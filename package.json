@@ -1,0 +1,23 @@
+{
+  "name": "8f4e",
+  "version": "1.0.0",
+  "description": "8f4e",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andormade/8f4e.git"
+  },
+  "author": "Andor Polgar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andormade/8f4e/issues"
+  },
+  "homepage": "https://github.com/andormade/8f4e#readme",
+  "devDependencies": {
+    "pixi.js": "^5.3.3"
+  }
+}
