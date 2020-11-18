@@ -1,22 +1,8 @@
-import * as PIXI from 'pixi.js';
-import cursor from './cursor.png';
+import pixijs from './ui/view/pixijs';
 
-const app = new PIXI.Application({
-	autoResize: true,
-	resolution: window.devicePixelRatio,
-});
-
-app.renderer.view.style.position = 'absolute';
-app.renderer.view.style.display = 'block';
-
-document.body.appendChild(app.view);
-
-window.addEventListener('resize', () => {
-	app.renderer.resize(window.innerWidth, window.innerHeight);
-});
-
-let ui = {
+window.ui = {
 	cursor: [0, 0],
+	selectArea: [0, 0, 0, 0],
 	modules: [
 		{
 			id: 1,
@@ -29,6 +15,15 @@ let ui = {
 				[100, 20],
 			],
 			beingDragged: false,
+			connectors: [
+				{ name: 'gate', id: 1, position: [5, 20] },
+				{
+					name: 'trigger',
+					id: 2,
+					position: [5, 40],
+				},
+			],
+			isSelected: false,
 		},
 		{
 			id: 2,
@@ -41,9 +36,65 @@ let ui = {
 				[100, 20],
 			],
 			beingDragged: false,
+			connectors: [
+				{ name: 'gate', id: 1, position: [5, 20] },
+				{
+					name: 'trigger',
+					id: 2,
+					position: [5, 40],
+				},
+			],
+			isSelected: false,
 		},
 		{
 			id: 3,
+			name: 'Hello2',
+			position: [200, 200],
+			size: [100, 100],
+			zIndex: 1,
+			draggableArea: [
+				[0, 0],
+				[100, 20],
+			],
+			beingDragged: false,
+			connectors: [
+				{ name: 'gate', id: 1, position: [5, 20] },
+				{
+					name: 'trigger',
+					id: 2,
+					position: [5, 40],
+				},
+								{
+					name: 'trigger',
+					id: 2,
+					position: [5, 80],
+				},
+			],
+			isSelected: false,
+		},
+		{
+			id: 4,
+			name: 'Hello',
+			position: [10, 10],
+			size: [100, 100],
+			zIndex: 1,
+			draggableArea: [
+				[0, 0],
+				[100, 20],
+			],
+			beingDragged: false,
+			connectors: [
+				{ name: 'gate', id: 1, position: [5, 20] },
+				{
+					name: 'trigger',
+					id: 2,
+					position: [5, 40],
+				},
+			],
+			isSelected: false,
+		},
+		{
+			id: 5,
 			name: 'Hello2',
 			position: [60, 50],
 			size: [100, 100],
@@ -53,11 +104,46 @@ let ui = {
 				[100, 20],
 			],
 			beingDragged: false,
+			connectors: [
+				{ name: 'gate', id: 1, position: [5, 20] },
+				{
+					name: 'trigger',
+					id: 2,
+					position: [5, 40],
+				},
+			],
+			isSelected: false,
+		},
+		{
+			id: 6,
+			name: 'Hello2',
+			position: [60, 50],
+			size: [100, 100],
+			zIndex: 1,
+			draggableArea: [
+				[0, 0],
+				[100, 20],
+			],
+			beingDragged: false,
+			connectors: [
+				{ name: 'gate', id: 1, position: [5, 20] },
+				{
+					name: 'trigger',
+					id: 2,
+					position: [5, 40],
+				},
+			],
+			isSelected: false,
 		},
 	],
 	connections: [
-		{ from: 1, to: 2 },
-		{ from: 2, to: 3 },
+		{ fromModule: 1, fromConnector: 1, toModule: 3, toConnector: 2 },
+		{ fromModule: 1, fromConnector: 0, toModule: 2, toConnector: 0 },
+		{ fromModule: 2, fromConnector: 0, toModule: 3, toConnector: 1 },
+		{ fromModule: 1, fromConnector: 1, toModule: 3, toConnector: 0 },
+		{ fromModule: 2, fromConnector: 0, toModule: 4, toConnector: 0 },
+		{ fromModule: 1, fromConnector: 1, toModule: 5, toConnector: 1 },
+		{ fromModule: 2, fromConnector: 0, toModule: 6, toConnector: 1 },
 	],
 };
 
@@ -75,8 +161,12 @@ document.addEventListener('mousedown', e => {
 			x >= position[0] && x <= position[0] + size[0] && y >= position[1] && y <= position[1] + size[1]
 	);
 
+	ui.selectArea[0] = x;
+	ui.selectArea[1] = y;
+
 	if (draggedModule) {
 		draggedModule.beingDragged = true;
+		draggedModule.isSelected = true;
 	}
 });
 
@@ -89,6 +179,11 @@ document.addEventListener('mousemove', e => {
 	if (draggedModule) {
 		draggedModule.position[0] += e.movementX;
 		draggedModule.position[1] += e.movementY;
+	} else {
+		if (e.buttons === 1) {
+			ui.selectArea[2] += e.movementX;
+			ui.selectArea[3] += e.movementY;
+		}
 	}
 
 	ui.cursor[0] = e.clientX;
@@ -100,74 +195,10 @@ document.addEventListener('mouseup', e => {
 
 	if (draggedModule) {
 		draggedModule.beingDragged = false;
+		draggedModule.position[0] = Math.round(draggedModule.position[0] / 10) * 10; 
+		draggedModule.position[1] = Math.round(draggedModule.position[1] / 10) * 10; 
 	}
+
+	ui.selectArea = [0, 0, 0, 0];
 });
 
-app.loader.add('cursor', cursor).load((loader, resources) => {
-	const cursor = new PIXI.Sprite(resources.cursor.texture);
-
-	const rectangles = ui.modules.map(({ size, position, name }) => {
-		const container = new PIXI.Container();
-
-		const rectangle = new PIXI.Graphics();
-		rectangle.lineStyle(1, 0xffffff, 1);
-		rectangle.drawRect(0, 0, size[0], size[1]);
-		container.addChild(rectangle);
-
-		let style = new PIXI.TextStyle({
-			fontFamily: 'monospace',
-			fontSize: 12,
-			fill: 'white',
-			stroke: '#ffffff',
-			strokeThickness: 1,
-		});
-
-		const message = new PIXI.Text(name, style);
-		message.position.x = 10;
-		message.position.y = 10;
-
-		container.x = position[0];
-		container.y = position[1];
-		container.addChild(message);
-
-		app.stage.addChild(container);
-
-		return container;
-	});
-
-	const connections = ui.connections.map(({ from, to }) => {
-		const line = new PIXI.Graphics();
-		const a = ui.modules.find(({ id }) => id === from);
-		const b = ui.modules.find(({ id }) => id === to);
-		line.lineStyle(1, 0xffffff, 1);
-		line.moveTo(a.position[0], a.position[1]);
-		line.lineTo(b.position[0], b.position[1]);
-		app.stage.addChild(line);
-
-		return line;
-	});
-
-	app.stage.addChild(cursor);
-
-	app.ticker.add(() => {
-		cursor.x = ui.cursor[0];
-		cursor.y = ui.cursor[1];
-
-		rectangles.forEach((rectangle, index) => {
-			rectangle.x = ui.modules[index].position[0];
-			rectangle.y = ui.modules[index].position[1];
-		});
-
-		connections.forEach((connection, index) => {
-			connection.clear();
-			const { from, to } = ui.connections[index];
-			const a = ui.modules.find(({ id }) => id === from);
-			const b = ui.modules.find(({ id }) => id === to);
-			connection.lineStyle(1, 0xffffff, 1);
-			connection.moveTo(a.position[0], a.position[1]);
-			connection.lineTo(b.position[0], b.position[1]);
-		});
-	});
-});
-
-app.renderer.resize(window.innerWidth, window.innerHeight);
