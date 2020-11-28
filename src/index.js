@@ -65,7 +65,7 @@ window.ui = {
 					id: 2,
 					position: [5, 40],
 				},
-								{
+				{
 					name: 'trigger',
 					id: 2,
 					position: [5, 80],
@@ -196,10 +196,9 @@ document.addEventListener('mouseup', e => {
 
 	if (draggedModule) {
 		draggedModule.beingDragged = false;
-		draggedModule.position[0] = Math.round(draggedModule.position[0] / 10) * 10; 
-		draggedModule.position[1] = Math.round(draggedModule.position[1] / 10) * 10; 
+		draggedModule.position[0] = Math.round(draggedModule.position[0] / 10) * 10;
+		draggedModule.position[1] = Math.round(draggedModule.position[1] / 10) * 10;
 	}
 
 	ui.selectArea = [0, 0, 0, 0];
 });
-
