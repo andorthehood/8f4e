@@ -2,7 +2,7 @@ const createProgram = function (gl, shaders) {
 	let program = gl.createProgram();
 
 	shaders.forEach(shader => {
-		console.log(shader)
+		console.log(shader);
 		gl.attachShader(program, shader);
 	});
 

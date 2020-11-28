@@ -5,7 +5,6 @@ import createShader from './utils/createShader';
 import createProgram from './utils/createProgram';
 import setUniform from './utils/setUniform';
 
-
 const init = function (vertexShaderCode, fragmentShaderCode) {
 	const canvas = document.getElementById('glcanvas');
 	const gl = canvas.getContext('webgl', { antialias: false });
@@ -27,11 +26,10 @@ const init = function (vertexShaderCode, fragmentShaderCode) {
 
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-
 	gl.clearColor(0.9, 0.9, 0.9, 1.0);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
- 	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
+	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
 
 	setUniform(gl, program, 'u_color', 1, 0, 0, 1);
 
