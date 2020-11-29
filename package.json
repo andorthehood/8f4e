@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel serve src/index.html --log-level 4 --port 3000 --host 0.0.0.0",
+    "build": "parcel src/index.html --port 3000 --host 0.0.0.0",
     "prettier": "prettier --write ./src/**/*.js"
   },
   "repository": {
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/andormade/8f4e#readme",
   "devDependencies": {
-    "parcel": "^1.12.4",
-    "pixi.js": "^5.3.3"
+    "pixi.js": "^5.3.3",
+    "prettier": "^2.2.1"
   }
 }
