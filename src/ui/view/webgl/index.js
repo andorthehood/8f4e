@@ -1,21 +1,28 @@
-import fragmentShader from './shaders/shader.frag';
-import vertexShader from './shaders/shader.vert';
+import createShader from './utils/createShader.js';
+import createProgram from './utils/createProgram.js';
+import setUniform from './utils/setUniform.js';
 
-import createShader from './utils/createShader';
-import createProgram from './utils/createProgram';
-import setUniform from './utils/setUniform';
-
-const init = function (vertexShaderCode, fragmentShaderCode) {
+const init = async function () {
 	const canvas = document.getElementById('glcanvas');
+
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+
 	const gl = canvas.getContext('webgl', { antialias: false });
 
-	const fragmentShader = createShader(gl, fragmentShaderCode, gl.FRAGMENT_SHADER);
-	const vertexShader = createShader(gl, vertexShaderCode, gl.VERTEX_SHADER);
-
-	const program = createProgram(gl, [vertexShader, fragmentShader]);
+	const shaderFiles = await Promise.all([fetch('ui/view/webgl/shaders/shader.vert'), fetch('ui/view/webgl/shaders/shader.frag')]);
+	const shaderCodes = await Promise.all(shaderFiles.map(response => response.text()));
+	const shaders = [createShader(gl, shaderCodes[1], gl.FRAGMENT_SHADER), createShader(gl, shaderCodes[0], gl.VERTEX_SHADER)];
+	const program = createProgram(gl, shaders);
 	gl.useProgram(program);
 
 	var a_position = gl.getAttribLocation(program, 'a_position');
+
+	window.addEventListener('resize', () => {
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		setUniform(gl, program, 'u_resolution', canvas.width, canvas.height);
+	});
 
 	setUniform(gl, program, 'u_resolution', canvas.width, canvas.height);
 
@@ -26,7 +33,7 @@ const init = function (vertexShaderCode, fragmentShaderCode) {
 
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-	gl.clearColor(0.9, 0.9, 0.9, 1.0);
+	gl.clearColor(0, 0, 0, 1.0);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
 	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
@@ -40,4 +47,4 @@ const init = function (vertexShaderCode, fragmentShaderCode) {
 	gl.drawArrays(gl.LINE_LOOP, 0, 4);
 };
 
-init(vertexShader, fragmentShader);
+init();
