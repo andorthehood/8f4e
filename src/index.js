@@ -1,5 +1,4 @@
-//import pixijs from './ui/view/pixijs';
-import './ui/view/webgl';
+import './ui/view/webgl/index.js';
 
 window.ui = {
 	cursor: [0, 0],
