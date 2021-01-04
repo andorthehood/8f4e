@@ -3,7 +3,8 @@ import createProgram from './utils/createProgram.js';
 import setUniform from './utils/setUniform.js';
 import fragmentShader from './shaders/shader.frag';
 import vertexShader from './shaders/shader.vert';
-import { drawRectangles, createRectangleBuffer } from './utils.js';
+import { drawRectangles, drawLines } from './utils.js';
+import { createRectangleBufferFromUiData, createLineBufferFromUiData } from './uiHelper.js';
 
 const init = async function () {
 	const canvas = document.getElementById('glcanvas');
@@ -42,13 +43,16 @@ const init = async function () {
 
 	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
 
-	setUniform(gl, program, 'u_color', 1, 0, 0, 1);
+	setUniform(gl, program, 'u_color', 1, 1, 1, 1);
 
-	drawRectangles(gl, [
-		createRectangleBuffer(1, 20, 100, 100),
-		createRectangleBuffer(200, 200, 20, 40),
-		createRectangleBuffer(202, 202, 20, 40),
-	]);
+	const render = () => {
+		gl.clear(gl.COLOR_BUFFER_BIT);
+		drawRectangles(gl, createRectangleBufferFromUiData(window.ui));
+		drawLines(gl, createLineBufferFromUiData(window.ui));
+		window.requestAnimationFrame(render);
+	};
+
+	window.requestAnimationFrame(render);
 };
 
 init();
