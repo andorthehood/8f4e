@@ -1,6 +1,9 @@
 import createShader from './utils/createShader.js';
 import createProgram from './utils/createProgram.js';
 import setUniform from './utils/setUniform.js';
+import fragmentShader from './shaders/shader.frag';
+import vertexShader from './shaders/shader.vert';
+import { drawRectangles, createRectangleBuffer } from './utils.js';
 
 const init = async function () {
 	const canvas = document.getElementById('glcanvas');
@@ -10,9 +13,10 @@ const init = async function () {
 
 	const gl = canvas.getContext('webgl', { antialias: false });
 
-	const shaderFiles = await Promise.all([fetch('ui/view/webgl/shaders/shader.vert'), fetch('ui/view/webgl/shaders/shader.frag')]);
-	const shaderCodes = await Promise.all(shaderFiles.map(response => response.text()));
-	const shaders = [createShader(gl, shaderCodes[1], gl.FRAGMENT_SHADER), createShader(gl, shaderCodes[0], gl.VERTEX_SHADER)];
+	const shaders = [
+		createShader(gl, fragmentShader, gl.FRAGMENT_SHADER),
+		createShader(gl, vertexShader, gl.VERTEX_SHADER),
+	];
 	const program = createProgram(gl, shaders);
 	gl.useProgram(program);
 
@@ -40,11 +44,11 @@ const init = async function () {
 
 	setUniform(gl, program, 'u_color', 1, 0, 0, 1);
 
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([1, 1, 1, 10, 10, 10, 10, 1]), gl.STATIC_DRAW);
-	gl.drawArrays(gl.LINE_LOOP, 0, 4);
-
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([1, 1, 1, 15, 15, 15, 15, 1]), gl.STATIC_DRAW);
-	gl.drawArrays(gl.LINE_LOOP, 0, 4);
+	drawRectangles(gl, [
+		createRectangleBuffer(1, 20, 100, 100),
+		createRectangleBuffer(200, 200, 20, 40),
+		createRectangleBuffer(202, 202, 20, 40),
+	]);
 };
 
 init();
