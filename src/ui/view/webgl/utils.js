@@ -1,3 +1,5 @@
+import { resolveConfig } from 'prettier';
+
 export const createRectangleBuffer = (x, y, width, height) => {
 	return [x, y, x + width, y, x + width, y + height, x, y + height];
 };
@@ -18,4 +20,19 @@ export const drawLines = (gl, lines) => {
 	for (let i = 0; i < lines.length * 2; i += 2) {
 		gl.drawArrays(gl.LINES, i, 2);
 	}
+};
+
+export const drawTriangles = (gl, triangles) => {
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangles), gl.STATIC_DRAW);
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
+};
+
+export const loadImage = async () => {
+	return new Promise(resolve => {
+		const image = new Image();
+		image.src = '/test.jpg';
+		image.onload = function () {
+			resolve(image);
+		};
+	});
 };
