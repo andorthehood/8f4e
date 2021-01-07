@@ -30,7 +30,9 @@ function setRectangle(gl, x, y, width, height) {
 }
 
 const init = async function () {
-	const image = await loadImage();
+	const test1 = await loadImage('/test.jpg');
+	const test2 = await loadImage('/test2.jpg');
+
 	const canvas = document.getElementById('glcanvas');
 
 	canvas.width = window.innerWidth;
@@ -51,11 +53,6 @@ const init = async function () {
 
 	const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 
 	window.addEventListener('resize', () => {
 		canvas.width = window.innerWidth;
@@ -71,7 +68,6 @@ const init = async function () {
 
 	/// POSITION BUFFER
 	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	setRectangle(gl, 0, 0, image.width * 2, image.height);
 	gl.enableVertexAttribArray(a_position);
 	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
 
@@ -79,69 +75,84 @@ const init = async function () {
 	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 	gl.enableVertexAttribArray(a_texcoord);
 	gl.vertexAttribPointer(a_texcoord, 2, gl.FLOAT, false, 0, 0);
-	gl.bufferData(
-		gl.ARRAY_BUFFER,
-		new Float32Array([
-			0.0,
-			0.0,
-			1.0,
-			0.0,
-			0.0,
-			1.0,
-			0.0,
-			1.0,
-			1.0,
-			0.0,
-			1.0,
-			1.0,
-			0.0,
-			0.0,
-			1.0,
-			0.0,
-			0.0,
-			1.0,
-			0.0,
-			1.0,
-			1.0,
-			0.0,
-			1.0,
-			1.0,
-			0.0,
-			0.0,
-			1.0,
-			0.0,
-			0.0,
-			1.0,
-			0.0,
-			1.0,
-			1.0,
-			0.0,
-			1.0,
-			1.0,
-			0.0,
-			0.0,
-			1.0,
-			0.0,
-			0.0,
-			1.0,
-			0.0,
-			1.0,
-			1.0,
-			0.0,
-			1.0,
-			1.0,
-		]),
-		gl.STATIC_DRAW
-	);
-
-	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
 	const render = () => {
+		gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+		gl.bufferData(
+			gl.ARRAY_BUFFER,
+			new Float32Array([
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				1.0,
+				1.0,
+			]),
+			gl.STATIC_DRAW
+		);
+
+		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
 		performance.now();
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
-		setRectangle(gl, 10, 10, image.width / 2, image.height / 2);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, test1);
+
+		setUniform(gl, program, 'u_draw_texture', true);
+
+		setRectangle(gl, 10, 10, 500, 500);
 		gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+		setRectangle(gl, 1000, 100, 100, 100);
+		gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+		setUniform(gl, program, 'u_draw_texture', false);
 
 		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
 		drawRectangles(gl, createRectangleBufferFromUiData(window.ui));
