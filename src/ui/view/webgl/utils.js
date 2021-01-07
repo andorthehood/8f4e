@@ -27,10 +27,10 @@ export const drawTriangles = (gl, triangles) => {
 	gl.drawArrays(gl.TRIANGLES, 0, 6);
 };
 
-export const loadImage = async () => {
+export const loadImage = async src => {
 	return new Promise(resolve => {
 		const image = new Image();
-		image.src = '/test.jpg';
+		image.src = src;
 		image.onload = function () {
 			resolve(image);
 		};
