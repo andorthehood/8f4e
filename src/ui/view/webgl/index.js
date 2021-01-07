@@ -134,13 +134,15 @@ const init = async function () {
 		gl.STATIC_DRAW
 	);
 
-	gl.drawArrays(gl.TRIANGLES, 0, 6);
-
 	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
 	const render = () => {
 		performance.now();
 		gl.clear(gl.COLOR_BUFFER_BIT);
+
+		setRectangle(gl, 10, 10, image.width / 2, image.height / 2);
+		gl.drawArrays(gl.TRIANGLES, 0, 6);
+
 		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
 		drawRectangles(gl, createRectangleBufferFromUiData(window.ui));
 		setUniform(gl, program, 'u_color', 0.5, 0.5, 0.5, 1);
@@ -148,9 +150,8 @@ const init = async function () {
 
 		window.requestAnimationFrame(render);
 	};
-	render();
 
-	//window.requestAnimationFrame(render);
+	window.requestAnimationFrame(render);
 
 	loadWasm();
 };
