@@ -31,7 +31,6 @@ const init = async function () {
 	const gl = canvas.getContext('webgl', { antialias: false });
 
 	const program = createProgram(gl, [
-		//createShader(gl, fragmentShader, gl.FRAGMENT_SHADER),
 		createShader(gl, textureShader, gl.FRAGMENT_SHADER),
 		createShader(gl, vertexShader, gl.VERTEX_SHADER),
 	]);
@@ -55,12 +54,10 @@ const init = async function () {
 
 	/// POSITION BUFFER
 	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	//gl.enableVertexAttribArray(a_position);
 	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
 
 	// BACK TO TEXTCOORD BUFFER
 	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-	//gl.enableVertexAttribArray(a_texcoord);
 	gl.vertexAttribPointer(a_texcoord, 2, gl.FLOAT, false, 0, 0);
 
 	const render = () => {
