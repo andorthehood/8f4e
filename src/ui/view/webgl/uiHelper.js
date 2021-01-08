@@ -3,8 +3,8 @@ import { createRectangleBuffer } from './utils.js';
 export const createRectangleBufferFromUiData = ui => {
 	return new Float32Array(
 		ui.modules
-			.map(({ position, size, connectors }) => {
-				return [...createRectangleBuffer(position[0], position[1], size[0], size[1])];
+			.map(({ position, size }) => {
+				return createRectangleBuffer(position[0], position[1], size[0], size[1]);
 			})
 			.flat()
 	);
