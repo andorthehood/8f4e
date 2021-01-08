@@ -3,7 +3,7 @@ import createProgram from './utils/createProgram.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
 
-import { drawRectangles, drawLines, loadImage, drawImage, setUniform } from './utils.js';
+import { drawRectangles, drawLines, loadImage, drawImage, setUniform, memoize } from './utils.js';
 import { createRectangleBufferFromUiData, createLineBufferFromUiData } from './uiHelper.js';
 
 const loadWasm = async () => {
