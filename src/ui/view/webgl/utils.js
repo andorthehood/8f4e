@@ -21,26 +21,26 @@ export const createRectangleFromTriangles = (x, y, width, height) => {
 	var x2 = x + width;
 	var y1 = y;
 	var y2 = y + height;
-	return [x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2];
+	return new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2]);
 };
 
 export const drawRectangles = (gl, rectangles) => {
 	gl.bufferData(gl.ARRAY_BUFFER, rectangles, gl.STATIC_DRAW);
-	for (let i = 0; i < rectangles.length; i += 4) {
+	for (let i = 0; i < rectangles.length / 2; i += 4) {
 		gl.drawArrays(gl.LINE_LOOP, i, 4);
 	}
 };
 
 export const drawLines = (gl, linesBuffer) => {
 	gl.bufferData(gl.ARRAY_BUFFER, linesBuffer, gl.STATIC_DRAW);
-	for (let i = 0; i < linesBuffer.length; i += 2) {
+	for (let i = 0; i < linesBuffer.length / 2; i += 2) {
 		gl.drawArrays(gl.LINES, i, 2);
 	}
 };
 
 export const drawRectanglesFromTriangles = (gl, rectangles) => {
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(rectangles.flat()), gl.STATIC_DRAW);
-	for (let i = 0; i < rectangles.length * 6; i += 6) {
+	gl.bufferData(gl.ARRAY_BUFFER, rectangles, gl.STATIC_DRAW);
+	for (let i = 0; i < rectangles.length / 2; i += 6) {
 		gl.drawArrays(gl.TRIANGLES, 0, 6);
 	}
 };
@@ -80,7 +80,7 @@ export const drawImage = (
 	gl.enableVertexAttribArray(a_texcoord);
 	gl.bufferData(
 		gl.ARRAY_BUFFER,
-		new Float32Array([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0]),
+		new Float32Array([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]),
 		gl.STATIC_DRAW
 	);
 
