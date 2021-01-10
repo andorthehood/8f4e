@@ -3,7 +3,7 @@ import createProgram from './utils/createProgram.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
 
-import { drawRectangles, drawLines, loadImage, drawImage, setUniform, memoize } from './utils.js';
+import { drawRectangles, drawLines, loadImage, drawImage, setUniform, drawText } from './utils.js';
 import { createRectangleBufferFromUiData, createLineBufferFromUiData } from './uiHelper.js';
 
 const loadWasm = async () => {
@@ -21,7 +21,7 @@ const loadWasm = async () => {
 
 const init = async function () {
 	const image = await loadImage('/test.jpg');
-	const test2 = await loadImage('/test2.jpg');
+	const font = await loadImage('/font.png');
 
 	const canvas = document.getElementById('glcanvas');
 
@@ -59,14 +59,44 @@ const init = async function () {
 	// BACK TO TEXTCOORD BUFFER
 	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 	gl.vertexAttribPointer(a_texcoord, 2, gl.FLOAT, false, 0, 0);
+	let counter = 0;
+	let start = Date.now();
 
 	const render = () => {
+		const now = performance.now();
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		drawImage(gl, program, positionBuffer, texcoordBuffer, a_position, a_texcoord, image, 0, 0, 500, 500);
+		drawImage(gl, program, positionBuffer, texcoordBuffer, a_position, a_texcoord, image, 100, 100, 500, 500);
 		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
 		drawRectangles(gl, createRectangleBufferFromUiData(window.ui));
 		setUniform(gl, program, 'u_color', 0.5, 0.5, 0.5, 1);
 		drawLines(gl, createLineBufferFromUiData(window.ui));
+
+		const time = (Math.round((performance.now() - now) * 100) / 100).toString();
+		drawText(
+			gl,
+			program,
+			positionBuffer,
+			texcoordBuffer,
+			a_position,
+			a_texcoord,
+			font,
+			'time to render one frame ' + time + ' ms',
+			100,
+			50
+		);
+		drawText(
+			gl,
+			program,
+			positionBuffer,
+			texcoordBuffer,
+			a_position,
+			a_texcoord,
+			font,
+			'fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)),
+			100,
+			60
+		);
+		counter++;
 
 		window.requestAnimationFrame(render);
 	};
