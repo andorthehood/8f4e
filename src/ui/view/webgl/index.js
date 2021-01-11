@@ -2,6 +2,8 @@ import createShader from './utils/createShader.js';
 import createProgram from './utils/createProgram.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
+import testImage from './textures/test.jpg';
+import fontImage from './textures/font.png';
 
 import { drawRectangles, drawLines, loadImage, drawImage, setUniform, drawText, createTexture } from './utils.js';
 import { createRectangleBufferFromUiData, createLineBufferFromUiData } from './uiHelper.js';
@@ -20,8 +22,8 @@ const loadWasm = async () => {
 };
 
 const init = async function () {
-	const image = await loadImage('/test.jpg');
-	const font = await loadImage('/font.png');
+	const image = await loadImage(testImage);
+	const font = await loadImage(fontImage);
 
 	const canvas = document.getElementById('glcanvas');
 
