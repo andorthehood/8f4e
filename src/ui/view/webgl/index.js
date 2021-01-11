@@ -97,7 +97,7 @@ const init = async function () {
 			fontTexture,
 			'fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)),
 			100,
-			60
+			70
 		);
 		counter++;
 
