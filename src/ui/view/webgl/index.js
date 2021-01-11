@@ -3,7 +3,7 @@ import createProgram from './utils/createProgram.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
 
-import { drawRectangles, drawLines, loadImage, drawImage, setUniform, drawText } from './utils.js';
+import { drawRectangles, drawLines, loadImage, drawImage, setUniform, drawText, createTexture } from './utils.js';
 import { createRectangleBufferFromUiData, createLineBufferFromUiData } from './uiHelper.js';
 
 const loadWasm = async () => {
@@ -62,10 +62,13 @@ const init = async function () {
 	let counter = 0;
 	let start = Date.now();
 
+	const texture = createTexture(gl, image);
+	const fontTexture = createTexture(gl, font);
+
 	const render = () => {
 		const now = performance.now();
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		drawImage(gl, program, positionBuffer, texcoordBuffer, a_position, a_texcoord, image, 100, 100, 500, 500);
+		drawImage(gl, program, positionBuffer, texcoordBuffer, a_position, a_texcoord, texture, 100, 100, 500, 500);
 		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
 		drawRectangles(gl, createRectangleBufferFromUiData(window.ui));
 		setUniform(gl, program, 'u_color', 0.5, 0.5, 0.5, 1);
@@ -79,7 +82,7 @@ const init = async function () {
 			texcoordBuffer,
 			a_position,
 			a_texcoord,
-			font,
+			fontTexture,
 			'time to render one frame ' + time + ' ms',
 			100,
 			50
@@ -91,7 +94,7 @@ const init = async function () {
 			texcoordBuffer,
 			a_position,
 			a_texcoord,
-			font,
+			fontTexture,
 			'fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)),
 			100,
 			60

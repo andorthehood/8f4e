@@ -67,16 +67,14 @@ export const drawImage = (
 	texcoordBuffer,
 	a_position,
 	a_texcoord,
-	image,
+	texture,
 	x,
 	y,
 	width,
 	height
 ) => {
-	const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.enableVertexAttribArray(a_texcoord);
-
 	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 	gl.bufferData(
 		gl.ARRAY_BUFFER,
@@ -84,16 +82,9 @@ export const drawImage = (
 		gl.STATIC_DRAW
 	);
 
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-
 	setUniform(gl, program, 'u_draw_texture', true);
 	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 	drawRectanglesFromTriangles(gl, createRectangleFromTriangles(x, y, width, height));
-
 	gl.disableVertexAttribArray(a_texcoord);
 	setUniform(gl, program, 'u_draw_texture', false);
 };
@@ -180,26 +171,30 @@ function makeVerticesForString({ textureWidth, textureHeight, letterHeight, lett
 }
 
 export const drawText = (gl, program, positionBuffer, texcoordBuffer, a_position, a_texcoord, font, text, x, y) => {
-	var glyphTex = gl.createTexture();
-	gl.bindTexture(gl.TEXTURE_2D, glyphTex);
-	gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, font);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-
+	gl.bindTexture(gl.TEXTURE_2D, font);
 	const vertices = makeVerticesForString(fontInfo, text, x, y);
-
-	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, vertices.position, gl.STATIC_DRAW);
-	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, vertices.texcoord, gl.STATIC_DRAW);
 
 	gl.enableVertexAttribArray(a_position);
 	gl.enableVertexAttribArray(a_texcoord);
 
+	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, vertices.texcoord, gl.STATIC_DRAW);
+	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, vertices.position, gl.STATIC_DRAW);
+
 	setUniform(gl, program, 'u_draw_texture', true);
 	gl.drawArrays(gl.TRIANGLES, 0, vertices.numVertices);
 	setUniform(gl, program, 'u_draw_texture', false);
+};
+
+export const createTexture = (gl, image) => {
+	const texture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	return texture;
 };
