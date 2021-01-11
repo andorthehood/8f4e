@@ -17,10 +17,10 @@ export const createLineBuffer = (x, y, x2, y2) => {
 };
 
 export const createRectangleFromTriangles = (x, y, width, height) => {
-	var x1 = x;
-	var x2 = x + width;
-	var y1 = y;
-	var y2 = y + height;
+	const x1 = x;
+	const x2 = x + width;
+	const y1 = y;
+	const y2 = y + height;
 	return new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2]);
 };
 
@@ -89,10 +89,10 @@ export const drawImage = (
 	setUniform(gl, program, 'u_draw_texture', false);
 };
 
-var fontInfo = {
+const fontInfo = {
 	letterHeight: 7,
 	letterWidth: 5,
-	letterSpacing: 1,
+	letterSpacing: 10,
 	textureWidth: 120,
 	textureHeight: 120,
 };
@@ -127,8 +127,9 @@ function makeVerticesForString({ textureWidth, textureHeight, letterHeight, lett
 	for (let i = 0; i < s.length; ++i) {
 		const glyphInfo = getGlyphInfo(s[i]);
 
-		const x2 = x + letterWidth;
-		const y2 = y + letterHeight;
+		const x2 = x + letterWidth * 2;
+		const y2 = y + letterHeight * 2;
+
 		const u1 = glyphInfo.x / textureWidth;
 		const v2 = (glyphInfo.y + letterHeight) / textureHeight;
 		const u2 = (glyphInfo.x + letterWidth) / textureWidth;
@@ -136,26 +137,27 @@ function makeVerticesForString({ textureWidth, textureHeight, letterHeight, lett
 
 		positions[offset + 0] = x;
 		positions[offset + 1] = y;
-		texcoords[offset + 0] = u1;
-		texcoords[offset + 1] = v1;
 		positions[offset + 2] = x2;
 		positions[offset + 3] = y;
-		texcoords[offset + 2] = u2;
-		texcoords[offset + 3] = v1;
 		positions[offset + 4] = x;
 		positions[offset + 5] = y2;
-		texcoords[offset + 4] = u1;
-		texcoords[offset + 5] = v2;
 		positions[offset + 6] = x;
 		positions[offset + 7] = y2;
-		texcoords[offset + 6] = u1;
-		texcoords[offset + 7] = v2;
 		positions[offset + 8] = x2;
 		positions[offset + 9] = y;
-		texcoords[offset + 8] = u2;
-		texcoords[offset + 9] = v1;
 		positions[offset + 10] = x2;
 		positions[offset + 11] = y2;
+
+		texcoords[offset + 0] = u1;
+		texcoords[offset + 1] = v1;
+		texcoords[offset + 2] = u2;
+		texcoords[offset + 3] = v1;
+		texcoords[offset + 4] = u1;
+		texcoords[offset + 5] = v2;
+		texcoords[offset + 6] = u1;
+		texcoords[offset + 7] = v2;
+		texcoords[offset + 8] = u2;
+		texcoords[offset + 9] = v1;
 		texcoords[offset + 10] = u2;
 		texcoords[offset + 11] = v2;
 
