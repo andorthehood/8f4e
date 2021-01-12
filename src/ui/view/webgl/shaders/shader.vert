@@ -14,12 +14,5 @@ void main() {
     gl_PointSize = 1.0;
 	gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
 
-	// if (a_texcoord) {
-	// 	v_draw_texture = 1.0;
-	// }
-	// else {
-	// 	v_draw_texture = 0.0;
-	// }
-
 	v_texcoord = a_texcoord;
 }
