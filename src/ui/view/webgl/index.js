@@ -74,19 +74,7 @@ const init = async function () {
 	const render = () => {
 		const now = performance.now();
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		drawImage(
-			gl,
-			program,
-			positionBuffer,
-			texcoordBuffer,
-			a_position,
-			a_texcoord,
-			cursorTexture,
-			ui.cursor[0],
-			ui.cursor[1],
-			32,
-			32
-		);
+
 		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
 		drawRectangles(gl, createRectangleBufferFromUiData(window.ui));
 		setUniform(gl, program, 'u_color', 0.5, 0.5, 0.5, 1);
@@ -117,6 +105,21 @@ const init = async function () {
 			100,
 			70
 		);
+
+		drawImage(
+			gl,
+			program,
+			positionBuffer,
+			texcoordBuffer,
+			a_position,
+			a_texcoord,
+			cursorTexture,
+			ui.cursor[0],
+			ui.cursor[1],
+			32,
+			32
+		);
+
 		counter++;
 
 		window.requestAnimationFrame(render);
