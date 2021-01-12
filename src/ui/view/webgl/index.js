@@ -2,7 +2,7 @@ import createShader from './utils/createShader.js';
 import createProgram from './utils/createProgram.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
-import testImage from './textures/test.jpg';
+import cursorImage from './textures/cursor.png';
 import fontImage from './textures/font.png';
 
 import { drawRectangles, drawLines, loadImage, drawImage, setUniform, drawText, createTexture } from './utils.js';
@@ -22,7 +22,7 @@ const loadWasm = async () => {
 };
 
 const init = async function () {
-	const image = await loadImage(testImage);
+	const cursor = await loadImage(cursorImage);
 	const font = await loadImage(fontImage);
 
 	const canvas = document.getElementById('glcanvas');
@@ -61,16 +61,32 @@ const init = async function () {
 	// BACK TO TEXTCOORD BUFFER
 	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 	gl.vertexAttribPointer(a_texcoord, 2, gl.FLOAT, false, 0, 0);
+
+	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	gl.enable(gl.BLEND);
+
 	let counter = 0;
 	let start = Date.now();
 
-	const texture = createTexture(gl, image);
+	const cursorTexture = createTexture(gl, cursor);
 	const fontTexture = createTexture(gl, font);
 
 	const render = () => {
 		const now = performance.now();
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		drawImage(gl, program, positionBuffer, texcoordBuffer, a_position, a_texcoord, texture, 100, 100, 500, 500);
+		drawImage(
+			gl,
+			program,
+			positionBuffer,
+			texcoordBuffer,
+			a_position,
+			a_texcoord,
+			cursorTexture,
+			ui.cursor[0],
+			ui.cursor[1],
+			32,
+			32
+		);
 		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
 		drawRectangles(gl, createRectangleBufferFromUiData(window.ui));
 		setUniform(gl, program, 'u_color', 0.5, 0.5, 0.5, 1);
