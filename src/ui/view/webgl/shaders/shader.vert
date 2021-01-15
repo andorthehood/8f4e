@@ -4,7 +4,6 @@ attribute vec2 a_texcoord;
 uniform vec2 u_resolution;
 
 varying vec2 v_texcoord;
-varying float v_draw_texture;
 
 void main() {
 	vec2 zeroToOne = a_position / u_resolution;
