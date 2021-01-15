@@ -1,3 +1,5 @@
+import setUniform from './engine/utils/setUniform.js';
+
 const cache = {};
 
 export const memoize = (func, cacheKey) => {
@@ -62,11 +64,6 @@ export const loadImage = async src => {
 			resolve(image);
 		};
 	});
-};
-
-export const setUniform = function (gl, program, name, ...values) {
-	const location = gl.getUniformLocation(program, name);
-	gl['uniform' + values.length + 'f'](location, ...values);
 };
 
 export const drawImage = (
@@ -199,16 +196,4 @@ export const drawText = (gl, program, positionBuffer, texcoordBuffer, a_position
 	setUniform(gl, program, 'u_draw_texture', false);
 
 	gl.disableVertexAttribArray(a_texcoord);
-};
-
-export const createTexture = (gl, image) => {
-	const texture = gl.createTexture();
-	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-	return texture;
 };

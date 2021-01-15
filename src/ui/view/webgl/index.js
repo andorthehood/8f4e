@@ -1,12 +1,10 @@
-import createShader from './utils/createShader.js';
-import createProgram from './utils/createProgram.js';
-import vertexShader from './shaders/shader.vert';
-import textureShader from './shaders/texture.frag';
+import { Engine } from './engine/index.js';
 import cursorImage from './textures/cursor.png';
 import fontImage from './textures/font.png';
+import setUniform from './engine/utils/setUniform.js';
+import createTexture from './engine/utils/createTexture.js';
 
-import { drawRectangles, drawLines, loadImage, drawImage, setUniform, drawText, createTexture } from './utils.js';
-import { createRectangleBufferFromUiData, createLineBufferFromUiData } from './uiHelper.js';
+import { loadImage, drawText } from './utils.js';
 
 const loadWasm = async () => {
 	const importObject = {
@@ -30,56 +28,40 @@ const init = async function () {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 
-	const gl = canvas.getContext('webgl', { antialias: false });
+	const engine = new Engine(canvas);
 
-	const program = createProgram(gl, [
-		createShader(gl, textureShader, gl.FRAGMENT_SHADER),
-		createShader(gl, vertexShader, gl.VERTEX_SHADER),
-	]);
-
-	const a_position = gl.getAttribLocation(program, 'a_position');
-	const a_texcoord = gl.getAttribLocation(program, 'a_texcoord');
-	const texcoordBuffer = gl.createBuffer();
-	const positionBuffer = gl.createBuffer();
-
-	window.addEventListener('resize', () => {
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-		setUniform(gl, program, 'u_resolution', canvas.width, canvas.height);
-	});
-
-	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-	gl.clearColor(0, 0, 0, 1.0);
-	gl.clear(gl.COLOR_BUFFER_BIT);
-	gl.useProgram(program);
-	setUniform(gl, program, 'u_resolution', canvas.width, canvas.height);
-
-	/// POSITION BUFFER
-	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	//gl.bufferData(gl.ARRAY_BUFFER, 1024, gl.STATIC_DRAW);
-	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
-
-	// BACK TO TEXTCOORD BUFFER
-	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-	gl.vertexAttribPointer(a_texcoord, 2, gl.FLOAT, false, 0, 0);
-
-	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-	gl.enable(gl.BLEND);
+	const {
+		attributes: { a_position, a_texcoord },
+		buffers: { texcoordBuffer, positionBuffer },
+		program,
+		gl,
+	} = engine;
 
 	let counter = 0;
 	let start = Date.now();
 
 	const fontTexture = createTexture(gl, font);
 
-	const render = () => {
+	engine.render(function () {
 		const now = performance.now();
-		gl.clear(gl.COLOR_BUFFER_BIT);
-
-		gl.enableVertexAttribArray(a_position);
-		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
 		setUniform(gl, program, 'u_color', 0.5, 0.5, 0.5, 1);
-		drawLines(gl, createLineBufferFromUiData(window.ui));
+
+		ui.connections.forEach(({ fromModule, fromConnector, toModule, toConnector }) => {
+			const a = ui.modules.find(({ id }) => id === fromModule);
+			const b = ui.modules.find(({ id }) => id === toModule);
+			const line = [
+				a.connectors[fromConnector].position[0] + a.position[0] + 5,
+				a.connectors[fromConnector].position[1] + a.position[1] + 5,
+				b.connectors[toConnector].position[0] + b.position[0] + 5,
+				b.connectors[toConnector].position[1] + b.position[1] + 5,
+			];
+			engine.drawLine(...line);
+		});
+
+		ui.modules.forEach(({ position, size }) => {
+			engine.drawRectangle(...position, ...size);
+		});
 
 		for (let i = 0; i < window.ui.modules.length; i++) {
 			drawText(
@@ -95,12 +77,6 @@ const init = async function () {
 				window.ui.modules[i].position[1]
 			);
 		}
-
-		gl.enableVertexAttribArray(a_position);
-		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
-		drawLines(gl, createRectangleBufferFromUiData(window.ui));
 
 		const time = (Math.round((performance.now() - now) * 100) / 100).toString();
 		drawText(
@@ -129,11 +105,7 @@ const init = async function () {
 		);
 
 		counter++;
-
-		window.requestAnimationFrame(render);
-	};
-
-	window.requestAnimationFrame(render);
+	});
 };
 
 init();
