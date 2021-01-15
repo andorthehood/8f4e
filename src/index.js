@@ -12,7 +12,18 @@ if (localStorage.getItem('ui')) {
 }
 
 document.addEventListener('contextmenu', e => {
+	const x = e.clientX;
+	const y = e.clientY;
+
 	e.preventDefault();
+
+	if (!ui.contextMenu) {
+		ui.contextMenu = {};
+	}
+	ui.contextMenu.open = true;
+	ui.contextMenu.position = [x, y];
+	ui.contextMenu.items = ['Hello', 'Close'];
+
 	return false;
 });
 
