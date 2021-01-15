@@ -56,6 +56,7 @@ const init = async function () {
 
 	/// POSITION BUFFER
 	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+	//gl.bufferData(gl.ARRAY_BUFFER, 1024, gl.STATIC_DRAW);
 	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
 
 	// BACK TO TEXTCOORD BUFFER
@@ -68,17 +69,38 @@ const init = async function () {
 	let counter = 0;
 	let start = Date.now();
 
-	const cursorTexture = createTexture(gl, cursor);
 	const fontTexture = createTexture(gl, font);
 
 	const render = () => {
 		const now = performance.now();
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
-		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
-		drawRectangles(gl, createRectangleBufferFromUiData(window.ui));
+		gl.enableVertexAttribArray(a_position);
+		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
 		setUniform(gl, program, 'u_color', 0.5, 0.5, 0.5, 1);
 		drawLines(gl, createLineBufferFromUiData(window.ui));
+
+		for (let i = 0; i < window.ui.modules.length; i++) {
+			drawText(
+				gl,
+				program,
+				positionBuffer,
+				texcoordBuffer,
+				a_position,
+				a_texcoord,
+				fontTexture,
+				window.ui.modules[i].name,
+				window.ui.modules[i].position[0],
+				window.ui.modules[i].position[1]
+			);
+		}
+
+		gl.enableVertexAttribArray(a_position);
+		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+		setUniform(gl, program, 'u_color', 1, 1, 1, 1);
+		drawLines(gl, createRectangleBufferFromUiData(window.ui));
 
 		const time = (Math.round((performance.now() - now) * 100) / 100).toString();
 		drawText(
@@ -106,28 +128,12 @@ const init = async function () {
 			70
 		);
 
-		drawImage(
-			gl,
-			program,
-			positionBuffer,
-			texcoordBuffer,
-			a_position,
-			a_texcoord,
-			cursorTexture,
-			ui.cursor[0],
-			ui.cursor[1],
-			32,
-			32
-		);
-
 		counter++;
 
 		window.requestAnimationFrame(render);
 	};
 
 	window.requestAnimationFrame(render);
-
-	loadWasm();
 };
 
 init();
