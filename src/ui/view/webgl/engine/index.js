@@ -3,6 +3,7 @@ import createProgram from './utils/createProgram.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
 import setUniform from './utils/setUniform.js';
+import { fillBufferWithLineCoordinates } from './utils/buffer.js';
 
 export const setup = function (canvas) {
 	const gl = canvas.getContext('webgl', { antialias: false });
@@ -75,34 +76,15 @@ export class Engine {
 	}
 
 	drawRectangle(x, y, width, height) {
-		this.lineBuffer[this.lineBufferCounter] = x;
-		this.lineBuffer[this.lineBufferCounter + 1] = y;
-		this.lineBuffer[this.lineBufferCounter + 2] = x + width;
-		this.lineBuffer[this.lineBufferCounter + 3] = y;
-
-		this.lineBuffer[this.lineBufferCounter + 4] = x + width;
-		this.lineBuffer[this.lineBufferCounter + 5] = y;
-		this.lineBuffer[this.lineBufferCounter + 6] = x + width;
-		this.lineBuffer[this.lineBufferCounter + 7] = y + height;
-
-		this.lineBuffer[this.lineBufferCounter + 8] = x + width;
-		this.lineBuffer[this.lineBufferCounter + 9] = y + height;
-		this.lineBuffer[this.lineBufferCounter + 10] = x;
-		this.lineBuffer[this.lineBufferCounter + 11] = y + height;
-
-		this.lineBuffer[this.lineBufferCounter + 12] = x;
-		this.lineBuffer[this.lineBufferCounter + 13] = y + height;
-		this.lineBuffer[this.lineBufferCounter + 14] = x;
-		this.lineBuffer[this.lineBufferCounter + 15] = y;
-
+		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x + width, y);
+		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 4, x + width, y, x + width, y + height);
+		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 8, x + width, y + height, x, y + height);
+		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 12, x, y + height, x, y);
 		this.lineBufferCounter += 16;
 	}
 
 	drawLine(x, y, x2, y2) {
-		this.lineBuffer[this.lineBufferCounter] = x;
-		this.lineBuffer[this.lineBufferCounter + 1] = y;
-		this.lineBuffer[this.lineBufferCounter + 2] = x2;
-		this.lineBuffer[this.lineBufferCounter + 3] = y2;
+		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x2, y2);
 		this.lineBufferCounter += 4;
 	}
 
