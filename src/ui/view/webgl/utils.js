@@ -9,7 +9,27 @@ export const memoize = (func, cacheKey) => {
 };
 
 export const createRectangleBuffer = (x, y, width, height) => {
-	return [x, y, x + width, y, x + width, y + height, x, y + height];
+	return [
+		x,
+		y,
+		x + width,
+		y,
+
+		x + width,
+		y,
+		x + width,
+		y + height,
+
+		x + width,
+		y + height,
+		x,
+		y + height,
+
+		x,
+		y + height,
+		x,
+		y,
+	];
 };
 
 export const createLineBuffer = (x, y, x2, y2) => {
@@ -24,25 +44,14 @@ export const createRectangleFromTriangles = (x, y, width, height) => {
 	return new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2]);
 };
 
-export const drawRectangles = (gl, rectangles) => {
-	gl.bufferData(gl.ARRAY_BUFFER, rectangles, gl.STATIC_DRAW);
-	for (let i = 0; i < rectangles.length / 2; i += 4) {
-		gl.drawArrays(gl.LINE_LOOP, i, 4);
-	}
-};
-
 export const drawLines = (gl, linesBuffer) => {
 	gl.bufferData(gl.ARRAY_BUFFER, linesBuffer, gl.STATIC_DRAW);
-	for (let i = 0; i < linesBuffer.length / 2; i += 2) {
-		gl.drawArrays(gl.LINES, i, 2);
-	}
+	gl.drawArrays(gl.LINES, 0, linesBuffer.length / 2);
 };
 
 export const drawRectanglesFromTriangles = (gl, rectangles) => {
 	gl.bufferData(gl.ARRAY_BUFFER, rectangles, gl.STATIC_DRAW);
-	for (let i = 0; i < rectangles.length / 2; i += 6) {
-		gl.drawArrays(gl.TRIANGLES, 0, 6);
-	}
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
 };
 
 export const loadImage = async src => {
@@ -92,7 +101,7 @@ export const drawImage = (
 const fontInfo = {
 	letterHeight: 7,
 	letterWidth: 5,
-	letterSpacing: 10,
+	letterSpacing: 1,
 	textureWidth: 120,
 	textureHeight: 120,
 };
@@ -127,8 +136,8 @@ function makeVerticesForString({ textureWidth, textureHeight, letterHeight, lett
 	for (let i = 0; i < s.length; ++i) {
 		const glyphInfo = getGlyphInfo(s[i]);
 
-		const x2 = x + letterWidth * 2;
-		const y2 = y + letterHeight * 2;
+		const x2 = x + letterWidth * 1;
+		const y2 = y + letterHeight * 1;
 
 		const u1 = glyphInfo.x / textureWidth;
 		const v2 = (glyphInfo.y + letterHeight) / textureHeight;
@@ -181,12 +190,15 @@ export const drawText = (gl, program, positionBuffer, texcoordBuffer, a_position
 
 	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, vertices.texcoord, gl.STATIC_DRAW);
+
 	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, vertices.position, gl.STATIC_DRAW);
 
 	setUniform(gl, program, 'u_draw_texture', true);
 	gl.drawArrays(gl.TRIANGLES, 0, vertices.numVertices);
 	setUniform(gl, program, 'u_draw_texture', false);
+
+	gl.disableVertexAttribArray(a_texcoord);
 };
 
 export const createTexture = (gl, image) => {
