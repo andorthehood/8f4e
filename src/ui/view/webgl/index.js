@@ -1,10 +1,10 @@
-import { Engine } from './engine/index.js';
+import { Engine } from './engine/index.ts';
 import cursorImage from './textures/cursor.png';
 import fontImage from './textures/font.png';
 import setUniform from './engine/utils/setUniform.js';
 import createTexture from './engine/utils/createTexture.js';
 
-import { loadImage, drawText } from './utils.js';
+import { loadImage, drawText, drawImage } from './utils.js';
 
 const loadWasm = async () => {
 	const importObject = {
@@ -41,6 +41,7 @@ const init = async function () {
 	let start = Date.now();
 
 	const fontTexture = createTexture(gl, font);
+	const cursorTexture = createTexture(gl, cursor);
 
 	engine.render(function () {
 		const now = performance.now();
@@ -103,6 +104,8 @@ const init = async function () {
 			100,
 			70
 		);
+
+		drawImage(gl, program, positionBuffer, texcoordBuffer, a_position, a_texcoord, cursorTexture, 100, 100, 100, 100);
 
 		counter++;
 	});
