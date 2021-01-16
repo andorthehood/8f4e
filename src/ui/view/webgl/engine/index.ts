@@ -79,6 +79,9 @@ export class Engine {
 	spriteSheet: WebGLTexture;
 	spriteSheetWidth: number;
 	spriteSheetHeight: number;
+	glyphLookup: (
+		glyph: string
+	) => { letterSpacing: number; letterHeight: number; letterWidth: number; x: number; y: number };
 
 	constructor(canvas: HTMLCanvasElement) {
 		const { program, gl, attributes, buffers } = setup(canvas);
@@ -180,5 +183,16 @@ export class Engine {
 
 		gl.disableVertexAttribArray(this.attributes.a_texcoord);
 		gl.disableVertexAttribArray(this.attributes.a_position);
+	}
+
+	setGlyphLookupAlgorithm(glyphLookup) {
+		this.glyphLookup = glyphLookup;
+	}
+
+	drawText(text, posX, posY) {
+		for (let i = 0; i < text.length; i++) {
+			const { x, y, letterWidth, letterHeight, letterSpacing } = this.glyphLookup(text[i]);
+			this.drawSprite(posX + i * (letterWidth + letterSpacing), posY, x, y, letterWidth, letterHeight);
+		}
 	}
 }
