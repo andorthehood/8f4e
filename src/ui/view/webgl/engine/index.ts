@@ -1,9 +1,14 @@
 import createShader from './utils/createShader.js';
 import createProgram from './utils/createProgram.js';
+import createTexture from './utils/createTexture.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
 import setUniform from './utils/setUniform.js';
-import { fillBufferWithLineCoordinates } from './utils/buffer';
+import {
+	fillBufferWithLineCoordinates,
+	fillBufferWithRectangleVertices,
+	fillBufferWithSpriteCoordinates,
+} from './utils/buffer';
 
 export const setup = function (
 	canvas: HTMLCanvasElement
@@ -63,10 +68,17 @@ export const setup = function (
 export class Engine {
 	program: WebGLProgram;
 	gl: WebGLRenderingContext;
-	attributes: { a_position: any };
-	buffers: { positionBuffer: WebGLBuffer };
+	attributes: { a_position: any; a_texcoord: any };
+	buffers: { positionBuffer: WebGLBuffer; texcoordBuffer: WebGLBuffer };
 	lineBuffer: Float32Array;
-	lineBufferCounter: 0;
+	lineBufferCounter: number;
+	triangleBuffer: Float32Array;
+	triangleBufferCounter: number;
+	textureCoordinateBuffer: Float32Array;
+	textureCoordinateBufferCounter: number;
+	spriteSheet: WebGLTexture;
+	spriteSheetWidth: number;
+	spriteSheetHeight: number;
 
 	constructor(canvas: HTMLCanvasElement) {
 		const { program, gl, attributes, buffers } = setup(canvas);
@@ -74,11 +86,15 @@ export class Engine {
 		this.gl = gl;
 		this.attributes = attributes;
 		this.buffers = buffers;
+		this.lineBuffer = new Float32Array(1000);
+		this.triangleBuffer = new Float32Array(1000);
+		this.textureCoordinateBuffer = new Float32Array(1000);
 	}
 
 	render(callback) {
-		this.lineBuffer = new Float32Array(1000);
 		this.lineBufferCounter = 0;
+		this.triangleBufferCounter = 0;
+		this.textureCoordinateBufferCounter = 0;
 
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 		callback();
@@ -87,6 +103,7 @@ export class Engine {
 		});
 
 		this.renderLines();
+		this.renderSprites();
 	}
 
 	/**
@@ -104,12 +121,37 @@ export class Engine {
 		this.lineBufferCounter += 16;
 	}
 
+	drawFilledRectangle(x: number, y: number, width: number, height: number) {
+		fillBufferWithRectangleVertices(this.triangleBuffer, this.triangleBufferCounter, x, y, width, height);
+		this.triangleBufferCounter += 12;
+	}
+
 	drawLine(x: number, y: number, x2: number, y2: number) {
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x2, y2);
 		this.lineBufferCounter += 4;
 	}
 
-	drawImage() {}
+	loadSpriteSheet(image: HTMLImageElement) {
+		this.spriteSheet = createTexture(this.gl, image);
+		this.spriteSheetWidth = image.width;
+		this.spriteSheetHeight = image.height;
+	}
+
+	drawSprite(x: number, y: number, spriteX: number, spriteY: number, width: number, height: number) {
+		fillBufferWithRectangleVertices(this.triangleBuffer, this.triangleBufferCounter, x, y, width, height);
+		fillBufferWithSpriteCoordinates(
+			this.textureCoordinateBuffer,
+			this.textureCoordinateBufferCounter,
+			spriteX,
+			spriteY,
+			width,
+			height,
+			this.spriteSheetWidth,
+			this.spriteSheetHeight
+		);
+		this.triangleBufferCounter += 12;
+		this.textureCoordinateBufferCounter += 12;
+	}
 
 	renderLines() {
 		const { gl } = this;
@@ -119,5 +161,24 @@ export class Engine {
 		gl.drawArrays(gl.LINES, 0, this.lineBufferCounter / 2);
 	}
 
-	renderImages() {}
+	renderSprites() {
+		const { gl, program } = this;
+		gl.bindTexture(gl.TEXTURE_2D, this.spriteSheet);
+
+		gl.enableVertexAttribArray(this.attributes.a_texcoord);
+		gl.enableVertexAttribArray(this.attributes.a_position);
+
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.texcoordBuffer);
+		gl.bufferData(gl.ARRAY_BUFFER, this.textureCoordinateBuffer, gl.STATIC_DRAW);
+
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.positionBuffer);
+		gl.bufferData(gl.ARRAY_BUFFER, this.triangleBuffer, gl.STATIC_DRAW);
+
+		setUniform(gl, program, 'u_draw_texture', true);
+		gl.drawArrays(gl.TRIANGLES, 0, this.triangleBufferCounter / 2);
+		setUniform(gl, program, 'u_draw_texture', false);
+
+		gl.disableVertexAttribArray(this.attributes.a_texcoord);
+		gl.disableVertexAttribArray(this.attributes.a_position);
+	}
 }
