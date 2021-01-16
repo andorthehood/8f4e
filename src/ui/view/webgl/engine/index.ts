@@ -3,67 +3,12 @@ import createProgram from './utils/createProgram.js';
 import createTexture from './utils/createTexture.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
-import setUniform from './utils/setUniform.js';
+
 import {
 	fillBufferWithLineCoordinates,
 	fillBufferWithRectangleVertices,
 	fillBufferWithSpriteCoordinates,
 } from './utils/buffer';
-
-export const setup = function (
-	canvas: HTMLCanvasElement
-): {
-	program: WebGLProgram;
-	gl: WebGLRenderingContext;
-	attributes: { a_position: any; a_texcoord: any };
-	buffers: { positionBuffer: WebGLBuffer; texcoordBuffer: WebGLBuffer };
-} {
-	const gl = canvas.getContext('webgl', { antialias: false });
-
-	const program = createProgram(gl, [
-		createShader(gl, textureShader, gl.FRAGMENT_SHADER),
-		createShader(gl, vertexShader, gl.VERTEX_SHADER),
-	]);
-
-	const a_position = gl.getAttribLocation(program, 'a_position');
-	const a_texcoord = gl.getAttribLocation(program, 'a_texcoord');
-	const texcoordBuffer = gl.createBuffer();
-	const positionBuffer = gl.createBuffer();
-
-	window.addEventListener('resize', () => {
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-		setUniform(gl, program, 'u_resolution', canvas.width, canvas.height);
-	});
-
-	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-	gl.clearColor(0, 0, 0, 1.0);
-	gl.clear(gl.COLOR_BUFFER_BIT);
-	gl.useProgram(program);
-	setUniform(gl, program, 'u_resolution', canvas.width, canvas.height);
-
-	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
-
-	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-	gl.vertexAttribPointer(a_texcoord, 2, gl.FLOAT, false, 0, 0);
-
-	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-	gl.enable(gl.BLEND);
-
-	return {
-		program,
-		gl,
-		attributes: {
-			a_position,
-			a_texcoord,
-		},
-		buffers: {
-			texcoordBuffer,
-			positionBuffer,
-		},
-	};
-};
 
 export class Engine {
 	program: WebGLProgram;
@@ -84,14 +29,53 @@ export class Engine {
 	) => { letterSpacing: number; letterHeight: number; letterWidth: number; x: number; y: number };
 
 	constructor(canvas: HTMLCanvasElement) {
-		const { program, gl, attributes, buffers } = setup(canvas);
+		const gl = canvas.getContext('webgl2', { antialias: false });
+		this.gl = gl;
+		const program = createProgram(gl, [
+			createShader(gl, textureShader, gl.FRAGMENT_SHADER),
+			createShader(gl, vertexShader, gl.VERTEX_SHADER),
+		]);
+		this.program = program;
+
+		const a_position = gl.getAttribLocation(program, 'a_position');
+		const a_texcoord = gl.getAttribLocation(program, 'a_texcoord');
+		const texcoordBuffer = gl.createBuffer();
+		const positionBuffer = gl.createBuffer();
+
+		window.addEventListener('resize', () => {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			this.setUniform('u_resolution', canvas.width, canvas.height);
+		});
+
+		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+		gl.clearColor(0, 0, 0, 1.0);
+		gl.clear(gl.COLOR_BUFFER_BIT);
+		gl.useProgram(program);
+		this.setUniform('u_resolution', canvas.width, canvas.height);
+
+		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+		gl.vertexAttribPointer(a_position, 2, gl.FLOAT, false, 0, 0);
+
+		gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+		gl.vertexAttribPointer(a_texcoord, 2, gl.FLOAT, false, 0, 0);
+
+		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+		gl.enable(gl.BLEND);
+
 		this.program = program;
 		this.gl = gl;
-		this.attributes = attributes;
-		this.buffers = buffers;
-		this.lineBuffer = new Float32Array(1000);
-		this.triangleBuffer = new Float32Array(1000);
-		this.textureCoordinateBuffer = new Float32Array(1000);
+		this.attributes = {
+			a_position,
+			a_texcoord,
+		};
+		this.buffers = {
+			texcoordBuffer,
+			positionBuffer,
+		};
+		this.lineBuffer = new Float32Array(100000);
+		this.triangleBuffer = new Float32Array(100000);
+		this.textureCoordinateBuffer = new Float32Array(100000);
 	}
 
 	render(callback) {
@@ -177,9 +161,9 @@ export class Engine {
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.positionBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, this.triangleBuffer, gl.STATIC_DRAW);
 
-		setUniform(gl, program, 'u_draw_texture', true);
+		this.setUniform('u_draw_texture', true);
 		gl.drawArrays(gl.TRIANGLES, 0, this.triangleBufferCounter / 2);
-		setUniform(gl, program, 'u_draw_texture', false);
+		this.setUniform('u_draw_texture', false);
 
 		gl.disableVertexAttribArray(this.attributes.a_texcoord);
 		gl.disableVertexAttribArray(this.attributes.a_position);
@@ -194,5 +178,10 @@ export class Engine {
 			const { x, y, letterWidth, letterHeight, letterSpacing } = this.glyphLookup(text[i]);
 			this.drawSprite(posX + i * (letterWidth + letterSpacing), posY, x, y, letterWidth, letterHeight);
 		}
+	}
+
+	setUniform(name, ...values) {
+		const location = this.gl.getUniformLocation(this.program, name);
+		this.gl['uniform' + values.length + 'f'](location, ...values);
 	}
 }
