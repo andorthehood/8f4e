@@ -77,13 +77,7 @@ const init = async function () {
 	const fontTexture = createTexture(gl, font);
 
 	engine.loadSpriteSheet(font);
-
-	function drawText(text, posX, posY) {
-		for (let i = 0; i < text.length; i++) {
-			const { x, y, letterWidth, letterHeight, letterSpacing } = getGlyphInfo(text[i]);
-			engine.drawSprite(posX + i * (letterWidth + letterSpacing), posY, x, y, letterWidth, letterHeight);
-		}
-	}
+	engine.setGlyphLookupAlgorithm(getGlyphInfo);
 
 	engine.render(function () {
 		const now = performance.now();
@@ -107,12 +101,12 @@ const init = async function () {
 		});
 
 		for (let i = 0; i < window.ui.modules.length; i++) {
-			drawText(window.ui.modules[i].name, window.ui.modules[i].position[0], window.ui.modules[i].position[1]);
+			engine.drawText(window.ui.modules[i].name, window.ui.modules[i].position[0], window.ui.modules[i].position[1]);
 		}
 
 		const time = (Math.round((performance.now() - now) * 100) / 100).toString();
-		drawText('time to render one frame ' + time + ' ms', 100, 50);
-		drawText('fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)), 100, 70);
+		engine.drawText('time to render one frame ' + time + ' ms', 100, 50,);
+		engine.drawText('fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)), 100, 70);
 
 		engine.drawSprite(0, 0, 0, 0, 120, 120);
 
