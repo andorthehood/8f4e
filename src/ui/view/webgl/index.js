@@ -1,10 +1,19 @@
 import { Engine } from './engine/index.ts';
-import cursorImage from './textures/cursor.png';
 import fontImage from './textures/font.png';
 import setUniform from './engine/utils/setUniform.js';
 import createTexture from './engine/utils/createTexture.js';
 
-import { loadImage, drawText, drawImage } from './utils.js';
+import { drawText } from './utils.js';
+
+const loadImage = async src => {
+	return new Promise(resolve => {
+		const image = new Image();
+		image.src = src;
+		image.onload = function () {
+			resolve(image);
+		};
+	});
+};
 
 const loadWasm = async () => {
 	const importObject = {
@@ -20,7 +29,6 @@ const loadWasm = async () => {
 };
 
 const init = async function () {
-	const cursor = await loadImage(cursorImage);
 	const font = await loadImage(fontImage);
 
 	const canvas = document.getElementById('glcanvas');
@@ -41,7 +49,8 @@ const init = async function () {
 	let start = Date.now();
 
 	const fontTexture = createTexture(gl, font);
-	const cursorTexture = createTexture(gl, cursor);
+
+	engine.loadSpriteSheet(font);
 
 	engine.render(function () {
 		const now = performance.now();
@@ -105,7 +114,7 @@ const init = async function () {
 			70
 		);
 
-		drawImage(gl, program, positionBuffer, texcoordBuffer, a_position, a_texcoord, cursorTexture, 100, 100, 100, 100);
+		engine.drawSprite(0, 0, 0, 0, 120, 120);
 
 		counter++;
 	});
