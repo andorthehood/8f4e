@@ -1,60 +1,5 @@
 import setUniform from './engine/utils/setUniform.js';
-
-const cache = {};
-
-export const memoize = (func, cacheKey) => {
-	if (cache[cacheKey]) {
-		return cache[cacheKey];
-	}
-	cache[cacheKey] = func();
-	return cache[cacheKey];
-};
-
-export const createRectangleBuffer = (x, y, width, height) => {
-	return [
-		x,
-		y,
-		x + width,
-		y,
-
-		x + width,
-		y,
-		x + width,
-		y + height,
-
-		x + width,
-		y + height,
-		x,
-		y + height,
-
-		x,
-		y + height,
-		x,
-		y,
-	];
-};
-
-export const createLineBuffer = (x, y, x2, y2) => {
-	return [x, y, x2, y2];
-};
-
-export const createRectangleFromTriangles = (x, y, width, height) => {
-	const x1 = x;
-	const x2 = x + width;
-	const y1 = y;
-	const y2 = y + height;
-	return new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2]);
-};
-
-export const drawLines = (gl, linesBuffer) => {
-	gl.bufferData(gl.ARRAY_BUFFER, linesBuffer, gl.STATIC_DRAW);
-	gl.drawArrays(gl.LINES, 0, linesBuffer.length / 2);
-};
-
-export const drawRectanglesFromTriangles = (gl, rectangles) => {
-	gl.bufferData(gl.ARRAY_BUFFER, rectangles, gl.STATIC_DRAW);
-	gl.drawArrays(gl.TRIANGLES, 0, 6);
-};
+import { fillBufferWithRectangleVertices, fillBufferWithSpriteCoordinates } from './engine/utils/buffer.ts';
 
 export const loadImage = async src => {
 	return new Promise(resolve => {
@@ -90,7 +35,12 @@ export const drawImage = (
 
 	setUniform(gl, program, 'u_draw_texture', true);
 	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	drawRectanglesFromTriangles(gl, createRectangleFromTriangles(x, y, width, height));
+
+	const buffer = new Float32Array(12);
+	fillBufferWithRectangleVertices(buffer, 0, x, y, width, height);
+	gl.bufferData(gl.ARRAY_BUFFER, buffer, gl.STATIC_DRAW);
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
+
 	gl.disableVertexAttribArray(a_texcoord);
 	setUniform(gl, program, 'u_draw_texture', false);
 };
@@ -132,41 +82,17 @@ function makeVerticesForString({ textureWidth, textureHeight, letterHeight, lett
 	let offset = 0;
 	for (let i = 0; i < s.length; ++i) {
 		const glyphInfo = getGlyphInfo(s[i]);
-
-		const x2 = x + letterWidth * 1;
-		const y2 = y + letterHeight * 1;
-
-		const u1 = glyphInfo.x / textureWidth;
-		const v2 = (glyphInfo.y + letterHeight) / textureHeight;
-		const u2 = (glyphInfo.x + letterWidth) / textureWidth;
-		const v1 = glyphInfo.y / textureHeight;
-
-		positions[offset + 0] = x;
-		positions[offset + 1] = y;
-		positions[offset + 2] = x2;
-		positions[offset + 3] = y;
-		positions[offset + 4] = x;
-		positions[offset + 5] = y2;
-		positions[offset + 6] = x;
-		positions[offset + 7] = y2;
-		positions[offset + 8] = x2;
-		positions[offset + 9] = y;
-		positions[offset + 10] = x2;
-		positions[offset + 11] = y2;
-
-		texcoords[offset + 0] = u1;
-		texcoords[offset + 1] = v1;
-		texcoords[offset + 2] = u2;
-		texcoords[offset + 3] = v1;
-		texcoords[offset + 4] = u1;
-		texcoords[offset + 5] = v2;
-		texcoords[offset + 6] = u1;
-		texcoords[offset + 7] = v2;
-		texcoords[offset + 8] = u2;
-		texcoords[offset + 9] = v1;
-		texcoords[offset + 10] = u2;
-		texcoords[offset + 11] = v2;
-
+		fillBufferWithRectangleVertices(positions, offset, x, y, letterWidth, letterHeight);
+		fillBufferWithSpriteCoordinates(
+			texcoords,
+			offset,
+			glyphInfo.x,
+			glyphInfo.y,
+			letterWidth,
+			letterHeight,
+			textureWidth,
+			textureHeight
+		);
 		x += letterWidth + letterSpacing;
 		offset += 12;
 	}

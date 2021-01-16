@@ -3,9 +3,16 @@ import createProgram from './utils/createProgram.js';
 import vertexShader from './shaders/shader.vert';
 import textureShader from './shaders/texture.frag';
 import setUniform from './utils/setUniform.js';
-import { fillBufferWithLineCoordinates } from './utils/buffer.js';
+import { fillBufferWithLineCoordinates } from './utils/buffer';
 
-export const setup = function (canvas) {
+export const setup = function (
+	canvas: HTMLCanvasElement
+): {
+	program: WebGLProgram;
+	gl: WebGLRenderingContext;
+	attributes: { a_position: any; a_texcoord: any };
+	buffers: { positionBuffer: WebGLBuffer; texcoordBuffer: WebGLBuffer };
+} {
 	const gl = canvas.getContext('webgl', { antialias: false });
 
 	const program = createProgram(gl, [
@@ -54,7 +61,14 @@ export const setup = function (canvas) {
 };
 
 export class Engine {
-	constructor(canvas) {
+	program: WebGLProgram;
+	gl: WebGLRenderingContext;
+	attributes: { a_position: any };
+	buffers: { positionBuffer: WebGLBuffer };
+	lineBuffer: Float32Array;
+	lineBufferCounter: 0;
+
+	constructor(canvas: HTMLCanvasElement) {
 		const { program, gl, attributes, buffers } = setup(canvas);
 		this.program = program;
 		this.gl = gl;
@@ -75,7 +89,14 @@ export class Engine {
 		this.renderLines();
 	}
 
-	drawRectangle(x, y, width, height) {
+	/**
+	 * Fills the line drawing buffer with points of a rectangle.
+	 * @param x top left corner X coordinate
+	 * @param y top left corner Y coordinate
+	 * @param width width of the rectanlge
+	 * @param height height of the reactanlge
+	 */
+	drawRectangle(x: number, y: number, width: number, height: number) {
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x + width, y);
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 4, x + width, y, x + width, y + height);
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 8, x + width, y + height, x, y + height);
@@ -83,10 +104,12 @@ export class Engine {
 		this.lineBufferCounter += 16;
 	}
 
-	drawLine(x, y, x2, y2) {
+	drawLine(x: number, y: number, x2: number, y2: number) {
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x2, y2);
 		this.lineBufferCounter += 4;
 	}
+
+	drawImage() {}
 
 	renderLines() {
 		const { gl } = this;
@@ -95,4 +118,6 @@ export class Engine {
 		gl.bufferData(gl.ARRAY_BUFFER, this.lineBuffer, gl.STATIC_DRAW);
 		gl.drawArrays(gl.LINES, 0, this.lineBufferCounter / 2);
 	}
+
+	renderImages() {}
 }
