@@ -3,7 +3,33 @@ import fontImage from './textures/font.png';
 import setUniform from './engine/utils/setUniform.js';
 import createTexture from './engine/utils/createTexture.js';
 
-import { drawText } from './utils.js';
+function getGlyphInfo(letter) {
+	const code = letter.charCodeAt();
+	let posY = 0;
+	let posX = 0;
+
+	if (code >= 97 && code <= 122) {
+		posX = code - 97;
+		posY = 3;
+	} else if (code >= 48 && code <= 57) {
+		posX = code - 48;
+		posY = 0;
+	} else if (code >= 65 && code <= 84) {
+		posX = code - 65;
+		posY = 1;
+	} else {
+		posX = 0;
+		posY = 5;
+	}
+
+	return {
+		x: (5 + 1) * posX,
+		y: (7 + 1) * posY,
+		letterHeight: 7,
+		letterWidth: 5,
+		letterSpacing: 1,
+	};
+}
 
 const loadImage = async src => {
 	return new Promise(resolve => {
@@ -52,6 +78,13 @@ const init = async function () {
 
 	engine.loadSpriteSheet(font);
 
+	function drawText(text, posX, posY) {
+		for (let i = 0; i < text.length; i++) {
+			const { x, y, letterWidth, letterHeight, letterSpacing } = getGlyphInfo(text[i]);
+			engine.drawSprite(posX + i * (letterWidth + letterSpacing), posY, x, y, letterWidth, letterHeight);
+		}
+	}
+
 	engine.render(function () {
 		const now = performance.now();
 
@@ -74,45 +107,12 @@ const init = async function () {
 		});
 
 		for (let i = 0; i < window.ui.modules.length; i++) {
-			drawText(
-				gl,
-				program,
-				positionBuffer,
-				texcoordBuffer,
-				a_position,
-				a_texcoord,
-				fontTexture,
-				window.ui.modules[i].name,
-				window.ui.modules[i].position[0],
-				window.ui.modules[i].position[1]
-			);
+			drawText(window.ui.modules[i].name, window.ui.modules[i].position[0], window.ui.modules[i].position[1]);
 		}
 
 		const time = (Math.round((performance.now() - now) * 100) / 100).toString();
-		drawText(
-			gl,
-			program,
-			positionBuffer,
-			texcoordBuffer,
-			a_position,
-			a_texcoord,
-			fontTexture,
-			'time to render one frame ' + time + ' ms',
-			100,
-			50
-		);
-		drawText(
-			gl,
-			program,
-			positionBuffer,
-			texcoordBuffer,
-			a_position,
-			a_texcoord,
-			fontTexture,
-			'fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)),
-			100,
-			70
-		);
+		drawText('time to render one frame ' + time + ' ms', 100, 50);
+		drawText('fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)), 100, 70);
 
 		engine.drawSprite(0, 0, 0, 0, 120, 120);
 
