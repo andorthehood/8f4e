@@ -69,7 +69,7 @@ const init = async function () {
 	engine.setGlyphLookupAlgorithm(getGlyphInfo);
 	engine.setUniform('u_color', 0.5, 0.5, 0.5, 1);
 
-	engine.render(function () {
+	engine.render(function (triangles, maxTriangles) {
 		const now = performance.now();
 
 		ui.connections.forEach(({ fromModule, fromConnector, toModule, toConnector }) => {
@@ -86,17 +86,22 @@ const init = async function () {
 
 		ui.modules.forEach(({ position, size }) => {
 			engine.drawRectangle(...position, ...size);
+			engine.drawSprite(...position, ...size, 0, 0);
 		});
 
 		for (let i = 0; i < window.ui.modules.length; i++) {
-			engine.drawText(window.ui.modules[i].name, window.ui.modules[i].position[0], window.ui.modules[i].position[1]);
+			engine.drawText(window.ui.modules[i].position[0], window.ui.modules[i].position[1], window.ui.modules[i].name);
 		}
 
 		const time = (Math.round((performance.now() - now) * 100) / 100).toString();
-		engine.drawText('time to render one frame ' + time + ' ms', 100, 50);
-		engine.drawText('fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)), 100, 70);
+		engine.drawText(100, 50, ' time to render one frame ' + time + ' ms');
+		engine.drawText(
+			100,
+			70,
+			' fps ' + Math.floor(counter / ((Date.now() - start) / 1000)) + '  triangles ' + triangles + '/' + maxTriangles
+		);
 
-		engine.drawSprite(0, 0, 0, 0, 120, 120);
+		engine.drawSprite(200, 200, 120, 120, 0, 0);
 
 		counter++;
 	});

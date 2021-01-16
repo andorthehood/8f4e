@@ -74,17 +74,19 @@ export class Engine {
 			positionBuffer,
 		};
 		this.lineBuffer = new Float32Array(100000);
-		this.triangleBuffer = new Float32Array(100000);
-		this.textureCoordinateBuffer = new Float32Array(100000);
+		this.triangleBuffer = new Float32Array(600000);
+		this.textureCoordinateBuffer = new Float32Array(600000);
 	}
 
 	render(callback) {
+		const triangles = this.triangleBufferCounter / 6;
+		const maxTriangles = Math.floor(this.triangleBuffer.length / 6);
 		this.lineBufferCounter = 0;
 		this.triangleBufferCounter = 0;
 		this.textureCoordinateBufferCounter = 0;
 
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-		callback();
+		callback(triangles, maxTriangles);
 		window.requestAnimationFrame(() => {
 			this.render(callback);
 		});
@@ -124,15 +126,24 @@ export class Engine {
 		this.spriteSheetHeight = image.height;
 	}
 
-	drawSprite(x: number, y: number, spriteX: number, spriteY: number, width: number, height: number) {
+	drawSprite(
+		x: number,
+		y: number,
+		width: number,
+		height: number,
+		spriteX: number,
+		spriteY: number,
+		spriteWidth: number = width,
+		spriteHeight: number = height
+	) {
 		fillBufferWithRectangleVertices(this.triangleBuffer, this.triangleBufferCounter, x, y, width, height);
 		fillBufferWithSpriteCoordinates(
 			this.textureCoordinateBuffer,
 			this.textureCoordinateBufferCounter,
 			spriteX,
 			spriteY,
-			width,
-			height,
+			spriteWidth,
+			spriteHeight,
 			this.spriteSheetWidth,
 			this.spriteSheetHeight
 		);
@@ -173,10 +184,10 @@ export class Engine {
 		this.glyphLookup = glyphLookup;
 	}
 
-	drawText(text, posX, posY) {
+	drawText(posX, posY, text) {
 		for (let i = 0; i < text.length; i++) {
 			const { x, y, letterWidth, letterHeight, letterSpacing } = this.glyphLookup(text[i]);
-			this.drawSprite(posX + i * (letterWidth + letterSpacing), posY, x, y, letterWidth, letterHeight);
+			this.drawSprite(posX + i * (letterWidth + letterSpacing), posY, letterWidth, letterHeight, x, y);
 		}
 	}
 
