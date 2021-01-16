@@ -1,50 +1,6 @@
 import setUniform from './engine/utils/setUniform.js';
 import { fillBufferWithRectangleVertices, fillBufferWithSpriteCoordinates } from './engine/utils/buffer.ts';
 
-export const loadImage = async src => {
-	return new Promise(resolve => {
-		const image = new Image();
-		image.src = src;
-		image.onload = function () {
-			resolve(image);
-		};
-	});
-};
-
-export const drawImage = (
-	gl,
-	program,
-	positionBuffer,
-	texcoordBuffer,
-	a_position,
-	a_texcoord,
-	texture,
-	x,
-	y,
-	width,
-	height
-) => {
-	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.enableVertexAttribArray(a_texcoord);
-	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-	gl.bufferData(
-		gl.ARRAY_BUFFER,
-		new Float32Array([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]),
-		gl.STATIC_DRAW
-	);
-
-	setUniform(gl, program, 'u_draw_texture', true);
-	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-	const buffer = new Float32Array(12);
-	fillBufferWithRectangleVertices(buffer, 0, x, y, width, height);
-	gl.bufferData(gl.ARRAY_BUFFER, buffer, gl.STATIC_DRAW);
-	gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-	gl.disableVertexAttribArray(a_texcoord);
-	setUniform(gl, program, 'u_draw_texture', false);
-};
-
 const fontInfo = {
 	letterHeight: 7,
 	letterWidth: 5,
