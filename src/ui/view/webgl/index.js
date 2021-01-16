@@ -1,7 +1,5 @@
 import { Engine } from './engine/index.ts';
 import fontImage from './textures/font.png';
-import setUniform from './engine/utils/setUniform.js';
-import createTexture from './engine/utils/createTexture.js';
 
 function getGlyphInfo(letter) {
 	const code = letter.charCodeAt();
@@ -64,25 +62,15 @@ const init = async function () {
 
 	const engine = new Engine(canvas);
 
-	const {
-		attributes: { a_position, a_texcoord },
-		buffers: { texcoordBuffer, positionBuffer },
-		program,
-		gl,
-	} = engine;
-
 	let counter = 0;
 	let start = Date.now();
 
-	const fontTexture = createTexture(gl, font);
-
 	engine.loadSpriteSheet(font);
 	engine.setGlyphLookupAlgorithm(getGlyphInfo);
+	engine.setUniform('u_color', 0.5, 0.5, 0.5, 1);
 
 	engine.render(function () {
 		const now = performance.now();
-
-		setUniform(gl, program, 'u_color', 0.5, 0.5, 0.5, 1);
 
 		ui.connections.forEach(({ fromModule, fromConnector, toModule, toConnector }) => {
 			const a = ui.modules.find(({ id }) => id === fromModule);
@@ -105,7 +93,7 @@ const init = async function () {
 		}
 
 		const time = (Math.round((performance.now() - now) * 100) / 100).toString();
-		engine.drawText('time to render one frame ' + time + ' ms', 100, 50,);
+		engine.drawText('time to render one frame ' + time + ' ms', 100, 50);
 		engine.drawText('fps: ' + Math.floor(counter / ((Date.now() - start) / 1000)), 100, 70);
 
 		engine.drawSprite(0, 0, 0, 0, 120, 120);
