@@ -76,7 +76,7 @@ const init = async function () {
 
 		ui.modules.forEach(({ position, size }) => {
 			engine.drawRectangle(...position, ...size);
-			engine.drawSprite(...position, ...size, 0, 0);
+			//engine.drawSprite(...position, ...size, 0, 0);
 		});
 
 		for (let i = 0; i < window.ui.modules.length; i++) {
@@ -91,7 +91,7 @@ const init = async function () {
 			' fps ' + Math.floor(counter / ((Date.now() - start) / 1000)) + '  triangles ' + triangles + '/' + maxTriangles
 		);
 
-		engine.drawSprite(200, 200, 120, 120, 0, 0);
+		engine.drawSprite(200, 200, 200, 120, 0, 0);
 
 		counter++;
 	});
