@@ -1,4 +1,4 @@
-import generateFont from './generateFont';
+import generateFont from './generateFonts';
 
 const generateSprite = async function () {
 	const offscreenCanvas = new OffscreenCanvas(256, 256);
