@@ -1,5 +1,5 @@
 import { Engine } from './engine/index.ts';
-import fontImage from './textures/font.png';
+import generateSprite from './sprites/index';
 
 function getGlyphInfo(letter) {
 	const code = letter.charCodeAt();
@@ -8,10 +8,10 @@ function getGlyphInfo(letter) {
 
 	if (code >= 97 && code <= 122) {
 		posX = code - 97;
-		posY = 3;
+		posY = 0;
 	} else if (code >= 48 && code <= 57) {
 		posX = code - 48;
-		posY = 0;
+		posY = 2;
 	} else if (code >= 65 && code <= 84) {
 		posX = code - 65;
 		posY = 1;
@@ -21,23 +21,13 @@ function getGlyphInfo(letter) {
 	}
 
 	return {
-		x: (5 + 1) * posX,
-		y: (7 + 1) * posY,
-		letterHeight: 7,
-		letterWidth: 5,
-		letterSpacing: 1,
+		x: (7 + 1) * posX,
+		y: (13 + 1) * posY,
+		letterHeight: 12,
+		letterWidth: 7,
+		letterSpacing: 2,
 	};
 }
-
-const loadImage = async src => {
-	return new Promise(resolve => {
-		const image = new Image();
-		image.src = src;
-		image.onload = function () {
-			resolve(image);
-		};
-	});
-};
 
 const loadWasm = async () => {
 	const importObject = {
@@ -53,7 +43,7 @@ const loadWasm = async () => {
 };
 
 const init = async function () {
-	const font = await loadImage(fontImage);
+	const font = await generateSprite();
 
 	const canvas = document.getElementById('glcanvas');
 
