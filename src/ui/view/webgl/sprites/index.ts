@@ -1,6 +1,7 @@
 import generateFont from './generateFonts';
+export { getGlyphInfo } from './generateFonts';
 
-const generateSprite = async function () {
+const generateSprite = async function (): Promise<OffscreenCanvas> {
 	const offscreenCanvas = new OffscreenCanvas(256, 256);
 	const ctx = offscreenCanvas.getContext('2d');
 
