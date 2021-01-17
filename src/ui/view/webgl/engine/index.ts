@@ -24,6 +24,10 @@ export class Engine {
 	spriteSheet: WebGLTexture;
 	spriteSheetWidth: number;
 	spriteSheetHeight: number;
+	frameCounter: number;
+	startTime: number;
+	lastRenderFinishTime: number;
+
 	glyphLookup: (
 		glyph: string
 	) => { letterSpacing: number; letterHeight: number; letterWidth: number; x: number; y: number };
@@ -63,6 +67,8 @@ export class Engine {
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		gl.enable(gl.BLEND);
 
+		this.setUniform('u_color', 0.5, 0.5, 0.5, 1);
+
 		this.program = program;
 		this.gl = gl;
 		this.attributes = {
@@ -76,23 +82,33 @@ export class Engine {
 		this.lineBuffer = new Float32Array(100000);
 		this.triangleBuffer = new Float32Array(600000);
 		this.textureCoordinateBuffer = new Float32Array(600000);
+		this.startTime = Date.now();
+		this.frameCounter = 0;
 	}
 
-	render(callback) {
+	render(callback: (timeToRender: number, fps: number, triangles: number, maxTriangles: number) => void) {
 		const triangles = this.triangleBufferCounter / 6;
 		const maxTriangles = Math.floor(this.triangleBuffer.length / 6);
 		this.lineBufferCounter = 0;
 		this.triangleBufferCounter = 0;
 		this.textureCoordinateBufferCounter = 0;
 
+		const fps = Math.floor(this.frameCounter / ((Date.now() - this.startTime) / 1000));
+		const timeToRender = Math.round((performance.now() - this.lastRenderFinishTime) * 100) / 100;
+
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-		callback(triangles, maxTriangles);
-		window.requestAnimationFrame(() => {
-			this.render(callback);
-		});
+
+		callback(timeToRender, fps, triangles, maxTriangles);
 
 		this.renderLines();
 		this.renderSprites();
+
+		this.frameCounter++;
+		this.lastRenderFinishTime = performance.now();
+
+		window.requestAnimationFrame(() => {
+			this.render(callback);
+		});
 	}
 
 	/**
@@ -120,7 +136,7 @@ export class Engine {
 		this.lineBufferCounter += 4;
 	}
 
-	loadSpriteSheet(image: HTMLImageElement) {
+	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas) {
 		this.spriteSheet = createTexture(this.gl, image);
 		this.spriteSheetWidth = image.width;
 		this.spriteSheetHeight = image.height;
@@ -184,14 +200,14 @@ export class Engine {
 		this.glyphLookup = glyphLookup;
 	}
 
-	drawText(posX, posY, text) {
+	drawText(posX: number, posY: number, text: string) {
 		for (let i = 0; i < text.length; i++) {
 			const { x, y, letterWidth, letterHeight, letterSpacing } = this.glyphLookup(text[i]);
 			this.drawSprite(posX + i * (letterWidth + letterSpacing), posY, letterWidth, letterHeight, x, y);
 		}
 	}
 
-	setUniform(name, ...values) {
+	setUniform(name, ...values: any) {
 		const location = this.gl.getUniformLocation(this.program, name);
 		this.gl['uniform' + values.length + 'f'](location, ...values);
 	}
