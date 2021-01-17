@@ -12,6 +12,36 @@ const mirr = function (toBeMirrored: number[], middle: number[]): number[] {
 	return [...toBeMirrored, ...middle, ...toBeMirrored.slice().reverse()];
 };
 
+export const getGlyphInfo = function (
+	letter: string
+): { x: number; y: number; letterHeight: number; letterWidth: number; letterSpacing: number } {
+	const code = letter.charCodeAt(0);
+	let posY = 0;
+	let posX = 0;
+
+	if (code >= 97 && code <= 122) {
+		posX = code - 97;
+		posY = 0;
+	} else if (code >= 48 && code <= 57) {
+		posX = code - 48;
+		posY = 2;
+	} else if (code >= 65 && code <= 84) {
+		posX = code - 65;
+		posY = 1;
+	} else {
+		posX = 0;
+		posY = 5;
+	}
+
+	return {
+		x: (7 + 1) * posX,
+		y: (15 + 1) * posY,
+		letterHeight: 15,
+		letterWidth: 7,
+		letterSpacing: 2,
+	};
+};
+
 const font = [
 	// a-z
 	pad(4, [0x7c, 0x82, 0x02, 0x7e, 0x82, 0x86, 0x7a]),
