@@ -22,8 +22,8 @@ function getGlyphInfo(letter) {
 
 	return {
 		x: (7 + 1) * posX,
-		y: (13 + 1) * posY,
-		letterHeight: 12,
+		y: (15 + 1) * posY,
+		letterHeight: 15,
 		letterWidth: 7,
 		letterSpacing: 2,
 	};
@@ -91,7 +91,7 @@ const init = async function () {
 			' fps ' + Math.floor(counter / ((Date.now() - start) / 1000)) + '  triangles ' + triangles + '/' + maxTriangles
 		);
 
-		engine.drawSprite(200, 200, 200, 120, 0, 0);
+		engine.drawSprite(200, 200, 220, 120, 0, 0);
 
 		counter++;
 	});
