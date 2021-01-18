@@ -1,18 +1,17 @@
-import createShader from './utils/createShader.js';
-import createProgram from './utils/createProgram.js';
-import createTexture from './utils/createTexture.js';
-import vertexShader from './shaders/shader.vert';
-import textureShader from './shaders/texture.frag';
-
 import {
+	createShader,
+	createProgram,
+	createTexture,
 	fillBufferWithLineCoordinates,
 	fillBufferWithRectangleVertices,
 	fillBufferWithSpriteCoordinates,
-} from './utils/buffer';
+} from './utils';
+import vertexShader from './shaders/shader.vert';
+import textureShader from './shaders/texture.frag';
 
 export class Engine {
 	program: WebGLProgram;
-	gl: WebGLRenderingContext;
+	gl: WebGL2RenderingContext;
 	attributes: { a_position: any; a_texcoord: any };
 	buffers: { positionBuffer: WebGLBuffer; texcoordBuffer: WebGLBuffer };
 	lineBuffer: Float32Array;
