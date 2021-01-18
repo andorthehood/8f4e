@@ -1,5 +1,5 @@
 /**
- * Fills a vertex buffer with coordinates of the specified line.
+ * Fills a vertex buffer with indices of the specified line.
  * @param buffer
  * @param offset
  * @param x

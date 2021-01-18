@@ -26,6 +26,13 @@ export class Engine {
 	frameCounter: number;
 	startTime: number;
 	lastRenderFinishTime: number;
+	lastRenderStartTime: number;
+	/**
+	 * If enabled, it makes the render function block the main thread until the GPU finishes rendering.
+	 * Otherwise rendering is asynchronous, and there's no other way to get notified of the end of it.
+	 * It makes possible to measure the time a whole render cycle took.
+	 */
+	isPerformanceMeasurementMode: boolean;
 
 	spriteLookup: (
 		sprite: string
@@ -83,6 +90,7 @@ export class Engine {
 		this.textureCoordinateBuffer = new Float32Array(600000);
 		this.startTime = Date.now();
 		this.frameCounter = 0;
+		this.isPerformanceMeasurementMode = false;
 	}
 
 	render(callback: (timeToRender: number, fps: number, triangles: number, maxTriangles: number) => void) {
@@ -93,7 +101,9 @@ export class Engine {
 		this.textureCoordinateBufferCounter = 0;
 
 		const fps = Math.floor(this.frameCounter / ((Date.now() - this.startTime) / 1000));
-		const timeToRender = Math.round((performance.now() - this.lastRenderFinishTime) * 100) / 100;
+		const timeToRender = Math.round((this.lastRenderStartTime - this.lastRenderFinishTime) * 100) / 100;
+
+		this.lastRenderStartTime = performance.now();
 
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
@@ -102,8 +112,8 @@ export class Engine {
 		this.renderLines();
 		this.renderSprites();
 
-		this.frameCounter++;
 		this.lastRenderFinishTime = performance.now();
+		this.frameCounter++;
 
 		window.requestAnimationFrame(() => {
 			this.render(callback);
@@ -111,7 +121,7 @@ export class Engine {
 	}
 
 	/**
-	 * Fills the line drawing buffer with points of a rectangle.
+	 * Fills the line drawing buffer with indices of a rectangle.
 	 * @param x top left corner X coordinate
 	 * @param y top left corner Y coordinate
 	 * @param width width of the rectanlge
@@ -125,11 +135,13 @@ export class Engine {
 		this.lineBufferCounter += 16;
 	}
 
-	drawFilledRectangle(x: number, y: number, width: number, height: number) {
-		fillBufferWithRectangleVertices(this.triangleBuffer, this.triangleBufferCounter, x, y, width, height);
-		this.triangleBufferCounter += 12;
-	}
-
+	/**
+	 * Fills the line drawing buffer with indices of a line.
+	 * @param x line starting point X coordinate
+	 * @param y line starting point Y coordinate
+	 * @param x2 line end point X coordinate
+	 * @param y2 line end point Y coordinate
+	 */
 	drawLine(x: number, y: number, x2: number, y2: number) {
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x2, y2);
 		this.lineBufferCounter += 4;
@@ -141,7 +153,7 @@ export class Engine {
 		this.spriteSheetHeight = image.height;
 	}
 
-	drawSprite(
+	drawSpriteFromCoordinates(
 		x: number,
 		y: number,
 		width: number,
@@ -150,7 +162,7 @@ export class Engine {
 		spriteY: number,
 		spriteWidth: number = width,
 		spriteHeight: number = height
-	) {
+	): void {
 		fillBufferWithRectangleVertices(this.triangleBuffer, this.triangleBufferCounter, x, y, width, height);
 		fillBufferWithSpriteCoordinates(
 			this.textureCoordinateBuffer,
@@ -166,12 +178,29 @@ export class Engine {
 		this.textureCoordinateBufferCounter += 12;
 	}
 
+	drawSprite(posX: number, posY: number, sprite: string, width?: number, height?: number): void {
+		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(sprite);
+		this.drawSpriteFromCoordinates(
+			posX,
+			posY,
+			width | spriteWidth,
+			height | spriteHeight,
+			x,
+			y,
+			spriteWidth,
+			spriteHeight
+		);
+	}
+
 	renderLines() {
 		const { gl } = this;
 		gl.enableVertexAttribArray(this.attributes.a_position);
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.positionBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, this.lineBuffer, gl.STATIC_DRAW);
 		gl.drawArrays(gl.LINES, 0, this.lineBufferCounter / 2);
+		if (this.isPerformanceMeasurementMode) {
+			gl.finish();
+		}
 	}
 
 	renderSprites() {
@@ -189,6 +218,9 @@ export class Engine {
 
 		this.setUniform('u_draw_texture', true);
 		gl.drawArrays(gl.TRIANGLES, 0, this.triangleBufferCounter / 2);
+		if (this.isPerformanceMeasurementMode) {
+			gl.finish();
+		}
 		this.setUniform('u_draw_texture', false);
 
 		gl.disableVertexAttribArray(this.attributes.a_texcoord);
@@ -202,7 +234,7 @@ export class Engine {
 	drawText(posX: number, posY: number, text: string, letterSpacing: number = 2) {
 		for (let i = 0; i < text.length; i++) {
 			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(text[i]);
-			this.drawSprite(posX + i * (spriteWidth + letterSpacing), posY, spriteWidth, spriteHeight, x, y);
+			this.drawSpriteFromCoordinates(posX + i * (spriteWidth + letterSpacing), posY, spriteWidth, spriteHeight, x, y);
 		}
 	}
 
