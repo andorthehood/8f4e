@@ -26,7 +26,7 @@ const init = async function () {
 	const engine = new Engine(canvas);
 
 	engine.loadSpriteSheet(font);
-	engine.setGlyphLookupAlgorithm(getGlyphInfo);
+	engine.setSpriteLookupAlgorithm(getGlyphInfo);
 
 	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
 		drawConnections(engine);
