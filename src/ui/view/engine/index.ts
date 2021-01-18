@@ -27,9 +27,9 @@ export class Engine {
 	startTime: number;
 	lastRenderFinishTime: number;
 
-	glyphLookup: (
-		glyph: string
-	) => { letterSpacing: number; letterHeight: number; letterWidth: number; x: number; y: number };
+	spriteLookup: (
+		sprite: string
+	) => { letterSpacing: number; spriteHeight: number; spriteWidth: number; x: number; y: number };
 
 	constructor(canvas: HTMLCanvasElement) {
 		const gl = canvas.getContext('webgl2', { antialias: false });
@@ -195,14 +195,14 @@ export class Engine {
 		gl.disableVertexAttribArray(this.attributes.a_position);
 	}
 
-	setGlyphLookupAlgorithm(glyphLookup) {
-		this.glyphLookup = glyphLookup;
+	setSpriteLookupAlgorithm(spriteLookup) {
+		this.spriteLookup = spriteLookup;
 	}
 
-	drawText(posX: number, posY: number, text: string) {
+	drawText(posX: number, posY: number, text: string, letterSpacing: number = 2) {
 		for (let i = 0; i < text.length; i++) {
-			const { x, y, letterWidth, letterHeight, letterSpacing } = this.glyphLookup(text[i]);
-			this.drawSprite(posX + i * (letterWidth + letterSpacing), posY, letterWidth, letterHeight, x, y);
+			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(text[i]);
+			this.drawSprite(posX + i * (spriteWidth + letterSpacing), posY, spriteWidth, spriteHeight, x, y);
 		}
 	}
 
