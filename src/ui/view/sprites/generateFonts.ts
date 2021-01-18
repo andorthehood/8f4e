@@ -14,7 +14,7 @@ const mirr = function (toBeMirrored: number[], middle: number[]): number[] {
 
 export const getGlyphInfo = function (
 	letter: string
-): { x: number; y: number; letterHeight: number; letterWidth: number; letterSpacing: number } {
+): { x: number; y: number; spriteHeight: number; spriteWidth: number } {
 	const code = letter.charCodeAt(0);
 	let posY = 0;
 	let posX = 0;
@@ -36,9 +36,8 @@ export const getGlyphInfo = function (
 	return {
 		x: (7 + 1) * posX,
 		y: (15 + 1) * posY,
-		letterHeight: 15,
-		letterWidth: 7,
-		letterSpacing: 2,
+		spriteHeight: 15,
+		spriteWidth: 7,
 	};
 };
 
