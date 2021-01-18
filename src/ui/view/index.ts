@@ -1,6 +1,6 @@
-import { Engine } from './engine/index';
-import generateSprite, { getGlyphInfo } from './sprites/index';
-import { drawConnections, drawModules } from './drawers/index';
+import { Engine } from './engine';
+import generateSprite, { getGlyphInfo } from './sprites';
+import { drawConnections, drawModules } from './drawers';
 
 const loadWasm = async () => {
 	const importObject = {
