@@ -35,7 +35,8 @@ const init = async function () {
 		engine.drawText(100, 50, 'Time to render one frame ' + timeToRender + ' ms');
 		engine.drawText(100, 70, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
 
-		engine.drawSprite(200, 200, 220, 120, 0, 0);
+		engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
+		engine.drawSprite(200, 300, 'a', 20, 20);
 	});
 };
 
