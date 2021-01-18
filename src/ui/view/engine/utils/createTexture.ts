@@ -1,4 +1,7 @@
-const createTexture = (gl, image) => {
+const createTexture = (
+	gl: WebGL2RenderingContext,
+	image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas
+): WebGLTexture => {
 	const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
