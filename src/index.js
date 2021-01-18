@@ -1,4 +1,4 @@
-import './ui/view/webgl/index.ts';
+import './ui/view/index.ts';
 
 if (localStorage.getItem('ui')) {
 	window.ui = JSON.parse(localStorage.getItem('ui'));
