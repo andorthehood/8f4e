@@ -35,7 +35,6 @@ const events = function (): {
 
 	const on = function (eventName: string, callback: EventHandler): void {
 		subscriptions[eventName].push(callback);
-		console.log(subscriptions);
 	};
 
 	const off = function (eventName: string, callback: EventHandler): void {
