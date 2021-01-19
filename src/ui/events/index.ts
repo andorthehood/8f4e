@@ -18,6 +18,7 @@ const events = function (): {
 		mousedown: [],
 		mousemove: [],
 		mouseup: [],
+		resize: [],
 	};
 
 	const onEvent = function ({ clientX, clientY, movementX, movementY, type, buttons }) {
@@ -30,7 +31,11 @@ const events = function (): {
 	};
 
 	Object.keys(subscriptions).forEach(function (event: any) {
-		document.addEventListener(event, onEvent);
+		if (event === 'resize') {
+			window.addEventListener(event, onEvent);
+		} else {
+			document.addEventListener(event, onEvent);
+		}
 	});
 
 	const on = function (eventName: string, callback: EventHandler): void {
