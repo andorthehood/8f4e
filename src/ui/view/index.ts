@@ -1,5 +1,5 @@
 import { Engine } from './engine';
-import generateSprite, { getGlyphInfo } from './sprites';
+import generateSprite from './sprites';
 import { drawConnections, drawModules } from './drawers';
 
 const loadWasm = async () => {
@@ -16,7 +16,7 @@ const loadWasm = async () => {
 };
 
 const init = async function () {
-	const font = await generateSprite();
+	const sprite = await generateSprite();
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
 
@@ -25,18 +25,22 @@ const init = async function () {
 
 	const engine = new Engine(canvas);
 
-	engine.loadSpriteSheet(font);
-	engine.setSpriteLookupAlgorithm(getGlyphInfo);
+	engine.loadSpriteSheet(sprite.canvas);
+	engine.setSpriteLookupAlgorithm(sprite.lookupFunction);
 
 	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
 		drawConnections(engine);
 		drawModules(engine);
 
-		engine.drawText(100, 50, 'Time to render one frame ' + timeToRender + ' ms');
-		engine.drawText(100, 70, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
+		engine.drawText(10, 10, 'Time to render one frame ' + timeToRender + ' ms');
+		engine.drawText(10, 30, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
 
 		engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
-		engine.drawSprite(200, 300, 'a', 20, 20);
+		engine.drawSprite(200, 300, 'cyan', 10, 10);
+		engine.drawSprite(200, 310, 'cyan', 10, 10);
+		engine.drawSprite(220, 300, 'purple', 20, 20);
+
+		engine.drawSprite(200, 330, 'a', 20, 20);
 	});
 };
 

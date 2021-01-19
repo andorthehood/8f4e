@@ -183,8 +183,8 @@ export class Engine {
 		this.drawSpriteFromCoordinates(
 			posX,
 			posY,
-			width | spriteWidth,
-			height | spriteHeight,
+			width || spriteWidth,
+			height || spriteHeight,
 			x,
 			y,
 			spriteWidth,
@@ -193,38 +193,36 @@ export class Engine {
 	}
 
 	renderLines() {
-		const { gl } = this;
-		gl.enableVertexAttribArray(this.attributes.a_position);
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.positionBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, this.lineBuffer, gl.STATIC_DRAW);
-		gl.drawArrays(gl.LINES, 0, this.lineBufferCounter / 2);
+		this.gl.enableVertexAttribArray(this.attributes.a_position);
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.positionBuffer);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.lineBuffer, this.gl.STATIC_DRAW);
+		this.gl.drawArrays(this.gl.LINES, 0, this.lineBufferCounter / 2);
 		if (this.isPerformanceMeasurementMode) {
-			gl.finish();
+			this.gl.finish();
 		}
 	}
 
 	renderSprites() {
-		const { gl, program } = this;
-		gl.bindTexture(gl.TEXTURE_2D, this.spriteSheet);
+		this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
 
-		gl.enableVertexAttribArray(this.attributes.a_texcoord);
-		gl.enableVertexAttribArray(this.attributes.a_position);
+		this.gl.enableVertexAttribArray(this.attributes.a_texcoord);
+		this.gl.enableVertexAttribArray(this.attributes.a_position);
 
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.texcoordBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, this.textureCoordinateBuffer, gl.STATIC_DRAW);
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texcoordBuffer);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.textureCoordinateBuffer, this.gl.STATIC_DRAW);
 
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers.positionBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, this.triangleBuffer, gl.STATIC_DRAW);
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.positionBuffer);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.triangleBuffer, this.gl.STATIC_DRAW);
 
 		this.setUniform('u_draw_texture', true);
-		gl.drawArrays(gl.TRIANGLES, 0, this.triangleBufferCounter / 2);
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, this.triangleBufferCounter / 2);
 		if (this.isPerformanceMeasurementMode) {
-			gl.finish();
+			this.gl.finish();
 		}
 		this.setUniform('u_draw_texture', false);
 
-		gl.disableVertexAttribArray(this.attributes.a_texcoord);
-		gl.disableVertexAttribArray(this.attributes.a_position);
+		this.gl.disableVertexAttribArray(this.attributes.a_texcoord);
+		this.gl.disableVertexAttribArray(this.attributes.a_position);
 	}
 
 	setSpriteLookupAlgorithm(spriteLookup) {
