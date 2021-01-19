@@ -6,6 +6,9 @@ const offset = function (state, events) {
 		}
 	};
 
+	state.ui.viewport.width = window.innerWidth;
+	state.ui.viewport.height = window.innerHeight;
+
 	events.on('mousemove', onMouseMove);
 
 	return () => {
