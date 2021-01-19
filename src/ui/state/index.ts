@@ -11,6 +11,8 @@ const init = function (events) {
 	offset(state, events);
 	contextMenu(state, events);
 
+	console.log(state);
+
 	return state;
 };
 
