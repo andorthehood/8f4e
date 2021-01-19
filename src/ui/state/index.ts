@@ -1,4 +1,4 @@
-import offset from './mutators/offset';
+import viewport from './mutators/viewport';
 import loader from './mutators/loader';
 import contextMenu from './mutators/contextMenu';
 import moduleDragger from './mutators/moduleDragger';
@@ -8,7 +8,7 @@ const init = function (events) {
 
 	loader(state);
 	moduleDragger(state, events);
-	offset(state, events);
+	viewport(state, events);
 	contextMenu(state, events);
 
 	console.log(state);
