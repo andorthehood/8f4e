@@ -13,7 +13,9 @@ const mirr = function (toBeMirrored: number[], middle: number[]): number[] {
 };
 
 export const getGlyphInfo = function (
-	letter: string
+	letter: string,
+	offsetX: number = 0,
+	offsetY: number = 0
 ): { x: number; y: number; spriteHeight: number; spriteWidth: number } {
 	const code = letter.charCodeAt(0);
 	let posY = 0;
@@ -25,17 +27,16 @@ export const getGlyphInfo = function (
 	} else if (code >= 48 && code <= 57) {
 		posX = code - 48;
 		posY = 2;
-	} else if (code >= 65 && code <= 84) {
+	} else if (code >= 65 && code <= 90) {
 		posX = code - 65;
 		posY = 1;
 	} else {
-		posX = 0;
-		posY = 5;
+		return;
 	}
 
 	return {
-		x: (7 + 1) * posX,
-		y: (15 + 1) * posY,
+		x: (7 + 1) * posX + offsetX,
+		y: (15 + 1) * posY + offsetY,
 		spriteHeight: 15,
 		spriteWidth: 7,
 	};
@@ -151,12 +152,17 @@ const generateFonts = function (ctx: OffscreenCanvasRenderingContext2D, x: numbe
 	ctx.fillStyle = 'rgba(255,255,255,255)';
 	generateFont(ctx, x, y, font);
 	ctx.fillStyle = 'rgba(0,0,0,255)';
-	generateFont(ctx, x, y + 42, font);
+	generateFont(ctx, x, y + 50, font);
 
 	const lookupTable = {};
-	for (let i = 0; i < 255; i++) {
+	for (let i = 0; i < 128; i++) {
 		const c = String.fromCharCode(i);
 		lookupTable[c] = getGlyphInfo(c);
+	}
+
+	for (let i = 0; i < 128; i++) {
+		const c = String.fromCharCode(i);
+		lookupTable['black_' + c] = getGlyphInfo(c, 0, 50);
 	}
 
 	return lookupTable;
