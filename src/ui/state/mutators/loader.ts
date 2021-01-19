@@ -9,6 +9,7 @@ const loader = function (state) {
 				width: 0,
 				height: 0,
 			},
+			offset: [0, 0],
 		};
 	}
 };
