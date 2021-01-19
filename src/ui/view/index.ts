@@ -29,6 +29,7 @@ const init = async function (state) {
 	engine.setSpriteLookupAlgorithm(sprite.lookupFunction);
 
 	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
+		engine.resize(window.innerWidth, window.innerHeight);
 		drawConnections(engine, state.ui);
 		drawModules(engine, state);
 		drawContextMenu(engine, state.ui);
