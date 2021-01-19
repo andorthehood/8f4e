@@ -1,6 +1,6 @@
 import { Engine } from './engine';
 import generateSprite from './sprites';
-import { drawConnections, drawModules } from './drawers';
+import { drawConnections, drawModules, drawContextMenu } from './drawers';
 
 const loadWasm = async () => {
 	const importObject = {
@@ -31,6 +31,7 @@ const init = async function () {
 	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
 		drawConnections(engine);
 		drawModules(engine);
+		drawContextMenu(engine);
 
 		engine.drawText(10, 10, 'Time to render one frame ' + timeToRender + ' ms');
 		engine.drawText(10, 30, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
