@@ -55,6 +55,7 @@ export class Engine {
 		window.addEventListener('resize', () => {
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
+			gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 			this.setUniform('u_resolution', canvas.width, canvas.height);
 		});
 
@@ -91,6 +92,13 @@ export class Engine {
 		this.startTime = Date.now();
 		this.frameCounter = 0;
 		this.isPerformanceMeasurementMode = false;
+	}
+
+	resize(width: number, height: number) {
+		this.gl.canvas.width = width;
+		this.gl.canvas.height = height;
+		this.gl.viewport(0, 0, width, height);
+		this.setUniform('u_resolution', width, height);
 	}
 
 	render(callback: (timeToRender: number, fps: number, triangles: number, maxTriangles: number) => void) {
