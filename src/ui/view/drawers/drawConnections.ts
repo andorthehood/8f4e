@@ -1,5 +1,4 @@
-const drawConnections = function (engine) {
-	const ui = window.ui;
+const drawConnections = function (engine, ui) {
 	const [offsetX, offsetY] = ui.offset;
 
 	ui.connections.forEach(({ fromModule, fromConnector, toModule, toConnector }) => {

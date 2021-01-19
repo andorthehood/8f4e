@@ -1,4 +1,4 @@
-const drawContextMenu = function (engine) {
+const drawContextMenu = function (engine, ui) {
 	const menuItems = ['New module', 'Close'];
 
 	for (let i = 0; i < menuItems.length; i++) {
