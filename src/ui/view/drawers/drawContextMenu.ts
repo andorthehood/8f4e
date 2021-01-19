@@ -2,9 +2,8 @@ const drawContextMenu = function (engine) {
 	const menuItems = ['New module', 'Close'];
 
 	for (let i = 0; i < menuItems.length; i++) {
-		engine.drawSprite(0, i * 20, 200, 20, 0, 1, 1, 1);
-
-		engine.drawText(0, i * 20, menuItems[i]);
+		engine.drawSprite(100, 70 + i * 20, 'white', 200, 20);
+		engine.drawText(120, 70 + i * 20, menuItems[i], 'black_');
 	}
 };
 
