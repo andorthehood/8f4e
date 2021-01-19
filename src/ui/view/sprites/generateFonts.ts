@@ -152,6 +152,14 @@ const generateFonts = function (ctx: OffscreenCanvasRenderingContext2D, x: numbe
 	generateFont(ctx, x, y, font);
 	ctx.fillStyle = 'rgba(0,0,0,255)';
 	generateFont(ctx, x, y + 42, font);
+
+	const lookupTable = {};
+	for (let i = 0; i < 255; i++) {
+		const c = String.fromCharCode(i);
+		lookupTable[c] = getGlyphInfo(c);
+	}
+
+	return lookupTable;
 };
 
 export default generateFonts;
