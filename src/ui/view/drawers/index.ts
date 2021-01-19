@@ -1,3 +1,3 @@
-export { default as drawConnections } from './drawConnections';
-export { default as drawContextMenu } from './drawContextMenu';
-export { default as drawModules } from './drawModules';
+export { default as drawConnections } from './connections';
+export { default as drawContextMenu } from './contextMenu';
+export { default as drawModules } from './modules';

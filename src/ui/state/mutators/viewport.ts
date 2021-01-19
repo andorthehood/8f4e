@@ -11,6 +11,8 @@ const viewport = function (state, events) {
 		state.ui.viewport.height = window.innerHeight;
 	};
 
+	onResize();
+
 	events.on('mousemove', onMouseMove);
 	events.on('resize', onResize);
 

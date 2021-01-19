@@ -4,6 +4,11 @@ const drawConnections = function (engine, ui) {
 	ui.connections.forEach(({ fromModule, fromConnector, toModule, toConnector }) => {
 		const a = ui.modules.find(({ id }) => id === fromModule);
 		const b = ui.modules.find(({ id }) => id === toModule);
+
+		if (!a || !b || !a.connectors || !b.connectors) {
+			return;
+		}
+
 		const line = [
 			a.connectors[fromConnector].position[0] + a.position[0] + 5 + offsetX,
 			a.connectors[fromConnector].position[1] + a.position[1] + 5 + offsetY,
