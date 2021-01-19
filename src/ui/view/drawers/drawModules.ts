@@ -1,14 +1,19 @@
-const drawModules = function (engine, ui) {
-	const [offsetX, offsetY] = ui.offset;
+const drawModules = function (engine, state) {
+	const [offsetX, offsetY] = state.ui.offset;
 
-	ui.modules.forEach(({ position, size }) => {
-		engine.drawRectangle(position[0] + offsetX, position[1] + offsetY, ...size);
-		//engine.drawSprite(...position, ...size, 0, 0);
+	state.ui.modules.forEach(({ position, size, name }) => {
+		if (
+			position[0] + offsetX > 0 &&
+			position[1] + offsetY > 0 &&
+			position[0] + offsetX < state.ui.viewport.width &&
+			position[1] + offsetY < state.ui.viewport.height
+		) {
+			engine.drawRectangle(position[0] + offsetX, position[1] + offsetY, ...size);
+			engine.drawText(position[0] + offsetX, position[1] + offsetY, name);
+		}
 	});
 
-	for (let i = 0; i < ui.modules.length; i++) {
-		engine.drawText(ui.modules[i].position[0] + offsetX, ui.modules[i].position[1] + offsetY, ui.modules[i].name);
-	}
+	for (let i = 0; i < state.ui.modules.length; i++) {}
 };
 
 export default drawModules;
