@@ -15,7 +15,7 @@ const loadWasm = async () => {
 	const module = await WebAssembly.instantiateStreaming(fetch('/test.wasm'), importObject);
 };
 
-const init = async function () {
+const init = async function (state) {
 	const sprite = await generateSprite();
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
@@ -29,9 +29,9 @@ const init = async function () {
 	engine.setSpriteLookupAlgorithm(sprite.lookupFunction);
 
 	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
-		drawConnections(engine);
-		drawModules(engine);
-		drawContextMenu(engine);
+		drawConnections(engine, state.ui);
+		drawModules(engine, state.ui);
+		drawContextMenu(engine, state.ui);
 
 		engine.drawText(10, 10, 'Time to render one frame ' + timeToRender + ' ms');
 		engine.drawText(10, 30, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
@@ -45,4 +45,4 @@ const init = async function () {
 	});
 };
 
-init();
+export default init;
