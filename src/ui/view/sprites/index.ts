@@ -15,7 +15,7 @@ const generateSprite = async function (): Promise<{
 	};
 
 	const lookupFunction = function (sprite: string) {
-		return lookupTable[sprite];
+		return lookupTable[sprite] || { x: 0, y: 0, spriteWidth: 0, spriteHeight: 0 };
 	};
 
 	const blob = await canvas.convertToBlob({
@@ -24,6 +24,7 @@ const generateSprite = async function (): Promise<{
 	const src = URL.createObjectURL(blob);
 
 	console.log(src);
+	console.log(lookupTable);
 
 	// const image = document.createElement('img');
 	// image.src = src;
