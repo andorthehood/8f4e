@@ -30,7 +30,7 @@ const init = async function (state) {
 
 	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
 		drawConnections(engine, state.ui);
-		drawModules(engine, state.ui);
+		drawModules(engine, state);
 		drawContextMenu(engine, state.ui);
 
 		engine.drawText(10, 10, 'Time to render one frame ' + timeToRender + ' ms');
