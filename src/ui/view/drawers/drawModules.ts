@@ -12,8 +12,6 @@ const drawModules = function (engine, state) {
 			engine.drawText(position[0] + offsetX, position[1] + offsetY, name);
 		}
 	});
-
-	for (let i = 0; i < state.ui.modules.length; i++) {}
 };
 
 export default drawModules;
