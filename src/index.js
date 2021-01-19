@@ -1,7 +1,7 @@
 import './ui/view/index.ts';
 
 if (localStorage.getItem('ui')) {
-	window.ui = JSON.parse(localStorage.getItem('ui'));
+	window.ui = { offset: [0, 0], ...JSON.parse(localStorage.getItem('ui')) };
 } else {
 	window.ui = {
 		cursor: [0, 0],
@@ -33,7 +33,10 @@ document.addEventListener('mousedown', e => {
 
 	const draggedModule = ui.modules.find(
 		({ position, size }) =>
-			x >= position[0] && x <= position[0] + size[0] && y >= position[1] && y <= position[1] + size[1]
+			x >= position[0] + ui.offset[0] &&
+			x <= position[0] + size[0] + ui.offset[0] &&
+			y >= position[1] + ui.offset[1] &&
+			y <= position[1] + size[1] + ui.offset[1]
 	);
 
 	ui.selectArea[0] = x;
@@ -56,8 +59,8 @@ document.addEventListener('mousemove', e => {
 		draggedModule.position[1] += e.movementY;
 	} else {
 		if (e.buttons === 1) {
-			ui.selectArea[2] += e.movementX;
-			ui.selectArea[3] += e.movementY;
+			ui.offset[0] += e.movementX;
+			ui.offset[1] += e.movementY;
 		}
 	}
 
