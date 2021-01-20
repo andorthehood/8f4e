@@ -7,10 +7,10 @@ const moduleDragger = function (state, events) {
 
 		draggedModule = state.ui.modules.find(
 			({ position, size }) =>
-				x >= position[0] + state.ui.offset[0] &&
-				x <= position[0] + size[0] + state.ui.offset[0] &&
-				y >= position[1] + state.ui.offset[1] &&
-				y <= position[1] + size[1] + state.ui.offset[1]
+				x >= position[0] + state.ui.viewport.x &&
+				x <= position[0] + size[0] + state.ui.viewport.x &&
+				y >= position[1] + state.ui.viewport.y &&
+				y <= position[1] + size[1] + state.ui.viewport.y
 		);
 
 		if (draggedModule) {

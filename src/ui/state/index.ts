@@ -1,8 +1,8 @@
 import viewport from './mutators/viewport';
 import loader from './mutators/loader';
 import contextMenu from './mutators/contextMenu';
-import moduleDragger from './mutators/moduleDragger';
-import moduleCreator from './mutators/moduleCreator';
+import moduleDragger from './mutators/modules/moduleDragger';
+import moduleCreator from './mutators/modules/moduleCreator';
 import connectionMaker from './mutators/connectionMaker';
 
 const init = function (events) {
