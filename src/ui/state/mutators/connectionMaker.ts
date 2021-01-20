@@ -57,6 +57,14 @@ const connectionMaker = function (state, events) {
 		events.on('mousemove', onMouseMove);
 	};
 
+	const onDeleteConnection = ({ moduleId }) => {
+		state.ui.connections.splice(
+			state.ui.connections.findIndex(({ fromModule, toModule }) => moduleId === fromModule || moduleId === toModule),
+			1
+		);
+	};
+
+	events.on('deleteConnection', onDeleteConnection);
 	events.on('mousedown', onMouseDown);
 };
 
