@@ -30,7 +30,7 @@ const init = async function (state) {
 
 	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
 		engine.resize(window.innerWidth, window.innerHeight);
-		drawConnections(engine, state.ui);
+		drawConnections(engine, state);
 		drawModules(engine, state);
 		drawContextMenu(engine, state);
 

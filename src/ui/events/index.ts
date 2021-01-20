@@ -1,4 +1,6 @@
 export interface EventObject {
+	x: number;
+	y: number;
 	clientX: number;
 	clientY: number;
 	movementX: number;
@@ -25,7 +27,16 @@ const events = function (): {
 	const onEvent = function (event) {
 		const { clientX, clientY, movementX, movementY, type, buttons } = event;
 		event.preventDefault();
-		const eventObject: EventObject = { clientX, clientY, movementX, movementY, buttons, stopPropagation: false };
+		const eventObject: EventObject = {
+			x: clientX,
+			y: clientY,
+			clientX,
+			clientY,
+			movementX,
+			movementY,
+			buttons,
+			stopPropagation: false,
+		};
 		for (let i = 0; i < subscriptions[type].length; i++) {
 			if (!eventObject.stopPropagation) {
 				subscriptions[type][i](eventObject);
@@ -49,10 +60,16 @@ const events = function (): {
 	};
 
 	const off = function (eventName: string, callback: EventHandler): void {
+		if (subscriptions[eventName].indexOf(callback) === -1) {
+			return;
+		}
 		subscriptions[eventName].splice(subscriptions[eventName].indexOf(callback), 1);
 	};
 
 	const dispatch = function (type: string, eventObject: {} = {}): void {
+		if (!subscriptions[type]) {
+			return console.warn('No subscription to event type:', type);
+		}
 		for (let i = 0; i < subscriptions[type].length; i++) {
 			subscriptions[type][i](eventObject);
 		}
