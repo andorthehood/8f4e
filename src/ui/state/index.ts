@@ -3,11 +3,13 @@ import loader from './mutators/loader';
 import contextMenu from './mutators/contextMenu';
 import moduleDragger from './mutators/moduleDragger';
 import moduleCreator from './mutators/moduleCreator';
+import connectionMaker from './mutators/connectionMaker';
 
 const init = function (events) {
 	const state = { ui: {} };
 
 	loader(state);
+	connectionMaker(state, events);
 	moduleDragger(state, events);
 	viewport(state, events);
 	contextMenu(state, events);
