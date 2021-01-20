@@ -3,6 +3,8 @@ const viewport = function (state, events) {
 		if (event.buttons === 1) {
 			state.ui.offset[0] += event.movementX;
 			state.ui.offset[1] += event.movementY;
+			state.ui.viewport.x += event.movementX;
+			state.ui.viewport.y += event.movementY;
 		}
 	};
 

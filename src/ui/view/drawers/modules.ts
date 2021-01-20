@@ -1,5 +1,6 @@
 const drawModules = function (engine, state) {
-	const [offsetX, offsetY] = state.ui.offset;
+	const offsetX = state.ui.viewport.x;
+	const offsetY = state.ui.viewport.y;
 
 	state.ui.modules.forEach(({ position, size, name, connectors }) => {
 		if (
