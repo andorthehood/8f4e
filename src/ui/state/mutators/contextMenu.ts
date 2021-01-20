@@ -55,7 +55,7 @@ const contextMenu = function (state, events) {
 
 		if (module !== -1) {
 			state.ui.contextMenu.items = [
-				{ title: 'Delete module', action: 'deleteModule', payload: { module } },
+				{ title: 'Delete module', action: 'deleteModule', payload: { moduleId: module.id } },
 				{ title: 'Close', action: 'closeContextMenu' },
 			];
 		} else {
