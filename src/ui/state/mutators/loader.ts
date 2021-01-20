@@ -21,7 +21,7 @@ const defaultState = {
 };
 
 const loader = function (state) {
-	state.ui = { defaultState, ...(JSON.parse(localStorage.getItem('ui')) || {}) };
+	state.ui = { ...defaultState, ...(JSON.parse(localStorage.getItem('ui')) || {}) };
 };
 
 export default loader;
