@@ -37,12 +37,12 @@ const init = async function (state) {
 		engine.drawText(10, 10, 'Time to render one frame ' + timeToRender + ' ms');
 		engine.drawText(10, 30, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
 
-		engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
-		engine.drawSprite(200, 300, 'cyan', 10, 10);
-		engine.drawSprite(200, 310, 'cyan', 10, 10);
-		engine.drawSprite(220, 300, 'purple', 20, 20);
+		// engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
+		// engine.drawSprite(200, 300, 'cyan', 10, 10);
+		// engine.drawSprite(200, 310, 'cyan', 10, 10);
+		// engine.drawSprite(220, 300, 'purple', 20, 20);
 
-		engine.drawSprite(200, 330, 'a', 20, 20);
+		// engine.drawSprite(200, 330, 'a', 20, 20);
 	});
 };
 
