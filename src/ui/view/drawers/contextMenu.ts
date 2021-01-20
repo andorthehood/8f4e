@@ -8,10 +8,10 @@ const drawContextMenu = function (engine, state) {
 	for (let i = 0; i < items.length; i++) {
 		if (i === highlightedItem) {
 			engine.drawSprite(position[0], position[1] + i * itemHeight, 'white', itemWidth, itemHeight);
-			engine.drawText(position[0] + itemHeight, position[1] + i * itemHeight, items[i].title, 'black_');
+			engine.drawText(position[0] + 6, position[1] + i * itemHeight + 3, items[i].title, 'black_');
 		} else {
 			engine.drawSprite(position[0], position[1] + i * itemHeight, 'black', itemWidth, itemHeight);
-			engine.drawText(position[0] + itemHeight, position[1] + i * itemHeight, items[i].title);
+			engine.drawText(position[0] + 6, position[1] + i * itemHeight + 3, items[i].title);
 		}
 	}
 };
