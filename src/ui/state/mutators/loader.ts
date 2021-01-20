@@ -1,18 +1,27 @@
-const loader = function (state) {
-	if (localStorage.getItem('ui')) {
-		state.ui = { viewport: { x: 0, y: 0 }, ...JSON.parse(localStorage.getItem('ui')) };
-	} else {
-		state.ui = {
-			modules: [],
-			connections: [],
-			viewport: {
-				width: 0,
-				height: 0,
-				x: 0,
-				y: 0,
+const defaultState = {
+	modules: [],
+	connections: [],
+	viewport: {
+		width: 0,
+		height: 0,
+		x: 0,
+		y: 0,
+	},
+	moduleTypes: {
+		splitter: {
+			width: 100,
+			height: 100,
+			connectors: {
+				in: { x: 5, y: 20, isInput: true },
+				out1: { x: 5, y: 35 },
+				out2: { x: 5, y: 50 },
 			},
-		};
-	}
+		},
+	},
+};
+
+const loader = function (state) {
+	state.ui = { defaultState, ...(JSON.parse(localStorage.getItem('ui')) || {}) };
 };
 
 export default loader;
