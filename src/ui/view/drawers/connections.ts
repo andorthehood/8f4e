@@ -1,6 +1,7 @@
 const drawConnections = function (engine, state) {
 	const ui = state.ui;
-	const [offsetX, offsetY] = ui.offset;
+	const offsetX = state.ui.viewport.x;
+	const offsetY = state.ui.viewport.y;
 
 	ui.connections.forEach(({ fromModule, fromConnector, toModule, toConnector }) => {
 		const a = ui.modules.find(({ id }) => id === fromModule);
