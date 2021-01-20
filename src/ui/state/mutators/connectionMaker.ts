@@ -8,10 +8,10 @@ const connectionMaker = function (state, events) {
 
 		const module = state.ui.modules.find(
 			({ position, size }) =>
-				x >= position[0] + state.ui.offset[0] &&
-				x <= position[0] + size[0] + state.ui.offset[0] &&
-				y >= position[1] + state.ui.offset[1] &&
-				y <= position[1] + size[1] + state.ui.offset[1]
+				x >= position[0] + state.ui.viewport.x &&
+				x <= position[0] + size[0] + state.ui.viewport.x &&
+				y >= position[1] + state.ui.viewport.y &&
+				y <= position[1] + size[1] + state.ui.viewport.y
 		);
 
 		if (!module) {
@@ -23,10 +23,10 @@ const connectionMaker = function (state, events) {
 		const connector = Object.keys(module.connectors).find(id => {
 			const connector = module.connectors[id];
 			return (
-				x >= module.position[0] + state.ui.offset[0] + connector.x &&
-				x <= module.position[0] + 10 + state.ui.offset[0] + connector.x &&
-				y >= module.position[1] + state.ui.offset[1] + connector.y &&
-				y <= module.position[1] + 10 + state.ui.offset[1] + connector.y
+				x >= module.position[0] + state.ui.viewport.x + connector.x &&
+				x <= module.position[0] + 10 + state.ui.viewport.x + connector.x &&
+				y >= module.position[1] + state.ui.viewport.y + connector.y &&
+				y <= module.position[1] + 10 + state.ui.viewport.y + connector.y
 			);
 		});
 

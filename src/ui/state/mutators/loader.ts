@@ -1,6 +1,6 @@
 const loader = function (state) {
 	if (localStorage.getItem('ui')) {
-		state.ui = { viewport: {}, offset: [0, 0], ...JSON.parse(localStorage.getItem('ui')) };
+		state.ui = { viewport: { x: 0, y: 0 }, ...JSON.parse(localStorage.getItem('ui')) };
 	} else {
 		state.ui = {
 			modules: [],
@@ -8,8 +8,9 @@ const loader = function (state) {
 			viewport: {
 				width: 0,
 				height: 0,
+				x: 0,
+				y: 0,
 			},
-			offset: [0, 0],
 		};
 	}
 };
