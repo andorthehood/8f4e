@@ -3,10 +3,19 @@ import generateFillColors from './generateFillColors';
 export { getGlyphInfo } from './generateFonts';
 
 const generateSprite = async function (): Promise<{
-	canvas: OffscreenCanvas;
+	canvas: OffscreenCanvas | HTMLCanvasElement;
 	lookupFunction: (sprite: string) => any;
 }> {
-	const canvas = new OffscreenCanvas(256, 256);
+	let canvas;
+
+	if (window.OffscreenCanvas) {
+		canvas = new OffscreenCanvas(256, 256);
+	} else {
+		canvas = document.createElement('canvas');
+		canvas.width = 256;
+		canvas.height = 256;
+	}
+
 	const ctx = canvas.getContext('2d');
 
 	const lookupTable = {
@@ -18,12 +27,12 @@ const generateSprite = async function (): Promise<{
 		return lookupTable[sprite] || { x: 0, y: 0, spriteWidth: 0, spriteHeight: 0 };
 	};
 
-	const blob = await canvas.convertToBlob({
-		type: 'image/png',
-	});
-	const src = URL.createObjectURL(blob);
+	// const blob = await canvas.convertToBlob({
+	// 	type: 'image/png',
+	// });
+	// const src = URL.createObjectURL(blob);
 
-	console.log(src);
+	//console.log(src);
 	console.log(lookupTable);
 
 	// const image = document.createElement('img');
