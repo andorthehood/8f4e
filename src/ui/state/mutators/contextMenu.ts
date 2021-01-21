@@ -16,12 +16,7 @@ const contextMenu = function (state, events) {
 
 	const onMouseMove = event => {
 		const { itemHeight, itemWidth, x, y } = state.ui.contextMenu;
-		state.ui.contextMenu.highlightedItem = getHighlightedMenuItem(
-			event.clientX - x,
-			event.clientY - y,
-			itemHeight,
-			itemWidth
-		);
+		state.ui.contextMenu.highlightedItem = getHighlightedMenuItem(event.x - x, event.y - y, itemHeight, itemWidth);
 	};
 
 	const onMouseDown = event => {
@@ -30,8 +25,8 @@ const contextMenu = function (state, events) {
 		if (items[highlightedItem]) {
 			events.dispatch(items[highlightedItem].action, {
 				...items[highlightedItem].payload,
-				x: event.clientX,
-				y: event.clientY,
+				x: event.x,
+				y: event.y,
 			});
 		}
 
@@ -42,8 +37,7 @@ const contextMenu = function (state, events) {
 	};
 
 	const onContextMenu = event => {
-		const x = event.clientX;
-		const y = event.clientY;
+		const { x, y } = event;
 
 		state.ui.contextMenu.open = true;
 		state.ui.contextMenu.x = x;
@@ -66,15 +60,13 @@ const contextMenu = function (state, events) {
 			];
 		} else {
 			state.ui.contextMenu.items = [
-				{ title: 'Add module', action: 'addModule' },
+				{ title: 'Add module', action: 'addModule', payload: { type: 'splitter' } },
 				{ title: 'Close', action: 'closeContextMenu' },
 			];
 		}
 
 		events.on('mousedown', onMouseDown);
 		events.on('mousemove', onMouseMove);
-
-		return false;
 	};
 
 	events.on('contextmenu', onContextMenu);
