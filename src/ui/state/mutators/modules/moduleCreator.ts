@@ -1,12 +1,10 @@
 const moduleCreator = function (state, events) {
-	const onAddModule = ({ x, y }) => {
-		const id1 = Date.now() + 1;
-		const id2 = Date.now() + 2;
+	const onAddModule = ({ x, y, type }) => {
 		state.ui.modules.push({
-			x: x - state.ui.viewport.x,
-			y: y - state.ui.viewport.y,
-			id: 'quantizer' + Date.now(),
-			type: 'quantizer',
+			x: x - state.ui.viewport.x - Math.floor(state.ui.moduleTypes[type].width / 2),
+			y: y - state.ui.viewport.y - Math.floor(state.ui.moduleTypes[type].height / 2),
+			id: type + Date.now(),
+			type,
 		});
 	};
 

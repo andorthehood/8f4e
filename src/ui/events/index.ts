@@ -1,8 +1,6 @@
 export interface EventObject {
 	x: number;
 	y: number;
-	clientX: number;
-	clientY: number;
 	movementX: number;
 	movementY: number;
 	buttons: {};
