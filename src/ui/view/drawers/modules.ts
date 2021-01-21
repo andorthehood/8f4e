@@ -2,7 +2,10 @@ const drawModules = function (engine, state) {
 	const offsetX = state.ui.viewport.x;
 	const offsetY = state.ui.viewport.y;
 
-	state.ui.modules.forEach(({ x, y, type }) => {
+	engine.startGroup(offsetX, offsetY);
+
+	for (let i = 0; i < state.ui.modules.length; i++) {
+		const { x, y, type } = state.ui.modules[i];
 		const { width, height, name, connectors } = state.ui.moduleTypes[type];
 
 		if (
@@ -11,7 +14,7 @@ const drawModules = function (engine, state) {
 			x + offsetX < state.ui.viewport.width &&
 			y + offsetY < state.ui.viewport.height
 		) {
-			engine.startGroup(x + offsetX, y + offsetY);
+			engine.startGroup(x, y);
 			engine.drawRectangle(0, 0, width, height);
 			engine.drawText(5, 5, name);
 
@@ -23,7 +26,9 @@ const drawModules = function (engine, state) {
 
 			engine.endGroup();
 		}
-	});
+	}
+
+	engine.endGroup();
 };
 
 export default drawModules;
