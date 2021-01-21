@@ -5,8 +5,8 @@ const moduleCreator = function (state, events) {
 		state.ui.modules.push({
 			x: x - state.ui.viewport.x,
 			y: y - state.ui.viewport.y,
-			id: 'splitter' + Date.now(),
-			type: 'splitter',
+			id: 'quantizer' + Date.now(),
+			type: 'quantizer',
 		});
 	};
 

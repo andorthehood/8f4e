@@ -1,5 +1,6 @@
 import findModuleAtViewportCoordinates from '../helpers/findModuleAtViewportCoordinates';
 import findConnectorAtViewportCoordinates from '../helpers/findConnectorAtViewportCoordinates';
+import findConnectorInModule from '../helpers/findConnectorInModule';
 
 const connectionMaker = function (state, events) {
 	const onMouseMove = event => {
@@ -30,6 +31,20 @@ const connectionMaker = function (state, events) {
 		if (state.ui.isConnectionBeingMade) {
 			state.ui.isConnectionBeingMade = false;
 			events.off('mousemove', onMouseMove);
+
+			const connectorToConnect = findConnectorInModule(
+				state,
+				state.ui.connectionFromModule,
+				state.ui.connectionFromConnector
+			);
+
+			if (connector.isInput && connectorToConnect.isInput) {
+				return events.dispatch('error', { message: `It doesn't make sense to connect two inputs` });
+			}
+
+			if (!connector.isInput && !connectorToConnect.isInput) {
+				return events.dispatch('error', { message: `It doesn't make sense to connect two outputs` });
+			}
 
 			state.ui.connections.push({
 				fromModule: state.ui.connectionFromModule,

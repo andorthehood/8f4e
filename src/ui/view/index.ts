@@ -39,6 +39,12 @@ const init = async function (state) {
 		engine.drawText(0, 20, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
 		engine.endGroup();
 
+		if (state.ui.error.display) {
+			engine.startGroup(5, 5);
+			engine.drawText(0, 0, 'Error: ' + state.ui.error.message);
+			engine.endGroup();
+		}
+
 		// engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
 		// engine.drawSprite(200, 300, 'cyan', 10, 10);
 		// engine.drawSprite(200, 310, 'cyan', 10, 10);
