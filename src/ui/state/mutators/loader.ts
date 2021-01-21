@@ -7,6 +7,10 @@ const defaultState = {
 		x: 0,
 		y: 0,
 	},
+	error: {
+		display: false,
+		message: '',
+	},
 	moduleTypes: {
 		splitter: {
 			width: 100,
@@ -19,6 +23,21 @@ const defaultState = {
 				{ id: 'out4', x: 85, y: 65 },
 			],
 			name: 'Splitter',
+		},
+		clockGenerator: {
+			width: 100,
+			height: 150,
+			connectors: [{ id: 'out1', x: 85, y: 20 }],
+			name: 'Clock generator',
+		},
+		quantizer: {
+			width: 300,
+			height: 100,
+			connectors: [
+				{ id: 'in', x: 5, y: 20, isInput: true },
+				{ id: 'out1', x: 285, y: 20 },
+			],
+			name: 'Quantizer',
 		},
 	},
 };
