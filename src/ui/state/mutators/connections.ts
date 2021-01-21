@@ -35,7 +35,7 @@ const connectionMaker = function (state, events) {
 				fromModule: state.ui.connectionFromModule,
 				fromConnector: state.ui.connectionFromConnector,
 				toModule: module.id,
-				toConnector: connector,
+				toConnector: connector.id,
 			});
 			return;
 		}
@@ -43,7 +43,7 @@ const connectionMaker = function (state, events) {
 		state.ui.connectionPointA = [x, y];
 		state.ui.connectionPointB = [x, y];
 		state.ui.connectionFromModule = module.id;
-		state.ui.connectionFromConnector = connector;
+		state.ui.connectionFromConnector = connector.id;
 		state.ui.isConnectionBeingMade = true;
 		events.on('mousemove', onMouseMove);
 	};
