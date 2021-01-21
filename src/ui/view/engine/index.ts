@@ -11,7 +11,7 @@ import textureShader from './shaders/texture.frag';
 
 export class Engine {
 	program: WebGLProgram;
-	gl: WebGL2RenderingContext;
+	gl: WebGL2RenderingContext | WebGLRenderingContext;
 	attributes: { a_position: any; a_texcoord: any };
 	buffers: { positionBuffer: WebGLBuffer; texcoordBuffer: WebGLBuffer };
 	lineBuffer: Float32Array;
@@ -39,7 +39,7 @@ export class Engine {
 	) => { letterSpacing: number; spriteHeight: number; spriteWidth: number; x: number; y: number };
 
 	constructor(canvas: HTMLCanvasElement) {
-		const gl = canvas.getContext('webgl2', { antialias: false });
+		const gl = canvas.getContext('webgl', { antialias: false });
 		this.gl = gl;
 		const program = createProgram(gl, [
 			createShader(gl, textureShader, gl.FRAGMENT_SHADER),
