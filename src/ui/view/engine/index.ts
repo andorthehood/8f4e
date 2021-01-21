@@ -29,6 +29,7 @@ export class Engine {
 	lastRenderStartTime: number;
 	offsetX: number;
 	offsetY: number;
+	offsetGroups: number[][];
 
 	/**
 	 * If enabled, it makes the render function block the main thread until the GPU finishes rendering.
@@ -90,23 +91,26 @@ export class Engine {
 			positionBuffer,
 		};
 		this.lineBuffer = new Float32Array(100000);
-		this.triangleBuffer = new Float32Array(600000);
-		this.textureCoordinateBuffer = new Float32Array(600000);
+		this.triangleBuffer = new Float32Array(100000);
+		this.textureCoordinateBuffer = new Float32Array(100000);
 		this.startTime = Date.now();
 		this.frameCounter = 0;
 		this.isPerformanceMeasurementMode = false;
 		this.offsetX = 0;
 		this.offsetY = 0;
+		this.offsetGroups = [];
 	}
 
 	startGroup(x: number, y: number) {
-		this.offsetX = x;
-		this.offsetY = y;
+		this.offsetX += x;
+		this.offsetY += y;
+		this.offsetGroups.push([x, y]);
 	}
 
 	endGroup() {
-		this.offsetX = 0;
-		this.offsetY = 0;
+		const [x, y] = this.offsetGroups.pop();
+		this.offsetX -= x;
+		this.offsetY -= y;
 	}
 
 	resize(width: number, height: number) {
