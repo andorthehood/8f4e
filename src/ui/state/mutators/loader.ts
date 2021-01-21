@@ -11,13 +11,13 @@ const defaultState = {
 		splitter: {
 			width: 100,
 			height: 100,
-			connectors: {
-				in: { x: 5, y: 20, isInput: true },
-				out1: { x: 85, y: 20 },
-				out2: { x: 85, y: 35 },
-				out3: { x: 85, y: 50 },
-				out4: { x: 85, y: 65 },
-			},
+			connectors: [
+				{ id: 'in', x: 5, y: 20, isInput: true },
+				{ id: 'out1', x: 85, y: 20 },
+				{ id: 'out2', x: 85, y: 35 },
+				{ id: 'out3', x: 85, y: 50 },
+				{ id: 'out4', x: 85, y: 65 },
+			],
 			name: 'Splitter',
 		},
 	},
