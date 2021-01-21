@@ -30,6 +30,7 @@ const connectionMaker = function (state, events) {
 		if (state.ui.isConnectionBeingMade) {
 			state.ui.isConnectionBeingMade = false;
 			events.off('mousemove', onMouseMove);
+
 			state.ui.connections.push({
 				fromModule: state.ui.connectionFromModule,
 				fromConnector: state.ui.connectionFromConnector,
