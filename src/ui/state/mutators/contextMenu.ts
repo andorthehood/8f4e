@@ -15,10 +15,13 @@ const contextMenu = function (state, events) {
 	};
 
 	const onMouseMove = event => {
-		const { itemHeight, itemWidth, position } = state.ui.contextMenu;
-		const x = event.clientX - position[0];
-		const y = event.clientY - position[1];
-		state.ui.contextMenu.highlightedItem = getHighlightedMenuItem(x, y, itemHeight, itemWidth);
+		const { itemHeight, itemWidth, x, y } = state.ui.contextMenu;
+		state.ui.contextMenu.highlightedItem = getHighlightedMenuItem(
+			event.clientX - x,
+			event.clientY - y,
+			itemHeight,
+			itemWidth
+		);
 	};
 
 	const onMouseDown = event => {
@@ -43,7 +46,8 @@ const contextMenu = function (state, events) {
 		const y = event.clientY;
 
 		state.ui.contextMenu.open = true;
-		state.ui.contextMenu.position = [x, y];
+		state.ui.contextMenu.x = x;
+		state.ui.contextMenu.y = y;
 
 		const module = state.ui.modules.find(module => {
 			const { width, height } = state.ui.moduleTypes[module.type];
