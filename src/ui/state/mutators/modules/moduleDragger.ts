@@ -1,17 +1,16 @@
 const moduleDragger = function (state, events) {
 	let draggedModule = null;
 
-	const onMouseDown = e => {
-		const x = e.clientX;
-		const y = e.clientY;
-
-		draggedModule = state.ui.modules.find(
-			({ position, size }) =>
-				x >= position[0] + state.ui.viewport.x &&
-				x <= position[0] + size[0] + state.ui.viewport.x &&
-				y >= position[1] + state.ui.viewport.y &&
-				y <= position[1] + size[1] + state.ui.viewport.y
-		);
+	const onMouseDown = ({ x, y }) => {
+		draggedModule = state.ui.modules.find(module => {
+			const { width, height } = state.ui.moduleTypes[module.type];
+			return (
+				x >= module.x + state.ui.viewport.x &&
+				x <= module.x + width + state.ui.viewport.x &&
+				y >= module.y + state.ui.viewport.y &&
+				y <= module.y + height + state.ui.viewport.y
+			);
+		});
 
 		if (draggedModule) {
 			draggedModule.beingDragged = true;
@@ -19,21 +18,20 @@ const moduleDragger = function (state, events) {
 		}
 	};
 
-	const onMouseMove = e => {
-		const x = e.clientX;
-		const y = e.clientY;
+	const onMouseMove = event => {
+		const { movementX, movementY } = event;
 		if (draggedModule) {
-			draggedModule.position[0] += e.movementX;
-			draggedModule.position[1] += e.movementY;
-			e.stopPropagation = true;
+			draggedModule.x += movementX;
+			draggedModule.y += movementY;
+			event.stopPropagation = true;
 		}
 	};
 
-	const onMouseUp = e => {
+	const onMouseUp = () => {
 		if (draggedModule) {
 			draggedModule.beingDragged = false;
-			draggedModule.position[0] = Math.round(draggedModule.position[0] / 10) * 10;
-			draggedModule.position[1] = Math.round(draggedModule.position[1] / 10) * 10;
+			draggedModule.x = Math.round(draggedModule.x / 10) * 10;
+			draggedModule.y = Math.round(draggedModule.y / 10) * 10;
 			draggedModule = null;
 		}
 
