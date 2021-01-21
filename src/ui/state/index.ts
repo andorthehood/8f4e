@@ -8,7 +8,7 @@ import connectionMaker from './mutators/connectionMaker';
 const init = function (events) {
 	const state = { ui: {} };
 
-	loader(state);
+	loader(state, events);
 	connectionMaker(state, events);
 	moduleDragger(state, events);
 	viewport(state, events);

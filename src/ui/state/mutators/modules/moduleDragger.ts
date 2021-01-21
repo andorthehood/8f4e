@@ -35,7 +35,7 @@ const moduleDragger = function (state, events) {
 			draggedModule = null;
 		}
 
-		localStorage.setItem('ui', JSON.stringify(state.ui));
+		events.dispatch('saveState');
 	};
 
 	events.on('mousedown', onMouseDown);
