@@ -16,6 +16,7 @@ const defaultState = {
 				out1: { x: 5, y: 35 },
 				out2: { x: 5, y: 50 },
 			},
+			name: 'Splitter',
 		},
 	},
 };
