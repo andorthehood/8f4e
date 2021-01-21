@@ -1,5 +1,5 @@
 const createTexture = (
-	gl: WebGL2RenderingContext,
+	gl: WebGL2RenderingContext | WebGLRenderingContext,
 	image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas
 ): WebGLTexture => {
 	const texture = gl.createTexture();

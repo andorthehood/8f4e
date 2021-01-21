@@ -1,4 +1,7 @@
-const createProgram = function (gl: WebGL2RenderingContext, shaders: WebGLShader[]): WebGLProgram {
+const createProgram = function (
+	gl: WebGL2RenderingContext | WebGLRenderingContext,
+	shaders: WebGLShader[]
+): WebGLProgram {
 	let program = gl.createProgram();
 
 	shaders.forEach(shader => {

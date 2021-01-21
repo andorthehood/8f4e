@@ -1,4 +1,8 @@
-const createShader = function (gl: WebGL2RenderingContext, shaderSource: string, shaderType: number): WebGLShader {
+const createShader = function (
+	gl: WebGL2RenderingContext | WebGLRenderingContext,
+	shaderSource: string,
+	shaderType: number
+): WebGLShader {
 	const shader = gl.createShader(shaderType);
 	gl.shaderSource(shader, shaderSource);
 	gl.compileShader(shader);
