@@ -6,13 +6,15 @@ const connectionMaker = function (state, events) {
 	const onMouseDown = event => {
 		const { x, y } = event;
 
-		const module = state.ui.modules.find(
-			({ position, size }) =>
-				x >= position[0] + state.ui.viewport.x &&
-				x <= position[0] + size[0] + state.ui.viewport.x &&
-				y >= position[1] + state.ui.viewport.y &&
-				y <= position[1] + size[1] + state.ui.viewport.y
-		);
+		const module = state.ui.modules.find(module => {
+			const { width, height } = state.ui.moduleTypes[module.type];
+			return (
+				x >= module.x + state.ui.viewport.x &&
+				x <= module.x + width + state.ui.viewport.x &&
+				y >= module.y + state.ui.viewport.y &&
+				y <= module.y + height + state.ui.viewport.y
+			);
+		});
 
 		if (!module) {
 			state.ui.isConnectionBeingMade = false;
@@ -20,13 +22,13 @@ const connectionMaker = function (state, events) {
 			return;
 		}
 
-		const connector = Object.keys(module.connectors).find(id => {
-			const connector = module.connectors[id];
+		const connector = Object.keys(state.ui.moduleTypes[module.type].connectors).find(id => {
+			const connector = state.ui.moduleTypes[module.type].connectors[id];
 			return (
-				x >= module.position[0] + state.ui.viewport.x + connector.x &&
-				x <= module.position[0] + 10 + state.ui.viewport.x + connector.x &&
-				y >= module.position[1] + state.ui.viewport.y + connector.y &&
-				y <= module.position[1] + 10 + state.ui.viewport.y + connector.y
+				x >= module.x + state.ui.viewport.x + connector.x &&
+				x <= module.x + 10 + state.ui.viewport.x + connector.x &&
+				y >= module.y + state.ui.viewport.y + connector.y &&
+				y <= module.y + 10 + state.ui.viewport.y + connector.y
 			);
 		});
 
@@ -58,10 +60,9 @@ const connectionMaker = function (state, events) {
 	};
 
 	const onDeleteConnection = ({ moduleId }) => {
-		state.ui.connections.splice(
-			state.ui.connections.findIndex(({ fromModule, toModule }) => moduleId === fromModule || moduleId === toModule),
-			1
-		);
+		state.ui.connections = state.ui.connections.filter(({ fromModule, toModule }) => {
+			return moduleId !== fromModule && moduleId !== toModule;
+		});
 	};
 
 	events.on('deleteConnection', onDeleteConnection);
