@@ -3,29 +3,28 @@ const drawConnections = function (engine, state) {
 	const connections = state.ui.connections;
 	const modules = state.ui.modules;
 	const moduleTypes = state.ui.moduleTypes;
-	const offsetX = state.ui.viewport.x;
-	const offsetY = state.ui.viewport.y;
 
 	for (let i = 0; i < connections.length; i++) {
 		const { fromModule, fromConnector, toModule, toConnector } = connections[i];
 		const a = modules.find(({ id }) => id === fromModule);
 		const b = modules.find(({ id }) => id === toModule);
 
-		const { connectors: aConnectors } = moduleTypes[a.type];
-		const { connectors: bConnectors } = moduleTypes[b.type];
+		let { x: fromX, y: fromY } = moduleTypes[a.type].connectors.find(({ id }) => id === fromConnector);
+		let { x: toX, y: toY } = moduleTypes[b.type].connectors.find(({ id }) => id === toConnector);
 
-		const line = [
-			aConnectors[fromConnector].x + a.x + 5 + offsetX,
-			aConnectors[fromConnector].y + a.y + 5 + offsetY,
-			bConnectors[toConnector].x + b.x + 5 + offsetX,
-			bConnectors[toConnector].y + b.y + 5 + offsetY,
-		];
+		fromX += a.x;
+		fromY += a.y;
 
-		engine.drawLine(...line);
+		toX += b.x;
+		toY += b.y;
+
+		engine.startGroup(5 + state.ui.viewport.x, 5 + state.ui.viewport.y);
+		engine.drawLine(fromX, fromY, toX, toY);
+		engine.endGroup();
 	}
 
-	if (ui.isConnectionBeingMade && ui.connectionPointA && ui.connectionPointB) {
-		engine.drawLine(ui.connectionPointA[0], ui.connectionPointA[1], ui.connectionPointB[0], ui.connectionPointB[1]);
+	if (state.ui.isConnectionBeingMade && state.ui.connectionPointA && state.ui.connectionPointB) {
+		engine.drawLine(...ui.connectionPointA, ...ui.connectionPointB);
 	}
 };
 
