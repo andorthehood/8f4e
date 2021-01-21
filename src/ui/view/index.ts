@@ -34,8 +34,10 @@ const init = async function (state) {
 		drawModules(engine, state);
 		drawContextMenu(engine, state);
 
-		engine.drawText(10, 10, 'Time to render one frame ' + timeToRender + ' ms');
-		engine.drawText(10, 30, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
+		engine.startGroup(10, 10);
+		engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
+		engine.drawText(0, 20, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
+		engine.endGroup();
 
 		// engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
 		// engine.drawSprite(200, 300, 'cyan', 10, 10);
