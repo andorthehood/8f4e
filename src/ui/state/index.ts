@@ -3,7 +3,7 @@ import loader from './mutators/loader';
 import contextMenu from './mutators/contextMenu';
 import moduleDragger from './mutators/modules/moduleDragger';
 import moduleCreator from './mutators/modules/moduleCreator';
-import connectionMaker from './mutators/connectionMaker';
+import connectionMaker from './mutators/connections';
 
 const init = function (events) {
 	const state = { ui: {} };
