@@ -27,6 +27,9 @@ export class Engine {
 	startTime: number;
 	lastRenderFinishTime: number;
 	lastRenderStartTime: number;
+	offsetX: number;
+	offsetY: number;
+
 	/**
 	 * If enabled, it makes the render function block the main thread until the GPU finishes rendering.
 	 * Otherwise rendering is asynchronous, and there's no other way to get notified of the end of it.
@@ -92,6 +95,18 @@ export class Engine {
 		this.startTime = Date.now();
 		this.frameCounter = 0;
 		this.isPerformanceMeasurementMode = false;
+		this.offsetX = 0;
+		this.offsetY = 0;
+	}
+
+	startGroup(x: number, y: number) {
+		this.offsetX = x;
+		this.offsetY = y;
+	}
+
+	endGroup() {
+		this.offsetX = 0;
+		this.offsetY = 0;
 	}
 
 	resize(width: number, height: number) {
@@ -136,6 +151,8 @@ export class Engine {
 	 * @param height height of the reactanlge
 	 */
 	drawRectangle(x: number, y: number, width: number, height: number) {
+		x = x + this.offsetX;
+		y = y + this.offsetY;
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x + width, y);
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 4, x + width, y, x + width, y + height);
 		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 8, x + width, y + height, x, y + height);
@@ -151,7 +168,14 @@ export class Engine {
 	 * @param y2 line end point Y coordinate
 	 */
 	drawLine(x: number, y: number, x2: number, y2: number) {
-		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x2, y2);
+		fillBufferWithLineCoordinates(
+			this.lineBuffer,
+			this.lineBufferCounter,
+			x + this.offsetX,
+			y + this.offsetY,
+			x2 + this.offsetX,
+			y2 + this.offsetY
+		);
 		this.lineBufferCounter += 4;
 	}
 
@@ -171,6 +195,8 @@ export class Engine {
 		spriteWidth: number = width,
 		spriteHeight: number = height
 	): void {
+		x = x + this.offsetX;
+		y = y + this.offsetY;
 		fillBufferWithRectangleVertices(this.triangleBuffer, this.triangleBufferCounter, x, y, width, height);
 		fillBufferWithSpriteCoordinates(
 			this.textureCoordinateBuffer,
