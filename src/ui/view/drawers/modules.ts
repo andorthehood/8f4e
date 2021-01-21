@@ -11,19 +11,17 @@ const drawModules = function (engine, state) {
 			x + offsetX < state.ui.viewport.width &&
 			y + offsetY < state.ui.viewport.height
 		) {
-			engine.drawRectangle(x + offsetX, y + offsetY, width, height);
-			engine.drawText(x + offsetX, y + offsetY, name);
+			engine.startGroup(x + offsetX, y + offsetY);
+			engine.drawRectangle(0, 0, width, height);
+			engine.drawText(5, 5, name);
 
 			const connectorIds = Object.keys(connectors);
 
 			for (let i = 0; i < connectorIds.length; i++) {
-				engine.drawRectangle(
-					x + offsetX + connectors[connectorIds[i]].x,
-					y + offsetY + connectors[connectorIds[i]].y,
-					10,
-					10
-				);
+				engine.drawRectangle(connectors[connectorIds[i]].x, connectors[connectorIds[i]].y, 10, 10);
 			}
+
+			engine.endGroup();
 		}
 	});
 };

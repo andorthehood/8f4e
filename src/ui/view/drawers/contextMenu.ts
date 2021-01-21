@@ -6,13 +6,15 @@ const drawContextMenu = function (engine, state) {
 	}
 
 	for (let i = 0; i < items.length; i++) {
+		engine.startGroup(position[0], position[1] + i * itemHeight);
 		if (i === highlightedItem) {
-			engine.drawSprite(position[0], position[1] + i * itemHeight, 'white', itemWidth, itemHeight);
-			engine.drawText(position[0] + 6, position[1] + i * itemHeight + 3, items[i].title, 'black_');
+			engine.drawSprite(0, 0, 'white', itemWidth, itemHeight);
+			engine.drawText(6, 3, items[i].title, 'black_');
 		} else {
-			engine.drawSprite(position[0], position[1] + i * itemHeight, 'black', itemWidth, itemHeight);
-			engine.drawText(position[0] + 6, position[1] + i * itemHeight + 3, items[i].title);
+			engine.drawSprite(0, 0, 'black', itemWidth, itemHeight);
+			engine.drawText(6, 3, items[i].title);
 		}
+		engine.endGroup();
 	}
 };
 
