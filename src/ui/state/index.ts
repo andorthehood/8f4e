@@ -4,6 +4,7 @@ import contextMenu from './mutators/contextMenu';
 import moduleDragger from './mutators/modules/moduleDragger';
 import moduleCreator from './mutators/modules/moduleCreator';
 import connectionMaker from './mutators/connections';
+import error from './mutators/error';
 
 const init = function (events) {
 	const state = { ui: {} };
@@ -14,6 +15,7 @@ const init = function (events) {
 	viewport(state, events);
 	contextMenu(state, events);
 	moduleCreator(state, events);
+	error(state, events);
 
 	console.log(state);
 
