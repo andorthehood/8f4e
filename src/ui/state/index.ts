@@ -5,11 +5,13 @@ import moduleDragger from './mutators/modules/moduleDragger';
 import moduleCreator from './mutators/modules/moduleCreator';
 import connectionMaker from './mutators/connections';
 import error from './mutators/error';
+import history from './mutators/history';
 
 const init = function (events) {
 	const state = { ui: {} };
 
 	loader(state, events);
+	history(state, events);
 	connectionMaker(state, events);
 	moduleDragger(state, events);
 	viewport(state, events);

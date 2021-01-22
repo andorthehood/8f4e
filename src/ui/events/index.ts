@@ -5,6 +5,7 @@ export interface EventObject {
 	movementY: number;
 	buttons: {};
 	stopPropagation: boolean;
+	key: number;
 }
 
 export type EventHandler = (event: EventObject) => void;
@@ -20,20 +21,21 @@ const events = function (): {
 		mousemove: [],
 		mouseup: [],
 		resize: [],
+		keydown: [],
+		keyup: [],
 	};
 
 	const onEvent = function (event) {
-		const { clientX, clientY, movementX, movementY, type, buttons } = event;
+		const { clientX, clientY, movementX, movementY, type, buttons, which } = event;
 		event.preventDefault();
 		const eventObject: EventObject = {
 			x: clientX,
 			y: clientY,
-			clientX,
-			clientY,
 			movementX,
 			movementY,
 			buttons,
 			stopPropagation: false,
+			key: which,
 		};
 		for (let i = 0; i < subscriptions[type].length; i++) {
 			if (!eventObject.stopPropagation) {
