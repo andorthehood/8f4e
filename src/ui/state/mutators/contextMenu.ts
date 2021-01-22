@@ -61,6 +61,7 @@ const contextMenu = function (state, events) {
 		} else {
 			state.ui.contextMenu.items = [
 				{ title: 'Add module', action: 'addModule', payload: { type: 'splitter' } },
+				{ title: 'Undo', action: 'undo' },
 				{ title: 'Close', action: 'closeContextMenu' },
 			];
 		}
