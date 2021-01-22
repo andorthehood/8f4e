@@ -58,6 +58,10 @@ const connectionMaker = function (state, events) {
 				return events.dispatch('error', { message: `It doesn't make sense to connect two outputs` });
 			}
 
+			if (state.ui.connectionFromModule === module.id) {
+				return events.dispatch('error', { message: `Self-patching is not supported` });
+			}
+
 			events.dispatch('createConnection', { module, connector });
 			return;
 		}
