@@ -1,5 +1,11 @@
+const trackedEvents = ['deleteConnection', 'createConnection', 'deleteModule', 'addModule'];
+
 const history = function (state, events) {
-	const onHistoricEvent = () => {
+	const onHistoricEvent = event => {
+		if (event.replaceHistory) {
+			return;
+		}
+
 		state.history.push({
 			modules: [...state.ui.modules],
 			connections: [...state.ui.connections],
@@ -18,10 +24,10 @@ const history = function (state, events) {
 		state.ui.connections = connections;
 	};
 
-	events.on('deleteConnection', onHistoricEvent);
-	events.on('createConnection', onHistoricEvent);
-	events.on('deleteModule', onHistoricEvent);
-	events.on('addModule', onHistoricEvent);
+	trackedEvents.forEach(event => {
+		events.on(event, onHistoricEvent);
+	});
+
 	events.on('undo', onUndo);
 };
 

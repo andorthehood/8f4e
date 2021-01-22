@@ -6,6 +6,7 @@ import moduleCreator from './mutators/modules/moduleCreator';
 import connectionMaker from './mutators/connections';
 import error from './mutators/error';
 import history from './mutators/history';
+import tests from './mutators/tests';
 
 const init = function (events) {
 	const state = { ui: {} };
@@ -18,8 +19,7 @@ const init = function (events) {
 	contextMenu(state, events);
 	moduleCreator(state, events);
 	error(state, events);
-
-	console.log(state);
+	tests(state, events);
 
 	return state;
 };

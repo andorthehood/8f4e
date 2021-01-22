@@ -9,11 +9,11 @@ const moduleCreator = function (state, events) {
 	};
 
 	const onDeleteModule = ({ moduleId }) => {
+		events.dispatch('deleteConnection', { moduleId, replaceHistory: true });
 		state.ui.modules.splice(
 			state.ui.modules.findIndex(({ id }) => id === moduleId),
 			1
 		);
-		events.dispatch('deleteConnection', { moduleId });
 	};
 
 	events.on('addModule', onAddModule);
