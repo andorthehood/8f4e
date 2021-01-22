@@ -44,6 +44,9 @@ const defaultState = {
 
 const loader = function (state, events) {
 	state.ui = { ...defaultState, ...(JSON.parse(localStorage.getItem('state')) || {}) };
+	state.history = [];
+
+	window.state = state;
 
 	const onSaveState = () => {
 		localStorage.setItem(
