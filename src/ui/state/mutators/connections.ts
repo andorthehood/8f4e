@@ -5,8 +5,7 @@ import findConnectionByConnector from '../helpers/findConnectionByConnector';
 
 const connectionMaker = function (state, events) {
 	const onMouseMove = event => {
-		const { x, y } = event;
-		state.ui.connectionPointB = [x, y];
+		state.ui.connectionPointB = [event.x, event.y];
 		event.stopPropagation = true;
 	};
 
@@ -59,13 +58,7 @@ const connectionMaker = function (state, events) {
 				return events.dispatch('error', { message: `It doesn't make sense to connect two outputs` });
 			}
 
-			state.ui.connections.push({
-				fromModule: state.ui.connectionFromModule,
-				fromConnector: state.ui.connectionFromConnector,
-				toModule: module.id,
-				toConnector: connector.id,
-				id: Date.now(),
-			});
+			events.dispatch('createConnection', { module, connector });
 			return;
 		}
 
@@ -83,8 +76,19 @@ const connectionMaker = function (state, events) {
 		});
 	};
 
+	const onCreateConnection = ({ module, connector }) => {
+		state.ui.connections.push({
+			fromModule: state.ui.connectionFromModule,
+			fromConnector: state.ui.connectionFromConnector,
+			toModule: module.id,
+			toConnector: connector.id,
+			id: Date.now(),
+		});
+	};
+
 	events.on('deleteConnection', onDeleteConnection);
 	events.on('mouseup', onMouseUp);
+	events.on('createConnection', onCreateConnection);
 };
 
 export default connectionMaker;
