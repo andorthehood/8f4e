@@ -114,6 +114,10 @@ export class Engine {
 	}
 
 	resize(width: number, height: number) {
+		if (width === this.gl.canvas.width && height === this.gl.canvas.height) {
+			return;
+		}
+
 		this.gl.canvas.width = width;
 		this.gl.canvas.height = height;
 		this.gl.viewport(0, 0, width, height);
