@@ -1,3 +1,5 @@
+import findModuleAtViewportCoordinates from '../helpers/findModuleAtViewportCoordinates';
+
 const getHighlightedMenuItem = function (x, y, itemHeight, width) {
 	if (x < 0 || x > width || y < 0) {
 		return Infinity;
@@ -17,6 +19,7 @@ const contextMenu = function (state, events) {
 	const onMouseMove = event => {
 		const { itemHeight, itemWidth, x, y } = state.ui.contextMenu;
 		state.ui.contextMenu.highlightedItem = getHighlightedMenuItem(event.x - x, event.y - y, itemHeight, itemWidth);
+		event.stopPropagation = true;
 	};
 
 	const onMouseDown = event => {
@@ -31,6 +34,7 @@ const contextMenu = function (state, events) {
 		}
 
 		state.ui.contextMenu.open = false;
+		event.stopPropagation = true;
 
 		events.off('mousedown', onMouseDown);
 		events.off('mousemove', onMouseMove);
@@ -39,30 +43,25 @@ const contextMenu = function (state, events) {
 	const onContextMenu = event => {
 		const { x, y } = event;
 
-		state.ui.contextMenu.open = true;
+		state.ui.contextMenu.highlightedItem = 0;
 		state.ui.contextMenu.x = x;
 		state.ui.contextMenu.y = y;
+		state.ui.contextMenu.open = true;
 
-		const module = state.ui.modules.find(module => {
-			const { width, height } = state.ui.moduleTypes[module.type];
-			return (
-				x >= module.x + state.ui.viewport.x &&
-				x <= module.x + width + state.ui.viewport.x &&
-				y >= module.y + state.ui.viewport.y &&
-				y <= module.y + height + state.ui.viewport.y
-			);
-		});
+		const module = findModuleAtViewportCoordinates(state, x, y);
 
 		if (module) {
 			state.ui.contextMenu.items = [
 				{ title: 'Delete module', action: 'deleteModule', payload: { moduleId: module.id } },
-				{ title: 'Close', action: 'closeContextMenu' },
+				{ title: 'Remove wires', action: 'deleteConnection', payload: { moduleId: module.id } },
 			];
 		} else {
 			state.ui.contextMenu.items = [
 				{ title: 'Add module', action: 'addModule', payload: { type: 'splitter' } },
 				{ title: 'Undo', action: 'undo' },
-				{ title: 'Close', action: 'closeContextMenu' },
+				{ title: 'Save', action: 'save' },
+				{ title: 'Run test', action: 'runTest' },
+				{ title: 'Export', action: 'export' },
 			];
 		}
 
