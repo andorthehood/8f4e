@@ -1,5 +1,5 @@
 const error = function (state, events) {
-	let timeoutRef = 0;
+	let timeoutRef: NodeJS.Timeout = null;
 
 	const onError = ({ message, timeout = 5000 }) => {
 		state.ui.error.message = message;
