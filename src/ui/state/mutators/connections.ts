@@ -1,6 +1,7 @@
 import findModuleAtViewportCoordinates from '../helpers/findModuleAtViewportCoordinates';
 import findConnectorAtViewportCoordinates from '../helpers/findConnectorAtViewportCoordinates';
 import findConnectorInModule from '../helpers/findConnectorInModule';
+import findConnectionByConnector from '../helpers/findConnectionByConnector';
 
 const connectionMaker = function (state, events) {
 	const onMouseMove = event => {
@@ -28,6 +29,18 @@ const connectionMaker = function (state, events) {
 			return;
 		}
 
+		const connection = findConnectionByConnector(state, module, connector);
+
+		if (!state.ui.isConnectionBeingMade && connection) {
+			return events.dispatch('deleteConnection', { connectionId: connection.id });
+		}
+
+		if (state.ui.isConnectionBeingMade && connection) {
+			if (connection) {
+				return events.dispatch('error', { message: `This connector is already connected.` });
+			}
+		}
+
 		if (state.ui.isConnectionBeingMade) {
 			state.ui.isConnectionBeingMade = false;
 			events.off('mousemove', onMouseMove);
@@ -51,6 +64,7 @@ const connectionMaker = function (state, events) {
 				fromConnector: state.ui.connectionFromConnector,
 				toModule: module.id,
 				toConnector: connector.id,
+				id: Date.now(),
 			});
 			return;
 		}
@@ -63,9 +77,9 @@ const connectionMaker = function (state, events) {
 		events.on('mousemove', onMouseMove);
 	};
 
-	const onDeleteConnection = ({ moduleId }) => {
-		state.ui.connections = state.ui.connections.filter(({ fromModule, toModule }) => {
-			return moduleId !== fromModule && moduleId !== toModule;
+	const onDeleteConnection = ({ moduleId, connectionId }) => {
+		state.ui.connections = state.ui.connections.filter(({ fromModule, toModule, id }) => {
+			return !(connectionId === id || moduleId === fromModule || moduleId === toModule);
 		});
 	};
 
