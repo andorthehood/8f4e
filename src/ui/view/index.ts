@@ -34,6 +34,11 @@ const init = async function (state) {
 		drawModules(engine, state);
 		drawContextMenu(engine, state);
 
+		// engine.drawLine(100, 100, 200, 100);
+		// engine.drawLine(200, 200, 200, 300);
+		// engine.drawLine(400, 400, 440, 500);
+		// engine.drawLine(500, 500, 560, 600);
+
 		engine.startGroup(10, state.ui.viewport.height - 50);
 		engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
 		engine.drawText(0, 20, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
