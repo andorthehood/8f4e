@@ -56,13 +56,6 @@ export class Engine {
 		const texcoordBuffer = gl.createBuffer();
 		const positionBuffer = gl.createBuffer();
 
-		window.addEventListener('resize', () => {
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-			this.setUniform('u_resolution', canvas.width, canvas.height);
-		});
-
 		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 		gl.clearColor(0, 0, 0, 1.0);
 		gl.clear(gl.COLOR_BUFFER_BIT);
@@ -78,14 +71,12 @@ export class Engine {
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		gl.enable(gl.BLEND);
 
-		this.setUniform('u_color', 0.5, 0.5, 0.5, 1);
+		this.gl.enableVertexAttribArray(a_texcoord);
+		this.gl.enableVertexAttribArray(a_position);
 
 		this.program = program;
 		this.gl = gl;
-		this.attributes = {
-			a_position,
-			a_texcoord,
-		};
+
 		this.buffers = {
 			texcoordBuffer,
 			positionBuffer,
@@ -234,26 +225,17 @@ export class Engine {
 	}
 
 	renderTriangleBuffer() {
-		this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
-
-		this.gl.enableVertexAttribArray(this.attributes.a_texcoord);
-		this.gl.enableVertexAttribArray(this.attributes.a_position);
-
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texcoordBuffer);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.textureCoordinateBuffer, this.gl.STATIC_DRAW);
 
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.positionBuffer);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.triangleBuffer, this.gl.STATIC_DRAW);
 
-		this.setUniform('u_draw_texture', true);
 		this.gl.drawArrays(this.gl.TRIANGLES, 0, this.triangleBufferCounter / 2);
+
 		if (this.isPerformanceMeasurementMode) {
 			this.gl.finish();
 		}
-		this.setUniform('u_draw_texture', false);
-
-		this.gl.disableVertexAttribArray(this.attributes.a_texcoord);
-		this.gl.disableVertexAttribArray(this.attributes.a_position);
 	}
 
 	setSpriteLookupAlgorithm(spriteLookup) {
