@@ -2,11 +2,13 @@ import {
 	createShader,
 	createProgram,
 	createTexture,
-	fillBufferWithLineCoordinates,
 	fillBufferWithRectangleVertices,
 	fillBufferWithSpriteCoordinates,
+	fillBufferWithLineVertices,
 } from './utils';
+// @ts-ignore
 import vertexShader from './shaders/shader.vert';
+// @ts-ignore
 import textureShader from './shaders/texture.frag';
 
 export class Engine {
@@ -14,8 +16,6 @@ export class Engine {
 	gl: WebGL2RenderingContext | WebGLRenderingContext;
 	attributes: { a_position: any; a_texcoord: any };
 	buffers: { positionBuffer: WebGLBuffer; texcoordBuffer: WebGLBuffer };
-	lineBuffer: Float32Array;
-	lineBufferCounter: number;
 	triangleBuffer: Float32Array;
 	triangleBufferCounter: number;
 	textureCoordinateBuffer: Float32Array;
@@ -90,7 +90,6 @@ export class Engine {
 			texcoordBuffer,
 			positionBuffer,
 		};
-		this.lineBuffer = new Float32Array(100000);
 		this.triangleBuffer = new Float32Array(100000);
 		this.textureCoordinateBuffer = new Float32Array(100000);
 		this.startTime = Date.now();
@@ -127,7 +126,6 @@ export class Engine {
 	render(callback: (timeToRender: number, fps: number, triangles: number, maxTriangles: number) => void) {
 		const triangles = this.triangleBufferCounter / 6;
 		const maxTriangles = Math.floor(this.triangleBuffer.length / 6);
-		this.lineBufferCounter = 0;
 		this.triangleBufferCounter = 0;
 		this.textureCoordinateBufferCounter = 0;
 
@@ -140,8 +138,7 @@ export class Engine {
 
 		callback(timeToRender, fps, triangles, maxTriangles);
 
-		this.renderLines();
-		this.renderSprites();
+		this.renderTriangleBuffer();
 
 		this.lastRenderFinishTime = performance.now();
 		this.frameCounter++;
@@ -158,33 +155,11 @@ export class Engine {
 	 * @param width width of the rectanlge
 	 * @param height height of the reactanlge
 	 */
-	drawRectangle(x: number, y: number, width: number, height: number) {
-		x = x + this.offsetX;
-		y = y + this.offsetY;
-		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter, x, y, x + width, y);
-		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 4, x + width, y, x + width, y + height);
-		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 8, x + width, y + height, x, y + height);
-		fillBufferWithLineCoordinates(this.lineBuffer, this.lineBufferCounter + 12, x, y + height, x, y);
-		this.lineBufferCounter += 16;
-	}
-
-	/**
-	 * Fills the line drawing buffer with indices of a line.
-	 * @param x line starting point X coordinate
-	 * @param y line starting point Y coordinate
-	 * @param x2 line end point X coordinate
-	 * @param y2 line end point Y coordinate
-	 */
-	drawLine(x: number, y: number, x2: number, y2: number) {
-		fillBufferWithLineCoordinates(
-			this.lineBuffer,
-			this.lineBufferCounter,
-			x + this.offsetX,
-			y + this.offsetY,
-			x2 + this.offsetX,
-			y2 + this.offsetY
-		);
-		this.lineBufferCounter += 4;
+	drawRectangle(x: number, y: number, width: number, height: number, sprite: any, thickness: number) {
+		this.drawLine(x, y, x + width, y, sprite, thickness);
+		this.drawLine(x + width, y, x + width, y + height, sprite, thickness);
+		this.drawLine(x + width, y + height, x, y + height, sprite, thickness);
+		this.drawLine(x, y + height, x, y, sprite, thickness);
 	}
 
 	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas) {
@@ -220,6 +195,30 @@ export class Engine {
 		this.textureCoordinateBufferCounter += 12;
 	}
 
+	drawLine(x1: number, y1: number, x2: number, y2: number, sprite: any, thickness: number) {
+		x1 = x1 + this.offsetX;
+		y1 = y1 + this.offsetY;
+		x2 = x2 + this.offsetX;
+		y2 = y2 + this.offsetY;
+		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(sprite);
+
+		fillBufferWithLineVertices(this.triangleBuffer, this.triangleBufferCounter, x1, y1, x2, y2, thickness);
+
+		fillBufferWithSpriteCoordinates(
+			this.textureCoordinateBuffer,
+			this.textureCoordinateBufferCounter,
+			x,
+			y,
+			spriteWidth,
+			spriteHeight,
+			this.spriteSheetWidth,
+			this.spriteSheetHeight
+		);
+
+		this.triangleBufferCounter += 12;
+		this.textureCoordinateBufferCounter += 12;
+	}
+
 	drawSprite(posX: number, posY: number, sprite: string, width?: number, height?: number): void {
 		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(sprite);
 		this.drawSpriteFromCoordinates(
@@ -234,17 +233,7 @@ export class Engine {
 		);
 	}
 
-	renderLines() {
-		this.gl.enableVertexAttribArray(this.attributes.a_position);
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.positionBuffer);
-		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.lineBuffer, this.gl.STATIC_DRAW);
-		this.gl.drawArrays(this.gl.LINES, 0, this.lineBufferCounter / 2);
-		if (this.isPerformanceMeasurementMode) {
-			this.gl.finish();
-		}
-	}
-
-	renderSprites() {
+	renderTriangleBuffer() {
 		this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
 
 		this.gl.enableVertexAttribArray(this.attributes.a_texcoord);
