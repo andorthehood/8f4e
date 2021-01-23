@@ -29,6 +29,7 @@ const init = async function (state) {
 	engine.setSpriteLookupAlgorithm(sprite.lookupFunction);
 
 	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
+		//engine.reallocateBuffer(1000);
 		engine.resize(window.innerWidth, window.innerHeight);
 		drawConnections(engine, state);
 		drawModules(engine, state);
