@@ -1,29 +1,4 @@
 /**
- * Fills a vertex buffer with indices of the specified line.
- * @param buffer
- * @param offset
- * @param x
- * @param y
- * @param x2
- * @param y2
- */
-export const fillBufferWithLineCoordinates = function (
-	buffer: Float32Array,
-	offset: number,
-	x: number,
-	y: number,
-	x2: number,
-	y2: number
-) {
-	// Start point
-	buffer[offset] = x;
-	buffer[offset + 1] = y;
-	// End point
-	buffer[offset + 2] = x2;
-	buffer[offset + 3] = y2;
-};
-
-/**
  * Fills a vertex buffer with vertices of the specified rectangle.
  * @param buffer
  * @param offset
@@ -104,4 +79,91 @@ export const fillBufferWithSpriteCoordinates = function (
 	buffer[offset + 9] = v1;
 	buffer[offset + 10] = u2;
 	buffer[offset + 11] = v2;
+};
+
+export const fillBufferWithLineVertices = function (
+	buffer: Float32Array,
+	offset: number,
+	x1: number,
+	y1: number,
+	x2: number,
+	y2: number,
+	thickness: number = 1
+) {
+	/*      o (x1, y1)
+	 *      |\  Alpha
+	 *      | \
+	 *      |  \  <-- The hypotenuse here
+	 * legA |   \     is the line we want to render.
+	 *      |    \
+	 *      |     \ Beta
+	 *      '----- o (x2, y2)
+	 *        legB
+	 *
+	 *  We need to calculate one of it's angles to be able
+	 *  to copy and translate the original line to make it look thicker.
+	 */
+	const legA = y1 - y2;
+	const legB = x1 - x2;
+	const alpha = Math.atan(legA / legB);
+
+	/*               |
+	 *               |--- o (xA, yA)
+	 *               |   /|\ Alpha
+	 *               |  / | \
+	 *         Beta  | /  |  \
+	 *      (x1, y1) |/   |   \
+	 * --------------*-)--+----\---->
+	 *              /|\         \
+	 *             / | \         \
+	 *            /  |  \         \
+	 *           /   |   \         '
+	 * (xD, xD) o-)--+    \          .
+	 *           \   |     \
+	 *            \  |      '    <-- This is the central line
+	 *             \          .      for which we have the cooridnates
+	 *              '
+	 *                .  <-- This is a slightly translated line
+	 */
+
+	thickness = thickness / 2;
+	const translateX = Math.max(1, thickness) * Math.sin(alpha);
+	const translateY = Math.max(1, thickness) * Math.cos(alpha);
+
+	let xA = x1;
+	let yA = y1;
+	let xD = x1 + translateX;
+	let yD = y1 - translateY;
+
+	let xB = x2;
+	let yB = y2;
+	let xC = x2 + translateX;
+	let yC = y2 - translateY;
+
+	if (thickness >= 1) {
+		xA = x1 - translateX;
+		yA = y1 + translateY;
+		xB = x2 - translateX;
+		yB = y2 + translateY;
+	}
+
+	// triangle 1 vertex 1
+	buffer[offset] = xA;
+	buffer[offset + 1] = yA;
+	// vertex 2
+	buffer[offset + 2] = xB;
+	buffer[offset + 3] = yB;
+	// vertex 3
+	buffer[offset + 4] = xC;
+	buffer[offset + 5] = yC;
+
+	// triangle 2 vertex 1
+	buffer[offset + 6] = xD;
+	buffer[offset + 7] = yD;
+	// vertex 2
+	buffer[offset + 8] = xA;
+	buffer[offset + 9] = yA;
+	// vertex 3
+	buffer[offset + 10] = xC;
+	buffer[offset + 11] = yC;
 };
