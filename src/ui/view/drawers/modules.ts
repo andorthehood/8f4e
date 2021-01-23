@@ -15,13 +15,13 @@ const drawModules = function (engine, state) {
 			y + offsetY < state.ui.viewport.height
 		) {
 			engine.startGroup(x, y);
-			engine.drawRectangle(0, 0, width, height);
+			engine.drawRectangle(0, 0, width, height, 'grey', 1);
 			engine.drawText(5, 5, name);
 
 			const connectorIds = Object.keys(connectors);
 
 			for (let i = 0; i < connectorIds.length; i++) {
-				engine.drawRectangle(connectors[connectorIds[i]].x, connectors[connectorIds[i]].y, 10, 10);
+				engine.drawRectangle(connectors[connectorIds[i]].x, connectors[connectorIds[i]].y, 10, 10, 'grey', 1);
 			}
 
 			engine.endGroup();

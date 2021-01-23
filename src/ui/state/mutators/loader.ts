@@ -46,6 +46,7 @@ const loader = function (state, events) {
 	state.ui = { ...defaultState, ...(JSON.parse(localStorage.getItem('state')) || {}) };
 	state.history = [];
 
+	// @ts-ignore
 	window.state = state;
 
 	const onSaveState = () => {
