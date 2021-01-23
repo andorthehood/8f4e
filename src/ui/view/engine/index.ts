@@ -17,9 +17,8 @@ export class Engine {
 	glPositionBuffer: WebGLBuffer;
 	glTextureCoordinateBuffer: WebGLBuffer;
 	vertexBuffer: Float32Array;
-	vertexBufferCounter: number;
+	bufferPointer: number;
 	textureCoordinateBuffer: Float32Array;
-	textureCoordinateBufferCounter: number;
 	spriteSheet: WebGLTexture;
 	spriteSheetWidth: number;
 	spriteSheetHeight: number;
@@ -30,6 +29,8 @@ export class Engine {
 	offsetX: number;
 	offsetY: number;
 	offsetGroups: number[][];
+	bufferSize: number;
+	bufferCounter: number;
 
 	/**
 	 * If enabled, it makes the render function block the main thread until the GPU finishes rendering.
@@ -73,8 +74,8 @@ export class Engine {
 		this.gl.enableVertexAttribArray(a_texcoord);
 		this.gl.enableVertexAttribArray(a_position);
 
-		this.vertexBuffer = new Float32Array(100000);
-		this.textureCoordinateBuffer = new Float32Array(100000);
+		this.reallocateBuffer(10000);
+
 		this.startTime = Date.now();
 		this.frameCounter = 0;
 		this.isPerformanceMeasurementMode = false;
@@ -95,6 +96,14 @@ export class Engine {
 		this.offsetY -= y;
 	}
 
+	reallocateBuffer(newSize: number) {
+		this.bufferSize = newSize * 12;
+		this.bufferPointer = 0;
+		this.bufferCounter = 0;
+		this.vertexBuffer = new Float32Array(this.bufferSize);
+		this.textureCoordinateBuffer = new Float32Array(this.bufferSize);
+	}
+
 	resize(width: number, height: number) {
 		if (width === this.gl.canvas.width && height === this.gl.canvas.height) {
 			return;
@@ -107,10 +116,10 @@ export class Engine {
 	}
 
 	render(callback: (timeToRender: number, fps: number, triangles: number, maxTriangles: number) => void) {
-		const triangles = this.vertexBufferCounter / 6;
+		const triangles = this.bufferCounter / 6;
 		const maxTriangles = Math.floor(this.vertexBuffer.length / 6);
-		this.vertexBufferCounter = 0;
-		this.textureCoordinateBufferCounter = 0;
+		this.bufferPointer = 0;
+		this.bufferCounter = 0;
 
 		const fps = Math.floor(this.frameCounter / ((Date.now() - this.startTime) / 1000));
 		const timeToRender = Math.round((this.lastRenderStartTime - this.lastRenderFinishTime) * 100) / 100;
@@ -163,10 +172,10 @@ export class Engine {
 	): void {
 		x = x + this.offsetX;
 		y = y + this.offsetY;
-		fillBufferWithRectangleVertices(this.vertexBuffer, this.vertexBufferCounter, x, y, width, height);
+		fillBufferWithRectangleVertices(this.vertexBuffer, this.bufferPointer, x, y, width, height);
 		fillBufferWithSpriteCoordinates(
 			this.textureCoordinateBuffer,
-			this.textureCoordinateBufferCounter,
+			this.bufferPointer,
 			spriteX,
 			spriteY,
 			spriteWidth,
@@ -174,8 +183,9 @@ export class Engine {
 			this.spriteSheetWidth,
 			this.spriteSheetHeight
 		);
-		this.vertexBufferCounter += 12;
-		this.textureCoordinateBufferCounter += 12;
+
+		this.bufferCounter += 12;
+		this.bufferPointer = this.bufferCounter % this.bufferSize;
 	}
 
 	drawLine(x1: number, y1: number, x2: number, y2: number, sprite: any, thickness: number) {
@@ -185,11 +195,11 @@ export class Engine {
 		y2 = y2 + this.offsetY;
 		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(sprite);
 
-		fillBufferWithLineVertices(this.vertexBuffer, this.vertexBufferCounter, x1, y1, x2, y2, thickness);
+		fillBufferWithLineVertices(this.vertexBuffer, this.bufferPointer, x1, y1, x2, y2, thickness);
 
 		fillBufferWithSpriteCoordinates(
 			this.textureCoordinateBuffer,
-			this.textureCoordinateBufferCounter,
+			this.bufferPointer,
 			x,
 			y,
 			spriteWidth,
@@ -198,8 +208,8 @@ export class Engine {
 			this.spriteSheetHeight
 		);
 
-		this.vertexBufferCounter += 12;
-		this.textureCoordinateBufferCounter += 12;
+		this.bufferCounter += 12;
+		this.bufferPointer = this.bufferCounter % this.bufferSize;
 	}
 
 	drawSprite(posX: number, posY: number, sprite: string, width?: number, height?: number): void {
@@ -223,7 +233,7 @@ export class Engine {
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glPositionBuffer);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.vertexBuffer, this.gl.STATIC_DRAW);
 
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, this.vertexBufferCounter / 2);
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, Math.min(this.bufferCounter / 2, this.bufferSize / 2));
 
 		if (this.isPerformanceMeasurementMode) {
 			this.gl.finish();
