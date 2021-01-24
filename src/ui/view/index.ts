@@ -2,19 +2,6 @@ import { Engine } from './engine';
 import generateSprite from './sprites';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 
-const loadWasm = async () => {
-	const importObject = {
-		module: {},
-		env: {
-			puts: function () {},
-			__memory_base: 0,
-			memory: new WebAssembly.Memory({ initial: 8 }),
-		},
-	};
-
-	const module = await WebAssembly.instantiateStreaming(fetch('/test.wasm'), importObject);
-};
-
 const init = async function (state) {
 	const sprite = await generateSprite();
 
@@ -51,7 +38,7 @@ const init = async function (state) {
 			engine.endGroup();
 		}
 
-		// engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
+		engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
 		// engine.drawSprite(200, 300, 'cyan', 10, 10);
 		// engine.drawSprite(200, 310, 'cyan', 10, 10);
 		// engine.drawSprite(220, 300, 'purple', 20, 20);
