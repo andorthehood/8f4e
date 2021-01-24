@@ -4,5 +4,6 @@
 ## Project dependencies
 
 * node
+* rust
 * python3
 * emscripten (emcc)
