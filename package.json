@@ -8,7 +8,7 @@
     "wasm": "emcc src/c/test.c -Os -s WASM=1 -s SIDE_MODULE=1 -o dist/test.wasm",
     "build": "parcel build src/index.html",
     "watch": "parcel src/index.html --port 3000",
-    "prettier": "prettier --write ./src/**/*.ts"
+    "prettier": "prettier --write './src/**/*.ts'"
   },
   "browserslist": [
     "last 1 Chrome version"
