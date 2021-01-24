@@ -32,7 +32,7 @@ const generateSprite = async function (): Promise<{
 	// });
 	// const src = URL.createObjectURL(blob);
 
-	//console.log(src);
+	// console.log(src);
 	console.log(lookupTable);
 
 	// const image = document.createElement('img');
