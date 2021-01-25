@@ -31,26 +31,22 @@ const compile = function () {
 	return Uint8Array.from([
 		...HEADER,
 		...VERSION,
-		...createSection(
-			Section.TYPE,
-			encodeVector([[FUNCTION_TYPES, ...encodeVector([Type.I32, Type.I32]), ...encodeVector([Type.I32])]])
-		),
-		...createSection(Section.FUNCTION, encodeVector([0x00])),
-		...createSection(Section.EXPORT, encodeVector([[...encodeString('add'), ExportDesc.FUNC, 0x00]])),
-		...createSection(
-			Section.CODE,
+		...createSection(Section.TYPE, [
+			[FUNCTION_TYPES, ...encodeVector([Type.I32, Type.I32]), ...encodeVector([Type.I32])],
+		]),
+		...createSection(Section.FUNCTION, [0x00]),
+		...createSection(Section.EXPORT, [[...encodeString('add'), ExportDesc.FUNC, 0x00]]),
+		...createSection(Section.CODE, [
 			encodeVector([
-				encodeVector([
-					0x00,
-					Instruction.LOCAL_GET,
-					...unsignedLEB128(0),
-					Instruction.LOCAL_GET,
-					...unsignedLEB128(1),
-					Instruction.I32_ADD,
-					Instruction.END,
-				]),
-			])
-		),
+				0x00,
+				Instruction.LOCAL_GET,
+				...unsignedLEB128(0),
+				Instruction.LOCAL_GET,
+				...unsignedLEB128(1),
+				Instruction.I32_ADD,
+				Instruction.END,
+			]),
+		]),
 	]);
 };
 
