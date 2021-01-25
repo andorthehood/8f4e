@@ -1,24 +1,16 @@
 import {
 	unsignedLEB128,
-	encodeVector,
-	createSection,
-	encodeString,
 	createFunctionSection,
 	createTypeSection,
 	createFunctionType,
 	createExportSection,
 	createFunctionExport,
+	createCodeSection,
+	createFunctionBody,
 } from './utils';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
-
-const enum Section {
-	TYPE = 0x01,
-	FUNCTION = 0x03,
-	EXPORT = 0x07,
-	CODE = 0x0a,
-}
 
 const enum Type {
 	I32 = 0x7f,
@@ -42,8 +34,8 @@ const compile = function () {
 		]),
 		...createFunctionSection([0x00, 0x00, 0x00]),
 		...createExportSection([createFunctionExport('add', 0x00)]),
-		...createSection(Section.CODE, [
-			encodeVector([
+		...createCodeSection([
+			createFunctionBody([
 				0x00,
 				Instruction.LOCAL_GET,
 				...unsignedLEB128(0),
@@ -52,7 +44,7 @@ const compile = function () {
 				Instruction.I32_ADD,
 				Instruction.END,
 			]),
-			encodeVector([
+			createFunctionBody([
 				0x00,
 				Instruction.LOCAL_GET,
 				...unsignedLEB128(0),
@@ -61,7 +53,7 @@ const compile = function () {
 				Instruction.I32_ADD,
 				Instruction.END,
 			]),
-			encodeVector([
+			createFunctionBody([
 				0x00,
 				Instruction.LOCAL_GET,
 				...unsignedLEB128(0),
