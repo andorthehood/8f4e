@@ -6,6 +6,8 @@ import {
 	createFunctionSection,
 	createTypeSection,
 	createFunctionType,
+	createExportSection,
+	createFunctionExport,
 } from './utils';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
@@ -21,10 +23,6 @@ const enum Section {
 const enum Type {
 	I32 = 0x7f,
 	F32 = 0x7d,
-}
-
-const enum ExportDesc {
-	FUNC = 0x00,
 }
 
 const enum Instruction {
@@ -43,7 +41,7 @@ const compile = function () {
 			createFunctionType([], Type.I32),
 		]),
 		...createFunctionSection([0x00, 0x00, 0x00]),
-		...createSection(Section.EXPORT, [[...encodeString('add'), ExportDesc.FUNC, 0x00]]),
+		...createExportSection([createFunctionExport('add', 0x00)]),
 		...createSection(Section.CODE, [
 			encodeVector([
 				0x00,

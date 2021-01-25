@@ -5,6 +5,10 @@ const enum Section {
 	CODE = 0x0a,
 }
 
+const enum ExportDesc {
+	FUNC = 0x00,
+}
+
 export const flatten = function (arr: any[]) {
 	return [].concat.apply([], arr);
 };
@@ -31,7 +35,7 @@ export const createSection = function (sectionType, code: any[]) {
 };
 
 export const encodeString = function (str: string) {
-	return [str.length, ...str.split('').map(char => char.charCodeAt(0))];
+	return str.split('').map(char => char.charCodeAt(0));
 };
 
 export const createFunctionSection = function (functionTypeIndexes: number[]): number[] {
@@ -61,4 +65,16 @@ export const createTypeSection = function (types: number[][]): number[] {
 	const sectionSize = flatten(types).length + 1;
 	const numberOfTypes = types.length;
 	return [Section.TYPE, ...unsignedLEB128(sectionSize), ...unsignedLEB128(numberOfTypes), ...flatten(types)];
+};
+
+export const createExportSection = function (_exports: number[][]): number[] {
+	const sectionSize = flatten(_exports).length + 1;
+	const numberOfExports = _exports.length;
+
+	return [Section.EXPORT, ...unsignedLEB128(sectionSize), ...unsignedLEB128(numberOfExports), ...flatten(_exports)];
+};
+
+export const createFunctionExport = function (name: string, reference: number): number[] {
+	const stringLength = name.length;
+	return [stringLength, ...encodeString('add'), ExportDesc.FUNC, reference];
 };
