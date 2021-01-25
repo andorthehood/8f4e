@@ -1,8 +1,15 @@
+const enum Section {
+	TYPE = 0x01,
+	FUNCTION = 0x03,
+	EXPORT = 0x07,
+	CODE = 0x0a,
+}
+
 export const flatten = function (arr: any[]) {
 	return [].concat.apply([], arr);
 };
 
-export const unsignedLEB128 = function (n: number) {
+export const unsignedLEB128 = function (n: number): number[] {
 	const buffer = [];
 	do {
 		let byte = n & 0x7f;
@@ -25,4 +32,33 @@ export const createSection = function (sectionType, code: any[]) {
 
 export const encodeString = function (str: string) {
 	return [str.length, ...str.split('').map(char => char.charCodeAt(0))];
+};
+
+export const createFunctionSection = function (functionTypeIndexes: number[]): number[] {
+	const numberOfFunctions = functionTypeIndexes.length;
+	const sectionSize = numberOfFunctions + 1;
+	return [
+		Section.FUNCTION,
+		...unsignedLEB128(sectionSize),
+		...unsignedLEB128(numberOfFunctions),
+		...functionTypeIndexes,
+	];
+};
+
+export const createFunctionType = function (parameterTypes: number[], resultType?: number) {
+	const numberOfParameters = parameterTypes.length;
+	const numberOfResults = resultType ? 1 : 0;
+	return [
+		0x60,
+		...unsignedLEB128(numberOfParameters),
+		...parameterTypes,
+		...unsignedLEB128(numberOfResults),
+		...(resultType ? [resultType] : []),
+	];
+};
+
+export const createTypeSection = function (types: number[][]): number[] {
+	const sectionSize = flatten(types).length + 1;
+	const numberOfTypes = types.length;
+	return [Section.TYPE, ...unsignedLEB128(sectionSize), ...unsignedLEB128(numberOfTypes), ...flatten(types)];
 };
