@@ -30,10 +30,6 @@ export const encodeVector = function (code: any[]) {
 	return [unsignedLEB128(code.length), ...flatten(code)];
 };
 
-export const createSection = function (sectionType, code: any[]) {
-	return [sectionType, ...encodeVector(encodeVector(code))];
-};
-
 export const encodeString = function (str: string) {
 	return str.split('').map(char => char.charCodeAt(0));
 };
@@ -77,4 +73,20 @@ export const createExportSection = function (_exports: number[][]): number[] {
 export const createFunctionExport = function (name: string, reference: number): number[] {
 	const stringLength = name.length;
 	return [stringLength, ...encodeString('add'), ExportDesc.FUNC, reference];
+};
+
+export const createCodeSection = function (functionBodies: number[][]): number[] {
+	const sectionSize = flatten(functionBodies).length + 1;
+	const numberOfFunctions = functionBodies.length;
+	return [
+		Section.CODE,
+		...unsignedLEB128(sectionSize),
+		...unsignedLEB128(numberOfFunctions),
+		...flatten(functionBodies),
+	];
+};
+
+export const createFunctionBody = function (functionBody: number[]): number[] {
+	const functionBodySize = functionBody.length;
+	return [...unsignedLEB128(functionBodySize), ...functionBody];
 };
