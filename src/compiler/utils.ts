@@ -20,7 +20,7 @@ export const encodeVector = function (code: any[]) {
 };
 
 export const createSection = function (sectionType, code: any[]) {
-	return [sectionType, ...encodeVector(code)];
+	return [sectionType, ...encodeVector(encodeVector(code))];
 };
 
 export const encodeString = function (str: string) {
