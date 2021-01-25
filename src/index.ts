@@ -4,7 +4,7 @@ import view from './ui/view';
 import compiler from './compiler';
 
 (async function () {
-	const blob = new Blob(compiler(), { type: 'application/wasm' });
+	const blob = new Blob([compiler().buffer], { type: 'application/wasm' });
 	const src = URL.createObjectURL(blob);
 	console.log(src);
 
