@@ -1,6 +1,7 @@
 const enum Section {
 	TYPE = 0x01,
 	FUNCTION = 0x03,
+	MEMORY = 0x05,
 	EXPORT = 0x07,
 	CODE = 0x0a,
 }
@@ -123,4 +124,17 @@ export const createFunctionBody = function (
 export const createLocalDeclaration = function (type: Type): LocalDeclaration {
 	const typeCount = 1;
 	return [...unsignedLEB128(typeCount), type];
+};
+
+export const createMemorySection = function (pageSize: number): number[] {
+	const sectionSize = 3;
+	const numMemories = 1;
+	const flags = 0;
+	return [
+		Section.MEMORY,
+		...unsignedLEB128(sectionSize),
+		...unsignedLEB128(numMemories),
+		...unsignedLEB128(flags),
+		...unsignedLEB128(pageSize),
+	];
 };
