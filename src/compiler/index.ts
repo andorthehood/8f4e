@@ -20,9 +20,9 @@ const compile = function () {
 		...HEADER,
 		...VERSION,
 		...createTypeSection([
-			createFunctionType([Type.I32, Type.I32], Type.I32),
+			createFunctionType([Type.I32, Type.I32], [Type.I32]),
 			createFunctionType([Type.I32]),
-			createFunctionType([], Type.I32),
+			createFunctionType([], [Type.I32]),
 		]),
 		...createFunctionSection([0x00, 0x00, 0x00]),
 		...createExportSection([createFunctionExport('add', 0x00)]),
