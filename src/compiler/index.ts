@@ -8,6 +8,7 @@ import {
 	createCodeSection,
 	createFunctionBody,
 	createLocalDeclaration,
+	createMemorySection,
 	Type,
 	Instruction,
 } from './utils';
@@ -25,6 +26,7 @@ const compile = function () {
 			createFunctionType([], [Type.I32]),
 		]),
 		...createFunctionSection([0x00, 0x00, 0x00]),
+		...createMemorySection(1),
 		...createExportSection([createFunctionExport('add', 0x00)]),
 		...createCodeSection([
 			createFunctionBody(
