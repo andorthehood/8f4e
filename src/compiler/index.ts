@@ -9,6 +9,8 @@ import {
 	createFunctionBody,
 	createLocalDeclaration,
 	createMemorySection,
+	createNameSection,
+	createFunctioName,
 	Type,
 	Instruction,
 } from './utils';
@@ -63,6 +65,7 @@ const compile = function () {
 				]
 			),
 		]),
+		...createNameSection([createFunctioName(0, 'lofaszgeci'), createFunctioName(1, 'macskageci')]),
 	]);
 };
 
