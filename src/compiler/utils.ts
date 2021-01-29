@@ -1,6 +1,7 @@
 const enum Section {
 	CUSTOM = 0x00,
 	TYPE = 0x01,
+	IMPORT = 0x02,
 	FUNCTION = 0x03,
 	MEMORY = 0x05,
 	EXPORT = 0x07,
@@ -25,6 +26,9 @@ export const enum Instruction {
 	END = 0x0b,
 	CALL = 0x10,
 	LOCAL_GET = 0x20,
+	I32_LOAD = 0x28,
+	I32_STORE = 0x36,
+	I32_CONST = 0x41,
 	I32_ADD = 0x6a,
 }
 
@@ -34,6 +38,7 @@ type FunctionExport = number[];
 type FunctionType = number[];
 type FunctionName = number[];
 type LocalName = number[];
+type Import = number[];
 
 export const flatten = function (arr: any[]) {
 	return [].concat.apply([], arr);
@@ -107,7 +112,12 @@ export const createFunctionBody = function (
 	functionBody: number[]
 ): FunctionBody {
 	const localDeclarationCount = localDeclarations.length;
-	return createVector([...unsignedLEB128(localDeclarationCount), ...flatten(localDeclarations), ...functionBody]);
+	return createVector([
+		...unsignedLEB128(localDeclarationCount),
+		...flatten(localDeclarations),
+		...functionBody,
+		Instruction.END,
+	]);
 };
 
 export const createLocalDeclaration = function (type: Type): LocalDeclaration {
@@ -140,6 +150,49 @@ export const createFunctioName = function (functionIndex: number, name: string):
 	return [...unsignedLEB128(functionIndex), ...encodeString(name)];
 };
 
-export const call = function (functionIndex: number) {
+export const call = function (functionIndex?: number): number[] {
 	return [Instruction.CALL, ...unsignedLEB128(functionIndex)];
+};
+
+export const i32const = function (number: number): number[] {
+	return [Instruction.I32_CONST, ...unsignedLEB128(number)];
+};
+
+export const i32store = function (
+	address?: number,
+	value?: number,
+	alingment: number = 2,
+	offset: number = 0
+): number[] {
+	return [
+		...(typeof address === 'undefined' ? [] : i32const(address)),
+		...(typeof value === 'undefined' ? [] : i32const(value)),
+		Instruction.I32_STORE,
+		...unsignedLEB128(alingment),
+		...unsignedLEB128(offset),
+	];
+};
+
+export const i32load = function (address?: number, alingment: number = 2, offset: number = 0): number[] {
+	return [
+		...(typeof address === 'undefined' ? [] : i32const(address)),
+		Instruction.I32_LOAD,
+		...unsignedLEB128(alingment),
+		...unsignedLEB128(offset),
+	];
+};
+
+export const createImportSection = function (imports: Import[]): number[] {
+	const numImports = imports.length;
+	return [Section.IMPORT, ...createVector([...unsignedLEB128(numImports), ...flatten(imports)])];
+};
+
+export const createMemoryImport = function (moduleName: string, fieldName: string, initial: number = 1): Import {
+	return [
+		...encodeString(moduleName),
+		...encodeString(fieldName),
+		0x02,
+		0x00, // flags
+		...unsignedLEB128(initial),
+	];
 };
