@@ -1,9 +1,15 @@
 const enum Section {
+	CUSTOM = 0x00,
 	TYPE = 0x01,
 	FUNCTION = 0x03,
 	MEMORY = 0x05,
 	EXPORT = 0x07,
 	CODE = 0x0a,
+}
+
+const enum NameSection {
+	FUNCTION_NAME = 0x01,
+	LOCAL_NAME = 0x02,
 }
 
 const enum ExportDesc {
@@ -17,6 +23,7 @@ export const enum Type {
 
 export const enum Instruction {
 	END = 0x0b,
+	CALL = 0x10,
 	LOCAL_GET = 0x20,
 	I32_ADD = 0x6a,
 }
@@ -25,6 +32,8 @@ type LocalDeclaration = number[];
 type FunctionBody = number[];
 type FunctionExport = number[];
 type FunctionType = number[];
+type FunctionName = number[];
+type LocalName = number[];
 
 export const flatten = function (arr: any[]) {
 	return [].concat.apply([], arr);
@@ -48,7 +57,7 @@ export const unsignedLEB128 = function (n: number): number[] {
 };
 
 export const encodeString = function (str: string) {
-	return str.split('').map(char => char.charCodeAt(0));
+	return [...unsignedLEB128(str.length), ...str.split('').map(char => char.charCodeAt(0))];
 };
 
 export const createVector = function (data: number[]) {
@@ -85,8 +94,7 @@ export const createExportSection = function (_exports: FunctionExport[]): number
 };
 
 export const createFunctionExport = function (name: string, reference: number): FunctionExport {
-	const stringLength = name.length;
-	return [...unsignedLEB128(stringLength), ...encodeString(name), ExportDesc.FUNC, reference];
+	return [...encodeString(name), ExportDesc.FUNC, reference];
 };
 
 export const createCodeSection = function (functionBodies: FunctionBody[]): number[] {
@@ -114,4 +122,24 @@ export const createMemorySection = function (pageSize: number): number[] {
 		Section.MEMORY,
 		...createVector([...unsignedLEB128(numMemories), ...unsignedLEB128(flags), ...unsignedLEB128(pageSize)]),
 	];
+};
+
+export const createNameSection = function (functionNames: FunctionName[]): number[] {
+	const numFunctions = functionNames.length;
+	return [
+		Section.CUSTOM,
+		...createVector([
+			...encodeString('name'),
+			NameSection.FUNCTION_NAME,
+			...createVector([...unsignedLEB128(numFunctions), ...flatten(functionNames)]),
+		]),
+	];
+};
+
+export const createFunctioName = function (functionIndex: number, name: string): FunctionName {
+	return [...unsignedLEB128(functionIndex), ...encodeString(name)];
+};
+
+export const call = function (functionIndex: number) {
+	return [Instruction.CALL, ...unsignedLEB128(functionIndex)];
 };
