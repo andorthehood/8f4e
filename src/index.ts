@@ -8,8 +8,21 @@ import compiler from './compiler';
 	const src = URL.createObjectURL(blob);
 	console.log(src);
 
-	const { instance } = await WebAssembly.instantiate(compiler());
-	console.log(instance.exports.add(1, 1));
+	const memory = new WebAssembly.Memory({ initial: 1 });
+	const { instance } = await WebAssembly.instantiate(compiler(), {
+		js: {
+			memory,
+		},
+	});
+
+	instance.exports.setRate(12000);
+	console.log(instance.exports.getRate());
+
+	console.log('memorydebug', new Uint8Array(memory.buffer));
+
+	setInterval(() => {
+		console.log(instance.exports.channel1());
+	}, 1000);
 })();
 
 if (document.readyState === 'complete') {
