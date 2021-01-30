@@ -2,7 +2,7 @@ import { Engine } from './engine';
 import generateSprite from './sprites';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 
-const init = async function (state) {
+const init = async function (state, memory: Uint8Array) {
 	const sprite = await generateSprite();
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
@@ -28,7 +28,11 @@ const init = async function (state) {
 		// engine.drawLine(500, 500, 560, 600);
 
 		engine.startGroup(10, state.ui.viewport.height - 50);
-		engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
+		engine.drawText(
+			0,
+			0,
+			'Time to render one frame ' + timeToRender + ' ms' + ' ' + memory[0] + memory[1] + memory[2] + memory[3]
+		);
 		engine.drawText(0, 20, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
 		engine.endGroup();
 
