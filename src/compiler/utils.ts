@@ -13,6 +13,10 @@ const enum NameSection {
 	LOCAL_NAME = 0x02,
 }
 
+const enum ImportDesc {
+	MEMORY = 0x02,
+}
+
 const enum ExportDesc {
 	FUNC = 0x00,
 }
@@ -30,6 +34,9 @@ export const enum Instruction {
 	I32_STORE = 0x36,
 	I32_CONST = 0x41,
 	I32_ADD = 0x6a,
+	I32_SUB = 0x6b,
+	I32_MUL = 0x6c,
+	I32_DIV_U = 0x6e,
 }
 
 type LocalDeclaration = number[];
@@ -191,8 +198,29 @@ export const createMemoryImport = function (moduleName: string, fieldName: strin
 	return [
 		...encodeString(moduleName),
 		...encodeString(fieldName),
-		0x02,
+		ImportDesc.MEMORY,
 		0x00, // flags
 		...unsignedLEB128(initial),
 	];
+};
+
+export const localGet = function (index: number): number[] {
+	return [Instruction.LOCAL_GET, ...unsignedLEB128(index)];
+};
+
+export const createModuloFunction = function (): FunctionBody {
+	return createFunctionBody(
+		[],
+		[
+			...i32const(0),
+			...localGet(0),
+			...localGet(1),
+			Instruction.I32_DIV_U,
+			...localGet(1),
+			Instruction.I32_MUL,
+			...localGet(0),
+			Instruction.I32_SUB,
+			Instruction.I32_SUB,
+		]
+	);
 };
