@@ -2,7 +2,7 @@ import { Engine } from './engine';
 import generateSprite from './sprites';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 
-const init = async function (state, memory: Uint8Array) {
+const init = async function (state, memory: Uint32Array) {
 	const sprite = await generateSprite();
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
