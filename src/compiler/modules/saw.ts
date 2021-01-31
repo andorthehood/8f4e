@@ -33,7 +33,11 @@ const saw = function (
 			...i32load(Memory.COUNTER + offset),
 			...i32const(10), // Max value
 			Instruction.I32_EQ,
-			...ifelse(Type.I32, [...i32const(0)], [...i32const(1), ...i32load(Memory.COUNTER + offset), Instruction.I32_ADD]),
+			...ifelse(
+				Type.I32,
+				[Instruction.I32_CONST, 0x76],
+				[...i32const(1), ...i32load(Memory.COUNTER + offset), Instruction.I32_ADD]
+			),
 			...i32store(),
 		]
 	);

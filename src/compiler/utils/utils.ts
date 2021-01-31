@@ -15,10 +15,10 @@ export const ieee754 = (n: number): Uint8Array => {
 export const unsignedLEB128 = function (n: number): number[] {
 	const buffer = [];
 	do {
-		let byte = n & 0x7f;
+		let byte = n & 0b1111111;
 		n >>>= 7;
 		if (n !== 0) {
-			byte |= 0x80;
+			byte |= 0b10000000;
 		}
 		buffer.push(byte);
 	} while (n !== 0);
@@ -29,12 +29,12 @@ export const signedLEB128 = (n: number): number[] => {
 	const buffer = [];
 	let more = true;
 	while (more) {
-		let byte = n & 0x7f;
+		let byte = n & 0b1111111;
 		n >>>= 7;
-		if ((n === 0 && (byte & 0x40) === 0) || (n === -1 && (byte & 0x40) !== 0)) {
+		if ((n === 0 && (byte & 0b1000000) === 0) || (n === -1 && (byte & 0b1000000) !== 0)) {
 			more = false;
 		} else {
-			byte |= 0x80;
+			byte |= 0b10000000;
 		}
 		buffer.push(byte);
 	}
