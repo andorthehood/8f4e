@@ -2,7 +2,7 @@ import events from './ui/events';
 import state from './ui/state';
 import view from './ui/view';
 import compiler from './compiler';
-import tests from './compiler/tests';
+import tests from '../tests';
 
 async function init() {
 	const blob = new Blob([compiler().buffer], { type: 'application/wasm' });
