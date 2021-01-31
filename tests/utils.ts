@@ -7,9 +7,9 @@ import {
 	createCodeSection,
 	createImportSection,
 	createMemoryImport,
-} from '../utils/sections';
-import { Type } from '../enums';
-import { modulo } from '../standardLibrary';
+} from '../src/compiler/utils/sections';
+import { Type } from '../src/compiler/enums';
+import { modulo } from '../src/compiler/standardLibrary';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -26,7 +26,7 @@ const createSingleFunctionWASMProgramWithStandardLibrary = function (functionBod
 	]);
 };
 
-export const createTestModule = async function (functionBody): Promise<{ memory: Uint32Array; test: any }> {
+export const createTestModule = async function (functionBody): Promise<{ memory: Int32Array; test: any }> {
 	const program = createSingleFunctionWASMProgramWithStandardLibrary(functionBody);
 
 	const memory = new WebAssembly.Memory({ initial: 1 });
@@ -40,7 +40,7 @@ export const createTestModule = async function (functionBody): Promise<{ memory:
 		},
 	});
 
-	return { memory: new Uint32Array(memory.buffer), test };
+	return { memory: new Int32Array(memory.buffer), test };
 };
 
 export const setInitialMemory = function (memory: any, initialMemory: any) {
@@ -48,3 +48,9 @@ export const setInitialMemory = function (memory: any, initialMemory: any) {
 		memory[i] = initialMemory[i];
 	}
 };
+
+export const assertEqual = function (a, b) {
+	if (a != b) {
+		throw new Error('Assertion error: ' + a +  ' != ' + b);
+	}
+}
