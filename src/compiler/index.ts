@@ -1,5 +1,4 @@
 import {
-	unsignedLEB128,
 	createFunctionSection,
 	createTypeSection,
 	createFunctionType,
@@ -10,19 +9,23 @@ import {
 	createLocalDeclaration,
 	createMemorySection,
 	createNameSection,
-	createFunctioName,
-	Type,
-	i32load,
-	i32store,
-	i32const,
+	createFunctionName,
 	createImportSection,
 	createMemoryImport,
-	localGet,
-	createModuloFunction,
-} from './utils';
+} from './utils/sections';
+
+import { Type } from './enums';
+
+import { i32load, i32store, i32const, localGet, call } from './utils/instructions';
+
+import { modulo } from './standardLibrary';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
+
+const clockDivider = function () {
+	return [];
+};
 
 const compile = function () {
 	return Uint8Array.from([
@@ -50,13 +53,13 @@ const compile = function () {
 				[],
 				[...i32load(0)]
 			),
-			createModuloFunction(),
+			modulo(),
 		]),
 		...createNameSection([
-			createFunctioName(0x00, 'channel1'),
-			createFunctioName(0x01, 'setRate'),
-			createFunctioName(0x02, 'getRate'),
-			createFunctioName(0x03, 'modulo'),
+			createFunctionName(0x00, 'channel1'),
+			createFunctionName(0x01, 'setRate'),
+			createFunctionName(0x02, 'getRate'),
+			createFunctionName(0x03, 'modulo'),
 		]),
 	]);
 };
