@@ -25,13 +25,18 @@ export const unsignedLEB128 = function (n: number): number[] {
 	return buffer;
 };
 
-export const signedLEB128 = (n: number): number[] => {
+export const signedLEB128 = (n: number) => {
 	const buffer = [];
 	let more = true;
+	const isNegative = n < 0;
+	const bitCount = Math.ceil(Math.log2(Math.abs(n))) + 1;
 	while (more) {
 		let byte = n & 0b1111111;
-		n >>>= 7;
-		if ((n === 0 && (byte & 0b1000000) === 0) || (n === -1 && (byte & 0b1000000) !== 0)) {
+		n >>= 7;
+		if (isNegative) {
+			n = n | -(0b1 << (bitCount - 8));
+		}
+		if ((n === 0 && (byte & 0b1000000) === 0) || (n === -1 && (byte & 0b1000000) == 0b1000000)) {
 			more = false;
 		} else {
 			byte |= 0b10000000;
