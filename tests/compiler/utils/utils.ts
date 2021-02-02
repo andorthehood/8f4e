@@ -1,7 +1,7 @@
-import { unsignedLEB128 } from '../../../src/compiler/utils/utils';
+import { signedLEB128 } from '../../../src/compiler/utils/utils';
 
 const runTest = function() {
-    unsignedLEB128(-10);
+    signedLEB128(-10);
 }
 
 export default runTest;
