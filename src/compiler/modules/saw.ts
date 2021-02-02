@@ -35,7 +35,7 @@ const saw = function (
 			Instruction.I32_EQ,
 			...ifelse(
 				Type.I32,
-				[Instruction.I32_CONST, 0x76],
+				[...i32const(-10)],
 				[...i32const(1), ...i32load(Memory.COUNTER + offset), Instruction.I32_ADD]
 			),
 			...i32store(),
