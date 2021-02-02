@@ -1,28 +1,24 @@
 import events from './ui/events';
 import state from './ui/state';
 import view from './ui/view';
-import compiler from './compiler';
+import compiler, { initializeMemory } from './compiler';
 import tests from '../tests';
 
 async function init() {
-	const blob = new Blob([compiler().buffer], { type: 'application/wasm' });
-	const src = URL.createObjectURL(blob);
-	console.log(src);
-
 	await tests();
 
-	const memory = new WebAssembly.Memory({ initial: 1 });
+	const { memoryRef, memoryBuffer } = initializeMemory();
+
 	const { instance } = await WebAssembly.instantiate(compiler(), {
 		js: {
-			memory,
+			memory: memoryRef,
 		},
 	});
 
 	setInterval(() => {
-		instance.exports.setRate(instance.exports.getRate() + 1);
+		instance.exports.cycle();
+		console.log(memoryBuffer.slice(0, 8));
 	}, 100);
-
-	const memoryBuffer = new Uint32Array(memory.buffer);
 
 	view(state(events()), memoryBuffer);
 }
