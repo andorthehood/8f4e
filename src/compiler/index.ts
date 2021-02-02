@@ -6,60 +6,44 @@ import {
 	createFunctionExport,
 	createCodeSection,
 	createFunctionBody,
-	createLocalDeclaration,
-	createMemorySection,
-	createNameSection,
-	createFunctionName,
 	createImportSection,
 	createMemoryImport,
 } from './utils/sections';
 
-import { Type } from './enums';
-
-import { i32load, i32store, i32const, localGet, call } from './utils/instructions';
-
-import { modulo } from './standardLibrary';
+import { call } from './utils/instructions';
+import saw from './modules/saw';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
-const clockDivider = function () {
-	return [];
+export const setInitialMemory = function (memory: any, initialMemory: any) {
+	for (let i = 0; i < initialMemory.length; i++) {
+		memory[i] = initialMemory[i];
+	}
+};
+
+export const initializeMemory = function () {
+	const memoryRef = new WebAssembly.Memory({ initial: 1 });
+	const memoryBuffer = new Int32Array(memoryRef.buffer);
+
+	setInitialMemory(memoryBuffer, [...saw(0).initialMemory, ...saw(3).initialMemory, ...saw(6).initialMemory]);
+
+	return { memoryRef, memoryBuffer };
 };
 
 const compile = function () {
 	return Uint8Array.from([
 		...HEADER,
 		...VERSION,
-		...createTypeSection([
-			createFunctionType([Type.I32, Type.I32], [Type.I32]),
-			createFunctionType([Type.I32]),
-			createFunctionType([], [Type.I32]),
-		]),
+		...createTypeSection([createFunctionType([], [])]),
 		...createImportSection([createMemoryImport('js', 'memory')]),
-		...createFunctionSection([0x00, 0x01, 0x02, 0x00]),
-		//...createMemorySection(10),
-		...createExportSection([
-			createFunctionExport('channel1', 0x02),
-			createFunctionExport('setRate', 0x01),
-			createFunctionExport('getRate', 0x02),
-			createFunctionExport('modulo', 0x03),
-		]),
+		...createFunctionSection([0x00, 0x00, 0x00, 0x00]),
+		...createExportSection([createFunctionExport('cycle', 0x00)]),
 		...createCodeSection([
-			createFunctionBody([], [...i32const(1)]),
-			createFunctionBody([], [...i32const(0), ...localGet(0), ...i32store(), ...i32store(4, 10), ...i32store(8, 22)]),
-			createFunctionBody(
-				//[createLocalDeclaration(Type.I32)],
-				[],
-				[...i32load(0)]
-			),
-			modulo(),
-		]),
-		...createNameSection([
-			createFunctionName(0x00, 'channel1'),
-			createFunctionName(0x01, 'setRate'),
-			createFunctionName(0x02, 'getRate'),
-			createFunctionName(0x03, 'modulo'),
+			createFunctionBody([], [...call(1), ...call(2), ...call(3)]),
+			saw(0).functionBody,
+			saw(3).functionBody,
+			saw(6).functionBody,
 		]),
 	]);
 };
