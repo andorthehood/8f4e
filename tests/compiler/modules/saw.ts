@@ -2,7 +2,7 @@ import saw from '../../../src/compiler/modules/saw';
 import { createTestModule, setInitialMemory, assertEqual } from '../../utils';
 
 const runTest = async function () {
-	const { functionBody, initialMemory, memoryFootprint } = saw(0, 0);
+	const { functionBody, initialMemory } = saw(0);
 	const { memory, test } = await createTestModule(functionBody);
 
 	setInitialMemory(memory, initialMemory);
