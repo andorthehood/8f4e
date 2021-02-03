@@ -7,6 +7,9 @@ const defaultState = {
 		x: 0,
 		y: 0,
 	},
+	midi: {
+		ports: [],
+	},
 	error: {
 		display: false,
 		message: '',

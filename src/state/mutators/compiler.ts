@@ -29,11 +29,14 @@ const compiler = function (state, events) {
 
 		interval = setInterval(() => {
 			const start = performance.now();
+			// @ts-ignore
 			cycle();
 			const end = performance.now() - start;
 			//console.log(end);
 			//console.log(memoryBuffer.slice(0, 16));
-		}, 100);
+			events.dispatch('sendMidiMessage', { message: [0x90, memoryBuffer[0] + 50, 100] });
+			events.dispatch('sendMidiMessage', { message: [0x80, memoryBuffer[0] + 50, 100], delay: Date.now() + 100 });
+		}, 1000);
 
 		const end = performance.now() - start;
 		console.log('Compilation time (ms):', end);
