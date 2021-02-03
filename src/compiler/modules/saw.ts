@@ -1,6 +1,7 @@
-import { call, i32const, i32load, i32store, ifelse } from '../utils/instructions';
+import { i32const, i32load, i32store, ifelse } from '../utils/instructions';
 import { createFunctionBody } from '../utils/sections';
 import { Instruction, Type } from '../enums';
+import { ModuleGenerator } from './types';
 
 const enum Memory {
 	COUNTER = 0x00,
@@ -8,22 +9,11 @@ const enum Memory {
 	LIMIT = 0x08,
 }
 
-const INITIAL_MEMORY = [0, 1, 10];
-
 /**
  *
  * @param memoryStartAddress
  */
-const saw = function (
-	memoryStartAddress: number
-): {
-	functionBody: number[];
-	memoryFootprint: number;
-	memoryStartAddress: number;
-	initialMemory: number[];
-	outputs: { address: number; label: string }[];
-	inputs: { address: number; label: string }[];
-} {
+const saw: ModuleGenerator = function (memoryStartAddress) {
 	const offset = memoryStartAddress * 4;
 
 	const functionBody = createFunctionBody(
@@ -46,9 +36,8 @@ const saw = function (
 
 	return {
 		functionBody,
-		memoryFootprint: INITIAL_MEMORY.length,
 		memoryStartAddress,
-		initialMemory: INITIAL_MEMORY,
+		initialMemory: [0, 1, 10],
 		outputs: [{ address: Memory.COUNTER + offset, label: 'output' }],
 		inputs: [{ address: Memory.RATE + offset, label: 'rate' }],
 	};
