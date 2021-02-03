@@ -34,8 +34,6 @@ export const initializeMemory = function (modules: object[]) {
 		})
 		.flat();
 
-	console.log(initialMemory);
-
 	setInitialMemory(memoryBuffer, initialMemory);
 
 	return { memoryRef, memoryBuffer };
