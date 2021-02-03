@@ -68,3 +68,7 @@ export const localGet = function (index: number): number[] {
 export const ifelse = function (resultType: Type, trueBranch: number[], falseBranch: number[]): number[] {
 	return [Instruction.IF, resultType, ...trueBranch, Instruction.ELSE, ...falseBranch, Instruction.END];
 };
+
+export const i32loadAddress = function (address: number, alingment: number = 2, offset: number = 0): number[] {
+	return [...i32load(address), ...i32load()];
+};
