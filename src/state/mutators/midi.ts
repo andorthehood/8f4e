@@ -34,7 +34,7 @@ export const midi = async function (state, events) {
 
 	// @ts-ignore requestMIDIAccess
 	navigator.requestMIDIAccess().then(onMidiAccess);
-	midiAccess.addEventListener('statechange', onStateChange);
+	//midiAccess.addEventListener('statechange', onStateChange);
 	events.on('selectMidiOutput', onSelectMidiOutput);
 	events.on('sendMidiMessage', onSendMidiMessage);
 };
