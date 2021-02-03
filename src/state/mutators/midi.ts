@@ -22,7 +22,6 @@ export const midi = async function (state, events) {
 	};
 
 	const onSendMidiMessage = function ({ message, delay }) {
-		console.log(message);
 		if (selectedPort) {
 			selectedPort.send(message, delay);
 		}
