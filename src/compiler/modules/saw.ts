@@ -8,7 +8,7 @@ const enum Memory {
 	LIMIT = 0x08,
 }
 
-const INITIAL_MEMORY = new Uint32Array([0, 1, 10]);
+const INITIAL_MEMORY = [0, 1, 10];
 
 /**
  *

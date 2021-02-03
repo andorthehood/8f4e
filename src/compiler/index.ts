@@ -22,29 +22,43 @@ export const setInitialMemory = function (memory: any, initialMemory: any) {
 	}
 };
 
-export const initializeMemory = function () {
+export const initializeMemory = function (modules: object[]) {
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
+	let memoryCounter = 0;
+	const initialMemory = modules
+		.map(() => {
+			const { initialMemory, memoryFootprint } = saw(memoryCounter);
+			memoryCounter += memoryFootprint;
+			return initialMemory;
+		})
+		.flat();
 
-	setInitialMemory(memoryBuffer, [...saw(0).initialMemory, ...saw(3).initialMemory, ...saw(6).initialMemory]);
+	console.log(initialMemory);
+
+	setInitialMemory(memoryBuffer, initialMemory);
 
 	return { memoryRef, memoryBuffer };
 };
 
-const compile = function () {
+const compile = function (modules: object[], connections: object[]) {
+	let memoryAddress = 0;
+	const functionBodies = modules.map(() => {
+		const { functionBody, memoryFootprint } = saw(memoryAddress);
+		memoryAddress += memoryFootprint;
+		return functionBody;
+	});
+	const functionSignatures = modules.map(() => 0x00);
+	const functionCalls = modules.map((module, index) => call(index + 1)).flat();
+
 	return Uint8Array.from([
 		...HEADER,
 		...VERSION,
 		...createTypeSection([createFunctionType([], [])]),
 		...createImportSection([createMemoryImport('js', 'memory')]),
-		...createFunctionSection([0x00, 0x00, 0x00, 0x00]),
+		...createFunctionSection([0x00, ...functionSignatures]),
 		...createExportSection([createFunctionExport('cycle', 0x00)]),
-		...createCodeSection([
-			createFunctionBody([], [...call(1), ...call(2), ...call(3)]),
-			saw(0).functionBody,
-			saw(3).functionBody,
-			saw(6).functionBody,
-		]),
+		...createCodeSection([createFunctionBody([], functionCalls), ...functionBodies]),
 	]);
 };
 
