@@ -8,11 +8,13 @@ import error from './mutators/error';
 import history from './mutators/history';
 import tests from './mutators/tests';
 import compiler from './mutators/compiler';
+import midi from './mutators/midi';
 
 const init = function (events) {
 	const state = { ui: {} };
 
 	compiler(state, events);
+	midi(state, events);
 	loader(state, events);
 	history(state, events);
 	connectionMaker(state, events);
