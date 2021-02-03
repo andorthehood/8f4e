@@ -26,12 +26,14 @@ export const initializeMemory = function (modules: object[]) {
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 	let memoryCounter = 0;
+
 	const initialMemory = modules
 		.map(() => {
 			const { initialMemory, memoryFootprint } = saw(memoryCounter);
 			memoryCounter += memoryFootprint;
 			return initialMemory;
 		})
+		// @ts-ignore flat
 		.flat();
 
 	setInitialMemory(memoryBuffer, initialMemory);
@@ -47,6 +49,7 @@ const compile = function (modules: object[], connections: object[]) {
 		return functionBody;
 	});
 	const functionSignatures = modules.map(() => 0x00);
+	// @ts-ignore flat
 	const functionCalls = modules.map((module, index) => call(index + 1)).flat();
 
 	return Uint8Array.from([
