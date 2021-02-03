@@ -20,7 +20,7 @@ const saw = function (
 	functionBody: number[];
 	memoryFootprint: number;
 	memoryStartAddress: number;
-	initialMemory: Uint32Array;
+	initialMemory: number[];
 	outputs: { address: number; label: string }[];
 	inputs: { address: number; label: string }[];
 } {
