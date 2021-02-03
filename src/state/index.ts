@@ -7,10 +7,12 @@ import connectionMaker from './mutators/connections';
 import error from './mutators/error';
 import history from './mutators/history';
 import tests from './mutators/tests';
+import compiler from './mutators/compiler';
 
 const init = function (events) {
 	const state = { ui: {} };
 
+	compiler(state, events);
 	loader(state, events);
 	history(state, events);
 	connectionMaker(state, events);
