@@ -34,7 +34,7 @@ const compiler = function (state, events) {
 			cycle();
 			const end = performance.now() - start;
 			//console.log(end);
-			//console.log(memoryBuffer.slice(0, 16));
+			console.log(memoryBuffer.slice(0, 16));
 			events.dispatch('sendMidiMessage', { message: [Event.NOTE_ON, memoryBuffer[0] + 50, 100] });
 			events.dispatch('sendMidiMessage', {
 				message: [Event.NOTE_OFF, memoryBuffer[0] + 50, 100],
