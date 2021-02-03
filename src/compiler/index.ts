@@ -29,8 +29,8 @@ export const initializeMemory = function (modules: object[]) {
 
 	const initialMemory = modules
 		.map(() => {
-			const { initialMemory, memoryFootprint } = saw(memoryCounter);
-			memoryCounter += memoryFootprint;
+			const { initialMemory } = saw(memoryCounter);
+			memoryCounter += initialMemory.length;
 			return initialMemory;
 		})
 		// @ts-ignore flat
@@ -44,8 +44,8 @@ export const initializeMemory = function (modules: object[]) {
 const compile = function (modules: object[], connections: object[]) {
 	let memoryAddress = 0;
 	const functionBodies = modules.map(() => {
-		const { functionBody, memoryFootprint } = saw(memoryAddress);
-		memoryAddress += memoryFootprint;
+		const { functionBody, initialMemory } = saw(memoryAddress);
+		memoryAddress += initialMemory.length;
 		return functionBody;
 	});
 	const functionSignatures = modules.map(() => 0x00);
