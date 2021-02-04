@@ -9,6 +9,7 @@ import history from './mutators/history';
 import tests from './mutators/tests';
 import compiler from './mutators/compiler';
 import midi from './mutators/midi';
+import innit from './mutators/init';
 
 const init = function (events) {
 	const state = { ui: {} };
@@ -24,6 +25,7 @@ const init = function (events) {
 	moduleCreator(state, events);
 	error(state, events);
 	tests(state, events);
+	innit(state, events);
 
 	return state;
 };
