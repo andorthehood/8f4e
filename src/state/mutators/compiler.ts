@@ -3,18 +3,19 @@ import { Event } from '../../midi/enums';
 
 async function createModule(state) {
 	const { memoryRef, memoryBuffer } = initializeMemory(state.ui.modules);
+	const { codeBuffer, outputAddressLookup } = compile(state.ui.modules, state.ui.connections);
 
 	const {
 		instance: {
 			exports: { cycle },
 		},
-	} = await WebAssembly.instantiate(compile(state.ui.modules, state.ui.connections), {
+	} = await WebAssembly.instantiate(codeBuffer, {
 		js: {
 			memory: memoryRef,
 		},
 	});
 
-	return { memoryBuffer, cycle };
+	return { memoryBuffer, cycle, outputAddressLookup };
 }
 
 const compiler = function (state, events) {
@@ -24,7 +25,7 @@ const compiler = function (state, events) {
 		clearInterval(interval);
 
 		const start = performance.now();
-		const { memoryBuffer, cycle } = await createModule(state);
+		const { memoryBuffer, cycle, outputAddressLookup } = await createModule(state);
 
 		state.memory = memoryBuffer;
 
@@ -34,12 +35,22 @@ const compiler = function (state, events) {
 			cycle();
 			const end = performance.now() - start;
 			//console.log(end);
-			console.log(memoryBuffer.slice(0, 16));
-			events.dispatch('sendMidiMessage', { message: [Event.NOTE_ON, memoryBuffer[0] + 50, 100] });
-			events.dispatch('sendMidiMessage', {
-				message: [Event.NOTE_OFF, memoryBuffer[0] + 50, 100],
-				delay: Date.now() + 100,
-			});
+			//console.log(memoryBuffer.slice(0, 16));
+
+			const connection = state.ui.connections.find(
+				({ toModule, toConnector, fromModule, fromConnector }) =>
+					(toModule === 'cvToMidi1' || fromModule === 'cvToMidi1') &&
+					(toConnector === 'cvin' || fromConnector === 'cvin')
+			);
+
+			if (connection && outputAddressLookup[connection.fromModule]) {
+				const address = outputAddressLookup[connection.fromModule][0].memoryAddress;
+				events.dispatch('sendMidiMessage', { message: [Event.NOTE_ON, memoryBuffer[address] + 50, 100] });
+				events.dispatch('sendMidiMessage', {
+					message: [Event.NOTE_OFF, memoryBuffer[address] + 50, 100],
+					delay: Date.now() + 100,
+				});
+			}
 		}, 1000);
 
 		const end = performance.now() - start;
@@ -48,10 +59,12 @@ const compiler = function (state, events) {
 
 	events.on('addModule', recompile);
 	events.on('deleteModule', recompile);
+	events.on('init', recompile);
 
 	return () => {
 		events.off('addModule', recompile);
 		events.off('deleteModule', recompile);
+		events.off('init', recompile);
 	};
 };
 
