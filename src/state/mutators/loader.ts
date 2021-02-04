@@ -1,5 +1,14 @@
 const defaultState = {
-	modules: [],
+	modules: [
+		{
+			beingDragged: false,
+			id: 'cvToMidi1',
+			isSelected: false,
+			type: 'cvToMidi',
+			x: 0,
+			y: 0,
+		},
+	],
 	connections: [],
 	viewport: {
 		width: 0,
@@ -41,6 +50,27 @@ const defaultState = {
 				{ id: 'out1', x: 285, y: 20 },
 			],
 			name: 'Quantizer',
+		},
+		cvToMidi: {
+			width: 100,
+			height: 100,
+			connectors: [
+				{ id: 'cvin', x: 5, y: 20, isInput: true },
+				{ id: 'clockin', x: 5, y: 35, isInput: true },
+			],
+			name: 'CV to MIDI',
+		},
+		saw: {
+			width: 100,
+			height: 100,
+			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+			name: 'Saw',
+		},
+		random: {
+			width: 100,
+			height: 100,
+			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+			name: 'Random',
 		},
 	},
 };

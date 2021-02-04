@@ -22,14 +22,14 @@ export const setInitialMemory = function (memory: any, initialMemory: any) {
 	}
 };
 
-export const initializeMemory = function (modules: object[]) {
+export const initializeMemory = function (modules) {
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 	let memoryCounter = 0;
 
 	const initialMemory = modules
-		.map(() => {
-			const { initialMemory } = saw(memoryCounter);
+		.map(({ id }) => {
+			const { initialMemory } = saw(id, memoryCounter);
 			memoryCounter += initialMemory.length;
 			return initialMemory;
 		})
@@ -41,26 +41,43 @@ export const initializeMemory = function (modules: object[]) {
 	return { memoryRef, memoryBuffer };
 };
 
-const compile = function (modules: object[], connections: object[]) {
+const compileModules = function (modules) {
 	let memoryAddress = 0;
-	const functionBodies = modules.map(() => {
-		const { functionBody, initialMemory } = saw(memoryAddress);
-		memoryAddress += initialMemory.length;
-		return functionBody;
+	return modules.map(({ id }) => {
+		const module = saw(id, memoryAddress);
+		memoryAddress += module.initialMemory.length;
+		return module;
 	});
+};
+
+const generateOutputAddressLookup = function (compiledModules) {
+	const lookup = {};
+	compiledModules.forEach(({ outputs, moduleId }) => {
+		lookup[moduleId] = outputs.map(output => ({ outputId: output.id, memoryAddress: output.address }));
+	});
+	return lookup;
+};
+
+const compile = function (modules: object[], connections: object[]) {
+	const compiledModules = compileModules(modules);
+	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = modules.map(() => 0x00);
 	// @ts-ignore flat
 	const functionCalls = modules.map((module, index) => call(index + 1)).flat();
+	const outputAddressLookup = generateOutputAddressLookup(compiledModules);
 
-	return Uint8Array.from([
-		...HEADER,
-		...VERSION,
-		...createTypeSection([createFunctionType([], [])]),
-		...createImportSection([createMemoryImport('js', 'memory')]),
-		...createFunctionSection([0x00, ...functionSignatures]),
-		...createExportSection([createFunctionExport('cycle', 0x00)]),
-		...createCodeSection([createFunctionBody([], functionCalls), ...functionBodies]),
-	]);
+	return {
+		codeBuffer: Uint8Array.from([
+			...HEADER,
+			...VERSION,
+			...createTypeSection([createFunctionType([], [])]),
+			...createImportSection([createMemoryImport('js', 'memory')]),
+			...createFunctionSection([0x00, ...functionSignatures]),
+			...createExportSection([createFunctionExport('cycle', 0x00)]),
+			...createCodeSection([createFunctionBody([], functionCalls), ...functionBodies]),
+		]),
+		outputAddressLookup,
+	};
 };
 
 export default compile;
