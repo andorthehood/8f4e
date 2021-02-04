@@ -57,7 +57,7 @@ const contextMenu = function (state, events) {
 			];
 		} else {
 			state.ui.contextMenu.items = [
-				{ title: 'Add module', action: 'addModule', payload: { type: 'splitter' } },
+				{ title: 'Add module', action: 'addModule', payload: { type: 'saw' } },
 				{ title: 'Undo', action: 'undo' },
 				{ title: 'Save', action: 'save' },
 				{ title: 'Run test', action: 'runTest' },

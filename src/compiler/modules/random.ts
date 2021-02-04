@@ -13,7 +13,7 @@ const enum Memory {
  *
  * @param memoryStartAddress
  */
-const saw: ModuleGenerator = function (memoryStartAddress) {
+const saw: ModuleGenerator = function (moduleId, memoryStartAddress) {
 	const offset = memoryStartAddress * 4;
 
 	const functionBody = createFunctionBody(
@@ -32,11 +32,11 @@ const saw: ModuleGenerator = function (memoryStartAddress) {
 	);
 
 	return {
+		moduleId,
 		functionBody,
-		memoryFootprint: 3,
 		memoryStartAddress,
 		initialMemory: [25214903917, 11, 9],
-		outputs: [{ address: Memory.PREVIOUS + offset, label: 'output' }],
+		outputs: [{ address: Memory.PREVIOUS + offset, id: 'output' }],
 		inputs: [],
 	};
 };
