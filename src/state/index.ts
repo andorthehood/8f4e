@@ -14,7 +14,6 @@ import innit from './mutators/init';
 const init = function (events) {
 	const state = { ui: {} };
 
-	compiler(state, events);
 	midi(state, events);
 	loader(state, events);
 	history(state, events);
@@ -25,6 +24,7 @@ const init = function (events) {
 	moduleCreator(state, events);
 	error(state, events);
 	tests(state, events);
+	compiler(state, events);
 	innit(state, events);
 
 	return state;

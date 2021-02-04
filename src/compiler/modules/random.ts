@@ -36,7 +36,7 @@ const saw: ModuleGenerator = function (moduleId, memoryStartAddress) {
 		functionBody,
 		memoryStartAddress,
 		initialMemory: [25214903917, 11, 9],
-		outputs: [{ address: Memory.PREVIOUS + offset, id: 'output' }],
+		outputs: [{ address: Memory.PREVIOUS + offset, id: 'out' }],
 		inputs: [],
 	};
 };
