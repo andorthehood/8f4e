@@ -29,6 +29,8 @@ const compiler = function (state, events) {
 
 		state.memory = memoryBuffer;
 
+		console.log(outputAddressLookup);
+
 		interval = setInterval(() => {
 			const start = performance.now();
 			// @ts-ignore
