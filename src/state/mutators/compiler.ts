@@ -43,9 +43,10 @@ const compiler = function (state, events) {
 					(toConnector === 'cvin' || fromConnector === 'cvin')
 			);
 
-			if (connection && outputAddressLookup[connection.fromModule]) {
-				const address = outputAddressLookup[connection.fromModule][0].memoryAddress;
-				events.dispatch('sendMidiMessage', { message: [Event.NOTE_ON, memoryBuffer[address] + 50, 100] });
+			if (connection) {
+				const fromModule = connection.fromModule === 'cvToMidi1' ? connection.toModule : connection.fromModule;
+				const address = outputAddressLookup[fromModule][0].memoryAddress;
+				events.dispatch('sendMidiMessage', { message: [Event.NOTE_ON, memoryBuffer[address / 4] + 50, 100] });
 				events.dispatch('sendMidiMessage', {
 					message: [Event.NOTE_OFF, memoryBuffer[address] + 50, 100],
 					delay: Date.now() + 100,
