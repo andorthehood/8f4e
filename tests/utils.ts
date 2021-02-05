@@ -7,8 +7,8 @@ import {
 	createCodeSection,
 	createImportSection,
 	createMemoryImport,
-} from '../src/compiler/utils/sections';
-import { Type } from '../src/compiler/enums';
+} from '../src/compiler/wasm/sections';
+import { Type } from '../src/compiler/wasm/enums';
 import { modulo } from '../src/compiler/standardLibrary';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
