@@ -8,9 +8,9 @@ import {
 	createFunctionBody,
 	createImportSection,
 	createMemoryImport,
-} from './utils/sections';
+} from './wasm/sections';
 
-import { call } from './utils/instructions';
+import { call } from './wasm/instructions';
 import saw from './modules/saw';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
