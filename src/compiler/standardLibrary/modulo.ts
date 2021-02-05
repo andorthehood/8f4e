@@ -1,7 +1,7 @@
-import { createFunctionBody } from '../utils/sections';
-import { i32const, localGet } from '../utils/instructions';
-import { Instruction } from '../enums';
-import { FunctionBody } from '../types';
+import { createFunctionBody } from '../wasm/sections';
+import { i32const, localGet } from '../wasm/instructions';
+import { Instruction } from '../wasm/enums';
+import { FunctionBody } from '../wasm/types';
 
 export const createModuloFunction = function (): FunctionBody {
 	return createFunctionBody(
