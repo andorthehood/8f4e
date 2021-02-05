@@ -1,9 +1,8 @@
-import compile, { initializeMemory } from '../../compiler';
+import compile from '../../compiler';
 import { Event } from '../../midi/enums';
 
 async function createModule(state) {
-	const { memoryRef, memoryBuffer } = initializeMemory(state.ui.modules);
-	const { codeBuffer, outputAddressLookup } = compile(state.ui.modules, state.ui.connections);
+	const { codeBuffer, outputAddressLookup, memoryRef, memoryBuffer } = compile(state.ui.modules, state.ui.connections);
 
 	const {
 		instance: {
