@@ -1,6 +1,6 @@
 import { createVector, unsignedLEB128, flatten, encodeString } from './utils';
-import { FunctionBody, FunctionType, FunctionExport, FunctionName, LocalDeclaration, Import } from '../types';
-import { Section, Type, Instruction, ImportDesc, NameSection, ExportDesc } from '../enums';
+import { FunctionBody, FunctionType, FunctionExport, FunctionName, LocalDeclaration, Import } from './types';
+import { Section, Type, Instruction, ImportDesc, NameSection, ExportDesc } from './enums';
 
 export const createFunctionSection = function (functionTypeIndexes: number[]): number[] {
 	const numberOfFunctions = functionTypeIndexes.length;

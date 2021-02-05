@@ -1,5 +1,5 @@
 import { unsignedLEB128, signedLEB128, ieee754 } from './utils';
-import { Instruction, Type } from '../enums';
+import { Instruction, Type } from './enums';
 
 export const call = function (functionIndex: number): number[] {
 	return [Instruction.CALL, ...unsignedLEB128(functionIndex)];
