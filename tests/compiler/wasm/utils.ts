@@ -1,4 +1,4 @@
-import { signedLEB128 } from '../../../src/compiler/utils/utils';
+import { signedLEB128 } from '../../../src/compiler/wasm/utils';
 
 const runTest = function() {
     signedLEB128(-10);
