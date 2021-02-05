@@ -12,42 +12,21 @@ import {
 
 import { call } from './wasm/instructions';
 import saw from './modules/saw';
+import { initializeMemory } from './initializeMemory';
+import * as moduleCompilers from './modules';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
-export const setInitialMemory = function (memory: any, initialMemory: any) {
-	for (let i = 0; i < initialMemory.length; i++) {
-		memory[i] = initialMemory[i];
-	}
-};
-
-export const initializeMemory = function (modules) {
-	const memoryRef = new WebAssembly.Memory({ initial: 1 });
-	const memoryBuffer = new Int32Array(memoryRef.buffer);
-	let memoryCounter = 0;
-
-	const initialMemory = modules
-		.map(({ id }) => {
-			const { initialMemory } = saw(id, memoryCounter);
-			memoryCounter += initialMemory.length;
-			return initialMemory;
-		})
-		// @ts-ignore flat
-		.flat();
-
-	setInitialMemory(memoryBuffer, initialMemory);
-
-	return { memoryRef, memoryBuffer };
-};
-
 const compileModules = function (modules) {
 	let memoryAddress = 0;
-	return modules.map(({ id }) => {
-		const module = saw(id, memoryAddress);
-		memoryAddress += module.initialMemory.length;
-		return module;
-	});
+	return modules
+		.filter(({ type }) => moduleCompilers[type])
+		.map(({ id, type }) => {
+			const module = moduleCompilers[type](id, memoryAddress);
+			memoryAddress += module.initialMemory.length;
+			return module;
+		});
 };
 
 const generateOutputAddressLookup = function (compiledModules) {
@@ -61,10 +40,11 @@ const generateOutputAddressLookup = function (compiledModules) {
 const compile = function (modules: object[], connections: object[]) {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
-	const functionSignatures = modules.map(() => 0x00);
+	const functionSignatures = compiledModules.map(() => 0x00);
 	// @ts-ignore flat
-	const functionCalls = modules.map((module, index) => call(index + 1)).flat();
+	const functionCalls = compiledModules.map((module, index) => call(index + 1)).flat();
 	const outputAddressLookup = generateOutputAddressLookup(compiledModules);
+	const { memoryRef, memoryBuffer } = initializeMemory(compiledModules);
 
 	return {
 		codeBuffer: Uint8Array.from([
@@ -77,6 +57,8 @@ const compile = function (modules: object[], connections: object[]) {
 			...createCodeSection([createFunctionBody([], functionCalls), ...functionBodies]),
 		]),
 		outputAddressLookup,
+		memoryRef,
+		memoryBuffer,
 	};
 };
 
