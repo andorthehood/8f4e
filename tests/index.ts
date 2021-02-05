@@ -1,5 +1,5 @@
 import saw from './compiler/modules/saw';
-import utils from './compiler/utils/utils';
+import utils from './compiler/wasm/utils';
 
 
 const runTests = async function () {

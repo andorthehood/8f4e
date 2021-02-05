@@ -53,7 +53,7 @@ const defaultState = {
 		},
 		cvToMidi: {
 			width: 100,
-			height: 100,
+			height: 200,
 			connectors: [
 				{ id: 'cvin', x: 5, y: 20, isInput: true },
 				{ id: 'clockin', x: 5, y: 35, isInput: true },
