@@ -32,7 +32,6 @@ const compile = function (modules: object[], connections: object[]) {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
-	// @ts-ignore flat
 	const functionCalls = compiledModules.map((module, index) => call(index + 1)).flat();
 	const { memoryRef, memoryBuffer, outputAddressLookup } = initializeMemory(compiledModules, connections);
 
