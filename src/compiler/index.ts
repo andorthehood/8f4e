@@ -13,11 +13,12 @@ import {
 import { call } from './wasm/instructions';
 import { initializeMemory } from './initializeMemory';
 import * as moduleCompilers from './modules';
+import { Module } from './modules/types';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
-const compileModules = function (modules) {
+const compileModules = function (modules): Module[] {
 	let memoryAddress = 0;
 	return modules
 		.filter(({ type }) => moduleCompilers[type])
