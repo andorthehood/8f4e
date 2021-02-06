@@ -37,7 +37,7 @@ const forEachBit = function (byte: number, callback: (isByteSet: boolean, nthBit
 	}
 };
 
-const generateFont = function (ctx: OffscreenCanvasRenderingContext2D, x: number = 0, y: number = 0, font: Uint8Array) {
+const generateFont = function (ctx: OffscreenCanvasRenderingContext2D, x: number = 0, y: number = 0, font: number[]) {
 	// A-Z
 	for (let j = 0; j < 26; j++) {
 		for (let i = 0; i < 10; i++) {
