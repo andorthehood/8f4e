@@ -1,3 +1,5 @@
+import { Module } from './modules/types';
+
 const generateOutputAddressLookup = function (compiledModules) {
 	const lookup = {};
 	compiledModules.forEach(({ outputs, moduleId }) => {
@@ -12,7 +14,7 @@ export const setInitialMemory = function (memory: any, initialMemory: any) {
 	}
 };
 
-export const initializeMemory = function (compiledModules, connections) {
+export const initializeMemory = function (compiledModules: Module[], connections) {
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
