@@ -32,13 +32,11 @@ export const createFunctionType = function (parameterTypes: Type[], resultTypes:
 
 export const createTypeSection = function (types: FunctionType[]): number[] {
 	const numberOfTypes = types.length;
-	// @ts-ignore flat
 	return [Section.TYPE, ...createVector([...unsignedLEB128(numberOfTypes), ...types.flat()])];
 };
 
 export const createExportSection = function (_exports: FunctionExport[]): number[] {
 	const numberOfExports = _exports.length;
-	// @ts-ignore flat
 	return [Section.EXPORT, ...createVector([...unsignedLEB128(numberOfExports), ..._exports.flat()])];
 };
 
@@ -48,7 +46,6 @@ export const createFunctionExport = function (name: string, reference: number): 
 
 export const createCodeSection = function (functionBodies: FunctionBody[]): number[] {
 	const numberOfFunctions = functionBodies.length;
-	// @ts-ignore flat
 	return [Section.CODE, ...createVector([...unsignedLEB128(numberOfFunctions), ...functionBodies.flat()])];
 };
 
@@ -59,7 +56,6 @@ export const createFunctionBody = function (
 	const localDeclarationCount = localDeclarations.length;
 	return createVector([
 		...unsignedLEB128(localDeclarationCount),
-		// @ts-ignore flat
 		...localDeclarations.flat(),
 		...functionBody,
 		Instruction.END,
@@ -87,7 +83,6 @@ export const createNameSection = function (functionNames: FunctionName[]): numbe
 		...createVector([
 			...encodeString('name'),
 			NameSection.FUNCTION_NAME,
-			// @ts-ignore flat
 			...createVector([...unsignedLEB128(numFunctions), ...functionNames.flat()]),
 		]),
 	];
@@ -109,6 +104,5 @@ export const createMemoryImport = function (moduleName: string, fieldName: strin
 
 export const createImportSection = function (imports: Import[]): number[] {
 	const numImports = imports.length;
-	// @ts-ignore flat
 	return [Section.IMPORT, ...createVector([...unsignedLEB128(numImports), ...imports.flat()])];
 };

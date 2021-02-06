@@ -16,7 +16,6 @@ export const initializeMemory = function (compiledModules, connections) {
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
-	// @ts-ignore flat
 	const initialMemory = compiledModules.map(({ initialMemory }) => initialMemory).flat();
 
 	setInitialMemory(memoryBuffer, initialMemory);
