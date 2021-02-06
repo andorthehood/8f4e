@@ -1,6 +1,6 @@
 import viewport from './mutators/viewport';
 import loader from './mutators/loader';
-import contextMenu from './mutators/contextMenu';
+import contextMenu from './mutators/menu/contextMenu';
 import moduleDragger from './mutators/modules/moduleDragger';
 import moduleCreator from './mutators/modules/moduleCreator';
 import connectionMaker from './mutators/connections';
@@ -10,6 +10,7 @@ import tests from './mutators/tests';
 import compiler from './mutators/compiler';
 import midi from './mutators/midi';
 import innit from './mutators/init';
+import moduleMenu from './mutators/menu/moduleMenu';
 
 const init = function (events) {
 	const state = { ui: {} };
@@ -21,6 +22,7 @@ const init = function (events) {
 	moduleDragger(state, events);
 	viewport(state, events);
 	contextMenu(state, events);
+	moduleMenu(state, events);
 	moduleCreator(state, events);
 	error(state, events);
 	tests(state, events);
