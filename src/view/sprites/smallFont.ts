@@ -138,7 +138,6 @@ const font = [
 	_7,
 	_8,
 	_9,
-	// @ts-ignore flat
 ].flat();
 
 export default font;
