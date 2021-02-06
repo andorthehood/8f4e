@@ -1,8 +1,5 @@
 // @ts-ignore
-import { getFontPointer, memory } from './font.rs';
-
-const pointer = getFontPointer();
-const font: Uint8Array = new Uint8Array(memory.buffer.slice(pointer, pointer + 62 * 14));
+import font from './smallFont.ts';
 
 export const getGlyphInfo = function (
 	letter: string,
@@ -27,16 +24,16 @@ export const getGlyphInfo = function (
 	}
 
 	return {
-		x: (7 + 1) * posX + offsetX,
-		y: (15 + 1) * posY + offsetY,
-		spriteHeight: 15,
-		spriteWidth: 7,
+		x: 5 * posX + offsetX,
+		y: 10 * posY + offsetY,
+		spriteHeight: 10,
+		spriteWidth: 5,
 	};
 };
 
 const forEachBit = function (byte: number, callback: (isByteSet: boolean, nthBit: number) => void) {
-	for (let i = 0; i < 8; i++) {
-		const mask = 1 << (7 - i);
+	for (let i = 0; i < 5; i++) {
+		const mask = 1 << (4 - i);
 		callback((byte & mask) !== 0, i);
 	}
 };
@@ -44,27 +41,27 @@ const forEachBit = function (byte: number, callback: (isByteSet: boolean, nthBit
 const generateFont = function (ctx: OffscreenCanvasRenderingContext2D, x: number = 0, y: number = 0, font: Uint8Array) {
 	// A-Z
 	for (let j = 0; j < 26; j++) {
-		for (let i = 0; i < 14; i++) {
-			forEachBit(font[j * 14 + i], function (bit, nthBit) {
-				bit && ctx.fillRect(j * 8 + nthBit + x, i + y, 1, 1);
+		for (let i = 0; i < 10; i++) {
+			forEachBit(font[j * 10 + i], function (bit, nthBit) {
+				bit && ctx.fillRect(j * 5 + nthBit + x, i + y, 1, 1);
 			});
 		}
 	}
 
 	// a-z
 	for (let j = 26; j < 52; j++) {
-		for (let i = 0; i < 14; i++) {
-			forEachBit(font[j * 14 + i], function (bit, nthBit) {
-				bit && ctx.fillRect((j - 26) * 8 + nthBit + x, i + 16 + y, 1, 1);
+		for (let i = 0; i < 10; i++) {
+			forEachBit(font[j * 10 + i], function (bit, nthBit) {
+				bit && ctx.fillRect((j - 26) * 5 + nthBit + x, i + 10 + y, 1, 1);
 			});
 		}
 	}
 
 	// 0-9
 	for (let j = 52; j < 62; j++) {
-		for (let i = 0; i < 14; i++) {
-			forEachBit(font[j * 14 + i], function (bit, nthBit) {
-				bit && ctx.fillRect((j - 52) * 8 + nthBit + x, i + 32 + y, 1, 1);
+		for (let i = 0; i < 10; i++) {
+			forEachBit(font[j * 10 + i], function (bit, nthBit) {
+				bit && ctx.fillRect((j - 52) * 5 + nthBit + x, i + 20 + y, 1, 1);
 			});
 		}
 	}
