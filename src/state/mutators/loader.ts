@@ -10,6 +10,10 @@ const defaultState = {
 		},
 	],
 	connections: [],
+	compiler: {
+		compilationTime: 0,
+		isCompiling: false,
+	},
 	viewport: {
 		width: 0,
 		height: 0,

@@ -8,7 +8,6 @@ import {
 	createImportSection,
 	createMemoryImport,
 } from '../src/compiler/wasm/sections';
-import { Type } from '../src/compiler/wasm/enums';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -31,7 +30,7 @@ export const setInitialMemory = function (memory: any, initialMemory: any) {
 	}
 };
 
-export const createTestModule = async function (moduleCreator): Promise<{ memory: Int32Array; test: any }> {
+export const createTestModule = async function (moduleCreator): Promise<{ memory: Int32Array; test: any, reset: () => void }> {
 	const module = moduleCreator('test', 0);
 	const program = createSingleFunctionWASMProgramWithStandardLibrary(module.functionBody);
 
@@ -47,7 +46,11 @@ export const createTestModule = async function (moduleCreator): Promise<{ memory
 		},
 	});
 
-	setInitialMemory(memoryBuffer, module.initialMemory);
+	const reset = () => {
+		setInitialMemory(memoryBuffer, module.initialMemory);
+	}
 
-	return { memory: memoryBuffer, test };
+	reset();
+
+	return { memory: memoryBuffer, test, reset };
 };
