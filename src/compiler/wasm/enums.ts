@@ -22,6 +22,7 @@ export const enum Instruction {
 	END = 0x0b,
 	CALL = 0x10,
 	LOCAL_GET = 0x20,
+	LOCAL_SET = 0x21,
 	I32_LOAD = 0x28,
 	F32_LOAD = 0x2a,
 	I32_STORE = 0x36,
