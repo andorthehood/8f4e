@@ -4,8 +4,6 @@
   "description": "8f4e",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "wasm": "emcc src/c/test.c -Os -s WASM=1 -s SIDE_MODULE=1 -o dist/test.wasm",
     "build": "parcel build src/index.html",
     "watch": "parcel src/index.html --port 3000",
     "prettier": "prettier --write './src/**/*.ts'"
@@ -26,7 +24,6 @@
   "devDependencies": {
     "glslify-bundle": "^5.1.1",
     "glslify-deps": "^1.3.2",
-    "jest": "^26.6.3",
     "parcel": "^1.12.4",
     "prettier": "^2.2.1",
     "typescript": "^4.1.3"
