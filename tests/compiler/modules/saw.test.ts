@@ -1,16 +1,12 @@
+import { createSingleFunctionWASMProgramWithStandardLibrary, createTestModule } from '../../utils';
 import saw from '../../../src/compiler/modules/saw';
-import { createTestModule, setInitialMemory, assertEqual } from '../../utils';
 
-const runTest = async function () {
-	const { functionBody, initialMemory } = saw('test', 0);
-	const { memory, test } = await createTestModule(functionBody);
-
-	setInitialMemory(memory, initialMemory);
-
-	for (let i = 1; i < 10; i++) {
-		test();
-		assertEqual(memory[0], i);
-	}
-};
-
-export default runTest;
+test('saw module', async () => {
+    const {memory, test} = await createTestModule(saw);
+    test();
+    expect(memory[0]).toBe(1);
+    test();
+    expect(memory[0]).toBe(2);
+    test();
+    expect(memory[0]).toBe(3);
+});
