@@ -15,7 +15,7 @@ const init = async function (state) {
 	engine.loadSpriteSheet(sprite.canvas);
 	engine.setSpriteLookupAlgorithm(sprite.lookupFunction);
 
-	engine.render(function (timeToRender, fps, triangles, maxTriangles) {
+	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		//engine.reallocateBuffer(1000);
 		engine.resize(window.innerWidth, window.innerHeight);
 		drawConnections(engine, state);
@@ -29,7 +29,8 @@ const init = async function (state) {
 
 		engine.startGroup(10, state.ui.viewport.height - 50);
 		engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
-		engine.drawText(0, 20, 'fps ' + fps + '  triangles ' + triangles + '/' + maxTriangles);
+		engine.drawText(0, 15, 'fps ' + fps + '  vertex buffer ' + vertices + '/' + maxVertices);
+		engine.drawText(0, 30, 'compilation time ' + state.ui.compiler.compilationTime + ' ms');
 		engine.endGroup();
 
 		if (state.ui.error.display) {

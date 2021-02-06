@@ -62,8 +62,7 @@ export const createFunctionBody = function (
 	]);
 };
 
-export const createLocalDeclaration = function (type: Type): LocalDeclaration {
-	const typeCount = 1;
+export const createLocalDeclaration = function (type: Type, typeCount: number = 1): LocalDeclaration {
 	return [...unsignedLEB128(typeCount), type];
 };
 
