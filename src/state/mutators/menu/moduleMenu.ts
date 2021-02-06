@@ -1,0 +1,22 @@
+const contextMenu = function (state, events) {
+	const onModuleMenu = event => {
+		const { y } = event;
+
+		state.ui.contextMenu.highlightedItem = 0;
+		state.ui.contextMenu.y = y;
+		state.ui.contextMenu.open = true;
+
+		state.ui.contextMenu.items = [
+			{ title: 'Saw', action: 'addModule', payload: { type: 'saw' }, close: true },
+			{ title: 'Splitter', action: 'addModule', payload: { type: 'splitter' }, close: true },
+		];
+	};
+
+	events.on('openModuleMenu', onModuleMenu);
+
+	return () => {
+		events.off('openModuleMenu', onModuleMenu);
+	};
+};
+
+export default contextMenu;
