@@ -1,8 +1,18 @@
-import { createSingleFunctionWASMProgramWithStandardLibrary, createTestModule } from '../../utils';
+import { createTestModule } from '../../utils';
 import saw from '../../../src/compiler/modules/saw';
 
-test('saw module', async () => {
-    const {memory, test} = await createTestModule(saw);
+let testModule;
+
+beforeAll(async () => {
+    testModule = await createTestModule(saw);
+});
+
+beforeEach(() => {
+    testModule.reset();
+});
+
+test('saw module', () => {
+    const {memory, test} = testModule;
     test();
     expect(memory[0]).toBe(1);
     test();

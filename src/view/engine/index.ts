@@ -115,14 +115,14 @@ export class Engine {
 		this.setUniform('u_resolution', width, height);
 	}
 
-	render(callback: (timeToRender: number, fps: number, triangles: number, maxTriangles: number) => void) {
-		const triangles = this.bufferCounter / 6;
-		const maxTriangles = Math.floor(this.vertexBuffer.length / 6);
+	render(callback: (timeToRender: string, fps: number, triangles: number, maxTriangles: number) => void) {
+		const triangles = this.bufferCounter / 2;
+		const maxTriangles = Math.floor(this.vertexBuffer.length / 2);
 		this.bufferPointer = 0;
 		this.bufferCounter = 0;
 
 		const fps = Math.floor(this.frameCounter / ((Date.now() - this.startTime) / 1000));
-		const timeToRender = Math.round((this.lastRenderStartTime - this.lastRenderFinishTime) * 100) / 100;
+		const timeToRender = (this.lastRenderStartTime - this.lastRenderFinishTime).toFixed(2);
 
 		this.lastRenderStartTime = performance.now();
 

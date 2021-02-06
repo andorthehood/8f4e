@@ -1,6 +1,14 @@
 import { unsignedLEB128, signedLEB128, ieee754 } from './types';
 import { Instruction, Type } from './enums';
 
+export const localGet = function (index: number): number[] {
+	return [Instruction.LOCAL_GET, ...unsignedLEB128(index)];
+};
+
+export const localSet = function (index: number): number[] {
+	return [Instruction.LOCAL_SET, ...unsignedLEB128(index)];
+};
+
 export const call = function (functionIndex: number): number[] {
 	return [Instruction.CALL, ...unsignedLEB128(functionIndex)];
 };
@@ -25,6 +33,50 @@ export const i32store = function (
 		Instruction.I32_STORE,
 		...unsignedLEB128(alingment),
 		...unsignedLEB128(offset),
+	];
+};
+
+/**
+ * Saves an I32 local variable in the memory.
+ * @param index
+ * @param address
+ * @param alingment
+ * @param offset
+ */
+export const i32storeLocal = function (
+	index: number,
+	address?: number,
+	alingment: number = 2,
+	offset: number = 0
+): number[] {
+	return [
+		...(typeof address === 'undefined' ? [] : i32const(address)),
+		...localGet(index),
+		Instruction.I32_STORE,
+		...unsignedLEB128(alingment),
+		...unsignedLEB128(offset),
+	];
+};
+
+/**
+ * Loads an I32 number from a memory address to a local variable.
+ * @param index
+ * @param address
+ * @param alingment
+ * @param offset
+ */
+export const i32loadLocal = function (
+	index: number,
+	address?: number,
+	alingment: number = 2,
+	offset: number = 0
+): number[] {
+	return [
+		...(typeof address === 'undefined' ? [] : i32const(address)),
+		Instruction.I32_LOAD,
+		...unsignedLEB128(alingment),
+		...unsignedLEB128(offset),
+		...localSet(index),
 	];
 };
 
@@ -59,10 +111,6 @@ export const f32load = function (address?: number, alingment: number = 2, offset
 		...unsignedLEB128(alingment),
 		...unsignedLEB128(offset),
 	];
-};
-
-export const localGet = function (index: number): number[] {
-	return [Instruction.LOCAL_GET, ...unsignedLEB128(index)];
 };
 
 export const ifelse = function (resultType: Type, trueBranch: number[], falseBranch: number[]): number[] {

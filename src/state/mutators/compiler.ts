@@ -21,6 +21,7 @@ const compiler = function (state, events) {
 	let interval;
 
 	const recompile = async () => {
+		state.ui.compiler.isCompiling = true;
 		clearInterval(interval);
 
 		const start = performance.now();
@@ -28,15 +29,11 @@ const compiler = function (state, events) {
 
 		state.memory = memoryBuffer;
 
-		console.log(outputAddressLookup);
-
 		interval = setInterval(() => {
 			const start = performance.now();
 			// @ts-ignore
 			cycle();
 			const end = performance.now() - start;
-			//console.log(end);
-			//console.log(memoryBuffer.slice(0, 16));
 
 			const connection = state.ui.connections.find(
 				({ toModule, toConnector, fromModule, fromConnector }) =>
@@ -56,7 +53,8 @@ const compiler = function (state, events) {
 		}, 1000);
 
 		const end = performance.now() - start;
-		console.log('Compilation time (ms):', end);
+		state.ui.compiler.compilationTime = end.toFixed(2);
+		state.ui.compiler.isCompiling = false;
 	};
 
 	events.on('addModule', recompile);
