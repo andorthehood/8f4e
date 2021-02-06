@@ -1,4 +1,4 @@
-import findModuleAtViewportCoordinates from '../helpers/findModuleAtViewportCoordinates';
+import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 
 const getHighlightedMenuItem = function (x, y, itemHeight, width) {
 	if (x < 0 || x > width || y < 0) {
@@ -22,6 +22,12 @@ const contextMenu = function (state, events) {
 		event.stopPropagation = true;
 	};
 
+	const close = () => {
+		events.off('mousedown', onMouseDown);
+		events.off('mousemove', onMouseMove);
+		state.ui.contextMenu.open = false;
+	};
+
 	const onMouseDown = event => {
 		const { highlightedItem, items } = state.ui.contextMenu;
 
@@ -31,13 +37,15 @@ const contextMenu = function (state, events) {
 				x: event.x,
 				y: event.y,
 			});
+
+			if (items[highlightedItem].close) {
+				close();
+			}
+		} else {
+			close();
 		}
 
-		state.ui.contextMenu.open = false;
 		event.stopPropagation = true;
-
-		events.off('mousedown', onMouseDown);
-		events.off('mousemove', onMouseMove);
 	};
 
 	const onContextMenu = event => {
@@ -52,16 +60,16 @@ const contextMenu = function (state, events) {
 
 		if (module) {
 			state.ui.contextMenu.items = [
-				{ title: 'Delete module', action: 'deleteModule', payload: { moduleId: module.id } },
-				{ title: 'Remove wires', action: 'deleteConnection', payload: { moduleId: module.id } },
+				{ title: 'Delete module', action: 'deleteModule', payload: { moduleId: module.id }, close: true },
+				{ title: 'Remove wires', action: 'deleteConnection', payload: { moduleId: module.id }, close: true },
 			];
 		} else {
 			state.ui.contextMenu.items = [
-				{ title: 'Add module', action: 'addModule', payload: { type: 'saw' } },
-				{ title: 'Undo', action: 'undo' },
-				{ title: 'Save', action: 'save' },
-				{ title: 'Run test', action: 'runTest' },
-				{ title: 'Export', action: 'export' },
+				{ title: 'Add module', action: 'openModuleMenu' },
+				{ title: 'Undo', action: 'undo', close: true },
+				{ title: 'Save', action: 'save', close: true },
+				{ title: 'Run test', action: 'runTest', close: true },
+				{ title: 'Export', action: 'export', close: true },
 			];
 		}
 
