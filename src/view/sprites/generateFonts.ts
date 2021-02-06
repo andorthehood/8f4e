@@ -1,5 +1,4 @@
-// @ts-ignore
-import font from './smallFont.ts';
+import font from './smallFont';
 
 export const getGlyphInfo = function (
 	letter: string,
