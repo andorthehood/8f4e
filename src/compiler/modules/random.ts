@@ -1,12 +1,18 @@
-import { i32const, i32load, i32store, ifelse } from '../wasm/instructions';
-import { createFunctionBody } from '../wasm/sections';
-import { Instruction } from '../wasm/enums';
+import { i32storeLocal, i32loadLocal, localGet, localSet } from '../wasm/instructions';
+import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
+import { Instruction, Type } from '../wasm/enums';
 import { ModuleGenerator } from './types';
 
 const enum Memory {
 	MULTIPLIER = 0x00,
 	INCREMENT = 0x04,
 	PREVIOUS = 0x08,
+}
+
+const enum Locals {
+	MULTIPLIER = 0,
+	INCREMENT = 1,
+	PREVIOUS = 2,
 }
 
 /**
@@ -17,17 +23,20 @@ const saw: ModuleGenerator = function (moduleId, memoryStartAddress) {
 	const offset = memoryStartAddress * 4;
 
 	const functionBody = createFunctionBody(
-		[],
+		[createLocalDeclaration(Type.I32, 3)],
 		[
-			...i32const(Memory.PREVIOUS + offset), // Address for storing
-			...[
-				...i32load(Memory.PREVIOUS + offset),
-				...i32load(Memory.MULTIPLIER + offset),
-				Instruction.I32_MUL,
-				...i32load(Memory.INCREMENT + offset),
-				Instruction.I32_ADD,
-			],
-			...i32store(),
+			...i32loadLocal(Locals.MULTIPLIER, Memory.MULTIPLIER + offset),
+			...i32loadLocal(Locals.INCREMENT, Memory.INCREMENT + offset),
+			...i32loadLocal(Locals.PREVIOUS, Memory.PREVIOUS + offset),
+
+			...localGet(Locals.PREVIOUS),
+			...localGet(Locals.MULTIPLIER),
+			Instruction.I32_MUL,
+			...localGet(Locals.INCREMENT),
+			Instruction.I32_ADD,
+			...localSet(Locals.PREVIOUS),
+
+			...i32storeLocal(Locals.PREVIOUS, Memory.PREVIOUS + offset),
 		]
 	);
 
