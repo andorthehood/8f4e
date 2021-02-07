@@ -38,9 +38,7 @@ type InitialMemory = [
  *
  * @param memoryStartAddress
  */
-const saw: ModuleGenerator = function (moduleId, memoryStartAddress) {
-	const offset = memoryStartAddress * 4;
-
+const saw: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, 3)],
 		[
@@ -71,7 +69,7 @@ const saw: ModuleGenerator = function (moduleId, memoryStartAddress) {
 	return {
 		moduleId,
 		functionBody,
-		memoryStartAddress,
+		offset,
 		initialMemory,
 		outputs: [{ address: Memory.COUNTER + offset, id: 'output' }],
 		inputs: [{ address: Memory.RATE_ADDRESS + offset, id: 'rate' }],
