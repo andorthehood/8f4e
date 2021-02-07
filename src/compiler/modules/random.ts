@@ -19,7 +19,7 @@ const enum Locals {
  *
  * @param memoryStartAddress
  */
-const saw: ModuleGenerator = function (moduleId, offset) {
+const random: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, 3)],
 		[
@@ -43,9 +43,8 @@ const saw: ModuleGenerator = function (moduleId, offset) {
 		functionBody,
 		offset,
 		initialMemory: [Date.now(), 11, 9],
-		outputs: [{ address: Memory.PREVIOUS + offset, id: 'out' }],
-		inputs: [],
+		memoryAddresses: [{ address: Memory.PREVIOUS + offset, id: 'out' }],
 	};
 };
 
-export default saw;
+export default random;
