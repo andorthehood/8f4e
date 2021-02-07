@@ -24,7 +24,7 @@ const compileModules = function (modules): Module[] {
 		.filter(({ type }) => moduleCompilers[type])
 		.map(({ id, type }) => {
 			const module = moduleCompilers[type](id, memoryAddress);
-			memoryAddress += module.initialMemory.length;
+			memoryAddress += module.initialMemory.length * Int32Array.BYTES_PER_ELEMENT;
 			return module;
 		});
 };
