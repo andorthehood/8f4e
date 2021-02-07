@@ -36,6 +36,7 @@ export const createTestModule = async function (moduleCreator): Promise<{ memory
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
+	
 	const {
 		instance: {
 			exports: { test },
@@ -45,7 +46,7 @@ export const createTestModule = async function (moduleCreator): Promise<{ memory
 			memory: memoryRef,
 		},
 	});
-
+	
 	const reset = () => {
 		setInitialMemory(memoryBuffer, module.initialMemory);
 	}
