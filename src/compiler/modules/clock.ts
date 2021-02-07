@@ -28,9 +28,7 @@ type InitialMemory = [COUNTER: number, OUTPUT: number];
  *
  * @param memoryStartAddress
  */
-const clock: ModuleGenerator = function (moduleId, memoryStartAddress) {
-	const offset = memoryStartAddress * 4;
-
+const clock: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, 2)],
 		[
@@ -63,7 +61,7 @@ const clock: ModuleGenerator = function (moduleId, memoryStartAddress) {
 	return {
 		moduleId,
 		functionBody,
-		memoryStartAddress,
+		offset,
 		initialMemory,
 		outputs: [{ address: Memory.OUTPUT + offset, id: 'output' }],
 	};

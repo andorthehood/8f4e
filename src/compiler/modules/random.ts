@@ -19,9 +19,7 @@ const enum Locals {
  *
  * @param memoryStartAddress
  */
-const saw: ModuleGenerator = function (moduleId, memoryStartAddress) {
-	const offset = memoryStartAddress * 4;
-
+const saw: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, 3)],
 		[
@@ -43,8 +41,8 @@ const saw: ModuleGenerator = function (moduleId, memoryStartAddress) {
 	return {
 		moduleId,
 		functionBody,
-		memoryStartAddress,
-		initialMemory: [25214903917, 11, 9],
+		offset,
+		initialMemory: [Date.now(), 11, 9],
 		outputs: [{ address: Memory.PREVIOUS + offset, id: 'out' }],
 		inputs: [],
 	};
