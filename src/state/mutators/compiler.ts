@@ -43,7 +43,8 @@ const compiler = function (state, events) {
 
 			if (connection) {
 				const fromModule = connection.fromModule === 'cvToMidi1' ? connection.toModule : connection.fromModule;
-				const address = outputAddressLookup[fromModule][0].memoryAddress;
+				console.log(fromModule, outputAddressLookup);
+				const address = outputAddressLookup[fromModule].find(({ isInputPointer }) => !isInputPointer).address;
 				events.dispatch('sendMidiMessage', { message: [Event.NOTE_ON, memoryBuffer[address / 4] + 50, 100] });
 				events.dispatch('sendMidiMessage', {
 					message: [Event.NOTE_OFF, memoryBuffer[address] + 50, 100],

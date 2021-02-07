@@ -5,7 +5,7 @@ import { ModuleGenerator } from './types';
 
 const enum Memory {
 	ZERO = 0x00,
-	INPUT_ADDRESS = 0x04,
+	INPUT_POINTER = 0x04,
 	OUTPUT_1 = 0x08,
 	OUTPUT_2 = 0x0c,
 	OUTPUT_3 = 0x10,
@@ -24,7 +24,7 @@ const splitter: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, 1)],
 		[
-			...i32load(Memory.INPUT_ADDRESS + offset),
+			...i32load(Memory.INPUT_POINTER + offset),
 			...i32loadLocal(Locals.INPUT),
 			...i32storeLocal(Locals.INPUT, Memory.OUTPUT_1 + offset),
 			...i32storeLocal(Locals.INPUT, Memory.OUTPUT_2 + offset),
@@ -38,13 +38,13 @@ const splitter: ModuleGenerator = function (moduleId, offset) {
 		functionBody,
 		offset,
 		initialMemory: [0, Memory.ZERO + offset, 0, 0, 0, 0],
-		outputs: [
+		memoryAddresses: [
 			{ address: Memory.OUTPUT_1 + offset, id: 'out1' },
 			{ address: Memory.OUTPUT_2 + offset, id: 'out2' },
 			{ address: Memory.OUTPUT_3 + offset, id: 'out3' },
 			{ address: Memory.OUTPUT_4 + offset, id: 'out4' },
+			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
 		],
-		inputs: [],
 	};
 };
 
