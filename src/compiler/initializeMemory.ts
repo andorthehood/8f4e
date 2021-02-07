@@ -2,8 +2,8 @@ import { Module } from './modules/types';
 
 const generateOutputAddressLookup = function (compiledModules) {
 	const lookup = {};
-	compiledModules.forEach(({ outputs, moduleId }) => {
-		lookup[moduleId] = outputs.map(output => ({ outputId: output.id, memoryAddress: output.address }));
+	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
+		lookup[moduleId] = memoryAddresses;
 	});
 	return lookup;
 };

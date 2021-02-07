@@ -1,13 +1,4 @@
-import {
-	i32const,
-	i32load,
-	i32loadAddress,
-	i32storeLocal,
-	ifelse,
-	localGet,
-	localSet,
-	i32loadLocal,
-} from '../wasm/instructions';
+import { i32const, i32storeLocal, ifelse, localGet, localSet, i32loadLocal } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from '../wasm/enums';
 import { ModuleGenerator } from './types';
@@ -63,7 +54,7 @@ const clock: ModuleGenerator = function (moduleId, offset) {
 		functionBody,
 		offset,
 		initialMemory,
-		outputs: [{ address: Memory.OUTPUT + offset, id: 'output' }],
+		memoryAddresses: [{ address: Memory.OUTPUT + offset, id: 'output' }],
 	};
 };
 
