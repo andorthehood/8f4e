@@ -1,5 +1,14 @@
-import { i32const, i32load, i32loadAddress, i32store, ifelse } from '../wasm/instructions';
-import { createFunctionBody } from '../wasm/sections';
+import {
+	i32const,
+	i32loadAddress,
+	i32loadLocal,
+	i32load,
+	i32storeLocal,
+	ifelse,
+	localGet,
+	localSet,
+} from '../wasm/instructions';
+import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from '../wasm/enums';
 import { ModuleGenerator } from './types';
 
@@ -9,6 +18,12 @@ const enum Memory {
 	RATE_SELF = 0x08,
 	LIMIT_ADDRESS = 12,
 	LIMIT_SELF = 16,
+}
+
+const enum Locals {
+	COUNTER = 0,
+	RATE = 1,
+	LIMIT = 2,
 }
 
 type InitialMemory = [
@@ -27,20 +42,27 @@ const saw: ModuleGenerator = function (moduleId, memoryStartAddress) {
 	const offset = memoryStartAddress * 4;
 
 	const functionBody = createFunctionBody(
-		[],
+		[createLocalDeclaration(Type.I32, 3)],
 		[
-			...i32const(Memory.COUNTER + offset), // Address for storing
-			...[
-				...i32load(Memory.COUNTER + offset),
-				...i32loadAddress(Memory.LIMIT_ADDRESS + offset),
-				Instruction.I32_GE_S,
-				...ifelse(
-					Type.I32,
-					[...i32const(0), ...i32loadAddress(Memory.LIMIT_ADDRESS + offset), Instruction.I32_SUB],
-					[...i32loadAddress(Memory.RATE_ADDRESS + offset), ...i32load(Memory.COUNTER + offset), Instruction.I32_ADD]
-				),
-			],
-			...i32store(),
+			// Load data from memory into local variables.
+			...i32load(Memory.RATE_ADDRESS + offset),
+			...i32loadLocal(Locals.RATE),
+			...i32load(Memory.LIMIT_ADDRESS + offset),
+			...i32loadLocal(Locals.LIMIT),
+			...i32loadLocal(Locals.COUNTER, Memory.COUNTER + offset),
+
+			...localGet(Locals.COUNTER),
+			...localGet(Locals.LIMIT),
+			Instruction.I32_GE_S,
+			...ifelse(
+				Type.I32,
+				[...i32const(0), ...localGet(Locals.LIMIT), Instruction.I32_SUB],
+				[...localGet(Locals.RATE), ...localGet(Locals.COUNTER), Instruction.I32_ADD]
+			),
+			...localSet(Locals.COUNTER),
+
+			// Save data to memory.
+			...i32storeLocal(Locals.COUNTER, Memory.COUNTER + offset),
 		]
 	);
 
