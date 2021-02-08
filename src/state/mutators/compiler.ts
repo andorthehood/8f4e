@@ -39,7 +39,7 @@ const compiler = function (state, events) {
 			const start = performance.now();
 			// @ts-ignore
 			cycle();
-			const end = performance.now() - start;
+			state.ui.compiler.cycleTime = (performance.now() - start).toFixed(2);
 
 			const connection = state.ui.connections.find(
 				({ toModule, toConnector, fromModule, fromConnector }) =>

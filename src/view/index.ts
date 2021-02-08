@@ -27,11 +27,21 @@ const init = async function (state) {
 		// engine.drawLine(400, 400, 440, 500);
 		// engine.drawLine(500, 500, 560, 600);
 
-		engine.startGroup(10, state.ui.viewport.height - 50);
-		engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
-		engine.drawText(0, 15, 'fps ' + fps + '  vertex buffer ' + vertices + '/' + maxVertices);
-		engine.drawText(0, 30, 'compilation time ' + state.ui.compiler.compilationTime + ' ms');
-		engine.endGroup();
+		if (state.ui.isDebugMode) {
+			engine.startGroup(10, state.ui.viewport.height - 50);
+			engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
+			engine.drawText(0, 15, 'fps ' + fps + '  vertex buffer ' + vertices + '/' + maxVertices);
+			engine.drawText(
+				0,
+				30,
+				'compilation time ' +
+					state.ui.compiler.compilationTime +
+					' ms  cycle time ' +
+					state.ui.compiler.cycleTime +
+					' ms'
+			);
+			engine.endGroup();
+		}
 
 		if (state.ui.error.display) {
 			engine.startGroup(5, 5);
