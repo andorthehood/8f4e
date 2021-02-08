@@ -1,12 +1,16 @@
 import compile from '../../compiler';
+import { setUpConnections } from '../../compiler/initializeMemory';
 import { Event } from '../../midi/enums';
 
 async function createModule(state) {
-	const { codeBuffer, outputAddressLookup, memoryRef, memoryBuffer } = compile(state.ui.modules, state.ui.connections);
+	const { codeBuffer, outputAddressLookup, compiledModules } = compile(state.ui.modules, state.ui.connections);
+
+	const memoryRef = new WebAssembly.Memory({ initial: 1 });
+	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
 	const {
 		instance: {
-			exports: { cycle },
+			exports: { cycle, init },
 		},
 	} = await WebAssembly.instantiate(codeBuffer, {
 		js: {
@@ -14,7 +18,7 @@ async function createModule(state) {
 		},
 	});
 
-	return { memoryBuffer, cycle, outputAddressLookup };
+	return { memoryBuffer, cycle, init, outputAddressLookup, compiledModules };
 }
 
 const compiler = function (state, events) {
@@ -25,8 +29,10 @@ const compiler = function (state, events) {
 		clearInterval(interval);
 
 		const start = performance.now();
-		const { memoryBuffer, cycle, outputAddressLookup } = await createModule(state);
-
+		const { memoryBuffer, cycle, outputAddressLookup, init, compiledModules } = await createModule(state);
+		// @ts-ignore
+		init();
+		setUpConnections(memoryBuffer, compiledModules, state.ui.connections);
 		state.memory = memoryBuffer;
 
 		interval = setInterval(() => {
@@ -43,7 +49,6 @@ const compiler = function (state, events) {
 
 			if (connection) {
 				const fromModule = connection.fromModule === 'cvToMidi1' ? connection.toModule : connection.fromModule;
-				console.log(fromModule, outputAddressLookup);
 				const address = outputAddressLookup[fromModule].find(({ isInputPointer }) => !isInputPointer).address;
 				events.dispatch('sendMidiMessage', { message: [Event.NOTE_ON, memoryBuffer[address / 4] + 50, 100] });
 				events.dispatch('sendMidiMessage', {
