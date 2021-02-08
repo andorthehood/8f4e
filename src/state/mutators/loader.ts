@@ -10,9 +10,12 @@ const defaultState = {
 		},
 	],
 	connections: [],
+	isDebugMode: true,
 	compiler: {
 		compilationTime: 0,
 		isCompiling: false,
+		outputAddressLookup: {},
+		memoryBuffer: [],
 	},
 	viewport: {
 		width: 0,
