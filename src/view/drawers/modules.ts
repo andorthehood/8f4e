@@ -5,7 +5,7 @@ const drawModules = function (engine, state) {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.ui.modules.length; i++) {
-		const { x, y, type } = state.ui.modules[i];
+		const { x, y, type, id } = state.ui.modules[i];
 		const { width, height, name, connectors } = state.ui.moduleTypes[type];
 
 		if (
@@ -19,6 +19,22 @@ const drawModules = function (engine, state) {
 			engine.drawText(5, 5, name);
 
 			const connectorIds = Object.keys(connectors);
+
+			if (state.ui.isDebugMode && state.ui.compiler.outputAddressLookup[id]) {
+				for (let i = 0; i < state.ui.compiler.outputAddressLookup[id].length; i++) {
+					engine.drawText(
+						width,
+						height + i * 10,
+						state.ui.compiler.outputAddressLookup[id][i].id +
+							' ' +
+							state.ui.compiler.outputAddressLookup[id][i].address +
+							' ' +
+							state.ui.compiler.memoryBuffer[
+								state.ui.compiler.outputAddressLookup[id][i].address / Int32Array.BYTES_PER_ELEMENT
+							]
+					);
+				}
+			}
 
 			for (let i = 0; i < connectorIds.length; i++) {
 				engine.drawRectangle(connectors[connectorIds[i]].x, connectors[connectorIds[i]].y, 10, 10, 'grey', 1);
