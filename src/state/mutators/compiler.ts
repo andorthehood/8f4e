@@ -56,13 +56,19 @@ const compiler = function (state, events) {
 		const end = performance.now() - start;
 		state.ui.compiler.compilationTime = end.toFixed(2);
 		state.ui.compiler.isCompiling = false;
+		state.ui.compiler.outputAddressLookup = outputAddressLookup;
+		state.ui.compiler.memoryBuffer = memoryBuffer;
 	};
 
+	events.on('createConnection', recompile);
+	events.on('deleteConnection', recompile);
 	events.on('addModule', recompile);
 	events.on('deleteModule', recompile);
 	events.on('init', recompile);
 
 	return () => {
+		events.off('createConnection', recompile);
+		events.off('deleteConnection', recompile);
 		events.off('addModule', recompile);
 		events.off('deleteModule', recompile);
 		events.off('init', recompile);
