@@ -72,7 +72,7 @@ const saw: ModuleGenerator = function (moduleId, offset) {
 		offset,
 		initialMemory,
 		memoryAddresses: [
-			{ address: Memory.COUNTER + offset, id: 'output' },
+			{ address: Memory.COUNTER + offset, id: 'out' },
 			{ address: Memory.RATE_POINTER + offset, id: 'rate', isInputPointer: true },
 		],
 	};
