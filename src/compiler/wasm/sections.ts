@@ -91,13 +91,21 @@ export const createFunctionName = function (functionIndex: number, name: string)
 	return [...unsignedLEB128(functionIndex), ...encodeString(name)];
 };
 
-export const createMemoryImport = function (moduleName: string, fieldName: string, initial: number = 1): Import {
+export const createMemoryImport = function (
+	moduleName: string,
+	fieldName: string,
+	initial: number = 1,
+	max?: number,
+	isShared: boolean = false
+): Import {
+	const flags = isShared ? 0x03 : 0x00;
 	return [
 		...encodeString(moduleName),
 		...encodeString(fieldName),
 		ImportDesc.MEMORY,
-		0x00, // flags
+		flags,
 		...unsignedLEB128(initial),
+		...(max ? unsignedLEB128(max) : []),
 	];
 };
 
