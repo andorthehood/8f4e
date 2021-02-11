@@ -57,7 +57,7 @@ const compile = function (modules: object[], connections: object[]) {
 			...HEADER,
 			...VERSION,
 			...createTypeSection([createFunctionType([], [])]),
-			...createImportSection([createMemoryImport('js', 'memory')]),
+			...createImportSection([createMemoryImport('js', 'memory', 1, 1, true)]),
 			...createFunctionSection([0x00, 0x00, ...functionSignatures]),
 			...createExportSection([createFunctionExport('init', 0x00), createFunctionExport('cycle', 0x01)]),
 			...createCodeSection([
