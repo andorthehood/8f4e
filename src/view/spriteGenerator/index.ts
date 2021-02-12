@@ -1,11 +1,11 @@
 import generateFont from './generateFonts';
 import generateFillColors from './generateFillColors';
-export { getGlyphInfo } from './generateFonts';
+import generateFeedbackScale from './generateFeedbackScale';
+export { lookup as feedbackScale } from './generateFeedbackScale';
+export { lookup as fillColor } from './generateFillColors';
+export { lookup as font } from './generateFonts';
 
-const generateSprite = async function (): Promise<{
-	canvas: OffscreenCanvas | HTMLCanvasElement;
-	lookupFunction: (sprite: string) => any;
-}> {
+const generateSprite = async function (): Promise<OffscreenCanvas | HTMLCanvasElement> {
 	let canvas;
 
 	if (window.OffscreenCanvas) {
@@ -18,18 +18,11 @@ const generateSprite = async function (): Promise<{
 
 	const ctx = canvas.getContext('2d');
 
-	const lookupTable = {
-		...generateFont(ctx, 0, 0),
-		...generateFillColors(ctx, 0, 100),
-	};
+	generateFeedbackScale(ctx);
+	generateFont(ctx);
+	generateFillColors(ctx);
 
-	console.log(lookupTable);
-
-	const lookupFunction = function (sprite: string) {
-		return lookupTable[sprite] || { x: 0, y: 0, spriteWidth: 0, spriteHeight: 0 };
-	};
-
-	return { canvas, lookupFunction };
+	return canvas;
 };
 
 export default generateSprite;
