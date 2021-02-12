@@ -1,7 +1,9 @@
 export const generateOutputAddressLookup = function (compiledModules) {
 	const lookup = {};
 	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
-		lookup[moduleId] = memoryAddresses;
+		memoryAddresses.forEach(({ id, address }) => {
+			lookup[moduleId + id] = address;
+		});
 	});
 	return lookup;
 };

@@ -20,31 +20,39 @@ const drawModules = function (engine, state) {
 
 			const connectorIds = Object.keys(connectors);
 
-			if (state.ui.isDebugMode && state.ui.compiler.outputAddressLookup[id]) {
-				for (let i = 0; i < state.ui.compiler.outputAddressLookup[id].length; i++) {
-					engine.drawText(
-						width,
-						height + i * 10,
-						state.ui.compiler.outputAddressLookup[id][i].id +
-							' ' +
-							state.ui.compiler.outputAddressLookup[id][i].address +
-							' ' +
-							state.ui.compiler.memoryBuffer[
-								state.ui.compiler.outputAddressLookup[id][i].address / Int32Array.BYTES_PER_ELEMENT
-							]
-					);
-				}
-			}
+			// if (state.ui.isDebugMode) {
+			// 	for (let i = 0; i < state.ui.compiler.outputAddressLookup[id].length; i++) {
+			// 		engine.drawText(
+			// 			width,
+			// 			height + i * 10,
+			// 			state.ui.compiler.outputAddressLookup[id][i].id +
+			// 				' ' +
+			// 				state.ui.compiler.outputAddressLookup[id][i].address +
+			// 				' ' +
+			// 				state.ui.compiler.memoryBuffer[
+			// 					state.ui.compiler.outputAddressLookup[id][i].address / Int32Array.BYTES_PER_ELEMENT
+			// 				]
+			// 		);
+			// 	}
+			// }
 
 			for (let i = 0; i < connectorIds.length; i++) {
-				engine.drawRectangle(
-					connectors[connectorIds[i]].x,
-					connectors[connectorIds[i]].y,
-					10,
-					10,
-					'rgb(255,255,255)',
-					1
-				);
+				if (state.ui.compiler.outputAddressLookup[id + connectors[i].id]) {
+					const connectorAddress = state.ui.compiler.outputAddressLookup[id + connectors[i].id];
+					const color =
+						Math.floor(
+							Math.floor(((state.ui.compiler.memoryBuffer[connectorAddress / 4] + 32767) / (2 * 32767)) * 255) / 51
+						) * 51;
+
+					engine.drawRectangle(
+						connectors[connectorIds[i]].x,
+						connectors[connectorIds[i]].y,
+						10,
+						10,
+						'rgb(255,' + color + ',' + color + ')',
+						1
+					);
+				}
 			}
 
 			engine.endGroup();
