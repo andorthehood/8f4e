@@ -27,18 +27,6 @@ const generateSprite = async function (): Promise<{
 		return lookupTable[sprite] || { x: 0, y: 0, spriteWidth: 0, spriteHeight: 0 };
 	};
 
-	// const blob = await canvas.convertToBlob({
-	// 	type: 'image/png',
-	// });
-	// const src = URL.createObjectURL(blob);
-
-	// console.log(src);
-	console.log(lookupTable);
-
-	// const image = document.createElement('img');
-	// image.src = src;
-	// document.body.appendChild(image);
-
 	return { canvas, lookupFunction };
 };
 
