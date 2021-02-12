@@ -46,7 +46,7 @@ const defaultState = {
 		clockGenerator: {
 			width: 100,
 			height: 150,
-			connectors: [{ id: 'out1', x: 85, y: 20 }],
+			connectors: [{ id: 'out', x: 85, y: 20 }],
 			name: 'Clock generator',
 		},
 		quantizer: {

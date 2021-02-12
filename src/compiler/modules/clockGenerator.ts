@@ -28,17 +28,17 @@ const clock: ModuleGenerator = function (moduleId, offset) {
 			...i32loadLocal(Locals.COUNTER, Memory.COUNTER + offset),
 
 			// Set output
-			...i32const(5),
+			...i32const(12000),
 			...localGet(Locals.COUNTER),
 			Instruction.I32_GE_S,
-			...ifelse(Type.I32, [...i32const(1)], [...i32const(0)]),
+			...ifelse(Type.I32, [...i32const(32000)], [...i32const(0)]),
 			...localSet(Locals.OUTPUT),
 
 			// Increment counter
 			...localGet(Locals.COUNTER),
-			...i32const(10),
+			...i32const(32000),
 			Instruction.I32_GE_S,
-			...ifelse(Type.I32, [...i32const(0)], [...localGet(Locals.COUNTER), ...i32const(1), Instruction.I32_ADD]),
+			...ifelse(Type.I32, [...i32const(0)], [...localGet(Locals.COUNTER), ...i32const(1000), Instruction.I32_ADD]),
 			...localSet(Locals.COUNTER),
 
 			// Store variables
@@ -54,7 +54,7 @@ const clock: ModuleGenerator = function (moduleId, offset) {
 		functionBody,
 		offset,
 		initialMemory,
-		memoryAddresses: [{ address: Memory.OUTPUT + offset, id: 'output' }],
+		memoryAddresses: [{ address: Memory.OUTPUT + offset, id: 'out' }],
 	};
 };
 

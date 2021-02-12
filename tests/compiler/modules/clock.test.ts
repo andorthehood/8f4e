@@ -1,5 +1,5 @@
 import { createTestModule } from '../../utils';
-import clock from '../../../src/compiler/modules/clock';
+import clock from '../../../src/compiler/modules/clockGenerator';
 
 let testModule;
 
