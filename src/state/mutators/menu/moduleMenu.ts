@@ -9,6 +9,7 @@ const contextMenu = function (state, events) {
 		state.ui.contextMenu.items = [
 			{ title: 'Saw', action: 'addModule', payload: { type: 'saw' }, close: true },
 			{ title: 'Splitter', action: 'addModule', payload: { type: 'splitter' }, close: true },
+			{ title: 'Clock generator', action: 'addModule', payload: { type: 'clockGenerator' }, close: true },
 		];
 	};
 
