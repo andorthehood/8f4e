@@ -73,7 +73,7 @@ const defaultState = {
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 			name: 'Saw',
 		},
-		random: {
+		randomGenerator: {
 			width: 100,
 			height: 100,
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],

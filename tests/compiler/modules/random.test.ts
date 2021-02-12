@@ -1,5 +1,5 @@
 import { createTestModule } from '../../utils';
-import random from '../../../src/compiler/modules/random';
+import random from '../../../src/compiler/modules/randomGenerator';
 
 let testModule;
 
