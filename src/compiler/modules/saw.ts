@@ -64,7 +64,7 @@ const saw: ModuleGenerator = function (moduleId, offset) {
 		]
 	);
 
-	const initialMemory: InitialMemory = [0, offset + Memory.RATE_SELF, 1, offset + Memory.LIMIT_SELF, 10];
+	const initialMemory: InitialMemory = [0, offset + Memory.RATE_SELF, 1000, offset + Memory.LIMIT_SELF, 32767];
 
 	return {
 		moduleId,
