@@ -1,21 +1,19 @@
-const generateFillColors = function (ctx: OffscreenCanvasRenderingContext2D, x: number, y: number) {
-	ctx.fillStyle = 'rgba(255,255,255,255)';
-	ctx.fillRect(x, y, 10, 10);
-	ctx.fillStyle = 'rgba(0,255,255,255)';
-	ctx.fillRect(x + 10, y, 10, 10);
-	ctx.fillStyle = 'rgba(255,0,255,255)';
-	ctx.fillRect(x + 20, y, 10, 10);
-	ctx.fillStyle = 'rgba(255,255,0,255)';
-	ctx.fillRect(x + 10, y + 10, 10, 10);
-	ctx.fillStyle = 'rgba(127,127,127,255)';
-	ctx.fillRect(x + 30, y, 10, 10);
+const generateFillColors = function (ctx: OffscreenCanvasRenderingContext2D, offsetX: number, offsetY: number) {
+	let lookup = {};
 
-	return {
-		white: { x, y, spriteWidth: 10, spriteHeight: 10 },
-		cyan: { x: x + 10, y, spriteWidth: 10, spriteHeight: 10 },
-		purple: { x: x + 20, y, spriteWidth: 10, spriteHeight: 10 },
-		grey: { x: x + 30, y, spriteWidth: 10, spriteHeight: 10 },
-	};
+	for (let r = 0; r <= 255; r += 51) {
+		for (let g = 0; g <= 255; g += 51) {
+			for (let b = 0; b <= 255; b += 51) {
+				ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+				const x = offsetX + (r / 51) * 4 + (b / 51) * 24;
+				const y = offsetY + (g / 51) * 4;
+				ctx.fillRect(x, y, 4, 4);
+				lookup['rgb(' + r + ',' + g + ',' + b + ')'] = { x, y, spriteWidth: 4, spriteHeight: 4 };
+			}
+		}
+	}
+
+	return lookup;
 };
 
 export default generateFillColors;

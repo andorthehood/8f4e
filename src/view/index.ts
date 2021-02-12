@@ -17,6 +17,11 @@ const init = async function (state) {
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.resize(window.innerWidth, window.innerHeight);
+
+		if (state.ui.isDebugMode) {
+			engine.drawSpriteFromCoordinates(10, 10, 512, 512, 0, 0);
+		}
+		
 		drawConnections(engine, state);
 		drawModules(engine, state);
 		drawContextMenu(engine, state);
@@ -44,8 +49,6 @@ const init = async function (state) {
 			engine.drawText(0, 0, 'Error: ' + state.ui.error.message);
 			engine.endGroup();
 		}
-
-		//engine.drawSpriteFromCoordinates(200, 200, 220, 120, 0, 0);
 	});
 };
 
