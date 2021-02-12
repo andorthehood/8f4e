@@ -15,10 +15,6 @@ const enum Locals {
 	PREVIOUS = 2,
 }
 
-/**
- *
- * @param memoryStartAddress
- */
 const random: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, 3)],

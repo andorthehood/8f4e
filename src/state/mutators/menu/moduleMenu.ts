@@ -10,6 +10,7 @@ const contextMenu = function (state, events) {
 			{ title: 'Saw', action: 'addModule', payload: { type: 'saw' }, close: true },
 			{ title: 'Splitter', action: 'addModule', payload: { type: 'splitter' }, close: true },
 			{ title: 'Clock generator', action: 'addModule', payload: { type: 'clockGenerator' }, close: true },
+			{ title: 'Random generator', action: 'addModule', payload: { type: 'randomGenerator' }, close: true },
 		];
 	};
 
