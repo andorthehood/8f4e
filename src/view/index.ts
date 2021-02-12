@@ -1,6 +1,7 @@
 import { Engine } from './engine';
 import generateSprite from './spriteGenerator';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
+import { font } from './spriteGenerator';
 
 const init = async function (state) {
 	const sprite = await generateSprite();
@@ -12,8 +13,7 @@ const init = async function (state) {
 
 	const engine = new Engine(canvas);
 
-	engine.loadSpriteSheet(sprite.canvas);
-	engine.setSpriteLookupAlgorithm(sprite.lookupFunction);
+	engine.loadSpriteSheet(sprite);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.resize(window.innerWidth, window.innerHeight);
@@ -25,6 +25,8 @@ const init = async function (state) {
 		drawConnections(engine, state);
 		drawModules(engine, state);
 		drawContextMenu(engine, state);
+
+		engine.setSpriteLookup(font('small_white'));
 
 		if (state.ui.isDebugMode) {
 			engine.startGroup(10, state.ui.viewport.height - 50);

@@ -1,34 +1,15 @@
+import { SpriteCoordinates, SpriteLookup } from '../engine';
 import font from './smallFont';
 
-export const getGlyphInfo = function (
-	letter: string,
-	offsetX: number = 0,
-	offsetY: number = 0
-): { x: number; y: number; spriteHeight: number; spriteWidth: number } {
-	const code = letter.charCodeAt(0);
-	let posY = 0;
-	let posX = 0;
-
-	if (code >= 97 && code <= 122) {
-		posX = code - 97;
-		posY = 0;
-	} else if (code >= 48 && code <= 57) {
-		posX = code - 48;
-		posY = 2;
-	} else if (code >= 65 && code <= 90) {
-		posX = code - 65;
-		posY = 1;
-	} else {
-		return;
-	}
-
-	return {
-		x: 5 * posX + offsetX,
-		y: 10 * posY + offsetY,
-		spriteHeight: 10,
-		spriteWidth: 5,
-	};
+const defaultSprite: SpriteCoordinates = {
+	x: 0,
+	y: 0,
+	spriteHeight: 1,
+	spriteWidth: 1,
 };
+
+const offsetX = 0;
+const offsetY = 0;
 
 const forEachBit = function (byte: number, callback: (isByteSet: boolean, nthBit: number) => void) {
 	for (let i = 0; i < 5; i++) {
@@ -66,24 +47,39 @@ const generateFont = function (ctx: OffscreenCanvasRenderingContext2D, x: number
 	}
 };
 
-const generateFonts = function (ctx: OffscreenCanvasRenderingContext2D, x: number = 0, y: number = 0) {
+const generateFonts = function (ctx: OffscreenCanvasRenderingContext2D) {
 	ctx.fillStyle = 'rgba(255,255,255,255)';
-	generateFont(ctx, x, y, font);
+	generateFont(ctx, offsetY, offsetY, font);
 	ctx.fillStyle = 'rgba(0,0,0,255)';
-	generateFont(ctx, x, y + 50, font);
-
-	const lookupTable = {};
-	for (let i = 0; i < 128; i++) {
-		const c = String.fromCharCode(i);
-		lookupTable[c] = getGlyphInfo(c);
-	}
-
-	for (let i = 0; i < 128; i++) {
-		const c = String.fromCharCode(i);
-		lookupTable['black_' + c] = getGlyphInfo(c, 0, 50);
-	}
-
-	return lookupTable;
+	generateFont(ctx, offsetX, offsetY + 50, font);
 };
 
 export default generateFonts;
+
+export const lookup = function (font: string): SpriteLookup {
+	return function (letter) {
+		const code = letter.charCodeAt(0);
+		let posY = 0;
+		let posX = 0;
+
+		if (code >= 97 && code <= 122) {
+			posX = code - 97;
+			posY = 0;
+		} else if (code >= 48 && code <= 57) {
+			posX = code - 48;
+			posY = 2;
+		} else if (code >= 65 && code <= 90) {
+			posX = code - 65;
+			posY = 1;
+		} else {
+			return defaultSprite;
+		}
+
+		return {
+			x: 5 * posX + offsetX,
+			y: 10 * posY + offsetY,
+			spriteHeight: 10,
+			spriteWidth: 5,
+		};
+	};
+};
