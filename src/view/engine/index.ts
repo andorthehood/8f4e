@@ -11,6 +11,15 @@ import vertexShader from './shaders/shader.vert';
 // @ts-ignore
 import textureShader from './shaders/texture.frag';
 
+export type SpriteCoordinates = {
+	spriteWidth: number;
+	spriteHeight: number;
+	x: number;
+	y: number;
+};
+
+export type SpriteLookup = (...args: any[]) => SpriteCoordinates;
+
 export class Engine {
 	program: WebGLProgram;
 	gl: WebGL2RenderingContext | WebGLRenderingContext;
@@ -31,6 +40,7 @@ export class Engine {
 	offsetGroups: number[][];
 	bufferSize: number;
 	bufferCounter: number;
+	spriteLookup: SpriteLookup;
 
 	/**
 	 * If enabled, it makes the render function block the main thread until the GPU finishes rendering.
@@ -38,10 +48,6 @@ export class Engine {
 	 * It makes possible to measure the time a whole render cycle took.
 	 */
 	isPerformanceMeasurementMode: boolean;
-
-	spriteLookup: (
-		sprite: string
-	) => { letterSpacing: number; spriteHeight: number; spriteWidth: number; x: number; y: number };
 
 	constructor(canvas: HTMLCanvasElement) {
 		this.gl = canvas.getContext('webgl', { antialias: false });
@@ -74,7 +80,7 @@ export class Engine {
 		this.gl.enableVertexAttribArray(a_texcoord);
 		this.gl.enableVertexAttribArray(a_position);
 
-		this.reallocateBuffer(10000);
+		this.growBuffer(10000);
 
 		this.startTime = Date.now();
 		this.frameCounter = 0;
@@ -96,7 +102,7 @@ export class Engine {
 		this.offsetY -= y;
 	}
 
-	reallocateBuffer(newSize: number) {
+	growBuffer(newSize: number) {
 		this.bufferSize = newSize * 12;
 		this.bufferPointer = 0;
 		this.bufferCounter = 0;
@@ -240,13 +246,14 @@ export class Engine {
 		}
 	}
 
-	setSpriteLookupAlgorithm(spriteLookup) {
+	setSpriteLookup(spriteLookup: SpriteLookup) {
 		this.spriteLookup = spriteLookup;
 	}
 
 	drawText(posX: number, posY: number, text: string, font: string = '', letterSpacing: number = 1) {
+		//console.log(this.spriteLookup);
 		for (let i = 0; i < text.length; i++) {
-			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(font + text[i]);
+			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(text[i]);
 			this.drawSpriteFromCoordinates(posX + i * (spriteWidth + letterSpacing), posY, spriteWidth, spriteHeight, x, y);
 		}
 	}
