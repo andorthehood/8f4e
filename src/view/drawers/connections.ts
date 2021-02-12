@@ -1,8 +1,12 @@
+import { fillColor } from '../spriteGenerator';
+
 const drawConnections = function (engine, state) {
 	const ui = state.ui;
 	const connections = state.ui.connections;
 	const modules = state.ui.modules;
 	const moduleTypes = state.ui.moduleTypes;
+
+	engine.setSpriteLookup(fillColor);
 
 	for (let i = 0; i < connections.length; i++) {
 		const { fromModule, fromConnector, toModule, toConnector } = connections[i];
