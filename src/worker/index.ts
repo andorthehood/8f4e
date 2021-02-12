@@ -41,17 +41,12 @@ const recompile = async function (memoryRef, modules, connections) {
 		},
 	});
 
-	let lastIntervalStart;
-
-	const intervalTime = 1000;
+	const intervalTime = 100;
 
 	clearInterval(interval);
 	interval = setInterval(() => {
-		const timerAccuracy = Math.floor(((performance.now() - lastIntervalStart) / intervalTime) * 100);
-		lastIntervalStart = performance.now();
 		// @ts-ignore
 		cycle();
-		const cycleTime = (performance.now() - lastIntervalStart).toFixed(2);
 
 		const connection = connections.find(
 			({ toModule, toConnector, fromModule, fromConnector }) =>
@@ -66,19 +61,15 @@ const recompile = async function (memoryRef, modules, connections) {
 			self.postMessage({
 				type: 'midiMessage',
 				payload: {
-					message: [Event.NOTE_ON, memoryBuffer[address / 4] + 50, 100],
-					timerAccuracy,
-					cycleTime,
+					message: [Event.NOTE_ON, memoryBuffer[address / 4] + 70, 100],
 				},
 			});
 			// @ts-ignore
 			self.postMessage({
 				type: 'midiMessage',
 				payload: {
-					message: [Event.NOTE_OFF, memoryBuffer[address] + 50, 100],
+					message: [Event.NOTE_OFF, memoryBuffer[address / 4] + 70, 100],
 					delay: Date.now() + 100,
-					timerAccuracy,
-					cycleTime,
 				},
 			});
 		}

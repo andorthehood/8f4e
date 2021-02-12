@@ -13,8 +13,6 @@ const compiler = function (state, events) {
 		switch (data.type) {
 			case 'midiMessage':
 				events.dispatch('sendMidiMessage', data.payload);
-				state.ui.compiler.timerAccuracy = data.payload.timerAccuracy;
-				state.ui.compiler.cycleTime = data.payload.cycleTime;
 				break;
 			case 'compilationDone':
 				state.ui.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
