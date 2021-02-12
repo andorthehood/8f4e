@@ -1,5 +1,5 @@
 import { Engine } from './engine';
-import generateSprite from './sprites';
+import generateSprite from './spriteGenerator';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 
 const init = async function (state) {
@@ -16,16 +16,10 @@ const init = async function (state) {
 	engine.setSpriteLookupAlgorithm(sprite.lookupFunction);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
-		//engine.reallocateBuffer(1000);
 		engine.resize(window.innerWidth, window.innerHeight);
 		drawConnections(engine, state);
 		drawModules(engine, state);
 		drawContextMenu(engine, state);
-
-		// engine.drawLine(100, 100, 200, 100);
-		// engine.drawLine(200, 200, 200, 300);
-		// engine.drawLine(400, 400, 440, 500);
-		// engine.drawLine(500, 500, 560, 600);
 
 		if (state.ui.isDebugMode) {
 			engine.startGroup(10, state.ui.viewport.height - 50);
@@ -38,7 +32,9 @@ const init = async function (state) {
 					state.ui.compiler.compilationTime +
 					' ms  cycle time ' +
 					state.ui.compiler.cycleTime +
-					' ms'
+					' ms  timer accuracy ' +
+					state.ui.compiler.timerAccuracy +
+					' % '
 			);
 			engine.endGroup();
 		}
