@@ -28,7 +28,8 @@ export const enum Instruction {
 	I32_STORE = 0x36,
 	I32_CONST = 0x41,
 	F32_CONST = 0x43,
-	I32_EQ = 0x46,
+	I32_EQ = 0x46, // Integer Equality
+	I32_LT_S = 0x48, // Integer Less Than, Signed
 	I32_GE_S = 0x4e,
 	I32_ADD = 0x6a,
 	I32_SUB = 0x6b,

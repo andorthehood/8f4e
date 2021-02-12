@@ -8,6 +8,7 @@ import {
 	createImportSection,
 	createMemoryImport,
 } from '../src/compiler/wasm/sections';
+import { FunctionBody, FunctionType } from '../src/compiler/wasm/types';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
