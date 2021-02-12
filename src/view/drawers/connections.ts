@@ -19,12 +19,12 @@ const drawConnections = function (engine, state) {
 		toY += b.y;
 
 		engine.startGroup(5 + state.ui.viewport.x, 5 + state.ui.viewport.y);
-		engine.drawLine(fromX, fromY, toX, toY, 'grey', 1);
+		engine.drawLine(fromX, fromY, toX, toY, 'rgb(153,153,153)', 1);
 		engine.endGroup();
 	}
 
 	if (state.ui.isConnectionBeingMade && state.ui.connectionPointA && state.ui.connectionPointB) {
-		engine.drawLine(...ui.connectionPointA, ...ui.connectionPointB, 'grey', 1);
+		engine.drawLine(...ui.connectionPointA, ...ui.connectionPointB, 'rgb(255,255,255)', 1);
 	}
 };
 
