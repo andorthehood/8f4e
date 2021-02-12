@@ -55,20 +55,21 @@ const recompile = async function (memoryRef, modules, connections) {
 
 		if (connection) {
 			const fromModule = connection.fromModule === 'cvToMidi1' ? connection.toModule : connection.fromModule;
-			const address = outputAddressLookup[fromModule].find(({ isInputPointer }) => !isInputPointer).address;
+			const address = outputAddressLookup[fromModule + 'out1'];
+			const note = Math.floor(((memoryBuffer[address / 4] + 32767) / 32767) * 10) + 40;
 
 			// @ts-ignore
 			self.postMessage({
 				type: 'midiMessage',
 				payload: {
-					message: [Event.NOTE_ON, memoryBuffer[address / 4] + 70, 100],
+					message: [Event.NOTE_ON, note, 100],
 				},
 			});
 			// @ts-ignore
 			self.postMessage({
 				type: 'midiMessage',
 				payload: {
-					message: [Event.NOTE_OFF, memoryBuffer[address / 4] + 70, 100],
+					message: [Event.NOTE_OFF, note, 100],
 					delay: Date.now() + 100,
 				},
 			});
