@@ -8,20 +8,26 @@ import {
 	createImportSection,
 	createMemoryImport,
 } from '../src/compiler/wasm/sections';
-import { FunctionBody, FunctionType } from '../src/compiler/wasm/types';
+import { FunctionBody } from '../src/compiler/wasm/types';
+import { i32abs } from '../src/compiler/wasm/helpers/i32abs'
+import { Type } from '../src/compiler/wasm/enums';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
-export const createSingleFunctionWASMProgramWithStandardLibrary = function (functionBody: number[]): Uint8Array {
+export const createSingleFunctionWASMProgramWithStandardLibrary = function (functionBody: FunctionBody): Uint8Array {
+	const helperFunctions = [
+		i32abs()
+	];
+
 	return Uint8Array.from([
 		...HEADER,
 		...VERSION,
-		...createTypeSection([createFunctionType([], []), createFunctionType([], [])]),
+		...createTypeSection([createFunctionType([], []), createFunctionType([Type.I32], [Type.I32])]),
 		...createImportSection([createMemoryImport('js', 'memory')]),
-		...createFunctionSection([0x00]),
-		...createExportSection([createFunctionExport('test', 0x00)]),
-		...createCodeSection([functionBody]),
+		...createFunctionSection([0x01, 0x00]),
+		...createExportSection([createFunctionExport('test', 0x01)]),
+		...createCodeSection([...helperFunctions, functionBody]),
 	]);
 };
 

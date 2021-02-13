@@ -14,6 +14,8 @@ import { call, i32store } from './wasm/instructions';
 import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module } from './modules/types';
+import { i32abs } from './wasm/helpers';
+import { Type } from './wasm/enums';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -51,16 +53,18 @@ const compile = function (modules: object[], connections: object[]) {
 	const cycleFunction = compiledModules.map((module, index) => call(index + 2)).flat();
 	const memoryInitiatorFunction = generateMemoryInitiatorFunction(compiledModules);
 	const outputAddressLookup = generateOutputAddressLookup(compiledModules);
+	const helperFunctions = [i32abs()];
 
 	return {
 		codeBuffer: Uint8Array.from([
 			...HEADER,
 			...VERSION,
-			...createTypeSection([createFunctionType([], [])]),
+			...createTypeSection([createFunctionType([], []), createFunctionType([Type.I32], [Type.I32])]),
 			...createImportSection([createMemoryImport('js', 'memory', 1, 1, true)]),
-			...createFunctionSection([0x00, 0x00, ...functionSignatures]),
+			...createFunctionSection([0x01, 0x00, 0x00, ...functionSignatures]),
 			...createExportSection([createFunctionExport('init', 0x00), createFunctionExport('cycle', 0x01)]),
 			...createCodeSection([
+				...helperFunctions,
 				createFunctionBody([], memoryInitiatorFunction),
 				createFunctionBody([], cycleFunction),
 				...functionBodies,
