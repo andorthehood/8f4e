@@ -19,6 +19,7 @@ export const enum Type {
 
 export const enum Instruction {
 	NOP = 0x01,
+	BLOCK = 0x02,
 	LOOP = 0x03,
 	IF = 0x04,
 	ELSE = 0x05,
