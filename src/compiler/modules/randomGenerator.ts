@@ -10,14 +10,15 @@ const enum Memory {
 }
 
 const enum Locals {
-	MULTIPLIER = 0,
-	INCREMENT = 1,
-	PREVIOUS = 2,
+	MULTIPLIER,
+	INCREMENT,
+	PREVIOUS,
+	__LENGTH,
 }
 
 const random: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
-		[createLocalDeclaration(Type.I32, 3)],
+		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			...i32loadLocal(Locals.MULTIPLIER, Memory.MULTIPLIER + offset),
 			...i32loadLocal(Locals.INCREMENT, Memory.INCREMENT + offset),
