@@ -9,8 +9,9 @@ const enum Memory {
 }
 
 const enum Locals {
-	COUNTER = 0,
-	OUTPUT = 1,
+	COUNTER,
+	OUTPUT,
+	__LENGTH,
 }
 
 type InitialMemory = [COUNTER: number, OUTPUT: number];
@@ -21,7 +22,7 @@ type InitialMemory = [COUNTER: number, OUTPUT: number];
  */
 const clock: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
-		[createLocalDeclaration(Type.I32, 2)],
+		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load variables from the memory
 			...i32loadLocal(Locals.OUTPUT, Memory.OUTPUT + offset),
