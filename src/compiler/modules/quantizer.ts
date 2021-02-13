@@ -27,17 +27,18 @@ const enum Memory {
 }
 
 const enum Locals {
-	INPUT = 0,
-	BEST_MACHING_VALUE = 1,
-	SMALLEST_DIFFERENCE = 2,
-	DIFFERENCE = 3,
-	COUNTER = 4,
-	NOTE_VALUE = 5,
+	INPUT,
+	BEST_MACHING_VALUE,
+	SMALLEST_DIFFERENCE,
+	DIFFERENCE,
+	COUNTER,
+	NOTE_VALUE,
+	__LENGTH,
 }
 
 const quantizer: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
-		[createLocalDeclaration(Type.I32, 6)],
+		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			...i32load(Memory.INPUT_POINTER + offset),
 			...i32loadLocal(Locals.INPUT),
