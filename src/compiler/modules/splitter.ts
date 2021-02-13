@@ -13,7 +13,8 @@ const enum Memory {
 }
 
 const enum Locals {
-	INPUT = 0,
+	INPUT,
+	__LENGTH,
 }
 
 /**
@@ -22,7 +23,7 @@ const enum Locals {
  */
 const splitter: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
-		[createLocalDeclaration(Type.I32, 1)],
+		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			...i32load(Memory.INPUT_POINTER + offset),
 			...i32loadLocal(Locals.INPUT),

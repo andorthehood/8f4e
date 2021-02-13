@@ -21,9 +21,10 @@ const enum Memory {
 }
 
 const enum Locals {
-	COUNTER = 0,
-	RATE = 1,
-	LIMIT = 2,
+	COUNTER,
+	RATE,
+	LIMIT,
+	__LENGTH,
 }
 
 type InitialMemory = [
@@ -40,7 +41,7 @@ type InitialMemory = [
  */
 const saw: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
-		[createLocalDeclaration(Type.I32, 3)],
+		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load data from memory into local variables.
 			...i32load(Memory.RATE_POINTER + offset),
