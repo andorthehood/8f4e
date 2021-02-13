@@ -132,3 +132,7 @@ export const br_if = function (breakDepth: number): number[] {
 export const loop = function (resultType: Type, code: number[]): number[] {
 	return [Instruction.LOOP, resultType, ...code, ...br(0), Instruction.END];
 };
+
+export const block = function (resultType: Type, code: number[]): number[] {
+	return [Instruction.BLOCK, resultType, ...code, Instruction.END];
+};
