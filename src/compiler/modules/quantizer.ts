@@ -9,6 +9,7 @@ import {
 	ifelse,
 	loop,
 	br_if,
+	block,
 } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from '../wasm/enums';
@@ -47,45 +48,48 @@ const quantizer: ModuleGenerator = function (moduleId, offset) {
 			...i32const(0),
 			...localSet(Locals.COUNTER),
 
-			...loop(Type.VOID, [
-				...localGet(Locals.COUNTER),
-				...i32const(10 * 4),
-				Instruction.I32_GE_U,
-				...br_if(1),
+			...block(
+				Type.VOID,
+				loop(Type.VOID, [
+					...localGet(Locals.COUNTER),
+					...i32const(10 * 4),
+					Instruction.I32_GE_U,
+					...br_if(1),
 
-				// Load note value from the memory
-				...localGet(Locals.COUNTER),
-				...i32const(Memory.NOTES_START_ADDRESS + offset),
-				Instruction.I32_ADD,
-				...i32load(),
-				...localSet(Locals.NOTE_VALUE),
+					// Load note value from the memory
+					...localGet(Locals.COUNTER),
+					...i32const(Memory.NOTES_START_ADDRESS + offset),
+					Instruction.I32_ADD,
+					...i32load(),
+					...localSet(Locals.NOTE_VALUE),
 
-				// Calculate difference between input and note
-				...localGet(Locals.NOTE_VALUE),
-				...localGet(Locals.INPUT),
-				Instruction.I32_SUB,
-				...call(Helper.ABS),
-				...localSet(Locals.DIFFERENCE),
-
-				// Compare with the smallest difference
-				...localGet(Locals.DIFFERENCE),
-				...localGet(Locals.SMALLEST_DIFFERENCE),
-				Instruction.I32_LE_S,
-				...ifelse(Type.VOID, [
-					...localGet(Locals.DIFFERENCE),
-					...localSet(Locals.SMALLEST_DIFFERENCE),
+					// Calculate difference between input and note
 					...localGet(Locals.NOTE_VALUE),
-					...localSet(Locals.BEST_MACHING_VALUE),
-				]),
+					...localGet(Locals.INPUT),
+					Instruction.I32_SUB,
+					...call(Helper.ABS),
+					...localSet(Locals.DIFFERENCE),
 
-				// Increment counter
-				...localGet(Locals.COUNTER),
-				...i32const(4),
-				Instruction.I32_ADD,
-				...localSet(Locals.COUNTER),
+					// Compare with the smallest difference
+					...localGet(Locals.DIFFERENCE),
+					...localGet(Locals.SMALLEST_DIFFERENCE),
+					Instruction.I32_LE_S,
+					...ifelse(Type.VOID, [
+						...localGet(Locals.DIFFERENCE),
+						...localSet(Locals.SMALLEST_DIFFERENCE),
+						...localGet(Locals.NOTE_VALUE),
+						...localSet(Locals.BEST_MACHING_VALUE),
+					]),
 
-				...i32storeLocal(Locals.BEST_MACHING_VALUE, Memory.OUTPUT + offset),
-			]),
+					// Increment counter
+					...localGet(Locals.COUNTER),
+					...i32const(4),
+					Instruction.I32_ADD,
+					...localSet(Locals.COUNTER),
+				])
+			),
+
+			...i32storeLocal(Locals.BEST_MACHING_VALUE, Memory.OUTPUT + offset),
 		]
 	);
 
