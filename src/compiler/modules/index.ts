@@ -4,3 +4,4 @@ export { default as saw } from './saw';
 export { default as splitter } from './splitter';
 export { default as clockGenerator } from './clockGenerator';
 export { default as quantizer } from './quantizer';
+export { default as scope } from './scope';

@@ -1,4 +1,5 @@
-import { modules, feedbackScale, font } from '../spriteGenerator';
+import { modules, feedbackScale, font } from '../../spriteGenerator';
+import scope from './scope';
 
 const drawModules = function (engine, state) {
 	const offsetX = state.ui.viewport.x;
@@ -43,12 +44,16 @@ const drawModules = function (engine, state) {
 			engine.setSpriteLookup(feedbackScale);
 
 			for (let i = 0; i < connectorIds.length; i++) {
-				if (state.ui.compiler.outputAddressLookup[id + connectors[i].id]) {
+				if (typeof state.ui.compiler.outputAddressLookup[id + connectors[i].id] !== 'undefined') {
 					const connectorAddress = state.ui.compiler.outputAddressLookup[id + connectors[i].id];
 					const value = state.ui.compiler.memoryBuffer[connectorAddress / 4];
 
 					engine.drawSprite(connectors[connectorIds[i]].x, connectors[connectorIds[i]].y, value, 10, 10);
 				}
+			}
+
+			if (type === 'scope') {
+				scope(engine, state, id);
 			}
 
 			engine.endGroup();
