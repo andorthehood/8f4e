@@ -1,4 +1,4 @@
-import { fillColor, feedbackScale, font } from '../spriteGenerator';
+import { modules, feedbackScale, font } from '../spriteGenerator';
 
 const drawModules = function (engine, state) {
 	const offsetX = state.ui.viewport.x;
@@ -17,8 +17,8 @@ const drawModules = function (engine, state) {
 			y + offsetY < state.ui.viewport.height
 		) {
 			engine.startGroup(x, y);
-			engine.setSpriteLookup(fillColor);
-			engine.drawRectangle(0, 0, width, height, 'rgb(102,102,102)', 1);
+			engine.setSpriteLookup(modules);
+			engine.drawSprite(0, 0, type, width, height);
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
@@ -47,7 +47,7 @@ const drawModules = function (engine, state) {
 					const connectorAddress = state.ui.compiler.outputAddressLookup[id + connectors[i].id];
 					const value = state.ui.compiler.memoryBuffer[connectorAddress / 4];
 
-					engine.drawRectangle(connectors[connectorIds[i]].x, connectors[connectorIds[i]].y, 10, 10, value, 1);
+					engine.drawSprite(connectors[connectorIds[i]].x, connectors[connectorIds[i]].y, value, 10, 10);
 				}
 			}
 
