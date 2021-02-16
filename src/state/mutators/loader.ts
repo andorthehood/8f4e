@@ -54,7 +54,11 @@ const defaultState = {
 			height: 100,
 			connectors: [
 				{ id: 'in', x: 5, y: 20, isInput: true },
-				{ id: 'out1', x: 285, y: 20 },
+				{ id: 'out', x: 285, y: 20 },
+			],
+			toggleSwitches: [
+				{ id: 'c', onValue: 230, offValue: 0, isOn: false, x: 40, y: 40, width: 10, height: 10 },
+				{ id: 'c#', onValue: 240, offValue: 0, isOn: false, x: 30, y: 30, width: 10, height: 10 },
 			],
 			name: 'Quantizer',
 		},
