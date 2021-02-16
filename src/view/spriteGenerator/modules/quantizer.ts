@@ -14,8 +14,8 @@ const generateBox = function (ctx: OffscreenCanvasRenderingContext2D): void {
 };
 
 const generateWhiteKeys = function (ctx: OffscreenCanvasRenderingContext2D): void {
-	ctx.fillStyle = 'rgb(255,255,255)';
-	const whiteKeyLeft = function (width = 30, height = 80, cutX = 8, cutY = 50) {
+	ctx.fillStyle = 'rgb(200,200,200)';
+	const whiteKeyLeft = function (width = 20, height = 70, cutX = 5, cutY = 40) {
 		width--;
 		ctx.fillRect(0, 0, 1, height);
 		ctx.fillRect(width - cutX, 0, 1, cutY);
@@ -26,7 +26,7 @@ const generateWhiteKeys = function (ctx: OffscreenCanvasRenderingContext2D): voi
 		ctx.fillRect(0, height, width, 1);
 	};
 
-	const whiteKeyMiddle = function (width = 30, height = 80, cutX = 8, cutY = 50) {
+	const whiteKeyMiddle = function (width = 20, height = 70, cutX = 5, cutY = 40) {
 		width--;
 		ctx.fillRect(0, cutY, 1, height - cutY);
 		ctx.fillRect(cutX, 0, 1, cutY);
@@ -39,7 +39,7 @@ const generateWhiteKeys = function (ctx: OffscreenCanvasRenderingContext2D): voi
 		ctx.fillRect(0, height, width, 1);
 	};
 
-	const whiteKeyRight = function (width = 30, height = 80, cutX = 8, cutY = 50) {
+	const whiteKeyRight = function (width = 20, height = 70, cutX = 5, cutY = 40) {
 		width--;
 		ctx.fillRect(0, cutY, 1, height - cutY);
 		ctx.fillRect(cutX, 0, 1, cutY);
@@ -50,7 +50,7 @@ const generateWhiteKeys = function (ctx: OffscreenCanvasRenderingContext2D): voi
 		ctx.fillRect(0, height, width, 1);
 	};
 
-	const spacing = 29;
+	const spacing = 24;
 
 	whiteKeyLeft();
 	ctx.translate(spacing, 0);
@@ -71,7 +71,7 @@ const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.resetTransform();
 	ctx.translate(offsetX, offsetY);
 	generateBox(ctx);
-	ctx.translate(70, 10);
+	ctx.translate(50, 20);
 	generateWhiteKeys(ctx);
 };
 

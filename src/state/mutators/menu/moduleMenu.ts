@@ -12,6 +12,7 @@ const contextMenu = function (state, events) {
 			{ title: 'Clock generator', action: 'addModule', payload: { type: 'clockGenerator' }, close: true },
 			{ title: 'Random generator', action: 'addModule', payload: { type: 'randomGenerator' }, close: true },
 			{ title: 'Quantizer', action: 'addModule', payload: { type: 'quantizer' }, close: true },
+			{ title: 'Scope', action: 'addModule', payload: { type: 'scope' }, close: true },
 		];
 	};
 
