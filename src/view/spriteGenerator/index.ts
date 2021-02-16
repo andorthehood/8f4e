@@ -2,10 +2,12 @@ import generateFont from './generateFonts';
 import generateFillColors from './generateFillColors';
 import generateFeedbackScale from './generateFeedbackScale';
 import generateModules from './modules';
+import generateScope from './generateScope';
 export { lookup as feedbackScale } from './generateFeedbackScale';
 export { lookup as fillColor } from './generateFillColors';
 export { lookup as font } from './generateFonts';
 export { lookup as modules } from './modules';
+export { lookup as scope } from './generateScope';
 
 const generateSprite = async function (): Promise<OffscreenCanvas | HTMLCanvasElement> {
 	let canvas;
@@ -24,6 +26,7 @@ const generateSprite = async function (): Promise<OffscreenCanvas | HTMLCanvasEl
 	generateFont(ctx);
 	generateFillColors(ctx);
 	generateModules(ctx);
+	generateScope(ctx);
 
 	return canvas;
 };

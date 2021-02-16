@@ -81,12 +81,12 @@ const recompile = async function (memoryRef, modules, connections) {
 						message: [Event.NOTE_ON, note, 100],
 					},
 				});
+			} else if (!isHigh && wasHigh) {
 				// @ts-ignore
 				self.postMessage({
 					type: 'midiMessage',
 					payload: {
 						message: [Event.NOTE_OFF, note, 100],
-						delay: Date.now() + 100,
 					},
 				});
 			}
