@@ -22,8 +22,8 @@ const init = async function (state) {
 			engine.drawSpriteFromCoordinates(10, 10, 512, 512, 0, 0);
 		}
 
-		drawConnections(engine, state);
 		drawModules(engine, state);
+		drawConnections(engine, state);
 		drawContextMenu(engine, state);
 
 		engine.setSpriteLookup(font('small_white'));

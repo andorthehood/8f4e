@@ -108,7 +108,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset,
-		initialMemory: [249, Memory.ZERO + offset, 0, 0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100],
+		initialMemory: [249, Memory.ZERO + offset, 0, 0, 100, 200, 300, 0, 400, 410, 20000, 32000, 800, 900, 1000, 1100],
 		memoryAddresses: [
 			{ address: Memory.OUTPUT + offset, id: 'out' },
 			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
