@@ -1,4 +1,4 @@
-import { i32storeLocal, i32load, localGet, localSet, i32const, i32store, ifelse } from '../wasm/instructions';
+import { i32storeLocal, i32load, localGet, localSet, i32const, i32store, ifelse, br } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from '../wasm/enums';
 import { ModuleGenerator } from './types';
@@ -7,17 +7,20 @@ const enum Memory {
 	ZERO = 0x00,
 	INPUT_POINTER = 0x04,
 	OUTPUT = 0x08,
-	BUFFER_POINTER = 0x0c,
-	BUFFER_START = 0x10,
+	COUNTER = 0x0c,
+	RATE = 0x10,
+	BUFFER_POINTER = 0x14,
+	BUFFER_START = 0x18,
 }
 
 const enum Locals {
 	INPUT,
 	BUFFER_POINTER,
+	COUNTER,
 	__LENGTH,
 }
 
-const BUFFER_LENGTH = Int32Array.BYTES_PER_ELEMENT * 8;
+const BUFFER_LENGTH = Int32Array.BYTES_PER_ELEMENT * 100;
 
 const scope: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
@@ -28,6 +31,36 @@ const scope: ModuleGenerator = function (moduleId, offset) {
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.INPUT),
+
+			// Save input to the memory.
+			...i32const(Memory.OUTPUT + offset),
+			...localGet(Locals.INPUT),
+			...i32store(),
+
+			// Load counter.
+			...i32const(Memory.COUNTER + offset),
+			...i32load(),
+			...localSet(Locals.COUNTER),
+
+			...localGet(Locals.COUNTER),
+			...i32const(Memory.RATE + offset),
+			...i32load(),
+			Instruction.I32_GE_S,
+			...ifelse(
+				Type.VOID,
+				[...i32const(Memory.COUNTER + offset), ...i32const(0), ...i32store()],
+				[
+					...localGet(Locals.COUNTER),
+					...i32const(1),
+					Instruction.I32_ADD,
+					...localSet(Locals.COUNTER),
+
+					...i32const(Memory.COUNTER + offset),
+					...localGet(Locals.COUNTER),
+					...i32store(),
+					...br(1),
+				]
+			),
 
 			// Load buffer pointer and store it in a register.
 			...i32const(Memory.BUFFER_POINTER + offset),
@@ -55,8 +88,6 @@ const scope: ModuleGenerator = function (moduleId, offset) {
 			...i32const(Memory.BUFFER_POINTER + offset),
 			...localGet(Locals.BUFFER_POINTER),
 			...i32store(),
-
-			...i32storeLocal(Locals.INPUT, Memory.OUTPUT + offset),
 		]
 	);
 
@@ -64,7 +95,15 @@ const scope: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset,
-		initialMemory: [0, Memory.ZERO + offset, 0, Memory.BUFFER_START + offset, 0, 0, 0, 0, 0, 0, 0, 0],
+		initialMemory: [
+			0,
+			Memory.ZERO + offset,
+			0,
+			0,
+			0,
+			Memory.BUFFER_START + offset,
+			...new Array(BUFFER_LENGTH / Int32Array.BYTES_PER_ELEMENT).fill(0),
+		],
 		memoryAddresses: [
 			{ address: Memory.OUTPUT + offset, id: 'out' },
 			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
