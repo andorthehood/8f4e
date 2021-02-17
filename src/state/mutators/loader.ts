@@ -77,6 +77,12 @@ const defaultState = {
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 			name: 'Saw',
 		},
+		triangle: {
+			width: 100,
+			height: 100,
+			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+			name: 'Triangle',
+		},
 		randomGenerator: {
 			width: 100,
 			height: 100,
@@ -91,6 +97,15 @@ const defaultState = {
 				{ id: 'out', x: 85, y: 20 },
 			],
 			name: 'Scope',
+		},
+		attenuator: {
+			width: 100,
+			height: 100,
+			connectors: [
+				{ id: 'out', x: 85, y: 20, isInput: false },
+				{ id: 'in', x: 5, y: 20, isInput: true },
+			],
+			name: 'Attenuator',
 		},
 	},
 };

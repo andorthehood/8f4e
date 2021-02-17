@@ -23,7 +23,7 @@ const enum Memory {
 	ZERO = 0x00,
 	INPUT_POINTER = 0x04,
 	OUTPUT = 0x08,
-	NOTES_START_ADDRESS = 12,
+	NOTES_START_ADDRESS = 0xc,
 }
 
 const enum Locals {

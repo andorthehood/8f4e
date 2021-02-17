@@ -20,7 +20,7 @@ const enum Locals {
 	__LENGTH,
 }
 
-const BUFFER_LENGTH = Int32Array.BYTES_PER_ELEMENT * 100;
+const BUFFER_LENGTH = Int32Array.BYTES_PER_ELEMENT * 80;
 
 const scope: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(

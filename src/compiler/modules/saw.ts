@@ -16,8 +16,8 @@ const enum Memory {
 	COUNTER = 0x00,
 	RATE_POINTER = 0x04,
 	RATE_SELF = 0x08,
-	LIMIT_POINTER = 12,
-	LIMIT_SELF = 16,
+	LIMIT_POINTER = 0xc,
+	LIMIT_SELF = 0x10,
 }
 
 const enum Locals {
@@ -27,18 +27,6 @@ const enum Locals {
 	__LENGTH,
 }
 
-type InitialMemory = [
-	COUNTER: number,
-	RATE_POINTER: number,
-	RATE_SELF: number,
-	RATE_POINTER: number,
-	LIMIT_SELF: number
-];
-
-/**
- *
- * @param memoryStartAddress
- */
 const saw: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
@@ -65,7 +53,7 @@ const saw: ModuleGenerator = function (moduleId, offset) {
 		]
 	);
 
-	const initialMemory: InitialMemory = [0, offset + Memory.RATE_SELF, 1000, offset + Memory.LIMIT_SELF, 32767];
+	const initialMemory = [0, offset + Memory.RATE_SELF, 1000, offset + Memory.LIMIT_SELF, 32767];
 
 	return {
 		moduleId,
