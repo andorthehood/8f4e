@@ -1,30 +1,26 @@
-import { i32const, i32load, i32store, ifelse } from '../wasm/instructions';
+import { i32const, i32load, i32store } from '../wasm/instructions';
 import { createFunctionBody } from '../wasm/sections';
 import { Instruction } from '../wasm/enums';
 import { ModuleGenerator } from './types';
 
 const enum Memory {
-	MULTIPLIER = 0x00,
-	INCREMENT = 0x04,
-	PREVIOUS = 0x08,
+	ZERO = 0x00,
+	INPUT_POINTER = 0x04,
+	DIVISOR = 0x08,
+	OUT = 0x0c,
 }
 
-/**
- *
- * @param memoryStartAddress
- */
 const attenuator: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
-			...i32const(Memory.PREVIOUS + offset), // Address for storing
-			...[
-				...i32load(Memory.PREVIOUS + offset),
-				...i32load(Memory.MULTIPLIER + offset),
-				Instruction.I32_MUL,
-				...i32load(Memory.INCREMENT + offset),
-				Instruction.I32_ADD,
-			],
+			...i32const(Memory.OUT + offset),
+			...i32const(Memory.INPUT_POINTER + offset),
+			...i32load(),
+			...i32load(),
+			...i32const(Memory.DIVISOR + offset),
+			...i32load(),
+			Instruction.I32_DIV_S,
 			...i32store(),
 		]
 	);
@@ -33,8 +29,11 @@ const attenuator: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset,
-		initialMemory: [25214903917, 11, 9],
-		memoryAddresses: [{ address: Memory.PREVIOUS + offset, id: 'output' }],
+		initialMemory: [0, Memory.ZERO + offset, 10, 0],
+		memoryAddresses: [
+			{ address: Memory.OUT + offset, id: 'out' },
+			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
+		],
 	};
 };
 

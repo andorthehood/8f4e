@@ -42,6 +42,7 @@ export const enum Instruction {
 	I32_ADD = 0x6a,
 	I32_SUB = 0x6b,
 	I32_MUL = 0x6c,
+	I32_DIV_S = 0x6d,
 	I32_DIV_U = 0x6e,
 	F32_STORE = 0x83,
 	F32_ADD = 0x92,
