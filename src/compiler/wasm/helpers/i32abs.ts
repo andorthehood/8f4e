@@ -1,6 +1,6 @@
 import { createFunctionBody } from '../sections';
 import { i32const, localGet, ifelse } from '../instructions';
-import { Instruction, Type } from '../enums';
+import { Instruction, Type } from 'wasm-bytecode-utils';
 import { FunctionBody } from '../types';
 
 export const i32abs = function (): FunctionBody {
