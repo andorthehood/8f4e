@@ -9,7 +9,9 @@ import {
 	unsignedLEB128,
 	encodeString,
 } from './types';
-import { Section, Type, Instruction, ImportDesc, NameSection, ExportDesc } from './enums';
+
+import { Type, Section, Instruction } from 'wasm-bytecode-utils';
+import { ImportDesc, NameSection, ExportDesc } from './enums';
 
 export const createFunctionSection = function (functionTypeIndexes: number[]): number[] {
 	const numberOfFunctions = functionTypeIndexes.length;

@@ -15,7 +15,7 @@ import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module } from './modules/types';
 import { i32abs, i32modulo } from './wasm/helpers';
-import { Type } from './wasm/enums';
+import { Type } from 'wasm-bytecode-utils';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
