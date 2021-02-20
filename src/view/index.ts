@@ -1,4 +1,4 @@
-import { Engine } from './engine';
+import { Engine } from 'glugglugglug';
 import generateSprite from './spriteGenerator';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 import { font } from './spriteGenerator';
