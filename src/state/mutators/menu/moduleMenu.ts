@@ -15,6 +15,8 @@ const contextMenu = function (state, events) {
 			{ title: 'Quantizer', action: 'addModule', payload: { type: 'quantizer' }, close: true },
 			{ title: 'Scope', action: 'addModule', payload: { type: 'scope' }, close: true },
 			{ title: 'Attenuator', action: 'addModule', payload: { type: 'attenuator' }, close: true },
+			{ title: 'Swtich', action: 'addModule', payload: { type: 'switch' }, close: true },
+			{ title: 'Volt', action: 'addModule', payload: { type: 'voltageSource' }, close: true },
 		];
 	};
 
