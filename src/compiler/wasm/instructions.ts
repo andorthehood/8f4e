@@ -1,5 +1,5 @@
 import { unsignedLEB128, signedLEB128, ieee754 } from './types';
-import { Instruction, Type } from './enums';
+import { Instruction, Type } from 'wasm-bytecode-utils';
 
 export const localGet = function (index: number): number[] {
 	return [Instruction.LOCAL_GET, ...unsignedLEB128(index)];
