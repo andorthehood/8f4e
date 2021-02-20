@@ -107,6 +107,18 @@ const defaultState = {
 			],
 			name: 'Attenuator',
 		},
+		switch: {
+			width: 50,
+			height: 50,
+			connectors: [{ id: 'out', x: 35, y: 20, isInput: false }],
+			name: 'Switch',
+		},
+		voltageSource: {
+			width: 50,
+			height: 50,
+			connectors: [{ id: 'out', x: 35, y: 20, isInput: false }],
+			name: 'Volt',
+		},
 	},
 };
 
