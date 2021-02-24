@@ -1,4 +1,4 @@
-import { modules, feedbackScale, font } from '../../spriteGenerator';
+import { modules, feedbackScale, font, fillColor } from '../../spriteGenerator';
 import scope from './scope';
 
 const drawModules = function (engine, state) {
@@ -41,14 +41,22 @@ const drawModules = function (engine, state) {
 			// 	}
 			// }
 
-			engine.setSpriteLookup(feedbackScale);
-
 			for (let i = 0; i < connectorIds.length; i++) {
 				if (typeof state.ui.compiler.outputAddressLookup[id + connectors[i].id] !== 'undefined') {
 					const connectorAddress = state.ui.compiler.outputAddressLookup[id + connectors[i].id];
 					const value = state.ui.compiler.memoryBuffer[connectorAddress / 4];
+					const connector = connectors[connectorIds[i]];
 
-					engine.drawSprite(connectors[connectorIds[i]].x, connectors[connectorIds[i]].y, value, 10, 10);
+					if (connector.isInput) {
+						engine.setSpriteLookup(fillColor);
+						engine.drawRectangle(connector.x, connector.y, 10, 10, 'rgb(153,153,153)');
+					} else {
+						engine.setSpriteLookup(feedbackScale);
+						engine.drawSprite(connector.x, connector.y, value, 10, 10);
+					}
+					engine.setSpriteLookup(font('small_white'));
+					const offset = connector.isInput ? 15 : (connector.label || connector.id).length * -7;
+					engine.drawText(connector.x + offset, connector.y, connector.label || connector.id);
 				}
 			}
 
