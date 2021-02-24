@@ -1,7 +1,7 @@
-import findModuleAtViewportCoordinates from '../helpers/findModuleAtViewportCoordinates';
-import findConnectorAtViewportCoordinates from '../helpers/findConnectorAtViewportCoordinates';
-import findConnectorInModule from '../helpers/findConnectorInModule';
-import findConnectionByConnector from '../helpers/findConnectionByConnector';
+import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
+import findConnectorAtViewportCoordinates from '../../helpers/findConnectorAtViewportCoordinates';
+import findConnectorInModule from '../../helpers/findConnectorInModule';
+import { rejectConnectionByConnectorId, findConnectionByConnectorId } from '../../helpers/connectionHelpers';
 
 const connectionMaker = function (state, events) {
 	const onMouseMove = event => {
@@ -28,10 +28,10 @@ const connectionMaker = function (state, events) {
 			return;
 		}
 
-		const connection = findConnectionByConnector(state, module, connector);
+		const connection = findConnectionByConnectorId(state.ui.connections, module.id, connector.id);
 
 		if (!state.ui.isConnectionBeingMade && connection) {
-			return events.dispatch('deleteConnection', { connectionId: connection.id });
+			return events.dispatch('deleteConnection', { connectorId: connector.id, moduleId: module.id });
 		}
 
 		if (state.ui.isConnectionBeingMade && connection) {
@@ -74,20 +74,21 @@ const connectionMaker = function (state, events) {
 		events.on('mousemove', onMouseMove);
 	};
 
-	const onDeleteConnection = ({ moduleId, connectionId }) => {
-		state.ui.connections = state.ui.connections.filter(({ fromModule, toModule, id }) => {
-			return !(connectionId === id || moduleId === fromModule || moduleId === toModule);
-		});
+	const onDeleteConnection = ({ moduleId, connectorId }) => {
+		state.ui.connections = rejectConnectionByConnectorId(state.ui.connections, moduleId, connectorId);
 	};
 
 	const onCreateConnection = ({ module, connector }) => {
-		state.ui.connections.push({
-			fromModule: state.ui.connectionFromModule,
-			fromConnector: state.ui.connectionFromConnector,
-			toModule: module.id,
-			toConnector: connector.id,
-			id: Date.now(),
-		});
+		state.ui.connections.push([
+			{
+				connectorId: connector.id,
+				moduleId: module.id,
+			},
+			{
+				connectorId: state.ui.connectionFromConnector,
+				moduleId: state.ui.connectionFromModule,
+			},
+		]);
 	};
 
 	events.on('deleteConnection', onDeleteConnection);

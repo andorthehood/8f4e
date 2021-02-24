@@ -46,7 +46,7 @@ const generateMemoryInitiatorFunction = function (compiledModules) {
 		.flat();
 };
 
-const compile = function (modules: object[], connections: object[]) {
+const compile = function (modules: object[]) {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
