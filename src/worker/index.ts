@@ -3,8 +3,8 @@ import { setUpConnections } from '../compiler/initializeMemory';
 import { Event } from '../midi/enums';
 import { findWhatIsConnectedTo } from '../helpers/connectionHelpers';
 
-export const createModule = async function (memoryRef, modules, connections) {
-	const { codeBuffer, outputAddressLookup, compiledModules } = compile(modules, connections);
+export const createModule = async function (memoryRef, modules) {
+	const { codeBuffer, outputAddressLookup, compiledModules } = compile(modules);
 
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
@@ -24,11 +24,7 @@ export const createModule = async function (memoryRef, modules, connections) {
 let interval;
 
 const recompile = async function (memoryRef, modules, connections) {
-	const { memoryBuffer, cycle, outputAddressLookup, init, compiledModules } = await createModule(
-		memoryRef,
-		modules,
-		connections
-	);
+	const { memoryBuffer, cycle, outputAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
 
 	// @ts-ignore
 	init();
@@ -48,22 +44,26 @@ const recompile = async function (memoryRef, modules, connections) {
 
 	let wasHigh = false;
 
+	const cvToMidiModule = compiledModules.find(({ moduleId }) => moduleId.startsWith('cvToMidi'));
+	let cvAddress, clockAddress;
+	if (cvToMidiModule) {
+		cvAddress =
+			memoryBuffer[
+				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'cvin').address / Uint32Array.BYTES_PER_ELEMENT
+			];
+		clockAddress =
+			memoryBuffer[
+				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'clockin').address / Uint32Array.BYTES_PER_ELEMENT
+			];
+	}
+
 	interval = setInterval(() => {
 		// @ts-ignore
 		cycle();
 
-		const connectionCV = findWhatIsConnectedTo(connections, 'cvToMidi1', 'cvin');
-		const connectionClock = findWhatIsConnectedTo(connections, 'cvToMidi1', 'clockin');
-
-		if (connectionCV && connectionClock) {
-			const fromModuleCV = connectionCV.moduleId;
-			const fromModuleClock = connectionClock.moduleId;
-
-			const addressCV = outputAddressLookup[fromModuleCV + 'out1'];
-			const note = Math.floor(((memoryBuffer[addressCV / 4] + 32767) / 32767) * 10) + 40;
-
-			const addressClock = outputAddressLookup[fromModuleClock + 'out1'];
-			const isHigh = memoryBuffer[addressClock / 4] !== 0;
+		if (cvAddress && clockAddress) {
+			const note = Math.floor(((memoryBuffer[cvAddress / Uint32Array.BYTES_PER_ELEMENT] + 32767) / 32767) * 10) + 40;
+			const isHigh = memoryBuffer[clockAddress / Uint32Array.BYTES_PER_ELEMENT] !== 0;
 
 			if (isHigh && !wasHigh) {
 				// @ts-ignore

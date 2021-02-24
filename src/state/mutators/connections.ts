@@ -1,7 +1,11 @@
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 import findConnectorAtViewportCoordinates from '../../helpers/findConnectorAtViewportCoordinates';
 import findConnectorInModule from '../../helpers/findConnectorInModule';
-import { rejectConnectionByConnectorId, findConnectionByConnectorId } from '../../helpers/connectionHelpers';
+import {
+	rejectConnectionByConnectorId,
+	findConnectionByConnectorId,
+	rejectConnectionsByModuleId,
+} from '../../helpers/connectionHelpers';
 
 const connectionMaker = function (state, events) {
 	const onMouseMove = event => {
@@ -75,7 +79,11 @@ const connectionMaker = function (state, events) {
 	};
 
 	const onDeleteConnection = ({ moduleId, connectorId }) => {
-		state.ui.connections = rejectConnectionByConnectorId(state.ui.connections, moduleId, connectorId);
+		if (connectorId) {
+			state.ui.connections = rejectConnectionByConnectorId(state.ui.connections, moduleId, connectorId);
+		} else {
+			state.ui.connections = rejectConnectionsByModuleId(state.ui.connections, moduleId);
+		}
 	};
 
 	const onCreateConnection = ({ module, connector }) => {
