@@ -10,9 +10,9 @@ const mirr = function (toBeMirrored: number[], middle: number[] = []): number[] 
 	return [...toBeMirrored, ...middle, ...toBeMirrored.slice().reverse()];
 };
 
-const a = pad(2, [0b00001111, 0b00010001, ...same(0b00010001, 2), 0b00010011, 0b0001110], 2);
+const a = pad(2, [0b00001110, 0b00010001, ...same(0b00010001, 2), 0b00010011, 0b0001101], 2);
 const b = pad(0, [0b00010000, 0b00010000, 0b00010110, 0b00011001, 0b00010001, 0b00010001, 0b00010001, 0b00011110], 2);
-const c = pad(2, mirr([0b00001110, 0b00010001], same(0b0001000, 2)), 2);
+const c = pad(2, mirr([0b00001110, 0b00010001], same(0b0010000, 2)), 2);
 const d = pad(0, [0b00000001, 0b00000001, 0b00001111, ...same(0b00010001, 3), 0b00010011, 0b00001101], 2);
 const e = pad(2, [0b00001110, 0b00010001, 0b00011111, 0b00010000, 0b00010001, 0b00001110], 2);
 const f = pad(0, [0b00000110, 0b00001000, 0b00011110, ...same(0b00001000, 5)], 2);
