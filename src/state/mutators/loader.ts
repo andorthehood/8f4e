@@ -1,14 +1,5 @@
 const defaultState = {
-	modules: [
-		{
-			beingDragged: false,
-			id: 'cvToMidi1',
-			isSelected: false,
-			type: 'cvToMidi',
-			x: 0,
-			y: 0,
-		},
-	],
+	modules: [],
 	connections: [],
 	isDebugMode: process.env.NODE_ENV === 'development',
 	compiler: {
@@ -63,11 +54,11 @@ const defaultState = {
 			name: 'Quantizer',
 		},
 		cvToMidi: {
-			width: 100,
-			height: 200,
+			width: 200,
+			height: 100,
 			connectors: [
-				{ id: 'cvin', x: 5, y: 20, isInput: true },
-				{ id: 'clockin', x: 5, y: 35, isInput: true },
+				{ id: 'cvin', x: 5, y: 20, isInput: true, label: 'note in' },
+				{ id: 'clockin', x: 5, y: 35, isInput: true, label: 'clock in' },
 			],
 			name: 'CV to MIDI',
 		},
