@@ -18,12 +18,12 @@ export const filterConnectionsByModuleId = function (connections, moduleId: stri
 	});
 };
 
-export const rejectConnectionsByModuleId = function (connections, moduleId: string, connectorId: string): Object[] {
+export const rejectConnectionsByModuleId = function (connections, moduleId: string): Object[] {
 	return connections.filter(parties => {
 		return (
 			parties.findIndex(party => {
-				return party.moduleId !== moduleId;
-			}) !== -1
+				return party.moduleId == moduleId;
+			}) === -1
 		);
 	});
 };
@@ -32,8 +32,8 @@ export const rejectConnectionByConnectorId = function (connections, moduleId: st
 	return connections.filter(parties => {
 		return (
 			parties.findIndex(party => {
-				return party.moduleId !== moduleId && party.connectorId !== connectorId;
-			}) !== -1
+				return party.moduleId === moduleId && party.connectorId === connectorId;
+			}) === -1
 		);
 	});
 };

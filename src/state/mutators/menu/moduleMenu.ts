@@ -17,6 +17,7 @@ const contextMenu = function (state, events) {
 			{ title: 'Attenuator', action: 'addModule', payload: { type: 'attenuator' }, close: true },
 			{ title: 'Swtich', action: 'addModule', payload: { type: 'switch' }, close: true },
 			{ title: 'Volt', action: 'addModule', payload: { type: 'voltageSource' }, close: true },
+			{ title: 'CV2Midi', action: 'addModule', payload: { type: 'cvToMidi' }, close: true },
 		];
 	};
 
