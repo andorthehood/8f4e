@@ -1,6 +1,7 @@
 import compile from '../compiler';
 import { setUpConnections } from '../compiler/initializeMemory';
 import { Event } from '../midi/enums';
+import { findWhatIsConnectedTo } from '../helpers/connectionHelpers';
 
 export const createModule = async function (memoryRef, modules, connections) {
 	const { codeBuffer, outputAddressLookup, compiledModules } = compile(modules, connections);
@@ -51,21 +52,12 @@ const recompile = async function (memoryRef, modules, connections) {
 		// @ts-ignore
 		cycle();
 
-		const connectionCV = connections.find(
-			({ toModule, toConnector, fromModule, fromConnector }) =>
-				(toModule === 'cvToMidi1' || fromModule === 'cvToMidi1') && (toConnector === 'cvin' || fromConnector === 'cvin')
-		);
-
-		const connectionClock = connections.find(
-			({ toModule, toConnector, fromModule, fromConnector }) =>
-				(toModule === 'cvToMidi1' || fromModule === 'cvToMidi1') &&
-				(toConnector === 'clockin' || fromConnector === 'clockin')
-		);
+		const connectionCV = findWhatIsConnectedTo(connections, 'cvToMidi1', 'cvin');
+		const connectionClock = findWhatIsConnectedTo(connections, 'cvToMidi1', 'clockin');
 
 		if (connectionCV && connectionClock) {
-			const fromModuleCV = connectionCV.fromModule === 'cvToMidi1' ? connectionCV.toModule : connectionCV.fromModule;
-			const fromModuleClock =
-				connectionClock.fromModule === 'cvToMidi1' ? connectionClock.toModule : connectionClock.fromModule;
+			const fromModuleCV = connectionCV.moduleId;
+			const fromModuleClock = connectionClock.moduleId;
 
 			const addressCV = outputAddressLookup[fromModuleCV + 'out1'];
 			const note = Math.floor(((memoryBuffer[addressCV / 4] + 32767) / 32767) * 10) + 40;

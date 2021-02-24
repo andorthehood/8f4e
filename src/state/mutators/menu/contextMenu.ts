@@ -1,4 +1,4 @@
-import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
+import findModuleAtViewportCoordinates from '../../../helpers/findModuleAtViewportCoordinates';
 
 const getHighlightedMenuItem = function (x, y, itemHeight, width) {
 	if (x < 0 || x > width || y < 0) {

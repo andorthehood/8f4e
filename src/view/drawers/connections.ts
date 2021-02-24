@@ -9,12 +9,11 @@ const drawConnections = function (engine, state) {
 	engine.setSpriteLookup(fillColor);
 
 	for (let i = 0; i < connections.length; i++) {
-		const { fromModule, fromConnector, toModule, toConnector } = connections[i];
-		const a = modules.find(({ id }) => id === fromModule);
-		const b = modules.find(({ id }) => id === toModule);
+		const a = modules.find(({ id }) => id === connections[i][0].moduleId);
+		const b = modules.find(({ id }) => id === connections[i][1].moduleId);
 
-		let { x: fromX, y: fromY } = moduleTypes[a.type].connectors.find(({ id }) => id === fromConnector);
-		let { x: toX, y: toY } = moduleTypes[b.type].connectors.find(({ id }) => id === toConnector);
+		let { x: fromX, y: fromY } = moduleTypes[a.type].connectors.find(({ id }) => id === connections[i][0].connectorId);
+		let { x: toX, y: toY } = moduleTypes[b.type].connectors.find(({ id }) => id === connections[i][1].connectorId);
 
 		fromX += a.x;
 		fromY += a.y;
