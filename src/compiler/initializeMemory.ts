@@ -1,3 +1,5 @@
+import { findWhatIsConnectedTo } from '../helpers/connectionHelpers';
+
 export const generateOutputAddressLookup = function (compiledModules) {
 	const lookup = {};
 	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
@@ -9,20 +11,17 @@ export const generateOutputAddressLookup = function (compiledModules) {
 };
 
 export const setUpConnections = function (memoryBuffer, compiledModules, connections) {
-	connections.forEach(connection => {
-		const toModule = compiledModules.find(({ moduleId }) => moduleId === connection.toModule);
-
-		if (!toModule) {
-			return;
-		}
-
-		const toConnector = toModule.memoryAddresses.find(({ id }) => id === connection.toConnector);
-		const inputPointerAddressInBuffer = toConnector.address / Int32Array.BYTES_PER_ELEMENT;
-
-		const fromModule = compiledModules.find(({ moduleId }) => moduleId === connection.fromModule);
-		const fromConnector = fromModule.memoryAddresses.find(({ id }) => id === connection.fromConnector);
-		const outputAddress = fromConnector.address;
-
-		memoryBuffer[inputPointerAddressInBuffer] = outputAddress;
+	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
+		memoryAddresses
+			.filter(({ isInputPointer }) => isInputPointer)
+			.forEach(({ id, address }) => {
+				const output = findWhatIsConnectedTo(connections, moduleId, id);
+				if (output) {
+					const outputModule = compiledModules.find(({ moduleId }) => moduleId === output.moduleId);
+					const outputAddress = outputModule.memoryAddresses.find(({ id }) => id === output.connectorId).address;
+					const inputPointerAddressInBuffer = address / Int32Array.BYTES_PER_ELEMENT;
+					memoryBuffer[inputPointerAddressInBuffer] = outputAddress;
+				}
+			});
 	});
 };
