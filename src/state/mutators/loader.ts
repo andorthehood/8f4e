@@ -1,3 +1,5 @@
+const STRUCTURE_VERSION = 1;
+
 const defaultState = {
 	modules: [],
 	connections: [],
@@ -115,6 +117,9 @@ const defaultState = {
 
 const loader = function (state, events) {
 	state.ui = { ...defaultState, ...(JSON.parse(localStorage.getItem('state')) || {}) };
+	if (state.ui.sructureVersion !== STRUCTURE_VERSION) {
+		state.ui = { sructureVersion: STRUCTURE_VERSION, ...defaultState };
+	}
 	state.history = [];
 
 	// @ts-ignore
@@ -127,6 +132,7 @@ const loader = function (state, events) {
 				viewport: state.ui.viewport,
 				connections: state.ui.connections,
 				modules: state.ui.modules,
+				sructureVersion: state.ui.sructureVersion,
 			})
 		);
 	};
