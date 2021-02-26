@@ -1,4 +1,4 @@
-const STRUCTURE_VERSION = 2;
+const STRUCTURE_VERSION = 3;
 
 const defaultState = {
 	modules: [],
@@ -36,6 +36,7 @@ const defaultState = {
 			],
 			name: 'Splitter',
 			switches: [],
+			sliders: [],
 		},
 		clockGenerator: {
 			width: 100,
@@ -43,6 +44,7 @@ const defaultState = {
 			connectors: [{ id: 'out', x: 85, y: 20 }],
 			name: 'Clock generator',
 			switches: [],
+			sliders: [],
 		},
 		quantizer: {
 			width: 300,
@@ -61,6 +63,7 @@ const defaultState = {
 				{ id: 'note7', onValue: 240, offValue: 0, x: 100, y: 30, width: 10, height: 10 },
 			],
 			name: 'Quantizer',
+			sliders: [],
 		},
 		cvToMidi: {
 			width: 200,
@@ -71,14 +74,18 @@ const defaultState = {
 			],
 			name: 'CV to MIDI',
 			switches: [],
+			sliders: [],
 		},
 		saw: {
 			width: 100,
 			height: 100,
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
-			sliders: [{ id: 'rate' }],
 			name: 'Saw',
 			switches: [],
+			sliders: [{ id: 'rate', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 2000, resolution: 10 }],
+			defaultValues: {
+				rate: 1000,
+			},
 		},
 		triangle: {
 			width: 100,
@@ -86,6 +93,7 @@ const defaultState = {
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 			name: 'Triangle',
 			switches: [],
+			sliders: [],
 		},
 		randomGenerator: {
 			width: 100,
@@ -93,16 +101,18 @@ const defaultState = {
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 			name: 'Random',
 			switches: [],
+			sliders: [],
 		},
 		scope: {
 			width: 100,
 			height: 100,
 			connectors: [
-				{ id: 'in', x: 5, y: 20, isInput: true },
-				{ id: 'out', x: 85, y: 20 },
+				{ id: 'in', x: 5, y: 45, isInput: true },
+				{ id: 'out', x: 85, y: 45 },
 			],
 			name: 'Scope',
 			switches: [],
+			sliders: [],
 		},
 		attenuator: {
 			width: 100,
@@ -113,6 +123,7 @@ const defaultState = {
 			],
 			name: 'Attenuator',
 			switches: [],
+			sliders: [],
 		},
 		switch: {
 			width: 50,
@@ -120,6 +131,7 @@ const defaultState = {
 			connectors: [{ id: 'out', x: 35, y: 20, isInput: false }],
 			name: 'Switch',
 			switches: [],
+			sliders: [],
 		},
 		voltageSource: {
 			width: 50,
@@ -127,6 +139,7 @@ const defaultState = {
 			connectors: [{ id: 'out', x: 35, y: 20, isInput: false }],
 			name: 'Volt',
 			switches: [],
+			sliders: [],
 		},
 	},
 };

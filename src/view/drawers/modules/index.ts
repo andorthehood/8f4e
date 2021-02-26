@@ -9,7 +9,7 @@ const drawModules = function (engine, state) {
 
 	for (let i = 0; i < state.ui.modules.length; i++) {
 		const { x, y, type, id, config } = state.ui.modules[i];
-		const { width, height, name, connectors, switches } = state.ui.moduleTypes[type];
+		const { width, height, name, connectors, switches, sliders } = state.ui.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -47,10 +47,23 @@ const drawModules = function (engine, state) {
 				const _switch = switches[i];
 				engine.setSpriteLookup(fillColor);
 				if (config[_switch.id] === _switch.onValue) {
-					engine.drawRectangle(_switch.x, _switch.y, 10, 10, 'rgb(255,255,255)');
+					engine.drawRectangle(_switch.x, _switch.y, _switch.width, _switch.height, 'rgb(255,255,255)');
 				} else {
-					engine.drawRectangle(_switch.x, _switch.y, 10, 10, 'rgb(153,153,153)');
+					engine.drawRectangle(_switch.x, _switch.y, _switch.width, _switch.height, 'rgb(153,153,153)');
 				}
+			}
+
+			for (let i = 0; i < sliders.length; i++) {
+				const slider = sliders[i];
+				engine.setSpriteLookup(fillColor);
+				engine.drawRectangle(slider.x, slider.y, slider.width, slider.height, 'rgb(255,255,255)');
+
+				const address = state.ui.compiler.outputAddressLookup[id + slider.id] / Uint32Array.BYTES_PER_ELEMENT;
+				const value = state.ui.compiler.memoryBuffer[address];
+				const offset = (value / slider.maxValue) * slider.height;
+				engine.drawSprite(slider.x, slider.y + (slider.height - offset), 'rgb(255,255,255)', slider.width, offset);
+				engine.setSpriteLookup(font('small_white'));
+				engine.drawText(slider.x, slider.y, '' + value);
 			}
 
 			if (type === 'scope') {
