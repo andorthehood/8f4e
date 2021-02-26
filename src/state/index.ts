@@ -3,6 +3,7 @@ import loader from './mutators/loader';
 import contextMenu from './mutators/menu/contextMenu';
 import moduleDragger from './mutators/modules/moduleDragger';
 import moduleCreator from './mutators/modules/moduleCreator';
+import moduleSwitches from './mutators/modules/moduleSwitches';
 import connectionMaker from './mutators/connections';
 import error from './mutators/error';
 import history from './mutators/history';
@@ -24,6 +25,7 @@ const init = function (events) {
 	contextMenu(state, events);
 	moduleMenu(state, events);
 	moduleCreator(state, events);
+	moduleSwitches(state, events);
 	error(state, events);
 	tests(state, events);
 	compiler(state, events);
