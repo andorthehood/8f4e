@@ -7,3 +7,4 @@ export { default as quantizer } from './quantizer';
 export { default as scope } from './scope';
 export { default as triangle } from './triangle';
 export { default as cvToMidi } from './cvToMidi';
+export { default as offset } from './offset';
