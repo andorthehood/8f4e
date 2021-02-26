@@ -72,7 +72,7 @@ const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.translate(offsetX, offsetY);
 	generateBox(ctx);
 	ctx.translate(50, 20);
-	generateWhiteKeys(ctx);
+	//generateWhiteKeys(ctx);
 };
 
 export default generate;
