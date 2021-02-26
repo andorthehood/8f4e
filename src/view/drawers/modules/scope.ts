@@ -11,8 +11,8 @@ const drawer = function (engine, state, id) {
 	}
 	counters[id]++;
 
-	for (let i = 0; i < 80; i++) {
-		engine.drawSprite(1 * i + 10, 20, buffer[(i + counters[id]) % 80], 1, 80);
+	for (let i = 0; i < 98; i++) {
+		engine.drawSprite(1 * i + 1, 1, buffer[(i + counters[id]) % 80], 1, 98);
 	}
 };
 
