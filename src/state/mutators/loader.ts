@@ -187,7 +187,24 @@ const defaultState = {
 			],
 			name: 'Attenuator',
 			switches: [],
-			sliders: [],
+			sliders: [{ id: 'divisor', x: 10, y: 20, width: 10, height: 50, minValue: 1, maxValue: 100, resolution: 1 }],
+			defaultValues: {
+				divisor: 1,
+			},
+		},
+		offset: {
+			width: 100,
+			height: 100,
+			connectors: [
+				{ id: 'in', x: 5, y: 20, isInput: true },
+				{ id: 'out', x: 85, y: 20, isInput: false },
+			],
+			name: 'Offset',
+			sliders: [{ id: 'offset', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 32000, resolution: 100 }],
+			defaultValues: {
+				offset: 0,
+			},
+			switches: [],
 		},
 		switch: {
 			width: 50,
