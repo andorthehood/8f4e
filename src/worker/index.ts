@@ -1,6 +1,34 @@
 import compile from '../compiler';
 import { setUpConnections } from '../compiler/initializeMemory';
-import { Event } from '../midi/enums';
+import { int16ToMidiNote } from '../helpers/midi';
+import { Event, ControlChange } from '../midi/enums';
+
+const resetMidi = function () {
+	// @ts-ignore
+	self.postMessage({
+		type: 'midiMessage',
+		payload: {
+			message: [Event.CONTROL_CHANGE, ControlChange.ALL_SOUND_OFF, 0],
+		},
+	});
+	// @ts-ignore
+	self.postMessage({
+		type: 'midiMessage',
+		payload: {
+			message: [Event.CONTROL_CHANGE, ControlChange.ALL_NOTE_OFF, 0],
+		},
+	});
+
+	for (let i = 0; i < 128; i++) {
+		// @ts-ignore
+		self.postMessage({
+			type: 'midiMessage',
+			payload: {
+				message: [Event.NOTE_OFF, i, 0],
+			},
+		});
+	}
+};
 
 export const createModule = async function (memoryRef, modules) {
 	const { codeBuffer, outputAddressLookup, compiledModules } = compile(modules);
@@ -56,12 +84,14 @@ const recompile = async function (memoryRef, modules, connections) {
 			];
 	}
 
+	resetMidi();
+
 	interval = setInterval(() => {
 		// @ts-ignore
 		cycle();
 
 		if (cvAddress && clockAddress) {
-			const note = Math.floor(((memoryBuffer[cvAddress / Uint32Array.BYTES_PER_ELEMENT] + 32767) / 32767) * 10) + 40;
+			const note = int16ToMidiNote(memoryBuffer[cvAddress / Uint32Array.BYTES_PER_ELEMENT]);
 			const isHigh = memoryBuffer[clockAddress / Uint32Array.BYTES_PER_ELEMENT] !== 0;
 
 			if (isHigh && !wasHigh) {
@@ -72,14 +102,24 @@ const recompile = async function (memoryRef, modules, connections) {
 						message: [Event.NOTE_ON, note, 100],
 					},
 				});
+
+				setTimeout(() => {
+					// @ts-ignore
+					self.postMessage({
+						type: 'midiMessage',
+						payload: {
+							message: [Event.NOTE_OFF, note, 100],
+						},
+					});
+				}, 100);
 			} else if (!isHigh && wasHigh) {
 				// @ts-ignore
-				self.postMessage({
-					type: 'midiMessage',
-					payload: {
-						message: [Event.NOTE_OFF, note, 100],
-					},
-				});
+				// self.postMessage({
+				// 	type: 'midiMessage',
+				// 	payload: {
+				// 		message: [Event.NOTE_OFF, note, 100],
+				// 	},
+				// });
 			}
 			wasHigh = isHigh;
 		}

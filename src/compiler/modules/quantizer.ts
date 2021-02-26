@@ -10,10 +10,12 @@ import {
 	loop,
 	br_if,
 	block,
+	i32store,
 } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from './types';
+import { getOneOctaveInInt16, midiNoteToInt16 } from '../../helpers/midi';
 
 const enum Helper {
 	ABS = 0,
@@ -32,10 +34,15 @@ const enum Locals {
 	DIFFERENCE,
 	NOTE_MEMORY_POINTER,
 	NOTE_VALUE,
+	OCTAVE,
 	__LENGTH,
 }
 
 const NUMBER_OF_NOTES = 12;
+
+console.log(midiNoteToInt16(0), midiNoteToInt16(12), midiNoteToInt16(24));
+
+const OCTAVE = getOneOctaveInInt16();
 
 const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
@@ -44,6 +51,17 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 			// Load the input value from the memory and put it into a register.
 			...i32load(Memory.INPUT_POINTER + offset),
 			...i32loadLocal(Locals.INPUT),
+
+			// Save octave value for later.
+			...localGet(Locals.INPUT),
+			...i32const(OCTAVE),
+			Instruction.I32_DIV_S,
+			...localSet(Locals.OCTAVE),
+
+			...localGet(Locals.INPUT),
+			...i32const(OCTAVE),
+			Instruction.I32_REM_S,
+			...localSet(Locals.INPUT),
 
 			// Set the smallest difference to the largest 16bit signed number.
 			...i32const(0x7fff),
@@ -98,8 +116,18 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 				])
 			),
 
+			// Prepare memory address for storing the output value.
+			...i32const(Memory.OUTPUT + offset),
+
+			// Offset the best matching value with the saved octave value.
+			...i32const(OCTAVE),
+			...localGet(Locals.OCTAVE),
+			Instruction.I32_MUL,
+			...localGet(Locals.BEST_MACTHING_VALUE),
+			Instruction.I32_ADD,
+
 			// Save the best matching value to the memory.
-			...i32storeLocal(Locals.BEST_MACTHING_VALUE, Memory.OUTPUT + offset),
+			...i32store(),
 		]
 	);
 
@@ -110,18 +138,18 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		initialMemory: [
 			0,
 			0,
-			initialConfig.note1 || 0,
-			initialConfig.note2 || 0,
-			initialConfig.note3 || 0,
-			initialConfig.note4 || 0,
-			initialConfig.note5 || 0,
-			initialConfig.note6 || 0,
-			initialConfig.note7 || 0,
-			initialConfig.note8 || 0,
-			initialConfig.note9 || 0,
-			initialConfig.note10 || 0,
-			initialConfig.note11 || 0,
-			initialConfig.note12 || 0,
+			initialConfig.note1 || -2147483648,
+			initialConfig.note2 || -2147483648,
+			initialConfig.note3 || -2147483648,
+			initialConfig.note4 || -2147483648,
+			initialConfig.note5 || -2147483648,
+			initialConfig.note6 || -2147483648,
+			initialConfig.note7 || -2147483648,
+			initialConfig.note8 || -2147483648,
+			initialConfig.note9 || -2147483648,
+			initialConfig.note10 || -2147483648,
+			initialConfig.note11 || -2147483648,
+			initialConfig.note12 || -2147483648,
 		],
 		memoryAddresses: [
 			{ address: Memory.OUTPUT + offset, id: 'out' },
