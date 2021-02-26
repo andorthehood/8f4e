@@ -1,4 +1,4 @@
-const STRUCTURE_VERSION = 1;
+const STRUCTURE_VERSION = 2;
 
 const defaultState = {
 	modules: [],
@@ -35,12 +35,14 @@ const defaultState = {
 				{ id: 'out4', x: 85, y: 65 },
 			],
 			name: 'Splitter',
+			switches: [],
 		},
 		clockGenerator: {
 			width: 100,
 			height: 150,
 			connectors: [{ id: 'out', x: 85, y: 20 }],
 			name: 'Clock generator',
+			switches: [],
 		},
 		quantizer: {
 			width: 300,
@@ -49,9 +51,14 @@ const defaultState = {
 				{ id: 'in', x: 5, y: 20, isInput: true },
 				{ id: 'out', x: 285, y: 20 },
 			],
-			toggleSwitches: [
-				{ id: 'c', onValue: 230, offValue: 0, isOn: false, x: 40, y: 40, width: 10, height: 10 },
-				{ id: 'c#', onValue: 240, offValue: 0, isOn: false, x: 30, y: 30, width: 10, height: 10 },
+			switches: [
+				{ id: 'note1', onValue: 2030, offValue: 0, x: 40, y: 30, width: 10, height: 10 },
+				{ id: 'note2', onValue: 20040, offValue: 0, x: 50, y: 30, width: 10, height: 10 },
+				{ id: 'note3', onValue: 240, offValue: 0, x: 60, y: 30, width: 10, height: 10 },
+				{ id: 'note4', onValue: 240, offValue: 0, x: 70, y: 30, width: 10, height: 10 },
+				{ id: 'note5', onValue: 240, offValue: 0, x: 80, y: 30, width: 10, height: 10 },
+				{ id: 'note6', onValue: 240, offValue: 0, x: 90, y: 30, width: 10, height: 10 },
+				{ id: 'note7', onValue: 240, offValue: 0, x: 100, y: 30, width: 10, height: 10 },
 			],
 			name: 'Quantizer',
 		},
@@ -63,24 +70,29 @@ const defaultState = {
 				{ id: 'clockin', x: 5, y: 35, isInput: true, label: 'clock in' },
 			],
 			name: 'CV to MIDI',
+			switches: [],
 		},
 		saw: {
 			width: 100,
 			height: 100,
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+			sliders: [{ id: 'rate' }],
 			name: 'Saw',
+			switches: [],
 		},
 		triangle: {
 			width: 100,
 			height: 100,
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 			name: 'Triangle',
+			switches: [],
 		},
 		randomGenerator: {
 			width: 100,
 			height: 100,
 			connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 			name: 'Random',
+			switches: [],
 		},
 		scope: {
 			width: 100,
@@ -90,6 +102,7 @@ const defaultState = {
 				{ id: 'out', x: 85, y: 20 },
 			],
 			name: 'Scope',
+			switches: [],
 		},
 		attenuator: {
 			width: 100,
@@ -99,18 +112,21 @@ const defaultState = {
 				{ id: 'in', x: 5, y: 20, isInput: true },
 			],
 			name: 'Attenuator',
+			switches: [],
 		},
 		switch: {
 			width: 50,
 			height: 50,
 			connectors: [{ id: 'out', x: 35, y: 20, isInput: false }],
 			name: 'Switch',
+			switches: [],
 		},
 		voltageSource: {
 			width: 50,
 			height: 50,
 			connectors: [{ id: 'out', x: 35, y: 20, isInput: false }],
 			name: 'Volt',
+			switches: [],
 		},
 	},
 };
