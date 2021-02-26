@@ -20,7 +20,7 @@ const enum Locals {
 	__LENGTH,
 }
 
-const BUFFER_LENGTH = Int32Array.BYTES_PER_ELEMENT * 80;
+const BUFFER_LENGTH = Int32Array.BYTES_PER_ELEMENT * 49;
 
 const scope: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
@@ -108,6 +108,7 @@ const scope: ModuleGenerator = function (moduleId, offset) {
 			{ address: Memory.OUTPUT + offset, id: 'out' },
 			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
 			{ address: Memory.BUFFER_START + offset, id: 'buffer' },
+			{ address: Memory.BUFFER_POINTER + offset, id: 'bufferPointer' },
 		],
 	};
 };
