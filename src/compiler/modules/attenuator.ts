@@ -10,7 +10,7 @@ const enum Memory {
 	OUT = 0x0c,
 }
 
-const attenuator: ModuleGenerator = function (moduleId, offset) {
+const attenuator: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
 		[],
 		[
@@ -29,9 +29,10 @@ const attenuator: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset,
-		initialMemory: [0, Memory.ZERO + offset, 10, 0],
+		initialMemory: [0, Memory.ZERO + offset, initialConfig.divisor, 0],
 		memoryAddresses: [
 			{ address: Memory.OUT + offset, id: 'out' },
+			{ address: Memory.DIVISOR + offset, id: 'divisor' },
 			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
 		],
 	};
