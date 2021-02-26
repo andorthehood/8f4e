@@ -6,4 +6,4 @@ export type Module = {
 	memoryAddresses: { address: number; id: string; isInputPointer?: boolean }[];
 };
 
-export type ModuleGenerator = (moduleId: string, offset: number) => Module;
+export type ModuleGenerator = (moduleId: string, offset: number, initialConfig?: any) => Module;
