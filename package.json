@@ -34,6 +34,6 @@
   },
   "dependencies": {
     "glugglugglug": "0.0.1",
-    "wasm-bytecode-utils": "0.0.2"
+    "wasm-bytecode-utils": "0.0.4"
   }
 }
