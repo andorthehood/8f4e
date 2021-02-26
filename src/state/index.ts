@@ -4,6 +4,7 @@ import contextMenu from './mutators/menu/contextMenu';
 import moduleDragger from './mutators/modules/moduleDragger';
 import moduleCreator from './mutators/modules/moduleCreator';
 import moduleSwitches from './mutators/modules/moduleSwitches';
+import moduleSliders from './mutators/modules/moduleSliders';
 import connectionMaker from './mutators/connections';
 import error from './mutators/error';
 import history from './mutators/history';
@@ -20,6 +21,7 @@ const init = function (events) {
 	loader(state, events);
 	history(state, events);
 	connectionMaker(state, events);
+	moduleSliders(state, events);
 	moduleDragger(state, events);
 	viewport(state, events);
 	contextMenu(state, events);

@@ -27,7 +27,7 @@ const enum Locals {
 	__LENGTH,
 }
 
-const saw: ModuleGenerator = function (moduleId, offset) {
+const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -53,7 +53,7 @@ const saw: ModuleGenerator = function (moduleId, offset) {
 		]
 	);
 
-	const initialMemory = [0, offset + Memory.RATE_SELF, 1000, offset + Memory.LIMIT_SELF, 32767];
+	const initialMemory = [0, offset + Memory.RATE_SELF, initialConfig.rate, offset + Memory.LIMIT_SELF, 32767];
 
 	return {
 		moduleId,
@@ -62,7 +62,8 @@ const saw: ModuleGenerator = function (moduleId, offset) {
 		initialMemory,
 		memoryAddresses: [
 			{ address: Memory.COUNTER + offset, id: 'out' },
-			{ address: Memory.RATE_POINTER + offset, id: 'rate', isInputPointer: true },
+			{ address: Memory.RATE_POINTER + offset, id: 'ratein', isInputPointer: true },
+			{ address: Memory.RATE_SELF + offset, id: 'rate', isInputPointer: true },
 		],
 	};
 };
