@@ -1,18 +1,17 @@
-import { font, scope } from '../../spriteGenerator';
-let counters = {};
+import { scope } from '../../spriteGenerator';
+
+const RESOLUTION = 49;
+
 const drawer = function (engine, state, id) {
-	const address = state.ui.compiler.outputAddressLookup[id + 'buffer'] / 4;
-	const buffer = state.ui.compiler.memoryBuffer.slice(address, address + 80);
+	const bufferAddress = state.ui.compiler.outputAddressLookup[id + 'buffer'] / 4;
+	const pointerAddress = state.ui.compiler.outputAddressLookup[id + 'bufferPointer'] / 4;
+	const buffer = state.ui.compiler.memoryBuffer.slice(bufferAddress, bufferAddress + RESOLUTION);
+	const pointer = state.ui.compiler.memoryBuffer[pointerAddress] / Int32Array.BYTES_PER_ELEMENT - bufferAddress;
 
 	engine.setSpriteLookup(scope);
 
-	if (typeof counters[id] === 'undefined') {
-		counters[id] = 0;
-	}
-	counters[id]++;
-
-	for (let i = 0; i < 98; i++) {
-		engine.drawSprite(1 * i + 1, 1, buffer[(i + counters[id]) % 80], 1, 98);
+	for (let i = 0; i < RESOLUTION; i++) {
+		engine.drawSprite(2 * i + 1, 1, buffer[(i + pointer) % RESOLUTION], 2, RESOLUTION * 2);
 	}
 };
 
