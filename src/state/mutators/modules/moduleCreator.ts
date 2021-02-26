@@ -4,6 +4,7 @@ const moduleCreator = function (state, events) {
 			x: x - state.ui.viewport.x - Math.floor(state.ui.moduleTypes[type].width / 2),
 			y: y - state.ui.viewport.y - Math.floor(state.ui.moduleTypes[type].height / 2),
 			id: type + Date.now(),
+			config: {},
 			type,
 		});
 	};

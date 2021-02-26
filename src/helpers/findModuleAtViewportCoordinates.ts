@@ -1,4 +1,4 @@
-const findModuleAtViewportCoordinates = function (state, x, y) {
+const findModuleAtViewportCoordinates = function (state, x: number, y: number): Object {
 	return state.ui.modules.find(module => {
 		const { width, height } = state.ui.moduleTypes[module.type];
 		return (
