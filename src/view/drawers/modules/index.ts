@@ -8,8 +8,8 @@ const drawModules = function (engine, state) {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.ui.modules.length; i++) {
-		const { x, y, type, id } = state.ui.modules[i];
-		const { width, height, name, connectors } = state.ui.moduleTypes[type];
+		const { x, y, type, id, config } = state.ui.modules[i];
+		const { width, height, name, connectors, switches } = state.ui.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -23,29 +23,12 @@ const drawModules = function (engine, state) {
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
-			const connectorIds = Object.keys(connectors);
+			for (let i = 0; i < connectors.length; i++) {
+				const connector = connectors[i];
 
-			// if (state.ui.isDebugMode) {
-			// 	for (let i = 0; i < state.ui.compiler.outputAddressLookup[id].length; i++) {
-			// 		engine.drawText(
-			// 			width,
-			// 			height + i * 10,
-			// 			state.ui.compiler.outputAddressLookup[id][i].id +
-			// 				' ' +
-			// 				state.ui.compiler.outputAddressLookup[id][i].address +
-			// 				' ' +
-			// 				state.ui.compiler.memoryBuffer[
-			// 					state.ui.compiler.outputAddressLookup[id][i].address / Int32Array.BYTES_PER_ELEMENT
-			// 				]
-			// 		);
-			// 	}
-			// }
-
-			for (let i = 0; i < connectorIds.length; i++) {
-				if (typeof state.ui.compiler.outputAddressLookup[id + connectors[i].id] !== 'undefined') {
-					const connectorAddress = state.ui.compiler.outputAddressLookup[id + connectors[i].id];
+				if (typeof state.ui.compiler.outputAddressLookup[id + connector.id] !== 'undefined') {
+					const connectorAddress = state.ui.compiler.outputAddressLookup[id + connector.id];
 					const value = state.ui.compiler.memoryBuffer[connectorAddress / 4];
-					const connector = connectors[connectorIds[i]];
 
 					if (connector.isInput) {
 						engine.setSpriteLookup(fillColor);
@@ -57,6 +40,16 @@ const drawModules = function (engine, state) {
 					engine.setSpriteLookup(font('small_white'));
 					const offset = connector.isInput ? 15 : (connector.label || connector.id).length * -7;
 					engine.drawText(connector.x + offset, connector.y, connector.label || connector.id);
+				}
+			}
+
+			for (let i = 0; i < switches.length; i++) {
+				const _switch = switches[i];
+				engine.setSpriteLookup(fillColor);
+				if (config[_switch.id] === _switch.onValue) {
+					engine.drawRectangle(_switch.x, _switch.y, 10, 10, 'rgb(255,255,255)');
+				} else {
+					engine.drawRectangle(_switch.x, _switch.y, 10, 10, 'rgb(153,153,153)');
 				}
 			}
 

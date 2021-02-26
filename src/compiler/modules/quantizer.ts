@@ -20,10 +20,9 @@ const enum Helper {
 }
 
 const enum Memory {
-	ZERO = 0x00,
-	INPUT_POINTER = 0x04,
-	OUTPUT = 0x08,
-	NOTES_START_ADDRESS = 0xc,
+	INPUT_POINTER = 0x00,
+	OUTPUT = 0x04,
+	NOTES_START_ADDRESS = 0x08,
 }
 
 const enum Locals {
@@ -36,9 +35,9 @@ const enum Locals {
 	__LENGTH,
 }
 
-const NUMBER_OF_NOTES = 10;
+const NUMBER_OF_NOTES = 12;
 
-const quantizer: ModuleGenerator = function (moduleId, offset) {
+const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -108,10 +107,37 @@ const quantizer: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset,
-		initialMemory: [249, Memory.ZERO + offset, 0, 0, 100, 200, 300, 0, 400, 410, 20000, 32000, 800, 900, 1000, 1100],
+		initialMemory: [
+			0,
+			0,
+			initialConfig.note1 || 0,
+			initialConfig.note2 || 0,
+			initialConfig.note3 || 0,
+			initialConfig.note4 || 0,
+			initialConfig.note5 || 0,
+			initialConfig.note6 || 0,
+			initialConfig.note7 || 0,
+			initialConfig.note8 || 0,
+			initialConfig.note9 || 0,
+			initialConfig.note10 || 0,
+			initialConfig.note11 || 0,
+			initialConfig.note12 || 0,
+		],
 		memoryAddresses: [
 			{ address: Memory.OUTPUT + offset, id: 'out' },
 			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 0, id: 'note1' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 4, id: 'note2' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 8, id: 'note3' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 12, id: 'note4' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 16, id: 'note5' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 20, id: 'note6' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 24, id: 'note7' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 28, id: 'note8' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 32, id: 'note9' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 36, id: 'note10' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 40, id: 'note11' },
+			{ address: Memory.NOTES_START_ADDRESS + offset + 44, id: 'note12' },
 		],
 	};
 };
