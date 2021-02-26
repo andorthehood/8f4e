@@ -20,6 +20,11 @@ const drawModules = function (engine, state) {
 			engine.startGroup(x, y);
 			engine.setSpriteLookup(modules);
 			engine.drawSprite(0, 0, type, width, height);
+
+			if (type === 'scope') {
+				scope(engine, state, id);
+			}
+
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
@@ -28,7 +33,7 @@ const drawModules = function (engine, state) {
 
 				if (typeof state.ui.compiler.outputAddressLookup[id + connector.id] !== 'undefined') {
 					const connectorAddress = state.ui.compiler.outputAddressLookup[id + connector.id];
-					const value = state.ui.compiler.memoryBuffer[connectorAddress / 4];
+					const value = state.ui.compiler.memoryBuffer[connectorAddress / Uint32Array.BYTES_PER_ELEMENT];
 
 					if (connector.isInput) {
 						engine.setSpriteLookup(fillColor);
@@ -39,7 +44,7 @@ const drawModules = function (engine, state) {
 					}
 					engine.setSpriteLookup(font('small_white'));
 					const offset = connector.isInput ? 15 : (connector.label || connector.id).length * -7;
-					engine.drawText(connector.x + offset, connector.y, connector.label || connector.id);
+					engine.drawText(connector.x + offset, connector.y + 1, connector.label || connector.id);
 				}
 			}
 
@@ -63,11 +68,7 @@ const drawModules = function (engine, state) {
 				const offset = (value / slider.maxValue) * slider.height;
 				engine.drawSprite(slider.x, slider.y + (slider.height - offset), 'rgb(255,255,255)', slider.width, offset);
 				engine.setSpriteLookup(font('small_white'));
-				engine.drawText(slider.x, slider.y, '' + value);
-			}
-
-			if (type === 'scope') {
-				scope(engine, state, id);
+				engine.drawText(slider.x, slider.y, '' + value / slider.resolution);
 			}
 
 			engine.endGroup();

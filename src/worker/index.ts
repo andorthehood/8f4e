@@ -1,7 +1,6 @@
 import compile from '../compiler';
 import { setUpConnections } from '../compiler/initializeMemory';
 import { Event } from '../midi/enums';
-import { findWhatIsConnectedTo } from '../helpers/connectionHelpers';
 
 export const createModule = async function (memoryRef, modules) {
 	const { codeBuffer, outputAddressLookup, compiledModules } = compile(modules);
