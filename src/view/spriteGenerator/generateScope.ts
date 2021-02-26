@@ -6,7 +6,7 @@ const offsetY = 0;
 const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.resetTransform();
 	ctx.translate(offsetX, offsetY);
-	ctx.fillStyle = 'rgb(255,255,255)';
+	ctx.fillStyle = 'rgb(100,255,255)';
 	for (let i = 0; i <= 80; i += 1) {
 		ctx.fillRect(i * 4, 80 - i, 4, 1);
 	}
