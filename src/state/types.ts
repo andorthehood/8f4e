@@ -1,5 +1,8 @@
 export interface Module {
 	id: string;
+	type: string;
+	x: number;
+	y: number;
 }
 
 export interface Connection {}

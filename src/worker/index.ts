@@ -1,6 +1,6 @@
 import compile from '../compiler';
 import { setUpConnections } from '../compiler/initializeMemory';
-import { int16ToMidiNote } from '../helpers/midi';
+import { int16ToMidiNote } from '../state/helpers/midi';
 import { Event, ControlChange } from '../midi/enums';
 
 const resetMidi = function () {

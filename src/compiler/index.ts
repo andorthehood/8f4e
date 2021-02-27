@@ -13,7 +13,7 @@ import {
 import { call, i32store } from './wasm/instructions';
 import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
-import { Module } from './modules/types';
+import { Module } from './types';
 import { i32abs, i32modulo } from './wasm/helpers';
 import { Type } from 'wasm-bytecode-utils';
 

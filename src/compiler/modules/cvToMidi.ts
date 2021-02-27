@@ -1,5 +1,5 @@
 import { createFunctionBody } from '../wasm/sections';
-import { ModuleGenerator } from './types';
+import { ModuleGenerator } from '../types';
 
 const enum Memory {
 	NOTE_INPUT_POINTER = 0x00,

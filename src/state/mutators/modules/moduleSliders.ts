@@ -1,4 +1,4 @@
-import findSliderAtViewportCoordinates from '../../../helpers/findSliderAtViewportCoordinates';
+import findSliderAtViewportCoordinates from '../../helpers/findSliderAtViewportCoordinates';
 
 const moduleSliders = function (state, events) {
 	let slider = null;
