@@ -1,4 +1,4 @@
-import findModuleAtViewportCoordinates from '../../../helpers/findModuleAtViewportCoordinates';
+import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 
 const getHighlightedMenuItem = function (x, y, itemHeight, width) {
 	if (x < 0 || x > width || y < 0) {
@@ -56,7 +56,7 @@ const contextMenu = function (state, events) {
 		state.ui.contextMenu.y = y;
 		state.ui.contextMenu.open = true;
 
-		const module = findModuleAtViewportCoordinates(state, x, y);
+		const module = findModuleAtViewportCoordinates(state.ui, x, y);
 
 		if (module) {
 			state.ui.contextMenu.items = [
@@ -67,9 +67,9 @@ const contextMenu = function (state, events) {
 			state.ui.contextMenu.items = [
 				{ title: 'Add module', action: 'openModuleMenu' },
 				{ title: 'Undo', action: 'undo', close: true },
-				{ title: 'Save', action: 'save', close: true },
 				{ title: 'Run test', action: 'runTest', close: true },
 				{ title: 'Export', action: 'export', close: true },
+				{ title: 'New', action: 'new', close: true },
 			];
 		}
 

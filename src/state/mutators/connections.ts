@@ -1,11 +1,11 @@
-import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
-import findConnectorAtViewportCoordinates from '../../helpers/findConnectorAtViewportCoordinates';
-import findConnectorInModule from '../../helpers/findConnectorInModule';
+import findModuleAtViewportCoordinates from '../helpers/findModuleAtViewportCoordinates';
+import findConnectorAtViewportCoordinates from '../helpers/findConnectorAtViewportCoordinates';
+import findConnectorInModule from '../helpers/findConnectorInModule';
 import {
 	rejectConnectionByConnectorId,
 	findConnectionByConnectorId,
 	rejectConnectionsByModuleId,
-} from '../../helpers/connectionHelpers';
+} from '../helpers/connectionHelpers';
 
 const connectionMaker = function (state, events) {
 	const onMouseMove = event => {
@@ -16,7 +16,7 @@ const connectionMaker = function (state, events) {
 	const onMouseUp = event => {
 		const { x, y } = event;
 
-		const module = findModuleAtViewportCoordinates(state, x, y);
+		const module = findModuleAtViewportCoordinates(state.ui, x, y);
 
 		if (!module) {
 			state.ui.isConnectionBeingMade = false;

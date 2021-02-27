@@ -1,4 +1,4 @@
-import findSwitchAtViewportCoordinates from '../../../helpers/findSwitchAtViewportCoordinates';
+import findSwitchAtViewportCoordinates from '../../helpers/findSwitchAtViewportCoordinates';
 
 const moduleSwitches = function (state, events) {
 	const onModuleClick = function ({ x, y, module }) {
