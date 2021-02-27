@@ -1,9 +1,10 @@
 import { midiNoteToInt16 } from '../../helpers/midi';
 import { Note } from '../../midi/enums';
+import { State } from '../types';
 
 const STRUCTURE_VERSION = 3;
 
-const defaultState = {
+const defaultState: State = {
 	modules: [],
 	connections: [],
 	isDebugMode: false, //process.env.NODE_ENV === 'development',
@@ -223,22 +224,6 @@ const defaultState = {
 				offset: 0,
 			},
 			switches: [],
-		},
-		switch: {
-			width: 50,
-			height: 50,
-			connectors: [{ id: 'out', x: 35, y: 20, isInput: false }],
-			name: 'Switch',
-			switches: [],
-			sliders: [],
-		},
-		voltageSource: {
-			width: 50,
-			height: 50,
-			connectors: [{ id: 'out', x: 35, y: 20, isInput: false }],
-			name: 'Volt',
-			switches: [],
-			sliders: [],
 		},
 	},
 };
