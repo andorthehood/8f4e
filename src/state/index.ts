@@ -13,6 +13,7 @@ import compiler from './mutators/compiler';
 import midi from './mutators/midi';
 import innit from './mutators/init';
 import moduleMenu from './mutators/menu/moduleMenu';
+import save from './mutators/save';
 
 const init = function (events) {
 	const state = { ui: {} };
@@ -32,6 +33,7 @@ const init = function (events) {
 	tests(state, events);
 	compiler(state, events);
 	innit(state, events);
+	save(state, events);
 
 	return state;
 };
