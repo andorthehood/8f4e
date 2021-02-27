@@ -1,7 +1,7 @@
 import { i32const, i32storeLocal, ifelse, localGet, localSet, i32loadLocal } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
-import { ModuleGenerator } from './types';
+import { ModuleGenerator } from '../types';
 
 const enum Memory {
 	COUNTER = 0x00,
