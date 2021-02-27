@@ -19,6 +19,7 @@ const contextMenu = function (state, events) {
 			{ title: 'Volt', action: 'addModule', payload: { type: 'voltageSource' }, close: true },
 			{ title: 'CV2Midi', action: 'addModule', payload: { type: 'cvToMidi' }, close: true },
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
+			{ title: 'Sequential switch', action: 'addModule', payload: { type: 'sequentialSwitch' }, close: true },
 		];
 	};
 
