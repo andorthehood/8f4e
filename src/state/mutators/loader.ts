@@ -1,4 +1,4 @@
-import { midiNoteToInt16 } from '../../helpers/midi';
+import { midiNoteToInt16 } from '../helpers/midi';
 import { Note } from '../../midi/enums';
 import { State } from '../types';
 

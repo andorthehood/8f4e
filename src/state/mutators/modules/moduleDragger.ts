@@ -1,10 +1,10 @@
-import findModuleAtViewportCoordinates from '../../../helpers/findModuleAtViewportCoordinates';
+import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 
 const moduleDragger = function (state, events) {
 	let draggedModule = null;
 
 	const onMouseDown = ({ x, y }) => {
-		draggedModule = findModuleAtViewportCoordinates(state, x, y);
+		draggedModule = findModuleAtViewportCoordinates(state.ui, x, y);
 		if (draggedModule) {
 			events.dispatch('moduleClick', { x, y, module: draggedModule });
 			draggedModule.beingDragged = true;

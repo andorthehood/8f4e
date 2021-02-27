@@ -1,5 +1,4 @@
 import {
-	i32storeLocal,
 	i32load,
 	i32loadLocal,
 	localGet,
@@ -14,8 +13,9 @@ import {
 } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
-import { ModuleGenerator } from './types';
-import { getOneOctaveInInt16, midiNoteToInt16 } from '../../helpers/midi';
+import { ModuleGenerator } from '../types';
+import { getOneOctaveInInt16 } from '../../state/helpers/midi';
+import { I32_SIGNED_SMALLEST_NUMBER } from '../consts';
 
 const enum Helper {
 	ABS = 0,
@@ -39,9 +39,6 @@ const enum Locals {
 }
 
 const NUMBER_OF_NOTES = 12;
-
-console.log(midiNoteToInt16(0), midiNoteToInt16(12), midiNoteToInt16(24));
-
 const OCTAVE = getOneOctaveInInt16();
 
 const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
@@ -138,18 +135,18 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		initialMemory: [
 			0,
 			0,
-			initialConfig.note1 || -2147483648,
-			initialConfig.note2 || -2147483648,
-			initialConfig.note3 || -2147483648,
-			initialConfig.note4 || -2147483648,
-			initialConfig.note5 || -2147483648,
-			initialConfig.note6 || -2147483648,
-			initialConfig.note7 || -2147483648,
-			initialConfig.note8 || -2147483648,
-			initialConfig.note9 || -2147483648,
-			initialConfig.note10 || -2147483648,
-			initialConfig.note11 || -2147483648,
-			initialConfig.note12 || -2147483648,
+			initialConfig.note1 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note2 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note3 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note4 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note5 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note6 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note7 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note8 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note9 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note10 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note11 || I32_SIGNED_SMALLEST_NUMBER,
+			initialConfig.note12 || I32_SIGNED_SMALLEST_NUMBER,
 		],
 		memoryAddresses: [
 			{ address: Memory.OUTPUT + offset, id: 'out' },
