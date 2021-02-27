@@ -68,8 +68,9 @@ const contextMenu = function (state, events) {
 				{ title: 'Add module', action: 'openModuleMenu' },
 				{ title: 'Undo', action: 'undo', close: true },
 				{ title: 'Run test', action: 'runTest', close: true },
-				{ title: 'Export', action: 'export', close: true },
+				{ title: 'Export', action: 'save', close: true },
 				{ title: 'New', action: 'new', close: true },
+				{ title: 'Open', action: 'open', close: true },
 			];
 		}
 
