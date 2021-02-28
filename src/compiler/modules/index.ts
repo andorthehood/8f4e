@@ -9,3 +9,6 @@ export { default as triangle } from './triangle';
 export { default as cvToMidi } from './cvToMidi';
 export { default as offset } from './offset';
 export { default as sequentialSwitch } from './sequentialSwitch';
+export { default as and } from './and';
+export { default as or } from './or';
+export { default as xor } from './xor';
