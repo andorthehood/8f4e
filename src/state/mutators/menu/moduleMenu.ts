@@ -20,6 +20,9 @@ const contextMenu = function (state, events) {
 			{ title: 'CV2Midi', action: 'addModule', payload: { type: 'cvToMidi' }, close: true },
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
 			{ title: 'Sequential switch', action: 'addModule', payload: { type: 'sequentialSwitch' }, close: true },
+			{ title: 'And', action: 'addModule', payload: { type: 'and' }, close: true },
+			{ title: 'Or', action: 'addModule', payload: { type: 'or' }, close: true },
+			{ title: 'Xor', action: 'addModule', payload: { type: 'xor' }, close: true },
 		];
 	};
 

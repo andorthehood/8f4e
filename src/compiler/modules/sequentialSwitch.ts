@@ -1,16 +1,7 @@
-import {
-	i32storeLocal,
-	i32load,
-	i32loadLocal,
-	localGet,
-	localSet,
-	i32const,
-	ifelse,
-	i32store,
-} from '../wasm/instructions';
+import { i32load, localGet, localSet, i32const, ifelse, i32store } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
-import { ModuleGenerator } from './types';
+import { ModuleGenerator } from '../types';
 
 const enum Memory {
 	ZERO = 0x00,
