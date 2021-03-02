@@ -13,8 +13,8 @@ const enum Memory {
 
 const enum Locals {
 	COUNTER,
-	RATE,
 	LIMIT,
+	RATE,
 	__LENGTH,
 }
 

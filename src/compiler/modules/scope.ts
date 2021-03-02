@@ -14,9 +14,9 @@ const enum Memory {
 }
 
 const enum Locals {
-	INPUT,
 	BUFFER_POINTER,
 	COUNTER,
+	INPUT,
 	__LENGTH,
 }
 
