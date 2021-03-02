@@ -12,3 +12,4 @@ export { default as sequentialSwitch } from './sequentialSwitch';
 export { default as and } from './and';
 export { default as or } from './or';
 export { default as xor } from './xor';
+export { default as constant } from './constant';
