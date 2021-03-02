@@ -23,6 +23,7 @@ const contextMenu = function (state, events) {
 			{ title: 'And', action: 'addModule', payload: { type: 'and' }, close: true },
 			{ title: 'Or', action: 'addModule', payload: { type: 'or' }, close: true },
 			{ title: 'Xor', action: 'addModule', payload: { type: 'xor' }, close: true },
+			{ title: 'Constant', action: 'addModule', payload: { type: 'constant' }, close: true },
 		];
 	};
 

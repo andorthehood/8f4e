@@ -7,7 +7,7 @@ const defaultState: State = {
 	modules: [],
 	connections: [],
 	moduleTypes,
-	isDebugMode: false, //process.env.NODE_ENV === 'development',
+	isDebugMode: process.env.NODE_ENV === 'development',
 	compiler: {
 		compilationTime: 0,
 		isCompiling: false,

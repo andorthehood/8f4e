@@ -21,6 +21,7 @@ const moduleSliders = function (state, events) {
 				Math.max(slider.minValue, module.config[slider.id] + movementY * -1 * slider.resolution),
 				slider.maxValue
 			);
+
 			const address = state.ui.compiler.outputAddressLookup[module.id + slider.id] / Uint32Array.BYTES_PER_ELEMENT;
 			state.ui.compiler.memoryBuffer[address] = module.config[slider.id];
 		}
