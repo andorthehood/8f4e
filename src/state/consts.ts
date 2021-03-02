@@ -199,6 +199,17 @@ export const moduleTypes = {
 		},
 		switches: [],
 	},
+	constant: {
+		width: 100,
+		height: 100,
+		connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+		name: 'Constant',
+		sliders: [{ id: 'out', x: 10, y: 20, width: 10, height: 50, minValue: -32000, maxValue: 32000, resolution: 100 }],
+		defaultValues: {
+			out: 0,
+		},
+		switches: [],
+	},
 	and: {
 		width: 100,
 		height: 100,
