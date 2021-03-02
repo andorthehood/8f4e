@@ -16,8 +16,8 @@ const enum Memory {
 }
 
 const enum Locals {
-	COUNTER,
 	CLOCK,
+	COUNTER,
 	__LENGTH,
 }
 

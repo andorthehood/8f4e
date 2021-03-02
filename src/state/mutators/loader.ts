@@ -4,16 +4,16 @@ import { moduleTypes } from '../consts';
 const STRUCTURE_VERSION = 3;
 
 const defaultState: State = {
-	modules: [],
-	connections: [],
-	moduleTypes,
-	isDebugMode: process.env.NODE_ENV === 'development',
 	compiler: {
 		compilationTime: 0,
 		isCompiling: false,
 		outputAddressLookup: {},
 		memoryBuffer: [],
 	},
+	connections: [],
+	isDebugMode: process.env.NODE_ENV === 'development',
+	moduleTypes,
+	modules: [],
 	viewport: {
 		width: 0,
 		height: 0,
@@ -43,10 +43,10 @@ const loader = function (state, events) {
 		localStorage.setItem(
 			'state',
 			JSON.stringify({
-				viewport: state.ui.viewport,
 				connections: state.ui.connections,
 				modules: state.ui.modules,
 				sructureVersion: state.ui.sructureVersion,
+				viewport: state.ui.viewport,
 			})
 		);
 	};

@@ -9,41 +9,41 @@ export interface Connection {}
 
 export interface Connector {
 	id: string;
-	x: number;
-	y: number;
 	isInput?: boolean;
 	label?: string;
+	x: number;
+	y: number;
 }
 
 export interface Slider {
+	height: number;
 	id: string;
+	maxValue: number;
+	minValue: number;
+	resolution: number;
+	width: number;
 	x: number;
 	y: number;
-	width: number;
-	height: number;
-	minValue: number;
-	maxValue: number;
-	resolution: number;
 }
 
 export interface Switch {
+	height: number;
 	id: string;
-	onValue: number;
 	offValue: number;
+	onValue: number;
+	width: number;
 	x: number;
 	y: number;
-	width: number;
-	height: number;
 }
 
 export interface ModuleType {
-	width: number;
-	height: number;
 	connectors: Connector[];
+	defaultValues?: Object;
+	height: number;
 	name: string;
 	sliders: Slider[];
-	defaultValues?: Object;
 	switches: Switch[];
+	width: number;
 }
 
 export interface State {
@@ -52,29 +52,29 @@ export interface State {
 	isDebugMode: boolean;
 	compiler: {};
 	viewport: {
+		height: number;
+		width: number;
 		x: number;
 		y: number;
-		width: number;
-		height: number;
 	};
 	midi: {
 		ports: [];
 	};
+	moduleTypes: {
+		attenuator: ModuleType;
+		clockGenerator: ModuleType;
+		cvToMidi: ModuleType;
+		offset: ModuleType;
+		quantizer: ModuleType;
+		randomGenerator: ModuleType;
+		saw: ModuleType;
+		scope: ModuleType;
+		sequentialSwitch: ModuleType;
+		splitter: ModuleType;
+		triangle: ModuleType;
+	};
 	error: {
 		display: boolean;
 		message: string;
-	};
-	moduleTypes: {
-		splitter: ModuleType;
-		sequentialSwitch: ModuleType;
-		clockGenerator: ModuleType;
-		quantizer: ModuleType;
-		cvToMidi: ModuleType;
-		saw: ModuleType;
-		triangle: ModuleType;
-		randomGenerator: ModuleType;
-		scope: ModuleType;
-		attenuator: ModuleType;
-		offset: ModuleType;
 	};
 }

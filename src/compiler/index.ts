@@ -1,13 +1,13 @@
 import {
-	createFunctionSection,
-	createTypeSection,
-	createFunctionType,
-	createExportSection,
-	createFunctionExport,
 	createCodeSection,
+	createExportSection,
 	createFunctionBody,
+	createFunctionExport,
+	createFunctionSection,
+	createFunctionType,
 	createImportSection,
 	createMemoryImport,
+	createTypeSection,
 } from './wasm/sections';
 
 import { call, i32store } from './wasm/instructions';
