@@ -1,10 +1,10 @@
 const save = function (state, events) {
 	const onSave = function () {
 		const json = JSON.stringify({
-			viewport: state.ui.viewport,
 			connections: state.ui.connections,
 			modules: state.ui.modules,
 			sructureVersion: state.ui.sructureVersion,
+			viewport: state.ui.viewport,
 		});
 
 		const blob = new Blob([json], { type: 'octet/stream' });

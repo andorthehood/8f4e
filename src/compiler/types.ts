@@ -1,9 +1,9 @@
 export type Module = {
-	moduleId: string;
 	functionBody: number[];
-	offset: number;
 	initialMemory: number[];
 	memoryAddresses: { address: number; id: string; isInputPointer?: boolean }[];
+	moduleId: string;
+	offset: number;
 };
 
 export type ModuleGenerator = (moduleId: string, offset: number, initialConfig?: any) => Module;
