@@ -1,19 +1,19 @@
-import viewport from './mutators/viewport';
-import loader from './mutators/loader';
-import contextMenu from './mutators/menu/contextMenu';
-import moduleDragger from './mutators/modules/moduleDragger';
-import moduleCreator from './mutators/modules/moduleCreator';
-import moduleSwitches from './mutators/modules/moduleSwitches';
-import moduleSliders from './mutators/modules/moduleSliders';
+import compiler from './mutators/compiler';
 import connectionMaker from './mutators/connections';
+import contextMenu from './mutators/menu/contextMenu';
 import error from './mutators/error';
 import history from './mutators/history';
-import tests from './mutators/tests';
-import compiler from './mutators/compiler';
-import midi from './mutators/midi';
 import innit from './mutators/init';
+import loader from './mutators/loader';
+import midi from './mutators/midi';
+import moduleCreator from './mutators/modules/moduleCreator';
+import moduleDragger from './mutators/modules/moduleDragger';
 import moduleMenu from './mutators/menu/moduleMenu';
+import moduleSliders from './mutators/modules/moduleSliders';
+import moduleSwitches from './mutators/modules/moduleSwitches';
 import save from './mutators/save';
+import tests from './mutators/tests';
+import viewport from './mutators/viewport';
 
 const init = function (events) {
 	const state = { ui: {} };

@@ -17,12 +17,12 @@ const events = function (): {
 } {
 	const subscriptions = {
 		contextmenu: [],
+		keydown: [],
+		keyup: [],
 		mousedown: [],
 		mousemove: [],
 		mouseup: [],
 		resize: [],
-		keydown: [],
-		keyup: [],
 	};
 
 	const onEvent = function (event) {
