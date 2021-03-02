@@ -1,13 +1,13 @@
 import {
 	FunctionBody,
-	FunctionType,
 	FunctionExport,
 	FunctionName,
-	LocalDeclaration,
+	FunctionType,
 	Import,
+	LocalDeclaration,
 	createVector,
-	unsignedLEB128,
 	encodeString,
+	unsignedLEB128,
 } from './types';
 
 import { Type, Section, Instruction } from 'wasm-bytecode-utils';
