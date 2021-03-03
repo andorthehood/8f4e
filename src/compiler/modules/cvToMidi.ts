@@ -7,14 +7,14 @@ const enum Memory {
 	MIDI_CHANNEL = 0x08,
 }
 
-const cvToMidi: ModuleGenerator = function (moduleId, offset) {
+const cvToMidi: ModuleGenerator = function (moduleId, offset, config) {
 	const functionBody = createFunctionBody([], []);
 
 	return {
 		moduleId,
 		functionBody,
 		offset,
-		initialMemory: [0, 0, 0],
+		initialMemory: [0, 0, config.channel || 0],
 		memoryAddresses: [
 			{ address: Memory.NOTE_INPUT_POINTER + offset, id: 'cvin', isInputPointer: true },
 			{ address: Memory.CLOCK_INPUT_POINTER + offset, id: 'clockin', isInputPointer: true },
