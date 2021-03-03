@@ -36,12 +36,23 @@ export interface Switch {
 	y: number;
 }
 
+export interface Stepper {
+	height: number;
+	id: string;
+	maxValue: number;
+	minValue: number;
+	width: number;
+	x: number;
+	y: number;
+}
+
 export interface ModuleType {
 	connectors: Connector[];
 	defaultValues?: Object;
 	height: number;
 	name: string;
 	sliders: Slider[];
+	steppers: Stepper[];
 	switches: Switch[];
 	width: number;
 }
