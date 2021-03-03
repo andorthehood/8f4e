@@ -10,6 +10,7 @@ import moduleCreator from './mutators/modules/moduleCreator';
 import moduleDragger from './mutators/modules/moduleDragger';
 import moduleMenu from './mutators/menu/moduleMenu';
 import moduleSliders from './mutators/modules/moduleSliders';
+import moduleSteppers from './mutators/modules/moduleSteppers';
 import moduleSwitches from './mutators/modules/moduleSwitches';
 import save from './mutators/save';
 import tests from './mutators/tests';
@@ -29,6 +30,7 @@ const init = function (events) {
 	moduleMenu(state, events);
 	moduleCreator(state, events);
 	moduleSwitches(state, events);
+	moduleSteppers(state, events);
 	error(state, events);
 	tests(state, events);
 	compiler(state, events);
