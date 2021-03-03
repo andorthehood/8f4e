@@ -33,7 +33,7 @@ export const moduleTypes = {
 	},
 	clockGenerator: {
 		width: 100,
-		height: 150,
+		height: 100,
 		connectors: [{ id: 'out', x: 85, y: 20 }],
 		name: 'Clock generator',
 		switches: [],
@@ -132,6 +132,7 @@ export const moduleTypes = {
 		name: 'CV to MIDI',
 		switches: [],
 		sliders: [],
+		steppers: [{ id: 'channel', x: 10, y: 10, minValue: 1, maxValue: 8 }],
 	},
 	saw: {
 		width: 100,
