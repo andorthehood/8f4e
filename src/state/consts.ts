@@ -15,6 +15,7 @@ export const moduleTypes = {
 		name: 'Splitter',
 		switches: [],
 		sliders: [],
+		steppers: [],
 	},
 	sequentialSwitch: {
 		width: 100,
@@ -30,6 +31,7 @@ export const moduleTypes = {
 		name: 'Sequential switch',
 		switches: [],
 		sliders: [],
+		steppers: [],
 	},
 	clockGenerator: {
 		width: 100,
@@ -41,6 +43,7 @@ export const moduleTypes = {
 		defaultValues: {
 			rate: 10,
 		},
+		steppers: [],
 	},
 	quantizer: {
 		width: 200,
@@ -121,6 +124,7 @@ export const moduleTypes = {
 		],
 		name: 'Quantizer',
 		sliders: [],
+		steppers: [],
 	},
 	cvToMidi: {
 		width: 200,
@@ -132,7 +136,10 @@ export const moduleTypes = {
 		name: 'CV to MIDI',
 		switches: [],
 		sliders: [],
-		steppers: [{ id: 'channel', x: 10, y: 10, minValue: 1, maxValue: 8 }],
+		steppers: [{ id: 'channel', x: 80, y: 10, width: 10, height: 20, minValue: 1, maxValue: 8 }],
+		defaultValues: {
+			channel: 1,
+		},
 	},
 	saw: {
 		width: 100,
@@ -144,6 +151,7 @@ export const moduleTypes = {
 		defaultValues: {
 			rate: 1000,
 		},
+		steppers: [],
 	},
 	triangle: {
 		width: 100,
@@ -152,6 +160,7 @@ export const moduleTypes = {
 		name: 'Triangle',
 		switches: [],
 		sliders: [],
+		steppers: [],
 	},
 	randomGenerator: {
 		width: 100,
@@ -160,6 +169,7 @@ export const moduleTypes = {
 		name: 'Random',
 		switches: [],
 		sliders: [],
+		steppers: [],
 	},
 	scope: {
 		width: 100,
@@ -171,6 +181,7 @@ export const moduleTypes = {
 		name: 'Scope',
 		switches: [],
 		sliders: [],
+		steppers: [],
 	},
 	attenuator: {
 		width: 100,
@@ -185,6 +196,7 @@ export const moduleTypes = {
 		defaultValues: {
 			divisor: 1,
 		},
+		steppers: [],
 	},
 	offset: {
 		width: 100,
@@ -199,6 +211,7 @@ export const moduleTypes = {
 			offset: 0,
 		},
 		switches: [],
+		steppers: [],
 	},
 	constant: {
 		width: 100,
@@ -210,6 +223,7 @@ export const moduleTypes = {
 			out: 0,
 		},
 		switches: [],
+		steppers: [],
 	},
 	and: {
 		width: 100,
@@ -222,6 +236,7 @@ export const moduleTypes = {
 		name: 'And',
 		sliders: [],
 		switches: [],
+		steppers: [],
 	},
 	or: {
 		width: 100,
@@ -234,6 +249,7 @@ export const moduleTypes = {
 		name: 'Or',
 		sliders: [],
 		switches: [],
+		steppers: [],
 	},
 	xor: {
 		width: 100,
@@ -246,5 +262,6 @@ export const moduleTypes = {
 		name: 'Xor',
 		sliders: [],
 		switches: [],
+		steppers: [],
 	},
 };
