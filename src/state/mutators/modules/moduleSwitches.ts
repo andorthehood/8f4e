@@ -1,8 +1,8 @@
-import findSwitchAtViewportCoordinates from '../../helpers/findSwitchAtViewportCoordinates';
+import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
 
 const moduleSwitches = function (state, events) {
 	const onModuleClick = function ({ x, y, module }) {
-		const _switch = findSwitchAtViewportCoordinates(state, module, x, y);
+		const _switch = findModuleControllerAtViewportCoordinates(state.ui, module, 'switches', x, y);
 
 		if (_switch) {
 			module.config[_switch.id] = module.config[_switch.id] === _switch.onValue ? _switch.offValue : _switch.onValue;

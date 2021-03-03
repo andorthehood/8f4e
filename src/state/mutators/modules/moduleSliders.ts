@@ -1,4 +1,4 @@
-import findSliderAtViewportCoordinates from '../../helpers/findSliderAtViewportCoordinates';
+import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
 
 const moduleSliders = function (state, events) {
 	let slider = null;
@@ -9,7 +9,7 @@ const moduleSliders = function (state, events) {
 		event.stopPropagation = true;
 
 		module = event.module;
-		slider = findSliderAtViewportCoordinates(state, module, x, y);
+		slider = findModuleControllerAtViewportCoordinates(state.ui, module, 'sliders', x, y);
 	};
 
 	const onMouseMove = function (event) {
