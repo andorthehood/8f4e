@@ -9,7 +9,7 @@ const drawModules = function (engine, state) {
 
 	for (let i = 0; i < state.ui.modules.length; i++) {
 		const { x, y, type, id, config } = state.ui.modules[i];
-		const { width, height, name, connectors, switches, sliders } = state.ui.moduleTypes[type];
+		const { width, height, name, connectors, switches, sliders, steppers } = state.ui.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -69,6 +69,25 @@ const drawModules = function (engine, state) {
 				engine.drawSprite(slider.x, slider.y + (slider.height - offset), 'rgb(255,255,255)', slider.width, offset);
 				engine.setSpriteLookup(font('small_white'));
 				engine.drawText(slider.x, slider.y, '' + value / slider.resolution);
+			}
+
+			for (let i = 0; i < steppers.length; i++) {
+				const stepper = steppers[i];
+				engine.setSpriteLookup(fillColor);
+				engine.drawRectangle(stepper.x, stepper.y, stepper.width, stepper.height / 2, 'rgb(255,255,255)');
+				engine.drawRectangle(
+					stepper.x,
+					stepper.y + stepper.height / 2,
+					stepper.width,
+					stepper.height / 2,
+					'rgb(255,255,255)'
+				);
+
+				const address = state.ui.compiler.outputAddressLookup[id + stepper.id] / Uint32Array.BYTES_PER_ELEMENT;
+				const value = state.ui.compiler.memoryBuffer[address];
+
+				engine.setSpriteLookup(font('small_white'));
+				engine.drawText(stepper.x + 12, stepper.y, '' + value);
 			}
 
 			engine.endGroup();
