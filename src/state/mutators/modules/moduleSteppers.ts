@@ -1,5 +1,4 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
-import viewport from '../viewport';
 
 const moduleSwitches = function (state, events) {
 	const onModuleClick = function ({ x, y, module }) {
