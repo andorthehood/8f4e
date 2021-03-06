@@ -1,4 +1,4 @@
-import { Engine } from 'glugglugglug';
+import Engine from './engine';
 import generateSprite from './spriteGenerator';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 import { font } from './spriteGenerator';
@@ -19,7 +19,7 @@ const init = async function (state) {
 		engine.resize(window.innerWidth, window.innerHeight);
 
 		if (state.ui.isDebugMode) {
-			engine.drawSpriteFromCoordinates(10, 10, 512, 512, 0, 0);
+			engine.drawSpriteFromCoordinates(10, 10, 512, 512, 0, 0, 512, 512);
 		}
 
 		drawModules(engine, state);
