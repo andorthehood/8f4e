@@ -1,8 +1,137 @@
 import { midiNoteToInt16 } from './helpers/midi';
 import { Note } from '../midi/enums';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../compiler/consts';
+import { ModuleTypes } from './types';
 
-export const moduleTypes = {
+export const moduleTypes: ModuleTypes = {
+	abs: {
+		width: 100,
+		height: 100,
+		connectors: [
+			{ id: 'in', x: 5, y: 20, isInput: true },
+			{ id: 'out', x: 85, y: 20 },
+		],
+		name: 'Abs',
+		switches: [],
+		sliders: [],
+		steppers: [],
+	},
+	and: {
+		width: 100,
+		height: 100,
+		connectors: [
+			{ id: 'in1', x: 5, y: 20, isInput: true },
+			{ id: 'in2', x: 5, y: 35, isInput: true },
+			{ id: 'out', x: 85, y: 20, isInput: false },
+		],
+		name: 'And',
+		sliders: [],
+		switches: [],
+		steppers: [],
+	},
+	attenuator: {
+		width: 100,
+		height: 100,
+		connectors: [
+			{ id: 'out', x: 85, y: 20, isInput: false },
+			{ id: 'in', x: 5, y: 20, isInput: true },
+		],
+		name: 'Attenuator',
+		switches: [],
+		sliders: [{ id: 'divisor', x: 10, y: 20, width: 10, height: 50, minValue: 1, maxValue: 100, resolution: 1 }],
+		defaultValues: {
+			divisor: 1,
+		},
+		steppers: [],
+	},
+	clockGenerator: {
+		width: 100,
+		height: 100,
+		connectors: [{ id: 'out', x: 85, y: 20 }],
+		name: 'Clock generator',
+		switches: [],
+		sliders: [{ id: 'rate', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 3000, resolution: 10 }],
+		defaultValues: {
+			rate: 10,
+		},
+		steppers: [],
+	},
+	constant: {
+		width: 100,
+		height: 100,
+		connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+		name: 'Constant',
+		sliders: [
+			{
+				id: 'out',
+				x: 10,
+				y: 20,
+				width: 10,
+				height: 50,
+				minValue: I16_SIGNED_SMALLEST_NUMBER,
+				maxValue: I16_SIGNED_LARGEST_NUMBER,
+				resolution: 100,
+			},
+		],
+		defaultValues: {
+			out: 0,
+		},
+		switches: [],
+		steppers: [],
+	},
+	cvToMidi: {
+		width: 200,
+		height: 100,
+		connectors: [
+			{ id: 'cvin', x: 5, y: 20, isInput: true, label: 'note in' },
+			{ id: 'clockin', x: 5, y: 35, isInput: true, label: 'clock in' },
+		],
+		name: 'CV to MIDI',
+		switches: [],
+		sliders: [],
+		steppers: [{ id: 'channel', x: 80, y: 10, width: 10, height: 20, minValue: 1, maxValue: 8 }],
+		defaultValues: {
+			channel: 1,
+		},
+	},
+	invert: {
+		width: 100,
+		height: 100,
+		connectors: [
+			{ id: 'in', x: 5, y: 20, isInput: true },
+			{ id: 'out', x: 85, y: 20 },
+		],
+		name: 'Invert',
+		switches: [],
+		sliders: [],
+		steppers: [],
+	},
+	max: {
+		width: 100,
+		height: 100,
+		connectors: [
+			{ id: 'in1', x: 5, y: 20, isInput: true },
+			{ id: 'in2', x: 5, y: 35, isInput: true },
+			{ id: 'out', x: 85, y: 20, isInput: false },
+		],
+		name: 'Max',
+		sliders: [],
+		switches: [],
+		steppers: [],
+	},
+	min: {
+		width: 100,
+		height: 100,
+		connectors: [
+			{ id: 'in1', x: 5, y: 20, isInput: true },
+			{ id: 'in2', x: 5, y: 35, isInput: true },
+			{ id: 'out', x: 85, y: 20, isInput: false },
+		],
+		name: 'Min',
+		sliders: [],
+		switches: [],
+		steppers: [],
+	},
 	mixer: {
 		width: 100,
 		height: 100,
@@ -18,71 +147,55 @@ export const moduleTypes = {
 		sliders: [],
 		steppers: [],
 	},
-	abs: {
+	negate: {
 		width: 100,
 		height: 100,
 		connectors: [
 			{ id: 'in', x: 5, y: 20, isInput: true },
-			{ id: 'out', x: 85, y: 20 },
+			{ id: 'out', x: 85, y: 20, isInput: false },
 		],
-		name: 'Abs',
-		switches: [],
+		name: 'Negate',
 		sliders: [],
+		switches: [],
 		steppers: [],
 	},
-	invert: {
+	offset: {
 		width: 100,
 		height: 100,
 		connectors: [
 			{ id: 'in', x: 5, y: 20, isInput: true },
-			{ id: 'out', x: 85, y: 20 },
+			{ id: 'out', x: 85, y: 20, isInput: false },
 		],
-		name: 'Invert',
+		name: 'Offset',
+		sliders: [
+			{
+				id: 'offset',
+				x: 10,
+				y: 20,
+				width: 10,
+				height: 50,
+				minValue: 0,
+				maxValue: I16_SIGNED_LARGEST_NUMBER,
+				resolution: 100,
+			},
+		],
+		defaultValues: {
+			offset: 0,
+		},
 		switches: [],
-		sliders: [],
 		steppers: [],
 	},
-	splitter: {
+	or: {
 		width: 100,
 		height: 100,
 		connectors: [
-			{ id: 'in', x: 5, y: 20, isInput: true },
-			{ id: 'out1', x: 85, y: 20 },
-			{ id: 'out2', x: 85, y: 35 },
-			{ id: 'out3', x: 85, y: 50 },
-			{ id: 'out4', x: 85, y: 65 },
-		],
-		name: 'Splitter',
-		switches: [],
-		sliders: [],
-		steppers: [],
-	},
-	sequentialSwitch: {
-		width: 100,
-		height: 100,
-		connectors: [
-			{ id: 'out', x: 85, y: 20 },
 			{ id: 'in1', x: 5, y: 20, isInput: true },
 			{ id: 'in2', x: 5, y: 35, isInput: true },
-			{ id: 'in3', x: 5, y: 50, isInput: true },
-			{ id: 'in4', x: 5, y: 65, isInput: true },
-			{ id: 'clock', x: 5, y: 80, isInput: true },
+			{ id: 'out', x: 85, y: 20, isInput: false },
 		],
-		name: 'Sequential switch',
-		switches: [],
+		name: 'Or',
 		sliders: [],
-		steppers: [],
-	},
-	clockGenerator: {
-		width: 100,
-		height: 100,
-		connectors: [{ id: 'out', x: 85, y: 20 }],
-		name: 'Clock generator',
 		switches: [],
-		sliders: [{ id: 'rate', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 3000, resolution: 10 }],
-		defaultValues: {
-			rate: 10,
-		},
 		steppers: [],
 	},
 	quantizer: {
@@ -166,20 +279,14 @@ export const moduleTypes = {
 		sliders: [],
 		steppers: [],
 	},
-	cvToMidi: {
-		width: 200,
+	randomGenerator: {
+		width: 100,
 		height: 100,
-		connectors: [
-			{ id: 'cvin', x: 5, y: 20, isInput: true, label: 'note in' },
-			{ id: 'clockin', x: 5, y: 35, isInput: true, label: 'clock in' },
-		],
-		name: 'CV to MIDI',
+		connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+		name: 'Random',
 		switches: [],
 		sliders: [],
-		steppers: [{ id: 'channel', x: 80, y: 10, width: 10, height: 20, minValue: 1, maxValue: 8 }],
-		defaultValues: {
-			channel: 1,
-		},
+		steppers: [],
 	},
 	saw: {
 		width: 100,
@@ -191,24 +298,6 @@ export const moduleTypes = {
 		defaultValues: {
 			rate: 1000,
 		},
-		steppers: [],
-	},
-	triangle: {
-		width: 100,
-		height: 100,
-		connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
-		name: 'Triangle',
-		switches: [],
-		sliders: [],
-		steppers: [],
-	},
-	randomGenerator: {
-		width: 100,
-		height: 100,
-		connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
-		name: 'Random',
-		switches: [],
-		sliders: [],
 		steppers: [],
 	},
 	scope: {
@@ -223,94 +312,44 @@ export const moduleTypes = {
 		sliders: [],
 		steppers: [],
 	},
-	attenuator: {
+	sequentialSwitch: {
 		width: 100,
 		height: 100,
 		connectors: [
-			{ id: 'out', x: 85, y: 20, isInput: false },
-			{ id: 'in', x: 5, y: 20, isInput: true },
+			{ id: 'out', x: 85, y: 20 },
+			{ id: 'in1', x: 5, y: 20, isInput: true },
+			{ id: 'in2', x: 5, y: 35, isInput: true },
+			{ id: 'in3', x: 5, y: 50, isInput: true },
+			{ id: 'in4', x: 5, y: 65, isInput: true },
+			{ id: 'clock', x: 5, y: 80, isInput: true },
 		],
-		name: 'Attenuator',
+		name: 'Sequential switch',
 		switches: [],
-		sliders: [{ id: 'divisor', x: 10, y: 20, width: 10, height: 50, minValue: 1, maxValue: 100, resolution: 1 }],
-		defaultValues: {
-			divisor: 1,
-		},
+		sliders: [],
 		steppers: [],
 	},
-	offset: {
+	splitter: {
 		width: 100,
 		height: 100,
 		connectors: [
 			{ id: 'in', x: 5, y: 20, isInput: true },
-			{ id: 'out', x: 85, y: 20, isInput: false },
+			{ id: 'out1', x: 85, y: 20 },
+			{ id: 'out2', x: 85, y: 35 },
+			{ id: 'out3', x: 85, y: 50 },
+			{ id: 'out4', x: 85, y: 65 },
 		],
-		name: 'Offset',
-		sliders: [
-			{
-				id: 'offset',
-				x: 10,
-				y: 20,
-				width: 10,
-				height: 50,
-				minValue: 0,
-				maxValue: I16_SIGNED_LARGEST_NUMBER,
-				resolution: 100,
-			},
-		],
-		defaultValues: {
-			offset: 0,
-		},
+		name: 'Splitter',
 		switches: [],
+		sliders: [],
 		steppers: [],
 	},
-	constant: {
+	triangle: {
 		width: 100,
 		height: 100,
 		connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
-		name: 'Constant',
-		sliders: [
-			{
-				id: 'out',
-				x: 10,
-				y: 20,
-				width: 10,
-				height: 50,
-				minValue: I16_SIGNED_SMALLEST_NUMBER,
-				maxValue: I16_SIGNED_LARGEST_NUMBER,
-				resolution: 100,
-			},
-		],
-		defaultValues: {
-			out: 0,
-		},
+		name: 'Triangle',
 		switches: [],
-		steppers: [],
-	},
-	and: {
-		width: 100,
-		height: 100,
-		connectors: [
-			{ id: 'in1', x: 5, y: 20, isInput: true },
-			{ id: 'in2', x: 5, y: 35, isInput: true },
-			{ id: 'out', x: 85, y: 20, isInput: false },
-		],
-		name: 'And',
 		sliders: [],
-		switches: [],
-		steppers: [],
-	},
-	or: {
-		width: 100,
-		height: 100,
-		connectors: [
-			{ id: 'in1', x: 5, y: 20, isInput: true },
-			{ id: 'in2', x: 5, y: 35, isInput: true },
-			{ id: 'out', x: 85, y: 20, isInput: false },
-		],
-		name: 'Or',
-		sliders: [],
-		switches: [],
 		steppers: [],
 	},
 	xor: {
@@ -322,18 +361,6 @@ export const moduleTypes = {
 			{ id: 'out', x: 85, y: 20, isInput: false },
 		],
 		name: 'Xor',
-		sliders: [],
-		switches: [],
-		steppers: [],
-	},
-	negate: {
-		width: 100,
-		height: 100,
-		connectors: [
-			{ id: 'in', x: 5, y: 20, isInput: true },
-			{ id: 'out', x: 85, y: 20, isInput: false },
-		],
-		name: 'Negate',
 		sliders: [],
 		switches: [],
 		steppers: [],
