@@ -6,4 +6,4 @@ export type Module = {
 	offset: number;
 };
 
-export type ModuleGenerator = (moduleId: string, offset: number, initialConfig?: any) => Module;
+export type ModuleGenerator = (moduleId: string, offset: number, initialConfig?: { [key: string]: any }) => Module;

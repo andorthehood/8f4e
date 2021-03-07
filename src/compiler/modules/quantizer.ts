@@ -17,10 +17,6 @@ import { ModuleGenerator } from '../types';
 import { getOneOctaveInInt16 } from '../../state/helpers/midi';
 import { I32_SIGNED_SMALLEST_NUMBER } from '../consts';
 
-const enum Helper {
-	ABS = 0,
-}
-
 const enum Memory {
 	INPUT_POINTER = 0x00,
 	OUTPUT = 0x04,
@@ -88,7 +84,17 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 					...localGet(Locals.NOTE_VALUE),
 					...localGet(Locals.INPUT),
 					Instruction.I32_SUB,
-					...call(Helper.ABS),
+					...localSet(Locals.DIFFERENCE),
+
+					// Abs
+					...localGet(Locals.DIFFERENCE),
+					...i32const(0),
+					Instruction.I32_LT_S,
+					...ifelse(
+						Type.I32,
+						[...i32const(0), ...localGet(Locals.DIFFERENCE), Instruction.I32_SUB],
+						[...localGet(Locals.DIFFERENCE)]
+					),
 					...localSet(Locals.DIFFERENCE),
 
 					// Compare with the smallest difference.
