@@ -12,6 +12,7 @@ const contextMenu = function (state, events) {
 			{ title: 'CV2Midi', action: 'addModule', payload: { type: 'cvToMidi' }, close: true },
 			{ title: 'Clock generator', action: 'addModule', payload: { type: 'clockGenerator' }, close: true },
 			{ title: 'Constant', action: 'addModule', payload: { type: 'constant' }, close: true },
+			{ title: 'Negate', action: 'addModule', payload: { type: 'negate' }, close: true },
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
 			{ title: 'Or', action: 'addModule', payload: { type: 'or' }, close: true },
 			{ title: 'Quantizer', action: 'addModule', payload: { type: 'quantizer' }, close: true },
