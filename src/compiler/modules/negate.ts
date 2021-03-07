@@ -1,7 +1,8 @@
-import { i32load, i32const, i32store, ifelse, br_if, block, br } from '../wasm/instructions';
+import { i32load, i32const, i32store, ifelse } from '../wasm/instructions';
 import { createFunctionBody } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
+import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
 	ZERO = 0x00,
@@ -19,7 +20,7 @@ const negate: ModuleGenerator = function (moduleId, offset) {
 			...i32load(),
 			...i32const(0),
 			Instruction.I32_GT_S,
-			...ifelse(Type.I32, [...i32const(0)], [...i32const(32000)]),
+			...ifelse(Type.I32, [...i32const(0)], [...i32const(I16_SIGNED_LARGEST_NUMBER)]),
 			...i32store(),
 		]
 	);

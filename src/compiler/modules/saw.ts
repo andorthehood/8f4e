@@ -2,6 +2,7 @@ import { i32const, i32loadLocal, i32load, i32storeLocal, ifelse, localGet, local
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
+import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
 	COUNTER = 0x00,
@@ -44,7 +45,13 @@ const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		]
 	);
 
-	const initialMemory = [0, offset + Memory.RATE_SELF, initialConfig.rate, offset + Memory.LIMIT_SELF, 32767];
+	const initialMemory = [
+		0,
+		offset + Memory.RATE_SELF,
+		initialConfig.rate,
+		offset + Memory.LIMIT_SELF,
+		I16_SIGNED_LARGEST_NUMBER,
+	];
 
 	return {
 		moduleId,
