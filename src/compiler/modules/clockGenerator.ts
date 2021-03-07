@@ -2,6 +2,7 @@ import { i32const, i32storeLocal, ifelse, localGet, localSet, i32loadLocal } fro
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
+import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
 	COUNTER = 0x00,
@@ -29,12 +30,12 @@ const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
 			...i32const(12000),
 			...localGet(Locals.COUNTER),
 			Instruction.I32_GE_S,
-			...ifelse(Type.I32, [...i32const(32000)], [...i32const(0)]),
+			...ifelse(Type.I32, [...i32const(I16_SIGNED_LARGEST_NUMBER)], [...i32const(0)]),
 			...localSet(Locals.OUTPUT),
 
 			// Increment counter
 			...localGet(Locals.COUNTER),
-			...i32const(32000),
+			...i32const(I16_SIGNED_LARGEST_NUMBER),
 			Instruction.I32_GE_S,
 			...ifelse(
 				Type.I32,
