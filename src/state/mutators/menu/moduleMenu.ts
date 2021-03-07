@@ -14,6 +14,7 @@ const contextMenu = function (state, events) {
 			{ title: 'Clock generator', action: 'addModule', payload: { type: 'clockGenerator' }, close: true },
 			{ title: 'Constant', action: 'addModule', payload: { type: 'constant' }, close: true },
 			{ title: 'Invert', action: 'addModule', payload: { type: 'invert' }, close: true },
+			{ title: 'Mixer', action: 'addModule', payload: { type: 'mixer' }, close: true },
 			{ title: 'Negate', action: 'addModule', payload: { type: 'negate' }, close: true },
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
 			{ title: 'Or', action: 'addModule', payload: { type: 'or' }, close: true },

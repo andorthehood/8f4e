@@ -5,6 +5,7 @@ export { default as clockGenerator } from './clockGenerator';
 export { default as constant } from './constant';
 export { default as cvToMidi } from './cvToMidi';
 export { default as invert } from './invert';
+export { default as mixer } from './mixer';
 export { default as negate } from './negate';
 export { default as offset } from './offset';
 export { default as or } from './or';
