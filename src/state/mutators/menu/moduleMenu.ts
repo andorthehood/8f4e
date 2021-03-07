@@ -7,11 +7,13 @@ const contextMenu = function (state, events) {
 		state.ui.contextMenu.open = true;
 
 		state.ui.contextMenu.items = [
+			{ title: 'Abs', action: 'addModule', payload: { type: 'abs' }, close: true },
 			{ title: 'And', action: 'addModule', payload: { type: 'and' }, close: true },
 			{ title: 'Attenuator', action: 'addModule', payload: { type: 'attenuator' }, close: true },
 			{ title: 'CV2Midi', action: 'addModule', payload: { type: 'cvToMidi' }, close: true },
 			{ title: 'Clock generator', action: 'addModule', payload: { type: 'clockGenerator' }, close: true },
 			{ title: 'Constant', action: 'addModule', payload: { type: 'constant' }, close: true },
+			{ title: 'Invert', action: 'addModule', payload: { type: 'invert' }, close: true },
 			{ title: 'Negate', action: 'addModule', payload: { type: 'negate' }, close: true },
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
 			{ title: 'Or', action: 'addModule', payload: { type: 'or' }, close: true },
@@ -23,7 +25,6 @@ const contextMenu = function (state, events) {
 			{ title: 'Splitter', action: 'addModule', payload: { type: 'splitter' }, close: true },
 			{ title: 'Swtich', action: 'addModule', payload: { type: 'switch' }, close: true },
 			{ title: 'Triangle', action: 'addModule', payload: { type: 'triangle' }, close: true },
-			{ title: 'Volt', action: 'addModule', payload: { type: 'voltageSource' }, close: true },
 			{ title: 'Xor', action: 'addModule', payload: { type: 'xor' }, close: true },
 		];
 	};

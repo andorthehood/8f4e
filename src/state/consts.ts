@@ -3,6 +3,30 @@ import { Note } from '../midi/enums';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../compiler/consts';
 
 export const moduleTypes = {
+	abs: {
+		width: 100,
+		height: 100,
+		connectors: [
+			{ id: 'in', x: 5, y: 20, isInput: true },
+			{ id: 'out', x: 85, y: 20 },
+		],
+		name: 'Abs',
+		switches: [],
+		sliders: [],
+		steppers: [],
+	},
+	invert: {
+		width: 100,
+		height: 100,
+		connectors: [
+			{ id: 'in', x: 5, y: 20, isInput: true },
+			{ id: 'out', x: 85, y: 20 },
+		],
+		name: 'Invert',
+		switches: [],
+		sliders: [],
+		steppers: [],
+	},
 	splitter: {
 		width: 100,
 		height: 100,

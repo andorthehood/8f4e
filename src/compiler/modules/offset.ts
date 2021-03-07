@@ -1,7 +1,8 @@
-import { i32storeLocal, i32load, i32loadLocal, localGet, localSet, i32const } from '../wasm/instructions';
+import { i32load, i32const, i32store, ifelse, localSet, localGet } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
+import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 
 const enum Memory {
 	ZERO = 0x00,
@@ -11,7 +12,7 @@ const enum Memory {
 }
 
 const enum Locals {
-	INPUT,
+	RESULT,
 	__LENGTH,
 }
 
@@ -19,16 +20,31 @@ const offset: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32load(Memory.INPUT_POINTER + offset),
-			...i32loadLocal(Locals.INPUT),
+			...i32const(Memory.OUTPUT + offset),
+			...[
+				...i32const(Memory.INPUT_POINTER + offset),
+				...i32load(),
+				...i32load(),
 
-			...localGet(Locals.INPUT),
-			...i32const(Memory.OFFSET + offset),
-			...i32load(),
-			Instruction.I32_ADD,
-			...localSet(Locals.INPUT),
+				...i32const(Memory.OFFSET + offset),
+				...i32load(),
 
-			...i32storeLocal(Locals.INPUT, Memory.OUTPUT + offset),
+				Instruction.I32_ADD,
+				...localSet(Locals.RESULT),
+
+				// Limit
+				...localGet(Locals.RESULT),
+				...i32const(I16_SIGNED_LARGEST_NUMBER),
+				Instruction.I32_GE_S,
+				...ifelse(Type.I32, [...i32const(I16_SIGNED_LARGEST_NUMBER)], [...localGet(Locals.RESULT)]),
+				...localSet(Locals.RESULT),
+
+				...localGet(Locals.RESULT),
+				...i32const(I16_SIGNED_SMALLEST_NUMBER),
+				Instruction.I32_LE_S,
+				...ifelse(Type.I32, [...i32const(I16_SIGNED_SMALLEST_NUMBER)], [...localGet(Locals.RESULT)]),
+			],
+			...i32store(),
 		]
 	);
 
