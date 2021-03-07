@@ -57,6 +57,30 @@ export interface ModuleType {
 	width: number;
 }
 
+export interface ModuleTypes {
+	abs: ModuleType;
+	and: ModuleType;
+	attenuator: ModuleType;
+	clockGenerator: ModuleType;
+	constant: ModuleType;
+	cvToMidi: ModuleType;
+	invert: ModuleType;
+	max: ModuleType;
+	min: ModuleType;
+	mixer: ModuleType;
+	negate: ModuleType;
+	offset: ModuleType;
+	or: ModuleType;
+	quantizer: ModuleType;
+	randomGenerator: ModuleType;
+	saw: ModuleType;
+	scope: ModuleType;
+	sequentialSwitch: ModuleType;
+	splitter: ModuleType;
+	triangle: ModuleType;
+	xor: ModuleType;
+}
+
 export interface State {
 	modules: Module[];
 	connections: Connection[];
@@ -71,19 +95,7 @@ export interface State {
 	midi: {
 		ports: [];
 	};
-	moduleTypes: {
-		attenuator: ModuleType;
-		clockGenerator: ModuleType;
-		cvToMidi: ModuleType;
-		offset: ModuleType;
-		quantizer: ModuleType;
-		randomGenerator: ModuleType;
-		saw: ModuleType;
-		scope: ModuleType;
-		sequentialSwitch: ModuleType;
-		splitter: ModuleType;
-		triangle: ModuleType;
-	};
+	moduleTypes: ModuleTypes;
 	error: {
 		display: boolean;
 		message: string;
