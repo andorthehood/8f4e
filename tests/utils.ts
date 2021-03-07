@@ -9,25 +9,19 @@ import {
 	createMemoryImport,
 } from '../src/compiler/wasm/sections';
 import { FunctionBody } from '../src/compiler/wasm/types';
-import { i32abs } from '../src/compiler/wasm/helpers/i32abs'
-import { Type } from '../src/compiler/wasm/enums';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
-export const createSingleFunctionWASMProgramWithStandardLibrary = function (functionBody: FunctionBody): Uint8Array {
-	const helperFunctions = [
-		i32abs()
-	];
-
+export const createSingleFunctionWASMProgram = function (functionBody: FunctionBody): Uint8Array {
 	return Uint8Array.from([
 		...HEADER,
 		...VERSION,
-		...createTypeSection([createFunctionType([], []), createFunctionType([Type.I32], [Type.I32])]),
+		...createTypeSection([createFunctionType([], [])]),
 		...createImportSection([createMemoryImport('js', 'memory')]),
-		...createFunctionSection([0x01, 0x00]),
-		...createExportSection([createFunctionExport('test', 0x01)]),
-		...createCodeSection([...helperFunctions, functionBody]),
+		...createFunctionSection([0x00]),
+		...createExportSection([createFunctionExport('test', 0x00)]),
+		...createCodeSection([functionBody]),
 	]);
 };
 
@@ -39,7 +33,7 @@ export const setInitialMemory = function (memory: any, initialMemory: any) {
 
 export const createTestModule = async function (moduleCreator): Promise<{ memory: Int32Array; test: any, reset: () => void }> {
 	const module = moduleCreator('test', 0);
-	const program = createSingleFunctionWASMProgramWithStandardLibrary(module.functionBody);
+	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
