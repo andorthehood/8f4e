@@ -1,5 +1,6 @@
 import { midiNoteToInt16 } from './helpers/midi';
 import { Note } from '../midi/enums';
+import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../compiler/consts';
 
 export const moduleTypes = {
 	splitter: {
@@ -206,7 +207,18 @@ export const moduleTypes = {
 			{ id: 'out', x: 85, y: 20, isInput: false },
 		],
 		name: 'Offset',
-		sliders: [{ id: 'offset', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 32000, resolution: 100 }],
+		sliders: [
+			{
+				id: 'offset',
+				x: 10,
+				y: 20,
+				width: 10,
+				height: 50,
+				minValue: 0,
+				maxValue: I16_SIGNED_LARGEST_NUMBER,
+				resolution: 100,
+			},
+		],
 		defaultValues: {
 			offset: 0,
 		},
@@ -218,7 +230,18 @@ export const moduleTypes = {
 		height: 100,
 		connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 		name: 'Constant',
-		sliders: [{ id: 'out', x: 10, y: 20, width: 10, height: 50, minValue: -32000, maxValue: 32000, resolution: 100 }],
+		sliders: [
+			{
+				id: 'out',
+				x: 10,
+				y: 20,
+				width: 10,
+				height: 50,
+				minValue: I16_SIGNED_SMALLEST_NUMBER,
+				maxValue: I16_SIGNED_LARGEST_NUMBER,
+				resolution: 100,
+			},
+		],
 		defaultValues: {
 			out: 0,
 		},
