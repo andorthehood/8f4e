@@ -1,5 +1,5 @@
-import { i32load, i32const, i32store } from '../wasm/instructions';
-import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
+import { i32load, i32const, i32store, ifelse, br_if, block, br } from '../wasm/instructions';
+import { createFunctionBody } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
 
@@ -10,23 +10,46 @@ const enum Memory {
 	OUTPUT = 0x0c,
 }
 
-const enum Locals {
-	INPUT,
-	__LENGTH,
-}
-
 const xor: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
-		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
+		[],
 		[
+			...block(Type.VOID, [
+				...i32const(Memory.INPUT_1_POINTER + offset),
+				...i32load(),
+				...i32load(),
+				...i32const(0),
+				Instruction.I32_GT_S,
+				...ifelse(
+					Type.VOID,
+					[
+						// If input1 == 1
+						...i32const(Memory.INPUT_2_POINTER + offset),
+						...i32load(),
+						...i32load(),
+						...i32const(0),
+						Instruction.I32_GT_S,
+						...br_if(1), // If input2 == input1 then break
+					],
+					[
+						// If input1 == 0
+						...i32const(Memory.INPUT_2_POINTER + offset),
+						...i32load(),
+						...i32load(),
+						...i32const(0),
+						Instruction.I32_LE_S,
+						...br_if(1), // If input2 == input1 then break
+					]
+				),
+
+				...i32const(Memory.OUTPUT + offset),
+				...i32const(32000),
+				...i32store(),
+				...br(1),
+			]),
+
 			...i32const(Memory.OUTPUT + offset),
-			...i32const(Memory.INPUT_1_POINTER + offset),
-			...i32load(),
-			...i32load(),
-			...i32const(Memory.INPUT_2_POINTER + offset),
-			...i32load(),
-			...i32load(),
-			Instruction.I32_XOR,
+			...i32const(0),
 			...i32store(),
 		]
 	);
