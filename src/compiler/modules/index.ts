@@ -3,6 +3,7 @@ export { default as attenuator } from './attenuator';
 export { default as clockGenerator } from './clockGenerator';
 export { default as constant } from './constant';
 export { default as cvToMidi } from './cvToMidi';
+export { default as negate } from './negate';
 export { default as offset } from './offset';
 export { default as or } from './or';
 export { default as quantizer } from './quantizer';
