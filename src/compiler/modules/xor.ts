@@ -2,6 +2,7 @@ import { i32load, i32const, i32store, ifelse, br_if, block, br } from '../wasm/i
 import { createFunctionBody } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
+import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
 	ZERO = 0x00,
@@ -43,7 +44,7 @@ const xor: ModuleGenerator = function (moduleId, offset) {
 				),
 
 				...i32const(Memory.OUTPUT + offset),
-				...i32const(32000),
+				...i32const(I16_SIGNED_LARGEST_NUMBER),
 				...i32store(),
 				...br(1),
 			]),

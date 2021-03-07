@@ -1,6 +1,7 @@
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
+import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
 	COUNTER = 0x00,
@@ -21,7 +22,7 @@ const enum Locals {
 const triangle: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody([createLocalDeclaration(Type.I32, Locals.__LENGTH)], []);
 
-	const initialMemory = [0, offset + Memory.RATE_SELF, 1000, offset + Memory.LIMIT_SELF, 32767];
+	const initialMemory = [0, offset + Memory.RATE_SELF, 1000, offset + Memory.LIMIT_SELF, I16_SIGNED_LARGEST_NUMBER];
 
 	return {
 		moduleId,
