@@ -1,4 +1,4 @@
-import { i32const, i32storeLocal, ifelse, localGet, localSet, i32loadLocal } from '../wasm/instructions';
+import { i32const, i32load, i32store, ifelse, localGet, localSet } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
@@ -22,9 +22,17 @@ const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load variables from the memory
-			...i32loadLocal(Locals.OUTPUT, Memory.OUTPUT + offset),
-			...i32loadLocal(Locals.COUNTER, Memory.COUNTER + offset),
-			...i32loadLocal(Locals.RATE, Memory.RATE_SELF + offset),
+			...i32const(Memory.OUTPUT + offset),
+			...i32load(),
+			...localSet(Locals.OUTPUT),
+
+			...i32const(Memory.COUNTER + offset),
+			...i32load(),
+			...localSet(Locals.COUNTER),
+
+			...i32const(Memory.RATE_SELF + offset),
+			...i32load(),
+			...localSet(Locals.RATE),
 
 			// Set output
 			...i32const(12000),
@@ -45,8 +53,13 @@ const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
 			...localSet(Locals.COUNTER),
 
 			// Store variables
-			...i32storeLocal(Locals.OUTPUT, Memory.OUTPUT + offset),
-			...i32storeLocal(Locals.COUNTER, Memory.COUNTER + offset),
+			...i32const(Memory.OUTPUT + offset),
+			...localGet(Locals.OUTPUT),
+			...i32store(),
+
+			...i32const(Memory.COUNTER + offset),
+			...localGet(Locals.COUNTER),
+			...i32store(),
 		]
 	);
 

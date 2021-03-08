@@ -1,8 +1,7 @@
-import { i32load, i32const, i32store, ifelse, br, localSet, localGet } from '../wasm/instructions';
+import { i32load, i32const, i32store, ifelse, localSet, localGet } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
-import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
 	ZERO = 0x00,
