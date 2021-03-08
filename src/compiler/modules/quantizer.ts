@@ -1,16 +1,4 @@
-import {
-	i32load,
-	i32loadLocal,
-	localGet,
-	localSet,
-	i32const,
-	call,
-	ifelse,
-	loop,
-	br_if,
-	block,
-	i32store,
-} from '../wasm/instructions';
+import { i32load, localGet, localSet, i32const, ifelse, loop, br_if, block, i32store } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
@@ -42,8 +30,10 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load the input value from the memory and put it into a register.
-			...i32load(Memory.INPUT_POINTER + offset),
-			...i32loadLocal(Locals.INPUT),
+			...i32const(Memory.INPUT_POINTER + offset),
+			...i32load(),
+			...i32load(),
+			...localSet(Locals.INPUT),
 
 			// Save octave value for later.
 			...localGet(Locals.INPUT),
