@@ -1,4 +1,4 @@
-import { i32storeLocal, i32load, i32loadLocal } from '../wasm/instructions';
+import { i32load, i32const, localSet, localGet, i32store } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
@@ -25,12 +25,26 @@ const splitter: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32load(Memory.INPUT_POINTER + offset),
-			...i32loadLocal(Locals.INPUT),
-			...i32storeLocal(Locals.INPUT, Memory.OUTPUT_1 + offset),
-			...i32storeLocal(Locals.INPUT, Memory.OUTPUT_2 + offset),
-			...i32storeLocal(Locals.INPUT, Memory.OUTPUT_3 + offset),
-			...i32storeLocal(Locals.INPUT, Memory.OUTPUT_4 + offset),
+			...i32const(Memory.INPUT_POINTER + offset),
+			...i32load(),
+			...i32load(),
+			...localSet(Locals.INPUT),
+
+			...i32const(Memory.OUTPUT_1 + offset),
+			...localGet(Locals.INPUT),
+			...i32store(),
+
+			...i32const(Memory.OUTPUT_2 + offset),
+			...localGet(Locals.INPUT),
+			...i32store(),
+
+			...i32const(Memory.OUTPUT_3 + offset),
+			...localGet(Locals.INPUT),
+			...i32store(),
+
+			...i32const(Memory.OUTPUT_4 + offset),
+			...localGet(Locals.INPUT),
+			...i32store(),
 		]
 	);
 

@@ -1,4 +1,4 @@
-import { i32storeLocal, i32loadLocal, localGet, localSet } from '../wasm/instructions';
+import { localGet, localSet, i32const, i32load, i32store } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
@@ -20,9 +20,13 @@ const random: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32loadLocal(Locals.MULTIPLIER, Memory.MULTIPLIER + offset),
-			...i32loadLocal(Locals.INCREMENT, Memory.INCREMENT + offset),
-			...i32loadLocal(Locals.PREVIOUS, Memory.PREVIOUS + offset),
+			...i32const(Memory.MULTIPLIER + offset),
+			...i32load(),
+			...localSet(Locals.MULTIPLIER),
+
+			...i32const(Memory.INCREMENT + offset),
+			...i32load(),
+			...localSet(Locals.PREVIOUS),
 
 			...localGet(Locals.PREVIOUS),
 			...localGet(Locals.MULTIPLIER),
@@ -31,7 +35,9 @@ const random: ModuleGenerator = function (moduleId, offset) {
 			Instruction.I32_ADD,
 			...localSet(Locals.PREVIOUS),
 
-			...i32storeLocal(Locals.PREVIOUS, Memory.PREVIOUS + offset),
+			...i32const(Memory.PREVIOUS + offset),
+			...localGet(Locals.PREVIOUS),
+			...i32store(),
 		]
 	);
 
