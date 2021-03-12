@@ -1,4 +1,4 @@
-import { findWhatIsConnectedTo } from '../../src/state/helpers/connectionHelpers';
+import { findWhatIsConnectedTo } from '../../../src/state/helpers/connectionHelpers';
 
 export const generateOutputAddressLookup = function (compiledModules) {
 	const lookup = {};

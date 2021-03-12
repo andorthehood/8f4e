@@ -1,6 +1,6 @@
 import { midiNoteToInt16 } from './helpers/midi';
 import { Note } from '../midi/enums';
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../packages/compiler/consts';
+import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../packages/compiler/src/consts';
 import { ModuleTypes } from './types';
 
 export const moduleTypes: ModuleTypes = {
