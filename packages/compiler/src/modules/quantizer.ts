@@ -2,7 +2,7 @@ import { i32load, localGet, localSet, i32const, ifelse, loop, br_if, block, i32s
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
-import { getOneOctaveInInt16 } from '../../../src/state/helpers/midi';
+import { getOneOctaveInInt16 } from '../../../../src/state/helpers/midi';
 import { I32_SIGNED_SMALLEST_NUMBER } from '../consts';
 
 const enum Memory {
