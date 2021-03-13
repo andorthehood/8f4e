@@ -2,9 +2,8 @@ import { i32load, i32const, i32store, ifelse, br, localSet, localGet } from '../
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
-import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
-const enum Memory {
+export const enum Memory {
 	ZERO = 0x00,
 	INPUT_1_POINTER = 0x04,
 	INPUT_2_POINTER = 0x08,
@@ -17,18 +16,18 @@ const enum Locals {
 	__LENGTH,
 }
 
-const min: ModuleGenerator = function (moduleId, offset) {
+const min: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(Memory.OUTPUT + offset),
+			...i32const(Memory.OUTPUT * bytes + offset),
 			...[
-				...i32const(Memory.INPUT_1_POINTER + offset),
+				...i32const(Memory.INPUT_1_POINTER * bytes + offset),
 				...i32load(),
 				...i32load(),
 				...localSet(Locals.INPUT_1),
 
-				...i32const(Memory.INPUT_2_POINTER + offset),
+				...i32const(Memory.INPUT_2_POINTER * bytes + offset),
 				...i32load(),
 				...i32load(),
 				...localSet(Locals.INPUT_2),
@@ -47,11 +46,21 @@ const min: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset,
-		initialMemory: [0, Memory.ZERO + offset, Memory.ZERO + offset, 0],
+		initialMemory: [0, Memory.ZERO * bytes + offset, Memory.ZERO * bytes + offset, 0],
 		memoryAddresses: [
 			{ address: Memory.OUTPUT + offset, id: 'out' },
-			{ address: Memory.INPUT_1_POINTER + offset, id: 'in1', default: Memory.ZERO + offset, isInputPointer: true },
-			{ address: Memory.INPUT_2_POINTER + offset, id: 'in2', default: Memory.ZERO + offset, isInputPointer: true },
+			{
+				address: Memory.INPUT_1_POINTER * bytes + offset,
+				id: 'in1',
+				default: Memory.ZERO * bytes + offset,
+				isInputPointer: true,
+			},
+			{
+				address: Memory.INPUT_2_POINTER * bytes + offset,
+				id: 'in2',
+				default: Memory.ZERO * bytes + offset,
+				isInputPointer: true,
+			},
 		],
 	};
 };

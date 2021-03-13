@@ -15,6 +15,7 @@ export const moduleTypes: ModuleTypes = {
 		switches: [],
 		sliders: [],
 		steppers: [],
+		engine: 'abs',
 	},
 	and: {
 		width: 100,
@@ -28,6 +29,7 @@ export const moduleTypes: ModuleTypes = {
 		sliders: [],
 		switches: [],
 		steppers: [],
+		engine: 'and',
 	},
 	attenuator: {
 		width: 100,
@@ -43,6 +45,7 @@ export const moduleTypes: ModuleTypes = {
 			divisor: 1,
 		},
 		steppers: [],
+		engine: 'attenuator',
 	},
 	clockGenerator: {
 		width: 100,
@@ -55,6 +58,7 @@ export const moduleTypes: ModuleTypes = {
 			rate: 10,
 		},
 		steppers: [],
+		engine: 'clockGenerator',
 	},
 	constant: {
 		width: 100,
@@ -78,6 +82,7 @@ export const moduleTypes: ModuleTypes = {
 		},
 		switches: [],
 		steppers: [],
+		engine: 'constant',
 	},
 	cvToMidi: {
 		width: 200,
@@ -93,6 +98,7 @@ export const moduleTypes: ModuleTypes = {
 		defaultValues: {
 			channel: 1,
 		},
+		engine: '',
 	},
 	invert: {
 		width: 100,
@@ -105,6 +111,7 @@ export const moduleTypes: ModuleTypes = {
 		switches: [],
 		sliders: [],
 		steppers: [],
+		engine: 'invert',
 	},
 	max: {
 		width: 100,
@@ -118,6 +125,7 @@ export const moduleTypes: ModuleTypes = {
 		sliders: [],
 		switches: [],
 		steppers: [],
+		engine: 'max',
 	},
 	min: {
 		width: 100,
@@ -131,6 +139,7 @@ export const moduleTypes: ModuleTypes = {
 		sliders: [],
 		switches: [],
 		steppers: [],
+		engine: 'min',
 	},
 	mixer: {
 		width: 100,
@@ -146,6 +155,7 @@ export const moduleTypes: ModuleTypes = {
 		switches: [],
 		sliders: [],
 		steppers: [],
+		engine: 'mixer',
 	},
 	negate: {
 		width: 100,
@@ -158,6 +168,7 @@ export const moduleTypes: ModuleTypes = {
 		sliders: [],
 		switches: [],
 		steppers: [],
+		engine: 'negate',
 	},
 	offset: {
 		width: 100,
@@ -184,6 +195,7 @@ export const moduleTypes: ModuleTypes = {
 		},
 		switches: [],
 		steppers: [],
+		engine: 'offset',
 	},
 	or: {
 		width: 100,
@@ -197,6 +209,7 @@ export const moduleTypes: ModuleTypes = {
 		sliders: [],
 		switches: [],
 		steppers: [],
+		engine: 'or',
 	},
 	quantizer: {
 		width: 200,
@@ -278,6 +291,7 @@ export const moduleTypes: ModuleTypes = {
 		name: 'Quantizer',
 		sliders: [],
 		steppers: [],
+		engine: 'quantizer',
 	},
 	randomGenerator: {
 		width: 100,
@@ -287,6 +301,7 @@ export const moduleTypes: ModuleTypes = {
 		switches: [],
 		sliders: [],
 		steppers: [],
+		engine: 'randomGenerator',
 	},
 	saw: {
 		width: 100,
@@ -299,6 +314,7 @@ export const moduleTypes: ModuleTypes = {
 			rate: 1000,
 		},
 		steppers: [],
+		engine: 'saw',
 	},
 	scope: {
 		width: 100,
@@ -311,6 +327,7 @@ export const moduleTypes: ModuleTypes = {
 		switches: [],
 		sliders: [],
 		steppers: [],
+		engine: 'scope',
 	},
 	sequentialSwitch: {
 		width: 100,
@@ -327,6 +344,7 @@ export const moduleTypes: ModuleTypes = {
 		switches: [],
 		sliders: [],
 		steppers: [],
+		engine: 'sequentialSwitch',
 	},
 	splitter: {
 		width: 100,
@@ -342,6 +360,7 @@ export const moduleTypes: ModuleTypes = {
 		switches: [],
 		sliders: [],
 		steppers: [],
+		engine: 'splitter',
 	},
 	triangle: {
 		width: 100,
@@ -351,6 +370,7 @@ export const moduleTypes: ModuleTypes = {
 		switches: [],
 		sliders: [],
 		steppers: [],
+		engine: 'triangle',
 	},
 	xor: {
 		width: 100,
@@ -364,5 +384,6 @@ export const moduleTypes: ModuleTypes = {
 		sliders: [],
 		switches: [],
 		steppers: [],
+		engine: 'xor',
 	},
 };

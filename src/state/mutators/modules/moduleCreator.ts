@@ -6,6 +6,7 @@ const moduleCreator = function (state, events) {
 			id: type + Date.now(),
 			config: { ...state.ui.moduleTypes[type].defaultValues },
 			type,
+			engine: state.ui.moduleTypes[type].engine,
 		});
 	};
 

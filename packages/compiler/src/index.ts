@@ -22,9 +22,9 @@ const VERSION = [0x01, 0x00, 0x00, 0x00];
 const compileModules = function (modules): Module[] {
 	let memoryAddress = 4;
 	return modules
-		.filter(({ type }) => moduleCompilers[type])
-		.map(({ id, type, config }) => {
-			const module = moduleCompilers[type](id, memoryAddress, config);
+		.filter(({ engine }) => moduleCompilers[engine])
+		.map(({ id, engine, config }) => {
+			const module = moduleCompilers[engine](id, memoryAddress, config);
 			memoryAddress += module.initialMemory.length * Int32Array.BYTES_PER_ELEMENT;
 			return module;
 		});
