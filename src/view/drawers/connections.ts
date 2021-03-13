@@ -1,10 +1,10 @@
 import { fillColor } from '../spriteGenerator';
+import * as moduleTypes from '../../modules';
 
 const drawConnections = function (engine, state) {
 	const ui = state.ui;
 	const connections = state.ui.connections;
 	const modules = state.ui.modules;
-	const moduleTypes = state.ui.moduleTypes;
 
 	engine.setSpriteLookup(fillColor);
 

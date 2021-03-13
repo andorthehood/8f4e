@@ -1,12 +1,14 @@
+import * as moduleTypes from '../../../modules';
+
 const moduleCreator = function (state, events) {
 	const onAddModule = ({ x, y, type }) => {
 		state.ui.modules.push({
-			x: x - state.ui.viewport.x - Math.floor(state.ui.moduleTypes[type].width / 2),
-			y: y - state.ui.viewport.y - Math.floor(state.ui.moduleTypes[type].height / 2),
+			x: x - state.ui.viewport.x - Math.floor(moduleTypes[type].width / 2),
+			y: y - state.ui.viewport.y - Math.floor(moduleTypes[type].height / 2),
 			id: type + Date.now(),
-			config: { ...state.ui.moduleTypes[type].defaultValues },
+			config: { ...moduleTypes[type].defaultValues },
 			type,
-			engine: state.ui.moduleTypes[type].engine,
+			engine: moduleTypes[type].engine,
 		});
 	};
 
