@@ -1,6 +1,7 @@
 export interface Module {
 	id: string;
 	type: string;
+	engine: string;
 	x: number;
 	y: number;
 }
@@ -49,6 +50,7 @@ export interface Stepper {
 export interface ModuleType {
 	connectors: Connector[];
 	defaultValues?: Object;
+	engine: string;
 	height: number;
 	name: string;
 	sliders: Slider[];
