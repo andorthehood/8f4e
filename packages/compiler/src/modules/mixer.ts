@@ -4,13 +4,13 @@ import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 
-const enum Memory {
-	ZERO = 0x00,
-	OUTPUT = 0x04,
-	INPUT_POINTER_1 = 8,
-	INPUT_POINTER_2 = 12,
-	INPUT_POINTER_3 = 16,
-	INPUT_POINTER_4 = 20,
+export const enum Memory {
+	DEFAULT_VALUE,
+	OUTPUT,
+	INPUT_POINTER_1,
+	INPUT_POINTER_2,
+	INPUT_POINTER_3,
+	INPUT_POINTER_4,
 }
 
 const enum Locals {
@@ -18,30 +18,30 @@ const enum Locals {
 	__LENGTH,
 }
 
-const mixer: ModuleGenerator = function (moduleId, offset) {
+const mixer: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(Memory.OUTPUT + offset),
+			...i32const(Memory.OUTPUT * bytes + offset),
 
 			...[
-				...i32const(Memory.INPUT_POINTER_1 + offset),
+				...i32const(Memory.INPUT_POINTER_1 * bytes + offset),
 				...i32load(),
 				...i32load(),
 
-				...i32const(Memory.INPUT_POINTER_2 + offset),
-				...i32load(),
-				...i32load(),
-
-				Instruction.I32_ADD,
-
-				...i32const(Memory.INPUT_POINTER_3 + offset),
+				...i32const(Memory.INPUT_POINTER_2 * bytes + offset),
 				...i32load(),
 				...i32load(),
 
 				Instruction.I32_ADD,
 
-				...i32const(Memory.INPUT_POINTER_4 + offset),
+				...i32const(Memory.INPUT_POINTER_3 * bytes + offset),
+				...i32load(),
+				...i32load(),
+
+				Instruction.I32_ADD,
+
+				...i32const(Memory.INPUT_POINTER_4 * bytes + offset),
 				...i32load(),
 				...i32load(),
 
@@ -69,13 +69,20 @@ const mixer: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset,
-		initialMemory: [0, 0, Memory.ZERO + offset, Memory.ZERO + offset, Memory.ZERO + offset, Memory.ZERO + offset],
+		initialMemory: [
+			0,
+			0,
+			Memory.DEFAULT_VALUE * bytes + offset,
+			Memory.DEFAULT_VALUE * bytes + offset,
+			Memory.DEFAULT_VALUE * bytes + offset,
+			Memory.DEFAULT_VALUE * bytes + offset,
+		],
 		memoryAddresses: [
-			{ address: Memory.INPUT_POINTER_1 + offset, id: 'in1', isInputPointer: true },
-			{ address: Memory.INPUT_POINTER_2 + offset, id: 'in2', isInputPointer: true },
-			{ address: Memory.INPUT_POINTER_3 + offset, id: 'in3', isInputPointer: true },
-			{ address: Memory.INPUT_POINTER_4 + offset, id: 'in4', isInputPointer: true },
-			{ address: Memory.OUTPUT + offset, id: 'out' },
+			{ address: Memory.INPUT_POINTER_1 * bytes + offset, id: 'in1', isInputPointer: true },
+			{ address: Memory.INPUT_POINTER_2 * bytes + offset, id: 'in2', isInputPointer: true },
+			{ address: Memory.INPUT_POINTER_3 * bytes + offset, id: 'in3', isInputPointer: true },
+			{ address: Memory.INPUT_POINTER_4 * bytes + offset, id: 'in4', isInputPointer: true },
+			{ address: Memory.OUTPUT * bytes + offset, id: 'out' },
 		],
 	};
 };
