@@ -1,5 +1,4 @@
 import { State } from '../types';
-import { moduleTypes } from '../consts';
 
 const STRUCTURE_VERSION = 4;
 
@@ -12,7 +11,6 @@ const defaultState: State = {
 	},
 	connections: [],
 	isDebugMode: process.env.NODE_ENV === 'development',
-	moduleTypes,
 	modules: [],
 	viewport: {
 		width: 0,
