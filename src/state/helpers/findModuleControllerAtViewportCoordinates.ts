@@ -1,4 +1,5 @@
 import { Module, State } from '../types';
+import * as moduleTypes from '../../modules';
 
 const findModuleControllerAtViewportCoordinates = function (
 	state: State,
@@ -7,7 +8,7 @@ const findModuleControllerAtViewportCoordinates = function (
 	x: number,
 	y: number
 ) {
-	const controllers = state.moduleTypes[module.type][controllerType];
+	const controllers = moduleTypes[module.type][controllerType];
 	return controllers.find(controller => {
 		const { width, height } = controller;
 		return (
