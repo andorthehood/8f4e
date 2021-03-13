@@ -1,11 +1,11 @@
 import { createFunctionBody } from '../wasm/sections';
 import { ModuleGenerator } from '../types';
 
-const enum Memory {
-	OUTPUT = 0x00,
+export const enum Memory {
+	OUTPUT,
 }
 
-const constant: ModuleGenerator = function (moduleId, offset, initialConfig) {
+const constant: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4) {
 	const functionBody = createFunctionBody([], []);
 
 	return {
@@ -13,7 +13,7 @@ const constant: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		functionBody,
 		offset,
 		initialMemory: [initialConfig.out || 0],
-		memoryAddresses: [{ address: Memory.OUTPUT + offset, id: 'out' }],
+		memoryAddresses: [{ address: Memory.OUTPUT * bytes + offset, id: 'out' }],
 	};
 };
 
