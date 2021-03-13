@@ -32,9 +32,10 @@ export const setInitialMemory = function (memory: any, initialMemory: any) {
 };
 
 export const createTestModule = async function (
-	moduleCreator
+	moduleCreator,
+	initialConfig = {}
 ): Promise<{ memory: Int32Array; test: any; reset: () => void }> {
-	const module = moduleCreator('test', 0);
+	const module = moduleCreator('test', 0, initialConfig);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
