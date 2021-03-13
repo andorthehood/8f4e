@@ -1,5 +1,6 @@
 import { modules, feedbackScale, font, fillColor } from '../../spriteGenerator';
 import scope from './scope';
+import * as moduleTypes from '../../../modules';
 
 const drawModules = function (engine, state) {
 	const offsetX = state.ui.viewport.x;
@@ -9,7 +10,7 @@ const drawModules = function (engine, state) {
 
 	for (let i = 0; i < state.ui.modules.length; i++) {
 		const { x, y, type, id, config } = state.ui.modules[i];
-		const { width, height, name, connectors, switches, sliders, steppers } = state.ui.moduleTypes[type];
+		const { width, height, name, connectors, switches, sliders, steppers } = moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
