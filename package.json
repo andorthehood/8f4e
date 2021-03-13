@@ -7,7 +7,7 @@
     "build": "parcel build src/index.html",
     "watch": "parcel src/index.html --port 3000",
     "sprite": "parcel tests/view/spriteGenerator/visualTesting.html --port 3001",
-    "prettier": "prettier --write './src/**/*.ts'",
+    "prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/**/*.ts'",
     "test": "node --experimental-vm-modules --experimental-wasi-unstable-preview1 node_modules/.bin/jest"
   },
   "browserslist": [
