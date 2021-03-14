@@ -4,10 +4,10 @@ import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 export const enum Memory {
-	ZERO = 0x00,
-	INPUT_1_POINTER = 0x04,
-	INPUT_2_POINTER = 0x08,
-	OUTPUT = 0x0c,
+	ZERO,
+	INPUT_1_POINTER,
+	INPUT_2_POINTER,
+	OUTPUT,
 }
 
 const enum Locals {
@@ -16,18 +16,18 @@ const enum Locals {
 	__LENGTH,
 }
 
-const min: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4) {
+const min: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(Memory.OUTPUT * bytes + offset),
+			...i32const(offset(Memory.OUTPUT)),
 			...[
-				...i32const(Memory.INPUT_1_POINTER * bytes + offset),
+				...i32const(offset(Memory.INPUT_1_POINTER)),
 				...i32load(),
 				...i32load(),
 				...localSet(Locals.INPUT_1),
 
-				...i32const(Memory.INPUT_2_POINTER * bytes + offset),
+				...i32const(offset(Memory.INPUT_2_POINTER)),
 				...i32load(),
 				...i32load(),
 				...localSet(Locals.INPUT_2),
@@ -45,20 +45,20 @@ const min: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 
 	return {
 		moduleId,
 		functionBody,
-		offset,
-		initialMemory: [0, Memory.ZERO * bytes + offset, Memory.ZERO * bytes + offset, 0],
+		offset: offset(0),
+		initialMemory: [0, offset(Memory.ZERO), offset(Memory.ZERO), 0],
 		memoryAddresses: [
-			{ address: Memory.OUTPUT + offset, id: 'out' },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
 			{
-				address: Memory.INPUT_1_POINTER * bytes + offset,
+				address: offset(Memory.INPUT_1_POINTER),
 				id: 'in1',
-				default: Memory.ZERO * bytes + offset,
+				default: offset(Memory.ZERO),
 				isInputPointer: true,
 			},
 			{
-				address: Memory.INPUT_2_POINTER * bytes + offset,
+				address: offset(Memory.INPUT_2_POINTER),
 				id: 'in2',
-				default: Memory.ZERO * bytes + offset,
+				default: offset(Memory.ZERO),
 				isInputPointer: true,
 			},
 		],
