@@ -11,35 +11,35 @@ export const enum Memory {
 	OUTPUT,
 }
 
-const or: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4) {
+const or: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
-			...i32const(Memory.INPUT_1_POINTER * bytes + offset),
+			...i32const(offset(Memory.INPUT_1_POINTER)),
 			...i32load(),
 			...i32load(),
 			...i32const(0),
 			Instruction.I32_GT_S,
 			...ifelse(Type.VOID, [
-				...i32const(Memory.OUTPUT * bytes + offset),
+				...i32const(offset(Memory.OUTPUT)),
 				...i32const(I16_SIGNED_LARGEST_NUMBER),
 				...i32store(),
 				...br(1),
 			]),
 
-			...i32const(Memory.INPUT_2_POINTER * bytes + offset),
+			...i32const(offset(Memory.INPUT_2_POINTER)),
 			...i32load(),
 			...i32load(),
 			...i32const(0),
 			Instruction.I32_GT_S,
 			...ifelse(Type.VOID, [
-				...i32const(Memory.OUTPUT * bytes + offset),
+				...i32const(offset(Memory.OUTPUT)),
 				...i32const(I16_SIGNED_LARGEST_NUMBER),
 				...i32store(),
 				...br(1),
 			]),
 
-			...i32const(Memory.OUTPUT * bytes + offset),
+			...i32const(offset(Memory.OUTPUT)),
 			...i32const(0),
 			...i32store(),
 		]
@@ -48,20 +48,20 @@ const or: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4
 	return {
 		moduleId,
 		functionBody,
-		offset,
-		initialMemory: [0, Memory.ZERO * bytes + offset, Memory.ZERO * bytes + offset, 0],
+		offset: offset(0),
+		initialMemory: [0, offset(Memory.ZERO), offset(Memory.ZERO), 0],
 		memoryAddresses: [
-			{ address: Memory.OUTPUT * bytes + offset, id: 'out' },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
 			{
-				address: Memory.INPUT_1_POINTER * bytes + offset,
+				address: offset(Memory.INPUT_1_POINTER),
 				id: 'in1',
-				default: Memory.ZERO * bytes + offset,
+				default: offset(Memory.ZERO),
 				isInputPointer: true,
 			},
 			{
-				address: Memory.INPUT_2_POINTER * bytes + offset,
+				address: offset(Memory.INPUT_2_POINTER),
 				id: 'in2',
-				default: Memory.ZERO * bytes + offset,
+				default: offset(Memory.ZERO),
 				isInputPointer: true,
 			},
 		],

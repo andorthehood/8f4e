@@ -15,17 +15,19 @@ import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module } from './types';
 import { Type } from 'wasm-bytecode-utils';
+import { createRelativeAddressCalculator } from './utils';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
 const compileModules = function (modules): Module[] {
-	let memoryAddress = 4;
+	let memoryAddress = 1;
 	return modules
 		.filter(({ engine }) => moduleCompilers[engine])
 		.map(({ id, engine, config }) => {
-			const module = moduleCompilers[engine](id, memoryAddress, config);
-			memoryAddress += module.initialMemory.length * Int32Array.BYTES_PER_ELEMENT;
+			const relative = createRelativeAddressCalculator(memoryAddress, Int32Array.BYTES_PER_ELEMENT);
+			const module = moduleCompilers[engine](id, relative, config);
+			memoryAddress += module.initialMemory.length;
 			return module;
 		});
 };
