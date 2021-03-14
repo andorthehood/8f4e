@@ -18,30 +18,30 @@ const enum Locals {
 	__LENGTH,
 }
 
-const mixer: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4) {
+const mixer: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(Memory.OUTPUT * bytes + offset),
+			...i32const(offset(Memory.OUTPUT)),
 
 			...[
-				...i32const(Memory.INPUT_POINTER_1 * bytes + offset),
+				...i32const(offset(Memory.INPUT_POINTER_1)),
 				...i32load(),
 				...i32load(),
 
-				...i32const(Memory.INPUT_POINTER_2 * bytes + offset),
-				...i32load(),
-				...i32load(),
-
-				Instruction.I32_ADD,
-
-				...i32const(Memory.INPUT_POINTER_3 * bytes + offset),
+				...i32const(offset(Memory.INPUT_POINTER_2)),
 				...i32load(),
 				...i32load(),
 
 				Instruction.I32_ADD,
 
-				...i32const(Memory.INPUT_POINTER_4 * bytes + offset),
+				...i32const(offset(Memory.INPUT_POINTER_3)),
+				...i32load(),
+				...i32load(),
+
+				Instruction.I32_ADD,
+
+				...i32const(offset(Memory.INPUT_POINTER_4)),
 				...i32load(),
 				...i32load(),
 
@@ -68,21 +68,21 @@ const mixer: ModuleGenerator = function (moduleId, offset, initialConfig, bytes 
 	return {
 		moduleId,
 		functionBody,
-		offset,
+		offset: offset(0),
 		initialMemory: [
 			0,
 			0,
-			Memory.DEFAULT_VALUE * bytes + offset,
-			Memory.DEFAULT_VALUE * bytes + offset,
-			Memory.DEFAULT_VALUE * bytes + offset,
-			Memory.DEFAULT_VALUE * bytes + offset,
+			offset(Memory.DEFAULT_VALUE),
+			offset(Memory.DEFAULT_VALUE),
+			offset(Memory.DEFAULT_VALUE),
+			offset(Memory.DEFAULT_VALUE),
 		],
 		memoryAddresses: [
-			{ address: Memory.INPUT_POINTER_1 * bytes + offset, id: 'in1', isInputPointer: true },
-			{ address: Memory.INPUT_POINTER_2 * bytes + offset, id: 'in2', isInputPointer: true },
-			{ address: Memory.INPUT_POINTER_3 * bytes + offset, id: 'in3', isInputPointer: true },
-			{ address: Memory.INPUT_POINTER_4 * bytes + offset, id: 'in4', isInputPointer: true },
-			{ address: Memory.OUTPUT * bytes + offset, id: 'out' },
+			{ address: offset(Memory.INPUT_POINTER_1), id: 'in1', isInputPointer: true },
+			{ address: offset(Memory.INPUT_POINTER_2), id: 'in2', isInputPointer: true },
+			{ address: offset(Memory.INPUT_POINTER_3), id: 'in3', isInputPointer: true },
+			{ address: offset(Memory.INPUT_POINTER_4), id: 'in4', isInputPointer: true },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
 		],
 	};
 };

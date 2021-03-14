@@ -4,12 +4,12 @@ import { Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 const enum Memory {
-	ZERO = 0x00,
-	INPUT_POINTER = 0x04,
-	OUTPUT_1 = 0x08,
-	OUTPUT_2 = 0x0c,
-	OUTPUT_3 = 0x10,
-	OUTPUT_4 = 0x14,
+	ZERO,
+	INPUT_POINTER,
+	OUTPUT_1,
+	OUTPUT_2,
+	OUTPUT_3,
+	OUTPUT_4,
 }
 
 const enum Locals {
@@ -25,24 +25,24 @@ const splitter: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(Memory.INPUT_POINTER + offset),
+			...i32const(offset(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.INPUT),
 
-			...i32const(Memory.OUTPUT_1 + offset),
+			...i32const(offset(Memory.OUTPUT_1)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 
-			...i32const(Memory.OUTPUT_2 + offset),
+			...i32const(offset(Memory.OUTPUT_2)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 
-			...i32const(Memory.OUTPUT_3 + offset),
+			...i32const(offset(Memory.OUTPUT_3)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 
-			...i32const(Memory.OUTPUT_4 + offset),
+			...i32const(offset(Memory.OUTPUT_4)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 		]
@@ -51,14 +51,14 @@ const splitter: ModuleGenerator = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset,
-		initialMemory: [0, Memory.ZERO + offset, 0, 0, 0, 0],
+		offset: offset(0),
+		initialMemory: [0, offset(Memory.ZERO), 0, 0, 0, 0],
 		memoryAddresses: [
-			{ address: Memory.OUTPUT_1 + offset, id: 'out1' },
-			{ address: Memory.OUTPUT_2 + offset, id: 'out2' },
-			{ address: Memory.OUTPUT_3 + offset, id: 'out3' },
-			{ address: Memory.OUTPUT_4 + offset, id: 'out4' },
-			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
+			{ address: offset(Memory.OUTPUT_1), id: 'out1' },
+			{ address: offset(Memory.OUTPUT_2), id: 'out2' },
+			{ address: offset(Memory.OUTPUT_3), id: 'out3' },
+			{ address: offset(Memory.OUTPUT_4), id: 'out4' },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true },
 		],
 	};
 };
