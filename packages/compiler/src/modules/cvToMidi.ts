@@ -2,9 +2,9 @@ import { createFunctionBody } from '../wasm/sections';
 import { ModuleGenerator } from '../types';
 
 const enum Memory {
-	NOTE_INPUT_POINTER = 0x00,
-	CLOCK_INPUT_POINTER = 0x04,
-	MIDI_CHANNEL = 0x08,
+	NOTE_INPUT_POINTER,
+	CLOCK_INPUT_POINTER,
+	MIDI_CHANNEL,
 }
 
 const cvToMidi: ModuleGenerator = function (moduleId, offset, config) {
@@ -13,12 +13,12 @@ const cvToMidi: ModuleGenerator = function (moduleId, offset, config) {
 	return {
 		moduleId,
 		functionBody,
-		offset,
+		offset: offset(0),
 		initialMemory: [0, 0, config.channel || 0],
 		memoryAddresses: [
-			{ address: Memory.NOTE_INPUT_POINTER + offset, id: 'cvin', isInputPointer: true },
-			{ address: Memory.CLOCK_INPUT_POINTER + offset, id: 'clockin', isInputPointer: true },
-			{ address: Memory.MIDI_CHANNEL + offset, id: 'channel' },
+			{ address: offset(Memory.NOTE_INPUT_POINTER), id: 'cvin', isInputPointer: true },
+			{ address: offset(Memory.CLOCK_INPUT_POINTER), id: 'clockin', isInputPointer: true },
+			{ address: offset(Memory.MIDI_CHANNEL), id: 'channel' },
 		],
 	};
 };
