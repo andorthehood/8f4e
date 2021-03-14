@@ -14,12 +14,12 @@ const enum Locals {
 	__LENGTH,
 }
 
-const abs: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4) {
+const abs: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(Memory.OUTPUT * bytes + offset),
-			...i32const(Memory.INPUT_POINTER * bytes + offset),
+			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.INPUT),
@@ -39,14 +39,14 @@ const abs: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 
 	return {
 		moduleId,
 		functionBody,
-		offset,
-		initialMemory: [0, Memory.DEFAULT_VALUE * bytes + offset, Memory.DEFAULT_VALUE + offset, 0],
+		offset: offset(0),
+		initialMemory: [0, offset(Memory.DEFAULT_VALUE), offset(Memory.DEFAULT_VALUE), 0],
 		memoryAddresses: [
-			{ address: Memory.OUTPUT * bytes + offset, id: 'out' },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
 			{
-				address: Memory.INPUT_POINTER * bytes + offset,
+				address: offset(Memory.INPUT_POINTER),
 				id: 'in',
-				default: Memory.DEFAULT_VALUE + offset,
+				default: offset(Memory.DEFAULT_VALUE),
 				isInputPointer: true,
 			},
 		],

@@ -5,9 +5,9 @@ import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
-	COUNTER = 0x00,
-	RATE_SELF = 0x04,
-	OUTPUT = 0x08,
+	COUNTER,
+	RATE_SELF,
+	OUTPUT,
 }
 
 const enum Locals {
@@ -22,15 +22,15 @@ const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load variables from the memory
-			...i32const(Memory.OUTPUT + offset),
+			...i32const(offset(Memory.OUTPUT)),
 			...i32load(),
 			...localSet(Locals.OUTPUT),
 
-			...i32const(Memory.COUNTER + offset),
+			...i32const(offset(Memory.COUNTER)),
 			...i32load(),
 			...localSet(Locals.COUNTER),
 
-			...i32const(Memory.RATE_SELF + offset),
+			...i32const(offset(Memory.RATE_SELF)),
 			...i32load(),
 			...localSet(Locals.RATE),
 
@@ -53,11 +53,11 @@ const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
 			...localSet(Locals.COUNTER),
 
 			// Store variables
-			...i32const(Memory.OUTPUT + offset),
+			...i32const(offset(Memory.OUTPUT)),
 			...localGet(Locals.OUTPUT),
 			...i32store(),
 
-			...i32const(Memory.COUNTER + offset),
+			...i32const(offset(Memory.COUNTER)),
 			...localGet(Locals.COUNTER),
 			...i32store(),
 		]
@@ -68,11 +68,11 @@ const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	return {
 		moduleId,
 		functionBody,
-		offset,
+		offset: offset(0),
 		initialMemory,
 		memoryAddresses: [
-			{ address: Memory.OUTPUT + offset, id: 'out' },
-			{ address: Memory.RATE_SELF + offset, id: 'rate' },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
+			{ address: offset(Memory.RATE_SELF), id: 'rate' },
 		],
 	};
 };

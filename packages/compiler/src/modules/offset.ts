@@ -5,10 +5,10 @@ import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 
 const enum Memory {
-	ZERO = 0x00,
-	INPUT_POINTER = 0x04,
-	OFFSET = 0x08,
-	OUTPUT = 12,
+	ZERO,
+	INPUT_POINTER,
+	OFFSET,
+	OUTPUT,
 }
 
 const enum Locals {
@@ -20,13 +20,13 @@ const offset: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(Memory.OUTPUT + offset),
+			...i32const(offset(Memory.OUTPUT)),
 			...[
-				...i32const(Memory.INPUT_POINTER + offset),
+				...i32const(offset(Memory.INPUT_POINTER)),
 				...i32load(),
 				...i32load(),
 
-				...i32const(Memory.OFFSET + offset),
+				...i32const(offset(Memory.OFFSET)),
 				...i32load(),
 
 				Instruction.I32_ADD,
@@ -51,12 +51,12 @@ const offset: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	return {
 		moduleId,
 		functionBody,
-		offset,
-		initialMemory: [0, Memory.ZERO + offset, initialConfig.offset, 0],
+		offset: offset(0),
+		initialMemory: [0, offset(Memory.ZERO), initialConfig.offset, 0],
 		memoryAddresses: [
-			{ address: Memory.OUTPUT + offset, id: 'out' },
-			{ address: Memory.OFFSET + offset, id: 'offset', default: initialConfig.offset },
-			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true, default: Memory.ZERO + offset },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
+			{ address: offset(Memory.OFFSET), id: 'offset', default: initialConfig.offset },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true, default: offset(Memory.ZERO) },
 		],
 	};
 };

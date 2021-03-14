@@ -11,30 +11,30 @@ export const enum Memory {
 	OUTPUT,
 }
 
-const and: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 4) {
+const and: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
-			...i32const(Memory.INPUT_1_POINTER * bytes + offset),
+			...i32const(offset(Memory.INPUT_1_POINTER)),
 			...i32load(),
 			...i32load(),
 			...i32const(0),
 			Instruction.I32_GT_S,
 			...ifelse(Type.VOID, [
-				...i32const(Memory.INPUT_2_POINTER * bytes + offset),
+				...i32const(offset(Memory.INPUT_2_POINTER)),
 				...i32load(),
 				...i32load(),
 				...i32const(0),
 				Instruction.I32_GT_S,
 				...ifelse(Type.VOID, [
-					...i32const(Memory.OUTPUT * bytes + offset),
+					...i32const(offset(Memory.OUTPUT)),
 					...i32const(I16_SIGNED_LARGEST_NUMBER),
 					...i32store(),
 					...br(2),
 				]),
 			]),
 
-			...i32const(Memory.OUTPUT * bytes + offset),
+			...i32const(offset(Memory.OUTPUT)),
 			...i32const(0),
 			...i32store(),
 		]
@@ -43,20 +43,20 @@ const and: ModuleGenerator = function (moduleId, offset, initialConfig, bytes = 
 	return {
 		moduleId,
 		functionBody,
-		offset,
-		initialMemory: [0, Memory.DEFAULT_VALUE * bytes + offset, Memory.DEFAULT_VALUE * bytes + offset, 0],
+		offset: offset(0),
+		initialMemory: [0, offset(Memory.DEFAULT_VALUE), offset(Memory.DEFAULT_VALUE), 0],
 		memoryAddresses: [
-			{ address: Memory.OUTPUT + offset, id: 'out' },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
 			{
-				address: Memory.INPUT_1_POINTER + offset,
+				address: offset(Memory.INPUT_1_POINTER),
 				id: 'in1',
-				default: Memory.DEFAULT_VALUE * bytes + offset,
+				default: offset(Memory.DEFAULT_VALUE),
 				isInputPointer: true,
 			},
 			{
-				address: Memory.INPUT_2_POINTER + offset,
+				address: offset(Memory.INPUT_2_POINTER),
 				id: 'in2',
-				default: Memory.DEFAULT_VALUE + offset,
+				default: offset(Memory.DEFAULT_VALUE),
 				isInputPointer: true,
 			},
 		],

@@ -6,9 +6,9 @@ import { getOneOctaveInInt16 } from '../../../../src/state/helpers/midi';
 import { I32_SIGNED_SMALLEST_NUMBER } from '../consts';
 
 const enum Memory {
-	INPUT_POINTER = 0x00,
-	OUTPUT = 0x04,
-	NOTES_START_ADDRESS = 0x08,
+	INPUT_POINTER,
+	OUTPUT,
+	NOTES_START_ADDRESS,
 }
 
 const enum Locals {
@@ -30,7 +30,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load the input value from the memory and put it into a register.
-			...i32const(Memory.INPUT_POINTER + offset),
+			...i32const(offset(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.INPUT),
@@ -65,7 +65,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 
 					// Load a note value from the memory.
 					...localGet(Locals.NOTE_MEMORY_POINTER),
-					...i32const(Memory.NOTES_START_ADDRESS + offset),
+					...i32const(offset(Memory.NOTES_START_ADDRESS)),
 					Instruction.I32_ADD,
 					...i32load(),
 					...localSet(Locals.NOTE_VALUE),
@@ -110,7 +110,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 			),
 
 			// Prepare memory address for storing the output value.
-			...i32const(Memory.OUTPUT + offset),
+			...i32const(offset(Memory.OUTPUT)),
 
 			// Offset the best matching value with the saved octave value.
 			...i32const(OCTAVE),
@@ -127,7 +127,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	return {
 		moduleId,
 		functionBody,
-		offset,
+		offset: offset(0),
 		initialMemory: [
 			0,
 			0,
@@ -145,20 +145,20 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 			initialConfig.note12 || I32_SIGNED_SMALLEST_NUMBER,
 		],
 		memoryAddresses: [
-			{ address: Memory.OUTPUT + offset, id: 'out' },
-			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 0, id: 'note1' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 4, id: 'note2' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 8, id: 'note3' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 12, id: 'note4' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 16, id: 'note5' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 20, id: 'note6' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 24, id: 'note7' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 28, id: 'note8' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 32, id: 'note9' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 36, id: 'note10' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 40, id: 'note11' },
-			{ address: Memory.NOTES_START_ADDRESS + offset + 44, id: 'note12' },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 0, id: 'note1' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 4, id: 'note2' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 8, id: 'note3' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 12, id: 'note4' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 16, id: 'note5' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 20, id: 'note6' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 24, id: 'note7' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 28, id: 'note8' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 32, id: 'note9' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 36, id: 'note10' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 40, id: 'note11' },
+			{ address: offset(Memory.NOTES_START_ADDRESS) + 44, id: 'note12' },
 		],
 	};
 };
