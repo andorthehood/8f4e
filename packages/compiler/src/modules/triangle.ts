@@ -4,11 +4,11 @@ import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
-	COUNTER = 0x00,
-	RATE_POINTER = 0x04,
-	RATE_SELF = 0x08,
-	LIMIT_POINTER = 0xc,
-	LIMIT_SELF = 0x10,
+	COUNTER,
+	RATE_POINTER,
+	RATE_SELF,
+	LIMIT_POINTER,
+	LIMIT_SELF,
 }
 
 const enum Locals {
@@ -22,16 +22,16 @@ const enum Locals {
 const triangle: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody([createLocalDeclaration(Type.I32, Locals.__LENGTH)], []);
 
-	const initialMemory = [0, offset + Memory.RATE_SELF, 1000, offset + Memory.LIMIT_SELF, I16_SIGNED_LARGEST_NUMBER];
+	const initialMemory = [0, offset(Memory.RATE_SELF), 1000, offset(Memory.LIMIT_SELF), I16_SIGNED_LARGEST_NUMBER];
 
 	return {
 		moduleId,
 		functionBody,
-		offset,
+		offset: offset(0),
 		initialMemory,
 		memoryAddresses: [
-			{ address: Memory.COUNTER + offset, id: 'out' },
-			{ address: Memory.RATE_POINTER + offset, id: 'rate', isInputPointer: true },
+			{ address: offset(Memory.COUNTER), id: 'out' },
+			{ address: offset(Memory.RATE_POINTER), id: 'rate', isInputPointer: true },
 		],
 	};
 };

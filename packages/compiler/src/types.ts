@@ -8,7 +8,6 @@ export type Module = {
 
 export type ModuleGenerator = (
 	moduleId: string,
-	offset: number,
-	initialConfig?: { [key: string]: any },
-	bytes?: number
+	relative: (nthWord: number) => number,
+	initialConfig?: { [key: string]: any }
 ) => Module;

@@ -5,11 +5,11 @@ import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 const enum Memory {
-	COUNTER = 0x00,
-	RATE_POINTER = 0x04,
-	RATE_SELF = 0x08,
-	LIMIT_POINTER = 0xc,
-	LIMIT_SELF = 0x10,
+	COUNTER,
+	RATE_POINTER,
+	RATE_SELF,
+	LIMIT_POINTER,
+	LIMIT_SELF,
 }
 
 const enum Locals {
@@ -24,17 +24,17 @@ const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load data from memory into local variables.
-			...i32const(Memory.RATE_POINTER + offset),
+			...i32const(offset(Memory.RATE_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.RATE),
 
-			...i32const(Memory.LIMIT_POINTER + offset),
+			...i32const(offset(Memory.LIMIT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.LIMIT),
 
-			...i32const(Memory.COUNTER + offset),
+			...i32const(offset(Memory.COUNTER)),
 			...i32load(),
 			...localSet(Locals.COUNTER),
 
@@ -49,7 +49,7 @@ const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
 			...localSet(Locals.COUNTER),
 
 			// Save data to memory.
-			...i32const(Memory.COUNTER + offset),
+			...i32const(offset(Memory.COUNTER)),
 			...localGet(Locals.COUNTER),
 			...i32store(),
 		]
@@ -57,21 +57,21 @@ const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
 
 	const initialMemory = [
 		0,
-		offset + Memory.RATE_SELF,
+		offset(Memory.RATE_SELF),
 		initialConfig.rate,
-		offset + Memory.LIMIT_SELF,
+		offset(Memory.LIMIT_SELF),
 		I16_SIGNED_LARGEST_NUMBER,
 	];
 
 	return {
 		moduleId,
 		functionBody,
-		offset,
+		offset: offset(0),
 		initialMemory,
 		memoryAddresses: [
-			{ address: Memory.COUNTER + offset, id: 'out' },
-			{ address: Memory.RATE_POINTER + offset, id: 'ratein', isInputPointer: true, default: Memory.RATE_SELF + offset },
-			{ address: Memory.RATE_SELF + offset, id: 'rate', default: initialConfig.rate },
+			{ address: offset(Memory.COUNTER), id: 'out' },
+			{ address: offset(Memory.RATE_POINTER), id: 'ratein', isInputPointer: true, default: offset(Memory.RATE_SELF) },
+			{ address: offset(Memory.RATE_SELF), id: 'rate', default: initialConfig.rate },
 		],
 	};
 };

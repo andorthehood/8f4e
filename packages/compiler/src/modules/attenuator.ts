@@ -4,21 +4,21 @@ import { Instruction } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 const enum Memory {
-	ZERO = 0x00,
-	INPUT_POINTER = 0x04,
-	DIVISOR = 0x08,
-	OUT = 0x0c,
+	ZERO,
+	INPUT_POINTER,
+	DIVISOR,
+	OUT,
 }
 
 const attenuator: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
 		[],
 		[
-			...i32const(Memory.OUT + offset),
-			...i32const(Memory.INPUT_POINTER + offset),
+			...i32const(offset(Memory.OUT)),
+			...i32const(offset(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
-			...i32const(Memory.DIVISOR + offset),
+			...i32const(offset(Memory.DIVISOR)),
 			...i32load(),
 			Instruction.I32_DIV_S,
 			...i32store(),
@@ -28,12 +28,12 @@ const attenuator: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	return {
 		moduleId,
 		functionBody,
-		offset,
-		initialMemory: [0, Memory.ZERO + offset, initialConfig.divisor, 0],
+		offset: offset(0),
+		initialMemory: [0, offset(Memory.ZERO), initialConfig.divisor, 0],
 		memoryAddresses: [
-			{ address: Memory.OUT + offset, id: 'out' },
-			{ address: Memory.DIVISOR + offset, id: 'divisor' },
-			{ address: Memory.INPUT_POINTER + offset, id: 'in', isInputPointer: true },
+			{ address: offset(Memory.OUT), id: 'out' },
+			{ address: offset(Memory.DIVISOR), id: 'divisor' },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true },
 		],
 	};
 };

@@ -35,7 +35,7 @@ export const createTestModule = async function (
 	moduleCreator,
 	initialConfig = {}
 ): Promise<{ memory: Int32Array; test: any; reset: () => void }> {
-	const module = moduleCreator('test', 0, initialConfig);
+	const module = moduleCreator('test', nthWord => nthWord * 4, initialConfig);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });

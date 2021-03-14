@@ -4,9 +4,9 @@ import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 const enum Memory {
-	MULTIPLIER = 0x00,
-	INCREMENT = 0x04,
-	PREVIOUS = 0x08,
+	MULTIPLIER,
+	INCREMENT,
+	PREVIOUS,
 }
 
 const enum Locals {
@@ -20,11 +20,11 @@ const random: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(Memory.MULTIPLIER + offset),
+			...i32const(offset(Memory.MULTIPLIER)),
 			...i32load(),
 			...localSet(Locals.MULTIPLIER),
 
-			...i32const(Memory.INCREMENT + offset),
+			...i32const(offset(Memory.INCREMENT)),
 			...i32load(),
 			...localSet(Locals.PREVIOUS),
 
@@ -35,7 +35,7 @@ const random: ModuleGenerator = function (moduleId, offset) {
 			Instruction.I32_ADD,
 			...localSet(Locals.PREVIOUS),
 
-			...i32const(Memory.PREVIOUS + offset),
+			...i32const(offset(Memory.PREVIOUS)),
 			...localGet(Locals.PREVIOUS),
 			...i32store(),
 		]
@@ -44,9 +44,9 @@ const random: ModuleGenerator = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset,
+		offset: offset(0),
 		initialMemory: [Date.now(), 11, 9],
-		memoryAddresses: [{ address: Memory.PREVIOUS + offset, id: 'out' }],
+		memoryAddresses: [{ address: offset(Memory.PREVIOUS), id: 'out' }],
 	};
 };
 
