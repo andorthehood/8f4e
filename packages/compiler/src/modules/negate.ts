@@ -36,7 +36,6 @@ const negate: ModuleGenerator = function (moduleId, offset) {
 				address: offset(Memory.INPUT_POINTER),
 				id: 'in',
 				default: offset(Memory.DEFAULT_VALUE),
-				isInputPointer: true,
 			},
 		],
 	};

@@ -3,8 +3,8 @@ import { scope } from '../../spriteGenerator';
 const RESOLUTION = 49;
 
 const drawer = function (engine, state, id) {
-	const bufferAddress = state.ui.compiler.outputAddressLookup[id + 'buffer'] / 4;
-	const pointerAddress = state.ui.compiler.outputAddressLookup[id + 'bufferPointer'] / 4;
+	const bufferAddress = state.ui.compiler.outputAddressLookup[id + '_' + 'buffer'] / 4;
+	const pointerAddress = state.ui.compiler.outputAddressLookup[id + '_' + 'bufferPointer'] / 4;
 	const buffer = state.ui.compiler.memoryBuffer.slice(bufferAddress, bufferAddress + RESOLUTION);
 	const pointer = state.ui.compiler.memoryBuffer[pointerAddress] / Int32Array.BYTES_PER_ELEMENT - bufferAddress;
 
