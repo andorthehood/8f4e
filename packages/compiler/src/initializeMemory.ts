@@ -4,7 +4,7 @@ export const generateOutputAddressLookup = function (compiledModules) {
 	const lookup = {};
 	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
 		memoryAddresses.forEach(({ id, address }) => {
-			lookup[moduleId + id] = address;
+			lookup[moduleId + '_' + id] = address;
 		});
 	});
 	return lookup;
@@ -13,7 +13,7 @@ export const generateOutputAddressLookup = function (compiledModules) {
 export const setUpConnections = function (memoryBuffer, compiledModules, connections) {
 	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
 		memoryAddresses
-			.filter(({ isInputPointer }) => isInputPointer)
+			.filter(({ id }) => id.startsWith('in'))
 			.forEach(({ id, address }) => {
 				const output = findWhatIsConnectedTo(connections, moduleId, id);
 				if (output) {

@@ -56,7 +56,7 @@ const offset: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		memoryAddresses: [
 			{ address: offset(Memory.OUTPUT), id: 'out' },
 			{ address: offset(Memory.OFFSET), id: 'offset', default: initialConfig.offset },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true, default: offset(Memory.ZERO) },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in', default: offset(Memory.ZERO) },
 		],
 	};
 };
