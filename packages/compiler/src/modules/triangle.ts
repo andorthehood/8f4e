@@ -31,7 +31,7 @@ const triangle: ModuleGenerator = function (moduleId, offset) {
 		initialMemory,
 		memoryAddresses: [
 			{ address: offset(Memory.COUNTER), id: 'out' },
-			{ address: offset(Memory.RATE_POINTER), id: 'rate', isInputPointer: true },
+			{ address: offset(Memory.RATE_POINTER), id: 'in' },
 		],
 	};
 };

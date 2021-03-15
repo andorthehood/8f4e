@@ -1,7 +1,7 @@
 export type Module = {
 	functionBody: number[];
 	initialMemory: number[];
-	memoryAddresses: { address: number; id: string; isInputPointer?: boolean }[];
+	memoryAddresses: { address: number; id: string }[];
 	moduleId: string;
 	offset: number;
 };
