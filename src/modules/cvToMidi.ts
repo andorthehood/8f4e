@@ -4,8 +4,8 @@ const cvToMidi: ModuleType = {
 	width: 200,
 	height: 100,
 	connectors: [
-		{ id: 'cvin', x: 5, y: 20, isInput: true, label: 'note in' },
-		{ id: 'clockin', x: 5, y: 35, isInput: true, label: 'clock in' },
+		{ id: 'in:note', x: 5, y: 20, isInput: true, label: 'note in' },
+		{ id: 'in:clock', x: 5, y: 35, isInput: true, label: 'clock in' },
 	],
 	name: 'CV to MIDI',
 	switches: [],

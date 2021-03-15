@@ -106,7 +106,7 @@ const scope: ModuleGenerator = function (moduleId, offset) {
 		],
 		memoryAddresses: [
 			{ address: offset(Memory.OUTPUT), id: 'out' },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
 			{ address: offset(Memory.BUFFER_START), id: 'buffer' },
 			{ address: offset(Memory.BUFFER_POINTER), id: 'bufferPointer' },
 		],

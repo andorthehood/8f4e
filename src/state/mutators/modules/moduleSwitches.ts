@@ -6,7 +6,8 @@ const moduleSwitches = function (state, events) {
 
 		if (_switch) {
 			module.config[_switch.id] = module.config[_switch.id] === _switch.onValue ? _switch.offValue : _switch.onValue;
-			const address = state.ui.compiler.outputAddressLookup[module.id + _switch.id] / Uint32Array.BYTES_PER_ELEMENT;
+			const address =
+				state.ui.compiler.outputAddressLookup[module.id + '_' + _switch.id] / Uint32Array.BYTES_PER_ELEMENT;
 			state.ui.compiler.memoryBuffer[address] = module.config[_switch.id];
 		}
 	};

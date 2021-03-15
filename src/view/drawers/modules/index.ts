@@ -32,8 +32,8 @@ const drawModules = function (engine, state) {
 			for (let i = 0; i < connectors.length; i++) {
 				const connector = connectors[i];
 
-				if (typeof state.ui.compiler.outputAddressLookup[id + connector.id] !== 'undefined') {
-					const connectorAddress = state.ui.compiler.outputAddressLookup[id + connector.id];
+				if (typeof state.ui.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
+					const connectorAddress = state.ui.compiler.outputAddressLookup[id + '_' + connector.id];
 					const value = state.ui.compiler.memoryBuffer[connectorAddress / Uint32Array.BYTES_PER_ELEMENT];
 
 					if (connector.isInput) {
@@ -64,7 +64,7 @@ const drawModules = function (engine, state) {
 				engine.setSpriteLookup(fillColor);
 				engine.drawRectangle(slider.x, slider.y, slider.width, slider.height, 'rgb(255,255,255)');
 
-				const address = state.ui.compiler.outputAddressLookup[id + slider.id] / Uint32Array.BYTES_PER_ELEMENT;
+				const address = state.ui.compiler.outputAddressLookup[id + '_' + slider.id] / Uint32Array.BYTES_PER_ELEMENT;
 				const value = state.ui.compiler.memoryBuffer[address];
 				const offset = (value / slider.maxValue) * slider.height;
 				engine.drawSprite(slider.x, slider.y + (slider.height - offset), 'rgb(255,255,255)', slider.width, offset);
@@ -84,7 +84,7 @@ const drawModules = function (engine, state) {
 					'rgb(255,255,255)'
 				);
 
-				const address = state.ui.compiler.outputAddressLookup[id + stepper.id] / Uint32Array.BYTES_PER_ELEMENT;
+				const address = state.ui.compiler.outputAddressLookup[id + '_' + stepper.id] / Uint32Array.BYTES_PER_ELEMENT;
 				const value = state.ui.compiler.memoryBuffer[address];
 
 				engine.setSpriteLookup(font('small_white'));

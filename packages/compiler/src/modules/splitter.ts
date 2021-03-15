@@ -54,11 +54,11 @@ const splitter: ModuleGenerator = function (moduleId, offset) {
 		offset: offset(0),
 		initialMemory: [0, offset(Memory.ZERO), 0, 0, 0, 0],
 		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT_1), id: 'out1' },
-			{ address: offset(Memory.OUTPUT_2), id: 'out2' },
-			{ address: offset(Memory.OUTPUT_3), id: 'out3' },
-			{ address: offset(Memory.OUTPUT_4), id: 'out4' },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true },
+			{ address: offset(Memory.OUTPUT_1), id: 'out:1' },
+			{ address: offset(Memory.OUTPUT_2), id: 'out:2' },
+			{ address: offset(Memory.OUTPUT_3), id: 'out:3' },
+			{ address: offset(Memory.OUTPUT_4), id: 'out:4' },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
 		],
 	};
 };
