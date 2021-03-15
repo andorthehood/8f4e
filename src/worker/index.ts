@@ -76,11 +76,11 @@ const recompile = async function (memoryRef, modules, connections) {
 	if (cvToMidiModule) {
 		cvAddress =
 			memoryBuffer[
-				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'cvin').address / Uint32Array.BYTES_PER_ELEMENT
+				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'in:note').address / Uint32Array.BYTES_PER_ELEMENT
 			];
 		clockAddress =
 			memoryBuffer[
-				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'clockin').address / Uint32Array.BYTES_PER_ELEMENT
+				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'in:clock').address / Uint32Array.BYTES_PER_ELEMENT
 			];
 	}
 

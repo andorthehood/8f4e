@@ -22,7 +22,8 @@ const moduleSliders = function (state, events) {
 				slider.maxValue
 			);
 
-			const address = state.ui.compiler.outputAddressLookup[module.id + slider.id] / Uint32Array.BYTES_PER_ELEMENT;
+			const address =
+				state.ui.compiler.outputAddressLookup[module.id + '_' + slider.id] / Uint32Array.BYTES_PER_ELEMENT;
 			state.ui.compiler.memoryBuffer[address] = module.config[slider.id];
 		}
 	};

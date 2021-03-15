@@ -49,15 +49,13 @@ const and: ModuleGenerator = function (moduleId, offset) {
 			{ address: offset(Memory.OUTPUT), id: 'out' },
 			{
 				address: offset(Memory.INPUT_1_POINTER),
-				id: 'in1',
+				id: 'in:1',
 				default: offset(Memory.DEFAULT_VALUE),
-				isInputPointer: true,
 			},
 			{
 				address: offset(Memory.INPUT_2_POINTER),
-				id: 'in2',
+				id: 'in:2',
 				default: offset(Memory.DEFAULT_VALUE),
-				isInputPointer: true,
 			},
 		],
 	};

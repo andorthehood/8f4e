@@ -78,10 +78,10 @@ const mixer: ModuleGenerator = function (moduleId, offset) {
 			offset(Memory.DEFAULT_VALUE),
 		],
 		memoryAddresses: [
-			{ address: offset(Memory.INPUT_POINTER_1), id: 'in1', isInputPointer: true },
-			{ address: offset(Memory.INPUT_POINTER_2), id: 'in2', isInputPointer: true },
-			{ address: offset(Memory.INPUT_POINTER_3), id: 'in3', isInputPointer: true },
-			{ address: offset(Memory.INPUT_POINTER_4), id: 'in4', isInputPointer: true },
+			{ address: offset(Memory.INPUT_POINTER_1), id: 'in:1' },
+			{ address: offset(Memory.INPUT_POINTER_2), id: 'in:2' },
+			{ address: offset(Memory.INPUT_POINTER_3), id: 'in:3' },
+			{ address: offset(Memory.INPUT_POINTER_4), id: 'in:4' },
 			{ address: offset(Memory.OUTPUT), id: 'out' },
 		],
 	};
