@@ -33,7 +33,7 @@ const attenuator: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		memoryAddresses: [
 			{ address: offset(Memory.OUT), id: 'out' },
 			{ address: offset(Memory.DIVISOR), id: 'divisor' },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
 		],
 	};
 };

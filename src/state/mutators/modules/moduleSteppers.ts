@@ -15,7 +15,8 @@ const moduleSwitches = function (state, events) {
 
 			module.config[stepper.id] = Math.min(Math.max(newValue, stepper.minValue), stepper.maxValue);
 
-			const address = state.ui.compiler.outputAddressLookup[module.id + stepper.id] / Uint32Array.BYTES_PER_ELEMENT;
+			const address =
+				state.ui.compiler.outputAddressLookup[module.id + '_' + stepper.id] / Uint32Array.BYTES_PER_ELEMENT;
 			state.ui.compiler.memoryBuffer[address] = module.config[stepper.id];
 		}
 	};

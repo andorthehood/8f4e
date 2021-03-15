@@ -146,7 +146,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		],
 		memoryAddresses: [
 			{ address: offset(Memory.OUTPUT), id: 'out' },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in', isInputPointer: true },
+			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
 			{ address: offset(Memory.NOTES_START_ADDRESS) + 0, id: 'note1' },
 			{ address: offset(Memory.NOTES_START_ADDRESS) + 4, id: 'note2' },
 			{ address: offset(Memory.NOTES_START_ADDRESS) + 8, id: 'note3' },
