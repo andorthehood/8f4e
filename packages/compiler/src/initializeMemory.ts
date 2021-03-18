@@ -1,4 +1,4 @@
-import { findWhatIsConnectedTo } from '../../../src/state/helpers/connectionHelpers';
+import { Connection, MemoryBuffer } from './types';
 
 export const generateOutputAddressLookup = function (compiledModules) {
 	const lookup = {};
@@ -10,18 +10,22 @@ export const generateOutputAddressLookup = function (compiledModules) {
 	return lookup;
 };
 
-export const setUpConnections = function (memoryBuffer, compiledModules, connections) {
-	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
-		memoryAddresses
-			.filter(({ id }) => id.startsWith('in'))
-			.forEach(({ id, address }) => {
-				const output = findWhatIsConnectedTo(connections, moduleId, id);
-				if (output) {
-					const outputModule = compiledModules.find(({ moduleId }) => moduleId === output.moduleId);
-					const outputAddress = outputModule.memoryAddresses.find(({ id }) => id === output.connectorId).address;
-					const inputPointerAddressInBuffer = address / Int32Array.BYTES_PER_ELEMENT;
-					memoryBuffer[inputPointerAddressInBuffer] = outputAddress;
-				}
-			});
+const getInputName = function (connection: Connection) {
+	const { moduleId, connectorId } = connection.find(({ connectorId }) => connectorId.startsWith('in'));
+	return moduleId + '_' + connectorId;
+};
+
+const getOutputName = function (connection: Connection) {
+	const { moduleId, connectorId } = connection.find(({ connectorId }) => !connectorId.startsWith('in'));
+	return moduleId + '_' + connectorId;
+};
+
+export const setUpConnections = function (memoryBuffer: MemoryBuffer, memoryAddresses, connections: Connection[]) {
+	connections.forEach(connection => {
+		const inputName = getInputName(connection);
+		const outputName = getOutputName(connection);
+		const inputAddress = memoryAddresses[inputName];
+		const outputAddress = memoryAddresses[outputName];
+		memoryBuffer[inputAddress / memoryBuffer.BYTES_PER_ELEMENT] = outputAddress;
 	});
 };
