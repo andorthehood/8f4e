@@ -9,13 +9,16 @@ import {
 	createMemoryImport,
 	createTypeSection,
 } from './wasm/sections';
-
 import { call, i32store } from './wasm/instructions';
 import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module, CompiledModule } from './types';
 import { Type } from 'wasm-bytecode-utils';
 import { createRelativeAddressCalculator } from './utils';
+
+export { Module, Connection, Connector } from './types';
+export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
+export { setUpConnections } from './initializeMemory';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];

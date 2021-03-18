@@ -1,4 +1,4 @@
-import { I16_SIGNED_LARGEST_NUMBER } from '../../../packages/compiler/src/consts';
+import { I16_SIGNED_LARGEST_NUMBER } from '../../../packages/compiler/src';
 
 const MIN_MIDI_NOTE = 0;
 const MAX_MIDI_NOTE = 69;
