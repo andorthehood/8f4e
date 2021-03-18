@@ -13,14 +13,14 @@ import {
 import { call, i32store } from './wasm/instructions';
 import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
-import { Module } from './types';
+import { Module, CompiledModule } from './types';
 import { Type } from 'wasm-bytecode-utils';
 import { createRelativeAddressCalculator } from './utils';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
-const compileModules = function (modules): Module[] {
+const compileModules = function (modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
 	return modules
 		.filter(({ engine }) => moduleCompilers[engine])
@@ -32,7 +32,7 @@ const compileModules = function (modules): Module[] {
 		});
 };
 
-const generateMemoryInitiatorFunction = function (compiledModules) {
+const generateMemoryInitiatorFunction = function (compiledModules: CompiledModule[]) {
 	return compiledModules
 		.map(module => {
 			let pointer = module.offset;
@@ -47,7 +47,7 @@ const generateMemoryInitiatorFunction = function (compiledModules) {
 		.flat();
 };
 
-const compile = function (modules: object[]) {
+const compile = function (modules: Module[]) {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
