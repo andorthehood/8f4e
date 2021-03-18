@@ -1,5 +1,5 @@
 import compile from '../../packages/compiler/src';
-import { setUpConnections } from '../../packages/compiler/src/initializeMemory';
+import { setUpConnections } from '../../packages/compiler/src';
 import { int16ToMidiNote } from '../state/helpers/midi';
 import { Event, ControlChange } from '../midi/enums';
 
