@@ -55,7 +55,7 @@ const recompile = async function (memoryRef, modules, connections) {
 
 	// @ts-ignore
 	init();
-	setUpConnections(memoryBuffer, compiledModules, connections);
+	setUpConnections(memoryBuffer, outputAddressLookup, connections);
 
 	// @ts-ignore
 	self.postMessage({
