@@ -8,18 +8,22 @@ const contextMenu = function (state, events) {
 
 		state.ui.contextMenu.items = [
 			{ title: 'Abs', action: 'addModule', payload: { type: 'abs' }, close: true },
-			{ title: 'And', action: 'addModule', payload: { type: 'and' }, close: true },
 			{ title: 'Attenuator', action: 'addModule', payload: { type: 'attenuator' }, close: true },
+			{ title: 'Bitwise AND', action: 'addModule', payload: { type: 'bitwiseAnd' }, close: true },
+			{ title: 'Bitwise OR', action: 'addModule', payload: { type: 'bitwiseOr' }, close: true },
+			{ title: 'Bitwise XOR', action: 'addModule', payload: { type: 'bitwiseXor' }, close: true },
 			{ title: 'CV2Midi', action: 'addModule', payload: { type: 'cvToMidi' }, close: true },
 			{ title: 'Clock generator', action: 'addModule', payload: { type: 'clockGenerator' }, close: true },
 			{ title: 'Constant', action: 'addModule', payload: { type: 'constant' }, close: true },
 			{ title: 'Invert', action: 'addModule', payload: { type: 'invert' }, close: true },
+			{ title: 'Logic AND', action: 'addModule', payload: { type: 'logicAnd' }, close: true },
+			{ title: 'Logic Negate', action: 'addModule', payload: { type: 'logicNegate' }, close: true },
+			{ title: 'Logic OR', action: 'addModule', payload: { type: 'logicOr' }, close: true },
+			{ title: 'Logic XOR', action: 'addModule', payload: { type: 'logicXor' }, close: true },
 			{ title: 'Max', action: 'addModule', payload: { type: 'max' }, close: true },
 			{ title: 'Min', action: 'addModule', payload: { type: 'min' }, close: true },
 			{ title: 'Mixer', action: 'addModule', payload: { type: 'mixer' }, close: true },
-			{ title: 'Negate', action: 'addModule', payload: { type: 'negate' }, close: true },
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
-			{ title: 'Or', action: 'addModule', payload: { type: 'or' }, close: true },
 			{ title: 'Quantizer', action: 'addModule', payload: { type: 'pianoQuantizer' }, close: true },
 			{ title: 'Random generator', action: 'addModule', payload: { type: 'randomGenerator' }, close: true },
 			{ title: 'Saw', action: 'addModule', payload: { type: 'saw' }, close: true },
@@ -28,7 +32,6 @@ const contextMenu = function (state, events) {
 			{ title: 'Splitter', action: 'addModule', payload: { type: 'splitter' }, close: true },
 			{ title: 'Swtich', action: 'addModule', payload: { type: 'switch' }, close: true },
 			{ title: 'Triangle', action: 'addModule', payload: { type: 'triangle' }, close: true },
-			{ title: 'Xor', action: 'addModule', payload: { type: 'xor' }, close: true },
 		];
 	};
 

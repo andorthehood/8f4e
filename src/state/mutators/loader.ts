@@ -1,6 +1,6 @@
 import { State } from '../types';
 
-const STRUCTURE_VERSION = 5;
+const STRUCTURE_VERSION = 6;
 
 const defaultState: State = {
 	compiler: {
