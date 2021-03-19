@@ -1,5 +1,5 @@
 import { createTestModule } from '../utils';
-import xor, { Memory } from '../../src/modules/xor';
+import xor, { Memory } from '../../src/modules/logicXor';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../src/consts';
 
 let testModule;
