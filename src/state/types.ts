@@ -48,8 +48,8 @@ export interface Stepper {
 }
 
 export interface ModuleType {
+	config?: Object;
 	connectors: Connector[];
-	defaultValues?: Object;
 	engine: string;
 	height: number;
 	name: string;
