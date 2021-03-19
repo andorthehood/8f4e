@@ -6,7 +6,7 @@ const moduleCreator = function (state, events) {
 			x: x - state.ui.viewport.x - Math.floor(moduleTypes[type].width / 2),
 			y: y - state.ui.viewport.y - Math.floor(moduleTypes[type].height / 2),
 			id: type + state.ui.modules.length,
-			config: { ...moduleTypes[type].defaultValues },
+			config: { ...moduleTypes[type].config },
 			type,
 			engine: moduleTypes[type].engine,
 		});
