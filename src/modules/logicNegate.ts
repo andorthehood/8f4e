@@ -1,18 +1,17 @@
 import { ModuleType } from '../state/types';
 
-const and: ModuleType = {
+const logicNegate: ModuleType = {
 	width: 100,
 	height: 100,
 	connectors: [
-		{ id: 'in:1', x: 5, y: 20, isInput: true },
-		{ id: 'in:2', x: 5, y: 35, isInput: true },
+		{ id: 'in', x: 5, y: 20, isInput: true },
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
-	name: 'And',
+	name: 'Logic Negate',
 	sliders: [],
 	switches: [],
 	steppers: [],
-	engine: 'logicAnd',
+	engine: 'logicNegate',
 };
 
-export default and;
+export default logicNegate;
