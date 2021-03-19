@@ -76,11 +76,11 @@ const recompile = async function (memoryRef, modules, connections) {
 	if (cvToMidiModule) {
 		cvAddress =
 			memoryBuffer[
-				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'in:note').address / Uint32Array.BYTES_PER_ELEMENT
+				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'in:note').address / memoryBuffer.BYTES_PER_ELEMENT
 			];
 		clockAddress =
 			memoryBuffer[
-				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'in:clock').address / Uint32Array.BYTES_PER_ELEMENT
+				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'in:clock').address / memoryBuffer.BYTES_PER_ELEMENT
 			];
 	}
 
@@ -91,8 +91,8 @@ const recompile = async function (memoryRef, modules, connections) {
 		cycle();
 
 		if (cvAddress && clockAddress) {
-			const note = int16ToMidiNote(memoryBuffer[cvAddress / Uint32Array.BYTES_PER_ELEMENT]);
-			const isHigh = memoryBuffer[clockAddress / Uint32Array.BYTES_PER_ELEMENT] !== 0;
+			const note = int16ToMidiNote(memoryBuffer[cvAddress / memoryBuffer.BYTES_PER_ELEMENT]);
+			const isHigh = memoryBuffer[clockAddress / memoryBuffer.BYTES_PER_ELEMENT] !== 0;
 
 			if (isHigh && !wasHigh) {
 				// @ts-ignore
