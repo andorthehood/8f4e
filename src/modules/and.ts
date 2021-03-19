@@ -12,7 +12,7 @@ const and: ModuleType = {
 	sliders: [],
 	switches: [],
 	steppers: [],
-	engine: 'and',
+	engine: 'logicAnd',
 };
 
 export default and;
