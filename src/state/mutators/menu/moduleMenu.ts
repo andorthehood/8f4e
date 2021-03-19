@@ -8,6 +8,7 @@ const contextMenu = function (state, events) {
 
 		state.ui.contextMenu.items = [
 			{ title: 'Abs', action: 'addModule', payload: { type: 'abs' }, close: true },
+			{ title: '8bit ADC', action: 'addModule', payload: { type: 'adc8bit' }, close: true },
 			{ title: 'Attenuator', action: 'addModule', payload: { type: 'attenuator' }, close: true },
 			{ title: 'Bitwise AND', action: 'addModule', payload: { type: 'bitwiseAnd' }, close: true },
 			{ title: 'Bitwise OR', action: 'addModule', payload: { type: 'bitwiseOr' }, close: true },
