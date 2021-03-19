@@ -11,7 +11,7 @@ const cvToMidi: ModuleType = {
 	switches: [],
 	sliders: [],
 	steppers: [{ id: 'channel', x: 80, y: 10, width: 10, height: 20, minValue: 1, maxValue: 8 }],
-	defaultValues: {
+	config: {
 		channel: 1,
 	},
 	engine: '',

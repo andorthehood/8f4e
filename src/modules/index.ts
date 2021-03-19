@@ -1,4 +1,6 @@
 export { default as abs } from './abs';
+export { default as adc16bit } from './adc16bit';
+export { default as adc8bit } from './adc8bit';
 export { default as attenuator } from './attenuator';
 export { default as bitwiseAnd } from './bitwiseAnd';
 export { default as bitwiseOr } from './bitwiseOr';
@@ -22,5 +24,3 @@ export { default as scope } from './scope';
 export { default as sequentialSwitch } from './sequentialSwitch';
 export { default as splitter } from './splitter';
 export { default as triangle } from './triangle';
-
-export { default as adc8bit } from './adc8bit';
