@@ -10,7 +10,7 @@ const attenuator: ModuleType = {
 	name: 'Attenuator',
 	switches: [],
 	sliders: [{ id: 'divisor', x: 10, y: 20, width: 10, height: 50, minValue: 1, maxValue: 100, resolution: 1 }],
-	defaultValues: {
+	config: {
 		divisor: 1,
 	},
 	steppers: [],
