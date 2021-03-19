@@ -17,10 +17,14 @@ export type MemoryBuffer = Uint32Array | Uint16Array;
 
 export type Connection = [Connector, Connector];
 
+export type RelativeAddressCalculator = (nthWord: number) => number;
+
+export type InitialConfig = { [key: string]: number };
+
 export type ModuleGenerator = (
 	moduleId: string,
-	relative: (nthWord: number) => number,
-	initialConfig?: { [key: string]: any }
+	offset: RelativeAddressCalculator,
+	initialConfig?: InitialConfig
 ) => CompiledModule;
 
 export interface Module {
