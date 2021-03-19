@@ -4,7 +4,7 @@ import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 
-const enum Memory {
+export const enum Memory {
 	ZERO,
 	INPUT_POINTER,
 	OFFSET,
