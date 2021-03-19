@@ -2,7 +2,7 @@ import { i32load, i32const, i32store, localSet, localGet, ifelse } from '../wasm
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
-import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
+import { I16_SIGNED_LARGEST_NUMBER, LOGIC_HIGH, LOGIC_LOW } from '../consts';
 
 export const enum Memory {
 	DEFAULT_VALUE,
@@ -49,19 +49,21 @@ const enum Locals {
 	__LENGTH,
 }
 
-const adc8bit: ModuleGenerator = function (moduleId, offset) {
+const adc: ModuleGenerator = function (moduleId, offset, { resolution }) {
+	console.log('ez', resolution);
+
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			...i32const(offset(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
-			...i32const(Math.floor(I16_SIGNED_LARGEST_NUMBER / 255)),
+			...i32const(resolution === 16 ? 1 : Math.floor(I16_SIGNED_LARGEST_NUMBER / (Math.pow(2, resolution) - 1))),
 			Instruction.I32_DIV_S,
 			...localSet(Locals.INPUT),
 
 			...masks
-				.slice(0, 8)
+				.slice(0, resolution)
 				.map(([memoryAddress, mask]) => [
 					...i32const(offset(memoryAddress)),
 					...localGet(Locals.INPUT),
@@ -69,7 +71,7 @@ const adc8bit: ModuleGenerator = function (moduleId, offset) {
 					Instruction.I32_AND,
 					...i32const(0),
 					Instruction.I32_GT_S,
-					...ifelse(Type.I32, i32const(0), i32const(I16_SIGNED_LARGEST_NUMBER)),
+					...ifelse(Type.I32, i32const(LOGIC_HIGH), i32const(LOGIC_LOW)),
 					...i32store(),
 				])
 				.flat(),
@@ -82,7 +84,9 @@ const adc8bit: ModuleGenerator = function (moduleId, offset) {
 		offset: offset(0),
 		initialMemory: [0, offset(Memory.DEFAULT_VALUE), offset(Memory.DEFAULT_VALUE), ...masks.map(() => 0)],
 		memoryAddresses: [
-			...masks.map(([memoryAddress], index) => ({ address: offset(memoryAddress), id: 'out:' + (index + 1) })),
+			...masks
+				.slice(0, resolution)
+				.map(([memoryAddress], index) => ({ address: offset(memoryAddress), id: 'out:' + (index + 1) })),
 			{
 				address: offset(Memory.INPUT_POINTER),
 				id: 'in',
@@ -92,4 +96,4 @@ const adc8bit: ModuleGenerator = function (moduleId, offset) {
 	};
 };
 
-export default adc8bit;
+export default adc;

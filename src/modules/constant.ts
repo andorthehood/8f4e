@@ -18,7 +18,7 @@ const constant: ModuleType = {
 			resolution: 100,
 		},
 	],
-	defaultValues: {
+	config: {
 		out: 0,
 	},
 	switches: [],

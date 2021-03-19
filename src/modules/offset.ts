@@ -21,7 +21,7 @@ const offset: ModuleType = {
 			resolution: 100,
 		},
 	],
-	defaultValues: {
+	config: {
 		offset: 0,
 	},
 	switches: [],
