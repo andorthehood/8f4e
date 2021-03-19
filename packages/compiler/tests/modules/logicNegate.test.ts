@@ -1,6 +1,6 @@
 import { createTestModule } from '../utils';
-import negate, { Memory } from '../../src/modules/negate';
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../src/consts';
+import negate, { Memory } from '../../src/modules/logicNegate';
+import { I16_SIGNED_LARGEST_NUMBER } from '../../src/consts';
 
 let testModule;
 

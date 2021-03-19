@@ -1,6 +1,6 @@
 import { ModuleType } from '../state/types';
 
-const or: ModuleType = {
+const logicXor: ModuleType = {
 	width: 100,
 	height: 100,
 	connectors: [
@@ -8,11 +8,11 @@ const or: ModuleType = {
 		{ id: 'in:2', x: 5, y: 35, isInput: true },
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
-	name: 'Or',
+	name: 'Logic XOR',
 	sliders: [],
 	switches: [],
 	steppers: [],
-	engine: 'logicOr',
+	engine: 'logicXor',
 };
 
-export default or;
+export default logicXor;
