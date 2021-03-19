@@ -12,7 +12,7 @@ const or: ModuleType = {
 	sliders: [],
 	switches: [],
 	steppers: [],
-	engine: 'or',
+	engine: 'logicOr',
 };
 
 export default or;

@@ -12,7 +12,7 @@ const xor: ModuleType = {
 	sliders: [],
 	switches: [],
 	steppers: [],
-	engine: 'xor',
+	engine: 'logicXor',
 };
 
 export default xor;

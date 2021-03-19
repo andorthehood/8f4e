@@ -1,18 +1,19 @@
 import { createTestModule } from '../utils';
-import or, { Memory } from '../../src/modules/or';
+import and, { Memory } from '../../src/modules/logicAnd';
+
 import { I16_SIGNED_LARGEST_NUMBER } from '../../src/consts';
 
 let testModule;
 
 beforeAll(async () => {
-	testModule = await createTestModule(or);
+	testModule = await createTestModule(and);
 });
 
 beforeEach(() => {
 	testModule.reset();
 });
 
-test('or module', () => {
+test('and module', () => {
 	const { memory, test } = testModule;
 
 	memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
@@ -26,12 +27,12 @@ test('or module', () => {
 	memory[10] = 0;
 	memory[11] = 10;
 	test();
-	expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
+	expect(memory[Memory.OUTPUT]).toBe(0);
 
 	memory[10] = 10;
 	memory[11] = 0;
 	test();
-	expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
+	expect(memory[Memory.OUTPUT]).toBe(0);
 
 	memory[10] = 0;
 	memory[11] = 0;
