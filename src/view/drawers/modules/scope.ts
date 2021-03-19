@@ -6,7 +6,8 @@ const drawer = function (engine, state, id) {
 	const bufferAddress = state.ui.compiler.outputAddressLookup[id + '_' + 'buffer'] / 4;
 	const pointerAddress = state.ui.compiler.outputAddressLookup[id + '_' + 'bufferPointer'] / 4;
 	const buffer = state.ui.compiler.memoryBuffer.slice(bufferAddress, bufferAddress + RESOLUTION);
-	const pointer = state.ui.compiler.memoryBuffer[pointerAddress] / Int32Array.BYTES_PER_ELEMENT - bufferAddress;
+	const pointer =
+		state.ui.compiler.memoryBuffer[pointerAddress] / state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT - bufferAddress;
 
 	engine.setSpriteLookup(scope);
 
