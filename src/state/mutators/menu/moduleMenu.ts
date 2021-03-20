@@ -28,6 +28,7 @@ const contextMenu = function (state, events) {
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
 			{ title: 'Quantizer', action: 'addModule', payload: { type: 'pianoQuantizer' }, close: true },
 			{ title: 'Random generator', action: 'addModule', payload: { type: 'randomGenerator' }, close: true },
+			{ title: 'Sample & Hold', action: 'addModule', payload: { type: 'sampleAndHold' }, close: true },
 			{ title: 'Saw', action: 'addModule', payload: { type: 'saw' }, close: true },
 			{ title: 'Scope', action: 'addModule', payload: { type: 'scope' }, close: true },
 			{ title: 'Sequential switch', action: 'addModule', payload: { type: 'sequentialSwitch' }, close: true },

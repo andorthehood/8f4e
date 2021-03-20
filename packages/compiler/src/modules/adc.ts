@@ -50,8 +50,6 @@ const enum Locals {
 }
 
 const adc: ModuleGenerator = function (moduleId, offset, { resolution }) {
-	console.log('ez', resolution);
-
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
