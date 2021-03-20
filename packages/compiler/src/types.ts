@@ -3,7 +3,7 @@ import moduleSliders from '../../../src/state/mutators/modules/moduleSliders';
 export interface CompiledModule {
 	functionBody: number[];
 	initialMemory: number[];
-	memoryAddresses: { address: number; id: string }[];
+	memoryAddresses: { address: number; id: string; default?: number }[];
 	moduleId: string;
 	offset: number;
 }

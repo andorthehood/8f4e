@@ -19,6 +19,7 @@ export { default as mixer } from './mixer';
 export { default as offset } from './offset';
 export { default as pianoQuantizer } from './pianoQuantizer';
 export { default as randomGenerator } from './randomGenerator';
+export { default as sampleAndHold } from './sampleAndHold';
 export { default as saw } from './saw';
 export { default as scope } from './scope';
 export { default as sequentialSwitch } from './sequentialSwitch';
