@@ -8,7 +8,7 @@ const randomGenerator: ModuleType = {
 	switches: [],
 	sliders: [],
 	steppers: [],
-	engine: 'randomGenerator',
+	engine: 'random',
 };
 
 export default randomGenerator;
