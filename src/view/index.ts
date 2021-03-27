@@ -18,9 +18,9 @@ const init = async function (state) {
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.resize(window.innerWidth, window.innerHeight);
 
-		if (state.ui.isDebugMode) {
-			engine.drawSpriteFromCoordinates(10, 10, 512, 512, 0, 0, 512, 512);
-		}
+		// if (state.ui.isDebugMode) {
+		// 	engine.drawSpriteFromCoordinates(10, 10, 512, 512, 0, 0, 512, 512);
+		// }
 
 		drawModules(engine, state);
 		drawConnections(engine, state);
