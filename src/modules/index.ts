@@ -16,6 +16,7 @@ export { default as logicXor } from './logicXor';
 export { default as max } from './max';
 export { default as min } from './min';
 export { default as mixer } from './mixer';
+export { default as number } from './number';
 export { default as offset } from './offset';
 export { default as pianoQuantizer } from './pianoQuantizer';
 export { default as randomGenerator } from './randomGenerator';

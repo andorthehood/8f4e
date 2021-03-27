@@ -23,4 +23,5 @@ export { default as saw } from './saw';
 export { default as scope } from './scope';
 export { default as sequentialSwitch } from './sequentialSwitch';
 export { default as splitter } from './splitter';
+export { default as through } from './through';
 export { default as triangle } from './triangle';
