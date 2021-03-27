@@ -1,5 +1,6 @@
 import { modules, feedbackScale, font, fillColor } from '../../spriteGenerator';
 import scope from './scope';
+import number from './number';
 import * as moduleTypes from '../../../modules';
 
 const drawModules = function (engine, state) {
@@ -24,6 +25,10 @@ const drawModules = function (engine, state) {
 
 			if (type === 'scope') {
 				scope(engine, state, id);
+			}
+
+			if (type === 'number') {
+				number(engine, state, id);
 			}
 
 			engine.setSpriteLookup(font('small_white'));
