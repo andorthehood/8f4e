@@ -23,14 +23,14 @@ test('offset module', () => {
 	expect(memory[Memory.OUTPUT]).toBe(-15413);
 
 	test();
-	expect(memory[Memory.OUTPUT]).toBe(-7707);
+	expect(memory[Memory.OUTPUT]).toBe(25062);
 
 	test();
-	expect(memory[Memory.OUTPUT]).toBe(28915);
+	expect(memory[Memory.OUTPUT]).toBe(12531);
 
 	test();
-	expect(memory[Memory.OUTPUT]).toBe(-18312);
+	expect(memory[Memory.OUTPUT]).toBe(6265);
 
 	test();
-	expect(memory[Memory.OUTPUT]).toBe(-9156);
+	expect(memory[Memory.OUTPUT]).toBe(-29637);
 });

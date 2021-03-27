@@ -25,6 +25,7 @@ const contextMenu = function (state, events) {
 			{ title: 'Max', action: 'addModule', payload: { type: 'max' }, close: true },
 			{ title: 'Min', action: 'addModule', payload: { type: 'min' }, close: true },
 			{ title: 'Mixer', action: 'addModule', payload: { type: 'mixer' }, close: true },
+			{ title: 'Number', action: 'addModule', payload: { type: 'number' }, close: true },
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
 			{ title: 'Quantizer', action: 'addModule', payload: { type: 'pianoQuantizer' }, close: true },
 			{ title: 'Random generator', action: 'addModule', payload: { type: 'randomGenerator' }, close: true },
