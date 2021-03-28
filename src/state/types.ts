@@ -1,7 +1,10 @@
+import { MemoryBuffer } from '../../packages/compiler/src/types';
+
 export interface Module {
+	config: { [key: string]: any };
+	engine: string;
 	id: string;
 	type: string;
-	engine: string;
 	x: number;
 	y: number;
 }
@@ -30,8 +33,8 @@ export interface Slider {
 export interface Switch {
 	height: number;
 	id: string;
-	offValue: number;
-	onValue: number;
+	offValue: number | boolean | string;
+	onValue: number | boolean | string;
 	width: number;
 	x: number;
 	y: number;
@@ -47,6 +50,12 @@ export interface Stepper {
 	y: number;
 }
 
+export type MemoryTransformer = (
+	module: Module,
+	memoryBuffer: MemoryBuffer,
+	memoryAddressLookup: { [key: string]: number }
+) => void;
+
 export interface ModuleType {
 	config?: Object;
 	connectors: Connector[];
@@ -56,6 +65,7 @@ export interface ModuleType {
 	sliders: Slider[];
 	steppers: Stepper[];
 	switches: Switch[];
+	transformer: MemoryTransformer;
 	width: number;
 }
 
