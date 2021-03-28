@@ -2,13 +2,13 @@ import { i32load, localGet, localSet, i32const, ifelse, loop, br_if, block, i32s
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
 import { Instruction, Type } from 'wasm-bytecode-utils';
 import { ModuleGenerator } from '../types';
-import { getOneOctaveInInt16 } from '../../../../src/state/helpers/midi';
-import { I32_SIGNED_SMALLEST_NUMBER } from '../consts';
+import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
-const enum Memory {
+export const enum Memory {
 	INPUT_POINTER,
 	OUTPUT,
-	NOTES_START_ADDRESS,
+	NUMBER_OF_NOTES,
+	FIRST_NOTE,
 }
 
 const enum Locals {
@@ -17,15 +17,20 @@ const enum Locals {
 	INPUT,
 	NOTE_MEMORY_POINTER,
 	NOTE_VALUE,
-	OCTAVE,
 	SMALLEST_DIFFERENCE,
+	NOTES_END_ADDRESS_POINTER,
 	__LENGTH,
 }
 
-const NUMBER_OF_NOTES = 12;
-const OCTAVE = getOneOctaveInInt16();
+const abs = registerIndex => [
+	...localGet(registerIndex),
+	...i32const(0),
+	Instruction.I32_LT_S,
+	...ifelse(Type.I32, [...i32const(0), ...localGet(registerIndex), Instruction.I32_SUB], [...localGet(registerIndex)]),
+	...localSet(registerIndex),
+];
 
-const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
+const quantizer: ModuleGenerator = function (moduleId, offset, { allocatedNotes = 12 }) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -35,23 +40,30 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 			...i32load(),
 			...localSet(Locals.INPUT),
 
-			// Save octave value for later.
+			// Ignore values below zero.
 			...localGet(Locals.INPUT),
-			...i32const(OCTAVE),
-			Instruction.I32_DIV_S,
-			...localSet(Locals.OCTAVE),
-
-			...localGet(Locals.INPUT),
-			...i32const(OCTAVE),
-			Instruction.I32_REM_S,
+			...i32const(0),
+			Instruction.I32_LT_S,
+			...ifelse(Type.I32, [...i32const(0)], [...localGet(Locals.INPUT)]),
 			...localSet(Locals.INPUT),
 
+			// Calculate the address of the last note.
+			...i32const(offset(Memory.NUMBER_OF_NOTES)),
+			...i32load(),
+			...i32const(1),
+			Instruction.I32_SUB,
+			...i32const(Int32Array.BYTES_PER_ELEMENT),
+			Instruction.I32_MUL,
+			...i32const(offset(Memory.FIRST_NOTE)),
+			Instruction.I32_ADD,
+			...localSet(Locals.NOTES_END_ADDRESS_POINTER),
+
 			// Set the smallest difference to the largest 16bit signed number.
-			...i32const(0x7fff),
+			...i32const(I16_SIGNED_LARGEST_NUMBER),
 			...localSet(Locals.SMALLEST_DIFFERENCE),
 
-			// Set the note memory pointer to 0
-			...i32const(0),
+			// Set the note memory pointer to the start address
+			...i32const(offset(Memory.FIRST_NOTE)),
 			...localSet(Locals.NOTE_MEMORY_POINTER),
 
 			...block(
@@ -59,14 +71,12 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 				loop(Type.VOID, [
 					// Break if the memory pointer would overflow.
 					...localGet(Locals.NOTE_MEMORY_POINTER),
-					...i32const(NUMBER_OF_NOTES * Int32Array.BYTES_PER_ELEMENT),
-					Instruction.I32_GE_U,
+					...localGet(Locals.NOTES_END_ADDRESS_POINTER),
+					Instruction.I32_GT_U,
 					...br_if(1),
 
 					// Load a note value from the memory.
 					...localGet(Locals.NOTE_MEMORY_POINTER),
-					...i32const(offset(Memory.NOTES_START_ADDRESS)),
-					Instruction.I32_ADD,
 					...i32load(),
 					...localSet(Locals.NOTE_VALUE),
 
@@ -77,15 +87,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 					...localSet(Locals.DIFFERENCE),
 
 					// Abs
-					...localGet(Locals.DIFFERENCE),
-					...i32const(0),
-					Instruction.I32_LT_S,
-					...ifelse(
-						Type.I32,
-						[...i32const(0), ...localGet(Locals.DIFFERENCE), Instruction.I32_SUB],
-						[...localGet(Locals.DIFFERENCE)]
-					),
-					...localSet(Locals.DIFFERENCE),
+					...abs(Locals.DIFFERENCE),
 
 					// Compare with the smallest difference.
 					...localGet(Locals.DIFFERENCE),
@@ -111,15 +113,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 
 			// Prepare memory address for storing the output value.
 			...i32const(offset(Memory.OUTPUT)),
-
-			// Offset the best matching value with the saved octave value.
-			...i32const(OCTAVE),
-			...localGet(Locals.OCTAVE),
-			Instruction.I32_MUL,
 			...localGet(Locals.BEST_MACTHING_VALUE),
-			Instruction.I32_ADD,
-
-			// Save the best matching value to the memory.
 			...i32store(),
 		]
 	);
@@ -128,37 +122,12 @@ const quantizer: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [
-			0,
-			0,
-			initialConfig.note1 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note2 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note3 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note4 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note5 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note6 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note7 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note8 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note9 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note10 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note11 || I32_SIGNED_SMALLEST_NUMBER,
-			initialConfig.note12 || I32_SIGNED_SMALLEST_NUMBER,
-		],
+		initialMemory: [0, 0, 0, ...new Array(allocatedNotes).fill(0)],
 		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+			{ address: offset(Memory.FIRST_NOTE), id: 'notes' },
 			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 0, id: 'note1' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 4, id: 'note2' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 8, id: 'note3' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 12, id: 'note4' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 16, id: 'note5' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 20, id: 'note6' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 24, id: 'note7' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 28, id: 'note8' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 32, id: 'note9' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 36, id: 'note10' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 40, id: 'note11' },
-			{ address: offset(Memory.NOTES_START_ADDRESS) + 44, id: 'note12' },
+			{ address: offset(Memory.NUMBER_OF_NOTES), id: 'numberOfNotes' },
+			{ address: offset(Memory.OUTPUT), id: 'out' },
 		],
 	};
 };

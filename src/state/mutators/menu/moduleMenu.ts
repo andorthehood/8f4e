@@ -27,6 +27,7 @@ const contextMenu = function (state, events) {
 			{ title: 'Mixer', action: 'addModule', payload: { type: 'mixer' }, close: true },
 			{ title: 'Number', action: 'addModule', payload: { type: 'number' }, close: true },
 			{ title: 'Offset', action: 'addModule', payload: { type: 'offset' }, close: true },
+			{ title: 'Piano Quantizer', action: 'addModule', payload: { type: 'pianoQuantizer' }, close: true },
 			{ title: 'Quantizer', action: 'addModule', payload: { type: 'pianoQuantizer' }, close: true },
 			{ title: 'Random generator', action: 'addModule', payload: { type: 'randomGenerator' }, close: true },
 			{ title: 'Sample & Hold', action: 'addModule', payload: { type: 'sampleAndHold' }, close: true },
