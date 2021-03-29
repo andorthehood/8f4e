@@ -1,13 +1,16 @@
-import generateFont from './generateFonts';
-import generateFillColors from './generateFillColors';
-import generateFeedbackScale from './generateFeedbackScale';
+import generateFont from './fontSmall';
+import generateFillColors from './fillColors';
+import generateFeedbackScale from './feedbackScale';
 import generateModules from './modules';
-import generateScope from './generateScope';
-export { lookup as feedbackScale } from './generateFeedbackScale';
-export { lookup as fillColor } from './generateFillColors';
-export { lookup as font } from './generateFonts';
+import generateScope from './scope';
+import generatePianoKeyboard from './pianoKeyboard';
+
+export { lookup as feedbackScale } from './feedbackScale';
+export { lookup as fillColor } from './fillColors';
+export { lookup as font } from './fontSmall';
 export { lookup as modules } from './modules';
-export { lookup as scope } from './generateScope';
+export { lookup as scope } from './scope';
+export { lookup as pianoKeyboard } from './pianoKeyboard';
 
 const generateSprite = async function (): Promise<OffscreenCanvas | HTMLCanvasElement> {
 	let canvas;
@@ -27,6 +30,7 @@ const generateSprite = async function (): Promise<OffscreenCanvas | HTMLCanvasEl
 	generateFillColors(ctx);
 	generateModules(ctx);
 	generateScope(ctx);
+	generatePianoKeyboard(ctx);
 
 	return canvas;
 };
