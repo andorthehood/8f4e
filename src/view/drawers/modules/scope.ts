@@ -1,4 +1,4 @@
-import { scope } from '../../spriteGenerator';
+import { scope } from '../../../../packages/spriteGenerator/src';
 
 const RESOLUTION = 49;
 
