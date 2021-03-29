@@ -1,6 +1,7 @@
-import { modules, feedbackScale, font, fillColor } from '../../spriteGenerator';
+import { modules, feedbackScale, font, fillColor } from '../../../../packages/spriteGenerator/src';
 import scope from './scope';
 import number from './number';
+import pianoQuantizer from './pianoQuantizer';
 import * as moduleTypes from '../../../modules';
 
 const drawModules = function (engine, state) {
@@ -31,6 +32,10 @@ const drawModules = function (engine, state) {
 				number(engine, state, id);
 			}
 
+			if (type === 'pianoQuantizer') {
+				pianoQuantizer(engine, config);
+			}
+
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
@@ -55,15 +60,15 @@ const drawModules = function (engine, state) {
 				}
 			}
 
-			for (let i = 0; i < switches.length; i++) {
-				const _switch = switches[i];
-				engine.setSpriteLookup(fillColor);
-				if (config[_switch.id] === _switch.onValue) {
-					engine.drawRectangle(_switch.x, _switch.y, _switch.width, _switch.height, 'rgb(255,255,255)');
-				} else {
-					engine.drawRectangle(_switch.x, _switch.y, _switch.width, _switch.height, 'rgb(153,153,153)');
-				}
-			}
+			// for (let i = 0; i < switches.length; i++) {
+			// 	const _switch = switches[i];
+			// 	engine.setSpriteLookup(fillColor);
+			// 	if (config[_switch.id] === _switch.onValue) {
+			// 		engine.drawRectangle(_switch.x, _switch.y, _switch.width, _switch.height, 'rgb(255,255,255)');
+			// 	} else {
+			// 		engine.drawRectangle(_switch.x, _switch.y, _switch.width, _switch.height, 'rgb(153,153,153)');
+			// 	}
+			// }
 
 			for (let i = 0; i < sliders.length; i++) {
 				const slider = sliders[i];
