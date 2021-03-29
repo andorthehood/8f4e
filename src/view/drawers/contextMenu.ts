@@ -1,4 +1,4 @@
-import { font, fillColor } from '../spriteGenerator';
+import { font, fillColor } from '../../../packages/spriteGenerator/src';
 
 const drawContextMenu = function (engine, state) {
 	const { open, items, x, y, highlightedItem, itemHeight, itemWidth } = state.ui.contextMenu;

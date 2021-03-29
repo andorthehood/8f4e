@@ -1,4 +1,4 @@
-import { SpriteCoordinates, SpriteLookup } from '../engine';
+import { SpriteCoordinates, SpriteLookup } from 'glugglugglug';
 import font from './smallFont';
 
 const defaultSprite: SpriteCoordinates = {
