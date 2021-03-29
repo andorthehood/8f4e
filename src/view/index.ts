@@ -1,7 +1,7 @@
 import { Engine } from 'glugglugglug';
-import generateSprite from './spriteGenerator';
+import generateSprite from '../../packages/spriteGenerator/src';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
-import { font } from './spriteGenerator';
+import { font } from '../../packages/spriteGenerator/src';
 
 const init = async function (state) {
 	const sprite = await generateSprite();
