@@ -1,4 +1,4 @@
-import { fillColor } from '../spriteGenerator';
+import { fillColor } from '../../../packages/spriteGenerator/src';
 import * as moduleTypes from '../../modules';
 
 const drawConnections = function (engine, state) {

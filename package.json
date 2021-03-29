@@ -6,7 +6,7 @@
   "scripts": {
     "build": "parcel build src/index.html",
     "dev": "parcel src/index.html --port 3000",
-    "sprite": "parcel tests/view/spriteGenerator/visualTesting.html --port 3001",
+    "sprite": "parcel packages/spriteGenerator/tests/visualTesting.html --port 3001",
     "prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/**/*.ts'",
     "test": "node --experimental-vm-modules --experimental-wasi-unstable-preview1 node_modules/.bin/jest"
   },
