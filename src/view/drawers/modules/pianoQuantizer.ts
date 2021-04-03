@@ -1,15 +1,21 @@
 import { pianoKeyboard } from '../../../../packages/spriteGenerator/src';
 
-const getWhiteKeyIndex = function (note: number) {
-	const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
-	return whiteKeys.indexOf(note % 12) + Math.floor(note / 12) * 7;
+const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
+const blackKeys = [1, 3, 6, 8, 10];
+
+const getWhiteKeyIndex = function (note: number): number {
+	return whiteKeys.indexOf(note % 12);
+};
+
+const getBlackKeyIndex = function (note: number): number {
+	return blackKeys.indexOf(note % 12);
 };
 
 const drawer = function (engine, config) {
 	engine.setSpriteLookup(pianoKeyboard());
 
 	for (let i = 0; i < 8; i++) {
-		engine.drawSprite(140 * i, 40);
+		engine.drawSprite(140 * i, 38);
 	}
 
 	const activeNotes = Object.keys(config)
@@ -20,7 +26,15 @@ const drawer = function (engine, config) {
 	engine.setSpriteLookup(pianoKeyboard(true));
 
 	for (let i = 0; i < activeNotes.length; i++) {
-		engine.drawSprite(getWhiteKeyIndex(activeNotes[i]) * 20, 40, activeNotes[i]);
+		const index = getWhiteKeyIndex(activeNotes[i]);
+		if (index !== -1) {
+			const octaveNumber = Math.floor(activeNotes[i] / 12) * 7;
+			engine.drawSprite((index + octaveNumber) * 20, 38, activeNotes[i]);
+		} else {
+			const blackIndex = getBlackKeyIndex(activeNotes[i]);
+			const octaveNumber = Math.floor(activeNotes[i] / 12) * 5;
+			engine.drawSprite((blackIndex + octaveNumber) * 20 + 14, 38, activeNotes[i]);
+		}
 	}
 };
 
