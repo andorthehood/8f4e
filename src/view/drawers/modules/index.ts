@@ -28,14 +28,6 @@ const drawModules = function (engine, state) {
 				scope(engine, state, id);
 			}
 
-			if (type === 'number') {
-				number(engine, state, id);
-			}
-
-			if (type === 'pianoQuantizer') {
-				pianoQuantizer(engine, config);
-			}
-
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
@@ -104,6 +96,14 @@ const drawModules = function (engine, state) {
 
 				engine.setSpriteLookup(font('small_white'));
 				engine.drawText(stepper.x + 12, stepper.y, '' + value);
+			}
+
+			if (type === 'number') {
+				number(engine, state, id);
+			}
+
+			if (type === 'pianoQuantizer') {
+				pianoQuantizer(engine, config);
 			}
 
 			engine.endGroup();
