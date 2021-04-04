@@ -24,6 +24,7 @@ const constant: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'constant',
+	category: 'Other',
 };
 
 export default constant;

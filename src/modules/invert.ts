@@ -12,6 +12,7 @@ const invert: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'invert',
+	category: 'Math',
 };
 
 export default invert;

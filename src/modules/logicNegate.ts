@@ -12,6 +12,7 @@ const logicNegate: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'logicNegate',
+	category: 'Logic',
 };
 
 export default logicNegate;

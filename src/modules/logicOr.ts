@@ -13,6 +13,7 @@ const logicOr: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'logicOr',
+	category: 'Logic',
 };
 
 export default logicOr;

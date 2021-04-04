@@ -57,6 +57,7 @@ export type MemoryTransformer = (
 ) => void;
 
 export interface ModuleType {
+	category: string;
 	config?: Object;
 	connectors: Connector[];
 	engine: string;
@@ -65,7 +66,7 @@ export interface ModuleType {
 	sliders: Slider[];
 	steppers: Stepper[];
 	switches: Switch[];
-	transformer: MemoryTransformer;
+	transformer?: MemoryTransformer;
 	width: number;
 }
 

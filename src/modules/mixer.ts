@@ -15,6 +15,7 @@ const mixer: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'mixer',
+	category: 'Other',
 };
 
 export default mixer;
