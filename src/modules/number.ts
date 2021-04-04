@@ -12,6 +12,7 @@ const number: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'through',
+	category: 'Inspection',
 };
 
 export default number;

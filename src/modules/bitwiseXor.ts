@@ -13,6 +13,7 @@ const bitwiseXor: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'bitwiseXor',
+	category: 'Bitwise',
 };
 
 export default bitwiseXor;

@@ -13,6 +13,7 @@ const logicXor: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'logicXor',
+	category: 'Logic',
 };
 
 export default logicXor;

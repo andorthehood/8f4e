@@ -13,6 +13,7 @@ const bitwiseOr: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'bitwiseOr',
+	category: 'Bitwise',
 };
 
 export default bitwiseOr;
