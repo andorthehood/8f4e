@@ -1,8 +1,7 @@
 import { ModuleType } from '../state/types';
 
 const mixer: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Other',
 	connectors: [
 		{ id: 'in:1', x: 5, y: 20, isInput: true },
 		{ id: 'in:2', x: 5, y: 35, isInput: true },
@@ -10,12 +9,13 @@ const mixer: ModuleType = {
 		{ id: 'in:4', x: 5, y: 65, isInput: true },
 		{ id: 'out', x: 85, y: 20 },
 	],
+	engine: 'mixer',
+	height: 100,
 	name: 'Mixer',
-	switches: [],
 	sliders: [],
 	steppers: [],
-	engine: 'mixer',
-	category: 'Other',
+	switches: [],
+	width: 100,
 };
 
 export default mixer;

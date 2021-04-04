@@ -1,15 +1,15 @@
 import { ModuleType } from '../state/types';
 
 const triangle: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Oscillator',
 	connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+	engine: 'triangle',
+	height: 100,
 	name: 'Triangle',
-	switches: [],
 	sliders: [],
 	steppers: [],
-	engine: 'triangle',
-	category: 'Oscillator',
+	switches: [],
+	width: 100,
 };
 
 export default triangle;

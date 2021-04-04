@@ -45,6 +45,7 @@ const blackKeys = new Array(60).fill(0).map((item, index) => {
 });
 
 const pianoQuantizer: ModuleType = {
+	category: 'Quantizer',
 	connectors: [
 		{ id: 'in', x: 5, y: 20, isInput: true },
 		{ id: 'out', x: 1285, y: 20 },
@@ -57,7 +58,6 @@ const pianoQuantizer: ModuleType = {
 	switches: [...whiteKeys, ...blackKeys],
 	transformer,
 	width: 1300,
-	category: 'Quantizer',
 };
 
 export default pianoQuantizer;

@@ -1,15 +1,15 @@
 import { ModuleType } from '../state/types';
 
 const randomGenerator: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Random',
 	connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+	engine: 'random',
+	height: 100,
 	name: 'Random',
-	switches: [],
 	sliders: [],
 	steppers: [],
-	engine: 'random',
-	category: 'Random',
+	switches: [],
+	width: 100,
 };
 
 export default randomGenerator;

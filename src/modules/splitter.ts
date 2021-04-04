@@ -1,8 +1,7 @@
 import { ModuleType } from '../state/types';
 
 const splitter: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Other',
 	connectors: [
 		{ id: 'in', x: 5, y: 20, isInput: true },
 		{ id: 'out:1', x: 85, y: 20 },
@@ -10,12 +9,13 @@ const splitter: ModuleType = {
 		{ id: 'out:3', x: 85, y: 50 },
 		{ id: 'out:4', x: 85, y: 65 },
 	],
+	engine: 'splitter',
+	height: 100,
 	name: 'Splitter',
-	switches: [],
 	sliders: [],
 	steppers: [],
-	engine: 'splitter',
-	category: 'Other',
+	switches: [],
+	width: 100,
 };
 
 export default splitter;
