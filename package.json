@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "parcel build src/index.html",
-    "dev": "parcel src/index.html --port 3000",
-    "sprite": "parcel packages/spriteGenerator/tests/visualTesting.html --port 3001",
+    "dev": "parcel src/index.html --port 3000 --hmr-port 30000",
+    "sprite": "parcel packages/spriteGenerator/tests/visualTesting.html --port 3001 --hmr-port 30001",
     "prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/**/*.ts'",
     "test": "node --experimental-vm-modules --experimental-wasi-unstable-preview1 node_modules/.bin/jest"
   },

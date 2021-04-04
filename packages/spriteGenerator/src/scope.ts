@@ -1,6 +1,6 @@
 import { SpriteLookup } from 'glugglugglug';
 
-const offsetX = 300;
+const offsetX = 500;
 const offsetY = 0;
 
 const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
