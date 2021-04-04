@@ -2,32 +2,32 @@ import { I16_SIGNED_LARGEST_NUMBER } from '../../packages/compiler/src';
 import { ModuleType } from '../state/types';
 
 const offset: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Other',
+	config: {
+		offset: 0,
+	},
 	connectors: [
 		{ id: 'in', x: 5, y: 20, isInput: true },
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
+	engine: 'offset',
+	height: 100,
 	name: 'Offset',
+	steppers: [],
 	sliders: [
 		{
+			height: 50,
 			id: 'offset',
+			maxValue: I16_SIGNED_LARGEST_NUMBER,
+			minValue: 0,
+			resolution: 100,
+			width: 10,
 			x: 10,
 			y: 20,
-			width: 10,
-			height: 50,
-			minValue: 0,
-			maxValue: I16_SIGNED_LARGEST_NUMBER,
-			resolution: 100,
 		},
 	],
-	config: {
-		offset: 0,
-	},
 	switches: [],
-	steppers: [],
-	engine: 'offset',
-	category: 'Other',
+	width: 100,
 };
 
 export default offset;
