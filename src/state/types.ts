@@ -70,6 +70,8 @@ export interface ModuleType {
 	width: number;
 }
 
+export type ModuleTypeLookup = { [key: string]: ModuleType };
+
 export interface State {
 	modules: Module[];
 	connections: Connection[];
@@ -88,4 +90,9 @@ export interface State {
 		display: boolean;
 		message: string;
 	};
+}
+
+declare module 'modules/index' {
+	var t: ModuleType;
+	export = t;
 }
