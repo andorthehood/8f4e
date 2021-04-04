@@ -10,7 +10,7 @@ import {
 	unsignedLEB128,
 } from './types';
 
-import { Type, Section, Instruction } from 'wasm-bytecode-utils';
+import { Type, Section, Instruction } from '../../../byteCodeUtils/src';
 import { ImportDesc, NameSection, ExportDesc } from './enums';
 
 export const createFunctionSection = function (functionTypeIndexes: number[]): number[] {
