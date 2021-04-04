@@ -1,6 +1,6 @@
 import { i32load, i32const, i32store, localSet, localGet, ifelse } from '../wasm/instructions';
 import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
-import { Instruction, Type } from 'wasm-bytecode-utils';
+import { Instruction, Type } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 

@@ -1,4 +1,4 @@
-import { Engine } from 'glugglugglug';
+import { Engine } from '../../../packages/2dEngine/src';
 
 function random(max) {
 	return Math.floor(Math.random() * max);

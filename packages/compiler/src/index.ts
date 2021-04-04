@@ -13,7 +13,7 @@ import { call, i32store } from './wasm/instructions';
 import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module, CompiledModule } from './types';
-import { Type } from 'wasm-bytecode-utils';
+import { Type } from '../../byteCodeUtils/src';
 import { createRelativeAddressCalculator } from './utils';
 
 export { Module, Connection, Connector } from './types';
