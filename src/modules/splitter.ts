@@ -15,6 +15,7 @@ const splitter: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'splitter',
+	category: 'Other',
 };
 
 export default splitter;

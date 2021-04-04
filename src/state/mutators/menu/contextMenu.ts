@@ -65,7 +65,7 @@ const contextMenu = function (state, events) {
 			];
 		} else {
 			state.ui.contextMenu.items = [
-				{ title: 'Add module', action: 'openModuleMenu' },
+				{ title: 'Add module...', action: 'openModuleMenu' },
 				{ title: 'Undo', action: 'undo', close: true },
 				{ title: 'Run test', action: 'runTest', close: true },
 				{ title: 'Export', action: 'save', close: true },
