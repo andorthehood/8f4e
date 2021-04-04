@@ -12,6 +12,7 @@ const abs: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'abs',
+	category: 'Math',
 };
 
 export default abs;

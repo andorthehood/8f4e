@@ -16,6 +16,7 @@ const sequentialSwitch: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'sequentialSwitch',
+	category: 'Logic',
 };
 
 export default sequentialSwitch;

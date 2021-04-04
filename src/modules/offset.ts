@@ -27,6 +27,7 @@ const offset: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'offset',
+	category: 'Other',
 };
 
 export default offset;

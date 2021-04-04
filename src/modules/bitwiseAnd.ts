@@ -13,6 +13,7 @@ const bitwiseAnd: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'bitwiseAnd',
+	category: 'Bitwise',
 };
 
 export default bitwiseAnd;

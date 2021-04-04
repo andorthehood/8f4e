@@ -15,6 +15,7 @@ const adc8bit: ModuleType = {
 	config: {
 		resolution: 8,
 	},
+	category: 'Bitwise',
 };
 
 export default adc8bit;
