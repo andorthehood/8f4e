@@ -91,8 +91,3 @@ export interface State {
 		message: string;
 	};
 }
-
-declare module 'modules/index' {
-	var t: ModuleType;
-	export = t;
-}

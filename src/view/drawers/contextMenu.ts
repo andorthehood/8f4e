@@ -13,12 +13,12 @@ const drawContextMenu = function (engine, state) {
 		if (i === highlightedItem) {
 			engine.setSpriteLookup(fillColor);
 			engine.drawSprite(0, 0, 'rgb(255,255,255)', itemWidth, itemHeight);
-			engine.setSpriteLookup(font('black_small'));
+			engine.setSpriteLookup(font('small_black'));
 			engine.drawText(6, 3, items[i].title);
 		} else {
 			engine.setSpriteLookup(fillColor);
 			engine.drawSprite(0, 0, 'rgb(0,0,0)', itemWidth, itemHeight);
-			engine.setSpriteLookup(font('white_small'));
+			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(6, 3, items[i].title);
 		}
 		engine.endGroup();
