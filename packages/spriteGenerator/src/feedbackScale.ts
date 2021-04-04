@@ -1,4 +1,4 @@
-import { SpriteLookup } from 'glugglugglug';
+import { SpriteLookup } from '../../2dEngine/src';
 
 const offsetX = 0;
 const offsetY = 130;
