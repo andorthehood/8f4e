@@ -13,6 +13,7 @@ const min: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'sampleAndHold',
+	category: 'Other',
 };
 
 export default min;

@@ -12,5 +12,6 @@ const saw: ModuleType = {
 	},
 	steppers: [],
 	engine: 'saw',
+	category: 'Oscillator',
 };
 export default saw;

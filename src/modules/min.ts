@@ -13,6 +13,7 @@ const min: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'min',
+	category: 'Logic',
 };
 
 export default min;

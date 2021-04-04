@@ -12,6 +12,7 @@ const scope: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'scope',
+	category: 'Inspection',
 };
 
 export default scope;

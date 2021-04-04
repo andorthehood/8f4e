@@ -15,6 +15,7 @@ const attenuator: ModuleType = {
 	},
 	steppers: [],
 	engine: 'attenuator',
+	category: 'Other',
 };
 
 export default attenuator;

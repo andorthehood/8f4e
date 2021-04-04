@@ -9,6 +9,7 @@ const triangle: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'triangle',
+	category: 'Oscillator',
 };
 
 export default triangle;

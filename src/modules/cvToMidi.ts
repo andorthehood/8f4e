@@ -15,6 +15,7 @@ const cvToMidi: ModuleType = {
 		channel: 1,
 	},
 	engine: '',
+	category: 'MIDI',
 };
 
 export default cvToMidi;

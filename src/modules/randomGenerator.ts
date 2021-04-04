@@ -9,6 +9,7 @@ const randomGenerator: ModuleType = {
 	sliders: [],
 	steppers: [],
 	engine: 'random',
+	category: 'Random',
 };
 
 export default randomGenerator;
