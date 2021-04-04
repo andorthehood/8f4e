@@ -2,9 +2,13 @@ import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../pac
 import { ModuleType } from '../state/types';
 
 const constant: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Other',
+	config: {
+		out: 0,
+	},
 	connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
+	engine: 'constant',
+	height: 100,
 	name: 'Constant',
 	sliders: [
 		{
@@ -18,13 +22,9 @@ const constant: ModuleType = {
 			resolution: 100,
 		},
 	],
-	config: {
-		out: 0,
-	},
-	switches: [],
 	steppers: [],
-	engine: 'constant',
-	category: 'Other',
+	switches: [],
+	width: 100,
 };
 
 export default constant;

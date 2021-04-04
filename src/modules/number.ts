@@ -1,18 +1,18 @@
 import { ModuleType } from '../state/types';
 
 const number: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Inspection',
 	connectors: [
 		{ id: 'in', x: 5, y: 45, isInput: true },
 		{ id: 'out', x: 85, y: 45 },
 	],
+	engine: 'through',
+	height: 100,
 	name: 'Number',
-	switches: [],
 	sliders: [],
 	steppers: [],
-	engine: 'through',
-	category: 'Inspection',
+	switches: [],
+	width: 100,
 };
 
 export default number;

@@ -1,19 +1,19 @@
 import { ModuleType } from '../state/types';
 
 const min: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Logic',
 	connectors: [
 		{ id: 'in:1', x: 5, y: 20, isInput: true },
 		{ id: 'in:2', x: 5, y: 35, isInput: true },
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
+	engine: 'min',
+	height: 100,
 	name: 'Min',
 	sliders: [],
-	switches: [],
 	steppers: [],
-	engine: 'min',
-	category: 'Logic',
+	switches: [],
+	width: 100,
 };
 
 export default min;
