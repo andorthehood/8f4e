@@ -14,8 +14,8 @@ const getBlackKeyIndex = function (note: number): number {
 const drawer = function (engine, config) {
 	engine.setSpriteLookup(pianoKeyboard());
 
-	for (let i = 0; i < 8; i++) {
-		engine.drawSprite(140 * i, 38);
+	for (let i = 0; i < 9; i++) {
+		engine.drawSprite(140 * i, 38, undefined);
 	}
 
 	const activeNotes = Object.keys(config)

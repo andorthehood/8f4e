@@ -55,8 +55,6 @@ const whiteKeyRight = function (
 	fillColor: string,
 	borderColor: string
 ) {
-	console.log(cutX);
-
 	ctx.fillStyle = fillColor;
 	ctx.fillRect(cutX, 0, width - cutX, height);
 	ctx.fillRect(0, cutY, width, height - cutY);
@@ -137,7 +135,6 @@ const blackKeyWidth = 10;
 const spacing = 2;
 const keyboardWidth = (whiteKeyWidth + spacing) * orderedKeys.length;
 const cutX = (blackKeyWidth - spacing) / 2;
-const cutY = blackKeyHeight;
 const blackKeyOffsetRelativeToWhiteKey = whiteKeyWidth - cutX;
 
 const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
