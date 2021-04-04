@@ -13,6 +13,7 @@ const max: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'max',
+	category: 'Logic',
 };
 
 export default max;

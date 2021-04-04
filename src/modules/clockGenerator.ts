@@ -12,6 +12,7 @@ const clockGenerator: ModuleType = {
 	},
 	steppers: [],
 	engine: 'clockGenerator',
+	category: 'Clock',
 };
 
 export default clockGenerator;

@@ -13,6 +13,7 @@ const logicAnd: ModuleType = {
 	switches: [],
 	steppers: [],
 	engine: 'logicAnd',
+	category: 'Logic',
 };
 
 export default logicAnd;
