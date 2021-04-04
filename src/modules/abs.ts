@@ -1,18 +1,18 @@
 import { ModuleType } from '../state/types';
 
 const abs: ModuleType = {
-	width: 100,
-	height: 100,
+	category: 'Math',
 	connectors: [
 		{ id: 'in', x: 5, y: 20, isInput: true },
 		{ id: 'out', x: 85, y: 20 },
 	],
+	engine: 'abs',
+	height: 100,
 	name: 'Abs',
-	switches: [],
 	sliders: [],
 	steppers: [],
-	engine: 'abs',
-	category: 'Math',
+	switches: [],
+	width: 100,
 };
 
 export default abs;
