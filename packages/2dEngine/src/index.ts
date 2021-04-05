@@ -126,7 +126,7 @@ export class Engine {
 		this.bufferCounter = 0;
 
 		const fps = Math.floor(this.frameCounter / ((Date.now() - this.startTime) / 1000));
-		const timeToRender = (this.lastRenderStartTime - this.lastRenderFinishTime).toFixed(2);
+		const timeToRender = (this.lastRenderFinishTime - this.lastRenderStartTime).toFixed(2);
 
 		this.lastRenderStartTime = performance.now();
 
