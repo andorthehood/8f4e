@@ -1,17 +1,9 @@
-import {
-	FunctionBody,
-	FunctionExport,
-	FunctionName,
-	FunctionType,
-	Import,
-	LocalDeclaration,
-	createVector,
-	encodeString,
-	unsignedLEB128,
-} from './types';
-
-import { Type, Section, Instruction } from '../../../byteCodeUtils/src';
-import { ImportDesc, NameSection, ExportDesc } from './enums';
+import { FunctionBody, FunctionExport, FunctionName, FunctionType, Import, LocalDeclaration } from './typeHelpers';
+import Instruction from './instruction';
+import { Section } from './section';
+import Type from './type';
+import { createVector, encodeString, unsignedLEB128 } from './typeHelpers';
+import { ImportDesc, NameSection, ExportDesc } from './section';
 
 export const createFunctionSection = function (functionTypeIndexes: number[]): number[] {
 	const numberOfFunctions = functionTypeIndexes.length;

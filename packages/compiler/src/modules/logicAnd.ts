@@ -1,6 +1,13 @@
-import { i32load, i32const, i32store, ifelse, br } from '../wasm/instructions';
-import { createFunctionBody } from '../wasm/sections';
-import { Instruction, Type } from '../../../byteCodeUtils/src';
+import {
+	Instruction,
+	Type,
+	br,
+	createFunctionBody,
+	i32const,
+	i32load,
+	i32store,
+	ifelse,
+} from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
