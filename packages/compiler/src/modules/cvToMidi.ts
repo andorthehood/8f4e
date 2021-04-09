@@ -1,4 +1,4 @@
-import { createFunctionBody } from '../wasm/sections';
+import { createFunctionBody } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
 const enum Memory {
