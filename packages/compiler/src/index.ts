@@ -8,12 +8,13 @@ import {
 	createImportSection,
 	createMemoryImport,
 	createTypeSection,
-} from './wasm/sections';
-import { call, i32store } from './wasm/instructions';
+	call,
+	i32store,
+	Type,
+} from '../../byteCodeUtils/src';
 import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module, CompiledModule } from './types';
-import { Type } from '../../byteCodeUtils/src';
 import { createRelativeAddressCalculator } from './utils';
 
 export { Module, Connection, Connector } from './types';
