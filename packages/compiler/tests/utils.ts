@@ -7,8 +7,8 @@ import {
 	createCodeSection,
 	createImportSection,
 	createMemoryImport,
-} from '../src/wasm/sections';
-import { FunctionBody } from '../src/wasm/types';
+	FunctionBody,
+} from '../../byteCodeUtils/src';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];

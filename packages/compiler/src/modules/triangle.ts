@@ -1,5 +1,4 @@
-import { createFunctionBody, createLocalDeclaration } from '../wasm/sections';
-import { Type } from '../../../byteCodeUtils/src';
+import { Type, createFunctionBody, createLocalDeclaration } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
