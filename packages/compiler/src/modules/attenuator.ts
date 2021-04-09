@@ -1,6 +1,4 @@
-import { i32const, i32load, i32store } from '../wasm/instructions';
-import { createFunctionBody } from '../wasm/sections';
-import { Instruction } from '../../../byteCodeUtils/src';
+import { Instruction, i32const, i32load, i32store, createFunctionBody } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
 const enum Memory {

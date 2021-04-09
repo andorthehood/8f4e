@@ -1,5 +1,6 @@
-import { unsignedLEB128, signedLEB128, ieee754 } from './types';
-import { Instruction, Type } from '../../../byteCodeUtils/src';
+import { unsignedLEB128, signedLEB128, ieee754 } from './typeHelpers';
+import Instruction from './instruction';
+import Type from './type';
 
 export const localGet = function (index: number): number[] {
 	return [Instruction.LOCAL_GET, ...unsignedLEB128(index)];
