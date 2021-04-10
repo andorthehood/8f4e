@@ -1,6 +1,7 @@
 export { default as abs } from './abs';
 export { default as adc16bit } from './adc16bit';
 export { default as adc8bit } from './adc8bit';
+export { default as arpeggiator } from './arpeggiator';
 export { default as attenuator } from './attenuator';
 export { default as bitwiseAnd } from './bitwiseAnd';
 export { default as bitwiseOr } from './bitwiseOr';
@@ -14,6 +15,7 @@ export { default as logicNegate } from './logicNegate';
 export { default as logicOr } from './logicOr';
 export { default as logicXor } from './logicXor';
 export { default as max } from './max';
+export { default as midiNote } from './midiNote';
 export { default as min } from './min';
 export { default as mixer } from './mixer';
 export { default as number } from './number';
