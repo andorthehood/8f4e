@@ -13,7 +13,7 @@ import {
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
-export const enum Memory {
+export enum Memory {
 	ZERO,
 	INPUT_1_POINTER,
 	INPUT_2_POINTER,

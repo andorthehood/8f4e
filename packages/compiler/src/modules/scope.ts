@@ -13,7 +13,7 @@ import {
 } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
-const enum Memory {
+enum Memory {
 	ZERO,
 	INPUT_POINTER,
 	OUTPUT,
@@ -23,7 +23,7 @@ const enum Memory {
 	BUFFER_START,
 }
 
-const enum Locals {
+enum Locals {
 	BUFFER_POINTER,
 	COUNTER,
 	INPUT,

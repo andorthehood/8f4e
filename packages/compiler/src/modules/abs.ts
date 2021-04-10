@@ -12,13 +12,13 @@ import {
 } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
-export const enum Memory {
+export enum Memory {
 	DEFAULT_VALUE,
 	INPUT_POINTER,
 	OUTPUT,
 }
 
-const enum Locals {
+enum Locals {
 	INPUT,
 	__LENGTH,
 }

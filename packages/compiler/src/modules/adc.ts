@@ -13,7 +13,7 @@ import {
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, LOGIC_HIGH, LOGIC_LOW } from '../consts';
 
-export const enum Memory {
+export enum Memory {
 	DEFAULT_VALUE,
 	INPUT_POINTER,
 	OUTPUT_1,
@@ -53,7 +53,7 @@ const masks = [
 	[Memory.OUTPUT_16, 0b1000000000000000],
 ];
 
-const enum Locals {
+enum Locals {
 	INPUT,
 	__LENGTH,
 }

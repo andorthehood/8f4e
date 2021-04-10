@@ -2,7 +2,7 @@ import { Type, createFunctionBody, createLocalDeclaration } from '../../../byteC
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
-const enum Memory {
+enum Memory {
 	COUNTER,
 	RATE_POINTER,
 	RATE_SELF,
@@ -10,7 +10,7 @@ const enum Memory {
 	LIMIT_SELF,
 }
 
-const enum Locals {
+enum Locals {
 	COUNTER,
 	LIMIT,
 	NEGATIVE_LIMIT,
