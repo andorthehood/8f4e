@@ -9,7 +9,7 @@ import {
 	ifelse,
 	createFunctionBody,
 	createLocalDeclaration,
-} from '../../../byteCodeUtils/src';
+} from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 export enum Memory {
