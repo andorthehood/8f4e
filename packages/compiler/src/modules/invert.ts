@@ -1,4 +1,4 @@
-import { Instruction, i32load, i32const, i32store, createFunctionBody } from '../../../byteCodeUtils/src';
+import { Instruction, i32load, i32const, i32store, createFunctionBody } from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 export enum Memory {

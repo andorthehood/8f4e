@@ -11,7 +11,7 @@ import {
 	call,
 	i32store,
 	Type,
-} from '../../byteCodeUtils/src';
+} from 'bytecode-utils';
 import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module, CompiledModule } from './types';
