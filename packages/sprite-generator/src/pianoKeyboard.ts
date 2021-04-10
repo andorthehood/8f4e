@@ -1,4 +1,4 @@
-import { SpriteLookup } from '../../2dEngine/src';
+import { SpriteLookup } from '../../2d-engine/src';
 
 const whiteKeyLeft = function (
 	ctx: OffscreenCanvasRenderingContext2D,

@@ -1,4 +1,4 @@
-import { pianoKeyboard } from '../../../../packages/spriteGenerator/src';
+import { pianoKeyboard } from '../../../../packages/sprite-generator/src';
 
 const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
 const blackKeys = [1, 3, 6, 8, 10];

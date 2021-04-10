@@ -1,4 +1,4 @@
-import { SpriteLookup } from '../../../2dEngine/src';
+import { SpriteLookup } from '../../../2d-engine/src';
 import generateSplitter, { lookup as splitterLookup } from './splitter';
 
 const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {

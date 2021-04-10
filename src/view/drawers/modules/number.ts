@@ -1,4 +1,4 @@
-import { font } from '../../../../packages/spriteGenerator/src';
+import { font } from '../../../../packages/sprite-generator/src';
 
 const drawer = function (engine, state, id) {
 	const address =
