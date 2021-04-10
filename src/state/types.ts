@@ -1,4 +1,4 @@
-import { MemoryBuffer } from '../../packages/compiler/src/types';
+import { MemoryBuffer } from 'compiler';
 
 export interface Module {
 	config: { [key: string]: any };
