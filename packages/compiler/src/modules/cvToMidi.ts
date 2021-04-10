@@ -1,4 +1,4 @@
-import { createFunctionBody } from '../../../byteCodeUtils/src';
+import { createFunctionBody } from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 enum Memory {

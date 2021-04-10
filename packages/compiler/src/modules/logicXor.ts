@@ -9,7 +9,7 @@ import {
 	i32load,
 	i32store,
 	ifelse,
-} from '../../../byteCodeUtils/src';
+} from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 

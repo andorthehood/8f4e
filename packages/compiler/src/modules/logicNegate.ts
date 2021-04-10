@@ -1,4 +1,4 @@
-import { Instruction, Type, i32load, i32const, i32store, ifelse, createFunctionBody } from '../../../byteCodeUtils/src';
+import { Instruction, Type, i32load, i32const, i32store, ifelse, createFunctionBody } from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 

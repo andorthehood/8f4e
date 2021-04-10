@@ -8,7 +8,7 @@ import {
 	createImportSection,
 	createMemoryImport,
 	FunctionBody,
-} from '../../byteCodeUtils/src';
+} from 'bytecode-utils';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];

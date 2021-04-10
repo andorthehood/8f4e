@@ -1,9 +1,10 @@
 {
-    "compilerOptions": {
-        "lib": [
-            "esnext",
-            "dom"
-        ],
-        "downlevelIteration": true
-    }
+	"compilerOptions": {
+		"lib": ["esnext", "dom"],
+		"module": "esnext",
+		"downlevelIteration": true,
+		"paths": {
+			"bytecode-utils": ["./packages/byteCodeUtils/src"]
+		}
+	}
 }
