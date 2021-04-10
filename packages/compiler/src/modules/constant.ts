@@ -1,7 +1,7 @@
 import { createFunctionBody } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
-export const enum Memory {
+export enum Memory {
 	OUTPUT,
 }
 
