@@ -1,4 +1,4 @@
-import { Engine } from '../../../packages/2dEngine/src';
+import { Engine } from '../../../packages/2d-engine/src';
 
 function random(max) {
 	return Math.floor(Math.random() * max);
