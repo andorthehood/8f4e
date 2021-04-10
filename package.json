@@ -33,6 +33,7 @@
     "typescript": "^4.1.3"
   },
   "alias": {
-    "bytecode-utils": "./packages/byteCodeUtils/src"
+    "bytecode-utils": "./packages/byteCodeUtils/src",
+    "compiler": "./packages/compiler/src"
   }
 }

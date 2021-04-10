@@ -1,4 +1,4 @@
-import { I16_SIGNED_LARGEST_NUMBER } from '../../packages/compiler/src';
+import { I16_SIGNED_LARGEST_NUMBER } from 'compiler';
 import { ModuleType } from '../state/types';
 
 const offset: ModuleType = {
