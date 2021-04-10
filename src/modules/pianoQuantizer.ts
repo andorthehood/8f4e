@@ -16,32 +16,49 @@ const transformer: MemoryTransformer = function (module, memoryBuffer, memoryAdd
 	memoryBuffer[memoryAddressLookup[module.id + '_numberOfNotes'] / memoryBuffer.BYTES_PER_ELEMENT] = activeNotes.length;
 };
 
-const whiteKeys = new Array(60).fill(0).map((item, index) => {
-	const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
+const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
+const blackKeys = [1, 3, 6, 8, 10];
+const blackKeyPositions = [13, 33, 73, 93, 113];
+const allKeys = [...whiteKeys, ...blackKeys];
+const whiteKeyWidth = 18;
+const spacing = 2;
+const keyboardWidth = whiteKeyWidth * whiteKeys.length + spacing * whiteKeys.length;
 
-	return {
-		id: 'note:' + (whiteKeys[index % 7] + Math.floor(index / 7) * 12),
-		onValue: true,
-		offValue: false,
-		x: index * 18 + 2 * index,
-		y: 80,
-		width: 18,
-		height: 20,
-	};
-});
+const getWhiteKeyIndex = function (note: number): number {
+	return whiteKeys.indexOf(note % allKeys.length);
+};
 
-const blackKeys = new Array(60).fill(0).map((item, index) => {
-	const blackKeys = [1, 3, 6, 8, 10];
+const getBlackKeyIndex = function (note: number): number {
+	return blackKeys.indexOf(note % allKeys.length);
+};
 
-	return {
-		id: 'note:' + (blackKeys[index % 5] + Math.floor(index / 5) * 12),
-		onValue: true,
-		offValue: false,
-		x: 13 + index * 18 + 2 * index,
-		y: 40,
-		width: 12,
-		height: 40,
-	};
+const pianoKeys = new Array(128).fill(0).map((item, index) => {
+	const whiteKeyIndex = getWhiteKeyIndex(index);
+	const blackKeyIndex = getBlackKeyIndex(index);
+	const isWhite = blackKeyIndex === -1;
+	const octave = Math.floor(index / allKeys.length);
+
+	if (isWhite) {
+		return {
+			id: 'note:' + index,
+			onValue: true,
+			offValue: false,
+			x: whiteKeyIndex * whiteKeyWidth + spacing * whiteKeyIndex + keyboardWidth * octave,
+			y: 80,
+			width: 18,
+			height: 20,
+		};
+	} else {
+		return {
+			id: 'note:' + index,
+			onValue: true,
+			offValue: false,
+			x: blackKeyPositions[blackKeyIndex] + keyboardWidth * octave,
+			y: 40,
+			width: 12,
+			height: 40,
+		};
+	}
 });
 
 const pianoQuantizer: ModuleType = {
@@ -55,9 +72,9 @@ const pianoQuantizer: ModuleType = {
 	name: 'Quantizer',
 	sliders: [],
 	steppers: [],
-	switches: [...whiteKeys, ...blackKeys],
+	switches: [...pianoKeys],
 	transformer,
-	width: 1300,
+	width: 1500,
 };
 
 export default pianoQuantizer;
