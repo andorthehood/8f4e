@@ -1,7 +1,7 @@
-import { Engine } from '../../packages/2dEngine/src';
-import generateSprite from '../../packages/spriteGenerator/src';
+import { Engine } from '../../packages/2d-engine/src';
+import generateSprite from '../../packages/sprite-generator/src';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
-import { font } from '../../packages/spriteGenerator/src';
+import { font } from '../../packages/sprite-generator/src';
 
 const init = async function (state) {
 	const sprite = await generateSprite();
