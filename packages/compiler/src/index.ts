@@ -17,7 +17,7 @@ import * as moduleCompilers from './modules';
 import { Module, CompiledModule } from './types';
 import { createRelativeAddressCalculator } from './utils';
 
-export { Module, Connection, Connector } from './types';
+export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
 export { setUpConnections } from './initializeMemory';
 
