@@ -1,5 +1,5 @@
 const compiler = function (state, events) {
-	const worker = new Worker('../../worker/index.ts');
+	const worker = new Worker(new URL('../../worker/index.ts', import.meta.url));
 	// @ts-ignore shared: true
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 
