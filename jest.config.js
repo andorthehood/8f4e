@@ -2,7 +2,7 @@ module.exports = {
 	preset: 'ts-jest',
 	testEnvironment: 'node',
 	moduleNameMapper: {
-		'bytecode-utils': '<rootDir>/packages/byteCodeUtils/src',
+		'bytecode-utils': '<rootDir>/packages/bytecode-utils/src',
 		compiler: '<rootDir>/packages/compiler/src',
 	},
 	globals: {
