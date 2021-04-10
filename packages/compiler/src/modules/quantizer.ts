@@ -12,7 +12,7 @@ import {
 	localGet,
 	localSet,
 	loop,
-} from '../../../byteCodeUtils/src';
+} from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 

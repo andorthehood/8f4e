@@ -10,7 +10,7 @@ import {
 	ifelse,
 	localGet,
 	localSet,
-} from '../../../byteCodeUtils/src';
+} from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 enum Memory {

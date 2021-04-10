@@ -7,7 +7,7 @@ import {
 	i32store,
 	localGet,
 	localSet,
-} from '../../../byteCodeUtils/src';
+} from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
 
 enum Memory {
