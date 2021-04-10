@@ -13,13 +13,13 @@ import {
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
-const enum Memory {
+enum Memory {
 	COUNTER,
 	RATE_SELF,
 	OUTPUT,
 }
 
-const enum Locals {
+enum Locals {
 	COUNTER,
 	OUTPUT,
 	RATE,

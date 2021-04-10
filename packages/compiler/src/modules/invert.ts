@@ -1,7 +1,7 @@
 import { Instruction, i32load, i32const, i32store, createFunctionBody } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
-export const enum Memory {
+export enum Memory {
 	DEFAULT_VALUE,
 	INPUT_POINTER,
 	OUTPUT,

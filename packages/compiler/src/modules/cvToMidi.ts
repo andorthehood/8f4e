@@ -1,7 +1,7 @@
 import { createFunctionBody } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
-const enum Memory {
+enum Memory {
 	NOTE_INPUT_POINTER,
 	CLOCK_INPUT_POINTER,
 	MIDI_CHANNEL,
