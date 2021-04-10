@@ -5,7 +5,7 @@
 		"downlevelIteration": true,
 		"moduleResolution": "node",
 		"paths": {
-			"bytecode-utils": ["./packages/byteCodeUtils/src"],
+			"bytecode-utils": ["./packages/bytecode-utils/src"],
 			"compiler": ["./packages/compiler/src"]
 		}
 	}
