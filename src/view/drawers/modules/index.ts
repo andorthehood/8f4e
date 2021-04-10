@@ -1,4 +1,4 @@
-import { modules, feedbackScale, font, fillColor } from '../../../../packages/spriteGenerator/src';
+import { modules, feedbackScale, font, fillColor } from '../../../../packages/sprite-generator/src';
 import scope from './scope';
 import number from './number';
 import midiNote from './midiNote';

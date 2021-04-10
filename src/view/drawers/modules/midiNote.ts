@@ -1,4 +1,4 @@
-import { font } from '../../../../packages/spriteGenerator/src';
+import { font } from '../../../../packages/sprite-generator/src';
 import { int16ToMidiNote } from '../../../state/helpers/midi';
 
 const midiNoteLookup = new Array(128).fill(0).map((item, index) => {

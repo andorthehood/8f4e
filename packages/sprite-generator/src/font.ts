@@ -1,4 +1,4 @@
-import { SpriteLookup } from '../../2dEngine/src';
+import { SpriteLookup } from '../../2d-engine/src';
 import smallFont from './smallFont';
 
 const offsetX = 0;
