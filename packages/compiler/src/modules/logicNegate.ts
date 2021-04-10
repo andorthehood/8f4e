@@ -2,7 +2,7 @@ import { Instruction, Type, i32load, i32const, i32store, ifelse, createFunctionB
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
-export const enum Memory {
+export enum Memory {
 	DEFAULT_VALUE,
 	INPUT_POINTER,
 	OUTPUT,
