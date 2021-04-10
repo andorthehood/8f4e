@@ -16,14 +16,14 @@ import {
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
-export const enum Memory {
+export enum Memory {
 	INPUT_POINTER,
 	OUTPUT,
 	NUMBER_OF_NOTES,
 	FIRST_NOTE,
 }
 
-const enum Locals {
+enum Locals {
 	BEST_MACTHING_VALUE,
 	DIFFERENCE,
 	INPUT,

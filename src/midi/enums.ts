@@ -1,4 +1,4 @@
-export const enum Event {
+export enum Event {
 	/** This message is sent when a note is released (ended). */
 	NOTE_OFF = 0x80,
 	/** This message is sent when a note is depressed (start). */
@@ -22,14 +22,14 @@ export const enum Event {
 	PITCH_WHEEL = 0xe0,
 }
 
-export const enum ControlChange {
+export enum ControlChange {
 	/** All sound off. */
 	ALL_SOUND_OFF = 120,
 	/** All notes off. */
 	ALL_NOTE_OFF = 123,
 }
 
-export const enum Note {
+export enum Note {
 	C0,
 	C0_SHARP,
 	D0,

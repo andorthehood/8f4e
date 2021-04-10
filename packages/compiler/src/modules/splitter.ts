@@ -10,7 +10,7 @@ import {
 } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
-const enum Memory {
+enum Memory {
 	ZERO,
 	INPUT_POINTER,
 	OUTPUT_1,
@@ -19,7 +19,7 @@ const enum Memory {
 	OUTPUT_4,
 }
 
-const enum Locals {
+enum Locals {
 	INPUT,
 	__LENGTH,
 }

@@ -13,12 +13,12 @@ import {
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
-export const enum Memory {
+export enum Memory {
 	SEED,
 	OUTPUT,
 }
 
-const enum Locals {
+enum Locals {
 	RANDOM,
 	FEEDBACK,
 	__LENGTH,

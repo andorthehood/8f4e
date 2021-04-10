@@ -12,7 +12,7 @@ import {
 } from '../../../byteCodeUtils/src';
 import { ModuleGenerator } from '../types';
 
-export const enum Memory {
+export enum Memory {
 	DEFAULT_VALUE,
 	INPUT_POINTER,
 	TRIGGER_INPUT_POINTER,
@@ -20,7 +20,7 @@ export const enum Memory {
 	OUTPUT,
 }
 
-const enum Locals {
+enum Locals {
 	TRIGGER_INPUT,
 	__LENGTH,
 }

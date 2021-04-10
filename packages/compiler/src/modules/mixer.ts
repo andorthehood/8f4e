@@ -13,7 +13,7 @@ import {
 import { ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 
-export const enum Memory {
+export enum Memory {
 	DEFAULT_VALUE,
 	OUTPUT,
 	INPUT_POINTER_1,
@@ -22,7 +22,7 @@ export const enum Memory {
 	INPUT_POINTER_4,
 }
 
-const enum Locals {
+enum Locals {
 	RESULT,
 	__LENGTH,
 }
