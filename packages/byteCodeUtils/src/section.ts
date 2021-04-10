@@ -1,4 +1,4 @@
-export const enum Section {
+export enum Section {
 	CUSTOM = 0x00,
 	TYPE = 0x01,
 	IMPORT = 0x02,
@@ -8,16 +8,16 @@ export const enum Section {
 	CODE = 0x0a,
 }
 
-export const enum NameSection {
+export enum NameSection {
 	FUNCTION_NAME = 0x01,
 	LOCAL_NAME = 0x02,
 }
 
-export const enum ImportDesc {
+export enum ImportDesc {
 	MEMORY = 0x02,
 }
 
-export const enum ExportDesc {
+export enum ExportDesc {
 	FUNC = 0x00,
 }
 

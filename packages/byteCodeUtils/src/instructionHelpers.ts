@@ -52,22 +52,12 @@ export const f32store = function (
 	];
 };
 
-export const i32load = function (address?: number, alingment: number = 2, offset: number = 0): number[] {
-	return [
-		...(typeof address === 'undefined' ? [] : i32const(address)),
-		Instruction.I32_LOAD,
-		...unsignedLEB128(alingment),
-		...unsignedLEB128(offset),
-	];
+export const i32load = function (alingment: number = 2, offset: number = 0): number[] {
+	return [Instruction.I32_LOAD, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
 };
 
-export const f32load = function (address?: number, alingment: number = 2, offset: number = 0): number[] {
-	return [
-		...(typeof address === 'undefined' ? [] : i32const(address)),
-		Instruction.F32_LOAD,
-		...unsignedLEB128(alingment),
-		...unsignedLEB128(offset),
-	];
+export const f32load = function (alingment: number = 2, offset: number = 0): number[] {
+	return [Instruction.F32_LOAD, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
 };
 
 export const ifelse = function (resultType: Type, trueBranch: number[], falseBranch: number[] = []): number[] {
