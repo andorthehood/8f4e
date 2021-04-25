@@ -9,10 +9,10 @@ const moduleDragger = function (state, events) {
 			events.dispatch('moduleClick', { x, y, module: draggedModule });
 			draggedModule.beingDragged = true;
 			draggedModule.isSelected = true;
-		}
 
-		// Bring dragged module forward.
-		state.ui.modules.push(state.ui.modules.splice(state.ui.modules.indexOf(draggedModule), 1)[0]);
+			// Bring dragged module forward.
+			state.ui.modules.push(state.ui.modules.splice(state.ui.modules.indexOf(draggedModule), 1)[0]);
+		}
 	};
 
 	const onMouseMove = event => {

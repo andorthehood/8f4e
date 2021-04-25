@@ -3,30 +3,34 @@ import { ModuleGenerator } from '../types';
 
 enum Memory {
 	ZERO,
-	INPUT_POINTER,
-	OUTPUT,
 }
 
-const through: ModuleGenerator = function (moduleId, offset) {
+const through: ModuleGenerator = function (moduleId, offset, { numberOfPorts = 1 } = {}) {
+	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
+	const inputPointers = portIndexes.map(index => offset(1 + index));
+	const outputs = portIndexes.map(index => offset(1 + numberOfPorts + index));
+
 	const functionBody = createFunctionBody(
 		[],
-		[
-			...i32const(offset(Memory.OUTPUT)),
-			...i32const(offset(Memory.INPUT_POINTER)),
-			...i32load(),
-			...i32load(),
-			...i32store(),
-		]
+		portIndexes
+			.map(index => [
+				...i32const(outputs[index]),
+				...i32const(inputPointers[index]),
+				...i32load(),
+				...i32load(),
+				...i32store(),
+			])
+			.flat()
 	);
 
 	return {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), 0],
+		initialMemory: [0, ...portIndexes.map(() => offset(Memory.ZERO)), ...portIndexes.map(() => 0)],
 		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
+			...inputPointers.map((address, index) => ({ address, id: 'in:' + (index + 1) })),
+			...outputs.map((address, index) => ({ address, id: 'out:' + (index + 1) })),
 		],
 	};
 };
