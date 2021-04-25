@@ -2,7 +2,7 @@ import { font } from '../../../../packages/sprite-generator/src';
 
 const drawer = function (engine, state, id) {
 	const address =
-		state.ui.compiler.outputAddressLookup[id + '_' + 'out'] / state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+		state.ui.compiler.outputAddressLookup[id + '_' + 'out:1'] / state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 
 	if (!address) {
 		return;
