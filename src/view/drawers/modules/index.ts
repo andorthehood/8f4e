@@ -85,6 +85,8 @@ const drawModules = function (engine, state) {
 					state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 				const value = state.ui.compiler.memoryBuffer[address];
 
+				//console.log(state.ui.compiler.outputAddressLookup[id + '_' + stepper.id]);
+
 				engine.setSpriteLookup(font('small_white'));
 				engine.drawText(stepper.x + 12, stepper.y, '' + value);
 			}
