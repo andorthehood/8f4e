@@ -4,7 +4,7 @@ const cvToMidi: ModuleType = {
 	category: 'MIDI',
 	config: {
 		numberOfPorts: 2,
-		dataPlaceholders: [{ id: 'channel' }],
+		dataPlaceholders: [{ id: 'channel' }, { id: 'device' }],
 	},
 	connectors: [
 		{ id: 'in:1', x: 5, y: 20, isInput: true, label: 'note in' },
