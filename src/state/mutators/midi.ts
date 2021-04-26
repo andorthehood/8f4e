@@ -5,8 +5,8 @@ export const midi = async function (state, events) {
 
 	const onMidiAccess = function (access) {
 		midiAccess = access;
+
 		access.outputs.forEach(port => {
-			console.log('port', port);
 			state.ui.midi.ports.push({ id: port.id, name: port.name, manufacturer: port.manufacturer });
 			selectedPort = port;
 			events.dispatch('midiPortConnected');
