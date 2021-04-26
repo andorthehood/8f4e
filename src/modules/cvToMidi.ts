@@ -3,13 +3,14 @@ import { ModuleType } from '../state/types';
 const cvToMidi: ModuleType = {
 	category: 'MIDI',
 	config: {
-		channel: 1,
+		numberOfPorts: 2,
+		dataPlaceholders: [{ id: 'channel' }],
 	},
 	connectors: [
-		{ id: 'in:note', x: 5, y: 20, isInput: true, label: 'note in' },
-		{ id: 'in:clock', x: 5, y: 35, isInput: true, label: 'clock in' },
+		{ id: 'in:1', x: 5, y: 20, isInput: true, label: 'note in' },
+		{ id: 'in:2', x: 5, y: 35, isInput: true, label: 'clock in' },
 	],
-	engine: '',
+	engine: 'through',
 	height: 100,
 	name: 'CV to MIDI',
 	sliders: [],
