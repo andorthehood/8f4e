@@ -7,7 +7,6 @@ export { default as bitwiseOr } from './bitwiseOr';
 export { default as bitwiseXor } from './bitwiseXor';
 export { default as clockGenerator } from './clockGenerator';
 export { default as constant } from './constant';
-export { default as cvToMidi } from './cvToMidi';
 export { default as invert } from './invert';
 export { default as logicAnd } from './logicAnd';
 export { default as logicNegate } from './logicNegate';

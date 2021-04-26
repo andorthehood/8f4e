@@ -19,12 +19,10 @@ export type Connection = [Connector, Connector];
 
 export type RelativeAddressCalculator = (nthWord: number) => number;
 
-export type InitialConfig = { [key: string]: number };
-
 export type ModuleGenerator = (
 	moduleId: string,
 	offset: RelativeAddressCalculator,
-	initialConfig?: InitialConfig
+	initialConfig?: Object
 ) => CompiledModule;
 
 export interface Module {
