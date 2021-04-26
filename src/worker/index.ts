@@ -71,16 +71,16 @@ const recompile = async function (memoryRef, modules, connections) {
 	let wasHigh = false;
 
 	const cvToMidiModule = compiledModules.find(({ moduleId }) => moduleId.startsWith('cvToMidi'));
-	let cvAddress, clockAddress;
+	let cvAddress, clockAddress, channelAddress;
 	if (cvToMidiModule) {
 		cvAddress =
-			memoryBuffer[
-				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'in:note').address / memoryBuffer.BYTES_PER_ELEMENT
-			];
+			cvToMidiModule.memoryAddresses.find(({ id }) => id === 'out:1').address / memoryBuffer.BYTES_PER_ELEMENT;
+
 		clockAddress =
-			memoryBuffer[
-				cvToMidiModule.memoryAddresses.find(({ id }) => id === 'in:clock').address / memoryBuffer.BYTES_PER_ELEMENT
-			];
+			cvToMidiModule.memoryAddresses.find(({ id }) => id === 'out:2').address / memoryBuffer.BYTES_PER_ELEMENT;
+
+		channelAddress =
+			cvToMidiModule.memoryAddresses.find(({ id }) => id === 'channel').address / memoryBuffer.BYTES_PER_ELEMENT;
 	}
 
 	resetMidi();
@@ -90,15 +90,16 @@ const recompile = async function (memoryRef, modules, connections) {
 		cycle();
 
 		if (cvAddress && clockAddress) {
-			const note = int16ToMidiNote(memoryBuffer[cvAddress / memoryBuffer.BYTES_PER_ELEMENT]);
-			const isHigh = memoryBuffer[clockAddress / memoryBuffer.BYTES_PER_ELEMENT] !== 0;
+			const note = int16ToMidiNote(memoryBuffer[cvAddress]);
+			const isHigh = memoryBuffer[clockAddress] !== 0;
+			const channel = memoryBuffer[channelAddress] || 1;
 
 			if (isHigh && !wasHigh) {
 				// @ts-ignore
 				self.postMessage({
 					type: 'midiMessage',
 					payload: {
-						message: [Event.NOTE_ON, note, 100],
+						message: [Event.NOTE_ON + channel - 1, note, 100],
 					},
 				});
 
@@ -107,7 +108,7 @@ const recompile = async function (memoryRef, modules, connections) {
 					self.postMessage({
 						type: 'midiMessage',
 						payload: {
-							message: [Event.NOTE_OFF, note, 100],
+							message: [Event.NOTE_OFF + channel - 1, note, 100],
 						},
 					});
 				}, 100);
