@@ -58,13 +58,6 @@ const quantizer: ModuleGenerator = function (moduleId, offset, config: Quantizer
 			...i32load(),
 			...localSet(Locals.INPUT),
 
-			// // Ignore values below zero.
-			// ...localGet(Locals.INPUT),
-			// ...i32const(0),
-			// Instruction.I32_LT_S,
-			// ...ifelse(Type.I32, [...i32const(0)], [...localGet(Locals.INPUT)]),
-			// ...localSet(Locals.INPUT),
-
 			// Calculate the address of the last note.
 			...i32const(offset(Memory.NUMBER_OF_NOTES)),
 			...i32load(),
