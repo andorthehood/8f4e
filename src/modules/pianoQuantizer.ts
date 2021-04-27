@@ -5,7 +5,7 @@ const transformer: MemoryTransformer = function (module, memoryBuffer, memoryAdd
 	const activeNotes = Object.keys(module.config)
 		.filter(key => key.startsWith('note') && module.config[key])
 		.map(note => parseInt(note.split(':')[1], 10))
-		.slice(0, 12);
+		.slice(0, module.config.allocatedNotes);
 
 	activeNotes.forEach((note, index) => {
 		memoryBuffer[memoryAddressLookup[module.id + '_notes'] / memoryBuffer.BYTES_PER_ELEMENT + index] = midiNoteToInt16(
@@ -67,6 +67,9 @@ const pianoQuantizer: ModuleType = {
 		{ id: 'in', x: 5, y: 20, isInput: true },
 		{ id: 'out', x: 1285, y: 20 },
 	],
+	config: {
+		allocatedNotes: 32,
+	},
 	engine: 'quantizer',
 	height: 100,
 	name: 'Quantizer',
