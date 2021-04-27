@@ -25,8 +25,7 @@ const drawer = function (engine, config) {
 
 	const activeNotes = Object.keys(config)
 		.filter(key => key.startsWith('note') && config[key])
-		.map(note => parseInt(note.split(':')[1], 10))
-		.slice(0, 12);
+		.map(note => parseInt(note.split(':')[1], 10));
 
 	engine.setSpriteLookup(pianoKeyboard(true));
 

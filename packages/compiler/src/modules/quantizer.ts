@@ -42,7 +42,13 @@ const abs = registerIndex => [
 	...localSet(registerIndex),
 ];
 
-const quantizer: ModuleGenerator = function (moduleId, offset, { allocatedNotes = 12 }) {
+interface QuantizerConfig {
+	allocatedNotes: number;
+}
+
+const quantizer: ModuleGenerator = function (moduleId, offset, config: QuantizerConfig) {
+	const { allocatedNotes = 12 } = config;
+
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -52,12 +58,12 @@ const quantizer: ModuleGenerator = function (moduleId, offset, { allocatedNotes 
 			...i32load(),
 			...localSet(Locals.INPUT),
 
-			// Ignore values below zero.
-			...localGet(Locals.INPUT),
-			...i32const(0),
-			Instruction.I32_LT_S,
-			...ifelse(Type.I32, [...i32const(0)], [...localGet(Locals.INPUT)]),
-			...localSet(Locals.INPUT),
+			// // Ignore values below zero.
+			// ...localGet(Locals.INPUT),
+			// ...i32const(0),
+			// Instruction.I32_LT_S,
+			// ...ifelse(Type.I32, [...i32const(0)], [...localGet(Locals.INPUT)]),
+			// ...localSet(Locals.INPUT),
 
 			// Calculate the address of the last note.
 			...i32const(offset(Memory.NUMBER_OF_NOTES)),
