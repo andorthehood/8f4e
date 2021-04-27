@@ -1,3 +1,5 @@
+import * as moduleTypes from '../../modules';
+
 const compiler = function (state, events) {
 	const worker = new Worker(new URL('../../worker/index.ts', import.meta.url));
 	// @ts-ignore shared: true
@@ -20,6 +22,16 @@ const compiler = function (state, events) {
 				state.ui.compiler.isCompiling = false;
 				const end = performance.now() - state.ui.compiler.lastCompilationStart;
 				state.ui.compiler.compilationTime = end.toFixed(2);
+
+				state.ui.modules.forEach(module => {
+					if (moduleTypes[module.type].transformer) {
+						moduleTypes[module.type].transformer(
+							module,
+							state.ui.compiler.memoryBuffer,
+							state.ui.compiler.outputAddressLookup
+						);
+					}
+				});
 				break;
 		}
 	};
