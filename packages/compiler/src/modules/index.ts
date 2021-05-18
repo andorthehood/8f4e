@@ -1,12 +1,12 @@
 export { default as abs } from './abs';
 export { default as adc } from './adc';
-export { default as arpeggiator } from './arpeggiator';
 export { default as attenuator } from './attenuator';
 export { default as bitwiseAnd } from './bitwiseAnd';
 export { default as bitwiseOr } from './bitwiseOr';
 export { default as bitwiseXor } from './bitwiseXor';
 export { default as clockGenerator } from './clockGenerator';
 export { default as constant } from './constant';
+export { default as cvSequencer } from './cvSequencer';
 export { default as invert } from './invert';
 export { default as logicAnd } from './logicAnd';
 export { default as logicNegate } from './logicNegate';
