@@ -34,7 +34,7 @@ enum Local {
 	__LENGTH,
 }
 
-const arpeggiator: ModuleGenerator = function (moduleId, offset, { allocatedNotes = 12 }) {
+const cvSequencer: ModuleGenerator = function (moduleId, offset, { allocatedNotes = 12 }) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Local.__LENGTH)],
 		[
@@ -86,4 +86,4 @@ const arpeggiator: ModuleGenerator = function (moduleId, offset, { allocatedNote
 	};
 };
 
-export default arpeggiator;
+export default cvSequencer;

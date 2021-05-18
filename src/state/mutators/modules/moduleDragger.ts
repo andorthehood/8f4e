@@ -20,6 +20,8 @@ const moduleDragger = function (state, events) {
 		if (draggedModule) {
 			draggedModule.x += movementX;
 			draggedModule.y += movementY;
+			draggedModule.row = Math.floor(draggedModule.y / 14);
+			draggedModule.col = Math.floor(draggedModule.x / 8);
 			event.stopPropagation = true;
 		}
 	};
@@ -29,6 +31,8 @@ const moduleDragger = function (state, events) {
 			draggedModule.beingDragged = false;
 			draggedModule.x = Math.round(draggedModule.x / 10) * 10;
 			draggedModule.y = Math.round(draggedModule.y / 10) * 10;
+			draggedModule.row = Math.floor(draggedModule.y / 14);
+			draggedModule.col = Math.floor(draggedModule.x / 8);
 			draggedModule = null;
 		}
 

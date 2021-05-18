@@ -12,7 +12,7 @@ const drawModules = function (engine, state) {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.ui.modules.length; i++) {
-		const { x, y, type, id, config } = state.ui.modules[i];
+		const { x, y, type, id, config, row, col } = state.ui.modules[i];
 		const { width, height, name, connectors, switches, sliders, steppers } = moduleTypes[type];
 
 		if (
@@ -21,7 +21,7 @@ const drawModules = function (engine, state) {
 			x + offsetX < state.ui.viewport.width &&
 			y + offsetY < state.ui.viewport.height
 		) {
-			engine.startGroup(x, y);
+			engine.startGroup(col * 8, row * 14);
 			engine.setSpriteLookup(modules);
 			engine.drawSprite(0, 0, type, width, height);
 
