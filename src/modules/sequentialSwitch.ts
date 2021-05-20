@@ -11,12 +11,12 @@ const sequentialSwitch: ModuleType = {
 		{ id: 'out', x: 85, y: 20 },
 	],
 	engine: 'sequentialSwitch',
-	height: 100,
+	height: 10,
 	name: 'Sequential switch',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default sequentialSwitch;

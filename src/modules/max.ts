@@ -8,12 +8,12 @@ const max: ModuleType = {
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
 	engine: 'max',
-	height: 100,
+	height: 10,
 	name: 'Max',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default max;

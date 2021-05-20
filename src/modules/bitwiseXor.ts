@@ -8,12 +8,12 @@ const bitwiseXor: ModuleType = {
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
 	engine: 'bitwiseXor',
-	height: 100,
+	height: 10,
 	name: 'Bitwise XOR',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default bitwiseXor;
