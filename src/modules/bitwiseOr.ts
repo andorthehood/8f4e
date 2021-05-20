@@ -8,12 +8,12 @@ const bitwiseOr: ModuleType = {
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
 	engine: 'bitwiseOr',
-	height: 100,
+	height: 10,
 	name: 'Bitwise OR',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default bitwiseOr;

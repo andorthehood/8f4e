@@ -10,12 +10,12 @@ const splitter: ModuleType = {
 		{ id: 'out:4', x: 85, y: 65 },
 	],
 	engine: 'splitter',
-	height: 100,
+	height: 10,
 	name: 'Splitter',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default splitter;
