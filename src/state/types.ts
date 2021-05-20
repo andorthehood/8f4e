@@ -1,9 +1,11 @@
 import { MemoryBuffer } from 'compiler';
 
 export interface Module {
+	col: number;
 	config: { [key: string]: any };
 	engine: string;
 	id: string;
+	row: number;
 	type: string;
 	x: number;
 	y: number;
@@ -78,7 +80,9 @@ export interface State {
 	isDebugMode: boolean;
 	compiler: {};
 	viewport: {
+		hGrid: number;
 		height: number;
+		vGrid: number;
 		width: number;
 		x: number;
 		y: number;
