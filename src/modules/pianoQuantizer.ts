@@ -71,13 +71,13 @@ const pianoQuantizer: ModuleType = {
 		allocatedNotes: 32,
 	},
 	engine: 'quantizer',
-	height: 100,
+	height: 10,
 	name: 'Quantizer',
 	sliders: [],
 	steppers: [],
 	switches: [...pianoKeys],
 	transformer,
-	width: 1500,
+	width: 150,
 };
 
 export default pianoQuantizer;

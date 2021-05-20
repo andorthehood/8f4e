@@ -8,12 +8,12 @@ const logicOr: ModuleType = {
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
 	engine: 'logicOr',
-	height: 100,
+	height: 10,
 	name: 'Logic OR',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default logicOr;

@@ -7,12 +7,12 @@ const abs: ModuleType = {
 		{ id: 'out', x: 85, y: 20 },
 	],
 	engine: 'abs',
-	height: 100,
+	height: 10,
 	name: 'Abs',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default abs;
