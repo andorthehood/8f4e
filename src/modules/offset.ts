@@ -11,7 +11,7 @@ const offset: ModuleType = {
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
 	engine: 'offset',
-	height: 100,
+	height: 10,
 	name: 'Offset',
 	steppers: [],
 	sliders: [
@@ -27,7 +27,7 @@ const offset: ModuleType = {
 		},
 	],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default offset;

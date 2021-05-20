@@ -6,8 +6,7 @@ import pianoQuantizer from './pianoQuantizer';
 import * as moduleTypes from '../../../modules';
 
 const drawModules = function (engine, state) {
-	const offsetX = state.ui.viewport.x;
-	const offsetY = state.ui.viewport.y;
+	const { vGrid, hGrid, x: offsetX, y: offsetY, viewPortWidth, viewPortHeight } = state.ui.viewport;
 
 	engine.startGroup(offsetX, offsetY);
 
@@ -16,14 +15,14 @@ const drawModules = function (engine, state) {
 		const { width, height, name, connectors, switches, sliders, steppers } = moduleTypes[type];
 
 		if (
-			x + offsetX > -1 * width &&
-			y + offsetY > -1 * height &&
+			x + offsetX > -1 * width * vGrid &&
+			y + offsetY > -1 * height * hGrid &&
 			x + offsetX < state.ui.viewport.width &&
 			y + offsetY < state.ui.viewport.height
 		) {
-			engine.startGroup(col * 8, row * 14);
+			engine.startGroup(col * vGrid, row * hGrid);
 			engine.setSpriteLookup(modules);
-			engine.drawSprite(0, 0, type, width, height);
+			engine.drawSprite(0, 0, type, width * vGrid, height * hGrid);
 
 			if (type === 'scope') {
 				scope(engine, state, id);

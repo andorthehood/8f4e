@@ -8,8 +8,8 @@ const moduleCreator = function (state, events) {
 		state.ui.modules.push({
 			x,
 			y,
-			row: Math.floor(y / 14),
-			col: Math.floor(x / 8),
+			row: Math.floor(y / state.ui.viewport.hGrid),
+			col: Math.floor(x / state.ui.viewport.vGrid),
 			id: type + state.ui.modules.length,
 			config: { ...moduleTypes[type].config },
 			type,

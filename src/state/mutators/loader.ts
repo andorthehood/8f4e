@@ -13,8 +13,10 @@ const defaultState: State = {
 	isDebugMode: process.env.NODE_ENV === 'development',
 	modules: [],
 	viewport: {
-		width: 0,
+		hGrid: 14,
 		height: 0,
+		vGrid: 6,
+		width: 0,
 		x: 0,
 		y: 0,
 	},

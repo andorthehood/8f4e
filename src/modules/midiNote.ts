@@ -7,12 +7,12 @@ const number: ModuleType = {
 		{ id: 'out', x: 85, y: 45 },
 	],
 	engine: 'through',
-	height: 100,
+	height: 10,
 	name: 'MIDI Note',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default number;
