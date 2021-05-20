@@ -8,7 +8,7 @@ const constant: ModuleType = {
 	},
 	connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 	engine: 'constant',
-	height: 100,
+	height: 10,
 	name: 'Constant',
 	sliders: [
 		{
@@ -24,7 +24,7 @@ const constant: ModuleType = {
 	],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default constant;

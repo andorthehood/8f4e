@@ -5,10 +5,10 @@ const findModuleAtViewportCoordinates = function (state: State, x: number, y: nu
 	return state.modules.find((module: Module) => {
 		const { width, height } = moduleTypes[module.type];
 		return (
-			x >= module.x + state.viewport.x &&
-			x <= module.x + width + state.viewport.x &&
-			y >= module.y + state.viewport.y &&
-			y <= module.y + height + state.viewport.y
+			x >= module.col * state.viewport.vGrid + state.viewport.x &&
+			x <= module.col * state.viewport.vGrid + width * state.viewport.vGrid + state.viewport.x &&
+			y >= module.row * state.viewport.hGrid + state.viewport.y &&
+			y <= module.row * state.viewport.hGrid + height * state.viewport.hGrid + state.viewport.y
 		);
 	});
 };

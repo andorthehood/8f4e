@@ -10,12 +10,12 @@ const attenuator: ModuleType = {
 		{ id: 'in', x: 5, y: 20, isInput: true },
 	],
 	engine: 'attenuator',
-	height: 100,
+	height: 10,
 	name: 'Attenuator',
 	sliders: [{ id: 'divisor', x: 10, y: 20, width: 10, height: 50, minValue: 1, maxValue: 100, resolution: 1 }],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default attenuator;

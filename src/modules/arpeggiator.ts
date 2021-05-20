@@ -68,13 +68,13 @@ const arpeggiator: ModuleType = {
 		{ id: 'out', x: 1285, y: 20 },
 	],
 	engine: 'arpeggiator',
-	height: 100,
+	height: 10,
 	name: 'Arpeggiator',
 	sliders: [],
 	steppers: [],
 	switches: [...pianoKeys],
 	transformer,
-	width: 1500,
+	width: 150,
 };
 
 export default arpeggiator;

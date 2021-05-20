@@ -7,11 +7,11 @@ const saw: ModuleType = {
 	connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 	category: 'Oscillator',
 	engine: 'saw',
-	height: 100,
+	height: 10,
 	name: 'Saw',
 	sliders: [{ id: 'rate', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 2000, resolution: 10 }],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 export default saw;

@@ -8,12 +8,12 @@ const bitwiseAnd: ModuleType = {
 		{ id: 'out', x: 85, y: 20, isInput: false },
 	],
 	engine: 'bitwiseAnd',
-	height: 100,
+	height: 10,
 	name: 'Bitwise AND',
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 100,
+	width: 20,
 };
 
 export default bitwiseAnd;
