@@ -79,7 +79,15 @@ export interface State {
 	modules: Module[];
 	connections: Connection[];
 	isDebugMode: boolean;
-	compiler: {};
+	compiler: {
+		compilationTime: number;
+		cycleTime: number;
+		isCompiling: boolean;
+		lastCompilationStart: number;
+		memoryBuffer: Int32Array;
+		outputAddressLookup: { [key: string]: number };
+		timerAccuracy: number;
+	};
 	viewport: {
 		hGrid: number;
 		height: number;
