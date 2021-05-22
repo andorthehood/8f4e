@@ -11,9 +11,11 @@ const drawConnections = function (engine, state) {
 	for (let i = 0; i < connections.length; i++) {
 		const a = modules.find(({ id }) => id === connections[i][0].moduleId);
 		const b = modules.find(({ id }) => id === connections[i][1].moduleId);
-
-		let { x: fromX, y: fromY } = moduleTypes[a.type].connectors.find(({ id }) => id === connections[i][0].connectorId);
-		let { x: toX, y: toY } = moduleTypes[b.type].connectors.find(({ id }) => id === connections[i][1].connectorId);
+		// @TODO improtve performance
+		const connectorsA = [...moduleTypes[a.type].inputs, ...moduleTypes[a.type].outputs];
+		const connectorsB = [...moduleTypes[b.type].inputs, ...moduleTypes[b.type].outputs];
+		let { x: fromX, y: fromY } = connectorsA.find(({ id }) => id === connections[i][0].connectorId);
+		let { x: toX, y: toY } = connectorsB.find(({ id }) => id === connections[i][1].connectorId);
 
 		fromX += a.x;
 		fromY += a.y;

@@ -61,7 +61,8 @@ export type MemoryTransformer = (
 export interface ModuleType {
 	category: string;
 	config?: Object;
-	connectors: Connector[];
+	inputs: Connector[];
+	outputs: Connector[];
 	engine: string;
 	height: number;
 	name: string;

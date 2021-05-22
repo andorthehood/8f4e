@@ -2,10 +2,11 @@ import { ModuleType } from '../state/types';
 
 const triangle: ModuleType = {
 	category: 'Oscillator',
-	connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 	engine: 'triangle',
 	height: 10,
+	inputs: [],
 	name: 'Triangle',
+	outputs: [{ id: 'out', x: 85, y: 20, isInput: false }],
 	sliders: [],
 	steppers: [],
 	switches: [],
