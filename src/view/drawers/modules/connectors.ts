@@ -1,5 +1,5 @@
 import { feedbackScale, font, fillColor } from '../../../../packages/sprite-generator/src';
-import { Module, ModuleType, State } from '../../../state/types';
+import { ModuleType, State } from '../../../state/types';
 
 function drawConnectors(engine, moduleType: ModuleType, state: State, id: string) {
 	const { vGrid, hGrid } = state.viewport;
@@ -25,9 +25,6 @@ function drawConnectors(engine, moduleType: ModuleType, state: State, id: string
 		const connector = inputs[i];
 
 		if (typeof state.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
-			const connectorAddress = state.compiler.outputAddressLookup[id + '_' + connector.id];
-			const value = state.compiler.memoryBuffer[connectorAddress / state.compiler.memoryBuffer.BYTES_PER_ELEMENT];
-
 			engine.setSpriteLookup(fillColor);
 			engine.drawRectangle(1 * vGrid, (i + 1) * hGrid, vGrid, hGrid, 'rgb(153,153,153)');
 

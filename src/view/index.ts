@@ -2,8 +2,9 @@ import { Engine } from '../../packages/2d-engine/src';
 import generateSprite from '../../packages/sprite-generator/src';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 import { font } from '../../packages/sprite-generator/src';
+import { State } from '../state/types';
 
-const init = async function (state) {
+const init = async function (state: State) {
 	const sprite = await generateSprite();
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
@@ -28,27 +29,27 @@ const init = async function (state) {
 
 		engine.setSpriteLookup(font('small_white'));
 
-		if (state.ui.isDebugMode) {
-			engine.startGroup(10, state.ui.viewport.height - 50);
+		if (state.isDebugMode) {
+			engine.startGroup(10, state.viewport.height - 50);
 			engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
 			engine.drawText(0, 15, 'fps ' + fps + '  vertex buffer ' + vertices + '/' + maxVertices);
 			engine.drawText(
 				0,
 				30,
 				'compilation time ' +
-					state.ui.compiler.compilationTime +
+					state.compiler.compilationTime +
 					' ms  cycle time ' +
-					state.ui.compiler.cycleTime +
+					state.compiler.cycleTime +
 					' ms  timer accuracy ' +
-					state.ui.compiler.timerAccuracy +
+					state.compiler.timerAccuracy +
 					' % '
 			);
 			engine.endGroup();
 		}
 
-		if (state.ui.error.display) {
+		if (state.error.display) {
 			engine.startGroup(5, 5);
-			engine.drawText(0, 0, 'Error: ' + state.ui.error.message);
+			engine.drawText(0, 0, 'Error: ' + state.error.message);
 			engine.endGroup();
 		}
 	});
