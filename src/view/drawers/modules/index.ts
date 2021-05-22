@@ -12,7 +12,7 @@ const drawModules = function (engine, state) {
 
 	for (let i = 0; i < state.ui.modules.length; i++) {
 		const { x, y, type, id, config, row, col } = state.ui.modules[i];
-		const { width, height, name, connectors, switches, sliders, steppers } = moduleTypes[type];
+		const { width, height, name, inputs, outputs, switches, sliders, steppers } = moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width * vGrid &&
@@ -31,24 +31,37 @@ const drawModules = function (engine, state) {
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
-			for (let i = 0; i < connectors.length; i++) {
-				const connector = connectors[i];
+			for (let i = 0; i < inputs.length; i++) {
+				const connector = inputs[i];
 
 				if (typeof state.ui.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
 					const connectorAddress = state.ui.compiler.outputAddressLookup[id + '_' + connector.id];
 					const value =
 						state.ui.compiler.memoryBuffer[connectorAddress / state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT];
 
-					if (connector.isInput) {
-						engine.setSpriteLookup(fillColor);
-						engine.drawRectangle(connector.x, connector.y, 10, 10, 'rgb(153,153,153)');
-					} else {
-						engine.setSpriteLookup(feedbackScale);
-						engine.drawSprite(connector.x, connector.y, value, 10, 10);
-					}
+					engine.setSpriteLookup(fillColor);
+					engine.drawRectangle(connector.x, connector.y, 10, 10, 'rgb(153,153,153)');
+
 					engine.setSpriteLookup(font('small_white'));
-					const offset = connector.isInput ? 15 : (connector.label || connector.id).length * -7;
-					engine.drawText(connector.x + offset, connector.y + 1, connector.label || connector.id);
+					//const offset = connector.isInput ? 15 : (connector.label || connector.id).length * -7;
+					engine.drawText(1 * vGrid, (i + 1) * hGrid, connector.label || connector.id);
+				}
+			}
+
+			for (let i = 0; i < outputs.length; i++) {
+				const connector = outputs[i];
+
+				if (typeof state.ui.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
+					const connectorAddress = state.ui.compiler.outputAddressLookup[id + '_' + connector.id];
+					const value =
+						state.ui.compiler.memoryBuffer[connectorAddress / state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT];
+
+					engine.setSpriteLookup(feedbackScale);
+					engine.drawSprite(connector.x, connector.y, value, 10, 10);
+
+					engine.setSpriteLookup(font('small_white'));
+					//const offset = connector.isInput ? 15 : (connector.label || connector.id).length * -7;
+					engine.drawText(1 * vGrid, (i + 1) * hGrid, connector.label || connector.id);
 				}
 			}
 

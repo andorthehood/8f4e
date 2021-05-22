@@ -1,7 +1,8 @@
 import * as moduleTypes from '../../modules';
 
 const findConnectorAtViewportCoordinates = function (state, module, x, y) {
-	return moduleTypes[module.type].connectors.find(connector => {
+	// @TODO improve performance
+	return [...moduleTypes[module.type].inputs, ...moduleTypes[module.type].outputs].find(connector => {
 		return (
 			x >= module.x + state.ui.viewport.x + connector.x &&
 			x <= module.x + 10 + state.ui.viewport.x + connector.x &&

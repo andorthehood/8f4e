@@ -6,10 +6,11 @@ const constant: ModuleType = {
 	config: {
 		out: 0,
 	},
-	connectors: [{ id: 'out', x: 85, y: 20, isInput: false }],
 	engine: 'constant',
 	height: 10,
+	inputs: [{ id: 'out', x: 85, y: 20, isInput: false }],
 	name: 'Constant',
+	outputs: [],
 	sliders: [
 		{
 			id: 'out',
