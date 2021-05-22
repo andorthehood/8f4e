@@ -5,21 +5,22 @@ import midiNote from './midiNote';
 import pianoQuantizer from './pianoQuantizer';
 import * as moduleTypes from '../../../modules';
 import drawConnectors from './connectors';
+import { State } from '../../../state/types';
 
-const drawModules = function (engine, state) {
-	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.ui.viewport;
+function drawModules(engine, state: State) {
+	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.viewport;
 
 	engine.startGroup(offsetX, offsetY);
 
-	for (let i = 0; i < state.ui.modules.length; i++) {
-		const { x, y, type, id, config, row, col } = state.ui.modules[i];
+	for (let i = 0; i < state.modules.length; i++) {
+		const { x, y, type, id, config, row, col } = state.modules[i];
 		const { width, height, name, switches, sliders, steppers } = moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width * vGrid &&
 			y + offsetY > -1 * height * hGrid &&
-			x + offsetX < state.ui.viewport.width &&
-			y + offsetY < state.ui.viewport.height
+			x + offsetX < state.viewport.width &&
+			y + offsetY < state.viewport.height
 		) {
 			engine.startGroup(col * vGrid, row * hGrid);
 			engine.setSpriteLookup(modules);
@@ -32,7 +33,7 @@ const drawModules = function (engine, state) {
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
-			drawConnectors(engine, moduleTypes[type], state.ui, id);
+			drawConnectors(engine, moduleTypes[type], state, id);
 
 			for (let i = 0; i < sliders.length; i++) {
 				const slider = sliders[i];
@@ -40,9 +41,8 @@ const drawModules = function (engine, state) {
 				engine.drawRectangle(slider.x, slider.y, slider.width, slider.height, 'rgb(255,255,255)');
 
 				const address =
-					state.ui.compiler.outputAddressLookup[id + '_' + slider.id] /
-					state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-				const value = state.ui.compiler.memoryBuffer[address];
+					state.compiler.outputAddressLookup[id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+				const value = state.compiler.memoryBuffer[address];
 				const offset = (value / slider.maxValue) * slider.height;
 				engine.drawSprite(slider.x, slider.y + (slider.height - offset), 'rgb(255,255,255)', slider.width, offset);
 				engine.setSpriteLookup(font('small_white'));
@@ -62,11 +62,8 @@ const drawModules = function (engine, state) {
 				);
 
 				const address =
-					state.ui.compiler.outputAddressLookup[id + '_' + stepper.id] /
-					state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-				const value = state.ui.compiler.memoryBuffer[address];
-
-				//console.log(state.ui.compiler.outputAddressLookup[id + '_' + stepper.id]);
+					state.compiler.outputAddressLookup[id + '_' + stepper.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+				const value = state.compiler.memoryBuffer[address];
 
 				engine.setSpriteLookup(font('small_white'));
 				engine.drawText(stepper.x + 12, stepper.y, '' + value);
@@ -99,6 +96,6 @@ const drawModules = function (engine, state) {
 	}
 
 	engine.endGroup();
-};
+}
 
 export default drawModules;
