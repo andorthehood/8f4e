@@ -103,4 +103,8 @@ export interface State {
 		display: boolean;
 		message: string;
 	};
+	isConnectionBeingMade: boolean;
+	connectionPointA: any;
+	connectionPointB: any;
+	contextMenu: any;
 }
