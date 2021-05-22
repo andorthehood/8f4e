@@ -63,13 +63,11 @@ const pianoKeys = new Array(128).fill(0).map((item, index) => {
 
 const arpeggiator: ModuleType = {
 	category: 'Arpeggiator',
-	connectors: [
-		{ id: 'in', x: 5, y: 20, isInput: true },
-		{ id: 'out', x: 1285, y: 20 },
-	],
 	engine: 'arpeggiator',
 	height: 10,
+	inputs: [{ id: 'in', x: 5, y: 20 }],
 	name: 'Arpeggiator',
+	outputs: [{ id: 'out', x: 1285, y: 20 }],
 	sliders: [],
 	steppers: [],
 	switches: [...pianoKeys],
