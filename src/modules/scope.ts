@@ -2,13 +2,11 @@ import { ModuleType } from '../state/types';
 
 const scope: ModuleType = {
 	category: 'Inspection',
-	connectors: [
-		{ id: 'in', x: 5, y: 45, isInput: true },
-		{ id: 'out', x: 85, y: 45 },
-	],
 	engine: 'scope',
 	height: 10,
+	inputs: [{ id: 'in', x: 5, y: 45, isInput: true }],
 	name: 'Scope',
+	outputs: [{ id: 'out', x: 85, y: 45 }],
 	sliders: [],
 	steppers: [],
 	switches: [],
