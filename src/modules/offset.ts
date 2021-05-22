@@ -6,13 +6,11 @@ const offset: ModuleType = {
 	config: {
 		offset: 0,
 	},
-	connectors: [
-		{ id: 'in', x: 5, y: 20, isInput: true },
-		{ id: 'out', x: 85, y: 20, isInput: false },
-	],
 	engine: 'offset',
 	height: 10,
+	inputs: [{ id: 'in', x: 5, y: 20, isInput: true }],
 	name: 'Offset',
+	outputs: [{ id: 'out', x: 85, y: 20, isInput: false }],
 	steppers: [],
 	sliders: [
 		{

@@ -63,16 +63,14 @@ const pianoKeys = new Array(128).fill(0).map((item, index) => {
 
 const pianoQuantizer: ModuleType = {
 	category: 'Quantizer',
-	connectors: [
-		{ id: 'in', x: 5, y: 20, isInput: true },
-		{ id: 'out', x: 1285, y: 20 },
-	],
 	config: {
 		allocatedNotes: 32,
 	},
 	engine: 'quantizer',
 	height: 10,
+	inputs: [{ id: 'in', x: 5, y: 20, isInput: true }],
 	name: 'Quantizer',
+	outputs: [{ id: 'out', x: 1285, y: 20 }],
 	sliders: [],
 	steppers: [],
 	switches: [...pianoKeys],
