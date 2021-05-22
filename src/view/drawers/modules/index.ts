@@ -1,18 +1,19 @@
-import { modules, feedbackScale, font, fillColor } from '../../../../packages/sprite-generator/src';
+import { modules, font, fillColor } from '../../../../packages/sprite-generator/src';
 import scope from './scope';
 import number from './number';
 import midiNote from './midiNote';
 import pianoQuantizer from './pianoQuantizer';
 import * as moduleTypes from '../../../modules';
+import drawConnectors from './connectors';
 
 const drawModules = function (engine, state) {
-	const { vGrid, hGrid, x: offsetX, y: offsetY, viewPortWidth, viewPortHeight } = state.ui.viewport;
+	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.ui.viewport;
 
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.ui.modules.length; i++) {
 		const { x, y, type, id, config, row, col } = state.ui.modules[i];
-		const { width, height, name, inputs, outputs, switches, sliders, steppers } = moduleTypes[type];
+		const { width, height, name, switches, sliders, steppers } = moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width * vGrid &&
@@ -31,39 +32,7 @@ const drawModules = function (engine, state) {
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
-			for (let i = 0; i < inputs.length; i++) {
-				const connector = inputs[i];
-
-				if (typeof state.ui.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
-					const connectorAddress = state.ui.compiler.outputAddressLookup[id + '_' + connector.id];
-					const value =
-						state.ui.compiler.memoryBuffer[connectorAddress / state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT];
-
-					engine.setSpriteLookup(fillColor);
-					engine.drawRectangle(connector.x, connector.y, 10, 10, 'rgb(153,153,153)');
-
-					engine.setSpriteLookup(font('small_white'));
-					//const offset = connector.isInput ? 15 : (connector.label || connector.id).length * -7;
-					engine.drawText(1 * vGrid, (i + 1) * hGrid, connector.label || connector.id);
-				}
-			}
-
-			for (let i = 0; i < outputs.length; i++) {
-				const connector = outputs[i];
-
-				if (typeof state.ui.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
-					const connectorAddress = state.ui.compiler.outputAddressLookup[id + '_' + connector.id];
-					const value =
-						state.ui.compiler.memoryBuffer[connectorAddress / state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT];
-
-					engine.setSpriteLookup(feedbackScale);
-					engine.drawSprite(connector.x, connector.y, value, 10, 10);
-
-					engine.setSpriteLookup(font('small_white'));
-					//const offset = connector.isInput ? 15 : (connector.label || connector.id).length * -7;
-					engine.drawText(1 * vGrid, (i + 1) * hGrid, connector.label || connector.id);
-				}
-			}
+			drawConnectors(engine, moduleTypes[type], state.ui, id);
 
 			for (let i = 0; i < sliders.length; i++) {
 				const slider = sliders[i];
