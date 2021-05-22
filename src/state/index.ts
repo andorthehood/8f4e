@@ -15,8 +15,9 @@ import moduleSwitches from './mutators/modules/moduleSwitches';
 import save from './mutators/save';
 import tests from './mutators/tests';
 import viewport from './mutators/viewport';
+import { State } from './types';
 
-const init = function (events) {
+const init = function (events): State {
 	const state = { ui: {} };
 
 	midi(state, events);
@@ -37,7 +38,7 @@ const init = function (events) {
 	innit(state, events);
 	save(state, events);
 
-	return state;
+	return state.ui;
 };
 
 export default init;

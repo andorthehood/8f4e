@@ -1,10 +1,10 @@
 import { fillColor } from '../../../packages/sprite-generator/src';
 import * as moduleTypes from '../../modules';
+import { State } from '../../state/types';
 
-const drawConnections = function (engine, state) {
-	const ui = state.ui;
-	const connections = state.ui.connections;
-	const modules = state.ui.modules;
+const drawConnections = function (engine, state: State) {
+	const connections = state.connections;
+	const modules = state.modules;
 
 	engine.setSpriteLookup(fillColor);
 
@@ -23,13 +23,13 @@ const drawConnections = function (engine, state) {
 		toX += b.x;
 		toY += b.y;
 
-		engine.startGroup(5 + state.ui.viewport.x, 5 + state.ui.viewport.y);
+		engine.startGroup(5 + state.viewport.x, 5 + state.viewport.y);
 		engine.drawLine(fromX, fromY, toX, toY, 'rgb(153,153,153)', 1);
 		engine.endGroup();
 	}
 
-	if (state.ui.isConnectionBeingMade && state.ui.connectionPointA && state.ui.connectionPointB) {
-		engine.drawLine(...ui.connectionPointA, ...ui.connectionPointB, 'rgb(255,255,255)', 1);
+	if (state.isConnectionBeingMade && state.connectionPointA && state.connectionPointB) {
+		engine.drawLine(...state.connectionPointA, ...state.connectionPointB, 'rgb(255,255,255)', 1);
 	}
 };
 

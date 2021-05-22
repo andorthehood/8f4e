@@ -1,14 +1,15 @@
 import { font } from '../../../../packages/sprite-generator/src';
+import { State } from '../../../state/types';
 
-const drawer = function (engine, state, id) {
+const drawer = function (engine, state: State, id) {
 	const address =
-		state.ui.compiler.outputAddressLookup[id + '_' + 'out:1'] / state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+		state.compiler.outputAddressLookup[id + '_' + 'out:1'] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 
 	if (!address) {
 		return;
 	}
 
-	const value = state.ui.compiler.memoryBuffer[address];
+	const value = state.compiler.memoryBuffer[address];
 
 	engine.setSpriteLookup(font('small_white'));
 	engine.drawText(20, 20, `${value}`);
