@@ -16,7 +16,7 @@ const getBlackKeyIndex = function (note: number): number {
 	return blackKeys.indexOf(note % allKeys.length);
 };
 
-const drawer = function (engine, config) {
+export default function drawer(engine, config) {
 	engine.setSpriteLookup(pianoKeyboard());
 
 	for (let i = 0; i < 10; i++) {
@@ -40,6 +40,4 @@ const drawer = function (engine, config) {
 			engine.drawSprite(blackKeyPositions[blackIndex] + octave * keyboardWidth, 38, activeNotes[i]);
 		}
 	}
-};
-
-export default drawer;
+}
