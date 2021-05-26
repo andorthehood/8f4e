@@ -1,7 +1,7 @@
 import { font } from '../../../../packages/sprite-generator/src';
 import { State } from '../../../state/types';
 
-const drawer = function (engine, state: State, id) {
+export default function drawer(engine, state: State, id) {
 	const address =
 		state.compiler.outputAddressLookup[id + '_' + 'out:1'] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 
@@ -13,6 +13,4 @@ const drawer = function (engine, state: State, id) {
 
 	engine.setSpriteLookup(font('small_white'));
 	engine.drawText(20, 20, `${value}`);
-};
-
-export default drawer;
+}
