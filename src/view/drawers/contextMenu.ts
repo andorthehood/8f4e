@@ -1,7 +1,7 @@
 import { font, fillColor } from '../../../packages/sprite-generator/src';
 import { State } from '../../state/types';
 
-const drawContextMenu = function (engine, state: State) {
+export default function drawContextMenu(engine, state: State) {
 	const { open, items, x, y, highlightedItem, itemHeight, itemWidth } = state.contextMenu;
 
 	if (!open) {
@@ -25,6 +25,4 @@ const drawContextMenu = function (engine, state: State) {
 		engine.endGroup();
 	}
 	engine.endGroup();
-};
-
-export default drawContextMenu;
+}

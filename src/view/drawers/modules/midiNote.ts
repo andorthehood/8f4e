@@ -8,7 +8,7 @@ const midiNoteLookup = new Array(128).fill(0).map((item, index) => {
 	return notes[index % 12] + octave;
 });
 
-const drawer = function (engine, state: State, id) {
+export default function drawer(engine, state: State, id) {
 	const address = state.compiler.outputAddressLookup[id + '_' + 'out'] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 
 	if (!address) {
@@ -19,6 +19,4 @@ const drawer = function (engine, state: State, id) {
 
 	engine.setSpriteLookup(font('small_white'));
 	engine.drawText(20, 20, `${value}`);
-};
-
-export default drawer;
+}

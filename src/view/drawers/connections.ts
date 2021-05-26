@@ -2,7 +2,7 @@ import { fillColor } from '../../../packages/sprite-generator/src';
 import * as moduleTypes from '../../modules';
 import { State } from '../../state/types';
 
-const drawConnections = function (engine, state: State) {
+export default function drawConnections(engine, state: State) {
 	const connections = state.connections;
 	const modules = state.modules;
 
@@ -31,6 +31,4 @@ const drawConnections = function (engine, state: State) {
 	if (state.isConnectionBeingMade && state.connectionPointA && state.connectionPointB) {
 		engine.drawLine(...state.connectionPointA, ...state.connectionPointB, 'rgb(255,255,255)', 1);
 	}
-};
-
-export default drawConnections;
+}

@@ -7,7 +7,7 @@ import * as moduleTypes from '../../../modules';
 import drawConnectors from './connectors';
 import { State } from '../../../state/types';
 
-function drawModules(engine, state: State) {
+export default function drawModules(engine, state: State) {
 	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.viewport;
 
 	engine.startGroup(offsetX, offsetY);
@@ -97,5 +97,3 @@ function drawModules(engine, state: State) {
 
 	engine.endGroup();
 }
-
-export default drawModules;
