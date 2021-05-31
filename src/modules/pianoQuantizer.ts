@@ -68,7 +68,7 @@ const pianoQuantizer: ModuleType = {
 	},
 	engine: 'quantizer',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20, isInput: true }],
+	inputs: [{ id: 'in', x: 5, y: 20 }],
 	name: 'Quantizer',
 	outputs: [{ id: 'out', x: 1285, y: 20 }],
 	sliders: [],
