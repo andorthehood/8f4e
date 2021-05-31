@@ -56,7 +56,7 @@ const contextMenu = function (state, events) {
 		state.ui.contextMenu.y = y;
 		state.ui.contextMenu.open = true;
 
-		const module = findModuleAtViewportCoordinates(state.ui, x, y);
+		const module = findModuleAtViewportCoordinates(state.ui.modules, state.ui.viewport, x, y);
 
 		if (module) {
 			state.ui.contextMenu.items = [

@@ -1,9 +1,9 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
 import * as moduleTypes from '../../../modules';
 
-const moduleSwitches = function (state, events) {
+export default function moduleSwitches(state, events) {
 	const onModuleClick = function ({ x, y, module }) {
-		const _switch = findModuleControllerAtViewportCoordinates(state.ui, module, 'switches', x, y);
+		const _switch = findModuleControllerAtViewportCoordinates(state.ui.viewport, module, 'switches', x, y);
 
 		if (_switch) {
 			module.config[_switch.id] = module.config[_switch.id] === _switch.onValue ? _switch.offValue : _switch.onValue;
@@ -17,6 +17,4 @@ const moduleSwitches = function (state, events) {
 	};
 
 	events.on('moduleClick', onModuleClick);
-};
-
-export default moduleSwitches;
+}

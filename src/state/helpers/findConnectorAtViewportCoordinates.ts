@@ -1,15 +1,26 @@
 import * as moduleTypes from '../../modules';
+import { Module, Viewport } from '../types';
 
-const findConnectorAtViewportCoordinates = function (state, module, x, y) {
-	// @TODO improve performance
-	return [...moduleTypes[module.type].inputs, ...moduleTypes[module.type].outputs].find(connector => {
+export default function findConnectorAtViewportCoordinates(viewport: Viewport, module: Module, x: number, y: number) {
+	const input = moduleTypes[module.type].inputs.find(connector => {
 		return (
-			x >= module.x + state.ui.viewport.x + connector.x &&
-			x <= module.x + 10 + state.ui.viewport.x + connector.x &&
-			y >= module.y + state.ui.viewport.y + connector.y &&
-			y <= module.y + 10 + state.ui.viewport.y + connector.y
+			x >= module.x + viewport.x + connector.x &&
+			x <= module.x + 10 + viewport.x + connector.x &&
+			y >= module.y + viewport.y + connector.y &&
+			y <= module.y + 10 + viewport.y + connector.y
 		);
 	});
-};
 
-export default findConnectorAtViewportCoordinates;
+	if (input) {
+		return input;
+	}
+
+	return moduleTypes[module.type].outputs.find(connector => {
+		return (
+			x >= module.x + viewport.x + connector.x &&
+			x <= module.x + 10 + viewport.x + connector.x &&
+			y >= module.y + viewport.y + connector.y &&
+			y <= module.y + 10 + viewport.y + connector.y
+		);
+	});
+}
