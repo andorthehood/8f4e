@@ -1,6 +1,6 @@
 import * as moduleTypes from '../../modules';
 
-const compiler = function (state, events) {
+export default function compiler(state, events) {
 	const worker = new Worker(new URL('../../worker/index.ts', import.meta.url));
 	// @ts-ignore shared: true
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
@@ -50,6 +50,4 @@ const compiler = function (state, events) {
 		events.off('deleteModule', recompile);
 		events.off('init', recompile);
 	};
-};
-
-export default compiler;
+}

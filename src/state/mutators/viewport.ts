@@ -1,4 +1,4 @@
-const viewport = function (state, events) {
+export default function viewport(state, events) {
 	const onMouseMove = event => {
 		if (event.buttons === 1) {
 			state.ui.viewport.x += event.movementX;
@@ -20,6 +20,4 @@ const viewport = function (state, events) {
 		events.off('mousemove', onMouseMove);
 		events.off('resize', onResize);
 	};
-};
-
-export default viewport;
+}
