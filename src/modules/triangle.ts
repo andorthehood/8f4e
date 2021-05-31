@@ -6,7 +6,7 @@ const triangle: ModuleType = {
 	height: 10,
 	inputs: [],
 	name: 'Triangle',
-	outputs: [{ id: 'out', x: 85, y: 20, isInput: false }],
+	outputs: [{ id: 'out', x: 85, y: 20 }],
 	sliders: [],
 	steppers: [],
 	switches: [],
