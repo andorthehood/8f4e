@@ -7,7 +7,7 @@ import {
 	rejectConnectionsByModuleId,
 } from '../helpers/connectionHelpers';
 
-const connectionMaker = function (state, events) {
+export default function connectionMaker(state, events) {
 	const onMouseMove = event => {
 		state.ui.connectionPointB = [event.x, event.y];
 		event.stopPropagation = true;
@@ -16,7 +16,7 @@ const connectionMaker = function (state, events) {
 	const onMouseUp = event => {
 		const { x, y } = event;
 
-		const module = findModuleAtViewportCoordinates(state.ui, x, y);
+		const module = findModuleAtViewportCoordinates(state.ui.modules, state.ui.viewport, x, y);
 
 		if (!module) {
 			state.ui.isConnectionBeingMade = false;
@@ -24,7 +24,7 @@ const connectionMaker = function (state, events) {
 			return;
 		}
 
-		const connector = findConnectorAtViewportCoordinates(state, module, x, y);
+		const connector = findConnectorAtViewportCoordinates(state.ui.viewport, module, x, y);
 
 		if (!connector) {
 			state.ui.isConnectionBeingMade = false;
@@ -49,7 +49,7 @@ const connectionMaker = function (state, events) {
 			events.off('mousemove', onMouseMove);
 
 			const connectorToConnect = findConnectorInModule(
-				state,
+				state.ui.modules,
 				state.ui.connectionFromModule,
 				state.ui.connectionFromConnector
 			);
@@ -102,6 +102,4 @@ const connectionMaker = function (state, events) {
 	events.on('deleteConnection', onDeleteConnection);
 	events.on('mouseup', onMouseUp);
 	events.on('createConnection', onCreateConnection);
-};
-
-export default connectionMaker;
+}

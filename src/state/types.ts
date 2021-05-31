@@ -11,7 +11,12 @@ export interface Module {
 	y: number;
 }
 
-export interface Connection {}
+export interface Connection {
+	fromModule: string;
+	toModule: string;
+	fromConnector: string;
+	toConnector: string;
+}
 
 export interface Connector {
 	id: string;
@@ -74,6 +79,15 @@ export interface ModuleType {
 
 export type ModuleTypeLookup = { [key: string]: ModuleType };
 
+export type Viewport = {
+	hGrid: number;
+	height: number;
+	vGrid: number;
+	width: number;
+	x: number;
+	y: number;
+};
+
 export interface State {
 	modules: Module[];
 	connections: Connection[];
@@ -87,14 +101,7 @@ export interface State {
 		outputAddressLookup: { [key: string]: number };
 		timerAccuracy: number;
 	};
-	viewport: {
-		hGrid: number;
-		height: number;
-		vGrid: number;
-		width: number;
-		x: number;
-		y: number;
-	};
+	viewport: Viewport;
 	midi: {
 		ports: [];
 	};

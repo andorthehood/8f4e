@@ -1,8 +1,8 @@
-import { Module, State } from '../types';
+import { Module, Viewport } from '../types';
 import * as moduleTypes from '../../modules';
 
-const findModuleControllerAtViewportCoordinates = function (
-	state: State,
+export default function findModuleControllerAtViewportCoordinates(
+	viewport: Viewport,
 	module: Module,
 	controllerType: string,
 	x: number,
@@ -12,12 +12,10 @@ const findModuleControllerAtViewportCoordinates = function (
 	return controllers.find(controller => {
 		const { width, height } = controller;
 		return (
-			x >= controller.x + module.x + state.viewport.x &&
-			x <= controller.x + module.x + width + state.viewport.x &&
-			y >= controller.y + module.y + state.viewport.y &&
-			y <= controller.y + module.y + height + state.viewport.y
+			x >= controller.x + module.x + viewport.x &&
+			x <= controller.x + module.x + width + viewport.x &&
+			y >= controller.y + module.y + viewport.y &&
+			y <= controller.y + module.y + height + viewport.y
 		);
 	});
-};
-
-export default findModuleControllerAtViewportCoordinates;
+}
