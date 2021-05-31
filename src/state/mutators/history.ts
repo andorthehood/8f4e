@@ -1,6 +1,6 @@
 const trackedEvents = ['deleteConnection', 'createConnection', 'deleteModule', 'addModule'];
 
-const history = function (state, events) {
+export default function history(state, events) {
 	const onHistoricEvent = event => {
 		if (event.replaceHistory) {
 			return;
@@ -29,6 +29,4 @@ const history = function (state, events) {
 	});
 
 	events.on('undo', onUndo);
-};
-
-export default history;
+}
