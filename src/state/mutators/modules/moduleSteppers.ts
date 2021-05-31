@@ -1,8 +1,8 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
 
-const moduleSwitches = function (state, events) {
+export default function moduleSwitches(state, events) {
 	const onModuleClick = function ({ x, y, module }) {
-		const stepper = findModuleControllerAtViewportCoordinates(state.ui, module, 'steppers', x, y);
+		const stepper = findModuleControllerAtViewportCoordinates(state.ui.viewport, module, 'steppers', x, y);
 
 		if (stepper) {
 			let newValue = module.config[stepper.id];
@@ -23,6 +23,4 @@ const moduleSwitches = function (state, events) {
 	};
 
 	events.on('moduleClick', onModuleClick);
-};
-
-export default moduleSwitches;
+}

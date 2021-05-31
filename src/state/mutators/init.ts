@@ -1,5 +1,3 @@
-const init = function (state, events) {
+export default function init(state, events) {
 	events.dispatch('init');
-};
-
-export default init;
+}

@@ -1,4 +1,4 @@
-const error = function (state, events) {
+export default function error(state, events) {
 	let timeoutRef: NodeJS.Timeout = null;
 
 	const onError = ({ message, timeout = 5000 }) => {
@@ -16,6 +16,4 @@ const error = function (state, events) {
 		events.off('error', onError);
 		clearTimeout(timeoutRef);
 	};
-};
-
-export default error;
+}
