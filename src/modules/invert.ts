@@ -5,7 +5,7 @@ const invert: ModuleType = {
 
 	engine: 'invert',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20, isInput: true }],
+	inputs: [{ id: 'in', x: 5, y: 20 }],
 	name: 'Invert',
 	outputs: [{ id: 'out', x: 85, y: 20 }],
 	sliders: [],

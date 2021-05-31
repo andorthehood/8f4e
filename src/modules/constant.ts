@@ -8,7 +8,7 @@ const constant: ModuleType = {
 	},
 	engine: 'constant',
 	height: 10,
-	inputs: [{ id: 'out', x: 85, y: 20, isInput: false }],
+	inputs: [{ id: 'out', x: 85, y: 20 }],
 	name: 'Constant',
 	outputs: [],
 	sliders: [

@@ -9,8 +9,8 @@ const cvToMidi: ModuleType = {
 	engine: 'through',
 	height: 10,
 	inputs: [
-		{ id: 'in:1', x: 5, y: 20, isInput: true, label: 'note in' },
-		{ id: 'in:2', x: 5, y: 35, isInput: true, label: 'clock in' },
+		{ id: 'in:1', x: 5, y: 20, label: 'note in' },
+		{ id: 'in:2', x: 5, y: 35, label: 'clock in' },
 	],
 	name: 'CV to MIDI',
 	outputs: [],

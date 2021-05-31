@@ -15,7 +15,6 @@ export interface Connection {}
 
 export interface Connector {
 	id: string;
-	isInput?: boolean;
 	label?: string;
 	x: number;
 	y: number;

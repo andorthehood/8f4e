@@ -8,9 +8,9 @@ const offset: ModuleType = {
 	},
 	engine: 'offset',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20, isInput: true }],
+	inputs: [{ id: 'in', x: 5, y: 20 }],
 	name: 'Offset',
-	outputs: [{ id: 'out', x: 85, y: 20, isInput: false }],
+	outputs: [{ id: 'out', x: 85, y: 20 }],
 	steppers: [],
 	sliders: [
 		{
