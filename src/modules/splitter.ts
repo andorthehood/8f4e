@@ -4,7 +4,7 @@ const splitter: ModuleType = {
 	category: 'Other',
 	engine: 'splitter',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20, isInput: true }],
+	inputs: [{ id: 'in', x: 5, y: 20 }],
 	name: 'Splitter',
 	outputs: [
 		{ id: 'out:1', x: 85, y: 20 },
