@@ -7,7 +7,7 @@ const getHighlightedMenuItem = function (x, y, itemHeight, width) {
 	return Math.floor(y / itemHeight);
 };
 
-const contextMenu = function (state, events) {
+export default function contextMenu(state, events) {
 	state.ui.contextMenu = {
 		open: false,
 		items: [],
@@ -83,6 +83,4 @@ const contextMenu = function (state, events) {
 	return () => {
 		events.off('contextmenu', onContextMenu);
 	};
-};
-
-export default contextMenu;
+}

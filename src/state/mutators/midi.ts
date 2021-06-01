@@ -1,4 +1,4 @@
-export const midi = async function (state, events) {
+export default async function midi(state, events) {
 	// @ts-ignore
 	let selectedPort;
 	let midiAccess;
@@ -36,6 +36,4 @@ export const midi = async function (state, events) {
 	//midiAccess.addEventListener('statechange', onStateChange);
 	events.on('selectMidiOutput', onSelectMidiOutput);
 	events.on('sendMidiMessage', onSendMidiMessage);
-};
-
-export default midi;
+}
