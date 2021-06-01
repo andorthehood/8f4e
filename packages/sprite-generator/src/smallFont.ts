@@ -10,7 +10,7 @@ const mirr = function (toBeMirrored: number[], middle: number[] = []): number[] 
 	return [...toBeMirrored, ...middle, ...toBeMirrored.slice().reverse()];
 };
 
-const font = [
+export default [
 	pad(10, []), // Space
 	pad(0, [...same(0b00000100, 6), 0b00000000, 0b00000100], 2), // !
 	pad(0, [...same(0b00001010, 3), ...same(0b00000000, 5)], 2), // "
@@ -120,5 +120,3 @@ const font = [
 	pad(0, mirr([0b00011000, 0b00000100, 0b00000100], [0b00000010, 0b00000100]), 2), // }
 	pad(10, []), // ~
 ].flat();
-
-export default font;

@@ -21,14 +21,12 @@ const generateFont = function (ctx: OffscreenCanvasRenderingContext2D, x: number
 	}
 };
 
-const generateFonts = function (ctx: OffscreenCanvasRenderingContext2D) {
+export default function generateFonts(ctx: OffscreenCanvasRenderingContext2D) {
 	ctx.fillStyle = 'rgba(255,255,255,255)';
 	generateFont(ctx, offsetY, offsetY, smallFont);
 	ctx.fillStyle = 'rgba(0,0,0,255)';
 	generateFont(ctx, offsetX, offsetY + 10, smallFont);
-};
-
-export default generateFonts;
+}
 
 export const lookup = function (font: string): SpriteLookup {
 	return function (letter) {

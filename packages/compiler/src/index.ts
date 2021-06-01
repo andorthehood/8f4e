@@ -51,7 +51,7 @@ const generateMemoryInitiatorFunction = function (compiledModules: CompiledModul
 		.flat();
 };
 
-const compile = function (modules: Module[]) {
+export default function compile(modules: Module[]) {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
@@ -80,6 +80,4 @@ const compile = function (modules: Module[]) {
 		outputAddressLookup,
 		compiledModules,
 	};
-};
-
-export default compile;
+}

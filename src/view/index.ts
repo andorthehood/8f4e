@@ -4,7 +4,7 @@ import { drawConnections, drawModules, drawContextMenu } from './drawers';
 import { font } from '../../packages/sprite-generator/src';
 import { State } from '../state/types';
 
-const init = async function (state: State) {
+export default async function init(state: State) {
 	const sprite = await generateSprite();
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
@@ -53,6 +53,4 @@ const init = async function (state: State) {
 			engine.endGroup();
 		}
 	});
-};
-
-export default init;
+}

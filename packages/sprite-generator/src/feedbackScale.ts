@@ -3,7 +3,7 @@ import { SpriteLookup } from '../../2d-engine/src';
 const offsetX = 0;
 const offsetY = 130;
 
-const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
+export default function generate(ctx: OffscreenCanvasRenderingContext2D): void {
 	for (let r = 0; r <= 255; r += 8) {
 		for (let b = 0; b <= 255; b += 8) {
 			ctx.fillStyle = 'rgb(' + r + ',' + 0 + ',' + (255 - b) + ')';
@@ -12,9 +12,7 @@ const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
 			ctx.fillRect(x, y, 4, 4);
 		}
 	}
-};
-
-export default generate;
+}
 
 export const lookup: SpriteLookup = function (scale: number) {
 	return {

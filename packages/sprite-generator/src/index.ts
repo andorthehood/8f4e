@@ -12,7 +12,7 @@ export { lookup as modules } from './modules';
 export { lookup as scope } from './scope';
 export { lookup as pianoKeyboard } from './pianoKeyboard';
 
-const generateSprite = async function (): Promise<OffscreenCanvas | HTMLCanvasElement> {
+export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasElement> {
 	let canvas;
 
 	if (window.OffscreenCanvas) {
@@ -33,6 +33,4 @@ const generateSprite = async function (): Promise<OffscreenCanvas | HTMLCanvasEl
 	generatePianoKeyboard(ctx);
 
 	return canvas;
-};
-
-export default generateSprite;
+}
