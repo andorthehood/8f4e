@@ -1,4 +1,4 @@
-const createProgram = function (
+export default function createProgram(
 	gl: WebGL2RenderingContext | WebGLRenderingContext,
 	shaders: WebGLShader[]
 ): WebGLProgram {
@@ -21,6 +21,4 @@ const createProgram = function (
 	}
 
 	return program;
-};
-
-export default createProgram;
+}

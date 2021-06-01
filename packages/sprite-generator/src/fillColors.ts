@@ -12,7 +12,7 @@ const defaultSprite: SpriteCoordinates = {
 	spriteWidth: 1,
 };
 
-const generate = function (ctx: OffscreenCanvasRenderingContext2D) {
+export default function generate(ctx: OffscreenCanvasRenderingContext2D) {
 	for (let r = 0; r <= 255; r += 51) {
 		for (let g = 0; g <= 255; g += 51) {
 			for (let b = 0; b <= 255; b += 51) {
@@ -24,9 +24,7 @@ const generate = function (ctx: OffscreenCanvasRenderingContext2D) {
 			}
 		}
 	}
-};
-
-export default generate;
+}
 
 export const lookup: SpriteLookup = function (color) {
 	return lookupTable[color] ? lookupTable[color] : defaultSprite;
