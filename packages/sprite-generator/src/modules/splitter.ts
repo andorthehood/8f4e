@@ -13,13 +13,11 @@ const generateBox = function (ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.fillRect(0, height, width, 1);
 };
 
-const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
+export default function generate(ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.resetTransform();
 	ctx.translate(offsetX, offsetY);
 	generateBox(ctx);
-};
-
-export default generate;
+}
 
 export const lookup: SpriteLookup = function (scale: number) {
 	return {

@@ -1,4 +1,4 @@
-const createShader = function (
+export default function createShader(
 	gl: WebGL2RenderingContext | WebGLRenderingContext,
 	shaderSource: string,
 	shaderType: number
@@ -13,6 +13,4 @@ const createShader = function (
 	}
 
 	return shader;
-};
-
-export default createShader;
+}
