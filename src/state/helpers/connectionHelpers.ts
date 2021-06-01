@@ -1,4 +1,10 @@
-export const findConnectionByConnectorId = function (connections, moduleId: string, connectorId: string): Object {
+import { Connection } from '../types';
+
+export const findConnectionByConnectorId = function (
+	connections: Connection[],
+	moduleId: string,
+	connectorId: string
+): Object {
 	return connections.find(parties => {
 		return (
 			parties.findIndex(party => {
@@ -8,7 +14,7 @@ export const findConnectionByConnectorId = function (connections, moduleId: stri
 	});
 };
 
-export const filterConnectionsByModuleId = function (connections, moduleId: string): Object[] {
+export const filterConnectionsByModuleId = function (connections: Connection[], moduleId: string): Object[] {
 	return connections.filter(parties => {
 		return (
 			parties.findIndex(party => {
@@ -18,24 +24,26 @@ export const filterConnectionsByModuleId = function (connections, moduleId: stri
 	});
 };
 
-export const rejectConnectionsByModuleId = function (connections, moduleId: string): Object[] {
-	return connections.filter(parties => {
-		return (
-			parties.findIndex(party => {
+export const rejectConnectionsByModuleId = function (connections: Connection[], moduleId: string): Object[] {
+	return connections.filter(
+		parties =>
+			!parties.some(party => {
 				return party.moduleId == moduleId;
-			}) === -1
-		);
-	});
+			})
+	);
 };
 
-export const rejectConnectionByConnectorId = function (connections, moduleId: string, connectorId: string): Object[] {
-	return connections.filter(parties => {
-		return (
-			parties.findIndex(party => {
+export const rejectConnectionByConnectorId = function (
+	connections: Connection[],
+	moduleId: string,
+	connectorId: string
+): Object[] {
+	return connections.filter(
+		parties =>
+			!parties.some(party => {
 				return party.moduleId === moduleId && party.connectorId === connectorId;
-			}) === -1
-		);
-	});
+			})
+	);
 };
 
 export const findWhatIsConnectedTo = function (
