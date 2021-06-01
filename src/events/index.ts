@@ -10,7 +10,7 @@ export interface EventObject {
 
 export type EventHandler = (event: EventObject) => void;
 
-const events = function (): {
+export default function events(): {
 	on: (event: string, callback: EventHandler) => void;
 	off: (event: string, callback: EventHandler) => void;
 	dispatch: (event: string, eventObject: {}) => void;
@@ -76,6 +76,4 @@ const events = function (): {
 	};
 
 	return { on, off, dispatch };
-};
-
-export default events;
+}

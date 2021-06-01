@@ -137,7 +137,7 @@ const keyboardWidth = (whiteKeyWidth + spacing) * orderedKeys.length;
 const cutX = (blackKeyWidth - spacing) / 2;
 const blackKeyOffsetRelativeToWhiteKey = whiteKeyWidth - cutX;
 
-const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
+export default function generate(ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.resetTransform();
 	ctx.translate(offsetX, offsetY);
 	generateKeyboard(
@@ -208,9 +208,7 @@ const generate = function (ctx: OffscreenCanvasRenderingContext2D): void {
 		'rgb(255, 0, 0)',
 		'rgb(0, 0, 0)'
 	);
-};
-
-export default generate;
+}
 
 const getWhiteKeyIndex = function (note: number) {
 	const whiteKeys = [0, 2, 4, 5, 7, 9, 11];

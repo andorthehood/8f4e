@@ -1,6 +1,6 @@
 const sleep = async time => new Promise(resolve => setTimeout(resolve, time));
 
-const addRemoveModules = function (state, events) {
+export default function addRemoveModules(state, events) {
 	const onRunTest = async () => {
 		for (let i = 0; i < 100; i++) {
 			await sleep(100);
@@ -9,6 +9,4 @@ const addRemoveModules = function (state, events) {
 	};
 
 	events.on('runTest', onRunTest);
-};
-
-export default addRemoveModules;
+}

@@ -1,7 +1,5 @@
 import addRemoveModules from './addRemoveModules';
 
-const tests = function (state, events) {
+export default function tests(state, events) {
 	addRemoveModules(state, events);
-};
-
-export default tests;
+}

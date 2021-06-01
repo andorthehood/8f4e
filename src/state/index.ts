@@ -17,11 +17,45 @@ import tests from './mutators/tests';
 import viewport from './mutators/viewport';
 import { State } from './types';
 
-const init = function (events): State {
-	const state = { ui: {} };
+const defaultState: State = {
+	compiler: {
+		compilationTime: 0,
+		cycleTime: 0,
+		isCompiling: false,
+		lastCompilationStart: 0,
+		memoryBuffer: new Int32Array(),
+		outputAddressLookup: {},
+		timerAccuracy: 0,
+	},
+	connections: [],
+	isDebugMode: process.env.NODE_ENV === 'development',
+	modules: [],
+	viewport: {
+		hGrid: 14,
+		height: 0,
+		vGrid: 6,
+		width: 0,
+		x: 0,
+		y: 0,
+	},
+	midi: {
+		ports: [],
+	},
+	error: {
+		display: false,
+		message: '',
+	},
+	isConnectionBeingMade: false,
+	connectionPointA: null,
+	connectionPointB: null,
+	contextMenu: null,
+};
+
+export default function init(events): State {
+	const state = { ui: defaultState };
 
 	midi(state, events);
-	loader(state, events);
+	loader(state, events, defaultState);
 	history(state, events);
 	connectionMaker(state, events);
 	moduleSliders(state, events);
@@ -39,6 +73,4 @@ const init = function (events): State {
 	save(state, events);
 
 	return state.ui;
-};
-
-export default init;
+}
