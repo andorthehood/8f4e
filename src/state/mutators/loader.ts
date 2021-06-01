@@ -5,9 +5,12 @@ const STRUCTURE_VERSION = 6;
 const defaultState: State = {
 	compiler: {
 		compilationTime: 0,
+		cycleTime: 0,
 		isCompiling: false,
+		lastCompilationStart: 0,
+		memoryBuffer: new Int32Array(),
 		outputAddressLookup: {},
-		memoryBuffer: [],
+		timerAccuracy: 0,
 	},
 	connections: [],
 	isDebugMode: process.env.NODE_ENV === 'development',
@@ -27,6 +30,10 @@ const defaultState: State = {
 		display: false,
 		message: '',
 	},
+	isConnectionBeingMade: false,
+	connectionPointA: null,
+	connectionPointB: null,
+	contextMenu: null
 };
 
 const loader = function (state, events) {

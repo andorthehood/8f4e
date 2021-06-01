@@ -1,4 +1,4 @@
-const save = function (state, events) {
+export default function save(state, events) {
 	const onSave = function () {
 		const json = JSON.stringify({
 			connections: state.ui.connections,
@@ -11,7 +11,7 @@ const save = function (state, events) {
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
 		document.body.appendChild(a);
-		a.style = 'display: none';
+		a.style.display = 'none';
 		a.href = url;
 		a.download = '8f4e.4e';
 		a.click();
@@ -19,6 +19,4 @@ const save = function (state, events) {
 	};
 
 	events.on('save', onSave);
-};
-
-export default save;
+}
