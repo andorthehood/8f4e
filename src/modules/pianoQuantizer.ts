@@ -24,13 +24,13 @@ const whiteKeyWidth = 18;
 const spacing = 2;
 const keyboardWidth = whiteKeyWidth * whiteKeys.length + spacing * whiteKeys.length;
 
-const getWhiteKeyIndex = function (note: number): number {
+function getWhiteKeyIndex(note: number): number {
 	return whiteKeys.indexOf(note % allKeys.length);
-};
+}
 
-const getBlackKeyIndex = function (note: number): number {
+function getBlackKeyIndex(note: number): number {
 	return blackKeys.indexOf(note % allKeys.length);
-};
+}
 
 const pianoKeys = new Array(128).fill(0).map((item, index) => {
 	const whiteKeyIndex = getWhiteKeyIndex(index);

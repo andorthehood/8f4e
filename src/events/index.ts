@@ -25,7 +25,7 @@ export default function events(): {
 		resize: [],
 	};
 
-	const onEvent = function (event) {
+	function onEvent(event) {
 		const { clientX, clientY, movementX, movementY, type, buttons, which } = event;
 		event.preventDefault();
 		const eventObject: EventObject = {
@@ -42,7 +42,7 @@ export default function events(): {
 				subscriptions[type][i](eventObject);
 			}
 		}
-	};
+	}
 
 	Object.keys(subscriptions).forEach(function (event: any) {
 		if (event === 'resize') {
@@ -52,28 +52,28 @@ export default function events(): {
 		}
 	});
 
-	const on = function (eventName: string, callback: EventHandler): void {
+	function on(eventName: string, callback: EventHandler): void {
 		if (!subscriptions[eventName]) {
 			subscriptions[eventName] = [];
 		}
 		subscriptions[eventName].push(callback);
-	};
+	}
 
-	const off = function (eventName: string, callback: EventHandler): void {
+	function off(eventName: string, callback: EventHandler): void {
 		if (subscriptions[eventName].indexOf(callback) === -1) {
 			return;
 		}
 		subscriptions[eventName].splice(subscriptions[eventName].indexOf(callback), 1);
-	};
+	}
 
-	const dispatch = function (type: string, eventObject: {} = {}): void {
+	function dispatch(type: string, eventObject: {} = {}): void {
 		if (!subscriptions[type]) {
 			return console.warn('No subscription to event type:', type);
 		}
 		for (let i = 0; i < subscriptions[type].length; i++) {
 			subscriptions[type][i](eventObject);
 		}
-	};
+	}
 
 	return { on, off, dispatch };
 }

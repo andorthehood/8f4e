@@ -16,7 +16,7 @@ export const ieee754 = (n: number): Uint8Array => {
  * LEB128 or Little Endian Base 128 is a variable-lenght code compression format like VLQ.
  * WebAssembly is using it's unsigned version for encoding all integer literals.
  */
-export const unsignedLEB128 = function (n: number): number[] {
+export function unsignedLEB128(n: number): number[] {
 	const buffer = [];
 	do {
 		let byte = n & 0b1111111;
@@ -27,9 +27,9 @@ export const unsignedLEB128 = function (n: number): number[] {
 		buffer.push(byte);
 	} while (n !== 0);
 	return buffer;
-};
+}
 
-export const signedLEB128 = (n: number) => {
+export function signedLEB128(n: number) {
 	const buffer = [];
 	let more = true;
 	const isNegative = n < 0;
@@ -48,12 +48,12 @@ export const signedLEB128 = (n: number) => {
 		buffer.push(byte);
 	}
 	return buffer;
-};
+}
 
-export const encodeString = function (str: string) {
+export function encodeString(str: string) {
 	return [...unsignedLEB128(str.length), ...str.split('').map(char => char.charCodeAt(0))];
-};
+}
 
-export const createVector = function (data: number[]) {
+export function createVector(data: number[]) {
 	return [...unsignedLEB128(data.length), ...data];
-};
+}

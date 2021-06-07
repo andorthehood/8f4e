@@ -1,12 +1,12 @@
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 import { State } from '../../types';
 
-const getHighlightedMenuItem = function (x, y, itemHeight, width) {
+function getHighlightedMenuItem(x, y, itemHeight, width) {
 	if (x < 0 || x > width || y < 0) {
 		return Infinity;
 	}
 	return Math.floor(y / itemHeight);
-};
+}
 
 export default function contextMenu(state: State, events) {
 	state.contextMenu = {

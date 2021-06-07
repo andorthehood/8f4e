@@ -3,7 +3,7 @@ import { SpriteLookup } from '../../../2d-engine/src';
 const offsetX = 0;
 const offsetY = 250;
 
-const generateBox = function (ctx: OffscreenCanvasRenderingContext2D): void {
+function generateBox(ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.fillStyle = 'rgb(100,100,100)';
 	const width = 100 - 1;
 	const height = 100 - 1;
@@ -11,7 +11,7 @@ const generateBox = function (ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.fillRect(width, 0, 1, height);
 	ctx.fillRect(0, 0, width, 1);
 	ctx.fillRect(0, height, width, 1);
-};
+}
 
 export default function generate(ctx: OffscreenCanvasRenderingContext2D): void {
 	ctx.resetTransform();
