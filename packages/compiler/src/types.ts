@@ -1,5 +1,3 @@
-import moduleSliders from '../../../src/state/mutators/modules/moduleSliders';
-
 export interface CompiledModule {
 	functionBody: number[];
 	initialMemory: number[];

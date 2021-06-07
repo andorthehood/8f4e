@@ -1,10 +1,12 @@
-export default function save(state, events) {
+import { State } from '../types';
+
+export default function save(state: State, events) {
 	const onSave = function () {
 		const json = JSON.stringify({
-			connections: state.ui.connections,
-			modules: state.ui.modules,
-			sructureVersion: state.ui.sructureVersion,
-			viewport: state.ui.viewport,
+			connections: state.connections,
+			modules: state.modules,
+			sructureVersion: state.sructureVersion,
+			viewport: state.viewport,
 		});
 
 		const blob = new Blob([json], { type: 'octet/stream' });
