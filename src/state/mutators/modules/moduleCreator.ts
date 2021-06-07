@@ -2,7 +2,7 @@ import * as moduleTypes from '../../../modules';
 import { State } from '../../types';
 
 export default function moduleCreator(state: State, events) {
-	const onAddModule = ({ x, y, type }) => {
+	function onAddModule({ x, y, type }) {
 		x = x - state.viewport.x - Math.floor(moduleTypes[type].width / 2);
 		y = y - state.viewport.y - Math.floor(moduleTypes[type].height / 2);
 
@@ -16,15 +16,15 @@ export default function moduleCreator(state: State, events) {
 			type,
 			engine: moduleTypes[type].engine,
 		});
-	};
+	}
 
-	const onDeleteModule = ({ moduleId }) => {
+	function onDeleteModule({ moduleId }) {
 		events.dispatch('deleteConnection', { moduleId, replaceHistory: true });
 		state.modules.splice(
 			state.modules.findIndex(({ id }) => id === moduleId),
 			1
 		);
-	};
+	}
 
 	events.on('addModule', onAddModule);
 	events.on('deleteModule', onDeleteModule);
