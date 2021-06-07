@@ -9,7 +9,7 @@ export default async function midi(state: State, events) {
 		midiAccess = access;
 
 		access.outputs.forEach(port => {
-			state.ui.midi.ports.push({ id: port.id, name: port.name, manufacturer: port.manufacturer });
+			state.midi.ports.push({ id: port.id, name: port.name, manufacturer: port.manufacturer });
 			selectedPort = port;
 			events.dispatch('midiPortConnected');
 		});

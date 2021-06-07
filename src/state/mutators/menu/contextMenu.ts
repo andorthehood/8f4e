@@ -1,4 +1,5 @@
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
+import { State } from '../../types';
 
 const getHighlightedMenuItem = function (x, y, itemHeight, width) {
 	if (x < 0 || x > width || y < 0) {
@@ -7,8 +8,8 @@ const getHighlightedMenuItem = function (x, y, itemHeight, width) {
 	return Math.floor(y / itemHeight);
 };
 
-export default function contextMenu(state, events) {
-	state.ui.contextMenu = {
+export default function contextMenu(state: State, events) {
+	state.contextMenu = {
 		open: false,
 		items: [],
 		itemHeight: 20,
@@ -17,19 +18,19 @@ export default function contextMenu(state, events) {
 	};
 
 	const onMouseMove = event => {
-		const { itemHeight, itemWidth, x, y } = state.ui.contextMenu;
-		state.ui.contextMenu.highlightedItem = getHighlightedMenuItem(event.x - x, event.y - y, itemHeight, itemWidth);
+		const { itemHeight, itemWidth, x, y } = state.contextMenu;
+		state.contextMenu.highlightedItem = getHighlightedMenuItem(event.x - x, event.y - y, itemHeight, itemWidth);
 		event.stopPropagation = true;
 	};
 
 	const close = () => {
 		events.off('mousedown', onMouseDown);
 		events.off('mousemove', onMouseMove);
-		state.ui.contextMenu.open = false;
+		state.contextMenu.open = false;
 	};
 
 	const onMouseDown = event => {
-		const { highlightedItem, items } = state.ui.contextMenu;
+		const { highlightedItem, items } = state.contextMenu;
 
 		if (items[highlightedItem]) {
 			events.dispatch(items[highlightedItem].action, {
@@ -51,20 +52,20 @@ export default function contextMenu(state, events) {
 	const onContextMenu = event => {
 		const { x, y } = event;
 
-		state.ui.contextMenu.highlightedItem = 0;
-		state.ui.contextMenu.x = x;
-		state.ui.contextMenu.y = y;
-		state.ui.contextMenu.open = true;
+		state.contextMenu.highlightedItem = 0;
+		state.contextMenu.x = x;
+		state.contextMenu.y = y;
+		state.contextMenu.open = true;
 
-		const module = findModuleAtViewportCoordinates(state.ui.modules, state.ui.viewport, x, y);
+		const module = findModuleAtViewportCoordinates(state.modules, state.viewport, x, y);
 
 		if (module) {
-			state.ui.contextMenu.items = [
+			state.contextMenu.items = [
 				{ title: 'Delete module', action: 'deleteModule', payload: { moduleId: module.id }, close: true },
 				{ title: 'Remove wires', action: 'deleteConnection', payload: { moduleId: module.id }, close: true },
 			];
 		} else {
-			state.ui.contextMenu.items = [
+			state.contextMenu.items = [
 				{ title: 'Add module...', action: 'openModuleMenu' },
 				{ title: 'Undo', action: 'undo', close: true },
 				{ title: 'Run test', action: 'runTest', close: true },
