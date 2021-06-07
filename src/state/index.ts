@@ -18,8 +18,9 @@ import viewport from './mutators/viewport';
 import { State } from './types';
 
 const defaultState: State = {
+	sructureVersion: 6,
 	compiler: {
-		compilationTime: 0,
+		compilationTime: '0',
 		cycleTime: 0,
 		isCompiling: false,
 		lastCompilationStart: 0,
@@ -30,6 +31,7 @@ const defaultState: State = {
 	connections: [],
 	isDebugMode: process.env.NODE_ENV === 'development',
 	modules: [],
+	history: [],
 	viewport: {
 		hGrid: 14,
 		height: 0,
@@ -54,23 +56,23 @@ const defaultState: State = {
 export default function init(events): State {
 	const state = { ui: defaultState };
 
-	midi(state, events);
+	midi(state.ui, events);
 	loader(state, events, defaultState);
-	history(state, events);
+	history(state.ui, events);
 	connectionMaker(state, events);
 	moduleSliders(state, events);
 	moduleDragger(state, events);
-	viewport(state, events);
+	viewport(state.ui, events);
 	contextMenu(state, events);
 	moduleMenu(state, events);
 	moduleCreator(state, events);
 	moduleSwitches(state, events);
 	moduleSteppers(state, events);
-	error(state, events);
+	error(state.ui, events);
 	tests(state, events);
-	compiler(state, events);
+	compiler(state.ui, events);
 	innit(state, events);
-	save(state, events);
+	save(state.ui, events);
 
 	return state.ui;
 }
