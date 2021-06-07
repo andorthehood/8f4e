@@ -126,4 +126,6 @@ export interface State {
 	connectionPointA: any;
 	connectionPointB: any;
 	contextMenu: any;
+	connectionFromModule: any;
+	connectionFromConnector: any;
 }

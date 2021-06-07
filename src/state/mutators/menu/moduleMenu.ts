@@ -1,5 +1,5 @@
 import * as moduleTypes from '../../../modules';
-import { ModuleType, ModuleTypeLookup } from '../../types';
+import { ModuleType, ModuleTypeLookup, State } from '../../types';
 
 const getModuleCategories = function (moduleTypes: ModuleTypeLookup): string[] {
 	return Object.values(moduleTypes)
@@ -19,17 +19,17 @@ const filterModuleTypesByCategory = function (moduleTypes: ModuleTypeLookup, cat
 	});
 };
 
-export default function contextMenu(state, events) {
+export default function contextMenu(state: State, events) {
 	const onModuleMenu = event => {
 		const { y } = event;
 
-		state.ui.contextMenu.highlightedItem = 0;
-		state.ui.contextMenu.y = y;
-		state.ui.contextMenu.open = true;
+		state.contextMenu.highlightedItem = 0;
+		state.contextMenu.y = y;
+		state.contextMenu.open = true;
 
 		if (event.category) {
 			const modules = filterModuleTypesByCategory(moduleTypes, event.category);
-			state.ui.contextMenu.items = [
+			state.contextMenu.items = [
 				{
 					title: 'Back',
 					action: 'openModuleMenu',
@@ -47,7 +47,7 @@ export default function contextMenu(state, events) {
 			];
 		} else {
 			const categories = getModuleCategories(moduleTypes);
-			state.ui.contextMenu.items = [
+			state.contextMenu.items = [
 				{
 					title: 'Back',
 					action: 'contextmenu',
