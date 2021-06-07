@@ -1,7 +1,7 @@
 import * as moduleTypes from '../../../modules';
 import { ModuleType, ModuleTypeLookup, State } from '../../types';
 
-const getModuleCategories = function (moduleTypes: ModuleTypeLookup): string[] {
+function getModuleCategories(moduleTypes: ModuleTypeLookup): string[] {
 	return Object.values(moduleTypes)
 		.reduce((accumulator, moduleType: ModuleType) => {
 			if (accumulator.includes(moduleType.category)) {
@@ -11,13 +11,13 @@ const getModuleCategories = function (moduleTypes: ModuleTypeLookup): string[] {
 			}
 		}, [])
 		.sort();
-};
+}
 
-const filterModuleTypesByCategory = function (moduleTypes: ModuleTypeLookup, category: string): string[] {
+function filterModuleTypesByCategory(moduleTypes: ModuleTypeLookup, category: string): string[] {
 	return Object.keys(moduleTypes).filter((type: string) => {
 		return moduleTypes[type].category === category;
 	});
-};
+}
 
 export default function contextMenu(state: State, events) {
 	const onModuleMenu = event => {

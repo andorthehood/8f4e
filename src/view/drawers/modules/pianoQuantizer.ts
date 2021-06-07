@@ -8,13 +8,13 @@ const whiteKeyWidth = 18;
 const spacing = 2;
 const keyboardWidth = whiteKeyWidth * whiteKeys.length + spacing * whiteKeys.length;
 
-const getWhiteKeyIndex = function (note: number): number {
+function getWhiteKeyIndex(note: number): number {
 	return whiteKeys.indexOf(note % allKeys.length);
-};
+}
 
-const getBlackKeyIndex = function (note: number): number {
+function getBlackKeyIndex(note: number): number {
 	return blackKeys.indexOf(note % allKeys.length);
-};
+}
 
 export default function drawer(engine, config) {
 	engine.setSpriteLookup(pianoKeyboard());

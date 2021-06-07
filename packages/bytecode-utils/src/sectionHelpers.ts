@@ -5,13 +5,13 @@ import Type from './type';
 import { createVector, encodeString, unsignedLEB128 } from './typeHelpers';
 import { ImportDesc, NameSection, ExportDesc } from './section';
 
-export const createFunctionSection = function (functionTypeIndexes: number[]): number[] {
+export function createFunctionSection(functionTypeIndexes: number[]): number[] {
 	const numberOfFunctions = functionTypeIndexes.length;
 
 	return [Section.FUNCTION, ...createVector([...unsignedLEB128(numberOfFunctions), ...functionTypeIndexes])];
-};
+}
 
-export const createFunctionType = function (parameterTypes: Type[], resultTypes: Type[] = []): FunctionType {
+export function createFunctionType(parameterTypes: Type[], resultTypes: Type[] = []): FunctionType {
 	const numberOfParameters = parameterTypes.length;
 	const numberOfResults = resultTypes.length;
 
@@ -22,31 +22,27 @@ export const createFunctionType = function (parameterTypes: Type[], resultTypes:
 		...unsignedLEB128(numberOfResults),
 		...resultTypes,
 	];
-};
+}
 
-export const createTypeSection = function (types: FunctionType[]): number[] {
+export function createTypeSection(types: FunctionType[]): number[] {
 	const numberOfTypes = types.length;
 	return [Section.TYPE, ...createVector([...unsignedLEB128(numberOfTypes), ...types.flat()])];
-};
+}
 
-export const createExportSection = function (_exports: FunctionExport[]): number[] {
+export function createExportSection(_exports: FunctionExport[]): number[] {
 	const numberOfExports = _exports.length;
 	return [Section.EXPORT, ...createVector([...unsignedLEB128(numberOfExports), ..._exports.flat()])];
-};
+}
 
-export const createFunctionExport = function (name: string, reference: number): FunctionExport {
+export function createFunctionExport(name: string, reference: number): FunctionExport {
 	return [...encodeString(name), ExportDesc.FUNC, reference];
-};
+}
 
-export const createCodeSection = function (functionBodies: FunctionBody[]): number[] {
+export function createCodeSection(functionBodies: FunctionBody[]): number[] {
 	const numberOfFunctions = functionBodies.length;
 	return [Section.CODE, ...createVector([...unsignedLEB128(numberOfFunctions), ...functionBodies.flat()])];
-};
-
-export const createFunctionBody = function (
-	localDeclarations: LocalDeclaration[],
-	functionBody: number[]
-): FunctionBody {
+}
+export function createFunctionBody(localDeclarations: LocalDeclaration[], functionBody: number[]): FunctionBody {
 	const localDeclarationCount = localDeclarations.length;
 	return createVector([
 		...unsignedLEB128(localDeclarationCount),
@@ -54,22 +50,22 @@ export const createFunctionBody = function (
 		...functionBody,
 		Instruction.END,
 	]);
-};
+}
 
-export const createLocalDeclaration = function (type: Type, typeCount: number = 1): LocalDeclaration {
+export function createLocalDeclaration(type: Type, typeCount: number = 1): LocalDeclaration {
 	return [...unsignedLEB128(typeCount), type];
-};
+}
 
-export const createMemorySection = function (pageSize: number): number[] {
+export function createMemorySection(pageSize: number): number[] {
 	const numMemories = 1;
 	const flags = 0;
 	return [
 		Section.MEMORY,
 		...createVector([...unsignedLEB128(numMemories), ...unsignedLEB128(flags), ...unsignedLEB128(pageSize)]),
 	];
-};
+}
 
-export const createNameSection = function (functionNames: FunctionName[]): number[] {
+export function createNameSection(functionNames: FunctionName[]): number[] {
 	const numFunctions = functionNames.length;
 	return [
 		Section.CUSTOM,
@@ -79,13 +75,13 @@ export const createNameSection = function (functionNames: FunctionName[]): numbe
 			...createVector([...unsignedLEB128(numFunctions), ...functionNames.flat()]),
 		]),
 	];
-};
+}
 
-export const createFunctionName = function (functionIndex: number, name: string): FunctionName {
+export function createFunctionName(functionIndex: number, name: string): FunctionName {
 	return [...unsignedLEB128(functionIndex), ...encodeString(name)];
-};
+}
 
-export const createMemoryImport = function (
+export function createMemoryImport(
 	moduleName: string,
 	fieldName: string,
 	initial: number = 1,
@@ -101,9 +97,9 @@ export const createMemoryImport = function (
 		...unsignedLEB128(initial),
 		...(max ? unsignedLEB128(max) : []),
 	];
-};
+}
 
-export const createImportSection = function (imports: Import[]): number[] {
+export function createImportSection(imports: Import[]): number[] {
 	const numImports = imports.length;
 	return [Section.IMPORT, ...createVector([...unsignedLEB128(numImports), ...imports.flat()])];
-};
+}
