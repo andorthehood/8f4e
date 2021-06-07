@@ -1,14 +1,14 @@
-const pad = function (paddingLeft: number, arr: number[], paddingRight: number = 0): number[] {
+function pad(paddingLeft: number, arr: number[], paddingRight: number = 0): number[] {
 	return [...new Array(paddingLeft).fill(0b00000000), ...arr, ...new Array(paddingRight).fill(0b00000000)];
-};
+}
 
-const same = function (byte: number, times: number): number[] {
+function same(byte: number, times: number): number[] {
 	return new Array(times).fill(byte);
-};
+}
 
-const mirr = function (toBeMirrored: number[], middle: number[] = []): number[] {
+function mirr(toBeMirrored: number[], middle: number[] = []): number[] {
 	return [...toBeMirrored, ...middle, ...toBeMirrored.slice().reverse()];
-};
+}
 
 export default [
 	pad(10, []), // Space

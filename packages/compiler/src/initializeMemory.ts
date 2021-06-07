@@ -1,6 +1,6 @@
 import { Connection, MemoryBuffer } from './types';
 
-export const generateOutputAddressLookup = function (compiledModules) {
+export function generateOutputAddressLookup(compiledModules) {
 	const lookup = {};
 	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
 		memoryAddresses.forEach(({ id, address }) => {
@@ -8,19 +8,19 @@ export const generateOutputAddressLookup = function (compiledModules) {
 		});
 	});
 	return lookup;
-};
+}
 
-const getInputName = function (connection: Connection) {
+function getInputName(connection: Connection) {
 	const { moduleId, connectorId } = connection.find(({ connectorId }) => connectorId.startsWith('in'));
 	return moduleId + '_' + connectorId;
-};
+}
 
-const getOutputName = function (connection: Connection) {
+function getOutputName(connection: Connection) {
 	const { moduleId, connectorId } = connection.find(({ connectorId }) => !connectorId.startsWith('in'));
 	return moduleId + '_' + connectorId;
-};
+}
 
-export const setUpConnections = function (memoryBuffer: MemoryBuffer, memoryAddresses, connections: Connection[]) {
+export function setUpConnections(memoryBuffer: MemoryBuffer, memoryAddresses, connections: Connection[]) {
 	connections.forEach(connection => {
 		const inputName = getInputName(connection);
 		const outputName = getOutputName(connection);
@@ -28,4 +28,4 @@ export const setUpConnections = function (memoryBuffer: MemoryBuffer, memoryAddr
 		const outputAddress = memoryAddresses[outputName];
 		memoryBuffer[inputAddress / memoryBuffer.BYTES_PER_ELEMENT] = outputAddress;
 	});
-};
+}

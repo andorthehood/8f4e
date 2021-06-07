@@ -13,7 +13,7 @@ import {
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
-export const createSingleFunctionWASMProgram = function (functionBody: FunctionBody): Uint8Array {
+export function createSingleFunctionWASMProgram(functionBody: FunctionBody): Uint8Array {
 	return Uint8Array.from([
 		...HEADER,
 		...VERSION,
@@ -23,15 +23,15 @@ export const createSingleFunctionWASMProgram = function (functionBody: FunctionB
 		...createExportSection([createFunctionExport('test', 0x00)]),
 		...createCodeSection([functionBody]),
 	]);
-};
+}
 
-export const setInitialMemory = function (memory: any, initialMemory: any) {
+export function setInitialMemory(memory: any, initialMemory: any) {
 	for (let i = 0; i < initialMemory.length; i++) {
 		memory[i] = initialMemory[i];
 	}
-};
+}
 
-export const createTestModule = async function (
+export async function createTestModule(
 	moduleCreator,
 	initialConfig = {}
 ): Promise<{ memory: Int32Array; test: any; reset: () => void }> {
@@ -58,4 +58,4 @@ export const createTestModule = async function (
 	reset();
 
 	return { memory: memoryBuffer, test, reset };
-};
+}
