@@ -7,7 +7,7 @@
  * @param width
  * @param height
  */
-export const fillBufferWithRectangleVertices = function (
+export function fillBufferWithRectangleVertices(
 	buffer: Float32Array,
 	offset: number,
 	x: number,
@@ -39,7 +39,7 @@ export const fillBufferWithRectangleVertices = function (
 	// vertex 3
 	buffer[offset + 10] = x2;
 	buffer[offset + 11] = y2;
-};
+}
 
 /**
  * Fills a texture coordinate buffer with the specified sprite coordinates.
@@ -52,7 +52,7 @@ export const fillBufferWithRectangleVertices = function (
  * @param spriteSheetWidth
  * @param spriteSheetHeight
  */
-export const fillBufferWithSpriteCoordinates = function (
+export function fillBufferWithSpriteCoordinates(
 	buffer: Float32Array,
 	offset: number,
 	spriteX: number,
@@ -79,9 +79,9 @@ export const fillBufferWithSpriteCoordinates = function (
 	buffer[offset + 9] = v1;
 	buffer[offset + 10] = u2;
 	buffer[offset + 11] = v2;
-};
+}
 
-export const fillBufferWithLineVertices = function (
+export function fillBufferWithLineVertices(
 	buffer: Float32Array,
 	offset: number,
 	x1: number,
@@ -166,4 +166,4 @@ export const fillBufferWithLineVertices = function (
 	// vertex 3
 	buffer[offset + 10] = xC;
 	buffer[offset + 11] = yC;
-};
+}

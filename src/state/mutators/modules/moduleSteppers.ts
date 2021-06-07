@@ -2,7 +2,7 @@ import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleC
 import { State } from '../../types';
 
 export default function moduleSwitches(state: State, events) {
-	const onModuleClick = function ({ x, y, module }) {
+	function onModuleClick({ x, y, module }) {
 		const stepper = findModuleControllerAtViewportCoordinates(state.viewport, module, 'steppers', x, y);
 
 		if (stepper) {
@@ -21,7 +21,7 @@ export default function moduleSwitches(state: State, events) {
 				state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 			state.compiler.memoryBuffer[address] = module.config[stepper.id];
 		}
-	};
+	}
 
 	events.on('moduleClick', onModuleClick);
 }
