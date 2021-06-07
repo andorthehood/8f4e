@@ -1,7 +1,7 @@
 import { State } from '../types';
 
 export default function save(state: State, events) {
-	const onSave = function () {
+	function onSave() {
 		const json = JSON.stringify({
 			connections: state.connections,
 			modules: state.modules,
@@ -18,7 +18,7 @@ export default function save(state: State, events) {
 		a.download = '8f4e.4e';
 		a.click();
 		URL.revokeObjectURL(url);
-	};
+	}
 
 	events.on('save', onSave);
 }

@@ -3,7 +3,7 @@ import { State } from '../types';
 const trackedEvents = ['deleteConnection', 'createConnection', 'deleteModule', 'addModule'];
 
 export default function history(state: State, events) {
-	const onHistoricEvent = event => {
+	function onHistoricEvent(event) {
 		if (event.replaceHistory) {
 			return;
 		}
@@ -12,9 +12,9 @@ export default function history(state: State, events) {
 			modules: [...state.modules],
 			connections: [...state.connections],
 		});
-	};
+	}
 
-	const onUndo = () => {
+	function onUndo() {
 		const prevState = state.history.pop();
 
 		if (!prevState) {
@@ -24,7 +24,7 @@ export default function history(state: State, events) {
 		const { modules, connections } = prevState;
 		state.modules = modules;
 		state.connections = connections;
-	};
+	}
 
 	trackedEvents.forEach(event => {
 		events.on(event, onHistoricEvent);
