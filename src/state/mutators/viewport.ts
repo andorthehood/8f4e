@@ -1,14 +1,16 @@
-export default function viewport(state, events) {
+import { State } from '../types';
+
+export default function viewport(state: State, events) {
 	const onMouseMove = event => {
 		if (event.buttons === 1) {
-			state.ui.viewport.x += event.movementX;
-			state.ui.viewport.y += event.movementY;
+			state.viewport.x += event.movementX;
+			state.viewport.y += event.movementY;
 		}
 	};
 
 	const onResize = () => {
-		state.ui.viewport.width = window.innerWidth;
-		state.ui.viewport.height = window.innerHeight;
+		state.viewport.width = window.innerWidth;
+		state.viewport.height = window.innerHeight;
 	};
 
 	onResize();
