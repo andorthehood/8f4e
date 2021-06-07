@@ -1,16 +1,17 @@
 import * as moduleTypes from '../../../modules';
+import { State } from '../../types';
 
-export default function moduleCreator(state, events) {
+export default function moduleCreator(state: State, events) {
 	const onAddModule = ({ x, y, type }) => {
-		x = x - state.ui.viewport.x - Math.floor(moduleTypes[type].width / 2);
-		y = y - state.ui.viewport.y - Math.floor(moduleTypes[type].height / 2);
+		x = x - state.viewport.x - Math.floor(moduleTypes[type].width / 2);
+		y = y - state.viewport.y - Math.floor(moduleTypes[type].height / 2);
 
-		state.ui.modules.push({
+		state.modules.push({
 			x,
 			y,
-			row: Math.floor(y / state.ui.viewport.hGrid),
-			col: Math.floor(x / state.ui.viewport.vGrid),
-			id: type + state.ui.modules.length,
+			row: Math.floor(y / state.viewport.hGrid),
+			col: Math.floor(x / state.viewport.vGrid),
+			id: type + state.modules.length,
 			config: { ...moduleTypes[type].config },
 			type,
 			engine: moduleTypes[type].engine,
@@ -19,8 +20,8 @@ export default function moduleCreator(state, events) {
 
 	const onDeleteModule = ({ moduleId }) => {
 		events.dispatch('deleteConnection', { moduleId, replaceHistory: true });
-		state.ui.modules.splice(
-			state.ui.modules.findIndex(({ id }) => id === moduleId),
+		state.modules.splice(
+			state.modules.findIndex(({ id }) => id === moduleId),
 			1
 		);
 	};
