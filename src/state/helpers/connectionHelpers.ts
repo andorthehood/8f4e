@@ -1,10 +1,6 @@
 import { Connection } from '../types';
 
-export const findConnectionByConnectorId = function (
-	connections: Connection[],
-	moduleId: string,
-	connectorId: string
-): Object {
+export function findConnectionByConnectorId(connections: Connection[], moduleId: string, connectorId: string): Object {
 	return connections.find(parties => {
 		return (
 			parties.findIndex(party => {
@@ -12,9 +8,9 @@ export const findConnectionByConnectorId = function (
 			}) !== -1
 		);
 	});
-};
+}
 
-export const filterConnectionsByModuleId = function (connections: Connection[], moduleId: string): Object[] {
+export function filterConnectionsByModuleId(connections: Connection[], moduleId: string): Object[] {
 	return connections.filter(parties => {
 		return (
 			parties.findIndex(party => {
@@ -22,18 +18,18 @@ export const filterConnectionsByModuleId = function (connections: Connection[], 
 			}) !== -1
 		);
 	});
-};
+}
 
-export const rejectConnectionsByModuleId = function (connections: Connection[], moduleId: string): Object[] {
+export function rejectConnectionsByModuleId(connections: Connection[], moduleId: string): Object[] {
 	return connections.filter(
 		parties =>
 			!parties.some(party => {
 				return party.moduleId == moduleId;
 			})
 	);
-};
+}
 
-export const rejectConnectionByConnectorId = function (
+export function rejectConnectionByConnectorId(
 	connections: Connection[],
 	moduleId: string,
 	connectorId: string
@@ -44,9 +40,9 @@ export const rejectConnectionByConnectorId = function (
 				return party.moduleId === moduleId && party.connectorId === connectorId;
 			})
 	);
-};
+}
 
-export const findWhatIsConnectedTo = function (
+export function findWhatIsConnectedTo(
 	connections,
 	moduleId: string,
 	connectorId: string
@@ -59,4 +55,4 @@ export const findWhatIsConnectedTo = function (
 				connectorId: connection[0].connectorId === connectorId ? connection[1].connectorId : connection[0].connectorId,
 		  }
 		: null;
-};
+}
