@@ -5,7 +5,7 @@ export default async function midi(state: State, events) {
 	let selectedPort;
 	let midiAccess;
 
-	const onMidiAccess = function (access) {
+	function onMidiAccess(access) {
 		midiAccess = access;
 
 		access.outputs.forEach(port => {
@@ -13,25 +13,25 @@ export default async function midi(state: State, events) {
 			selectedPort = port;
 			events.dispatch('midiPortConnected');
 		});
-	};
+	}
 
-	const onSelectMidiOutput = function ({ id }) {
+	function onSelectMidiOutput({ id }) {
 		selectedPort = midiAccess.outputs.forEach(function (port) {
 			if (port.id === id) {
 				selectedPort = port;
 			}
 		});
-	};
+	}
 
-	const onSendMidiMessage = function ({ message, delay }) {
+	function onSendMidiMessage({ message, delay }) {
 		if (selectedPort) {
 			selectedPort.send(message, delay);
 		}
-	};
+	}
 
-	const onStateChange = function (e) {
+	function onStateChange(e) {
 		console.log(e.port.name, e.port.manufacturer, e.port.state);
-	};
+	}
 
 	// @ts-ignore requestMIDIAccess
 	navigator.requestMIDIAccess().then(onMidiAccess);
