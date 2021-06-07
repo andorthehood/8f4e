@@ -1,13 +1,14 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
+import { State } from '../../types';
 
-export default function moduleSwitches(state, events) {
+export default function moduleSwitches(state: State, events) {
 	const onModuleClick = function ({ x, y, module }) {
-		const stepper = findModuleControllerAtViewportCoordinates(state.ui.viewport, module, 'steppers', x, y);
+		const stepper = findModuleControllerAtViewportCoordinates(state.viewport, module, 'steppers', x, y);
 
 		if (stepper) {
 			let newValue = module.config[stepper.id];
 
-			if (stepper.y + module.y + state.ui.viewport.y + 10 < y) {
+			if (stepper.y + module.y + state.viewport.y + 10 < y) {
 				newValue--;
 			} else {
 				newValue++;
@@ -16,9 +17,9 @@ export default function moduleSwitches(state, events) {
 			module.config[stepper.id] = Math.min(Math.max(newValue, stepper.minValue), stepper.maxValue);
 
 			const address =
-				state.ui.compiler.outputAddressLookup[module.id + '_' + stepper.id] /
-				state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-			state.ui.compiler.memoryBuffer[address] = module.config[stepper.id];
+				state.compiler.outputAddressLookup[module.id + '_' + stepper.id] /
+				state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+			state.compiler.memoryBuffer[address] = module.config[stepper.id];
 		}
 	};
 
