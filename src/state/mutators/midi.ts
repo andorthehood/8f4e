@@ -1,4 +1,6 @@
-export default async function midi(state, events) {
+import { State } from '../types';
+
+export default async function midi(state: State, events) {
 	// @ts-ignore
 	let selectedPort;
 	let midiAccess;
