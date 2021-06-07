@@ -9,12 +9,12 @@ import {
 import { State } from '../types';
 
 export default function connectionMaker(state: State, events) {
-	const onMouseMove = event => {
+	function onMouseMove(event) {
 		state.connectionPointB = [event.x, event.y];
 		event.stopPropagation = true;
-	};
+	}
 
-	const onMouseUp = event => {
+	function onMouseUp(event) {
 		const { x, y } = event;
 
 		const module = findModuleAtViewportCoordinates(state.modules, state.viewport, x, y);
@@ -77,17 +77,17 @@ export default function connectionMaker(state: State, events) {
 		state.connectionFromConnector = connector.id;
 		state.isConnectionBeingMade = true;
 		events.on('mousemove', onMouseMove);
-	};
+	}
 
-	const onDeleteConnection = ({ moduleId, connectorId }) => {
+	function onDeleteConnection({ moduleId, connectorId }) {
 		if (connectorId) {
 			state.connections = rejectConnectionByConnectorId(state.connections, moduleId, connectorId);
 		} else {
 			state.connections = rejectConnectionsByModuleId(state.connections, moduleId);
 		}
-	};
+	}
 
-	const onCreateConnection = ({ module, connector }) => {
+	function onCreateConnection({ module, connector }) {
 		state.connections.push([
 			{
 				connectorId: connector.id,
@@ -98,7 +98,7 @@ export default function connectionMaker(state: State, events) {
 				moduleId: state.connectionFromModule,
 			},
 		]);
-	};
+	}
 
 	events.on('deleteConnection', onDeleteConnection);
 	events.on('mouseup', onMouseUp);

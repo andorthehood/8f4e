@@ -4,7 +4,7 @@ import { State } from '../../types';
 export default function moduleDragger(state: State, events) {
 	let draggedModule = null;
 
-	const onMouseDown = ({ x, y }) => {
+	function onMouseDown({ x, y }) {
 		draggedModule = findModuleAtViewportCoordinates(state.modules, state.viewport, x, y);
 		if (draggedModule) {
 			events.dispatch('moduleClick', { x, y, module: draggedModule });
@@ -14,9 +14,9 @@ export default function moduleDragger(state: State, events) {
 			// Bring dragged module forward.
 			state.modules.push(state.modules.splice(state.modules.indexOf(draggedModule), 1)[0]);
 		}
-	};
+	}
 
-	const onMouseMove = event => {
+	function onMouseMove(event) {
 		const { movementX, movementY } = event;
 		if (draggedModule) {
 			draggedModule.x += movementX;
@@ -25,9 +25,9 @@ export default function moduleDragger(state: State, events) {
 			draggedModule.col = Math.round(draggedModule.x / state.viewport.vGrid);
 			event.stopPropagation = true;
 		}
-	};
+	}
 
-	const onMouseUp = () => {
+	function onMouseUp() {
 		if (draggedModule) {
 			draggedModule.beingDragged = false;
 			draggedModule.x = Math.round(draggedModule.x / 10) * 10;
@@ -38,7 +38,7 @@ export default function moduleDragger(state: State, events) {
 		}
 
 		events.dispatch('saveState');
-	};
+	}
 
 	events.on('mousedown', onMouseDown);
 	events.on('mousemove', onMouseMove);
