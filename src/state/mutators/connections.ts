@@ -6,52 +6,53 @@ import {
 	findConnectionByConnectorId,
 	rejectConnectionsByModuleId,
 } from '../helpers/connectionHelpers';
+import { State } from '../types';
 
-export default function connectionMaker(state, events) {
+export default function connectionMaker(state: State, events) {
 	const onMouseMove = event => {
-		state.ui.connectionPointB = [event.x, event.y];
+		state.connectionPointB = [event.x, event.y];
 		event.stopPropagation = true;
 	};
 
 	const onMouseUp = event => {
 		const { x, y } = event;
 
-		const module = findModuleAtViewportCoordinates(state.ui.modules, state.ui.viewport, x, y);
+		const module = findModuleAtViewportCoordinates(state.modules, state.viewport, x, y);
 
 		if (!module) {
-			state.ui.isConnectionBeingMade = false;
+			state.isConnectionBeingMade = false;
 			events.off('mousemove', onMouseMove);
 			return;
 		}
 
-		const connector = findConnectorAtViewportCoordinates(state.ui.viewport, module, x, y);
+		const connector = findConnectorAtViewportCoordinates(state.viewport, module, x, y);
 
 		if (!connector) {
-			state.ui.isConnectionBeingMade = false;
+			state.isConnectionBeingMade = false;
 			events.off('mousemove', onMouseMove);
 			return;
 		}
 
-		const connection = findConnectionByConnectorId(state.ui.connections, module.id, connector.id);
+		const connection = findConnectionByConnectorId(state.connections, module.id, connector.id);
 
-		if (!state.ui.isConnectionBeingMade && connection) {
+		if (!state.isConnectionBeingMade && connection) {
 			return events.dispatch('deleteConnection', { connectorId: connector.id, moduleId: module.id });
 		}
 
-		if (state.ui.isConnectionBeingMade && connection) {
+		if (state.isConnectionBeingMade && connection) {
 			if (connection) {
 				return events.dispatch('error', { message: `This connector is already connected.` });
 			}
 		}
 
-		if (state.ui.isConnectionBeingMade) {
-			state.ui.isConnectionBeingMade = false;
+		if (state.isConnectionBeingMade) {
+			state.isConnectionBeingMade = false;
 			events.off('mousemove', onMouseMove);
 
 			const connectorToConnect = findConnectorInModule(
-				state.ui.modules,
-				state.ui.connectionFromModule,
-				state.ui.connectionFromConnector
+				state.modules,
+				state.connectionFromModule,
+				state.connectionFromConnector
 			);
 
 			if (connector.isInput && connectorToConnect.isInput) {
@@ -62,7 +63,7 @@ export default function connectionMaker(state, events) {
 				return events.dispatch('error', { message: `It doesn't make sense to connect two outputs` });
 			}
 
-			if (state.ui.connectionFromModule === module.id) {
+			if (state.connectionFromModule === module.id) {
 				return events.dispatch('error', { message: `Self-patching is not supported` });
 			}
 
@@ -70,31 +71,31 @@ export default function connectionMaker(state, events) {
 			return;
 		}
 
-		state.ui.connectionPointA = [x, y];
-		state.ui.connectionPointB = [x, y];
-		state.ui.connectionFromModule = module.id;
-		state.ui.connectionFromConnector = connector.id;
-		state.ui.isConnectionBeingMade = true;
+		state.connectionPointA = [x, y];
+		state.connectionPointB = [x, y];
+		state.connectionFromModule = module.id;
+		state.connectionFromConnector = connector.id;
+		state.isConnectionBeingMade = true;
 		events.on('mousemove', onMouseMove);
 	};
 
 	const onDeleteConnection = ({ moduleId, connectorId }) => {
 		if (connectorId) {
-			state.ui.connections = rejectConnectionByConnectorId(state.ui.connections, moduleId, connectorId);
+			state.connections = rejectConnectionByConnectorId(state.connections, moduleId, connectorId);
 		} else {
-			state.ui.connections = rejectConnectionsByModuleId(state.ui.connections, moduleId);
+			state.connections = rejectConnectionsByModuleId(state.connections, moduleId);
 		}
 	};
 
 	const onCreateConnection = ({ module, connector }) => {
-		state.ui.connections.push([
+		state.connections.push([
 			{
 				connectorId: connector.id,
 				moduleId: module.id,
 			},
 			{
-				connectorId: state.ui.connectionFromConnector,
-				moduleId: state.ui.connectionFromModule,
+				connectorId: state.connectionFromConnector,
+				moduleId: state.connectionFromModule,
 			},
 		]);
 	};

@@ -1,9 +1,16 @@
 import { State } from '../types';
 
-export default function loader(state, events, defaultState) {
-	state.ui = { ...defaultState, ...(JSON.parse(localStorage.getItem('state')) || {}) };
-	if (state.ui.sructureVersion !== defaultState.sructureVersion) {
-		state.ui = { ...defaultState };
+export default function loader(state: State, events, defaultState) {
+	const localState = JSON.parse(localStorage.getItem('state')) || {};
+
+	Object.keys(localState).forEach(key => {
+		state[key] = localState[key] || defaultState[key];
+	});
+
+	if (state.sructureVersion !== defaultState.sructureVersion) {
+		Object.keys(defaultState).forEach(key => {
+			state[key] = defaultState[key];
+		});
 	}
 	state.history = [];
 
@@ -14,10 +21,10 @@ export default function loader(state, events, defaultState) {
 		localStorage.setItem(
 			'state',
 			JSON.stringify({
-				connections: state.ui.connections,
-				modules: state.ui.modules,
-				sructureVersion: state.ui.sructureVersion,
-				viewport: state.ui.viewport,
+				connections: state.connections,
+				modules: state.modules,
+				sructureVersion: state.sructureVersion,
+				viewport: state.viewport,
 			})
 		);
 	};

@@ -51,28 +51,30 @@ const defaultState: State = {
 	connectionPointA: null,
 	connectionPointB: null,
 	contextMenu: null,
+	connectionFromModule: null,
+	connectionFromConnector: null,
 };
 
 export default function init(events): State {
-	const state = { ui: defaultState };
+	const state = { ...defaultState };
 
-	midi(state.ui, events);
+	midi(state, events);
 	loader(state, events, defaultState);
-	history(state.ui, events);
+	history(state, events);
 	connectionMaker(state, events);
 	moduleSliders(state, events);
 	moduleDragger(state, events);
-	viewport(state.ui, events);
+	viewport(state, events);
 	contextMenu(state, events);
 	moduleMenu(state, events);
 	moduleCreator(state, events);
 	moduleSwitches(state, events);
 	moduleSteppers(state, events);
-	error(state.ui, events);
+	error(state, events);
 	tests(state, events);
-	compiler(state.ui, events);
+	compiler(state, events);
 	innit(state, events);
-	save(state.ui, events);
+	save(state, events);
 
-	return state.ui;
+	return state;
 }

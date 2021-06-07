@@ -1,6 +1,7 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
+import { State } from '../../types';
 
-export default function moduleSliders(state, events) {
+export default function moduleSliders(state: State, events) {
 	let slider = null;
 	let module = null;
 
@@ -9,7 +10,7 @@ export default function moduleSliders(state, events) {
 		event.stopPropagation = true;
 
 		module = event.module;
-		slider = findModuleControllerAtViewportCoordinates(state.ui.viewport, module, 'sliders', x, y);
+		slider = findModuleControllerAtViewportCoordinates(state.viewport, module, 'sliders', x, y);
 	};
 
 	const onMouseMove = function (event) {
@@ -23,9 +24,8 @@ export default function moduleSliders(state, events) {
 			);
 
 			const address =
-				state.ui.compiler.outputAddressLookup[module.id + '_' + slider.id] /
-				state.ui.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-			state.ui.compiler.memoryBuffer[address] = module.config[slider.id];
+				state.compiler.outputAddressLookup[module.id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+			state.compiler.memoryBuffer[address] = module.config[slider.id];
 		}
 	};
 
