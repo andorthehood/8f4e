@@ -1,14 +1,15 @@
 import * as moduleTypes from '../../modules';
+import { State } from '../types';
 
-export default function compiler(state, events) {
+export default function compiler(state: State, events) {
 	const worker = new Worker(new URL('../../worker/index.ts', import.meta.url));
 	// @ts-ignore shared: true
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 
 	const recompile = async () => {
-		worker.postMessage({ memoryRef, modules: state.ui.modules, connections: state.ui.connections });
-		state.ui.compiler.isCompiling = true;
-		state.ui.compiler.lastCompilationStart = performance.now();
+		worker.postMessage({ memoryRef, modules: state.modules, connections: state.connections });
+		state.compiler.isCompiling = true;
+		state.compiler.lastCompilationStart = performance.now();
 	};
 
 	const onWorkerMessage = ({ data }) => {
@@ -17,18 +18,18 @@ export default function compiler(state, events) {
 				events.dispatch('sendMidiMessage', data.payload);
 				break;
 			case 'compilationDone':
-				state.ui.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
-				state.ui.compiler.outputAddressLookup = data.payload.outputAddressLookup;
-				state.ui.compiler.isCompiling = false;
-				const end = performance.now() - state.ui.compiler.lastCompilationStart;
-				state.ui.compiler.compilationTime = end.toFixed(2);
+				state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
+				state.compiler.outputAddressLookup = data.payload.outputAddressLookup;
+				state.compiler.isCompiling = false;
+				const end = performance.now() - state.compiler.lastCompilationStart;
+				state.compiler.compilationTime = end.toFixed(2);
 
-				state.ui.modules.forEach(module => {
+				state.modules.forEach(module => {
 					if (moduleTypes[module.type].transformer) {
 						moduleTypes[module.type].transformer(
 							module,
-							state.ui.compiler.memoryBuffer,
-							state.ui.compiler.outputAddressLookup
+							state.compiler.memoryBuffer,
+							state.compiler.outputAddressLookup
 						);
 					}
 				});

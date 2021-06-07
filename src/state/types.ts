@@ -88,12 +88,25 @@ export type Viewport = {
 	y: number;
 };
 
+export type MidiPort = {
+	id: string;
+	name: string;
+	manufacturer: string;
+};
+
+export type HistoryItem = {
+	modules: Module[];
+	connections: Connection[];
+};
+
 export interface State {
+	history: HistoryItem[];
+	sructureVersion: number;
 	modules: Module[];
 	connections: Connection[];
 	isDebugMode: boolean;
 	compiler: {
-		compilationTime: number;
+		compilationTime: string;
 		cycleTime: number;
 		isCompiling: boolean;
 		lastCompilationStart: number;
@@ -103,7 +116,7 @@ export interface State {
 	};
 	viewport: Viewport;
 	midi: {
-		ports: [];
+		ports: MidiPort[];
 	};
 	error: {
 		display: boolean;

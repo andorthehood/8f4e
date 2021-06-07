@@ -1,14 +1,16 @@
+import { State } from '../types';
+
 const trackedEvents = ['deleteConnection', 'createConnection', 'deleteModule', 'addModule'];
 
-export default function history(state, events) {
+export default function history(state: State, events) {
 	const onHistoricEvent = event => {
 		if (event.replaceHistory) {
 			return;
 		}
 
 		state.history.push({
-			modules: [...state.ui.modules],
-			connections: [...state.ui.connections],
+			modules: [...state.modules],
+			connections: [...state.connections],
 		});
 	};
 
@@ -20,8 +22,8 @@ export default function history(state, events) {
 		}
 
 		const { modules, connections } = prevState;
-		state.ui.modules = modules;
-		state.ui.connections = connections;
+		state.modules = modules;
+		state.connections = connections;
 	};
 
 	trackedEvents.forEach(event => {

@@ -1,11 +1,9 @@
 import { State } from '../types';
 
-const STRUCTURE_VERSION = 6;
-
 export default function loader(state, events, defaultState) {
 	state.ui = { ...defaultState, ...(JSON.parse(localStorage.getItem('state')) || {}) };
-	if (state.ui.sructureVersion !== STRUCTURE_VERSION) {
-		state.ui = { sructureVersion: STRUCTURE_VERSION, ...onabortdefaultState };
+	if (state.ui.sructureVersion !== defaultState.sructureVersion) {
+		state.ui = { ...defaultState };
 	}
 	state.history = [];
 
