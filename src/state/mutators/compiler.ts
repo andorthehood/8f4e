@@ -6,13 +6,13 @@ export default function compiler(state: State, events) {
 	// @ts-ignore shared: true
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 
-	const recompile = async () => {
+	async function recompile() {
 		worker.postMessage({ memoryRef, modules: state.modules, connections: state.connections });
 		state.compiler.isCompiling = true;
 		state.compiler.lastCompilationStart = performance.now();
-	};
+	}
 
-	const onWorkerMessage = ({ data }) => {
+	async function onWorkerMessage({ data }) {
 		switch (data.type) {
 			case 'midiMessage':
 				events.dispatch('sendMidiMessage', data.payload);
@@ -35,7 +35,7 @@ export default function compiler(state: State, events) {
 				});
 				break;
 		}
-	};
+	}
 
 	worker.addEventListener('message', onWorkerMessage);
 	events.on('createConnection', recompile);

@@ -17,7 +17,7 @@ export default function loader(state: State, events, defaultState) {
 	// @ts-ignore
 	window.state = state;
 
-	const onSaveState = () => {
+	function onSaveState() {
 		localStorage.setItem(
 			'state',
 			JSON.stringify({
@@ -27,9 +27,9 @@ export default function loader(state: State, events, defaultState) {
 				viewport: state.viewport,
 			})
 		);
-	};
+	}
 
-	const onOpenFile = () => {};
+	function onOpenFile() {}
 
 	events.on('saveState', onSaveState);
 	events.on('open', onOpenFile);

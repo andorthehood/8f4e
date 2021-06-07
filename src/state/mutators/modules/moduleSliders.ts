@@ -5,15 +5,15 @@ export default function moduleSliders(state: State, events) {
 	let slider = null;
 	let module = null;
 
-	const onModuleClick = function (event) {
+	function onModuleClick(event) {
 		const { x, y } = event;
 		event.stopPropagation = true;
 
 		module = event.module;
 		slider = findModuleControllerAtViewportCoordinates(state.viewport, module, 'sliders', x, y);
-	};
+	}
 
-	const onMouseMove = function (event) {
+	function onMouseMove(event) {
 		if (slider) {
 			event.stopPropagation = true;
 			const { movementY } = event;
@@ -27,12 +27,12 @@ export default function moduleSliders(state: State, events) {
 				state.compiler.outputAddressLookup[module.id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 			state.compiler.memoryBuffer[address] = module.config[slider.id];
 		}
-	};
+	}
 
-	const onMouseUp = function () {
+	function onMouseUp() {
 		slider = null;
 		module = null;
-	};
+	}
 
 	events.on('moduleClick', onModuleClick);
 	events.on('mouseup', onMouseUp);
