@@ -4,14 +4,14 @@ import smallFont from './smallFont';
 const offsetX = 0;
 const offsetY = 0;
 
-const forEachBit = function (byte: number, callback: (isByteSet: boolean, nthBit: number) => void) {
+function forEachBit(byte: number, callback: (isByteSet: boolean, nthBit: number) => void) {
 	for (let i = 0; i < 5; i++) {
 		const mask = 1 << (4 - i);
 		callback((byte & mask) !== 0, i);
 	}
-};
+}
 
-const generateFont = function (ctx: OffscreenCanvasRenderingContext2D, x: number = 0, y: number = 0, font: number[]) {
+function generateFont(ctx: OffscreenCanvasRenderingContext2D, x: number = 0, y: number = 0, font: number[]) {
 	for (let j = 0; j < 128; j++) {
 		for (let i = 0; i < 10; i++) {
 			forEachBit(font[j * 10 + i], function (bit, nthBit) {
@@ -19,7 +19,7 @@ const generateFont = function (ctx: OffscreenCanvasRenderingContext2D, x: number
 			});
 		}
 	}
-};
+}
 
 export default function generateFonts(ctx: OffscreenCanvasRenderingContext2D) {
 	ctx.fillStyle = 'rgba(255,255,255,255)';

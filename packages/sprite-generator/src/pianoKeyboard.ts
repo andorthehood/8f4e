@@ -1,6 +1,6 @@
 import { SpriteLookup } from '../../2d-engine/src';
 
-const whiteKeyLeft = function (
+function whiteKeyLeft(
 	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
@@ -20,9 +20,9 @@ const whiteKeyLeft = function (
 	ctx.fillRect(width - 1, cutY, 1, height - cutY);
 	ctx.fillRect(0, height - 1, width, 1);
 	ctx.fillRect(0, 0, 1, height);
-};
+}
 
-const whiteKeyMiddle = function (
+function whiteKeyMiddle(
 	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
@@ -44,9 +44,9 @@ const whiteKeyMiddle = function (
 	ctx.fillRect(0, cutY, 1, height - cutY);
 	ctx.fillRect(0, cutY, cutX, 1);
 	ctx.fillRect(cutX, 0, 1, cutY);
-};
+}
 
-const whiteKeyRight = function (
+function whiteKeyRight(
 	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
@@ -66,9 +66,9 @@ const whiteKeyRight = function (
 	ctx.fillRect(0, cutY, 1, height - cutY);
 	ctx.fillRect(0, cutY, cutX, 1);
 	ctx.fillRect(cutX, 0, 1, cutY);
-};
+}
 
-const blackKey = function (
+function blackKey(
 	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
@@ -83,7 +83,7 @@ const blackKey = function (
 	ctx.fillRect(width - 1, 0, 1, height);
 	ctx.fillRect(0, 0, width, 1);
 	ctx.fillRect(0, height - 1, width, 1);
-};
+}
 
 const orderedKeys = [
 	whiteKeyLeft,
@@ -95,7 +95,7 @@ const orderedKeys = [
 	whiteKeyRight,
 ];
 
-const generateKeyboard = function (
+function generateKeyboard(
 	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
@@ -124,7 +124,7 @@ const generateKeyboard = function (
 	});
 
 	ctx.resetTransform();
-};
+}
 
 const offsetX = 0;
 const offsetY = 140;

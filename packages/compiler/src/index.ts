@@ -24,7 +24,7 @@ export { setUpConnections } from './initializeMemory';
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
-const compileModules = function (modules: Module[]): CompiledModule[] {
+function compileModules(modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
 	return modules
 		.filter(({ engine }) => moduleCompilers[engine])
@@ -34,9 +34,9 @@ const compileModules = function (modules: Module[]): CompiledModule[] {
 			memoryAddress += module.initialMemory.length;
 			return module;
 		});
-};
+}
 
-const generateMemoryInitiatorFunction = function (compiledModules: CompiledModule[]) {
+function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
 	return compiledModules
 		.map(module => {
 			let pointer = module.offset;
@@ -49,7 +49,7 @@ const generateMemoryInitiatorFunction = function (compiledModules: CompiledModul
 				.flat();
 		})
 		.flat();
-};
+}
 
 export default function compile(modules: Module[]) {
 	const compiledModules = compileModules(modules);

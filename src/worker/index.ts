@@ -2,7 +2,7 @@ import compile, { setUpConnections } from 'compiler';
 import { int16ToMidiNote } from '../state/helpers/midi';
 import { Event, ControlChange } from '../midi/enums';
 
-const resetMidi = function () {
+function resetMidi() {
 	// @ts-ignore
 	self.postMessage({
 		type: 'midiMessage',
@@ -27,9 +27,9 @@ const resetMidi = function () {
 			},
 		});
 	}
-};
+}
 
-export const createModule = async function (memoryRef, modules) {
+export async function createModule(memoryRef, modules) {
 	const { codeBuffer, outputAddressLookup, compiledModules } = compile(modules);
 
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
@@ -45,11 +45,11 @@ export const createModule = async function (memoryRef, modules) {
 	});
 
 	return { memoryBuffer, cycle, init, outputAddressLookup, compiledModules };
-};
+}
 
 let interval;
 
-const recompile = async function (memoryRef, modules, connections) {
+async function recompile(memoryRef, modules, connections) {
 	const { memoryBuffer, cycle, outputAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
 
 	// @ts-ignore
@@ -124,7 +124,7 @@ const recompile = async function (memoryRef, modules, connections) {
 			wasHigh = isHigh;
 		}
 	}, intervalTime);
-};
+}
 
 self.onmessage = function (event) {
 	recompile(event.data.memoryRef, event.data.modules, event.data.connections);
