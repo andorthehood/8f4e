@@ -1,4 +1,5 @@
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from 'compiler';
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
 import { ModuleType } from '../state/types';
 
 const constant: ModuleType = {
@@ -8,7 +9,7 @@ const constant: ModuleType = {
 	},
 	engine: 'constant',
 	height: 10,
-	inputs: [{ id: 'out', x: 85, y: 20 }],
+	inputs: addDefaultInputPositions([{ id: 'out' }]),
 	name: 'Constant',
 	outputs: [],
 	sliders: [

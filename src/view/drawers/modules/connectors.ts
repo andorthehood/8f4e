@@ -12,15 +12,15 @@ export default function drawConnectors(engine, moduleType: ModuleType, state: St
 		if (typeof state.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
 			const connectorAddress = state.compiler.outputAddressLookup[id + '_' + connector.id];
 			const value = state.compiler.memoryBuffer[connectorAddress / state.compiler.memoryBuffer.BYTES_PER_ELEMENT];
-			const { x, y, width, height } = getConnectorDefaultPosition(i, false, moduleWidth, vGrid, hGrid);
+			const { x, y } = connector;
 
 			engine.setSpriteLookup(feedbackScale);
-			engine.drawSprite(x, y, value, width, height);
+			engine.drawSprite(x * vGrid, y * hGrid, value, vGrid * 2, hGrid);
 
 			engine.setSpriteLookup(font('small_white'));
 
 			const label = connector.label || connector.id;
-			engine.drawText(x - vGrid * label.length, y, label);
+			engine.drawText(x * vGrid - vGrid * label.length, y * hGrid, label);
 		}
 	}
 
@@ -28,14 +28,14 @@ export default function drawConnectors(engine, moduleType: ModuleType, state: St
 		const connector = inputs[i];
 
 		if (typeof state.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
-			const { x, y, width, height } = getConnectorDefaultPosition(i, true, moduleWidth, vGrid, hGrid);
+			const { x, y } = connector;
 
 			engine.setSpriteLookup(fillColor);
-			engine.drawRectangle(x, y, width, height, 'rgb(153,153,153)');
+			engine.drawRectangle(x * vGrid, y * hGrid, vGrid, hGrid, 'rgb(153,153,153)');
 
 			engine.setSpriteLookup(font('small_white'));
 
-			engine.drawText(x + vGrid * 2, y, connector.label || connector.id);
+			engine.drawText(x * vGrid + vGrid * 2, y * hGrid, connector.label || connector.id);
 		}
 	}
 }
