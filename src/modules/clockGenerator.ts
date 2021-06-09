@@ -10,7 +10,7 @@ const clockGenerator: ModuleType = {
 	height: 10,
 	inputs: [],
 	name: 'Clock generator',
-	outputs: addDefaultOutputPositions([{ id: 'out', x: 85, y: 20 }], 20),
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
 	sliders: [{ id: 'rate', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 3000, resolution: 10 }],
 	steppers: [],
 	switches: [],

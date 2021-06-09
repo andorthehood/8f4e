@@ -69,7 +69,7 @@ const arpeggiator: ModuleType = {
 	height: 10,
 	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: 'Arpeggiator',
-	outputs: addDefaultOutputPositions([{ id: 'out', x: 1285, y: 20 }], 150),
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 150),
 	sliders: [],
 	steppers: [],
 	switches: [...pianoKeys],
