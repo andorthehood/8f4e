@@ -7,9 +7,9 @@ const invert: ModuleType = {
 
 	engine: 'invert',
 	height: 10,
-	inputs: addDefaultInputPositions([{ id: 'in', x: 5, y: 20 }]),
+	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: 'Invert',
-	outputs: addDefaultOutputPositions([{ id: 'out', x: 85, y: 20 }], 20),
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
 	sliders: [],
 	steppers: [],
 	switches: [],
