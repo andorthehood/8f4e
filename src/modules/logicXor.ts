@@ -1,15 +1,14 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const logicXor: ModuleType = {
 	category: 'Logic',
 	engine: 'logicXor',
 	height: 10,
-	inputs: [
-		{ id: 'in:1', x: 5, y: 20 },
-		{ id: 'in:2', x: 5, y: 35 },
-	],
+	inputs: addDefaultInputPositions([{ id: 'in:1' }, { id: 'in:2' }]),
 	name: 'Logic XOR',
-	outputs: [{ id: 'out', x: 85, y: 20 }],
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
 	sliders: [],
 	steppers: [],
 	switches: [],

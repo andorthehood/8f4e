@@ -1,3 +1,5 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const adc8bit: ModuleType = {
@@ -7,11 +9,12 @@ const adc8bit: ModuleType = {
 	},
 	engine: 'adc',
 	height: 30,
-	inputs: [{ id: 'in', x: 5, y: 20 }],
+	inputs: addDefaultInputPositions([{ id: 'in', x: 5, y: 20 }]),
 	name: '16bit ADC',
-	outputs: [
-		...new Array(16).fill(0).map((item, i) => ({ id: 'out:' + (i + 1), x: 85, y: 20 + i * 15, label: 'bit' + i })),
-	],
+	outputs: addDefaultOutputPositions(
+		[...new Array(16).fill(0).map((item, i) => ({ id: 'out:' + (i + 1), label: 'bit' + i }))],
+		20
+	),
 	sliders: [],
 	steppers: [],
 	switches: [],
