@@ -1,3 +1,5 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const invert: ModuleType = {
@@ -5,9 +7,9 @@ const invert: ModuleType = {
 
 	engine: 'invert',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20 }],
+	inputs: addDefaultInputPositions([{ id: 'in', x: 5, y: 20 }]),
 	name: 'Invert',
-	outputs: [{ id: 'out', x: 85, y: 20 }],
+	outputs: addDefaultOutputPositions([{ id: 'out', x: 85, y: 20 }], 20),
 	sliders: [],
 	steppers: [],
 	switches: [],
