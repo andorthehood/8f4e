@@ -1,17 +1,14 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const splitter: ModuleType = {
 	category: 'Other',
 	engine: 'splitter',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20 }],
+	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: 'Splitter',
-	outputs: [
-		{ id: 'out:1', x: 85, y: 20 },
-		{ id: 'out:2', x: 85, y: 35 },
-		{ id: 'out:3', x: 85, y: 50 },
-		{ id: 'out:4', x: 85, y: 65 },
-	],
+	outputs: addDefaultOutputPositions([{ id: 'out:1' }, { id: 'out:2' }, { id: 'out:3' }, { id: 'out:4' }], 20),
 	sliders: [],
 	steppers: [],
 	switches: [],

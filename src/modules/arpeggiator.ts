@@ -1,3 +1,5 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { midiNoteToInt16 } from '../state/helpers/midi';
 import { MemoryTransformer, ModuleType } from '../state/types';
 
@@ -65,9 +67,9 @@ const arpeggiator: ModuleType = {
 	category: 'Arpeggiator',
 	engine: 'arpeggiator',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20 }],
+	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: 'Arpeggiator',
-	outputs: [{ id: 'out', x: 1285, y: 20 }],
+	outputs: addDefaultOutputPositions([{ id: 'out', x: 1285, y: 20 }], 150),
 	sliders: [],
 	steppers: [],
 	switches: [...pianoKeys],

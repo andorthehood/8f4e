@@ -1,12 +1,14 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const number: ModuleType = {
 	category: 'Inspection',
 	engine: 'through',
 	height: 10,
-	inputs: [{ id: 'in:1', x: 5, y: 45 }],
+	inputs: addDefaultInputPositions([{ id: 'in:1' }]),
 	name: 'Number',
-	outputs: [{ id: 'out:1', x: 85, y: 45 }],
+	outputs: addDefaultOutputPositions([{ id: 'out:1' }], 20),
 	sliders: [],
 	steppers: [],
 	switches: [],
