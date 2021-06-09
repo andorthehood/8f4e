@@ -12,7 +12,7 @@ const offset: ModuleType = {
 	height: 10,
 	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: 'Offset',
-	outputs: addDefaultOutputPositions([{ id: 'out', x: 85, y: 20 }], 20),
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
 	steppers: [],
 	sliders: [
 		{
