@@ -1,3 +1,4 @@
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const randomGenerator: ModuleType = {
@@ -6,7 +7,7 @@ const randomGenerator: ModuleType = {
 	height: 10,
 	inputs: [],
 	name: 'Random',
-	outputs: [{ id: 'out', x: 85, y: 20 }],
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
 	sliders: [],
 	steppers: [],
 	switches: [],

@@ -1,3 +1,5 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const attenuator: ModuleType = {
@@ -7,9 +9,9 @@ const attenuator: ModuleType = {
 	},
 	engine: 'attenuator',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20 }],
+	inputs: addDefaultInputPositions([{ id: 'in', x: 5, y: 20 }]),
 	name: 'Attenuator',
-	outputs: [{ id: 'out', x: 85, y: 20 }],
+	outputs: addDefaultOutputPositions([{ id: 'out', x: 85, y: 20 }], 20),
 	sliders: [{ id: 'divisor', x: 10, y: 20, width: 10, height: 50, minValue: 1, maxValue: 100, resolution: 1 }],
 	steppers: [],
 	switches: [],

@@ -1,3 +1,4 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
 import { ModuleType } from '../state/types';
 
 const cvToMidi: ModuleType = {
@@ -8,10 +9,10 @@ const cvToMidi: ModuleType = {
 	},
 	engine: 'through',
 	height: 10,
-	inputs: [
-		{ id: 'in:1', x: 5, y: 20, label: 'note in' },
-		{ id: 'in:2', x: 5, y: 35, label: 'clock in' },
-	],
+	inputs: addDefaultInputPositions([
+		{ id: 'in:1', label: 'note in' },
+		{ id: 'in:2', label: 'clock in' },
+	]),
 	name: 'CV to MIDI',
 	outputs: [],
 	sliders: [],

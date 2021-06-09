@@ -1,12 +1,14 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const abs: ModuleType = {
 	category: 'Math',
 	engine: 'abs',
 	height: 10,
-	inputs: [{ id: 'in', x: 0, y: 1 }],
+	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: 'Abs',
-	outputs: [{ id: 'out', x: 10, y: 1 }],
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
 	sliders: [],
 	steppers: [],
 	switches: [],

@@ -1,4 +1,6 @@
 import { I16_SIGNED_LARGEST_NUMBER } from 'compiler';
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const offset: ModuleType = {
@@ -8,9 +10,9 @@ const offset: ModuleType = {
 	},
 	engine: 'offset',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20 }],
+	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: 'Offset',
-	outputs: [{ id: 'out', x: 85, y: 20 }],
+	outputs: addDefaultOutputPositions([{ id: 'out', x: 85, y: 20 }], 20),
 	steppers: [],
 	sliders: [
 		{

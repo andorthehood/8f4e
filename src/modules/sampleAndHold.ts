@@ -1,15 +1,14 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
 
 const min: ModuleType = {
 	category: 'Other',
 	engine: 'sampleAndHold',
 	height: 10,
-	inputs: [
-		{ id: 'in', x: 5, y: 20 },
-		{ id: 'in:trigger', x: 5, y: 35 },
-	],
+	inputs: addDefaultInputPositions([{ id: 'in' }, { id: 'in:trigger' }]),
 	name: 'Sample & Hold',
-	outputs: [{ id: 'out', x: 85, y: 20 }],
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
 	sliders: [],
 	steppers: [],
 	switches: [],

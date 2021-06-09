@@ -1,3 +1,5 @@
+import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { midiNoteToInt16 } from '../state/helpers/midi';
 import { MemoryTransformer, ModuleType } from '../state/types';
 
@@ -68,9 +70,9 @@ const pianoQuantizer: ModuleType = {
 	},
 	engine: 'quantizer',
 	height: 10,
-	inputs: [{ id: 'in', x: 5, y: 20 }],
+	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: 'Quantizer',
-	outputs: [{ id: 'out', x: 1285, y: 20 }],
+	outputs: addDefaultOutputPositions([{ id: 'out' }], 150),
 	sliders: [],
 	steppers: [],
 	switches: [...pianoKeys],
