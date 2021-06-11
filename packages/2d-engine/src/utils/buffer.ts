@@ -89,7 +89,7 @@ export function fillBufferWithLineVertices(
 	x2: number,
 	y2: number,
 	thickness = 1
-) {
+): void {
 	/*      o (x1, y1)
 	 *      |\  Alpha
 	 *      | \

@@ -2,7 +2,7 @@ import { MemoryBuffer } from 'compiler';
 
 export interface Module {
 	col: number;
-	config: { [key: string]: any };
+	config: { [key: string]: unknown };
 	engine: string;
 	id: string;
 	row: number;
@@ -64,7 +64,7 @@ export type MemoryTransformer = (
 
 export interface ModuleType {
 	category: string;
-	config?: Object;
+	config?: Record<string, unknown>;
 	inputs: Connector[];
 	outputs: Connector[];
 	engine: string;
@@ -123,9 +123,9 @@ export interface State {
 		message: string;
 	};
 	isConnectionBeingMade: boolean;
-	connectionPointA: any;
-	connectionPointB: any;
-	contextMenu: any;
-	connectionFromModule: any;
-	connectionFromConnector: any;
+	connectionPointA: unknown;
+	connectionPointB: unknown;
+	contextMenu: unknown;
+	connectionFromModule: unknown;
+	connectionFromConnector: unknown;
 }

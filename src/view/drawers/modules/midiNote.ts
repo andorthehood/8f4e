@@ -1,3 +1,4 @@
+import { Engine } from '../../../../packages/2d-engine/src';
 import { font } from '../../../../packages/sprite-generator/src';
 import { int16ToMidiNote } from '../../../state/helpers/midi';
 import { State } from '../../../state/types';
@@ -8,7 +9,7 @@ const midiNoteLookup = new Array(128).fill(0).map((item, index) => {
 	return notes[index % 12] + octave;
 });
 
-export default function drawer(engine, state: State, id) {
+export default function drawer(engine: Engine, state: State, id: string): void {
 	const address = state.compiler.outputAddressLookup[id + '_' + 'out'] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 
 	if (!address) {

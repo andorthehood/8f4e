@@ -1,6 +1,6 @@
 import { State } from '../types';
 
-export default function viewport(state: State, events) {
+export default function viewport(state: State, events): () => void {
 	function onMouseMove(event) {
 		if (event.buttons === 1) {
 			state.viewport.x += event.movementX;
