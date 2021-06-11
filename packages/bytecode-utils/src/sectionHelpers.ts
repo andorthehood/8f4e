@@ -52,7 +52,7 @@ export function createFunctionBody(localDeclarations: LocalDeclaration[], functi
 	]);
 }
 
-export function createLocalDeclaration(type: Type, typeCount: number = 1): LocalDeclaration {
+export function createLocalDeclaration(type: Type, typeCount = 1): LocalDeclaration {
 	return [...unsignedLEB128(typeCount), type];
 }
 
@@ -84,9 +84,9 @@ export function createFunctionName(functionIndex: number, name: string): Functio
 export function createMemoryImport(
 	moduleName: string,
 	fieldName: string,
-	initial: number = 1,
+	initial = 1,
 	max?: number,
-	isShared: boolean = false
+	isShared = false
 ): Import {
 	const flags = isShared ? 0x03 : 0x00;
 	return [

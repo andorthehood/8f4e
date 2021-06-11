@@ -11,7 +11,7 @@ function forEachBit(byte: number, callback: (isByteSet: boolean, nthBit: number)
 	}
 }
 
-function generateFont(ctx: OffscreenCanvasRenderingContext2D, x: number = 0, y: number = 0, font: number[]) {
+function generateFont(ctx: OffscreenCanvasRenderingContext2D, x = 0, y = 0, font: number[]) {
 	for (let j = 0; j < 128; j++) {
 		for (let i = 0; i < 10; i++) {
 			forEachBit(font[j * 10 + i], function (bit, nthBit) {

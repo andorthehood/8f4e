@@ -1,7 +1,6 @@
 import { fillColor } from '../../../packages/sprite-generator/src';
 import * as moduleTypes from '../../modules';
 import { State } from '../../state/types';
-import getConnectorDefaultPosition from '../helpers/getConnectorDefaultPosition';
 
 export default function drawConnections(engine, state: State) {
 	const connections = state.connections;

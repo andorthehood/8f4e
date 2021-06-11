@@ -215,7 +215,7 @@ const getWhiteKeyIndex = function (note: number) {
 	return whiteKeys.indexOf(note % 12);
 };
 
-export const lookup = function (isHighlighted: boolean = false): SpriteLookup {
+export const lookup = function (isHighlighted = false): SpriteLookup {
 	return function (key) {
 		if (typeof key !== 'number') {
 			return {

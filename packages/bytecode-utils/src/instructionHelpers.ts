@@ -22,7 +22,7 @@ export function f32const(number: number): number[] {
 	return [Instruction.F32_CONST, ...ieee754(number)];
 }
 
-export function i32store(address?: number, value?: number, alingment: number = 2, offset: number = 0): number[] {
+export function i32store(address?: number, value?: number, alingment = 2, offset = 0): number[] {
 	return [
 		...(typeof address === 'undefined' ? [] : i32const(address)),
 		...(typeof value === 'undefined' ? [] : i32const(value)),
@@ -32,7 +32,7 @@ export function i32store(address?: number, value?: number, alingment: number = 2
 	];
 }
 
-export function f32store(address?: number, value?: number, alingment: number = 2, offset: number = 0): number[] {
+export function f32store(address?: number, value?: number, alingment = 2, offset = 0): number[] {
 	return [
 		...(typeof address === 'undefined' ? [] : i32const(address)),
 		...(typeof value === 'undefined' ? [] : i32const(value)),
@@ -42,11 +42,11 @@ export function f32store(address?: number, value?: number, alingment: number = 2
 	];
 }
 
-export function i32load(alingment: number = 2, offset: number = 0): number[] {
+export function i32load(alingment = 2, offset = 0): number[] {
 	return [Instruction.I32_LOAD, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
 }
 
-export function f32load(alingment: number = 2, offset: number = 0): number[] {
+export function f32load(alingment = 2, offset = 0): number[] {
 	return [Instruction.F32_LOAD, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
 }
 
