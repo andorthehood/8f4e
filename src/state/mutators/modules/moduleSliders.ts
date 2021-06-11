@@ -1,7 +1,7 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
 import { State } from '../../types';
 
-export default function moduleSliders(state: State, events) {
+export default function moduleSliders(state: State, events): void {
 	let slider = null;
 	let module = null;
 

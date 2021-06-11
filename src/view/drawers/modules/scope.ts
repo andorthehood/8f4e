@@ -1,9 +1,10 @@
+import { Engine } from '../../../../packages/2d-engine/src';
 import { scope } from '../../../../packages/sprite-generator/src';
 import { State } from '../../../state/types';
 
 const RESOLUTION = 49;
 
-export default function drawer(engine, state: State, id) {
+export default function drawer(engine: Engine, state: State, id: string): void {
 	const bufferAddress = state.compiler.outputAddressLookup[id + '_' + 'buffer'] / 4;
 	const pointerAddress = state.compiler.outputAddressLookup[id + '_' + 'bufferPointer'] / 4;
 	const buffer = state.compiler.memoryBuffer.slice(bufferAddress, bufferAddress + RESOLUTION);
