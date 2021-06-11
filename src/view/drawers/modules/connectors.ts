@@ -1,10 +1,10 @@
+import { Engine } from '../../../../packages/2d-engine/src';
 import { feedbackScale, font, fillColor } from '../../../../packages/sprite-generator/src';
 import { ModuleType, State } from '../../../state/types';
-import getConnectorDefaultPosition from '../../helpers/getConnectorDefaultPosition';
 
-export default function drawConnectors(engine, moduleType: ModuleType, state: State, id: string) {
+export default function drawConnectors(engine: Engine, moduleType: ModuleType, state: State, id: string): void {
 	const { vGrid, hGrid } = state.viewport;
-	const { width: moduleWidth, outputs, inputs } = moduleType;
+	const { outputs, inputs } = moduleType;
 
 	for (let i = 0; i < outputs.length; i++) {
 		const connector = outputs[i];

@@ -6,8 +6,9 @@ import pianoQuantizer from './pianoQuantizer';
 import * as moduleTypes from '../../../modules';
 import drawConnectors from './connectors';
 import { State } from '../../../state/types';
+import { Engine } from '../../../../packages/2d-engine/src';
 
-export default function drawModules(engine, state: State) {
+export default function drawModules(engine: Engine, state: State): void {
 	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.viewport;
 
 	engine.startGroup(offsetX, offsetY);

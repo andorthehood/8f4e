@@ -88,19 +88,19 @@ export class Engine {
 		this.offsetGroups = [];
 	}
 
-	startGroup(x: number, y: number) {
+	startGroup(x: number, y: number): void {
 		this.offsetX += x;
 		this.offsetY += y;
 		this.offsetGroups.push([x, y]);
 	}
 
-	endGroup() {
+	endGroup(): void {
 		const [x, y] = this.offsetGroups.pop();
 		this.offsetX -= x;
 		this.offsetY -= y;
 	}
 
-	growBuffer(newSize: number) {
+	growBuffer(newSize: number): void {
 		this.bufferSize = newSize * 12;
 		this.bufferPointer = 0;
 		this.bufferCounter = 0;
@@ -108,7 +108,7 @@ export class Engine {
 		this.textureCoordinateBuffer = new Float32Array(this.bufferSize);
 	}
 
-	resize(width: number, height: number) {
+	resize(width: number, height: number): void {
 		if (width === this.gl.canvas.width && height === this.gl.canvas.height) {
 			return;
 		}
@@ -119,7 +119,7 @@ export class Engine {
 		this.setUniform('u_resolution', width, height);
 	}
 
-	render(callback: (timeToRender: string, fps: number, triangles: number, maxTriangles: number) => void) {
+	render(callback: (timeToRender: string, fps: number, triangles: number, maxTriangles: number) => void): void {
 		const triangles = this.bufferCounter / 2;
 		const maxTriangles = Math.floor(this.vertexBuffer.length / 2);
 		this.bufferPointer = 0;
@@ -151,14 +151,14 @@ export class Engine {
 	 * @param width width of the rectanlge
 	 * @param height height of the reactanlge
 	 */
-	drawRectangle(x: number, y: number, width: number, height: number, sprite: any, thickness: number) {
+	drawRectangle(x: number, y: number, width: number, height: number, sprite: string | number, thickness = 1): void {
 		this.drawLine(x, y, x + width, y, sprite, thickness);
 		this.drawLine(x + width, y, x + width, y + height, sprite, thickness);
 		this.drawLine(x + width, y + height, x, y + height, sprite, thickness);
 		this.drawLine(x, y + height, x, y, sprite, thickness);
 	}
 
-	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas) {
+	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas): void {
 		this.spriteSheet = createTexture(this.gl, image);
 		this.spriteSheetWidth = image.width;
 		this.spriteSheetHeight = image.height;
@@ -192,7 +192,7 @@ export class Engine {
 		this.bufferPointer = this.bufferCounter % this.bufferSize;
 	}
 
-	drawLine(x1: number, y1: number, x2: number, y2: number, sprite: any, thickness: number) {
+	drawLine(x1: number, y1: number, x2: number, y2: number, sprite: string | number, thickness: number): void {
 		x1 = x1 + this.offsetX;
 		y1 = y1 + this.offsetY;
 		x2 = x2 + this.offsetX;
@@ -216,7 +216,7 @@ export class Engine {
 		this.bufferPointer = this.bufferCounter % this.bufferSize;
 	}
 
-	drawSprite(posX: number, posY: number, sprite: string, width?: number, height?: number): void {
+	drawSprite(posX: number, posY: number, sprite: string | number, width?: number, height?: number): void {
 		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(sprite);
 		this.drawSpriteFromCoordinates(
 			posX,
@@ -230,7 +230,7 @@ export class Engine {
 		);
 	}
 
-	rendervertexBuffer() {
+	rendervertexBuffer(): void {
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glTextureCoordinateBuffer);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.textureCoordinateBuffer, this.gl.STATIC_DRAW);
 
@@ -244,11 +244,11 @@ export class Engine {
 		}
 	}
 
-	setSpriteLookup(spriteLookup: SpriteLookup) {
+	setSpriteLookup(spriteLookup: SpriteLookup): void {
 		this.spriteLookup = spriteLookup;
 	}
 
-	drawText(posX: number, posY: number, text: string, font = '', letterSpacing = 1) {
+	drawText(posX: number, posY: number, text: string, font = '', letterSpacing = 1): void {
 		//console.log(this.spriteLookup);
 		for (let i = 0; i < text.length; i++) {
 			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(text[i]);
@@ -256,7 +256,7 @@ export class Engine {
 		}
 	}
 
-	setUniform(name, ...values: any) {
+	setUniform(name, ...values: any): void {
 		const location = this.gl.getUniformLocation(this.program, name);
 		this.gl['uniform' + values.length + 'f'](location, ...values);
 	}
