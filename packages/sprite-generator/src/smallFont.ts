@@ -1,4 +1,4 @@
-function pad(paddingLeft: number, arr: number[], paddingRight: number = 0): number[] {
+function pad(paddingLeft: number, arr: number[], paddingRight = 0): number[] {
 	return [...new Array(paddingLeft).fill(0b00000000), ...arr, ...new Array(paddingRight).fill(0b00000000)];
 }
 

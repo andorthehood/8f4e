@@ -2,7 +2,7 @@ export default function createProgram(
 	gl: WebGL2RenderingContext | WebGLRenderingContext,
 	shaders: WebGLShader[]
 ): WebGLProgram {
-	let program = gl.createProgram();
+	const program = gl.createProgram();
 
 	shaders.forEach(shader => {
 		console.log(shader);
