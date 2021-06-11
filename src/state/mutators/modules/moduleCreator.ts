@@ -1,7 +1,7 @@
 import * as moduleTypes from '../../../modules';
 import { State } from '../../types';
 
-export default function moduleCreator(state: State, events) {
+export default function moduleCreator(state: State, events): void {
 	function onAddModule({ x, y, type }) {
 		x = x - state.viewport.x - Math.floor(moduleTypes[type].width / 2);
 		y = y - state.viewport.y - Math.floor(moduleTypes[type].height / 2);

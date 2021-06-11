@@ -1,6 +1,6 @@
 import { State } from '../types';
 
-export default function save(state: State, events) {
+export default function save(state: State, events): void {
 	function onSave() {
 		const json = JSON.stringify({
 			connections: state.connections,

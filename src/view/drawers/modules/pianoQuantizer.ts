@@ -1,3 +1,4 @@
+import { Engine } from '../../../../packages/2d-engine/src';
 import { pianoKeyboard } from '../../../../packages/sprite-generator/src';
 
 const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
@@ -16,7 +17,7 @@ function getBlackKeyIndex(note: number): number {
 	return blackKeys.indexOf(note % allKeys.length);
 }
 
-export default function drawer(engine, config) {
+export default function drawer(engine: Engine, config): void {
 	engine.setSpriteLookup(pianoKeyboard());
 
 	for (let i = 0; i < 10; i++) {
