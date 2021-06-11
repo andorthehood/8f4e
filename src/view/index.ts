@@ -4,7 +4,7 @@ import { drawConnections, drawModules, drawContextMenu } from './drawers';
 import { font } from '../../packages/sprite-generator/src';
 import { State } from '../state/types';
 
-export default async function init(state: State) {
+export default async function init(state: State): Promise<void> {
 	const sprite = await generateSprite();
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');

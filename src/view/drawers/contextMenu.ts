@@ -1,7 +1,8 @@
+import { Engine } from '../../../packages/2d-engine/src';
 import { font, fillColor } from '../../../packages/sprite-generator/src';
 import { State } from '../../state/types';
 
-export default function drawContextMenu(engine, state: State) {
+export default function drawContextMenu(engine: Engine, state: State): void {
 	const { open, items, x, y, highlightedItem, itemHeight, itemWidth } = state.contextMenu;
 
 	if (!open) {
