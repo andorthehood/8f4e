@@ -17,14 +17,14 @@ export default function drawModules(engine, state: State) {
 		const { width, height, name, switches, sliders, steppers } = moduleTypes[type];
 
 		if (
-			x + offsetX > -1 * width * vGrid &&
-			y + offsetY > -1 * height * hGrid &&
+			x + offsetX > -1 * width &&
+			y + offsetY > -1 * height &&
 			x + offsetX < state.viewport.width &&
 			y + offsetY < state.viewport.height
 		) {
 			engine.startGroup(col * vGrid, row * hGrid);
 			engine.setSpriteLookup(modules);
-			engine.drawSprite(0, 0, type, width * vGrid, height * hGrid);
+			engine.drawSprite(0, 0, type, width, height);
 
 			if (type === 'scope') {
 				scope(engine, state, id);

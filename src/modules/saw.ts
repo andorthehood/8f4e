@@ -1,5 +1,6 @@
 import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
+import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 
 const saw: ModuleType = {
 	config: {
@@ -7,13 +8,13 @@ const saw: ModuleType = {
 	},
 	category: 'Oscillator',
 	engine: 'saw',
-	height: 10,
+	height: MODULE_HEIGHT_S,
 	inputs: [],
 	name: 'Saw',
-	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
+	outputs: addDefaultOutputPositions([{ id: 'out' }], MODULE_WIDTH_S),
 	sliders: [{ id: 'rate', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 2000, resolution: 10 }],
 	steppers: [],
 	switches: [],
-	width: 20,
+	width: MODULE_WIDTH_S,
 };
 export default saw;

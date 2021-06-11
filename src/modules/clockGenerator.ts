@@ -1,5 +1,6 @@
 import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
+import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 
 const clockGenerator: ModuleType = {
 	category: 'Clock',
@@ -7,14 +8,14 @@ const clockGenerator: ModuleType = {
 		rate: 10,
 	},
 	engine: 'clockGenerator',
-	height: 10,
+	height: MODULE_HEIGHT_S,
 	inputs: [],
 	name: 'Clock generator',
-	outputs: addDefaultOutputPositions([{ id: 'out' }], 20),
+	outputs: addDefaultOutputPositions([{ id: 'out' }], MODULE_WIDTH_S),
 	sliders: [{ id: 'rate', x: 10, y: 20, width: 10, height: 50, minValue: 0, maxValue: 3000, resolution: 10 }],
 	steppers: [],
 	switches: [],
-	width: 20,
+	width: MODULE_WIDTH_S,
 };
 
 export default clockGenerator;
