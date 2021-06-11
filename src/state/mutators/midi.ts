@@ -1,7 +1,6 @@
 import { State } from '../types';
 
-export default async function midi(state: State, events) {
-	// @ts-ignore
+export default async function midi(state: State, events): Promise<void> {
 	let selectedPort;
 	let midiAccess;
 
@@ -33,7 +32,6 @@ export default async function midi(state: State, events) {
 		console.log(e.port.name, e.port.manufacturer, e.port.state);
 	}
 
-	// @ts-ignore requestMIDIAccess
 	navigator.requestMIDIAccess().then(onMidiAccess);
 	//midiAccess.addEventListener('statechange', onStateChange);
 	events.on('selectMidiOutput', onSelectMidiOutput);

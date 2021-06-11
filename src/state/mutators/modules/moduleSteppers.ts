@@ -1,7 +1,7 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
 import { State } from '../../types';
 
-export default function moduleSwitches(state: State, events) {
+export default function moduleSwitches(state: State, events): void {
 	function onModuleClick({ x, y, module }) {
 		const stepper = findModuleControllerAtViewportCoordinates(state.viewport, module, 'steppers', x, y);
 
