@@ -15,24 +15,8 @@ export default function drawConnections(engine, state: State) {
 		// @TODO improtve performance
 		const connectorsA = [...moduleTypes[moduleA.type].inputs, ...moduleTypes[moduleA.type].outputs];
 		const connectorsB = [...moduleTypes[moduleB.type].inputs, ...moduleTypes[moduleB.type].outputs];
-		let fromIndex = connectorsA.findIndex(({ id }) => id === connections[i][0].connectorId);
-		let toIndex = connectorsB.findIndex(({ id }) => id === connections[i][1].connectorId);
-
-		let { x: fromX, y: fromY } = getConnectorDefaultPosition(
-			fromIndex,
-			false,
-			moduleTypes[moduleA.type].width,
-			state.viewport.vGrid,
-			state.viewport.hGrid
-		);
-
-		let { x: toX, y: toY } = getConnectorDefaultPosition(
-			toIndex,
-			true,
-			moduleTypes[moduleB.type].width,
-			state.viewport.vGrid,
-			state.viewport.hGrid
-		);
+		let { x: fromX, y: fromY } = connectorsA.find(({ id }) => id === connections[i][0].connectorId);
+		let { x: toX, y: toY } = connectorsB.find(({ id }) => id === connections[i][1].connectorId);
 
 		fromX += moduleA.col * state.viewport.vGrid;
 		fromY += moduleA.row * state.viewport.hGrid;
