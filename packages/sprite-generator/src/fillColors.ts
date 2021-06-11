@@ -3,7 +3,7 @@ import { SpriteLookup, SpriteCoordinates } from '../../2d-engine/src';
 const offsetX = 0;
 const offsetY = 100;
 
-let lookupTable = {};
+const lookupTable = {};
 
 const defaultSprite: SpriteCoordinates = {
 	x: 0,
