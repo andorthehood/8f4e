@@ -88,7 +88,7 @@ export function fillBufferWithLineVertices(
 	y1: number,
 	x2: number,
 	y2: number,
-	thickness: number = 1
+	thickness = 1
 ) {
 	/*      o (x1, y1)
 	 *      |\  Alpha
@@ -132,13 +132,13 @@ export function fillBufferWithLineVertices(
 
 	let xA = x1;
 	let yA = y1;
-	let xD = x1 + translateX;
-	let yD = y1 - translateY;
+	const xD = x1 + translateX;
+	const yD = y1 - translateY;
 
 	let xB = x2;
 	let yB = y2;
-	let xC = x2 + translateX;
-	let yC = y2 - translateY;
+	const xC = x2 + translateX;
+	const yC = y2 - translateY;
 
 	if (thickness >= 1) {
 		xA = x1 - translateX;
