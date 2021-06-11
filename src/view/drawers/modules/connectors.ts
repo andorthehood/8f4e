@@ -15,12 +15,12 @@ export default function drawConnectors(engine, moduleType: ModuleType, state: St
 			const { x, y } = connector;
 
 			engine.setSpriteLookup(feedbackScale);
-			engine.drawSprite(x * vGrid, y * hGrid, value, vGrid * 2, hGrid);
+			engine.drawSprite(x, y, value, vGrid * 2, hGrid);
 
 			engine.setSpriteLookup(font('small_white'));
 
 			const label = connector.label || connector.id;
-			engine.drawText(x * vGrid - vGrid * label.length, y * hGrid, label);
+			engine.drawText(x - vGrid * label.length, y, label);
 		}
 	}
 
@@ -31,11 +31,11 @@ export default function drawConnectors(engine, moduleType: ModuleType, state: St
 			const { x, y } = connector;
 
 			engine.setSpriteLookup(fillColor);
-			engine.drawRectangle(x * vGrid, y * hGrid, vGrid, hGrid, 'rgb(153,153,153)');
+			engine.drawRectangle(x, y, vGrid, hGrid, 'rgb(153,153,153)');
 
 			engine.setSpriteLookup(font('small_white'));
 
-			engine.drawText(x * vGrid + vGrid * 2, y * hGrid, connector.label || connector.id);
+			engine.drawText(x + vGrid * 2, y, connector.label || connector.id);
 		}
 	}
 }

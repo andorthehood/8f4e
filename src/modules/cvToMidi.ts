@@ -1,5 +1,6 @@
 import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
 import { ModuleType } from '../state/types';
+import { MODULE_WIDTH_M } from './consts';
 
 const cvToMidi: ModuleType = {
 	category: 'MIDI',
@@ -18,7 +19,7 @@ const cvToMidi: ModuleType = {
 	sliders: [],
 	steppers: [{ id: 'channel', x: 80, y: 10, width: 10, height: 20, minValue: 1, maxValue: 8 }],
 	switches: [],
-	width: 30,
+	width: MODULE_WIDTH_M,
 };
 
 export default cvToMidi;

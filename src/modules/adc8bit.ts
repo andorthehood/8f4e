@@ -1,6 +1,7 @@
 import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType } from '../state/types';
+import { MODULE_HEIGHT_M, MODULE_WIDTH_S } from './consts';
 
 const adc8bit: ModuleType = {
 	category: 'Bitwise',
@@ -8,17 +9,17 @@ const adc8bit: ModuleType = {
 		resolution: 8,
 	},
 	engine: 'adc',
-	height: 20,
+	height: MODULE_HEIGHT_M,
 	inputs: addDefaultInputPositions([{ id: 'in' }]),
 	name: '8bit ADC',
 	outputs: addDefaultOutputPositions(
 		[...new Array(8).fill(0).map((item, i) => ({ id: 'out:' + (i + 1), label: 'bit' + i }))],
-		20
+		MODULE_WIDTH_S
 	),
 	sliders: [],
 	steppers: [],
 	switches: [],
-	width: 20,
+	width: MODULE_WIDTH_S,
 };
 
 export default adc8bit;
