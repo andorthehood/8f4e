@@ -3,35 +3,26 @@ import { int16ToMidiNote } from '../state/helpers/midi';
 import { Event, ControlChange } from '../midi/enums';
 
 function resetMidi() {
-	self.postMessage(
-		{
-			type: 'midiMessage',
-			payload: {
-				message: [Event.CONTROL_CHANGE, ControlChange.ALL_SOUND_OFF, 0],
-			},
+	self.postMessage({
+		type: 'midiMessage',
+		payload: {
+			message: [Event.CONTROL_CHANGE, ControlChange.ALL_SOUND_OFF, 0],
 		},
-		'*'
-	);
-	self.postMessage(
-		{
-			type: 'midiMessage',
-			payload: {
-				message: [Event.CONTROL_CHANGE, ControlChange.ALL_NOTE_OFF, 0],
-			},
+	});
+	self.postMessage({
+		type: 'midiMessage',
+		payload: {
+			message: [Event.CONTROL_CHANGE, ControlChange.ALL_NOTE_OFF, 0],
 		},
-		'*'
-	);
+	});
 
 	for (let i = 0; i < 128; i++) {
-		self.postMessage(
-			{
-				type: 'midiMessage',
-				payload: {
-					message: [Event.NOTE_OFF, i, 0],
-				},
+		self.postMessage({
+			type: 'midiMessage',
+			payload: {
+				message: [Event.NOTE_OFF, i, 0],
 			},
-			'*'
-		);
+		});
 	}
 }
 
@@ -62,15 +53,12 @@ async function recompile(memoryRef, modules, connections) {
 	init();
 	setUpConnections(memoryBuffer, outputAddressLookup, connections);
 
-	self.postMessage(
-		{
-			type: 'compilationDone',
-			payload: {
-				outputAddressLookup,
-			},
+	self.postMessage({
+		type: 'compilationDone',
+		payload: {
+			outputAddressLookup,
 		},
-		'*'
-	);
+	});
 
 	const intervalTime = 10;
 
@@ -103,26 +91,20 @@ async function recompile(memoryRef, modules, connections) {
 			const channel = memoryBuffer[channelAddress] || 1;
 
 			if (isHigh && !wasHigh) {
-				self.postMessage(
-					{
-						type: 'midiMessage',
-						payload: {
-							message: [Event.NOTE_ON + channel - 1, note, 100],
-						},
+				self.postMessage({
+					type: 'midiMessage',
+					payload: {
+						message: [Event.NOTE_ON + channel - 1, note, 100],
 					},
-					'*'
-				);
+				});
 
 				setTimeout(() => {
-					self.postMessage(
-						{
-							type: 'midiMessage',
-							payload: {
-								message: [Event.NOTE_OFF + channel - 1, note, 100],
-							},
+					self.postMessage({
+						type: 'midiMessage',
+						payload: {
+							message: [Event.NOTE_OFF + channel - 1, note, 100],
 						},
-						'*'
-					);
+					});
 				}, 100);
 			} else if (!isHigh && wasHigh) {
 				// self.postMessage({

@@ -1,4 +1,3 @@
-import * as moduleTypes from '../../modules';
 import { State } from '../types';
 
 export default function compiler(state: State, events) {
@@ -25,8 +24,8 @@ export default function compiler(state: State, events) {
 				state.compiler.compilationTime = end.toFixed(2);
 
 				state.modules.forEach(module => {
-					if (moduleTypes[module.type].transformer) {
-						moduleTypes[module.type].transformer(
+					if (state.moduleTypes[module.type].transformer) {
+						state.moduleTypes[module.type].transformer(
 							module,
 							state.compiler.memoryBuffer,
 							state.compiler.outputAddressLookup
