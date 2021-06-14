@@ -11,7 +11,7 @@ export interface Connector {
 	connectorId: string;
 }
 
-export type MemoryBuffer = Uint32Array | Uint16Array;
+export type MemoryBuffer = Int32Array;
 
 export type Connection = [Connector, Connector];
 
