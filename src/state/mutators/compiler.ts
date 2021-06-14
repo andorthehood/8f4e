@@ -1,7 +1,7 @@
 import { State } from '../types';
 
 export default function compiler(state: State, events) {
-	const worker = new Worker(new URL('../../worker/index.ts', import.meta.url));
+	const worker = new Worker(new URL('../../../packages/worker/src/index.ts', import.meta.url));
 	// @ts-ignore shared: true
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 
