@@ -1,7 +1,12 @@
-import * as moduleTypes from '../../modules';
-import { Module, Viewport } from '../types';
+import { Module, ModuleTypeLookup, Viewport } from '../types';
 
-export default function findConnectorAtViewportCoordinates(viewport: Viewport, module: Module, x: number, y: number) {
+export default function findConnectorAtViewportCoordinates(
+	viewport: Viewport,
+	moduleTypes: ModuleTypeLookup,
+	module: Module,
+	x: number,
+	y: number
+) {
 	const input = moduleTypes[module.type].inputs.find(connector => {
 		return (
 			x >= module.x + viewport.x + connector.x &&

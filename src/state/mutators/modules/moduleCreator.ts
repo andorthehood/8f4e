@@ -1,10 +1,9 @@
-import * as moduleTypes from '../../../modules';
 import { State } from '../../types';
 
 export default function moduleCreator(state: State, events): void {
 	function onAddModule({ x, y, type }) {
-		x = x - state.viewport.x - Math.floor(moduleTypes[type].width / 2);
-		y = y - state.viewport.y - Math.floor(moduleTypes[type].height / 2);
+		x = x - state.viewport.x - Math.floor(state.moduleTypes[type].width / 2);
+		y = y - state.viewport.y - Math.floor(state.moduleTypes[type].height / 2);
 
 		state.modules.push({
 			x,
@@ -12,9 +11,9 @@ export default function moduleCreator(state: State, events): void {
 			row: Math.floor(y / state.viewport.hGrid),
 			col: Math.floor(x / state.viewport.vGrid),
 			id: type + state.modules.length,
-			config: { ...moduleTypes[type].config },
+			config: { ...state.moduleTypes[type].config },
 			type,
-			engine: moduleTypes[type].engine,
+			engine: state.moduleTypes[type].engine,
 		});
 	}
 

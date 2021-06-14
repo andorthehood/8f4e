@@ -10,7 +10,7 @@ export default function moduleSliders(state: State, events): void {
 		event.stopPropagation = true;
 
 		module = event.module;
-		slider = findModuleControllerAtViewportCoordinates(state.viewport, module, 'sliders', x, y);
+		slider = findModuleControllerAtViewportCoordinates(state.viewport, module, state.moduleTypes, 'sliders', x, y);
 	}
 
 	function onMouseMove(event) {

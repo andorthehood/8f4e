@@ -8,4 +8,8 @@ module.exports = {
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
     ],
+    env: {
+      window: true,
+      module: true
+    }
   };

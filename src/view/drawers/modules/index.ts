@@ -3,7 +3,6 @@ import scope from './scope';
 import number from './number';
 import midiNote from './midiNote';
 import pianoQuantizer from './pianoQuantizer';
-import * as moduleTypes from '../../../modules';
 import drawConnectors from './connectors';
 import { State } from '../../../state/types';
 import { Engine } from '../../../../packages/2d-engine/src';
@@ -15,7 +14,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, type, id, config, row, col } = state.modules[i];
-		const { width, height, name, switches, sliders, steppers } = moduleTypes[type];
+		const { width, height, name, switches, sliders, steppers } = state.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -34,7 +33,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.setSpriteLookup(font('small_white'));
 			engine.drawText(5, 5, name);
 
-			drawConnectors(engine, moduleTypes[type], state, id);
+			drawConnectors(engine, state.moduleTypes[type], state, id);
 
 			for (let i = 0; i < sliders.length; i++) {
 				const slider = sliders[i];
