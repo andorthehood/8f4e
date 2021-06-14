@@ -1,5 +1,4 @@
 import { fillColor } from '../../../packages/sprite-generator/src';
-import * as moduleTypes from '../../modules';
 import { State } from '../../state/types';
 
 export default function drawConnections(engine, state: State) {
@@ -12,8 +11,8 @@ export default function drawConnections(engine, state: State) {
 		const moduleA = modules.find(({ id }) => id === connections[i][0].moduleId);
 		const moduleB = modules.find(({ id }) => id === connections[i][1].moduleId);
 		// @TODO improtve performance
-		const connectorsA = [...moduleTypes[moduleA.type].inputs, ...moduleTypes[moduleA.type].outputs];
-		const connectorsB = [...moduleTypes[moduleB.type].inputs, ...moduleTypes[moduleB.type].outputs];
+		const connectorsA = [...state.moduleTypes[moduleA.type].inputs, ...state.moduleTypes[moduleA.type].outputs];
+		const connectorsB = [...state.moduleTypes[moduleB.type].inputs, ...state.moduleTypes[moduleB.type].outputs];
 		let { x: fromX, y: fromY } = connectorsA.find(({ id }) => id === connections[i][0].connectorId);
 		let { x: toX, y: toY } = connectorsB.find(({ id }) => id === connections[i][1].connectorId);
 

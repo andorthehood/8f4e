@@ -1,7 +1,7 @@
 import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { midiNoteToInt16 } from '../state/helpers/midi';
-import { MemoryTransformer, ModuleType } from '../state/types';
+import { MemoryTransformer, ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 
 const transformer: MemoryTransformer = function (module, memoryBuffer, memoryAddressLookup) {
@@ -64,21 +64,21 @@ const pianoKeys = new Array(128).fill(0).map((item, index) => {
 	}
 });
 
-const pianoQuantizer: ModuleType = {
-	category: 'Quantizer',
-	config: {
-		allocatedNotes: 32,
-	},
-	engine: 'quantizer',
-	height: MODULE_HEIGHT_S,
-	inputs: addDefaultInputPositions([{ id: 'in' }]),
-	name: 'Quantizer',
-	outputs: addDefaultOutputPositions([{ id: 'out' }], MODULE_WIDTH_XXL),
-	sliders: [],
-	steppers: [],
-	switches: [...pianoKeys],
-	transformer,
-	width: MODULE_WIDTH_XXL,
-};
-
-export default pianoQuantizer;
+export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
+	return {
+		category: 'Quantizer',
+		config: {
+			allocatedNotes: 32,
+		},
+		engine: 'quantizer',
+		height: MODULE_HEIGHT_S * hGrid,
+		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
+		name: 'Quantizer',
+		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, MODULE_WIDTH_XXL * vGrid),
+		sliders: [],
+		steppers: [],
+		switches: [...pianoKeys],
+		transformer,
+		width: MODULE_WIDTH_XXL * vGrid,
+	};
+}
