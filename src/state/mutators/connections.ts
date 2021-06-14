@@ -17,7 +17,7 @@ export default function connectionMaker(state: State, events) {
 	function onMouseUp(event) {
 		const { x, y } = event;
 
-		const module = findModuleAtViewportCoordinates(state.modules, state.viewport, x, y);
+		const module = findModuleAtViewportCoordinates(state.modules, state.moduleTypes, state.viewport, x, y);
 
 		if (!module) {
 			state.isConnectionBeingMade = false;
@@ -25,7 +25,7 @@ export default function connectionMaker(state: State, events) {
 			return;
 		}
 
-		const connector = findConnectorAtViewportCoordinates(state.viewport, module, x, y);
+		const connector = findConnectorAtViewportCoordinates(state.viewport, state.moduleTypes, module, x, y);
 
 		if (!connector) {
 			state.isConnectionBeingMade = false;
@@ -51,6 +51,7 @@ export default function connectionMaker(state: State, events) {
 
 			const connectorToConnect = findConnectorInModule(
 				state.modules,
+				state.moduleTypes,
 				state.connectionFromModule,
 				state.connectionFromConnector
 			);
