@@ -1,6 +1,6 @@
 import compile, { setUpConnections } from 'compiler';
-import { int16ToMidiNote } from '../state/helpers/midi';
-import { Event, ControlChange } from '../midi/enums';
+import { int16ToMidiNote } from '../../../src/state/helpers/midi';
+import { Event, ControlChange } from '../../../src/midi/enums';
 
 function resetMidi() {
 	self.postMessage({
