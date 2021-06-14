@@ -9,5 +9,6 @@
 			"compiler": ["./packages/compiler/src"]
 		}
 	},
+	"exclude": ["src/worker/*.ts"],
 	"include": ["src/**/*.ts", "packages/**/*.ts"]
 }
