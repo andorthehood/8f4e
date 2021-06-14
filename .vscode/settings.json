@@ -26,7 +26,8 @@
         "**/node_modules": true,
         "**/dist/**": true,
         "**/.cache/**": true,
-        "**/.parcel-cache/**": true
+        "**/.parcel-cache/**": true,
+        "package-lock.json": true
     },
     "editor.formatOnSave": true,
 }

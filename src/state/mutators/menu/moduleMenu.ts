@@ -1,4 +1,3 @@
-import * as moduleTypes from '../../../modules';
 import { ModuleType, ModuleTypeLookup, State } from '../../types';
 
 function getModuleCategories(moduleTypes: ModuleTypeLookup): string[] {
@@ -28,7 +27,7 @@ export default function contextMenu(state: State, events) {
 		state.contextMenu.open = true;
 
 		if (event.category) {
-			const modules = filterModuleTypesByCategory(moduleTypes, event.category);
+			const modules = filterModuleTypesByCategory(state.moduleTypes, event.category);
 			state.contextMenu.items = [
 				{
 					title: 'Back',
@@ -38,7 +37,7 @@ export default function contextMenu(state: State, events) {
 				},
 				...modules.map(type => {
 					return {
-						title: moduleTypes[type].name,
+						title: state.moduleTypes[type].name,
 						action: 'addModule',
 						payload: { type },
 						close: true,
@@ -46,7 +45,7 @@ export default function contextMenu(state: State, events) {
 				}),
 			];
 		} else {
-			const categories = getModuleCategories(moduleTypes);
+			const categories = getModuleCategories(state.moduleTypes);
 			state.contextMenu.items = [
 				{
 					title: 'Back',

@@ -1,30 +1,67 @@
-export { default as abs } from './abs';
-export { default as adc16bit } from './adc16bit';
-export { default as adc8bit } from './adc8bit';
-export { default as arpeggiator } from './arpeggiator';
-export { default as attenuator } from './attenuator';
-export { default as bitwiseAnd } from './bitwiseAnd';
-export { default as bitwiseOr } from './bitwiseOr';
-export { default as bitwiseXor } from './bitwiseXor';
-export { default as clockGenerator } from './clockGenerator';
-export { default as constant } from './constant';
-export { default as cvToMidi } from './cvToMidi';
-export { default as invert } from './invert';
-export { default as logicAnd } from './logicAnd';
-export { default as logicNegate } from './logicNegate';
-export { default as logicOr } from './logicOr';
-export { default as logicXor } from './logicXor';
-export { default as max } from './max';
-export { default as midiNote } from './midiNote';
-export { default as min } from './min';
-export { default as mixer } from './mixer';
-export { default as number } from './number';
-export { default as offset } from './offset';
-export { default as pianoQuantizer } from './pianoQuantizer';
-export { default as randomGenerator } from './randomGenerator';
-export { default as sampleAndHold } from './sampleAndHold';
-export { default as saw } from './saw';
-export { default as scope } from './scope';
-export { default as sequentialSwitch } from './sequentialSwitch';
-export { default as splitter } from './splitter';
-export { default as triangle } from './triangle';
+import { ModuleGeneratorProps, ModuleType, ModuleTypeLookup } from '../state/types';
+
+import abs from './abs';
+import adc16bit from './adc16bit';
+import adc8bit from './adc8bit';
+import arpeggiator from './arpeggiator';
+import attenuator from './attenuator';
+import bitwiseAnd from './bitwiseAnd';
+import bitwiseOr from './bitwiseOr';
+import bitwiseXor from './bitwiseXor';
+import clockGenerator from './clockGenerator';
+import constant from './constant';
+import cvToMidi from './cvToMidi';
+import invert from './invert';
+import logicAnd from './logicAnd';
+import logicNegate from './logicNegate';
+import logicOr from './logicOr';
+import logicXor from './logicXor';
+import max from './max';
+import midiNote from './midiNote';
+import min from './min';
+import mixer from './mixer';
+import number from './number';
+import offset from './offset';
+import pianoQuantizer from './pianoQuantizer';
+import randomGenerator from './randomGenerator';
+import sampleAndHold from './sampleAndHold';
+import saw from './saw';
+import scope from './scope';
+import sequentialSwitch from './sequentialSwitch';
+import splitter from './splitter';
+import triangle from './triangle';
+
+export default function generateModuleTypes(props: ModuleGeneratorProps): ModuleTypeLookup {
+	return {
+		abs: abs(props),
+		adc16bit: adc16bit(props),
+		adc8bit: adc8bit(props),
+		arpeggiator: arpeggiator(props),
+		attenuator: attenuator(props),
+		bitwiseAnd: bitwiseAnd(props),
+		bitwiseOr: bitwiseOr(props),
+		bitwiseXor: bitwiseXor(props),
+		clockGenerator: clockGenerator(props),
+		constant: constant(props),
+		cvToMidi: cvToMidi(props),
+		invert: invert(props),
+		logicAnd: logicAnd(props),
+		logicNegate: logicNegate(props),
+		logicOr: logicOr(props),
+		logicXor: logicXor(props),
+		max: max(props),
+		midiNote: midiNote(props),
+		min: min(props),
+		mixer: mixer(props),
+		number: number(props),
+		offset: offset(props),
+		pianoQuantizer: pianoQuantizer(props),
+		randomGenerator: randomGenerator(props),
+		sampleAndHold: sampleAndHold(props),
+		saw: saw(props),
+		scope: scope(props),
+		sequentialSwitch: sequentialSwitch(props),
+		splitter: splitter(props),
+		triangle: triangle(props),
+	};
+}
