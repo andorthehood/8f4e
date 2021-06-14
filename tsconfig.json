@@ -8,5 +8,6 @@
 			"bytecode-utils": ["./packages/bytecode-utils/src"],
 			"compiler": ["./packages/compiler/src"]
 		}
-	}
+	},
+	"include": ["src/**/*.ts", "packages/**/*.ts"]
 }

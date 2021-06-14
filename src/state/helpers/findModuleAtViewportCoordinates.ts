@@ -1,8 +1,8 @@
-import { Module, Viewport } from '../types';
-import * as moduleTypes from '../../modules';
+import { Module, ModuleTypeLookup, Viewport } from '../types';
 
 export default function findModuleAtViewportCoordinates(
 	modules: Module[],
+	moduleTypes: ModuleTypeLookup,
 	viewport: Viewport,
 	x: number,
 	y: number

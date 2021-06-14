@@ -3,7 +3,14 @@ import { State } from '../../types';
 
 export default function moduleSwitches(state: State, events): void {
 	function onModuleClick({ x, y, module }) {
-		const stepper = findModuleControllerAtViewportCoordinates(state.viewport, module, 'steppers', x, y);
+		const stepper = findModuleControllerAtViewportCoordinates(
+			state.viewport,
+			module,
+			state.moduleTypes,
+			'steppers',
+			x,
+			y
+		);
 
 		if (stepper) {
 			let newValue = module.config[stepper.id];

@@ -16,6 +16,7 @@ import save from './mutators/save';
 import tests from './mutators/tests';
 import viewport from './mutators/viewport';
 import { State } from './types';
+import generateModuleTypes from '../modules';
 
 const defaultState: State = {
 	sructureVersion: 6,
@@ -53,11 +54,13 @@ const defaultState: State = {
 	contextMenu: null,
 	connectionFromModule: null,
 	connectionFromConnector: null,
+	moduleTypes: {},
 };
 
 export default function init(events): State {
 	const state = { ...defaultState };
 
+	state.moduleTypes = generateModuleTypes({ vGrid: state.viewport.vGrid, hGrid: state.viewport.hGrid });
 	midi(state, events);
 	loader(state, events, defaultState);
 	history(state, events);

@@ -77,7 +77,7 @@ export interface ModuleType {
 	width: number;
 }
 
-export type ModuleTypeLookup = { [key: string]: ModuleType };
+export type ModuleTypeLookup = Record<string, ModuleType>;
 
 export type Viewport = {
 	hGrid: number;
@@ -128,4 +128,10 @@ export interface State {
 	contextMenu: unknown;
 	connectionFromModule: unknown;
 	connectionFromConnector: unknown;
+	moduleTypes: ModuleTypeLookup;
+}
+
+export interface ModuleGeneratorProps {
+	vGrid: number;
+	hGrid: number;
 }
