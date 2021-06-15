@@ -114,7 +114,7 @@ export interface State {
 		isCompiling: boolean;
 		lastCompilationStart: number;
 		memoryBuffer: Int32Array;
-		outputAddressLookup: { [key: string]: number };
+		outputAddressLookup: Record<string, number>;
 		timerAccuracy: number;
 	};
 	viewport: Viewport;
