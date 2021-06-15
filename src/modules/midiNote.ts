@@ -14,6 +14,6 @@ export default function number({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 		sliders: [],
 		steppers: [],
 		switches: [],
-		width: MODULE_WIDTH_S,
+		width: MODULE_WIDTH_S * vGrid,
 	};
 }
