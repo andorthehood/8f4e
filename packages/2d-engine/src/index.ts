@@ -16,7 +16,7 @@ export type SpriteCoordinates = {
 	y: number;
 };
 
-export type SpriteLookup = (...args: any[]) => SpriteCoordinates;
+export type SpriteLookup = (...args: unknown[]) => SpriteCoordinates;
 
 export class Engine {
 	program: WebGLProgram;
@@ -248,7 +248,7 @@ export class Engine {
 		this.spriteLookup = spriteLookup;
 	}
 
-	drawText(posX: number, posY: number, text: string, font = '', letterSpacing = 1): void {
+	drawText(posX: number, posY: number, text: string, letterSpacing = 1): void {
 		//console.log(this.spriteLookup);
 		for (let i = 0; i < text.length; i++) {
 			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(text[i]);
@@ -256,7 +256,7 @@ export class Engine {
 		}
 	}
 
-	setUniform(name, ...values: any): void {
+	setUniform(name: string, ...values: unknown[]): void {
 		const location = this.gl.getUniformLocation(this.program, name);
 		this.gl['uniform' + values.length + 'f'](location, ...values);
 	}

@@ -1,4 +1,4 @@
-import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
+import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 

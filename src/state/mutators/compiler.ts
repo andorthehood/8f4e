@@ -20,8 +20,7 @@ export default function compiler(state: State, events) {
 				state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
 				state.compiler.outputAddressLookup = data.payload.outputAddressLookup;
 				state.compiler.isCompiling = false;
-				const end = performance.now() - state.compiler.lastCompilationStart;
-				state.compiler.compilationTime = end.toFixed(2);
+				state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
 
 				state.modules.forEach(module => {
 					if (state.moduleTypes[module.type].transformer) {

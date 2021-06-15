@@ -1,4 +1,4 @@
-import compile, { setUpConnections } from 'compiler';
+import compile, { Module, setUpConnections } from 'compiler';
 import { int16ToMidiNote } from '../../../src/state/helpers/midi';
 import { Event, ControlChange } from '../../../src/midi/enums';
 
@@ -26,30 +26,28 @@ function resetMidi() {
 	}
 }
 
-export async function createModule(memoryRef, modules) {
+async function createModule(memoryRef, modules: Module[]) {
 	const { codeBuffer, outputAddressLookup, compiledModules } = compile(modules);
 
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
-	const {
-		instance: {
-			exports: { cycle, init },
-		},
-	} = await WebAssembly.instantiate(codeBuffer, {
+	const { instance } = await WebAssembly.instantiate(codeBuffer, {
 		js: {
 			memory: memoryRef,
 		},
 	});
 
+	const cycle = instance.exports.cycle as CallableFunction;
+	const init = instance.exports.init as CallableFunction;
+
 	return { memoryBuffer, cycle, init, outputAddressLookup, compiledModules };
 }
 
-let interval;
+let interval: NodeJS.Timeout;
 
 async function recompile(memoryRef, modules, connections) {
 	const { memoryBuffer, cycle, outputAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
 
-	// @ts-ignore
 	init();
 	setUpConnections(memoryBuffer, outputAddressLookup, connections);
 
@@ -82,7 +80,6 @@ async function recompile(memoryRef, modules, connections) {
 	resetMidi();
 
 	interval = setInterval(() => {
-		// @ts-ignore
 		cycle();
 
 		if (cvAddress && clockAddress) {

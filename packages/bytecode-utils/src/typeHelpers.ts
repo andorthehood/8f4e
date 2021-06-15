@@ -29,7 +29,7 @@ export function unsignedLEB128(n: number): number[] {
 	return buffer;
 }
 
-export function signedLEB128(n: number) {
+export function signedLEB128(n: number): number[] {
 	const buffer = [];
 	let more = true;
 	const isNegative = n < 0;
@@ -50,10 +50,10 @@ export function signedLEB128(n: number) {
 	return buffer;
 }
 
-export function encodeString(str: string) {
+export function encodeString(str: string): number[] {
 	return [...unsignedLEB128(str.length), ...str.split('').map(char => char.charCodeAt(0))];
 }
 
-export function createVector(data: number[]) {
+export function createVector(data: number[]): number[] {
 	return [...unsignedLEB128(data.length), ...data];
 }
