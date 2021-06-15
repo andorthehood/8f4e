@@ -9,7 +9,8 @@ module.exports = {
       'plugin:@typescript-eslint/recommended',
     ],
     env: {
-      window: true,
-      module: true
+      browser: true,
+      es2021: true,
+      commonjs: true
     }
   };

@@ -20,11 +20,13 @@ export type RelativeAddressCalculator = (nthWord: number) => number;
 export type ModuleGenerator = (
 	moduleId: string,
 	offset: RelativeAddressCalculator,
-	initialConfig?: Object
+	initialConfig?: Record<string, number | string>
 ) => CompiledModule;
 
 export interface Module {
 	id: string;
 	engine: string;
-	config: Object;
+	config: Record<string, number | string>;
 }
+
+export type MemoryAddressLookup = Record<string, number>;
