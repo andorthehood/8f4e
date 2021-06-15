@@ -1,12 +1,12 @@
 import getConnectorDefaultPosition from './getConnectorDefaultPosition';
-import { Connector } from '../state/types';
+import { Connector, ConnectorWithPosition } from '../state/types';
 
 export default function addDefaultOutputPositions(
-	connectors,
+	connectors: Connector[],
 	vGrid: number,
 	hGrid: number,
 	width: number
-): Connector[] {
+): ConnectorWithPosition[] {
 	return connectors.map(function (connector, index: number) {
 		return {
 			...connector,

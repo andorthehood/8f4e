@@ -14,7 +14,7 @@ import {
 } from 'bytecode-utils';
 import { generateOutputAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
-import { Module, CompiledModule } from './types';
+import { Module, CompiledModule, MemoryAddressLookup } from './types';
 import { createRelativeAddressCalculator } from './utils';
 
 export * from './types';
@@ -51,7 +51,7 @@ function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
 		.flat();
 }
 
-export default function compile(modules: Module[]) {
+export default function compile(modules: Module[]): { codeBuffer: Uint8Array, outputAddressLookup: MemoryAddressLookup, compiledModules: CompiledModule[]} {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
