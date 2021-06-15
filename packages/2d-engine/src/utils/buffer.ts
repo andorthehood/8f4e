@@ -14,7 +14,7 @@ export function fillBufferWithRectangleVertices(
 	y: number,
 	width: number,
 	height: number
-) {
+): void {
 	const x1: number = x;
 	const x2: number = x + width;
 	const y1: number = y;
@@ -61,7 +61,7 @@ export function fillBufferWithSpriteCoordinates(
 	spriteHeight: number,
 	spriteSheetWidth: number,
 	spriteSheetHeight: number
-) {
+): void {
 	const u1: number = spriteX / spriteSheetWidth;
 	const v2: number = (spriteY + spriteHeight) / spriteSheetHeight;
 	const u2: number = (spriteX + spriteWidth) / spriteSheetWidth;

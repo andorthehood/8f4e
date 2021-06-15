@@ -1,8 +1,8 @@
-import { MemoryBuffer } from 'compiler';
+import { MemoryAddressLookup, MemoryBuffer } from 'compiler';
 
 export interface Module {
 	col: number;
-	config: { [key: string]: unknown };
+	config: Record<string, number | string | Record<string, number | string>>;
 	engine: string;
 	id: string;
 	row: number;
@@ -21,6 +21,9 @@ export interface Connection {
 export interface Connector {
 	id: string;
 	label?: string;
+}
+
+export interface ConnectorWithPosition extends Connector {
 	x: number;
 	y: number;
 }
@@ -59,14 +62,14 @@ export interface Stepper {
 export type MemoryTransformer = (
 	module: Module,
 	memoryBuffer: MemoryBuffer,
-	memoryAddressLookup: { [key: string]: number }
+	memoryAddressLookup: MemoryAddressLookup
 ) => void;
 
 export interface ModuleType {
 	category: string;
 	config?: Record<string, unknown>;
-	inputs: Connector[];
-	outputs: Connector[];
+	inputs: ConnectorWithPosition[];
+	outputs: ConnectorWithPosition[];
 	engine: string;
 	height: number;
 	name: string;

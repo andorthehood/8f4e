@@ -1,4 +1,4 @@
-import { ModuleGeneratorProps, ModuleType, ModuleTypeLookup } from '../state/types';
+import { ModuleGeneratorProps, ModuleTypeLookup } from '../state/types';
 
 import abs from './abs';
 import adc16bit from './adc16bit';

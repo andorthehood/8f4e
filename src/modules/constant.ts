@@ -1,5 +1,5 @@
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from 'compiler';
-import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
+import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import { ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 

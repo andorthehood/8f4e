@@ -1,5 +1,5 @@
-import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
-import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
+import addDefaultInputPositions from './helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_M, MODULE_WIDTH_S } from './consts';
 
