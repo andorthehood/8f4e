@@ -1,5 +1,5 @@
-import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
-import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
+import addDefaultInputPositions from './helpers/addDefaultInputPositions';
+import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { midiNoteToInt16 } from '../state/helpers/midi';
 import { MemoryTransformer, ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
