@@ -91,6 +91,23 @@ export type Viewport = {
 	y: number;
 };
 
+export interface ContextMenuItem {
+	title: string;
+	action: string;
+	payload?: Record<string, unknown>;
+	close?: boolean;
+}
+
+export interface ContextMenu {
+	highlightedItem: number;
+	itemHeight: number;
+	itemWidth: number;
+	items: ContextMenuItem[];
+	open: boolean;
+	x: number;
+	y: number;
+}
+
 export type MidiPort = {
 	id: string;
 	name: string;
@@ -102,36 +119,42 @@ export type HistoryItem = {
 	connections: Connection[];
 };
 
+export interface Compiler {
+	compilationTime: string;
+	cycleTime: number;
+	isCompiling: boolean;
+	lastCompilationStart: number;
+	memoryBuffer: Int32Array;
+	outputAddressLookup: Record<string, number>;
+	timerAccuracy: number;
+}
+
+export interface Error {
+	display: boolean;
+	message: string;
+}
+
+export interface Midi {
+	ports: MidiPort[];
+}
+
 export interface State {
-	history: HistoryItem[];
-	sructureVersion: number;
-	modules: Module[];
-	connections: Connection[];
-	isDebugMode: boolean;
-	compiler: {
-		compilationTime: string;
-		cycleTime: number;
-		isCompiling: boolean;
-		lastCompilationStart: number;
-		memoryBuffer: Int32Array;
-		outputAddressLookup: Record<string, number>;
-		timerAccuracy: number;
-	};
-	viewport: Viewport;
-	midi: {
-		ports: MidiPort[];
-	};
-	error: {
-		display: boolean;
-		message: string;
-	};
-	isConnectionBeingMade: boolean;
+	compiler: Compiler;
+	connectionFromConnector: unknown;
+	connectionFromModule: unknown;
 	connectionPointA: unknown;
 	connectionPointB: unknown;
-	contextMenu: unknown;
-	connectionFromModule: unknown;
-	connectionFromConnector: unknown;
+	connections: Connection[];
+	contextMenu: ContextMenu;
+	error: Error;
+	history: HistoryItem[];
+	isConnectionBeingMade: boolean;
+	isDebugMode: boolean;
+	midi: Midi;
 	moduleTypes: ModuleTypeLookup;
+	modules: Module[];
+	sructureVersion: number;
+	viewport: Viewport;
 }
 
 export interface ModuleGeneratorProps {
