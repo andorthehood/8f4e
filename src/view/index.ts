@@ -1,4 +1,4 @@
-import { Engine } from '../../packages/2d-engine/src';
+import { Engine } from '2d-engine';
 import generateSprite from '../../packages/sprite-generator/src';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 import { font } from '../../packages/sprite-generator/src';
