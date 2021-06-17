@@ -1,4 +1,4 @@
-import { SpriteLookup } from '../../2d-engine/src';
+import { SpriteLookup } from '2d-engine';
 
 const offsetX = 500;
 const offsetY = 0;
