@@ -6,14 +6,14 @@ export interface CompiledModule {
 	offset: number;
 }
 
-export interface Connector {
-	moduleId: string;
-	connectorId: string;
-}
-
 export type MemoryBuffer = Int32Array;
 
-export type Connection = [Connector, Connector];
+export type Connection = {
+	fromModuleId: string;
+	fromConnectorId: string;
+	toModuleId: string;
+	toConnectorId: string;
+};
 
 export type RelativeAddressCalculator = (nthWord: number) => number;
 
