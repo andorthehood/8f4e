@@ -1,4 +1,4 @@
-import { Engine } from '../../../../packages/2d-engine/src';
+import { Engine } from '2d-engine';
 import { feedbackScale, font, fillColor } from '../../../../packages/sprite-generator/src';
 import { ModuleType, State } from '../../../state/types';
 

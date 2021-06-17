@@ -1,4 +1,4 @@
-import { SpriteLookup, SpriteCoordinates } from '../../2d-engine/src';
+import { SpriteLookup, SpriteCoordinates } from '2d-engine';
 
 const offsetX = 0;
 const offsetY = 100;
@@ -12,7 +12,7 @@ const defaultSprite: SpriteCoordinates = {
 	spriteWidth: 1,
 };
 
-export default function generate(ctx: OffscreenCanvasRenderingContext2D) {
+export default function generate(ctx: OffscreenCanvasRenderingContext2D): void {
 	for (let r = 0; r <= 255; r += 51) {
 		for (let g = 0; g <= 255; g += 51) {
 			for (let b = 0; b <= 255; b += 51) {
@@ -26,6 +26,6 @@ export default function generate(ctx: OffscreenCanvasRenderingContext2D) {
 	}
 }
 
-export const lookup: SpriteLookup = function (color) {
+export const lookup: SpriteLookup = function (color: string) {
 	return lookupTable[color] ? lookupTable[color] : defaultSprite;
 };

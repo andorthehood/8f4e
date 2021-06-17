@@ -1,4 +1,4 @@
-import { Engine } from '../../../../packages/2d-engine/src';
+import { Engine } from '2d-engine';
 import { scope } from '../../../../packages/sprite-generator/src';
 import { State } from '../../../state/types';
 
