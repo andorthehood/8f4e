@@ -8,7 +8,7 @@ import {
 } from '../helpers/connectionHelpers';
 import { State } from '../types';
 
-export default function connectionMaker(state: State, events) {
+export default function connectionMaker(state: State, events): void {
 	function onMouseMove(event) {
 		state.connectionPointB = [event.x, event.y];
 		event.stopPropagation = true;
@@ -89,16 +89,12 @@ export default function connectionMaker(state: State, events) {
 	}
 
 	function onCreateConnection({ module, connector }) {
-		state.connections.push([
-			{
-				connectorId: connector.id,
-				moduleId: module.id,
-			},
-			{
-				connectorId: state.connectionFromConnector,
-				moduleId: state.connectionFromModule,
-			},
-		]);
+		state.connections.push({
+			toConnectorId: connector.id,
+			toModuleId: module.id,
+			fromConnectorId: state.connectionFromConnector,
+			fromModuleId: state.connectionFromModule,
+		});
 	}
 
 	events.on('deleteConnection', onDeleteConnection);
