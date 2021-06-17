@@ -23,8 +23,11 @@ export default function drawModules(engine: Engine, state: State): void {
 			y + offsetY < state.viewport.height
 		) {
 			engine.startGroup(col * vGrid, row * hGrid);
-			engine.setSpriteLookup(modules);
-			engine.drawSprite(0, 0, type, width, height);
+			engine.setSpriteLookup(fillColor);
+			engine.drawSprite(0, 0, 'rgb(153,153,153)', width, 1);
+			engine.drawSprite(0, 0, 'rgb(153,153,153)', 1, height);
+			engine.drawSprite(0, height, 'rgb(153,153,153)', width, 1);
+			engine.drawSprite(width, 0, 'rgb(153,153,153)', 1, height);
 
 			if (type === 'scope') {
 				scope(engine, state, id);
