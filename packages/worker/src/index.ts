@@ -1,4 +1,4 @@
-import compile, { Module, setUpConnections } from 'compiler';
+import compile, { Connection, Module, setUpConnections } from 'compiler';
 import { int16ToMidiNote } from '../../../src/state/helpers/midi';
 import { Event, ControlChange } from '../../../src/midi/enums';
 
@@ -45,7 +45,7 @@ async function createModule(memoryRef, modules: Module[]) {
 
 let interval: NodeJS.Timeout;
 
-async function recompile(memoryRef, modules, connections) {
+async function recompile(memoryRef, modules: Module[], connections: Connection[]) {
 	const { memoryBuffer, cycle, outputAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
 
 	init();

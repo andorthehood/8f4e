@@ -1,58 +1,48 @@
-import { Connection } from '../types';
+import { Connection } from 'compiler';
 
-export function findConnectionByConnectorId(connections: Connection[], moduleId: string, connectorId: string): Object {
-	return connections.find(parties => {
+export function findConnectionByConnectorId(
+	connections: Connection[],
+	moduleId: string,
+	connectorId: string
+): Connection {
+	return connections.find(({ fromModuleId, toModuleId, fromConnectorId, toConnectorId }) => {
 		return (
-			parties.findIndex(party => {
-				return party.moduleId === moduleId && party.connectorId === connectorId;
-			}) !== -1
+			(fromModuleId === moduleId && fromConnectorId === connectorId) ||
+			(toModuleId === moduleId && toConnectorId === connectorId)
 		);
 	});
 }
 
-export function filterConnectionsByModuleId(connections: Connection[], moduleId: string): Object[] {
-	return connections.filter(parties => {
-		return (
-			parties.findIndex(party => {
-				return party.moduleId === moduleId;
-			}) !== -1
-		);
+export function filterConnectionsByModuleId(connections: Connection[], moduleId: string): Connection[] {
+	return connections.filter(({ fromModuleId, toModuleId }) => {
+		return fromModuleId === moduleId || toModuleId === moduleId;
 	});
 }
 
-export function rejectConnectionsByModuleId(connections: Connection[], moduleId: string): Object[] {
-	return connections.filter(
-		parties =>
-			!parties.some(party => {
-				return party.moduleId == moduleId;
-			})
-	);
+export function rejectConnectionsByModuleId(connections: Connection[], moduleId: string): Connection[] {
+	return connections.filter(({ fromModuleId, toModuleId }) => {
+		return !(fromModuleId === moduleId || toModuleId === moduleId);
+	});
 }
 
 export function rejectConnectionByConnectorId(
 	connections: Connection[],
 	moduleId: string,
 	connectorId: string
-): Object[] {
-	return connections.filter(
-		parties =>
-			!parties.some(party => {
-				return party.moduleId === moduleId && party.connectorId === connectorId;
-			})
-	);
+): Connection[] {
+	return connections.filter(({ fromModuleId, toModuleId, fromConnectorId, toConnectorId }) => {
+		return !(
+			(fromModuleId === moduleId && fromConnectorId === connectorId) ||
+			(toModuleId === moduleId && toConnectorId === connectorId)
+		);
+	});
 }
 
 export function findWhatIsConnectedTo(
-	connections,
+	connections: Connection[],
 	moduleId: string,
 	connectorId: string
 ): { moduleId: string; connectorId: string } {
 	const connection = findConnectionByConnectorId(connections, moduleId, connectorId);
-
-	return connection
-		? {
-				moduleId: connection[0].moduleId === moduleId ? connection[1].moduleId : connection[0].moduleId,
-				connectorId: connection[0].connectorId === connectorId ? connection[1].connectorId : connection[0].connectorId,
-		  }
-		: null;
+	return connection ? { moduleId: connection.toModuleId, connectorId: connection.toConnectorId } : null;
 }
