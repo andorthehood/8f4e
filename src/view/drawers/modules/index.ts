@@ -5,7 +5,7 @@ import midiNote from './midiNote';
 import pianoQuantizer from './pianoQuantizer';
 import drawConnectors from './connectors';
 import { State } from '../../../state/types';
-import { Engine } from '../../../../packages/2d-engine/src';
+import { Engine } from '2d-engine';
 
 export default function drawModules(engine: Engine, state: State): void {
 	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.viewport;

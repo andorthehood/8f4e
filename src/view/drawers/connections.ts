@@ -1,7 +1,8 @@
+import { Engine } from '2d-engine';
 import { fillColor } from '../../../packages/sprite-generator/src';
 import { State } from '../../state/types';
 
-export default function drawConnections(engine, state: State): void {
+export default function drawConnections(engine: Engine, state: State): void {
 	const connections = state.connections;
 	const modules = state.modules;
 

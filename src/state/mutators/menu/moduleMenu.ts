@@ -18,7 +18,7 @@ function filterModuleTypesByCategory(moduleTypes: ModuleTypeLookup, category: st
 	});
 }
 
-export default function contextMenu(state: State, events) {
+export default function contextMenu(state: State, events): () => void {
 	const onModuleMenu = event => {
 		const { y } = event;
 

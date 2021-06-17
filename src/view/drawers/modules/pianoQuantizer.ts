@@ -1,4 +1,4 @@
-import { Engine } from '../../../../packages/2d-engine/src';
+import { Engine } from '2d-engine';
 import { pianoKeyboard } from '../../../../packages/sprite-generator/src';
 
 const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
