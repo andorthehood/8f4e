@@ -8,13 +8,15 @@ function getHighlightedMenuItem(x, y, itemHeight, width) {
 	return Math.floor(y / itemHeight);
 }
 
-export default function contextMenu(state: State, events) {
+export default function contextMenu(state: State, events): () => void {
 	state.contextMenu = {
-		open: false,
-		items: [],
+		highlightedItem: 0,
 		itemHeight: 20,
 		itemWidth: 200,
-		highlightedItem: 0,
+		items: [],
+		open: false,
+		x: 0,
+		y: 0,
 	};
 
 	const onMouseMove = event => {

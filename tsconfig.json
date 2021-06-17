@@ -6,7 +6,8 @@
 		"moduleResolution": "node",
 		"paths": {
 			"bytecode-utils": ["./packages/bytecode-utils/src"],
-			"compiler": ["./packages/compiler/src"]
+			"compiler": ["./packages/compiler/src"],
+			"2d-engine": ["./packages/2d-engine/src"]
 		}
 	},
 	"exclude": ["src/worker/*.ts"],
