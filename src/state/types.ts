@@ -1,4 +1,4 @@
-import { MemoryAddressLookup, MemoryBuffer } from 'compiler';
+import { MemoryAddressLookup, MemoryBuffer, Connection } from 'compiler';
 
 export interface Module {
 	col: number;
@@ -9,13 +9,6 @@ export interface Module {
 	type: string;
 	x: number;
 	y: number;
-}
-
-export interface Connection {
-	fromModule: string;
-	toModule: string;
-	fromConnector: string;
-	toConnector: string;
 }
 
 export interface Connector {
@@ -140,8 +133,8 @@ export interface Midi {
 
 export interface State {
 	compiler: Compiler;
-	connectionFromConnector: unknown;
-	connectionFromModule: unknown;
+	connectionFromConnector: string;
+	connectionFromModule: string;
 	connectionPointA: unknown;
 	connectionPointB: unknown;
 	connections: Connection[];
