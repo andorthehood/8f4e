@@ -10,6 +10,8 @@ export default function addDefaultInputPositions(
 		return {
 			...connector,
 			...getConnectorDefaultPosition(index, true, vGrid, hGrid),
+			width: 2 * vGrid,
+			height: hGrid - 1,
 		};
 	});
 }
