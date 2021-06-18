@@ -9,6 +9,6 @@ export default function getConnectorDefaultPosition(
 		x: isInput ? 1 * vGrid : moduleWidth - 3 * vGrid,
 		y: (index + 2) * hGrid,
 		width: 2 * vGrid,
-		height: 1 * hGrid,
+		height: hGrid - 1,
 	};
 }
