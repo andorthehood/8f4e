@@ -9,23 +9,21 @@ export default function drawConnections(engine: Engine, state: State): void {
 	engine.setSpriteLookup(fillColor);
 
 	for (let i = 0; i < connections.length; i++) {
-		const moduleA = modules.find(({ id }) => id === connections[i].toModuleId);
-		const moduleB = modules.find(({ id }) => id === connections[i].fromModuleId);
-		// @TODO improtve performance
-		const connectorsA = [...state.moduleTypes[moduleA.type].inputs, ...state.moduleTypes[moduleA.type].outputs];
-		const connectorsB = [...state.moduleTypes[moduleB.type].inputs, ...state.moduleTypes[moduleB.type].outputs];
-		let { x: fromX, y: fromY } = connectorsA.find(
-			({ id }) => id === connections[i].fromConnectorId || id === connections[i].toConnectorId
+		const fromModule = modules.find(({ id }) => id === connections[i].fromModuleId);
+		const toModule = modules.find(({ id }) => id === connections[i].toModuleId);
+
+		let { x: fromX, y: fromY } = state.moduleTypes[fromModule.type].outputs.find(
+			({ id }) => id === connections[i].fromConnectorId
 		);
-		let { x: toX, y: toY } = connectorsB.find(
-			({ id }) => id === connections[i].toConnectorId || id === connections[i].fromConnectorId
+		let { x: toX, y: toY } = state.moduleTypes[toModule.type].inputs.find(
+			({ id }) => id === connections[i].toConnectorId
 		);
 
-		fromX += moduleA.col * state.viewport.vGrid;
-		fromY += moduleA.row * state.viewport.hGrid;
+		fromX += fromModule.x;
+		fromY += fromModule.y;
 
-		toX += moduleB.col * state.viewport.vGrid;
-		toY += moduleB.row * state.viewport.hGrid;
+		toX += toModule.x;
+		toY += toModule.y;
 
 		engine.startGroup(5 + state.viewport.x, 5 + state.viewport.y);
 		engine.drawLine(fromX, fromY, toX, toY, 'rgb(153,153,153)', 1);
