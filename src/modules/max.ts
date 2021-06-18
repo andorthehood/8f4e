@@ -8,9 +8,16 @@ export default function max({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 		category: 'Logic',
 		engine: 'max',
 		height: MODULE_HEIGHT_S * hGrid,
-		inputs: addDefaultInputPositions([{ id: 'in:1' }, { id: 'in:2' }], vGrid, hGrid),
+		inputs: addDefaultInputPositions(
+			[
+				{ id: 'in:1', label: 'in' },
+				{ id: 'in:2', label: 'in' },
+			],
+			vGrid,
+			hGrid
+		),
 		name: 'Max',
-		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, MODULE_WIDTH_S * vGrid),
+		outputs: addDefaultOutputPositions([{ id: 'out', label: 'out' }], vGrid, hGrid, MODULE_WIDTH_S * vGrid),
 		sliders: [],
 		steppers: [],
 		switches: [],

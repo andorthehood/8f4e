@@ -14,12 +14,12 @@ export interface Connector {
 	label?: string;
 }
 
-export interface ConnectorWithPosition extends Connector {
-	height: number;
-	width: number;
+export interface Position {
 	x: number;
 	y: number;
 }
+
+export interface ConnectorWithPosition extends Connector, Position {}
 
 export interface Slider {
 	height: number;
