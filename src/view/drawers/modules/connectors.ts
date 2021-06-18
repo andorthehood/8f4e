@@ -12,10 +12,10 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 		if (typeof state.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
 			const connectorAddress = state.compiler.outputAddressLookup[id + '_' + connector.id];
 			const value = state.compiler.memoryBuffer[connectorAddress / state.compiler.memoryBuffer.BYTES_PER_ELEMENT];
-			const { x, y } = connector;
+			const { x, y, width, height } = connector;
 
 			engine.setSpriteLookup(feedbackScale);
-			engine.drawSprite(x, y, value, 2 * vGrid, hGrid - 1);
+			engine.drawSprite(x, y, value, width, height);
 
 			engine.setSpriteLookup(font('small_white'));
 
