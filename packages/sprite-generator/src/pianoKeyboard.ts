@@ -129,9 +129,9 @@ function generateKeyboard(
 const offsetX = 0;
 const offsetY = 140;
 const whiteKeyWidth = 18;
-const whiteKeyHeight = 60;
+const whiteKeyHeight = 14 * 4;
 const blackKeyHeight = 40;
-const blackKeyWidth = 10;
+const blackKeyWidth = 12;
 const spacing = 2;
 const keyboardWidth = (whiteKeyWidth + spacing) * orderedKeys.length;
 const cutX = (blackKeyWidth - spacing) / 2;

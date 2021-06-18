@@ -9,7 +9,7 @@ export interface Module {
 	y: number;
 }
 
-export interface Connector {
+export interface Connector extends Position, Size {
 	id: string;
 	label?: string;
 }
@@ -23,8 +23,6 @@ export interface Position {
 	x: number;
 	y: number;
 }
-
-export interface ConnectorWithPosition extends Connector, Position, Size {}
 
 export interface Slider extends Position, Size {
 	id: string;
@@ -54,8 +52,8 @@ export type MemoryTransformer = (
 export interface ModuleType extends Size {
 	category: string;
 	config?: Record<string, unknown>;
-	inputs: ConnectorWithPosition[];
-	outputs: ConnectorWithPosition[];
+	inputs: Connector[];
+	outputs: Connector[];
 	engine: string;
 	name: string;
 	sliders: Slider[];
