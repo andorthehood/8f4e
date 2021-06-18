@@ -12,10 +12,10 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 		if (typeof state.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
 			const connectorAddress = state.compiler.outputAddressLookup[id + '_' + connector.id];
 			const value = state.compiler.memoryBuffer[connectorAddress / state.compiler.memoryBuffer.BYTES_PER_ELEMENT];
-			const { x, y } = connector;
+			const { x, y, width, height } = connector;
 
 			engine.setSpriteLookup(feedbackScale);
-			engine.drawSprite(x, y, value, vGrid * 2, hGrid - 1);
+			engine.drawSprite(x, y, value, width, height);
 
 			engine.setSpriteLookup(font('small_white'));
 
@@ -28,10 +28,10 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 		const connector = inputs[i];
 
 		if (typeof state.compiler.outputAddressLookup[id + '_' + connector.id] !== 'undefined') {
-			const { x, y } = connector;
+			const { x, y, width, height } = connector;
 
 			engine.setSpriteLookup(fillColor);
-			engine.drawRectangle(x, y, vGrid * 2, hGrid, 'rgb(153,153,153)');
+			engine.drawRectangle(x, y, width, height, 'rgb(153,153,153)');
 
 			engine.setSpriteLookup(font('small_white'));
 

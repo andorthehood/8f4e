@@ -28,7 +28,7 @@ export default function moduleDragger(state: State, events): () => void {
 	function onMouseUp() {
 		if (draggedModule) {
 			draggedModule.beingDragged = false;
-			draggedModule.x = Math.round(draggedModule.x / state.viewport.vGrid) * state.viewport.vGrid;
+			draggedModule.x = Math.round(draggedModule.x / (state.viewport.vGrid * 2)) * (state.viewport.vGrid * 2);
 			draggedModule.y = Math.round(draggedModule.y / state.viewport.hGrid) * state.viewport.hGrid;
 			draggedModule = null;
 		}
