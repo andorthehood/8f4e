@@ -1,5 +1,5 @@
 import { Engine } from '2d-engine';
-import { feedbackScale, font, fillColor } from '../../../../packages/sprite-generator/src';
+import { feedbackScale, font, fillColor } from 'sprite-generator';
 import { ModuleType, State } from '../../../state/types';
 
 export default function drawConnectors(engine: Engine, moduleType: ModuleType, state: State, id: string): void {
