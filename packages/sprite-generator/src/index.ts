@@ -1,7 +1,6 @@
 import generateFont from './font';
 import generateFillColors from './fillColors';
 import generateFeedbackScale from './feedbackScale';
-import generateModules from './modules';
 import generateScope from './scope';
 import generatePianoKeyboard from './pianoKeyboard';
 
@@ -28,7 +27,6 @@ export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasEl
 	generateFeedbackScale(ctx);
 	generateFont(ctx);
 	generateFillColors(ctx);
-	generateModules(ctx);
 	generateScope(ctx);
 	generatePianoKeyboard(ctx);
 
