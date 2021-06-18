@@ -16,7 +16,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, type, id, config } = state.modules[i];
-		const { width, height, name, switches, sliders, steppers } = state.moduleTypes[type];
+		const { width, height, name } = state.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -26,17 +26,17 @@ export default function drawModules(engine: Engine, state: State): void {
 		) {
 			engine.startGroup(x, y);
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'rgb(153,153,153)', width, 1);
-			engine.drawSprite(0, 0, 'rgb(153,153,153)', 1, height);
-			engine.drawSprite(0, height, 'rgb(153,153,153)', width, 1);
-			engine.drawSprite(width, 0, 'rgb(153,153,153)', 1, height);
+			engine.drawSprite(0, 0, 'rgb(102,102,102)', width, 1);
+			engine.drawSprite(0, 0, 'rgb(102,102,102)', 1, height);
+			engine.drawSprite(0, height, 'rgb(102,102,102)', width, 1);
+			engine.drawSprite(width, 0, 'rgb(102,102,102)', 1, height);
 
 			if (type === 'scope') {
 				scope(engine, state, id);
 			}
 
 			engine.setSpriteLookup(font('small_white'));
-			engine.drawText(vGrid, hGrid, name);
+			engine.drawText(vGrid, 0, name);
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
 			drawSliders(engine, state.moduleTypes[type], state, id);

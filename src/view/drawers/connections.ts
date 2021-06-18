@@ -12,21 +12,22 @@ export default function drawConnections(engine: Engine, state: State): void {
 		const fromModule = modules.find(({ id }) => id === connections[i].fromModuleId);
 		const toModule = modules.find(({ id }) => id === connections[i].toModuleId);
 
-		let { x: fromX, y: fromY } = state.moduleTypes[fromModule.type].outputs.find(
+		const { x: fromX, y: fromY, width, height } = state.moduleTypes[fromModule.type].outputs.find(
 			({ id }) => id === connections[i].fromConnectorId
 		);
-		let { x: toX, y: toY } = state.moduleTypes[toModule.type].inputs.find(
+		const { x: toX, y: toY } = state.moduleTypes[toModule.type].inputs.find(
 			({ id }) => id === connections[i].toConnectorId
 		);
 
-		fromX += fromModule.x;
-		fromY += fromModule.y;
-
-		toX += toModule.x;
-		toY += toModule.y;
-
-		engine.startGroup(5 + state.viewport.x, 5 + state.viewport.y);
-		engine.drawLine(fromX, fromY, toX, toY, 'rgb(153,153,153)', 1);
+		engine.startGroup(state.viewport.x, state.viewport.y);
+		engine.drawLine(
+			fromX + fromModule.x + width / 2,
+			fromY + fromModule.y + height / 2,
+			toX + toModule.x + width / 2,
+			toY + toModule.y + height / 2,
+			'rgb(153,153,153)',
+			1
+		);
 		engine.endGroup();
 	}
 
