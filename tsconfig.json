@@ -7,7 +7,8 @@
 		"paths": {
 			"bytecode-utils": ["./packages/bytecode-utils/src"],
 			"compiler": ["./packages/compiler/src"],
-			"2d-engine": ["./packages/2d-engine/src"]
+			"2d-engine": ["./packages/2d-engine/src"],
+			"sprite-generator": ["./packages/sprite-generator/src"]
 		}
 	},
 	"exclude": ["src/worker/*.ts"],
