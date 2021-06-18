@@ -15,6 +15,8 @@ export interface Connector {
 }
 
 export interface ConnectorWithPosition extends Connector {
+	height: number;
+	width: number;
 	x: number;
 	y: number;
 }
@@ -83,10 +85,10 @@ export type Viewport = {
 };
 
 export interface ContextMenuItem {
-	title: string;
 	action: string;
-	payload?: Record<string, unknown>;
 	close?: boolean;
+	payload?: Record<string, unknown>;
+	title: string;
 }
 
 export interface ContextMenu {
@@ -106,8 +108,8 @@ export type MidiPort = {
 };
 
 export type HistoryItem = {
-	modules: Module[];
 	connections: Connection[];
+	modules: Module[];
 };
 
 export interface Compiler {
@@ -149,6 +151,6 @@ export interface State {
 }
 
 export interface ModuleGeneratorProps {
-	vGrid: number;
 	hGrid: number;
+	vGrid: number;
 }

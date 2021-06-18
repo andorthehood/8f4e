@@ -10,9 +10,9 @@ export default function findConnectorAtViewportCoordinates(
 	const input = moduleTypes[module.type].inputs.find(connector => {
 		return (
 			x >= module.x + viewport.x + connector.x &&
-			x <= module.x + 10 + viewport.x + connector.x &&
+			x <= module.x + connector.width + viewport.x + connector.x &&
 			y >= module.y + viewport.y + connector.y &&
-			y <= module.y + 10 + viewport.y + connector.y
+			y <= module.y + connector.height + viewport.y + connector.y
 		);
 	});
 
@@ -23,9 +23,9 @@ export default function findConnectorAtViewportCoordinates(
 	return moduleTypes[module.type].outputs.find(connector => {
 		return (
 			x >= module.x + viewport.x + connector.x &&
-			x <= module.x + 10 + viewport.x + connector.x &&
+			x <= module.x + connector.width + viewport.x + connector.x &&
 			y >= module.y + viewport.y + connector.y &&
-			y <= module.y + 10 + viewport.y + connector.y
+			y <= module.y + connector.height + viewport.y + connector.y
 		);
 	});
 }
