@@ -1,5 +1,5 @@
 import { Engine } from '2d-engine';
-import { pianoKeyboard } from '../../../../packages/sprite-generator/src';
+import { pianoKeyboard } from 'sprite-generator';
 
 const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
 const blackKeys = [1, 3, 6, 8, 10];

@@ -1,5 +1,5 @@
 import { Engine } from '2d-engine';
-import { scope } from '../../../../packages/sprite-generator/src';
+import { scope } from 'sprite-generator';
 import { State } from '../../../state/types';
 
 const RESOLUTION = 49;
