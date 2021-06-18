@@ -34,7 +34,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			engine.setSpriteLookup(font('small_white'));
-			engine.drawText(5, 5, name);
+			engine.drawText(vGrid, hGrid, name);
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
 
