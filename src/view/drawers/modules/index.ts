@@ -1,4 +1,4 @@
-import { font, fillColor } from '../../../../packages/sprite-generator/src';
+import { font, fillColor } from 'sprite-generator';
 import scope from './scope';
 import number from './number';
 import midiNote from './midiNote';

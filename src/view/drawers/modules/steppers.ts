@@ -1,6 +1,6 @@
 import { Engine } from '2d-engine';
 import { ModuleType, State } from '../../../state/types';
-import { font, fillColor } from '../../../../packages/sprite-generator/src';
+import { font, fillColor } from 'sprite-generator';
 
 export default function drawSteppers(engine: Engine, moduleType: ModuleType, state: State, id: string): void {
 	for (let i = 0; i < moduleType.steppers.length; i++) {
