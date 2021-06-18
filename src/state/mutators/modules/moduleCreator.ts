@@ -8,8 +8,6 @@ export default function moduleCreator(state: State, events): void {
 		state.modules.push({
 			x,
 			y,
-			row: Math.floor(y / state.viewport.hGrid),
-			col: Math.floor(x / state.viewport.vGrid),
 			id: type + state.modules.length,
 			config: { ...state.moduleTypes[type].config },
 			type,
