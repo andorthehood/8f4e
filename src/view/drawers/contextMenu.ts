@@ -1,5 +1,5 @@
 import { Engine } from '2d-engine';
-import { font, fillColor } from '../../../packages/sprite-generator/src';
+import { font, fillColor } from 'sprite-generator';
 import { State } from '../../state/types';
 
 export default function drawContextMenu(engine: Engine, state: State): void {

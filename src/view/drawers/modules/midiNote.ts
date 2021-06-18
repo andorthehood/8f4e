@@ -1,5 +1,5 @@
 import { Engine } from '2d-engine';
-import { font } from '../../../../packages/sprite-generator/src';
+import { font } from 'sprite-generator';
 import { int16ToMidiNote } from '../../../state/helpers/midi';
 import { State } from '../../../state/types';
 
