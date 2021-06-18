@@ -1,7 +1,7 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { ModuleGeneratorProps, ModuleType } from '../state/types';
-import { MODULE_HEIGHT_M, MODULE_WIDTH_S } from './consts';
+import { MODULE_HEIGHT_L, MODULE_WIDTH_S } from './consts';
 
 export default function adc8bit({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
 	return {
@@ -10,7 +10,7 @@ export default function adc8bit({ vGrid, hGrid }: ModuleGeneratorProps): ModuleT
 			resolution: 16,
 		},
 		engine: 'adc',
-		height: MODULE_HEIGHT_M * hGrid,
+		height: MODULE_HEIGHT_L * hGrid,
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		name: '16bit ADC',
 		outputs: addDefaultOutputPositions(
