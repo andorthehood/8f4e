@@ -7,7 +7,6 @@ import generatePianoKeyboard from './pianoKeyboard';
 export { lookup as feedbackScale } from './feedbackScale';
 export { lookup as fillColor } from './fillColors';
 export { lookup as font } from './font';
-export { lookup as modules } from './modules';
 export { lookup as scope } from './scope';
 export { lookup as pianoKeyboard } from './pianoKeyboard';
 
