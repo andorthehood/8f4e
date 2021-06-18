@@ -14,42 +14,35 @@ export interface Connector {
 	label?: string;
 }
 
+export interface Size {
+	width: number;
+	height: number;
+}
+
 export interface Position {
 	x: number;
 	y: number;
 }
 
-export interface ConnectorWithPosition extends Connector, Position {}
+export interface ConnectorWithPosition extends Connector, Position, Size {}
 
-export interface Slider {
-	height: number;
+export interface Slider extends Position, Size {
 	id: string;
 	maxValue: number;
 	minValue: number;
 	resolution: number;
-	width: number;
-	x: number;
-	y: number;
 }
 
-export interface Switch {
-	height: number;
+export interface Switch extends Position, Size {
 	id: string;
 	offValue: number | boolean | string;
 	onValue: number | boolean | string;
-	width: number;
-	x: number;
-	y: number;
 }
 
-export interface Stepper {
-	height: number;
+export interface Stepper extends Position, Size {
 	id: string;
 	maxValue: number;
 	minValue: number;
-	width: number;
-	x: number;
-	y: number;
 }
 
 export type MemoryTransformer = (
@@ -58,31 +51,25 @@ export type MemoryTransformer = (
 	memoryAddressLookup: MemoryAddressLookup
 ) => void;
 
-export interface ModuleType {
+export interface ModuleType extends Size {
 	category: string;
 	config?: Record<string, unknown>;
 	inputs: ConnectorWithPosition[];
 	outputs: ConnectorWithPosition[];
 	engine: string;
-	height: number;
 	name: string;
 	sliders: Slider[];
 	steppers: Stepper[];
 	switches: Switch[];
 	transformer?: MemoryTransformer;
-	width: number;
 }
 
 export type ModuleTypeLookup = Record<string, ModuleType>;
 
-export type Viewport = {
+export interface Viewport extends Position, Size {
 	hGrid: number;
-	height: number;
 	vGrid: number;
-	width: number;
-	x: number;
-	y: number;
-};
+}
 
 export interface ContextMenuItem {
 	action: string;
@@ -91,14 +78,12 @@ export interface ContextMenuItem {
 	title: string;
 }
 
-export interface ContextMenu {
+export interface ContextMenu extends Position {
 	highlightedItem: number;
 	itemHeight: number;
 	itemWidth: number;
 	items: ContextMenuItem[];
 	open: boolean;
-	x: number;
-	y: number;
 }
 
 export type MidiPort = {

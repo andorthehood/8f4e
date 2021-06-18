@@ -4,8 +4,10 @@ import number from './number';
 import midiNote from './midiNote';
 import pianoQuantizer from './pianoQuantizer';
 import drawConnectors from './connectors';
+import drawSliders from './sliders';
 import { State } from '../../../state/types';
 import { Engine } from '2d-engine';
+import drawSteppers from './steppers';
 
 export default function drawModules(engine: Engine, state: State): void {
 	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.viewport;
@@ -37,40 +39,8 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.drawText(vGrid, hGrid, name);
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
-
-			for (let i = 0; i < sliders.length; i++) {
-				const slider = sliders[i];
-				engine.setSpriteLookup(fillColor);
-				engine.drawRectangle(slider.x, slider.y, slider.width, slider.height, 'rgb(255,255,255)');
-
-				const address =
-					state.compiler.outputAddressLookup[id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-				const value = state.compiler.memoryBuffer[address];
-				const offset = (value / slider.maxValue) * slider.height;
-				engine.drawSprite(slider.x, slider.y + (slider.height - offset), 'rgb(255,255,255)', slider.width, offset);
-				engine.setSpriteLookup(font('small_white'));
-				engine.drawText(slider.x, slider.y, '' + value / slider.resolution);
-			}
-
-			for (let i = 0; i < steppers.length; i++) {
-				const stepper = steppers[i];
-				engine.setSpriteLookup(fillColor);
-				engine.drawRectangle(stepper.x, stepper.y, stepper.width, stepper.height / 2, 'rgb(255,255,255)');
-				engine.drawRectangle(
-					stepper.x,
-					stepper.y + stepper.height / 2,
-					stepper.width,
-					stepper.height / 2,
-					'rgb(255,255,255)'
-				);
-
-				const address =
-					state.compiler.outputAddressLookup[id + '_' + stepper.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-				const value = state.compiler.memoryBuffer[address];
-
-				engine.setSpriteLookup(font('small_white'));
-				engine.drawText(stepper.x + 12, stepper.y, '' + value);
-			}
+			drawSliders(engine, state.moduleTypes[type], state, id);
+			drawSteppers(engine, state.moduleTypes[type], state, id);
 
 			if (type === 'number') {
 				number(engine, state, id);
