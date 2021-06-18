@@ -10,10 +10,10 @@ export default function findModuleAtViewportCoordinates(
 	return modules.find((module: Module) => {
 		const { width, height } = moduleTypes[module.type];
 		return (
-			x >= module.col * viewport.vGrid + viewport.x &&
-			x <= module.col * viewport.vGrid + width + viewport.x &&
-			y >= module.row * viewport.hGrid + viewport.y &&
-			y <= module.row * viewport.hGrid + height + viewport.y
+			x >= module.x + viewport.x &&
+			x <= module.x + width + viewport.x &&
+			y >= module.y + viewport.y &&
+			y <= module.y + height + viewport.y
 		);
 	});
 }
