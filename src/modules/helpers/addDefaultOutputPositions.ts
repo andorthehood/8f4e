@@ -11,6 +11,8 @@ export default function addDefaultOutputPositions(
 		return {
 			...connector,
 			...getConnectorDefaultPosition(index, false, vGrid, hGrid, width),
+			width: 2 * vGrid,
+			height: hGrid - 1,
 		};
 	});
 }
