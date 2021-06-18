@@ -13,7 +13,7 @@ export default function drawModules(engine: Engine, state: State): void {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.modules.length; i++) {
-		const { x, y, type, id, config, row, col } = state.modules[i];
+		const { x, y, type, id, config } = state.modules[i];
 		const { width, height, name, switches, sliders, steppers } = state.moduleTypes[type];
 
 		if (
@@ -22,7 +22,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			x + offsetX < state.viewport.width &&
 			y + offsetY < state.viewport.height
 		) {
-			engine.startGroup(col * vGrid, row * hGrid);
+			engine.startGroup(x, y);
 			engine.setSpriteLookup(fillColor);
 			engine.drawSprite(0, 0, 'rgb(153,153,153)', width, 1);
 			engine.drawSprite(0, 0, 'rgb(153,153,153)', 1, height);

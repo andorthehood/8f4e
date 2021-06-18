@@ -1,11 +1,9 @@
 import { MemoryAddressLookup, MemoryBuffer, Connection } from 'compiler';
 
 export interface Module {
-	col: number;
 	config: Record<string, number | string | Record<string, number | string>>;
 	engine: string;
 	id: string;
-	row: number;
 	type: string;
 	x: number;
 	y: number;
