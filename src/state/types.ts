@@ -49,13 +49,18 @@ export type MemoryTransformer = (
 	memoryAddressLookup: MemoryAddressLookup
 ) => void;
 
+export interface Line extends Position, Size {
+	color?: string;
+}
+
 export interface ModuleType extends Size {
 	category: string;
 	config?: Record<string, unknown>;
-	inputs: Connector[];
-	outputs: Connector[];
 	engine: string;
+	inputs: Connector[];
+	lines: Line[];
 	name: string;
+	outputs: Connector[];
 	sliders: Slider[];
 	steppers: Stepper[];
 	switches: Switch[];
