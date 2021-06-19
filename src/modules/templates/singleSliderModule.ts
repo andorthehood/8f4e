@@ -30,7 +30,7 @@ export default function singleSliderModule(
 				resolution,
 				width: vGrid * 2,
 				x: vGrid * 8,
-				y: hGrid * 2,
+				y: hGrid * 3,
 			},
 		],
 		steppers: [],
