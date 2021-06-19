@@ -67,6 +67,8 @@ export interface ModuleType extends Size {
 	transformer?: MemoryTransformer;
 }
 
+export type ModuleController = Stepper | Connector | Slider | Switch;
+
 export type ModuleTypeLookup = Record<string, ModuleType>;
 
 export interface Viewport extends Position, Size {

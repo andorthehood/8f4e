@@ -1,7 +1,7 @@
 import { State } from '../types';
 import { compilationDone, recompile } from '../mutators/compiler';
 
-export default function compiler(state: State, events) {
+export default function compiler(state: State, events): void {
 	const worker = new Worker(new URL('../../../packages/worker/src/index.ts', import.meta.url));
 	// @ts-ignore shared: true
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
@@ -28,12 +28,4 @@ export default function compiler(state: State, events) {
 	events.on('addModule', onRecompile);
 	events.on('deleteModule', onRecompile);
 	events.on('init', onRecompile);
-
-	return () => {
-		events.off('createConnection', onRecompile);
-		events.off('deleteConnection', onRecompile);
-		events.off('addModule', onRecompile);
-		events.off('deleteModule', onRecompile);
-		events.off('init', onRecompile);
-	};
 }

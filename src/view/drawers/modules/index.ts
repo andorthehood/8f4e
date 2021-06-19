@@ -8,6 +8,7 @@ import drawSliders from './sliders';
 import { State } from '../../../state/types';
 import { Engine } from '2d-engine';
 import drawSteppers from './steppers';
+import drawLines from './lines';
 
 export default function drawModules(engine: Engine, state: State): void {
 	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.viewport;
@@ -16,7 +17,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, type, id, config } = state.modules[i];
-		const { width, height, name, lines } = state.moduleTypes[type];
+		const { width, height, name, sliders, steppers, lines } = state.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -27,11 +28,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.startGroup(x, y);
 			engine.setSpriteLookup(fillColor);
 
-			if (lines) {
-				for (let i = 0; i < lines.length; i++) {
-					engine.drawSprite(lines[i].x, lines[i].y, 'rgb(102,102,102)', lines[i].width, lines[i].height);
-				}
-			}
+			drawLines(engine, lines);
 
 			if (type === 'scope') {
 				scope(engine, state, id);
@@ -41,8 +38,8 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.drawText(vGrid * 2, hGrid, name);
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
-			drawSliders(engine, state.moduleTypes[type], state, id);
-			drawSteppers(engine, state.moduleTypes[type], state, id);
+			drawSliders(engine, sliders, state, id);
+			drawSteppers(engine, steppers, state, id);
 
 			if (type === 'number') {
 				number(engine, state, id);

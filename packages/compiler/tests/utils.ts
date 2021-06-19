@@ -9,6 +9,7 @@ import {
 	createMemoryImport,
 	FunctionBody,
 } from 'bytecode-utils';
+import { ModuleGenerator } from 'compiler';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -25,27 +26,23 @@ export function createSingleFunctionWASMProgram(functionBody: FunctionBody): Uin
 	]);
 }
 
-export function setInitialMemory(memory: any, initialMemory: any) {
+export function setInitialMemory(memory: Int32Array, initialMemory: number[]): void {
 	for (let i = 0; i < initialMemory.length; i++) {
 		memory[i] = initialMemory[i];
 	}
 }
 
 export async function createTestModule(
-	moduleCreator,
+	moduleCreator: ModuleGenerator,
 	initialConfig = {}
-): Promise<{ memory: Int32Array; test: any; reset: () => void }> {
+): Promise<{ memory: Int32Array; test: CallableFunction; reset: () => void }> {
 	const module = moduleCreator('test', nthWord => nthWord * 4, initialConfig);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
-	const {
-		instance: {
-			exports: { test },
-		},
-	} = await WebAssembly.instantiate(program, {
+	const { instance } = await WebAssembly.instantiate(program, {
 		js: {
 			memory: memoryRef,
 		},
@@ -56,6 +53,8 @@ export async function createTestModule(
 	};
 
 	reset();
+
+	const test = instance.exports.test as CallableFunction;
 
 	return { memory: memoryBuffer, test, reset };
 }
