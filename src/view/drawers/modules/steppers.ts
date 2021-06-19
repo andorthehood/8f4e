@@ -1,10 +1,10 @@
 import { Engine } from '2d-engine';
-import { ModuleType, State } from '../../../state/types';
+import { State, Stepper } from '../../../state/types';
 import { font, fillColor } from 'sprite-generator';
 
-export default function drawSteppers(engine: Engine, moduleType: ModuleType, state: State, id: string): void {
-	for (let i = 0; i < moduleType.steppers.length; i++) {
-		const stepper = moduleType.steppers[i];
+export default function drawSteppers(engine: Engine, steppers: Stepper[], state: State, id: string): void {
+	for (let i = 0; i < steppers.length; i++) {
+		const stepper = steppers[i];
 		engine.setSpriteLookup(fillColor);
 		engine.drawRectangle(stepper.x, stepper.y, stepper.width, stepper.height / 2, 'rgb(255,255,255)');
 		engine.drawRectangle(

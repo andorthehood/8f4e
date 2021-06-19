@@ -1,6 +1,6 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import { ModuleGeneratorProps, ModuleType } from '../state/types';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_M, MODULE_WIDTH_S } from './consts';
+import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 
 export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {

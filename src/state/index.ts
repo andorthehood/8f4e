@@ -3,7 +3,6 @@ import connectionMaker from './effects/connections';
 import contextMenu from './effects/menu/contextMenu';
 import error from './effects/error';
 import history from './effects/history';
-import innit from './effects/init';
 import loader from './effects/loader';
 import midi from './effects/midi';
 import moduleCreator from './effects/modules/moduleCreator';
@@ -78,7 +77,6 @@ export default function init(events): State {
 	error(state, events);
 	tests(state, events);
 	compiler(state, events);
-	innit(state, events);
 	save(state, events);
 
 	return state;
