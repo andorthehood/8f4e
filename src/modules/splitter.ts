@@ -11,7 +11,12 @@ export default function splitter({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		name: 'Splitter',
 		outputs: addDefaultOutputPositions(
-			[{ id: 'out:1' }, { id: 'out:2' }, { id: 'out:3' }, { id: 'out:4' }],
+			[
+				{ id: 'out:1', label: 'out' },
+				{ id: 'out:2', label: 'out' },
+				{ id: 'out:3', label: 'out' },
+				{ id: 'out:4', label: 'out' },
+			],
 			vGrid,
 			hGrid,
 			MODULE_WIDTH_S * vGrid

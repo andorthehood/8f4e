@@ -8,7 +8,14 @@ export default function bitwiseOr({ vGrid, hGrid }: ModuleGeneratorProps): Modul
 		category: 'Bitwise',
 		engine: 'bitwiseOr',
 		height: MODULE_HEIGHT_S * hGrid,
-		inputs: addDefaultInputPositions([{ id: 'in:1' }, { id: 'in:2' }], vGrid, hGrid),
+		inputs: addDefaultInputPositions(
+			[
+				{ id: 'in:1', label: 'in' },
+				{ id: 'in:2', label: 'in' },
+			],
+			vGrid,
+			hGrid
+		),
 		name: 'Bitwise OR',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, MODULE_WIDTH_S * vGrid),
 		sliders: [],
