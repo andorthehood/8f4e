@@ -26,17 +26,18 @@ export default function drawModules(engine: Engine, state: State): void {
 		) {
 			engine.startGroup(x, y);
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'rgb(102,102,102)', width, 1);
-			engine.drawSprite(0, 0, 'rgb(102,102,102)', 1, height);
-			engine.drawSprite(0, height, 'rgb(102,102,102)', width, 1);
-			engine.drawSprite(width, 0, 'rgb(102,102,102)', 1, height);
+
+			engine.drawSprite(vGrid, hGrid / 2, 'rgb(102,102,102)', width - vGrid * 2, 1);
+			engine.drawSprite(width - vGrid, hGrid / 2, 'rgb(102,102,102)', 1, height - hGrid);
+			engine.drawSprite(vGrid, height - hGrid / 2, 'rgb(102,102,102)', width - vGrid * 2, 1);
+			engine.drawSprite(vGrid, hGrid / 2, 'rgb(102,102,102)', 1, height - hGrid);
 
 			if (type === 'scope') {
 				scope(engine, state, id);
 			}
 
 			engine.setSpriteLookup(font('small_white'));
-			engine.drawText(vGrid, 0, name);
+			engine.drawText(vGrid * 2, hGrid, name);
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
 			drawSliders(engine, state.moduleTypes[type], state, id);

@@ -1,25 +1,11 @@
 import { State } from '../types';
 
-export default function viewport(state: State, events): () => void {
-	function onMouseMove(event) {
-		if (event.buttons === 1) {
-			state.viewport.x += event.movementX;
-			state.viewport.y += event.movementY;
-		}
-	}
+export function resize(state: State, width: number, height: number): void {
+	state.viewport.width = width;
+	state.viewport.height = height;
+}
 
-	function onResize() {
-		state.viewport.width = window.innerWidth;
-		state.viewport.height = window.innerHeight;
-	}
-
-	onResize();
-
-	events.on('mousemove', onMouseMove);
-	events.on('resize', onResize);
-
-	return () => {
-		events.off('mousemove', onMouseMove);
-		events.off('resize', onResize);
-	};
+export function move(state: State, movementX: number, movementY: number): void {
+	state.viewport.x += movementX;
+	state.viewport.y += movementY;
 }
