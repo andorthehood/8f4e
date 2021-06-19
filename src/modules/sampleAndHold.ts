@@ -8,12 +8,12 @@ export default function min({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 		category: 'Other',
 		engine: 'sampleAndHold',
 		height: MODULE_HEIGHT_S * hGrid,
-		inputs: addDefaultInputPositions([{ id: 'in' }, { id: 'in:trigger' }], vGrid, hGrid),
+		inputs: addDefaultInputPositions([{ id: 'in' }, { id: 'in:trigger', label: 'trigger' }], vGrid, hGrid),
 		name: 'Sample & Hold',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, MODULE_WIDTH_S * vGrid),
 		sliders: [],
 		steppers: [],
 		switches: [],
-		width: MODULE_WIDTH_S,
+		width: MODULE_WIDTH_S * vGrid,
 	};
 }
