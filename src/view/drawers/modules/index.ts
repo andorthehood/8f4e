@@ -16,7 +16,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, type, id, config } = state.modules[i];
-		const { width, height, name } = state.moduleTypes[type];
+		const { width, height, name, lines } = state.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -27,10 +27,11 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.startGroup(x, y);
 			engine.setSpriteLookup(fillColor);
 
-			engine.drawSprite(vGrid, hGrid / 2, 'rgb(102,102,102)', width - vGrid * 2, 1);
-			engine.drawSprite(width - vGrid, hGrid / 2, 'rgb(102,102,102)', 1, height - hGrid);
-			engine.drawSprite(vGrid, height - hGrid / 2, 'rgb(102,102,102)', width - vGrid * 2, 1);
-			engine.drawSprite(vGrid, hGrid / 2, 'rgb(102,102,102)', 1, height - hGrid);
+			if (lines) {
+				for (let i = 0; i < lines.length; i++) {
+					engine.drawSprite(lines[i].x, lines[i].y, 'rgb(102,102,102)', lines[i].width, lines[i].height);
+				}
+			}
 
 			if (type === 'scope') {
 				scope(engine, state, id);
