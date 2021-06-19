@@ -1,6 +1,6 @@
 import { State } from '../types';
 
-export default function error(state: State, events) {
+export default function error(state: State, events): void {
 	let timeoutRef: NodeJS.Timeout = null;
 
 	function onError({ message, timeout = 5000 }) {
@@ -13,9 +13,4 @@ export default function error(state: State, events) {
 	}
 
 	events.on('error', onError);
-
-	return () => {
-		events.off('error', onError);
-		clearTimeout(timeoutRef);
-	};
 }

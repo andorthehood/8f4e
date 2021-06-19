@@ -1,11 +1,11 @@
 export interface EventObject {
-	x: number;
-	y: number;
-	movementX: number;
-	movementY: number;
-	buttons: {};
-	stopPropagation: boolean;
-	key: number;
+	x?: number;
+	y?: number;
+	movementX?: number;
+	movementY?: number;
+	buttons?: number;
+	stopPropagation?: boolean;
+	key?: number;
 }
 
 export type EventHandler = (event: EventObject) => void;
@@ -13,7 +13,7 @@ export type EventHandler = (event: EventObject) => void;
 export default function events(): {
 	on: (event: string, callback: EventHandler) => void;
 	off: (event: string, callback: EventHandler) => void;
-	dispatch: (event: string, eventObject: {}) => void;
+	dispatch: (event: string, eventObject: EventObject) => void;
 } {
 	const subscriptions = {
 		contextmenu: [],
@@ -66,7 +66,7 @@ export default function events(): {
 		subscriptions[eventName].splice(subscriptions[eventName].indexOf(callback), 1);
 	}
 
-	function dispatch(type: string, eventObject: {} = {}): void {
+	function dispatch(type: string, eventObject: EventObject = {}): void {
 		if (!subscriptions[type]) {
 			return console.warn('No subscription to event type:', type);
 		}
