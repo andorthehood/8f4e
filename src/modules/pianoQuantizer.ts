@@ -3,6 +3,7 @@ import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { midiNoteToInt16 } from '../state/helpers/midi';
 import { MemoryTransformer, ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
+import generateBorderLines from './helpers/generateBorderLines';
 
 const transformer: MemoryTransformer = function (module, memoryBuffer, memoryAddressLookup) {
 	const activeNotes = Object.keys(module.config)
@@ -65,20 +66,24 @@ const pianoKeys = new Array(128).fill(0).map((item, index) => {
 });
 
 export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
+	const width = MODULE_WIDTH_XXL * vGrid;
+	const height = MODULE_HEIGHT_S * hGrid;
+
 	return {
 		category: 'Quantizer',
 		config: {
 			allocatedNotes: 32,
 		},
 		engine: 'quantizer',
-		height: MODULE_HEIGHT_S * hGrid,
+		height,
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
+		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Quantizer',
-		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, MODULE_WIDTH_XXL * vGrid),
+		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
 		switches: [...pianoKeys],
 		transformer,
-		width: MODULE_WIDTH_XXL * vGrid,
+		width,
 	};
 }
