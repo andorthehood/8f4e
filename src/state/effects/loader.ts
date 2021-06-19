@@ -1,6 +1,6 @@
 import { State } from '../types';
 
-export default function loader(state: State, events, defaultState) {
+export default function loader(state: State, events, defaultState: State): void {
 	const localState = JSON.parse(localStorage.getItem('state')) || {};
 
 	Object.keys(localState).forEach(key => {
@@ -29,8 +29,5 @@ export default function loader(state: State, events, defaultState) {
 		);
 	}
 
-	function onOpenFile() {}
-
 	events.on('saveState', onSaveState);
-	events.on('open', onOpenFile);
 }

@@ -1,10 +1,10 @@
 import { Engine } from '2d-engine';
-import { ModuleType, State } from '../../../state/types';
+import { Slider, State } from '../../../state/types';
 import { font, fillColor } from 'sprite-generator';
 
-export default function drawSliders(engine: Engine, moduleType: ModuleType, state: State, id: string): void {
-	for (let i = 0; i < moduleType.sliders.length; i++) {
-		const slider = moduleType.sliders[i];
+export default function drawSliders(engine: Engine, sliders: Slider[], state: State, id: string): void {
+	for (let i = 0; i < sliders.length; i++) {
+		const slider = sliders[i];
 		engine.setSpriteLookup(fillColor);
 		engine.drawRectangle(slider.x, slider.y, slider.width, slider.height, 'rgb(255,255,255)');
 
