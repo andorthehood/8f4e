@@ -1,4 +1,4 @@
-import { Module, ModuleTypeLookup, Viewport } from '../types';
+import { Module, ModuleController, ModuleTypeLookup, Viewport } from '../types';
 
 export default function findModuleControllerAtViewportCoordinates(
 	viewport: Viewport,
@@ -7,7 +7,7 @@ export default function findModuleControllerAtViewportCoordinates(
 	controllerType: string,
 	x: number,
 	y: number
-) {
+): ModuleController {
 	const controllers = moduleTypes[module.type][controllerType];
 	return controllers.find(controller => {
 		const { width, height } = controller;

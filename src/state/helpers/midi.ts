@@ -12,6 +12,6 @@ export function midiNoteToInt16(num: number): number {
 	return Math.floor((num / MAX_MIDI_NOTE) * (I16_SIGNED_LARGEST_NUMBER * 2) - I16_SIGNED_LARGEST_NUMBER);
 }
 
-export function getOneOctaveInInt16() {
+export function getOneOctaveInInt16(): number {
 	return midiNoteToInt16(0) + midiNoteToInt16(12);
 }

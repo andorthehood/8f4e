@@ -2,7 +2,7 @@ import { State } from '../types';
 
 const trackedEvents = ['deleteConnection', 'createConnection', 'deleteModule', 'addModule'];
 
-export default function history(state: State, events) {
+export default function history(state: State, events): void {
 	function onHistoricEvent(event) {
 		if (event.replaceHistory) {
 			return;
