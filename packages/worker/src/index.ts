@@ -2,8 +2,6 @@ import compile, { Connection, Module, setUpConnections } from 'compiler';
 import { int16ToMidiNote } from '../../../src/state/helpers/midi';
 import { Event, ControlChange } from '../../../src/midi/enums';
 
-console.log('IDEIG ELJUT');
-
 function resetMidi() {
 	self.postMessage({
 		type: 'midiMessage',
@@ -41,8 +39,6 @@ async function createModule(memoryRef, modules: Module[]) {
 
 	const cycle = instance.exports.cycle as CallableFunction;
 	const init = instance.exports.init as CallableFunction;
-
-	console.log('idaig is', cycle);
 
 	return { memoryBuffer, cycle, init, outputAddressLookup, compiledModules };
 }
