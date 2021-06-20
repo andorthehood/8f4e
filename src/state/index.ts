@@ -58,9 +58,6 @@ const defaultState: State = {
 
 export default function init(events): State {
 	const state = { ...defaultState };
-
-	console.log('init2');
-
 	state.moduleTypes = generateModuleTypes({ vGrid: state.viewport.vGrid, hGrid: state.viewport.hGrid });
 	midi(state, events);
 	loader(state, events, defaultState);
@@ -78,6 +75,6 @@ export default function init(events): State {
 	tests(state, events);
 	compiler(state, events);
 	save(state, events);
-
+	events.dispatch('init');
 	return state;
 }
