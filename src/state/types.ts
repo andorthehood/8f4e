@@ -53,9 +53,14 @@ export interface Line extends Position, Size {
 	color?: string;
 }
 
+export interface Drawer {
+	name: string;
+	config: Record<string, number | string>;
+}
+
 export interface ModuleType extends Size {
 	category: string;
-	config?: Record<string, unknown>;
+	drawer?: Drawer;
 	engine: Engine;
 	initialState: ModuleState;
 	inputs: Connector[];
