@@ -1,4 +1,5 @@
 import { Engine } from '2d-engine';
+import { ModuleState } from 'compiler';
 import { pianoKeyboard } from 'sprite-generator';
 
 const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
@@ -17,15 +18,15 @@ function getBlackKeyIndex(note: number): number {
 	return blackKeys.indexOf(note % allKeys.length);
 }
 
-export default function drawer(engine: Engine, config): void {
+export default function pianoDrawer(engine: Engine, state: ModuleState, vGrid: number, hGrid: number): void {
 	engine.setSpriteLookup(pianoKeyboard());
 
 	for (let i = 0; i < 10; i++) {
-		engine.drawSprite(140 * i, 38, undefined);
+		engine.drawSprite(140 * i + vGrid, hGrid * 4.5, undefined);
 	}
 
-	const activeNotes = Object.keys(config)
-		.filter(key => key.startsWith('note') && config[key])
+	const activeNotes = Object.keys(state)
+		.filter(key => key.startsWith('note') && state[key])
 		.map(note => parseInt(note.split(':')[1], 10));
 
 	engine.setSpriteLookup(pianoKeyboard(true));
@@ -34,11 +35,11 @@ export default function drawer(engine: Engine, config): void {
 		const index = getWhiteKeyIndex(activeNotes[i]);
 		if (index !== -1) {
 			const octaveNumber = Math.floor(activeNotes[i] / 12) * 7;
-			engine.drawSprite((index + octaveNumber) * 20, 38, activeNotes[i]);
+			engine.drawSprite((index + octaveNumber) * 20 + vGrid, hGrid * 4.5, activeNotes[i]);
 		} else {
 			const blackIndex = getBlackKeyIndex(activeNotes[i]);
 			const octave = Math.floor(activeNotes[i] / 12);
-			engine.drawSprite(blackKeyPositions[blackIndex] + octave * keyboardWidth, 38, activeNotes[i]);
+			engine.drawSprite(blackKeyPositions[blackIndex] + octave * keyboardWidth + vGrid, hGrid * 4.5, activeNotes[i]);
 		}
 	}
 }
