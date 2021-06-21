@@ -1,16 +1,23 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
-import { State } from '../../types';
+import { State, Module, Slider } from '../../types';
 
 export default function moduleSliders(state: State, events): void {
-	let slider = null;
-	let module = null;
+	let slider: Slider = null;
+	let module: Module = null;
 
-	function onModuleClick(event) {
+	function onModuleClick(event: { x: number; y: number; module: Module; stopPropagation: boolean }) {
 		const { x, y } = event;
 		event.stopPropagation = true;
 
 		module = event.module;
-		slider = findModuleControllerAtViewportCoordinates(state.viewport, module, state.moduleTypes, 'sliders', x, y);
+		slider = findModuleControllerAtViewportCoordinates<Slider>(
+			state.viewport,
+			module,
+			state.moduleTypes,
+			'sliders',
+			x,
+			y
+		);
 	}
 
 	function onMouseMove(event) {
@@ -18,14 +25,14 @@ export default function moduleSliders(state: State, events): void {
 			event.stopPropagation = true;
 			const { movementY } = event;
 
-			module.config[slider.id] = Math.min(
-				Math.max(slider.minValue, module.config[slider.id] + movementY * -1 * slider.resolution),
+			module.state[slider.id] = Math.min(
+				Math.max(slider.minValue, module.state[slider.id] + movementY * -1 * slider.resolution),
 				slider.maxValue
 			);
 
 			const address =
 				state.compiler.outputAddressLookup[module.id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-			state.compiler.memoryBuffer[address] = module.config[slider.id];
+			state.compiler.memoryBuffer[address] = module.state[slider.id];
 		}
 	}
 

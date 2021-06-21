@@ -27,10 +27,10 @@ const VERSION = [0x01, 0x00, 0x00, 0x00];
 function compileModules(modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
 	return modules
-		.filter(({ engine }) => moduleCompilers[engine])
-		.map(({ id, engine, config }) => {
+		.filter(({ engine }) => moduleCompilers[engine.name])
+		.map(({ id, engine, state }) => {
 			const relative = createRelativeAddressCalculator(memoryAddress, Int32Array.BYTES_PER_ELEMENT);
-			const module = moduleCompilers[engine](id, relative, config);
+			const module = moduleCompilers[engine.name](id, relative, { ...engine.config, ...state });
 			memoryAddress += module.initialMemory.length;
 			return module;
 		});
@@ -51,7 +51,9 @@ function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
 		.flat();
 }
 
-export default function compile(modules: Module[]): { codeBuffer: Uint8Array, outputAddressLookup: MemoryAddressLookup, compiledModules: CompiledModule[]} {
+export default function compile(
+	modules: Module[]
+): { codeBuffer: Uint8Array; outputAddressLookup: MemoryAddressLookup; compiledModules: CompiledModule[] } {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);

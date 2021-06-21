@@ -10,8 +10,9 @@ export default function sequentialSwitch({ vGrid, hGrid }: ModuleGeneratorProps)
 
 	return {
 		category: 'Logic',
-		engine: 'sequentialSwitch',
+		engine: { name: 'sequentialSwitch', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions(
 			[{ id: 'in:1' }, { id: 'in:2' }, { id: 'in:3' }, { id: 'in:4' }, { id: 'in:clock' }],
 			vGrid,

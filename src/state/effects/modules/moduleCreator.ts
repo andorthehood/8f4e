@@ -6,12 +6,12 @@ export default function moduleCreator(state: State, events): void {
 		y = y - state.viewport.y - Math.floor(state.moduleTypes[type].height / 2);
 
 		state.modules.push({
+			engine: { name: state.moduleTypes[type].engine.name, config: { ...state.moduleTypes[type].engine.config } },
+			id: type + state.modules.length,
+			state: { ...state.moduleTypes[type].initialState },
+			type,
 			x,
 			y,
-			id: type + state.modules.length,
-			config: { ...state.moduleTypes[type].config },
-			type,
-			engine: state.moduleTypes[type].engine,
 		});
 	}
 

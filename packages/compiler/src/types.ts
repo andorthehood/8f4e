@@ -8,12 +8,12 @@ export interface CompiledModule {
 
 export type MemoryBuffer = Int32Array;
 
-export type Connection = {
+export interface Connection {
 	fromModuleId: string;
 	fromConnectorId: string;
 	toModuleId: string;
 	toConnectorId: string;
-};
+}
 
 export type RelativeAddressCalculator = (nthWord: number) => number;
 
@@ -23,10 +23,17 @@ export type ModuleGenerator = (
 	initialConfig?: Record<string, number | string>
 ) => CompiledModule;
 
+export interface Engine {
+	name: string;
+	config?: Record<string, unknown>;
+}
+
+export type ModuleState = Record<string, number>;
+
 export interface Module {
 	id: string;
-	engine: string;
-	config: Record<string, number | string>;
+	engine: Engine;
+	state: ModuleState;
 }
 
 export type MemoryAddressLookup = Record<string, number>;

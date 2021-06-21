@@ -10,8 +10,9 @@ export default function logicXor({ vGrid, hGrid }: ModuleGeneratorProps): Module
 
 	return {
 		category: 'Logic',
-		engine: 'logicXor',
+		engine: { name: 'logicXor', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions(
 			[
 				{ id: 'in:1', label: 'in' },

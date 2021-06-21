@@ -10,8 +10,9 @@ export default function mixer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTyp
 
 	return {
 		category: 'Other',
-		engine: 'mixer',
+		engine: { name: 'mixer', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in:1' }, { id: 'in:2' }, { id: 'in:3' }, { id: 'in:4' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Mixer',

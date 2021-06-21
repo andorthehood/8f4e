@@ -10,8 +10,9 @@ export default function number({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 
 	return {
 		category: 'Inspection',
-		engine: 'through',
+		engine: { name: 'through', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'MIDI Note',

@@ -10,8 +10,9 @@ export default function invert({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 
 	return {
 		category: 'Math',
-		engine: 'invert',
+		engine: { name: 'invert', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Invert',

@@ -1,9 +1,9 @@
-import { MemoryAddressLookup, MemoryBuffer, Connection } from 'compiler';
+import { MemoryAddressLookup, MemoryBuffer, Connection, Engine, ModuleState } from 'compiler';
 
 export interface Module {
-	config: Record<string, number | string | Record<string, number | string>>;
-	engine: string;
+	engine: Engine;
 	id: string;
+	state: ModuleState;
 	type: string;
 	x: number;
 	y: number;
@@ -56,7 +56,8 @@ export interface Line extends Position, Size {
 export interface ModuleType extends Size {
 	category: string;
 	config?: Record<string, unknown>;
-	engine: string;
+	engine: Engine;
+	initialState: ModuleState;
 	inputs: Connector[];
 	lines: Line[];
 	name: string;

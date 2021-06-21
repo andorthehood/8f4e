@@ -10,8 +10,9 @@ export default function bitwiseXor({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 
 	return {
 		category: 'Bitwise',
-		engine: 'bitwiseXor',
+		engine: { name: 'bitwiseXor', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions(
 			[
 				{ id: 'in:1', label: 'in' },

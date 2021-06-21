@@ -9,8 +9,9 @@ export default function randomGenerator({ vGrid, hGrid }: ModuleGeneratorProps):
 
 	return {
 		category: 'Random',
-		engine: 'random',
+		engine: { name: 'random', config: {} },
 		height,
+		initialState: {},
 		inputs: [],
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Random',

@@ -1,15 +1,13 @@
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
-import { State } from '../../types';
+import { State, Module } from '../../types';
 
 export default function moduleDragger(state: State, events): () => void {
-	let draggedModule = null;
+	let draggedModule: Module = null;
 
 	function onMouseDown({ x, y }) {
 		draggedModule = findModuleAtViewportCoordinates(state.modules, state.moduleTypes, state.viewport, x, y);
 		if (draggedModule) {
 			events.dispatch('moduleClick', { x, y, module: draggedModule });
-			draggedModule.beingDragged = true;
-			draggedModule.isSelected = true;
 
 			// Bring dragged module forward.
 			state.modules.push(state.modules.splice(state.modules.indexOf(draggedModule), 1)[0]);
@@ -27,7 +25,6 @@ export default function moduleDragger(state: State, events): () => void {
 
 	function onMouseUp() {
 		if (draggedModule) {
-			draggedModule.beingDragged = false;
 			draggedModule.x = Math.round(draggedModule.x / (state.viewport.vGrid * 2)) * (state.viewport.vGrid * 2);
 			draggedModule.y = Math.round(draggedModule.y / state.viewport.hGrid) * state.viewport.hGrid;
 			draggedModule = null;

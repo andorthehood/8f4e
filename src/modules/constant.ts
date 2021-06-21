@@ -11,10 +11,8 @@ export default function constant(props: ModuleGeneratorProps): ModuleType {
 			resolution: 100,
 		}),
 		category: 'Other',
-		config: {
-			out: 0,
-		},
-		engine: 'constant',
+		engine: { name: 'constant', config: {} },
+		initialState: { out: 0 },
 		inputs: [],
 		name: 'Constant',
 	};
