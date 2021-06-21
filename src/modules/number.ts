@@ -10,11 +10,9 @@ export default function number({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 
 	return {
 		category: 'Inspection',
-		config: {
-			numberOfPorts: 1,
-		},
-		engine: 'through',
+		engine: { name: 'through', config: { numberOfPorts: 1 } },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in:1', label: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Number',

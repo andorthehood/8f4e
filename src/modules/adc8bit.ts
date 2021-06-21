@@ -9,11 +9,9 @@ export default function adc8bit({ vGrid, hGrid }: ModuleGeneratorProps): ModuleT
 	const height = MODULE_HEIGHT_M * hGrid;
 	return {
 		category: 'Bitwise',
-		config: {
-			resolution: 8,
-		},
-		engine: 'adc',
+		engine: { name: 'adc', config: { resolution: 8 } },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: '8bit ADC',

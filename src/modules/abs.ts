@@ -10,8 +10,9 @@ export default function abs({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 
 	return {
 		category: 'Math',
-		engine: 'abs',
+		engine: { name: 'abs', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Abs',
