@@ -10,11 +10,9 @@ export default function adc8bit({ vGrid, hGrid }: ModuleGeneratorProps): ModuleT
 
 	return {
 		category: 'Bitwise',
-		config: {
-			resolution: 16,
-		},
-		engine: 'adc',
+		engine: { name: 'adc', config: { resolution: 16 } },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: '16bit ADC',

@@ -10,8 +10,9 @@ export default function scope({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTyp
 
 	return {
 		category: 'Inspection',
-		engine: 'scope',
+		engine: { name: 'scope', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Scope',
