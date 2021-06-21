@@ -17,7 +17,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, type, id, state: moduleState } = state.modules[i];
-		const { width, height, name, sliders, steppers, lines } = state.moduleTypes[type];
+		const { width, height, name, sliders, steppers, lines, drawer } = state.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -49,8 +49,8 @@ export default function drawModules(engine: Engine, state: State): void {
 				midiNote(engine, state, id);
 			}
 
-			if (type === 'pianoQuantizer' || type == 'arpeggiator') {
-				pianoQuantizer(engine, moduleState, vGrid, hGrid);
+			if (drawer && drawer.name === 'piano') {
+				pianoQuantizer(engine, moduleState, vGrid, hGrid, drawer.config);
 			}
 
 			// for (let i = 0; i < switches.length; i++) {

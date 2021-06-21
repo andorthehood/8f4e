@@ -23,9 +23,11 @@ export type ModuleGenerator = (
 	initialConfig?: Record<string, number | string>
 ) => CompiledModule;
 
+export type EngineConfig = Record<string, number | string | EngineConfig[]>;
+
 export interface Engine {
 	name: string;
-	config: Record<string, number>;
+	config: EngineConfig;
 }
 
 export type ModuleState = Record<string, number>;
