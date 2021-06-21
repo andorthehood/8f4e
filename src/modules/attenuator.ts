@@ -8,7 +8,7 @@ export default function attenuator(props: ModuleGeneratorProps): ModuleType {
 		config: {
 			divisor: 1,
 		},
-		engine: 'attenuator',
+		engine: { name: 'attenuator' },
 		name: 'Attenuator',
 	};
 }

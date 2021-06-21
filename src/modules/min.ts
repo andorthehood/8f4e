@@ -10,8 +10,9 @@ export default function min({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 
 	return {
 		category: 'Logic',
-		engine: 'min',
+		engine: { name: 'min', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in:1' }, { id: 'in:2' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Min',

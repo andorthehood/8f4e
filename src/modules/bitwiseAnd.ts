@@ -10,8 +10,9 @@ export default function bitwiseAnd({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 
 	return {
 		category: 'Bitwise',
-		engine: 'bitwiseAnd',
-		height: MODULE_HEIGHT_S * hGrid,
+		engine: { name: 'bitwiseAnd', config: {} },
+		height,
+		initialState: {},
 		inputs: addDefaultInputPositions(
 			[
 				{ id: 'in:1', label: 'in' },
@@ -22,10 +23,10 @@ export default function bitwiseAnd({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 		),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Bitwise AND',
-		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, MODULE_WIDTH_S * vGrid),
+		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
 		switches: [],
-		width: MODULE_WIDTH_S * vGrid,
+		width,
 	};
 }
