@@ -29,9 +29,20 @@ const transformer: MemoryTransformer = function (
 export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
 	const width = MODULE_WIDTH_XXL * vGrid;
 	const height = MODULE_HEIGHT_S * hGrid;
+	const pianoX = vGrid;
+	const pianoY = hGrid * 4.5;
+	const keyCount = 128;
 
 	return {
 		category: 'Quantizer',
+		drawer: {
+			name: 'piano',
+			config: {
+				keyCount,
+				x: pianoX,
+				y: pianoY,
+			},
+		},
 		engine: { name: 'quantizer', config: { allocatedNotes: 32 } },
 		height,
 		initialState: {},
@@ -42,13 +53,13 @@ export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): 
 		sliders: [],
 		steppers: [],
 		switches: [
-			...generatePianoKeyLayout<Switch>({ keyCount: 128, vGrid, hGrid }, ({ index, x, y, ...rest }) => {
+			...generatePianoKeyLayout<Switch>({ keyCount, vGrid, hGrid }, ({ index, x, y, ...rest }) => {
 				return {
 					id: 'note:' + index,
 					onValue: true,
 					offValue: false,
-					x: x + vGrid,
-					y: y + hGrid * 4,
+					x: x + pianoX,
+					y: y + pianoY,
 					...rest,
 				};
 			}),
