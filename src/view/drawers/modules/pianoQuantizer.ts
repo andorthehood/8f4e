@@ -18,11 +18,11 @@ function getBlackKeyIndex(note: number): number {
 	return blackKeys.indexOf(note % allKeys.length);
 }
 
-export default function pianoDrawer(engine: Engine, state: ModuleState, vGrid: number, hGrid: number): void {
+export default function pianoDrawer(engine: Engine, state: ModuleState, vGrid: number, hGrid: number, config): void {
 	engine.setSpriteLookup(pianoKeyboard());
 
 	for (let i = 0; i < 10; i++) {
-		engine.drawSprite(140 * i + vGrid, hGrid * 4.5, undefined);
+		engine.drawSprite(140 * i + config.x, config.y, undefined);
 	}
 
 	const activeNotes = Object.keys(state)
@@ -35,11 +35,11 @@ export default function pianoDrawer(engine: Engine, state: ModuleState, vGrid: n
 		const index = getWhiteKeyIndex(activeNotes[i]);
 		if (index !== -1) {
 			const octaveNumber = Math.floor(activeNotes[i] / 12) * 7;
-			engine.drawSprite((index + octaveNumber) * 20 + vGrid, hGrid * 4.5, activeNotes[i]);
+			engine.drawSprite((index + octaveNumber) * 20 + config.x, config.y, activeNotes[i]);
 		} else {
 			const blackIndex = getBlackKeyIndex(activeNotes[i]);
 			const octave = Math.floor(activeNotes[i] / 12);
-			engine.drawSprite(blackKeyPositions[blackIndex] + octave * keyboardWidth + vGrid, hGrid * 4.5, activeNotes[i]);
+			engine.drawSprite(blackKeyPositions[blackIndex] + octave * keyboardWidth + config.x, config.y, activeNotes[i]);
 		}
 	}
 }
