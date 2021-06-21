@@ -10,8 +10,9 @@ export default function min({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 
 	return {
 		category: 'Other',
-		engine: 'sampleAndHold',
+		engine: { name: 'sampleAndHold', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }, { id: 'in:trigger', label: 'trigger' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Sample & Hold',

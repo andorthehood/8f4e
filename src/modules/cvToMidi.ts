@@ -9,12 +9,15 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 
 	return {
 		category: 'MIDI',
-		config: {
-			numberOfPorts: 2,
-			dataPlaceholders: [{ id: 'channel' }, { id: 'device' }],
+		engine: {
+			name: 'through',
+			config: {
+				numberOfPorts: 2,
+				dataPlaceholders: [{ id: 'channel' }, { id: 'device' }],
+			},
 		},
-		engine: 'through',
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions(
 			[
 				{ id: 'in:1', label: 'note in' },

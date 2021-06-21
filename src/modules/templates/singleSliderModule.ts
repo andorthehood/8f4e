@@ -20,8 +20,9 @@ export default function singleSliderModule(
 
 	return {
 		category: '',
-		engine: '',
+		engine: { name: '', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: '',

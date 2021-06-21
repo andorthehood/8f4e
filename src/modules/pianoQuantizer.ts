@@ -71,11 +71,9 @@ export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): 
 
 	return {
 		category: 'Quantizer',
-		config: {
-			allocatedNotes: 32,
-		},
-		engine: 'quantizer',
+		engine: { name: 'quantizer', config: { allocatedNotes: 32 } },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Quantizer',

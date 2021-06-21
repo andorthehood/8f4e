@@ -10,8 +10,9 @@ export default function max({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 
 	return {
 		category: 'Logic',
-		engine: 'max',
+		engine: { name: 'max', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions(
 			[
 				{ id: 'in:1', label: 'in' },

@@ -71,8 +71,9 @@ export default function arpeggiator({ vGrid, hGrid }: ModuleGeneratorProps): Mod
 
 	return {
 		category: 'Arpeggiator',
-		engine: 'arpeggiator',
+		engine: { name: 'arpeggiator' },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Arpeggiator',
