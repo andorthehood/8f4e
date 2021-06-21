@@ -46,7 +46,6 @@ async function createModule(memoryRef, modules: Module[]) {
 let interval: NodeJS.Timeout;
 
 async function recompile(memoryRef, modules: Module[], connections: Connection[]) {
-	console.log('recompil;e');
 	const { memoryBuffer, cycle, outputAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
 
 	init();

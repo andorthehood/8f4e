@@ -10,8 +10,9 @@ export default function logicNegate({ vGrid, hGrid }: ModuleGeneratorProps): Mod
 
 	return {
 		category: 'Logic',
-		engine: 'logicNegate',
+		engine: { name: 'logicNegate', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Logic Negate',

@@ -10,8 +10,9 @@ export default function bitwiseOr({ vGrid, hGrid }: ModuleGeneratorProps): Modul
 
 	return {
 		category: 'Bitwise',
-		engine: 'bitwiseOr',
+		engine: { name: 'bitwiseOr', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions(
 			[
 				{ id: 'in:1', label: 'in' },

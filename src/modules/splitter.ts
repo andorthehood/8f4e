@@ -10,8 +10,9 @@ export default function splitter({ vGrid, hGrid }: ModuleGeneratorProps): Module
 
 	return {
 		category: 'Other',
-		engine: 'splitter',
+		engine: { name: 'splitter', config: {} },
 		height,
+		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Splitter',

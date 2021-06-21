@@ -18,7 +18,7 @@ import { State } from './types';
 import generateModuleTypes from '../modules';
 
 const defaultState: State = {
-	sructureVersion: 7,
+	sructureVersion: 8,
 	compiler: {
 		compilationTime: '0',
 		cycleTime: 0,

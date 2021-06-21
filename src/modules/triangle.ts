@@ -9,8 +9,9 @@ export default function triangle({ vGrid, hGrid }: ModuleGeneratorProps): Module
 
 	return {
 		category: 'Oscillator',
-		engine: 'triangle',
+		engine: { name: 'triangle', config: {} },
 		height,
+		initialState: {},
 		inputs: [],
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Triangle',
