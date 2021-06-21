@@ -16,7 +16,7 @@ export default function drawModules(engine: Engine, state: State): void {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.modules.length; i++) {
-		const { x, y, type, id, config } = state.modules[i];
+		const { x, y, type, id, state: moduleState } = state.modules[i];
 		const { width, height, name, sliders, steppers, lines } = state.moduleTypes[type];
 
 		if (
@@ -50,7 +50,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			if (type === 'pianoQuantizer' || type == 'arpeggiator') {
-				pianoQuantizer(engine, config);
+				pianoQuantizer(engine, moduleState, vGrid, hGrid);
 			}
 
 			// for (let i = 0; i < switches.length; i++) {
