@@ -58,7 +58,7 @@ enum Locals {
 	__LENGTH,
 }
 
-const adc: ModuleGenerator = function (moduleId, offset, { resolution }) {
+const adc: ModuleGenerator = function (moduleId, offset, { resolution = 8 }: { resolution?: number } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
