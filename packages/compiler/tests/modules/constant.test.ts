@@ -3,22 +3,28 @@ import constant, { Memory } from '../../src/modules/constant';
 
 let testModule;
 
-beforeAll(async () => {
-	testModule = await createTestModule(constant, { out: 0 });
+test('if compiled module matches with snapshot', () => {
+	expect(constant('id', () => 0)).toMatchSnapshot();
 });
 
-beforeEach(() => {
-	testModule.reset();
-});
+describe('functional tests', () => {
+	beforeAll(async () => {
+		testModule = await createTestModule(constant, { out: 0 });
+	});
 
-test('constant module', () => {
-	const { memory, test } = testModule;
+	beforeEach(() => {
+		testModule.reset();
+	});
 
-	memory[Memory.OUTPUT] = 1;
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(1);
+	test('constant module', () => {
+		const { memory, test } = testModule;
 
-	memory[Memory.OUTPUT] = -69;
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(-69);
+		memory[Memory.OUTPUT] = 1;
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(1);
+
+		memory[Memory.OUTPUT] = -69;
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(-69);
+	});
 });
