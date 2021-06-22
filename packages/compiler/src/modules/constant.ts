@@ -5,7 +5,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const constant: ModuleGenerator = function (moduleId, offset, initialConfig) {
+const constant: ModuleGenerator = function (moduleId, offset, initialConfig: { out?: number } = {}) {
 	const functionBody = createFunctionBody([], []);
 
 	return {
