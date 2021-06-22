@@ -6,8 +6,8 @@ import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 
 const transformer: MemoryTransformer = function (module, memoryBuffer, memoryAddressLookup) {
-	const activeNotes = Object.keys(module.config)
-		.filter(key => key.startsWith('note') && module.config[key])
+	const activeNotes = Object.keys(module.state)
+		.filter(key => key.startsWith('note') && module.state[key])
 		.map(note => parseInt(note.split(':')[1], 10))
 		.slice(0, 12);
 
