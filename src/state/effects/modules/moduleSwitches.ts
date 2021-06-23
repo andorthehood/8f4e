@@ -13,12 +13,13 @@ export default function moduleSwitches(state: State, events): void {
 		);
 
 		if (_switch) {
-			(module.state[_switch.id] = module.state[_switch.id] === _switch.onValue ? _switch.offValue : _switch.onValue),
-				state.moduleTypes[module.type].transformer(
-					module,
-					state.compiler.memoryBuffer,
-					state.compiler.outputAddressLookup
-				);
+			module.state[_switch.id] = module.state[_switch.id] === _switch.onValue ? _switch.offValue : _switch.onValue;
+
+			state.moduleTypes[module.type].transformer(
+				module,
+				state.compiler.memoryBuffer,
+				state.compiler.outputAddressLookup
+			);
 		}
 	};
 
