@@ -215,7 +215,7 @@ const getWhiteKeyIndex = function (note: number) {
 	return whiteKeys.indexOf(note % 12);
 };
 
-export const lookup = function (isHighlighted = false): SpriteLookup {
+export const lookup = function (isHighlighted = false, isRed = false): SpriteLookup {
 	return function (key) {
 		if (typeof key !== 'number') {
 			return {
@@ -230,7 +230,11 @@ export const lookup = function (isHighlighted = false): SpriteLookup {
 
 		if (index !== -1) {
 			return {
-				x: offsetX + (whiteKeyWidth + spacing) * index + (isHighlighted ? keyboardWidth : 0),
+				x:
+					offsetX +
+					(whiteKeyWidth + spacing) * index +
+					(isHighlighted ? keyboardWidth : 0) +
+					(isRed ? keyboardWidth * 3 : 0),
 				y: offsetY,
 				spriteWidth: whiteKeyWidth,
 				spriteHeight: whiteKeyHeight,
@@ -238,7 +242,11 @@ export const lookup = function (isHighlighted = false): SpriteLookup {
 		}
 
 		return {
-			x: offsetX + blackKeyOffsetRelativeToWhiteKey + (isHighlighted ? keyboardWidth * 2 : 0),
+			x:
+				offsetX +
+				blackKeyOffsetRelativeToWhiteKey +
+				(isHighlighted ? keyboardWidth * 2 : 0) +
+				(isRed ? keyboardWidth * 3 : 0),
 			y: offsetY,
 			spriteWidth: blackKeyWidth,
 			spriteHeight: blackKeyHeight,
