@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`if compiled module matches with snapshot 1`] = `
+Object {
+  "functionBody": Array [
+    18,
+    0,
+    65,
+    0,
+    65,
+    0,
+    40,
+    2,
+    0,
+    40,
+    2,
+    0,
+    65,
+    127,
+    108,
+    54,
+    2,
+    0,
+    11,
+  ],
+  "initialMemory": Array [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "memoryAddresses": Array [
+    Object {
+      "address": 0,
+      "id": "out",
+    },
+    Object {
+      "address": 0,
+      "default": 0,
+      "id": "in",
+    },
+  ],
+  "moduleId": "id",
+  "offset": 0,
+}
+`;
