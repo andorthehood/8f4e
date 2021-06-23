@@ -3,34 +3,40 @@ import random, { Memory } from '../../src/modules/random';
 
 let testModule;
 
-beforeAll(async () => {
-	testModule = await createTestModule(random);
+test('if compiled module matches with snapshot', () => {
+	expect(random('id', () => 0)).toMatchSnapshot();
 });
 
-beforeEach(() => {
-	testModule.reset();
-});
+describe('functional tests', () => {
+	beforeAll(async () => {
+		testModule = await createTestModule(random);
+	});
 
-test('offset module', () => {
-	const { memory, test } = testModule;
+	beforeEach(() => {
+		testModule.reset();
+	});
 
-	memory[Memory.OUTPUT] = 69420;
+	test('offset module', () => {
+		const { memory, test } = testModule;
 
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(-30826);
+		memory[Memory.OUTPUT] = 69420;
 
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(-15413);
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(-30826);
 
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(25062);
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(-15413);
 
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(12531);
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(25062);
 
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(6265);
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(12531);
 
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(-29637);
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(6265);
+
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(-29637);
+	});
 });

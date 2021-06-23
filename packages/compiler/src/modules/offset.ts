@@ -25,7 +25,7 @@ enum Locals {
 	__LENGTH,
 }
 
-const offset: ModuleGenerator = function (moduleId, offset, initialConfig) {
+const offset: ModuleGenerator = function (moduleId, offset, { offset: valueOffset = 0 }: { offset?: number } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -61,10 +61,10 @@ const offset: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), initialConfig.offset, 0],
+		initialMemory: [0, offset(Memory.ZERO), valueOffset, 0],
 		memoryAddresses: [
 			{ address: offset(Memory.OUTPUT), id: 'out' },
-			{ address: offset(Memory.OFFSET), id: 'offset', default: initialConfig.offset },
+			{ address: offset(Memory.OFFSET), id: 'offset', default: valueOffset },
 			{ address: offset(Memory.INPUT_POINTER), id: 'in', default: offset(Memory.ZERO) },
 		],
 	};
