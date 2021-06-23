@@ -4,26 +4,32 @@ import { I16_SIGNED_LARGEST_NUMBER } from '../../src/consts';
 
 let testModule;
 
-beforeAll(async () => {
-	testModule = await createTestModule(negate);
+test('if compiled module matches with snapshot', () => {
+	expect(negate('id', () => 0)).toMatchSnapshot();
 });
 
-beforeEach(() => {
-	testModule.reset();
-});
+describe('functional tests', () => {
+	beforeAll(async () => {
+		testModule = await createTestModule(negate);
+	});
 
-test('negate module', () => {
-	const { memory, test } = testModule;
+	beforeEach(() => {
+		testModule.reset();
+	});
 
-	memory[Memory.DEFAULT_VALUE] = 1;
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(0);
+	test('negate module', () => {
+		const { memory, test } = testModule;
 
-	memory[Memory.DEFAULT_VALUE] = -69;
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
+		memory[Memory.DEFAULT_VALUE] = 1;
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(0);
 
-	memory[Memory.DEFAULT_VALUE] = 0;
-	test();
-	expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
+		memory[Memory.DEFAULT_VALUE] = -69;
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
+
+		memory[Memory.DEFAULT_VALUE] = 0;
+		test();
+		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
+	});
 });
