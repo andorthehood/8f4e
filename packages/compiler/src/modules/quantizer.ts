@@ -43,10 +43,10 @@ const abs = registerIndex => [
 ];
 
 interface QuantizerConfig {
-	allocatedNotes: number;
+	allocatedNotes?: number;
 }
 
-const quantizer: ModuleGenerator = function (moduleId, offset, config: QuantizerConfig) {
+const quantizer: ModuleGenerator = function (moduleId, offset, config: QuantizerConfig = {}) {
 	const { allocatedNotes = 12 } = config;
 
 	const functionBody = createFunctionBody(
