@@ -27,7 +27,7 @@ function resetMidi() {
 }
 
 async function createModule(memoryRef, modules: Module[]) {
-	const { codeBuffer, outputAddressLookup, compiledModules } = compile(modules);
+	const { codeBuffer, memoryAddressLookup, compiledModules } = compile(modules);
 
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
@@ -40,21 +40,21 @@ async function createModule(memoryRef, modules: Module[]) {
 	const cycle = instance.exports.cycle as CallableFunction;
 	const init = instance.exports.init as CallableFunction;
 
-	return { memoryBuffer, cycle, init, outputAddressLookup, compiledModules };
+	return { memoryBuffer, cycle, init, memoryAddressLookup, compiledModules };
 }
 
 let interval: NodeJS.Timeout;
 
 async function recompile(memoryRef, modules: Module[], connections: Connection[]) {
-	const { memoryBuffer, cycle, outputAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
+	const { memoryBuffer, cycle, memoryAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
 
 	init();
-	setUpConnections(memoryBuffer, outputAddressLookup, connections);
+	setUpConnections(memoryBuffer, memoryAddressLookup, connections);
 
 	self.postMessage({
 		type: 'compilationDone',
 		payload: {
-			outputAddressLookup,
+			memoryAddressLookup,
 		},
 	});
 

@@ -1,8 +1,9 @@
 import { CompiledModule, Connection, MemoryAddressLookup, MemoryBuffer } from './types';
 
-export function generateOutputAddressLookup(compiledModules: CompiledModule[]): MemoryAddressLookup {
+export function generatememoryAddressLookup(compiledModules: CompiledModule[]): MemoryAddressLookup {
 	const lookup = {};
-	compiledModules.forEach(({ memoryAddresses, moduleId }) => {
+	compiledModules.forEach(({ offset, memoryAddresses, moduleId }) => {
+		lookup[moduleId] = offset;
 		memoryAddresses.forEach(({ id, address }) => {
 			lookup[moduleId + '_' + id] = address;
 		});

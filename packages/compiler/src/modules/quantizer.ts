@@ -13,8 +13,8 @@ import {
 	localSet,
 	loop,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
-import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
+import { MemoryBuffer, ModuleGenerator } from '../types';
+import { I32_SIGNED_LARGEST_NUMBER } from '../consts';
 
 export enum Memory {
 	INPUT_POINTER,
@@ -42,6 +42,14 @@ const abs = registerIndex => [
 	...localSet(registerIndex),
 ];
 
+export function memoryUpdater(quantizeToValues: number[], memoryBuffer: MemoryBuffer, moduleAddress: number): void {
+	quantizeToValues.forEach((value, index) => {
+		memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.FIRST_NOTE + index] = value;
+	});
+
+	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_NOTES] = quantizeToValues.length;
+}
+
 interface QuantizerConfig {
 	allocatedNotes?: number;
 }
@@ -61,16 +69,14 @@ const quantizer: ModuleGenerator = function (moduleId, offset, config: Quantizer
 			// Calculate the address of the last note.
 			...i32const(offset(Memory.NUMBER_OF_NOTES)),
 			...i32load(),
-			...i32const(1),
-			Instruction.I32_SUB,
 			...i32const(Int32Array.BYTES_PER_ELEMENT),
 			Instruction.I32_MUL,
 			...i32const(offset(Memory.FIRST_NOTE)),
 			Instruction.I32_ADD,
 			...localSet(Locals.NOTES_END_ADDRESS_POINTER),
 
-			// Set the smallest difference to the largest 16bit signed number.
-			...i32const(I16_SIGNED_LARGEST_NUMBER),
+			// Set the smallest difference to the largest 32bit signed number.
+			...i32const(I32_SIGNED_LARGEST_NUMBER),
 			...localSet(Locals.SMALLEST_DIFFERENCE),
 
 			// Set the note memory pointer to the start address
@@ -83,7 +89,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, config: Quantizer
 					// Break if the memory pointer would overflow.
 					...localGet(Locals.NOTE_MEMORY_POINTER),
 					...localGet(Locals.NOTES_END_ADDRESS_POINTER),
-					Instruction.I32_GT_U,
+					Instruction.I32_GE_U,
 					...br_if(1),
 
 					// Load a note value from the memory.
@@ -133,7 +139,7 @@ const quantizer: ModuleGenerator = function (moduleId, offset, config: Quantizer
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, 0, 0, ...new Array(allocatedNotes).fill(0)],
+		initialMemory: [0, 0, 0, ...new Array(allocatedNotes).fill(-1)],
 		memoryAddresses: [
 			{ address: offset(Memory.FIRST_NOTE), id: 'notes' },
 			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
