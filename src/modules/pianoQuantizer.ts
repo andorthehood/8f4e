@@ -6,6 +6,7 @@ import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
 import { MemoryAddressLookup } from 'compiler';
+import { memoryUpdater } from 'compiler/modules/quantizer';
 
 const transformer: MemoryTransformer = function (
 	module: Module,
@@ -14,16 +15,10 @@ const transformer: MemoryTransformer = function (
 ) {
 	const activeNotes = Object.keys(module.state)
 		.filter(key => key.startsWith('note') && module.state[key])
-		.map(note => parseInt(note.split(':')[1], 10))
+		.map(note => midiNoteToInt16(parseInt(note.split(':')[1], 10)))
 		.slice(0, module.engine.config.allocatedNotes);
 
-	activeNotes.forEach((note, index) => {
-		memoryBuffer[memoryAddressLookup[module.id + '_notes'] / memoryBuffer.BYTES_PER_ELEMENT + index] = midiNoteToInt16(
-			note
-		);
-	});
-
-	memoryBuffer[memoryAddressLookup[module.id + '_numberOfNotes'] / memoryBuffer.BYTES_PER_ELEMENT] = activeNotes.length;
+	memoryUpdater(activeNotes, memoryBuffer, memoryAddressLookup[module.id]);
 };
 
 export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
