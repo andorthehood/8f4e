@@ -18,7 +18,7 @@ export default function moduleSwitches(state: State, events): void {
 			state.moduleTypes[module.type].transformer(
 				module,
 				state.compiler.memoryBuffer,
-				state.compiler.outputAddressLookup
+				state.compiler.memoryAddressLookup
 			);
 		}
 	};

@@ -31,7 +31,7 @@ export default function moduleSliders(state: State, events): void {
 			);
 
 			const address =
-				state.compiler.outputAddressLookup[module.id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+				state.compiler.memoryAddressLookup[module.id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 			state.compiler.memoryBuffer[address] = module.state[slider.id];
 		}
 	}
