@@ -30,4 +30,5 @@
         "package-lock.json": true
     },
     "editor.formatOnSave": true,
+    "jest.jestCommandLine": "npx jest",
 }
