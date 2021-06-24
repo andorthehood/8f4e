@@ -114,7 +114,7 @@ export interface Compiler {
 	isCompiling: boolean;
 	lastCompilationStart: number;
 	memoryBuffer: Int32Array;
-	outputAddressLookup: Record<string, number>;
+	memoryAddressLookup: Record<string, number>;
 	timerAccuracy: number;
 }
 

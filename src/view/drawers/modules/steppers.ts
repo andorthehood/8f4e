@@ -16,7 +16,7 @@ export default function drawSteppers(engine: Engine, steppers: Stepper[], state:
 		);
 
 		const address =
-			state.compiler.outputAddressLookup[id + '_' + stepper.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+			state.compiler.memoryAddressLookup[id + '_' + stepper.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 		const value = state.compiler.memoryBuffer[address];
 
 		engine.setSpriteLookup(font('small_white'));
