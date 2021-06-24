@@ -12,7 +12,7 @@ import {
 	i32store,
 	Type,
 } from 'bytecode-utils';
-import { generateOutputAddressLookup } from './initializeMemory';
+import { generatememoryAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module, CompiledModule, MemoryAddressLookup } from './types';
 import { createRelativeAddressCalculator } from './utils';
@@ -53,13 +53,13 @@ function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
 
 export default function compile(
 	modules: Module[]
-): { codeBuffer: Uint8Array; outputAddressLookup: MemoryAddressLookup; compiledModules: CompiledModule[] } {
+): { codeBuffer: Uint8Array; memoryAddressLookup: MemoryAddressLookup; compiledModules: CompiledModule[] } {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
 	const cycleFunction = compiledModules.map((module, index) => call(index + 2)).flat();
 	const memoryInitiatorFunction = generateMemoryInitiatorFunction(compiledModules);
-	const outputAddressLookup = generateOutputAddressLookup(compiledModules);
+	const memoryAddressLookup = generatememoryAddressLookup(compiledModules);
 
 	return {
 		codeBuffer: Uint8Array.from([
@@ -79,7 +79,7 @@ export default function compile(
 				...functionBodies,
 			]),
 		]),
-		outputAddressLookup,
+		memoryAddressLookup,
 		compiledModules,
 	};
 }
