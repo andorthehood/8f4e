@@ -25,7 +25,7 @@ const defaultState: State = {
 		isCompiling: false,
 		lastCompilationStart: 0,
 		memoryBuffer: new Int32Array(),
-		outputAddressLookup: {},
+		memoryAddressLookup: {},
 		timerAccuracy: 0,
 	},
 	connections: [],

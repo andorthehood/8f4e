@@ -24,7 +24,7 @@ export default function moduleSwitches(state: State, events): void {
 			module.state[stepper.id] = Math.min(Math.max(newValue, stepper.minValue), stepper.maxValue);
 
 			const address =
-				state.compiler.outputAddressLookup[module.id + '_' + stepper.id] /
+				state.compiler.memoryAddressLookup[module.id + '_' + stepper.id] /
 				state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 			state.compiler.memoryBuffer[address] = module.state[stepper.id];
 		}

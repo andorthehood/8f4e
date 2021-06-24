@@ -2,7 +2,7 @@ import { State } from '../types';
 
 export function compilationDone(state: State, data, memoryRef): void {
 	state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
-	state.compiler.outputAddressLookup = data.payload.outputAddressLookup;
+	state.compiler.memoryAddressLookup = data.payload.memoryAddressLookup;
 	state.compiler.isCompiling = false;
 	state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
 
@@ -11,7 +11,7 @@ export function compilationDone(state: State, data, memoryRef): void {
 			state.moduleTypes[module.type].transformer(
 				module,
 				state.compiler.memoryBuffer,
-				state.compiler.outputAddressLookup
+				state.compiler.memoryAddressLookup
 			);
 		}
 	});
