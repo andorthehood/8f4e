@@ -1,6 +1,6 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { ModuleGeneratorProps, ModuleType, Switch } from '../state/types';
+import { ModuleGeneratorProps, ModuleType, Button } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_L } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
@@ -13,6 +13,18 @@ export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): 
 	const keyCount = 24;
 
 	return {
+		buttons: [
+			...generatePianoKeyLayout<Button>({ keyCount, vGrid, hGrid }, ({ index, x, y, ...rest }) => {
+				return {
+					id: 'note:' + index,
+					onValue: true,
+					offValue: false,
+					x: x + pianoX,
+					y: y + pianoY,
+					...rest,
+				};
+			}),
+		],
 		category: 'Quantizer',
 		drawer: {
 			name: 'piano',
@@ -31,18 +43,6 @@ export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): 
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [
-			...generatePianoKeyLayout<Switch>({ keyCount, vGrid, hGrid }, ({ index, x, y, ...rest }) => {
-				return {
-					id: 'note:' + index,
-					onValue: true,
-					offValue: false,
-					x: x + pianoX,
-					y: y + pianoY,
-					...rest,
-				};
-			}),
-		],
 		width,
 	};
 }

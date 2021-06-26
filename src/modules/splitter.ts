@@ -9,6 +9,7 @@ export default function splitter({ vGrid, hGrid }: ModuleGeneratorProps): Module
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Other',
 		engine: { name: 'splitter', config: {} },
 		height,
@@ -29,7 +30,6 @@ export default function splitter({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }
