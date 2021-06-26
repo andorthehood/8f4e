@@ -9,6 +9,7 @@ export default function number({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Inspection',
 		engine: { name: 'through', config: { numberOfPorts: 1 } },
 		height,
@@ -19,7 +20,6 @@ export default function number({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 		outputs: addDefaultOutputPositions([{ id: 'out:1', label: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

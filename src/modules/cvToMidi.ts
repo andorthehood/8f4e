@@ -8,6 +8,7 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'MIDI',
 		engine: {
 			name: 'through',
@@ -33,7 +34,6 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		steppers: [
 			{ id: 'channel', x: vGrid * 20, y: hGrid * 2, width: vGrid * 2, height: hGrid, minValue: 1, maxValue: 8 },
 		],
-		switches: [],
 		width,
 	};
 }

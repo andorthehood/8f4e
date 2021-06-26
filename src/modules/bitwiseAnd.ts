@@ -9,6 +9,7 @@ export default function bitwiseAnd({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Bitwise',
 		engine: { name: 'bitwiseAnd', config: {} },
 		height,
@@ -26,7 +27,6 @@ export default function bitwiseAnd({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

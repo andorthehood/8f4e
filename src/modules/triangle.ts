@@ -8,6 +8,7 @@ export default function triangle({ vGrid, hGrid }: ModuleGeneratorProps): Module
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Oscillator',
 		engine: { name: 'triangle', config: {} },
 		height,
@@ -18,7 +19,6 @@ export default function triangle({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }
