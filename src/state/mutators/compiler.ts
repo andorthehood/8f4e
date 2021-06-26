@@ -5,16 +5,6 @@ export function compilationDone(state: State, data, memoryRef): void {
 	state.compiler.memoryAddressLookup = data.payload.memoryAddressLookup;
 	state.compiler.isCompiling = false;
 	state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
-
-	state.modules.forEach(module => {
-		if (state.moduleTypes[module.type].transformer) {
-			state.moduleTypes[module.type].transformer(
-				module,
-				state.compiler.memoryBuffer,
-				state.compiler.memoryAddressLookup
-			);
-		}
-	});
 }
 
 export function recompile(state: State): void {

@@ -1,4 +1,4 @@
-import { Module, ModuleController, ModuleTypeLookup, Viewport } from '../types';
+import { Module, ModuleTypeLookup, Viewport } from '../types';
 
 export default function findModuleControllerAtViewportCoordinates<T>(
 	viewport: Viewport,

@@ -30,7 +30,10 @@ export interface Engine {
 	config: EngineConfig;
 }
 
-export type ModuleState = Record<string, number>;
+export type ModuleState = Record<string, any>;
+
+export type ModuleStateExtractor<T> = (memoryBuffer: MemoryBuffer, moduleAddress: number) => T;
+export type ModuleStateInserter<T> = (moduleState: T, memoryBuffer: MemoryBuffer, moduleAddress: number) => void;
 
 export interface Module {
 	id: string;
