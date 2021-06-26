@@ -8,6 +8,7 @@ export default function randomGenerator({ vGrid, hGrid }: ModuleGeneratorProps):
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Random',
 		engine: { name: 'random', config: {} },
 		height,
@@ -18,7 +19,6 @@ export default function randomGenerator({ vGrid, hGrid }: ModuleGeneratorProps):
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

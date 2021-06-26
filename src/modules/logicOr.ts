@@ -9,6 +9,7 @@ export default function logicOr({ vGrid, hGrid }: ModuleGeneratorProps): ModuleT
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Logic',
 		engine: { name: 'logicOr', config: {} },
 		height,
@@ -26,7 +27,6 @@ export default function logicOr({ vGrid, hGrid }: ModuleGeneratorProps): ModuleT
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }
