@@ -33,8 +33,8 @@ export interface Slider extends Position, Size {
 
 export interface Switch extends Position, Size {
 	id: string;
-	offValue: number | boolean | string;
-	onValue: number | boolean | string;
+	onClick: (module: Module, memoryBuffer: Int32Array, memoryAddressLookup: MemoryAddressLookup, value: number) => void;
+	value: number;
 }
 
 export interface Stepper extends Position, Size {

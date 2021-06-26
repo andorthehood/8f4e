@@ -1,7 +1,7 @@
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
 import { State, Switch, Module } from '../../types';
 
-export default function moduleSwitches(state: State, events): void {
+export default function moduleButtons(state: State, events): void {
 	const onModuleClick = function ({ x, y, module }: { x: number; y: number; module: Module }) {
 		const _switch = findModuleControllerAtViewportCoordinates<Switch>(
 			state.viewport,
@@ -13,13 +13,7 @@ export default function moduleSwitches(state: State, events): void {
 		);
 
 		if (_switch) {
-			module.state[_switch.id] = module.state[_switch.id] === _switch.onValue ? _switch.offValue : _switch.onValue;
-
-			state.moduleTypes[module.type].transformer(
-				module,
-				state.compiler.memoryBuffer,
-				state.compiler.memoryAddressLookup
-			);
+			_switch.onClick(module, state.compiler.memoryBuffer, state.compiler.memoryAddressLookup, _switch.value);
 		}
 	};
 
