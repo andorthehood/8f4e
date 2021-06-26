@@ -9,6 +9,7 @@ export default function sequentialSwitch({ vGrid, hGrid }: ModuleGeneratorProps)
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Logic',
 		engine: { name: 'sequentialSwitch', config: {} },
 		height,
@@ -29,7 +30,6 @@ export default function sequentialSwitch({ vGrid, hGrid }: ModuleGeneratorProps)
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

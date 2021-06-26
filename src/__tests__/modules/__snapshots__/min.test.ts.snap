@@ -2,6 +2,7 @@
 
 exports[`generates correct module type descriptor 1`] = `
 Object {
+  "buttons": Array [],
   "category": "Logic",
   "engine": Object {
     "config": Object {},
@@ -63,7 +64,6 @@ Object {
   ],
   "sliders": Array [],
   "steppers": Array [],
-  "switches": Array [],
   "width": 120,
 }
 `;

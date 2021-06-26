@@ -9,6 +9,7 @@ export default function mixer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTyp
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Other',
 		engine: { name: 'mixer', config: {} },
 		height,
@@ -19,7 +20,6 @@ export default function mixer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTyp
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

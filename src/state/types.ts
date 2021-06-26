@@ -46,7 +46,7 @@ export type ButtonClickHandler = (
 	value: number
 ) => void;
 
-export interface Switch extends Position, Size {
+export interface Button extends Position, Size {
 	id: string;
 	onClick: ButtonClickHandler;
 	value: number;
@@ -78,12 +78,12 @@ export interface ModuleType extends Size {
 	outputs: Connector[];
 	sliders: Slider[];
 	steppers: Stepper[];
-	switches: Switch[];
+	buttons: Button[];
 	saveState?: ModuleStateExtractor<ModuleState>;
 	restoreState?: ModuleStateInserter<ModuleState>;
 }
 
-export type ModuleController = Stepper | Connector | Slider | Switch;
+export type ModuleController = Stepper | Connector | Slider | Button;
 
 export type ModuleTypeLookup = Record<string, ModuleType>;
 

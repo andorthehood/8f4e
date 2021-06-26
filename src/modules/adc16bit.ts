@@ -9,6 +9,7 @@ export default function adc8bit({ vGrid, hGrid }: ModuleGeneratorProps): ModuleT
 	const height = MODULE_HEIGHT_L * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Bitwise',
 		engine: { name: 'adc', config: { resolution: 16 } },
 		height,
@@ -24,7 +25,6 @@ export default function adc8bit({ vGrid, hGrid }: ModuleGeneratorProps): ModuleT
 		),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

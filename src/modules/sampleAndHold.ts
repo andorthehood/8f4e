@@ -9,6 +9,7 @@ export default function min({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Other',
 		engine: { name: 'sampleAndHold', config: {} },
 		height,
@@ -19,7 +20,6 @@ export default function min({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }
