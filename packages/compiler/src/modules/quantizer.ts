@@ -42,12 +42,24 @@ const abs = registerIndex => [
 	...localSet(registerIndex),
 ];
 
-export function memoryUpdater(quantizeToValues: number[], memoryBuffer: MemoryBuffer, moduleAddress: number): void {
-	quantizeToValues.forEach((value, index) => {
-		memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.FIRST_NOTE + index] = value;
+export function toggleNote(note: number, memoryBuffer: MemoryBuffer, moduleAddress: number): void {
+	const firstNoteAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.FIRST_NOTE;
+	const numberOfNotesAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_NOTES;
+	const activeNotes = Array.from(
+		memoryBuffer.slice(firstNoteAddress, firstNoteAddress + memoryBuffer[numberOfNotesAddress])
+	);
+
+	if (activeNotes.includes(note)) {
+		activeNotes.splice(activeNotes.indexOf(note), 1);
+	} else {
+		activeNotes.push(note);
+	}
+
+	activeNotes.forEach((note, index) => {
+		memoryBuffer[firstNoteAddress + index] = note;
 	});
 
-	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_NOTES] = quantizeToValues.length;
+	memoryBuffer[numberOfNotesAddress] = activeNotes.length;
 }
 
 interface QuantizerConfig {
