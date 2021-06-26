@@ -14,7 +14,13 @@ export default function sequentialSwitch({ vGrid, hGrid }: ModuleGeneratorProps)
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions(
-			[{ id: 'in:1' }, { id: 'in:2' }, { id: 'in:3' }, { id: 'in:4' }, { id: 'in:clock' }],
+			[
+				{ id: 'in:1', label: 'in' },
+				{ id: 'in:2', label: 'in' },
+				{ id: 'in:3', label: 'in' },
+				{ id: 'in:4', label: 'in' },
+				{ id: 'in:clock', label: 'clock' },
+			],
 			vGrid,
 			hGrid
 		),

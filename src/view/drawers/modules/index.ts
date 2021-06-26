@@ -39,7 +39,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
 			drawSliders(engine, sliders, state, id);
-			drawSteppers(engine, steppers, state, id);
+			drawSteppers(engine, steppers, state, id, vGrid, hGrid);
 
 			if (type === 'number') {
 				number(engine, state, id);

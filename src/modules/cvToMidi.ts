@@ -30,7 +30,9 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		name: 'CV to MIDI',
 		outputs: [],
 		sliders: [],
-		steppers: [{ id: 'channel', x: 80, y: 10, width: 10, height: 20, minValue: 1, maxValue: 8 }],
+		steppers: [
+			{ id: 'channel', x: vGrid * 20, y: hGrid * 2, width: vGrid * 2, height: hGrid, minValue: 1, maxValue: 8 },
+		],
 		switches: [],
 		width,
 	};

@@ -22,7 +22,9 @@ import min from './min';
 import mixer from './mixer';
 import number from './number';
 import offset from './offset';
-import pianoQuantizer from './pianoQuantizer';
+import pianoQuantizer from './pianoQuantizer120';
+import pianoQuantizer12 from './pianoQuantizer12';
+import pianoQuantizer24 from './pianoQuantizer24';
 import randomGenerator from './randomGenerator';
 import sampleAndHold from './sampleAndHold';
 import saw from './saw';
@@ -56,6 +58,8 @@ export default function generateModuleTypes(props: ModuleGeneratorProps): Module
 		number: number(props),
 		offset: offset(props),
 		pianoQuantizer: pianoQuantizer(props),
+		pianoQuantizer12: pianoQuantizer12(props),
+		pianoQuantizer24: pianoQuantizer24(props),
 		randomGenerator: randomGenerator(props),
 		sampleAndHold: sampleAndHold(props),
 		saw: saw(props),
