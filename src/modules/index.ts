@@ -3,7 +3,6 @@ import { ModuleGeneratorProps, ModuleTypeLookup } from '../state/types';
 import abs from './abs';
 import adc16bit from './adc16bit';
 import adc8bit from './adc8bit';
-import arpeggiator from './arpeggiator';
 import attenuator from './attenuator';
 import bitwiseAnd from './bitwiseAnd';
 import bitwiseOr from './bitwiseOr';
@@ -38,7 +37,6 @@ export default function generateModuleTypes(props: ModuleGeneratorProps): Module
 		abs: abs(props),
 		adc16bit: adc16bit(props),
 		adc8bit: adc8bit(props),
-		arpeggiator: arpeggiator(props),
 		attenuator: attenuator(props),
 		bitwiseAnd: bitwiseAnd(props),
 		bitwiseOr: bitwiseOr(props),

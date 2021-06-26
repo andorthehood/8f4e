@@ -1,20 +1,22 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { midiNoteToInt16 } from '../state/helpers/midi';
-import { Module, ModuleGeneratorProps, ModuleType, Switch } from '../state/types';
+import { ModuleGeneratorProps, ModuleType, Switch, ButtonClickHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
-import { MemoryAddressLookup } from 'compiler';
-import { toggleNote } from 'compiler/modules/quantizer';
+import { insertState, extractState } from 'compiler/modules/quantizer';
 
-const onButtonClick = function (
-	module: Module,
-	memoryBuffer: Int32Array,
-	memoryAddressLookup: MemoryAddressLookup,
-	value: number
-) {
-	toggleNote(value, memoryBuffer, memoryAddressLookup[module.id]);
+const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
+	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id]);
+
+	if (activeNotes.includes(value)) {
+		activeNotes.splice(activeNotes.indexOf(value), 1);
+	} else {
+		activeNotes.push(value);
+	}
+
+	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id]);
 };
 
 export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
@@ -41,6 +43,8 @@ export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): 
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Quantizer 120',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
+		restoreState: insertState,
+		saveState: extractState,
 		sliders: [],
 		steppers: [],
 		switches: [

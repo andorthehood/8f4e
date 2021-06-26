@@ -18,6 +18,15 @@ export default function loader(state: State, events, defaultState: State): void 
 	window.state = state;
 
 	function onSaveState() {
+		state.modules.forEach(({ type }, index) => {
+			if (state.moduleTypes[type].saveState) {
+				state.modules[index].state = state.moduleTypes[type].saveState(
+					state.compiler.memoryBuffer,
+					state.compiler.memoryAddressLookup[state.modules[index].id]
+				);
+			}
+		});
+
 		localStorage.setItem(
 			'state',
 			JSON.stringify({

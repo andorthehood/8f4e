@@ -13,7 +13,7 @@ import {
 	localSet,
 	loop,
 } from 'bytecode-utils';
-import { MemoryBuffer, ModuleGenerator } from '../types';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
 import { I32_SIGNED_LARGEST_NUMBER } from '../consts';
 
 export enum Memory {
@@ -42,25 +42,35 @@ const abs = registerIndex => [
 	...localSet(registerIndex),
 ];
 
-export function toggleNote(note: number, memoryBuffer: MemoryBuffer, moduleAddress: number): void {
+interface QuantizerState {
+	activeNotes: number[];
+}
+
+export const extractState: ModuleStateExtractor<QuantizerState> = function extractState(
+	memoryBuffer,
+	moduleAddress
+): QuantizerState {
 	const firstNoteAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.FIRST_NOTE;
 	const numberOfNotesAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_NOTES;
-	const activeNotes = Array.from(
-		memoryBuffer.slice(firstNoteAddress, firstNoteAddress + memoryBuffer[numberOfNotesAddress])
-	);
+	return {
+		activeNotes: Array.from(
+			memoryBuffer.slice(firstNoteAddress, firstNoteAddress + memoryBuffer[numberOfNotesAddress])
+		),
+	};
+};
 
-	if (activeNotes.includes(note)) {
-		activeNotes.splice(activeNotes.indexOf(note), 1);
-	} else {
-		activeNotes.push(note);
-	}
-
-	activeNotes.forEach((note, index) => {
+export const insertState: ModuleStateInserter<QuantizerState> = function insertState(
+	state,
+	memoryBuffer,
+	moduleAddress
+): void {
+	const firstNoteAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.FIRST_NOTE;
+	const numberOfNotesAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_NOTES;
+	state.activeNotes.forEach((note, index) => {
 		memoryBuffer[firstNoteAddress + index] = note;
 	});
-
-	memoryBuffer[numberOfNotesAddress] = activeNotes.length;
-}
+	memoryBuffer[numberOfNotesAddress] = state.activeNotes.length;
+};
 
 interface QuantizerConfig {
 	allocatedNotes?: number;

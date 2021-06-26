@@ -55,9 +55,7 @@ export default function drawModules(engine: Engine, state: State): void {
 					state.modules[i],
 					state.moduleTypes[type],
 					state.compiler.memoryAddressLookup,
-					state.compiler.memoryBuffer,
-					vGrid,
-					hGrid
+					state.compiler.memoryBuffer
 				);
 			}
 
