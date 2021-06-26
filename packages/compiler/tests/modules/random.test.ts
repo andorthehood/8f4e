@@ -16,7 +16,7 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('offset module', () => {
+	test('random module', () => {
 		const { memory, test } = testModule;
 
 		memory[Memory.OUTPUT] = 69420;

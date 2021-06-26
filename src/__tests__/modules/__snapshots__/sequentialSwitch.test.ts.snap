@@ -13,6 +13,7 @@ Object {
     Object {
       "height": 13,
       "id": "in:1",
+      "label": "in",
       "width": 12,
       "x": 12,
       "y": 42,
@@ -20,6 +21,7 @@ Object {
     Object {
       "height": 13,
       "id": "in:2",
+      "label": "in",
       "width": 12,
       "x": 12,
       "y": 56,
@@ -27,6 +29,7 @@ Object {
     Object {
       "height": 13,
       "id": "in:3",
+      "label": "in",
       "width": 12,
       "x": 12,
       "y": 70,
@@ -34,6 +37,7 @@ Object {
     Object {
       "height": 13,
       "id": "in:4",
+      "label": "in",
       "width": 12,
       "x": 12,
       "y": 84,
@@ -41,6 +45,7 @@ Object {
     Object {
       "height": 13,
       "id": "in:clock",
+      "label": "clock",
       "width": 12,
       "x": 12,
       "y": 98,
