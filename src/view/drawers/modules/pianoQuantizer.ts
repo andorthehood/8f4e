@@ -41,9 +41,7 @@ export default function pianoDrawer(
 	module: Module,
 	moduleType: ModuleType,
 	memoryAddressLookup: MemoryAddressLookup,
-	memoryBuffer: MemoryBuffer,
-	vGrid: number,
-	hGrid: number
+	memoryBuffer: MemoryBuffer
 ): void {
 	engine.setSpriteLookup(pianoKeyboard());
 

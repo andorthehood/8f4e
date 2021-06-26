@@ -8,6 +8,9 @@ module.exports = {
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
     ],
+    rules: {
+      "@typescript-eslint/ban-ts-comment": "warn"
+    },
     env: {
       browser: true,
       es2021: true,
