@@ -9,6 +9,7 @@ export default function logicNegate({ vGrid, hGrid }: ModuleGeneratorProps): Mod
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Logic',
 		engine: { name: 'logicNegate', config: {} },
 		height,
@@ -19,7 +20,6 @@ export default function logicNegate({ vGrid, hGrid }: ModuleGeneratorProps): Mod
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

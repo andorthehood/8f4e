@@ -9,6 +9,7 @@ export default function logicAnd({ vGrid, hGrid }: ModuleGeneratorProps): Module
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Logic',
 		engine: { name: 'logicAnd', config: {} },
 		height,
@@ -26,7 +27,7 @@ export default function logicAnd({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
+
 		width,
 	};
 }

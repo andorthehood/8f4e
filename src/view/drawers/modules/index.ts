@@ -59,16 +59,6 @@ export default function drawModules(engine: Engine, state: State): void {
 				);
 			}
 
-			// for (let i = 0; i < switches.length; i++) {
-			// 	const _switch = switches[i];
-			// 	engine.setSpriteLookup(fillColor);
-			// 	if (config[_switch.id] === _switch.onValue) {
-			// 		engine.drawRectangle(_switch.x, _switch.y, _switch.width, _switch.height, 'rgb(255,0,0)');
-			// 	} else {
-			// 		engine.drawRectangle(_switch.x, _switch.y, _switch.width, _switch.height, 'rgb(153,0,0)');
-			// 	}
-			// }
-
 			engine.endGroup();
 		}
 	}

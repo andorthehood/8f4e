@@ -9,6 +9,7 @@ export default function bitwiseOr({ vGrid, hGrid }: ModuleGeneratorProps): Modul
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Bitwise',
 		engine: { name: 'bitwiseOr', config: {} },
 		height,
@@ -26,7 +27,6 @@ export default function bitwiseOr({ vGrid, hGrid }: ModuleGeneratorProps): Modul
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

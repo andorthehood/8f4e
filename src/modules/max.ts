@@ -9,6 +9,7 @@ export default function max({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Logic',
 		engine: { name: 'max', config: {} },
 		height,
@@ -26,7 +27,6 @@ export default function max({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 		outputs: addDefaultOutputPositions([{ id: 'out', label: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }
