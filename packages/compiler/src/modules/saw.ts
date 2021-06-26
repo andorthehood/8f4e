@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 enum Memory {
@@ -27,6 +27,18 @@ enum Locals {
 	RATE,
 	__LENGTH,
 }
+
+interface SawState {
+	rate: number;
+}
+
+export const insertState: ModuleStateInserter<SawState> = function (state, memoryBuffer, moduleAddress) {
+	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] = state.rate;
+};
+
+export const extractState: ModuleStateExtractor<SawState> = function (memoryBuffer, moduleAddress) {
+	return { rate: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] };
+};
 
 const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(

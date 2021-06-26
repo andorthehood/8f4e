@@ -8,11 +8,13 @@ Object {
     "config": Object {},
     "name": "constant",
   },
+  "extractState": undefined,
   "height": 126,
   "initialState": Object {
     "out": 0,
   },
   "inputs": Array [],
+  "insertState": undefined,
   "lines": Array [
     Object {
       "height": 1,
@@ -55,6 +57,7 @@ Object {
       "id": "out",
       "maxValue": 32767,
       "minValue": -32768,
+      "onChange": [Function],
       "resolution": 100,
       "width": 12,
       "x": 48,

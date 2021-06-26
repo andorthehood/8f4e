@@ -1171,6 +1171,7 @@ Object {
     },
     "name": "quantizer",
   },
+  "extractState": undefined,
   "height": 126,
   "initialState": Object {},
   "inputs": Array [
@@ -1182,6 +1183,7 @@ Object {
       "y": 42,
     },
   ],
+  "insertState": undefined,
   "lines": Array [
     Object {
       "height": 1,
@@ -1218,8 +1220,6 @@ Object {
       "y": 42,
     },
   ],
-  "restoreState": undefined,
-  "saveState": undefined,
   "sliders": Array [],
   "steppers": Array [],
   "width": 1440,

@@ -1,5 +1,5 @@
 import { Instruction, i32const, i32load, i32store, createFunctionBody } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
 
 enum Memory {
 	ZERO,
@@ -7,6 +7,18 @@ enum Memory {
 	DIVISOR,
 	OUT,
 }
+
+interface AttenuatorState {
+	divisor: number;
+}
+
+export const insertState: ModuleStateInserter<AttenuatorState> = function (state, memoryBuffer, moduleAddress) {
+	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.DIVISOR] = state.divisor;
+};
+
+export const extractState: ModuleStateExtractor<AttenuatorState> = function (memoryBuffer, moduleAddress) {
+	return { divisor: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.DIVISOR] };
+};
 
 const attenuator: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
@@ -27,7 +39,7 @@ const attenuator: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), initialConfig.divisor, 0],
+		initialMemory: [0, offset(Memory.ZERO), 1, 0],
 		memoryAddresses: [
 			{ address: offset(Memory.OUT), id: 'out' },
 			{ address: offset(Memory.DIVISOR), id: 'divisor' },

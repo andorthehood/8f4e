@@ -8,11 +8,13 @@ Object {
     "config": Object {},
     "name": "saw",
   },
+  "extractState": undefined,
   "height": 126,
   "initialState": Object {
     "rate": 1000,
   },
   "inputs": Array [],
+  "insertState": undefined,
   "lines": Array [
     Object {
       "height": 1,
@@ -55,6 +57,7 @@ Object {
       "id": "rate",
       "maxValue": 2000,
       "minValue": 0,
+      "onChange": [Function],
       "resolution": 10,
       "width": 12,
       "x": 48,
