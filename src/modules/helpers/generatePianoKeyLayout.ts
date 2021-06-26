@@ -15,7 +15,7 @@ function getBlackKeyIndex(note: number): number {
 }
 
 export default function generatePianoKeyLayout<T>(
-	{ keyCount, vGrid, hGrid }: { keyCount: number; vGrid: number; hGrid: number },
+	{ keyCount, hGrid }: { keyCount: number; vGrid: number; hGrid: number },
 	callback: CallableFunction
 ): T[] {
 	return new Array(keyCount).fill(0).map((item, index) => {

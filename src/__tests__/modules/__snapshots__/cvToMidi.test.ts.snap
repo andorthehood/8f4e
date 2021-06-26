@@ -68,13 +68,13 @@ Object {
   "sliders": Array [],
   "steppers": Array [
     Object {
-      "height": 20,
+      "height": 14,
       "id": "channel",
       "maxValue": 8,
       "minValue": 1,
-      "width": 10,
-      "x": 80,
-      "y": 10,
+      "width": 12,
+      "x": 120,
+      "y": 28,
     },
   ],
   "switches": Array [],
