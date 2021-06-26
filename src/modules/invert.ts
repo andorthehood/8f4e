@@ -9,6 +9,7 @@ export default function invert({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: 'Math',
 		engine: { name: 'invert', config: {} },
 		height,
@@ -19,7 +20,6 @@ export default function invert({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }

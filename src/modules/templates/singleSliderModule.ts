@@ -19,6 +19,7 @@ export default function singleSliderModule(
 	const height = MODULE_HEIGHT_S * hGrid;
 
 	return {
+		buttons: [],
 		category: '',
 		engine: { name: '', config: {} },
 		height,
@@ -40,7 +41,6 @@ export default function singleSliderModule(
 			},
 		],
 		steppers: [],
-		switches: [],
 		width,
 	};
 }
