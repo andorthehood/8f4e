@@ -1,4 +1,12 @@
-import { MemoryAddressLookup, MemoryBuffer, Connection, Engine, ModuleState } from 'compiler';
+import {
+	MemoryAddressLookup,
+	MemoryBuffer,
+	Connection,
+	Engine,
+	ModuleState,
+	ModuleStateInserter,
+	ModuleStateExtractor,
+} from 'compiler';
 
 export interface Module {
 	engine: Engine;
@@ -31,9 +39,16 @@ export interface Slider extends Position, Size {
 	resolution: number;
 }
 
+export type ButtonClickHandler = (
+	module: Module,
+	memoryBuffer: MemoryBuffer,
+	memoryAddressLookup: MemoryAddressLookup,
+	value: number
+) => void;
+
 export interface Switch extends Position, Size {
 	id: string;
-	onClick: (module: Module, memoryBuffer: Int32Array, memoryAddressLookup: MemoryAddressLookup, value: number) => void;
+	onClick: ButtonClickHandler;
 	value: number;
 }
 
@@ -42,12 +57,6 @@ export interface Stepper extends Position, Size {
 	maxValue: number;
 	minValue: number;
 }
-
-export type MemoryTransformer = (
-	module: Module,
-	memoryBuffer: MemoryBuffer,
-	memoryAddressLookup: MemoryAddressLookup
-) => void;
 
 export interface Line extends Position, Size {
 	color?: string;
@@ -70,7 +79,8 @@ export interface ModuleType extends Size {
 	sliders: Slider[];
 	steppers: Stepper[];
 	switches: Switch[];
-	transformer?: MemoryTransformer;
+	saveState?: ModuleStateExtractor<ModuleState>;
+	restoreState?: ModuleStateInserter<ModuleState>;
 }
 
 export type ModuleController = Stepper | Connector | Slider | Switch;
@@ -113,7 +123,7 @@ export interface Compiler {
 	cycleTime: number;
 	isCompiling: boolean;
 	lastCompilationStart: number;
-	memoryBuffer: Int32Array;
+	memoryBuffer: MemoryBuffer;
 	memoryAddressLookup: Record<string, number>;
 	timerAccuracy: number;
 }
