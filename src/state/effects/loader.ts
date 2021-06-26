@@ -19,8 +19,8 @@ export default function loader(state: State, events, defaultState: State): void 
 
 	function onSaveState() {
 		state.modules.forEach(({ type }, index) => {
-			if (state.moduleTypes[type].saveState) {
-				state.modules[index].state = state.moduleTypes[type].saveState(
+			if (state.moduleTypes[type].extractState) {
+				state.modules[index].state = state.moduleTypes[type].extractState(
 					state.compiler.memoryBuffer,
 					state.compiler.memoryAddressLookup[state.modules[index].id]
 				);

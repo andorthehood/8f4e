@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 
 export enum Memory {
@@ -24,6 +24,18 @@ enum Locals {
 	RESULT,
 	__LENGTH,
 }
+
+interface OffsetState {
+	offset: number;
+}
+
+export const insertState: ModuleStateInserter<OffsetState> = function (state, memoryBuffer, moduleAddress) {
+	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OFFSET] = state.offset;
+};
+
+export const extractState: ModuleStateExtractor<OffsetState> = function (memoryBuffer, moduleAddress) {
+	return { offset: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OFFSET] };
+};
 
 const offset: ModuleGenerator = function (moduleId, offset, { offset: valueOffset = 0 }: { offset?: number } = {}) {
 	const functionBody = createFunctionBody(

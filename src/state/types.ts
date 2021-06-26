@@ -32,11 +32,20 @@ export interface Position {
 	y: number;
 }
 
+export type SliderChangeHandler = (
+	module: Module,
+	memoryBuffer: MemoryBuffer,
+	memoryAddressLookup: MemoryAddressLookup,
+	value: number,
+	slider: Slider
+) => void;
+
 export interface Slider extends Position, Size {
 	id: string;
 	maxValue: number;
 	minValue: number;
 	resolution: number;
+	onChange: SliderChangeHandler;
 }
 
 export type ButtonClickHandler = (
@@ -79,8 +88,8 @@ export interface ModuleType extends Size {
 	sliders: Slider[];
 	steppers: Stepper[];
 	buttons: Button[];
-	saveState?: ModuleStateExtractor<ModuleState>;
-	restoreState?: ModuleStateInserter<ModuleState>;
+	extractState?: ModuleStateExtractor<ModuleState>;
+	insertState?: ModuleStateInserter<ModuleState>;
 }
 
 export type ModuleController = Stepper | Connector | Slider | Button;

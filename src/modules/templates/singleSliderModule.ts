@@ -1,6 +1,6 @@
 import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
-import { ModuleGeneratorProps, ModuleType } from '../../state/types';
+import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from '../consts';
 import generateBorderLines from '../helpers/generateBorderLines';
 
@@ -9,11 +9,12 @@ interface SliderConfig {
 	maxValue: number;
 	resolution: number;
 	id: string;
+	onChange: SliderChangeHandler;
 }
 
 export default function singleSliderModule(
 	{ vGrid, hGrid }: ModuleGeneratorProps,
-	{ minValue, maxValue, resolution, id }: SliderConfig
+	{ minValue, maxValue, resolution, id, onChange }: SliderConfig
 ): ModuleType {
 	const width = MODULE_WIDTH_S * vGrid;
 	const height = MODULE_HEIGHT_S * hGrid;
@@ -38,6 +39,7 @@ export default function singleSliderModule(
 				width: vGrid * 2,
 				x: vGrid * 8,
 				y: hGrid * 3,
+				onChange,
 			},
 		],
 		steppers: [],

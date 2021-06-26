@@ -21,18 +21,10 @@ export default function moduleSliders(state: State, events): void {
 	}
 
 	function onMouseMove(event) {
-		if (slider) {
+		if (slider && slider.onChange) {
 			event.stopPropagation = true;
 			const { movementY } = event;
-
-			module.state[slider.id] = Math.min(
-				Math.max(slider.minValue, module.state[slider.id] + movementY * -1 * slider.resolution),
-				slider.maxValue
-			);
-
-			const address =
-				state.compiler.memoryAddressLookup[module.id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-			state.compiler.memoryBuffer[address] = module.state[slider.id];
+			slider.onChange(module, state.compiler.memoryBuffer, state.compiler.memoryAddressLookup, movementY, slider);
 		}
 	}
 

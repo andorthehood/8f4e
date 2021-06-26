@@ -19,8 +19,8 @@ export default function compiler(state: State, events): void {
 			case 'compilationDone':
 				compilationDone(state, data, memoryRef);
 				state.modules.forEach(({ type }, index) => {
-					if (state.moduleTypes[type].restoreState) {
-						state.moduleTypes[type].restoreState(
+					if (state.moduleTypes[type].insertState) {
+						state.moduleTypes[type].insertState(
 							state.modules[index].state,
 							state.compiler.memoryBuffer,
 							state.compiler.memoryAddressLookup[state.modules[index].id]

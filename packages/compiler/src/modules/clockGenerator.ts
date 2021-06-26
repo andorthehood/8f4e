@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 enum Memory {
@@ -25,6 +25,18 @@ enum Locals {
 	RATE,
 	__LENGTH,
 }
+
+interface ClockGeneratorState {
+	rate: number;
+}
+
+export const insertState: ModuleStateInserter<ClockGeneratorState> = function (state, memoryBuffer, moduleAddress) {
+	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] = state.rate;
+};
+
+export const extractState: ModuleStateExtractor<ClockGeneratorState> = function (memoryBuffer, moduleAddress) {
+	return { rate: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] };
+};
 
 const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
 	const functionBody = createFunctionBody(
