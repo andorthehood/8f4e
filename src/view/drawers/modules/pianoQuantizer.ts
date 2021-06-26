@@ -1,5 +1,6 @@
 import { Engine } from '2d-engine';
 import { MemoryAddressLookup, MemoryBuffer } from 'compiler';
+import { Memory } from 'compiler/modules/quantizer';
 import { pianoKeyboard } from 'sprite-generator';
 import { int16ToMidiNote } from '../../../state/helpers/midi';
 import { Module, ModuleType } from '../../../state/types';
@@ -46,25 +47,30 @@ export default function pianoDrawer(
 ): void {
 	engine.setSpriteLookup(pianoKeyboard());
 
-	const config: { x: number; y: number } = moduleType.drawer.config;
-	const outAddress = memoryAddressLookup[module.id + '_' + 'out'] / memoryBuffer.BYTES_PER_ELEMENT;
-	const outValue = int16ToMidiNote(memoryBuffer[outAddress]);
+	const moduleAddress = memoryAddressLookup[module.id] / memoryBuffer.BYTES_PER_ELEMENT;
+	const config: { x: number; y: number; keyCount: number } = moduleType.drawer.config;
+	const outAddress = moduleAddress + Memory.OUTPUT;
+	const notesAddress = moduleAddress + Memory.FIRST_NOTE;
+	const numberOfNotesAddress = moduleAddress + Memory.NUMBER_OF_NOTES;
+	const numberOfNotes = memoryBuffer[numberOfNotesAddress];
+	const activeNotes = memoryBuffer.slice(notesAddress, notesAddress + Math.min(numberOfNotes, config.keyCount));
+	const outValue = memoryBuffer[outAddress];
 
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < Math.floor(config.keyCount / 12); i++) {
 		engine.drawSprite(octaveWidth * i + config.x, config.y, undefined);
 	}
-
-	const activeNotes = Object.keys(module.state)
-		.filter(key => key.startsWith('note') && module.state[key])
-		.map(note => parseInt(note.split(':')[1], 10));
 
 	engine.setSpriteLookup(pianoKeyboard(true));
 
 	for (let i = 0; i < activeNotes.length; i++) {
-		engine.drawSprite(keyPositions[activeNotes[i]] + config.x, config.y, activeNotes[i]);
+		engine.drawSprite(
+			keyPositions[int16ToMidiNote(activeNotes[i])] + config.x,
+			config.y,
+			int16ToMidiNote(activeNotes[i])
+		);
 	}
 
 	engine.setSpriteLookup(pianoKeyboard(false, true));
 
-	engine.drawSprite(keyPositions[outValue] + config.x, config.y, outValue);
+	engine.drawSprite(keyPositions[int16ToMidiNote(outValue)] + config.x, config.y, int16ToMidiNote(outValue));
 }

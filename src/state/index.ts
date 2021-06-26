@@ -10,7 +10,7 @@ import moduleDragger from './effects/modules/moduleDragger';
 import moduleMenu from './effects/menu/moduleMenu';
 import moduleSliders from './effects/modules/moduleSliders';
 import moduleSteppers from './effects/modules/moduleSteppers';
-import moduleSwitches from './effects/modules/moduleSwitches';
+import moduleSwitches from './effects/modules/moduleButtons';
 import save from './effects/save';
 import tests from './effects/tests';
 import viewport from './effects/viewport';
