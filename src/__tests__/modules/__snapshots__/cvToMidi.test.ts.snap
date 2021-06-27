@@ -18,6 +18,7 @@ Object {
     },
     "name": "through",
   },
+  "extractState": undefined,
   "height": 126,
   "initialState": Object {},
   "inputs": Array [
@@ -38,6 +39,7 @@ Object {
       "y": 56,
     },
   ],
+  "insertState": undefined,
   "lines": Array [
     Object {
       "height": 1,
@@ -70,9 +72,11 @@ Object {
   "steppers": Array [
     Object {
       "height": 14,
-      "id": "channel",
+      "id": "data:1",
+      "label": "channel",
       "maxValue": 8,
       "minValue": 1,
+      "onChange": [Function],
       "width": 12,
       "x": 120,
       "y": 28,

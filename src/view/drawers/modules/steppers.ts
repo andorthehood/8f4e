@@ -21,6 +21,6 @@ export default function drawSteppers(
 		const value = state.compiler.memoryBuffer[address];
 
 		engine.setSpriteLookup(font('small_white'));
-		engine.drawText(stepper.x, stepper.y + hGrid, stepper.id + ': ' + value);
+		engine.drawText(stepper.x, stepper.y + hGrid, (stepper.label || stepper.id) + ': ' + value);
 	}
 }

@@ -74,7 +74,7 @@ async function recompile(memoryRef, modules: Module[], connections: Connection[]
 			cvToMidiModule.memoryAddresses.find(({ id }) => id === 'out:2').address / memoryBuffer.BYTES_PER_ELEMENT;
 
 		channelAddress =
-			cvToMidiModule.memoryAddresses.find(({ id }) => id === 'channel').address / memoryBuffer.BYTES_PER_ELEMENT;
+			cvToMidiModule.memoryAddresses.find(({ id }) => id === 'data:1').address / memoryBuffer.BYTES_PER_ELEMENT;
 	}
 
 	resetMidi();
