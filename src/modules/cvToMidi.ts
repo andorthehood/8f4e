@@ -4,9 +4,21 @@ import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import { extractState, insertState } from 'compiler/modules/through';
 
-const onChange: StepperChangeHandler = function (module, memoryBuffer, memoryAddressLookup, value, stepper) {
+const onChangeChannel: StepperChangeHandler = function (module, state, value, stepper) {
+	const { memoryBuffer, memoryAddressLookup } = state.compiler;
 	const dataAddress = memoryAddressLookup[module.id + '_' + stepper.id] / memoryBuffer.BYTES_PER_ELEMENT;
 	memoryBuffer[dataAddress] = Math.min(Math.max(memoryBuffer[dataAddress] + value, stepper.minValue), stepper.maxValue);
+};
+
+const onChangeDevice: StepperChangeHandler = function (module, state, value, stepper) {
+	const { memoryBuffer, memoryAddressLookup } = state.compiler;
+	const dataAddress = memoryAddressLookup[module.id + '_' + stepper.id] / memoryBuffer.BYTES_PER_ELEMENT;
+	const maxValue = state.midi.ports.length - 1;
+	const minValue = 0;
+	const newValue = Math.min(Math.max(memoryBuffer[dataAddress] + value, minValue), maxValue);
+
+	memoryBuffer[dataAddress] = newValue;
+	stepper.textValue = state.midi.ports[newValue].name;
 };
 
 export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
@@ -20,7 +32,7 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 			name: 'through',
 			config: {
 				numberOfPorts: 2,
-				dataPlaceholders: [{ id: 'channel' }, { id: 'device' }],
+				numberOfDataPlaceholders: 2,
 			},
 		},
 		height,
@@ -47,7 +59,18 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 				height: hGrid,
 				minValue: 1,
 				maxValue: 8,
-				onChange,
+				onChange: onChangeChannel,
+			},
+			{
+				id: 'data:2',
+				label: 'device',
+				x: vGrid * 20,
+				y: hGrid * 4,
+				width: vGrid * 2,
+				height: hGrid,
+				minValue: 0,
+				maxValue: 8,
+				onChange: onChangeDevice,
 			},
 		],
 		width,
