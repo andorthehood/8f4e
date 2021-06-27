@@ -125,6 +125,7 @@ Object {
   "initialMemory": Array [
     0,
     0,
+    12,
     0,
     -1,
     -1,
@@ -147,6 +148,10 @@ Object {
     Object {
       "address": 0,
       "id": "in",
+    },
+    Object {
+      "address": 0,
+      "id": "allocatedNotes",
     },
     Object {
       "address": 0,

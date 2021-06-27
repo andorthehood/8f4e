@@ -1,7 +1,13 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import { ModuleGeneratorProps, ModuleType } from '../state/types';
+import { ModuleGeneratorProps, ModuleType, StepperChangeHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
+import { extractState, insertState } from 'compiler/modules/through';
+
+const onChange: StepperChangeHandler = function (module, memoryBuffer, memoryAddressLookup, value, stepper) {
+	const dataAddress = memoryAddressLookup[module.id + '_' + stepper.id] / memoryBuffer.BYTES_PER_ELEMENT;
+	memoryBuffer[dataAddress] = Math.min(Math.max(memoryBuffer[dataAddress] + value, stepper.minValue), stepper.maxValue);
+};
 
 export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
 	const width = MODULE_WIDTH_M * vGrid;
@@ -32,8 +38,20 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		outputs: [],
 		sliders: [],
 		steppers: [
-			{ id: 'channel', x: vGrid * 20, y: hGrid * 2, width: vGrid * 2, height: hGrid, minValue: 1, maxValue: 8 },
+			{
+				id: 'data:1',
+				label: 'channel',
+				x: vGrid * 20,
+				y: hGrid * 2,
+				width: vGrid * 2,
+				height: hGrid,
+				minValue: 1,
+				maxValue: 8,
+				onChange,
+			},
 		],
 		width,
+		insertState,
+		extractState,
 	};
 }
