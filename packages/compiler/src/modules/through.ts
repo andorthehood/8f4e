@@ -1,24 +1,72 @@
 import { i32load, i32const, i32store, createFunctionBody } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
 
 enum Memory {
 	ZERO,
+	NUMBER_OF_INPUTS,
+	NUMBER_OF_OUTPUTS,
+	NUMBER_OF_DATA_PLACEHOLDERS,
+	START_OF_PORTS_AND_PLACEHOLDERS,
 }
-
-type DataPlaceholder = {
-	id: string;
-};
 
 type ThroughConfig = {
 	numberOfPorts?: number;
-	dataPlaceholders?: DataPlaceholder[];
+	numberOfDataPlaceholders?: number;
+};
+
+interface ThroughState {
+	[key: string]: number;
+}
+
+export const insertState: ModuleStateInserter<ThroughState> = function (moduleState, memoryBuffer, moduleAddress) {
+	const numberOfInputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_INPUTS];
+	const numberOfOutputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_OUTPUTS];
+	const numberOfDataPlaceholders =
+		memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_DATA_PLACEHOLDERS];
+	const dataPlaceholdersStartAddress =
+		moduleAddress / memoryBuffer.BYTES_PER_ELEMENT +
+		Memory.START_OF_PORTS_AND_PLACEHOLDERS +
+		numberOfInputs +
+		numberOfOutputs;
+
+	Object.entries(moduleState)
+		.slice(0, numberOfDataPlaceholders)
+		.forEach(([key, value]) => {
+			memoryBuffer[dataPlaceholdersStartAddress + parseInt(key.split(':')[1], 10) - 1] = value;
+		});
+};
+
+export const extractState: ModuleStateExtractor<ThroughState> = function (memoryBuffer, moduleAddress) {
+	const numberOfInputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_INPUTS];
+	const numberOfOutputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_OUTPUTS];
+	const numberOfDataPlaceholders =
+		memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_DATA_PLACEHOLDERS];
+	const dataPlaceholdersStartAddress =
+		moduleAddress / memoryBuffer.BYTES_PER_ELEMENT +
+		Memory.START_OF_PORTS_AND_PLACEHOLDERS +
+		numberOfInputs +
+		numberOfOutputs;
+
+	const obj = {};
+
+	memoryBuffer
+		.slice(dataPlaceholdersStartAddress, dataPlaceholdersStartAddress + numberOfDataPlaceholders)
+		.forEach((value, index) => {
+			obj['data:' + (index + 1)] = value;
+		});
+
+	return obj;
 };
 
 const through: ModuleGenerator = function (moduleId, offset, config: ThroughConfig = {}) {
-	const { numberOfPorts = 1, dataPlaceholders = [] } = config;
+	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
 	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
-	const inputPointers = portIndexes.map(index => offset(1 + index));
-	const outputs = portIndexes.map(index => offset(1 + numberOfPorts + index));
+	const dataPlaceholderIndexes = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index);
+	const inputPointers = portIndexes.map(index => offset(Memory.START_OF_PORTS_AND_PLACEHOLDERS + index));
+	const outputs = portIndexes.map(index => offset(Memory.START_OF_PORTS_AND_PLACEHOLDERS + numberOfPorts + index));
+	const dataPlaceholders = dataPlaceholderIndexes.map(index =>
+		offset(Memory.START_OF_PORTS_AND_PLACEHOLDERS + 2 * numberOfPorts + index)
+	);
 
 	const functionBody = createFunctionBody(
 		[],
@@ -39,14 +87,20 @@ const through: ModuleGenerator = function (moduleId, offset, config: ThroughConf
 		offset: offset(0),
 		initialMemory: [
 			0,
+			numberOfPorts,
+			numberOfPorts,
+			numberOfDataPlaceholders,
 			...portIndexes.map(() => offset(Memory.ZERO)),
 			...portIndexes.map(() => 0),
-			...dataPlaceholders.map(({ id }) => (typeof config[id] !== 'undefined' ? config[id] : 0)),
+			...dataPlaceholders.map(() => 0),
 		],
 		memoryAddresses: [
 			...inputPointers.map((address, index) => ({ address, id: 'in:' + (index + 1) })),
 			...outputs.map((address, index) => ({ address, id: 'out:' + (index + 1) })),
-			...dataPlaceholders.map(({ id }, index) => ({ address: offset(index + 1 + 2 * numberOfPorts), id })),
+			...dataPlaceholders.map((address, index) => ({
+				address,
+				id: 'data:' + (index + 1),
+			})),
 		],
 	};
 };

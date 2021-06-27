@@ -13,20 +13,11 @@ export default function moduleSteppers(state: State, events): void {
 		);
 
 		if (stepper) {
-			let newValue = module.state[stepper.id];
-
 			if (stepper.y + module.y + state.viewport.y + 10 < y) {
-				newValue--;
+				stepper.onChange(module, state.compiler.memoryBuffer, state.compiler.memoryAddressLookup, -1, stepper);
 			} else {
-				newValue++;
+				stepper.onChange(module, state.compiler.memoryBuffer, state.compiler.memoryAddressLookup, +1, stepper);
 			}
-
-			module.state[stepper.id] = Math.min(Math.max(newValue, stepper.minValue), stepper.maxValue);
-
-			const address =
-				state.compiler.memoryAddressLookup[module.id + '_' + stepper.id] /
-				state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
-			state.compiler.memoryBuffer[address] = module.state[stepper.id];
 		}
 	}
 

@@ -19,6 +19,7 @@ import { I32_SIGNED_LARGEST_NUMBER } from '../consts';
 export enum Memory {
 	INPUT_POINTER,
 	OUTPUT,
+	ALLOCATED_NOTES,
 	NUMBER_OF_NOTES,
 	FIRST_NOTE,
 }
@@ -66,10 +67,14 @@ export const insertState: ModuleStateInserter<QuantizerState> = function insertS
 ): void {
 	const firstNoteAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.FIRST_NOTE;
 	const numberOfNotesAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_NOTES;
-	state.activeNotes.forEach((note, index) => {
+	const allocatedNotesAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.ALLOCATED_NOTES;
+	const allocatedNotes = memoryBuffer[allocatedNotesAddress];
+
+	state.activeNotes.slice(0, allocatedNotes).forEach((note, index) => {
 		memoryBuffer[firstNoteAddress + index] = note;
 	});
-	memoryBuffer[numberOfNotesAddress] = state.activeNotes.length;
+
+	memoryBuffer[numberOfNotesAddress] = Math.min(state.activeNotes.length, allocatedNotes);
 };
 
 interface QuantizerConfig {
@@ -161,10 +166,11 @@ const quantizer: ModuleGenerator = function (moduleId, offset, config: Quantizer
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, 0, 0, ...new Array(allocatedNotes).fill(-1)],
+		initialMemory: [0, 0, allocatedNotes, 0, ...new Array(allocatedNotes).fill(-1)],
 		memoryAddresses: [
 			{ address: offset(Memory.FIRST_NOTE), id: 'notes' },
 			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
+			{ address: offset(Memory.ALLOCATED_NOTES), id: 'allocatedNotes' },
 			{ address: offset(Memory.NUMBER_OF_NOTES), id: 'numberOfNotes' },
 			{ address: offset(Memory.OUTPUT), id: 'out' },
 		],
