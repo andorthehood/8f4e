@@ -61,13 +61,7 @@ export interface Button extends Position, Size {
 	value: number;
 }
 
-export type StepperChangeHandler = (
-	module: Module,
-	memoryBuffer: MemoryBuffer,
-	memoryAddressLookup: MemoryAddressLookup,
-	value,
-	stepper: Stepper
-) => void;
+export type StepperChangeHandler = (module: Module, state: State, value, stepper: Stepper) => void;
 
 export interface Stepper extends Position, Size {
 	id: string;
@@ -75,6 +69,7 @@ export interface Stepper extends Position, Size {
 	minValue: number;
 	onChange: StepperChangeHandler;
 	label: string;
+	textValue?: string;
 }
 
 export interface Line extends Position, Size {

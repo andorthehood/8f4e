@@ -14,9 +14,9 @@ export default function moduleSteppers(state: State, events): void {
 
 		if (stepper) {
 			if (stepper.y + module.y + state.viewport.y + 10 < y) {
-				stepper.onChange(module, state.compiler.memoryBuffer, state.compiler.memoryAddressLookup, -1, stepper);
+				stepper.onChange(module, state, -1, stepper);
 			} else {
-				stepper.onChange(module, state.compiler.memoryBuffer, state.compiler.memoryAddressLookup, +1, stepper);
+				stepper.onChange(module, state, +1, stepper);
 			}
 		}
 	}
