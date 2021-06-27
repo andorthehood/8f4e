@@ -6,14 +6,7 @@ Object {
   "category": "MIDI",
   "engine": Object {
     "config": Object {
-      "dataPlaceholders": Array [
-        Object {
-          "id": "channel",
-        },
-        Object {
-          "id": "device",
-        },
-      ],
+      "numberOfDataPlaceholders": 2,
       "numberOfPorts": 2,
     },
     "name": "through",
@@ -80,6 +73,17 @@ Object {
       "width": 12,
       "x": 120,
       "y": 28,
+    },
+    Object {
+      "height": 14,
+      "id": "data:2",
+      "label": "device",
+      "maxValue": 8,
+      "minValue": 0,
+      "onChange": [Function],
+      "width": 12,
+      "x": 120,
+      "y": 56,
     },
   ],
   "width": 240,
