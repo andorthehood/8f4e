@@ -1,7 +1,8 @@
 import { State } from '../types';
 import { resize, move } from '../mutators/viewport';
+import { EventDispatcher } from '../../events';
 
-export default function viewport(state: State, events): () => void {
+export default function viewport(state: State, events: EventDispatcher): () => void {
 	function onMouseMove(event) {
 		if (event.buttons === 1) {
 			move(state, event.movementX, event.movementY);
