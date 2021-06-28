@@ -8,13 +8,15 @@ export interface EventObject {
 	key?: number;
 }
 
-export type EventHandler = (event: EventObject) => void;
+export type EventHandler = (event?: EventObject) => void;
 
-export default function events(): {
+export interface EventDispatcher {
 	on: (event: string, callback: EventHandler) => void;
 	off: (event: string, callback: EventHandler) => void;
-	dispatch: (event: string, eventObject: EventObject) => void;
-} {
+	dispatch: (event: string, eventObject?: EventObject) => void;
+}
+
+export default function events(): EventDispatcher {
 	const subscriptions = {
 		contextmenu: [],
 		keydown: [],

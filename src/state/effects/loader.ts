@@ -1,6 +1,6 @@
 import { State } from '../types';
 
-export default function loader(state: State, events, defaultState: State): void {
+export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
 	const localState = JSON.parse(localStorage.getItem('state')) || {};
 
 	Object.keys(localState).forEach(key => {

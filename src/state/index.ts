@@ -16,6 +16,7 @@ import tests from './effects/tests';
 import viewport from './effects/viewport';
 import { State } from './types';
 import generateModuleTypes from '../modules';
+import { EventDispatcher } from '../events';
 
 const defaultState: State = {
 	sructureVersion: 8,
@@ -56,7 +57,7 @@ const defaultState: State = {
 	moduleTypes: {},
 };
 
-export default function init(events): State {
+export default function init(events: EventDispatcher): State {
 	const state = { ...defaultState };
 	state.moduleTypes = generateModuleTypes({ vGrid: state.viewport.vGrid, hGrid: state.viewport.hGrid });
 	midi(state, events);
