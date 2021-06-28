@@ -1,3 +1,4 @@
+import { EventDispatcher } from '../../../events';
 import { ModuleType, ModuleTypeLookup, State } from '../../types';
 
 function getModuleCategories(moduleTypes: ModuleTypeLookup): string[] {
@@ -18,7 +19,7 @@ function filterModuleTypesByCategory(moduleTypes: ModuleTypeLookup, category: st
 	});
 }
 
-export default function contextMenu(state: State, events): () => void {
+export default function contextMenu(state: State, events: EventDispatcher): () => void {
 	const onModuleMenu = event => {
 		const { y } = event;
 

@@ -8,7 +8,7 @@ import {
 } from '../helpers/connectionHelpers';
 import { State } from '../types';
 
-export default function connectionMaker(state: State, events): void {
+export default function connectionMaker(state: State, events: EventDispatcher): void {
 	function onMouseMove(event) {
 		state.connectionPointB = [event.x, event.y];
 		event.stopPropagation = true;

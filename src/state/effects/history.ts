@@ -1,8 +1,9 @@
+import { EventDispatcher } from '../../events';
 import { State } from '../types';
 
 const trackedEvents = ['deleteConnection', 'createConnection', 'deleteModule', 'addModule'];
 
-export default function history(state: State, events): void {
+export default function history(state: State, events: EventDispatcher): void {
 	function onHistoricEvent(event) {
 		if (event.replaceHistory) {
 			return;

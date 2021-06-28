@@ -1,6 +1,7 @@
+import { EventDispatcher } from '../../events';
 import { State } from '../types';
 
-export default async function midi(state: State, events): Promise<void> {
+export default async function midi(state: State, events: EventDispatcher): Promise<void> {
 	let selectedPort;
 	let midiAccess;
 
@@ -28,10 +29,11 @@ export default async function midi(state: State, events): Promise<void> {
 		}
 	}
 
-	function onStateChange(e) {
-		console.log(e.port.name, e.port.manufacturer, e.port.state);
-	}
+	// function onStateChange(e) {
+	// 	console.log(e.port.name, e.port.manufacturer, e.port.state);
+	// }
 
+	// @ts-ignore
 	navigator.requestMIDIAccess().then(onMidiAccess);
 	//midiAccess.addEventListener('statechange', onStateChange);
 	events.on('selectMidiOutput', onSelectMidiOutput);

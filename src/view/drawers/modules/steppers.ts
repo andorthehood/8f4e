@@ -7,8 +7,8 @@ export default function drawSteppers(
 	steppers: Stepper[],
 	state: State,
 	id: string,
-	vGrid,
-	hGrid
+	vGrid: number,
+	hGrid: number
 ): void {
 	for (let i = 0; i < steppers.length; i++) {
 		const stepper = steppers[i];

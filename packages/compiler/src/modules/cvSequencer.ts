@@ -1,8 +1,6 @@
 import {
 	Instruction,
 	Type,
-	block,
-	br_if,
 	createFunctionBody,
 	createLocalDeclaration,
 	i32const,
@@ -11,10 +9,8 @@ import {
 	ifelse,
 	localGet,
 	localSet,
-	loop,
 } from 'bytecode-utils';
 import { ModuleGenerator } from '../types';
-import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 export enum Memory {
 	STEP_BACK_TRIGGER_INPUT_POINTER,
