@@ -1,7 +1,8 @@
+import { EventDispatcher } from '../../../events';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 import { State, Module } from '../../types';
 
-export default function moduleDragger(state: State, events): () => void {
+export default function moduleDragger(state: State, events: EventDispatcher): () => void {
 	let draggedModule: Module = null;
 
 	function onMouseDown({ x, y }) {

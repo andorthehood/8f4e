@@ -1,3 +1,4 @@
+import { EventDispatcher } from '../../../events';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 import { State } from '../../types';
 
@@ -8,7 +9,7 @@ function getHighlightedMenuItem(x, y, itemHeight, width) {
 	return Math.floor(y / itemHeight);
 }
 
-export default function contextMenu(state: State, events): () => void {
+export default function contextMenu(state: State, events: EventDispatcher): () => void {
 	state.contextMenu = {
 		highlightedItem: 0,
 		itemHeight: 20,

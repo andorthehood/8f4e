@@ -1,6 +1,7 @@
+import { EventDispatcher } from '../../../events';
 import { State } from '../../types';
 
-export default function moduleCreator(state: State, events): void {
+export default function moduleCreator(state: State, events: EventDispatcher): void {
 	function onAddModule({ x, y, type }) {
 		x = x - state.viewport.x - Math.floor(state.moduleTypes[type].width / 2);
 		y = y - state.viewport.y - Math.floor(state.moduleTypes[type].height / 2);
@@ -15,7 +16,7 @@ export default function moduleCreator(state: State, events): void {
 		});
 	}
 
-	function onDeleteModule({ moduleId }) {
+	function onDeleteModule({ moduleId }): void {
 		events.dispatch('deleteConnection', { moduleId, replaceHistory: true });
 		state.modules.splice(
 			state.modules.findIndex(({ id }) => id === moduleId),
