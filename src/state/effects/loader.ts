@@ -1,3 +1,4 @@
+import { EventDispatcher } from '../../events';
 import { State } from '../types';
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
