@@ -7,9 +7,9 @@ Object {
   "engine": Object {
     "config": Object {
       "numberOfDataPlaceholders": 2,
-      "numberOfPorts": 2,
+      "numberOfPorts": 3,
     },
-    "name": "through",
+    "name": "buffer",
   },
   "extractState": undefined,
   "height": 126,
@@ -30,6 +30,14 @@ Object {
       "width": 12,
       "x": 12,
       "y": 56,
+    },
+    Object {
+      "height": 13,
+      "id": "in:3",
+      "label": "velocity",
+      "width": 12,
+      "x": 12,
+      "y": 70,
     },
   ],
   "insertState": undefined,

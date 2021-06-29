@@ -8,7 +8,7 @@ Object {
     "config": Object {
       "numberOfPorts": 1,
     },
-    "name": "through",
+    "name": "buffer",
   },
   "height": 126,
   "initialState": Object {},
