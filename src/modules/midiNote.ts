@@ -11,7 +11,7 @@ export default function number({ vGrid, hGrid }: ModuleGeneratorProps): ModuleTy
 	return {
 		buttons: [],
 		category: 'Inspection',
-		engine: { name: 'through', config: {} },
+		engine: { name: 'buffer', config: {} },
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),

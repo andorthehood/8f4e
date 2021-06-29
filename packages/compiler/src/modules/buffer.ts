@@ -9,7 +9,7 @@ enum Memory {
 	START_OF_PORTS_AND_PLACEHOLDERS,
 }
 
-type ThroughConfig = {
+type BufferConfig = {
 	numberOfPorts?: number;
 	numberOfDataPlaceholders?: number;
 };
@@ -58,7 +58,7 @@ export const extractState: ModuleStateExtractor<ThroughState> = function (memory
 	return obj;
 };
 
-const through: ModuleGenerator = function (moduleId, offset, config: ThroughConfig = {}) {
+const buffer: ModuleGenerator = function (moduleId, offset, config: BufferConfig = {}) {
 	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
 	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
 	const dataPlaceholderIndexes = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index);
@@ -105,4 +105,4 @@ const through: ModuleGenerator = function (moduleId, offset, config: ThroughConf
 	};
 };
 
-export default through;
+export default buffer;
