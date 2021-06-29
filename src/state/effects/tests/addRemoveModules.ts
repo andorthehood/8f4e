@@ -1,3 +1,4 @@
+import { EventDispatcher } from '../../../events';
 import { State } from '../../types';
 
 const sleep = async time => new Promise(resolve => setTimeout(resolve, time));
