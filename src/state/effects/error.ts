@@ -1,3 +1,4 @@
+import { EventDispatcher } from '../../events';
 import { State } from '../types';
 
 export default function error(state: State, events: EventDispatcher): void {
