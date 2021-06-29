@@ -1,3 +1,4 @@
+import { EventDispatcher } from '../../../events';
 import { State } from '../../types';
 import addRemoveModules from './addRemoveModules';
 

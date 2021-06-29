@@ -7,6 +7,7 @@ import {
 	rejectConnectionsByModuleId,
 } from '../helpers/connectionHelpers';
 import { State } from '../types';
+import { EventDispatcher } from '../../events';
 
 export default function connectionMaker(state: State, events: EventDispatcher): void {
 	function onMouseMove(event) {
