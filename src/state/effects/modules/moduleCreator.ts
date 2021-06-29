@@ -1,5 +1,13 @@
 import { EventDispatcher } from '../../../events';
-import { State } from '../../types';
+import { Module, State } from '../../types';
+
+function getUniqueModuleId(modules: Module[]): number {
+	const largestNumber = modules.reduce((acc, module) => {
+		const moduleNumber = parseInt(module.id.replace(module.type, ''));
+		return moduleNumber > acc ? moduleNumber : acc;
+	}, 1);
+	return largestNumber + 1;
+}
 
 export default function moduleCreator(state: State, events: EventDispatcher): void {
 	function onAddModule({ x, y, type }) {
@@ -8,7 +16,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 
 		state.modules.push({
 			engine: { name: state.moduleTypes[type].engine.name, config: { ...state.moduleTypes[type].engine.config } },
-			id: type + state.modules.length,
+			id: type + getUniqueModuleId(state.modules),
 			state: { ...state.moduleTypes[type].initialState },
 			type,
 			x,
