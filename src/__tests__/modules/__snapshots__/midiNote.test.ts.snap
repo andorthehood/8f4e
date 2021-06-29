@@ -6,7 +6,7 @@ Object {
   "category": "Inspection",
   "engine": Object {
     "config": Object {},
-    "name": "through",
+    "name": "buffer",
   },
   "height": 126,
   "initialState": Object {},
