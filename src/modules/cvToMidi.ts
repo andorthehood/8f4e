@@ -2,7 +2,7 @@ import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import { ModuleGeneratorProps, ModuleType, StepperChangeHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
-import { extractState, insertState } from 'compiler/modules/through';
+import { extractState, insertState } from 'compiler/modules/buffer';
 
 const onChangeChannel: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;
@@ -29,9 +29,9 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		buttons: [],
 		category: 'MIDI',
 		engine: {
-			name: 'through',
+			name: 'buffer',
 			config: {
-				numberOfPorts: 2,
+				numberOfPorts: 3,
 				numberOfDataPlaceholders: 2,
 			},
 		},
@@ -41,6 +41,7 @@ export default function cvToMidi({ vGrid, hGrid }: ModuleGeneratorProps): Module
 			[
 				{ id: 'in:1', label: 'note in' },
 				{ id: 'in:2', label: 'clock in' },
+				{ id: 'in:3', label: 'velocity' },
 			],
 			vGrid,
 			hGrid
