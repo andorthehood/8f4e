@@ -6,7 +6,7 @@ export default function findMidiNoteModules(
 	memoryBuffer: MemoryBuffer
 ): MidiModuleAddresses[] {
 	return compiledModules
-		.filter(({ moduleId }) => moduleId.startsWith('cvToMidi'))
+		.filter(({ moduleId }) => moduleId.startsWith('cvToMidiNote'))
 		.map(module => {
 			return {
 				noteAddress: module.memoryAddresses.find(({ id }) => id === 'out:1').address / memoryBuffer.BYTES_PER_ELEMENT,
