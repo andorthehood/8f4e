@@ -9,7 +9,8 @@ import bitwiseOr from './bitwiseOr';
 import bitwiseXor from './bitwiseXor';
 import clockGenerator from './clockGenerator';
 import constant from './constant';
-import cvToMidi from './cvToMidi';
+import cvToMidiCC from './cvToMidiCC';
+import cvToMidiNote from './cvToMidiNote';
 import invert from './invert';
 import logicAnd from './logicAnd';
 import logicNegate from './logicNegate';
@@ -43,7 +44,8 @@ export default function generateModuleTypes(props: ModuleGeneratorProps): Module
 		bitwiseXor: bitwiseXor(props),
 		clockGenerator: clockGenerator(props),
 		constant: constant(props),
-		cvToMidi: cvToMidi(props),
+		cvToMidiCC: cvToMidiCC(props),
+		cvToMidiNote: cvToMidiNote(props),
 		invert: invert(props),
 		logicAnd: logicAnd(props),
 		logicNegate: logicNegate(props),
