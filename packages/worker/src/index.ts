@@ -3,6 +3,8 @@ import createModule from './createModule';
 import resetMidi from './resetMidi';
 import findMidiNoteModules from './findMidiNoteModules';
 import broadcastMidiMessages from './broadcastMidiMessages';
+import findMidiCCModules from './findMidiCCModules';
+import broadcastMidiCCMessages from './broadcastMidiCCMessages';
 
 let interval: NodeJS.Timeout;
 const intervalTime = 10;
@@ -26,11 +28,14 @@ async function recompile(memoryRef, modules: Module[], connections: Connection[]
 	const wasOn: boolean[] = new Array(midiNoteModules.length).fill(false);
 	const sampleAndHold: number[] = new Array(midiNoteModules.length).fill(0);
 
+	const midiCCModules = findMidiCCModules(compiledModules, memoryBuffer);
+
 	resetMidi();
 
 	interval = setInterval(() => {
 		cycle();
 
+		broadcastMidiCCMessages(midiCCModules, memoryBuffer);
 		broadcastMidiMessages(midiNoteModules, wasOn, sampleAndHold, memoryBuffer);
 	}, intervalTime);
 }
