@@ -34,7 +34,6 @@ async function recompile(memoryRef, modules: Module[], connections: Connection[]
 
 	interval = setInterval(() => {
 		cycle();
-
 		broadcastMidiCCMessages(midiCCModules, memoryBuffer);
 		broadcastMidiMessages(midiNoteModules, wasOn, sampleAndHold, memoryBuffer);
 	}, intervalTime);

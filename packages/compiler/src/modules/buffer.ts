@@ -23,11 +23,9 @@ export const insertState: ModuleStateInserter<ThroughState> = function (moduleSt
 	const numberOfOutputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_OUTPUTS];
 	const numberOfDataPlaceholders =
 		memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_DATA_PLACEHOLDERS];
-	const dataPlaceholdersStartAddress =
-		moduleAddress / memoryBuffer.BYTES_PER_ELEMENT +
-		Memory.START_OF_PORTS_AND_PLACEHOLDERS +
-		numberOfInputs +
-		numberOfOutputs;
+	const startAddressOfOutputs =
+		moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.START_OF_PORTS_AND_PLACEHOLDERS + numberOfInputs;
+	const dataPlaceholdersStartAddress = startAddressOfOutputs + numberOfOutputs;
 
 	Object.entries(moduleState)
 		.slice(0, numberOfDataPlaceholders)
@@ -62,11 +60,13 @@ const buffer: ModuleGenerator = function (moduleId, offset, config: BufferConfig
 	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
 	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
 	const dataPlaceholderIndexes = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index);
+
+	const startAddressOfOutputs = Memory.START_OF_PORTS_AND_PLACEHOLDERS + numberOfPorts;
+	const startAddressOfDataPlaceholders = Memory.START_OF_PORTS_AND_PLACEHOLDERS + 2 * numberOfPorts;
+
 	const inputPointers = portIndexes.map(index => offset(Memory.START_OF_PORTS_AND_PLACEHOLDERS + index));
-	const outputs = portIndexes.map(index => offset(Memory.START_OF_PORTS_AND_PLACEHOLDERS + numberOfPorts + index));
-	const dataPlaceholders = dataPlaceholderIndexes.map(index =>
-		offset(Memory.START_OF_PORTS_AND_PLACEHOLDERS + 2 * numberOfPorts + index)
-	);
+	const outputs = portIndexes.map(index => offset(startAddressOfOutputs + index));
+	const dataPlaceholders = dataPlaceholderIndexes.map(index => offset(startAddressOfDataPlaceholders + index));
 
 	const functionBody = createFunctionBody(
 		[],
