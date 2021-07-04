@@ -7,7 +7,7 @@ const wasOn = new Map<string, boolean>();
 const sampleAndHold = new Map<string, number>();
 
 export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: MemoryBuffer): void {
-	midiNoteModules.forEach(({ noteAddress, noteOnOffAddress, channelAddress, velocityAddress, moduleId }, index) => {
+	midiNoteModules.forEach(({ noteAddress, noteOnOffAddress, channelAddress, velocityAddress, moduleId }) => {
 		const note = int16ToMidiNote(memoryBuffer[noteAddress]);
 		const isOn = memoryBuffer[noteOnOffAddress] !== 0;
 		const channel = memoryBuffer[channelAddress] || 1;
