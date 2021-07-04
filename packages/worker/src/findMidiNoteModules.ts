@@ -9,6 +9,7 @@ export default function findMidiNoteModules(
 		.filter(({ moduleId }) => moduleId.startsWith('cvToMidiNote'))
 		.map(module => {
 			return {
+				moduleId: module.moduleId,
 				noteAddress: module.memoryAddresses.find(({ id }) => id === 'out:1').address / memoryBuffer.BYTES_PER_ELEMENT,
 				channelAddress:
 					module.memoryAddresses.find(({ id }) => id === 'data:1').address / memoryBuffer.BYTES_PER_ELEMENT,
