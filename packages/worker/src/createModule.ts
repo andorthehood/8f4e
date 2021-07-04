@@ -1,6 +1,15 @@
-import compile, { Module } from 'compiler';
+import compile, { CompiledModule, MemoryAddressLookup, MemoryBuffer, Module } from 'compiler';
 
-export default async function createModule(memoryRef, modules: Module[]) {
+export default async function createModule(
+	memoryRef: WebAssembly.Memory,
+	modules: Module[]
+): Promise<{
+	memoryBuffer: MemoryBuffer;
+	cycle: CallableFunction;
+	init: CallableFunction;
+	memoryAddressLookup: MemoryAddressLookup;
+	compiledModules: CompiledModule[];
+}> {
 	const { codeBuffer, memoryAddressLookup, compiledModules } = compile(modules);
 
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
