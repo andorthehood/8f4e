@@ -25,10 +25,14 @@ export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasEl
 
 	const ctx: OffscreenCanvasRenderingContext2D = canvas.getContext('2d');
 
-	generateFillColors(ctx);
-	generateScope(ctx);
-
-	const commands = [...generateFeedbackScale(), ...generateFont(), ...generatePianoKeyboard(), ...generateIcons()];
+	const commands = [
+		...generateScope(),
+		...generateFillColors(),
+		...generateFeedbackScale(),
+		...generateFont(),
+		...generatePianoKeyboard(),
+		...generateIcons(),
+	];
 
 	commands.forEach(([command, ...params]) => {
 		switch (command) {
