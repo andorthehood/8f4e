@@ -1,6 +1,6 @@
 import { State } from '../types';
 
-export function compilationDone(state: State, data, memoryRef): void {
+export function compilationDone(state: State, data, memoryRef: WebAssembly.Memory): void {
 	state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
 	state.compiler.memoryAddressLookup = data.payload.memoryAddressLookup;
 	state.compiler.isCompiling = false;
