@@ -10,6 +10,7 @@
 			"compiler*": ["./packages/compiler/src*"],
 			"2d-engine": ["./packages/2d-engine/src"],
 			"sprite-generator": ["./packages/sprite-generator/src"],
+			"sprite-generator*": ["./packages/sprite-generator/src*"],
 			"worker": ["./packages/worker/src"]
 		}
 	},
