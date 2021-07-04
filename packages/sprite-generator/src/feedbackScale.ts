@@ -1,17 +1,21 @@
 import { SpriteLookup } from '2d-engine';
+import { Command, DrawingCommand } from './types';
 
 const offsetX = 0;
 const offsetY = 130;
 
-export default function generate(ctx: OffscreenCanvasRenderingContext2D): void {
+export default function generate(): DrawingCommand[] {
+	//TODO: optimize this once I'm not going to be high on BNT162b2
+	const commands: DrawingCommand[] = [];
 	for (let r = 0; r <= 255; r += 8) {
 		for (let b = 0; b <= 255; b += 8) {
-			ctx.fillStyle = 'rgb(' + r + ',' + 0 + ',' + (255 - b) + ')';
+			commands.push([Command.FILL_COLOR, 'rgb(' + r + ',' + 0 + ',' + (255 - b) + ')']);
 			const x = offsetX + r / 2 + b / 2;
 			const y = offsetY;
-			ctx.fillRect(x, y, 4, 4);
+			commands.push([Command.RECTANGLE, x, y, 4, 4]);
 		}
 	}
+	return [[Command.RESET_TRANSFORM], ...commands];
 }
 
 export const lookup: SpriteLookup = function (scale: number) {

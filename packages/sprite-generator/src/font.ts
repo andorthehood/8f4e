@@ -1,5 +1,6 @@
 import { SpriteLookup } from '2d-engine';
 import smallFont from './smallFont';
+import { Command, DrawingCommand } from './types';
 
 const offsetX = 0;
 const offsetY = 0;
@@ -17,21 +18,27 @@ function forEachBit(byte: number, callback: (isByteSet: boolean, nthBit: number)
 	}
 }
 
-function generateFont(ctx: OffscreenCanvasRenderingContext2D, x = 0, y = 0, font: number[]): void {
+function generateFont(x = 0, y = 0, font: number[]): DrawingCommand[] {
+	//TODO: optimize this once I'm not going to be high on BNT162b2
+	const commands: DrawingCommand[] = [];
 	for (let j = 0; j < CHARACTER_COUNT; j++) {
 		for (let i = 0; i < CHARACTER_HEIGHT; i++) {
 			forEachBit(font[j * CHARACTER_HEIGHT + i], function (bit, nthBit) {
-				bit && ctx.fillRect(j * CHARACTER_WIDTH + nthBit + x, i + y, 1, 1);
+				bit && commands.push([Command.PIXEL, j * CHARACTER_WIDTH + nthBit + x, i + y]);
 			});
 		}
 	}
+	return commands;
 }
 
-export default function generateFonts(ctx: OffscreenCanvasRenderingContext2D): void {
-	ctx.fillStyle = 'rgba(255,255,255,255)';
-	generateFont(ctx, offsetX, offsetY + PADDING_TOP, smallFont);
-	ctx.fillStyle = 'rgba(0,0,0,255)';
-	generateFont(ctx, offsetX, offsetY + LINE_HEIGHT, smallFont);
+export default function generateFonts(): DrawingCommand[] {
+	return [
+		[Command.RESET_TRANSFORM],
+		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		...generateFont(offsetX, offsetY + PADDING_TOP, smallFont),
+		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
+		...generateFont(offsetX, offsetY + LINE_HEIGHT, smallFont),
+	];
 }
 
 export const lookup = function (font: string): SpriteLookup {

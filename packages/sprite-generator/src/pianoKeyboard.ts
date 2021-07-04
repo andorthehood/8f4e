@@ -1,7 +1,7 @@
 import { SpriteLookup } from '2d-engine';
 import { DrawingCommand, Command } from './types';
 
-function whiteKeyLeft(
+export function whiteKeyLeft(
 	width: number,
 	height: number,
 	cutX: number,
@@ -24,7 +24,7 @@ function whiteKeyLeft(
 	];
 }
 
-function whiteKeyMiddle(
+export function whiteKeyMiddle(
 	width: number,
 	height: number,
 	cutX: number,
@@ -49,7 +49,7 @@ function whiteKeyMiddle(
 	];
 }
 
-function whiteKeyRight(
+export function whiteKeyRight(
 	width: number,
 	height: number,
 	cutX: number,
@@ -72,7 +72,7 @@ function whiteKeyRight(
 	];
 }
 
-function blackKey(width: number, height: number, fillColor: string, borderColor: string) {
+export function blackKey(width: number, height: number, fillColor: string, borderColor: string): DrawingCommand[] {
 	return [
 		[Command.FILL_COLOR, fillColor],
 		[Command.RECTANGLE, 0, 0, width, height],
