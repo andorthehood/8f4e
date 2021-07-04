@@ -3,6 +3,7 @@ import generateFillColors from './fillColors';
 import generateFeedbackScale from './feedbackScale';
 import generateScope from './scope';
 import generatePianoKeyboard from './pianoKeyboard';
+import { Command } from './types';
 
 export { lookup as feedbackScale } from './feedbackScale';
 export { lookup as fillColor } from './fillColors';
@@ -21,13 +22,30 @@ export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasEl
 		canvas.height = 1024;
 	}
 
-	const ctx = canvas.getContext('2d');
+	const ctx: OffscreenCanvasRenderingContext2D = canvas.getContext('2d');
 
 	generateFeedbackScale(ctx);
 	generateFont(ctx);
 	generateFillColors(ctx);
 	generateScope(ctx);
-	generatePianoKeyboard(ctx);
+
+	const commands = generatePianoKeyboard();
+
+	commands.forEach(([command, ...params]) => {
+		switch (command) {
+			case Command.FILL_COLOR:
+				ctx.fillStyle = <string>params[0];
+				break;
+			case Command.RECTANGLE:
+				ctx.fillRect(...params);
+				break;
+			case Command.RESET_TRANSFORM:
+				ctx.resetTransform();
+				break;
+			case Command.TRANSLATE:
+				ctx.translate(...params);
+		}
+	});
 
 	return canvas;
 }
