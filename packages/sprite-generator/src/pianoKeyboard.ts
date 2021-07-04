@@ -1,88 +1,88 @@
 import { SpriteLookup } from '2d-engine';
+import { DrawingCommand, Command } from './types';
 
 function whiteKeyLeft(
-	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
 	cutX: number,
 	cutY: number,
 	fillColor: string,
 	borderColor: string
-) {
-	ctx.fillStyle = fillColor;
-	ctx.fillRect(0, 0, width - cutX, height);
-	ctx.fillRect(0, cutY, width, height - cutY);
+): DrawingCommand[] {
+	return [
+		[Command.FILL_COLOR, fillColor],
+		[Command.RECTANGLE, 0, 0, width - cutX, height],
+		[Command.RECTANGLE, 0, cutY, width, height - cutY],
 
-	ctx.fillStyle = borderColor;
-	ctx.fillRect(0, 0, width - cutX, 1);
-	ctx.fillRect(width - cutX - 1, 0, 1, cutY);
-	ctx.fillRect(width - cutX, cutY, cutX, 1);
-	ctx.fillRect(width - 1, cutY, 1, height - cutY);
-	ctx.fillRect(0, height - 1, width, 1);
-	ctx.fillRect(0, 0, 1, height);
+		[Command.FILL_COLOR, borderColor],
+		[Command.RECTANGLE, 0, 0, width - cutX, 1],
+		[Command.RECTANGLE, width - cutX - 1, 0, 1, cutY],
+		[Command.RECTANGLE, width - cutX, cutY, cutX, 1],
+		[Command.RECTANGLE, width - 1, cutY, 1, height - cutY],
+		[Command.RECTANGLE, 0, height - 1, width, 1],
+		[Command.RECTANGLE, 0, 0, 1, height],
+	];
 }
 
 function whiteKeyMiddle(
-	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
 	cutX: number,
 	cutY: number,
 	fillColor: string,
 	borderColor: string
-) {
-	ctx.fillStyle = fillColor;
-	ctx.fillRect(cutX, 0, width - cutX * 2, height);
-	ctx.fillRect(0, cutY, width, height - cutY);
+): DrawingCommand[] {
+	return [
+		[Command.FILL_COLOR, fillColor],
+		[Command.RECTANGLE, cutX, 0, width - cutX * 2, height],
+		[Command.RECTANGLE, 0, cutY, width, height - cutY],
 
-	ctx.fillStyle = borderColor;
-	ctx.fillRect(cutX, 0, width - 2 * cutX, 1);
-	ctx.fillRect(width - cutX - 1, 0, 1, cutY);
-	ctx.fillRect(width - cutX, cutY, cutX, 1);
-	ctx.fillRect(width - 1, cutY, 1, height - cutY);
-	ctx.fillRect(0, height - 1, width, 1);
-	ctx.fillRect(0, cutY, 1, height - cutY);
-	ctx.fillRect(0, cutY, cutX, 1);
-	ctx.fillRect(cutX, 0, 1, cutY);
+		[Command.FILL_COLOR, borderColor],
+		[Command.RECTANGLE, cutX, 0, width - 2 * cutX, 1],
+		[Command.RECTANGLE, width - cutX - 1, 0, 1, cutY],
+		[Command.RECTANGLE, width - cutX, cutY, cutX, 1],
+		[Command.RECTANGLE, width - 1, cutY, 1, height - cutY],
+		[Command.RECTANGLE, 0, height - 1, width, 1],
+		[Command.RECTANGLE, 0, cutY, 1, height - cutY],
+		[Command.RECTANGLE, 0, cutY, cutX, 1],
+		[Command.RECTANGLE, cutX, 0, 1, cutY],
+	];
 }
 
 function whiteKeyRight(
-	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
 	cutX: number,
 	cutY: number,
 	fillColor: string,
 	borderColor: string
-) {
-	ctx.fillStyle = fillColor;
-	ctx.fillRect(cutX, 0, width - cutX, height);
-	ctx.fillRect(0, cutY, width, height - cutY);
+): DrawingCommand[] {
+	return [
+		[Command.FILL_COLOR, fillColor],
+		[Command.RECTANGLE, cutX, 0, width - cutX, height],
+		[Command.RECTANGLE, 0, cutY, width, height - cutY],
 
-	ctx.fillStyle = borderColor;
-	ctx.fillRect(cutX, 0, width - cutX, 1);
-	ctx.fillRect(width - 1, 0, 1, height);
-	ctx.fillRect(0, height - 1, width, 1);
-	ctx.fillRect(0, cutY, 1, height - cutY);
-	ctx.fillRect(0, cutY, cutX, 1);
-	ctx.fillRect(cutX, 0, 1, cutY);
+		[Command.FILL_COLOR, borderColor],
+		[Command.RECTANGLE, cutX, 0, width - cutX, 1],
+		[Command.RECTANGLE, width - 1, 0, 1, height],
+		[Command.RECTANGLE, 0, height - 1, width, 1],
+		[Command.RECTANGLE, 0, cutY, 1, height - cutY],
+		[Command.RECTANGLE, 0, cutY, cutX, 1],
+		[Command.RECTANGLE, cutX, 0, 1, cutY],
+	];
 }
 
-function blackKey(
-	ctx: OffscreenCanvasRenderingContext2D,
-	width: number,
-	height: number,
-	fillColor: string,
-	borderColor: string
-) {
-	ctx.fillStyle = fillColor;
-	ctx.fillRect(0, 0, width, height);
+function blackKey(width: number, height: number, fillColor: string, borderColor: string) {
+	return [
+		[Command.FILL_COLOR, fillColor],
+		[Command.RECTANGLE, 0, 0, width, height],
 
-	ctx.fillStyle = borderColor;
-	ctx.fillRect(0, 0, 1, height);
-	ctx.fillRect(width - 1, 0, 1, height);
-	ctx.fillRect(0, 0, width, 1);
-	ctx.fillRect(0, height - 1, width, 1);
+		[Command.FILL_COLOR, borderColor],
+		[Command.RECTANGLE, 0, 0, 1, height],
+		[Command.RECTANGLE, width - 1, 0, 1, height],
+		[Command.RECTANGLE, 0, 0, width, 1],
+		[Command.RECTANGLE, 0, height - 1, width, 1],
+	];
 }
 
 const orderedKeys = [
@@ -96,7 +96,6 @@ const orderedKeys = [
 ];
 
 function generateKeyboard(
-	ctx: OffscreenCanvasRenderingContext2D,
 	width: number,
 	height: number,
 	spacing: number,
@@ -106,24 +105,29 @@ function generateKeyboard(
 	whiteKeyBorderColor: string,
 	blackKeyFillColor: string,
 	blackKeyBorderColor: string
-): void {
+): DrawingCommand[] {
 	const cutX = (blackKeyWidth - spacing) / 2;
 	const cutY = blackKeyHeight;
 	const blackKeyOffsetRelativeToWhiteKey = width - cutX;
 
-	orderedKeys.forEach(keyDrawer => {
-		keyDrawer.call(this, ctx, width, height, cutX, cutY, whiteKeyFillColor, whiteKeyBorderColor);
-
-		if ([whiteKeyLeft, whiteKeyMiddle].includes(keyDrawer)) {
-			ctx.translate(blackKeyOffsetRelativeToWhiteKey, 0);
-			blackKey(ctx, blackKeywidth, blackKeyHeight, blackKeyFillColor, blackKeyBorderColor);
-			ctx.translate(-blackKeyOffsetRelativeToWhiteKey, 0);
-		}
-
-		ctx.translate(width + spacing, 0);
-	});
-
-	ctx.resetTransform();
+	return [
+		...orderedKeys
+			.map(keyDrawer => {
+				return [
+					...keyDrawer.call(this, width, height, cutX, cutY, whiteKeyFillColor, whiteKeyBorderColor),
+					...([whiteKeyLeft, whiteKeyMiddle].includes(keyDrawer)
+						? [
+								[Command.TRANSLATE, blackKeyOffsetRelativeToWhiteKey, 0],
+								...blackKey(blackKeywidth, blackKeyHeight, blackKeyFillColor, blackKeyBorderColor),
+								[Command.TRANSLATE, -blackKeyOffsetRelativeToWhiteKey, 0],
+						  ]
+						: []),
+					[Command.TRANSLATE, width + spacing, 0],
+				];
+			})
+			.flat(),
+		[Command.RESET_TRANSFORM],
+	];
 }
 
 const offsetX = 0;
@@ -137,77 +141,74 @@ const keyboardWidth = (whiteKeyWidth + spacing) * orderedKeys.length;
 const cutX = (blackKeyWidth - spacing) / 2;
 const blackKeyOffsetRelativeToWhiteKey = whiteKeyWidth - cutX;
 
-export default function generate(ctx: OffscreenCanvasRenderingContext2D): void {
-	ctx.resetTransform();
-	ctx.translate(offsetX, offsetY);
-	generateKeyboard(
-		ctx,
-		whiteKeyWidth,
-		whiteKeyHeight,
-		spacing,
-		blackKeyWidth,
-		blackKeyHeight,
-		'rgb(255, 255, 255)',
-		'rgb(255, 255, 255)',
-		'rgba(0, 0, 0',
-		'rgba(0, 0, 0)'
-	);
+export default function generate(): DrawingCommand[] {
+	return [
+		[Command.RESET_TRANSFORM],
+		[Command.TRANSLATE, offsetX, offsetY],
+		...generateKeyboard(
+			whiteKeyWidth,
+			whiteKeyHeight,
+			spacing,
+			blackKeyWidth,
+			blackKeyHeight,
+			'rgb(255, 255, 255)',
+			'rgb(255, 255, 255)',
+			'rgba(0, 0, 0',
+			'rgba(0, 0, 0)'
+		),
 
-	ctx.translate(offsetX + keyboardWidth, offsetY);
-	generateKeyboard(
-		ctx,
-		whiteKeyWidth,
-		whiteKeyHeight,
-		spacing,
-		blackKeyWidth,
-		blackKeyHeight,
-		'rgb(0, 0, 0)',
-		'rgb(255, 255, 255)',
-		'rgba(255, 255, 255, 0)',
-		'rgba(0, 0, 0, 0)'
-	);
+		[Command.TRANSLATE, offsetX + keyboardWidth, offsetY],
+		...generateKeyboard(
+			whiteKeyWidth,
+			whiteKeyHeight,
+			spacing,
+			blackKeyWidth,
+			blackKeyHeight,
+			'rgb(0, 0, 0)',
+			'rgb(255, 255, 255)',
+			'rgba(255, 255, 255, 0)',
+			'rgba(0, 0, 0, 0)'
+		),
 
-	ctx.translate(offsetX + keyboardWidth * 2, offsetY);
-	generateKeyboard(
-		ctx,
-		whiteKeyWidth,
-		whiteKeyHeight,
-		spacing,
-		blackKeyWidth,
-		blackKeyHeight,
-		'rgba(255, 255, 255, 0)',
-		'rgba(0, 0, 0, 0)',
-		'rgb(255, 255, 255)',
-		'rgb(0, 0, 0)'
-	);
+		[Command.TRANSLATE, offsetX + keyboardWidth * 2, offsetY],
+		...generateKeyboard(
+			whiteKeyWidth,
+			whiteKeyHeight,
+			spacing,
+			blackKeyWidth,
+			blackKeyHeight,
+			'rgba(255, 255, 255, 0)',
+			'rgba(0, 0, 0, 0)',
+			'rgb(255, 255, 255)',
+			'rgb(0, 0, 0)'
+		),
 
-	ctx.translate(offsetX + keyboardWidth * 3, offsetY);
-	generateKeyboard(
-		ctx,
-		whiteKeyWidth,
-		whiteKeyHeight,
-		spacing,
-		blackKeyWidth,
-		blackKeyHeight,
-		'rgb(255, 0, 0)',
-		'rgb(255, 255, 255)',
-		'rgba(255, 255, 255, 0)',
-		'rgba(0, 0, 0, 0)'
-	);
+		[Command.TRANSLATE, offsetX + keyboardWidth * 3, offsetY],
+		...generateKeyboard(
+			whiteKeyWidth,
+			whiteKeyHeight,
+			spacing,
+			blackKeyWidth,
+			blackKeyHeight,
+			'rgb(255, 0, 0)',
+			'rgb(255, 255, 255)',
+			'rgba(255, 255, 255, 0)',
+			'rgba(0, 0, 0, 0)'
+		),
 
-	ctx.translate(offsetX + keyboardWidth * 4, offsetY);
-	generateKeyboard(
-		ctx,
-		whiteKeyWidth,
-		whiteKeyHeight,
-		spacing,
-		blackKeyWidth,
-		blackKeyHeight,
-		'rgba(255, 255, 255, 0)',
-		'rgba(0, 0, 0, 0)',
-		'rgb(255, 0, 0)',
-		'rgb(0, 0, 0)'
-	);
+		[Command.TRANSLATE, offsetX + keyboardWidth * 4, offsetY],
+		...generateKeyboard(
+			whiteKeyWidth,
+			whiteKeyHeight,
+			spacing,
+			blackKeyWidth,
+			blackKeyHeight,
+			'rgba(255, 255, 255, 0)',
+			'rgba(0, 0, 0, 0)',
+			'rgb(255, 0, 0)',
+			'rgb(0, 0, 0)'
+		),
+	];
 }
 
 const getWhiteKeyIndex = function (note: number) {
