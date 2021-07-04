@@ -4,6 +4,7 @@ import generateFeedbackScale from './feedbackScale';
 import generateScope from './scope';
 import generatePianoKeyboard from './pianoKeyboard';
 import { Command } from './types';
+import generateIcons from './icons';
 
 export { lookup as feedbackScale } from './feedbackScale';
 export { lookup as fillColor } from './fillColors';
@@ -24,12 +25,10 @@ export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasEl
 
 	const ctx: OffscreenCanvasRenderingContext2D = canvas.getContext('2d');
 
-	generateFeedbackScale(ctx);
-	generateFont(ctx);
 	generateFillColors(ctx);
 	generateScope(ctx);
 
-	const commands = generatePianoKeyboard();
+	const commands = [...generateFeedbackScale(), ...generateFont(), ...generatePianoKeyboard(), ...generateIcons()];
 
 	commands.forEach(([command, ...params]) => {
 		switch (command) {
@@ -44,6 +43,10 @@ export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasEl
 				break;
 			case Command.TRANSLATE:
 				ctx.translate(...params);
+				break;
+			case Command.PIXEL:
+				ctx.fillRect(...params, 1, 1);
+				break;
 		}
 	});
 
