@@ -1,5 +1,5 @@
-import { createTestModule } from '../utils';
-import random, { Memory } from '../../src/modules/random';
+import { createTestModule } from '../../testUtils';
+import random, { Memory } from '../../modules/random';
 
 let testModule;
 

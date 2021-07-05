@@ -1,16 +1,16 @@
-import { createTestModule } from '../utils';
-import xor, { Memory } from '../../src/modules/logicXor';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../src/consts';
+import { createTestModule } from '../../testUtils';
+import or, { Memory } from '../../modules/logicOr';
+import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(xor('id', () => 0)).toMatchSnapshot();
+	expect(or('id', () => 0)).toMatchSnapshot();
 });
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(xor);
+		testModule = await createTestModule(or);
 	});
 
 	beforeEach(() => {
@@ -26,7 +26,7 @@ describe('functional tests', () => {
 		memory[10] = 10;
 		memory[11] = 10;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
 
 		memory[10] = 0;
 		memory[11] = 10;
