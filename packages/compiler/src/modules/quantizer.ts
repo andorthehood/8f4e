@@ -81,7 +81,7 @@ interface QuantizerConfig {
 	allocatedNotes?: number;
 }
 
-const quantizer: ModuleGenerator = function (moduleId, offset, config: QuantizerConfig = {}) {
+const quantizer: ModuleGenerator<QuantizerConfig> = function (moduleId, offset, config = {}) {
 	const { allocatedNotes = 12 } = config;
 
 	const functionBody = createFunctionBody(
