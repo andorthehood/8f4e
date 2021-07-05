@@ -30,7 +30,7 @@ enum Local {
 	__LENGTH,
 }
 
-const cvSequencer: ModuleGenerator = function (moduleId, offset, { allocatedNotes = 12 }) {
+const cvSequencer: ModuleGenerator<{ allocatedNotes?: number }> = function (moduleId, offset, { allocatedNotes = 12 }) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Local.__LENGTH)],
 		[

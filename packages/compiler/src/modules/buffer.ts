@@ -56,7 +56,7 @@ export const extractState: ModuleStateExtractor<ThroughState> = function (memory
 	return obj;
 };
 
-const buffer: ModuleGenerator = function (moduleId, offset, config: BufferConfig = {}) {
+const buffer: ModuleGenerator<BufferConfig> = function (moduleId, offset, config = {}) {
 	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
 	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
 	const dataPlaceholderIndexes = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index);

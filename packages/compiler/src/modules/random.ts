@@ -27,7 +27,7 @@ enum Locals {
 const tapPositions = [0, 2, 3, 5];
 
 /* Linear-feedback shift register style random generator. */
-const random: ModuleGenerator = function (moduleId, offset, { seed = 69420 }: { seed?: number } = {}) {
+const random: ModuleGenerator<{ seed?: number }> = function (moduleId, offset, { seed = 69420 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
