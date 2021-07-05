@@ -1,5 +1,5 @@
-import { createTestModule } from '../utils';
-import sampleAndHold, { Memory } from '../../src/modules/sampleAndHold';
+import { createTestModule } from '../../testUtils';
+import sampleAndHold, { Memory } from '../../modules/sampleAndHold';
 
 let testModule;
 

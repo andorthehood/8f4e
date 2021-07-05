@@ -1,6 +1,6 @@
-import { createTestModule } from '../utils';
-import offset, { Memory } from '../../src/modules/offset';
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../src/consts';
+import { createTestModule } from '../../testUtils';
+import offset, { Memory } from '../../modules/offset';
+import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../consts';
 
 let testModule;
 

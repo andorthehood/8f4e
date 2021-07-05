@@ -1,5 +1,5 @@
-import { createTestModule } from '../utils';
-import constant, { Memory } from '../../src/modules/constant';
+import { createTestModule } from '../../testUtils';
+import constant, { Memory } from '../../modules/constant';
 
 let testModule;
 

@@ -1,4 +1,4 @@
-import { localGet, localSet, call, i32const, f32const } from '../src';
+import { localGet, localSet, call, i32const, f32const } from '..';
 
 test('localGet', () => {
 	expect(localGet(1)).toStrictEqual([32, 1]);
