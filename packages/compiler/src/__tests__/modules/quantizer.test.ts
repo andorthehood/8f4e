@@ -1,5 +1,5 @@
-import { createTestModule } from '../utils';
-import quantizer, { Memory } from '../../src/modules/quantizer';
+import { createTestModule } from '../../testUtils';
+import quantizer, { Memory } from '../../modules/quantizer';
 
 let testModule;
 

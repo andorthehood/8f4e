@@ -1,5 +1,5 @@
-import { createTestModule } from '../utils';
-import invert, { Memory } from '../../src/modules/invert';
+import { createTestModule } from '../../testUtils';
+import invert, { Memory } from '../../modules/invert';
 
 let testModule;
 

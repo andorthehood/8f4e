@@ -1,6 +1,6 @@
-import { createTestModule } from '../utils';
-import bitwiseAnd, { Memory } from '../../src/modules/bitwiseAnd';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../src/consts';
+import { createTestModule } from '../../testUtils';
+import bitwiseAnd, { Memory } from '../../modules/bitwiseAnd';
+import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 
 let testModule;
 

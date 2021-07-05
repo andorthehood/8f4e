@@ -1,5 +1,5 @@
-import { createTestModule } from '../utils';
-import max, { Memory } from '../../src/modules/max';
+import { createTestModule } from '../../testUtils';
+import max, { Memory } from '../../modules/max';
 
 let testModule;
 

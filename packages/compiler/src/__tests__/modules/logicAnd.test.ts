@@ -1,7 +1,7 @@
-import { createTestModule } from '../utils';
-import and, { Memory } from '../../src/modules/logicAnd';
+import { createTestModule } from '../../testUtils';
+import and, { Memory } from '../../modules/logicAnd';
 
-import { I16_SIGNED_LARGEST_NUMBER } from '../../src/consts';
+import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 
 let testModule;
 

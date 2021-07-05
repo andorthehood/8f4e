@@ -1,4 +1,4 @@
-import { signedLEB128, unsignedLEB128 } from '../src';
+import { signedLEB128, unsignedLEB128 } from '..';
 
 test('signedLEB128', () => {
 	expect(signedLEB128(-10)).toStrictEqual([118]);

@@ -1,5 +1,5 @@
-import { createTestModule } from '../utils';
-import splitter from '../../src/modules/splitter';
+import { createTestModule } from '../../testUtils';
+import splitter from '../../modules/splitter';
 
 let testModule;
 

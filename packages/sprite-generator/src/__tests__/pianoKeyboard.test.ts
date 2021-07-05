@@ -1,4 +1,4 @@
-import { whiteKeyLeft, whiteKeyMiddle, whiteKeyRight, blackKey } from '../src/pianoKeyboard';
+import { whiteKeyLeft, whiteKeyMiddle, whiteKeyRight, blackKey } from '../pianoKeyboard';
 
 it('generates the correct drawing commands for piano keys', () => {
 	expect(whiteKeyLeft(10, 20, 5, 5, '#ffffff', '#ffffff')).toMatchSnapshot();
