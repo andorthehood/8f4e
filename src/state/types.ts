@@ -81,10 +81,13 @@ export interface Drawer {
 	config: Record<string, number | string>;
 }
 
-export interface ModuleType extends Size {
+export interface ModuleType<EngineConfig = unknown> extends Size {
 	category: string;
 	drawer?: Drawer;
-	engine: Engine;
+	engine: {
+		name: string;
+		config: EngineConfig;
+	};
 	initialState: ModuleState;
 	inputs: Connector[];
 	lines: Line[];
