@@ -17,14 +17,14 @@ export const extractState: ModuleStateExtractor<ConstantState> = function (memor
 	return { out: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OUTPUT] };
 };
 
-const constant: ModuleGenerator = function (moduleId, offset, initialConfig: { out?: number } = {}) {
+const constant: ModuleGenerator<{ out?: number }> = function (moduleId, offset, { out = 0 } = {}) {
 	const functionBody = createFunctionBody([], []);
 
 	return {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [initialConfig.out || 0],
+		initialMemory: [out],
 		memoryAddresses: [{ address: offset(Memory.OUTPUT), id: 'out' }],
 	};
 };
