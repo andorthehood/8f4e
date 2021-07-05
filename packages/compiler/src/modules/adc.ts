@@ -58,7 +58,11 @@ enum Locals {
 	__LENGTH,
 }
 
-const adc: ModuleGenerator<{ resolution?: number }> = function (moduleId, offset, { resolution = 8 } = {}) {
+export interface Config {
+	resolution?: number;
+}
+
+const adc: ModuleGenerator<Config> = function (moduleId, offset, { resolution = 8 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
