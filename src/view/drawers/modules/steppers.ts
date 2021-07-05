@@ -1,7 +1,6 @@
 import { Engine } from '2d-engine';
 import { State, Stepper } from '../../../state/types';
-import { font, fillColor } from 'sprite-generator';
-import { Icon } from 'sprite-generator/fonts/icons';
+import { font } from 'sprite-generator';
 
 export default function drawSteppers(
 	engine: Engine,

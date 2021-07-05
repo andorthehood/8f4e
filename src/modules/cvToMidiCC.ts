@@ -4,6 +4,7 @@ import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import { extractState, insertState } from 'compiler/modules/buffer';
 import ccNames from '../midi/ccNames';
+import { Config } from 'compiler/modules/buffer';
 
 const onChange: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;
@@ -16,7 +17,7 @@ const onChange: StepperChangeHandler = function (module, state, value, stepper) 
 	}
 };
 
-export default function cvToMidiCC({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
+export default function cvToMidiCC({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
 	const width = MODULE_WIDTH_M * vGrid;
 	const height = MODULE_HEIGHT_S * hGrid;
 
@@ -41,8 +42,8 @@ export default function cvToMidiCC({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 			{
 				id: 'data:1',
 				label: 'channel',
-				x: vGrid * 20,
-				y: hGrid * 2,
+				x: vGrid * 10,
+				y: hGrid * 3,
 				width: vGrid * 2,
 				height: hGrid,
 				minValue: 1,
@@ -52,7 +53,7 @@ export default function cvToMidiCC({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 			{
 				id: 'data:2',
 				label: 'cc',
-				x: vGrid * 20,
+				x: vGrid * 10,
 				y: hGrid * 4,
 				width: vGrid * 2,
 				height: hGrid,
