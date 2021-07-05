@@ -1,22 +1,23 @@
-import { createTestModule } from '../utils';
-import min, { Memory } from '../../src/modules/min';
+import { createTestModule } from '../../testUtils';
+import xor, { Memory } from '../../modules/logicXor';
+import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(min('id', () => 0)).toMatchSnapshot();
+	expect(xor('id', () => 0)).toMatchSnapshot();
 });
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(min);
+		testModule = await createTestModule(xor);
 	});
 
 	beforeEach(() => {
 		testModule.reset();
 	});
 
-	test('min module', () => {
+	test('or module', () => {
 		const { memory, test } = testModule;
 
 		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
@@ -25,17 +26,17 @@ describe('functional tests', () => {
 		memory[10] = 10;
 		memory[11] = 10;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(10);
+		expect(memory[Memory.OUTPUT]).toBe(0);
 
 		memory[10] = 0;
 		memory[11] = 10;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
 
 		memory[10] = 10;
 		memory[11] = 0;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
 
 		memory[10] = 0;
 		memory[11] = 0;
@@ -45,11 +46,6 @@ describe('functional tests', () => {
 		memory[10] = -10;
 		memory[11] = 0;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(-10);
-
-		memory[10] = -10;
-		memory[11] = -100;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(-100);
+		expect(memory[Memory.OUTPUT]).toBe(0);
 	});
 });
