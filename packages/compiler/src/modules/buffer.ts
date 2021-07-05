@@ -9,10 +9,10 @@ enum Memory {
 	START_OF_PORTS_AND_PLACEHOLDERS,
 }
 
-type BufferConfig = {
+export interface Config {
 	numberOfPorts?: number;
 	numberOfDataPlaceholders?: number;
-};
+}
 
 interface ThroughState {
 	[key: string]: number;
@@ -56,7 +56,7 @@ export const extractState: ModuleStateExtractor<ThroughState> = function (memory
 	return obj;
 };
 
-const buffer: ModuleGenerator<BufferConfig> = function (moduleId, offset, config = {}) {
+const buffer: ModuleGenerator<Config> = function (moduleId, offset, config = {}) {
 	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
 	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
 	const dataPlaceholderIndexes = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index);

@@ -77,11 +77,11 @@ export const insertState: ModuleStateInserter<QuantizerState> = function insertS
 	memoryBuffer[numberOfNotesAddress] = Math.min(state.activeNotes.length, allocatedNotes);
 };
 
-interface QuantizerConfig {
+export interface Config {
 	allocatedNotes?: number;
 }
 
-const quantizer: ModuleGenerator<QuantizerConfig> = function (moduleId, offset, config = {}) {
+const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = {}) {
 	const { allocatedNotes = 12 } = config;
 
 	const functionBody = createFunctionBody(

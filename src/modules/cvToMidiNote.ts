@@ -3,6 +3,7 @@ import { ModuleGeneratorProps, ModuleType, StepperChangeHandler } from '../state
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import { extractState, insertState } from 'compiler/modules/buffer';
+import { Config } from 'compiler/modules/buffer';
 
 const onChangeChannel: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;
@@ -10,7 +11,7 @@ const onChangeChannel: StepperChangeHandler = function (module, state, value, st
 	memoryBuffer[dataAddress] = Math.min(Math.max(memoryBuffer[dataAddress] + value, stepper.minValue), stepper.maxValue);
 };
 
-export default function cvToMidiNote({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
+export default function cvToMidiNote({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
 	const width = MODULE_WIDTH_M * vGrid;
 	const height = MODULE_HEIGHT_S * hGrid;
 
@@ -44,7 +45,7 @@ export default function cvToMidiNote({ vGrid, hGrid }: ModuleGeneratorProps): Mo
 				id: 'data:1',
 				label: 'channel',
 				x: vGrid * 20,
-				y: hGrid * 2,
+				y: hGrid * 3,
 				width: vGrid * 2,
 				height: hGrid,
 				minValue: 1,
