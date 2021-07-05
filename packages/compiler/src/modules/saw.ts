@@ -40,7 +40,7 @@ export const extractState: ModuleStateExtractor<SawState> = function (memoryBuff
 	return { rate: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] };
 };
 
-const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
+const saw: ModuleGenerator<{ rate?: number }> = function (moduleId, offset, { rate = 1 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -76,13 +76,7 @@ const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		]
 	);
 
-	const initialMemory = [
-		0,
-		offset(Memory.RATE_SELF),
-		initialConfig.rate,
-		offset(Memory.LIMIT_SELF),
-		I16_SIGNED_LARGEST_NUMBER,
-	];
+	const initialMemory = [0, offset(Memory.RATE_SELF), rate, offset(Memory.LIMIT_SELF), I16_SIGNED_LARGEST_NUMBER];
 
 	return {
 		moduleId,
@@ -92,7 +86,7 @@ const saw: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		memoryAddresses: [
 			{ address: offset(Memory.COUNTER), id: 'out' },
 			{ address: offset(Memory.RATE_POINTER), id: 'in:rate', default: offset(Memory.RATE_SELF) },
-			{ address: offset(Memory.RATE_SELF), id: 'rate', default: initialConfig.rate },
+			{ address: offset(Memory.RATE_SELF), id: 'rate', default: rate },
 		],
 	};
 };

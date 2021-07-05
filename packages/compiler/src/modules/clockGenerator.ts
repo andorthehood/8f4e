@@ -38,7 +38,7 @@ export const extractState: ModuleStateExtractor<ClockGeneratorState> = function 
 	return { rate: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] };
 };
 
-const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
+const clock: ModuleGenerator<{ rate?: number }> = function (moduleId, offset, { rate = 1 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -84,7 +84,7 @@ const clock: ModuleGenerator = function (moduleId, offset, initialConfig) {
 		]
 	);
 
-	const initialMemory = [0, initialConfig.rate, 0];
+	const initialMemory = [0, rate, 0];
 
 	return {
 		moduleId,
