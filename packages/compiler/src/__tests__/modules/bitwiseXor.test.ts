@@ -1,6 +1,6 @@
-import { createTestModule } from '../utils';
-import bitwiseXor, { Memory } from '../../src/modules/bitwiseXor';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../src/consts';
+import { createTestModule } from '../../testUtils';
+import bitwiseXor, { Memory } from '../../modules/bitwiseXor';
+import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 
 let testModule;
 

@@ -1,6 +1,6 @@
-import { createTestModule } from '../utils';
-import adc, { Memory } from '../../src/modules/adc';
-import { LOGIC_HIGH } from '../../src/consts';
+import { createTestModule } from '../../testUtils';
+import adc, { Memory } from '../../modules/adc';
+import { LOGIC_HIGH } from '../../consts';
 
 let testModule;
 

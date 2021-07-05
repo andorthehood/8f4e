@@ -1,6 +1,6 @@
-import { createTestModule } from '../utils';
-import mixer, { Memory } from '../../src/modules/mixer';
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../src/consts';
+import { createTestModule } from '../../testUtils';
+import mixer, { Memory } from '../../modules/mixer';
+import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../consts';
 
 let testModule;
 
