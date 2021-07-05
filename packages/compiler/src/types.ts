@@ -17,10 +17,10 @@ export interface Connection {
 
 export type RelativeAddressCalculator = (nthWord: number) => number;
 
-export type ModuleGenerator = (
+export type ModuleGenerator<TConfig = unknown> = (
 	moduleId: string,
 	offset: RelativeAddressCalculator,
-	initialConfig?: Record<string, number | string>
+	initialConfig?: TConfig
 ) => CompiledModule;
 
 export type EngineConfig = Record<string, number | string | EngineConfig[]>;
