@@ -6,6 +6,7 @@ import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
 import { insertState, extractState } from 'compiler/modules/quantizer';
+import { Config } from 'compiler/modules/quantizer';
 
 const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
 	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id]);
@@ -19,7 +20,7 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id]);
 };
 
-export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
+export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
 	const width = MODULE_WIDTH_XXL * vGrid;
 	const height = MODULE_HEIGHT_S * hGrid;
 	const pianoX = vGrid;
