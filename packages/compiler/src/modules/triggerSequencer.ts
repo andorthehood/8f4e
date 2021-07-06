@@ -10,7 +10,7 @@ import {
 	localSet,
 	Type,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
 
 export enum Memory {
 	ZERO,
@@ -22,15 +22,53 @@ export enum Memory {
 	PATTERN_START,
 }
 
+interface TriggerSequencerState {
+	pattern: boolean[];
+}
+
+export const insertState: ModuleStateInserter<TriggerSequencerState> = function (
+	moduleState,
+	memoryBuffer,
+	moduleAddress
+) {
+	const patternStartAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_START;
+	const patternMemorySizeAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_MEMORY_SIZE;
+
+	if (moduleState.pattern.length === 0) {
+		memoryBuffer[patternMemorySizeAddress] = 1;
+		memoryBuffer[patternStartAddress] = 0;
+		return;
+	}
+
+	memoryBuffer[patternMemorySizeAddress] = moduleState.pattern.length;
+
+	moduleState.pattern.forEach((item, index) => {
+		memoryBuffer[patternStartAddress + index * memoryBuffer.BYTES_PER_ELEMENT] = item ? 1 : 0;
+	});
+};
+
+export const extractState: ModuleStateExtractor<TriggerSequencerState> = function (memoryBuffer, moduleAddress) {
+	const patternStartAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_START;
+	const patternMemorySizeAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_MEMORY_SIZE;
+
+	const patternMemorySize = memoryBuffer[patternMemorySizeAddress] / memoryBuffer.BYTES_PER_ELEMENT;
+	const pattern = Array.from(memoryBuffer.slice(patternStartAddress, patternStartAddress + patternMemorySize));
+
+	return { pattern: pattern.map(item => item === 1) };
+};
+
 enum Locals {
 	TRIGGER_INPUT,
 	PATTERN_POINTER,
 	__LENGTH,
 }
 
-const triggerSequencer: ModuleGenerator = function (moduleId, offset) {
-	const patternLength = 1;
-	const pattern = new Array(patternLength).fill(0);
+export interface Config {
+	maxPatternSizeToAlloc: number;
+}
+
+const triggerSequencer: ModuleGenerator<Config> = function (moduleId, offset, { maxPatternSizeToAlloc }) {
+	const pattern = new Array(maxPatternSizeToAlloc).fill(0);
 
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
@@ -88,7 +126,7 @@ const triggerSequencer: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), 0, 0, 0, patternLength, ...pattern],
+		initialMemory: [0, offset(Memory.ZERO), 0, 0, 0, maxPatternSizeToAlloc * 4, ...pattern],
 		memoryAddresses: [
 			{ address: offset(Memory.OUTPUT), id: 'out' },
 			{
