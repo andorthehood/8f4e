@@ -25,3 +25,4 @@ export { default as sequentialSwitch } from './sequentialSwitch';
 export { default as splitter } from './splitter';
 export { default as buffer } from './buffer';
 export { default as triangle } from './triangle';
+export { default as triggerSequencer } from './triggerSequencer';
