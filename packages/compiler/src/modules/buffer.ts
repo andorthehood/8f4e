@@ -14,11 +14,11 @@ export interface Config {
 	numberOfDataPlaceholders?: number;
 }
 
-interface ThroughState {
+interface BufferState {
 	[key: string]: number;
 }
 
-export const insertState: ModuleStateInserter<ThroughState> = function (moduleState, memoryBuffer, moduleAddress) {
+export const insertState: ModuleStateInserter<BufferState> = function (moduleState, memoryBuffer, moduleAddress) {
 	const numberOfInputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_INPUTS];
 	const numberOfOutputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_OUTPUTS];
 	const numberOfDataPlaceholders =
@@ -34,7 +34,7 @@ export const insertState: ModuleStateInserter<ThroughState> = function (moduleSt
 		});
 };
 
-export const extractState: ModuleStateExtractor<ThroughState> = function (memoryBuffer, moduleAddress) {
+export const extractState: ModuleStateExtractor<BufferState> = function (memoryBuffer, moduleAddress) {
 	const numberOfInputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_INPUTS];
 	const numberOfOutputs = memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_OUTPUTS];
 	const numberOfDataPlaceholders =
