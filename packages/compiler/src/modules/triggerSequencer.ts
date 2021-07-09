@@ -22,41 +22,6 @@ export enum Memory {
 	PATTERN_START,
 }
 
-interface TriggerSequencerState {
-	pattern: boolean[];
-}
-
-export const insertState: ModuleStateInserter<TriggerSequencerState> = function (
-	moduleState,
-	memoryBuffer,
-	moduleAddress
-) {
-	const patternStartAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_START;
-	const patternMemorySizeAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_MEMORY_SIZE;
-
-	if (moduleState.pattern.length === 0) {
-		memoryBuffer[patternMemorySizeAddress] = 1;
-		memoryBuffer[patternStartAddress] = 0;
-		return;
-	}
-
-	memoryBuffer[patternMemorySizeAddress] = moduleState.pattern.length;
-
-	moduleState.pattern.forEach((item, index) => {
-		memoryBuffer[patternStartAddress + index * memoryBuffer.BYTES_PER_ELEMENT] = item ? 1 : 0;
-	});
-};
-
-export const extractState: ModuleStateExtractor<TriggerSequencerState> = function (memoryBuffer, moduleAddress) {
-	const patternStartAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_START;
-	const patternMemorySizeAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_MEMORY_SIZE;
-
-	const patternMemorySize = memoryBuffer[patternMemorySizeAddress] / memoryBuffer.BYTES_PER_ELEMENT;
-	const pattern = Array.from(memoryBuffer.slice(patternStartAddress, patternStartAddress + patternMemorySize));
-
-	return { pattern: pattern.map(item => item === 1) };
-};
-
 enum Locals {
 	TRIGGER_INPUT,
 	PATTERN_POINTER,
@@ -139,3 +104,38 @@ const triggerSequencer: ModuleGenerator<Config> = function (moduleId, offset, { 
 };
 
 export default triggerSequencer;
+
+interface TriggerSequencerState {
+	pattern: boolean[];
+}
+
+export const insertState: ModuleStateInserter<TriggerSequencerState> = function (
+	moduleState,
+	memoryBuffer,
+	moduleAddress
+) {
+	const patternStartAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_START;
+	const patternMemorySizeAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_MEMORY_SIZE;
+
+	if (moduleState.pattern.length === 0) {
+		memoryBuffer[patternMemorySizeAddress] = 1;
+		memoryBuffer[patternStartAddress] = 0;
+		return;
+	}
+
+	memoryBuffer[patternMemorySizeAddress] = moduleState.pattern.length;
+
+	moduleState.pattern.forEach((item, index) => {
+		memoryBuffer[patternStartAddress + index * memoryBuffer.BYTES_PER_ELEMENT] = item ? 1 : 0;
+	});
+};
+
+export const extractState: ModuleStateExtractor<TriggerSequencerState> = function (memoryBuffer, moduleAddress) {
+	const patternStartAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_START;
+	const patternMemorySizeAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_MEMORY_SIZE;
+
+	const patternMemorySize = memoryBuffer[patternMemorySizeAddress] / memoryBuffer.BYTES_PER_ELEMENT;
+	const pattern = Array.from(memoryBuffer.slice(patternStartAddress, patternStartAddress + patternMemorySize));
+
+	return { pattern: pattern.map(item => item === 1) };
+};
