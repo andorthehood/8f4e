@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
+import { MemoryTypes, ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 enum Memory {
@@ -38,7 +38,7 @@ export const extractState: ModuleStateExtractor<ClockGeneratorState> = function 
 	return { rate: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] };
 };
 
-const clock: ModuleGenerator<{ rate?: number }> = function (moduleId, offset, { rate = 1 } = {}) {
+const clock: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, offset, { rate = 1 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -84,16 +84,14 @@ const clock: ModuleGenerator<{ rate?: number }> = function (moduleId, offset, { 
 		]
 	);
 
-	const initialMemory = [0, rate, 0];
-
 	return {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory,
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
-			{ address: offset(Memory.RATE_SELF), id: 'rate' },
+		memoryMap: [
+			{ type: MemoryTypes.NUMBER, address: Memory.COUNTER, default: 0 },
+			{ type: MemoryTypes.NUMBER, address: Memory.RATE_SELF, id: 'rate', default: rate },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
 		],
 	};
 };

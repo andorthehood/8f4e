@@ -10,7 +10,7 @@ import {
 	localSet,
 	Type,
 } from 'bytecode-utils';
-import { ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
+import { MemoryTypes, ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
 
 export enum Memory {
 	ZERO,
@@ -32,7 +32,7 @@ export interface Config {
 	maxPatternSizeToAlloc: number;
 }
 
-const triggerSequencer: ModuleGenerator<Config> = function (moduleId, offset, { maxPatternSizeToAlloc }) {
+const triggerSequencer: ModuleGenerator<Config, Memory> = function (moduleId, offset, { maxPatternSizeToAlloc }) {
 	const pattern = new Array(maxPatternSizeToAlloc).fill(0);
 
 	const functionBody = createFunctionBody(
@@ -91,13 +91,24 @@ const triggerSequencer: ModuleGenerator<Config> = function (moduleId, offset, { 
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), 0, 0, 0, maxPatternSizeToAlloc * 4, ...pattern],
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+		memoryMap: [
+			{ address: Memory.ZERO, default: 0, type: MemoryTypes.PRIVATE },
 			{
-				address: offset(Memory.TRIGGER_INPUT_POINTER),
 				id: 'in:trigger',
+				address: Memory.TRIGGER_INPUT_POINTER,
 				default: offset(Memory.ZERO),
+				type: MemoryTypes.INPUT_POINTER,
+			},
+			{ address: Memory.TRIGGER_PREVIOUS_VALUE, default: 0, type: MemoryTypes.PRIVATE },
+			{ id: 'out', address: Memory.OUTPUT, default: 0, type: MemoryTypes.OUTPUT },
+			{ address: Memory.PATTERN_POINTER, type: MemoryTypes.PRIVATE, default: 0 },
+			{ address: Memory.PATTERN_MEMORY_SIZE, type: MemoryTypes.ARRAY_SIZE, default: maxPatternSizeToAlloc * 4 },
+			{
+				address: Memory.PATTERN_START,
+				type: MemoryTypes.DYNAMIC_ARRAY,
+				sizePointer: Memory.PATTERN_MEMORY_SIZE,
+				maxSize: maxPatternSizeToAlloc * 4,
+				default: pattern,
 			},
 		],
 	};

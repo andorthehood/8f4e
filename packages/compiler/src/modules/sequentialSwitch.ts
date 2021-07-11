@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 
 enum Memory {
 	ZERO,
@@ -30,7 +30,7 @@ enum Locals {
 	__LENGTH,
 }
 
-const sequentialSwitch: ModuleGenerator = function (moduleId, offset) {
+const sequentialSwitch: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -79,24 +79,16 @@ const sequentialSwitch: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [
-			0,
-			0,
-			offset(Memory.ZERO),
-			0,
-			0,
-			offset(Memory.ZERO),
-			offset(Memory.ZERO),
-			offset(Memory.ZERO),
-			offset(Memory.ZERO),
-		],
-		memoryAddresses: [
-			{ address: offset(Memory.INPUT_POINTER_1), id: 'in:1' },
-			{ address: offset(Memory.INPUT_POINTER_2), id: 'in:2' },
-			{ address: offset(Memory.INPUT_POINTER_3), id: 'in:3' },
-			{ address: offset(Memory.INPUT_POINTER_4), id: 'in:4' },
-			{ address: offset(Memory.CLOCK_POINTER), id: 'in:clock' },
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.CLOCK_POINTER, id: 'in:clock', default: offset(Memory.ZERO) },
+			{ type: MemoryTypes.PRIVATE, address: Memory.PREVIOUS_CLOCK, default: 0 },
+			{ type: MemoryTypes.PRIVATE, address: Memory.COUNTER, default: 0 },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER_1, id: 'in:1', default: offset(Memory.ZERO) },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER_2, id: 'in:2', default: offset(Memory.ZERO) },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER_3, id: 'in:3', default: offset(Memory.ZERO) },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER_4, id: 'in:4', default: offset(Memory.ZERO) },
 		],
 	};
 };

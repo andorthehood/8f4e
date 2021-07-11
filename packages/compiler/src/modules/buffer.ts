@@ -1,5 +1,5 @@
 import { i32load, i32const, i32store, createFunctionBody } from 'bytecode-utils';
-import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor, MemoryTypes } from '../types';
 
 enum Memory {
 	ZERO,
@@ -56,7 +56,7 @@ export const extractState: ModuleStateExtractor<BufferState> = function (memoryB
 	return obj;
 };
 
-const buffer: ModuleGenerator<Config> = function (moduleId, offset, config = {}) {
+const buffer: ModuleGenerator<Config, Memory> = function (moduleId, offset, config = {}) {
 	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
 	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
 	const dataPlaceholderIndexes = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index);
@@ -64,9 +64,9 @@ const buffer: ModuleGenerator<Config> = function (moduleId, offset, config = {})
 	const startAddressOfOutputs = Memory.START_OF_PORTS_AND_PLACEHOLDERS + numberOfPorts;
 	const startAddressOfDataPlaceholders = Memory.START_OF_PORTS_AND_PLACEHOLDERS + 2 * numberOfPorts;
 
-	const inputPointers = portIndexes.map(index => offset(Memory.START_OF_PORTS_AND_PLACEHOLDERS + index));
-	const outputs = portIndexes.map(index => offset(startAddressOfOutputs + index));
-	const dataPlaceholders = dataPlaceholderIndexes.map(index => offset(startAddressOfDataPlaceholders + index));
+	const inputPointers = portIndexes.map(index => Memory.START_OF_PORTS_AND_PLACEHOLDERS + index);
+	const outputs = portIndexes.map(index => startAddressOfOutputs + index);
+	const dataPlaceholders = dataPlaceholderIndexes.map(index => startAddressOfDataPlaceholders + index);
 
 	const functionBody = createFunctionBody(
 		[],
@@ -85,21 +85,23 @@ const buffer: ModuleGenerator<Config> = function (moduleId, offset, config = {})
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [
-			0,
-			numberOfPorts,
-			numberOfPorts,
-			numberOfDataPlaceholders,
-			...portIndexes.map(() => offset(Memory.ZERO)),
-			...portIndexes.map(() => 0),
-			...dataPlaceholders.map(() => 0),
-		],
-		memoryAddresses: [
-			...inputPointers.map((address, index) => ({ address, id: 'in:' + (index + 1) })),
-			...outputs.map((address, index) => ({ address, id: 'out:' + (index + 1) })),
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
+			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_INPUTS, default: numberOfPorts },
+			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_OUTPUTS, default: numberOfPorts },
+			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_DATA_PLACEHOLDERS, default: numberOfDataPlaceholders },
+			...inputPointers.map((address, index) => ({
+				type: MemoryTypes.INPUT_POINTER,
+				address,
+				id: 'in:' + (index + 1),
+				default: offset(Memory.ZERO),
+			})),
+			...outputs.map((address, index) => ({ type: MemoryTypes.OUTPUT, address, id: 'out:' + (index + 1), default: 0 })),
 			...dataPlaceholders.map((address, index) => ({
+				type: MemoryTypes.NUMBER,
 				address,
 				id: 'data:' + (index + 1),
+				default: 0,
 			})),
 		],
 	};
