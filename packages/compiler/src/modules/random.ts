@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 export enum Memory {
@@ -27,7 +27,7 @@ enum Locals {
 const tapPositions = [0, 2, 3, 5];
 
 /* Linear-feedback shift register style random generator. */
-const random: ModuleGenerator<{ seed?: number }> = function (moduleId, offset, { seed = 69420 } = {}) {
+const random: ModuleGenerator<{ seed?: number }, Memory> = function (moduleId, offset, { seed = 69420 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -80,8 +80,10 @@ const random: ModuleGenerator<{ seed?: number }> = function (moduleId, offset, {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [seed % I16_SIGNED_LARGEST_NUMBER, 0],
-		memoryAddresses: [{ address: offset(Memory.OUTPUT), id: 'out' }],
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.SEED, default: seed },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
+		],
 	};
 };
 
