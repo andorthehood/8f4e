@@ -66,26 +66,29 @@ Object {
     0,
     11,
   ],
-  "initialMemory": Array [
-    0,
-    0,
-    0,
-    0,
-  ],
-  "memoryAddresses": Array [
+  "memoryMap": Array [
     Object {
       "address": 0,
-      "id": "out",
+      "default": 0,
+      "type": 5,
     },
     Object {
       "address": 0,
       "default": 0,
       "id": "in:1",
+      "type": 3,
     },
     Object {
       "address": 0,
       "default": 0,
       "id": "in:2",
+      "type": 3,
+    },
+    Object {
+      "address": 0,
+      "default": 0,
+      "id": "out",
+      "type": 4,
     },
   ],
   "moduleId": "id",

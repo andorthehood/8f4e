@@ -8,7 +8,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 
 enum Memory {
 	ZERO,
@@ -28,7 +28,7 @@ enum Locals {
  *
  * @param memoryStartAddress
  */
-const splitter: ModuleGenerator = function (moduleId, offset) {
+const splitter: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -59,13 +59,13 @@ const splitter: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), 0, 0, 0, 0],
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT_1), id: 'out:1' },
-			{ address: offset(Memory.OUTPUT_2), id: 'out:2' },
-			{ address: offset(Memory.OUTPUT_3), id: 'out:3' },
-			{ address: offset(Memory.OUTPUT_4), id: 'out:4' },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT_1, id: 'out:1', default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT_2, id: 'out:2', default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT_3, id: 'out:3', default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT_4, id: 'out:4', default: 0 },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: offset(Memory.ZERO) },
 		],
 	};
 };

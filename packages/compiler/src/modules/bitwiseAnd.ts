@@ -1,5 +1,5 @@
 import { Instruction, i32load, i32const, i32store, createFunctionBody } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 
 export enum Memory {
 	ZERO,
@@ -8,7 +8,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const bitwiseAnd: ModuleGenerator = function (moduleId, offset) {
+const bitwiseAnd: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
@@ -28,19 +28,23 @@ const bitwiseAnd: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), offset(Memory.ZERO), 0],
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
+
 			{
+				type: MemoryTypes.INPUT_POINTER,
 				address: offset(Memory.INPUT_1_POINTER),
 				id: 'in:1',
 				default: offset(Memory.ZERO),
 			},
 			{
+				type: MemoryTypes.INPUT_POINTER,
 				address: offset(Memory.INPUT_2_POINTER),
 				id: 'in:2',
 				default: offset(Memory.ZERO),
 			},
+
+			{ type: MemoryTypes.OUTPUT, address: offset(Memory.OUTPUT), id: 'out', default: 0 },
 		],
 	};
 };

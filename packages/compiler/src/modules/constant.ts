@@ -1,5 +1,5 @@
 import { createFunctionBody } from 'bytecode-utils';
-import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor, MemoryTypes } from '../types';
 
 export enum Memory {
 	OUTPUT,
@@ -17,15 +17,14 @@ export const extractState: ModuleStateExtractor<ConstantState> = function (memor
 	return { out: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OUTPUT] };
 };
 
-const constant: ModuleGenerator<{ out?: number }> = function (moduleId, offset, { out = 0 } = {}) {
+const constant: ModuleGenerator<{ out?: number }, Memory> = function (moduleId, offset, { out = 0 } = {}) {
 	const functionBody = createFunctionBody([], []);
 
 	return {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [out],
-		memoryAddresses: [{ address: offset(Memory.OUTPUT), id: 'out' }],
+		memoryMap: [{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: out }],
 	};
 };
 
