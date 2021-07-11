@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 
 export enum Memory {
@@ -27,7 +27,7 @@ enum Locals {
 	__LENGTH,
 }
 
-const mixer: ModuleGenerator = function (moduleId, offset) {
+const mixer: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -78,20 +78,33 @@ const mixer: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [
-			0,
-			0,
-			offset(Memory.DEFAULT_VALUE),
-			offset(Memory.DEFAULT_VALUE),
-			offset(Memory.DEFAULT_VALUE),
-			offset(Memory.DEFAULT_VALUE),
-		],
-		memoryAddresses: [
-			{ address: offset(Memory.INPUT_POINTER_1), id: 'in:1' },
-			{ address: offset(Memory.INPUT_POINTER_2), id: 'in:2' },
-			{ address: offset(Memory.INPUT_POINTER_3), id: 'in:3' },
-			{ address: offset(Memory.INPUT_POINTER_4), id: 'in:4' },
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.DEFAULT_VALUE, default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.INPUT_POINTER_1,
+				id: 'in:1',
+				default: offset(Memory.DEFAULT_VALUE),
+			},
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.INPUT_POINTER_2,
+				id: 'in:2',
+				default: offset(Memory.DEFAULT_VALUE),
+			},
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.INPUT_POINTER_3,
+				id: 'in:3',
+				default: offset(Memory.DEFAULT_VALUE),
+			},
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.INPUT_POINTER_4,
+				id: 'in:4',
+				default: offset(Memory.DEFAULT_VALUE),
+			},
 		],
 	};
 };

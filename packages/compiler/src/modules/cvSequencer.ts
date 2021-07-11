@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 
 export enum Memory {
 	STEP_BACK_TRIGGER_INPUT_POINTER,
@@ -30,7 +30,11 @@ enum Local {
 	__LENGTH,
 }
 
-const cvSequencer: ModuleGenerator<{ allocatedNotes?: number }> = function (moduleId, offset, { allocatedNotes = 12 }) {
+const cvSequencer: ModuleGenerator<{ allocatedNotes?: number }, Memory> = function (
+	moduleId,
+	offset,
+	{ allocatedNotes = 12 }
+) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Local.__LENGTH)],
 		[
@@ -71,13 +75,32 @@ const cvSequencer: ModuleGenerator<{ allocatedNotes?: number }> = function (modu
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, 0, 0, ...new Array(allocatedNotes).fill(0)],
-		memoryAddresses: [
-			{ address: offset(Memory.STEP_BACK_TRIGGER_INPUT_POINTER), id: 'in:stepBack' },
-			{ address: offset(Memory.STEP_FORWARD_TRIGGER_INPUT_POINTER), id: 'in:stepForward' },
-			{ address: offset(Memory.OUTPUT), id: 'out' },
-			{ address: offset(Memory.NUMBER_OF_NOTES), id: 'numberOfNotes' },
-			{ address: offset(Memory.FIRST_NOTE), id: 'notes' },
+		memoryMap: [
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.STEP_BACK_TRIGGER_INPUT_POINTER,
+				id: 'in:stepBack',
+				default: 0,
+			},
+			{ type: MemoryTypes.PRIVATE, address: Memory.STEP_BACK_TRIGGER_PREV_VALUE, default: 0 },
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.STEP_FORWARD_TRIGGER_INPUT_POINTER,
+				id: 'in:stepForward',
+				default: 0,
+			},
+			{ type: MemoryTypes.PRIVATE, address: Memory.STEP_FORWARD_TRIGGER_PREV_VALUE, default: 0 },
+			{ type: MemoryTypes.PRIVATE, address: Memory.NOTE_MEMORY_POINTER, default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
+			{ type: MemoryTypes.ARRAY_SIZE, address: Memory.NUMBER_OF_NOTES, id: 'numberOfNotes', default: 0 },
+			{
+				type: MemoryTypes.DYNAMIC_ARRAY,
+				maxSize: allocatedNotes,
+				sizePointer: Memory.NUMBER_OF_NOTES,
+				address: Memory.FIRST_NOTE,
+				id: 'notes',
+				default: new Array(allocatedNotes).fill(0),
+			},
 		],
 	};
 };

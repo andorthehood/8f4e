@@ -11,7 +11,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 
 enum Memory {
 	ZERO,
@@ -32,7 +32,7 @@ enum Locals {
 
 const BUFFER_LENGTH = Int32Array.BYTES_PER_ELEMENT * 49;
 
-const scope: ModuleGenerator = function (moduleId, offset) {
+const scope: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -105,20 +105,30 @@ const scope: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [
-			0,
-			offset(Memory.ZERO),
-			0,
-			0,
-			0,
-			offset(Memory.BUFFER_START),
-			...new Array(BUFFER_LENGTH / Int32Array.BYTES_PER_ELEMENT).fill(0),
-		],
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
-			{ address: offset(Memory.BUFFER_START), id: 'buffer' },
-			{ address: offset(Memory.BUFFER_POINTER), id: 'bufferPointer' },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.INPUT_POINTER,
+				id: 'in',
+				default: offset(Memory.ZERO),
+			},
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
+			{ type: MemoryTypes.PRIVATE, address: Memory.COUNTER, default: 0 },
+			{ type: MemoryTypes.PRIVATE, address: Memory.RATE, default: 0 },
+			{
+				type: MemoryTypes.NUMBER,
+				address: Memory.BUFFER_POINTER,
+				id: 'bufferPointer',
+				default: offset(Memory.BUFFER_START),
+			},
+			{
+				type: MemoryTypes.STATIC_ARRAY,
+				address: Memory.BUFFER_START,
+				id: 'buffer',
+				size: BUFFER_LENGTH / Int32Array.BYTES_PER_ELEMENT,
+				default: new Array(BUFFER_LENGTH / Int32Array.BYTES_PER_ELEMENT).fill(0),
+			},
 		],
 	};
 };

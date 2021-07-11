@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor, MemoryTypes } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 enum Memory {
@@ -40,7 +40,7 @@ export const extractState: ModuleStateExtractor<SawState> = function (memoryBuff
 	return { rate: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] };
 };
 
-const saw: ModuleGenerator<{ rate?: number }> = function (moduleId, offset, { rate = 1 } = {}) {
+const saw: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, offset, { rate = 1 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -76,17 +76,21 @@ const saw: ModuleGenerator<{ rate?: number }> = function (moduleId, offset, { ra
 		]
 	);
 
-	const initialMemory = [0, offset(Memory.RATE_SELF), rate, offset(Memory.LIMIT_SELF), I16_SIGNED_LARGEST_NUMBER];
-
 	return {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory,
-		memoryAddresses: [
-			{ address: offset(Memory.COUNTER), id: 'out' },
-			{ address: offset(Memory.RATE_POINTER), id: 'in:rate', default: offset(Memory.RATE_SELF) },
-			{ address: offset(Memory.RATE_SELF), id: 'rate', default: rate },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.COUNTER, default: 0, id: 'out' },
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.RATE_POINTER,
+				default: offset(Memory.RATE_SELF),
+				id: 'in:rate',
+			},
+			{ type: MemoryTypes.PRIVATE, address: Memory.RATE_SELF, default: rate, id: 'rate' },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.LIMIT_POINTER, default: offset(Memory.LIMIT_SELF) },
+			{ type: MemoryTypes.PRIVATE, address: Memory.LIMIT_SELF, default: I16_SIGNED_LARGEST_NUMBER },
 		],
 	};
 };

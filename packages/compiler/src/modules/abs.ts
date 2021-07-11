@@ -10,7 +10,7 @@ import {
 	createFunctionBody,
 	createLocalDeclaration,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 
 export enum Memory {
 	DEFAULT_VALUE,
@@ -23,7 +23,7 @@ enum Locals {
 	__LENGTH,
 }
 
-const abs: ModuleGenerator = function (moduleId, offset) {
+const abs: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -49,14 +49,15 @@ const abs: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.DEFAULT_VALUE), offset(Memory.DEFAULT_VALUE), 0],
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.DEFAULT_VALUE, default: 0 },
 			{
-				address: offset(Memory.INPUT_POINTER),
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.INPUT_POINTER,
 				id: 'in',
 				default: offset(Memory.DEFAULT_VALUE),
 			},
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
 		],
 	};
 };

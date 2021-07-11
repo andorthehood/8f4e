@@ -13,7 +13,7 @@ import {
 	localSet,
 	loop,
 } from 'bytecode-utils';
-import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor, MemoryTypes } from '../types';
 import { I32_SIGNED_LARGEST_NUMBER } from '../consts';
 
 export enum Memory {
@@ -166,13 +166,19 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, 0, allocatedNotes, 0, ...new Array(allocatedNotes).fill(-1)],
-		memoryAddresses: [
-			{ address: offset(Memory.FIRST_NOTE), id: 'notes' },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in' },
-			{ address: offset(Memory.ALLOCATED_NOTES), id: 'allocatedNotes' },
-			{ address: offset(Memory.NUMBER_OF_NOTES), id: 'numberOfNotes' },
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+		memoryMap: [
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
+			{ type: MemoryTypes.PRIVATE, address: Memory.ALLOCATED_NOTES, id: 'allocatedNotes', default: allocatedNotes },
+			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_NOTES, id: 'numberOfNotes', default: 0 },
+			{
+				type: MemoryTypes.DYNAMIC_ARRAY,
+				sizePointer: Memory.NUMBER_OF_NOTES,
+				maxSize: allocatedNotes,
+				address: Memory.FIRST_NOTE,
+				id: '',
+				default: new Array(allocatedNotes).fill(-1),
+			},
 		],
 	};
 };
