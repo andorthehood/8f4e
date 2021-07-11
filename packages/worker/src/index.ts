@@ -24,8 +24,8 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], conne
 
 	clearInterval(interval);
 
-	const midiNoteModules = findMidiNoteModules(compiledModules, memoryBuffer);
-	const midiCCModules = findMidiCCModules(compiledModules, memoryBuffer);
+	const midiNoteModules = findMidiNoteModules(compiledModules, memoryBuffer, memoryAddressLookup);
+	const midiCCModules = findMidiCCModules(compiledModules, memoryBuffer, memoryAddressLookup);
 
 	resetMidi();
 

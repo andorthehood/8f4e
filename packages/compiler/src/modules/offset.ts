@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
+import { MemoryTypes, ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../consts';
 
 export enum Memory {
@@ -37,7 +37,11 @@ export const extractState: ModuleStateExtractor<OffsetState> = function (memoryB
 	return { offset: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OFFSET] };
 };
 
-const offset: ModuleGenerator<{ offset?: number }> = function (moduleId, offset, { offset: valueOffset = 0 } = {}) {
+const offset: ModuleGenerator<{ offset?: number }, Memory> = function (
+	moduleId,
+	offset,
+	{ offset: valueOffset = 0 } = {}
+) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -73,11 +77,11 @@ const offset: ModuleGenerator<{ offset?: number }> = function (moduleId, offset,
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), valueOffset, 0],
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
-			{ address: offset(Memory.OFFSET), id: 'offset', default: valueOffset },
-			{ address: offset(Memory.INPUT_POINTER), id: 'in', default: offset(Memory.ZERO) },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, default: offset(Memory.ZERO), id: 'in' },
+			{ type: MemoryTypes.NUMBER, address: Memory.OFFSET, default: valueOffset, id: 'offset' },
+			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, default: 0, id: 'out' },
 		],
 	};
 };
