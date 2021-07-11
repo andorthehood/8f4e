@@ -9,7 +9,8 @@ import {
 	createMemoryImport,
 	FunctionBody,
 } from 'bytecode-utils';
-import { ModuleGenerator } from 'compiler';
+import { getInitialMemory, ModuleGenerator } from 'compiler';
+import { CompiledModule } from './types';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -26,7 +27,8 @@ export function createSingleFunctionWASMProgram(functionBody: FunctionBody): Uin
 	]);
 }
 
-export function setInitialMemory(memory: Int32Array, initialMemory: number[]): void {
+export function setInitialMemory(memory: Int32Array, module: CompiledModule): void {
+	const initialMemory = getInitialMemory(module);
 	for (let i = 0; i < initialMemory.length; i++) {
 		memory[i] = initialMemory[i];
 	}
@@ -49,7 +51,7 @@ export async function createTestModule(
 	});
 
 	const reset = () => {
-		setInitialMemory(memoryBuffer, module.initialMemory);
+		setInitialMemory(memoryBuffer, module);
 	};
 
 	reset();

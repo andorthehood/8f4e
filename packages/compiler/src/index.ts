@@ -24,6 +24,23 @@ export { setUpConnections } from './initializeMemory';
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
+export function calculateModuleSize(module: CompiledModule): number {
+	return module.memoryMap.reduce((accumulator, current) => {
+		return accumulator + (Array.isArray(current.default) ? current.default.length : 1);
+	}, 0);
+}
+
+export function getInitialMemory(module: CompiledModule): number[] {
+	return module.memoryMap.reduce((accumulator, current) => {
+		if (Array.isArray(current.default)) {
+			accumulator.concat(current.default);
+		} else {
+			accumulator.push(current.default);
+		}
+		return accumulator;
+	}, []);
+}
+
 function compileModules(modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
 	return modules
@@ -31,7 +48,7 @@ function compileModules(modules: Module[]): CompiledModule[] {
 		.map(({ id, engine, state }) => {
 			const relative = createRelativeAddressCalculator(memoryAddress, Int32Array.BYTES_PER_ELEMENT);
 			const module = moduleCompilers[engine.name](id, relative, { ...engine.config, ...state });
-			memoryAddress += module.initialMemory.length;
+			memoryAddress += calculateModuleSize(module);
 			return module;
 		});
 }
@@ -40,7 +57,7 @@ function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
 	return compiledModules
 		.map(module => {
 			let pointer = module.offset;
-			return module.initialMemory
+			return getInitialMemory(module)
 				.map(value => {
 					const instuction = i32store(pointer, value);
 					pointer += Int32Array.BYTES_PER_ELEMENT;

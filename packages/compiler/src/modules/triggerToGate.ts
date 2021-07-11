@@ -10,7 +10,7 @@ import {
 	createLocalDeclaration,
 	localGet,
 } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 export enum Memory {
@@ -29,7 +29,7 @@ enum Locals {
 	__LENGTH,
 }
 
-const triggerToGate: ModuleGenerator = function (moduleId, offset) {
+const triggerToGate: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -87,22 +87,30 @@ const triggerToGate: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.ZERO), offset(Memory.GATE_LENGTH), 2, 0, 0, 0],
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
 			{
-				address: offset(Memory.TRIGGER_INPUT_POINTER),
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.TRIGGER_INPUT_POINTER,
 				id: 'in:trigger',
 				default: offset(Memory.ZERO),
 			},
-			{ address: offset(Memory.GATE_LENGTH), id: 'gateLength' },
 			{
-				address: offset(Memory.GATE_LENGTH_INPUT_POINTER),
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.GATE_LENGTH_INPUT_POINTER,
 				id: 'in:gateLength',
 				default: offset(Memory.GATE_LENGTH),
 			},
+			{ type: MemoryTypes.NUMBER, address: Memory.GATE_LENGTH, id: 'gateLength', default: 2 },
 			{
-				address: offset(Memory.OUTPUT),
+				type: MemoryTypes.PRIVATE,
+				address: Memory.TRIGGER_PREVIOUS_VALUE,
+				default: 0,
+			},
+			{ type: MemoryTypes.PRIVATE, address: Memory.COUNTER, default: 0 },
+			{
+				type: MemoryTypes.OUTPUT,
+				address: Memory.OUTPUT,
 				id: 'out',
 				default: 0,
 			},

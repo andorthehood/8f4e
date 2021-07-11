@@ -1,5 +1,5 @@
 import { Instruction, Type, br, createFunctionBody, i32const, i32load, i32store, ifelse } from 'bytecode-utils';
-import { ModuleGenerator } from '../types';
+import { MemoryTypes, ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 export enum Memory {
@@ -9,7 +9,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const and: ModuleGenerator = function (moduleId, offset) {
+const and: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
@@ -42,19 +42,23 @@ const and: ModuleGenerator = function (moduleId, offset) {
 		moduleId,
 		functionBody,
 		offset: offset(0),
-		initialMemory: [0, offset(Memory.DEFAULT_VALUE), offset(Memory.DEFAULT_VALUE), 0],
-		memoryAddresses: [
-			{ address: offset(Memory.OUTPUT), id: 'out' },
+		memoryMap: [
+			{ type: MemoryTypes.PRIVATE, address: Memory.DEFAULT_VALUE, default: 0 },
+
 			{
+				type: MemoryTypes.INPUT_POINTER,
 				address: offset(Memory.INPUT_1_POINTER),
 				id: 'in:1',
 				default: offset(Memory.DEFAULT_VALUE),
 			},
 			{
+				type: MemoryTypes.INPUT_POINTER,
 				address: offset(Memory.INPUT_2_POINTER),
 				id: 'in:2',
 				default: offset(Memory.DEFAULT_VALUE),
 			},
+
+			{ type: MemoryTypes.OUTPUT, address: offset(Memory.OUTPUT), id: 'out', default: 0 },
 		],
 	};
 };
