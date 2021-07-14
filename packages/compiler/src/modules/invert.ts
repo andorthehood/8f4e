@@ -11,8 +11,8 @@ const invert: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
-			...i32const(offset(Memory.OUTPUT)),
-			...i32const(offset(Memory.INPUT_POINTER)),
+			...i32const(offset.byte(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...i32const(-1),
@@ -24,18 +24,18 @@ const invert: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.DEFAULT_VALUE, default: 0 },
 
 			{
 				type: MemoryTypes.INPUT_POINTER,
-				address: offset(Memory.INPUT_POINTER),
+				address: offset.byte(Memory.INPUT_POINTER),
 				id: 'in',
-				default: offset(Memory.DEFAULT_VALUE),
+				default: offset.byte(Memory.DEFAULT_VALUE),
 			},
 
-			{ type: MemoryTypes.OUTPUT, address: offset(Memory.OUTPUT), id: 'out', default: 0 },
+			{ type: MemoryTypes.OUTPUT, address: offset.byte(Memory.OUTPUT), id: 'out', default: 0 },
 		],
 	};
 };

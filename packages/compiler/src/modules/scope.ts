@@ -37,35 +37,35 @@ const scope: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load input value from memory, store it in a register.
-			...i32const(offset(Memory.INPUT_POINTER)),
+			...i32const(offset.byte(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.INPUT),
 
 			// Save input to the memory.
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 
 			// Load counter.
-			...i32const(offset(Memory.COUNTER)),
+			...i32const(offset.byte(Memory.COUNTER)),
 			...i32load(),
 			...localSet(Locals.COUNTER),
 
 			...localGet(Locals.COUNTER),
-			...i32const(offset(Memory.RATE)),
+			...i32const(offset.byte(Memory.RATE)),
 			...i32load(),
 			Instruction.I32_GE_S,
 			...ifelse(
 				Type.VOID,
-				[...i32const(offset(Memory.COUNTER)), ...i32const(0), ...i32store()],
+				[...i32const(offset.byte(Memory.COUNTER)), ...i32const(0), ...i32store()],
 				[
 					...localGet(Locals.COUNTER),
 					...i32const(1),
 					Instruction.I32_ADD,
 					...localSet(Locals.COUNTER),
 
-					...i32const(offset(Memory.COUNTER)),
+					...i32const(offset.byte(Memory.COUNTER)),
 					...localGet(Locals.COUNTER),
 					...i32store(),
 					...br(1),
@@ -73,7 +73,7 @@ const scope: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 			),
 
 			// Load buffer pointer and store it in a register.
-			...i32const(offset(Memory.BUFFER_POINTER)),
+			...i32const(offset.byte(Memory.BUFFER_POINTER)),
 			...i32load(),
 			...localSet(Locals.BUFFER_POINTER),
 
@@ -90,12 +90,12 @@ const scope: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 
 			// Prevent the buffer pointer access out of bounds memory.
 			...localGet(Locals.BUFFER_POINTER),
-			...i32const(offset(Memory.BUFFER_START) + BUFFER_LENGTH),
+			...i32const(offset.byte(Memory.BUFFER_START) + BUFFER_LENGTH),
 			Instruction.I32_GE_U,
-			...ifelse(Type.VOID, [...i32const(offset(Memory.BUFFER_START)), ...localSet(Locals.BUFFER_POINTER)]),
+			...ifelse(Type.VOID, [...i32const(offset.byte(Memory.BUFFER_START)), ...localSet(Locals.BUFFER_POINTER)]),
 
 			// Store the buffer pointer in the memory.
-			...i32const(offset(Memory.BUFFER_POINTER)),
+			...i32const(offset.byte(Memory.BUFFER_POINTER)),
 			...localGet(Locals.BUFFER_POINTER),
 			...i32store(),
 		]
@@ -104,14 +104,14 @@ const scope: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.INPUT_POINTER,
 				id: 'in',
-				default: offset(Memory.ZERO),
+				default: offset.byte(Memory.ZERO),
 			},
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
 			{ type: MemoryTypes.PRIVATE, address: Memory.COUNTER, default: 0 },
@@ -120,7 +120,7 @@ const scope: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 				type: MemoryTypes.NUMBER,
 				address: Memory.BUFFER_POINTER,
 				id: 'bufferPointer',
-				default: offset(Memory.BUFFER_START),
+				default: offset.byte(Memory.BUFFER_START),
 			},
 			{
 				type: MemoryTypes.STATIC_ARRAY,

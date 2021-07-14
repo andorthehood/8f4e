@@ -27,8 +27,8 @@ const abs: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(offset(Memory.OUTPUT)),
-			...i32const(offset(Memory.INPUT_POINTER)),
+			...i32const(offset.byte(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.INPUT),
@@ -48,14 +48,14 @@ const abs: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.DEFAULT_VALUE, default: 0 },
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.INPUT_POINTER,
 				id: 'in',
-				default: offset(Memory.DEFAULT_VALUE),
+				default: offset.byte(Memory.DEFAULT_VALUE),
 			},
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
 		],

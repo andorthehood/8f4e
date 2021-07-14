@@ -88,17 +88,17 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load the input value from the memory and put it into a register.
-			...i32const(offset(Memory.INPUT_POINTER)),
+			...i32const(offset.byte(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.INPUT),
 
 			// Calculate the address of the last note.
-			...i32const(offset(Memory.NUMBER_OF_NOTES)),
+			...i32const(offset.byte(Memory.NUMBER_OF_NOTES)),
 			...i32load(),
 			...i32const(Int32Array.BYTES_PER_ELEMENT),
 			Instruction.I32_MUL,
-			...i32const(offset(Memory.FIRST_NOTE)),
+			...i32const(offset.byte(Memory.FIRST_NOTE)),
 			Instruction.I32_ADD,
 			...localSet(Locals.NOTES_END_ADDRESS_POINTER),
 
@@ -107,7 +107,7 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 			...localSet(Locals.SMALLEST_DIFFERENCE),
 
 			// Set the note memory pointer to the start address
-			...i32const(offset(Memory.FIRST_NOTE)),
+			...i32const(offset.byte(Memory.FIRST_NOTE)),
 			...localSet(Locals.NOTE_MEMORY_POINTER),
 
 			...block(
@@ -156,7 +156,7 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 			),
 
 			// Prepare memory address for storing the output value.
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...localGet(Locals.BEST_MACTHING_VALUE),
 			...i32store(),
 		]
@@ -165,12 +165,18 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: 0 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
-			{ type: MemoryTypes.PRIVATE, address: Memory.ALLOCATED_NOTES, id: 'allocatedNotes', default: allocatedNotes },
-			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_NOTES, id: 'numberOfNotes', default: 0 },
+			{
+				type: MemoryTypes.PRIVATE,
+				address: Memory.ALLOCATED_NOTES,
+				id: 'allocatedNotes',
+				default: allocatedNotes,
+				reclaimable: true,
+			},
+			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_NOTES, id: 'numberOfNotes', default: 0, reclaimable: true },
 			{
 				type: MemoryTypes.DYNAMIC_ARRAY,
 				sizePointer: Memory.NUMBER_OF_NOTES,
@@ -178,6 +184,7 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 				address: Memory.FIRST_NOTE,
 				id: '',
 				default: new Array(allocatedNotes).fill(-1),
+				reclaimable: true,
 			},
 		],
 	};

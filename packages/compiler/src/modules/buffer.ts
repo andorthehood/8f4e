@@ -84,7 +84,7 @@ const buffer: ModuleGenerator<Config, Memory> = function (moduleId, offset, conf
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
 			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_INPUTS, default: numberOfPorts },
@@ -94,7 +94,7 @@ const buffer: ModuleGenerator<Config, Memory> = function (moduleId, offset, conf
 				type: MemoryTypes.INPUT_POINTER,
 				address,
 				id: 'in:' + (index + 1),
-				default: offset(Memory.ZERO),
+				default: offset.byte(Memory.ZERO),
 			})),
 			...outputs.map((address, index) => ({ type: MemoryTypes.OUTPUT, address, id: 'out:' + (index + 1), default: 0 })),
 			...dataPlaceholders.map((address, index) => ({

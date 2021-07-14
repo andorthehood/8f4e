@@ -31,26 +31,26 @@ const mixer: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 
 			...[
-				...i32const(offset(Memory.INPUT_POINTER_1)),
+				...i32const(offset.byte(Memory.INPUT_POINTER_1)),
 				...i32load(),
 				...i32load(),
 
-				...i32const(offset(Memory.INPUT_POINTER_2)),
-				...i32load(),
-				...i32load(),
-
-				Instruction.I32_ADD,
-
-				...i32const(offset(Memory.INPUT_POINTER_3)),
+				...i32const(offset.byte(Memory.INPUT_POINTER_2)),
 				...i32load(),
 				...i32load(),
 
 				Instruction.I32_ADD,
 
-				...i32const(offset(Memory.INPUT_POINTER_4)),
+				...i32const(offset.byte(Memory.INPUT_POINTER_3)),
+				...i32load(),
+				...i32load(),
+
+				Instruction.I32_ADD,
+
+				...i32const(offset.byte(Memory.INPUT_POINTER_4)),
 				...i32load(),
 				...i32load(),
 
@@ -77,7 +77,7 @@ const mixer: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.DEFAULT_VALUE, default: 0 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
@@ -85,25 +85,25 @@ const mixer: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.INPUT_POINTER_1,
 				id: 'in:1',
-				default: offset(Memory.DEFAULT_VALUE),
+				default: offset.byte(Memory.DEFAULT_VALUE),
 			},
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.INPUT_POINTER_2,
 				id: 'in:2',
-				default: offset(Memory.DEFAULT_VALUE),
+				default: offset.byte(Memory.DEFAULT_VALUE),
 			},
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.INPUT_POINTER_3,
 				id: 'in:3',
-				default: offset(Memory.DEFAULT_VALUE),
+				default: offset.byte(Memory.DEFAULT_VALUE),
 			},
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.INPUT_POINTER_4,
 				id: 'in:4',
-				default: offset(Memory.DEFAULT_VALUE),
+				default: offset.byte(Memory.DEFAULT_VALUE),
 			},
 		],
 	};

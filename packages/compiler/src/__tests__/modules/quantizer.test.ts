@@ -4,7 +4,7 @@ import quantizer, { Memory } from '../../modules/quantizer';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(quantizer('id', () => 0)).toMatchSnapshot();
+	expect(quantizer('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

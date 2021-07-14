@@ -4,7 +4,7 @@ import min, { Memory } from '../../modules/min';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(min('id', () => 0)).toMatchSnapshot();
+	expect(min('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {
