@@ -2,11 +2,11 @@ import { CompiledModule, Connection, MemoryAddressLookup, MemoryBuffer } from '.
 
 export function generatememoryAddressLookup(compiledModules: CompiledModule[]): MemoryAddressLookup {
 	const lookup = {};
-	compiledModules.forEach(({ byteAddress, memoryMap, moduleId }) => {
-		lookup[moduleId] = { __startAddress: byteAddress };
+	compiledModules.forEach(({ wordAddress, memoryMap, moduleId }) => {
+		lookup[moduleId] = { __startAddress: wordAddress };
 		memoryMap.forEach(item => {
 			if (item.id) {
-				lookup[moduleId][item.id] = byteAddress + item.address * Int32Array.BYTES_PER_ELEMENT;
+				lookup[moduleId][item.id] = wordAddress + item.address;
 			}
 		});
 	});
@@ -21,6 +21,6 @@ export function setUpConnections(
 	connections.forEach(connection => {
 		const inputAddress = memoryAddresses[connection.toModuleId][connection.toConnectorId];
 		const outputAddress = memoryAddresses[connection.fromModuleId][connection.fromConnectorId];
-		memoryBuffer[inputAddress / memoryBuffer.BYTES_PER_ELEMENT] = outputAddress;
+		memoryBuffer[inputAddress] = outputAddress * memoryBuffer.BYTES_PER_ELEMENT;
 	});
 }
