@@ -3,8 +3,7 @@ import { font } from 'sprite-generator';
 import { State } from '../../../state/types';
 
 export default function drawer(engine: Engine, state: State, id: string): void {
-	const address =
-		state.compiler.memoryAddressLookup[id + '_' + 'out:1'] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+	const address = state.compiler.memoryAddressLookup[id]['out:1'] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 
 	if (!address) {
 		return;

@@ -9,7 +9,7 @@ import { insertState, extractState } from 'compiler/modules/quantizer';
 import { Config } from 'compiler/modules/quantizer';
 
 const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
-	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id]);
+	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 
 	if (activeNotes.includes(value)) {
 		activeNotes.splice(activeNotes.indexOf(value), 1);
@@ -17,7 +17,7 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 		activeNotes.push(value);
 	}
 
-	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id]);
+	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
 export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
