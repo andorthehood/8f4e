@@ -31,11 +31,11 @@ interface ClockGeneratorState {
 }
 
 export const insertState: ModuleStateInserter<ClockGeneratorState> = function (state, memoryBuffer, moduleAddress) {
-	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] = state.rate;
+	memoryBuffer[moduleAddress + Memory.RATE_SELF] = state.rate;
 };
 
 export const extractState: ModuleStateExtractor<ClockGeneratorState> = function (memoryBuffer, moduleAddress) {
-	return { rate: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.RATE_SELF] };
+	return { rate: memoryBuffer[moduleAddress + Memory.RATE_SELF] };
 };
 
 const clock: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, offset, { rate = 1 } = {}) {
