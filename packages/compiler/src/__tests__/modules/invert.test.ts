@@ -4,7 +4,7 @@ import invert, { Memory } from '../../modules/invert';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(invert('id', () => 0)).toMatchSnapshot();
+	expect(invert('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

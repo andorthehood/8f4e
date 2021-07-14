@@ -9,11 +9,11 @@ export enum MemoryTypes {
 }
 
 export type MemoryItemDescriptor<Memory> = {
-	type: MemoryTypes;
 	default: number;
 	/** Relative address of the memory */
 	address: Memory;
 	id?: string;
+	reclaimable?: boolean;
 };
 
 export interface DynamicArray<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'default'> {
@@ -29,7 +29,7 @@ export interface StaticArray<Memory> extends Omit<MemoryItemDescriptor<Memory>, 
 	default: number[];
 }
 
-export interface InputPointer<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id'> {
+export interface InputPointer<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id' | 'reclaimable'> {
 	type: MemoryTypes.INPUT_POINTER;
 	id: string;
 }
@@ -43,15 +43,24 @@ export interface Private<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id'
 	type: MemoryTypes.PRIVATE;
 }
 
+export interface NumberValue<Memory> extends MemoryItemDescriptor<Memory> {
+	type: MemoryTypes.NUMBER;
+}
+
+export interface ArraySize<Memory> extends MemoryItemDescriptor<Memory> {
+	type: MemoryTypes.ARRAY_SIZE;
+}
+
 export type MemoryMap<Memory> =
 	| Private<Memory>
 	| Output<Memory>
 	| InputPointer<Memory>
 	| StaticArray<Memory>
 	| DynamicArray<Memory>
-	| MemoryItemDescriptor<Memory>;
+	| NumberValue<Memory>
+	| ArraySize<Memory>;
 
-export interface CompiledModule<Memory = unknown> {
+export interface CompiledModule<Memory = number> {
 	functionBody: number[];
 	moduleId: string;
 	offset: number;
@@ -67,7 +76,10 @@ export interface Connection {
 	toConnectorId: string;
 }
 
-export type RelativeAddressCalculator = (nthWord: number) => number;
+export interface RelativeAddressCalculator {
+	byte: (nthWord: number) => number;
+	word: (nthWord: number) => number;
+}
 
 export type ModuleGenerator<TConfig = unknown, Memory = unknown> = (
 	moduleId: string,
