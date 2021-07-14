@@ -74,7 +74,7 @@ const cvSequencer: ModuleGenerator<{ allocatedNotes?: number }, Memory> = functi
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{
 				type: MemoryTypes.INPUT_POINTER,

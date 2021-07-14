@@ -45,13 +45,13 @@ const offset: ModuleGenerator<{ offset?: number }, Memory> = function (
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...[
-				...i32const(offset(Memory.INPUT_POINTER)),
+				...i32const(offset.byte(Memory.INPUT_POINTER)),
 				...i32load(),
 				...i32load(),
 
-				...i32const(offset(Memory.OFFSET)),
+				...i32const(offset.byte(Memory.OFFSET)),
 				...i32load(),
 
 				Instruction.I32_ADD,
@@ -76,10 +76,10 @@ const offset: ModuleGenerator<{ offset?: number }, Memory> = function (
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
-			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, default: offset(Memory.ZERO), id: 'in' },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, default: offset.byte(Memory.ZERO), id: 'in' },
 			{ type: MemoryTypes.NUMBER, address: Memory.OFFSET, default: valueOffset, id: 'offset' },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, default: 0, id: 'out' },
 		],
