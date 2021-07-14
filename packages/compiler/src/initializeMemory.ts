@@ -3,10 +3,10 @@ import { CompiledModule, Connection, MemoryAddressLookup, MemoryBuffer } from '.
 export function generatememoryAddressLookup(compiledModules: CompiledModule[]): MemoryAddressLookup {
 	const lookup = {};
 	compiledModules.forEach(({ byteAddress, memoryMap, moduleId }) => {
-		lookup[moduleId] = byteAddress;
+		lookup[moduleId] = { __startAddress: byteAddress };
 		memoryMap.forEach(item => {
 			if (item.id) {
-				lookup[moduleId + '_' + item.id] = byteAddress + item.address * Int32Array.BYTES_PER_ELEMENT;
+				lookup[moduleId][item.id] = byteAddress + item.address * Int32Array.BYTES_PER_ELEMENT;
 			}
 		});
 	});
@@ -19,10 +19,8 @@ export function setUpConnections(
 	connections: Connection[]
 ): void {
 	connections.forEach(connection => {
-		const inputName = connection.toModuleId + '_' + connection.toConnectorId;
-		const outputName = connection.fromModuleId + '_' + connection.fromConnectorId;
-		const inputAddress = memoryAddresses[inputName];
-		const outputAddress = memoryAddresses[outputName];
+		const inputAddress = memoryAddresses[connection.toModuleId][connection.toConnectorId];
+		const outputAddress = memoryAddresses[connection.fromModuleId][connection.fromConnectorId];
 		memoryBuffer[inputAddress / memoryBuffer.BYTES_PER_ELEMENT] = outputAddress;
 	});
 }

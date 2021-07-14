@@ -5,9 +5,9 @@ import singleSliderModule from './templates/singleSliderModule';
 import { extractState, insertState } from 'compiler/modules/offset';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
-	let { offset } = extractState(memoryBuffer, memoryAddressLookup[module.id]);
+	let { offset } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 	offset = Math.min(Math.max(slider.minValue, offset + movement * -1 * slider.resolution), slider.maxValue);
-	insertState({ offset }, memoryBuffer, memoryAddressLookup[module.id]);
+	insertState({ offset }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
 export default function offset(props: ModuleGeneratorProps): ModuleType {
