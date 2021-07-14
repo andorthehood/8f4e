@@ -4,7 +4,7 @@ import random, { Memory } from '../../modules/random';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(random('id', () => 0)).toMatchSnapshot();
+	expect(random('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

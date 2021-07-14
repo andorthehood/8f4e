@@ -34,11 +34,11 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 	}
 }
 
-export async function createTestModule(
-	moduleCreator: ModuleGenerator,
+export async function createTestModule<Memory>(
+	moduleCreator: ModuleGenerator<unknown, Memory>,
 	initialConfig = {}
 ): Promise<{ memory: Int32Array; test: CallableFunction; reset: () => void }> {
-	const module = moduleCreator('test', nthWord => nthWord * 4, initialConfig);
+	const module = moduleCreator('test', { byte: nthWord => nthWord * 4, word: nthWord => nthWord }, initialConfig);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });

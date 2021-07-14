@@ -38,21 +38,21 @@ const triggerSequencer: ModuleGenerator<Config, Memory> = function (moduleId, of
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...i32const(0),
 			...i32store(),
 
-			...i32const(offset(Memory.PATTERN_POINTER)),
+			...i32const(offset.byte(Memory.PATTERN_POINTER)),
 			...i32load(),
 			...localSet(Locals.PATTERN_POINTER),
 
-			...i32const(offset(Memory.TRIGGER_INPUT_POINTER)),
+			...i32const(offset.byte(Memory.TRIGGER_INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.TRIGGER_INPUT),
 
 			// Determining wether the signal is high
-			...i32const(offset(Memory.TRIGGER_PREVIOUS_VALUE)),
+			...i32const(offset.byte(Memory.TRIGGER_PREVIOUS_VALUE)),
 			...i32load(),
 			...localGet(Locals.TRIGGER_INPUT),
 			Instruction.I32_GT_S,
@@ -61,27 +61,27 @@ const triggerSequencer: ModuleGenerator<Config, Memory> = function (moduleId, of
 				...localGet(Locals.PATTERN_POINTER),
 				...i32const(4),
 				Instruction.I32_ADD,
-				...i32const(offset(Memory.PATTERN_MEMORY_SIZE)),
+				...i32const(offset.byte(Memory.PATTERN_MEMORY_SIZE)),
 				...i32load(),
 				Instruction.I32_REM_S,
 				...localSet(Locals.PATTERN_POINTER),
 
 				// Set output to high if pattern is set
-				...i32const(offset(Memory.PATTERN_START)),
+				...i32const(offset.byte(Memory.PATTERN_START)),
 				...localGet(Locals.PATTERN_POINTER),
 				Instruction.I32_ADD,
 				...i32load(),
 				...i32const(1),
 				Instruction.I32_EQ,
-				...ifelse(Type.VOID, [...i32const(offset(Memory.OUTPUT)), ...i32const(30000), ...i32store()]),
+				...ifelse(Type.VOID, [...i32const(offset.byte(Memory.OUTPUT)), ...i32const(30000), ...i32store()]),
 
 				// Save pattern pointer
-				...i32const(offset(Memory.PATTERN_POINTER)),
+				...i32const(offset.byte(Memory.PATTERN_POINTER)),
 				...localGet(Locals.PATTERN_POINTER),
 				...i32store(),
 			]),
 
-			...i32const(offset(Memory.TRIGGER_PREVIOUS_VALUE)),
+			...i32const(offset.byte(Memory.TRIGGER_PREVIOUS_VALUE)),
 			...localGet(Locals.TRIGGER_INPUT),
 			...i32store(),
 		]
@@ -90,13 +90,13 @@ const triggerSequencer: ModuleGenerator<Config, Memory> = function (moduleId, of
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ address: Memory.ZERO, default: 0, type: MemoryTypes.PRIVATE },
 			{
 				id: 'in:trigger',
 				address: Memory.TRIGGER_INPUT_POINTER,
-				default: offset(Memory.ZERO),
+				default: offset.byte(Memory.ZERO),
 				type: MemoryTypes.INPUT_POINTER,
 			},
 			{ address: Memory.TRIGGER_PREVIOUS_VALUE, default: 0, type: MemoryTypes.PRIVATE },

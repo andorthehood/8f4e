@@ -5,7 +5,7 @@ import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(bitwiseOr('id', () => 0)).toMatchSnapshot();
+	expect(bitwiseOr('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

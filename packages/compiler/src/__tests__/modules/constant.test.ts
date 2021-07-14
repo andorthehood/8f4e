@@ -4,7 +4,7 @@ import constant, { Memory } from '../../modules/constant';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(constant('id', () => 0)).toMatchSnapshot();
+	expect(constant('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

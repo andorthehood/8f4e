@@ -5,7 +5,7 @@ import { LOGIC_HIGH } from '../../consts';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(adc('id', () => 0)).toMatchSnapshot();
+	expect(adc('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

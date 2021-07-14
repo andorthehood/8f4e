@@ -23,8 +23,8 @@ const constant: ModuleGenerator<{ out?: number }, Memory> = function (moduleId, 
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
-		memoryMap: [{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: out }],
+		offset: offset.byte(0),
+		memoryMap: [{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: out, reclaimable: true }],
 	};
 };
 

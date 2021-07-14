@@ -32,24 +32,24 @@ const splitter: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(offset(Memory.INPUT_POINTER)),
+			...i32const(offset.byte(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.INPUT),
 
-			...i32const(offset(Memory.OUTPUT_1)),
+			...i32const(offset.byte(Memory.OUTPUT_1)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 
-			...i32const(offset(Memory.OUTPUT_2)),
+			...i32const(offset.byte(Memory.OUTPUT_2)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 
-			...i32const(offset(Memory.OUTPUT_3)),
+			...i32const(offset.byte(Memory.OUTPUT_3)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 
-			...i32const(offset(Memory.OUTPUT_4)),
+			...i32const(offset.byte(Memory.OUTPUT_4)),
 			...localGet(Locals.INPUT),
 			...i32store(),
 		]
@@ -58,14 +58,14 @@ const splitter: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT_1, id: 'out:1', default: 0 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT_2, id: 'out:2', default: 0 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT_3, id: 'out:3', default: 0 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT_4, id: 'out:4', default: 0 },
-			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: offset(Memory.ZERO) },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: offset.byte(Memory.ZERO) },
 		],
 	};
 };
