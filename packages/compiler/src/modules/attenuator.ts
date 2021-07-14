@@ -38,7 +38,8 @@ const attenuator: ModuleGenerator<unknown, Memory> = function (moduleId, offset)
 	return {
 		moduleId,
 		functionBody,
-		offset: offset.byte(0),
+		byteAddress: offset.byte(0),
+		wordAddress: offset.word(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
 			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: offset.byte(Memory.ZERO) },

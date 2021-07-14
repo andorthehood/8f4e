@@ -77,7 +77,8 @@ const mixer: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset: offset.byte(0),
+		byteAddress: offset.byte(0),
+		wordAddress: offset.word(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.DEFAULT_VALUE, default: 0 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
