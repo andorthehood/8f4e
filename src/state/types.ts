@@ -141,7 +141,7 @@ export interface Compiler {
 	isCompiling: boolean;
 	lastCompilationStart: number;
 	memoryBuffer: MemoryBuffer;
-	memoryAddressLookup: Record<string, number>;
+	memoryAddressLookup: MemoryAddressLookup;
 	timerAccuracy: number;
 }
 

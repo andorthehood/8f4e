@@ -8,8 +8,7 @@ export default function drawSliders(engine: Engine, sliders: Slider[], state: St
 		engine.setSpriteLookup(fillColor);
 		engine.drawRectangle(slider.x, slider.y, slider.width, slider.height, 'rgb(255,255,255)');
 
-		const address =
-			state.compiler.memoryAddressLookup[id + '_' + slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+		const address = state.compiler.memoryAddressLookup[id][slider.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
 		const value = state.compiler.memoryBuffer[address];
 		const offset = (value / slider.maxValue) * slider.height;
 		engine.drawSprite(slider.x, slider.y + (slider.height - offset), 'rgb(255,255,255)', slider.width, offset);

@@ -23,7 +23,7 @@ export default function compiler(state: State, events: EventDispatcher): void {
 						state.moduleTypes[type].insertState(
 							state.modules[index].state,
 							state.compiler.memoryBuffer,
-							state.compiler.memoryAddressLookup[state.modules[index].id]
+							state.compiler.memoryAddressLookup[state.modules[index].id].__startAddress
 						);
 					}
 				});
