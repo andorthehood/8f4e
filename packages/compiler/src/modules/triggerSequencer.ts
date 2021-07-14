@@ -126,8 +126,8 @@ export const insertState: ModuleStateInserter<TriggerSequencerState> = function 
 	memoryBuffer,
 	moduleAddress
 ) {
-	const patternStartAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_START;
-	const patternMemorySizeAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_MEMORY_SIZE;
+	const patternStartAddress = moduleAddress + Memory.PATTERN_START;
+	const patternMemorySizeAddress = moduleAddress + Memory.PATTERN_MEMORY_SIZE;
 
 	if (moduleState.pattern.length === 0) {
 		memoryBuffer[patternMemorySizeAddress] = 1;
@@ -143,8 +143,8 @@ export const insertState: ModuleStateInserter<TriggerSequencerState> = function 
 };
 
 export const extractState: ModuleStateExtractor<TriggerSequencerState> = function (memoryBuffer, moduleAddress) {
-	const patternStartAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_START;
-	const patternMemorySizeAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.PATTERN_MEMORY_SIZE;
+	const patternStartAddress = moduleAddress + Memory.PATTERN_START;
+	const patternMemorySizeAddress = moduleAddress + Memory.PATTERN_MEMORY_SIZE;
 
 	const patternMemorySize = memoryBuffer[patternMemorySizeAddress] / memoryBuffer.BYTES_PER_ELEMENT;
 	const pattern = Array.from(memoryBuffer.slice(patternStartAddress, patternStartAddress + patternMemorySize));

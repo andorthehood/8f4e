@@ -10,11 +10,11 @@ interface ConstantState {
 }
 
 export const insertState: ModuleStateInserter<ConstantState> = function (state, memoryBuffer, moduleAddress) {
-	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OUTPUT] = state.out;
+	memoryBuffer[moduleAddress + Memory.OUTPUT] = state.out;
 };
 
 export const extractState: ModuleStateExtractor<ConstantState> = function (memoryBuffer, moduleAddress) {
-	return { out: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OUTPUT] };
+	return { out: memoryBuffer[moduleAddress + Memory.OUTPUT] };
 };
 
 const constant: ModuleGenerator<{ out?: number }, Memory> = function (moduleId, offset, { out = 0 } = {}) {
