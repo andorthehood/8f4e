@@ -56,7 +56,7 @@ function compileModules(modules: Module[]): CompiledModule[] {
 function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
 	return compiledModules
 		.map(module => {
-			let pointer = module.offset;
+			let pointer = module.byteAddress;
 			return getInitialMemory(module)
 				.map(value => {
 					const instuction = i32store(pointer, value);

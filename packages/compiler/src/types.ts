@@ -63,7 +63,8 @@ export type MemoryMap<Memory> =
 export interface CompiledModule<Memory = number> {
 	functionBody: number[];
 	moduleId: string;
-	offset: number;
+	byteAddress: number;
+	wordAddress: number;
 	memoryMap: MemoryMap<Memory>[];
 }
 

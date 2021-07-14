@@ -165,7 +165,8 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 	return {
 		moduleId,
 		functionBody,
-		offset: offset.byte(0),
+		byteAddress: offset.byte(0),
+		wordAddress: offset.word(0),
 		memoryMap: [
 			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: 0 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
