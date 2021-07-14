@@ -45,17 +45,17 @@ const saw: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, offs
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load data from memory into local variables.
-			...i32const(offset(Memory.RATE_POINTER)),
+			...i32const(offset.byte(Memory.RATE_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.RATE),
 
-			...i32const(offset(Memory.LIMIT_POINTER)),
+			...i32const(offset.byte(Memory.LIMIT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.LIMIT),
 
-			...i32const(offset(Memory.COUNTER)),
+			...i32const(offset.byte(Memory.COUNTER)),
 			...i32load(),
 			...localSet(Locals.COUNTER),
 
@@ -70,7 +70,7 @@ const saw: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, offs
 			...localSet(Locals.COUNTER),
 
 			// Save data to memory.
-			...i32const(offset(Memory.COUNTER)),
+			...i32const(offset.byte(Memory.COUNTER)),
 			...localGet(Locals.COUNTER),
 			...i32store(),
 		]
@@ -79,17 +79,22 @@ const saw: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, offs
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.COUNTER, default: 0, id: 'out' },
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.RATE_POINTER,
-				default: offset(Memory.RATE_SELF),
+				default: offset.byte(Memory.RATE_SELF),
 				id: 'in:rate',
 			},
-			{ type: MemoryTypes.PRIVATE, address: Memory.RATE_SELF, default: rate, id: 'rate' },
-			{ type: MemoryTypes.INPUT_POINTER, address: Memory.LIMIT_POINTER, default: offset(Memory.LIMIT_SELF) },
+			{ type: MemoryTypes.PRIVATE, address: Memory.RATE_SELF, default: rate, id: 'rate', reclaimable: true },
+			{
+				type: MemoryTypes.INPUT_POINTER,
+				address: Memory.LIMIT_POINTER,
+				default: offset.byte(Memory.LIMIT_SELF),
+				id: 'in:limit',
+			},
 			{ type: MemoryTypes.PRIVATE, address: Memory.LIMIT_SELF, default: I16_SIGNED_LARGEST_NUMBER },
 		],
 	};

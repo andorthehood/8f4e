@@ -43,15 +43,15 @@ const clock: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, of
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
 			// Load variables from the memory
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...i32load(),
 			...localSet(Locals.OUTPUT),
 
-			...i32const(offset(Memory.COUNTER)),
+			...i32const(offset.byte(Memory.COUNTER)),
 			...i32load(),
 			...localSet(Locals.COUNTER),
 
-			...i32const(offset(Memory.RATE_SELF)),
+			...i32const(offset.byte(Memory.RATE_SELF)),
 			...i32load(),
 			...localSet(Locals.RATE),
 
@@ -74,11 +74,11 @@ const clock: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, of
 			...localSet(Locals.COUNTER),
 
 			// Store variables
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...localGet(Locals.OUTPUT),
 			...i32store(),
 
-			...i32const(offset(Memory.COUNTER)),
+			...i32const(offset.byte(Memory.COUNTER)),
 			...localGet(Locals.COUNTER),
 			...i32store(),
 		]
@@ -87,10 +87,10 @@ const clock: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, of
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.NUMBER, address: Memory.COUNTER, default: 0 },
-			{ type: MemoryTypes.NUMBER, address: Memory.RATE_SELF, id: 'rate', default: rate },
+			{ type: MemoryTypes.NUMBER, address: Memory.RATE_SELF, id: 'rate', default: rate, reclaimable: true },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
 		],
 	};

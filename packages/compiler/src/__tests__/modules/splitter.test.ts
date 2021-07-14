@@ -4,7 +4,7 @@ import splitter from '../../modules/splitter';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(splitter('id', () => 0)).toMatchSnapshot();
+	expect(splitter('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

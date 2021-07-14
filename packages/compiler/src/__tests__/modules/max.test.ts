@@ -4,7 +4,7 @@ import max, { Memory } from '../../modules/max';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(max('id', () => 0)).toMatchSnapshot();
+	expect(max('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

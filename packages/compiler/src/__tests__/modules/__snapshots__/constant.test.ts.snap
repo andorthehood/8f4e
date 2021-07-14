@@ -12,6 +12,7 @@ Object {
       "address": 0,
       "default": 0,
       "id": "out",
+      "reclaimable": true,
       "type": 4,
     },
   ],

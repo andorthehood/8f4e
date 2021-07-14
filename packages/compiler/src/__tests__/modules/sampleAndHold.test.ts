@@ -4,7 +4,7 @@ import sampleAndHold, { Memory } from '../../modules/sampleAndHold';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(sampleAndHold('id', () => 0)).toMatchSnapshot();
+	expect(sampleAndHold('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {

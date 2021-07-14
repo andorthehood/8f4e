@@ -66,7 +66,7 @@ const adc: ModuleGenerator<Config, Memory> = function (moduleId, offset, { resol
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(offset(Memory.INPUT_POINTER)),
+			...i32const(offset.byte(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...i32const(resolution === 16 ? 1 : Math.floor(I16_SIGNED_LARGEST_NUMBER / (Math.pow(2, resolution) - 1))),
@@ -76,7 +76,7 @@ const adc: ModuleGenerator<Config, Memory> = function (moduleId, offset, { resol
 			...masks
 				.slice(0, resolution)
 				.map(([memoryAddress, mask]) => [
-					...i32const(offset(memoryAddress)),
+					...i32const(offset.byte(memoryAddress)),
 					...localGet(Locals.INPUT),
 					...i32const(mask),
 					Instruction.I32_AND,
@@ -92,7 +92,7 @@ const adc: ModuleGenerator<Config, Memory> = function (moduleId, offset, { resol
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{
 				type: MemoryTypes.PRIVATE,
@@ -103,7 +103,7 @@ const adc: ModuleGenerator<Config, Memory> = function (moduleId, offset, { resol
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.INPUT_POINTER,
 				id: 'in',
-				default: offset(Memory.DEFAULT_VALUE),
+				default: offset.byte(Memory.DEFAULT_VALUE),
 			},
 			...masks.slice(0, resolution).map(([memoryAddress], index) => ({
 				type: MemoryTypes.OUTPUT,
