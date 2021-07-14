@@ -4,7 +4,7 @@ import { State } from '../types';
 
 function extractState(module: CompiledModule, memoryBuffer: MemoryBuffer): Record<string, number | number[]> {
 	return module.memoryMap.reduce((accumulator, current) => {
-		const moduleAddress = module.offset / memoryBuffer.BYTES_PER_ELEMENT;
+		const moduleAddress = module.wordAddress;
 
 		if (current.type === MemoryTypes.NUMBER && current.id) {
 			accumulator[current.id] = memoryBuffer[moduleAddress + current.address];

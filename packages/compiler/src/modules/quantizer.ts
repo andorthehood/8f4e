@@ -51,8 +51,8 @@ export const extractState: ModuleStateExtractor<QuantizerState> = function extra
 	memoryBuffer,
 	moduleAddress
 ): QuantizerState {
-	const firstNoteAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.FIRST_NOTE;
-	const numberOfNotesAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_NOTES;
+	const firstNoteAddress = moduleAddress + Memory.FIRST_NOTE;
+	const numberOfNotesAddress = moduleAddress + Memory.NUMBER_OF_NOTES;
 	return {
 		activeNotes: Array.from(
 			memoryBuffer.slice(firstNoteAddress, firstNoteAddress + memoryBuffer[numberOfNotesAddress])
@@ -65,9 +65,9 @@ export const insertState: ModuleStateInserter<QuantizerState> = function insertS
 	memoryBuffer,
 	moduleAddress
 ): void {
-	const firstNoteAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.FIRST_NOTE;
-	const numberOfNotesAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.NUMBER_OF_NOTES;
-	const allocatedNotesAddress = moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.ALLOCATED_NOTES;
+	const firstNoteAddress = moduleAddress + Memory.FIRST_NOTE;
+	const numberOfNotesAddress = moduleAddress + Memory.NUMBER_OF_NOTES;
+	const allocatedNotesAddress = moduleAddress + Memory.ALLOCATED_NOTES;
 	const allocatedNotes = memoryBuffer[allocatedNotesAddress];
 
 	state.activeNotes.slice(0, allocatedNotes).forEach((note, index) => {

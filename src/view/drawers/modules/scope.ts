@@ -5,8 +5,8 @@ import { State } from '../../../state/types';
 const RESOLUTION = 49;
 
 export default function drawer(engine: Engine, state: State, id: string): void {
-	const bufferAddress = state.compiler.memoryAddressLookup[id]['buffer'] / 4;
-	const pointerAddress = state.compiler.memoryAddressLookup[id]['bufferPointer'] / 4;
+	const bufferAddress = state.compiler.memoryAddressLookup[id]['buffer'];
+	const pointerAddress = state.compiler.memoryAddressLookup[id]['bufferPointer'];
 	const buffer = state.compiler.memoryBuffer.slice(bufferAddress, bufferAddress + RESOLUTION);
 	const pointer =
 		state.compiler.memoryBuffer[pointerAddress] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT - bufferAddress;

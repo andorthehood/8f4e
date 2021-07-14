@@ -45,7 +45,7 @@ export default function pianoDrawer(
 ): void {
 	engine.setSpriteLookup(pianoKeyboard());
 
-	const moduleAddress = memoryAddressLookup[module.id].__startAddress / memoryBuffer.BYTES_PER_ELEMENT;
+	const moduleAddress = memoryAddressLookup[module.id].__startAddress;
 	const config: { x: number; y: number; keyCount: number } = moduleType.drawer.config;
 	const outAddress = moduleAddress + Memory.OUTPUT;
 	const notesAddress = moduleAddress + Memory.FIRST_NOTE;
