@@ -13,11 +13,11 @@ interface AttenuatorState {
 }
 
 export const insertState: ModuleStateInserter<AttenuatorState> = function (state, memoryBuffer, moduleAddress) {
-	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.DIVISOR] = state.divisor;
+	memoryBuffer[moduleAddress + Memory.DIVISOR] = state.divisor;
 };
 
 export const extractState: ModuleStateExtractor<AttenuatorState> = function (memoryBuffer, moduleAddress) {
-	return { divisor: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.DIVISOR] };
+	return { divisor: memoryBuffer[moduleAddress + Memory.DIVISOR] };
 };
 
 const attenuator: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {

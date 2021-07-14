@@ -10,7 +10,7 @@ const midiNoteLookup = new Array(128).fill(0).map((item, index) => {
 });
 
 export default function drawer(engine: Engine, state: State, id: string): void {
-	const address = state.compiler.memoryAddressLookup[id]['out'] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+	const address = state.compiler.memoryAddressLookup[id]['out'];
 
 	if (!address) {
 		return;

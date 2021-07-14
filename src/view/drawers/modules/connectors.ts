@@ -14,7 +14,7 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 			typeof state.compiler.memoryAddressLookup[id][connector.id] !== 'undefined'
 		) {
 			const connectorAddress = state.compiler.memoryAddressLookup[id][connector.id];
-			const value = state.compiler.memoryBuffer[connectorAddress / state.compiler.memoryBuffer.BYTES_PER_ELEMENT];
+			const value = state.compiler.memoryBuffer[connectorAddress];
 			const { x, y, width, height } = connector;
 
 			engine.setSpriteLookup(feedbackScale);

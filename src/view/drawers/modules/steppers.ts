@@ -20,7 +20,7 @@ export default function drawSteppers(
 		//engine.setSpriteLookup(fillColor);
 		//engine.drawRectangle(stepper.x, stepper.y, vGrid, hGrid, 'rgb(255,255,255)');
 
-		const address = state.compiler.memoryAddressLookup[id][stepper.id] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT;
+		const address = state.compiler.memoryAddressLookup[id][stepper.id];
 		const value = state.compiler.memoryBuffer[address];
 
 		engine.setSpriteLookup(font('small_white'));

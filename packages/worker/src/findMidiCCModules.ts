@@ -11,9 +11,9 @@ export default function findMidiNoteModules(
 		.map(module => {
 			return {
 				moduleId: module.moduleId,
-				valueAddress: memoryAddressLookup[module.moduleId]['out:1'] / memoryBuffer.BYTES_PER_ELEMENT,
-				channelAddress: memoryAddressLookup[module.moduleId]['data:1'] / memoryBuffer.BYTES_PER_ELEMENT,
-				selectedCCAddress: memoryAddressLookup[module.moduleId]['data:2'] / memoryBuffer.BYTES_PER_ELEMENT,
+				valueAddress: memoryAddressLookup[module.moduleId]['out:1'],
+				channelAddress: memoryAddressLookup[module.moduleId]['data:1'],
+				selectedCCAddress: memoryAddressLookup[module.moduleId]['data:2'],
 			};
 		});
 }
