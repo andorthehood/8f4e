@@ -9,8 +9,11 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 	for (let i = 0; i < outputs.length; i++) {
 		const connector = outputs[i];
 
-		if (typeof state.compiler.memoryAddressLookup[id + '_' + connector.id] !== 'undefined') {
-			const connectorAddress = state.compiler.memoryAddressLookup[id + '_' + connector.id];
+		if (
+			state.compiler.memoryAddressLookup[id] &&
+			typeof state.compiler.memoryAddressLookup[id][connector.id] !== 'undefined'
+		) {
+			const connectorAddress = state.compiler.memoryAddressLookup[id][connector.id];
 			const value = state.compiler.memoryBuffer[connectorAddress / state.compiler.memoryBuffer.BYTES_PER_ELEMENT];
 			const { x, y, width, height } = connector;
 
@@ -27,7 +30,10 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 	for (let i = 0; i < inputs.length; i++) {
 		const connector = inputs[i];
 
-		if (typeof state.compiler.memoryAddressLookup[id + '_' + connector.id] !== 'undefined') {
+		if (
+			state.compiler.memoryAddressLookup[id] &&
+			typeof state.compiler.memoryAddressLookup[id][connector.id] !== 'undefined'
+		) {
 			const { x, y } = connector;
 
 			engine.setSpriteLookup(fillColor);

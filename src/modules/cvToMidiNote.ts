@@ -7,7 +7,7 @@ import { Config } from 'compiler/modules/buffer';
 
 const onChangeChannel: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;
-	const dataAddress = memoryAddressLookup[module.id + '_' + stepper.id] / memoryBuffer.BYTES_PER_ELEMENT;
+	const dataAddress = memoryAddressLookup[module.id][stepper.id] / memoryBuffer.BYTES_PER_ELEMENT;
 	memoryBuffer[dataAddress] = Math.min(Math.max(memoryBuffer[dataAddress] + value, stepper.minValue), stepper.maxValue);
 };
 
