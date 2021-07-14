@@ -2,6 +2,7 @@
 
 exports[`if compiled module matches with snapshot 1`] = `
 Object {
+  "byteAddress": 0,
   "functionBody": Array [
     82,
     1,
@@ -125,6 +126,6 @@ Object {
     },
   ],
   "moduleId": "id",
-  "offset": 0,
+  "wordAddress": 0,
 }
 `;
