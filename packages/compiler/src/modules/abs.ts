@@ -48,7 +48,8 @@ const abs: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
 	return {
 		moduleId,
 		functionBody,
-		offset: offset.byte(0),
+		byteAddress: offset.byte(0),
+		wordAddress: offset.word(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.DEFAULT_VALUE, default: 0 },
 			{

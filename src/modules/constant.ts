@@ -4,9 +4,9 @@ import singleSliderModule from './templates/singleSliderModule';
 import { extractState, insertState } from 'compiler/modules/constant';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
-	let { out } = extractState(memoryBuffer, memoryAddressLookup[module.id]);
+	let { out } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 	out = Math.min(Math.max(slider.minValue, out + movement * -1 * slider.resolution), slider.maxValue);
-	insertState({ out }, memoryBuffer, memoryAddressLookup[module.id]);
+	insertState({ out }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
 export default function constant(props: ModuleGeneratorProps): ModuleType {

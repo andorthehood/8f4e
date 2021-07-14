@@ -106,4 +106,4 @@ export interface Module {
 	state: ModuleState;
 }
 
-export type MemoryAddressLookup = Record<string, number>;
+export type MemoryAddressLookup = Record<string, Record<string, number>>;
