@@ -81,6 +81,7 @@ Object {
     Object {
       "address": 4,
       "default": 0,
+      "id": "out",
       "type": 4,
     },
   ],

@@ -33,22 +33,26 @@ const triggerToGate: ModuleGenerator<unknown, Memory> = function (moduleId, offs
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(offset(Memory.TRIGGER_INPUT_POINTER)),
+			...i32const(offset.byte(Memory.TRIGGER_INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			...localSet(Locals.TRIGGER_INPUT),
 
-			...i32const(offset(Memory.COUNTER)),
+			...i32const(offset.byte(Memory.COUNTER)),
 			...i32load(),
 			...localSet(Locals.COUNTER),
 
 			...localGet(Locals.TRIGGER_INPUT),
-			...i32const(offset(Memory.TRIGGER_PREVIOUS_VALUE)),
+			...i32const(offset.byte(Memory.TRIGGER_PREVIOUS_VALUE)),
 			...i32load(),
 			Instruction.I32_GT_S,
-			...ifelse(Type.VOID, [...i32const(offset(Memory.OUTPUT)), ...i32const(I16_SIGNED_LARGEST_NUMBER), ...i32store()]),
+			...ifelse(Type.VOID, [
+				...i32const(offset.byte(Memory.OUTPUT)),
+				...i32const(I16_SIGNED_LARGEST_NUMBER),
+				...i32store(),
+			]),
 
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...i32load(),
 			...i32const(0),
 			Instruction.I32_GT_S,
@@ -60,24 +64,24 @@ const triggerToGate: ModuleGenerator<unknown, Memory> = function (moduleId, offs
 			]),
 
 			...localGet(Locals.COUNTER),
-			...i32const(offset(Memory.GATE_LENGTH_INPUT_POINTER)),
+			...i32const(offset.byte(Memory.GATE_LENGTH_INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
 			Instruction.I32_GT_S,
 			...ifelse(Type.VOID, [
 				...i32const(0),
 				...localSet(Locals.COUNTER),
-				...i32const(offset(Memory.OUTPUT)),
+				...i32const(offset.byte(Memory.OUTPUT)),
 				...i32const(0),
 				...i32store(),
 			]),
 
 			// Store previous trigger value
-			...i32const(offset(Memory.TRIGGER_PREVIOUS_VALUE)),
+			...i32const(offset.byte(Memory.TRIGGER_PREVIOUS_VALUE)),
 			...localGet(Locals.TRIGGER_INPUT),
 			...i32store(),
 
-			...i32const(offset(Memory.COUNTER)),
+			...i32const(offset.byte(Memory.COUNTER)),
 			...localGet(Locals.COUNTER),
 			...i32store(),
 		]
@@ -86,20 +90,20 @@ const triggerToGate: ModuleGenerator<unknown, Memory> = function (moduleId, offs
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.TRIGGER_INPUT_POINTER,
 				id: 'in:trigger',
-				default: offset(Memory.ZERO),
+				default: offset.byte(Memory.ZERO),
 			},
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.GATE_LENGTH_INPUT_POINTER,
 				id: 'in:gateLength',
-				default: offset(Memory.GATE_LENGTH),
+				default: offset.byte(Memory.GATE_LENGTH),
 			},
 			{ type: MemoryTypes.NUMBER, address: Memory.GATE_LENGTH, id: 'gateLength', default: 2 },
 			{

@@ -24,11 +24,11 @@ const attenuator: ModuleGenerator<unknown, Memory> = function (moduleId, offset)
 	const functionBody = createFunctionBody(
 		[],
 		[
-			...i32const(offset(Memory.OUT)),
-			...i32const(offset(Memory.INPUT_POINTER)),
+			...i32const(offset.byte(Memory.OUT)),
+			...i32const(offset.byte(Memory.INPUT_POINTER)),
 			...i32load(),
 			...i32load(),
-			...i32const(offset(Memory.DIVISOR)),
+			...i32const(offset.byte(Memory.DIVISOR)),
 			...i32load(),
 			Instruction.I32_DIV_S,
 			...i32store(),
@@ -38,11 +38,11 @@ const attenuator: ModuleGenerator<unknown, Memory> = function (moduleId, offset)
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
-			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: offset(Memory.ZERO) },
-			{ type: MemoryTypes.NUMBER, address: Memory.DIVISOR, id: 'divisor', default: 1 },
+			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: offset.byte(Memory.ZERO) },
+			{ type: MemoryTypes.NUMBER, address: Memory.DIVISOR, id: 'divisor', default: 1, reclaimable: true },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUT, id: 'out', default: 0 },
 		],
 	};

@@ -31,14 +31,14 @@ const random: ModuleGenerator<{ seed?: number }, Memory> = function (moduleId, o
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...i32load(),
 			...localSet(Locals.RANDOM),
 
 			...localGet(Locals.RANDOM),
 			// The zero state is considered illegal because the counter would remain locked-up.
 			0x45, //Instruction.I32_EQZ
-			...ifelse(Type.I32, [...i32const(offset(Memory.SEED)), ...i32load()], [...localGet(Locals.RANDOM)]),
+			...ifelse(Type.I32, [...i32const(offset.byte(Memory.SEED)), ...i32load()], [...localGet(Locals.RANDOM)]),
 			...localSet(Locals.RANDOM),
 
 			...tapPositions
@@ -68,7 +68,7 @@ const random: ModuleGenerator<{ seed?: number }, Memory> = function (moduleId, o
 			),
 			...localSet(Locals.RANDOM),
 
-			...i32const(offset(Memory.OUTPUT)),
+			...i32const(offset.byte(Memory.OUTPUT)),
 			...localGet(Locals.RANDOM),
 			...i32const(I16_SIGNED_LARGEST_NUMBER),
 			Instruction.I32_REM_S,
@@ -79,7 +79,7 @@ const random: ModuleGenerator<{ seed?: number }, Memory> = function (moduleId, o
 	return {
 		moduleId,
 		functionBody,
-		offset: offset(0),
+		offset: offset.byte(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.SEED, default: seed },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
