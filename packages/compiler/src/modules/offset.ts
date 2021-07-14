@@ -30,11 +30,11 @@ interface OffsetState {
 }
 
 export const insertState: ModuleStateInserter<OffsetState> = function (state, memoryBuffer, moduleAddress) {
-	memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OFFSET] = state.offset;
+	memoryBuffer[moduleAddress + Memory.OFFSET] = state.offset;
 };
 
 export const extractState: ModuleStateExtractor<OffsetState> = function (memoryBuffer, moduleAddress) {
-	return { offset: memoryBuffer[moduleAddress / memoryBuffer.BYTES_PER_ELEMENT + Memory.OFFSET] };
+	return { offset: memoryBuffer[moduleAddress + Memory.OFFSET] };
 };
 
 const offset: ModuleGenerator<{ offset?: number }, Memory> = function (
