@@ -9,11 +9,9 @@ export default function generate(): DrawingCommand[] {
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
 		[Command.FILL_COLOR, 'rgb(100,255,255)'],
-		...new Array(80).fill(0).map(
-			(item, index): DrawingCommand => {
-				return [Command.RECTANGLE, index * 4, 80 - index, 4, 1];
-			}
-		),
+		...new Array(80).fill(0).map((item, index): DrawingCommand => {
+			return [Command.RECTANGLE, index * 4, 80 - index, 4, 1];
+		}),
 	];
 }
 

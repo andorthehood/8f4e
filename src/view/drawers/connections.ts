@@ -12,9 +12,12 @@ export default function drawConnections(engine: Engine, state: State): void {
 		const fromModule = modules.find(({ id }) => id === connections[i].fromModuleId);
 		const toModule = modules.find(({ id }) => id === connections[i].toModuleId);
 
-		const { x: fromX, y: fromY, width, height } = state.moduleTypes[fromModule.type].outputs.find(
-			({ id }) => id === connections[i].fromConnectorId
-		);
+		const {
+			x: fromX,
+			y: fromY,
+			width,
+			height,
+		} = state.moduleTypes[fromModule.type].outputs.find(({ id }) => id === connections[i].fromConnectorId);
 		const { x: toX, y: toY } = state.moduleTypes[toModule.type].inputs.find(
 			({ id }) => id === connections[i].toConnectorId
 		);
