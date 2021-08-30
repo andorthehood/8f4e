@@ -3,7 +3,7 @@ import { compilationDone, recompile } from '../mutators/compiler';
 import { EventDispatcher } from '../../events';
 
 export default function compiler(state: State, events: EventDispatcher): void {
-	const worker = new Worker(new URL('../../../packages/worker/src/index.ts', import.meta.url));
+	const worker = new Worker(new URL('../../../packages/worker/src/index.ts', import.meta.url), { type: 'module' });
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 
 	async function onRecompile() {
