@@ -68,9 +68,11 @@ function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
 		.flat();
 }
 
-export default function compile(
-	modules: Module[]
-): { codeBuffer: Uint8Array; memoryAddressLookup: MemoryAddressLookup; compiledModules: CompiledModule[] } {
+export default function compile(modules: Module[]): {
+	codeBuffer: Uint8Array;
+	memoryAddressLookup: MemoryAddressLookup;
+	compiledModules: CompiledModule[];
+} {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
