@@ -1,55 +1,57 @@
 {
-  "name": "8f4e",
-  "version": "1.0.0",
-  "description": "8f4e",
-  "main": "src/index.js",
-  "scripts": {
-    "build": "parcel build src/index.html",
-    "dev": "parcel src/index.html --port 3000 --hmr-port 30000",
-    "sprite": "parcel packages/sprite-generator/tests/visualTesting.html --port 3001 --hmr-port 30001",
-    "prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/**/*.ts'",
-    "eslint": "npx eslint . --ext .ts --fix",
-    "test": "node --experimental-vm-modules --experimental-wasi-unstable-preview1 node_modules/.bin/jest",
-    "prepare": "husky install"
-  },
-  "browserslist": [
-    "last 1 Chrome version"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/andormade/8f4e.git"
-  },
-  "author": "Andor Polgar",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/andormade/8f4e/issues"
-  },
-  "homepage": "https://github.com/andormade/8f4e#readme",
-  "devDependencies": {
-    "@parcel/transformer-image": "^2.0.0-rc.0",
-    "@typescript-eslint/eslint-plugin": "4.30.0",
-    "@typescript-eslint/parser": "4.30.0",
-    "eslint": "7.32.0",
-    "eslint-config-prettier": "8.3.0",
-    "glslify-bundle": "5.1.1",
-    "glslify-deps": "1.3.2",
-    "husky": "7.0.2",
-    "jest": "27.1.0",
-    "lint-staged": "11.1.2",
-    "parcel": "2.0.0-rc.0",
-    "prettier": "2.3.2",
-    "ts-jest": "27.0.5",
-    "typescript": "4.4.2"
-  },
-  "alias": {
-    "bytecode-utils": "./packages/bytecode-utils/src",
-    "compiler": "./packages/compiler/src",
-    "2d-engine": "./packages/2d-engine/src",
-    "sprite-generator": "./packages/sprite-generator/src",
-    "worker": "./packages/worker/src"
-  },
-  "lint-staged": {
-    "*.ts": "eslint --cache --fix",
-    "*.{ts,css,md}": "prettier --write"
-  }
+	"name": "8f4e",
+	"version": "1.0.0",
+	"description": "8f4e",
+	"scripts": {
+		"build": "parcel build src/index.html",
+		"dev": "parcel src/index.html --port 3000 --hmr-port 30000",
+		"sprite": "parcel packages/sprite-generator/tests/visualTesting.html --port 3001 --hmr-port 30001",
+		"prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/**/*.ts'",
+		"eslint": "npx eslint . --ext .ts --fix",
+		"test": "node --experimental-vm-modules --experimental-wasi-unstable-preview1 node_modules/.bin/jest",
+		"prepare": "husky install"
+	},
+	"browserslist": [
+		"last 1 Chrome version"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andormade/8f4e.git"
+	},
+	"author": "Andor Polgar",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/andormade/8f4e/issues"
+	},
+	"homepage": "https://github.com/andormade/8f4e#readme",
+	"devDependencies": {
+		"@parcel/transformer-image": "^2.0.0-rc.0",
+		"@typescript-eslint/eslint-plugin": "4.30.0",
+		"@typescript-eslint/parser": "4.30.0",
+		"eslint": "7.32.0",
+		"eslint-config-prettier": "8.3.0",
+		"glslify-bundle": "5.1.1",
+		"glslify-deps": "1.3.2",
+		"husky": "7.0.2",
+		"jest": "27.1.0",
+		"lint-staged": "11.1.2",
+		"parcel": "2.0.0-rc.0",
+		"prettier": "2.3.2",
+		"ts-jest": "27.0.5",
+		"typescript": "4.4.2"
+	},
+	"alias": {
+		"bytecode-utils": "./packages/bytecode-utils/src",
+		"compiler": "./packages/compiler/src",
+		"2d-engine": "./packages/2d-engine/src",
+		"sprite-generator": "./packages/sprite-generator/src",
+		"worker": "./packages/worker/src"
+	},
+	"lint-staged": {
+		"*.ts": "eslint --cache --fix",
+		"*.{ts,css,md}": "prettier --write"
+	},
+	"dependencies": {
+		"buffer": "^5.7.1"
+	}
 }
