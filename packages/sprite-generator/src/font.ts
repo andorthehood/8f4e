@@ -1,17 +1,14 @@
 import { SpriteLookup } from '2d-engine';
-import icons from './fonts/icons';
-import smallFont from './fonts/smallFont';
 import thickFont from './fonts/thickFont';
+import thickIcons from './fonts/thickIcons';
 import { Command, DrawingCommand } from './types';
 
 const offsetX = 0;
 const offsetY = 0;
 
 const CHARACTER_COUNT = 128;
-const CHARACTER_HEIGHT = 10;
 const CHARACTER_WIDTH = 6;
 const LINE_HEIGHT = 14;
-const PADDING_TOP = 2;
 
 const THICK_CHARACTER_WIDTH = 8;
 const THICK_CHARACTER_HEIGHT = 16;
@@ -45,19 +42,14 @@ export default function generateFonts(): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
-		...generateFont(offsetX, offsetY + PADDING_TOP, smallFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
+		...generateFont(offsetX, offsetY, thickFont, THICK_CHARACTER_WIDTH, THICK_CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
-		...generateFont(offsetX, offsetY + LINE_HEIGHT, smallFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
-		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
-		...generateFont(offsetX, offsetY + LINE_HEIGHT * 2, icons, CHARACTER_WIDTH, LINE_HEIGHT),
-
-		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
-		...generateFont(offsetX, offsetY + LINE_HEIGHT * 3, thickFont, THICK_CHARACTER_WIDTH, THICK_CHARACTER_HEIGHT),
+		...generateFont(offsetX, offsetY + THICK_LINE_HEIGHT, thickFont, THICK_CHARACTER_WIDTH, THICK_CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
 		...generateFont(
 			offsetX,
-			offsetY + LINE_HEIGHT * 3 + THICK_LINE_HEIGHT,
-			thickFont,
+			offsetY + THICK_LINE_HEIGHT * 2,
+			thickIcons,
 			THICK_CHARACTER_WIDTH,
 			THICK_CHARACTER_HEIGHT
 		),
@@ -71,21 +63,21 @@ export const lookup = function (font: string): SpriteLookup {
 			case 'small_white':
 				return {
 					x: (code - 32) * THICK_CHARACTER_WIDTH + offsetX,
-					y: offsetY + LINE_HEIGHT * 3,
+					y: offsetY,
 					spriteHeight: THICK_LINE_HEIGHT,
 					spriteWidth: THICK_CHARACTER_WIDTH,
 				};
 			case 'small_black':
 				return {
 					x: (code - 32) * THICK_CHARACTER_WIDTH + offsetX,
-					y: offsetY + LINE_HEIGHT * 3 + THICK_LINE_HEIGHT,
+					y: offsetY + THICK_LINE_HEIGHT,
 					spriteHeight: THICK_LINE_HEIGHT,
 					spriteWidth: THICK_CHARACTER_WIDTH,
 				};
 			case 'icons_white':
 				return {
 					x: (code - 32) * THICK_CHARACTER_WIDTH + offsetX,
-					y: offsetY + LINE_HEIGHT * 2,
+					y: offsetY + THICK_LINE_HEIGHT * 2,
 					spriteHeight: LINE_HEIGHT,
 					spriteWidth: CHARACTER_WIDTH,
 				};
