@@ -2,7 +2,7 @@ import { font, fillColor } from 'sprite-generator';
 import scope from './scope';
 import number from './number';
 import midiNote from './midiNote';
-import pianoQuantizer from './pianoQuantizer';
+import pianoQuantizer from './pianoQuantizer2';
 import drawConnectors from './connectors';
 import drawSliders from './sliders';
 import { State } from '../../../state/types';
