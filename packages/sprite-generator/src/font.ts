@@ -25,16 +25,50 @@ function forEachBit(
 	}
 }
 
+export function drawCharacter(
+	font: number[],
+	charCode: number,
+	characterWidth: number,
+	characterHeight: number
+): DrawingCommand[] {
+	const commands: DrawingCommand[] = [];
+	const char = charCode;
+	for (let i = 0; i < characterHeight; i++) {
+		forEachBit(font[char * characterHeight + i], characterWidth, function (bit, nthBit) {
+			bit && commands.push([Command.PIXEL, nthBit, i]);
+		});
+	}
+	return commands;
+}
+
+export function drawCharacterMatrix(
+	font: number[],
+	characterWidth: number,
+	characterHeight: number,
+	characterMatrix: number[][]
+): DrawingCommand[] {
+	const commands: DrawingCommand[] = [[Command.SAVE]];
+	characterMatrix.forEach(characterArray => {
+		characterArray.forEach(char => {
+			commands.push(...drawCharacter(font, char, characterWidth, characterHeight), [
+				Command.TRANSLATE,
+				characterWidth,
+				0,
+			]);
+		});
+		commands.push([Command.TRANSLATE, characterArray.length * -8, characterHeight]);
+	});
+	commands.push([Command.RESTORE]);
+	return commands;
+}
+
 function generateFont(x = 0, y = 0, font: number[], characterWidth: number, characterHeight: number): DrawingCommand[] {
 	//TODO: optimize this once I'm not going to be high on BNT162b2
-	const commands: DrawingCommand[] = [];
+	const commands: DrawingCommand[] = [[Command.TRANSLATE, x, y]];
 	for (let j = 0; j < CHARACTER_COUNT; j++) {
-		for (let i = 0; i < characterHeight; i++) {
-			forEachBit(font[j * characterHeight + i], characterWidth, function (bit, nthBit) {
-				bit && commands.push([Command.PIXEL, j * characterWidth + nthBit + x, i + y]);
-			});
-		}
+		commands.push(...drawCharacter(font, j, characterWidth, characterHeight), [Command.TRANSLATE, characterWidth, 0]);
 	}
+	commands.push([Command.RESET_TRANSFORM]);
 	return commands;
 }
 
