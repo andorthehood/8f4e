@@ -13,7 +13,7 @@ const allNotes = new Array(128).fill(0).map((item, index) => index);
 const whiteKeyWidth = 18;
 const spacing = 2;
 const keyboardWidth = whiteKeyWidth * whiteKeys.length + spacing * whiteKeys.length;
-const octaveWidth = 140;
+const octaveWidth = 12 * 16;
 
 function getWhiteKeyIndex(note: number): number {
 	return whiteKeys.indexOf(note % allKeys.length);
@@ -58,17 +58,17 @@ export default function pianoDrawer(
 		engine.drawSprite(octaveWidth * i + config.x, config.y, undefined);
 	}
 
-	engine.setSpriteLookup(pianoKeyboard(true));
+	//engine.setSpriteLookup(pianoKeyboard(true));
 
-	for (let i = 0; i < activeNotes.length; i++) {
-		engine.drawSprite(
-			keyPositions[int16ToMidiNote(activeNotes[i])] + config.x,
-			config.y,
-			int16ToMidiNote(activeNotes[i])
-		);
-	}
+	// for (let i = 0; i < activeNotes.length; i++) {
+	// 	engine.drawSprite(
+	// 		keyPositions[int16ToMidiNote(activeNotes[i])] + config.x,
+	// 		config.y,
+	// 		int16ToMidiNote(activeNotes[i])
+	// 	);
+	// }
 
-	engine.setSpriteLookup(pianoKeyboard(false, true));
+	//engine.setSpriteLookup(pianoKeyboard(false, true));
 
-	engine.drawSprite(keyPositions[int16ToMidiNote(outValue)] + config.x, config.y, int16ToMidiNote(outValue));
+	//engine.drawSprite(keyPositions[int16ToMidiNote(outValue)] + config.x, config.y, int16ToMidiNote(outValue));
 }
