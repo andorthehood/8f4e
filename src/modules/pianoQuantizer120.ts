@@ -23,8 +23,8 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
 	const width = MODULE_WIDTH_XXL * vGrid;
 	const height = MODULE_HEIGHT_S * hGrid;
-	const pianoX = vGrid;
-	const pianoY = hGrid * 4.5;
+	const pianoX = vGrid * 2;
+	const pianoY = hGrid * 3;
 	const keyCount = 128;
 
 	return {
