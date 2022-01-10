@@ -1,4 +1,4 @@
-export const MODULE_WIDTH_S = 20;
+export const MODULE_WIDTH_S = 18;
 export const MODULE_WIDTH_M = MODULE_WIDTH_S * 2;
 export const MODULE_WIDTH_L = MODULE_WIDTH_S * 3;
 export const MODULE_WIDTH_XXL = MODULE_WIDTH_S * 12;
