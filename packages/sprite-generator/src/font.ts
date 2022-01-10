@@ -96,21 +96,21 @@ export const lookup = function (font: string): SpriteLookup {
 		switch (font) {
 			case 'small_white':
 				return {
-					x: (code - 32) * THICK_CHARACTER_WIDTH + offsetX,
+					x: code * THICK_CHARACTER_WIDTH + offsetX,
 					y: offsetY,
 					spriteHeight: THICK_LINE_HEIGHT,
 					spriteWidth: THICK_CHARACTER_WIDTH,
 				};
 			case 'small_black':
 				return {
-					x: (code - 32) * THICK_CHARACTER_WIDTH + offsetX,
+					x: code * THICK_CHARACTER_WIDTH + offsetX,
 					y: offsetY + THICK_LINE_HEIGHT,
 					spriteHeight: THICK_LINE_HEIGHT,
 					spriteWidth: THICK_CHARACTER_WIDTH,
 				};
 			case 'icons_white':
 				return {
-					x: (code - 32) * THICK_CHARACTER_WIDTH + offsetX,
+					x: code * THICK_CHARACTER_WIDTH + offsetX,
 					y: offsetY + THICK_LINE_HEIGHT * 2,
 					spriteHeight: LINE_HEIGHT,
 					spriteWidth: CHARACTER_WIDTH,
