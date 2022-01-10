@@ -9,7 +9,7 @@ export { lookup as feedbackScale } from './feedbackScale';
 export { lookup as fillColor } from './fillColors';
 export { lookup as font } from './font';
 export { lookup as scope } from './scope';
-export { lookup as pianoKeyboard } from './pianoKeyboard';
+export { lookup as pianoKeyboard } from './pianoKeyboard2';
 
 export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasElement> {
 	let canvas;
