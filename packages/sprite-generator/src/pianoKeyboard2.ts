@@ -89,7 +89,7 @@ function drawPianoKeyboard(state: State): DrawingCommand[] {
 		state === State.HIGHLIGHTED
 			? [Command.FILL_COLOR, 'rgba(255,0,0,255)']
 			: [Command.FILL_COLOR, 'rgba(255,255,255,255)'],
-		...drawCharacterMatrix(font, 8, 16, [stringToCharCodeArray('C C#D D#E F F#G G# A A#B')]),
+		...drawCharacterMatrix(font, 8, 16, [stringToCharCodeArray('C C#D D#E F F#G G#A A#B')]),
 		[Command.TRANSLATE, 0, 16],
 		...(orderedKeys
 			.map(keyDrawerFunction => [...keyDrawerFunction(state), [Command.TRANSLATE, 16, 0]])
@@ -115,7 +115,7 @@ export const lookup = function (isHighlighted = false, isRed = false): SpriteLoo
 			x: offsetX,
 			y: offsetY,
 			spriteWidth: orderedKeys.length * 16,
-			spriteHeight: 60,
+			spriteHeight: 76,
 		};
 	};
 };
