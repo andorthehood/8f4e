@@ -26,8 +26,8 @@ function blackKey(state: State): DrawingCommand[] {
 	return [
 		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
 		...drawCharacterMatrix(icons, 8, 16, [
-			[Icon.FILL, Icon.FILL],
-			[Icon.FILL, Icon.FILL],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
 			[Icon.SLIM_LINE_RIGHT, Icon.SLIM_LINE_LEFT],
 			[Icon.SLIM_LINE_RIGHT, Icon.SLIM_LINE_LEFT],
 		]),
@@ -86,6 +86,7 @@ function stringToCharCodeArray(str: string): number[] {
 
 function drawPianoKeyboard(state: State): DrawingCommand[] {
 	return [
+		[Command.SAVE],
 		state === State.HIGHLIGHTED
 			? [Command.FILL_COLOR, 'rgba(255,0,0,255)']
 			: [Command.FILL_COLOR, 'rgba(255,255,255,255)'],
@@ -94,6 +95,7 @@ function drawPianoKeyboard(state: State): DrawingCommand[] {
 		...(orderedKeys
 			.map(keyDrawerFunction => [...keyDrawerFunction(state), [Command.TRANSLATE, 16, 0]])
 			.flat(1) as DrawingCommand[]),
+		[Command.RESTORE],
 	];
 }
 
@@ -104,7 +106,9 @@ export default function generate(): DrawingCommand[] {
 		[Command.FILL_COLOR, 'rgba(136,126,203,255)'],
 		[Command.RECTANGLE, 0, 0, orderedKeys.length * 16 * 3, 80],
 		...drawPianoKeyboard(State.NORMAL),
+		[Command.TRANSLATE, 16 * 12, 0],
 		...drawPianoKeyboard(State.PRESSED),
+		[Command.TRANSLATE, 16 * 12, 0],
 		...drawPianoKeyboard(State.HIGHLIGHTED),
 	];
 }
