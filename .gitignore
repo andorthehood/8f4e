@@ -1,5 +1,5 @@
 .cache
-dist
+/dist*
 node_modules
-.parcel-cache
+.parcel-cache*
 .eslintcache
