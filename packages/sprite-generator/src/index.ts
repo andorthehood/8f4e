@@ -2,14 +2,14 @@ import generateFont from './font';
 import generateFillColors from './fillColors';
 import generateFeedbackScale from './feedbackScale';
 import generateScope from './scope';
-import generatePianoKeyboard2 from './pianoKeyboard2';
+import generatePianoKeyboard2 from './pianoKeyboard';
 import { Command } from './types';
 
 export { lookup as feedbackScale } from './feedbackScale';
 export { lookup as fillColor } from './fillColors';
 export { lookup as font } from './font';
 export { lookup as scope } from './scope';
-export { lookup as pianoKeyboard } from './pianoKeyboard2';
+export { lookup as pianoKeyboard } from './pianoKeyboard';
 
 export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasElement> {
 	let canvas;
