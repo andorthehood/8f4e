@@ -1,14 +1,4 @@
-function pad(paddingLeft: number, arr: number[], paddingRight = 0): number[] {
-	return [...new Array(paddingLeft).fill(0b00000000), ...arr, ...new Array(paddingRight).fill(0b00000000)];
-}
-
-function same(byte: number, times: number): number[] {
-	return new Array(times).fill(byte);
-}
-
-function mirr(toBeMirrored: number[], middle: number[] = []): number[] {
-	return [...toBeMirrored, ...middle, ...toBeMirrored.slice().reverse()];
-}
+import { pad, same } from './utils';
 
 export default [
 	pad(16, []), // Space
