@@ -24,19 +24,19 @@ Object {
   "lines": Array [
     Object {
       "height": 1,
-      "width": 108,
+      "width": 96,
       "x": 6,
       "y": 7,
     },
     Object {
       "height": 364,
       "width": 1,
-      "x": 114,
+      "x": 102,
       "y": 7,
     },
     Object {
       "height": 1,
-      "width": 108,
+      "width": 96,
       "x": 6,
       "y": 371,
     },
@@ -54,7 +54,7 @@ Object {
       "id": "out:1",
       "label": "bit0",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 42,
     },
     Object {
@@ -62,7 +62,7 @@ Object {
       "id": "out:2",
       "label": "bit1",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 56,
     },
     Object {
@@ -70,7 +70,7 @@ Object {
       "id": "out:3",
       "label": "bit2",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 70,
     },
     Object {
@@ -78,7 +78,7 @@ Object {
       "id": "out:4",
       "label": "bit3",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 84,
     },
     Object {
@@ -86,7 +86,7 @@ Object {
       "id": "out:5",
       "label": "bit4",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 98,
     },
     Object {
@@ -94,7 +94,7 @@ Object {
       "id": "out:6",
       "label": "bit5",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 112,
     },
     Object {
@@ -102,7 +102,7 @@ Object {
       "id": "out:7",
       "label": "bit6",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 126,
     },
     Object {
@@ -110,7 +110,7 @@ Object {
       "id": "out:8",
       "label": "bit7",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 140,
     },
     Object {
@@ -118,7 +118,7 @@ Object {
       "id": "out:9",
       "label": "bit8",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 154,
     },
     Object {
@@ -126,7 +126,7 @@ Object {
       "id": "out:10",
       "label": "bit9",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 168,
     },
     Object {
@@ -134,7 +134,7 @@ Object {
       "id": "out:11",
       "label": "bit10",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 182,
     },
     Object {
@@ -142,7 +142,7 @@ Object {
       "id": "out:12",
       "label": "bit11",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 196,
     },
     Object {
@@ -150,7 +150,7 @@ Object {
       "id": "out:13",
       "label": "bit12",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 210,
     },
     Object {
@@ -158,7 +158,7 @@ Object {
       "id": "out:14",
       "label": "bit13",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 224,
     },
     Object {
@@ -166,7 +166,7 @@ Object {
       "id": "out:15",
       "label": "bit14",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 238,
     },
     Object {
@@ -174,12 +174,12 @@ Object {
       "id": "out:16",
       "label": "bit15",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 252,
     },
   ],
   "sliders": Array [],
   "steppers": Array [],
-  "width": 120,
+  "width": 108,
 }
 `;
