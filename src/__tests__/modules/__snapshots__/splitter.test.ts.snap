@@ -22,19 +22,19 @@ Object {
   "lines": Array [
     Object {
       "height": 1,
-      "width": 108,
+      "width": 96,
       "x": 6,
       "y": 7,
     },
     Object {
       "height": 112,
       "width": 1,
-      "x": 114,
+      "x": 102,
       "y": 7,
     },
     Object {
       "height": 1,
-      "width": 108,
+      "width": 96,
       "x": 6,
       "y": 119,
     },
@@ -52,7 +52,7 @@ Object {
       "id": "out:1",
       "label": "out",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 42,
     },
     Object {
@@ -60,7 +60,7 @@ Object {
       "id": "out:2",
       "label": "out",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 56,
     },
     Object {
@@ -68,7 +68,7 @@ Object {
       "id": "out:3",
       "label": "out",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 70,
     },
     Object {
@@ -76,12 +76,12 @@ Object {
       "id": "out:4",
       "label": "out",
       "width": 12,
-      "x": 96,
+      "x": 84,
       "y": 84,
     },
   ],
   "sliders": Array [],
   "steppers": Array [],
-  "width": 120,
+  "width": 108,
 }
 `;

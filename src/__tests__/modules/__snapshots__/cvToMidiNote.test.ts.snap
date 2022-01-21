@@ -44,19 +44,19 @@ Object {
   "lines": Array [
     Object {
       "height": 1,
-      "width": 228,
+      "width": 204,
       "x": 6,
       "y": 7,
     },
     Object {
       "height": 112,
       "width": 1,
-      "x": 234,
+      "x": 210,
       "y": 7,
     },
     Object {
       "height": 1,
-      "width": 228,
+      "width": 204,
       "x": 6,
       "y": 119,
     },
@@ -83,6 +83,6 @@ Object {
       "y": 42,
     },
   ],
-  "width": 240,
+  "width": 216,
 }
 `;
