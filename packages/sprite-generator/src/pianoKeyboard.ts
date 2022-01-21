@@ -1,256 +1,145 @@
+import { Command, DrawingCommand } from './types';
+import icons, { Icon } from './fonts/thickIcons';
+import { drawCharacterMatrix } from './font';
+import font from './fonts/thickFont';
 import { SpriteLookup } from '2d-engine';
-import { DrawingCommand, Command } from './types';
 
-export function whiteKeyLeft(
-	width: number,
-	height: number,
-	cutX: number,
-	cutY: number,
-	fillColor: string,
-	borderColor: string
-): DrawingCommand[] {
+const enum State {
+	PRESSED,
+	NORMAL,
+	HIGHLIGHTED,
+}
+
+function whiteKeyLeft(state: State): DrawingCommand[] {
 	return [
-		[Command.FILL_COLOR, fillColor],
-		[Command.RECTANGLE, 0, 0, width - cutX, height],
-		[Command.RECTANGLE, 0, cutY, width, height - cutY],
-
-		[Command.FILL_COLOR, borderColor],
-		[Command.RECTANGLE, 0, 0, width - cutX, 1],
-		[Command.RECTANGLE, width - cutX - 1, 0, 1, cutY],
-		[Command.RECTANGLE, width - cutX, cutY, cutX, 1],
-		[Command.RECTANGLE, width - 1, cutY, 1, height - cutY],
-		[Command.RECTANGLE, 0, height - 1, width, 1],
-		[Command.RECTANGLE, 0, 0, 1, height],
+		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		...drawCharacterMatrix(icons, 8, 16, [
+			[Icon.FILL, Icon.THICK_LINE_LEFT],
+			[Icon.FILL, Icon.THICK_LINE_LEFT],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+		]),
 	];
 }
 
-export function whiteKeyMiddle(
-	width: number,
-	height: number,
-	cutX: number,
-	cutY: number,
-	fillColor: string,
-	borderColor: string
-): DrawingCommand[] {
+function blackKey(state: State): DrawingCommand[] {
 	return [
-		[Command.FILL_COLOR, fillColor],
-		[Command.RECTANGLE, cutX, 0, width - cutX * 2, height],
-		[Command.RECTANGLE, 0, cutY, width, height - cutY],
-
-		[Command.FILL_COLOR, borderColor],
-		[Command.RECTANGLE, cutX, 0, width - 2 * cutX, 1],
-		[Command.RECTANGLE, width - cutX - 1, 0, 1, cutY],
-		[Command.RECTANGLE, width - cutX, cutY, cutX, 1],
-		[Command.RECTANGLE, width - 1, cutY, 1, height - cutY],
-		[Command.RECTANGLE, 0, height - 1, width, 1],
-		[Command.RECTANGLE, 0, cutY, 1, height - cutY],
-		[Command.RECTANGLE, 0, cutY, cutX, 1],
-		[Command.RECTANGLE, cutX, 0, 1, cutY],
+		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
+		...drawCharacterMatrix(icons, 8, 16, [
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+			[Icon.SLIM_LINE_RIGHT, Icon.SLIM_LINE_LEFT],
+			[Icon.SLIM_LINE_RIGHT, Icon.SLIM_LINE_LEFT],
+		]),
 	];
 }
 
-export function whiteKeyRight(
-	width: number,
-	height: number,
-	cutX: number,
-	cutY: number,
-	fillColor: string,
-	borderColor: string
-): DrawingCommand[] {
+function whiteKeyMiddle(state: State): DrawingCommand[] {
 	return [
-		[Command.FILL_COLOR, fillColor],
-		[Command.RECTANGLE, cutX, 0, width - cutX, height],
-		[Command.RECTANGLE, 0, cutY, width, height - cutY],
-
-		[Command.FILL_COLOR, borderColor],
-		[Command.RECTANGLE, cutX, 0, width - cutX, 1],
-		[Command.RECTANGLE, width - 1, 0, 1, height],
-		[Command.RECTANGLE, 0, height - 1, width, 1],
-		[Command.RECTANGLE, 0, cutY, 1, height - cutY],
-		[Command.RECTANGLE, 0, cutY, cutX, 1],
-		[Command.RECTANGLE, cutX, 0, 1, cutY],
+		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		...drawCharacterMatrix(icons, 8, 16, [
+			[Icon.THICK_LINE_RIGHT, Icon.THICK_LINE_LEFT],
+			[Icon.THICK_LINE_RIGHT, Icon.THICK_LINE_LEFT],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+		]),
 	];
 }
 
-export function blackKey(width: number, height: number, fillColor: string, borderColor: string): DrawingCommand[] {
+function whiteKeyRight(state: State): DrawingCommand[] {
 	return [
-		[Command.FILL_COLOR, fillColor],
-		[Command.RECTANGLE, 0, 0, width, height],
-
-		[Command.FILL_COLOR, borderColor],
-		[Command.RECTANGLE, 0, 0, 1, height],
-		[Command.RECTANGLE, width - 1, 0, 1, height],
-		[Command.RECTANGLE, 0, 0, width, 1],
-		[Command.RECTANGLE, 0, height - 1, width, 1],
+		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		...drawCharacterMatrix(icons, 8, 16, [
+			[Icon.THICK_LINE_RIGHT, Icon.FILL],
+			[Icon.THICK_LINE_RIGHT, Icon.FILL],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+		]),
 	];
 }
 
 const orderedKeys = [
 	whiteKeyLeft,
+	blackKey,
 	whiteKeyMiddle,
+	blackKey,
 	whiteKeyRight,
 	whiteKeyLeft,
+	blackKey,
 	whiteKeyMiddle,
+	blackKey,
 	whiteKeyMiddle,
+	blackKey,
 	whiteKeyRight,
 ];
 
-function generateKeyboard(
-	width: number,
-	height: number,
-	spacing: number,
-	blackKeywidth: number,
-	blackKeyHeight: number,
-	whiteKeyFillColor: string,
-	whiteKeyBorderColor: string,
-	blackKeyFillColor: string,
-	blackKeyBorderColor: string
-): DrawingCommand[] {
-	const cutX = (blackKeyWidth - spacing) / 2;
-	const cutY = blackKeyHeight;
-	const blackKeyOffsetRelativeToWhiteKey = width - cutX;
+const offsetX = 0;
+const offsetY = 200;
 
-	return [
-		...orderedKeys
-			.map(keyDrawer => {
-				return [
-					...keyDrawer.call(this, width, height, cutX, cutY, whiteKeyFillColor, whiteKeyBorderColor),
-					...([whiteKeyLeft, whiteKeyMiddle].includes(keyDrawer)
-						? [
-								[Command.TRANSLATE, blackKeyOffsetRelativeToWhiteKey, 0],
-								...blackKey(blackKeywidth, blackKeyHeight, blackKeyFillColor, blackKeyBorderColor),
-								[Command.TRANSLATE, -blackKeyOffsetRelativeToWhiteKey, 0],
-						  ]
-						: []),
-					[Command.TRANSLATE, width + spacing, 0],
-				];
-			})
-			.flat(),
-		[Command.RESET_TRANSFORM],
-	];
+function stringToCharCodeArray(str: string): number[] {
+	const arr: number[] = [];
+	for (let i = 0; i < str.length; i++) {
+		arr.push(str.charCodeAt(i));
+	}
+	return arr;
 }
 
-const offsetX = 0;
-const offsetY = 140;
-const whiteKeyWidth = 18;
-const whiteKeyHeight = 14 * 4;
-const blackKeyHeight = 40;
-const blackKeyWidth = 12;
-const spacing = 2;
-const keyboardWidth = (whiteKeyWidth + spacing) * orderedKeys.length;
-const cutX = (blackKeyWidth - spacing) / 2;
-const blackKeyOffsetRelativeToWhiteKey = whiteKeyWidth - cutX;
+function drawPianoKeyboard(state: State): DrawingCommand[] {
+	return [
+		[Command.SAVE],
+		state === State.HIGHLIGHTED
+			? [Command.FILL_COLOR, 'rgba(255,0,0,255)']
+			: [Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		...drawCharacterMatrix(font, 8, 16, [stringToCharCodeArray('C C#D D#E F F#G G#A A#B')]),
+		[Command.TRANSLATE, 0, 16],
+		...(orderedKeys
+			.map(keyDrawerFunction => [...keyDrawerFunction(state), [Command.TRANSLATE, 16, 0]])
+			.flat(1) as DrawingCommand[]),
+		[Command.RESTORE],
+	];
+}
 
 export default function generate(): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
-		...generateKeyboard(
-			whiteKeyWidth,
-			whiteKeyHeight,
-			spacing,
-			blackKeyWidth,
-			blackKeyHeight,
-			'rgb(255, 255, 255)',
-			'rgb(255, 255, 255)',
-			'rgba(0, 0, 0',
-			'rgba(0, 0, 0)'
-		),
-
-		[Command.TRANSLATE, offsetX + keyboardWidth, offsetY],
-		...generateKeyboard(
-			whiteKeyWidth,
-			whiteKeyHeight,
-			spacing,
-			blackKeyWidth,
-			blackKeyHeight,
-			'rgb(0, 0, 0)',
-			'rgb(255, 255, 255)',
-			'rgba(255, 255, 255, 0)',
-			'rgba(0, 0, 0, 0)'
-		),
-
-		[Command.TRANSLATE, offsetX + keyboardWidth * 2, offsetY],
-		...generateKeyboard(
-			whiteKeyWidth,
-			whiteKeyHeight,
-			spacing,
-			blackKeyWidth,
-			blackKeyHeight,
-			'rgba(255, 255, 255, 0)',
-			'rgba(0, 0, 0, 0)',
-			'rgb(255, 255, 255)',
-			'rgb(0, 0, 0)'
-		),
-
-		[Command.TRANSLATE, offsetX + keyboardWidth * 3, offsetY],
-		...generateKeyboard(
-			whiteKeyWidth,
-			whiteKeyHeight,
-			spacing,
-			blackKeyWidth,
-			blackKeyHeight,
-			'rgb(255, 0, 0)',
-			'rgb(255, 255, 255)',
-			'rgba(255, 255, 255, 0)',
-			'rgba(0, 0, 0, 0)'
-		),
-
-		[Command.TRANSLATE, offsetX + keyboardWidth * 4, offsetY],
-		...generateKeyboard(
-			whiteKeyWidth,
-			whiteKeyHeight,
-			spacing,
-			blackKeyWidth,
-			blackKeyHeight,
-			'rgba(255, 255, 255, 0)',
-			'rgba(0, 0, 0, 0)',
-			'rgb(255, 0, 0)',
-			'rgb(0, 0, 0)'
-		),
+		[Command.FILL_COLOR, 'rgba(136,126,203,255)'],
+		[Command.RECTANGLE, 0, 0, orderedKeys.length * 16 * 3, 80],
+		...drawPianoKeyboard(State.NORMAL),
+		[Command.TRANSLATE, 16 * orderedKeys.length, 0],
+		...drawPianoKeyboard(State.PRESSED),
+		[Command.TRANSLATE, 16 * orderedKeys.length, 0],
+		...drawPianoKeyboard(State.HIGHLIGHTED),
 	];
 }
 
-const getWhiteKeyIndex = function (note: number) {
-	const whiteKeys = [0, 2, 4, 5, 7, 9, 11];
-	return whiteKeys.indexOf(note % 12);
-};
-
 export const lookup = function (isHighlighted = false, isRed = false): SpriteLookup {
-	return function (key) {
-		if (typeof key !== 'number') {
+	return function (key: number) {
+		if (typeof key === 'undefined') {
 			return {
 				x: offsetX,
 				y: offsetY,
-				spriteWidth: 140,
-				spriteHeight: 60,
+				spriteWidth: orderedKeys.length * 16,
+				spriteHeight: 76,
 			};
 		}
 
-		const index = getWhiteKeyIndex(key);
-
-		if (index !== -1) {
+		if (isHighlighted) {
 			return {
-				x:
-					offsetX +
-					(whiteKeyWidth + spacing) * index +
-					(isHighlighted ? keyboardWidth : 0) +
-					(isRed ? keyboardWidth * 3 : 0),
+				x: offsetX + 16 * orderedKeys.length + key * 16,
 				y: offsetY,
-				spriteWidth: whiteKeyWidth,
-				spriteHeight: whiteKeyHeight,
+				spriteWidth: 16,
+				spriteHeight: 76,
 			};
 		}
 
-		return {
-			x:
-				offsetX +
-				blackKeyOffsetRelativeToWhiteKey +
-				(isHighlighted ? keyboardWidth * 2 : 0) +
-				(isRed ? keyboardWidth * 3 : 0),
-			y: offsetY,
-			spriteWidth: blackKeyWidth,
-			spriteHeight: blackKeyHeight,
-		};
+		if (isRed) {
+			return {
+				x: offsetX + 16 * orderedKeys.length * 2 + key * 16,
+				y: offsetY,
+				spriteWidth: 16,
+				spriteHeight: 76,
+			};
+		}
 	};
 };
