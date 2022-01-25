@@ -1,5 +1,10 @@
+const tsJestPreset = require('ts-jest/jest-preset');
+const jestPuppeteerPreset = require('jest-puppeteer/jest-preset');
+
 module.exports = {
-	preset: 'ts-jest',
+	...tsJestPreset,
+	...jestPuppeteerPreset,
+	//preset: 'ts-jest',
 	testEnvironment: 'node',
 	moduleNameMapper: {
 		'bytecode-utils': '<rootDir>/packages/bytecode-utils/src',
