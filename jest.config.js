@@ -1,11 +1,5 @@
-const tsJestPreset = require('ts-jest/jest-preset');
-const jestPuppeteerPreset = require('jest-puppeteer/jest-preset');
-
 module.exports = {
-	...tsJestPreset,
-	...jestPuppeteerPreset,
-	//preset: 'ts-jest',
-	testEnvironment: 'node',
+	preset: './jest-presets.js',
 	moduleNameMapper: {
 		'bytecode-utils': '<rootDir>/packages/bytecode-utils/src',
 		compiler: '<rootDir>/packages/compiler/src',
@@ -19,4 +13,5 @@ module.exports = {
 			},
 		},
 	},
+	setupFilesAfterEnv: ['./jest.image.ts'],
 };
