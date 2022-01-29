@@ -11,4 +11,10 @@ describe('pianoKeyboard2', () => {
 	test.each(fixtures)('key: %s should be: %s', (key, spriteCoordinates) => {
 		expect(lookup(true)(key)).toStrictEqual(spriteCoordinates);
 	});
+
+	test('', async () => {
+		await page.goto('http://localhost:3001');
+		const image = await page.screenshot({ fullPage: true });
+		expect(image).toMatchImageSnapshot();
+	});
 });
