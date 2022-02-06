@@ -13,7 +13,8 @@ describe('pianoKeyboard2', () => {
 	});
 
 	test('', async () => {
-		await page.goto('http://localhost:3001');
+		await page.goto('http://localhost:3000');
+		await new Promise(r => setTimeout(r, 4000));
 		const image = await page.screenshot({ fullPage: true });
 		expect(image).toMatchImageSnapshot();
 	});
