@@ -8,13 +8,13 @@ Object {
     "config": Object {},
     "name": "clockGenerator",
   },
-  "extractState": undefined,
+  "extractState": [Function],
   "height": 126,
   "initialState": Object {
     "rate": 10,
   },
   "inputs": Array [],
-  "insertState": undefined,
+  "insertState": [Function],
   "lines": Array [
     Object {
       "height": 1,

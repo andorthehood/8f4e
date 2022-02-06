@@ -3,12 +3,11 @@
 	"version": "1.0.0",
 	"description": "8f4e",
 	"scripts": {
-		"build": "parcel build src/index.html && cp ./src/_headers ./dist/_headers",
-		"dev": "parcel src/index.html --port 3000 --hmr-port 30000",
-		"sprite": "parcel packages/sprite-generator/visual-testing/index.html --port 3001 --hmr-port 30001 --cache-dir .parcel-cache-sprite --dist-dir dist-sprite",
+		"build": "parcel build src/*.html && cp ./src/_headers ./dist/_headers",
+		"dev": "parcel src/**/*.html --port 3000 --hmr-port 30000",
 		"prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/**/*.ts'",
 		"eslint": "npx eslint . --ext .ts --fix",
-		"test": "node --experimental-vm-modules --experimental-wasi-unstable-preview1 node_modules/.bin/jest",
+		"test": "jest",
 		"prepare": "husky install"
 	},
 	"browserslist": [
@@ -28,6 +27,7 @@
 		"@types/jest": "27.0.3",
 		"@types/jest-environment-puppeteer": "5.0.0",
 		"@types/jest-image-snapshot": "4.3.1",
+		"@types/offscreencanvas": "2019.6.4",
 		"@types/puppeteer": "5.4.4",
 		"@typescript-eslint/eslint-plugin": "5.8.1",
 		"@typescript-eslint/parser": "5.8.1",
@@ -46,11 +46,10 @@
 		"ts-jest": "27.1.2",
 		"typescript": "4.5.4"
 	},
+	"workspaces": [
+		"packages/*"
+	],
 	"alias": {
-		"bytecode-utils": "./packages/bytecode-utils/src",
-		"compiler": "./packages/compiler/src",
-		"2d-engine": "./packages/2d-engine/src",
-		"sprite-generator": "./packages/sprite-generator/src",
 		"worker": "./packages/worker/src"
 	},
 	"lint-staged": {
