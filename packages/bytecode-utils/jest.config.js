@@ -1,6 +1,5 @@
 module.exports = {
-	preset: './jest-presets.js',
-	modulePathIgnorePatterns: ['packages', 'dist'],
+	preset: 'ts-jest',
 	globals: {
 		'ts-jest': {
 			tsconfig: 'tsconfig.json',
@@ -9,5 +8,4 @@ module.exports = {
 			},
 		},
 	},
-	setupFilesAfterEnv: ['./jest.image.ts'],
 };

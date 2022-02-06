@@ -1,7 +1,7 @@
 module.exports = {
 	server: {
-		command: `npm run sprite`,
-		port: 3001,
+		command: `npm run dev`,
+		port: 3000,
 		protocol: 'http',
 		launchTimeout: 30000,
 		debug: true,

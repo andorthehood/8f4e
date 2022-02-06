@@ -1171,7 +1171,7 @@ Object {
     },
     "name": "quantizer",
   },
-  "extractState": undefined,
+  "extractState": [Function],
   "height": 126,
   "initialState": Object {},
   "inputs": Array [
@@ -1183,7 +1183,7 @@ Object {
       "y": 42,
     },
   ],
-  "insertState": undefined,
+  "insertState": [Function],
   "lines": Array [
     Object {
       "height": 1,

@@ -8,7 +8,7 @@ Object {
     "config": Object {},
     "name": "attenuator",
   },
-  "extractState": undefined,
+  "extractState": [Function],
   "height": 126,
   "initialState": Object {
     "divisor": 1,
@@ -22,7 +22,7 @@ Object {
       "y": 42,
     },
   ],
-  "insertState": undefined,
+  "insertState": [Function],
   "lines": Array [
     Object {
       "height": 1,

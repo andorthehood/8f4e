@@ -1,6 +1,6 @@
 import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../state/types';
 import singleSliderModule from './templates/singleSliderModule';
-import { extractState, insertState } from 'compiler/modules/attenuator';
+import { extractState, insertState } from 'compiler/dist/modules/attenuator';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
 	let { divisor } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
