@@ -8,13 +8,13 @@ Object {
     "config": Object {},
     "name": "constant",
   },
-  "extractState": undefined,
+  "extractState": [Function],
   "height": 126,
   "initialState": Object {
     "out": 0,
   },
   "inputs": Array [],
-  "insertState": undefined,
+  "insertState": [Function],
   "lines": Array [
     Object {
       "height": 1,

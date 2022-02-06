@@ -8,7 +8,7 @@ Object {
     "config": Object {},
     "name": "offset",
   },
-  "extractState": undefined,
+  "extractState": [Function],
   "height": 126,
   "initialState": Object {
     "offset": 0,
@@ -22,7 +22,7 @@ Object {
       "y": 42,
     },
   ],
-  "insertState": undefined,
+  "insertState": [Function],
   "lines": Array [
     Object {
       "height": 1,
