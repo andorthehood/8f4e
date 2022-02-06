@@ -134,7 +134,7 @@ export class Engine {
 
 		callback(timeToRender, fps, triangles, maxTriangles);
 
-		this.rendervertexBuffer();
+		this.renderVertexBuffer();
 
 		this.lastRenderFinishTime = performance.now();
 		this.frameCounter++;
@@ -158,7 +158,7 @@ export class Engine {
 		this.drawLine(x, y + height, x, y, sprite, thickness);
 	}
 
-	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas): void {
+	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement): void {
 		this.spriteSheet = createTexture(this.gl, image);
 		this.spriteSheetWidth = image.width;
 		this.spriteSheetHeight = image.height;
@@ -230,7 +230,7 @@ export class Engine {
 		);
 	}
 
-	rendervertexBuffer(): void {
+	renderVertexBuffer(): void {
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glTextureCoordinateBuffer);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.textureCoordinateBuffer, this.gl.STATIC_DRAW);
 

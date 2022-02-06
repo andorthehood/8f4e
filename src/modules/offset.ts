@@ -2,7 +2,7 @@ import { I16_SIGNED_LARGEST_NUMBER } from 'compiler';
 import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../state/types';
 import singleSliderModule from './templates/singleSliderModule';
 
-import { extractState, insertState } from 'compiler/modules/offset';
+import { extractState, insertState } from 'compiler/dist/modules/offset';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
 	let { offset } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);

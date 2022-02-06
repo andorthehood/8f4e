@@ -2,8 +2,8 @@ import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import { ModuleGeneratorProps, ModuleType, StepperChangeHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
-import { extractState, insertState } from 'compiler/modules/buffer';
-import { Config } from 'compiler/modules/buffer';
+import { extractState, insertState } from 'compiler/dist/modules/buffer';
+import { Config } from 'compiler/dist/modules/buffer';
 
 const onChangeChannel: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;

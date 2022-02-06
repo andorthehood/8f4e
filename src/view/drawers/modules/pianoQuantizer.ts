@@ -1,6 +1,6 @@
 import { Engine } from '2d-engine';
 import { MemoryAddressLookup, MemoryBuffer } from 'compiler';
-import { Memory } from 'compiler/modules/quantizer';
+import { Memory } from 'compiler/dist/modules/quantizer';
 import { pianoKeyboard } from 'sprite-generator';
 import { int16ToMidiNote } from '../../../state/helpers/midi';
 import { Module, ModuleType } from '../../../state/types';

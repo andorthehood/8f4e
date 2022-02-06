@@ -1,13 +1,12 @@
 {
-	"name": "sprite-generator",
+	"name": "bytecode-utils",
 	"version": "1.0.0",
 	"description": "",
 	"main": "dist/index.js",
 	"devDependencies": {},
 	"scripts": {
 		"test": "jest",
-		"build": "tsc",
-		"dev": "parcel visual-testing/index.html --port 3000 --hmr-port 30000 --dist-dir .parcel-dist"
+		"build": "tsc"
 	},
 	"repository": {
 		"type": "git",

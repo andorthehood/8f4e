@@ -4,16 +4,11 @@
 		"module": "esnext",
 		"downlevelIteration": true,
 		"moduleResolution": "node",
+		"esModuleInterop": true,
 		"paths": {
-			"bytecode-utils": ["./packages/bytecode-utils/src"],
-			"compiler": ["./packages/compiler/src"],
-			"compiler*": ["./packages/compiler/src*"],
-			"2d-engine": ["./packages/2d-engine/src"],
-			"sprite-generator": ["./packages/sprite-generator/src"],
-			"sprite-generator*": ["./packages/sprite-generator/src*"],
 			"worker": ["./packages/worker/src"]
 		}
 	},
-	"exclude": ["src/worker/*.ts"],
-	"include": ["src/**/*.ts", "packages/**/*.ts"]
+	"exclude": ["src/worker/*.ts", "node_modules"],
+	"include": ["src/**/*.ts"]
 }
