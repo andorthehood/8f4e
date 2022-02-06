@@ -9,7 +9,7 @@ import {
 	createMemoryImport,
 	FunctionBody,
 } from 'bytecode-utils';
-import { getInitialMemory, ModuleGenerator } from 'compiler';
+import { getInitialMemory, ModuleGenerator } from '.';
 import { CompiledModule } from './types';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
