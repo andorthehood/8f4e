@@ -1,14 +1,13 @@
 {
-    "compilerOptions" : {
-        "target": "esnext",
-        "moduleResolution": "node",
-        "lib": [
-            "esnext",
-            "webworker"
-        ],
-        "paths": {
-			"compiler": ["../../packages/compiler/src"]
-		}
-    },
-    "include": ["./**/*.ts"]
+	"compilerOptions": {
+		"target": "esnext",
+		"moduleResolution": "node",
+		"lib": ["esnext", "webworker"],
+		"module": "commonjs",
+		"downlevelIteration": true,
+		"esModuleInterop": true,
+		"outDir": "dist/",
+		"declaration": true
+	},
+	"include": ["./**/*.ts"]
 }
