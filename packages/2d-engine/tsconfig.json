@@ -5,7 +5,8 @@
 		"downlevelIteration": true,
 		"moduleResolution": "node",
 		"esModuleInterop": true,
-		"outDir": "dist/"
+		"outDir": "dist/",
+		"declaration": true
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["**/__tests__/**"]
