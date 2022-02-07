@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "8f4e",
 	"scripts": {
-		"build": "parcel build src/*.html && cp ./src/_headers ./dist/_headers",
+		"build": "npm run build --workspaces && parcel build src/*.html && cp ./src/_headers ./dist/_headers",
 		"dev": "parcel src/**/*.html --port 3000 --hmr-port 30000",
 		"prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/**/*.ts'",
 		"eslint": "npx eslint . --ext .ts --fix",
