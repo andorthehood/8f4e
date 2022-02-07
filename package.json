@@ -49,9 +49,6 @@
 	"workspaces": [
 		"packages/*"
 	],
-	"alias": {
-		"worker": "./packages/worker/src"
-	},
 	"lint-staged": {
 		"*.ts": "eslint --cache --fix",
 		"*.{ts,css,md}": "prettier --write"
