@@ -4,10 +4,7 @@
 		"module": "esnext",
 		"downlevelIteration": true,
 		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"paths": {
-			"worker": ["./packages/worker/src"]
-		}
+		"esModuleInterop": true
 	},
 	"exclude": ["src/worker/*.ts", "node_modules"],
 	"include": ["src/**/*.ts"]
