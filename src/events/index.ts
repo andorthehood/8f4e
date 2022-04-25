@@ -27,8 +27,14 @@ export default function events(): EventDispatcher {
 		resize: [],
 	};
 
+	let prevEvent = null;
+
 	function onEvent(event) {
-		const { clientX, clientY, movementX, movementY, type, buttons, which } = event;
+		const movementX = event.clientX - prevEvent?.clientX;
+		const movementY = event.clientY - prevEvent?.clientY;
+		prevEvent = event;
+
+		const { clientX, clientY, type, buttons, which } = event;
 		event.preventDefault();
 		const eventObject: EventObject = {
 			x: clientX,
