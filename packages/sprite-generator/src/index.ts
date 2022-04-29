@@ -38,7 +38,7 @@ export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasEl
 				ctx.fillStyle = <string>params[0];
 				break;
 			case Command.RECTANGLE:
-				ctx.fillRect(...params);
+				ctx.fillRect(...(params as [number, number, number, number]));
 				break;
 			case Command.SAVE:
 				ctx.save();
@@ -50,10 +50,10 @@ export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasEl
 				ctx.restore();
 				break;
 			case Command.TRANSLATE:
-				ctx.translate(...params);
+				ctx.translate(...(params as [number, number]));
 				break;
 			case Command.PIXEL:
-				ctx.fillRect(...params, 1, 1);
+				ctx.fillRect(...(params as [number, number]), 1, 1);
 				break;
 		}
 	});
