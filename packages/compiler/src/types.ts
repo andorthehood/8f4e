@@ -13,7 +13,6 @@ export type MemoryItemDescriptor<Memory> = {
 	/** Relative address of the memory */
 	address: Memory;
 	id?: string;
-	reclaimable?: boolean;
 };
 
 export interface DynamicArray<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'default'> {
@@ -29,7 +28,7 @@ export interface StaticArray<Memory> extends Omit<MemoryItemDescriptor<Memory>, 
 	default: number[];
 }
 
-export interface InputPointer<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id' | 'reclaimable'> {
+export interface InputPointer<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id'> {
 	type: MemoryTypes.INPUT_POINTER;
 	id: string;
 }
