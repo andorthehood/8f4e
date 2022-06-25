@@ -89,7 +89,7 @@ const saw: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, offs
 				default: offset.byte(Memory.RATE_SELF),
 				id: 'in:rate',
 			},
-			{ type: MemoryTypes.PRIVATE, address: Memory.RATE_SELF, default: rate, id: 'rate', reclaimable: true },
+			{ type: MemoryTypes.PRIVATE, address: Memory.RATE_SELF, default: rate, id: 'rate' },
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.LIMIT_POINTER,
