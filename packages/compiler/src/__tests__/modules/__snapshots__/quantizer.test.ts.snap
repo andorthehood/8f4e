@@ -140,14 +140,12 @@ Object {
       "address": 2,
       "default": 12,
       "id": "allocatedNotes",
-      "reclaimable": true,
       "type": 5,
     },
     Object {
       "address": 3,
       "default": 0,
       "id": "numberOfNotes",
-      "reclaimable": true,
       "type": 6,
     },
     Object {
@@ -168,7 +166,6 @@ Object {
       ],
       "id": "",
       "maxSize": 12,
-      "reclaimable": true,
       "sizePointer": 3,
       "type": 0,
     },

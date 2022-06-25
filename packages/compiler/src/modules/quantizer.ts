@@ -175,9 +175,8 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 				address: Memory.ALLOCATED_NOTES,
 				id: 'allocatedNotes',
 				default: allocatedNotes,
-				reclaimable: true,
 			},
-			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_NOTES, id: 'numberOfNotes', default: 0, reclaimable: true },
+			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_NOTES, id: 'numberOfNotes', default: 0 },
 			{
 				type: MemoryTypes.DYNAMIC_ARRAY,
 				sizePointer: Memory.NUMBER_OF_NOTES,
@@ -185,7 +184,6 @@ const quantizer: ModuleGenerator<Config> = function (moduleId, offset, config = 
 				address: Memory.FIRST_NOTE,
 				id: '',
 				default: new Array(allocatedNotes).fill(-1),
-				reclaimable: true,
 			},
 		],
 	};
