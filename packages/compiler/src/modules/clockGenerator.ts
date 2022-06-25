@@ -91,7 +91,7 @@ const clock: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, of
 		wordAddress: offset.word(0),
 		memoryMap: [
 			{ type: MemoryTypes.NUMBER, address: Memory.COUNTER, default: 0 },
-			{ type: MemoryTypes.NUMBER, address: Memory.RATE_SELF, id: 'rate', default: rate, reclaimable: true },
+			{ type: MemoryTypes.NUMBER, address: Memory.RATE_SELF, id: 'rate', default: rate },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
 		],
 	};

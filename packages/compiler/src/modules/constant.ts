@@ -25,7 +25,7 @@ const constant: ModuleGenerator<{ out?: number }, Memory> = function (moduleId, 
 		functionBody,
 		byteAddress: offset.byte(0),
 		wordAddress: offset.word(0),
-		memoryMap: [{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: out, reclaimable: true }],
+		memoryMap: [{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: out }],
 	};
 };
 
