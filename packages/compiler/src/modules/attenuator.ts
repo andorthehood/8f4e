@@ -43,7 +43,7 @@ const attenuator: ModuleGenerator<unknown, Memory> = function (moduleId, offset)
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
 			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: offset.byte(Memory.ZERO) },
-			{ type: MemoryTypes.NUMBER, address: Memory.DIVISOR, id: 'divisor', default: 1, reclaimable: true },
+			{ type: MemoryTypes.NUMBER, address: Memory.DIVISOR, id: 'divisor', default: 1 },
 			{ type: MemoryTypes.OUTPUT, address: Memory.OUT, id: 'out', default: 0 },
 		],
 	};
