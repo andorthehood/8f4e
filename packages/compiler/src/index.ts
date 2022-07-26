@@ -12,7 +12,7 @@ import {
 	i32store,
 	Type,
 } from 'bytecode-utils';
-import { generatememoryAddressLookup } from './initializeMemory';
+import { generateMemoryAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module, CompiledModule, MemoryAddressLookup } from './types';
 import { createRelativeAddressCalculator } from './utils';
@@ -41,7 +41,7 @@ export function getInitialMemory(module: CompiledModule): number[] {
 	}, []);
 }
 
-function compileModules(modules: Module[]): CompiledModule[] {
+export function compileModules(modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
 	return modules
 		.filter(({ engine }) => moduleCompilers[engine.name])
@@ -53,7 +53,7 @@ function compileModules(modules: Module[]): CompiledModule[] {
 		});
 }
 
-function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
+export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
 	return compiledModules
 		.map(module => {
 			let pointer = module.byteAddress;
@@ -78,7 +78,7 @@ export default function compile(modules: Module[]): {
 	const functionSignatures = compiledModules.map(() => 0x00);
 	const cycleFunction = compiledModules.map((module, index) => call(index + 2)).flat();
 	const memoryInitiatorFunction = generateMemoryInitiatorFunction(compiledModules);
-	const memoryAddressLookup = generatememoryAddressLookup(compiledModules);
+	const memoryAddressLookup = generateMemoryAddressLookup(compiledModules);
 
 	return {
 		codeBuffer: Uint8Array.from([
