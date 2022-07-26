@@ -1,11 +1,13 @@
 import { CompiledModule, Connection, MemoryAddressLookup, MemoryBuffer } from './types';
 
-export function generatememoryAddressLookup(compiledModules: CompiledModule[]): MemoryAddressLookup {
+export function generateMemoryAddressLookup(compiledModules: CompiledModule[]): MemoryAddressLookup {
 	const lookup = {};
 	compiledModules.forEach(({ wordAddress, memoryMap, moduleId }) => {
 		lookup[moduleId] = { __startAddress: wordAddress };
 		memoryMap.forEach(item => {
-			if (item.id) {
+			// @ts-ignore
+			if (item?.id) {
+				// @ts-ignore
 				lookup[moduleId][item.id] = wordAddress + item.address;
 			}
 		});

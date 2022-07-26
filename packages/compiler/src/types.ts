@@ -28,14 +28,12 @@ export interface StaticArray<Memory> extends Omit<MemoryItemDescriptor<Memory>, 
 	default: number[];
 }
 
-export interface InputPointer<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id'> {
+export interface InputPointer<Memory> extends MemoryItemDescriptor<Memory> {
 	type: MemoryTypes.INPUT_POINTER;
-	id: string;
 }
 
-export interface Output<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id'> {
+export interface Output<Memory> extends MemoryItemDescriptor<Memory> {
 	type: MemoryTypes.OUTPUT;
-	id: string;
 }
 
 export interface Private<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id'> {
