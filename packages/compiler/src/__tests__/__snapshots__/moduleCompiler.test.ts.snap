@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`moduleCompiler compileToAST 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      "DEFAULT_VALUE",
+      "0",
+    ],
+    "instruction": "private",
+  },
+  Object {
+    "arguments": Array [
+      "in",
+      "address(DEFAULT_VALUE)",
+    ],
+    "instruction": "inputPointer",
+  },
+  Object {
+    "arguments": Array [
+      "out",
+      "0",
+    ],
+    "instruction": "output",
+  },
+  Object {
+    "arguments": Array [
+      "input",
+    ],
+    "instruction": "local",
+  },
+  Object {
+    "arguments": Array [
+      "out",
+    ],
+    "instruction": "const",
+  },
+  Object {
+    "arguments": Array [
+      "in",
+    ],
+    "instruction": "const",
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "load",
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "load",
+  },
+  Object {
+    "arguments": Array [
+      "input",
+    ],
+    "instruction": "localSet",
+  },
+  Object {
+    "arguments": Array [
+      "input",
+    ],
+    "instruction": "localGet",
+  },
+  Object {
+    "arguments": Array [
+      "0",
+    ],
+    "instruction": "const",
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "lessThan",
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+  },
+  Object {
+    "arguments": Array [
+      "0",
+    ],
+    "instruction": "const",
+  },
+  Object {
+    "arguments": Array [
+      "input",
+    ],
+    "instruction": "localGet",
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "sub",
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+  },
+  Object {
+    "arguments": Array [
+      "input",
+    ],
+    "instruction": "localGet",
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+  },
+]
+`;
