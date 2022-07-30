@@ -1,43 +1,112 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`moduleCompiler compile 1`] = `
+Array [
+  36,
+  1,
+  1,
+  127,
+  0,
+  0,
+  0,
+  0,
+  65,
+  2,
+  65,
+  1,
+  40,
+  2,
+  0,
+  40,
+  2,
+  0,
+  33,
+  0,
+  32,
+  0,
+  65,
+  0,
+  0,
+  0,
+  65,
+  0,
+  32,
+  0,
+  0,
+  0,
+  32,
+  0,
+  0,
+  0,
+  11,
+]
+`;
+
 exports[`moduleCompiler compileToAST 1`] = `
 Array [
   Object {
     "arguments": Array [
-      "DEFAULT_VALUE",
-      "0",
+      Object {
+        "type": "identifier",
+        "value": "DEFAULT_VALUE",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
     ],
     "instruction": "private",
   },
   Object {
     "arguments": Array [
-      "in",
-      "address(DEFAULT_VALUE)",
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+      Object {
+        "type": "identifier",
+        "value": "DEFAULT_VALUE",
+      },
     ],
     "instruction": "inputPointer",
   },
   Object {
     "arguments": Array [
-      "out",
-      "0",
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
     ],
     "instruction": "output",
   },
   Object {
     "arguments": Array [
-      "input",
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
     ],
     "instruction": "local",
   },
   Object {
     "arguments": Array [
-      "out",
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
     ],
     "instruction": "const",
   },
   Object {
     "arguments": Array [
-      "in",
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
     ],
     "instruction": "const",
   },
@@ -51,19 +120,28 @@ Array [
   },
   Object {
     "arguments": Array [
-      "input",
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
     ],
     "instruction": "localSet",
   },
   Object {
     "arguments": Array [
-      "input",
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
     ],
     "instruction": "localGet",
   },
   Object {
     "arguments": Array [
-      "0",
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
     ],
     "instruction": "const",
   },
@@ -77,13 +155,19 @@ Array [
   },
   Object {
     "arguments": Array [
-      "0",
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
     ],
     "instruction": "const",
   },
   Object {
     "arguments": Array [
-      "input",
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
     ],
     "instruction": "localGet",
   },
@@ -97,7 +181,10 @@ Array [
   },
   Object {
     "arguments": Array [
-      "input",
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
     ],
     "instruction": "localGet",
   },
