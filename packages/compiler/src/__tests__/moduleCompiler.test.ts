@@ -1,11 +1,11 @@
-import { compileToAST } from '../moduleCompiler';
+import { compileToAST, compile } from '../moduleCompiler';
 
 const fixture = `
 # abs module
 
 # memory
 private DEFAULT_VALUE 0
-inputPointer in address(DEFAULT_VALUE)
+inputPointer in DEFAULT_VALUE
 output out 0
 
 # registers
@@ -32,5 +32,10 @@ store`;
 describe('moduleCompiler', () => {
 	test('compileToAST', () => {
 		expect(compileToAST(fixture)).toMatchSnapshot();
+	});
+
+	test('compile', () => {
+		const ast = compileToAST(fixture);
+		expect(compile(ast)).toMatchSnapshot();
 	});
 });
