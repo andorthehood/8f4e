@@ -36,6 +36,6 @@ describe('moduleCompiler', () => {
 
 	test('compile', () => {
 		const ast = compileToAST(fixture);
-		expect(compile(ast)).toMatchSnapshot();
+		expect(compile(ast).byteCode).toMatchSnapshot();
 	});
 });
