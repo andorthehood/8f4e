@@ -1,14 +1,7 @@
-import {
-	createFunctionBody,
-	createLocalDeclaration,
-	i32const,
-	i32load,
-	localGet,
-	localSet,
-	Type,
-} from 'bytecode-utils';
-type Argument = { type: 'literal'; value: number } | { type: 'identifier'; value: string };
-type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
+import { createFunctionBody, createLocalDeclaration, Type } from 'bytecode-utils';
+import instructions from './module-compiler/instructions';
+export type Argument = { type: 'literal'; value: number } | { type: 'identifier'; value: string };
+export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
 
 const memoryKeywords = ['private', 'inputPointer', 'output'];
 
@@ -69,33 +62,17 @@ export function compileToAST(module: string) {
 }
 
 export function compileLine(line: AST[number], locals: string[], memory: string[]): number[] {
-	switch (line.instruction) {
-		case 'const':
-			if (line.arguments[0].type === 'identifier') {
-				return i32const(memory.indexOf(line.arguments[0].value));
-			} else {
-				return i32const(line.arguments[0].value);
-			}
-		case 'load':
-			return i32load();
-		case 'localSet':
-			if (line.arguments[0].type === 'identifier') {
-				return localSet(locals.indexOf(line.arguments[0].value));
-			} else {
-				return localSet(line.arguments[0].value);
-			}
-		case 'localGet':
-			if (line.arguments[0].type === 'identifier') {
-				return localGet(locals.indexOf(line.arguments[0].value));
-			} else {
-				return localGet(line.arguments[0].value);
-			}
-		default:
-			return [0];
+	if (!instructions[line.instruction]) {
+		return [];
 	}
+	return instructions[line.instruction](line, locals, memory);
 }
 
-export function compile(ast: AST): number[] {
+export function compile(
+	ast: AST,
+	moduleId: string,
+	startingAddress: number
+): { moduleId: string; byteCode: number[]; byteAddress: number; wordAddress: number; memoryMap: string[] } {
 	const locals = collectLocals(ast);
 	const memory = collectMemoryItemNames(ast);
 
@@ -109,5 +86,11 @@ export function compile(ast: AST): number[] {
 		}, [] as number[][])
 		.flat();
 
-	return createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa);
+	return {
+		moduleId,
+		byteCode: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
+		byteAddress: startingAddress,
+		wordAddress: startingAddress * 2,
+		memoryMap: [],
+	};
 }
