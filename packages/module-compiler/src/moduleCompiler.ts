@@ -1,5 +1,5 @@
 import { createFunctionBody, createLocalDeclaration, Type } from 'bytecode-utils';
-import instructions from './module-compiler/instructions';
+import instructions from './instructions';
 export type Argument = { type: 'literal'; value: number } | { type: 'identifier'; value: string };
 export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
 
@@ -12,6 +12,7 @@ function parseArgument(argument: string): Argument {
 }
 
 function parseLine(line: string): AST[number] {
+	// @ts-ignore
 	const [, instruction, ...args] = line.match(/\s*(\S+)\s*(\S*)\s*(\S*)/);
 
 	return {
