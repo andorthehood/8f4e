@@ -4,7 +4,7 @@ import abs, { Memory } from '../../modules/abs';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(abs('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
+	expect(abs('id', { byte: nthWord => nthWord * 4, word: nthWord => nthWord })).toMatchSnapshot();
 });
 
 describe('functional tests', () => {
