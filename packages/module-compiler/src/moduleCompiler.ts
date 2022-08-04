@@ -5,6 +5,8 @@ export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
 
 const memoryKeywords = ['private', 'inputPointer', 'output'];
 
+export const WORD_LENGTH = 4;
+
 function parseArgument(argument: string): Argument {
 	return /[0-9]/.test(argument)
 		? { value: parseInt(argument, 10), type: 'literal' }
