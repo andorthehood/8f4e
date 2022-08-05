@@ -1,5 +1,6 @@
 import { i32const } from 'bytecode-utils';
-import { AST, WORD_LENGTH } from '../moduleCompiler';
+import { AST } from '../types';
+import { WORD_LENGTH } from '../consts';
 
 export default function (line: AST[number], locals = [], memory: string[]) {
 	if (line.arguments[0].type === 'identifier') {
