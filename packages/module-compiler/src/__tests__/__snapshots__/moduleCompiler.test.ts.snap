@@ -41,159 +41,30 @@ Array [
 ]
 `;
 
-exports[`moduleCompiler compileToAST 1`] = `
+exports[`moduleCompiler compile 2`] = `
 Array [
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "DEFAULT_VALUE",
-      },
-      Object {
-        "type": "literal",
-        "value": 0,
-      },
-    ],
-    "instruction": "private",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "in",
-      },
-      Object {
-        "type": "identifier",
-        "value": "DEFAULT_VALUE",
-      },
-    ],
-    "instruction": "inputPointer",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "out",
-      },
-      Object {
-        "type": "literal",
-        "value": 0,
-      },
-    ],
-    "instruction": "output",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "input",
-      },
-    ],
-    "instruction": "local",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "out",
-      },
-    ],
-    "instruction": "const",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "in",
-      },
-    ],
-    "instruction": "const",
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "load",
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "load",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "input",
-      },
-    ],
-    "instruction": "localSet",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "input",
-      },
-    ],
-    "instruction": "localGet",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "literal",
-        "value": 0,
-      },
-    ],
-    "instruction": "const",
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "lessThan",
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "if",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "literal",
-        "value": 0,
-      },
-    ],
-    "instruction": "const",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "input",
-      },
-    ],
-    "instruction": "localGet",
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "sub",
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "else",
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "input",
-      },
-    ],
-    "instruction": "localGet",
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "end",
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "store",
-  },
+  22,
+  1,
+  0,
+  127,
+  65,
+  12,
+  65,
+  4,
+  40,
+  2,
+  0,
+  40,
+  2,
+  0,
+  65,
+  8,
+  40,
+  2,
+  0,
+  54,
+  2,
+  0,
+  11,
 ]
 `;

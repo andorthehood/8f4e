@@ -45,6 +45,7 @@ Object {
     Object {
       "address": 0,
       "default": 0,
+      "id": "DEFAULT_VALUE",
       "type": 5,
     },
     Object {
