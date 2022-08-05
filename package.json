@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "parcel build src/*.html && cp ./src/_headers ./dist/_headers",
 		"dev": "parcel src/**/*.html --port 3000 --hmr-port 30000",
-		"prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/**/*.ts'",
+		"prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/*/src/**/*.ts'",
 		"eslint": "npx eslint . --ext .ts --fix",
 		"test": "jest",
 		"prepare": "husky install"

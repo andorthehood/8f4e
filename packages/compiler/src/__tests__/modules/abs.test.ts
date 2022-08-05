@@ -1,11 +1,18 @@
 import { createTestModule } from '../../testUtils';
-import abs, { Memory } from '../../modules/abs';
+import abs from '../../modules/abs';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
 	expect(abs('id', { byte: nthWord => nthWord * 4, word: nthWord => nthWord })).toMatchSnapshot();
 });
+
+const fixtures: [input: number, output: number][] = [
+	[1, 1],
+	[-1, 1],
+	[-69, 69],
+	[420, 420],
+];
 
 describe('functional tests', () => {
 	beforeAll(async () => {
@@ -16,23 +23,10 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('abs module', () => {
+	test.each(fixtures)('given %p, returns %p', (input, output) => {
 		const { memory, test } = testModule;
-
-		memory[Memory.DEFAULT_VALUE] = 1;
+		memory[0] = input;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(1);
-
-		memory[Memory.DEFAULT_VALUE] = -1;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(1);
-
-		memory[Memory.DEFAULT_VALUE] = -69;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(69);
-
-		memory[Memory.DEFAULT_VALUE] = 420;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(420);
+		expect(memory[2]).toBe(output);
 	});
 });
