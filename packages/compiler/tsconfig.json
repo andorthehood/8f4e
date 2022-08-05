@@ -9,6 +9,6 @@
 		"declaration": true,
 		"resolveJsonModule": true
 	},
-	"include": ["src/**/*.ts"],
+	"include": ["src/**/*.ts", "asm.d.ts"],
 	"exclude": ["**/__tests__/**"]
 }

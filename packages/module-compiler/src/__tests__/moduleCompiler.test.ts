@@ -1,6 +1,6 @@
-import { compileToAST, compile } from '../moduleCompiler';
+import { compile } from '..';
 
-const fixture = `
+const fixture1 = `
 # abs module
 
 # memory
@@ -29,13 +29,28 @@ else
 end
 store`;
 
+const fixture2 = `
+private zero 0
+inputPointer in zero
+private divisor 1
+output out 0
+
+const out
+const in
+load
+load
+const divisor
+load
+div
+store
+`;
+
 describe('moduleCompiler', () => {
-	test('compileToAST', () => {
-		expect(compileToAST(fixture)).toMatchSnapshot();
+	test('compile', () => {
+		expect(compile(fixture1, 'a', 0).functionBody).toMatchSnapshot();
 	});
 
 	test('compile', () => {
-		const ast = compileToAST(fixture);
-		expect(compile(ast, 'a', 0).byteCode).toMatchSnapshot();
+		expect(compile(fixture2, 'a', 0).functionBody).toMatchSnapshot();
 	});
 });

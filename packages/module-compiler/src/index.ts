@@ -1,11 +1,11 @@
 import { createFunctionBody, createLocalDeclaration, Type } from 'bytecode-utils';
 import instructions from './instructions';
-export type Argument = { type: 'literal'; value: number } | { type: 'identifier'; value: string };
-export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
+import { AST, Argument, MemoryTypes } from './types';
+import { WORD_LENGTH } from './consts';
+
+export { MemoryTypes } from './types';
 
 const memoryKeywords = ['private', 'inputPointer', 'output'];
-
-export const WORD_LENGTH = 4;
 
 function parseArgument(argument: string): Argument {
 	return /[0-9]/.test(argument)
@@ -71,16 +71,43 @@ export function compileLine(line: AST[number], locals: string[], memory: string[
 	return instructions[line.instruction](line, locals, memory);
 }
 
+function memoryInstructionNameToEnum(name: string): MemoryTypes {
+	switch (name) {
+		case 'private':
+			return MemoryTypes.PRIVATE;
+		case 'inputPointer':
+			return MemoryTypes.INPUT_POINTER;
+		case 'output':
+			return MemoryTypes.OUTPUT;
+		default:
+			return MemoryTypes.NUMBER;
+	}
+}
+
+function getMemoryMap(ast: AST) {
+	const memories = collectMemoryItemNames(ast);
+	return ast
+		.filter(({ instruction }) => {
+			return memoryKeywords.includes(instruction);
+		})
+		.map(({ instruction, arguments: args }, index) => {
+			return {
+				type: memoryInstructionNameToEnum(instruction),
+				address: index,
+				id: args[0].value.toString(),
+				default: args[1].type === 'literal' ? args[1].value : memories.indexOf(args[1].value),
+			};
+		});
+}
+
 export function compile(
-	ast: AST,
+	module: string,
 	moduleId: string,
 	startingAddress: number
-): { moduleId: string; byteCode: number[]; byteAddress: number; wordAddress: number; memoryMap: string[] } {
+): { moduleId: string; functionBody: number[]; byteAddress: number; wordAddress: number; memoryMap } {
+	const ast = compileToAST(module);
 	const locals = collectLocals(ast);
 	const memory = collectMemoryItemNames(ast);
-
-	console.log('locals', locals);
-	console.log('memory', memory);
 
 	const wa = ast
 		.reduce((acc, line) => {
@@ -91,9 +118,9 @@ export function compile(
 
 	return {
 		moduleId,
-		byteCode: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
-		byteAddress: startingAddress,
-		wordAddress: startingAddress * 2,
-		memoryMap: [],
+		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
+		byteAddress: startingAddress * WORD_LENGTH,
+		wordAddress: startingAddress,
+		memoryMap: getMemoryMap(ast),
 	};
 }
