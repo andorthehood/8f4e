@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import generateSprite, { font } from 'sprite-generator';
+import generateSprite, { font } from '@8f4e/sprite-generator';
 import { drawConnections, drawModules, drawContextMenu } from './drawers';
 import { State } from '../state/types';
 

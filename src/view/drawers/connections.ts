@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import { fillColor } from 'sprite-generator';
+import { fillColor } from '@8f4e/sprite-generator';
 import { State } from '../../state/types';
 
 export default function drawConnections(engine: Engine, state: State): void {
