@@ -2,9 +2,9 @@ import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import { ModuleGeneratorProps, ModuleType, StepperChangeHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
-import { extractState, insertState } from 'compiler/dist/modules/buffer';
+import { extractState, insertState } from '@8f4e/compiler/dist/modules/buffer';
 import ccNames from '../midi/ccNames';
-import { Config } from 'compiler/dist/modules/buffer';
+import { Config } from '@8f4e/compiler/dist/modules/buffer';
 
 const onChange: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;

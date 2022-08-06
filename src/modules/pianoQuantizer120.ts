@@ -5,8 +5,8 @@ import { ModuleGeneratorProps, ModuleType, Button, ButtonClickHandler } from '..
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
-import { insertState, extractState } from 'compiler/dist/modules/quantizer';
-import { Config } from 'compiler/dist/modules/quantizer';
+import { insertState, extractState } from '@8f4e/compiler/dist/modules/quantizer';
+import { Config } from '@8f4e/compiler/dist/modules/quantizer';
 
 const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
 	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
