@@ -64,11 +64,16 @@ export function compileToAST(module: string) {
 		});
 }
 
-export function compileLine(line: AST[number], locals: string[], memory: string[]): number[] {
+export function compileLine(
+	line: AST[number],
+	locals: string[],
+	memory: string[],
+	startingByteAddress: number
+): number[] {
 	if (!instructions[line.instruction]) {
 		return [];
 	}
-	return instructions[line.instruction](line, locals, memory);
+	return instructions[line.instruction](line, locals, memory, startingByteAddress);
 }
 
 function memoryInstructionNameToEnum(name: string): MemoryTypes {
@@ -103,7 +108,7 @@ function getMemoryMap(ast: AST) {
 export function compile(
 	module: string,
 	moduleId: string,
-	startingAddress: number
+	startingByteAddress: number
 ): { moduleId: string; functionBody: number[]; byteAddress: number; wordAddress: number; memoryMap } {
 	const ast = compileToAST(module);
 	const locals = collectLocals(ast);
@@ -111,7 +116,7 @@ export function compile(
 
 	const wa = ast
 		.reduce((acc, line) => {
-			acc.push(compileLine(line, locals, memory));
+			acc.push(compileLine(line, locals, memory, startingByteAddress));
 			return acc;
 		}, [] as number[][])
 		.flat();
@@ -119,8 +124,8 @@ export function compile(
 	return {
 		moduleId,
 		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
-		byteAddress: startingAddress * WORD_LENGTH,
-		wordAddress: startingAddress,
+		byteAddress: startingByteAddress,
+		wordAddress: startingByteAddress / WORD_LENGTH,
 		memoryMap: getMemoryMap(ast),
 	};
 }
