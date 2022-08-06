@@ -25,7 +25,7 @@ enum Locals {
 	__LENGTH,
 }
 
-const min: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const min: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[

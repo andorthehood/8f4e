@@ -20,7 +20,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const xor: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const xor: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[

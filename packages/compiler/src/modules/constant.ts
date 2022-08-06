@@ -17,7 +17,7 @@ export const extractState: ModuleStateExtractor<ConstantState> = function (memor
 	return { out: memoryBuffer[moduleAddress + Memory.OUTPUT] };
 };
 
-const constant: ModuleGenerator<{ out?: number }, Memory> = function (moduleId, offset, { out = 0 } = {}) {
+const constant: ModuleGenerator<{ out?: number }> = function (moduleId, offset, { out = 0 } = {}) {
 	const functionBody = createFunctionBody([], []);
 
 	return {

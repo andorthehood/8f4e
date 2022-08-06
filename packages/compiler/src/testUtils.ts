@@ -34,8 +34,8 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 	}
 }
 
-export async function createTestModule<Memory>(
-	moduleCreator: ModuleGenerator<unknown, Memory>,
+export async function createTestModule(
+	moduleCreator: ModuleGenerator<unknown>,
 	initialConfig = {}
 ): Promise<{ memory: Int32Array; test: CallableFunction; reset: () => void }> {
 	const module = moduleCreator('test', { byte: nthWord => nthWord * 4, word: nthWord => nthWord }, initialConfig);
