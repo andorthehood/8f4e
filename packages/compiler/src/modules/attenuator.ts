@@ -20,7 +20,7 @@ export const extractState: ModuleStateExtractor<AttenuatorState> = function (mem
 	return { divisor: memoryBuffer[moduleAddress + Memory.DIVISOR] };
 };
 
-const attenuator: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const attenuator: ModuleGenerator<unknown> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[

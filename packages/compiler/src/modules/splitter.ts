@@ -28,7 +28,7 @@ enum Locals {
  *
  * @param memoryStartAddress
  */
-const splitter: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const splitter: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[

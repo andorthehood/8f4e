@@ -1,5 +1,13 @@
 import { i32load, i32const, i32store, createFunctionBody } from 'bytecode-utils';
-import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor, MemoryTypes } from '../types';
+import {
+	ModuleGenerator,
+	ModuleStateInserter,
+	ModuleStateExtractor,
+	MemoryTypes,
+	MemoryMap,
+	InputPointer,
+	Output,
+} from '../types';
 
 enum Memory {
 	ZERO,
@@ -50,7 +58,7 @@ export const extractState: ModuleStateExtractor<BufferState> = function (memoryB
 	return obj;
 };
 
-const buffer: ModuleGenerator<Config, Memory> = function (moduleId, offset, config = {}) {
+const buffer: ModuleGenerator<Config> = function (moduleId, offset, config = {}) {
 	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
 	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
 	const dataPlaceholderIndexes = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index);
@@ -85,19 +93,24 @@ const buffer: ModuleGenerator<Config, Memory> = function (moduleId, offset, conf
 			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_INPUTS, default: numberOfPorts },
 			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_OUTPUTS, default: numberOfPorts },
 			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_DATA_PLACEHOLDERS, default: numberOfDataPlaceholders },
-			...inputPointers.map((address, index) => ({
+			...(inputPointers.map((address, index) => ({
 				type: MemoryTypes.INPUT_POINTER,
 				address,
 				id: 'in:' + (index + 1),
 				default: offset.byte(Memory.ZERO),
-			})),
-			...outputs.map((address, index) => ({ type: MemoryTypes.OUTPUT, address, id: 'out:' + (index + 1), default: 0 })),
-			...dataPlaceholders.map((address, index) => ({
+			})) as InputPointer[]),
+			...(outputs.map((address, index) => ({
+				type: MemoryTypes.OUTPUT,
+				address,
+				id: 'out:' + (index + 1),
+				default: 0,
+			})) as Output[]),
+			...(dataPlaceholders.map((address, index) => ({
 				type: MemoryTypes.NUMBER,
 				address,
 				id: 'data:' + (index + 1),
 				default: 0,
-			})),
+			})) as MemoryMap[]),
 		],
 	};
 };

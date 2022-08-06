@@ -40,7 +40,7 @@ export const extractState: ModuleStateExtractor<SawState> = function (memoryBuff
 	return { rate: memoryBuffer[moduleAddress + Memory.RATE_SELF] };
 };
 
-const saw: ModuleGenerator<{ rate?: number }, Memory> = function (moduleId, offset, { rate = 1 } = {}) {
+const saw: ModuleGenerator<{ rate?: number }> = function (moduleId, offset, { rate = 1 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
