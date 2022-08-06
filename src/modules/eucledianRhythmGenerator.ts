@@ -3,7 +3,7 @@ import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
-import { Config } from 'compiler/dist/modules/triggerSequencer';
+import { Config } from '@8f4e/compiler/dist/modules/triggerSequencer';
 
 export default function eucledianRhythmGenerator({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
 	const width = MODULE_WIDTH_M * vGrid;
