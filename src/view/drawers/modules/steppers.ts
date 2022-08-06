@@ -1,6 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 import { State, Stepper } from '../../../state/types';
-import { font } from 'sprite-generator';
+import { font } from '@8f4e/sprite-generator';
 
 export default function drawSteppers(
 	engine: Engine,

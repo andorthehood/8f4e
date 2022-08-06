@@ -1,4 +1,4 @@
-import { font, fillColor } from 'sprite-generator';
+import { font, fillColor } from '@8f4e/sprite-generator';
 import scope from './scope';
 import number from './number';
 import midiNote from './midiNote';
