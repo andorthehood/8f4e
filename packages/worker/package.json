@@ -19,6 +19,6 @@
 	},
 	"homepage": "https://github.com/andormade/8f4e#readme",
 	"dependencies": {
-		"compiler": "^1.0.0"
+		"compiler": "file:packages/compiler"
 	}
 }
