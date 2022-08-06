@@ -1,5 +1,5 @@
-import { int16ToMidiNote } from '../../../src/state/helpers/midi';
-import { Event } from '../../../src/midi/enums';
+import { int16ToMidiNote } from './midiHelpers';
+import { Event } from './midiEnums';
 import { I16_SIGNED_LARGEST_NUMBER, MemoryBuffer } from 'compiler';
 import { MidiModuleAddresses } from './types';
 
