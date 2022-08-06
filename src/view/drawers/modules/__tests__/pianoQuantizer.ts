@@ -1,4 +1,4 @@
-import { Engine } from '2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 import generateSprite from 'sprite-generator';
 
 const init = async function () {

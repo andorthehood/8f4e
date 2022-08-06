@@ -9,7 +9,7 @@ import {
 	localGet,
 	localSet,
 	Type,
-} from 'bytecode-utils';
+} from '@8f4e/bytecode-utils';
 import { MemoryTypes, ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
 
 export enum Memory {

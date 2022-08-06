@@ -11,7 +11,7 @@ import {
 	call,
 	i32store,
 	Type,
-} from 'bytecode-utils';
+} from '@8f4e/bytecode-utils';
 import { generateMemoryAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module, CompiledModule, MemoryAddressLookup } from './types';

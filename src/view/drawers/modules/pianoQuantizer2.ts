@@ -1,5 +1,5 @@
-import { Engine } from '2d-engine';
-import { MemoryAddressLookup, MemoryBuffer } from 'compiler';
+import { Engine } from '@8f4e/2d-engine';
+import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
 import { Memory } from 'compiler/dist/modules/quantizer';
 import { pianoKeyboard } from 'sprite-generator';
 import { Module, ModuleType } from '../../../state/types';

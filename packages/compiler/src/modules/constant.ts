@@ -1,4 +1,4 @@
-import { createFunctionBody } from 'bytecode-utils';
+import { createFunctionBody } from '@8f4e/bytecode-utils';
 import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor, MemoryTypes } from '../types';
 
 export enum Memory {
