@@ -1,6 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 import { Slider, State } from '../../../state/types';
-import { font, fillColor } from 'sprite-generator';
+import { font, fillColor } from '@8f4e/sprite-generator';
 
 export default function drawSliders(engine: Engine, sliders: Slider[], state: State, id: string): void {
 	for (let i = 0; i < sliders.length; i++) {
