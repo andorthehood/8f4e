@@ -2,8 +2,8 @@
 	"name": "@8f4e/worker",
 	"version": "1.0.0",
 	"description": "",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"scripts": {
 		"test": "jest --passWithNoTests",
 		"build": "tsc"
