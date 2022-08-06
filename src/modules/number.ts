@@ -3,7 +3,7 @@ import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
-import { Config } from 'compiler/dist/modules/buffer';
+import { Config } from '@8f4e/compiler/dist/modules/buffer';
 
 export default function number({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
 	const width = MODULE_WIDTH_S * vGrid;
