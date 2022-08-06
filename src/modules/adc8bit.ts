@@ -3,7 +3,7 @@ import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { ModuleGeneratorProps, ModuleType } from '../state/types';
 import { MODULE_HEIGHT_M, MODULE_WIDTH_S } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
-import { Config } from 'compiler/dist/modules/adc';
+import { Config } from '@8f4e/compiler/dist/modules/adc';
 
 export default function adc8bit({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
 	const width = MODULE_WIDTH_S * vGrid;
