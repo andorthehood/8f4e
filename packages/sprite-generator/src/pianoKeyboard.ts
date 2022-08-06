@@ -2,7 +2,7 @@ import { Command, DrawingCommand } from './types';
 import icons, { Icon } from './fonts/thickIcons';
 import { drawCharacterMatrix } from './font';
 import font from './fonts/thickFont';
-import { SpriteLookup } from '2d-engine';
+import { SpriteLookup } from '@8f4e/2d-engine';
 
 const enum State {
 	PRESSED,

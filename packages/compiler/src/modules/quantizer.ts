@@ -12,7 +12,7 @@ import {
 	localGet,
 	localSet,
 	loop,
-} from 'bytecode-utils';
+} from '@8f4e/bytecode-utils';
 import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor, MemoryTypes } from '../types';
 import { I32_SIGNED_LARGEST_NUMBER } from '../consts';
 
