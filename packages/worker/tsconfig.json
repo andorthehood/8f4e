@@ -7,8 +7,9 @@
 		"downlevelIteration": true,
 		"esModuleInterop": true,
 		"outDir": "dist/",
-		"declaration": true
+		"declaration": true,
+		"baseUrl": "./"
 	},
-	"include": ["src/**/*.ts"],
+	"include": ["./src/**/*.ts"],
 	"exclude": ["node_modules"]
 }

@@ -6,7 +6,7 @@ import pianoQuantizer from './pianoQuantizer2';
 import drawConnectors from './connectors';
 import drawSliders from './sliders';
 import { State } from '../../../state/types';
-import { Engine } from '2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 import drawSteppers from './steppers';
 import drawLines from './lines';
 
