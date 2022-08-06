@@ -10,7 +10,7 @@ import {
 	localGet,
 	localSet,
 } from 'bytecode-utils';
-import { MemoryTypes, ModuleGenerator } from '../types';
+import { MemoryMap, MemoryTypes, ModuleGenerator, Output } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, LOGIC_HIGH, LOGIC_LOW } from '../consts';
 
 export enum Memory {
@@ -62,7 +62,7 @@ export interface Config {
 	resolution?: number;
 }
 
-const adc: ModuleGenerator<Config, Memory> = function (moduleId, offset, { resolution = 8 } = {}) {
+const adc: ModuleGenerator<Config> = function (moduleId, offset, { resolution = 8 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
@@ -106,12 +106,12 @@ const adc: ModuleGenerator<Config, Memory> = function (moduleId, offset, { resol
 				id: 'in',
 				default: offset.byte(Memory.DEFAULT_VALUE),
 			},
-			...masks.slice(0, resolution).map(([memoryAddress], index) => ({
+			...(masks.slice(0, resolution).map(([memoryAddress], index) => ({
 				type: MemoryTypes.OUTPUT,
 				address: memoryAddress,
 				id: 'out:' + (index + 1),
 				default: 0,
-			})),
+			})) as Output[]),
 		],
 	};
 };

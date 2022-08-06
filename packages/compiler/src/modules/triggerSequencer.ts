@@ -32,7 +32,7 @@ export interface Config {
 	maxPatternSizeToAlloc: number;
 }
 
-const triggerSequencer: ModuleGenerator<Config, Memory> = function (moduleId, offset, { maxPatternSizeToAlloc }) {
+const triggerSequencer: ModuleGenerator<Config> = function (moduleId, offset, { maxPatternSizeToAlloc }) {
 	const pattern = new Array(maxPatternSizeToAlloc).fill(0);
 
 	const functionBody = createFunctionBody(

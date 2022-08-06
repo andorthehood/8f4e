@@ -8,7 +8,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const bitwiseOr: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const bitwiseOr: ModuleGenerator<unknown> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
@@ -31,7 +31,6 @@ const bitwiseOr: ModuleGenerator<unknown, Memory> = function (moduleId, offset) 
 		wordAddress: offset.word(0),
 		memoryMap: [
 			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
-
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: offset.byte(Memory.INPUT_1_POINTER),

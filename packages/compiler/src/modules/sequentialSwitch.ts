@@ -30,7 +30,7 @@ enum Locals {
 	__LENGTH,
 }
 
-const sequentialSwitch: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const sequentialSwitch: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[
