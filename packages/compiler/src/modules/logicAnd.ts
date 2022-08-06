@@ -9,7 +9,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const and: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const and: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
