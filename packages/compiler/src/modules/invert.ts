@@ -7,7 +7,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const invert: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const invert: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[

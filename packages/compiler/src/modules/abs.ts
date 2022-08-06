@@ -1,7 +1,7 @@
 import { ModuleGenerator } from '../types';
 import { compile } from 'module-compiler';
 
-const abs: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const abs: ModuleGenerator<unknown> = function (moduleId, offset) {
 	return compile(
 		`
 		# abs module

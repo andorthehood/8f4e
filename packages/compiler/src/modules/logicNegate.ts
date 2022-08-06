@@ -8,7 +8,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const negate: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const negate: ModuleGenerator = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[

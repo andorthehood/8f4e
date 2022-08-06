@@ -37,11 +37,7 @@ export const extractState: ModuleStateExtractor<OffsetState> = function (memoryB
 	return { offset: memoryBuffer[moduleAddress + Memory.OFFSET] };
 };
 
-const offset: ModuleGenerator<{ offset?: number }, Memory> = function (
-	moduleId,
-	offset,
-	{ offset: valueOffset = 0 } = {}
-) {
+const offset: ModuleGenerator<{ offset?: number }> = function (moduleId, offset, { offset: valueOffset = 0 } = {}) {
 	const functionBody = createFunctionBody(
 		[createLocalDeclaration(Type.I32, Locals.__LENGTH)],
 		[

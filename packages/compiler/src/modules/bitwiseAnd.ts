@@ -8,7 +8,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const bitwiseAnd: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const bitwiseAnd: ModuleGenerator<unknown> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[
