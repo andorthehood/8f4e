@@ -1,5 +1,5 @@
 import { ModuleGenerator } from '../types';
-import { compile } from 'module-compiler';
+import { compile } from '@8f4e/module-compiler';
 
 const abs: ModuleGenerator<unknown> = function (moduleId, offset) {
 	return compile(

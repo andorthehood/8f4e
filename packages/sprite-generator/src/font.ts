@@ -1,4 +1,4 @@
-import { SpriteLookup } from '2d-engine';
+import { SpriteLookup } from '@8f4e/2d-engine';
 import thickFont from './fonts/thickFont';
 import thickIcons from './fonts/thickIcons';
 import { Command, DrawingCommand } from './types';

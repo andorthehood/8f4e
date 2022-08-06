@@ -1,4 +1,4 @@
-import { i32load, i32const, i32store, createFunctionBody } from 'bytecode-utils';
+import { i32load, i32const, i32store, createFunctionBody } from '@8f4e/bytecode-utils';
 import {
 	ModuleGenerator,
 	ModuleStateInserter,

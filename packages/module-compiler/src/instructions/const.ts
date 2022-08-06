@@ -1,4 +1,4 @@
-import { i32const } from 'bytecode-utils';
+import { i32const } from '@8f4e/bytecode-utils';
 import { AST } from '../types';
 import { WORD_LENGTH } from '../consts';
 
