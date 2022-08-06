@@ -4,7 +4,6 @@
 	"description": "",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"devDependencies": {},
 	"scripts": {
 		"test": "node --experimental-vm-modules --experimental-wasi-unstable-preview1 ../../node_modules/.bin/jest",
 		"build": "tsc"
@@ -18,5 +17,9 @@
 	"bugs": {
 		"url": "https://github.com/andormade/8f4e/issues"
 	},
-	"homepage": "https://github.com/andormade/8f4e#readme"
+	"homepage": "https://github.com/andormade/8f4e#readme",
+	"dependencies": {
+		"bytecode-utils": "file:packages/bytecode-utils",
+		"module-compiler": "file:packages/module-compiler"
+	}
 }
