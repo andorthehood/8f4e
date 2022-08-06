@@ -2,8 +2,8 @@
 	"name": "worker",
 	"version": "1.0.0",
 	"description": "",
-	"main": "dist/index.js",
-	"devDependencies": {},
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"scripts": {
 		"test": "jest --passWithNoTests",
 		"build": "tsc"
@@ -17,5 +17,8 @@
 	"bugs": {
 		"url": "https://github.com/andormade/8f4e/issues"
 	},
-	"homepage": "https://github.com/andormade/8f4e#readme"
+	"homepage": "https://github.com/andormade/8f4e#readme",
+	"dependencies": {
+		"compiler": "^1.0.0"
+	}
 }

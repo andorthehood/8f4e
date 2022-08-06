@@ -1,4 +1,4 @@
-import { Event } from '../../../src/midi/enums';
+import { Event } from './midiEnums';
 import { I16_SIGNED_LARGEST_NUMBER, MemoryBuffer } from 'compiler';
 import { MidiCCModuleAddresses } from './types';
 
