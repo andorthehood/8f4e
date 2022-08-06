@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import generateSprite from 'sprite-generator';
+import generateSprite from '@8f4e/sprite-generator';
 
 const init = async function () {
 	const sprite = await generateSprite();

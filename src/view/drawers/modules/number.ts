@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import { font } from 'sprite-generator';
+import { font } from '@8f4e/sprite-generator';
 import { State } from '../../../state/types';
 
 export default function drawer(engine: Engine, state: State, id: string): void {
