@@ -8,7 +8,7 @@ export enum Memory {
 	OUTPUT,
 }
 
-const bitwiseXor: ModuleGenerator<unknown, Memory> = function (moduleId, offset) {
+const bitwiseXor: ModuleGenerator<unknown> = function (moduleId, offset) {
 	const functionBody = createFunctionBody(
 		[],
 		[

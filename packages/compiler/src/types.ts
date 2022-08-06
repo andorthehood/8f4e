@@ -8,61 +8,54 @@ export enum MemoryTypes {
 	NUMBER,
 }
 
-export type MemoryItemDescriptor<Memory> = {
+export type MemoryItemDescriptor = {
 	default: number;
 	/** Relative address of the memory */
-	address: Memory;
+	address: number;
 	id?: string;
 };
 
-export interface DynamicArray<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'default'> {
+export interface DynamicArray extends Omit<MemoryItemDescriptor, 'default'> {
 	type: MemoryTypes.DYNAMIC_ARRAY;
 	sizePointer: number;
 	maxSize: number;
 	default: number[];
 }
 
-export interface StaticArray<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'default'> {
+export interface StaticArray extends Omit<MemoryItemDescriptor, 'default'> {
 	type: MemoryTypes.STATIC_ARRAY;
 	size: number;
 	default: number[];
 }
 
-export interface InputPointer<Memory> extends MemoryItemDescriptor<Memory> {
+export interface InputPointer extends MemoryItemDescriptor {
 	type: MemoryTypes.INPUT_POINTER;
 }
 
-export interface Output<Memory> extends MemoryItemDescriptor<Memory> {
+export interface Output extends MemoryItemDescriptor {
 	type: MemoryTypes.OUTPUT;
 }
 
-export interface Private<Memory> extends Omit<MemoryItemDescriptor<Memory>, 'id'> {
+export interface Private extends MemoryItemDescriptor {
 	type: MemoryTypes.PRIVATE;
 }
 
-export interface NumberValue<Memory> extends MemoryItemDescriptor<Memory> {
+export interface NumberValue extends MemoryItemDescriptor {
 	type: MemoryTypes.NUMBER;
 }
 
-export interface ArraySize<Memory> extends MemoryItemDescriptor<Memory> {
+export interface ArraySize extends MemoryItemDescriptor {
 	type: MemoryTypes.ARRAY_SIZE;
 }
 
-export type MemoryMap<Memory> =
-	| Private<Memory>
-	| Output<Memory>
-	| InputPointer<Memory>
-	| StaticArray<Memory>
-	| DynamicArray<Memory>
-	| NumberValue<Memory>
-	| ArraySize<Memory>;
+export type MemoryMap = Private | Output | InputPointer | StaticArray | DynamicArray | NumberValue | ArraySize;
 
-export interface CompiledModule<Memory = number> {
+export interface CompiledModule {
 	functionBody: number[];
 	moduleId: string;
 	byteAddress: number;
 	wordAddress: number;
-	memoryMap: MemoryMap<Memory>[];
+	memoryMap: MemoryMap[];
 }
 
 export type MemoryBuffer = Int32Array;
@@ -79,11 +72,11 @@ export interface RelativeAddressCalculator {
 	word: (nthWord: number) => number;
 }
 
-export type ModuleGenerator<TConfig = unknown, Memory = unknown> = (
+export type ModuleGenerator<TConfig = unknown> = (
 	moduleId: string,
 	offset: RelativeAddressCalculator,
 	initialConfig?: TConfig
-) => CompiledModule<Memory>;
+) => CompiledModule;
 
 export type EngineConfig = Record<string, number | string | EngineConfig[]>;
 
