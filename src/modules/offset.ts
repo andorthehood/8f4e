@@ -1,4 +1,4 @@
-import { I16_SIGNED_LARGEST_NUMBER } from 'compiler';
+import { I16_SIGNED_LARGEST_NUMBER } from '@8f4e/compiler';
 import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../state/types';
 import singleSliderModule from './templates/singleSliderModule';
 

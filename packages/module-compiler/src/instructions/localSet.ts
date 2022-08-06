@@ -1,4 +1,4 @@
-import { localSet } from 'bytecode-utils';
+import { localSet } from '@8f4e/bytecode-utils';
 import { AST } from '../types';
 
 export default function (line: AST[number], locals: string[]) {

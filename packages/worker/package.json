@@ -1,5 +1,5 @@
 {
-	"name": "worker",
+	"name": "@8f4e/worker",
 	"version": "1.0.0",
 	"description": "",
 	"main": "./dist/index.js",
@@ -19,6 +19,6 @@
 	},
 	"homepage": "https://github.com/andormade/8f4e#readme",
 	"dependencies": {
-		"compiler": "file:packages/compiler"
+		"@8f4e/compiler": "file:packages/compiler"
 	}
 }

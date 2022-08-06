@@ -9,7 +9,7 @@ import {
 	ifelse,
 	localGet,
 	localSet,
-} from 'bytecode-utils';
+} from '@8f4e/bytecode-utils';
 import { MemoryMap, MemoryTypes, ModuleGenerator, Output } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER, LOGIC_HIGH, LOGIC_LOW } from '../consts';
 

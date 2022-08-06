@@ -1,4 +1,4 @@
-import compile, { CompiledModule, MemoryAddressLookup, MemoryBuffer, Module } from 'compiler';
+import compile, { CompiledModule, MemoryAddressLookup, MemoryBuffer, Module } from '@8f4e/compiler';
 
 export default async function createModule(
 	memoryRef: WebAssembly.Memory,

@@ -1,5 +1,5 @@
 {
-	"name": "2d-engine",
+	"name": "@8f4e/2d-engine",
 	"version": "1.0.0",
 	"description": "",
 	"main": "dist/index.js",

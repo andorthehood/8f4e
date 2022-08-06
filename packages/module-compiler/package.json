@@ -1,5 +1,5 @@
 {
-	"name": "module-compiler",
+	"name": "@8f4e/module-compiler",
 	"version": "1.0.0",
 	"description": "",
 	"main": "./dist/index.js",
