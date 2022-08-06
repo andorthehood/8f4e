@@ -8,7 +8,7 @@ import {
 	createImportSection,
 	createMemoryImport,
 	FunctionBody,
-} from 'bytecode-utils';
+} from '@8f4e/bytecode-utils';
 import { getInitialMemory, ModuleGenerator } from '.';
 import { CompiledModule } from './types';
 

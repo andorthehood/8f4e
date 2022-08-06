@@ -1,5 +1,5 @@
 {
-	"name": "bytecode-utils",
+	"name": "@8f4e/bytecode-utils",
 	"version": "1.0.0",
 	"description": "",
 	"main": "dist/index.js",

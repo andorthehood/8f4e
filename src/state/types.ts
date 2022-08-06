@@ -6,7 +6,7 @@ import {
 	ModuleState,
 	ModuleStateInserter,
 	ModuleStateExtractor,
-} from 'compiler';
+} from '@8f4e/compiler';
 
 export interface Module {
 	engine: Engine;
