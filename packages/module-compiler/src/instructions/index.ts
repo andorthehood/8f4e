@@ -8,8 +8,14 @@ import store from './store';
 import sub from './sub';
 import ifInstruction from './if';
 import lessThan from './lessThan';
+import div from './div';
+import and from './and';
+import or from './or';
+import xor from './xor';
 
 export default {
+	and,
+	or,
 	const: constInstruction,
 	load,
 	localGet,
@@ -20,4 +26,6 @@ export default {
 	end,
 	store,
 	sub,
+	div,
+	xor,
 };
