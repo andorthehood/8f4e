@@ -1,5 +1,5 @@
-import { Instruction, i32const, i32load, i32store, createFunctionBody } from '@8f4e/bytecode-utils';
-import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor, MemoryTypes } from '../types';
+import { compile } from '@8f4e/module-compiler';
+import { ModuleGenerator, ModuleStateInserter, ModuleStateExtractor } from '../types';
 
 export enum Memory {
 	ZERO,
@@ -21,32 +21,22 @@ export const extractState: ModuleStateExtractor<AttenuatorState> = function (mem
 };
 
 const attenuator: ModuleGenerator<unknown> = function (moduleId, offset) {
-	const functionBody = createFunctionBody(
-		[],
-		[
-			...i32const(offset.byte(Memory.OUT)),
-			...i32const(offset.byte(Memory.INPUT_POINTER)),
-			...i32load(),
-			...i32load(),
-			...i32const(offset.byte(Memory.DIVISOR)),
-			...i32load(),
-			Instruction.I32_DIV_S,
-			...i32store(),
-		]
-	);
-
-	return {
+	return compile(
+		`private zero 0
+		inputPointer in zero
+		public divisor 1
+		output out 0
+		const out
+		const in
+		load
+		load
+		const divisor
+		load
+		div
+		store`,
 		moduleId,
-		functionBody,
-		byteAddress: offset.byte(0),
-		wordAddress: offset.word(0),
-		memoryMap: [
-			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
-			{ type: MemoryTypes.INPUT_POINTER, address: Memory.INPUT_POINTER, id: 'in', default: offset.byte(Memory.ZERO) },
-			{ type: MemoryTypes.NUMBER, address: Memory.DIVISOR, id: 'divisor', default: 1 },
-			{ type: MemoryTypes.OUTPUT, address: Memory.OUT, id: 'out', default: 0 },
-		],
-	};
+		offset.byte(0)
+	);
 };
 
 export default attenuator;
