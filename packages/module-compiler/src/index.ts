@@ -5,7 +5,7 @@ import { WORD_LENGTH } from './consts';
 
 export { MemoryTypes } from './types';
 
-const memoryKeywords = ['private', 'inputPointer', 'output'];
+const memoryKeywords = ['private', 'inputPointer', 'output', 'public'];
 
 function parseArgument(argument: string): Argument {
 	return /[0-9]/.test(argument)
@@ -84,6 +84,7 @@ function memoryInstructionNameToEnum(name: string): MemoryTypes {
 			return MemoryTypes.INPUT_POINTER;
 		case 'output':
 			return MemoryTypes.OUTPUT;
+		case 'public':
 		default:
 			return MemoryTypes.NUMBER;
 	}
