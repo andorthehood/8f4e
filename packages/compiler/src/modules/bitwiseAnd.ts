@@ -1,7 +1,7 @@
 import { compile } from '@8f4e/module-compiler';
 import { ModuleGenerator } from '../types';
 
-const bitwiseAnd: ModuleGenerator<unknown> = function (moduleId, offset) {
+const bitwiseAnd: ModuleGenerator = function (moduleId, offset) {
 	return compile(
 		`private default1 0
 		private default2 0
