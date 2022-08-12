@@ -1,52 +1,26 @@
-import { Instruction, i32load, i32const, i32store, createFunctionBody } from '@8f4e/bytecode-utils';
-import { MemoryTypes, ModuleGenerator } from '../types';
+import { compile } from '@8f4e/module-compiler';
+import { ModuleGenerator } from '../types';
 
-export enum Memory {
-	ZERO,
-	INPUT_1_POINTER,
-	INPUT_2_POINTER,
-	OUTPUT,
-}
-
-const bitwiseOr: ModuleGenerator<unknown> = function (moduleId, offset) {
-	const functionBody = createFunctionBody(
-		[],
-		[
-			...i32const(offset.byte(Memory.OUTPUT)),
-			...i32const(offset.byte(Memory.INPUT_1_POINTER)),
-			...i32load(),
-			...i32load(),
-			...i32const(offset.byte(Memory.INPUT_2_POINTER)),
-			...i32load(),
-			...i32load(),
-			Instruction.I32_OR,
-			...i32store(),
-		]
-	);
-
-	return {
+const bitwiseOr: ModuleGenerator = function (moduleId, offset) {
+	return compile(
+		`private default1 0
+		private default2 0
+		inputPointer in:1 default1
+		inputPointer in:2 default2
+		output out 0
+		
+		const out
+		const in:1
+		load
+		load
+		const in:2
+		load
+		load
+		or
+		store`,
 		moduleId,
-		functionBody,
-		byteAddress: offset.byte(0),
-		wordAddress: offset.word(0),
-		memoryMap: [
-			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
-			{
-				type: MemoryTypes.INPUT_POINTER,
-				address: offset.byte(Memory.INPUT_1_POINTER),
-				id: 'in:1',
-				default: offset.byte(Memory.ZERO),
-			},
-			{
-				type: MemoryTypes.INPUT_POINTER,
-				address: offset.byte(Memory.INPUT_2_POINTER),
-				id: 'in:2',
-				default: offset.byte(Memory.ZERO),
-			},
-
-			{ type: MemoryTypes.OUTPUT, address: offset.byte(Memory.OUTPUT), id: 'out', default: 0 },
-		],
-	};
+		offset.byte(0)
+	);
 };
 
 export default bitwiseOr;
