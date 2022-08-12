@@ -16,6 +16,7 @@ import _private from './private';
 import inputPointer from './inputPointer';
 import output from './output';
 import local from './local';
+import _public from './public';
 
 export default {
 	and,
@@ -36,4 +37,5 @@ export default {
 	inputPointer,
 	output,
 	local,
+	public: _public,
 };
