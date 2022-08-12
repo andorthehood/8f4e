@@ -27,11 +27,9 @@ const attenuator: ModuleGenerator<unknown> = function (moduleId, offset) {
 		public divisor 1
 		output out 0
 		const out
-		const in
+		load in
 		load
-		load
-		const divisor
-		load
+		load divisor
 		div
 		store`,
 		moduleId,
