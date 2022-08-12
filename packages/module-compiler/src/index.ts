@@ -90,7 +90,7 @@ function memoryInstructionNameToEnum(name: string): MemoryTypes {
 	}
 }
 
-function getMemoryMap(ast: AST) {
+function getMemoryMap(ast: AST, startingByteAddress) {
 	const memories = collectMemoryItemNames(ast);
 	return ast
 		.filter(({ instruction }) => {
@@ -101,7 +101,10 @@ function getMemoryMap(ast: AST) {
 				type: memoryInstructionNameToEnum(instruction),
 				address: index,
 				id: args[0].value.toString(),
-				default: args[1].type === 'literal' ? args[1].value : memories.indexOf(args[1].value),
+				default:
+					args[1].type === 'literal'
+						? args[1].value
+						: startingByteAddress + memories.indexOf(args[1].value) * WORD_LENGTH,
 			};
 		});
 }
@@ -127,6 +130,6 @@ export function compile(
 		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
-		memoryMap: getMemoryMap(ast),
+		memoryMap: getMemoryMap(ast, startingByteAddress),
 	};
 }
