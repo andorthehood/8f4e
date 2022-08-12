@@ -1,12 +1,19 @@
 import { createTestModule } from '../../testUtils';
-import bitwiseXor, { Memory } from '../../modules/bitwiseXor';
+import bitwiseXor from '../../modules/bitwiseXor';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(bitwiseXor('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
+	expect(bitwiseXor('id', { byte: nthWord => nthWord * 4, word: nthWord => nthWord })).toMatchSnapshot();
 });
+
+const fixtures: [input1: number, input2: number, output: number][] = [
+	[10, 10, 10 ^ 10],
+	[69, 420, 69 ^ 420],
+	[-69, 420, -69 ^ 420],
+	[I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_LARGEST_NUMBER ^ I16_SIGNED_LARGEST_NUMBER],
+];
 
 describe('functional tests', () => {
 	beforeAll(async () => {
@@ -17,30 +24,11 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('bitwise xor module', () => {
+	test.each(fixtures)('given %p and %p, the output is %p', (input1, input2, output) => {
 		const { memory, test } = testModule;
-
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
-
-		memory[10] = 10;
-		memory[11] = 10;
+		memory[0] = input1;
+		memory[1] = input2;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(10 ^ 10);
-
-		memory[10] = 69;
-		memory[11] = 420;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(69 ^ 420);
-
-		memory[10] = -69;
-		memory[11] = 420;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(-69 ^ 420);
-
-		memory[10] = I16_SIGNED_LARGEST_NUMBER;
-		memory[11] = I16_SIGNED_LARGEST_NUMBER;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER ^ I16_SIGNED_LARGEST_NUMBER);
+		expect(memory[4]).toBe(output);
 	});
 });

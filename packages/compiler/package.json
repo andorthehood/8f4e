@@ -6,7 +6,8 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"test": "node --experimental-vm-modules --experimental-wasi-unstable-preview1 ../../node_modules/.bin/jest",
-		"build": "tsc"
+		"build": "tsc",
+		"dev": "tsc --watch"
 	},
 	"repository": {
 		"type": "git",
