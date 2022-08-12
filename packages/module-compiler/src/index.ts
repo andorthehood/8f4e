@@ -71,7 +71,7 @@ export function compileLine(
 	startingByteAddress: number
 ): number[] {
 	if (!instructions[line.instruction]) {
-		throw `Unrecognized instruction: ${line.instruction}`;
+		throw `1001: Unrecognized instruction: '${line.instruction}'`;
 	}
 	return instructions[line.instruction](line, locals, memory, startingByteAddress);
 }
