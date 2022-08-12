@@ -7,7 +7,7 @@
 		"dev": "parcel src/**/*.html --port 3000 --hmr-port 30000",
 		"prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/*/src/**/*.ts'",
 		"eslint": "npx eslint . --ext .ts --fix",
-		"test": "jest",
+		"test": "run test --workspaces --if-present && jest",
 		"prepare": "husky install"
 	},
 	"browserslist": [
