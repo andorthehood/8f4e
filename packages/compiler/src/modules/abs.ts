@@ -16,8 +16,7 @@ const abs: ModuleGenerator<unknown> = function (moduleId, offset) {
 		
 		# code
 		const out
-		const in
-		load
+		load in
 		load
 		localSet input
 		localGet input

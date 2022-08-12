@@ -10,11 +10,9 @@ const bitwiseXor: ModuleGenerator = function (moduleId, offset) {
 		output out 0
 		
 		const out
-		const in:1
+		load in:1
 		load
-		load
-		const in:2
-		load
+		load in:2
 		load
 		xor
 		store`,
