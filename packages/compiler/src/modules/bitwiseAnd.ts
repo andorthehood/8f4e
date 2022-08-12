@@ -15,7 +15,7 @@ const bitwiseAnd: ModuleGenerator<unknown> = function (moduleId, offset) {
 		load
 		const in:2
 		load
-		loa3
+		load
 		and
 		store`,
 		moduleId,

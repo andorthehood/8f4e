@@ -5,10 +5,10 @@ import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(bitwiseAnd('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
+	expect(bitwiseAnd('id', { byte: nthWord => nthWord * 4, word: nthWord => nthWord })).toMatchSnapshot();
 });
 
-const fixtures = [
+const fixtures: [input1: number, input2: number, output: number][] = [
 	[10, 10, 10 & 10],
 	[69, 420, 69 & 420],
 	[-69, 420, -69 & 420],
