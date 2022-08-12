@@ -17,6 +17,8 @@ import inputPointer from './inputPointer';
 import output from './output';
 import local from './local';
 import _public from './public';
+import greaterOrEqual from './greaterOrEqual';
+import add from './add';
 
 export default {
 	and,
@@ -38,4 +40,6 @@ export default {
 	output,
 	local,
 	public: _public,
+	greaterOrEqual,
+	add,
 };
