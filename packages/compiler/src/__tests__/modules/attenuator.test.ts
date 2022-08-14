@@ -1,10 +1,11 @@
 import { createTestModule } from '../../testUtils';
-import abs, { Memory } from '../../modules/attenuator';
+import abs from '../../modules/attenuator.asm';
+import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(abs('id', { byte: nthWord => nthWord * 4, word: nthWord => nthWord })).toMatchSnapshot();
+	expect(compile(abs, 'id', 0)).toMatchSnapshot();
 });
 
 const fixtures: [dividend: number, divisor: number, quotient: number][] = [
@@ -31,9 +32,9 @@ describe('functional tests', () => {
 
 	test.each(fixtures)('given %p as dividend and %p as divisor, returns %p', (dividend, divisor, quotient) => {
 		const { memory, test } = testModule;
-		memory[Memory.ZERO] = dividend;
-		memory[Memory.DIVISOR] = divisor;
+		memory[0] = dividend;
+		memory[2] = divisor;
 		test();
-		expect(memory[Memory.OUT]).toBe(quotient);
+		expect(memory[3]).toBe(quotient);
 	});
 });

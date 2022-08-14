@@ -1,10 +1,11 @@
 import { createTestModule } from '../../testUtils';
-import abs from '../../modules/abs';
+import abs from '../../modules/abs.asm';
+import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(abs('id', { byte: nthWord => nthWord * 4, word: nthWord => nthWord })).toMatchSnapshot();
+	expect(compile(abs, 'id', 0)).toMatchSnapshot();
 });
 
 const fixtures: [input: number, output: number][] = [
