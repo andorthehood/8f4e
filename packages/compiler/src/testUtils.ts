@@ -9,6 +9,7 @@ import {
 	createMemoryImport,
 	FunctionBody,
 } from '@8f4e/bytecode-utils';
+import { compile } from '@8f4e/module-compiler';
 import { getInitialMemory, ModuleGenerator } from '.';
 import { CompiledModule } from './types';
 
@@ -35,10 +36,17 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 }
 
 export async function createTestModule(
-	moduleCreator: ModuleGenerator<unknown>,
+	moduleCreator: ModuleGenerator | string,
 	initialConfig = {}
 ): Promise<{ memory: Int32Array; test: CallableFunction; reset: () => void }> {
-	const module = moduleCreator('test', { byte: nthWord => nthWord * 4, word: nthWord => nthWord }, initialConfig);
+	let module;
+
+	if (typeof moduleCreator === 'function') {
+		module = moduleCreator('test', { byte: nthWord => nthWord * 4, word: nthWord => nthWord }, initialConfig);
+	} else {
+		module = compile(moduleCreator, 'test', 0);
+	}
+
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
