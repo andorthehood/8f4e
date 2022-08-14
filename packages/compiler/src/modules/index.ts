@@ -1,9 +1,9 @@
-export { default as abs } from './abs';
+export { default as abs } from './abs.asm';
 export { default as adc } from './adc';
-export { default as attenuator } from './attenuator';
-export { default as bitwiseAnd } from './bitwiseAnd';
-export { default as bitwiseOr } from './bitwiseOr';
-export { default as bitwiseXor } from './bitwiseXor';
+export { default as attenuator } from './attenuator.asm';
+export { default as bitwiseAnd } from './bitwiseAnd.asm';
+export { default as bitwiseOr } from './bitwiseOr.asm';
+export { default as bitwiseXor } from './bitwiseXor.asm';
 export { default as clockGenerator } from './clockGenerator';
 export { default as constant } from './constant';
 export { default as cvSequencer } from './cvSequencer';
