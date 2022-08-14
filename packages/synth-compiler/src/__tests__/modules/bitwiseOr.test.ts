@@ -1,11 +1,12 @@
 import { createTestModule } from '../../testUtils';
-import bitwiseOr from '../../modules/bitwiseOr';
+import bitwiseOr from '../../modules/bitwiseOr.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
+import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(bitwiseOr('id', { byte: nthWord => nthWord * 4, word: nthWord => nthWord })).toMatchSnapshot();
+	expect(compile(bitwiseOr, 'id', 0)).toMatchSnapshot();
 });
 
 const fixtures: [input1: number, input2: number, output: number][] = [
