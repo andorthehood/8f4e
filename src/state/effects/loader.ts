@@ -1,4 +1,4 @@
-import { CompiledModule, MemoryBuffer, MemoryTypes } from '@8f4e/compiler';
+import { CompiledModule, MemoryBuffer, MemoryTypes } from '@8f4e/synth-compiler';
 import { EventDispatcher } from '../../events';
 import { State } from '../types';
 
