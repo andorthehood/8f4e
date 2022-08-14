@@ -1,6 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
-import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
-import { Memory } from '@8f4e/compiler/dist/modules/quantizer';
+import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/synth-compiler';
+import { Memory } from '@8f4e/synth-compiler/dist/modules/quantizer';
 import { pianoKeyboard } from '@8f4e/sprite-generator';
 import { Module, ModuleType } from '../../../state/types';
 

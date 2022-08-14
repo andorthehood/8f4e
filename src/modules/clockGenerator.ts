@@ -1,6 +1,6 @@
 import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../state/types';
 import singleSliderModule from './templates/singleSliderModule';
-import { extractState, insertState } from '@8f4e/compiler/dist/modules/clockGenerator';
+import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/clockGenerator';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
 	let { rate } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
