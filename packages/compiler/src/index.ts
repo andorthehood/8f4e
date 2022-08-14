@@ -12,6 +12,7 @@ import {
 	i32store,
 	Type,
 } from '@8f4e/bytecode-utils';
+import { compile as compileModule } from '@8f4e/module-compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
 import { Module, CompiledModule, MemoryAddressLookup } from './types';
@@ -47,7 +48,14 @@ export function compileModules(modules: Module[]): CompiledModule[] {
 		.filter(({ engine }) => moduleCompilers[engine.name])
 		.map(({ id, engine, state }) => {
 			const relative = createRelativeAddressCalculator(memoryAddress, Int32Array.BYTES_PER_ELEMENT);
-			const module = moduleCompilers[engine.name](id, relative, { ...engine.config, ...state });
+
+			let module: CompiledModule;
+			if (typeof moduleCompilers[engine.name] === 'function') {
+				module = moduleCompilers[engine.name](id, relative, { ...engine.config, ...state });
+			} else {
+				module = compileModule(moduleCompilers[engine.name], id, relative.byte(0));
+			}
+
 			memoryAddress += calculateModuleSize(module);
 			return module;
 		});
