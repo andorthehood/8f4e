@@ -1,6 +1,6 @@
 import { int16ToMidiNote } from './midiHelpers';
 import { Event } from './midiEnums';
-import { I16_SIGNED_LARGEST_NUMBER, MemoryBuffer } from '@8f4e/compiler';
+import { I16_SIGNED_LARGEST_NUMBER, MemoryBuffer } from '@8f4e/synth-compiler';
 import { MidiModuleAddresses } from './types';
 
 const wasOn = new Map<string, boolean>();
