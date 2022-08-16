@@ -21,6 +21,8 @@ import greaterOrEqual from './greaterOrEqual';
 import add from './add';
 import greaterThan from './greaterThan';
 import _break from './break';
+import push from './push';
+import pushRef from './pushRef';
 
 export default {
 	and,
@@ -46,4 +48,6 @@ export default {
 	add,
 	greaterThan,
 	break: _break,
+	push,
+	pushRef,
 };
