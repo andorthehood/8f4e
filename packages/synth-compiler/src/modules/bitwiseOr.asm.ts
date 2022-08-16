@@ -7,9 +7,7 @@ export default `
 		
 	const out
 	load in:1
-	load
 	load in:2
-	load
 	or
 	store
 `;

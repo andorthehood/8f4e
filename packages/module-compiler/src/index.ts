@@ -1,9 +1,9 @@
 import { createFunctionBody, createLocalDeclaration, Type } from '@8f4e/bytecode-utils';
 import instructions from './instructions';
-import { AST, Argument, MemoryTypes } from './types';
+import { AST, Argument, MemoryTypes, MemoryMap } from './types';
 import { WORD_LENGTH } from './consts';
 
-export { MemoryTypes } from './types';
+export { MemoryTypes, MemoryMap } from './types';
 
 const memoryKeywords = ['private', 'inputPointer', 'output', 'public'];
 
@@ -67,7 +67,7 @@ export function compileToAST(module: string) {
 export function compileLine(
 	line: AST[number],
 	locals: string[],
-	memory: string[],
+	memory: MemoryMap,
 	startingByteAddress: number
 ): number[] {
 	if (!instructions[line.instruction]) {
@@ -90,7 +90,7 @@ function memoryInstructionNameToEnum(name: string): MemoryTypes {
 	}
 }
 
-function getMemoryMap(ast: AST, startingByteAddress) {
+function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 	const memories = collectMemoryItemNames(ast);
 	return ast
 		.filter(({ instruction }) => {
@@ -100,6 +100,7 @@ function getMemoryMap(ast: AST, startingByteAddress) {
 			return {
 				type: memoryInstructionNameToEnum(instruction),
 				address: index,
+				byteAddress: startingByteAddress + index * WORD_LENGTH,
 				id: args[0].value.toString(),
 				default:
 					args[1].type === 'literal'
@@ -116,11 +117,11 @@ export function compile(
 ): { moduleId: string; functionBody: number[]; byteAddress: number; wordAddress: number; memoryMap } {
 	const ast = compileToAST(module);
 	const locals = collectLocals(ast);
-	const memory = collectMemoryItemNames(ast);
+	const memoryMap = getMemoryMap(ast, startingByteAddress);
 
 	const wa = ast
 		.reduce((acc, line) => {
-			acc.push(compileLine(line, locals, memory, startingByteAddress));
+			acc.push(compileLine(line, locals, memoryMap, startingByteAddress));
 			return acc;
 		}, [] as number[][])
 		.flat();
@@ -130,6 +131,6 @@ export function compile(
 		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
-		memoryMap: getMemoryMap(ast, startingByteAddress),
+		memoryMap,
 	};
 }
