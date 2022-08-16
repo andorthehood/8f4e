@@ -19,7 +19,6 @@ export default `
 	output out 0
 	const out
 	load in
-	load
 	load divisor
 	div
 	store
