@@ -32,24 +32,28 @@ Object {
   "memoryMap": Array [
     Object {
       "address": 0,
+      "byteAddress": 0,
       "default": 0,
       "id": "zero",
       "type": 5,
     },
     Object {
       "address": 1,
+      "byteAddress": 4,
       "default": 0,
       "id": "in",
       "type": 3,
     },
     Object {
       "address": 2,
+      "byteAddress": 8,
       "default": 1,
       "id": "divisor",
       "type": 6,
     },
     Object {
       "address": 3,
+      "byteAddress": 12,
       "default": 0,
       "id": "out",
       "type": 4,
