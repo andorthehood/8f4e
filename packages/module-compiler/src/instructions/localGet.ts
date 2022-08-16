@@ -8,7 +8,7 @@ export default function (line: AST[number], locals: string[]) {
 
 	if (line.arguments[0].type === 'identifier') {
 		if (locals.indexOf(line.arguments[0].value) === -1) {
-			throw `'1003: Undefined identifier: '${line.arguments[0].value}''`;
+			throw `'1003: Undefined identifier: '${line.arguments[0].value}'`;
 		}
 
 		return localGet(locals.indexOf(line.arguments[0].value));

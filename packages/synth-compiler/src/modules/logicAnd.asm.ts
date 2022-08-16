@@ -7,12 +7,10 @@ export default `
 	output out 0
 
 	load in:1
-	load
 	const 0
 	greaterThan
 	if void
 		load in:2
-		load
 		const 0
 		greaterThan
 		if void

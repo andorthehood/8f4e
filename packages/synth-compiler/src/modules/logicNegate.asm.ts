@@ -7,7 +7,6 @@ export default `
 
 	const out
 	load in
-	load
 	const 0
 	greaterThan
 	if

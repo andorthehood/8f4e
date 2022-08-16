@@ -12,7 +12,6 @@ export default `
 	# code
 	const out
 	load in
-	load
 	localSet input
 	localGet input
 	const 0
