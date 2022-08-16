@@ -6,22 +6,22 @@ export default `
 	inputPointer in:2 defaultValue
 	output out 0
 
-	load in:1
-	const 0
+	push in:1
+	push 0
 	greaterThan
 	if void
-		load in:2
-		const 0
+		push in:2
+		push 0
 		greaterThan
 		if void
-			const out
-			const ${I16_SIGNED_LARGEST_NUMBER}
+			pushRef out
+			push ${I16_SIGNED_LARGEST_NUMBER}
 			store
 			break 2
 		end
 	end
 
-	const out
-	const 0
+	pushRef out
+	push 0
 	store
 `;
