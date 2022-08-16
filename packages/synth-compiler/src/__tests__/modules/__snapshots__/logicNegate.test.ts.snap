@@ -4,12 +4,14 @@ exports[`if compiled module matches with snapshot 1`] = `
 Object {
   "byteAddress": 0,
   "functionBody": Array [
-    28,
+    30,
+    1,
     0,
+    127,
     65,
-    0,
+    8,
     65,
-    0,
+    4,
     40,
     2,
     0,
@@ -38,16 +40,17 @@ Object {
     Object {
       "address": 0,
       "default": 0,
+      "id": "defaultValue",
       "type": 5,
     },
     Object {
-      "address": 0,
+      "address": 1,
       "default": 0,
       "id": "in",
       "type": 3,
     },
     Object {
-      "address": 0,
+      "address": 2,
       "default": 0,
       "id": "out",
       "type": 4,
