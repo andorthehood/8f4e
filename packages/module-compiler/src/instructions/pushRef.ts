@@ -2,7 +2,7 @@ import { i32const } from '@8f4e/bytecode-utils';
 import { AST, MemoryMap } from '../types';
 import { getMemoryItemByteAddress, isMemoryIdentifier } from '../utils';
 
-export default function (line: AST[number], locals = [], memory: MemoryMap) {
+export default function pushRef(line: AST[number], locals = [], memory: MemoryMap) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
@@ -13,7 +13,5 @@ export default function (line: AST[number], locals = [], memory: MemoryMap) {
 		}
 
 		return i32const(getMemoryItemByteAddress(memory, line.arguments[0].value));
-	} else {
-		return i32const(line.arguments[0].value);
 	}
 }
