@@ -11,3 +11,11 @@ export enum MemoryTypes {
 	PRIVATE,
 	NUMBER,
 }
+
+export type MemoryMap = Array<{
+	type: MemoryTypes;
+	address: number;
+	byteAddress: number;
+	id: string;
+	default: number;
+}>;

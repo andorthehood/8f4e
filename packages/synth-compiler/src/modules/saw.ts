@@ -28,11 +28,9 @@ const saw: ModuleGenerator<{ rate?: number }> = function (moduleId, offset, { ra
 		local counter
 
 		load in:rate
-		load
 		localSet rate
 
 		load in:limit
-		load
 		localSet limit
 
 		load out
