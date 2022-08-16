@@ -5,14 +5,14 @@ export default `
 	inputPointer in defaultValue
 	output out 0
 
-	const out
-	load in
-	const 0
+	pushRef out
+	push in
+	push 0
 	greaterThan
 	if
-		const 0
+		push 0
 	else 
-		const ${I16_SIGNED_LARGEST_NUMBER}
+		push ${I16_SIGNED_LARGEST_NUMBER}
 	end
 
 	store
