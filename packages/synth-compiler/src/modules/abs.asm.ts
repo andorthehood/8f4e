@@ -10,18 +10,18 @@ export default `
 	local input
 
 	# code
-	const out
-	load in
+	pushRef out
+	push in
 	localSet input
-	localGet input
-	const 0
+	push input
+	push 0
 	lessThan
 	if 
-		const 0
-		localGet input
+		push 0
+		push input
 		sub
 	else
-		localGet input
+		push input
 	end
 	store
 `;
