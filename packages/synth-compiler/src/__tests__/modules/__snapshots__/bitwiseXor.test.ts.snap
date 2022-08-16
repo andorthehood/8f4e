@@ -35,30 +35,35 @@ Object {
   "memoryMap": Array [
     Object {
       "address": 0,
+      "byteAddress": 0,
       "default": 0,
       "id": "default1",
       "type": 5,
     },
     Object {
       "address": 1,
+      "byteAddress": 4,
       "default": 0,
       "id": "default2",
       "type": 5,
     },
     Object {
       "address": 2,
+      "byteAddress": 8,
       "default": 0,
       "id": "in:1",
       "type": 3,
     },
     Object {
       "address": 3,
+      "byteAddress": 12,
       "default": 4,
       "id": "in:2",
       "type": 3,
     },
     Object {
       "address": 4,
+      "byteAddress": 16,
       "default": 0,
       "id": "out",
       "type": 4,
