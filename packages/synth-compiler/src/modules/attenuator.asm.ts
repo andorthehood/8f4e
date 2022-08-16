@@ -17,9 +17,9 @@ export default `
 	inputPointer in zero
 	public divisor 1
 	output out 0
-	const out
-	load in
-	load divisor
+	pushRef out
+	push in
+	push divisor
 	div
 	store
 `;
