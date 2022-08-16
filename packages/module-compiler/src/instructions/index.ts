@@ -19,6 +19,8 @@ import local from './local';
 import _public from './public';
 import greaterOrEqual from './greaterOrEqual';
 import add from './add';
+import greaterThan from './greaterThan';
+import _break from './break';
 
 export default {
 	and,
@@ -42,4 +44,6 @@ export default {
 	public: _public,
 	greaterOrEqual,
 	add,
+	greaterThan,
+	break: _break,
 };
