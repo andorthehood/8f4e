@@ -9,7 +9,7 @@ export { default as constant } from './constant';
 export { default as cvSequencer } from './cvSequencer';
 export { default as invert } from './invert';
 export { default as logicAnd } from './logicAnd.asm';
-export { default as logicNegate } from './logicNegate';
+export { default as logicNegate } from './logicNegate.asm';
 export { default as logicOr } from './logicOr';
 export { default as logicXor } from './logicXor';
 export { default as max } from './max';
