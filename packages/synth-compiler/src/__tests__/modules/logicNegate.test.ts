@@ -1,12 +1,19 @@
 import { createTestModule } from '../../testUtils';
-import negate, { Memory } from '../../modules/logicNegate';
+import negate from '../../modules/logicNegate.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
+import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(negate('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
+	expect(compile(negate, 'id', 0)).toMatchSnapshot();
 });
+
+const fixtures = [
+	[1, 0],
+	[-69, I16_SIGNED_LARGEST_NUMBER],
+	[0, I16_SIGNED_LARGEST_NUMBER],
+];
 
 describe('functional tests', () => {
 	beforeAll(async () => {
@@ -17,19 +24,11 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('negate module', () => {
+	test.each(fixtures)('given %p, the expected result is %p', (input, output) => {
 		const { memory, test } = testModule;
 
-		memory[Memory.DEFAULT_VALUE] = 1;
+		memory[0] = input;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
-
-		memory[Memory.DEFAULT_VALUE] = -69;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
-
-		memory[Memory.DEFAULT_VALUE] = 0;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
+		expect(memory[2]).toBe(output);
 	});
 });
