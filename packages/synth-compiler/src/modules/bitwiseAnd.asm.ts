@@ -5,9 +5,9 @@ export default `
 	inputPointer in:2 default2
 	output out 0
 		
-	const out
-	load in:1
-	load in:2
+	pushRef out
+	push in:1
+	push in:2
 	and
 	store
 `;
