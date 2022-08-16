@@ -15,3 +15,7 @@ export function getMemoryItemByteAddress(memoryMap: MemoryMap, id: string): numb
 export function isInputPointer(memoryMap: MemoryMap, id: string): boolean {
 	return getMemoryItem(memoryMap, id).type === MemoryTypes.INPUT_POINTER;
 }
+
+export function isLocalIdentifier(locals: string[], id: string): boolean {
+	return locals.indexOf(id) !== -1;
+}
