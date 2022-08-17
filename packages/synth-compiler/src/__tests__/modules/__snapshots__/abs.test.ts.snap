@@ -48,6 +48,7 @@ Object {
       "default": 0,
       "id": "DEFAULT_VALUE",
       "type": 5,
+      "usage": 0,
     },
     Object {
       "address": 1,
@@ -55,6 +56,7 @@ Object {
       "default": 0,
       "id": "in",
       "type": 3,
+      "usage": 1,
     },
     Object {
       "address": 2,
@@ -62,6 +64,7 @@ Object {
       "default": 0,
       "id": "out",
       "type": 4,
+      "usage": 0,
     },
   ],
   "moduleId": "id",
