@@ -63,6 +63,7 @@ Object {
       "default": 0,
       "id": "defaultValue",
       "type": 5,
+      "usage": 0,
     },
     Object {
       "address": 1,
@@ -70,6 +71,7 @@ Object {
       "default": 0,
       "id": "in:1",
       "type": 3,
+      "usage": 1,
     },
     Object {
       "address": 2,
@@ -77,6 +79,7 @@ Object {
       "default": 0,
       "id": "in:2",
       "type": 3,
+      "usage": 1,
     },
     Object {
       "address": 3,
@@ -84,6 +87,7 @@ Object {
       "default": 0,
       "id": "out",
       "type": 4,
+      "usage": 0,
     },
   ],
   "moduleId": "id",
