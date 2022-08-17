@@ -1,5 +1,5 @@
 import { i32const, i32load, localGet } from '@8f4e/bytecode-utils';
-import { AST, MemoryMap } from '../types';
+import { ArgumentType, AST, MemoryMap } from '../types';
 import { getMemoryItemByteAddress, isInputPointer, isLocalIdentifier, isMemoryIdentifier } from '../utils';
 
 export default function push(line: AST[number], locals: string[], memory: MemoryMap) {
@@ -9,7 +9,7 @@ export default function push(line: AST[number], locals: string[], memory: Memory
 
 	const argument = line.arguments[0];
 
-	if (argument.type === 'identifier') {
+	if (argument.type === ArgumentType.IDENTIFIER) {
 		if (isMemoryIdentifier(memory, argument.value)) {
 			return [
 				...i32const(getMemoryItemByteAddress(memory, argument.value)),
@@ -21,7 +21,7 @@ export default function push(line: AST[number], locals: string[], memory: Memory
 		}
 	}
 
-	if (argument.type === 'literal') {
+	if (argument.type === ArgumentType.LITERAL) {
 		return i32const(argument.value);
 	}
 }

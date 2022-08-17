@@ -1,5 +1,5 @@
 import { i32const, i32load } from '@8f4e/bytecode-utils';
-import { AST, MemoryMap } from '../types';
+import { ArgumentType, AST, MemoryMap } from '../types';
 import { getMemoryItemByteAddress, isInputPointer, isMemoryIdentifier } from '../utils';
 
 export default function load(line: AST[number], locals: string[], memory: MemoryMap) {
@@ -7,7 +7,7 @@ export default function load(line: AST[number], locals: string[], memory: Memory
 		return i32load();
 	}
 
-	if (line.arguments[0].type === 'identifier') {
+	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
 		if (!isMemoryIdentifier(memory, line.arguments[0].value)) {
 			throw `'1003: Unidentified identifier: '${line.arguments[0].value}'`;
 		}
