@@ -1,7 +1,8 @@
 import { createFunctionBody, createLocalDeclaration, Type } from '@8f4e/bytecode-utils';
 import instructions from './instructions';
-import { AST, Argument, MemoryTypes, MemoryMap } from './types';
+import { AST, Argument, MemoryTypes, MemoryMap, ArgumentType } from './types';
 import { WORD_LENGTH } from './consts';
+import localSet from './instructions/localSet';
 
 export { MemoryTypes, MemoryMap } from './types';
 
@@ -9,8 +10,8 @@ const memoryKeywords = ['private', 'inputPointer', 'output', 'public'];
 
 function parseArgument(argument: string): Argument {
 	return /^[0-9]+$/.test(argument)
-		? { value: parseInt(argument, 10), type: 'literal' }
-		: { value: argument, type: 'identifier' };
+		? { value: parseInt(argument, 10), type: ArgumentType.LITERAL }
+		: { value: argument, type: ArgumentType.IDENTIFIER };
 }
 
 function parseLine(line: string): AST[number] {
@@ -106,6 +107,34 @@ function countUsage(ast: AST, identifier: string): number {
 	}, 0);
 }
 
+function findLastIndex<T>(array: Array<T>, predicate: (item?: T, index?: number, array?: Array<T>) => boolean): number {
+	let index = array.length;
+	while (index--) {
+		if (predicate(array[index], index, array)) {
+			return index;
+		}
+	}
+	return 0;
+}
+
+function addLocalsForOverlyUsedMemories(memoryMap: MemoryMap, ast: AST): void {
+	const overused = memoryMap.filter(({ usage }) => usage > 1);
+	overused.forEach(({ id }) => {
+		const index = findLastIndex(ast, item => {
+			return memoryKeywords.includes(item.instruction);
+		});
+		ast.splice(
+			index,
+			0,
+			...[
+				{ instruction: 'local', arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument] },
+				{ instruction: 'push', arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument] },
+				{ instruction: 'localSet', arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument] },
+			]
+		);
+	});
+}
+
 function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 	const memories = collectMemoryItemNames(ast);
 	return ast
@@ -133,8 +162,8 @@ export function compile(
 	startingByteAddress: number
 ): { moduleId: string; functionBody: number[]; byteAddress: number; wordAddress: number; memoryMap } {
 	const ast = compileToAST(module);
-	const locals = collectLocals(ast);
 	const memoryMap = getMemoryMap(ast, startingByteAddress);
+	const locals = collectLocals(ast);
 
 	const wa = ast
 		.reduce((acc, line) => {
