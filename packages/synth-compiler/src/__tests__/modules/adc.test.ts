@@ -1,35 +1,34 @@
 import { createTestModule } from '../../testUtils';
-import adc, { Memory } from '../../modules/adc';
+import adc from '../../modules/adc';
 import { LOGIC_HIGH } from '../../consts';
+import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(adc('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
+	expect(compile(adc(), 'id', 0)).toMatchSnapshot();
 });
+
+const fixtures = [
+	[3000, LOGIC_HIGH],
+	[2000, LOGIC_HIGH],
+	[3000, LOGIC_HIGH],
+];
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(adc, { resolution: 8 });
+		testModule = await createTestModule(adc(), { resolution: 8 });
 	});
 
 	beforeEach(() => {
 		testModule.reset();
 	});
 
-	test('adc module', () => {
+	test.each(fixtures)('given %p the output should be %p', (input, output) => {
 		const { memory, test } = testModule;
 
-		memory[Memory.DEFAULT_VALUE] = 3000;
+		memory[0] = input;
 		test();
-		expect(memory[Memory.OUTPUT_1]).toBe(LOGIC_HIGH);
-
-		memory[Memory.DEFAULT_VALUE] = 2000;
-		test();
-		expect(memory[Memory.OUTPUT_1]).toBe(LOGIC_HIGH);
-
-		memory[Memory.DEFAULT_VALUE] = 3000;
-		test();
-		expect(memory[Memory.OUTPUT_1]).toBe(LOGIC_HIGH);
+		expect(memory[2]).toBe(output);
 	});
 });
