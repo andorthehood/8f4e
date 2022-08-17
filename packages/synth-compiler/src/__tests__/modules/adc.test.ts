@@ -1,5 +1,5 @@
 import { createTestModule } from '../../testUtils';
-import adc from '../../modules/adc';
+import adc from '../../modules/adc.asm';
 import { LOGIC_HIGH } from '../../consts';
 import { compile } from '@8f4e/module-compiler';
 
