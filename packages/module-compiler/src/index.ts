@@ -90,6 +90,22 @@ function memoryInstructionNameToEnum(name: string): MemoryTypes {
 	}
 }
 
+function countUsage(ast: AST, identifier: string): number {
+	return ast.reduce((acc, line) => {
+		if (line.instruction !== 'push') {
+			return acc;
+		}
+		if (
+			line.arguments.some(({ value }) => {
+				return value === identifier;
+			})
+		) {
+			return acc + 1;
+		}
+		return acc;
+	}, 0);
+}
+
 function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 	const memories = collectMemoryItemNames(ast);
 	return ast
@@ -102,6 +118,7 @@ function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 				address: index,
 				byteAddress: startingByteAddress + index * WORD_LENGTH,
 				id: args[0].value.toString(),
+				usage: countUsage(ast, args[0].value.toString()),
 				default:
 					args[1].type === 'literal'
 						? args[1].value
