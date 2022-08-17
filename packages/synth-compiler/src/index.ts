@@ -49,11 +49,13 @@ export function compileModules(modules: Module[]): CompiledModule[] {
 		.map(({ id, engine, state }) => {
 			const relative = createRelativeAddressCalculator(memoryAddress, Int32Array.BYTES_PER_ELEMENT);
 
-			let module: CompiledModule;
-			if (typeof moduleCompilers[engine.name] === 'function') {
+			let module: CompiledModule = moduleCompilers[engine.name];
+			if (typeof module === 'function') {
 				module = moduleCompilers[engine.name](id, relative, { ...engine.config, ...state });
-			} else {
-				module = compileModule(moduleCompilers[engine.name], id, relative.byte(0));
+			}
+
+			if (typeof module === 'string') {
+				module = compileModule(module, id, relative.byte(0));
 			}
 
 			memoryAddress += calculateModuleSize(module);
