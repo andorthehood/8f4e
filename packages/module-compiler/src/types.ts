@@ -1,4 +1,9 @@
-export type Argument = { type: 'literal'; value: number } | { type: 'identifier'; value: string };
+export const enum ArgumentType {
+	LITERAL = 'literal',
+	IDENTIFIER = 'identifier',
+}
+
+export type Argument = { type: ArgumentType.LITERAL; value: number } | { type: ArgumentType.IDENTIFIER; value: string };
 
 export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
 
@@ -18,4 +23,5 @@ export type MemoryMap = Array<{
 	byteAddress: number;
 	id: string;
 	default: number;
+	usage: number;
 }>;

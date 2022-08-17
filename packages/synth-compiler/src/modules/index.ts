@@ -1,5 +1,5 @@
 export { default as abs } from './abs.asm';
-export { default as adc } from './adc';
+export { default as adc } from './adc.asm';
 export { default as attenuator } from './attenuator.asm';
 export { default as bitwiseAnd } from './bitwiseAnd.asm';
 export { default as bitwiseOr } from './bitwiseOr.asm';
