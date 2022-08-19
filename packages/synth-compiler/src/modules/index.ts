@@ -19,7 +19,7 @@ export { default as offset } from './offset';
 export { default as quantizer } from './quantizer';
 export { default as random } from './random';
 export { default as sampleAndHold } from './sampleAndHold';
-export { default as saw } from './saw';
+export { default as saw } from './saw.asm';
 export { default as scope } from './scope';
 export { default as sequentialSwitch } from './sequentialSwitch';
 export { default as splitter } from './splitter';
