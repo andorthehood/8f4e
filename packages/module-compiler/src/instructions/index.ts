@@ -23,6 +23,7 @@ import greaterThan from './greaterThan';
 import _break from './break';
 import push from './push';
 import pushRef from './pushRef';
+import block from './block';
 
 export default {
 	and,
@@ -50,4 +51,5 @@ export default {
 	break: _break,
 	push,
 	pushRef,
+	block,
 };
