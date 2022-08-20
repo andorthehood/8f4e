@@ -1,12 +1,21 @@
 import { createTestModule } from '../../testUtils';
-import xor, { Memory } from '../../modules/logicXor';
+import xor from '../../modules/logicXor.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
+import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(xor('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
+	expect(compile(xor, 'id', 0)).toMatchSnapshot();
 });
+
+const fixtures = [
+	[10, 10, 0],
+	[0, 10, I16_SIGNED_LARGEST_NUMBER],
+	[10, 0, I16_SIGNED_LARGEST_NUMBER],
+	[0, 0, 0],
+	[-10, 0, 0],
+];
 
 describe('functional tests', () => {
 	beforeAll(async () => {
@@ -17,35 +26,15 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('or module', () => {
+	test.each(fixtures)('given %p and %p, the expected output is %p', (a, b, output) => {
 		const { memory, test } = testModule;
 
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
+		memory[1] = 10 * memory.BYTES_PER_ELEMENT;
+		memory[2] = 11 * memory.BYTES_PER_ELEMENT;
 
-		memory[10] = 10;
-		memory[11] = 10;
+		memory[10] = a;
+		memory[11] = b;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
-
-		memory[10] = 0;
-		memory[11] = 10;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
-
-		memory[10] = 10;
-		memory[11] = 0;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(I16_SIGNED_LARGEST_NUMBER);
-
-		memory[10] = 0;
-		memory[11] = 0;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
-
-		memory[10] = -10;
-		memory[11] = 0;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[3]).toBe(output);
 	});
 });
