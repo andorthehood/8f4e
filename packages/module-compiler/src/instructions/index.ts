@@ -25,6 +25,7 @@ import branchIfTrue from './branchIfTrue';
 import push from './push';
 import pushRef from './pushRef';
 import block from './block';
+import lessOrEqual from './lessOrEqual';
 
 export default {
 	and,
@@ -54,4 +55,5 @@ export default {
 	push,
 	pushRef,
 	block,
+	lessOrEqual,
 };
