@@ -20,7 +20,8 @@ import _public from './public';
 import greaterOrEqual from './greaterOrEqual';
 import add from './add';
 import greaterThan from './greaterThan';
-import _break from './break';
+import branch from './branch';
+import branchIfTrue from './branchIfTrue';
 import push from './push';
 import pushRef from './pushRef';
 import block from './block';
@@ -48,7 +49,8 @@ export default {
 	greaterOrEqual,
 	add,
 	greaterThan,
-	break: _break,
+	branch,
+	branchIfTrue,
 	push,
 	pushRef,
 	block,
