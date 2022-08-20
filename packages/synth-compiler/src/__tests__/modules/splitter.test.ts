@@ -1,11 +1,18 @@
 import { createTestModule } from '../../testUtils';
-import splitter from '../../modules/splitter';
+import splitter from '../../modules/splitter.asm';
+import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(splitter('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
+	expect(compile(splitter, 'id', 0)).toMatchSnapshot();
 });
+
+const fixtures = [
+	[1, 1],
+	[69, 69],
+	[420, 420],
+];
 
 describe('functional tests', () => {
 	beforeAll(async () => {
@@ -16,30 +23,16 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('splitter module', () => {
+	test.each(fixtures)('given %p as input, all the outputs should be %p', (input, output) => {
 		const { memory, test } = testModule;
 
 		memory[1] = 10 * memory.BYTES_PER_ELEMENT;
 
-		memory[10] = 1;
+		memory[10] = input;
 		test();
-		expect(memory[2]).toBe(1);
-		expect(memory[3]).toBe(1);
-		expect(memory[4]).toBe(1);
-		expect(memory[5]).toBe(1);
-
-		memory[10] = 69;
-		test();
-		expect(memory[2]).toBe(69);
-		expect(memory[3]).toBe(69);
-		expect(memory[4]).toBe(69);
-		expect(memory[5]).toBe(69);
-
-		memory[10] = 420;
-		test();
-		expect(memory[2]).toBe(420);
-		expect(memory[3]).toBe(420);
-		expect(memory[4]).toBe(420);
-		expect(memory[5]).toBe(420);
+		expect(memory[2]).toBe(output);
+		expect(memory[3]).toBe(output);
+		expect(memory[4]).toBe(output);
+		expect(memory[5]).toBe(output);
 	});
 });

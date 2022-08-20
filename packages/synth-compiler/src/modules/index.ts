@@ -22,7 +22,7 @@ export { default as sampleAndHold } from './sampleAndHold';
 export { default as saw } from './saw.asm';
 export { default as scope } from './scope';
 export { default as sequentialSwitch } from './sequentialSwitch';
-export { default as splitter } from './splitter';
+export { default as splitter } from './splitter.asm';
 export { default as buffer } from './buffer';
 export { default as triggerSequencer } from './triggerSequencer';
 export { default as triggerToGate } from './triggerToGate';
