@@ -17,7 +17,7 @@ export default `
 			pushRef out
 			push ${I16_SIGNED_LARGEST_NUMBER}
 			store
-			break 2
+			branch 2
 		end
 	end
 
