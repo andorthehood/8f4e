@@ -2,14 +2,16 @@ import { Engine } from '@8f4e/2d-engine';
 import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/synth-compiler';
 import { Memory } from '@8f4e/synth-compiler/dist/modules/quantizer';
 import { pianoKeyboard } from '@8f4e/sprite-generator';
-import { Module, ModuleType } from '../../../state/types';
+import { Module } from '../../../state/types';
+import { VGRID } from '../consts';
+import { PianoQuantizer } from '../../../modules/pianoQuantizer120';
 
 const octaveWidth = 12 * 16;
 
 export default function pianoDrawer(
 	engine: Engine,
 	module: Module,
-	moduleType: ModuleType,
+	moduleType: PianoQuantizer,
 	memoryAddressLookup: MemoryAddressLookup,
 	memoryBuffer: MemoryBuffer
 ): void {
@@ -28,17 +30,9 @@ export default function pianoDrawer(
 		engine.drawSprite(octaveWidth * i + config.x, config.y, undefined);
 	}
 
-	//engine.setSpriteLookup(pianoKeyboard(true));
+	engine.setSpriteLookup(pianoKeyboard(true));
 
-	// for (let i = 0; i < activeNotes.length; i++) {
-	// 	engine.drawSprite(
-	// 		keyPositions[int16ToMidiNote(activeNotes[i])] + config.x,
-	// 		config.y,
-	// 		int16ToMidiNote(activeNotes[i])
-	// 	);
-	// }
-
-	//engine.setSpriteLookup(pianoKeyboard(false, true));
-
-	//engine.drawSprite(keyPositions[int16ToMidiNote(outValue)] + config.x, config.y, int16ToMidiNote(outValue));
+	for (let i = 0; i < activeNotes.length; i++) {
+		engine.drawSprite(2 * VGRID * moduleType.precalculatedValues.notes.get(activeNotes[i]) + config.x, config.y, 2);
+	}
 }

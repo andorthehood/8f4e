@@ -20,10 +20,16 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
-export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
+interface PrecalculatedValues {
+	notes: Map<number, number>;
+}
+
+export type PianoQuantizer = ModuleType<Config, PrecalculatedValues>;
+
+export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): PianoQuantizer {
 	const width = MODULE_WIDTH_XXL * vGrid;
 	const height = MODULE_HEIGHT_S * hGrid;
-	const pianoX = vGrid * 2;
+	const pianoX = vGrid * 5;
 	const pianoY = hGrid * 3;
 	const keyCount = 128;
 
@@ -51,6 +57,9 @@ export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): 
 		},
 		engine: { name: 'quantizer', config: { allocatedNotes: 32 } },
 		height,
+		precalculatedValues: {
+			notes: new Map(new Array(127).fill(0).map((item, index) => [midiNoteToInt16(index), index])),
+		},
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],

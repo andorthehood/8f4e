@@ -9,6 +9,7 @@ import { State } from '../../../state/types';
 import { Engine } from '@8f4e/2d-engine';
 import drawSteppers from './steppers';
 import drawLines from './lines';
+import drawButtonHitArea from './drawButtonHitArea';
 
 export default function drawModules(engine: Engine, state: State): void {
 	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.viewport;
@@ -17,7 +18,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, type, id } = state.modules[i];
-		const { width, height, name, sliders, steppers, lines, drawer } = state.moduleTypes[type];
+		const { width, height, name, sliders, steppers, lines, drawer, buttons } = state.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -58,6 +59,10 @@ export default function drawModules(engine: Engine, state: State): void {
 					state.compiler.memoryAddressLookup,
 					state.compiler.memoryBuffer
 				);
+			}
+
+			if (state.isDebugMode) {
+				drawButtonHitArea(engine, buttons);
 			}
 
 			engine.endGroup();
