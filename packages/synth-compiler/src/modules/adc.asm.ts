@@ -7,6 +7,10 @@ const masks = [
 	0b1000000000000000,
 ];
 
+export interface Config {
+	resolution: number;
+}
+
 export default (moduleId = '', offset = '', { resolution = 8 } = {}) => `
 	# adc module
 
