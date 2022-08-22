@@ -81,7 +81,7 @@ export interface Drawer {
 	config: Record<string, number | string>;
 }
 
-export interface ModuleType<EngineConfig = unknown> extends Size {
+export interface ModuleType<EngineConfig = unknown, PrecalculatedValues = unknown> extends Size {
 	category: string;
 	drawer?: Drawer;
 	engine: {
@@ -96,6 +96,7 @@ export interface ModuleType<EngineConfig = unknown> extends Size {
 	sliders: Slider[];
 	steppers: Stepper[];
 	buttons: Button[];
+	precalculatedValues?: PrecalculatedValues;
 	extractState?: ModuleStateExtractor<ModuleState>;
 	insertState?: ModuleStateInserter<ModuleState>;
 }
