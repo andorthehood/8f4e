@@ -22,6 +22,7 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 
 interface PrecalculatedValues {
 	notes: Map<number, number>;
+	keyNumbers: Map<number, number>;
 }
 
 export type PianoQuantizer = ModuleType<Config, PrecalculatedValues>;
@@ -59,6 +60,7 @@ export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): 
 		height,
 		precalculatedValues: {
 			notes: new Map(new Array(127).fill(0).map((item, index) => [midiNoteToInt16(index), index])),
+			keyNumbers: new Map(new Array(127).fill(0).map((item, index) => [midiNoteToInt16(index), index % 12])),
 		},
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
