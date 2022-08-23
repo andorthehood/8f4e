@@ -120,7 +120,7 @@ export const lookup = function (isHighlighted = false, isRed = false): SpriteLoo
 				x: offsetX,
 				y: offsetY,
 				spriteWidth: orderedKeys.length * 16,
-				spriteHeight: 76,
+				spriteHeight: 80,
 			};
 		}
 
@@ -129,7 +129,7 @@ export const lookup = function (isHighlighted = false, isRed = false): SpriteLoo
 				x: offsetX + 16 * orderedKeys.length + key * 16,
 				y: offsetY,
 				spriteWidth: 16,
-				spriteHeight: 76,
+				spriteHeight: 80,
 			};
 		}
 
@@ -138,7 +138,7 @@ export const lookup = function (isHighlighted = false, isRed = false): SpriteLoo
 				x: offsetX + 16 * orderedKeys.length * 2 + key * 16,
 				y: offsetY,
 				spriteWidth: 16,
-				spriteHeight: 76,
+				spriteHeight: 80,
 			};
 		}
 	};
