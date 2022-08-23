@@ -76,14 +76,14 @@ export interface Line extends Position, Size {
 	color?: string;
 }
 
-export interface Drawer {
+export interface Drawer<DrawerConfig> {
 	name: string;
-	config: Record<string, number | string>;
+	config: DrawerConfig;
 }
 
-export interface ModuleType<EngineConfig = unknown, PrecalculatedValues = unknown> extends Size {
+export interface ModuleType<EngineConfig = unknown, DrawerConfig = unknown> extends Size {
 	category: string;
-	drawer?: Drawer;
+	drawer?: Drawer<DrawerConfig>;
 	engine: {
 		name: string;
 		config: EngineConfig;
@@ -96,7 +96,6 @@ export interface ModuleType<EngineConfig = unknown, PrecalculatedValues = unknow
 	sliders: Slider[];
 	steppers: Stepper[];
 	buttons: Button[];
-	precalculatedValues?: PrecalculatedValues;
 	extractState?: ModuleStateExtractor<ModuleState>;
 	insertState?: ModuleStateInserter<ModuleState>;
 }

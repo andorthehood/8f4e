@@ -18,7 +18,7 @@ export default function pianoDrawer(
 	engine.setSpriteLookup(pianoKeyboard());
 
 	const moduleAddress = memoryAddressLookup[module.id].__startAddress;
-	const config: { x: number; y: number; keyCount: number } = moduleType.drawer.config;
+	const config = moduleType.drawer.config;
 	const outAddress = moduleAddress + Memory.OUTPUT;
 	const notesAddress = moduleAddress + Memory.FIRST_NOTE;
 	const numberOfNotesAddress = moduleAddress + Memory.NUMBER_OF_NOTES;
@@ -34,17 +34,13 @@ export default function pianoDrawer(
 
 	for (let i = 0; i < activeNotes.length; i++) {
 		engine.drawSprite(
-			2 * VGRID * moduleType.precalculatedValues.notes.get(activeNotes[i]) + config.x,
+			2 * VGRID * config.notes.get(activeNotes[i]) + config.x,
 			config.y,
-			moduleType.precalculatedValues.keyNumbers.get(activeNotes[i])
+			config.keyNumbers.get(activeNotes[i])
 		);
 	}
 
 	engine.setSpriteLookup(pianoKeyboard(false, true));
 
-	engine.drawSprite(
-		2 * VGRID * moduleType.precalculatedValues.notes.get(outValue) + config.x,
-		config.y,
-		moduleType.precalculatedValues.keyNumbers.get(outValue)
-	);
+	engine.drawSprite(2 * VGRID * config.notes.get(outValue) + config.x, config.y, config.keyNumbers.get(outValue));
 }
