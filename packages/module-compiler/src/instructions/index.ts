@@ -26,6 +26,9 @@ import push from './push';
 import pushRef from './pushRef';
 import block from './block';
 import lessOrEqual from './lessOrEqual';
+import mul from './mul';
+import loop from './loop';
+import loopEnd from './loopEnd';
 
 export default {
 	and,
@@ -56,4 +59,7 @@ export default {
 	pushRef,
 	block,
 	lessOrEqual,
+	mul,
+	loop,
+	loopEnd,
 };
