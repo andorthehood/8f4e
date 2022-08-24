@@ -10,9 +10,17 @@ const enum State {
 	HIGHLIGHTED,
 }
 
+const backgroundColor = 'rgba(136,126,203,255)';
+const whiteKeyColor = 'rgba(255,255,255,255)';
+const blackKeyColor = 'rgba(0,0,0,255)';
+const highlightColor = '#6abfc6';
+const pressedColor = '#50459b';
+
 function whiteKeyLeft(state: State): DrawingCommand[] {
 	return [
-		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		state === State.PRESSED
+			? [Command.FILL_COLOR, pressedColor]
+			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
 		...drawCharacterMatrix(icons, 8, 16, [
 			[Icon.FILL, Icon.THICK_LINE_LEFT],
 			[Icon.FILL, Icon.THICK_LINE_LEFT],
@@ -24,7 +32,9 @@ function whiteKeyLeft(state: State): DrawingCommand[] {
 
 function blackKey(state: State): DrawingCommand[] {
 	return [
-		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
+		state === State.PRESSED
+			? [Command.FILL_COLOR, pressedColor]
+			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : blackKeyColor],
 		...drawCharacterMatrix(icons, 8, 16, [
 			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
 			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
@@ -36,7 +46,9 @@ function blackKey(state: State): DrawingCommand[] {
 
 function whiteKeyMiddle(state: State): DrawingCommand[] {
 	return [
-		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		state === State.PRESSED
+			? [Command.FILL_COLOR, pressedColor]
+			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
 		...drawCharacterMatrix(icons, 8, 16, [
 			[Icon.THICK_LINE_RIGHT, Icon.THICK_LINE_LEFT],
 			[Icon.THICK_LINE_RIGHT, Icon.THICK_LINE_LEFT],
@@ -48,7 +60,9 @@ function whiteKeyMiddle(state: State): DrawingCommand[] {
 
 function whiteKeyRight(state: State): DrawingCommand[] {
 	return [
-		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		state === State.PRESSED
+			? [Command.FILL_COLOR, pressedColor]
+			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
 		...drawCharacterMatrix(icons, 8, 16, [
 			[Icon.THICK_LINE_RIGHT, Icon.FILL],
 			[Icon.THICK_LINE_RIGHT, Icon.FILL],
@@ -87,9 +101,7 @@ function stringToCharCodeArray(str: string): number[] {
 function drawPianoKeyboard(state: State): DrawingCommand[] {
 	return [
 		[Command.SAVE],
-		state === State.HIGHLIGHTED
-			? [Command.FILL_COLOR, 'rgba(255,0,0,255)']
-			: [Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		[Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
 		...drawCharacterMatrix(font, 8, 16, [stringToCharCodeArray('C C#D D#E F F#G G#A A#B')]),
 		[Command.TRANSLATE, 0, 16],
 		...(orderedKeys
@@ -103,7 +115,7 @@ export default function generate(): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
-		[Command.FILL_COLOR, 'rgba(136,126,203,255)'],
+		[Command.FILL_COLOR, backgroundColor],
 		[Command.RECTANGLE, 0, 0, orderedKeys.length * 16 * 3, 80],
 		...drawPianoKeyboard(State.NORMAL),
 		[Command.TRANSLATE, 16 * orderedKeys.length, 0],
