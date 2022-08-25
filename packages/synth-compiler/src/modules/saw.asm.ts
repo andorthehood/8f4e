@@ -19,7 +19,7 @@ export default `
 	inputPointer in:rate rate
 	inputPointer in:limit LIMIT_SELF
 	output out 0
-		
+
 	local _rate
 	local limit
 	local counter
