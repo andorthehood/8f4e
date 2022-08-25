@@ -4,7 +4,7 @@ const fixture = `
 # abs module
 
 # memory
-private DEFAULT_VALUE 0
+private DEFAULT_VALUE -1
 inputPointer in:1 DEFAULT_VALUE
 output out 0
 
