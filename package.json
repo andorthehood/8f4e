@@ -44,7 +44,8 @@
 		"prettier": "2.5.1",
 		"puppeteer": "9.1.1",
 		"ts-jest": "27.1.2",
-		"typescript": "4.7.4"
+		"typescript": "4.7.4",
+		"wabt": "^1.0.29"
 	},
 	"workspaces": [
 		"packages/bytecode-utils",
@@ -60,8 +61,8 @@
 	},
 	"dependencies": {
 		"@8f4e/2d-engine": "file:packages/2d-engine",
-		"@8f4e/synth-compiler": "file:packages/synth-compiler",
 		"@8f4e/sprite-generator": "file:packages/sprite-generator",
+		"@8f4e/synth-compiler": "file:packages/synth-compiler",
 		"@8f4e/worker": "file:packages/worker",
 		"buffer": "5.7.1"
 	}
