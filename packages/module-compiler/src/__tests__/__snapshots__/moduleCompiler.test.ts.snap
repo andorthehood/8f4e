@@ -10,7 +10,7 @@ Array [
       },
       Object {
         "type": "literal",
-        "value": 0,
+        "value": -1,
       },
     ],
     "instruction": "private",
@@ -40,6 +40,23 @@ Array [
       },
     ],
     "instruction": "output",
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "arr",
+      },
+      Object {
+        "type": "literal",
+        "value": 32,
+      },
+      Object {
+        "type": "literal",
+        "value": -1,
+      },
+    ],
+    "instruction": "array",
   },
   Object {
     "arguments": Array [

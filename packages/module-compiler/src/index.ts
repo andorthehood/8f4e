@@ -2,7 +2,6 @@ import { createFunctionBody, createLocalDeclaration, Type } from '@8f4e/bytecode
 import instructions from './instructions';
 import { AST, Argument, MemoryTypes, MemoryMap, ArgumentType } from './types';
 import { WORD_LENGTH } from './consts';
-import localSet from './instructions/localSet';
 
 export { MemoryTypes, MemoryMap } from './types';
 
@@ -16,7 +15,7 @@ function parseArgument(argument: string): Argument {
 
 function parseLine(line: string): AST[number] {
 	// @ts-ignore
-	const [, instruction, ...args] = line.match(/\s*(\S+)\s*(\S*)\s*(\S*)/);
+	const [, instruction, ...args] = line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/);
 
 	return {
 		instruction,
