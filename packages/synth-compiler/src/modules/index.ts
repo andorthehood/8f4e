@@ -16,7 +16,7 @@ export { default as max } from './max';
 export { default as min } from './min';
 export { default as mixer } from './mixer';
 export { default as offset } from './offset';
-export { default as quantizer } from './quantizer';
+export { default as quantizer } from './quantizer.asm';
 export { default as random } from './random';
 export { default as sampleAndHold } from './sampleAndHold';
 export { default as saw } from './saw.asm';

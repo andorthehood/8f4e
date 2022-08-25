@@ -85,7 +85,7 @@ function memoryInstructionNameToEnum(name: string): MemoryTypes {
 		case 'output':
 			return MemoryTypes.OUTPUT;
 		case 'array':
-			return MemoryTypes.ARRAY;
+			return MemoryTypes.DYNAMIC_ARRAY;
 		case 'public':
 		default:
 			return MemoryTypes.NUMBER;
@@ -145,7 +145,7 @@ function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 		})
 		.map(({ instruction, arguments: args }, index) => {
 			const type = memoryInstructionNameToEnum(instruction);
-			const wordSize = type === MemoryTypes.ARRAY ? (args[1].value as number) : 1;
+			const wordSize = type === MemoryTypes.DYNAMIC_ARRAY ? (args[1].value as number) : 1;
 			const wordAddress = addressCounter;
 			addressCounter += wordSize;
 
@@ -157,7 +157,7 @@ function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 				id: args[0].value.toString(),
 				usage: countUsage(ast, args[0].value.toString()),
 				default:
-					type === MemoryTypes.ARRAY
+					type === MemoryTypes.DYNAMIC_ARRAY
 						? new Array(wordSize).fill(args[2].value)
 						: args[1].type === 'literal'
 						? args[1].value

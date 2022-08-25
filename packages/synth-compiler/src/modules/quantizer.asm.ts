@@ -39,10 +39,10 @@ export interface Config {
 	allocatedNotes?: number;
 }
 
-export default ({ allocatedNotes }) => `
+export default ({ allocatedNotes = 12 } = {}) => `
 	inputPointer in 0
 	output out 0
-    public allocatedNotes ${allocatedNotes}
+    private allocatedNotes ${allocatedNotes}
 	public numberOfNotes 0
 	array notes ${allocatedNotes} -1 
 

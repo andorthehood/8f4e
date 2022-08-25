@@ -1,12 +1,7 @@
 import { createTestModule } from '../../testUtils';
 import quantizer from '../../modules/quantizer.asm';
-import { compile } from '@8f4e/module-compiler';
 
 let testModule;
-
-test('if compiled module matches with snapshot', () => {
-	expect(compile(quantizer({ allocatedNotes: 12 }), 'id', 0)).toMatchSnapshot();
-});
 
 const fixtures: [input: number, notes: number[], output: number][] = [
 	[1000, [], 0],
@@ -31,11 +26,19 @@ const fixtures: [input: number, notes: number[], output: number][] = [
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(quantizer({ allocatedNotes: 12 }));
+		testModule = await createTestModule(quantizer());
 	});
 
 	beforeEach(() => {
 		testModule.reset();
+	});
+
+	test('if compiled module matches with snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
 	test('quantizer module', () => {
