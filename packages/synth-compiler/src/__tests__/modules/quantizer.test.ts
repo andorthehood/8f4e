@@ -1,10 +1,11 @@
 import { createTestModule } from '../../testUtils';
-import quantizer, { Memory } from '../../modules/quantizer';
+import quantizer from '../../modules/quantizer.asm';
+import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
 test('if compiled module matches with snapshot', () => {
-	expect(quantizer('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
+	expect(compile(quantizer({ allocatedNotes: 12 }), 'id', 0)).toMatchSnapshot();
 });
 
 const fixtures: [input: number, notes: number[], output: number][] = [
@@ -19,7 +20,9 @@ const fixtures: [input: number, notes: number[], output: number][] = [
 
 	[900, [1000, 500], 1000],
 	[800, [1000, 500], 1000],
-	[400, [1000, 500], 500],
+	[400, [1000, 500, 100], 500],
+	[500, [1000, 500, 100], 500],
+	[600, [1000, 500, 100], 500],
 
 	[-900, [-1000, 500], -1000],
 	[-800, [-1000, 500], -1000],
@@ -28,7 +31,7 @@ const fixtures: [input: number, notes: number[], output: number][] = [
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(quantizer);
+		testModule = await createTestModule(quantizer({ allocatedNotes: 12 }));
 	});
 
 	beforeEach(() => {
@@ -38,22 +41,22 @@ describe('functional tests', () => {
 	test('quantizer module', () => {
 		const { memory, test } = testModule;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[1]).toBe(0);
 	});
 
 	test.each(fixtures)('given %p as input, %p as active notes, the expected output is %p', (input, notes, output) => {
 		const { memory, test } = testModule;
 
-		memory[Memory.INPUT_POINTER] = 100 * memory.BYTES_PER_ELEMENT;
+		memory[0] = 100 * memory.BYTES_PER_ELEMENT;
 
-		memory[Memory.NUMBER_OF_NOTES] = notes.length;
+		memory[3] = notes.length;
 
 		notes.forEach((note, index) => {
-			memory[Memory.FIRST_NOTE + index] = note;
+			memory[4 + index] = note;
 		});
 
 		memory[100] = input;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(output);
+		expect(memory[1]).toBe(output);
 	});
 });
