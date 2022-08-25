@@ -9,7 +9,7 @@ export { MemoryTypes, MemoryMap } from './types';
 const memoryKeywords = ['private', 'inputPointer', 'output', 'public', 'array'];
 
 function parseArgument(argument: string): Argument {
-	return /^[0-9]+$/.test(argument)
+	return /^-?[0-9]+$/.test(argument)
 		? { value: parseInt(argument, 10), type: ArgumentType.LITERAL }
 		: { value: argument, type: ArgumentType.IDENTIFIER };
 }
