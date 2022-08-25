@@ -15,6 +15,7 @@ export enum MemoryTypes {
 	OUTPUT,
 	PRIVATE,
 	NUMBER,
+	ARRAY,
 }
 
 export type MemoryMap = Array<{
@@ -22,6 +23,7 @@ export type MemoryMap = Array<{
 	address: number;
 	byteAddress: number;
 	id: string;
-	default: number;
+	size: number;
+	default: number | number[];
 	usage: number;
 }>;

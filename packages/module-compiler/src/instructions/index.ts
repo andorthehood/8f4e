@@ -29,6 +29,7 @@ import lessOrEqual from './lessOrEqual';
 import mul from './mul';
 import loop from './loop';
 import loopEnd from './loopEnd';
+import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 
 export default {
 	and,
@@ -62,4 +63,5 @@ export default {
 	mul,
 	loop,
 	loopEnd,
+	greaterOrEqualUnsigned,
 };
