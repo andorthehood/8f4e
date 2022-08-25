@@ -6,7 +6,7 @@ import localSet from './instructions/localSet';
 
 export { MemoryTypes, MemoryMap } from './types';
 
-const memoryKeywords = ['private', 'inputPointer', 'output', 'public'];
+const memoryKeywords = ['private', 'inputPointer', 'output', 'public', 'array'];
 
 function parseArgument(argument: string): Argument {
 	return /^[0-9]+$/.test(argument)
@@ -85,6 +85,8 @@ function memoryInstructionNameToEnum(name: string): MemoryTypes {
 			return MemoryTypes.INPUT_POINTER;
 		case 'output':
 			return MemoryTypes.OUTPUT;
+		case 'array':
+			return MemoryTypes.ARRAY;
 		case 'public':
 		default:
 			return MemoryTypes.NUMBER;
@@ -137,19 +139,28 @@ function addLocalsForOverlyUsedMemories(memoryMap: MemoryMap, ast: AST): void {
 
 function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 	const memories = collectMemoryItemNames(ast);
+	let addressCounter = 0;
 	return ast
 		.filter(({ instruction }) => {
 			return memoryKeywords.includes(instruction);
 		})
 		.map(({ instruction, arguments: args }, index) => {
+			const type = memoryInstructionNameToEnum(instruction);
+			const wordSize = type === MemoryTypes.ARRAY ? (args[1].value as number) : 1;
+			const wordAddress = addressCounter;
+			addressCounter += wordSize;
+
 			return {
-				type: memoryInstructionNameToEnum(instruction),
-				address: index,
+				type,
+				address: wordAddress,
+				size: wordSize,
 				byteAddress: startingByteAddress + index * WORD_LENGTH,
 				id: args[0].value.toString(),
 				usage: countUsage(ast, args[0].value.toString()),
 				default:
-					args[1].type === 'literal'
+					type === MemoryTypes.ARRAY
+						? new Array(wordSize).fill(args[2].value)
+						: args[1].type === 'literal'
 						? args[1].value
 						: startingByteAddress + memories.indexOf(args[1].value) * WORD_LENGTH,
 			};
