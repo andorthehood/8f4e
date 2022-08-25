@@ -4,7 +4,7 @@ import { ModuleGeneratorProps, ModuleType, Button } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
-import { Config } from '@8f4e/synth-compiler/dist/modules/quantizer';
+import { Config } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
 
 export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
 	const width = MODULE_WIDTH_M * vGrid;

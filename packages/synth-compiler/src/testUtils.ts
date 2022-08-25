@@ -11,7 +11,8 @@ import {
 } from '@8f4e/bytecode-utils';
 import { compile } from '@8f4e/module-compiler';
 import { getInitialMemory, ModuleGenerator } from '.';
-import { CompiledModule } from './types';
+import { CompiledModule, MemoryMap } from './types';
+import wabt from 'wabt';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -38,8 +39,15 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 export async function createTestModule(
 	moduleCreator: ModuleGenerator | string,
 	initialConfig = {}
-): Promise<{ memory: Int32Array; test: CallableFunction; reset: () => void }> {
-	let module;
+): Promise<{
+	memory: Int32Array;
+	test: CallableFunction;
+	reset: () => void;
+	wat: string;
+	program: Uint8Array;
+	memoryMap: MemoryMap[];
+}> {
+	let module: CompiledModule;
 
 	if (typeof moduleCreator === 'function') {
 		module = moduleCreator('test', { byte: nthWord => nthWord * 4, word: nthWord => nthWord }, initialConfig);
@@ -66,5 +74,12 @@ export async function createTestModule(
 
 	const test = instance.exports.test as CallableFunction;
 
-	return { memory: memoryBuffer, test, reset };
+	const wat: string = await new Promise(resolve => {
+		wabt().then(_wabt => {
+			const module = _wabt.readWasm(program, {});
+			resolve(module.toText({}));
+		});
+	});
+
+	return { memory: memoryBuffer, test, reset, wat, program, memoryMap: module.memoryMap };
 }
