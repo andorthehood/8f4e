@@ -1,13 +1,8 @@
 import { createTestModule } from '../../testUtils';
 import adc from '../../modules/adc.asm';
 import { LOGIC_HIGH } from '../../consts';
-import { compile } from '@8f4e/module-compiler';
 
 let testModule;
-
-test('if compiled module matches with snapshot', () => {
-	expect(compile(adc(), 'id', 0)).toMatchSnapshot();
-});
 
 const fixtures = [
 	[3000, LOGIC_HIGH],
@@ -22,6 +17,14 @@ describe('functional tests', () => {
 
 	beforeEach(() => {
 		testModule.reset();
+	});
+
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
 	test.each(fixtures)('given %p the output should be %p', (input, output) => {

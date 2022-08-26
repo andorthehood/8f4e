@@ -1,13 +1,8 @@
 import { createTestModule } from '../../testUtils';
 import bitwiseAnd from '../../modules/bitwiseAnd.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
-import { compile } from '@8f4e/module-compiler';
 
 let testModule;
-
-test('if compiled module matches with snapshot', () => {
-	expect(compile(bitwiseAnd, 'id', 0)).toMatchSnapshot();
-});
 
 const fixtures: [input1: number, input2: number, output: number][] = [
 	[10, 10, 10 & 10],
@@ -23,6 +18,14 @@ describe('functional tests', () => {
 
 	beforeEach(() => {
 		testModule.reset();
+	});
+
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
 	test.each(fixtures)('given %p and %p, the output is %p', (input1, input2, output) => {
