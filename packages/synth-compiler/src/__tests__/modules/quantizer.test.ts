@@ -33,11 +33,11 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('if compiled module matches with snapshot', () => {
+	test('if the wat code matches with the snapshot', () => {
 		expect(testModule.wat).toMatchSnapshot();
 	});
 
-	test('if the generated memory map matches with snapshot', () => {
+	test('if the generated memory map matches with the snapshot', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
