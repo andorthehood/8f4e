@@ -1,6 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`functional tests if compiled module matches with snapshot 1`] = `
+exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
+Array [
+  Object {
+    "address": 0,
+    "byteAddress": 0,
+    "default": 0,
+    "id": "in",
+    "size": 1,
+    "type": 3,
+    "usage": 1,
+  },
+  Object {
+    "address": 1,
+    "byteAddress": 4,
+    "default": 0,
+    "id": "out",
+    "size": 1,
+    "type": 4,
+    "usage": 0,
+  },
+  Object {
+    "address": 2,
+    "byteAddress": 8,
+    "default": 12,
+    "id": "allocatedNotes",
+    "size": 1,
+    "type": 5,
+    "usage": 0,
+  },
+  Object {
+    "address": 3,
+    "byteAddress": 12,
+    "default": 0,
+    "id": "numberOfNotes",
+    "size": 1,
+    "type": 6,
+    "usage": 1,
+  },
+  Object {
+    "address": 4,
+    "byteAddress": 16,
+    "default": Array [
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+      -1,
+    ],
+    "id": "notes",
+    "size": 12,
+    "type": 0,
+    "usage": 0,
+  },
+]
+`;
+
+exports[`functional tests if the wat code matches with the snapshot 1`] = `
 "(module
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
@@ -66,67 +129,4 @@ exports[`functional tests if compiled module matches with snapshot 1`] = `
     i32.store)
   (export \\"test\\" (func 0)))
 "
-`;
-
-exports[`functional tests if the generated memory map matches with snapshot 1`] = `
-Array [
-  Object {
-    "address": 0,
-    "byteAddress": 0,
-    "default": 0,
-    "id": "in",
-    "size": 1,
-    "type": 3,
-    "usage": 1,
-  },
-  Object {
-    "address": 1,
-    "byteAddress": 4,
-    "default": 0,
-    "id": "out",
-    "size": 1,
-    "type": 4,
-    "usage": 0,
-  },
-  Object {
-    "address": 2,
-    "byteAddress": 8,
-    "default": 12,
-    "id": "allocatedNotes",
-    "size": 1,
-    "type": 5,
-    "usage": 0,
-  },
-  Object {
-    "address": 3,
-    "byteAddress": 12,
-    "default": 0,
-    "id": "numberOfNotes",
-    "size": 1,
-    "type": 6,
-    "usage": 1,
-  },
-  Object {
-    "address": 4,
-    "byteAddress": 16,
-    "default": Array [
-      -1,
-      -1,
-      -1,
-      -1,
-      -1,
-      -1,
-      -1,
-      -1,
-      -1,
-      -1,
-      -1,
-      -1,
-    ],
-    "id": "notes",
-    "size": 12,
-    "type": 0,
-    "usage": 0,
-  },
-]
 `;
