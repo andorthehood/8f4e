@@ -1,100 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`if compiled module matches with snapshot 1`] = `
-Object {
-  "byteAddress": 0,
-  "functionBody": Array [
-    50,
-    1,
-    0,
-    127,
-    65,
-    4,
-    40,
-    2,
-    0,
-    40,
-    2,
-    0,
-    65,
-    0,
-    74,
-    4,
-    64,
-    65,
-    8,
-    40,
-    2,
-    0,
-    40,
-    2,
-    0,
-    65,
-    0,
-    74,
-    4,
-    64,
-    65,
-    12,
-    65,
-    255,
-    255,
-    1,
-    54,
-    2,
-    0,
-    12,
-    2,
-    11,
-    11,
-    65,
-    12,
-    65,
-    0,
-    54,
-    2,
-    0,
-    11,
-  ],
-  "memoryMap": Array [
-    Object {
-      "address": 0,
-      "byteAddress": 0,
-      "default": 0,
-      "id": "defaultValue",
-      "size": 1,
-      "type": 5,
-      "usage": 0,
-    },
-    Object {
-      "address": 1,
-      "byteAddress": 4,
-      "default": 0,
-      "id": "in:1",
-      "size": 1,
-      "type": 3,
-      "usage": 1,
-    },
-    Object {
-      "address": 2,
-      "byteAddress": 8,
-      "default": 0,
-      "id": "in:2",
-      "size": 1,
-      "type": 3,
-      "usage": 1,
-    },
-    Object {
-      "address": 3,
-      "byteAddress": 12,
-      "default": 0,
-      "id": "out",
-      "size": 1,
-      "type": 4,
-      "usage": 0,
-    },
-  ],
-  "moduleId": "id",
-  "wordAddress": 0,
-}
+exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
+Array [
+  Object {
+    "address": 0,
+    "byteAddress": 0,
+    "default": 0,
+    "id": "defaultValue",
+    "size": 1,
+    "type": 5,
+    "usage": 0,
+  },
+  Object {
+    "address": 1,
+    "byteAddress": 4,
+    "default": 0,
+    "id": "in:1",
+    "size": 1,
+    "type": 3,
+    "usage": 1,
+  },
+  Object {
+    "address": 2,
+    "byteAddress": 8,
+    "default": 0,
+    "id": "in:2",
+    "size": 1,
+    "type": 3,
+    "usage": 1,
+  },
+  Object {
+    "address": 3,
+    "byteAddress": 12,
+    "default": 0,
+    "id": "out",
+    "size": 1,
+    "type": 4,
+    "usage": 0,
+  },
+]
+`;
+
+exports[`functional tests if the wat code matches with the snapshot 1`] = `
+"(module
+  (type (;0;) (func))
+  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.load
+    i32.load
+    i32.const 0
+    i32.gt_s
+    if  ;; label = @1
+      i32.const 8
+      i32.load
+      i32.load
+      i32.const 0
+      i32.gt_s
+      if  ;; label = @2
+        i32.const 12
+        i32.const 32767
+        i32.store
+        br 2 (;@0;)
+      end
+    end
+    i32.const 12
+    i32.const 0
+    i32.store)
+  (export \\"test\\" (func 0)))
+"
 `;

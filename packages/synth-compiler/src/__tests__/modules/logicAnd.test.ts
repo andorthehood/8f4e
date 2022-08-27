@@ -2,13 +2,8 @@ import { createTestModule } from '../../testUtils';
 import and from '../../modules/logicAnd.asm';
 
 import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
-import { compile } from '@8f4e/module-compiler';
 
 let testModule;
-
-test('if compiled module matches with snapshot', () => {
-	expect(compile(and, 'id', 0)).toMatchSnapshot();
-});
 
 const fixtures = [
 	[10, 10, I16_SIGNED_LARGEST_NUMBER],
@@ -25,6 +20,14 @@ describe('functional tests', () => {
 
 	beforeEach(() => {
 		testModule.reset();
+	});
+
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
 	test.each(fixtures)('given %p and %p, the expected result is %p', (a, b, expected) => {
