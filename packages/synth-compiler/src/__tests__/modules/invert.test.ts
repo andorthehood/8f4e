@@ -1,13 +1,16 @@
 import { createTestModule } from '../../testUtils';
-import invert, { Memory } from '../../modules/invert';
+import invert from '../../modules/invert.asm';
 
 let testModule;
 
-test('if compiled module matches with snapshot', () => {
-	expect(invert('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
-});
+const fixtures = [
+	[1, -1],
+	[69, -69],
+	[0, 0],
+	[-420, 420],
+];
 
-describe('functional tests', () => {
+describe('invert module', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(invert);
 	});
@@ -16,19 +19,19 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('invert module', () => {
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
+	});
+
+	test.each(fixtures)('given %p as input, the output is %p', (input, output) => {
 		const { memory, test } = testModule;
 
-		memory[Memory.DEFAULT_VALUE] = 1;
+		memory[0] = input;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(-1);
-
-		memory[Memory.DEFAULT_VALUE] = -69;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(69);
-
-		memory[Memory.DEFAULT_VALUE] = 0;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[2]).toBe(output);
 	});
 });
