@@ -1,11 +1,16 @@
 import { createTestModule } from '../../testUtils';
-import max, { Memory } from '../../modules/max';
+import max from '../../modules/max.asm';
 
 let testModule;
 
-test('if compiled module matches with snapshot', () => {
-	expect(max('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
-});
+const fixtures = [
+	[10, 10, 10],
+	[0, 10, 10],
+	[10, 0, 10],
+	[0, 0, 0],
+	[-10, 0, 0],
+	[-10, -100, -10],
+];
 
 describe('functional tests', () => {
 	beforeAll(async () => {
@@ -16,49 +21,22 @@ describe('functional tests', () => {
 		testModule.reset();
 	});
 
-	test('max module', () => {
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
+	});
+
+	test.each(fixtures)('given %p and %p, the output should be %p', (inputA, inputB, output) => {
 		const { memory, test } = testModule;
 
-		memory[10] = 10;
-		memory[11] = 10;
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
+		memory[10] = inputA;
+		memory[11] = inputB;
+		memory[1] = 10 * memory.BYTES_PER_ELEMENT;
+		memory[2] = 11 * memory.BYTES_PER_ELEMENT;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(10);
-
-		memory[10] = 0;
-		memory[11] = 10;
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(10);
-
-		memory[10] = 10;
-		memory[11] = 0;
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(10);
-
-		memory[10] = 0;
-		memory[11] = 0;
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
-
-		memory[10] = -10;
-		memory[11] = 0;
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
-
-		memory[10] = -10;
-		memory[11] = -100;
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(-10);
+		expect(memory[3]).toBe(output);
 	});
 });

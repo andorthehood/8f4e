@@ -12,7 +12,7 @@ export { default as logicAnd } from './logicAnd.asm';
 export { default as logicNegate } from './logicNegate.asm';
 export { default as logicOr } from './logicOr.asm';
 export { default as logicXor } from './logicXor.asm';
-export { default as max } from './max';
+export { default as max } from './max.asm';
 export { default as min } from './min';
 export { default as mixer } from './mixer';
 export { default as offset } from './offset';
