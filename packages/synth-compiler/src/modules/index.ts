@@ -7,7 +7,7 @@ export { default as bitwiseXor } from './bitwiseXor.asm';
 export { default as clockGenerator } from './clockGenerator.asm';
 export { default as constant } from './constant';
 export { default as cvSequencer } from './cvSequencer';
-export { default as invert } from './invert';
+export { default as invert } from './invert.asm';
 export { default as logicAnd } from './logicAnd.asm';
 export { default as logicNegate } from './logicNegate.asm';
 export { default as logicOr } from './logicOr.asm';
