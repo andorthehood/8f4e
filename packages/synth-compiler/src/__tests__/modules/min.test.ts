@@ -3,10 +3,6 @@ import min, { Memory } from '../../modules/min';
 
 let testModule;
 
-test('if compiled module matches with snapshot', () => {
-	expect(min('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
-});
-
 describe('functional tests', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(min);
@@ -14,6 +10,14 @@ describe('functional tests', () => {
 
 	beforeEach(() => {
 		testModule.reset();
+	});
+
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
 	test('min module', () => {

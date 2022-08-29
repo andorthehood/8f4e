@@ -3,10 +3,6 @@ import constant, { Memory } from '../../modules/constant';
 
 let testModule;
 
-test('if compiled module matches with snapshot', () => {
-	expect(constant('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
-});
-
 describe('functional tests', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(constant, { out: 0 });
@@ -14,6 +10,14 @@ describe('functional tests', () => {
 
 	beforeEach(() => {
 		testModule.reset();
+	});
+
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
 	test('constant module', () => {
