@@ -4,10 +4,6 @@ import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
-test('if compiled module matches with snapshot', () => {
-	expect(compile(splitter, 'id', 0)).toMatchSnapshot();
-});
-
 const fixtures = [
 	[1, 1],
 	[69, 69],
@@ -21,6 +17,14 @@ describe('functional tests', () => {
 
 	beforeEach(() => {
 		testModule.reset();
+	});
+
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
 	test.each(fixtures)('given %p as input, all the outputs should be %p', (input, output) => {

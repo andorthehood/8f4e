@@ -4,10 +4,6 @@ import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../con
 
 let testModule;
 
-test('if compiled module matches with snapshot', () => {
-	expect(offset('id', { byte: () => 0, word: () => 0 })).toMatchSnapshot();
-});
-
 describe('functional tests', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(offset);
@@ -15,6 +11,14 @@ describe('functional tests', () => {
 
 	beforeEach(() => {
 		testModule.reset();
+	});
+
+	test('if the wat code matches with the snapshot', () => {
+		expect(testModule.wat).toMatchSnapshot();
+	});
+
+	test('if the generated memory map matches with the snapshot', () => {
+		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
 	test('offset module', () => {
