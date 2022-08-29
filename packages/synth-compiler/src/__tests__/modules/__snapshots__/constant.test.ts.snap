@@ -1,22 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`if compiled module matches with snapshot 1`] = `
-Object {
-  "byteAddress": 0,
-  "functionBody": Array [
-    2,
-    0,
-    11,
-  ],
-  "memoryMap": Array [
-    Object {
-      "address": 0,
-      "default": 0,
-      "id": "out",
-      "type": 4,
-    },
-  ],
-  "moduleId": "id",
-  "wordAddress": 0,
-}
+exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
+Array [
+  Object {
+    "address": 0,
+    "default": 0,
+    "id": "out",
+    "type": 4,
+  },
+]
+`;
+
+exports[`functional tests if the wat code matches with the snapshot 1`] = `
+"(module
+  (type (;0;) (func))
+  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (func (;0;) (type 0))
+  (export \\"test\\" (func 0)))
+"
 `;
