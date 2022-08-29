@@ -1,98 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`if compiled module matches with snapshot 1`] = `
-Object {
-  "byteAddress": 0,
-  "functionBody": Array [
-    61,
-    1,
-    1,
-    127,
-    65,
-    0,
-    65,
-    0,
-    40,
-    2,
-    0,
-    40,
-    2,
-    0,
-    65,
-    0,
-    40,
-    2,
-    0,
-    106,
-    33,
-    0,
-    32,
-    0,
-    65,
-    255,
-    255,
-    1,
-    78,
-    4,
-    127,
-    65,
-    255,
-    255,
-    1,
-    5,
-    32,
-    0,
-    11,
-    33,
-    0,
-    32,
-    0,
-    65,
-    128,
-    128,
-    126,
-    76,
-    4,
-    127,
-    65,
-    128,
-    128,
-    126,
-    5,
-    32,
-    0,
-    11,
-    54,
-    2,
-    0,
-    11,
-  ],
-  "memoryMap": Array [
-    Object {
-      "address": 0,
-      "default": 0,
-      "type": 5,
-    },
-    Object {
-      "address": 1,
-      "default": 0,
-      "id": "in",
-      "type": 3,
-    },
-    Object {
-      "address": 2,
-      "default": 0,
-      "id": "offset",
-      "type": 6,
-    },
-    Object {
-      "address": 3,
-      "default": 0,
-      "id": "out",
-      "type": 4,
-    },
-  ],
-  "moduleId": "id",
-  "wordAddress": 0,
-}
+exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
+Array [
+  Object {
+    "address": 0,
+    "default": 0,
+    "type": 5,
+  },
+  Object {
+    "address": 1,
+    "default": 0,
+    "id": "in",
+    "type": 3,
+  },
+  Object {
+    "address": 2,
+    "default": 0,
+    "id": "offset",
+    "type": 6,
+  },
+  Object {
+    "address": 3,
+    "default": 0,
+    "id": "out",
+    "type": 4,
+  },
+]
+`;
+
+exports[`functional tests if the wat code matches with the snapshot 1`] = `
+"(module
+  (type (;0;) (func))
+  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32)
+    i32.const 12
+    i32.const 4
+    i32.load
+    i32.load
+    i32.const 8
+    i32.load
+    i32.add
+    local.set 0
+    local.get 0
+    i32.const 32767
+    i32.ge_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      local.get 0
+    end
+    local.set 0
+    local.get 0
+    i32.const -32768
+    i32.le_s
+    if (result i32)  ;; label = @1
+      i32.const -32768
+    else
+      local.get 0
+    end
+    i32.store)
+  (export \\"test\\" (func 0)))
+"
 `;
