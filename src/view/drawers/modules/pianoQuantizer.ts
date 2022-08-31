@@ -1,6 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
 import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/synth-compiler';
-import { Memory } from '@8f4e/synth-compiler/dist/modules/quantizer';
 import { pianoKeyboard } from '@8f4e/sprite-generator';
 import { Module } from '../../../state/types';
 import { HGRID, VGRID } from '../consts';
@@ -19,9 +18,9 @@ export default function pianoDrawer(
 
 	const moduleAddress = memoryAddressLookup[module.id].__startAddress;
 	const config = moduleType.drawer.config;
-	const outAddress = moduleAddress + Memory.OUTPUT;
-	const notesAddress = moduleAddress + Memory.FIRST_NOTE;
-	const numberOfNotesAddress = moduleAddress + Memory.NUMBER_OF_NOTES;
+	const outAddress = moduleAddress + 1;
+	const notesAddress = moduleAddress + 4;
+	const numberOfNotesAddress = moduleAddress + 3;
 	const numberOfNotes = memoryBuffer[numberOfNotesAddress];
 	const activeNotes = memoryBuffer.slice(notesAddress, notesAddress + Math.min(numberOfNotes, config.keyCount));
 	const outValue = memoryBuffer[outAddress];
