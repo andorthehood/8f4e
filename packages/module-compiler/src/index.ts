@@ -5,7 +5,7 @@ import { WORD_LENGTH } from './consts';
 
 export { MemoryTypes, MemoryMap } from './types';
 
-const memoryKeywords = ['private', 'inputPointer', 'output', 'public', 'array'];
+const memoryKeywords = ['private', 'inputPointer', 'output', 'public', 'array', 'triggerInputPointer'];
 
 function parseArgument(argument: string): Argument {
 	return /^-?[0-9]+$/.test(argument)
