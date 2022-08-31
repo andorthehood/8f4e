@@ -44,6 +44,14 @@ enum Instruction {
 	F64_CONST = 0x44,
 
 	/**
+	 * Equal with zero.
+	 * The eqz instruction returns true if the operand is equal to zero, or
+	 * false otherwise.
+	 * Type signature: (param i32) (result i32)
+	 */
+	I32_EQZ = 0x45,
+
+	/**
 	 * Equality.
 	 * Tests whether the operands are equal.
 	 * Type signature: (param i32 i32) (result i32)
