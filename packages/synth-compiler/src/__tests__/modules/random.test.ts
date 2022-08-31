@@ -1,15 +1,15 @@
 import { createTestModule } from '../../testUtils';
-import random, { Memory } from '../../modules/random';
+import random from '../../modules/random.asm';
 
 let testModule;
 
+const fixtures = [-30826, -15413, 25062, 12531, 6265, -29637];
+
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(random);
-	});
-
-	beforeEach(() => {
-		testModule.reset();
+		testModule = await createTestModule(random());
+		const { memory } = testModule;
+		memory[1] = 69420;
 	});
 
 	test('if the wat code matches with the snapshot', () => {
@@ -20,27 +20,10 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test('random module', () => {
+	test.each(fixtures)('given the seed 69420, the output should be %p', output => {
 		const { memory, test } = testModule;
 
-		memory[Memory.OUTPUT] = 69420;
-
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(-30826);
-
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(-15413);
-
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(25062);
-
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(12531);
-
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(6265);
-
-		test();
-		expect(memory[Memory.OUTPUT]).toBe(-29637);
+		expect(memory[1]).toBe(output);
 	});
 });
