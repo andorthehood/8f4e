@@ -31,6 +31,10 @@ import loop from './loop';
 import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import array from './array';
+import equalToZero from './equalToZero';
+import shiftRightUnsigned from './shiftRightUnsigned';
+import shiftRight from './shiftRight';
+import remainder from './remainder';
 
 export default {
 	and,
@@ -66,4 +70,8 @@ export default {
 	loopEnd,
 	greaterOrEqualUnsigned,
 	array,
+	equalToZero,
+	shiftRight,
+	shiftRightUnsigned,
+	remainder,
 };
