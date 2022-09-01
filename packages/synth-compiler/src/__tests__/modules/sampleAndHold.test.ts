@@ -1,5 +1,5 @@
 import { createTestModule } from '../../testUtils';
-import sampleAndHold, { Memory } from '../../modules/sampleAndHold';
+import sampleAndHold, { Memory } from '../../modules/sampleAndHold.asm';
 
 let testModule;
 
@@ -23,8 +23,8 @@ describe('functional tests', () => {
 	test('min module', () => {
 		const { memory, test } = testModule;
 
-		memory[Memory.TRIGGER_INPUT_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
+		memory[2] = 10 * memory.BYTES_PER_ELEMENT;
+		memory[1] = 11 * memory.BYTES_PER_ELEMENT;
 
 		memory[10] = 0;
 		memory[11] = 8;
@@ -35,7 +35,7 @@ describe('functional tests', () => {
 		memory[10] = 0;
 		memory[11] = 12;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(10);
+		expect(memory[4]).toBe(10);
 
 		memory[10] = 0;
 		memory[11] = 8;
@@ -52,6 +52,6 @@ describe('functional tests', () => {
 		memory[10] = 0;
 		memory[11] = 16;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(14);
+		expect(memory[4]).toBe(14);
 	});
 });
