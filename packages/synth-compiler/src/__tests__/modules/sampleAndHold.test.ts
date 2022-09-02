@@ -1,5 +1,5 @@
 import { createTestModule } from '../../testUtils';
-import sampleAndHold, { Memory } from '../../modules/sampleAndHold.asm';
+import sampleAndHold from '../../modules/sampleAndHold.asm';
 
 let testModule;
 
