@@ -1,5 +1,5 @@
 import { createTestModule } from '../../testUtils';
-import min, { Memory } from '../../modules/min';
+import min from '../../modules/min.asm';
 
 let testModule;
 
@@ -23,37 +23,37 @@ describe('functional tests', () => {
 	test('min module', () => {
 		const { memory, test } = testModule;
 
-		memory[Memory.INPUT_1_POINTER] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[Memory.INPUT_2_POINTER] = 11 * memory.BYTES_PER_ELEMENT;
+		memory[1] = 10 * memory.BYTES_PER_ELEMENT;
+		memory[2] = 11 * memory.BYTES_PER_ELEMENT;
 
 		memory[10] = 10;
 		memory[11] = 10;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(10);
+		expect(memory[3]).toBe(10);
 
 		memory[10] = 0;
 		memory[11] = 10;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[3]).toBe(0);
 
 		memory[10] = 10;
 		memory[11] = 0;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[3]).toBe(0);
 
 		memory[10] = 0;
 		memory[11] = 0;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(0);
+		expect(memory[3]).toBe(0);
 
 		memory[10] = -10;
 		memory[11] = 0;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(-10);
+		expect(memory[3]).toBe(-10);
 
 		memory[10] = -10;
 		memory[11] = -100;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(-100);
+		expect(memory[3]).toBe(-100);
 	});
 });

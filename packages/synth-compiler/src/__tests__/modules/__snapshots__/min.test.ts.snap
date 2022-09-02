@@ -4,26 +4,39 @@ exports[`functional tests if the generated memory map matches with the snapshot 
 Array [
   Object {
     "address": 0,
+    "byteAddress": 0,
     "default": 0,
+    "id": "defaultValue",
+    "size": 1,
     "type": 5,
+    "usage": 0,
   },
   Object {
-    "address": 4,
+    "address": 1,
+    "byteAddress": 4,
     "default": 0,
     "id": "in:1",
+    "size": 1,
     "type": 3,
+    "usage": 1,
   },
   Object {
-    "address": 8,
+    "address": 2,
+    "byteAddress": 8,
     "default": 0,
     "id": "in:2",
+    "size": 1,
     "type": 3,
+    "usage": 1,
   },
   Object {
-    "address": 12,
+    "address": 3,
+    "byteAddress": 12,
     "default": 0,
     "id": "out",
+    "size": 1,
     "type": 4,
+    "usage": 0,
   },
 ]
 `;
