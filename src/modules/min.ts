@@ -14,10 +14,17 @@ export default function min({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 		engine: { name: 'min', config: {} },
 		height,
 		initialState: {},
-		inputs: addDefaultInputPositions([{ id: 'in:1' }, { id: 'in:2' }], vGrid, hGrid),
+		inputs: addDefaultInputPositions(
+			[
+				{ id: 'in:1', label: 'in' },
+				{ id: 'in:2', label: 'in' },
+			],
+			vGrid,
+			hGrid
+		),
 		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
 		name: 'Min',
-		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
+		outputs: addDefaultOutputPositions([{ id: 'out', label: 'out' }], vGrid, hGrid, width),
 		sliders: [],
 		steppers: [],
 		width,
