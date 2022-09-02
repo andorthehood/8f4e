@@ -21,7 +21,7 @@ export { default as random } from './random.asm';
 export { default as sampleAndHold } from './sampleAndHold.asm';
 export { default as saw } from './saw.asm';
 export { default as scope } from './scope';
-export { default as sequentialSwitch } from './sequentialSwitch';
+export { default as sequentialSwitch } from './sequentialSwitch.asm';
 export { default as splitter } from './splitter.asm';
 export { default as buffer } from './buffer';
 export { default as triggerSequencer } from './triggerSequencer';
