@@ -1,5 +1,5 @@
 import { createTestModule } from '../../testUtils';
-import constant, { Memory } from '../../modules/constant';
+import constant from '../../modules/constant.asm';
 
 let testModule;
 
@@ -23,12 +23,12 @@ describe('functional tests', () => {
 	test('constant module', () => {
 		const { memory, test } = testModule;
 
-		memory[Memory.OUTPUT] = 1;
+		memory[0] = 1;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(1);
+		expect(memory[0]).toBe(1);
 
-		memory[Memory.OUTPUT] = -69;
+		memory[0] = -69;
 		test();
-		expect(memory[Memory.OUTPUT]).toBe(-69);
+		expect(memory[0]).toBe(-69);
 	});
 });
