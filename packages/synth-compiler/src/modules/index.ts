@@ -22,3 +22,4 @@ export { default as saw } from './saw.asm';
 export { default as scope } from './scope';
 export { default as sequentialSwitch } from './sequentialSwitch.asm';
 export { default as splitter } from './splitter.asm';
+export { default as buffer } from './buffer';
