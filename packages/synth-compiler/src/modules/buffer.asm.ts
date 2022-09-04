@@ -1,21 +1,9 @@
-import { i32load, i32const, i32store, createFunctionBody } from '@8f4e/bytecode-utils';
-import {
-	ModuleGenerator,
-	ModuleStateInserter,
-	ModuleStateExtractor,
-	MemoryTypes,
-	MemoryMap,
-	InputPointer,
-	Output,
-} from '../types';
+import { ModuleStateInserter, ModuleStateExtractor } from '../types';
 
-enum Memory {
-	ZERO,
-	NUMBER_OF_INPUTS,
-	NUMBER_OF_OUTPUTS,
-	NUMBER_OF_DATA_PLACEHOLDERS,
-	START_OF_PORTS_AND_PLACEHOLDERS,
-}
+const numberOfInputsAddress = 1;
+const numberOfOutputsAddress = 2;
+const numberOfDataPlaceholdersAddress = 3;
+const startOfPortsAndPLaceholdersAddress = 4;
 
 export interface Config {
 	numberOfPorts?: number;
@@ -27,10 +15,10 @@ interface BufferState {
 }
 
 export const insertState: ModuleStateInserter<BufferState> = function (moduleState, memoryBuffer, moduleAddress) {
-	const numberOfInputs = memoryBuffer[moduleAddress + Memory.NUMBER_OF_INPUTS];
-	const numberOfOutputs = memoryBuffer[moduleAddress + Memory.NUMBER_OF_OUTPUTS];
-	const numberOfDataPlaceholders = memoryBuffer[moduleAddress + Memory.NUMBER_OF_DATA_PLACEHOLDERS];
-	const startAddressOfOutputs = moduleAddress + Memory.START_OF_PORTS_AND_PLACEHOLDERS + numberOfInputs;
+	const numberOfInputs = memoryBuffer[moduleAddress + numberOfInputsAddress];
+	const numberOfOutputs = memoryBuffer[moduleAddress + numberOfOutputsAddress];
+	const numberOfDataPlaceholders = memoryBuffer[moduleAddress + numberOfDataPlaceholdersAddress];
+	const startAddressOfOutputs = moduleAddress + startOfPortsAndPLaceholdersAddress + numberOfInputs;
 	const dataPlaceholdersStartAddress = startAddressOfOutputs + numberOfOutputs;
 
 	Object.entries(moduleState)
@@ -41,11 +29,11 @@ export const insertState: ModuleStateInserter<BufferState> = function (moduleSta
 };
 
 export const extractState: ModuleStateExtractor<BufferState> = function (memoryBuffer, moduleAddress) {
-	const numberOfInputs = memoryBuffer[moduleAddress + Memory.NUMBER_OF_INPUTS];
-	const numberOfOutputs = memoryBuffer[moduleAddress + Memory.NUMBER_OF_OUTPUTS];
-	const numberOfDataPlaceholders = memoryBuffer[moduleAddress + Memory.NUMBER_OF_DATA_PLACEHOLDERS];
+	const numberOfInputs = memoryBuffer[moduleAddress + numberOfInputsAddress];
+	const numberOfOutputs = memoryBuffer[moduleAddress + numberOfOutputsAddress];
+	const numberOfDataPlaceholders = memoryBuffer[moduleAddress + numberOfDataPlaceholdersAddress];
 	const dataPlaceholdersStartAddress =
-		moduleAddress + Memory.START_OF_PORTS_AND_PLACEHOLDERS + numberOfInputs + numberOfOutputs;
+		moduleAddress + startOfPortsAndPLaceholdersAddress + numberOfInputs + numberOfOutputs;
 
 	const obj = {};
 
@@ -58,61 +46,50 @@ export const extractState: ModuleStateExtractor<BufferState> = function (memoryB
 	return obj;
 };
 
-const buffer: ModuleGenerator<Config> = function (moduleId, offset, config = {}) {
+export default config => {
 	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
-	const portIndexes = new Array(numberOfPorts).fill(0).map((item, index) => index);
-	const dataPlaceholderIndexes = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index);
 
-	const startAddressOfOutputs = Memory.START_OF_PORTS_AND_PLACEHOLDERS + numberOfPorts;
-	const startAddressOfDataPlaceholders = Memory.START_OF_PORTS_AND_PLACEHOLDERS + 2 * numberOfPorts;
+	const ports = new Array(numberOfPorts).fill(0).map((item, index) => index + 1);
+	const dataPlaceholders = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index + 1);
 
-	const inputPointers = portIndexes.map(index => Memory.START_OF_PORTS_AND_PLACEHOLDERS + index);
-	const outputs = portIndexes.map(index => startAddressOfOutputs + index);
-	const dataPlaceholders = dataPlaceholderIndexes.map(index => startAddressOfDataPlaceholders + index);
+	return `
+		private defaultValue 0
+		public numberOfInputs ${numberOfPorts}
+		public numberOfOutputs ${numberOfPorts}
+		public numberOfDataPlaceholders ${numberOfDataPlaceholders}
 
-	const functionBody = createFunctionBody(
-		[],
-		portIndexes
-			.map(index => [
-				...i32const(outputs[index]),
-				...i32const(inputPointers[index]),
-				...i32load(),
-				...i32load(),
-				...i32store(),
-			])
-			.flat()
-	);
+		${ports
+			.map(
+				index => `
+			inputPointer in:${index} defaultValue
+		`
+			)
+			.join('\n')}
 
-	return {
-		moduleId,
-		functionBody,
-		byteAddress: offset.byte(0),
-		wordAddress: offset.word(0),
-		memoryMap: [
-			{ type: MemoryTypes.PRIVATE, address: Memory.ZERO, default: 0 },
-			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_INPUTS, default: numberOfPorts },
-			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_OUTPUTS, default: numberOfPorts },
-			{ type: MemoryTypes.NUMBER, address: Memory.NUMBER_OF_DATA_PLACEHOLDERS, default: numberOfDataPlaceholders },
-			...(inputPointers.map((address, index) => ({
-				type: MemoryTypes.INPUT_POINTER,
-				address,
-				id: 'in:' + (index + 1),
-				default: offset.byte(Memory.ZERO),
-			})) as InputPointer[]),
-			...(outputs.map((address, index) => ({
-				type: MemoryTypes.OUTPUT,
-				address,
-				id: 'out:' + (index + 1),
-				default: 0,
-			})) as Output[]),
-			...(dataPlaceholders.map((address, index) => ({
-				type: MemoryTypes.NUMBER,
-				address,
-				id: 'data:' + (index + 1),
-				default: 0,
-			})) as MemoryMap[]),
-		],
-	};
+		${ports
+			.map(
+				index => `
+			output out:${index} 0
+		`
+			)
+			.join('\n')}
+
+		${dataPlaceholders
+			.map(
+				index => `
+			public data:${index} 0
+		`
+			)
+			.join('\n')}
+
+		${ports
+			.map(
+				index => `
+			pushRef out:${index}
+			push in:${index}
+			store
+		`
+			)
+			.join('\n')}
+	`;
 };
-
-export default buffer;
