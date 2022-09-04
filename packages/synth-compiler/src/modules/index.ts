@@ -13,7 +13,7 @@ export { default as logicOr } from './logicOr.asm';
 export { default as logicXor } from './logicXor.asm';
 export { default as max } from './max.asm';
 export { default as min } from './min.asm';
-export { default as mixer } from './mixer';
+export { default as mixer } from './mixer.asm';
 export { default as offset } from './offset.asm';
 export { default as quantizer } from './quantizer.asm';
 export { default as random } from './random.asm';
