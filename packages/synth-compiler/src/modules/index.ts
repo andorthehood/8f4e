@@ -14,7 +14,7 @@ export { default as logicXor } from './logicXor.asm';
 export { default as max } from './max.asm';
 export { default as min } from './min.asm';
 export { default as mixer } from './mixer';
-export { default as offset } from './offset';
+export { default as offset } from './offset.asm';
 export { default as quantizer } from './quantizer.asm';
 export { default as random } from './random.asm';
 export { default as sampleAndHold } from './sampleAndHold.asm';
