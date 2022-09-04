@@ -1,11 +1,11 @@
 import { createTestModule } from '../../testUtils';
-import buffer from '../../modules/buffer';
+import buffer from '../../modules/buffer.asm';
 
 let testModule;
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(buffer, { numberOfDataPlaceholders: 4, numberOfPorts: 6 });
+		testModule = await createTestModule(buffer({ numberOfDataPlaceholders: 4, numberOfPorts: 6 }));
 	});
 
 	beforeEach(() => {
