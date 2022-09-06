@@ -153,7 +153,7 @@ function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 				type,
 				address: wordAddress,
 				size: wordSize,
-				byteAddress: startingByteAddress + index * WORD_LENGTH,
+				byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
 				id: args[0].value.toString(),
 				usage: countUsage(ast, args[0].value.toString()),
 				default:
