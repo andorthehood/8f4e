@@ -12,7 +12,7 @@ export default function addDefaultOutputPositions(
 			...connector,
 			...getConnectorDefaultPosition(index, false, vGrid, hGrid, width),
 			width: 2 * vGrid,
-			height: hGrid - 1,
+			height: hGrid,
 		};
 	});
 }
