@@ -17,7 +17,7 @@ export interface Module {
 	y: number;
 }
 
-export interface Connector extends Position {
+export interface Connector extends Position, Size {
 	id: string;
 	label?: string;
 }
