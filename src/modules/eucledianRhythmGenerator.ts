@@ -1,13 +1,13 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { ModuleGeneratorProps, ModuleType } from '../state/types';
+import { ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import { Config } from '@8f4e/synth-compiler/dist/modules/triggerSequencer';
 
-export default function eucledianRhythmGenerator({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
-	const width = MODULE_WIDTH_M * vGrid;
-	const height = MODULE_HEIGHT_S * hGrid;
+export default function eucledianRhythmGenerator(): ModuleType<Config> {
+	const width = MODULE_WIDTH_M;
+	const height = MODULE_HEIGHT_S;
 
 	return {
 		buttons: [],
@@ -15,10 +15,10 @@ export default function eucledianRhythmGenerator({ vGrid, hGrid }: ModuleGenerat
 		engine: { name: 'triggerSequencer', config: { maxPatternSizeToAlloc: 64 } },
 		height,
 		initialState: {},
-		inputs: addDefaultInputPositions([{ id: 'in:trigger', label: 'trig' }], vGrid, hGrid),
-		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
+		inputs: addDefaultInputPositions([{ id: 'in:trigger', label: 'trig' }]),
+		lines: [...generateBorderLines(width, height)],
 		name: 'Eucledian Rhythm',
-		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
+		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
 		steppers: [],
 		width,

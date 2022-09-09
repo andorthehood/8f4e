@@ -1,14 +1,14 @@
+import { HGRID, VGRID } from '../drawers/consts';
+
 export default function getConnectorDefaultPosition(
 	index: number,
 	isInput: boolean,
-	moduleWidth: number,
-	vGrid: number,
-	hGrid: number
+	moduleWidth: number
 ): { x: number; y: number; width: number; height: number } {
 	return {
-		x: isInput ? 1 * vGrid : (moduleWidth - 3) * vGrid + 2,
-		y: (index + 1) * hGrid,
-		width: vGrid * 2,
-		height: hGrid - 4,
+		x: isInput ? 1 * VGRID : (moduleWidth - 3) * VGRID + 2,
+		y: (index + 1) * HGRID,
+		width: VGRID * 2,
+		height: HGRID - 4,
 	};
 }
