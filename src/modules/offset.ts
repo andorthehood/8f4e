@@ -1,5 +1,5 @@
 import { I16_SIGNED_LARGEST_NUMBER } from '@8f4e/synth-compiler';
-import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../state/types';
+import { ModuleType, SliderChangeHandler } from '../state/types';
 import singleSliderModule from './templates/singleSliderModule';
 
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/offset.asm';
@@ -10,9 +10,9 @@ const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddr
 	insertState({ offset }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
-export default function offset(props: ModuleGeneratorProps): ModuleType {
+export default function offset(): ModuleType {
 	return {
-		...singleSliderModule(props, {
+		...singleSliderModule({
 			id: 'offset',
 			maxValue: I16_SIGNED_LARGEST_NUMBER,
 			minValue: 0,

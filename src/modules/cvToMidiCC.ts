@@ -1,10 +1,11 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import { ModuleGeneratorProps, ModuleType, StepperChangeHandler } from '../state/types';
+import { ModuleType, StepperChangeHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
 import ccNames from '../midi/ccNames';
 import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
+import { HGRID, VGRID } from '../view/drawers/consts';
 
 const onChange: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;
@@ -17,9 +18,9 @@ const onChange: StepperChangeHandler = function (module, state, value, stepper) 
 	}
 };
 
-export default function cvToMidiCC({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
-	const width = MODULE_WIDTH_M * vGrid;
-	const height = MODULE_HEIGHT_S * hGrid;
+export default function cvToMidiCC(): ModuleType<Config> {
+	const width = MODULE_WIDTH_M;
+	const height = MODULE_HEIGHT_S;
 
 	return {
 		buttons: [],
@@ -33,8 +34,8 @@ export default function cvToMidiCC({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 		},
 		height,
 		initialState: {},
-		inputs: addDefaultInputPositions([{ id: 'in:1', label: 'in' }], vGrid, hGrid),
-		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
+		inputs: addDefaultInputPositions([{ id: 'in:1', label: 'in' }]),
+		lines: [...generateBorderLines(width, height)],
 		name: 'CV to MIDI CC',
 		outputs: [],
 		sliders: [],
@@ -42,10 +43,10 @@ export default function cvToMidiCC({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 			{
 				id: 'data:1',
 				label: 'channel',
-				x: vGrid * 10,
-				y: hGrid * 3,
-				width: vGrid * 2,
-				height: hGrid,
+				x: VGRID * 10,
+				y: HGRID * 3,
+				width: VGRID * 2,
+				height: HGRID,
 				minValue: 1,
 				maxValue: 8,
 				onChange: onChange,
@@ -53,10 +54,10 @@ export default function cvToMidiCC({ vGrid, hGrid }: ModuleGeneratorProps): Modu
 			{
 				id: 'data:2',
 				label: 'cc',
-				x: vGrid * 10,
-				y: hGrid * 4,
-				width: vGrid * 2,
-				height: hGrid,
+				x: VGRID * 10,
+				y: HGRID * 4,
+				width: VGRID * 2,
+				height: HGRID,
 				minValue: 1,
 				maxValue: 127,
 				onChange: onChange,
