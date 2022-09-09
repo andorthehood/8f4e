@@ -1,6 +1,7 @@
 import { Engine } from '@8f4e/2d-engine';
 import { fillColor } from '@8f4e/sprite-generator';
 import { State } from '../../state/types';
+import { HGRID, VGRID } from './consts';
 
 export default function drawConnections(engine: Engine, state: State): void {
 	const connections = state.connections;
@@ -12,22 +13,19 @@ export default function drawConnections(engine: Engine, state: State): void {
 		const fromModule = modules.find(({ id }) => id === connections[i].fromModuleId);
 		const toModule = modules.find(({ id }) => id === connections[i].toModuleId);
 
-		const {
-			x: fromX,
-			y: fromY,
-			width,
-			height,
-		} = state.moduleTypes[fromModule.type].outputs.find(({ id }) => id === connections[i].fromConnectorId);
+		const { x: fromX, y: fromY } = state.moduleTypes[fromModule.type].outputs.find(
+			({ id }) => id === connections[i].fromConnectorId
+		);
 		const { x: toX, y: toY } = state.moduleTypes[toModule.type].inputs.find(
 			({ id }) => id === connections[i].toConnectorId
 		);
 
 		engine.startGroup(state.viewport.x, state.viewport.y);
 		engine.drawLine(
-			fromX + fromModule.x + width / 2,
-			fromY + fromModule.y + height / 2,
-			toX + toModule.x + width / 2,
-			toY + toModule.y + height / 2,
+			fromX + fromModule.x + VGRID,
+			fromY + fromModule.y + HGRID / 2,
+			toX + toModule.x + VGRID,
+			toY + toModule.y + HGRID / 2,
 			'rgb(153,153,153)',
 			1
 		);

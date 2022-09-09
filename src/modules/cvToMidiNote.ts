@@ -1,9 +1,10 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import { ModuleGeneratorProps, ModuleType, StepperChangeHandler } from '../state/types';
+import { ModuleType, StpperChangeHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
 import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
+import { HGRID, VGRID } from '../view/drawers/consts';
 
 const onChangeChannel: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;
@@ -11,9 +12,9 @@ const onChangeChannel: StepperChangeHandler = function (module, state, value, st
 	memoryBuffer[dataAddress] = Math.min(Math.max(memoryBuffer[dataAddress] + value, stepper.minValue), stepper.maxValue);
 };
 
-export default function cvToMidiNote({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType<Config> {
-	const width = MODULE_WIDTH_M * vGrid;
-	const height = MODULE_HEIGHT_S * hGrid;
+export default function cvToMidiNote(): ModuleType<Config> {
+	const width = MODULE_WIDTH_M * VGRID;
+	const height = MODULE_HEIGHT_S * HGRID;
 
 	return {
 		buttons: [],
@@ -27,16 +28,12 @@ export default function cvToMidiNote({ vGrid, hGrid }: ModuleGeneratorProps): Mo
 		},
 		height,
 		initialState: {},
-		inputs: addDefaultInputPositions(
-			[
-				{ id: 'in:1', label: 'note' },
-				{ id: 'in:2', label: 'on/off' },
-				{ id: 'in:3', label: 'velocity' },
-			],
-			vGrid,
-			hGrid
-		),
-		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
+		inputs: addDefaultInputPositions([
+			{ id: 'in:1', label: 'note' },
+			{ id: 'in:2', label: 'on/off' },
+			{ id: 'in:3', label: 'velocity' },
+		]),
+		lines: [...generateBorderLines(width, height)],
 		name: 'CV to MIDI Note',
 		outputs: [],
 		sliders: [],
@@ -44,10 +41,10 @@ export default function cvToMidiNote({ vGrid, hGrid }: ModuleGeneratorProps): Mo
 			{
 				id: 'data:1',
 				label: 'channel',
-				x: vGrid * 20,
-				y: hGrid * 3,
-				width: vGrid * 2,
-				height: hGrid,
+				x: VGRID * 20,
+				y: HGRID * 3,
+				width: VGRID * 2,
+				height: HGRID,
 				minValue: 1,
 				maxValue: 8,
 				onChange: onChangeChannel,

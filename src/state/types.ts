@@ -17,7 +17,7 @@ export interface Module {
 	y: number;
 }
 
-export interface Connector extends Position, Size {
+export interface Connector extends Position {
 	id: string;
 	label?: string;
 }
@@ -104,10 +104,7 @@ export type ModuleController = Stepper | Connector | Slider | Button;
 
 export type ModuleTypeLookup = Record<string, ModuleType>;
 
-export interface Viewport extends Position, Size {
-	hGrid: number;
-	vGrid: number;
-}
+export interface Viewport extends Position, Size {}
 
 export interface ContextMenuItem {
 	action: string;
@@ -171,9 +168,4 @@ export interface State {
 	modules: Module[];
 	sructureVersion: number;
 	viewport: Viewport;
-}
-
-export interface ModuleGeneratorProps {
-	hGrid: number;
-	vGrid: number;
 }
