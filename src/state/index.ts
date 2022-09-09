@@ -57,7 +57,7 @@ const defaultState: State = {
 
 export default function init(events: EventDispatcher): State {
 	const state = { ...defaultState };
-	state.moduleTypes = generateModuleTypes({ vGrid: state.viewport.vGrid, hGrid: state.viewport.hGrid });
+	state.moduleTypes = generateModuleTypes();
 	midi(state, events);
 	loader(state, events, defaultState);
 	history(state, events);
