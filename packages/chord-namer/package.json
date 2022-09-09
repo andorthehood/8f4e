@@ -1,0 +1,11 @@
+{
+  "name": "@8f4e/chord-namer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Andor Polgar",
+  "license": "MIT"
+}
