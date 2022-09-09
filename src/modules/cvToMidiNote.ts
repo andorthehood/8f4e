@@ -13,8 +13,8 @@ const onChangeChannel: StepperChangeHandler = function (module, state, value, st
 };
 
 export default function cvToMidiNote(): ModuleType<Config> {
-	const width = MODULE_WIDTH_M * VGRID;
-	const height = MODULE_HEIGHT_S * HGRID;
+	const width = MODULE_WIDTH_M;
+	const height = MODULE_HEIGHT_S;
 
 	return {
 		buttons: [],
