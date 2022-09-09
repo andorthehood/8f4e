@@ -1,4 +1,5 @@
 import { EventDispatcher } from '../../../events';
+import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 import { State, Module } from '../../types';
 
@@ -26,8 +27,8 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 
 	function onMouseUp() {
 		if (draggedModule) {
-			draggedModule.x = Math.round(draggedModule.x / (state.viewport.vGrid * 2)) * (state.viewport.vGrid * 2);
-			draggedModule.y = Math.round(draggedModule.y / state.viewport.hGrid) * state.viewport.hGrid;
+			draggedModule.x = Math.round(draggedModule.x / (VGRID * 2)) * (VGRID * 2);
+			draggedModule.y = Math.round(draggedModule.y / HGRID) * HGRID;
 			draggedModule = null;
 		}
 

@@ -1,9 +1,9 @@
 import { Engine } from '@8f4e/2d-engine';
 import { feedbackScale, font, fillColor } from '@8f4e/sprite-generator';
 import { ModuleType, State } from '../../../state/types';
+import { HGRID, VGRID } from '../consts';
 
 export default function drawConnectors(engine: Engine, moduleType: ModuleType, state: State, id: string): void {
-	const { vGrid, hGrid } = state.viewport;
 	const { outputs, inputs } = moduleType;
 
 	for (let i = 0; i < outputs.length; i++) {
@@ -15,15 +15,15 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 		) {
 			const connectorAddress = state.compiler.memoryAddressLookup[id][connector.id];
 			const value = state.compiler.memoryBuffer[connectorAddress];
-			const { x, y, width, height } = connector;
+			const { x, y } = connector;
 
 			engine.setSpriteLookup(feedbackScale);
-			engine.drawSprite(x, y, value, width, height);
+			engine.drawSprite(x, y, value, VGRID * 2, HGRID);
 
 			engine.setSpriteLookup(font('small_white'));
 
 			const label = connector.label || connector.id;
-			engine.drawText(x - vGrid * (label.length + 1), y, label);
+			engine.drawText(x - VGRID * (label.length + 1), y, label);
 		}
 	}
 
@@ -37,11 +37,11 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 			const { x, y } = connector;
 
 			engine.setSpriteLookup(fillColor);
-			engine.drawRectangle(x, y, 2 * vGrid, hGrid - 1, 'rgb(153,153,153)');
+			engine.drawRectangle(x, y, 2 * VGRID, HGRID, 'rgb(153,153,153)');
 
 			engine.setSpriteLookup(font('small_white'));
 
-			engine.drawText(x + vGrid * 3, y, connector.label || connector.id);
+			engine.drawText(x + VGRID * 3, y, connector.label || connector.id);
 		}
 	}
 }

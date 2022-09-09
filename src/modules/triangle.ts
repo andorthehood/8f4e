@@ -1,11 +1,11 @@
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { ModuleGeneratorProps, ModuleType } from '../state/types';
+import { ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 
-export default function triangle({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
-	const width = MODULE_WIDTH_S * vGrid;
-	const height = MODULE_HEIGHT_S * hGrid;
+export default function triangle(): ModuleType {
+	const width = MODULE_WIDTH_S;
+	const height = MODULE_HEIGHT_S;
 
 	return {
 		buttons: [],
@@ -14,9 +14,9 @@ export default function triangle({ vGrid, hGrid }: ModuleGeneratorProps): Module
 		height,
 		initialState: {},
 		inputs: [],
-		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
+		lines: [...generateBorderLines(width, height)],
 		name: 'Triangle',
-		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
+		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
 		steppers: [],
 		width,

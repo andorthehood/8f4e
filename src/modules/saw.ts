@@ -1,4 +1,4 @@
-import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../state/types';
+import { ModuleType, SliderChangeHandler } from '../state/types';
 import singleSliderModule from './templates/singleSliderModule';
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/saw.asm';
 
@@ -8,9 +8,9 @@ const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddr
 	insertState({ rate }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
-export default function saw(props: ModuleGeneratorProps): ModuleType {
+export default function saw(): ModuleType {
 	return {
-		...singleSliderModule(props, { id: 'rate', maxValue: 2000, minValue: 0, resolution: 10, onChange }),
+		...singleSliderModule({ id: 'rate', maxValue: 2000, minValue: 0, resolution: 10, onChange }),
 		category: 'Oscillator',
 		engine: { name: 'saw', config: {} },
 		initialState: { rate: 1000 },

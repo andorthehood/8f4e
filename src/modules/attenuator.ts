@@ -1,4 +1,4 @@
-import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../state/types';
+import { ModuleType, SliderChangeHandler } from '../state/types';
 import singleSliderModule from './templates/singleSliderModule';
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/attenuator.asm';
 
@@ -8,9 +8,9 @@ const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddr
 	insertState({ divisor }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
-export default function attenuator(props: ModuleGeneratorProps): ModuleType {
+export default function attenuator(): ModuleType {
 	return {
-		...singleSliderModule(props, { id: 'divisor', minValue: 1, maxValue: 100, resolution: 1, onChange }),
+		...singleSliderModule({ id: 'divisor', minValue: 1, maxValue: 100, resolution: 1, onChange }),
 		category: 'Other',
 		engine: { name: 'attenuator', config: {} },
 		initialState: {
