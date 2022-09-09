@@ -1,5 +1,5 @@
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '@8f4e/synth-compiler';
-import { ModuleGeneratorProps, ModuleType, SliderChangeHandler } from '../state/types';
+import { ModuleType, SliderChangeHandler } from '../state/types';
 import singleSliderModule from './templates/singleSliderModule';
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/constant.asm';
 
@@ -9,9 +9,9 @@ const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddr
 	insertState({ out }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
-export default function constant(props: ModuleGeneratorProps): ModuleType {
+export default function constant(): ModuleType {
 	return {
-		...singleSliderModule(props, {
+		...singleSliderModule({
 			id: 'out',
 			minValue: I16_SIGNED_SMALLEST_NUMBER,
 			maxValue: I16_SIGNED_LARGEST_NUMBER,
