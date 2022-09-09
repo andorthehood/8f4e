@@ -1,11 +1,12 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { midiNoteToInt16 } from '../state/helpers/midi';
-import { ModuleGeneratorProps, ModuleType, Button, ButtonClickHandler } from '../state/types';
+import { ModuleType, Button, ButtonClickHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
 import { insertState, extractState, Config } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
+import { HGRID, VGRID } from '../view/drawers/consts';
 
 const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
 	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
@@ -24,16 +25,16 @@ export type PianoQuantizer = ModuleType<
 	{ keyCount: number; x: number; y: number; notes: Map<number, number>; keyNumbers: Map<number, number> }
 >;
 
-export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): PianoQuantizer {
-	const width = MODULE_WIDTH_XXL * vGrid;
-	const height = MODULE_HEIGHT_S * hGrid;
-	const pianoX = vGrid * 5;
-	const pianoY = hGrid * 3;
+export default function pianoQuantizer(): PianoQuantizer {
+	const width = MODULE_WIDTH_XXL;
+	const height = MODULE_HEIGHT_S;
+	const pianoX = VGRID * 5;
+	const pianoY = HGRID * 3;
 	const keyCount = 120;
 
 	return {
 		buttons: [
-			...generatePianoKeyLayout<Button>({ keyCount, vGrid, hGrid }, ({ index, x, y, ...rest }) => {
+			...generatePianoKeyLayout<Button>({ keyCount }, ({ index, x, y, ...rest }) => {
 				return {
 					id: 'note:' + index,
 					value: midiNoteToInt16(index),
@@ -58,10 +59,10 @@ export default function pianoQuantizer({ vGrid, hGrid }: ModuleGeneratorProps): 
 		engine: { name: 'quantizer', config: { allocatedNotes: 32 } },
 		height,
 		initialState: {},
-		inputs: addDefaultInputPositions([{ id: 'in' }], vGrid, hGrid),
-		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
+		inputs: addDefaultInputPositions([{ id: 'in' }]),
+		lines: [...generateBorderLines(width, height)],
 		name: 'Quantizer 120',
-		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
+		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		insertState,
 		extractState,
 		sliders: [],

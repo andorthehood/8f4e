@@ -1,12 +1,12 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { ModuleGeneratorProps, ModuleType } from '../state/types';
+import { ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 
-export default function min({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
-	const width = MODULE_WIDTH_S * vGrid;
-	const height = MODULE_HEIGHT_S * hGrid;
+export default function min(): ModuleType {
+	const width = MODULE_WIDTH_S;
+	const height = MODULE_HEIGHT_S;
 
 	return {
 		buttons: [],
@@ -14,17 +14,13 @@ export default function min({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType 
 		engine: { name: 'min', config: {} },
 		height,
 		initialState: {},
-		inputs: addDefaultInputPositions(
-			[
-				{ id: 'in:1', label: 'in' },
-				{ id: 'in:2', label: 'in' },
-			],
-			vGrid,
-			hGrid
-		),
-		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
+		inputs: addDefaultInputPositions([
+			{ id: 'in:1', label: 'in' },
+			{ id: 'in:2', label: 'in' },
+		]),
+		lines: [...generateBorderLines(width, height)],
 		name: 'Min',
-		outputs: addDefaultOutputPositions([{ id: 'out', label: 'out' }], vGrid, hGrid, width),
+		outputs: addDefaultOutputPositions([{ id: 'out', label: 'out' }], width),
 		sliders: [],
 		steppers: [],
 		width,

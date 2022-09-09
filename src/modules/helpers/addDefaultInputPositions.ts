@@ -1,17 +1,14 @@
 import getConnectorDefaultPosition from './getConnectorDefaultPosition';
 import { Connector } from '../../state/types';
+import { HGRID, VGRID } from '../../view/drawers/consts';
 
-export default function addDefaultInputPositions(
-	connectors: Pick<Connector, 'id' | 'label'>[],
-	vGrid: number,
-	hGrid: number
-): Connector[] {
+export default function addDefaultInputPositions(connectors: Pick<Connector, 'id' | 'label'>[]): Connector[] {
 	return connectors.map(function (connector, index: number) {
 		return {
 			...connector,
-			...getConnectorDefaultPosition(index, true, vGrid, hGrid),
-			width: 2 * vGrid,
-			height: hGrid,
+			...getConnectorDefaultPosition(index, true),
+			width: 2 * VGRID,
+			height: HGRID,
 		};
 	});
 }

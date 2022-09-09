@@ -10,9 +10,10 @@ import { Engine } from '@8f4e/2d-engine';
 import drawSteppers from './steppers';
 import drawLines from './lines';
 import drawButtonHitArea from './drawButtonHitArea';
+import { HGRID, VGRID } from '../consts';
 
 export default function drawModules(engine: Engine, state: State): void {
-	const { vGrid, hGrid, x: offsetX, y: offsetY } = state.viewport;
+	const { x: offsetX, y: offsetY } = state.viewport;
 
 	engine.startGroup(offsetX, offsetY);
 
@@ -37,11 +38,11 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			engine.setSpriteLookup(font('small_white'));
-			engine.drawText(vGrid * 2, hGrid, name);
+			engine.drawText(VGRID * 2, HGRID, name);
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
 			drawSliders(engine, sliders, state, id);
-			drawSteppers(engine, steppers, state, id, vGrid, hGrid);
+			drawSteppers(engine, steppers, state, id);
 
 			if (type === 'number') {
 				number(engine, state, id);

@@ -1,12 +1,12 @@
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { ModuleGeneratorProps, ModuleType } from '../state/types';
+import { ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 
-export default function triggerToGate({ vGrid, hGrid }: ModuleGeneratorProps): ModuleType {
-	const width = MODULE_WIDTH_S * vGrid;
-	const height = MODULE_HEIGHT_S * hGrid;
+export default function triggerToGate(): ModuleType {
+	const width = MODULE_WIDTH_S;
+	const height = MODULE_HEIGHT_S;
 
 	return {
 		buttons: [],
@@ -14,10 +14,10 @@ export default function triggerToGate({ vGrid, hGrid }: ModuleGeneratorProps): M
 		engine: { name: 'triggerToGate', config: {} },
 		height,
 		initialState: {},
-		inputs: addDefaultInputPositions([{ id: 'in:trigger', label: 'trig' }], vGrid, hGrid),
-		lines: [...generateBorderLines(vGrid, hGrid, width, height)],
+		inputs: addDefaultInputPositions([{ id: 'in:trigger', label: 'trig' }]),
+		lines: [...generateBorderLines(width, height)],
 		name: 'Trigger to Gate',
-		outputs: addDefaultOutputPositions([{ id: 'out' }], vGrid, hGrid, width),
+		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
 		steppers: [],
 		width,

@@ -34,9 +34,7 @@ const defaultState: State = {
 	modules: [],
 	history: [],
 	viewport: {
-		hGrid: 16,
 		height: 0,
-		vGrid: 8,
 		width: 0,
 		x: 0,
 		y: 0,
