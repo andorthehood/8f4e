@@ -1,5 +1,5 @@
 import { State } from '../types';
-import { resize, move } from '../mutators/viewport';
+import { resize, move, snapToGrid } from '../mutators/viewport';
 import { EventDispatcher } from '../../events';
 
 export default function viewport(state: State, events: EventDispatcher): () => void {
@@ -13,13 +13,19 @@ export default function viewport(state: State, events: EventDispatcher): () => v
 		resize(state, window.innerWidth, window.innerHeight);
 	}
 
+	function onMouseUp() {
+		snapToGrid(state);
+	}
+
 	onResize();
 
 	events.on('mousemove', onMouseMove);
 	events.on('resize', onResize);
+	events.on('mouseup', onMouseUp);
 
 	return () => {
 		events.off('mousemove', onMouseMove);
 		events.off('resize', onResize);
+		events.off('mouseup', onMouseUp);
 	};
 }
