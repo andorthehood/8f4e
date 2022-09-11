@@ -29,13 +29,8 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 		}
 	}
 
-	// function onStateChange(e) {
-	// 	console.log(e.port.name, e.port.manufacturer, e.port.state);
-	// }
-
 	// @ts-ignore
 	navigator.requestMIDIAccess().then(onMidiAccess);
-	//midiAccess.addEventListener('statechange', onStateChange);
 	events.on('selectMidiOutput', onSelectMidiOutput);
 	events.on('sendMidiMessage', onSendMidiMessage);
 }

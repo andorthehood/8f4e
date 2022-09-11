@@ -1,12 +1,15 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { midiNoteToInt16 } from '../state/helpers/midi';
+import { int16ToMidiNote, midiNoteToInt16 } from '../state/helpers/midi';
 import { ModuleType, Button, ButtonClickHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
 import { insertState, extractState, Config } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
 import { HGRID, VGRID } from '../view/drawers/consts';
+import chordIdentifier from '@8f4e/chord-identifier';
+
+const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
 	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
@@ -17,12 +20,21 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 		activeNotes.push(value);
 	}
 
+	module.state.chord = chordIdentifier(activeNotes.map(int16ToMidiNote));
+
 	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
 export type PianoQuantizer = ModuleType<
 	Config,
-	{ keyCount: number; x: number; y: number; notes: Map<number, number>; keyNumbers: Map<number, number> }
+	{
+		keyCount: number;
+		x: number;
+		y: number;
+		notes: Map<number, number>;
+		keyNumbers: Map<number, number>;
+		noteSigns: Map<number, string>;
+	}
 >;
 
 export default function pianoQuantizer(): PianoQuantizer {
@@ -54,6 +66,9 @@ export default function pianoQuantizer(): PianoQuantizer {
 				y: pianoY,
 				notes: new Map(new Array(keyCount).fill(0).map((item, index) => [midiNoteToInt16(index), index])),
 				keyNumbers: new Map(new Array(keyCount).fill(0).map((item, index) => [midiNoteToInt16(index), index % 12])),
+				noteSigns: new Map(
+					new Array(keyCount).fill(0).map((item, index) => [midiNoteToInt16(index), notes[index % 12]])
+				),
 			},
 		},
 		engine: { name: 'quantizer', config: { allocatedNotes: 32 } },
