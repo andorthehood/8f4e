@@ -57,7 +57,9 @@ Object {
   "name": "Logic AND",
   "outputs": Array [
     Object {
+      "height": 16,
       "id": "out",
+      "width": 16,
       "x": 112,
       "y": 48,
     },

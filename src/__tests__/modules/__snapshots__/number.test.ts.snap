@@ -51,8 +51,10 @@ Object {
   "name": "Number",
   "outputs": Array [
     Object {
+      "height": 16,
       "id": "out:1",
       "label": "out",
+      "width": 16,
       "x": 112,
       "y": 48,
     },
