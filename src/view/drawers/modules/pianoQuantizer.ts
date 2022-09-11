@@ -1,3 +1,4 @@
+import { font } from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/synth-compiler';
 import { pianoKeyboard } from '@8f4e/sprite-generator';
@@ -40,6 +41,9 @@ export default function pianoDrawer(
 	}
 
 	engine.setSpriteLookup(pianoKeyboard(false, true));
-
 	engine.drawSprite(2 * VGRID * config.notes.get(outValue) + config.x, config.y, config.keyNumbers.get(outValue));
+
+	engine.setSpriteLookup(font('small_white'));
+	engine.drawText(VGRID * 18, HGRID, 'chord: ' + (module.state.chord ? module.state.chord : '-'));
+	engine.drawText(VGRID * 30, HGRID, 'out: ' + (config.noteSigns.has(outValue) ? config.noteSigns.get(outValue) : '-'));
 }

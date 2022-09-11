@@ -11,7 +11,7 @@ export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: M
 		const note = int16ToMidiNote(memoryBuffer[noteAddress]);
 		const isOn = memoryBuffer[noteOnOffAddress] !== 0;
 		const channel = memoryBuffer[channelAddress] || 1;
-		const velocity = (memoryBuffer[velocityAddress] / I16_SIGNED_LARGEST_NUMBER + 1) * 50 || 127;
+		const velocity = Math.round((memoryBuffer[velocityAddress] / I16_SIGNED_LARGEST_NUMBER + 1) * 50) || 127;
 
 		if (isOn && !wasOn.get(moduleId)) {
 			sampleAndHold.set(moduleId, note);
