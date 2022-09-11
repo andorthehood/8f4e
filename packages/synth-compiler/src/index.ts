@@ -51,7 +51,7 @@ export function compileModules(modules: Module[]): CompiledModule[] {
 
 			let module: CompiledModule = moduleCompilers[engine.name];
 			if (typeof module === 'function') {
-				module = moduleCompilers[engine.name](id, relative, { ...engine.config, ...state });
+				module = moduleCompilers[engine.name]({ ...engine.config, ...state });
 			}
 
 			if (typeof module === 'string') {
