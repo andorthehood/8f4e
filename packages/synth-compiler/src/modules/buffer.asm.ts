@@ -46,9 +46,7 @@ export const extractState: ModuleStateExtractor<BufferState> = function (memoryB
 	return obj;
 };
 
-export default config => {
-	const { numberOfPorts = 1, numberOfDataPlaceholders = 1 } = config;
-
+export default ({ numberOfPorts = 1, numberOfDataPlaceholders = 1 }) => {
 	const ports = new Array(numberOfPorts).fill(0).map((item, index) => index + 1);
 	const dataPlaceholders = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index + 1);
 
