@@ -1,7 +1,6 @@
 import chordNamer from '..';
 
 const fixtures: [notes: number[], chord: string][] = [
-	// C
 	[[0, 4, 7], 'C'],
 	[[12, 16, 19], 'C'],
 	[[0, 4, 7, 12, 16, 19], 'C'],
