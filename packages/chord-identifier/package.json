@@ -1,5 +1,5 @@
 {
-  "name": "@8f4e/chord-namer",
+  "name": "@8f4e/chord-identifier",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
