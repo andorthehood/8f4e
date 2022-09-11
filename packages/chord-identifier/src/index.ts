@@ -14,7 +14,7 @@ const enum Intervals {
 	OCTAVE,
 }
 
-const triads = {
+const chords = {
 	major: [Intervals.MAJOR_THIRD, Intervals.PERFECT_FIFTH],
 	minor: [Intervals.MINOR_THIRD, Intervals.PERFECT_FIFTH],
 	augmented: [Intervals.MAJOR_THIRD, Intervals.MAJOR_SIXTH],
@@ -27,8 +27,10 @@ const chordSignsMinor = ['Cm', 'Cm#', 'Dm', 'Dm#', 'Em', 'Fm', 'Fm#', 'Gm', 'Gm#
 export default function (midiNotes: number[]): string {
 	const notes = Array.from(new Set(midiNotes.map(note => note % 12))).sort((a, b) => a - b);
 
-	const chordType = Object.keys(triads).find(chordType => {
-		if (triads[chordType][0] === notes[1] - notes[0] && triads[chordType][1] === notes[2] - notes[0]) {
+	console.log(chords.major, notes);
+
+	const chordType = Object.keys(chords).find(chordType => {
+		if (chords[chordType][0] === notes[1] - notes[0] && chords[chordType][1] === notes[2] - notes[0]) {
 			return chordType;
 		}
 	});
