@@ -27,8 +27,6 @@ const chordSignsMinor = ['Cm', 'Cm#', 'Dm', 'Dm#', 'Em', 'Fm', 'Fm#', 'Gm', 'Gm#
 export default function (midiNotes: number[]): string {
 	const notes = Array.from(new Set(midiNotes.map(note => note % 12))).sort((a, b) => a - b);
 
-	console.log(chords.major, notes);
-
 	const chordType = Object.keys(chords).find(chordType => {
 		if (chords[chordType][0] === notes[1] - notes[0] && chords[chordType][1] === notes[2] - notes[0]) {
 			return chordType;
@@ -40,5 +38,7 @@ export default function (midiNotes: number[]): string {
 			return chordSignsMajor[notes[0]];
 		case 'minor':
 			return chordSignsMinor[notes[0]];
+		default:
+			return '';
 	}
 }
