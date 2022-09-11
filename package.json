@@ -7,7 +7,7 @@
 		"dev": "parcel src/**/*.html --port 3000 --hmr-port 30000",
 		"prettier": "prettier --write './src/**/*.ts' && prettier --write './packages/*/src/**/*.ts'",
 		"eslint": "npx eslint . --ext .ts --fix",
-		"test": "run test --workspaces --if-present && jest",
+		"test": "jest src",
 		"prepare": "husky install"
 	},
 	"browserslist": [
@@ -53,6 +53,7 @@
 		"packages/synth-compiler",
 		"packages/worker",
 		"packages/2d-engine",
+		"packages/chord-identifier",
 		"packages/sprite-generator"
 	],
 	"lint-staged": {
@@ -61,6 +62,7 @@
 	},
 	"dependencies": {
 		"@8f4e/2d-engine": "file:packages/2d-engine",
+		"@8f4e/chord-identifier": "file:packages/chord-identifier",
 		"@8f4e/sprite-generator": "file:packages/sprite-generator",
 		"@8f4e/synth-compiler": "file:packages/synth-compiler",
 		"@8f4e/worker": "file:packages/worker",
