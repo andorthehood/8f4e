@@ -16,7 +16,7 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 		engine.setSpriteLookup(feedbackScale);
 		engine.drawSprite(x, y, value, width, height);
 
-		engine.setSpriteLookup(font('small_white'));
+		engine.setSpriteLookup(font('white'));
 
 		const label = connector.label || connector.id;
 		engine.drawText(x - VGRID * (label.length + 1), y, label);
@@ -30,7 +30,7 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 		engine.setSpriteLookup(fillColor);
 		engine.drawRectangle(x, y, 2 * VGRID, HGRID, 'rgb(153,153,153)');
 
-		engine.setSpriteLookup(font('small_white'));
+		engine.setSpriteLookup(font('white'));
 
 		engine.drawText(x + VGRID * 3, y, connector.label || connector.id);
 	}
