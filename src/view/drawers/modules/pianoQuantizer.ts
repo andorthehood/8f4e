@@ -43,7 +43,7 @@ export default function pianoDrawer(
 	engine.setSpriteLookup(pianoKeyboard(false, true));
 	engine.drawSprite(2 * VGRID * config.notes.get(outValue) + config.x, config.y, config.keyNumbers.get(outValue));
 
-	engine.setSpriteLookup(font('small_white'));
+	engine.setSpriteLookup(font('white'));
 	engine.drawText(VGRID * 18, HGRID, 'chord: ' + (module.state.chord ? module.state.chord : '-'));
 	engine.drawText(VGRID * 30, HGRID, 'out: ' + (config.noteSigns.has(outValue) ? config.noteSigns.get(outValue) : '-'));
 }
