@@ -12,6 +12,6 @@ export default function drawer(engine: Engine, state: State, id: string): void {
 
 	const value = state.compiler.memoryBuffer[address];
 
-	engine.setSpriteLookup(font('small_white'));
+	engine.setSpriteLookup(font('white'));
 	engine.drawText(VGRID, HGRID * 3, `${value}`);
 }

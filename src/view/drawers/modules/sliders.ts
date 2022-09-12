@@ -12,7 +12,7 @@ export default function drawSliders(engine: Engine, sliders: Slider[], state: St
 		const value = state.compiler.memoryBuffer[address];
 		const offset = (value / slider.maxValue) * slider.height;
 		engine.drawSprite(slider.x, slider.y + (slider.height - offset), 'rgb(255,255,255)', slider.width, offset);
-		engine.setSpriteLookup(font('small_white'));
+		engine.setSpriteLookup(font('white'));
 		//engine.drawText(slider.x, slider.y, '' + value / slider.resolution);
 	}
 }
