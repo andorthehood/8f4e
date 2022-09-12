@@ -7,7 +7,7 @@ export default function drawSteppers(engine: Engine, steppers: Stepper[], state:
 	for (let i = 0; i < steppers.length; i++) {
 		const stepper = steppers[i];
 
-		engine.setSpriteLookup(font('icons_white'));
+		engine.setSpriteLookup(font('icons'));
 		engine.drawText(stepper.x, stepper.y, '$%');
 		engine.drawText(stepper.x + VGRID * 2, stepper.y, '$%');
 
@@ -17,7 +17,7 @@ export default function drawSteppers(engine: Engine, steppers: Stepper[], state:
 		const address = state.compiler.memoryAddressLookup[id][stepper.id];
 		const value = state.compiler.memoryBuffer[address];
 
-		engine.setSpriteLookup(font('small_white'));
+		engine.setSpriteLookup(font('white'));
 		engine.drawText(
 			stepper.x + VGRID * 4,
 			stepper.y,

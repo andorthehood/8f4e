@@ -1,6 +1,6 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
-import thickFont from './fonts/thickFont';
-import thickIcons from './fonts/thickIcons';
+import thickFont from './fonts/font';
+import thickIcons from './fonts/icons';
 import { Command, DrawingCommand } from './types';
 
 const offsetX = 0;
@@ -94,21 +94,21 @@ export const lookup = function (font: string): SpriteLookup {
 	return function (letter: string) {
 		const code = letter.charCodeAt(0);
 		switch (font) {
-			case 'small_white':
+			case 'white':
 				return {
 					x: code * THICK_CHARACTER_WIDTH + offsetX,
 					y: offsetY,
 					spriteHeight: THICK_LINE_HEIGHT,
 					spriteWidth: THICK_CHARACTER_WIDTH,
 				};
-			case 'small_black':
+			case 'black':
 				return {
 					x: code * THICK_CHARACTER_WIDTH + offsetX,
 					y: offsetY + THICK_LINE_HEIGHT,
 					spriteHeight: THICK_LINE_HEIGHT,
 					spriteWidth: THICK_CHARACTER_WIDTH,
 				};
-			case 'icons_white':
+			case 'icons':
 				return {
 					x: code * THICK_CHARACTER_WIDTH + offsetX,
 					y: offsetY + THICK_LINE_HEIGHT * 2,
