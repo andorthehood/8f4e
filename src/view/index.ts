@@ -26,7 +26,7 @@ export default async function init(state: State): Promise<void> {
 		drawConnections(engine, state);
 		drawContextMenu(engine, state);
 
-		engine.setSpriteLookup(font('small_white'));
+		engine.setSpriteLookup(font('white'));
 
 		if (state.isDebugMode) {
 			engine.startGroup(10, state.viewport.height - 50);
