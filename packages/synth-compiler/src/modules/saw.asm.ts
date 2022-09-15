@@ -1,4 +1,4 @@
-import { ModuleStateInserter, ModuleStateExtractor } from '../types';
+import { ModuleStateExtractor, ModuleStateInserter } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
 interface SawState {

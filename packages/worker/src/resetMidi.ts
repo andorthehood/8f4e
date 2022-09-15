@@ -1,4 +1,4 @@
-import { Event, ControlChange } from './midiEnums';
+import { ControlChange, Event } from './midiEnums';
 
 export default function resetMidi(): void {
 	self.postMessage({

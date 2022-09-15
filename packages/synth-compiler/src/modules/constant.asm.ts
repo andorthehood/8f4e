@@ -1,4 +1,4 @@
-import { ModuleStateInserter, ModuleStateExtractor } from '../types';
+import { ModuleStateExtractor, ModuleStateInserter } from '../types';
 
 interface ConstantState {
 	out: number;

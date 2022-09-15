@@ -1,4 +1,5 @@
 import { Connection, Module, setUpConnections } from '@8f4e/synth-compiler';
+
 import createModule from './createModule';
 import resetMidi from './resetMidi';
 import findMidiNoteModules from './findMidiNoteModules';

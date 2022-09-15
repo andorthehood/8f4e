@@ -1,10 +1,12 @@
+import { Config } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
+
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { ModuleType, Button } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_L } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
-import { Config } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
+
+import { Button, ModuleType } from '../state/types';
 import { HGRID, VGRID } from '../view/drawers/consts';
 
 export default function pianoQuantizer(): ModuleType<Config> {

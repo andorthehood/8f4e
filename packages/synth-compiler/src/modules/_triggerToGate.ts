@@ -2,14 +2,15 @@ import {
 	Instruction,
 	Type,
 	createFunctionBody,
+	createLocalDeclaration,
 	i32const,
 	i32load,
 	i32store,
 	ifelse,
-	localSet,
-	createLocalDeclaration,
 	localGet,
+	localSet,
 } from '@8f4e/bytecode-utils';
+
 import { MemoryTypes, ModuleGenerator } from '../types';
 import { I16_SIGNED_LARGEST_NUMBER } from '../consts';
 
@@ -106,7 +107,12 @@ const triggerToGate: ModuleGenerator = function (moduleId, offset) {
 				id: 'in:gateLength',
 				default: offset.byte(Memory.GATE_LENGTH),
 			},
-			{ type: MemoryTypes.NUMBER, address: Memory.GATE_LENGTH, id: 'gateLength', default: 2 },
+			{
+				type: MemoryTypes.NUMBER,
+				address: Memory.GATE_LENGTH,
+				id: 'gateLength',
+				default: 2,
+			},
 			{
 				type: MemoryTypes.PRIVATE,
 				address: Memory.TRIGGER_PREVIOUS_VALUE,

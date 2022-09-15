@@ -1,15 +1,16 @@
 import {
+	Instruction,
+	Type,
 	createFunctionBody,
 	createLocalDeclaration,
 	i32const,
 	i32load,
 	i32store,
 	ifelse,
-	Instruction,
 	localGet,
 	localSet,
-	Type,
 } from '@8f4e/bytecode-utils';
+
 import { MemoryTypes, ModuleGenerator, ModuleStateExtractor, ModuleStateInserter } from '../types';
 
 export enum Memory {
@@ -100,10 +101,27 @@ const triggerSequencer: ModuleGenerator<Config> = function (moduleId, offset, { 
 				default: offset.byte(Memory.ZERO),
 				type: MemoryTypes.INPUT_POINTER,
 			},
-			{ address: Memory.TRIGGER_PREVIOUS_VALUE, default: 0, type: MemoryTypes.PRIVATE },
-			{ id: 'out', address: Memory.OUTPUT, default: 0, type: MemoryTypes.OUTPUT },
-			{ address: Memory.PATTERN_POINTER, type: MemoryTypes.PRIVATE, default: 0 },
-			{ address: Memory.PATTERN_MEMORY_SIZE, type: MemoryTypes.ARRAY_SIZE, default: maxPatternSizeToAlloc * 4 },
+			{
+				address: Memory.TRIGGER_PREVIOUS_VALUE,
+				default: 0,
+				type: MemoryTypes.PRIVATE,
+			},
+			{
+				id: 'out',
+				address: Memory.OUTPUT,
+				default: 0,
+				type: MemoryTypes.OUTPUT,
+			},
+			{
+				address: Memory.PATTERN_POINTER,
+				type: MemoryTypes.PRIVATE,
+				default: 0,
+			},
+			{
+				address: Memory.PATTERN_MEMORY_SIZE,
+				type: MemoryTypes.ARRAY_SIZE,
+				default: maxPatternSizeToAlloc * 4,
+			},
 			{
 				address: Memory.PATTERN_START,
 				type: MemoryTypes.DYNAMIC_ARRAY,
