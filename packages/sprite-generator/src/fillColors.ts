@@ -1,4 +1,5 @@
-import { SpriteLookup, SpriteCoordinates } from '@8f4e/2d-engine';
+import { SpriteCoordinates, SpriteLookup } from '@8f4e/2d-engine';
+
 import { Command, DrawingCommand } from './types';
 
 const offsetX = 0;
@@ -22,7 +23,12 @@ export default function generate(): DrawingCommand[] {
 				const x = offsetX + (r / 51) * 4 + (b / 51) * 24;
 				const y = offsetY + (g / 51) * 4;
 				commands.push([Command.RECTANGLE, x, y, 4, 4]);
-				lookupTable['rgb(' + r + ',' + g + ',' + b + ')'] = { x, y, spriteWidth: 4, spriteHeight: 4 };
+				lookupTable['rgb(' + r + ',' + g + ',' + b + ')'] = {
+					x,
+					y,
+					spriteWidth: 4,
+					spriteHeight: 4,
+				};
 			}
 		}
 	}

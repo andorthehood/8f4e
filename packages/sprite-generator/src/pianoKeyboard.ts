@@ -1,8 +1,9 @@
+import { SpriteLookup } from '@8f4e/2d-engine';
+
 import { Command, DrawingCommand } from './types';
 import icons, { Icon } from './fonts/icons';
 import { drawCharacterMatrix } from './font';
 import font from './fonts/font';
-import { SpriteLookup } from '@8f4e/2d-engine';
 
 const enum State {
 	PRESSED,

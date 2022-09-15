@@ -3,7 +3,7 @@ import Instruction from './instruction';
 import { Section } from './section';
 import Type from './type';
 import { createVector, encodeString, unsignedLEB128 } from './typeHelpers';
-import { ImportDesc, NameSection, ExportDesc } from './section';
+import { ExportDesc, ImportDesc, NameSection } from './section';
 
 export function createFunctionSection(functionTypeIndexes: number[]): number[] {
 	const numberOfFunctions = functionTypeIndexes.length;

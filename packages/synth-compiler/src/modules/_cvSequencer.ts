@@ -10,6 +10,7 @@ import {
 	localGet,
 	localSet,
 } from '@8f4e/bytecode-utils';
+
 import { MemoryTypes, ModuleGenerator } from '../types';
 
 export enum Memory {
@@ -79,17 +80,39 @@ const cvSequencer: ModuleGenerator<{ allocatedNotes?: number }> = function (modu
 				id: 'in:stepBack',
 				default: 0,
 			},
-			{ type: MemoryTypes.PRIVATE, address: Memory.STEP_BACK_TRIGGER_PREV_VALUE, default: 0 },
+			{
+				type: MemoryTypes.PRIVATE,
+				address: Memory.STEP_BACK_TRIGGER_PREV_VALUE,
+				default: 0,
+			},
 			{
 				type: MemoryTypes.INPUT_POINTER,
 				address: Memory.STEP_FORWARD_TRIGGER_INPUT_POINTER,
 				id: 'in:stepForward',
 				default: 0,
 			},
-			{ type: MemoryTypes.PRIVATE, address: Memory.STEP_FORWARD_TRIGGER_PREV_VALUE, default: 0 },
-			{ type: MemoryTypes.PRIVATE, address: Memory.NOTE_MEMORY_POINTER, default: 0 },
-			{ type: MemoryTypes.OUTPUT, address: Memory.OUTPUT, id: 'out', default: 0 },
-			{ type: MemoryTypes.ARRAY_SIZE, address: Memory.NUMBER_OF_NOTES, id: 'numberOfNotes', default: 0 },
+			{
+				type: MemoryTypes.PRIVATE,
+				address: Memory.STEP_FORWARD_TRIGGER_PREV_VALUE,
+				default: 0,
+			},
+			{
+				type: MemoryTypes.PRIVATE,
+				address: Memory.NOTE_MEMORY_POINTER,
+				default: 0,
+			},
+			{
+				type: MemoryTypes.OUTPUT,
+				address: Memory.OUTPUT,
+				id: 'out',
+				default: 0,
+			},
+			{
+				type: MemoryTypes.ARRAY_SIZE,
+				address: Memory.NUMBER_OF_NOTES,
+				id: 'numberOfNotes',
+				default: 0,
+			},
 			{
 				type: MemoryTypes.DYNAMIC_ARRAY,
 				maxSize: allocatedNotes,

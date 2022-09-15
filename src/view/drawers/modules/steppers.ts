@@ -1,6 +1,7 @@
 import { Engine } from '@8f4e/2d-engine';
-import { State, Stepper } from '../../../state/types';
 import { font } from '@8f4e/sprite-generator';
+
+import { State, Stepper } from '../../../state/types';
 import { VGRID } from '../consts';
 
 export default function drawSteppers(engine: Engine, steppers: Stepper[], state: State, id: string): void {

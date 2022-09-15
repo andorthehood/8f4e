@@ -1,5 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
-import { font, fillColor } from '@8f4e/sprite-generator';
+import { fillColor, font } from '@8f4e/sprite-generator';
+
 import { State } from '../../state/types';
 
 export default function drawContextMenu(engine: Engine, state: State): void {

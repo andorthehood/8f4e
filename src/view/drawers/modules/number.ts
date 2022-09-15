@@ -1,5 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 import { font } from '@8f4e/sprite-generator';
+
 import { State } from '../../../state/types';
 import { HGRID, VGRID } from '../consts';
 
