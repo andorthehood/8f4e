@@ -1,4 +1,5 @@
 import { SpriteCoordinates } from '@8f4e/2d-engine';
+
 import { lookup } from './pianoKeyboard';
 
 const fixtures: [key: number, spriteCoordinates: SpriteCoordinates][] = [

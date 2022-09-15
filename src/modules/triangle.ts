@@ -1,7 +1,8 @@
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
+
+import { ModuleType } from '../state/types';
 
 export default function triangle(): ModuleType {
 	const width = MODULE_WIDTH_S;

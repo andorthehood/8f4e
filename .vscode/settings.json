@@ -29,6 +29,6 @@
         "**/.parcel-cache/**": true,
         "package-lock.json": true
     },
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "jest.jestCommandLine": "npx jest",
 }

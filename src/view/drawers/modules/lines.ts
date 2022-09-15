@@ -1,4 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
+
 import { Line } from '../../../state/types';
 
 export default function drawLines(engine: Engine, lines: Line[]): void {

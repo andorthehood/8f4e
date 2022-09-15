@@ -1,5 +1,3 @@
-import { ModuleTypeLookup } from '../state/types';
-
 import abs from './abs';
 import adc16bit from './adc16bit';
 import adc8bit from './adc8bit';
@@ -34,6 +32,8 @@ import sequentialSwitch from './sequentialSwitch';
 import splitter from './splitter';
 import triangle from './triangle';
 import triggerToGate from './triggerToGate';
+
+import { ModuleTypeLookup } from '../state/types';
 
 export default function generateModuleTypes(): ModuleTypeLookup {
 	return {

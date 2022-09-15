@@ -1,7 +1,7 @@
 module.exports = {
 	root: true,
 	parser: '@typescript-eslint/parser',
-	plugins: ['@typescript-eslint', 'prettier'],
+	plugins: ['@typescript-eslint', 'prettier', 'import'],
 	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
 	rules: {
 		'@typescript-eslint/ban-ts-comment': 'warn',
@@ -16,6 +16,13 @@ module.exports = {
 				singleQuote: true,
 				trailingComma: 'es5',
 				useTabs: true,
+			},
+		],
+		'import/order': [
+			'error',
+			{
+				groups: ['builtin', 'external', 'internal', 'sibling', 'parent', 'index', 'object', 'type'],
+				'newlines-between': 'always',
 			},
 		],
 	},

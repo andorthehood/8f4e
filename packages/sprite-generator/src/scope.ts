@@ -1,4 +1,5 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
+
 import { Command, DrawingCommand } from './types';
 
 const offsetX = 500;

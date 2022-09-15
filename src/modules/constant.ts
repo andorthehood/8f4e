@@ -1,7 +1,9 @@
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '@8f4e/synth-compiler';
-import { ModuleType, SliderChangeHandler } from '../state/types';
-import singleSliderModule from './templates/singleSliderModule';
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/constant.asm';
+
+import singleSliderModule from './templates/singleSliderModule';
+
+import { ModuleType, SliderChangeHandler } from '../state/types';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
 	let { out } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);

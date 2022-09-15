@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../../events';
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
-import { State, Stepper, Module } from '../../types';
+import { Module, State, Stepper } from '../../types';
 
 export default function moduleSteppers(state: State, events: EventDispatcher): void {
 	function onModuleClick({ x, y, module }: { x: number; y: number; module: Module }) {

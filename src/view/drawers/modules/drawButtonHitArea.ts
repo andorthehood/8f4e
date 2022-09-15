@@ -1,6 +1,7 @@
 import { fillColor } from '@8f4e/sprite-generator';
-import { ModuleType } from '../../../state/types';
 import { Engine } from '@8f4e/2d-engine';
+
+import { ModuleType } from '../../../state/types';
 
 export default function drawButtonHitArea(engine: Engine, buttons: ModuleType['buttons']): void {
 	for (let i = 0; i < buttons.length; i++) {

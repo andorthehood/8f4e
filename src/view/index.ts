@@ -1,6 +1,8 @@
-import { Engine } from '@8f4e/2d-engine';
 import generateSprite, { font } from '@8f4e/sprite-generator';
-import { drawConnections, drawModules, drawContextMenu } from './drawers';
+import { Engine } from '@8f4e/2d-engine';
+
+import { drawConnections, drawContextMenu, drawModules } from './drawers';
+
 import { State } from '../state/types';
 
 export default async function init(state: State): Promise<void> {

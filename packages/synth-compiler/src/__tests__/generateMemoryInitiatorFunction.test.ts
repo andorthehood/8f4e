@@ -1,5 +1,6 @@
-import { generateMemoryInitiatorFunction, compileModules } from '..';
 import modules from './__fixtures__/modules.json';
+
+import { compileModules, generateMemoryInitiatorFunction } from '..';
 
 describe('compiler', () => {
 	test('generateMemoryInitiatorFunction', () => {

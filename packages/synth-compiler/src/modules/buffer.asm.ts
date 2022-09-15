@@ -1,4 +1,4 @@
-import { ModuleStateInserter, ModuleStateExtractor } from '../types';
+import { ModuleStateExtractor, ModuleStateInserter } from '../types';
 
 const numberOfInputsAddress = 1;
 const numberOfOutputsAddress = 2;

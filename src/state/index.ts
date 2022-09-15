@@ -15,6 +15,7 @@ import save from './effects/save';
 import tests from './effects/tests';
 import viewport from './effects/viewport';
 import { State } from './types';
+
 import generateModuleTypes from '../modules';
 import { EventDispatcher } from '../events';
 

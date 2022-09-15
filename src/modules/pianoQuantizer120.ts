@@ -1,13 +1,15 @@
+import { Config, extractState, insertState } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
+import chordIdentifier from '@8f4e/chord-identifier';
+
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { int16ToMidiNote, midiNoteToInt16 } from '../state/helpers/midi';
-import { ModuleType, Button, ButtonClickHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
-import { insertState, extractState, Config } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
+
+import { Button, ButtonClickHandler, ModuleType } from '../state/types';
+import { int16ToMidiNote, midiNoteToInt16 } from '../state/helpers/midi';
 import { HGRID, VGRID } from '../view/drawers/consts';
-import chordIdentifier from '@8f4e/chord-identifier';
 
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 

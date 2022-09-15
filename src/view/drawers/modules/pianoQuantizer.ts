@@ -2,9 +2,10 @@ import { font } from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/synth-compiler';
 import { pianoKeyboard } from '@8f4e/sprite-generator';
-import { Module } from '../../../state/types';
-import { HGRID, VGRID } from '../consts';
+
 import { PianoQuantizer } from '../../../modules/pianoQuantizer120';
+import { HGRID, VGRID } from '../consts';
+import { Module } from '../../../state/types';
 
 const octaveWidth = 12 * HGRID;
 

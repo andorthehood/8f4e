@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../../events';
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
-import { State, Module, Slider } from '../../types';
+import { Module, Slider, State } from '../../types';
 
 export default function moduleSliders(state: State, events: EventDispatcher): void {
 	let slider: Slider = null;

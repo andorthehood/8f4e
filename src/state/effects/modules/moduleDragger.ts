@@ -1,7 +1,7 @@
 import { EventDispatcher } from '../../../events';
 import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
-import { State, Module } from '../../types';
+import { Module, State } from '../../types';
 
 export default function moduleDragger(state: State, events: EventDispatcher): () => void {
 	let draggedModule: Module = null;

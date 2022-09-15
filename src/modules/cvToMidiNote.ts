@@ -1,9 +1,11 @@
-import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import { ModuleType, StepperChangeHandler } from '../state/types';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
 import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
+
+import addDefaultInputPositions from './helpers/addDefaultInputPositions';
+import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
+import generateBorderLines from './helpers/generateBorderLines';
+
+import { ModuleType, StepperChangeHandler } from '../state/types';
 import { HGRID, VGRID } from '../view/drawers/consts';
 
 const onChangeChannel: StepperChangeHandler = function (module, state, value, stepper) {
