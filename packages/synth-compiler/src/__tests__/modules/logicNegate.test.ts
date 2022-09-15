@@ -1,7 +1,6 @@
 import { createTestModule } from '../../testUtils';
 import negate from '../../modules/logicNegate.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
-import { compile } from '@8f4e/module-compiler';
 
 let testModule;
 
