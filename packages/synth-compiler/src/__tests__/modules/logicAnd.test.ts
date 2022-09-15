@@ -1,6 +1,5 @@
 import { createTestModule } from '../../testUtils';
 import and from '../../modules/logicAnd.asm';
-
 import { I16_SIGNED_LARGEST_NUMBER } from '../../consts';
 
 let testModule;

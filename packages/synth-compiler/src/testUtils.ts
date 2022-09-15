@@ -1,18 +1,20 @@
 import {
-	createFunctionSection,
-	createTypeSection,
-	createFunctionType,
+	FunctionBody,
+	createCodeSection,
 	createExportSection,
 	createFunctionExport,
-	createCodeSection,
+	createFunctionSection,
+	createFunctionType,
 	createImportSection,
 	createMemoryImport,
-	FunctionBody,
+	createTypeSection,
 } from '@8f4e/bytecode-utils';
 import { compile } from '@8f4e/module-compiler';
-import { getInitialMemory, ModuleGenerator } from '.';
-import { CompiledModule, MemoryMap } from './types';
 import wabt from 'wabt';
+
+import { CompiledModule, MemoryMap } from './types';
+
+import { ModuleGenerator, getInitialMemory } from '.';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -81,5 +83,12 @@ export async function createTestModule(
 		});
 	});
 
-	return { memory: memoryBuffer, test, reset, wat, program, memoryMap: module.memoryMap };
+	return {
+		memory: memoryBuffer,
+		test,
+		reset,
+		wat,
+		program,
+		memoryMap: module.memoryMap,
+	};
 }

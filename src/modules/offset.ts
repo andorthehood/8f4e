@@ -1,8 +1,9 @@
 import { I16_SIGNED_LARGEST_NUMBER } from '@8f4e/synth-compiler';
-import { ModuleType, SliderChangeHandler } from '../state/types';
+import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/offset.asm';
+
 import singleSliderModule from './templates/singleSliderModule';
 
-import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/offset.asm';
+import { ModuleType, SliderChangeHandler } from '../state/types';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
 	let { offset } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);

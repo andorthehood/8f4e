@@ -1,5 +1,6 @@
 import { br } from '@8f4e/bytecode-utils';
-import { ArgumentType, AST } from '../types';
+
+import { AST, ArgumentType } from '../types';
 
 export default function branch(line: AST[number]) {
 	if (!line.arguments[0]) {

@@ -1,10 +1,12 @@
+import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
+import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
+
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import { ModuleType, StepperChangeHandler } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
-import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
+
+import { ModuleType, StepperChangeHandler } from '../state/types';
 import ccNames from '../midi/ccNames';
-import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
 import { HGRID, VGRID } from '../view/drawers/consts';
 
 const onChange: StepperChangeHandler = function (module, state, value, stepper) {

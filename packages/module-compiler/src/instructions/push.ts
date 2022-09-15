@@ -1,5 +1,6 @@
 import { i32const, i32load, localGet } from '@8f4e/bytecode-utils';
-import { ArgumentType, AST, MemoryMap } from '../types';
+
+import { AST, ArgumentType, MemoryMap } from '../types';
 import { getMemoryItemByteAddress, isInputPointer, isLocalIdentifier, isMemoryIdentifier } from '../utils';
 
 export default function push(line: AST[number], locals: string[], memory: MemoryMap) {

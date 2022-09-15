@@ -1,4 +1,7 @@
+import { compile as compileModule } from '@8f4e/module-compiler';
 import {
+	Type,
+	call,
 	createCodeSection,
 	createExportSection,
 	createFunctionBody,
@@ -8,14 +11,12 @@ import {
 	createImportSection,
 	createMemoryImport,
 	createTypeSection,
-	call,
 	i32store,
-	Type,
 } from '@8f4e/bytecode-utils';
-import { compile as compileModule } from '@8f4e/module-compiler';
+
 import { generateMemoryAddressLookup } from './initializeMemory';
 import * as moduleCompilers from './modules';
-import { Module, CompiledModule, MemoryAddressLookup } from './types';
+import { CompiledModule, MemoryAddressLookup, Module } from './types';
 import { createRelativeAddressCalculator } from './utils';
 
 export * from './types';

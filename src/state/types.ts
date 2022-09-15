@@ -1,11 +1,11 @@
 import {
-	MemoryAddressLookup,
-	MemoryBuffer,
 	Connection,
 	Engine,
+	MemoryAddressLookup,
+	MemoryBuffer,
 	ModuleState,
-	ModuleStateInserter,
 	ModuleStateExtractor,
+	ModuleStateInserter,
 } from '@8f4e/synth-compiler';
 
 export interface Module {

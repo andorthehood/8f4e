@@ -1,5 +1,6 @@
-import { Event } from './midiEnums';
 import { I16_SIGNED_LARGEST_NUMBER, MemoryBuffer } from '@8f4e/synth-compiler';
+
+import { Event } from './midiEnums';
 import { MidiCCModuleAddresses } from './types';
 
 const previousValues = new Map<string, number>();
