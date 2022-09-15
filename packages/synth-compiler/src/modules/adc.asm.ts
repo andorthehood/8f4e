@@ -11,7 +11,7 @@ export interface Config {
 	resolution: number;
 }
 
-export default (moduleId = '', offset = '', { resolution = 8 } = {}) => `
+export default ({ resolution = 8 } = {}) => `
 	# adc module
 
 	# memory

@@ -24,20 +24,35 @@ const chords = {
 const chordSignsMajor = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const chordSignsMinor = ['Cm', 'Cm#', 'Dm', 'Dm#', 'Em', 'Fm', 'Fm#', 'Gm', 'Gm#', 'Am', 'Am#', 'Bm'];
 
+function getIntervalBetweenNotes(noteA, noteB) {
+	if (noteA == noteB) {
+		return 0;
+	}
+
+	if (noteB > noteA) {
+		const a = Math.abs(12 - noteB - noteA);
+		const b = Math.abs(noteA - noteB);
+		return b < a ? b : a;
+	}
+}
+
 export default function (midiNotes: number[]): string {
-	const notes = Array.from(new Set(midiNotes.map(note => note % 12))).sort((a, b) => a - b);
+	const uniqueNotes = Array.from(new Set(midiNotes.map(note => note % 12))).sort((a, b) => a - b);
 
 	const chordType = Object.keys(chords).find(chordType => {
-		if (chords[chordType][0] === notes[1] - notes[0] && chords[chordType][1] === notes[2] - notes[0]) {
+		if (
+			chords[chordType][0] === uniqueNotes[1] - uniqueNotes[0] &&
+			chords[chordType][1] === uniqueNotes[2] - uniqueNotes[0]
+		) {
 			return chordType;
 		}
 	});
 
 	switch (chordType) {
 		case 'major':
-			return chordSignsMajor[notes[0]];
+			return chordSignsMajor[uniqueNotes[0]];
 		case 'minor':
-			return chordSignsMinor[notes[0]];
+			return chordSignsMinor[uniqueNotes[0]];
 		default:
 			return '';
 	}
