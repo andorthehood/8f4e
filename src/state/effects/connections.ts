@@ -2,8 +2,8 @@ import findModuleAtViewportCoordinates from '../helpers/findModuleAtViewportCoor
 import findConnectorAtViewportCoordinates from '../helpers/findConnectorAtViewportCoordinates';
 import findConnectorInModule from '../helpers/findConnectorInModule';
 import {
-	rejectConnectionByConnectorId,
 	findConnectionByConnectorId,
+	rejectConnectionByConnectorId,
 	rejectConnectionsByModuleId,
 } from '../helpers/connectionHelpers';
 import { State } from '../types';
@@ -37,12 +37,17 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 		const connection = findConnectionByConnectorId(state.connections, module.id, connector.id);
 
 		if (!state.isConnectionBeingMade && connection) {
-			return events.dispatch('deleteConnection', { connectorId: connector.id, moduleId: module.id });
+			return events.dispatch('deleteConnection', {
+				connectorId: connector.id,
+				moduleId: module.id,
+			});
 		}
 
 		if (state.isConnectionBeingMade && connection) {
 			if (connection) {
-				return events.dispatch('error', { message: `This connector is already connected.` });
+				return events.dispatch('error', {
+					message: `This connector is already connected.`,
+				});
 			}
 		}
 
@@ -58,15 +63,21 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 			);
 
 			if (connector.isInput && connectorToConnect.isInput) {
-				return events.dispatch('error', { message: `It doesn't make sense to connect two inputs` });
+				return events.dispatch('error', {
+					message: `It doesn't make sense to connect two inputs`,
+				});
 			}
 
 			if (!connector.isInput && !connectorToConnect.isInput) {
-				return events.dispatch('error', { message: `It doesn't make sense to connect two outputs` });
+				return events.dispatch('error', {
+					message: `It doesn't make sense to connect two outputs`,
+				});
 			}
 
 			if (state.connectionFromModule === module.id) {
-				return events.dispatch('error', { message: `Self-patching is not supported` });
+				return events.dispatch('error', {
+					message: `Self-patching is not supported`,
+				});
 			}
 
 			events.dispatch('createConnection', { module, connector });

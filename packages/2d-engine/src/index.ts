@@ -1,7 +1,7 @@
 import {
+	fillBufferWithLineVertices,
 	fillBufferWithRectangleVertices,
 	fillBufferWithSpriteCoordinates,
-	fillBufferWithLineVertices,
 } from './utils/buffer';
 import createShader from './utils/createShader';
 import createProgram from './utils/createProgram';

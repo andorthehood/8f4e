@@ -1,4 +1,5 @@
 import getConnectorDefaultPosition from './getConnectorDefaultPosition';
+
 import { Connector } from '../../state/types';
 import { HGRID, VGRID } from '../../view/drawers/consts';
 

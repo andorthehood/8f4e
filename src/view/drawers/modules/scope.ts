@@ -1,5 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 import { scope } from '@8f4e/sprite-generator';
+
 import { State } from '../../../state/types';
 
 const RESOLUTION = 49;

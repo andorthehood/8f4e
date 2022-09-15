@@ -1,4 +1,4 @@
-import { unsignedLEB128, signedLEB128, ieee754 } from './typeHelpers';
+import { ieee754, signedLEB128, unsignedLEB128 } from './typeHelpers';
 import Instruction from './instruction';
 import Type from './type';
 
