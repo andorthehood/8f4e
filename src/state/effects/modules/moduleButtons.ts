@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../../events';
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
-import { State, Button, Module } from '../../types';
+import { Button, Module, State } from '../../types';
 
 export default function moduleButtons(state: State, events: EventDispatcher): void {
 	const onModuleClick = function ({ x, y, module }: { x: number; y: number; module: Module }) {

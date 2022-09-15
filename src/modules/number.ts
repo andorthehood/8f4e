@@ -1,9 +1,11 @@
+import { Config } from '@8f4e/synth-compiler/dist/modules/buffer';
+
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { ModuleType } from '../state/types';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 import generateBorderLines from './helpers/generateBorderLines';
-import { Config } from '@8f4e/synth-compiler/dist/modules/buffer';
+
+import { ModuleType } from '../state/types';
 
 export default function number(): ModuleType<Config> {
 	const width = MODULE_WIDTH_S;

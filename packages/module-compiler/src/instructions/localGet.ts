@@ -1,5 +1,6 @@
 import { localGet } from '@8f4e/bytecode-utils';
-import { ArgumentType, AST } from '../types';
+
+import { AST, ArgumentType } from '../types';
 
 export default function (line: AST[number], locals: string[]) {
 	if (!line.arguments[0]) {

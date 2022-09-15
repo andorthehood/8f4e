@@ -1,6 +1,7 @@
-import { createFunctionBody, createLocalDeclaration, Type } from '@8f4e/bytecode-utils';
+import { Type, createFunctionBody, createLocalDeclaration } from '@8f4e/bytecode-utils';
+
 import instructions from './instructions';
-import { AST, Argument, MemoryTypes, MemoryMap, ArgumentType } from './types';
+import { AST, Argument, ArgumentType, MemoryMap, MemoryTypes } from './types';
 import { WORD_LENGTH } from './consts';
 
 export { MemoryTypes, MemoryMap } from './types';
@@ -128,9 +129,18 @@ function addLocalsForOverlyUsedMemories(memoryMap: MemoryMap, ast: AST): void {
 			index,
 			0,
 			...[
-				{ instruction: 'local', arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument] },
-				{ instruction: 'push', arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument] },
-				{ instruction: 'localSet', arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument] },
+				{
+					instruction: 'local',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument],
+				},
+				{
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument],
+				},
+				{
+					instruction: 'localSet',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument],
+				},
 			]
 		);
 	});
@@ -170,7 +180,13 @@ export function compile(
 	module: string,
 	moduleId: string,
 	startingByteAddress: number
-): { moduleId: string; functionBody: number[]; byteAddress: number; wordAddress: number; memoryMap } {
+): {
+	moduleId: string;
+	functionBody: number[];
+	byteAddress: number;
+	wordAddress: number;
+	memoryMap;
+} {
 	const ast = compileToAST(module);
 	const memoryMap = getMemoryMap(ast, startingByteAddress);
 	const locals = collectLocals(ast);

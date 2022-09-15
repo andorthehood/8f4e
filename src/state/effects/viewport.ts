@@ -1,5 +1,5 @@
 import { State } from '../types';
-import { resize, move, snapToGrid } from '../mutators/viewport';
+import { move, resize, snapToGrid } from '../mutators/viewport';
 import { EventDispatcher } from '../../events';
 
 export default function viewport(state: State, events: EventDispatcher): () => void {
