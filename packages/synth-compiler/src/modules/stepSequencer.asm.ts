@@ -1,4 +1,3 @@
-import { I32_SIGNED_LARGEST_NUMBER } from '../consts';
 import { ModuleStateInserter, ModuleStateExtractor } from '../types';
 
 interface QuantizerState {
