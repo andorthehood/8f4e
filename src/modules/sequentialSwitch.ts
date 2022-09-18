@@ -1,7 +1,6 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 
 import { ModuleType } from '../state/types';
 
@@ -22,7 +21,6 @@ export default function sequentialSwitch(): ModuleType {
 			{ id: 'in:4', label: 'in' },
 			{ id: 'in:clock', label: 'clock' },
 		]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'Sequential sw',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],

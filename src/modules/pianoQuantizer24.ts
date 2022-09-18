@@ -3,7 +3,6 @@ import { Config } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_L } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
 
 import { Button, ModuleType } from '../state/types';
@@ -42,7 +41,6 @@ export default function pianoQuantizer(): ModuleType<Config> {
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'Quantizer 24',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],

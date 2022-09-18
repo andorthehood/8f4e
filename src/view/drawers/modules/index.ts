@@ -8,7 +8,6 @@ import pianoQuantizer from './pianoQuantizer';
 import drawConnectors from './connectors';
 import drawSliders from './sliders';
 import drawSteppers from './steppers';
-import drawLines from './lines';
 import drawButtonHitArea from './drawButtonHitArea';
 
 import { State } from '../../../state/types';
@@ -21,7 +20,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, type, id } = state.modules[i];
-		const { width, height, name, sliders, steppers, lines, drawer, buttons } = state.moduleTypes[type];
+		const { width, height, name, sliders, steppers, drawer, buttons } = state.moduleTypes[type];
 
 		if (
 			x + offsetX > -1 * width &&
@@ -41,14 +40,12 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.drawText(0, height - HGRID, String.fromCharCode(Icon.CORNER_BOTTOM_LEFT));
 			engine.drawText(width - VGRID, height - HGRID, String.fromCharCode(Icon.CORNER_BOTTOM_RIGHT));
 
-			//drawLines(engine, lines);
-
 			if (type === 'scope') {
 				scope(engine, state, id);
 			}
 
 			engine.setSpriteLookup(font('white'));
-			engine.drawText(VGRID * 2, 0, name);
+			engine.drawText(VGRID * 3, 0, name);
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
 			drawSliders(engine, sliders, state, id);
