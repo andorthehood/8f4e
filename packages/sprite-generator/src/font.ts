@@ -2,18 +2,15 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 
 import thickFont from './fonts/font';
 import thickIcons from './fonts/icons';
+import wideIcons from './fonts/wideIcons';
 import { Command, DrawingCommand } from './types';
 
 const offsetX = 0;
 const offsetY = 0;
 
 const CHARACTER_COUNT = 128;
-const CHARACTER_WIDTH = 6;
-const LINE_HEIGHT = 14;
-
-const THICK_CHARACTER_WIDTH = 8;
-const THICK_CHARACTER_HEIGHT = 16;
-const THICK_LINE_HEIGHT = 16;
+const CHARACTER_WIDTH = 8;
+const CHARACTER_HEIGHT = 16;
 
 function forEachBit(
 	byte: number,
@@ -77,25 +74,15 @@ export default function generateFonts(): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
-		...generateFont(offsetX, offsetY, thickFont, THICK_CHARACTER_WIDTH, THICK_CHARACTER_HEIGHT),
+		...generateFont(offsetX, offsetY, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
-		...generateFont(offsetX, offsetY + THICK_LINE_HEIGHT, thickFont, THICK_CHARACTER_WIDTH, THICK_CHARACTER_HEIGHT),
+		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
-		...generateFont(
-			offsetX,
-			offsetY + THICK_LINE_HEIGHT * 2,
-			thickIcons,
-			THICK_CHARACTER_WIDTH,
-			THICK_CHARACTER_HEIGHT
-		),
+		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 2, thickIcons, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
-		...generateFont(
-			offsetX,
-			offsetY + THICK_LINE_HEIGHT * 3,
-			thickIcons,
-			THICK_CHARACTER_WIDTH,
-			THICK_CHARACTER_HEIGHT
-		),
+		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 3, thickIcons, CHARACTER_WIDTH, CHARACTER_HEIGHT),
+		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 4, wideIcons, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 	];
 }
 
@@ -105,31 +92,38 @@ export const lookup = function (font: string): SpriteLookup {
 		switch (font) {
 			case 'white':
 				return {
-					x: code * THICK_CHARACTER_WIDTH + offsetX,
+					x: code * CHARACTER_WIDTH + offsetX,
 					y: offsetY,
-					spriteHeight: THICK_LINE_HEIGHT,
-					spriteWidth: THICK_CHARACTER_WIDTH,
+					spriteHeight: CHARACTER_HEIGHT,
+					spriteWidth: CHARACTER_WIDTH,
 				};
 			case 'black':
 				return {
-					x: code * THICK_CHARACTER_WIDTH + offsetX,
-					y: offsetY + THICK_LINE_HEIGHT,
-					spriteHeight: THICK_LINE_HEIGHT,
-					spriteWidth: THICK_CHARACTER_WIDTH,
+					x: code * CHARACTER_WIDTH + offsetX,
+					y: offsetY + CHARACTER_HEIGHT,
+					spriteHeight: CHARACTER_HEIGHT,
+					spriteWidth: CHARACTER_WIDTH,
 				};
 			case 'icons':
 				return {
-					x: code * THICK_CHARACTER_WIDTH + offsetX,
-					y: offsetY + THICK_LINE_HEIGHT * 2,
-					spriteHeight: LINE_HEIGHT,
+					x: code * CHARACTER_WIDTH + offsetX,
+					y: offsetY + CHARACTER_HEIGHT * 2,
+					spriteHeight: CHARACTER_HEIGHT,
 					spriteWidth: CHARACTER_WIDTH,
 				};
 			case 'icons_white':
 				return {
-					x: code * THICK_CHARACTER_WIDTH + offsetX,
-					y: offsetY + THICK_LINE_HEIGHT * 3,
-					spriteHeight: LINE_HEIGHT,
+					x: code * CHARACTER_WIDTH + offsetX,
+					y: offsetY + CHARACTER_HEIGHT * 3,
+					spriteHeight: CHARACTER_HEIGHT,
 					spriteWidth: CHARACTER_WIDTH,
+				};
+			case 'icons_wide':
+				return {
+					x: code * 2 * CHARACTER_WIDTH + offsetX,
+					y: offsetY + CHARACTER_HEIGHT * 4,
+					spriteHeight: CHARACTER_HEIGHT,
+					spriteWidth: CHARACTER_WIDTH * 2,
 				};
 		}
 	};
