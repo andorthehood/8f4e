@@ -72,10 +72,6 @@ export interface Stepper extends Position, Size {
 	textValue?: string;
 }
 
-export interface Line extends Position, Size {
-	color?: string;
-}
-
 export interface Drawer<DrawerConfig> {
 	name: string;
 	config: DrawerConfig;
@@ -90,7 +86,6 @@ export interface ModuleType<EngineConfig = unknown, DrawerConfig = unknown> exte
 	};
 	initialState: ModuleState;
 	inputs: Connector[];
-	lines: Line[];
 	name: string;
 	outputs: Connector[];
 	sliders: Slider[];

@@ -1,6 +1,5 @@
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 
 import { ModuleType } from '../state/types';
 
@@ -15,7 +14,6 @@ export default function randomGenerator(): ModuleType {
 		height,
 		initialState: {},
 		inputs: [],
-		lines: [...generateBorderLines(width, height)],
 		name: 'Random',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
