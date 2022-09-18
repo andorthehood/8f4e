@@ -13,6 +13,11 @@ export default [
 	same(0b00001111, 16), // THICK_LINE_RIGHT
 	same(0b11000000, 16), // SLIM_LINE_LEFT
 	same(0b00000011, 16), // SLIM_LINE_RIGHT
+	[...same(0b00000000, 2), ...same(0b00111111, 2), ...same(0b00110000, 12)],
+	[...same(0b00000000, 2), ...same(0b11111000, 2), ...same(0b00011000, 12)],
+	[...same(0b00011000, 7), ...same(0b00011111, 2), ...same(0b00000000, 7)],
+	[...same(0b00011000, 7), ...same(0b11111000, 2), ...same(0b00000000, 7)],
+	[...same(0b00000000, 7), 0b00001000, 0b00010000, ...same(0b00000000, 7)], // DOT
 ].flat();
 
 export enum Icon {
@@ -28,4 +33,9 @@ export enum Icon {
 	THICK_LINE_RIGHT,
 	SLIM_LINE_LEFT,
 	SLIM_LINE_RIGHT,
+	CORNER_TOP_LEFT,
+	CORNER_TOP_RIGHT,
+	CORNER_BOTTOM_LEFT,
+	CORNER_BOTTOM_RIGHT,
+	DOT,
 }

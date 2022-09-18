@@ -1,4 +1,4 @@
-import generateSprite, { font } from '@8f4e/sprite-generator';
+import generateSprite, { font, background } from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
 import { drawConnections, drawContextMenu, drawModules } from './drawers';
@@ -19,6 +19,16 @@ export default async function init(state: State): Promise<void> {
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.resize(window.innerWidth, window.innerHeight);
+
+		engine.setSpriteLookup(background);
+		engine.drawSprite(0, 0, 0);
+		engine.drawSprite(32 * 16, 0, 0);
+		engine.drawSprite(32 * 16 * 2, 0, 0);
+		engine.drawSprite(32 * 16 * 3, 0, 0);
+		engine.drawSprite(0, 32 * 16, 0);
+		engine.drawSprite(32 * 16, 32 * 16, 0);
+		engine.drawSprite(32 * 16 * 2, 32 * 16, 0);
+		engine.drawSprite(32 * 16 * 3, 32 * 16, 0);
 
 		// if (state.ui.isDebugMode) {
 		// 	engine.drawSpriteFromCoordinates(10, 10, 512, 512, 0, 0, 512, 512);

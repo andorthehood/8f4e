@@ -88,6 +88,14 @@ export default function generateFonts(): DrawingCommand[] {
 			THICK_CHARACTER_WIDTH,
 			THICK_CHARACTER_HEIGHT
 		),
+		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		...generateFont(
+			offsetX,
+			offsetY + THICK_LINE_HEIGHT * 3,
+			thickIcons,
+			THICK_CHARACTER_WIDTH,
+			THICK_CHARACTER_HEIGHT
+		),
 	];
 }
 
@@ -113,6 +121,13 @@ export const lookup = function (font: string): SpriteLookup {
 				return {
 					x: code * THICK_CHARACTER_WIDTH + offsetX,
 					y: offsetY + THICK_LINE_HEIGHT * 2,
+					spriteHeight: LINE_HEIGHT,
+					spriteWidth: CHARACTER_WIDTH,
+				};
+			case 'icons_white':
+				return {
+					x: code * THICK_CHARACTER_WIDTH + offsetX,
+					y: offsetY + THICK_LINE_HEIGHT * 3,
 					spriteHeight: LINE_HEIGHT,
 					spriteWidth: CHARACTER_WIDTH,
 				};
