@@ -3,7 +3,6 @@ import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 
 import { ModuleType, StepperChangeHandler } from '../state/types';
 import { HGRID, VGRID } from '../view/drawers/consts';
@@ -35,7 +34,6 @@ export default function cvToMidiNote(): ModuleType<Config> {
 			{ id: 'in:2', label: 'on/off' },
 			{ id: 'in:3', label: 'velocity' },
 		]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'CV to MIDI Note',
 		outputs: [],
 		sliders: [],

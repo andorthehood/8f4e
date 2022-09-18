@@ -1,7 +1,6 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 
 import { ModuleType } from '../state/types';
 
@@ -16,7 +15,6 @@ export default function mixer(): ModuleType {
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in:1' }, { id: 'in:2' }, { id: 'in:3' }, { id: 'in:4' }]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'Mixer',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
