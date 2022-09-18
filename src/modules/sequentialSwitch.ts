@@ -23,7 +23,7 @@ export default function sequentialSwitch(): ModuleType {
 			{ id: 'in:clock', label: 'clock' },
 		]),
 		lines: [...generateBorderLines(width, height)],
-		name: 'Sequential switch',
+		name: 'Sequential sw',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
 		steppers: [],
