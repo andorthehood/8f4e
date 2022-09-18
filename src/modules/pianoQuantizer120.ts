@@ -40,10 +40,10 @@ export type PianoQuantizer = ModuleType<
 >;
 
 export default function pianoQuantizer(): PianoQuantizer {
-	const width = MODULE_WIDTH_XXL;
-	const height = MODULE_HEIGHT_S;
+	const width = VGRID * 250;
+	const height = HGRID * 6;
 	const pianoX = VGRID * 5;
-	const pianoY = HGRID * 3;
+	const pianoY = HGRID;
 	const keyCount = 120;
 
 	return {
