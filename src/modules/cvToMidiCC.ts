@@ -3,7 +3,6 @@ import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 
 import { ModuleType, StepperChangeHandler } from '../state/types';
 import ccNames from '../midi/ccNames';
@@ -37,7 +36,6 @@ export default function cvToMidiCC(): ModuleType<Config> {
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in:1', label: 'in' }]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'CV to MIDI CC',
 		outputs: [],
 		sliders: [],

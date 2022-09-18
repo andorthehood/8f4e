@@ -1,6 +1,5 @@
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 
 import { ModuleType } from '../state/types';
@@ -16,7 +15,6 @@ export default function triggerToGate(): ModuleType {
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in:trigger', label: 'trig' }]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'Trigger to Gate',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],

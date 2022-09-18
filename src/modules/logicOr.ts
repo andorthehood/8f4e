@@ -1,7 +1,6 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 
 import { ModuleType } from '../state/types';
 
@@ -19,7 +18,6 @@ export default function logicOr(): ModuleType {
 			{ id: 'in:1', label: 'in' },
 			{ id: 'in:2', label: 'in' },
 		]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'Logic OR',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],

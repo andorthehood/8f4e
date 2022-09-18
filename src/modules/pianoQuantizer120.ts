@@ -4,7 +4,6 @@ import chordIdentifier from '@8f4e/chord-identifier';
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
-import generateBorderLines from './helpers/generateBorderLines';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
 
 import { Button, ButtonClickHandler, ModuleType } from '../state/types';
@@ -40,10 +39,10 @@ export type PianoQuantizer = ModuleType<
 >;
 
 export default function pianoQuantizer(): PianoQuantizer {
-	const width = VGRID * 250;
-	const height = HGRID * 6;
-	const pianoX = VGRID * 5;
-	const pianoY = HGRID;
+	const width = VGRID * 246;
+	const height = HGRID * 7;
+	const pianoX = VGRID * 3;
+	const pianoY = HGRID * 2;
 	const keyCount = 120;
 
 	return {
@@ -77,7 +76,6 @@ export default function pianoQuantizer(): PianoQuantizer {
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'Quantizer 120',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		insertState,
