@@ -1,6 +1,5 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import generateBorderLines from './helpers/generateBorderLines';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 
 import { ModuleType } from '../state/types';
@@ -16,7 +15,6 @@ export default function abs(): ModuleType {
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
-		lines: [...generateBorderLines(width, height)],
 		name: 'Abs',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
