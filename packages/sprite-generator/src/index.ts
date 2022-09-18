@@ -14,6 +14,7 @@ export { lookup as pianoKeyboard } from './pianoKeyboard';
 export { lookup as background } from './background';
 
 export { Icon } from './fonts/icons';
+export { WideIcon } from './fonts/wideIcons';
 
 export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasElement> {
 	let canvas;
