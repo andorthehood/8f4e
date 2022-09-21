@@ -2,13 +2,13 @@ import { Config } from '@8f4e/synth-compiler/dist/modules/adc.asm';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { MODULE_HEIGHT_L, MODULE_WIDTH_S } from './consts';
 
 import { ModuleType } from '../state/types';
+import { HGRID } from '../view/drawers/consts';
 
 export default function adc8bit(): ModuleType<Config> {
-	const width = MODULE_WIDTH_S;
-	const height = MODULE_HEIGHT_L;
+	const width = 8 * HGRID;
+	const height = 20 * HGRID;
 
 	return {
 		buttons: [],

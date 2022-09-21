@@ -2,8 +2,9 @@ import { Engine } from '@8f4e/2d-engine';
 import { scope } from '@8f4e/sprite-generator';
 
 import { State } from '../../../state/types';
+import { VGRID } from '../consts';
 
-const RESOLUTION = 49;
+const RESOLUTION = 64;
 
 export default function drawer(engine: Engine, state: State, id: string): void {
 	const bufferAddress = state.compiler.memoryAddressLookup[id]['buffer'];

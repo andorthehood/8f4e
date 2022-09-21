@@ -8,41 +8,15 @@ Object {
     "config": Object {},
     "name": "invert",
   },
-  "height": 144,
+  "height": 128,
   "initialState": Object {},
   "inputs": Array [
     Object {
       "height": 16,
       "id": "in",
       "width": 16,
-      "x": 16,
-      "y": 48,
-    },
-  ],
-  "lines": Array [
-    Object {
-      "height": 1,
-      "width": 128,
-      "x": 8,
-      "y": 8,
-    },
-    Object {
-      "height": 128,
-      "width": 1,
-      "x": 136,
-      "y": 8,
-    },
-    Object {
-      "height": 1,
-      "width": 128,
-      "x": 8,
-      "y": 136,
-    },
-    Object {
-      "height": 128,
-      "width": 1,
-      "x": 8,
-      "y": 8,
+      "x": 0,
+      "y": 32,
     },
   ],
   "name": "Invert",
@@ -52,11 +26,11 @@ Object {
       "id": "out",
       "width": 16,
       "x": 112,
-      "y": 48,
+      "y": 32,
     },
   ],
   "sliders": Array [],
   "steppers": Array [],
-  "width": 144,
+  "width": 128,
 }
 `;

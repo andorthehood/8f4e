@@ -13,8 +13,8 @@ interface SliderConfig {
 }
 
 export default function singleSliderModule({ minValue, maxValue, resolution, id, onChange }: SliderConfig): ModuleType {
-	const width = MODULE_WIDTH_S;
-	const height = MODULE_HEIGHT_S;
+	const width = 8 * HGRID;
+	const height = 8 * HGRID;
 
 	return {
 		buttons: [],

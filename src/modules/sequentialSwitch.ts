@@ -3,10 +3,11 @@ import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 
 import { ModuleType } from '../state/types';
+import { HGRID, VGRID } from '../view/drawers/consts';
 
 export default function sequentialSwitch(): ModuleType {
-	const width = MODULE_WIDTH_S;
-	const height = MODULE_HEIGHT_S;
+	const width = 12 * HGRID;
+	const height = 9 * HGRID;
 
 	return {
 		buttons: [],
@@ -21,7 +22,7 @@ export default function sequentialSwitch(): ModuleType {
 			{ id: 'in:4', label: 'in' },
 			{ id: 'in:clock', label: 'clock' },
 		]),
-		name: 'Sequential sw',
+		name: 'Sequential switch',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
 		steppers: [],
