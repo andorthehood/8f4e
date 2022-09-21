@@ -1,4 +1,4 @@
-const BUFFER_LENGTH = 49;
+const BUFFER_LENGTH = 64;
 
 export default `
 	private defaultValue 0
