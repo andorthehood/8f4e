@@ -9,7 +9,7 @@ Object {
     "name": "attenuator",
   },
   "extractState": [Function],
-  "height": 144,
+  "height": 128,
   "initialState": Object {
     "divisor": 1,
   },
@@ -18,37 +18,11 @@ Object {
       "height": 16,
       "id": "in",
       "width": 16,
-      "x": 16,
-      "y": 48,
+      "x": 0,
+      "y": 32,
     },
   ],
   "insertState": [Function],
-  "lines": Array [
-    Object {
-      "height": 1,
-      "width": 128,
-      "x": 8,
-      "y": 8,
-    },
-    Object {
-      "height": 128,
-      "width": 1,
-      "x": 136,
-      "y": 8,
-    },
-    Object {
-      "height": 1,
-      "width": 128,
-      "x": 8,
-      "y": 136,
-    },
-    Object {
-      "height": 128,
-      "width": 1,
-      "x": 8,
-      "y": 8,
-    },
-  ],
   "name": "Attenuator",
   "outputs": Array [
     Object {
@@ -56,7 +30,7 @@ Object {
       "id": "out",
       "width": 16,
       "x": 112,
-      "y": 48,
+      "y": 32,
     },
   ],
   "sliders": Array [
@@ -73,6 +47,6 @@ Object {
     },
   ],
   "steppers": Array [],
-  "width": 144,
+  "width": 128,
 }
 `;

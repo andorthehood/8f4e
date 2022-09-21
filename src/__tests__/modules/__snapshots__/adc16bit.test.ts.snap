@@ -10,41 +10,15 @@ Object {
     },
     "name": "adc",
   },
-  "height": 432,
+  "height": 320,
   "initialState": Object {},
   "inputs": Array [
     Object {
       "height": 16,
       "id": "in",
       "width": 16,
-      "x": 16,
-      "y": 48,
-    },
-  ],
-  "lines": Array [
-    Object {
-      "height": 1,
-      "width": 128,
-      "x": 8,
-      "y": 8,
-    },
-    Object {
-      "height": 416,
-      "width": 1,
-      "x": 136,
-      "y": 8,
-    },
-    Object {
-      "height": 1,
-      "width": 128,
-      "x": 8,
-      "y": 424,
-    },
-    Object {
-      "height": 416,
-      "width": 1,
-      "x": 8,
-      "y": 8,
+      "x": 0,
+      "y": 32,
     },
   ],
   "name": "16bit ADC",
@@ -55,7 +29,7 @@ Object {
       "label": "bit0",
       "width": 16,
       "x": 112,
-      "y": 48,
+      "y": 32,
     },
     Object {
       "height": 16,
@@ -63,7 +37,7 @@ Object {
       "label": "bit1",
       "width": 16,
       "x": 112,
-      "y": 64,
+      "y": 48,
     },
     Object {
       "height": 16,
@@ -71,7 +45,7 @@ Object {
       "label": "bit2",
       "width": 16,
       "x": 112,
-      "y": 80,
+      "y": 64,
     },
     Object {
       "height": 16,
@@ -79,7 +53,7 @@ Object {
       "label": "bit3",
       "width": 16,
       "x": 112,
-      "y": 96,
+      "y": 80,
     },
     Object {
       "height": 16,
@@ -87,7 +61,7 @@ Object {
       "label": "bit4",
       "width": 16,
       "x": 112,
-      "y": 112,
+      "y": 96,
     },
     Object {
       "height": 16,
@@ -95,7 +69,7 @@ Object {
       "label": "bit5",
       "width": 16,
       "x": 112,
-      "y": 128,
+      "y": 112,
     },
     Object {
       "height": 16,
@@ -103,7 +77,7 @@ Object {
       "label": "bit6",
       "width": 16,
       "x": 112,
-      "y": 144,
+      "y": 128,
     },
     Object {
       "height": 16,
@@ -111,7 +85,7 @@ Object {
       "label": "bit7",
       "width": 16,
       "x": 112,
-      "y": 160,
+      "y": 144,
     },
     Object {
       "height": 16,
@@ -119,7 +93,7 @@ Object {
       "label": "bit8",
       "width": 16,
       "x": 112,
-      "y": 176,
+      "y": 160,
     },
     Object {
       "height": 16,
@@ -127,7 +101,7 @@ Object {
       "label": "bit9",
       "width": 16,
       "x": 112,
-      "y": 192,
+      "y": 176,
     },
     Object {
       "height": 16,
@@ -135,7 +109,7 @@ Object {
       "label": "bit10",
       "width": 16,
       "x": 112,
-      "y": 208,
+      "y": 192,
     },
     Object {
       "height": 16,
@@ -143,7 +117,7 @@ Object {
       "label": "bit11",
       "width": 16,
       "x": 112,
-      "y": 224,
+      "y": 208,
     },
     Object {
       "height": 16,
@@ -151,7 +125,7 @@ Object {
       "label": "bit12",
       "width": 16,
       "x": 112,
-      "y": 240,
+      "y": 224,
     },
     Object {
       "height": 16,
@@ -159,7 +133,7 @@ Object {
       "label": "bit13",
       "width": 16,
       "x": 112,
-      "y": 256,
+      "y": 240,
     },
     Object {
       "height": 16,
@@ -167,7 +141,7 @@ Object {
       "label": "bit14",
       "width": 16,
       "x": 112,
-      "y": 272,
+      "y": 256,
     },
     Object {
       "height": 16,
@@ -175,11 +149,11 @@ Object {
       "label": "bit15",
       "width": 16,
       "x": 112,
-      "y": 288,
+      "y": 272,
     },
   ],
   "sliders": Array [],
   "steppers": Array [],
-  "width": 144,
+  "width": 128,
 }
 `;
