@@ -12,7 +12,7 @@ Object {
     "name": "buffer",
   },
   "extractState": [Function],
-  "height": 144,
+  "height": 128,
   "initialState": Object {},
   "inputs": Array [
     Object {
@@ -20,37 +20,11 @@ Object {
       "id": "in:1",
       "label": "in",
       "width": 16,
-      "x": 16,
-      "y": 48,
+      "x": 0,
+      "y": 32,
     },
   ],
   "insertState": [Function],
-  "lines": Array [
-    Object {
-      "height": 1,
-      "width": 272,
-      "x": 8,
-      "y": 8,
-    },
-    Object {
-      "height": 128,
-      "width": 1,
-      "x": 280,
-      "y": 8,
-    },
-    Object {
-      "height": 1,
-      "width": 272,
-      "x": 8,
-      "y": 136,
-    },
-    Object {
-      "height": 128,
-      "width": 1,
-      "x": 8,
-      "y": 8,
-    },
-  ],
   "name": "CV to MIDI CC",
   "outputs": Array [],
   "sliders": Array [],
@@ -78,6 +52,6 @@ Object {
       "y": 64,
     },
   ],
-  "width": 288,
+  "width": 256,
 }
 `;
