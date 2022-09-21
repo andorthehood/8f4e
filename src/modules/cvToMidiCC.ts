@@ -20,8 +20,8 @@ const onChange: StepperChangeHandler = function (module, state, value, stepper) 
 };
 
 export default function cvToMidiCC(): ModuleType<Config> {
-	const width = MODULE_WIDTH_M;
-	const height = MODULE_HEIGHT_S;
+	const width = 16 * HGRID;
+	const height = 8 * HGRID;
 
 	return {
 		buttons: [],
