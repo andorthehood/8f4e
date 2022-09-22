@@ -32,6 +32,8 @@ export interface Position {
 	y: number;
 }
 
+export interface HitArea extends Size, Position {}
+
 export type SliderChangeHandler = (
 	module: Module,
 	memoryBuffer: MemoryBuffer,
@@ -70,6 +72,8 @@ export interface Stepper extends Position, Size {
 	onChange: StepperChangeHandler;
 	label: string;
 	textValue?: string;
+	upHitArea: HitArea;
+	downHitArea: HitArea;
 }
 
 export interface Drawer<DrawerConfig> {
