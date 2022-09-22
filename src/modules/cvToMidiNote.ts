@@ -41,8 +41,8 @@ export default function cvToMidiNote(): ModuleType<Config> {
 			{
 				id: 'data:1',
 				label: 'channel',
-				x: VGRID * 20,
-				y: HGRID * 3,
+				x: VGRID * 14,
+				y: HGRID * 2,
 				width: VGRID * 2,
 				height: HGRID,
 				minValue: 1,
