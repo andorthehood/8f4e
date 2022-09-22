@@ -44,17 +44,7 @@ export default function pianoQuantizer(): ModuleType<Config> {
 		name: 'Quantizer 12',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [],
-		steppers: [
-			{
-				id: 'octave',
-				x: VGRID * 26,
-				y: 5 * HGRID,
-				width: VGRID * 2,
-				height: HGRID,
-				minValue: 1,
-				maxValue: 8,
-			},
-		],
+		steppers: [],
 		width,
 	};
 }

@@ -14,9 +14,21 @@ export default function moduleSteppers(state: State, events: EventDispatcher): v
 		);
 
 		if (stepper) {
-			if (stepper.y + module.y + state.viewport.y + 10 < y) {
+			if (
+				stepper.y + stepper.downHitArea.y + module.y + state.viewport.y <= y &&
+				stepper.y + stepper.downHitArea.y + stepper.downHitArea.height + module.y + state.viewport.y >= y &&
+				stepper.x + stepper.downHitArea.x + module.x + state.viewport.x <= x &&
+				stepper.x + stepper.downHitArea.x + stepper.downHitArea.width + module.x + state.viewport.x >= x
+			) {
 				stepper.onChange(module, state, -1, stepper);
-			} else {
+			}
+
+			if (
+				stepper.y + stepper.upHitArea.y + module.y + state.viewport.y <= y &&
+				stepper.y + stepper.upHitArea.y + stepper.upHitArea.height + module.y + state.viewport.y >= y &&
+				stepper.x + stepper.upHitArea.x + module.x + state.viewport.x <= x &&
+				stepper.x + stepper.upHitArea.x + stepper.upHitArea.width + module.x + state.viewport.x >= x
+			) {
 				stepper.onChange(module, state, +1, stepper);
 			}
 		}
