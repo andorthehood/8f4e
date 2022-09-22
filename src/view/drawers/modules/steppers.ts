@@ -1,26 +1,29 @@
 import { Engine } from '@8f4e/2d-engine';
-import { font } from '@8f4e/sprite-generator';
+import { fillColor, font } from '@8f4e/sprite-generator';
 
 import { State, Stepper } from '../../../state/types';
-import { VGRID } from '../consts';
+import { HGRID, VGRID } from '../consts';
 
 export default function drawSteppers(engine: Engine, steppers: Stepper[], state: State, id: string): void {
 	for (let i = 0; i < steppers.length; i++) {
 		const stepper = steppers[i];
 
-		engine.setSpriteLookup(font('icons'));
-		engine.drawText(stepper.x, stepper.y, '$%');
-		engine.drawText(stepper.x + VGRID * 2, stepper.y, '$%');
+		engine.setSpriteLookup(fillColor);
+		engine.drawSprite(stepper.x, stepper.y, 'rgb(255,255,255)', VGRID * 3, HGRID);
+		engine.setSpriteLookup(font('black'));
+		engine.drawText(stepper.x + VGRID, stepper.y, '-');
 
-		//engine.setSpriteLookup(fillColor);
-		//engine.drawRectangle(stepper.x, stepper.y, VGRID, HGRID, 'rgb(255,255,255)');
+		engine.setSpriteLookup(fillColor);
+		engine.drawSprite(stepper.x + VGRID * 4, stepper.y, 'rgb(255,255,255)', VGRID * 3, HGRID);
+		engine.setSpriteLookup(font('black'));
+		engine.drawText(stepper.x + VGRID * 5, stepper.y, '+');
 
 		const address = state.compiler.memoryAddressLookup[id][stepper.id];
 		const value = state.compiler.memoryBuffer[address];
 
 		engine.setSpriteLookup(font('white'));
 		engine.drawText(
-			stepper.x + VGRID * 4,
+			stepper.x + VGRID * 8,
 			stepper.y,
 			(stepper.label || stepper.id) + ': ' + (stepper.textValue || value)
 		);
