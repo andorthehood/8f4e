@@ -38,7 +38,7 @@ Object {
       "onChange": [Function],
       "width": 16,
       "x": 80,
-      "y": 48,
+      "y": 32,
     },
     Object {
       "height": 16,
@@ -49,7 +49,7 @@ Object {
       "onChange": [Function],
       "width": 16,
       "x": 80,
-      "y": 64,
+      "y": 48,
     },
   ],
   "width": 256,
