@@ -8,24 +8,22 @@ export default function drawSteppers(engine: Engine, steppers: Stepper[], state:
 	for (let i = 0; i < steppers.length; i++) {
 		const stepper = steppers[i];
 
+		engine.startGroup(stepper.x, stepper.y);
 		engine.setSpriteLookup(fillColor);
-		engine.drawSprite(stepper.x, stepper.y, 'rgb(255,255,255)', VGRID * 3, HGRID);
+		engine.drawSprite(0, 0, 'rgb(255,255,255)', VGRID * 3, HGRID);
 		engine.setSpriteLookup(font('black'));
-		engine.drawText(stepper.x + VGRID, stepper.y, '-');
+		engine.drawText(VGRID, 0, '-');
 
 		engine.setSpriteLookup(fillColor);
-		engine.drawSprite(stepper.x + VGRID * 4, stepper.y, 'rgb(255,255,255)', VGRID * 3, HGRID);
+		engine.drawSprite(VGRID * 4, 0, 'rgb(255,255,255)', VGRID * 3, HGRID);
 		engine.setSpriteLookup(font('black'));
-		engine.drawText(stepper.x + VGRID * 5, stepper.y, '+');
+		engine.drawText(VGRID * 5, 0, '+');
 
 		const address = state.compiler.memoryAddressLookup[id][stepper.id];
 		const value = state.compiler.memoryBuffer[address];
 
 		engine.setSpriteLookup(font('white'));
-		engine.drawText(
-			stepper.x + VGRID * 8,
-			stepper.y,
-			(stepper.label || stepper.id) + ': ' + (stepper.textValue || value)
-		);
+		engine.drawText(VGRID * 8, 0, (stepper.label || stepper.id) + ': ' + (stepper.textValue || value));
+		engine.endGroup();
 	}
 }
