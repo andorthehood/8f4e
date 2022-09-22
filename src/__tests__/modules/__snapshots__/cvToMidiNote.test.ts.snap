@@ -46,13 +46,25 @@ Object {
   "sliders": Array [],
   "steppers": Array [
     Object {
+      "downHitArea": Object {
+        "height": 16,
+        "width": 24,
+        "x": 0,
+        "y": 0,
+      },
       "height": 16,
       "id": "data:1",
       "label": "channel",
       "maxValue": 8,
       "minValue": 1,
       "onChange": [Function],
-      "width": 16,
+      "upHitArea": Object {
+        "height": 16,
+        "width": 24,
+        "x": 32,
+        "y": 0,
+      },
+      "width": 56,
       "x": 112,
       "y": 32,
     },
