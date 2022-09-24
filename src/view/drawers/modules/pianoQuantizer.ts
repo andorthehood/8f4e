@@ -16,16 +16,16 @@ export default function pianoDrawer(
 	memoryAddressLookup: MemoryAddressLookup,
 	memoryBuffer: MemoryBuffer
 ): void {
-	engine.setSpriteLookup(pianoKeyboard());
-
 	const moduleAddress = memoryAddressLookup[module.id].__startAddress;
 	const config = moduleType.drawer.config;
 	const outAddress = moduleAddress + 1;
 	const notesAddress = moduleAddress + 4;
 	const numberOfNotesAddress = moduleAddress + 3;
 	const numberOfNotes = memoryBuffer[numberOfNotesAddress];
-	const activeNotes = memoryBuffer.slice(notesAddress, notesAddress + Math.min(numberOfNotes, config.keyCount));
+	const activeNotes = memoryBuffer.slice(notesAddress, notesAddress + numberOfNotes);
 	const outValue = memoryBuffer[outAddress];
+
+	engine.setSpriteLookup(pianoKeyboard());
 
 	for (let i = 0; i < Math.floor(config.keyCount / 12); i++) {
 		engine.drawSprite(octaveWidth * i + config.x, config.y, undefined);
@@ -37,12 +37,12 @@ export default function pianoDrawer(
 		engine.drawSprite(
 			2 * VGRID * config.notes.get(activeNotes[i]) + config.x,
 			config.y,
-			config.keyNumbers.get(activeNotes[i])
+			config.notes.get(activeNotes[i]) % 12
 		);
 	}
 
 	engine.setSpriteLookup(pianoKeyboard(false, true));
-	engine.drawSprite(2 * VGRID * config.notes.get(outValue) + config.x, config.y, config.keyNumbers.get(outValue));
+	engine.drawSprite(2 * VGRID * config.notes.get(outValue) + config.x, config.y, config.notes.get(outValue) % 12);
 
 	engine.setSpriteLookup(font('white'));
 	engine.drawText(VGRID * 18, 0, 'chord: ' + (module.state.chord ? module.state.chord : '-'));
