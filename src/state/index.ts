@@ -15,6 +15,7 @@ import save from './effects/save';
 import tests from './effects/tests';
 import viewport from './effects/viewport';
 import { State } from './types';
+import initialProject from './initialProject.json';
 
 import generateModuleTypes from '../modules';
 import { EventDispatcher } from '../events';
@@ -54,6 +55,7 @@ const defaultState: State = {
 	connectionFromModule: null,
 	connectionFromConnector: null,
 	moduleTypes: {},
+	...initialProject,
 };
 
 export default function init(events: EventDispatcher): State {

@@ -9,8 +9,6 @@ import { Button, ButtonClickHandler, ModuleType } from '../state/types';
 import { int16ToMidiNote, midiNoteToInt16 } from '../state/helpers/midi';
 import { HGRID, VGRID } from '../view/drawers/consts';
 
-const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
 const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
 	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 
@@ -36,7 +34,7 @@ export type PianoQuantizer = ModuleType<
 		x: number;
 		y: number;
 		notes: Map<number, number>;
-		noteSigns: Map<number, string>;
+		noteSigns?: never;
 	}
 >;
 
@@ -68,7 +66,6 @@ export default function pianoQuantizer(): PianoQuantizer {
 				x: pianoX,
 				y: pianoY,
 				notes: new Map(new Array(127).fill(0).map((item, index) => [midiNoteToInt16(index), index % 12])),
-				noteSigns: new Map(new Array(127).fill(0).map((item, index) => [midiNoteToInt16(index), notes[index % 12]])),
 			},
 		},
 		engine: { name: 'quantizer', config: { allocatedNotes: 120 } },
