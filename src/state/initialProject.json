@@ -37,45 +37,6 @@
                 "name": "saw",
                 "config": {}
             },
-            "id": "saw30",
-            "state": {
-                "rate": 760
-            },
-            "type": "saw",
-            "x": -736,
-            "y": 560
-        },
-        {
-            "engine": {
-                "name": "constant",
-                "config": {}
-            },
-            "id": "constant12",
-            "state": {
-                "out": 24267
-            },
-            "type": "constant",
-            "x": -224,
-            "y": 576
-        },
-        {
-            "engine": {
-                "name": "saw",
-                "config": {}
-            },
-            "id": "saw15",
-            "state": {
-                "rate": 410
-            },
-            "type": "saw",
-            "x": -672,
-            "y": 1184
-        },
-        {
-            "engine": {
-                "name": "saw",
-                "config": {}
-            },
             "id": "saw36",
             "state": {
                 "rate": 150
@@ -184,19 +145,6 @@
             "type": "cvToMidiCC",
             "x": 2752,
             "y": 1072
-        },
-        {
-            "engine": {
-                "name": "saw",
-                "config": {}
-            },
-            "id": "saw22",
-            "state": {
-                "rate": 700
-            },
-            "type": "saw",
-            "x": -400,
-            "y": 576
         },
         {
             "engine": {
@@ -322,7 +270,7 @@
         "height": 861,
         "vGrid": 8,
         "width": 1680,
-        "x": 64,
-        "y": -800
+        "x": 62,
+        "y": -810
     }
 }
