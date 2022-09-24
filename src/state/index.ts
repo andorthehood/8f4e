@@ -12,7 +12,6 @@ import moduleSliders from './effects/modules/moduleSliders';
 import moduleSteppers from './effects/modules/moduleSteppers';
 import moduleSwitches from './effects/modules/moduleButtons';
 import save from './effects/save';
-import tests from './effects/tests';
 import viewport from './effects/viewport';
 import { State } from './types';
 import initialProject from './initialProject.json';
@@ -74,7 +73,6 @@ export default function init(events: EventDispatcher): State {
 	moduleSwitches(state, events);
 	moduleSteppers(state, events);
 	error(state, events);
-	tests(state, events);
 	compiler(state, events);
 	save(state, events);
 	events.dispatch('init');
