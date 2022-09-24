@@ -46,5 +46,7 @@ export default function pianoDrawer(
 
 	engine.setSpriteLookup(font('white'));
 	engine.drawText(VGRID * 18, 0, 'chord: ' + (module.state.chord ? module.state.chord : '-'));
-	engine.drawText(VGRID * 30, 0, 'out: ' + (config.noteSigns.has(outValue) ? config.noteSigns.get(outValue) : '-'));
+	if (config.noteSigns) {
+		engine.drawText(VGRID * 30, 0, 'out: ' + (config.noteSigns.has(outValue) ? config.noteSigns.get(outValue) : '-'));
+	}
 }
