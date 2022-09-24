@@ -1,12 +1,12 @@
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 
 import { ModuleType } from '../state/types';
+import { HGRID } from '../view/drawers/consts';
 
 export default function triggerToGate(): ModuleType {
-	const width = MODULE_WIDTH_S;
-	const height = MODULE_HEIGHT_S;
+	const width = 8 * HGRID;
+	const height = 8 * HGRID;
 
 	return {
 		buttons: [],

@@ -20,12 +20,11 @@ export default function clockGenerator(): ModuleType {
 			resolution: 10,
 			onChange,
 		}),
-		width: 11 * HGRID,
 		category: 'Clock',
 		engine: { name: 'clockGenerator', config: {} },
 		initialState: { rate: 10 },
 		inputs: [],
-		name: 'Clock generator',
+		name: 'Clock',
 		extractState,
 		insertState,
 	};
