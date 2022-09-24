@@ -2,13 +2,13 @@ import { Config } from '@8f4e/synth-compiler/dist/modules/triggerSequencer';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 
 import { ModuleType } from '../state/types';
+import { HGRID } from '../view/drawers/consts';
 
 export default function eucledianRhythmGenerator(): ModuleType<Config> {
-	const width = MODULE_WIDTH_M;
-	const height = MODULE_HEIGHT_S;
+	const width = 8 * HGRID;
+	const height = 8 * HGRID;
 
 	return {
 		buttons: [],

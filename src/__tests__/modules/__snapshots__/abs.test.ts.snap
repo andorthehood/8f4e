@@ -8,7 +8,7 @@ Object {
     "config": Object {},
     "name": "abs",
   },
-  "height": 144,
+  "height": 128,
   "initialState": Object {},
   "inputs": Array [
     Object {
@@ -25,12 +25,12 @@ Object {
       "height": 16,
       "id": "out",
       "width": 16,
-      "x": 128,
+      "x": 112,
       "y": 32,
     },
   ],
   "sliders": Array [],
   "steppers": Array [],
-  "width": 144,
+  "width": 128,
 }
 `;
