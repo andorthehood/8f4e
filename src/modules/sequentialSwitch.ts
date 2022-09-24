@@ -1,9 +1,8 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 
 import { ModuleType } from '../state/types';
-import { HGRID, VGRID } from '../view/drawers/consts';
+import { HGRID } from '../view/drawers/consts';
 
 export default function sequentialSwitch(): ModuleType {
 	const width = 12 * HGRID;

@@ -15,7 +15,7 @@ Object {
   },
   "inputs": Array [],
   "insertState": [Function],
-  "name": "Clock generator",
+  "name": "Clock",
   "outputs": Array [
     Object {
       "height": 16,
@@ -39,6 +39,6 @@ Object {
     },
   ],
   "steppers": Array [],
-  "width": 176,
+  "width": 128,
 }
 `;
