@@ -3,7 +3,6 @@ import chordIdentifier from '@8f4e/chord-identifier';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_XXL } from './consts';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
 
 import { Button, ButtonClickHandler, ModuleType } from '../state/types';
