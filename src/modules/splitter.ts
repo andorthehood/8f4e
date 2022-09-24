@@ -1,6 +1,5 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from './consts';
 
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';

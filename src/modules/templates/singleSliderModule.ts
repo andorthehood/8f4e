@@ -1,7 +1,6 @@
 import addDefaultInputPositions from '../helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from '../helpers/addDefaultOutputPositions';
 import { ModuleType, SliderChangeHandler } from '../../state/types';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_S } from '../consts';
 import { HGRID, VGRID } from '../../view/drawers/consts';
 
 interface SliderConfig {

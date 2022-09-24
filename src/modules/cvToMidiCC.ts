@@ -2,7 +2,6 @@ import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buf
 import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import { MODULE_HEIGHT_S, MODULE_WIDTH_M } from './consts';
 
 import { ModuleType, StepperChangeHandler } from '../state/types';
 import ccNames from '../midi/ccNames';
