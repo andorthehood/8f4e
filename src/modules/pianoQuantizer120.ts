@@ -33,7 +33,6 @@ export type PianoQuantizer = ModuleType<
 		x: number;
 		y: number;
 		notes: Map<number, number>;
-		keyNumbers: Map<number, number>;
 		noteSigns: Map<number, string>;
 	}
 >;
@@ -66,7 +65,6 @@ export default function pianoQuantizer(): PianoQuantizer {
 				x: pianoX,
 				y: pianoY,
 				notes: new Map(new Array(keyCount).fill(0).map((item, index) => [midiNoteToInt16(index), index])),
-				keyNumbers: new Map(new Array(keyCount).fill(0).map((item, index) => [midiNoteToInt16(index), index % 12])),
 				noteSigns: new Map(
 					new Array(keyCount).fill(0).map((item, index) => [midiNoteToInt16(index), notes[index % 12]])
 				),
