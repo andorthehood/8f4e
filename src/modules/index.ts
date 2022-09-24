@@ -23,7 +23,6 @@ import number from './number';
 import offset from './offset';
 import pianoQuantizer from './pianoQuantizer120';
 import pianoQuantizer12 from './pianoQuantizer12';
-import pianoQuantizer24 from './pianoQuantizer24';
 import randomGenerator from './randomGenerator';
 import sampleAndHold from './sampleAndHold';
 import saw from './saw';
@@ -62,7 +61,6 @@ export default function generateModuleTypes(): ModuleTypeLookup {
 		offset: offset(),
 		pianoQuantizer: pianoQuantizer(),
 		pianoQuantizer12: pianoQuantizer12(),
-		pianoQuantizer24: pianoQuantizer24(),
 		randomGenerator: randomGenerator(),
 		sampleAndHold: sampleAndHold(),
 		saw: saw(),
