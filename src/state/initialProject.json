@@ -1,0 +1,328 @@
+{
+    "connections": [
+        {
+            "toConnectorId": "in",
+            "toModuleId": "pianoQuantizer1266",
+            "fromConnectorId": "out",
+            "fromModuleId": "scope65"
+        },
+        {
+            "toConnectorId": "in",
+            "toModuleId": "scope63",
+            "fromConnectorId": "out",
+            "fromModuleId": "pianoQuantizer1266"
+        },
+        {
+            "toConnectorId": "in:1",
+            "toModuleId": "cvToMidiNote67",
+            "fromConnectorId": "out",
+            "fromModuleId": "scope63"
+        },
+        {
+            "toConnectorId": "in:2",
+            "toModuleId": "cvToMidiNote67",
+            "fromConnectorId": "out",
+            "fromModuleId": "clockGenerator68"
+        },
+        {
+            "toConnectorId": "in",
+            "toModuleId": "scope65",
+            "fromConnectorId": "out",
+            "fromModuleId": "saw69"
+        }
+    ],
+    "modules": [
+        {
+            "engine": {
+                "name": "saw",
+                "config": {}
+            },
+            "id": "saw30",
+            "state": {
+                "rate": 760
+            },
+            "type": "saw",
+            "x": -736,
+            "y": 560
+        },
+        {
+            "engine": {
+                "name": "constant",
+                "config": {}
+            },
+            "id": "constant12",
+            "state": {
+                "out": 24267
+            },
+            "type": "constant",
+            "x": -224,
+            "y": 576
+        },
+        {
+            "engine": {
+                "name": "saw",
+                "config": {}
+            },
+            "id": "saw15",
+            "state": {
+                "rate": 410
+            },
+            "type": "saw",
+            "x": -672,
+            "y": 1184
+        },
+        {
+            "engine": {
+                "name": "saw",
+                "config": {}
+            },
+            "id": "saw36",
+            "state": {
+                "rate": 150
+            },
+            "type": "saw",
+            "x": 2512,
+            "y": 1424
+        },
+        {
+            "engine": {
+                "name": "buffer",
+                "config": {}
+            },
+            "id": "midiNote43",
+            "state": {},
+            "type": "midiNote",
+            "x": 2304,
+            "y": 1504
+        },
+        {
+            "engine": {
+                "name": "clockGenerator",
+                "config": {}
+            },
+            "id": "clockGenerator35",
+            "state": {
+                "rate": 580
+            },
+            "type": "clockGenerator",
+            "x": 2512,
+            "y": 1184
+        },
+        {
+            "engine": {
+                "name": "invert",
+                "config": {}
+            },
+            "id": "invert58",
+            "state": {},
+            "type": "invert",
+            "x": 2288,
+            "y": 1648
+        },
+        {
+            "engine": {
+                "name": "mixer",
+                "config": {}
+            },
+            "id": "mixer59",
+            "state": {},
+            "type": "mixer",
+            "x": 2464,
+            "y": 1648
+        },
+        {
+            "engine": {
+                "name": "sampleAndHold",
+                "config": {}
+            },
+            "id": "sampleAndHold60",
+            "state": {},
+            "type": "sampleAndHold",
+            "x": 2608,
+            "y": 1632
+        },
+        {
+            "engine": {
+                "name": "random",
+                "config": {}
+            },
+            "id": "randomGenerator61",
+            "state": {},
+            "type": "randomGenerator",
+            "x": 2416,
+            "y": 1792
+        },
+        {
+            "engine": {
+                "name": "buffer",
+                "config": {
+                    "numberOfPorts": 3,
+                    "numberOfDataPlaceholders": 1
+                }
+            },
+            "id": "cvToMidiNote34",
+            "state": {
+                "data:1": 1
+            },
+            "type": "cvToMidiNote",
+            "x": 2448,
+            "y": 1008
+        },
+        {
+            "engine": {
+                "name": "buffer",
+                "config": {
+                    "numberOfPorts": 3,
+                    "numberOfDataPlaceholders": 2
+                }
+            },
+            "id": "cvToMidiCC57",
+            "state": {
+                "data:1": 4,
+                "data:2": 5
+            },
+            "type": "cvToMidiCC",
+            "x": 2752,
+            "y": 1072
+        },
+        {
+            "engine": {
+                "name": "saw",
+                "config": {}
+            },
+            "id": "saw22",
+            "state": {
+                "rate": 700
+            },
+            "type": "saw",
+            "x": -400,
+            "y": 576
+        },
+        {
+            "engine": {
+                "name": "scope",
+                "config": {}
+            },
+            "id": "scope63",
+            "state": {},
+            "type": "scope",
+            "x": 832,
+            "y": 1104
+        },
+        {
+            "engine": {
+                "name": "clockGenerator",
+                "config": {}
+            },
+            "id": "clockGenerator68",
+            "state": {
+                "rate": 1580
+            },
+            "type": "clockGenerator",
+            "x": 784,
+            "y": 1264
+        },
+        {
+            "engine": {
+                "name": "quantizer",
+                "config": {
+                    "allocatedNotes": 60
+                }
+            },
+            "id": "pianoQuantizer1266",
+            "state": {
+                "activeNotes": [
+                    -32767,
+                    -26575,
+                    -20383,
+                    -14191,
+                    -7999,
+                    -1807,
+                    4386,
+                    10578,
+                    16770,
+                    22962,
+                    29154,
+                    35347,
+                    -30703,
+                    -24511,
+                    -18319,
+                    -12127,
+                    -5935,
+                    258,
+                    6450,
+                    12642,
+                    18834,
+                    25026,
+                    31218,
+                    37411,
+                    -29155,
+                    -22963,
+                    -16771,
+                    -10579,
+                    -4387,
+                    1806,
+                    7998,
+                    14190,
+                    20382,
+                    26574,
+                    32767,
+                    38959
+                ],
+                "chord": "C"
+            },
+            "type": "pianoQuantizer12",
+            "x": 560,
+            "y": 1104
+        },
+        {
+            "engine": {
+                "name": "scope",
+                "config": {}
+            },
+            "id": "scope65",
+            "state": {},
+            "type": "scope",
+            "x": 400,
+            "y": 1104
+        },
+        {
+            "engine": {
+                "name": "buffer",
+                "config": {
+                    "numberOfPorts": 3,
+                    "numberOfDataPlaceholders": 1
+                }
+            },
+            "id": "cvToMidiNote67",
+            "state": {
+                "data:1": 1
+            },
+            "type": "cvToMidiNote",
+            "x": 1040,
+            "y": 1184
+        },
+        {
+            "engine": {
+                "name": "saw",
+                "config": {}
+            },
+            "id": "saw69",
+            "state": {
+                "rate": 260
+            },
+            "type": "saw",
+            "x": 240,
+            "y": 1104
+        }
+    ],
+    "sructureVersion": 8,
+    "viewport": {
+        "hGrid": 16,
+        "height": 861,
+        "vGrid": 8,
+        "width": 1680,
+        "x": 64,
+        "y": -800
+    }
+}
