@@ -1,7 +1,5 @@
-import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/attenuator.asm';
-
 import singleSliderModule from './templates/singleSliderModule';
-import source from './engines/attenuator.asm';
+import source, { extractState, insertState } from './engines/attenuator.asm';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
