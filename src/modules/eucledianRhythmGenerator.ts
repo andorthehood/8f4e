@@ -19,8 +19,6 @@ export default function eucledianRhythmGenerator(): ModuleType<Config> {
 		inputs: addDefaultInputPositions([{ id: 'in:trigger', label: 'trig' }]),
 		name: 'Eucledian Rhythm',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }
