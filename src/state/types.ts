@@ -1,6 +1,5 @@
 import {
 	Connection,
-	Engine,
 	MemoryAddressLookup,
 	MemoryBuffer,
 	ModuleState,
@@ -9,7 +8,6 @@ import {
 } from '@8f4e/synth-compiler';
 
 export interface Module {
-	engine: Engine;
 	id: string;
 	state: ModuleState;
 	type: string;
