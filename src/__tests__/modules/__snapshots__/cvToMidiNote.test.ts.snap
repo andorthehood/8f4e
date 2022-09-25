@@ -5,11 +5,52 @@ Object {
   "buttons": Array [],
   "category": "MIDI",
   "engine": Object {
-    "config": Object {
-      "numberOfDataPlaceholders": 1,
-      "numberOfPorts": 3,
-    },
-    "name": "buffer",
+    "source": "
+		private defaultValue 0
+		public numberOfInputs 3
+		public numberOfOutputs 3
+		public numberOfDataPlaceholders 1
+
+		
+			inputPointer in:1 defaultValue
+		
+
+			inputPointer in:2 defaultValue
+		
+
+			inputPointer in:3 defaultValue
+		
+
+		
+			output out:1 0
+		
+
+			output out:2 0
+		
+
+			output out:3 0
+		
+
+		
+			public data:1 0
+		
+
+		
+			pushRef out:1
+			push in:1
+			store
+		
+
+			pushRef out:2
+			push in:2
+			store
+		
+
+			pushRef out:3
+			push in:3
+			store
+		
+	",
   },
   "extractState": [Function],
   "height": 128,
@@ -43,7 +84,6 @@ Object {
   "insertState": [Function],
   "name": "CV to MIDI Note",
   "outputs": Array [],
-  "sliders": Array [],
   "steppers": Array [
     Object {
       "downHitArea": Object {

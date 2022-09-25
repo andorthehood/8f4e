@@ -83,8 +83,7 @@ export interface ModuleType<EngineConfig = unknown, DrawerConfig = unknown> exte
 	category: string;
 	drawer?: Drawer<DrawerConfig>;
 	engine: {
-		name: string;
-		config: EngineConfig;
+		source: string;
 	};
 	initialState: ModuleState;
 	inputs: Connector[];

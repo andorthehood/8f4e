@@ -11,18 +11,19 @@ interface SliderConfig {
 	onChange: SliderChangeHandler;
 }
 
-export default function singleSliderModule({ minValue, maxValue, resolution, id, onChange }: SliderConfig): ModuleType {
+export default function singleSliderModule({
+	minValue,
+	maxValue,
+	resolution,
+	id,
+	onChange,
+}: SliderConfig): Pick<ModuleType, 'sliders' | 'height' | 'inputs' | 'outputs' | 'width'> {
 	const width = 8 * HGRID;
 	const height = 8 * HGRID;
 
 	return {
-		buttons: [],
-		category: '',
-		engine: { name: '', config: {} },
 		height,
-		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
-		name: '',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
 		sliders: [
 			{
