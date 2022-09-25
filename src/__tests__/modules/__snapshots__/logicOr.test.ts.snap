@@ -5,8 +5,36 @@ Object {
   "buttons": Array [],
   "category": "Logic",
   "engine": Object {
-    "config": Object {},
-    "name": "logicOr",
+    "source": "
+	private defaultValue 0
+	inputPointer in:1 defaultValue
+	inputPointer in:2 defaultValue
+	output out 0
+
+	push in:1
+	push 0
+	greaterThan
+	if void
+		pushRef out
+		push 32767
+		store
+		branch 1
+	end
+
+	push in:2
+	push 0
+	greaterThan
+	if void
+		pushRef out
+		push 32767
+		store
+		branch 1
+	end
+
+	push out
+	push 0
+	store
+",
   },
   "height": 128,
   "initialState": Object {},
