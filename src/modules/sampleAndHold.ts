@@ -17,8 +17,6 @@ export default function min(): ModuleType {
 		inputs: addDefaultInputPositions([{ id: 'in' }, { id: 'in:trigger', label: 'trigger' }]),
 		name: 'Sample & Hold',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

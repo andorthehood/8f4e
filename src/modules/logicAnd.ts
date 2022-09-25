@@ -20,9 +20,6 @@ export default function logicAnd(): ModuleType {
 		]),
 		name: 'Logic AND',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
-
 		width,
 	};
 }

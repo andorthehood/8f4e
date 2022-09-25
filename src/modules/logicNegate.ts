@@ -17,8 +17,6 @@ export default function logicNegate(): ModuleType {
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
 		name: 'Logic Negate',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

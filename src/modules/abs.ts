@@ -17,8 +17,6 @@ export default function abs(): ModuleType {
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
 		name: 'Abs',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

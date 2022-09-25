@@ -20,8 +20,6 @@ export default function bitwiseAnd(): ModuleType {
 		]),
 		name: 'Bitwise AND',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }
