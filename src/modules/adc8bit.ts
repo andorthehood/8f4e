@@ -2,6 +2,7 @@ import { Config } from '@8f4e/synth-compiler/dist/modules/adc.asm';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
+import source from './engines/adc.asm';
 
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';
@@ -13,7 +14,7 @@ export default function adc8bit(): ModuleType<Config> {
 	return {
 		buttons: [],
 		category: 'Bitwise',
-		engine: { name: 'adc', config: { resolution: 8 } },
+		engine: { source: source({ resolution: 8 }) },
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }]),

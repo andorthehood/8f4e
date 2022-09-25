@@ -81,8 +81,7 @@ export type ModuleGenerator<TConfig = unknown> = (
 export type EngineConfig = Record<string, number | string | EngineConfig[]>;
 
 export interface Engine {
-	name: string;
-	config: EngineConfig;
+	source: string;
 }
 
 export type ModuleState = Record<string, any>;

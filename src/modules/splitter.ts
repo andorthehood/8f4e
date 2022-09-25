@@ -1,9 +1,9 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
+import source from './engines/splitter.asm';
 
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';
-
 export default function splitter(): ModuleType {
 	const width = 8 * HGRID;
 	const height = 8 * HGRID;
@@ -11,7 +11,7 @@ export default function splitter(): ModuleType {
 	return {
 		buttons: [],
 		category: 'Other',
-		engine: { name: 'splitter', config: {} },
+		engine: { source },
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }]),

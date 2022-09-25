@@ -5,10 +5,143 @@ Object {
   "buttons": Array [],
   "category": "Bitwise",
   "engine": Object {
-    "config": Object {
-      "resolution": 8,
-    },
-    "name": "adc",
+    "source": "
+	# adc module
+
+	# memory
+	private default 0
+	inputPointer in default
+	output out:1 0
+output out:2 0
+output out:3 0
+output out:4 0
+output out:5 0
+output out:6 0
+output out:7 0
+output out:8 0
+
+	# locals
+	local input
+
+	# code
+	push in
+	push 128
+	div
+	localSet input
+
+	
+			pushRef out:1
+			push input
+			push 1
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:2
+			push input
+			push 2
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:3
+			push input
+			push 4
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:4
+			push input
+			push 8
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:5
+			push input
+			push 16
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:6
+			push input
+			push 32
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:7
+			push input
+			push 64
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:8
+			push input
+			push 128
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+",
   },
   "height": 192,
   "initialState": Object {},

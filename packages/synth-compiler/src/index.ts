@@ -15,13 +15,13 @@ import {
 } from '@8f4e/bytecode-utils';
 
 import { generateMemoryAddressLookup } from './initializeMemory';
-import * as moduleCompilers from './modules';
 import { CompiledModule, MemoryAddressLookup, Module } from './types';
 import { createRelativeAddressCalculator } from './utils';
 
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
 export { setUpConnections } from './initializeMemory';
+export { createTestModule } from './testUtils';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -45,23 +45,12 @@ export function getInitialMemory(module: CompiledModule): number[] {
 
 export function compileModules(modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
-	return modules
-		.filter(({ engine }) => moduleCompilers[engine.name])
-		.map(({ id, engine, state }) => {
-			const relative = createRelativeAddressCalculator(memoryAddress, Int32Array.BYTES_PER_ELEMENT);
-
-			let module: CompiledModule = moduleCompilers[engine.name];
-			if (typeof module === 'function') {
-				module = moduleCompilers[engine.name]({ ...engine.config, ...state });
-			}
-
-			if (typeof module === 'string') {
-				module = compileModule(module, id, relative.byte(0));
-			}
-
-			memoryAddress += calculateModuleSize(module);
-			return module;
-		});
+	return modules.map(({ id, engine }) => {
+		const relative = createRelativeAddressCalculator(memoryAddress, Int32Array.BYTES_PER_ELEMENT);
+		const module = compileModule(engine.source, id, relative.byte(0));
+		memoryAddress += calculateModuleSize(module);
+		return module;
+	});
 }
 
 export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {

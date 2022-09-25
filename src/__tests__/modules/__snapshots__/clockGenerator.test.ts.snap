@@ -5,8 +5,54 @@ Object {
   "buttons": Array [],
   "category": "Clock",
   "engine": Object {
-    "config": Object {},
-    "name": "clockGenerator",
+    "source": "
+	private counter 0
+	public rate 0
+	output out 0
+
+	local _counter
+	local _output
+	local _rate
+
+	push out
+	localSet _output
+
+	push counter
+	localSet _counter
+
+	push rate
+	localSet _rate
+
+	push 12000
+	push _counter
+	greaterOrEqual
+	if 
+		push 32767
+	else
+		push 0
+	end
+	localSet _output
+
+	push _counter
+	push 32767
+	greaterOrEqual
+	if 
+		push 0
+	else
+		push _counter
+		push _rate
+		add
+	end
+	localSet _counter
+
+	pushRef out
+	push _output
+	store
+
+	pushRef counter
+	push _counter
+	store
+",
   },
   "extractState": [Function],
   "height": 128,

@@ -1,4 +1,5 @@
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
+import source from './engines/random.asm';
 
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';
@@ -10,7 +11,7 @@ export default function randomGenerator(): ModuleType {
 	return {
 		buttons: [],
 		category: 'Random',
-		engine: { name: 'random', config: {} },
+		engine: { source: source() },
 		height,
 		initialState: {},
 		inputs: [],

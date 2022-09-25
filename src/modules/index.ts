@@ -9,7 +9,6 @@ import clockGenerator from './clockGenerator';
 import constant from './constant';
 import cvToMidiCC from './cvToMidiCC';
 import cvToMidiNote from './cvToMidiNote';
-import eucledianRhythmGenerator from './eucledianRhythmGenerator';
 import invert from './invert';
 import logicAnd from './logicAnd';
 import logicNegate from './logicNegate';
@@ -29,8 +28,6 @@ import saw from './saw';
 import scope from './scope';
 import sequentialSwitch from './sequentialSwitch';
 import splitter from './splitter';
-import triangle from './triangle';
-import triggerToGate from './triggerToGate';
 
 import { ModuleTypeLookup } from '../state/types';
 
@@ -47,7 +44,6 @@ export default function generateModuleTypes(): ModuleTypeLookup {
 		constant: constant(),
 		cvToMidiCC: cvToMidiCC(),
 		cvToMidiNote: cvToMidiNote(),
-		eucledianRhythmGenerator: eucledianRhythmGenerator(),
 		invert: invert(),
 		logicAnd: logicAnd(),
 		logicNegate: logicNegate(),
@@ -67,7 +63,5 @@ export default function generateModuleTypes(): ModuleTypeLookup {
 		scope: scope(),
 		sequentialSwitch: sequentialSwitch(),
 		splitter: splitter(),
-		triangle: triangle(),
-		triggerToGate: triggerToGate(),
 	};
 }
