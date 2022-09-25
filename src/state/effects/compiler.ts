@@ -7,7 +7,13 @@ export default function compiler(state: State, events: EventDispatcher): void {
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 
 	async function onRecompile() {
-		worker.postMessage({ memoryRef, modules: state.modules, connections: state.connections });
+		worker.postMessage({
+			memoryRef,
+			modules: state.modules.map(module => {
+				return { ...module, engine: state.moduleTypes[module.type].engine };
+			}),
+			connections: state.connections,
+		});
 		recompile(state);
 	}
 
