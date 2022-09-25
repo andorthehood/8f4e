@@ -1,6 +1,7 @@
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/saw.asm';
 
 import singleSliderModule from './templates/singleSliderModule';
+import source from './engines/saw.asm';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
@@ -19,8 +20,9 @@ export default function saw(): ModuleType {
 			resolution: 10,
 			onChange,
 		}),
+		buttons: [],
 		category: 'Oscillator',
-		engine: { name: 'saw', config: {} },
+		engine: { source },
 		initialState: { rate: 1000 },
 		inputs: [],
 		name: 'Saw',

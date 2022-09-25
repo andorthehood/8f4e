@@ -5,8 +5,17 @@ Object {
   "buttons": Array [],
   "category": "Math",
   "engine": Object {
-    "config": Object {},
-    "name": "invert",
+    "source": "
+	private default 0
+	inputPointer in default
+	output out 0
+		
+	pushRef out
+	push in
+	push -1
+	mul
+	store
+",
   },
   "height": 128,
   "initialState": Object {},

@@ -1,9 +1,9 @@
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/clockGenerator.asm';
 
 import singleSliderModule from './templates/singleSliderModule';
+import source from './engines/clockGenerator.asm';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
-import { HGRID } from '../view/drawers/consts';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
 	let { rate } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
@@ -20,8 +20,9 @@ export default function clockGenerator(): ModuleType {
 			resolution: 10,
 			onChange,
 		}),
+		buttons: [],
 		category: 'Clock',
-		engine: { name: 'clockGenerator', config: {} },
+		engine: { source },
 		initialState: { rate: 10 },
 		inputs: [],
 		name: 'Clock',

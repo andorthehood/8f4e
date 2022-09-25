@@ -2,6 +2,7 @@ import { I16_SIGNED_LARGEST_NUMBER } from '@8f4e/synth-compiler';
 import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/offset.asm';
 
 import singleSliderModule from './templates/singleSliderModule';
+import source from './engines/offset.asm';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
@@ -20,11 +21,12 @@ export default function offset(): ModuleType {
 			resolution: 100,
 			onChange,
 		}),
+		buttons: [],
 		category: 'Other',
 		initialState: {
 			offset: 0,
 		},
-		engine: { name: 'offset', config: {} },
+		engine: { source },
 		name: 'Offset',
 		extractState,
 		insertState,

@@ -5,8 +5,46 @@ Object {
   "buttons": Array [],
   "category": "Other",
   "engine": Object {
-    "config": Object {},
-    "name": "mixer",
+    "source": "
+	private defaultValue 0
+	output out 0
+	inputPointer in:1 defaultValue
+	inputPointer in:2 defaultValue
+	inputPointer in:3 defaultValue
+	inputPointer in:4 defaultValue
+
+	local result
+
+	pushRef out
+		push in:1
+		push in:2
+		add
+		push in:3
+		add
+		push in:4
+		add
+		localSet result
+
+		push result
+		push 32767
+		greaterOrEqual
+		if
+			push 32767
+		else
+			push result
+		end
+		localSet result
+
+		push result
+		push -32768
+		lessOrEqual
+		if
+			push -32768
+		else
+			push result
+		end	
+	store
+",
   },
   "height": 128,
   "initialState": Object {},
