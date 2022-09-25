@@ -1,8 +1,5 @@
-import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
-import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
-
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import source from './engines/buffer.asm';
+import source, { extractState, insertState, Config } from './engines/buffer.asm';
 
 import { ModuleType, StepperChangeHandler } from '../state/types';
 import ccNames from '../midi/ccNames';
@@ -19,7 +16,7 @@ const onChange: StepperChangeHandler = function (module, state, value, stepper) 
 	}
 };
 
-export default function cvToMidiCC(): ModuleType<Config> {
+export default function cvToMidiCC(): ModuleType {
 	const width = 16 * HGRID;
 	const height = 8 * HGRID;
 
