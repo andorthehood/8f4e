@@ -79,7 +79,7 @@ export interface Drawer<DrawerConfig> {
 	config: DrawerConfig;
 }
 
-export interface ModuleType<EngineConfig = unknown, DrawerConfig = unknown> extends Size {
+export interface ModuleType<DrawerConfig = unknown> extends Size {
 	category: string;
 	drawer?: Drawer<DrawerConfig>;
 	engine: {
