@@ -5,8 +5,38 @@ Object {
   "buttons": Array [],
   "category": "Logic",
   "engine": Object {
-    "config": Object {},
-    "name": "logicXor",
+    "source": "
+	private defaultValue 0
+	inputPointer in:1 defaultValue
+	inputPointer in:2 defaultValue
+	output out 0
+
+	block void
+		push in:1
+		push 0
+		greaterThan
+		if void
+			push in:2
+			push 0
+			greaterThan
+			branchIfTrue 1
+		else
+			push in:2
+			push 0
+			lessOrEqual 
+			branchIfTrue 1
+		end
+
+		pushRef out
+		push 32767
+		store
+		branch 1
+	end
+
+	pushRef out
+	push 0
+	store
+",
   },
   "height": 128,
   "initialState": Object {},

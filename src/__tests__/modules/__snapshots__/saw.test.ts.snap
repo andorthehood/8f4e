@@ -5,8 +5,44 @@ Object {
   "buttons": Array [],
   "category": "Oscillator",
   "engine": Object {
-    "config": Object {},
-    "name": "saw",
+    "source": "
+	private LIMIT_SELF 32767
+	public rate 1
+	inputPointer in:rate rate
+	inputPointer in:limit LIMIT_SELF
+	output out 0
+
+	local _rate
+	local limit
+	local counter
+
+	push in:rate
+	localSet _rate
+
+	push in:limit
+	localSet limit
+
+	push out
+	localSet counter
+
+	push counter
+	push limit
+	greaterOrEqual
+	if
+		push 0
+		push limit
+		sub
+	else
+		push _rate
+		push counter
+		add
+	end
+	localSet counter
+
+	pushRef out
+	push counter
+	store
+",
   },
   "extractState": [Function],
   "height": 128,

@@ -1,9 +1,9 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
+import source from './engines/sequentialSwitch.asm';
 
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';
-
 export default function sequentialSwitch(): ModuleType {
 	const width = 12 * HGRID;
 	const height = 9 * HGRID;
@@ -11,7 +11,7 @@ export default function sequentialSwitch(): ModuleType {
 	return {
 		buttons: [],
 		category: 'Logic',
-		engine: { name: 'sequentialSwitch', config: {} },
+		engine: { source },
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([

@@ -5,8 +5,9 @@ Object {
   "buttons": Array [],
   "category": "Other",
   "engine": Object {
-    "config": Object {},
-    "name": "constant",
+    "source": "
+	output out 0
+",
   },
   "extractState": [Function],
   "height": 128,
