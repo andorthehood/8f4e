@@ -5,10 +5,263 @@ Object {
   "buttons": Array [],
   "category": "Bitwise",
   "engine": Object {
-    "config": Object {
-      "resolution": 16,
-    },
-    "name": "adc",
+    "source": "
+	# adc module
+
+	# memory
+	private default 0
+	inputPointer in default
+	output out:1 0
+output out:2 0
+output out:3 0
+output out:4 0
+output out:5 0
+output out:6 0
+output out:7 0
+output out:8 0
+output out:9 0
+output out:10 0
+output out:11 0
+output out:12 0
+output out:13 0
+output out:14 0
+output out:15 0
+output out:16 0
+
+	# locals
+	local input
+
+	# code
+	push in
+	push 1
+	div
+	localSet input
+
+	
+			pushRef out:1
+			push input
+			push 1
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:2
+			push input
+			push 2
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:3
+			push input
+			push 4
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:4
+			push input
+			push 8
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:5
+			push input
+			push 16
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:6
+			push input
+			push 32
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:7
+			push input
+			push 64
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:8
+			push input
+			push 128
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:9
+			push input
+			push 256
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:10
+			push input
+			push 512
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:11
+			push input
+			push 1024
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:12
+			push input
+			push 2048
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:13
+			push input
+			push 4096
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:14
+			push input
+			push 8192
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:15
+			push input
+			push 16384
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+
+			pushRef out:16
+			push input
+			push 32768
+			and
+			push 0
+			greaterThan
+			if 
+				push 32767
+			else
+				push 0
+			end
+			store
+		
+",
   },
   "height": 320,
   "initialState": Object {},

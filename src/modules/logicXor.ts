@@ -1,5 +1,6 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
+import source from './engines/logicXor.asm';
 
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';
@@ -11,7 +12,7 @@ export default function logicXor(): ModuleType {
 	return {
 		buttons: [],
 		category: 'Logic',
-		engine: { name: 'logicXor', config: {} },
+		engine: { source },
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([

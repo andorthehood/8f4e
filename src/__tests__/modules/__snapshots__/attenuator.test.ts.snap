@@ -5,8 +5,17 @@ Object {
   "buttons": Array [],
   "category": "Other",
   "engine": Object {
-    "config": Object {},
-    "name": "attenuator",
+    "source": "
+	private zero 0
+	inputPointer in zero
+	public divisor 1
+	output out 0
+	pushRef out
+	push in
+	push divisor
+	div
+	store
+",
   },
   "extractState": [Function],
   "height": 128,

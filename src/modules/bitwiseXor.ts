@@ -1,5 +1,6 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
+import source from './engines/bitwiseXor.asm';
 
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';
@@ -11,7 +12,7 @@ export default function bitwiseXor(): ModuleType {
 	return {
 		buttons: [],
 		category: 'Bitwise',
-		engine: { name: 'bitwiseXor', config: {} },
+		engine: { source },
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([

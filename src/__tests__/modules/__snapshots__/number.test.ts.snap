@@ -5,10 +5,30 @@ Object {
   "buttons": Array [],
   "category": "Inspection",
   "engine": Object {
-    "config": Object {
-      "numberOfPorts": 1,
-    },
-    "name": "buffer",
+    "source": "
+		private defaultValue 0
+		public numberOfInputs 1
+		public numberOfOutputs 1
+		public numberOfDataPlaceholders 1
+
+		
+			inputPointer in:1 defaultValue
+		
+
+		
+			output out:1 0
+		
+
+		
+			public data:1 0
+		
+
+		
+			pushRef out:1
+			push in:1
+			store
+		
+	",
   },
   "height": 128,
   "initialState": Object {},

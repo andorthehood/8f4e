@@ -5,8 +5,23 @@ Object {
   "buttons": Array [],
   "category": "Logic",
   "engine": Object {
-    "config": Object {},
-    "name": "logicNegate",
+    "source": "
+	private defaultValue 0
+	inputPointer in defaultValue
+	output out 0
+
+	pushRef out
+	push in
+	push 0
+	greaterThan
+	if
+		push 0
+	else 
+		push 32767
+	end
+
+	store
+",
   },
   "height": 128,
   "initialState": Object {},

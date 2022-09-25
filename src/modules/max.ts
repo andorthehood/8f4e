@@ -1,5 +1,6 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
+import source from './engines/max.asm';
 
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';
@@ -11,7 +12,7 @@ export default function max(): ModuleType {
 	return {
 		buttons: [],
 		category: 'Logic',
-		engine: { name: 'max', config: {} },
+		engine: { source },
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([

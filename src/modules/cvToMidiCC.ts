@@ -2,6 +2,7 @@ import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buf
 import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
+import source from './engines/buffer.asm';
 
 import { ModuleType, StepperChangeHandler } from '../state/types';
 import ccNames from '../midi/ccNames';
@@ -26,18 +27,16 @@ export default function cvToMidiCC(): ModuleType<Config> {
 		buttons: [],
 		category: 'MIDI',
 		engine: {
-			name: 'buffer',
-			config: {
+			source: source({
 				numberOfPorts: 3,
 				numberOfDataPlaceholders: 2,
-			},
+			}),
 		},
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in:1', label: 'in' }]),
 		name: 'CV to MIDI CC',
 		outputs: [],
-		sliders: [],
 		steppers: [
 			{
 				id: 'data:1',

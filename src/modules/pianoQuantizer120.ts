@@ -4,6 +4,7 @@ import chordIdentifier from '@8f4e/chord-identifier';
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
+import source from './engines/quantizer.asm';
 
 import { Button, ButtonClickHandler, ModuleType } from '../state/types';
 import { int16ToMidiNote, midiNoteToInt16 } from '../state/helpers/midi';
@@ -69,7 +70,7 @@ export default function pianoQuantizer(): PianoQuantizer {
 				),
 			},
 		},
-		engine: { name: 'quantizer', config: { allocatedNotes: 32 } },
+		engine: { source: source({ allocatedNotes: 32 }) },
 		height,
 		initialState: {},
 		inputs: addDefaultInputPositions([{ id: 'in' }]),

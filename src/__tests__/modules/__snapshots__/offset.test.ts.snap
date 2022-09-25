@@ -5,8 +5,40 @@ Object {
   "buttons": Array [],
   "category": "Other",
   "engine": Object {
-    "config": Object {},
-    "name": "offset",
+    "source": "
+	private defaultValue 0
+	inputPointer in defaultValue
+	public offset 0
+	output out 0
+
+	local result
+
+	pushRef out
+		push in
+		push offset
+		add
+		localSet result
+
+		push result
+		push 32767
+		greaterOrEqual
+		if 
+			push 32767
+		else
+			push result
+		end
+		localSet result
+		
+		push result
+		push -32768
+		lessOrEqual
+		if 
+			push -32768
+		else 
+			push result
+		end
+	store
+",
   },
   "extractState": [Function],
   "height": 128,
