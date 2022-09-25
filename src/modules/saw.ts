@@ -1,7 +1,5 @@
-import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/saw.asm';
-
 import singleSliderModule from './templates/singleSliderModule';
-import source from './engines/saw.asm';
+import source, { extractState, insertState } from './engines/saw.asm';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
 

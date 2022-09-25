@@ -1,8 +1,7 @@
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '@8f4e/synth-compiler';
-import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/constant.asm';
 
 import singleSliderModule from './templates/singleSliderModule';
-import source from './engines/constant.asm';
+import source, { extractState, insertState } from './engines/constant.asm';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
 

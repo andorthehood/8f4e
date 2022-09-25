@@ -1,5 +1,3 @@
-import { Config } from '@8f4e/synth-compiler/dist/modules/buffer';
-
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import source from './engines/buffer.asm';
@@ -7,7 +5,7 @@ import source from './engines/buffer.asm';
 import { ModuleType } from '../state/types';
 import { HGRID } from '../view/drawers/consts';
 
-export default function number(): ModuleType<Config> {
+export default function number(): ModuleType {
 	const width = 8 * HGRID;
 	const height = 8 * HGRID;
 
