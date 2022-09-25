@@ -19,8 +19,6 @@ export default function number(): ModuleType<Config> {
 		inputs: addDefaultInputPositions([{ id: 'in:1', label: 'in' }]),
 		name: 'Number',
 		outputs: addDefaultOutputPositions([{ id: 'out:1', label: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

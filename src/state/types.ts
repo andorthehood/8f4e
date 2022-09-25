@@ -90,8 +90,8 @@ export interface ModuleType<EngineConfig = unknown, DrawerConfig = unknown> exte
 	inputs: Connector[];
 	name: string;
 	outputs: Connector[];
-	sliders: Slider[];
-	steppers: Stepper[];
+	sliders?: Slider[];
+	steppers?: Stepper[];
 	buttons: Button[];
 	extractState?: ModuleStateExtractor<ModuleState>;
 	insertState?: ModuleStateInserter<ModuleState>;

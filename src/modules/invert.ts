@@ -17,8 +17,6 @@ export default function invert(): ModuleType {
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
 		name: 'Invert',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

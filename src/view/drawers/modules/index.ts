@@ -48,8 +48,14 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.drawText(VGRID * 3, 0, name);
 
 			drawConnectors(engine, state.moduleTypes[type], state, id);
-			drawSliders(engine, sliders, state, id);
-			drawSteppers(engine, steppers, state, id);
+
+			if (sliders) {
+				drawSliders(engine, sliders, state, id);
+			}
+
+			if (steppers) {
+				drawSteppers(engine, steppers, state, id);
+			}
 
 			if (type === 'number') {
 				number(engine, state, id);

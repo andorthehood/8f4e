@@ -20,8 +20,6 @@ export default function max(): ModuleType {
 		]),
 		name: 'Max',
 		outputs: addDefaultOutputPositions([{ id: 'out', label: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

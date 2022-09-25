@@ -76,8 +76,6 @@ export default function pianoQuantizer(): PianoQuantizer {
 		outputs: addDefaultOutputPositions([{ id: 'out', label: '' }], width),
 		insertState,
 		extractState,
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }
