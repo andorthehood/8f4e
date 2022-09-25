@@ -46,7 +46,6 @@ Object {
       "y": 48,
     },
   ],
-  "steppers": Array [],
   "width": 128,
 }
 `;

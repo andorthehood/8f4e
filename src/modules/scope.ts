@@ -17,8 +17,6 @@ export default function scope(): ModuleType {
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
 		name: 'Scope',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

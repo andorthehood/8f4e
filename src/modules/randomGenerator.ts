@@ -16,8 +16,6 @@ export default function randomGenerator(): ModuleType {
 		inputs: [],
 		name: 'Random',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

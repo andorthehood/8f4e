@@ -33,8 +33,6 @@ Object {
       "y": 32,
     },
   ],
-  "sliders": Array [],
-  "steppers": Array [],
   "width": 128,
 }
 `;
