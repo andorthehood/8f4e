@@ -1,10 +1,9 @@
-import { Config, extractState, insertState } from '@8f4e/synth-compiler/dist/modules/quantizer.asm';
 import chordIdentifier from '@8f4e/chord-identifier';
 
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
-import source from './engines/quantizer.asm';
+import source, { extractState, insertState } from './engines/quantizer.asm';
 
 import { Button, ButtonClickHandler, ModuleType } from '../state/types';
 import { int16ToMidiNote, midiNoteToInt16 } from '../state/helpers/midi';
@@ -28,16 +27,13 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
-export type PianoQuantizer = ModuleType<
-	Config,
-	{
-		keyCount: number;
-		x: number;
-		y: number;
-		notes: Map<number, number>;
-		noteSigns?: never;
-	}
->;
+export type PianoQuantizer = ModuleType<{
+	keyCount: number;
+	x: number;
+	y: number;
+	notes: Map<number, number>;
+	noteSigns?: never;
+}>;
 
 export default function pianoQuantizer(): PianoQuantizer {
 	const width = HGRID * 15;

@@ -1,8 +1,5 @@
-import { extractState, insertState } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
-import { Config } from '@8f4e/synth-compiler/dist/modules/buffer.asm';
-
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import source from './engines/buffer.asm';
+import source, { extractState, insertState } from './engines/buffer.asm';
 
 import { ModuleType, StepperChangeHandler } from '../state/types';
 import { HGRID, VGRID } from '../view/drawers/consts';
@@ -13,7 +10,7 @@ const onChangeChannel: StepperChangeHandler = function (module, state, value, st
 	memoryBuffer[dataAddress] = Math.min(Math.max(memoryBuffer[dataAddress] + value, stepper.minValue), stepper.maxValue);
 };
 
-export default function cvToMidiNote(): ModuleType<Config> {
+export default function cvToMidiNote(): ModuleType {
 	const width = 16 * HGRID;
 	const height = 8 * HGRID;
 
