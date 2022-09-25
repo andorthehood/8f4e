@@ -33,10 +33,6 @@
     ],
     "modules": [
         {
-            "engine": {
-                "name": "scope",
-                "config": {}
-            },
             "id": "scope63",
             "state": {},
             "type": "scope",
@@ -44,10 +40,6 @@
             "y": 1104
         },
         {
-            "engine": {
-                "name": "clockGenerator",
-                "config": {}
-            },
             "id": "clockGenerator68",
             "state": {
                 "rate": 1580
@@ -57,12 +49,6 @@
             "y": 1264
         },
         {
-            "engine": {
-                "name": "quantizer",
-                "config": {
-                    "allocatedNotes": 60
-                }
-            },
             "id": "pianoQuantizer1266",
             "state": {
                 "activeNotes": [
@@ -110,10 +96,6 @@
             "y": 1104
         },
         {
-            "engine": {
-                "name": "scope",
-                "config": {}
-            },
             "id": "scope65",
             "state": {},
             "type": "scope",
@@ -121,13 +103,6 @@
             "y": 1104
         },
         {
-            "engine": {
-                "name": "buffer",
-                "config": {
-                    "numberOfPorts": 3,
-                    "numberOfDataPlaceholders": 1
-                }
-            },
             "id": "cvToMidiNote67",
             "state": {
                 "data:1": 1
@@ -137,10 +112,6 @@
             "y": 1184
         },
         {
-            "engine": {
-                "name": "saw",
-                "config": {}
-            },
             "id": "saw69",
             "state": {
                 "rate": 260
