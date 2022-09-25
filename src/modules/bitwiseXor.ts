@@ -20,8 +20,6 @@ export default function bitwiseXor(): ModuleType {
 		]),
 		name: 'Bitwise XOR',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

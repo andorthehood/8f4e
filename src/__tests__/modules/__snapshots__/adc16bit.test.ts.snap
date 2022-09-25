@@ -152,8 +152,6 @@ Object {
       "y": 272,
     },
   ],
-  "sliders": Array [],
-  "steppers": Array [],
   "width": 128,
 }
 `;

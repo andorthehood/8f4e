@@ -54,8 +54,6 @@ Object {
       "y": 80,
     },
   ],
-  "sliders": Array [],
-  "steppers": Array [],
   "width": 128,
 }
 `;

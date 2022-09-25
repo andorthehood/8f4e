@@ -37,7 +37,6 @@ export default function singleSliderModule({ minValue, maxValue, resolution, id,
 				onChange,
 			},
 		],
-		steppers: [],
 		width,
 	};
 }

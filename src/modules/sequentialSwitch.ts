@@ -23,8 +23,6 @@ export default function sequentialSwitch(): ModuleType {
 		]),
 		name: 'Sequential switch',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

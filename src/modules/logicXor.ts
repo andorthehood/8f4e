@@ -20,8 +20,6 @@ export default function logicXor(): ModuleType {
 		]),
 		name: 'Logic XOR',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

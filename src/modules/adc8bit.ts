@@ -22,8 +22,6 @@ export default function adc8bit(): ModuleType<Config> {
 			[...new Array(8).fill(0).map((item, i) => ({ id: 'out:' + (i + 1), label: 'bit' + i }))],
 			width
 		),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

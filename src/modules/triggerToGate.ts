@@ -17,8 +17,6 @@ export default function triggerToGate(): ModuleType {
 		inputs: addDefaultInputPositions([{ id: 'in:trigger', label: 'trig' }]),
 		name: 'Trigger to Gate',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

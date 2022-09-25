@@ -17,8 +17,6 @@ export default function number(): ModuleType {
 		inputs: addDefaultInputPositions([{ id: 'in:1', label: 'in' }]),
 		name: 'MIDI Note',
 		outputs: addDefaultOutputPositions([{ id: 'out:1', label: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

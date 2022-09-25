@@ -25,8 +25,6 @@ export default function splitter(): ModuleType {
 			],
 			width
 		),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }
