@@ -20,8 +20,6 @@ export default function logicOr(): ModuleType {
 		]),
 		name: 'Logic OR',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

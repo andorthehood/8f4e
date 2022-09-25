@@ -20,8 +20,6 @@ export default function bitwiseOr(): ModuleType {
 		]),
 		name: 'Bitwise OR',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

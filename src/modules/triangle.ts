@@ -16,8 +16,6 @@ export default function triangle(): ModuleType {
 		inputs: [],
 		name: 'Triangle',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }

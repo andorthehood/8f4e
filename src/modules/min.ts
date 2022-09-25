@@ -20,8 +20,6 @@ export default function min(): ModuleType {
 		]),
 		name: 'Min',
 		outputs: addDefaultOutputPositions([{ id: 'out', label: 'out' }], width),
-		sliders: [],
-		steppers: [],
 		width,
 	};
 }
