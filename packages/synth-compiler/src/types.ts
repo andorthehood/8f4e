@@ -6,56 +6,25 @@ export enum MemoryTypes {
 	OUTPUT,
 	PRIVATE,
 	NUMBER,
+	ARRAY,
 }
 
-export type MemoryItemDescriptor = {
-	default: number;
-	/** Relative address of the memory */
+export type MemoryMap = Array<{
+	type: MemoryTypes;
 	address: number;
-	id?: string;
-};
-
-export interface DynamicArray extends Omit<MemoryItemDescriptor, 'default'> {
-	type: MemoryTypes.DYNAMIC_ARRAY;
-	sizePointer: number;
-	maxSize: number;
-	default: number[];
-}
-
-export interface StaticArray extends Omit<MemoryItemDescriptor, 'default'> {
-	type: MemoryTypes.STATIC_ARRAY;
+	byteAddress: number;
+	id: string;
 	size: number;
-	default: number[];
-}
-
-export interface InputPointer extends MemoryItemDescriptor {
-	type: MemoryTypes.INPUT_POINTER;
-}
-
-export interface Output extends MemoryItemDescriptor {
-	type: MemoryTypes.OUTPUT;
-}
-
-export interface Private extends MemoryItemDescriptor {
-	type: MemoryTypes.PRIVATE;
-}
-
-export interface NumberValue extends MemoryItemDescriptor {
-	type: MemoryTypes.NUMBER;
-}
-
-export interface ArraySize extends MemoryItemDescriptor {
-	type: MemoryTypes.ARRAY_SIZE;
-}
-
-export type MemoryMap = Private | Output | InputPointer | StaticArray | DynamicArray | NumberValue | ArraySize;
+	default: number | number[];
+	usage: number;
+}>;
 
 export interface CompiledModule {
 	functionBody: number[];
 	moduleId: string;
 	byteAddress: number;
 	wordAddress: number;
-	memoryMap: MemoryMap[];
+	memoryMap: MemoryMap;
 }
 
 export type MemoryBuffer = Int32Array;
@@ -96,3 +65,12 @@ export interface Module {
 }
 
 export type MemoryAddressLookup = Record<string, Record<string, number>>;
+
+export const enum ArgumentType {
+	LITERAL = 'literal',
+	IDENTIFIER = 'identifier',
+}
+
+export type Argument = { type: ArgumentType.LITERAL; value: number } | { type: ArgumentType.IDENTIFIER; value: string };
+
+export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;

@@ -48,7 +48,6 @@
 	},
 	"workspaces": [
 		"packages/bytecode-utils",
-		"packages/module-compiler",
 		"packages/synth-compiler",
 		"packages/worker",
 		"packages/2d-engine",
