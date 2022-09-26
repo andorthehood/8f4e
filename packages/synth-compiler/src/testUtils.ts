@@ -9,9 +9,9 @@ import {
 	createMemoryImport,
 	createTypeSection,
 } from '@8f4e/bytecode-utils';
-import { compile } from '@8f4e/module-compiler';
 import wabt from 'wabt';
 
+import { compile } from './compiler';
 import { CompiledModule, MemoryMap } from './types';
 
 import { ModuleGenerator, getInitialMemory } from '.';
@@ -47,7 +47,7 @@ export async function createTestModule(
 	reset: () => void;
 	wat: string;
 	program: Uint8Array;
-	memoryMap: MemoryMap[];
+	memoryMap: MemoryMap;
 }> {
 	let module: CompiledModule;
 

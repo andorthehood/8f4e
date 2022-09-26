@@ -20,11 +20,6 @@
 	},
 	"homepage": "https://github.com/andormade/8f4e#readme",
 	"dependencies": {
-		"bytecode-utils": "file:packages/bytecode-utils",
-		"module-compiler": "file:packages/module-compiler"
-	},
-	"devDependencies": {
-		"ts-loader": "9.3.1",
-		"webpack": "5.74.0"
+		"bytecode-utils": "file:packages/bytecode-utils"
 	}
 }
