@@ -48,7 +48,7 @@
 	},
 	"workspaces": [
 		"packages/bytecode-utils",
-		"packages/synth-compiler",
+		"packages/compiler",
 		"packages/worker",
 		"packages/2d-engine",
 		"packages/chord-identifier",
@@ -61,7 +61,7 @@
 		"@8f4e/2d-engine": "file:packages/2d-engine",
 		"@8f4e/chord-identifier": "file:packages/chord-identifier",
 		"@8f4e/sprite-generator": "file:packages/sprite-generator",
-		"@8f4e/synth-compiler": "file:packages/synth-compiler",
+		"@8f4e/compiler": "file:packages/compiler",
 		"@8f4e/worker": "file:packages/worker",
 		"buffer": "5.7.1"
 	}

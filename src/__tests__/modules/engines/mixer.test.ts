@@ -1,4 +1,4 @@
-import { createTestModule } from '@8f4e/synth-compiler';
+import { createTestModule } from '@8f4e/compiler';
 
 import mixer from '../../../modules/engines/mixer.asm';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../../modules/engines/consts';

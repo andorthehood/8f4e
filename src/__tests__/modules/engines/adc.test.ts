@@ -1,4 +1,4 @@
-import { createTestModule } from '@8f4e/synth-compiler';
+import { createTestModule } from '@8f4e/compiler';
 
 import adc from '../../../modules/engines/adc.asm';
 import { LOGIC_HIGH } from '../../../modules/engines/consts';

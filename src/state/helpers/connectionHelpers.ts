@@ -1,4 +1,4 @@
-import { Connection } from '@8f4e/synth-compiler';
+import { Connection } from '@8f4e/compiler';
 
 export function findConnectionByConnectorId(
 	connections: Connection[],
