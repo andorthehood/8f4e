@@ -1,4 +1,4 @@
-import { createTestModule } from '@8f4e/synth-compiler';
+import { createTestModule } from '@8f4e/compiler';
 
 import abs from '../../../modules/engines/abs.asm';
 
