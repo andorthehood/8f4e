@@ -1,4 +1,4 @@
-import { I16_SIGNED_LARGEST_NUMBER } from '@8f4e/synth-compiler';
+import { I16_SIGNED_LARGEST_NUMBER } from '@8f4e/compiler';
 
 import singleSliderModule from './templates/singleSliderModule';
 import source, { extractState, insertState } from './engines/offset.asm';

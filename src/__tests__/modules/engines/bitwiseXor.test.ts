@@ -1,4 +1,4 @@
-import { createTestModule } from '@8f4e/synth-compiler';
+import { createTestModule } from '@8f4e/compiler';
 
 import bitwiseXor from '../../../modules/engines/bitwiseXor.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../../modules/engines/consts';
