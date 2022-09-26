@@ -1,4 +1,4 @@
-import { createTestModule } from '@8f4e/synth-compiler';
+import { createTestModule } from '@8f4e/compiler';
 
 import random from '../../../modules/engines/random.asm';
 

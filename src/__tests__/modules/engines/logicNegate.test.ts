@@ -1,4 +1,4 @@
-import { createTestModule } from '@8f4e/synth-compiler';
+import { createTestModule } from '@8f4e/compiler';
 
 import negate from '../../../modules/engines/logicNegate.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../../modules/engines/consts';
