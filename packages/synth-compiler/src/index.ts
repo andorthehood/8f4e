@@ -1,4 +1,3 @@
-import { compile as compileModule } from '@8f4e/module-compiler';
 import {
 	Type,
 	call,
@@ -14,9 +13,9 @@ import {
 	i32store,
 } from '@8f4e/bytecode-utils';
 
+import { compile as compileModule } from './compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
 import { CompiledModule, MemoryAddressLookup, Module } from './types';
-import { createRelativeAddressCalculator } from './utils';
 
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
@@ -40,14 +39,13 @@ export function getInitialMemory(module: CompiledModule): number[] {
 			accumulator.push(current.default);
 		}
 		return accumulator;
-	}, []);
+	}, [] as number[]);
 }
 
 export function compileModules(modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
 	return modules.map(({ id, engine }) => {
-		const relative = createRelativeAddressCalculator(memoryAddress, Int32Array.BYTES_PER_ELEMENT);
-		const module = compileModule(engine.source, id, relative.byte(0));
+		const module = compileModule(engine.source, id, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
 		memoryAddress += calculateModuleSize(module);
 		return module;
 	});
