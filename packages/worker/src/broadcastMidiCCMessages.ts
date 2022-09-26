@@ -1,4 +1,4 @@
-import { I16_SIGNED_LARGEST_NUMBER, MemoryBuffer } from '@8f4e/synth-compiler';
+import { I16_SIGNED_LARGEST_NUMBER, MemoryBuffer } from '@8f4e/compiler';
 
 import { Event } from './midiEnums';
 import { MidiCCModuleAddresses } from './types';

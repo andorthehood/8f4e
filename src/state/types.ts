@@ -5,7 +5,7 @@ import {
 	ModuleState,
 	ModuleStateExtractor,
 	ModuleStateInserter,
-} from '@8f4e/synth-compiler';
+} from '@8f4e/compiler';
 
 export interface Module {
 	id: string;

@@ -1,6 +1,6 @@
 import { font } from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
-import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/synth-compiler';
+import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
 import { pianoKeyboard } from '@8f4e/sprite-generator';
 
 import { PianoQuantizer } from '../../../modules/pianoQuantizer120';
