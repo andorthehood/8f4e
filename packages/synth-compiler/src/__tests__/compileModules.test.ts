@@ -1,4 +1,4 @@
-import modules from './__fixtures__/modules.json';
+import modules from './__fixtures__/modules';
 
 import { compileModules } from '..';
 
