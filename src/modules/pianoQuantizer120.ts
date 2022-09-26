@@ -3,7 +3,7 @@ import chordIdentifier from '@8f4e/chord-identifier';
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 import addDefaultOutputPositions from './helpers/addDefaultOutputPositions';
 import generatePianoKeyLayout from './helpers/generatePianoKeyLayout';
-import source, { Config, extractState, insertState } from './engines/quantizer.asm';
+import source, { extractState, insertState } from './engines/quantizer.asm';
 
 import { Button, ButtonClickHandler, ModuleType } from '../state/types';
 import { int16ToMidiNote, midiNoteToInt16 } from '../state/helpers/midi';
