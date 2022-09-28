@@ -13,7 +13,7 @@ const fixtures = [
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(adc(), { resolution: 8 });
+		testModule = await createTestModule(adc({ resolution: 8 }));
 	});
 
 	beforeEach(() => {
