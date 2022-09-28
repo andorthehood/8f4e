@@ -2,12 +2,11 @@ import {
 	Connection,
 	MemoryAddressLookup,
 	MemoryBuffer,
-	ModuleState,
 	ModuleStateExtractor,
 	ModuleStateInserter,
 } from '@8f4e/compiler';
 
-export interface Module {
+export interface Module<ModuleState = Record<string, any>> {
 	id: string;
 	state: ModuleState;
 	type: string;
@@ -79,7 +78,7 @@ export interface Drawer<DrawerConfig> {
 	config: DrawerConfig;
 }
 
-export interface ModuleType<DrawerConfig = unknown> extends Size {
+export interface ModuleType<DrawerConfig = unknown, ModuleState = Record<string, any>> extends Size {
 	category: string;
 	drawer?: Drawer<DrawerConfig>;
 	engine: {
