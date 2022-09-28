@@ -6,7 +6,7 @@ let testModule;
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(constant, { out: 0 });
+		testModule = await createTestModule(constant);
 	});
 
 	beforeEach(() => {

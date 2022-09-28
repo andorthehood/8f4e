@@ -36,31 +36,14 @@ export interface Connection {
 	toConnectorId: string;
 }
 
-export interface RelativeAddressCalculator {
-	byte: (nthWord: number) => number;
-	word: (nthWord: number) => number;
-}
-
-export type ModuleGenerator<TConfig = unknown> = (
-	moduleId: string,
-	offset: RelativeAddressCalculator,
-	initialConfig?: TConfig
-) => CompiledModule;
-
-export type EngineConfig = Record<string, number | string | EngineConfig[]>;
-
-export interface Engine {
-	source: string;
-}
-
-export type ModuleState = Record<string, any>;
-
 export type ModuleStateExtractor<T> = (memoryBuffer: MemoryBuffer, moduleAddress: number) => T;
 export type ModuleStateInserter<T> = (moduleState: T, memoryBuffer: MemoryBuffer, moduleAddress: number) => void;
 
-export interface Module {
+export interface Module<ModuleState = Record<string, any>> {
 	id: string;
-	engine: Engine;
+	engine: {
+		source: string;
+	};
 	state: ModuleState;
 }
 

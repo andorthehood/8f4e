@@ -14,7 +14,7 @@ import wabt from 'wabt';
 import { compile } from './compiler';
 import { CompiledModule, MemoryMap } from './types';
 
-import { ModuleGenerator, getInitialMemory } from '.';
+import { getInitialMemory } from '.';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -38,10 +38,7 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 	}
 }
 
-export async function createTestModule(
-	moduleCreator: ModuleGenerator | string,
-	initialConfig = {}
-): Promise<{
+export async function createTestModule(sourceCode: string): Promise<{
 	memory: Int32Array;
 	test: CallableFunction;
 	reset: () => void;
@@ -49,14 +46,7 @@ export async function createTestModule(
 	program: Uint8Array;
 	memoryMap: MemoryMap;
 }> {
-	let module: CompiledModule;
-
-	if (typeof moduleCreator === 'function') {
-		module = moduleCreator('test', { byte: nthWord => nthWord * 4, word: nthWord => nthWord }, initialConfig);
-	} else {
-		module = compile(moduleCreator, 'test', 0);
-	}
-
+	const module: CompiledModule = compile(sourceCode, 'test', 0);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
