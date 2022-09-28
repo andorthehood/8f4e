@@ -1,11 +1,11 @@
 import { I32_SIGNED_LARGEST_NUMBER } from './consts';
 import { ModuleStateExtractor, ModuleStateInserter } from './types';
 
-interface QuantizerState {
+export interface State {
 	activeNotes: number[];
 }
 
-export const extractState: ModuleStateExtractor<QuantizerState> = function extractState(
+export const extractState: ModuleStateExtractor<State> = function extractState(
 	memoryBuffer,
 	moduleAddress
 ): QuantizerState {
@@ -18,11 +18,7 @@ export const extractState: ModuleStateExtractor<QuantizerState> = function extra
 	};
 };
 
-export const insertState: ModuleStateInserter<QuantizerState> = function insertState(
-	state,
-	memoryBuffer,
-	moduleAddress
-): void {
+export const insertState: ModuleStateInserter<State> = function insertState(state, memoryBuffer, moduleAddress): void {
 	const firstNoteAddress = moduleAddress + 4;
 	const numberOfNotesAddress = moduleAddress + 3;
 	const allocatedNotesAddress = moduleAddress + 2;
