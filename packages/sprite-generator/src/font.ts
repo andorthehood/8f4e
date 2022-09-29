@@ -3,6 +3,7 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 import thickFont from './fonts/font';
 import thickIcons from './fonts/icons';
 import wideIcons from './fonts/wideIcons';
+import mosaic from './fonts/mosaic';
 import { Command, DrawingCommand } from './types';
 
 const offsetX = 0;
@@ -83,6 +84,10 @@ export default function generateFonts(): DrawingCommand[] {
 		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 3, thickIcons, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
 		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 4, wideIcons, CHARACTER_WIDTH, CHARACTER_HEIGHT),
+		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
+		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 5, mosaic, CHARACTER_WIDTH, CHARACTER_HEIGHT),
+		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
+		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 6, mosaic, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 	];
 }
 
@@ -124,6 +129,13 @@ export const lookup = function (font: string): SpriteLookup {
 					y: offsetY + CHARACTER_HEIGHT * 4,
 					spriteHeight: CHARACTER_HEIGHT,
 					spriteWidth: CHARACTER_WIDTH * 2,
+				};
+			case 'mosaic_white':
+				return {
+					x: code * CHARACTER_WIDTH + offsetX,
+					y: offsetY + CHARACTER_HEIGHT * 6,
+					spriteHeight: CHARACTER_HEIGHT,
+					spriteWidth: CHARACTER_WIDTH,
 				};
 		}
 	};

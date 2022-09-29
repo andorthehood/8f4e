@@ -2,7 +2,7 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { Command, DrawingCommand } from './types';
 
-const offsetX = 500;
+const offsetX = 600;
 const offsetY = 100;
 
 export default function generate(): DrawingCommand[] {
