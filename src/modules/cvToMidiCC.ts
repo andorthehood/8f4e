@@ -1,5 +1,5 @@
 import addDefaultInputPositions from './helpers/addDefaultInputPositions';
-import source, { extractState, insertState, Config } from './engines/buffer.asm';
+import source, { extractState, insertState } from './engines/buffer.asm';
 
 import { ModuleType, StepperChangeHandler } from '../state/types';
 import ccNames from '../midi/ccNames';
