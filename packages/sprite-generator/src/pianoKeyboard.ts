@@ -1,7 +1,7 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { Command, DrawingCommand } from './types';
-import icons, { Icon } from './fonts/icons';
+import mosaic, { Mosaic } from './fonts/mosaic';
 import { drawCharacterMatrix } from './font';
 import font from './fonts/font';
 
@@ -22,11 +22,11 @@ function whiteKeyLeft(state: State): DrawingCommand[] {
 		state === State.PRESSED
 			? [Command.FILL_COLOR, pressedColor]
 			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
-		...drawCharacterMatrix(icons, 8, 16, [
-			[Icon.FILL, Icon.THICK_LINE_LEFT],
-			[Icon.FILL, Icon.THICK_LINE_LEFT],
-			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
-			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+		...drawCharacterMatrix(mosaic, 8, 16, [
+			[Mosaic.FILL, Mosaic.LINE_LEFT],
+			[Mosaic.FILL, Mosaic.LINE_LEFT],
+			state === State.NORMAL ? [Mosaic.FILL, Mosaic.FILL] : [Mosaic.FILL, Mosaic.FILL],
+			state === State.NORMAL ? [Mosaic.FILL, Mosaic.FILL] : [Mosaic.FILL, Mosaic.FILL],
 		]),
 	];
 }
@@ -36,11 +36,11 @@ function blackKey(state: State): DrawingCommand[] {
 		state === State.PRESSED
 			? [Command.FILL_COLOR, pressedColor]
 			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : blackKeyColor],
-		...drawCharacterMatrix(icons, 8, 16, [
-			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
-			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
-			[Icon.SLIM_LINE_RIGHT, Icon.SLIM_LINE_LEFT],
-			[Icon.SLIM_LINE_RIGHT, Icon.SLIM_LINE_LEFT],
+		...drawCharacterMatrix(mosaic, 8, 16, [
+			state === State.NORMAL ? [Mosaic.FILL, Mosaic.FILL] : [Mosaic.FILL, Mosaic.FILL],
+			state === State.NORMAL ? [Mosaic.FILL, Mosaic.FILL] : [Mosaic.FILL, Mosaic.FILL],
+			[Mosaic.EMPTY, Mosaic.LINE_LEFT],
+			[Mosaic.EMPTY, Mosaic.LINE_LEFT],
 		]),
 	];
 }
@@ -50,11 +50,11 @@ function whiteKeyMiddle(state: State): DrawingCommand[] {
 		state === State.PRESSED
 			? [Command.FILL_COLOR, pressedColor]
 			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
-		...drawCharacterMatrix(icons, 8, 16, [
-			[Icon.THICK_LINE_RIGHT, Icon.THICK_LINE_LEFT],
-			[Icon.THICK_LINE_RIGHT, Icon.THICK_LINE_LEFT],
-			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
-			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+		...drawCharacterMatrix(mosaic, 8, 16, [
+			[Mosaic.LINE_RIGHT, Mosaic.LINE_LEFT],
+			[Mosaic.LINE_RIGHT, Mosaic.LINE_LEFT],
+			state === State.NORMAL ? [Mosaic.FILL, Mosaic.FILL] : [Mosaic.FILL, Mosaic.FILL],
+			state === State.NORMAL ? [Mosaic.FILL, Mosaic.FILL] : [Mosaic.FILL, Mosaic.FILL],
 		]),
 	];
 }
@@ -64,11 +64,11 @@ function whiteKeyRight(state: State): DrawingCommand[] {
 		state === State.PRESSED
 			? [Command.FILL_COLOR, pressedColor]
 			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
-		...drawCharacterMatrix(icons, 8, 16, [
-			[Icon.THICK_LINE_RIGHT, Icon.FILL],
-			[Icon.THICK_LINE_RIGHT, Icon.FILL],
-			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
-			state === State.NORMAL ? [Icon.FILL, Icon.FILL] : [Icon.SEMI_FILL, Icon.SEMI_FILL],
+		...drawCharacterMatrix(mosaic, 8, 16, [
+			[Mosaic.LINE_RIGHT, Mosaic.FILL],
+			[Mosaic.LINE_RIGHT, Mosaic.FILL],
+			state === State.NORMAL ? [Mosaic.FILL, Mosaic.FILL] : [Mosaic.FILL, Mosaic.FILL],
+			state === State.NORMAL ? [Mosaic.FILL, Mosaic.FILL] : [Mosaic.FILL, Mosaic.FILL],
 		]),
 	];
 }
