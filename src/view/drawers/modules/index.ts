@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import { fillColor, font, Icon } from '@8f4e/sprite-generator';
+import { fillColor, font, Mosaic } from '@8f4e/sprite-generator';
 
 import scope from './scope';
 import number from './number';
@@ -34,11 +34,11 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.setSpriteLookup(fillColor);
 			engine.drawSprite(0, 0, 'rgb(0,0,0)', width, height);
 
-			engine.setSpriteLookup(font('icons_white'));
-			engine.drawText(0, 0, String.fromCharCode(Icon.CORNER_TOP_LEFT));
-			engine.drawText(width - VGRID, 0, String.fromCharCode(Icon.CORNER_TOP_RIGHT));
-			engine.drawText(0, height - HGRID, String.fromCharCode(Icon.CORNER_BOTTOM_LEFT));
-			engine.drawText(width - VGRID, height - HGRID, String.fromCharCode(Icon.CORNER_BOTTOM_RIGHT));
+			engine.setSpriteLookup(font('mosaic_white'));
+			engine.drawText(0, 0, String.fromCharCode(Mosaic.CORNER_TOP_LEFT));
+			engine.drawText(width - VGRID, 0, String.fromCharCode(Mosaic.CORNER_TOP_RIGHT));
+			engine.drawText(0, height - HGRID, String.fromCharCode(Mosaic.CORNER_BOTTOM_LEFT));
+			engine.drawText(width - VGRID, height - HGRID, String.fromCharCode(Mosaic.CORNER_BOTTOM_RIGHT));
 
 			if (type === 'scope') {
 				scope(engine, state, id);
