@@ -1,10 +1,10 @@
 import { EventDispatcher } from '../../../events';
 import findModuleControllerAtViewportCoordinates from '../../helpers/findModuleControllerAtViewportCoordinates';
-import { Button, Module, State } from '../../types';
+import { Module, State } from '../../types';
 
 export default function moduleButtons(state: State, events: EventDispatcher): void {
 	const onModuleClick = function ({ x, y, module }: { x: number; y: number; module: Module }) {
-		const _switch = findModuleControllerAtViewportCoordinates<Button>(
+		const _switch = findModuleControllerAtViewportCoordinates(
 			state.viewport,
 			module,
 			state.moduleTypes,
