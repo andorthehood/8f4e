@@ -55,7 +55,7 @@
 		"packages/sprite-generator"
 	],
 	"lint-staged": {
-		"*.ts": "eslint --cache --fix"
+		"*.ts": ["eslint --cache --fix", "tsc --noEmit"]
 	},
 	"dependencies": {
 		"@8f4e/2d-engine": "file:packages/2d-engine",

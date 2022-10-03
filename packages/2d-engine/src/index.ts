@@ -158,7 +158,7 @@ export class Engine {
 		this.drawLine(x, y + height, x, y, sprite, thickness);
 	}
 
-	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement): void {
+	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas): void {
 		this.spriteSheet = createTexture(this.gl, image);
 		this.spriteSheetWidth = image.width;
 		this.spriteSheetHeight = image.height;
