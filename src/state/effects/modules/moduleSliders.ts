@@ -11,14 +11,7 @@ export default function moduleSliders(state: State, events: EventDispatcher): vo
 		event.stopPropagation = true;
 
 		module = event.module;
-		slider = findModuleControllerAtViewportCoordinates<Slider>(
-			state.viewport,
-			module,
-			state.moduleTypes,
-			'sliders',
-			x,
-			y
-		);
+		slider = findModuleControllerAtViewportCoordinates(state.viewport, module, state.moduleTypes, 'sliders', x, y);
 	}
 
 	function onMouseMove(event) {
