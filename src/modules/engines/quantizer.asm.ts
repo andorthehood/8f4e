@@ -5,10 +5,7 @@ export interface State {
 	activeNotes: number[];
 }
 
-export const extractState: ModuleStateExtractor<State> = function extractState(
-	memoryBuffer,
-	moduleAddress
-): QuantizerState {
+export const extractState: ModuleStateExtractor<State> = function extractState(memoryBuffer, moduleAddress): State {
 	const firstNoteAddress = moduleAddress + 4;
 	const numberOfNotesAddress = moduleAddress + 3;
 	return {
