@@ -71,7 +71,7 @@ export default function pianoQuantizer(): PianoQuantizer {
 		},
 		engine: { source: source({ allocatedNotes: 32 }) },
 		height,
-		initialState: {},
+		initialState: { activeNotes: [] },
 		inputs: addDefaultInputPositions([{ id: 'in' }]),
 		name: 'Quantizer 120',
 		outputs: addDefaultOutputPositions([{ id: 'out' }], width),
