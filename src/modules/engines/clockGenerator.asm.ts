@@ -1,4 +1,4 @@
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
+import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 import { ModuleStateExtractor, ModuleStateInserter } from './types';
 
 interface ClockGeneratorState {
@@ -34,26 +34,26 @@ export default `
 	push _counter
 	push _rate
 	greaterOrEqual
-	if void
+	if
 		push _output
 		equalToZero
 		
-		if void
-			push ${I16_SIGNED_LARGEST_NUMBER}
-			localSet _output
+		if
+			push ${I16_SIGNED_LARGEST_NUMBER}	
 		else
 			push 0
-			localSet _output
 		end
+		localSet _output
 
 		push 0
-		localSet _counter
+
 	else
 		push _counter
 		push 1
 		add
-		localSet _counter
 	end
+
+	localSet _counter
 
 	pushRef out
 	push _output
