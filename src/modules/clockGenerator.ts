@@ -13,9 +13,9 @@ export default function clockGenerator(): ModuleType {
 	return {
 		...singleSliderModule({
 			id: 'rate',
-			maxValue: 3000,
+			maxValue: 100,
 			minValue: 0,
-			resolution: 10,
+			resolution: 1,
 			onChange,
 		}),
 		buttons: [],
