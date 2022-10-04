@@ -23,27 +23,29 @@ Object {
 	push rate
 	localSet _rate
 
-	push 12000
 	push _counter
+	push _rate
 	greaterOrEqual
-	if 
-		push 32767
-	else
-		push 0
-	end
-	localSet _output
+	if void
+		push _output
+		equalToZero
+		
+		if void
+			push 32767
+			localSet _output
+		else
+			push 0
+			localSet _output
+		end
 
-	push _counter
-	push 32767
-	greaterOrEqual
-	if 
 		push 0
+		localSet _counter
 	else
 		push _counter
-		push _rate
+		push 1
 		add
+		localSet _counter
 	end
-	localSet _counter
 
 	pushRef out
 	push _output
@@ -75,10 +77,10 @@ Object {
     Object {
       "height": 80,
       "id": "rate",
-      "maxValue": 3000,
+      "maxValue": 100,
       "minValue": 0,
       "onChange": [Function],
-      "resolution": 10,
+      "resolution": 1,
       "width": 16,
       "x": 64,
       "y": 48,
