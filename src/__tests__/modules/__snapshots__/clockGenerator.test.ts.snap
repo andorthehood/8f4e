@@ -26,26 +26,26 @@ Object {
 	push _counter
 	push _rate
 	greaterOrEqual
-	if void
+	if
 		push _output
 		equalToZero
 		
-		if void
-			push 32767
-			localSet _output
+		if
+			push 32767	
 		else
 			push 0
-			localSet _output
 		end
+		localSet _output
 
 		push 0
-		localSet _counter
+
 	else
 		push _counter
 		push 1
 		add
-		localSet _counter
 	end
+
+	localSet _counter
 
 	pushRef out
 	push _output
