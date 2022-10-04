@@ -1434,7 +1434,9 @@ Object {
   },
   "extractState": [Function],
   "height": 128,
-  "initialState": Object {},
+  "initialState": Object {
+    "activeNotes": Array [],
+  },
   "inputs": Array [
     Object {
       "height": 16,
