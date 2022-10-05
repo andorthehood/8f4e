@@ -28,7 +28,7 @@ import saw from './saw';
 import scope from './scope';
 import sequentialSwitch from './sequentialSwitch';
 import splitter from './splitter';
-import triggerGenerator from './triggerGenerator.asm';
+import triggerGenerator from './triggerGenerator';
 
 import { ModuleTypeLookup } from '../state/types';
 
