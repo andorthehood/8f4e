@@ -3,7 +3,7 @@
 exports[`generates correct module type descriptor 1`] = `
 Object {
   "buttons": Array [],
-  "category": "Clock",
+  "category": "Oscillator",
   "engine": Object {
     "source": "
 	private counter 0
@@ -63,7 +63,7 @@ Object {
   },
   "inputs": Array [],
   "insertState": [Function],
-  "name": "Clock",
+  "name": "Square",
   "outputs": Array [
     Object {
       "height": 16,
