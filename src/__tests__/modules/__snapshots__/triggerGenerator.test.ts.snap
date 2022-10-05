@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generates correct module type descriptor 1`] = `
+Object {
+  "buttons": Array [],
+  "category": "Oscillator",
+  "engine": Object {
+    "source": "
+	private counter 0
+	public rate 0
+	output out 0
+    private defaultValue 0
+    inputPointer reset defaultValue
+
+	local _counter
+	local _output
+	local _rate
+
+	push out
+	localSet _output
+
+	push counter
+	localSet _counter
+
+	push rate
+	localSet _rate
+
+    push reset
+    push 0
+    greaterThan
+    if void
+        push 0
+        localSet _counter
+        push 0
+        localSet _output
+    end
+
+    # Resets the output to 0
+    push _output
+    push 32767
+    greaterOrEqual
+    if void
+        push 0
+        localSet _output
+    end
+
+	push _counter
+	push _rate
+	greaterOrEqual
+	if
+		push 32767	
+		localSet _output
+
+		push 0
+	else
+		push _counter
+		push 1
+		add
+	end
+
+	localSet _counter
+
+	pushRef out
+	push _output
+	store
+
+	pushRef counter
+	push _counter
+	store
+",
+  },
+  "extractState": [Function],
+  "height": 128,
+  "initialState": Object {
+    "rate": 10,
+  },
+  "inputs": Array [
+    Object {
+      "height": 16,
+      "id": "reset",
+      "width": 16,
+      "x": 0,
+      "y": 32,
+    },
+  ],
+  "insertState": [Function],
+  "name": "Trigger",
+  "outputs": Array [
+    Object {
+      "height": 16,
+      "id": "out",
+      "width": 16,
+      "x": 112,
+      "y": 32,
+    },
+  ],
+  "sliders": Array [
+    Object {
+      "height": 80,
+      "id": "rate",
+      "maxValue": 100,
+      "minValue": 1,
+      "onChange": [Function],
+      "resolution": 1,
+      "width": 16,
+      "x": 64,
+      "y": 48,
+    },
+  ],
+  "width": 128,
+}
+`;
