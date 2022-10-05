@@ -56,4 +56,22 @@ describe('triggerGenerator module', () => {
 			expect(memory[2]).toBe(I16_SIGNED_LARGEST_NUMBER);
 		}
 	});
+
+	test('reset input', () => {
+		const { memory, test } = testModule;
+		memory[1] = 10;
+
+		for (let j = 0; j < 10; j++) {
+			test();
+			expect(memory[2]).toBe(0);
+		}
+
+		memory[3] = 1; // Send reset signal
+		test();
+
+		for (let j = 0; j < 10; j++) {
+			test();
+			expect(memory[2]).toBe(0);
+		}
+	});
 });

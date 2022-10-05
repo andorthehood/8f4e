@@ -11,6 +11,8 @@ Object {
 	inputPointer in:rate rate
 	inputPointer in:limit LIMIT_SELF
 	output out 0
+	private defaultValue 0
+	inputPointer reset defaultValue
 
 	local _rate
 	local limit
@@ -24,6 +26,14 @@ Object {
 
 	push out
 	localSet counter
+
+	push reset
+    push 0
+    greaterThan
+    if void
+        push 0
+        localSet counter
+    end
 
 	push counter
 	push limit
@@ -49,7 +59,15 @@ Object {
   "initialState": Object {
     "rate": 1000,
   },
-  "inputs": Array [],
+  "inputs": Array [
+    Object {
+      "height": 16,
+      "id": "reset",
+      "width": 16,
+      "x": 0,
+      "y": 32,
+    },
+  ],
   "insertState": [Function],
   "name": "Saw",
   "outputs": Array [

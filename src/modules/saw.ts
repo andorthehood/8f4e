@@ -1,5 +1,6 @@
 import singleSliderModule from './templates/singleSliderModule';
 import source, { extractState, insertState } from './engines/saw.asm';
+import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
@@ -22,7 +23,7 @@ export default function saw(): ModuleType {
 		category: 'Oscillator',
 		engine: { source },
 		initialState: { rate: 1000 },
-		inputs: [],
+		inputs: addDefaultInputPositions([{ id: 'reset' }]),
 		name: 'Saw',
 		extractState,
 		insertState,
