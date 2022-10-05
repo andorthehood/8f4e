@@ -1,5 +1,5 @@
 import singleSliderModule from './templates/singleSliderModule';
-import source, { extractState, insertState } from './engines/clockGenerator.asm';
+import source, { extractState, insertState } from './engines/triggerGenerator.asm';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
@@ -9,7 +9,7 @@ const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddr
 	insertState({ rate }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
 };
 
-export default function clockGenerator(): ModuleType {
+export default function triggerGenerator(): ModuleType {
 	return {
 		...singleSliderModule({
 			id: 'rate',
@@ -19,11 +19,11 @@ export default function clockGenerator(): ModuleType {
 			onChange,
 		}),
 		buttons: [],
-		category: 'Clock',
+		category: 'Oscillator',
 		engine: { source },
 		initialState: { rate: 10 },
 		inputs: [],
-		name: 'Clock',
+		name: 'Trigger',
 		extractState,
 		insertState,
 	};
