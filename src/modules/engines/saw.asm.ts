@@ -19,6 +19,8 @@ export default `
 	inputPointer in:rate rate
 	inputPointer in:limit LIMIT_SELF
 	output out 0
+	private defaultValue 0
+	inputPointer reset defaultValue
 
 	local _rate
 	local limit
@@ -32,6 +34,14 @@ export default `
 
 	push out
 	localSet counter
+
+	push reset
+    push 0
+    greaterThan
+    if void
+        push 0
+        localSet counter
+    end
 
 	push counter
 	push limit
