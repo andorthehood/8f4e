@@ -5,7 +5,7 @@ import attenuator from './attenuator';
 import bitwiseAnd from './bitwiseAnd';
 import bitwiseOr from './bitwiseOr';
 import bitwiseXor from './bitwiseXor';
-import clockGenerator from './clockGenerator';
+import square from './square';
 import constant from './constant';
 import cvToMidiCC from './cvToMidiCC';
 import cvToMidiNote from './cvToMidiNote';
@@ -28,6 +28,7 @@ import saw from './saw';
 import scope from './scope';
 import sequentialSwitch from './sequentialSwitch';
 import splitter from './splitter';
+import triggerGenerator from './triggerGenerator.asm';
 
 import { ModuleTypeLookup } from '../state/types';
 
@@ -40,7 +41,8 @@ export default function generateModuleTypes(): ModuleTypeLookup {
 		bitwiseAnd: bitwiseAnd(),
 		bitwiseOr: bitwiseOr(),
 		bitwiseXor: bitwiseXor(),
-		clockGenerator: clockGenerator(),
+		square: square(),
+		triggerGenerator: triggerGenerator(),
 		constant: constant(),
 		cvToMidiCC: cvToMidiCC(),
 		cvToMidiNote: cvToMidiNote(),
