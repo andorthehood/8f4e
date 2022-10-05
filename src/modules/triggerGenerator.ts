@@ -15,7 +15,7 @@ export default function triggerGenerator(): ModuleType {
 		...singleSliderModule({
 			id: 'rate',
 			maxValue: 100,
-			minValue: 0,
+			minValue: 1,
 			resolution: 1,
 			onChange,
 		}),
