@@ -22,7 +22,7 @@
             "toConnectorId": "in:2",
             "toModuleId": "cvToMidiNote67",
             "fromConnectorId": "out",
-            "fromModuleId": "clockGenerator68"
+            "fromModuleId": "triggerGenerator68"
         },
         {
             "toConnectorId": "in",
@@ -40,11 +40,11 @@
             "y": 1104
         },
         {
-            "id": "clockGenerator68",
+            "id": "triggerGenerator68",
             "state": {
                 "rate": 1580
             },
-            "type": "clockGenerator",
+            "type": "triggerGenerator",
             "x": 784,
             "y": 1264
         },
