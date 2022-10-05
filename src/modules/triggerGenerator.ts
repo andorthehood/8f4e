@@ -1,5 +1,6 @@
 import singleSliderModule from './templates/singleSliderModule';
 import source, { extractState, insertState } from './engines/triggerGenerator.asm';
+import addDefaultInputPositions from './helpers/addDefaultInputPositions';
 
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
@@ -22,7 +23,7 @@ export default function triggerGenerator(): ModuleType {
 		category: 'Oscillator',
 		engine: { source },
 		initialState: { rate: 10 },
-		inputs: [],
+		inputs: addDefaultInputPositions([{ id: 'reset' }]),
 		name: 'Trigger',
 		extractState,
 		insertState,
