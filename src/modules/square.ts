@@ -4,9 +4,9 @@ import source, { extractState, insertState } from './engines/square.asm';
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
-	let { rate } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	let { rate } = extractState(memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 	rate = Math.min(Math.max(slider.minValue, rate + movement * -1 * slider.resolution), slider.maxValue);
-	insertState({ rate }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	insertState({ rate }, memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 };
 
 export default function square(): ModuleType {

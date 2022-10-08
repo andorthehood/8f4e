@@ -6,9 +6,9 @@ import source, { extractState, insertState } from './engines/offset.asm';
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
-	let { offset } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	let { offset } = extractState(memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 	offset = Math.min(Math.max(slider.minValue, offset + movement * -1 * slider.resolution), slider.maxValue);
-	insertState({ offset }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	insertState({ offset }, memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 };
 
 export default function offset(): ModuleType {

@@ -6,9 +6,9 @@ import source, { extractState, insertState } from './engines/constant.asm';
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
-	let { out } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	let { out } = extractState(memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 	out = Math.min(Math.max(slider.minValue, out + movement * -1 * slider.resolution), slider.maxValue);
-	insertState({ out }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	insertState({ out }, memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 };
 
 export default function constant(): ModuleType {

@@ -12,7 +12,7 @@ import { HGRID, VGRID } from '../view/drawers/consts';
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
-	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 
 	if (activeNotes.includes(value)) {
 		activeNotes.splice(activeNotes.indexOf(value), 1);
@@ -22,7 +22,7 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 
 	module.state.chord = chordIdentifier(activeNotes.map(int16ToMidiNote));
 
-	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 };
 
 export type PianoQuantizer = ModuleType<

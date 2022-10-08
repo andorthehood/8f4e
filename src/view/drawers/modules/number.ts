@@ -5,7 +5,7 @@ import { State } from '../../../state/types';
 import { HGRID, VGRID } from '../consts';
 
 export default function drawer(engine: Engine, state: State, id: string): void {
-	const address = state.compiler.memoryAddressLookup[id]['out:1'];
+	const address = state.compiler.memoryAddressLookup.get(id + 'out:1');
 
 	if (!address) {
 		return;
