@@ -1,53 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
-Array [
-  Object {
+Map {
+  "defaultValue" => Object {
     "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "id": "defaultValue",
     "size": 1,
     "type": 5,
     "usage": 0,
   },
-  Object {
+  "in" => Object {
     "address": 1,
     "byteAddress": 4,
     "default": 0,
-    "id": "in",
     "size": 1,
     "type": 3,
     "usage": 1,
   },
-  Object {
+  "in:trigger" => Object {
     "address": 2,
     "byteAddress": 8,
     "default": 0,
-    "id": "in:trigger",
     "size": 1,
     "type": 3,
     "usage": 1,
   },
-  Object {
+  "triggerPreviousValue" => Object {
     "address": 3,
     "byteAddress": 12,
     "default": 0,
-    "id": "triggerPreviousValue",
     "size": 1,
     "type": 5,
     "usage": 1,
   },
-  Object {
+  "out" => Object {
     "address": 4,
     "byteAddress": 16,
     "default": 0,
-    "id": "out",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-]
+}
 `;
 
 exports[`functional tests if the wat code matches with the snapshot 1`] = `

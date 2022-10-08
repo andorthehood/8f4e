@@ -1,98 +1,88 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
-Array [
-  Object {
+Map {
+  "default" => Object {
     "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "id": "default",
     "size": 1,
     "type": 5,
     "usage": 0,
   },
-  Object {
+  "in" => Object {
     "address": 1,
     "byteAddress": 4,
     "default": 0,
-    "id": "in",
     "size": 1,
     "type": 3,
     "usage": 1,
   },
-  Object {
+  "out:1" => Object {
     "address": 2,
     "byteAddress": 8,
     "default": 0,
-    "id": "out:1",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-  Object {
+  "out:2" => Object {
     "address": 3,
     "byteAddress": 12,
     "default": 0,
-    "id": "out:2",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-  Object {
+  "out:3" => Object {
     "address": 4,
     "byteAddress": 16,
     "default": 0,
-    "id": "out:3",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-  Object {
+  "out:4" => Object {
     "address": 5,
     "byteAddress": 20,
     "default": 0,
-    "id": "out:4",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-  Object {
+  "out:5" => Object {
     "address": 6,
     "byteAddress": 24,
     "default": 0,
-    "id": "out:5",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-  Object {
+  "out:6" => Object {
     "address": 7,
     "byteAddress": 28,
     "default": 0,
-    "id": "out:6",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-  Object {
+  "out:7" => Object {
     "address": 8,
     "byteAddress": 32,
     "default": 0,
-    "id": "out:7",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-  Object {
+  "out:8" => Object {
     "address": 9,
     "byteAddress": 36,
     "default": 0,
-    "id": "out:8",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-]
+}
 `;
 
 exports[`functional tests if the wat code matches with the snapshot 1`] = `
