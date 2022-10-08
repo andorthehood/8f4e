@@ -119,61 +119,39 @@ function findLastIndex<T>(array: Array<T>, predicate: (item?: T, index?: number,
 	return 0;
 }
 
-function addLocalsForOverlyUsedMemories(memoryMap: MemoryMap, ast: AST): void {
-	const overused = memoryMap.filter(({ usage }) => usage > 1);
-	overused.forEach(({ id }) => {
-		const index = findLastIndex(ast, item => {
-			return memoryKeywords.includes(item.instruction);
-		});
-		ast.splice(
-			index,
-			0,
-			...[
-				{
-					instruction: 'local',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument],
-				},
-				{
-					instruction: 'push',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument],
-				},
-				{
-					instruction: 'localSet',
-					arguments: [{ type: ArgumentType.IDENTIFIER, value: id } as Argument],
-				},
-			]
-		);
-	});
-}
-
 function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 	const memories = collectMemoryItemNames(ast);
 	let addressCounter = 0;
-	return ast
-		.filter(({ instruction }) => {
-			return memoryKeywords.includes(instruction);
-		})
-		.map(({ instruction, arguments: args }, index) => {
-			const type = memoryInstructionNameToEnum(instruction);
-			const wordSize = type === MemoryTypes.DYNAMIC_ARRAY ? (args[1].value as number) : 1;
-			const wordAddress = addressCounter;
-			addressCounter += wordSize;
+	return new Map(
+		ast
+			.filter(({ instruction }) => {
+				return memoryKeywords.includes(instruction);
+			})
+			.map(({ instruction, arguments: args }, index) => {
+				const type = memoryInstructionNameToEnum(instruction);
+				const wordSize = type === MemoryTypes.DYNAMIC_ARRAY ? (args[1].value as number) : 1;
+				const wordAddress = addressCounter;
+				addressCounter += wordSize;
+				const id = args[0].value.toString();
 
-			return {
-				type,
-				address: wordAddress,
-				size: wordSize,
-				byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
-				id: args[0].value.toString(),
-				usage: countUsage(ast, args[0].value.toString()),
-				default:
-					type === MemoryTypes.DYNAMIC_ARRAY
-						? new Array(wordSize).fill(args[2].value)
-						: args[1].type === 'literal'
-						? args[1].value
-						: startingByteAddress + memories.indexOf(args[1].value) * WORD_LENGTH,
-			};
-		});
+				return [
+					id,
+					{
+						type,
+						address: wordAddress,
+						size: wordSize,
+						byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
+						usage: countUsage(ast, args[0].value.toString()),
+						default:
+							type === MemoryTypes.DYNAMIC_ARRAY
+								? new Array(wordSize).fill(args[2].value)
+								: args[1].type === 'literal'
+								? args[1].value
+								: startingByteAddress + memories.indexOf(args[1].value) * WORD_LENGTH,
+					},
+				];
+			})
+	);
 }
 
 export function compile(

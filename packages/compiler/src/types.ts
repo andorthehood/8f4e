@@ -9,15 +9,17 @@ export enum MemoryTypes {
 	ARRAY,
 }
 
-export type MemoryMap = Array<{
-	type: MemoryTypes;
-	address: number;
-	byteAddress: number;
-	id: string;
-	size: number;
-	default: number | number[];
-	usage: number;
-}>;
+export type MemoryMap = Map<
+	string,
+	{
+		type: MemoryTypes;
+		address: number;
+		byteAddress: number;
+		size: number;
+		default: number | number[];
+		usage: number;
+	}
+>;
 
 export interface CompiledModule {
 	functionBody: number[];
@@ -57,3 +59,12 @@ export const enum ArgumentType {
 export type Argument = { type: ArgumentType.LITERAL; value: number } | { type: ArgumentType.IDENTIFIER; value: string };
 
 export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
+
+export interface TestModule {
+	memory: Int32Array;
+	test: CallableFunction;
+	reset: () => void;
+	wat: string;
+	program: Uint8Array;
+	memoryMap: MemoryMap;
+}
