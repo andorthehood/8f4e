@@ -4,11 +4,11 @@ export function generateMemoryAddressLookup(compiledModules: CompiledModule[]): 
 	const lookup = {};
 	compiledModules.forEach(({ wordAddress, memoryMap, moduleId }) => {
 		lookup[moduleId] = { __startAddress: wordAddress };
-		memoryMap.forEach(item => {
+		Array.from(memoryMap.entries()).forEach(([id, item]) => {
 			// @ts-ignore
-			if (item?.id) {
+			if (id) {
 				// @ts-ignore
-				lookup[moduleId][item.id] = wordAddress + item.address;
+				lookup[moduleId][id] = wordAddress + item.address;
 			}
 		});
 	});
