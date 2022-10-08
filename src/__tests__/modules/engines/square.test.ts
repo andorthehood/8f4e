@@ -1,8 +1,8 @@
-import { createTestModule, I16_SIGNED_LARGEST_NUMBER } from '@8f4e/compiler';
+import { createTestModule, I16_SIGNED_LARGEST_NUMBER, TestModule } from '@8f4e/compiler';
 
 import clockGenerator from '../../../modules/engines/square.asm';
 
-let testModule;
+let testModule: TestModule;
 
 describe('square generator module', () => {
 	beforeAll(async () => {
@@ -23,39 +23,39 @@ describe('square generator module', () => {
 
 	test('if the counter is counting', () => {
 		const { memory, test } = testModule;
-		memory[1] = 10;
+		memory.set('rate', 10);
 
 		for (let i = 0; i < 30; i++) {
-			expect(memory[0]).toBe(i % 11);
+			expect(memory.get('counter')).toBe(i % 11);
 			test();
 		}
 	});
 
 	test('if the pulse is coming', () => {
 		const { memory, test } = testModule;
-		memory[1] = 1;
+		memory.set('rate', 1);
 
 		for (let i = 0; i < 10; i++) {
 			test();
-			expect(memory[2]).toBe(0);
+			expect(memory.get('out')).toBe(0);
 			test();
-			expect(memory[2]).toBe(I16_SIGNED_LARGEST_NUMBER);
+			expect(memory.get('out')).toBe(I16_SIGNED_LARGEST_NUMBER);
 			test();
-			expect(memory[2]).toBe(I16_SIGNED_LARGEST_NUMBER);
+			expect(memory.get('out')).toBe(I16_SIGNED_LARGEST_NUMBER);
 			test();
-			expect(memory[2]).toBe(0);
+			expect(memory.get('out')).toBe(0);
 		}
 	});
 
 	test('if the pulse is coming', () => {
 		const { memory, test } = testModule;
-		memory[1] = 0;
+		memory.set('rate', 0);
 
 		for (let i = 0; i < 10; i++) {
 			test();
-			expect(memory[2]).toBe(I16_SIGNED_LARGEST_NUMBER);
+			expect(memory.get('out')).toBe(I16_SIGNED_LARGEST_NUMBER);
 			test();
-			expect(memory[2]).toBe(0);
+			expect(memory.get('out')).toBe(0);
 		}
 	});
 });

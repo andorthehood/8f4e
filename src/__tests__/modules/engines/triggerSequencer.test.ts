@@ -23,51 +23,51 @@ describe('triggerSequencer', () => {
 	});
 
 	test('if the pointer points to the first element of the step array', () => {
-		const { test, memorySet, memoryGet } = testModule;
-		memorySet('steps', 69420);
+		const { test, memory } = testModule;
+		memory.set('steps', 69420);
 		test();
-		expect(memoryGet('out')).toBe(69420);
+		expect(memory.get('out')).toBe(69420);
 	});
 
 	test("if the pointer doesn't move when there is no trigger pulse", () => {
-		const { memoryGet, test } = testModule;
+		const { memory, test } = testModule;
 
 		for (let i = 0; i < 10; i++) {
-			expect(memoryGet('stepPointer')).toBe(0);
+			expect(memory.get('stepPointer')).toBe(0);
 			test();
 		}
 	});
 
 	test('if the pointer moves when a trigger pulse is provided', () => {
-		const { test, memorySet, memoryGet, allocMemoryForPointer } = testModule;
+		const { test, memory } = testModule;
 
-		const trigger = allocMemoryForPointer('trigger');
+		const trigger = memory.allocMemoryForPointer('trigger');
 
 		for (let i = 1; i < 10; i++) {
-			memorySet(trigger, 1);
+			memory.set(trigger, 1);
 			test();
-			expect(memoryGet('stepPointer')).toBe(i * WORD_LENGTH);
-			memorySet(trigger, 0);
+			expect(memory.get('stepPointer')).toBe(i * WORD_LENGTH);
+			memory.set(trigger, 0);
 			test();
-			expect(memoryGet('stepPointer')).toBe(i * WORD_LENGTH);
+			expect(memory.get('stepPointer')).toBe(i * WORD_LENGTH);
 		}
 	});
 
 	test('if the pointer moves when a trigger pulse is provided', () => {
-		const { test, memoryGet, memorySet, allocMemoryForPointer } = testModule;
+		const { test, memory } = testModule;
 
-		const trigger = allocMemoryForPointer('trigger');
-		memorySet('steps', 69, 0);
-		memorySet('steps', 70, 1);
-		memorySet('steps', 71, 2);
-		memorySet('steps', 72, 3);
+		const trigger = memory.allocMemoryForPointer('trigger');
+		memory.set('steps', 69, 0);
+		memory.set('steps', 70, 1);
+		memory.set('steps', 71, 2);
+		memory.set('steps', 72, 3);
 
 		for (let i = 69; i < 73; i++) {
 			test();
-			expect(memoryGet('out')).toBe(i);
-			memorySet(trigger, 1);
+			expect(memory.get('out')).toBe(i);
+			memory.set(trigger, 1);
 			test();
-			memorySet(trigger, 0);
+			memory.set(trigger, 0);
 		}
 	});
 });
