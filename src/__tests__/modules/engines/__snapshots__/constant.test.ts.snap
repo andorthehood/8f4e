@@ -1,17 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
-Array [
-  Object {
+Map {
+  "out" => Object {
     "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "id": "out",
     "size": 1,
     "type": 4,
     "usage": 0,
   },
-]
+}
 `;
 
 exports[`functional tests if the wat code matches with the snapshot 1`] = `

@@ -1,53 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`triggerGenerator module if the generated memory map matches with the snapshot 1`] = `
-Array [
-  Object {
+Map {
+  "counter" => Object {
     "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "id": "counter",
     "size": 1,
     "type": 5,
     "usage": 1,
   },
-  Object {
+  "rate" => Object {
     "address": 1,
     "byteAddress": 4,
     "default": 0,
-    "id": "rate",
     "size": 1,
     "type": 6,
     "usage": 1,
   },
-  Object {
+  "out" => Object {
     "address": 2,
     "byteAddress": 8,
     "default": 0,
-    "id": "out",
     "size": 1,
     "type": 4,
     "usage": 1,
   },
-  Object {
+  "defaultValue" => Object {
     "address": 3,
     "byteAddress": 12,
     "default": 0,
-    "id": "defaultValue",
     "size": 1,
     "type": 5,
     "usage": 0,
   },
-  Object {
+  "reset" => Object {
     "address": 4,
     "byteAddress": 16,
     "default": 12,
-    "id": "reset",
     "size": 1,
     "type": 3,
     "usage": 1,
   },
-]
+}
 `;
 
 exports[`triggerGenerator module if the wat code matches with the snapshot 1`] = `

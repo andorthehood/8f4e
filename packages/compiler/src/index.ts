@@ -26,13 +26,13 @@ const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
 export function calculateModuleSize(module: CompiledModule): number {
-	return module.memoryMap.reduce((accumulator, current) => {
+	return Array.from(module.memoryMap.values()).reduce((accumulator, current) => {
 		return accumulator + (Array.isArray(current.default) ? current.default.length : 1);
 	}, 0);
 }
 
 export function getInitialMemory(module: CompiledModule): number[] {
-	return module.memoryMap.reduce((accumulator, current) => {
+	return Array.from(module.memoryMap.values()).reduce((accumulator, current) => {
 		if (Array.isArray(current.default)) {
 			accumulator.concat(current.default);
 		} else {

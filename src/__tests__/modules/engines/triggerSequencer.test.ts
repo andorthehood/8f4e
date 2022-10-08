@@ -1,9 +1,9 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 import { WORD_LENGTH } from '@8f4e/compiler/dist/consts';
 
 import triggerSequencer from '../../../modules/engines/triggerSequencer.asm';
 
-let testModule;
+let testModule: TestModule;
 
 describe('triggerSequencer', () => {
 	beforeAll(async () => {
@@ -54,17 +54,17 @@ describe('triggerSequencer', () => {
 	});
 
 	test('if the pointer moves when a trigger pulse is provided', () => {
-		const { memory, test } = testModule;
+		const { memory, test, memoryMap } = testModule;
 
-		memory[2] = 30 * WORD_LENGTH;
-		memory[4] = 69;
-		memory[5] = 70;
-		memory[6] = 71;
-		memory[7] = 72;
+		memory[memoryMap.get('trigger').address] = 30 * WORD_LENGTH;
+		memory[memoryMap.get('steps').address] = 69;
+		memory[memoryMap.get('steps').address + 1] = 70;
+		memory[memoryMap.get('steps').address + 2] = 71;
+		memory[memoryMap.get('steps').address + 3] = 72;
 
 		for (let i = 69; i < 73; i++) {
 			test();
-			expect(memory[21]).toBe(i);
+			expect(memory[memoryMap.get('out').address]).toBe(i);
 			memory[30] = 1;
 			test();
 			memory[30] = 0;
