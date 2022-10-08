@@ -12,10 +12,10 @@ export default function findMidiNoteModules(
 		.map(module => {
 			return {
 				moduleId: module.moduleId,
-				noteAddress: memoryAddressLookup[module.moduleId]['out:1'],
-				channelAddress: memoryAddressLookup[module.moduleId]['data:1'],
-				noteOnOffAddress: memoryAddressLookup[module.moduleId]['out:2'],
-				velocityAddress: memoryAddressLookup[module.moduleId]['out:3'],
+				noteAddress: memoryAddressLookup.get(module.moduleId + 'out:1'),
+				channelAddress: memoryAddressLookup.get(module.moduleId + 'data:1'),
+				noteOnOffAddress: memoryAddressLookup.get(module.moduleId + 'out:2'),
+				velocityAddress: memoryAddressLookup.get(module.moduleId + 'out:3'),
 			};
 		});
 }

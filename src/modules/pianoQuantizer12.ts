@@ -10,7 +10,7 @@ import { int16ToMidiNote, midiNoteToInt16 } from '../state/helpers/midi';
 import { HGRID, VGRID } from '../view/drawers/consts';
 
 const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memoryAddressLookup, value) {
-	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	const { activeNotes } = extractState(memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 
 	if (activeNotes.includes(midiNoteToInt16(value))) {
 		for (let i = 0; i < 12; i++) {
@@ -24,7 +24,7 @@ const onButtonClick: ButtonClickHandler = function (module, memoryBuffer, memory
 
 	module.state.chord = chordIdentifier(activeNotes.map(int16ToMidiNote));
 
-	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	insertState({ activeNotes }, memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 };
 
 export type PianoQuantizer = ModuleType<{

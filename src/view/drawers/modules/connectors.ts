@@ -10,7 +10,7 @@ export default function drawConnectors(engine: Engine, moduleType: ModuleType, s
 	for (let i = 0; i < outputs.length; i++) {
 		const connector = outputs[i];
 
-		const connectorAddress = state.compiler.memoryAddressLookup[id][connector.id];
+		const connectorAddress = state.compiler.memoryAddressLookup.get(id + connector.id);
 		const value = state.compiler.memoryBuffer[connectorAddress];
 		const { x, y, width, height } = connector;
 
