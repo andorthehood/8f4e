@@ -59,10 +59,10 @@ Map {
     "type": 0,
     "usage": 0,
   },
-  "stepArraySize" => Object {
+  "stepLength" => Object {
     "address": 20,
     "byteAddress": 80,
-    "default": 16,
+    "default": 4,
     "size": 1,
     "type": 6,
     "usage": 0,
