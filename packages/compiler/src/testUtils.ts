@@ -66,6 +66,22 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		});
 	});
 
+	const memoryGet = (address: string | number, offset = 0): number => {
+		if (typeof address === 'string') {
+			return memoryBuffer[module.memoryMap.get(address).address + offset];
+		}
+		return memoryBuffer[address + offset];
+	};
+
+	const memorySet = (address: string | number, value: number, offset = 0): void => {
+		if (typeof address === 'string') {
+			memoryBuffer[module.memoryMap.get(address).address + offset] = value;
+			return;
+		}
+
+		memoryBuffer[address + offset] = value;
+	};
+
 	return {
 		memory: memoryBuffer,
 		test,
@@ -73,5 +89,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		wat,
 		program,
 		memoryMap: module.memoryMap,
+		memoryGet,
+		memorySet,
 	};
 }
