@@ -21,7 +21,7 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
     inputPointer trigger defaultValue
     private triggerPreviousValue 0
     array steps ${maxSteps} 0
-    public stepArraySize ${WORD_LENGTH * 4}
+    public stepLength 4
     output out 0
 
     local _stepPointer
@@ -34,8 +34,7 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
     greaterThan
     if void
         push _stepPointer
-        push ${WORD_LENGTH}
-        add
+        pointerForward
         localSet _stepPointer
     end
     pushRef stepPointer
