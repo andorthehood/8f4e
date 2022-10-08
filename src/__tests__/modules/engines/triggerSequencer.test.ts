@@ -54,20 +54,20 @@ describe('triggerSequencer', () => {
 	});
 
 	test('if the pointer moves when a trigger pulse is provided', () => {
-		const { memory, test, memoryMap } = testModule;
+		const { test, memoryGet, memorySet } = testModule;
 
-		memory[memoryMap.get('trigger').address] = 30 * WORD_LENGTH;
-		memory[memoryMap.get('steps').address] = 69;
-		memory[memoryMap.get('steps').address + 1] = 70;
-		memory[memoryMap.get('steps').address + 2] = 71;
-		memory[memoryMap.get('steps').address + 3] = 72;
+		memorySet('trigger', 30 * WORD_LENGTH);
+		memorySet('steps', 69, 0);
+		memorySet('steps', 70, 1);
+		memorySet('steps', 71, 2);
+		memorySet('steps', 72, 3);
 
 		for (let i = 69; i < 73; i++) {
 			test();
-			expect(memory[memoryMap.get('out').address]).toBe(i);
-			memory[30] = 1;
+			expect(memoryGet('out')).toBe(i);
+			memorySet(30, 1);
 			test();
-			memory[30] = 0;
+			memorySet(30, 0);
 		}
 	});
 });
