@@ -7,7 +7,7 @@ import { HGRID, VGRID } from '../view/drawers/consts';
 
 const onChange: StepperChangeHandler = function (module, state, value, stepper) {
 	const { memoryBuffer, memoryAddressLookup } = state.compiler;
-	const dataAddress = memoryAddressLookup[module.id][stepper.id];
+	const dataAddress = memoryAddressLookup.get(module.id + stepper.id);
 
 	memoryBuffer[dataAddress] = Math.min(Math.max(memoryBuffer[dataAddress] + value, stepper.minValue), stepper.maxValue);
 
