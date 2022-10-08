@@ -94,15 +94,20 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		return firstFreeAddress;
 	};
 
+	// @ts-ignore
+	memoryBuffer.get = memoryGet;
+	// @ts-ignore
+	memoryBuffer.set = memorySet;
+	// @ts-ignore
+	memoryBuffer.allocMemoryForPointer = allocMemoryForPointer;
+
 	return {
+		// @ts-ignore
 		memory: memoryBuffer,
 		test,
 		reset,
 		wat,
 		program,
 		memoryMap: module.memoryMap,
-		memoryGet,
-		memorySet,
-		allocMemoryForPointer,
 	};
 }
