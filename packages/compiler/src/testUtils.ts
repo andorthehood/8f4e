@@ -12,7 +12,7 @@ import {
 import wabt from 'wabt';
 
 import { compile } from './compiler';
-import { CompiledModule, MemoryMap } from './types';
+import { CompiledModule, TestModule } from './types';
 
 import { getInitialMemory } from '.';
 
@@ -38,14 +38,7 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 	}
 }
 
-export async function createTestModule(sourceCode: string): Promise<{
-	memory: Int32Array;
-	test: CallableFunction;
-	reset: () => void;
-	wat: string;
-	program: Uint8Array;
-	memoryMap: MemoryMap;
-}> {
+export async function createTestModule(sourceCode: string): Promise<TestModule> {
 	const module: CompiledModule = compile(sourceCode, 'test', 0);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
