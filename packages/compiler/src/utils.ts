@@ -1,3 +1,4 @@
+import { WORD_LENGTH } from './consts';
 import { MemoryMap, MemoryTypes } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
@@ -10,6 +11,10 @@ export function getMemoryItem(memoryMap: MemoryMap, id: string) {
 
 export function getMemoryItemByteAddress(memoryMap: MemoryMap, id: string): number {
 	return getMemoryItem(memoryMap, id).byteAddress;
+}
+
+export function getMemoryStringEndAddress(memoryMap: MemoryMap, id: string): number {
+	return getMemoryItem(memoryMap, id).byteAddress + getMemoryItem(memoryMap, id).size * WORD_LENGTH;
 }
 
 export function isInputPointer(memoryMap: MemoryMap, id: string): boolean {
