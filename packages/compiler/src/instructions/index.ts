@@ -35,6 +35,7 @@ import equalToZero from './equalToZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
 import remainder from './remainder';
+import pointerForward from './pointerForward';
 
 export default {
 	and,
@@ -74,4 +75,5 @@ export default {
 	shiftRight,
 	shiftRightUnsigned,
 	remainder,
+	pointerForward,
 };
