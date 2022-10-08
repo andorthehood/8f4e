@@ -22,41 +22,41 @@ describe('triggerSequencer', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
+	test('if the pointer points to the first element of the step array', () => {
+		const { test, memorySet, memoryGet } = testModule;
+		memorySet('steps', 69420);
+		test();
+		expect(memoryGet('out')).toBe(69420);
+	});
+
 	test("if the pointer doesn't move when there is no trigger pulse", () => {
-		const { memory, test } = testModule;
+		const { memoryGet, test } = testModule;
 
 		for (let i = 0; i < 10; i++) {
-			expect(memory[0]).toBe(0);
+			expect(memoryGet('stepPointer')).toBe(0);
 			test();
 		}
 	});
 
 	test('if the pointer moves when a trigger pulse is provided', () => {
-		const { memory, test } = testModule;
+		const { test, memorySet, memoryGet, allocMemoryForPointer } = testModule;
 
-		memory[2] = 30 * WORD_LENGTH;
+		const trigger = allocMemoryForPointer('trigger');
 
 		for (let i = 1; i < 10; i++) {
-			memory[30] = 1;
+			memorySet(trigger, 1);
 			test();
-			expect(memory[0]).toBe(i * WORD_LENGTH);
-			memory[30] = 0;
+			expect(memoryGet('stepPointer')).toBe(i * WORD_LENGTH);
+			memorySet(trigger, 0);
 			test();
-			expect(memory[0]).toBe(i * WORD_LENGTH);
+			expect(memoryGet('stepPointer')).toBe(i * WORD_LENGTH);
 		}
 	});
 
-	test('if the pointer points to the first element of the step array', () => {
-		const { memory, test } = testModule;
-		memory[4] = 69420;
-		test();
-		expect(memory[21]).toBe(69420);
-	});
-
 	test('if the pointer moves when a trigger pulse is provided', () => {
-		const { test, memoryGet, memorySet } = testModule;
+		const { test, memoryGet, memorySet, allocMemoryForPointer } = testModule;
 
-		memorySet('trigger', 30 * WORD_LENGTH);
+		const trigger = allocMemoryForPointer('trigger');
 		memorySet('steps', 69, 0);
 		memorySet('steps', 70, 1);
 		memorySet('steps', 71, 2);
@@ -65,9 +65,9 @@ describe('triggerSequencer', () => {
 		for (let i = 69; i < 73; i++) {
 			test();
 			expect(memoryGet('out')).toBe(i);
-			memorySet(30, 1);
+			memorySet(trigger, 1);
 			test();
-			memorySet(30, 0);
+			memorySet(trigger, 0);
 		}
 	});
 });
