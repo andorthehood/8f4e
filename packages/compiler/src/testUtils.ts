@@ -13,6 +13,7 @@ import wabt from 'wabt';
 
 import { compile } from './compiler';
 import { CompiledModule, TestModule } from './types';
+import { WORD_LENGTH } from './consts';
 
 import { getInitialMemory } from '.';
 
@@ -39,6 +40,8 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 }
 
 export async function createTestModule(sourceCode: string): Promise<TestModule> {
+	let allocatedMemoryForTestData = 0;
+
 	const module: CompiledModule = compile(sourceCode, 'test', 0);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
@@ -53,6 +56,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 	const reset = () => {
 		setInitialMemory(memoryBuffer, module);
+		allocatedMemoryForTestData = 0;
 	};
 
 	reset();
@@ -82,6 +86,14 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		memoryBuffer[address + offset] = value;
 	};
 
+	const allocMemoryForPointer = (address: string | number): number => {
+		const [, lastMemoryItem] = Array.from(module.memoryMap).pop();
+		const firstFreeAddress = lastMemoryItem.address + lastMemoryItem.size + allocatedMemoryForTestData;
+		memorySet(address, firstFreeAddress * WORD_LENGTH);
+		allocatedMemoryForTestData++;
+		return firstFreeAddress;
+	};
+
 	return {
 		memory: memoryBuffer,
 		test,
@@ -91,5 +103,6 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		memoryMap: module.memoryMap,
 		memoryGet,
 		memorySet,
+		allocMemoryForPointer,
 	};
 }

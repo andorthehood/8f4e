@@ -69,4 +69,5 @@ export interface TestModule {
 	memoryMap: MemoryMap;
 	memoryGet: (address: number | string, offset?: number) => number;
 	memorySet: (address: number | string, value: number, offset?: number) => void;
+	allocMemoryForPointer: (address: number | string) => number;
 }
