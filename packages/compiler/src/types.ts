@@ -67,4 +67,6 @@ export interface TestModule {
 	wat: string;
 	program: Uint8Array;
 	memoryMap: MemoryMap;
+	memoryGet: (address: number | string, offset?: number) => number;
+	memorySet: (address: number | string, value: number, offset?: number) => void;
 }
