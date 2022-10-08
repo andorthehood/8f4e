@@ -61,13 +61,14 @@ export type Argument = { type: ArgumentType.LITERAL; value: number } | { type: A
 export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
 
 export interface TestModule {
-	memory: Int32Array;
+	memory: MemoryBuffer & {
+		get: (address: number | string, offset?: number) => number;
+		set: (address: number | string, value: number, offset?: number) => void;
+		allocMemoryForPointer: (address: number | string) => number;
+	};
 	test: CallableFunction;
 	reset: () => void;
 	wat: string;
 	program: Uint8Array;
 	memoryMap: MemoryMap;
-	memoryGet: (address: number | string, offset?: number) => number;
-	memorySet: (address: number | string, value: number, offset?: number) => void;
-	allocMemoryForPointer: (address: number | string) => number;
 }
