@@ -1,8 +1,8 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import splitter from '../../../modules/engines/sequentialSwitch.asm';
 
-let testModule;
+let testModule: TestModule;
 
 const fixtures = [
 	[1, 2, 3, 4, 0, 1],
@@ -37,28 +37,29 @@ describe('functional tests', () => {
 		(input1, input2, input3, input4, numberOfPulses, output) => {
 			const { memory, test } = testModule;
 
-			memory[2] = 19 * memory.BYTES_PER_ELEMENT;
-			memory[5] = 20 * memory.BYTES_PER_ELEMENT;
-			memory[6] = 21 * memory.BYTES_PER_ELEMENT;
-			memory[7] = 22 * memory.BYTES_PER_ELEMENT;
-			memory[8] = 23 * memory.BYTES_PER_ELEMENT;
-			memory[20] = input1;
-			memory[21] = input2;
-			memory[22] = input3;
-			memory[23] = input4;
+			const clock = memory.allocMemoryForPointer('in:clock');
+			const in1address = memory.allocMemoryForPointer('in:1');
+			const in2address = memory.allocMemoryForPointer('in:2');
+			const in3address = memory.allocMemoryForPointer('in:3');
+			const in4address = memory.allocMemoryForPointer('in:4');
+
+			memory.set(in1address, input1);
+			memory.set(in2address, input2);
+			memory.set(in3address, input3);
+			memory.set(in4address, input4);
 
 			test();
 
 			for (let i = 0; i < numberOfPulses; i++) {
-				memory[19] = 0;
+				memory.set(clock, 0);
 				test();
-				memory[19] = 1;
+				memory.set(clock, 1);
 				test();
-				memory[19] = 0;
+				memory.set(clock, 0);
 				test();
 			}
 
-			expect(memory[1]).toBe(output);
+			expect(memory.get('out')).toBe(output);
 		}
 	);
 });
