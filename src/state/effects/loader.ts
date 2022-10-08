@@ -25,7 +25,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 					...state.modules[index].state,
 					...state.moduleTypes[type].extractState(
 						state.compiler.memoryBuffer,
-						state.compiler.memoryAddressLookup[state.modules[index].id].__startAddress
+						state.compiler.memoryAddressLookup.get(state.modules[index].id + '__startAddress')
 					),
 				};
 			}
