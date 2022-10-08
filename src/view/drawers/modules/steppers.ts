@@ -19,7 +19,7 @@ export default function drawSteppers(engine: Engine, steppers: Stepper[], state:
 		engine.setSpriteLookup(font('black'));
 		engine.drawText(VGRID * 5, 0, '+');
 
-		const address = state.compiler.memoryAddressLookup[id][stepper.id];
+		const address = state.compiler.memoryAddressLookup.get(id + stepper.id);
 		const value = state.compiler.memoryBuffer[address];
 
 		engine.setSpriteLookup(font('white'));

@@ -4,9 +4,9 @@ import source, { extractState, insertState } from './engines/attenuator.asm';
 import { ModuleType, SliderChangeHandler } from '../state/types';
 
 const onChange: SliderChangeHandler = function (module, memoryBuffer, memoryAddressLookup, movement, slider) {
-	let { divisor } = extractState(memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	let { divisor } = extractState(memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 	divisor = Math.min(Math.max(slider.minValue, divisor + movement * -1 * slider.resolution), slider.maxValue);
-	insertState({ divisor }, memoryBuffer, memoryAddressLookup[module.id].__startAddress);
+	insertState({ divisor }, memoryBuffer, memoryAddressLookup.get(module.id + '__startAddress'));
 };
 
 export default function attenuator(): ModuleType {

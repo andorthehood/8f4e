@@ -16,7 +16,7 @@ export default function pianoDrawer(
 	memoryAddressLookup: MemoryAddressLookup,
 	memoryBuffer: MemoryBuffer
 ): void {
-	const moduleAddress = memoryAddressLookup[module.id].__startAddress;
+	const moduleAddress = memoryAddressLookup.get(module.id + '__startAddress');
 	const config = moduleType.drawer.config;
 	const outAddress = moduleAddress + 1;
 	const notesAddress = moduleAddress + 4;

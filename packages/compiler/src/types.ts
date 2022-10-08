@@ -49,7 +49,7 @@ export interface Module<ModuleState = Record<string, any>> {
 	state: ModuleState;
 }
 
-export type MemoryAddressLookup = Record<string, Record<string, number>>;
+export type MemoryAddressLookup = Map<string, number>;
 
 export const enum ArgumentType {
 	LITERAL = 'literal',
