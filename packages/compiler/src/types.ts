@@ -27,6 +27,7 @@ export interface CompiledModule {
 	byteAddress: number;
 	wordAddress: number;
 	memoryMap: MemoryMap;
+	memoryWordSize: number;
 }
 
 export type MemoryBuffer = Int32Array;
