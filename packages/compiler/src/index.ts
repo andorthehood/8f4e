@@ -34,7 +34,7 @@ export function calculateModuleSize(module: CompiledModule): number {
 export function getInitialMemory(module: CompiledModule): number[] {
 	return Array.from(module.memoryMap.values()).reduce((accumulator, current) => {
 		if (Array.isArray(current.default)) {
-			accumulator.concat(current.default);
+			accumulator = accumulator.concat(current.default);
 		} else {
 			accumulator.push(current.default);
 		}
