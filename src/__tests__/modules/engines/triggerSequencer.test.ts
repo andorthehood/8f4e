@@ -26,6 +26,7 @@ describe('triggerSequencer', () => {
 		const { test, memory } = testModule;
 		memory.set('steps', 69420);
 		test();
+
 		expect(memory.get('out')).toBe(69420);
 	});
 
@@ -33,7 +34,7 @@ describe('triggerSequencer', () => {
 		const { memory, test } = testModule;
 
 		for (let i = 0; i < 10; i++) {
-			expect(memory.get('stepPointer')).toBe(0);
+			expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps'));
 			test();
 		}
 	});
@@ -43,13 +44,12 @@ describe('triggerSequencer', () => {
 
 		const trigger = memory.allocMemoryForPointer('trigger');
 
-		for (let i = 1; i < 10; i++) {
+		for (let i = memory.byteAddress('steps'); i < 18 * WORD_LENGTH; i += WORD_LENGTH) {
+			expect(memory.get('stepPointer')).toBe(i);
 			memory.set(trigger, 1);
 			test();
-			expect(memory.get('stepPointer')).toBe(i * WORD_LENGTH);
 			memory.set(trigger, 0);
 			test();
-			expect(memory.get('stepPointer')).toBe(i * WORD_LENGTH);
 		}
 	});
 
