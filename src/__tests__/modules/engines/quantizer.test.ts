@@ -1,8 +1,8 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import quantizer from '../../../modules/engines/quantizer.asm';
 
-let testModule;
+let testModule: TestModule;
 
 const fixtures: [input: number, notes: number[], output: number][] = [
 	[1000, [], 0],
@@ -51,16 +51,14 @@ describe('functional tests', () => {
 	test.each(fixtures)('given %p as input, %p as active notes, the expected output is %p', (input, notes, output) => {
 		const { memory, test } = testModule;
 
-		memory[0] = 100 * memory.BYTES_PER_ELEMENT;
+		const inAddress = memory.allocMemoryForPointer('in');
 
-		memory[3] = notes.length;
+		memory.set('numberOfNotes', notes.length);
 
-		notes.forEach((note, index) => {
-			memory[4 + index] = note;
-		});
+		memory.set('notes', notes);
 
-		memory[100] = input;
+		memory.set(inAddress, input);
 		test();
-		expect(memory[1]).toBe(output);
+		expect(memory.get('out')).toBe(output);
 	});
 });
