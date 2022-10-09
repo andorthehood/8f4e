@@ -110,6 +110,9 @@ exports[`triggerSequencer if the wat code matches with the snapshot 1`] = `
     i32.load
     i32.gt_s
     if  ;; label = @1
+      i32.const 88
+      i32.const 0
+      i32.store
       local.get 0
       i32.const 4
       i32.add
@@ -125,9 +128,6 @@ exports[`triggerSequencer if the wat code matches with the snapshot 1`] = `
       if  ;; label = @2
         i32.const 16
         local.set 0
-        i32.const 88
-        i32.const 0
-        i32.store
       end
     end
     i32.const 80

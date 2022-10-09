@@ -68,10 +68,7 @@ describe('triggerSequencer', () => {
 
 		const trigger = memory.allocMemoryForPointer('trigger');
 		memory.set('stepLength', 4);
-		memory.set('steps', 1, 0);
-		memory.set('steps', 1, 1);
-		memory.set('steps', 1, 2);
-		memory.set('steps', 1, 3);
+		memory.set('steps', [1, 1, 1, 1]);
 
 		for (let i = 0; i < 10; i++) {
 			test();
@@ -93,10 +90,7 @@ describe('triggerSequencer', () => {
 
 		const trigger = memory.allocMemoryForPointer('trigger');
 		memory.set('stepLength', 4);
-		memory.set('steps', 1, 0);
-		memory.set('steps', 1, 1);
-		memory.set('steps', 1, 2);
-		memory.set('steps', 1, 3);
+		memory.set('steps', [1, 1, 1, 1]);
 
 		test();
 		expect(memory.get('out')).toBe(0);
