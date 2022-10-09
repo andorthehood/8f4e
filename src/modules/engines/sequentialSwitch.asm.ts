@@ -23,8 +23,7 @@ export default `
 	greaterThan
 	if void
 		push _counter
-		push 4
-		add
+		pointerForward
 		push 16
 		remainder
 		localSet _counter

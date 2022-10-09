@@ -86,6 +86,14 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		memoryBuffer[address + offset] = value;
 	};
 
+	const getByteAddress = (address: string | number): number => {
+		if (typeof address === 'string') {
+			return module.memoryMap.get(address).byteAddress;
+		}
+
+		return address * WORD_LENGTH;
+	};
+
 	const allocMemoryForPointer = (address: string | number): number => {
 		const [, lastMemoryItem] = Array.from(module.memoryMap).pop();
 		const firstFreeAddress = lastMemoryItem.address + lastMemoryItem.size + allocatedMemoryForTestData;
@@ -100,6 +108,8 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	memoryBuffer.set = memorySet;
 	// @ts-ignore
 	memoryBuffer.allocMemoryForPointer = allocMemoryForPointer;
+	// @ts-ignore
+	memoryBuffer.byteAddress = getByteAddress;
 
 	return {
 		// @ts-ignore
