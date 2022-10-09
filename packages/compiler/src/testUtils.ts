@@ -56,6 +56,11 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 	const reset = () => {
 		setInitialMemory(memoryBuffer, module);
+
+		// Clear the test data that was out of the module's scope.
+		for (let i = module.memoryWordSize; i < module.memoryWordSize + allocatedMemoryForTestData; i++) {
+			memoryBuffer[i] = 0;
+		}
 		allocatedMemoryForTestData = 0;
 	};
 
@@ -95,8 +100,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	};
 
 	const allocMemoryForPointer = (address: string | number): number => {
-		const [, lastMemoryItem] = Array.from(module.memoryMap).pop();
-		const firstFreeAddress = lastMemoryItem.address + lastMemoryItem.size + allocatedMemoryForTestData;
+		const firstFreeAddress = module.memoryWordSize + allocatedMemoryForTestData;
 		memorySet(address, firstFreeAddress * WORD_LENGTH);
 		allocatedMemoryForTestData++;
 		return firstFreeAddress;
