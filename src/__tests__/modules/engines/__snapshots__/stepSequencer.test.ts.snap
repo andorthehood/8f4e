@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`triggerSequencer if the generated memory map matches with the snapshot 1`] = `
+exports[`stepSequencer if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
     "address": 0,
@@ -26,17 +26,9 @@ Map {
     "type": 5,
     "usage": 1,
   },
-  "stepMinusOne" => Object {
+  "steps" => Object {
     "address": 3,
     "byteAddress": 12,
-    "default": 0,
-    "size": 1,
-    "type": 5,
-    "usage": 0,
-  },
-  "steps" => Object {
-    "address": 4,
-    "byteAddress": 16,
     "default": Array [
       0,
       0,
@@ -60,32 +52,24 @@ Map {
     "usage": 0,
   },
   "stepPointer" => Object {
-    "address": 20,
-    "byteAddress": 80,
+    "address": 19,
+    "byteAddress": 76,
     "default": 12,
     "size": 1,
     "type": 5,
     "usage": 1,
   },
   "stepLength" => Object {
-    "address": 21,
-    "byteAddress": 84,
+    "address": 20,
+    "byteAddress": 80,
     "default": 4,
     "size": 1,
     "type": 6,
     "usage": 1,
   },
-  "didTrigger" => Object {
-    "address": 22,
-    "byteAddress": 88,
-    "default": 0,
-    "size": 1,
-    "type": 5,
-    "usage": 1,
-  },
   "out" => Object {
-    "address": 23,
-    "byteAddress": 92,
+    "address": 21,
+    "byteAddress": 84,
     "default": 0,
     "size": 1,
     "type": 4,
@@ -94,13 +78,13 @@ Map {
 }
 `;
 
-exports[`triggerSequencer if the wat code matches with the snapshot 1`] = `
+exports[`stepSequencer if the wat code matches with the snapshot 1`] = `
 "(module
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
-    i32.const 80
+    i32.const 76
     i32.load
     local.set 0
     i32.const 4
@@ -115,45 +99,24 @@ exports[`triggerSequencer if the wat code matches with the snapshot 1`] = `
       i32.add
       local.set 0
       local.get 0
-      i32.const 84
+      i32.const 80
       i32.load
       i32.const 4
       i32.mul
-      i32.const 16
+      i32.const 12
       i32.add
       i32.ge_s
       if  ;; label = @2
-        i32.const 16
+        i32.const 12
         local.set 0
-        i32.const 88
-        i32.const 0
-        i32.store
       end
     end
-    i32.const 80
+    i32.const 76
     local.get 0
     i32.store
-    i32.const 92
+    i32.const 84
     local.get 0
     i32.load
-    i32.const 0
-    i32.gt_s
-    if (result i32)  ;; label = @1
-      i32.const 88
-      i32.load
-      i32.const 0
-      i32.gt_s
-      if (result i32)  ;; label = @2
-        i32.const 0
-      else
-        i32.const 88
-        i32.const 1
-        i32.store
-        i32.const 32767
-      end
-    else
-      i32.const 0
-    end
     i32.store
     i32.const 8
     i32.const 4
