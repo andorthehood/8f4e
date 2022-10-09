@@ -76,10 +76,7 @@ describe('stepSequencer', () => {
 
 		const trigger = memory.allocMemoryForPointer('trigger');
 		memory.set('stepLength', 4);
-		memory.set('steps', 69, 0);
-		memory.set('steps', 70, 1);
-		memory.set('steps', 71, 2);
-		memory.set('steps', 72, 3);
+		memory.set('steps', [69, 70, 71, 72]);
 
 		for (let i = 69; i < 73; i++) {
 			test();
