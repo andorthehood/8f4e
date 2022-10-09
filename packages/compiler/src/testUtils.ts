@@ -75,20 +75,32 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		});
 	});
 
-	const memoryGet = (address: string | number, offset = 0): number => {
+	const memoryGet = (address: string | number): number => {
 		if (typeof address === 'string') {
-			return memoryBuffer[module.memoryMap.get(address).address + offset];
+			return memoryBuffer[module.memoryMap.get(address).address];
 		}
-		return memoryBuffer[address + offset];
+		return memoryBuffer[address];
 	};
 
-	const memorySet = (address: string | number, value: number, offset = 0): void => {
+	const memorySet = (address: string | number, value: number | number[]): void => {
 		if (typeof address === 'string') {
-			memoryBuffer[module.memoryMap.get(address).address + offset] = value;
+			if (typeof value === 'number') {
+				memoryBuffer[module.memoryMap.get(address).address] = value;
+			} else {
+				for (let i = 0; i < value.length; i++) {
+					memoryBuffer[module.memoryMap.get(address).address + i] = value[i];
+				}
+			}
 			return;
 		}
 
-		memoryBuffer[address + offset] = value;
+		if (typeof value === 'number') {
+			memoryBuffer[address] = value;
+		} else {
+			for (let i = 0; i < value.length; i++) {
+				memoryBuffer[address] = value[i];
+			}
+		}
 	};
 
 	const getByteAddress = (address: string | number): number => {
