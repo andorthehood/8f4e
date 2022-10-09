@@ -1,5 +1,5 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
-import { WORD_LENGTH } from '@8f4e/compiler/dist/consts';
+import { I16_SIGNED_LARGEST_NUMBER, WORD_LENGTH } from '@8f4e/compiler/dist/consts';
 
 import triggerSequencer from '../../../modules/engines/triggerSequencer.asm';
 
@@ -22,19 +22,11 @@ describe('triggerSequencer', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test('if the pointer points to the first element of the step array', () => {
-		const { test, memory } = testModule;
-		memory.set('steps', 69420);
-		test();
-
-		expect(memory.get('out')).toBe(69420);
-	});
-
 	test("if the pointer doesn't move when there is no trigger pulse", () => {
 		const { memory, test } = testModule;
 
 		for (let i = 0; i < 10; i++) {
-			expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps'));
+			expect(memory.get('stepPointer')).toBe(memory.byteAddress('stepMinusOne'));
 			test();
 		}
 	});
@@ -43,31 +35,89 @@ describe('triggerSequencer', () => {
 		const { test, memory } = testModule;
 
 		const trigger = memory.allocMemoryForPointer('trigger');
+		memory.set('stepLength', 15);
 
-		for (let i = memory.byteAddress('steps'); i < 18 * WORD_LENGTH; i += WORD_LENGTH) {
-			expect(memory.get('stepPointer')).toBe(i);
+		for (let i = 0; i < 15 * WORD_LENGTH; i += WORD_LENGTH) {
 			memory.set(trigger, 1);
 			test();
 			memory.set(trigger, 0);
 			test();
+			expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + i);
 		}
 	});
 
-	test('if the pointer moves when a trigger pulse is provided', () => {
+	test('if the pointer resets before it would overflow', () => {
 		const { test, memory } = testModule;
 
 		const trigger = memory.allocMemoryForPointer('trigger');
-		memory.set('steps', 69, 0);
-		memory.set('steps', 70, 1);
-		memory.set('steps', 71, 2);
-		memory.set('steps', 72, 3);
+		memory.set('stepLength', 3);
 
-		for (let i = 69; i < 73; i++) {
+		for (let i = 0; i < 10; i += 1) {
+			for (let j = 0; j < 3; j++) {
+				memory.set(trigger, 1);
+				test();
+				memory.set(trigger, 0);
+				test();
+				expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + WORD_LENGTH * j);
+			}
+		}
+	});
+
+	test('if the pulse only appears on the output once', () => {
+		const { test, memory } = testModule;
+
+		const trigger = memory.allocMemoryForPointer('trigger');
+		memory.set('stepLength', 4);
+		memory.set('steps', 1, 0);
+		memory.set('steps', 1, 1);
+		memory.set('steps', 1, 2);
+		memory.set('steps', 1, 3);
+
+		for (let i = 0; i < 10; i++) {
 			test();
-			expect(memory.get('out')).toBe(i);
-			memory.set(trigger, 1);
+			expect(memory.get('out')).toBe(0);
+		}
+
+		memory.set(trigger, 1);
+		test();
+		expect(memory.get('out')).toBe(I16_SIGNED_LARGEST_NUMBER);
+
+		for (let i = 0; i < 10; i++) {
 			test();
-			memory.set(trigger, 0);
+			expect(memory.get('out')).toBe(0);
+		}
+	});
+
+	test('if the pulse appears once every time the trigger is high', () => {
+		const { test, memory } = testModule;
+
+		const trigger = memory.allocMemoryForPointer('trigger');
+		memory.set('stepLength', 4);
+		memory.set('steps', 1, 0);
+		memory.set('steps', 1, 1);
+		memory.set('steps', 1, 2);
+		memory.set('steps', 1, 3);
+
+		test();
+		expect(memory.get('out')).toBe(0);
+		memory.set(trigger, 1);
+		test();
+		expect(memory.get('out')).toBe(I16_SIGNED_LARGEST_NUMBER);
+		memory.set(trigger, 0);
+		test();
+
+		for (let i = 0; i < 10; i++) {
+			test();
+			expect(memory.get('out')).toBe(0);
+		}
+
+		memory.set(trigger, 1);
+		test();
+		expect(memory.get('out')).toBe(I16_SIGNED_LARGEST_NUMBER);
+
+		for (let i = 0; i < 10; i++) {
+			test();
+			expect(memory.get('out')).toBe(0);
 		}
 	});
 });

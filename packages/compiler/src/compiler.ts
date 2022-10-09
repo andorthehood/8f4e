@@ -1,7 +1,7 @@
 import { Type, createFunctionBody, createLocalDeclaration } from '@8f4e/bytecode-utils';
 
 import instructions from './instructions';
-import { AST, Argument, ArgumentType, MemoryMap, MemoryTypes } from './types';
+import { AST, Argument, ArgumentType, MemoryMap, MemoryTypes, CompiledModule } from './types';
 import { WORD_LENGTH } from './consts';
 
 export { MemoryTypes, MemoryMap } from './types';
@@ -154,17 +154,7 @@ function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 	);
 }
 
-export function compile(
-	module: string,
-	moduleId: string,
-	startingByteAddress: number
-): {
-	moduleId: string;
-	functionBody: number[];
-	byteAddress: number;
-	wordAddress: number;
-	memoryMap;
-} {
+export function compile(module: string, moduleId: string, startingByteAddress: number): CompiledModule {
 	const ast = compileToAST(module);
 	const memoryMap = getMemoryMap(ast, startingByteAddress);
 	const locals = collectLocals(ast);
@@ -176,11 +166,14 @@ export function compile(
 		}, [] as number[][])
 		.flat();
 
+	const [, lastMemoryItem] = Array.from(memoryMap).pop();
+
 	return {
 		moduleId,
 		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
 		memoryMap,
+		memoryWordSize: lastMemoryItem.address + lastMemoryItem.size,
 	};
 }
