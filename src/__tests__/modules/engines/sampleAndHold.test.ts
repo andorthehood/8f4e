@@ -1,10 +1,10 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import sampleAndHold from '../../../modules/engines/sampleAndHold.asm';
 
-let testModule;
+let testModule: TestModule;
 
-describe('functional tests', () => {
+describe('sampleAndHold', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(sampleAndHold);
 	});
@@ -21,38 +21,21 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test('min module', () => {
+	test('if the output changes only after trigger', () => {
 		const { memory, test } = testModule;
 
-		memory[2] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[1] = 11 * memory.BYTES_PER_ELEMENT;
+		const inAddress = memory.allocMemoryForPointer('in');
+		const triggerAddress = memory.allocMemoryForPointer('in:trigger');
 
-		memory[10] = 0;
-		memory[11] = 8;
+		memory.set(triggerAddress, 0);
+		memory.set(inAddress, 8);
 		test();
-		memory[10] = 1000;
-		memory[11] = 10;
+		memory.set(triggerAddress, 1000);
+		memory.set(inAddress, 10);
 		test();
-		memory[10] = 0;
-		memory[11] = 12;
+		memory.set(triggerAddress, 0);
+		memory.set(inAddress, 12);
 		test();
-		expect(memory[4]).toBe(10);
-
-		memory[10] = 0;
-		memory[11] = 8;
-		test();
-		memory[10] = 1000;
-		memory[11] = 10;
-		test();
-		memory[10] = 100;
-		memory[11] = 12;
-		test();
-		memory[10] = 2000;
-		memory[11] = 14;
-		test();
-		memory[10] = 0;
-		memory[11] = 16;
-		test();
-		expect(memory[4]).toBe(14);
+		expect(memory.get('out')).toBe(10);
 	});
 });
