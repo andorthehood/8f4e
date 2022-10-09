@@ -16,11 +16,11 @@ export const extractState: ModuleStateExtractor<State> = function (memoryBuffer,
 };
 
 export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
-    private stepPointer 0
     private defaultValue 0
     inputPointer trigger defaultValue
     private triggerPreviousValue 0
     array steps ${maxSteps} 0
+    private stepPointer steps
     public stepLength 4
     output out 0
 
@@ -42,9 +42,7 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
     store
 
     pushRef out
-    pushRef steps
     push _stepPointer
-    add
     load
     store
 

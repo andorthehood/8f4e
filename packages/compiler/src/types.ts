@@ -63,6 +63,7 @@ export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
 export interface TestModule {
 	memory: MemoryBuffer & {
 		get: (address: number | string, offset?: number) => number;
+		byteAddress: (address: number | string) => number;
 		set: (address: number | string, value: number, offset?: number) => void;
 		allocMemoryForPointer: (address: number | string) => number;
 	};

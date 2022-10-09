@@ -2,41 +2,33 @@
 
 exports[`triggerSequencer if the generated memory map matches with the snapshot 1`] = `
 Map {
-  "stepPointer" => Object {
+  "defaultValue" => Object {
     "address": 0,
     "byteAddress": 0,
-    "default": 0,
-    "size": 1,
-    "type": 5,
-    "usage": 1,
-  },
-  "defaultValue" => Object {
-    "address": 1,
-    "byteAddress": 4,
     "default": 0,
     "size": 1,
     "type": 5,
     "usage": 0,
   },
   "trigger" => Object {
-    "address": 2,
-    "byteAddress": 8,
-    "default": 4,
+    "address": 1,
+    "byteAddress": 4,
+    "default": 0,
     "size": 1,
     "type": 3,
     "usage": 2,
   },
   "triggerPreviousValue" => Object {
-    "address": 3,
-    "byteAddress": 12,
+    "address": 2,
+    "byteAddress": 8,
     "default": 0,
     "size": 1,
     "type": 5,
     "usage": 1,
   },
   "steps" => Object {
-    "address": 4,
-    "byteAddress": 16,
+    "address": 3,
+    "byteAddress": 12,
     "default": Array [
       0,
       0,
@@ -58,6 +50,14 @@ Map {
     "size": 16,
     "type": 0,
     "usage": 0,
+  },
+  "stepPointer" => Object {
+    "address": 19,
+    "byteAddress": 76,
+    "default": 12,
+    "size": 1,
+    "type": 5,
+    "usage": 1,
   },
   "stepLength" => Object {
     "address": 20,
@@ -84,13 +84,13 @@ exports[`triggerSequencer if the wat code matches with the snapshot 1`] = `
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
-    i32.const 0
+    i32.const 76
     i32.load
     local.set 0
+    i32.const 4
+    i32.load
+    i32.load
     i32.const 8
-    i32.load
-    i32.load
-    i32.const 12
     i32.load
     i32.gt_s
     if  ;; label = @1
@@ -99,17 +99,15 @@ exports[`triggerSequencer if the wat code matches with the snapshot 1`] = `
       i32.add
       local.set 0
     end
-    i32.const 0
+    i32.const 76
     local.get 0
     i32.store
     i32.const 84
-    i32.const 16
     local.get 0
-    i32.add
     i32.load
     i32.store
-    i32.const 12
     i32.const 8
+    i32.const 4
     i32.load
     i32.load
     i32.store)
