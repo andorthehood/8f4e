@@ -112,10 +112,8 @@ export default ({ allocatedNotes = 12 } = {}) => `
 				localSet bestMatchingValue
 			end
 
-			# Increment the note memory pointer by 4 (i32 is 4 bytes)
 			push noteMemoryPointer
-			push 4
-			add
+			pointerForward
 			localSet noteMemoryPointer
 		loopEnd
 	end
