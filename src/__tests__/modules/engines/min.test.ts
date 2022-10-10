@@ -1,10 +1,19 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import min from '../../../modules/engines/min.asm';
 
-let testModule;
+let testModule: TestModule;
 
-describe('functional tests', () => {
+const fixtures: [input1: number, input2: number, output: number][] = [
+	[10, 10, 10],
+	[0, 10, 0],
+	[10, 0, 0],
+	[0, 0, 0],
+	[-10, 0, -10],
+	[-10, -100, -100],
+];
+
+describe('min', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(min);
 	});
@@ -21,40 +30,14 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test('min module', () => {
+	test.each(fixtures)('given inputs %p and %p, the expected output is %p', (input1, input2, output) => {
 		const { memory, test } = testModule;
 
-		memory[1] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[2] = 11 * memory.BYTES_PER_ELEMENT;
-
-		memory[10] = 10;
-		memory[11] = 10;
+		const in1 = memory.allocMemoryForPointer('in:1');
+		const in2 = memory.allocMemoryForPointer('in:2');
+		memory.set(in1, input1);
+		memory.set(in2, input2);
 		test();
-		expect(memory[3]).toBe(10);
-
-		memory[10] = 0;
-		memory[11] = 10;
-		test();
-		expect(memory[3]).toBe(0);
-
-		memory[10] = 10;
-		memory[11] = 0;
-		test();
-		expect(memory[3]).toBe(0);
-
-		memory[10] = 0;
-		memory[11] = 0;
-		test();
-		expect(memory[3]).toBe(0);
-
-		memory[10] = -10;
-		memory[11] = 0;
-		test();
-		expect(memory[3]).toBe(-10);
-
-		memory[10] = -10;
-		memory[11] = -100;
-		test();
-		expect(memory[3]).toBe(-100);
+		expect(memory.get('out')).toBe(output);
 	});
 });
