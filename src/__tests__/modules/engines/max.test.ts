@@ -1,10 +1,10 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import max from '../../../modules/engines/max.asm';
 
-let testModule;
+let testModule: TestModule;
 
-const fixtures = [
+const fixtures: [input1: number, input2: number, output: number][] = [
 	[10, 10, 10],
 	[0, 10, 10],
 	[10, 0, 10],
@@ -13,7 +13,7 @@ const fixtures = [
 	[-10, -100, -10],
 ];
 
-describe('functional tests', () => {
+describe('max', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(max);
 	});
@@ -30,14 +30,14 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test.each(fixtures)('given %p and %p, the output should be %p', (inputA, inputB, output) => {
+	test.each(fixtures)('given inputs %p and %p, the expected output is %p', (input1, input2, output) => {
 		const { memory, test } = testModule;
 
-		memory[10] = inputA;
-		memory[11] = inputB;
-		memory[1] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[2] = 11 * memory.BYTES_PER_ELEMENT;
+		const in1 = memory.allocMemoryForPointer('in:1');
+		const in2 = memory.allocMemoryForPointer('in:2');
+		memory.set(in1, input1);
+		memory.set(in2, input2);
 		test();
-		expect(memory[3]).toBe(output);
+		expect(memory.get('out')).toBe(output);
 	});
 });
