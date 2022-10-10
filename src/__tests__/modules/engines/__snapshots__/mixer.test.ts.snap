@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`funciontal tests if the generated memory map matches with the snapshot 1`] = `
+exports[`mixer if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
     "address": 0,
@@ -53,7 +53,7 @@ Map {
 }
 `;
 
-exports[`funciontal tests if the wat code matches with the snapshot 1`] = `
+exports[`mixer if the wat code matches with the snapshot 1`] = `
 "(module
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))

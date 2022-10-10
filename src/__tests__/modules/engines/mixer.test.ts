@@ -1,11 +1,24 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import mixer from '../../../modules/engines/mixer.asm';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../../modules/engines/consts';
 
-let testModule;
+let testModule: TestModule;
 
-describe('funciontal tests', () => {
+const fixtures: [inputs: [number, number, number, number], output: number][] = [
+	[[1, 1, 1, 1], 4],
+	[[1, -1, 1, -1], 0],
+	[
+		[I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_LARGEST_NUMBER],
+		I16_SIGNED_LARGEST_NUMBER,
+	],
+	[
+		[I16_SIGNED_SMALLEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER],
+		I16_SIGNED_SMALLEST_NUMBER,
+	],
+];
+
+describe('mixer', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(mixer);
 	});
@@ -22,40 +35,19 @@ describe('funciontal tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test('negate module', () => {
+	test.each(fixtures)('given inputs %p the expected output is %p', (inputs, output) => {
 		const { memory, test } = testModule;
 
-		memory[2] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[3] = 11 * memory.BYTES_PER_ELEMENT;
-		memory[4] = 12 * memory.BYTES_PER_ELEMENT;
-		memory[5] = 13 * memory.BYTES_PER_ELEMENT;
+		const in1 = memory.allocMemoryForPointer('in:1');
+		const in2 = memory.allocMemoryForPointer('in:2');
+		const in3 = memory.allocMemoryForPointer('in:3');
+		const in4 = memory.allocMemoryForPointer('in:4');
+		memory.set(in1, inputs[0]);
+		memory.set(in2, inputs[1]);
+		memory.set(in3, inputs[2]);
+		memory.set(in4, inputs[3]);
 
-		memory[10] = 1;
-		memory[11] = 1;
-		memory[12] = 1;
-		memory[13] = 1;
 		test();
-		expect(memory[1]).toBe(4);
-
-		memory[10] = 1;
-		memory[11] = -1;
-		memory[12] = 1;
-		memory[13] = -1;
-		test();
-		expect(memory[1]).toBe(0);
-
-		memory[10] = I16_SIGNED_LARGEST_NUMBER;
-		memory[11] = I16_SIGNED_LARGEST_NUMBER;
-		memory[12] = I16_SIGNED_LARGEST_NUMBER;
-		memory[13] = I16_SIGNED_LARGEST_NUMBER;
-		test();
-		expect(memory[1]).toBe(I16_SIGNED_LARGEST_NUMBER);
-
-		memory[10] = I16_SIGNED_SMALLEST_NUMBER;
-		memory[11] = I16_SIGNED_SMALLEST_NUMBER;
-		memory[12] = I16_SIGNED_SMALLEST_NUMBER;
-		memory[13] = I16_SIGNED_SMALLEST_NUMBER;
-		test();
-		expect(memory[1]).toBe(I16_SIGNED_SMALLEST_NUMBER);
+		expect(memory.get('out')).toBe(output);
 	});
 });
