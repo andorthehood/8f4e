@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`invert module if the generated memory map matches with the snapshot 1`] = `
+exports[`invert if the generated memory map matches with the snapshot 1`] = `
 Map {
   "default" => Object {
     "address": 0,
@@ -29,7 +29,7 @@ Map {
 }
 `;
 
-exports[`invert module if the wat code matches with the snapshot 1`] = `
+exports[`invert if the wat code matches with the snapshot 1`] = `
 "(module
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))

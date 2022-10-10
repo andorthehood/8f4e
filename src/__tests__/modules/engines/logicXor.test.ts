@@ -1,11 +1,11 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import xor from '../../../modules/engines/logicXor.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../../modules/engines/consts';
 
-let testModule;
+let testModule: TestModule;
 
-const fixtures = [
+const fixtures: [input1: number, input2: number, output: number][] = [
 	[10, 10, 0],
 	[0, 10, I16_SIGNED_LARGEST_NUMBER],
 	[10, 0, I16_SIGNED_LARGEST_NUMBER],
@@ -13,7 +13,7 @@ const fixtures = [
 	[-10, 0, 0],
 ];
 
-describe('functional tests', () => {
+describe('logicXor', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(xor);
 	});
@@ -30,15 +30,14 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test.each(fixtures)('given %p and %p, the expected output is %p', (a, b, output) => {
+	test.each(fixtures)('given inputs %p and %p, the expected output is %p', (input1, input2, output) => {
 		const { memory, test } = testModule;
 
-		memory[1] = 10 * memory.BYTES_PER_ELEMENT;
-		memory[2] = 11 * memory.BYTES_PER_ELEMENT;
-
-		memory[10] = a;
-		memory[11] = b;
+		const in1 = memory.allocMemoryForPointer('in:1');
+		const in2 = memory.allocMemoryForPointer('in:2');
+		memory.set(in1, input1);
+		memory.set(in2, input2);
 		test();
-		expect(memory[3]).toBe(output);
+		expect(memory.get('out')).toBe(output);
 	});
 });

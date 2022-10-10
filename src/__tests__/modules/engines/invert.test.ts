@@ -1,17 +1,17 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import invert from '../../../modules/engines/invert.asm';
 
-let testModule;
+let testModule: TestModule;
 
-const fixtures = [
+const fixtures: [input: number, output: number][] = [
 	[1, -1],
 	[69, -69],
 	[0, 0],
 	[-420, 420],
 ];
 
-describe('invert module', () => {
+describe('invert', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(invert);
 	});
@@ -28,11 +28,12 @@ describe('invert module', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test.each(fixtures)('given %p as input, the output is %p', (input, output) => {
+	test.each(fixtures)('given input %p, the expected output is %p', (input, output) => {
 		const { memory, test } = testModule;
 
-		memory[0] = input;
+		const inAddress = memory.allocMemoryForPointer('in');
+		memory.set(inAddress, input);
 		test();
-		expect(memory[2]).toBe(output);
+		expect(memory.get('out')).toBe(output);
 	});
 });
