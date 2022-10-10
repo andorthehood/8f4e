@@ -1,11 +1,19 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import offset from '../../../modules/engines/offset.asm';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from '../../../modules/engines/consts';
 
-let testModule;
+let testModule: TestModule;
 
-describe('functional tests', () => {
+const fixtures: [input: number, offset: number, output: number][] = [
+	[10, 10, 20],
+	[-10, 10, 0],
+	[-100, 10, -90],
+	[1000, I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_LARGEST_NUMBER],
+	[-1000, I16_SIGNED_SMALLEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER],
+];
+
+describe('offset', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(offset);
 	});
@@ -22,34 +30,14 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test('offset module', () => {
+	test.each(fixtures)('given input %p and offset %p the expected output is %p', (input, offset, output) => {
 		const { memory, test } = testModule;
 
-		memory[1] = 10 * memory.BYTES_PER_ELEMENT;
+		const inAddress = memory.allocMemoryForPointer('in');
 
-		memory[10] = 10;
-		memory[2] = 10;
+		memory.set(inAddress, input);
+		memory.set('offset', offset);
 		test();
-		expect(memory[3]).toBe(20);
-
-		memory[10] = -10;
-		memory[2] = 10;
-		test();
-		expect(memory[3]).toBe(0);
-
-		memory[10] = -100;
-		memory[2] = 10;
-		test();
-		expect(memory[3]).toBe(-90);
-
-		memory[10] = 1000;
-		memory[2] = I16_SIGNED_LARGEST_NUMBER;
-		test();
-		expect(memory[3]).toBe(I16_SIGNED_LARGEST_NUMBER);
-
-		memory[10] = -1000;
-		memory[2] = I16_SIGNED_SMALLEST_NUMBER;
-		test();
-		expect(memory[3]).toBe(I16_SIGNED_SMALLEST_NUMBER);
+		expect(memory.get('out')).toBe(output);
 	});
 });
