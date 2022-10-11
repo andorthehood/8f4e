@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
+exports[`buffer snapshots if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
     "address": 0,
@@ -13,7 +13,7 @@ Map {
   "numberOfInputs" => Object {
     "address": 1,
     "byteAddress": 4,
-    "default": 6,
+    "default": 4,
     "size": 1,
     "type": 6,
     "usage": 0,
@@ -21,7 +21,7 @@ Map {
   "numberOfOutputs" => Object {
     "address": 2,
     "byteAddress": 8,
-    "default": 6,
+    "default": 4,
     "size": 1,
     "type": 6,
     "usage": 0,
@@ -66,23 +66,23 @@ Map {
     "type": 3,
     "usage": 1,
   },
-  "in:5" => Object {
+  "out:1" => Object {
     "address": 8,
     "byteAddress": 32,
     "default": 0,
     "size": 1,
-    "type": 3,
-    "usage": 1,
+    "type": 4,
+    "usage": 0,
   },
-  "in:6" => Object {
+  "out:2" => Object {
     "address": 9,
     "byteAddress": 36,
     "default": 0,
     "size": 1,
-    "type": 3,
-    "usage": 1,
+    "type": 4,
+    "usage": 0,
   },
-  "out:1" => Object {
+  "out:3" => Object {
     "address": 10,
     "byteAddress": 40,
     "default": 0,
@@ -90,7 +90,7 @@ Map {
     "type": 4,
     "usage": 0,
   },
-  "out:2" => Object {
+  "out:4" => Object {
     "address": 11,
     "byteAddress": 44,
     "default": 0,
@@ -98,65 +98,33 @@ Map {
     "type": 4,
     "usage": 0,
   },
-  "out:3" => Object {
+  "data:1" => Object {
     "address": 12,
     "byteAddress": 48,
-    "default": 0,
-    "size": 1,
-    "type": 4,
-    "usage": 0,
-  },
-  "out:4" => Object {
-    "address": 13,
-    "byteAddress": 52,
-    "default": 0,
-    "size": 1,
-    "type": 4,
-    "usage": 0,
-  },
-  "out:5" => Object {
-    "address": 14,
-    "byteAddress": 56,
-    "default": 0,
-    "size": 1,
-    "type": 4,
-    "usage": 0,
-  },
-  "out:6" => Object {
-    "address": 15,
-    "byteAddress": 60,
-    "default": 0,
-    "size": 1,
-    "type": 4,
-    "usage": 0,
-  },
-  "data:1" => Object {
-    "address": 16,
-    "byteAddress": 64,
     "default": 0,
     "size": 1,
     "type": 6,
     "usage": 0,
   },
   "data:2" => Object {
-    "address": 17,
-    "byteAddress": 68,
+    "address": 13,
+    "byteAddress": 52,
     "default": 0,
     "size": 1,
     "type": 6,
     "usage": 0,
   },
   "data:3" => Object {
-    "address": 18,
-    "byteAddress": 72,
+    "address": 14,
+    "byteAddress": 56,
     "default": 0,
     "size": 1,
     "type": 6,
     "usage": 0,
   },
   "data:4" => Object {
-    "address": 19,
-    "byteAddress": 76,
+    "address": 15,
+    "byteAddress": 60,
     "default": 0,
     "size": 1,
     "type": 6,
@@ -165,38 +133,28 @@ Map {
 }
 `;
 
-exports[`functional tests if the wat code matches with the snapshot 1`] = `
+exports[`buffer snapshots if the wat code matches with the snapshot 1`] = `
 "(module
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
   (func (;0;) (type 0)
-    i32.const 40
+    i32.const 32
     i32.const 16
     i32.load
     i32.load
     i32.store
-    i32.const 44
+    i32.const 36
     i32.const 20
     i32.load
     i32.load
     i32.store
-    i32.const 48
+    i32.const 40
     i32.const 24
     i32.load
     i32.load
     i32.store
-    i32.const 52
+    i32.const 44
     i32.const 28
-    i32.load
-    i32.load
-    i32.store
-    i32.const 56
-    i32.const 32
-    i32.load
-    i32.load
-    i32.store
-    i32.const 60
-    i32.const 36
     i32.load
     i32.load
     i32.store)
