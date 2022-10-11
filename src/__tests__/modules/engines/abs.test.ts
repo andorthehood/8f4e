@@ -1,8 +1,8 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import abs from '../../../modules/engines/abs.asm';
 
-let testModule;
+let testModule: TestModule;
 
 const fixtures: [input: number, output: number][] = [
 	[1, 1],
@@ -11,7 +11,7 @@ const fixtures: [input: number, output: number][] = [
 	[420, 420],
 ];
 
-describe('functional tests', () => {
+describe('abs', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(abs);
 	});
@@ -28,10 +28,12 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test.each(fixtures)('given %p, returns %p', (input, output) => {
+	test.each(fixtures)('given input %p, the output should be %p', (input, output) => {
 		const { memory, test } = testModule;
-		memory[0] = input;
+
+		const inAddress = memory.allocMemoryForPointer('in');
+		memory.set(inAddress, input);
 		test();
-		expect(memory[2]).toBe(output);
+		expect(memory.get('out')).toBe(output);
 	});
 });
