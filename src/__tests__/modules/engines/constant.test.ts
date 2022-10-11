@@ -1,10 +1,12 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import constant from '../../../modules/engines/constant.asm';
 
-let testModule;
+let testModule: TestModule;
 
-describe('functional tests', () => {
+const fixtures = [1, -69];
+
+describe('constant', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(constant);
 	});
@@ -21,15 +23,11 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test('constant module', () => {
+	test.each(fixtures)('given input %p the output should be the same', input => {
 		const { memory, test } = testModule;
 
-		memory[0] = 1;
+		memory.set('out', input);
 		test();
-		expect(memory[0]).toBe(1);
-
-		memory[0] = -69;
-		test();
-		expect(memory[0]).toBe(-69);
+		expect(memory.get('out')).toBe(input);
 	});
 });
