@@ -1,8 +1,8 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import abs from '../../../modules/engines/attenuator.asm';
 
-let testModule;
+let testModule: TestModule;
 
 const fixtures: [dividend: number, divisor: number, quotient: number][] = [
 	[1, 1, 1],
@@ -17,7 +17,7 @@ const fixtures: [dividend: number, divisor: number, quotient: number][] = [
 	[420, -420, -1],
 ];
 
-describe('functional tests', () => {
+describe('attenuator', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(abs);
 	});
@@ -36,9 +36,11 @@ describe('functional tests', () => {
 
 	test.each(fixtures)('given %p as dividend and %p as divisor, returns %p', (dividend, divisor, quotient) => {
 		const { memory, test } = testModule;
-		memory[0] = dividend;
-		memory[2] = divisor;
+
+		const inAddress = memory.allocMemoryForPointer('in');
+		memory.set(inAddress, dividend);
+		memory.set('divisor', divisor);
 		test();
-		expect(memory[3]).toBe(quotient);
+		expect(memory.get('out')).toBe(quotient);
 	});
 });
