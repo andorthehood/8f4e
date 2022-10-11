@@ -1,17 +1,17 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import adc from '../../../modules/engines/adc.asm';
 import { LOGIC_HIGH } from '../../../modules/engines/consts';
 
-let testModule;
+let testModule: TestModule;
 
-const fixtures = [
-	[3000, LOGIC_HIGH],
-	[2000, LOGIC_HIGH],
-	[3000, LOGIC_HIGH],
+const fixtures: [input: number, outputs: number[]][] = [
+	[3000, [LOGIC_HIGH]],
+	[2000, [LOGIC_HIGH]],
+	[3000, [LOGIC_HIGH]],
 ];
 
-describe('functional tests', () => {
+describe('adc', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(adc({ resolution: 8 }));
 	});
@@ -28,11 +28,12 @@ describe('functional tests', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test.each(fixtures)('given %p the output should be %p', (input, output) => {
+	test.each(fixtures)('given %p as input, the output should be %p', (input, outputs) => {
 		const { memory, test } = testModule;
 
-		memory[0] = input;
+		const inAddress = memory.allocMemoryForPointer('in');
+		memory.set(inAddress, input);
 		test();
-		expect(memory[2]).toBe(output);
+		expect(memory.get('out:1')).toBe(outputs[0]);
 	});
 });

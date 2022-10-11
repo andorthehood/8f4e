@@ -1,9 +1,9 @@
-import { createTestModule } from '@8f4e/compiler';
+import { createTestModule, TestModule } from '@8f4e/compiler';
 
 import bitwiseOr from '../../../modules/engines/bitwiseOr.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from '../../../modules/engines/consts';
 
-let testModule;
+let testModule: TestModule;
 
 const fixtures: [input1: number, input2: number, output: number][] = [
 	[10, 10, 10 | 10],
@@ -12,7 +12,7 @@ const fixtures: [input1: number, input2: number, output: number][] = [
 	[I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_LARGEST_NUMBER | I16_SIGNED_LARGEST_NUMBER],
 ];
 
-describe('functional tests', () => {
+describe('bitwiseOr', () => {
 	beforeAll(async () => {
 		testModule = await createTestModule(bitwiseOr);
 	});
@@ -31,9 +31,12 @@ describe('functional tests', () => {
 
 	test.each(fixtures)('given %p and %p, the output is %p', (input1, input2, output) => {
 		const { memory, test } = testModule;
-		memory[0] = input1;
-		memory[1] = input2;
+
+		const in1Address = memory.allocMemoryForPointer('in:1');
+		const in2Address = memory.allocMemoryForPointer('in:2');
+		memory.set(in1Address, input1);
+		memory.set(in2Address, input2);
 		test();
-		expect(memory[4]).toBe(output);
+		expect(memory.get('out')).toBe(output);
 	});
 });
