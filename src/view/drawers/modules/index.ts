@@ -34,11 +34,11 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.setSpriteLookup(fillColor);
 			engine.drawSprite(0, 0, 'rgb(0,0,0)', width, height);
 
-			engine.setSpriteLookup(font('mosaic_white'));
-			engine.drawText(0, 0, String.fromCharCode(Mosaic.CORNER_TOP_LEFT));
-			engine.drawText(width - VGRID, 0, String.fromCharCode(Mosaic.CORNER_TOP_RIGHT));
-			engine.drawText(0, height - HGRID, String.fromCharCode(Mosaic.CORNER_BOTTOM_LEFT));
-			engine.drawText(width - VGRID, height - HGRID, String.fromCharCode(Mosaic.CORNER_BOTTOM_RIGHT));
+			engine.setSpriteLookup(font('white'));
+			engine.drawText(0, 0, '+');
+			engine.drawText(width - VGRID, 0, '+');
+			engine.drawText(0, height - HGRID, '+');
+			engine.drawText(width - VGRID, height - HGRID, '+');
 
 			if (type === 'scope') {
 				scope(engine, state, id);
