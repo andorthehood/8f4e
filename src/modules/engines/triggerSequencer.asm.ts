@@ -3,6 +3,7 @@ import { I16_SIGNED_LARGEST_NUMBER } from '@8f4e/compiler';
 export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
     private defaultValue 0
     inputPointer trigger defaultValue
+    inputPointer reset defaultValue
     private triggerPreviousValue 0
     private stepMinusOne 0
     array steps ${maxSteps} 0
@@ -15,6 +16,14 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
 
     push stepPointer
     localSet _stepPointer
+
+    push reset
+    push 0
+    greaterThan
+    if void
+        pushRef stepMinusOne
+        localSet _stepPointer
+    end
 
     push trigger
     push triggerPreviousValue
