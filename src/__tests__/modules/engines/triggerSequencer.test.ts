@@ -63,6 +63,30 @@ describe('triggerSequencer', () => {
 		}
 	});
 
+	test('if the pointer resets when the reset input is high', () => {
+		const { test, memory } = testModule;
+
+		const trigger = memory.allocMemoryForPointer('trigger');
+		const reset = memory.allocMemoryForPointer('reset');
+		memory.set('stepLength', 6);
+
+		for (let i = 0; i < 10; i += 1) {
+			for (let j = 0; j < 3; j++) {
+				memory.set(trigger, 1);
+				test();
+				memory.set(trigger, 0);
+				test();
+				expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + WORD_LENGTH * j);
+			}
+
+			memory.set(reset, 1);
+			test();
+			memory.set(reset, 0);
+			test();
+			expect(memory.get('stepPointer')).toBe(memory.byteAddress('stepMinusOne'));
+		}
+	});
+
 	test('if the pulse only appears on the output once', () => {
 		const { test, memory } = testModule;
 
