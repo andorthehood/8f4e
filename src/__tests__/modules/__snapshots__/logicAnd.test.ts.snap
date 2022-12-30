@@ -19,14 +19,14 @@ Object {
 		push 0
 		greaterThan
 		if void
-			pushRef out
+			push &out
 			push 32767
 			store
 			branch 2
 		end
 	end
 
-	pushRef out
+	push &out
 	push 0
 	store
 ",

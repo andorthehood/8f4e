@@ -22,13 +22,13 @@ export default `
 			branchIfTrue 1
 		end
 
-		pushRef out
+		push &out
 		push ${I16_SIGNED_LARGEST_NUMBER}
 		store
 		branch 1
 	end
 
-	pushRef out
+	push &out
 	push 0
 	store
 `;

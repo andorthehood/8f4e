@@ -273,7 +273,7 @@ Object {
 	push numberOfNotes
 	push 4
 	mul
-	pushRef notes
+	push &notes
 	add
 	localSet notesEndAddressPointer
 
@@ -282,7 +282,7 @@ Object {
 	localSet smallestDifference
 
 	# Set the note memory pointer to the start address
-	pushRef notes
+	push &notes
 	localSet noteMemoryPointer
 
 	block void
@@ -338,7 +338,7 @@ Object {
 	end
 
 	# Prepare memory address for storing the output value.
-	pushRef out
+	push &out
 	push bestMatchingValue
 	store
 ",

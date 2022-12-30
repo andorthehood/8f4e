@@ -21,7 +21,7 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
     push 0
     greaterThan
     if void
-        pushRef stepMinusOne
+        push &stepMinusOne
         localSet _stepPointer
     end
 
@@ -29,7 +29,7 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
     push triggerPreviousValue
     greaterThan
     if void
-        pushRef didTrigger
+        push &didTrigger
         push 0
         store
 
@@ -41,19 +41,19 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
         push stepLength
         push 4
         mul
-        pushRef steps
+        push &steps
         add
         greaterOrEqual
         if void
-            pushRef steps
+            push &steps
             localSet _stepPointer
         end
     end
-    pushRef stepPointer
+    push &stepPointer
     push _stepPointer
     store
 
-    pushRef out
+    push &out
     push _stepPointer
     load
     push 0
@@ -65,7 +65,7 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
         if
             push 0
         else
-            pushRef didTrigger
+            push &didTrigger
             push 1
             store
 
@@ -76,7 +76,7 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
     end
     store
 
-    pushRef triggerPreviousValue
+    push &triggerPreviousValue
     push trigger
     store
 `;

@@ -14,14 +14,14 @@ export default `
 		push 0
 		greaterThan
 		if void
-			pushRef out
+			push &out
 			push ${I16_SIGNED_LARGEST_NUMBER}
 			store
 			branch 2
 		end
 	end
 
-	pushRef out
+	push &out
 	push 0
 	store
 `;

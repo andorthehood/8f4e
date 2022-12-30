@@ -15,7 +15,7 @@ Object {
 	push 0
 	greaterThan
 	if void
-		pushRef out
+		push &out
 		push 32767
 		store
 		branch 1
@@ -25,7 +25,7 @@ Object {
 	push 0
 	greaterThan
 	if void
-		pushRef out
+		push &out
 		push 32767
 		store
 		branch 1
