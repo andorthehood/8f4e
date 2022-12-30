@@ -29,19 +29,19 @@ export default `
 		localSet _counter
 	end
 
-	pushRef previousClock
+	push &previousClock
 	push clock
 	store
 
-	pushRef out
-	pushRef in:1
+	push &out
+	push &in:1
 	push _counter
 	add
 	load
 	load
 	store
 
-	pushRef counter
+	push &counter
 	push _counter
 	store
 `;

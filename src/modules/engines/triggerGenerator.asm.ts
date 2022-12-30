@@ -68,11 +68,11 @@ export default `
 
 	localSet _counter
 
-	pushRef out
+	push &out
 	push _output
 	store
 
-	pushRef counter
+	push &counter
 	push _counter
 	store
 `;

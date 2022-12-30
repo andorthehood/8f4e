@@ -54,7 +54,7 @@ export default ({ allocatedNotes = 12 } = {}) => `
 	push numberOfNotes
 	push 4
 	mul
-	pushRef notes
+	push &notes
 	add
 	localSet notesEndAddressPointer
 
@@ -63,7 +63,7 @@ export default ({ allocatedNotes = 12 } = {}) => `
 	localSet smallestDifference
 
 	# Set the note memory pointer to the start address
-	pushRef notes
+	push &notes
 	localSet noteMemoryPointer
 
 	block void
@@ -119,7 +119,7 @@ export default ({ allocatedNotes = 12 } = {}) => `
 	end
 
 	# Prepare memory address for storing the output value.
-	pushRef out
+	push &out
 	push bestMatchingValue
 	store
 `;

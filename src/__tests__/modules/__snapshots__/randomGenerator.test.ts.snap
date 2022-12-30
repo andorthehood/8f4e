@@ -82,7 +82,7 @@ Object {
 	end
 	localSet random
 
-	pushRef out
+	push &out
 	push random
 	push 32767
 	remainder

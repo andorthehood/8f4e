@@ -11,19 +11,19 @@ export default `
 	push in
 	localSet input
 
-	pushRef out:1
+	push &out:1
 	push input
 	store
 
-	pushRef out:2
+	push &out:2
 	push input
 	store
 
-	pushRef out:3
+	push &out:3
 	push input
 	store
 
-	pushRef out:4
+	push &out:4
 	push input
 	store
 `;

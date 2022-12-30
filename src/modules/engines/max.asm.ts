@@ -7,7 +7,7 @@ export default `
 	local _in1
 	local _in2
 
-	pushRef out
+	push &out
 		push in:1
 		localSet _in1
 

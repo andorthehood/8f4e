@@ -5,6 +5,10 @@ export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean 
 	return memoryMap.has(name);
 }
 
+export function isMemoryReferenceIdentifier(memoryMap: MemoryMap, name: string): boolean {
+	return name.startsWith('&') && memoryMap.has(name.substring(1));
+}
+
 export function getMemoryItem(memoryMap: MemoryMap, id: string) {
 	return memoryMap.get(id);
 }

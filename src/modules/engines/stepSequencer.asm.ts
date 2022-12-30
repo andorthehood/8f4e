@@ -24,24 +24,24 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
         push stepLength
         push 4
         mul
-        pushRef steps
+        push &steps
         add
         greaterOrEqual
         if void
-            pushRef steps
+            push &steps
             localSet _stepPointer
         end
     end
-    pushRef stepPointer
+    push &stepPointer
     push _stepPointer
     store
 
-    pushRef out
+    push &out
     push _stepPointer
     load
     store
 
-    pushRef triggerPreviousValue
+    push &triggerPreviousValue
     push trigger
     store
 `;
