@@ -27,13 +27,13 @@ Object {
 			branchIfTrue 1
 		end
 
-		pushRef out
+		push &out
 		push 32767
 		store
 		branch 1
 	end
 
-	pushRef out
+	push &out
 	push 0
 	store
 ",

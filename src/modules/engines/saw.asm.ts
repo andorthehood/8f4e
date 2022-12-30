@@ -57,7 +57,7 @@ export default `
 	end
 	localSet counter
 
-	pushRef out
+	push &out
 	push counter
 	store
 `;

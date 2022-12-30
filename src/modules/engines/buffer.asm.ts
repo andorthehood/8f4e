@@ -83,7 +83,7 @@ export default ({ numberOfPorts = 1, numberOfDataPlaceholders = 1 }) => {
 		${ports
 			.map(
 				index => `
-			pushRef out:${index}
+			push &out:${index}
 			push in:${index}
 			store
 		`

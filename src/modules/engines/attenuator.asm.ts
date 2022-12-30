@@ -17,7 +17,7 @@ export default `
 	inputPointer in zero
 	public divisor 1
 	output out 0
-	pushRef out
+	push &out
 	push in
 	push divisor
 	div

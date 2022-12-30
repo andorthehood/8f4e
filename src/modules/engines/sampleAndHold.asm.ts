@@ -16,12 +16,12 @@ export default `
 	push 1000
 	greaterOrEqual
 	if void
-		pushRef out
+		push &out
 		push in
 		store
 	end
 
-	pushRef triggerPreviousValue
+	push &triggerPreviousValue
 	push triggerInput
 	store
 `;
