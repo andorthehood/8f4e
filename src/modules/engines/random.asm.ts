@@ -53,7 +53,7 @@ export default ({ seed = 69420 } = {}) => `
 	end
 	localSet random
 
-	pushRef out
+	push &out
 	push random
 	push ${I16_SIGNED_LARGEST_NUMBER}
 	remainder

@@ -5,7 +5,7 @@ export default `
 	inputPointer in:2 default2
 	output out 0
 		
-	pushRef out
+	push &out
 	push in:1
 	push in:2
 	xor
