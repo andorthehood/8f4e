@@ -15,7 +15,7 @@ export default [
             local input
         
             # code
-            pushRef out
+            push &out
             push in
             localSet input
             push input

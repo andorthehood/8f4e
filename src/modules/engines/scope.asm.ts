@@ -17,7 +17,7 @@ export default `
 	push in
 	localSet _input
 
-	pushRef out
+	push &out
 	push _input
 	store
 
@@ -28,7 +28,7 @@ export default `
 	push rate
 	greaterOrEqual
 	if void
-		pushRef counter
+		push &counter
 		push 0
 		store
 	else
@@ -37,7 +37,7 @@ export default `
 		add
 		localSet _counter
 		
-		pushRef counter
+		push &counter
 		push _counter
 		store
 		branch 1
@@ -58,16 +58,16 @@ export default `
 
 	# Prevent the buffer pointer access out of bounds memory.
 	push _bufferPointer
-		pushRef buffer
+		push &buffer
 			push ${BUFFER_LENGTH * Int32Array.BYTES_PER_ELEMENT}
 		add
 	greaterOrEqualUnsigned
 	if void
-		pushRef buffer
+		push &buffer
 		localSet _bufferPointer
 	end
 
-	pushRef bufferPointer
+	push &bufferPointer
 	push _bufferPointer
 	store
 `;

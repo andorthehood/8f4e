@@ -21,7 +21,7 @@ export default `
 
 	local result
 
-	pushRef out
+	push &out
 		push in
 		push offset
 		add

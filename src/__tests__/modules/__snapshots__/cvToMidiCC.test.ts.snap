@@ -39,17 +39,17 @@ Object {
 		
 
 		
-			pushRef out:1
+			push &out:1
 			push in:1
 			store
 		
 
-			pushRef out:2
+			push &out:2
 			push in:2
 			store
 		
 
-			pushRef out:3
+			push &out:3
 			push in:3
 			store
 		

@@ -38,7 +38,7 @@ output out:16 0
 	localSet input
 
 	
-			pushRef out:1
+			push &out:1
 			push input
 			push 1
 			and
@@ -52,7 +52,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:2
+			push &out:2
 			push input
 			push 2
 			and
@@ -66,7 +66,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:3
+			push &out:3
 			push input
 			push 4
 			and
@@ -80,7 +80,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:4
+			push &out:4
 			push input
 			push 8
 			and
@@ -94,7 +94,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:5
+			push &out:5
 			push input
 			push 16
 			and
@@ -108,7 +108,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:6
+			push &out:6
 			push input
 			push 32
 			and
@@ -122,7 +122,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:7
+			push &out:7
 			push input
 			push 64
 			and
@@ -136,7 +136,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:8
+			push &out:8
 			push input
 			push 128
 			and
@@ -150,7 +150,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:9
+			push &out:9
 			push input
 			push 256
 			and
@@ -164,7 +164,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:10
+			push &out:10
 			push input
 			push 512
 			and
@@ -178,7 +178,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:11
+			push &out:11
 			push input
 			push 1024
 			and
@@ -192,7 +192,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:12
+			push &out:12
 			push input
 			push 2048
 			and
@@ -206,7 +206,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:13
+			push &out:13
 			push input
 			push 4096
 			and
@@ -220,7 +220,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:14
+			push &out:14
 			push input
 			push 8192
 			and
@@ -234,7 +234,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:15
+			push &out:15
 			push input
 			push 16384
 			and
@@ -248,7 +248,7 @@ output out:16 0
 			store
 		
 
-			pushRef out:16
+			push &out:16
 			push input
 			push 32768
 			and

@@ -35,7 +35,7 @@ export default ({ resolution = 8 } = {}) => `
 		.slice(0, resolution)
 		.map(
 			(mask, index) => `
-			pushRef out:${index + 1}
+			push &out:${index + 1}
 			push input
 			push ${mask}
 			and

@@ -10,7 +10,7 @@ export default `
 
 	local result
 
-	pushRef out
+	push &out
 		push in:1
 		push in:2
 		add
