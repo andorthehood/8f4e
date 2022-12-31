@@ -1,5 +1,9 @@
 import { Instruction } from '@8f4e/bytecode-utils';
 
-export default function () {
+import { InstructionHandler } from '../types';
+
+const and: InstructionHandler = function () {
 	return [Instruction.I32_AND];
-}
+};
+
+export default and;

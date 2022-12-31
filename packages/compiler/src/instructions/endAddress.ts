@@ -1,9 +1,9 @@
 import { i32const } from '@8f4e/bytecode-utils';
 
-import { AST, ArgumentType, MemoryMap } from '../types';
+import { ArgumentType } from '../types';
 import { getMemoryStringEndAddress, isMemoryIdentifier } from '../utils';
 
-export default function push(line: AST[number], locals: string[], memory: MemoryMap) {
+const endAddress = function (line, locals, memory) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
@@ -15,4 +15,6 @@ export default function push(line: AST[number], locals: string[], memory: Memory
 	}
 
 	return [...i32const(getMemoryStringEndAddress(memory, argument.value))];
-}
+};
+
+export default endAddress;

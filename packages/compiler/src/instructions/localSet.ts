@@ -1,8 +1,8 @@
 import { localSet } from '@8f4e/bytecode-utils';
 
-import { AST, ArgumentType } from '../types';
+import { ArgumentType, InstructionHandler } from '../types';
 
-export default function (line: AST[number], locals: string[]) {
+const _localSet: InstructionHandler = function (line, locals) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
@@ -16,4 +16,6 @@ export default function (line: AST[number], locals: string[]) {
 	} else {
 		throw `'1005: Expected identifier, got a value: '${line.arguments[0].value}''`;
 	}
-}
+};
+
+export default _localSet;
