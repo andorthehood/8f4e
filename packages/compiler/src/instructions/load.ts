@@ -1,9 +1,9 @@
 import { i32const, i32load } from '@8f4e/bytecode-utils';
 
-import { AST, ArgumentType, MemoryMap } from '../types';
+import { ArgumentType, InstructionHandler } from '../types';
 import { getMemoryItemByteAddress, isInputPointer, isMemoryIdentifier } from '../utils';
 
-export default function load(line: AST[number], locals: string[], memory: MemoryMap) {
+const load: InstructionHandler = function (line, locals, memory) {
 	if (!line.arguments[0]) {
 		return i32load();
 	}
@@ -21,4 +21,6 @@ export default function load(line: AST[number], locals: string[], memory: Memory
 	} else {
 		throw `'1005: Expected identifier, got a value: '${line.arguments[0].value}''`;
 	}
-}
+};
+
+export default load;
