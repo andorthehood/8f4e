@@ -1,19 +1,21 @@
 import { localGet } from '@8f4e/bytecode-utils';
 
-import { AST, ArgumentType } from '../types';
+import { ArgumentType, InstructionHandler } from '../types';
 
-export default function (line: AST[number], locals: string[]) {
+const _localGet: InstructionHandler = function (line, locals) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
 
 	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
 		if (locals.indexOf(line.arguments[0].value) === -1) {
-			throw `'1003: Unidentified identifier: '${line.arguments[0].value}'`;
+			throw `'1003: Undeclared identifier: '${line.arguments[0].value}'`;
 		}
 
 		return localGet(locals.indexOf(line.arguments[0].value));
 	} else {
 		throw `'1005: Expected identifier, got a value: '${line.arguments[0].value}''`;
 	}
-}
+};
+
+export default _localGet;
