@@ -8,7 +8,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 0,
   },
   "in" => Object {
     "address": 1,
@@ -16,7 +15,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 3,
-    "usage": 1,
   },
   "out" => Object {
     "address": 2,
@@ -24,7 +22,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 4,
-    "usage": 0,
   },
   "counter" => Object {
     "address": 3,
@@ -32,7 +29,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 1,
   },
   "rate" => Object {
     "address": 4,
@@ -40,7 +36,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 1,
   },
   "bufferPointer" => Object {
     "address": 5,
@@ -48,7 +43,6 @@ Map {
     "default": 24,
     "size": 1,
     "type": 6,
-    "usage": 1,
   },
   "buffer" => Object {
     "address": 6,
@@ -121,7 +115,6 @@ Map {
     ],
     "size": 64,
     "type": 0,
-    "usage": 0,
   },
 }
 `;

@@ -8,7 +8,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 0,
   },
   "default2" => Object {
     "address": 1,
@@ -16,7 +15,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 0,
   },
   "in:1" => Object {
     "address": 2,
@@ -24,7 +22,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 3,
-    "usage": 1,
   },
   "in:2" => Object {
     "address": 3,
@@ -32,7 +29,6 @@ Map {
     "default": 4,
     "size": 1,
     "type": 3,
-    "usage": 1,
   },
   "out" => Object {
     "address": 4,
@@ -40,7 +36,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 4,
-    "usage": 0,
   },
 }
 `;
