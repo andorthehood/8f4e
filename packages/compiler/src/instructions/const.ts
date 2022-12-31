@@ -1,9 +1,11 @@
-import { AST, MemoryMap } from '../types';
+import { InstructionHandler } from '../types';
 
-export default function (line: AST[number], locals, memory: MemoryMap, consts: Record<string, number>) {
+const _const: InstructionHandler = function (line) {
 	if (!line.arguments[0] || !line.arguments[1]) {
 		throw '1002: Missing argument';
 	}
 
 	return [];
-}
+};
+
+export default _const;
