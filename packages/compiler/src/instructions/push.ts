@@ -9,7 +9,7 @@ import {
 	isMemoryReferenceIdentifier,
 } from '../utils';
 
-export default function push(line: AST[number], locals: string[], memory: MemoryMap) {
+export default function push(line: AST[number], locals: string[], memory: MemoryMap, consts: Record<string, number>) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
@@ -25,6 +25,8 @@ export default function push(line: AST[number], locals: string[], memory: Memory
 			];
 		} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
 			return i32const(getMemoryItemByteAddress(memory, argument.value.substring(1)));
+		} else if (typeof consts[argument.value] !== 'undefined') {
+			return i32const(consts[argument.value]);
 		} else if (isLocalIdentifier(locals, argument.value)) {
 			return localGet(locals.indexOf(argument.value));
 		}

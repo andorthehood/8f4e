@@ -13,16 +13,16 @@ array arr 32 -1
 local input
 
 # code
-const out
-const in:1
+push out
+push in:1
 load
 load
 localSet input
 localGet input
-const 0
+push 0
 lessThan
 if 
-    const 0
+    push 0
     localGet input
     sub
 else

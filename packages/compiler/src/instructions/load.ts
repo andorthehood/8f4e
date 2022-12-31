@@ -10,7 +10,7 @@ export default function load(line: AST[number], locals: string[], memory: Memory
 
 	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
 		if (!isMemoryIdentifier(memory, line.arguments[0].value)) {
-			throw `'1003: Unidentified identifier: '${line.arguments[0].value}'`;
+			throw `'1003: Undeclared identifier: '${line.arguments[0].value}'`;
 		}
 
 		return [
@@ -18,5 +18,7 @@ export default function load(line: AST[number], locals: string[], memory: Memory
 			...(isInputPointer(memory, line.arguments[0].value) ? i32load() : []),
 			...i32load(),
 		];
+	} else {
+		throw `'1005: Expected identifier, got a value: '${line.arguments[0].value}''`;
 	}
 }

@@ -8,6 +8,9 @@ export default `
 	inputPointer in:3 defaultValue
 	inputPointer in:4 defaultValue
 
+	const HIGH ${I16_SIGNED_LARGEST_NUMBER}
+	const LOW ${I16_SIGNED_SMALLEST_NUMBER}
+
 	local result
 
 	push &out
@@ -21,20 +24,20 @@ export default `
 		localSet result
 
 		push result
-		push ${I16_SIGNED_LARGEST_NUMBER}
+		push HIGH
 		greaterOrEqual
 		if
-			push ${I16_SIGNED_LARGEST_NUMBER}
+			push HIGH
 		else
 			push result
 		end
 		localSet result
 
 		push result
-		push ${I16_SIGNED_SMALLEST_NUMBER}
+		push LOW
 		lessOrEqual
 		if
-			push ${I16_SIGNED_SMALLEST_NUMBER}
+			push LOW
 		else
 			push result
 		end	
