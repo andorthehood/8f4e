@@ -13,6 +13,9 @@ Object {
 	inputPointer in:3 defaultValue
 	inputPointer in:4 defaultValue
 
+	const HIGH 32767
+	const LOW -32768
+
 	local result
 
 	push &out
@@ -26,20 +29,20 @@ Object {
 		localSet result
 
 		push result
-		push 32767
+		push HIGH
 		greaterOrEqual
 		if
-			push 32767
+			push HIGH
 		else
 			push result
 		end
 		localSet result
 
 		push result
-		push -32768
+		push LOW
 		lessOrEqual
 		if
-			push -32768
+			push LOW
 		else
 			push result
 		end	

@@ -6,12 +6,14 @@ export default `
 	inputPointer in:2 defaultValue
 	output out 0
 
+	const HIGH ${I16_SIGNED_LARGEST_NUMBER}
+
 	push in:1
 	push 0
 	greaterThan
 	if void
 		push &out
-		push ${I16_SIGNED_LARGEST_NUMBER}
+		push HIGH
 		store
 		branch 1
 	end
@@ -21,7 +23,7 @@ export default `
 	greaterThan
 	if void
 		push &out
-		push ${I16_SIGNED_LARGEST_NUMBER}
+		push HIGH
 		store
 		branch 1
 	end

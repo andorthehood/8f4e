@@ -11,6 +11,8 @@ Object {
 	inputPointer in:2 defaultValue
 	output out 0
 
+	const HIGH 32767
+
 	block void
 		push in:1
 		push 0
@@ -28,7 +30,7 @@ Object {
 		end
 
 		push &out
-		push 32767
+		push HIGH
 		store
 		branch 1
 	end

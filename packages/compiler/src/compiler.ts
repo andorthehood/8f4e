@@ -45,6 +45,21 @@ function collectLocals(ast: AST): string[] {
 	}, [] as string[]);
 }
 
+function collectConsts(ast: AST): Record<string, number> {
+	return Object.fromEntries(
+		ast.reduce((acc, line) => {
+			if (
+				line.instruction === 'const' &&
+				line.arguments[0].type === 'identifier' &&
+				line.arguments[1].type === 'literal'
+			) {
+				acc.push([line.arguments[0].value, line.arguments[1].value]);
+			}
+			return acc;
+		}, [] as [string, number][])
+	);
+}
+
 function collectMemoryItemNames(ast: AST): string[] {
 	return ast.reduce((acc, line) => {
 		if (memoryKeywords.includes(line.instruction) && line.arguments[0].type === 'identifier') {
@@ -69,12 +84,12 @@ export function compileLine(
 	line: AST[number],
 	locals: string[],
 	memory: MemoryMap,
-	startingByteAddress: number
+	consts: Record<string, number>
 ): number[] {
 	if (!instructions[line.instruction]) {
 		throw `1001: Unrecognized instruction: '${line.instruction}'`;
 	}
-	return instructions[line.instruction](line, locals, memory, startingByteAddress);
+	return instructions[line.instruction](line, locals, memory, consts);
 }
 
 function memoryInstructionNameToEnum(name: string): MemoryTypes {
@@ -158,10 +173,11 @@ export function compile(module: string, moduleId: string, startingByteAddress: n
 	const ast = compileToAST(module);
 	const memoryMap = getMemoryMap(ast, startingByteAddress);
 	const locals = collectLocals(ast);
+	const consts = collectConsts(ast);
 
 	const wa = ast
 		.reduce((acc, line) => {
-			acc.push(compileLine(line, locals, memoryMap, startingByteAddress));
+			acc.push(compileLine(line, locals, memoryMap, consts));
 			return acc;
 		}, [] as number[][])
 		.flat();

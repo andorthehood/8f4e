@@ -11,12 +11,14 @@ Object {
 	inputPointer in:2 defaultValue
 	output out 0
 
+	const HIGH 32767
+
 	push in:1
 	push 0
 	greaterThan
 	if void
 		push &out
-		push 32767
+		push HIGH
 		store
 		branch 1
 	end
@@ -26,7 +28,7 @@ Object {
 	greaterThan
 	if void
 		push &out
-		push 32767
+		push HIGH
 		store
 		branch 1
 	end
