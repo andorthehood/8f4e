@@ -23,7 +23,6 @@ import greaterThan from './greaterThan';
 import branch from './branch';
 import branchIfTrue from './branchIfTrue';
 import push from './push';
-import pushRef from './pushRef';
 import block from './block';
 import lessOrEqual from './lessOrEqual';
 import mul from './mul';
@@ -63,7 +62,6 @@ export default {
 	branch,
 	branchIfTrue,
 	push,
-	pushRef,
 	block,
 	lessOrEqual,
 	mul,
