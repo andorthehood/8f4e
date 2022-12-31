@@ -8,7 +8,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 0,
   },
   "trigger" => Object {
     "address": 1,
@@ -16,7 +15,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 3,
-    "usage": 2,
   },
   "reset" => Object {
     "address": 2,
@@ -24,7 +22,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 3,
-    "usage": 1,
   },
   "triggerPreviousValue" => Object {
     "address": 3,
@@ -32,7 +29,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 1,
   },
   "stepMinusOne" => Object {
     "address": 4,
@@ -40,7 +36,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 0,
   },
   "steps" => Object {
     "address": 5,
@@ -65,7 +60,6 @@ Map {
     ],
     "size": 16,
     "type": 0,
-    "usage": 0,
   },
   "stepPointer" => Object {
     "address": 21,
@@ -73,7 +67,6 @@ Map {
     "default": 16,
     "size": 1,
     "type": 5,
-    "usage": 1,
   },
   "stepLength" => Object {
     "address": 22,
@@ -81,7 +74,6 @@ Map {
     "default": 4,
     "size": 1,
     "type": 6,
-    "usage": 1,
   },
   "didTrigger" => Object {
     "address": 23,
@@ -89,7 +81,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 5,
-    "usage": 1,
   },
   "out" => Object {
     "address": 24,
@@ -97,7 +88,6 @@ Map {
     "default": 0,
     "size": 1,
     "type": 4,
-    "usage": 0,
   },
 }
 `;
