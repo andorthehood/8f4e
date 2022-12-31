@@ -27,7 +27,7 @@ export function collectConsts(ast: AST): Record<string, number> {
 	);
 }
 
-export function collectMemoryItemNames(ast: AST): string[] {
+function collectMemoryItemNames(ast: AST): string[] {
 	return ast.reduce((acc, line) => {
 		if (memoryKeywords.includes(line.instruction) && line.arguments[0].type === 'identifier') {
 			acc.push(line.arguments[0].value);
@@ -36,7 +36,7 @@ export function collectMemoryItemNames(ast: AST): string[] {
 	}, [] as string[]);
 }
 
-export function memoryInstructionNameToEnum(name: string): MemoryTypes {
+function memoryInstructionNameToEnum(name: string): MemoryTypes {
 	switch (name) {
 		case 'private':
 			return MemoryTypes.PRIVATE;
