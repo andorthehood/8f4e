@@ -60,7 +60,7 @@ export function getMemoryMap(ast: AST, startingByteAddress): MemoryMap {
 			.filter(({ instruction }) => {
 				return memoryKeywords.includes(instruction);
 			})
-			.map(({ instruction, arguments: args }, index) => {
+			.map(({ instruction, arguments: args }) => {
 				const type = memoryInstructionNameToEnum(instruction);
 				const wordSize = type === MemoryTypes.DYNAMIC_ARRAY ? (args[1].value as number) : 1;
 				const wordAddress = addressCounter;

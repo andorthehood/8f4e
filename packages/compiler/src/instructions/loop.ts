@@ -1,11 +1,13 @@
 import { Instruction, Type } from '@8f4e/bytecode-utils';
 
-import { AST, ArgumentType } from '../types';
+import { ArgumentType, InstructionHandler } from '../types';
 
-export default function loop(line: AST[number]) {
+const loop: InstructionHandler = function (line) {
 	if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'void') {
 		return [Instruction.LOOP, Type.VOID];
 	}
 
 	return [Instruction.LOOP, Type.I32];
-}
+};
+
+export default loop;

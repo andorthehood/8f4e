@@ -1,3 +1,5 @@
+import { Instruction, Type } from '@8f4e/bytecode-utils';
+
 export enum MemoryTypes {
 	DYNAMIC_ARRAY,
 	STATIC_ARRAY,
@@ -73,3 +75,10 @@ export interface TestModule {
 	program: Uint8Array;
 	memoryMap: MemoryMap;
 }
+
+export type InstructionHandler = (
+	line: AST[number],
+	locals: string[],
+	memory: MemoryMap,
+	consts: Record<string, number>
+) => Array<Instruction | Type | number>;
