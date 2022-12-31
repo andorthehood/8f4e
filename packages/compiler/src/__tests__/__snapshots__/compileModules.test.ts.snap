@@ -42,35 +42,33 @@ Array [
       0,
       11,
     ],
-    "memoryMap": Array [
-      Object {
+    "memoryMap": Map {
+      "DEFAULT_VALUE" => Object {
         "address": 0,
         "byteAddress": 4,
         "default": 0,
-        "id": "DEFAULT_VALUE",
         "size": 1,
         "type": 5,
         "usage": 0,
       },
-      Object {
+      "in" => Object {
         "address": 1,
         "byteAddress": 8,
         "default": 4,
-        "id": "in",
         "size": 1,
         "type": 3,
         "usage": 1,
       },
-      Object {
+      "out" => Object {
         "address": 2,
         "byteAddress": 12,
         "default": 0,
-        "id": "out",
         "size": 1,
         "type": 4,
         "usage": 0,
       },
-    ],
+    },
+    "memoryWordSize": 3,
     "moduleId": "1",
     "wordAddress": 1,
   },
