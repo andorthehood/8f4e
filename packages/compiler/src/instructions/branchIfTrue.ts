@@ -1,8 +1,8 @@
 import { br_if } from '@8f4e/bytecode-utils';
 
-import { AST, ArgumentType } from '../types';
+import { ArgumentType, InstructionHandler } from '../types';
 
-export default function branch(line: AST[number]) {
+const branchIfTrue: InstructionHandler = function (line) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
@@ -12,4 +12,6 @@ export default function branch(line: AST[number]) {
 	} else {
 		return br_if(line.arguments[0].value);
 	}
-}
+};
+
+export default branchIfTrue;
