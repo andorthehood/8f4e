@@ -17,7 +17,6 @@ export type MemoryMap = Map<
 		byteAddress: number;
 		size: number;
 		default: number | number[];
-		usage: number;
 	}
 >;
 
