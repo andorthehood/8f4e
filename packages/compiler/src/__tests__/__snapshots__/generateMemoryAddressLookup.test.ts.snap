@@ -1,12 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`compiler generateMemoryAddressLookup 1`] = `
-Object {
-  "1": Object {
-    "DEFAULT_VALUE": 1,
-    "__startAddress": 1,
-    "in": 2,
-    "out": 3,
-  },
+Map {
+  "1__startAddress" => 1,
+  "1DEFAULT_VALUE" => 1,
+  "1in" => 2,
+  "1out" => 3,
 }
 `;
