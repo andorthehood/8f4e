@@ -1,5 +1,4 @@
-import { i32const, i32load, localGet } from '@8f4e/bytecode-utils';
-
+import { i32const, i32load, localGet } from '../bytecodeUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 import {
 	getMemoryItemByteAddress,

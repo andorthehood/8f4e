@@ -1,5 +1,4 @@
-import { localGet } from '@8f4e/bytecode-utils';
-
+import { localGet } from '../bytecodeUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 
 const _localGet: InstructionHandler = function (line, locals) {

@@ -1,5 +1,4 @@
-import { i32const, i32load } from '@8f4e/bytecode-utils';
-
+import { i32const, i32load } from '../bytecodeUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 import { getMemoryItemByteAddress, isInputPointer, isMemoryIdentifier } from '../utils';
 

@@ -1,6 +1,5 @@
-import { br } from '@8f4e/bytecode-utils';
-import { Instruction } from '@8f4e/bytecode-utils';
-
+import { br } from '../bytecodeUtils/instructionHelpers';
+import Instruction from '../bytecodeUtils/instruction';
 import { InstructionHandler } from '../types';
 
 const loopEnd: InstructionHandler = function () {

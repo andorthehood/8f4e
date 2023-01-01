@@ -1,9 +1,17 @@
-import { FunctionBody, FunctionExport, FunctionName, FunctionType, Import, LocalDeclaration } from './typeHelpers';
+import {
+	FunctionBody,
+	FunctionExport,
+	FunctionName,
+	FunctionType,
+	Import,
+	LocalDeclaration,
+	createVector,
+	encodeString,
+	unsignedLEB128,
+} from './typeHelpers';
 import Instruction from './instruction';
-import { Section } from './section';
+import { Section, ExportDesc, ImportDesc, NameSection } from './section';
 import Type from './type';
-import { createVector, encodeString, unsignedLEB128 } from './typeHelpers';
-import { ExportDesc, ImportDesc, NameSection } from './section';
 
 export function createFunctionSection(functionTypeIndexes: number[]): number[] {
 	const numberOfFunctions = functionTypeIndexes.length;
