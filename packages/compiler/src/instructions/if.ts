@@ -1,5 +1,5 @@
-import { Instruction, Type } from '@8f4e/bytecode-utils';
-
+import Instruction from '../bytecodeUtils/instruction';
+import Type from '../bytecodeUtils/type';
 import { ArgumentType } from '../types';
 
 const _if = function (line) {

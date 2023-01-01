@@ -1,5 +1,4 @@
-import { br } from '@8f4e/bytecode-utils';
-
+import { br } from '../bytecodeUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 
 const branch: InstructionHandler = function branch(line) {
