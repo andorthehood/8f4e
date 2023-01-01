@@ -1,5 +1,5 @@
-import { i32const, Instruction } from '@8f4e/bytecode-utils';
-
+import { i32const } from '../bytecodeUtils/instructionHelpers';
+import Instruction from '../bytecodeUtils/instruction';
 import { WORD_LENGTH } from '../consts';
 import { InstructionHandler } from '../types';
 

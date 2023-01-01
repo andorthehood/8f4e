@@ -1,5 +1,4 @@
-import { localSet } from '@8f4e/bytecode-utils';
-
+import { localSet } from '../bytecodeUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 
 const _localSet: InstructionHandler = function (line, locals) {

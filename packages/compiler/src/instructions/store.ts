@@ -1,5 +1,4 @@
-import { i32store } from '@8f4e/bytecode-utils';
-
+import { i32store } from '../bytecodeUtils/instructionHelpers';
 import { InstructionHandler } from '../types';
 
 const store: InstructionHandler = function () {
