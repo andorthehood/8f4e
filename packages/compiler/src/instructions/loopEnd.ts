@@ -1,9 +1,9 @@
-import { br } from '../bytecodeUtils/instructionHelpers';
-import Instruction from '../bytecodeUtils/instruction';
+import { br } from '../wasmUtils/instructionHelpers';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
 const loopEnd: InstructionHandler = function () {
-	return [...br(0), Instruction.END];
+	return [...br(0), WASMInstruction.END];
 };
 
 export default loopEnd;

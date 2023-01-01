@@ -9,7 +9,7 @@ import {
 	encodeString,
 	unsignedLEB128,
 } from './typeHelpers';
-import Instruction from './instruction';
+import Instruction from './wasmInstruction';
 import { Section, ExportDesc, ImportDesc, NameSection } from './section';
 import Type from './type';
 

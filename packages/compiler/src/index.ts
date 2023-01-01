@@ -8,9 +8,9 @@ import {
 	createImportSection,
 	createMemoryImport,
 	createTypeSection,
-} from './bytecodeUtils/sectionHelpers';
-import Type from './bytecodeUtils/type';
-import { call, i32store } from './bytecodeUtils/instructionHelpers';
+} from './wasmUtils/sectionHelpers';
+import Type from './wasmUtils/type';
+import { call, i32store } from './wasmUtils/instructionHelpers';
 import { compile as compileModule } from './compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
 import { CompiledModule, MemoryAddressLookup, Module } from './types';
