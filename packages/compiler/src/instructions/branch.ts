@@ -1,7 +1,7 @@
 import { br } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 
-const branch: InstructionHandler = function branch(line) {
+const branch: InstructionHandler = function branch(line, namespace) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
@@ -9,7 +9,7 @@ const branch: InstructionHandler = function branch(line) {
 	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
 		throw `'1004: Expected value, got an identifier: '${line.arguments[0].value}''`;
 	} else {
-		return br(line.arguments[0].value);
+		return { byteCode: br(line.arguments[0].value), namespace };
 	}
 };
 

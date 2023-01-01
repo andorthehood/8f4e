@@ -1,8 +1,8 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
-const or: InstructionHandler = function () {
-	return [WASMInstruction.I32_OR];
+const or: InstructionHandler = function (line, namespace) {
+	return { byteCode: [WASMInstruction.I32_OR], namespace };
 };
 
 export default or;

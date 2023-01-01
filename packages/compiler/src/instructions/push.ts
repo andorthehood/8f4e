@@ -8,7 +8,9 @@ import {
 	isMemoryReferenceIdentifier,
 } from '../utils';
 
-const push: InstructionHandler = function (line, { locals, memory, consts }) {
+const push: InstructionHandler = function (line, namespace) {
+	const { locals, memory, consts } = namespace;
+
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
@@ -17,22 +19,25 @@ const push: InstructionHandler = function (line, { locals, memory, consts }) {
 
 	if (argument.type === ArgumentType.IDENTIFIER) {
 		if (isMemoryIdentifier(memory, argument.value)) {
-			return [
-				...i32const(getMemoryItemByteAddress(memory, argument.value)),
-				...(isInputPointer(memory, argument.value) ? i32load() : []),
-				...i32load(),
-			];
+			return {
+				byteCode: [
+					...i32const(getMemoryItemByteAddress(memory, argument.value)),
+					...(isInputPointer(memory, argument.value) ? i32load() : []),
+					...i32load(),
+				],
+				namespace,
+			};
 		} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
-			return i32const(getMemoryItemByteAddress(memory, argument.value.substring(1)));
+			return { byteCode: i32const(getMemoryItemByteAddress(memory, argument.value.substring(1))), namespace };
 		} else if (typeof consts[argument.value] !== 'undefined') {
-			return i32const(consts[argument.value]);
+			return { byteCode: i32const(consts[argument.value]), namespace };
 		} else if (isLocalIdentifier(locals, argument.value)) {
-			return localGet(locals.indexOf(argument.value));
+			return { byteCode: localGet(locals.indexOf(argument.value)), namespace };
 		}
 	}
 
 	if (argument.type === ArgumentType.LITERAL) {
-		return i32const(argument.value);
+		return { byteCode: i32const(argument.value), namespace };
 	}
 };
 
