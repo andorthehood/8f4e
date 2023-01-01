@@ -3,7 +3,7 @@ import Type from './wasmUtils/type';
 import instructions from './instructions';
 import { AST, Argument, ArgumentType, CompiledModule, Namespace } from './types';
 import { WORD_LENGTH } from './consts';
-import { collectLocals, collectConsts, getMemoryMap } from './astUtils';
+import { getMemoryMap } from './astUtils';
 
 export { MemoryTypes, MemoryMap } from './types';
 
@@ -56,12 +56,15 @@ export function compileLine(line: AST[number], namespace: Namespace): { byteCode
 export function compile(module: string, moduleId: string, startingByteAddress: number): CompiledModule {
 	const ast = compileToAST(module);
 	const memory = getMemoryMap(ast, startingByteAddress);
-	const locals = collectLocals(ast);
-	const consts = collectConsts(ast);
+	let locals: string[] = [];
+	let consts: Record<string, number> = {};
 
 	const wa = ast
 		.reduce((acc, line) => {
-			acc.push(compileLine(line, { locals, memory, consts }).byteCode);
+			const { byteCode, namespace } = compileLine(line, { locals, memory, consts });
+			consts = namespace.consts;
+			locals = namespace.locals;
+			acc.push(byteCode);
 			return acc;
 		}, [] as number[][])
 		.flat();
