@@ -83,4 +83,7 @@ export interface Namespace {
 	consts: Record<string, number>;
 }
 
-export type InstructionHandler = (line: AST[number], namespace: Namespace) => Array<WASMInstruction | Type | number>;
+export type InstructionHandler = (
+	line: AST[number],
+	namespace: Namespace
+) => { namespace: Namespace; byteCode: Array<WASMInstruction | Type | number> };

@@ -36,6 +36,8 @@ import shiftRight from './shiftRight';
 import remainder from './remainder';
 import pointerForward from './pointerForward';
 
+import { InstructionHandler } from '../types';
+
 export default {
 	and,
 	or,
@@ -74,4 +76,4 @@ export default {
 	shiftRightUnsigned,
 	remainder,
 	pointerForward,
-};
+} as Record<string, InstructionHandler>;

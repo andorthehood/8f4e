@@ -1,8 +1,8 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
-const shiftRight: InstructionHandler = function () {
-	return [WASMInstruction.I32_SHR_S];
+const shiftRight: InstructionHandler = function (line, namespace) {
+	return { byteCode: [WASMInstruction.I32_SHR_S], namespace };
 };
 
 export default shiftRight;

@@ -46,7 +46,7 @@ export function compileToAST(module: string) {
 		});
 }
 
-export function compileLine(line: AST[number], namespace: Namespace): number[] {
+export function compileLine(line: AST[number], namespace: Namespace): { byteCode: number[]; namespace: Namespace } {
 	if (!instructions[line.instruction]) {
 		throw `1001: Unrecognized instruction: '${line.instruction}'`;
 	}
@@ -61,7 +61,7 @@ export function compile(module: string, moduleId: string, startingByteAddress: n
 
 	const wa = ast
 		.reduce((acc, line) => {
-			acc.push(compileLine(line, { locals, memory, consts }));
+			acc.push(compileLine(line, { locals, memory, consts }).byteCode);
 			return acc;
 		}, [] as number[][])
 		.flat();
