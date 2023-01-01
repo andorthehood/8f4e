@@ -1,8 +1,8 @@
-import Instruction from '../bytecodeUtils/instruction';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
 const mul: InstructionHandler = function () {
-	return [Instruction.I32_MUL];
+	return [WASMInstruction.I32_MUL];
 };
 
 export default mul;

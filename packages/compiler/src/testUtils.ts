@@ -9,8 +9,8 @@ import {
 	createImportSection,
 	createMemoryImport,
 	createTypeSection,
-} from './bytecodeUtils/sectionHelpers';
-import { FunctionBody } from './bytecodeUtils/typeHelpers';
+} from './wasmUtils/sectionHelpers';
+import { FunctionBody } from './wasmUtils/typeHelpers';
 import { compile } from './compiler';
 import { CompiledModule, TestModule } from './types';
 import { WORD_LENGTH } from './consts';

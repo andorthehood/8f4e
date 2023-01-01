@@ -1,7 +1,7 @@
 /**
  * WebAssembly instuction set
  */
-enum Instruction {
+enum WASMInstruction {
 	/** Unreachable */
 	UNREACHABLE = 0x00,
 	/** No-Op. It does nothing. */
@@ -216,4 +216,4 @@ enum Instruction {
 	F32_DIV = 0x95,
 }
 
-export default Instruction;
+export default WASMInstruction;
