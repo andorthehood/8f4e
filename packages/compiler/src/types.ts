@@ -77,9 +77,10 @@ export interface TestModule {
 	memoryMap: MemoryMap;
 }
 
-export type InstructionHandler = (
-	line: AST[number],
-	locals: string[],
-	memory: MemoryMap,
-	consts: Record<string, number>
-) => Array<WASMInstruction | Type | number>;
+export interface Namespace {
+	locals: string[];
+	memory: MemoryMap;
+	consts: Record<string, number>;
+}
+
+export type InstructionHandler = (line: AST[number], namespace: Namespace) => Array<WASMInstruction | Type | number>;
