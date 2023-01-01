@@ -1,5 +1,5 @@
-import { createFunctionBody, createLocalDeclaration } from './bytecodeUtils/sectionHelpers';
-import Type from './bytecodeUtils/type';
+import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
+import Type from './wasmUtils/type';
 import instructions from './instructions';
 import { AST, Argument, ArgumentType, MemoryMap, CompiledModule } from './types';
 import { WORD_LENGTH } from './consts';

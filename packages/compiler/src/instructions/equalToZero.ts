@@ -1,8 +1,8 @@
-import Instruction from '../bytecodeUtils/instruction';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
 const equalToZero: InstructionHandler = function () {
-	return [Instruction.I32_EQZ];
+	return [WASMInstruction.I32_EQZ];
 };
 
 export default equalToZero;

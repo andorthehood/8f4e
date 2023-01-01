@@ -1,4 +1,4 @@
-import { i32store } from '../bytecodeUtils/instructionHelpers';
+import { i32store } from '../wasmUtils/instructionHelpers';
 import { InstructionHandler } from '../types';
 
 const store: InstructionHandler = function () {
