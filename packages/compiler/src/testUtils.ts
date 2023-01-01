@@ -1,5 +1,6 @@
+import wabt from 'wabt';
+
 import {
-	FunctionBody,
 	createCodeSection,
 	createExportSection,
 	createFunctionExport,
@@ -8,9 +9,8 @@ import {
 	createImportSection,
 	createMemoryImport,
 	createTypeSection,
-} from '@8f4e/bytecode-utils';
-import wabt from 'wabt';
-
+} from './bytecodeUtils/sectionHelpers';
+import { FunctionBody } from './bytecodeUtils/typeHelpers';
 import { compile } from './compiler';
 import { CompiledModule, TestModule } from './types';
 import { WORD_LENGTH } from './consts';

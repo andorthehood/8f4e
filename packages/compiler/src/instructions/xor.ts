@@ -1,5 +1,4 @@
-import { Instruction } from '@8f4e/bytecode-utils';
-
+import Instruction from '../bytecodeUtils/instruction';
 import { InstructionHandler } from '../types';
 
 const xor: InstructionHandler = function () {

@@ -49,7 +49,6 @@
 		"wabt": "^1.0.29"
 	},
 	"workspaces": [
-		"packages/bytecode-utils",
 		"packages/compiler",
 		"packages/worker",
 		"packages/2d-engine",

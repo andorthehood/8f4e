@@ -1,4 +1,4 @@
-import { signedLEB128, unsignedLEB128 } from '..';
+import { signedLEB128, unsignedLEB128 } from '../../bytecodeUtils/typeHelpers';
 
 test('signedLEB128', () => {
 	expect(signedLEB128(-10)).toStrictEqual([118]);
