@@ -3,30 +3,6 @@ import { WORD_LENGTH } from './consts';
 
 const memoryKeywords = ['private', 'inputPointer', 'output', 'public', 'array', 'triggerInputPointer'];
 
-export function collectLocals(ast: AST): string[] {
-	return ast.reduce((acc, line) => {
-		if (line.instruction === 'local' && line.arguments[0].type === 'identifier') {
-			acc.push(line.arguments[0].value);
-		}
-		return acc;
-	}, [] as string[]);
-}
-
-export function collectConsts(ast: AST): Record<string, number> {
-	return Object.fromEntries(
-		ast.reduce((acc, line) => {
-			if (
-				line.instruction === 'const' &&
-				line.arguments[0].type === 'identifier' &&
-				line.arguments[1].type === 'literal'
-			) {
-				acc.push([line.arguments[0].value, line.arguments[1].value]);
-			}
-			return acc;
-		}, [] as [string, number][])
-	);
-}
-
 function collectMemoryItemNames(ast: AST): string[] {
 	return ast.reduce((acc, line) => {
 		if (memoryKeywords.includes(line.instruction) && line.arguments[0].type === 'identifier') {
