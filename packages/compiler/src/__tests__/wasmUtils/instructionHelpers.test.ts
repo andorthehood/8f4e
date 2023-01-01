@@ -1,4 +1,4 @@
-import { call, f32const, i32const, localGet, localSet } from '../../bytecodeUtils/instructionHelpers';
+import { call, f32const, i32const, localGet, localSet } from '../../wasmUtils/instructionHelpers';
 
 test('localGet', () => {
 	expect(localGet(1)).toStrictEqual([32, 1]);

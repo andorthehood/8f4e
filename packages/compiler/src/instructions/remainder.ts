@@ -1,8 +1,8 @@
-import Instruction from '../bytecodeUtils/instruction';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
 const remainder: InstructionHandler = function () {
-	return [Instruction.I32_REM_S];
+	return [WASMInstruction.I32_REM_S];
 };
 
 export default remainder;

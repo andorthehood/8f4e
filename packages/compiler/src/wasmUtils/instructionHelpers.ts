@@ -1,5 +1,5 @@
 import { ieee754, signedLEB128, unsignedLEB128 } from './typeHelpers';
-import Instruction from './instruction';
+import Instruction from './wasmInstruction';
 import Type from './type';
 
 export function localGet(index: number): number[] {
