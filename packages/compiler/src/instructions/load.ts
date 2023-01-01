@@ -2,7 +2,7 @@ import { i32const, i32load } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 import { getMemoryItemByteAddress, isInputPointer, isMemoryIdentifier } from '../utils';
 
-const load: InstructionHandler = function (line, locals, memory) {
+const load: InstructionHandler = function (line, { memory }) {
 	if (!line.arguments[0]) {
 		return i32load();
 	}

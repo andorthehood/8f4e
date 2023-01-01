@@ -8,7 +8,7 @@ import {
 	isMemoryReferenceIdentifier,
 } from '../utils';
 
-const push: InstructionHandler = function (line, locals, memory, consts) {
+const push: InstructionHandler = function (line, { locals, memory, consts }) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
