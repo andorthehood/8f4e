@@ -1,8 +1,8 @@
 import { i32const } from '../wasmUtils/instructionHelpers';
-import { ArgumentType } from '../types';
+import { ArgumentType, InstructionHandler } from '../types';
 import { getMemoryStringEndAddress, isMemoryIdentifier } from '../utils';
 
-const endAddress = function (line, locals, memory) {
+const endAddress: InstructionHandler = function (line, { memory }) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
