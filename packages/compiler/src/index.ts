@@ -1,6 +1,4 @@
 import {
-	Type,
-	call,
 	createCodeSection,
 	createExportSection,
 	createFunctionBody,
@@ -10,9 +8,9 @@ import {
 	createImportSection,
 	createMemoryImport,
 	createTypeSection,
-	i32store,
-} from '@8f4e/bytecode-utils';
-
+} from './bytecodeUtils/sectionHelpers';
+import Type from './bytecodeUtils/type';
+import { call, i32store } from './bytecodeUtils/instructionHelpers';
 import { compile as compileModule } from './compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
 import { CompiledModule, MemoryAddressLookup, Module } from './types';

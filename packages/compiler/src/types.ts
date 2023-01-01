@@ -1,4 +1,5 @@
-import { Instruction, Type } from '@8f4e/bytecode-utils';
+import Type from './bytecodeUtils/type';
+import Instruction from './bytecodeUtils/instruction';
 
 export enum MemoryTypes {
 	DYNAMIC_ARRAY,

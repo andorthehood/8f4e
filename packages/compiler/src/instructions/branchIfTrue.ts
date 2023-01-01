@@ -1,5 +1,4 @@
-import { br_if } from '@8f4e/bytecode-utils';
-
+import { br_if } from '../bytecodeUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 
 const branchIfTrue: InstructionHandler = function (line) {

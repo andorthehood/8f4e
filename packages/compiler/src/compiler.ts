@@ -1,5 +1,5 @@
-import { Type, createFunctionBody, createLocalDeclaration } from '@8f4e/bytecode-utils';
-
+import { createFunctionBody, createLocalDeclaration } from './bytecodeUtils/sectionHelpers';
+import Type from './bytecodeUtils/type';
 import instructions from './instructions';
 import { AST, Argument, ArgumentType, MemoryMap, CompiledModule } from './types';
 import { WORD_LENGTH } from './consts';
