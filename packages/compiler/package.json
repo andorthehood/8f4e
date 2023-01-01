@@ -18,8 +18,5 @@
 	"bugs": {
 		"url": "https://github.com/andormade/8f4e/issues"
 	},
-	"homepage": "https://github.com/andormade/8f4e#readme",
-	"dependencies": {
-		"bytecode-utils": "file:packages/bytecode-utils"
-	}
+	"homepage": "https://github.com/andormade/8f4e#readme"
 }
