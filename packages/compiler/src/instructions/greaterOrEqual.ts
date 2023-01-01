@@ -1,8 +1,8 @@
-import Instruction from '../bytecodeUtils/instruction';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
 const greaterOrEqual: InstructionHandler = function () {
-	return [Instruction.I32_GE_S];
+	return [WASMInstruction.I32_GE_S];
 };
 
 export default greaterOrEqual;

@@ -1,8 +1,8 @@
-import Instruction from '../bytecodeUtils/instruction';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
 const end: InstructionHandler = function () {
-	return [Instruction.END];
+	return [WASMInstruction.END];
 };
 
 export default end;

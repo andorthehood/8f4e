@@ -1,5 +1,5 @@
-import Type from './bytecodeUtils/type';
-import Instruction from './bytecodeUtils/instruction';
+import Type from './wasmUtils/type';
+import WASMInstruction from './wasmUtils/wasmInstruction';
 
 export enum MemoryTypes {
 	DYNAMIC_ARRAY,
@@ -82,4 +82,4 @@ export type InstructionHandler = (
 	locals: string[],
 	memory: MemoryMap,
 	consts: Record<string, number>
-) => Array<Instruction | Type | number>;
+) => Array<WASMInstruction | Type | number>;
