@@ -1,7 +1,7 @@
 import { localGet } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 
-const _localGet: InstructionHandler = function (line, locals) {
+const _localGet: InstructionHandler = function (line, { locals }) {
 	if (!line.arguments[0]) {
 		throw '1002: Missing argument';
 	}
