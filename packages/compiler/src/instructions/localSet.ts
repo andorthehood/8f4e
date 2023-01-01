@@ -1,4 +1,4 @@
-import { localSet } from '../bytecodeUtils/instructionHelpers';
+import { localSet } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 
 const _localSet: InstructionHandler = function (line, locals) {

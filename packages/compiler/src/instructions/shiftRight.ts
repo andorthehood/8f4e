@@ -1,8 +1,8 @@
-import Instruction from '../bytecodeUtils/instruction';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 
 const shiftRight: InstructionHandler = function () {
-	return [Instruction.I32_SHR_S];
+	return [WASMInstruction.I32_SHR_S];
 };
 
 export default shiftRight;
