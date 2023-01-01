@@ -1,7 +1,7 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import instructions from './instructions';
-import { AST, Argument, ArgumentType, MemoryMap, CompiledModule } from './types';
+import { AST, Argument, ArgumentType, CompiledModule, Namespace } from './types';
 import { WORD_LENGTH } from './consts';
 import { collectLocals, collectConsts, getMemoryMap } from './astUtils';
 
@@ -46,39 +46,34 @@ export function compileToAST(module: string) {
 		});
 }
 
-export function compileLine(
-	line: AST[number],
-	locals: string[],
-	memory: MemoryMap,
-	consts: Record<string, number>
-): number[] {
+export function compileLine(line: AST[number], namespace: Namespace): number[] {
 	if (!instructions[line.instruction]) {
 		throw `1001: Unrecognized instruction: '${line.instruction}'`;
 	}
-	return instructions[line.instruction](line, locals, memory, consts);
+	return instructions[line.instruction](line, namespace);
 }
 
 export function compile(module: string, moduleId: string, startingByteAddress: number): CompiledModule {
 	const ast = compileToAST(module);
-	const memoryMap = getMemoryMap(ast, startingByteAddress);
+	const memory = getMemoryMap(ast, startingByteAddress);
 	const locals = collectLocals(ast);
 	const consts = collectConsts(ast);
 
 	const wa = ast
 		.reduce((acc, line) => {
-			acc.push(compileLine(line, locals, memoryMap, consts));
+			acc.push(compileLine(line, { locals, memory, consts }));
 			return acc;
 		}, [] as number[][])
 		.flat();
 
-	const [, lastMemoryItem] = Array.from(memoryMap).pop();
+	const [, lastMemoryItem] = Array.from(memory).pop();
 
 	return {
 		moduleId,
 		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
-		memoryMap,
+		memoryMap: memory,
 		memoryWordSize: lastMemoryItem.address + lastMemoryItem.size,
 	};
 }
