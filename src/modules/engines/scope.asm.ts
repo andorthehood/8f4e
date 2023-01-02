@@ -7,8 +7,8 @@ export default `
 
 	private counter 0
 	private rate 0
-	public bufferPointer buffer
 	array buffer ${BUFFER_LENGTH} 0
+	public bufferPointer buffer
 
 	local _bufferPointer
 	local _counter
