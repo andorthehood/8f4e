@@ -16,9 +16,9 @@ export type MemoryMap = Map<
 	string,
 	{
 		type: MemoryTypes;
-		address: number;
+		relativeWordAddress: number;
 		byteAddress: number;
-		size: number;
+		wordSize: number;
 		default: number | number[];
 	}
 >;

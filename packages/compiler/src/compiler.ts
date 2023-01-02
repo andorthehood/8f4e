@@ -81,6 +81,6 @@ export function compile(module: string, moduleId: string, startingByteAddress: n
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
 		memoryMap: memory,
-		memoryWordSize: lastMemoryItem.address + lastMemoryItem.size,
+		memoryWordSize: lastMemoryItem.relativeWordAddress + lastMemoryItem.wordSize,
 	};
 }

@@ -3,35 +3,34 @@
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
 Map {
   "in" => Object {
-    "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 0,
     "type": 3,
+    "wordSize": 1,
   },
   "out" => Object {
-    "address": 1,
     "byteAddress": 4,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 1,
     "type": 4,
+    "wordSize": 1,
   },
   "allocatedNotes" => Object {
-    "address": 2,
     "byteAddress": 8,
     "default": 12,
-    "size": 1,
+    "relativeWordAddress": 2,
     "type": 5,
+    "wordSize": 1,
   },
   "numberOfNotes" => Object {
-    "address": 3,
     "byteAddress": 12,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 3,
     "type": 6,
+    "wordSize": 1,
   },
   "notes" => Object {
-    "address": 4,
     "byteAddress": 16,
     "default": Array [
       -1,
@@ -47,8 +46,9 @@ Map {
       -1,
       -1,
     ],
-    "size": 12,
+    "relativeWordAddress": 4,
     "type": 0,
+    "wordSize": 12,
   },
 }
 `;

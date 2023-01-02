@@ -18,7 +18,7 @@ export function getMemoryItemByteAddress(memoryMap: MemoryMap, id: string): numb
 }
 
 export function getMemoryStringEndAddress(memoryMap: MemoryMap, id: string): number {
-	return getMemoryItem(memoryMap, id).byteAddress + getMemoryItem(memoryMap, id).size * WORD_LENGTH;
+	return getMemoryItem(memoryMap, id).byteAddress + getMemoryItem(memoryMap, id).wordSize * WORD_LENGTH;
 }
 
 export function isInputPointer(memoryMap: MemoryMap, id: string): boolean {
@@ -30,12 +30,12 @@ export function isLocalIdentifier(locals: string[], id: string): boolean {
 }
 
 export function getNextFreeMemoryWordAddress(memory: MemoryMap, _default: number) {
-	const { address, size } = Array.from(memory.values()).pop() || {
+	const { relativeWordAddress, wordSize } = Array.from(memory.values()).pop() || {
 		address: _default,
 		size: 0,
 	};
 
-	return address + size;
+	return relativeWordAddress + wordSize;
 }
 
 export function calculateMemoryWordSize(memory: MemoryMap): number {

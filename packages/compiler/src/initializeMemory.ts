@@ -5,7 +5,7 @@ export function generateMemoryAddressLookup(compiledModules: CompiledModule[]): 
 	compiledModules.forEach(({ wordAddress, memoryMap, moduleId }) => {
 		lookup.set(moduleId + '__startAddress', wordAddress);
 		memoryMap.forEach((item, id) => {
-			lookup.set(moduleId + id, wordAddress + item.address);
+			lookup.set(moduleId + id, wordAddress + item.relativeWordAddress);
 		});
 	});
 	return lookup;

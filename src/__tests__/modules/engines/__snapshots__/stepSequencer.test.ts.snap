@@ -3,28 +3,27 @@
 exports[`stepSequencer if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
-    "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 0,
     "type": 5,
+    "wordSize": 1,
   },
   "trigger" => Object {
-    "address": 1,
     "byteAddress": 4,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 1,
     "type": 3,
+    "wordSize": 1,
   },
   "triggerPreviousValue" => Object {
-    "address": 2,
     "byteAddress": 8,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 2,
     "type": 5,
+    "wordSize": 1,
   },
   "steps" => Object {
-    "address": 3,
     "byteAddress": 12,
     "default": Array [
       0,
@@ -44,29 +43,30 @@ Map {
       0,
       0,
     ],
-    "size": 16,
+    "relativeWordAddress": 3,
     "type": 0,
+    "wordSize": 16,
   },
   "stepPointer" => Object {
-    "address": 19,
     "byteAddress": 76,
     "default": 12,
-    "size": 1,
+    "relativeWordAddress": 19,
     "type": 5,
+    "wordSize": 1,
   },
   "stepLength" => Object {
-    "address": 20,
     "byteAddress": 80,
     "default": 4,
-    "size": 1,
+    "relativeWordAddress": 20,
     "type": 6,
+    "wordSize": 1,
   },
   "out" => Object {
-    "address": 21,
     "byteAddress": 84,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 21,
     "type": 4,
+    "wordSize": 1,
   },
 }
 `;

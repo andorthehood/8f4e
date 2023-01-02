@@ -3,18 +3,18 @@
 exports[`random if the generated memory map matches with the snapshot 1`] = `
 Map {
   "seed" => Object {
-    "address": 0,
     "byteAddress": 0,
     "default": 69420,
-    "size": 1,
+    "relativeWordAddress": 0,
     "type": 5,
+    "wordSize": 1,
   },
   "out" => Object {
-    "address": 1,
     "byteAddress": 4,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 1,
     "type": 4,
+    "wordSize": 1,
   },
 }
 `;
