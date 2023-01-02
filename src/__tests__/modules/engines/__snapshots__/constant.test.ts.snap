@@ -3,11 +3,11 @@
 exports[`constant if the generated memory map matches with the snapshot 1`] = `
 Map {
   "out" => Object {
-    "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 0,
     "type": 4,
+    "wordSize": 1,
   },
 }
 `;

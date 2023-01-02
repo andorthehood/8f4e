@@ -3,42 +3,41 @@
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
-    "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 0,
     "type": 5,
+    "wordSize": 1,
   },
   "in" => Object {
-    "address": 1,
     "byteAddress": 4,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 1,
     "type": 3,
+    "wordSize": 1,
   },
   "out" => Object {
-    "address": 2,
     "byteAddress": 8,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 2,
     "type": 4,
+    "wordSize": 1,
   },
   "counter" => Object {
-    "address": 3,
     "byteAddress": 12,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 3,
     "type": 5,
+    "wordSize": 1,
   },
   "rate" => Object {
-    "address": 4,
     "byteAddress": 16,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 4,
     "type": 5,
+    "wordSize": 1,
   },
   "buffer" => Object {
-    "address": 5,
     "byteAddress": 20,
     "default": Array [
       0,
@@ -106,15 +105,16 @@ Map {
       0,
       0,
     ],
-    "size": 64,
+    "relativeWordAddress": 5,
     "type": 0,
+    "wordSize": 64,
   },
   "bufferPointer" => Object {
-    "address": 69,
     "byteAddress": 276,
     "default": 20,
-    "size": 1,
+    "relativeWordAddress": 69,
     "type": 6,
+    "wordSize": 1,
   },
 }
 `;

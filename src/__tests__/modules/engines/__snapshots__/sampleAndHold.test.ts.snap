@@ -3,39 +3,39 @@
 exports[`sampleAndHold if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
-    "address": 0,
     "byteAddress": 0,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 0,
     "type": 5,
+    "wordSize": 1,
   },
   "in" => Object {
-    "address": 1,
     "byteAddress": 4,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 1,
     "type": 3,
+    "wordSize": 1,
   },
   "in:trigger" => Object {
-    "address": 2,
     "byteAddress": 8,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 2,
     "type": 3,
+    "wordSize": 1,
   },
   "triggerPreviousValue" => Object {
-    "address": 3,
     "byteAddress": 12,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 3,
     "type": 5,
+    "wordSize": 1,
   },
   "out" => Object {
-    "address": 4,
     "byteAddress": 16,
     "default": 0,
-    "size": 1,
+    "relativeWordAddress": 4,
     "type": 4,
+    "wordSize": 1,
   },
 }
 `;

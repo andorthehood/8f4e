@@ -77,7 +77,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 	const memoryGet = (address: string | number): number => {
 		if (typeof address === 'string') {
-			return memoryBuffer[module.memoryMap.get(address).address];
+			return memoryBuffer[module.memoryMap.get(address).relativeWordAddress];
 		}
 		return memoryBuffer[address];
 	};
@@ -85,10 +85,10 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	const memorySet = (address: string | number, value: number | number[]): void => {
 		if (typeof address === 'string') {
 			if (typeof value === 'number') {
-				memoryBuffer[module.memoryMap.get(address).address] = value;
+				memoryBuffer[module.memoryMap.get(address).relativeWordAddress] = value;
 			} else {
 				for (let i = 0; i < value.length; i++) {
-					memoryBuffer[module.memoryMap.get(address).address + i] = value[i];
+					memoryBuffer[module.memoryMap.get(address).relativeWordAddress + i] = value[i];
 				}
 			}
 			return;
