@@ -1,9 +1,8 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import instructions from './instructions';
-import { AST, Argument, ArgumentType, CompiledModule, Namespace } from './types';
+import { AST, Argument, ArgumentType, CompiledModule, Namespace, MemoryMap } from './types';
 import { WORD_LENGTH } from './consts';
-import { getMemoryMap } from './astUtils';
 
 export { MemoryTypes, MemoryMap } from './types';
 
@@ -46,24 +45,29 @@ export function compileToAST(module: string) {
 		});
 }
 
-export function compileLine(line: AST[number], namespace: Namespace): { byteCode: number[]; namespace: Namespace } {
+export function compileLine(
+	line: AST[number],
+	namespace: Namespace,
+	startingByteAddress: number
+): { byteCode: number[]; namespace: Namespace } {
 	if (!instructions[line.instruction]) {
 		throw `1001: Unrecognized instruction: '${line.instruction}'`;
 	}
-	return instructions[line.instruction](line, namespace);
+	return instructions[line.instruction](line, namespace, startingByteAddress);
 }
 
 export function compile(module: string, moduleId: string, startingByteAddress: number): CompiledModule {
 	const ast = compileToAST(module);
-	const memory = getMemoryMap(ast, startingByteAddress);
+	let memory: MemoryMap = new Map();
 	let locals: string[] = [];
 	let consts: Record<string, number> = {};
 
 	const wa = ast
 		.reduce((acc, line) => {
-			const { byteCode, namespace } = compileLine(line, { locals, memory, consts });
+			const { byteCode, namespace } = compileLine(line, { locals, memory, consts }, startingByteAddress);
 			consts = namespace.consts;
 			locals = namespace.locals;
+			memory = namespace.memory;
 			acc.push(byteCode);
 			return acc;
 		}, [] as number[][])
