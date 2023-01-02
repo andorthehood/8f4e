@@ -37,16 +37,9 @@ Map {
     "size": 1,
     "type": 5,
   },
-  "bufferPointer" => Object {
+  "buffer" => Object {
     "address": 5,
     "byteAddress": 20,
-    "default": 24,
-    "size": 1,
-    "type": 6,
-  },
-  "buffer" => Object {
-    "address": 6,
-    "byteAddress": 24,
     "default": Array [
       0,
       0,
@@ -116,6 +109,13 @@ Map {
     "size": 64,
     "type": 0,
   },
+  "bufferPointer" => Object {
+    "address": 69,
+    "byteAddress": 276,
+    "default": 20,
+    "size": 1,
+    "type": 6,
+  },
 }
 `;
 
@@ -153,7 +153,7 @@ exports[`functional tests if the wat code matches with the snapshot 1`] = `
       i32.store
       br 1 (;@0;)
     end
-    i32.const 20
+    i32.const 276
     i32.load
     local.set 0
     local.get 0
@@ -164,15 +164,15 @@ exports[`functional tests if the wat code matches with the snapshot 1`] = `
     i32.add
     local.set 0
     local.get 0
-    i32.const 24
+    i32.const 20
     i32.const 256
     i32.add
     i32.ge_u
     if  ;; label = @1
-      i32.const 24
+      i32.const 20
       local.set 0
     end
-    i32.const 20
+    i32.const 276
     local.get 0
     i32.store)
   (export \\"test\\" (func 0)))

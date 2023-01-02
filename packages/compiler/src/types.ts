@@ -85,5 +85,6 @@ export interface Namespace {
 
 export type InstructionHandler = (
 	line: AST[number],
-	namespace: Namespace
+	namespace: Namespace,
+	startingByteAddress: number
 ) => { namespace: Namespace; byteCode: Array<WASMInstruction | Type | number> };
