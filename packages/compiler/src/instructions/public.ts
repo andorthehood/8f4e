@@ -9,8 +9,8 @@ const _public: InstructionHandler = function (line, namespace, startingByteAddre
 
 	memory.set(line.arguments[0].value.toString(), {
 		type: MemoryTypes.NUMBER,
-		address: wordAddress,
-		size: 1,
+		relativeWordAddress: wordAddress,
+		wordSize: 1,
 		byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
 		default:
 			line.arguments[1].type === ArgumentType.LITERAL
