@@ -3,8 +3,11 @@ import { InstructionHandler, MemoryTypes } from '../types';
 import { calculateMemoryWordSize } from '../utils';
 
 const array: InstructionHandler = function (line, namespace, startingByteAddress) {
-	const memory = new Map(namespace.memory);
+	if (!line.arguments[0] || !line.arguments[1] || !line.arguments[2]) {
+		throw '1002: Missing argument';
+	}
 
+	const memory = new Map(namespace.memory);
 	const wordAddress = calculateMemoryWordSize(memory);
 	const wordSize = line.arguments[1].value as number;
 
