@@ -10,9 +10,8 @@ const array: InstructionHandler = function (line, namespace, startingByteAddress
 
 	memory.set(line.arguments[0].value.toString(), {
 		type: MemoryTypes.DYNAMIC_ARRAY,
-		// TODO: rename this to relativeWordAddress
-		address: wordAddress,
-		size: wordSize,
+		relativeWordAddress: wordAddress,
+		wordSize: wordSize,
 		byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
 		default: new Array(wordSize).fill(line.arguments[2].value),
 	});
