@@ -56,7 +56,7 @@ export function compileLine(
 	return instructions[line.instruction](line, namespace, startingByteAddress);
 }
 
-export function compile(module: string, moduleId: string, startingByteAddress: number): CompiledModule {
+export function compile(module: string, moduleId = '', startingByteAddress = 0): CompiledModule {
 	const ast = compileToAST(module);
 	let memory: MemoryMap = new Map();
 	let locals: string[] = [];
@@ -73,7 +73,7 @@ export function compile(module: string, moduleId: string, startingByteAddress: n
 		}, [] as number[][])
 		.flat();
 
-	const [, lastMemoryItem] = Array.from(memory).pop();
+	const [, lastMemoryItem = { relativeWordAddress: 0, wordSize: 0 }] = Array.from(memory).pop() || [];
 
 	return {
 		moduleId,

@@ -3,6 +3,7 @@ dist*
 node_modules
 .parcel-cache*
 .eslintcache
+coverage
 
 # Visual regression is expensive,
 # for now I don't want to invest in storing the image snapshots online,
