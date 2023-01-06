@@ -42,7 +42,7 @@
         {
             "id": "triggerGenerator68",
             "state": {
-                "rate": 1580
+                "rate": 25
             },
             "type": "triggerGenerator",
             "x": 784,
