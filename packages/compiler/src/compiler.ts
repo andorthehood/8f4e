@@ -34,10 +34,8 @@ function isValidInstruction(line: string): boolean {
 	return /\s*(\S+)\s*(\S*)\s*(\S*)/.test(line);
 }
 
-export function compileToAST(module: string) {
-	const lines = module.split('\n');
-
-	return lines
+export function compileToAST(module: string[]) {
+	return module
 		.filter(line => !isComment(line))
 		.filter(line => isValidInstruction(line))
 		.map(line => {
@@ -56,7 +54,7 @@ export function compileLine(
 	return instructions[line.instruction](line, namespace, startingByteAddress);
 }
 
-export function compile(module: string, moduleId = '', startingByteAddress = 0): CompiledModule {
+export function compile(module: string[], moduleId = '', startingByteAddress = 0): CompiledModule {
 	const ast = compileToAST(module);
 	let memory: MemoryMap = new Map();
 	let locals: string[] = [];
