@@ -9,9 +9,7 @@ export default function compiler(state: State, events: EventDispatcher): void {
 	async function onRecompile() {
 		worker.postMessage({
 			memoryRef,
-			modules: state.modules.map(module => {
-				return { ...module, engine: state.moduleTypes[module.type].engine };
-			}),
+			modules: state.modules,
 			connections: state.connections,
 		});
 		recompile(state);
