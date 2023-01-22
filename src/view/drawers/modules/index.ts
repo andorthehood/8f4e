@@ -19,7 +19,7 @@ export default function drawModules(engine: Engine, state: State): void {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.modules.length; i++) {
-		const { x, y, type, id } = state.modules[i];
+		const { x, y, type, id, code } = state.modules[i];
 		const { width, height, name, sliders, steppers, drawer, buttons } = state.moduleTypes[type];
 
 		if (
@@ -78,6 +78,10 @@ export default function drawModules(engine: Engine, state: State): void {
 			if (state.isDebugMode) {
 				drawButtonHitArea(engine, buttons);
 			}
+
+			// for (let i = 0; i < code.length; i++) {
+			// 	engine.drawText(0, HGRID * 10 + HGRID * i, code[i]);
+			// }
 
 			engine.endGroup();
 		}
