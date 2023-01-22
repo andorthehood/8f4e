@@ -12,11 +12,12 @@ function parseArgument(argument: string): Argument {
 		: { value: argument, type: ArgumentType.IDENTIFIER };
 }
 
-function parseLine(line: string): AST[number] {
+function parseLine(line: string, lineNumber: number): AST[number] {
 	// @ts-ignore
 	const [, instruction, ...args] = line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/);
 
 	return {
+		lineNumber,
 		instruction,
 		arguments: args
 			.filter(argument => {
@@ -36,10 +37,11 @@ function isValidInstruction(line: string): boolean {
 
 export function compileToAST(module: string[]) {
 	return module
-		.filter(line => !isComment(line))
-		.filter(line => isValidInstruction(line))
-		.map(line => {
-			return parseLine(line);
+		.map((line, index) => [index + 1, line] as [number, string])
+		.filter(([, line]) => !isComment(line))
+		.filter(([, line]) => isValidInstruction(line))
+		.map(([lineNumber, line]) => {
+			return parseLine(line, lineNumber);
 		});
 }
 
@@ -80,5 +82,6 @@ export function compile(module: string[], moduleId = '', startingByteAddress = 0
 		wordAddress: startingByteAddress / WORD_LENGTH,
 		memoryMap: memory,
 		memoryWordSize: lastMemoryItem.relativeWordAddress + lastMemoryItem.wordSize,
+		ast,
 	};
 }

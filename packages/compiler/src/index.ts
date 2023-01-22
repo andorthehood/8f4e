@@ -13,7 +13,7 @@ import Type from './wasmUtils/type';
 import { call, i32store } from './wasmUtils/instructionHelpers';
 import { compile as compileModule } from './compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
-import { CompiledModule, MemoryAddressLookup, Module } from './types';
+import { CompiledModule, MemoryAddressLookup, Module, CompiledModuleLookup } from './types';
 import { calculateModuleWordSize } from './utils';
 
 export * from './types';
@@ -62,7 +62,7 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 export default function compile(modules: Module[]): {
 	codeBuffer: Uint8Array;
 	memoryAddressLookup: MemoryAddressLookup;
-	compiledModules: CompiledModule[];
+	compiledModules: CompiledModuleLookup;
 } {
 	const compiledModules = compileModules(modules);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
@@ -90,6 +90,6 @@ export default function compile(modules: Module[]): {
 			]),
 		]),
 		memoryAddressLookup,
-		compiledModules,
+		compiledModules: new Map(compiledModules.map(({ moduleId, ...rest }) => [moduleId, { moduleId, ...rest }])),
 	};
 }
