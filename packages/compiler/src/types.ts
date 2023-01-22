@@ -30,7 +30,10 @@ export interface CompiledModule {
 	wordAddress: number;
 	memoryMap: MemoryMap;
 	memoryWordSize: number;
+	ast: AST;
 }
+
+export type CompiledModuleLookup = Map<string, CompiledModule>;
 
 export type MemoryBuffer = Int32Array;
 
@@ -59,7 +62,7 @@ export const enum ArgumentType {
 
 export type Argument = { type: ArgumentType.LITERAL; value: number } | { type: ArgumentType.IDENTIFIER; value: string };
 
-export type AST = Array<{ instruction: string; arguments: Array<Argument> }>;
+export type AST = Array<{ lineNumber: number; instruction: string; arguments: Array<Argument> }>;
 
 export interface TestModule {
 	memory: MemoryBuffer & {
