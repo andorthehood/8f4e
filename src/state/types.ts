@@ -9,6 +9,7 @@ import {
 export interface Module<ModuleState = Record<string, any>> {
 	id: string;
 	state: ModuleState;
+	code: string[];
 	type: string;
 	x: number;
 	y: number;

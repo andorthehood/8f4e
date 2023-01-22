@@ -17,13 +17,14 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 		state.modules.push({
 			id: type + getUniqueModuleId(state.modules),
 			state: { ...state.moduleTypes[type].initialState },
+			code: state.moduleTypes[type].engine.source.split('\n'),
 			type,
 			x,
 			y,
 		});
 	}
 
-	function onDeleteModule({ moduleId }): void {
+	function onDeleteModule({ moduleId }: { moduleId: string }): void {
 		events.dispatch('deleteConnection', { moduleId, replaceHistory: true });
 		state.modules.splice(
 			state.modules.findIndex(({ id }) => id === moduleId),
