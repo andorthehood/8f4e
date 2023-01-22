@@ -37,8 +37,8 @@ export function getInitialMemory(module: CompiledModule): number[] {
 
 export function compileModules(modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
-	return modules.map(({ id, engine }) => {
-		const module = compileModule(engine.source, id, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
+	return modules.map(({ id, code }) => {
+		const module = compileModule(code, id, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
 		memoryAddress += calculateModuleWordSize(module);
 		return module;
 	});

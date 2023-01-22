@@ -46,9 +46,7 @@ export type ModuleStateInserter<T> = (moduleState: T, memoryBuffer: MemoryBuffer
 
 export interface Module<ModuleState = Record<string, any>> {
 	id: string;
-	engine: {
-		source: string;
-	};
+	code: string[];
 	state: ModuleState;
 }
 
