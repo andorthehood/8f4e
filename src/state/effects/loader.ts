@@ -1,4 +1,5 @@
 import { EventDispatcher } from '../../events';
+import { HGRID, VGRID } from '../../view/drawers/consts';
 import { State } from '../types';
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
