@@ -10,18 +10,21 @@ export default function drawConnectors(engine: Engine, state: State, id: string,
 	}
 
 	for (let i = 0; i < state.compiler.compiledModules.get(id).outputs.length; i++) {
-		const connectorAddress = state.compiler.compiledModules.get(id).outputs[i].byteAddress / 4;
-		const lineNumber = state.compiler.compiledModules.get(id).outputs[i].lineNumber;
-		const value = state.compiler.memoryBuffer[connectorAddress];
+		const { byteAddress, id: connectorId } = state.compiler.compiledModules.get(id).outputs[i];
+		const value = state.compiler.memoryBuffer[byteAddress / 4];
+		const { x, y } = state.graphicHelper.get(id).outputs.get(connectorId);
+
 		engine.setSpriteLookup(feedbackScale);
-		engine.drawSprite(VGRID * 3 + VGRID * code[lineNumber - 1].length, HGRID * lineNumber, value, VGRID * 2, HGRID);
+		engine.drawSprite(x, y, value, VGRID * 2, HGRID);
 		engine.setSpriteLookup(font('white'));
-		engine.drawText(VGRID * 6 + VGRID * code[lineNumber - 1].length, HGRID * lineNumber, value.toString());
+		engine.drawText(x + 3 * VGRID, y, value.toString());
 	}
 
 	for (let i = 0; i < state.compiler.compiledModules.get(id).inputs.length; i++) {
-		const lineNumber = state.compiler.compiledModules.get(id).inputs[i].lineNumber;
+		const { id: connectorId } = state.compiler.compiledModules.get(id).inputs[i];
+		const { x, y } = state.graphicHelper.get(id).inputs.get(connectorId);
+
 		engine.setSpriteLookup(fillColor);
-		engine.drawRectangle(0, HGRID * lineNumber, 2 * VGRID, HGRID, 'rgb(153,153,153)');
+		engine.drawRectangle(x, y, 2 * VGRID, HGRID, 'rgb(153,153,153)');
 	}
 }
