@@ -7,7 +7,7 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 	let draggedModule: Module = null;
 
 	function onMouseDown({ x, y }) {
-		draggedModule = findModuleAtViewportCoordinates(state.modules, state.moduleTypes, state.viewport, x, y);
+		draggedModule = findModuleAtViewportCoordinates(state.modules, state.graphicHelper, state.viewport, x, y);
 		if (draggedModule) {
 			events.dispatch('moduleClick', { x, y, module: draggedModule });
 

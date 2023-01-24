@@ -1,4 +1,5 @@
 import {
+	CompiledModuleLookup,
 	Connection,
 	MemoryAddressLookup,
 	MemoryBuffer,
@@ -18,6 +19,7 @@ export interface Module<ModuleState = Record<string, any>> {
 export interface Connector extends Position, Size {
 	id: string;
 	label?: string;
+	isInput?: boolean;
 }
 
 export interface Size {
@@ -136,6 +138,7 @@ export interface Compiler {
 	memoryBuffer: MemoryBuffer;
 	memoryAddressLookup: MemoryAddressLookup;
 	timerAccuracy: number;
+	compiledModules: CompiledModuleLookup;
 }
 
 export interface Error {
@@ -146,6 +149,15 @@ export interface Error {
 export interface Midi {
 	ports: MidiPort[];
 }
+
+export interface ModuleGraphicData {
+	width: number;
+	height: number;
+	inputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
+	outputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
+}
+
+export type GraphicHelper = Map<string, ModuleGraphicData>;
 
 export interface State {
 	compiler: Compiler;
@@ -164,4 +176,5 @@ export interface State {
 	modules: Module[];
 	sructureVersion: number;
 	viewport: Viewport;
+	graphicHelper: GraphicHelper;
 }
