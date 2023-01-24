@@ -1,4 +1,4 @@
-import compile, { CompiledModule, MemoryAddressLookup, MemoryBuffer, Module } from '@8f4e/compiler';
+import compile, { CompiledModuleLookup, MemoryAddressLookup, MemoryBuffer, Module } from '@8f4e/compiler';
 
 export default async function createModule(
 	memoryRef: WebAssembly.Memory,
@@ -8,7 +8,7 @@ export default async function createModule(
 	cycle: CallableFunction;
 	init: CallableFunction;
 	memoryAddressLookup: MemoryAddressLookup;
-	compiledModules: CompiledModule[];
+	compiledModules: CompiledModuleLookup;
 }> {
 	const { codeBuffer, memoryAddressLookup, compiledModules } = compile(modules);
 

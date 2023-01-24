@@ -12,6 +12,8 @@ const _private: InstructionHandler = function (line, namespace, startingByteAddr
 		relativeWordAddress: wordAddress,
 		wordSize: 1,
 		byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
+		lineNumber: line.lineNumber,
+		id: line.arguments[0].value.toString(),
 		default:
 			line.arguments[1].type === ArgumentType.LITERAL
 				? line.arguments[1].value
