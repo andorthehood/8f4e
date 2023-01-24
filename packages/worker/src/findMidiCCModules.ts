@@ -1,13 +1,14 @@
-import { CompiledModule, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
+import { CompiledModuleLookup, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
 
 import { MidiCCModuleAddresses } from './types';
 
 export default function findMidiNoteModules(
-	compiledModules: CompiledModule[],
+	compiledModules: CompiledModuleLookup,
 	memoryBuffer: MemoryBuffer,
 	memoryAddressLookup: MemoryAddressLookup
 ): MidiCCModuleAddresses[] {
-	return compiledModules
+	return Array.from(compiledModules)
+		.map(([, compiledModule]) => compiledModule)
 		.filter(({ moduleId }) => moduleId.startsWith('cvToMidiCC'))
 		.map(module => {
 			return {

@@ -27,8 +27,9 @@ const defaultState: State = {
 		isCompiling: false,
 		lastCompilationStart: 0,
 		memoryBuffer: new Int32Array(),
-		memoryAddressLookup: {},
+		memoryAddressLookup: new Map(),
 		timerAccuracy: 0,
+		compiledModules: new Map(),
 	},
 	connections: [],
 	isDebugMode: process.env.NODE_ENV === 'development',
@@ -54,6 +55,7 @@ const defaultState: State = {
 	connectionFromModule: null,
 	connectionFromConnector: null,
 	moduleTypes: {},
+	graphicHelper: new Map(),
 	...initialProject,
 };
 

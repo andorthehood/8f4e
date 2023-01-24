@@ -35,15 +35,15 @@ export default function drawConnections(engine: Engine, state: State): void {
 	// }
 
 	for (let i = 0; i < connections.length; i++) {
+		if (!state.graphicHelper.has(connections[i].fromModuleId)) {
+			return;
+		}
+
 		const fromModule = modules.find(({ id }) => id === connections[i].fromModuleId);
 		const toModule = modules.find(({ id }) => id === connections[i].toModuleId);
 
-		const { x: fromX, y: fromY } = state.moduleTypes[fromModule.type].outputs.find(
-			({ id }) => id === connections[i].fromConnectorId
-		);
-		const { x: toX, y: toY } = state.moduleTypes[toModule.type].inputs.find(
-			({ id }) => id === connections[i].toConnectorId
-		);
+		const { x: fromX, y: fromY } = state.graphicHelper.get(fromModule.id).outputs.get(connections[i].fromConnectorId);
+		const { x: toX, y: toY } = state.graphicHelper.get(toModule.id).inputs.get(connections[i].toConnectorId);
 
 		const xDistance = Math.floor(fromX + fromModule.x - (toX + toModule.x)) / 2;
 		engine.startGroup(state.viewport.x, state.viewport.y);
