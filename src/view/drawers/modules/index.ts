@@ -77,7 +77,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 			engine.setSpriteLookup(font('white'));
 			for (let i = 0; i < code.length; i++) {
-				engine.drawText(VGRID * 2, HGRID + HGRID * i, code[i]);
+				engine.drawText(VGRID * 2, HGRID * i, code[i]);
 			}
 
 			engine.endGroup();
