@@ -1,4 +1,5 @@
 import { EventDispatcher } from '../../../events';
+import { HGRID, VGRID } from '../../../view/drawers/consts';
 import { Module, State } from '../../types';
 
 function getUniqueModuleId(modules: Module[]): number {
@@ -14,10 +15,13 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 		x = x - state.viewport.x - Math.floor(state.moduleTypes[type].width / 2);
 		y = y - state.viewport.y - Math.floor(state.moduleTypes[type].height / 2);
 
+		const id = type + getUniqueModuleId(state.modules);
+		const code = state.moduleTypes[type].engine.source.split('\n');
+
 		state.modules.push({
-			id: type + getUniqueModuleId(state.modules),
+			id,
 			state: { ...state.moduleTypes[type].initialState },
-			code: state.moduleTypes[type].engine.source.split('\n'),
+			code,
 			type,
 			x,
 			y,

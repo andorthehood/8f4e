@@ -2,12 +2,8 @@ import { Engine } from '@8f4e/2d-engine';
 import { fillColor, font, Mosaic } from '@8f4e/sprite-generator';
 
 import scope from './scope';
-import number from './number';
-import midiNote from './midiNote';
 import pianoQuantizer from './pianoQuantizer';
 import drawConnectors from './connectors';
-import drawSliders from './sliders';
-import drawSteppers from './steppers';
 import drawButtonHitArea from './drawButtonHitArea';
 
 import { State } from '../../../state/types';
@@ -20,7 +16,8 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, type, id, code } = state.modules[i];
-		const { width, height, name, sliders, steppers, drawer, buttons } = state.moduleTypes[type];
+		const { drawer, buttons } = state.moduleTypes[type];
+		const { width, height } = state.graphicHelper.get(state.modules[i].id) || { width: 0, height: 0 };
 
 		if (
 			x + offsetX > -1 * width &&
@@ -45,25 +42,24 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			engine.setSpriteLookup(font('white'));
-			engine.drawText(VGRID * 3, 0, name);
 
-			drawConnectors(engine, state.moduleTypes[type], state, id);
+			drawConnectors(engine, state, id, code);
 
-			if (sliders) {
-				drawSliders(engine, sliders, state, id);
-			}
+			// if (sliders) {
+			// 	drawSliders(engine, sliders, state, id);
+			// }
 
-			if (steppers) {
-				drawSteppers(engine, steppers, state, id);
-			}
+			// if (steppers) {
+			// 	drawSteppers(engine, steppers, state, id);
+			// }
 
-			if (type === 'number') {
-				number(engine, state, id);
-			}
+			// if (type === 'number') {
+			// 	number(engine, state, id);
+			// }
 
-			if (type === 'midiNote') {
-				midiNote(engine, state, id);
-			}
+			// if (type === 'midiNote') {
+			// 	midiNote(engine, state, id);
+			// }
 
 			if (drawer && drawer.name === 'piano') {
 				pianoQuantizer(
@@ -79,9 +75,10 @@ export default function drawModules(engine: Engine, state: State): void {
 				drawButtonHitArea(engine, buttons);
 			}
 
-			// for (let i = 0; i < code.length; i++) {
-			// 	engine.drawText(0, HGRID * 10 + HGRID * i, code[i]);
-			// }
+			engine.setSpriteLookup(font('white'));
+			for (let i = 0; i < code.length; i++) {
+				engine.drawText(VGRID * 2, HGRID + HGRID * i, code[i]);
+			}
 
 			engine.endGroup();
 		}

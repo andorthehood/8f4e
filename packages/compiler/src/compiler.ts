@@ -1,7 +1,7 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import instructions from './instructions';
-import { AST, Argument, ArgumentType, CompiledModule, Namespace, MemoryMap } from './types';
+import { AST, Argument, ArgumentType, CompiledModule, Namespace, MemoryMap, MemoryTypes } from './types';
 import { WORD_LENGTH } from './consts';
 
 export { MemoryTypes, MemoryMap } from './types';
@@ -83,5 +83,7 @@ export function compile(module: string[], moduleId = '', startingByteAddress = 0
 		memoryMap: memory,
 		memoryWordSize: lastMemoryItem.relativeWordAddress + lastMemoryItem.wordSize,
 		ast,
+		inputs: Array.from(memory.values()).filter(memoryItem => memoryItem.type === MemoryTypes.INPUT_POINTER),
+		outputs: Array.from(memory.values()).filter(memoryItem => memoryItem.type === MemoryTypes.OUTPUT),
 	};
 }

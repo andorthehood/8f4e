@@ -18,7 +18,7 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 	function onMouseUp(event) {
 		const { x, y } = event;
 
-		const module = findModuleAtViewportCoordinates(state.modules, state.moduleTypes, state.viewport, x, y);
+		const module = findModuleAtViewportCoordinates(state.modules, state.graphicHelper, state.viewport, x, y);
 
 		if (!module) {
 			state.isConnectionBeingMade = false;
@@ -26,7 +26,7 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 			return;
 		}
 
-		const connector = findConnectorAtViewportCoordinates(state.viewport, state.moduleTypes, module, x, y);
+		const connector = findConnectorAtViewportCoordinates(state.viewport, state.graphicHelper, module, x, y);
 
 		if (!connector) {
 			state.isConnectionBeingMade = false;
@@ -56,8 +56,7 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 			events.off('mousemove', onMouseMove);
 
 			const connectorToConnect = findConnectorInModule(
-				state.modules,
-				state.moduleTypes,
+				state.graphicHelper,
 				state.connectionFromModule,
 				state.connectionFromConnector
 			);
@@ -67,6 +66,8 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 					message: `It doesn't make sense to connect two inputs`,
 				});
 			}
+
+			console.log(connector, connectorToConnect);
 
 			if (!connector.isInput && !connectorToConnect.isInput) {
 				return events.dispatch('error', {

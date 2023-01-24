@@ -12,16 +12,17 @@ export enum MemoryTypes {
 	ARRAY,
 }
 
-export type MemoryMap = Map<
-	string,
-	{
-		type: MemoryTypes;
-		relativeWordAddress: number;
-		byteAddress: number;
-		wordSize: number;
-		default: number | number[];
-	}
->;
+export interface MemoryItem {
+	type: MemoryTypes;
+	relativeWordAddress: number;
+	byteAddress: number;
+	wordSize: number;
+	default: number | number[];
+	lineNumber: number;
+	id: string;
+}
+
+export type MemoryMap = Map<string, MemoryItem>;
 
 export interface CompiledModule {
 	functionBody: number[];
@@ -31,6 +32,8 @@ export interface CompiledModule {
 	memoryMap: MemoryMap;
 	memoryWordSize: number;
 	ast: AST;
+	inputs: MemoryItem[];
+	outputs: MemoryItem[];
 }
 
 export type CompiledModuleLookup = Map<string, CompiledModule>;

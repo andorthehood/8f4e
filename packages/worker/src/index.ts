@@ -20,6 +20,7 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], conne
 		type: 'compilationDone',
 		payload: {
 			memoryAddressLookup,
+			compiledModules,
 		},
 	});
 
