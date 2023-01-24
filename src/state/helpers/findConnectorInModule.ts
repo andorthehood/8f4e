@@ -1,12 +1,19 @@
-import { Connector, Module, ModuleTypeLookup } from '../types';
+import { Connector, GraphicHelper } from '../types';
 
 export default function findConnectorInModule(
-	modules: Module[],
-	moduleTypes: ModuleTypeLookup,
+	graphicHelper: GraphicHelper,
 	moduleId: string,
 	connectorId: string
 ): Connector {
-	const { type } = modules.find(({ id }) => id === moduleId);
 	// @TODO improve performance
-	return [...moduleTypes[type].inputs, ...moduleTypes[type].outputs].find(({ id }) => id === connectorId);
+	const input = Array.from(graphicHelper.get(moduleId).inputs.values()).find(({ id }) => id === connectorId);
+
+	if (input) {
+		return {
+			...input,
+			isInput: true,
+		};
+	}
+
+	return Array.from(graphicHelper.get(moduleId).outputs.values()).find(({ id }) => id === connectorId);
 }

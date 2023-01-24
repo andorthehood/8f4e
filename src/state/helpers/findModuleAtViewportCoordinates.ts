@@ -1,14 +1,18 @@
-import { Module, ModuleTypeLookup, Viewport } from '../types';
+import { GraphicHelper, Module, Viewport } from '../types';
 
 export default function findModuleAtViewportCoordinates(
 	modules: Module[],
-	moduleTypes: ModuleTypeLookup,
+	graphicHelper: GraphicHelper,
 	viewport: Viewport,
 	x: number,
 	y: number
 ): Module {
 	return modules.find((module: Module) => {
-		const { width, height } = moduleTypes[module.type];
+		if (!graphicHelper.has(module.id)) {
+			return false;
+		}
+
+		const { width, height } = graphicHelper.get(module.id);
 		return (
 			x >= module.x + viewport.x &&
 			x <= module.x + width + viewport.x &&

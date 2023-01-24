@@ -1,13 +1,13 @@
-import { Connector, Module, ModuleTypeLookup, Viewport } from '../types';
+import { Connector, GraphicHelper, Module, Viewport } from '../types';
 
 export default function findConnectorAtViewportCoordinates(
 	viewport: Viewport,
-	moduleTypes: ModuleTypeLookup,
+	graphicHelper: GraphicHelper,
 	module: Module,
 	x: number,
 	y: number
 ): Connector {
-	const input = moduleTypes[module.type].inputs.find(connector => {
+	const input = Array.from(graphicHelper.get(module.id).inputs.values()).find(connector => {
 		return (
 			x >= module.x + viewport.x + connector.x &&
 			x <= module.x + connector.width + viewport.x + connector.x &&
@@ -20,7 +20,7 @@ export default function findConnectorAtViewportCoordinates(
 		return { ...input, isInput: true };
 	}
 
-	return moduleTypes[module.type].outputs.find(connector => {
+	return Array.from(graphicHelper.get(module.id).outputs.values()).find(connector => {
 		return (
 			x >= module.x + viewport.x + connector.x &&
 			x <= module.x + connector.width + viewport.x + connector.x &&

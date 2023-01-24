@@ -15,6 +15,8 @@ const array: InstructionHandler = function (line, namespace, startingByteAddress
 		type: MemoryTypes.DYNAMIC_ARRAY,
 		relativeWordAddress: wordAddress,
 		wordSize: wordSize,
+		id: line.arguments[0].value.toString(),
+		lineNumber: line.lineNumber,
 		byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
 		default: new Array(wordSize).fill(line.arguments[2].value),
 	});
