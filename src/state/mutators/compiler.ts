@@ -25,7 +25,7 @@ export function compilationDone(state: State, data, memoryRef: WebAssembly.Memor
 				width: VGRID * 2,
 				height: HGRID,
 				x: VGRID * 3 + VGRID * module.code[output.lineNumber - 1].length,
-				y: HGRID * output.lineNumber,
+				y: HGRID * (output.lineNumber - 1),
 				id: output.id,
 			});
 		}
@@ -37,7 +37,7 @@ export function compilationDone(state: State, data, memoryRef: WebAssembly.Memor
 				width: VGRID * 2,
 				height: HGRID,
 				x: 0,
-				y: HGRID * input.lineNumber,
+				y: HGRID * (input.lineNumber - 1),
 				id: input.id,
 			});
 		}
