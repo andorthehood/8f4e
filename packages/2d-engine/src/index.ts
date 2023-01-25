@@ -248,11 +248,13 @@ export class Engine {
 		this.spriteLookup = spriteLookup;
 	}
 
-	drawText(posX: number, posY: number, text: string, letterSpacing = 0): void {
-		//console.log(this.spriteLookup);
+	drawText(posX: number, posY: number, text: string, sprites?: Array<SpriteLookup | undefined>): void {
 		for (let i = 0; i < text.length; i++) {
+			if (sprites && sprites[i]) {
+				this.spriteLookup = sprites[i];
+			}
 			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(text[i]);
-			this.drawSpriteFromCoordinates(posX + i * (spriteWidth + letterSpacing), posY, spriteWidth, spriteHeight, x, y);
+			this.drawSpriteFromCoordinates(posX + i * spriteWidth, posY, spriteWidth, spriteHeight, x, y);
 		}
 	}
 
