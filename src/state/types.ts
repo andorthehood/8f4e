@@ -157,7 +157,7 @@ export interface ModuleGraphicData {
 	inputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
 	outputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
 	code: string[];
-	codeColors: Array<SpriteLookup | undefined>;
+	codeColors: Array<SpriteLookup | undefined>[];
 }
 
 export type GraphicHelper = Map<string, ModuleGraphicData>;
