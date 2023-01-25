@@ -15,9 +15,14 @@ export default function drawModules(engine: Engine, state: State): void {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.modules.length; i++) {
-		const { x, y, type, id, code } = state.modules[i];
+		const { x, y, type, id } = state.modules[i];
 		const { drawer, buttons } = state.moduleTypes[type];
-		const { width, height } = state.graphicHelper.get(state.modules[i].id) || { width: 0, height: 0 };
+		const { width, height, code, codeColors } = state.graphicHelper.get(state.modules[i].id) || {
+			width: 0,
+			height: 0,
+			code: [],
+			codeColors: [],
+		};
 
 		if (
 			x + offsetX > -1 * width &&
@@ -77,7 +82,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 			engine.setSpriteLookup(font('white'));
 			for (let i = 0; i < code.length; i++) {
-				engine.drawText(VGRID * 2, HGRID * i, code[i]);
+				engine.drawText(VGRID * 2, HGRID * i, code[i], codeColors);
 			}
 
 			engine.endGroup();

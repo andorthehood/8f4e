@@ -1,3 +1,5 @@
+import { font } from '@8f4e/sprite-generator';
+
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { State } from '../types';
 
@@ -11,9 +13,13 @@ export function compilationDone(state: State, data, memoryRef: WebAssembly.Memor
 	// TODO: refactor this
 	// initialize graphic helper
 	state.modules.forEach(module => {
+		const code = module.code.map((line, index) => index + 1 + ' ' + line);
+
 		state.graphicHelper.set(module.id, {
 			width: 30 * VGRID,
 			height: module.code.length * HGRID,
+			code,
+			codeColors: [font('grey'), undefined, font('white')],
 			inputs: new Map(),
 			outputs: new Map(),
 		});
@@ -24,7 +30,7 @@ export function compilationDone(state: State, data, memoryRef: WebAssembly.Memor
 			state.graphicHelper.get(module.id).outputs.set(output.id, {
 				width: VGRID * 2,
 				height: HGRID,
-				x: VGRID * 3 + VGRID * module.code[output.lineNumber - 1].length,
+				x: VGRID * 3 + VGRID * code[output.lineNumber - 1].length,
 				y: HGRID * (output.lineNumber - 1),
 				id: output.id,
 			});
