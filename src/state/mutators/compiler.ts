@@ -3,6 +3,9 @@ import { font } from '@8f4e/sprite-generator';
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { State } from '../types';
 
+const keywords =
+	/output|inputPointer|local|private|push|div|if|else|end|store|and|greaterThan|branch|greaterOrEqual|add|sub|lessThan|public|xor|shiftRight/;
+
 export function compilationDone(state: State, data, memoryRef: WebAssembly.Memory): void {
 	state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
 	state.compiler.memoryAddressLookup = data.payload.memoryAddressLookup;
@@ -13,13 +16,46 @@ export function compilationDone(state: State, data, memoryRef: WebAssembly.Memor
 	// TODO: refactor this
 	// initialize graphic helper
 	state.modules.forEach(module => {
-		const code = module.code.map((line, index) => index + 1 + ' ' + line);
+		const padLength = module.code.length.toString().length;
+
+		const code = module.code.map(
+			(line, index) =>
+				(line.includes('inputPointer') || index === 0
+					? ''.padStart(padLength, ' ')
+					: `${index + 1}`.padStart(padLength, '0')) +
+				' ' +
+				line
+		);
+
+		const codeColors = code.map(line => {
+			const keywordIndex = line.search(keywords);
+
+			if (line.includes('#')) {
+				return [font('grey'), font('grey'), font('grey'), font('green')];
+			}
+
+			return line.split('').map((char, index) => {
+				if (index === 0) {
+					return font('grey');
+				}
+				if (index === padLength) {
+					return font('white');
+				}
+				if (index === keywordIndex) {
+					return font('purple');
+				}
+				if (char === ' ') {
+					return font('white');
+				}
+				return undefined;
+			});
+		});
 
 		state.graphicHelper.set(module.id, {
 			width: 30 * VGRID,
 			height: module.code.length * HGRID,
 			code,
-			codeColors: [font('grey'), undefined, font('white')],
+			codeColors,
 			inputs: new Map(),
 			outputs: new Map(),
 		});
