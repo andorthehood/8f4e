@@ -94,6 +94,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		return str.substring(0, index) + char + str.substring(index);
 	}
 
+	function breakAtIndex(str, index): [string, string] {
+		return [str.substring(0, index), str.substring(index)];
+	}
+
 	const onKeydown: EventHandler = function (event) {
 		const module = state.graphicHelper.get(state.selectedModule.id);
 		switch (event.key) {
@@ -118,6 +122,15 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				onCompilationDone();
 				break;
 			case 'Enter':
+				// eslint-disable-next-line no-case-declarations
+				const [a, b] = breakAtIndex(state.selectedModule.code[module.cursor.row - 1], module.cursor.col - 1);
+
+				state.selectedModule.code[module.cursor.row - 1] = a;
+				state.selectedModule.code.splice(module.cursor.row, 0, '');
+				state.selectedModule.code[module.cursor.row] = b;
+
+				module.cursor.row = module.cursor.row + 1;
+				onCompilationDone();
 				break;
 			default:
 				if (event.key.length === 1) {
