@@ -5,7 +5,7 @@ export interface EventObject {
 	movementY?: number;
 	buttons?: number;
 	stopPropagation?: boolean;
-	key?: number;
+	key?: string;
 }
 
 export type EventHandler = (event?: EventObject) => void;
@@ -34,7 +34,7 @@ export default function events(): EventDispatcher {
 		const movementY = event.clientY - prevEvent?.clientY;
 		prevEvent = event;
 
-		const { clientX, clientY, type, buttons, which } = event;
+		const { clientX, clientY, type, buttons, key } = event;
 		event.preventDefault();
 		const eventObject: EventObject = {
 			x: clientX,
@@ -43,7 +43,7 @@ export default function events(): EventDispatcher {
 			movementY,
 			buttons,
 			stopPropagation: false,
-			key: which,
+			key,
 		};
 		for (let i = 0; i < subscriptions[type].length; i++) {
 			if (!eventObject.stopPropagation) {

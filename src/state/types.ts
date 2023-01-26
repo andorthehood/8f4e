@@ -8,6 +8,8 @@ import {
 	ModuleStateInserter,
 } from '@8f4e/compiler';
 
+import offset from '../modules/offset';
+
 export interface Module<ModuleState = Record<string, any>> {
 	id: string;
 	state: ModuleState;
@@ -158,6 +160,7 @@ export interface ModuleGraphicData {
 	outputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
 	code: string[];
 	codeColors: Array<SpriteLookup | undefined>[];
+	cursor: { col: number; row: number; offset: number };
 }
 
 export type GraphicHelper = Map<string, ModuleGraphicData>;
@@ -177,6 +180,7 @@ export interface State {
 	midi: Midi;
 	moduleTypes: ModuleTypeLookup;
 	modules: Module[];
+	selectedModule: Module;
 	sructureVersion: number;
 	viewport: Viewport;
 	graphicHelper: GraphicHelper;
