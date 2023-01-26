@@ -67,8 +67,6 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 				});
 			}
 
-			console.log(connector, connectorToConnect);
-
 			if (!connector.isInput && !connectorToConnect.isInput) {
 				return events.dispatch('error', {
 					message: `It doesn't make sense to connect two outputs`,
