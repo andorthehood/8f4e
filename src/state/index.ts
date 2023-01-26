@@ -15,6 +15,7 @@ import save from './effects/save';
 import viewport from './effects/viewport';
 import { State } from './types';
 import initialProject from './initialProject.json';
+import graphicHelper from './effects/graphicHelper';
 
 import generateModuleTypes from '../modules';
 import { EventDispatcher } from '../events';
@@ -76,6 +77,7 @@ export default function init(events: EventDispatcher): State {
 	moduleSteppers(state, events);
 	error(state, events);
 	compiler(state, events);
+	graphicHelper(state, events);
 	save(state, events);
 	events.dispatch('init');
 	return state;

@@ -4,7 +4,7 @@ import { feedbackScale, fillColor, font } from '@8f4e/sprite-generator';
 import { State } from '../../../state/types';
 import { HGRID, VGRID } from '../consts';
 
-export default function drawConnectors(engine: Engine, state: State, id: string, code: string[]): void {
+export default function drawConnectors(engine: Engine, state: State, id: string): void {
 	if (!state.compiler.compiledModules.has(id)) {
 		return;
 	}
