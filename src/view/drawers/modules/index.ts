@@ -85,6 +85,11 @@ export default function drawModules(engine: Engine, state: State): void {
 				engine.drawText(VGRID, HGRID * i, code[i], codeColors[i]);
 			}
 
+			if (state.selectedModule === state.modules[i]) {
+				const { row, col, offset } = state.graphicHelper.get(state.modules[i].id).cursor;
+				engine.drawText(col * VGRID + offset, (row - 1) * HGRID, '_');
+			}
+
 			engine.endGroup();
 		}
 	}
