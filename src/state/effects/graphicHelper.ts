@@ -1,7 +1,7 @@
 import { font } from '@8f4e/sprite-generator';
 
 import { HGRID, VGRID } from '../../view/drawers/consts';
-import { EventDispatcher } from '../../events';
+import { EventDispatcher, EventHandler } from '../../events';
 import { State } from '../types';
 
 const keywords =
@@ -45,14 +45,20 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				});
 			});
 
-			state.graphicHelper.set(module.id, {
-				width: 32 * VGRID,
-				height: module.code.length * HGRID,
-				code,
-				codeColors,
-				inputs: new Map(),
-				outputs: new Map(),
-			});
+			if (!state.graphicHelper.has(module.id)) {
+				state.graphicHelper.set(module.id, {
+					width: 32 * VGRID,
+					height: module.code.length * HGRID,
+					code,
+					codeColors,
+					inputs: new Map(),
+					outputs: new Map(),
+					cursor: { col: 1, row: 1, offset: VGRID * (padLength + 1) },
+				});
+			} else {
+				state.graphicHelper.get(module.id).code = code;
+				state.graphicHelper.get(module.id).codeColors = codeColors;
+			}
 
 			for (let i = 0; i < state.compiler.compiledModules.get(module.id).outputs.length; i++) {
 				const output = state.compiler.compiledModules.get(module.id).outputs[i];
@@ -80,5 +86,52 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		});
 	};
 
+	function removeByIndex(str, index) {
+		return str.slice(0, index) + str.slice(index + 1);
+	}
+
+	function addAtIndex(str, char, index) {
+		return str.substring(0, index) + char + str.substring(index);
+	}
+
+	const onKeydown: EventHandler = function (event) {
+		const module = state.graphicHelper.get(state.selectedModule.id);
+		switch (event.key) {
+			case 'ArrowLeft':
+				module.cursor.col = Math.max(module.cursor.col - 1, 1);
+				break;
+			case 'ArrowUp':
+				module.cursor.row = Math.max(module.cursor.row - 1, 1);
+				break;
+			case 'ArrowRight':
+				module.cursor.col = module.cursor.col + 1;
+				break;
+			case 'ArrowDown':
+				module.cursor.row = module.cursor.row + 1;
+				break;
+			case 'Backspace':
+				module.cursor.col = Math.max(module.cursor.col - 1, 1);
+				state.selectedModule.code[module.cursor.row - 1] = removeByIndex(
+					state.selectedModule.code[module.cursor.row - 1],
+					module.cursor.col - 1
+				);
+				onCompilationDone();
+				break;
+			case 'Enter':
+				break;
+			default:
+				if (event.key.length === 1) {
+					state.selectedModule.code[module.cursor.row - 1] = addAtIndex(
+						state.selectedModule.code[module.cursor.row - 1],
+						event.key,
+						module.cursor.col - 1
+					);
+					module.cursor.col = module.cursor.col + 1;
+					onCompilationDone();
+				}
+		}
+	};
+
 	events.on('compilationDone', onCompilationDone);
+	events.on('keydown', onKeydown);
 }
