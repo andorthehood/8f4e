@@ -31,6 +31,7 @@ export default function compiler(state: State, events: EventDispatcher): void {
 						);
 					}
 				});
+				events.dispatch('compilationDone');
 				break;
 		}
 	}
