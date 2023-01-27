@@ -58,6 +58,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			} else {
 				state.graphicHelper.get(module.id).code = code;
 				state.graphicHelper.get(module.id).codeColors = codeColors;
+				state.graphicHelper.get(module.id).height = module.code.length * HGRID;
+				state.graphicHelper.get(module.id).cursor.offset = VGRID * (padLength + 1);
 			}
 
 			for (let i = 0; i < state.compiler.compiledModules.get(module.id).outputs.length; i++) {
@@ -114,11 +116,16 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				module.cursor.row = module.cursor.row + 1;
 				break;
 			case 'Backspace':
-				module.cursor.col = Math.max(module.cursor.col - 1, 1);
-				state.selectedModule.code[module.cursor.row - 1] = removeByIndex(
-					state.selectedModule.code[module.cursor.row - 1],
-					module.cursor.col - 1
-				);
+				if (module.cursor.col === 1 && state.selectedModule.code[module.cursor.row - 1].length === 0) {
+					state.selectedModule.code.splice(module.cursor.row - 1, 1);
+					module.cursor.row = Math.max(module.cursor.row - 1, 1);
+				} else {
+					module.cursor.col = Math.max(module.cursor.col - 1, 1);
+					state.selectedModule.code[module.cursor.row - 1] = removeByIndex(
+						state.selectedModule.code[module.cursor.row - 1],
+						module.cursor.col - 1
+					);
+				}
 				onCompilationDone();
 				break;
 			case 'Enter':
