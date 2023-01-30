@@ -2,8 +2,7 @@ export default [
 	{
 		id: '1',
 		state: {},
-		engine: {
-			source: `
+		code: `
             # abs module
         
             # memory
@@ -29,7 +28,6 @@ export default [
                 push input
             end
             store
-        `,
-		},
+        `.split('\n'),
 	},
 ];
