@@ -5,6 +5,8 @@ Map {
   "defaultValue" => Object {
     "byteAddress": 0,
     "default": 0,
+    "id": "defaultValue",
+    "lineNumber": 2,
     "relativeWordAddress": 0,
     "type": 5,
     "wordSize": 1,
@@ -12,6 +14,8 @@ Map {
   "trigger" => Object {
     "byteAddress": 4,
     "default": 0,
+    "id": "trigger",
+    "lineNumber": 3,
     "relativeWordAddress": 1,
     "type": 3,
     "wordSize": 1,
@@ -19,6 +23,8 @@ Map {
   "triggerPreviousValue" => Object {
     "byteAddress": 8,
     "default": 0,
+    "id": "triggerPreviousValue",
+    "lineNumber": 4,
     "relativeWordAddress": 2,
     "type": 5,
     "wordSize": 1,
@@ -43,6 +49,8 @@ Map {
       0,
       0,
     ],
+    "id": "steps",
+    "lineNumber": 5,
     "relativeWordAddress": 3,
     "type": 0,
     "wordSize": 16,
@@ -50,6 +58,8 @@ Map {
   "stepPointer" => Object {
     "byteAddress": 76,
     "default": 12,
+    "id": "stepPointer",
+    "lineNumber": 6,
     "relativeWordAddress": 19,
     "type": 5,
     "wordSize": 1,
@@ -57,6 +67,8 @@ Map {
   "stepLength" => Object {
     "byteAddress": 80,
     "default": 4,
+    "id": "stepLength",
+    "lineNumber": 7,
     "relativeWordAddress": 20,
     "type": 6,
     "wordSize": 1,
@@ -64,6 +76,8 @@ Map {
   "out" => Object {
     "byteAddress": 84,
     "default": 0,
+    "id": "out",
+    "lineNumber": 8,
     "relativeWordAddress": 21,
     "type": 4,
     "wordSize": 1,
