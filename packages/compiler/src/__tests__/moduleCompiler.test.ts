@@ -28,7 +28,7 @@ if
 else
     localGet input
 end
-store`;
+store`.split('\n');
 
 describe('moduleCompiler', () => {
 	test('ast', () => {
