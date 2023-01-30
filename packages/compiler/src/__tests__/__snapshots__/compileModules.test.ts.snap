@@ -3,6 +3,170 @@
 exports[`compiler compileModules 1`] = `
 Array [
   Object {
+    "ast": Array [
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "DEFAULT_VALUE",
+          },
+          Object {
+            "type": "literal",
+            "value": 0,
+          },
+        ],
+        "instruction": "private",
+        "lineNumber": 5,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "in",
+          },
+          Object {
+            "type": "identifier",
+            "value": "DEFAULT_VALUE",
+          },
+        ],
+        "instruction": "inputPointer",
+        "lineNumber": 6,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "out",
+          },
+          Object {
+            "type": "literal",
+            "value": 0,
+          },
+        ],
+        "instruction": "output",
+        "lineNumber": 7,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "input",
+          },
+        ],
+        "instruction": "local",
+        "lineNumber": 10,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "&out",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 13,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "in",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 14,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "input",
+          },
+        ],
+        "instruction": "localSet",
+        "lineNumber": 15,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "input",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 16,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "literal",
+            "value": 0,
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 17,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "lessThan",
+        "lineNumber": 18,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "if",
+        "lineNumber": 19,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "literal",
+            "value": 0,
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 20,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "input",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 21,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "sub",
+        "lineNumber": 22,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "else",
+        "lineNumber": 23,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
+            "value": "input",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 24,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "end",
+        "lineNumber": 25,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "store",
+        "lineNumber": 26,
+      },
+    ],
     "byteAddress": 4,
     "functionBody": Array [
       35,
@@ -42,10 +206,23 @@ Array [
       0,
       11,
     ],
+    "inputs": Array [
+      Object {
+        "byteAddress": 8,
+        "default": 4,
+        "id": "in",
+        "lineNumber": 6,
+        "relativeWordAddress": 1,
+        "type": 3,
+        "wordSize": 1,
+      },
+    ],
     "memoryMap": Map {
       "DEFAULT_VALUE" => Object {
         "byteAddress": 4,
         "default": 0,
+        "id": "DEFAULT_VALUE",
+        "lineNumber": 5,
         "relativeWordAddress": 0,
         "type": 5,
         "wordSize": 1,
@@ -53,6 +230,8 @@ Array [
       "in" => Object {
         "byteAddress": 8,
         "default": 4,
+        "id": "in",
+        "lineNumber": 6,
         "relativeWordAddress": 1,
         "type": 3,
         "wordSize": 1,
@@ -60,6 +239,8 @@ Array [
       "out" => Object {
         "byteAddress": 12,
         "default": 0,
+        "id": "out",
+        "lineNumber": 7,
         "relativeWordAddress": 2,
         "type": 4,
         "wordSize": 1,
@@ -67,6 +248,17 @@ Array [
     },
     "memoryWordSize": 3,
     "moduleId": "1",
+    "outputs": Array [
+      Object {
+        "byteAddress": 12,
+        "default": 0,
+        "id": "out",
+        "lineNumber": 7,
+        "relativeWordAddress": 2,
+        "type": 4,
+        "wordSize": 1,
+      },
+    ],
     "wordAddress": 1,
   },
 ]

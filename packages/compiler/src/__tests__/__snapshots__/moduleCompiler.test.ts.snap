@@ -14,6 +14,7 @@ Array [
       },
     ],
     "instruction": "private",
+    "lineNumber": 5,
   },
   Object {
     "arguments": Array [
@@ -27,6 +28,7 @@ Array [
       },
     ],
     "instruction": "inputPointer",
+    "lineNumber": 6,
   },
   Object {
     "arguments": Array [
@@ -40,6 +42,7 @@ Array [
       },
     ],
     "instruction": "output",
+    "lineNumber": 7,
   },
   Object {
     "arguments": Array [
@@ -57,6 +60,7 @@ Array [
       },
     ],
     "instruction": "array",
+    "lineNumber": 8,
   },
   Object {
     "arguments": Array [
@@ -66,6 +70,7 @@ Array [
       },
     ],
     "instruction": "local",
+    "lineNumber": 11,
   },
   Object {
     "arguments": Array [
@@ -75,6 +80,7 @@ Array [
       },
     ],
     "instruction": "push",
+    "lineNumber": 14,
   },
   Object {
     "arguments": Array [
@@ -84,14 +90,17 @@ Array [
       },
     ],
     "instruction": "push",
+    "lineNumber": 15,
   },
   Object {
     "arguments": Array [],
     "instruction": "load",
+    "lineNumber": 16,
   },
   Object {
     "arguments": Array [],
     "instruction": "load",
+    "lineNumber": 17,
   },
   Object {
     "arguments": Array [
@@ -101,6 +110,7 @@ Array [
       },
     ],
     "instruction": "localSet",
+    "lineNumber": 18,
   },
   Object {
     "arguments": Array [
@@ -110,6 +120,7 @@ Array [
       },
     ],
     "instruction": "localGet",
+    "lineNumber": 19,
   },
   Object {
     "arguments": Array [
@@ -119,14 +130,17 @@ Array [
       },
     ],
     "instruction": "push",
+    "lineNumber": 20,
   },
   Object {
     "arguments": Array [],
     "instruction": "lessThan",
+    "lineNumber": 21,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
+    "lineNumber": 22,
   },
   Object {
     "arguments": Array [
@@ -136,6 +150,7 @@ Array [
       },
     ],
     "instruction": "push",
+    "lineNumber": 23,
   },
   Object {
     "arguments": Array [
@@ -145,14 +160,17 @@ Array [
       },
     ],
     "instruction": "localGet",
+    "lineNumber": 24,
   },
   Object {
     "arguments": Array [],
     "instruction": "sub",
+    "lineNumber": 25,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
+    "lineNumber": 26,
   },
   Object {
     "arguments": Array [
@@ -162,14 +180,17 @@ Array [
       },
     ],
     "instruction": "localGet",
+    "lineNumber": 27,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
+    "lineNumber": 28,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
+    "lineNumber": 29,
   },
 ]
 `;
