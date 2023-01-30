@@ -5,6 +5,8 @@ Map {
   "defaultValue" => Object {
     "byteAddress": 0,
     "default": 0,
+    "id": "defaultValue",
+    "lineNumber": 2,
     "relativeWordAddress": 0,
     "type": 5,
     "wordSize": 1,
@@ -12,6 +14,8 @@ Map {
   "in" => Object {
     "byteAddress": 4,
     "default": 0,
+    "id": "in",
+    "lineNumber": 3,
     "relativeWordAddress": 1,
     "type": 3,
     "wordSize": 1,
@@ -19,6 +23,8 @@ Map {
   "out" => Object {
     "byteAddress": 8,
     "default": 0,
+    "id": "out",
+    "lineNumber": 4,
     "relativeWordAddress": 2,
     "type": 4,
     "wordSize": 1,
