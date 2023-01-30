@@ -5,6 +5,8 @@ Map {
   "defaultValue" => Object {
     "byteAddress": 0,
     "default": 0,
+    "id": "defaultValue",
+    "lineNumber": 2,
     "relativeWordAddress": 0,
     "type": 5,
     "wordSize": 1,
@@ -12,6 +14,8 @@ Map {
   "numberOfInputs" => Object {
     "byteAddress": 4,
     "default": 4,
+    "id": "numberOfInputs",
+    "lineNumber": 3,
     "relativeWordAddress": 1,
     "type": 6,
     "wordSize": 1,
@@ -19,6 +23,8 @@ Map {
   "numberOfOutputs" => Object {
     "byteAddress": 8,
     "default": 4,
+    "id": "numberOfOutputs",
+    "lineNumber": 4,
     "relativeWordAddress": 2,
     "type": 6,
     "wordSize": 1,
@@ -26,6 +32,8 @@ Map {
   "numberOfDataPlaceholders" => Object {
     "byteAddress": 12,
     "default": 4,
+    "id": "numberOfDataPlaceholders",
+    "lineNumber": 5,
     "relativeWordAddress": 3,
     "type": 6,
     "wordSize": 1,
@@ -33,6 +41,8 @@ Map {
   "in:1" => Object {
     "byteAddress": 16,
     "default": 0,
+    "id": "in:1",
+    "lineNumber": 8,
     "relativeWordAddress": 4,
     "type": 3,
     "wordSize": 1,
@@ -40,6 +50,8 @@ Map {
   "in:2" => Object {
     "byteAddress": 20,
     "default": 0,
+    "id": "in:2",
+    "lineNumber": 11,
     "relativeWordAddress": 5,
     "type": 3,
     "wordSize": 1,
@@ -47,6 +59,8 @@ Map {
   "in:3" => Object {
     "byteAddress": 24,
     "default": 0,
+    "id": "in:3",
+    "lineNumber": 14,
     "relativeWordAddress": 6,
     "type": 3,
     "wordSize": 1,
@@ -54,6 +68,8 @@ Map {
   "in:4" => Object {
     "byteAddress": 28,
     "default": 0,
+    "id": "in:4",
+    "lineNumber": 17,
     "relativeWordAddress": 7,
     "type": 3,
     "wordSize": 1,
@@ -61,6 +77,8 @@ Map {
   "out:1" => Object {
     "byteAddress": 32,
     "default": 0,
+    "id": "out:1",
+    "lineNumber": 21,
     "relativeWordAddress": 8,
     "type": 4,
     "wordSize": 1,
@@ -68,6 +86,8 @@ Map {
   "out:2" => Object {
     "byteAddress": 36,
     "default": 0,
+    "id": "out:2",
+    "lineNumber": 24,
     "relativeWordAddress": 9,
     "type": 4,
     "wordSize": 1,
@@ -75,6 +95,8 @@ Map {
   "out:3" => Object {
     "byteAddress": 40,
     "default": 0,
+    "id": "out:3",
+    "lineNumber": 27,
     "relativeWordAddress": 10,
     "type": 4,
     "wordSize": 1,
@@ -82,6 +104,8 @@ Map {
   "out:4" => Object {
     "byteAddress": 44,
     "default": 0,
+    "id": "out:4",
+    "lineNumber": 30,
     "relativeWordAddress": 11,
     "type": 4,
     "wordSize": 1,
@@ -89,6 +113,8 @@ Map {
   "data:1" => Object {
     "byteAddress": 48,
     "default": 0,
+    "id": "data:1",
+    "lineNumber": 34,
     "relativeWordAddress": 12,
     "type": 6,
     "wordSize": 1,
@@ -96,6 +122,8 @@ Map {
   "data:2" => Object {
     "byteAddress": 52,
     "default": 0,
+    "id": "data:2",
+    "lineNumber": 37,
     "relativeWordAddress": 13,
     "type": 6,
     "wordSize": 1,
@@ -103,6 +131,8 @@ Map {
   "data:3" => Object {
     "byteAddress": 56,
     "default": 0,
+    "id": "data:3",
+    "lineNumber": 40,
     "relativeWordAddress": 14,
     "type": 6,
     "wordSize": 1,
@@ -110,6 +140,8 @@ Map {
   "data:4" => Object {
     "byteAddress": 60,
     "default": 0,
+    "id": "data:4",
+    "lineNumber": 43,
     "relativeWordAddress": 15,
     "type": 6,
     "wordSize": 1,

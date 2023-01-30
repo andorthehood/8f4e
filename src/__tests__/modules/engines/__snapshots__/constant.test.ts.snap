@@ -5,6 +5,8 @@ Map {
   "out" => Object {
     "byteAddress": 0,
     "default": 0,
+    "id": "out",
+    "lineNumber": 2,
     "relativeWordAddress": 0,
     "type": 4,
     "wordSize": 1,

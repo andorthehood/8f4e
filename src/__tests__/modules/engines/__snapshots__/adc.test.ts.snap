@@ -5,6 +5,8 @@ Map {
   "default" => Object {
     "byteAddress": 0,
     "default": 0,
+    "id": "default",
+    "lineNumber": 5,
     "relativeWordAddress": 0,
     "type": 5,
     "wordSize": 1,
@@ -12,6 +14,8 @@ Map {
   "in" => Object {
     "byteAddress": 4,
     "default": 0,
+    "id": "in",
+    "lineNumber": 6,
     "relativeWordAddress": 1,
     "type": 3,
     "wordSize": 1,
@@ -19,6 +23,8 @@ Map {
   "out:1" => Object {
     "byteAddress": 8,
     "default": 0,
+    "id": "out:1",
+    "lineNumber": 7,
     "relativeWordAddress": 2,
     "type": 4,
     "wordSize": 1,
@@ -26,6 +32,8 @@ Map {
   "out:2" => Object {
     "byteAddress": 12,
     "default": 0,
+    "id": "out:2",
+    "lineNumber": 8,
     "relativeWordAddress": 3,
     "type": 4,
     "wordSize": 1,
@@ -33,6 +41,8 @@ Map {
   "out:3" => Object {
     "byteAddress": 16,
     "default": 0,
+    "id": "out:3",
+    "lineNumber": 9,
     "relativeWordAddress": 4,
     "type": 4,
     "wordSize": 1,
@@ -40,6 +50,8 @@ Map {
   "out:4" => Object {
     "byteAddress": 20,
     "default": 0,
+    "id": "out:4",
+    "lineNumber": 10,
     "relativeWordAddress": 5,
     "type": 4,
     "wordSize": 1,
@@ -47,6 +59,8 @@ Map {
   "out:5" => Object {
     "byteAddress": 24,
     "default": 0,
+    "id": "out:5",
+    "lineNumber": 11,
     "relativeWordAddress": 6,
     "type": 4,
     "wordSize": 1,
@@ -54,6 +68,8 @@ Map {
   "out:6" => Object {
     "byteAddress": 28,
     "default": 0,
+    "id": "out:6",
+    "lineNumber": 12,
     "relativeWordAddress": 7,
     "type": 4,
     "wordSize": 1,
@@ -61,6 +77,8 @@ Map {
   "out:7" => Object {
     "byteAddress": 32,
     "default": 0,
+    "id": "out:7",
+    "lineNumber": 13,
     "relativeWordAddress": 8,
     "type": 4,
     "wordSize": 1,
@@ -68,6 +86,8 @@ Map {
   "out:8" => Object {
     "byteAddress": 36,
     "default": 0,
+    "id": "out:8",
+    "lineNumber": 14,
     "relativeWordAddress": 9,
     "type": 4,
     "wordSize": 1,
