@@ -117,7 +117,14 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				break;
 			case 'Backspace':
 				if (module.cursor.col === 1 && state.selectedModule.code[module.cursor.row - 1].length === 0) {
-					state.selectedModule.code.splice(module.cursor.row - 1, 1);
+					const save = state.selectedModule.code[module.cursor.row - 2];
+					state.selectedModule.code.splice(module.cursor.row - 2, 1);
+					state.selectedModule.code[module.cursor.row - 1] = state.selectedModule.code[module.cursor.row - 1] + save;
+					module.cursor.row = Math.max(module.cursor.row - 1, 1);
+				} else if (module.cursor.col === 1 && state.selectedModule.code[module.cursor.row - 1].length > 0) {
+					const save = state.selectedModule.code[module.cursor.row - 2];
+					state.selectedModule.code.splice(module.cursor.row - 2, 1);
+					state.selectedModule.code[module.cursor.row - 1] = state.selectedModule.code[module.cursor.row - 1] + save;
 					module.cursor.row = Math.max(module.cursor.row - 1, 1);
 				} else {
 					module.cursor.col = Math.max(module.cursor.col - 1, 1);
