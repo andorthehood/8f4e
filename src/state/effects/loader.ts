@@ -20,18 +20,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 	window.state = state;
 
 	function onSaveState() {
-		state.modules.forEach(({ type }, index) => {
-			if (state.moduleTypes[type].extractState) {
-				state.modules[index].state = {
-					...state.modules[index].state,
-					...state.moduleTypes[type].extractState(
-						state.compiler.memoryBuffer,
-						state.compiler.memoryAddressLookup.get(state.modules[index].id + '__startAddress')
-					),
-				};
-			}
-		});
-
 		localStorage.setItem(
 			'state',
 			JSON.stringify({
