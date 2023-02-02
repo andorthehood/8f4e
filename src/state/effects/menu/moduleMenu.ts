@@ -1,23 +1,5 @@
 import { EventDispatcher } from '../../../events';
-import { ModuleType, ModuleTypeLookup, State } from '../../types';
-
-function getModuleCategories(moduleTypes: ModuleTypeLookup): string[] {
-	return Object.values(moduleTypes)
-		.reduce((accumulator, moduleType: ModuleType) => {
-			if (accumulator.includes(moduleType.category)) {
-				return accumulator;
-			} else {
-				return [...accumulator, moduleType.category];
-			}
-		}, [])
-		.sort();
-}
-
-function filterModuleTypesByCategory(moduleTypes: ModuleTypeLookup, category: string): string[] {
-	return Object.keys(moduleTypes).filter((type: string) => {
-		return moduleTypes[type].category === category;
-	});
-}
+import { State } from '../../types';
 
 export default function contextMenu(state: State, events: EventDispatcher): () => void {
 	const onModuleMenu = event => {
@@ -28,7 +10,6 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		state.contextMenu.open = true;
 
 		if (event.category) {
-			const modules = filterModuleTypesByCategory(state.moduleTypes, event.category);
 			state.contextMenu.items = [
 				{
 					title: 'Back',
@@ -36,17 +17,8 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 					payload: {},
 					close: false,
 				},
-				...modules.map(type => {
-					return {
-						title: state.moduleTypes[type].name,
-						action: 'addModule',
-						payload: { type },
-						close: true,
-					};
-				}),
 			];
 		} else {
-			const categories = getModuleCategories(state.moduleTypes);
 			state.contextMenu.items = [
 				{
 					title: 'Back',
@@ -54,14 +26,6 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 					payload: {},
 					close: false,
 				},
-				...categories.map(category => {
-					return {
-						title: category,
-						action: 'openModuleMenu',
-						payload: { category },
-						close: false,
-					};
-				}),
 			];
 		}
 	};
