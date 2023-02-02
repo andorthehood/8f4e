@@ -3,7 +3,6 @@ import { Engine } from '@8f4e/2d-engine';
 import { MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
 import { pianoKeyboard } from '@8f4e/sprite-generator';
 
-import { PianoQuantizer } from '../../../modules/pianoQuantizer120';
 import { HGRID, VGRID } from '../consts';
 import { Module } from '../../../state/types';
 
@@ -12,7 +11,7 @@ const octaveWidth = 12 * HGRID;
 export default function pianoDrawer(
 	engine: Engine,
 	module: Module,
-	moduleType: PianoQuantizer,
+	moduleType,
 	memoryAddressLookup: MemoryAddressLookup,
 	memoryBuffer: MemoryBuffer
 ): void {
