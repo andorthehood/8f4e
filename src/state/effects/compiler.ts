@@ -22,15 +22,6 @@ export default function compiler(state: State, events: EventDispatcher): void {
 				break;
 			case 'compilationDone':
 				compilationDone(state, data, memoryRef);
-				state.modules.forEach(({ type }, index) => {
-					if (state.moduleTypes[type].insertState) {
-						state.moduleTypes[type].insertState(
-							state.modules[index].state,
-							state.compiler.memoryBuffer,
-							state.compiler.memoryAddressLookup.get(state.modules[index].id + '__startAddress')
-						);
-					}
-				});
 				events.dispatch('compilationDone');
 				break;
 		}
