@@ -3,6 +3,7 @@ import { font } from '@8f4e/sprite-generator';
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
 import { State } from '../types';
+import { backSpace, moveCaret, type } from '../helpers/editor';
 
 const keywords =
 	/output|inputPointer|local|private|push|div|if|else|end|store|and|greaterThan|branch|greaterOrEqual|add|sub|lessThan|public|xor|shiftRight/;
@@ -102,37 +103,34 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 	const onKeydown: EventHandler = function (event) {
 		const module = state.graphicHelper.get(state.selectedModule.id);
+		let newPosition: [number, number] = [module.cursor.row, module.cursor.col];
 		switch (event.key) {
 			case 'ArrowLeft':
-				module.cursor.col = Math.max(module.cursor.col - 1, 1);
+				newPosition = moveCaret(state.selectedModule.code, module.cursor.row - 1, module.cursor.col - 1, 'left');
+				module.cursor.row = newPosition[0] + 1;
+				module.cursor.col = newPosition[1] + 1;
 				break;
 			case 'ArrowUp':
-				module.cursor.row = Math.max(module.cursor.row - 1, 1);
+				newPosition = moveCaret(state.selectedModule.code, module.cursor.row - 1, module.cursor.col - 1, 'up');
+				module.cursor.row = newPosition[0] + 1;
+				module.cursor.col = newPosition[1] + 1;
 				break;
 			case 'ArrowRight':
-				module.cursor.col = module.cursor.col + 1;
+				newPosition = moveCaret(state.selectedModule.code, module.cursor.row - 1, module.cursor.col - 1, 'right');
+				module.cursor.row = newPosition[0] + 1;
+				module.cursor.col = newPosition[1] + 1;
 				break;
 			case 'ArrowDown':
-				module.cursor.row = module.cursor.row + 1;
+				newPosition = moveCaret(state.selectedModule.code, module.cursor.row - 1, module.cursor.col - 1, 'down');
+				module.cursor.row = newPosition[0] + 1;
+				module.cursor.col = newPosition[1] + 1;
 				break;
 			case 'Backspace':
-				if (module.cursor.col === 1 && state.selectedModule.code[module.cursor.row - 1].length === 0) {
-					const save = state.selectedModule.code[module.cursor.row - 2];
-					state.selectedModule.code.splice(module.cursor.row - 2, 1);
-					state.selectedModule.code[module.cursor.row - 1] = state.selectedModule.code[module.cursor.row - 1] + save;
-					module.cursor.row = Math.max(module.cursor.row - 1, 1);
-				} else if (module.cursor.col === 1 && state.selectedModule.code[module.cursor.row - 1].length > 0) {
-					const save = state.selectedModule.code[module.cursor.row - 2];
-					state.selectedModule.code.splice(module.cursor.row - 2, 1);
-					state.selectedModule.code[module.cursor.row - 1] = state.selectedModule.code[module.cursor.row - 1] + save;
-					module.cursor.row = Math.max(module.cursor.row - 1, 1);
-				} else {
-					module.cursor.col = Math.max(module.cursor.col - 1, 1);
-					state.selectedModule.code[module.cursor.row - 1] = removeByIndex(
-						state.selectedModule.code[module.cursor.row - 1],
-						module.cursor.col - 1
-					);
-				}
+				// eslint-disable-next-line no-case-declarations
+				const bp = backSpace(state.selectedModule.code, module.cursor.row - 1, module.cursor.col - 1);
+				module.cursor.row = bp.row + 1;
+				module.cursor.col = bp.col + 1;
+				state.selectedModule.code = bp.code;
 				onCompilationDone();
 				break;
 			case 'Enter':
@@ -148,12 +146,11 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				break;
 			default:
 				if (event.key.length === 1) {
-					state.selectedModule.code[module.cursor.row - 1] = addAtIndex(
-						state.selectedModule.code[module.cursor.row - 1],
-						event.key,
-						module.cursor.col - 1
-					);
-					module.cursor.col = module.cursor.col + 1;
+					// eslint-disable-next-line no-case-declarations
+					const bp = type(state.selectedModule.code, module.cursor.row - 1, module.cursor.col - 1, event.key);
+					module.cursor.row = bp.row + 1;
+					module.cursor.col = bp.col + 1;
+					state.selectedModule.code = bp.code;
 					onCompilationDone();
 				}
 		}
