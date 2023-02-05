@@ -1,6 +1,6 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import constant from '../../examples/constant.asm';
+import constant from './constant.asm';
 
 let testModule: TestModule;
 

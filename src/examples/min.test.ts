@@ -1,6 +1,6 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import min from '../../examples/min.asm';
+import min from './min.asm';
 
 let testModule: TestModule;
 

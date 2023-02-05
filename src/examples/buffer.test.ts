@@ -1,6 +1,6 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import buffer from '../../examples/buffer.asm';
+import buffer from './buffer.asm';
 
 let testModule: TestModule;
 
