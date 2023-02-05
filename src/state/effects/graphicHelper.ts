@@ -54,13 +54,13 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					codeColors,
 					inputs: new Map(),
 					outputs: new Map(),
-					cursor: { col: 1, row: 1, offset: VGRID * (padLength + 1) },
+					cursor: { col: 0, row: 0, offset: VGRID * (padLength + 2) },
 				});
 			} else {
 				state.graphicHelper.get(module.id).code = code;
 				state.graphicHelper.get(module.id).codeColors = codeColors;
 				state.graphicHelper.get(module.id).height = module.code.length * HGRID;
-				state.graphicHelper.get(module.id).cursor.offset = VGRID * (padLength + 1);
+				state.graphicHelper.get(module.id).cursor.offset = VGRID * (padLength + 2);
 			}
 
 			for (let i = 0; i < state.compiler.compiledModules.get(module.id).outputs.length; i++) {
