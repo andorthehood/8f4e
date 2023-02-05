@@ -1,7 +1,7 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import xor from '../../examples/logicXor.asm';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../examples/consts';
+import xor from './logicXor.asm';
+import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 let testModule: TestModule;
 

@@ -1,6 +1,6 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import abs from '../../examples/attenuator.asm';
+import abs from './attenuator.asm';
 
 let testModule: TestModule;
 

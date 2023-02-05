@@ -1,7 +1,7 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import bitwiseAnd from '../../examples/bitwiseAnd.asm';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../examples/consts';
+import { I16_SIGNED_LARGEST_NUMBER } from './consts';
+import bitwiseAnd from './bitwiseAnd.asm';
 
 let testModule: TestModule;
 

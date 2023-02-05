@@ -1,21 +1,21 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import logicOr from '../../examples/logicOr.asm';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../examples/consts';
+import max from './max.asm';
 
 let testModule: TestModule;
 
 const fixtures: [input1: number, input2: number, output: number][] = [
-	[10, 10, I16_SIGNED_LARGEST_NUMBER],
-	[0, 10, I16_SIGNED_LARGEST_NUMBER],
-	[10, 0, I16_SIGNED_LARGEST_NUMBER],
+	[10, 10, 10],
+	[0, 10, 10],
+	[10, 0, 10],
 	[0, 0, 0],
 	[-10, 0, 0],
+	[-10, -100, -10],
 ];
 
-describe('logicOr', () => {
+describe('max', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(logicOr);
+		testModule = await createTestModule(max);
 	});
 
 	beforeEach(() => {

@@ -1,6 +1,6 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import splitter from '../../examples/splitter.asm';
+import splitter from './splitter.asm';
 
 let testModule: TestModule;
 

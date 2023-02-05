@@ -1,6 +1,6 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import quantizer from '../../examples/quantizer.asm';
+import quantizer from './quantizer.asm';
 
 let testModule: TestModule;
 

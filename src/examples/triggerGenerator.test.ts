@@ -1,6 +1,6 @@
 import { createTestModule, I16_SIGNED_LARGEST_NUMBER, TestModule } from '@8f4e/compiler';
 
-import triggerGenerator from '../../examples/triggerGenerator.asm';
+import triggerGenerator from './triggerGenerator.asm';
 
 let testModule: TestModule;
 

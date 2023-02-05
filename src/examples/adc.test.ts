@@ -1,7 +1,7 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import adc from '../../examples/adc.asm';
-import { LOGIC_HIGH } from '../../examples/consts';
+import adc from './adc.asm';
+import { LOGIC_HIGH } from './consts';
 
 let testModule: TestModule;
 
