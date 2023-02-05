@@ -1,16 +1,23 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import random from '../../examples/random.asm';
+import invert from './invert.asm';
 
 let testModule: TestModule;
 
-const fixtures = [-30826, -15413, 25062, 12531, 6265, -29637];
+const fixtures: [input: number, output: number][] = [
+	[1, -1],
+	[69, -69],
+	[0, 0],
+	[-420, 420],
+];
 
-describe('random', () => {
+describe('invert', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(random());
-		const { memory } = testModule;
-		memory.set('seed', 69420);
+		testModule = await createTestModule(invert);
+	});
+
+	beforeEach(() => {
+		testModule.reset();
 	});
 
 	test('if the wat code matches with the snapshot', () => {
@@ -21,9 +28,11 @@ describe('random', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test.each(fixtures)('given the seed 69420, the output should be %p', output => {
+	test.each(fixtures)('given input %p, the expected output is %p', (input, output) => {
 		const { memory, test } = testModule;
 
+		const inAddress = memory.allocMemoryForPointer('in');
+		memory.set(inAddress, input);
 		test();
 		expect(memory.get('out')).toBe(output);
 	});

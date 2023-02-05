@@ -1,6 +1,6 @@
 import { createTestModule, I16_SIGNED_LARGEST_NUMBER, TestModule } from '@8f4e/compiler';
 
-import clockGenerator from '../../examples/square.asm';
+import clockGenerator from './square.asm';
 
 let testModule: TestModule;
 

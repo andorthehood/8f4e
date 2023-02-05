@@ -1,7 +1,7 @@
 import { createTestModule } from '@8f4e/compiler';
 
-import and from '../../examples/logicAnd.asm';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../examples/consts';
+import and from './logicAnd.asm';
+import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 let testModule;
 
