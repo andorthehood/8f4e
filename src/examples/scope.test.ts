@@ -1,6 +1,6 @@
 import { createTestModule } from '@8f4e/compiler';
 
-import scope from '../../examples/scope.asm';
+import scope from './scope.asm';
 
 let testModule;
 

@@ -1,6 +1,6 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import sampleAndHold from '../../examples/sampleAndHold.asm';
+import sampleAndHold from './sampleAndHold.asm';
 
 let testModule: TestModule;
 
