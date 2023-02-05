@@ -1,7 +1,7 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import bitwiseXor from '../../examples/bitwiseXor.asm';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../examples/consts';
+import bitwiseXor from './bitwiseXor.asm';
+import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 let testModule: TestModule;
 

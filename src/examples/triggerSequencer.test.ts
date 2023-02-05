@@ -1,7 +1,7 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 import { I16_SIGNED_LARGEST_NUMBER, WORD_LENGTH } from '@8f4e/compiler/dist/consts';
 
-import triggerSequencer from '../../examples/triggerSequencer.asm';
+import triggerSequencer from './triggerSequencer.asm';
 
 let testModule: TestModule;
 

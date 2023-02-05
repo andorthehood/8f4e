@@ -1,4 +1,4 @@
-import ccNames from '../../midi/ccNames';
+import ccNames from './ccNames';
 
 test('test if the list matches the snapshot', () => {
 	expect(ccNames).toMatchSnapshot();
