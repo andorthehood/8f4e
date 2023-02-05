@@ -5,7 +5,8 @@
 		"downlevelIteration": true,
 		"moduleResolution": "node",
 		"esModuleInterop": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"strictNullChecks": true
 	},
 	"exclude": ["node_modules"],
 	"include": ["src/**/*.ts"]
