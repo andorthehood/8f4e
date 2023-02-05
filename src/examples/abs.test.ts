@@ -1,19 +1,19 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import negate from '../../examples/logicNegate.asm';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../examples/consts';
+import abs from './abs.asm';
 
 let testModule: TestModule;
 
 const fixtures: [input: number, output: number][] = [
-	[1, 0],
-	[-69, I16_SIGNED_LARGEST_NUMBER],
-	[0, I16_SIGNED_LARGEST_NUMBER],
+	[1, 1],
+	[-1, 1],
+	[-69, 69],
+	[420, 420],
 ];
 
-describe('logicNegate', () => {
+describe('abs', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(negate);
+		testModule = await createTestModule(abs);
 	});
 
 	beforeEach(() => {
@@ -28,7 +28,7 @@ describe('logicNegate', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
 
-	test.each(fixtures)('given input %p, the expected output is %p', (input, output) => {
+	test.each(fixtures)('given input %p, the output should be %p', (input, output) => {
 		const { memory, test } = testModule;
 
 		const inAddress = memory.allocMemoryForPointer('in');

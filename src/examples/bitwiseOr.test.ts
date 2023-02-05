@@ -1,7 +1,7 @@
 import { createTestModule, TestModule } from '@8f4e/compiler';
 
-import bitwiseOr from '../../examples/bitwiseOr.asm';
-import { I16_SIGNED_LARGEST_NUMBER } from '../../examples/consts';
+import bitwiseOr from './bitwiseOr.asm';
+import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 let testModule: TestModule;
 
