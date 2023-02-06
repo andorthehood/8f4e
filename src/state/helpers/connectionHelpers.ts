@@ -4,7 +4,7 @@ export function findConnectionByConnectorId(
 	connections: Connection[],
 	moduleId: string,
 	connectorId: string
-): Connection {
+): Connection | undefined {
 	return connections.find(({ fromModuleId, toModuleId, fromConnectorId, toConnectorId }) => {
 		return (
 			(fromModuleId === moduleId && fromConnectorId === connectorId) ||
