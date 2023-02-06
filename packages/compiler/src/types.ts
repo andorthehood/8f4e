@@ -32,8 +32,6 @@ export interface CompiledModule {
 	memoryMap: MemoryMap;
 	memoryWordSize: number;
 	ast: AST;
-	inputs: MemoryItem[];
-	outputs: MemoryItem[];
 }
 
 export type CompiledModuleLookup = Map<string, CompiledModule>;
