@@ -4,20 +4,21 @@ export default function findModuleAtViewportCoordinates(
 	modules: Module[],
 	graphicHelper: GraphicHelper,
 	viewport: Viewport,
-	x: number,
-	y: number
-): Module {
-	return modules.find((module: Module) => {
-		if (!graphicHelper.has(module.id)) {
-			return false;
+	searchX: number,
+	searchY: number
+): Module | undefined {
+	return modules.find(({ id, x, y }) => {
+		const module = graphicHelper.get(id);
+		if (!module) {
+			return;
 		}
 
-		const { width, height } = graphicHelper.get(module.id);
+		const { width, height } = module;
 		return (
-			x >= module.x + viewport.x &&
-			x <= module.x + width + viewport.x &&
-			y >= module.y + viewport.y &&
-			y <= module.y + height + viewport.y
+			searchX >= x + viewport.x &&
+			searchX <= x + width + viewport.x &&
+			searchY >= y + viewport.y &&
+			searchY <= y + height + viewport.y
 		);
 	});
 }
