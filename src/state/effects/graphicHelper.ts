@@ -4,6 +4,7 @@ import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
 import { State } from '../types';
 import { backSpace, enter, moveCaret, type } from '../helpers/editor';
+import { parseInputs, parseOutputs } from '../helpers/codeParsers';
 
 const keywords =
 	/output|inputPointer|local|private|push|div|if|else|end|store|and|greaterThan|branch|greaterOrEqual|add|sub|lessThan|public|xor|shiftRight/;
@@ -63,29 +64,28 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				state.graphicHelper.get(module.id).cursor.offset = VGRID * (padLength + 2);
 			}
 
-			for (let i = 0; i < state.compiler.compiledModules.get(module.id).outputs.length; i++) {
-				const output = state.compiler.compiledModules.get(module.id).outputs[i];
-
-				state.graphicHelper.get(module.id).outputs.set(output.id, {
+			state.graphicHelper.get(module.id)?.outputs.clear();
+			parseOutputs(module.code).forEach(output => {
+				state.graphicHelper.get(module.id)?.outputs.set(output.id, {
 					width: VGRID * 2,
 					height: HGRID,
-					x: VGRID * 3 + VGRID * code[output.lineNumber - 1].length,
-					y: HGRID * (output.lineNumber - 1),
+					x: VGRID * 3 + VGRID * code[output.lineNumber].length,
+					y: HGRID * output.lineNumber,
 					id: output.id,
+					labelOffset: 3 * VGRID,
 				});
-			}
+			});
 
-			for (let i = 0; i < state.compiler.compiledModules.get(module.id).inputs.length; i++) {
-				const input = state.compiler.compiledModules.get(module.id).inputs[i];
-
-				state.graphicHelper.get(module.id).inputs.set(input.id, {
+			state.graphicHelper.get(module.id)?.inputs.clear();
+			parseInputs(module.code).forEach(input => {
+				state.graphicHelper.get(module.id)?.inputs.set(input.id, {
 					width: VGRID * 2,
 					height: HGRID,
 					x: VGRID,
-					y: HGRID * (input.lineNumber - 1),
+					y: HGRID * input.lineNumber,
 					id: input.id,
 				});
-			}
+			});
 		});
 	};
 
@@ -137,5 +137,6 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	};
 
 	events.on('compilationDone', onCompilationDone);
+	events.on('init', onCompilationDone);
 	events.on('keydown', onKeydown);
 }
