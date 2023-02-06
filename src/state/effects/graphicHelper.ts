@@ -47,7 +47,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				});
 			});
 
-			if (!state.graphicHelper.has(module.id)) {
+			const graphicData = state.graphicHelper.get(module.id);
+			if (!graphicData) {
 				state.graphicHelper.set(module.id, {
 					width: 32 * VGRID,
 					height: module.code.length * HGRID,
@@ -58,10 +59,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					cursor: { col: 0, row: 0, offset: VGRID * (padLength + 2) },
 				});
 			} else {
-				state.graphicHelper.get(module.id).code = code;
-				state.graphicHelper.get(module.id).codeColors = codeColors;
-				state.graphicHelper.get(module.id).height = module.code.length * HGRID;
-				state.graphicHelper.get(module.id).cursor.offset = VGRID * (padLength + 2);
+				graphicData.code = code;
+				graphicData.codeColors = codeColors;
+				graphicData.height = module.code.length * HGRID;
+				graphicData.cursor.offset = VGRID * (padLength + 2);
 			}
 
 			state.graphicHelper.get(module.id)?.outputs.clear();

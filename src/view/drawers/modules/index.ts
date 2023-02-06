@@ -1,7 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 import { fillColor, font } from '@8f4e/sprite-generator';
 
-import scope from './scope';
 import drawConnectors from './connectors';
 
 import { State } from '../../../state/types';
@@ -13,7 +12,7 @@ export default function drawModules(engine: Engine, state: State): void {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.modules.length; i++) {
-		const { x, y, type, id } = state.modules[i];
+		const { x, y, id } = state.modules[i];
 		const { width, height, code, codeColors } = state.graphicHelper.get(state.modules[i].id) || {
 			width: 0,
 			height: 0,
@@ -38,10 +37,6 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.drawText(0, height - HGRID, '+');
 			engine.drawText(width - VGRID, height - HGRID, '+');
 
-			if (type === 'scope') {
-				scope(engine, state, id);
-			}
-
 			engine.setSpriteLookup(font('white'));
 
 			drawConnectors(engine, state, id);
@@ -52,7 +47,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			if (state.selectedModule === state.modules[i]) {
-				const { row, col, offset } = state.graphicHelper.get(state.modules[i].id).cursor;
+				const { row = 0, col = 0, offset = 0 } = state.graphicHelper.get(state.modules[i].id)?.cursor || {};
 				engine.drawText(col * VGRID + offset, row * HGRID, '_');
 			}
 
