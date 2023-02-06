@@ -25,8 +25,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			x + offsetX > -1 * width &&
 			y + offsetY > -1 * height &&
 			x + offsetX < state.viewport.width &&
-			y + offsetY < state.viewport.height &&
-			!state.compiler.isCompiling
+			y + offsetY < state.viewport.height
 		) {
 			engine.startGroup(x, y);
 
