@@ -4,9 +4,15 @@ export default function findConnectorInModule(
 	graphicHelper: GraphicHelper,
 	moduleId: string,
 	connectorId: string
-): Connector {
+): Connector | undefined {
+	const module = graphicHelper.get(moduleId);
+
+	if (!module) {
+		return;
+	}
+
 	// @TODO improve performance
-	const input = Array.from(graphicHelper.get(moduleId).inputs.values()).find(({ id }) => id === connectorId);
+	const input = Array.from(module.inputs.values()).find(({ id }) => id === connectorId);
 
 	if (input) {
 		return {
@@ -15,5 +21,5 @@ export default function findConnectorInModule(
 		};
 	}
 
-	return Array.from(graphicHelper.get(moduleId).outputs.values()).find(({ id }) => id === connectorId);
+	return Array.from(module.outputs.values()).find(({ id }) => id === connectorId);
 }

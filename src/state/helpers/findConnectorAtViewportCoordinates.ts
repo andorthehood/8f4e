@@ -6,8 +6,14 @@ export default function findConnectorAtViewportCoordinates(
 	module: Module,
 	x: number,
 	y: number
-): Connector {
-	const input = Array.from(graphicHelper.get(module.id).inputs.values()).find(connector => {
+): Connector | undefined {
+	const graphicData = graphicHelper.get(module.id);
+
+	if (!graphicData) {
+		return;
+	}
+
+	const input = Array.from(graphicData.inputs.values()).find(connector => {
 		return (
 			x >= module.x + viewport.x + connector.x &&
 			x <= module.x + connector.width + viewport.x + connector.x &&
@@ -20,7 +26,7 @@ export default function findConnectorAtViewportCoordinates(
 		return { ...input, isInput: true };
 	}
 
-	return Array.from(graphicHelper.get(module.id).outputs.values()).find(connector => {
+	return Array.from(graphicData.outputs.values()).find(connector => {
 		return (
 			x >= module.x + viewport.x + connector.x &&
 			x <= module.x + connector.width + viewport.x + connector.x &&
