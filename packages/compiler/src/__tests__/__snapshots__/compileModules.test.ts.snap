@@ -206,17 +206,6 @@ Array [
       0,
       11,
     ],
-    "inputs": Array [
-      Object {
-        "byteAddress": 8,
-        "default": 4,
-        "id": "in",
-        "lineNumber": 6,
-        "relativeWordAddress": 1,
-        "type": 3,
-        "wordSize": 1,
-      },
-    ],
     "memoryMap": Map {
       "DEFAULT_VALUE" => Object {
         "byteAddress": 4,
@@ -248,17 +237,6 @@ Array [
     },
     "memoryWordSize": 3,
     "moduleId": "1",
-    "outputs": Array [
-      Object {
-        "byteAddress": 12,
-        "default": 0,
-        "id": "out",
-        "lineNumber": 7,
-        "relativeWordAddress": 2,
-        "type": 4,
-        "wordSize": 1,
-      },
-    ],
     "wordAddress": 1,
   },
 ]
