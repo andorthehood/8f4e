@@ -33,6 +33,8 @@ export interface Config {
 }
 
 export default ({ allocatedNotes = 12 } = {}) => `
+	module quantizer
+
 	inputPointer in 0
 	output out 0
     private allocatedNotes ${allocatedNotes}

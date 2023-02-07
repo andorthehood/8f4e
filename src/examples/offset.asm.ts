@@ -14,6 +14,8 @@ export const extractState: ModuleStateExtractor<OffsetState> = function (memoryB
 };
 
 export default `
+	module offset
+
 	private defaultValue 0
 	inputPointer in defaultValue
 	public offset 0

@@ -13,5 +13,6 @@ export const extractState: ModuleStateExtractor<ConstantState> = function (memor
 };
 
 export default `
+	module constant
 	output out 0
 `;
