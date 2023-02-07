@@ -1,9 +1,8 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 import { CompiledModuleLookup, Connection, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
 
-export interface Module<ModuleState = Record<string, any>> {
+export interface Module {
 	id: string;
-	state: ModuleState;
 	code: string[];
 	isOpen: boolean;
 	x: number;

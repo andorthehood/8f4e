@@ -1,17 +1,4 @@
 import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-import { ModuleStateExtractor, ModuleStateInserter } from './types';
-
-interface ClockGeneratorState {
-	rate: number;
-}
-
-export const insertState: ModuleStateInserter<ClockGeneratorState> = function (state, memoryBuffer, moduleAddress) {
-	memoryBuffer[moduleAddress + 1] = state.rate;
-};
-
-export const extractState: ModuleStateExtractor<ClockGeneratorState> = function (memoryBuffer, moduleAddress) {
-	return { rate: memoryBuffer[moduleAddress + 1] };
-};
 
 export default `
 	module square
