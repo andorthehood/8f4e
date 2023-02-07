@@ -1,33 +1,4 @@
 import { I32_SIGNED_LARGEST_NUMBER } from './consts';
-import { ModuleStateExtractor, ModuleStateInserter } from './types';
-
-export interface State {
-	activeNotes: number[];
-}
-
-export const extractState: ModuleStateExtractor<State> = function extractState(memoryBuffer, moduleAddress): State {
-	const firstNoteAddress = moduleAddress + 4;
-	const numberOfNotesAddress = moduleAddress + 3;
-	return {
-		activeNotes: Array.from(
-			memoryBuffer.slice(firstNoteAddress, firstNoteAddress + memoryBuffer[numberOfNotesAddress])
-		),
-	};
-};
-
-export const insertState: ModuleStateInserter<State> = function insertState(state, memoryBuffer, moduleAddress): void {
-	const firstNoteAddress = moduleAddress + 4;
-	const numberOfNotesAddress = moduleAddress + 3;
-	const allocatedNotesAddress = moduleAddress + 2;
-	const allocatedNotes = memoryBuffer[allocatedNotesAddress];
-
-	state.activeNotes.slice(0, allocatedNotes).forEach((note, index) => {
-		memoryBuffer[firstNoteAddress + index] = note;
-	});
-
-	memoryBuffer[numberOfNotesAddress] = Math.min(state.activeNotes.length, allocatedNotes);
-};
-
 export interface Config {
 	allocatedNotes?: number;
 }
