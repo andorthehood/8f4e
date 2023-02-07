@@ -12,7 +12,7 @@ export interface Config {
 }
 
 export default ({ resolution = 8 } = {}) => `
-	# adc module
+	module adc
 
 	# memory
 	private default 0

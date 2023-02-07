@@ -1,7 +1,7 @@
 import { compile, compileToAST } from '../compiler';
 
 const fixture = `
-# abs module
+module abs
 
 # memory
 private DEFAULT_VALUE -1
@@ -36,6 +36,6 @@ describe('moduleCompiler', () => {
 	});
 
 	test('compiled code', () => {
-		expect(compile(fixture, 'a', 0).functionBody).toMatchSnapshot();
+		expect(compile(fixture, 0).functionBody).toMatchSnapshot();
 	});
 });

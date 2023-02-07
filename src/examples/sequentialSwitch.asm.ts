@@ -1,4 +1,6 @@
 export default `
+	module sequentialSwitch
+
 	private defaultValue 0
 	output out 0
 	inputPointer in:clock defaultValue

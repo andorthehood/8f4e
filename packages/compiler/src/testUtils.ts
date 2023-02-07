@@ -42,7 +42,7 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 export async function createTestModule(sourceCode: string): Promise<TestModule> {
 	let allocatedMemoryForTestData = 0;
 
-	const module: CompiledModule = compile(sourceCode.split('\n'), 'test', 0);
+	const module: CompiledModule = compile(sourceCode.split('\n'), 0);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
@@ -75,20 +75,31 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		});
 	});
 
-	const memoryGet = (address: string | number): number => {
+	const memoryGet = (address: string | number): number | undefined => {
 		if (typeof address === 'string') {
-			return memoryBuffer[module.memoryMap.get(address).relativeWordAddress];
+			const memoryItem = module.memoryMap.get(address);
+
+			if (!memoryItem) {
+				return;
+			}
+
+			return memoryBuffer[memoryItem.relativeWordAddress];
 		}
 		return memoryBuffer[address];
 	};
 
 	const memorySet = (address: string | number, value: number | number[]): void => {
 		if (typeof address === 'string') {
+			const memoryItem = module.memoryMap.get(address);
+			if (!memoryItem) {
+				return;
+			}
+
 			if (typeof value === 'number') {
-				memoryBuffer[module.memoryMap.get(address).relativeWordAddress] = value;
+				memoryBuffer[memoryItem.relativeWordAddress] = value;
 			} else {
 				for (let i = 0; i < value.length; i++) {
-					memoryBuffer[module.memoryMap.get(address).relativeWordAddress + i] = value[i];
+					memoryBuffer[memoryItem.relativeWordAddress + i] = value[i];
 				}
 			}
 			return;
@@ -103,9 +114,14 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		}
 	};
 
-	const getByteAddress = (address: string | number): number => {
+	const getByteAddress = (address: string | number): number | undefined => {
 		if (typeof address === 'string') {
-			return module.memoryMap.get(address).byteAddress;
+			const memoryItem = module.memoryMap.get(address);
+			if (!memoryItem) {
+				return;
+			}
+
+			return memoryItem.byteAddress;
 		}
 
 		return address * WORD_LENGTH;
@@ -135,5 +151,6 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		wat,
 		program,
 		memoryMap: module.memoryMap,
+		ast: module.ast,
 	};
 }

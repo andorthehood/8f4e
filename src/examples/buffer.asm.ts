@@ -51,6 +51,8 @@ export default ({ numberOfPorts = 1, numberOfDataPlaceholders = 1 }) => {
 	const dataPlaceholders = new Array(numberOfDataPlaceholders).fill(0).map((item, index) => index + 1);
 
 	return `
+		module buffer
+
 		private defaultValue 0
 		public numberOfInputs ${numberOfPorts}
 		public numberOfOutputs ${numberOfPorts}

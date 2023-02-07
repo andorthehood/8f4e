@@ -1,4 +1,6 @@
 export default `
+	module sampleAndHold
+
 	private defaultValue 0
 	inputPointer in defaultValue
 	inputPointer in:trigger defaultValue

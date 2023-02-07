@@ -1,5 +1,5 @@
 export default `
-	# abs module
+	module abs
 
 	# memory
 	private DEFAULT_VALUE 0

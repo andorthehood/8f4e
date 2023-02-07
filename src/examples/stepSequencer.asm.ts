@@ -1,4 +1,6 @@
 export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
+    module stepSequencer
+
     private defaultValue 0
     inputPointer trigger defaultValue
     private triggerPreviousValue 0
