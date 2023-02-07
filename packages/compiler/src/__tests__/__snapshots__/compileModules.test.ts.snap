@@ -8,6 +8,16 @@ Array [
         "arguments": Array [
           Object {
             "type": "identifier",
+            "value": "abs",
+          },
+        ],
+        "instruction": "module",
+        "lineNumber": 2,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
             "value": "DEFAULT_VALUE",
           },
           Object {
@@ -236,7 +246,7 @@ Array [
       },
     },
     "memoryWordSize": 3,
-    "moduleId": "1",
+    "moduleId": "abs",
     "wordAddress": 1,
   },
 ]

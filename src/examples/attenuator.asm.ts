@@ -13,6 +13,7 @@ export const extractState: ModuleStateExtractor<AttenuatorState> = function (mem
 };
 
 export default `
+	module attenuator
 	private zero 0
 	inputPointer in zero
 	public divisor 1

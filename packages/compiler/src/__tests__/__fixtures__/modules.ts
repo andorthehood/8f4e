@@ -1,9 +1,8 @@
 export default [
 	{
-		id: '1',
 		state: {},
 		code: `
-            # abs module
+            module abs
         
             # memory
             private DEFAULT_VALUE 0

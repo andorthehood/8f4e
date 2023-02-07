@@ -19,6 +19,11 @@ export function setUpConnections(
 	connections.forEach(connection => {
 		const inputAddress = memoryAddresses.get(connection.toModuleId + connection.toConnectorId);
 		const outputAddress = memoryAddresses.get(connection.fromModuleId + connection.fromConnectorId);
+
+		if (!inputAddress || !outputAddress) {
+			return;
+		}
+
 		memoryBuffer[inputAddress] = outputAddress * memoryBuffer.BYTES_PER_ELEMENT;
 	});
 }

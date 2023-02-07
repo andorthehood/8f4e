@@ -1,7 +1,7 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import instructions from './instructions';
-import { AST, Argument, ArgumentType, CompiledModule, Namespace, MemoryMap, MemoryTypes } from './types';
+import { AST, Argument, ArgumentType, CompiledModule, Namespace, MemoryMap } from './types';
 import { WORD_LENGTH } from './consts';
 
 export { MemoryTypes, MemoryMap } from './types';
@@ -56,8 +56,24 @@ export function compileLine(
 	return instructions[line.instruction](line, namespace, startingByteAddress);
 }
 
-export function compile(module: string[], moduleId = '', startingByteAddress = 0): CompiledModule {
+function getModuleId(ast: AST): string | undefined {
+	return (
+		ast
+			.find(
+				line => line.instruction === 'module' && line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER
+			)
+			?.arguments[0].value.toString() || undefined
+	);
+}
+
+export function compile(module: string[], startingByteAddress = 0): CompiledModule {
 	const ast = compileToAST(module);
+	const moduleId = getModuleId(ast);
+
+	if (!moduleId) {
+		throw '1007: Missing module ID';
+	}
+
 	let memory: MemoryMap = new Map();
 	let locals: string[] = [];
 	let consts: Record<string, number> = {};
