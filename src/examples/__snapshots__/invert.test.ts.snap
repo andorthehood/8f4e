@@ -1,5 +1,102 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`invert if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "invert",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "default",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+      Object {
+        "type": "identifier",
+        "value": "default",
+      },
+    ],
+    "instruction": "inputPointer",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 9,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": -1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 10,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "mul",
+    "lineNumber": 11,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 12,
+  },
+]
+`;
+
 exports[`invert if the generated memory map matches with the snapshot 1`] = `
 Map {
   "default" => Object {

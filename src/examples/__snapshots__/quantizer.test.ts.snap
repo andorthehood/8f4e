@@ -1,5 +1,614 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`functional tests if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "quantizer",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "inputPointer",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "allocatedNotes",
+      },
+      Object {
+        "type": "literal",
+        "value": 12,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "numberOfNotes",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "public",
+    "lineNumber": 7,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "notes",
+      },
+      Object {
+        "type": "literal",
+        "value": 12,
+      },
+      Object {
+        "type": "literal",
+        "value": -1,
+      },
+    ],
+    "instruction": "array",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "bestMatchingValue",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 10,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "difference",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 11,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_in",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 12,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteMemoryPointer",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 13,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteValue",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 14,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "smallestDifference",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 15,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "notesEndAddressPointer",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 16,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 18,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_in",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 19,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "numberOfNotes",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 22,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 4,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 23,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "mul",
+    "lineNumber": 24,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&notes",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 25,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "add",
+    "lineNumber": 26,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "notesEndAddressPointer",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 27,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 2147483647,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 30,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "smallestDifference",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 31,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&notes",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 34,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteMemoryPointer",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 35,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "void",
+      },
+    ],
+    "instruction": "block",
+    "lineNumber": 37,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "void",
+      },
+    ],
+    "instruction": "loop",
+    "lineNumber": 38,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteMemoryPointer",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 40,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "notesEndAddressPointer",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 41,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterOrEqualUnsigned",
+    "lineNumber": 42,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "branchIfTrue",
+    "lineNumber": 43,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteMemoryPointer",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 46,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "load",
+    "lineNumber": 47,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteValue",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 48,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteValue",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 51,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_in",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 52,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "sub",
+    "lineNumber": 53,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "difference",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 54,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "difference",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 57,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 58,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "lessThan",
+    "lineNumber": 59,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 60,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 61,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "difference",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 62,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "sub",
+    "lineNumber": 63,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 64,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "difference",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 65,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 66,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "difference",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 67,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "difference",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 70,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "smallestDifference",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 71,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "lessOrEqual",
+    "lineNumber": 72,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "void",
+      },
+    ],
+    "instruction": "if",
+    "lineNumber": 73,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "difference",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 77,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "smallestDifference",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 78,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteValue",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 79,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "bestMatchingValue",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 80,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 81,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteMemoryPointer",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 83,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "pointerForward",
+    "lineNumber": 84,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "noteMemoryPointer",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 85,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "loopEnd",
+    "lineNumber": 86,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 87,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 90,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "bestMatchingValue",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 91,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 92,
+  },
+]
+`;
+
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
 Map {
   "in" => Object {
