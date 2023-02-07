@@ -22,6 +22,10 @@ describe('logicOr', () => {
 		testModule.reset();
 	});
 
+	test('if the generated ast matches with the snapshot', () => {
+		expect(testModule.ast).toMatchSnapshot();
+	});
+
 	test('if the wat code matches with the snapshot', () => {
 		expect(testModule.wat).toMatchSnapshot();
 	});
@@ -29,7 +33,7 @@ describe('logicOr', () => {
 	test('if the generated memory map matches with the snapshot', () => {
 		expect(testModule.memoryMap).toMatchSnapshot();
 	});
-
+	
 	test.each(fixtures)('given inputs %p and %p, the expected output is %p', (input1, input2, output) => {
 		const { memory, test } = testModule;
 
