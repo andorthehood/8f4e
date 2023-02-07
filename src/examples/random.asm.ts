@@ -3,6 +3,8 @@ import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 const tapPositions = [0, 2, 3, 5];
 
 export default ({ seed = 69420 } = {}) => `
+	module random
+
 	private seed ${seed}
 	output out 0
 

@@ -1,6 +1,8 @@
 import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 export default `
+	module logicAnd
+
 	private defaultValue 0
 	inputPointer in:1 defaultValue
 	inputPointer in:2 defaultValue

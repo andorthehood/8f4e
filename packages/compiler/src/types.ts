@@ -49,7 +49,6 @@ export type ModuleStateExtractor<T> = (memoryBuffer: MemoryBuffer, moduleAddress
 export type ModuleStateInserter<T> = (moduleState: T, memoryBuffer: MemoryBuffer, moduleAddress: number) => void;
 
 export interface Module<ModuleState = Record<string, any>> {
-	id: string;
 	code: string[];
 	state: ModuleState;
 }
@@ -77,6 +76,7 @@ export interface TestModule {
 	wat: string;
 	program: Uint8Array;
 	memoryMap: MemoryMap;
+	ast: AST;
 }
 
 export interface Namespace {

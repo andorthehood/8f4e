@@ -14,6 +14,8 @@ export const extractState: ModuleStateExtractor<SawState> = function (memoryBuff
 };
 
 export default `
+	module saw
+
 	private LIMIT_SELF ${I16_SIGNED_LARGEST_NUMBER}
 	public rate 1
 	inputPointer in:rate rate

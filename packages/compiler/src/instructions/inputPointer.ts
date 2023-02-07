@@ -7,6 +7,19 @@ const inputPointer: InstructionHandler = function (line, namespace, startingByte
 
 	const wordAddress = calculateMemoryWordSize(memory);
 
+	let defaultValue = 0;
+
+	if (line.arguments[1].type === ArgumentType.LITERAL) {
+		defaultValue = line.arguments[1].value;
+	} else {
+		const memoryItem = memory.get(line.arguments[1].value);
+		if (memoryItem) {
+			defaultValue = memoryItem.byteAddress;
+		} else {
+			throw `'1003: Undeclared identifier: '${line.arguments[1].value}'`;
+		}
+	}
+
 	memory.set(line.arguments[0].value.toString(), {
 		type: MemoryTypes.INPUT_POINTER,
 		relativeWordAddress: wordAddress,
@@ -14,10 +27,7 @@ const inputPointer: InstructionHandler = function (line, namespace, startingByte
 		byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
 		lineNumber: line.lineNumber,
 		id: line.arguments[0].value.toString(),
-		default:
-			line.arguments[1].type === ArgumentType.LITERAL
-				? line.arguments[1].value
-				: memory.get(line.arguments[1].value).byteAddress,
+		default: defaultValue,
 	});
 
 	return { byteCode: [], namespace: { ...namespace, memory } };
