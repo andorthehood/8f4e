@@ -45,12 +45,8 @@ export interface Connection {
 	toConnectorId: string;
 }
 
-export type ModuleStateExtractor<T> = (memoryBuffer: MemoryBuffer, moduleAddress: number) => T;
-export type ModuleStateInserter<T> = (moduleState: T, memoryBuffer: MemoryBuffer, moduleAddress: number) => void;
-
-export interface Module<ModuleState = Record<string, any>> {
+export interface Module {
 	code: string[];
-	state: ModuleState;
 }
 
 export type MemoryAddressLookup = Map<string, number>;

@@ -16,6 +16,11 @@ export default function pianoDrawer(
 	memoryBuffer: MemoryBuffer
 ): void {
 	const moduleAddress = memoryAddressLookup.get(module.id + '__startAddress');
+
+	if (typeof moduleAddress === 'undefined') {
+		return;
+	}
+
 	const config = moduleType.drawer.config;
 	const outAddress = moduleAddress + 1;
 	const notesAddress = moduleAddress + 4;
@@ -44,7 +49,7 @@ export default function pianoDrawer(
 	engine.drawSprite(2 * VGRID * config.notes.get(outValue) + config.x, config.y, config.notes.get(outValue) % 12);
 
 	engine.setSpriteLookup(font('white'));
-	engine.drawText(VGRID * 18, 0, 'chord: ' + (module.state.chord ? module.state.chord : '-'));
+	// engine.drawText(VGRID * 18, 0, 'chord: ' + (module.state.chord ? module.state.chord : '-'));
 	if (config.noteSigns) {
 		engine.drawText(VGRID * 30, 0, 'out: ' + (config.noteSigns.has(outValue) ? config.noteSigns.get(outValue) : '-'));
 	}

@@ -1,17 +1,3 @@
-import { ModuleStateExtractor, ModuleStateInserter } from './types';
-
-interface AttenuatorState {
-	divisor: number;
-}
-
-export const insertState: ModuleStateInserter<AttenuatorState> = function (state, memoryBuffer, moduleAddress) {
-	memoryBuffer[moduleAddress + 2] = state.divisor;
-};
-
-export const extractState: ModuleStateExtractor<AttenuatorState> = function (memoryBuffer, moduleAddress) {
-	return { divisor: memoryBuffer[moduleAddress + 2] };
-};
-
 export default `
 	module attenuator
 	private zero 0

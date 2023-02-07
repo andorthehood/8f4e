@@ -1,17 +1,4 @@
-import { ModuleStateExtractor, ModuleStateInserter } from './types';
 import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-
-interface SawState {
-	rate: number;
-}
-
-export const insertState: ModuleStateInserter<SawState> = function (state, memoryBuffer, moduleAddress) {
-	memoryBuffer[moduleAddress + 1] = state.rate;
-};
-
-export const extractState: ModuleStateExtractor<SawState> = function (memoryBuffer, moduleAddress) {
-	return { rate: memoryBuffer[moduleAddress + 1] };
-};
 
 export default `
 	module saw
