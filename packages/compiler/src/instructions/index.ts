@@ -35,6 +35,7 @@ import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
 import remainder from './remainder';
 import pointerForward from './pointerForward';
+import _module from './module';
 
 import { InstructionHandler } from '../types';
 
@@ -76,4 +77,5 @@ export default {
 	shiftRightUnsigned,
 	remainder,
 	pointerForward,
+	module: _module,
 } as Record<string, InstructionHandler>;

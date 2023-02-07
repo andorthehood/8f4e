@@ -17,7 +17,7 @@ export const ieee754 = (n: number): Uint8Array => {
  * WebAssembly is using it's unsigned version for encoding all integer literals.
  */
 export function unsignedLEB128(n: number): number[] {
-	const buffer = [];
+	const buffer: number[] = [];
 	do {
 		let byte = n & 0b1111111;
 		n >>>= 7;
@@ -30,7 +30,7 @@ export function unsignedLEB128(n: number): number[] {
 }
 
 export function signedLEB128(n: number): number[] {
-	const buffer = [];
+	const buffer: number[] = [];
 	let more = true;
 	const isNegative = n < 0;
 	const bitCount = Math.ceil(Math.log2(Math.abs(n))) + 1;

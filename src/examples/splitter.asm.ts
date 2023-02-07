@@ -1,4 +1,6 @@
 export default `
+	module splitter
+
 	private zero 0
 	inputPointer in zero
 	output out:1 zero

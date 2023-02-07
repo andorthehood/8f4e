@@ -1,4 +1,6 @@
 export default `
+	module bitwiseXor
+
 	private default1 0
 	private default2 0
 	inputPointer in:1 default1

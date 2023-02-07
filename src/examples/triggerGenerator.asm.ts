@@ -14,6 +14,8 @@ export const extractState: ModuleStateExtractor<ClockGeneratorState> = function 
 };
 
 export default `
+	module triggerGenerator
+	
 	private counter 0
 	public rate 0
 	output out 0

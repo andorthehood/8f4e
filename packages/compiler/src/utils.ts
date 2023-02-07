@@ -14,15 +14,23 @@ export function getMemoryItem(memoryMap: MemoryMap, id: string) {
 }
 
 export function getMemoryItemByteAddress(memoryMap: MemoryMap, id: string): number {
-	return getMemoryItem(memoryMap, id).byteAddress;
+	const memoryItem = getMemoryItem(memoryMap, id);
+	return memoryItem ? memoryItem.byteAddress : 0;
 }
 
 export function getMemoryStringEndAddress(memoryMap: MemoryMap, id: string): number {
-	return getMemoryItem(memoryMap, id).byteAddress + getMemoryItem(memoryMap, id).wordSize * WORD_LENGTH;
+	const memoryItem = getMemoryItem(memoryMap, id);
+	return memoryItem ? memoryItem.byteAddress + memoryItem.wordSize * WORD_LENGTH : 0;
 }
 
 export function isInputPointer(memoryMap: MemoryMap, id: string): boolean {
-	return getMemoryItem(memoryMap, id).type === MemoryTypes.INPUT_POINTER;
+	const memoryItem = getMemoryItem(memoryMap, id);
+
+	if (!memoryItem) {
+		return false;
+	}
+
+	return memoryItem && memoryItem.type === MemoryTypes.INPUT_POINTER;
 }
 
 export function isLocalIdentifier(locals: string[], id: string): boolean {
@@ -31,8 +39,8 @@ export function isLocalIdentifier(locals: string[], id: string): boolean {
 
 export function getNextFreeMemoryWordAddress(memory: MemoryMap, _default: number) {
 	const { relativeWordAddress, wordSize } = Array.from(memory.values()).pop() || {
-		address: _default,
-		size: 0,
+		relativeWordAddress: _default,
+		wordSize: 0,
 	};
 
 	return relativeWordAddress + wordSize;

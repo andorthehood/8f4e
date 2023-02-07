@@ -6,7 +6,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "out",
-    "lineNumber": 2,
+    "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 4,
     "wordSize": 1,

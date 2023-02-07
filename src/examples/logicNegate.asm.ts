@@ -1,6 +1,8 @@
 import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 export default `
+	module logicNegate
+
 	private defaultValue 0
 	inputPointer in defaultValue
 	output out 0

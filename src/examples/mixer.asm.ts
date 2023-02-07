@@ -1,6 +1,8 @@
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
 
 export default `
+	module mixer
+
 	private defaultValue 0
 	output out 0
 	inputPointer in:1 defaultValue

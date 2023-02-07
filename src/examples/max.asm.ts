@@ -1,4 +1,6 @@
 export default `
+	module max
+
 	private defaultValue 0
 	inputPointer in:1 defaultValue
 	inputPointer in:2 defaultValue
