@@ -1,5 +1,558 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`random if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "seed",
+      },
+      Object {
+        "type": "literal",
+        "value": 69420,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 7,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 10,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 11,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "localGet",
+    "lineNumber": 13,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "equalToZero",
+    "lineNumber": 15,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 16,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "seed",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 17,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 18,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 19,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 20,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 21,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 24,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 25,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 26,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 27,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "shiftRight",
+    "lineNumber": 28,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 29,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "xor",
+    "lineNumber": 30,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 31,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 34,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 4,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 35,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 36,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 2,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 37,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "shiftRight",
+    "lineNumber": 38,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 39,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "xor",
+    "lineNumber": 40,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 41,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 44,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 8,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 45,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 46,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 3,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 47,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "shiftRight",
+    "lineNumber": 48,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 49,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "xor",
+    "lineNumber": 50,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 51,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 54,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 55,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 56,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 5,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 57,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "shiftRight",
+    "lineNumber": 58,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 59,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "xor",
+    "lineNumber": 60,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 61,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 64,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 65,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "shiftRightUnsigned",
+    "lineNumber": 66,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 67,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "feedback",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 69,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "equalToZero",
+    "lineNumber": 70,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 71,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 72,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 73,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 74,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 2147483648,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 75,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "or",
+    "lineNumber": 76,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 77,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 78,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 80,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "random",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 81,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 82,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "remainder",
+    "lineNumber": 83,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 84,
+  },
+]
+`;
+
 exports[`random if the generated memory map matches with the snapshot 1`] = `
 Map {
   "seed" => Object {

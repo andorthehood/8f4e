@@ -1,5 +1,234 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`functional tests if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "splitter",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "zero",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+      Object {
+        "type": "identifier",
+        "value": "zero",
+      },
+    ],
+    "instruction": "inputPointer",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:1",
+      },
+      Object {
+        "type": "identifier",
+        "value": "zero",
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:2",
+      },
+      Object {
+        "type": "identifier",
+        "value": "zero",
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 7,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:3",
+      },
+      Object {
+        "type": "identifier",
+        "value": "zero",
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:4",
+      },
+      Object {
+        "type": "identifier",
+        "value": "zero",
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 9,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 11,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 13,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 14,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:1",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 16,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 17,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 18,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:2",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 20,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 21,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 22,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:3",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 24,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 25,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 26,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:4",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 28,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 29,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 30,
+  },
+]
+`;
+
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
 Map {
   "zero" => Object {

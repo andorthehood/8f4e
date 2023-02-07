@@ -1,5 +1,347 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`square generator module if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "square",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "counter",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "rate",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "public",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 9,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_rate",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 10,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 12,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 13,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 15,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 16,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "rate",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 18,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_rate",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 19,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 21,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_rate",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 22,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterOrEqual",
+    "lineNumber": 23,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 24,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 25,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "equalToZero",
+    "lineNumber": 26,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 28,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 29,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 30,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 31,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 32,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 33,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 35,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 37,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 38,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 39,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "add",
+    "lineNumber": 40,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 41,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 43,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 45,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 46,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 47,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 49,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 50,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 51,
+  },
+]
+`;
+
 exports[`square generator module if the generated memory map matches with the snapshot 1`] = `
 Map {
   "counter" => Object {
