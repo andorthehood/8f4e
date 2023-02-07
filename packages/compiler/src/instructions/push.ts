@@ -34,11 +34,11 @@ const push: InstructionHandler = function (line, namespace) {
 		} else if (isLocalIdentifier(locals, argument.value)) {
 			return { byteCode: localGet(locals.indexOf(argument.value)), namespace };
 		}
-	}
-
-	if (argument.type === ArgumentType.LITERAL) {
+	} else {
 		return { byteCode: i32const(argument.value), namespace };
 	}
+
+	return { byteCode: [], namespace };
 };
 
 export default push;

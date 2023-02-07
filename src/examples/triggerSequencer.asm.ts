@@ -1,6 +1,8 @@
 import { I16_SIGNED_LARGEST_NUMBER } from '@8f4e/compiler';
 
 export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `
+    module triggerSequencer
+
     private defaultValue 0
     inputPointer trigger defaultValue
     inputPointer reset defaultValue
