@@ -21,6 +21,10 @@ describe('bitwiseOr', () => {
 		testModule.reset();
 	});
 
+	test('if the generated ast matches with the snapshot', () => {
+		expect(testModule.ast).toMatchSnapshot();
+	});
+
 	test('if the wat code matches with the snapshot', () => {
 		expect(testModule.wat).toMatchSnapshot();
 	});

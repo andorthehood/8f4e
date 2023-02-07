@@ -13,6 +13,10 @@ describe('random', () => {
 		memory.set('seed', 69420);
 	});
 
+	test('if the generated ast matches with the snapshot', () => {
+		expect(testModule.ast).toMatchSnapshot();
+	});
+
 	test('if the wat code matches with the snapshot', () => {
 		expect(testModule.wat).toMatchSnapshot();
 	});
