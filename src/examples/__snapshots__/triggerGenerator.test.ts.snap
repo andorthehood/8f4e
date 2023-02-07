@@ -1,5 +1,475 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`triggerGenerator module if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "triggerGenerator",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "counter",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "rate",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "public",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "defaultValue",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 7,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "reset",
+      },
+      Object {
+        "type": "identifier",
+        "value": "defaultValue",
+      },
+    ],
+    "instruction": "inputPointer",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 10,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 11,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_rate",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 12,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 14,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 15,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 17,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 18,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "rate",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 20,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_rate",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 21,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "reset",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 23,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 24,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 25,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "void",
+      },
+    ],
+    "instruction": "if",
+    "lineNumber": 26,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 27,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 28,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 29,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 30,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 31,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 34,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 35,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterOrEqual",
+    "lineNumber": 36,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "void",
+      },
+    ],
+    "instruction": "if",
+    "lineNumber": 37,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 38,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 39,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 40,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 42,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_rate",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 43,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterOrEqual",
+    "lineNumber": 44,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 45,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 46,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 47,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 49,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 50,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 51,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 52,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "add",
+    "lineNumber": 53,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 54,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 56,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 58,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 59,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 60,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 62,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "_counter",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 63,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 64,
+  },
+]
+`;
+
 exports[`triggerGenerator module if the generated memory map matches with the snapshot 1`] = `
 Map {
   "counter" => Object {
