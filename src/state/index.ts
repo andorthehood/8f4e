@@ -11,7 +11,6 @@ import moduleMenu from './effects/menu/moduleMenu';
 import save from './effects/save';
 import viewport from './effects/viewport';
 import { State } from './types';
-import initialProject from './initialProject.json';
 import graphicHelper from './effects/graphicHelper';
 
 import { EventDispatcher } from '../events';
@@ -48,12 +47,11 @@ const defaultState: State = {
 	isConnectionBeingMade: false,
 	connectionPointA: undefined,
 	connectionPointB: undefined,
-	contextMenu: null,
-	connectionFromModule: null,
-	connectionFromConnector: null,
-	graphicHelper: new Map(),
+	contextMenu: undefined,
+	connectionFromModule: undefined,
+	connectionFromConnector: undefined,
+	graphicHelper: { connections: [], modules: new Map() },
 	selectedModule: undefined,
-	...initialProject,
 };
 
 export default function init(events: EventDispatcher): State {
