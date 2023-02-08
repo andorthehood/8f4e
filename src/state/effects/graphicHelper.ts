@@ -2,12 +2,22 @@ import { font } from '@8f4e/sprite-generator';
 
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
-import { State } from '../types';
+import { GraphicHelper, State } from '../types';
 import { backSpace, enter, moveCaret, type } from '../helpers/editor';
 import { parseInputs, parseOutputs } from '../helpers/codeParsers';
 
 const keywords =
-	/output|inputPointer|local|private|push|div|if|else|end|store|and|greaterThan|branch|greaterOrEqual|add|sub|lessThan|public|xor|shiftRight/;
+	/module|output|inputPointer|local|private|push|div|if|else|end|store|and|greaterThan|branch|greaterOrEqual|add|sub|lessThan|public|xor|shiftRight/;
+
+function getModuleId(code: string[]): string {
+	for (let i = 0; i < code.length; i++) {
+		const [, instruction, ...args] = code[i].match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || [];
+		if (instruction === 'module') {
+			return args[0] || '';
+		}
+	}
+	return '';
+}
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onCompilationDone = function () {
@@ -47,9 +57,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				});
 			});
 
-			const graphicData = state.graphicHelper.get(module.id);
+			const graphicData = state.graphicHelper.modules.get(module);
 			if (!graphicData) {
-				state.graphicHelper.set(module.id, {
+				state.graphicHelper.modules.set(module, {
 					width: 32 * VGRID,
 					height: module.code.length * HGRID,
 					code,
@@ -57,17 +67,19 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					inputs: new Map(),
 					outputs: new Map(),
 					cursor: { col: 0, row: 0, offset: VGRID * (padLength + 2) },
+					id: getModuleId(module.code) || '',
 				});
 			} else {
 				graphicData.code = code;
 				graphicData.codeColors = codeColors;
 				graphicData.height = module.code.length * HGRID;
 				graphicData.cursor.offset = VGRID * (padLength + 2);
+				graphicData.id = getModuleId(module.code) || '';
 			}
 
-			state.graphicHelper.get(module.id)?.outputs.clear();
+			state.graphicHelper.modules.get(module)?.outputs.clear();
 			parseOutputs(module.code).forEach(output => {
-				state.graphicHelper.get(module.id)?.outputs.set(output.id, {
+				state.graphicHelper.modules.get(module)?.outputs.set(output.id, {
 					width: VGRID * 2,
 					height: HGRID,
 					x: VGRID * 3 + VGRID * code[output.lineNumber].length,
@@ -77,9 +89,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				});
 			});
 
-			state.graphicHelper.get(module.id)?.inputs.clear();
+			state.graphicHelper.modules.get(module)?.inputs.clear();
 			parseInputs(module.code).forEach(input => {
-				state.graphicHelper.get(module.id)?.inputs.set(input.id, {
+				state.graphicHelper.modules.get(module)?.inputs.set(input.id, {
 					width: VGRID * 2,
 					height: HGRID,
 					x: VGRID,
@@ -88,10 +100,39 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				});
 			});
 		});
+
+		state.graphicHelper.connections = state.connections
+			.map(connection => {
+				const [fromModule] =
+					Array.from(state.graphicHelper.modules).find(([, graphicData]) => {
+						return graphicData.id === connection.fromModuleId;
+					}) || [];
+
+				const [toModule] =
+					Array.from(state.graphicHelper.modules).find(([, graphicData]) => {
+						return graphicData.id === connection.toModuleId;
+					}) || [];
+
+				if (!fromModule || !toModule) {
+					return;
+				}
+
+				return {
+					fromModule,
+					toModule,
+					fromConnectorId: connection.fromConnectorId,
+					toConnectorId: connection.toConnectorId,
+				};
+			})
+			.filter(connection => connection !== undefined) as GraphicHelper['connections'];
 	};
 
 	const onKeydown: EventHandler = function (event) {
-		const module = state.graphicHelper.get(state.selectedModule.id);
+		if (!state.selectedModule) {
+			return;
+		}
+
+		const module = state.graphicHelper.modules.get(state.selectedModule);
 
 		if (!module) {
 			return;
