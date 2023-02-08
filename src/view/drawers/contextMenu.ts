@@ -4,6 +4,10 @@ import { fillColor, font } from '@8f4e/sprite-generator';
 import { State } from '../../state/types';
 
 export default function drawContextMenu(engine: Engine, state: State): void {
+	if (!state.contextMenu) {
+		return;
+	}
+
 	const { open, items, x, y, highlightedItem, itemHeight, itemWidth } = state.contextMenu;
 
 	if (!open) {
