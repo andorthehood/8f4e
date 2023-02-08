@@ -4,7 +4,7 @@ import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportC
 import { Module, State } from '../../types';
 
 export default function moduleDragger(state: State, events: EventDispatcher): () => void {
-	let draggedModule: Module = null;
+	let draggedModule: Module | undefined = undefined;
 
 	function onMouseDown({ x, y }) {
 		draggedModule = findModuleAtViewportCoordinates(state.modules, state.graphicHelper, state.viewport, x, y);
@@ -32,7 +32,7 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 		if (draggedModule) {
 			draggedModule.x = Math.round(draggedModule.x / (VGRID * 2)) * (VGRID * 2);
 			draggedModule.y = Math.round(draggedModule.y / HGRID) * HGRID;
-			draggedModule = null;
+			draggedModule = undefined;
 		}
 
 		events.dispatch('saveState');

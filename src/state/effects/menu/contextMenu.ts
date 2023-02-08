@@ -64,12 +64,13 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 
 		if (module) {
 			state.contextMenu.items = [
-				{ title: 'Delete module', action: 'deleteModule', payload: { moduleId: module.id }, close: true },
-				{ title: 'Remove wires', action: 'deleteConnection', payload: { moduleId: module.id }, close: true },
+				// TODO module id mapper
+				{ title: 'Delete module', action: 'deleteModule', payload: { module }, close: true },
+				{ title: 'Remove wires', action: 'deleteConnection', payload: { module }, close: true },
 			];
 		} else {
 			state.contextMenu.items = [
-				{ title: 'Add module...', action: 'openModuleMenu' },
+				{ title: 'New Module', action: 'addModule', close: true },
 				{ title: 'Undo', action: 'undo', close: true },
 				{ title: 'Export', action: 'save', close: true },
 				{ title: 'New', action: 'new', close: true },

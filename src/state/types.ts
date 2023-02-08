@@ -2,7 +2,6 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 import { CompiledModuleLookup, Connection, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
 
 export interface Module {
-	id: string;
 	code: string[];
 	isOpen: boolean;
 	x: number;
@@ -81,25 +80,29 @@ export interface ModuleGraphicData {
 	code: string[];
 	codeColors: Array<SpriteLookup | undefined>[];
 	cursor: { col: number; row: number; offset: number };
+	id: string;
 }
 
-export type GraphicHelper = Map<string, ModuleGraphicData>;
+export type GraphicHelper = {
+	connections: Array<{ fromModule: Module; toModule: Module; fromConnectorId: string; toConnectorId: string }>;
+	modules: Map<Module, ModuleGraphicData>;
+};
 
 export interface State {
 	compiler: Compiler;
-	connectionFromConnector: string;
-	connectionFromModule: string;
-	connectionPointA: [number, number];
-	connectionPointB: [number, number];
+	connectionFromConnector: string | undefined;
+	connectionFromModule: Module | undefined;
+	connectionPointA: [number, number] | undefined;
+	connectionPointB: [number, number] | undefined;
 	connections: Connection[];
-	contextMenu: ContextMenu;
+	contextMenu: ContextMenu | undefined;
 	error: Error;
 	history: HistoryItem[];
 	isConnectionBeingMade: boolean;
 	isDebugMode: boolean;
 	midi: Midi;
 	modules: Module[];
-	selectedModule: Module;
+	selectedModule: Module | undefined;
 	sructureVersion: number;
 	viewport: Viewport;
 	graphicHelper: GraphicHelper;

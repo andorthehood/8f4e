@@ -13,8 +13,7 @@ function parseArgument(argument: string): Argument {
 }
 
 function parseLine(line: string, lineNumber: number): AST[number] {
-	// @ts-ignore
-	const [, instruction, ...args] = line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/);
+	const [, instruction, ...args] = line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || [];
 
 	return {
 		lineNumber,

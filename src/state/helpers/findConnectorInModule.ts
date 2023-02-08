@@ -1,18 +1,18 @@
-import { Connector, GraphicHelper } from '../types';
+import { Connector, GraphicHelper, Module } from '../types';
 
 export default function findConnectorInModule(
 	graphicHelper: GraphicHelper,
-	moduleId: string,
+	module: Module,
 	connectorId: string
 ): Connector | undefined {
-	const module = graphicHelper.get(moduleId);
+	const graphicData = graphicHelper.modules.get(module);
 
-	if (!module) {
+	if (!graphicData) {
 		return;
 	}
 
 	// @TODO improve performance
-	const input = Array.from(module.inputs.values()).find(({ id }) => id === connectorId);
+	const input = Array.from(graphicData.inputs.values()).find(({ id }) => id === connectorId);
 
 	if (input) {
 		return {
@@ -21,5 +21,5 @@ export default function findConnectorInModule(
 		};
 	}
 
-	return Array.from(module.outputs.values()).find(({ id }) => id === connectorId);
+	return Array.from(graphicData.outputs.values()).find(({ id }) => id === connectorId);
 }

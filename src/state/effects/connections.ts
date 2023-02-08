@@ -73,7 +73,7 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 				});
 			}
 
-			if (state.connectionFromModule === module.id) {
+			if (state.connectionFromModule === module) {
 				return events.dispatch('error', {
 					message: `Self-patching is not supported`,
 				});
@@ -85,13 +85,19 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 
 		state.connectionPointA = [x, y];
 		state.connectionPointB = [x, y];
-		state.connectionFromModule = module.id;
+		state.connectionFromModule = module;
 		state.connectionFromConnector = connector.id;
 		state.isConnectionBeingMade = true;
 		events.on('mousemove', onMouseMove);
 	}
 
-	function onDeleteConnection({ moduleId, connectorId }) {
+	function onDeleteConnection({ module, connectorId }) {
+		const moduleId = state.graphicHelper.modules.get(module)?.id;
+
+		if (!moduleId) {
+			return;
+		}
+
 		if (connectorId) {
 			state.connections = rejectConnectionByConnectorId(state.connections, moduleId, connectorId);
 		} else {
@@ -100,11 +106,22 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 	}
 
 	function onCreateConnection({ module, connector }) {
+		if (!state.connectionFromModule || !state.connectionFromConnector) {
+			return;
+		}
+
+		const fromModuleGraphicData = state.graphicHelper.modules.get(state.connectionFromModule);
+		const tomModuleGraphicData = state.graphicHelper.modules.get(module);
+
+		if (!fromModuleGraphicData || !tomModuleGraphicData) {
+			return;
+		}
+
 		state.connections.push({
 			toConnectorId: connector.id,
-			toModuleId: module.id,
+			toModuleId: tomModuleGraphicData.id,
 			fromConnectorId: state.connectionFromConnector,
-			fromModuleId: state.connectionFromModule,
+			fromModuleId: fromModuleGraphicData.id,
 		});
 	}
 

@@ -7,7 +7,7 @@ export default function findConnectorAtViewportCoordinates(
 	x: number,
 	y: number
 ): Connector | undefined {
-	const graphicData = graphicHelper.get(module.id);
+	const graphicData = graphicHelper.modules.get(module);
 
 	if (!graphicData) {
 		return;

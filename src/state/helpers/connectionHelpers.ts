@@ -42,7 +42,7 @@ export function findWhatIsConnectedTo(
 	connections: Connection[],
 	moduleId: string,
 	connectorId: string
-): { moduleId: string; connectorId: string } {
+): { moduleId: string; connectorId: string } | undefined {
 	const connection = findConnectionByConnectorId(connections, moduleId, connectorId);
-	return connection ? { moduleId: connection.toModuleId, connectorId: connection.toConnectorId } : null;
+	return connection ? { moduleId: connection.toModuleId, connectorId: connection.toConnectorId } : undefined;
 }
