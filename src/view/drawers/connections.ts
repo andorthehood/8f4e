@@ -6,7 +6,7 @@ import { HGRID, VGRID } from './consts';
 import { State } from '../../state/types';
 
 export default function drawConnections(engine: Engine, state: State): void {
-	const connections = state.connections;
+	const connections = state.graphicHelper.connections;
 	const modules = state.modules;
 
 	engine.setSpriteLookup(fillColor);
@@ -34,16 +34,16 @@ export default function drawConnections(engine: Engine, state: State): void {
 	// 	engine.endGroup();
 	// }
 
-	for (let i = 0; i < connections.length; i++) {
-		if (!state.graphicHelper.has(connections[i].fromModuleId)) {
+	for (const { fromModule, toModule, toConnectorId, fromConnectorId } of connections) {
+		const fromModuleGraphicData = state.graphicHelper.modules.get(fromModule)?.outputs.get(fromConnectorId);
+		const toModuleGraphicData = state.graphicHelper.modules.get(toModule)?.inputs.get(toConnectorId);
+
+		if (!fromModuleGraphicData || !toModuleGraphicData) {
 			return;
 		}
 
-		const fromModule = modules.find(({ id }) => id === connections[i].fromModuleId);
-		const toModule = modules.find(({ id }) => id === connections[i].toModuleId);
-
-		const { x: fromX, y: fromY } = state.graphicHelper.get(fromModule.id).outputs.get(connections[i].fromConnectorId);
-		const { x: toX, y: toY } = state.graphicHelper.get(toModule.id).inputs.get(connections[i].toConnectorId);
+		const { x: fromX, y: fromY } = fromModuleGraphicData;
+		const { x: toX, y: toY } = toModuleGraphicData;
 
 		const xDistance = Math.floor(fromX + fromModule.x - (toX + toModule.x)) / 2;
 		engine.startGroup(state.viewport.x, state.viewport.y);

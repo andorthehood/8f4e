@@ -7,13 +7,14 @@ export default function findModuleAtViewportCoordinates(
 	searchX: number,
 	searchY: number
 ): Module | undefined {
-	return modules.find(({ id, x, y }) => {
-		const module = graphicHelper.get(id);
-		if (!module) {
+	return modules.find(module => {
+		const graphicData = graphicHelper.modules.get(module);
+		if (!graphicData) {
 			return;
 		}
 
-		const { width, height } = module;
+		const { x, y } = module;
+		const { width, height } = graphicData;
 		return (
 			searchX >= x + viewport.x &&
 			searchX <= x + width + viewport.x &&

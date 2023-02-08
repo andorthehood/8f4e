@@ -12,8 +12,8 @@ export default function drawModules(engine: Engine, state: State): void {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.modules.length; i++) {
-		const { x, y, id } = state.modules[i];
-		const { width, height, code, codeColors } = state.graphicHelper.get(state.modules[i].id) || {
+		const { x, y } = state.modules[i];
+		const { width, height, code, codeColors } = state.graphicHelper.modules.get(state.modules[i]) || {
 			width: 0,
 			height: 0,
 			code: [],
@@ -39,7 +39,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 			engine.setSpriteLookup(font('white'));
 
-			drawConnectors(engine, state, id);
+			drawConnectors(engine, state, state.modules[i]);
 
 			engine.setSpriteLookup(font('white'));
 			for (let i = 0; i < code.length; i++) {
@@ -47,7 +47,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			if (state.selectedModule === state.modules[i]) {
-				const { row = 0, col = 0, offset = 0 } = state.graphicHelper.get(state.modules[i].id)?.cursor || {};
+				const { row = 0, col = 0, offset = 0 } = state.graphicHelper.modules.get(state.modules[i])?.cursor || {};
 				engine.drawText(col * VGRID + offset, row * HGRID, '_');
 			}
 
