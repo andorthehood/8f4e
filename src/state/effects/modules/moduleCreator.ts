@@ -1,13 +1,65 @@
 import { EventDispatcher } from '../../../events';
 import { Module, State } from '../../types';
 
+const nameList = [
+	'quark',
+	'electron',
+	'positron',
+	'muon',
+	'tau',
+	'neutrino',
+	'photon',
+	'gluon',
+	'boson',
+	'lepton',
+	'axion',
+	'curvaton',
+	'dilaton',
+	'graviton',
+	'inflaton',
+	'majoron',
+	'preon',
+	'tachyon',
+	'pion',
+	'baryon',
+	'proton',
+	'neutron',
+	'nucleon',
+	'kaon',
+	'meson',
+	'hadron',
+	'dropleton',
+	'anyon',
+	'exciton',
+	'fracton',
+	'magnon',
+	'plasmon',
+	'polariton',
+	'polaron',
+	'roton',
+	'trion',
+];
+
+function getModuleName() {
+	return nameList[Math.floor(Math.random() * nameList.length)];
+}
+
 export default function moduleCreator(state: State, events: EventDispatcher): void {
-	function onAddModule({ x, y }) {
-		const code = ['# new module', '#', '# code', 'module kaki' + Math.random().toString()];
+	async function onAddModule({ x, y, isNew }) {
+		let code = [''];
+
+		if (isNew) {
+			code = ['module ' + getModuleName(), '', '', ''];
+		} else {
+			code = (await navigator.clipboard.readText()).split('\n');
+		}
+
+		console.log(code);
+
 		state.modules.push({
 			code,
-			x,
-			y,
+			x: x - state.viewport.x,
+			y: y - state.viewport.y,
 			isOpen: true,
 		});
 	}
