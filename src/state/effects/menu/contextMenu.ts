@@ -70,7 +70,18 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 			];
 		} else {
 			state.contextMenu.items = [
-				{ title: 'New Module', action: 'addModule', close: true },
+				{
+					title: 'New Module',
+					action: 'addModule',
+					payload: { isNew: true },
+					close: true,
+				},
+				{
+					title: 'Paste Module',
+					action: 'addModule',
+					payload: { isPaste: true },
+					close: true,
+				},
 				{ title: 'Undo', action: 'undo', close: true },
 				{ title: 'Export', action: 'save', close: true },
 				{ title: 'New', action: 'new', close: true },
