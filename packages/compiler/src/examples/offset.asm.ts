@@ -3,7 +3,7 @@ import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts'
 export default `module offset
 
 private defaultValue 0
-inputPointer in defaultValue
+inputPointer in &defaultValue
 public offset 0
 output out 0
 
