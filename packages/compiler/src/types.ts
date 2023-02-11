@@ -1,3 +1,4 @@
+import { Instruction } from './instructions';
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
 
@@ -58,7 +59,7 @@ export const enum ArgumentType {
 
 export type Argument = { type: ArgumentType.LITERAL; value: number } | { type: ArgumentType.IDENTIFIER; value: string };
 
-export type AST = Array<{ lineNumber: number; instruction: string; arguments: Array<Argument> }>;
+export type AST = Array<{ lineNumber: number; instruction: Instruction; arguments: Array<Argument> }>;
 
 export interface TestModule {
 	memory: MemoryBuffer & {
