@@ -1,4 +1,5 @@
 import { font } from '@8f4e/sprite-generator';
+import { instructions } from '@8f4e/compiler';
 
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
@@ -6,8 +7,7 @@ import { GraphicHelper, State } from '../types';
 import { backSpace, enter, moveCaret, type } from '../helpers/editor';
 import { parseInputs, parseOutputs } from '../helpers/codeParsers';
 
-const keywords =
-	/module|output|inputPointer|local|private|push|div|if|else|end|store|and|greaterThan|branch|greaterOrEqual|add|sub|lessThan|public|xor|shiftRight/;
+const keywords = new RegExp(Object.keys(instructions).join('|'));
 
 function getModuleId(code: string[]): string {
 	for (let i = 0; i < code.length; i++) {
