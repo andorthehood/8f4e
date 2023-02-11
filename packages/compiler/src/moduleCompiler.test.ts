@@ -1,4 +1,4 @@
-import { compile, compileToAST } from '../compiler';
+import { compile, compileToAST } from './compiler';
 
 const fixture = `
 module abs
