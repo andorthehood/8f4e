@@ -4,10 +4,10 @@ export default `module mixer
 
 private defaultValue 0
 output out 0
-inputPointer in:1 defaultValue
-inputPointer in:2 defaultValue
-inputPointer in:3 defaultValue
-inputPointer in:4 defaultValue
+inputPointer in:1 &defaultValue
+inputPointer in:2 &defaultValue
+inputPointer in:3 &defaultValue
+inputPointer in:4 &defaultValue
 
 const HIGH ${I16_SIGNED_LARGEST_NUMBER}
 const LOW ${I16_SIGNED_SMALLEST_NUMBER}

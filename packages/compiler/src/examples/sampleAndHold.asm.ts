@@ -1,8 +1,8 @@
 export default `module sampleAndHold
 
 private defaultValue 0
-inputPointer in defaultValue
-inputPointer in:trigger defaultValue
+inputPointer in &defaultValue
+inputPointer in:trigger &defaultValue
 private triggerPreviousValue 0
 output out 0
 

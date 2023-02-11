@@ -4,8 +4,8 @@ export default `module saw
 
 private LIMIT_SELF ${I16_SIGNED_LARGEST_NUMBER}
 public rate 1
-inputPointer in:rate rate
-inputPointer in:limit LIMIT_SELF
+inputPointer in:rate &rate
+inputPointer in:limit &LIMIT_SELF
 output out 0
 private defaultValue 0
 inputPointer reset defaultValue
