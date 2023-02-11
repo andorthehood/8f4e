@@ -1,4 +1,4 @@
-import { signedLEB128, unsignedLEB128 } from '../../wasmUtils/typeHelpers';
+import { signedLEB128, unsignedLEB128 } from './typeHelpers';
 
 test('signedLEB128', () => {
 	expect(signedLEB128(-10)).toStrictEqual([118]);
