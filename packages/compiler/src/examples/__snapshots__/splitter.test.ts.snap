@@ -48,7 +48,7 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "zero",
+        "value": "&zero",
       },
     ],
     "instruction": "output",
@@ -62,7 +62,7 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "zero",
+        "value": "&zero",
       },
     ],
     "instruction": "output",
@@ -76,7 +76,7 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "zero",
+        "value": "&zero",
       },
     ],
     "instruction": "output",
@@ -90,7 +90,7 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "zero",
+        "value": "&zero",
       },
     ],
     "instruction": "output",
