@@ -38,9 +38,7 @@ import pointerForward from './pointerForward';
 import _module from './module';
 import global from './global';
 
-import { InstructionHandler } from '../types';
-
-export default {
+const instructions = {
 	and,
 	or,
 	const: _const,
@@ -80,4 +78,8 @@ export default {
 	pointerForward,
 	module: _module,
 	global,
-} as Record<string, InstructionHandler>;
+} as const;
+
+export default instructions;
+
+export type Instruction = keyof typeof instructions;
