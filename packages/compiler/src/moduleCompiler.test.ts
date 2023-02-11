@@ -31,11 +31,13 @@ end
 store`.split('\n');
 
 describe('moduleCompiler', () => {
+	const ast = compileToAST(fixture);
+
 	test('ast', () => {
-		expect(compileToAST(fixture)).toMatchSnapshot();
+		expect(ast).toMatchSnapshot();
 	});
 
 	test('compiled code', () => {
-		expect(compile(fixture, 0).functionBody).toMatchSnapshot();
+		expect(compile(ast, {}, 0).functionBody).toMatchSnapshot();
 	});
 });
