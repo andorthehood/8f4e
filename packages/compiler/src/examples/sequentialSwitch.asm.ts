@@ -2,13 +2,13 @@ export default `module sequentialSwitch
 
 private defaultValue 0
 output out 0
-inputPointer in:clock defaultValue
+inputPointer in:clock &defaultValue
 private previousClock 0
 private counter 0
-inputPointer in:1 defaultValue
-inputPointer in:2 defaultValue
-inputPointer in:3 defaultValue
-inputPointer in:4 defaultValue
+inputPointer in:1 &defaultValue
+inputPointer in:2 &defaultValue
+inputPointer in:3 &defaultValue
+inputPointer in:4 &defaultValue
 
 local clock
 local _counter
