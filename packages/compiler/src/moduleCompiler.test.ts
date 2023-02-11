@@ -5,7 +5,7 @@ module abs
 
 # memory
 private DEFAULT_VALUE -1
-inputPointer in:1 DEFAULT_VALUE
+inputPointer in:1 &DEFAULT_VALUE
 output out 0
 array arr 32 -1
 

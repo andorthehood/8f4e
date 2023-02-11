@@ -1,6 +1,6 @@
 export default `module attenuator
 private zero 0
-inputPointer in zero
+inputPointer in &zero
 public divisor 1
 output out 0
 push &out

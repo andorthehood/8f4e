@@ -36,7 +36,7 @@ Array [
           },
           Object {
             "type": "identifier",
-            "value": "DEFAULT_VALUE",
+            "value": "&DEFAULT_VALUE",
           },
         ],
         "instruction": "inputPointer",

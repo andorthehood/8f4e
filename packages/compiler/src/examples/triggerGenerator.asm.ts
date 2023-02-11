@@ -6,7 +6,7 @@ private counter 0
 public rate 0
 output out 0
 private defaultValue 0
-inputPointer reset defaultValue
+inputPointer reset &defaultValue
 
 local _counter
 local _output
