@@ -1,6 +1,6 @@
-import { createTestModule, TestModule } from '../';
-
 import invert from './invert.asm';
+
+import { createTestModule, TestModule } from '../';
 
 let testModule: TestModule;
 

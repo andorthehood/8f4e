@@ -1,4 +1,4 @@
-import { compile } from '../../compiler';
+import { compile } from '../compiler';
 
 describe('array', () => {
 	test('if it throws error when arguments are missing', () => {
