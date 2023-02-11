@@ -1,7 +1,7 @@
 import modules from './__fixtures__/modules';
 import { generateMemoryAddressLookup } from './initializeMemory';
 
-import { compileModules } from '..';
+import { compileModules } from '.';
 
 describe('compiler', () => {
 	test('generateMemoryAddressLookup', () => {

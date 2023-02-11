@@ -11,7 +11,7 @@ import {
 	createTypeSection,
 } from './wasmUtils/sectionHelpers';
 import { FunctionBody } from './wasmUtils/typeHelpers';
-import { compile } from './compiler';
+import { compile, compileToAST } from './compiler';
 import { CompiledModule, TestModule } from './types';
 import { WORD_LENGTH } from './consts';
 
@@ -42,7 +42,7 @@ export function setInitialMemory(memory: Int32Array, module: CompiledModule): vo
 export async function createTestModule(sourceCode: string): Promise<TestModule> {
 	let allocatedMemoryForTestData = 0;
 
-	const module: CompiledModule = compile(sourceCode.split('\n'), 0);
+	const module: CompiledModule = compile(compileToAST(sourceCode.split('\n')), {}, 0);
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
