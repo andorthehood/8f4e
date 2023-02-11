@@ -10,7 +10,7 @@ Array [
       },
     ],
     "instruction": "module",
-    "lineNumber": 2,
+    "lineNumber": 1,
   },
   Object {
     "arguments": Array [
@@ -24,7 +24,7 @@ Array [
       },
     ],
     "instruction": "private",
-    "lineNumber": 3,
+    "lineNumber": 2,
   },
   Object {
     "arguments": Array [
@@ -38,7 +38,7 @@ Array [
       },
     ],
     "instruction": "inputPointer",
-    "lineNumber": 4,
+    "lineNumber": 3,
   },
   Object {
     "arguments": Array [
@@ -52,7 +52,7 @@ Array [
       },
     ],
     "instruction": "public",
-    "lineNumber": 5,
+    "lineNumber": 4,
   },
   Object {
     "arguments": Array [
@@ -66,7 +66,7 @@ Array [
       },
     ],
     "instruction": "output",
-    "lineNumber": 6,
+    "lineNumber": 5,
   },
   Object {
     "arguments": Array [
@@ -76,7 +76,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 7,
+    "lineNumber": 6,
   },
   Object {
     "arguments": Array [
@@ -86,7 +86,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 8,
+    "lineNumber": 7,
   },
   Object {
     "arguments": Array [
@@ -96,17 +96,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 9,
+    "lineNumber": 8,
   },
   Object {
     "arguments": Array [],
     "instruction": "div",
-    "lineNumber": 10,
+    "lineNumber": 9,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 11,
+    "lineNumber": 10,
   },
 ]
 `;
@@ -117,7 +117,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "zero",
-    "lineNumber": 3,
+    "lineNumber": 2,
     "relativeWordAddress": 0,
     "type": 5,
     "wordSize": 1,
@@ -126,7 +126,7 @@ Map {
     "byteAddress": 4,
     "default": 0,
     "id": "in",
-    "lineNumber": 4,
+    "lineNumber": 3,
     "relativeWordAddress": 1,
     "type": 3,
     "wordSize": 1,
@@ -135,7 +135,7 @@ Map {
     "byteAddress": 8,
     "default": 1,
     "id": "divisor",
-    "lineNumber": 5,
+    "lineNumber": 4,
     "relativeWordAddress": 2,
     "type": 6,
     "wordSize": 1,
@@ -144,7 +144,7 @@ Map {
     "byteAddress": 12,
     "default": 0,
     "id": "out",
-    "lineNumber": 6,
+    "lineNumber": 5,
     "relativeWordAddress": 3,
     "type": 4,
     "wordSize": 1,
