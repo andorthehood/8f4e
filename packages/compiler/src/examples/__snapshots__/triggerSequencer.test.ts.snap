@@ -34,7 +34,7 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "defaultValue",
+        "value": "&defaultValue",
       },
     ],
     "instruction": "inputPointer",
@@ -48,7 +48,7 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "defaultValue",
+        "value": "&defaultValue",
       },
     ],
     "instruction": "inputPointer",

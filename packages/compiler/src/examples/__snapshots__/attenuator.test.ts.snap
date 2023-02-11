@@ -34,7 +34,7 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "zero",
+        "value": "&zero",
       },
     ],
     "instruction": "inputPointer",

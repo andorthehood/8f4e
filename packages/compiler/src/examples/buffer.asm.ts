@@ -14,7 +14,7 @@ public numberOfInputs ${numberOfPorts}
 public numberOfOutputs ${numberOfPorts}
 public numberOfDataPlaceholders ${numberOfDataPlaceholders}
 
-${ports.map(index => `inputPointer in:${index} defaultValue`).join('\n')}
+${ports.map(index => `inputPointer in:${index} &defaultValue`).join('\n')}
 ${ports.map(index => `output out:${index} 0`).join('\n')}
 
 ${dataPlaceholders.map(index => `public data:${index} 0`).join('\n')}
