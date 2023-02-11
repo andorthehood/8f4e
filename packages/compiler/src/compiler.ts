@@ -1,7 +1,7 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
-import instructions from './instructions';
-import { AST, Argument, ArgumentType, CompiledModule, Namespace, MemoryMap } from './types';
+import instructions, { Instruction } from './instructions';
+import { AST, Argument, ArgumentType, CompiledModule, Namespace } from './types';
 import { WORD_LENGTH } from './consts';
 
 export { MemoryTypes, MemoryMap } from './types';
@@ -13,7 +13,12 @@ function parseArgument(argument: string): Argument {
 }
 
 function parseLine(line: string, lineNumber: number): AST[number] {
-	const [, instruction, ...args] = line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || [];
+	const [, instruction, ...args] = (line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || []) as [
+		never,
+		Instruction,
+		string,
+		string
+	];
 
 	return {
 		lineNumber,
