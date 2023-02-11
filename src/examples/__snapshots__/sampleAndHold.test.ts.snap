@@ -10,7 +10,7 @@ Array [
       },
     ],
     "instruction": "module",
-    "lineNumber": 2,
+    "lineNumber": 1,
   },
   Object {
     "arguments": Array [
@@ -24,7 +24,7 @@ Array [
       },
     ],
     "instruction": "private",
-    "lineNumber": 4,
+    "lineNumber": 3,
   },
   Object {
     "arguments": Array [
@@ -38,7 +38,7 @@ Array [
       },
     ],
     "instruction": "inputPointer",
-    "lineNumber": 5,
+    "lineNumber": 4,
   },
   Object {
     "arguments": Array [
@@ -52,7 +52,7 @@ Array [
       },
     ],
     "instruction": "inputPointer",
-    "lineNumber": 6,
+    "lineNumber": 5,
   },
   Object {
     "arguments": Array [
@@ -66,7 +66,7 @@ Array [
       },
     ],
     "instruction": "private",
-    "lineNumber": 7,
+    "lineNumber": 6,
   },
   Object {
     "arguments": Array [
@@ -80,7 +80,7 @@ Array [
       },
     ],
     "instruction": "output",
-    "lineNumber": 8,
+    "lineNumber": 7,
   },
   Object {
     "arguments": Array [
@@ -90,7 +90,7 @@ Array [
       },
     ],
     "instruction": "local",
-    "lineNumber": 10,
+    "lineNumber": 9,
   },
   Object {
     "arguments": Array [
@@ -100,7 +100,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 12,
+    "lineNumber": 11,
   },
   Object {
     "arguments": Array [
@@ -110,7 +110,7 @@ Array [
       },
     ],
     "instruction": "localSet",
-    "lineNumber": 13,
+    "lineNumber": 12,
   },
   Object {
     "arguments": Array [
@@ -120,7 +120,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 15,
+    "lineNumber": 14,
   },
   Object {
     "arguments": Array [
@@ -130,12 +130,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 16,
+    "lineNumber": 15,
   },
   Object {
     "arguments": Array [],
     "instruction": "sub",
-    "lineNumber": 17,
+    "lineNumber": 16,
   },
   Object {
     "arguments": Array [
@@ -145,12 +145,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 18,
+    "lineNumber": 17,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterOrEqual",
-    "lineNumber": 19,
+    "lineNumber": 18,
   },
   Object {
     "arguments": Array [
@@ -160,7 +160,7 @@ Array [
       },
     ],
     "instruction": "if",
-    "lineNumber": 20,
+    "lineNumber": 19,
   },
   Object {
     "arguments": Array [
@@ -170,7 +170,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 21,
+    "lineNumber": 20,
   },
   Object {
     "arguments": Array [
@@ -180,17 +180,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 22,
+    "lineNumber": 21,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 23,
+    "lineNumber": 22,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 24,
+    "lineNumber": 23,
   },
   Object {
     "arguments": Array [
@@ -200,7 +200,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 26,
+    "lineNumber": 25,
   },
   Object {
     "arguments": Array [
@@ -210,12 +210,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 27,
+    "lineNumber": 26,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 28,
+    "lineNumber": 27,
   },
 ]
 `;
@@ -226,7 +226,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
-    "lineNumber": 4,
+    "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 5,
     "wordSize": 1,
@@ -235,7 +235,7 @@ Map {
     "byteAddress": 4,
     "default": 0,
     "id": "in",
-    "lineNumber": 5,
+    "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": 3,
     "wordSize": 1,
@@ -244,7 +244,7 @@ Map {
     "byteAddress": 8,
     "default": 0,
     "id": "in:trigger",
-    "lineNumber": 6,
+    "lineNumber": 5,
     "relativeWordAddress": 2,
     "type": 3,
     "wordSize": 1,
@@ -253,7 +253,7 @@ Map {
     "byteAddress": 12,
     "default": 0,
     "id": "triggerPreviousValue",
-    "lineNumber": 7,
+    "lineNumber": 6,
     "relativeWordAddress": 3,
     "type": 5,
     "wordSize": 1,
@@ -262,7 +262,7 @@ Map {
     "byteAddress": 16,
     "default": 0,
     "id": "out",
-    "lineNumber": 8,
+    "lineNumber": 7,
     "relativeWordAddress": 4,
     "type": 4,
     "wordSize": 1,

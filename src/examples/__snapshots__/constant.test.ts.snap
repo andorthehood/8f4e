@@ -10,7 +10,7 @@ Array [
       },
     ],
     "instruction": "module",
-    "lineNumber": 2,
+    "lineNumber": 1,
   },
   Object {
     "arguments": Array [
@@ -24,7 +24,7 @@ Array [
       },
     ],
     "instruction": "output",
-    "lineNumber": 3,
+    "lineNumber": 2,
   },
 ]
 `;
@@ -35,7 +35,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "out",
-    "lineNumber": 3,
+    "lineNumber": 2,
     "relativeWordAddress": 0,
     "type": 4,
     "wordSize": 1,
