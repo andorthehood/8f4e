@@ -65,17 +65,16 @@ function getModuleId(ast: AST): string | undefined {
 	);
 }
 
-export function compile(module: string[], startingByteAddress = 0): CompiledModule {
-	const ast = compileToAST(module);
+export function compile(ast: AST, globals: Namespace['consts'], startingByteAddress = 0): CompiledModule {
 	const moduleId = getModuleId(ast);
 
 	if (!moduleId) {
 		throw '1007: Missing module ID';
 	}
 
-	let memory: MemoryMap = new Map();
-	let locals: string[] = [];
-	let consts: Record<string, number> = {};
+	let memory: Namespace['memory'] = new Map();
+	let locals: Namespace['locals'] = [];
+	let consts: Namespace['consts'] = { ...globals };
 
 	const wa = ast
 		.reduce((acc, line) => {
