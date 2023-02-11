@@ -11,43 +11,43 @@ export interface Config {
 	resolution: number;
 }
 
-export default ({ resolution = 8 } = {}) => `
-	module adc
+export default ({ resolution = 8 } = {}) => `module adc
 
-	# memory
-	private default 0
-	inputPointer in default
-	${masks
-		.slice(0, resolution)
-		.map((mask, index) => `output out:${index + 1} 0`)
-		.join('\n')}
+# memory
+private default 0
+inputPointer in default
 
-	# locals
-	local input
+${masks
+	.slice(0, resolution)
+	.map((mask, index) => `output out:${index + 1} 0`)
+	.join('\n')}
 
-	# code
-	push in
-	push ${resolution === 16 ? 1 : Math.floor(I16_SIGNED_LARGEST_NUMBER / (Math.pow(2, resolution) - 1))}
-	div
-	localSet input
+# locals
+local input
 
-	${masks
-		.slice(0, resolution)
-		.map(
-			(mask, index) => `
-			push &out:${index + 1}
-			push input
-			push ${mask}
-			and
-			push 0
-			greaterThan
-			if 
-				push ${LOGIC_HIGH}
-			else
-				push ${LOGIC_LOW}
-			end
-			store
-		`
-		)
-		.join('\n')}
+# code
+push in
+push ${resolution === 16 ? 1 : Math.floor(I16_SIGNED_LARGEST_NUMBER / (Math.pow(2, resolution) - 1))}
+div
+localSet input
+
+${masks
+	.slice(0, resolution)
+	.map(
+		(mask, index) => `
+push &out:${index + 1}
+push input
+push ${mask}
+and
+push 0
+greaterThan
+if 
+ push ${LOGIC_HIGH}
+else
+ push ${LOGIC_LOW}
+end
+store
+`
+	)
+	.join('\n')}
 `;
