@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`abs if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "abs",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 1,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "DEFAULT_VALUE",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+      Object {
+        "type": "identifier",
+        "value": "DEFAULT_VALUE",
+      },
+    ],
+    "instruction": "inputPointer",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 9,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 12,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 13,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 14,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 15,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 16,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "lessThan",
+    "lineNumber": 17,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 18,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 19,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 20,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "sub",
+    "lineNumber": 21,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 22,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 23,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 24,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 25,
+  },
+]
+`;
+
+exports[`abs if the generated memory map matches with the snapshot 1`] = `
+Map {
+  "DEFAULT_VALUE" => Object {
+    "byteAddress": 0,
+    "default": 0,
+    "id": "DEFAULT_VALUE",
+    "lineNumber": 4,
+    "relativeWordAddress": 0,
+    "type": 5,
+    "wordSize": 1,
+  },
+  "in" => Object {
+    "byteAddress": 4,
+    "default": 0,
+    "id": "in",
+    "lineNumber": 5,
+    "relativeWordAddress": 1,
+    "type": 3,
+    "wordSize": 1,
+  },
+  "out" => Object {
+    "byteAddress": 8,
+    "default": 0,
+    "id": "out",
+    "lineNumber": 6,
+    "relativeWordAddress": 2,
+    "type": 4,
+    "wordSize": 1,
+  },
+}
+`;
+
+exports[`abs if the wat code matches with the snapshot 1`] = `
+"(module
+  (type (;0;) (func))
+  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32)
+    i32.const 8
+    i32.const 4
+    i32.load
+    i32.load
+    local.set 0
+    local.get 0
+    i32.const 0
+    i32.lt_s
+    if (result i32)  ;; label = @1
+      i32.const 0
+      local.get 0
+      i32.sub
+    else
+      local.get 0
+    end
+    i32.store)
+  (export \\"test\\" (func 0)))
+"
+`;
