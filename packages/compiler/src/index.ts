@@ -11,9 +11,9 @@ import {
 } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import { call, i32store } from './wasmUtils/instructionHelpers';
-import { compile as compileModule } from './compiler';
+import { compile as compileModule, compileToAST } from './compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
-import { CompiledModule, MemoryAddressLookup, Module, CompiledModuleLookup } from './types';
+import { CompiledModule, MemoryAddressLookup, Module, CompiledModuleLookup, AST, Namespace } from './types';
 import { calculateModuleWordSize } from './utils';
 
 export * from './types';
@@ -36,10 +36,28 @@ export function getInitialMemory(module: CompiledModule): number[] {
 	}, [] as number[]);
 }
 
+function collectGlobals(ast: AST): Namespace['consts'] {
+	return Object.fromEntries(
+		ast
+			.filter(({ instruction }) => instruction === 'global')
+			.map(({ arguments: _arguments }) => {
+				return [_arguments[0].value, parseInt(_arguments[1].value.toString(), 10)];
+			})
+	);
+}
+
 export function compileModules(modules: Module[]): CompiledModule[] {
 	let memoryAddress = 1;
-	return modules.map(({ code }) => {
-		const module = compileModule(code, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
+	let globals: Namespace['consts'] = {};
+
+	const astModules = modules.map(({ code }) => {
+		const ast = compileToAST(code);
+		globals = { ...globals, ...collectGlobals(ast) };
+		return ast;
+	});
+
+	return astModules.map(ast => {
+		const module = compileModule(ast, globals, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
 		memoryAddress += calculateModuleWordSize(module);
 		return module;
 	});
