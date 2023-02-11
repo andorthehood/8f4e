@@ -1,0 +1,1128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`adc if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "adc",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 1,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "default",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "private",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+      Object {
+        "type": "identifier",
+        "value": "default",
+      },
+    ],
+    "instruction": "inputPointer",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:1",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 7,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:2",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:3",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 9,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:4",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 10,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:5",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 11,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:6",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 12,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:7",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 13,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out:8",
+      },
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "output",
+    "lineNumber": 14,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "local",
+    "lineNumber": 17,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "in",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 20,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 128,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 21,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "div",
+    "lineNumber": 22,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "localSet",
+    "lineNumber": 23,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:1",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 26,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 27,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 28,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 29,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 30,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 31,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 32,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 33,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 34,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 35,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 36,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 37,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:2",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 40,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 41,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 2,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 42,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 43,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 44,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 45,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 46,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 47,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 48,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 49,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 50,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 51,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:3",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 54,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 55,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 4,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 56,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 57,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 58,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 59,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 60,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 61,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 62,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 63,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 64,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 65,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:4",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 68,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 69,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 8,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 70,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 71,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 72,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 73,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 74,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 75,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 76,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 77,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 78,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 79,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:5",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 82,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 83,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 16,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 84,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 85,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 86,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 87,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 88,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 89,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 90,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 91,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 92,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 93,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:6",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 96,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 97,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 98,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 99,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 100,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 101,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 102,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 103,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 104,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 105,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 106,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 107,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:7",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 110,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 111,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 64,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 112,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 113,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 114,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 115,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 116,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 117,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 118,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 119,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 120,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 121,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out:8",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 124,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 125,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 128,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 126,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "and",
+    "lineNumber": 127,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 128,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "greaterThan",
+    "lineNumber": 129,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "if",
+    "lineNumber": 130,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 32767,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 131,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "else",
+    "lineNumber": 132,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 133,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 134,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 135,
+  },
+]
+`;
+
+exports[`adc if the generated memory map matches with the snapshot 1`] = `
+Map {
+  "default" => Object {
+    "byteAddress": 0,
+    "default": 0,
+    "id": "default",
+    "lineNumber": 4,
+    "relativeWordAddress": 0,
+    "type": 5,
+    "wordSize": 1,
+  },
+  "in" => Object {
+    "byteAddress": 4,
+    "default": 0,
+    "id": "in",
+    "lineNumber": 5,
+    "relativeWordAddress": 1,
+    "type": 3,
+    "wordSize": 1,
+  },
+  "out:1" => Object {
+    "byteAddress": 8,
+    "default": 0,
+    "id": "out:1",
+    "lineNumber": 7,
+    "relativeWordAddress": 2,
+    "type": 4,
+    "wordSize": 1,
+  },
+  "out:2" => Object {
+    "byteAddress": 12,
+    "default": 0,
+    "id": "out:2",
+    "lineNumber": 8,
+    "relativeWordAddress": 3,
+    "type": 4,
+    "wordSize": 1,
+  },
+  "out:3" => Object {
+    "byteAddress": 16,
+    "default": 0,
+    "id": "out:3",
+    "lineNumber": 9,
+    "relativeWordAddress": 4,
+    "type": 4,
+    "wordSize": 1,
+  },
+  "out:4" => Object {
+    "byteAddress": 20,
+    "default": 0,
+    "id": "out:4",
+    "lineNumber": 10,
+    "relativeWordAddress": 5,
+    "type": 4,
+    "wordSize": 1,
+  },
+  "out:5" => Object {
+    "byteAddress": 24,
+    "default": 0,
+    "id": "out:5",
+    "lineNumber": 11,
+    "relativeWordAddress": 6,
+    "type": 4,
+    "wordSize": 1,
+  },
+  "out:6" => Object {
+    "byteAddress": 28,
+    "default": 0,
+    "id": "out:6",
+    "lineNumber": 12,
+    "relativeWordAddress": 7,
+    "type": 4,
+    "wordSize": 1,
+  },
+  "out:7" => Object {
+    "byteAddress": 32,
+    "default": 0,
+    "id": "out:7",
+    "lineNumber": 13,
+    "relativeWordAddress": 8,
+    "type": 4,
+    "wordSize": 1,
+  },
+  "out:8" => Object {
+    "byteAddress": 36,
+    "default": 0,
+    "id": "out:8",
+    "lineNumber": 14,
+    "relativeWordAddress": 9,
+    "type": 4,
+    "wordSize": 1,
+  },
+}
+`;
+
+exports[`adc if the wat code matches with the snapshot 1`] = `
+"(module
+  (type (;0;) (func))
+  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32)
+    i32.const 4
+    i32.load
+    i32.load
+    i32.const 128
+    i32.div_s
+    local.set 0
+    i32.const 8
+    local.get 0
+    i32.const 1
+    i32.and
+    i32.const 0
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      i32.const 0
+    end
+    i32.store
+    i32.const 12
+    local.get 0
+    i32.const 2
+    i32.and
+    i32.const 0
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      i32.const 0
+    end
+    i32.store
+    i32.const 16
+    local.get 0
+    i32.const 4
+    i32.and
+    i32.const 0
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      i32.const 0
+    end
+    i32.store
+    i32.const 20
+    local.get 0
+    i32.const 8
+    i32.and
+    i32.const 0
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      i32.const 0
+    end
+    i32.store
+    i32.const 24
+    local.get 0
+    i32.const 16
+    i32.and
+    i32.const 0
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      i32.const 0
+    end
+    i32.store
+    i32.const 28
+    local.get 0
+    i32.const 32
+    i32.and
+    i32.const 0
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      i32.const 0
+    end
+    i32.store
+    i32.const 32
+    local.get 0
+    i32.const 64
+    i32.and
+    i32.const 0
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      i32.const 0
+    end
+    i32.store
+    i32.const 36
+    local.get 0
+    i32.const 128
+    i32.and
+    i32.const 0
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 32767
+    else
+      i32.const 0
+    end
+    i32.store)
+  (export \\"test\\" (func 0)))
+"
+`;
