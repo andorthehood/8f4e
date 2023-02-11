@@ -36,6 +36,7 @@ import shiftRight from './shiftRight';
 import remainder from './remainder';
 import pointerForward from './pointerForward';
 import _module from './module';
+import global from './global';
 
 import { InstructionHandler } from '../types';
 
@@ -78,4 +79,5 @@ export default {
 	remainder,
 	pointerForward,
 	module: _module,
+	global,
 } as Record<string, InstructionHandler>;
