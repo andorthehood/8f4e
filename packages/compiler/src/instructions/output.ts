@@ -11,14 +11,22 @@ const output: InstructionHandler = function (line, namespace, startingByteAddres
 
 	if (line.arguments[1].type === ArgumentType.LITERAL) {
 		defaultValue = line.arguments[1].value;
-	} else {
-		const memoryItem = memory.get(line.arguments[1].value);
+	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
+		const memoryItem = memory.get(line.arguments[1].value.substring(1));
 
 		if (!memoryItem) {
-			throw `'1003: Undeclared identifier: '${line.arguments[1].value}'`;
+			throw `'1003: Undeclared identifier: '${line.arguments[1].value.substring(1)}'`;
 		}
 
 		defaultValue = memoryItem.byteAddress;
+	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
+		const constant = namespace.consts[line.arguments[1].value];
+
+		if (!constant) {
+			throw `'1003: Undeclared identifier: '${line.arguments[1].value}'`;
+		}
+
+		defaultValue = constant;
 	}
 
 	memory.set(line.arguments[0].value.toString(), {

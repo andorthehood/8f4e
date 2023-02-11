@@ -21,6 +21,8 @@ export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts'
 export { setUpConnections } from './initializeMemory';
 export { createTestModule } from './testUtils';
 export * as examples from './examples';
+export { Instruction } from './instructions';
+export { default as instructions } from './instructions';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
