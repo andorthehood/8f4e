@@ -3,7 +3,7 @@ const BUFFER_LENGTH = 64;
 export default `module scope
 
 private defaultValue 0
-inputPointer in defaultValue
+inputPointer in &defaultValue
 output out 0
 
 private counter 0

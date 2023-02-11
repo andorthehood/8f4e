@@ -15,7 +15,7 @@ export default ({ resolution = 8 } = {}) => `module adc
 
 # memory
 private default 0
-inputPointer in default
+inputPointer in &default
 
 ${masks
 	.slice(0, resolution)
