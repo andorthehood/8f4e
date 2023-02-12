@@ -23,8 +23,8 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
-    "lineNumber": 2,
+    "instruction": "memory",
+    "lineNumber": 3,
   },
   Object {
     "arguments": Array [
@@ -37,8 +37,8 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "inputPointer",
-    "lineNumber": 3,
+    "instruction": "memory",
+    "lineNumber": 4,
   },
   Object {
     "arguments": Array [
@@ -51,8 +51,8 @@ Array [
         "value": 1,
       },
     ],
-    "instruction": "public",
-    "lineNumber": 4,
+    "instruction": "memory",
+    "lineNumber": 5,
   },
   Object {
     "arguments": Array [
@@ -65,8 +65,8 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
-    "lineNumber": 5,
+    "instruction": "memory",
+    "lineNumber": 6,
   },
   Object {
     "arguments": Array [
@@ -76,7 +76,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumber": 8,
   },
   Object {
     "arguments": Array [
@@ -86,7 +86,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 7,
+    "lineNumber": 9,
   },
   Object {
     "arguments": Array [
@@ -96,17 +96,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 8,
+    "lineNumber": 10,
   },
   Object {
     "arguments": Array [],
     "instruction": "div",
-    "lineNumber": 9,
+    "lineNumber": 11,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 10,
+    "lineNumber": 12,
   },
 ]
 `;
@@ -117,36 +117,36 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "zero",
-    "lineNumber": 2,
+    "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "in" => Object {
     "byteAddress": 4,
     "default": 0,
     "id": "in",
-    "lineNumber": 3,
+    "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
   "divisor" => Object {
     "byteAddress": 8,
     "default": 1,
     "id": "divisor",
-    "lineNumber": 4,
+    "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 6,
+    "type": 1,
     "wordSize": 1,
   },
   "out" => Object {
     "byteAddress": 12,
     "default": 0,
     "id": "out",
-    "lineNumber": 5,
+    "lineNumber": 6,
     "relativeWordAddress": 3,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
 }

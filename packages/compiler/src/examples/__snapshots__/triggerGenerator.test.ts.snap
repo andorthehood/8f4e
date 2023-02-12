@@ -23,7 +23,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 3,
   },
   Object {
@@ -37,7 +37,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "public",
+    "instruction": "memory",
     "lineNumber": 4,
   },
   Object {
@@ -51,7 +51,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 5,
   },
   Object {
@@ -65,7 +65,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 6,
   },
   Object {
@@ -79,7 +79,7 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "inputPointer",
+    "instruction": "memory",
     "lineNumber": 7,
   },
   Object {
@@ -478,7 +478,7 @@ Map {
     "id": "counter",
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "rate" => Object {
@@ -487,7 +487,7 @@ Map {
     "id": "rate",
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 6,
+    "type": 1,
     "wordSize": 1,
   },
   "out" => Object {
@@ -496,7 +496,7 @@ Map {
     "id": "out",
     "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "defaultValue" => Object {
@@ -505,7 +505,7 @@ Map {
     "id": "defaultValue",
     "lineNumber": 6,
     "relativeWordAddress": 3,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "reset" => Object {
@@ -514,7 +514,7 @@ Map {
     "id": "reset",
     "lineNumber": 7,
     "relativeWordAddress": 4,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
 }

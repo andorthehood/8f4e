@@ -1,10 +1,10 @@
 export default `module bitwiseAnd
 
-private default1 0
-private default2 0
-inputPointer in:1 &default1
-inputPointer in:2 &default2
-output out 0
+memory default1 0
+memory default2 0
+memory in:1 &default1
+memory in:2 &default2
+memory out 0
 
 push &out
 push *in:1

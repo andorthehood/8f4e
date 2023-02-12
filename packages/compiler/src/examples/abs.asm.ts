@@ -1,9 +1,9 @@
 export default `module abs
 
 # memory
-private DEFAULT_VALUE 0
-inputPointer in &DEFAULT_VALUE
-output out 0
+memory defaultValue 0
+memory in &defaultValue
+memory out 0
 
 # locals
 local input
