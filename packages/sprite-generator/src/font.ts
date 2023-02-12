@@ -84,10 +84,12 @@ export default function generateFonts(): DrawingCommand[] {
 		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 3, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(136,126,203,255)'],
 		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 4, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
+		[Command.FILL_COLOR, 'rgba(201,212,135,255)'],
+		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 5, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 	];
 }
 
-export const lookup = function (font: 'white' | 'black' | 'grey' | 'green' | 'purple'): SpriteLookup {
+export const lookup = function (font: 'white' | 'black' | 'grey' | 'green' | 'purple' | 'lime'): SpriteLookup {
 	return function (letter: string) {
 		const code = letter.charCodeAt(0);
 		switch (font) {
@@ -123,6 +125,13 @@ export const lookup = function (font: 'white' | 'black' | 'grey' | 'green' | 'pu
 				return {
 					x: code * CHARACTER_WIDTH + offsetX,
 					y: offsetY + CHARACTER_HEIGHT * 4,
+					spriteHeight: CHARACTER_HEIGHT,
+					spriteWidth: CHARACTER_WIDTH,
+				};
+			case 'lime':
+				return {
+					x: code * CHARACTER_WIDTH + offsetX,
+					y: offsetY + CHARACTER_HEIGHT * 5,
 					spriteHeight: CHARACTER_HEIGHT,
 					spriteWidth: CHARACTER_WIDTH,
 				};
