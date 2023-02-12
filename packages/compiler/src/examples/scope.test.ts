@@ -1,8 +1,9 @@
 import scope from './scope.asm';
 
-import { createTestModule } from '../';
+import { createTestModule } from '../testUtils';
+import { TestModule } from '../types';
 
-let testModule;
+let testModule: TestModule;
 
 describe('functional tests', () => {
 	beforeAll(async () => {
