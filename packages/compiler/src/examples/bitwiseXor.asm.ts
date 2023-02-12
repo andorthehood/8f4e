@@ -7,8 +7,8 @@ inputPointer in:2 &default2
 output out 0
 
 push &out
-push in:1
-push in:2
+push *in:1
+push *in:2
 xor
 store
 `;

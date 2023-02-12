@@ -9,7 +9,7 @@ output out:4 &zero
 
 local input
 
-push in
+push *in
 localSet input
 
 push &out:1

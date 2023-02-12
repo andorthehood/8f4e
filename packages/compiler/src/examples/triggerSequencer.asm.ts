@@ -18,7 +18,7 @@ local _stepPointer
 push stepPointer
 localSet _stepPointer
 
-push reset
+push *reset
 push 0
 greaterThan
 if void
@@ -26,7 +26,7 @@ if void
  localSet _stepPointer
 end
 
-push trigger
+push *trigger
 push triggerPreviousValue
 greaterThan
 if void
@@ -78,6 +78,6 @@ end
 store
 
 push &triggerPreviousValue
-push trigger
+push *trigger
 store
 `;
