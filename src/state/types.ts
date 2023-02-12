@@ -76,11 +76,12 @@ export interface ModuleGraphicData {
 	width: number;
 	height: number;
 	inputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
-	outputs: Map<string, { width: number; height: number; x: number; y: number; id: string; labelOffset: number }>;
+	outputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
 	code: string[];
 	codeColors: Array<SpriteLookup | undefined>[];
 	cursor: { col: number; row: number; offset: number };
 	id: string;
+	debuggers: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
 }
 
 export type GraphicHelper = {
