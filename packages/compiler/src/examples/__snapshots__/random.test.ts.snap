@@ -23,7 +23,7 @@ Array [
         "value": 69420,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 3,
   },
   Object {
@@ -37,7 +37,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 4,
   },
   Object {
@@ -561,7 +561,7 @@ Map {
     "id": "seed",
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "out" => Object {
@@ -570,7 +570,7 @@ Map {
     "id": "out",
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
 }

@@ -5,10 +5,10 @@ export interface Config {
 
 export default ({ allocatedNotes = 12 } = {}) => `module quantizer
 
-inputPointer in 0
-output out 0
-private allocatedNotes ${allocatedNotes}
-public numberOfNotes 0
+memory in 0
+memory out 0
+memory allocatedNotes ${allocatedNotes}
+memory numberOfNotes 0
 array notes ${allocatedNotes} -1 
 
 local bestMatchingValue

@@ -12,7 +12,7 @@ const array: InstructionHandler = function (line, namespace, startingByteAddress
 	const wordSize = line.arguments[1].value as number;
 
 	memory.set(line.arguments[0].value.toString(), {
-		type: MemoryTypes.DYNAMIC_ARRAY,
+		type: MemoryTypes.ARRAY,
 		relativeWordAddress: wordAddress,
 		wordSize: wordSize,
 		id: line.arguments[0].value.toString(),
