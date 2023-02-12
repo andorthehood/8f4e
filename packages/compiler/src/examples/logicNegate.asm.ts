@@ -2,9 +2,9 @@ import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 export default `module logicNegate
 
-private defaultValue 0
-inputPointer in &defaultValue
-output out 0
+memory defaultValue 0
+memory in &defaultValue
+memory out 0
 
 push &out
 push *in

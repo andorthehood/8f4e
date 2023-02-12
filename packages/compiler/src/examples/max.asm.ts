@@ -1,9 +1,9 @@
 export default `module max
 
-private defaultValue 0
-inputPointer in:1 &defaultValue
-inputPointer in:2 &defaultValue
-output out 0
+memory defaultValue 0
+memory in:1 &defaultValue
+memory in:2 &defaultValue
+memory out 0
 
 local _in1
 local _in2

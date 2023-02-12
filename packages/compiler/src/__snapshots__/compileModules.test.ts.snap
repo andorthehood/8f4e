@@ -25,7 +25,7 @@ Array [
             "value": 0,
           },
         ],
-        "instruction": "private",
+        "instruction": "memory",
         "lineNumber": 5,
       },
       Object {
@@ -39,7 +39,7 @@ Array [
             "value": "&DEFAULT_VALUE",
           },
         ],
-        "instruction": "inputPointer",
+        "instruction": "memory",
         "lineNumber": 6,
       },
       Object {
@@ -53,7 +53,7 @@ Array [
             "value": 0,
           },
         ],
-        "instruction": "output",
+        "instruction": "memory",
         "lineNumber": 7,
       },
       Object {
@@ -179,7 +179,7 @@ Array [
     ],
     "byteAddress": 4,
     "functionBody": Array [
-      35,
+      32,
       1,
       1,
       127,
@@ -187,9 +187,6 @@ Array [
       12,
       65,
       8,
-      40,
-      2,
-      0,
       40,
       2,
       0,
@@ -223,7 +220,7 @@ Array [
         "id": "DEFAULT_VALUE",
         "lineNumber": 5,
         "relativeWordAddress": 0,
-        "type": 5,
+        "type": 1,
         "wordSize": 1,
       },
       "in" => Object {
@@ -232,7 +229,7 @@ Array [
         "id": "in",
         "lineNumber": 6,
         "relativeWordAddress": 1,
-        "type": 3,
+        "type": 1,
         "wordSize": 1,
       },
       "out" => Object {
@@ -241,7 +238,7 @@ Array [
         "id": "out",
         "lineNumber": 7,
         "relativeWordAddress": 2,
-        "type": 4,
+        "type": 1,
         "wordSize": 1,
       },
     },

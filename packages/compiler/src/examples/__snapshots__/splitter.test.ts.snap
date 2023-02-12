@@ -23,7 +23,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 3,
   },
   Object {
@@ -37,7 +37,7 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "inputPointer",
+    "instruction": "memory",
     "lineNumber": 4,
   },
   Object {
@@ -51,7 +51,7 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 5,
   },
   Object {
@@ -65,7 +65,7 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 6,
   },
   Object {
@@ -79,7 +79,7 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 7,
   },
   Object {
@@ -93,7 +93,7 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 8,
   },
   Object {
@@ -237,7 +237,7 @@ Map {
     "id": "zero",
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "in" => Object {
@@ -246,7 +246,7 @@ Map {
     "id": "in",
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
   "out:1" => Object {
@@ -255,7 +255,7 @@ Map {
     "id": "out:1",
     "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:2" => Object {
@@ -264,7 +264,7 @@ Map {
     "id": "out:2",
     "lineNumber": 6,
     "relativeWordAddress": 3,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:3" => Object {
@@ -273,7 +273,7 @@ Map {
     "id": "out:3",
     "lineNumber": 7,
     "relativeWordAddress": 4,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:4" => Object {
@@ -282,7 +282,7 @@ Map {
     "id": "out:4",
     "lineNumber": 8,
     "relativeWordAddress": 5,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
 }

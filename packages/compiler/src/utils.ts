@@ -27,16 +27,6 @@ export function getMemoryStringEndAddress(memoryMap: MemoryMap, id: string): num
 	return memoryItem ? memoryItem.byteAddress + memoryItem.wordSize * WORD_LENGTH : 0;
 }
 
-export function isInputPointer(memoryMap: MemoryMap, id: string): boolean {
-	const memoryItem = getMemoryItem(memoryMap, id);
-
-	if (!memoryItem) {
-		return false;
-	}
-
-	return memoryItem && memoryItem.type === MemoryTypes.INPUT_POINTER;
-}
-
 export function isLocalIdentifier(locals: string[], id: string): boolean {
 	return locals.indexOf(id) !== -1;
 }

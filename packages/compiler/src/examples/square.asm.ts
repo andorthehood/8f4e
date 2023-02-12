@@ -2,9 +2,9 @@ import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 export default `module square
 
-private counter 0
-public rate 0
-output out 0
+memory counter 0
+memory rate 0
+memory out 0
 
 local _counter
 local _output

@@ -23,7 +23,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 4,
   },
   Object {
@@ -37,7 +37,7 @@ Array [
         "value": "&default",
       },
     ],
-    "instruction": "inputPointer",
+    "instruction": "memory",
     "lineNumber": 5,
   },
   Object {
@@ -51,7 +51,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 7,
   },
   Object {
@@ -65,7 +65,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 8,
   },
   Object {
@@ -79,7 +79,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 9,
   },
   Object {
@@ -93,7 +93,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 10,
   },
   Object {
@@ -107,7 +107,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 11,
   },
   Object {
@@ -121,7 +121,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 12,
   },
   Object {
@@ -135,7 +135,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 13,
   },
   Object {
@@ -149,7 +149,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 14,
   },
   Object {
@@ -928,7 +928,7 @@ Map {
     "id": "default",
     "lineNumber": 4,
     "relativeWordAddress": 0,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "in" => Object {
@@ -937,7 +937,7 @@ Map {
     "id": "in",
     "lineNumber": 5,
     "relativeWordAddress": 1,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
   "out:1" => Object {
@@ -946,7 +946,7 @@ Map {
     "id": "out:1",
     "lineNumber": 7,
     "relativeWordAddress": 2,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:2" => Object {
@@ -955,7 +955,7 @@ Map {
     "id": "out:2",
     "lineNumber": 8,
     "relativeWordAddress": 3,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:3" => Object {
@@ -964,7 +964,7 @@ Map {
     "id": "out:3",
     "lineNumber": 9,
     "relativeWordAddress": 4,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:4" => Object {
@@ -973,7 +973,7 @@ Map {
     "id": "out:4",
     "lineNumber": 10,
     "relativeWordAddress": 5,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:5" => Object {
@@ -982,7 +982,7 @@ Map {
     "id": "out:5",
     "lineNumber": 11,
     "relativeWordAddress": 6,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:6" => Object {
@@ -991,7 +991,7 @@ Map {
     "id": "out:6",
     "lineNumber": 12,
     "relativeWordAddress": 7,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:7" => Object {
@@ -1000,7 +1000,7 @@ Map {
     "id": "out:7",
     "lineNumber": 13,
     "relativeWordAddress": 8,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
   "out:8" => Object {
@@ -1009,7 +1009,7 @@ Map {
     "id": "out:8",
     "lineNumber": 14,
     "relativeWordAddress": 9,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
 }
