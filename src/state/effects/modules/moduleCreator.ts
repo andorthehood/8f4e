@@ -54,8 +54,6 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			code = (await navigator.clipboard.readText()).split('\n');
 		}
 
-		console.log(code);
-
 		state.modules.push({
 			code,
 			x: x - state.viewport.x,
@@ -69,6 +67,11 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 		state.modules.splice(state.modules.indexOf(module), 1);
 	}
 
+	function onCopyModule({ module }: { module: Module }): void {
+		navigator.clipboard.writeText(module.code.join('\n'));
+	}
+
 	events.on('addModule', onAddModule);
+	events.on('copyModule', onCopyModule);
 	events.on('deleteModule', onDeleteModule);
 }
