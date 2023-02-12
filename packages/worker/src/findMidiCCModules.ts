@@ -9,13 +9,13 @@ export default function findMidiNoteModules(
 ): MidiCCModuleAddresses[] {
 	return Array.from(compiledModules)
 		.map(([, compiledModule]) => compiledModule)
-		.filter(({ moduleId }) => moduleId.startsWith('cvToMidiCC'))
+		.filter(({ id }) => id.startsWith('cvToMidiCC'))
 		.map(module => {
 			return {
-				moduleId: module.moduleId,
-				valueAddress: memoryAddressLookup.get(module.moduleId + 'out:1'),
-				channelAddress: memoryAddressLookup.get(module.moduleId + 'data:1'),
-				selectedCCAddress: memoryAddressLookup.get(module.moduleId + 'data:2'),
+				moduleId: module.id,
+				valueAddress: memoryAddressLookup.get(module.id + 'out:1'),
+				channelAddress: memoryAddressLookup.get(module.id + 'data:1'),
+				selectedCCAddress: memoryAddressLookup.get(module.id + 'data:2'),
 			};
 		});
 }

@@ -9,14 +9,14 @@ export default function findMidiNoteModules(
 ): MidiModuleAddresses[] {
 	return Array.from(compiledModules)
 		.map(([, compiledModule]) => compiledModule)
-		.filter(({ moduleId }) => moduleId.startsWith('cvToMidiNote'))
+		.filter(({ id }) => id.startsWith('midi:'))
 		.map(module => {
 			return {
-				moduleId: module.moduleId,
-				noteAddress: memoryAddressLookup.get(module.moduleId + 'out:1'),
-				channelAddress: memoryAddressLookup.get(module.moduleId + 'data:1'),
-				noteOnOffAddress: memoryAddressLookup.get(module.moduleId + 'out:2'),
-				velocityAddress: memoryAddressLookup.get(module.moduleId + 'out:3'),
+				moduleId: module.id,
+				noteAddress: memoryAddressLookup.get(module.id + 'note'),
+				channelAddress: memoryAddressLookup.get(module.id + 'channel'),
+				noteOnOffAddress: memoryAddressLookup.get(module.id + 'trigger'),
+				velocityAddress: memoryAddressLookup.get(module.id + 'velocity'),
 			};
 		});
 }
