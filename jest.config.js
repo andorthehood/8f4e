@@ -7,5 +7,5 @@ module.exports = {
 			sourceMaps: true,
 		}],
 	},
-	testPathIgnorePatterns: ['packages', 'dist'],
+	testPathIgnorePatterns: ['dist'],
 };

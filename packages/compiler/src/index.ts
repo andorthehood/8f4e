@@ -110,6 +110,6 @@ export default function compile(modules: Module[]): {
 			]),
 		]),
 		memoryAddressLookup,
-		compiledModules: new Map(compiledModules.map(({ moduleId, ...rest }) => [moduleId, { moduleId, ...rest }])),
+		compiledModules: new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }])),
 	};
 }
