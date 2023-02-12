@@ -27,7 +27,7 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 		const { byteAddress = 0 } = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(debuggerId) || {};
 		const value = state.compiler.memoryBuffer[byteAddress / 4] || 0;
 
-		engine.setSpriteLookup(font('white'));
+		engine.setSpriteLookup(font('lime'));
 		engine.drawText(x, y, '[' + value.toString() + ']');
 	}
 }
