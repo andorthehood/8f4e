@@ -10,7 +10,7 @@ local input
 
 # code
 push &out
-push in
+push *in
 localSet input
 push input
 push 0

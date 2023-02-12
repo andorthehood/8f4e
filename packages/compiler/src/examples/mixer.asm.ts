@@ -15,12 +15,12 @@ const LOW ${I16_SIGNED_SMALLEST_NUMBER}
 local result
 
 push &out
- push in:1
- push in:2
+ push *in:1
+ push *in:2
  add
- push in:3
+ push *in:3
  add
- push in:4
+ push *in:4
  add
  localSet result
 

@@ -72,7 +72,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "in:1",
+        "value": "*in:1",
       },
     ],
     "instruction": "push",
@@ -107,7 +107,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "in:2",
+        "value": "*in:2",
       },
     ],
     "instruction": "push",

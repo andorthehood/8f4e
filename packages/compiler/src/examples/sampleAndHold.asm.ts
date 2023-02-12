@@ -8,7 +8,7 @@ output out 0
 
 local triggerInput
 
-push in:trigger
+push *in:trigger
 localSet triggerInput
 
 push triggerInput
@@ -18,7 +18,7 @@ push 1000
 greaterOrEqual
 if void
  push &out
- push in
+ push *in
  store
 end
 
