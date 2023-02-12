@@ -2,11 +2,11 @@ import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 export default `module triggerGenerator
 
-private counter 0
-public rate 0
-output out 0
-private defaultValue 0
-inputPointer reset &defaultValue
+memory counter 0
+memory rate 0
+memory out 0
+memory defaultValue 0
+memory reset &defaultValue
 
 local _counter
 local _output

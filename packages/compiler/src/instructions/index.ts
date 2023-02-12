@@ -12,11 +12,7 @@ import div from './div';
 import and from './and';
 import or from './or';
 import xor from './xor';
-import _private from './private';
-import inputPointer from './inputPointer';
-import output from './output';
 import local from './local';
-import _public from './public';
 import greaterOrEqual from './greaterOrEqual';
 import add from './add';
 import greaterThan from './greaterThan';
@@ -37,6 +33,7 @@ import remainder from './remainder';
 import pointerForward from './pointerForward';
 import _module from './module';
 import global from './global';
+import memory from './memory';
 
 const instructions = {
 	and,
@@ -53,11 +50,7 @@ const instructions = {
 	sub,
 	div,
 	xor,
-	private: _private,
-	inputPointer,
-	output,
 	local,
-	public: _public,
 	greaterOrEqual,
 	add,
 	greaterThan,
@@ -78,6 +71,7 @@ const instructions = {
 	pointerForward,
 	module: _module,
 	global,
+	memory,
 } as const;
 
 export default instructions;
