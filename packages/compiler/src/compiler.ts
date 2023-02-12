@@ -95,7 +95,7 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 	const [, lastMemoryItem = { relativeWordAddress: 0, wordSize: 0 }] = Array.from(memory).pop() || [];
 
 	return {
-		moduleId,
+		id: moduleId,
 		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
