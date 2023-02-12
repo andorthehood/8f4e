@@ -37,3 +37,10 @@ export function parseDebuggers(code: string[]): Array<{ id: string; lineNumber: 
 		return acc;
 	}, []);
 }
+
+export function getLastMemoryInstructionLine(code: string[]): number {
+	// @ts-ignore
+	return code.findLastIndex(line => {
+		return /^\s*memory/.test(line);
+	});
+}
