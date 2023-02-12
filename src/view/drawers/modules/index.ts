@@ -12,7 +12,7 @@ export default function drawModules(engine: Engine, state: State): void {
 	engine.startGroup(offsetX, offsetY);
 
 	for (let i = 0; i < state.modules.length; i++) {
-		const { x, y } = state.modules[i];
+		const { x, y, isOpen } = state.modules[i];
 		const { width, height, code, codeColors } = state.graphicHelper.modules.get(state.modules[i]) || {
 			width: 0,
 			height: 0,
@@ -32,10 +32,13 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.drawSprite(0, 0, 'rgb(0,0,0)', width, height);
 
 			engine.setSpriteLookup(font('white'));
-			engine.drawText(0, 0, '+');
-			engine.drawText(width - VGRID, 0, '+');
-			engine.drawText(0, height - HGRID, '+');
-			engine.drawText(width - VGRID, height - HGRID, '+');
+
+			const corner = isOpen ? '-' : '+';
+
+			engine.drawText(0, 0, corner);
+			engine.drawText(width - VGRID, 0, corner);
+			engine.drawText(0, height - HGRID, corner);
+			engine.drawText(width - VGRID, height - HGRID, corner);
 
 			engine.setSpriteLookup(font('white'));
 
