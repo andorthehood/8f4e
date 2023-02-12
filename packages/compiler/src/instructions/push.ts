@@ -38,12 +38,12 @@ const push: InstructionHandler = function (line, namespace) {
 			return { byteCode: i32const(consts[argument.value]), namespace };
 		} else if (isLocalIdentifier(locals, argument.value)) {
 			return { byteCode: localGet(locals.indexOf(argument.value)), namespace };
+		} else {
+			throw `'1003: Undeclared identifier: '${argument.value}'`;
 		}
 	} else {
 		return { byteCode: i32const(argument.value), namespace };
 	}
-
-	return { byteCode: [], namespace };
 };
 
 export default push;

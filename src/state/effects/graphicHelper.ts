@@ -5,7 +5,7 @@ import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
 import { GraphicHelper, State } from '../types';
 import { backSpace, enter, moveCaret, type } from '../helpers/editor';
-import { parseInputs, parseOutputs } from '../helpers/codeParsers';
+import { parseDebuggers, parseInputs, parseOutputs } from '../helpers/codeParsers';
 
 const keywords = new RegExp(Object.keys(instructions).join('|'));
 
@@ -26,11 +26,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 			const code = module.code.map(
 				(line, index) =>
-					(line.includes('memory in') || index === 0
-						? ''.padStart(padLength, ' ')
-						: `${index + 1}`.padStart(padLength, '0')) +
-					' ' +
-					line
+					(line.includes('memory in') ? ''.padStart(padLength, ' ') : `${index}`.padStart(padLength, '0')) + ' ' + line
 			);
 
 			const codeColors = code.map(line => {
@@ -66,6 +62,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					codeColors,
 					inputs: new Map(),
 					outputs: new Map(),
+					debuggers: new Map(),
 					cursor: { col: 0, row: 0, offset: VGRID * (padLength + 2) },
 					id: getModuleId(module.code) || '',
 				});
@@ -82,10 +79,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				state.graphicHelper.modules.get(module)?.outputs.set(output.id, {
 					width: VGRID * 2,
 					height: HGRID,
-					x: VGRID * 3 + VGRID * code[output.lineNumber].length,
+					x: 30 * VGRID, //VGRID * 3 + VGRID * code[output.lineNumber].length,
 					y: HGRID * output.lineNumber,
 					id: output.id,
-					labelOffset: 3 * VGRID,
 				});
 			});
 
@@ -97,6 +93,18 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					x: VGRID,
 					y: HGRID * input.lineNumber,
 					id: input.id,
+				});
+			});
+
+			state.graphicHelper.modules.get(module)?.debuggers.clear();
+			parseDebuggers(module.code).forEach(_debugger => {
+				console.log('debugger', _debugger);
+				state.graphicHelper.modules.get(module)?.debuggers.set(_debugger.id, {
+					width: VGRID * 2,
+					height: HGRID,
+					x: VGRID * 2 + VGRID * code[_debugger.lineNumber].length,
+					y: HGRID * _debugger.lineNumber,
+					id: _debugger.id,
 				});
 			});
 		});
