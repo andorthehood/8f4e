@@ -12,6 +12,7 @@ import save from './effects/save';
 import viewport from './effects/viewport';
 import { State } from './types';
 import graphicHelper from './effects/graphicHelper';
+import moduleOpener from './effects/modules/moduleOpener';
 
 import { EventDispatcher } from '../events';
 
@@ -61,6 +62,7 @@ export default function init(events: EventDispatcher): State {
 	history(state, events);
 	connectionMaker(state, events);
 	moduleDragger(state, events);
+	moduleOpener(state, events);
 	viewport(state, events);
 	contextMenu(state, events);
 	moduleMenu(state, events);
