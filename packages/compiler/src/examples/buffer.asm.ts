@@ -22,7 +22,7 @@ ${dataPlaceholders.map(index => `public data:${index} 0`).join('\n')}
 ${ports
 	.map(
 		index => `push &out:${index}
-push in:${index}
+push *in:${index}
 store
 `
 	)

@@ -182,7 +182,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "in:clock",
+        "value": "*in:clock",
       },
     ],
     "instruction": "push",

@@ -5,7 +5,7 @@ inputPointer in &default
 output out 0
 
 push &out
-push in
+push *in
 push -1
 mul
 store

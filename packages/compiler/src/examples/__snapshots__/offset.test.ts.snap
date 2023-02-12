@@ -120,7 +120,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "in",
+        "value": "*in",
       },
     ],
     "instruction": "push",

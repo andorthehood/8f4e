@@ -13,7 +13,7 @@ const LOW ${I16_SIGNED_SMALLEST_NUMBER}
 local result
 
 push &out
- push in
+ push *in
  push offset
  add
  localSet result
