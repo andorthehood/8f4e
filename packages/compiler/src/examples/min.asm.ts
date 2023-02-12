@@ -9,10 +9,10 @@ local input1
 local input2
 
 push &out
- push in:1
+ push *in:1
  localSet input1
 
- push in:2
+ push *in:2
  localSet input2
 
  push input1

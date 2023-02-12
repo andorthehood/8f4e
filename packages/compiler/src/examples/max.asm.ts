@@ -9,10 +9,10 @@ local _in1
 local _in2
 
 push &out
- push in:1
+ push *in:1
  localSet _in1
 
- push in:2
+ push *in:2
  localSet _in2
 
  push _in1

@@ -8,16 +8,16 @@ inputPointer in:rate &rate
 inputPointer in:limit &LIMIT_SELF
 output out 0
 private defaultValue 0
-inputPointer reset defaultValue
+inputPointer reset &defaultValue
 
 local _rate
 local limit
 local counter
 
-push in:rate
+push *in:rate
 localSet _rate
 
-push in:limit
+push *in:limit
 localSet limit
 
 push out
