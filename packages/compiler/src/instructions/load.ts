@@ -1,6 +1,6 @@
 import { i32const, i32load } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
-import { getMemoryItemByteAddress, isInputPointer, isMemoryIdentifier } from '../utils';
+import { getMemoryItemByteAddress, isMemoryIdentifier } from '../utils';
 
 const load: InstructionHandler = function (line, namespace) {
 	if (!line.arguments[0]) {
@@ -13,11 +13,7 @@ const load: InstructionHandler = function (line, namespace) {
 		}
 
 		return {
-			byteCode: [
-				...i32const(getMemoryItemByteAddress(namespace.memory, line.arguments[0].value)),
-				...(isInputPointer(namespace.memory, line.arguments[0].value) ? i32load() : []),
-				...i32load(),
-			],
+			byteCode: [...i32const(getMemoryItemByteAddress(namespace.memory, line.arguments[0].value)), ...i32load()],
 			namespace,
 		};
 	} else {

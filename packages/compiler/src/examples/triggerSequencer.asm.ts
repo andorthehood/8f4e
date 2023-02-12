@@ -2,16 +2,16 @@ import { I16_SIGNED_LARGEST_NUMBER } from '../';
 
 export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `module triggerSequencer
 
-private defaultValue 0
-inputPointer trigger &defaultValue
-inputPointer reset &defaultValue
-private triggerPreviousValue 0
-private stepMinusOne 0
+memory defaultValue 0
+memory trigger &defaultValue
+memory reset &defaultValue
+memory triggerPreviousValue 0
+memory stepMinusOne 0
 array steps ${maxSteps} 0
-private stepPointer stepMinusOne
-public stepLength 4
-private didTrigger 0
-output out 0
+memory stepPointer &stepMinusOne
+memory stepLength 4
+memory didTrigger 0
+memory out 0
 
 local _stepPointer
 

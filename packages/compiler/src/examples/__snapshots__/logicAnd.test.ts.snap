@@ -23,7 +23,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 3,
   },
   Object {
@@ -37,7 +37,7 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "inputPointer",
+    "instruction": "memory",
     "lineNumber": 4,
   },
   Object {
@@ -51,7 +51,7 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "inputPointer",
+    "instruction": "memory",
     "lineNumber": 5,
   },
   Object {
@@ -65,7 +65,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 6,
   },
   Object {
@@ -219,7 +219,7 @@ Map {
     "id": "defaultValue",
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "in:1" => Object {
@@ -228,7 +228,7 @@ Map {
     "id": "in:1",
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
   "in:2" => Object {
@@ -237,7 +237,7 @@ Map {
     "id": "in:2",
     "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
   "out" => Object {
@@ -246,7 +246,7 @@ Map {
     "id": "out",
     "lineNumber": 6,
     "relativeWordAddress": 3,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
 }

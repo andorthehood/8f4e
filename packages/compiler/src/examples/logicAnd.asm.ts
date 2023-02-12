@@ -2,10 +2,10 @@ import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 export default `module logicAnd
 
-private defaultValue 0
-inputPointer in:1 &defaultValue
-inputPointer in:2 &defaultValue
-output out 0
+memory defaultValue 0
+memory in:1 &defaultValue
+memory in:2 &defaultValue
+memory out 0
 
 push *in:1
 push 0

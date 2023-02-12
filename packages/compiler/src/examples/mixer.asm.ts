@@ -2,12 +2,12 @@ import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts'
 
 export default `module mixer
 
-private defaultValue 0
-output out 0
-inputPointer in:1 &defaultValue
-inputPointer in:2 &defaultValue
-inputPointer in:3 &defaultValue
-inputPointer in:4 &defaultValue
+memory defaultValue 0
+memory out 0
+memory in:1 &defaultValue
+memory in:2 &defaultValue
+memory in:3 &defaultValue
+memory in:4 &defaultValue
 
 const HIGH ${I16_SIGNED_LARGEST_NUMBER}
 const LOW ${I16_SIGNED_SMALLEST_NUMBER}

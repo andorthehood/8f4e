@@ -2,13 +2,13 @@ import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
 export default `module saw
 
-private LIMIT_SELF ${I16_SIGNED_LARGEST_NUMBER}
-public rate 1
-inputPointer in:rate &rate
-inputPointer in:limit &LIMIT_SELF
-output out 0
-private defaultValue 0
-inputPointer reset &defaultValue
+memory LIMIT_SELF ${I16_SIGNED_LARGEST_NUMBER}
+memory rate 1
+memory in:rate &rate
+memory in:limit &LIMIT_SELF
+memory out 0
+memory defaultValue 0
+memory reset &defaultValue
 
 local _rate
 local limit

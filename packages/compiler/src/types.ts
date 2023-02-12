@@ -3,14 +3,8 @@ import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
 
 export enum MemoryTypes {
-	DYNAMIC_ARRAY,
-	STATIC_ARRAY,
-	ARRAY_SIZE,
-	INPUT_POINTER,
-	OUTPUT,
-	PRIVATE,
-	NUMBER,
 	ARRAY,
+	WORD,
 }
 
 export interface MemoryItem {
