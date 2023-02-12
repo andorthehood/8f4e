@@ -1,9 +1,10 @@
 import and from './logicAnd.asm';
 import { I16_SIGNED_LARGEST_NUMBER } from './consts';
 
-import { createTestModule } from '../';
+import { createTestModule } from '../testUtils';
+import { TestModule } from '../types';
 
-let testModule;
+let testModule: TestModule;
 
 const fixtures: [input1: number, input2: number, output: number][] = [
 	[10, 10, I16_SIGNED_LARGEST_NUMBER],

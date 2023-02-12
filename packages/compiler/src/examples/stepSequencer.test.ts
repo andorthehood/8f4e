@@ -1,7 +1,8 @@
 import triggerSequencer from './stepSequencer.asm';
 
 import { WORD_LENGTH } from '../consts';
-import { createTestModule, TestModule } from '../';
+import { createTestModule } from '../testUtils';
+import { TestModule } from '../types';
 
 let testModule: TestModule;
 
