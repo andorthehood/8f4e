@@ -7,7 +7,7 @@ inputPointer in &defaultValue
 output out 0
 
 push &out
-push in
+push *in
 push 0
 greaterThan
 if

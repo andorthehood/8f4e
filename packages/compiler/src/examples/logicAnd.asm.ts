@@ -7,11 +7,11 @@ inputPointer in:1 &defaultValue
 inputPointer in:2 &defaultValue
 output out 0
 
-push in:1
+push *in:1
 push 0
 greaterThan
 if void
- push in:2
+ push *in:2
  push 0
  greaterThan
  if void

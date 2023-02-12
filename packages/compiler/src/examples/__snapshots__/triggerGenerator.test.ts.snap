@@ -176,7 +176,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "reset",
+        "value": "*reset",
       },
     ],
     "instruction": "push",

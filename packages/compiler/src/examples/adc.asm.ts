@@ -26,7 +26,7 @@ ${masks
 local input
 
 # code
-push in
+push *in
 push ${resolution === 16 ? 1 : Math.floor(I16_SIGNED_LARGEST_NUMBER / (Math.pow(2, resolution) - 1))}
 div
 localSet input

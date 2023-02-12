@@ -21,7 +21,7 @@ localSet _counter
 push rate
 localSet _rate
 
-push reset
+push *reset
 push 0
 greaterThan
 if void

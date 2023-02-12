@@ -9,7 +9,7 @@ output out 0
 
 const HIGH ${I16_SIGNED_LARGEST_NUMBER}
 
-push in:1
+push *in:1
 push 0
 greaterThan
 if void
@@ -19,7 +19,7 @@ if void
  branch 1
 end
 
-push in:2
+push *in:2
 push 0
 greaterThan
 if void

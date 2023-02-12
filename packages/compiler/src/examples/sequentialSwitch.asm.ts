@@ -16,7 +16,7 @@ local _counter
 push counter
 localSet _counter
 
-push in:clock
+push *in:clock
 localSet clock
 
 push previousClock

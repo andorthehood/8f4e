@@ -19,7 +19,7 @@ local noteValue
 local smallestDifference
 local notesEndAddressPointer
 
-push in
+push *in
 localSet _in
 
 # Calculate the address of the last note.

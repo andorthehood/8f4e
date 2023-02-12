@@ -13,7 +13,7 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `module stepSe
  push stepPointer
  localSet _stepPointer
 
- push trigger
+ push *trigger
  push triggerPreviousValue
  greaterThan
  if void
@@ -43,6 +43,6 @@ export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `module stepSe
  store
 
  push &triggerPreviousValue
- push trigger
+ push *trigger
  store
 `;

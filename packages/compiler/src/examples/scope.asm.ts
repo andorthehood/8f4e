@@ -15,7 +15,7 @@ local _bufferPointer
 local _counter
 local _input
 
-push in
+push *in
 localSet _input
 
 push &out

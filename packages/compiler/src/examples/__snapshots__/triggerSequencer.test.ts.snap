@@ -190,7 +190,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "reset",
+        "value": "*reset",
       },
     ],
     "instruction": "push",
@@ -250,7 +250,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "trigger",
+        "value": "*trigger",
       },
     ],
     "instruction": "push",
@@ -620,7 +620,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "trigger",
+        "value": "*trigger",
       },
     ],
     "instruction": "push",
