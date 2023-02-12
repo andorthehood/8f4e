@@ -2,7 +2,7 @@ import { CompiledModule, Connection, MemoryAddressLookup, MemoryBuffer } from '.
 
 export function generateMemoryAddressLookup(compiledModules: CompiledModule[]): MemoryAddressLookup {
 	const lookup = new Map<string, number>();
-	compiledModules.forEach(({ wordAddress, memoryMap, moduleId }) => {
+	compiledModules.forEach(({ wordAddress, memoryMap, id: moduleId }) => {
 		lookup.set(moduleId + '__startAddress', wordAddress);
 		memoryMap.forEach((item, id) => {
 			lookup.set(moduleId + id, wordAddress + item.relativeWordAddress);
