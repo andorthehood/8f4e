@@ -21,7 +21,7 @@ export type MemoryMap = Map<string, MemoryItem>;
 
 export interface CompiledModule {
 	functionBody: number[];
-	moduleId: string;
+	id: string;
 	byteAddress: number;
 	wordAddress: number;
 	memoryMap: MemoryMap;
