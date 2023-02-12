@@ -67,6 +67,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 				// TODO module id mapper
 				{ title: 'Delete module', action: 'deleteModule', payload: { module }, close: true },
 				{ title: 'Remove wires', action: 'deleteConnection', payload: { module }, close: true },
+				{ title: 'Copy module', action: 'copyModule', payload: { module }, close: true },
 			];
 		} else {
 			state.contextMenu.items = [
