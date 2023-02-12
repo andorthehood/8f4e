@@ -23,7 +23,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 2,
   },
 ]
@@ -37,7 +37,7 @@ Map {
     "id": "out",
     "lineNumber": 2,
     "relativeWordAddress": 0,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
 }

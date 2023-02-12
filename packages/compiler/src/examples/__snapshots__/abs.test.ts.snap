@@ -16,14 +16,14 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "DEFAULT_VALUE",
+        "value": "defaultValue",
       },
       Object {
         "type": "literal",
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 4,
   },
   Object {
@@ -34,10 +34,10 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "&DEFAULT_VALUE",
+        "value": "&defaultValue",
       },
     ],
-    "instruction": "inputPointer",
+    "instruction": "memory",
     "lineNumber": 5,
   },
   Object {
@@ -51,7 +51,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 6,
   },
   Object {
@@ -179,13 +179,13 @@ Array [
 
 exports[`abs if the generated memory map matches with the snapshot 1`] = `
 Map {
-  "DEFAULT_VALUE" => Object {
+  "defaultValue" => Object {
     "byteAddress": 0,
     "default": 0,
-    "id": "DEFAULT_VALUE",
+    "id": "defaultValue",
     "lineNumber": 4,
     "relativeWordAddress": 0,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "in" => Object {
@@ -194,7 +194,7 @@ Map {
     "id": "in",
     "lineNumber": 5,
     "relativeWordAddress": 1,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
   "out" => Object {
@@ -203,7 +203,7 @@ Map {
     "id": "out",
     "lineNumber": 6,
     "relativeWordAddress": 2,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
 }

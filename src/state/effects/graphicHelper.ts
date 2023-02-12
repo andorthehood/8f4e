@@ -26,7 +26,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 			const code = module.code.map(
 				(line, index) =>
-					(line.includes('inputPointer') || index === 0
+					(line.includes('memory in') || index === 0
 						? ''.padStart(padLength, ' ')
 						: `${index + 1}`.padStart(padLength, '0')) +
 					' ' +

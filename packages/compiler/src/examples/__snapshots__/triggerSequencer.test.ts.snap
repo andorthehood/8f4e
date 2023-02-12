@@ -23,7 +23,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 3,
   },
   Object {
@@ -37,7 +37,7 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "inputPointer",
+    "instruction": "memory",
     "lineNumber": 4,
   },
   Object {
@@ -51,7 +51,7 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "inputPointer",
+    "instruction": "memory",
     "lineNumber": 5,
   },
   Object {
@@ -65,7 +65,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 6,
   },
   Object {
@@ -79,7 +79,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 7,
   },
   Object {
@@ -108,10 +108,10 @@ Array [
       },
       Object {
         "type": "identifier",
-        "value": "stepMinusOne",
+        "value": "&stepMinusOne",
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 9,
   },
   Object {
@@ -125,7 +125,7 @@ Array [
         "value": 4,
       },
     ],
-    "instruction": "public",
+    "instruction": "memory",
     "lineNumber": 10,
   },
   Object {
@@ -139,7 +139,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "private",
+    "instruction": "memory",
     "lineNumber": 11,
   },
   Object {
@@ -153,7 +153,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "output",
+    "instruction": "memory",
     "lineNumber": 12,
   },
   Object {
@@ -642,7 +642,7 @@ Map {
     "id": "defaultValue",
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "trigger" => Object {
@@ -651,7 +651,7 @@ Map {
     "id": "trigger",
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
   "reset" => Object {
@@ -660,7 +660,7 @@ Map {
     "id": "reset",
     "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 3,
+    "type": 1,
     "wordSize": 1,
   },
   "triggerPreviousValue" => Object {
@@ -669,7 +669,7 @@ Map {
     "id": "triggerPreviousValue",
     "lineNumber": 6,
     "relativeWordAddress": 3,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "stepMinusOne" => Object {
@@ -678,7 +678,7 @@ Map {
     "id": "stepMinusOne",
     "lineNumber": 7,
     "relativeWordAddress": 4,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "steps" => Object {
@@ -713,7 +713,7 @@ Map {
     "id": "stepPointer",
     "lineNumber": 9,
     "relativeWordAddress": 21,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "stepLength" => Object {
@@ -722,7 +722,7 @@ Map {
     "id": "stepLength",
     "lineNumber": 10,
     "relativeWordAddress": 22,
-    "type": 6,
+    "type": 1,
     "wordSize": 1,
   },
   "didTrigger" => Object {
@@ -731,7 +731,7 @@ Map {
     "id": "didTrigger",
     "lineNumber": 11,
     "relativeWordAddress": 23,
-    "type": 5,
+    "type": 1,
     "wordSize": 1,
   },
   "out" => Object {
@@ -740,7 +740,7 @@ Map {
     "id": "out",
     "lineNumber": 12,
     "relativeWordAddress": 24,
-    "type": 4,
+    "type": 1,
     "wordSize": 1,
   },
 }

@@ -1,14 +1,14 @@
 export default `module sequentialSwitch
 
-private defaultValue 0
-output out 0
-inputPointer in:clock &defaultValue
-private previousClock 0
-private counter 0
-inputPointer in:1 &defaultValue
-inputPointer in:2 &defaultValue
-inputPointer in:3 &defaultValue
-inputPointer in:4 &defaultValue
+memory defaultValue 0
+memory out 0
+memory in:clock &defaultValue
+memory previousClock 0
+memory counter 0
+memory in:1 &defaultValue
+memory in:2 &defaultValue
+memory in:3 &defaultValue
+memory in:4 &defaultValue
 
 local clock
 local _counter

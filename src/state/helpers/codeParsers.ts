@@ -4,7 +4,7 @@ export function parseInputs(code: string[]): Array<{ id: string; lineNumber: num
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = line.match(instructionParser) ?? [];
 
-		if (instruction === 'inputPointer') {
+		if (instruction === 'memory' && args[0].includes('in')) {
 			return [...acc, { id: args[0], lineNumber: index }];
 		}
 		return acc;
@@ -15,7 +15,7 @@ export function parseOutputs(code: string[]): Array<{ id: string; lineNumber: nu
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = line.match(instructionParser) ?? [];
 
-		if (instruction === 'output') {
+		if (instruction === 'memory' && args[0].includes('out')) {
 			return [...acc, { id: args[0], lineNumber: index }];
 		}
 		return acc;
