@@ -1,7 +1,8 @@
 import adc from './adc.asm';
 import { LOGIC_HIGH } from './consts';
 
-import { createTestModule, TestModule } from '../';
+import { createTestModule } from '../testUtils';
+import { TestModule } from '../types';
 
 let testModule: TestModule;
 

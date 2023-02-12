@@ -19,7 +19,6 @@ import { calculateModuleWordSize } from './utils';
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
 export { setUpConnections } from './initializeMemory';
-export { createTestModule } from './testUtils';
 export * as examples from './examples';
 export { Instruction } from './instructions';
 export { default as instructions } from './instructions';

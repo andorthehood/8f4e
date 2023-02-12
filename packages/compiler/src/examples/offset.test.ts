@@ -1,7 +1,8 @@
 import offset from './offset.asm';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
 
-import { createTestModule, TestModule } from '../';
+import { createTestModule } from '../testUtils';
+import { TestModule } from '../types';
 
 let testModule: TestModule;
 

@@ -1,6 +1,7 @@
 import buffer from './buffer.asm';
 
-import { createTestModule, TestModule } from '../';
+import { createTestModule } from '../testUtils';
+import { TestModule } from '../types';
 
 let testModule: TestModule;
 
