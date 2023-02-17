@@ -6,7 +6,7 @@ import { WORD_LENGTH } from './consts';
 
 export { MemoryTypes, MemoryMap } from './types';
 
-function parseArgument(argument: string): Argument {
+export function parseArgument(argument: string): Argument {
 	switch (true) {
 		case /^-?[0-9]+$/.test(argument):
 			return { value: parseInt(argument, 10), type: ArgumentType.LITERAL };
@@ -19,7 +19,7 @@ function parseArgument(argument: string): Argument {
 	}
 }
 
-function parseLine(line: string, lineNumber: number): AST[number] {
+export function parseLine(line: string, lineNumber: number): AST[number] {
 	const [, instruction, ...args] = (line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || []) as [
 		never,
 		Instruction,
