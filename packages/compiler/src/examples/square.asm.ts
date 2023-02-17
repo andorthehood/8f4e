@@ -1,5 +1,3 @@
-import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-
 export default `module square
 
 memory counter 0
@@ -27,7 +25,7 @@ if
  equalToZero
  
  if
-  push ${I16_SIGNED_LARGEST_NUMBER}
+  push I16_SIGNED_LARGEST_NUMBER
  else
   push 0
  end

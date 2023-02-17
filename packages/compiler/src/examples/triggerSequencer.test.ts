@@ -8,7 +8,7 @@ let testModule: TestModule;
 
 describe('triggerSequencer', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(triggerSequencer());
+		testModule = await createTestModule(triggerSequencer);
 	});
 
 	beforeEach(() => {

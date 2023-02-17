@@ -2,9 +2,9 @@
 
 exports[`compiler generateMemoryAddressLookup 1`] = `
 Map {
-  "abs__startAddress" => 1,
-  "absDEFAULT_VALUE" => 1,
-  "absin" => 2,
-  "absout" => 3,
+  "abs__startAddress" => 0,
+  "absDEFAULT_VALUE" => 0,
+  "absin" => 1,
+  "absout" => 2,
 }
 `;
