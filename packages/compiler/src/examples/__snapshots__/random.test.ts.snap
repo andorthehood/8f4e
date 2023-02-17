@@ -533,8 +533,8 @@ Array [
   Object {
     "arguments": Array [
       Object {
-        "type": "literal",
-        "value": 32767,
+        "type": "identifier",
+        "value": "I16_SIGNED_LARGEST_NUMBER",
       },
     ],
     "instruction": "push",
