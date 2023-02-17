@@ -7,9 +7,16 @@ import { WORD_LENGTH } from './consts';
 export { MemoryTypes, MemoryMap } from './types';
 
 function parseArgument(argument: string): Argument {
-	return /^-?[0-9]+$/.test(argument)
-		? { value: parseInt(argument, 10), type: ArgumentType.LITERAL }
-		: { value: argument, type: ArgumentType.IDENTIFIER };
+	switch (true) {
+		case /^-?[0-9]+$/.test(argument):
+			return { value: parseInt(argument, 10), type: ArgumentType.LITERAL };
+		case /^-?0x[0-9a-fA-F]+$/.test(argument):
+			return { value: parseInt(argument.replace('0x', ''), 16), type: ArgumentType.LITERAL };
+		case /^-?0b[0-1]+$/.test(argument):
+			return { value: parseInt(argument.replace('0b', ''), 2), type: ArgumentType.LITERAL };
+		default:
+			return { value: argument, type: ArgumentType.IDENTIFIER };
+	}
 }
 
 function parseLine(line: string, lineNumber: number): AST[number] {
