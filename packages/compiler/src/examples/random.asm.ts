@@ -47,7 +47,7 @@ if
  push random
 else
  push random
- push ${0b10000000000000000000000000000000}
+ push 0b10000000000000000000000000000000
  or
 end
 localSet random
