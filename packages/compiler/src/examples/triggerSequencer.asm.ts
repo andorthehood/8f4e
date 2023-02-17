@@ -1,13 +1,11 @@
-import { I16_SIGNED_LARGEST_NUMBER } from '../';
-
-export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `module triggerSequencer
+export default `module triggerSequencer
 
 memory defaultValue 0
 memory trigger &defaultValue
 memory reset &defaultValue
 memory triggerPreviousValue 0
 memory stepMinusOne 0
-array steps ${maxSteps} 0
+array steps 16 0
 memory stepPointer &stepMinusOne
 memory stepLength 4
 memory didTrigger 0
@@ -70,7 +68,7 @@ if
   push 1
   store
 
-  push ${I16_SIGNED_LARGEST_NUMBER}
+  push I16_SIGNED_LARGEST_NUMBER
  end
 else
  push 0
