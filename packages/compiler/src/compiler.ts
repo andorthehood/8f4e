@@ -38,11 +38,11 @@ export function parseLine(line: string, lineNumber: number): AST[number] {
 	};
 }
 
-function isComment(line: string): boolean {
+export function isComment(line: string): boolean {
 	return /\s*#/.test(line);
 }
 
-function isValidInstruction(line: string): boolean {
+export function isValidInstruction(line: string): boolean {
 	return /\s*(\S+)\s*(\S*)\s*(\S*)/.test(line);
 }
 

@@ -1,4 +1,4 @@
-import { parseArgument, parseLine } from './compiler';
+import { parseArgument, parseLine, isComment, isValidInstruction } from './compiler';
 import { ArgumentType, AST } from './types';
 
 describe('parseArgument', () => {
@@ -57,5 +57,27 @@ describe('parseLine', () => {
 
 	test.each(fixtures)('given %p as input the output is %p', (lineNumber, line, ast) => {
 		expect(parseLine(line, lineNumber)).toStrictEqual(ast);
+	});
+});
+
+describe('isComment', () => {
+	const fixtures: [string, boolean][] = [
+		['# hello', true],
+		['hello', false],
+	];
+
+	test.each(fixtures)('given %p the output is %p', (line, value) => {
+		expect(isComment(line)).toBe(value);
+	});
+});
+
+describe('isValidInstruction', () => {
+	const fixtures: [string, boolean][] = [
+		['hello', true],
+		['hello 10', true],
+	];
+
+	test.each(fixtures)('given %p the output is %p', (line, value) => {
+		expect(isValidInstruction(line)).toBe(value);
 	});
 });
