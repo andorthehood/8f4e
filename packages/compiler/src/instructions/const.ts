@@ -6,16 +6,24 @@ const _const: InstructionHandler = function (line, namespace) {
 	}
 
 	if (line.arguments[0].type === ArgumentType.LITERAL) {
-		throw `'1005: Expected identifier, got a value: '${line.arguments[0].value}''`;
+		throw `1005: Expected identifier, got a value: '${line.arguments[0].value}'`;
 	}
 
+	let value = 0;
+
 	if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
-		throw `'1004: Expected value, got an identifier: '${line.arguments[1].value}''`;
+		if (typeof namespace.consts[line.arguments[1].value] !== 'undefined') {
+			value = namespace.consts[line.arguments[1].value];
+		} else {
+			throw `1003: Undeclared identifier: '${line.arguments[1].value}'`;
+		}
+	} else {
+		value = line.arguments[1].value;
 	}
 
 	return {
 		byteCode: [],
-		namespace: { ...namespace, consts: { ...namespace.consts, [line.arguments[0].value]: line.arguments[1].value } },
+		namespace: { ...namespace, consts: { ...namespace.consts, [line.arguments[0].value]: value } },
 	};
 };
 

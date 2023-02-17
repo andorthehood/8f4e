@@ -1,5 +1,3 @@
-import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-
 export default `module logicXor
 
 memory defaultValue 0
@@ -7,7 +5,7 @@ memory in:1 &defaultValue
 memory in:2 &defaultValue
 memory out 0
 
-const HIGH ${I16_SIGNED_LARGEST_NUMBER}
+const HIGH I16_SIGNED_LARGEST_NUMBER
 
 block void
  push *in:1

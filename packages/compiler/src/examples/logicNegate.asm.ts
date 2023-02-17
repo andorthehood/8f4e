@@ -1,5 +1,3 @@
-import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-
 export default `module logicNegate
 
 memory defaultValue 0
@@ -13,7 +11,7 @@ greaterThan
 if
  push 0
 else 
- push ${I16_SIGNED_LARGEST_NUMBER}
+ push I16_SIGNED_LARGEST_NUMBER
 end
 
 store

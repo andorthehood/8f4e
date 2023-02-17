@@ -39,7 +39,7 @@ const push: InstructionHandler = function (line, namespace) {
 		} else if (isLocalIdentifier(locals, argument.value)) {
 			return { byteCode: localGet(locals.indexOf(argument.value)), namespace };
 		} else {
-			throw `'1003: Undeclared identifier: '${argument.value}'`;
+			throw `1003: Undeclared identifier: '${argument.value}`;
 		}
 	} else {
 		return { byteCode: i32const(argument.value), namespace };

@@ -1,5 +1,3 @@
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
-
 export default `module offset
 
 memory defaultValue 0
@@ -7,8 +5,8 @@ memory in &defaultValue
 memory offset 0
 memory out 0
 
-const HIGH ${I16_SIGNED_LARGEST_NUMBER}
-const LOW ${I16_SIGNED_SMALLEST_NUMBER}
+const HIGH I16_SIGNED_LARGEST_NUMBER
+const LOW I16_SIGNED_SMALLEST_NUMBER
 
 local result
 

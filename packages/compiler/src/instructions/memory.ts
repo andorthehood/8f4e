@@ -15,7 +15,7 @@ const memory: InstructionHandler = function (line, namespace, startingByteAddres
 		const memoryItem = memory.get(line.arguments[1].value.substring(1));
 
 		if (!memoryItem) {
-			throw `'1003: Undeclared identifier: '${line.arguments[1].value.substring(1)}'`;
+			throw `1003: Undeclared identifier: '${line.arguments[1].value.substring(1)}`;
 		}
 
 		defaultValue = memoryItem.byteAddress;
@@ -23,7 +23,7 @@ const memory: InstructionHandler = function (line, namespace, startingByteAddres
 		const constant = namespace.consts[line.arguments[1].value];
 
 		if (!constant) {
-			throw `'1003: Undeclared identifier: '${line.arguments[1].value}'`;
+			throw `1003: Undeclared identifier: '${line.arguments[1].value}`;
 		}
 
 		defaultValue = constant;

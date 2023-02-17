@@ -1,5 +1,3 @@
-import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-
 export default `module triggerGenerator
 
 memory counter 0
@@ -33,7 +31,7 @@ end
 
 # Resets the output to 0
 push _output
-push ${I16_SIGNED_LARGEST_NUMBER}
+push I16_SIGNED_LARGEST_NUMBER
 greaterOrEqual
 if void
  push 0
@@ -44,7 +42,7 @@ push _counter
 push _rate
 greaterOrEqual
 if
- push ${I16_SIGNED_LARGEST_NUMBER} 
+ push I16_SIGNED_LARGEST_NUMBER
  localSet _output
 
  push 0
