@@ -75,8 +75,8 @@ Array [
         "value": "HIGH",
       },
       Object {
-        "type": "literal",
-        "value": 32767,
+        "type": "identifier",
+        "value": "I16_SIGNED_LARGEST_NUMBER",
       },
     ],
     "instruction": "const",
@@ -89,8 +89,8 @@ Array [
         "value": "LOW",
       },
       Object {
-        "type": "literal",
-        "value": -32768,
+        "type": "identifier",
+        "value": "I16_SIGNED_SMALLEST_NUMBER",
       },
     ],
     "instruction": "const",

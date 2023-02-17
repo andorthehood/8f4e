@@ -1,10 +1,8 @@
-import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-
 const tapPositions = [0, 2, 3, 5];
 
-export default ({ seed = 69420 } = {}) => `module random
+export default () => `module random
 
-memory seed ${seed}
+memory seed 69420
 memory out 0
 
 local random
@@ -56,7 +54,7 @@ localSet random
 
 push &out
 push random
-push ${I16_SIGNED_LARGEST_NUMBER}
+push I16_SIGNED_LARGEST_NUMBER
 remainder
 store
 `;

@@ -1,5 +1,3 @@
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
-
 export default `module mixer
 
 memory defaultValue 0
@@ -9,8 +7,8 @@ memory in:2 &defaultValue
 memory in:3 &defaultValue
 memory in:4 &defaultValue
 
-const HIGH ${I16_SIGNED_LARGEST_NUMBER}
-const LOW ${I16_SIGNED_SMALLEST_NUMBER}
+const HIGH I16_SIGNED_LARGEST_NUMBER
+const LOW I16_SIGNED_SMALLEST_NUMBER
 
 local result
 

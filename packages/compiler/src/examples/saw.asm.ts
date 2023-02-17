@@ -1,8 +1,6 @@
-import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-
 export default `module saw
 
-memory LIMIT_SELF ${I16_SIGNED_LARGEST_NUMBER}
+memory LIMIT_SELF I16_SIGNED_LARGEST_NUMBER
 memory rate 1
 memory in:rate &rate
 memory in:limit &LIMIT_SELF

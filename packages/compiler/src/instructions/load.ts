@@ -9,7 +9,7 @@ const load: InstructionHandler = function (line, namespace) {
 
 	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
 		if (!isMemoryIdentifier(namespace.memory, line.arguments[0].value)) {
-			throw `'1003: Undeclared identifier: '${line.arguments[0].value}'`;
+			throw `1003: Undeclared identifier: '${line.arguments[0].value}`;
 		}
 
 		return {
@@ -17,7 +17,7 @@ const load: InstructionHandler = function (line, namespace) {
 			namespace,
 		};
 	} else {
-		throw `'1005: Expected identifier, got a value: '${line.arguments[0].value}''`;
+		throw `1005: Expected identifier, got a value: '${line.arguments[0].value}'`;
 	}
 };
 

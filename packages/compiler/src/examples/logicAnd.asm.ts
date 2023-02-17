@@ -1,5 +1,3 @@
-import { I16_SIGNED_LARGEST_NUMBER } from './consts';
-
 export default `module logicAnd
 
 memory defaultValue 0
@@ -16,7 +14,7 @@ if void
  greaterThan
  if void
   push &out
-  push ${I16_SIGNED_LARGEST_NUMBER}
+  push I16_SIGNED_LARGEST_NUMBER
   store
   branch 2
  end
