@@ -1,15 +1,10 @@
-import { I32_SIGNED_LARGEST_NUMBER } from './consts';
-export interface Config {
-	allocatedNotes?: number;
-}
-
-export default ({ allocatedNotes = 12 } = {}) => `module quantizer
+export default `module quantizer
 
 memory in 0
 memory out 0
-memory allocatedNotes ${allocatedNotes}
+memory allocatedNotes 12
 memory numberOfNotes 0
-array notes ${allocatedNotes} -1 
+array notes 12 -1 
 
 local bestMatchingValue
 local difference
@@ -31,7 +26,7 @@ add
 localSet notesEndAddressPointer
 
 # Set the smallest difference to the largest 32bit signed number.
-push ${I32_SIGNED_LARGEST_NUMBER}
+push I32_SIGNED_LARGEST_NUMBER
 localSet smallestDifference
 
 # Set the note memory pointer to the start address

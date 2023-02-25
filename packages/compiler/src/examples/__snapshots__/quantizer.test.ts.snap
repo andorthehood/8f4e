@@ -229,8 +229,8 @@ Array [
   Object {
     "arguments": Array [
       Object {
-        "type": "literal",
-        "value": 2147483647,
+        "type": "identifier",
+        "value": "I32_SIGNED_LARGEST_NUMBER",
       },
     ],
     "instruction": "push",
