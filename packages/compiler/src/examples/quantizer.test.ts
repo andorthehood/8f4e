@@ -28,7 +28,7 @@ const fixtures: [input: number, notes: number[], output: number][] = [
 
 describe('functional tests', () => {
 	beforeAll(async () => {
-		testModule = await createTestModule(quantizer());
+		testModule = await createTestModule(quantizer);
 	});
 
 	beforeEach(() => {
