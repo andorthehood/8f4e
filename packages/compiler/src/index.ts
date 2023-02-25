@@ -15,7 +15,7 @@ import { compile as compileModule, compileToAST } from './compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
 import { CompiledModule, MemoryAddressLookup, Module, CompiledModuleLookup, AST, Namespace } from './types';
 import { calculateModuleWordSize } from './utils';
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
+import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
 
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
@@ -53,6 +53,7 @@ export function compileModules(modules: Module[]): CompiledModule[] {
 	let globals: Namespace['consts'] = {
 		I16_SIGNED_LARGEST_NUMBER: I16_SIGNED_LARGEST_NUMBER,
 		I16_SIGNED_SMALLEST_NUMBER: I16_SIGNED_SMALLEST_NUMBER,
+		I32_SIGNED_LARGEST_NUMBER: I32_SIGNED_LARGEST_NUMBER,
 	};
 
 	const astModules = modules.map(({ code }) => {
