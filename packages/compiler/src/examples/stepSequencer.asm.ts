@@ -1,9 +1,9 @@
-export default ({ maxSteps = 16 }: { maxSteps?: number } = {}) => `module stepSequencer
+export default `module stepSequencer
 
  memory defaultValue 0
  memory trigger &defaultValue
  memory triggerPreviousValue 0
- array steps ${maxSteps} 0
+ array steps 16 0
  memory stepPointer &steps
  memory stepLength 4
  memory out 0
