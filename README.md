@@ -2,11 +2,10 @@
 
 # 8f4e
 
-8f4e
+8f4e is a semi-visual, stack-oriented programming language that runs on the WebAssembly Virtual Machine.
 
-## Project dependencies
+## Why the stack-oriented design?
 
-- node
-- rust
-- python3
-- emscripten (emcc)
+The WebAssembly Virtual Machine uses a stack machine architecture, because stack machines are typically easier to port to different platforms than register-based machines, as they have a simpler instruction set and fewer hardware dependencies.
+
+A programming language that is designed with a stack-oriented approach can perform operations on the stack in a manner that is both efficient and natural, with instructions that can be easily mapped to those of the stack machine. Therefore, a programming language with a stack-oriented design is a natural fit for the WebAssembly Virtual Machine.
