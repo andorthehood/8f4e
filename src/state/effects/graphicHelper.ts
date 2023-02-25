@@ -186,6 +186,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					onCompilationDone();
 				}
 		}
+
+		events.dispatch('saveState');
 	};
 
 	events.on('moduleClick', onCompilationDone);
