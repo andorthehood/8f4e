@@ -6,6 +6,8 @@
 
 ## Why the stack-oriented design?
 
-The WebAssembly Virtual Machine uses a stack machine architecture, because stack machines are typically easier to port to different platforms than register-based machines, as they have a simpler instruction set and fewer hardware dependencies.
+The WebAssembly Virtual Machine uses a stack machine architecture, which offers several advantages for cross-platform compatibility. Stack machines have a simpler instruction set and fewer hardware dependencies than register-based machines, making them easier to port to different platforms.
 
 A programming language that is designed with a stack-oriented approach can perform operations on the stack in a manner that is both efficient and natural, with instructions that can be easily mapped to those of the stack machine. Therefore, a programming language with a stack-oriented design is a natural fit for the WebAssembly Virtual Machine.
+
+tl;dr: Using a stack-oriented programming language makes it possible to create more efficient software for the WebAssembly Virtual Machine.
