@@ -1,5 +1,3 @@
-const tapPositions = [0, 2, 3, 5];
-
 export default () => `module random
 
 memory seed 69420
@@ -21,20 +19,41 @@ else
 end
 localSet random
 
-${tapPositions
-	.map(
-		position => `
- push random
- push ${1 << position}
- and
- push ${position}
- shiftRight
- push feedback
- xor
- localSet feedback
-`
-	)
-	.join('\n')}
+push random
+push 0b000001
+and
+push 0
+shiftRight
+push feedback
+xor
+localSet feedback
+
+push random
+push 0b000100
+and
+push 2
+shiftRight
+push feedback
+xor
+localSet feedback
+
+push random
+push 0b001000
+and
+push 3
+shiftRight
+push feedback
+xor
+localSet feedback
+
+push random
+push 0b100000
+and
+push 5
+shiftRight
+push feedback
+xor
+localSet feedback
 
 push random
 push 1
