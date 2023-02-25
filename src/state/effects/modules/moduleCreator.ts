@@ -60,6 +60,8 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			y: y - state.viewport.y,
 			isOpen: true,
 		});
+
+		events.dispatch('saveState');
 	}
 
 	function onDeleteModule({ module }: { module: Module }): void {
