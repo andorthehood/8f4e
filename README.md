@@ -2,8 +2,7 @@
 
 # 8f4e
 
-8f4e is a semi-visual, stack-oriented programming language that runs on the WebAssembly Virtual Machine.
-
+8f4e is a semi-visual, stack-oriented programming language for real-time signal generation and processing. 📡 It runs on the WebAssembly Virtual Machine.
 ## Why the stack-oriented design?
 
 The WebAssembly Virtual Machine uses a stack machine architecture, which offers several advantages for cross-platform compatibility. Stack machines have a simpler instruction set and fewer hardware dependencies than register-based machines, making them easier to port to different platforms.
