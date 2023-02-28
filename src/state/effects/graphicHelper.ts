@@ -5,7 +5,13 @@ import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
 import { GraphicHelper, State } from '../types';
 import { backSpace, enter, moveCaret, type } from '../helpers/editor';
-import { parseDebuggers, parseInputs, parseOutputs, getLastMemoryInstructionLine } from '../helpers/codeParsers';
+import {
+	parseDebuggers,
+	parseInputs,
+	parseOutputs,
+	getLastMemoryInstructionLine,
+	parseScopes,
+} from '../helpers/codeParsers';
 
 const keywords = new RegExp(Object.keys(instructions).join('|'));
 
@@ -66,6 +72,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					inputs: new Map(),
 					outputs: new Map(),
 					debuggers: new Map(),
+					scopes: new Map(),
 					cursor: { col: 0, row: 0, offset: VGRID * (padLength + 2) },
 					id: getModuleId(module.code) || '',
 				});
@@ -107,6 +114,17 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					x: VGRID * (3 + padLength) + VGRID * trimmedCode[_debugger.lineNumber].length,
 					y: HGRID * _debugger.lineNumber,
 					id: _debugger.id,
+				});
+			});
+
+			state.graphicHelper.modules.get(module)?.scopes.clear();
+			parseScopes(trimmedCode).forEach(scope => {
+				state.graphicHelper.modules.get(module)?.scopes.set(scope.id, {
+					width: VGRID * 2,
+					height: HGRID,
+					x: VGRID * (4 + padLength),
+					y: HGRID * (scope.lineNumber + 1),
+					id: scope.id,
 				});
 			});
 		});
