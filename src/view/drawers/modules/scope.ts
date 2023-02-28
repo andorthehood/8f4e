@@ -1,20 +1,44 @@
 import { Engine } from '@8f4e/2d-engine';
 import { scope } from '@8f4e/sprite-generator';
 
-import { State } from '../../../state/types';
+import { Module, State } from '../../../state/types';
 
 const RESOLUTION = 64;
 
-export default function drawer(engine: Engine, state: State, id: string): void {
-	const bufferAddress = state.compiler.memoryAddressLookup.get(id + 'buffer');
-	const pointerAddress = state.compiler.memoryAddressLookup.get(id + 'bufferPointer');
-	const buffer = state.compiler.memoryBuffer.slice(bufferAddress, bufferAddress + RESOLUTION);
-	const pointer =
-		state.compiler.memoryBuffer[pointerAddress] / state.compiler.memoryBuffer.BYTES_PER_ELEMENT - bufferAddress;
+const scopeBuffers = new Map<number, Int32Array>();
+const bufferPointers = new Map<number, number>();
+
+export default function drawer(engine: Engine, state: State, module: Module): void {
+	const graphicData = state.graphicHelper.modules.get(module);
+
+	if (!graphicData) {
+		return;
+	}
 
 	engine.setSpriteLookup(scope);
 
-	for (let i = 0; i < RESOLUTION; i++) {
-		engine.drawSprite(2 * i + 1, 1, buffer[(i + pointer) % RESOLUTION], 2, RESOLUTION * 2);
+	for (const [, { x, y, id: scopeId }] of graphicData.scopes) {
+		const { byteAddress = 0 } = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(scopeId) || {};
+		const value = state.compiler.memoryBuffer[byteAddress / 4] || 0;
+
+		const buffer = scopeBuffers.get(byteAddress);
+		const bufferPointer = bufferPointers.get(byteAddress);
+
+		if (!buffer || typeof bufferPointer === 'undefined') {
+			scopeBuffers.set(byteAddress, new Int32Array(RESOLUTION));
+			bufferPointers.set(byteAddress, 0);
+			return;
+		}
+
+		buffer[bufferPointer] = value;
+		bufferPointers.set(byteAddress, ((bufferPointers.get(byteAddress) || 0) + 1) % RESOLUTION);
+
+		engine.startGroup(x, y);
+
+		for (let i = 0; i < RESOLUTION; i++) {
+			engine.drawSprite(2 * i + 1, 1, buffer[i], 2, RESOLUTION * 2);
+		}
+
+		engine.endGroup();
 	}
 }
