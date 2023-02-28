@@ -3,6 +3,7 @@ import { Instruction } from '@8f4e/compiler';
 const instructionParser = /^\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)$/;
 const commentParser = /^\s*#(.+)$/;
 const debuggerParser = /^\s*debug\s*(\S*)$/;
+const scopeParser = /^\s*scope\s*(\S*)$/;
 
 export function parseInputs(code: string[]): Array<{ id: string; lineNumber: number }> {
 	return code.reduce((acc, line, index) => {
@@ -32,6 +33,18 @@ export function parseDebuggers(code: string[]): Array<{ id: string; lineNumber: 
 
 		if (comment && comment.includes('debug')) {
 			const [, memoryToDebug] = (comment.match(debuggerParser) ?? []) as [never, string];
+			return [...acc, { id: memoryToDebug, lineNumber: index }];
+		}
+		return acc;
+	}, []);
+}
+
+export function parseScopes(code: string[]): Array<{ id: string; lineNumber: number }> {
+	return code.reduce((acc, line, index) => {
+		const [, comment] = (line.match(commentParser) ?? []) as [never, string];
+
+		if (comment && comment.includes('scope')) {
+			const [, memoryToDebug] = (comment.match(scopeParser) ?? []) as [never, string];
 			return [...acc, { id: memoryToDebug, lineNumber: index }];
 		}
 		return acc;

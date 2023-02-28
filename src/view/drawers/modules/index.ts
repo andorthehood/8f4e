@@ -2,6 +2,7 @@ import { Engine } from '@8f4e/2d-engine';
 import { fillColor, font } from '@8f4e/sprite-generator';
 
 import drawConnectors from './connectors';
+import drawScopes from './scope';
 
 import { State } from '../../../state/types';
 import { HGRID, VGRID } from '../consts';
@@ -43,6 +44,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.setSpriteLookup(font('white'));
 
 			drawConnectors(engine, state, state.modules[i]);
+			drawScopes(engine, state, state.modules[i]);
 
 			engine.setSpriteLookup(font('white'));
 			for (let i = 0; i < code.length; i++) {
