@@ -16,9 +16,9 @@ export default function generate(): DrawingCommand[] {
 	];
 }
 
-export const lookup: SpriteLookup = function (scale: number) {
+export const lookup: SpriteLookup = function (value: number) {
 	return {
-		x: offsetX + Math.floor(((scale + 32768) / 65535) * 80) * 4,
+		x: offsetX + value * 4,
 		y: offsetY,
 		spriteWidth: 4,
 		spriteHeight: 80,

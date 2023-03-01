@@ -80,7 +80,7 @@ export default function generateFonts(): DrawingCommand[] {
 		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(51,51,51,255)'],
 		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 2, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
-		[Command.FILL_COLOR, 'rgba(92,171,94,255)'],
+		[Command.FILL_COLOR, 'rgba(102,102,102,255)'],
 		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 3, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
 		[Command.FILL_COLOR, 'rgba(136,126,203,255)'],
 		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 4, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
@@ -89,7 +89,7 @@ export default function generateFonts(): DrawingCommand[] {
 	];
 }
 
-export const lookup = function (font: 'white' | 'black' | 'grey' | 'green' | 'purple' | 'lime'): SpriteLookup {
+export const lookup = function (font: 'white' | 'black' | 'grey' | 'light_grey' | 'purple' | 'lime'): SpriteLookup {
 	return function (letter: string) {
 		const code = letter.charCodeAt(0);
 		switch (font) {
@@ -114,7 +114,7 @@ export const lookup = function (font: 'white' | 'black' | 'grey' | 'green' | 'pu
 					spriteHeight: CHARACTER_HEIGHT,
 					spriteWidth: CHARACTER_WIDTH,
 				};
-			case 'green':
+			case 'light_grey':
 				return {
 					x: code * CHARACTER_WIDTH + offsetX,
 					y: offsetY + CHARACTER_HEIGHT * 3,
