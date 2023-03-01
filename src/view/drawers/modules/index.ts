@@ -4,6 +4,7 @@ import { fillColor, font } from '@8f4e/sprite-generator';
 import drawConnectors from './connectors';
 import drawScopes from './scopes';
 import drawDebuggers from './debuggers';
+import drawSwitches from './switches';
 
 import { State } from '../../../state/types';
 import { HGRID, VGRID } from '../consts';
@@ -57,6 +58,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			drawConnectors(engine, state, state.modules[i]);
 			drawScopes(engine, state, state.modules[i]);
 			drawDebuggers(engine, state, state.modules[i]);
+			drawSwitches(engine, state, state.modules[i]);
 
 			engine.endGroup();
 		}

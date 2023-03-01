@@ -4,6 +4,7 @@ const instructionParser = /^\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)$/;
 const commentParser = /^\s*#(.+)$/;
 const debuggerParser = /^\s*debug\s*(\S*)\s*$/;
 const scopeParser = /^\s*scope\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
+const switchParser = /^\s*switch\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
 
 export function parseInputs(code: string[]): Array<{ id: string; lineNumber: number }> {
 	return code.reduce((acc, line, index) => {
@@ -59,6 +60,28 @@ export function parseScopes(
 					lineNumber: index,
 					minValue: parseInt(minValue) || 0,
 					maxValue: parseInt(maxValue) || 100,
+				},
+			];
+		}
+		return acc;
+	}, []);
+}
+
+export function parseSwitches(
+	code: string[]
+): Array<{ id: string; lineNumber: number; offValue: number; onValue: number }> {
+	return code.reduce((acc, line, index) => {
+		const [, comment] = (line.match(commentParser) ?? []) as [never, string];
+
+		if (comment && comment.includes('switch')) {
+			const [, switchId, offValue, onValue] = (comment.match(switchParser) ?? []) as [never, string, string, string];
+			return [
+				...acc,
+				{
+					id: switchId,
+					lineNumber: index,
+					offValue: parseInt(offValue) || 0,
+					onValue: parseInt(onValue) || 100,
 				},
 			];
 		}
