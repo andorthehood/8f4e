@@ -11,6 +11,7 @@ import {
 	parseOutputs,
 	getLastMemoryInstructionLine,
 	parseScopes,
+	parseSwitches,
 } from '../helpers/codeParsers';
 
 const keywords = new RegExp(Object.keys(instructions).join('|'));
@@ -72,6 +73,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					inputs: new Map(),
 					outputs: new Map(),
 					debuggers: new Map(),
+					switches: new Map(),
 					scopes: new Map(),
 					cursor: { col: 0, row: 0, offset: VGRID * (padLength + 2) },
 					id: getModuleId(module.code) || '',
@@ -127,6 +129,20 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					id: scope.id,
 					minValue: scope.minValue,
 					maxValue: scope.maxValue,
+				});
+			});
+
+			state.graphicHelper.modules.get(module)?.switches.clear();
+			parseSwitches(trimmedCode).forEach(_switch => {
+				console.log(_switch);
+				state.graphicHelper.modules.get(module)?.switches.set(_switch.id, {
+					width: VGRID * 2,
+					height: HGRID,
+					x: VGRID * (3 + padLength) + VGRID * trimmedCode[_switch.lineNumber].length,
+					y: HGRID * _switch.lineNumber,
+					id: _switch.id,
+					offValue: _switch.offValue,
+					onValue: _switch.onValue,
 				});
 			});
 		});
