@@ -2,7 +2,8 @@ import { Engine } from '@8f4e/2d-engine';
 import { fillColor, font } from '@8f4e/sprite-generator';
 
 import drawConnectors from './connectors';
-import drawScopes from './scope';
+import drawScopes from './scopes';
+import drawDebuggers from './debuggers';
 
 import { State } from '../../../state/types';
 import { HGRID, VGRID } from '../consts';
@@ -43,9 +44,6 @@ export default function drawModules(engine: Engine, state: State): void {
 
 			engine.setSpriteLookup(font('white'));
 
-			drawConnectors(engine, state, state.modules[i]);
-			drawScopes(engine, state, state.modules[i]);
-
 			engine.setSpriteLookup(font('white'));
 			for (let i = 0; i < code.length; i++) {
 				engine.drawText(VGRID, HGRID * i, code[i], codeColors[i]);
@@ -55,6 +53,10 @@ export default function drawModules(engine: Engine, state: State): void {
 				const { row = 0, col = 0, offset = 0 } = state.graphicHelper.modules.get(state.modules[i])?.cursor || {};
 				engine.drawText(col * VGRID + offset, row * HGRID, '_');
 			}
+
+			drawConnectors(engine, state, state.modules[i]);
+			drawScopes(engine, state, state.modules[i]);
+			drawDebuggers(engine, state, state.modules[i]);
 
 			engine.endGroup();
 		}
