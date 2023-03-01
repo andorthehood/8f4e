@@ -86,6 +86,10 @@ export interface ModuleGraphicData {
 		string,
 		{ width: number; height: number; x: number; y: number; id: string; minValue: number; maxValue: number }
 	>;
+	switches: Map<
+		string,
+		{ width: number; height: number; x: number; y: number; id: string; offValue: number; onValue: number }
+	>;
 }
 
 export type GraphicHelper = {
