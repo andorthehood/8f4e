@@ -18,7 +18,13 @@ export default function drawer(engine: Engine, state: State, module: Module): vo
 	engine.setSpriteLookup(scope);
 
 	for (const [, { x, y, id: scopeId }] of graphicData.scopes) {
-		const { byteAddress = 0 } = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(scopeId) || {};
+		const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(scopeId);
+
+		if (!memory) {
+			return;
+		}
+
+		const { byteAddress } = memory;
 		const value = state.compiler.memoryBuffer[byteAddress / 4] || 0;
 
 		const buffer = scopeBuffers.get(byteAddress);

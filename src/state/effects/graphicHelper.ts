@@ -42,7 +42,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				const keywordIndex = line.search(keywords);
 
 				if (line.includes('#')) {
-					return [font('grey'), font('grey'), font('grey'), font('green')];
+					return [font('grey'), font('grey'), font('grey'), font('light_grey')];
 				}
 
 				return line.split('').map((char, index) => {
@@ -125,6 +125,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					x: VGRID * (4 + padLength),
 					y: HGRID * (scope.lineNumber + 1),
 					id: scope.id,
+					minValue: scope.minValue,
+					maxValue: scope.maxValue,
 				});
 			});
 		});

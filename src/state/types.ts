@@ -82,7 +82,10 @@ export interface ModuleGraphicData {
 	cursor: { col: number; row: number; offset: number };
 	id: string;
 	debuggers: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
-	scopes: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
+	scopes: Map<
+		string,
+		{ width: number; height: number; x: number; y: number; id: string; minValue: number; maxValue: number }
+	>;
 }
 
 export type GraphicHelper = {
