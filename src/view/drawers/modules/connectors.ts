@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import { feedbackScale, fillColor, font } from '@8f4e/sprite-generator';
+import { feedbackScale, fillColor } from '@8f4e/sprite-generator';
 
 import { Module, State } from '../../../state/types';
 
@@ -22,12 +22,4 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 		engine.setSpriteLookup(fillColor);
 		engine.drawRectangle(x, y, width, height, 'rgb(153,153,153)');
 	});
-
-	for (const [, { x, y, id: debuggerId }] of graphicData.debuggers) {
-		const { byteAddress = 0 } = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(debuggerId) || {};
-		const value = state.compiler.memoryBuffer[byteAddress / 4] || 0;
-
-		engine.setSpriteLookup(font('lime'));
-		engine.drawText(x, y, '[' + value.toString() + ']');
-	}
 }
