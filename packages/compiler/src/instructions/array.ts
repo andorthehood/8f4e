@@ -15,6 +15,7 @@ const array: InstructionHandler = function (line, namespace, startingByteAddress
 		type: MemoryTypes.ARRAY,
 		relativeWordAddress: wordAddress,
 		wordSize: wordSize,
+		wordAddress: startingByteAddress / WORD_LENGTH + wordAddress,
 		id: line.arguments[0].value.toString(),
 		lineNumber: line.lineNumber,
 		byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
