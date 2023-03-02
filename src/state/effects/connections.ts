@@ -34,12 +34,12 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 			return;
 		}
 
-		const connection = findConnectionByConnectorId(state.connections, module.id, connector.id);
+		const connection = findConnectionByConnectorId(state, module, connector);
 
 		if (!state.isConnectionBeingMade && connection) {
 			return events.dispatch('deleteConnection', {
 				connectorId: connector.id,
-				moduleId: module.id,
+				module: module,
 			});
 		}
 
