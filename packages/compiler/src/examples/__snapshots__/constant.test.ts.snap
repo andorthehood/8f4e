@@ -38,6 +38,7 @@ Map {
     "lineNumber": 2,
     "relativeWordAddress": 0,
     "type": 1,
+    "wordAddress": 0,
     "wordSize": 1,
   },
 }

@@ -120,6 +120,7 @@ Map {
     "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 1,
+    "wordAddress": 0,
     "wordSize": 1,
   },
   "in" => Object {
@@ -129,6 +130,7 @@ Map {
     "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": 1,
+    "wordAddress": 1,
     "wordSize": 1,
   },
   "divisor" => Object {
@@ -138,6 +140,7 @@ Map {
     "lineNumber": 5,
     "relativeWordAddress": 2,
     "type": 1,
+    "wordAddress": 2,
     "wordSize": 1,
   },
   "out" => Object {
@@ -147,6 +150,7 @@ Map {
     "lineNumber": 6,
     "relativeWordAddress": 3,
     "type": 1,
+    "wordAddress": 3,
     "wordSize": 1,
   },
 }
