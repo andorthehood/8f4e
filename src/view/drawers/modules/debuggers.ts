@@ -17,8 +17,7 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 			return;
 		}
 
-		const { byteAddress = 0 } = memory;
-		const value = state.compiler.memoryBuffer[byteAddress / 4] || 0;
+		const value = state.compiler.memoryBuffer[memory.wordAddress];
 
 		engine.setSpriteLookup(font('lime'));
 		engine.drawText(x, y, '[' + value.toString() + ']');
