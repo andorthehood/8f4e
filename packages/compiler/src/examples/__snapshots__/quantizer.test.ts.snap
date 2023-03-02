@@ -671,6 +671,7 @@ Map {
     "lineNumber": 7,
     "relativeWordAddress": 4,
     "type": 0,
+    "wordAddress": 4,
     "wordSize": 12,
   },
 }

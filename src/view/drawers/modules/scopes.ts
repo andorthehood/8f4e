@@ -21,7 +21,7 @@ export default function drawer(engine: Engine, state: State, module: Module): vo
 		const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(scopeId);
 
 		if (!memory) {
-			return;
+			continue;
 		}
 
 		const { wordAddress } = memory;
@@ -33,7 +33,7 @@ export default function drawer(engine: Engine, state: State, module: Module): vo
 		if (!buffer || typeof bufferPointer === 'undefined') {
 			scopeBuffers.set(wordAddress, new Int32Array(RESOLUTION));
 			bufferPointers.set(wordAddress, 0);
-			return;
+			continue;
 		}
 
 		buffer[bufferPointer] = value;
