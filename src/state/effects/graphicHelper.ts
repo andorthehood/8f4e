@@ -134,9 +134,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 			state.graphicHelper.modules.get(module)?.switches.clear();
 			parseSwitches(trimmedCode).forEach(_switch => {
-				console.log(_switch);
 				state.graphicHelper.modules.get(module)?.switches.set(_switch.id, {
-					width: VGRID * 2,
+					width: VGRID * 4,
 					height: HGRID,
 					x: VGRID * (3 + padLength) + VGRID * trimmedCode[_switch.lineNumber].length,
 					y: HGRID * _switch.lineNumber,
