@@ -643,6 +643,7 @@ Map {
     "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 1,
+    "wordAddress": 0,
     "wordSize": 1,
   },
   "trigger" => Object {
@@ -652,6 +653,7 @@ Map {
     "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": 1,
+    "wordAddress": 1,
     "wordSize": 1,
   },
   "reset" => Object {
@@ -661,6 +663,7 @@ Map {
     "lineNumber": 5,
     "relativeWordAddress": 2,
     "type": 1,
+    "wordAddress": 2,
     "wordSize": 1,
   },
   "triggerPreviousValue" => Object {
@@ -670,6 +673,7 @@ Map {
     "lineNumber": 6,
     "relativeWordAddress": 3,
     "type": 1,
+    "wordAddress": 3,
     "wordSize": 1,
   },
   "stepMinusOne" => Object {
@@ -679,6 +683,7 @@ Map {
     "lineNumber": 7,
     "relativeWordAddress": 4,
     "type": 1,
+    "wordAddress": 4,
     "wordSize": 1,
   },
   "steps" => Object {
@@ -714,6 +719,7 @@ Map {
     "lineNumber": 9,
     "relativeWordAddress": 21,
     "type": 1,
+    "wordAddress": 21,
     "wordSize": 1,
   },
   "stepLength" => Object {
@@ -723,6 +729,7 @@ Map {
     "lineNumber": 10,
     "relativeWordAddress": 22,
     "type": 1,
+    "wordAddress": 22,
     "wordSize": 1,
   },
   "didTrigger" => Object {
@@ -732,6 +739,7 @@ Map {
     "lineNumber": 11,
     "relativeWordAddress": 23,
     "type": 1,
+    "wordAddress": 23,
     "wordSize": 1,
   },
   "out" => Object {
@@ -741,6 +749,7 @@ Map {
     "lineNumber": 12,
     "relativeWordAddress": 24,
     "type": 1,
+    "wordAddress": 24,
     "wordSize": 1,
   },
 }
