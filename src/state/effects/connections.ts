@@ -18,7 +18,7 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 	function onMouseUp(event) {
 		const { x, y } = event;
 
-		const module = findModuleAtViewportCoordinates(state.modules, state.graphicHelper, state.viewport, x, y);
+		const module = findModuleAtViewportCoordinates(state.graphicHelper, state.viewport, x, y);
 
 		if (!module) {
 			state.isConnectionBeingMade = false;
@@ -88,6 +88,7 @@ export default function connectionMaker(state: State, events: EventDispatcher): 
 		state.connectionFromModule = module;
 		state.connectionFromConnector = connector.id;
 		state.isConnectionBeingMade = true;
+
 		events.on('mousemove', onMouseMove);
 	}
 

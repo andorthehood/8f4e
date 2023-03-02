@@ -710,6 +710,7 @@ Map {
     "lineNumber": 8,
     "relativeWordAddress": 5,
     "type": 0,
+    "wordAddress": 5,
     "wordSize": 16,
   },
   "stepPointer" => Object {
