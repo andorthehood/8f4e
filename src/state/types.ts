@@ -72,24 +72,61 @@ export interface Midi {
 	ports: MidiPort[];
 }
 
+export interface Scope {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	id: string;
+	minValue: number;
+	maxValue: number;
+}
+export interface Switch {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	id: string;
+	offValue: number;
+	onValue: number;
+}
+
+export interface Debugger {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	id: string;
+}
+
+export interface Output {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	id: string;
+}
+
+export interface Input {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	id: string;
+}
+
 export interface ModuleGraphicData {
 	width: number;
 	height: number;
-	inputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
-	outputs: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
+	inputs: Map<string, Input>;
+	outputs: Map<string, Output>;
 	code: string[];
 	codeColors: Array<SpriteLookup | undefined>[];
 	cursor: { col: number; row: number; offset: number };
 	id: string;
-	debuggers: Map<string, { width: number; height: number; x: number; y: number; id: string }>;
-	scopes: Map<
-		string,
-		{ width: number; height: number; x: number; y: number; id: string; minValue: number; maxValue: number }
-	>;
-	switches: Map<
-		string,
-		{ width: number; height: number; x: number; y: number; id: string; offValue: number; onValue: number }
-	>;
+	debuggers: Map<string, Debugger>;
+	scopes: Map<string, Scope>;
+	switches: Map<string, Switch>;
 }
 
 export type GraphicHelper = {
