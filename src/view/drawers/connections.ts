@@ -7,7 +7,6 @@ import { State } from '../../state/types';
 
 export default function drawConnections(engine: Engine, state: State): void {
 	const connections = state.graphicHelper.connections;
-	const modules = state.modules;
 
 	engine.setSpriteLookup(fillColor);
 
@@ -39,7 +38,7 @@ export default function drawConnections(engine: Engine, state: State): void {
 		const toModuleGraphicData = state.graphicHelper.modules.get(toModule)?.inputs.get(toConnectorId);
 
 		if (!fromModuleGraphicData || !toModuleGraphicData) {
-			return;
+			continue;
 		}
 
 		const { x: fromX, y: fromY } = fromModuleGraphicData;

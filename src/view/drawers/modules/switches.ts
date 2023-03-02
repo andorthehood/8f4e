@@ -14,7 +14,7 @@ export default function drawSwitches(engine: Engine, state: State, module: Modul
 		const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(debuggerId);
 
 		if (!memory) {
-			return;
+			continue;
 		}
 
 		const { wordAddress } = memory;
