@@ -348,6 +348,7 @@ Map {
     "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 1,
+    "wordAddress": 0,
     "wordSize": 1,
   },
   "numberOfInputs" => Object {
@@ -357,6 +358,7 @@ Map {
     "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": 1,
+    "wordAddress": 1,
     "wordSize": 1,
   },
   "numberOfOutputs" => Object {
@@ -366,6 +368,7 @@ Map {
     "lineNumber": 5,
     "relativeWordAddress": 2,
     "type": 1,
+    "wordAddress": 2,
     "wordSize": 1,
   },
   "numberOfDataPlaceholders" => Object {
@@ -375,6 +378,7 @@ Map {
     "lineNumber": 6,
     "relativeWordAddress": 3,
     "type": 1,
+    "wordAddress": 3,
     "wordSize": 1,
   },
   "in:1" => Object {
@@ -384,6 +388,7 @@ Map {
     "lineNumber": 8,
     "relativeWordAddress": 4,
     "type": 1,
+    "wordAddress": 4,
     "wordSize": 1,
   },
   "in:2" => Object {
@@ -393,6 +398,7 @@ Map {
     "lineNumber": 9,
     "relativeWordAddress": 5,
     "type": 1,
+    "wordAddress": 5,
     "wordSize": 1,
   },
   "in:3" => Object {
@@ -402,6 +408,7 @@ Map {
     "lineNumber": 10,
     "relativeWordAddress": 6,
     "type": 1,
+    "wordAddress": 6,
     "wordSize": 1,
   },
   "in:4" => Object {
@@ -411,6 +418,7 @@ Map {
     "lineNumber": 11,
     "relativeWordAddress": 7,
     "type": 1,
+    "wordAddress": 7,
     "wordSize": 1,
   },
   "out:1" => Object {
@@ -420,6 +428,7 @@ Map {
     "lineNumber": 12,
     "relativeWordAddress": 8,
     "type": 1,
+    "wordAddress": 8,
     "wordSize": 1,
   },
   "out:2" => Object {
@@ -429,6 +438,7 @@ Map {
     "lineNumber": 13,
     "relativeWordAddress": 9,
     "type": 1,
+    "wordAddress": 9,
     "wordSize": 1,
   },
   "out:3" => Object {
@@ -438,6 +448,7 @@ Map {
     "lineNumber": 14,
     "relativeWordAddress": 10,
     "type": 1,
+    "wordAddress": 10,
     "wordSize": 1,
   },
   "out:4" => Object {
@@ -447,6 +458,7 @@ Map {
     "lineNumber": 15,
     "relativeWordAddress": 11,
     "type": 1,
+    "wordAddress": 11,
     "wordSize": 1,
   },
   "data:1" => Object {
@@ -456,6 +468,7 @@ Map {
     "lineNumber": 17,
     "relativeWordAddress": 12,
     "type": 1,
+    "wordAddress": 12,
     "wordSize": 1,
   },
   "data:2" => Object {
@@ -465,6 +478,7 @@ Map {
     "lineNumber": 18,
     "relativeWordAddress": 13,
     "type": 1,
+    "wordAddress": 13,
     "wordSize": 1,
   },
   "data:3" => Object {
@@ -474,6 +488,7 @@ Map {
     "lineNumber": 19,
     "relativeWordAddress": 14,
     "type": 1,
+    "wordAddress": 14,
     "wordSize": 1,
   },
   "data:4" => Object {
@@ -483,6 +498,7 @@ Map {
     "lineNumber": 20,
     "relativeWordAddress": 15,
     "type": 1,
+    "wordAddress": 15,
     "wordSize": 1,
   },
 }

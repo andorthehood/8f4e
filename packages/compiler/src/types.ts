@@ -12,6 +12,7 @@ export interface MemoryItem {
 	relativeWordAddress: number;
 	byteAddress: number;
 	wordSize: number;
+	wordAddress: number;
 	default: number | number[];
 	lineNumber: number;
 	id: string;
