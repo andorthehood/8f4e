@@ -11,8 +11,13 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 	}
 
 	for (const [, { x, y, width, height, id: connectorId }] of graphicData.outputs) {
-		const { byteAddress = 0 } = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(connectorId) || {};
-		const value = state.compiler.memoryBuffer[byteAddress / 4] || 0;
+		const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(connectorId);
+
+		if (!memory) {
+			continue;
+		}
+
+		const value = state.compiler.memoryBuffer[memory.wordAddress];
 
 		engine.setSpriteLookup(feedbackScale);
 		engine.drawSprite(x, y, value, width, height);

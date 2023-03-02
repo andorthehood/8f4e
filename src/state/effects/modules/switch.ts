@@ -19,14 +19,14 @@ export default function moduleOpener(state: State, events: EventDispatcher): () 
 		if (!memory) {
 			return;
 		}
-		const value = state.compiler.memoryBuffer[memory.byteAddress / 4];
+		const value = state.compiler.memoryBuffer[memory.wordAddress];
 
 		if (value === _switch.offValue) {
-			state.compiler.memoryBuffer[memory.byteAddress / 4] = _switch.onValue;
+			state.compiler.memoryBuffer[memory.wordAddress] = _switch.onValue;
 		} else if (value === _switch.onValue) {
-			state.compiler.memoryBuffer[memory.byteAddress / 4] = _switch.offValue;
+			state.compiler.memoryBuffer[memory.wordAddress] = _switch.offValue;
 		} else {
-			state.compiler.memoryBuffer[memory.byteAddress / 4] = _switch.offValue;
+			state.compiler.memoryBuffer[memory.wordAddress] = _switch.offValue;
 		}
 	};
 

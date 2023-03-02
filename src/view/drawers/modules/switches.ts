@@ -17,8 +17,8 @@ export default function drawSwitches(engine: Engine, state: State, module: Modul
 			return;
 		}
 
-		const { byteAddress = 0 } = memory;
-		const value = state.compiler.memoryBuffer[byteAddress / 4] || 0;
+		const { wordAddress } = memory;
+		const value = state.compiler.memoryBuffer[wordAddress] || 0;
 
 		engine.setSpriteLookup(font('lime'));
 
