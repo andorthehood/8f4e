@@ -656,6 +656,7 @@ Map {
     "lineNumber": 9,
     "relativeWordAddress": 5,
     "type": 0,
+    "wordAddress": 5,
     "wordSize": 64,
   },
   "bufferPointer" => Object {

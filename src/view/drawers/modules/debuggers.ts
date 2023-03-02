@@ -14,7 +14,7 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 		const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(debuggerId);
 
 		if (!memory) {
-			return;
+			continue;
 		}
 
 		const value = state.compiler.memoryBuffer[memory.wordAddress];

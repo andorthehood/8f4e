@@ -60,7 +60,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		state.contextMenu.y = y;
 		state.contextMenu.open = true;
 
-		const module = findModuleAtViewportCoordinates(state.modules, state.graphicHelper, state.viewport, x, y);
+		const module = findModuleAtViewportCoordinates(state.graphicHelper, state.viewport, x, y);
 
 		if (module) {
 			state.contextMenu.items = [
