@@ -24,20 +24,20 @@ export default function drawer(engine: Engine, state: State, module: Module): vo
 			return;
 		}
 
-		const { byteAddress } = memory;
-		const value = state.compiler.memoryBuffer[byteAddress / 4] || 0;
+		const { wordAddress } = memory;
+		const value = state.compiler.memoryBuffer[wordAddress] || 0;
 
-		const buffer = scopeBuffers.get(byteAddress);
-		const bufferPointer = bufferPointers.get(byteAddress);
+		const buffer = scopeBuffers.get(wordAddress);
+		const bufferPointer = bufferPointers.get(wordAddress);
 
 		if (!buffer || typeof bufferPointer === 'undefined') {
-			scopeBuffers.set(byteAddress, new Int32Array(RESOLUTION));
-			bufferPointers.set(byteAddress, 0);
+			scopeBuffers.set(wordAddress, new Int32Array(RESOLUTION));
+			bufferPointers.set(wordAddress, 0);
 			return;
 		}
 
 		buffer[bufferPointer] = value;
-		bufferPointers.set(byteAddress, ((bufferPointers.get(byteAddress) || 0) + 1) % RESOLUTION);
+		bufferPointers.set(wordAddress, ((bufferPointers.get(wordAddress) || 0) + 1) % RESOLUTION);
 
 		engine.startGroup(x, y);
 
