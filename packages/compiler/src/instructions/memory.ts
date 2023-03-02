@@ -34,6 +34,7 @@ const memory: InstructionHandler = function (line, namespace, startingByteAddres
 	memory.set(line.arguments[0].value.toString(), {
 		type: MemoryTypes.WORD,
 		relativeWordAddress: wordAddress,
+		wordAddress: startingByteAddress / WORD_LENGTH + wordAddress,
 		wordSize: 1,
 		byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
 		lineNumber: line.lineNumber,
