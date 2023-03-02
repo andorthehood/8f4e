@@ -1,14 +1,16 @@
-import { Connection } from '@8f4e/compiler';
+import { Connection, Module } from '@8f4e/compiler';
+
+import { Connector, GraphicHelper, State } from '../types';
 
 export function findConnectionByConnectorId(
-	connections: Connection[],
-	moduleId: string,
-	connectorId: string
-): Connection | undefined {
-	return connections.find(({ fromModuleId, toModuleId, fromConnectorId, toConnectorId }) => {
+	state: State,
+	module: Module,
+	connector: Connector
+): GraphicHelper['connections'][number] | undefined {
+	return state.graphicHelper.connections.find(({ fromModule, toModule, fromConnectorId, toConnectorId }) => {
 		return (
-			(fromModuleId === moduleId && fromConnectorId === connectorId) ||
-			(toModuleId === moduleId && toConnectorId === connectorId)
+			(fromModule === module && fromConnectorId === connector.id) ||
+			(toModule === module && toConnectorId === connector.id)
 		);
 	});
 }
