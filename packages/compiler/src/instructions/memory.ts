@@ -9,7 +9,9 @@ const memory: InstructionHandler = function (line, namespace, startingByteAddres
 
 	let defaultValue = 0;
 
-	if (line.arguments[1].type === ArgumentType.LITERAL) {
+	if (!line.arguments[1]) {
+		defaultValue = 0;
+	} else if (line.arguments[1].type === ArgumentType.LITERAL) {
 		defaultValue = line.arguments[1].value;
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
 		const memoryItem = memory.get(line.arguments[1].value.substring(1));
