@@ -14,6 +14,6 @@ export interface MidiCCModuleAddresses {
 }
 
 export interface MaxModule {
-	moduleId: string;
+	patcherId: string;
 	paramAdresses: number[];
 }
