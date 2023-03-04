@@ -12,3 +12,8 @@ export interface MidiCCModuleAddresses {
 	channelAddress: number;
 	selectedCCAddress: number;
 }
+
+export interface MaxModule {
+	moduleId: string;
+	paramAdresses: number[];
+}

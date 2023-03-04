@@ -2,7 +2,7 @@ import { State } from '../types';
 import { compilationDone, recompile } from '../mutators/compiler';
 import { EventDispatcher } from '../../events';
 
-export default function compiler(state: State, events: EventDispatcher): void {
+export default async function compiler(state: State, events: EventDispatcher): void {
 	const worker = new Worker(new URL('../../../packages/worker/src/index.ts', import.meta.url), { type: 'module' });
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 
@@ -19,6 +19,9 @@ export default function compiler(state: State, events: EventDispatcher): void {
 		switch (data.type) {
 			case 'midiMessage':
 				events.dispatch('sendMidiMessage', data.payload);
+				break;
+			case 'RNBOMessage':
+				events.dispatch('RNBOMessage', data.payload);
 				break;
 			case 'compilationDone':
 				compilationDone(state, data, memoryRef);

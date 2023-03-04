@@ -1,5 +1,6 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 import { CompiledModuleLookup, Connection, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
+import { IPatcher } from '@rnbo/js';
 
 export interface Module {
 	code: string[];
@@ -152,4 +153,5 @@ export interface State {
 	sructureVersion: number;
 	viewport: Viewport;
 	graphicHelper: GraphicHelper;
+	rnbo: { patcher: IPatcher | undefined };
 }
