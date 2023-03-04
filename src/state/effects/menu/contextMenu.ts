@@ -88,6 +88,11 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 					action: 'importRNBOPatch',
 					close: true,
 				},
+				{
+					title: 'Remove RNBO patches',
+					action: 'removeRNBOPatches',
+					close: true,
+				},
 				{ title: 'Undo', action: 'undo', close: true },
 				{ title: 'Export', action: 'save', close: true },
 				{ title: 'New', action: 'new', close: true },
