@@ -153,5 +153,5 @@ export interface State {
 	sructureVersion: number;
 	viewport: Viewport;
 	graphicHelper: GraphicHelper;
-	rnbo: { patcher: IPatcher | undefined };
+	rnbo: { patchers: Record<string, IPatcher> };
 }

@@ -55,7 +55,7 @@ const defaultState: State = {
 	connectionFromConnector: undefined,
 	graphicHelper: { connections: [], modules: new Map() },
 	selectedModule: undefined,
-	rnbo: { patcher: undefined },
+	rnbo: { patchers: {} },
 };
 
 export default function init(events: EventDispatcher): State {
