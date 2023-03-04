@@ -227,6 +227,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 	events.on('moduleClick', onCompilationDone);
 	events.on('compilationDone', onCompilationDone);
+	events.on('saveState', onCompilationDone);
 	events.on('init', onCompilationDone);
 	events.on('keydown', onKeydown);
 }
