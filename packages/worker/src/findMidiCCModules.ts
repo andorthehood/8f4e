@@ -1,10 +1,9 @@
-import { CompiledModuleLookup, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
+import { CompiledModuleLookup, MemoryAddressLookup } from '@8f4e/compiler';
 
 import { MidiCCModuleAddresses } from './types';
 
 export default function findMidiNoteModules(
 	compiledModules: CompiledModuleLookup,
-	memoryBuffer: MemoryBuffer,
 	memoryAddressLookup: MemoryAddressLookup
 ): MidiCCModuleAddresses[] {
 	return Array.from(compiledModules)

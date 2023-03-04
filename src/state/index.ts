@@ -14,6 +14,7 @@ import { State } from './types';
 import graphicHelper from './effects/graphicHelper';
 import moduleOpener from './effects/modules/moduleOpener';
 import _switch from './effects/modules/switch';
+import RNBO from './effects/rnbo';
 
 import { EventDispatcher } from '../events';
 
@@ -54,6 +55,7 @@ const defaultState: State = {
 	connectionFromConnector: undefined,
 	graphicHelper: { connections: [], modules: new Map() },
 	selectedModule: undefined,
+	rnbo: { patcher: undefined },
 };
 
 export default function init(events: EventDispatcher): State {
@@ -73,6 +75,7 @@ export default function init(events: EventDispatcher): State {
 	compiler(state, events);
 	graphicHelper(state, events);
 	save(state, events);
+	RNBO(state, events);
 	events.dispatch('init');
 	return state;
 }

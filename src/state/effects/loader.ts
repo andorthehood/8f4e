@@ -26,6 +26,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				modules: state.modules,
 				sructureVersion: state.sructureVersion,
 				viewport: state.viewport,
+				rnbo: state.rnbo,
 			})
 		);
 	}
