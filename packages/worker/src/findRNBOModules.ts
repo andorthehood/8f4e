@@ -16,7 +16,7 @@ export default function findMaxModules(compiledModules: CompiledModuleLookup): M
 			}
 
 			return {
-				moduleId: module.id,
+				patcherId: module.id.substring(5),
 				paramAdresses,
 			};
 		});

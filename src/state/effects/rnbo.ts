@@ -5,19 +5,30 @@ import { EventDispatcher } from '../../events';
 
 export default function (state: State, events: EventDispatcher): void {
 	let audioContext: AudioContext;
-	let RNBODevice: RNBO.Device;
+	const RNBODevices: Record<string, RNBO.Device> = {};
 	const input = document.createElement('input');
+	let outputNode: GainNode;
 	input.type = 'file';
 
-	async function initRNBODevice() {
-		if (!audioContext || !state.rnbo.patcher) {
+	async function removeRNBODevice(name: string) {
+		if (RNBODevices[name]) {
+			RNBODevices[name].node.disconnect(outputNode);
+			delete RNBODevices[name];
+		}
+	}
+
+	async function initRNBODevice(name: string) {
+		if (!audioContext || !state.rnbo.patchers[name]) {
 			return;
 		}
 
-		const outputNode = audioContext.createGain();
-		outputNode.connect(audioContext.destination);
-		RNBODevice = await RNBO.createDevice({ context: audioContext, patcher: state.rnbo.patcher });
+		if (RNBODevices[name]) {
+			RNBODevices[name].node.disconnect(outputNode);
+		}
+
+		const RNBODevice = await RNBO.createDevice({ context: audioContext, patcher: state.rnbo.patchers[name] });
 		RNBODevice.node.connect(outputNode);
+		RNBODevices[name] = RNBODevice;
 	}
 
 	async function initAudioContext() {
@@ -26,18 +37,28 @@ export default function (state: State, events: EventDispatcher): void {
 		}
 
 		audioContext = new window.AudioContext();
+		outputNode = audioContext.createGain();
+		outputNode.connect(audioContext.destination);
 
-		initRNBODevice();
+		Object.keys(state.rnbo.patchers).forEach(name => {
+			initRNBODevice(name);
+		});
+	}
+
+	async function onRemoveRNBOPatches() {
+		Object.keys(state.rnbo.patchers).forEach(name => {
+			removeRNBODevice(name);
+		});
 	}
 
 	async function onRNBOMessage(data) {
-		if (!RNBODevice) {
+		if (!RNBODevices[data.patcherId]) {
 			return;
 		}
 
 		for (let i = 0; i < data.params.length; i++) {
-			if (RNBODevice.parameters[i]) {
-				RNBODevice.parameters[i].value = data.params[i];
+			if (RNBODevices[data.patcherId].parameters[i]) {
+				RNBODevices[data.patcherId].parameters[i].value = data.params[i];
 			}
 		}
 	}
@@ -57,9 +78,9 @@ export default function (state: State, events: EventDispatcher): void {
 		reader.addEventListener('load', readerEvent => {
 			const content = readerEvent.target?.result?.toString();
 			if (content) {
-				state.rnbo.patcher = JSON.parse(content);
+				state.rnbo.patchers[file.name] = JSON.parse(content);
 				events.dispatch('saveState');
-				initRNBODevice();
+				initRNBODevice(file.name);
 			}
 		});
 	});
@@ -67,4 +88,5 @@ export default function (state: State, events: EventDispatcher): void {
 	events.on('RNBOMessage', onRNBOMessage);
 	events.on('importRNBOPatch', onImportRNBOPatch);
 	events.on('mousedown', initAudioContext);
+	events.on('removeRNBOPatches', onRemoveRNBOPatches);
 }
