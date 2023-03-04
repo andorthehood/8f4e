@@ -16,10 +16,10 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.modules.length; i++) {
 		const { x, y, isOpen } = state.modules[i];
-		const { width, height, code, codeColors } = state.graphicHelper.modules.get(state.modules[i]) || {
+		const { width, height, codeWithLineNumbers, codeColors } = state.graphicHelper.modules.get(state.modules[i]) || {
 			width: 0,
 			height: 0,
-			code: [],
+			codeWithLineNumbers: [],
 			codeColors: [],
 		};
 
@@ -46,8 +46,8 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.setSpriteLookup(font('white'));
 
 			engine.setSpriteLookup(font('white'));
-			for (let i = 0; i < code.length; i++) {
-				engine.drawText(VGRID, HGRID * i, code[i], codeColors[i]);
+			for (let i = 0; i < codeWithLineNumbers.length; i++) {
+				engine.drawText(VGRID, HGRID * i, codeWithLineNumbers[i], codeColors[i]);
 			}
 
 			if (state.selectedModule === state.modules[i]) {

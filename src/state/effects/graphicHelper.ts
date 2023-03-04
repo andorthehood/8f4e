@@ -68,7 +68,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				state.graphicHelper.modules.set(module, {
 					width: 32 * VGRID,
 					height: trimmedCode.length * HGRID,
-					code: codeWithLineNumbers,
+					codeWithLineNumbers,
 					codeColors,
 					inputs: new Map(),
 					outputs: new Map(),
@@ -79,7 +79,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					id: getModuleId(module.code) || '',
 				});
 			} else {
-				graphicData.code = codeWithLineNumbers;
+				graphicData.codeWithLineNumbers = codeWithLineNumbers;
 				graphicData.codeColors = codeColors;
 				graphicData.height = trimmedCode.length * HGRID;
 				graphicData.cursor.offset = VGRID * (padLength + 2);
