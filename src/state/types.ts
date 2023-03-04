@@ -120,7 +120,7 @@ export interface ModuleGraphicData {
 	height: number;
 	inputs: Map<string, Input>;
 	outputs: Map<string, Output>;
-	code: string[];
+	codeWithLineNumbers: string[];
 	codeColors: Array<SpriteLookup | undefined>[];
 	cursor: { col: number; row: number; offset: number };
 	id: string;
