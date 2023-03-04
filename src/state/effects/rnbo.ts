@@ -14,6 +14,8 @@ export default function (state: State, events: EventDispatcher): void {
 		if (RNBODevices[name]) {
 			RNBODevices[name].node.disconnect(outputNode);
 			delete RNBODevices[name];
+			delete state.rnbo.patchers[name];
+			events.dispatch('saveState');
 		}
 	}
 
