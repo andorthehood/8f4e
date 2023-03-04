@@ -83,6 +83,11 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 					payload: { isPaste: true },
 					close: true,
 				},
+				{
+					title: 'Import RNBO patch',
+					action: 'importRNBOPatch',
+					close: true,
+				},
 				{ title: 'Undo', action: 'undo', close: true },
 				{ title: 'Export', action: 'save', close: true },
 				{ title: 'New', action: 'new', close: true },

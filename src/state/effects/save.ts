@@ -8,6 +8,7 @@ export default function save(state: State, events: EventDispatcher): void {
 			modules: state.modules,
 			sructureVersion: state.sructureVersion,
 			viewport: state.viewport,
+			rnbo: state.rnbo,
 		});
 
 		const blob = new Blob([json], { type: 'octet/stream' });
@@ -16,7 +17,7 @@ export default function save(state: State, events: EventDispatcher): void {
 		document.body.appendChild(a);
 		a.style.display = 'none';
 		a.href = url;
-		a.download = '8f4e.4e';
+		a.download = '8f4e.json';
 		a.click();
 		URL.revokeObjectURL(url);
 	}
