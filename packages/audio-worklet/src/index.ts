@@ -1,4 +1,17 @@
+import { Connection, Module, setUpConnections } from '@8f4e/compiler';
+
+import createModule from './createModule';
+
 class Main extends AudioWorkletProcessor {
+	constructor() {
+		super();
+		this.port.onmessage = event => {
+			// Handling data from the node.
+			console.log('event', event);
+			createModule(event.data.memoryRef, event.data.modules);
+		};
+	}
+
 	static get parameterDescriptors() {
 		return [{ name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1 }];
 	}

@@ -13,7 +13,7 @@ export interface MidiCCModuleAddresses {
 	selectedCCAddress: number;
 }
 
-export interface MaxModule {
+export interface RNBOModule {
 	patcherId: string;
 	paramAdresses: number[];
 }
