@@ -2,7 +2,7 @@ import { State } from '../types';
 import { EventDispatcher } from '../../events';
 
 export default function worklet(state: State, events: EventDispatcher) {
-	// const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
+	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 	let audioContext: AudioContext;
 
 	async function initAudioContext() {
@@ -14,6 +14,7 @@ export default function worklet(state: State, events: EventDispatcher) {
 		await audioContext.audioWorklet.addModule(new URL('../../../packages/audio-worklet/src/index.ts', import.meta.url));
 		const noiseGenerator = new AudioWorkletNode(audioContext, 'worklet');
 		noiseGenerator.connect(audioContext.destination);
+		noiseGenerator.port.postMessage({ memoryRef, modules: state.modules, connections: state.connections });
 	}
 
 	// worker.addEventListener('message', onWorkerMessage);
