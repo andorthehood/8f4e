@@ -15,6 +15,7 @@ import graphicHelper from './effects/graphicHelper';
 import moduleOpener from './effects/modules/moduleOpener';
 import _switch from './effects/modules/switch';
 import RNBO from './effects/rnbo';
+import worklet from './effects/worklet';
 
 import { EventDispatcher } from '../events';
 
@@ -76,6 +77,7 @@ export default function init(events: EventDispatcher): State {
 	graphicHelper(state, events);
 	save(state, events);
 	RNBO(state, events);
+	worklet(state, events);
 	events.dispatch('init');
 	return state;
 }
