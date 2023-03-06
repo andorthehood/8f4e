@@ -1,16 +1,16 @@
 export interface MidiModuleAddresses {
 	moduleId: string;
-	noteAddress: number;
-	channelAddress: number;
-	noteOnOffAddress: number;
-	velocityAddress: number;
+	noteAddress: number | undefined;
+	channelAddress: number | undefined;
+	noteOnOffAddress: number | undefined;
+	velocityAddress: number | undefined;
 }
 
 export interface MidiCCModuleAddresses {
 	moduleId: string;
-	valueAddress: number;
-	channelAddress: number;
-	selectedCCAddress: number;
+	valueAddress: number | undefined;
+	channelAddress: number | undefined;
+	selectedCCAddress: number | undefined;
 }
 
 export interface RNBOModule {
