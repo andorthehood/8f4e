@@ -7,6 +7,7 @@ export default async function createModule(
 	memoryBuffer: MemoryBuffer;
 	cycle: CallableFunction;
 	init: CallableFunction;
+	buffer: CallableFunction;
 	memoryAddressLookup: MemoryAddressLookup;
 	compiledModules: CompiledModuleLookup;
 }> {
@@ -21,7 +22,8 @@ export default async function createModule(
 	});
 
 	const cycle = instance.exports.cycle as CallableFunction;
+	const buffer = instance.exports.buffer as CallableFunction;
 	const init = instance.exports.init as CallableFunction;
 
-	return { memoryBuffer, cycle, init, memoryAddressLookup, compiledModules };
+	return { memoryBuffer, cycle, buffer, init, memoryAddressLookup, compiledModules };
 }
