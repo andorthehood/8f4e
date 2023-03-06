@@ -6,7 +6,10 @@ export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean 
 }
 
 export function isMemoryReferenceIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('&') && memoryMap.has(name.substring(1));
+	return (
+		(name.startsWith('&') && memoryMap.has(name.substring(1))) ||
+		(name.endsWith('&') && memoryMap.has(name.slice(0, -1)))
+	);
 }
 
 export function isMemoryPointerIdentifier(memoryMap: MemoryMap, name: string): boolean {
@@ -22,9 +25,9 @@ export function getMemoryItemByteAddress(memoryMap: MemoryMap, id: string): numb
 	return memoryItem ? memoryItem.byteAddress : 0;
 }
 
-export function getMemoryStringEndAddress(memoryMap: MemoryMap, id: string): number {
+export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getMemoryItem(memoryMap, id);
-	return memoryItem ? memoryItem.byteAddress + memoryItem.wordSize * WORD_LENGTH : 0;
+	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSize - 1) * WORD_LENGTH : 0;
 }
 
 export function isLocalIdentifier(locals: string[], id: string): boolean {
