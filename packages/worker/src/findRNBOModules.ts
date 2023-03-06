@@ -1,8 +1,8 @@
 import { CompiledModuleLookup } from '@8f4e/compiler';
 
-import { MaxModule } from './types';
+import { RNBOModule } from './types';
 
-export default function findMaxModules(compiledModules: CompiledModuleLookup): MaxModule[] {
+export default function findMaxModules(compiledModules: CompiledModuleLookup): RNBOModule[] {
 	return Array.from(compiledModules)
 		.map(([, compiledModule]) => compiledModule)
 		.filter(({ id }) => id.startsWith('rnbo:'))

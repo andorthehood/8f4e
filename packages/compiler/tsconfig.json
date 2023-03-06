@@ -8,7 +8,8 @@
 		"outDir": "dist/",
 		"declaration": true,
 		"resolveJsonModule": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"types": ["node"]
 	},
 	"include": ["src/**/*.ts", "src/**/*.asm.ts"],
 	"exclude": ["dist", "node_modules", "src/**/*.test.ts"]
