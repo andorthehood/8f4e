@@ -15,6 +15,9 @@ export default function worklet(state: State, events: EventDispatcher) {
 		const noiseGenerator = new AudioWorkletNode(audioContext, 'worklet');
 		noiseGenerator.connect(audioContext.destination);
 		noiseGenerator.port.postMessage({ memoryRef, modules: state.modules, connections: state.connections });
+		noiseGenerator.port.addEventListener('message', event => {
+			console.log('workletmessage', event);
+		});
 	}
 
 	// worker.addEventListener('message', onWorkerMessage);
