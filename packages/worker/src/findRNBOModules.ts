@@ -7,7 +7,7 @@ export default function findMaxModules(compiledModules: CompiledModuleLookup): R
 		.map(([, compiledModule]) => compiledModule)
 		.filter(({ id }) => id.startsWith('rnbo:'))
 		.map(module => {
-			const paramAdresses = [];
+			const paramAdresses: number[] = [];
 
 			for (const [, memory] of module.memoryMap) {
 				if (memory.id.startsWith('param:')) {

@@ -7,8 +7,12 @@ const previousValues = new Map<string, number>();
 
 export default function (midiNoteModules: MidiCCModuleAddresses[], memoryBuffer: MemoryBuffer): void {
 	midiNoteModules.forEach(({ channelAddress, selectedCCAddress, valueAddress, moduleId }) => {
+		if (!selectedCCAddress || !valueAddress) {
+			return;
+		}
+
 		const cc = memoryBuffer[selectedCCAddress];
-		const channel = memoryBuffer[channelAddress] || 1;
+		const channel = channelAddress ? memoryBuffer[channelAddress] || 1 : 1;
 		const value = Math.floor((memoryBuffer[valueAddress] / I16_SIGNED_LARGEST_NUMBER + 1) * 63.5);
 
 		if (previousValues.get(moduleId) !== value) {
