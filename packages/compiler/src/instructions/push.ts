@@ -2,6 +2,7 @@ import { i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 import {
 	getMemoryItemByteAddress,
+	getMemoryStringLastAddress,
 	isLocalIdentifier,
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
@@ -33,7 +34,11 @@ const push: InstructionHandler = function (line, namespace) {
 				namespace,
 			};
 		} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
-			return { byteCode: i32const(getMemoryItemByteAddress(memory, argument.value.substring(1))), namespace };
+			if (argument.value.startsWith('&')) {
+				return { byteCode: i32const(getMemoryItemByteAddress(memory, argument.value.substring(1))), namespace };
+			} else {
+				return { byteCode: i32const(getMemoryStringLastAddress(memory, argument.value.slice(0, -1))), namespace };
+			}
 		} else if (typeof consts[argument.value] !== 'undefined') {
 			return { byteCode: i32const(consts[argument.value]), namespace };
 		} else if (isLocalIdentifier(locals, argument.value)) {
