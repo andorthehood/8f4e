@@ -8,10 +8,23 @@ const sampleAndHold = new Map<string, number>();
 
 export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: MemoryBuffer): void {
 	midiNoteModules.forEach(({ noteAddress, noteOnOffAddress, channelAddress, velocityAddress, moduleId }) => {
+		if (typeof noteAddress === 'undefined' || typeof noteOnOffAddress === 'undefined') {
+			return;
+		}
+
 		const note = memoryBuffer[noteAddress];
 		const isOn = memoryBuffer[noteOnOffAddress] !== 0;
-		const channel = memoryBuffer[channelAddress] || 1;
-		const velocity = memoryBuffer[velocityAddress];
+
+		let channel = 1;
+		let velocity = 127;
+
+		if (typeof channelAddress !== 'undefined') {
+			channel = memoryBuffer[channelAddress];
+		}
+
+		if (typeof velocityAddress !== 'undefined') {
+			velocity = memoryBuffer[velocityAddress];
+		}
 
 		if (isOn && !wasOn.get(moduleId)) {
 			sampleAndHold.set(moduleId, note);
