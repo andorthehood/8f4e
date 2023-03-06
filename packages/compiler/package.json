@@ -19,5 +19,8 @@
 	"bugs": {
 		"url": "https://github.com/andormade/8f4e/issues"
 	},
-	"homepage": "https://github.com/andormade/8f4e#readme"
+	"homepage": "https://github.com/andormade/8f4e#readme",
+	"devDependencies": {
+		"@types/node": "^18.14.6"
+	}
 }
