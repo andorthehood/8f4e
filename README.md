@@ -2,7 +2,7 @@
 
 # 8f4e
 
-8f4e is a semi-visual, stack-oriented programming language for real-time audio-rate signal generation and processing. Its natural habitat is the WebAssembly Virtual Machine and the AudioWorklet.
+8f4e is a semi-visual, stack-oriented programming language for real-time audio-rate signal generation and processing. Its natural habitat is the WebAssembly Virtual Machine and the AudioWorklet, but in the future we're planning to provide glue code for microcontroller platforms as well.
 
 ## Why the stack-oriented design?
 
