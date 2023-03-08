@@ -12,8 +12,6 @@ The WebAssembly Virtual Machine uses a stack machine architecture, which offers 
 
 A programming language that is designed with a stack-oriented approach can perform operations on the stack in a manner that is both efficient and natural, with instructions that can be easily mapped to those of the stack machine. Therefore, a programming language with a stack-oriented design is a natural fit for the WebAssembly Virtual Machine.
 
-tl;dr: Using a stack-oriented programming language makes it possible to create more efficient software for the WebAssembly Virtual Machine.
-
 ## What does semi-visual mean?
 
 Visual programming languages use graphical elements, such as icons, symbols, and flowcharts, to represent programming concepts and logic, instead of traditional text-based code. 8f4e combines these graphical elements with text-based code.
