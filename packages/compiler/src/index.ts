@@ -54,6 +54,7 @@ export function compileModules(modules: Module[]): CompiledModule[] {
 		I16_SIGNED_LARGEST_NUMBER: I16_SIGNED_LARGEST_NUMBER,
 		I16_SIGNED_SMALLEST_NUMBER: I16_SIGNED_SMALLEST_NUMBER,
 		I32_SIGNED_LARGEST_NUMBER: I32_SIGNED_LARGEST_NUMBER,
+		WORD_SIZE: Int32Array.BYTES_PER_ELEMENT,
 	};
 
 	const astModules = modules.map(({ code }) => {

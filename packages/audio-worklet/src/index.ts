@@ -1,13 +1,6 @@
 import { Connection, Module, setUpConnections } from '@8f4e/compiler';
 
 import createModule from './createModule';
-import resetMidi from './resetMidi';
-import findMidiNoteModules from './findMidiNoteModules';
-import broadcastMidiMessages from './broadcastMidiMessages';
-import findMidiCCModules from './findMidiCCModules';
-import broadcastMidiCCMessages from './broadcastMidiCCMessages';
-import findRNBOModules from './findRNBOModules';
-import broadcastRNBOMessages from './broadcastRNBOMessages';
 
 async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], connections: Connection[]) {
 	const { memoryBuffer, buffer, memoryAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
@@ -22,21 +15,6 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], conne
 	}
 
 	const audioBufferAddress = audioModule.memoryMap.get('buffer')?.wordAddress || 0;
-
-	// clearInterval(interval);
-
-	// const midiNoteModules = findMidiNoteModules(compiledModules, memoryAddressLookup);
-	// const RNBOModules = findRNBOModules(compiledModules);
-	// const midiCCModules = findMidiCCModules(compiledModules, memoryAddressLookup);
-
-	// resetMidi();
-
-	// interval = setInterval(() => {
-	// 	cycle();
-	// 	broadcastMidiCCMessages(midiCCModules, memoryBuffer);
-	// 	broadcastMidiMessages(midiNoteModules, memoryBuffer);
-	// 	broadcastRNBOMessages(RNBOModules, memoryBuffer);
-	// }, intervalTime);
 
 	return { buffer, audioBufferAddress, memoryBuffer, memoryAddressLookup, compiledModules };
 }
@@ -65,9 +43,9 @@ class Main extends AudioWorkletProcessor {
 		};
 	}
 
-	buffer() {
+	buffer: CallableFunction = () => {
 		return;
-	}
+	};
 
 	memoryBuffer = new Int32Array(128).fill(0);
 	audioBufferAddress = 0;
@@ -78,15 +56,14 @@ class Main extends AudioWorkletProcessor {
 
 	process(inputs, outputs, parameters) {
 		this.buffer();
-		const audioBuffer = this.memoryBuffer.slice(this.audioBufferAddress, this.audioBufferAddress + 128);
 		const output = outputs[0];
 		// const amplitude = parameters.amplitude;
 
 		for (let channel = 0; channel < output.length; ++channel) {
 			const outputChannel = output[channel];
 
-			for (let i = 0; i < outputChannel.length; ++i) {
-				outputChannel[i] = audioBuffer[i] / 500;
+			for (let i = 0; i < outputChannel.length; i++) {
+				outputChannel[i] = this.memoryBuffer[i + this.audioBufferAddress] / 500;
 			}
 		}
 
