@@ -10,13 +10,15 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], conne
 
 	const audioModule = compiledModules.get('audioout');
 
+	console.log('audioModuke', audioModule);
+
 	if (!audioModule) {
 		return;
 	}
 
-	const audioBufferAddress = audioModule.memoryMap.get('buffer')?.wordAddress || 0;
+	const audioBufferWordAddress = audioModule.memoryMap.get('buffer')?.wordAddress || 0;
 
-	return { buffer, audioBufferAddress, memoryBuffer, memoryAddressLookup, compiledModules };
+	return { buffer, audioBufferWordAddress, memoryBuffer, memoryAddressLookup, compiledModules };
 }
 
 class Main extends AudioWorkletProcessor {
@@ -26,7 +28,7 @@ class Main extends AudioWorkletProcessor {
 			const data = await recompile(event.data.memoryRef, event.data.modules, event.data.connections);
 
 			if (data) {
-				this.audioBufferAddress = data.audioBufferAddress;
+				this.audioBufferWordAddress = data.audioBufferWordAddress;
 				this.buffer = data.buffer;
 				this.memoryBuffer = data.memoryBuffer;
 
@@ -48,7 +50,7 @@ class Main extends AudioWorkletProcessor {
 	};
 
 	memoryBuffer = new Int32Array(128).fill(0);
-	audioBufferAddress = 0;
+	audioBufferWordAddress = 0;
 
 	static get parameterDescriptors() {
 		return [{ name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1 }];
@@ -63,7 +65,7 @@ class Main extends AudioWorkletProcessor {
 			const outputChannel = output[channel];
 
 			for (let i = 0; i < outputChannel.length; i++) {
-				outputChannel[i] = this.memoryBuffer[i + this.audioBufferAddress] / 500;
+				outputChannel[i] = this.memoryBuffer[i + this.audioBufferWordAddress] / 500;
 			}
 		}
 

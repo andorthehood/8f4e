@@ -1,9 +1,10 @@
-import events from './events';
-import state from './state';
-import view from './view';
+import initialProject from './initialProject.json';
 
-async function init() {
-	view(state(events()));
+import initEditor from '../packages/editor/src';
+
+function init() {
+	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
+	initEditor(canvas, initialProject, { isLocalStorageEnabled: false, isDebugMode: false });
 }
 
 if (document.readyState === 'complete') {
