@@ -1,14 +1,12 @@
 * {
 	padding: 0;
 	margin: 0;
-	cursor: url('../packages/editor/src/view/textures/cursor.png'), auto;
-	-webkit-user-select: none;
-	-webkit-touch-callout: none;
 }
 
 html {
-	background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(51,51,51,1) 100%);
+	background: linear-gradient(0deg, #990000 0%, #000099 100%);
 	background-attachment: fixed;
+	font-family: monospace;
 }
 
 h1 {
@@ -17,15 +15,25 @@ h1 {
 }
 
 p {
-	color: #999999;
-	font-size: 18px;
+	color: #ffffff;
+	font-size: 16px;
+	padding: 16px 0;
+}
+
+a {
+	color: #ffffff;
 }
 
 canvas {
 	image-rendering: pixelated;
+	cursor: url('../packages/editor/src/view/textures/cursor.png'), auto;
+	background: #000000;
+	box-shadow: 0 0 32px rgba(255, 255, 255, 0.1);
 }
 
 .canvas {
-	width: 800px;
+	max-width: 800px;
+	width: 100%;
 	margin: 0 auto;
+	padding: 0 16px;
 }
