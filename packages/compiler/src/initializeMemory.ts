@@ -20,7 +20,7 @@ export function setUpConnections(
 		const inputAddress = memoryAddresses.get(connection.toModuleId + connection.toConnectorId);
 		const outputAddress = memoryAddresses.get(connection.fromModuleId + connection.fromConnectorId);
 
-		if (!inputAddress || !outputAddress) {
+		if (typeof inputAddress === 'undefined' || typeof outputAddress == 'undefined') {
 			return;
 		}
 
