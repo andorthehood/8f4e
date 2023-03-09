@@ -28,11 +28,14 @@ export default function events(element: HTMLElement): EventDispatcher {
 		mouseup: [],
 	};
 
-	let prevEvent = null;
+	let prevEvent = {
+		offsetX: 0,
+		offsetY: 0,
+	};
 
 	function onEvent(event) {
-		const movementX = event.offsetX - prevEvent?.offsetX;
-		const movementY = event.offsetY - prevEvent?.offsetY;
+		const movementX = event.offsetX - prevEvent.offsetX;
+		const movementY = event.offsetY - prevEvent.offsetY;
 		prevEvent = event;
 
 		const { offsetX, offsetY, type, buttons, key } = event;
