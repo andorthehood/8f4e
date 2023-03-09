@@ -4,7 +4,8 @@
 	"description": "8f4e",
 	"scripts": {
 		"build": "npm run build --workspaces && parcel build src/*.html && cp ./src/_headers ./dist/_headers",
-		"dev": "parcel src/**/*.html --port 3000 --hmr-port 30000",
+		"dev": "parcel src/editor.html --port 3000 --hmr-port 30000",
+		"dev-website": "parcel src/*.html --port 3000 --hmr-port 30000",
 		"lint": "npx eslint . --ext .ts --fix",
 		"test": "jest src",
 		"typecheck": "tsc --noEmit",
