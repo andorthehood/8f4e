@@ -1,0 +1,23 @@
+{
+	"name": "@8f4e/editor",
+	"version": "1.0.0",
+	"description": "8f4e",
+	"author": "Andor Polgar",
+	"license": "MIT",
+    "scripts": {
+        "build": ""
+    },
+	"bugs": {
+		"url": "https://github.com/andormade/8f4e/issues"
+	},
+	"homepage": "https://github.com/andormade/8f4e#readme",
+	"dependencies": {
+		"@8f4e/2d-engine": "file:packages/2d-engine",
+		"@8f4e/chord-identifier": "file:packages/chord-identifier",
+		"@8f4e/compiler": "file:packages/compiler",
+		"@8f4e/sprite-generator": "file:packages/sprite-generator",
+		"@8f4e/worker": "file:packages/worker",
+		"@rnbo/js": "^1.1.0",
+		"buffer": "5.7.1"
+	}
+}
