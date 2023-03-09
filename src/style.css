@@ -1,8 +1,10 @@
-html {
+html, body {
 	background: linear-gradient(0deg, #990000 0%, #000099 100%);
 	background-attachment: fixed;
 	font-family: monospace;
 	line-height: 1.25;
+	padding: 0;
+	margin: 0;
 }
 
 h1 {
