@@ -18,7 +18,23 @@
 		</p>
 		<p>Hello World program:</p>
 		<canvas id="glcanvas" width="800" height="500"></canvas>
-		<p><a href="/editor">Open editor</a></p>
+		<p><a href="/editor">Open Web Editor</a></p>
+		<h2>Why the stack-oriented design?</h2>
+		<p>The WebAssembly Virtual Machine uses a stack machine architecture, which offers several advantages for
+			cross-platform compatibility. Stack machines have a simpler instruction set and fewer hardware dependencies
+			than register-based machines, making them easier to port to different platforms.</p>
+		<p>A programming language that is designed with a stack-oriented approach can perform operations on the stack
+			in a manner that is both efficient and natural, with instructions that can be easily mapped to those of the
+			stack machine. Therefore, a programming language with a stack-oriented design is a natural fit for the
+			WebAssembly Virtual Machine.</p>
+		<h2>What does semi-visual mean?</h2>
+		<p>Visual programming languages use graphical elements, such as icons, symbols, and flowcharts, to represent
+			programming concepts and logic, instead of traditional text-based code. 8f4e combines these graphical
+			elements with text-based code.</p>
+		<h2>Why is this better than exporting a Max/Msp algorithm to JavaScript?</h2>
+		<p>Although Max/Masp may be easier to learn, 8f4e offers superior flexibility, efficiency, and the ability to
+			test audio algorithms in the browser with live-edit capability thanks to its fast compilation time.</p>
+		<p><a href="https://github.com/andormade/8f4e">GitHub</a></p>
 	</div>
 	<script src="./index.ts" type="module"></script>
 </body>
