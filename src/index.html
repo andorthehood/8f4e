@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, user-scalable=no">
-		<link rel="stylesheet" type="text/css" href="style.css" />
-		<title>8f4e</title>
-	</head>
-	<body>
-		<canvas id="glcanvas" width="500" height="500"></canvas>
-		<script src="./index.ts" type="module"></script>
-	</body>
+
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<title>8f4e</title>
+</head>
+
+<body>
+	<div class="canvas">
+		<h1>8f4e</h1>
+		<p>
+			8f4e is stack-oriented programming language with a semi-visual interface specifically designed for
+			generating and processing real-time audio signals. While its primary environment is the WebAssembly Virtual
+			Machine and AudioWorklet, we plan to develop compatibility with microcontroller platforms by providing
+			appropriate glue code in the future.
+		</p>
+		<canvas id="glcanvas" width="800" height="500"></canvas>
+		<p><a href="/editor">Open editor</a></p>
+	</div>
+	<script src="./index.ts" type="module"></script>
+</body>
+
 </html>
