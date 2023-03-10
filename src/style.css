@@ -50,9 +50,11 @@ canvas {
 	margin: 0 auto;
 	width: 20%;
 	padding: 16px;
-	background: #ffffff;
-	color: #000000;
+	background: linear-gradient(0deg, #0000cc 0%, #660066 70%, #cc0000 100%);
+	color: #ffffff;
 	display: block;
 	text-align: center;
 	text-decoration: none;
+	border-radius: 16px;
+	box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
 }
