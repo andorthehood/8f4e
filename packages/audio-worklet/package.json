@@ -29,6 +29,7 @@
 			"outputFormat": "global",
 			"includeNodeModules": true,
 			"sourceMap": false,
+			"outputFormat": "global",
 			"distDir": "dist"
 		}
 	}
