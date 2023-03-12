@@ -14,6 +14,8 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 		const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(connectorId);
 
 		if (!memory) {
+			engine.setSpriteLookup(feedbackScale);
+			engine.drawSprite(x, y, 0, width, height);
 			continue;
 		}
 
