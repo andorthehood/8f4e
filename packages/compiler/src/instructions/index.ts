@@ -25,7 +25,7 @@ import mul from './mul';
 import loop from './loop';
 import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
-import array from './array';
+import buffer from './buffer';
 import equalToZero from './equalToZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
@@ -63,7 +63,7 @@ const instructions = {
 	loop,
 	loopEnd,
 	greaterOrEqualUnsigned,
-	array,
+	buffer,
 	equalToZero,
 	shiftRight,
 	shiftRightUnsigned,
