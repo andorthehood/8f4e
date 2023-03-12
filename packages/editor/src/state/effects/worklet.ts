@@ -1,9 +1,22 @@
 import { State } from '../types';
 import { EventDispatcher } from '../../events';
+import { compilationDone } from '../mutators/compiler';
 
 export default function worklet(state: State, events: EventDispatcher) {
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 	let audioContext: AudioContext;
+	let audioWorklet: AudioWorkletNode;
+
+	function onRecompile() {
+		if (!audioWorklet) {
+			return;
+		}
+		audioWorklet.port.postMessage({
+			memoryRef,
+			modules: state.project.modules,
+			connections: state.project.connections,
+		});
+	}
 
 	async function initAudioContext() {
 		if (audioContext) {
@@ -14,23 +27,19 @@ export default function worklet(state: State, events: EventDispatcher) {
 		await audioContext.audioWorklet.addModule(
 			new URL('../../../../../packages/audio-worklet/src/index.ts', import.meta.url)
 		);
-		const noiseGenerator = new AudioWorkletNode(audioContext, 'worklet');
-		noiseGenerator.connect(audioContext.destination);
-		noiseGenerator.port.postMessage({
-			memoryRef,
-			modules: state.project.modules,
-			connections: state.project.connections,
-		});
-		noiseGenerator.port.addEventListener('message', event => {
-			console.log('workletmessage', event);
-		});
+		audioWorklet = new AudioWorkletNode(audioContext, 'worklet');
+		audioWorklet.port.onmessage = function ({ data }) {
+			switch (data.type) {
+				case 'compilationDone':
+					compilationDone(state, data, memoryRef);
+					events.dispatch('compilationDone');
+					break;
+			}
+		};
+		audioWorklet.connect(audioContext.destination);
+		onRecompile();
 	}
 
-	// worker.addEventListener('message', onWorkerMessage);
-	// events.on('createConnection', onRecompile);
-	// events.on('deleteConnection', onRecompile);
-	// events.on('addModule', onRecompile);
-	// events.on('deleteModule', onRecompile);
-	// events.on('init', onRecompile);
+	events.on('buildOk', onRecompile);
 	events.on('mousedown', initAudioContext);
 }
