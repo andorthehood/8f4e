@@ -31,4 +31,5 @@
     },
     "editor.formatOnSave": false,
     "jest.jestCommandLine": "npx jest",
+    "liveServer.settings.root": "./dist"
 }
