@@ -2,7 +2,12 @@ import { State } from '../types';
 import { EventDispatcher } from '../../events';
 
 export default function compiler(state: State, events: EventDispatcher): void {
-	const worker = new Worker(new URL('../../../../../packages/worker/src/index.ts', import.meta.url), {
+	const workletUrl = new URL('../../../../../packages/audio-worklet/src/index.ts', import.meta.url);
+	const workerUrl = new URL('../../../../../packages/worker/src/index.ts', import.meta.url);
+
+	console.log('compiler.ts', workletUrl, workerUrl);
+
+	const worker = new Worker(workerUrl, {
 		type: 'module',
 	});
 
