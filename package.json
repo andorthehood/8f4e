@@ -25,7 +25,9 @@
 	},
 	"homepage": "https://github.com/andormade/8f4e#readme",
 	"devDependencies": {
-		"@swc/core": "^1.3.24",
+		"@parcel/transformer-typescript-types": "^2.8.3",
+		"@swc/cli": "^0.1.62",
+		"@swc/core": "^1.3.39",
 		"@swc/jest": "^0.2.24",
 		"@types/audioworklet": "^0.0.38",
 		"@types/jest": "27.0.3",
@@ -69,12 +71,12 @@
 	},
 	"dependencies": {
 		"@8f4e/2d-engine": "file:packages/2d-engine",
+		"@8f4e/audio-worklet": "file:packages/audio-worklet",
 		"@8f4e/chord-identifier": "file:packages/chord-identifier",
 		"@8f4e/compiler": "file:packages/compiler",
+		"@8f4e/editor": "file:packages/editor",
 		"@8f4e/sprite-generator": "file:packages/sprite-generator",
 		"@8f4e/worker": "file:packages/worker",
-		"@8f4e/editor": "file:packages/editor",
-		"@8f4e/audio-worklet": "file:packages/audio-worklet",
 		"@rnbo/js": "^1.1.0",
 		"buffer": "5.7.1"
 	}

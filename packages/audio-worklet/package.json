@@ -2,11 +2,9 @@
 	"name": "@8f4e/audio-worklet",
 	"version": "1.0.0",
 	"description": "",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
 	"scripts": {
 		"test": "jest --passWithNoTests",
-		"build": "tsc"
+		"build": "parcel build --no-source-maps"
 	},
 	"repository": {
 		"type": "git",
@@ -20,5 +18,18 @@
 	"homepage": "https://github.com/andormade/8f4e#readme",
 	"dependencies": {
 		"@8f4e/compiler": "file:packages/compiler"
+	},
+	"devDependencies": {
+		"@parcel/packager-ts": "^2.8.3"
+	},
+	"targets": {
+		"worker": {
+			"source": "src/index.ts",
+			"context": "web-worker",
+			"outputFormat": "global",
+			"includeNodeModules": true,
+			"sourceMap": false,
+			"distDir": "dist"
+		}
 	}
 }
