@@ -5,7 +5,7 @@ memory trigger &defaultValue
 memory reset &defaultValue
 memory triggerPreviousValue 0
 memory stepMinusOne 0
-array steps 16 0
+buffer steps 16 0
 memory stepPointer &stepMinusOne
 memory stepLength 4
 memory didTrigger 0

@@ -97,7 +97,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "array",
+    "instruction": "buffer",
     "lineNumber": 9,
   },
   Object {

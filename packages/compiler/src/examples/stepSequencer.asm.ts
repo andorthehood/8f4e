@@ -3,7 +3,7 @@ export default `module stepSequencer
  memory defaultValue 0
  memory trigger &defaultValue
  memory triggerPreviousValue 0
- array steps 16 0
+ buffer steps 16 0
  memory stepPointer &steps
  memory stepLength 4
  memory out 0
