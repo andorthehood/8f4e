@@ -26,9 +26,11 @@ const defaultState: State = {
 		isCompiling: false,
 		lastCompilationStart: 0,
 		memoryBuffer: new Int32Array(),
+		memoryRef: undefined,
 		memoryAddressLookup: new Map(),
 		timerAccuracy: 0,
 		compiledModules: new Map(),
+		buildErrors: [],
 	},
 	history: [],
 	midi: {
