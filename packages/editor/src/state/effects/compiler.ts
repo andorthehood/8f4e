@@ -1,13 +1,12 @@
 import { State } from '../types';
 import { EventDispatcher } from '../../events';
 
-export default function compiler(state: State, events: EventDispatcher): void {
-	const workletUrl = new URL('../../../../../packages/audio-worklet/src/index.ts', import.meta.url);
-	const workerUrl = new URL('../../../../../packages/worker/src/index.ts', import.meta.url);
+export default async function compiler(state: State, events: EventDispatcher) {
+	const workerUrl = new URL('../../../../../packages/audio-worklet/src/index.ts', import.meta.url);
+	const workerBlob = await (await fetch(workerUrl)).blob();
+	const workerBlobUrl = URL.createObjectURL(workerBlob);
 
-	console.log('compiler.ts', workletUrl, workerUrl);
-
-	const worker = new Worker(workerUrl, {
+	const worker = new Worker(workerBlobUrl, {
 		type: 'module',
 	});
 
