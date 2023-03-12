@@ -1,7 +1,6 @@
 import { State } from '../types';
 import { EventDispatcher } from '../../events';
 import { compilationDone } from '../mutators/compiler';
-import '@8f4e/audio-worklet';
 
 export default function worklet(state: State, events: EventDispatcher) {
 	const workletUrl = new URL('../../../../../packages/audio-worklet/src/index.ts', import.meta.url);
