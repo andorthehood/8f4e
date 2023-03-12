@@ -11,7 +11,7 @@ export default function findMidiNoteModules(compiledModules: CompiledModuleLooku
 				moduleId: module.id,
 				valueWordAddress: module.memoryMap.get('value')?.wordAddress,
 				channelWordAddress: module.memoryMap.get('channel')?.wordAddress,
-				selectedWordCCAddress: module.memoryMap.get('cc')?.wordAddress,
+				selectedCCWordAddress: module.memoryMap.get('cc')?.wordAddress,
 			};
 		});
 }
