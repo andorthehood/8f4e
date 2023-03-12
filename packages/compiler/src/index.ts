@@ -48,8 +48,8 @@ function collectGlobals(ast: AST): Namespace['consts'] {
 	);
 }
 
-export function compileModules(modules: Module[]): CompiledModule[] {
-	let memoryAddress = 0;
+export function compileModules(modules: Module[], startingMemoryWordAddress = 0): CompiledModule[] {
+	let memoryAddress = startingMemoryWordAddress;
 	let globals: Namespace['consts'] = {
 		I16_SIGNED_LARGEST_NUMBER: I16_SIGNED_LARGEST_NUMBER,
 		I16_SIGNED_SMALLEST_NUMBER: I16_SIGNED_SMALLEST_NUMBER,
@@ -90,7 +90,7 @@ export default function compile(modules: Module[]): {
 	memoryAddressLookup: MemoryAddressLookup;
 	compiledModules: CompiledModuleLookup;
 } {
-	const compiledModules = compileModules(modules);
+	const compiledModules = compileModules(modules, 1);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
 	const cycleFunction = compiledModules.map((module, index) => call(index + 3)).flat();
