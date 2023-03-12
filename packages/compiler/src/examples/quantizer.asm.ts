@@ -4,7 +4,7 @@ memory in 0
 memory out 0
 memory allocatedNotes 12
 memory numberOfNotes 0
-array notes 12 -1 
+buffer notes 12 -1 
 
 local bestMatchingValue
 local difference

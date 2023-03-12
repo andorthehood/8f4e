@@ -2,7 +2,7 @@ import { WORD_LENGTH } from '../consts';
 import { InstructionHandler, MemoryTypes } from '../types';
 import { calculateMemoryWordSize } from '../utils';
 
-const array: InstructionHandler = function (line, namespace, startingByteAddress) {
+const buffer: InstructionHandler = function (line, namespace, startingByteAddress) {
 	if (!line.arguments[0] || !line.arguments[1] || !line.arguments[2]) {
 		throw '1002: Missing argument';
 	}
@@ -24,4 +24,5 @@ const array: InstructionHandler = function (line, namespace, startingByteAddress
 
 	return { byteCode: [], namespace: { ...namespace, memory } };
 };
-export default array;
+
+export default buffer;
