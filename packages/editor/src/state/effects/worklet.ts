@@ -7,6 +7,8 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	const workletBlob = await (await fetch(workletUrl)).blob();
 	const workletBlobUrl = URL.createObjectURL(workletBlob);
 
+	console.log(workletUrl, workletBlob, workletBlobUrl);
+
 	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 	let audioContext: AudioContext;
 	let audioWorklet: AudioWorkletNode;
