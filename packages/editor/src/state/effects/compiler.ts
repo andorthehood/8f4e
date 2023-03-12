@@ -1,20 +1,20 @@
 import { State } from '../types';
-import { compilationDone, recompile } from '../mutators/compiler';
 import { EventDispatcher } from '../../events';
 
 export default function compiler(state: State, events: EventDispatcher): void {
 	const worker = new Worker(new URL('../../../../../packages/worker/src/index.ts', import.meta.url), {
 		type: 'module',
 	});
-	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 
 	async function onRecompile() {
+		if (!state.compiler.memoryRef) {
+			return;
+		}
 		worker.postMessage({
-			memoryRef,
+			memoryRef: state.compiler.memoryRef,
 			modules: state.project.modules,
-			connections: state.project.connections,
+			compiledModules: state.compiler.compiledModules,
 		});
-		recompile(state);
 	}
 
 	async function onWorkerMessage({ data }) {
@@ -25,9 +25,13 @@ export default function compiler(state: State, events: EventDispatcher): void {
 			case 'RNBOMessage':
 				events.dispatch('RNBOMessage', data.payload);
 				break;
-			case 'compilationDone':
-				compilationDone(state, data, memoryRef);
-				events.dispatch('compilationDone');
+			case 'buildOk':
+				state.compiler.buildErrors = [];
+				events.dispatch('buildOk');
+				break;
+			case 'buildError':
+				state.compiler.buildErrors.push({ lineNumber: 0, errorCode: 0, errorMessage: 'error' });
+				events.dispatch('buildError');
 				break;
 		}
 	}
@@ -38,4 +42,5 @@ export default function compiler(state: State, events: EventDispatcher): void {
 	events.on('addModule', onRecompile);
 	events.on('deleteModule', onRecompile);
 	events.on('init', onRecompile);
+	events.on('saveState', onRecompile);
 }
