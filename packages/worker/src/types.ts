@@ -10,7 +10,7 @@ export interface MidiCCModuleAddresses {
 	moduleId: string;
 	valueWordAddress: number | undefined;
 	channelWordAddress: number | undefined;
-	selectedWordCCAddress: number | undefined;
+	selectedCCWordAddress: number | undefined;
 }
 
 export interface RNBOModule {
