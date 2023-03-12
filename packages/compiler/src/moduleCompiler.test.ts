@@ -7,7 +7,7 @@ module abs
 memory DEFAULT_VALUE -1
 memory in:1 &DEFAULT_VALUE
 memory out 0
-array arr 32 -1
+buffer arr 32 -1
 
 # registers
 local input
