@@ -1,6 +1,6 @@
-import { Connection, Module, setUpConnections } from '@8f4e/compiler';
+import { CompiledModuleLookup, Module } from '@8f4e/compiler';
 
-import createModule from './createModule';
+import testBuild from './testBuild';
 import resetMidi from './resetMidi';
 import findMidiNoteModules from './findMidiNoteModules';
 import broadcastMidiMessages from './broadcastMidiMessages';
@@ -12,30 +12,30 @@ import broadcastRNBOMessages from './broadcastRNBOMessages';
 let interval: NodeJS.Timeout;
 const intervalTime = 10;
 
-async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], connections: Connection[]) {
-	const { memoryBuffer, cycle, memoryAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
-
-	init();
-	setUpConnections(memoryBuffer, memoryAddressLookup, connections);
-
-	self.postMessage({
-		type: 'compilationDone',
-		payload: {
-			memoryAddressLookup,
-			compiledModules,
-		},
-	});
+async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compiledModules: CompiledModuleLookup) {
+	try {
+		await testBuild(memoryRef, modules);
+		self.postMessage({
+			type: 'buildOk',
+		});
+	} catch (error) {
+		console.log(error);
+		self.postMessage({
+			type: 'buildError',
+		});
+	}
 
 	clearInterval(interval);
 
-	const midiNoteModules = findMidiNoteModules(compiledModules, memoryAddressLookup);
+	const memoryBuffer = new Int32Array(memoryRef.buffer);
+
+	const midiNoteModules = findMidiNoteModules(compiledModules);
 	const RNBOModules = findRNBOModules(compiledModules);
-	const midiCCModules = findMidiCCModules(compiledModules, memoryAddressLookup);
+	const midiCCModules = findMidiCCModules(compiledModules);
 
 	resetMidi();
 
 	interval = setInterval(() => {
-		cycle();
 		broadcastMidiCCMessages(midiCCModules, memoryBuffer);
 		broadcastMidiMessages(midiNoteModules, memoryBuffer);
 		broadcastRNBOMessages(RNBOModules, memoryBuffer);
@@ -43,5 +43,5 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], conne
 }
 
 self.onmessage = function (event) {
-	recompile(event.data.memoryRef, event.data.modules, event.data.connections);
+	recompile(event.data.memoryRef, event.data.modules, event.data.compiledModules);
 };
