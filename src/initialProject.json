@@ -53,7 +53,7 @@
                 "module audioout",
                 "",
                 "memory in",
-                "memory channel 1",
+                "memory channel 0",
                 "",
                 "# Audio buffer",
                 "buffer buffer 128 0",
