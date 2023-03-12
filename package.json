@@ -57,7 +57,8 @@
 		"packages/2d-engine",
 		"packages/chord-identifier",
 		"packages/sprite-generator",
-		"packages/editor"
+		"packages/editor",
+		"packages/audio-worklet"
 	],
 	"lint-staged": {
 		"*.ts": [
@@ -73,6 +74,7 @@
 		"@8f4e/sprite-generator": "file:packages/sprite-generator",
 		"@8f4e/worker": "file:packages/worker",
 		"@8f4e/editor": "file:packages/editor",
+		"@8f4e/audio-worklet": "file:packages/audio-worklet",
 		"@rnbo/js": "^1.1.0",
 		"buffer": "5.7.1"
 	}
