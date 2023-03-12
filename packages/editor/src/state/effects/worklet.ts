@@ -3,7 +3,7 @@ import { EventDispatcher } from '../../events';
 import { compilationDone } from '../mutators/compiler';
 
 export default async function worklet(state: State, events: EventDispatcher) {
-	const workletUrl = new URL('../../../../../packages/audio-worklet/src/index.ts', import.meta.url);
+	const workletUrl = new URL('../../../../../packages/audio-worklet/dist/index.js', import.meta.url);
 	const workletBlob = await (await fetch(workletUrl)).blob();
 	const workletBlobUrl = URL.createObjectURL(workletBlob);
 
@@ -30,7 +30,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		}
 
 		audioContext = new AudioContext();
-		await audioContext.audioWorklet.addModule(workletBlobUrl);
+		await audioContext.audioWorklet.addModule(workletUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet');
 		audioWorklet.port.onmessage = function ({ data }) {
 			switch (data.type) {
