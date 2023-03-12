@@ -8,7 +8,7 @@ memory out 0
 
 memory counter 0
 memory rate 0
-array buffer ${BUFFER_LENGTH} 0
+buffer buffer ${BUFFER_LENGTH} 0
 memory bufferPointer &buffer
 
 local _bufferPointer
