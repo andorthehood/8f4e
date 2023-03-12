@@ -53,15 +53,23 @@ export type HistoryItem = {
 	modules: Module[];
 };
 
+export interface BuildError {
+	lineNumber: number;
+	errorCode: number;
+	errorMessage: string;
+}
+
 export interface Compiler {
 	compilationTime: string;
 	cycleTime: number;
 	isCompiling: boolean;
 	lastCompilationStart: number;
 	memoryBuffer: MemoryBuffer;
+	memoryRef: WebAssembly.Memory | undefined;
 	memoryAddressLookup: MemoryAddressLookup;
 	timerAccuracy: number;
 	compiledModules: CompiledModuleLookup;
+	buildErrors: BuildError[];
 }
 
 export interface Error {

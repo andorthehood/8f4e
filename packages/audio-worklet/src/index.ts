@@ -10,8 +10,6 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], conne
 
 	const audioModule = compiledModules.get('audioout');
 
-	console.log('audioModuke', audioModule);
-
 	if (!audioModule) {
 		return;
 	}
@@ -22,8 +20,9 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], conne
 }
 
 class Main extends AudioWorkletProcessor {
-	constructor() {
-		super();
+	constructor(...args) {
+		// @ts-ignore
+		super(...args);
 		this.port.onmessage = async event => {
 			const data = await recompile(event.data.memoryRef, event.data.modules, event.data.connections);
 
@@ -59,14 +58,10 @@ class Main extends AudioWorkletProcessor {
 	process(inputs, outputs, parameters) {
 		this.buffer();
 		const output = outputs[0];
-		// const amplitude = parameters.amplitude;
+		const outputChannel = output[0];
 
-		for (let channel = 0; channel < output.length; ++channel) {
-			const outputChannel = output[channel];
-
-			for (let i = 0; i < outputChannel.length; i++) {
-				outputChannel[i] = this.memoryBuffer[i + this.audioBufferWordAddress] / 500;
-			}
+		for (let i = 0; i < outputChannel.length; i++) {
+			outputChannel[i] = this.memoryBuffer[i + this.audioBufferWordAddress] / 500;
 		}
 
 		return true;
