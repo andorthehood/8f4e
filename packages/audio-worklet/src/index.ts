@@ -19,9 +19,7 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], conne
 	return { buffer, audioBufferWordAddress, memoryBuffer, memoryAddressLookup, compiledModules };
 }
 
-const _AudioWorkletProcessor = AudioWorkletProcessor || class Empty {};
-
-class Main extends _AudioWorkletProcessor {
+class Main extends AudioWorkletProcessor {
 	constructor(...args) {
 		// @ts-ignore
 		super(...args);
@@ -70,6 +68,4 @@ class Main extends _AudioWorkletProcessor {
 	}
 }
 
-if (registerProcessor) {
-	registerProcessor('worklet', Main);
-}
+registerProcessor('worklet', Main);
