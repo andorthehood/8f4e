@@ -33,6 +33,7 @@ import remainder from './remainder';
 import _module from './module';
 import global from './global';
 import memory from './memory';
+import castToInt from './castToInt';
 
 const instructions = {
 	and,
@@ -70,6 +71,7 @@ const instructions = {
 	module: _module,
 	global,
 	memory,
+	castToInt,
 } as const;
 
 export default instructions;
