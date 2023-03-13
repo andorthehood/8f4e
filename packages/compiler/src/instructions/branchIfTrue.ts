@@ -1,15 +1,16 @@
 import { br_if } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
+import { ErrorCode, getError } from '../errors';
 
-const branchIfTrue: InstructionHandler = function (line, namespace) {
+const branchIfTrue: InstructionHandler = function (line, namespace, stack) {
 	if (!line.arguments[0]) {
-		throw '1002: Missing argument';
+		throw getError(ErrorCode.MISSING_ARGUMENT, line);
 	}
 
 	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
-		throw `'1004: Expected value, got an identifier: '${line.arguments[0].value}''`;
+		throw getError(ErrorCode.EXPECTED_VALUE, line);
 	} else {
-		return { byteCode: br_if(line.arguments[0].value), namespace };
+		return { byteCode: br_if(line.arguments[0].value), namespace, stack };
 	}
 };
 

@@ -24,7 +24,8 @@ push clock
 greaterThan
 if void
  push _counter
- pointerForward
+ push WORD_SIZE
+ add
  push 16
  remainder
  localSet _counter
