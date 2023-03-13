@@ -34,6 +34,7 @@ enum WASMInstruction {
 	I32_LOAD = 0x28,
 	F32_LOAD = 0x2a,
 	I32_STORE = 0x36,
+	F32_STORE = 0x38,
 	/** varsint32 constant */
 	I32_CONST = 0x41,
 	/** varsint64 constant */
@@ -222,7 +223,6 @@ enum WASMInstruction {
 	 * Type signature: (param i32) (result i32)
 	 */
 	I32_POPCNT = 0x69,
-	F32_STORE = 0x83,
 	F32_ADD = 0x92,
 	F32_SUB = 0x93,
 	F32_MUL = 0x94,
