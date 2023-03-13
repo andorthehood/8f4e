@@ -47,9 +47,6 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 	const module: CompiledModule = compileModules([{ code: sourceCode.split('\n') }])[0];
 	const program = createSingleFunctionWASMProgram(module.functionBody);
-
-	console.log(program);
-
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const dataView = new DataView(memoryRef.buffer);
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
