@@ -80,7 +80,8 @@ block void
   end
 
   push noteMemoryPointer
-  pointerForward
+  push WORD_SIZE
+  add
   localSet noteMemoryPointer
  loopEnd
 end

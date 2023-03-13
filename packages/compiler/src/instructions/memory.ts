@@ -1,8 +1,9 @@
 import { WORD_LENGTH } from '../consts';
+import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
 import { calculateMemoryWordSize } from '../utils';
 
-const memory: InstructionHandler = function (line, namespace, startingByteAddress) {
+const memory: InstructionHandler = function (line, namespace, stack, startingByteAddress) {
 	const memory = new Map(namespace.memory);
 
 	const wordAddress = calculateMemoryWordSize(memory);
@@ -17,7 +18,7 @@ const memory: InstructionHandler = function (line, namespace, startingByteAddres
 		const memoryItem = memory.get(line.arguments[1].value.substring(1));
 
 		if (!memoryItem) {
-			throw `1003: Undeclared identifier: '${line.arguments[1].value.substring(1)}`;
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
 		}
 
 		defaultValue = memoryItem.byteAddress;
@@ -25,10 +26,10 @@ const memory: InstructionHandler = function (line, namespace, startingByteAddres
 		const constant = namespace.consts[line.arguments[1].value];
 
 		if (!constant) {
-			throw `1003: Undeclared identifier: '${line.arguments[1].value}`;
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
 		}
 
-		defaultValue = constant;
+		defaultValue = constant.value;
 	}
 
 	memory.set(line.arguments[0].value.toString(), {
@@ -40,9 +41,10 @@ const memory: InstructionHandler = function (line, namespace, startingByteAddres
 		lineNumber: line.lineNumber,
 		id: line.arguments[0].value.toString(),
 		default: defaultValue,
+		isInteger: Number.isInteger(defaultValue),
 	});
 
-	return { byteCode: [], namespace: { ...namespace, memory } };
+	return { byteCode: [], namespace: { ...namespace, memory }, stack };
 };
 
 export default memory;

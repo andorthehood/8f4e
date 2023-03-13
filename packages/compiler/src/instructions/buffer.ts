@@ -1,10 +1,11 @@
 import { WORD_LENGTH } from '../consts';
+import { ErrorCode, getError } from '../errors';
 import { InstructionHandler, MemoryTypes } from '../types';
 import { calculateMemoryWordSize } from '../utils';
 
-const buffer: InstructionHandler = function (line, namespace, startingByteAddress) {
+const buffer: InstructionHandler = function (line, namespace, stack, startingByteAddress) {
 	if (!line.arguments[0] || !line.arguments[1] || !line.arguments[2]) {
-		throw '1002: Missing argument';
+		throw getError(ErrorCode.MISSING_ARGUMENT, line);
 	}
 
 	const memory = new Map(namespace.memory);
@@ -20,9 +21,10 @@ const buffer: InstructionHandler = function (line, namespace, startingByteAddres
 		lineNumber: line.lineNumber,
 		byteAddress: startingByteAddress + wordAddress * WORD_LENGTH,
 		default: new Array(wordSize).fill(line.arguments[2].value),
+		isInteger: true,
 	});
 
-	return { byteCode: [], namespace: { ...namespace, memory } };
+	return { byteCode: [], namespace: { ...namespace, memory }, stack };
 };
 
 export default buffer;

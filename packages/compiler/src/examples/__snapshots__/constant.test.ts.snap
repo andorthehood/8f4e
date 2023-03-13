@@ -19,6 +19,7 @@ Array [
         "value": "out",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -35,6 +36,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "out",
+    "isInteger": true,
     "lineNumber": 2,
     "relativeWordAddress": 0,
     "type": 1,
