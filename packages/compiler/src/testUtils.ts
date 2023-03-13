@@ -31,10 +31,14 @@ export function createSingleFunctionWASMProgram(functionBody: FunctionBody): Uin
 	]);
 }
 
-export function setInitialMemory(memory: Int32Array, module: CompiledModule): void {
+export function setInitialMemory(memory: DataView, module: CompiledModule): void {
 	const initialMemory = getInitialMemory(module);
 	for (let i = 0; i < initialMemory.length; i++) {
-		memory[i] = initialMemory[i];
+		if (Number.isInteger(initialMemory[i])) {
+			memory.setInt32(i * 4, initialMemory[i], true);
+		} else {
+			memory.setFloat32(i * 4, initialMemory[i], true);
+		}
 	}
 }
 
@@ -44,17 +48,34 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	const module: CompiledModule = compileModules([{ code: sourceCode.split('\n') }])[0];
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 
-	const memoryRef = new WebAssembly.Memory({ initial: 1 });
-	const memoryBuffer = new Int32Array(memoryRef.buffer);
+	console.log(program);
 
-	const { instance } = await WebAssembly.instantiate(program, {
-		js: {
-			memory: memoryRef,
-		},
-	});
+	const memoryRef = new WebAssembly.Memory({ initial: 1 });
+	const dataView = new DataView(memoryRef.buffer);
+	const memoryBuffer = new Int32Array(memoryRef.buffer);
+	let instance: WebAssembly.Instance | undefined;
+	let wat = '';
+
+	try {
+		const webAssemblyInstantiatedSource = await WebAssembly.instantiate(program, {
+			js: {
+				memory: memoryRef,
+			},
+		});
+		instance = webAssemblyInstantiatedSource.instance;
+
+		wat = await new Promise(resolve => {
+			wabt().then(_wabt => {
+				const module = _wabt.readWasm(program, {});
+				resolve(module.toText({}));
+			});
+		});
+	} catch (error) {
+		console.log(error);
+	}
 
 	const reset = () => {
-		setInitialMemory(memoryBuffer, module);
+		setInitialMemory(dataView, module);
 
 		// Clear the test data that was out of the module's scope.
 		for (let i = module.memoryWordSize; i < module.memoryWordSize + allocatedMemoryForTestData; i++) {
@@ -65,14 +86,10 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 	reset();
 
-	const test = instance.exports.test as CallableFunction;
-
-	const wat: string = await new Promise(resolve => {
-		wabt().then(_wabt => {
-			const module = _wabt.readWasm(program, {});
-			resolve(module.toText({}));
-		});
-	});
+	const test = (instance?.exports.test ||
+		function () {
+			return;
+		}) as CallableFunction;
 
 	const memoryGet = (address: string | number): number | undefined => {
 		if (typeof address === 'string') {
@@ -82,8 +99,13 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 				return;
 			}
 
-			return memoryBuffer[memoryItem.relativeWordAddress];
+			if (memoryItem.isInteger) {
+				return dataView.getInt32(memoryItem.byteAddress, true);
+			} else {
+				return dataView.getFloat32(memoryItem.byteAddress, true);
+			}
 		}
+
 		return memoryBuffer[address];
 	};
 
@@ -95,20 +117,36 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 			}
 
 			if (typeof value === 'number') {
-				memoryBuffer[memoryItem.relativeWordAddress] = value;
+				if (Number.isInteger(value)) {
+					dataView.setInt32(memoryItem.byteAddress, value, true);
+				} else {
+					dataView.setFloat32(memoryItem.byteAddress, value, true);
+				}
 			} else {
 				for (let i = 0; i < value.length; i++) {
-					memoryBuffer[memoryItem.relativeWordAddress + i] = value[i];
+					if (Number.isInteger(value[i])) {
+						dataView.setInt32(memoryItem.byteAddress + i * 4, value[i], true);
+					} else {
+						dataView.setFloat32(memoryItem.byteAddress + i * 4, value[i], true);
+					}
 				}
 			}
 			return;
 		}
 
 		if (typeof value === 'number') {
-			memoryBuffer[address] = value;
+			if (Number.isInteger(value)) {
+				dataView.setInt32(address * 4, value, true);
+			} else {
+				dataView.setFloat32(address * 4, value, true);
+			}
 		} else {
 			for (let i = 0; i < value.length; i++) {
-				memoryBuffer[address] = value[i];
+				if (Number.isInteger(value[i])) {
+					dataView.setInt32(address * 4 + i * 4, value[i], true);
+				} else {
+					dataView.setFloat32(address * 4 + i * 4, value[i], true);
+				}
 			}
 		}
 	};
