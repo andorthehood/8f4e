@@ -13,10 +13,8 @@ import { ErrorCode, getError } from '../errors';
 
 function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 	if (argument.isInteger) {
-		console.log('i32');
 		return i32const(argument.value);
 	} else {
-		console.log('f32');
 		return f32const(argument.value);
 	}
 }
