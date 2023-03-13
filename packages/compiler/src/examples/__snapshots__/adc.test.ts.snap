@@ -19,6 +19,7 @@ Array [
         "value": "default",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -47,6 +48,7 @@ Array [
         "value": "out:1",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -61,6 +63,7 @@ Array [
         "value": "out:2",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -75,6 +78,7 @@ Array [
         "value": "out:3",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -89,6 +93,7 @@ Array [
         "value": "out:4",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -103,6 +108,7 @@ Array [
         "value": "out:5",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -117,6 +123,7 @@ Array [
         "value": "out:6",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -131,6 +138,7 @@ Array [
         "value": "out:7",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -145,6 +153,7 @@ Array [
         "value": "out:8",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -175,6 +184,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 128,
       },
@@ -220,6 +230,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 1,
       },
@@ -235,6 +246,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -255,6 +267,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32767,
       },
@@ -270,6 +283,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -310,6 +324,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 2,
       },
@@ -325,6 +340,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -345,6 +361,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32767,
       },
@@ -360,6 +377,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -400,6 +418,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -415,6 +434,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -435,6 +455,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32767,
       },
@@ -450,6 +471,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -490,6 +512,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -505,6 +528,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -525,6 +549,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32767,
       },
@@ -540,6 +565,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -580,6 +606,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 16,
       },
@@ -595,6 +622,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -615,6 +643,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32767,
       },
@@ -630,6 +659,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -670,6 +700,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32,
       },
@@ -685,6 +716,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -705,6 +737,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32767,
       },
@@ -720,6 +753,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -760,6 +794,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 64,
       },
@@ -775,6 +810,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -795,6 +831,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32767,
       },
@@ -810,6 +847,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -850,6 +888,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 128,
       },
@@ -865,6 +904,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -885,6 +925,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32767,
       },
@@ -900,6 +941,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -926,6 +968,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "default",
+    "isInteger": true,
     "lineNumber": 4,
     "relativeWordAddress": 0,
     "type": 1,
@@ -936,6 +979,7 @@ Map {
     "byteAddress": 4,
     "default": 0,
     "id": "in",
+    "isInteger": true,
     "lineNumber": 5,
     "relativeWordAddress": 1,
     "type": 1,
@@ -946,6 +990,7 @@ Map {
     "byteAddress": 8,
     "default": 0,
     "id": "out:1",
+    "isInteger": true,
     "lineNumber": 7,
     "relativeWordAddress": 2,
     "type": 1,
@@ -956,6 +1001,7 @@ Map {
     "byteAddress": 12,
     "default": 0,
     "id": "out:2",
+    "isInteger": true,
     "lineNumber": 8,
     "relativeWordAddress": 3,
     "type": 1,
@@ -966,6 +1012,7 @@ Map {
     "byteAddress": 16,
     "default": 0,
     "id": "out:3",
+    "isInteger": true,
     "lineNumber": 9,
     "relativeWordAddress": 4,
     "type": 1,
@@ -976,6 +1023,7 @@ Map {
     "byteAddress": 20,
     "default": 0,
     "id": "out:4",
+    "isInteger": true,
     "lineNumber": 10,
     "relativeWordAddress": 5,
     "type": 1,
@@ -986,6 +1034,7 @@ Map {
     "byteAddress": 24,
     "default": 0,
     "id": "out:5",
+    "isInteger": true,
     "lineNumber": 11,
     "relativeWordAddress": 6,
     "type": 1,
@@ -996,6 +1045,7 @@ Map {
     "byteAddress": 28,
     "default": 0,
     "id": "out:6",
+    "isInteger": true,
     "lineNumber": 12,
     "relativeWordAddress": 7,
     "type": 1,
@@ -1006,6 +1056,7 @@ Map {
     "byteAddress": 32,
     "default": 0,
     "id": "out:7",
+    "isInteger": true,
     "lineNumber": 13,
     "relativeWordAddress": 8,
     "type": 1,
@@ -1016,6 +1067,7 @@ Map {
     "byteAddress": 36,
     "default": 0,
     "id": "out:8",
+    "isInteger": true,
     "lineNumber": 14,
     "relativeWordAddress": 9,
     "type": 1,

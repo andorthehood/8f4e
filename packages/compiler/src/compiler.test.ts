@@ -2,19 +2,30 @@ import { parseArgument, parseLine, isComment, isValidInstruction } from './compi
 import { ArgumentType, AST } from './types';
 
 describe('parseArgument', () => {
-	const fixtures: [string, ArgumentType, number | string][] = [
-		['0b1', ArgumentType.LITERAL, 1],
-		['0b01', ArgumentType.LITERAL, 1],
-		['0b001', ArgumentType.LITERAL, 1],
-		['0xff', ArgumentType.LITERAL, 255],
-		['100', ArgumentType.LITERAL, 100],
+	const literals: [string, ArgumentType, number, boolean][] = [
+		['0b1', ArgumentType.LITERAL, 1, true],
+		['0b01', ArgumentType.LITERAL, 1, true],
+		['0b001', ArgumentType.LITERAL, 1, true],
+		['0xff', ArgumentType.LITERAL, 255, true],
+		['100', ArgumentType.LITERAL, 100, true],
+		['0.0', ArgumentType.LITERAL, 0, false],
+		['1.00', ArgumentType.LITERAL, 1, false],
+		['1.1', ArgumentType.LITERAL, 1.1, false],
+		['-2.3', ArgumentType.LITERAL, -2.3, false],
+	];
+
+	const identifiers: [string, ArgumentType, string][] = [
 		['foo', ArgumentType.IDENTIFIER, 'foo'],
 		['1foo', ArgumentType.IDENTIFIER, '1foo'],
 		['foo1', ArgumentType.IDENTIFIER, 'foo1'],
 		['f0o', ArgumentType.IDENTIFIER, 'f0o'],
 	];
 
-	test.each(fixtures)('given %p as input the output is %p', (argument, type, value) => {
+	test.each(literals)('given %p as input the output is %p', (argument, type, value, isInteger) => {
+		expect(parseArgument(argument)).toStrictEqual({ type, value, isInteger });
+	});
+
+	test.each(identifiers)('given %p as input the output is %p', (argument, type, value) => {
 		expect(parseArgument(argument)).toStrictEqual({ type, value });
 	});
 });
@@ -33,6 +44,7 @@ describe('parseLine', () => {
 					{
 						type: ArgumentType.LITERAL,
 						value: 1,
+						isInteger: true,
 					},
 				],
 				instruction: 'memory',
@@ -47,6 +59,7 @@ describe('parseLine', () => {
 					{
 						type: ArgumentType.LITERAL,
 						value: 255,
+						isInteger: true,
 					},
 				],
 				instruction: 'push',

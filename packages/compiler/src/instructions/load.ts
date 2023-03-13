@@ -1,23 +1,49 @@
-import { i32const, i32load } from '../wasmUtils/instructionHelpers';
+import { f32load, i32const, i32load } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
-import { getMemoryItemByteAddress, isMemoryIdentifier } from '../utils';
+import { areAllOperandsIntegers, getMemoryItem } from '../utils';
+import { ErrorCode, getError } from '../errors';
 
-const load: InstructionHandler = function (line, namespace) {
+// TODO: remove or refactor this instruction
+const load: InstructionHandler = function (line, namespace, stack) {
 	if (!line.arguments[0]) {
-		return { byteCode: i32load(), namespace };
+		const operand = stack.pop();
+
+		if (!operand) {
+			throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line);
+		}
+
+		if (areAllOperandsIntegers(operand)) {
+			stack.push({ isInteger: true });
+			return { byteCode: i32load(), namespace, stack };
+		} else {
+			throw getError(ErrorCode.ONLY_INTEGERS, line);
+		}
 	}
 
 	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
-		if (!isMemoryIdentifier(namespace.memory, line.arguments[0].value)) {
-			throw `1003: Undeclared identifier: '${line.arguments[0].value}`;
+		const memoryItem = getMemoryItem(namespace.memory, line.arguments[0].value);
+
+		if (!memoryItem) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
 		}
 
-		return {
-			byteCode: [...i32const(getMemoryItemByteAddress(namespace.memory, line.arguments[0].value)), ...i32load()],
-			namespace,
-		};
+		if (memoryItem.isInteger) {
+			stack.push({ isInteger: true });
+			return {
+				byteCode: [...i32const(memoryItem.byteAddress), ...i32load()],
+				namespace,
+				stack,
+			};
+		} else {
+			stack.push({ isInteger: false });
+			return {
+				byteCode: [...i32const(memoryItem.byteAddress), ...f32load()],
+				namespace,
+				stack,
+			};
+		}
 	} else {
-		throw `1005: Expected identifier, got a value: '${line.arguments[0].value}'`;
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line);
 	}
 };
 

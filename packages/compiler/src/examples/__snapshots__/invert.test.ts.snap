@@ -19,6 +19,7 @@ Array [
         "value": "default",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -47,6 +48,7 @@ Array [
         "value": "out",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -77,6 +79,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": -1,
       },
@@ -103,6 +106,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "default",
+    "isInteger": true,
     "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 1,
@@ -113,6 +117,7 @@ Map {
     "byteAddress": 4,
     "default": 0,
     "id": "in",
+    "isInteger": true,
     "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": 1,
@@ -123,6 +128,7 @@ Map {
     "byteAddress": 8,
     "default": 0,
     "id": "out",
+    "isInteger": true,
     "lineNumber": 5,
     "relativeWordAddress": 2,
     "type": 1,

@@ -19,6 +19,7 @@ Array [
         "value": "defaultValue",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -47,6 +48,7 @@ Array [
         "value": "out",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -61,6 +63,7 @@ Array [
         "value": "counter",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -75,6 +78,7 @@ Array [
         "value": "rate",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -89,10 +93,12 @@ Array [
         "value": "buffer",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 64,
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -257,6 +263,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -287,6 +294,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 1,
       },
@@ -337,6 +345,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 1,
       },
@@ -407,6 +416,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -452,6 +462,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 256,
       },
@@ -538,6 +549,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
+    "isInteger": true,
     "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 1,
@@ -548,6 +560,7 @@ Map {
     "byteAddress": 4,
     "default": 0,
     "id": "in",
+    "isInteger": true,
     "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": 1,
@@ -558,6 +571,7 @@ Map {
     "byteAddress": 8,
     "default": 0,
     "id": "out",
+    "isInteger": true,
     "lineNumber": 5,
     "relativeWordAddress": 2,
     "type": 1,
@@ -568,6 +582,7 @@ Map {
     "byteAddress": 12,
     "default": 0,
     "id": "counter",
+    "isInteger": true,
     "lineNumber": 7,
     "relativeWordAddress": 3,
     "type": 1,
@@ -578,6 +593,7 @@ Map {
     "byteAddress": 16,
     "default": 0,
     "id": "rate",
+    "isInteger": true,
     "lineNumber": 8,
     "relativeWordAddress": 4,
     "type": 1,
@@ -653,6 +669,7 @@ Map {
       0,
     ],
     "id": "buffer",
+    "isInteger": true,
     "lineNumber": 9,
     "relativeWordAddress": 5,
     "type": 0,
@@ -663,6 +680,7 @@ Map {
     "byteAddress": 276,
     "default": 20,
     "id": "bufferPointer",
+    "isInteger": true,
     "lineNumber": 10,
     "relativeWordAddress": 69,
     "type": 1,
