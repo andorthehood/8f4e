@@ -11,6 +11,7 @@ export enum ErrorCode {
 	UNRECOGNISED_INSTRUCTION,
 	EXPECTED_VALUE,
 	MISSING_MODULE_ID,
+	EXPECTED_FLOAT_OPERAND,
 }
 
 export function getError(code: ErrorCode, line: Partial<AST[number]> = { lineNumber: 0 }): Error {
@@ -57,7 +58,6 @@ export function getError(code: ErrorCode, line: Partial<AST[number]> = { lineNum
 				message: 'Expected one of the operands to be an integer value.',
 				line,
 			};
-
 		case ErrorCode.UNRECOGNISED_INSTRUCTION:
 			return {
 				code,
@@ -74,6 +74,12 @@ export function getError(code: ErrorCode, line: Partial<AST[number]> = { lineNum
 			return {
 				code,
 				message: 'Missing module ID.',
+				line,
+			};
+		case ErrorCode.EXPECTED_FLOAT_OPERAND:
+			return {
+				code,
+				message: 'Expected one of the operands to be a floating point value.',
 				line,
 			};
 		default:
