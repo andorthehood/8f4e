@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`floatCounter if the generated ast matches with the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "constant",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 1,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "memory",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+      Object {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.1,
+      },
+    ],
+    "instruction": "memory",
+    "lineNumber": 3,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "out",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 7,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "add",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 9,
+  },
+]
+`;
+
+exports[`floatCounter if the generated memory map matches with the snapshot 1`] = `
+Map {
+  "test" => Object {
+    "byteAddress": 0,
+    "default": 0,
+    "id": "test",
+    "isInteger": true,
+    "lineNumber": 2,
+    "relativeWordAddress": 0,
+    "type": 1,
+    "wordAddress": 0,
+    "wordSize": 1,
+  },
+  "out" => Object {
+    "byteAddress": 4,
+    "default": 0.1,
+    "id": "out",
+    "isInteger": false,
+    "lineNumber": 3,
+    "relativeWordAddress": 1,
+    "type": 1,
+    "wordAddress": 1,
+    "wordSize": 1,
+  },
+}
+`;
+
+exports[`floatCounter if the wat code matches with the snapshot 1`] = `
+"(module
+  (type (;0;) (func))
+  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 4
+    f32.load
+    f32.const 0x1.99999ap-4 (;=0.1;)
+    f32.add
+    f32.store)
+  (export \\"test\\" (func 0)))
+"
+`;
