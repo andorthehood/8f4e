@@ -35,7 +35,7 @@ export function i32store(address?: number, value?: number, alingment = 2, offset
 export function f32store(address?: number, value?: number, alingment = 2, offset = 0): number[] {
 	return [
 		...(typeof address === 'undefined' ? [] : i32const(address)),
-		...(typeof value === 'undefined' ? [] : i32const(value)),
+		...(typeof value === 'undefined' ? [] : f32const(value)),
 		Instruction.F32_STORE,
 		...unsignedLEB128(alingment),
 		...unsignedLEB128(offset),

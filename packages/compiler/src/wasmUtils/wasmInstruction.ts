@@ -227,6 +227,12 @@ enum WASMInstruction {
 	F32_SUB = 0x93,
 	F32_MUL = 0x94,
 	F32_DIV = 0x95,
+
+	/**
+	 * Truncate Floating-Point to Integer, Signed
+	 * Type signature: (param f32) (result i32)
+	 */
+	I32_TUNC_F32_S = 0xa8,
 }
 
 export default WASMInstruction;
