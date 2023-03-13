@@ -30,7 +30,6 @@ import equalToZero from './equalToZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
 import remainder from './remainder';
-import pointerForward from './pointerForward';
 import _module from './module';
 import global from './global';
 import memory from './memory';
@@ -68,7 +67,6 @@ const instructions = {
 	shiftRight,
 	shiftRightUnsigned,
 	remainder,
-	pointerForward,
 	module: _module,
 	global,
 	memory,
