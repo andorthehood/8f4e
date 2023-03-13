@@ -18,7 +18,8 @@ export default `module stepSequencer
  greaterThan
  if void
  push _stepPointer
- pointerForward
+ push WORD_SIZE
+ add
  localSet _stepPointer
 
  push _stepPointer

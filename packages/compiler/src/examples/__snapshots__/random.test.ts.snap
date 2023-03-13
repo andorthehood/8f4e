@@ -19,6 +19,7 @@ Array [
         "value": "seed",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 69420,
       },
@@ -33,6 +34,7 @@ Array [
         "value": "out",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -153,6 +155,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 1,
       },
@@ -168,6 +171,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -218,6 +222,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -233,6 +238,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 2,
       },
@@ -283,6 +289,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 8,
       },
@@ -298,6 +305,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 3,
       },
@@ -348,6 +356,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 32,
       },
@@ -363,6 +372,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 5,
       },
@@ -413,6 +423,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 1,
       },
@@ -483,6 +494,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 2147483648,
       },
@@ -559,6 +571,7 @@ Map {
     "byteAddress": 0,
     "default": 69420,
     "id": "seed",
+    "isInteger": true,
     "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 1,
@@ -569,6 +582,7 @@ Map {
     "byteAddress": 4,
     "default": 0,
     "id": "out",
+    "isInteger": true,
     "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": 1,

@@ -15,6 +15,7 @@ export interface MemoryItem {
 	wordAddress: number;
 	default: number | number[];
 	lineNumber: number;
+	isInteger: boolean;
 	id: string;
 }
 
@@ -52,7 +53,10 @@ export const enum ArgumentType {
 	IDENTIFIER = 'identifier',
 }
 
-export type Argument = { type: ArgumentType.LITERAL; value: number } | { type: ArgumentType.IDENTIFIER; value: string };
+export type ArgumentLiteral = { type: ArgumentType.LITERAL; value: number; isInteger: boolean };
+export type ArgumentIdentifier = { type: ArgumentType.IDENTIFIER; value: string };
+
+export type Argument = ArgumentLiteral | ArgumentIdentifier;
 
 export type AST = Array<{ lineNumber: number; instruction: Instruction; arguments: Array<Argument> }>;
 
@@ -74,11 +78,24 @@ export interface TestModule {
 export interface Namespace {
 	locals: string[];
 	memory: MemoryMap;
-	consts: Record<string, number>;
+	consts: Record<string, { value: number; isInteger: boolean }>;
 }
+
+export interface StackItem {
+	isInteger: boolean;
+}
+
+export type Stack = StackItem[];
 
 export type InstructionHandler = (
 	line: AST[number],
 	namespace: Namespace,
+	stack: Stack,
 	startingByteAddress: number
-) => { namespace: Namespace; byteCode: Array<WASMInstruction | Type | number> };
+) => { namespace: Namespace; byteCode: Array<WASMInstruction | Type | number>; stack: Stack };
+
+export interface Error {
+	message: string;
+	line: Partial<AST[number]>;
+	code: number;
+}
