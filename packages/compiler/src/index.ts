@@ -1,3 +1,5 @@
+import { parse } from 'path';
+
 import {
 	createCodeSection,
 	createExportSection,
@@ -13,7 +15,17 @@ import Type from './wasmUtils/type';
 import { call, i32store } from './wasmUtils/instructionHelpers';
 import { compile as compileModule, compileToAST } from './compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
-import { CompiledModule, MemoryAddressLookup, Module, CompiledModuleLookup, AST, Namespace } from './types';
+import {
+	CompiledModule,
+	MemoryAddressLookup,
+	Module,
+	CompiledModuleLookup,
+	AST,
+	Namespace,
+	Argument,
+	ArgumentType,
+	ArgumentLiteral,
+} from './types';
 import { calculateModuleWordSize } from './utils';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
 
@@ -43,7 +55,13 @@ function collectGlobals(ast: AST): Namespace['consts'] {
 		ast
 			.filter(({ instruction }) => instruction === 'global')
 			.map(({ arguments: _arguments }) => {
-				return [_arguments[0].value, parseInt(_arguments[1].value.toString(), 10)];
+				return [
+					_arguments[0].value,
+					{
+						value: parseFloat(_arguments[1].value.toString()),
+						isInteger: (_arguments[1] as ArgumentLiteral).isInteger,
+					},
+				];
 			})
 	);
 }
@@ -51,10 +69,10 @@ function collectGlobals(ast: AST): Namespace['consts'] {
 export function compileModules(modules: Module[], startingMemoryWordAddress = 0): CompiledModule[] {
 	let memoryAddress = startingMemoryWordAddress;
 	let globals: Namespace['consts'] = {
-		I16_SIGNED_LARGEST_NUMBER: I16_SIGNED_LARGEST_NUMBER,
-		I16_SIGNED_SMALLEST_NUMBER: I16_SIGNED_SMALLEST_NUMBER,
-		I32_SIGNED_LARGEST_NUMBER: I32_SIGNED_LARGEST_NUMBER,
-		WORD_SIZE: Int32Array.BYTES_PER_ELEMENT,
+		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
+		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
+		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
+		WORD_SIZE: { value: Int32Array.BYTES_PER_ELEMENT, isInteger: true },
 	};
 
 	const astModules = modules.map(({ code }) => {

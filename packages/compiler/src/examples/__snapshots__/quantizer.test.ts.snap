@@ -19,6 +19,7 @@ Array [
         "value": "in",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -33,6 +34,7 @@ Array [
         "value": "out",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -47,6 +49,7 @@ Array [
         "value": "allocatedNotes",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 12,
       },
@@ -61,6 +64,7 @@ Array [
         "value": "numberOfNotes",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -75,10 +79,12 @@ Array [
         "value": "notes",
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 12,
       },
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": -1,
       },
@@ -189,6 +195,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 4,
       },
@@ -314,6 +321,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 1,
       },
@@ -394,6 +402,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -414,6 +423,7 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "isInteger": true,
         "type": "literal",
         "value": 0,
       },
@@ -557,9 +567,19 @@ Array [
     "lineNumber": 82,
   },
   Object {
-    "arguments": Array [],
-    "instruction": "pointerForward",
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "WORD_SIZE",
+      },
+    ],
+    "instruction": "push",
     "lineNumber": 83,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "add",
+    "lineNumber": 84,
   },
   Object {
     "arguments": Array [
@@ -569,17 +589,17 @@ Array [
       },
     ],
     "instruction": "localSet",
-    "lineNumber": 84,
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "loopEnd",
     "lineNumber": 85,
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "loopEnd",
     "lineNumber": 86,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 87,
   },
   Object {
     "arguments": Array [
@@ -589,7 +609,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 89,
+    "lineNumber": 90,
   },
   Object {
     "arguments": Array [
@@ -599,12 +619,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 90,
+    "lineNumber": 91,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 91,
+    "lineNumber": 92,
   },
 ]
 `;
@@ -615,6 +635,7 @@ Map {
     "byteAddress": 0,
     "default": 0,
     "id": "in",
+    "isInteger": true,
     "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": 1,
@@ -625,6 +646,7 @@ Map {
     "byteAddress": 4,
     "default": 0,
     "id": "out",
+    "isInteger": true,
     "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": 1,
@@ -635,6 +657,7 @@ Map {
     "byteAddress": 8,
     "default": 12,
     "id": "allocatedNotes",
+    "isInteger": true,
     "lineNumber": 5,
     "relativeWordAddress": 2,
     "type": 1,
@@ -645,6 +668,7 @@ Map {
     "byteAddress": 12,
     "default": 0,
     "id": "numberOfNotes",
+    "isInteger": true,
     "lineNumber": 6,
     "relativeWordAddress": 3,
     "type": 1,
@@ -668,6 +692,7 @@ Map {
       -1,
     ],
     "id": "notes",
+    "isInteger": true,
     "lineNumber": 7,
     "relativeWordAddress": 4,
     "type": 0,

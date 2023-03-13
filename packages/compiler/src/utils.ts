@@ -1,5 +1,5 @@
 import { WORD_LENGTH } from './consts';
-import { CompiledModule, MemoryMap } from './types';
+import { CompiledModule, MemoryMap, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return memoryMap.has(name);
@@ -51,4 +51,12 @@ export function calculateMemoryWordSize(memory: MemoryMap): number {
 
 export function calculateModuleWordSize(module: CompiledModule): number {
 	return calculateMemoryWordSize(module.memoryMap);
+}
+
+export function areAllOperandsIntegers(...operands: StackItem[]): boolean {
+	return !operands.some(operand => !operand.isInteger);
+}
+
+export function areAllOperandsFloats(...operands: StackItem[]): boolean {
+	return !operands.some(operand => operand.isInteger);
 }

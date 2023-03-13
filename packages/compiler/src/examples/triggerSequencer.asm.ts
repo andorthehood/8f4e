@@ -33,7 +33,8 @@ if void
  store
 
  push _stepPointer
- pointerForward
+ push WORD_SIZE
+ add
  localSet _stepPointer
 
  push _stepPointer
