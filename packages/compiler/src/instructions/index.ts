@@ -34,6 +34,7 @@ import _module from './module';
 import global from './global';
 import memory from './memory';
 import castToInt from './castToInt';
+import castToFloat from './castToFloat';
 
 const instructions = {
 	and,
@@ -72,6 +73,7 @@ const instructions = {
 	global,
 	memory,
 	castToInt,
+	castToFloat,
 } as const;
 
 export default instructions;
