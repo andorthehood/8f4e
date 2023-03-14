@@ -15,7 +15,7 @@ const and: InstructionHandler = function (line, namespace, stack) {
 		stack.push({ isInteger: true });
 		return { byteCode: [WASMInstruction.I32_AND], namespace, stack };
 	} else {
-		throw 'The operation only accepts integer values as operands.';
+		throw getError(ErrorCode.ONLY_INTEGERS, line);
 	}
 };
 
