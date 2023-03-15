@@ -32,7 +32,7 @@ class Main extends AudioWorkletProcessor {
 		return;
 	};
 
-	memoryBuffer = new Int32Array(128).fill(0);
+	memoryBuffer = new Float32Array(128).fill(0);
 	audioBufferWordAddress = 0;
 	outputWordAddress = 0;
 	channelWordAddress = 0;
@@ -56,7 +56,7 @@ class Main extends AudioWorkletProcessor {
 		}
 
 		for (let i = 0; i < outputChannel.length; i++) {
-			outputChannel[i] = this.memoryBuffer[i + this.audioBufferWordAddress] / 500;
+			outputChannel[i] = this.memoryBuffer[i + this.audioBufferWordAddress];
 		}
 
 		return true;
