@@ -21,7 +21,7 @@ export function parseArgument(argument: string): Argument {
 }
 
 export function parseLine(line: string, lineNumber: number): AST[number] {
-	const [, instruction, ...args] = (line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || []) as [
+	const [, instruction, ...args] = (line.match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)\s*(\S*)/) || []) as [
 		never,
 		Instruction,
 		string,
@@ -44,7 +44,7 @@ export function isComment(line: string): boolean {
 }
 
 export function isValidInstruction(line: string): boolean {
-	return /\s*(\S+)\s*(\S*)\s*(\S*)/.test(line);
+	return /\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/.test(line);
 }
 
 export function compileToAST(module: string[]) {
