@@ -83,6 +83,11 @@ Array [
         "type": "literal",
         "value": 16,
       },
+      Object {
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
+      },
     ],
     "instruction": "buffer",
     "lineNumber": 6,
