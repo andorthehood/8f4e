@@ -1,6 +1,6 @@
 export default `module constant
-memory test
-memory out 0.1
+memory int test
+memory float out 0.1
 
 push &out
 push out

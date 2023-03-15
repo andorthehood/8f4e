@@ -7,10 +7,10 @@ const scopeParser = /^\s*scope\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
 
 export function parseInputs(code: string[]): Array<{ id: string; lineNumber: number }> {
 	return code.reduce((acc, line, index) => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string];
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'memory' && args[0].startsWith('in')) {
-			return [...acc, { id: args[0], lineNumber: index }];
+		if (instruction === 'memory' && args[1].startsWith('in')) {
+			return [...acc, { id: args[1], lineNumber: index }];
 		}
 		return acc;
 	}, []);
@@ -18,10 +18,10 @@ export function parseInputs(code: string[]): Array<{ id: string; lineNumber: num
 
 export function parseOutputs(code: string[]): Array<{ id: string; lineNumber: number }> {
 	return code.reduce((acc, line, index) => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string];
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'memory' && args[0].startsWith('out')) {
-			return [...acc, { id: args[0], lineNumber: index }];
+		if (instruction === 'memory' && args[1].startsWith('out')) {
+			return [...acc, { id: args[1], lineNumber: index }];
 		}
 		return acc;
 	}, []);
