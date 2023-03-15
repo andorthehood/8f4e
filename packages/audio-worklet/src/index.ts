@@ -1,41 +1,30 @@
-import { Connection, Module, setUpConnections } from '@8f4e/compiler';
-
 import createModule from './createModule';
 class Main extends AudioWorkletProcessor {
 	constructor(...args) {
 		// @ts-ignore
 		super(...args);
 		this.port.onmessage = async event => {
-			this.recompile(event.data.memoryRef, event.data.modules, event.data.connections);
+			this.recompile(event.data.memoryRef, event.data.codeBuffer, event.data.addresses);
 		};
 	}
 
-	async recompile(memoryRef: WebAssembly.Memory, modules: Module[], connections: Connection[]) {
-		const { memoryBuffer, buffer, memoryAddressLookup, init, compiledModules } = await createModule(memoryRef, modules);
-
+	async recompile(
+		memoryRef: WebAssembly.Memory,
+		codeBuffer: Uint8Array,
+		addresses: { audioBufferWordAddress: number; outputWordAddress: number; channelWordAddress: number }
+	) {
+		const { memoryBuffer, buffer, init } = await createModule(memoryRef, codeBuffer);
 		init();
-		setUpConnections(memoryBuffer, memoryAddressLookup, connections);
 
-		const audioModule = compiledModules.get('audioout');
+		this.audioBufferWordAddress = addresses.audioBufferWordAddress;
+		this.outputWordAddress = addresses.outputWordAddress;
+		this.channelWordAddress = addresses.channelWordAddress;
 
-		if (!audioModule) {
-			return;
-		}
-
-		this.audioBufferWordAddress = audioModule.memoryMap.get('buffer')?.wordAddress || 0;
-		this.outputWordAddress = audioModule.memoryMap.get('output')?.wordAddress || 0;
-		this.channelWordAddress = audioModule.memoryMap.get('channel')?.wordAddress || 0;
 		this.buffer = buffer;
 		this.memoryBuffer = memoryBuffer;
 
-		this.buffer();
-
 		this.port.postMessage({
 			type: 'compilationDone',
-			payload: {
-				memoryAddressLookup: memoryAddressLookup,
-				compiledModules: compiledModules,
-			},
 		});
 	}
 
