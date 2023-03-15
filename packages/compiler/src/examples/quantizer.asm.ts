@@ -1,10 +1,10 @@
 export default `module quantizer
 
-memory in 0
-memory out 0
-memory allocatedNotes 12
-memory numberOfNotes 0
-buffer notes 12 -1 
+memory int* in 0
+memory int out 0
+memory int allocatedNotes 12
+memory int numberOfNotes 0
+buffer int notes 12 -1 
 
 local bestMatchingValue
 local difference

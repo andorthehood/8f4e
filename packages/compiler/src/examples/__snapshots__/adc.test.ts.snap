@@ -16,6 +16,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "default",
       },
       Object {
@@ -31,6 +35,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "in",
       },
       Object {
@@ -43,6 +51,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out:1",
@@ -60,6 +72,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "out:2",
       },
       Object {
@@ -73,6 +89,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out:3",
@@ -90,6 +110,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "out:4",
       },
       Object {
@@ -103,6 +127,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out:5",
@@ -120,6 +148,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "out:6",
       },
       Object {
@@ -135,6 +167,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "out:7",
       },
       Object {
@@ -148,6 +184,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out:8",
@@ -969,9 +1009,11 @@ Map {
     "default": 0,
     "id": "default",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 4,
     "relativeWordAddress": 0,
-    "type": 1,
+    "type": "int",
     "wordAddress": 0,
     "wordSize": 1,
   },
@@ -980,9 +1022,11 @@ Map {
     "default": 0,
     "id": "in",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 5,
     "relativeWordAddress": 1,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 1,
     "wordSize": 1,
   },
@@ -991,9 +1035,11 @@ Map {
     "default": 0,
     "id": "out:1",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 7,
     "relativeWordAddress": 2,
-    "type": 1,
+    "type": "int",
     "wordAddress": 2,
     "wordSize": 1,
   },
@@ -1002,9 +1048,11 @@ Map {
     "default": 0,
     "id": "out:2",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 8,
     "relativeWordAddress": 3,
-    "type": 1,
+    "type": "int",
     "wordAddress": 3,
     "wordSize": 1,
   },
@@ -1013,9 +1061,11 @@ Map {
     "default": 0,
     "id": "out:3",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 9,
     "relativeWordAddress": 4,
-    "type": 1,
+    "type": "int",
     "wordAddress": 4,
     "wordSize": 1,
   },
@@ -1024,9 +1074,11 @@ Map {
     "default": 0,
     "id": "out:4",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 10,
     "relativeWordAddress": 5,
-    "type": 1,
+    "type": "int",
     "wordAddress": 5,
     "wordSize": 1,
   },
@@ -1035,9 +1087,11 @@ Map {
     "default": 0,
     "id": "out:5",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 11,
     "relativeWordAddress": 6,
-    "type": 1,
+    "type": "int",
     "wordAddress": 6,
     "wordSize": 1,
   },
@@ -1046,9 +1100,11 @@ Map {
     "default": 0,
     "id": "out:6",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 12,
     "relativeWordAddress": 7,
-    "type": 1,
+    "type": "int",
     "wordAddress": 7,
     "wordSize": 1,
   },
@@ -1057,9 +1113,11 @@ Map {
     "default": 0,
     "id": "out:7",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 13,
     "relativeWordAddress": 8,
-    "type": 1,
+    "type": "int",
     "wordAddress": 8,
     "wordSize": 1,
   },
@@ -1068,9 +1126,11 @@ Map {
     "default": 0,
     "id": "out:8",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 14,
     "relativeWordAddress": 9,
-    "type": 1,
+    "type": "int",
     "wordAddress": 9,
     "wordSize": 1,
   },

@@ -1,12 +1,12 @@
 export default `module saw
 
-memory LIMIT_SELF I16_SIGNED_LARGEST_NUMBER
-memory rate 1
-memory in:rate &rate
-memory in:limit &LIMIT_SELF
-memory out 0
-memory defaultValue 0
-memory reset &defaultValue
+memory int LIMIT_SELF I16_SIGNED_LARGEST_NUMBER
+memory int rate 1
+memory int* in:rate &rate
+memory int* in:limit &LIMIT_SELF
+memory int out 0
+memory int defaultValue 0
+memory int* reset &defaultValue
 
 local _rate
 local limit

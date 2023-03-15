@@ -16,6 +16,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "DEFAULT_VALUE",
       },
       Object {
@@ -31,6 +35,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "in:1",
       },
       Object {
@@ -43,6 +51,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -60,17 +72,16 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "arr",
       },
       Object {
         "isInteger": true,
         "type": "literal",
         "value": 32,
-      },
-      Object {
-        "isInteger": true,
-        "type": "literal",
-        "value": -1,
       },
     ],
     "instruction": "buffer",

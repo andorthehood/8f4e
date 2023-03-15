@@ -16,6 +16,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "defaultValue",
       },
       Object {
@@ -29,6 +33,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "numberOfInputs",
@@ -46,6 +54,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "numberOfOutputs",
       },
       Object {
@@ -59,6 +71,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "numberOfDataPlaceholders",
@@ -76,6 +92,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "in:1",
       },
       Object {
@@ -88,6 +108,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int*",
+      },
       Object {
         "type": "identifier",
         "value": "in:2",
@@ -104,6 +128,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "in:3",
       },
       Object {
@@ -118,6 +146,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "in:4",
       },
       Object {
@@ -130,6 +162,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out:1",
@@ -147,6 +183,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "out:2",
       },
       Object {
@@ -160,6 +200,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out:3",
@@ -177,6 +221,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "out:4",
       },
       Object {
@@ -190,6 +238,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "data:1",
@@ -207,6 +259,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "data:2",
       },
       Object {
@@ -222,6 +278,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "data:3",
       },
       Object {
@@ -235,6 +295,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "data:4",
@@ -358,9 +422,11 @@ Map {
     "default": 0,
     "id": "defaultValue",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 1,
+    "type": "int",
     "wordAddress": 0,
     "wordSize": 1,
   },
@@ -369,9 +435,11 @@ Map {
     "default": 4,
     "id": "numberOfInputs",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 1,
+    "type": "int",
     "wordAddress": 1,
     "wordSize": 1,
   },
@@ -380,9 +448,11 @@ Map {
     "default": 4,
     "id": "numberOfOutputs",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 1,
+    "type": "int",
     "wordAddress": 2,
     "wordSize": 1,
   },
@@ -391,9 +461,11 @@ Map {
     "default": 4,
     "id": "numberOfDataPlaceholders",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 6,
     "relativeWordAddress": 3,
-    "type": 1,
+    "type": "int",
     "wordAddress": 3,
     "wordSize": 1,
   },
@@ -402,9 +474,11 @@ Map {
     "default": 0,
     "id": "in:1",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 8,
     "relativeWordAddress": 4,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 4,
     "wordSize": 1,
   },
@@ -413,9 +487,11 @@ Map {
     "default": 0,
     "id": "in:2",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 9,
     "relativeWordAddress": 5,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 5,
     "wordSize": 1,
   },
@@ -424,9 +500,11 @@ Map {
     "default": 0,
     "id": "in:3",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 10,
     "relativeWordAddress": 6,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 6,
     "wordSize": 1,
   },
@@ -435,9 +513,11 @@ Map {
     "default": 0,
     "id": "in:4",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 11,
     "relativeWordAddress": 7,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 7,
     "wordSize": 1,
   },
@@ -446,9 +526,11 @@ Map {
     "default": 0,
     "id": "out:1",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 12,
     "relativeWordAddress": 8,
-    "type": 1,
+    "type": "int",
     "wordAddress": 8,
     "wordSize": 1,
   },
@@ -457,9 +539,11 @@ Map {
     "default": 0,
     "id": "out:2",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 13,
     "relativeWordAddress": 9,
-    "type": 1,
+    "type": "int",
     "wordAddress": 9,
     "wordSize": 1,
   },
@@ -468,9 +552,11 @@ Map {
     "default": 0,
     "id": "out:3",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 14,
     "relativeWordAddress": 10,
-    "type": 1,
+    "type": "int",
     "wordAddress": 10,
     "wordSize": 1,
   },
@@ -479,9 +565,11 @@ Map {
     "default": 0,
     "id": "out:4",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 15,
     "relativeWordAddress": 11,
-    "type": 1,
+    "type": "int",
     "wordAddress": 11,
     "wordSize": 1,
   },
@@ -490,9 +578,11 @@ Map {
     "default": 0,
     "id": "data:1",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 17,
     "relativeWordAddress": 12,
-    "type": 1,
+    "type": "int",
     "wordAddress": 12,
     "wordSize": 1,
   },
@@ -501,9 +591,11 @@ Map {
     "default": 0,
     "id": "data:2",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 18,
     "relativeWordAddress": 13,
-    "type": 1,
+    "type": "int",
     "wordAddress": 13,
     "wordSize": 1,
   },
@@ -512,9 +604,11 @@ Map {
     "default": 0,
     "id": "data:3",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 19,
     "relativeWordAddress": 14,
-    "type": 1,
+    "type": "int",
     "wordAddress": 14,
     "wordSize": 1,
   },
@@ -523,9 +617,11 @@ Map {
     "default": 0,
     "id": "data:4",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 20,
     "relativeWordAddress": 15,
-    "type": 1,
+    "type": "int",
     "wordAddress": 15,
     "wordSize": 1,
   },

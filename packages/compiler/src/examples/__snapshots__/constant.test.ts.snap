@@ -16,6 +16,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "out",
       },
       Object {
@@ -37,9 +41,11 @@ Map {
     "default": 0,
     "id": "out",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 2,
     "relativeWordAddress": 0,
-    "type": 1,
+    "type": "int",
     "wordAddress": 0,
     "wordSize": 1,
   },

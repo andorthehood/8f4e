@@ -1,9 +1,9 @@
 export default `module offset
 
-memory defaultValue 0
-memory in &defaultValue
-memory offset 0
-memory out 0
+memory int defaultValue 0
+memory int* in &defaultValue
+memory int offset 0
+memory int out 0
 
 const HIGH I16_SIGNED_LARGEST_NUMBER
 const LOW I16_SIGNED_SMALLEST_NUMBER

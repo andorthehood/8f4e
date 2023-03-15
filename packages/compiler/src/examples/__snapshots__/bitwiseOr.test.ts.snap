@@ -16,6 +16,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "default1",
       },
       Object {
@@ -29,6 +33,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "default2",
@@ -46,6 +54,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "in:1",
       },
       Object {
@@ -60,6 +72,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "in:2",
       },
       Object {
@@ -72,6 +88,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -135,9 +155,11 @@ Map {
     "default": 0,
     "id": "default1",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 1,
+    "type": "int",
     "wordAddress": 0,
     "wordSize": 1,
   },
@@ -146,9 +168,11 @@ Map {
     "default": 0,
     "id": "default2",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 1,
+    "type": "int",
     "wordAddress": 1,
     "wordSize": 1,
   },
@@ -157,9 +181,11 @@ Map {
     "default": 0,
     "id": "in:1",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 2,
     "wordSize": 1,
   },
@@ -168,9 +194,11 @@ Map {
     "default": 4,
     "id": "in:2",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 6,
     "relativeWordAddress": 3,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 3,
     "wordSize": 1,
   },
@@ -179,9 +207,11 @@ Map {
     "default": 0,
     "id": "out",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 7,
     "relativeWordAddress": 4,
-    "type": 1,
+    "type": "int",
     "wordAddress": 4,
     "wordSize": 1,
   },

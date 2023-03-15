@@ -1,15 +1,15 @@
 export default `module triggerSequencer
 
-memory defaultValue 0
-memory trigger &defaultValue
-memory reset &defaultValue
-memory triggerPreviousValue 0
-memory stepMinusOne 0
-buffer steps 16 0
-memory stepPointer &stepMinusOne
-memory stepLength 4
-memory didTrigger 0
-memory out 0
+memory int defaultValue 0
+memory int* trigger &defaultValue
+memory int* reset &defaultValue
+memory int triggerPreviousValue 0
+memory int stepMinusOne 0
+buffer int steps 16 0
+memory int stepPointer &stepMinusOne
+memory int stepLength 4
+memory int didTrigger 0
+memory int out 0
 
 local _stepPointer
 

@@ -1,7 +1,7 @@
 export default () => `module random
 
-memory seed 69420
-memory out 0
+memory int seed 69420
+memory int out 0
 
 local random
 local feedback
