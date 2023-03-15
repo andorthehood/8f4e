@@ -16,6 +16,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "test",
       },
     ],
@@ -24,6 +28,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "float",
+      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -88,9 +96,11 @@ Map {
     "default": 0,
     "id": "test",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 2,
     "relativeWordAddress": 0,
-    "type": 1,
+    "type": "int",
     "wordAddress": 0,
     "wordSize": 1,
   },
@@ -99,9 +109,11 @@ Map {
     "default": 0.1,
     "id": "out",
     "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 3,
     "relativeWordAddress": 1,
-    "type": 1,
+    "type": "float",
     "wordAddress": 1,
     "wordSize": 1,
   },

@@ -16,6 +16,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "defaultValue",
       },
       Object {
@@ -31,6 +35,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "trigger",
       },
       Object {
@@ -43,6 +51,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "triggerPreviousValue",
@@ -60,6 +72,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "steps",
       },
       Object {
@@ -67,17 +83,16 @@ Array [
         "type": "literal",
         "value": 16,
       },
-      Object {
-        "isInteger": true,
-        "type": "literal",
-        "value": 0,
-      },
     ],
     "instruction": "buffer",
     "lineNumber": 6,
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "stepPointer",
@@ -94,6 +109,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "stepLength",
       },
       Object {
@@ -107,6 +126,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -406,9 +429,11 @@ Map {
     "default": 0,
     "id": "defaultValue",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 1,
+    "type": "int",
     "wordAddress": 0,
     "wordSize": 1,
   },
@@ -417,9 +442,11 @@ Map {
     "default": 0,
     "id": "trigger",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 1,
     "wordSize": 1,
   },
@@ -428,9 +455,11 @@ Map {
     "default": 0,
     "id": "triggerPreviousValue",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 1,
+    "type": "int",
     "wordAddress": 2,
     "wordSize": 1,
   },
@@ -456,9 +485,11 @@ Map {
     ],
     "id": "steps",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 6,
     "relativeWordAddress": 3,
-    "type": 0,
+    "type": "int",
     "wordAddress": 3,
     "wordSize": 16,
   },
@@ -467,9 +498,11 @@ Map {
     "default": 12,
     "id": "stepPointer",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 7,
     "relativeWordAddress": 19,
-    "type": 1,
+    "type": "int",
     "wordAddress": 19,
     "wordSize": 1,
   },
@@ -478,9 +511,11 @@ Map {
     "default": 4,
     "id": "stepLength",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 8,
     "relativeWordAddress": 20,
-    "type": 1,
+    "type": "int",
     "wordAddress": 20,
     "wordSize": 1,
   },
@@ -489,9 +524,11 @@ Map {
     "default": 0,
     "id": "out",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 9,
     "relativeWordAddress": 21,
-    "type": 1,
+    "type": "int",
     "wordAddress": 21,
     "wordSize": 1,
   },

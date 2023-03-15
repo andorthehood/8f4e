@@ -1,8 +1,8 @@
 export default `module invert
 
-memory default 0
-memory in &default
-memory out 0
+memory int default 0
+memory int* in &default
+memory int out 0
 
 push &out
 push *in

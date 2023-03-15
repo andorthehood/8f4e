@@ -16,6 +16,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "defaultValue",
       },
       Object {
@@ -31,6 +35,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int*",
+      },
+      Object {
+        "type": "identifier",
         "value": "in",
       },
       Object {
@@ -43,6 +51,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -60,6 +72,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "counter",
       },
       Object {
@@ -73,6 +89,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "rate",
@@ -90,6 +110,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "buffer",
       },
       Object {
@@ -97,17 +121,16 @@ Array [
         "type": "literal",
         "value": 64,
       },
-      Object {
-        "isInteger": true,
-        "type": "literal",
-        "value": 0,
-      },
     ],
     "instruction": "buffer",
     "lineNumber": 9,
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "bufferPointer",
@@ -550,9 +573,11 @@ Map {
     "default": 0,
     "id": "defaultValue",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 3,
     "relativeWordAddress": 0,
-    "type": 1,
+    "type": "int",
     "wordAddress": 0,
     "wordSize": 1,
   },
@@ -561,9 +586,11 @@ Map {
     "default": 0,
     "id": "in",
     "isInteger": true,
+    "isPointer": true,
+    "isPointingToInteger": true,
     "lineNumber": 4,
     "relativeWordAddress": 1,
-    "type": 1,
+    "type": "int*",
     "wordAddress": 1,
     "wordSize": 1,
   },
@@ -572,9 +599,11 @@ Map {
     "default": 0,
     "id": "out",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 5,
     "relativeWordAddress": 2,
-    "type": 1,
+    "type": "int",
     "wordAddress": 2,
     "wordSize": 1,
   },
@@ -583,9 +612,11 @@ Map {
     "default": 0,
     "id": "counter",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 7,
     "relativeWordAddress": 3,
-    "type": 1,
+    "type": "int",
     "wordAddress": 3,
     "wordSize": 1,
   },
@@ -594,9 +625,11 @@ Map {
     "default": 0,
     "id": "rate",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 8,
     "relativeWordAddress": 4,
-    "type": 1,
+    "type": "int",
     "wordAddress": 4,
     "wordSize": 1,
   },
@@ -670,9 +703,11 @@ Map {
     ],
     "id": "buffer",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 9,
     "relativeWordAddress": 5,
-    "type": 0,
+    "type": "int",
     "wordAddress": 5,
     "wordSize": 64,
   },
@@ -681,9 +716,11 @@ Map {
     "default": 20,
     "id": "bufferPointer",
     "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
     "lineNumber": 10,
     "relativeWordAddress": 69,
-    "type": 1,
+    "type": "int",
     "wordAddress": 69,
     "wordSize": 1,
   },
