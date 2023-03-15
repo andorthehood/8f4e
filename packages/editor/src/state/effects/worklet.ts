@@ -19,6 +19,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		const { codeBuffer, compiledModules, memoryAddressLookup } = compile(state.project.modules);
 
 		state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
+		state.compiler.memoryBufferFloat = new Float32Array(memoryRef.buffer);
 		state.compiler.memoryRef = memoryRef;
 		state.compiler.memoryAddressLookup = memoryAddressLookup;
 		state.compiler.isCompiling = false;
