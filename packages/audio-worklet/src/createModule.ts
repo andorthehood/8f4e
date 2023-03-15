@@ -1,18 +1,12 @@
-import compile, { CompiledModuleLookup, MemoryAddressLookup, MemoryBuffer, Module } from '@8f4e/compiler';
-
 export default async function createModule(
 	memoryRef: WebAssembly.Memory,
-	modules: Module[]
+	codeBuffer: Uint8Array
 ): Promise<{
-	memoryBuffer: MemoryBuffer;
+	memoryBuffer: Int32Array;
 	cycle: CallableFunction;
 	init: CallableFunction;
 	buffer: CallableFunction;
-	memoryAddressLookup: MemoryAddressLookup;
-	compiledModules: CompiledModuleLookup;
 }> {
-	const { codeBuffer, memoryAddressLookup, compiledModules } = compile(modules);
-
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 
 	const { instance } = await WebAssembly.instantiate(codeBuffer, {
@@ -25,5 +19,5 @@ export default async function createModule(
 	const buffer = instance.exports.buffer as CallableFunction;
 	const init = instance.exports.init as CallableFunction;
 
-	return { memoryBuffer, cycle, buffer, init, memoryAddressLookup, compiledModules };
+	return { memoryBuffer, cycle, buffer, init };
 }

@@ -1,8 +1,8 @@
 import workletBlobUrl from 'worklet:../../../../audio-worklet/dist/index.js';
+import compile, { setUpConnections } from '@8f4e/compiler';
 
 import { State } from '../types';
 import { EventDispatcher } from '../../events';
-import { compilationDone } from '../mutators/compiler';
 
 export default async function worklet(state: State, events: EventDispatcher) {
 	console.log(workletBlobUrl);
@@ -15,10 +15,32 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		if (!audioWorklet) {
 			return;
 		}
+
+		const { codeBuffer, compiledModules, memoryAddressLookup } = compile(state.project.modules);
+
+		state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
+		state.compiler.memoryRef = memoryRef;
+		state.compiler.memoryAddressLookup = memoryAddressLookup;
+		state.compiler.isCompiling = false;
+		state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
+		state.compiler.compiledModules = compiledModules;
+
+		const audioModule = compiledModules.get('audioout');
+
+		if (!audioModule) {
+			return;
+		}
+
+		const addresses = {
+			audioBufferWordAddress: audioModule.memoryMap.get('buffer')?.wordAddress || 0,
+			outputWordAddress: audioModule.memoryMap.get('output')?.wordAddress || 0,
+			channelWordAddress: audioModule.memoryMap.get('channel')?.wordAddress || 0,
+		};
+
 		audioWorklet.port.postMessage({
 			memoryRef,
-			modules: state.project.modules,
-			connections: state.project.connections,
+			codeBuffer,
+			addresses,
 		});
 	}
 
@@ -33,7 +55,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		audioWorklet.port.onmessage = function ({ data }) {
 			switch (data.type) {
 				case 'compilationDone':
-					compilationDone(state, data, memoryRef);
+					setUpConnections(state.compiler.memoryBuffer, state.compiler.memoryAddressLookup, state.project.connections);
 					events.dispatch('compilationDone');
 					break;
 			}
