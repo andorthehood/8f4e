@@ -65,6 +65,7 @@ export interface Compiler {
 	isCompiling: boolean;
 	lastCompilationStart: number;
 	memoryBuffer: MemoryBuffer;
+	memoryBufferFloat: Float32Array;
 	memoryRef: WebAssembly.Memory | undefined;
 	memoryAddressLookup: MemoryAddressLookup;
 	timerAccuracy: number;

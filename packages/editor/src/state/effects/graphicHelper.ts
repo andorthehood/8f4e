@@ -34,10 +34,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 			const trimmedCode = [...module.code.slice(0, length + 1), ''];
 
-			const codeWithLineNumbers = trimmedCode.map(
-				(line, index) =>
-					(line.includes('memory in') ? ''.padStart(padLength, ' ') : `${index}`.padStart(padLength, '0')) + ' ' + line
-			);
+			const codeWithLineNumbers = trimmedCode.map((line, index) => `${index}`.padStart(padLength, '0') + ' ' + line);
 
 			const codeColors = codeWithLineNumbers.map(line => {
 				const keywordIndex = line.search(keywords);
