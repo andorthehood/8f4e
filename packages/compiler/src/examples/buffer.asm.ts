@@ -9,15 +9,15 @@ export default ({ numberOfPorts = 1, numberOfDataPlaceholders = 1 }) => {
 
 	return `module buffer
 
-memory defaultValue 0
-memory numberOfInputs ${numberOfPorts}
-memory numberOfOutputs ${numberOfPorts}
-memory numberOfDataPlaceholders ${numberOfDataPlaceholders}
+memory int defaultValue 0
+memory int numberOfInputs ${numberOfPorts}
+memory int numberOfOutputs ${numberOfPorts}
+memory int numberOfDataPlaceholders ${numberOfDataPlaceholders}
 
-${ports.map(index => `memory in:${index} &defaultValue`).join('\n')}
-${ports.map(index => `memory out:${index} 0`).join('\n')}
+${ports.map(index => `memory int* in:${index} &defaultValue`).join('\n')}
+${ports.map(index => `memory int out:${index} 0`).join('\n')}
 
-${dataPlaceholders.map(index => `memory data:${index} 0`).join('\n')}
+${dataPlaceholders.map(index => `memory int data:${index} 0`).join('\n')}
 
 ${ports
 	.map(

@@ -12,6 +12,7 @@ export enum ErrorCode {
 	EXPECTED_VALUE,
 	MISSING_MODULE_ID,
 	EXPECTED_FLOAT_OPERAND,
+	UNKNOWN_ERROR,
 }
 
 export function getError(code: ErrorCode, line: Partial<AST[number]> = { lineNumber: 0 }): Error {
@@ -82,6 +83,7 @@ export function getError(code: ErrorCode, line: Partial<AST[number]> = { lineNum
 				message: 'Expected one of the operands to be a floating point value.',
 				line,
 			};
+		case ErrorCode.UNKNOWN_ERROR:
 		default:
 			return {
 				message: 'Unknown error',

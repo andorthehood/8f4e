@@ -3,8 +3,10 @@ import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
 
 export enum MemoryTypes {
-	ARRAY,
-	WORD,
+	'int',
+	'int*',
+	'float',
+	'float*',
 }
 
 export interface MemoryItem {
@@ -17,6 +19,8 @@ export interface MemoryItem {
 	lineNumber: number;
 	isInteger: boolean;
 	id: string;
+	isPointer: boolean;
+	isPointingToInteger: boolean;
 }
 
 export type MemoryMap = Map<string, MemoryItem>;

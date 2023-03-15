@@ -1,8 +1,8 @@
 export default `module logicNegate
 
-memory defaultValue 0
-memory in &defaultValue
-memory out 0
+memory int defaultValue 0
+memory int* in &defaultValue
+memory int out 0
 
 push &out
 push *in

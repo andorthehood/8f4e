@@ -4,10 +4,10 @@ const fixture = `
 module abs
 
 # memory
-memory DEFAULT_VALUE -1
-memory in:1 &DEFAULT_VALUE
-memory out 0
-buffer arr 32 -1
+memory int DEFAULT_VALUE -1
+memory int* in:1 &DEFAULT_VALUE
+memory int out 0
+buffer int arr 32 -1
 
 # registers
 local input
