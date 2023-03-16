@@ -31,10 +31,10 @@ export function parseSwitches(
 	code: string[]
 ): Array<{ id: string; lineNumber: number; onValue: number; offValue: number }> {
 	return code.reduce((acc, line, index) => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string];
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'memory' && args[0].startsWith('sw')) {
-			return [...acc, { id: args[0], lineNumber: index, onValue: 100, offValue: 0 }];
+		if (instruction === 'memory' && args[1].startsWith('sw')) {
+			return [...acc, { id: args[1], lineNumber: index, onValue: 100, offValue: 0 }];
 		}
 		return acc;
 	}, []);
@@ -84,4 +84,8 @@ export function getLastMemoryInstructionLine(code: string[]): number {
 	return code.findLastIndex(line => {
 		return /^\s*memory/.test(line);
 	});
+}
+
+export function getLongestLineLength(code: string[]): number {
+	return code.reduce((longestLength, line) => (line.length > longestLength ? line.length : longestLength), 0);
 }

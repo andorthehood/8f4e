@@ -12,7 +12,7 @@ import {
 	createTypeSection,
 } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
-import { call, i32store } from './wasmUtils/instructionHelpers';
+import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
 import { compile as compileModule, compileToAST } from './compiler';
 import { generateMemoryAddressLookup } from './initializeMemory';
 import {
@@ -94,7 +94,7 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 			let pointer = module.byteAddress;
 			return getInitialMemory(module)
 				.map(value => {
-					const instuction = i32store(pointer, value);
+					const instuction = Number.isInteger(value) ? i32store(pointer, value) : f32store(pointer, value);
 					pointer += Int32Array.BYTES_PER_ELEMENT;
 					return instuction;
 				})
