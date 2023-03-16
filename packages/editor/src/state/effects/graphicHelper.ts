@@ -12,6 +12,7 @@ import {
 	getLastMemoryInstructionLine,
 	parseScopes,
 	parseSwitches,
+	getLongestLineLength,
 } from '../helpers/codeParsers';
 
 const keywords = new RegExp(Object.keys(instructions).join('|'));
@@ -35,6 +36,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			const trimmedCode = [...module.code.slice(0, length + 1), ''];
 
 			const codeWithLineNumbers = trimmedCode.map((line, index) => `${index}`.padStart(padLength, '0') + ' ' + line);
+
+			const width = Math.max(32, getLongestLineLength(module.code) + padLength + 3);
 
 			const codeColors = codeWithLineNumbers.map(line => {
 				const keywordIndex = line.search(keywords);
@@ -63,7 +66,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			const graphicData = state.graphicHelper.modules.get(module);
 			if (!graphicData) {
 				state.graphicHelper.modules.set(module, {
-					width: 32 * VGRID,
+					width: width * VGRID,
 					height: trimmedCode.length * HGRID,
 					codeWithLineNumbers,
 					codeColors,
@@ -81,6 +84,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				graphicData.height = trimmedCode.length * HGRID;
 				graphicData.cursor.offset = VGRID * (padLength + 2);
 				graphicData.id = getModuleId(module.code) || '';
+				graphicData.width = width * VGRID;
 			}
 
 			state.graphicHelper.modules.get(module)?.outputs.clear();
@@ -88,7 +92,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				state.graphicHelper.modules.get(module)?.outputs.set(output.id, {
 					width: VGRID * 2,
 					height: HGRID,
-					x: 30 * VGRID, //VGRID * 3 + VGRID * code[output.lineNumber].length,
+					x: (width - 2) * VGRID,
 					y: HGRID * output.lineNumber,
 					id: output.id,
 				});
@@ -134,7 +138,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				state.graphicHelper.modules.get(module)?.switches.set(_switch.id, {
 					width: VGRID * 4,
 					height: HGRID,
-					x: VGRID * (3 + padLength) + VGRID * trimmedCode[_switch.lineNumber].length,
+					x: (width - 4) * VGRID,
 					y: HGRID * _switch.lineNumber,
 					id: _switch.id,
 					offValue: _switch.offValue,
@@ -199,6 +203,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				module.cursor.col = bp.col;
 				state.selectedModule.code = bp.code;
 				onCompilationDone();
+				events.dispatch('saveState');
+				events.dispatch('codeChange');
 				break;
 			case 'Enter':
 				// eslint-disable-next-line no-case-declarations
@@ -207,6 +213,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				module.cursor.col = ent.col;
 				state.selectedModule.code = ent.code;
 				onCompilationDone();
+				events.dispatch('saveState');
+				events.dispatch('codeChange');
 				break;
 			default:
 				if (event?.key.length === 1) {
@@ -216,10 +224,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					module.cursor.col = bp.col;
 					state.selectedModule.code = bp.code;
 					onCompilationDone();
+					events.dispatch('saveState');
+					events.dispatch('codeChange');
 				}
 		}
-
-		events.dispatch('saveState');
 	};
 
 	events.on('moduleClick', onCompilationDone);
