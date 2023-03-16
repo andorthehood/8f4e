@@ -50,13 +50,13 @@ const push: InstructionHandler = function (line, namespace, stack) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
 			}
 
-			stack.push({ isInteger: memoryItem.isInteger });
+			stack.push({ isInteger: memoryItem.isPointingToInteger });
 
 			return {
 				byteCode: [
 					...i32const(memoryItem.byteAddress),
 					...i32load(),
-					...(memoryItem.isInteger ? i32load() : f32load()),
+					...(memoryItem.isPointingToInteger ? i32load() : f32load()),
 				],
 				namespace,
 				stack,
