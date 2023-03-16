@@ -44,5 +44,5 @@ export default async function compiler(state: State, events: EventDispatcher) {
 	events.on('addModule', onRecompile);
 	events.on('deleteModule', onRecompile);
 	events.on('init', onRecompile);
-	events.on('saveState', onRecompile);
+	events.on('codeChange', onRecompile);
 }
