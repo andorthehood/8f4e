@@ -5,6 +5,7 @@ import drawConnectors from './connectors';
 import drawScopes from './scopes';
 import drawDebuggers from './debuggers';
 import drawSwitches from './switches';
+import drawErrorMessages from './errorMessages';
 
 import { State } from '../../../state/types';
 import { HGRID, VGRID } from '../consts';
@@ -57,6 +58,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			drawScopes(engine, state, module);
 			drawDebuggers(engine, state, module);
 			drawSwitches(engine, state, module);
+			drawErrorMessages(engine, state, module);
 
 			engine.endGroup();
 		}

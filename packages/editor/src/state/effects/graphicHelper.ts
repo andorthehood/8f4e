@@ -3,7 +3,7 @@ import { instructions } from '@8f4e/compiler';
 
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
-import { GraphicHelper, State } from '../types';
+import { GraphicHelper, ModuleGraphicData, State } from '../types';
 import { backSpace, enter, moveCaret, type } from '../helpers/editor';
 import {
 	parseDebuggers,
@@ -18,8 +18,18 @@ import {
 
 const keywords = new RegExp(Object.keys(instructions).join('|'));
 
+function calculateCursorYPosition(row: number, gaps: ModuleGraphicData['gaps']) {
+	let newRow = row;
+	for (const [gapRow, gap] of gaps) {
+		if (row >= gapRow) {
+			newRow += gap.size;
+		}
+	}
+	return newRow * HGRID;
+}
+
 export default function graphicHelper(state: State, events: EventDispatcher) {
-	const onCompilationDone = function () {
+	const updateGraphics = function () {
 		state.project.modules.forEach(module => {
 			const padLength = module.code.length.toString().length;
 			const length = module.isOpen ? module.code.length : getLastMemoryInstructionLine(module.code);
@@ -28,7 +38,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 			const codeWithLineNumbers = trimmedCode.map((line, index) => `${index}`.padStart(padLength, '0') + ' ' + line);
 
-			const width = Math.max(32, getLongestLineLength(module.code) + padLength + 3);
+			const width = Math.max(32, getLongestLineLength(codeWithLineNumbers));
 
 			const codeColors = codeWithLineNumbers.map(line => {
 				const keywordIndex = line.search(keywords);
@@ -54,90 +64,115 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				});
 			});
 
-			const graphicData = state.graphicHelper.modules.get(module);
-			if (!graphicData) {
-				state.graphicHelper.modules.set(module, {
-					width: width * VGRID,
-					height: trimmedCode.length * HGRID,
-					code: module.code,
-					codeWithLineNumbers,
-					codeColors,
-					inputs: new Map(),
-					outputs: new Map(),
-					debuggers: new Map(),
-					switches: new Map(),
-					scopes: new Map(),
-					cursor: { col: 0, row: 0, x: VGRID * (padLength + 2), y: 0 },
-					id: getModuleId(module.code) || '',
-				});
-			} else {
-				graphicData.codeWithLineNumbers = codeWithLineNumbers;
-				graphicData.codeColors = codeColors;
-				graphicData.height = trimmedCode.length * HGRID;
-				graphicData.cursor.x = (graphicData.cursor.col + (padLength + 2)) * VGRID;
-				graphicData.cursor.y = graphicData.cursor.row * HGRID;
-				graphicData.id = getModuleId(module.code) || '';
-				graphicData.width = width * VGRID;
-			}
+			const graphicData = state.graphicHelper.modules.get(module) || {
+				width: width * VGRID,
+				height: codeWithLineNumbers.length * HGRID,
+				code: module.code,
+				codeWithLineNumbers,
+				codeColors,
+				inputs: new Map(),
+				outputs: new Map(),
+				debuggers: new Map(),
+				switches: new Map(),
+				scopes: new Map(),
+				cursor: { col: 0, row: 0, x: VGRID * (padLength + 2), y: 0 },
+				id: getModuleId(module.code) || '',
+				gaps: new Map(),
+				errorMessages: new Map(),
+			};
+			state.graphicHelper.modules.set(module, graphicData);
 
-			state.graphicHelper.modules.get(module)?.outputs.clear();
-			parseOutputs(trimmedCode).forEach(output => {
-				state.graphicHelper.modules.get(module)?.outputs.set(output.id, {
-					width: VGRID * 2,
-					height: HGRID,
-					x: (width - 2) * VGRID,
-					y: HGRID * output.lineNumber,
-					id: output.id,
+			graphicData.gaps.clear();
+			graphicData.errorMessages.clear();
+
+			state.compiler.buildErrors.forEach(buildError => {
+				if (buildError.moduleId !== graphicData.id) {
+					return;
+				}
+				graphicData.errorMessages.set(buildError.lineNumber, {
+					x: 0,
+					y: calculateCursorYPosition(buildError.lineNumber, graphicData.gaps),
+					message: ['Error:', buildError.message],
 				});
+				graphicData.gaps.set(buildError.lineNumber, { size: 2 });
 			});
 
-			state.graphicHelper.modules.get(module)?.inputs.clear();
-			parseInputs(trimmedCode).forEach(input => {
-				state.graphicHelper.modules.get(module)?.inputs.set(input.id, {
-					width: VGRID * 2,
-					height: HGRID,
-					x: VGRID,
-					y: HGRID * input.lineNumber,
-					id: input.id,
-				});
-			});
-
-			state.graphicHelper.modules.get(module)?.debuggers.clear();
-			parseDebuggers(trimmedCode).forEach(_debugger => {
-				state.graphicHelper.modules.get(module)?.debuggers.set(_debugger.id, {
-					width: VGRID * 2,
-					height: HGRID,
-					x: VGRID * (3 + padLength) + VGRID * trimmedCode[_debugger.lineNumber].length,
-					y: HGRID * _debugger.lineNumber,
-					id: _debugger.id,
-				});
-			});
-
-			state.graphicHelper.modules.get(module)?.scopes.clear();
+			graphicData.scopes.clear();
 			parseScopes(trimmedCode).forEach(scope => {
-				state.graphicHelper.modules.get(module)?.scopes.set(scope.id, {
+				graphicData.scopes.set(scope.id, {
 					width: VGRID * 2,
 					height: HGRID,
 					x: VGRID * (4 + padLength),
-					y: HGRID * (scope.lineNumber + 1),
+					y: calculateCursorYPosition(scope.lineNumber + 1, graphicData.gaps),
 					id: scope.id,
 					minValue: scope.minValue,
 					maxValue: scope.maxValue,
 				});
+				graphicData.gaps.set(scope.lineNumber + 1, { size: 9 });
 			});
 
-			state.graphicHelper.modules.get(module)?.switches.clear();
+			graphicData.outputs.clear();
+			parseOutputs(trimmedCode).forEach(output => {
+				graphicData.outputs.set(output.id, {
+					width: VGRID * 2,
+					height: HGRID,
+					x: (width - 2) * VGRID,
+					y: calculateCursorYPosition(output.lineNumber, graphicData.gaps),
+					id: output.id,
+				});
+			});
+
+			graphicData.inputs.clear();
+			parseInputs(trimmedCode).forEach(input => {
+				graphicData.inputs.set(input.id, {
+					width: VGRID * 2,
+					height: HGRID,
+					x: VGRID,
+					y: calculateCursorYPosition(input.lineNumber, graphicData.gaps),
+					id: input.id,
+				});
+			});
+
+			graphicData.debuggers.clear();
+			parseDebuggers(trimmedCode).forEach(_debugger => {
+				graphicData.debuggers.set(_debugger.id, {
+					width: VGRID * 2,
+					height: HGRID,
+					x: VGRID * (3 + padLength) + VGRID * trimmedCode[_debugger.lineNumber].length,
+					y: calculateCursorYPosition(_debugger.lineNumber, graphicData.gaps),
+					id: _debugger.id,
+				});
+			});
+
+			graphicData.switches.clear();
 			parseSwitches(trimmedCode).forEach(_switch => {
-				state.graphicHelper.modules.get(module)?.switches.set(_switch.id, {
+				graphicData.switches.set(_switch.id, {
 					width: VGRID * 4,
 					height: HGRID,
 					x: (width - 4) * VGRID,
-					y: HGRID * _switch.lineNumber,
+					y: calculateCursorYPosition(_switch.lineNumber, graphicData.gaps),
 					id: _switch.id,
 					offValue: _switch.offValue,
 					onValue: _switch.onValue,
 				});
 			});
+
+			graphicData.codeWithLineNumbers = codeWithLineNumbers;
+			graphicData.codeColors = codeColors;
+
+			let offset = 0;
+
+			for (const [row, gap] of graphicData.gaps) {
+				graphicData.codeWithLineNumbers.splice(row + offset, 0, ...new Array(gap.size).fill(' '));
+				graphicData.codeColors.splice(row + offset, 0, ...new Array(gap.size).fill([]));
+				offset += gap.size;
+			}
+
+			graphicData.height = codeWithLineNumbers.length * HGRID;
+			graphicData.cursor.x = (graphicData.cursor.col + (padLength + 2)) * VGRID;
+			graphicData.cursor.y = calculateCursorYPosition(graphicData.cursor.row, graphicData.gaps);
+			graphicData.id = getModuleId(module.code) || '';
+			graphicData.width = width * VGRID;
 		});
 
 		state.graphicHelper.connections = state.project.connections
@@ -178,6 +213,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		}
 
 		let newPosition: [number, number] = [module.cursor.row, module.cursor.col];
+
 		switch (event?.key) {
 			case undefined:
 				break;
@@ -194,8 +230,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				const bp = backSpace(state.selectedModule.code, module.cursor.row, module.cursor.col);
 				module.cursor.row = bp.row;
 				module.cursor.col = bp.col;
+
 				state.selectedModule.code = bp.code;
-				onCompilationDone();
+
 				events.dispatch('saveState');
 				events.dispatch('codeChange');
 				break;
@@ -204,8 +241,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				const ent = enter(state.selectedModule.code, module.cursor.row, module.cursor.col);
 				module.cursor.row = ent.row;
 				module.cursor.col = ent.col;
+
 				state.selectedModule.code = ent.code;
-				onCompilationDone();
+
 				events.dispatch('saveState');
 				events.dispatch('codeChange');
 				break;
@@ -215,20 +253,19 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					const bp = type(state.selectedModule.code, module.cursor.row, module.cursor.col, event.key);
 					module.cursor.row = bp.row;
 					module.cursor.col = bp.col;
+
 					state.selectedModule.code = bp.code;
-					onCompilationDone();
+
 					events.dispatch('saveState');
 					events.dispatch('codeChange');
 				}
 		}
-		const padLength = module.code.length.toString().length;
-		module.cursor.x = (module.cursor.col + (padLength + 2)) * VGRID;
-		module.cursor.y = module.cursor.row * HGRID;
+
+		updateGraphics();
 	};
 
-	events.on('moduleClick', onCompilationDone);
-	events.on('compilationDone', onCompilationDone);
-	events.on('saveState', onCompilationDone);
-	events.on('init', onCompilationDone);
+	events.on('moduleClick', updateGraphics);
+	events.on('compilationDone', updateGraphics);
+	events.on('init', updateGraphics);
 	events.on('keydown', onKeydown);
 }

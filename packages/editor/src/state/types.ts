@@ -55,8 +55,9 @@ export type HistoryItem = {
 
 export interface BuildError {
 	lineNumber: number;
-	errorCode: number;
-	errorMessage: string;
+	code: number;
+	message: string;
+	moduleId: string;
 }
 
 export interface Compiler {
@@ -132,12 +133,21 @@ export interface ModuleGraphicData {
 	outputs: Map<string, Output>;
 	code: string[];
 	codeWithLineNumbers: string[];
-	codeColors: Array<SpriteLookup | undefined>[];
+	codeColors: Array<Array<SpriteLookup | undefined>>;
+	gaps: Map<number, { size: number }>;
 	cursor: { col: number; row: number; x: number; y: number };
 	id: string;
 	debuggers: Map<string, Debugger>;
 	scopes: Map<string, Scope>;
 	switches: Map<string, Switch>;
+	errorMessages: Map<
+		number,
+		{
+			message: string[];
+			x: number;
+			y: number;
+		}
+	>;
 }
 
 export type GraphicHelper = {
