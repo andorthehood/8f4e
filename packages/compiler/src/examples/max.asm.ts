@@ -18,7 +18,7 @@ push &out
  push _in1
  push _in2
  greaterThan
- if 
+ if
   localGet _in1
  else
   localGet _in2
