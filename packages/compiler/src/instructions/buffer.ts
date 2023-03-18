@@ -5,11 +5,11 @@ import { calculateMemoryWordSize } from '../utils';
 
 const buffer: InstructionHandler = function (line, namespace, stack, startingByteAddress) {
 	if (!line.arguments[0] || !line.arguments[1] || !line.arguments[2]) {
-		throw getError(ErrorCode.MISSING_ARGUMENT, line);
+		throw getError(ErrorCode.MISSING_ARGUMENT, line, namespace, stack);
 	}
 
 	if (line.arguments[0].type === ArgumentType.LITERAL) {
-		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line);
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, namespace, stack);
 	}
 
 	if (
@@ -18,19 +18,19 @@ const buffer: InstructionHandler = function (line, namespace, stack, startingByt
 		line.arguments[0].value !== 'float*' &&
 		line.arguments[0].value !== 'int*'
 	) {
-		throw getError(ErrorCode.UNKNOWN_ERROR, line);
+		throw getError(ErrorCode.UNKNOWN_ERROR, line, namespace, stack);
 	}
 
 	if (line.arguments[1].type === ArgumentType.LITERAL) {
-		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line);
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, namespace, stack);
 	}
 
 	if (line.arguments[2].type === ArgumentType.IDENTIFIER) {
-		throw getError(ErrorCode.EXPECTED_VALUE, line);
+		throw getError(ErrorCode.EXPECTED_VALUE, line, namespace, stack);
 	}
 
 	if (line.arguments[3] && line.arguments[3].type === ArgumentType.IDENTIFIER) {
-		throw getError(ErrorCode.EXPECTED_VALUE, line);
+		throw getError(ErrorCode.EXPECTED_VALUE, line, namespace, stack);
 	}
 
 	const memory = new Map(namespace.memory);

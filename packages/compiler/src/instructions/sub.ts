@@ -8,7 +8,7 @@ const sub: InstructionHandler = function (line, namespace, stack) {
 	const operand2 = stack.pop();
 
 	if (!operand1 || !operand2) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line);
+		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, namespace, stack);
 	}
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
@@ -26,7 +26,7 @@ const sub: InstructionHandler = function (line, namespace, stack) {
 			stack,
 		};
 	} else {
-		throw getError(ErrorCode.UNMATCHING_OPERANDS, line);
+		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, namespace, stack);
 	}
 };
 

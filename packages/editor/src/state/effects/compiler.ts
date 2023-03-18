@@ -32,7 +32,14 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				events.dispatch('buildOk');
 				break;
 			case 'buildError':
-				state.compiler.buildErrors.push({ lineNumber: 0, errorCode: 0, errorMessage: 'error' });
+				state.compiler.buildErrors = [
+					{
+						lineNumber: data.payload.line.lineNumber,
+						moduleId: data.payload.namespace.moduleName,
+						code: data.payload.errorCode,
+						message: data.payload.message,
+					},
+				];
 				events.dispatch('buildError');
 				break;
 		}
