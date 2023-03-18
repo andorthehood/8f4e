@@ -64,32 +64,17 @@ export function compileLine(
 	startingByteAddress: number
 ): { byteCode: number[]; namespace: Namespace; stack: Stack } {
 	if (!instructions[line.instruction]) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line);
+		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, namespace, stack);
 	}
 	return instructions[line.instruction](line, namespace, stack, startingByteAddress);
 }
 
-function getModuleId(ast: AST): string | undefined {
-	return (
-		ast
-			.find(
-				line => line.instruction === 'module' && line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER
-			)
-			?.arguments[0].value.toString() || undefined
-	);
-}
-
 export function compile(ast: AST, globals: Namespace['consts'], startingByteAddress = 0): CompiledModule {
-	const moduleId = getModuleId(ast);
-
-	if (!moduleId) {
-		throw getError(ErrorCode.MISSING_MODULE_ID);
-	}
-
 	let memory: Namespace['memory'] = new Map();
 	let locals: Namespace['locals'] = [];
 	let consts: Namespace['consts'] = { ...globals };
 	let stack: Stack = [];
+	let moduleName: Namespace['moduleName'] = undefined;
 
 	const wa = ast
 		.reduce((acc, line) => {
@@ -97,10 +82,11 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 				byteCode,
 				namespace,
 				stack: newStack,
-			} = compileLine(line, { locals, memory, consts }, stack, startingByteAddress);
+			} = compileLine(line, { locals, memory, consts, moduleName }, stack, startingByteAddress);
 			consts = namespace.consts;
 			locals = namespace.locals;
 			memory = namespace.memory;
+			moduleName = namespace.moduleName;
 			stack = newStack;
 			acc.push(byteCode);
 			return acc;
@@ -109,8 +95,22 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 
 	const [, lastMemoryItem = { relativeWordAddress: 0, wordSize: 0 }] = Array.from(memory).pop() || [];
 
+	if (!moduleName) {
+		throw getError(
+			ErrorCode.MISSING_MODULE_ID,
+			{ lineNumber: 0, instruction: 'module', arguments: [] },
+			{
+				memory,
+				locals,
+				consts,
+				moduleName,
+			},
+			stack
+		);
+	}
+
 	return {
-		id: moduleId,
+		id: moduleName,
 		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,

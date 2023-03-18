@@ -8,11 +8,11 @@ const store: InstructionHandler = function (line, namespace, stack) {
 	const operand2Address = stack.pop();
 
 	if (!operand1Value || !operand2Address) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line);
+		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, namespace, stack);
 	}
 
 	if (!areAllOperandsIntegers(operand2Address)) {
-		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line);
+		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, namespace, stack);
 	}
 
 	if (areAllOperandsIntegers(operand1Value)) {

@@ -3,11 +3,11 @@ import { ArgumentType, InstructionHandler } from '../types';
 
 const _const: InstructionHandler = function (line, namespace, stack) {
 	if (!line.arguments[0] || !line.arguments[1]) {
-		throw getError(ErrorCode.MISSING_ARGUMENT, line);
+		throw getError(ErrorCode.MISSING_ARGUMENT, line, namespace, stack);
 	}
 
 	if (line.arguments[0].type === ArgumentType.LITERAL) {
-		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line);
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, namespace, stack);
 	}
 
 	let value = { value: 0, isInteger: true };
@@ -16,7 +16,7 @@ const _const: InstructionHandler = function (line, namespace, stack) {
 		if (typeof namespace.consts[line.arguments[1].value] !== 'undefined') {
 			value = namespace.consts[line.arguments[1].value];
 		} else {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack);
 		}
 	} else {
 		value = line.arguments[1];
