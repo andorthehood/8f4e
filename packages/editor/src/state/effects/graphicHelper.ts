@@ -13,19 +13,10 @@ import {
 	parseScopes,
 	parseSwitches,
 	getLongestLineLength,
+	getModuleId,
 } from '../helpers/codeParsers';
 
 const keywords = new RegExp(Object.keys(instructions).join('|'));
-
-function getModuleId(code: string[]): string {
-	for (let i = 0; i < code.length; i++) {
-		const [, instruction, ...args] = code[i].match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || [];
-		if (instruction === 'module') {
-			return args[0] || '';
-		}
-	}
-	return '';
-}
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onCompilationDone = function () {
@@ -68,6 +59,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				state.graphicHelper.modules.set(module, {
 					width: width * VGRID,
 					height: trimmedCode.length * HGRID,
+					code: module.code,
 					codeWithLineNumbers,
 					codeColors,
 					inputs: new Map(),
@@ -75,14 +67,15 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					debuggers: new Map(),
 					switches: new Map(),
 					scopes: new Map(),
-					cursor: { col: 0, row: 0, offset: VGRID * (padLength + 2) },
+					cursor: { col: 0, row: 0, x: VGRID * (padLength + 2), y: 0 },
 					id: getModuleId(module.code) || '',
 				});
 			} else {
 				graphicData.codeWithLineNumbers = codeWithLineNumbers;
 				graphicData.codeColors = codeColors;
 				graphicData.height = trimmedCode.length * HGRID;
-				graphicData.cursor.offset = VGRID * (padLength + 2);
+				graphicData.cursor.x = (graphicData.cursor.col + (padLength + 2)) * VGRID;
+				graphicData.cursor.y = graphicData.cursor.row * HGRID;
 				graphicData.id = getModuleId(module.code) || '';
 				graphicData.width = width * VGRID;
 			}
@@ -228,6 +221,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					events.dispatch('codeChange');
 				}
 		}
+		const padLength = module.code.length.toString().length;
+		module.cursor.x = (module.cursor.col + (padLength + 2)) * VGRID;
+		module.cursor.y = module.cursor.row * HGRID;
 	};
 
 	events.on('moduleClick', onCompilationDone);

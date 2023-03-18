@@ -16,55 +16,47 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (let i = 0; i < state.project.modules.length; i++) {
 		const { x, y, isOpen } = state.project.modules[i];
-		const { width, height, codeWithLineNumbers, codeColors } = state.graphicHelper.modules.get(
-			state.project.modules[i]
-		) || {
-			width: 0,
-			height: 0,
-			codeWithLineNumbers: [],
-			codeColors: [],
-		};
+		const module = state.graphicHelper.modules.get(state.project.modules[i]);
+
+		if (!module) {
+			continue;
+		}
 
 		if (
-			x + offsetX > -1 * width &&
-			y + offsetY > -1 * height &&
+			x + offsetX > -1 * module.width &&
+			y + offsetY > -1 * module.height &&
 			x + offsetX < state.project.viewport.width &&
 			y + offsetY < state.project.viewport.height
 		) {
 			engine.startGroup(x, y);
 
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'rgb(0,0,0)', width, height);
+			engine.drawSprite(0, 0, 'rgb(0,0,0)', module.width, module.height);
 
 			engine.setSpriteLookup(font('white'));
 
 			const corner = isOpen ? '-' : '+';
 
 			engine.drawText(0, 0, corner);
-			engine.drawText(width - VGRID, 0, corner);
-			engine.drawText(0, height - HGRID, corner);
-			engine.drawText(width - VGRID, height - HGRID, corner);
+			engine.drawText(module.width - VGRID, 0, corner);
+			engine.drawText(0, module.height - HGRID, corner);
+			engine.drawText(module.width - VGRID, module.height - HGRID, corner);
 
 			engine.setSpriteLookup(font('white'));
 
 			engine.setSpriteLookup(font('white'));
-			for (let i = 0; i < codeWithLineNumbers.length; i++) {
-				engine.drawText(VGRID, HGRID * i, codeWithLineNumbers[i], codeColors[i]);
+			for (let i = 0; i < module.codeWithLineNumbers.length; i++) {
+				engine.drawText(VGRID, HGRID * i, module.codeWithLineNumbers[i], module.codeColors[i]);
 			}
 
 			if (state.selectedModule === state.project.modules[i]) {
-				const {
-					row = 0,
-					col = 0,
-					offset = 0,
-				} = state.graphicHelper.modules.get(state.project.modules[i])?.cursor || {};
-				engine.drawText(col * VGRID + offset, row * HGRID, '_');
+				engine.drawText(module.cursor.x, module.cursor.y, '_');
 			}
 
-			drawConnectors(engine, state, state.project.modules[i]);
-			drawScopes(engine, state, state.project.modules[i]);
-			drawDebuggers(engine, state, state.project.modules[i]);
-			drawSwitches(engine, state, state.project.modules[i]);
+			drawConnectors(engine, state, module);
+			drawScopes(engine, state, module);
+			drawDebuggers(engine, state, module);
+			drawSwitches(engine, state, module);
 
 			engine.endGroup();
 		}
