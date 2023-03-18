@@ -3,12 +3,12 @@ import { InstructionHandler } from '../types';
 import { areAllOperandsFloats, areAllOperandsIntegers } from '../utils';
 import { ErrorCode, getError } from '../errors';
 
-const sub: InstructionHandler = function (line, namespace, stack) {
+const sub: InstructionHandler = function (line, namespace, stack, blockStack) {
 	const operand1 = stack.pop();
 	const operand2 = stack.pop();
 
 	if (!operand1 || !operand2) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, namespace, stack);
+		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, namespace, stack, blockStack);
 	}
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
@@ -17,6 +17,7 @@ const sub: InstructionHandler = function (line, namespace, stack) {
 			byteCode: [WASMInstruction.I32_SUB],
 			namespace,
 			stack,
+			blockStack,
 		};
 	} else if (areAllOperandsFloats(operand1, operand2)) {
 		stack.push({ isInteger: false });
@@ -24,9 +25,10 @@ const sub: InstructionHandler = function (line, namespace, stack) {
 			byteCode: [WASMInstruction.F32_SUB],
 			namespace,
 			stack,
+			blockStack,
 		};
 	} else {
-		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, namespace, stack);
+		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, namespace, stack, blockStack);
 	}
 };
 

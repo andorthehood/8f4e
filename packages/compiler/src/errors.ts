@@ -1,4 +1,4 @@
-import { AST, Error, Namespace, Stack } from './types';
+import { AST, BlockStack, Error, Namespace, Stack } from './types';
 
 export enum ErrorCode {
 	INSUFFICIENT_OPERANDS,
@@ -13,9 +13,17 @@ export enum ErrorCode {
 	MISSING_MODULE_ID,
 	EXPECTED_FLOAT_OPERAND,
 	UNKNOWN_ERROR,
+	STACK_EXPECTED_ZERO_ELEMENTS,
+	MISSING_BLOCK_START_INSTRUCTION,
 }
 
-export function getError(code: ErrorCode, line: AST[number], namespace: Namespace, stack: Stack): Error {
+export function getError(
+	code: ErrorCode,
+	line: AST[number],
+	namespace: Namespace,
+	stack: Stack,
+	blockStack: BlockStack
+): Error {
 	switch (code) {
 		case ErrorCode.INSUFFICIENT_OPERANDS:
 			return {
@@ -24,6 +32,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.UNMATCHING_OPERANDS:
 			return {
@@ -32,6 +41,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.ONLY_INTEGERS:
 			return {
@@ -40,6 +50,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.MISSING_ARGUMENT:
 			return {
@@ -48,6 +59,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.UNDECLARED_IDENTIFIER:
 			return {
@@ -56,6 +68,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.EXPECTED_IDENTIFIER:
 			return {
@@ -64,6 +77,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.EXPECTED_INTEGER_OPERAND:
 			return {
@@ -72,6 +86,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.UNRECOGNISED_INSTRUCTION:
 			return {
@@ -80,6 +95,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.EXPECTED_VALUE:
 			return {
@@ -88,6 +104,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.MISSING_MODULE_ID:
 			return {
@@ -96,6 +113,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 		case ErrorCode.EXPECTED_FLOAT_OPERAND:
 			return {
@@ -104,6 +122,31 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
+			};
+		case ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS:
+			return {
+				code,
+				message:
+					line.lineNumber +
+					': Expected 0 elements on the stack, found ' +
+					stack.length +
+					' [' +
+					stack.map(({ isInteger }) => (isInteger ? 'int' : 'float')).join(', ') +
+					']',
+				line,
+				namespace,
+				stack,
+				blockStack,
+			};
+		case ErrorCode.MISSING_BLOCK_START_INSTRUCTION:
+			return {
+				code,
+				message: 'Missing block start instruction.',
+				line,
+				namespace,
+				stack,
+				blockStack,
 			};
 		case ErrorCode.UNKNOWN_ERROR:
 		default:
@@ -113,6 +156,7 @@ export function getError(code: ErrorCode, line: AST[number], namespace: Namespac
 				line,
 				namespace,
 				stack,
+				blockStack,
 			};
 	}
 }
