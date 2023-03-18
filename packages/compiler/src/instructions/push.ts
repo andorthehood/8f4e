@@ -33,7 +33,7 @@ const push: InstructionHandler = function (line, namespace, stack) {
 			const memoryItem = getMemoryItem(memory, argument.value);
 
 			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack);
 			}
 
 			stack.push({ isInteger: memoryItem.isInteger });
@@ -47,7 +47,7 @@ const push: InstructionHandler = function (line, namespace, stack) {
 			const memoryItem = getMemoryItem(memory, argument.value.substring(1));
 
 			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack);
 			}
 
 			stack.push({ isInteger: memoryItem.isPointingToInteger });
@@ -84,7 +84,7 @@ const push: InstructionHandler = function (line, namespace, stack) {
 			stack.push({ isInteger: true });
 			return { byteCode: localGet(locals.indexOf(argument.value)), namespace, stack };
 		} else {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack);
 		}
 	} else {
 		stack.push({ isInteger: argument.isInteger });

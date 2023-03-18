@@ -83,6 +83,7 @@ export interface Namespace {
 	locals: string[];
 	memory: MemoryMap;
 	consts: Record<string, { value: number; isInteger: boolean }>;
+	moduleName: string | undefined;
 }
 
 export interface StackItem {
@@ -100,6 +101,8 @@ export type InstructionHandler = (
 
 export interface Error {
 	message: string;
-	line: Partial<AST[number]>;
+	line: Parameters<InstructionHandler>[0];
+	namespace: Parameters<InstructionHandler>[1];
+	stack: Parameters<InstructionHandler>[2];
 	code: number;
 }
