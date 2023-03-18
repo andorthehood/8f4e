@@ -264,6 +264,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		updateGraphics();
 	};
 
+	events.on('buildError', updateGraphics);
 	events.on('moduleClick', updateGraphics);
 	events.on('compilationDone', updateGraphics);
 	events.on('init', updateGraphics);

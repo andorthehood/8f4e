@@ -19,11 +19,11 @@ function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 	}
 }
 
-const push: InstructionHandler = function (line, namespace, stack) {
+const push: InstructionHandler = function (line, namespace, stack, blockStack) {
 	const { locals, memory, consts } = namespace;
 
 	if (!line.arguments[0]) {
-		throw '1002: Missing argument';
+		throw getError(ErrorCode.MISSING_ARGUMENT, line, namespace, stack, blockStack);
 	}
 
 	const argument = line.arguments[0];
@@ -33,7 +33,7 @@ const push: InstructionHandler = function (line, namespace, stack) {
 			const memoryItem = getMemoryItem(memory, argument.value);
 
 			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack, blockStack);
 			}
 
 			stack.push({ isInteger: memoryItem.isInteger });
@@ -42,12 +42,13 @@ const push: InstructionHandler = function (line, namespace, stack) {
 				byteCode: [...i32const(memoryItem.byteAddress), ...(memoryItem.isInteger ? i32load() : f32load())],
 				namespace,
 				stack,
+				blockStack,
 			};
 		} else if (isMemoryPointerIdentifier(memory, argument.value)) {
 			const memoryItem = getMemoryItem(memory, argument.value.substring(1));
 
 			if (!memoryItem) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack);
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack, blockStack);
 			}
 
 			stack.push({ isInteger: memoryItem.isPointingToInteger });
@@ -60,6 +61,7 @@ const push: InstructionHandler = function (line, namespace, stack) {
 				],
 				namespace,
 				stack,
+				blockStack,
 			};
 		} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
 			stack.push({ isInteger: true });
@@ -68,27 +70,29 @@ const push: InstructionHandler = function (line, namespace, stack) {
 					byteCode: i32const(getMemoryItemByteAddress(memory, argument.value.substring(1))),
 					namespace,
 					stack,
+					blockStack,
 				};
 			} else {
 				return {
 					byteCode: i32const(getMemoryStringLastAddress(memory, argument.value.slice(0, -1))),
 					namespace,
 					stack,
+					blockStack,
 				};
 			}
 		} else if (typeof consts[argument.value] !== 'undefined') {
 			stack.push({ isInteger: consts[argument.value].isInteger });
-			return { byteCode: i32const(consts[argument.value].value), namespace, stack };
+			return { byteCode: i32const(consts[argument.value].value), namespace, stack, blockStack };
 		} else if (isLocalIdentifier(locals, argument.value)) {
 			// TODO: add support for float locals
 			stack.push({ isInteger: true });
-			return { byteCode: localGet(locals.indexOf(argument.value)), namespace, stack };
+			return { byteCode: localGet(locals.indexOf(argument.value)), namespace, stack, blockStack };
 		} else {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack);
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, namespace, stack, blockStack);
 		}
 	} else {
 		stack.push({ isInteger: argument.isInteger });
-		return { byteCode: getTypeAppropriateConstInstruction(argument), namespace, stack };
+		return { byteCode: getTypeAppropriateConstInstruction(argument), namespace, stack, blockStack };
 	}
 };
 
