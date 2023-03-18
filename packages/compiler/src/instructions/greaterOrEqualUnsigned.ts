@@ -8,7 +8,7 @@ const greaterOrEqualUnsigned: InstructionHandler = function (line, namespace, st
 	const operand2 = stack.pop();
 
 	if (!operand1 || !operand2) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line);
+		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, namespace, stack);
 	}
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
@@ -18,7 +18,7 @@ const greaterOrEqualUnsigned: InstructionHandler = function (line, namespace, st
 		stack.push({ isInteger: true });
 		return { byteCode: [WASMInstruction.F32_GE], namespace, stack };
 	} else {
-		throw getError(ErrorCode.UNMATCHING_OPERANDS, line);
+		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, namespace, stack);
 	}
 };
 

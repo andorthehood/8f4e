@@ -7,11 +7,11 @@ const castToFloat: InstructionHandler = function (line, namespace, stack) {
 	const operand = stack.pop();
 
 	if (!operand) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line);
+		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, namespace, stack);
 	}
 
 	if (areAllOperandsFloats(operand)) {
-		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line);
+		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, namespace, stack);
 	}
 
 	stack.push({ isInteger: false });
