@@ -108,10 +108,22 @@ enum WASMInstruction {
 	I32_GE_U = 0x4f,
 
 	/**
+	 * Floating-Point Less Than
+	 * Type signature: (param f32, f32) (result i32)
+	 */
+	F32_LT = 0x5d,
+
+	/**
 	 * Floating-Point Greater Than
 	 * Type signature: (param f32, f32) (result i32)
 	 */
 	F32_GT = 0x5e,
+
+	/**
+	 * Floating-Point Less Than Or Equal To
+	 * Type signature (param f32, f32) (result i32)
+	 */
+	F32_LE = 0x5f,
 
 	/**
 	 * Floating-Point Greater Than Or Equal To
