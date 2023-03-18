@@ -1,17 +1,11 @@
 import { Engine } from '@8f4e/2d-engine';
 import { font } from '@8f4e/sprite-generator';
 
-import { Module, State } from '../../../state/types';
+import { ModuleGraphicData, State } from '../../../state/types';
 
-export default function drawConnectors(engine: Engine, state: State, module: Module): void {
-	const graphicData = state.graphicHelper.modules.get(module);
-
-	if (!graphicData) {
-		return;
-	}
-
-	for (const [, { x, y, id: debuggerId }] of graphicData.debuggers) {
-		const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(debuggerId);
+export default function drawConnectors(engine: Engine, state: State, module: ModuleGraphicData): void {
+	for (const [, { x, y, id: debuggerId }] of module.debuggers) {
+		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(debuggerId);
 
 		if (!memory) {
 			continue;
