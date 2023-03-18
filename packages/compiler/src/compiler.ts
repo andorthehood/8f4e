@@ -1,7 +1,7 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import instructions, { Instruction } from './instructions';
-import { AST, Argument, ArgumentType, CompiledModule, Namespace, Stack } from './types';
+import { AST, Argument, ArgumentType, CompiledModule, Namespace, Stack, BlockStack } from './types';
 import { WORD_LENGTH } from './consts';
 import { ErrorCode, getError } from './errors';
 
@@ -61,12 +61,13 @@ export function compileLine(
 	line: AST[number],
 	namespace: Namespace,
 	stack: Stack,
+	blockStack: BlockStack,
 	startingByteAddress: number
-): { byteCode: number[]; namespace: Namespace; stack: Stack } {
+): { byteCode: number[]; namespace: Namespace; stack: Stack; blockStack: BlockStack } {
 	if (!instructions[line.instruction]) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, namespace, stack);
+		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, namespace, stack, blockStack);
 	}
-	return instructions[line.instruction](line, namespace, stack, startingByteAddress);
+	return instructions[line.instruction](line, namespace, stack, blockStack, startingByteAddress);
 }
 
 export function compile(ast: AST, globals: Namespace['consts'], startingByteAddress = 0): CompiledModule {
@@ -74,6 +75,7 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 	let locals: Namespace['locals'] = [];
 	let consts: Namespace['consts'] = { ...globals };
 	let stack: Stack = [];
+	let blockStack: BlockStack = [];
 	let moduleName: Namespace['moduleName'] = undefined;
 
 	const wa = ast
@@ -82,12 +84,14 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 				byteCode,
 				namespace,
 				stack: newStack,
-			} = compileLine(line, { locals, memory, consts, moduleName }, stack, startingByteAddress);
+				blockStack: newBlockStack,
+			} = compileLine(line, { locals, memory, consts, moduleName }, stack, blockStack, startingByteAddress);
 			consts = namespace.consts;
 			locals = namespace.locals;
 			memory = namespace.memory;
 			moduleName = namespace.moduleName;
 			stack = newStack;
+			blockStack = newBlockStack;
 			acc.push(byteCode);
 			return acc;
 		}, [] as number[][])
@@ -105,7 +109,23 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 				consts,
 				moduleName,
 			},
-			stack
+			stack,
+			blockStack
+		);
+	}
+
+	if (stack.length > 0) {
+		throw getError(
+			ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS,
+			{ lineNumber: 0, instruction: 'module', arguments: [] },
+			{
+				memory,
+				locals,
+				consts,
+				moduleName,
+			},
+			stack,
+			blockStack
 		);
 	}
 

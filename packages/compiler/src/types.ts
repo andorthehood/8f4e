@@ -92,12 +92,15 @@ export interface StackItem {
 
 export type Stack = StackItem[];
 
+export type BlockStack = Array<{ expectedResultIsInteger: boolean; hasExpectedResult: boolean }>;
+
 export type InstructionHandler = (
 	line: AST[number],
 	namespace: Namespace,
 	stack: Stack,
+	blockStack: BlockStack,
 	startingByteAddress: number
-) => { namespace: Namespace; byteCode: Array<WASMInstruction | Type | number>; stack: Stack };
+) => { namespace: Namespace; byteCode: Array<WASMInstruction | Type | number>; stack: Stack; blockStack: BlockStack };
 
 export interface Error {
 	message: string;
@@ -105,4 +108,5 @@ export interface Error {
 	namespace: Parameters<InstructionHandler>[1];
 	stack: Parameters<InstructionHandler>[2];
 	code: number;
+	blockStack: BlockStack;
 }
