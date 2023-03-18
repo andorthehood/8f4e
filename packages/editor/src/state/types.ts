@@ -130,9 +130,10 @@ export interface ModuleGraphicData {
 	height: number;
 	inputs: Map<string, Input>;
 	outputs: Map<string, Output>;
+	code: string[];
 	codeWithLineNumbers: string[];
 	codeColors: Array<SpriteLookup | undefined>[];
-	cursor: { col: number; row: number; offset: number };
+	cursor: { col: number; row: number; x: number; y: number };
 	id: string;
 	debuggers: Map<string, Debugger>;
 	scopes: Map<string, Scope>;
