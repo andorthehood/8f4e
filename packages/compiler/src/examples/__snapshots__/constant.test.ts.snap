@@ -10,7 +10,7 @@ Array [
       },
     ],
     "instruction": "module",
-    "lineNumber": 1,
+    "lineNumber": 0,
   },
   Object {
     "arguments": Array [
@@ -29,7 +29,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 2,
+    "lineNumber": 1,
   },
 ]
 `;
@@ -43,7 +43,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 2,
+    "lineNumber": 1,
     "relativeWordAddress": 0,
     "type": "int",
     "wordAddress": 0,

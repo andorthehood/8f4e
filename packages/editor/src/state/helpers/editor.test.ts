@@ -1,4 +1,6 @@
-import { backSpace, moveCaret, type } from './editor';
+import { backSpace, moveCaret, type, gapCalculator } from './editor';
+
+import { ModuleGraphicData } from '../types';
 
 const testCode = ['lorem', 'ipsum 1', 'dolor sit 0', 'amet'];
 
@@ -57,5 +59,15 @@ describe('editing', () => {
 			row: 0,
 			col: 6,
 		});
+	});
+});
+
+const gaps: ModuleGraphicData['gaps'] = new Map(
+	Object.entries({ 0: { size: 2 } })
+) as unknown as ModuleGraphicData['gaps'];
+
+describe('gapCalculator', () => {
+	test('without gaps', () => {
+		expect(gapCalculator(0, gaps)).toBe(2);
 	});
 });
