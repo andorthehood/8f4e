@@ -49,7 +49,7 @@ export function isValidInstruction(line: string): boolean {
 
 export function compileToAST(module: string[]) {
 	return module
-		.map((line, index) => [index + 1, line] as [number, string])
+		.map((line, index) => [index, line] as [number, string])
 		.filter(([, line]) => !isComment(line))
 		.filter(([, line]) => isValidInstruction(line))
 		.map(([lineNumber, line]) => {

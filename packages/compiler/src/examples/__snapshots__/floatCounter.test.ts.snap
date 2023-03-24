@@ -10,7 +10,7 @@ Array [
       },
     ],
     "instruction": "module",
-    "lineNumber": 1,
+    "lineNumber": 0,
   },
   Object {
     "arguments": Array [
@@ -24,7 +24,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 2,
+    "lineNumber": 1,
   },
   Object {
     "arguments": Array [
@@ -43,7 +43,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 3,
+    "lineNumber": 2,
   },
   Object {
     "arguments": Array [
@@ -53,7 +53,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumber": 4,
   },
   Object {
     "arguments": Array [
@@ -63,7 +63,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
+    "lineNumber": 5,
   },
   Object {
     "arguments": Array [
@@ -74,17 +74,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 7,
+    "lineNumber": 6,
   },
   Object {
     "arguments": Array [],
     "instruction": "add",
-    "lineNumber": 8,
+    "lineNumber": 7,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 9,
+    "lineNumber": 8,
   },
 ]
 `;
@@ -98,7 +98,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 2,
+    "lineNumber": 1,
     "relativeWordAddress": 0,
     "type": "int",
     "wordAddress": 0,
@@ -111,7 +111,7 @@ Map {
     "isInteger": false,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 3,
+    "lineNumber": 2,
     "relativeWordAddress": 1,
     "type": "float",
     "wordAddress": 1,
