@@ -4,7 +4,7 @@ import { instructions } from '@8f4e/compiler';
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
 import { GraphicHelper, ModuleGraphicData, State } from '../types';
-import { backSpace, enter, moveCaret, type } from '../helpers/editor';
+import { backSpace, enter, moveCaret, type, gapCalculator } from '../helpers/editor';
 import {
 	parseDebuggers,
 	parseInputs,
@@ -17,16 +17,6 @@ import {
 } from '../helpers/codeParsers';
 
 const keywords = new RegExp(Object.keys(instructions).join('|'));
-
-function calculateCursorYPosition(row: number, gaps: ModuleGraphicData['gaps']) {
-	let newRow = row;
-	for (const [gapRow, gap] of gaps) {
-		if (row >= gapRow) {
-			newRow += gap.size;
-		}
-	}
-	return newRow * HGRID;
-}
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const updateGraphics = function () {
@@ -77,24 +67,44 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				scopes: new Map(),
 				cursor: { col: 0, row: 0, x: VGRID * (padLength + 2), y: 0 },
 				id: getModuleId(module.code) || '',
-				gaps: new Map(),
+				gaps: new Map() as ModuleGraphicData['gaps'],
 				errorMessages: new Map(),
 			};
 			state.graphicHelper.modules.set(module, graphicData);
 
-			graphicData.gaps.clear();
-			graphicData.errorMessages.clear();
+			graphicData.codeWithLineNumbers = codeWithLineNumbers;
+			graphicData.codeColors = codeColors;
 
+			graphicData.gaps.clear();
+			state.compiler.buildErrors.forEach(buildError => {
+				if (buildError.moduleId !== graphicData.id) {
+					return;
+				}
+				graphicData.gaps.set(buildError.lineNumber, { size: 2 });
+			});
+			parseScopes(trimmedCode).forEach(scope => {
+				graphicData.gaps.set(scope.lineNumber, { size: 9 });
+			});
+
+			const gaps = Array.from(graphicData.gaps).sort(([a], [b]) => {
+				return b - a;
+			});
+
+			gaps.forEach(([row, gap]) => {
+				graphicData.codeWithLineNumbers.splice(row + 1, 0, ...new Array(gap.size).fill(' '));
+				graphicData.codeColors.splice(row + 1, 0, ...new Array(gap.size).fill([]));
+			});
+
+			graphicData.errorMessages.clear();
 			state.compiler.buildErrors.forEach(buildError => {
 				if (buildError.moduleId !== graphicData.id) {
 					return;
 				}
 				graphicData.errorMessages.set(buildError.lineNumber, {
 					x: 0,
-					y: calculateCursorYPosition(buildError.lineNumber, graphicData.gaps),
+					y: (gapCalculator(buildError.lineNumber, graphicData.gaps) + 1) * HGRID,
 					message: ['Error:', buildError.message],
 				});
-				graphicData.gaps.set(buildError.lineNumber, { size: 2 });
 			});
 
 			graphicData.scopes.clear();
@@ -103,12 +113,11 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					width: VGRID * 2,
 					height: HGRID,
 					x: VGRID * (4 + padLength),
-					y: calculateCursorYPosition(scope.lineNumber + 1, graphicData.gaps),
+					y: (gapCalculator(scope.lineNumber, graphicData.gaps) + 1) * HGRID,
 					id: scope.id,
 					minValue: scope.minValue,
 					maxValue: scope.maxValue,
 				});
-				graphicData.gaps.set(scope.lineNumber + 1, { size: 9 });
 			});
 
 			graphicData.outputs.clear();
@@ -117,7 +126,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					width: VGRID * 2,
 					height: HGRID,
 					x: (width - 2) * VGRID,
-					y: calculateCursorYPosition(output.lineNumber, graphicData.gaps),
+					y: gapCalculator(output.lineNumber, graphicData.gaps) * HGRID,
 					id: output.id,
 				});
 			});
@@ -128,7 +137,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					width: VGRID * 2,
 					height: HGRID,
 					x: VGRID,
-					y: calculateCursorYPosition(input.lineNumber, graphicData.gaps),
+					y: gapCalculator(input.lineNumber, graphicData.gaps) * HGRID,
 					id: input.id,
 				});
 			});
@@ -139,7 +148,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					width: VGRID * 2,
 					height: HGRID,
 					x: VGRID * (3 + padLength) + VGRID * trimmedCode[_debugger.lineNumber].length,
-					y: calculateCursorYPosition(_debugger.lineNumber, graphicData.gaps),
+					y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * HGRID,
 					id: _debugger.id,
 				});
 			});
@@ -150,27 +159,16 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					width: VGRID * 4,
 					height: HGRID,
 					x: (width - 4) * VGRID,
-					y: calculateCursorYPosition(_switch.lineNumber, graphicData.gaps),
+					y: gapCalculator(_switch.lineNumber, graphicData.gaps) * HGRID,
 					id: _switch.id,
 					offValue: _switch.offValue,
 					onValue: _switch.onValue,
 				});
 			});
 
-			graphicData.codeWithLineNumbers = codeWithLineNumbers;
-			graphicData.codeColors = codeColors;
-
-			let offset = 0;
-
-			for (const [row, gap] of graphicData.gaps) {
-				graphicData.codeWithLineNumbers.splice(row + offset, 0, ...new Array(gap.size).fill(' '));
-				graphicData.codeColors.splice(row + offset, 0, ...new Array(gap.size).fill([]));
-				offset += gap.size;
-			}
-
 			graphicData.height = codeWithLineNumbers.length * HGRID;
 			graphicData.cursor.x = (graphicData.cursor.col + (padLength + 2)) * VGRID;
-			graphicData.cursor.y = calculateCursorYPosition(graphicData.cursor.row, graphicData.gaps);
+			graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * HGRID;
 			graphicData.id = getModuleId(module.code) || '';
 			graphicData.width = width * VGRID;
 		});
