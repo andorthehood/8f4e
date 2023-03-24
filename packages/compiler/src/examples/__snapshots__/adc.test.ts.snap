@@ -10,7 +10,7 @@ Array [
       },
     ],
     "instruction": "module",
-    "lineNumber": 1,
+    "lineNumber": 0,
   },
   Object {
     "arguments": Array [
@@ -29,7 +29,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 4,
+    "lineNumber": 3,
   },
   Object {
     "arguments": Array [
@@ -47,7 +47,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 5,
+    "lineNumber": 4,
   },
   Object {
     "arguments": Array [
@@ -66,7 +66,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 7,
+    "lineNumber": 6,
   },
   Object {
     "arguments": Array [
@@ -85,7 +85,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 8,
+    "lineNumber": 7,
   },
   Object {
     "arguments": Array [
@@ -104,7 +104,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 9,
+    "lineNumber": 8,
   },
   Object {
     "arguments": Array [
@@ -123,7 +123,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 10,
+    "lineNumber": 9,
   },
   Object {
     "arguments": Array [
@@ -142,7 +142,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 11,
+    "lineNumber": 10,
   },
   Object {
     "arguments": Array [
@@ -161,7 +161,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 12,
+    "lineNumber": 11,
   },
   Object {
     "arguments": Array [
@@ -180,7 +180,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 13,
+    "lineNumber": 12,
   },
   Object {
     "arguments": Array [
@@ -199,7 +199,7 @@ Array [
       },
     ],
     "instruction": "memory",
-    "lineNumber": 14,
+    "lineNumber": 13,
   },
   Object {
     "arguments": Array [
@@ -209,7 +209,7 @@ Array [
       },
     ],
     "instruction": "local",
-    "lineNumber": 17,
+    "lineNumber": 16,
   },
   Object {
     "arguments": Array [
@@ -219,7 +219,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 20,
+    "lineNumber": 19,
   },
   Object {
     "arguments": Array [
@@ -230,12 +230,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 21,
+    "lineNumber": 20,
   },
   Object {
     "arguments": Array [],
     "instruction": "div",
-    "lineNumber": 22,
+    "lineNumber": 21,
   },
   Object {
     "arguments": Array [
@@ -245,7 +245,7 @@ Array [
       },
     ],
     "instruction": "localSet",
-    "lineNumber": 23,
+    "lineNumber": 22,
   },
   Object {
     "arguments": Array [
@@ -255,7 +255,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 26,
+    "lineNumber": 25,
   },
   Object {
     "arguments": Array [
@@ -265,7 +265,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 27,
+    "lineNumber": 26,
   },
   Object {
     "arguments": Array [
@@ -276,12 +276,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 28,
+    "lineNumber": 27,
   },
   Object {
     "arguments": Array [],
     "instruction": "and",
-    "lineNumber": 29,
+    "lineNumber": 28,
   },
   Object {
     "arguments": Array [
@@ -292,17 +292,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 30,
+    "lineNumber": 29,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterThan",
-    "lineNumber": 31,
+    "lineNumber": 30,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
-    "lineNumber": 32,
+    "lineNumber": 31,
   },
   Object {
     "arguments": Array [
@@ -313,12 +313,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 33,
+    "lineNumber": 32,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
-    "lineNumber": 34,
+    "lineNumber": 33,
   },
   Object {
     "arguments": Array [
@@ -329,17 +329,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 35,
+    "lineNumber": 34,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 36,
+    "lineNumber": 35,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 37,
+    "lineNumber": 36,
   },
   Object {
     "arguments": Array [
@@ -349,7 +349,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 40,
+    "lineNumber": 39,
   },
   Object {
     "arguments": Array [
@@ -359,7 +359,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 41,
+    "lineNumber": 40,
   },
   Object {
     "arguments": Array [
@@ -370,12 +370,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 42,
+    "lineNumber": 41,
   },
   Object {
     "arguments": Array [],
     "instruction": "and",
-    "lineNumber": 43,
+    "lineNumber": 42,
   },
   Object {
     "arguments": Array [
@@ -386,17 +386,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 44,
+    "lineNumber": 43,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterThan",
-    "lineNumber": 45,
+    "lineNumber": 44,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
-    "lineNumber": 46,
+    "lineNumber": 45,
   },
   Object {
     "arguments": Array [
@@ -407,12 +407,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 47,
+    "lineNumber": 46,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
-    "lineNumber": 48,
+    "lineNumber": 47,
   },
   Object {
     "arguments": Array [
@@ -423,17 +423,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 49,
+    "lineNumber": 48,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 50,
+    "lineNumber": 49,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 51,
+    "lineNumber": 50,
   },
   Object {
     "arguments": Array [
@@ -443,7 +443,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 54,
+    "lineNumber": 53,
   },
   Object {
     "arguments": Array [
@@ -453,7 +453,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 55,
+    "lineNumber": 54,
   },
   Object {
     "arguments": Array [
@@ -464,12 +464,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 56,
+    "lineNumber": 55,
   },
   Object {
     "arguments": Array [],
     "instruction": "and",
-    "lineNumber": 57,
+    "lineNumber": 56,
   },
   Object {
     "arguments": Array [
@@ -480,17 +480,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 58,
+    "lineNumber": 57,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterThan",
-    "lineNumber": 59,
+    "lineNumber": 58,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
-    "lineNumber": 60,
+    "lineNumber": 59,
   },
   Object {
     "arguments": Array [
@@ -501,12 +501,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 61,
+    "lineNumber": 60,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
-    "lineNumber": 62,
+    "lineNumber": 61,
   },
   Object {
     "arguments": Array [
@@ -517,17 +517,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 63,
+    "lineNumber": 62,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 64,
+    "lineNumber": 63,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 65,
+    "lineNumber": 64,
   },
   Object {
     "arguments": Array [
@@ -537,7 +537,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 68,
+    "lineNumber": 67,
   },
   Object {
     "arguments": Array [
@@ -547,7 +547,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 69,
+    "lineNumber": 68,
   },
   Object {
     "arguments": Array [
@@ -558,12 +558,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 70,
+    "lineNumber": 69,
   },
   Object {
     "arguments": Array [],
     "instruction": "and",
-    "lineNumber": 71,
+    "lineNumber": 70,
   },
   Object {
     "arguments": Array [
@@ -574,17 +574,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 72,
+    "lineNumber": 71,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterThan",
-    "lineNumber": 73,
+    "lineNumber": 72,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
-    "lineNumber": 74,
+    "lineNumber": 73,
   },
   Object {
     "arguments": Array [
@@ -595,12 +595,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 75,
+    "lineNumber": 74,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
-    "lineNumber": 76,
+    "lineNumber": 75,
   },
   Object {
     "arguments": Array [
@@ -611,17 +611,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 77,
+    "lineNumber": 76,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 78,
+    "lineNumber": 77,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 79,
+    "lineNumber": 78,
   },
   Object {
     "arguments": Array [
@@ -631,7 +631,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 82,
+    "lineNumber": 81,
   },
   Object {
     "arguments": Array [
@@ -641,7 +641,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 83,
+    "lineNumber": 82,
   },
   Object {
     "arguments": Array [
@@ -652,12 +652,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 84,
+    "lineNumber": 83,
   },
   Object {
     "arguments": Array [],
     "instruction": "and",
-    "lineNumber": 85,
+    "lineNumber": 84,
   },
   Object {
     "arguments": Array [
@@ -668,17 +668,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 86,
+    "lineNumber": 85,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterThan",
-    "lineNumber": 87,
+    "lineNumber": 86,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
-    "lineNumber": 88,
+    "lineNumber": 87,
   },
   Object {
     "arguments": Array [
@@ -689,12 +689,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 89,
+    "lineNumber": 88,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
-    "lineNumber": 90,
+    "lineNumber": 89,
   },
   Object {
     "arguments": Array [
@@ -705,17 +705,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 91,
+    "lineNumber": 90,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 92,
+    "lineNumber": 91,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 93,
+    "lineNumber": 92,
   },
   Object {
     "arguments": Array [
@@ -725,7 +725,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 96,
+    "lineNumber": 95,
   },
   Object {
     "arguments": Array [
@@ -735,7 +735,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 97,
+    "lineNumber": 96,
   },
   Object {
     "arguments": Array [
@@ -746,12 +746,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 98,
+    "lineNumber": 97,
   },
   Object {
     "arguments": Array [],
     "instruction": "and",
-    "lineNumber": 99,
+    "lineNumber": 98,
   },
   Object {
     "arguments": Array [
@@ -762,17 +762,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 100,
+    "lineNumber": 99,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterThan",
-    "lineNumber": 101,
+    "lineNumber": 100,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
-    "lineNumber": 102,
+    "lineNumber": 101,
   },
   Object {
     "arguments": Array [
@@ -783,12 +783,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 103,
+    "lineNumber": 102,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
-    "lineNumber": 104,
+    "lineNumber": 103,
   },
   Object {
     "arguments": Array [
@@ -799,17 +799,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 105,
+    "lineNumber": 104,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 106,
+    "lineNumber": 105,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 107,
+    "lineNumber": 106,
   },
   Object {
     "arguments": Array [
@@ -819,7 +819,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 110,
+    "lineNumber": 109,
   },
   Object {
     "arguments": Array [
@@ -829,7 +829,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 111,
+    "lineNumber": 110,
   },
   Object {
     "arguments": Array [
@@ -840,12 +840,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 112,
+    "lineNumber": 111,
   },
   Object {
     "arguments": Array [],
     "instruction": "and",
-    "lineNumber": 113,
+    "lineNumber": 112,
   },
   Object {
     "arguments": Array [
@@ -856,17 +856,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 114,
+    "lineNumber": 113,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterThan",
-    "lineNumber": 115,
+    "lineNumber": 114,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
-    "lineNumber": 116,
+    "lineNumber": 115,
   },
   Object {
     "arguments": Array [
@@ -877,12 +877,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 117,
+    "lineNumber": 116,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
-    "lineNumber": 118,
+    "lineNumber": 117,
   },
   Object {
     "arguments": Array [
@@ -893,17 +893,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 119,
+    "lineNumber": 118,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 120,
+    "lineNumber": 119,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 121,
+    "lineNumber": 120,
   },
   Object {
     "arguments": Array [
@@ -913,7 +913,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 124,
+    "lineNumber": 123,
   },
   Object {
     "arguments": Array [
@@ -923,7 +923,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 125,
+    "lineNumber": 124,
   },
   Object {
     "arguments": Array [
@@ -934,12 +934,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 126,
+    "lineNumber": 125,
   },
   Object {
     "arguments": Array [],
     "instruction": "and",
-    "lineNumber": 127,
+    "lineNumber": 126,
   },
   Object {
     "arguments": Array [
@@ -950,17 +950,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 128,
+    "lineNumber": 127,
   },
   Object {
     "arguments": Array [],
     "instruction": "greaterThan",
-    "lineNumber": 129,
+    "lineNumber": 128,
   },
   Object {
     "arguments": Array [],
     "instruction": "if",
-    "lineNumber": 130,
+    "lineNumber": 129,
   },
   Object {
     "arguments": Array [
@@ -971,12 +971,12 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 131,
+    "lineNumber": 130,
   },
   Object {
     "arguments": Array [],
     "instruction": "else",
-    "lineNumber": 132,
+    "lineNumber": 131,
   },
   Object {
     "arguments": Array [
@@ -987,17 +987,17 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 133,
+    "lineNumber": 132,
   },
   Object {
     "arguments": Array [],
     "instruction": "end",
-    "lineNumber": 134,
+    "lineNumber": 133,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 135,
+    "lineNumber": 134,
   },
 ]
 `;
@@ -1011,7 +1011,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 4,
+    "lineNumber": 3,
     "relativeWordAddress": 0,
     "type": "int",
     "wordAddress": 0,
@@ -1024,7 +1024,7 @@ Map {
     "isInteger": true,
     "isPointer": true,
     "isPointingToInteger": true,
-    "lineNumber": 5,
+    "lineNumber": 4,
     "relativeWordAddress": 1,
     "type": "int*",
     "wordAddress": 1,
@@ -1037,7 +1037,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 7,
+    "lineNumber": 6,
     "relativeWordAddress": 2,
     "type": "int",
     "wordAddress": 2,
@@ -1050,7 +1050,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 8,
+    "lineNumber": 7,
     "relativeWordAddress": 3,
     "type": "int",
     "wordAddress": 3,
@@ -1063,7 +1063,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 9,
+    "lineNumber": 8,
     "relativeWordAddress": 4,
     "type": "int",
     "wordAddress": 4,
@@ -1076,7 +1076,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 10,
+    "lineNumber": 9,
     "relativeWordAddress": 5,
     "type": "int",
     "wordAddress": 5,
@@ -1089,7 +1089,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 11,
+    "lineNumber": 10,
     "relativeWordAddress": 6,
     "type": "int",
     "wordAddress": 6,
@@ -1102,7 +1102,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 12,
+    "lineNumber": 11,
     "relativeWordAddress": 7,
     "type": "int",
     "wordAddress": 7,
@@ -1115,7 +1115,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 13,
+    "lineNumber": 12,
     "relativeWordAddress": 8,
     "type": "int",
     "wordAddress": 8,
@@ -1128,7 +1128,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
-    "lineNumber": 14,
+    "lineNumber": 13,
     "relativeWordAddress": 9,
     "type": "int",
     "wordAddress": 9,
