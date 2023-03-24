@@ -1,3 +1,5 @@
+import { ModuleGraphicData } from '../types';
+
 export function moveCaret(
 	code: string[],
 	row: number,
@@ -83,4 +85,42 @@ export function enter(
 
 	const [newRow] = moveCaret(newCode, row, col, 'ArrowDown');
 	return { code: newCode, row: newRow, col: 0 };
+}
+
+/**
+ *
+ *  +------------
+ *  | 0 Line 0
+ *  +------------
+ *  | 1 Line 1   gap.size = 2
+ *  +------------
+ *  | 2 gap
+ *  +-----------
+ *  | 3 gap
+ *  +-------------
+ *  | 4 Line 2
+ *  +--------------
+ *  | 5 Line 3    gap.size = 3
+ *  +--------------
+ *  | 6 gap
+ *  +---------------
+ *  | 7 gap
+ *  +------------
+ *  | 8 gap
+ *  +---------
+ *  | 9 Line 4
+ *  +----------
+ *  | 10 Line 5
+ *  +-------------
+ * @returns
+ */
+
+export function gapCalculator(row: number, gaps: ModuleGraphicData['gaps']) {
+	let physicalRowCounter = row;
+	for (const [gapStarLine, { size }] of gaps) {
+		if (row > gapStarLine) {
+			physicalRowCounter += size;
+		}
+	}
+	return physicalRowCounter;
 }
