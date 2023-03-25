@@ -1,16 +1,19 @@
 import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler } from '../types';
 
-const _module: InstructionHandler = function (line, namespace, stack, blockStack) {
+const _module: InstructionHandler = function (line, context) {
 	if (!line.arguments[0]) {
-		throw getError(ErrorCode.MISSING_ARGUMENT, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 	}
 
 	if (line.arguments[0].type === ArgumentType.LITERAL) {
-		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
-	return { byteCode: [], namespace: { ...namespace, moduleName: line.arguments[0].value }, stack, blockStack };
+	return {
+		byteCode: [],
+		context: { ...context, namespace: { ...context.namespace, moduleName: line.arguments[0].value } },
+	};
 };
 
 export default _module;
