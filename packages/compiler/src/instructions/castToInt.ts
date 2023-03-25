@@ -3,23 +3,21 @@ import { InstructionHandler } from '../types';
 import { areAllOperandsIntegers } from '../utils';
 import { ErrorCode, getError } from '../errors';
 
-const castToInt: InstructionHandler = function (line, namespace, stack, blockStack) {
-	const operand = stack.pop();
+const castToInt: InstructionHandler = function (line, context) {
+	const operand = context.stack.pop();
 
 	if (!operand) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
 	if (areAllOperandsIntegers(operand)) {
-		throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
 	}
 
-	stack.push({ isInteger: true });
+	context.stack.push({ isInteger: true });
 	return {
 		byteCode: [WASMInstruction.I32_TUNC_F32_S],
-		namespace,
-		stack,
-		blockStack,
+		context,
 	};
 };
 

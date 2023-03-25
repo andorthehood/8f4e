@@ -3,22 +3,22 @@ import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { areAllOperandsIntegers } from '../utils';
 
-const store: InstructionHandler = function (line, namespace, stack, blockStack) {
-	const operand1Value = stack.pop();
-	const operand2Address = stack.pop();
+const store: InstructionHandler = function (line, context) {
+	const operand1Value = context.stack.pop();
+	const operand2Address = context.stack.pop();
 
 	if (!operand1Value || !operand2Address) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
 	if (!areAllOperandsIntegers(operand2Address)) {
-		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
 	}
 
 	if (areAllOperandsIntegers(operand1Value)) {
-		return { byteCode: i32store(), namespace, stack, blockStack };
+		return { byteCode: i32store(), context };
 	} else {
-		return { byteCode: f32store(), namespace, stack, blockStack };
+		return { byteCode: f32store(), context };
 	}
 };
 

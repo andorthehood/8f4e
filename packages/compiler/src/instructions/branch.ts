@@ -2,15 +2,15 @@ import { br } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 
-const branch: InstructionHandler = function branch(line, namespace, stack, blockStack) {
+const branch: InstructionHandler = function branch(line, context) {
 	if (!line.arguments[0]) {
-		throw getError(ErrorCode.MISSING_ARGUMENT, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 	}
 
 	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
-		throw getError(ErrorCode.EXPECTED_VALUE, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	} else {
-		return { byteCode: br(line.arguments[0].value), namespace, stack, blockStack };
+		return { byteCode: br(line.arguments[0].value), context };
 	}
 };
 
