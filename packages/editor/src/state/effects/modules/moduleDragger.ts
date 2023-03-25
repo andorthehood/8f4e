@@ -19,7 +19,6 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 
 		// Bring dragged module forward.
 		state.project.modules.push(state.project.modules.splice(state.project.modules.indexOf(draggedModule), 1)[0]);
-
 	}
 
 	function onMouseMove(event) {
