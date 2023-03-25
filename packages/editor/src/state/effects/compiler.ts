@@ -35,7 +35,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				state.compiler.buildErrors = [
 					{
 						lineNumber: data.payload.line.lineNumber,
-						moduleId: data.payload.namespace.moduleName,
+						moduleId: data.payload.context.namespace.moduleName,
 						code: data.payload.errorCode,
 						message: data.payload.message,
 					},

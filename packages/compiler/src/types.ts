@@ -86,6 +86,13 @@ export interface Namespace {
 	moduleName: string | undefined;
 }
 
+export interface CompilationContext {
+	namespace: Namespace;
+	stack: Stack;
+	blockStack: BlockStack;
+	startingByteAddress: number;
+}
+
 export interface StackItem {
 	isInteger: boolean;
 }
@@ -96,17 +103,12 @@ export type BlockStack = Array<{ expectedResultIsInteger: boolean; hasExpectedRe
 
 export type InstructionHandler = (
 	line: AST[number],
-	namespace: Namespace,
-	stack: Stack,
-	blockStack: BlockStack,
-	startingByteAddress: number
-) => { namespace: Namespace; byteCode: Array<WASMInstruction | Type | number>; stack: Stack; blockStack: BlockStack };
+	context: CompilationContext
+) => { context: CompilationContext; byteCode: Array<WASMInstruction | Type | number> };
 
 export interface Error {
 	message: string;
 	line: Parameters<InstructionHandler>[0];
-	namespace: Parameters<InstructionHandler>[1];
-	stack: Parameters<InstructionHandler>[2];
+	context: CompilationContext;
 	code: number;
-	blockStack: BlockStack;
 }
