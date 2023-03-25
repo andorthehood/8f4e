@@ -22,8 +22,6 @@ import {
 	CompiledModuleLookup,
 	AST,
 	Namespace,
-	Argument,
-	ArgumentType,
 	ArgumentLiteral,
 } from './types';
 import { calculateModuleWordSize } from './utils';
