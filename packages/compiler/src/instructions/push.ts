@@ -1,5 +1,5 @@
 import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
-import { Argument, ArgumentLiteral, ArgumentType, InstructionHandler } from '../types';
+import { ArgumentLiteral, ArgumentType, InstructionHandler } from '../types';
 import {
 	getMemoryItem,
 	getMemoryItemByteAddress,

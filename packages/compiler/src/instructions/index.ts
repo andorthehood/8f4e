@@ -35,6 +35,7 @@ import global from './global';
 import memory from './memory';
 import castToInt from './castToInt';
 import castToFloat from './castToFloat';
+import skip from './skip';
 
 const instructions = {
 	and,
@@ -74,6 +75,7 @@ const instructions = {
 	memory,
 	castToInt,
 	castToFloat,
+	skip,
 } as const;
 
 export default instructions;
