@@ -1,11 +1,9 @@
 import { InstructionHandler } from '../types';
 
-const global: InstructionHandler = function (line, namespace, stack, blockStack) {
+const global: InstructionHandler = function (line, context) {
 	return {
 		byteCode: [],
-		namespace,
-		stack,
-		blockStack
+		context,
 	};
 };
 

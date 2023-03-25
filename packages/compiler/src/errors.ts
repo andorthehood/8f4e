@@ -1,4 +1,4 @@
-import { AST, BlockStack, Error, Namespace, Stack } from './types';
+import { AST, CompilationContext, Error } from './types';
 
 export enum ErrorCode {
 	INSUFFICIENT_OPERANDS,
@@ -17,112 +17,84 @@ export enum ErrorCode {
 	MISSING_BLOCK_START_INSTRUCTION,
 }
 
-export function getError(
-	code: ErrorCode,
-	line: AST[number],
-	namespace: Namespace,
-	stack: Stack,
-	blockStack: BlockStack
-): Error {
+export function getError(code: ErrorCode, line: AST[number], context: CompilationContext): Error {
 	switch (code) {
 		case ErrorCode.INSUFFICIENT_OPERANDS:
 			return {
 				code,
 				message: 'Insufficient number of elements in the stack for the operation to proceed.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.UNMATCHING_OPERANDS:
 			return {
 				code,
 				message: 'This instruction can only operate on operands of the same type.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.ONLY_INTEGERS:
 			return {
 				code,
 				message: 'The operation only accepts integer values as operands.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.MISSING_ARGUMENT:
 			return {
 				code,
 				message: 'Missing argument.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.UNDECLARED_IDENTIFIER:
 			return {
 				code,
 				message: 'Undeclared identifier.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.EXPECTED_IDENTIFIER:
 			return {
 				code,
 				message: 'Expected identifier, got a value.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.EXPECTED_INTEGER_OPERAND:
 			return {
 				code,
 				message: 'Expected one of the operands to be an integer value.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.UNRECOGNISED_INSTRUCTION:
 			return {
 				code,
 				message: 'Unrecognised instruction.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.EXPECTED_VALUE:
 			return {
 				code,
 				message: 'Expected value, got an identifier.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.MISSING_MODULE_ID:
 			return {
 				code,
 				message: 'Missing module ID.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.EXPECTED_FLOAT_OPERAND:
 			return {
 				code,
 				message: 'Expected one of the operands to be a floating point value.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS:
 			return {
@@ -130,23 +102,19 @@ export function getError(
 				message:
 					line.lineNumber +
 					': Expected 0 elements on the stack, found ' +
-					stack.length +
+					context.stack.length +
 					' [' +
-					stack.map(({ isInteger }) => (isInteger ? 'int' : 'float')).join(', ') +
+					context.stack.map(({ isInteger }) => (isInteger ? 'int' : 'float')).join(', ') +
 					']',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.MISSING_BLOCK_START_INSTRUCTION:
 			return {
 				code,
 				message: 'Missing block start instruction.',
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 		case ErrorCode.UNKNOWN_ERROR:
 		default:
@@ -154,9 +122,7 @@ export function getError(
 				message: 'Unknown error',
 				code,
 				line,
-				namespace,
-				stack,
-				blockStack,
+				context,
 			};
 	}
 }

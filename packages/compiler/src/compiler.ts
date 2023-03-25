@@ -1,7 +1,7 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import instructions, { Instruction } from './instructions';
-import { AST, Argument, ArgumentType, CompiledModule, Namespace, Stack, BlockStack } from './types';
+import { AST, Argument, ArgumentType, CompiledModule, Namespace, CompilationContext } from './types';
 import { WORD_LENGTH } from './consts';
 import { ErrorCode, getError } from './errors';
 
@@ -59,82 +59,64 @@ export function compileToAST(module: string[]) {
 
 export function compileLine(
 	line: AST[number],
-	namespace: Namespace,
-	stack: Stack,
-	blockStack: BlockStack,
-	startingByteAddress: number
-): { byteCode: number[]; namespace: Namespace; stack: Stack; blockStack: BlockStack } {
+	context: CompilationContext
+): { byteCode: number[]; context: CompilationContext } {
 	if (!instructions[line.instruction]) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, namespace, stack, blockStack);
+		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
-	return instructions[line.instruction](line, namespace, stack, blockStack, startingByteAddress);
+	return instructions[line.instruction](line, context);
 }
 
 export function compile(ast: AST, globals: Namespace['consts'], startingByteAddress = 0): CompiledModule {
-	let memory: Namespace['memory'] = new Map();
-	let locals: Namespace['locals'] = [];
-	let consts: Namespace['consts'] = { ...globals };
-	let stack: Stack = [];
-	let blockStack: BlockStack = [];
-	let moduleName: Namespace['moduleName'] = undefined;
+	const context: CompilationContext = {
+		namespace: {
+			memory: new Map(),
+			locals: [],
+			consts: { ...globals },
+			moduleName: undefined,
+		},
+		stack: [],
+		blockStack: [],
+		startingByteAddress,
+	};
 
 	const wa = ast
 		.reduce((acc, line) => {
 			const {
 				byteCode,
-				namespace,
-				stack: newStack,
-				blockStack: newBlockStack,
-			} = compileLine(line, { locals, memory, consts, moduleName }, stack, blockStack, startingByteAddress);
-			consts = namespace.consts;
-			locals = namespace.locals;
-			memory = namespace.memory;
-			moduleName = namespace.moduleName;
-			stack = newStack;
-			blockStack = newBlockStack;
+				context: { namespace, stack: newStack, blockStack: newBlockStack },
+			} = compileLine(line, context);
+			context.namespace.consts = namespace.consts;
+			context.namespace.locals = namespace.locals;
+			context.namespace.memory = namespace.memory;
+			context.namespace.moduleName = namespace.moduleName;
+			context.stack = newStack;
+			context.blockStack = newBlockStack;
 			acc.push(byteCode);
 			return acc;
 		}, [] as number[][])
 		.flat();
 
-	const [, lastMemoryItem = { relativeWordAddress: 0, wordSize: 0 }] = Array.from(memory).pop() || [];
+	const [, lastMemoryItem = { relativeWordAddress: 0, wordSize: 0 }] = Array.from(context.namespace.memory).pop() || [];
 
-	if (!moduleName) {
-		throw getError(
-			ErrorCode.MISSING_MODULE_ID,
-			{ lineNumber: 0, instruction: 'module', arguments: [] },
-			{
-				memory,
-				locals,
-				consts,
-				moduleName,
-			},
-			stack,
-			blockStack
-		);
+	if (!context.namespace.moduleName) {
+		throw getError(ErrorCode.MISSING_MODULE_ID, { lineNumber: 0, instruction: 'module', arguments: [] }, context);
 	}
 
-	if (stack.length > 0) {
+	if (context.stack.length > 0) {
 		throw getError(
 			ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS,
 			{ lineNumber: 0, instruction: 'module', arguments: [] },
-			{
-				memory,
-				locals,
-				consts,
-				moduleName,
-			},
-			stack,
-			blockStack
+			context
 		);
 	}
 
 	return {
-		id: moduleName,
-		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, locals.length)], wa),
+		id: context.namespace.moduleName,
+		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, context.namespace.locals.length)], wa),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
-		memoryMap: memory,
+		memoryMap: context.namespace.memory,
 		memoryWordSize: lastMemoryItem.relativeWordAddress + lastMemoryItem.wordSize,
 		ast,
 	};
