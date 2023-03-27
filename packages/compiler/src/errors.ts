@@ -17,7 +17,7 @@ export enum ErrorCode {
 	MISSING_BLOCK_START_INSTRUCTION,
 }
 
-export function getError(code: ErrorCode, line: AST[number], context: CompilationContext): Error {
+export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
 	switch (code) {
 		case ErrorCode.INSUFFICIENT_OPERANDS:
 			return {
@@ -102,9 +102,9 @@ export function getError(code: ErrorCode, line: AST[number], context: Compilatio
 				message:
 					line.lineNumber +
 					': Expected 0 elements on the stack, found ' +
-					context.stack.length +
+					context?.stack.length +
 					' [' +
-					context.stack.map(({ isInteger }) => (isInteger ? 'int' : 'float')).join(', ') +
+					context?.stack.map(({ isInteger }) => (isInteger ? 'int' : 'float')).join(', ') +
 					']',
 				line,
 				context,
