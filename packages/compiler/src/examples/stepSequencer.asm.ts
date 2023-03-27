@@ -1,12 +1,12 @@
 export default `module stepSequencer
 
- memory int defaultValue 0
- memory int* trigger &defaultValue
- memory int triggerPreviousValue 0
- buffer int steps 16 0
- memory int stepPointer &steps
- memory int stepLength 4
- memory int out 0
+ int defaultValue 0
+ int* trigger &defaultValue
+ int triggerPreviousValue 0
+ int[] steps 16 0
+ int stepPointer &steps
+ int stepLength 4
+ int out 0
 
  local _stepPointer
 

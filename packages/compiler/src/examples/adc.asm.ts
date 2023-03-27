@@ -14,12 +14,12 @@ export interface Config {
 export default ({ resolution = 8 } = {}) => `module adc
 
 # memory
-memory int default 0
-memory int* in &default
+int default 0
+int* in &default
 
 ${masks
 	.slice(0, resolution)
-	.map((mask, index) => `memory int out:${index + 1} 0`)
+	.map((mask, index) => `int out:${index + 1} 0`)
 	.join('\n')}
 
 # locals

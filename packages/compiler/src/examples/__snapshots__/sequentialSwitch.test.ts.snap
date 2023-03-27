@@ -16,10 +16,6 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "int",
-      },
-      Object {
-        "type": "identifier",
         "value": "defaultValue",
       },
       Object {
@@ -28,15 +24,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 2,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -47,15 +39,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 3,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int*",
-      },
       Object {
         "type": "identifier",
         "value": "in:clock",
@@ -65,15 +53,11 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int*",
     "lineNumber": 4,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "previousClock",
@@ -84,15 +68,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 5,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "counter",
@@ -103,15 +83,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 6,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int*",
-      },
       Object {
         "type": "identifier",
         "value": "in:1",
@@ -121,15 +97,11 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int*",
     "lineNumber": 7,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int*",
-      },
       Object {
         "type": "identifier",
         "value": "in:2",
@@ -139,15 +111,11 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int*",
     "lineNumber": 8,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int*",
-      },
       Object {
         "type": "identifier",
         "value": "in:3",
@@ -157,15 +125,11 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int*",
     "lineNumber": 9,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int*",
-      },
       Object {
         "type": "identifier",
         "value": "in:4",
@@ -175,7 +139,7 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int*",
     "lineNumber": 10,
   },
   Object {

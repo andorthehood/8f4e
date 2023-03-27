@@ -16,10 +16,6 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "int",
-      },
-      Object {
-        "type": "identifier",
         "value": "DEFAULT_VALUE",
       },
       Object {
@@ -28,15 +24,11 @@ Array [
         "value": -1,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 4,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int*",
-      },
       Object {
         "type": "identifier",
         "value": "in:1",
@@ -46,15 +38,11 @@ Array [
         "value": "&DEFAULT_VALUE",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int*",
     "lineNumber": 5,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -65,15 +53,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 6,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "arr",
@@ -89,7 +73,7 @@ Array [
         "value": -1,
       },
     ],
-    "instruction": "buffer",
+    "instruction": "int[]",
     "lineNumber": 7,
   },
   Object {
