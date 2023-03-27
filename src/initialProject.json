@@ -1,12 +1,4 @@
 {
-    "connections": [
-        {
-            "toConnectorId": "in",
-            "toModuleId": "audioout",
-            "fromConnectorId": "out",
-            "fromModuleId": "saw"
-        }
-    ],
     "modules": [
         {
             "code": [
@@ -43,7 +35,7 @@
             "code": [
                 "module audioout",
                 "",
-                "memory float* in",
+                "memory float* in saw.out",
                 "memory int channel 0",
                 "",
                 "# Audio buffer",

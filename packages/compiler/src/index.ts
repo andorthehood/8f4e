@@ -23,9 +23,11 @@ import {
 	AST,
 	Namespace,
 	ArgumentLiteral,
+	ArgumentType,
 } from './types';
 import { calculateModuleWordSize } from './utils';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
+import { ErrorCode, getError } from './errors';
 
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
@@ -62,6 +64,42 @@ function collectGlobals(ast: AST): Namespace['consts'] {
 				];
 			})
 	);
+}
+
+function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
+	compiledModules.forEach(({ ast, memoryMap }) => {
+		ast.forEach(line => {
+			const { instruction, arguments: _arguments } = line;
+			if (
+				instruction === 'memory' &&
+				_arguments[1] &&
+				_arguments[2] &&
+				_arguments[1].type === ArgumentType.IDENTIFIER &&
+				_arguments[2].type === ArgumentType.IDENTIFIER &&
+				/(\S+)\.(\S+)/.test(_arguments[2].value)
+			) {
+				const [targetModuleId, targetMemoryId] = _arguments[2].value.split('.');
+
+				const targetModule = compiledModules.get(targetModuleId);
+
+				if (!targetModule) {
+					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+				}
+
+				const targetMemory = targetModule.memoryMap.get(targetMemoryId);
+
+				if (!targetMemory) {
+					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+				}
+
+				const memory = memoryMap.get(_arguments[1].value);
+
+				if (memory) {
+					memory.default = targetMemory.byteAddress;
+				}
+			}
+		});
+	});
 }
 
 export function compileModules(modules: Module[], startingMemoryWordAddress = 0): CompiledModule[] {
@@ -107,6 +145,8 @@ export default function compile(modules: Module[]): {
 	compiledModules: CompiledModuleLookup;
 } {
 	const compiledModules = compileModules(modules, 1);
+	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
+	resolveInterModularConnections(compiledModulesMap);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
 	const cycleFunction = compiledModules.map((module, index) => call(index + 3)).flat();
@@ -137,6 +177,6 @@ export default function compile(modules: Module[]): {
 			]),
 		]),
 		memoryAddressLookup,
-		compiledModules: new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }])),
+		compiledModules: compiledModulesMap,
 	};
 }

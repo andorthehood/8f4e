@@ -109,6 +109,6 @@ export type InstructionHandler = (
 export interface Error {
 	message: string;
 	line: Parameters<InstructionHandler>[0];
-	context: CompilationContext;
+	context?: CompilationContext;
 	code: number;
 }
