@@ -1,11 +1,11 @@
 export default `module splitter
 
-memory int zero 0
-memory int* in &zero
-memory int out:1 &zero
-memory int out:2 &zero
-memory int out:3 &zero
-memory int out:4 &zero
+int zero 0
+int* in &zero
+int out:1 &zero
+int out:2 &zero
+int out:3 &zero
+int out:4 &zero
 
 local input
 

@@ -1,14 +1,14 @@
 export default `module sequentialSwitch
 
-memory int defaultValue 0
-memory int out 0
-memory int* in:clock &defaultValue
-memory int previousClock 0
-memory int counter 0
-memory int* in:1 &defaultValue
-memory int* in:2 &defaultValue
-memory int* in:3 &defaultValue
-memory int* in:4 &defaultValue
+int defaultValue 0
+int out 0
+int* in:clock &defaultValue
+int previousClock 0
+int counter 0
+int* in:1 &defaultValue
+int* in:2 &defaultValue
+int* in:3 &defaultValue
+int* in:4 &defaultValue
 
 local clock
 local _counter
