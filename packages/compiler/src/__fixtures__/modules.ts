@@ -5,9 +5,9 @@ export default [
             module abs
         
             # memory
-            memory int DEFAULT_VALUE 0
-            memory int* in &DEFAULT_VALUE
-            memory int out 0
+            int DEFAULT_VALUE 0
+            int* in &DEFAULT_VALUE
+            int out 0
         
             # locals
             local input

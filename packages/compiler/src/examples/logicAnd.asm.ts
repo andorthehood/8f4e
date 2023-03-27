@@ -1,9 +1,9 @@
 export default `module logicAnd
 
-memory int defaultValue 0
-memory int* in:1 &defaultValue
-memory int* in:2 &defaultValue
-memory int out 0
+int defaultValue 0
+int* in:1 &defaultValue
+int* in:2 &defaultValue
+int out 0
 
 push *in:1
 push 0

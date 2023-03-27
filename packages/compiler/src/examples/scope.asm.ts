@@ -2,14 +2,14 @@ const BUFFER_LENGTH = 64;
 
 export default `module scope
 
-memory int defaultValue 0
-memory int* in &defaultValue
-memory int out 0
+int defaultValue 0
+int* in &defaultValue
+int out 0
 
-memory int counter 0
-memory int rate 0
-buffer int buffer ${BUFFER_LENGTH} 0
-memory int bufferPointer &buffer
+int counter 0
+int rate 0
+int[] buffer ${BUFFER_LENGTH} 0
+int bufferPointer &buffer
 
 local _bufferPointer
 local _counter

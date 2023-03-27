@@ -1,5 +1,3 @@
-import { parse } from 'path';
-
 import {
 	createCodeSection,
 	createExportSection,
@@ -71,14 +69,14 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 		ast.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
-				instruction === 'memory' &&
+				['int*', 'float*'].includes(instruction) &&
+				_arguments[0] &&
 				_arguments[1] &&
-				_arguments[2] &&
+				_arguments[0].type === ArgumentType.IDENTIFIER &&
 				_arguments[1].type === ArgumentType.IDENTIFIER &&
-				_arguments[2].type === ArgumentType.IDENTIFIER &&
-				/(\S+)\.(\S+)/.test(_arguments[2].value)
+				/(\S+)\.(\S+)/.test(_arguments[1].value)
 			) {
-				const [targetModuleId, targetMemoryId] = _arguments[2].value.split('.');
+				const [targetModuleId, targetMemoryId] = _arguments[1].value.split('.');
 
 				const targetModule = compiledModules.get(targetModuleId);
 
@@ -92,7 +90,7 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
 				}
 
-				const memory = memoryMap.get(_arguments[1].value);
+				const memory = memoryMap.get(_arguments[0].value);
 
 				if (memory) {
 					memory.default = targetMemory.byteAddress;

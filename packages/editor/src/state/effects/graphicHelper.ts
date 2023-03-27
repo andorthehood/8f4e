@@ -3,7 +3,7 @@ import { instructions } from '@8f4e/compiler';
 
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
-import { GraphicHelper, ModuleGraphicData, State } from '../types';
+import { ModuleGraphicData, State } from '../types';
 import { backSpace, enter, moveCaret, type, gapCalculator } from '../helpers/editor';
 import {
 	parseDebuggers,
@@ -54,7 +54,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				(line, index) => `${index}`.padStart(padLength, '0') + ' ' + line
 			);
 
-			graphicData.width = Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers)) * VGRID;
+			graphicData.width = Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) * VGRID;
 
 			graphicData.codeColors = graphicData.codeWithLineNumbers.map(line => {
 				const keywordIndex = line.search(keywords);
