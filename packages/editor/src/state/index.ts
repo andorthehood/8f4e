@@ -1,8 +1,6 @@
 import compiler from './effects/compiler';
-import connectionMaker from './effects/connections';
 import contextMenu from './effects/menu/contextMenu';
 import error from './effects/error';
-import history from './effects/history';
 import loader from './effects/loader';
 import midi from './effects/midi';
 import moduleCreator from './effects/modules/moduleCreator';
@@ -33,7 +31,6 @@ const defaultState: State = {
 		compiledModules: new Map(),
 		buildErrors: [],
 	},
-	history: [],
 	midi: {
 		ports: [],
 	},
@@ -47,11 +44,10 @@ const defaultState: State = {
 	contextMenu: undefined,
 	connectionFromModule: undefined,
 	connectionFromConnector: undefined,
-	graphicHelper: { connections: [], modules: new Map() },
+	graphicHelper: { connections: [], modules: new Map(), outputsByWordAddress: new Map() },
 	selectedModule: undefined,
 	project: {
 		modules: [],
-		connections: [],
 		viewport: {
 			height: 0,
 			width: 0,
@@ -71,8 +67,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	const state = { ...defaultState, project, options: { ...defaultState.options, ...options } };
 	midi(state, events);
 	loader(state, events, defaultState);
-	history(state, events);
-	connectionMaker(state, events);
 	moduleDragger(state, events);
 	moduleOpener(state, events);
 	_switch(state, events);

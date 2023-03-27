@@ -1,6 +1,6 @@
 import { Instruction } from '@8f4e/compiler';
 
-const instructionParser = /^\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)$/;
+const instructionParser = /^\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
 const commentParser = /^\s*#(.+)$/;
 const debuggerParser = /^\s*debug\s*(\S*)\s*$/;
 const scopeParser = /^\s*scope\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
@@ -9,7 +9,7 @@ export function parseInputs(code: string[]): Array<{ id: string; lineNumber: num
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'memory' && args[1].startsWith('in')) {
+		if (instruction === 'memory' && (args[0] === 'int*' || args[0] === 'float*')) {
 			return [...acc, { id: args[1], lineNumber: index }];
 		}
 		return acc;
@@ -20,7 +20,7 @@ export function parseOutputs(code: string[]): Array<{ id: string; lineNumber: nu
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'memory' && args[1].startsWith('out')) {
+		if (instruction === 'memory' && (args[0] === 'int' || args[0] === 'float')) {
 			return [...acc, { id: args[1], lineNumber: index }];
 		}
 		return acc;
