@@ -15,28 +15,25 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	engine.startGroup(offsetX, offsetY);
 
-	for (let i = 0; i < state.project.modules.length; i++) {
-		const { x, y, isOpen } = state.project.modules[i];
-		const module = state.graphicHelper.modules.get(state.project.modules[i]);
-
+	for (const [, module] of state.graphicHelper.modules) {
 		if (!module) {
 			continue;
 		}
 
 		if (
-			x + offsetX > -1 * module.width &&
-			y + offsetY > -1 * module.height &&
-			x + offsetX < state.project.viewport.width &&
-			y + offsetY < state.project.viewport.height
+			module.x + offsetX > -1 * module.width &&
+			module.y + offsetY > -1 * module.height &&
+			module.x + offsetX < state.project.viewport.width &&
+			module.y + offsetY < state.project.viewport.height
 		) {
-			engine.startGroup(x, y);
+			engine.startGroup(module.x, module.y);
 
 			engine.setSpriteLookup(fillColor);
 			engine.drawSprite(0, 0, 'rgb(0,0,0)', module.width, module.height);
 
 			engine.setSpriteLookup(font('white'));
 
-			const corner = isOpen ? '-' : '+';
+			const corner = module.isOpen ? '-' : '+';
 
 			engine.drawText(0, 0, corner);
 			engine.drawText(module.width - VGRID, 0, corner);
@@ -50,7 +47,7 @@ export default function drawModules(engine: Engine, state: State): void {
 				engine.drawText(VGRID, HGRID * i, module.codeWithLineNumbers[i], module.codeColors[i]);
 			}
 
-			if (state.selectedModule === state.project.modules[i]) {
+			if (state.selectedModule === module) {
 				engine.drawText(module.cursor.x, module.cursor.y, '_');
 			}
 

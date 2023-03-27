@@ -1,10 +1,10 @@
 import { EventDispatcher } from '../../../events';
 import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
-import { Module, State } from '../../types';
+import { ModuleGraphicData, State } from '../../types';
 
 export default function moduleDragger(state: State, events: EventDispatcher): () => void {
-	let draggedModule: Module | undefined = undefined;
+	let draggedModule: ModuleGraphicData | undefined = undefined;
 	let startingPosition: { x: number; y: number } | undefined;
 	function onMouseDown({ x, y }) {
 		draggedModule = findModuleAtViewportCoordinates(state.graphicHelper, state.project.viewport, x, y);

@@ -48,11 +48,6 @@ export type MidiPort = {
 	manufacturer: string;
 };
 
-export type HistoryItem = {
-	connections: Connection[];
-	modules: Module[];
-};
-
 export interface BuildError {
 	lineNumber: number;
 	code: number;
@@ -111,6 +106,7 @@ export interface Debugger {
 }
 
 export interface Output {
+	module: ModuleGraphicData;
 	width: number;
 	height: number;
 	x: number;
@@ -119,11 +115,13 @@ export interface Output {
 }
 
 export interface Input {
+	module: ModuleGraphicData;
 	width: number;
 	height: number;
 	x: number;
 	y: number;
 	id: string;
+	wordAddress: number;
 }
 
 export interface ModuleGraphicData {
@@ -140,6 +138,9 @@ export interface ModuleGraphicData {
 	debuggers: Map<string, Debugger>;
 	scopes: Map<string, Scope>;
 	switches: Map<string, Switch>;
+	x: number;
+	y: number;
+	isOpen: boolean;
 	errorMessages: Map<
 		number,
 		{
@@ -152,13 +153,13 @@ export interface ModuleGraphicData {
 
 export type GraphicHelper = {
 	connections: Array<{ fromModule: Module; toModule: Module; fromConnectorId: string; toConnectorId: string }>;
+	outputsByWordAddress: Map<number, Output>;
 	modules: Map<Module, ModuleGraphicData>;
 };
 
 export interface Project {
 	modules: Module[];
 	viewport: Viewport;
-	connections: Connection[];
 	rnbo: { patchers: Record<string, IPatcher> };
 }
 
@@ -176,10 +177,9 @@ export interface State {
 	connectionPointB: [number, number] | undefined;
 	contextMenu: ContextMenu | undefined;
 	error: Error;
-	history: HistoryItem[];
 	isConnectionBeingMade: boolean;
 	midi: Midi;
-	selectedModule: Module | undefined;
+	selectedModule: ModuleGraphicData | undefined;
 	graphicHelper: GraphicHelper;
 	project: Project;
 	options: Options;

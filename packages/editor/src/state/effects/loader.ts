@@ -14,11 +14,19 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 	state.options.isLocalStorageEnabled && loadProject(localProject);
 
-	state.history = [];
-
 	function onSaveState() {
-		state.options.isLocalStorageEnabled &&
-			localStorage.setItem('project_' + state.options.localStorageId, JSON.stringify(state.project));
+		if (!state.options.isLocalStorageEnabled) {
+			return;
+		}
+
+		Array.from(state.graphicHelper.modules).forEach(([module, graphicData]) => {
+			module.code = graphicData.code;
+			module.x = graphicData.x;
+			module.y = graphicData.y;
+			module.isOpen = graphicData.isOpen;
+		});
+
+		localStorage.setItem('project_' + state.options.localStorageId, JSON.stringify(state.project));
 	}
 
 	function onOpen() {

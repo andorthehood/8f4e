@@ -42,6 +42,9 @@ const memory: InstructionHandler = function (line, context) {
 		}
 
 		defaultValue = memoryItem.byteAddress;
+	} else if (line.arguments[2].type === ArgumentType.IDENTIFIER && /(\S+)\.(\S+)/.test(line.arguments[2].value)) {
+		// Do nothing
+		// Intermodular references are resolved later
 	} else if (line.arguments[2].type === ArgumentType.IDENTIFIER) {
 		const constant = context.namespace.consts[line.arguments[2].value];
 

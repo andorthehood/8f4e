@@ -65,7 +65,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 	}
 
 	function onDeleteModule({ module }: { module: Module }): void {
-		events.dispatch('deleteConnection', { module, replaceHistory: true });
+		events.dispatch('deleteConnection', { module });
 		state.project.modules.splice(state.project.modules.indexOf(module), 1);
 	}
 

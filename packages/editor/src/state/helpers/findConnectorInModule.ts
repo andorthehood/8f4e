@@ -1,12 +1,9 @@
-import { Connector, GraphicHelper, Module } from '../types';
+import { Connector, ModuleGraphicData } from '../types';
 
 export default function findConnectorInModule(
-	graphicHelper: GraphicHelper,
-	module: Module,
+	graphicData: ModuleGraphicData,
 	connectorId: string
 ): Connector | undefined {
-	const graphicData = graphicHelper.modules.get(module);
-
 	if (!graphicData) {
 		return;
 	}

@@ -21,16 +21,42 @@ const keywords = new RegExp(Object.keys(instructions).join('|'));
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const updateGraphics = function () {
 		state.project.modules.forEach(module => {
-			const padLength = module.code.length.toString().length;
-			const length = module.isOpen ? module.code.length : getLastMemoryInstructionLine(module.code);
+			const graphicData =
+				state.graphicHelper.modules.get(module) ||
+				({
+					width: 0,
+					height: 0,
+					code: module.code,
+					codeWithLineNumbers: [],
+					codeColors: [],
+					inputs: new Map(),
+					outputs: new Map(),
+					debuggers: new Map(),
+					switches: new Map(),
+					scopes: new Map(),
+					cursor: { col: 0, row: 0, x: 0, y: 0 },
+					id: getModuleId(module.code) || '',
+					gaps: new Map() as ModuleGraphicData['gaps'],
+					errorMessages: new Map(),
+					x: module.x,
+					y: module.y,
+					isOpen: module.isOpen,
+				} as ModuleGraphicData);
+			state.graphicHelper.modules.set(module, graphicData);
 
-			const trimmedCode = [...module.code.slice(0, length + 1), ''];
+			const padLength = graphicData.code.length.toString().length;
+			const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(module.code);
+			const trimmedCode = [...graphicData.code.slice(0, length + 1), ''];
 
-			const codeWithLineNumbers = trimmedCode.map((line, index) => `${index}`.padStart(padLength, '0') + ' ' + line);
+			graphicData.cursor.x = VGRID * (padLength + 2);
 
-			const width = Math.max(32, getLongestLineLength(codeWithLineNumbers));
+			graphicData.codeWithLineNumbers = trimmedCode.map(
+				(line, index) => `${index}`.padStart(padLength, '0') + ' ' + line
+			);
 
-			const codeColors = codeWithLineNumbers.map(line => {
+			graphicData.width = Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers)) * VGRID;
+
+			graphicData.codeColors = graphicData.codeWithLineNumbers.map(line => {
 				const keywordIndex = line.search(keywords);
 
 				if (line.includes('#')) {
@@ -53,27 +79,6 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					return undefined;
 				});
 			});
-
-			const graphicData = state.graphicHelper.modules.get(module) || {
-				width: width * VGRID,
-				height: codeWithLineNumbers.length * HGRID,
-				code: module.code,
-				codeWithLineNumbers,
-				codeColors,
-				inputs: new Map(),
-				outputs: new Map(),
-				debuggers: new Map(),
-				switches: new Map(),
-				scopes: new Map(),
-				cursor: { col: 0, row: 0, x: VGRID * (padLength + 2), y: 0 },
-				id: getModuleId(module.code) || '',
-				gaps: new Map() as ModuleGraphicData['gaps'],
-				errorMessages: new Map(),
-			};
-			state.graphicHelper.modules.set(module, graphicData);
-
-			graphicData.codeWithLineNumbers = codeWithLineNumbers;
-			graphicData.codeColors = codeColors;
 
 			graphicData.gaps.clear();
 			state.compiler.buildErrors.forEach(buildError => {
@@ -122,23 +127,34 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 			graphicData.outputs.clear();
 			parseOutputs(trimmedCode).forEach(output => {
-				graphicData.outputs.set(output.id, {
+				const { byteAddress = 0 } =
+					state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(output.id) || {};
+
+				const out = {
 					width: VGRID * 2,
 					height: HGRID,
-					x: (width - 2) * VGRID,
+					x: graphicData.width - 2 * VGRID,
 					y: gapCalculator(output.lineNumber, graphicData.gaps) * HGRID,
 					id: output.id,
-				});
+					module: graphicData,
+				};
+
+				graphicData.outputs.set(output.id, out);
+				state.graphicHelper.outputsByWordAddress.set(byteAddress, out);
 			});
 
 			graphicData.inputs.clear();
 			parseInputs(trimmedCode).forEach(input => {
+				const { wordAddress = 0 } =
+					state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(input.id) || {};
 				graphicData.inputs.set(input.id, {
 					width: VGRID * 2,
 					height: HGRID,
 					x: VGRID,
 					y: gapCalculator(input.lineNumber, graphicData.gaps) * HGRID,
 					id: input.id,
+					wordAddress,
+					module: graphicData,
 				});
 			});
 
@@ -158,7 +174,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				graphicData.switches.set(_switch.id, {
 					width: VGRID * 4,
 					height: HGRID,
-					x: (width - 4) * VGRID,
+					x: graphicData.width - 4 * VGRID,
 					y: gapCalculator(_switch.lineNumber, graphicData.gaps) * HGRID,
 					id: _switch.id,
 					offValue: _switch.offValue,
@@ -166,37 +182,11 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				});
 			});
 
-			graphicData.height = codeWithLineNumbers.length * HGRID;
+			graphicData.height = graphicData.codeWithLineNumbers.length * HGRID;
 			graphicData.cursor.x = (graphicData.cursor.col + (padLength + 2)) * VGRID;
 			graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * HGRID;
-			graphicData.id = getModuleId(module.code) || '';
-			graphicData.width = width * VGRID;
+			graphicData.id = getModuleId(graphicData.code) || '';
 		});
-
-		state.graphicHelper.connections = state.project.connections
-			.map(connection => {
-				const [fromModule] =
-					Array.from(state.graphicHelper.modules).find(([, graphicData]) => {
-						return graphicData.id === connection.fromModuleId;
-					}) || [];
-
-				const [toModule] =
-					Array.from(state.graphicHelper.modules).find(([, graphicData]) => {
-						return graphicData.id === connection.toModuleId;
-					}) || [];
-
-				if (!fromModule || !toModule) {
-					return;
-				}
-
-				return {
-					fromModule,
-					toModule,
-					fromConnectorId: connection.fromConnectorId,
-					toConnectorId: connection.toConnectorId,
-				};
-			})
-			.filter(connection => connection !== undefined) as GraphicHelper['connections'];
 	};
 
 	const onKeydown: EventHandler = function (event) {
@@ -204,11 +194,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			return;
 		}
 
-		const module = state.graphicHelper.modules.get(state.selectedModule);
-
-		if (!module) {
-			return;
-		}
+		const module = state.selectedModule;
 
 		let newPosition: [number, number] = [module.cursor.row, module.cursor.col];
 
@@ -219,28 +205,28 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			case 'ArrowUp':
 			case 'ArrowRight':
 			case 'ArrowDown':
-				newPosition = moveCaret(state.selectedModule.code, module.cursor.row, module.cursor.col, event.key);
+				newPosition = moveCaret(module.code, module.cursor.row, module.cursor.col, event.key);
 				module.cursor.row = newPosition[0];
 				module.cursor.col = newPosition[1];
 				break;
 			case 'Backspace':
 				// eslint-disable-next-line no-case-declarations
-				const bp = backSpace(state.selectedModule.code, module.cursor.row, module.cursor.col);
+				const bp = backSpace(module.code, module.cursor.row, module.cursor.col);
 				module.cursor.row = bp.row;
 				module.cursor.col = bp.col;
 
-				state.selectedModule.code = bp.code;
+				module.code = bp.code;
 
 				events.dispatch('saveState');
 				events.dispatch('codeChange');
 				break;
 			case 'Enter':
 				// eslint-disable-next-line no-case-declarations
-				const ent = enter(state.selectedModule.code, module.cursor.row, module.cursor.col);
+				const ent = enter(module.code, module.cursor.row, module.cursor.col);
 				module.cursor.row = ent.row;
 				module.cursor.col = ent.col;
 
-				state.selectedModule.code = ent.code;
+				module.code = ent.code;
 
 				events.dispatch('saveState');
 				events.dispatch('codeChange');
@@ -248,11 +234,11 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			default:
 				if (event?.key.length === 1) {
 					// eslint-disable-next-line no-case-declarations
-					const bp = type(state.selectedModule.code, module.cursor.row, module.cursor.col, event.key);
+					const bp = type(module.code, module.cursor.row, module.cursor.col, event.key);
 					module.cursor.row = bp.row;
 					module.cursor.col = bp.col;
 
-					state.selectedModule.code = bp.code;
+					module.code = bp.code;
 
 					events.dispatch('saveState');
 					events.dispatch('codeChange');
