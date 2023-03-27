@@ -1,10 +1,10 @@
 export default `module sampleAndHold
 
-memory int defaultValue 0
-memory int* in &defaultValue
-memory int* in:trigger &defaultValue
-memory int triggerPreviousValue 0
-memory int out 0
+int defaultValue 0
+int* in &defaultValue
+int* in:trigger &defaultValue
+int triggerPreviousValue 0
+int out 0
 
 local triggerInput
 

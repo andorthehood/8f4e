@@ -16,10 +16,6 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "int",
-      },
-      Object {
-        "type": "identifier",
         "value": "defaultValue",
       },
       Object {
@@ -28,15 +24,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 2,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int*",
-      },
       Object {
         "type": "identifier",
         "value": "trigger",
@@ -46,15 +38,11 @@ Array [
         "value": "&defaultValue",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int*",
     "lineNumber": 3,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "triggerPreviousValue",
@@ -65,15 +53,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 4,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "steps",
@@ -89,15 +73,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "buffer",
+    "instruction": "int[]",
     "lineNumber": 5,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "stepPointer",
@@ -107,15 +87,11 @@ Array [
         "value": "&steps",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 6,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "stepLength",
@@ -126,15 +102,11 @@ Array [
         "value": 4,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 7,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -145,7 +117,7 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 8,
   },
   Object {
