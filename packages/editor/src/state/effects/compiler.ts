@@ -36,7 +36,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 					{
 						lineNumber: data.payload.line.lineNumber,
 						moduleId: data.payload.context.namespace.moduleName,
-						code: data.payload.errorCode,
+						code: data.payload.errorCodadde,
 						message: data.payload.message,
 					},
 				];
