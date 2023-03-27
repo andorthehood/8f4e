@@ -1,10 +1,10 @@
 export default `module triggerGenerator
 
-memory int counter 0
-memory int rate 0
-memory int out 0
-memory int defaultValue 0
-memory int* reset &defaultValue
+int counter 0
+int rate 0
+int out 0
+int defaultValue 0
+int* reset &defaultValue
 
 local _counter
 local _output

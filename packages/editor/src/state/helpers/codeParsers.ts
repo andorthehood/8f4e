@@ -9,8 +9,8 @@ export function parseInputs(code: string[]): Array<{ id: string; lineNumber: num
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'memory' && (args[0] === 'int*' || args[0] === 'float*')) {
-			return [...acc, { id: args[1], lineNumber: index }];
+		if (instruction === 'int*' || instruction === 'float*') {
+			return [...acc, { id: args[0], lineNumber: index }];
 		}
 		return acc;
 	}, []);
@@ -20,8 +20,8 @@ export function parseOutputs(code: string[]): Array<{ id: string; lineNumber: nu
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'memory' && (args[0] === 'int' || args[0] === 'float')) {
-			return [...acc, { id: args[1], lineNumber: index }];
+		if (instruction === 'int' || instruction === 'float') {
+			return [...acc, { id: args[0], lineNumber: index }];
 		}
 		return acc;
 	}, []);
@@ -33,8 +33,8 @@ export function parseSwitches(
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'memory' && args[1].startsWith('sw')) {
-			return [...acc, { id: args[1], lineNumber: index, onValue: 100, offValue: 0 }];
+		if ((instruction === 'int' || instruction === 'float') && args[0].startsWith('sw')) {
+			return [...acc, { id: args[0], lineNumber: index, onValue: 100, offValue: 0 }];
 		}
 		return acc;
 	}, []);

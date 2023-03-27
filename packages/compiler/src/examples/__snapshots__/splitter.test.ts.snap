@@ -16,10 +16,6 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "int",
-      },
-      Object {
-        "type": "identifier",
         "value": "zero",
       },
       Object {
@@ -28,15 +24,11 @@ Array [
         "value": 0,
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 2,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int*",
-      },
       Object {
         "type": "identifier",
         "value": "in",
@@ -46,15 +38,11 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int*",
     "lineNumber": 3,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "out:1",
@@ -64,15 +52,11 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 4,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "out:2",
@@ -82,15 +66,11 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 5,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "out:3",
@@ -100,15 +80,11 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 6,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "int",
-      },
       Object {
         "type": "identifier",
         "value": "out:4",
@@ -118,7 +94,7 @@ Array [
         "value": "&zero",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 7,
   },
   Object {

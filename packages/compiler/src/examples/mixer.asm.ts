@@ -1,11 +1,11 @@
 export default `module mixer
 
-memory int defaultValue 0
-memory int out 0
-memory int* in:1 &defaultValue
-memory int* in:2 &defaultValue
-memory int* in:3 &defaultValue
-memory int* in:4 &defaultValue
+int defaultValue 0
+int out 0
+int* in:1 &defaultValue
+int* in:2 &defaultValue
+int* in:3 &defaultValue
+int* in:4 &defaultValue
 
 const HIGH I16_SIGNED_LARGEST_NUMBER
 const LOW I16_SIGNED_SMALLEST_NUMBER
