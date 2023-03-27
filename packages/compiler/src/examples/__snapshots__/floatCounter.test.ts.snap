@@ -16,22 +16,14 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "int",
-      },
-      Object {
-        "type": "identifier",
         "value": "test",
       },
     ],
-    "instruction": "memory",
+    "instruction": "int",
     "lineNumber": 1,
   },
   Object {
     "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "float",
-      },
       Object {
         "type": "identifier",
         "value": "out",
@@ -42,7 +34,7 @@ Array [
         "value": 0.1,
       },
     ],
-    "instruction": "memory",
+    "instruction": "float",
     "lineNumber": 2,
   },
   Object {

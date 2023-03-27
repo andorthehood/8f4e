@@ -1,3 +1,3 @@
 export default `module constant
-memory int out 0
+int out 0
 `;

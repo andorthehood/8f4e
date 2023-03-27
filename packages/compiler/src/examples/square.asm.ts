@@ -1,8 +1,8 @@
 export default `module square
 
-memory int counter 0
-memory int rate 0
-memory int out 0
+int counter 0
+int rate 0
+int out 0
 
 local _counter
 local _output

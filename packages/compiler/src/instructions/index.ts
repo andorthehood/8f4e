@@ -25,7 +25,6 @@ import mul from './mul';
 import loop from './loop';
 import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
-import buffer from './buffer';
 import equalToZero from './equalToZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
@@ -36,6 +35,7 @@ import memory from './memory';
 import castToInt from './castToInt';
 import castToFloat from './castToFloat';
 import skip from './skip';
+import buffer from './buffer';
 
 const instructions = {
 	and,
@@ -65,14 +65,20 @@ const instructions = {
 	loop,
 	loopEnd,
 	greaterOrEqualUnsigned,
-	buffer,
 	equalToZero,
 	shiftRight,
 	shiftRightUnsigned,
 	remainder,
 	module: _module,
 	global,
-	memory,
+	int: memory,
+	float: memory,
+	'int*': memory,
+	'float*': memory,
+	'float[]': buffer,
+	'int[]': buffer,
+	'float*[]': buffer,
+	'int*[]': buffer,
 	castToInt,
 	castToFloat,
 	skip,

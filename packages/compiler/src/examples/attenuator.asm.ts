@@ -1,9 +1,9 @@
 export default `module attenuator
 
-memory int zero 0
-memory int* in &zero
-memory int divisor 1
-memory int out 0
+int zero 0
+int* in &zero
+int divisor 1
+int out 0
 
 push &out
 push *in
