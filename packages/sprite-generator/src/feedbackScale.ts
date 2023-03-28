@@ -74,7 +74,7 @@ export default function generate(): DrawingCommand[] {
 
 export const lookup: SpriteLookup = function (scale: number) {
 	return {
-		x: offsetX + Math.floor(((scale + 32768) / 65535) * 13) * 16,
+		x: offsetX + Math.round(scale * 13) * 16,
 		y: offsetY,
 		spriteWidth: 16,
 		spriteHeight: 16,
