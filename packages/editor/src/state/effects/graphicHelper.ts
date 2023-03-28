@@ -3,7 +3,7 @@ import { instructions } from '@8f4e/compiler';
 
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
-import { ModuleGraphicData, State } from '../types';
+import { ModuleGraphicData, Output, State } from '../types';
 import { backSpace, enter, moveCaret, type, gapCalculator } from '../helpers/editor';
 import {
 	parseDebuggers,
@@ -130,13 +130,15 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				const { byteAddress = 0 } =
 					state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(output.id) || {};
 
-				const out = {
+				const out: Output = {
 					width: VGRID * 2,
 					height: HGRID,
 					x: graphicData.width - 2 * VGRID,
 					y: gapCalculator(output.lineNumber, graphicData.gaps) * HGRID,
 					id: output.id,
 					module: graphicData,
+					calibratedMax: 0,
+					calibratedMin: 0,
 				};
 
 				graphicData.outputs.set(output.id, out);
