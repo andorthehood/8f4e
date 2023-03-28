@@ -112,6 +112,8 @@ export interface Output {
 	x: number;
 	y: number;
 	id: string;
+	calibratedMax: number;
+	calibratedMin: number;
 }
 
 export interface Input {
