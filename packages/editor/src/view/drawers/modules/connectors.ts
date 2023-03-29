@@ -15,7 +15,9 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 			continue;
 		}
 
-		const value = state.compiler.memoryBuffer[memory.wordAddress];
+		const value = memory.isInteger
+			? state.compiler.memoryBuffer[memory.wordAddress]
+			: state.compiler.memoryBufferFloat[memory.wordAddress];
 
 		output.calibratedMax = Math.max(1, output.calibratedMax, value);
 		output.calibratedMin = Math.min(-1, output.calibratedMin, value);
