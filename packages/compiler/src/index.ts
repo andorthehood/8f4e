@@ -22,6 +22,7 @@ import {
 	Namespace,
 	ArgumentLiteral,
 	ArgumentType,
+	CompileOptions,
 } from './types';
 import { calculateModuleWordSize } from './utils';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
@@ -100,13 +101,14 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	});
 }
 
-export function compileModules(modules: Module[], startingMemoryWordAddress = 0): CompiledModule[] {
-	let memoryAddress = startingMemoryWordAddress;
+export function compileModules(modules: Module[], options: CompileOptions): CompiledModule[] {
+	let memoryAddress = options.startingMemoryWordAddress;
 	let globals: Namespace['consts'] = {
 		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
 		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
 		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
 		WORD_SIZE: { value: Int32Array.BYTES_PER_ELEMENT, isInteger: true },
+		...options.constants,
 	};
 
 	const astModules = modules.map(({ code }) => {
@@ -137,12 +139,15 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 		.flat();
 }
 
-export default function compile(modules: Module[]): {
+export default function compile(
+	modules: Module[],
+	options: CompileOptions
+): {
 	codeBuffer: Uint8Array;
 	memoryAddressLookup: MemoryAddressLookup;
 	compiledModules: CompiledModuleLookup;
 } {
-	const compiledModules = compileModules(modules, 1);
+	const compiledModules = compileModules(modules, { ...options, startingMemoryWordAddress: 1 });
 	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
