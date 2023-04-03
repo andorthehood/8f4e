@@ -5,7 +5,7 @@ import { compileModules } from '.';
 
 describe('compiler', () => {
 	test('generateMemoryAddressLookup', () => {
-		const compiledModules = compileModules(modules);
+		const compiledModules = compileModules(modules, { startingMemoryWordAddress: 0, constants: {} });
 		expect(generateMemoryAddressLookup(compiledModules)).toMatchSnapshot();
 	});
 });
