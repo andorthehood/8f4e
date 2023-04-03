@@ -16,6 +16,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			memoryRef: state.compiler.memoryRef,
 			modules: state.project.modules,
 			compiledModules: state.compiler.compiledModules,
+			compilerOptions: state.compiler.compilerOptions,
 		});
 	}
 

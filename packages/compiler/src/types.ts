@@ -112,3 +112,8 @@ export interface Error {
 	context?: CompilationContext;
 	code: number;
 }
+
+export interface CompileOptions {
+	startingMemoryWordAddress: number;
+	constants: Namespace['consts'];
+}

@@ -3,6 +3,14 @@ class Main extends AudioWorkletProcessor {
 	constructor(...args) {
 		// @ts-ignore
 		super(...args);
+
+		this.port.postMessage({
+			type: 'audioWorkletReady',
+			payload: {
+				sampleRate,
+			},
+		});
+
 		this.port.onmessage = async event => {
 			this.recompile(event.data.memoryRef, event.data.codeBuffer, event.data.addresses);
 		};
@@ -25,6 +33,9 @@ class Main extends AudioWorkletProcessor {
 
 		this.port.postMessage({
 			type: 'compilationDone',
+			payload: {
+				sampleRate,
+			},
 		});
 	}
 
