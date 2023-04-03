@@ -30,6 +30,13 @@ const defaultState: State = {
 		timerAccuracy: 0,
 		compiledModules: new Map(),
 		buildErrors: [],
+		sampleRate: undefined,
+		compilerOptions: {
+			startingMemoryWordAddress: 0,
+			constants: {
+				SAMPLE_RATE: { value: 48000, isInteger: true },
+			},
+		},
 	},
 	midi: {
 		ports: [],

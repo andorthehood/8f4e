@@ -1,5 +1,5 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
-import { CompiledModuleLookup, Connection, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
+import { CompiledModuleLookup, CompileOptions, Connection, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
 import { IPatcher } from '@rnbo/js';
 
 export interface Module {
@@ -67,6 +67,8 @@ export interface Compiler {
 	timerAccuracy: number;
 	compiledModules: CompiledModuleLookup;
 	buildErrors: BuildError[];
+	sampleRate: number | undefined;
+	compilerOptions: CompileOptions;
 }
 
 export interface Error {

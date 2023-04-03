@@ -10,11 +10,14 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	let audioWorklet: AudioWorkletNode;
 
 	function onRecompile() {
-		if (!audioWorklet) {
+		if (!audioWorklet || !state.compiler.sampleRate) {
 			return;
 		}
 
-		const { codeBuffer, compiledModules, memoryAddressLookup } = compile(state.project.modules);
+		const { codeBuffer, compiledModules, memoryAddressLookup } = compile(
+			state.project.modules,
+			state.compiler.compilerOptions
+		);
 
 		state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
 		state.compiler.memoryBufferFloat = new Float32Array(memoryRef.buffer);
@@ -54,12 +57,15 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		audioWorklet.port.onmessage = function ({ data }) {
 			switch (data.type) {
 				case 'compilationDone':
-					events.dispatch('compilationDone');
+					events.dispatch('compilationDone', data.payload);
 					break;
+				case 'audioWorkletReady':
+					state.compiler.sampleRate = data.payload.sampleRate;
+					onRecompile();
+					events.dispatch('audioWorkletReady', data.payload);
 			}
 		};
 		audioWorklet.connect(audioContext.destination);
-		onRecompile();
 	}
 
 	events.on('buildOk', onRecompile);

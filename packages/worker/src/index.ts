@@ -1,4 +1,4 @@
-import { CompiledModuleLookup, Module } from '@8f4e/compiler';
+import { CompiledModuleLookup, CompileOptions, Module } from '@8f4e/compiler';
 
 import testBuild from './testBuild';
 import resetMidi from './resetMidi';
@@ -12,9 +12,14 @@ import broadcastRNBOMessages from './broadcastRNBOMessages';
 let interval: NodeJS.Timeout;
 const intervalTime = 10;
 
-async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compiledModules: CompiledModuleLookup) {
+async function recompile(
+	memoryRef: WebAssembly.Memory,
+	modules: Module[],
+	compiledModules: CompiledModuleLookup,
+	compilerOptions: CompileOptions
+) {
 	try {
-		await testBuild(memoryRef, modules);
+		await testBuild(memoryRef, modules, compilerOptions);
 		self.postMessage({
 			type: 'buildOk',
 		});
@@ -43,5 +48,5 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compi
 }
 
 self.onmessage = function (event) {
-	recompile(event.data.memoryRef, event.data.modules, event.data.compiledModules);
+	recompile(event.data.memoryRef, event.data.modules, event.data.compiledModules, event.data.compilerOptions);
 };
