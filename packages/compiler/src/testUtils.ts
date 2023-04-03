@@ -45,7 +45,10 @@ export function setInitialMemory(memory: DataView, module: CompiledModule): void
 export async function createTestModule(sourceCode: string): Promise<TestModule> {
 	let allocatedMemoryForTestData = 0;
 
-	const module: CompiledModule = compileModules([{ code: sourceCode.split('\n') }])[0];
+	const module: CompiledModule = compileModules([{ code: sourceCode.split('\n') }], {
+		constants: {},
+		startingMemoryWordAddress: 0,
+	})[0];
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const dataView = new DataView(memoryRef.buffer);
