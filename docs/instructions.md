@@ -4,17 +4,45 @@
 
 ### add
 
-The add instruction operates on two numbers of the same type that are retrieved from the stack. It performs addition on these numbers and then stores the result back onto the stack.
+The "add" instruction operates on two numbers of the same type that are retrieved from the stack. It performs addition on these numbers and then stores the result back onto the stack.
 
 ### div
 
-The div instruction retrieves two numbers of the same type from the stack and divides the first number by the second. The resulting quotient is then stored back onto the stack.
+The "div" instruction retrieves two numbers of the same type from the stack and divides the first number by the second. The resulting quotient is then stored back onto the stack.
+
+### mul
+
+The "mul" instruction retrieves two numbers of the same type from the stack, multiplies them together, and then stores the result back onto the stack.
+
+### remainder
+
+The "remainder" instruction retrieves two integer operands from the stack, divides the first operand by the second operand, and then computes the remainder of this division. It then stores the remainder back onto the stack. 
+
+### sub
+
+The "sub" instruction operates on two numbers of the same type that are retrieved from the stack. It subtracts the second operand from the first operand, and then stores the result back onto the stack.
 
 ## Bitwise instructions
 
 ### and
 
-The and instruction retrieves two integers from the stack and performs a bitwise and operation on them. The resulting value is then stored back onto the stack.
+The "and" instruction retrieves two integers from the stack and performs a bitwise AND operation on them. Specifically, each bit of the resulting value is computed by performing a logical AND between the corresponding bits of the two operands. The resulting value is then stored back onto the stack. 
+
+### or
+
+The "or" instruction retrieves two integers from the stack and performs a bitwise OR operation on them. Specifically, each bit of the resulting value is computed by performing a logical OR between the corresponding bits of the two operands. The resulting value is then stored back onto the stack.
+
+### shiftRight
+
+The "shiftRight" instruction retrieves two integer operands from the stack. It shifts the bits of the first operand to the right by the number of positions specified by the second operand, and then stores the resulting value back onto the stack. This instruction is typically used to perform bit shifting operations in a program, such as dividing an integer by a power of 2, or extracting specific bits from an integer. Note that if the second operand is greater than or equal to the number of bits in the first operand, the result will be 0.
+
+### shiftRightUnsigned
+
+The "shiftRightUnsigned" instruction retrieves two integer operands from the stack. It shifts the bits of the first operand to the right by the number of positions specified by the second operand, filling the leftmost bits with zeros, and then stores the resulting value back onto the stack. This instruction is similar to the "shiftRight" instruction, but treats the first operand as an unsigned integer. This means that no sign extension occurs during the shift, and the leftmost bits are always filled with zeros, even if the original leftmost bit was 
+
+### xor
+
+The "xor" instruction retrieves two integers from the stack and performs a bitwise XOR (exclusive OR) operation on them. Specifically, each bit of the resulting value is computed by performing a logical XOR between the corresponding bits of the two operands. The resulting value is then stored back onto the stack.
 
 ## Comparison
 
@@ -56,6 +84,12 @@ The lessThan instruction retrieves two values from the stack, checks if the firs
 
 ### if
 
+### loop
+
+### loopEnd
+
+### skip
+
 ## Conversion
 
 ### castToFloat
@@ -65,6 +99,12 @@ The castToFloat instruction takes an integer from the stack, converts it to a fl
 ### castToInt
 
 The castToInt instruction takes a value from the stack, converts it to an integer, and then places the resulting integer back onto the stack.
+
+## Memory instructions
+
+### load
+
+
 
 ## Other
 
