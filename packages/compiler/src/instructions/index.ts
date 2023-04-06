@@ -36,6 +36,8 @@ import castToInt from './castToInt';
 import castToFloat from './castToFloat';
 import skip from './skip';
 import buffer from './buffer';
+import drop from './drop';
+import clearStack from './clearStack';
 
 const instructions = {
 	and,
@@ -82,6 +84,8 @@ const instructions = {
 	castToInt,
 	castToFloat,
 	skip,
+	drop,
+	clearStack,
 } as const;
 
 export default instructions;
