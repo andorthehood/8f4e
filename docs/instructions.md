@@ -1,5 +1,43 @@
 # Instructions
 
+Table of Contents
+* [Arithmetic instructions](#arithmetic-instructions)
+    * [add](#add)
+    * [div](#div)
+    * [mul](#mul)
+    * [remainder](#remainder)
+    * [sub](#sub)
+* [Bitwise instructions](#bitwise-instructions)
+    * [and](#and)
+    * [or](#or)
+    * [shiftRight](#shiftright)
+    * [shiftRightUnsigned](#shiftrightunsigned)
+    * [xor](#xor)
+* [Comparison](#comparison)
+    * [equalToZero](#equaltozero)
+    * [greaterOrEqual](#greaterorequal)
+    * [greaterOrEqualUnsigned](#greaterorequalunsigned)
+    * [greaterThan](#greaterthan)
+    * [lessOrEqual](#lessorequal)
+    * [lessThan](#lessthan)
+* [Control flow instructions](#control-flow-instructions)
+    * [block](#block)
+    * [branch](#branch)
+    * [branchIfTrue](#branchiftrue)
+    * [else](#else)
+    * [end](#end)
+    * [if](#if)
+    * [loop](#loop)
+    * [loopEnd](#loopend)
+    * [skip](#skip)
+* [Conversion](#conversion)
+    * [castToFloat](#casttofloat)
+    * [castToInt](#casttoint)
+* [Memory instructions](#memory-instructions)
+    * [load](#load)
+* [Other](#other)
+    * [const](#const)
+    
 ## Arithmetic instructions
 
 ### add
