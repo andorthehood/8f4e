@@ -96,6 +96,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "bestMatchingValue",
       },
     ],
@@ -104,6 +108,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "difference",
@@ -116,6 +124,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "_in",
       },
     ],
@@ -124,6 +136,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "noteMemoryPointer",
@@ -136,6 +152,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "noteValue",
       },
     ],
@@ -146,6 +166,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "smallestDifference",
       },
     ],
@@ -154,6 +178,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "notesEndAddressPointer",

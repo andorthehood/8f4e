@@ -4,7 +4,6 @@ import {
 	getMemoryItem,
 	getMemoryItemByteAddress,
 	getMemoryStringLastAddress,
-	isLocalIdentifier,
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
@@ -75,12 +74,16 @@ const push: InstructionHandler = function (line, context) {
 		} else if (typeof consts[argument.value] !== 'undefined') {
 			context.stack.push({ isInteger: consts[argument.value].isInteger });
 			return { byteCode: i32const(consts[argument.value].value), context };
-		} else if (isLocalIdentifier(locals, argument.value)) {
-			// TODO: add support for float locals
-			context.stack.push({ isInteger: true });
-			return { byteCode: localGet(locals.indexOf(argument.value)), context };
 		} else {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+			const local = locals.get(argument.value);
+
+			if (!local) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+			}
+
+			context.stack.push({ isInteger: local.isInteger });
+
+			return { byteCode: localGet(local.index), context };
 		}
 	} else {
 		context.stack.push({ isInteger: argument.isInteger });

@@ -71,7 +71,7 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 	const context: CompilationContext = {
 		namespace: {
 			memory: new Map(),
-			locals: [],
+			locals: new Map(),
 			consts: { ...globals },
 			moduleName: undefined,
 		},
@@ -113,7 +113,7 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 
 	return {
 		id: context.namespace.moduleName,
-		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, context.namespace.locals.length)], wa),
+		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, context.namespace.locals.size)], wa),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
 		memoryMap: context.namespace.memory,
