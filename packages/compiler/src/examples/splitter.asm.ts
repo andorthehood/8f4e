@@ -7,7 +7,7 @@ int out:2 &zero
 int out:3 &zero
 int out:4 &zero
 
-local input
+local int input
 
 push *in
 localSet input

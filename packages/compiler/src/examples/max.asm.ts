@@ -5,8 +5,8 @@ int* in:1 &defaultValue
 int* in:2 &defaultValue
 int out 0
 
-local _in1
-local _in2
+local int _in1
+local int _in2
 
 push &out
  push *in:1

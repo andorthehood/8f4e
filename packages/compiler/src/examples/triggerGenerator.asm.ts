@@ -6,9 +6,9 @@ int out 0
 int defaultValue 0
 int* reset &defaultValue
 
-local _counter
-local _output
-local _rate
+local int _counter
+local int _output
+local int _rate
 
 push out
 localSet _output
