@@ -38,6 +38,7 @@ import skip from './skip';
 import buffer from './buffer';
 import drop from './drop';
 import clearStack from './clearStack';
+import risingEdge from './risingEdge';
 
 const instructions = {
 	and,
@@ -86,6 +87,7 @@ const instructions = {
 	skip,
 	drop,
 	clearStack,
+	risingEdge,
 } as const;
 
 export default instructions;
