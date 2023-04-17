@@ -130,6 +130,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "result",
       },
     ],

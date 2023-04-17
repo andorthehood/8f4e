@@ -6,7 +6,7 @@ int* in:trigger &defaultValue
 int triggerPreviousValue 0
 int out 0
 
-local triggerInput
+local int triggerInput
 
 push *in:trigger
 localSet triggerInput

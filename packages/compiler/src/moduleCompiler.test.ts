@@ -10,7 +10,7 @@ int out 0
 int[] arr 32 -1
 
 # registers
-local input
+local int input
 
 # code
 push out

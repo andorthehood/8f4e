@@ -80,7 +80,7 @@ export interface TestModule {
 }
 
 export interface Namespace {
-	locals: string[];
+	locals: Map<string, { isInteger: boolean; index: number }>;
 	memory: MemoryMap;
 	consts: Record<string, { value: number; isInteger: boolean }>;
 	moduleName: string | undefined;

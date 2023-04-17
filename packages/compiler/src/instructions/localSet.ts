@@ -19,11 +19,13 @@ const _localSet: InstructionHandler = function (line, context) {
 	}
 
 	if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
-		if (context.namespace.locals.indexOf(line.arguments[0].value) === -1) {
+		const local = context.namespace.locals.get(line.arguments[0].value);
+
+		if (!local) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 		}
 
-		return { byteCode: localSet(context.namespace.locals.indexOf(line.arguments[0].value)), context };
+		return { byteCode: localSet(local.index), context };
 	} else {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}

@@ -3,8 +3,8 @@ export default () => `module random
 int seed 69420
 int out 0
 
-local random
-local feedback
+local int random
+local int feedback
 
 push out
 localSet random

@@ -23,7 +23,7 @@ ${masks
 	.join('\n')}
 
 # locals
-local input
+local int input
 
 # code
 push *in
