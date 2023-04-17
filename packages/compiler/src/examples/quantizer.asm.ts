@@ -6,13 +6,13 @@ int allocatedNotes 12
 int numberOfNotes 0
 int[] notes 12 -1 
 
-local bestMatchingValue
-local difference
-local _in
-local noteMemoryPointer
-local noteValue
-local smallestDifference
-local notesEndAddressPointer
+local int bestMatchingValue
+local int difference
+local int _in
+local int noteMemoryPointer
+local int noteValue
+local int smallestDifference
+local int notesEndAddressPointer
 
 push *in
 localSet _in

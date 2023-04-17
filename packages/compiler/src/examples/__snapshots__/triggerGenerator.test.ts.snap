@@ -90,6 +90,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "_counter",
       },
     ],
@@ -100,6 +104,10 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
+        "value": "int",
+      },
+      Object {
+        "type": "identifier",
         "value": "_output",
       },
     ],
@@ -108,6 +116,10 @@ Array [
   },
   Object {
     "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "int",
+      },
       Object {
         "type": "identifier",
         "value": "_rate",

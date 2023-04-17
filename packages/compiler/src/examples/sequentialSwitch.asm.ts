@@ -10,8 +10,8 @@ int* in:2 &defaultValue
 int* in:3 &defaultValue
 int* in:4 &defaultValue
 
-local clock
-local _counter
+local int clock
+local int _counter
 
 push counter
 localSet _counter

@@ -8,9 +8,9 @@ int out 0
 int defaultValue 0
 int* reset &defaultValue
 
-local _rate
-local limit
-local counter
+local int _rate
+local int limit
+local int counter
 
 push *in:rate
 localSet _rate

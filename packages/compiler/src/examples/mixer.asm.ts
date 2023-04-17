@@ -10,7 +10,7 @@ int* in:4 &defaultValue
 const HIGH I16_SIGNED_LARGEST_NUMBER
 const LOW I16_SIGNED_SMALLEST_NUMBER
 
-local result
+local int result
 
 push &out
  push *in:1
