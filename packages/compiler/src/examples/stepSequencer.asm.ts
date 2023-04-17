@@ -8,7 +8,7 @@ export default `module stepSequencer
  int stepLength 4
  int out 0
 
- local _stepPointer
+ local int _stepPointer
 
  push stepPointer
  localSet _stepPointer

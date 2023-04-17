@@ -10,7 +10,7 @@ export default [
             int out 0
         
             # locals
-            local input
+            local int input
         
             # code
             push &out

@@ -1,5 +1,5 @@
 import { WORD_LENGTH } from './consts';
-import { CompiledModule, MemoryMap, StackItem } from './types';
+import { CompiledModule, MemoryMap, Namespace, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return memoryMap.has(name);
@@ -28,10 +28,6 @@ export function getMemoryItemByteAddress(memoryMap: MemoryMap, id: string): numb
 export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getMemoryItem(memoryMap, id);
 	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSize - 1) * WORD_LENGTH : 0;
-}
-
-export function isLocalIdentifier(locals: string[], id: string): boolean {
-	return locals.indexOf(id) !== -1;
 }
 
 export function getNextFreeMemoryWordAddress(memory: MemoryMap, _default: number) {

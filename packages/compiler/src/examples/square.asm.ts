@@ -4,9 +4,9 @@ int counter 0
 int rate 0
 int out 0
 
-local _counter
-local _output
-local _rate
+local int _counter
+local int _output
+local int _rate
 
 push out
 localSet _output
