@@ -11,9 +11,9 @@ int rate 0
 int[] buffer ${BUFFER_LENGTH} 0
 int bufferPointer &buffer
 
-local _bufferPointer
-local _counter
-local _input
+local int _bufferPointer
+local int _counter
+local int _input
 
 push *in
 localSet _input
