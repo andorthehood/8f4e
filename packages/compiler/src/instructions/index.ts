@@ -39,6 +39,7 @@ import buffer from './buffer';
 import drop from './drop';
 import clearStack from './clearStack';
 import risingEdge from './risingEdge';
+import fallingEdge from './fallingEdge';
 
 const instructions = {
 	and,
@@ -88,6 +89,7 @@ const instructions = {
 	drop,
 	clearStack,
 	risingEdge,
+	fallingEdge,
 } as const;
 
 export default instructions;
