@@ -1,6 +1,5 @@
 # Instructions
 
-Table of Contents
 * [Arithmetic instructions](#arithmetic-instructions)
     * [add](#add)
     * [div](#div)
