@@ -122,7 +122,12 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 
 	return {
 		id: context.namespace.moduleName,
-		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, context.namespace.locals.size)], byteCode),
+		functionBody: createFunctionBody(
+			Array.from(context.namespace.locals.values()).map(local => {
+				return createLocalDeclaration(local.isInteger ? Type.I32 : Type.F32, 1);
+			}),
+			byteCode
+		),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
 		memoryMap: context.namespace.memory,
