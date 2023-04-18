@@ -40,6 +40,8 @@ import drop from './drop';
 import clearStack from './clearStack';
 import risingEdge from './risingEdge';
 import fallingEdge from './fallingEdge';
+import dup from './dup';
+import swap from './swap';
 
 const instructions = {
 	and,
@@ -90,6 +92,8 @@ const instructions = {
 	clearStack,
 	risingEdge,
 	fallingEdge,
+	dup,
+	swap,
 } as const;
 
 export default instructions;
