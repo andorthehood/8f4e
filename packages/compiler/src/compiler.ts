@@ -67,8 +67,34 @@ export function compileLine(
 	return instructions[line.instruction](line, context);
 }
 
+export function compileSegment(
+	lines: AST,
+	context: CompilationContext
+): { byteCode: number[]; context: CompilationContext } {
+	const byteCode = lines.reduce((acc, line) => {
+		const { byteCode, context: newContext } = compileLine(line, context);
+		context = newContext;
+		return [...acc, ...byteCode];
+	}, [] as number[]);
+
+	return {
+		byteCode,
+		context,
+	};
+}
+
+export function parseSegment(
+	lines: string[],
+	context: CompilationContext
+): {
+	byteCode: number[];
+	context: CompilationContext;
+} {
+	return compileSegment(compileToAST(lines), context);
+}
+
 export function compile(ast: AST, globals: Namespace['consts'], startingByteAddress = 0): CompiledModule {
-	const context: CompilationContext = {
+	const { byteCode, context } = compileSegment(ast, {
 		namespace: {
 			memory: new Map(),
 			locals: new Map(),
@@ -78,24 +104,7 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-	};
-
-	const wa = ast
-		.reduce((acc, line) => {
-			const {
-				byteCode,
-				context: { namespace, stack: newStack, blockStack: newBlockStack },
-			} = compileLine(line, context);
-			context.namespace.consts = namespace.consts;
-			context.namespace.locals = namespace.locals;
-			context.namespace.memory = namespace.memory;
-			context.namespace.moduleName = namespace.moduleName;
-			context.stack = newStack;
-			context.blockStack = newBlockStack;
-			acc.push(byteCode);
-			return acc;
-		}, [] as number[][])
-		.flat();
+	});
 
 	const [, lastMemoryItem = { relativeWordAddress: 0, wordSize: 0 }] = Array.from(context.namespace.memory).pop() || [];
 
@@ -113,7 +122,7 @@ export function compile(ast: AST, globals: Namespace['consts'], startingByteAddr
 
 	return {
 		id: context.namespace.moduleName,
-		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, context.namespace.locals.size)], wa),
+		functionBody: createFunctionBody([createLocalDeclaration(Type.I32, context.namespace.locals.size)], byteCode),
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
 		memoryMap: context.namespace.memory,
