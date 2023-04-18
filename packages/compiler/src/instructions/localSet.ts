@@ -1,6 +1,5 @@
 import { localSet } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
-import { areAllOperandsIntegers } from '../utils';
 import { ErrorCode, getError } from '../errors';
 
 const _localSet: InstructionHandler = function (line, context) {
@@ -8,10 +7,6 @@ const _localSet: InstructionHandler = function (line, context) {
 
 	if (!operand) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	if (!areAllOperandsIntegers(operand)) {
-		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
 	if (!line.arguments[0]) {
@@ -23,6 +18,14 @@ const _localSet: InstructionHandler = function (line, context) {
 
 		if (!local) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		}
+
+		if (local.isInteger && !operand.isInteger) {
+			throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
+		}
+
+		if (!local.isInteger && operand.isInteger) {
+			throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
 		}
 
 		return { byteCode: localSet(local.index), context };
