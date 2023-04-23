@@ -46,4 +46,6 @@ export default `module stepSequencer
  push &triggerPreviousValue
  push *trigger
  store
+
+ end
 `;

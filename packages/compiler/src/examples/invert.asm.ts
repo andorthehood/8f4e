@@ -9,4 +9,5 @@ push *in
 push -1
 mul
 store
+end
 `;

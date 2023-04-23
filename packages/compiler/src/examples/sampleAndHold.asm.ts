@@ -25,4 +25,6 @@ end
 push &triggerPreviousValue
 push triggerInput
 store
+
+end
 `;

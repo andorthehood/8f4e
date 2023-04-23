@@ -2,6 +2,10 @@ import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler } from '../types';
 
 const _const: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	if (!line.arguments[0] || !line.arguments[1]) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 	}

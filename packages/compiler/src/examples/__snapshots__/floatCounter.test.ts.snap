@@ -78,6 +78,11 @@ Array [
     "instruction": "store",
     "lineNumber": 8,
   },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 9,
+  },
 ]
 `;
 

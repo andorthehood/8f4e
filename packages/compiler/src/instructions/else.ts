@@ -3,6 +3,10 @@ import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 
 const _else: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	const block = context.blockStack.pop();
 
 	if (!block) {
