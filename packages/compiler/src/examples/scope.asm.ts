@@ -71,4 +71,6 @@ end
 push &bufferPointer
 push _bufferPointer
 store
+
+end
 `;

@@ -4,6 +4,10 @@ import { ErrorCode, getError } from '../errors';
 import { areAllOperandsIntegers } from '../utils';
 
 const store: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	const operand1Value = context.stack.pop();
 	const operand2Address = context.stack.pop();
 

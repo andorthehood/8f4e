@@ -4,6 +4,10 @@ import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
 import { calculateMemoryWordSize } from '../utils';
 
 const memory: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	const memory = new Map(context.namespace.memory);
 	const wordAddress = calculateMemoryWordSize(memory);
 

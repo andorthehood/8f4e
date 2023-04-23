@@ -50,4 +50,6 @@ store
 `
 	)
 	.join('\n')}
+
+end
 `;

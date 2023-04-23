@@ -7,6 +7,10 @@ import Type from '../wasmUtils/type';
 import { ErrorCode, getError } from '../errors';
 
 const skip: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	if (!line.arguments[0]) {
 		return { byteCode: [WASMInstruction.RETURN], context };
 	}

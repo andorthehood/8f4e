@@ -24,4 +24,6 @@ push &out
   localGet _in2
  end
 store
+
+end
 `;

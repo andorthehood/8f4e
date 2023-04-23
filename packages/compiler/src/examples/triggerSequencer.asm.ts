@@ -79,4 +79,6 @@ store
 push &triggerPreviousValue
 push *trigger
 store
+
+end
 `;

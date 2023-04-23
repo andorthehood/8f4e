@@ -10,6 +10,8 @@ const _module: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
+	context.blockStack.push({ hasExpectedResult: false, expectedResultIsInteger: false, isModuleBlock: true });
+
 	return {
 		byteCode: [],
 		context: { ...context, namespace: { ...context.namespace, moduleName: line.arguments[0].value } },

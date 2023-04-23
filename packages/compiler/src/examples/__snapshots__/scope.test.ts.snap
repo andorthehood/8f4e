@@ -552,6 +552,11 @@ Array [
     "instruction": "store",
     "lineNumber": 70,
   },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 72,
+  },
 ]
 `;
 

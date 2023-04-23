@@ -4,6 +4,10 @@ import { areAllOperandsFloats, areAllOperandsIntegers } from '../utils';
 import { ErrorCode, getError } from '../errors';
 
 const greaterThan: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	const operand1 = context.stack.pop();
 	const operand2 = context.stack.pop();
 
