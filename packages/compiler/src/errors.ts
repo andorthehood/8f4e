@@ -15,10 +15,18 @@ export enum ErrorCode {
 	UNKNOWN_ERROR,
 	STACK_EXPECTED_ZERO_ELEMENTS,
 	MISSING_BLOCK_START_INSTRUCTION,
+	INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
 	switch (code) {
+		case ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK:
+			return {
+				code,
+				message: 'This instruction can only be used within a block or a module.',
+				line,
+				context,
+			};
 		case ErrorCode.INSUFFICIENT_OPERANDS:
 			return {
 				code,

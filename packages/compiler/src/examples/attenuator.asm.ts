@@ -10,4 +10,6 @@ push *in
 push divisor
 div
 store
+
+end
 `;

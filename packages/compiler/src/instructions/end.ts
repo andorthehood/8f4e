@@ -3,6 +3,10 @@ import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 
 const end: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	const block = context.blockStack.pop();
 
 	if (!block) {
@@ -23,7 +27,11 @@ const end: InstructionHandler = function (line, context) {
 		context.stack.push(operand);
 	}
 
-	return { byteCode: [WASMInstruction.END], context };
+	if (context.blockStack.length === 0) {
+		return { byteCode: [], context };
+	} else {
+		return { byteCode: [WASMInstruction.END], context };
+	}
 };
 
 export default end;

@@ -76,4 +76,6 @@ push random
 push I16_SIGNED_LARGEST_NUMBER
 remainder
 store
+
+end
 `;

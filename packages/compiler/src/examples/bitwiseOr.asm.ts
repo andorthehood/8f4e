@@ -11,4 +11,6 @@ push *in:1
 push *in:2
 or
 store
+
+end
 `;
