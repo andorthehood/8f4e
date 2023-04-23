@@ -19,12 +19,12 @@ const _if: InstructionHandler = function (line, context) {
 	}
 
 	if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'void') {
-		context.blockStack.push({ expectedResultIsInteger: false, hasExpectedResult: false });
+		context.blockStack.push({ expectedResultIsInteger: false, hasExpectedResult: false, isModuleBlock: false });
 		return { byteCode: [WASMInstruction.IF, Type.VOID], context };
 	}
 
 	// TODO: fix parse argument[0] to determine the result type
-	context.blockStack.push({ expectedResultIsInteger: true, hasExpectedResult: true });
+	context.blockStack.push({ expectedResultIsInteger: true, hasExpectedResult: true, isModuleBlock: false });
 
 	return { byteCode: [WASMInstruction.IF, Type.I32], context };
 };
