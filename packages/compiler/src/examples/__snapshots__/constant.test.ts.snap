@@ -27,6 +27,11 @@ Array [
     "instruction": "int",
     "lineNumber": 1,
   },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 2,
+  },
 ]
 `;
 

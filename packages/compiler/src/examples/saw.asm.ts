@@ -46,4 +46,6 @@ localSet counter
 push &out
 push counter
 store
+
+end
 `;

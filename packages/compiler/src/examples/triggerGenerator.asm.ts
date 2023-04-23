@@ -61,4 +61,6 @@ store
 push &counter
 push _counter
 store
+
+end
 `;

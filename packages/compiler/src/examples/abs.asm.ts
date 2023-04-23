@@ -23,4 +23,6 @@ else
  push input
 end
 store
+
+end
 `;

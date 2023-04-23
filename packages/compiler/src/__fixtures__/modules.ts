@@ -27,6 +27,7 @@ export default [
                 push input
             end
             store
+            end
         `.split('\n'),
 	},
 ];

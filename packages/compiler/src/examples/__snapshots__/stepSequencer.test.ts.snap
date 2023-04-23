@@ -400,6 +400,11 @@ Array [
     "instruction": "store",
     "lineNumber": 47,
   },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 49,
+  },
 ]
 `;
 

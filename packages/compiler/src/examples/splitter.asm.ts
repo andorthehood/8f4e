@@ -27,4 +27,6 @@ store
 push &out:4
 push input
 store
+
+end
 `;
