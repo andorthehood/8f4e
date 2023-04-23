@@ -26,5 +26,8 @@ push *in:${index}
 store
 `
 	)
-	.join('\n')}`;
+	.join('\n')}
+	
+end
+`;
 };

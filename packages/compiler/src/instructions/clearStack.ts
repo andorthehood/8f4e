@@ -1,7 +1,12 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
+import { ErrorCode, getError } from '../errors';
 
 const clearStack: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	const length = context.stack.length;
 	context.stack = [];
 	return { byteCode: new Array(length).fill(WASMInstruction.DROP), context };

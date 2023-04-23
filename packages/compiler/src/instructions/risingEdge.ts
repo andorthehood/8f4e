@@ -3,6 +3,10 @@ import { ErrorCode, getError } from '../errors';
 import { parseSegment } from '../compiler';
 
 const risingEdge: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	const operand = context.stack.pop();
 
 	if (!operand) {

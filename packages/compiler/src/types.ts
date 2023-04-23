@@ -99,7 +99,11 @@ export interface StackItem {
 
 export type Stack = StackItem[];
 
-export type BlockStack = Array<{ expectedResultIsInteger: boolean; hasExpectedResult: boolean }>;
+export type BlockStack = Array<{
+	expectedResultIsInteger: boolean;
+	hasExpectedResult: boolean;
+	isModuleBlock: boolean;
+}>;
 
 export type InstructionHandler = (
 	line: AST[number],
