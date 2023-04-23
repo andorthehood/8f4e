@@ -213,6 +213,11 @@ Array [
     "instruction": "store",
     "lineNumber": 25,
   },
+  Object {
+    "arguments": Array [],
+    "instruction": "end",
+    "lineNumber": 27,
+  },
 ]
 `;
 

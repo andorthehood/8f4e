@@ -3,6 +3,10 @@ import { ErrorCode, getError } from '../errors';
 import { parseSegment } from '../compiler';
 
 const dup: InstructionHandler = function (line, context) {
+	if (context.blockStack.length < 1) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	const operand1 = context.stack.pop();
 	const operand2 = context.stack.pop();
 

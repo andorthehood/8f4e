@@ -28,7 +28,8 @@ if
 else
     localGet input
 end
-store`.split('\n');
+store
+end`.split('\n');
 
 describe('moduleCompiler', () => {
 	const ast = compileToAST(fixture);
