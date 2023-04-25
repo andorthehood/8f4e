@@ -1,10 +1,10 @@
 import { i32store, f32store } from '../wasmUtils/instructionHelpers';
 import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers } from '../utils';
+import { areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
 
 const store: InstructionHandler = function (line, context) {
-	if (context.blockStack.length < 1) {
+	if (isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
