@@ -1,9 +1,10 @@
 import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { parseSegment } from '../compiler';
+import { isInstructionIsInsideAModule } from '../utils';
 
 const risingEdge: InstructionHandler = function (line, context) {
-	if (context.blockStack.length < 1) {
+	if (isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
