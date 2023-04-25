@@ -1,10 +1,10 @@
 import { WORD_LENGTH } from '../consts';
 import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
-import { calculateMemoryWordSize } from '../utils';
+import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
 
 const memory: InstructionHandler = function (line, context) {
-	if (context.blockStack.length < 1) {
+	if (isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
