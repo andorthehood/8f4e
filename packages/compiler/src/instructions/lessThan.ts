@@ -1,10 +1,10 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
-import { areAllOperandsFloats, areAllOperandsIntegers } from '../utils';
+import { areAllOperandsFloats, areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
 import { ErrorCode, getError } from '../errors';
 
 const lessThan: InstructionHandler = function (line, context) {
-	if (context.blockStack.length < 1) {
+	if (isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
