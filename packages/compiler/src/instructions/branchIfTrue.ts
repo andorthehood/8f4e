@@ -1,9 +1,10 @@
 import { br_if } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
+import { isInstructionIsInsideAModule } from '../utils';
 
 const branchIfTrue: InstructionHandler = function (line, context) {
-	if (context.blockStack.length < 1) {
+	if (isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 

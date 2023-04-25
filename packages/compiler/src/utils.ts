@@ -1,5 +1,5 @@
 import { WORD_LENGTH } from './consts';
-import { CompiledModule, MemoryMap, Namespace, StackItem } from './types';
+import { BlockStack, CompiledModule, MemoryMap, Namespace, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return memoryMap.has(name);
@@ -37,6 +37,15 @@ export function getNextFreeMemoryWordAddress(memory: MemoryMap, _default: number
 	};
 
 	return relativeWordAddress + wordSize;
+}
+
+export function isInstructionIsInsideAModule(blockStack: BlockStack) {
+	for (let i = blockStack.length - 1; i > 0; i--) {
+		if (blockStack[i].isModuleBlock) {
+			return true;
+		}
+	}
+	return false;
 }
 
 export function calculateMemoryWordSize(memory: MemoryMap): number {
