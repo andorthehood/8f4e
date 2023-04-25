@@ -1,13 +1,13 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
-import { calculateMemoryWordSize } from '../utils';
+import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
 import { WORD_LENGTH } from '../consts';
 import { i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
 import Type from '../wasmUtils/type';
 import { ErrorCode, getError } from '../errors';
 
 const skip: InstructionHandler = function (line, context) {
-	if (context.blockStack.length < 1) {
+	if (isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
