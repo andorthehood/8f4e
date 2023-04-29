@@ -20,32 +20,9 @@ const keywords = new RegExp(Object.keys(instructions).join('|'));
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const updateGraphics = function () {
-		state.project.modules.forEach(module => {
-			const graphicData =
-				state.graphicHelper.modules.get(module) ||
-				({
-					width: 0,
-					height: 0,
-					code: module.code,
-					codeWithLineNumbers: [],
-					codeColors: [],
-					inputs: new Map(),
-					outputs: new Map(),
-					debuggers: new Map(),
-					switches: new Map(),
-					scopes: new Map(),
-					cursor: { col: 0, row: 0, x: 0, y: 0 },
-					id: getModuleId(module.code) || '',
-					gaps: new Map() as ModuleGraphicData['gaps'],
-					errorMessages: new Map(),
-					x: module.x,
-					y: module.y,
-					isOpen: module.isOpen,
-				} as ModuleGraphicData);
-			state.graphicHelper.modules.set(module, graphicData);
-
+		for (const graphicData of state.graphicHelper.modules) {
 			const padLength = graphicData.code.length.toString().length;
-			const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(module.code);
+			const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(graphicData.code);
 			const trimmedCode = [...graphicData.code.slice(0, length + 1), ''];
 
 			graphicData.cursor.x = VGRID * (padLength + 2);
@@ -188,7 +165,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			graphicData.cursor.x = (graphicData.cursor.col + (padLength + 2)) * VGRID;
 			graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * HGRID;
 			graphicData.id = getModuleId(graphicData.code) || '';
-		});
+		}
 	};
 
 	const onKeydown: EventHandler = function (event) {
@@ -253,6 +230,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	events.on('buildError', updateGraphics);
 	events.on('moduleClick', updateGraphics);
 	events.on('compilationDone', updateGraphics);
+	events.on('addModule', updateGraphics);
 	events.on('init', updateGraphics);
 	events.on('keydown', onKeydown);
 }
