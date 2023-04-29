@@ -6,7 +6,7 @@ export default function findModuleAtViewportCoordinates(
 	searchX: number,
 	searchY: number
 ): ModuleGraphicData | undefined {
-	for (const [, graphicData] of graphicHelper.modules) {
+	for (const graphicData of graphicHelper.modules) {
 		const { width, height, x, y } = graphicData;
 		if (
 			searchX >= x + viewport.x &&

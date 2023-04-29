@@ -3,14 +3,14 @@ import { fillColor } from '@8f4e/sprite-generator';
 
 import { HGRID, VGRID } from './consts';
 
-import { ModuleGraphicData, State } from '../../state/types';
+import { State } from '../../state/types';
 
 export default function drawConnections(engine: Engine, state: State): void {
 	engine.setSpriteLookup(fillColor);
 
 	engine.startGroup(state.project.viewport.x, state.project.viewport.y);
 
-	for (const [, module] of state.graphicHelper.modules) {
+	for (const module of state.graphicHelper.modules) {
 		for (const [, { x, y, id }] of module.inputs) {
 			const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(id);
 

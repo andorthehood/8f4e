@@ -1,19 +1,12 @@
-import { Switch, GraphicHelper, Module, Viewport } from '../types';
+import { Switch, Viewport, ModuleGraphicData } from '../types';
 
 export default function findSwitchAtViewportCoordinates(
 	viewport: Viewport,
-	graphicHelper: GraphicHelper,
-	module: Module,
+	module: ModuleGraphicData,
 	x: number,
 	y: number
 ): Switch | undefined {
-	const graphicData = graphicHelper.modules.get(module);
-
-	if (!graphicData) {
-		return;
-	}
-
-	return Array.from(graphicData.switches.values()).find(_switch => {
+	return Array.from(module.switches.values()).find(_switch => {
 		return (
 			x >= module.x + viewport.x + _switch.x &&
 			x <= module.x + _switch.width + viewport.x + _switch.x &&

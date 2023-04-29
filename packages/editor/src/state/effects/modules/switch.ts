@@ -7,14 +7,13 @@ export default function moduleOpener(state: State, events: EventDispatcher): () 
 		// const relativeX = Math.abs(module.x - (x - state.viewport.x));
 		// const relativeY = Math.abs(module.y - (y - state.viewport.y));
 
-		const _switch = findSwitchAtViewportCoordinates(state.project.viewport, state.graphicHelper, module, x, y);
-		const graphicHelper = state.graphicHelper.modules.get(module);
+		const _switch = findSwitchAtViewportCoordinates(state.project.viewport, module, x, y);
 
-		if (!_switch || !graphicHelper) {
+		if (!_switch) {
 			return;
 		}
 
-		const memory = state.compiler.compiledModules.get(graphicHelper.id)?.memoryMap.get(_switch.id);
+		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(_switch.id);
 
 		if (!memory) {
 			return;
