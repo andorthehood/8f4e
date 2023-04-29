@@ -15,7 +15,9 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		}
 
 		const { codeBuffer, compiledModules, memoryAddressLookup } = compile(
-			state.project.modules,
+			Array.from(state.graphicHelper.modules).map(module => {
+				return { code: module.code };
+			}),
 			state.compiler.compilerOptions
 		);
 

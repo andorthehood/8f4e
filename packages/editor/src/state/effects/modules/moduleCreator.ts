@@ -50,7 +50,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 		let code = [''];
 
 		if (isNew) {
-			code = ['module ' + getModuleName(), '', '', ''];
+			code = ['module ' + getModuleName(), '', '', 'end'];
 		} else {
 			code = (await navigator.clipboard.readText()).split('\n');
 		}
