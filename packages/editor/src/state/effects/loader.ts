@@ -1,4 +1,5 @@
 import { EventDispatcher } from '../../events';
+import { getModuleId } from '../helpers/codeParsers';
 import { Project, State } from '../types';
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
@@ -10,6 +11,28 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		Object.keys(newProject).forEach(key => {
 			state['project'][key] = newProject[key] || defaultState.project[key];
 		});
+
+		state.project.modules.forEach(module => {
+			state.graphicHelper.modules.add({
+				width: 0,
+				height: 0,
+				code: module.code,
+				codeWithLineNumbers: [],
+				codeColors: [],
+				inputs: new Map(),
+				outputs: new Map(),
+				debuggers: new Map(),
+				switches: new Map(),
+				scopes: new Map(),
+				cursor: { col: 0, row: 0, x: 0, y: 0 },
+				id: getModuleId(module.code) || '',
+				gaps: new Map(),
+				errorMessages: new Map(),
+				x: module.x,
+				y: module.y,
+				isOpen: module.isOpen,
+			});
+		});
 	}
 
 	state.options.isLocalStorageEnabled && loadProject(localProject);
@@ -19,12 +42,16 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			return;
 		}
 
-		Array.from(state.graphicHelper.modules).forEach(([module, graphicData]) => {
-			module.code = graphicData.code;
-			module.x = graphicData.x;
-			module.y = graphicData.y;
-			module.isOpen = graphicData.isOpen;
-		});
+		state.project.modules = [];
+
+		for (const graphicData of state.graphicHelper.modules) {
+			state.project.modules.push({
+				code: graphicData.code,
+				x: graphicData.x,
+				y: graphicData.y,
+				isOpen: graphicData.isOpen,
+			});
+		}
 
 		localStorage.setItem('project_' + state.options.localStorageId, JSON.stringify(state.project));
 	}

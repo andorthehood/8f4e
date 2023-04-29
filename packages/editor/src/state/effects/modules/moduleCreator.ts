@@ -1,4 +1,5 @@
 import { EventDispatcher } from '../../../events';
+import { getModuleId } from '../../helpers/codeParsers';
 import { Module, State } from '../../types';
 
 const nameList = [
@@ -54,8 +55,21 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			code = (await navigator.clipboard.readText()).split('\n');
 		}
 
-		state.project.modules.push({
+		state.graphicHelper.modules.add({
+			width: 0,
+			height: 0,
 			code,
+			codeWithLineNumbers: [],
+			codeColors: [],
+			inputs: new Map(),
+			outputs: new Map(),
+			debuggers: new Map(),
+			switches: new Map(),
+			scopes: new Map(),
+			cursor: { col: 0, row: 0, x: 0, y: 0 },
+			id: getModuleId(code) || '',
+			gaps: new Map(),
+			errorMessages: new Map(),
 			x: x - state.project.viewport.x,
 			y: y - state.project.viewport.y,
 			isOpen: true,
@@ -66,7 +80,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 
 	function onDeleteModule({ module }: { module: Module }): void {
 		events.dispatch('deleteConnection', { module });
-		state.project.modules.splice(state.project.modules.indexOf(module), 1);
+		state.graphicHelper.modules.delete(module);
 	}
 
 	function onCopyModule({ module }: { module: Module }): void {

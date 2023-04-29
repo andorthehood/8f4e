@@ -51,7 +51,7 @@ const defaultState: State = {
 	contextMenu: undefined,
 	connectionFromModule: undefined,
 	connectionFromConnector: undefined,
-	graphicHelper: { connections: [], modules: new Map(), outputsByWordAddress: new Map() },
+	graphicHelper: { connections: [], modules: new Set(), outputsByWordAddress: new Map() },
 	selectedModule: undefined,
 	project: {
 		modules: [],
