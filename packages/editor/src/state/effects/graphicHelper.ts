@@ -3,7 +3,7 @@ import { instructions } from '@8f4e/compiler';
 
 import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler } from '../../events';
-import { ModuleGraphicData, Output, State } from '../types';
+import { Output, State } from '../types';
 import { backSpace, enter, moveCaret, type, gapCalculator } from '../helpers/editor';
 import {
 	parseDebuggers,
@@ -23,7 +23,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		for (const graphicData of state.graphicHelper.modules) {
 			const padLength = graphicData.code.length.toString().length;
 			const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(graphicData.code);
-			const trimmedCode = [...graphicData.code.slice(0, length + 1), ''];
+			const trimmedCode = [...graphicData.code.slice(0, length + 1)];
 
 			graphicData.cursor.x = VGRID * (padLength + 2);
 
