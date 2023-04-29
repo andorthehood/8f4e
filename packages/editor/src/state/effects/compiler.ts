@@ -14,7 +14,9 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		}
 		worker.postMessage({
 			memoryRef: state.compiler.memoryRef,
-			modules: state.project.modules,
+			modules: Array.from(state.graphicHelper.modules).map(module => {
+				return { code: module.code };
+			}),
 			compiledModules: state.compiler.compiledModules,
 			compilerOptions: state.compiler.compilerOptions,
 		});
