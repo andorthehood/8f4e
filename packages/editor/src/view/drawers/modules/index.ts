@@ -15,7 +15,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	engine.startGroup(offsetX, offsetY);
 
-	for (const [, module] of state.graphicHelper.modules) {
+	for (const module of state.graphicHelper.modules) {
 		if (!module) {
 			continue;
 		}

@@ -158,7 +158,7 @@ export interface ModuleGraphicData {
 export type GraphicHelper = {
 	connections: Array<{ fromModule: Module; toModule: Module; fromConnectorId: string; toConnectorId: string }>;
 	outputsByWordAddress: Map<number, Output>;
-	modules: Map<Module, ModuleGraphicData>;
+	modules: Set<ModuleGraphicData>;
 };
 
 export interface Project {
