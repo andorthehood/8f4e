@@ -46,11 +46,15 @@ function getModuleName() {
 }
 
 export default function moduleCreator(state: State, events: EventDispatcher): void {
-	async function onAddModule({ x, y, isNew }) {
+	async function onAddModule({ x, y, isNew, isGroup }) {
 		let code = [''];
 
 		if (isNew) {
-			code = ['module ' + getModuleName(), '', '', 'end'];
+			if (isGroup) {
+				code = ['group ' + getModuleName(), '', '', 'end'];
+			} else {
+				code = ['module ' + getModuleName(), '', '', 'end'];
+			}
 		} else {
 			code = (await navigator.clipboard.readText()).split('\n');
 		}
@@ -73,6 +77,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			x: x - state.project.viewport.x,
 			y: y - state.project.viewport.y,
 			isOpen: true,
+			isGroup: !!isGroup,
 		});
 
 		events.dispatch('saveState');

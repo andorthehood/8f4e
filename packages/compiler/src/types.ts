@@ -103,6 +103,7 @@ export type BlockStack = Array<{
 	expectedResultIsInteger: boolean;
 	hasExpectedResult: boolean;
 	isModuleBlock: boolean;
+	isGroupBlock: boolean;
 }>;
 
 export type InstructionHandler = (

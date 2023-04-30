@@ -1,8 +1,7 @@
 import { Engine } from '@8f4e/2d-engine';
 import { feedbackScale, fillColor } from '@8f4e/sprite-generator';
 
-import { Module, ModuleGraphicData, State } from '../../../state/types';
-import { HGRID, VGRID } from '../consts';
+import { ModuleGraphicData, State } from '../../../state/types';
 
 export default function drawConnectors(engine: Engine, state: State, module: ModuleGraphicData): void {
 	for (const [, output] of module.outputs) {
