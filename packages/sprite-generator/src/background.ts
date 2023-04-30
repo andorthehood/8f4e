@@ -15,10 +15,11 @@ export default function generate(): DrawingCommand[] {
 	];
 
 	for (let i = 0; i < 32; i++) {
+		commands.push([Command.TRANSLATE, 8, 0]);
 		for (let j = 0; j < 32; j++) {
 			commands.push(...drawCharacter(thickIcons, Icon.DOT, 8, 16), [Command.TRANSLATE, 16, 0]);
 		}
-		commands.push([Command.TRANSLATE, -16 * 32, 16]);
+		commands.push([Command.TRANSLATE, -16 * 32 - 8, 16]);
 	}
 
 	return commands;
