@@ -31,6 +31,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				x: module.x,
 				y: module.y,
 				isOpen: module.isOpen,
+				isGroup: false,
 			});
 		});
 	}
