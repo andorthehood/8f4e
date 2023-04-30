@@ -31,14 +31,10 @@ export default async function worklet(state: State, events: EventDispatcher) {
 
 		const audioModule = compiledModules.get('audioout');
 
-		if (!audioModule) {
-			return;
-		}
-
 		const addresses = {
-			audioBufferWordAddress: audioModule.memoryMap.get('buffer')?.wordAddress || 0,
-			outputWordAddress: audioModule.memoryMap.get('output')?.wordAddress || 0,
-			channelWordAddress: audioModule.memoryMap.get('channel')?.wordAddress || 0,
+			audioBufferWordAddress: audioModule?.memoryMap.get('buffer')?.wordAddress || 0,
+			outputWordAddress: audioModule?.memoryMap.get('output')?.wordAddress || 0,
+			channelWordAddress: audioModule?.memoryMap.get('channel')?.wordAddress || 0,
 		};
 
 		audioWorklet.port.postMessage({

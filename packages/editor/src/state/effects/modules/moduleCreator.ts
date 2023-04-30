@@ -79,13 +79,12 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			isOpen: true,
 			isGroup: !!isGroup,
 		});
-
 		events.dispatch('saveState');
 	}
 
 	function onDeleteModule({ module }: { module: Module }): void {
-		events.dispatch('deleteConnection', { module });
 		state.graphicHelper.modules.delete(module);
+		events.dispatch('saveState');
 	}
 
 	function onCopyModule({ module }: { module: Module }): void {
