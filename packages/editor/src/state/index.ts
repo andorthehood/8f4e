@@ -34,6 +34,7 @@ const defaultState: State = {
 		compilerOptions: {
 			startingMemoryWordAddress: 0,
 			constants: {
+				// TODO: make this dynamic
 				SAMPLE_RATE: { value: 48000, isInteger: true },
 			},
 		},
@@ -51,7 +52,7 @@ const defaultState: State = {
 	contextMenu: undefined,
 	connectionFromModule: undefined,
 	connectionFromConnector: undefined,
-	graphicHelper: { connections: [], modules: new Set(), outputsByWordAddress: new Map() },
+	graphicHelper: { modules: new Set(), outputsByWordAddress: new Map() },
 	selectedModule: undefined,
 	project: {
 		modules: [],
@@ -63,6 +64,7 @@ const defaultState: State = {
 			y: 0,
 		},
 		rnbo: { patchers: {} },
+		sampleRate: 44100,
 	},
 	options: {
 		isLocalStorageEnabled: true,
