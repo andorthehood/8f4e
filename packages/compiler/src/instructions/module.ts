@@ -10,7 +10,12 @@ const _module: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
-	context.blockStack.push({ hasExpectedResult: false, expectedResultIsInteger: false, isModuleBlock: true });
+	context.blockStack.push({
+		hasExpectedResult: false,
+		expectedResultIsInteger: false,
+		isModuleBlock: true,
+		isGroupBlock: false,
+	});
 
 	return {
 		byteCode: [],
