@@ -48,6 +48,10 @@ export function isInstructionIsInsideAModule(blockStack: BlockStack) {
 	return false;
 }
 
+export function isInstructionIsInsideAGroup(blockStack: BlockStack) {
+	return blockStack[blockStack.length - 1] && blockStack[blockStack.length - 1].isGroupBlock;
+}
+
 export function calculateMemoryWordSize(memory: MemoryMap): number {
 	return Array.from(memory.values()).reduce((accumulator, current) => {
 		return accumulator + (Array.isArray(current.default) ? current.default.length : 1);
