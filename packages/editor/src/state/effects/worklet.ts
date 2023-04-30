@@ -49,7 +49,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 			return;
 		}
 
-		audioContext = new AudioContext();
+		audioContext = new AudioContext({ sampleRate: state.project.sampleRate || 3000, latencyHint: 'playback' });
 		await audioContext.audioWorklet.addModule(workletBlobUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet');
 		audioWorklet.port.onmessage = function ({ data }) {

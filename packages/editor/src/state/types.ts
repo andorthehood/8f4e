@@ -172,6 +172,7 @@ export interface Project {
 	groups: Group[];
 	viewport: Viewport;
 	rnbo: { patchers: Record<string, IPatcher> };
+	sampleRate: number;
 }
 
 export interface Options {
