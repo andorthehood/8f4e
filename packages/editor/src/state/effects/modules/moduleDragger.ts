@@ -18,7 +18,8 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 		events.dispatch('moduleClick', { x, y, module: draggedModule });
 
 		// Bring dragged module forward.
-		state.project.modules.push(state.project.modules.splice(state.project.modules.indexOf(draggedModule), 1)[0]);
+		state.graphicHelper.modules.delete(draggedModule);
+		state.graphicHelper.modules.add(draggedModule);
 	}
 
 	function onMouseMove(event) {
@@ -34,7 +35,7 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 		if (!draggedModule) {
 			return;
 		}
-		draggedModule.x = Math.round(draggedModule.x / (VGRID * 2)) * (VGRID * 2);
+		draggedModule.x = Math.round(draggedModule.x / VGRID) * VGRID;
 		draggedModule.y = Math.round(draggedModule.y / HGRID) * HGRID;
 
 		if (startingPosition?.x !== draggedModule.x || startingPosition?.y !== draggedModule.y) {
