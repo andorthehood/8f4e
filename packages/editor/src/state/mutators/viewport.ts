@@ -12,6 +12,6 @@ export function move(state: State, movementX: number, movementY: number): void {
 }
 
 export function snapToGrid(state: State) {
-	state.project.viewport.x = Math.round(state.project.viewport.x / (VGRID * 2)) * (VGRID * 2);
+	state.project.viewport.x = Math.round(state.project.viewport.x / VGRID) * VGRID;
 	state.project.viewport.y = Math.round(state.project.viewport.y / HGRID) * HGRID;
 }
