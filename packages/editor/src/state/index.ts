@@ -55,6 +55,7 @@ const defaultState: State = {
 	selectedModule: undefined,
 	project: {
 		modules: [],
+		groups: [],
 		viewport: {
 			height: 0,
 			width: 0,

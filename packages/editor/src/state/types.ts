@@ -1,5 +1,5 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
-import { CompiledModuleLookup, CompileOptions, Connection, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
+import { CompiledModuleLookup, CompileOptions, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
 import { IPatcher } from '@rnbo/js';
 
 export interface Module {
@@ -153,6 +153,7 @@ export interface ModuleGraphicData {
 			y: number;
 		}
 	>;
+	isGroup: boolean;
 }
 
 export type GraphicHelper = {
@@ -161,8 +162,15 @@ export type GraphicHelper = {
 	modules: Set<ModuleGraphicData>;
 };
 
+export interface Group {
+	code: string[];
+	modules: Module[];
+	groups: Group[];
+}
+
 export interface Project {
 	modules: Module[];
+	groups: Group[];
 	viewport: Viewport;
 	rnbo: { patchers: Record<string, IPatcher> };
 }

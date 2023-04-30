@@ -78,6 +78,12 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 					close: true,
 				},
 				{
+					title: 'New Group',
+					action: 'addModule',
+					payload: { isNew: true, isGroup: true },
+					close: true,
+				},
+				{
 					title: 'Paste Module',
 					action: 'addModule',
 					payload: { isPaste: true },
