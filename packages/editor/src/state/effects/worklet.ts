@@ -5,31 +5,15 @@ import { State } from '../types';
 import { EventDispatcher } from '../../events';
 
 export default async function worklet(state: State, events: EventDispatcher) {
-	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
 	let audioContext: AudioContext;
 	let audioWorklet: AudioWorkletNode;
 
 	function onRecompile() {
-		if (!audioWorklet || !state.compiler.sampleRate) {
+		if (!audioWorklet) {
 			return;
 		}
 
-		const { codeBuffer, compiledModules, memoryAddressLookup } = compile(
-			Array.from(state.graphicHelper.modules).map(module => {
-				return { code: module.code };
-			}),
-			state.compiler.compilerOptions
-		);
-
-		state.compiler.memoryBuffer = new Int32Array(memoryRef.buffer);
-		state.compiler.memoryBufferFloat = new Float32Array(memoryRef.buffer);
-		state.compiler.memoryRef = memoryRef;
-		state.compiler.memoryAddressLookup = memoryAddressLookup;
-		state.compiler.isCompiling = false;
-		state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
-		state.compiler.compiledModules = compiledModules;
-
-		const audioModule = compiledModules.get('audioout');
+		const audioModule = state.compiler.compiledModules.get('audioout');
 
 		const addresses = {
 			audioBufferWordAddress: audioModule?.memoryMap.get('buffer')?.wordAddress || 0,
@@ -38,8 +22,8 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		};
 
 		audioWorklet.port.postMessage({
-			memoryRef,
-			codeBuffer,
+			memoryRef: state.compiler.memoryRef,
+			codeBuffer: state.compiler.codeBuffer,
 			addresses,
 		});
 	}
@@ -49,7 +33,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 			return;
 		}
 
-		audioContext = new AudioContext({ sampleRate: state.project.sampleRate || 3000, latencyHint: 'playback' });
+		audioContext = new AudioContext({ sampleRate: state.project.sampleRate, latencyHint: 'playback' });
 		await audioContext.audioWorklet.addModule(workletBlobUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet');
 		audioWorklet.port.onmessage = function ({ data }) {
@@ -58,7 +42,6 @@ export default async function worklet(state: State, events: EventDispatcher) {
 					events.dispatch('compilationDone', data.payload);
 					break;
 				case 'audioWorkletReady':
-					state.compiler.sampleRate = data.payload.sampleRate;
 					onRecompile();
 					events.dispatch('audioWorkletReady', data.payload);
 			}
