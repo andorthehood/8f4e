@@ -19,9 +19,13 @@ async function recompile(
 	compilerOptions: CompileOptions
 ) {
 	try {
-		await testBuild(memoryRef, modules, compilerOptions);
+		const { codeBuffer, compiledModules } = await testBuild(memoryRef, modules, compilerOptions);
 		self.postMessage({
 			type: 'buildOk',
+			payload: {
+				codeBuffer,
+				compiledModules,
+			},
 		});
 	} catch (error) {
 		self.postMessage({

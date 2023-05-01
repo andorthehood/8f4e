@@ -31,6 +31,13 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				events.dispatch('RNBOMessage', data.payload);
 				break;
 			case 'buildOk':
+				state.compiler.compiledModules = data.payload.compiledModules;
+				state.compiler.codeBuffer = data.payload.codeBuffer;
+				state.compiler.memoryBuffer = new Int32Array(state.compiler.memoryRef.buffer);
+				state.compiler.memoryBufferFloat = new Float32Array(state.compiler.memoryRef.buffer);
+				state.compiler.isCompiling = false;
+				state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
+
 				state.compiler.buildErrors = [];
 				events.dispatch('buildOk');
 				break;
