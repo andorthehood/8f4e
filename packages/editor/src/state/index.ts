@@ -19,24 +19,20 @@ import { EventDispatcher } from '../events';
 
 const defaultState: State = {
 	compiler: {
+		codeBuffer: new Uint8Array(),
 		compilationTime: '0',
 		cycleTime: 0,
 		isCompiling: false,
 		lastCompilationStart: 0,
 		memoryBuffer: new Int32Array(),
 		memoryBufferFloat: new Float32Array(),
-		memoryRef: undefined,
-		memoryAddressLookup: new Map(),
+		memoryRef: new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }),
 		timerAccuracy: 0,
 		compiledModules: new Map(),
 		buildErrors: [],
-		sampleRate: undefined,
 		compilerOptions: {
 			startingMemoryWordAddress: 0,
-			constants: {
-				// TODO: make this dynamic
-				SAMPLE_RATE: { value: 48000, isInteger: true },
-			},
+			constants: {},
 		},
 	},
 	midi: {

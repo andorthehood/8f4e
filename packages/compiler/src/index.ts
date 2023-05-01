@@ -12,10 +12,8 @@ import {
 import Type from './wasmUtils/type';
 import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
 import { compile as compileModule, compileToAST } from './compiler';
-import { generateMemoryAddressLookup } from './initializeMemory';
 import {
 	CompiledModule,
-	MemoryAddressLookup,
 	Module,
 	CompiledModuleLookup,
 	AST,
@@ -30,7 +28,6 @@ import { ErrorCode, getError } from './errors';
 
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
-export { setUpConnections } from './initializeMemory';
 export * as examples from './examples';
 export { Instruction } from './instructions';
 export { default as instructions } from './instructions';
@@ -144,7 +141,6 @@ export default function compile(
 	options: CompileOptions
 ): {
 	codeBuffer: Uint8Array;
-	memoryAddressLookup: MemoryAddressLookup;
 	compiledModules: CompiledModuleLookup;
 } {
 	const compiledModules = compileModules(modules, { ...options, startingMemoryWordAddress: 1 });
@@ -154,7 +150,6 @@ export default function compile(
 	const functionSignatures = compiledModules.map(() => 0x00);
 	const cycleFunction = compiledModules.map((module, index) => call(index + 3)).flat();
 	const memoryInitiatorFunction = generateMemoryInitiatorFunction(compiledModules);
-	const memoryAddressLookup = generateMemoryAddressLookup(compiledModules);
 
 	return {
 		codeBuffer: Uint8Array.from([
@@ -179,7 +174,6 @@ export default function compile(
 				...functionBodies,
 			]),
 		]),
-		memoryAddressLookup,
 		compiledModules: compiledModulesMap,
 	};
 }

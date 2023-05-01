@@ -1,5 +1,5 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
-import { CompiledModuleLookup, CompileOptions, MemoryAddressLookup, MemoryBuffer } from '@8f4e/compiler';
+import { CompiledModuleLookup, CompileOptions, MemoryBuffer } from '@8f4e/compiler';
 import { IPatcher } from '@rnbo/js';
 
 export interface Module {
@@ -56,18 +56,17 @@ export interface BuildError {
 }
 
 export interface Compiler {
+	codeBuffer: Uint8Array;
 	compilationTime: string;
 	cycleTime: number;
 	isCompiling: boolean;
 	lastCompilationStart: number;
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
-	memoryRef: WebAssembly.Memory | undefined;
-	memoryAddressLookup: MemoryAddressLookup;
+	memoryRef: WebAssembly.Memory;
 	timerAccuracy: number;
 	compiledModules: CompiledModuleLookup;
 	buildErrors: BuildError[];
-	sampleRate: number | undefined;
 	compilerOptions: CompileOptions;
 }
 
