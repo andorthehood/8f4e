@@ -18,7 +18,12 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				return { code: module.code };
 			}),
 			compiledModules: state.compiler.compiledModules,
-			compilerOptions: state.compiler.compilerOptions,
+			compilerOptions: {
+				...state.compiler.compilerOptions,
+				constants: {
+					SAMPLE_RATE: { value: state.project.sampleRate, isInteger: true },
+				},
+			},
 		});
 	}
 
