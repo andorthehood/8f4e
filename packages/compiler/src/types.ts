@@ -50,8 +50,6 @@ export interface Module {
 	code: string[];
 }
 
-export type MemoryAddressLookup = Map<string, number>;
-
 export const enum ArgumentType {
 	LITERAL = 'literal',
 	IDENTIFIER = 'identifier',
