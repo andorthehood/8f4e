@@ -12,6 +12,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		if (!state.compiler.memoryRef) {
 			return;
 		}
+
 		worker.postMessage({
 			memoryRef: state.compiler.memoryRef,
 			modules: Array.from(state.graphicHelper.modules).map(module => {
@@ -21,6 +22,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			compilerOptions: {
 				...state.compiler.compilerOptions,
 				constants: {
+					...state.compiler.compilerOptions.constants,
 					SAMPLE_RATE: { value: state.project.sampleRate, isInteger: true },
 				},
 			},

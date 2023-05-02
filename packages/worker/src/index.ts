@@ -28,6 +28,8 @@ async function recompile(
 			},
 		});
 	} catch (error) {
+		console.log(error);
+
 		self.postMessage({
 			type: 'buildError',
 			payload: error,
