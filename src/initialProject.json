@@ -28,7 +28,7 @@
                 "end",
                 "end"
             ],
-            "x": 1584,
+            "x": 1568,
             "y": -64,
             "isOpen": true
         },
@@ -40,7 +40,7 @@
                 "int channel 0",
                 "",
                 "# Audio buffer",
-                "float[] buffer 128 0",
+                "float[] buffer AUDIO_BUFFER_SIZE",
                 "int pointer &buffer",
                 "",
                 "#debug pointer",
@@ -74,7 +74,7 @@
                 "store",
                 "end"
             ],
-            "x": 1920,
+            "x": 1888,
             "y": -64,
             "isOpen": true
         }
