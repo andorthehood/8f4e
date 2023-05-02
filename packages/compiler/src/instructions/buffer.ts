@@ -16,17 +16,26 @@ const buffer: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
-	if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
-		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-	}
-
-	if (line.arguments[2] && line.arguments[2].type === ArgumentType.IDENTIFIER) {
+	if (line.arguments[2] && line.arguments[2].type !== ArgumentType.LITERAL) {
 		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	}
 
 	const memory = new Map(context.namespace.memory);
 	const wordAddress = calculateMemoryWordSize(memory);
-	const wordSize = line.arguments[1].value;
+
+	let wordSize = 1;
+
+	if (line.arguments[1].type === ArgumentType.LITERAL) {
+		wordSize = line.arguments[1].value;
+	} else {
+		const constant = context.namespace.consts[line.arguments[1].value];
+
+		if (!constant) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		}
+
+		wordSize = constant.value;
+	}
 
 	memory.set(line.arguments[0].value, {
 		relativeWordAddress: wordAddress,
