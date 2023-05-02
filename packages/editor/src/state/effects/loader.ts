@@ -36,7 +36,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		});
 	}
 
-	state.options.isLocalStorageEnabled && loadProject(localProject);
+	state.options.isLocalStorageEnabled ? loadProject(localProject) : loadProject(state.project);
 
 	function onSaveState() {
 		if (!state.options.isLocalStorageEnabled) {
