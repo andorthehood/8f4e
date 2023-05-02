@@ -86,6 +86,8 @@
         "x": -1472,
         "y": 112
     },
+    "groups": [],
+    "sampleRate": 44100,
     "rnbo": {
         "patchers": {}
     }
