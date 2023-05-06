@@ -54,6 +54,7 @@ class Main extends AudioWorkletProcessor {
 
 	process(inputs, outputs, parameters) {
 		this.buffer();
+
 		const output = outputs[this.memoryBuffer[this.outputWordAddress]];
 
 		if (!output) {
