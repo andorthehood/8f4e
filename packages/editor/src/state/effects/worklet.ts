@@ -35,7 +35,10 @@ export default async function worklet(state: State, events: EventDispatcher) {
 
 		audioContext = new AudioContext({ sampleRate: state.project.sampleRate, latencyHint: 'playback' });
 		await audioContext.audioWorklet.addModule(workletBlobUrl);
-		audioWorklet = new AudioWorkletNode(audioContext, 'worklet');
+		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
+			outputChannelCount: [2],
+			numberOfOutputs: 1,
+		});
 		audioWorklet.port.onmessage = function ({ data }) {
 			switch (data.type) {
 				case 'compilationDone':
