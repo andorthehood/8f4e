@@ -37,7 +37,7 @@
                 "module audioout",
                 "",
                 "float* in saw.out",
-                "int channel 0",
+                "int channel LEFT_CHANNEL",
                 "",
                 "# Audio buffer",
                 "float[] buffer AUDIO_BUFFER_SIZE",
