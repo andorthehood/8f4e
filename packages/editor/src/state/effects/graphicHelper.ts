@@ -2,9 +2,9 @@ import { font } from '@8f4e/sprite-generator';
 import { instructions } from '@8f4e/compiler';
 
 import { HGRID, VGRID } from '../../view/drawers/consts';
-import { EventDispatcher, EventHandler } from '../../events';
+import { EventDispatcher, EventHandler, EventObject } from '../../events';
 import { Output, State } from '../types';
-import { backSpace, enter, moveCaret, type, gapCalculator } from '../helpers/editor';
+import { backSpace, enter, moveCaret, type, gapCalculator, reverseGapCalculator } from '../helpers/editor';
 import {
 	parseDebuggers,
 	parseInputs,
@@ -19,16 +19,27 @@ import {
 const keywords = new RegExp(Object.keys(instructions).join('|'));
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
+	const onModuleClick = function ({ relativeX = 0, relativeY = 0, module }: EventObject) {
+		const [row, col] = moveCaret(
+			module.code,
+			reverseGapCalculator(Math.floor(relativeY / HGRID), module.gaps),
+			Math.floor(relativeX / VGRID) - (module.padLength + 2),
+			'Jump'
+		);
+		module.cursor.row = row;
+		module.cursor.col = col;
+	};
+
 	const updateGraphics = function () {
 		for (const graphicData of state.graphicHelper.modules) {
-			const padLength = graphicData.code.length.toString().length;
+			graphicData.padLength = graphicData.code.length.toString().length;
 			const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(graphicData.code);
 			const trimmedCode = [...graphicData.code.slice(0, length + 1)];
 
-			graphicData.cursor.x = VGRID * (padLength + 2);
+			// graphicData.cursor.x = VGRID * (padLength + 2);
 
 			graphicData.codeWithLineNumbers = trimmedCode.map(
-				(line, index) => `${index}`.padStart(padLength, '0') + ' ' + line
+				(line, index) => `${index}`.padStart(graphicData.padLength, '0') + ' ' + line
 			);
 
 			graphicData.width = Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) * VGRID;
@@ -44,7 +55,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					if (index === 0) {
 						return font('grey');
 					}
-					if (index === padLength) {
+					if (index === graphicData.padLength) {
 						return font('white');
 					}
 					if (index === keywordIndex) {
@@ -94,7 +105,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				graphicData.scopes.set(scope.id, {
 					width: VGRID * 2,
 					height: HGRID,
-					x: VGRID * (4 + padLength),
+					x: VGRID * (4 + graphicData.padLength),
 					y: (gapCalculator(scope.lineNumber, graphicData.gaps) + 1) * HGRID,
 					id: scope.id,
 					minValue: scope.minValue,
@@ -142,7 +153,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				graphicData.debuggers.set(_debugger.id, {
 					width: VGRID * 2,
 					height: HGRID,
-					x: VGRID * (3 + padLength) + VGRID * trimmedCode[_debugger.lineNumber].length,
+					x: VGRID * (3 + graphicData.padLength) + VGRID * trimmedCode[_debugger.lineNumber].length,
 					y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * HGRID,
 					id: _debugger.id,
 				});
@@ -162,7 +173,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			});
 
 			graphicData.height = graphicData.codeWithLineNumbers.length * HGRID;
-			graphicData.cursor.x = (graphicData.cursor.col + (padLength + 2)) * VGRID;
+			graphicData.cursor.x = (graphicData.cursor.col + (graphicData.padLength + 2)) * VGRID;
 			graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * HGRID;
 			graphicData.id = getModuleId(graphicData.code) || '';
 		}
@@ -228,6 +239,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	};
 
 	events.on('buildError', updateGraphics);
+	events.on('moduleClick', onModuleClick);
 	events.on('moduleClick', updateGraphics);
 	events.on('compilationDone', updateGraphics);
 	events.on('addModule', updateGraphics);

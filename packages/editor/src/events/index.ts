@@ -1,6 +1,10 @@
+import { ModuleGraphicData } from '../state/types';
+
 export interface EventObject {
 	x?: number;
 	y?: number;
+	relativeX?: number;
+	relativeY?: number;
 	movementX?: number;
 	movementY?: number;
 	buttons?: number;
@@ -8,6 +12,7 @@ export interface EventObject {
 	key?: string;
 	canvasWidth?: number;
 	canvasHeight?: number;
+	module: ModuleGraphicData;
 }
 
 export type EventHandler = (event?: EventObject) => void;
