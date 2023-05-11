@@ -133,6 +133,7 @@ export interface ModuleGraphicData {
 	inputs: Map<string, Input>;
 	outputs: Map<string, Output>;
 	code: string[];
+	padLength: number;
 	codeWithLineNumbers: string[];
 	codeColors: Array<Array<SpriteLookup | undefined>>;
 	gaps: Map<number, { size: number }>;
