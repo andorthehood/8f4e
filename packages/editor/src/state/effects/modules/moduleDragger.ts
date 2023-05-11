@@ -15,7 +15,9 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 		state.selectedModule = draggedModule;
 		startingPosition = { x: draggedModule.x, y: draggedModule.y };
 
-		events.dispatch('moduleClick', { x, y, module: draggedModule });
+		const relativeX = Math.abs(x - (state.project.viewport.x + draggedModule.x));
+		const relativeY = Math.abs(y - (state.project.viewport.y + draggedModule.y));
+		events.dispatch('moduleClick', { x, y, relativeX, relativeY, module: draggedModule });
 
 		// Bring dragged module forward.
 		state.graphicHelper.modules.delete(draggedModule);
