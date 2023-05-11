@@ -4,7 +4,7 @@ export function moveCaret(
 	code: string[],
 	row: number,
 	col: number,
-	direction: 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight'
+	direction: 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Jump'
 ): [row: number, col: number] {
 	switch (direction) {
 		case 'ArrowUp':
@@ -28,6 +28,10 @@ export function moveCaret(
 			return [row, col];
 		case 'ArrowRight':
 			col = Math.min(col + 1, code[row].length);
+			return [row, col];
+		case 'Jump':
+			col = Math.max(Math.min(col, code[row].length), 0);
+			row = row = Math.min(row, code.length - 1);
 			return [row, col];
 	}
 }
@@ -123,4 +127,9 @@ export function gapCalculator(row: number, gaps: ModuleGraphicData['gaps']) {
 		}
 	}
 	return physicalRowCounter;
+}
+
+export function reverseGapCalculator(physicalRow, gaps: ModuleGraphicData['gaps']) {
+	// TODO implement
+	return physicalRow;
 }
