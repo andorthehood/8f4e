@@ -32,6 +32,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				y: module.y,
 				isOpen: module.isOpen,
 				isGroup: false,
+				padLength: 1,
 			});
 		});
 	}
