@@ -43,6 +43,8 @@ import dup from './dup';
 import swap from './swap';
 import cycle from './cycle';
 import abs from './abs';
+import use from './use';
+import equal from './equal';
 
 const instructions = {
 	and,
@@ -96,6 +98,8 @@ const instructions = {
 	swap,
 	cycle,
 	abs,
+	use,
+	equal,
 } as const;
 
 export default instructions;
