@@ -43,6 +43,7 @@ import fallingEdge from './fallingEdge';
 import dup from './dup';
 import swap from './swap';
 import cycle from './cycle';
+import abs from './abs';
 
 const instructions = {
 	and,
@@ -96,6 +97,7 @@ const instructions = {
 	dup,
 	swap,
 	cycle,
+	abs,
 } as const;
 
 export default instructions;
