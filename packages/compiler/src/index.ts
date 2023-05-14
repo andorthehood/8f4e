@@ -21,6 +21,7 @@ import {
 	ArgumentLiteral,
 	ArgumentType,
 	CompileOptions,
+	Namespaces,
 } from './types';
 import { calculateModuleWordSize } from './utils';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
@@ -46,21 +47,21 @@ export function getInitialMemory(module: CompiledModule): number[] {
 	}, [] as number[]);
 }
 
-// function generateConstNamespaces(ast: AST): Map<string, Namespace['consts']> {
-// 	return Object.fromEntries(
-// 		ast
-// 			.filter(({ instruction }) => instruction === 'const')
-// 			.map(({ arguments: _arguments }) => {
-// 				return [
-// 					_arguments[0].value,
-// 					{
-// 						value: parseFloat(_arguments[1].value.toString()),
-// 						isInteger: (_arguments[1] as ArgumentLiteral).isInteger,
-// 					},
-// 				];
-// 			})
-// 	);
-// }
+function collectConstants(ast: AST): Namespace['consts'] {
+	return Object.fromEntries(
+		ast
+			.filter(({ instruction }) => instruction === 'const')
+			.map(({ arguments: _arguments }) => {
+				return [
+					_arguments[0].value,
+					{
+						value: parseFloat(_arguments[1].value.toString()),
+						isInteger: (_arguments[1] as ArgumentLiteral).isInteger,
+					},
+				];
+			})
+	);
+}
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	compiledModules.forEach(({ ast, memoryMap }) => {
@@ -108,33 +109,62 @@ export function compileModules(modules: Module[], options: CompileOptions): Comp
 		...options.constants,
 	};
 
+	const namespaces: Namespaces = new Map();
+
 	const astModules = modules.map(({ code }) => {
 		const ast = compileToAST(code);
+		const moduleName = getModuleName(ast);
+		namespaces.set(moduleName, { consts: collectConstants(ast) });
 		return ast;
 	});
 
-	const namespaces = new Map();
-
 	return astModules.map(ast => {
 		const module = compileModule(ast, builtInConsts, namespaces, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
+
 		memoryAddress += calculateModuleWordSize(module);
 		return module;
 	});
 }
 
+export function getModuleName(ast: AST) {
+	const moduleInstruction = ast.find(line => {
+		return line.instruction === 'module';
+	});
+
+	if (!moduleInstruction) {
+		throw 'Missing module instruction';
+	}
+
+	const argument = moduleInstruction.arguments[0];
+
+	if (argument.type !== ArgumentType.IDENTIFIER) {
+		throw 'Module instruction argument type invalid';
+	}
+
+	return argument.value;
+}
+
 export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
-	return compiledModules
-		.map(module => {
-			let pointer = module.byteAddress;
-			return getInitialMemory(module)
-				.map(value => {
-					const instuction = Number.isInteger(value) ? i32store(pointer, value) : f32store(pointer, value);
+	return compiledModules.flatMap(module => {
+		let pointer = module.byteAddress;
+		const instructions: number[] = [];
+
+		Array.from(module.memoryMap.values()).forEach(memory => {
+			if (Array.isArray(memory.default)) {
+				memory.default.forEach(value => {
+					instructions.push(...(memory.isInteger ? i32store(pointer, value) : f32store(pointer, value)));
 					pointer += Int32Array.BYTES_PER_ELEMENT;
-					return instuction;
-				})
-				.flat();
-		})
-		.flat();
+				});
+			} else {
+				instructions.push(
+					...(memory.isInteger ? i32store(pointer, memory.default) : f32store(pointer, memory.default))
+				);
+				pointer += Int32Array.BYTES_PER_ELEMENT;
+			}
+		});
+
+		return instructions;
+	});
 }
 
 export default function compile(
