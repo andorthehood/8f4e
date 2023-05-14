@@ -235,6 +235,7 @@ enum WASMInstruction {
 	 * Type signature: (param i32) (result i32)
 	 */
 	I32_POPCNT = 0x69,
+	F32_ABS = 0x8b,
 	F32_ADD = 0x92,
 	F32_SUB = 0x93,
 	F32_MUL = 0x94,
