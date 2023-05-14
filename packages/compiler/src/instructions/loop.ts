@@ -9,6 +9,13 @@ const loop: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
+	context.blockStack.push({
+		expectedResultIsInteger: false,
+		hasExpectedResult: false,
+		isModuleBlock: false,
+		isGroupBlock: false,
+	});
+
 	if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'void') {
 		return { byteCode: [WASMInstruction.LOOP, Type.VOID], context };
 	}
