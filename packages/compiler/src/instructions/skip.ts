@@ -2,7 +2,7 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
 import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
 import { WORD_LENGTH } from '../consts';
-import { i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
+import { block, br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
 import Type from '../wasmUtils/type';
 import { ErrorCode, getError } from '../errors';
 
@@ -37,8 +37,17 @@ const skip: InstructionHandler = function (line, context) {
 		isInteger: true,
 	});
 
+	context.blockStack.push({
+		expectedResultIsInteger: false,
+		hasExpectedResult: false,
+		isModuleBlock: false,
+		isGroupBlock: false,
+	});
+
 	return {
 		byteCode: [
+			WASMInstruction.BLOCK,
+			Type.VOID,
 			// Increment counter
 			...i32const(byteAddress),
 			...i32const(byteAddress),
@@ -54,7 +63,8 @@ const skip: InstructionHandler = function (line, context) {
 			WASMInstruction.I32_LT_S,
 			WASMInstruction.IF,
 			Type.VOID,
-			WASMInstruction.RETURN,
+			// WASMInstruction.RETURN,
+			...br(1),
 			WASMInstruction.ELSE,
 			...i32const(byteAddress),
 			...i32const(0),
