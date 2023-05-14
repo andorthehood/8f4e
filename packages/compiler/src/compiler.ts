@@ -1,7 +1,7 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import instructions, { Instruction } from './instructions';
-import { AST, Argument, ArgumentType, CompiledModule, Namespace, CompilationContext } from './types';
+import { AST, Argument, ArgumentType, CompiledModule, Namespace, CompilationContext, Namespaces } from './types';
 import { WORD_LENGTH } from './consts';
 import { ErrorCode, getError } from './errors';
 
@@ -93,12 +93,18 @@ export function parseSegment(
 	return compileSegment(compileToAST(lines), context);
 }
 
-export function compile(ast: AST, globals: Namespace['consts'], startingByteAddress = 0): CompiledModule {
+export function compile(
+	ast: AST,
+	builtInConsts: Namespace['consts'],
+	namespaces: Namespaces,
+	startingByteAddress = 0
+): CompiledModule {
 	const { byteCode, context } = compileSegment(ast, {
 		namespace: {
+			namespaces,
 			memory: new Map(),
 			locals: new Map(),
-			consts: { ...globals },
+			consts: { ...builtInConsts },
 			moduleName: undefined,
 		},
 		stack: [],
