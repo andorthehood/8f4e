@@ -77,13 +77,18 @@ export interface TestModule {
 	ast: AST;
 }
 
+export type Const = { value: number; isInteger: boolean };
+
+export type Consts = Record<string, Const>;
 export interface Namespace {
 	locals: Map<string, { isInteger: boolean; index: number }>;
 	memory: MemoryMap;
-	consts: Record<string, { value: number; isInteger: boolean }>;
+	consts: Consts;
 	moduleName: string | undefined;
+	namespaces: Namespaces;
 }
 
+export type Namespaces = Map<string, { consts: Consts }>;
 export interface CompilationContext {
 	namespace: Namespace;
 	stack: Stack;
