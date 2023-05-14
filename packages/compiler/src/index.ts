@@ -46,21 +46,21 @@ export function getInitialMemory(module: CompiledModule): number[] {
 	}, [] as number[]);
 }
 
-function collectGlobals(ast: AST): Namespace['consts'] {
-	return Object.fromEntries(
-		ast
-			.filter(({ instruction }) => instruction === 'global')
-			.map(({ arguments: _arguments }) => {
-				return [
-					_arguments[0].value,
-					{
-						value: parseFloat(_arguments[1].value.toString()),
-						isInteger: (_arguments[1] as ArgumentLiteral).isInteger,
-					},
-				];
-			})
-	);
-}
+// function generateConstNamespaces(ast: AST): Map<string, Namespace['consts']> {
+// 	return Object.fromEntries(
+// 		ast
+// 			.filter(({ instruction }) => instruction === 'const')
+// 			.map(({ arguments: _arguments }) => {
+// 				return [
+// 					_arguments[0].value,
+// 					{
+// 						value: parseFloat(_arguments[1].value.toString()),
+// 						isInteger: (_arguments[1] as ArgumentLiteral).isInteger,
+// 					},
+// 				];
+// 			})
+// 	);
+// }
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	compiledModules.forEach(({ ast, memoryMap }) => {
@@ -100,7 +100,7 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 
 export function compileModules(modules: Module[], options: CompileOptions): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress;
-	let globals: Namespace['consts'] = {
+	const builtInConsts: Namespace['consts'] = {
 		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
 		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
 		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
@@ -110,12 +110,13 @@ export function compileModules(modules: Module[], options: CompileOptions): Comp
 
 	const astModules = modules.map(({ code }) => {
 		const ast = compileToAST(code);
-		globals = { ...globals, ...collectGlobals(ast) };
 		return ast;
 	});
 
+	const namespaces = new Map();
+
 	return astModules.map(ast => {
-		const module = compileModule(ast, globals, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
+		const module = compileModule(ast, builtInConsts, namespaces, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
 		memoryAddress += calculateModuleWordSize(module);
 		return module;
 	});
