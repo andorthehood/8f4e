@@ -34,7 +34,7 @@ push &notes
 localSet noteMemoryPointer
 
 block void
- loop void
+ loop
   # Branch if the memory pointer would overflow.
   push noteMemoryPointer
   push notesEndAddressPointer
@@ -83,7 +83,7 @@ block void
   push WORD_SIZE
   add
   localSet noteMemoryPointer
- loopEnd
+ end
 end
 
 # Prepare memory address for storing the output value.

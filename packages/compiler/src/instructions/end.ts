@@ -2,6 +2,7 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
+import { br } from '../wasmUtils/instructionHelpers';
 
 const end: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
@@ -31,6 +32,9 @@ const end: InstructionHandler = function (line, context) {
 	if (context.blockStack.length === 0) {
 		return { byteCode: [], context };
 	} else {
+		if (block.isLoop) {
+			return { byteCode: [...br(0), WASMInstruction.END], context };
+		}
 		return { byteCode: [WASMInstruction.END], context };
 	}
 };

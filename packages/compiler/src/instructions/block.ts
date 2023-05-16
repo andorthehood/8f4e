@@ -15,6 +15,7 @@ const block: InstructionHandler = function (line, context) {
 			hasExpectedResult: false,
 			isModuleBlock: false,
 			isGroupBlock: false,
+			isLoop: false,
 		});
 		return { byteCode: [WASMInstruction.BLOCK, Type.VOID], context };
 	}
@@ -25,6 +26,7 @@ const block: InstructionHandler = function (line, context) {
 		hasExpectedResult: true,
 		isModuleBlock: false,
 		isGroupBlock: false,
+		isLoop: false,
 	});
 	return { byteCode: [WASMInstruction.BLOCK, Type.I32], context };
 };
