@@ -15,6 +15,7 @@ const _module: InstructionHandler = function (line, context) {
 		expectedResultIsInteger: false,
 		isModuleBlock: true,
 		isGroupBlock: false,
+		isLoop: false,
 	});
 
 	return {

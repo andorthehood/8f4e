@@ -25,6 +25,7 @@ const _if: InstructionHandler = function (line, context) {
 			hasExpectedResult: false,
 			isModuleBlock: false,
 			isGroupBlock: false,
+			isLoop: false,
 		});
 		return { byteCode: [WASMInstruction.IF, Type.VOID], context };
 	}
@@ -35,6 +36,7 @@ const _if: InstructionHandler = function (line, context) {
 		hasExpectedResult: true,
 		isModuleBlock: false,
 		isGroupBlock: false,
+		isLoop: false,
 	});
 
 	return { byteCode: [WASMInstruction.IF, Type.I32], context };
