@@ -23,7 +23,6 @@ import block from './block';
 import lessOrEqual from './lessOrEqual';
 import mul from './mul';
 import loop from './loop';
-import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import equalToZero from './equalToZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
@@ -45,6 +44,7 @@ import cycle from './cycle';
 import abs from './abs';
 import use from './use';
 import equal from './equal';
+import wasm from './wasm';
 
 const instructions = {
 	and,
@@ -72,7 +72,6 @@ const instructions = {
 	lessOrEqual,
 	mul,
 	loop,
-	loopEnd,
 	greaterOrEqualUnsigned,
 	equalToZero,
 	shiftRight,
@@ -100,6 +99,7 @@ const instructions = {
 	abs,
 	use,
 	equal,
+	wasm,
 } as const;
 
 export default instructions;
