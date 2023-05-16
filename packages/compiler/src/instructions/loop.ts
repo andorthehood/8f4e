@@ -1,8 +1,9 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import Type from '../wasmUtils/type';
-import { ArgumentType, InstructionHandler } from '../types';
+import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
+import { parseSegment } from '../compiler';
 
 const loop: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
@@ -14,13 +15,35 @@ const loop: InstructionHandler = function (line, context) {
 		hasExpectedResult: false,
 		isModuleBlock: false,
 		isGroupBlock: false,
+		isLoop: true,
 	});
 
-	if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'void') {
-		return { byteCode: [WASMInstruction.LOOP, Type.VOID], context };
-	}
+	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
+	const loopErrorSignalerName = 'loopErrorSignaler';
 
-	return { byteCode: [WASMInstruction.LOOP, Type.I32], context };
+	return parseSegment(
+		[
+			`local int ${infiniteLoopProtectionCounterName}`,
+			`int ${loopErrorSignalerName} 0`,
+			`wasm ${WASMInstruction.LOOP}`,
+			`wasm ${Type.VOID}`,
+
+			`localGet ${infiniteLoopProtectionCounterName}`,
+			'push 1000',
+			'greaterOrEqual',
+			'if void',
+			` push &${loopErrorSignalerName}`,
+			` push ${line.lineNumber}`,
+			' store',
+			` wasm ${WASMInstruction.RETURN}`,
+			'end',
+			`localGet ${infiniteLoopProtectionCounterName}`,
+			'push 1',
+			'add',
+			`localSet ${infiniteLoopProtectionCounterName}`,
+		],
+		context
+	);
 };
 
 export default loop;

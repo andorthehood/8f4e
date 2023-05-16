@@ -42,6 +42,7 @@ const skip: InstructionHandler = function (line, context) {
 		hasExpectedResult: false,
 		isModuleBlock: false,
 		isGroupBlock: false,
+		isLoop: false,
 	});
 
 	return {
