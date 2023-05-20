@@ -19,12 +19,13 @@ const loop: InstructionHandler = function (line, context) {
 	});
 
 	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
-	const loopErrorSignalerName = 'loopErrorSignaler';
+	const loopErrorSignalerName = '__loopErrorSignaler';
 
 	return parseSegment(
 		[
 			`local int ${infiniteLoopProtectionCounterName}`,
-			`int ${loopErrorSignalerName} 0`,
+			context.namespace.memory.has(loopErrorSignalerName) ? '' : `int ${loopErrorSignalerName} -1`,
+
 			`wasm ${WASMInstruction.LOOP}`,
 			`wasm ${Type.VOID}`,
 

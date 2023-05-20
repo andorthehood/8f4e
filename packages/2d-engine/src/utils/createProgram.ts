@@ -5,7 +5,6 @@ export default function createProgram(
 	const program = gl.createProgram();
 
 	shaders.forEach(shader => {
-		console.log(shader);
 		gl.attachShader(program, shader);
 	});
 

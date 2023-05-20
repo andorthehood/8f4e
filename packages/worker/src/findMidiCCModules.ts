@@ -5,7 +5,7 @@ import { MidiCCModuleAddresses } from './types';
 export default function findMidiNoteModules(compiledModules: CompiledModuleLookup): MidiCCModuleAddresses[] {
 	return Array.from(compiledModules)
 		.map(([, compiledModule]) => compiledModule)
-		.filter(({ id }) => id.startsWith('cvToMidiCC'))
+		.filter(({ id }) => id.startsWith('midicc:'))
 		.map(module => {
 			return {
 				moduleId: module.id,

@@ -1,4 +1,4 @@
-import { CompiledModuleLookup, CompileOptions, Module } from '@8f4e/compiler';
+import { CompileOptions, Module } from '@8f4e/compiler';
 
 import testBuild from './testBuild';
 import resetMidi from './resetMidi';
@@ -12,12 +12,7 @@ import broadcastRNBOMessages from './broadcastRNBOMessages';
 let interval: NodeJS.Timeout;
 const intervalTime = 10;
 
-async function recompile(
-	memoryRef: WebAssembly.Memory,
-	modules: Module[],
-	compiledModules: CompiledModuleLookup,
-	compilerOptions: CompileOptions
-) {
+async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
 	try {
 		const { codeBuffer, compiledModules } = await testBuild(memoryRef, modules, compilerOptions);
 		self.postMessage({
@@ -27,32 +22,31 @@ async function recompile(
 				compiledModules,
 			},
 		});
-	} catch (error) {
-		console.log(error);
 
+		clearInterval(interval);
+
+		const memoryBuffer = new Int32Array(memoryRef.buffer);
+
+		const midiNoteModules = findMidiNoteModules(compiledModules);
+		const RNBOModules = findRNBOModules(compiledModules);
+		const midiCCModules = findMidiCCModules(compiledModules);
+
+		resetMidi();
+
+		interval = setInterval(() => {
+			broadcastMidiCCMessages(midiCCModules, memoryBuffer);
+			broadcastMidiMessages(midiNoteModules, memoryBuffer);
+			broadcastRNBOMessages(RNBOModules, memoryBuffer);
+		}, intervalTime);
+	} catch (error) {
+		console.log('buildError', error);
 		self.postMessage({
 			type: 'buildError',
 			payload: error,
 		});
 	}
-
-	clearInterval(interval);
-
-	const memoryBuffer = new Int32Array(memoryRef.buffer);
-
-	const midiNoteModules = findMidiNoteModules(compiledModules);
-	const RNBOModules = findRNBOModules(compiledModules);
-	const midiCCModules = findMidiCCModules(compiledModules);
-
-	resetMidi();
-
-	interval = setInterval(() => {
-		broadcastMidiCCMessages(midiCCModules, memoryBuffer);
-		broadcastMidiMessages(midiNoteModules, memoryBuffer);
-		broadcastRNBOMessages(RNBOModules, memoryBuffer);
-	}, intervalTime);
 }
 
 self.onmessage = function (event) {
-	recompile(event.data.memoryRef, event.data.modules, event.data.compiledModules, event.data.compilerOptions);
+	recompile(event.data.memoryRef, event.data.modules, event.data.compilerOptions);
 };
