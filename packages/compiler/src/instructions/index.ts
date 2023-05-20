@@ -45,6 +45,7 @@ import abs from './abs';
 import use from './use';
 import equal from './equal';
 import wasm from './wasm';
+import branchIfUnchanged from './branchIfUnchanged';
 
 const instructions = {
 	and,
@@ -100,6 +101,7 @@ const instructions = {
 	use,
 	equal,
 	wasm,
+	branchIfUnchanged,
 } as const;
 
 export default instructions;
