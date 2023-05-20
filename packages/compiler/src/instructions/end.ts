@@ -30,7 +30,7 @@ const end: InstructionHandler = function (line, context) {
 	}
 
 	if (block.isLoop) {
-		return { byteCode: [...br(0), WASMInstruction.END], context };
+		return { byteCode: [...br(0), WASMInstruction.END, WASMInstruction.END], context };
 	}
 
 	if (context.blockStack.length === 0) {
