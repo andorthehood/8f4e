@@ -26,6 +26,12 @@ const loop: InstructionHandler = function (line, context) {
 			`local int ${infiniteLoopProtectionCounterName}`,
 			context.namespace.memory.has(loopErrorSignalerName) ? '' : `int ${loopErrorSignalerName} -1`,
 
+			'push 0',
+			`localSet ${infiniteLoopProtectionCounterName}`,
+
+			`wasm ${WASMInstruction.BLOCK}`,
+			`wasm ${Type.VOID}`,
+
 			`wasm ${WASMInstruction.LOOP}`,
 			`wasm ${Type.VOID}`,
 
@@ -36,7 +42,7 @@ const loop: InstructionHandler = function (line, context) {
 			` push &${loopErrorSignalerName}`,
 			` push ${line.lineNumber}`,
 			' store',
-			` wasm ${WASMInstruction.RETURN}`,
+			` branch 2`,
 			'end',
 			`localGet ${infiniteLoopProtectionCounterName}`,
 			'push 1',
