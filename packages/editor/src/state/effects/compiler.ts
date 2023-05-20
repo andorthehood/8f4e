@@ -18,7 +18,6 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			modules: Array.from(state.graphicHelper.modules).map(module => {
 				return { code: module.code };
 			}),
-			compiledModules: state.compiler.compiledModules,
 			compilerOptions: {
 				...state.compiler.compilerOptions,
 				constants: {

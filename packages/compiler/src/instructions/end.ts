@@ -29,12 +29,13 @@ const end: InstructionHandler = function (line, context) {
 		context.stack.push(operand);
 	}
 
+	if (block.isLoop) {
+		return { byteCode: [...br(0), WASMInstruction.END], context };
+	}
+
 	if (context.blockStack.length === 0) {
 		return { byteCode: [], context };
 	} else {
-		if (block.isLoop) {
-			return { byteCode: [...br(0), WASMInstruction.END], context };
-		}
 		return { byteCode: [WASMInstruction.END], context };
 	}
 };
