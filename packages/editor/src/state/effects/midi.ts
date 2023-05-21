@@ -2,21 +2,21 @@ import { EventDispatcher } from '../../events';
 import { State } from '../types';
 
 export default async function midi(state: State, events: EventDispatcher): Promise<void> {
-	let selectedPort;
-	let midiAccess;
+	let selectedPort: MIDIOutput;
+	let midiAccess: MIDIAccess;
 
 	function onMidiAccess(access) {
 		midiAccess = access;
 
 		access.outputs.forEach(port => {
-			state.midi.ports.push({ id: port.id, name: port.name, manufacturer: port.manufacturer });
+			state.midi.ports.push(port);
 			selectedPort = port;
 			events.dispatch('midiPortConnected');
 		});
 	}
 
 	function onSelectMidiOutput({ id }) {
-		selectedPort = midiAccess.outputs.forEach(function (port) {
+		midiAccess.outputs.forEach(function (port) {
 			if (port.id === id) {
 				selectedPort = port;
 			}
