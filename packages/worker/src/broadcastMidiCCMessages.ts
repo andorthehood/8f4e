@@ -1,4 +1,4 @@
-import { I16_SIGNED_LARGEST_NUMBER, MemoryBuffer } from '@8f4e/compiler';
+import { MemoryBuffer } from '@8f4e/compiler';
 
 import { Event } from './midiEnums';
 import { MidiCCModuleAddresses } from './types';
@@ -13,7 +13,9 @@ export default function (midiNoteModules: MidiCCModuleAddresses[], memoryBuffer:
 
 		const cc = memoryBuffer[selectedCCWordAddress];
 		const channel = channelWordAddress ? memoryBuffer[channelWordAddress] || 1 : 1;
-		const value = Math.floor((memoryBuffer[valueWordAddress] / I16_SIGNED_LARGEST_NUMBER + 1) * 63.5);
+		const value = memoryBuffer[valueWordAddress];
+
+		console.log(value);
 
 		if (previousValues.get(moduleId) !== value) {
 			self.postMessage({
