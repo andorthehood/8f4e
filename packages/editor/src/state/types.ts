@@ -42,12 +42,6 @@ export interface ContextMenu extends Position {
 	open: boolean;
 }
 
-export type MidiPort = {
-	id: string;
-	name: string;
-	manufacturer: string;
-};
-
 export interface BuildError {
 	lineNumber: number;
 	code: number;
@@ -76,7 +70,7 @@ export interface Error {
 }
 
 export interface Midi {
-	ports: MidiPort[];
+	ports: MIDIPort[];
 }
 
 export interface Scope {
