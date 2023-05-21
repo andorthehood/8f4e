@@ -6,10 +6,15 @@ export default async function testBuild(
 	compilerOptions: CompileOptions
 ): Promise<{ codeBuffer: Uint8Array; compiledModules: CompiledModuleLookup }> {
 	const { codeBuffer, compiledModules } = compile(modules, compilerOptions);
-	await WebAssembly.instantiate(codeBuffer, {
+	const { instance } = await WebAssembly.instantiate(codeBuffer, {
 		js: {
 			memory: memoryRef,
 		},
 	});
+
+	const init = instance.exports.init as CallableFunction;
+
+	init();
+
 	return { codeBuffer, compiledModules };
 }
