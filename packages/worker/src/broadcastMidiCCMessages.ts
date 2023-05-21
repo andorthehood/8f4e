@@ -15,8 +15,6 @@ export default function (midiNoteModules: MidiCCModuleAddresses[], memoryBuffer:
 		const channel = channelWordAddress ? memoryBuffer[channelWordAddress] || 1 : 1;
 		const value = memoryBuffer[valueWordAddress];
 
-		console.log(value);
-
 		if (previousValues.get(moduleId) !== value) {
 			self.postMessage({
 				type: 'midiMessage',
