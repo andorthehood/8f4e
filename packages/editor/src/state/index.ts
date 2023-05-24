@@ -36,7 +36,8 @@ const defaultState: State = {
 		},
 	},
 	midi: {
-		ports: [],
+		inputs: [],
+		outputs: [],
 	},
 	error: {
 		display: false,
