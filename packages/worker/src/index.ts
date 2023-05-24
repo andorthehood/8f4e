@@ -8,9 +8,13 @@ import findMidiCCModules from './findMidiCCModules';
 import broadcastMidiCCMessages from './broadcastMidiCCMessages';
 import findRNBOModules from './findRNBOModules';
 import broadcastRNBOMessages from './broadcastRNBOMessages';
+import findMidiCCInputModules from './findMidiCCInputModules';
+import { MidiCCModuleAddresses } from './types';
 
 let interval: NodeJS.Timeout;
 const intervalTime = 10;
+let memoryBuffer: Int32Array;
+let midiCCInputModules: Map<string, MidiCCModuleAddresses> = new Map();
 
 async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
 	try {
@@ -25,11 +29,12 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compi
 
 		clearInterval(interval);
 
-		const memoryBuffer = new Int32Array(memoryRef.buffer);
+		memoryBuffer = new Int32Array(memoryRef.buffer);
 
 		const midiNoteModules = findMidiNoteModules(compiledModules, memoryBuffer);
 		const RNBOModules = findRNBOModules(compiledModules);
 		const midiCCModules = findMidiCCModules(compiledModules, memoryBuffer);
+		midiCCInputModules = findMidiCCInputModules(compiledModules, memoryBuffer);
 
 		resetMidi();
 
@@ -47,6 +52,27 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compi
 	}
 }
 
+function onMidiMessage(message: Uint8Array) {
+	if (!memoryBuffer || midiCCInputModules.size < 1) {
+		return;
+	}
+
+	if (message[0] >= 176 && message[0] <= 191) {
+		const valueWordAddress = midiCCInputModules.get(message[0] - 175 + '' + message[1])?.valueWordAddress;
+
+		if (valueWordAddress) {
+			memoryBuffer[valueWordAddress] = message[2];
+		}
+	}
+}
+
 self.onmessage = function (event) {
-	recompile(event.data.memoryRef, event.data.modules, event.data.compilerOptions);
+	switch (event.data.type) {
+		case 'midimessage':
+			onMidiMessage(event.data.payload);
+			break;
+		case 'recompile':
+			recompile(event.data.payload.memoryRef, event.data.payload.modules, event.data.payload.compilerOptions);
+			break;
+	}
 };
