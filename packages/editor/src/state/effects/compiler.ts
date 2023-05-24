@@ -8,24 +8,34 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		type: 'module',
 	});
 
+	function onMidiMessage(data) {
+		worker.postMessage({
+			type: 'midimessage',
+			payload: data,
+		});
+	}
+
 	async function onRecompile() {
 		if (!state.compiler.memoryRef) {
 			return;
 		}
 
 		worker.postMessage({
-			memoryRef: state.compiler.memoryRef,
-			modules: Array.from(state.graphicHelper.modules).map(module => {
-				return { code: module.code };
-			}),
-			compilerOptions: {
-				...state.compiler.compilerOptions,
-				constants: {
-					...state.compiler.compilerOptions.constants,
-					SAMPLE_RATE: { value: state.project.sampleRate, isInteger: true },
-					AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
-					LEFT_CHANNEL: { value: 0, isInteger: true },
-					RIGHT_CHANNEL: { value: 1, isInteger: true },
+			type: 'recompile',
+			payload: {
+				memoryRef: state.compiler.memoryRef,
+				modules: Array.from(state.graphicHelper.modules).map(module => {
+					return { code: module.code };
+				}),
+				compilerOptions: {
+					...state.compiler.compilerOptions,
+					constants: {
+						...state.compiler.compilerOptions.constants,
+						SAMPLE_RATE: { value: state.project.sampleRate, isInteger: true },
+						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
+						LEFT_CHANNEL: { value: 0, isInteger: true },
+						RIGHT_CHANNEL: { value: 1, isInteger: true },
+					},
 				},
 			},
 		});
@@ -70,4 +80,5 @@ export default async function compiler(state: State, events: EventDispatcher) {
 	events.on('deleteModule', onRecompile);
 	events.on('init', onRecompile);
 	events.on('codeChange', onRecompile);
+	events.on('midiMessage', onMidiMessage);
 }
