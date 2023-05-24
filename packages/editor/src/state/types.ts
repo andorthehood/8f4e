@@ -70,7 +70,8 @@ export interface Error {
 }
 
 export interface Midi {
-	ports: MIDIPort[];
+	outputs: MIDIOutput[];
+	inputs: MIDIInput[];
 }
 
 export interface Scope {
