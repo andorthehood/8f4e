@@ -40,7 +40,7 @@ export function parseLine(line: string, lineNumber: number): AST[number] {
 }
 
 export function isComment(line: string): boolean {
-	return /\s*#/.test(line);
+	return /\s*;/.test(line);
 }
 
 export function isValidInstruction(line: string): boolean {
