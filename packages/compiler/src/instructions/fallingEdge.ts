@@ -27,7 +27,7 @@ const fallingEdge: InstructionHandler = function (line, context) {
 			`localGet ${currentValueName}`,
 			`push &${previousValueName}`,
 			'load',
-			'greaterThan',
+			'lessThan',
 			'if int',
 			'push 1',
 			'else',
