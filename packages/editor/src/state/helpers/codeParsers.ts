@@ -1,7 +1,7 @@
 import { Instruction } from '@8f4e/compiler';
 
 const instructionParser = /^\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
-const commentParser = /^\s*#(.+)$/;
+const commentParser = /^\s*;(.+)$/;
 const debuggerParser = /^\s*debug\s*(\S*)\s*$/;
 const scopeParser = /^\s*scope\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
 

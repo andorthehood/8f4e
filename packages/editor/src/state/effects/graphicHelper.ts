@@ -47,7 +47,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			graphicData.codeColors = graphicData.codeWithLineNumbers.map(line => {
 				const keywordIndex = line.search(keywords);
 
-				if (line.includes('#')) {
+				if (line.includes(';')) {
 					return [font('grey'), font('grey'), font('grey'), font('light_grey')];
 				}
 
