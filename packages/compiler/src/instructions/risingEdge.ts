@@ -27,7 +27,7 @@ const risingEdge: InstructionHandler = function (line, context) {
 			`localGet ${currentValueName}`,
 			`push &${previousValueName}`,
 			'load',
-			'lessThan',
+			'greaterThan',
 			'if int',
 			'push 1',
 			'else',
