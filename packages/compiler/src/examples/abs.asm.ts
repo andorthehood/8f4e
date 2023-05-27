@@ -1,14 +1,14 @@
 export default `module abs
 
-# memory
+; memory
 int defaultValue 0
 int* in &defaultValue
 int out 0
 
-# locals
+; locals
 local int input
 
-# code
+; code
 push &out
 push *in
 localSet input
