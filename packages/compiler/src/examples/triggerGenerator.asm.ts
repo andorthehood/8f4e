@@ -29,7 +29,7 @@ if void
  localSet _output
 end
 
-# Resets the output to 0
+; Resets the output to 0
 push _output
 push I16_SIGNED_LARGEST_NUMBER
 greaterOrEqual

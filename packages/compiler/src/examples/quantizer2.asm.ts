@@ -18,7 +18,7 @@ float bestMatchingValue
 float difference
 float smallestDifference 1000
 
-# debug bestMatchingValue
+; debug bestMatchingValue
 
 push *in
 branchIfUnchanged 0
@@ -34,9 +34,9 @@ loop
  push lastLevel
  cycle 
 
- # Calculate difference between
- # the input and the current
- # level.
+ ; Calculate difference between
+ ; the input and the current
+ ; level.
  push &difference
  push *levelPointer
  push *in
@@ -48,21 +48,21 @@ loop
  push smallestDifference
  lessOrEqual
  if void
-  # If it's actually smaller
-  # than the smallest difference,
-  # then update the smallest 
-  # difference.
+  ; If it's actually smaller
+  ; than the smallest difference,
+  ; then update the smallest 
+  ; difference.
   push &smallestDifference
   push difference
   store
-  # Save the current level value.
+  ; Save the current level value.
   push &bestMatchingValue
   push *levelPointer
   store
  end
  
- # Exit loop if the level pointer
- # reached the end.
+ ; Exit loop if the level pointer
+ ; reached the end.
  push levelPointer
  push lastLevel
  equal
