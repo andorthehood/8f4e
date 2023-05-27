@@ -78,6 +78,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			y: y - state.project.viewport.y,
 			isOpen: true,
 			isGroup: !!isGroup,
+			padLength: 2,
 		});
 		events.dispatch('saveState');
 	}
