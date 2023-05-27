@@ -34,7 +34,7 @@ describe('parseLine', () => {
 	const fixtures: [number, string, AST[number]][] = [
 		[
 			1,
-			'memory alpha 1',
+			'int alpha 1',
 			{
 				arguments: [
 					{
@@ -47,7 +47,7 @@ describe('parseLine', () => {
 						isInteger: true,
 					},
 				],
-				instruction: 'memory',
+				instruction: 'int',
 				lineNumber: 1,
 			},
 		],
@@ -75,7 +75,7 @@ describe('parseLine', () => {
 
 describe('isComment', () => {
 	const fixtures: [string, boolean][] = [
-		['# hello', true],
+		['; hello', true],
 		['hello', false],
 	];
 
