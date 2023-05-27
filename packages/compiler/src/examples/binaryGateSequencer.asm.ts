@@ -49,7 +49,7 @@ if void
  store
 end
 
-# Calculate output address
+; Calculate output address
 push &out1
 push bitPointer
 push 4

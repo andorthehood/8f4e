@@ -13,7 +13,7 @@ export interface Config {
 
 export default ({ resolution = 8 } = {}) => `module adc
 
-# memory
+; memory
 int default 0
 int* in &default
 
@@ -22,10 +22,10 @@ ${masks
 	.map((mask, index) => `int out:${index + 1} 0`)
 	.join('\n')}
 
-# locals
+; locals
 local int input
 
-# code
+; code
 push *in
 push ${resolution === 16 ? 1 : Math.floor(I16_SIGNED_LARGEST_NUMBER / (Math.pow(2, resolution) - 1))}
 div
