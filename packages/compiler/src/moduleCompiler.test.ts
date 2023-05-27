@@ -3,16 +3,16 @@ import { compile, compileToAST } from './compiler';
 const fixture = `
 module abs
 
-# memory
+; memory
 int DEFAULT_VALUE -1
 int* in:1 &DEFAULT_VALUE
 int out 0
 int[] arr 32 -1
 
-# registers
+; registers
 local int input
 
-# code
+; code
 push out
 push in:1
 load

@@ -51,13 +51,13 @@ push _bufferPointer
 push _input
 store
 
-# Increment the value of the the buffer pointer.
+; Increment the value of the the buffer pointer.
 push _bufferPointer
 push ${Int32Array.BYTES_PER_ELEMENT}
 add
 localSet _bufferPointer
 
-# Prevent the buffer pointer access out of bounds memory.
+; Prevent the buffer pointer access out of bounds memory.
 push _bufferPointer
  push &buffer
  push ${BUFFER_LENGTH * Int32Array.BYTES_PER_ELEMENT}

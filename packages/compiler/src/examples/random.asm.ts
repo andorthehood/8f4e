@@ -10,7 +10,7 @@ push out
 localSet random
 
 localGet random
-# The zero state is illegal because the counter would remain locked-up.
+; The zero state is illegal because the counter would remain locked-up.
 equalToZero
 if 
  push seed

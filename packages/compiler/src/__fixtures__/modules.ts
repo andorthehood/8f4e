@@ -4,15 +4,15 @@ export default [
 		code: `
             module abs
         
-            # memory
+            ; memory
             int DEFAULT_VALUE 0
             int* in &DEFAULT_VALUE
             int out 0
         
-            # locals
+            ; locals
             local int input
         
-            # code
+            ; code
             push &out
             push in
             localSet input
