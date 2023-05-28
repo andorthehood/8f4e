@@ -19,7 +19,8 @@ import {
 const keywords = new RegExp(
 	Object.keys(instructions)
 		.sort((a, b) => b.length - a.length)
-		.join('|'),
+		.join('|')
+		.replaceAll(/\*/g, '\\*'),
 	'd'
 );
 
