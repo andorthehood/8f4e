@@ -16,7 +16,12 @@ import {
 	getModuleId,
 } from '../helpers/codeParsers';
 
-const keywords = new RegExp(Object.keys(instructions).join('|'), 'd');
+const keywords = new RegExp(
+	Object.keys(instructions)
+		.sort((a, b) => b.length - a.length)
+		.join('|'),
+	'd'
+);
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onModuleClick = function ({ relativeX = 0, relativeY = 0, module }: EventObject) {
