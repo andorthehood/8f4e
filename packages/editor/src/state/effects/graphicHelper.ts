@@ -16,7 +16,7 @@ import {
 	getModuleId,
 } from '../helpers/codeParsers';
 
-const keywords = new RegExp(Object.keys(instructions).join('|'));
+const keywords = new RegExp(Object.keys(instructions).join('|'), 'd');
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onModuleClick = function ({ relativeX = 0, relativeY = 0, module }: EventObject) {
@@ -36,8 +36,6 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(graphicData.code);
 			const trimmedCode = [...graphicData.code.slice(0, length + 1)];
 
-			// graphicData.cursor.x = VGRID * (padLength + 2);
-
 			graphicData.codeWithLineNumbers = trimmedCode.map(
 				(line, index) => `${index}`.padStart(graphicData.padLength, '0') + ' ' + line
 			);
@@ -45,27 +43,26 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			graphicData.width = Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) * VGRID;
 
 			graphicData.codeColors = graphicData.codeWithLineNumbers.map(line => {
-				const keywordIndex = line.search(keywords);
+				const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
+				const { indices: instructionIndices } = keywords.exec(line) || {};
+				const { index: commentIndex } = /;/.exec(line) || {};
 
-				if (line.includes(';')) {
-					return [font('grey'), font('grey'), font('grey'), font('light_grey')];
+				const codeColors = new Array(line.length).fill(undefined);
+
+				if (typeof lineNumberIndex !== 'undefined') {
+					codeColors[lineNumberIndex] = font('grey');
 				}
 
-				return line.split('').map((char, index) => {
-					if (index === 0) {
-						return font('grey');
-					}
-					if (index === graphicData.padLength) {
-						return font('white');
-					}
-					if (index === keywordIndex) {
-						return font('purple');
-					}
-					if (char === ' ') {
-						return font('white');
-					}
-					return undefined;
-				});
+				if (typeof instructionIndices !== 'undefined') {
+					codeColors[instructionIndices[0][0]] = font('purple');
+					codeColors[instructionIndices[0][1]] = font('white');
+				}
+
+				if (typeof commentIndex !== 'undefined') {
+					codeColors[commentIndex] = font('light_grey');
+				}
+
+				return codeColors;
 			});
 
 			graphicData.gaps.clear();
