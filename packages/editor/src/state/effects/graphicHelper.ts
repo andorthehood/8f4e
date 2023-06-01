@@ -17,10 +17,14 @@ import {
 } from '../helpers/codeParsers';
 
 const keywords = new RegExp(
-	Object.keys(instructions)
-		.sort((a, b) => b.length - a.length)
-		.join('|')
-		.replaceAll(/\*/g, '\\*'),
+	'\\b(?:' +
+		Object.keys(instructions)
+			.sort((a, b) => b.length - a.length)
+			.join('|')
+			.replaceAll(/\*/g, '\\*')
+			.replaceAll(/\]/g, '\\]')
+			.replaceAll(/\[/g, '\\[') +
+		')\\b',
 	'd'
 );
 
