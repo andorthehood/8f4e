@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../../events';
 import { getModuleId } from '../../helpers/codeParsers';
-import { Module, State } from '../../types';
+import { Module, ModuleGraphicData, State } from '../../types';
 
 const nameList = [
 	'quark',
@@ -59,7 +59,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			code = (await navigator.clipboard.readText()).split('\n');
 		}
 
-		state.graphicHelper.modules.add({
+		const module: ModuleGraphicData = {
 			width: 0,
 			height: 0,
 			code,
@@ -79,16 +79,19 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			isOpen: true,
 			isGroup: !!isGroup,
 			padLength: 2,
-		});
+		};
+
+		state.graphicHelper.modules.add(module);
+		events.dispatch('moduleAdded', { module });
 		events.dispatch('saveState');
 	}
 
-	function onDeleteModule({ module }: { module: Module }): void {
+	function onDeleteModule({ module }: { module: ModuleGraphicData }): void {
 		state.graphicHelper.modules.delete(module);
 		events.dispatch('saveState');
 	}
 
-	function onCopyModule({ module }: { module: Module }): void {
+	function onCopyModule({ module }: { module: ModuleGraphicData }): void {
 		navigator.clipboard.writeText(module.code.join('\n'));
 	}
 
