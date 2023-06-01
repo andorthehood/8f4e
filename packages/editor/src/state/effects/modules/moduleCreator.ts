@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../../events';
 import { getModuleId } from '../../helpers/codeParsers';
-import { Module, ModuleGraphicData, State } from '../../types';
+import { ModuleGraphicData, State } from '../../types';
 
 const nameList = [
 	'quark',

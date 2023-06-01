@@ -31,7 +31,7 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 		);
 	}
 
-	for (const [, { x, y, width, height, id }] of module.inputs) {
+	for (const [, { x, y, width, height }] of module.inputs) {
 		engine.setSpriteLookup(fillColor);
 		engine.drawRectangle(x, y, width, height, 'rgb(153,153,153)');
 	}
