@@ -1,6 +1,7 @@
 import { instructions } from '@8f4e/compiler';
-import { ModuleGraphicData } from '../types';
 import { font } from '@8f4e/sprite-generator';
+
+import { ModuleGraphicData } from '../types';
 
 export function moveCaret(
 	code: string[],
@@ -135,7 +136,6 @@ export function reverseGapCalculator(physicalRow, gaps: ModuleGraphicData['gaps'
 	// TODO implement
 	return physicalRow;
 }
-
 
 const keywords = new RegExp(
 	'\\b(?:' +

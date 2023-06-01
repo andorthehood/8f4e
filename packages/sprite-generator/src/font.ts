@@ -1,9 +1,6 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 
 import thickFont from './fonts/font';
-import thickIcons from './fonts/icons';
-import wideIcons from './fonts/wideIcons';
-import mosaic from './fonts/mosaic';
 import { Command, DrawingCommand } from './types';
 
 const offsetX = 0;

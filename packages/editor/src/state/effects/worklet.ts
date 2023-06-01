@@ -1,5 +1,4 @@
 import workletBlobUrl from 'worklet:../../../../audio-worklet/dist/index.js';
-import compile from '@8f4e/compiler';
 
 import { State } from '../types';
 import { EventDispatcher } from '../../events';

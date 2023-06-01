@@ -1,5 +1,5 @@
 import { WORD_LENGTH } from './consts';
-import { BlockStack, CompiledModule, MemoryMap, Namespace, StackItem } from './types';
+import { BlockStack, CompiledModule, MemoryMap, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return memoryMap.has(name);

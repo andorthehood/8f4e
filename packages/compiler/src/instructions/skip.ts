@@ -2,7 +2,7 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
 import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
 import { WORD_LENGTH } from '../consts';
-import { block, br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
+import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
 import Type from '../wasmUtils/type';
 import { ErrorCode, getError } from '../errors';
 
