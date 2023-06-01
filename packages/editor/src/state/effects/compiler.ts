@@ -76,7 +76,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 
 	worker.addEventListener('message', onWorkerMessage);
 	events.on('createConnection', onRecompile);
-	events.on('addModule', onRecompile);
+	events.on('moduleAdded', onRecompile);
 	events.on('deleteModule', onRecompile);
 	events.on('init', onRecompile);
 	events.on('codeChange', onRecompile);
