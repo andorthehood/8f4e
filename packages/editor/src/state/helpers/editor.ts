@@ -1,4 +1,6 @@
+import { instructions } from '@8f4e/compiler';
 import { ModuleGraphicData } from '../types';
+import { font } from '@8f4e/sprite-generator';
 
 export function moveCaret(
 	code: string[],
@@ -132,4 +134,47 @@ export function gapCalculator(row: number, gaps: ModuleGraphicData['gaps']) {
 export function reverseGapCalculator(physicalRow, gaps: ModuleGraphicData['gaps']) {
 	// TODO implement
 	return physicalRow;
+}
+
+
+const keywords = new RegExp(
+	'\\b(?:' +
+		Object.keys(instructions)
+			.sort((a, b) => b.length - a.length)
+			.join('|')
+			.replaceAll(/\*/g, '\\*')
+			.replaceAll(/\]/g, '\\]')
+			.replaceAll(/\[/g, '\\[') +
+		')\\b',
+	'd'
+);
+
+export function generateCodeColorMap(code: string[]) {
+	return code.map(line => {
+		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
+		const { indices: instructionIndices } = keywords.exec(line) || {};
+		const { index: numberIndex } = /(?!^)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
+		const { index: commentIndex } = /;/.exec(line) || {};
+
+		const codeColors = new Array(line.length).fill(undefined);
+
+		if (typeof lineNumberIndex !== 'undefined') {
+			codeColors[lineNumberIndex] = font('grey');
+		}
+
+		if (typeof instructionIndices !== 'undefined') {
+			codeColors[instructionIndices[0][0]] = font('purple');
+			codeColors[instructionIndices[0][1]] = font('white');
+		}
+
+		if (typeof commentIndex !== 'undefined') {
+			codeColors[commentIndex] = font('light_grey');
+		}
+
+		if (typeof numberIndex !== 'undefined') {
+			codeColors[numberIndex] = font('lime');
+		}
+
+		return codeColors;
+	});
 }
