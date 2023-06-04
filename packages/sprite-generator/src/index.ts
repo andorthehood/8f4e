@@ -4,7 +4,7 @@ import generateFeedbackScale from './feedbackScale';
 import generateScope from './scope';
 import generatePianoKeyboard2 from './pianoKeyboard';
 import generateBackground from './background';
-import { Command } from './types';
+import { Command, Config } from './types';
 
 export { lookup as feedbackScale } from './feedbackScale';
 export { lookup as fillColor } from './fillColors';
@@ -17,7 +17,9 @@ export { Icon } from './fonts/icons';
 export { Mosaic } from './fonts/mosaic';
 export { WideIcon } from './fonts/wideIcons';
 
-export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasElement> {
+export { ColorScheme } from './types';
+
+export default function generateSprite(config: Config): Promise<OffscreenCanvas | HTMLCanvasElement> {
 	let canvas;
 
 	if (window.OffscreenCanvas) {
@@ -33,10 +35,10 @@ export default function generateSprite(): Promise<OffscreenCanvas | HTMLCanvasEl
 	const commands = [
 		...generateScope(),
 		...generateFillColors(),
-		...generateFeedbackScale(),
-		...generateFont(),
+		...generateFeedbackScale(config.colorScheme.icons.feedbackScale),
+		...generateFont(config.colorScheme.text),
 		...generatePianoKeyboard2(),
-		...generateBackground(),
+		...generateBackground(config.colorScheme.fill),
 	];
 
 	commands.forEach(([command, ...params]) => {
