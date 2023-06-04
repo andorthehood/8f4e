@@ -1,7 +1,9 @@
-import generateSprite, { font, background } from '@8f4e/sprite-generator';
+import generateSprite, { font, background, fillColor } from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
 import { drawConnections, drawContextMenu, drawModules } from './drawers';
+import { HGRID, VGRID } from './drawers/consts';
+import colorSchemes from './colorSchemes';
 
 import { State } from '../state/types';
 
@@ -9,7 +11,9 @@ export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
 ): Promise<{ resize: (width: number, height: number) => void }> {
-	const sprite = await generateSprite();
+	const sprite = await generateSprite({
+		colorScheme: colorSchemes[state.options.colorScheme] || colorSchemes['default'],
+	});
 
 	const engine = new Engine(canvas);
 
@@ -26,17 +30,33 @@ export default async function init(
 		engine.drawSprite(32 * 16 * 2, 32 * 16, 0);
 		engine.drawSprite(32 * 16 * 3, 32 * 16, 0);
 
-		// if (state.ui.isDebugMode) {
-		// 	engine.drawSpriteFromCoordinates(10, 10, 512, 512, 0, 0, 512, 512);
-		// }
-
 		drawModules(engine, state);
 		drawConnections(engine, state);
 		drawContextMenu(engine, state);
 
-		engine.setSpriteLookup(font('white'));
+		engine.startGroup(0, state.graphicHelper.viewport.roundedHeight - HGRID);
+
+		let statusText = ' ';
+
+		if (state.selectedModule) {
+			statusText += '< module: ' + state.selectedModule.id + ' >';
+		}
+
+		1000 / 120;
+
+		statusText += ' sample rate: ' + state.project.sampleRate;
+		statusText += ' vertex buffer: ' + Math.round((vertices / maxVertices) * 100) + '%';
+		statusText += ' graphic load: ' + (parseInt(timeToRender, 10) / (1000 / 120)) * 100 + '%';
+
+		engine.setSpriteLookup(fillColor);
+		engine.drawSprite(0, 0, 'rgb(0,0,0)', statusText.length * VGRID, HGRID);
+		engine.setSpriteLookup(font('code'));
+		engine.drawText(0, 0, statusText);
+
+		engine.endGroup();
 
 		if (state.options.isDebugMode) {
+			engine.setSpriteLookup(font('code'));
 			engine.startGroup(10, state.project.viewport.height - 50);
 			engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
 			engine.drawText(0, 15, 'fps ' + fps + '  vertex buffer ' + vertices + '/' + maxVertices);
@@ -51,12 +71,6 @@ export default async function init(
 					state.compiler.timerAccuracy +
 					' % '
 			);
-			engine.endGroup();
-		}
-
-		if (state.error.display) {
-			engine.startGroup(5, 5);
-			engine.drawText(0, 0, 'Error: ' + state.error.message);
 			engine.endGroup();
 		}
 	});

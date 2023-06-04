@@ -72,6 +72,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			graphicData.codeColors.splice(row + 1, 0, ...new Array(gap.size).fill([]));
 		});
 
+		graphicData.codeToRender = graphicData.codeWithLineNumbers.map(line =>
+			line.split('').map(char => char.charCodeAt(0))
+		);
+
 		graphicData.errorMessages.clear();
 		state.compiler.buildErrors.forEach(buildError => {
 			if (buildError.moduleId !== graphicData.id) {

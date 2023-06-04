@@ -153,26 +153,26 @@ export function generateCodeColorMap(code: string[]) {
 	return code.map(line => {
 		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
 		const { indices: instructionIndices } = keywords.exec(line) || {};
-		const { index: numberIndex } = /(?!^)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
+		const { index: numberIndex } = /(?!^)(?:-|)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: commentIndex } = /;/.exec(line) || {};
 
 		const codeColors = new Array(line.length).fill(undefined);
 
 		if (typeof lineNumberIndex !== 'undefined') {
-			codeColors[lineNumberIndex] = font('grey');
+			codeColors[lineNumberIndex] = font('lineNumber');
 		}
 
 		if (typeof instructionIndices !== 'undefined') {
-			codeColors[instructionIndices[0][0]] = font('purple');
-			codeColors[instructionIndices[0][1]] = font('white');
+			codeColors[instructionIndices[0][0]] = font('instruction');
+			codeColors[instructionIndices[0][1]] = font('code');
 		}
 
 		if (typeof commentIndex !== 'undefined') {
-			codeColors[commentIndex] = font('light_grey');
+			codeColors[commentIndex] = font('codeComment');
 		}
 
 		if (typeof numberIndex !== 'undefined') {
-			codeColors[numberIndex] = font('lime');
+			codeColors[numberIndex] = font('numbers');
 		}
 
 		return codeColors;
