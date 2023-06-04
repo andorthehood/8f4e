@@ -7,6 +7,8 @@ import { ErrorCode, getError } from './errors';
 
 export { MemoryTypes, MemoryMap } from './types';
 
+export const instructionParser = /^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
+
 export function parseArgument(argument: string): Argument {
 	switch (true) {
 		case /^-?[0-9.]+$/.test(argument):
@@ -21,8 +23,7 @@ export function parseArgument(argument: string): Argument {
 }
 
 export function parseLine(line: string, lineNumber: number): AST[number] {
-	const [, instruction, ...args] = (line.match(/^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/) ||
-		[]) as [never, Instruction, string, string];
+	const [, instruction, ...args] = (line.match(instructionParser) || []) as [never, Instruction, string, string];
 
 	return {
 		lineNumber,
@@ -40,7 +41,7 @@ export function isComment(line: string): boolean {
 }
 
 export function isValidInstruction(line: string): boolean {
-	return /^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/.test(line);
+	return instructionParser.test(line);
 }
 
 export function compileToAST(module: string[]) {

@@ -1,7 +1,8 @@
 import { Engine } from '@8f4e/2d-engine';
-import { feedbackScale, fillColor } from '@8f4e/sprite-generator';
+import { feedbackScale, font } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData, State } from '../../../state/types';
+import { HGRID, VGRID } from '../consts';
 
 export default function drawConnectors(engine: Engine, state: State, module: ModuleGraphicData): void {
 	for (const [, output] of module.outputs) {
@@ -23,16 +24,19 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 
 		engine.setSpriteLookup(feedbackScale);
 		engine.drawSprite(
-			x,
+			x + VGRID,
 			y,
 			(value - output.calibratedMin) / (output.calibratedMax + Math.abs(output.calibratedMin)),
-			width,
-			height
+			VGRID,
+			HGRID
 		);
+
+		engine.setSpriteLookup(font('code'));
+		engine.drawText(x, y, '[ ]');
 	}
 
-	for (const [, { x, y, width, height }] of module.inputs) {
-		engine.setSpriteLookup(fillColor);
-		engine.drawRectangle(x, y, width, height, 'rgb(153,153,153)');
+	for (const [, { x, y }] of module.inputs) {
+		engine.setSpriteLookup(font('code'));
+		engine.drawText(x, y, '[ ]');
 	}
 }
