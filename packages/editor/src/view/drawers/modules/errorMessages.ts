@@ -9,7 +9,7 @@ export default function drawErrorMessages(engine: Engine, state: State, module: 
 		engine.setSpriteLookup(fillColor);
 		engine.drawSprite(x, y, 'rgb(51,0,0)', module.width, message.length * HGRID);
 
-		engine.setSpriteLookup(font('white'));
+		engine.setSpriteLookup(font('code'));
 		for (let i = 0; i < message.length; i++) {
 			engine.drawText(x, y + i * HGRID, ' ' + message[i]);
 		}

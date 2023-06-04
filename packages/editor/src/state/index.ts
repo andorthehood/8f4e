@@ -1,6 +1,5 @@
 import compiler from './effects/compiler';
 import contextMenu from './effects/menu/contextMenu';
-import error from './effects/error';
 import loader from './effects/loader';
 import midi from './effects/midi';
 import moduleCreator from './effects/modules/moduleCreator';
@@ -39,17 +38,20 @@ const defaultState: State = {
 		inputs: [],
 		outputs: [],
 	},
-	error: {
-		display: false,
-		message: '',
-	},
 	isConnectionBeingMade: false,
 	connectionPointA: undefined,
 	connectionPointB: undefined,
 	contextMenu: undefined,
 	connectionFromModule: undefined,
 	connectionFromConnector: undefined,
-	graphicHelper: { modules: new Set(), outputsByWordAddress: new Map() },
+	graphicHelper: {
+		modules: new Set(),
+		outputsByWordAddress: new Map(),
+		viewport: {
+			roundedHeight: 0,
+			roundedWidth: 0,
+		},
+	},
 	selectedModule: undefined,
 	project: {
 		modules: [],
@@ -67,6 +69,7 @@ const defaultState: State = {
 		isLocalStorageEnabled: true,
 		isDebugMode: process.env.NODE_ENV === 'development',
 		localStorageId: 'default',
+		colorScheme: 'vector',
 	},
 };
 
@@ -81,7 +84,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	contextMenu(state, events);
 	moduleMenu(state, events);
 	moduleCreator(state, events);
-	error(state, events);
 	compiler(state, events);
 	graphicHelper(state, events);
 	save(state, events);

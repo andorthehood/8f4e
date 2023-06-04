@@ -1,7 +1,7 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 
 import thickFont from './fonts/font';
-import { Command, DrawingCommand } from './types';
+import { Command, Config, DrawingCommand } from './types';
 
 const offsetX = 0;
 const offsetY = 0;
@@ -9,6 +9,22 @@ const offsetY = 0;
 const CHARACTER_COUNT = 128;
 const CHARACTER_WIDTH = 8;
 const CHARACTER_HEIGHT = 16;
+
+const colorNames: Array<keyof Config['colorScheme']['text']> = [
+	'lineNumber',
+	'instruction',
+	'codeComment',
+	'code',
+	'numbers',
+	'menuItemText',
+	'menuItemTextHighlighted',
+];
+
+const fontPositions = Object.fromEntries(
+	colorNames.map((color, i) => {
+		return [color, offsetY + CHARACTER_HEIGHT * i];
+	})
+);
 
 function forEachBit(
 	byte: number,
@@ -23,12 +39,12 @@ function forEachBit(
 
 export function drawCharacter(
 	font: number[],
-	charCode: number,
+	charCode: number | string,
 	characterWidth: number,
 	characterHeight: number
 ): DrawingCommand[] {
 	const commands: DrawingCommand[] = [];
-	const char = charCode;
+	const char = typeof charCode === 'string' ? charCode.charCodeAt(0) : charCode;
 	for (let i = 0; i < characterHeight; i++) {
 		forEachBit(font[char * characterHeight + i], characterWidth, function (bit, nthBit) {
 			bit && commands.push([Command.PIXEL, nthBit, i]);
@@ -68,70 +84,26 @@ function generateFont(x = 0, y = 0, font: number[], characterWidth: number, char
 	return commands;
 }
 
-export default function generateFonts(): DrawingCommand[] {
+export default function generateFonts(colors: Config['colorScheme']['text']): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
-		[Command.FILL_COLOR, 'rgba(255,255,255,255)'],
-		...generateFont(offsetX, offsetY, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
-		[Command.FILL_COLOR, 'rgba(0,0,0,255)'],
-		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
-		[Command.FILL_COLOR, 'rgba(51,51,51,255)'],
-		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 2, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
-		[Command.FILL_COLOR, 'rgba(102,102,102,255)'],
-		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 3, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
-		[Command.FILL_COLOR, 'rgba(136,126,203,255)'],
-		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 4, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
-		[Command.FILL_COLOR, 'rgba(201,212,135,255)'],
-		...generateFont(offsetX, offsetY + CHARACTER_HEIGHT * 5, thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
+		...colorNames.flatMap<DrawingCommand>(color => {
+			return [
+				[Command.FILL_COLOR, colors[color]],
+				...generateFont(offsetX, fontPositions[color], thickFont, CHARACTER_WIDTH, CHARACTER_HEIGHT),
+			];
+		}),
 	];
 }
 
-export const lookup = function (font: 'white' | 'black' | 'grey' | 'light_grey' | 'purple' | 'lime'): SpriteLookup {
-	return function (letter: string) {
-		const code = letter.charCodeAt(0);
-		switch (font) {
-			case 'white':
-				return {
-					x: code * CHARACTER_WIDTH + offsetX,
-					y: offsetY,
-					spriteHeight: CHARACTER_HEIGHT,
-					spriteWidth: CHARACTER_WIDTH,
-				};
-			case 'black':
-				return {
-					x: code * CHARACTER_WIDTH + offsetX,
-					y: offsetY + CHARACTER_HEIGHT,
-					spriteHeight: CHARACTER_HEIGHT,
-					spriteWidth: CHARACTER_WIDTH,
-				};
-			case 'grey':
-				return {
-					x: code * CHARACTER_WIDTH + offsetX,
-					y: offsetY + CHARACTER_HEIGHT * 2,
-					spriteHeight: CHARACTER_HEIGHT,
-					spriteWidth: CHARACTER_WIDTH,
-				};
-			case 'light_grey':
-				return {
-					x: code * CHARACTER_WIDTH + offsetX,
-					y: offsetY + CHARACTER_HEIGHT * 3,
-					spriteHeight: CHARACTER_HEIGHT,
-					spriteWidth: CHARACTER_WIDTH,
-				};
-			case 'purple':
-				return {
-					x: code * CHARACTER_WIDTH + offsetX,
-					y: offsetY + CHARACTER_HEIGHT * 4,
-					spriteHeight: CHARACTER_HEIGHT,
-					spriteWidth: CHARACTER_WIDTH,
-				};
-			case 'lime':
-				return {
-					x: code * CHARACTER_WIDTH + offsetX,
-					y: offsetY + CHARACTER_HEIGHT * 5,
-					spriteHeight: CHARACTER_HEIGHT,
-					spriteWidth: CHARACTER_WIDTH,
-				};
-		}
+export const lookup = function (font: keyof Config['colorScheme']['text']): SpriteLookup {
+	return function (letter: string | number) {
+		const code = typeof letter === 'string' ? letter.charCodeAt(0) : letter;
+		return {
+			x: code * CHARACTER_WIDTH + offsetX,
+			y: fontPositions[font],
+			spriteHeight: CHARACTER_HEIGHT,
+			spriteWidth: CHARACTER_WIDTH,
+		};
 	};
 };

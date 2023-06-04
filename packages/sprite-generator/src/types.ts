@@ -16,3 +16,32 @@ export type DrawingCommand =
 	| [command: Command.SAVE]
 	| [command: Command.RESTORE]
 	| [command: Command.RESET_TRANSFORM];
+
+export interface ColorScheme {
+	text: {
+		lineNumber: string;
+		instruction: string;
+		codeComment: string;
+		code: string;
+		numbers: string;
+		menuItemText: string;
+		menuItemTextHighlighted: string;
+	};
+	fill: {
+		menuItemBackground: string;
+		menuItemBackgroundHighlighted: string;
+		background: string;
+		backgroundDots: string;
+		moduleBackground: string;
+		wire: string;
+	};
+	icons: {
+		inputConnector: string;
+		outputConnector: string;
+		feedbackScale: string[];
+	};
+}
+
+export interface Config {
+	colorScheme: ColorScheme;
+}
