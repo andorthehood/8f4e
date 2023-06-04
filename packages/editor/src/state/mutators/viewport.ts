@@ -4,6 +4,8 @@ import { State } from '../types';
 export function resize(state: State, width: number, height: number): void {
 	state.project.viewport.width = width;
 	state.project.viewport.height = height;
+	state.graphicHelper.viewport.roundedWidth = Math.floor(width / VGRID) * VGRID;
+	state.graphicHelper.viewport.roundedHeight = Math.floor(height / HGRID) * HGRID;
 }
 
 export function move(state: State, movementX: number, movementY: number): void {
