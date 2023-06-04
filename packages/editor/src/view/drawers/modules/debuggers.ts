@@ -15,7 +15,7 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 			? state.compiler.memoryBuffer[memory.wordAddress].toString()
 			: state.compiler.memoryBufferFloat[memory.wordAddress].toFixed(4);
 
-		engine.setSpriteLookup(font('lime'));
+		engine.setSpriteLookup(font('numbers'));
 		engine.drawText(x, y, '[' + value + ']');
 	}
 }

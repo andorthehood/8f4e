@@ -31,7 +31,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.setSpriteLookup(fillColor);
 			engine.drawSprite(0, 0, 'rgb(0,0,0)', module.width, module.height);
 
-			engine.setSpriteLookup(font('white'));
+			engine.setSpriteLookup(font('code'));
 
 			const corner = module.isOpen ? '-' : '+';
 
@@ -40,11 +40,16 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.drawText(0, module.height - HGRID, corner);
 			engine.drawText(module.width - VGRID, module.height - HGRID, corner);
 
-			engine.setSpriteLookup(font('white'));
+			engine.setSpriteLookup(font('code'));
 
-			engine.setSpriteLookup(font('white'));
-			for (let i = 0; i < module.codeWithLineNumbers.length; i++) {
-				engine.drawText(VGRID, HGRID * i, module.codeWithLineNumbers[i], module.codeColors[i]);
+			for (let i = 0; i < module.codeToRender.length; i++) {
+				for (let j = 0; j < module.codeToRender[i].length; j++) {
+					const lookup = module.codeColors[i][j];
+					if (lookup) {
+						engine.setSpriteLookup(lookup);
+					}
+					engine.drawSprite(VGRID * (j + 1), HGRID * i, module.codeToRender[i][j]);
+				}
 			}
 
 			if (state.selectedModule === module) {

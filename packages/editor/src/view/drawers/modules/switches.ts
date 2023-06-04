@@ -14,7 +14,7 @@ export default function drawSwitches(engine: Engine, state: State, module: Modul
 		const { wordAddress } = memory;
 		const value = state.compiler.memoryBuffer[wordAddress] || 0;
 
-		engine.setSpriteLookup(font('lime'));
+		engine.setSpriteLookup(font('numbers'));
 
 		if (value === onValue) {
 			engine.drawText(x, y, '[_#]');

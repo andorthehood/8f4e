@@ -64,11 +64,6 @@ export interface Compiler {
 	compilerOptions: CompileOptions;
 }
 
-export interface Error {
-	display: boolean;
-	message: string;
-}
-
 export interface Midi {
 	outputs: MIDIOutput[];
 	inputs: MIDIInput[];
@@ -130,6 +125,7 @@ export interface ModuleGraphicData {
 	code: string[];
 	padLength: number;
 	codeWithLineNumbers: string[];
+	codeToRender: number[][];
 	codeColors: Array<Array<SpriteLookup | undefined>>;
 	gaps: Map<number, { size: number }>;
 	cursor: { col: number; row: number; x: number; y: number };
@@ -154,6 +150,10 @@ export interface ModuleGraphicData {
 export type GraphicHelper = {
 	outputsByWordAddress: Map<number, Output>;
 	modules: Set<ModuleGraphicData>;
+	viewport: {
+		roundedWidth: number;
+		roundedHeight: number;
+	};
 };
 
 export interface Group {
@@ -174,6 +174,7 @@ export interface Options {
 	isLocalStorageEnabled: boolean;
 	isDebugMode: boolean;
 	localStorageId: string;
+	colorScheme: string;
 }
 
 export interface State {
@@ -183,7 +184,6 @@ export interface State {
 	connectionPointA: [number, number] | undefined;
 	connectionPointB: [number, number] | undefined;
 	contextMenu: ContextMenu | undefined;
-	error: Error;
 	isConnectionBeingMade: boolean;
 	midi: Midi;
 	selectedModule: ModuleGraphicData | undefined;
