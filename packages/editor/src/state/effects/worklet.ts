@@ -21,6 +21,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		};
 
 		audioWorklet.port.postMessage({
+			type: 'recompile',
 			memoryRef: state.compiler.memoryRef,
 			codeBuffer: state.compiler.codeBuffer,
 			addresses,
@@ -38,6 +39,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 			outputChannelCount: [2],
 			numberOfOutputs: 1,
 		});
+
 		audioWorklet.port.onmessage = function ({ data }) {
 			switch (data.type) {
 				case 'compilationDone':
@@ -46,6 +48,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 				case 'audioWorkletReady':
 					onRecompile();
 					events.dispatch('audioWorkletReady', data.payload);
+					break;
 			}
 		};
 		audioWorklet.connect(audioContext.destination);
