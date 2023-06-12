@@ -48,7 +48,9 @@ export default function drawModules(engine: Engine, state: State): void {
 					if (lookup) {
 						engine.setSpriteLookup(lookup);
 					}
-					engine.drawSprite(VGRID * (j + 1), HGRID * i, module.codeToRender[i][j]);
+					if (module.codeToRender[i][j] !== 32) {
+						engine.drawSprite(VGRID * (j + 1), HGRID * i, module.codeToRender[i][j]);
+					}
 				}
 			}
 
