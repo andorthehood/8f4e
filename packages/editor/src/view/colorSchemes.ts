@@ -15,7 +15,7 @@ const colorSchemes: Record<string, ColorScheme> = {
 			menuItemBackground: 'rgba(0,0,0,255)',
 			menuItemBackgroundHighlighted: 'rgba(255,255,255,255)',
 			background: '#000000',
-			backgroundDots: '#999999',
+			backgroundDots: '#444444',
 			moduleBackground: '#000000',
 			wire: '',
 		},
