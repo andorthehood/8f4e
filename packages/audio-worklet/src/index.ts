@@ -12,7 +12,9 @@ class Main extends AudioWorkletProcessor {
 		});
 
 		this.port.onmessage = async event => {
-			this.recompile(event.data.memoryRef, event.data.codeBuffer, event.data.addresses);
+			if (event.data.type === 'recompile') {
+				this.recompile(event.data.memoryRef, event.data.codeBuffer, event.data.addresses);
+			}
 		};
 	}
 
