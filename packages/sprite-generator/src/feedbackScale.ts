@@ -9,6 +9,7 @@ const offsetY = 130;
 
 export default function generate(colors: ColorScheme['icons']): DrawingCommand[] {
 	return [
+		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
 
 		...colors.feedbackScale.flatMap<DrawingCommand>(color => {

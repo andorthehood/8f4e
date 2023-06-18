@@ -29,7 +29,7 @@ export default function drawConnections(engine: Engine, state: State): void {
 				module.y + y + HGRID / 2,
 				output.module.x + output.x + VGRID,
 				output.module.y + output.y + VGRID,
-				'rgb(153,153,153)',
+				'wire',
 				1
 			);
 		}

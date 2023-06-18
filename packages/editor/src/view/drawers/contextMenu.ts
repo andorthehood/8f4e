@@ -19,12 +19,12 @@ export default function drawContextMenu(engine: Engine, state: State): void {
 		engine.startGroup(0, i * itemHeight);
 		if (i === highlightedItem) {
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'rgb(255,255,255)', itemWidth, itemHeight);
+			engine.drawSprite(0, 0, 'menuItemBackgroundHighlighted', itemWidth, itemHeight);
 			engine.setSpriteLookup(font('menuItemTextHighlighted'));
 			engine.drawText(6, 3, items[i].title);
 		} else {
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'rgb(0,0,0)', itemWidth, itemHeight);
+			engine.drawSprite(0, 0, 'menuItemBackground', itemWidth, itemHeight);
 			engine.setSpriteLookup(font('menuItemText'));
 			engine.drawText(6, 3, items[i].title);
 		}

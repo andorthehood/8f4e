@@ -109,7 +109,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			const out: Output = {
 				width: VGRID * 2,
 				height: HGRID,
-				x: graphicData.width - 2 * VGRID,
+				x: graphicData.width - 3 * VGRID,
 				y: gapCalculator(output.lineNumber, graphicData.gaps) * HGRID,
 				id: output.id,
 				module: graphicData,
@@ -128,7 +128,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			graphicData.inputs.set(input.id, {
 				width: VGRID * 2,
 				height: HGRID,
-				x: VGRID,
+				x: 0,
 				y: gapCalculator(input.lineNumber, graphicData.gaps) * HGRID,
 				id: input.id,
 				wordAddress,

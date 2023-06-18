@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import { font } from '@8f4e/sprite-generator';
+import { Icon, font, icons } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData, State } from '../../../state/types';
 
@@ -14,13 +14,14 @@ export default function drawSwitches(engine: Engine, state: State, module: Modul
 		const { wordAddress } = memory;
 		const value = state.compiler.memoryBuffer[wordAddress] || 0;
 
-		engine.setSpriteLookup(font('numbers'));
-
 		if (value === onValue) {
-			engine.drawText(x, y, '[_#]');
+			engine.setSpriteLookup(icons);
+			engine.drawSprite(x, y, Icon.SWITCH_ON);
 		} else if (value === offValue) {
-			engine.drawText(x, y, '[#_]');
+			engine.setSpriteLookup(icons);
+			engine.drawSprite(x, y, Icon.SWITCH_OFF);
 		} else {
+			engine.setSpriteLookup(font('numbers'));
 			engine.drawText(x, y, '[__]');
 		}
 	}

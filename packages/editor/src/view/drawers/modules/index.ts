@@ -29,11 +29,11 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.startGroup(module.x, module.y);
 
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'rgb(0,0,0)', module.width, module.height);
+			engine.drawSprite(0, 0, 'moduleBackground', module.width, module.height);
 
 			engine.setSpriteLookup(font('code'));
 
-			const corner = module.isOpen ? '-' : '+';
+			const corner = module.isOpen ? '+' : '+';
 
 			engine.drawText(0, 0, corner);
 			engine.drawText(module.width - VGRID, 0, corner);
