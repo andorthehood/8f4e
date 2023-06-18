@@ -36,7 +36,6 @@ export interface ContextMenuItem {
 
 export interface ContextMenu extends Position {
 	highlightedItem: number;
-	itemHeight: number;
 	itemWidth: number;
 	items: ContextMenuItem[];
 	open: boolean;
@@ -154,6 +153,7 @@ export type GraphicHelper = {
 		roundedWidth: number;
 		roundedHeight: number;
 	};
+	contextMenu: ContextMenu;
 };
 
 export interface Group {
@@ -183,7 +183,6 @@ export interface State {
 	connectionFromModule: Module | undefined;
 	connectionPointA: [number, number] | undefined;
 	connectionPointB: [number, number] | undefined;
-	contextMenu: ContextMenu | undefined;
 	isConnectionBeingMade: boolean;
 	midi: Midi;
 	selectedModule: ModuleGraphicData | undefined;

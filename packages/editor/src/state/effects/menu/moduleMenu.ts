@@ -5,12 +5,12 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 	const onModuleMenu = event => {
 		const { y } = event;
 
-		state.contextMenu.highlightedItem = 0;
-		state.contextMenu.y = y;
-		state.contextMenu.open = true;
+		state.graphicHelper.contextMenu.highlightedItem = 0;
+		state.graphicHelper.contextMenu.y = y;
+		state.graphicHelper.contextMenu.open = true;
 
 		if (event.category) {
-			state.contextMenu.items = [
+			state.graphicHelper.contextMenu.items = [
 				{
 					title: 'Back',
 					action: 'openModuleMenu',
@@ -19,7 +19,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 				},
 			];
 		} else {
-			state.contextMenu.items = [
+			state.graphicHelper.contextMenu.items = [
 				{
 					title: 'Back',
 					action: 'contextmenu',
