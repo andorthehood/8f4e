@@ -41,7 +41,6 @@ const defaultState: State = {
 	isConnectionBeingMade: false,
 	connectionPointA: undefined,
 	connectionPointB: undefined,
-	contextMenu: undefined,
 	connectionFromModule: undefined,
 	connectionFromConnector: undefined,
 	graphicHelper: {
@@ -50,6 +49,14 @@ const defaultState: State = {
 		viewport: {
 			roundedHeight: 0,
 			roundedWidth: 0,
+		},
+		contextMenu: {
+			highlightedItem: 0,
+			itemWidth: 200,
+			items: [],
+			open: false,
+			x: 0,
+			y: 0,
 		},
 	},
 	selectedModule: undefined,

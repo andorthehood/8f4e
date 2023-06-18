@@ -1,39 +1,30 @@
 import { EventDispatcher } from '../../../events';
+import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 import { State } from '../../types';
 
-function getHighlightedMenuItem(x, y, itemHeight, width) {
+function getHighlightedMenuItem(x, y, width) {
 	if (x < 0 || x > width || y < 0) {
 		return Infinity;
 	}
-	return Math.floor(y / itemHeight);
+	return Math.floor(y / HGRID);
 }
 
 export default function contextMenu(state: State, events: EventDispatcher): () => void {
-	state.contextMenu = {
-		highlightedItem: 0,
-		itemHeight: 20,
-		itemWidth: 200,
-		items: [],
-		open: false,
-		x: 0,
-		y: 0,
-	};
-
 	const onMouseMove = event => {
-		const { itemHeight, itemWidth, x, y } = state.contextMenu;
-		state.contextMenu.highlightedItem = getHighlightedMenuItem(event.x - x, event.y - y, itemHeight, itemWidth);
+		const { itemWidth, x, y } = state.graphicHelper.contextMenu;
+		state.graphicHelper.contextMenu.highlightedItem = getHighlightedMenuItem(event.x - x, event.y - y, itemWidth);
 		event.stopPropagation = true;
 	};
 
 	const close = () => {
 		events.off('mousedown', onMouseDown);
 		events.off('mousemove', onMouseMove);
-		state.contextMenu.open = false;
+		state.graphicHelper.contextMenu.open = false;
 	};
 
 	const onMouseDown = event => {
-		const { highlightedItem, items } = state.contextMenu;
+		const { highlightedItem, items } = state.graphicHelper.contextMenu;
 
 		if (items[highlightedItem]) {
 			events.dispatch(items[highlightedItem].action, {
@@ -55,21 +46,21 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 	const onContextMenu = event => {
 		const { x, y } = event;
 
-		state.contextMenu.highlightedItem = 0;
-		state.contextMenu.x = x;
-		state.contextMenu.y = y;
-		state.contextMenu.open = true;
+		state.graphicHelper.contextMenu.highlightedItem = 0;
+		state.graphicHelper.contextMenu.x = Math.round(x / VGRID) * VGRID;
+		state.graphicHelper.contextMenu.y = Math.round(y / HGRID) * HGRID;
+		state.graphicHelper.contextMenu.open = true;
 
 		const module = findModuleAtViewportCoordinates(state.graphicHelper, state.project.viewport, x, y);
 
 		if (module) {
-			state.contextMenu.items = [
+			state.graphicHelper.contextMenu.items = [
 				// TODO module id mapper
 				{ title: 'Delete module', action: 'deleteModule', payload: { module }, close: true },
 				{ title: 'Copy module', action: 'copyModule', payload: { module }, close: true },
 			];
 		} else {
-			state.contextMenu.items = [
+			state.graphicHelper.contextMenu.items = [
 				{
 					title: 'New Module',
 					action: 'addModule',

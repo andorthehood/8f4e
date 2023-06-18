@@ -1,14 +1,12 @@
 import { Engine } from '@8f4e/2d-engine';
 import { fillColor, font } from '@8f4e/sprite-generator';
 
+import { HGRID, VGRID } from './consts';
+
 import { State } from '../../state/types';
 
 export default function drawContextMenu(engine: Engine, state: State): void {
-	if (!state.contextMenu) {
-		return;
-	}
-
-	const { open, items, x, y, highlightedItem, itemHeight, itemWidth } = state.contextMenu;
+	const { open, items, x, y, highlightedItem, itemWidth } = state.graphicHelper.contextMenu;
 
 	if (!open) {
 		return;
@@ -16,17 +14,17 @@ export default function drawContextMenu(engine: Engine, state: State): void {
 
 	engine.startGroup(x, y);
 	for (let i = 0; i < items.length; i++) {
-		engine.startGroup(0, i * itemHeight);
+		engine.startGroup(0, i * HGRID);
 		if (i === highlightedItem) {
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'menuItemBackgroundHighlighted', itemWidth, itemHeight);
+			engine.drawSprite(0, 0, 'menuItemBackgroundHighlighted', itemWidth, HGRID);
 			engine.setSpriteLookup(font('menuItemTextHighlighted'));
-			engine.drawText(6, 3, items[i].title);
+			engine.drawText(VGRID, 0, items[i].title);
 		} else {
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'menuItemBackground', itemWidth, itemHeight);
+			engine.drawSprite(0, 0, 'menuItemBackground', itemWidth, HGRID);
 			engine.setSpriteLookup(font('menuItemText'));
-			engine.drawText(6, 3, items[i].title);
+			engine.drawText(VGRID, 0, items[i].title);
 		}
 		engine.endGroup();
 	}
