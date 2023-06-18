@@ -1,40 +1,45 @@
-import { SpriteCoordinates, SpriteLookup } from '@8f4e/2d-engine';
+import { SpriteLookup } from '@8f4e/2d-engine';
 
-import { Command, DrawingCommand } from './types';
+import { ColorScheme, Command, DrawingCommand } from './types';
 
 const offsetX = 0;
-const offsetY = 100;
+const offsetY = 180;
 
-const lookupTable = {};
+const fillColors: Array<keyof ColorScheme['fill']> = [
+	'menuItemBackground',
+	'menuItemBackgroundHighlighted',
+	'background',
+	'backgroundDots',
+	'moduleBackground',
+	'wire',
+	'errorMessageBackground',
+];
 
-const defaultSprite: SpriteCoordinates = {
-	x: 0,
-	y: 0,
-	spriteHeight: 1,
-	spriteWidth: 1,
-};
-
-export default function generate(): DrawingCommand[] {
-	const commands = [];
-	for (let r = 0; r <= 255; r += 51) {
-		for (let g = 0; g <= 255; g += 51) {
-			for (let b = 0; b <= 255; b += 51) {
-				commands.push([Command.FILL_COLOR, 'rgb(' + r + ',' + g + ',' + b + ')']);
-				const x = offsetX + (r / 51) * 4 + (b / 51) * 24;
-				const y = offsetY + (g / 51) * 4;
-				commands.push([Command.RECTANGLE, x, y, 4, 4]);
-				lookupTable['rgb(' + r + ',' + g + ',' + b + ')'] = {
-					x,
-					y,
-					spriteWidth: 4,
-					spriteHeight: 4,
-				};
-			}
-		}
-	}
-	return [[Command.RESET_TRANSFORM], ...commands];
+export enum Icon {
+	INPUT,
+	SWITCH_OFF,
+	SWITCH_ON,
 }
 
-export const lookup: SpriteLookup = function (color: string) {
-	return lookupTable[color] ? lookupTable[color] : defaultSprite;
+export default function generate(colors: ColorScheme['fill']): DrawingCommand[] {
+	return [
+		[Command.RESET_TRANSFORM],
+		[Command.TRANSLATE, offsetX, offsetY],
+		...fillColors.flatMap<DrawingCommand>(color => {
+			return [
+				[Command.FILL_COLOR, colors[color]],
+				[Command.RECTANGLE, 0, 0, 8, 16],
+				[Command.TRANSLATE, 8, 0],
+			];
+		}),
+	];
+}
+
+export const lookup: SpriteLookup = function (color: keyof ColorScheme['fill']) {
+	return {
+		x: offsetX + fillColors.indexOf(color) * 8,
+		y: offsetY,
+		spriteWidth: 8,
+		spriteHeight: 16,
+	};
 };
