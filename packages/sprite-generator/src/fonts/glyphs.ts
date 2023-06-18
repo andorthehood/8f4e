@@ -20,7 +20,7 @@ export default [
 	[...same(0b00000000, 7), 0b00011000, 0b00011000, ...same(0b00000000, 7)], // DOT
 ].flat();
 
-export enum Icon {
+export enum Glyph {
 	SPACE,
 	FILL,
 	SEMI_FILL,
