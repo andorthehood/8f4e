@@ -1,11 +1,16 @@
 import { EventDispatcher } from '../../events';
 import { getModuleId } from '../helpers/codeParsers';
-import { Project, State } from '../types';
+import { EditorSettings, Project, State } from '../types';
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
 	const localProject = JSON.parse(localStorage.getItem('project_' + state.options.localStorageId) ?? '{}') as Project;
+	const editorSettings = JSON.parse(
+		localStorage.getItem('editorSettings_' + state.options.localStorageId) ?? '{}'
+	) as EditorSettings;
 	const input = document.createElement('input');
 	input.type = 'file';
+
+	state.editorSettings = editorSettings;
 
 	function loadProject(newProject: Project) {
 		Object.keys(newProject).forEach(key => {
@@ -19,6 +24,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				code: module.code,
 				codeWithLineNumbers: [],
 				codeColors: [],
+				codeToRender: [],
 				inputs: new Map(),
 				outputs: new Map(),
 				debuggers: new Map(),
@@ -56,6 +62,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		}
 
 		localStorage.setItem('project_' + state.options.localStorageId, JSON.stringify(state.project));
+		localStorage.setItem('editorSettings_' + state.options.localStorageId, JSON.stringify(state.editorSettings));
 	}
 
 	function onOpen() {

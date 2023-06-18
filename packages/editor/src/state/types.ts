@@ -174,6 +174,9 @@ export interface Options {
 	isLocalStorageEnabled: boolean;
 	isDebugMode: boolean;
 	localStorageId: string;
+}
+
+export interface EditorSettings {
 	colorScheme: string;
 }
 
@@ -189,4 +192,5 @@ export interface State {
 	graphicHelper: GraphicHelper;
 	project: Project;
 	options: Options;
+	editorSettings: EditorSettings;
 }

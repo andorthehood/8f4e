@@ -10,9 +10,9 @@ import { State } from '../state/types';
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
-): Promise<{ resize: (width: number, height: number) => void }> {
-	const sprite = await generateSprite({
-		colorScheme: colorSchemes[state.options.colorScheme] || colorSchemes['default'],
+): Promise<{ resize: (width: number, height: number) => void; reloadSpriteSheet: () => Promise<void> }> {
+	let sprite = await generateSprite({
+		colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['default'],
 	});
 
 	const engine = new Engine(canvas);
@@ -78,6 +78,12 @@ export default async function init(
 	return {
 		resize: (width, height) => {
 			engine.resize(width, height);
+		},
+		reloadSpriteSheet: async () => {
+			sprite = await generateSprite({
+				colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['default'],
+			});
+			engine.loadSpriteSheet(sprite);
 		},
 	};
 }
