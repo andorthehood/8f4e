@@ -7,7 +7,7 @@ import { HGRID } from '../consts';
 export default function drawErrorMessages(engine: Engine, state: State, module: ModuleGraphicData): void {
 	for (const [, { x, y, message }] of module.errorMessages) {
 		engine.setSpriteLookup(fillColor);
-		engine.drawSprite(x, y, 'rgb(51,0,0)', module.width, message.length * HGRID);
+		engine.drawSprite(x, y, 'errorMessageBackground', module.width, message.length * HGRID);
 
 		engine.setSpriteLookup(font('code'));
 		for (let i = 0; i < message.length; i++) {

@@ -49,7 +49,7 @@ export default async function init(
 		statusText += ' graphic load: ' + (parseInt(timeToRender, 10) / (1000 / 120)) * 100 + '%';
 
 		engine.setSpriteLookup(fillColor);
-		engine.drawSprite(0, 0, 'rgb(0,0,0)', statusText.length * VGRID, HGRID);
+		engine.drawSprite(0, 0, 'background', statusText.length * VGRID, HGRID);
 		engine.setSpriteLookup(font('code'));
 		engine.drawText(0, 0, statusText);
 

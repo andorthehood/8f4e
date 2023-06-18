@@ -36,7 +36,7 @@ export default function generateSprite(config: Config): Promise<OffscreenCanvas 
 
 	const commands = [
 		...generateScope(),
-		...generateFillColors(),
+		...generateFillColors(config.colorScheme.fill),
 		...generateFeedbackScale(config.colorScheme.icons),
 		...generateFont(config.colorScheme.text),
 		...generatePianoKeyboard2(),
