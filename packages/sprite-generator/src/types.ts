@@ -38,6 +38,8 @@ export interface ColorScheme {
 	icons: {
 		inputConnector: string;
 		outputConnector: string;
+		inputConnectorBackground: string;
+		outputConnectorBackground: string;
 		feedbackScale: string[];
 	};
 }
