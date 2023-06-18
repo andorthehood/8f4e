@@ -34,6 +34,7 @@ export interface ColorScheme {
 		backgroundDots: string;
 		moduleBackground: string;
 		wire: string;
+		errorMessageBackground: string;
 	};
 	icons: {
 		inputConnector: string;
