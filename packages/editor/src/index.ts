@@ -8,6 +8,10 @@ export default async function init(canvas: HTMLCanvasElement, project: Project, 
 	const state = initState(events, project, options);
 	const view = await initView(state, canvas);
 
+	events.on('setColorScheme', () => {
+		view.reloadSpriteSheet();
+	});
+
 	return {
 		resize: (width: number, height: number) => {
 			events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
