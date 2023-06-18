@@ -22,9 +22,11 @@ import spriteGenerator from '../src';
 				wire: '',
 			},
 			icons: {
+				outputConnectorBackground: '#111111',
+				inputConnectorBackground: '#111111',
 				inputConnector: '#ffffff',
 				outputConnector: '#ffffff',
-				feedbackScale: ['', '', '', ''],
+				feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
 			},
 		},
 	});
