@@ -28,7 +28,7 @@ const colorSchemes: Record<string, ColorScheme> = {
 			feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
 		},
 	},
-	vector: {
+	hackerman: {
 		text: {
 			lineNumber: '#006600',
 			instruction: '#99ff99',
@@ -39,8 +39,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			menuItemTextHighlighted: '#000000',
 		},
 		fill: {
-			menuItemBackground: 'rgba(0,0,0,255)',
-			menuItemBackgroundHighlighted: 'rgba(255,255,255,255)',
+			menuItemBackground: '#000000',
+			menuItemBackgroundHighlighted: '#99ff99',
 			background: '#000000',
 			backgroundDots: '#006600',
 			moduleBackground: '#000000',
@@ -52,6 +52,33 @@ const colorSchemes: Record<string, ColorScheme> = {
 			inputConnectorBackground: '#002200',
 			inputConnector: '#00ff00',
 			outputConnector: '#00ff00',
+			feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
+		},
+	},
+	redalert: {
+		text: {
+			lineNumber: '#660000',
+			instruction: '#ff9999',
+			codeComment: '#660000',
+			code: '#cc0000',
+			numbers: '#ff0000',
+			menuItemText: '#ff0000',
+			menuItemTextHighlighted: '#000000',
+		},
+		fill: {
+			menuItemBackground: '#000000',
+			menuItemBackgroundHighlighted: '#ff9999',
+			background: '#220000',
+			backgroundDots: '#660000',
+			moduleBackground: '#220000',
+			wire: '#ffcccc',
+			errorMessageBackground: '#cc0000',
+		},
+		icons: {
+			outputConnectorBackground: '#220000',
+			inputConnectorBackground: '#220000',
+			inputConnector: '#ff0000',
+			outputConnector: '#ff0000',
 			feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
 		},
 	},

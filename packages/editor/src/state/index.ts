@@ -13,6 +13,7 @@ import moduleOpener from './effects/modules/moduleOpener';
 import _switch from './effects/modules/switch';
 import RNBO from './effects/rnbo';
 import worklet from './effects/worklet';
+import colorTheme from './effects/colorTheme';
 
 import { EventDispatcher } from '../events';
 
@@ -76,7 +77,9 @@ const defaultState: State = {
 		isLocalStorageEnabled: true,
 		isDebugMode: process.env.NODE_ENV === 'development',
 		localStorageId: 'default',
-		colorScheme: 'vector',
+	},
+	editorSettings: {
+		colorScheme: 'hackerman',
 	},
 };
 
@@ -96,6 +99,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	save(state, events);
 	RNBO(state, events);
 	worklet(state, events);
+	colorTheme(state, events);
 	events.dispatch('init');
 	return state;
 }

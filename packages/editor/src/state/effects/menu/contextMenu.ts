@@ -1,3 +1,5 @@
+import * as menus from './menus';
+
 import { EventDispatcher } from '../../../events';
 import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
@@ -54,52 +56,21 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		const module = findModuleAtViewportCoordinates(state.graphicHelper, state.project.viewport, x, y);
 
 		if (module) {
-			state.graphicHelper.contextMenu.items = [
-				// TODO module id mapper
-				{ title: 'Delete module', action: 'deleteModule', payload: { module }, close: true },
-				{ title: 'Copy module', action: 'copyModule', payload: { module }, close: true },
-			];
+			state.graphicHelper.contextMenu.items = menus.moduleMenu;
 		} else {
-			state.graphicHelper.contextMenu.items = [
-				{
-					title: 'New Module',
-					action: 'addModule',
-					payload: { isNew: true },
-					close: true,
-				},
-				{
-					title: 'New Group',
-					action: 'addModule',
-					payload: { isNew: true, isGroup: true },
-					close: true,
-				},
-				{
-					title: 'Paste Module',
-					action: 'addModule',
-					payload: { isPaste: true },
-					close: true,
-				},
-				{
-					title: 'Import RNBO patch',
-					action: 'importRNBOPatch',
-					close: true,
-				},
-				{
-					title: 'Remove RNBO patches',
-					action: 'removeRNBOPatches',
-					close: true,
-				},
-				{ title: 'Undo', action: 'undo', close: true },
-				{ title: 'Export', action: 'save', close: true },
-				{ title: 'New', action: 'new', close: true },
-				{ title: 'Open', action: 'open', close: true },
-			];
+			state.graphicHelper.contextMenu.items = menus.mainMenu;
 		}
 
 		events.on('mousedown', onMouseDown);
 		events.on('mousemove', onMouseMove);
 	};
 
+	const onOpenSubMenu = event => {
+		const { menu } = event;
+		state.graphicHelper.contextMenu.items = menus[menu];
+	};
+
+	events.on('openSubMenu', onOpenSubMenu);
 	events.on('contextmenu', onContextMenu);
 
 	return () => {
