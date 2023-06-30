@@ -124,5 +124,8 @@ export interface Error {
 
 export interface CompileOptions {
 	startingMemoryWordAddress: number;
-	constants: Namespace['consts'];
+	environmentExtensions: {
+		constants: Namespace['consts'];
+		ignoredKeywords: string[];
+	};
 }

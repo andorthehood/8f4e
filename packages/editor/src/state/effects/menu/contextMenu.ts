@@ -56,9 +56,9 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		const module = findModuleAtViewportCoordinates(state.graphicHelper, state.project.viewport, x, y);
 
 		if (module) {
-			state.graphicHelper.contextMenu.items = menus.moduleMenu;
+			state.graphicHelper.contextMenu.items = menus.moduleMenu(state);
 		} else {
-			state.graphicHelper.contextMenu.items = menus.mainMenu;
+			state.graphicHelper.contextMenu.items = menus.mainMenu(state);
 		}
 
 		events.on('mousedown', onMouseDown);
@@ -67,7 +67,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 
 	const onOpenSubMenu = event => {
 		const { menu } = event;
-		state.graphicHelper.contextMenu.items = menus[menu];
+		state.graphicHelper.contextMenu.items = menus[menu](state);
 	};
 
 	events.on('openSubMenu', onOpenSubMenu);

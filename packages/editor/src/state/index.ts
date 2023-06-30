@@ -32,7 +32,10 @@ const defaultState: State = {
 		buildErrors: [],
 		compilerOptions: {
 			startingMemoryWordAddress: 0,
-			constants: {},
+			environmentExtensions: {
+				constants: {},
+				ignoredKeywords: ['debug'],
+			},
 		},
 	},
 	midi: {
