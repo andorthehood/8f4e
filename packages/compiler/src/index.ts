@@ -107,13 +107,13 @@ export function compileModules(modules: Module[], options: CompileOptions): Comp
 		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
 		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
 		WORD_SIZE: { value: Int32Array.BYTES_PER_ELEMENT, isInteger: true },
-		...options.constants,
+		...options.environmentExtensions.constants,
 	};
 
 	const namespaces: Namespaces = new Map();
 
 	const astModules = modules.map(({ code }) => {
-		const ast = compileToAST(code);
+		const ast = compileToAST(code, options);
 		const moduleName = getModuleName(ast);
 		namespaces.set(moduleName, { consts: collectConstants(ast) });
 		return ast;
