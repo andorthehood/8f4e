@@ -4,6 +4,11 @@ import { compileModules } from '.';
 
 describe('compiler', () => {
 	test('compileModules', () => {
-		expect(compileModules(modules, { startingMemoryWordAddress: 0, constants: {} })).toMatchSnapshot();
+		expect(
+			compileModules(modules, {
+				startingMemoryWordAddress: 0,
+				environmentExtensions: { constants: {}, ignoredKeywords: [] },
+			})
+		).toMatchSnapshot();
 	});
 });

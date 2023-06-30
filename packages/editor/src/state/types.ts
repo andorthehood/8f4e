@@ -28,11 +28,14 @@ export interface Position {
 export interface Viewport extends Position, Size {}
 
 export interface ContextMenuItem {
-	action: string;
+	action?: string;
 	close?: boolean;
 	payload?: Record<string, unknown>;
+	disabled?: boolean;
 	title: string;
 }
+
+export type MenuGenerator = (state: State) => ContextMenuItem[];
 
 export interface ContextMenu extends Position {
 	highlightedItem: number;
