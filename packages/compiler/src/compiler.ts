@@ -1,7 +1,16 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import instructions, { Instruction } from './instructions';
-import { AST, Argument, ArgumentType, CompiledModule, Namespace, CompilationContext, Namespaces } from './types';
+import {
+	AST,
+	Argument,
+	ArgumentType,
+	CompiledModule,
+	Namespace,
+	CompilationContext,
+	Namespaces,
+	CompileOptions,
+} from './types';
 import { WORD_LENGTH } from './consts';
 import { ErrorCode, getError } from './errors';
 
@@ -44,11 +53,18 @@ export function isValidInstruction(line: string): boolean {
 	return instructionParser.test(line);
 }
 
-export function compileToAST(module: string[]) {
+export function compileToAST(module: string[], options?: CompileOptions) {
 	return module
 		.map((line, index) => [index, line] as [number, string])
 		.filter(([, line]) => !isComment(line))
 		.filter(([, line]) => isValidInstruction(line))
+		.filter(([lineNumber, line]) => {
+			if (!options) {
+				return true;
+			}
+			const { instruction } = parseLine(line, lineNumber);
+			return !options.environmentExtensions.ignoredKeywords.includes(instruction);
+		})
 		.map(([lineNumber, line]) => {
 			return parseLine(line, lineNumber);
 		});

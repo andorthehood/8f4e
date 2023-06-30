@@ -29,12 +29,15 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				}),
 				compilerOptions: {
 					...state.compiler.compilerOptions,
-					constants: {
-						...state.compiler.compilerOptions.constants,
-						SAMPLE_RATE: { value: state.project.sampleRate, isInteger: true },
-						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
-						LEFT_CHANNEL: { value: 0, isInteger: true },
-						RIGHT_CHANNEL: { value: 1, isInteger: true },
+					environmentExtensions: {
+						...state.compiler.compilerOptions.environmentExtensions,
+						constants: {
+							...state.compiler.compilerOptions.environmentExtensions.constants,
+							SAMPLE_RATE: { value: state.project.sampleRate, isInteger: true },
+							AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
+							LEFT_CHANNEL: { value: 0, isInteger: true },
+							RIGHT_CHANNEL: { value: 1, isInteger: true },
+						},
 					},
 				},
 			},
