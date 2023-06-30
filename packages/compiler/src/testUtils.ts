@@ -46,7 +46,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	let allocatedMemoryForTestData = 0;
 
 	const module: CompiledModule = compileModules([{ code: sourceCode.split('\n') }], {
-		constants: {},
+		environmentExtensions: { constants: {}, ignoredKeywords: [] },
 		startingMemoryWordAddress: 0,
 	})[0];
 	const program = createSingleFunctionWASMProgram(module.functionBody);
