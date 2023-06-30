@@ -27,13 +27,21 @@ export interface Position {
 
 export interface Viewport extends Position, Size {}
 
-export interface ContextMenuItem {
+interface ContextMenuButton {
 	action?: string;
 	close?: boolean;
 	payload?: Record<string, unknown>;
 	disabled?: boolean;
-	title: string;
+	divider?: boolean;
+	title?: string;
 }
+
+interface MenuItemDivider extends ContextMenuButton {
+	divider: true;
+	title: never;
+}
+
+export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
 export type MenuGenerator = (state: State) => ContextMenuItem[];
 

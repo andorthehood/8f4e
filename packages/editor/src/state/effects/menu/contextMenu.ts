@@ -3,13 +3,40 @@ import * as menus from './menus';
 import { EventDispatcher } from '../../../events';
 import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
-import { State } from '../../types';
+import { ContextMenuItem, State } from '../../types';
 
 function getHighlightedMenuItem(x, y, width) {
 	if (x < 0 || x > width || y < 0) {
 		return Infinity;
 	}
 	return Math.floor(y / HGRID);
+}
+
+function getLongestMenuItem(menuItems: ContextMenuItem[], min = 16) {
+	console.log(menuItems);
+	return menuItems.reduce((acc, curr) => {
+		if (!curr.title?.length) {
+			return acc;
+		}
+		return acc < curr.title.length ? curr.title.length : acc;
+	}, min);
+}
+
+function decorateMenu(menuItems: ContextMenuItem[]) {
+	const longest = getLongestMenuItem(menuItems);
+	return menuItems.map(item => {
+		if (item.divider) {
+			return item;
+		}
+
+		const title = item.close ? item.title : item.title + ' >';
+
+		const pad = '.'.repeat(longest + 2 - (title?.length || 0));
+		return {
+			...item,
+			title: pad + ' ' + title,
+		};
+	});
 }
 
 export default function contextMenu(state: State, events: EventDispatcher): () => void {
@@ -29,11 +56,15 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		const { highlightedItem, items } = state.graphicHelper.contextMenu;
 
 		if (items[highlightedItem]) {
-			events.dispatch(items[highlightedItem].action, {
-				...items[highlightedItem].payload,
-				x: event.x,
-				y: event.y,
-			});
+			const action = items[highlightedItem].action;
+
+			if (action) {
+				events.dispatch(action, {
+					...items[highlightedItem].payload,
+					x: event.x,
+					y: event.y,
+				});
+			}
 
 			if (items[highlightedItem].close) {
 				close();
@@ -56,10 +87,14 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		const module = findModuleAtViewportCoordinates(state.graphicHelper, state.project.viewport, x, y);
 
 		if (module) {
-			state.graphicHelper.contextMenu.items = menus.moduleMenu(state);
+			state.graphicHelper.contextMenu.items = decorateMenu(menus.moduleMenu(state));
 		} else {
-			state.graphicHelper.contextMenu.items = menus.mainMenu(state);
+			state.graphicHelper.contextMenu.items = decorateMenu(menus.mainMenu(state));
 		}
+
+		console.log(getLongestMenuItem(state.graphicHelper.contextMenu.items));
+
+		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
 
 		events.on('mousedown', onMouseDown);
 		events.on('mousemove', onMouseMove);
@@ -67,7 +102,8 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 
 	const onOpenSubMenu = event => {
 		const { menu } = event;
-		state.graphicHelper.contextMenu.items = menus[menu](state);
+		state.graphicHelper.contextMenu.items = decorateMenu(menus[menu](state));
+		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
 	};
 
 	events.on('openSubMenu', onOpenSubMenu);
