@@ -13,7 +13,6 @@ function getHighlightedMenuItem(x, y, width) {
 }
 
 function getLongestMenuItem(menuItems: ContextMenuItem[], min = 16) {
-	console.log(menuItems);
 	return menuItems.reduce((acc, curr) => {
 		if (!curr.title?.length) {
 			return acc;
@@ -29,7 +28,7 @@ function decorateMenu(menuItems: ContextMenuItem[]) {
 			return item;
 		}
 
-		const title = item.close ? item.title : item.title + ' >';
+		const title = item.close === false ? item.title + ' >' : item.title;
 
 		const pad = '.'.repeat(longest + 2 - (title?.length || 0));
 		return {

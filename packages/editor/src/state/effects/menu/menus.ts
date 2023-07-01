@@ -17,7 +17,7 @@ export const mainMenu: MenuGenerator = () => [
 	{ title: 'New Project', action: 'new', close: true },
 	{ divider: true },
 	{ title: 'Open From Disk', action: 'open', close: true },
-	{ title: 'Open Example Project', action: 'open', close: false },
+	{ title: 'Open Example Project', action: 'openSubMenu', payload: { menu: 'exampleProjectMenu' }, close: false },
 	{ divider: true },
 	{ title: 'Export Project', action: 'save', close: true },
 	{ divider: true },
@@ -56,4 +56,8 @@ export const colorSchemeMenu: MenuGenerator = () => [
 	{ title: 'Hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: true },
 	{ title: 'Red Alert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: true },
 	{ title: 'Default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: true },
+];
+
+export const exampleProjectMenu: MenuGenerator = () => [
+	{ title: 'Logic Gates', action: 'openExampleProject', payload: { project: 'logicgates' }, close: true },
 ];
