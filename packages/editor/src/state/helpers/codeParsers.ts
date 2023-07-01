@@ -1,7 +1,8 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
+import { ExtendedInstructionSet } from '../types';
+
 const commentParser = /^\s*;(.+)$/;
-const debuggerParser = /^\s*debug\s*(\S*)\s*$/;
 const scopeParser = /^\s*scope\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
 
 export function parseInputs(code: string[]): Array<{ id: string; lineNumber: number }> {
@@ -30,10 +31,19 @@ export function parseSwitches(
 	code: string[]
 ): Array<{ id: string; lineNumber: number; onValue: number; offValue: number }> {
 	return code.reduce((acc, line, index) => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+			never,
+			Instruction | ExtendedInstructionSet,
+			string,
+			string,
+			string
+		];
 
-		if ((instruction === 'int' || instruction === 'float') && args[0].startsWith('sw')) {
-			return [...acc, { id: args[0], lineNumber: index, onValue: 100, offValue: 0 }];
+		if (instruction === 'switch') {
+			return [
+				...acc,
+				{ id: args[0], lineNumber: index, onValue: parseInt(args[2], 10) || 1, offValue: parseInt(args[1], 10) || 0 },
+			];
 		}
 		return acc;
 	}, []);
@@ -41,11 +51,37 @@ export function parseSwitches(
 
 export function parseDebuggers(code: string[]): Array<{ id: string; lineNumber: number }> {
 	return code.reduce((acc, line, index) => {
-		const [, comment] = (line.match(commentParser) ?? []) as [never, string];
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+			never,
+			Instruction | ExtendedInstructionSet,
+			string,
+			string
+		];
 
-		if (comment && comment.includes('debug')) {
-			const [, memoryToDebug] = (comment.match(debuggerParser) ?? []) as [never, string];
-			return [...acc, { id: memoryToDebug, lineNumber: index }];
+		if (instruction === 'debug') {
+			return [...acc, { id: args[0], lineNumber: index }];
+		}
+		return acc;
+	}, []);
+}
+
+export function parseButtons(
+	code: string[]
+): Array<{ id: string; lineNumber: number; onValue: number; offValue: number }> {
+	return code.reduce((acc, line, index) => {
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+			never,
+			Instruction | ExtendedInstructionSet,
+			string,
+			string,
+			string
+		];
+
+		if (instruction === 'button') {
+			return [
+				...acc,
+				{ id: args[0], lineNumber: index, onValue: parseInt(args[2], 10) || 1, offValue: parseInt(args[1], 10) || 0 },
+			];
 		}
 		return acc;
 	}, []);

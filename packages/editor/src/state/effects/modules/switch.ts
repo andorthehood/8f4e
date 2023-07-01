@@ -2,7 +2,7 @@ import { EventDispatcher } from '../../../events';
 import findSwitchAtViewportCoordinates from '../../helpers/findSwitchAtViewportCoordinates';
 import { State } from '../../types';
 
-export default function moduleOpener(state: State, events: EventDispatcher): () => void {
+export default function _switch(state: State, events: EventDispatcher): () => void {
 	const onModuleClick = function ({ x, y, module }) {
 		// const relativeX = Math.abs(module.x - (x - state.viewport.x));
 		// const relativeY = Math.abs(module.y - (y - state.viewport.y));

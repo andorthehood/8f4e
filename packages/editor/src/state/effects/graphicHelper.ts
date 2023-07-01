@@ -19,6 +19,7 @@ import {
 	parseSwitches,
 	getLongestLineLength,
 	getModuleId,
+	parseButtons,
 } from '../helpers/codeParsers';
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
@@ -150,6 +151,18 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.switches.clear();
 		parseSwitches(trimmedCode).forEach(_switch => {
 			graphicData.switches.set(_switch.id, {
+				width: VGRID * 4,
+				height: HGRID,
+				x: graphicData.width - 4 * VGRID,
+				y: gapCalculator(_switch.lineNumber, graphicData.gaps) * HGRID,
+				id: _switch.id,
+				offValue: _switch.offValue,
+				onValue: _switch.onValue,
+			});
+		});
+
+		parseButtons(trimmedCode).forEach(_switch => {
+			graphicData.buttons.set(_switch.id, {
 				width: VGRID * 4,
 				height: HGRID,
 				x: graphicData.width - 4 * VGRID,
