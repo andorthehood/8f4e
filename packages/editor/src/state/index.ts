@@ -11,6 +11,7 @@ import { Options, Project, State } from './types';
 import graphicHelper from './effects/graphicHelper';
 import moduleOpener from './effects/modules/moduleOpener';
 import _switch from './effects/modules/switch';
+import button from './effects/modules/button';
 import RNBO from './effects/rnbo';
 import worklet from './effects/worklet';
 import colorTheme from './effects/colorTheme';
@@ -34,7 +35,7 @@ const defaultState: State = {
 			startingMemoryWordAddress: 0,
 			environmentExtensions: {
 				constants: {},
-				ignoredKeywords: ['debug'],
+				ignoredKeywords: ['debug', 'button', 'switch'],
 			},
 		},
 	},
@@ -93,6 +94,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	moduleDragger(state, events);
 	moduleOpener(state, events);
 	_switch(state, events);
+	button(state, events);
 	viewport(state, events);
 	contextMenu(state, events);
 	moduleMenu(state, events);
