@@ -29,6 +29,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				outputs: new Map(),
 				debuggers: new Map(),
 				switches: new Map(),
+				buttons: new Map(),
 				scopes: new Map(),
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
 				id: getModuleId(module.code) || '',

@@ -41,6 +41,8 @@ interface MenuItemDivider extends ContextMenuButton {
 	title: never;
 }
 
+export type ExtendedInstructionSet = 'debug' | 'button' | 'switch';
+
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
 export type MenuGenerator = (state: State) => ContextMenuItem[];
@@ -143,6 +145,7 @@ export interface ModuleGraphicData {
 	debuggers: Map<string, Debugger>;
 	scopes: Map<string, Scope>;
 	switches: Map<string, Switch>;
+	buttons: Map<string, Switch>;
 	x: number;
 	y: number;
 	isOpen: boolean;
