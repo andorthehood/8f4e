@@ -21,24 +21,9 @@ export const mainMenu: MenuGenerator = () => [
 	{ divider: true },
 	{ title: 'Export Project', action: 'save', close: true },
 	{ divider: true },
-	{
-		title: 'Import RNBO patch',
-		action: 'importRNBOPatch',
-		close: true,
-	},
-	{
-		title: 'Remove RNBO patches',
-		action: 'removeRNBOPatches',
-		close: true,
-	},
+	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
+	{ title: 'Project Settings', action: 'openSubMenu', payload: { menu: 'projectSettingsMenu' }, close: false },
 	{ divider: true },
-	{
-		title: 'Theme',
-		action: 'openSubMenu',
-		payload: { menu: 'colorSchemeMenu' },
-		close: false,
-	},
-	{ title: 'Undo', action: 'undo', close: true },
 ];
 
 export const moduleMenu: MenuGenerator = state => [
@@ -50,6 +35,29 @@ export const sampleRateMenu: MenuGenerator = () => [
 	{ title: '44100', action: 'setSampleRate', payload: { sampleRate: 44100 }, close: true },
 	{ title: '22050', action: 'setSampleRate', payload: { sampleRate: 22050 }, close: true },
 	{ title: '11025', action: 'setSampleRate', payload: { sampleRate: 11025 }, close: true },
+];
+
+export const projectSettingsMenu: MenuGenerator = () => [
+	{
+		title: 'Import RNBO patch',
+		action: 'importRNBOPatch',
+		close: true,
+	},
+	{
+		title: 'Remove RNBO patches',
+		action: 'removeRNBOPatches',
+		close: true,
+	},
+	{ title: 'Set Sample Rate', action: 'openSubMenu', payload: { menu: 'sampleRateMenu ' }, close: false },
+];
+
+export const editorSettingsMenu: MenuGenerator = () => [
+	{
+		title: 'Theme',
+		action: 'openSubMenu',
+		payload: { menu: 'colorSchemeMenu' },
+		close: false,
+	},
 ];
 
 export const colorSchemeMenu: MenuGenerator = () => [

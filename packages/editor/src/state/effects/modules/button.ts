@@ -32,10 +32,10 @@ export default function button(state: State, events: EventDispatcher): () => voi
 	};
 
 	events.on('moduleClick', onModuleClick);
-	events.on('mouseUp', onMouseUp);
+	events.on('mouseup', onMouseUp);
 
 	return () => {
 		events.off('moduleClick', onModuleClick);
-		events.off('mouseUp', onMouseUp);
+		events.off('mouseup', onMouseUp);
 	};
 }
