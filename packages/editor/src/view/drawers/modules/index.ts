@@ -5,6 +5,7 @@ import drawConnectors from './connectors';
 import drawScopes from './scopes';
 import drawDebuggers from './debuggers';
 import drawSwitches from './switches';
+import drawButtons from './buttons';
 import drawErrorMessages from './errorMessages';
 
 import { State } from '../../../state/types';
@@ -62,6 +63,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			drawScopes(engine, state, module);
 			drawDebuggers(engine, state, module);
 			drawSwitches(engine, state, module);
+			drawButtons(engine, state, module);
 			drawErrorMessages(engine, state, module);
 
 			engine.endGroup();

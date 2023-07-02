@@ -4,7 +4,6 @@ import loader from './effects/loader';
 import midi from './effects/midi';
 import moduleCreator from './effects/modules/moduleCreator';
 import moduleDragger from './effects/modules/moduleDragger';
-import moduleMenu from './effects/menu/moduleMenu';
 import save from './effects/save';
 import viewport from './effects/viewport';
 import { Options, Project, State } from './types';
@@ -97,7 +96,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	button(state, events);
 	viewport(state, events);
 	contextMenu(state, events);
-	moduleMenu(state, events);
 	moduleCreator(state, events);
 	compiler(state, events);
 	graphicHelper(state, events);
