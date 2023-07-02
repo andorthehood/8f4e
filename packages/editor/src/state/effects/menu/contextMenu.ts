@@ -101,7 +101,10 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 
 	const onOpenSubMenu = event => {
 		const { menu } = event;
-		state.graphicHelper.contextMenu.items = decorateMenu(menus[menu](state));
+		state.graphicHelper.contextMenu.items = decorateMenu([
+			{ title: '< Back', action: 'openSubMenu', payload: { menu: 'what' } },
+			...menus[menu](state),
+		]);
 		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
 	};
 
