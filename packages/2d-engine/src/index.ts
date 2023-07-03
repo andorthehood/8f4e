@@ -48,7 +48,7 @@ export class Engine {
 	isPerformanceMeasurementMode: boolean;
 
 	constructor(canvas: HTMLCanvasElement) {
-		this.gl = canvas.getContext('webgl', { antialias: false });
+		this.gl = canvas.getContext('webgl', { antialias: false, alpha: false });
 
 		this.program = createProgram(this.gl, [
 			createShader(this.gl, textureShader, this.gl.FRAGMENT_SHADER),

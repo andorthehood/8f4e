@@ -63,6 +63,7 @@ const defaultState: State = {
 			y: 0,
 			menuStack: [],
 		},
+		draggedModule: undefined,
 	},
 	selectedModule: undefined,
 	project: {

@@ -169,6 +169,17 @@ export type GraphicHelper = {
 		roundedHeight: number;
 	};
 	contextMenu: ContextMenu;
+	draggedModule: ModuleGraphicData | undefined;
+	dialog: {
+		show: boolean;
+		text: string;
+		title: string;
+		buttons: Array<{
+			title: string;
+			action: string;
+			payload: any;
+		}>;
+	};
 };
 
 export interface Group {
