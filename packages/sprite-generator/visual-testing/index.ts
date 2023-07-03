@@ -19,6 +19,7 @@ import spriteGenerator from '../src';
 				background: '#000000',
 				backgroundDots: '#999999',
 				moduleBackground: '#000000',
+				moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 				wire: '#ffffff',
 				errorMessageBackground: '#ff0000',
 			},
