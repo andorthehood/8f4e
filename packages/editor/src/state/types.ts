@@ -52,6 +52,7 @@ export interface ContextMenu extends Position {
 	itemWidth: number;
 	items: ContextMenuItem[];
 	open: boolean;
+	menuStack: string[];
 }
 
 export interface BuildError {
