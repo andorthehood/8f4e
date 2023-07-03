@@ -12,11 +12,25 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 	state.editorSettings = editorSettings;
 
-	function loadProject(newProject: Project) {
+	function loadProject({ project: newProject }: { project: Project }) {
+		state['project'] = {
+			modules: [],
+			groups: [],
+			viewport: {
+				height: 0,
+				width: 0,
+				x: 0,
+				y: 0,
+			},
+			rnbo: { patchers: {} },
+			sampleRate: 44100,
+		};
+
 		Object.keys(newProject).forEach(key => {
 			state['project'][key] = newProject[key] || defaultState.project[key];
 		});
 
+		state.graphicHelper.modules.clear();
 		state.project.modules.forEach(module => {
 			state.graphicHelper.modules.add({
 				width: 0,
@@ -42,9 +56,14 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				padLength: 1,
 			});
 		});
+
+		events.dispatch('init');
+		events.dispatch('saveState');
 	}
 
-	state.options.isLocalStorageEnabled ? loadProject(localProject) : loadProject(state.project);
+	state.options.isLocalStorageEnabled
+		? loadProject({ project: localProject })
+		: loadProject({ project: state.project });
 
 	function onSaveState() {
 		if (!state.options.isLocalStorageEnabled) {
@@ -89,4 +108,5 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 	events.on('saveState', onSaveState);
 	events.on('open', onOpen);
+	events.on('loadProject', loadProject);
 }

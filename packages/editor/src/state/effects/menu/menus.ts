@@ -1,5 +1,6 @@
 import { MenuGenerator } from '../../types';
-
+import bistableMultivibratorProject from '../../../exampleProjects/bistableMultivibrator.json';
+import audioBufferProject from '../../../exampleProjects/audioBuffer.json';
 export const mainMenu: MenuGenerator = () => [
 	{
 		title: 'New Module',
@@ -67,5 +68,11 @@ export const colorSchemeMenu: MenuGenerator = () => [
 ];
 
 export const exampleProjectMenu: MenuGenerator = () => [
-	{ title: 'Logic Gates', action: 'openExampleProject', payload: { project: 'logicgates' }, close: true },
+	{
+		title: 'Bistable Multivibrator',
+		action: 'loadProject',
+		payload: { project: bistableMultivibratorProject },
+		close: true,
+	},
+	{ title: 'Audio Buffer', action: 'loadProject', payload: { project: audioBufferProject }, close: true },
 ];
