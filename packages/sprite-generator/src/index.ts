@@ -32,7 +32,7 @@ export default function generateSprite(config: Config): Promise<OffscreenCanvas 
 		canvas.height = 1024;
 	}
 
-	const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+	const ctx: CanvasRenderingContext2D = canvas.getContext('2d', { alpha: true, antialias: false });
 
 	const commands = [
 		...generateScope(),

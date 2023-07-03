@@ -8,7 +8,7 @@
 	"scripts": {
 		"test": "jest",
 		"build": "tsc",
-		"dev": "parcel visual-testing/index.html --port 3001 --hmr-port 30001 --dist-dir .parcel-dist"
+		"dev": "parcel visual-testing/index.html --port 3001 --hmr-port 30001 --dist-dir .parcel-dist --cache-dir .parcel-cache"
 	},
 	"repository": {
 		"type": "git",
