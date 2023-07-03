@@ -1,50 +1,57 @@
 import { EventDispatcher } from '../../../events';
 import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
-import { ModuleGraphicData, State } from '../../types';
+import { State } from '../../types';
 
 export default function moduleDragger(state: State, events: EventDispatcher): () => void {
-	let draggedModule: ModuleGraphicData | undefined = undefined;
 	let startingPosition: { x: number; y: number } | undefined;
 	function onMouseDown({ x, y }) {
-		draggedModule = findModuleAtViewportCoordinates(state.graphicHelper, state.project.viewport, x, y);
+		state.graphicHelper.draggedModule = findModuleAtViewportCoordinates(
+			state.graphicHelper,
+			state.project.viewport,
+			x,
+			y
+		);
 
-		if (!draggedModule) {
+		if (!state.graphicHelper.draggedModule) {
 			return;
 		}
-		state.selectedModule = draggedModule;
-		startingPosition = { x: draggedModule.x, y: draggedModule.y };
+		state.selectedModule = state.graphicHelper.draggedModule;
+		startingPosition = { x: state.graphicHelper.draggedModule.x, y: state.graphicHelper.draggedModule.y };
 
-		const relativeX = Math.abs(x - (state.project.viewport.x + draggedModule.x));
-		const relativeY = Math.abs(y - (state.project.viewport.y + draggedModule.y));
-		events.dispatch('moduleClick', { x, y, relativeX, relativeY, module: draggedModule });
+		const relativeX = Math.abs(x - (state.project.viewport.x + state.graphicHelper.draggedModule.x));
+		const relativeY = Math.abs(y - (state.project.viewport.y + state.graphicHelper.draggedModule.y));
+		events.dispatch('moduleClick', { x, y, relativeX, relativeY, module: state.graphicHelper.draggedModule });
 
 		// Bring dragged module forward.
-		state.graphicHelper.modules.delete(draggedModule);
-		state.graphicHelper.modules.add(draggedModule);
+		state.graphicHelper.modules.delete(state.graphicHelper.draggedModule);
+		state.graphicHelper.modules.add(state.graphicHelper.draggedModule);
 	}
 
 	function onMouseMove(event) {
 		const { movementX, movementY } = event;
-		if (draggedModule) {
-			draggedModule.x += movementX;
-			draggedModule.y += movementY;
+		if (state.graphicHelper.draggedModule) {
+			state.graphicHelper.draggedModule.x += movementX;
+			state.graphicHelper.draggedModule.y += movementY;
 			event.stopPropagation = true;
 		}
 	}
 
 	function onMouseUp() {
-		if (!draggedModule) {
+		if (!state.graphicHelper.draggedModule) {
 			return;
 		}
-		draggedModule.x = Math.round(draggedModule.x / VGRID) * VGRID;
-		draggedModule.y = Math.round(draggedModule.y / HGRID) * HGRID;
+		state.graphicHelper.draggedModule.x = Math.round(state.graphicHelper.draggedModule.x / VGRID) * VGRID;
+		state.graphicHelper.draggedModule.y = Math.round(state.graphicHelper.draggedModule.y / HGRID) * HGRID;
 
-		if (startingPosition?.x !== draggedModule.x || startingPosition?.y !== draggedModule.y) {
+		if (
+			startingPosition?.x !== state.graphicHelper.draggedModule.x ||
+			startingPosition?.y !== state.graphicHelper.draggedModule.y
+		) {
 			events.dispatch('saveState');
 		}
 
-		draggedModule = undefined;
+		state.graphicHelper.draggedModule = undefined;
 	}
 
 	events.on('mousedown', onMouseDown);

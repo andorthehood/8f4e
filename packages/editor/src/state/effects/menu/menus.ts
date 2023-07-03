@@ -1,5 +1,5 @@
 import { MenuGenerator } from '../../types';
-import bistableMultivibratorProject from '../../../exampleProjects/bistableMultivibrator.json';
+import bistableMultivibratorsProject from '../../../exampleProjects/bistableMultivibrators.json';
 import audioBufferProject from '../../../exampleProjects/audioBuffer.json';
 export const mainMenu: MenuGenerator = () => [
 	{
@@ -62,16 +62,16 @@ export const editorSettingsMenu: MenuGenerator = () => [
 ];
 
 export const colorSchemeMenu: MenuGenerator = () => [
-	{ title: 'Hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: true },
-	{ title: 'Red Alert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: true },
-	{ title: 'Default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: true },
+	{ title: 'Hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: false },
+	{ title: 'Red Alert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: false },
+	{ title: 'Default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: false },
 ];
 
 export const exampleProjectMenu: MenuGenerator = () => [
 	{
-		title: 'Bistable Multivibrator',
+		title: 'Bistable Multivibrators',
 		action: 'loadProject',
-		payload: { project: bistableMultivibratorProject },
+		payload: { project: bistableMultivibratorsProject },
 		close: true,
 	},
 	{ title: 'Audio Buffer', action: 'loadProject', payload: { project: audioBufferProject }, close: true },
