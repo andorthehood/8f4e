@@ -30,7 +30,12 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.startGroup(module.x, module.y);
 
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'moduleBackground', module.width, module.height);
+
+			if (module === state.graphicHelper.draggedModule) {
+				engine.drawSprite(0, 0, 'moduleBackgroundDragged', module.width, module.height);
+			} else {
+				engine.drawSprite(0, 0, 'moduleBackground', module.width, module.height);
+			}
 
 			engine.setSpriteLookup(font('code'));
 
