@@ -61,6 +61,7 @@ const defaultState: State = {
 			open: false,
 			x: 0,
 			y: 0,
+			menuStack: [],
 		},
 	},
 	selectedModule: undefined,

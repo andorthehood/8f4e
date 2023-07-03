@@ -101,8 +101,26 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 
 	const onOpenSubMenu = event => {
 		const { menu } = event;
+		state.graphicHelper.contextMenu.menuStack.push(menu);
 		state.graphicHelper.contextMenu.items = decorateMenu([
-			{ title: '< Back', action: 'openSubMenu', payload: { menu: 'what' } },
+			{ title: '< Back', action: 'menuBack' },
+			...menus[menu](state),
+		]);
+		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
+	};
+
+	const onMenuBack = () => {
+		state.graphicHelper.contextMenu.menuStack.pop();
+		const menu = state.graphicHelper.contextMenu.menuStack.pop();
+
+		if (!menu) {
+			state.graphicHelper.contextMenu.items = decorateMenu(menus.mainMenu(state));
+			state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
+			return;
+		}
+
+		state.graphicHelper.contextMenu.items = decorateMenu([
+			{ title: '< Back', action: 'menuBack' },
 			...menus[menu](state),
 		]);
 		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
@@ -110,6 +128,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 
 	events.on('openSubMenu', onOpenSubMenu);
 	events.on('contextmenu', onContextMenu);
+	events.on('menuBack', onMenuBack);
 
 	return () => {
 		events.off('contextmenu', onContextMenu);
