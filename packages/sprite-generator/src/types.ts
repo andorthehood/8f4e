@@ -33,6 +33,7 @@ export interface ColorScheme {
 		background: string;
 		backgroundDots: string;
 		moduleBackground: string;
+		moduleBackgroundDragged: string;
 		wire: string;
 		errorMessageBackground: string;
 	};
