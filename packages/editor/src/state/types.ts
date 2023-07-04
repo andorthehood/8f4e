@@ -9,12 +9,6 @@ export interface Module {
 	y: number;
 }
 
-export interface Connector extends Position, Size {
-	id: string;
-	label?: string;
-	isInput?: boolean;
-}
-
 export interface Size {
 	width: number;
 	height: number;
@@ -25,7 +19,10 @@ export interface Position {
 	y: number;
 }
 
-export interface Viewport extends Position, Size {}
+export type Viewport = {
+	x: number;
+	y: number;
+};
 
 interface ContextMenuButton {
 	action?: string;
@@ -165,6 +162,8 @@ export type GraphicHelper = {
 	outputsByWordAddress: Map<number, Output>;
 	modules: Set<ModuleGraphicData>;
 	viewport: {
+		width: number;
+		height: number;
 		roundedWidth: number;
 		roundedHeight: number;
 	};
