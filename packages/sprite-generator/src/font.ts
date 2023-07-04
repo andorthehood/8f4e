@@ -18,6 +18,8 @@ const colorNames: Array<keyof Config['colorScheme']['text']> = [
 	'numbers',
 	'menuItemText',
 	'menuItemTextHighlighted',
+	'dialogText',
+	'dialogTitle',
 ];
 
 const fontPositions = Object.fromEntries(
