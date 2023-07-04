@@ -2,8 +2,8 @@ import { HGRID, VGRID } from '../../view/drawers/consts';
 import { State } from '../types';
 
 export function resize(state: State, width: number, height: number): void {
-	state.project.viewport.width = width;
-	state.project.viewport.height = height;
+	state.graphicHelper.viewport.width = width;
+	state.graphicHelper.viewport.height = height;
 	state.graphicHelper.viewport.roundedWidth = Math.floor(width / VGRID) * VGRID;
 	state.graphicHelper.viewport.roundedHeight = Math.floor(height / HGRID) * HGRID;
 }
