@@ -1,4 +1,5 @@
 import { ColorScheme } from '@8f4e/sprite-generator';
+import { Dialog } from 'puppeteer';
 
 const colorSchemes: Record<string, ColorScheme> = {
 	default: {
@@ -10,6 +11,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			numbers: 'rgba(201,212,135,255)',
 			menuItemText: 'rgba(255,255,255,255)',
 			menuItemTextHighlighted: 'rgba(0,0,0,255)',
+			dialogText: '#ffffff',
+			dialogTitle: '#ffffff',
 		},
 		fill: {
 			menuItemBackground: 'rgba(0,0,0,255)',
@@ -20,6 +23,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 			wire: '#ffffff',
 			errorMessageBackground: '#cc0000',
+			dialogBackground: '#000000',
+			dialogDimmer: 'rgba(0,0,0,0.5)',
 		},
 		icons: {
 			outputConnectorBackground: '#003300',
@@ -38,6 +43,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			numbers: '#00ff00',
 			menuItemText: '#00ff00',
 			menuItemTextHighlighted: '#000000',
+			dialogText: '#ffffff',
+			dialogTitle: '#ffffff',
 		},
 		fill: {
 			menuItemBackground: 'rgba(0,0,0,0.9)',
@@ -48,6 +55,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 			wire: 'rgba(153,255,153,0.6)',
 			errorMessageBackground: '#cc0000',
+			dialogBackground: '#000000',
+			dialogDimmer: 'rgba(0,0,0,0.5)',
 		},
 		icons: {
 			outputConnectorBackground: '#002200',
@@ -66,6 +75,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			numbers: '#ff0000',
 			menuItemText: '#ff0000',
 			menuItemTextHighlighted: '#000000',
+			dialogText: '#ffffff',
+			dialogTitle: '#ffffff',
 		},
 		fill: {
 			menuItemBackground: '#000000',
@@ -76,6 +87,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 			wire: '#ffcccc',
 			errorMessageBackground: '#cc0000',
+			dialogBackground: '#000000',
+			dialogDimmer: 'rgba(0,0,0,0.5)',
 		},
 		icons: {
 			outputConnectorBackground: '#220000',

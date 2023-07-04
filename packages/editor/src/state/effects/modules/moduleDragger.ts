@@ -16,7 +16,7 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 		if (!state.graphicHelper.draggedModule) {
 			return;
 		}
-		state.selectedModule = state.graphicHelper.draggedModule;
+		state.graphicHelper.selectedModule = state.graphicHelper.draggedModule;
 		startingPosition = { x: state.graphicHelper.draggedModule.x, y: state.graphicHelper.draggedModule.y };
 
 		const relativeX = Math.abs(x - (state.project.viewport.x + state.graphicHelper.draggedModule.x));
