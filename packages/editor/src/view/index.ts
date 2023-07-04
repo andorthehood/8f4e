@@ -57,7 +57,7 @@ export default async function init(
 
 		if (state.options.isDebugMode) {
 			engine.setSpriteLookup(font('code'));
-			engine.startGroup(10, state.project.viewport.height - 50);
+			engine.startGroup(10, state.graphicHelper.viewport.height - 50);
 			engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
 			engine.drawText(0, 15, 'fps ' + fps + '  vertex buffer ' + vertices + '/' + maxVertices);
 			engine.drawText(
