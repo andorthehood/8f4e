@@ -180,11 +180,11 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	};
 
 	const onKeydown: EventHandler = function (event) {
-		if (!state.selectedModule) {
+		if (!state.graphicHelper.selectedModule) {
 			return;
 		}
 
-		const module = state.selectedModule;
+		const module = state.graphicHelper.selectedModule;
 
 		let newPosition: [number, number] = [module.cursor.row, module.cursor.col];
 

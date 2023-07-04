@@ -60,7 +60,7 @@ export default function drawModules(engine: Engine, state: State): void {
 				}
 			}
 
-			if (state.selectedModule === module) {
+			if (state.graphicHelper.selectedModule === module) {
 				engine.drawText(module.cursor.x, module.cursor.y, '_');
 			}
 

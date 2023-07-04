@@ -14,6 +14,8 @@ const fillColors: Array<keyof ColorScheme['fill']> = [
 	'moduleBackgroundDragged',
 	'wire',
 	'errorMessageBackground',
+	'dialogBackground',
+	'dialogDimmer',
 ];
 
 export enum Icon {

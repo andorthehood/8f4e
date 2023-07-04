@@ -170,6 +170,7 @@ export type GraphicHelper = {
 	};
 	contextMenu: ContextMenu;
 	draggedModule: ModuleGraphicData | undefined;
+	selectedModule: ModuleGraphicData | undefined;
 	dialog: {
 		show: boolean;
 		text: string;
@@ -177,7 +178,7 @@ export type GraphicHelper = {
 		buttons: Array<{
 			title: string;
 			action: string;
-			payload: any;
+			payload?: any;
 		}>;
 	};
 };
@@ -208,13 +209,7 @@ export interface EditorSettings {
 
 export interface State {
 	compiler: Compiler;
-	connectionFromConnector: string | undefined;
-	connectionFromModule: Module | undefined;
-	connectionPointA: [number, number] | undefined;
-	connectionPointB: [number, number] | undefined;
-	isConnectionBeingMade: boolean;
 	midi: Midi;
-	selectedModule: ModuleGraphicData | undefined;
 	graphicHelper: GraphicHelper;
 	project: Project;
 	options: Options;
