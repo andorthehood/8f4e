@@ -26,6 +26,8 @@ export interface ColorScheme {
 		numbers: string;
 		menuItemText: string;
 		menuItemTextHighlighted: string;
+		dialogTitle: string;
+		dialogText: string;
 	};
 	fill: {
 		menuItemBackground: string;
@@ -36,6 +38,8 @@ export interface ColorScheme {
 		moduleBackgroundDragged: string;
 		wire: string;
 		errorMessageBackground: string;
+		dialogBackground: string;
+		dialogDimmer: string;
 	};
 	icons: {
 		inputConnector: string;

@@ -28,8 +28,8 @@ export const mainMenu: MenuGenerator = () => [
 ];
 
 export const moduleMenu: MenuGenerator = state => [
-	{ title: 'Delete module', action: 'deleteModule', payload: { module: state.selectedModule }, close: true },
-	{ title: 'Copy module', action: 'copyModule', payload: { module: state.selectedModule }, close: true },
+	{ title: 'Delete module', action: 'deleteModule', payload: { module: state.graphicHelper.selectedModule }, close: true },
+	{ title: 'Copy module', action: 'copyModule', payload: { module: state.graphicHelper.selectedModule }, close: true },
 ];
 
 export const sampleRateMenu: MenuGenerator = () => [
