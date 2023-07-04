@@ -42,12 +42,13 @@ const defaultState: State = {
 		inputs: [],
 		outputs: [],
 	},
-	isConnectionBeingMade: false,
-	connectionPointA: undefined,
-	connectionPointB: undefined,
-	connectionFromModule: undefined,
-	connectionFromConnector: undefined,
 	graphicHelper: {
+		dialog: {
+			show: false,
+			text: 'Lorem ipsum dolor sit amet',
+			title: 'Dialog',
+			buttons: [{ title: 'Close', action: 'close' }],
+		},
 		modules: new Set(),
 		outputsByWordAddress: new Map(),
 		viewport: {
@@ -64,8 +65,8 @@ const defaultState: State = {
 			menuStack: [],
 		},
 		draggedModule: undefined,
+		selectedModule: undefined,
 	},
-	selectedModule: undefined,
 	project: {
 		modules: [],
 		groups: [],

@@ -1,7 +1,7 @@
 import generateSprite, { font, background, fillColor } from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
-import { drawConnections, drawContextMenu, drawModules } from './drawers';
+import { drawConnections, drawContextMenu, drawModules, drawDialog } from './drawers';
 import { HGRID, VGRID } from './drawers/consts';
 import colorSchemes from './colorSchemes';
 
@@ -38,8 +38,8 @@ export default async function init(
 
 		let statusText = ' ';
 
-		if (state.selectedModule) {
-			statusText += '< module: ' + state.selectedModule.id + ' >';
+		if (state.graphicHelper.selectedModule) {
+			statusText += '< module: ' + state.graphicHelper.selectedModule.id + ' >';
 		}
 
 		1000 / 120;
@@ -73,6 +73,8 @@ export default async function init(
 			);
 			engine.endGroup();
 		}
+
+		drawDialog(engine, state);
 	});
 
 	return {

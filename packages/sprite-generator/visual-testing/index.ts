@@ -12,6 +12,8 @@ import spriteGenerator from '../src';
 				numbers: 'rgba(201,212,135,255)',
 				menuItemText: 'rgba(255,255,255,255)',
 				menuItemTextHighlighted: 'rgba(0,0,0,255)',
+				dialogText: 'rgba(255,255,255,255)',
+				dialogTitle: 'rgba(255,255,255,255)',
 			},
 			fill: {
 				menuItemBackground: 'rgba(0,0,0,255)',
@@ -22,6 +24,8 @@ import spriteGenerator from '../src';
 				moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 				wire: '#ffffff',
 				errorMessageBackground: '#ff0000',
+				dialogBackground: 'rgba(0,0,0,1)',
+				dialogDimmer: 'rgba(0,0,0,0.5)',
 			},
 			icons: {
 				outputConnectorBackground: '#111111',
