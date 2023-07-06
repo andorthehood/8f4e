@@ -80,20 +80,14 @@ function incrementModuleIdUntilItsNotTaken(state: State, moduleId: string) {
 }
 
 export default function moduleCreator(state: State, events: EventDispatcher): void {
-	async function onAddModule({ x, y, isNew, isGroup }) {
-		let code = [''];
-
+	async function onAddModule({ x, y, isNew, code = [''] }) {
 		if (isNew) {
-			const moduleId = incrementModuleIdUntilItsNotTaken(state, getRandomModuleId());
-			if (isGroup) {
-				code = ['group ' + moduleId, '', '', 'end'];
-			} else {
-				code = ['module ' + moduleId, '', '', 'end'];
-			}
-		} else {
+			code = ['module ' + getRandomModuleId(), '', '', 'end'];
+		} else if (code.length < 2) {
 			code = (await navigator.clipboard.readText()).split('\n');
-			code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, getModuleId(code)));
 		}
+
+		code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, getModuleId(code)));
 
 		const module: ModuleGraphicData = {
 			width: 0,
@@ -115,7 +109,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			x: x - state.project.viewport.x,
 			y: y - state.project.viewport.y,
 			isOpen: true,
-			isGroup: !!isGroup,
+			isGroup: false,
 			padLength: 2,
 		};
 
