@@ -42,7 +42,7 @@ export type ExtendedInstructionSet = 'debug' | 'button' | 'switch';
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
-export type MenuGenerator = (state: State) => ContextMenuItem[];
+export type MenuGenerator = (state: State, payload: any) => ContextMenuItem[];
 
 export interface ContextMenu extends Position {
 	highlightedItem: number;
@@ -189,6 +189,9 @@ export interface Group {
 }
 
 export interface Project {
+	title: string;
+	author: string;
+	description: string;
 	modules: Module[];
 	groups: Group[];
 	viewport: Viewport;
