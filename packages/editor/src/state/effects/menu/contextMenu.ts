@@ -104,7 +104,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		state.graphicHelper.contextMenu.menuStack.push(menu);
 		state.graphicHelper.contextMenu.items = decorateMenu([
 			{ title: '< Back', action: 'menuBack' },
-			...menus[menu](state),
+			...menus[menu](state, event),
 		]);
 		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
 	};

@@ -1,6 +1,27 @@
 import { MenuGenerator } from '../../types';
-import bistableMultivibratorsProject from '../../../exampleProjects/bistableMultivibrators.json';
-import audioBufferProject from '../../../exampleProjects/audioBuffer.json';
+import bistableMultivibratorsProject from '../../examples/projects/bistableMultivibrators';
+import audioBufferProject from '../../examples/projects/audioBuffer';
+import exampleModules from '../../examples/modules';
+
+const modules = {
+	//'Logic Gates': ['AND', 'OR', 'NAND', 'NOR', 'XOR'],
+	//Bitwise: ['Bitwise And', 'Bitwise Or', 'Bitwise NAND', 'Bitwise NOR', 'Bitwise XOR'],
+	Sequencers: { 'Binary Sequencer': 'binarySequencer' },
+	MIDI: {
+		'MIDI Note In': 'midiNoteIn',
+		'MIDI Note Out': 'midiNoteOut',
+		'MIDI CC In': 'midiCCIn',
+		'MIDI CC Out': 'midiCCOut',
+		'MIDI Codes': 'midiCodes',
+	},
+	'Audio Buffer': {
+		'Audio Buffer Out Mono': 'audioBufferOut',
+		'Audio Buffer Out Stereo': 'audioBufferOut',
+		'Audio Buffer In': 'audioBufferOut',
+	},
+	Quantizers: { Quantizer: 'quantizer' },
+} as const;
+
 export const mainMenu: MenuGenerator = () => [
 	{
 		title: 'New Module',
@@ -13,6 +34,12 @@ export const mainMenu: MenuGenerator = () => [
 		action: 'addModule',
 		payload: { isPaste: true },
 		close: true,
+	},
+	{
+		title: 'Add Built-in Module',
+		action: 'openSubMenu',
+		payload: { menu: 'moduleCategoriesMenu' },
+		close: false,
 	},
 	{ divider: true },
 	{ title: 'New Project', action: 'new', close: true },
@@ -28,9 +55,34 @@ export const mainMenu: MenuGenerator = () => [
 ];
 
 export const moduleMenu: MenuGenerator = state => [
-	{ title: 'Delete module', action: 'deleteModule', payload: { module: state.graphicHelper.selectedModule }, close: true },
+	{
+		title: 'Delete module',
+		action: 'deleteModule',
+		payload: { module: state.graphicHelper.selectedModule },
+		close: true,
+	},
 	{ title: 'Copy module', action: 'copyModule', payload: { module: state.graphicHelper.selectedModule }, close: true },
 ];
+
+export const moduleCategoriesMenu: MenuGenerator = () => {
+	const categories = Object.keys(modules);
+	return categories.map(category => {
+		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
+	});
+};
+
+export const builtInModuleMenu: MenuGenerator = (state, { category }: { category: string }) => {
+	return Object.keys(modules[category]).map(module => {
+		const code = exampleModules[modules[category][module]] || '';
+
+		return {
+			title: module,
+			action: 'addModule',
+			payload: { code: code.split('\n') },
+			close: true,
+		};
+	});
+};
 
 export const sampleRateMenu: MenuGenerator = () => [
 	{ title: '44100', action: 'setSampleRate', payload: { sampleRate: 44100 }, close: true },
