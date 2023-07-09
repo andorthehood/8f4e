@@ -13,6 +13,7 @@ const modules = {
 		'MIDI CC In': 'midiCCIn',
 		'MIDI CC Out': 'midiCCOut',
 		'MIDI Codes': 'midiCodes',
+		'General MIDI Drum Codes': 'generalMIDIDrumCodes',
 	},
 	'Audio Buffer': {
 		'Audio Buffer Out Mono': 'audioBufferOut',
