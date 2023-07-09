@@ -7,16 +7,26 @@ import Type from '../wasmUtils/type';
 import { ErrorCode, getError } from '../errors';
 
 const skip: InstructionHandler = function (line, context) {
+	const { consts } = context.namespace;
+
 	if (isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
+
+	let timesToSkip = 0;
 
 	if (!line.arguments[0]) {
 		return { byteCode: [WASMInstruction.RETURN], context };
 	}
 
-	if (line.arguments[0].type !== ArgumentType.LITERAL) {
-		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+	if (line.arguments[0].type === ArgumentType.LITERAL) {
+		timesToSkip = line.arguments[0].value;
+	} else {
+		if (typeof consts[line.arguments[0].value] !== 'undefined') {
+			timesToSkip = consts[line.arguments[0].value].value;
+		} else {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		}
 	}
 
 	const memory = context.namespace.memory;
@@ -60,7 +70,7 @@ const skip: InstructionHandler = function (line, context) {
 			// the number specified in the argument
 			...i32const(byteAddress),
 			...i32load(),
-			...i32const(line.arguments[0].value),
+			...i32const(timesToSkip),
 			WASMInstruction.I32_LT_S,
 			WASMInstruction.IF,
 			Type.VOID,

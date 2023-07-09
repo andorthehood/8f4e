@@ -2,9 +2,9 @@ import { CompileOptions, Module } from '@8f4e/compiler';
 
 import testBuild from './testBuild';
 import resetMidi from './resetMidi';
-import findMidiNoteModules from './findMidiNoteModules';
+import findMidiNoteOutModules from './findMidiNoteOutModules';
 import broadcastMidiMessages from './broadcastMidiMessages';
-import findMidiCCModules from './findMidiCCModules';
+import findMidiCCOutputModules from './findMidiCCOutputModules';
 import broadcastMidiCCMessages from './broadcastMidiCCMessages';
 import findRNBOModules from './findRNBOModules';
 import broadcastRNBOMessages from './broadcastRNBOMessages';
@@ -31,15 +31,15 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compi
 
 		memoryBuffer = new Int32Array(memoryRef.buffer);
 
-		const midiNoteModules = findMidiNoteModules(compiledModules, memoryBuffer);
+		const midiNoteModules = findMidiNoteOutModules(compiledModules, memoryBuffer);
 		const RNBOModules = findRNBOModules(compiledModules);
-		const midiCCModules = findMidiCCModules(compiledModules, memoryBuffer);
+		const midiCCOutputModules = findMidiCCOutputModules(compiledModules, memoryBuffer);
 		midiCCInputModules = findMidiCCInputModules(compiledModules, memoryBuffer);
 
 		resetMidi();
 
 		interval = setInterval(() => {
-			broadcastMidiCCMessages(midiCCModules, memoryBuffer);
+			broadcastMidiCCMessages(midiCCOutputModules, memoryBuffer);
 			broadcastMidiMessages(midiNoteModules, memoryBuffer);
 			broadcastRNBOMessages(RNBOModules, memoryBuffer);
 		}, intervalTime);

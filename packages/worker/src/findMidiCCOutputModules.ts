@@ -8,7 +8,7 @@ export default function findMidiCCModules(
 ): MidiCCModuleAddresses[] {
 	return Array.from(compiledModules)
 		.map(([, compiledModule]) => compiledModule)
-		.filter(({ id }) => id.startsWith('midicc:'))
+		.filter(({ id }) => id.startsWith('midiccout'))
 		.map(module => {
 			const value = module.memoryMap.get('value');
 			const channel = module.memoryMap.get('channel');
