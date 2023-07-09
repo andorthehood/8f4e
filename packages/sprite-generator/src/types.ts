@@ -40,6 +40,7 @@ export interface ColorScheme {
 		errorMessageBackground: string;
 		dialogBackground: string;
 		dialogDimmer: string;
+		highlightedCodeLine: string;
 	};
 	icons: {
 		inputConnector: string;
