@@ -12,7 +12,7 @@ import findMidiCCInputModules from './findMidiCCInputModules';
 import { MidiCCModuleAddresses } from './types';
 
 let interval: NodeJS.Timeout;
-const intervalTime = 10;
+const intervalTime = 1;
 let memoryBuffer: Int32Array;
 let midiCCInputModules: Map<string, MidiCCModuleAddresses> = new Map();
 
