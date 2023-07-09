@@ -2,17 +2,17 @@ import { CompiledModuleLookup, MemoryBuffer } from '@8f4e/compiler';
 
 import { MidiModuleAddresses } from './types';
 
-export default function findMidiNoteModules(
+export default function findMidiNoteOutModules(
 	compiledModules: CompiledModuleLookup,
 	memoryBuffer: MemoryBuffer
 ): MidiModuleAddresses[] {
 	return Array.from(compiledModules)
 		.map(([, compiledModule]) => compiledModule)
-		.filter(({ id }) => id.startsWith('midi:'))
+		.filter(({ id }) => id.startsWith('midinoteout'))
 		.map(module => {
 			const note = module.memoryMap.get('note');
 			const channel = module.memoryMap.get('channel');
-			const noteOnOff = module.memoryMap.get('trigger');
+			const noteOnOff = module.memoryMap.get('gate');
 			const velocity = module.memoryMap.get('velocity');
 
 			const noteWordAddress = note

@@ -11,7 +11,7 @@ export default function findMidCCInputModules(
 			.map(([, compiledModule]) => compiledModule)
 			.filter(
 				({ id, memoryMap }) =>
-					id.startsWith('midiccin:') && memoryMap.has('channel') && memoryMap.has('cc') && memoryMap.has('channel')
+					id.startsWith('midiccin') && memoryMap.has('channel') && memoryMap.has('cc') && memoryMap.has('channel')
 			)
 			.map(module => {
 				const value = module.memoryMap.get('value');
