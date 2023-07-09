@@ -42,6 +42,9 @@ export default async function worklet(state: State, events: EventDispatcher) {
 
 		audioWorklet.port.onmessage = function ({ data }) {
 			switch (data.type) {
+				case 'process':
+					console.log('process');
+					break;
 				case 'compilationDone':
 					events.dispatch('compilationDone', data.payload);
 					break;
