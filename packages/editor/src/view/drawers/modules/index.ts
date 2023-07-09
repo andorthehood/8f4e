@@ -37,6 +37,10 @@ export default function drawModules(engine: Engine, state: State): void {
 				engine.drawSprite(0, 0, 'moduleBackground', module.width, module.height);
 			}
 
+			if (state.graphicHelper.selectedModule === module) {
+				engine.drawSprite(0, module.cursor.y, 'highlightedCodeLine', module.width, HGRID);
+			}
+
 			engine.setSpriteLookup(font('code'));
 
 			const corner = module.isOpen ? '+' : '+';

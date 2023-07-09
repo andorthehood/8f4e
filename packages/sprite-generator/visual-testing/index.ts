@@ -26,6 +26,7 @@ import spriteGenerator from '../src';
 				errorMessageBackground: '#ff0000',
 				dialogBackground: 'rgba(0,0,0,1)',
 				dialogDimmer: 'rgba(0,0,0,0.5)',
+				highlightedCodeLine: '#333333',
 			},
 			icons: {
 				outputConnectorBackground: '#111111',
