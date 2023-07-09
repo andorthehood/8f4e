@@ -25,6 +25,7 @@ const colorSchemes: Record<string, ColorScheme> = {
 			errorMessageBackground: '#cc0000',
 			dialogBackground: '#000000',
 			dialogDimmer: 'rgba(0,0,0,0.5)',
+			highlightedCodeLine: '#333333',
 		},
 		icons: {
 			outputConnectorBackground: '#003300',
@@ -57,6 +58,7 @@ const colorSchemes: Record<string, ColorScheme> = {
 			errorMessageBackground: '#cc0000',
 			dialogBackground: '#000000',
 			dialogDimmer: 'rgba(0,0,0,0.5)',
+			highlightedCodeLine: '#002200',
 		},
 		icons: {
 			outputConnectorBackground: '#002200',
@@ -89,6 +91,7 @@ const colorSchemes: Record<string, ColorScheme> = {
 			errorMessageBackground: '#cc0000',
 			dialogBackground: '#000000',
 			dialogDimmer: 'rgba(0,0,0,0.5)',
+			highlightedCodeLine: '#333333',
 		},
 		icons: {
 			outputConnectorBackground: '#220000',

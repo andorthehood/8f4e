@@ -4,8 +4,8 @@ import audioBufferProject from '../../examples/projects/audioBuffer';
 import exampleModules from '../../examples/modules';
 
 const modules = {
-	//'Logic Gates': ['AND', 'OR', 'NAND', 'NOR', 'XOR'],
-	//Bitwise: ['Bitwise And', 'Bitwise Or', 'Bitwise NAND', 'Bitwise NOR', 'Bitwise XOR'],
+	'Logic Gates': ['AND', 'OR', 'NAND', 'NOR', 'XOR'],
+	Bitwise: ['Bitwise And', 'Bitwise Or', 'Bitwise NAND', 'Bitwise NOR', 'Bitwise XOR'],
 	Sequencers: { 'Binary Sequencer': 'binarySequencer' },
 	MIDI: {
 		'MIDI Note In': 'midiNoteIn',

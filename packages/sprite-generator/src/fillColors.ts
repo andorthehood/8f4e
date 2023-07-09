@@ -16,6 +16,7 @@ const fillColors: Array<keyof ColorScheme['fill']> = [
 	'errorMessageBackground',
 	'dialogBackground',
 	'dialogDimmer',
+	'highlightedCodeLine',
 ];
 
 export enum Icon {
