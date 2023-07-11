@@ -8,6 +8,8 @@ import generalMIDIDrumCodes from './generalMIDIDrumCodes';
 import bitwiseAnd from './bitwiseAnd';
 import bitwiseOr from './bitwiseOr';
 import bitwiseXor from './bitwiseXor';
+import break16Step1 from './break16Step1';
+import break16Step2 from './break16Step2';
 
 const modules = {
 	audioBufferOut,
@@ -20,6 +22,8 @@ const modules = {
 	bitwiseAnd,
 	bitwiseOr,
 	bitwiseXor,
+	break16Step1,
+	break16Step2,
 } as const;
 
 export default modules;
