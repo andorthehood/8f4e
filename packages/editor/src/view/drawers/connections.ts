@@ -11,6 +11,7 @@ export default function drawConnections(engine: Engine, state: State): void {
 	engine.startGroup(state.project.viewport.x, state.project.viewport.y);
 
 	for (const module of state.graphicHelper.modules) {
+		const isSelected = module === state.graphicHelper.selectedModule;
 		for (const [, { x, y, id }] of module.inputs) {
 			const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(id);
 
@@ -29,7 +30,7 @@ export default function drawConnections(engine: Engine, state: State): void {
 				module.y + y + HGRID / 2,
 				output.module.x + output.x + VGRID,
 				output.module.y + output.y + VGRID,
-				'wire',
+				isSelected ? 'wireHighlighted' : 'wire',
 				1
 			);
 		}

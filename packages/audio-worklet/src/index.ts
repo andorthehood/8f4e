@@ -4,21 +4,14 @@ class Main extends AudioWorkletProcessor {
 		// @ts-ignore
 		super(...args);
 
-		this.port.postMessage({
-			type: 'audioWorkletReady',
-			payload: {
-				sampleRate,
-			},
-		});
-
 		this.port.onmessage = async event => {
-			if (event.data.type === 'recompile') {
-				this.recompile(event.data.memoryRef, event.data.codeBuffer, event.data.addresses);
+			if (event.data.type === 'init') {
+				this.init(event.data.memoryRef, event.data.codeBuffer, event.data.addresses);
 			}
 		};
 	}
 
-	async recompile(
+	async init(
 		memoryRef: WebAssembly.Memory,
 		codeBuffer: Uint8Array,
 		addresses: { audioBufferWordAddress: number; outputWordAddress: number; channelWordAddress: number }
@@ -34,7 +27,7 @@ class Main extends AudioWorkletProcessor {
 		this.memoryBuffer = memoryBuffer;
 
 		this.port.postMessage({
-			type: 'compilationDone',
+			type: 'initialized',
 			payload: {
 				sampleRate,
 			},
