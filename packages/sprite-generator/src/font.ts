@@ -20,6 +20,8 @@ const colorNames: Array<keyof Config['colorScheme']['text']> = [
 	'menuItemTextHighlighted',
 	'dialogText',
 	'dialogTitle',
+	'binaryZero',
+	'binaryOne',
 ];
 
 const fontPositions = Object.fromEntries(

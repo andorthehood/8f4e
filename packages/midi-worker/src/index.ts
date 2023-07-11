@@ -96,7 +96,6 @@ self.onmessage = function (event) {
 			onMidiMessage(event.data.payload);
 			break;
 		case 'init':
-			console.log('init', event.data);
 			init(
 				event.data.payload.memoryRef,
 				event.data.payload.sampleRate,
