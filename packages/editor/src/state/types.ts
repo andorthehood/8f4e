@@ -42,7 +42,7 @@ export type ExtendedInstructionSet = 'debug' | 'button' | 'switch';
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
-export type MenuGenerator = (state: State, payload: any) => ContextMenuItem[];
+export type MenuGenerator = (state: State, payload?: any) => ContextMenuItem[];
 
 export interface ContextMenu extends Position {
 	highlightedItem: number;
@@ -57,6 +57,12 @@ export interface BuildError {
 	code: number;
 	message: string;
 	moduleId: string;
+}
+
+export interface Runtime {
+	runner: 'audioWorklet' | 'webWorker';
+	latency: number;
+	renderQuantum: number;
 }
 
 export interface Compiler {
@@ -211,6 +217,7 @@ export interface EditorSettings {
 
 export interface State {
 	compiler: Compiler;
+	runtime: Runtime;
 	midi: Midi;
 	graphicHelper: GraphicHelper;
 	project: Project;

@@ -2,18 +2,11 @@ import { State } from '../types';
 import { EventDispatcher } from '../../events';
 
 export default async function compiler(state: State, events: EventDispatcher) {
-	const workerUrl = new URL('../../../../../packages/worker/src/index.ts', import.meta.url);
+	const workerUrl = new URL('../../../../../packages/compiler-worker/src/index.ts', import.meta.url);
 
 	const worker = new Worker(workerUrl, {
 		type: 'module',
 	});
-
-	function onMidiMessage(data) {
-		worker.postMessage({
-			type: 'midimessage',
-			payload: data,
-		});
-	}
 
 	async function onRecompile() {
 		if (!state.compiler.memoryRef) {
@@ -46,12 +39,6 @@ export default async function compiler(state: State, events: EventDispatcher) {
 
 	async function onWorkerMessage({ data }) {
 		switch (data.type) {
-			case 'midiMessage':
-				events.dispatch('sendMidiMessage', data.payload);
-				break;
-			case 'RNBOMessage':
-				events.dispatch('RNBOMessage', data.payload);
-				break;
 			case 'buildOk':
 				state.compiler.compiledModules = data.payload.compiledModules;
 				state.compiler.codeBuffer = data.payload.codeBuffer;
@@ -61,7 +48,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
 
 				state.compiler.buildErrors = [];
-				events.dispatch('buildOk');
+				events.dispatch('initRuntime');
 				break;
 			case 'buildError':
 				state.compiler.buildErrors = [
@@ -83,5 +70,4 @@ export default async function compiler(state: State, events: EventDispatcher) {
 	events.on('deleteModule', onRecompile);
 	events.on('init', onRecompile);
 	events.on('codeChange', onRecompile);
-	events.on('midiMessage', onMidiMessage);
 }

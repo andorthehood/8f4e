@@ -37,6 +37,7 @@ export interface ColorScheme {
 		moduleBackground: string;
 		moduleBackgroundDragged: string;
 		wire: string;
+		wireHighlighted: string;
 		errorMessageBackground: string;
 		dialogBackground: string;
 		dialogDimmer: string;

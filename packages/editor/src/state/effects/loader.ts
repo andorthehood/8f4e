@@ -14,17 +14,20 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 	function loadProject({ project: newProject }: { project: Project }) {
 		state['project'] = {
+			title: '',
+			author: '',
+			description: '',
 			modules: [],
 			groups: [],
 			viewport: {
-				height: 0,
-				width: 0,
 				x: 0,
 				y: 0,
 			},
 			rnbo: { patchers: {} },
 			sampleRate: 44100,
 		};
+
+		console.log(newProject);
 
 		Object.keys(newProject).forEach(key => {
 			state['project'][key] = newProject[key] || defaultState.project[key];
@@ -100,7 +103,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		reader.addEventListener('load', readerEvent => {
 			const content = readerEvent.target?.result?.toString();
 			if (content) {
-				loadProject(JSON.parse(content));
+				console.log(JSON.parse(content));
+				loadProject({ project: JSON.parse(content) });
 				events.dispatch('saveState');
 			}
 		});

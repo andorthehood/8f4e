@@ -1,6 +1,5 @@
-import { CompileOptions, Module } from '@8f4e/compiler';
+import { CompiledModule } from '@8f4e/compiler';
 
-import testBuild from './testBuild';
 import resetMidi from './resetMidi';
 import findMidiNoteOutModules from './findMidiNoteOutModules';
 import broadcastMidiMessages from './broadcastMidiMessages';
@@ -10,26 +9,28 @@ import findRNBOModules from './findRNBOModules';
 import broadcastRNBOMessages from './broadcastRNBOMessages';
 import findMidiCCInputModules from './findMidiCCInputModules';
 import { MidiCCModuleAddresses } from './types';
+import createModule from './createModule';
 
 let interval: NodeJS.Timeout;
-const intervalTime = 1;
+let statsInterval: NodeJS.Timeout;
 let memoryBuffer: Int32Array;
 let midiCCInputModules: Map<string, MidiCCModuleAddresses> = new Map();
+let timeToExecute: number;
+let lastIntervalTime: number;
+let drift = 0;
 
-async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
+async function init(
+	memoryRef: WebAssembly.Memory,
+	sampleRate: number,
+	codeBuffer: Uint8Array,
+	compiledModules: Map<string, CompiledModule>
+) {
 	try {
-		const { codeBuffer, compiledModules } = await testBuild(memoryRef, modules, compilerOptions);
-		self.postMessage({
-			type: 'buildOk',
-			payload: {
-				codeBuffer,
-				compiledModules,
-			},
-		});
-
 		clearInterval(interval);
+		clearInterval(statsInterval);
 
-		memoryBuffer = new Int32Array(memoryRef.buffer);
+		const { memoryBuffer, cycle, init } = await createModule(memoryRef, codeBuffer);
+		init();
 
 		const midiNoteModules = findMidiNoteOutModules(compiledModules, memoryBuffer);
 		const RNBOModules = findRNBOModules(compiledModules);
@@ -38,11 +39,34 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compi
 
 		resetMidi();
 
+		const intervalTime = Math.floor(1000 / sampleRate);
+
 		interval = setInterval(() => {
+			const startTime = performance.now();
+			drift += intervalTime - (startTime - lastIntervalTime);
+			lastIntervalTime = startTime;
+			cycle();
+			const endTime = performance.now();
+			timeToExecute = endTime - startTime;
 			broadcastMidiCCMessages(midiCCOutputModules, memoryBuffer);
 			broadcastMidiMessages(midiNoteModules, memoryBuffer);
 			broadcastRNBOMessages(RNBOModules, memoryBuffer);
 		}, intervalTime);
+
+		statsInterval = setInterval(() => {
+			self.postMessage({
+				type: 'stats',
+				payload: {
+					drift,
+					timeToExecute,
+				},
+			});
+		}, 10000);
+
+		self.postMessage({
+			type: 'initialized',
+			payload: {},
+		});
 	} catch (error) {
 		console.log('buildError', error);
 		self.postMessage({
@@ -71,8 +95,14 @@ self.onmessage = function (event) {
 		case 'midimessage':
 			onMidiMessage(event.data.payload);
 			break;
-		case 'recompile':
-			recompile(event.data.payload.memoryRef, event.data.payload.modules, event.data.payload.compilerOptions);
+		case 'init':
+			console.log('init', event.data);
+			init(
+				event.data.payload.memoryRef,
+				event.data.payload.sampleRate,
+				event.data.payload.codeBuffer,
+				event.data.payload.compiledModules
+			);
 			break;
 	}
 };
