@@ -5,7 +5,7 @@ import exampleModules from '../../examples/modules';
 
 const modules = {
 	'Logic Gates': ['AND', 'OR', 'NAND', 'NOR', 'XOR'],
-	Bitwise: ['Bitwise And', 'Bitwise Or', 'Bitwise NAND', 'Bitwise NOR', 'Bitwise XOR'],
+	Bitwise: { 'Bitwise And': 'bitwiseAnd', 'Bitwise Or': 'bitwiseOr', 'Bitwise XOR': 'bitwiseXor' },
 	Sequencers: { 'Binary Sequencer': 'binarySequencer' },
 	MIDI: {
 		'MIDI Note In': 'midiNoteIn',
@@ -86,9 +86,31 @@ export const builtInModuleMenu: MenuGenerator = (state, { category }: { category
 };
 
 export const sampleRateMenu: MenuGenerator = () => [
-	{ title: '44100', action: 'setSampleRate', payload: { sampleRate: 44100 }, close: true },
-	{ title: '22050', action: 'setSampleRate', payload: { sampleRate: 22050 }, close: true },
-	{ title: '11025', action: 'setSampleRate', payload: { sampleRate: 11025 }, close: true },
+	{
+		title: '44100 Hz (buffered, for audio and MIDI CC)',
+		action: 'setSampleRate',
+		payload: { sampleRate: 44100 },
+		close: true,
+	},
+	{
+		title: '22050 Hz (buffered, for audio and MIDI CC)',
+		action: 'setSampleRate',
+		payload: { sampleRate: 22050 },
+		close: true,
+	},
+	{
+		title: '100 Hz (real time, for high precision MIDI timing)',
+		action: 'setSampleRate',
+		payload: { sampleRate: 100 },
+		close: true,
+	},
+	{
+		title: '50 Hz (real time, for high precision MIDI timing)',
+		action: 'setSampleRate',
+		payload: { sampleRate: 50 },
+		close: true,
+	},
+	{ title: '1 Hz (real time, for debugging)', action: 'setSampleRate', payload: { sampleRate: 1 }, close: true },
 ];
 
 export const projectSettingsMenu: MenuGenerator = () => [
@@ -102,7 +124,7 @@ export const projectSettingsMenu: MenuGenerator = () => [
 		action: 'removeRNBOPatches',
 		close: true,
 	},
-	{ title: 'Set Sample Rate', action: 'openSubMenu', payload: { menu: 'sampleRateMenu ' }, close: false },
+	{ title: 'Set Sample Rate', action: 'openSubMenu', payload: { menu: 'sampleRateMenu' }, close: false },
 ];
 
 export const editorSettingsMenu: MenuGenerator = () => [

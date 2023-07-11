@@ -6,8 +6,46 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 	let selectedInput: MIDIInput;
 	let midiAccess: MIDIAccess;
 
+	const workerUrl = new URL('../../../../../packages/midi-worker/src/index.ts', import.meta.url);
+
+	let worker: Worker | undefined;
+
+	function onInitRuntime() {
+		if (state.runtime.runner !== 'webWorker') {
+			if (worker) {
+				worker.terminate();
+				worker.removeEventListener('message', onWorkerMessage);
+				worker = undefined;
+			}
+			return;
+		}
+
+		if (!worker) {
+			worker = new Worker(workerUrl, {
+				type: 'module',
+			});
+
+			worker.addEventListener('message', onWorkerMessage);
+		}
+
+		worker.postMessage({
+			type: 'init',
+			payload: {
+				memoryRef: state.compiler.memoryRef,
+				sampleRate: state.project.sampleRate,
+				codeBuffer: state.compiler.codeBuffer,
+				compiledModules: state.compiler.compiledModules,
+			},
+		});
+	}
+
 	function onMidiMessage(event) {
-		events.dispatch('midiMessage', event.data);
+		if (worker) {
+			worker.postMessage({
+				type: 'midimessage',
+				payload: event.data,
+			});
+		}
 	}
 
 	function onMidiAccess(access: MIDIAccess) {
@@ -38,13 +76,26 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 		});
 	}
 
-	function onSendMidiMessage({ message, delay }) {
-		if (selectedOutput) {
-			selectedOutput.send(message, delay);
+	async function onWorkerMessage({ data }) {
+		switch (data.type) {
+			case 'midiMessage':
+				if (selectedOutput) {
+					selectedOutput.send(data.payload.message, data.payload.delay);
+				}
+				break;
+			case 'RNBOMessage':
+				events.dispatch('RNBOMessage', data.payload);
+				break;
+			case 'initialized':
+				events.dispatch('runtimeInitialized');
+				break;
+			case 'stats':
+				console.log(data.payload);
+				break;
 		}
 	}
 
 	navigator.requestMIDIAccess().then(onMidiAccess);
 	events.on('selectMidiOutput', onSelectMidiOutput);
-	events.on('sendMidiMessage', onSendMidiMessage);
+	events.on('initRuntime', onInitRuntime);
 }

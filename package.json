@@ -76,7 +76,8 @@
 		"@8f4e/compiler": "file:packages/compiler",
 		"@8f4e/editor": "file:packages/editor",
 		"@8f4e/sprite-generator": "file:packages/sprite-generator",
-		"@8f4e/worker": "file:packages/worker",
+		"@8f4e/midi-worker": "file:packages/midi-worker",
+		"@8f4e/compiler-worker": "file:packages/compiler-worker",
 		"@rnbo/js": "^1.1.0",
 		"buffer": "5.7.1"
 	}

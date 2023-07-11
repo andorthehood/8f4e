@@ -23,6 +23,7 @@ import spriteGenerator from '../src';
 				moduleBackground: '#000000',
 				moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 				wire: '#ffffff',
+				wireHighlighted: '#ffffff',
 				errorMessageBackground: '#ff0000',
 				dialogBackground: 'rgba(0,0,0,1)',
 				dialogDimmer: 'rgba(0,0,0,0.5)',

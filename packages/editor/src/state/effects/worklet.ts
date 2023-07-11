@@ -7,8 +7,12 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	let audioContext: AudioContext;
 	let audioWorklet: AudioWorkletNode;
 
-	function onRecompile() {
-		if (!audioWorklet) {
+	function onInitRuntime() {
+		if (audioWorklet && state.runtime.runner !== 'audioWorklet') {
+			audioWorklet.disconnect();
+		}
+
+		if (!audioWorklet || state.runtime.runner !== 'audioWorklet') {
 			return;
 		}
 
@@ -21,7 +25,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		};
 
 		audioWorklet.port.postMessage({
-			type: 'recompile',
+			type: 'init',
 			memoryRef: state.compiler.memoryRef,
 			codeBuffer: state.compiler.codeBuffer,
 			addresses,
@@ -29,7 +33,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	}
 
 	async function initAudioContext() {
-		if (audioContext) {
+		if (audioContext || state.runtime.runner !== 'audioWorklet') {
 			return;
 		}
 
@@ -42,21 +46,14 @@ export default async function worklet(state: State, events: EventDispatcher) {
 
 		audioWorklet.port.onmessage = function ({ data }) {
 			switch (data.type) {
-				case 'process':
-					console.log('process');
-					break;
-				case 'compilationDone':
-					events.dispatch('compilationDone', data.payload);
-					break;
-				case 'audioWorkletReady':
-					onRecompile();
-					events.dispatch('audioWorkletReady', data.payload);
+				case 'initialized':
+					events.dispatch('runtimeInitialized', data.payload);
 					break;
 			}
 		};
 		audioWorklet.connect(audioContext.destination);
 	}
 
-	events.on('buildOk', onRecompile);
+	events.on('initRuntime', onInitRuntime);
 	events.on('mousedown', initAudioContext);
 }

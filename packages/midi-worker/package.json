@@ -1,5 +1,5 @@
 {
-	"name": "@8f4e/worker",
+	"name": "@8f4e/midi-worker",
 	"version": "1.0.0",
 	"description": "",
 	"main": "dist/index.js",

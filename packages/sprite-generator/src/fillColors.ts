@@ -13,6 +13,7 @@ const fillColors: Array<keyof ColorScheme['fill']> = [
 	'moduleBackground',
 	'moduleBackgroundDragged',
 	'wire',
+	'wireHighlighted',
 	'errorMessageBackground',
 	'dialogBackground',
 	'dialogDimmer',
