@@ -14,6 +14,8 @@ import spriteGenerator from '../src';
 				menuItemTextHighlighted: 'rgba(0,0,0,255)',
 				dialogText: 'rgba(255,255,255,255)',
 				dialogTitle: 'rgba(255,255,255,255)',
+				binaryZero: 'rgba(201,212,135,255)',
+				binaryOne: 'rgba(201,212,135,255)',
 			},
 			fill: {
 				menuItemBackground: 'rgba(0,0,0,255)',

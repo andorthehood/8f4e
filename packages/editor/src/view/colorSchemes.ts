@@ -1,5 +1,4 @@
 import { ColorScheme } from '@8f4e/sprite-generator';
-import { Dialog } from 'puppeteer';
 
 const colorSchemes: Record<string, ColorScheme> = {
 	default: {
@@ -13,6 +12,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			menuItemTextHighlighted: 'rgba(0,0,0,255)',
 			dialogText: '#ffffff',
 			dialogTitle: '#ffffff',
+			binaryZero: 'rgba(201,212,135,255)',
+			binaryOne: 'rgba(201,212,135,255)',
 		},
 		fill: {
 			menuItemBackground: 'rgba(0,0,0,255)',
@@ -47,6 +48,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			menuItemTextHighlighted: '#000000',
 			dialogText: '#ffffff',
 			dialogTitle: '#ffffff',
+			binaryZero: '#006600',
+			binaryOne: '#00ff00',
 		},
 		fill: {
 			menuItemBackground: 'rgba(0,0,0,0.9)',
@@ -81,6 +84,8 @@ const colorSchemes: Record<string, ColorScheme> = {
 			menuItemTextHighlighted: '#000000',
 			dialogText: '#ffffff',
 			dialogTitle: '#ffffff',
+			binaryZero: '#ff0000',
+			binaryOne: '#ff0000',
 		},
 		fill: {
 			menuItemBackground: '#000000',

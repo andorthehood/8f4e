@@ -155,6 +155,11 @@ export function generateCodeColorMap(code: string[]) {
 		const { indices: instructionIndices } = keywords.exec(line) || {};
 		const { index: numberIndex } = /(?!^)(?:-|)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: commentIndex } = /;/.exec(line) || {};
+		const binaryNumberMatch = /0b([01]+)/.exec(line) || { index: undefined };
+		const { index: binaryNumberIndex } = binaryNumberMatch;
+		const binaryNumber = binaryNumberMatch[1] || '';
+		const binaryZeros = binaryNumber.matchAll(/(0+)/g);
+		const binaryOnes = binaryNumber.matchAll(/(1+)/g);
 
 		const codeColors = new Array(line.length).fill(undefined);
 
@@ -173,6 +178,18 @@ export function generateCodeColorMap(code: string[]) {
 
 		if (typeof numberIndex !== 'undefined') {
 			codeColors[numberIndex] = font('numbers');
+		}
+
+		if (binaryZeros && typeof binaryNumberIndex !== 'undefined') {
+			for (const match of binaryZeros) {
+				codeColors[match.index + binaryNumberIndex + 2] = font('binaryZero');
+			}
+		}
+
+		if (binaryOnes && typeof binaryNumberIndex !== 'undefined') {
+			for (const match of binaryOnes) {
+				codeColors[match.index + binaryNumberIndex + 2] = font('binaryOne');
+			}
 		}
 
 		return codeColors;
