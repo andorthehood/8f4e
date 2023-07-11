@@ -5,6 +5,9 @@ import binarySequencer from './binarySequencer';
 import midiNoteOut from './midiNoteOut';
 import midiCCOut from './midiCCOut';
 import generalMIDIDrumCodes from './generalMIDIDrumCodes';
+import bitwiseAnd from './bitwiseAnd';
+import bitwiseOr from './bitwiseOr';
+import bitwiseXor from './bitwiseXor';
 
 const modules = {
 	audioBufferOut,
@@ -14,6 +17,9 @@ const modules = {
 	midiNoteOut,
 	midiCCOut,
 	generalMIDIDrumCodes,
+	bitwiseAnd,
+	bitwiseOr,
+	bitwiseXor,
 } as const;
 
 export default modules;
