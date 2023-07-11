@@ -1,11 +1,13 @@
 import { MenuGenerator } from '../../types';
 import bistableMultivibratorsProject from '../../examples/projects/bistableMultivibrators';
 import audioBufferProject from '../../examples/projects/audioBuffer';
+import midiBreakBeat from '../../examples/projects/midiBreakBeat';
 import exampleModules from '../../examples/modules';
 
 const modules = {
 	'Logic Gates': ['AND', 'OR', 'NAND', 'NOR', 'XOR'],
 	Bitwise: { 'Bitwise And': 'bitwiseAnd', 'Bitwise Or': 'bitwiseOr', 'Bitwise XOR': 'bitwiseXor' },
+	'Break Beats': { '16 Step Break 1': 'break16Step1', '16 Step Break 2': 'break16Step2' },
 	Sequencers: { 'Binary Sequencer': 'binarySequencer' },
 	MIDI: {
 		'MIDI Note In': 'midiNoteIn',
@@ -150,4 +152,5 @@ export const exampleProjectMenu: MenuGenerator = () => [
 		close: true,
 	},
 	{ title: 'Audio Buffer', action: 'loadProject', payload: { project: audioBufferProject }, close: true },
+	{ title: 'MIDI Break Beat', action: 'loadProject', payload: { project: midiBreakBeat }, close: true },
 ];
