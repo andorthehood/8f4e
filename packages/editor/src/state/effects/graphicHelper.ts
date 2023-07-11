@@ -241,7 +241,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	events.on('buildError', updateGraphicsAll);
 	events.on('moduleClick', onModuleClick);
 	events.on('moduleClick', ({ module }) => updateGraphics(module));
-	events.on('compilationDone', updateGraphicsAll);
+	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on('moduleAdded', ({ module }) => updateGraphics(module));
 	events.on('init', updateGraphicsAll);
 	events.on('keydown', onKeydown);
