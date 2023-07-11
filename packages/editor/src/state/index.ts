@@ -14,6 +14,7 @@ import button from './effects/modules/button';
 import RNBO from './effects/rnbo';
 import worklet from './effects/worklet';
 import colorTheme from './effects/colorTheme';
+import sampleRate from './effects/sampleRate';
 
 import { EventDispatcher } from '../events';
 
@@ -38,6 +39,11 @@ const defaultState: State = {
 			},
 		},
 	},
+	runtime: {
+		runner: 'webWorker',
+		latency: 0,
+		renderQuantum: 120,
+	},
 	midi: {
 		inputs: [],
 		outputs: [],
@@ -52,6 +58,8 @@ const defaultState: State = {
 		modules: new Set(),
 		outputsByWordAddress: new Map(),
 		viewport: {
+			width: 0,
+			height: 0,
 			roundedHeight: 0,
 			roundedWidth: 0,
 		},
@@ -68,11 +76,12 @@ const defaultState: State = {
 		selectedModule: undefined,
 	},
 	project: {
+		title: '',
+		author: '',
+		description: '',
 		modules: [],
 		groups: [],
 		viewport: {
-			height: 0,
-			width: 0,
 			x: 0,
 			y: 0,
 		},
@@ -106,6 +115,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	RNBO(state, events);
 	worklet(state, events);
 	colorTheme(state, events);
+	sampleRate(state, events);
 	events.dispatch('init');
 	return state;
 }

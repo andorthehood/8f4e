@@ -91,8 +91,6 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 			state.graphicHelper.contextMenu.items = decorateMenu(menus.mainMenu(state));
 		}
 
-		console.log(getLongestMenuItem(state.graphicHelper.contextMenu.items));
-
 		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
 
 		events.on('mousedown', onMouseDown);
