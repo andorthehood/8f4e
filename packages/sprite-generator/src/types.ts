@@ -28,6 +28,8 @@ export interface ColorScheme {
 		menuItemTextHighlighted: string;
 		dialogTitle: string;
 		dialogText: string;
+		binaryZero: string;
+		binaryOne: string;
 	};
 	fill: {
 		menuItemBackground: string;
