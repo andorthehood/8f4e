@@ -25,6 +25,9 @@ const memory: InstructionHandler = function (line, context) {
 		defaultValue = 0;
 	} else if (line.arguments[1].type === ArgumentType.LITERAL) {
 		defaultValue = line.arguments[1].value;
+	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && /&(\S+)\.(\S+)/.test(line.arguments[1].value)) {
+		// Do nothing
+		// Intermodular references are resolved later
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
 		const memoryItem = memory.get(line.arguments[1].value.substring(1));
 
@@ -33,9 +36,6 @@ const memory: InstructionHandler = function (line, context) {
 		}
 
 		defaultValue = memoryItem.byteAddress;
-	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && /(\S+)\.(\S+)/.test(line.arguments[1].value)) {
-		// Do nothing
-		// Intermodular references are resolved later
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
 		const constant = context.namespace.consts[line.arguments[1].value];
 
