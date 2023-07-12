@@ -27,8 +27,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			sampleRate: 44100,
 		};
 
-		console.log(newProject);
-
 		Object.keys(newProject).forEach(key => {
 			state['project'][key] = newProject[key] || defaultState.project[key];
 		});
