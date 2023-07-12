@@ -13,8 +13,8 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 	function onInitRuntime() {
 		if (state.runtime.runner !== 'webWorker') {
 			if (worker) {
-				worker.terminate();
 				worker.removeEventListener('message', onWorkerMessage);
+				worker.terminate();
 				worker = undefined;
 			}
 			return;
