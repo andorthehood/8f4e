@@ -69,14 +69,15 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 		ast.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
-				['int*', 'float*', 'init'].includes(instruction) &&
+				['int*', 'float*', 'init', 'int'].includes(instruction) &&
 				_arguments[0] &&
 				_arguments[1] &&
 				_arguments[0].type === ArgumentType.IDENTIFIER &&
 				_arguments[1].type === ArgumentType.IDENTIFIER &&
-				/(\S+)\.(\S+)/.test(_arguments[1].value)
+				/&(\S+)\.(\S+)/.test(_arguments[1].value)
 			) {
-				const [targetModuleId, targetMemoryId] = _arguments[1].value.split('.');
+				// Remove &
+				const [targetModuleId, targetMemoryId] = _arguments[1].value.substring(1).split('.');
 
 				const targetModule = compiledModules.get(targetModuleId);
 
