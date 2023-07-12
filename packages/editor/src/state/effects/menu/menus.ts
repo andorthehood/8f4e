@@ -6,7 +6,12 @@ import exampleModules from '../../examples/modules';
 
 const modules = {
 	'Logic Gates': ['AND', 'OR', 'NAND', 'NOR', 'XOR'],
-	Bitwise: { 'Bitwise And': 'bitwiseAnd', 'Bitwise Or': 'bitwiseOr', 'Bitwise XOR': 'bitwiseXor' },
+	Bitwise: {
+		'Bitwise And': 'bitwiseAnd',
+		'Bitwise Or': 'bitwiseOr',
+		'Bitwise XOR': 'bitwiseXor',
+		'Decimal to Binary Converter (8bit, MSb)': 'decToBin8bitMSb',
+	},
 	'Break Beats': { '16 Step Break 1': 'break16Step1', '16 Step Break 2': 'break16Step2' },
 	Sequencers: { 'Binary Sequencer': 'binarySequencer' },
 	MIDI: {
