@@ -12,6 +12,7 @@ import break16Step1 from './break16Step1';
 import break16Step2 from './break16Step2';
 import decToBin8bitMSb from './decToBin8bitMSb';
 import amenBreak64Step from './amenBreak64Step';
+import clockDivider from './clockDivider';
 
 const modules = {
 	audioBufferOut,
@@ -28,6 +29,7 @@ const modules = {
 	break16Step2,
 	decToBin8bitMSb,
 	amenBreak64Step,
+	clockDivider,
 } as const;
 
 export default modules;
