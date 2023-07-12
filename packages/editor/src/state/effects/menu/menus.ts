@@ -12,7 +12,11 @@ const modules = {
 		'Bitwise XOR': 'bitwiseXor',
 		'Decimal to Binary Converter (8bit, MSb)': 'decToBin8bitMSb',
 	},
-	'Break Beats': { '16 Step Break 1': 'break16Step1', '16 Step Break 2': 'break16Step2' },
+	'Break Beats': {
+		'16 Step Break 1': 'break16Step1',
+		'16 Step Break 2': 'break16Step2',
+		'Amen Break 64 Step': 'amenBreak64Step',
+	},
 	Sequencers: { 'Binary Sequencer': 'binarySequencer' },
 	MIDI: {
 		'MIDI Note In': 'midiNoteIn',
