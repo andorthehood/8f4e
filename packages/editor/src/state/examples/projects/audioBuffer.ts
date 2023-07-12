@@ -41,7 +41,7 @@ const project: Project = {
 			code: [
 				'module audioout',
 				'',
-				'float* in saw.out',
+				'float* in &saw.out',
 				'int channel LEFT_CHANNEL',
 				'',
 				'; Audio buffer',
