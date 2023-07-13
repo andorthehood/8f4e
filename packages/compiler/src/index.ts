@@ -26,6 +26,7 @@ import {
 import { calculateModuleWordSize } from './utils';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
 import { ErrorCode, getError } from './errors';
+import { sortModules } from './gaphOptimizer';
 
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
@@ -101,7 +102,7 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	});
 }
 
-export function compileModules(modules: Module[], options: CompileOptions): CompiledModule[] {
+export function compileModules(modules: AST[], options: CompileOptions): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress;
 	const builtInConsts: Namespace['consts'] = {
 		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
@@ -111,16 +112,14 @@ export function compileModules(modules: Module[], options: CompileOptions): Comp
 		...options.environmentExtensions.constants,
 	};
 
-	const namespaces: Namespaces = new Map();
+	const namespaces: Namespaces = new Map(
+		modules.map(ast => {
+			const moduleName = getModuleName(ast);
+			return [moduleName, { consts: collectConstants(ast) }];
+		})
+	);
 
-	const astModules = modules.map(({ code }) => {
-		const ast = compileToAST(code, options);
-		const moduleName = getModuleName(ast);
-		namespaces.set(moduleName, { consts: collectConstants(ast) });
-		return ast;
-	});
-
-	return astModules.map(ast => {
+	return modules.map(ast => {
 		const module = compileModule(ast, builtInConsts, namespaces, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
 
 		memoryAddress += calculateModuleWordSize(module);
@@ -176,7 +175,9 @@ export default function compile(
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 } {
-	const compiledModules = compileModules(modules, { ...options, startingMemoryWordAddress: 1 });
+	const astModules = modules.map(({ code }) => compileToAST(code, options));
+	const sortedModules = sortModules(astModules);
+	const compiledModules = compileModules(sortedModules, { ...options, startingMemoryWordAddress: 1 });
 	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
 	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
