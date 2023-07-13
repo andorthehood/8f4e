@@ -2,7 +2,7 @@ import { MenuGenerator } from '../../types';
 import bistableMultivibratorsProject from '../../examples/projects/bistableMultivibrators';
 import audioBufferProject from '../../examples/projects/audioBuffer';
 import midiBreakBeat from '../../examples/projects/midiBreakBeat';
-import midiAmenBreak from '../../examples/projects/midiAmenBreak';
+import midiBreakBreak2dSequencer from '../../examples/projects/midiBreakBreak2dSequencer';
 import exampleModules from '../../examples/modules';
 
 const modules = {
@@ -163,5 +163,10 @@ export const exampleProjectMenu: MenuGenerator = () => [
 	},
 	{ title: 'Audio Buffer', action: 'loadProject', payload: { project: audioBufferProject }, close: true },
 	{ title: 'MIDI Break Beat', action: 'loadProject', payload: { project: midiBreakBeat }, close: true },
-	{ title: 'MIDI Amen Break', action: 'loadProject', payload: { project: midiAmenBreak }, close: true },
+	{
+		title: 'MIDI Break Beat with 2D Sequencer',
+		action: 'loadProject',
+		payload: { project: midiBreakBreak2dSequencer },
+		close: true,
+	},
 ];
