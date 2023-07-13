@@ -1,13 +1,13 @@
 import audioBuffer from './audioBuffer';
 import bistableMultivibrators from './bistableMultivibrators';
 import midiBreakBeat from './midiBreakBeat';
-import midiAmenBreak from './midiAmenBreak';
+import midiBreakBreak2dSequencer from './midiBreakBreak2dSequencer';
 
 const projects = {
 	audioBuffer,
 	bistableMultivibrators,
 	midiBreakBeat,
-	midiAmenBreak,
+	midiBreakBreak2dSequencer,
 } as const;
 
 export default projects;
