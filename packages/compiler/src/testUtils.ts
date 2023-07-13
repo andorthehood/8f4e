@@ -13,6 +13,7 @@ import {
 import { FunctionBody } from './wasmUtils/typeHelpers';
 import { CompiledModule, TestModule } from './types';
 import { WORD_LENGTH } from './consts';
+import { compileToAST } from './compiler';
 
 import { compileModules, getInitialMemory } from '.';
 
@@ -45,7 +46,8 @@ export function setInitialMemory(memory: DataView, module: CompiledModule): void
 export async function createTestModule(sourceCode: string): Promise<TestModule> {
 	let allocatedMemoryForTestData = 0;
 
-	const module: CompiledModule = compileModules([{ code: sourceCode.split('\n') }], {
+	const ast = compileToAST(sourceCode.split('\n'));
+	const module: CompiledModule = compileModules([ast], {
 		environmentExtensions: { constants: {}, ignoredKeywords: [] },
 		startingMemoryWordAddress: 0,
 	})[0];
