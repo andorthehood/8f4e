@@ -62,6 +62,8 @@ const defaultState: State = {
 			height: 0,
 			roundedHeight: 0,
 			roundedWidth: 0,
+			vGrid: 8,
+			hGrid: 16,
 		},
 		contextMenu: {
 			highlightedItem: 0,

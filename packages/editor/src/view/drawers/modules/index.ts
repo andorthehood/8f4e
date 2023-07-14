@@ -9,7 +9,6 @@ import drawButtons from './buttons';
 import drawErrorMessages from './errorMessages';
 
 import { State } from '../../../state/types';
-import { HGRID, VGRID } from '../consts';
 
 export default function drawModules(engine: Engine, state: State): void {
 	const { x: offsetX, y: offsetY } = state.project.viewport;
@@ -38,7 +37,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			if (state.graphicHelper.selectedModule === module) {
-				engine.drawSprite(0, module.cursor.y, 'highlightedCodeLine', module.width, HGRID);
+				engine.drawSprite(0, module.cursor.y, 'highlightedCodeLine', module.width, state.graphicHelper.viewport.hGrid);
 			}
 
 			engine.setSpriteLookup(font('code'));
@@ -46,9 +45,13 @@ export default function drawModules(engine: Engine, state: State): void {
 			const corner = module.isOpen ? '+' : '+';
 
 			engine.drawText(0, 0, corner);
-			engine.drawText(module.width - VGRID, 0, corner);
-			engine.drawText(0, module.height - HGRID, corner);
-			engine.drawText(module.width - VGRID, module.height - HGRID, corner);
+			engine.drawText(module.width - state.graphicHelper.viewport.vGrid, 0, corner);
+			engine.drawText(0, module.height - state.graphicHelper.viewport.hGrid, corner);
+			engine.drawText(
+				module.width - state.graphicHelper.viewport.vGrid,
+				module.height - state.graphicHelper.viewport.hGrid,
+				corner
+			);
 
 			engine.setSpriteLookup(font('code'));
 
@@ -59,7 +62,11 @@ export default function drawModules(engine: Engine, state: State): void {
 						engine.setSpriteLookup(lookup);
 					}
 					if (module.codeToRender[i][j] !== 32) {
-						engine.drawSprite(VGRID * (j + 1), HGRID * i, module.codeToRender[i][j]);
+						engine.drawSprite(
+							state.graphicHelper.viewport.vGrid * (j + 1),
+							state.graphicHelper.viewport.hGrid * i,
+							module.codeToRender[i][j]
+						);
 					}
 				}
 			}
