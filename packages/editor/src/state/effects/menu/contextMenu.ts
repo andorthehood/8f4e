@@ -1,15 +1,14 @@
 import * as menus from './menus';
 
 import { EventDispatcher } from '../../../events';
-import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 import { ContextMenuItem, State } from '../../types';
 
-function getHighlightedMenuItem(x, y, width) {
+function getHighlightedMenuItem(x, y, width, height) {
 	if (x < 0 || x > width || y < 0) {
 		return Infinity;
 	}
-	return Math.floor(y / HGRID);
+	return Math.floor(y / height);
 }
 
 function getLongestMenuItem(menuItems: ContextMenuItem[], min = 16) {
@@ -41,7 +40,12 @@ function decorateMenu(menuItems: ContextMenuItem[]) {
 export default function contextMenu(state: State, events: EventDispatcher): () => void {
 	const onMouseMove = event => {
 		const { itemWidth, x, y } = state.graphicHelper.contextMenu;
-		state.graphicHelper.contextMenu.highlightedItem = getHighlightedMenuItem(event.x - x, event.y - y, itemWidth);
+		state.graphicHelper.contextMenu.highlightedItem = getHighlightedMenuItem(
+			event.x - x,
+			event.y - y,
+			itemWidth,
+			state.graphicHelper.viewport.hGrid
+		);
 		event.stopPropagation = true;
 	};
 
@@ -79,8 +83,10 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		const { x, y } = event;
 
 		state.graphicHelper.contextMenu.highlightedItem = 0;
-		state.graphicHelper.contextMenu.x = Math.round(x / VGRID) * VGRID;
-		state.graphicHelper.contextMenu.y = Math.round(y / HGRID) * HGRID;
+		state.graphicHelper.contextMenu.x =
+			Math.round(x / state.graphicHelper.viewport.vGrid) * state.graphicHelper.viewport.vGrid;
+		state.graphicHelper.contextMenu.y =
+			Math.round(y / state.graphicHelper.viewport.hGrid) * state.graphicHelper.viewport.hGrid;
 		state.graphicHelper.contextMenu.open = true;
 
 		const module = findModuleAtViewportCoordinates(state.graphicHelper, state.project.viewport, x, y);
@@ -91,7 +97,8 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 			state.graphicHelper.contextMenu.items = decorateMenu(menus.mainMenu(state));
 		}
 
-		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
+		state.graphicHelper.contextMenu.itemWidth =
+			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 
 		events.on('mousedown', onMouseDown);
 		events.on('mousemove', onMouseMove);
@@ -104,7 +111,8 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 			{ title: '< Back', action: 'menuBack' },
 			...menus[menu](state, event),
 		]);
-		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
+		state.graphicHelper.contextMenu.itemWidth =
+			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 	};
 
 	const onMenuBack = () => {
@@ -113,7 +121,8 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 
 		if (!menu) {
 			state.graphicHelper.contextMenu.items = decorateMenu(menus.mainMenu(state));
-			state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
+			state.graphicHelper.contextMenu.itemWidth =
+				getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 			return;
 		}
 
@@ -121,7 +130,8 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 			{ title: '< Back', action: 'menuBack' },
 			...menus[menu](state),
 		]);
-		state.graphicHelper.contextMenu.itemWidth = getLongestMenuItem(state.graphicHelper.contextMenu.items) * VGRID;
+		state.graphicHelper.contextMenu.itemWidth =
+			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 	};
 
 	events.on('openSubMenu', onOpenSubMenu);
