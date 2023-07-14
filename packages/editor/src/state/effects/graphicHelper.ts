@@ -1,4 +1,3 @@
-import { HGRID, VGRID } from '../../view/drawers/consts';
 import { EventDispatcher, EventHandler, EventObject } from '../../events';
 import { ModuleGraphicData, Output, State } from '../types';
 import {
@@ -26,8 +25,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onModuleClick = function ({ relativeX = 0, relativeY = 0, module }: EventObject) {
 		const [row, col] = moveCaret(
 			module.code,
-			reverseGapCalculator(Math.floor(relativeY / HGRID), module.gaps),
-			Math.floor(relativeX / VGRID) - (module.padLength + 2),
+			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.viewport.hGrid), module.gaps),
+			Math.floor(relativeX / state.graphicHelper.viewport.vGrid) - (module.padLength + 2),
 			'Jump'
 		);
 		module.cursor.row = row;
@@ -49,7 +48,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			(line, index) => `${index}`.padStart(graphicData.padLength, '0') + ' ' + line
 		);
 
-		graphicData.width = Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) * VGRID;
+		graphicData.width =
+			Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) * state.graphicHelper.viewport.vGrid;
 
 		graphicData.codeColors = generateCodeColorMap(graphicData.codeWithLineNumbers);
 
@@ -84,7 +84,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			}
 			graphicData.errorMessages.set(buildError.lineNumber, {
 				x: 0,
-				y: (gapCalculator(buildError.lineNumber, graphicData.gaps) + 1) * HGRID,
+				y: (gapCalculator(buildError.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
 				message: ['Error:', buildError.message],
 			});
 		});
@@ -92,10 +92,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.scopes.clear();
 		parseScopes(trimmedCode).forEach(scope => {
 			graphicData.scopes.set(scope.id, {
-				width: VGRID * 2,
-				height: HGRID,
-				x: VGRID * (4 + graphicData.padLength),
-				y: (gapCalculator(scope.lineNumber, graphicData.gaps) + 1) * HGRID,
+				width: state.graphicHelper.viewport.vGrid * 2,
+				height: state.graphicHelper.viewport.hGrid,
+				x: state.graphicHelper.viewport.vGrid * (4 + graphicData.padLength),
+				y: (gapCalculator(scope.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
 				id: scope.id,
 				minValue: scope.minValue,
 				maxValue: scope.maxValue,
@@ -108,10 +108,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(output.id) || {};
 
 			const out: Output = {
-				width: VGRID * 2,
-				height: HGRID,
-				x: graphicData.width - 3 * VGRID,
-				y: gapCalculator(output.lineNumber, graphicData.gaps) * HGRID,
+				width: state.graphicHelper.viewport.vGrid * 2,
+				height: state.graphicHelper.viewport.hGrid,
+				x: graphicData.width - 3 * state.graphicHelper.viewport.vGrid,
+				y: gapCalculator(output.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: output.id,
 				module: graphicData,
 				calibratedMax: 0,
@@ -127,10 +127,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			const { wordAddress = 0 } =
 				state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(input.id) || {};
 			graphicData.inputs.set(input.id, {
-				width: VGRID * 2,
-				height: HGRID,
+				width: state.graphicHelper.viewport.vGrid * 2,
+				height: state.graphicHelper.viewport.hGrid,
 				x: 0,
-				y: gapCalculator(input.lineNumber, graphicData.gaps) * HGRID,
+				y: gapCalculator(input.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: input.id,
 				wordAddress,
 				module: graphicData,
@@ -140,10 +140,12 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.debuggers.clear();
 		parseDebuggers(trimmedCode).forEach(_debugger => {
 			graphicData.debuggers.set(_debugger.id, {
-				width: VGRID * 2,
-				height: HGRID,
-				x: VGRID * (3 + graphicData.padLength) + VGRID * trimmedCode[_debugger.lineNumber].length,
-				y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * HGRID,
+				width: state.graphicHelper.viewport.vGrid * 2,
+				height: state.graphicHelper.viewport.hGrid,
+				x:
+					state.graphicHelper.viewport.vGrid * (3 + graphicData.padLength) +
+					state.graphicHelper.viewport.vGrid * trimmedCode[_debugger.lineNumber].length,
+				y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: _debugger.id,
 			});
 		});
@@ -151,10 +153,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.switches.clear();
 		parseSwitches(trimmedCode).forEach(_switch => {
 			graphicData.switches.set(_switch.id, {
-				width: VGRID * 4,
-				height: HGRID,
-				x: graphicData.width - 4 * VGRID,
-				y: gapCalculator(_switch.lineNumber, graphicData.gaps) * HGRID,
+				width: state.graphicHelper.viewport.vGrid * 4,
+				height: state.graphicHelper.viewport.hGrid,
+				x: graphicData.width - 4 * state.graphicHelper.viewport.vGrid,
+				y: gapCalculator(_switch.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: _switch.id,
 				offValue: _switch.offValue,
 				onValue: _switch.onValue,
@@ -163,19 +165,19 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		parseButtons(trimmedCode).forEach(_switch => {
 			graphicData.buttons.set(_switch.id, {
-				width: VGRID * 4,
-				height: HGRID,
-				x: graphicData.width - 4 * VGRID,
-				y: gapCalculator(_switch.lineNumber, graphicData.gaps) * HGRID,
+				width: state.graphicHelper.viewport.vGrid * 4,
+				height: state.graphicHelper.viewport.hGrid,
+				x: graphicData.width - 4 * state.graphicHelper.viewport.vGrid,
+				y: gapCalculator(_switch.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: _switch.id,
 				offValue: _switch.offValue,
 				onValue: _switch.onValue,
 			});
 		});
 
-		graphicData.height = graphicData.codeWithLineNumbers.length * HGRID;
-		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.padLength + 2)) * VGRID;
-		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * HGRID;
+		graphicData.height = graphicData.codeWithLineNumbers.length * state.graphicHelper.viewport.hGrid;
+		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.padLength + 2)) * state.graphicHelper.viewport.vGrid;
+		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.graphicHelper.viewport.hGrid;
 		graphicData.id = getModuleId(graphicData.code) || '';
 	};
 

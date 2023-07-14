@@ -1,5 +1,4 @@
 import { EventDispatcher } from '../../../events';
-import { HGRID, VGRID } from '../../../view/drawers/consts';
 import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
 import { State } from '../../types';
 
@@ -41,8 +40,12 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 		if (!state.graphicHelper.draggedModule) {
 			return;
 		}
-		state.graphicHelper.draggedModule.x = Math.round(state.graphicHelper.draggedModule.x / VGRID) * VGRID;
-		state.graphicHelper.draggedModule.y = Math.round(state.graphicHelper.draggedModule.y / HGRID) * HGRID;
+		state.graphicHelper.draggedModule.x =
+			Math.round(state.graphicHelper.draggedModule.x / state.graphicHelper.viewport.vGrid) *
+			state.graphicHelper.viewport.vGrid;
+		state.graphicHelper.draggedModule.y =
+			Math.round(state.graphicHelper.draggedModule.y / state.graphicHelper.viewport.hGrid) *
+			state.graphicHelper.viewport.hGrid;
 
 		if (
 			startingPosition?.x !== state.graphicHelper.draggedModule.x ||
