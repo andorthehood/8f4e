@@ -1,8 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 import { fillColor } from '@8f4e/sprite-generator';
 
-import { HGRID, VGRID } from './consts';
-
 import { State } from '../../state/types';
 
 export default function drawConnections(engine: Engine, state: State): void {
@@ -26,10 +24,10 @@ export default function drawConnections(engine: Engine, state: State): void {
 			}
 
 			engine.drawLine(
-				module.x + x + VGRID,
-				module.y + y + HGRID / 2,
-				output.module.x + output.x + VGRID,
-				output.module.y + output.y + VGRID,
+				module.x + x + state.graphicHelper.viewport.vGrid,
+				module.y + y + state.graphicHelper.viewport.hGrid / 2,
+				output.module.x + output.x + state.graphicHelper.viewport.vGrid,
+				output.module.y + output.y + state.graphicHelper.viewport.vGrid,
 				isSelected ? 'wireHighlighted' : 'wire',
 				1
 			);
