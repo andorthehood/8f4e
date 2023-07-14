@@ -2,7 +2,6 @@ import { Engine } from '@8f4e/2d-engine';
 import { feedbackScale, font, icons, Icon } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData, State } from '../../../state/types';
-import { HGRID, VGRID } from '../consts';
 
 export default function drawConnectors(engine: Engine, state: State, module: ModuleGraphicData): void {
 	for (const [, output] of module.outputs) {
@@ -27,8 +26,8 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 			x,
 			y,
 			(value - output.calibratedMin) / (output.calibratedMax + Math.abs(output.calibratedMin)),
-			VGRID * 3,
-			HGRID
+			state.graphicHelper.viewport.vGrid * 3,
+			state.graphicHelper.viewport.hGrid
 		);
 
 		engine.setSpriteLookup(font('code'));
