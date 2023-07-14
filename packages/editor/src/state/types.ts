@@ -172,6 +172,8 @@ export type GraphicHelper = {
 		height: number;
 		roundedWidth: number;
 		roundedHeight: number;
+		vGrid: number;
+		hGrid: number;
 	};
 	contextMenu: ContextMenu;
 	draggedModule: ModuleGraphicData | undefined;

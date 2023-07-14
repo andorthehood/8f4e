@@ -2,7 +2,6 @@ import generateSprite, { font, background, fillColor } from '@8f4e/sprite-genera
 import { Engine } from '@8f4e/2d-engine';
 
 import { drawConnections, drawContextMenu, drawModules, drawDialog } from './drawers';
-import { HGRID, VGRID } from './drawers/consts';
 import colorSchemes from './colorSchemes';
 
 import { State } from '../state/types';
@@ -34,7 +33,7 @@ export default async function init(
 		drawConnections(engine, state);
 		drawContextMenu(engine, state);
 
-		engine.startGroup(0, state.graphicHelper.viewport.roundedHeight - HGRID);
+		engine.startGroup(0, state.graphicHelper.viewport.roundedHeight - state.graphicHelper.viewport.hGrid);
 
 		let statusText = ' ';
 
@@ -49,7 +48,13 @@ export default async function init(
 		statusText += ' graphic load: ' + (parseInt(timeToRender, 10) / (1000 / 120)) * 100 + '%';
 
 		engine.setSpriteLookup(fillColor);
-		engine.drawSprite(0, 0, 'background', statusText.length * VGRID, HGRID);
+		engine.drawSprite(
+			0,
+			0,
+			'background',
+			statusText.length * state.graphicHelper.viewport.vGrid,
+			state.graphicHelper.viewport.hGrid
+		);
 		engine.setSpriteLookup(font('code'));
 		engine.drawText(0, 0, statusText);
 

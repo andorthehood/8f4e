@@ -1,8 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 import { fillColor, font } from '@8f4e/sprite-generator';
 
-import { HGRID, VGRID } from './consts';
-
 import { State } from '../../state/types';
 
 export default function drawContextMenu(engine: Engine, state: State): void {
@@ -14,14 +12,14 @@ export default function drawContextMenu(engine: Engine, state: State): void {
 
 	engine.startGroup(x, y);
 	for (let i = 0; i < items.length; i++) {
-		engine.startGroup(0, i * HGRID);
+		engine.startGroup(0, i * state.graphicHelper.viewport.hGrid);
 		if (i === highlightedItem && !items[i].disabled && !items[i].divider) {
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'menuItemBackgroundHighlighted', itemWidth, HGRID);
+			engine.drawSprite(0, 0, 'menuItemBackgroundHighlighted', itemWidth, state.graphicHelper.viewport.hGrid);
 			engine.setSpriteLookup(font('menuItemTextHighlighted'));
 		} else {
 			engine.setSpriteLookup(fillColor);
-			engine.drawSprite(0, 0, 'menuItemBackground', itemWidth, HGRID);
+			engine.drawSprite(0, 0, 'menuItemBackground', itemWidth, state.graphicHelper.viewport.hGrid);
 			engine.setSpriteLookup(items[i].disabled ? font('lineNumber') : font('menuItemText'));
 		}
 		!items[i].divider && engine.drawText(0, 0, items[i].title || '');
