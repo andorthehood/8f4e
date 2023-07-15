@@ -1,4 +1,4 @@
-import { mirr, pad, same } from './utils';
+import { mirr, pad, same } from '../utils';
 
 export default [
 	pad(16, []), // Space
