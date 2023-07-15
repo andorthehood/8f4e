@@ -1,9 +1,9 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { Command, DrawingCommand } from './types';
-import mosaic, { Mosaic } from './fonts/mosaic';
+import mosaic, { Mosaic } from './fonts/8x16/mosaic';
 import { drawCharacterMatrix } from './font';
-import font from './fonts/font';
+import font from './fonts/8x16/ascii';
 
 const enum State {
 	PRESSED,
