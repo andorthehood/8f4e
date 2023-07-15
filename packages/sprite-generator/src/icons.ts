@@ -2,7 +2,7 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
-import font from './fonts/font';
+import ascii from './fonts/8x16/ascii';
 
 const offsetX = 0;
 const offsetY = 150;
@@ -25,7 +25,7 @@ export default function generate(colors: ColorScheme['icons']): DrawingCommand[]
 				[Command.RECTANGLE, 0, 0, 8 * icon.length, 16],
 				[Command.FILL_COLOR, colors.inputConnector],
 				...icon.split('').flatMap<DrawingCommand>(char => {
-					return [...drawCharacter(font, char, 8, 16), [Command.TRANSLATE, 8, 0]];
+					return [...drawCharacter(ascii, char, 8, 16), [Command.TRANSLATE, 8, 0]];
 				}),
 			];
 		}),
