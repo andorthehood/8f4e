@@ -1,4 +1,4 @@
-import { pad, same } from './utils';
+import { pad, same } from '../utils';
 
 export default [
 	pad(16, []), // Space

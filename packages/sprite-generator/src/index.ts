@@ -15,8 +15,8 @@ export { lookup as pianoKeyboard } from './pianoKeyboard';
 export { lookup as background } from './background';
 export { lookup as icons } from './icons';
 
-export { Glyph } from './fonts/glyphs';
-export { Mosaic } from './fonts/mosaic';
+export { Glyph } from './fonts/8x16/glyphs';
+export { Mosaic } from './fonts/8x16/mosaic';
 export { Icon } from './icons';
 
 export { ColorScheme } from './types';
