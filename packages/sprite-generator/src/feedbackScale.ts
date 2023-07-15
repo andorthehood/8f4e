@@ -2,7 +2,7 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
-import font from './fonts/font';
+import font from './fonts/8x16/ascii';
 
 const offsetX = 0;
 const offsetY = 130;
