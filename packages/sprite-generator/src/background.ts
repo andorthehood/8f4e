@@ -1,7 +1,8 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
-import glyphs, { Glyph } from './fonts/8x16/glyphs';
+import glyphs from './fonts/8x16/glyphs';
+import { Glyph } from './fonts/types';
 import { ColorScheme, Command, DrawingCommand } from './types';
 
 const offsetX = 0;

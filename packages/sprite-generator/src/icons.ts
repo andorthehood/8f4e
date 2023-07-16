@@ -2,7 +2,6 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
-import ascii from './fonts/8x16/ascii';
 
 const offsetX = 0;
 const offsetY = 150;
@@ -15,17 +14,25 @@ export enum Icon {
 	SWITCH_ON,
 }
 
-export default function generate(colors: ColorScheme['icons']): DrawingCommand[] {
+export default function generate(
+	font: number[],
+	characterWidth: number,
+	characterHeight: number,
+	colors: ColorScheme['icons']
+): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
 		...icons.flatMap<DrawingCommand>(icon => {
 			return [
 				[Command.FILL_COLOR, colors.inputConnectorBackground],
-				[Command.RECTANGLE, 0, 0, 8 * icon.length, 16],
+				[Command.RECTANGLE, 0, 0, characterWidth * icon.length, characterHeight],
 				[Command.FILL_COLOR, colors.inputConnector],
 				...icon.split('').flatMap<DrawingCommand>(char => {
-					return [...drawCharacter(ascii, char, 8, 16), [Command.TRANSLATE, 8, 0]];
+					return [
+						...drawCharacter(font, char, characterWidth, characterHeight),
+						[Command.TRANSLATE, characterWidth, 0],
+					];
 				}),
 			];
 		}),
