@@ -38,6 +38,8 @@ export interface SpriteLookups extends FontLookups {
 export default function generateSprite(config: Config): {
 	canvas: OffscreenCanvas | HTMLCanvasElement;
 	spriteLookups: SpriteLookups;
+	characterWidth: number;
+	characterHeight: number;
 } {
 	let canvas: OffscreenCanvas | HTMLCanvasElement;
 	const { characterWidth, characterHeight, bitmap: fontBitmap } = fonts[config.font];
@@ -93,6 +95,8 @@ export default function generateSprite(config: Config): {
 
 	return {
 		canvas,
+		characterHeight,
+		characterWidth,
 		spriteLookups: {
 			fillColors: generateLookupForFillColors(characterWidth, characterHeight),
 			...generateLookupsForFonts(characterWidth, characterHeight),
