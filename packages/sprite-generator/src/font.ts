@@ -1,6 +1,5 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 
-import ascii from './fonts/8x16/ascii';
 import { Command, Config, DrawingCommand } from './types';
 
 const offsetX = 0;
@@ -88,13 +87,18 @@ function generateFont(x = 0, y = 0, font: number[], characterWidth: number, char
 	return commands;
 }
 
-export default function generateFonts(colors: Config['colorScheme']['text']): DrawingCommand[] {
+export default function generateFonts(
+	font: number[],
+	characterWidth: number,
+	characterHeight: number,
+	colors: Config['colorScheme']['text']
+): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		...colorNames.flatMap<DrawingCommand>(color => {
 			return [
 				[Command.FILL_COLOR, colors[color]],
-				...generateFont(offsetX, fontPositions[color], ascii, CHARACTER_WIDTH, CHARACTER_HEIGHT),
+				...generateFont(offsetX, fontPositions[color], font, characterWidth, characterHeight),
 			];
 		}),
 	];
