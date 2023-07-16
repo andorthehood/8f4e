@@ -2,12 +2,16 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
-import font from './fonts/8x16/ascii';
 
 const offsetX = 0;
 const offsetY = 130;
 
-export default function generate(colors: ColorScheme['icons']): DrawingCommand[] {
+export default function generate(
+	font: number[],
+	characterWidth: number,
+	characterHeight: number,
+	colors: ColorScheme['icons']
+): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
@@ -15,16 +19,16 @@ export default function generate(colors: ColorScheme['icons']): DrawingCommand[]
 		...colors.feedbackScale.flatMap<DrawingCommand>(color => {
 			return [
 				[Command.FILL_COLOR, colors.outputConnectorBackground],
-				[Command.RECTANGLE, 0, 0, 8 * 3, 16],
+				[Command.RECTANGLE, 0, 0, characterWidth * 3, characterHeight],
 				[Command.FILL_COLOR, colors.outputConnector],
-				...drawCharacter(font, '[', 8, 16),
-				[Command.TRANSLATE, 8, 0],
+				...drawCharacter(font, '[', characterWidth, characterHeight),
+				[Command.TRANSLATE, characterWidth, 0],
 				[Command.FILL_COLOR, color],
-				...drawCharacter(font, '*', 8, 16),
-				[Command.TRANSLATE, 8, 0],
+				...drawCharacter(font, '*', characterWidth, characterHeight),
+				[Command.TRANSLATE, characterWidth, 0],
 				[Command.FILL_COLOR, colors.outputConnector],
-				...drawCharacter(font, ']', 8, 16),
-				[Command.TRANSLATE, 8, 0],
+				...drawCharacter(font, ']', characterWidth, characterHeight),
+				[Command.TRANSLATE, characterWidth, 0],
 			];
 		}),
 	];
