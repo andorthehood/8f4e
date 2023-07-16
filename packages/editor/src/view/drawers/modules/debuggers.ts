@@ -1,9 +1,12 @@
 import { Engine } from '@8f4e/2d-engine';
-import { font } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData, State } from '../../../state/types';
 
 export default function drawConnectors(engine: Engine, state: State, module: ModuleGraphicData): void {
+	if (!state.graphicHelper.spriteLookups) {
+		return;
+	}
+
 	for (const [, { x, y, id: debuggerId }] of module.debuggers) {
 		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(debuggerId);
 
@@ -15,7 +18,7 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 			? state.compiler.memoryBuffer[memory.wordAddress].toString()
 			: state.compiler.memoryBufferFloat[memory.wordAddress].toFixed(4);
 
-		engine.setSpriteLookup(font('numbers'));
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 		engine.drawText(x, y, '[' + value + ']');
 	}
 }
