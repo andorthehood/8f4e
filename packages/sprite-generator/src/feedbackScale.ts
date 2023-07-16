@@ -1,4 +1,4 @@
-import { SpriteLookup } from '@8f4e/2d-engine';
+import { SpriteCoordinates } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
@@ -34,11 +34,22 @@ export default function generate(
 	];
 }
 
-export const lookup: SpriteLookup = function (scale: number) {
-	return {
-		x: offsetX + Math.round(scale * 5) * (8 * 3),
-		y: offsetY,
-		spriteWidth: 8 * 3,
-		spriteHeight: 16,
-	};
+export const generateLookup = function (
+	characterWidth: number,
+	characterHeight: number,
+	feedbackScale: ColorScheme['icons']['feedbackScale']
+): Record<number, SpriteCoordinates> {
+	return Object.fromEntries(
+		feedbackScale.map((color, index) => {
+			return [
+				index,
+				{
+					x: offsetX + index * (characterWidth * 3),
+					y: offsetY,
+					spriteWidth: characterWidth * 3,
+					spriteHeight: characterHeight,
+				},
+			];
+		})
+	);
 };

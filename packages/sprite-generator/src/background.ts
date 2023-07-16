@@ -1,4 +1,4 @@
-import { SpriteLookup } from '@8f4e/2d-engine';
+import { SpriteCoordinates, SpriteLookup } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
 import glyphs from './fonts/8x16/glyphs';
@@ -26,11 +26,13 @@ export default function generate(colors: ColorScheme['fill']): DrawingCommand[] 
 	return commands;
 }
 
-export const lookup: SpriteLookup = function () {
+export const generateLookup = function (characterWidth: number, characterHeight: number): Record<0, SpriteCoordinates> {
 	return {
-		x: offsetX,
-		y: offsetY,
-		spriteWidth: 32 * 16,
-		spriteHeight: 32 * 16,
+		0: {
+			x: offsetX,
+			y: offsetY,
+			spriteWidth: 32 * characterHeight,
+			spriteHeight: 32 * characterHeight,
+		},
 	};
 };

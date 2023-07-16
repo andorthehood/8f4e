@@ -40,6 +40,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	};
 
 	const updateGraphics = function (graphicData: ModuleGraphicData) {
+		if (!state.graphicHelper.spriteLookups) {
+			return;
+		}
+
 		graphicData.padLength = graphicData.code.length.toString().length;
 		const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(graphicData.code);
 		const trimmedCode = [...graphicData.code.slice(0, length + 1)];
@@ -51,7 +55,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.width =
 			Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) * state.graphicHelper.viewport.vGrid;
 
-		graphicData.codeColors = generateCodeColorMap(graphicData.codeWithLineNumbers);
+		graphicData.codeColors = generateCodeColorMap(graphicData.codeWithLineNumbers, state.graphicHelper.spriteLookups);
 
 		graphicData.gaps.clear();
 		state.compiler.buildErrors.forEach(buildError => {

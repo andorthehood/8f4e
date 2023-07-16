@@ -1,3 +1,5 @@
+import { SpriteCoordinates } from '@8f4e/2d-engine';
+
 export enum Command {
 	FILL_COLOR,
 	RECTANGLE,
@@ -56,4 +58,12 @@ export interface ColorScheme {
 
 export interface Config {
 	colorScheme: ColorScheme;
+	font: '6x10' | '8x16';
 }
+
+export type SpriteLookup<T extends string = string> = Record<T, SpriteCoordinates>;
+
+export type SpriteLookupGenerator<T extends string = string> = (
+	characterWidth: number,
+	characterHeight: number
+) => SpriteLookup<T>;

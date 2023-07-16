@@ -49,6 +49,7 @@ const defaultState: State = {
 		outputs: [],
 	},
 	graphicHelper: {
+		spriteLookups: undefined,
 		dialog: {
 			show: false,
 			text: 'Lorem ipsum dolor sit amet',

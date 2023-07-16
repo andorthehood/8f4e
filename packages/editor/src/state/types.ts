@@ -1,5 +1,6 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 import { CompiledModuleLookup, CompileOptions, MemoryBuffer } from '@8f4e/compiler';
+import { SpriteLookups } from '@8f4e/sprite-generator';
 import { IPatcher } from '@rnbo/js';
 
 export interface Module {
@@ -165,6 +166,7 @@ export interface ModuleGraphicData {
 }
 
 export type GraphicHelper = {
+	spriteLookups: SpriteLookups | undefined;
 	outputsByWordAddress: Map<number, Output>;
 	modules: Set<ModuleGraphicData>;
 	viewport: {
