@@ -1,23 +1,46 @@
-import generateFont from './font';
-import generateFillColors from './fillColors';
-import generateFeedbackScale from './feedbackScale';
-import generateScope from './scope';
-import generateBackground from './background';
-import generateIcons from './icons';
+import { SpriteCoordinates } from '@8f4e/2d-engine';
+
+import generateFont, { FontLookups, generateLookups as generateLookupsForFonts } from './font';
+import generateFillColors, { generateLookup as generateLookupForFillColors } from './fillColors';
+import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale';
+import generateScope, { generateLookup as generateLookupForScope } from './scope';
+import generateBackground, { generateLookup as generateLookupForBackground } from './background';
+import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
 import { Command, Config } from './types';
-export { lookup as feedbackScale } from './feedbackScale';
-export { lookup as fillColor } from './fillColors';
-export { lookup as font } from './font';
-export { lookup as scope } from './scope';
-export { lookup as background } from './background';
-export { lookup as icons } from './icons';
-import ascii from './fonts/8x16/ascii';
+import ascii8x16 from './fonts/8x16/ascii';
+import ascii6x10 from './fonts/6x10/ascii';
+
 export { Glyph } from './fonts/types';
 export { Icon } from './icons';
 export { ColorScheme } from './types';
 
-export default function generateSprite(config: Config): OffscreenCanvas | HTMLCanvasElement {
+const fonts: Record<Config['font'], { bitmap: number[]; characterWidth: number; characterHeight: number }> = {
+	'8x16': {
+		bitmap: ascii8x16,
+		characterWidth: 8,
+		characterHeight: 16,
+	},
+	'6x10': {
+		bitmap: ascii6x10,
+		characterWidth: 6,
+		characterHeight: 10,
+	},
+};
+
+export interface SpriteLookups extends FontLookups {
+	fillColors: Record<keyof Config['colorScheme']['fill'], SpriteCoordinates>;
+	scope: Record<number, SpriteCoordinates>;
+	background: Record<0, SpriteCoordinates>;
+	icons: Record<Icon, SpriteCoordinates>;
+	feedbackScale: Record<number, SpriteCoordinates>;
+}
+
+export default function generateSprite(config: Config): {
+	canvas: OffscreenCanvas | HTMLCanvasElement;
+	spriteLookups: SpriteLookups;
+} {
 	let canvas: OffscreenCanvas | HTMLCanvasElement;
+	const { characterWidth, characterHeight, bitmap: fontBitmap } = fonts[config.font];
 
 	if (window.OffscreenCanvas) {
 		canvas = new OffscreenCanvas(1024, 1024);
@@ -36,10 +59,10 @@ export default function generateSprite(config: Config): OffscreenCanvas | HTMLCa
 	const commands = [
 		...generateScope(),
 		...generateFillColors(config.colorScheme.fill),
-		...generateFeedbackScale(ascii, 8, 16, config.colorScheme.icons),
-		...generateFont(ascii, 8, 16, config.colorScheme.text),
+		...generateFeedbackScale(fontBitmap, characterWidth, characterHeight, config.colorScheme.icons),
+		...generateFont(fontBitmap, characterWidth, characterHeight, config.colorScheme.text),
 		...generateBackground(config.colorScheme.fill),
-		...generateIcons(ascii, 8, 16, config.colorScheme.icons),
+		...generateIcons(fontBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {
@@ -68,5 +91,19 @@ export default function generateSprite(config: Config): OffscreenCanvas | HTMLCa
 		}
 	});
 
-	return canvas;
+	return {
+		canvas,
+		spriteLookups: {
+			fillColors: generateLookupForFillColors(characterWidth, characterHeight),
+			...generateLookupsForFonts(characterWidth, characterHeight),
+			feedbackScale: generateLookupForFeedbackScale(
+				characterWidth,
+				characterHeight,
+				config.colorScheme.icons.feedbackScale
+			),
+			scope: generateLookupForScope(),
+			background: generateLookupForBackground(characterWidth, characterHeight),
+			icons: generateLookupForIcons(characterWidth, characterHeight),
+		},
+	};
 }

@@ -1,10 +1,13 @@
 import { Engine } from '@8f4e/2d-engine';
-import { fillColor } from '@8f4e/sprite-generator';
 
 import { State } from '../../state/types';
 
 export default function drawConnections(engine: Engine, state: State): void {
-	engine.setSpriteLookup(fillColor);
+	if (!state.graphicHelper.spriteLookups) {
+		return;
+	}
+
+	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
 	engine.startGroup(state.project.viewport.x, state.project.viewport.y);
 
