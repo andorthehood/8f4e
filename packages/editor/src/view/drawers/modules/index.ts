@@ -1,5 +1,4 @@
 import { Engine } from '@8f4e/2d-engine';
-import { fillColor, font } from '@8f4e/sprite-generator';
 
 import drawConnectors from './connectors';
 import drawScopes from './scopes';
@@ -11,6 +10,10 @@ import drawErrorMessages from './errorMessages';
 import { State } from '../../../state/types';
 
 export default function drawModules(engine: Engine, state: State): void {
+	if (!state.graphicHelper.spriteLookups) {
+		return;
+	}
+
 	const { x: offsetX, y: offsetY } = state.project.viewport;
 
 	engine.startGroup(offsetX, offsetY);
@@ -28,7 +31,7 @@ export default function drawModules(engine: Engine, state: State): void {
 		) {
 			engine.startGroup(module.x, module.y);
 
-			engine.setSpriteLookup(fillColor);
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
 			if (module === state.graphicHelper.draggedModule) {
 				engine.drawSprite(0, 0, 'moduleBackgroundDragged', module.width, module.height);
@@ -40,7 +43,7 @@ export default function drawModules(engine: Engine, state: State): void {
 				engine.drawSprite(0, module.cursor.y, 'highlightedCodeLine', module.width, state.graphicHelper.viewport.hGrid);
 			}
 
-			engine.setSpriteLookup(font('code'));
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
 			const corner = module.isOpen ? '+' : '+';
 
@@ -53,7 +56,7 @@ export default function drawModules(engine: Engine, state: State): void {
 				corner
 			);
 
-			engine.setSpriteLookup(font('code'));
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
 			for (let i = 0; i < module.codeToRender.length; i++) {
 				for (let j = 0; j < module.codeToRender[i].length; j++) {

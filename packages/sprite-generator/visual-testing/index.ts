@@ -2,7 +2,8 @@ import spriteGenerator from '../src';
 
 (async function () {
 	const imageElement: HTMLImageElement = <HTMLImageElement>document.getElementById('sprite-sheet');
-	const canvas = await spriteGenerator({
+	const { canvas, spriteLookups } = spriteGenerator({
+		font: '8x16',
 		colorScheme: {
 			text: {
 				lineNumber: 'rgba(51,51,51,255)',
@@ -40,6 +41,9 @@ import spriteGenerator from '../src';
 			},
 		},
 	});
+
+	spriteLookups;
+
 	// @ts-ignore convertToBlob
 	const blob = await canvas.convertToBlob();
 	console.log(blob);

@@ -1,4 +1,4 @@
-import generateSprite, { font, background, fillColor } from '@8f4e/sprite-generator';
+import generateSprite from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
 import { drawConnections, drawContextMenu, drawModules, drawDialog } from './drawers';
@@ -10,16 +10,19 @@ export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
 ): Promise<{ resize: (width: number, height: number) => void; reloadSpriteSheet: () => Promise<void> }> {
-	let sprite = await generateSprite({
+	const { canvas: sprite, spriteLookups } = generateSprite({
+		font: '8x16',
 		colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['default'],
 	});
+
+	state.graphicHelper.spriteLookups = spriteLookups;
 
 	const engine = new Engine(canvas);
 
 	engine.loadSpriteSheet(sprite);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
-		engine.setSpriteLookup(background);
+		engine.setSpriteLookup(spriteLookups.background);
 		engine.drawSprite(0, 0, 0);
 		engine.drawSprite(32 * 16, 0, 0);
 		engine.drawSprite(32 * 16 * 2, 0, 0);
@@ -47,7 +50,7 @@ export default async function init(
 		statusText += ' vertex buffer: ' + Math.round((vertices / maxVertices) * 100) + '%';
 		statusText += ' graphic load: ' + (parseInt(timeToRender, 10) / (1000 / 120)) * 100 + '%';
 
-		engine.setSpriteLookup(fillColor);
+		engine.setSpriteLookup(spriteLookups.fillColors);
 		engine.drawSprite(
 			0,
 			0,
@@ -55,13 +58,13 @@ export default async function init(
 			statusText.length * state.graphicHelper.viewport.vGrid,
 			state.graphicHelper.viewport.hGrid
 		);
-		engine.setSpriteLookup(font('code'));
+		engine.setSpriteLookup(spriteLookups.fontCode);
 		engine.drawText(0, 0, statusText);
 
 		engine.endGroup();
 
 		if (state.options.isDebugMode) {
-			engine.setSpriteLookup(font('code'));
+			engine.setSpriteLookup(spriteLookups.fontCode);
 			engine.startGroup(10, state.graphicHelper.viewport.height - 50);
 			engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
 			engine.drawText(0, 15, 'fps ' + fps + '  vertex buffer ' + vertices + '/' + maxVertices);
@@ -87,7 +90,8 @@ export default async function init(
 			engine.resize(width, height);
 		},
 		reloadSpriteSheet: async () => {
-			sprite = await generateSprite({
+			const { canvas: sprite } = generateSprite({
+				font: '8x16',
 				colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['default'],
 			});
 			engine.loadSpriteSheet(sprite);

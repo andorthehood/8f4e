@@ -1,5 +1,4 @@
 import { Engine } from '@8f4e/2d-engine';
-import { scope } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData, State } from '../../../state/types';
 
@@ -9,7 +8,11 @@ const scopeBuffers = new Map<number, Int32Array>();
 const bufferPointers = new Map<number, number>();
 
 export default function drawer(engine: Engine, state: State, module: ModuleGraphicData): void {
-	engine.setSpriteLookup(scope);
+	if (!state.graphicHelper.spriteLookups) {
+		return;
+	}
+
+	engine.setSpriteLookup(state.graphicHelper.spriteLookups.scope);
 
 	for (const [, { x, y, id: scopeId }] of module.scopes) {
 		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(scopeId);

@@ -1,5 +1,5 @@
 import { instructions } from '@8f4e/compiler';
-import { font } from '@8f4e/sprite-generator';
+import { SpriteLookups } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData } from '../types';
 
@@ -149,7 +149,7 @@ const keywords = new RegExp(
 	'd'
 );
 
-export function generateCodeColorMap(code: string[]) {
+export function generateCodeColorMap(code: string[], spriteLookups: SpriteLookups) {
 	return code.map(line => {
 		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
 		const { indices: instructionIndices } = keywords.exec(line) || {};
@@ -164,31 +164,31 @@ export function generateCodeColorMap(code: string[]) {
 		const codeColors = new Array(line.length).fill(undefined);
 
 		if (typeof lineNumberIndex !== 'undefined') {
-			codeColors[lineNumberIndex] = font('lineNumber');
+			codeColors[lineNumberIndex] = spriteLookups.fontLineNumber;
 		}
 
 		if (typeof instructionIndices !== 'undefined') {
-			codeColors[instructionIndices[0][0]] = font('instruction');
-			codeColors[instructionIndices[0][1]] = font('code');
+			codeColors[instructionIndices[0][0]] = spriteLookups.fontInstruction;
+			codeColors[instructionIndices[0][1]] = spriteLookups.fontCode;
 		}
 
 		if (typeof commentIndex !== 'undefined') {
-			codeColors[commentIndex] = font('codeComment');
+			codeColors[commentIndex] = spriteLookups.fontCode;
 		}
 
 		if (typeof numberIndex !== 'undefined') {
-			codeColors[numberIndex] = font('numbers');
+			codeColors[numberIndex] = spriteLookups.fontNumbers;
 		}
 
 		if (binaryZeros && typeof binaryNumberIndex !== 'undefined') {
 			for (const match of binaryZeros) {
-				codeColors[match.index + binaryNumberIndex + 2] = font('binaryZero');
+				codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryZero;
 			}
 		}
 
 		if (binaryOnes && typeof binaryNumberIndex !== 'undefined') {
 			for (const match of binaryOnes) {
-				codeColors[match.index + binaryNumberIndex + 2] = font('binaryOne');
+				codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryOne;
 			}
 		}
 
