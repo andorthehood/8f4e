@@ -1,16 +1,15 @@
 import { Engine } from '@8f4e/2d-engine';
-import { fillColor } from '@8f4e/sprite-generator';
 
 import { State } from '../../state/types';
 
 export default function drawDialog(engine: Engine, state: State): void {
 	const { show } = state.graphicHelper.dialog;
 
-	if (!show) {
+	if (!show || !state.graphicHelper.spriteLookups) {
 		return;
 	}
 
-	engine.setSpriteLookup(fillColor);
+	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 	engine.startGroup(0, 0);
 	engine.drawSprite(0, 0, 'dialogDimmer', state.graphicHelper.viewport.width, state.graphicHelper.viewport.height);
 

@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import { Icon, font, icons } from '@8f4e/sprite-generator';
+import { Icon } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData, State } from '../../../state/types';
 
@@ -7,7 +7,7 @@ export default function drawSwitches(engine: Engine, state: State, module: Modul
 	for (const [, { x, y, id: debuggerId, onValue, offValue }] of module.buttons) {
 		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(debuggerId);
 
-		if (!memory) {
+		if (!memory || !state.graphicHelper.spriteLookups) {
 			continue;
 		}
 
@@ -15,13 +15,13 @@ export default function drawSwitches(engine: Engine, state: State, module: Modul
 		const value = state.compiler.memoryBuffer[wordAddress] || 0;
 
 		if (value === onValue) {
-			engine.setSpriteLookup(icons);
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
 			engine.drawSprite(x, y, Icon.SWITCH_ON);
 		} else if (value === offValue) {
-			engine.setSpriteLookup(icons);
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
 			engine.drawSprite(x, y, Icon.SWITCH_OFF);
 		} else {
-			engine.setSpriteLookup(font('numbers'));
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontNumbers);
 			engine.drawText(x, y, '[__]');
 		}
 	}

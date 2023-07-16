@@ -1,4 +1,4 @@
-import { SpriteLookup } from '@8f4e/2d-engine';
+import { SpriteCoordinates } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
@@ -39,17 +39,27 @@ export default function generate(
 	];
 }
 
-const iconPositions = icons.reduce((acc, current) => {
-	const length = acc.reduce((acc, icon) => acc + icon[2], 0);
-	acc.push([offsetX + length, offsetY, current.length * 8]);
-	return acc;
-}, [] as number[][]);
+function generateIconPositions(characterWidth: number) {
+	return icons.reduce((acc, current) => {
+		const length = acc.reduce((acc, icon) => acc + icon[2], 0);
+		acc.push([offsetX + length, offsetY, current.length * characterWidth]);
+		return acc;
+	}, [] as number[][]);
+}
+export const generateLookup = function (characterWidth: number, characterHeight: number) {
+	const iconPositions = generateIconPositions(characterWidth);
 
-export const lookup: SpriteLookup = function (icon: Icon) {
-	return {
-		x: iconPositions[icon][0],
-		y: iconPositions[icon][1],
-		spriteWidth: iconPositions[icon][2],
-		spriteHeight: 16,
-	};
+	return Object.fromEntries(
+		icons.map((icon, index) => {
+			return [
+				index,
+				{
+					x: iconPositions[index][0],
+					y: iconPositions[index][1],
+					spriteWidth: iconPositions[index][2],
+					spriteHeight: characterHeight,
+				},
+			];
+		})
+	) as Record<Icon, SpriteCoordinates>;
 };

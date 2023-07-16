@@ -1,6 +1,6 @@
-import { SpriteLookup } from '@8f4e/2d-engine';
+import { SpriteCoordinates } from '@8f4e/2d-engine';
 
-import { ColorScheme, Command, DrawingCommand } from './types';
+import { ColorScheme, Command, DrawingCommand, SpriteLookup, SpriteLookupGenerator } from './types';
 
 const offsetX = 0;
 const offsetY = 180;
@@ -40,11 +40,16 @@ export default function generate(colors: ColorScheme['fill']): DrawingCommand[] 
 	];
 }
 
-export const lookup: SpriteLookup = function (color: keyof ColorScheme['fill']) {
-	return {
-		x: offsetX + fillColors.indexOf(color) * 8,
-		y: offsetY,
-		spriteWidth: 8,
-		spriteHeight: 16,
-	};
+export const generateLookup = function (characterWidth: number, characterHeight: number) {
+	return Object.fromEntries(
+		fillColors.map(color => [
+			color,
+			{
+				x: offsetX + fillColors.indexOf(color) * 8,
+				y: offsetY,
+				spriteWidth: characterWidth,
+				spriteHeight: characterHeight,
+			},
+		])
+	) as Record<keyof ColorScheme['fill'], SpriteCoordinates>;
 };

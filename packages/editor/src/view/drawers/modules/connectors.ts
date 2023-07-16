@@ -1,15 +1,19 @@
 import { Engine } from '@8f4e/2d-engine';
-import { feedbackScale, font, icons, Icon } from '@8f4e/sprite-generator';
+import { Icon } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData, State } from '../../../state/types';
 
 export default function drawConnectors(engine: Engine, state: State, module: ModuleGraphicData): void {
+	if (!state.graphicHelper.spriteLookups) {
+		return;
+	}
+
 	for (const [, output] of module.outputs) {
 		const { x, y, width, height, id: connectorId } = output;
 		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(connectorId);
 
 		if (!memory) {
-			engine.setSpriteLookup(feedbackScale);
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.feedbackScale);
 			engine.drawSprite(x, y, 0, width, height);
 			continue;
 		}
@@ -21,20 +25,20 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 		output.calibratedMax = Math.max(1, output.calibratedMax, value);
 		output.calibratedMin = Math.min(-1, output.calibratedMin, value);
 
-		engine.setSpriteLookup(feedbackScale);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.feedbackScale);
 		engine.drawSprite(
 			x,
 			y,
-			(value - output.calibratedMin) / (output.calibratedMax + Math.abs(output.calibratedMin)),
+			Math.round(((value - output.calibratedMin) / (output.calibratedMax + Math.abs(output.calibratedMin))) * 5),
 			state.graphicHelper.viewport.vGrid * 3,
 			state.graphicHelper.viewport.hGrid
 		);
 
-		engine.setSpriteLookup(font('code'));
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 	}
 
 	for (const [, { x, y }] of module.inputs) {
-		engine.setSpriteLookup(icons);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
 		engine.drawSprite(x, y, Icon.INPUT);
 	}
 }
