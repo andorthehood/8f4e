@@ -16,7 +16,7 @@ export type SpriteCoordinates = {
 	y: number;
 };
 
-export type SpriteLookup = (...args: unknown[]) => SpriteCoordinates;
+export type SpriteLookup = Record<string | number, SpriteCoordinates>;
 
 export class Engine {
 	program: WebGLProgram;
@@ -191,7 +191,7 @@ export class Engine {
 		y1 = y1 + this.offsetY;
 		x2 = x2 + this.offsetX;
 		y2 = y2 + this.offsetY;
-		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(sprite);
+		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup[sprite];
 
 		fillBufferWithLineVertices(this.vertexBuffer, this.bufferPointer, x1, y1, x2, y2, thickness);
 
@@ -211,7 +211,7 @@ export class Engine {
 	}
 
 	drawSprite(posX: number, posY: number, sprite: string | number, width?: number, height?: number): void {
-		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(sprite);
+		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup[sprite];
 		this.drawSpriteFromCoordinates(
 			posX,
 			posY,
@@ -247,7 +247,7 @@ export class Engine {
 			if (sprites && sprites[i]) {
 				this.spriteLookup = sprites[i];
 			}
-			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup(text[i]);
+			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup[text[i]];
 			this.drawSpriteFromCoordinates(posX + i * spriteWidth, posY, spriteWidth, spriteHeight, x, y);
 		}
 	}
