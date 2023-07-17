@@ -64,13 +64,21 @@ export default function drawModules(engine: Engine, state: State): void {
 			continue;
 		}
 
+		if (module.positionOffsetterXWordAddress) {
+			module.offsetX = state.compiler.memoryBuffer[module.positionOffsetterXWordAddress];
+		}
+
+		if (module.positionOffsetterYWordAddress) {
+			module.offsetY = state.compiler.memoryBuffer[module.positionOffsetterYWordAddress];
+		}
+
 		if (
-			module.x + offsetX > -1 * module.width &&
-			module.y + offsetY > -1 * module.height &&
-			module.x + offsetX < state.graphicHelper.viewport.width &&
-			module.y + offsetY < state.graphicHelper.viewport.height
+			module.x + module.offsetX + offsetX > -1 * module.width &&
+			module.y + module.offsetY + offsetY > -1 * module.height &&
+			module.x + module.offsetX + offsetX < state.graphicHelper.viewport.width &&
+			module.y + module.offsetY + offsetY < state.graphicHelper.viewport.height
 		) {
-			engine.startGroup(module.x, module.y);
+			engine.startGroup(module.x + module.offsetX, module.y + module.offsetY);
 
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
