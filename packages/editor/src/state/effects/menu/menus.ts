@@ -146,12 +146,23 @@ export const editorSettingsMenu: MenuGenerator = () => [
 		payload: { menu: 'colorSchemeMenu' },
 		close: false,
 	},
+	{
+		title: 'Font',
+		action: 'openSubMenu',
+		payload: { menu: 'fontMenu' },
+		close: false,
+	},
 ];
 
 export const colorSchemeMenu: MenuGenerator = () => [
 	{ title: 'Hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: false },
 	{ title: 'Red Alert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: false },
 	{ title: 'Default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: false },
+];
+
+export const fontMenu: MenuGenerator = () => [
+	{ title: '8x16', action: 'setFont', payload: { font: '8x16' }, close: false },
+	{ title: '6x10', action: 'setFont', payload: { font: '6x10' }, close: false },
 ];
 
 export const exampleProjectMenu: MenuGenerator = () => [

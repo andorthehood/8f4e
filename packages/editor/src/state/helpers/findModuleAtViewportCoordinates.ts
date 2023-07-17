@@ -1,18 +1,17 @@
-import { GraphicHelper, ModuleGraphicData, Viewport } from '../types';
+import { GraphicHelper, ModuleGraphicData } from '../types';
 
 export default function findModuleAtViewportCoordinates(
 	graphicHelper: GraphicHelper,
-	viewport: Viewport,
 	searchX: number,
 	searchY: number
 ): ModuleGraphicData | undefined {
 	for (const graphicData of Array.from(graphicHelper.modules).reverse()) {
 		const { width, height, x, y } = graphicData;
 		if (
-			searchX >= x + viewport.x &&
-			searchX <= x + width + viewport.x &&
-			searchY >= y + viewport.y &&
-			searchY <= y + height + viewport.y
+			searchX >= x - graphicHelper.viewport.x &&
+			searchX <= x + width - graphicHelper.viewport.x &&
+			searchY >= y - graphicHelper.viewport.y &&
+			searchY <= y + height - graphicHelper.viewport.y
 		) {
 			return graphicData;
 		}

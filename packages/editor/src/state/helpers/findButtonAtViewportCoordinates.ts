@@ -1,17 +1,17 @@
-import { Viewport, ModuleGraphicData, Switch } from '../types';
+import { ModuleGraphicData, Switch, GraphicHelper } from '../types';
 
 export default function findButtonAtViewportCoordinates(
-	viewport: Viewport,
+	graphicHelper: GraphicHelper,
 	module: ModuleGraphicData,
 	x: number,
 	y: number
 ): Switch | undefined {
 	return Array.from(module.buttons.values()).find(button => {
 		return (
-			x >= module.x + viewport.x + button.x &&
-			x <= module.x + button.width + viewport.x + button.x &&
-			y >= module.y + viewport.y + button.y &&
-			y <= module.y + button.height + viewport.y + button.y
+			x >= module.x + button.x - graphicHelper.viewport.x &&
+			x <= module.x + button.width + button.x - graphicHelper.viewport.x &&
+			y >= module.y + button.y - graphicHelper.viewport.y &&
+			y <= module.y + button.height + button.y - graphicHelper.viewport.y
 		);
 	});
 }

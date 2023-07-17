@@ -9,7 +9,7 @@ export default function drawConnections(engine: Engine, state: State): void {
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
-	engine.startGroup(state.project.viewport.x, state.project.viewport.y);
+	engine.startGroup(-state.graphicHelper.viewport.x, -state.graphicHelper.viewport.y);
 
 	for (const module of state.graphicHelper.modules) {
 		const isSelected = module === state.graphicHelper.selectedModule;

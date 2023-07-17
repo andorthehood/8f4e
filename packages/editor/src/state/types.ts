@@ -1,6 +1,6 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
 import { CompiledModuleLookup, CompileOptions, MemoryBuffer } from '@8f4e/compiler';
-import { SpriteLookups } from '@8f4e/sprite-generator';
+import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { IPatcher } from '@rnbo/js';
 
 export interface Module {
@@ -176,6 +176,15 @@ export type GraphicHelper = {
 		roundedHeight: number;
 		vGrid: number;
 		hGrid: number;
+		x: number;
+		y: number;
+		borderLineCoordinates: {
+			top: { startX: number; startY: number; endX: number; endY: number };
+			right: { startX: number; startY: number; endX: number; endY: number };
+			bottom: { startX: number; startY: number; endX: number; endY: number };
+			left: { startX: number; startY: number; endX: number; endY: number };
+		};
+		center: { x: number; y: number };
 	};
 	contextMenu: ContextMenu;
 	draggedModule: ModuleGraphicData | undefined;
@@ -217,6 +226,7 @@ export interface Options {
 
 export interface EditorSettings {
 	colorScheme: string;
+	font: Font;
 }
 
 export interface State {

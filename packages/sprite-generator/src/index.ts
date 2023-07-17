@@ -12,7 +12,7 @@ import ascii6x10 from './fonts/6x10/ascii';
 
 export { Glyph } from './fonts/types';
 export { Icon } from './icons';
-export { ColorScheme } from './types';
+export { ColorScheme, Font } from './types';
 
 const fonts: Record<Config['font'], { bitmap: number[]; characterWidth: number; characterHeight: number }> = {
 	'8x16': {
@@ -63,7 +63,7 @@ export default function generateSprite(config: Config): {
 		...generateFillColors(config.colorScheme.fill),
 		...generateFeedbackScale(fontBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 		...generateFont(fontBitmap, characterWidth, characterHeight, config.colorScheme.text),
-		...generateBackground(config.colorScheme.fill),
+		...generateBackground(characterWidth, characterHeight, config.colorScheme.fill),
 		...generateIcons(fontBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 	];
 

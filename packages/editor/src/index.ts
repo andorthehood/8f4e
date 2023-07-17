@@ -12,6 +12,10 @@ export default async function init(canvas: HTMLCanvasElement, project: Project, 
 		view.reloadSpriteSheet();
 	});
 
+	events.on('setFont', () => {
+		view.reloadSpriteSheet();
+	});
+
 	return {
 		resize: (width: number, height: number) => {
 			events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
