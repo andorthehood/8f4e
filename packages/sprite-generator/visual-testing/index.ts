@@ -23,6 +23,7 @@ import spriteGenerator from '../src';
 				menuItemBackgroundHighlighted: 'rgba(255,255,255,255)',
 				background: '#000000',
 				backgroundDots: '#999999',
+				backgroundDots2: '#333333',
 				moduleBackground: '#000000',
 				moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
 				wire: '#ffffff',
