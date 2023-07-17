@@ -124,6 +124,8 @@ export interface Output {
 	id: string;
 	calibratedMax: number;
 	calibratedMin: number;
+	wordAddress: number;
+	isInteger: boolean;
 }
 
 export interface Input {
