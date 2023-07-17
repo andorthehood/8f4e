@@ -9,18 +9,9 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 	}
 
 	for (const [, output] of module.outputs) {
-		const { x, y, width, height, id: connectorId } = output;
-		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(connectorId);
+		const { x, y, isInteger, wordAddress } = output;
 
-		if (!memory) {
-			engine.setSpriteLookup(state.graphicHelper.spriteLookups.feedbackScale);
-			engine.drawSprite(x, y, 0, width, height);
-			continue;
-		}
-
-		const value = memory.isInteger
-			? state.compiler.memoryBuffer[memory.wordAddress]
-			: state.compiler.memoryBufferFloat[memory.wordAddress];
+		const value = isInteger ? state.compiler.memoryBuffer[wordAddress] : state.compiler.memoryBufferFloat[wordAddress];
 
 		output.calibratedMax = Math.max(1, output.calibratedMax, value);
 		output.calibratedMin = Math.min(-1, output.calibratedMin, value);
