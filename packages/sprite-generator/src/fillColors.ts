@@ -1,6 +1,6 @@
 import { SpriteCoordinates } from '@8f4e/2d-engine';
 
-import { ColorScheme, Command, DrawingCommand, SpriteLookup, SpriteLookupGenerator } from './types';
+import { ColorScheme, Command, DrawingCommand } from './types';
 
 const offsetX = 0;
 const offsetY = 180;

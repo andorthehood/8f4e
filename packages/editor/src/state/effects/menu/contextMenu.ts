@@ -89,7 +89,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 			Math.round(y / state.graphicHelper.viewport.hGrid) * state.graphicHelper.viewport.hGrid;
 		state.graphicHelper.contextMenu.open = true;
 
-		const module = findModuleAtViewportCoordinates(state.graphicHelper, state.project.viewport, x, y);
+		const module = findModuleAtViewportCoordinates(state.graphicHelper, x, y);
 
 		if (module) {
 			state.graphicHelper.contextMenu.items = decorateMenu(menus.moduleMenu(state));

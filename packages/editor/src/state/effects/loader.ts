@@ -32,6 +32,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		});
 
 		state.graphicHelper.modules.clear();
+		state.graphicHelper.viewport.x = state.project.viewport.x * state.graphicHelper.viewport.vGrid;
+		state.graphicHelper.viewport.y = state.project.viewport.y * state.graphicHelper.viewport.hGrid;
 		state.project.modules.forEach(module => {
 			state.graphicHelper.modules.add({
 				width: 0,
@@ -50,8 +52,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				id: getModuleId(module.code) || '',
 				gaps: new Map(),
 				errorMessages: new Map(),
-				x: module.x,
-				y: module.y,
+				x: module.x * state.graphicHelper.viewport.vGrid,
+				y: module.y * state.graphicHelper.viewport.hGrid,
 				isOpen: module.isOpen,
 				isGroup: false,
 				padLength: 1,
@@ -76,11 +78,14 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		for (const graphicData of state.graphicHelper.modules) {
 			state.project.modules.push({
 				code: graphicData.code,
-				x: graphicData.x,
-				y: graphicData.y,
+				x: graphicData.x / state.graphicHelper.viewport.vGrid,
+				y: graphicData.y / state.graphicHelper.viewport.hGrid,
 				isOpen: graphicData.isOpen,
 			});
 		}
+
+		state.project.viewport.x = Math.round(state.graphicHelper.viewport.x / state.graphicHelper.viewport.vGrid);
+		state.project.viewport.y = Math.round(state.graphicHelper.viewport.y / state.graphicHelper.viewport.hGrid);
 
 		localStorage.setItem('project_' + state.options.localStorageId, JSON.stringify(state.project));
 		localStorage.setItem('editorSettings_' + state.options.localStorageId, JSON.stringify(state.editorSettings));
