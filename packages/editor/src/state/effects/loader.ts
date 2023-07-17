@@ -54,6 +54,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				errorMessages: new Map(),
 				x: module.x * state.graphicHelper.viewport.vGrid,
 				y: module.y * state.graphicHelper.viewport.hGrid,
+				offsetX: 0,
+				offsetY: 0,
 				isOpen: module.isOpen,
 				isGroup: false,
 				padLength: 1,
