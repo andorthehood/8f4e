@@ -56,14 +56,11 @@ export interface ColorScheme {
 	};
 }
 
+export type Font = '6x10' | '8x16';
+
 export interface Config {
 	colorScheme: ColorScheme;
-	font: '6x10' | '8x16';
+	font: Font;
 }
 
 export type SpriteLookup<T extends string = string> = Record<T, SpriteCoordinates>;
-
-export type SpriteLookupGenerator<T extends string = string> = (
-	characterWidth: number,
-	characterHeight: number
-) => SpriteLookup<T>;

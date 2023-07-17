@@ -5,12 +5,7 @@ import { State } from '../../types';
 export default function moduleDragger(state: State, events: EventDispatcher): () => void {
 	let startingPosition: { x: number; y: number } | undefined;
 	function onMouseDown({ x, y }) {
-		state.graphicHelper.draggedModule = findModuleAtViewportCoordinates(
-			state.graphicHelper,
-			state.project.viewport,
-			x,
-			y
-		);
+		state.graphicHelper.draggedModule = findModuleAtViewportCoordinates(state.graphicHelper, x, y);
 
 		if (!state.graphicHelper.draggedModule) {
 			return;
@@ -18,8 +13,8 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 		state.graphicHelper.selectedModule = state.graphicHelper.draggedModule;
 		startingPosition = { x: state.graphicHelper.draggedModule.x, y: state.graphicHelper.draggedModule.y };
 
-		const relativeX = Math.abs(x - (state.project.viewport.x + state.graphicHelper.draggedModule.x));
-		const relativeY = Math.abs(y - (state.project.viewport.y + state.graphicHelper.draggedModule.y));
+		const relativeX = Math.abs(x - (state.graphicHelper.draggedModule.x - state.graphicHelper.viewport.x));
+		const relativeY = Math.abs(y - (state.graphicHelper.draggedModule.y - state.graphicHelper.viewport.y));
 		events.dispatch('moduleClick', { x, y, relativeX, relativeY, module: state.graphicHelper.draggedModule });
 
 		// Bring dragged module forward.

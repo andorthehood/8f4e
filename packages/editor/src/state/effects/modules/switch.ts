@@ -7,7 +7,7 @@ export default function _switch(state: State, events: EventDispatcher): () => vo
 		// const relativeX = Math.abs(module.x - (x - state.viewport.x));
 		// const relativeY = Math.abs(module.y - (y - state.viewport.y));
 
-		const _switch = findSwitchAtViewportCoordinates(state.project.viewport, module, x, y);
+		const _switch = findSwitchAtViewportCoordinates(state.graphicHelper, module, x, y);
 
 		if (!_switch) {
 			return;

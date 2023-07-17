@@ -173,7 +173,7 @@ export function generateCodeColorMap(code: string[], spriteLookups: SpriteLookup
 		}
 
 		if (typeof commentIndex !== 'undefined') {
-			codeColors[commentIndex] = spriteLookups.fontCode;
+			codeColors[commentIndex] = spriteLookups.fontCodeComment;
 		}
 
 		if (typeof numberIndex !== 'undefined') {

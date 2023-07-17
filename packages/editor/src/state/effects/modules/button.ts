@@ -9,7 +9,7 @@ export default function button(state: State, events: EventDispatcher): () => voi
 	let lastPushedButtonMemory: MemoryItem | undefined;
 
 	const onModuleClick = function ({ x, y, module }) {
-		lastPushedButton = findButtonAtViewportCoordinates(state.project.viewport, module, x, y);
+		lastPushedButton = findButtonAtViewportCoordinates(state.graphicHelper, module, x, y);
 
 		if (!lastPushedButton) {
 			return;

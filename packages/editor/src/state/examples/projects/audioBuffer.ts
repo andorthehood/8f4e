@@ -2,8 +2,8 @@ import { Project } from '../../types';
 
 const project: Project = {
 	title: 'Audio Buffer',
-	description: '',
 	author: 'Andor Polgar',
+	description: '',
 	modules: [
 		{
 			code: [
@@ -33,8 +33,8 @@ const project: Project = {
 				'end',
 				'end',
 			],
-			x: 1568,
-			y: -64,
+			x: 2,
+			y: 1,
 			isOpen: true,
 		},
 		{
@@ -79,20 +79,15 @@ const project: Project = {
 				'store',
 				'end',
 			],
-			x: 1888,
-			y: -64,
+			x: 37,
+			y: 1,
 			isOpen: true,
 		},
 	],
-	viewport: {
-		x: -1472,
-		y: 112,
-	},
 	groups: [],
+	viewport: { x: 0, y: 0 },
+	rnbo: { patchers: {} },
 	sampleRate: 44100,
-	rnbo: {
-		patchers: {},
-	},
 };
 
 export default project;

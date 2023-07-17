@@ -15,6 +15,7 @@ import RNBO from './effects/rnbo';
 import worklet from './effects/worklet';
 import colorTheme from './effects/colorTheme';
 import sampleRate from './effects/sampleRate';
+import font from './effects/font';
 
 import { EventDispatcher } from '../events';
 
@@ -65,6 +66,15 @@ const defaultState: State = {
 			roundedWidth: 0,
 			vGrid: 8,
 			hGrid: 16,
+			x: 0,
+			y: 0,
+			borderLineCoordinates: {
+				top: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				right: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				left: { startX: 0, startY: 0, endX: 0, endY: 0 },
+			},
+			center: { x: 0, y: 0 },
 		},
 		contextMenu: {
 			highlightedItem: 0,
@@ -98,6 +108,7 @@ const defaultState: State = {
 	},
 	editorSettings: {
 		colorScheme: 'hackerman',
+		font: '8x16',
 	},
 };
 
@@ -118,6 +129,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	RNBO(state, events);
 	worklet(state, events);
 	colorTheme(state, events);
+	font(state, events);
 	sampleRate(state, events);
 	events.dispatch('init');
 	return state;
