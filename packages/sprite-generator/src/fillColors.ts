@@ -45,7 +45,7 @@ export const generateLookup = function (characterWidth: number, characterHeight:
 		fillColors.map(color => [
 			color,
 			{
-				x: offsetX + fillColors.indexOf(color) * 8,
+				x: offsetX + fillColors.indexOf(color) * characterWidth,
 				y: offsetY,
 				spriteWidth: characterWidth,
 				spriteHeight: characterHeight,
