@@ -10,12 +10,19 @@ export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
 ): Promise<{ resize: (width: number, height: number) => void; reloadSpriteSheet: () => Promise<void> }> {
-	const { canvas: sprite, spriteLookups } = generateSprite({
-		font: '8x16',
+	const {
+		canvas: sprite,
+		spriteLookups,
+		characterWidth,
+		characterHeight,
+	} = generateSprite({
+		font: state.editorSettings.font || '8x16',
 		colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['default'],
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;
+	state.graphicHelper.viewport.hGrid = characterHeight;
+	state.graphicHelper.viewport.vGrid = characterWidth;
 
 	const engine = new Engine(canvas);
 
@@ -23,14 +30,12 @@ export default async function init(
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.setSpriteLookup(spriteLookups.background);
-		engine.drawSprite(0, 0, 0);
-		engine.drawSprite(32 * 16, 0, 0);
-		engine.drawSprite(32 * 16 * 2, 0, 0);
-		engine.drawSprite(32 * 16 * 3, 0, 0);
-		engine.drawSprite(0, 32 * 16, 0);
-		engine.drawSprite(32 * 16, 32 * 16, 0);
-		engine.drawSprite(32 * 16 * 2, 32 * 16, 0);
-		engine.drawSprite(32 * 16 * 3, 32 * 16, 0);
+
+		for (let i = 0; i < 4; i++) {
+			for (let j = 0; j < 4; j++) {
+				engine.drawSprite(64 * characterWidth * i, 32 * characterHeight * j, 0);
+			}
+		}
 
 		drawModules(engine, state);
 		drawConnections(engine, state);
@@ -90,10 +95,20 @@ export default async function init(
 			engine.resize(width, height);
 		},
 		reloadSpriteSheet: async () => {
-			const { canvas: sprite } = generateSprite({
-				font: '8x16',
+			const {
+				canvas: sprite,
+				spriteLookups,
+				characterHeight,
+				characterWidth,
+			} = generateSprite({
+				font: state.editorSettings.font || '8x16',
 				colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['default'],
 			});
+
+			state.graphicHelper.spriteLookups = spriteLookups;
+			state.graphicHelper.viewport.hGrid = characterHeight;
+			state.graphicHelper.viewport.vGrid = characterWidth;
+
 			engine.loadSpriteSheet(sprite);
 		},
 	};

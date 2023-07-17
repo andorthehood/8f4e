@@ -1,6 +1,6 @@
 import { SpriteCoordinates } from '@8f4e/2d-engine';
 
-import { Command, DrawingCommand, SpriteLookupGenerator } from './types';
+import { Command, DrawingCommand } from './types';
 
 const offsetX = 600;
 const offsetY = 100;
