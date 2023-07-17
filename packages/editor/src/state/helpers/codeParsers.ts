@@ -87,6 +87,23 @@ export function parseButtons(
 	}, []);
 }
 
+export function parsePositionOffsetters(code: string[]): Array<{ axis: string; memory: string }> {
+	return code.reduce((acc, line) => {
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+			never,
+			Instruction | ExtendedInstructionSet,
+			string,
+			string,
+			string
+		];
+
+		if (instruction === 'offset') {
+			return [...acc, { axis: args[0], memory: args[1] }];
+		}
+		return acc;
+	}, []);
+}
+
 export function parseScopes(
 	code: string[]
 ): Array<{ id: string; lineNumber: number; minValue: number; maxValue: number }> {

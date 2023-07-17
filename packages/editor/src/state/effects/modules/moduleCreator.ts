@@ -111,6 +111,8 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			isOpen: true,
 			isGroup: false,
 			padLength: 2,
+			offsetX: 0,
+			offsetY: 0,
 		};
 
 		state.graphicHelper.modules.add(module);

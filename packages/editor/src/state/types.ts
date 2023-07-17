@@ -39,7 +39,7 @@ interface MenuItemDivider extends ContextMenuButton {
 	title: never;
 }
 
-export type ExtendedInstructionSet = 'debug' | 'button' | 'switch';
+export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset';
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
@@ -108,6 +108,8 @@ export interface Switch {
 export interface Debugger {
 	width: number;
 	height: number;
+	wordAddress: number;
+	isInteger: boolean;
 	x: number;
 	y: number;
 	id: string;
@@ -151,8 +153,12 @@ export interface ModuleGraphicData {
 	scopes: Map<string, Scope>;
 	switches: Map<string, Switch>;
 	buttons: Map<string, Switch>;
+	positionOffsetterXWordAddress?: number;
+	positionOffsetterYWordAddress?: number;
 	x: number;
 	y: number;
+	offsetX: number;
+	offsetY: number;
 	isOpen: boolean;
 	errorMessages: Map<
 		number,
@@ -166,7 +172,7 @@ export interface ModuleGraphicData {
 }
 
 export type GraphicHelper = {
-	spriteLookups: SpriteLookups | undefined;
+	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
 	modules: Set<ModuleGraphicData>;
 	viewport: {
@@ -187,8 +193,8 @@ export type GraphicHelper = {
 		center: { x: number; y: number };
 	};
 	contextMenu: ContextMenu;
-	draggedModule: ModuleGraphicData | undefined;
-	selectedModule: ModuleGraphicData | undefined;
+	draggedModule?: ModuleGraphicData;
+	selectedModule?: ModuleGraphicData;
 	dialog: {
 		show: boolean;
 		text: string;
