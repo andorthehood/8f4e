@@ -1,7 +1,6 @@
 import { SpriteCoordinates } from '@8f4e/2d-engine';
 
 import { drawCharacter } from './font';
-import glyphs from './fonts/8x16/glyphs';
 import { Glyph } from './fonts/types';
 import { ColorScheme, Command, DrawingCommand } from './types';
 
@@ -9,23 +8,22 @@ const offsetX = 0;
 const offsetY = 300;
 
 export default function generate(
+	glyphs: number[],
 	characterWidth: number,
 	characterHeight: number,
 	colors: ColorScheme['fill']
 ): DrawingCommand[] {
-	const commands: DrawingCommand[] = [
-		[Command.RESET_TRANSFORM],
-		[Command.TRANSLATE, offsetX, offsetY],
-		[Command.FILL_COLOR, colors.backgroundDots],
-	];
+	const commands: DrawingCommand[] = [[Command.RESET_TRANSFORM], [Command.TRANSLATE, offsetX, offsetY]];
 
 	for (let i = 0; i < 32; i++) {
 		for (let j = 0; j < 64; j++) {
-			commands.push(...drawCharacter(glyphs, Glyph.DOT, characterWidth, characterHeight), [
-				Command.TRANSLATE,
-				characterWidth,
-				0,
-			]);
+			commands.push(
+				j % 2 === 0 && i % 1 === 0
+					? [Command.FILL_COLOR, colors.backgroundDots2]
+					: [Command.FILL_COLOR, colors.backgroundDots],
+				...drawCharacter(glyphs, Glyph.DOT, characterWidth, characterHeight),
+				[Command.TRANSLATE, characterWidth, 0]
+			);
 		}
 		commands.push([Command.TRANSLATE, -characterWidth * 64, characterHeight]);
 	}

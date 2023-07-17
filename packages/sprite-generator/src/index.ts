@@ -9,19 +9,26 @@ import generateIcons, { Icon, generateLookup as generateLookupForIcons } from '.
 import { Command, Config } from './types';
 import ascii8x16 from './fonts/8x16/ascii';
 import ascii6x10 from './fonts/6x10/ascii';
+import glyphs8x16 from './fonts/8x16/glyphs';
+import glyphs6x10 from './fonts/6x10/glyphs';
 
 export { Glyph } from './fonts/types';
 export { Icon } from './icons';
 export { ColorScheme, Font } from './types';
 
-const fonts: Record<Config['font'], { bitmap: number[]; characterWidth: number; characterHeight: number }> = {
+const fonts: Record<
+	Config['font'],
+	{ asciiBitmap: number[]; glyphsBitmap: number[]; characterWidth: number; characterHeight: number }
+> = {
 	'8x16': {
-		bitmap: ascii8x16,
+		asciiBitmap: ascii8x16,
+		glyphsBitmap: glyphs8x16,
 		characterWidth: 8,
 		characterHeight: 16,
 	},
 	'6x10': {
-		bitmap: ascii6x10,
+		asciiBitmap: ascii6x10,
+		glyphsBitmap: glyphs6x10,
 		characterWidth: 6,
 		characterHeight: 10,
 	},
@@ -42,7 +49,7 @@ export default function generateSprite(config: Config): {
 	characterHeight: number;
 } {
 	let canvas: OffscreenCanvas | HTMLCanvasElement;
-	const { characterWidth, characterHeight, bitmap: fontBitmap } = fonts[config.font];
+	const { characterWidth, characterHeight, asciiBitmap, glyphsBitmap } = fonts[config.font];
 
 	if (window.OffscreenCanvas) {
 		canvas = new OffscreenCanvas(1024, 1024);
@@ -61,10 +68,10 @@ export default function generateSprite(config: Config): {
 	const commands = [
 		...generateScope(),
 		...generateFillColors(config.colorScheme.fill),
-		...generateFeedbackScale(fontBitmap, characterWidth, characterHeight, config.colorScheme.icons),
-		...generateFont(fontBitmap, characterWidth, characterHeight, config.colorScheme.text),
-		...generateBackground(characterWidth, characterHeight, config.colorScheme.fill),
-		...generateIcons(fontBitmap, characterWidth, characterHeight, config.colorScheme.icons),
+		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
+		...generateFont(asciiBitmap, characterWidth, characterHeight, config.colorScheme.text),
+		...generateBackground(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.fill),
+		...generateIcons(asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {
