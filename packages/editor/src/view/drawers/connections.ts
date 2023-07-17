@@ -27,10 +27,10 @@ export default function drawConnections(engine: Engine, state: State): void {
 			}
 
 			engine.drawLine(
-				module.x + x + state.graphicHelper.viewport.vGrid,
-				module.y + y + state.graphicHelper.viewport.hGrid / 2,
-				output.module.x + output.x + state.graphicHelper.viewport.vGrid,
-				output.module.y + output.y + state.graphicHelper.viewport.vGrid,
+				module.x + module.offsetX + x + state.graphicHelper.viewport.vGrid,
+				module.y + module.offsetY + y + state.graphicHelper.viewport.hGrid / 2,
+				output.module.x + output.module.offsetX + output.x + state.graphicHelper.viewport.vGrid,
+				output.module.y + output.module.offsetY + output.y + state.graphicHelper.viewport.vGrid,
 				isSelected ? 'wireHighlighted' : 'wire',
 				1
 			);

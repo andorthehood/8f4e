@@ -36,7 +36,7 @@ const defaultState: State = {
 			startingMemoryWordAddress: 0,
 			environmentExtensions: {
 				constants: {},
-				ignoredKeywords: ['debug', 'button', 'switch'],
+				ignoredKeywords: ['debug', 'button', 'switch', 'offset'],
 			},
 		},
 	},
@@ -50,7 +50,6 @@ const defaultState: State = {
 		outputs: [],
 	},
 	graphicHelper: {
-		spriteLookups: undefined,
 		dialog: {
 			show: false,
 			text: 'Lorem ipsum dolor sit amet',
@@ -85,8 +84,6 @@ const defaultState: State = {
 			y: 0,
 			menuStack: [],
 		},
-		draggedModule: undefined,
-		selectedModule: undefined,
 	},
 	project: {
 		title: '',

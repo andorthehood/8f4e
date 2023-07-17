@@ -19,6 +19,7 @@ import {
 	getLongestLineLength,
 	getModuleId,
 	parseButtons,
+	parsePositionOffsetters,
 } from '../helpers/codeParsers';
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
@@ -143,6 +144,12 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		graphicData.debuggers.clear();
 		parseDebuggers(trimmedCode).forEach(_debugger => {
+			const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(_debugger.id);
+
+			if (!memory) {
+				return;
+			}
+
 			graphicData.debuggers.set(_debugger.id, {
 				width: state.graphicHelper.viewport.vGrid * 2,
 				height: state.graphicHelper.viewport.hGrid,
@@ -151,6 +158,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					state.graphicHelper.viewport.vGrid * trimmedCode[_debugger.lineNumber].length,
 				y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: _debugger.id,
+				isInteger: memory.isInteger,
+				wordAddress: memory.wordAddress,
 			});
 		});
 
@@ -167,6 +176,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			});
 		});
 
+		graphicData.buttons.clear();
 		parseButtons(trimmedCode).forEach(_switch => {
 			graphicData.buttons.set(_switch.id, {
 				width: state.graphicHelper.viewport.vGrid * 4,
@@ -177,6 +187,23 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				offValue: _switch.offValue,
 				onValue: _switch.onValue,
 			});
+		});
+
+		graphicData.positionOffsetterXWordAddress = undefined;
+		graphicData.positionOffsetterYWordAddress = undefined;
+		parsePositionOffsetters(trimmedCode).forEach(offsetter => {
+			const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(offsetter.memory);
+
+			if (!memory) {
+				return;
+			}
+
+			if (offsetter.axis === 'x') {
+				graphicData.positionOffsetterXWordAddress = memory.wordAddress;
+			}
+			if (offsetter.axis === 'y') {
+				graphicData.positionOffsetterYWordAddress = memory.wordAddress;
+			}
 		});
 
 		graphicData.height = graphicData.codeWithLineNumbers.length * state.graphicHelper.viewport.hGrid;

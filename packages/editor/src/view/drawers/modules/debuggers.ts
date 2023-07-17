@@ -7,16 +7,10 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 		return;
 	}
 
-	for (const [, { x, y, id: debuggerId }] of module.debuggers) {
-		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(debuggerId);
-
-		if (!memory) {
-			continue;
-		}
-
-		const value = memory.isInteger
-			? state.compiler.memoryBuffer[memory.wordAddress].toString()
-			: state.compiler.memoryBufferFloat[memory.wordAddress].toFixed(4);
+	for (const [, { x, y, wordAddress, isInteger }] of module.debuggers) {
+		const value = isInteger
+			? state.compiler.memoryBuffer[wordAddress].toString()
+			: state.compiler.memoryBufferFloat[wordAddress].toFixed(4);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 		engine.drawText(x, y, '[' + value + ']');
