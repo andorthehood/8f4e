@@ -109,8 +109,11 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		graphicData.outputs.clear();
 		parseOutputs(trimmedCode).forEach(output => {
-			const { byteAddress = 0 } =
-				state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(output.id) || {};
+			const memory = state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(output.id);
+
+			if (!memory) {
+				return;
+			}
 
 			const out: Output = {
 				width: state.graphicHelper.viewport.vGrid * 2,
@@ -121,23 +124,29 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				module: graphicData,
 				calibratedMax: 0,
 				calibratedMin: 0,
+				isInteger: memory.isInteger,
+				wordAddress: memory.wordAddress,
 			};
 
 			graphicData.outputs.set(output.id, out);
-			state.graphicHelper.outputsByWordAddress.set(byteAddress, out);
+			state.graphicHelper.outputsByWordAddress.set(memory.byteAddress, out);
 		});
 
 		graphicData.inputs.clear();
 		parseInputs(trimmedCode).forEach(input => {
-			const { wordAddress = 0 } =
-				state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(input.id) || {};
+			const memory = state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(input.id);
+
+			if (!memory) {
+				return;
+			}
+
 			graphicData.inputs.set(input.id, {
 				width: state.graphicHelper.viewport.vGrid * 2,
 				height: state.graphicHelper.viewport.hGrid,
 				x: 0,
 				y: gapCalculator(input.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: input.id,
-				wordAddress,
+				wordAddress: memory.wordAddress,
 				module: graphicData,
 			});
 		});
