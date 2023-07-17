@@ -38,6 +38,7 @@ export interface ColorScheme {
 		menuItemBackgroundHighlighted: string;
 		background: string;
 		backgroundDots: string;
+		backgroundDots2: string;
 		moduleBackground: string;
 		moduleBackgroundDragged: string;
 		wire: string;
