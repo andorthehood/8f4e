@@ -1,7 +1,7 @@
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
-import { drawConnections, drawContextMenu, drawModules, drawDialog } from './drawers';
+import { drawConnections, drawContextMenu, drawModules, drawDialog, drawArrows } from './drawers';
 import colorSchemes from './colorSchemes';
 
 import { State } from '../state/types';
@@ -39,6 +39,7 @@ export default async function init(
 
 		drawModules(engine, state);
 		drawConnections(engine, state);
+		drawArrows(engine, state);
 		drawContextMenu(engine, state);
 
 		engine.startGroup(0, state.graphicHelper.viewport.roundedHeight - state.graphicHelper.viewport.hGrid);

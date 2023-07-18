@@ -33,9 +33,11 @@ const colorSchemes: Record<string, ColorScheme> = {
 		icons: {
 			outputConnectorBackground: '#003300',
 			inputConnectorBackground: '#003300',
+			switchBackground: '#003300',
 			inputConnector: '#ffffff',
 			outputConnector: '#ffffff',
 			feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
+			arrow: '#ffffff',
 		},
 	},
 	hackerman: {
@@ -70,9 +72,11 @@ const colorSchemes: Record<string, ColorScheme> = {
 		icons: {
 			outputConnectorBackground: '#002200',
 			inputConnectorBackground: '#002200',
+			switchBackground: '#002200',
 			inputConnector: '#00ff00',
 			outputConnector: '#00ff00',
 			feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
+			arrow: '#00cc00',
 		},
 	},
 	redalert: {
@@ -107,9 +111,11 @@ const colorSchemes: Record<string, ColorScheme> = {
 		icons: {
 			outputConnectorBackground: '#220000',
 			inputConnectorBackground: '#220000',
+			switchBackground: '#220000',
 			inputConnector: '#ff0000',
 			outputConnector: '#ff0000',
 			feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
+			arrow: 'cc0000',
 		},
 	},
 };
