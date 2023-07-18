@@ -53,7 +53,9 @@ export interface ColorScheme {
 		outputConnector: string;
 		inputConnectorBackground: string;
 		outputConnectorBackground: string;
+		switchBackground: string;
 		feedbackScale: string[];
+		arrow: string;
 	};
 }
 
