@@ -12,7 +12,6 @@ import ascii6x10 from './fonts/6x10/ascii';
 import glyphs8x16 from './fonts/8x16/glyphs';
 import glyphs6x10 from './fonts/6x10/glyphs';
 
-export { Glyph } from './fonts/types';
 export { Icon } from './icons';
 export { ColorScheme, Font } from './types';
 
@@ -71,7 +70,7 @@ export default function generateSprite(config: Config): {
 		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 		...generateFont(asciiBitmap, characterWidth, characterHeight, config.colorScheme.text),
 		...generateBackground(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.fill),
-		...generateIcons(asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
+		...generateIcons(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {

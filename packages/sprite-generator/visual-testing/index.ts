@@ -36,6 +36,7 @@ import spriteGenerator from '../src';
 			icons: {
 				outputConnectorBackground: '#111111',
 				inputConnectorBackground: '#111111',
+				switchBackground: '#336699',
 				inputConnector: '#ffffff',
 				outputConnector: '#ffffff',
 				feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
