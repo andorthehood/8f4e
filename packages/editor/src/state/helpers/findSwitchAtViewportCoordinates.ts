@@ -8,10 +8,10 @@ export default function findSwitchAtViewportCoordinates(
 ): Switch | undefined {
 	return Array.from(module.switches.values()).find(_switch => {
 		return (
-			x >= module.x + _switch.x - graphicHelper.viewport.x &&
-			x <= module.x + _switch.width + _switch.x - graphicHelper.viewport.x &&
-			y >= module.y + _switch.y - graphicHelper.viewport.y &&
-			y <= module.y + _switch.height + _switch.y - graphicHelper.viewport.y
+			x >= module.x + module.offsetX + _switch.x - graphicHelper.viewport.x &&
+			x <= module.x + module.offsetX + _switch.width + _switch.x - graphicHelper.viewport.x &&
+			y >= module.y + module.offsetY + _switch.y - graphicHelper.viewport.y &&
+			y <= module.y + module.offsetY + _switch.height + _switch.y - graphicHelper.viewport.y
 		);
 	});
 }
