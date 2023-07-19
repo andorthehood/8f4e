@@ -13,7 +13,12 @@ export default function generate(
 	characterHeight: number,
 	colors: ColorScheme['fill']
 ): DrawingCommand[] {
-	const commands: DrawingCommand[] = [[Command.RESET_TRANSFORM], [Command.TRANSLATE, offsetX, offsetY]];
+	const commands: DrawingCommand[] = [
+		[Command.RESET_TRANSFORM],
+		[Command.TRANSLATE, offsetX, offsetY],
+		[Command.FILL_COLOR, colors.background],
+		[Command.RECTANGLE, 0, 0, characterWidth * 64, characterHeight * 32],
+	];
 
 	for (let i = 0; i < 32; i++) {
 		for (let j = 0; j < 64; j++) {

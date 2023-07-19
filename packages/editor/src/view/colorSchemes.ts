@@ -81,7 +81,7 @@ const colorSchemes: Record<string, ColorScheme> = {
 	},
 	redalert: {
 		text: {
-			lineNumber: '#660000',
+			lineNumber: '#550000',
 			instruction: '#ff9999',
 			codeComment: '#660000',
 			code: '#cc0000',
@@ -96,12 +96,12 @@ const colorSchemes: Record<string, ColorScheme> = {
 		fill: {
 			menuItemBackground: '#000000',
 			menuItemBackgroundHighlighted: '#ff9999',
-			background: '#220000',
+			background: '#330000',
 			backgroundDots: '#660000',
 			backgroundDots2: '#660000',
 			moduleBackground: '#220000',
 			moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
-			wire: '#ffcccc',
+			wire: 'rgba(255,153,153,0.6)',
 			wireHighlighted: '#ffcccc',
 			errorMessageBackground: '#cc0000',
 			dialogBackground: '#000000',

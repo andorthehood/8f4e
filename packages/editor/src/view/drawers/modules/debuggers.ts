@@ -7,12 +7,12 @@ export default function drawConnectors(engine: Engine, state: State, module: Mod
 		return;
 	}
 
-	for (const [, { x, y, wordAddress, isInteger }] of module.debuggers) {
+	for (const [, { x, y, wordAddress, isInteger, showAddress }] of module.debuggers) {
 		const value = isInteger
 			? state.compiler.memoryBuffer[wordAddress].toString()
 			: state.compiler.memoryBufferFloat[wordAddress].toFixed(4);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-		engine.drawText(x, y, '[' + value + ']');
+		engine.drawText(x, y, '[' + (showAddress ? wordAddress : value) + ']');
 	}
 }
