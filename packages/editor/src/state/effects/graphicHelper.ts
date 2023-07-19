@@ -1,4 +1,4 @@
-import { MemoryItem } from '@8f4e/compiler';
+import { instructions } from '@8f4e/compiler';
 
 import { EventDispatcher, EventHandler, EventObject } from '../../events';
 import { ModuleGraphicData, Output, State } from '../types';
@@ -59,7 +59,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.width =
 			Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) * state.graphicHelper.viewport.vGrid;
 
-		graphicData.codeColors = generateCodeColorMap(graphicData.codeWithLineNumbers, state.graphicHelper.spriteLookups);
+		graphicData.codeColors = generateCodeColorMap(graphicData.codeWithLineNumbers, state.graphicHelper.spriteLookups, [
+			...Object.keys(instructions),
+			...state.compiler.compilerOptions.environmentExtensions.ignoredKeywords,
+		]);
 
 		graphicData.gaps.clear();
 		state.compiler.buildErrors.forEach(buildError => {
