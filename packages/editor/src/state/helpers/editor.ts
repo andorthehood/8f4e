@@ -1,4 +1,3 @@
-import { instructions } from '@8f4e/compiler';
 import { SpriteLookups } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData } from '../types';
@@ -137,22 +136,23 @@ export function reverseGapCalculator(physicalRow, gaps: ModuleGraphicData['gaps'
 	return physicalRow;
 }
 
-const keywords = new RegExp(
-	'\\b(?:' +
-		Object.keys(instructions)
-			.sort((a, b) => b.length - a.length)
-			.join('|')
-			.replaceAll(/\*/g, '\\*')
-			.replaceAll(/\]/g, '\\]')
-			.replaceAll(/\[/g, '\\[') +
-		')\\b',
-	'd'
-);
+const getInstructionRegExp = (instructions: string[]) =>
+	new RegExp(
+		'\\b(?:' +
+			instructions
+				.sort((a, b) => b.length - a.length)
+				.join('|')
+				.replaceAll(/\*/g, '\\*')
+				.replaceAll(/\]/g, '\\]')
+				.replaceAll(/\[/g, '\\[') +
+			')\\b',
+		'd'
+	);
 
-export function generateCodeColorMap(code: string[], spriteLookups: SpriteLookups) {
+export function generateCodeColorMap(code: string[], spriteLookups: SpriteLookups, instructions: string[]) {
 	return code.map(line => {
 		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
-		const { indices: instructionIndices } = keywords.exec(line) || {};
+		const { indices: instructionIndices } = getInstructionRegExp(instructions).exec(line) || {};
 		const { index: numberIndex } = /(?!^)(?:-|)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: commentIndex } = /;/.exec(line) || {};
 		const binaryNumberMatch = /0b([01]+)/.exec(line) || { index: undefined };
