@@ -23,6 +23,7 @@ import {
 	parseButtons,
 	parsePositionOffsetters,
 } from '../helpers/codeParsers';
+import resolveMemoryIdentifier from '../helpers/resolveMemoryIdentifier';
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onModuleClick = function ({ relativeX = 0, relativeY = 0, module }: EventObject) {
@@ -155,7 +156,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		graphicData.debuggers.clear();
 		parseDebuggers(trimmedCode).forEach(_debugger => {
-			const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(_debugger.id);
+			const memory = resolveMemoryIdentifier(state, graphicData.id, _debugger.id);
 
 			if (!memory) {
 				return;
@@ -170,6 +171,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: _debugger.id,
 				isInteger: memory.isInteger,
+				showAddress: memory.showAddress,
 				wordAddress: memory.wordAddress,
 			});
 		});
@@ -203,15 +205,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.positionOffsetterXWordAddress = undefined;
 		graphicData.positionOffsetterYWordAddress = undefined;
 		parsePositionOffsetters(trimmedCode).forEach(offsetter => {
-			let memory: MemoryItem | undefined;
-
-			// TODO: refactoring
-			if (offsetter.memory.startsWith('&')) {
-				const [moduleId, memoryId] = offsetter.memory.substring(1).split('.');
-				memory = state.compiler.compiledModules.get(moduleId)?.memoryMap.get(memoryId);
-			} else {
-				memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(offsetter.memory);
-			}
+			const memory = resolveMemoryIdentifier(state, graphicData.id, offsetter.memory);
 
 			if (!memory) {
 				return;
