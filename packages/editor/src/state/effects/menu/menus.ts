@@ -3,6 +3,7 @@ import bistableMultivibratorsProject from '../../examples/projects/bistableMulti
 import audioBufferProject from '../../examples/projects/audioBuffer';
 import midiBreakBeat from '../../examples/projects/midiBreakBeat';
 import midiBreakBreak2dSequencer from '../../examples/projects/midiBreakBreak2dSequencer';
+import dancingWithTheSineLT from '../../examples/projects/dancingWithTheSineLT';
 import exampleModules from '../../examples/modules';
 
 const modules = {
@@ -26,6 +27,9 @@ const modules = {
 		'MIDI CC Out': 'midiCCOut',
 		'MIDI Codes': 'midiCodes',
 		'General MIDI Drum Codes': 'generalMIDIDrumCodes',
+	},
+	'Lookup tables': {
+		'Sine Lookup Table': 'sineLookupTable',
 	},
 	'Audio Buffer': {
 		'Audio Buffer Out Mono': 'audioBufferOut',
@@ -178,6 +182,12 @@ export const exampleProjectMenu: MenuGenerator = () => [
 		title: 'MIDI Break Beat with 2D Sequencer',
 		action: 'loadProject',
 		payload: { project: midiBreakBreak2dSequencer },
+		close: true,
+	},
+	{
+		title: 'Dancing with the Sine Lookup Table',
+		action: 'loadProject',
+		payload: { project: dancingWithTheSineLT },
 		close: true,
 	},
 ];
