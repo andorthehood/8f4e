@@ -1,3 +1,5 @@
+import { MemoryItem } from '@8f4e/compiler';
+
 import { EventDispatcher, EventHandler, EventObject } from '../../events';
 import { ModuleGraphicData, Output, State } from '../types';
 import {
@@ -201,7 +203,15 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.positionOffsetterXWordAddress = undefined;
 		graphicData.positionOffsetterYWordAddress = undefined;
 		parsePositionOffsetters(trimmedCode).forEach(offsetter => {
-			const memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(offsetter.memory);
+			let memory: MemoryItem | undefined;
+
+			// TODO: refactoring
+			if (offsetter.memory.startsWith('&')) {
+				const [moduleId, memoryId] = offsetter.memory.substring(1).split('.');
+				memory = state.compiler.compiledModules.get(moduleId)?.memoryMap.get(memoryId);
+			} else {
+				memory = state.compiler.compiledModules.get(graphicData.id)?.memoryMap.get(offsetter.memory);
+			}
 
 			if (!memory) {
 				return;
