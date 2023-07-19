@@ -6,12 +6,12 @@ export default function findModuleAtViewportCoordinates(
 	searchY: number
 ): ModuleGraphicData | undefined {
 	for (const graphicData of Array.from(graphicHelper.modules).reverse()) {
-		const { width, height, x, y } = graphicData;
+		const { width, height, x, y, offsetX, offsetY } = graphicData;
 		if (
-			searchX >= x - graphicHelper.viewport.x &&
-			searchX <= x + width - graphicHelper.viewport.x &&
-			searchY >= y - graphicHelper.viewport.y &&
-			searchY <= y + height - graphicHelper.viewport.y
+			searchX >= x + offsetX - graphicHelper.viewport.x &&
+			searchX <= x + offsetX + width - graphicHelper.viewport.x &&
+			searchY >= y + offsetY - graphicHelper.viewport.y &&
+			searchY <= y + offsetY + height - graphicHelper.viewport.y
 		) {
 			return graphicData;
 		}
