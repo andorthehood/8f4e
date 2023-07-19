@@ -11,10 +11,23 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 			return;
 		}
 		state.graphicHelper.selectedModule = state.graphicHelper.draggedModule;
-		startingPosition = { x: state.graphicHelper.draggedModule.x, y: state.graphicHelper.draggedModule.y };
+		startingPosition = {
+			x: state.graphicHelper.draggedModule.x,
+			y: state.graphicHelper.draggedModule.y,
+		};
 
-		const relativeX = Math.abs(x - (state.graphicHelper.draggedModule.x - state.graphicHelper.viewport.x));
-		const relativeY = Math.abs(y - (state.graphicHelper.draggedModule.y - state.graphicHelper.viewport.y));
+		const relativeX = Math.abs(
+			x -
+				(state.graphicHelper.draggedModule.x +
+					state.graphicHelper.draggedModule.offsetX -
+					state.graphicHelper.viewport.x)
+		);
+		const relativeY = Math.abs(
+			y -
+				(state.graphicHelper.draggedModule.y +
+					state.graphicHelper.draggedModule.offsetY -
+					state.graphicHelper.viewport.y)
+		);
 		events.dispatch('moduleClick', { x, y, relativeX, relativeY, module: state.graphicHelper.draggedModule });
 
 		// Bring dragged module forward.
