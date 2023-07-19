@@ -109,6 +109,7 @@ export interface Debugger {
 	width: number;
 	height: number;
 	wordAddress: number;
+	showAddress: boolean;
 	isInteger: boolean;
 	x: number;
 	y: number;
