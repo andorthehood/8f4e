@@ -102,6 +102,7 @@ const defaultState: State = {
 		isLocalStorageEnabled: true,
 		isDebugMode: process.env.NODE_ENV === 'development',
 		localStorageId: 'default',
+		exampleProjects: {},
 	},
 	editorSettings: {
 		colorScheme: 'hackerman',
