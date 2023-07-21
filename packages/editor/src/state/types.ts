@@ -231,6 +231,7 @@ export interface Options {
 	isLocalStorageEnabled: boolean;
 	isDebugMode: boolean;
 	localStorageId: string;
+	exampleProjects: Record<string, Project>;
 }
 
 export interface EditorSettings {
