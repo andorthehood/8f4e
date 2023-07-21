@@ -1,9 +1,4 @@
-import { MenuGenerator } from '../../types';
-import bistableMultivibratorsProject from '../../examples/projects/bistableMultivibrators';
-import audioBufferProject from '../../examples/projects/audioBuffer';
-import midiBreakBeat from '../../examples/projects/midiBreakBeat';
-import midiBreakBreak2dSequencer from '../../examples/projects/midiBreakBreak2dSequencer';
-import dancingWithTheSineLT from '../../examples/projects/dancingWithTheSineLT';
+import { ContextMenuItem, MenuGenerator } from '../../types';
 import exampleModules from '../../examples/modules';
 
 const modules = {
@@ -169,25 +164,10 @@ export const fontMenu: MenuGenerator = () => [
 	{ title: '6x10', action: 'setFont', payload: { font: '6x10' }, close: false },
 ];
 
-export const exampleProjectMenu: MenuGenerator = () => [
-	{
-		title: 'Bistable Multivibrators',
+export const exampleProjectMenu: MenuGenerator = state =>
+	Object.entries(state.options.exampleProjects).map(([key, project]) => ({
+		title: project.title,
 		action: 'loadProject',
-		payload: { project: bistableMultivibratorsProject },
+		payload: { project },
 		close: true,
-	},
-	{ title: 'Audio Buffer', action: 'loadProject', payload: { project: audioBufferProject }, close: true },
-	{ title: 'MIDI Break Beat', action: 'loadProject', payload: { project: midiBreakBeat }, close: true },
-	{
-		title: 'MIDI Break Beat with 2D Sequencer',
-		action: 'loadProject',
-		payload: { project: midiBreakBreak2dSequencer },
-		close: true,
-	},
-	{
-		title: 'Dancing with the Sine Lookup Table',
-		action: 'loadProject',
-		payload: { project: dancingWithTheSineLT },
-		close: true,
-	},
-];
+	}));

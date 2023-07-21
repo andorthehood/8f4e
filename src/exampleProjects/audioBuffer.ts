@@ -1,4 +1,4 @@
-import { Project } from '../../types';
+import { Project } from '../../packages/editor/src/state/types';
 
 const project: Project = {
 	title: 'Audio Buffer',
