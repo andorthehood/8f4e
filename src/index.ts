@@ -9,6 +9,8 @@ async function init() {
 		isDebugMode: false,
 	});
 	window.state = editor.state;
+
+	editor.resize(canvas.clientWidth, canvas.clientHeight);
 }
 
 if (document.readyState === 'complete') {
