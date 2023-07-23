@@ -39,7 +39,7 @@ interface MenuItemDivider extends ContextMenuButton {
 	title: never;
 }
 
-export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset';
+export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset' | 'scope';
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
