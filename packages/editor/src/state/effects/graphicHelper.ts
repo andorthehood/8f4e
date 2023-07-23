@@ -210,7 +210,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		parsePositionOffsetters(trimmedCode).forEach(offsetter => {
 			const memory = resolveMemoryIdentifier(state, graphicData.id, offsetter.memory);
 
-			if (!memory) {
+			if (!memory || !memory.isInteger) {
 				return;
 			}
 
