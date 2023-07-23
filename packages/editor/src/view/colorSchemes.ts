@@ -44,7 +44,7 @@ const colorSchemes: Record<string, ColorScheme> = {
 		text: {
 			lineNumber: '#006600',
 			instruction: '#99ff99',
-			codeComment: '#006600',
+			codeComment: '#cccc00',
 			code: '#00cc00',
 			numbers: '#00ff00',
 			menuItemText: '#00ff00',
@@ -80,7 +80,6 @@ const colorSchemes: Record<string, ColorScheme> = {
 		},
 	},
 	redalert: {
-		/** helloka* */
 		text: {
 			lineNumber: '#994433',
 			instruction: '#eeaa66',
