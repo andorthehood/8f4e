@@ -108,25 +108,26 @@ export function parseScopes(
 	code: string[]
 ): Array<{ id: string; lineNumber: number; minValue: number; maxValue: number }> {
 	return code.reduce((acc, line, index) => {
-		const [, comment] = (line.match(commentParser) ?? []) as [never, string];
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+			never,
+			Instruction | ExtendedInstructionSet,
+			string,
+			string,
+			string
+		];
 
-		if (comment && comment.includes('scope')) {
-			const [, memoryToDebug, minValue, maxValue] = (comment.match(scopeParser) ?? []) as [
-				never,
-				string,
-				string,
-				string
-			];
+		if (instruction === 'scope') {
 			return [
 				...acc,
 				{
-					id: memoryToDebug,
+					id: args[0],
 					lineNumber: index,
-					minValue: parseInt(minValue) || 0,
-					maxValue: parseInt(maxValue) || 100,
+					minValue: parseInt(args[1], 10) || 0,
+					maxValue: parseInt(args[2], 10) || 100,
 				},
 			];
 		}
+
 		return acc;
 	}, []);
 }
