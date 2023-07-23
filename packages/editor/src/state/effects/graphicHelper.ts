@@ -207,7 +207,14 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		graphicData.positionOffsetterXWordAddress = undefined;
 		graphicData.positionOffsetterYWordAddress = undefined;
-		parsePositionOffsetters(trimmedCode).forEach(offsetter => {
+		const offsetters = parsePositionOffsetters(trimmedCode);
+
+		if (offsetters.length === 0) {
+			graphicData.offsetX = 0;
+			graphicData.offsetY = 0;
+		}
+
+		offsetters.forEach(offsetter => {
 			const memory = resolveMemoryIdentifier(state, graphicData.id, offsetter.memory);
 
 			if (!memory || !memory.isInteger) {
