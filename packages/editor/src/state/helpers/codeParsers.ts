@@ -2,9 +2,6 @@ import { Instruction, instructionParser } from '@8f4e/compiler';
 
 import { ExtendedInstructionSet } from '../types';
 
-const commentParser = /^\s*;(.+)$/;
-const scopeParser = /^\s*scope\s*(\S*)\s*(\S*)\s*(\S*)\s*$/;
-
 export function parseInputs(code: string[]): Array<{ id: string; lineNumber: number }> {
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
