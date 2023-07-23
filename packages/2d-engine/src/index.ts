@@ -211,7 +211,12 @@ export class Engine {
 	}
 
 	drawSprite(posX: number, posY: number, sprite: string | number, width?: number, height?: number): void {
+		if (!this.spriteLookup[sprite]) {
+			return;
+		}
+
 		const { x, y, spriteWidth, spriteHeight } = this.spriteLookup[sprite];
+
 		this.drawSpriteFromCoordinates(
 			posX,
 			posY,
