@@ -1,4 +1,5 @@
-import exampleProjects from './exampleProjects';
+import exampleProjects from './examples/projects';
+import exampleModules from './examples/modules';
 
 import initEditor from '../packages/editor/src';
 import { Project } from '../packages/editor/src/state/types';
@@ -20,6 +21,7 @@ async function init() {
 		isDebugMode: false,
 		localStorageId: 'editor',
 		exampleProjects,
+		exampleModules,
 	});
 
 	// @ts-ignore

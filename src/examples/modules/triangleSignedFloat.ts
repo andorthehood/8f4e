@@ -1,4 +1,10 @@
-export default `module triangleSignedFloat
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const triangleSignedFloat: ExampleModule = {
+	title: 'Square (Signed, Float)',
+	author: 'Andor Polgar',
+	category: 'Lookup Tables',
+	code: `module triangleSignedFloat
 
 float default 1 ;Hz 
 float* frequency &default
@@ -36,4 +42,8 @@ if void
  store
 end
 
-end`;
+end`,
+	tests: [],
+};
+
+export default triangleSignedFloat;

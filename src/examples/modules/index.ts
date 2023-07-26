@@ -1,7 +1,7 @@
 import audioBufferOut from './audioBufferOut';
 import midiCodes from './midiCodes';
 import quantizer from './quantizer';
-import binarySequencer from './binarySequencer';
+import binaryGateSequencer from './binaryGateSequencer';
 import midiNoteOut from './midiNoteOut';
 import midiCCOut from './midiCCOut';
 import generalMIDIDrumCodes from './generalMIDIDrumCodes';
@@ -14,12 +14,16 @@ import decToBin8bitMSb from './decToBin8bitMSb';
 import amenBreak64Step from './amenBreak64Step';
 import clockDivider from './clockDivider';
 import sineLookupTable from './sineLookupTable';
+import sawSignedFloat from './sawSignedFloat';
+import sawUnsignedFloat from './sawUnsigned8bitInt';
+import squareSignedFloat from './squareSignedFloat';
+import triangleSignedFloat from './triangleSignedFloat';
 
 const modules = {
 	audioBufferOut,
 	midiCodes,
 	quantizer,
-	binarySequencer,
+	binaryGateSequencer,
 	midiNoteOut,
 	midiCCOut,
 	generalMIDIDrumCodes,
@@ -32,6 +36,10 @@ const modules = {
 	amenBreak64Step,
 	clockDivider,
 	sineLookupTable,
+	sawSignedFloat,
+	sawUnsignedFloat,
+	squareSignedFloat,
+	triangleSignedFloat,
 } as const;
 
 export default modules;

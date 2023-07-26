@@ -1,4 +1,10 @@
-export default `module break
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const break16Step1: ExampleModule = {
+	title: '16 Step Break 1',
+	author: 'Andor Polgar',
+	category: 'Break Beats',
+	code: `module break
 
 ; MSb 0 kick
 ; 1 snare
@@ -21,4 +27,8 @@ int step13 0b01100000
 int step14 0b00000000
 int step15 0b00100000
 int last   0b00000000
-`;
+`,
+	tests: [],
+};
+
+export default break16Step1;
