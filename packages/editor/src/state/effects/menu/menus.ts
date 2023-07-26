@@ -1,38 +1,4 @@
 import { ContextMenuItem, MenuGenerator } from '../../types';
-import exampleModules from '../../examples/modules';
-
-const modules = {
-	'Logic Gates': ['AND', 'OR', 'NAND', 'NOR', 'XOR'],
-	Bitwise: {
-		'Bitwise And': 'bitwiseAnd',
-		'Bitwise Or': 'bitwiseOr',
-		'Bitwise XOR': 'bitwiseXor',
-		'Decimal to Binary Converter (8bit, MSb)': 'decToBin8bitMSb',
-	},
-	'Break Beats': {
-		'16 Step Break 1': 'break16Step1',
-		'16 Step Break 2': 'break16Step2',
-		'Amen Break 64 Step': 'amenBreak64Step',
-	},
-	Sequencers: { 'Binary Sequencer': 'binarySequencer' },
-	MIDI: {
-		'MIDI Note In': 'midiNoteIn',
-		'MIDI Note Out': 'midiNoteOut',
-		'MIDI CC In': 'midiCCIn',
-		'MIDI CC Out': 'midiCCOut',
-		'MIDI Codes': 'midiCodes',
-		'General MIDI Drum Codes': 'generalMIDIDrumCodes',
-	},
-	'Lookup tables': {
-		'Sine Lookup Table': 'sineLookupTable',
-	},
-	'Audio Buffer': {
-		'Audio Buffer Out Mono': 'audioBufferOut',
-		'Audio Buffer Out Stereo': 'audioBufferOut',
-		'Audio Buffer In': 'audioBufferOut',
-	},
-	Quantizers: { Quantizer: 'quantizer' },
-} as const;
 
 export const mainMenu: MenuGenerator = () => [
 	{
@@ -76,24 +42,24 @@ export const moduleMenu: MenuGenerator = state => [
 	{ title: 'Copy module', action: 'copyModule', payload: { module: state.graphicHelper.selectedModule }, close: true },
 ];
 
-export const moduleCategoriesMenu: MenuGenerator = () => {
-	const categories = Object.keys(modules);
+export const moduleCategoriesMenu: MenuGenerator = state => {
+	const categories = [...new Set(Object.entries(state.options.exampleModules).map(([, module]) => module.category))];
 	return categories.map(category => {
 		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
 	});
 };
 
 export const builtInModuleMenu: MenuGenerator = (state, { category }: { category: string }) => {
-	return Object.keys(modules[category]).map(module => {
-		const code = exampleModules[modules[category][module]] || '';
-
-		return {
-			title: module,
-			action: 'addModule',
-			payload: { code: code.split('\n') },
-			close: true,
-		};
-	});
+	return Object.entries(state.options.exampleModules)
+		.filter(([, module]) => module.category == category)
+		.map(([, module]) => {
+			return {
+				title: module.title,
+				action: 'addModule',
+				payload: { code: module.code.split('\n') },
+				close: true,
+			};
+		});
 };
 
 export const sampleRateMenu: MenuGenerator = () => [

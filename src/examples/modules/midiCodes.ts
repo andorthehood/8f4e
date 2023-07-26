@@ -1,4 +1,10 @@
-export default `module midiCodes
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const midiCodes: ExampleModule = {
+	title: 'MIDI Codes',
+	author: 'Andor Polgar',
+	category: 'MIDI',
+	code: `module midiCodes
 
 const A0  21
 const A#0 22
@@ -152,4 +158,8 @@ const F#9 126
 const Gb9 126
 const G9  127
 
-end`;
+end`,
+	tests: [],
+};
+
+export default midiCodes;

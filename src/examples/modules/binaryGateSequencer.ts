@@ -1,4 +1,10 @@
-export default `module binaryGateSequencer
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const binaryGateSequencer: ExampleModule = {
+	title: 'Binary Gate Sequencer',
+	author: 'Andor Polgar',
+	category: 'Sequencers',
+	code: `module binaryGateSequencer
 
 int step1  0b10100000
 int step2  0b00100000
@@ -85,4 +91,8 @@ loop
 
 end
 
-end`;
+end`,
+	tests: [],
+};
+
+export default binaryGateSequencer;
