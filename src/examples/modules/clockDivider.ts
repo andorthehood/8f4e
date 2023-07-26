@@ -1,4 +1,10 @@
-export default `module clockDivider
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const clockDivider: ExampleModule = {
+	title: 'Clock Divider',
+	author: 'Andor Polgar',
+	category: 'Clock',
+	code: `module clockDivider
 
 int default 16
 int* divider &default
@@ -31,4 +37,8 @@ else
  store
 end
 
-end`;
+end`,
+	tests: [],
+};
+
+export default clockDivider;

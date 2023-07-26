@@ -1,4 +1,10 @@
-export default `module amen1
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const amenBreak64Step: ExampleModule = {
+	title: 'Amen Break 64 Step',
+	author: 'Andor Polgar',
+	category: 'Break Beats',
+	code: `module amen1
 
 ; MSb 0 kick
 ; 1 snare
@@ -73,4 +79,8 @@ int step62 0b00000000
 int step63 0b01100000
 int step64 0b00000000
 
-end`;
+end`,
+	tests: [],
+};
+
+export default amenBreak64Step;

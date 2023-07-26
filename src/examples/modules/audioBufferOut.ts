@@ -1,4 +1,10 @@
-export default `module audioBufferOut
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const audioBufferOut: ExampleModule = {
+	title: 'Audio Buffer Out',
+	author: 'Andor Polgar',
+	category: 'Audio Buffer',
+	code: `module audioBufferOut
 
 float* in
 int channel 0
@@ -34,4 +40,8 @@ end
 push pointer
 push *in
 store
-end`;
+end`,
+	tests: [],
+};
+
+export default audioBufferOut;
