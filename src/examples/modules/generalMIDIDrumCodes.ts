@@ -1,4 +1,10 @@
-export default `module generalMIDIDrumCodes
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const generalMIDIDrumCodes: ExampleModule = {
+	title: 'General MIDI Drum Codes',
+	author: 'Andor Polgar',
+	category: 'MIDI',
+	code: `module generalMIDIDrumCodes
 
 const LASER 27
 const WHIP 28
@@ -64,4 +70,8 @@ const SNARE_DRUM_ROD 91
 const OCEAN_DRUM 92
 const SNARE_DRUM_BRUSH 93
 
-end`;
+end`,
+	tests: [],
+};
+
+export default generalMIDIDrumCodes;

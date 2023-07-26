@@ -227,11 +227,20 @@ export interface Project {
 	sampleRate: number;
 }
 
+export interface ExampleModule {
+	title: string;
+	author: string;
+	code: string;
+	tests: unknown[];
+	category: string;
+}
+
 export interface Options {
 	isLocalStorageEnabled: boolean;
 	isDebugMode: boolean;
 	localStorageId: string;
 	exampleProjects: Record<string, Project>;
+	exampleModules: Record<string, ExampleModule>;
 }
 
 export interface EditorSettings {
