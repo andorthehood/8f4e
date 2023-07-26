@@ -1,4 +1,10 @@
-export default `module decToBin8bitMSB
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const decToBin8bitMSb: ExampleModule = {
+	title: 'Decimal to Binary Converter (8bit, MSb)',
+	author: 'Andor Polgar',
+	category: 'Bitwise',
+	code: `module decToBin8bitMSb
 
 int* in
 
@@ -57,4 +63,8 @@ loop
 
 end
 
-end`;
+end`,
+	tests: [],
+};
+
+export default decToBin8bitMSb;

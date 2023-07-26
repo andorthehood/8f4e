@@ -1,4 +1,10 @@
-export default `module quantizer
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const quantizer: ExampleModule = {
+	title: 'Quantizer',
+	author: 'Andor Polgar',
+	category: 'Quantizers',
+	code: `module quantizer
 
 use midiCodes
 
@@ -63,4 +69,8 @@ loop
  branchIfTrue 1
 end
 
-end`;
+end`,
+	tests: [],
+};
+
+export default quantizer;

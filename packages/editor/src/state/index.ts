@@ -103,6 +103,7 @@ const defaultState: State = {
 		isDebugMode: process.env.NODE_ENV === 'development',
 		localStorageId: 'default',
 		exampleProjects: {},
+		exampleModules: {},
 	},
 	editorSettings: {
 		colorScheme: 'hackerman',
