@@ -1,4 +1,10 @@
-export default `module sqaureSignedFloat
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const squareSignedFloat: ExampleModule = {
+	title: 'Square (Signed, Float)',
+	author: 'Andor Polgar',
+	category: 'Lookup Tables',
+	code: `module squareSignedFloat
 
 float default 1 ;Hz 
 float* frequency &default
@@ -50,4 +56,8 @@ else
  store
 end
 
-end`;
+end`,
+	tests: [],
+};
+
+export default squareSignedFloat;
