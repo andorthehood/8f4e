@@ -1,4 +1,4 @@
-import exampleProjects from './exampleProjects';
+import exampleProjects from './examples/projects';
 
 import initEditor from '../packages/editor/src';
 
