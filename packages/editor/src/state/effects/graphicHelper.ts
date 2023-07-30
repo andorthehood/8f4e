@@ -72,7 +72,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			graphicData.gaps.set(buildError.lineNumber, { size: 2 });
 		});
 		parseScopes(trimmedCode).forEach(scope => {
-			graphicData.gaps.set(scope.lineNumber, { size: 9 });
+			graphicData.gaps.set(scope.lineNumber, { size: 8 });
 		});
 
 		const gaps = Array.from(graphicData.gaps).sort(([a], [b]) => {
@@ -105,7 +105,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			graphicData.scopes.set(scope.id, {
 				width: state.graphicHelper.viewport.vGrid * 2,
 				height: state.graphicHelper.viewport.hGrid,
-				x: state.graphicHelper.viewport.vGrid * (4 + graphicData.padLength),
+				x: 0,
 				y: (gapCalculator(scope.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
 				id: scope.id,
 				minValue: scope.minValue,
