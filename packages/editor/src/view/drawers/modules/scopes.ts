@@ -33,13 +33,13 @@ export default function drawer(engine: Engine, state: State, module: ModuleGraph
 			continue;
 		}
 
-		buffer[bufferPointer] = value;
+		buffer[bufferPointer] = Math.round(value / 2);
 		bufferPointers.set(wordAddress, ((bufferPointers.get(wordAddress) || 0) + 1) % RESOLUTION);
 
 		engine.startGroup(x, y);
 
 		for (let i = 0; i < RESOLUTION; i++) {
-			engine.drawSprite(2 * i + 1, 1, buffer[i], 2, RESOLUTION * 2);
+			engine.drawSprite(i * 4, 0, buffer[i], 4, state.graphicHelper.viewport.hGrid * 8);
 		}
 
 		engine.endGroup();

@@ -1,7 +1,7 @@
 import { Engine } from '@8f4e/2d-engine';
 
 import drawConnectors from './connectors';
-// import drawScopes from './scopes';
+import drawScopes from './scopes';
 import drawDebuggers from './debuggers';
 import drawSwitches from './switches';
 import drawButtons from './buttons';
@@ -86,7 +86,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			drawConnectors(engine, state, module);
-			// drawScopes(engine, state, module);
+			drawScopes(engine, state, module);
 			drawDebuggers(engine, state, module);
 			drawSwitches(engine, state, module);
 			drawButtons(engine, state, module);
