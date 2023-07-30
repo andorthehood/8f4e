@@ -47,6 +47,8 @@ export interface ColorScheme {
 		dialogBackground: string;
 		dialogDimmer: string;
 		highlightedCodeLine: string;
+		plotterTrace: string;
+		plotterBackground: string;
 	};
 	icons: {
 		inputConnector: string;

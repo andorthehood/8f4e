@@ -10,7 +10,7 @@ const project: Project = {
 				'module saw',
 				'',
 				'debug out',
-				'scope out 0 100',
+				'plot out 0 100',
 				'',
 				'float out',
 				'',

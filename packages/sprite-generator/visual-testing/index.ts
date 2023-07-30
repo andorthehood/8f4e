@@ -32,6 +32,8 @@ import spriteGenerator from '../src';
 				dialogBackground: 'rgba(0,0,0,1)',
 				dialogDimmer: 'rgba(0,0,0,0.5)',
 				highlightedCodeLine: '#333333',
+				plotterBackground: '#000000',
+				plotterTrace: '#ffffff',
 			},
 			icons: {
 				outputConnectorBackground: '#111111',
@@ -40,6 +42,7 @@ import spriteGenerator from '../src';
 				inputConnector: '#ffffff',
 				outputConnector: '#ffffff',
 				feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
+				arrow: '#000000',
 			},
 		},
 	});
