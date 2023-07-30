@@ -78,7 +78,7 @@ export class Engine {
 		this.gl.enableVertexAttribArray(a_texcoord);
 		this.gl.enableVertexAttribArray(a_position);
 
-		this.growBuffer(10000);
+		this.growBuffer(20000);
 
 		this.startTime = Date.now();
 		this.frameCounter = 0;
