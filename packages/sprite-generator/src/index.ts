@@ -3,7 +3,7 @@ import { SpriteCoordinates } from '@8f4e/2d-engine';
 import generateFont, { FontLookups, generateLookups as generateLookupsForFonts } from './font';
 import generateFillColors, { generateLookup as generateLookupForFillColors } from './fillColors';
 import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale';
-import generateScope, { generateLookup as generateLookupForScope } from './scope';
+import generatePlotter, { generateLookup as generateLookupForPlotter } from './plotter';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
 import { Command, Config } from './types';
@@ -35,7 +35,7 @@ const fonts: Record<
 
 export interface SpriteLookups extends FontLookups {
 	fillColors: Record<keyof Config['colorScheme']['fill'], SpriteCoordinates>;
-	scope: Record<number, SpriteCoordinates>;
+	plotter: Record<number, SpriteCoordinates>;
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<Icon, SpriteCoordinates>;
 	feedbackScale: Record<number, SpriteCoordinates>;
@@ -65,7 +65,7 @@ export default function generateSprite(config: Config): {
 	}) as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 
 	const commands = [
-		...generateScope(characterWidth, characterHeight),
+		...generatePlotter(characterWidth, characterHeight, config.colorScheme.fill),
 		...generateFillColors(config.colorScheme.fill),
 		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 		...generateFont(asciiBitmap, characterWidth, characterHeight, config.colorScheme.text),
@@ -111,7 +111,7 @@ export default function generateSprite(config: Config): {
 				characterHeight,
 				config.colorScheme.icons.feedbackScale
 			),
-			scope: generateLookupForScope(characterWidth, characterHeight),
+			plotter: generateLookupForPlotter(characterWidth, characterHeight),
 			background: generateLookupForBackground(characterWidth, characterHeight),
 			icons: generateLookupForIcons(characterWidth, characterHeight),
 		},
