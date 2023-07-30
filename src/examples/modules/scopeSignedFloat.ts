@@ -1,16 +1,16 @@
 import { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const scope: ExampleModule = {
-	title: 'Scope',
+	title: 'Scope (Signed, Float, -1-1)',
 	author: 'Andor Polgar',
 	category: 'Debug Tools',
 	code: `module scope
 
-int* in &sawInt8bit.out 
-int[] buffer 64
+float* in
+float[] buffer 64
 int bufferPointer &buffer
 
-plot buffer 0 256
+plot buffer -1 1
 
 push &bufferPointer
 push bufferPointer
