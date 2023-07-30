@@ -65,7 +65,7 @@ export default function generateSprite(config: Config): {
 	}) as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 
 	const commands = [
-		...generateScope(),
+		...generateScope(characterWidth, characterHeight),
 		...generateFillColors(config.colorScheme.fill),
 		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 		...generateFont(asciiBitmap, characterWidth, characterHeight, config.colorScheme.text),
@@ -111,7 +111,7 @@ export default function generateSprite(config: Config): {
 				characterHeight,
 				config.colorScheme.icons.feedbackScale
 			),
-			scope: generateLookupForScope(),
+			scope: generateLookupForScope(characterWidth, characterHeight),
 			background: generateLookupForBackground(characterWidth, characterHeight),
 			icons: generateLookupForIcons(characterWidth, characterHeight),
 		},
