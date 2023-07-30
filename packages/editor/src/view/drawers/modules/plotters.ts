@@ -11,7 +11,7 @@ export default function drawer(engine: Engine, state: State, module: ModuleGraph
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.plotter);
 
-	for (const [, { x, y, id, maxValue }] of module.bufferPlotters) {
+	for (const [, { x, y, id, maxValue, minValue }] of module.bufferPlotters) {
 		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(id);
 
 		if (!memory) {
@@ -23,12 +23,15 @@ export default function drawer(engine: Engine, state: State, module: ModuleGraph
 		engine.startGroup(x, y);
 
 		const width = Math.min(memory.wordSize, maxPlotterWidth);
+		const height = maxValue - minValue;
+		const offset = minValue * -1;
 
 		for (let i = 0; i < width; i++) {
 			const value = memory.isInteger
 				? state.compiler.memoryBuffer[wordAddress + i]
 				: state.compiler.memoryBufferFloat[wordAddress + i];
-			const normalizedValue = Math.floor((value / maxValue) * (state.graphicHelper.viewport.hGrid * 8));
+
+			const normalizedValue = Math.round(((value + offset) / height) * (state.graphicHelper.viewport.hGrid * 8));
 
 			engine.drawSprite(
 				i * Math.floor(maxPlotterWidth / width),
