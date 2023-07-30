@@ -6,7 +6,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "scope",
+        "value": "plot",
       },
     ],
     "instruction": "module",

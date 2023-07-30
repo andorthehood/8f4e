@@ -16,7 +16,7 @@ import {
 	parseInputs,
 	parseOutputs,
 	getLastMemoryInstructionLine,
-	parseScopes,
+	parseBufferPlotters,
 	parseSwitches,
 	getLongestLineLength,
 	getModuleId,
@@ -71,8 +71,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			}
 			graphicData.gaps.set(buildError.lineNumber, { size: 2 });
 		});
-		parseScopes(trimmedCode).forEach(scope => {
-			graphicData.gaps.set(scope.lineNumber, { size: 8 });
+		parseBufferPlotters(trimmedCode).forEach(plotter => {
+			graphicData.gaps.set(plotter.lineNumber, { size: 8 });
 		});
 
 		const gaps = Array.from(graphicData.gaps).sort(([a], [b]) => {
@@ -100,16 +100,16 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			});
 		});
 
-		graphicData.scopes.clear();
-		parseScopes(trimmedCode).forEach(scope => {
-			graphicData.scopes.set(scope.id, {
+		graphicData.bufferPlotters.clear();
+		parseBufferPlotters(trimmedCode).forEach(plotter => {
+			graphicData.bufferPlotters.set(plotter.id, {
 				width: state.graphicHelper.viewport.vGrid * 2,
 				height: state.graphicHelper.viewport.hGrid,
 				x: 0,
-				y: (gapCalculator(scope.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
-				id: scope.id,
-				minValue: scope.minValue,
-				maxValue: scope.maxValue,
+				y: (gapCalculator(plotter.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
+				id: plotter.id,
+				minValue: plotter.minValue,
+				maxValue: plotter.maxValue,
 			});
 		});
 
