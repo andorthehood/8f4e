@@ -18,6 +18,8 @@ import sawSignedFloat from './sawSignedFloat';
 import sawUnsignedFloat from './sawUnsigned8bitInt';
 import squareSignedFloat from './squareSignedFloat';
 import triangleSignedFloat from './triangleSignedFloat';
+import scopeUnsignedInt from './scopeUnsignedInt';
+import scopeSignedFloat from './scopeSignedFloat';
 
 const modules = {
 	audioBufferOut,
@@ -40,6 +42,8 @@ const modules = {
 	sawUnsignedFloat,
 	squareSignedFloat,
 	triangleSignedFloat,
+	scopeUnsignedInt,
+	scopeSignedFloat,
 } as const;
 
 export default modules;
