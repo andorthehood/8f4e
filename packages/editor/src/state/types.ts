@@ -39,7 +39,7 @@ interface MenuItemDivider extends ContextMenuButton {
 	title: never;
 }
 
-export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset' | 'scope';
+export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset' | 'plot';
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
@@ -86,7 +86,7 @@ export interface Midi {
 	inputs: MIDIInput[];
 }
 
-export interface Scope {
+export interface BufferPlotter {
 	width: number;
 	height: number;
 	x: number;
@@ -153,7 +153,7 @@ export interface ModuleGraphicData {
 	cursor: { col: number; row: number; x: number; y: number };
 	id: string;
 	debuggers: Map<string, Debugger>;
-	scopes: Map<string, Scope>;
+	bufferPlotters: Map<string, BufferPlotter>;
 	switches: Map<string, Switch>;
 	buttons: Map<string, Switch>;
 	positionOffsetterXWordAddress?: number;
