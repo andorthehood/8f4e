@@ -119,8 +119,8 @@ export function parseBufferPlotters(
 				{
 					id: args[0],
 					lineNumber: index,
-					minValue: parseInt(args[1], 10) || 0,
-					maxValue: parseInt(args[2], 10) || 100,
+					minValue: parseInt(args[1], 10) || -8,
+					maxValue: parseInt(args[2], 10) || 8,
 				},
 			];
 		}
