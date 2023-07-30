@@ -101,7 +101,7 @@ export function parsePositionOffsetters(code: string[]): Array<{ axis: string; m
 	}, []);
 }
 
-export function parseScopes(
+export function parseBufferPlotters(
 	code: string[]
 ): Array<{ id: string; lineNumber: number; minValue: number; maxValue: number }> {
 	return code.reduce((acc, line, index) => {
@@ -113,7 +113,7 @@ export function parseScopes(
 			string
 		];
 
-		if (instruction === 'scope') {
+		if (instruction === 'plot') {
 			return [
 				...acc,
 				{
