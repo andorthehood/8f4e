@@ -11,6 +11,7 @@ export default function generate(characterWidth: number, characterHeight: number
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
+		[Command.RECTANGLE, 0, 0, 200, 200],
 		[Command.FILL_COLOR, 'rgb(100,255,255)'],
 		...values.map((value): DrawingCommand => {
 			return [Command.RECTANGLE, value, characterHeight * 8 - value, 1, 1];
