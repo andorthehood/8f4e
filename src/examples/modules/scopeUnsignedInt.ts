@@ -14,13 +14,13 @@ plot buffer 0 255
 
 push &bufferPointer
 push bufferPointer
-push 4
+push WORD_SIZE
 add
 store
 
 push bufferPointer
 push buffer&
-greaterOrEqual
+greaterThan
 if void
  push &bufferPointer
  push &buffer
