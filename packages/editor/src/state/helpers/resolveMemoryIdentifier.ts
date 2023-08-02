@@ -7,6 +7,13 @@ export default function resolveMemoryIdentifier(state: State, moduleId: string, 
 	let showAddress = false;
 	let showEndAddress = false;
 	let operator: '&' | '*' | undefined;
+	let bufferPointer = 0;
+	let showBinary = false;
+
+	if (memoryIdentifier.startsWith('0b')) {
+		showBinary = true;
+		memoryIdentifier = memoryIdentifier.substring(2);
+	}
 
 	if (memoryIdentifier.endsWith('&')) {
 		operator = '&';
@@ -30,6 +37,12 @@ export default function resolveMemoryIdentifier(state: State, moduleId: string, 
 		memoryIdentifier = memoryIdentifier.split('.')[1];
 	}
 
+	if (/.+\[(\d+)\]/.test(memoryIdentifier)) {
+		const match = memoryIdentifier.match(/.+\[(\d+)\]/) as [never, string];
+		bufferPointer = parseInt(match[1], 10);
+		memoryIdentifier = memoryIdentifier.replace(/\[\d+\]/, '');
+	}
+
 	memory = state.compiler.compiledModules.get(moduleId)?.memoryMap.get(memoryIdentifier);
 
 	if (!memory) {
@@ -48,5 +61,7 @@ export default function resolveMemoryIdentifier(state: State, moduleId: string, 
 		showAddress,
 		showEndAddress,
 		memory,
+		bufferPointer,
+		showBinary,
 	};
 }
