@@ -47,6 +47,7 @@ import equal from './equal';
 import wasm from './wasm';
 import branchIfUnchanged from './branchIfUnchanged';
 import init from './init';
+import shiftLeft from './shiftLeft';
 
 const instructions = {
 	and,
@@ -76,6 +77,7 @@ const instructions = {
 	loop,
 	greaterOrEqualUnsigned,
 	equalToZero,
+	shiftLeft,
 	shiftRight,
 	shiftRightUnsigned,
 	remainder,
