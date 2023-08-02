@@ -31,8 +31,8 @@ export default async function init(
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.setSpriteLookup(spriteLookups.background);
 
-		for (let i = 0; i < 4; i++) {
-			for (let j = 0; j < 4; j++) {
+		for (let i = 0; i < Math.ceil(state.graphicHelper.viewport.width / (64 * characterWidth)); i++) {
+			for (let j = 0; j < Math.ceil(state.graphicHelper.viewport.height / (32 * characterHeight)); j++) {
 				engine.drawSprite(64 * characterWidth * i, 32 * characterHeight * j, 0);
 			}
 		}
