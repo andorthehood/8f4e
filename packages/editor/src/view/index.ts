@@ -17,7 +17,7 @@ export default async function init(
 		characterHeight,
 	} = generateSprite({
 		font: state.editorSettings.font || '8x16',
-		colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['default'],
+		colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['hackerman'],
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;
