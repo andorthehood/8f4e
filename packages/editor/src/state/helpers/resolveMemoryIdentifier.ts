@@ -1,11 +1,18 @@
 import { MemoryItem } from '@8f4e/compiler';
 
-import { Output, State } from '../types';
+import { State } from '../types';
 
 export default function resolveMemoryIdentifier(state: State, moduleId: string, memoryIdentifier: string) {
-	let memory: MemoryItem | Output | undefined;
+	let memory: MemoryItem | undefined;
 	let showAddress = false;
+	let showEndAddress = false;
 	let operator: '&' | '*' | undefined;
+
+	if (memoryIdentifier.endsWith('&')) {
+		operator = '&';
+		showEndAddress = true;
+		memoryIdentifier = memoryIdentifier.slice(0, -1);
+	}
 
 	if (memoryIdentifier.startsWith('&')) {
 		operator = '&';
@@ -30,7 +37,7 @@ export default function resolveMemoryIdentifier(state: State, moduleId: string, 
 	}
 
 	if (operator === '*' && memory.isPointer) {
-		memory = state.graphicHelper.outputsByWordAddress.get(state.compiler.memoryBuffer[memory.wordAddress]);
+		memory = state.graphicHelper.outputsByWordAddress.get(state.compiler.memoryBuffer[memory.wordAddress])?.memory;
 	}
 
 	if (!memory) {
@@ -38,8 +45,8 @@ export default function resolveMemoryIdentifier(state: State, moduleId: string, 
 	}
 
 	return {
-		wordAddress: memory.wordAddress,
 		showAddress,
-		isInteger: memory.isInteger,
+		showEndAddress,
+		memory,
 	};
 }

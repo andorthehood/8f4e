@@ -130,8 +130,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				module: graphicData,
 				calibratedMax: 0,
 				calibratedMin: 0,
-				isInteger: memory.isInteger,
-				wordAddress: memory.wordAddress,
+				memory,
 			};
 
 			graphicData.outputs.set(output.id, out);
@@ -173,9 +172,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					state.graphicHelper.viewport.vGrid * trimmedCode[_debugger.lineNumber].length,
 				y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 				id: _debugger.id,
-				isInteger: memory.isInteger,
+				memory: memory.memory,
 				showAddress: memory.showAddress,
-				wordAddress: memory.wordAddress,
+				showEndAddress: memory.showEndAddress,
 			});
 		});
 

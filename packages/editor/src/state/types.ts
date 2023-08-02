@@ -1,5 +1,5 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
-import { CompiledModuleLookup, CompileOptions, MemoryBuffer } from '@8f4e/compiler';
+import { CompiledModuleLookup, CompileOptions, MemoryBuffer, MemoryItem } from '@8f4e/compiler';
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { IPatcher } from '@rnbo/js';
 
@@ -108,12 +108,12 @@ export interface Switch {
 export interface Debugger {
 	width: number;
 	height: number;
-	wordAddress: number;
 	showAddress: boolean;
-	isInteger: boolean;
+	showEndAddress: boolean;
 	x: number;
 	y: number;
 	id: string;
+	memory: MemoryItem;
 }
 
 export interface Output {
@@ -125,8 +125,7 @@ export interface Output {
 	id: string;
 	calibratedMax: number;
 	calibratedMin: number;
-	wordAddress: number;
-	isInteger: boolean;
+	memory: MemoryItem;
 }
 
 export interface Input {
