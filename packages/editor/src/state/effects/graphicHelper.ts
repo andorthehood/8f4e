@@ -175,6 +175,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				memory: memory.memory,
 				showAddress: memory.showAddress,
 				showEndAddress: memory.showEndAddress,
+				showBinary: memory.showBinary,
+				bufferPointer: memory.bufferPointer,
 			});
 		});
 
