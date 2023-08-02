@@ -297,7 +297,7 @@ const project: Project = {
 		},
 	],
 	groups: [],
-	viewport: { x: 144, y: -3 },
+	viewport: { x: 45, y: 7 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,
 };
