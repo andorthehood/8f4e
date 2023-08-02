@@ -114,6 +114,8 @@ export interface Debugger {
 	y: number;
 	id: string;
 	memory: MemoryItem;
+	bufferPointer: number;
+	showBinary: boolean;
 }
 
 export interface Output {
