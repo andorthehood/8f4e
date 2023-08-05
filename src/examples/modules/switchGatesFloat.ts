@@ -6,7 +6,7 @@ const switchGatesFloat: ExampleModule = {
 	category: 'Controllers',
 	code: `module switchGatesFloat
 
-float* in0 &electron.out
+float* in0
 float out0
 float* in1
 float out1
@@ -40,18 +40,18 @@ switch gate6
 int gate7
 switch gate7
 
-int inputPointer 0
+int pointer 0
 
 loop
  ; Exit point
- push inputPointer
+ push pointer
  push 7
  greaterThan
  branchIfTrue 1 
 
  ; Read switch
  push &gate0
- push inputPointer
+ push pointer
  push WORD_SIZE
  mul
  add
@@ -61,14 +61,14 @@ loop
  if void
   ; Prepare out address
   push &out0
-  push inputPointer
+  push pointer
   push WORD_SIZE
   mul
   add
 
   ; Read input
   push &in0
-  push inputPointer
+  push pointer
   push WORD_SIZE
   mul
   add
@@ -79,7 +79,7 @@ loop
  else
   ; Prepare out address
   push &out0
-  push inputPointer
+  push pointer
   push WORD_SIZE
   mul
   add
