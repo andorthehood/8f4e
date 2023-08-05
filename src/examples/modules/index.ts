@@ -28,6 +28,8 @@ import mulFloat from './multipleFloat';
 import mulInt from './multipleInt';
 import sequentialDemuxFloat from './sequentialDemuxFloat';
 import sequentialDemuxInt from './sequentialDemuxInt';
+import sequentialMuxFloat from './sequentialMuxFloat';
+import sequentialMuxInt from './sequentialMuxInt';
 
 const modules = {
 	audioBufferOut,
@@ -60,6 +62,8 @@ const modules = {
 	mulInt,
 	sequentialDemuxFloat,
 	sequentialDemuxInt,
+	sequentialMuxFloat,
+	sequentialMuxInt,
 } as const;
 
 export default modules;

@@ -3,7 +3,7 @@ import { ExampleModule } from '../../../packages/editor/src/state/types';
 const sequentialDemuxFloat: ExampleModule = {
 	title: 'Sequential Demultiplexer (8 output, Float)',
 	author: 'Andor Polgar',
-	category: 'Utilities',
+	category: 'Sequencers',
 	code: `module seqDemuxF
 
 int _length 8
