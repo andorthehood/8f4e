@@ -20,6 +20,7 @@ int* trigger
 
 int out
 
+; Increment step pointer
 push *trigger
 risingEdge 
 if void
