@@ -16,7 +16,7 @@ int* in6
 int* in7
 
 int _length 8; default
-int* trigger &pulse.out
+int* trigger
 int* length &_length
 
 int out
