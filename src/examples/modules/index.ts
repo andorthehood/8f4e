@@ -32,6 +32,9 @@ import sequentialMuxFloat from './sequentialMuxFloat';
 import sequentialMuxInt from './sequentialMuxInt';
 import sequencerFloat from './sequencerFloat';
 import sequencerInt from './sequencerInt';
+import shiftRegisterInt from './shiftRegisterInt';
+import shiftRegisterFloat from './shiftRegisterFloat';
+import binaryShiftRegister from './binaryShiftRegister';
 
 const modules = {
 	audioBufferOut,
@@ -68,6 +71,9 @@ const modules = {
 	sequentialMuxInt,
 	sequencerFloat,
 	sequencerInt,
+	shiftRegisterInt,
+	shiftRegisterFloat,
+	binaryShiftRegister,
 } as const;
 
 export default modules;
