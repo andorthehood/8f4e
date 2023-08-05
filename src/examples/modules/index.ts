@@ -26,6 +26,8 @@ import switchGatesInt from './switchGatesInt';
 import switchGatesFloat from './switchGatesFloat';
 import mulFloat from './multipleFloat';
 import mulInt from './multipleInt';
+import sequentialDemuxFloat from './sequentialDemuxFloat';
+import sequentialDemuxInt from './sequentialDemuxInt';
 
 const modules = {
 	audioBufferOut,
@@ -56,6 +58,8 @@ const modules = {
 	switchGatesFloat,
 	mulFloat,
 	mulInt,
+	sequentialDemuxFloat,
+	sequentialDemuxInt,
 } as const;
 
 export default modules;
