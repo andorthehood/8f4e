@@ -20,6 +20,10 @@ import squareSignedFloat from './squareSignedFloat';
 import triangleSignedFloat from './triangleSignedFloat';
 import scopeUnsignedInt from './scopeUnsignedInt';
 import scopeSignedFloat from './scopeSignedFloat';
+import binSwitchesLSb from './binSwitchesLSb';
+import binSwitchesMSb from './binSwitchesMSb';
+import switchGatesInt from './switchGatesInt';
+import switchGatesFloat from './switchGatesFloat';
 
 const modules = {
 	audioBufferOut,
@@ -44,6 +48,10 @@ const modules = {
 	triangleSignedFloat,
 	scopeUnsignedInt,
 	scopeSignedFloat,
+	binSwitchesLSb,
+	binSwitchesMSb,
+	switchGatesInt,
+	switchGatesFloat,
 } as const;
 
 export default modules;
