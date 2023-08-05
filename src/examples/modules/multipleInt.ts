@@ -16,32 +16,27 @@ int out5
 int out6
 int out7
 
-int pointer
+int* _pointer &out0
 
-push &pointer
-push 0
+push &_pointer
+push &out0
 store
 
 loop
- ; Exit point
- push pointer
- push 7
- greaterThan
- branchIfTrue 1
- 
- ; Calc. output address
- push &out0
- push pointer
- push WORD_SIZE
- mul
- add
+ push _pointer
  push *in
  store 
 
+ ; Exit point
+ push _pointer
+ push &out7; Last output
+ equal
+ branchIfTrue 1
+
  ; Increment pointer
- push &pointer
- push pointer
- push 1
+ push &_pointer
+ push _pointer
+ push WORD_SIZE
  add
  store
 end`,
