@@ -6,7 +6,7 @@ const mulFloat: ExampleModule = {
 	category: 'Utilities',
 	code: `module mulFloat
 
-float* in &electron.out
+float* in
 float out0
 float out1
 float out2

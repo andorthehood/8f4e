@@ -24,6 +24,8 @@ import binSwitchesLSb from './binSwitchesLSb';
 import binSwitchesMSb from './binSwitchesMSb';
 import switchGatesInt from './switchGatesInt';
 import switchGatesFloat from './switchGatesFloat';
+import mulFloat from './multipleFloat';
+import mulInt from './multipleInt';
 
 const modules = {
 	audioBufferOut,
@@ -52,6 +54,8 @@ const modules = {
 	binSwitchesMSb,
 	switchGatesInt,
 	switchGatesFloat,
+	mulFloat,
+	mulInt,
 } as const;
 
 export default modules;
