@@ -3,6 +3,7 @@ import bistableMultivibrators from './bistableMultivibrators';
 import midiBreakBeat from './midiBreakBeat';
 import midiBreakBreak2dSequencer from './midiBreakBreak2dSequencer';
 import dancingWithTheSineLT from './dancingWithTheSineLT';
+import randomGenerators from './randomGenerators';
 
 const projects = {
 	audioBuffer,
@@ -10,6 +11,7 @@ const projects = {
 	midiBreakBeat,
 	midiBreakBreak2dSequencer,
 	dancingWithTheSineLT,
+	randomGenerators,
 } as const;
 
 export default projects;
