@@ -10,10 +10,12 @@ export default async function init(canvas: HTMLCanvasElement, project: Project, 
 
 	events.on('setColorScheme', () => {
 		view.reloadSpriteSheet();
+		events.dispatch('spriteSheetRerendered');
 	});
 
 	events.on('setFont', () => {
 		view.reloadSpriteSheet();
+		events.dispatch('spriteSheetRerendered');
 	});
 
 	return {

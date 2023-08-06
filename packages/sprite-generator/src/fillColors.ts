@@ -26,15 +26,19 @@ export enum Icon {
 	SWITCH_ON,
 }
 
-export default function generate(colors: ColorScheme['fill']): DrawingCommand[] {
+export default function generate(
+	characterWidth: number,
+	characterHight: number,
+	colors: ColorScheme['fill']
+): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
 		...fillColors.flatMap<DrawingCommand>(color => {
 			return [
 				[Command.FILL_COLOR, colors[color]],
-				[Command.RECTANGLE, 0, 0, 8, 16],
-				[Command.TRANSLATE, 8, 0],
+				[Command.RECTANGLE, 0, 0, characterWidth, characterHight],
+				[Command.TRANSLATE, characterWidth, 0],
 			];
 		}),
 	];
