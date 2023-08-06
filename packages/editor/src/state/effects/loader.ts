@@ -56,6 +56,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				y: module.y * state.graphicHelper.viewport.hGrid,
 				offsetX: 0,
 				offsetY: 0,
+				gridX: module.x,
+				gridY: module.y,
 				isOpen: module.isOpen,
 				isGroup: false,
 				padLength: 1,
@@ -80,8 +82,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		for (const graphicData of state.graphicHelper.modules) {
 			state.project.modules.push({
 				code: graphicData.code,
-				x: graphicData.x / state.graphicHelper.viewport.vGrid,
-				y: graphicData.y / state.graphicHelper.viewport.hGrid,
+				x: graphicData.gridX,
+				y: graphicData.gridY,
 				isOpen: graphicData.isOpen,
 			});
 		}
