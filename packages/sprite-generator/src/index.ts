@@ -66,7 +66,7 @@ export default function generateSprite(config: Config): {
 
 	const commands = [
 		...generatePlotter(characterWidth, characterHeight, config.colorScheme.fill),
-		...generateFillColors(config.colorScheme.fill),
+		...generateFillColors(characterWidth, characterHeight, config.colorScheme.fill),
 		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 		...generateFont(asciiBitmap, characterWidth, characterHeight, config.colorScheme.text),
 		...generateBackground(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.fill),
