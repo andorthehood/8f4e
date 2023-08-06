@@ -52,6 +52,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(graphicData.code);
 		const trimmedCode = [...graphicData.code.slice(0, length + 1)];
 
+		graphicData.x = graphicData.gridX * state.graphicHelper.viewport.vGrid;
+		graphicData.y = graphicData.gridY * state.graphicHelper.viewport.hGrid;
+
 		graphicData.codeWithLineNumbers = trimmedCode.map(
 			(line, index) => `${index}`.padStart(graphicData.padLength, '0') + ' ' + line
 		);
@@ -218,15 +221,15 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		offsetters.forEach(offsetter => {
 			const memory = resolveMemoryIdentifier(state, graphicData.id, offsetter.memory);
 
-			if (!memory || !memory.isInteger) {
+			if (!memory || !memory.memory.isInteger) {
 				return;
 			}
 
 			if (offsetter.axis === 'x') {
-				graphicData.positionOffsetterXWordAddress = memory.wordAddress;
+				graphicData.positionOffsetterXWordAddress = memory.memory.wordAddress;
 			}
 			if (offsetter.axis === 'y') {
-				graphicData.positionOffsetterYWordAddress = memory.wordAddress;
+				graphicData.positionOffsetterYWordAddress = memory.memory.wordAddress;
 			}
 		});
 
@@ -301,5 +304,6 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on('moduleAdded', ({ module }) => updateGraphics(module));
 	events.on('init', updateGraphicsAll);
+	events.on('spriteSheetRerendered', updateGraphicsAll);
 	events.on('keydown', onKeydown);
 }
