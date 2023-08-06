@@ -9,7 +9,7 @@ import { State } from '../state/types';
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
-): Promise<{ resize: (width: number, height: number) => void; reloadSpriteSheet: () => Promise<void> }> {
+): Promise<{ resize: (width: number, height: number) => void; reloadSpriteSheet: () => void }> {
 	const {
 		canvas: sprite,
 		spriteLookups,
@@ -31,9 +31,17 @@ export default async function init(
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.setSpriteLookup(spriteLookups.background);
 
-		for (let i = 0; i < Math.ceil(state.graphicHelper.viewport.width / (64 * characterWidth)); i++) {
-			for (let j = 0; j < Math.ceil(state.graphicHelper.viewport.height / (32 * characterHeight)); j++) {
-				engine.drawSprite(64 * characterWidth * i, 32 * characterHeight * j, 0);
+		for (
+			let i = 0;
+			i < Math.ceil(state.graphicHelper.viewport.width / (64 * state.graphicHelper.viewport.vGrid));
+			i++
+		) {
+			for (
+				let j = 0;
+				j < Math.ceil(state.graphicHelper.viewport.height / (32 * state.graphicHelper.viewport.hGrid));
+				j++
+			) {
+				engine.drawSprite(64 * state.graphicHelper.viewport.vGrid * i, 32 * state.graphicHelper.viewport.hGrid * j, 0);
 			}
 		}
 
@@ -95,7 +103,7 @@ export default async function init(
 		resize: (width, height) => {
 			engine.resize(width, height);
 		},
-		reloadSpriteSheet: async () => {
+		reloadSpriteSheet: () => {
 			const {
 				canvas: sprite,
 				spriteLookups,

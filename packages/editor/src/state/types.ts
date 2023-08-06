@@ -163,6 +163,8 @@ export interface ModuleGraphicData {
 	y: number;
 	offsetX: number;
 	offsetY: number;
+	gridX: number;
+	gridY: number;
 	isOpen: boolean;
 	errorMessages: Map<
 		number,
