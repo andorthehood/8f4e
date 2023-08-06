@@ -127,7 +127,7 @@ export const colorSchemeMenu: MenuGenerator = () => [
 
 export const fontMenu: MenuGenerator = () => [
 	{ title: '8x16', action: 'setFont', payload: { font: '8x16' }, close: false },
-	// { title: '6x10', action: 'setFont', payload: { font: '6x10' }, close: false },
+	{ title: '6x10', action: 'setFont', payload: { font: '6x10' }, close: false },
 ];
 
 export const exampleProjectMenu: MenuGenerator = state =>

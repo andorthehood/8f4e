@@ -48,6 +48,14 @@ export default function moduleDragger(state: State, events: EventDispatcher): ()
 		if (!state.graphicHelper.draggedModule) {
 			return;
 		}
+
+		state.graphicHelper.draggedModule.gridX = Math.round(
+			state.graphicHelper.draggedModule.x / state.graphicHelper.viewport.vGrid
+		);
+		state.graphicHelper.draggedModule.gridY = Math.round(
+			state.graphicHelper.draggedModule.y / state.graphicHelper.viewport.hGrid
+		);
+
 		state.graphicHelper.draggedModule.x =
 			Math.round(state.graphicHelper.draggedModule.x / state.graphicHelper.viewport.vGrid) *
 			state.graphicHelper.viewport.vGrid;
