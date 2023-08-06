@@ -35,6 +35,9 @@ import sequencerInt from './sequencerInt';
 import shiftRegisterInt from './shiftRegisterInt';
 import shiftRegisterFloat from './shiftRegisterFloat';
 import binaryShiftRegister from './binaryShiftRegister';
+import linearCongruentialGenerator from './linearCongruentialGenerator';
+import peakHolderNegativeFloat from './peakHolderNegativeFloat';
+import XORShift from './XORShift';
 
 const modules = {
 	audioBufferOut,
@@ -74,6 +77,9 @@ const modules = {
 	shiftRegisterInt,
 	shiftRegisterFloat,
 	binaryShiftRegister,
+	linearCongruentialGenerator,
+	peakHolderNegativeFloat,
+	XORShift,
 } as const;
 
 export default modules;
