@@ -2,8 +2,6 @@ import { Engine } from '@8f4e/2d-engine';
 
 import { ModuleGraphicData, State } from '../../../state/types';
 
-const maxPlotterWidth = 256;
-
 export default function drawer(engine: Engine, state: State, module: ModuleGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
@@ -21,6 +19,8 @@ export default function drawer(engine: Engine, state: State, module: ModuleGraph
 		const { wordAddress } = memory;
 
 		engine.startGroup(x, y);
+
+		const maxPlotterWidth = module.width;
 
 		const width = Math.min(memory.wordSize, maxPlotterWidth);
 		const height = maxValue - minValue;
