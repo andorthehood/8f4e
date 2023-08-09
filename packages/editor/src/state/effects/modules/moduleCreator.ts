@@ -108,6 +108,8 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			errorMessages: new Map(),
 			x: state.graphicHelper.viewport.x + x,
 			y: state.graphicHelper.viewport.y + y,
+			gridX: Math.round((state.graphicHelper.viewport.x + x) / state.graphicHelper.viewport.vGrid),
+			gridY: Math.round((state.graphicHelper.viewport.y + y) / state.graphicHelper.viewport.hGrid),
 			isOpen: true,
 			isGroup: false,
 			padLength: 2,
