@@ -36,7 +36,7 @@ const defaultState: State = {
 			startingMemoryWordAddress: 0,
 			environmentExtensions: {
 				constants: {},
-				ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot'],
+				ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 			},
 		},
 	},
