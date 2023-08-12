@@ -17,7 +17,7 @@ export function parseOutputs(code: string[]): Array<{ id: string; lineNumber: nu
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'int' || instruction === 'float') {
+		if (instruction === 'int' || instruction === 'float' || instruction === 'int[]' || instruction === 'float[]') {
 			return [...acc, { id: args[0], lineNumber: index }];
 		}
 		return acc;
@@ -125,6 +125,23 @@ export function parseBufferPlotters(
 			];
 		}
 
+		return acc;
+	}, []);
+}
+
+export function parsePianoKeyboards(code: string[]): Array<{ id: string; lineNumber: number }> {
+	return code.reduce((acc, line, index) => {
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+			never,
+			Instruction | ExtendedInstructionSet,
+			string,
+			string,
+			string
+		];
+
+		if (instruction === 'piano') {
+			return [...acc, { id: args[0], lineNumber: index }];
+		}
 		return acc;
 	}, []);
 }
