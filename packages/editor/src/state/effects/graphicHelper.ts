@@ -22,6 +22,7 @@ import {
 	getModuleId,
 	parseButtons,
 	parsePositionOffsetters,
+	parsePianoKeyboards,
 } from '../helpers/codeParsers';
 import resolveMemoryIdentifier from '../helpers/resolveMemoryIdentifier';
 
@@ -76,6 +77,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		});
 		parseBufferPlotters(trimmedCode).forEach(plotter => {
 			graphicData.gaps.set(plotter.lineNumber, { size: 8 });
+		});
+		parsePianoKeyboards(trimmedCode).forEach(pianoKeyboard => {
+			graphicData.gaps.set(pianoKeyboard.lineNumber, { size: 5 });
 		});
 
 		const gaps = Array.from(graphicData.gaps).sort(([a], [b]) => {
@@ -206,6 +210,16 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				id: _switch.id,
 				offValue: _switch.offValue,
 				onValue: _switch.onValue,
+			});
+		});
+
+		graphicData.pianoKeyboards.clear();
+		parsePianoKeyboards(trimmedCode).forEach(pianoKeyboard => {
+			graphicData.pianoKeyboards.set(pianoKeyboard.lineNumber, {
+				x: 0,
+				y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
+				width: 100,
+				height: 50,
 			});
 		});
 

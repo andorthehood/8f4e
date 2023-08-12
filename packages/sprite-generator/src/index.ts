@@ -74,7 +74,7 @@ export default function generateSprite(config: Config): {
 		...generateFont(asciiBitmap, characterWidth, characterHeight, config.colorScheme.text),
 		...generateBackground(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.fill),
 		...generateIcons(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.icons),
-		...generatePianoKeyboard(glyphsBitmap, asciiBitmap, characterWidth, characterHeight),
+		...generatePianoKeyboard(glyphsBitmap, asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {
