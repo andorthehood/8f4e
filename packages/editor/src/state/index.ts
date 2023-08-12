@@ -115,6 +115,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	const state = { ...defaultState, project, options: { ...defaultState.options, ...options } };
 	midi(state, events);
 	loader(state, events, defaultState);
+	sampleRate(state, events);
 	moduleDragger(state, events);
 	moduleOpener(state, events);
 	_switch(state, events);
@@ -129,7 +130,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	worklet(state, events);
 	colorTheme(state, events);
 	font(state, events);
-	sampleRate(state, events);
 	events.dispatch('init');
 	return state;
 }
