@@ -6,6 +6,7 @@ import drawDebuggers from './debuggers';
 import drawSwitches from './switches';
 import drawButtons from './buttons';
 import drawErrorMessages from './errorMessages';
+import drawPianoKeyboards from './pianoKeyboards';
 
 import { State } from '../../../state/types';
 
@@ -91,6 +92,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			drawSwitches(engine, state, module);
 			drawButtons(engine, state, module);
 			drawErrorMessages(engine, state, module);
+			drawPianoKeyboards(engine, state, module);
 
 			engine.endGroup();
 		}

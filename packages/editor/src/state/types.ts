@@ -39,7 +39,7 @@ interface MenuItemDivider extends ContextMenuButton {
 	title: never;
 }
 
-export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset' | 'plot';
+export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset' | 'plot' | 'piano';
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
@@ -140,6 +140,13 @@ export interface Input {
 	wordAddress: number;
 }
 
+export interface PianoKeyboard {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
+
 export interface ModuleGraphicData {
 	width: number;
 	height: number;
@@ -157,6 +164,7 @@ export interface ModuleGraphicData {
 	bufferPlotters: Map<string, BufferPlotter>;
 	switches: Map<string, Switch>;
 	buttons: Map<string, Switch>;
+	pianoKeyboards: Map<number, PianoKeyboard>;
 	positionOffsetterXWordAddress?: number;
 	positionOffsetterYWordAddress?: number;
 	x: number;
