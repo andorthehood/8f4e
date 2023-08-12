@@ -64,6 +64,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			});
 		});
 
+		events.dispatch('setSampleRate', { sampleRate: state.project.sampleRate });
 		events.dispatch('init');
 		events.dispatch('saveState');
 	}
