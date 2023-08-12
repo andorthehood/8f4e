@@ -6,6 +6,7 @@ import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale
 import generatePlotter, { generateLookup as generateLookupForPlotter } from './plotter';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
+import generatePianoKeyboard, { PianoKey, generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
 import { Command, Config } from './types';
 import ascii8x16 from './fonts/8x16/ascii';
 import ascii6x10 from './fonts/6x10/ascii';
@@ -14,6 +15,7 @@ import glyphs6x10 from './fonts/6x10/glyphs';
 
 export { Icon } from './icons';
 export { ColorScheme, Font } from './types';
+export { PianoKey } from './pianoKeyboard';
 
 const fonts: Record<
 	Config['font'],
@@ -39,6 +41,7 @@ export interface SpriteLookups extends FontLookups {
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<Icon, SpriteCoordinates>;
 	feedbackScale: Record<number, SpriteCoordinates>;
+	pianoKeys: Record<PianoKey, SpriteCoordinates>;
 }
 
 export default function generateSprite(config: Config): {
@@ -71,6 +74,7 @@ export default function generateSprite(config: Config): {
 		...generateFont(asciiBitmap, characterWidth, characterHeight, config.colorScheme.text),
 		...generateBackground(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.fill),
 		...generateIcons(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.icons),
+		...generatePianoKeyboard(glyphsBitmap, asciiBitmap, characterWidth, characterHeight),
 	];
 
 	commands.forEach(([command, ...params]) => {
@@ -114,6 +118,7 @@ export default function generateSprite(config: Config): {
 			plotter: generateLookupForPlotter(characterWidth, characterHeight),
 			background: generateLookupForBackground(characterWidth, characterHeight),
 			icons: generateLookupForIcons(characterWidth, characterHeight),
+			pianoKeys: generateLookupForPianoKeys(characterWidth, characterHeight),
 		},
 	};
 }
