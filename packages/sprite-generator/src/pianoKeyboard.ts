@@ -1,6 +1,6 @@
 import { SpriteCoordinates } from '@8f4e/2d-engine';
 
-import { Command, DrawingCommand } from './types';
+import { ColorScheme, Command, DrawingCommand } from './types';
 import { drawCharacterMatrix } from './font';
 import { Glyph } from './fonts/types';
 
@@ -10,17 +10,17 @@ const enum State {
 	HIGHLIGHTED,
 }
 
-const backgroundColor = 'rgba(136,126,203,255)';
-const whiteKeyColor = 'rgba(255,255,255,255)';
-const blackKeyColor = 'rgba(0,0,0,255)';
-const highlightColor = '#6abfc6';
-const pressedColor = '#50459b';
-
-function whiteKeyLeft(state: State, font: number[], characterWidth: number, characterHeight: number): DrawingCommand[] {
+function whiteKeyLeft(
+	state: State,
+	font: number[],
+	characterWidth: number,
+	characterHeight: number,
+	colors: ColorScheme['icons']
+): DrawingCommand[] {
 	return [
 		state === State.PRESSED
-			? [Command.FILL_COLOR, pressedColor]
-			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
+			? [Command.FILL_COLOR, colors.pianoKeyWhitePressed]
+			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? colors.pianoKeyWhiteHighlighted : colors.pianoKeyWhite],
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			[Glyph.FILL, Glyph.THICK_LINE_LEFT],
 			[Glyph.FILL, Glyph.THICK_LINE_LEFT],
@@ -30,11 +30,21 @@ function whiteKeyLeft(state: State, font: number[], characterWidth: number, char
 	];
 }
 
-function blackKey(state: State, font: number[], characterWidth: number, characterHeight: number): DrawingCommand[] {
+function blackKey(
+	state: State,
+	font: number[],
+	characterWidth: number,
+	characterHeight: number,
+	colors: ColorScheme['icons']
+): DrawingCommand[] {
 	return [
 		state === State.PRESSED
-			? [Command.FILL_COLOR, pressedColor]
-			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : blackKeyColor],
+			? [Command.FILL_COLOR, colors.pianoKeyBlackPressed]
+			: [
+					Command.FILL_COLOR,
+					state === State.HIGHLIGHTED ? colors.pianoKeyBlackHighlighted : colors.pianoKeyBlack,
+					// eslint-disable-next-line no-mixed-spaces-and-tabs
+			  ],
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
 			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
@@ -48,12 +58,13 @@ function whiteKeyMiddle(
 	state: State,
 	font: number[],
 	characterWidth: number,
-	characterHeight: number
+	characterHeight: number,
+	colors: ColorScheme['icons']
 ): DrawingCommand[] {
 	return [
 		state === State.PRESSED
-			? [Command.FILL_COLOR, pressedColor]
-			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
+			? [Command.FILL_COLOR, colors.pianoKeyWhitePressed]
+			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? colors.pianoKeyWhiteHighlighted : colors.pianoKeyWhite],
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			[Glyph.THICK_LINE_RIGHT, Glyph.THICK_LINE_LEFT],
 			[Glyph.THICK_LINE_RIGHT, Glyph.THICK_LINE_LEFT],
@@ -67,12 +78,13 @@ function whiteKeyRight(
 	state: State,
 	font: number[],
 	characterWidth: number,
-	characterHeight: number
+	characterHeight: number,
+	colors: ColorScheme['icons']
 ): DrawingCommand[] {
 	return [
 		state === State.PRESSED
-			? [Command.FILL_COLOR, pressedColor]
-			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
+			? [Command.FILL_COLOR, colors.pianoKeyWhitePressed]
+			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? colors.pianoKeyWhiteHighlighted : colors.pianoKeyWhite],
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			[Glyph.THICK_LINE_RIGHT, Glyph.FILL],
 			[Glyph.THICK_LINE_RIGHT, Glyph.FILL],
@@ -113,18 +125,19 @@ function drawPianoKeyboard(
 	glyphFont: number[],
 	asciiFont: number[],
 	characterWidth: number,
-	characterHeight: number
+	characterHeight: number,
+	colors: ColorScheme['icons']
 ): DrawingCommand[] {
 	return [
 		[Command.SAVE],
-		[Command.FILL_COLOR, state === State.HIGHLIGHTED ? highlightColor : whiteKeyColor],
+		[Command.FILL_COLOR, state === State.HIGHLIGHTED ? colors.pianoKeyboardNoteHighlighted : colors.pianoKeyboardNote],
 		...drawCharacterMatrix(asciiFont, characterWidth, characterHeight, [
 			stringToCharCodeArray('C C#D D#E F F#G G#A A#B'),
 		]),
 		[Command.TRANSLATE, 0, characterHeight],
 		...(orderedKeys
 			.map(keyDrawerFunction => [
-				...keyDrawerFunction(state, glyphFont, characterWidth, characterHeight),
+				...keyDrawerFunction(state, glyphFont, characterWidth, characterHeight, colors),
 				[Command.TRANSLATE, characterHeight, 0],
 			])
 			.flat(1) as DrawingCommand[]),
@@ -136,18 +149,19 @@ export default function generate(
 	glyphFont: number[],
 	asciiFont: number[],
 	characterWidth: number,
-	characterHeight: number
+	characterHeight: number,
+	colors: ColorScheme['icons']
 ): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
-		[Command.FILL_COLOR, backgroundColor],
+		[Command.FILL_COLOR, colors.pianoKeyboardBackground],
 		[Command.RECTANGLE, 0, 0, orderedKeys.length * characterHeight * 3, 80],
-		...drawPianoKeyboard(State.NORMAL, glyphFont, asciiFont, characterWidth, characterHeight),
+		...drawPianoKeyboard(State.NORMAL, glyphFont, asciiFont, characterWidth, characterHeight, colors),
 		[Command.TRANSLATE, characterHeight * orderedKeys.length, 0],
-		...drawPianoKeyboard(State.PRESSED, glyphFont, asciiFont, characterWidth, characterHeight),
+		...drawPianoKeyboard(State.PRESSED, glyphFont, asciiFont, characterWidth, characterHeight, colors),
 		[Command.TRANSLATE, characterHeight * orderedKeys.length, 0],
-		...drawPianoKeyboard(State.HIGHLIGHTED, glyphFont, asciiFont, characterWidth, characterHeight),
+		...drawPianoKeyboard(State.HIGHLIGHTED, glyphFont, asciiFont, characterWidth, characterHeight, colors),
 	];
 }
 

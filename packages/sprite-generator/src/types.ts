@@ -58,6 +58,15 @@ export interface ColorScheme {
 		switchBackground: string;
 		feedbackScale: string[];
 		arrow: string;
+		pianoKeyWhite: string;
+		pianoKeyWhiteHighlighted: string;
+		pianoKeyWhitePressed: string;
+		pianoKeyBlack: string;
+		pianoKeyBlackHighlighted: string;
+		pianoKeyBlackPressed: string;
+		pianoKeyboardBackground: string;
+		pianoKeyboardNote: string;
+		pianoKeyboardNoteHighlighted: string;
 	};
 }
 
