@@ -38,6 +38,7 @@ import binaryShiftRegister from './binaryShiftRegister';
 import linearCongruentialGenerator from './linearCongruentialGenerator';
 import peakHolderNegativeFloat from './peakHolderNegativeFloat';
 import XORShift from './XORShift';
+import midiPianoKeyboardC3 from './midiPianoKeyboardC3';
 
 const modules = {
 	audioBufferOut,
@@ -80,6 +81,7 @@ const modules = {
 	linearCongruentialGenerator,
 	peakHolderNegativeFloat,
 	XORShift,
+	midiPianoKeyboardC3,
 } as const;
 
 export default modules;
