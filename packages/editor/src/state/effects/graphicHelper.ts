@@ -215,11 +215,31 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		graphicData.pianoKeyboards.clear();
 		parsePianoKeyboards(trimmedCode).forEach(pianoKeyboard => {
+			const memoryIdentifierKeysList = resolveMemoryIdentifier(
+				state,
+				graphicData.id,
+				pianoKeyboard.pressedKeysListMemoryId
+			);
+			const memoryIdentifierNumberOfKeys = resolveMemoryIdentifier(
+				state,
+				graphicData.id,
+				pianoKeyboard.pressedNumberOfKeysMemoryId
+			);
+
+			if (!memoryIdentifierKeysList || !memoryIdentifierNumberOfKeys) {
+				return;
+			}
+
 			graphicData.pianoKeyboards.set(pianoKeyboard.lineNumber, {
 				x: 0,
 				y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
-				width: 100,
-				height: 50,
+				width: 12 * (state.graphicHelper.viewport.vGrid * 2),
+				height: state.graphicHelper.viewport.hGrid * 5,
+				keyWidth: state.graphicHelper.viewport.vGrid * 2,
+				pressedKeys: pianoKeyboard.pressedKeys,
+				pressedKeysListMemory: memoryIdentifierKeysList.memory,
+				pressedNumberOfKeysMemory: memoryIdentifierNumberOfKeys.memory,
+				startingNumber: pianoKeyboard.startingNumber,
 			});
 		});
 

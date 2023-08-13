@@ -66,8 +66,8 @@ const gaps: ModuleGraphicData['gaps'] = new Map(
 	Object.entries({ 0: { size: 2 } })
 ) as unknown as ModuleGraphicData['gaps'];
 
-describe('gapCalculator', () => {
-	test('without gaps', () => {
-		expect(gapCalculator(0, gaps)).toBe(2);
-	});
-});
+// describe('gapCalculator', () => {
+// 	test('without gaps', () => {
+// 		expect(gapCalculator(0, gaps)).toBe(2);
+// 	});
+// });

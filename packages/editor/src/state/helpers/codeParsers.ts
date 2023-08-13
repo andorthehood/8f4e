@@ -1,5 +1,7 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
+import { parseCode } from './multiLineCodeParser';
+
 import { ExtendedInstructionSet } from '../types';
 
 export function parseInputs(code: string[]): Array<{ id: string; lineNumber: number }> {
@@ -129,7 +131,34 @@ export function parseBufferPlotters(
 	}, []);
 }
 
-export function parsePianoKeyboards(code: string[]): Array<{ id: string; lineNumber: number }> {
+export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string) {
+	const pressedKeys = new Set<number>();
+
+	const pattern = [
+		`push &${pressedKeysListMemoryId}`,
+		`push WORD_SIZE`,
+		`push :index`,
+		`mul`,
+		'add',
+		`push :key`,
+		`store`,
+	];
+
+	parseCode(code, pattern).forEach(({ key }) => {
+		pressedKeys.add(parseInt(key, 10));
+	});
+
+	return pressedKeys;
+}
+
+export function parsePianoKeyboards(code: string[]): Array<{
+	id: string;
+	lineNumber: number;
+	pressedNumberOfKeysMemoryId: string;
+	pressedKeysListMemoryId: string;
+	pressedKeys: Set<number>;
+	startingNumber: number;
+}> {
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
 			never,
@@ -139,8 +168,20 @@ export function parsePianoKeyboards(code: string[]): Array<{ id: string; lineNum
 			string
 		];
 
+		const pressedKeys = parsePressedKeys(code, args[0]);
+
 		if (instruction === 'piano') {
-			return [...acc, { id: args[0], lineNumber: index }];
+			return [
+				...acc,
+				{
+					id: args[0],
+					lineNumber: index,
+					pressedNumberOfKeysMemoryId: args[1],
+					pressedKeysListMemoryId: args[0],
+					startingNumber: parseInt(args[2] || '0', 10),
+					pressedKeys,
+				},
+			];
 		}
 		return acc;
 	}, []);
