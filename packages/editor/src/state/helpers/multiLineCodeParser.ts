@@ -1,8 +1,12 @@
+export function lineToRegexString(line: string) {
+	return `\\s*${line.replace(' ', '\\s+').replace(/:(\S+)/, '(?<$1>\\S+)')}[^\\S\\n]*`;
+}
+
 export function codeToRegex(code: string[]) {
 	return new RegExp(
 		code
 			.map(line => {
-				return `\\s*${line.replace(' ', '\\s+').replace(/:(\S+)/, '(?<$1>\\S+)')}[^\\S\\n]*`;
+				return lineToRegexString(line);
 			})
 			.join('\n'),
 		'gm'
@@ -10,7 +14,17 @@ export function codeToRegex(code: string[]) {
 }
 
 export function parseCode(code: string[], pattern: string[]) {
-	return codeToRegex(pattern).exec(code.filter(line => !/^\s*$/gm.test(line)).join('\n'))?.groups;
+	const regex = codeToRegex(pattern);
+	const codeWithoutEmptyLines = code.filter(line => !/^\s*$/gm.test(line)).join('\n');
+
+	let groups: Record<string, string> | undefined;
+	const data: Record<string, string>[] = [];
+
+	while ((groups = regex.exec(codeWithoutEmptyLines)?.groups)) {
+		data.push(groups);
+	}
+
+	return data;
 }
 
 export function replaceCode(code: string[], pattern: string[], replaceWith: string[]) {
@@ -23,4 +37,15 @@ export function replaceCode(code: string[], pattern: string[], replaceWith: stri
 		return [];
 	}
 	return newCode.split('\n');
+}
+
+export function insertCodeAfterLine(lineToFind: string, code: string[], codeToInsert: string[]) {
+	const regexp = new RegExp(lineToRegexString(lineToFind), 'gm');
+
+	const indexToInsert =
+		code.findIndex(line => {
+			return regexp.test(line);
+		}) + 1;
+
+	return [...code.slice(0, indexToInsert), ...codeToInsert, ...code.slice(indexToInsert)];
 }
