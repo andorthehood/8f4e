@@ -37,6 +37,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state.project.modules.forEach(module => {
 			state.graphicHelper.modules.add({
 				width: 0,
+				minGridWidth: 32,
 				height: 0,
 				code: module.code,
 				codeWithLineNumbers: [],

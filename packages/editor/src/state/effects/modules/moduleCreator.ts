@@ -91,6 +91,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 
 		const module: ModuleGraphicData = {
 			width: 0,
+			minGridWidth: 32,
 			height: 0,
 			code,
 			codeWithLineNumbers: [],
