@@ -11,6 +11,7 @@ import graphicHelper from './effects/graphicHelper';
 import moduleOpener from './effects/modules/moduleOpener';
 import _switch from './effects/modules/switch';
 import button from './effects/modules/button';
+import pianoKeyboard from './effects/modules/pianoKeyboard';
 import RNBO from './effects/rnbo';
 import worklet from './effects/worklet';
 import colorTheme from './effects/colorTheme';
@@ -120,6 +121,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	moduleOpener(state, events);
 	_switch(state, events);
 	button(state, events);
+	pianoKeyboard(state, events);
 	viewport(state, events);
 	contextMenu(state, events);
 	moduleCreator(state, events);

@@ -1,0 +1,74 @@
+import { EventDispatcher } from '../../../events';
+import findPianoKeyAtViewportCoordinates from '../../helpers/findPianoKeyboardAtViewportCoordinates';
+import { ModuleGraphicData, State } from '../../types';
+import { insertCodeAfterLine, replaceCode } from '../../helpers/multiLineCodeParser';
+
+function generateCode(pressedKeys: Set<number>, pressedKeysListMemoryId: string) {
+	return Array.from(pressedKeys).flatMap((key, index) => {
+		return [
+			`push &${pressedKeysListMemoryId}`,
+			`push WORD_SIZE`,
+			`push ${index}`,
+			`mul`,
+			'add',
+			`push ${key}`,
+			`store`,
+		];
+	});
+}
+
+function removeCode(code: string[], pressedKeysListMemoryId: string) {
+	const pattern = [
+		`push &${pressedKeysListMemoryId}`,
+		`push WORD_SIZE`,
+		`push :index`,
+		`mul`,
+		'add',
+		`push :key`,
+		`store`,
+	];
+
+	return replaceCode(code, pattern, []);
+}
+
+export default function pianoKeyboard(state: State, events: EventDispatcher): () => void {
+	const onModuleClick = function ({ x, y, module }: { x: number; y: number; module: ModuleGraphicData }) {
+		const keyboard = findPianoKeyAtViewportCoordinates(state.graphicHelper, module, x, y);
+
+		if (!keyboard) {
+			return;
+		}
+
+		const key =
+			Math.floor((x - (module.x - state.graphicHelper.viewport.x)) / keyboard.keyWidth) + keyboard.startingNumber;
+
+		if (keyboard.pressedKeys.has(key)) {
+			keyboard.pressedKeys.delete(key);
+		} else {
+			if (keyboard.pressedKeys.size === keyboard.pressedKeysListMemory.wordSize) {
+				return;
+			}
+			keyboard.pressedKeys.add(key);
+		}
+
+		module.code[keyboard.pressedNumberOfKeysMemory.lineNumber] =
+			'int ' + keyboard.pressedNumberOfKeysMemory.id + ' ' + keyboard.pressedKeys.size;
+
+		module.code = insertCodeAfterLine(
+			`piano ${keyboard.pressedKeysListMemory.id} ${keyboard.pressedNumberOfKeysMemory.id}`,
+			removeCode(module.code, keyboard.pressedKeysListMemory.id),
+			generateCode(keyboard.pressedKeys, keyboard.pressedKeysListMemory.id)
+		);
+
+		events.dispatch('saveState');
+		events.dispatch('codeChange');
+	};
+
+	events.on('moduleClick', onModuleClick);
+	//events.on('mouseup', onMouseUp);
+
+	return () => {
+		events.off('moduleClick', onModuleClick);
+		//events.off('mouseup', onMouseUp);
+	};
+}

@@ -145,6 +145,11 @@ export interface PianoKeyboard {
 	y: number;
 	width: number;
 	height: number;
+	keyWidth: number;
+	pressedKeys: Set<number>;
+	pressedKeysListMemory: MemoryItem;
+	pressedNumberOfKeysMemory: MemoryItem;
+	startingNumber: number;
 }
 
 export interface ModuleGraphicData {
