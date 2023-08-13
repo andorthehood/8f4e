@@ -154,6 +154,7 @@ export interface PianoKeyboard {
 
 export interface ModuleGraphicData {
 	width: number;
+	minGridWidth: number;
 	height: number;
 	inputs: Map<string, Input>;
 	outputs: Map<string, Output>;
