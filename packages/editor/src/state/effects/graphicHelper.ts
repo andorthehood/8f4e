@@ -60,9 +60,6 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			(line, index) => `${index}`.padStart(graphicData.padLength, '0') + ' ' + line
 		);
 
-		graphicData.width =
-			Math.max(32, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) * state.graphicHelper.viewport.vGrid;
-
 		graphicData.codeColors = generateCodeColorMap(graphicData.codeWithLineNumbers, state.graphicHelper.spriteLookups, [
 			...Object.keys(instructions),
 			...state.compiler.compilerOptions.environmentExtensions.ignoredKeywords,
@@ -94,6 +91,42 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.codeToRender = graphicData.codeWithLineNumbers.map(line =>
 			line.split('').map(char => char.charCodeAt(0))
 		);
+
+		graphicData.pianoKeyboards.clear();
+		parsePianoKeyboards(trimmedCode).forEach(pianoKeyboard => {
+			const memoryIdentifierKeysList = resolveMemoryIdentifier(
+				state,
+				graphicData.id,
+				pianoKeyboard.pressedKeysListMemoryId
+			);
+			const memoryIdentifierNumberOfKeys = resolveMemoryIdentifier(
+				state,
+				graphicData.id,
+				pianoKeyboard.pressedNumberOfKeysMemoryId
+			);
+
+			if (!memoryIdentifierKeysList || !memoryIdentifierNumberOfKeys) {
+				return;
+			}
+
+			graphicData.minGridWidth = 48;
+
+			graphicData.pianoKeyboards.set(pianoKeyboard.lineNumber, {
+				x: 0,
+				y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
+				width: 12 * (state.graphicHelper.viewport.vGrid * 2),
+				height: state.graphicHelper.viewport.hGrid * 5,
+				keyWidth: state.graphicHelper.viewport.vGrid * 2,
+				pressedKeys: pianoKeyboard.pressedKeys,
+				pressedKeysListMemory: memoryIdentifierKeysList.memory,
+				pressedNumberOfKeysMemory: memoryIdentifierNumberOfKeys.memory,
+				startingNumber: pianoKeyboard.startingNumber,
+			});
+		});
+
+		graphicData.width =
+			Math.max(graphicData.minGridWidth, getLongestLineLength(graphicData.codeWithLineNumbers) + 4) *
+			state.graphicHelper.viewport.vGrid;
 
 		graphicData.errorMessages.clear();
 		state.compiler.buildErrors.forEach(buildError => {
@@ -210,36 +243,6 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				id: _switch.id,
 				offValue: _switch.offValue,
 				onValue: _switch.onValue,
-			});
-		});
-
-		graphicData.pianoKeyboards.clear();
-		parsePianoKeyboards(trimmedCode).forEach(pianoKeyboard => {
-			const memoryIdentifierKeysList = resolveMemoryIdentifier(
-				state,
-				graphicData.id,
-				pianoKeyboard.pressedKeysListMemoryId
-			);
-			const memoryIdentifierNumberOfKeys = resolveMemoryIdentifier(
-				state,
-				graphicData.id,
-				pianoKeyboard.pressedNumberOfKeysMemoryId
-			);
-
-			if (!memoryIdentifierKeysList || !memoryIdentifierNumberOfKeys) {
-				return;
-			}
-
-			graphicData.pianoKeyboards.set(pianoKeyboard.lineNumber, {
-				x: 0,
-				y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
-				width: 12 * (state.graphicHelper.viewport.vGrid * 2),
-				height: state.graphicHelper.viewport.hGrid * 5,
-				keyWidth: state.graphicHelper.viewport.vGrid * 2,
-				pressedKeys: pianoKeyboard.pressedKeys,
-				pressedKeysListMemory: memoryIdentifierKeysList.memory,
-				pressedNumberOfKeysMemory: memoryIdentifierNumberOfKeys.memory,
-				startingNumber: pianoKeyboard.startingNumber,
 			});
 		});
 
