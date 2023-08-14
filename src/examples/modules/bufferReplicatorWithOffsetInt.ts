@@ -1,28 +1,33 @@
 import { ExampleModule } from '../../../packages/editor/src/state/types';
 
-const copyBufferFloat: ExampleModule = {
-	title: 'Buffer Copier (Float)',
+const bufferReplicatorWithOffsetInt: ExampleModule = {
+	title: 'Buffer Replicator with Offset (Int)',
 	author: 'Andor Polgar',
 	category: 'Buffer',
-	code: `module copyBuffer
+	code: `module replicator
 
-float* bufferIn
-int* lengthIn
-float[] buffer 16 ; max size
+const TIMES 2
+const OFFSET 12
+
+int* bufferIn &piano3.notes
+int* lengthIn &piano3.length
+int[] buffer 64 ; max size
 int length
-int pointer
+int _pointer
 
 push &length
 push *lengthIn
+push TIMES
+mul
 store
 
-push &pointer
+push &_pointer
 push 0
 store
 
 loop
  ; Guard
- push pointer
+ push _pointer
  push length
  greaterOrEqual
  branchIfTrue 1 
@@ -30,7 +35,7 @@ loop
  ; Calculate destination
  ; address
  push &buffer
- push pointer
+ push _pointer
  push WORD_SIZE
  mul
  add
@@ -38,31 +43,34 @@ loop
  ; Calculate source
  ; address
  push bufferIn
- push pointer
+ push _pointer
+ push *lengthIn
+ remainder
  push WORD_SIZE
  mul
  add
  
  load ; value from src
  
- ; =-=-=-=-=-=-=-=-=-=-=
- ; You can add code here
- ; that manipulates
- ; the values
- ; =-=-=-=-=-=-=-=-=-=-=
+ push _pointer
+ push *lengthIn
+ div
+ push OFFSET
+ mul
+ add
 
  store ; value to dst
  
  ; Increment buffer pointer
- push &pointer
- push pointer
+ push &_pointer
+ push _pointer
  push 1
  add
  store
 end
 
-end`,
+end `,
 	tests: [],
 };
 
-export default copyBufferFloat;
+export default bufferReplicatorWithOffsetInt;

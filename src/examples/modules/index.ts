@@ -41,10 +41,11 @@ import XORShift from './XORShift';
 import midiPianoKeyboardC3 from './midiPianoKeyboardC3';
 import bufferCombinerFloat from './bufferCombinerIntFloat';
 import bufferCombinerInt from './bufferCombinerInt';
-import copyBufferFloat from './copyBufferFloat';
-import copyBufferInt from './copyBufferInt';
-import reverseBufferFloat from './reverseBufferFloat';
-import reverseBufferInt from './reverseBufferInt';
+import bufferCopierFloat from './bufferCopierFloat';
+import bufferCopierInt from './bufferCopierInt';
+import bufferReverserFloat from './bufferReverserFloat';
+import bufferReverserInt from './bufferReverserInt';
+import bufferReplicatorWithOffsetInt from './bufferReplicatorWithOffsetInt';
 
 const modules = {
 	audioBufferOut,
@@ -90,10 +91,11 @@ const modules = {
 	midiPianoKeyboardC3,
 	bufferCombinerFloat,
 	bufferCombinerInt,
-	copyBufferFloat,
-	copyBufferInt,
-	reverseBufferFloat,
-	reverseBufferInt,
+	bufferCopierFloat,
+	bufferCopierInt,
+	bufferReverserFloat,
+	bufferReverserInt,
+	bufferReplicatorWithOffsetInt,
 } as const;
 
 export default modules;
