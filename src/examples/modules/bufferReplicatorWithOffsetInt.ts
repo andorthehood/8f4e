@@ -9,8 +9,8 @@ const bufferReplicatorWithOffsetInt: ExampleModule = {
 const TIMES 2
 const OFFSET 12
 
-int* bufferIn &piano3.notes
-int* lengthIn &piano3.length
+int* bufferIn
+int* lengthIn
 int[] buffer 64 ; max size
 int length
 int _pointer
