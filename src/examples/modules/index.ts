@@ -39,6 +39,12 @@ import linearCongruentialGenerator from './linearCongruentialGenerator';
 import peakHolderNegativeFloat from './peakHolderNegativeFloat';
 import XORShift from './XORShift';
 import midiPianoKeyboardC3 from './midiPianoKeyboardC3';
+import bufferCombinerFloat from './bufferCombinerIntFloat';
+import bufferCombinerInt from './bufferCombinerInt';
+import copyBufferFloat from './copyBufferFloat';
+import copyBufferInt from './copyBufferInt';
+import reverseBufferFloat from './reverseBufferFloat';
+import reverseBufferInt from './reverseBufferInt';
 
 const modules = {
 	audioBufferOut,
@@ -82,6 +88,12 @@ const modules = {
 	peakHolderNegativeFloat,
 	XORShift,
 	midiPianoKeyboardC3,
+	bufferCombinerFloat,
+	bufferCombinerInt,
+	copyBufferFloat,
+	copyBufferInt,
+	reverseBufferFloat,
+	reverseBufferInt,
 } as const;
 
 export default modules;
