@@ -1,10 +1,10 @@
 import { ExampleModule } from '../../../packages/editor/src/state/types';
 
-const reverseBufferFloat: ExampleModule = {
-	title: 'Buffer Reverser (Float)',
+const bufferCopierFloat: ExampleModule = {
+	title: 'Buffer Copier (Float)',
 	author: 'Andor Polgar',
 	category: 'Buffer',
-	code: `module reverseBuffer
+	code: `module copyBuffer
 
 float* bufferIn
 int* lengthIn
@@ -30,11 +30,7 @@ loop
  ; Calculate destination
  ; address
  push &buffer
- push length
- push 1
- sub
  push pointer
- sub
  push WORD_SIZE
  mul
  add
@@ -48,6 +44,13 @@ loop
  add
  
  load ; value from src
+ 
+ ; =-=-=-=-=-=-=-=-=-=-=
+ ; You can add code here
+ ; that manipulates
+ ; the values
+ ; =-=-=-=-=-=-=-=-=-=-=
+
  store ; value to dst
  
  ; Increment buffer pointer
@@ -62,4 +65,4 @@ end`,
 	tests: [],
 };
 
-export default reverseBufferFloat;
+export default bufferCopierFloat;
