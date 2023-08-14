@@ -1,6 +1,6 @@
 import { ExampleModule } from '../../../packages/editor/src/state/types';
 
-const reverseBufferInt: ExampleModule = {
+const bufferReverserInt: ExampleModule = {
 	title: 'Buffer Reverser (Int)',
 	author: 'Andor Polgar',
 	category: 'Buffer',
@@ -62,4 +62,4 @@ end`,
 	tests: [],
 };
 
-export default reverseBufferInt;
+export default bufferReverserInt;
