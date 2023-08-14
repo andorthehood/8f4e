@@ -4,7 +4,7 @@ const bufferIntToFloat: ExampleModule = {
 	title: 'Int Buffer to Float Buffer Converter',
 	author: 'Andor Polgar',
 	category: 'Buffer',
-	code: `module bufferI2F
+	code: `module bufferIToF
 
 int* bufferIn
 int* lengthIn
