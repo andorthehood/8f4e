@@ -6,67 +6,67 @@ const quantizer: ExampleModule = {
 	category: 'Quantizers',
 	code: `module quantizer
 
-use midiCodes
+float* in &saw.out
+float* buffer &bufferI2F.buffer
+int* length &bufferI2F.length
+float out
 
-float* in
+float* _levelPointer
+float _difference
+float _smallestDifference 1000
 
-float level1 A0
-float level2 A1
-float level3 A2
-float level4 A3
-float level5 A4
-
-float* firstLevel &level1
-float* lastLevel &level5
-float* levelPointer &level1
-
-float bestMatchingValue
-float difference
-float smallestDifference 1000
-
-push &smallestDifference
+push &_smallestDifference
 push 1000.0
 store
 
+push &_levelPointer
+push buffer
+store
+
 loop
- push &levelPointer
- push firstLevel
- push lastLevel
- cycle 
+ ; Guard
+ push _levelPointer
+ push buffer
+ push *length
+ push WORD_SIZE
+ mul
+ add
+ greaterOrEqual
+ branchIfTrue 1
 
  ; Calculate difference between
  ; the input and the current
  ; level.
- push &difference
- push *levelPointer
+ push &_difference
+ push *_levelPointer
  push *in
  sub
  abs
  store
 
- push difference
- push smallestDifference
+ push _difference
+ push _smallestDifference
  lessOrEqual
  if void
   ; If it's actually smaller
   ; than the smallest difference,
   ; then update the smallest 
   ; difference.
-  push &smallestDifference
-  push difference
+  push &_smallestDifference
+  push _difference
   store
   ; Save the current level value.
-  push &bestMatchingValue
-  push *levelPointer
+  push &out
+  push *_levelPointer
   store
  end
  
- ; Exit loop if the level pointer
- ; reached the end.
- push levelPointer
- push lastLevel
- equal
- branchIfTrue 1
+ ; Increment level pointer
+ push &_levelPointer
+ push _levelPointer
+ push WORD_SIZE
+ add
+ store
 end
 
 end`,
