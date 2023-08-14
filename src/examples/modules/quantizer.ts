@@ -6,9 +6,9 @@ const quantizer: ExampleModule = {
 	category: 'Quantizers',
 	code: `module quantizer
 
-float* in &saw.out
-float* buffer &bufferI2F.buffer
-int* length &bufferI2F.length
+float* in
+float* buffer
+int* length
 float out
 
 float* _levelPointer
@@ -24,16 +24,6 @@ push buffer
 store
 
 loop
- ; Guard
- push _levelPointer
- push buffer
- push *length
- push WORD_SIZE
- mul
- add
- greaterOrEqual
- branchIfTrue 1
-
  ; Calculate difference between
  ; the input and the current
  ; level.
@@ -60,7 +50,19 @@ loop
   push *_levelPointer
   store
  end
- 
+
+ ; Guard
+ push _levelPointer
+ push buffer
+ push *length
+ push 1
+ sub
+ push WORD_SIZE
+ mul
+ add
+ greaterOrEqual
+ branchIfTrue 1 
+
  ; Increment level pointer
  push &_levelPointer
  push _levelPointer
