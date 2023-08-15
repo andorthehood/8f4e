@@ -13,9 +13,9 @@ float out
 
 float* _levelPointer
 float _difference
-float _smallestDifference 1000
+float _smallestDiff 1000
 
-push &_smallestDifference
+push &_smallestDiff
 push 1000.0
 store
 
@@ -24,9 +24,9 @@ push buffer
 store
 
 loop
- ; Calculate difference between
- ; the input and the current
- ; level.
+ ; Calculate difference 
+ ; between the input and
+ ; the current level.
  push &_difference
  push *_levelPointer
  push *in
@@ -35,14 +35,14 @@ loop
  store
 
  push _difference
- push _smallestDifference
+ push _smallestDiff
  lessOrEqual
  if void
   ; If it's actually smaller
   ; than the smallest difference,
   ; then update the smallest 
   ; difference.
-  push &_smallestDifference
+  push &_smallestDiff
   push _difference
   store
   ; Save the current level value.
