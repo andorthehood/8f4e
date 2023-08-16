@@ -131,7 +131,7 @@ export function parseBufferPlotters(
 	}, []);
 }
 
-export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string) {
+export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string, startingNumber: number) {
 	const pressedKeys = new Set<number>();
 
 	const pattern = [
@@ -145,7 +145,7 @@ export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string
 	];
 
 	parseCode(code, pattern).forEach(({ key }) => {
-		pressedKeys.add(parseInt(key, 10));
+		pressedKeys.add(parseInt(key, 10) - startingNumber);
 	});
 
 	return pressedKeys;
@@ -168,9 +168,10 @@ export function parsePianoKeyboards(code: string[]): Array<{
 			string
 		];
 
-		const pressedKeys = parsePressedKeys(code, args[0]);
-
 		if (instruction === 'piano') {
+			const startingNumber = parseInt(args[2] || '0', 10);
+			const pressedKeys = parsePressedKeys(code, args[0], startingNumber);
+
 			return [
 				...acc,
 				{
@@ -178,7 +179,7 @@ export function parsePianoKeyboards(code: string[]): Array<{
 					lineNumber: index,
 					pressedNumberOfKeysMemoryId: args[1],
 					pressedKeysListMemoryId: args[0],
-					startingNumber: parseInt(args[2] || '0', 10),
+					startingNumber,
 					pressedKeys,
 				},
 			];
