@@ -6,7 +6,7 @@ import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale
 import generatePlotter, { generateLookup as generateLookupForPlotter } from './plotter';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
-import generatePianoKeyboard, { PianoKey, generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
+import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
 import { Command, Config } from './types';
 import ascii8x16 from './fonts/8x16/ascii';
 import ascii6x10 from './fonts/6x10/ascii';
@@ -41,7 +41,7 @@ export interface SpriteLookups extends FontLookups {
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<Icon, SpriteCoordinates>;
 	feedbackScale: Record<number, SpriteCoordinates>;
-	pianoKeys: Record<PianoKey, SpriteCoordinates>;
+	pianoKeys: Record<number, SpriteCoordinates>;
 }
 
 export default function generateSprite(config: Config): {
