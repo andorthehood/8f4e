@@ -114,7 +114,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			graphicData.pianoKeyboards.set(pianoKeyboard.lineNumber, {
 				x: 0,
 				y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
-				width: 12 * (state.graphicHelper.viewport.vGrid * 2),
+				width: 24 * (state.graphicHelper.viewport.vGrid * 2),
 				height: state.graphicHelper.viewport.hGrid * 5,
 				keyWidth: state.graphicHelper.viewport.vGrid * 2,
 				pressedKeys: pianoKeyboard.pressedKeys,
