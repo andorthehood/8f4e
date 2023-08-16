@@ -9,14 +9,14 @@ export default function drawer(engine: Engine, state: State, module: ModuleGraph
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.pianoKeys);
 
-	for (const [, { x, y, keyWidth, pressedKeys, startingNumber }] of module.pianoKeyboards) {
+	for (const [, { x, y, keyWidth, pressedKeys }] of module.pianoKeyboards) {
 		engine.startGroup(x, y);
 
-		for (let i = 0; i < 12; i++) {
-			if (pressedKeys.has(i + startingNumber)) {
-				engine.drawSprite(i * keyWidth, 0, i + 12);
+		for (let i = 0; i < 24; i++) {
+			if (pressedKeys.has(i)) {
+				engine.drawSprite(i * keyWidth, 0, (i % 12) + 12);
 			} else {
-				engine.drawSprite(i * keyWidth, 0, i);
+				engine.drawSprite(i * keyWidth, 0, i % 12);
 			}
 		}
 

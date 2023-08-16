@@ -3,15 +3,21 @@ import findPianoKeyAtViewportCoordinates from '../../helpers/findPianoKeyboardAt
 import { ModuleGraphicData, State } from '../../types';
 import { insertCodeAfterLine, replaceCode } from '../../helpers/multiLineCodeParser';
 
-function generateCode(pressedKeys: Set<number>, pressedKeysListMemoryId: string, isInteger: boolean) {
+function generateCode(
+	pressedKeys: Set<number>,
+	pressedKeysListMemoryId: string,
+	isInteger: boolean,
+	startingNumber: number
+) {
 	return Array.from(pressedKeys).flatMap((key, index) => {
+		const value = key + startingNumber;
 		return [
 			`push &${pressedKeysListMemoryId}`,
 			`push WORD_SIZE`,
 			`push ${index}`,
 			`mul`,
 			'add',
-			`push ${isInteger ? key : `${key}.0`}`,
+			`push ${isInteger ? value : `${value}.0`}`,
 			`store`,
 		];
 	});
@@ -39,8 +45,7 @@ export default function pianoKeyboard(state: State, events: EventDispatcher): ()
 			return;
 		}
 
-		const key =
-			Math.floor((x - (module.x - state.graphicHelper.viewport.x)) / keyboard.keyWidth) + keyboard.startingNumber;
+		const key = Math.floor((x - (module.x - state.graphicHelper.viewport.x)) / keyboard.keyWidth);
 
 		if (keyboard.pressedKeys.has(key)) {
 			keyboard.pressedKeys.delete(key);
@@ -57,7 +62,12 @@ export default function pianoKeyboard(state: State, events: EventDispatcher): ()
 		module.code = insertCodeAfterLine(
 			`piano ${keyboard.pressedKeysListMemory.id} ${keyboard.pressedNumberOfKeysMemory.id}`,
 			removeCode(module.code, keyboard.pressedKeysListMemory.id),
-			generateCode(keyboard.pressedKeys, keyboard.pressedKeysListMemory.id, keyboard.pressedKeysListMemory.isInteger)
+			generateCode(
+				keyboard.pressedKeys,
+				keyboard.pressedKeysListMemory.id,
+				keyboard.pressedKeysListMemory.isInteger,
+				keyboard.startingNumber
+			)
 		);
 
 		events.dispatch('saveState');
