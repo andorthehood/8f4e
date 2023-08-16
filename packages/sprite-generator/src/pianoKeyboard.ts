@@ -1,5 +1,3 @@
-import { SpriteCoordinates } from '@8f4e/2d-engine';
-
 import { ColorScheme, Command, DrawingCommand } from './types';
 import { drawCharacterMatrix } from './font';
 import { Glyph } from './fonts/types';
@@ -24,8 +22,8 @@ function whiteKeyLeft(
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			[Glyph.FILL, Glyph.THICK_LINE_LEFT],
 			[Glyph.FILL, Glyph.THICK_LINE_LEFT],
-			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
-			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
+			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
+			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
 		]),
 	];
 }
@@ -46,8 +44,8 @@ function blackKey(
 					// eslint-disable-next-line no-mixed-spaces-and-tabs
 			  ],
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
-			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
-			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
+			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
+			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
 			[Glyph.SPACE, Glyph.THICK_LINE_LEFT],
 			[Glyph.SPACE, Glyph.THICK_LINE_LEFT],
 		]),
@@ -68,8 +66,8 @@ function whiteKeyMiddle(
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			[Glyph.THICK_LINE_RIGHT, Glyph.THICK_LINE_LEFT],
 			[Glyph.THICK_LINE_RIGHT, Glyph.THICK_LINE_LEFT],
-			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
-			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
+			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
+			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
 		]),
 	];
 }
@@ -88,8 +86,8 @@ function whiteKeyRight(
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			[Glyph.THICK_LINE_RIGHT, Glyph.FILL],
 			[Glyph.THICK_LINE_RIGHT, Glyph.FILL],
-			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
-			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.FILL, Glyph.FILL],
+			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
+			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
 		]),
 	];
 }
@@ -166,18 +164,25 @@ export default function generate(
 }
 
 export enum PianoKey {
-	NORMAL,
-	PRESSED,
-	HIGHLIGHTED,
+	NORMAL = 1000,
+	PRESSED = 2000,
+	HIGHLIGHTED = 3000,
 }
 
 export const generateLookup = function (characterWidth: number, characterHeight: number) {
 	return {
-		[PianoKey.NORMAL]: {
-			x: offsetX,
-			y: offsetY,
-			spriteWidth: orderedKeys.length * (characterWidth * 2),
-			spriteHeight: characterHeight * 5,
-		},
-	} as Record<PianoKey, SpriteCoordinates>;
+		...Object.fromEntries(
+			new Array(24).fill(0).map((value, index) => {
+				return [
+					index,
+					{
+						x: offsetX + index * characterWidth * 2,
+						y: offsetY,
+						spriteWidth: characterWidth * 2,
+						spriteHeight: characterHeight * 5,
+					},
+				];
+			})
+		),
+	};
 };
