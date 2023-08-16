@@ -19,4 +19,5 @@ export enum Glyph {
 	THICK_LINE_RIGHT,
 	SLIM_LINE_LEFT,
 	SLIM_LINE_RIGHT,
+	SLASH,
 }
