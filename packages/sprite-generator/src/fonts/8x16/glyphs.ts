@@ -1,4 +1,6 @@
-import { mirr, pad, same } from '../utils';
+import ascii from './ascii';
+
+import { mirr, pad, same, invert } from '../utils';
 
 export default [
 	pad(16, []), // SPACE
@@ -21,4 +23,14 @@ export default [
 	same(0b00001111, 16), // THICK_LINE_RIGHT
 	same(0b11000000, 16), // SLIM_LINE_LEFT
 	same(0b00000011, 16), // SLIM_LINE_RIGHT
+	invert(
+		pad(
+			3,
+			[
+				0b00000110, 0b00000110, 0b00001100, 0b00001100, 0b00011000, 0b00011000, 0b00110000, 0b00110000, 0b01100000,
+				0b01100000,
+			],
+			3
+		)
+	), // SLASH
 ].flat();
