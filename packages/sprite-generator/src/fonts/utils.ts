@@ -9,3 +9,7 @@ export function same(byte: number | number[], times: number): number[] {
 export function mirr(toBeMirrored: number[], middle: number[] = []): number[] {
 	return [...toBeMirrored, ...middle, ...toBeMirrored.slice().reverse()];
 }
+
+export function invert(bytes: number[]): number[] {
+	return bytes.map(byte => ~byte);
+}

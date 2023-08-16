@@ -21,4 +21,5 @@ export default [
 	pad(10, []), // THICK_LINE_RIGHT
 	pad(10, []), // SLIM_LINE_LEFT
 	pad(10, []), // SLIM_LINE_RIGHT
+	pad(0, [0b00000001, 0b00000001, 0b00000010, 0b00000010, 0b00000100, 0b00000100, 0b00001000, 0b00001000], 2), // SLASH
 ].flat();
