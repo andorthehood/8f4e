@@ -1,5 +1,4 @@
 import { Engine } from '@8f4e/2d-engine';
-import { PianoKey } from '@8f4e/sprite-generator';
 
 import { ModuleGraphicData, State } from '../../../state/types';
 
@@ -10,11 +9,17 @@ export default function drawer(engine: Engine, state: State, module: ModuleGraph
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.pianoKeys);
 
-	for (const [, { x, y, width, height }] of module.pianoKeyboards) {
+	for (const [, { x, y, keyWidth, pressedKeys, startingNumber }] of module.pianoKeyboards) {
 		engine.startGroup(x, y);
 
-		engine.drawSprite(0, 0, PianoKey.NORMAL);
-		engine.drawSprite(192, 0, PianoKey.NORMAL);
+		for (let i = 0; i < 12; i++) {
+			if (pressedKeys.has(i + startingNumber)) {
+				engine.drawSprite(i * keyWidth, 0, i + 12);
+			} else {
+				engine.drawSprite(i * keyWidth, 0, i);
+			}
+		}
+
 		engine.endGroup();
 	}
 }
