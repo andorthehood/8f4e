@@ -11,28 +11,12 @@ function generateCode(
 ) {
 	return Array.from(pressedKeys).flatMap((key, index) => {
 		const value = key + startingNumber;
-		return [
-			`push &${pressedKeysListMemoryId}`,
-			`push WORD_SIZE`,
-			`push ${index}`,
-			`mul`,
-			'add',
-			`push ${isInteger ? value : `${value}.0`}`,
-			`store`,
-		];
+		return [`init ${pressedKeysListMemoryId}[${index}] ${isInteger ? value : `${value}.0`}`];
 	});
 }
 
 function removeCode(code: string[], pressedKeysListMemoryId: string) {
-	const pattern = [
-		`push &${pressedKeysListMemoryId}`,
-		`push WORD_SIZE`,
-		`push :index`,
-		`mul`,
-		'add',
-		`push :key`,
-		`store`,
-	];
+	const pattern = [`init ${pressedKeysListMemoryId}[:index] :key`];
 
 	return replaceCode(code, pattern, []);
 }
