@@ -1,4 +1,4 @@
-import { CompileOptions, Module } from '@8f4e/compiler';
+import { CompiledModuleLookup, CompileOptions, Module } from '@8f4e/compiler';
 
 import testBuild from './testBuild';
 
