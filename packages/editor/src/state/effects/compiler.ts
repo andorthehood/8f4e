@@ -13,13 +13,15 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			return;
 		}
 
+		const modules = Array.from(state.graphicHelper.modules).map(module => {
+			return { code: module.code };
+		});
+
 		worker.postMessage({
 			type: 'recompile',
 			payload: {
 				memoryRef: state.compiler.memoryRef,
-				modules: Array.from(state.graphicHelper.modules).map(module => {
-					return { code: module.code };
-				}),
+				modules,
 				compilerOptions: {
 					...state.compiler.compilerOptions,
 					environmentExtensions: {
