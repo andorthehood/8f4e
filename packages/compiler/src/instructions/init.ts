@@ -1,3 +1,5 @@
+import { off } from 'process';
+
 import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
@@ -42,10 +44,19 @@ const memory: InstructionHandler = function (line, context) {
 		defaultValue = constant.value;
 	}
 
-	const memoryItem = memory.get(line.arguments[0].value);
+	if (/(\S+)\[(\d+)\]/.test(line.arguments[0].value)) {
+		const [, memoryIdentifier, offset] = line.arguments[0].value.match(/(\S+)\[(\d+)\]/) as [never, string, string];
+		const memoryItem = memory.get(memoryIdentifier);
+		if (memoryItem) {
+			memoryItem.default[parseInt(offset, 10)] = defaultValue;
+		}
+	} else {
+		const memoryItem = memory.get(line.arguments[0].value);
 
-	if (memoryItem) {
-		memoryItem.default = defaultValue;
+		if (memoryItem) {
+			memoryItem.default;
+			memoryItem.default = defaultValue;
+		}
 	}
 
 	return { byteCode: [], context: { ...context, namespace: { ...context.namespace, memory } } };

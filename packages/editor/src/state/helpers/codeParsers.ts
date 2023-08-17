@@ -135,13 +135,7 @@ export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string
 	const pressedKeys = new Set<number>();
 
 	const pattern = [
-		`push &${pressedKeysListMemoryId}`,
-		`push WORD_SIZE`,
-		`push :index`,
-		`mul`,
-		'add',
-		`push :key`,
-		`store`,
+		`init ${pressedKeysListMemoryId}[:index] :key`,
 	];
 
 	parseCode(code, pattern).forEach(({ key }) => {
