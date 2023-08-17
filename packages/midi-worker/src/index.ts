@@ -29,8 +29,7 @@ async function init(
 		clearInterval(interval);
 		clearInterval(statsInterval);
 
-		const { memoryBuffer, cycle, init } = await createModule(memoryRef, codeBuffer);
-		init();
+		const { memoryBuffer, cycle } = await createModule(memoryRef, codeBuffer);
 
 		const midiNoteModules = findMidiNoteOutModules(compiledModules, memoryBuffer);
 		const RNBOModules = findRNBOModules(compiledModules);
