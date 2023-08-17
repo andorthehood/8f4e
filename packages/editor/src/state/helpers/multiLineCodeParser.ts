@@ -1,5 +1,11 @@
+function escapeRegExp(text) {
+	return text.replaceAll(/[[\]]/g, `\\$&`);
+}
+
 export function lineToRegexString(line: string) {
-	return `\\s*${line.replace(' ', '\\s+').replace(/:(\S+)/, '(?<$1>\\S+)')}[^\\S\\n]*`;
+	return `\\s*${escapeRegExp(line)
+		.replaceAll(' ', '\\s+')
+		.replaceAll(/:([\d\w]+)/g, '(?<$1>\\S+)')}[^\\S\\n]*`;
 }
 
 export function codeToRegex(code: string[]) {

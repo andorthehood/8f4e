@@ -56,6 +56,16 @@ describe('parseCode', () => {
 				},
 			],
 		],
+		[
+			[`init buffer[11] 301`],
+			[`init buffer[:index] :key`],
+			[
+				{
+					index: '11',
+					key: '301',
+				},
+			],
+		],
 	];
 
 	test.each(fixtures)('given code: %s and pattern: %s, the expected result is %s', (code, pattern, result) => {
