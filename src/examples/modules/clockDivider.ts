@@ -8,7 +8,7 @@ const clockDivider: ExampleModule = {
 
 int default 16
 int* divider &default
-int* trigger &pulse.out
+int* trigger
 int out
 int counter
 
