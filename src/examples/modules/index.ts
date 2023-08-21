@@ -47,6 +47,9 @@ import bufferReverserFloat from './bufferReverserFloat';
 import bufferReverserInt from './bufferReverserInt';
 import bufferReplicatorWithOffsetInt from './bufferReplicatorWithOffsetInt';
 import bufferIntToFloat from './bufferIntToFloat';
+import sampleAndHoldFloat from './sampleAndHoldFloat';
+import sampleAndHoldInt from './sampleAndHoldInt';
+import masterClock from './masterClock';
 
 const modules = {
 	audioBufferOut,
@@ -98,6 +101,9 @@ const modules = {
 	bufferReverserInt,
 	bufferReplicatorWithOffsetInt,
 	bufferIntToFloat,
+	sampleAndHoldFloat,
+	sampleAndHoldInt,
+	masterClock,
 } as const;
 
 export default modules;
