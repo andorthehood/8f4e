@@ -48,6 +48,8 @@ import wasm from './wasm';
 import branchIfUnchanged from './branchIfUnchanged';
 import init from './init';
 import shiftLeft from './shiftLeft';
+import pow2 from './pow2';
+import sqrt from './sqrt';
 
 const instructions = {
 	and,
@@ -106,6 +108,8 @@ const instructions = {
 	wasm,
 	branchIfUnchanged,
 	init,
+	pow2,
+	sqrt,
 } as const;
 
 export default instructions;
