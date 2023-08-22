@@ -1,9 +1,9 @@
 import { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const triangleSignedFloat: ExampleModule = {
-	title: 'Square (Signed, Float)',
+	title: 'Triangle (Signed, Float)',
 	author: 'Andor Polgar',
-	category: 'Lookup Tables',
+	category: 'Oscillators',
 	code: `module triangleSignedFloat
 
 float default 1 ;Hz 

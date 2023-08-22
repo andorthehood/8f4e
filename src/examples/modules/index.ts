@@ -50,6 +50,8 @@ import bufferIntToFloat from './bufferIntToFloat';
 import sampleAndHoldFloat from './sampleAndHoldFloat';
 import sampleAndHoldInt from './sampleAndHoldInt';
 import masterClock from './masterClock';
+import changeDetectorInt from './changeDetectorInt';
+import midiFrequenciesLookupTable from './midiFrequenciesLookupTable';
 
 const modules = {
 	audioBufferOut,
@@ -104,6 +106,8 @@ const modules = {
 	sampleAndHoldFloat,
 	sampleAndHoldInt,
 	masterClock,
+	changeDetectorInt,
+	midiFrequenciesLookupTable,
 } as const;
 
 export default modules;
