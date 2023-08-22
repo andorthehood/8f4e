@@ -78,7 +78,12 @@ const push: InstructionHandler = function (line, context) {
 			}
 		} else if (typeof consts[argument.value] !== 'undefined') {
 			context.stack.push({ isInteger: consts[argument.value].isInteger });
-			return { byteCode: i32const(consts[argument.value].value), context };
+			return {
+				byteCode: consts[argument.value].isInteger
+					? i32const(consts[argument.value].value)
+					: f32const(consts[argument.value].value),
+				context,
+			};
 		} else {
 			const local = locals.get(argument.value);
 
