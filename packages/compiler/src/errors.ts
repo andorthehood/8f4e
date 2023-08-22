@@ -4,6 +4,7 @@ export enum ErrorCode {
 	INSUFFICIENT_OPERANDS,
 	UNMATCHING_OPERANDS,
 	ONLY_INTEGERS,
+	ONLY_FLOATS,
 	MISSING_ARGUMENT,
 	UNDECLARED_IDENTIFIER,
 	EXPECTED_IDENTIFIER,
@@ -45,6 +46,13 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'The operation only accepts integer values as operands.',
+				line,
+				context,
+			};
+		case ErrorCode.ONLY_FLOATS:
+			return {
+				code,
+				message: 'The operation only accepts float values as operands.',
 				line,
 				context,
 			};
