@@ -3,7 +3,7 @@ import { ExampleModule } from '../../../packages/editor/src/state/types';
 const squareSignedFloat: ExampleModule = {
 	title: 'Square (Signed, Float)',
 	author: 'Andor Polgar',
-	category: 'Lookup Tables',
+	category: 'Oscillators',
 	code: `module squareSignedFloat
 
 float default 1 ;Hz 
