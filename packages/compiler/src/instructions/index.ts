@@ -50,6 +50,7 @@ import init from './init';
 import shiftLeft from './shiftLeft';
 import pow2 from './pow2';
 import sqrt from './sqrt';
+import loadFloat from './loadFloat';
 
 const instructions = {
 	and,
@@ -110,6 +111,7 @@ const instructions = {
 	init,
 	pow2,
 	sqrt,
+	loadFloat,
 } as const;
 
 export default instructions;
