@@ -2,7 +2,11 @@ import compile, { CompiledModuleLookup, CompileOptions, Module } from '@8f4e/com
 
 let previousCompiledModules: CompiledModuleLookup;
 
-function memoryValueChanges(compiledModules: CompiledModuleLookup, previous: CompiledModuleLookup | undefined) {
+function compareArray(arr1: number[], arr2: number[]): boolean {
+	return arr1.length === arr2.length && arr1.every((item, index) => item === arr2[index]);
+}
+
+function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: CompiledModuleLookup | undefined) {
 	const changes: { wordSize: number; wordAddress: number; value: number | number[]; isInteger: boolean }[] = [];
 
 	if (!previous) {
@@ -21,13 +25,24 @@ function memoryValueChanges(compiledModules: CompiledModuleLookup, previous: Com
 				break;
 			}
 
-			if (previousMemory.default !== memory.default) {
-				changes.push({
-					wordSize: memory.wordSize,
-					wordAddress: memory.wordAddress,
-					value: memory.default,
-					isInteger: memory.isInteger,
-				});
+			if (Array.isArray(memory.default) && Array.isArray(previousMemory.default)) {
+				if (!compareArray(memory.default, previousMemory.default)) {
+					changes.push({
+						wordSize: memory.wordSize,
+						wordAddress: memory.wordAddress,
+						value: memory.default,
+						isInteger: memory.isInteger,
+					});
+				}
+			} else {
+				if (previousMemory.default !== memory.default) {
+					changes.push({
+						wordSize: memory.wordSize,
+						wordAddress: memory.wordAddress,
+						value: memory.default,
+						isInteger: memory.isInteger,
+					});
+				}
 			}
 		}
 	}
@@ -84,9 +99,12 @@ export default async function testBuild(
 	}
 
 	const memoryBufferInt = new Int32Array(memoryRef.buffer);
-	const memoryBufferFloat = new Int32Array(memoryRef.buffer);
+	const memoryBufferFloat = new Float32Array(memoryRef.buffer);
+	const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
 
-	memoryValueChanges(compiledModules, previousCompiledModules).forEach(change => {
+	console.log(memoryValueChanges);
+
+	memoryValueChanges.forEach(change => {
 		if (change.isInteger) {
 			if (Array.isArray(change.value)) {
 				change.value.forEach((item, index) => {
