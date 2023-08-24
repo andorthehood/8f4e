@@ -32,6 +32,10 @@ export function moveCaret(
 			col = Math.min(col + 1, code[row].length);
 			return [row, col];
 		case 'Jump':
+			if (!code[row]) {
+				return [code.length - 1, 0];
+			}
+
 			col = Math.max(Math.min(col, code[row].length), 0);
 			row = row = Math.min(row, code.length - 1);
 			return [row, col];
