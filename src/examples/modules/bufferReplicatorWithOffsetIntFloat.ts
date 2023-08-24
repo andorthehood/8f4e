@@ -1,0 +1,79 @@
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const bufferReplicatorWithOffsetFloat: ExampleModule = {
+	title: 'Buffer Replicator with Offset (Int)',
+	author: 'Andor Polgar',
+	category: 'Buffer',
+	code: `module replicator2
+
+const TIMES 4
+const OFFSET 12.0
+
+float* bufferIn
+int* lengthIn
+float[] buffer 64 ; max size
+int length
+int _pointer
+
+push &length
+push *lengthIn
+push TIMES
+mul
+store
+
+push &_pointer
+push 0
+store
+
+loop 
+ ; Calculate destination
+ ; address
+ push &buffer
+ push _pointer
+ push WORD_SIZE
+ mul
+ add
+
+ ; Calculate source
+ ; address
+ push bufferIn
+ push _pointer
+ push *lengthIn
+ remainder
+ push WORD_SIZE
+ mul
+ add
+ 
+ loadFloat
+
+ push _pointer
+ push *lengthIn
+ div
+ castToFloat
+ push OFFSET
+ mul
+ add
+
+ store ; value to dst
+
+ ; Guard
+ push _pointer
+ push length
+ push 1
+ sub
+ greaterOrEqual
+ branchIfTrue 1
+ 
+ ; Increment buffer pointer
+ push &_pointer
+ push _pointer
+ push 1
+ add
+ store
+end
+
+end`,
+	tests: [],
+};
+
+export default bufferReplicatorWithOffsetFloat;
