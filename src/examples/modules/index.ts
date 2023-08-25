@@ -48,6 +48,7 @@ import bufferReverserInt from './bufferReverserInt';
 import bufferReplicatorWithOffsetInt from './bufferReplicatorWithOffsetInt';
 import bufferReplicatorWithOffsetFloat from './bufferReplicatorWithOffsetIntFloat';
 import bufferIntToFloat from './bufferIntToFloat';
+import bufferFloatToInt from './bufferFloatToInt';
 import sampleAndHoldFloat from './sampleAndHoldFloat';
 import sampleAndHoldInt from './sampleAndHoldInt';
 import masterClock from './masterClock';
@@ -105,6 +106,7 @@ const modules = {
 	bufferReplicatorWithOffsetInt,
 	bufferReplicatorWithOffsetFloat,
 	bufferIntToFloat,
+	bufferFloatToInt,
 	sampleAndHoldFloat,
 	sampleAndHoldInt,
 	masterClock,
