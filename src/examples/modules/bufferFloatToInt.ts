@@ -1,14 +1,14 @@
 import { ExampleModule } from '../../../packages/editor/src/state/types';
 
-const bufferIntToFloat: ExampleModule = {
-	title: 'Int Buffer to Float Buffer Converter',
+const bufferFloatToInt: ExampleModule = {
+	title: 'Float Buffer to Int Buffer Converter',
 	author: 'Andor Polgar',
 	category: 'Buffer',
-	code: `module bufferI2F
+	code: `module bufferF2I
 
-int* bufferIn
+float* bufferIn
 int* lengthIn
-float[] buffer 16 ; size
+int[] buffer 16 ; size
 int length
 int pointer
 
@@ -37,8 +37,8 @@ loop
  mul
  add
  
- load ; value from src
- castToFloat
+ loadFloat ; value from src
+ castToInt
 
  store ; value to dst
  
@@ -62,4 +62,4 @@ end`,
 	tests: [],
 };
 
-export default bufferIntToFloat;
+export default bufferFloatToInt;
