@@ -16,7 +16,7 @@ import { ErrorCode, getError } from './errors';
 
 export { MemoryTypes, MemoryMap } from './types';
 
-export const instructionParser = /^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
+export const instructionParser = /^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
 
 export function parseArgument(argument: string): Argument {
 	switch (true) {
