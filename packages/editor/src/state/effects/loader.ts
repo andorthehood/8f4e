@@ -80,28 +80,23 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			return;
 		}
 
-		state.project.modules = [];
-
-		for (const graphicData of state.graphicHelper.modules) {
-			state.project.modules.push({
-				code: graphicData.code,
-				x: graphicData.gridX,
-				y: graphicData.gridY,
-				isOpen: graphicData.isOpen,
+		state.project.modules = Array.from(state.graphicHelper.modules)
+			.sort((moduleA, moduleB) => {
+				if (moduleA.id > moduleB.id) {
+					return 1;
+				} else if (moduleA.id < moduleB.id) {
+					return -1;
+				}
+				return 0;
+			})
+			.map(graphicData => {
+				return {
+					code: graphicData.code,
+					x: graphicData.gridX,
+					y: graphicData.gridY,
+					isOpen: graphicData.isOpen,
+				};
 			});
-		}
-
-		state.project.modules = state.project.modules.sort((moduleA, moduleB) => {
-			const moduleAId = getModuleId(moduleA.code);
-			const moduleBId = getModuleId(moduleB.code);
-
-			if (moduleAId > moduleBId) {
-				return 1;
-			} else if (moduleAId < moduleBId) {
-				return -1;
-			}
-			return 0;
-		});
 
 		state.project.viewport.x = Math.round(state.graphicHelper.viewport.x / state.graphicHelper.viewport.vGrid);
 		state.project.viewport.y = Math.round(state.graphicHelper.viewport.y / state.graphicHelper.viewport.hGrid);
