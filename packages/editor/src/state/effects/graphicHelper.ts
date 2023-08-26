@@ -149,8 +149,6 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				return;
 			}
 
-			console.log('bufferLength', bufferLength, plotter.bufferLengthMemoryId);
-
 			graphicData.bufferPlotters.set(plotter.bufferMemoryId, {
 				width: state.graphicHelper.viewport.vGrid * 2,
 				height: state.graphicHelper.viewport.hGrid,
