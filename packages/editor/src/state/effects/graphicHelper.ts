@@ -142,14 +142,24 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		graphicData.bufferPlotters.clear();
 		parseBufferPlotters(trimmedCode).forEach(plotter => {
-			graphicData.bufferPlotters.set(plotter.id, {
+			const buffer = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferMemoryId);
+			const bufferLength = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferLengthMemoryId);
+
+			if (!buffer) {
+				return;
+			}
+
+			console.log('bufferLength', bufferLength, plotter.bufferLengthMemoryId);
+
+			graphicData.bufferPlotters.set(plotter.bufferMemoryId, {
 				width: state.graphicHelper.viewport.vGrid * 2,
 				height: state.graphicHelper.viewport.hGrid,
 				x: 0,
 				y: (gapCalculator(plotter.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
-				id: plotter.id,
+				buffer,
 				minValue: plotter.minValue,
 				maxValue: plotter.maxValue,
+				bufferLength,
 			});
 		});
 

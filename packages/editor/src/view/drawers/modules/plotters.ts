@@ -9,27 +9,26 @@ export default function drawer(engine: Engine, state: State, module: ModuleGraph
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.plotter);
 
-	for (const [, { x, y, id, maxValue, minValue }] of module.bufferPlotters) {
-		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(id);
+	const maxPlotterWidth = module.width;
 
-		if (!memory) {
-			continue;
-		}
-
-		const { wordAddress } = memory;
-
+	for (const [, { x, y, buffer, bufferLength, maxValue, minValue }] of module.bufferPlotters) {
 		engine.startGroup(x, y);
 
-		const maxPlotterWidth = module.width;
+		let width = 0;
 
-		const width = Math.min(memory.wordSize, maxPlotterWidth);
+		if (bufferLength) {
+			width = state.compiler.memoryBuffer[bufferLength.memory.wordAddress];
+		}
+
+		width = Math.min(width || buffer.memory.wordSize, maxPlotterWidth);
+
 		const height = maxValue - minValue;
 		const offset = minValue * -1;
 
 		for (let i = 0; i < width; i++) {
-			const value = memory.isInteger
-				? state.compiler.memoryBuffer[wordAddress + i]
-				: state.compiler.memoryBufferFloat[wordAddress + i];
+			const value = buffer.memory.isInteger
+				? state.compiler.memoryBuffer[buffer.memory.wordAddress + i]
+				: state.compiler.memoryBufferFloat[buffer.memory.wordAddress + i];
 
 			const normalizedValue = Math.round(((value + offset) / height) * (state.graphicHelper.viewport.hGrid * 8));
 
