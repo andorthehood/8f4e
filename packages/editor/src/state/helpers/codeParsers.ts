@@ -103,26 +103,32 @@ export function parsePositionOffsetters(code: string[]): Array<{ axis: string; m
 	}, []);
 }
 
-export function parseBufferPlotters(
-	code: string[]
-): Array<{ id: string; lineNumber: number; minValue: number; maxValue: number }> {
+export function parseBufferPlotters(code: string[]): Array<{
+	bufferMemoryId: string;
+	lineNumber: number;
+	minValue: number;
+	maxValue: number;
+	bufferLengthMemoryId: string | undefined;
+}> {
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
 			never,
 			Instruction | ExtendedInstructionSet,
 			string,
 			string,
-			string
+			string,
+			string | undefined
 		];
 
 		if (instruction === 'plot') {
 			return [
 				...acc,
 				{
-					id: args[0],
+					bufferMemoryId: args[0],
 					lineNumber: index,
 					minValue: parseInt(args[1], 10) || -8,
 					maxValue: parseInt(args[2], 10) || 8,
+					bufferLengthMemoryId: args[3] || undefined,
 				},
 			];
 		}

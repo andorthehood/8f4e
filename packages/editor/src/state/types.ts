@@ -86,14 +86,23 @@ export interface Midi {
 	inputs: MIDIInput[];
 }
 
+export interface MemoryIdentifier {
+	memory: MemoryItem;
+	showAddress: boolean;
+	showEndAddress: boolean;
+	bufferPointer: number;
+	showBinary: boolean;
+}
+
 export interface BufferPlotter {
 	width: number;
 	height: number;
 	x: number;
 	y: number;
-	id: string;
 	minValue: number;
 	maxValue: number;
+	buffer: MemoryIdentifier;
+	bufferLength: MemoryIdentifier | undefined;
 }
 export interface Switch {
 	width: number;
