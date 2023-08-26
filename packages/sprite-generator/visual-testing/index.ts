@@ -60,7 +60,6 @@ import spriteGenerator from '../src';
 
 	// @ts-ignore convertToBlob
 	const blob = await canvas.convertToBlob();
-	console.log(blob);
 	const objectURL = URL.createObjectURL(blob);
 	imageElement.src = objectURL;
 })();

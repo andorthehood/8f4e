@@ -102,8 +102,6 @@ export default async function testBuild(
 	const memoryBufferFloat = new Float32Array(memoryRef.buffer);
 	const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
 
-	console.log(memoryValueChanges);
-
 	memoryValueChanges.forEach(change => {
 		if (change.isInteger) {
 			if (Array.isArray(change.value)) {
