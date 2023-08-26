@@ -1,8 +1,16 @@
 import { MemoryItem } from '@8f4e/compiler';
 
-import { State } from '../types';
+import { State, MemoryIdentifier } from '../types';
 
-export default function resolveMemoryIdentifier(state: State, moduleId: string, memoryIdentifier: string) {
+export default function resolveMemoryIdentifier(
+	state: State,
+	moduleId: string,
+	memoryIdentifier: string | undefined
+): MemoryIdentifier | undefined {
+	if (!memoryIdentifier) {
+		return;
+	}
+
 	let memory: MemoryItem | undefined;
 	let showAddress = false;
 	let showEndAddress = false;
@@ -46,7 +54,7 @@ export default function resolveMemoryIdentifier(state: State, moduleId: string, 
 	memory = state.compiler.compiledModules.get(moduleId)?.memoryMap.get(memoryIdentifier);
 
 	if (!memory) {
-		return null;
+		return;
 	}
 
 	if (operator === '*' && memory.isPointer) {
@@ -54,7 +62,7 @@ export default function resolveMemoryIdentifier(state: State, moduleId: string, 
 	}
 
 	if (!memory) {
-		return null;
+		return;
 	}
 
 	return {
