@@ -5,8 +5,10 @@ import WASMInstruction from './wasmUtils/wasmInstruction';
 export enum MemoryTypes {
 	'int',
 	'int*',
+	'int**',
 	'float',
 	'float*',
+	'float**',
 }
 
 export interface MemoryItem {
@@ -21,6 +23,7 @@ export interface MemoryItem {
 	id: string;
 	isPointer: boolean;
 	isPointingToInteger: boolean;
+	isPointingToPointer: boolean;
 }
 
 export type MemoryMap = Map<string, MemoryItem>;
