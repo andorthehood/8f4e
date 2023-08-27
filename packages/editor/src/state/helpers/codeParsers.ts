@@ -8,7 +8,7 @@ export function parseInputs(code: string[]): Array<{ id: string; lineNumber: num
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
 
-		if (instruction === 'int*' || instruction === 'float*') {
+		if (instruction === 'int*' || instruction === 'float*' || instruction === 'int**' || instruction === 'float**') {
 			return [...acc, { id: args[0], lineNumber: index }];
 		}
 		return acc;
