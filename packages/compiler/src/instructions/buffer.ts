@@ -47,7 +47,8 @@ const buffer: InstructionHandler = function (line, context) {
 		default: new Array(wordSize).fill(line.arguments[2]?.value || 0),
 		isInteger: line.instruction === 'int[]' || line.instruction === 'int*[]' || line.instruction === 'float*[]',
 		isPointer: line.instruction === 'int*[]' || line.instruction === 'float*[]',
-		isPointingToInteger: line.instruction === 'int*',
+		isPointingToInteger: line.instruction === 'int*[]' || line.instruction === 'int**[]',
+		isPointingToPointer: line.instruction === 'int**[]' || line.instruction === 'float**[]',
 		type: line.instruction.slice(0, -2) as unknown as MemoryTypes,
 	});
 

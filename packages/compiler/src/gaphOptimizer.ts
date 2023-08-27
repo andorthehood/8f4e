@@ -33,7 +33,7 @@ export function sortModules(modules: AST[]): AST[] {
 			const intermodulerConnectionsA = astA
 				.filter(({ instruction, arguments: _arguments }) => {
 					return (
-						['int*', 'float*', 'init', 'int'].includes(instruction) &&
+						['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
 						_arguments[0] &&
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
@@ -49,7 +49,7 @@ export function sortModules(modules: AST[]): AST[] {
 			const intermodulerConnectionsB = astB
 				.filter(({ instruction, arguments: _arguments }) => {
 					return (
-						['int*', 'float*', 'init', 'int'].includes(instruction) &&
+						['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
 						_arguments[0] &&
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&

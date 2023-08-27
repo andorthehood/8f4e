@@ -58,7 +58,7 @@ const push: InstructionHandler = function (line, context) {
 			return {
 				byteCode: [
 					...i32const(memoryItem.byteAddress),
-					...i32load(),
+					...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
 					...(memoryItem.isPointingToInteger ? i32load() : f32load()),
 				],
 				context,
