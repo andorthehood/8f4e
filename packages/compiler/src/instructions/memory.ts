@@ -55,9 +55,19 @@ const memory: InstructionHandler = function (line, context) {
 		id: line.arguments[0].value,
 		default: defaultValue,
 		type: line.instruction as unknown as MemoryTypes,
-		isPointer: line.instruction === 'int*' || line.instruction === 'float*',
-		isPointingToInteger: line.instruction === 'int*',
-		isInteger: line.instruction === 'int' || line.instruction === 'int*' || line.instruction === 'float*',
+		isPointer:
+			line.instruction === 'int*' ||
+			line.instruction === 'float*' ||
+			line.instruction === 'int**' ||
+			line.instruction === 'float**',
+		isPointingToInteger: line.instruction === 'int*' || line.instruction === 'int**',
+		isPointingToPointer: line.instruction === 'int**' || line.instruction === 'float**',
+		isInteger:
+			line.instruction === 'int' ||
+			line.instruction === 'int*' ||
+			line.instruction === 'float*' ||
+			line.instruction === 'int**' ||
+			line.instruction === 'float**',
 	});
 
 	return { byteCode: [], context: { ...context, namespace: { ...context.namespace, memory } } };

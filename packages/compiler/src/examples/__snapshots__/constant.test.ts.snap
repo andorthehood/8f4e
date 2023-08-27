@@ -44,6 +44,7 @@ Map {
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
+    "isPointingToPointer": false,
     "lineNumber": 1,
     "relativeWordAddress": 0,
     "type": "int",
