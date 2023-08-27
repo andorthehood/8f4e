@@ -70,7 +70,7 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 		ast.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
-				['int*', 'float*', 'init', 'int'].includes(instruction) &&
+				['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
 				_arguments[0] &&
 				_arguments[1] &&
 				_arguments[0].type === ArgumentType.IDENTIFIER &&

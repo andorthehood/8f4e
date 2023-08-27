@@ -44,6 +44,7 @@ const skip: InstructionHandler = function (line, context) {
 		type: MemoryTypes.int,
 		isPointer: false,
 		isPointingToInteger: false,
+		isPointingToPointer: false,
 		isInteger: true,
 	});
 
