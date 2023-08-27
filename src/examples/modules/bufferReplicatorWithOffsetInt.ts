@@ -25,6 +25,12 @@ push &_pointer
 push 0
 store
 
+; Avoid remainder by zero
+push length
+push 0
+equal
+branchIfTrue 0
+
 loop
  ; Guard
  push _pointer
