@@ -54,6 +54,9 @@ import sampleAndHoldInt from './sampleAndHoldInt';
 import masterClock from './masterClock';
 import changeDetectorInt from './changeDetectorInt';
 import midiFrequenciesLookupTable from './midiFrequenciesLookupTable';
+import mapToRangeInt from './mapToRangeInt';
+import mapToRangeFloat from './mapToRangeFloat';
+import mapToRangeFloatToInt from './mapToRangeFloatToInt';
 
 const modules = {
 	audioBufferOut,
@@ -112,6 +115,9 @@ const modules = {
 	masterClock,
 	changeDetectorInt,
 	midiFrequenciesLookupTable,
+	mapToRangeFloat,
+	mapToRangeInt,
+	mapToRangeFloatToInt,
 } as const;
 
 export default modules;
