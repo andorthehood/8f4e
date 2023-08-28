@@ -57,6 +57,7 @@ import midiFrequenciesLookupTable from './midiFrequenciesLookupTable';
 import mapToRangeInt from './mapToRangeInt';
 import mapToRangeFloat from './mapToRangeFloat';
 import mapToRangeFloatToInt from './mapToRangeFloatToInt';
+import mapToVariableRangeFloat from './mapToVariableRangeFloat';
 
 const modules = {
 	audioBufferOut,
@@ -118,6 +119,7 @@ const modules = {
 	mapToRangeFloat,
 	mapToRangeInt,
 	mapToRangeFloatToInt,
+	mapToVariableRangeFloat,
 } as const;
 
 export default modules;
