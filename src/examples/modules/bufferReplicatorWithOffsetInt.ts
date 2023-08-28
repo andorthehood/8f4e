@@ -25,7 +25,7 @@ push &_pointer
 push 0
 store
 
-; Avoid remainder by zero
+; To avoid remainder by zero
 push length
 push 0
 equal
