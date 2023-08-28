@@ -6,11 +6,12 @@ const mapToRangeInt: ExampleModule = {
 	category: 'Utils',
 	code: `module mapToRange
 
-int* in
 const IN_RANGE_MIN -1.0
 const IN_RANGE_MAX 1.0
 const OUT_RANGE_MIN 0.0
 const OUT_RANGE_MAX 127.0
+
+int* in
 int out
 
 push &out
