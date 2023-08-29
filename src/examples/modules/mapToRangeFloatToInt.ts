@@ -28,6 +28,7 @@ sub
 mul
 push OUT_RANGE_MIN
 add
+round
 castToInt
 store
 
