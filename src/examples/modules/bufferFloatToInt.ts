@@ -38,6 +38,7 @@ loop
  add
  
  loadFloat ; value from src
+ round
  castToInt
 
  store ; value to dst
