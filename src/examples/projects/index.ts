@@ -6,6 +6,7 @@ import dancingWithTheSineLT from './dancingWithTheSineLT';
 import randomGenerators from './randomGenerators';
 import randomNoteGenerator from './randomNoteGenerator';
 import midiArpeggiator from './midiArpeggiator';
+import midiArpeggiator2 from './midiArpeggiator2';
 
 const projects = {
 	audioBuffer,
@@ -16,6 +17,7 @@ const projects = {
 	randomGenerators,
 	randomNoteGenerator,
 	midiArpeggiator,
+	midiArpeggiator2,
 } as const;
 
 export default projects;
