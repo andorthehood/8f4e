@@ -4,7 +4,7 @@ const sawSignedFloat: ExampleModule = {
 	title: 'Saw (Signed, Float)',
 	author: 'Andor Polgar',
 	category: 'Oscillators',
-	code: `module sawSignedFloat
+	code: `module saw
 
 float default 0.5 ;Hz 
 float* frequency &default

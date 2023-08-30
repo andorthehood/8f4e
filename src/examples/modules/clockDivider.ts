@@ -4,7 +4,7 @@ const clockDivider: ExampleModule = {
 	title: 'Clock Divider',
 	author: 'Andor Polgar',
 	category: 'Clock',
-	code: `module clockDivider
+	code: `module clockDiv
 
 int default 16
 int* divider &default

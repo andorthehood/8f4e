@@ -4,7 +4,7 @@ const mapToRangeFloatToInt: ExampleModule = {
 	title: 'Map Signal to Range (Float to Int)',
 	author: 'Andor Polgar',
 	category: 'Utils',
-	code: `module mapToRange3
+	code: `module mapToRange
 
 const IN_RANGE_MIN -1.0
 const IN_RANGE_MAX 1.0

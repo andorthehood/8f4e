@@ -4,7 +4,7 @@ const sequentialMuxInt: ExampleModule = {
 	title: 'Sequential Multiplexer (8 input, Int)',
 	author: 'Andor Polgar',
 	category: 'Sequencers',
-	code: `module seqMuxI
+	code: `module seqMux
 
 int* in0
 int* in1 
