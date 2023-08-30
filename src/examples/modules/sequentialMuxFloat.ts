@@ -4,7 +4,7 @@ const sequentialMuxFloat: ExampleModule = {
 	title: 'Sequential Multiplexer (8 input, Float)',
 	author: 'Andor Polgar',
 	category: 'Sequencers',
-	code: `module seqMuxF
+	code: `module seqMux
 
 float* in0
 float* in1 

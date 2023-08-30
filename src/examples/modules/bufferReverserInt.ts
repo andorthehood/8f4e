@@ -4,7 +4,7 @@ const bufferReverserInt: ExampleModule = {
 	title: 'Buffer Reverser (Int)',
 	author: 'Andor Polgar',
 	category: 'Buffer',
-	code: `module reverseBuffer
+	code: `module reverser
 
 int* bufferIn
 int* lengthIn

@@ -4,7 +4,7 @@ const sawUnsignedFloat: ExampleModule = {
 	title: 'Saw (Unsigned, Int, 8bit)',
 	author: 'Andor Polgar',
 	category: 'Oscillators',
-	code: `module sawUnsigned8bitInt
+	code: `module saw
 
 float default 1 ;Hz 
 float* frequency &default

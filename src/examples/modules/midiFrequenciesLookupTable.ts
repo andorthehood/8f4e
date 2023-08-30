@@ -10,7 +10,7 @@ const midiFrequenciesLookupTable: ExampleModule = {
 	title: 'MIDI Frequencies Lookup Table',
 	author: 'Andor Polgar',
 	category: 'Lookup Tables',
-	code: `module midiLT
+	code: `module midiLUT
 
 ${midiFrequencies
 	.map((value, note) => {
