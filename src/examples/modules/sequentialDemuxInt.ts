@@ -4,7 +4,7 @@ const sequentialDemuxInt: ExampleModule = {
 	title: 'Sequential Demultiplexer (8 output, Int)',
 	author: 'Andor Polgar',
 	category: 'Sequencers',
-	code: `module seqDemuxI
+	code: `module seqDemux
 
 int _length 8
 

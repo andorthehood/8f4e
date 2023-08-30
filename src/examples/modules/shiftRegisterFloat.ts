@@ -4,7 +4,7 @@ const shiftRegisterFloat: ExampleModule = {
 	title: 'Shift Register (8 outs, Float)',
 	author: 'Andor Polgar',
 	category: 'Utilities',
-	code: `module shiftRegI
+	code: `module shiftReg
 
 float* in
 int* trigger

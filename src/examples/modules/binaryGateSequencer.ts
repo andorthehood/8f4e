@@ -4,7 +4,7 @@ const binaryGateSequencer: ExampleModule = {
 	title: 'Binary Gate Sequencer',
 	author: 'Andor Polgar',
 	category: 'Sequencers',
-	code: `module binaryGateSequencer
+	code: `module binaryGateSeq
 
 int step1  0b10100000
 int step2  0b00100000
