@@ -4,7 +4,7 @@ const sequentialDemuxFloat: ExampleModule = {
 	title: 'Sequential Demultiplexer (8 output, Float)',
 	author: 'Andor Polgar',
 	category: 'Sequencers',
-	code: `module seqDemuxF
+	code: `module seqDemux
 
 int _length 8
 

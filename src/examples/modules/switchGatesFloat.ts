@@ -4,7 +4,7 @@ const switchGatesFloat: ExampleModule = {
 	title: 'Switchable Gates (8x Float)',
 	author: 'Andor Polgar',
 	category: 'Controllers',
-	code: `module switchGatesFloat
+	code: `module switchGates
 
 float* in0
 float out0

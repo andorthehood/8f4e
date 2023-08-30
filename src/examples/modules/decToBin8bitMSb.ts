@@ -4,7 +4,7 @@ const decToBin8bitMSb: ExampleModule = {
 	title: 'Decimal to Binary Converter (8bit, MSb)',
 	author: 'Andor Polgar',
 	category: 'Bitwise',
-	code: `module decToBin8bitMSb
+	code: `module decToBin
 
 int* in
 

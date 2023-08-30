@@ -4,7 +4,7 @@ const triangleSignedFloat: ExampleModule = {
 	title: 'Triangle (Signed, Float)',
 	author: 'Andor Polgar',
 	category: 'Oscillators',
-	code: `module triangleSignedFloat
+	code: `module triangle
 
 float default 1 ;Hz 
 float* frequency &default

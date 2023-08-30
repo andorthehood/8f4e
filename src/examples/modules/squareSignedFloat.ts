@@ -4,7 +4,7 @@ const squareSignedFloat: ExampleModule = {
 	title: 'Square (Signed, Float)',
 	author: 'Andor Polgar',
 	category: 'Oscillators',
-	code: `module squareSignedFloat
+	code: `module square
 
 float default 1 ;Hz 
 float* frequency &default

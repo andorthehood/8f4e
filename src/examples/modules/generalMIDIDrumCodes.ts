@@ -4,7 +4,7 @@ const generalMIDIDrumCodes: ExampleModule = {
 	title: 'General MIDI Drum Codes',
 	author: 'Andor Polgar',
 	category: 'MIDI',
-	code: `module generalMIDIDrumCodes
+	code: `module MIDIDrumCodes
 
 const LASER 27
 const WHIP 28
