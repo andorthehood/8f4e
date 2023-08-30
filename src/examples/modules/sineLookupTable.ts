@@ -8,7 +8,7 @@ const sineLookupTable: ExampleModule = {
 	title: 'Sine Lookup Table',
 	author: 'Andor Polgar',
 	category: 'Lookup Tables',
-	code: `module sineLT
+	code: `module sineLUT
 
 ${sine
 	.map((value, index) => {

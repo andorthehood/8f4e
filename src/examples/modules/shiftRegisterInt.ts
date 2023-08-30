@@ -4,7 +4,7 @@ const shiftRegisterInt: ExampleModule = {
 	title: 'Shift Register (8 outs, Int)',
 	author: 'Andor Polgar',
 	category: 'Utilities',
-	code: `module shiftRegI
+	code: `module shiftReg
 
 int* in
 int* trigger

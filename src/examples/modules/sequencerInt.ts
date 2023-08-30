@@ -4,7 +4,7 @@ const sequencerInt: ExampleModule = {
 	title: 'Sequencer (Int)',
 	author: 'Andor Polgar',
 	category: 'Sequencers',
-	code: `module sequencerF
+	code: `module sequencer
 
 int step0 
 int step1
