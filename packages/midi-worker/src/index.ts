@@ -29,7 +29,8 @@ async function init(
 		clearInterval(interval);
 		clearInterval(statsInterval);
 
-		const { memoryBuffer, cycle } = await createModule(memoryRef, codeBuffer);
+		const wasmApp = await createModule(memoryRef, codeBuffer);
+		memoryBuffer = wasmApp.memoryBuffer;
 
 		const midiNoteModules = findMidiNoteOutModules(compiledModules, memoryBuffer);
 		const RNBOModules = findRNBOModules(compiledModules);
@@ -44,7 +45,7 @@ async function init(
 			const startTime = performance.now();
 			drift += intervalTime - (startTime - lastIntervalTime);
 			lastIntervalTime = startTime;
-			cycle();
+			wasmApp.cycle();
 			const endTime = performance.now();
 			timeToExecute = endTime - startTime;
 			broadcastMidiCCMessages(midiCCOutputModules, memoryBuffer);
