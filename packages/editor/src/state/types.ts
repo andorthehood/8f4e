@@ -168,8 +168,8 @@ export interface ModuleGraphicData {
 	inputs: Map<string, Input>;
 	outputs: Map<string, Output>;
 	code: string[];
+	trimmedCode: string[];
 	padLength: number;
-	codeWithLineNumbers: string[];
 	codeToRender: number[][];
 	codeColors: Array<Array<SpriteLookup | undefined>>;
 	gaps: Map<number, { size: number }>;
