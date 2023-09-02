@@ -72,7 +72,7 @@ function didProgramOrMemoryStructureChange(
 			return true;
 		}
 
-		if (compiledModule.memoryMap.size !== previousModule.memoryMap.size) {
+		if (compiledModule.memoryWordSize !== previousModule.memoryWordSize) {
 			return true;
 		}
 	}
