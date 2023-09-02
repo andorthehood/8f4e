@@ -94,7 +94,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			minGridWidth: 32,
 			height: 0,
 			code,
-			codeWithLineNumbers: [],
+			trimmedCode: code,
 			codeColors: [],
 			codeToRender: [],
 			inputs: new Map(),
