@@ -2,7 +2,7 @@
 
 # 8f4e
 
-8f4e is stack-oriented programming language with a semi-visual interface specifically designed for generating and processing real-time audio signals. While its primary environment is the WebAssembly Virtual Machine and AudioWorklet, we plan to develop compatibility with microcontroller platforms by providing appropriate glue code in the future.
+8f4e is stack-oriented programming language with a semi-visual interface specifically designed for generating and processing real-time audio signals. One if its unique features is the ability to change variable values without needing to recompile the code, and its representation of pointers using interconnected wires.
 
 The objective of this programming language is to help sound designers in integrating complex interactive and/or generative audio components into their web applications with maximum efficiency.
 
