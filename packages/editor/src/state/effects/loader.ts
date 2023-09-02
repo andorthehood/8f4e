@@ -40,7 +40,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				minGridWidth: 32,
 				height: 0,
 				code: module.code,
-				codeWithLineNumbers: [],
+				trimmedCode: module.code,
 				codeColors: [],
 				codeToRender: [],
 				inputs: new Map(),
