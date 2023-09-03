@@ -1,4 +1,4 @@
-import { Switch, ModuleGraphicData, GraphicHelper } from '../types';
+import { GraphicHelper, ModuleGraphicData, Switch } from '../types';
 
 export default function findSwitchAtViewportCoordinates(
 	graphicHelper: GraphicHelper,

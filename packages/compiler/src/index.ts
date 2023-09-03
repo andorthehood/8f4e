@@ -13,14 +13,14 @@ import Type from './wasmUtils/type';
 import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
 import { compile as compileModule, compileToAST } from './compiler';
 import {
-	CompiledModule,
-	Module,
-	CompiledModuleLookup,
 	AST,
-	Namespace,
 	ArgumentLiteral,
 	ArgumentType,
 	CompileOptions,
+	CompiledModule,
+	CompiledModuleLookup,
+	Module,
+	Namespace,
 	Namespaces,
 } from './types';
 import { calculateModuleWordSize } from './utils';
