@@ -58,6 +58,7 @@ import mapToRangeInt from './mapToRangeInt';
 import mapToRangeFloat from './mapToRangeFloat';
 import mapToRangeFloatToInt from './mapToRangeFloatToInt';
 import mapToVariableRangeFloat from './mapToVariableRangeFloat';
+import strumFloat from './strumFloat';
 
 const modules = {
 	audioBufferOut,
@@ -120,6 +121,7 @@ const modules = {
 	mapToRangeInt,
 	mapToRangeFloatToInt,
 	mapToVariableRangeFloat,
+	strumFloat,
 } as const;
 
 export default modules;
