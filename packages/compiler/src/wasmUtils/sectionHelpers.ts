@@ -10,7 +10,7 @@ import {
 	unsignedLEB128,
 } from './typeHelpers';
 import Instruction from './wasmInstruction';
-import { Section, ExportDesc, ImportDesc, NameSection } from './section';
+import { ExportDesc, ImportDesc, NameSection, Section } from './section';
 import Type from './type';
 
 export function createFunctionSection(functionTypeIndexes: number[]): number[] {

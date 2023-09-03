@@ -1,6 +1,6 @@
 import ascii from './ascii';
 
-import { mirr, pad, same, invert } from '../utils';
+import { invert, mirr, pad, same } from '../utils';
 
 export default [
 	pad(16, []), // SPACE

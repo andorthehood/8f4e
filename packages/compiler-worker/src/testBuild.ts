@@ -1,4 +1,4 @@
-import compile, { CompiledModuleLookup, CompileOptions, Module } from '@8f4e/compiler';
+import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
 
 let previousCompiledModules: CompiledModuleLookup;
 
