@@ -1,14 +1,15 @@
 import { instructions } from '@8f4e/compiler';
 
-import pianoKeyboards, { parsePianoKeyboards } from './graphicHelper/pianoKeyboards';
-import bufferPlotters, { parseBufferPlotters } from './graphicHelper/bufferPlotters';
-import outputs from './graphicHelper/outputs';
-import inputs from './graphicHelper/inputs';
-import debuggers from './graphicHelper/debuggers';
-import switches from './graphicHelper/switches';
+import bufferPlotters from './graphicHelper/bufferPlotters';
 import buttons from './graphicHelper/buttons';
+import debuggers from './graphicHelper/debuggers';
 import errorMessages from './graphicHelper/errorMessages';
+import gaps from './graphicHelper/gaps';
+import inputs from './graphicHelper/inputs';
+import outputs from './graphicHelper/outputs';
+import pianoKeyboards from './graphicHelper/pianoKeyboards';
 import positionOffsetters from './graphicHelper/positionOffsetters';
+import switches from './graphicHelper/switches';
 
 import { EventDispatcher, EventHandler, EventObject } from '../../events';
 import { ModuleGraphicData, State } from '../types';
@@ -58,36 +59,14 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			(line, index) => `${index}`.padStart(graphicData.padLength, '0') + ' ' + line
 		);
 
+		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
+
 		graphicData.codeColors = generateCodeColorMap(codeWithLineNumbers, state.graphicHelper.spriteLookups, [
 			...Object.keys(instructions),
 			...state.compiler.compilerOptions.environmentExtensions.ignoredKeywords,
 		]);
 
-		graphicData.gaps.clear();
-		state.compiler.buildErrors.forEach(buildError => {
-			if (buildError.moduleId !== graphicData.id) {
-				return;
-			}
-			graphicData.gaps.set(buildError.lineNumber, { size: 2 });
-		});
-		parseBufferPlotters(graphicData.trimmedCode).forEach(plotter => {
-			graphicData.gaps.set(plotter.lineNumber, { size: 8 });
-		});
-		parsePianoKeyboards(graphicData.trimmedCode).forEach(pianoKeyboard => {
-			graphicData.gaps.set(pianoKeyboard.lineNumber, { size: 5 });
-		});
-
-		const gaps = Array.from(graphicData.gaps).sort(([a], [b]) => {
-			return b - a;
-		});
-
-		gaps.forEach(([row, gap]) => {
-			codeWithLineNumbers.splice(row + 1, 0, ...new Array(gap.size).fill(' '));
-			graphicData.codeColors.splice(row + 1, 0, ...new Array(gap.size).fill([]));
-		});
-
-		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
-
+		gaps(graphicData, state);
 		pianoKeyboards(graphicData, state);
 
 		graphicData.width =
@@ -103,7 +82,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		buttons(graphicData, state);
 		positionOffsetters(graphicData, state);
 
-		graphicData.height = codeWithLineNumbers.length * state.graphicHelper.viewport.hGrid;
+		graphicData.height = graphicData.codeToRender.length * state.graphicHelper.viewport.hGrid;
 		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.padLength + 2)) * state.graphicHelper.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.graphicHelper.viewport.hGrid;
 		graphicData.id = getModuleId(graphicData.code) || '';
