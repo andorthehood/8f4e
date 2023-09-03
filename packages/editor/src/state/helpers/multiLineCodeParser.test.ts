@@ -1,4 +1,4 @@
-import { parseCode, replaceCode, insertCodeAfterLine } from './multiLineCodeParser';
+import { insertCodeAfterLine, parseCode, replaceCode } from './multiLineCodeParser';
 
 describe('parseCode', () => {
 	const fixtures: [string[], string[], Record<string, string>[]][] = [

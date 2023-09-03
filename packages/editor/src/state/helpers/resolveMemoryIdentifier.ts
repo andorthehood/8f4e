@@ -1,6 +1,6 @@
 import { MemoryItem } from '@8f4e/compiler';
 
-import { State, MemoryIdentifier } from '../types';
+import { MemoryIdentifier, State } from '../types';
 
 export default function resolveMemoryIdentifier(
 	state: State,

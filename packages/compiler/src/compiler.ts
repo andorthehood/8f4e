@@ -1,22 +1,23 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
-import Type from './wasmUtils/type';
 import instructions, { Instruction } from './instructions';
 import {
 	AST,
 	Argument,
 	ArgumentType,
+	CompilationContext,
+	CompileOptions,
 	CompiledModule,
 	Namespace,
-	CompilationContext,
 	Namespaces,
-	CompileOptions,
 } from './types';
-import { WORD_LENGTH } from './consts';
 import { ErrorCode, getError } from './errors';
+import { WORD_LENGTH } from './consts';
+import Type from './wasmUtils/type';
 
 export { MemoryTypes, MemoryMap } from './types';
 
-export const instructionParser = /^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
+export const instructionParser =
+	/^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
 
 export function parseArgument(argument: string): Argument {
 	switch (true) {
