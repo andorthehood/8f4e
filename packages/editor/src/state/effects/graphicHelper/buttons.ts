@@ -1,7 +1,7 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { gapCalculator } from '../../helpers/editor';
 import { ExtendedInstructionSet, ModuleGraphicData, State } from '../../types';
+import { gapCalculator } from '../../helpers/editor';
 
 export function parseButtons(code: string[]) {
 	return code.reduce((acc, line, index) => {

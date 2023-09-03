@@ -1,5 +1,5 @@
-import { gapCalculator } from '../../helpers/editor';
 import { ModuleGraphicData, State } from '../../types';
+import { gapCalculator } from '../../helpers/editor';
 
 export default function errorMessages(graphicData: ModuleGraphicData, state: State) {
 	graphicData.errorMessages.clear();
