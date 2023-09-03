@@ -1,5 +1,5 @@
-import { parseArgument, parseLine, isComment, isValidInstruction } from './compiler';
-import { ArgumentType, AST } from './types';
+import { AST, ArgumentType } from './types';
+import { isComment, isValidInstruction, parseArgument, parseLine } from './compiler';
 
 describe('parseArgument', () => {
 	const literals: [string, ArgumentType, number, boolean][] = [

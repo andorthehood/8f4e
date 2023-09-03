@@ -1,4 +1,4 @@
-import { ModuleGraphicData, GraphicHelper, PianoKeyboard } from '../types';
+import { GraphicHelper, ModuleGraphicData, PianoKeyboard } from '../types';
 
 export default function findPianoKeyboardAtViewportCoordinates(
 	graphicHelper: GraphicHelper,

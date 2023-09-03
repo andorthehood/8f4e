@@ -1,4 +1,4 @@
-import { backSpace, moveCaret, type, gapCalculator } from './editor';
+import { backSpace, gapCalculator, moveCaret, type } from './editor';
 
 import { ModuleGraphicData } from '../types';
 

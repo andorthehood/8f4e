@@ -1,5 +1,5 @@
 import { SpriteLookup } from '@8f4e/2d-engine';
-import { CompiledModuleLookup, CompileOptions, MemoryBuffer, MemoryItem } from '@8f4e/compiler';
+import { CompileOptions, CompiledModuleLookup, MemoryBuffer, MemoryItem } from '@8f4e/compiler';
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { IPatcher } from '@rnbo/js';
 
