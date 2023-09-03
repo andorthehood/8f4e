@@ -1,8 +1,8 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { getModuleId } from '../../helpers/codeParsers';
-import { gapCalculator } from '../../helpers/editor';
 import { ModuleGraphicData, State } from '../../types';
+import { gapCalculator } from '../../helpers/editor';
+import { getModuleId } from '../../helpers/codeParsers';
 
 export function parseInputs(code: string[]): Array<{ id: string; lineNumber: number }> {
 	return code.reduce((acc, line, index) => {

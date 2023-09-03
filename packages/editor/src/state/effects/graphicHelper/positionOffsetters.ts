@@ -1,7 +1,7 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 import { ExtendedInstructionSet, ModuleGraphicData, State } from '../../types';
+import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 
 export function parsePositionOffsetters(code: string[]) {
 	return code.reduce((acc, line) => {
