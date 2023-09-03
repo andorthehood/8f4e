@@ -25,6 +25,16 @@ module.exports = {
 				'newlines-between': 'always',
 			},
 		],
+		'sort-imports': [
+			'warn',
+			{
+				ignoreCase: false,
+				ignoreDeclarationSort: false,
+				ignoreMemberSort: false,
+				memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+				allowSeparatedGroups: true,
+			},
+		],
 	},
 	env: {
 		browser: true,
