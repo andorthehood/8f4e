@@ -1,5 +1,5 @@
-import modules from './__fixtures__/modules';
 import { compileToAST } from './compiler';
+import modules from './__fixtures__/modules';
 
 import { compileModules } from '.';
 

@@ -1,4 +1,4 @@
-import { i32store, f32store } from '../wasmUtils/instructionHelpers';
+import { f32store, i32store } from '../wasmUtils/instructionHelpers';
 import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';

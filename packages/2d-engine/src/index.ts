@@ -3,11 +3,11 @@ import {
 	fillBufferWithRectangleVertices,
 	fillBufferWithSpriteCoordinates,
 } from './utils/buffer';
-import createShader from './utils/createShader';
 import createProgram from './utils/createProgram';
+import createShader from './utils/createShader';
 import createTexture from './utils/createTexture';
-import vertexShader from './shaders/vertexShader';
 import textureShader from './shaders/fragmentShader';
+import vertexShader from './shaders/vertexShader';
 
 export type SpriteCoordinates = {
 	spriteWidth: number;

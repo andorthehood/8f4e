@@ -15,11 +15,11 @@ import { ModuleGraphicData, State } from '../types';
 import {
 	backSpace,
 	enter,
-	moveCaret,
-	type,
 	gapCalculator,
-	reverseGapCalculator,
 	generateCodeColorMap,
+	moveCaret,
+	reverseGapCalculator,
+	type,
 } from '../helpers/editor';
 import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../helpers/codeParsers';
 

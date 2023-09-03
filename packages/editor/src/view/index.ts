@@ -1,7 +1,7 @@
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
-import { drawConnections, drawContextMenu, drawModules, drawDialog, drawArrows } from './drawers';
+import { drawArrows, drawConnections, drawContextMenu, drawDialog, drawModules } from './drawers';
 import colorSchemes from './colorSchemes';
 
 import { State } from '../state/types';
