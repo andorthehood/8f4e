@@ -1,10 +1,22 @@
 module.exports = {
-	root: true,
+	env: {
+		browser: true,
+		commonjs: true,
+		es2021: true,
+	},
+	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
 	parser: '@typescript-eslint/parser',
 	plugins: ['@typescript-eslint', 'prettier', 'import'],
-	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+	root: true,
 	rules: {
 		'@typescript-eslint/ban-ts-comment': 'warn',
+		'import/order': [
+			'error',
+			{
+				groups: ['builtin', 'external', 'internal', 'sibling', 'parent', 'index', 'object', 'type'],
+				'newlines-between': 'always',
+			},
+		],
 		'prettier/prettier': [
 			'error',
 			{
@@ -18,27 +30,17 @@ module.exports = {
 				useTabs: true,
 			},
 		],
-		'import/order': [
-			'error',
-			{
-				groups: ['builtin', 'external', 'internal', 'sibling', 'parent', 'index', 'object', 'type'],
-				'newlines-between': 'always',
-			},
-		],
 		'sort-imports': [
 			'warn',
 			{
+				allowSeparatedGroups: true,
 				ignoreCase: false,
 				ignoreDeclarationSort: false,
 				ignoreMemberSort: false,
 				memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
-				allowSeparatedGroups: true,
 			},
 		],
-	},
-	env: {
-		browser: true,
-		es2021: true,
-		commonjs: true,
+
+		'sort-keys': ['warn', 'asc', { caseSensitive: true, natural: false }],
 	},
 };
