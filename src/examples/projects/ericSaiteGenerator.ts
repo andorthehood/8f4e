@@ -551,7 +551,7 @@ const ericSaiteGenerator: Project = {
 		},
 	],
 	groups: [],
-	viewport: { x: -226, y: 29 },
+	viewport: { x: -241, y: -15 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,
 };
