@@ -18,6 +18,10 @@ export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: M
 			const channel = typeof channelWordAddress !== 'undefined' ? memoryBuffer[channelWordAddress] : 1;
 			const velocity = typeof velocityWordAddress !== 'undefined' ? memoryBuffer[velocityWordAddress] : 127;
 
+			if (note < 0 || note > 127 || channel > 16 || channel < 1 || velocity < 0 || velocity > 127) {
+				return;
+			}
+
 			if (isOn && !wasOn.get(moduleId)) {
 				sampleAndHold.set(moduleId, note);
 				self.postMessage({
