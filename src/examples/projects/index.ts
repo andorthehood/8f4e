@@ -7,6 +7,7 @@ import randomGenerators from './randomGenerators';
 import randomNoteGenerator from './randomNoteGenerator';
 import midiArpeggiator from './midiArpeggiator';
 import midiArpeggiator2 from './midiArpeggiator2';
+import ericSaiteGenerator from './ericSaiteGenerator';
 
 const projects = {
 	audioBuffer,
@@ -18,6 +19,7 @@ const projects = {
 	randomNoteGenerator,
 	midiArpeggiator,
 	midiArpeggiator2,
+	ericSaiteGenerator,
 } as const;
 
 export default projects;
