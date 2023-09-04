@@ -15,17 +15,8 @@ export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: M
 
 			const note = memoryBuffer[noteWordAddress];
 			const isOn = memoryBuffer[noteOnOffWordAddress] !== 0;
-
-			let channel = 1;
-			let velocity = 127;
-
-			if (typeof channelWordAddress !== 'undefined') {
-				channel = memoryBuffer[channelWordAddress];
-			}
-
-			if (typeof velocityWordAddress !== 'undefined') {
-				velocity = memoryBuffer[velocityWordAddress];
-			}
+			const channel = typeof channelWordAddress !== 'undefined' ? memoryBuffer[channelWordAddress] : 1;
+			const velocity = typeof velocityWordAddress !== 'undefined' ? memoryBuffer[velocityWordAddress] : 127;
 
 			if (isOn && !wasOn.get(moduleId)) {
 				sampleAndHold.set(moduleId, note);
