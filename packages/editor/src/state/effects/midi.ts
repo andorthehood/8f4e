@@ -2,7 +2,6 @@ import { EventDispatcher } from '../../events';
 import { State } from '../types';
 
 export default async function midi(state: State, events: EventDispatcher): Promise<void> {
-	let selectedOutput: MIDIOutput;
 	let selectedInput: MIDIInput;
 	let midiAccess: MIDIAccess;
 
@@ -53,14 +52,11 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 
 		access.outputs.forEach(port => {
 			state.midi.outputs.push(port);
-			selectedOutput = port;
-			events.dispatch('midiPortConnected');
 		});
 
 		access.inputs.forEach(port => {
 			state.midi.inputs.push(port);
 			selectedInput = port;
-			events.dispatch('midiPortConnected');
 		});
 
 		if (selectedInput) {
@@ -68,19 +64,11 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 		}
 	}
 
-	function onSelectMidiOutput({ id }) {
-		midiAccess.outputs.forEach(function (port) {
-			if (port.id === id) {
-				selectedOutput = port;
-			}
-		});
-	}
-
 	async function onWorkerMessage({ data }) {
 		switch (data.type) {
 			case 'midiMessage':
-				if (selectedOutput) {
-					selectedOutput.send(data.payload.message, data.payload.delay);
+				if (data.payload.port && state.midi.outputs[data.payload.port]) {
+					state.midi.outputs[data.payload.port - 1].send(data.payload.message, data.payload.delay);
 				}
 				break;
 			case 'RNBOMessage':
@@ -96,6 +84,5 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 	}
 
 	navigator.requestMIDIAccess().then(onMidiAccess);
-	events.on('selectMidiOutput', onSelectMidiOutput);
 	events.on('initRuntime', onInitRuntime);
 }
