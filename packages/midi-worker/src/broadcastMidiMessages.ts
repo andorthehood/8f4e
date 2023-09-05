@@ -8,7 +8,7 @@ const sampleAndHold = new Map<string, number>();
 
 export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: MemoryBuffer): void {
 	midiNoteModules.forEach(
-		({ noteWordAddress, noteOnOffWordAddress, channelWordAddress, velocityWordAddress, moduleId }) => {
+		({ noteWordAddress, noteOnOffWordAddress, channelWordAddress, velocityWordAddress, portWordAddress, moduleId }) => {
 			if (typeof noteWordAddress === 'undefined' || typeof noteOnOffWordAddress === 'undefined') {
 				return;
 			}
@@ -17,6 +17,7 @@ export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: M
 			const isOn = memoryBuffer[noteOnOffWordAddress] !== 0;
 			const channel = typeof channelWordAddress !== 'undefined' ? memoryBuffer[channelWordAddress] : 1;
 			const velocity = typeof velocityWordAddress !== 'undefined' ? memoryBuffer[velocityWordAddress] : 127;
+			const port = typeof portWordAddress !== 'undefined' ? memoryBuffer[portWordAddress] : 1;
 
 			if (note < 0 || note > 127 || channel > 16 || channel < 1 || velocity < 0 || velocity > 127) {
 				return;
@@ -28,6 +29,7 @@ export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: M
 					type: 'midiMessage',
 					payload: {
 						message: [Event.NOTE_ON + channel - 1, note, velocity],
+						port,
 					},
 				});
 			} else if (!isOn && wasOn.get(moduleId)) {
@@ -35,6 +37,7 @@ export default function (midiNoteModules: MidiModuleAddresses[], memoryBuffer: M
 					type: 'midiMessage',
 					payload: {
 						message: [Event.NOTE_OFF + channel - 1, sampleAndHold.get(moduleId), velocity],
+						port,
 					},
 				});
 			}
