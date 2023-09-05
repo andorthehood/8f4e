@@ -4,6 +4,7 @@ export interface MidiModuleAddresses {
 	channelWordAddress: number | undefined;
 	noteOnOffWordAddress: number | undefined;
 	velocityWordAddress: number | undefined;
+	portWordAddress: number | undefined;
 }
 
 export interface MidiCCModuleAddresses {
