@@ -14,6 +14,7 @@ export default function findMidiNoteOutModules(
 			const channel = module.memoryMap.get('channel');
 			const noteOnOff = module.memoryMap.get('gate');
 			const velocity = module.memoryMap.get('velocity');
+			const port = module.memoryMap.get('port');
 
 			const noteWordAddress = note
 				? note?.isPointer
@@ -39,11 +40,18 @@ export default function findMidiNoteOutModules(
 					: velocity.wordAddress
 				: undefined;
 
+			const portWordAddress = port
+				? port?.isPointer
+					? memoryBuffer[port.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: port.wordAddress
+				: undefined;
+
 			return {
-				moduleId: module.id,
-				noteWordAddress,
 				channelWordAddress,
+				moduleId: module.id,
 				noteOnOffWordAddress,
+				noteWordAddress,
+				portWordAddress,
 				velocityWordAddress,
 			};
 		});
