@@ -1,8 +1,8 @@
-import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { parseSegment } from '../compiler';
-import { isInstructionIsInsideAModule } from '../utils';
+import { InstructionHandler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { isInstructionIsInsideAModule } from '../utils';
+import { parseSegment } from '../compiler';
 
 const cycle: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
