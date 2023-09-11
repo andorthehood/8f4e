@@ -1,6 +1,6 @@
-import { br } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
+import { br } from '../wasmUtils/instructionHelpers';
 import { isInstructionIsInsideAModule } from '../utils';
 
 const branch: InstructionHandler = function branch(line, context) {

@@ -1,7 +1,7 @@
-import { WORD_LENGTH } from '../consts';
-import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
+import { ErrorCode, getError } from '../errors';
 import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
+import { WORD_LENGTH } from '../consts';
 
 const buffer: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
