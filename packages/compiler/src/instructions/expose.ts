@@ -1,5 +1,5 @@
-import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
+import { InstructionHandler } from '../types';
 import { isInstructionIsInsideAGroup } from '../utils';
 
 const expose: InstructionHandler = function (line, context) {

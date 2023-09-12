@@ -1,7 +1,7 @@
-import WASMInstruction from '../wasmUtils/wasmInstruction';
-import Type from '../wasmUtils/type';
 import { ArgumentType, InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
+import Type from '../wasmUtils/type';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule } from '../utils';
 
 const _if: InstructionHandler = function (line, context) {
