@@ -1,7 +1,5 @@
-import { off } from 'process';
-
-import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler } from '../types';
+import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
 
 const memory: InstructionHandler = function (line, context) {

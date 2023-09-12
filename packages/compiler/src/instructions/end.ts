@@ -1,8 +1,8 @@
-import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { isInstructionIsInsideAModule } from '../utils';
+import { InstructionHandler } from '../types';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { br } from '../wasmUtils/instructionHelpers';
+import { isInstructionIsInsideAModule } from '../utils';
 
 const end: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
