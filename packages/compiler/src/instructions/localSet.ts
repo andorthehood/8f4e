@@ -1,7 +1,7 @@
-import { localSet } from '../wasmUtils/instructionHelpers';
 import { ArgumentType, InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
+import { localSet } from '../wasmUtils/instructionHelpers';
 
 const _localSet: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
