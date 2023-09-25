@@ -34,7 +34,6 @@ const skip: InstructionHandler = function (line, context) {
 	const byteAddress = context.startingByteAddress + wordAddress * WORD_LENGTH;
 
 	memory.set('__sleeper' + wordAddress, {
-		relativeWordAddress: wordAddress,
 		wordAddress: context.startingByteAddress / WORD_LENGTH + wordAddress,
 		wordSize: 1,
 		byteAddress,
