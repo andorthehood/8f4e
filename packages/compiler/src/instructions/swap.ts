@@ -1,7 +1,7 @@
-import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { parseSegment } from '../compiler';
+import { InstructionHandler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
+import { parseSegment } from '../compiler';
 
 const dup: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
