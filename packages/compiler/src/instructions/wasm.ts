@@ -1,5 +1,5 @@
-import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler } from '../types';
+import { ErrorCode, getError } from '../errors';
 
 const wasm: InstructionHandler = function (line, context) {
 	if (!line.arguments[0]) {

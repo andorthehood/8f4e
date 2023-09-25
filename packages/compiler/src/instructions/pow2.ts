@@ -1,6 +1,6 @@
+import { ErrorCode, getError } from '../errors';
 import { InstructionHandler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
-import { ErrorCode, getError } from '../errors';
 import { parseSegment } from '../compiler';
 
 const pow2: InstructionHandler = function (line, context) {
