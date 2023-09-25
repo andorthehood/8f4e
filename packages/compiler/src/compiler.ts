@@ -13,6 +13,7 @@ import {
 import { ErrorCode, getError } from './errors';
 import { WORD_LENGTH } from './consts';
 import Type from './wasmUtils/type';
+import { calculateMemoryWordSize } from './utils';
 
 export { MemoryTypes, MemoryMap } from './types';
 
@@ -126,8 +127,6 @@ export function compile(
 		startingByteAddress,
 	});
 
-	const [, lastMemoryItem = { relativeWordAddress: 0, wordSize: 0 }] = Array.from(context.namespace.memory).pop() || [];
-
 	if (!context.namespace.moduleName) {
 		throw getError(ErrorCode.MISSING_MODULE_ID, { lineNumber: 0, instruction: 'module', arguments: [] }, context);
 	}
@@ -151,7 +150,7 @@ export function compile(
 		byteAddress: startingByteAddress,
 		wordAddress: startingByteAddress / WORD_LENGTH,
 		memoryMap: context.namespace.memory,
-		memoryWordSize: lastMemoryItem.relativeWordAddress + lastMemoryItem.wordSize,
+		memoryWordSize: calculateMemoryWordSize(context.namespace.memory),
 		ast,
 	};
 }
