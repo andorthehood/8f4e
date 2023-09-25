@@ -30,15 +30,6 @@ export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): nu
 	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSize - 1) * WORD_LENGTH : 0;
 }
 
-export function getNextFreeMemoryWordAddress(memory: MemoryMap, _default: number) {
-	const { relativeWordAddress, wordSize } = Array.from(memory.values()).pop() || {
-		relativeWordAddress: _default,
-		wordSize: 0,
-	};
-
-	return relativeWordAddress + wordSize;
-}
-
 export function isInstructionIsInsideAModule(blockStack: BlockStack) {
 	for (let i = blockStack.length - 1; i > 0; i--) {
 		if (blockStack[i].isModuleBlock) {
@@ -56,10 +47,6 @@ export function calculateMemoryWordSize(memory: MemoryMap): number {
 	return Array.from(memory.values()).reduce((accumulator, current) => {
 		return accumulator + (Array.isArray(current.default) ? current.default.length : 1);
 	}, 0);
-}
-
-export function calculateModuleWordSize(module: CompiledModule): number {
-	return calculateMemoryWordSize(module.memoryMap);
 }
 
 export function areAllOperandsIntegers(...operands: StackItem[]): boolean {
