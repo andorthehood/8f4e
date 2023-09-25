@@ -1,7 +1,7 @@
-import { i32load } from '../wasmUtils/instructionHelpers';
-import { InstructionHandler } from '../types';
-import { areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
 import { ErrorCode, getError } from '../errors';
+import { areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
+import { InstructionHandler } from '../types';
+import { i32load } from '../wasmUtils/instructionHelpers';
 
 const load: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {

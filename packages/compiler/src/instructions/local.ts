@@ -1,5 +1,5 @@
-import { ErrorCode, getError } from '../errors';
 import { ArgumentType, InstructionHandler } from '../types';
+import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
 
 const local: InstructionHandler = function (line, context) {

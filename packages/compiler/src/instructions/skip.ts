@@ -1,10 +1,10 @@
-import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
-import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
-import { WORD_LENGTH } from '../consts';
-import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
-import Type from '../wasmUtils/type';
 import { ErrorCode, getError } from '../errors';
+import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
+import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
+import Type from '../wasmUtils/type';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { WORD_LENGTH } from '../consts';
 
 const skip: InstructionHandler = function (line, context) {
 	const { consts } = context.namespace;
