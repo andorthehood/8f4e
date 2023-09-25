@@ -23,7 +23,6 @@ import {
 	Namespace,
 	Namespaces,
 } from './types';
-import { calculateModuleWordSize } from './utils';
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
 import { ErrorCode, getError } from './errors';
 import { sortModules } from './gaphOptimizer';
@@ -122,7 +121,7 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 	return modules.map(ast => {
 		const module = compileModule(ast, builtInConsts, namespaces, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
 
-		memoryAddress += calculateModuleWordSize(module);
+		memoryAddress += module.memoryWordSize;
 		return module;
 	});
 }

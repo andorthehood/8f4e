@@ -47,7 +47,6 @@ const memory: InstructionHandler = function (line, context) {
 	}
 
 	memory.set(line.arguments[0].value, {
-		relativeWordAddress: wordAddress,
 		wordAddress: context.startingByteAddress / WORD_LENGTH + wordAddress,
 		wordSize: 1,
 		byteAddress: context.startingByteAddress + wordAddress * WORD_LENGTH,

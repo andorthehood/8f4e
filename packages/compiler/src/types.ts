@@ -13,7 +13,6 @@ export enum MemoryTypes {
 
 export interface MemoryItem {
 	type: MemoryTypes;
-	relativeWordAddress: number;
 	byteAddress: number;
 	wordSize: number;
 	wordAddress: number;
