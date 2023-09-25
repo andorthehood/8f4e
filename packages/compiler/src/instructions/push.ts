@@ -1,5 +1,6 @@
-import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
 import { ArgumentLiteral, ArgumentType, InstructionHandler } from '../types';
+import { ErrorCode, getError } from '../errors';
+import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
 import {
 	getMemoryItem,
 	getMemoryItemByteAddress,
@@ -9,7 +10,6 @@ import {
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
 } from '../utils';
-import { ErrorCode, getError } from '../errors';
 
 function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 	if (argument.isInteger) {

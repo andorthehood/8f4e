@@ -1,7 +1,7 @@
-import WASMInstruction from '../wasmUtils/wasmInstruction';
-import Type from '../wasmUtils/type';
-import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
+import { InstructionHandler } from '../types';
+import Type from '../wasmUtils/type';
+import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule } from '../utils';
 import { parseSegment } from '../compiler';
 

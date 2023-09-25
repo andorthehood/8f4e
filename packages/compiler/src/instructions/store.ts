@@ -1,7 +1,7 @@
-import { f32store, i32store } from '../wasmUtils/instructionHelpers';
-import { InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
+import { f32store, i32store } from '../wasmUtils/instructionHelpers';
+import { InstructionHandler } from '../types';
 
 const store: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
