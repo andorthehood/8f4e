@@ -59,6 +59,8 @@ import mapToRangeFloat from './mapToRangeFloat';
 import mapToRangeFloatToInt from './mapToRangeFloatToInt';
 import mapToVariableRangeFloat from './mapToVariableRangeFloat';
 import strumFloat from './strumFloat';
+import perceptronAnd from './perceptronAnd';
+import perceptronOr from './perceptronOr';
 
 const modules = {
 	audioBufferOut,
@@ -122,6 +124,8 @@ const modules = {
 	mapToRangeFloatToInt,
 	mapToVariableRangeFloat,
 	strumFloat,
+	perceptronAnd,
+	perceptronOr,
 } as const;
 
 export default modules;
