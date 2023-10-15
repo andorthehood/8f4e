@@ -1,0 +1,25 @@
+import { ExampleModule } from '../../../packages/editor/src/state/types';
+
+const exp = new Array(512).fill(0).map((value, index) => {
+	return Math.exp(index / 512 - 1);
+});
+
+const sineLookupTable: ExampleModule = {
+	title: 'Exponent Function Lookup Table (-1...1)',
+	author: 'Andor Polgar',
+	category: 'Lookup Tables',
+	code: `module expLUT
+
+float[] lut 512 
+
+${exp
+	.map((value, index) => {
+		return `init lut[${index}] ${value.toFixed(4)}`;
+	})
+	.join('\n')}
+
+end`,
+	tests: [],
+};
+
+export default sineLookupTable;
