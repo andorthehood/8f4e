@@ -8,10 +8,12 @@ const perceptron: ExampleModule = {
 
 float* in1 
 float* in2 
+float out
+
+; Training data
 const w1 0.0
 const w2 0.0
 const bias 0.0
-float out
 
 push &out
 push *in1

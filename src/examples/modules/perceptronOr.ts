@@ -4,14 +4,15 @@ const perceptronOr: ExampleModule = {
 	author: 'Andor Polgar',
 	category: 'Machine Learning',
 	code: `module or
-const weight1 0.377
-const weight2 0.11
-const bias -0.01
 
 int* in1
 int* in2
-
 int out
+
+; Training data
+const weight1 0.377
+const weight2 0.11
+const bias -0.01
 
 push &out
 push bias
@@ -25,6 +26,8 @@ push weight2
 mul
 add
 add
+
+; Activation function
 push 0.0
 greaterThan
 if int
