@@ -61,6 +61,9 @@ import mapToVariableRangeFloat from './mapToVariableRangeFloat';
 import strumFloat from './strumFloat';
 import perceptronAnd from './perceptronAnd';
 import perceptronOr from './perceptronOr';
+import expLookupTable from './expLookupTable';
+import sigmoidPolynomialApproximation from './sigmoidPolynomialApproximation';
+import perceptron from './perceptron';
 
 const modules = {
 	audioBufferOut,
@@ -126,6 +129,9 @@ const modules = {
 	strumFloat,
 	perceptronAnd,
 	perceptronOr,
+	expLookupTable,
+	sigmoidPolynomialApproximation,
+	perceptron,
 } as const;
 
 export default modules;

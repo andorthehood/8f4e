@@ -8,6 +8,7 @@ import randomNoteGenerator from './randomNoteGenerator';
 import midiArpeggiator from './midiArpeggiator';
 import midiArpeggiator2 from './midiArpeggiator2';
 import ericSaiteGenerator from './ericSaiteGenerator';
+import neuralNetwork from './neuralNetwork';
 
 const projects = {
 	audioBuffer,
@@ -20,6 +21,7 @@ const projects = {
 	midiArpeggiator,
 	midiArpeggiator2,
 	ericSaiteGenerator,
+	neuralNetwork,
 } as const;
 
 export default projects;
