@@ -11,8 +11,6 @@ const bias -0.513
 int* in1
 int* in2
 
-debug out
-
 int out
 
 push &out
