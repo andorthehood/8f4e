@@ -67,7 +67,7 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 	async function onWorkerMessage({ data }) {
 		switch (data.type) {
 			case 'midiMessage':
-				if (data.payload.port && state.midi.outputs[data.payload.port]) {
+				if (data.payload.port && state.midi.outputs[data.payload.port - 1]) {
 					state.midi.outputs[data.payload.port - 1].send(data.payload.message, data.payload.delay);
 				}
 				break;
