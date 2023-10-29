@@ -32,7 +32,7 @@ function decorateMenu(menuItems: ContextMenuItem[]) {
 		const pad = '.'.repeat(longest + 2 - (title?.length || 0));
 		return {
 			...item,
-			title: pad + ' ' + title,
+			title: item.isSectionTitle ? title + ' ' + pad : pad + ' ' + title,
 		};
 	});
 }
