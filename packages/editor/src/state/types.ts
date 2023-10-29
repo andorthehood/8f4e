@@ -32,6 +32,7 @@ interface ContextMenuButton {
 	disabled?: boolean;
 	divider?: boolean;
 	title?: string;
+	isSectionTitle?: boolean;
 }
 
 interface MenuItemDivider extends ContextMenuButton {

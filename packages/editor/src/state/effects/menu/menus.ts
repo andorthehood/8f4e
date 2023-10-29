@@ -1,4 +1,4 @@
-import { ContextMenuItem, MenuGenerator } from '../../types';
+import { MenuGenerator } from '../../types';
 
 export const mainMenu: MenuGenerator = () => [
 	{
@@ -30,6 +30,20 @@ export const mainMenu: MenuGenerator = () => [
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
 	{ title: 'Project Settings', action: 'openSubMenu', payload: { menu: 'projectSettingsMenu' }, close: false },
 	{ divider: true },
+	{ title: 'MIDI Info', action: 'openSubMenu', payload: { menu: 'midiInfoMenu' }, close: false },
+];
+
+export const midiInfoMenu: MenuGenerator = state => [
+	{ title: 'Inputs:', disabled: true, isSectionTitle: true },
+	...state.midi.inputs.map(input => ({
+		title: `${input.name || input.id}${input.manufacturer ? ` ${input.manufacturer}` : ``}`,
+		disabled: true,
+	})),
+	{ title: 'Outputs:', disabled: true, isSectionTitle: true },
+	...state.midi.outputs.map(output => ({
+		title: `${output.name || output.id}${output.manufacturer ? ` ${output.manufacturer}` : ``}`,
+		disabled: true,
+	})),
 ];
 
 export const moduleMenu: MenuGenerator = state => [
