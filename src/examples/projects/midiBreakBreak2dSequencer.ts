@@ -493,7 +493,7 @@ const project: Project = {
 				' add',
 				' store',
 				'',
-				'end',
+				'loopEnd',
 				'',
 				'end',
 			],

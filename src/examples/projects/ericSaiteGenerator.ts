@@ -523,7 +523,7 @@ const ericSaiteGenerator: Project = {
 				' push WORD_SIZE',
 				' add',
 				' store',
-				'end',
+				'loopEnd',
 				'',
 				'end',
 			],

@@ -616,7 +616,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "loopEnd",
     "lineNumber": 85,
   },
   Object {
