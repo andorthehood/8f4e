@@ -128,17 +128,23 @@ export function enter(
 
 export function gapCalculator(row: number, gaps: ModuleGraphicData['gaps']) {
 	let physicalRowCounter = row;
-	for (const [gapStarLine, { size }] of gaps) {
-		if (row > gapStarLine) {
+	for (const [gapStartLine, { size }] of gaps) {
+		if (row > gapStartLine) {
 			physicalRowCounter += size;
 		}
 	}
 	return physicalRowCounter;
 }
 
-export function reverseGapCalculator(physicalRow, gaps: ModuleGraphicData['gaps']) {
-	// TODO implement
-	return physicalRow;
+export function reverseGapCalculator(physicalRow: number, gaps: ModuleGraphicData['gaps']) {
+	let startLineOffset = 0;
+	for (const [gapStartLine, { size }] of gaps) {
+		if (physicalRow > gapStartLine + startLineOffset) {
+			startLineOffset += size;
+		}
+	}
+
+	return Math.max(physicalRow - startLineOffset, 0);
 }
 
 const getInstructionRegExp = (instructions: string[]) =>
