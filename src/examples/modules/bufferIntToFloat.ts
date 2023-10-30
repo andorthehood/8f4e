@@ -56,7 +56,7 @@ loop
  push 1
  add
  store
-end
+loopEnd
 
 end`,
 	tests: [],

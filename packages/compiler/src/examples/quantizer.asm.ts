@@ -83,7 +83,7 @@ block void
   push WORD_SIZE
   add
   localSet noteMemoryPointer
- end
+ loopEnd
 end
 
 ; Prepare memory address for storing the output value.

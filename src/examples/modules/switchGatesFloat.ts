@@ -88,7 +88,7 @@ loop
   push 0
   store
  end ; if
-end ; loop
+loopEnd
 
 end`,
 	tests: [],
