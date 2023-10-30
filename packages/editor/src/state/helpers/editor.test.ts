@@ -1,6 +1,4 @@
-import { backSpace, gapCalculator, moveCaret, type } from './editor';
-
-import { ModuleGraphicData } from '../types';
+import { backSpace, generateCodeColorMap, moveCaret, type } from './editor';
 
 const testCode = ['lorem', 'ipsum 1', 'dolor sit 0', 'amet'];
 
@@ -62,12 +60,24 @@ describe('editing', () => {
 	});
 });
 
-const gaps: ModuleGraphicData['gaps'] = new Map(
-	Object.entries({ 0: { size: 2 } })
-) as unknown as ModuleGraphicData['gaps'];
+const codeColorMapFixtures: string[] = ['001 int pointer 10'];
 
-// describe('gapCalculator', () => {
-// 	test('without gaps', () => {
-// 		expect(gapCalculator(0, gaps)).toBe(2);
-// 	});
-// });
+describe('generateCodeColorMap', () => {
+	test.each(codeColorMapFixtures)('', code => {
+		expect(
+			generateCodeColorMap(
+				[code],
+				{
+					fontLineNumber: 0,
+					fontInstruction: 1,
+					fontCode: 2,
+					fontCodeComment: 3,
+					fontNumbers: 4,
+					fontBinaryZero: 5,
+					fontBinaryOne: 6,
+				},
+				['int']
+			)
+		).toMatchSnapshot();
+	});
+});

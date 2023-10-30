@@ -160,7 +160,19 @@ const getInstructionRegExp = (instructions: string[]) =>
 		'd'
 	);
 
-export function generateCodeColorMap(code: string[], spriteLookups: SpriteLookups, instructions: string[]) {
+export function generateCodeColorMap<T>(
+	code: string[],
+	spriteLookups: {
+		fontLineNumber: T;
+		fontInstruction: T;
+		fontCode: T;
+		fontCodeComment: T;
+		fontNumbers: T;
+		fontBinaryZero: T;
+		fontBinaryOne: T;
+	},
+	instructions: string[]
+): T[][] {
 	return code.map(line => {
 		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
 		const { indices: instructionIndices } = getInstructionRegExp(instructions).exec(line) || {};
