@@ -23,6 +23,7 @@ import block from './block';
 import lessOrEqual from './lessOrEqual';
 import mul from './mul';
 import loop from './loop';
+import loopEnd from './loopEnd';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import equalToZero from './equalToZero';
 import shiftRightUnsigned from './shiftRightUnsigned';
@@ -79,6 +80,7 @@ const instructions = {
 	lessOrEqual,
 	mul,
 	loop,
+	loopEnd,
 	greaterOrEqualUnsigned,
 	equalToZero,
 	shiftLeft,

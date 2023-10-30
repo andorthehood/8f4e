@@ -39,7 +39,7 @@ loop
  push WORD_SIZE
  add
  store
-end`,
+loopEnd`,
 	tests: [],
 };
 

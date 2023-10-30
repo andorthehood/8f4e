@@ -51,7 +51,7 @@ if void
   sub
   store
 
- end ; loop
+ loopEnd
  
  ; Copy the input value
  ; to the first register

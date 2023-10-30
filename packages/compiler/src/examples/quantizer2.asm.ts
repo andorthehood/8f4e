@@ -67,6 +67,6 @@ loop
  push lastLevel
  equal
  branchIfTrue 1
-end
+loopEnd
 
 end`;
