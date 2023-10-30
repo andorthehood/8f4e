@@ -75,7 +75,7 @@ loop
  add
  store
  
-end
+loopEnd
 
 end`,
 	tests: [],
