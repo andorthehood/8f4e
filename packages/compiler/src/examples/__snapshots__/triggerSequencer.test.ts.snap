@@ -256,7 +256,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "ifEnd",
     "lineNumber": 24,
   },
   Object {
@@ -443,12 +443,12 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "ifEnd",
     "lineNumber": 49,
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "ifEnd",
     "lineNumber": 50,
   },
   Object {
@@ -607,7 +607,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "ifEnd",
     "lineNumber": 72,
   },
   Object {
@@ -628,7 +628,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "ifEnd",
     "lineNumber": 75,
   },
   Object {

@@ -22,7 +22,7 @@ greaterThan
 if void
  push &stepMinusOne
  localSet _stepPointer
-end
+ifEnd
 
 push *trigger
 push triggerPreviousValue
@@ -47,8 +47,8 @@ if void
  if void
   push &steps
   localSet _stepPointer
- end
-end
+ ifEnd
+ifEnd
 push &stepPointer
 push _stepPointer
 store
@@ -70,10 +70,10 @@ if
   store
 
   push I16_SIGNED_LARGEST_NUMBER
- end
+ ifEnd
 else
  push 0
-end
+ifEnd
 store
 
 push &triggerPreviousValue

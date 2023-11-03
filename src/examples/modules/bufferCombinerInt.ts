@@ -62,7 +62,7 @@ loop
   push WORD_SIZE
   mul
   add
- end
+ ifEnd
 
  load ; value from src
  store ; value in dst

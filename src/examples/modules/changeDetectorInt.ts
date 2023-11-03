@@ -25,7 +25,7 @@ else
  push &trigOut
  push HIGH
  store
-end
+ifEnd
 
 push &prevValue
 push *in
