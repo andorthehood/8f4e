@@ -8,7 +8,7 @@ const midiPianoKeyboardC3: ExampleModule = {
 int[] notes 12
 int notesCount 0
 piano notes notesCount 48
-end`,
+moduleEnd`,
 	tests: [],
 };
 

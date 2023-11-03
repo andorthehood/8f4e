@@ -61,7 +61,7 @@ if void
  
 end
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

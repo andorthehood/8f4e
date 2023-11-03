@@ -17,7 +17,7 @@ push *in2
 xor
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

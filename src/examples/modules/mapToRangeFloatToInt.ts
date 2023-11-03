@@ -32,7 +32,7 @@ round
 castToInt
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

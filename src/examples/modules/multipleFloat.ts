@@ -39,7 +39,8 @@ loop
  push WORD_SIZE
  add
  store
-loopEnd`,
+loopEnd
+moduleEnd`,
 	tests: [],
 };
 
