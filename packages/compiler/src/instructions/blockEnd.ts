@@ -1,7 +1,6 @@
 import { ErrorCode, getError } from '../errors';
 import { InstructionHandler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { br } from '../wasmUtils/instructionHelpers';
 import { isInstructionIsInsideAModule } from '../utils';
 
 const end: InstructionHandler = function (line, context) {
@@ -29,15 +28,7 @@ const end: InstructionHandler = function (line, context) {
 		context.stack.push(operand);
 	}
 
-	if (block.isLoop) {
-		return { byteCode: [...br(0), WASMInstruction.END, WASMInstruction.END], context };
-	}
-
-	if (context.blockStack.length === 0) {
-		return { byteCode: [], context };
-	} else {
-		return { byteCode: [WASMInstruction.END], context };
-	}
+	return { byteCode: [WASMInstruction.END], context };
 };
 
 export default end;
