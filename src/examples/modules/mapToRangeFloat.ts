@@ -30,7 +30,7 @@ push OUT_RANGE_MIN
 add
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

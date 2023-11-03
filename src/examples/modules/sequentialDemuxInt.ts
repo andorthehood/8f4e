@@ -62,7 +62,7 @@ add
 push *in
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

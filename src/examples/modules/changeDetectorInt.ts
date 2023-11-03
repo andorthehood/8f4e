@@ -31,7 +31,7 @@ push &prevValue
 push *in
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

@@ -37,7 +37,7 @@ else
 end
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 	title: 'Perceptron (with OR gate training)',
 };

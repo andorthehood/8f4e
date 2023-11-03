@@ -70,7 +70,7 @@ const SNARE_DRUM_ROD 91
 const OCEAN_DRUM 92
 const SNARE_DRUM_BRUSH 93
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 
