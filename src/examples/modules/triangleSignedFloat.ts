@@ -31,7 +31,7 @@ if void
  push &direction
  push -1.0
  store
-end
+ifEnd
 
 push out
 push -1.0
@@ -40,7 +40,7 @@ if void
  push &direction
  push 1.0
  store
-end
+ifEnd
 
 moduleEnd`,
 	tests: [],

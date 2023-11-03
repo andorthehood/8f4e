@@ -21,7 +21,7 @@ block void
   push 0
   lessOrEqual
   branchIfTrue 1
- end
+ ifEnd
 
  push &out
  push HIGH

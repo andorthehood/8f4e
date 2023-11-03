@@ -62,7 +62,7 @@ block void
    sub
   else
    push difference
-  end
+  ifEnd
   localSet difference
 
   ; Compare with the smallest difference.
@@ -77,7 +77,7 @@ block void
    localSet smallestDifference
    push noteValue
    localSet bestMatchingValue
-  end
+  ifEnd
 
   push noteMemoryPointer
   push WORD_SIZE

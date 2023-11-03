@@ -17,23 +17,23 @@ push *trigger
 push triggerPreviousValue
 greaterThan
 if void
-push _stepPointer
-push WORD_SIZE
-add
-localSet _stepPointer
-
-push _stepPointer
-push stepLength
-push 4
-mul
-push &steps
-add
-greaterOrEqual
-if void
- push &steps
+ push _stepPointer
+ push WORD_SIZE
+ add
  localSet _stepPointer
-end
-end 
+
+ push _stepPointer
+ push stepLength
+ push 4
+ mul
+ push &steps
+ add
+ greaterOrEqual
+ if void
+  push &steps
+  localSet _stepPointer
+ ifEnd
+ifEnd 
 push &stepPointer
 push _stepPointer
 store

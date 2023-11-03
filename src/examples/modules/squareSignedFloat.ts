@@ -32,7 +32,7 @@ if void
  push &direction
  push -1.0
  store
-end
+ifEnd
 
 push counter
 push -1.0
@@ -41,7 +41,7 @@ if void
  push &direction
  push 1.0
  store
-end
+ifEnd
 
 push counter
 push 0.0
@@ -54,7 +54,7 @@ else
  push &out
  push -1.0
  store
-end
+ifEnd
 
 moduleEnd`,
 	tests: [],

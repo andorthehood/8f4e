@@ -25,7 +25,7 @@ if void
  push &bufferPointer
  push &buffer
  store
-end
+ifEnd
 
 push bufferPointer
 push *in

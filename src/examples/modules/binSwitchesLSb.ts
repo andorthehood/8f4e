@@ -65,8 +65,7 @@ loop
   shiftLeft
   or
   store
-
- end
+ ifEnd
  
  ; Increment bitPointer
  push &bitPointer

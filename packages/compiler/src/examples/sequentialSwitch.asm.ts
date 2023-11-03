@@ -29,7 +29,7 @@ if void
  push 16
  remainder
  localSet _counter
-end
+ifEnd
 
 push &previousClock
 push clock

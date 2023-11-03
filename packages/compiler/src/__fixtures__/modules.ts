@@ -25,7 +25,7 @@ export default [
                 sub
             else
                 push input
-            end
+                ifEnd
             store
             moduleEnd
         `.split('\n'),

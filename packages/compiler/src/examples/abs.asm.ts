@@ -21,7 +21,7 @@ if
  sub
 else
  push input
-end
+ifEnd
 store
 
 moduleEnd
