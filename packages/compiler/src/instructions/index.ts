@@ -30,6 +30,7 @@ import shiftRightUnsigned from './shiftRightUnsigned';
 import shiftRight from './shiftRight';
 import remainder from './remainder';
 import _module from './module';
+import moduleEnd from './moduleEnd';
 import memory from './memory';
 import castToInt from './castToInt';
 import castToFloat from './castToFloat';
@@ -88,6 +89,7 @@ const instructions = {
 	shiftRightUnsigned,
 	remainder,
 	module: _module,
+	moduleEnd,
 	int: memory,
 	float: memory,
 	'int*': memory,

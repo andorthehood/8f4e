@@ -91,5 +91,4 @@ push &out
 push bestMatchingValue
 store
 
-end
-`;
+moduleEnd`;
