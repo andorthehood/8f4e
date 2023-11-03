@@ -69,4 +69,4 @@ loop
  branchIfTrue 1
 loopEnd
 
-end`;
+moduleEnd`;

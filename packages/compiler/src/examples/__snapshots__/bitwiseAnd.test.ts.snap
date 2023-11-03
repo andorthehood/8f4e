@@ -127,7 +127,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "moduleEnd",
     "lineNumber": 14,
   },
 ]

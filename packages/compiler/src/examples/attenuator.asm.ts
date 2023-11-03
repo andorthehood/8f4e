@@ -11,5 +11,5 @@ push divisor
 div
 store
 
-end
+moduleEnd
 `;
