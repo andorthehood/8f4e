@@ -36,5 +36,4 @@ push &out
  end
 store
 
-end
-`;
+moduleEnd`;

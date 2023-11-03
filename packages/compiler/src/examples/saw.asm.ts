@@ -47,5 +47,4 @@ push &out
 push counter
 store
 
-end
-`;
+moduleEnd`;

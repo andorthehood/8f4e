@@ -29,7 +29,7 @@ else
     localGet input
 end
 store
-end`.split('\n');
+moduleEnd`.split('\n');
 
 describe('moduleCompiler', () => {
 	const ast = compileToAST(fixture);

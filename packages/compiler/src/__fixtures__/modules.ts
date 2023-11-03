@@ -27,7 +27,7 @@ export default [
                 push input
             end
             store
-            end
+            moduleEnd
         `.split('\n'),
 	},
 ];
