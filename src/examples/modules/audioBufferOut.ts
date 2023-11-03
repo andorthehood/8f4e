@@ -40,7 +40,7 @@ end
 push pointer
 push *in
 store
-end`,
+moduleEnd`,
 	tests: [],
 };
 

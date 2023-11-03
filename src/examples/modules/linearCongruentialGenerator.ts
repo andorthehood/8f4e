@@ -33,7 +33,7 @@ push &out
  div 
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

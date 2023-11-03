@@ -90,7 +90,7 @@ loop
  end ; if
 loopEnd
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

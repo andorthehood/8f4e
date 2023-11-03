@@ -58,7 +58,7 @@ loop
  store
 loopEnd
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

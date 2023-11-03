@@ -26,7 +26,7 @@ add
 push bias
 add
 store
-end`,
+moduleEnd`,
 	tests: [],
 	title: 'Perceptron (Untrained)',
 };

@@ -37,7 +37,7 @@ else
  store
 end
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 
