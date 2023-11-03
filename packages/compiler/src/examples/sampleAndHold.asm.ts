@@ -26,5 +26,4 @@ push &triggerPreviousValue
 push triggerInput
 store
 
-end
-`;
+moduleEnd`;
