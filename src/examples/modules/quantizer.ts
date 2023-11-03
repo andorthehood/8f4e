@@ -49,7 +49,7 @@ loop
   push &out
   push *_levelPointer
   store
- end
+ ifEnd
 
  ; Guard
  push _levelPointer

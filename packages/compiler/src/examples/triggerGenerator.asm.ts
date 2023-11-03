@@ -27,7 +27,7 @@ if void
  localSet _counter
  push 0
  localSet _output
-end
+ifEnd
 
 ; Resets the output to 0
 push _output
@@ -36,7 +36,7 @@ greaterOrEqual
 if void
  push 0
  localSet _output
-end
+ifEnd
 
 push _counter
 push _rate
@@ -50,7 +50,7 @@ else
  push _counter
  push 1
  add
-end
+ifEnd
 
 localSet _counter
 

@@ -176,7 +176,7 @@ Array [
       },
       Object {
         "arguments": Array [],
-        "instruction": "end",
+        "instruction": "ifEnd",
         "lineNumber": 24,
       },
       Object {

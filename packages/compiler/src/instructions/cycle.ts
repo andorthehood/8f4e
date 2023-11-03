@@ -53,7 +53,7 @@ const cycle: InstructionHandler = function (line, context) {
 			` localGet ${pointerName}`,
 			` localGet ${startPositionName}`,
 			` store`,
-			'end',
+			'ifEnd',
 		],
 		context
 	);

@@ -48,7 +48,7 @@ if void
  push &step1
  push &last
  cycle
-end
+ifEnd
 
 push &bitPointer
 push 0
@@ -78,7 +78,7 @@ loop
   push HIGH
  else
   push LOW
- end 
+ifEnd 
 
  store
 

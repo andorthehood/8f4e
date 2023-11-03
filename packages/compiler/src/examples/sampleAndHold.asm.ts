@@ -20,7 +20,7 @@ if void
  push &out
  push *in
  store
-end
+ifEnd
 
 push &triggerPreviousValue
 push triggerInput

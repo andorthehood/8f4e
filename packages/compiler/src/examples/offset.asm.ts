@@ -23,7 +23,7 @@ push &out
   push HIGH
  else
   push result
- end
+ ifEnd
  localSet result
  
  push result
@@ -33,7 +33,7 @@ push &out
   push LOW
  else 
   push result
- end
+ ifEnd
 store
 
 moduleEnd`;

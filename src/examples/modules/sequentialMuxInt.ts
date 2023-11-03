@@ -32,7 +32,7 @@ if void
   push 1
   add
  store
-end
+ifEnd
 
 ; Guard
 push counter
@@ -42,7 +42,7 @@ if void
  push &counter
   push 0
  store
-end
+ifEnd
 
 push &out
  ; Calculate input address

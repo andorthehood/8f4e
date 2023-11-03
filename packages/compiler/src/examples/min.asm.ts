@@ -22,7 +22,7 @@ push &out
   push input1
  else
   push input2
- end
+ ifEnd
 store
 
 moduleEnd`;

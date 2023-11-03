@@ -27,7 +27,7 @@ if
     sub
 else
     localGet input
-end
+	ifEnd
 store
 moduleEnd`.split('\n');
 

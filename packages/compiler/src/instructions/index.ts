@@ -7,6 +7,7 @@ import end from './end';
 import store from './store';
 import sub from './sub';
 import _if from './if';
+import ifEnd from './ifEnd';
 import lessThan from './lessThan';
 import div from './div';
 import and from './and';
@@ -64,6 +65,7 @@ const instructions = {
 	localSet,
 	else: _else,
 	if: _if,
+	ifEnd,
 	lessThan,
 	end,
 	store,

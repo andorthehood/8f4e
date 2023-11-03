@@ -15,7 +15,7 @@ if void
  push HIGH
  store
  branch 1
-end
+ifEnd
 
 push *in:2
 push 0
@@ -25,7 +25,7 @@ if void
  push HIGH
  store
  branch 1
-end
+ifEnd
 
 push out
 push 0

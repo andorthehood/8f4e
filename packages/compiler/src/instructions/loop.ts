@@ -43,7 +43,7 @@ const loop: InstructionHandler = function (line, context) {
 			` push ${line.lineNumber}`,
 			' store',
 			` branch 2`,
-			'end',
+			'ifEnd',
 			`localGet ${infiniteLoopProtectionCounterName}`,
 			'push 1',
 			'add',

@@ -33,7 +33,7 @@ if void
  push &pointer
  push &buffer
  store
-end
+ifEnd
 
 ; Store the input value
 ; in the buffer

@@ -87,7 +87,7 @@ loop
   ; Set out to 0
   push 0
   store
- end ; if
+ ifEnd
 loopEnd
 
 moduleEnd`,

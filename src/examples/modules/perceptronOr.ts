@@ -34,7 +34,7 @@ if int
  push 1
 else
  push 0
-end
+ifEnd
 store
 
 moduleEnd`,

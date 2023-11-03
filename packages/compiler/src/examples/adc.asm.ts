@@ -45,7 +45,7 @@ if
  push ${LOGIC_HIGH}
 else
  push ${LOGIC_LOW}
-end
+ ifEnd
 store
 `
 	)
