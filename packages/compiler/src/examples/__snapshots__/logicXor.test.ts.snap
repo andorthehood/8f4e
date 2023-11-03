@@ -252,7 +252,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "blockEnd",
     "lineNumber": 29,
   },
   Object {

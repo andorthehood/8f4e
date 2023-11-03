@@ -27,7 +27,7 @@ block void
  push HIGH
  store
  branch 1
-end
+blockEnd
 
 push &out
 push 0

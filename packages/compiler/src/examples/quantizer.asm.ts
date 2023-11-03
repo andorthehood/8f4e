@@ -84,7 +84,7 @@ block void
   add
   localSet noteMemoryPointer
  loopEnd
-end
+blockEnd
 
 ; Prepare memory address for storing the output value.
 push &out
