@@ -621,7 +621,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "blockEnd",
     "lineNumber": 86,
   },
   Object {

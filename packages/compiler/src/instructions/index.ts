@@ -3,7 +3,6 @@ import load from './load';
 import localGet from './localGet';
 import localSet from './localSet';
 import _else from './else';
-import end from './end';
 import store from './store';
 import sub from './sub';
 import _if from './if';
@@ -21,6 +20,7 @@ import branch from './branch';
 import branchIfTrue from './branchIfTrue';
 import push from './push';
 import block from './block';
+import blockEnd from './blockEnd';
 import lessOrEqual from './lessOrEqual';
 import mul from './mul';
 import loop from './loop';
@@ -67,7 +67,6 @@ const instructions = {
 	if: _if,
 	ifEnd,
 	lessThan,
-	end,
 	store,
 	sub,
 	div,
@@ -80,6 +79,7 @@ const instructions = {
 	branchIfTrue,
 	push,
 	block,
+	blockEnd,
 	lessOrEqual,
 	mul,
 	loop,

@@ -16,6 +16,7 @@ const group: InstructionHandler = function (line, context) {
 		isModuleBlock: false,
 		isGroupBlock: true,
 		isLoop: false,
+		isConditionBlock: false,
 	});
 
 	return {
