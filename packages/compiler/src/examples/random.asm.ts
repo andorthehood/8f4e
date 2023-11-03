@@ -16,7 +16,7 @@ if
  push seed
 else
  push random
-end
+ifEnd
 localSet random
 
 push random
@@ -68,7 +68,7 @@ else
  push random
  push 0b10000000000000000000000000000000
  or
-end
+ifEnd
 localSet random
 
 push &out

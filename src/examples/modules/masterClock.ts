@@ -19,7 +19,7 @@ if int
  push LOW
 else
  push HIGH
-end
+ifEnd
 store
 
 moduleEnd`,

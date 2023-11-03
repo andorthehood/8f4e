@@ -32,7 +32,7 @@ if void
  push &out
  push 0
  store
-end
+ifEnd
 
 moduleEnd`,
 	tests: [],

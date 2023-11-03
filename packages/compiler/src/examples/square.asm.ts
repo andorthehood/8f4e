@@ -28,7 +28,7 @@ if
   push I16_SIGNED_LARGEST_NUMBER
  else
   push 0
- end
+ ifEnd
  localSet _output
 
  push 0
@@ -37,7 +37,7 @@ else
  push _counter
  push 1
  add
-end
+ifEnd
 
 localSet _counter
 

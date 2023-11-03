@@ -21,7 +21,7 @@ if void
  push &counter
  push 0
  store
-end
+ifEnd
 
 push *clock
 risingEdge
@@ -52,12 +52,12 @@ if void
   push &trigOut
   push 1
   store
- end
+ ifEnd
 else
  push &trigOut
  push 0
  store
-end
+ifEnd
 
 moduleEnd`,
 	tests: [],

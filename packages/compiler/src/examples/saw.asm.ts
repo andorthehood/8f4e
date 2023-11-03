@@ -27,7 +27,7 @@ greaterThan
 if void
  push 0
  localSet counter
-end
+ifEnd
 
 push counter
 push limit
@@ -40,7 +40,7 @@ else
  push _rate
  push counter
  add
-end
+ifEnd
 localSet counter
 
 push &out
