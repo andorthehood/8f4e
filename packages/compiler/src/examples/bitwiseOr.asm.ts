@@ -12,5 +12,4 @@ push *in:2
 or
 store
 
-end
-`;
+moduleEnd`;

@@ -28,6 +28,5 @@ store
 	)
 	.join('\n')}
 	
-end
-`;
+moduleEnd`;
 };

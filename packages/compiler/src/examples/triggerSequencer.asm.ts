@@ -80,5 +80,4 @@ push &triggerPreviousValue
 push *trigger
 store
 
-end
-`;
+moduleEnd`;
