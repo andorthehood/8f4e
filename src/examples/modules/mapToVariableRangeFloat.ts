@@ -32,7 +32,7 @@ push *outRangeMin
 add
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

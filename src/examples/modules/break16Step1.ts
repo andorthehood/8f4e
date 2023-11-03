@@ -27,7 +27,8 @@ int step13 0b01100000
 int step14 0b00000000
 int step15 0b00100000
 int last   0b00000000
-`,
+
+moduleEnd`,
 	tests: [],
 };
 

@@ -45,7 +45,7 @@ push &out
 push *stepPointer
 store 
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

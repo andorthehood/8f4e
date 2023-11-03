@@ -16,7 +16,7 @@ ${sine
 	})
 	.join('\n')}
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

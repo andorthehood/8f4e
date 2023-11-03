@@ -32,7 +32,7 @@ add
 castToInt
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 
