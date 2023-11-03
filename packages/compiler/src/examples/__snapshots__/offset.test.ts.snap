@@ -215,7 +215,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "ifEnd",
     "lineNumber": 25,
   },
   Object {
@@ -285,7 +285,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "end",
+    "instruction": "ifEnd",
     "lineNumber": 35,
   },
   Object {

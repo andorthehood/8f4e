@@ -17,8 +17,8 @@ if void
   push I16_SIGNED_LARGEST_NUMBER
   store
   branch 2
- end
-end
+ ifEnd
+ifEnd
 
 push &out
 push 0

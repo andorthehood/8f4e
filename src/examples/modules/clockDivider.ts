@@ -20,7 +20,7 @@ if void
  push 1
  add
  store 
-end
+ifEnd
 
 push counter
 push *divider
@@ -35,7 +35,7 @@ else
  push &out
  push 0
  store
-end
+ifEnd
 
 moduleEnd`,
 	tests: [],

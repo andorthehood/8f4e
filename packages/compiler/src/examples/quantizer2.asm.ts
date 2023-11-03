@@ -59,7 +59,7 @@ loop
   push &bestMatchingValue
   push *levelPointer
   store
- end
+ ifEnd
  
  ; Exit loop if the level pointer
  ; reached the end.

@@ -110,6 +110,7 @@ export type BlockStack = Array<{
 	isModuleBlock: boolean;
 	isGroupBlock: boolean;
 	isLoop: boolean;
+	isConditionBlock: boolean;
 }>;
 
 export type InstructionHandler = (

@@ -33,7 +33,7 @@ const cycle: InstructionHandler = function (line, context) {
 				' sub',
 				'else',
 				` localGet ${valueName}`,
-				'end',
+				'ifEnd',
 			],
 			context
 		);

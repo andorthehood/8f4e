@@ -18,7 +18,7 @@ if void
  push &out
  push *in
  store
-end
+ifEnd
 
 moduleEnd`,
 	tests: [],

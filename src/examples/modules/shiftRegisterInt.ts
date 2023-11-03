@@ -59,7 +59,7 @@ if void
  push *in
  store
  
-end
+ifEnd
 
 moduleEnd`,
 	tests: [],

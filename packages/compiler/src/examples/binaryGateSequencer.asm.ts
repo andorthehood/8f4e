@@ -32,7 +32,7 @@ if void
  push &step1
  push &last_
  cycle
-end
+ifEnd
 
 push &bitPointer
 push bitPointer
@@ -47,7 +47,7 @@ if void
  push &bitPointer
  push 0
  store
-end
+ifEnd
 
 ; Calculate output address
 push &out1
@@ -65,7 +65,7 @@ if int
  push HIGH
 else
  push LOW
-end 
+ifEnd 
 
 store
 
