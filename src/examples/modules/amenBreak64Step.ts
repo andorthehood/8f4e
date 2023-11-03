@@ -79,7 +79,7 @@ int step62 0b00000000
 int step63 0b01100000
 int step64 0b00000000
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

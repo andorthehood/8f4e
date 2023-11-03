@@ -91,7 +91,7 @@ loop
 
 loopEnd
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

@@ -57,7 +57,7 @@ push &out
  load
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

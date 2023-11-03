@@ -158,7 +158,7 @@ const F#9 126
 const Gb9 126
 const G9  127
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

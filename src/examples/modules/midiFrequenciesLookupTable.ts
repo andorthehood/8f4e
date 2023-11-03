@@ -18,7 +18,7 @@ ${midiFrequencies
 	})
 	.join('\n')}
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

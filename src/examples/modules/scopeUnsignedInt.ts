@@ -31,7 +31,7 @@ push bufferPointer
 push *in
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 
