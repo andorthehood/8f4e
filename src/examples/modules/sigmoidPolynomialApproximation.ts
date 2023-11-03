@@ -19,7 +19,7 @@ add
 div
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 	title: 'Sigmoid Function (Polynomial Approximation)',
 };

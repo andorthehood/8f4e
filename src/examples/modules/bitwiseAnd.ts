@@ -17,7 +17,7 @@ push *in2
 and
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

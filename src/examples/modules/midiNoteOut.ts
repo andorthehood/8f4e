@@ -11,7 +11,7 @@ int channel 1
 int* gate
 int* velocity
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

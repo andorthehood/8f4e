@@ -20,7 +20,7 @@ if void
  store
 end
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

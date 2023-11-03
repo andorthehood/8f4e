@@ -22,7 +22,7 @@ else
 end
 store
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

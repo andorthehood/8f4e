@@ -18,7 +18,7 @@ ${exp
 	})
 	.join('\n')}
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 

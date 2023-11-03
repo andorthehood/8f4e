@@ -10,7 +10,7 @@ int cc 1
 int channel 1
 int* in
 
-end`,
+moduleEnd`,
 	tests: [],
 };
 
