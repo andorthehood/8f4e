@@ -22,7 +22,7 @@ push &out
   localGet _in1
  else
   localGet _in2
- end
+ ifEnd
 store
 
 moduleEnd`;

@@ -50,7 +50,7 @@ loop
   push HIGH
  else
   push LOW
- end 
+ ifEnd 
 
  store
 

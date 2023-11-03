@@ -12,7 +12,7 @@ if
  push 0
 else 
  push I16_SIGNED_LARGEST_NUMBER
-end
+ifEnd
 
 store
 moduleEnd`;

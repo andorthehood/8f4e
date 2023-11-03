@@ -29,7 +29,7 @@ if void
  push WORD_SIZE
  add
  store
-end
+ifEnd
 
 ; Guard
 push stepPointer
@@ -39,7 +39,7 @@ if void
  push &stepPointer
  push &step1
  store
-end
+ifEnd
 
 push &out
 push *stepPointer

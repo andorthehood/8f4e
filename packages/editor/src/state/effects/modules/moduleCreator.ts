@@ -82,7 +82,7 @@ function incrementModuleIdUntilItsNotTaken(state: State, moduleId: string) {
 export default function moduleCreator(state: State, events: EventDispatcher): void {
 	async function onAddModule({ x, y, isNew, code = [''] }) {
 		if (isNew) {
-			code = ['module ' + getRandomModuleId(), '', '', 'end'];
+			code = ['module ' + getRandomModuleId(), '', '', 'moduleEnd'];
 		} else if (code.length < 2) {
 			code = (await navigator.clipboard.readText()).split('\n');
 		}

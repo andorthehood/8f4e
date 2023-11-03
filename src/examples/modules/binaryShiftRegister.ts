@@ -21,7 +21,7 @@ if void
   push *in
   or
  store
-end
+ifEnd
 
 moduleEnd`,
 	tests: [],
