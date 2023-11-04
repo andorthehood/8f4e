@@ -17,8 +17,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			title: '',
 			author: '',
 			description: '',
-			modules: [],
-			groups: [],
+			codeBlocks: [],
 			viewport: {
 				x: 0,
 				y: 0,
@@ -31,16 +30,16 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			state['project'][key] = newProject[key] || defaultState.project[key];
 		});
 
-		state.graphicHelper.modules.clear();
+		state.graphicHelper.codeBlocks.clear();
 		state.graphicHelper.viewport.x = state.project.viewport.x * state.graphicHelper.viewport.vGrid;
 		state.graphicHelper.viewport.y = state.project.viewport.y * state.graphicHelper.viewport.hGrid;
-		state.project.modules.forEach(module => {
-			state.graphicHelper.modules.add({
+		state.project.codeBlocks.forEach(codeBlock => {
+			state.graphicHelper.codeBlocks.add({
 				width: 0,
 				minGridWidth: 32,
 				height: 0,
-				code: module.code,
-				trimmedCode: module.code,
+				code: codeBlock.code,
+				trimmedCode: codeBlock.code,
 				codeColors: [],
 				codeToRender: [],
 				inputs: new Map(),
@@ -51,16 +50,16 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				pianoKeyboards: new Map(),
 				bufferPlotters: new Map(),
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				id: getModuleId(module.code) || '',
+				id: getModuleId(codeBlock.code) || '',
 				gaps: new Map(),
 				errorMessages: new Map(),
-				x: module.x * state.graphicHelper.viewport.vGrid,
-				y: module.y * state.graphicHelper.viewport.hGrid,
+				x: codeBlock.x * state.graphicHelper.viewport.vGrid,
+				y: codeBlock.y * state.graphicHelper.viewport.hGrid,
 				offsetX: 0,
 				offsetY: 0,
-				gridX: module.x,
-				gridY: module.y,
-				isOpen: module.isOpen,
+				gridX: codeBlock.x,
+				gridY: codeBlock.y,
+				isOpen: codeBlock.isOpen,
 				isGroup: false,
 				padLength: 1,
 			});
@@ -80,11 +79,11 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			return;
 		}
 
-		state.project.modules = Array.from(state.graphicHelper.modules)
-			.sort((moduleA, moduleB) => {
-				if (moduleA.id > moduleB.id) {
+		state.project.codeBlocks = Array.from(state.graphicHelper.codeBlocks)
+			.sort((codeBlockA, codeBlockB) => {
+				if (codeBlockA.id > codeBlockB.id) {
 					return 1;
-				} else if (moduleA.id < moduleB.id) {
+				} else if (codeBlockA.id < codeBlockB.id) {
 					return -1;
 				}
 				return 0;
