@@ -12,7 +12,7 @@ export interface EventObject {
 	key?: string;
 	canvasWidth?: number;
 	canvasHeight?: number;
-	module: CodeBlockGraphicData;
+	codeBlock: CodeBlockGraphicData;
 }
 
 export type EventHandler = (event?: EventObject) => void;

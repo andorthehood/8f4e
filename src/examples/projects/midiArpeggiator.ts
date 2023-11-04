@@ -4,7 +4,7 @@ const midiArpeggiator: Project = {
 	title: 'MIDI Arpeggiator',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module chord1',
@@ -531,7 +531,6 @@ const midiArpeggiator: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: -47, y: -25 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,

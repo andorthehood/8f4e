@@ -25,19 +25,19 @@ import {
 import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../helpers/codeParsers';
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
-	const onModuleClick = function ({ relativeX = 0, relativeY = 0, module }: EventObject) {
+	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: EventObject) {
 		const [row, col] = moveCaret(
-			module.code,
-			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.viewport.hGrid), module.gaps),
-			Math.floor(relativeX / state.graphicHelper.viewport.vGrid) - (module.padLength + 2),
+			codeBlock.code,
+			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.viewport.hGrid), codeBlock.gaps),
+			Math.floor(relativeX / state.graphicHelper.viewport.vGrid) - (codeBlock.padLength + 2),
 			'Jump'
 		);
-		module.cursor.row = row;
-		module.cursor.col = col;
+		codeBlock.cursor.row = row;
+		codeBlock.cursor.col = col;
 	};
 
 	const updateGraphicsAll = function () {
-		for (const graphicData of state.graphicHelper.modules) {
+		for (const graphicData of state.graphicHelper.codeBlocks) {
 			updateGraphics(graphicData);
 		}
 	};
@@ -89,13 +89,13 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	};
 
 	const onKeydown: EventHandler = function (event) {
-		if (!state.graphicHelper.selectedModule) {
+		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
 		}
 
-		const module = state.graphicHelper.selectedModule;
+		const codeBlock = state.graphicHelper.selectedCodeBlock;
 
-		let newPosition: [number, number] = [module.cursor.row, module.cursor.col];
+		let newPosition: [number, number] = [codeBlock.cursor.row, codeBlock.cursor.col];
 
 		switch (event?.key) {
 			case undefined:
@@ -104,28 +104,28 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			case 'ArrowUp':
 			case 'ArrowRight':
 			case 'ArrowDown':
-				newPosition = moveCaret(module.code, module.cursor.row, module.cursor.col, event.key);
-				module.cursor.row = newPosition[0];
-				module.cursor.col = newPosition[1];
+				newPosition = moveCaret(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.key);
+				codeBlock.cursor.row = newPosition[0];
+				codeBlock.cursor.col = newPosition[1];
 				break;
 			case 'Backspace':
 				// eslint-disable-next-line no-case-declarations
-				const bp = backSpace(module.code, module.cursor.row, module.cursor.col);
-				module.cursor.row = bp.row;
-				module.cursor.col = bp.col;
+				const bp = backSpace(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
+				codeBlock.cursor.row = bp.row;
+				codeBlock.cursor.col = bp.col;
 
-				module.code = bp.code;
+				codeBlock.code = bp.code;
 
 				events.dispatch('saveState');
 				events.dispatch('codeChange');
 				break;
 			case 'Enter':
 				// eslint-disable-next-line no-case-declarations
-				const ent = enter(module.code, module.cursor.row, module.cursor.col);
-				module.cursor.row = ent.row;
-				module.cursor.col = ent.col;
+				const ent = enter(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
+				codeBlock.cursor.row = ent.row;
+				codeBlock.cursor.col = ent.col;
 
-				module.code = ent.code;
+				codeBlock.code = ent.code;
 
 				events.dispatch('saveState');
 				events.dispatch('codeChange');
@@ -133,25 +133,25 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 			default:
 				if (event?.key.length === 1) {
 					// eslint-disable-next-line no-case-declarations
-					const bp = type(module.code, module.cursor.row, module.cursor.col, event.key);
-					module.cursor.row = bp.row;
-					module.cursor.col = bp.col;
+					const bp = type(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.key);
+					codeBlock.cursor.row = bp.row;
+					codeBlock.cursor.col = bp.col;
 
-					module.code = bp.code;
+					codeBlock.code = bp.code;
 
 					events.dispatch('saveState');
 					events.dispatch('codeChange');
 				}
 		}
 
-		updateGraphics(module);
+		updateGraphics(codeBlock);
 	};
 
 	events.on('buildError', updateGraphicsAll);
-	events.on('moduleClick', onModuleClick);
-	events.on('moduleClick', ({ module }) => updateGraphics(module));
+	events.on('codeBlockClick', onCodeBlockClick);
+	events.on('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
-	events.on('moduleAdded', ({ module }) => updateGraphics(module));
+	events.on('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('init', updateGraphicsAll);
 	events.on('spriteSheetRerendered', updateGraphicsAll);
 	events.on('keydown', onKeydown);

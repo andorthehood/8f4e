@@ -2,16 +2,16 @@ import compiler from './effects/compiler';
 import contextMenu from './effects/menu/contextMenu';
 import loader from './effects/loader';
 import midi from './effects/midi';
-import moduleCreator from './effects/modules/moduleCreator';
-import moduleDragger from './effects/modules/moduleDragger';
+import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
+import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
 import save from './effects/save';
 import viewport from './effects/viewport';
 import { Options, Project, State } from './types';
 import graphicHelper from './effects/graphicHelper';
-import moduleOpener from './effects/modules/moduleOpener';
-import _switch from './effects/modules/switch';
-import button from './effects/modules/button';
-import pianoKeyboard from './effects/modules/pianoKeyboard';
+import codeBlockOpener from './effects/codeBlocks/codeBlockOpener';
+import _switch from './effects/codeBlocks/switch';
+import button from './effects/codeBlocks/button';
+import pianoKeyboard from './effects/codeBlocks/pianoKeyboard';
 import RNBO from './effects/rnbo';
 import worklet from './effects/worklet';
 import colorTheme from './effects/colorTheme';
@@ -57,7 +57,7 @@ const defaultState: State = {
 			title: 'Dialog',
 			buttons: [{ title: 'Close', action: 'close' }],
 		},
-		modules: new Set(),
+		codeBlocks: new Set(),
 		outputsByWordAddress: new Map(),
 		viewport: {
 			width: 0,
@@ -90,8 +90,7 @@ const defaultState: State = {
 		title: '',
 		author: '',
 		description: '',
-		modules: [],
-		groups: [],
+		codeBlocks: [],
 		viewport: {
 			x: 0,
 			y: 0,
@@ -117,14 +116,14 @@ export default function init(events: EventDispatcher, project: Project, options:
 	midi(state, events);
 	loader(state, events, defaultState);
 	sampleRate(state, events);
-	moduleDragger(state, events);
-	moduleOpener(state, events);
+	codeBlockDragger(state, events);
+	codeBlockOpener(state, events);
 	_switch(state, events);
 	button(state, events);
 	pianoKeyboard(state, events);
 	viewport(state, events);
 	contextMenu(state, events);
-	moduleCreator(state, events);
+	codeBlockCreator(state, events);
 	compiler(state, events);
 	graphicHelper(state, events);
 	save(state, events);
