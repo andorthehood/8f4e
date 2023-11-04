@@ -70,8 +70,8 @@ export default function drawModules(engine: Engine, state: State): void {
 				state.graphicHelper.viewport.borderLineCoordinates.top.endY,
 				state.graphicHelper.viewport.center.x,
 				state.graphicHelper.viewport.center.y,
-				module.x + codeBlock.offsetX,
-				module.y + codeBlock.offsetY
+				codeBlock.x + codeBlock.offsetX,
+				codeBlock.y + codeBlock.offsetY
 			);
 
 			if (topIntersection) {
@@ -85,8 +85,8 @@ export default function drawModules(engine: Engine, state: State): void {
 				state.graphicHelper.viewport.borderLineCoordinates.right.endY,
 				state.graphicHelper.viewport.center.x,
 				state.graphicHelper.viewport.center.y,
-				module.x + codeBlock.offsetX,
-				module.y + codeBlock.offsetY
+				codeBlock.x + codeBlock.offsetX,
+				codeBlock.y + codeBlock.offsetY
 			);
 
 			if (rightIntersection) {
