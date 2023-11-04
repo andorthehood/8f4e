@@ -1,6 +1,6 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, ModuleGraphicData, State } from '../../types';
+import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 import { gapCalculator } from '../../helpers/editor';
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 
@@ -41,7 +41,7 @@ export function parseBufferPlotters(code: string[]) {
 	);
 }
 
-export default function bufferPlotters(graphicData: ModuleGraphicData, state: State) {
+export default function bufferPlotters(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.bufferPlotters.clear();
 	parseBufferPlotters(graphicData.trimmedCode).forEach(plotter => {
 		const buffer = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferMemoryId);

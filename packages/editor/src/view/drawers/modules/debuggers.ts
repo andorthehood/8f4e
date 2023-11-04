@@ -1,8 +1,8 @@
 import { Engine } from '@8f4e/2d-engine';
 
-import { ModuleGraphicData, State } from '../../../state/types';
+import { CodeBlockGraphicData, State } from '../../../state/types';
 
-export default function drawConnectors(engine: Engine, state: State, module: ModuleGraphicData): void {
+export default function drawConnectors(engine: Engine, state: State, module: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
