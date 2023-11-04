@@ -1,7 +1,7 @@
-import { ModuleGraphicData, State } from '../../types';
+import { CodeBlockGraphicData, State } from '../../types';
 import { gapCalculator } from '../../helpers/editor';
 
-export default function errorMessages(graphicData: ModuleGraphicData, state: State) {
+export default function errorMessages(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.errorMessages.clear();
 	state.compiler.buildErrors.forEach(buildError => {
 		if (buildError.moduleId !== graphicData.id) {
