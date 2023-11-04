@@ -1,5 +1,3 @@
-import { SpriteLookups } from '@8f4e/sprite-generator';
-
 import { CodeBlockGraphicData } from '../types';
 
 export function moveCaret(

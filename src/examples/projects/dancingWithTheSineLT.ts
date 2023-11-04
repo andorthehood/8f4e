@@ -4,7 +4,7 @@ const project: Project = {
 	title: 'Dancing with the Sine Lookup Table',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module sineLT',
@@ -433,7 +433,6 @@ const project: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: -71, y: -23 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,

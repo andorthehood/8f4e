@@ -4,7 +4,7 @@ const project: Project = {
 	title: 'Random Note Generator',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module chord',
@@ -1101,7 +1101,6 @@ const project: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: -17, y: -11 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,

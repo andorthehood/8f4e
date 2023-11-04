@@ -1,7 +1,7 @@
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
-import { drawArrows, drawConnections, drawContextMenu, drawDialog, drawModules } from './drawers';
+import { drawArrows, drawConnections, drawContextMenu, drawDialog, drawCodeBlocks } from './drawers';
 import colorSchemes from './colorSchemes';
 
 import { State } from '../state/types';
@@ -45,7 +45,7 @@ export default async function init(
 			}
 		}
 
-		drawModules(engine, state);
+		drawCodeBlocks(engine, state);
 		drawConnections(engine, state);
 		drawArrows(engine, state);
 		drawContextMenu(engine, state);
@@ -54,8 +54,8 @@ export default async function init(
 
 		let statusText = ' ';
 
-		if (state.graphicHelper.selectedModule) {
-			statusText += '< module: ' + state.graphicHelper.selectedModule.id + ' >';
+		if (state.graphicHelper.selectedCodeBlock) {
+			statusText += '< module: ' + state.graphicHelper.selectedCodeBlock.id + ' >';
 		}
 
 		1000 / 120;

@@ -2,16 +2,16 @@ import { Engine } from '@8f4e/2d-engine';
 
 import { CodeBlockGraphicData, State } from '../../../state/types';
 
-export default function drawer(engine: Engine, state: State, module: CodeBlockGraphicData): void {
+export default function drawer(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.plotter);
 
-	const maxPlotterWidth = module.width;
+	const maxPlotterWidth = codeBlock.width;
 
-	for (const [, { x, y, buffer, bufferLength, maxValue, minValue }] of module.bufferPlotters) {
+	for (const [, { x, y, buffer, bufferLength, maxValue, minValue }] of codeBlock.bufferPlotters) {
 		engine.startGroup(x, y);
 
 		let width = 0;

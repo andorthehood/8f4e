@@ -52,13 +52,13 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	engine.startGroup(offsetX, offsetY);
 
-	for (const module of state.graphicHelper.modules) {
+	for (const codeBlock of state.graphicHelper.codeBlocks) {
 		if (
 			!(
-				module.x + module.offsetX + offsetX > -1 * module.width &&
-				module.y + module.offsetY + offsetY > -1 * module.height &&
-				module.x + module.offsetX + offsetX < state.graphicHelper.viewport.width &&
-				module.y + module.offsetY + offsetY < state.graphicHelper.viewport.height
+				codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
+				codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
+				codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.viewport.width &&
+				codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.viewport.height
 			)
 		) {
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
@@ -70,8 +70,8 @@ export default function drawModules(engine: Engine, state: State): void {
 				state.graphicHelper.viewport.borderLineCoordinates.top.endY,
 				state.graphicHelper.viewport.center.x,
 				state.graphicHelper.viewport.center.y,
-				module.x + module.offsetX,
-				module.y + module.offsetY
+				module.x + codeBlock.offsetX,
+				module.y + codeBlock.offsetY
 			);
 
 			if (topIntersection) {
@@ -85,8 +85,8 @@ export default function drawModules(engine: Engine, state: State): void {
 				state.graphicHelper.viewport.borderLineCoordinates.right.endY,
 				state.graphicHelper.viewport.center.x,
 				state.graphicHelper.viewport.center.y,
-				module.x + module.offsetX,
-				module.y + module.offsetY
+				module.x + codeBlock.offsetX,
+				module.y + codeBlock.offsetY
 			);
 
 			if (rightIntersection) {
@@ -104,8 +104,8 @@ export default function drawModules(engine: Engine, state: State): void {
 				state.graphicHelper.viewport.borderLineCoordinates.bottom.endY,
 				state.graphicHelper.viewport.center.x,
 				state.graphicHelper.viewport.center.y,
-				module.x + module.offsetX,
-				module.y + module.offsetY
+				codeBlock.x + codeBlock.offsetX,
+				codeBlock.y + codeBlock.offsetY
 			);
 
 			if (bottomIntersection) {
@@ -123,8 +123,8 @@ export default function drawModules(engine: Engine, state: State): void {
 				state.graphicHelper.viewport.borderLineCoordinates.left.endY,
 				state.graphicHelper.viewport.center.x,
 				state.graphicHelper.viewport.center.y,
-				module.x + module.offsetX,
-				module.y + module.offsetY
+				codeBlock.x + codeBlock.offsetX,
+				codeBlock.y + codeBlock.offsetY
 			);
 
 			if (leftIntersection) {

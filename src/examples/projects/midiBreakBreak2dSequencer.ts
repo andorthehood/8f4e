@@ -4,7 +4,7 @@ const project: Project = {
 	title: 'MIDI Break Beat with 2D Sequencer',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module bitwiseAnd',
@@ -717,7 +717,6 @@ const project: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: 24, y: -10 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,

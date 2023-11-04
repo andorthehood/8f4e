@@ -2,18 +2,18 @@ import { Engine } from '@8f4e/2d-engine';
 
 import { CodeBlockGraphicData, State } from '../../../state/types';
 
-export default function drawErrorMessages(engine: Engine, state: State, module: CodeBlockGraphicData): void {
+export default function drawErrorMessages(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
 
-	for (const [, { x, y, message }] of module.errorMessages) {
+	for (const [, { x, y, message }] of codeBlock.errorMessages) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 		engine.drawSprite(
 			x,
 			y,
 			'errorMessageBackground',
-			module.width,
+			codeBlock.width,
 			message.length * state.graphicHelper.viewport.hGrid
 		);
 

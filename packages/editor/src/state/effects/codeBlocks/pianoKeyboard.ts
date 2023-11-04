@@ -22,14 +22,14 @@ function removeCode(code: string[], pressedKeysListMemoryId: string) {
 }
 
 export default function pianoKeyboard(state: State, events: EventDispatcher): () => void {
-	const onModuleClick = function ({ x, y, module }: { x: number; y: number; module: CodeBlockGraphicData }) {
-		const keyboard = findPianoKeyAtViewportCoordinates(state.graphicHelper, module, x, y);
+	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
+		const keyboard = findPianoKeyAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
 
 		if (!keyboard) {
 			return;
 		}
 
-		const key = Math.floor((x - (module.x - state.graphicHelper.viewport.x)) / keyboard.keyWidth);
+		const key = Math.floor((x - (codeBlock.x - state.graphicHelper.viewport.x)) / keyboard.keyWidth);
 
 		if (keyboard.pressedKeys.has(key)) {
 			keyboard.pressedKeys.delete(key);
@@ -40,12 +40,12 @@ export default function pianoKeyboard(state: State, events: EventDispatcher): ()
 			keyboard.pressedKeys.add(key);
 		}
 
-		module.code[keyboard.pressedNumberOfKeysMemory.lineNumber] =
+		codeBlock.code[keyboard.pressedNumberOfKeysMemory.lineNumber] =
 			'int ' + keyboard.pressedNumberOfKeysMemory.id + ' ' + keyboard.pressedKeys.size;
 
-		module.code = insertCodeAfterLine(
+		codeBlock.code = insertCodeAfterLine(
 			`piano ${keyboard.pressedKeysListMemory.id} ${keyboard.pressedNumberOfKeysMemory.id}`,
-			removeCode(module.code, keyboard.pressedKeysListMemory.id),
+			removeCode(codeBlock.code, keyboard.pressedKeysListMemory.id),
 			generateCode(
 				keyboard.pressedKeys,
 				keyboard.pressedKeysListMemory.id,
@@ -58,11 +58,11 @@ export default function pianoKeyboard(state: State, events: EventDispatcher): ()
 		events.dispatch('codeChange');
 	};
 
-	events.on('moduleClick', onModuleClick);
+	events.on('codeBlockClick', onCodeBlockClick);
 	//events.on('mouseup', onMouseUp);
 
 	return () => {
-		events.off('moduleClick', onModuleClick);
+		events.off('codeBlockClick', onCodeBlockClick);
 		//events.off('mouseup', onMouseUp);
 	};
 }
