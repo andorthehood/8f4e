@@ -30,7 +30,7 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 			x: graphicData.width - 3 * state.graphicHelper.viewport.vGrid,
 			y: gapCalculator(output.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 			id: output.id,
-			module: graphicData,
+			codeBlock: graphicData,
 			calibratedMax: 0,
 			calibratedMin: 0,
 			memory,

@@ -4,7 +4,7 @@ const project: Project = {
 	title: 'MIDI Break Beat',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module and4',
@@ -449,7 +449,6 @@ const project: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: 37, y: -25 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,

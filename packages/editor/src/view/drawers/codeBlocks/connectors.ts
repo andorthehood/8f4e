@@ -3,12 +3,12 @@ import { Icon } from '@8f4e/sprite-generator';
 
 import { CodeBlockGraphicData, State } from '../../../state/types';
 
-export default function drawConnectors(engine: Engine, state: State, module: CodeBlockGraphicData): void {
+export default function drawConnectors(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
 
-	for (const [, output] of module.outputs) {
+	for (const [, output] of codeBlock.outputs) {
 		const { x, y, memory } = output;
 
 		const value = memory.isInteger
@@ -30,7 +30,7 @@ export default function drawConnectors(engine: Engine, state: State, module: Cod
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 	}
 
-	for (const [, { x, y }] of module.inputs) {
+	for (const [, { x, y }] of codeBlock.inputs) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
 		engine.drawSprite(x, y, Icon.INPUT);
 	}

@@ -4,7 +4,7 @@ const midiArpeggiator2: Project = {
 	title: 'MIDI Generative Melody',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module bufferCombiner',
@@ -611,7 +611,6 @@ const midiArpeggiator2: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: -90, y: -12 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,

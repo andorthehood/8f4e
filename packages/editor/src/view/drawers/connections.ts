@@ -11,10 +11,10 @@ export default function drawConnections(engine: Engine, state: State): void {
 
 	engine.startGroup(-state.graphicHelper.viewport.x, -state.graphicHelper.viewport.y);
 
-	for (const module of state.graphicHelper.modules) {
-		const isSelected = module === state.graphicHelper.selectedModule;
-		for (const [, { x, y, id }] of module.inputs) {
-			const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(id);
+	for (const codeBlock of state.graphicHelper.codeBlocks) {
+		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
+		for (const [, { x, y, id }] of codeBlock.inputs) {
+			const memory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(id);
 
 			if (!memory || state.compiler.memoryBuffer[memory.wordAddress] === 0) {
 				continue;
@@ -27,10 +27,10 @@ export default function drawConnections(engine: Engine, state: State): void {
 			}
 
 			engine.drawLine(
-				module.x + module.offsetX + x + state.graphicHelper.viewport.vGrid,
-				module.y + module.offsetY + y + state.graphicHelper.viewport.hGrid / 2,
-				output.module.x + output.module.offsetX + output.x + state.graphicHelper.viewport.vGrid,
-				output.module.y + output.module.offsetY + output.y + state.graphicHelper.viewport.vGrid,
+				codeBlock.x + codeBlock.offsetX + x + state.graphicHelper.viewport.vGrid,
+				codeBlock.y + codeBlock.offsetY + y + state.graphicHelper.viewport.hGrid / 2,
+				output.codeBlock.x + output.codeBlock.offsetX + output.x + state.graphicHelper.viewport.vGrid,
+				output.codeBlock.y + output.codeBlock.offsetY + output.y + state.graphicHelper.viewport.vGrid,
 				isSelected ? 'wireHighlighted' : 'wire',
 				1
 			);

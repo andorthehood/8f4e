@@ -4,7 +4,7 @@ const project: Project = {
 	title: 'Bistable Multivibrators',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module norGate2',
@@ -296,7 +296,6 @@ const project: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: 45, y: 7 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,

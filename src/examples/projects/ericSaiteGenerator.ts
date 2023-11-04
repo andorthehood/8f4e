@@ -4,7 +4,7 @@ const ericSaiteGenerator: Project = {
 	title: 'Eric Saite Generator',
 	author: 'Andor Polgar & Eric Saite',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module bufferToOut',
@@ -555,7 +555,6 @@ const ericSaiteGenerator: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: -241, y: -15 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,

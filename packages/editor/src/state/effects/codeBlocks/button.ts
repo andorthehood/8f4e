@@ -8,14 +8,14 @@ export default function button(state: State, events: EventDispatcher): () => voi
 	let lastPushedButton: Switch | undefined;
 	let lastPushedButtonMemory: MemoryItem | undefined;
 
-	const onModuleClick = function ({ x, y, module }) {
-		lastPushedButton = findButtonAtViewportCoordinates(state.graphicHelper, module, x, y);
+	const onCodeBlockClick = function ({ x, y, codeBlock }) {
+		lastPushedButton = findButtonAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
 
 		if (!lastPushedButton) {
 			return;
 		}
 
-		lastPushedButtonMemory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(lastPushedButton.id);
+		lastPushedButtonMemory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(lastPushedButton.id);
 
 		if (!lastPushedButtonMemory) {
 			return;
@@ -31,11 +31,11 @@ export default function button(state: State, events: EventDispatcher): () => voi
 		state.compiler.memoryBuffer[lastPushedButtonMemory.wordAddress] = lastPushedButton.offValue;
 	};
 
-	events.on('moduleClick', onModuleClick);
+	events.on('codeBlockClick', onCodeBlockClick);
 	events.on('mouseup', onMouseUp);
 
 	return () => {
-		events.off('moduleClick', onModuleClick);
+		events.off('codeBlockClick', onCodeBlockClick);
 		events.off('mouseup', onMouseUp);
 	};
 }

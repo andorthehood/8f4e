@@ -3,17 +3,14 @@ import findSwitchAtViewportCoordinates from '../../helpers/findSwitchAtViewportC
 import { State } from '../../types';
 
 export default function _switch(state: State, events: EventDispatcher): () => void {
-	const onModuleClick = function ({ x, y, module }) {
-		// const relativeX = Math.abs(module.x - (x - state.viewport.x));
-		// const relativeY = Math.abs(module.y - (y - state.viewport.y));
-
-		const _switch = findSwitchAtViewportCoordinates(state.graphicHelper, module, x, y);
+	const onCodeBlockClick = function ({ x, y, codeBlock }) {
+		const _switch = findSwitchAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
 
 		if (!_switch) {
 			return;
 		}
 
-		const memory = state.compiler.compiledModules.get(module.id)?.memoryMap.get(_switch.id);
+		const memory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(_switch.id);
 
 		if (!memory) {
 			return;
@@ -29,9 +26,9 @@ export default function _switch(state: State, events: EventDispatcher): () => vo
 		}
 	};
 
-	events.on('moduleClick', onModuleClick);
+	events.on('codeBlockClick', onCodeBlockClick);
 
 	return () => {
-		events.off('moduleClick', onModuleClick);
+		events.off('codeBlockClick', onCodeBlockClick);
 	};
 }

@@ -3,7 +3,7 @@ import { CompileOptions, CompiledModuleLookup, MemoryBuffer, MemoryItem } from '
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { IPatcher } from '@rnbo/js';
 
-export interface Module {
+export interface CodeBlock {
 	code: string[];
 	isOpen: boolean;
 	x: number;
@@ -129,7 +129,7 @@ export interface Debugger {
 }
 
 export interface Output {
-	module: CodeBlockGraphicData;
+	codeBlock: CodeBlockGraphicData;
 	width: number;
 	height: number;
 	x: number;
@@ -141,7 +141,7 @@ export interface Output {
 }
 
 export interface Input {
-	module: CodeBlockGraphicData;
+	codeBlock: CodeBlockGraphicData;
 	width: number;
 	height: number;
 	x: number;
@@ -204,7 +204,7 @@ export interface CodeBlockGraphicData {
 export type GraphicHelper = {
 	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
-	modules: Set<CodeBlockGraphicData>;
+	codeBlocks: Set<CodeBlockGraphicData>;
 	viewport: {
 		width: number;
 		height: number;
@@ -223,8 +223,8 @@ export type GraphicHelper = {
 		center: { x: number; y: number };
 	};
 	contextMenu: ContextMenu;
-	draggedModule?: CodeBlockGraphicData;
-	selectedModule?: CodeBlockGraphicData;
+	draggedCodeBlock?: CodeBlockGraphicData;
+	selectedCodeBlock?: CodeBlockGraphicData;
 	dialog: {
 		show: boolean;
 		text: string;
@@ -237,18 +237,11 @@ export type GraphicHelper = {
 	};
 };
 
-export interface Group {
-	code: string[];
-	modules: Module[];
-	groups: Group[];
-}
-
 export interface Project {
 	title: string;
 	author: string;
 	description: string;
-	modules: Module[];
-	groups: Group[];
+	codeBlocks: CodeBlock[];
 	viewport: Viewport;
 	rnbo: { patchers: Record<string, IPatcher> };
 	sampleRate: number;
