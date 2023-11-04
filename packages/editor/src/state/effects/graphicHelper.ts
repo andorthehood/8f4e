@@ -12,7 +12,7 @@ import positionOffsetters from './graphicHelper/positionOffsetters';
 import switches from './graphicHelper/switches';
 
 import { EventDispatcher, EventHandler, EventObject } from '../../events';
-import { ModuleGraphicData, State } from '../types';
+import { CodeBlockGraphicData, State } from '../types';
 import {
 	backSpace,
 	enter,
@@ -42,7 +42,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		}
 	};
 
-	const updateGraphics = function (graphicData: ModuleGraphicData) {
+	const updateGraphics = function (graphicData: CodeBlockGraphicData) {
 		if (!state.graphicHelper.spriteLookups) {
 			return;
 		}

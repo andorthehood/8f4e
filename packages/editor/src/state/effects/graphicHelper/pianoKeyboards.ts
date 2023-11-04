@@ -1,6 +1,6 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, ModuleGraphicData, State } from '../../types';
+import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 import { gapCalculator } from '../../helpers/editor';
 import { parseCode } from '../../helpers/multiLineCodeParser';
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
@@ -57,7 +57,7 @@ export function parsePianoKeyboards(code: string[]) {
 	);
 }
 
-export default function pianoKeyboards(graphicData: ModuleGraphicData, state: State) {
+export default function pianoKeyboards(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.pianoKeyboards.clear();
 	parsePianoKeyboards(graphicData.trimmedCode).forEach(pianoKeyboard => {
 		const memoryIdentifierKeysList = resolveMemoryIdentifier(

@@ -1,6 +1,6 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, ModuleGraphicData, State } from '../../types';
+import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 
 export function parsePositionOffsetters(code: string[]) {
@@ -20,7 +20,7 @@ export function parsePositionOffsetters(code: string[]) {
 	}, [] as Array<{ axis: string; memory: string }>);
 }
 
-export default function (graphicData: ModuleGraphicData, state: State) {
+export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.positionOffsetterXWordAddress = undefined;
 	graphicData.positionOffsetterYWordAddress = undefined;
 	const offsetters = parsePositionOffsetters(graphicData.trimmedCode);

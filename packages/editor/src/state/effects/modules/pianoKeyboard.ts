@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../../events';
 import findPianoKeyAtViewportCoordinates from '../../helpers/findPianoKeyboardAtViewportCoordinates';
-import { ModuleGraphicData, State } from '../../types';
+import { CodeBlockGraphicData, State } from '../../types';
 import { insertCodeAfterLine, replaceCode } from '../../helpers/multiLineCodeParser';
 
 function generateCode(
@@ -22,7 +22,7 @@ function removeCode(code: string[], pressedKeysListMemoryId: string) {
 }
 
 export default function pianoKeyboard(state: State, events: EventDispatcher): () => void {
-	const onModuleClick = function ({ x, y, module }: { x: number; y: number; module: ModuleGraphicData }) {
+	const onModuleClick = function ({ x, y, module }: { x: number; y: number; module: CodeBlockGraphicData }) {
 		const keyboard = findPianoKeyAtViewportCoordinates(state.graphicHelper, module, x, y);
 
 		if (!keyboard) {

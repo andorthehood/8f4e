@@ -1,6 +1,6 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, ModuleGraphicData, State } from '../../types';
+import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 import { gapCalculator } from '../../helpers/editor';
 
 export function parseSwitches(code: string[]) {
@@ -23,7 +23,7 @@ export function parseSwitches(code: string[]) {
 	}, [] as Array<{ id: string; lineNumber: number; onValue: number; offValue: number }>);
 }
 
-export default function (graphicData: ModuleGraphicData, state: State) {
+export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.switches.clear();
 	parseSwitches(graphicData.trimmedCode).forEach(_switch => {
 		graphicData.switches.set(_switch.id, {
