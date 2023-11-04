@@ -1,6 +1,6 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, ModuleGraphicData, State } from '../../types';
+import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 import { gapCalculator } from '../../helpers/editor';
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 
@@ -20,7 +20,7 @@ export function parseDebuggers(code: string[]) {
 	}, [] as Array<{ id: string; lineNumber: number }>);
 }
 
-export default function (graphicData: ModuleGraphicData, state: State) {
+export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.debuggers.clear();
 	parseDebuggers(graphicData.trimmedCode).forEach(_debugger => {
 		const memory = resolveMemoryIdentifier(state, graphicData.id, _debugger.id);
