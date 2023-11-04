@@ -1,8 +1,8 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, ModuleGraphicData, State } from '../../types';
+import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 
-export default function gaps(graphicData: ModuleGraphicData, state: State) {
+export default function gaps(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.gaps.clear();
 	state.compiler.buildErrors.forEach(buildError => {
 		if (buildError.moduleId !== graphicData.id) {

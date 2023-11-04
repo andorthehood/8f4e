@@ -1,6 +1,6 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ModuleGraphicData, Output, State } from '../../types';
+import { CodeBlockGraphicData, Output, State } from '../../types';
 import { gapCalculator } from '../../helpers/editor';
 import { getModuleId } from '../../helpers/codeParsers';
 
@@ -15,7 +15,7 @@ export function parseOutputs(code: string[]) {
 	}, [] as Array<{ id: string; lineNumber: number }>);
 }
 
-export default function (graphicData: ModuleGraphicData, state: State) {
+export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.outputs.clear();
 	parseOutputs(graphicData.trimmedCode).forEach(output => {
 		const memory = state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(output.id);
