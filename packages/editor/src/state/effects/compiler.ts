@@ -13,8 +13,8 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			return;
 		}
 
-		const modules = Array.from(state.graphicHelper.modules).map(module => {
-			return { code: module.code };
+		const modules = Array.from(state.graphicHelper.codeBlocks).map(codeBlock => {
+			return { code: codeBlock.code };
 		});
 
 		worker.postMessage({
@@ -68,8 +68,8 @@ export default async function compiler(state: State, events: EventDispatcher) {
 
 	worker.addEventListener('message', onWorkerMessage);
 	events.on('createConnection', onRecompile);
-	events.on('moduleAdded', onRecompile);
-	events.on('deleteModule', onRecompile);
+	events.on('codeBlockAdded', onRecompile);
+	events.on('deleteCodeBlock', onRecompile);
 	events.on('init', onRecompile);
 	events.on('codeChange', onRecompile);
 }

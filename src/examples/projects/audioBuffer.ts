@@ -4,7 +4,7 @@ const project: Project = {
 	title: 'Audio Buffer',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module saw',
@@ -82,7 +82,6 @@ const project: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: 0, y: 0 },
 	rnbo: { patchers: {} },
 	sampleRate: 44100,

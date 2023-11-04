@@ -1,7 +1,7 @@
 import * as menus from './menus';
 
 import { EventDispatcher } from '../../../events';
-import findModuleAtViewportCoordinates from '../../helpers/findModuleAtViewportCoordinates';
+import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtViewportCoordinates';
 import { ContextMenuItem, State } from '../../types';
 
 function getHighlightedMenuItem(x, y, width, height) {
@@ -89,9 +89,9 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 			Math.round(y / state.graphicHelper.viewport.hGrid) * state.graphicHelper.viewport.hGrid;
 		state.graphicHelper.contextMenu.open = true;
 
-		const module = findModuleAtViewportCoordinates(state.graphicHelper, x, y);
+		const codeBlock = findCodeBlockAtViewportCoordinates(state.graphicHelper, x, y);
 
-		if (module) {
+		if (codeBlock) {
 			state.graphicHelper.contextMenu.items = decorateMenu(menus.moduleMenu(state));
 		} else {
 			state.graphicHelper.contextMenu.items = decorateMenu(menus.mainMenu(state));

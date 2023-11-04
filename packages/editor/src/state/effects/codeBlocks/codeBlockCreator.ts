@@ -48,8 +48,8 @@ function getRandomModuleId() {
 }
 
 function checkIfModuleIdIsTaken(state: State, id: string) {
-	return Array.from(state.graphicHelper.modules).some(module => {
-		return module.id === id;
+	return Array.from(state.graphicHelper.codeBlocks).some(codeBlock => {
+		return codeBlock.id === id;
 	});
 }
 
@@ -79,8 +79,8 @@ function incrementModuleIdUntilItsNotTaken(state: State, moduleId: string) {
 	return moduleId;
 }
 
-export default function moduleCreator(state: State, events: EventDispatcher): void {
-	async function onAddModule({ x, y, isNew, code = [''] }) {
+export default function codeBlockCreator(state: State, events: EventDispatcher): void {
+	async function onAddCodeBlock({ x, y, isNew, code = [''] }) {
 		if (isNew) {
 			code = ['module ' + getRandomModuleId(), '', '', 'moduleEnd'];
 		} else if (code.length < 2) {
@@ -89,7 +89,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 
 		code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, getModuleId(code)));
 
-		const module: CodeBlockGraphicData = {
+		const codeBlock: CodeBlockGraphicData = {
 			width: 0,
 			minGridWidth: 32,
 			height: 0,
@@ -119,21 +119,21 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 			offsetY: 0,
 		};
 
-		state.graphicHelper.modules.add(module);
-		events.dispatch('moduleAdded', { module });
+		state.graphicHelper.codeBlocks.add(codeBlock);
+		events.dispatch('codeBlockAdded', { codeBlock });
 		events.dispatch('saveState');
 	}
 
-	function onDeleteModule({ module }: { module: CodeBlockGraphicData }): void {
-		state.graphicHelper.modules.delete(module);
+	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
+		state.graphicHelper.codeBlocks.delete(codeBlock);
 		events.dispatch('saveState');
 	}
 
-	function onCopyModule({ module }: { module: CodeBlockGraphicData }): void {
-		navigator.clipboard.writeText(module.code.join('\n'));
+	function onCopyCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
+		navigator.clipboard.writeText(codeBlock.code.join('\n'));
 	}
 
-	events.on('addModule', onAddModule);
-	events.on('copyModule', onCopyModule);
-	events.on('deleteModule', onDeleteModule);
+	events.on('addCodeBlock', onAddCodeBlock);
+	events.on('copyCodeBlock', onCopyCodeBlock);
+	events.on('deleteCodeBlock', onDeleteCodeBlock);
 }

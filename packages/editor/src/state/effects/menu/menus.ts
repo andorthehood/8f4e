@@ -3,13 +3,13 @@ import { MenuGenerator } from '../../types';
 export const mainMenu: MenuGenerator = () => [
 	{
 		title: 'New Module',
-		action: 'addModule',
+		action: 'addCodeBlock',
 		payload: { isNew: true },
 		close: true,
 	},
 	{
 		title: 'Paste Module',
-		action: 'addModule',
+		action: 'addCodeBlock',
 		payload: { isPaste: true },
 		close: true,
 	},
@@ -49,11 +49,16 @@ export const midiInfoMenu: MenuGenerator = state => [
 export const moduleMenu: MenuGenerator = state => [
 	{
 		title: 'Delete module',
-		action: 'deleteModule',
-		payload: { module: state.graphicHelper.selectedModule },
+		action: 'deleteCodeBlock',
+		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 		close: true,
 	},
-	{ title: 'Copy module', action: 'copyModule', payload: { module: state.graphicHelper.selectedModule }, close: true },
+	{
+		title: 'Copy module',
+		action: 'copyModule',
+		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+		close: true,
+	},
 ];
 
 export const moduleCategoriesMenu: MenuGenerator = state => {
@@ -69,7 +74,7 @@ export const builtInModuleMenu: MenuGenerator = (state, { category }: { category
 		.map(([, module]) => {
 			return {
 				title: module.title,
-				action: 'addModule',
+				action: 'addCodeBlock',
 				payload: { code: module.code.split('\n') },
 				close: true,
 			};

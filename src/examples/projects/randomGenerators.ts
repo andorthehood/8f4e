@@ -4,7 +4,7 @@ const project: Project = {
 	title: 'Random Generators',
 	author: 'Andor Polgar',
 	description: '',
-	modules: [
+	codeBlocks: [
 		{
 			code: [
 				'module lcg',
@@ -152,7 +152,6 @@ const project: Project = {
 			isOpen: true,
 		},
 	],
-	groups: [],
 	viewport: { x: 0, y: 0 },
 	rnbo: { patchers: {} },
 	sampleRate: 50,
