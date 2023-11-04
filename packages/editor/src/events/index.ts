@@ -1,4 +1,4 @@
-import { ModuleGraphicData } from '../state/types';
+import { CodeBlockGraphicData } from '../state/types';
 
 export interface EventObject {
 	x?: number;
@@ -12,7 +12,7 @@ export interface EventObject {
 	key?: string;
 	canvasWidth?: number;
 	canvasHeight?: number;
-	module: ModuleGraphicData;
+	module: CodeBlockGraphicData;
 }
 
 export type EventHandler = (event?: EventObject) => void;

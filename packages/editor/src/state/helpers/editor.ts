@@ -1,6 +1,6 @@
 import { SpriteLookups } from '@8f4e/sprite-generator';
 
-import { ModuleGraphicData } from '../types';
+import { CodeBlockGraphicData } from '../types';
 
 export function moveCaret(
 	code: string[],
@@ -126,7 +126,7 @@ export function enter(
  * @returns
  */
 
-export function gapCalculator(row: number, gaps: ModuleGraphicData['gaps']) {
+export function gapCalculator(row: number, gaps: CodeBlockGraphicData['gaps']) {
 	let physicalRowCounter = row;
 	for (const [gapStartLine, { size }] of gaps) {
 		if (row > gapStartLine) {
@@ -136,7 +136,7 @@ export function gapCalculator(row: number, gaps: ModuleGraphicData['gaps']) {
 	return physicalRowCounter;
 }
 
-export function reverseGapCalculator(physicalRow: number, gaps: ModuleGraphicData['gaps']) {
+export function reverseGapCalculator(physicalRow: number, gaps: CodeBlockGraphicData['gaps']) {
 	let startLineOffset = 0;
 	for (const [gapStartLine, { size }] of gaps) {
 		if (physicalRow > gapStartLine + startLineOffset) {

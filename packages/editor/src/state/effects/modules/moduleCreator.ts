@@ -2,7 +2,7 @@ import { Instruction, instructionParser } from '@8f4e/compiler';
 
 import { EventDispatcher } from '../../../events';
 import { getModuleId } from '../../helpers/codeParsers';
-import { ModuleGraphicData, State } from '../../types';
+import { CodeBlockGraphicData, State } from '../../types';
 
 const nameList = [
 	'quark',
@@ -89,7 +89,7 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 
 		code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, getModuleId(code)));
 
-		const module: ModuleGraphicData = {
+		const module: CodeBlockGraphicData = {
 			width: 0,
 			minGridWidth: 32,
 			height: 0,
@@ -124,12 +124,12 @@ export default function moduleCreator(state: State, events: EventDispatcher): vo
 		events.dispatch('saveState');
 	}
 
-	function onDeleteModule({ module }: { module: ModuleGraphicData }): void {
+	function onDeleteModule({ module }: { module: CodeBlockGraphicData }): void {
 		state.graphicHelper.modules.delete(module);
 		events.dispatch('saveState');
 	}
 
-	function onCopyModule({ module }: { module: ModuleGraphicData }): void {
+	function onCopyModule({ module }: { module: CodeBlockGraphicData }): void {
 		navigator.clipboard.writeText(module.code.join('\n'));
 	}
 

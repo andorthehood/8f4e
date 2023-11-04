@@ -129,7 +129,7 @@ export interface Debugger {
 }
 
 export interface Output {
-	module: ModuleGraphicData;
+	module: CodeBlockGraphicData;
 	width: number;
 	height: number;
 	x: number;
@@ -141,7 +141,7 @@ export interface Output {
 }
 
 export interface Input {
-	module: ModuleGraphicData;
+	module: CodeBlockGraphicData;
 	width: number;
 	height: number;
 	x: number;
@@ -162,7 +162,7 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
-export interface ModuleGraphicData {
+export interface CodeBlockGraphicData {
 	width: number;
 	minGridWidth: number;
 	height: number;
@@ -204,7 +204,7 @@ export interface ModuleGraphicData {
 export type GraphicHelper = {
 	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
-	modules: Set<ModuleGraphicData>;
+	modules: Set<CodeBlockGraphicData>;
 	viewport: {
 		width: number;
 		height: number;
@@ -223,8 +223,8 @@ export type GraphicHelper = {
 		center: { x: number; y: number };
 	};
 	contextMenu: ContextMenu;
-	draggedModule?: ModuleGraphicData;
-	selectedModule?: ModuleGraphicData;
+	draggedModule?: CodeBlockGraphicData;
+	selectedModule?: CodeBlockGraphicData;
 	dialog: {
 		show: boolean;
 		text: string;
