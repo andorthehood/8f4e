@@ -66,7 +66,7 @@ export const moduleMenu: MenuGenerator = state => [
 	},
 	{
 		title: 'Copy module',
-		action: 'copyModule',
+		action: 'copyCodeBlock',
 		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 		close: true,
 	},
