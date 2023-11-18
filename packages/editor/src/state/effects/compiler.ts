@@ -14,7 +14,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		}
 
 		// TODO: make it recursive
-		const modules = Array.from(state.graphicHelper.codeBlocks).map(codeBlock => {
+		const modules = Array.from(state.graphicHelper.baseCodeBlock.codeBlocks).map(codeBlock => {
 			return { code: codeBlock.code };
 		});
 

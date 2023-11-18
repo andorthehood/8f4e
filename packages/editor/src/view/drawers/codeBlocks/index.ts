@@ -15,14 +15,14 @@ export default function drawModules(engine: Engine, state: State): void {
 		return;
 	}
 
-	const { x, y } = state.graphicHelper.viewport;
+	const { x, y } = state.graphicHelper.activeViewport.viewport;
 
 	const offsetX = -x;
 	const offsetY = -y;
 
 	engine.startGroup(offsetX, offsetY);
 
-	for (const codeBlock of state.graphicHelper.activeViewport) {
+	for (const codeBlock of state.graphicHelper.activeViewport.codeBlocks) {
 		if (codeBlock.positionOffsetterXWordAddress) {
 			codeBlock.offsetX = state.compiler.memoryBuffer[codeBlock.positionOffsetterXWordAddress];
 		}
@@ -34,8 +34,8 @@ export default function drawModules(engine: Engine, state: State): void {
 		if (
 			codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
 			codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
-			codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.viewport.width &&
-			codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.viewport.height
+			codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.globalViewport.width &&
+			codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.globalViewport.height
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 
@@ -53,7 +53,7 @@ export default function drawModules(engine: Engine, state: State): void {
 					codeBlock.cursor.y,
 					'highlightedCodeLine',
 					codeBlock.width,
-					state.graphicHelper.viewport.hGrid
+					state.graphicHelper.globalViewport.hGrid
 				);
 			}
 
@@ -62,11 +62,11 @@ export default function drawModules(engine: Engine, state: State): void {
 			const corner = codeBlock.isOpen ? '+' : '+';
 
 			engine.drawText(0, 0, corner);
-			engine.drawText(codeBlock.width - state.graphicHelper.viewport.vGrid, 0, corner);
-			engine.drawText(0, codeBlock.height - state.graphicHelper.viewport.hGrid, corner);
+			engine.drawText(codeBlock.width - state.graphicHelper.globalViewport.vGrid, 0, corner);
+			engine.drawText(0, codeBlock.height - state.graphicHelper.globalViewport.hGrid, corner);
 			engine.drawText(
-				codeBlock.width - state.graphicHelper.viewport.vGrid,
-				codeBlock.height - state.graphicHelper.viewport.hGrid,
+				codeBlock.width - state.graphicHelper.globalViewport.vGrid,
+				codeBlock.height - state.graphicHelper.globalViewport.hGrid,
 				corner
 			);
 
@@ -80,8 +80,8 @@ export default function drawModules(engine: Engine, state: State): void {
 					}
 					if (codeBlock.codeToRender[i][j] !== 32) {
 						engine.drawSprite(
-							state.graphicHelper.viewport.vGrid * (j + 1),
-							state.graphicHelper.viewport.hGrid * i,
+							state.graphicHelper.globalViewport.vGrid * (j + 1),
+							state.graphicHelper.globalViewport.hGrid * i,
 							codeBlock.codeToRender[i][j]
 						);
 					}
