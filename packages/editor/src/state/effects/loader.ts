@@ -1,12 +1,40 @@
 import { EventDispatcher } from '../../events';
 import { getModuleId } from '../helpers/codeParsers';
-import { CodeBlockGraphicData, EditorSettings, Project, State } from '../types';
+import { CodeBlock, CodeBlock, CodeBlockGraphicData, EditorSettings, Project, State } from '../types';
 
-// function convertGraphicHelperToCompilerFriendlyStructure(codeBlock: CodeBlockGraphicData) {
-// 	Array.from(codeBlock.codeBlocks).forEach(codeBlock => {
-// 		convertGraphicHelperToCompilerFriendlyStructure(codeBlock);
-// 	});
-// }
+function convertGraphicDataToProjectStructure(
+	codeBlocks: CodeBlockGraphicData[],
+	vGrid: number,
+	hGrid: number
+): CodeBlock[] {
+	return codeBlocks
+		.sort((codeBlockA, codeBlockB) => {
+			if (codeBlockA.id > codeBlockB.id) {
+				return 1;
+			} else if (codeBlockA.id < codeBlockB.id) {
+				return -1;
+			}
+			return 0;
+		})
+		.map(codeBlock => ({
+			code: codeBlock.code,
+			x: codeBlock.gridX,
+			y: codeBlock.gridY,
+			isOpen: codeBlock.isOpen,
+			viewport:
+				codeBlock.codeBlocks.size > 0
+					? {
+							x: Math.round(codeBlock.x / vGrid),
+							y: Math.round(codeBlock.y / hGrid),
+							// eslint-disable-next-line
+					  }
+					: undefined,
+			codeBlocks:
+				codeBlock.codeBlocks.size > 0
+					? convertGraphicDataToProjectStructure(Array.from(codeBlock.codeBlocks), vGrid, hGrid)
+					: undefined,
+		}));
+}
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
 	const localProject = JSON.parse(localStorage.getItem('project_' + state.options.localStorageId) ?? '{}') as Project;
@@ -92,25 +120,11 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			return;
 		}
 
-		// TODO: make it recursive
-		state.project.codeBlocks = Array.from(state.graphicHelper.baseCodeBlock.codeBlocks)
-			.sort((codeBlockA, codeBlockB) => {
-				if (codeBlockA.id > codeBlockB.id) {
-					return 1;
-				} else if (codeBlockA.id < codeBlockB.id) {
-					return -1;
-				}
-				return 0;
-			})
-			.map(graphicData => {
-				return {
-					code: graphicData.code,
-					x: graphicData.gridX,
-					y: graphicData.gridY,
-					isOpen: graphicData.isOpen,
-				};
-			});
-
+		state.project.codeBlocks = convertGraphicDataToProjectStructure(
+			Array.from(state.graphicHelper.baseCodeBlock.codeBlocks),
+			state.graphicHelper.globalViewport.vGrid,
+			state.graphicHelper.globalViewport.hGrid
+		);
 		state.project.viewport.x = Math.round(
 			state.graphicHelper.activeViewport.viewport.x / state.graphicHelper.globalViewport.vGrid
 		);
