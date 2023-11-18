@@ -1,13 +1,17 @@
-import { SpriteLookup } from '@8f4e/2d-engine';
 import { CompileOptions, CompiledModuleLookup, MemoryBuffer, MemoryItem } from '@8f4e/compiler';
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { IPatcher } from '@rnbo/js';
+import { SpriteLookup } from '@8f4e/2d-engine';
 
 export interface CodeBlock {
 	code: string[];
 	isOpen: boolean;
 	x: number;
 	y: number;
+	nested?: {
+		viewport: Viewport;
+		codeBlocks: CodeBlock[];
+	};
 }
 
 export interface Size {
@@ -198,7 +202,7 @@ export interface CodeBlockGraphicData {
 			y: number;
 		}
 	>;
-	isGroup: boolean;
+	codeBlocks: Set<CodeBlockGraphicData>;
 }
 
 export type GraphicHelper = {
@@ -222,6 +226,7 @@ export type GraphicHelper = {
 		};
 		center: { x: number; y: number };
 	};
+	activeViewport: Set<CodeBlockGraphicData>;
 	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;

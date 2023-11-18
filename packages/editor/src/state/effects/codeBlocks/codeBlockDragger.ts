@@ -31,8 +31,8 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 		events.dispatch('codeBlockClick', { x, y, relativeX, relativeY, codeBlock: state.graphicHelper.draggedCodeBlock });
 
 		// Bring dragged module forward.
-		state.graphicHelper.codeBlocks.delete(state.graphicHelper.draggedCodeBlock);
-		state.graphicHelper.codeBlocks.add(state.graphicHelper.draggedCodeBlock);
+		state.graphicHelper.activeViewport.delete(state.graphicHelper.draggedCodeBlock);
+		state.graphicHelper.activeViewport.add(state.graphicHelper.draggedCodeBlock);
 	}
 
 	function onMouseMove(event) {

@@ -60,10 +60,12 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				gridX: codeBlock.x,
 				gridY: codeBlock.y,
 				isOpen: codeBlock.isOpen,
-				isGroup: false,
 				padLength: 1,
+				// TODO
+				codeBlocks: new Set(),
 			});
 		});
+		state.graphicHelper.activeViewport = state.graphicHelper.codeBlocks;
 
 		events.dispatch('setSampleRate', { sampleRate: state.project.sampleRate });
 		events.dispatch('init');
@@ -79,6 +81,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			return;
 		}
 
+		// TODO: make it recursive
 		state.project.codeBlocks = Array.from(state.graphicHelper.codeBlocks)
 			.sort((codeBlockA, codeBlockB) => {
 				if (codeBlockA.id > codeBlockB.id) {

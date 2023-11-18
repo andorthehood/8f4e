@@ -22,7 +22,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	engine.startGroup(offsetX, offsetY);
 
-	for (const codeBlock of state.graphicHelper.codeBlocks) {
+	for (const codeBlock of state.graphicHelper.activeViewport) {
 		if (codeBlock.positionOffsetterXWordAddress) {
 			codeBlock.offsetX = state.compiler.memoryBuffer[codeBlock.positionOffsetterXWordAddress];
 		}

@@ -37,7 +37,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	};
 
 	const updateGraphicsAll = function () {
-		for (const graphicData of state.graphicHelper.codeBlocks) {
+		for (const graphicData of state.graphicHelper.activeViewport) {
 			updateGraphics(graphicData);
 		}
 	};

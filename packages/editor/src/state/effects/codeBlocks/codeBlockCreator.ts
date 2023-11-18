@@ -48,7 +48,7 @@ function getRandomModuleId() {
 }
 
 function checkIfModuleIdIsTaken(state: State, id: string) {
-	return Array.from(state.graphicHelper.codeBlocks).some(codeBlock => {
+	return Array.from(state.graphicHelper.activeViewport).some(codeBlock => {
 		return codeBlock.id === id;
 	});
 }
@@ -113,19 +113,18 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			gridX: Math.round((state.graphicHelper.viewport.x + x) / state.graphicHelper.viewport.vGrid),
 			gridY: Math.round((state.graphicHelper.viewport.y + y) / state.graphicHelper.viewport.hGrid),
 			isOpen: true,
-			isGroup: false,
 			padLength: 2,
 			offsetX: 0,
 			offsetY: 0,
 		};
 
-		state.graphicHelper.codeBlocks.add(codeBlock);
+		state.graphicHelper.activeViewport.add(codeBlock);
 		events.dispatch('codeBlockAdded', { codeBlock });
 		events.dispatch('saveState');
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		state.graphicHelper.codeBlocks.delete(codeBlock);
+		state.graphicHelper.activeViewport.delete(codeBlock);
 		events.dispatch('saveState');
 	}
 
