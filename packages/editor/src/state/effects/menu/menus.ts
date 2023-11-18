@@ -1,6 +1,16 @@
 import { MenuGenerator } from '../../types';
 
-export const mainMenu: MenuGenerator = () => [
+export const mainMenu: MenuGenerator = state => [
+	...(state.graphicHelper.activeViewport !== state.graphicHelper.activeViewport.parent
+		? [
+				{
+					title: 'Go back',
+					action: 'goBack',
+					close: true,
+				},
+				// eslint-disable-next-line
+		  ]
+		: []),
 	{
 		title: 'New Module',
 		action: 'addCodeBlock',

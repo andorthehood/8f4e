@@ -45,31 +45,31 @@ export default function drawModules(engine: Engine, state: State): void {
 		return;
 	}
 
-	const { x, y } = state.graphicHelper.viewport;
+	const { x, y } = state.graphicHelper.activeViewport.viewport;
 
 	const offsetX = -x;
 	const offsetY = -y;
 
 	engine.startGroup(offsetX, offsetY);
 
-	for (const codeBlock of state.graphicHelper.activeViewport) {
+	for (const codeBlock of state.graphicHelper.activeViewport.codeBlocks) {
 		if (
 			!(
 				codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
 				codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
-				codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.viewport.width &&
-				codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.viewport.height
+				codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.globalViewport.width &&
+				codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.globalViewport.height
 			)
 		) {
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
 
 			const topIntersection = calculateIntersection(
-				state.graphicHelper.viewport.borderLineCoordinates.top.startX,
-				state.graphicHelper.viewport.borderLineCoordinates.top.startY,
-				state.graphicHelper.viewport.borderLineCoordinates.top.endX,
-				state.graphicHelper.viewport.borderLineCoordinates.top.endY,
-				state.graphicHelper.viewport.center.x,
-				state.graphicHelper.viewport.center.y,
+				state.graphicHelper.globalViewport.borderLineCoordinates.top.startX,
+				state.graphicHelper.globalViewport.borderLineCoordinates.top.startY,
+				state.graphicHelper.globalViewport.borderLineCoordinates.top.endX,
+				state.graphicHelper.globalViewport.borderLineCoordinates.top.endY,
+				state.graphicHelper.globalViewport.center.x,
+				state.graphicHelper.globalViewport.center.y,
 				codeBlock.x + codeBlock.offsetX,
 				codeBlock.y + codeBlock.offsetY
 			);
@@ -79,31 +79,31 @@ export default function drawModules(engine: Engine, state: State): void {
 			}
 
 			const rightIntersection = calculateIntersection(
-				state.graphicHelper.viewport.borderLineCoordinates.right.startX,
-				state.graphicHelper.viewport.borderLineCoordinates.right.startY,
-				state.graphicHelper.viewport.borderLineCoordinates.right.endX,
-				state.graphicHelper.viewport.borderLineCoordinates.right.endY,
-				state.graphicHelper.viewport.center.x,
-				state.graphicHelper.viewport.center.y,
+				state.graphicHelper.globalViewport.borderLineCoordinates.right.startX,
+				state.graphicHelper.globalViewport.borderLineCoordinates.right.startY,
+				state.graphicHelper.globalViewport.borderLineCoordinates.right.endX,
+				state.graphicHelper.globalViewport.borderLineCoordinates.right.endY,
+				state.graphicHelper.globalViewport.center.x,
+				state.graphicHelper.globalViewport.center.y,
 				codeBlock.x + codeBlock.offsetX,
 				codeBlock.y + codeBlock.offsetY
 			);
 
 			if (rightIntersection) {
 				engine.drawSprite(
-					rightIntersection.x - state.graphicHelper.viewport.vGrid,
+					rightIntersection.x - state.graphicHelper.globalViewport.vGrid,
 					rightIntersection.y,
 					Icon.ARROW_RIGHT
 				);
 			}
 
 			const bottomIntersection = calculateIntersection(
-				state.graphicHelper.viewport.borderLineCoordinates.bottom.startX,
-				state.graphicHelper.viewport.borderLineCoordinates.bottom.startY,
-				state.graphicHelper.viewport.borderLineCoordinates.bottom.endX,
-				state.graphicHelper.viewport.borderLineCoordinates.bottom.endY,
-				state.graphicHelper.viewport.center.x,
-				state.graphicHelper.viewport.center.y,
+				state.graphicHelper.globalViewport.borderLineCoordinates.bottom.startX,
+				state.graphicHelper.globalViewport.borderLineCoordinates.bottom.startY,
+				state.graphicHelper.globalViewport.borderLineCoordinates.bottom.endX,
+				state.graphicHelper.globalViewport.borderLineCoordinates.bottom.endY,
+				state.graphicHelper.globalViewport.center.x,
+				state.graphicHelper.globalViewport.center.y,
 				codeBlock.x + codeBlock.offsetX,
 				codeBlock.y + codeBlock.offsetY
 			);
@@ -111,18 +111,18 @@ export default function drawModules(engine: Engine, state: State): void {
 			if (bottomIntersection) {
 				engine.drawSprite(
 					bottomIntersection.x,
-					bottomIntersection.y - state.graphicHelper.viewport.hGrid,
+					bottomIntersection.y - state.graphicHelper.globalViewport.hGrid,
 					Icon.ARROW_BOTTOM
 				);
 			}
 
 			const leftIntersection = calculateIntersection(
-				state.graphicHelper.viewport.borderLineCoordinates.left.startX,
-				state.graphicHelper.viewport.borderLineCoordinates.left.startY,
-				state.graphicHelper.viewport.borderLineCoordinates.left.endX,
-				state.graphicHelper.viewport.borderLineCoordinates.left.endY,
-				state.graphicHelper.viewport.center.x,
-				state.graphicHelper.viewport.center.y,
+				state.graphicHelper.globalViewport.borderLineCoordinates.left.startX,
+				state.graphicHelper.globalViewport.borderLineCoordinates.left.startY,
+				state.graphicHelper.globalViewport.borderLineCoordinates.left.endX,
+				state.graphicHelper.globalViewport.borderLineCoordinates.left.endY,
+				state.graphicHelper.globalViewport.center.x,
+				state.graphicHelper.globalViewport.center.y,
 				codeBlock.x + codeBlock.offsetX,
 				codeBlock.y + codeBlock.offsetY
 			);

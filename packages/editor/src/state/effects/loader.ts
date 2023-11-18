@@ -30,11 +30,12 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			state['project'][key] = newProject[key] || defaultState.project[key];
 		});
 
-		state.graphicHelper.codeBlocks.clear();
-		state.graphicHelper.viewport.x = state.project.viewport.x * state.graphicHelper.viewport.vGrid;
-		state.graphicHelper.viewport.y = state.project.viewport.y * state.graphicHelper.viewport.hGrid;
+		state.graphicHelper.baseCodeBlock.codeBlocks.clear();
+		state.graphicHelper.activeViewport.viewport.x = state.project.viewport.x * state.graphicHelper.globalViewport.vGrid;
+		state.graphicHelper.activeViewport.viewport.y = state.project.viewport.y * state.graphicHelper.globalViewport.hGrid;
+		// TODO: make it recursive
 		state.project.codeBlocks.forEach(codeBlock => {
-			state.graphicHelper.codeBlocks.add({
+			state.graphicHelper.baseCodeBlock.codeBlocks.add({
 				width: 0,
 				minGridWidth: 32,
 				height: 0,
@@ -53,8 +54,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				id: getModuleId(codeBlock.code) || '',
 				gaps: new Map(),
 				errorMessages: new Map(),
-				x: codeBlock.x * state.graphicHelper.viewport.vGrid,
-				y: codeBlock.y * state.graphicHelper.viewport.hGrid,
+				x: codeBlock.x * state.graphicHelper.globalViewport.vGrid,
+				y: codeBlock.y * state.graphicHelper.globalViewport.hGrid,
 				offsetX: 0,
 				offsetY: 0,
 				gridX: codeBlock.x,
@@ -62,10 +63,15 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				isOpen: codeBlock.isOpen,
 				padLength: 1,
 				// TODO
+				parent: state.graphicHelper.baseCodeBlock,
+				viewport: {
+					x: 0,
+					y: 0,
+				},
 				codeBlocks: new Set(),
 			});
 		});
-		state.graphicHelper.activeViewport = state.graphicHelper.codeBlocks;
+		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
 
 		events.dispatch('setSampleRate', { sampleRate: state.project.sampleRate });
 		events.dispatch('init');
@@ -82,7 +88,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		}
 
 		// TODO: make it recursive
-		state.project.codeBlocks = Array.from(state.graphicHelper.codeBlocks)
+		state.project.codeBlocks = Array.from(state.graphicHelper.baseCodeBlock.codeBlocks)
 			.sort((codeBlockA, codeBlockB) => {
 				if (codeBlockA.id > codeBlockB.id) {
 					return 1;
@@ -100,8 +106,12 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				};
 			});
 
-		state.project.viewport.x = Math.round(state.graphicHelper.viewport.x / state.graphicHelper.viewport.vGrid);
-		state.project.viewport.y = Math.round(state.graphicHelper.viewport.y / state.graphicHelper.viewport.hGrid);
+		state.project.viewport.x = Math.round(
+			state.graphicHelper.activeViewport.viewport.x / state.graphicHelper.globalViewport.vGrid
+		);
+		state.project.viewport.y = Math.round(
+			state.graphicHelper.activeViewport.viewport.y / state.graphicHelper.globalViewport.hGrid
+		);
 
 		localStorage.setItem('project_' + state.options.localStorageId, JSON.stringify(state.project));
 		localStorage.setItem('editorSettings_' + state.options.localStorageId, JSON.stringify(state.editorSettings));

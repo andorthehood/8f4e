@@ -9,7 +9,7 @@ export default function errorMessages(graphicData: CodeBlockGraphicData, state: 
 		}
 		graphicData.errorMessages.set(buildError.lineNumber, {
 			x: 0,
-			y: (gapCalculator(buildError.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
+			y: (gapCalculator(buildError.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.globalViewport.hGrid,
 			message: ['Error:', buildError.message],
 		});
 	});
