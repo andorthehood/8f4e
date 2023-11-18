@@ -204,7 +204,6 @@ const project: Project = {
 		{ code: ['module switches', '', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'], x: 81, y: -68, isOpen: true },
 	],
 	viewport: { x: 73, y: -83 },
-	rnbo: { patchers: {} },
 	sampleRate: 50,
 };
 

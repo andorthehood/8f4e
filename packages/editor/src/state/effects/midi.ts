@@ -71,9 +71,6 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 					state.midi.outputs[data.payload.port - 1].send(data.payload.message, data.payload.delay);
 				}
 				break;
-			case 'RNBOMessage':
-				events.dispatch('RNBOMessage', data.payload);
-				break;
 			case 'initialized':
 				events.dispatch('runtimeInitialized');
 				break;

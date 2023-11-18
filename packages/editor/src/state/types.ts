@@ -1,6 +1,5 @@
 import { CompileOptions, CompiledModuleLookup, MemoryBuffer, MemoryItem } from '@8f4e/compiler';
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
-import { IPatcher } from '@rnbo/js';
 import { SpriteLookup } from '@8f4e/2d-engine';
 
 export interface CodeBlock {
@@ -248,7 +247,6 @@ export interface Project {
 	description: string;
 	codeBlocks: CodeBlock[];
 	viewport: Viewport;
-	rnbo: { patchers: Record<string, IPatcher> };
 	sampleRate: number;
 }
 

@@ -1,6 +1,12 @@
 import { EventDispatcher } from '../../events';
 import { getModuleId } from '../helpers/codeParsers';
-import { EditorSettings, Project, State } from '../types';
+import { CodeBlockGraphicData, EditorSettings, Project, State } from '../types';
+
+// function convertGraphicHelperToCompilerFriendlyStructure(codeBlock: CodeBlockGraphicData) {
+// 	Array.from(codeBlock.codeBlocks).forEach(codeBlock => {
+// 		convertGraphicHelperToCompilerFriendlyStructure(codeBlock);
+// 	});
+// }
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
 	const localProject = JSON.parse(localStorage.getItem('project_' + state.options.localStorageId) ?? '{}') as Project;
@@ -22,7 +28,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				x: 0,
 				y: 0,
 			},
-			rnbo: { patchers: {} },
 			sampleRate: 44100,
 		};
 
