@@ -25,10 +25,10 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 		}
 
 		const out: Output = {
-			width: state.graphicHelper.viewport.vGrid * 2,
-			height: state.graphicHelper.viewport.hGrid,
-			x: graphicData.width - 3 * state.graphicHelper.viewport.vGrid,
-			y: gapCalculator(output.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
+			width: state.graphicHelper.globalViewport.vGrid * 2,
+			height: state.graphicHelper.globalViewport.hGrid,
+			x: graphicData.width - 3 * state.graphicHelper.globalViewport.vGrid,
+			y: gapCalculator(output.lineNumber, graphicData.gaps) * state.graphicHelper.globalViewport.hGrid,
 			id: output.id,
 			codeBlock: graphicData,
 			calibratedMax: 0,

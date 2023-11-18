@@ -25,10 +25,10 @@ export default function inputs(graphicData: CodeBlockGraphicData, state: State) 
 		}
 
 		graphicData.inputs.set(input.id, {
-			width: state.graphicHelper.viewport.vGrid * 2,
-			height: state.graphicHelper.viewport.hGrid,
+			width: state.graphicHelper.globalViewport.vGrid * 2,
+			height: state.graphicHelper.globalViewport.hGrid,
 			x: 0,
-			y: gapCalculator(input.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
+			y: gapCalculator(input.lineNumber, graphicData.gaps) * state.graphicHelper.globalViewport.hGrid,
 			id: input.id,
 			wordAddress: memory.wordAddress,
 			codeBlock: graphicData,

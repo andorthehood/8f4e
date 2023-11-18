@@ -28,8 +28,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: EventObject) {
 		const [row, col] = moveCaret(
 			codeBlock.code,
-			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.viewport.hGrid), codeBlock.gaps),
-			Math.floor(relativeX / state.graphicHelper.viewport.vGrid) - (codeBlock.padLength + 2),
+			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.globalViewport.hGrid), codeBlock.gaps),
+			Math.floor(relativeX / state.graphicHelper.globalViewport.vGrid) - (codeBlock.padLength + 2),
 			'Jump'
 		);
 		codeBlock.cursor.row = row;
@@ -37,7 +37,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	};
 
 	const updateGraphicsAll = function () {
-		for (const graphicData of state.graphicHelper.activeViewport) {
+		for (const graphicData of state.graphicHelper.activeViewport.codeBlocks) {
 			updateGraphics(graphicData);
 		}
 	};
@@ -50,8 +50,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.padLength = graphicData.code.length.toString().length;
 		const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(graphicData.code);
 
-		graphicData.x = graphicData.gridX * state.graphicHelper.viewport.vGrid;
-		graphicData.y = graphicData.gridY * state.graphicHelper.viewport.hGrid;
+		graphicData.x = graphicData.gridX * state.graphicHelper.globalViewport.vGrid;
+		graphicData.y = graphicData.gridY * state.graphicHelper.globalViewport.hGrid;
 
 		graphicData.trimmedCode = [...graphicData.code.slice(0, length + 1)];
 
@@ -71,7 +71,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		graphicData.width =
 			Math.max(graphicData.minGridWidth, getLongestLineLength(codeWithLineNumbers) + 4) *
-			state.graphicHelper.viewport.vGrid;
+			state.graphicHelper.globalViewport.vGrid;
 
 		errorMessages(graphicData, state);
 		bufferPlotters(graphicData, state);
@@ -82,9 +82,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		buttons(graphicData, state);
 		positionOffsetters(graphicData, state);
 
-		graphicData.height = graphicData.codeToRender.length * state.graphicHelper.viewport.hGrid;
-		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.padLength + 2)) * state.graphicHelper.viewport.vGrid;
-		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.graphicHelper.viewport.hGrid;
+		graphicData.height = graphicData.codeToRender.length * state.graphicHelper.globalViewport.hGrid;
+		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.padLength + 2)) * state.graphicHelper.globalViewport.vGrid;
+		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.graphicHelper.globalViewport.hGrid;
 		graphicData.id = getModuleId(graphicData.code) || '';
 	};
 

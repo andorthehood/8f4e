@@ -202,22 +202,21 @@ export interface CodeBlockGraphicData {
 			y: number;
 		}
 	>;
+	viewport: Viewport;
+	parent: CodeBlockGraphicData;
 	codeBlocks: Set<CodeBlockGraphicData>;
 }
 
 export type GraphicHelper = {
 	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
-	codeBlocks: Set<CodeBlockGraphicData>;
-	viewport: {
+	globalViewport: {
 		width: number;
 		height: number;
 		roundedWidth: number;
 		roundedHeight: number;
 		vGrid: number;
 		hGrid: number;
-		x: number;
-		y: number;
 		borderLineCoordinates: {
 			top: { startX: number; startY: number; endX: number; endY: number };
 			right: { startX: number; startY: number; endX: number; endY: number };
@@ -226,7 +225,8 @@ export type GraphicHelper = {
 		};
 		center: { x: number; y: number };
 	};
-	activeViewport: Set<CodeBlockGraphicData>;
+	baseCodeBlock: CodeBlockGraphicData;
+	activeViewport: CodeBlockGraphicData;
 	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;
