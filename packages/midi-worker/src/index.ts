@@ -5,8 +5,6 @@ import findMidiNoteOutModules from './findMidiNoteOutModules';
 import broadcastMidiMessages from './broadcastMidiMessages';
 import findMidiCCOutputModules from './findMidiCCOutputModules';
 import broadcastMidiCCMessages from './broadcastMidiCCMessages';
-import findRNBOModules from './findRNBOModules';
-import broadcastRNBOMessages from './broadcastRNBOMessages';
 import findMidiCCInputModules from './findMidiCCInputModules';
 import { MidiCCModuleAddresses } from './types';
 import createModule from './createModule';
@@ -33,7 +31,6 @@ async function init(
 		memoryBuffer = wasmApp.memoryBuffer;
 
 		const midiNoteModules = findMidiNoteOutModules(compiledModules, memoryBuffer);
-		const RNBOModules = findRNBOModules(compiledModules);
 		const midiCCOutputModules = findMidiCCOutputModules(compiledModules, memoryBuffer);
 		midiCCInputModules = findMidiCCInputModules(compiledModules, memoryBuffer);
 
@@ -50,7 +47,6 @@ async function init(
 			timeToExecute = endTime - startTime;
 			broadcastMidiCCMessages(midiCCOutputModules, memoryBuffer);
 			broadcastMidiMessages(midiNoteModules, memoryBuffer);
-			broadcastRNBOMessages(RNBOModules, memoryBuffer);
 		}, intervalTime);
 
 		statsInterval = setInterval(() => {

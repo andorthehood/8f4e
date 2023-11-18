@@ -13,8 +13,3 @@ export interface MidiCCModuleAddresses {
 	channelWordAddress: number | undefined;
 	selectedCCWordAddress: number | undefined;
 }
-
-export interface RNBOModule {
-	patcherId: string;
-	paramAdresses: number[];
-}

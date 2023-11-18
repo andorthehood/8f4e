@@ -1,5 +1,4 @@
 import { Options, Project, State } from './types';
-import RNBO from './effects/rnbo';
 import _switch from './effects/codeBlocks/switch';
 import button from './effects/codeBlocks/button';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
@@ -130,7 +129,6 @@ const defaultState: State = {
 			x: 0,
 			y: 0,
 		},
-		rnbo: { patchers: {} },
 		sampleRate: 44100,
 	},
 	options: {
@@ -166,7 +164,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	compiler(state, events);
 	graphicHelper(state, events);
 	save(state, events);
-	RNBO(state, events);
 	worklet(state, events);
 	colorTheme(state, events);
 	font(state, events);

@@ -8,6 +8,7 @@ export const mainMenu: MenuGenerator = state => [
 					action: 'goBack',
 					close: true,
 				},
+				{ divider: true },
 				// eslint-disable-next-line
 		  ]
 		: []),
@@ -126,16 +127,6 @@ export const sampleRateMenu: MenuGenerator = () => [
 ];
 
 export const projectSettingsMenu: MenuGenerator = () => [
-	{
-		title: 'Import RNBO patch',
-		action: 'importRNBOPatch',
-		close: true,
-	},
-	{
-		title: 'Remove RNBO patches',
-		action: 'removeRNBOPatches',
-		close: true,
-	},
 	{ title: 'Set Sample Rate', action: 'openSubMenu', payload: { menu: 'sampleRateMenu' }, close: false },
 ];
 
