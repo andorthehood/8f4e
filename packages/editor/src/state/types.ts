@@ -7,10 +7,8 @@ export interface CodeBlock {
 	isOpen: boolean;
 	x: number;
 	y: number;
-	nested?: {
-		viewport: Viewport;
-		codeBlocks: CodeBlock[];
-	};
+	viewport?: Viewport;
+	codeBlocks?: CodeBlock[];
 }
 
 export interface Size {
