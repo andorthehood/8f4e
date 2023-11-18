@@ -11,7 +11,7 @@ export default function drawConnections(engine: Engine, state: State): void {
 
 	engine.startGroup(-state.graphicHelper.viewport.x, -state.graphicHelper.viewport.y);
 
-	for (const codeBlock of state.graphicHelper.codeBlocks) {
+	for (const codeBlock of state.graphicHelper.activeViewport) {
 		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
 		for (const [, { x, y, id }] of codeBlock.inputs) {
 			const memory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(id);
