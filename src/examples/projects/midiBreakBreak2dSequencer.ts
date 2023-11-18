@@ -718,7 +718,6 @@ const project: Project = {
 		},
 	],
 	viewport: { x: 24, y: -10 },
-	rnbo: { patchers: {} },
 	sampleRate: 50,
 };
 
