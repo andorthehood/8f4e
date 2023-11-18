@@ -59,6 +59,12 @@ export const moduleMenu: MenuGenerator = state => [
 		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 		close: true,
 	},
+	{
+		title: 'Open group',
+		action: 'openGroup',
+		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+		close: true,
+	},
 ];
 
 export const moduleCategoriesMenu: MenuGenerator = state => {
