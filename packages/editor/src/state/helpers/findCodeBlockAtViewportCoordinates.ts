@@ -1,11 +1,11 @@
-import { GraphicHelper, CodeBlockGraphicData } from '../types';
+import { CodeBlockGraphicData, GraphicHelper } from '../types';
 
 export default function findCodeBlockAtViewportCoordinates(
 	graphicHelper: GraphicHelper,
 	searchX: number,
 	searchY: number
 ): CodeBlockGraphicData | undefined {
-	for (const graphicData of Array.from(graphicHelper.codeBlocks).reverse()) {
+	for (const graphicData of Array.from(graphicHelper.activeViewport).reverse()) {
 		const { width, height, x, y, offsetX, offsetY } = graphicData;
 		if (
 			searchX >= x + offsetX - graphicHelper.viewport.x &&
