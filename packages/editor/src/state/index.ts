@@ -1,22 +1,22 @@
-import compiler from './effects/compiler';
-import contextMenu from './effects/menu/contextMenu';
-import loader from './effects/loader';
-import midi from './effects/midi';
-import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
-import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
-import save from './effects/save';
-import viewport from './effects/viewport';
 import { Options, Project, State } from './types';
-import graphicHelper from './effects/graphicHelper';
-import codeBlockOpener from './effects/codeBlocks/codeBlockOpener';
+import RNBO from './effects/rnbo';
 import _switch from './effects/codeBlocks/switch';
 import button from './effects/codeBlocks/button';
-import pianoKeyboard from './effects/codeBlocks/pianoKeyboard';
-import RNBO from './effects/rnbo';
-import worklet from './effects/worklet';
+import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
+import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
+import codeBlockOpener from './effects/codeBlocks/codeBlockOpener';
 import colorTheme from './effects/colorTheme';
-import sampleRate from './effects/sampleRate';
+import compiler from './effects/compiler';
+import contextMenu from './effects/menu/contextMenu';
 import font from './effects/font';
+import graphicHelper from './effects/graphicHelper';
+import loader from './effects/loader';
+import midi from './effects/midi';
+import pianoKeyboard from './effects/codeBlocks/pianoKeyboard';
+import sampleRate from './effects/sampleRate';
+import save from './effects/save';
+import viewport from './effects/viewport';
+import worklet from './effects/worklet';
 
 import { EventDispatcher } from '../events';
 
@@ -58,6 +58,7 @@ const defaultState: State = {
 			buttons: [{ title: 'Close', action: 'close' }],
 		},
 		codeBlocks: new Set(),
+		activeViewport: new Set(),
 		outputsByWordAddress: new Map(),
 		viewport: {
 			width: 0,

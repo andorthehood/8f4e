@@ -13,6 +13,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			return;
 		}
 
+		// TODO: make it recursive
 		const modules = Array.from(state.graphicHelper.codeBlocks).map(codeBlock => {
 			return { code: codeBlock.code };
 		});

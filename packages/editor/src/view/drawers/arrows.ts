@@ -52,7 +52,7 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	engine.startGroup(offsetX, offsetY);
 
-	for (const codeBlock of state.graphicHelper.codeBlocks) {
+	for (const codeBlock of state.graphicHelper.activeViewport) {
 		if (
 			!(
 				codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
