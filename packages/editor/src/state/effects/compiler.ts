@@ -1,5 +1,22 @@
-import { State } from '../types';
+import { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
+
+function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
+	const flatCodeBlocks: { code: string[] }[] = [];
+
+	function walk(codeBlocks: Set<CodeBlockGraphicData>) {
+		codeBlocks.forEach(codeBlock => {
+			flatCodeBlocks.push(codeBlock);
+			if (codeBlock.codeBlocks && codeBlock.codeBlocks.size > 0) {
+				walk(codeBlock.codeBlocks);
+				console.log('he');
+			}
+		});
+	}
+	walk(codeBlocks);
+
+	return flatCodeBlocks;
+}
 
 export default async function compiler(state: State, events: EventDispatcher) {
 	const workerUrl = new URL('../../../../../packages/compiler-worker/src/index.ts', import.meta.url);
@@ -14,9 +31,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		}
 
 		// TODO: make it recursive
-		const modules = Array.from(state.graphicHelper.baseCodeBlock.codeBlocks).map(codeBlock => {
-			return { code: codeBlock.code };
-		});
+		const modules = flattenProjectForCompiler(state.graphicHelper.baseCodeBlock.codeBlocks);
 
 		worker.postMessage({
 			type: 'recompile',
