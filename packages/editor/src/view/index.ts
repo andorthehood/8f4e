@@ -1,7 +1,7 @@
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
-import { drawArrows, drawConnections, drawContextMenu, drawDialog, drawCodeBlocks } from './drawers';
+import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog } from './drawers';
 import colorSchemes from './colorSchemes';
 
 import { State } from '../state/types';
@@ -21,8 +21,8 @@ export default async function init(
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;
-	state.graphicHelper.viewport.hGrid = characterHeight;
-	state.graphicHelper.viewport.vGrid = characterWidth;
+	state.graphicHelper.globalViewport.hGrid = characterHeight;
+	state.graphicHelper.globalViewport.vGrid = characterWidth;
 
 	const engine = new Engine(canvas);
 
@@ -33,15 +33,19 @@ export default async function init(
 
 		for (
 			let i = 0;
-			i < Math.ceil(state.graphicHelper.viewport.width / (64 * state.graphicHelper.viewport.vGrid));
+			i < Math.ceil(state.graphicHelper.globalViewport.width / (64 * state.graphicHelper.globalViewport.vGrid));
 			i++
 		) {
 			for (
 				let j = 0;
-				j < Math.ceil(state.graphicHelper.viewport.height / (32 * state.graphicHelper.viewport.hGrid));
+				j < Math.ceil(state.graphicHelper.globalViewport.height / (32 * state.graphicHelper.globalViewport.hGrid));
 				j++
 			) {
-				engine.drawSprite(64 * state.graphicHelper.viewport.vGrid * i, 32 * state.graphicHelper.viewport.hGrid * j, 0);
+				engine.drawSprite(
+					64 * state.graphicHelper.globalViewport.vGrid * i,
+					32 * state.graphicHelper.globalViewport.hGrid * j,
+					0
+				);
 			}
 		}
 
@@ -50,7 +54,7 @@ export default async function init(
 		drawArrows(engine, state);
 		drawContextMenu(engine, state);
 
-		engine.startGroup(0, state.graphicHelper.viewport.roundedHeight - state.graphicHelper.viewport.hGrid);
+		engine.startGroup(0, state.graphicHelper.globalViewport.roundedHeight - state.graphicHelper.globalViewport.hGrid);
 
 		let statusText = ' ';
 
@@ -69,8 +73,8 @@ export default async function init(
 			0,
 			0,
 			'background',
-			statusText.length * state.graphicHelper.viewport.vGrid,
-			state.graphicHelper.viewport.hGrid
+			statusText.length * state.graphicHelper.globalViewport.vGrid,
+			state.graphicHelper.globalViewport.hGrid
 		);
 		engine.setSpriteLookup(spriteLookups.fontCode);
 		engine.drawText(0, 0, statusText);
@@ -79,7 +83,7 @@ export default async function init(
 
 		if (state.options.isDebugMode) {
 			engine.setSpriteLookup(spriteLookups.fontCode);
-			engine.startGroup(10, state.graphicHelper.viewport.height - 50);
+			engine.startGroup(10, state.graphicHelper.globalViewport.height - 50);
 			engine.drawText(0, 0, 'Time to render one frame ' + timeToRender + ' ms');
 			engine.drawText(0, 15, 'fps ' + fps + '  vertex buffer ' + vertices + '/' + maxVertices);
 			engine.drawText(
@@ -115,8 +119,8 @@ export default async function init(
 			});
 
 			state.graphicHelper.spriteLookups = spriteLookups;
-			state.graphicHelper.viewport.hGrid = characterHeight;
-			state.graphicHelper.viewport.vGrid = characterWidth;
+			state.graphicHelper.globalViewport.hGrid = characterHeight;
+			state.graphicHelper.globalViewport.vGrid = characterWidth;
 
 			engine.loadSpriteSheet(sprite);
 		},
