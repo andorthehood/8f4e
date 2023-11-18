@@ -612,7 +612,6 @@ const midiArpeggiator2: Project = {
 		},
 	],
 	viewport: { x: -90, y: -12 },
-	rnbo: { patchers: {} },
 	sampleRate: 50,
 };
 

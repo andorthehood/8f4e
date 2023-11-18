@@ -83,7 +83,6 @@ const project: Project = {
 		},
 	],
 	viewport: { x: 0, y: 0 },
-	rnbo: { patchers: {} },
 	sampleRate: 44100,
 };
 
