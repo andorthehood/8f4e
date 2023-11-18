@@ -20,19 +20,19 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			x -
 				(state.graphicHelper.draggedCodeBlock.x +
 					state.graphicHelper.draggedCodeBlock.offsetX -
-					state.graphicHelper.viewport.x)
+					state.graphicHelper.activeViewport.viewport.x)
 		);
 		const relativeY = Math.abs(
 			y -
 				(state.graphicHelper.draggedCodeBlock.y +
 					state.graphicHelper.draggedCodeBlock.offsetY -
-					state.graphicHelper.viewport.y)
+					state.graphicHelper.activeViewport.viewport.y)
 		);
 		events.dispatch('codeBlockClick', { x, y, relativeX, relativeY, codeBlock: state.graphicHelper.draggedCodeBlock });
 
 		// Bring dragged module forward.
-		state.graphicHelper.activeViewport.delete(state.graphicHelper.draggedCodeBlock);
-		state.graphicHelper.activeViewport.add(state.graphicHelper.draggedCodeBlock);
+		state.graphicHelper.activeViewport.codeBlocks.delete(state.graphicHelper.draggedCodeBlock);
+		state.graphicHelper.activeViewport.codeBlocks.add(state.graphicHelper.draggedCodeBlock);
 	}
 
 	function onMouseMove(event) {
@@ -50,18 +50,18 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 		}
 
 		state.graphicHelper.draggedCodeBlock.gridX = Math.round(
-			state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid
+			state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.globalViewport.vGrid
 		);
 		state.graphicHelper.draggedCodeBlock.gridY = Math.round(
-			state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.viewport.hGrid
+			state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.globalViewport.hGrid
 		);
 
 		state.graphicHelper.draggedCodeBlock.x =
-			Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid) *
-			state.graphicHelper.viewport.vGrid;
+			Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.globalViewport.vGrid) *
+			state.graphicHelper.globalViewport.vGrid;
 		state.graphicHelper.draggedCodeBlock.y =
-			Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.viewport.hGrid) *
-			state.graphicHelper.viewport.hGrid;
+			Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.globalViewport.hGrid) *
+			state.graphicHelper.globalViewport.hGrid;
 
 		if (
 			startingPosition?.x !== state.graphicHelper.draggedCodeBlock.x ||

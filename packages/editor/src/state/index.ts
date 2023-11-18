@@ -12,6 +12,7 @@ import font from './effects/font';
 import graphicHelper from './effects/graphicHelper';
 import loader from './effects/loader';
 import midi from './effects/midi';
+import nestedCodeBlocksOpener from './effects/codeBlocks/nestedCodeBlocksOpener';
 import pianoKeyboard from './effects/codeBlocks/pianoKeyboard';
 import sampleRate from './effects/sampleRate';
 import save from './effects/save';
@@ -57,18 +58,51 @@ const defaultState: State = {
 			title: 'Dialog',
 			buttons: [{ title: 'Close', action: 'close' }],
 		},
-		codeBlocks: new Set(),
-		activeViewport: new Set(),
+		baseCodeBlock: {
+			width: 0,
+			minGridWidth: 32,
+			height: 0,
+			code: [],
+			trimmedCode: [],
+			codeColors: [],
+			codeToRender: [],
+			inputs: new Map(),
+			outputs: new Map(),
+			debuggers: new Map(),
+			switches: new Map(),
+			buttons: new Map(),
+			pianoKeyboards: new Map(),
+			bufferPlotters: new Map(),
+			cursor: { col: 0, row: 0, x: 0, y: 0 },
+			id: '',
+			gaps: new Map(),
+			errorMessages: new Map(),
+			x: 0,
+			y: 0,
+			offsetX: 0,
+			offsetY: 0,
+			gridX: 0,
+			gridY: 0,
+			isOpen: true,
+			padLength: 1,
+			// @ts-ignore
+			parent: undefined,
+			viewport: {
+				x: 0,
+				y: 0,
+			},
+			codeBlocks: new Set(),
+		},
+		// @ts-ignore
+		activeViewport: undefined,
 		outputsByWordAddress: new Map(),
-		viewport: {
+		globalViewport: {
 			width: 0,
 			height: 0,
 			roundedHeight: 0,
 			roundedWidth: 0,
 			vGrid: 8,
 			hGrid: 16,
-			x: 0,
-			y: 0,
 			borderLineCoordinates: {
 				top: { startX: 0, startY: 0, endX: 0, endY: 0 },
 				right: { startX: 0, startY: 0, endX: 0, endY: 0 },
@@ -112,6 +146,9 @@ const defaultState: State = {
 	},
 };
 
+defaultState.graphicHelper.activeViewport = defaultState.graphicHelper.baseCodeBlock;
+defaultState.graphicHelper.baseCodeBlock.parent = defaultState.graphicHelper.baseCodeBlock;
+
 export default function init(events: EventDispatcher, project: Project, options: Partial<Options>): State {
 	const state = { ...defaultState, project, options: { ...defaultState.options, ...options } };
 	midi(state, events);
@@ -119,6 +156,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	sampleRate(state, events);
 	codeBlockDragger(state, events);
 	codeBlockOpener(state, events);
+	nestedCodeBlocksOpener(state, events);
 	_switch(state, events);
 	button(state, events);
 	pianoKeyboard(state, events);
