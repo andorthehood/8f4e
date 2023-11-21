@@ -1,6 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 
-import { CodeBlockGraphicData, State } from '../../../state/types';
+import { CodeBlockGraphicData, State } from '../../../../state/types';
 
 export default function drawer(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {
@@ -9,10 +9,8 @@ export default function drawer(engine: Engine, state: State, codeBlock: CodeBloc
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.pianoKeys);
 
-	for (const [
-		,
-		{ x, y, keyWidth, pressedKeysListMemory, pressedNumberOfKeysMemory, startingNumber },
-	] of codeBlock.pianoKeyboards) {
+	for (const [, { x, y, keyWidth, pressedKeysListMemory, pressedNumberOfKeysMemory, startingNumber }] of codeBlock
+		.extras.pianoKeyboards) {
 		engine.startGroup(x, y);
 
 		const memoryBuffer = pressedKeysListMemory.isInteger

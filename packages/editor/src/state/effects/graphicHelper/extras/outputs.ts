@@ -1,8 +1,8 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { CodeBlockGraphicData, Output, State } from '../../types';
-import { gapCalculator } from '../../helpers/editor';
-import { getModuleId } from '../../helpers/codeParsers';
+import { CodeBlockGraphicData, Output, State } from '../../../types';
+import { gapCalculator } from '../../../helpers/editor';
+import { getModuleId } from '../../../helpers/codeParsers';
 
 export function parseOutputs(code: string[]) {
 	return code.reduce((acc, line, index) => {
@@ -16,7 +16,7 @@ export function parseOutputs(code: string[]) {
 }
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.outputs.clear();
+	graphicData.extras.outputs.clear();
 	parseOutputs(graphicData.trimmedCode).forEach(output => {
 		const memory = state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(output.id);
 
@@ -36,7 +36,7 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 			memory,
 		};
 
-		graphicData.outputs.set(output.id, out);
+		graphicData.extras.outputs.set(output.id, out);
 		state.graphicHelper.outputsByWordAddress.set(memory.byteAddress, out);
 	});
 }
