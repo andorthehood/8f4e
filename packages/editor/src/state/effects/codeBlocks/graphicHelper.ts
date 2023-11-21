@@ -1,19 +1,20 @@
 import { instructions } from '@8f4e/compiler';
 
-import bufferPlotters from './graphicHelper/extras/bufferPlotters';
-import buttons from './graphicHelper/extras/buttons';
-import debuggers from './graphicHelper/extras/debuggers';
-import errorMessages from './graphicHelper/extras/errorMessages';
-import gaps from './graphicHelper/gaps';
-import inputs from './graphicHelper/extras/inputs';
-import outputs from './graphicHelper/extras/outputs';
-import pianoKeyboards from './graphicHelper/extras/pianoKeyboards';
-import positionOffsetters from './graphicHelper/positionOffsetters';
-import switches from './graphicHelper/extras/switches';
-import { CodeBlockClickEvent } from './codeBlocks/codeBlockDragger';
+import bufferPlotters from './extras/bufferPlotters/codeParser';
+import buttons from './extras/buttons/codeParser';
+import debuggers from './extras/debuggers/codeParser';
+import errorMessages from './extras/errorMessages/errorMessages';
+import gaps from './gaps';
+import inputs from './extras/inputs/codeParser';
+import outputs from './extras/outputs/codeParser';
+import pianoKeyboards from './extras/pianoKeyboard/codeParser';
+import positionOffsetters from './positionOffsetters';
+import switches from './extras/switches/codeParser';
+import { CodeBlockClickEvent } from './codeBlockDragger';
+import { CodeBlockAddedEvent } from './codeBlockCreator';
 
-import { EventDispatcher } from '../../events';
-import { CodeBlockGraphicData, State } from '../types';
+import { EventDispatcher } from '../../../events';
+import { CodeBlockGraphicData, State } from '../../types';
 import {
 	backSpace,
 	enter,
@@ -22,9 +23,9 @@ import {
 	moveCaret,
 	reverseGapCalculator,
 	type,
-} from '../helpers/editor';
-import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../helpers/codeParsers';
-import { InternalKeyboardEvent } from '../../events/humanInterface';
+} from '../../helpers/editor';
+import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
+import { InternalKeyboardEvent } from '../../../events/humanInterface';
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
@@ -155,7 +156,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
-	events.on('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
+	events.on<CodeBlockAddedEvent>('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('init', updateGraphicsAll);
 	events.on('spriteSheetRerendered', updateGraphicsAll);
 	events.on<InternalKeyboardEvent>('keydown', onKeydown);
