@@ -1,15 +1,15 @@
 import { instructions } from '@8f4e/compiler';
 
-import bufferPlotters from './graphicHelper/bufferPlotters';
-import buttons from './graphicHelper/buttons';
-import debuggers from './graphicHelper/debuggers';
-import errorMessages from './graphicHelper/errorMessages';
+import bufferPlotters from './graphicHelper/extras/bufferPlotters';
+import buttons from './graphicHelper/extras/buttons';
+import debuggers from './graphicHelper/extras/debuggers';
+import errorMessages from './graphicHelper/extras/errorMessages';
 import gaps from './graphicHelper/gaps';
-import inputs from './graphicHelper/inputs';
-import outputs from './graphicHelper/outputs';
-import pianoKeyboards from './graphicHelper/pianoKeyboards';
+import inputs from './graphicHelper/extras/inputs';
+import outputs from './graphicHelper/extras/outputs';
+import pianoKeyboards from './graphicHelper/extras/pianoKeyboards';
 import positionOffsetters from './graphicHelper/positionOffsetters';
-import switches from './graphicHelper/switches';
+import switches from './graphicHelper/extras/switches';
 
 import { EventDispatcher, EventHandler, EventObject } from '../../events';
 import { CodeBlockGraphicData, State } from '../types';
@@ -83,8 +83,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		positionOffsetters(graphicData, state);
 
 		graphicData.height = graphicData.codeToRender.length * state.graphicHelper.globalViewport.hGrid;
-		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.padLength + 2)) * state.graphicHelper.globalViewport.vGrid;
-		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.graphicHelper.globalViewport.hGrid;
+		graphicData.cursor.x =
+			(graphicData.cursor.col + (graphicData.padLength + 2)) * state.graphicHelper.globalViewport.vGrid;
+		graphicData.cursor.y =
+			gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.graphicHelper.globalViewport.hGrid;
 		graphicData.id = getModuleId(graphicData.code) || '';
 	};
 

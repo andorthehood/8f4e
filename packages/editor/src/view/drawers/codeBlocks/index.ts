@@ -1,12 +1,12 @@
 import { Engine } from '@8f4e/2d-engine';
 
-import drawConnectors from './connectors';
-import drawPlotters from './plotters';
-import drawDebuggers from './debuggers';
-import drawSwitches from './switches';
-import drawButtons from './buttons';
-import drawErrorMessages from './errorMessages';
-import drawPianoKeyboards from './pianoKeyboards';
+import drawConnectors from './extras/connectors';
+import drawPlotters from './extras/plotters';
+import drawDebuggers from './extras/debuggers';
+import drawSwitches from './extras/switches';
+import drawButtons from './extras/buttons';
+import drawErrorMessages from './extras/errorMessages';
+import drawPianoKeyboards from './extras/pianoKeyboards';
 
 import { State } from '../../../state/types';
 

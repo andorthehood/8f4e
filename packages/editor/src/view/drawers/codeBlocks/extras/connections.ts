@@ -1,6 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 
-import { State } from '../../state/types';
+import { State } from '../../../../state/types';
 
 export default function drawConnections(engine: Engine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {
@@ -13,7 +13,7 @@ export default function drawConnections(engine: Engine, state: State): void {
 
 	for (const codeBlock of state.graphicHelper.activeViewport.codeBlocks) {
 		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
-		for (const [, { x, y, id }] of codeBlock.inputs) {
+		for (const [, { x, y, id }] of codeBlock.extras.inputs) {
 			const memory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(id);
 
 			if (!memory || state.compiler.memoryBuffer[memory.wordAddress] === 0) {
