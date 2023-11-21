@@ -1,9 +1,9 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
-import { gapCalculator } from '../../helpers/editor';
-import { parseCode } from '../../helpers/multiLineCodeParser';
-import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
+import { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../types';
+import { gapCalculator } from '../../../helpers/editor';
+import { parseCode } from '../../../helpers/multiLineCodeParser';
+import resolveMemoryIdentifier from '../../../helpers/resolveMemoryIdentifier';
 
 export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string, startingNumber: number) {
 	const pressedKeys = new Set<number>();
@@ -58,7 +58,7 @@ export function parsePianoKeyboards(code: string[]) {
 }
 
 export default function pianoKeyboards(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.pianoKeyboards.clear();
+	graphicData.extras.pianoKeyboards.clear();
 	parsePianoKeyboards(graphicData.trimmedCode).forEach(pianoKeyboard => {
 		const memoryIdentifierKeysList = resolveMemoryIdentifier(
 			state,
@@ -77,7 +77,7 @@ export default function pianoKeyboards(graphicData: CodeBlockGraphicData, state:
 
 		graphicData.minGridWidth = 48;
 
-		graphicData.pianoKeyboards.set(pianoKeyboard.lineNumber, {
+		graphicData.extras.pianoKeyboards.set(pianoKeyboard.lineNumber, {
 			x: 0,
 			y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.globalViewport.hGrid,
 			width: 24 * (state.graphicHelper.globalViewport.vGrid * 2),

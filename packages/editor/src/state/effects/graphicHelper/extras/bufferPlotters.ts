@@ -1,8 +1,8 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
-import { gapCalculator } from '../../helpers/editor';
-import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
+import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../../types';
+import { gapCalculator } from '../../../helpers/editor';
+import resolveMemoryIdentifier from '../../../helpers/resolveMemoryIdentifier';
 
 export function parseBufferPlotters(code: string[]) {
 	return code.reduce(
@@ -42,7 +42,7 @@ export function parseBufferPlotters(code: string[]) {
 }
 
 export default function bufferPlotters(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.bufferPlotters.clear();
+	graphicData.extras.bufferPlotters.clear();
 	parseBufferPlotters(graphicData.trimmedCode).forEach(plotter => {
 		const buffer = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferMemoryId);
 		const bufferLength = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferLengthMemoryId);
@@ -51,7 +51,7 @@ export default function bufferPlotters(graphicData: CodeBlockGraphicData, state:
 			return;
 		}
 
-		graphicData.bufferPlotters.set(plotter.bufferMemoryId, {
+		graphicData.extras.bufferPlotters.set(plotter.bufferMemoryId, {
 			width: state.graphicHelper.globalViewport.vGrid * 2,
 			height: state.graphicHelper.globalViewport.hGrid,
 			x: 0,
