@@ -1,9 +1,9 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
-import { gapCalculator } from '../../helpers/editor';
+import { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../types';
+import { gapCalculator } from '../../../helpers/editor';
 
-export function parseSwitches(code: string[]) {
+export function parseButtons(code: string[]) {
 	return code.reduce((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
 			never,
@@ -13,7 +13,7 @@ export function parseSwitches(code: string[]) {
 			string
 		];
 
-		if (instruction === 'switch') {
+		if (instruction === 'button') {
 			return [
 				...acc,
 				{ id: args[0], lineNumber: index, onValue: parseInt(args[2], 10) || 1, offValue: parseInt(args[1], 10) || 0 },
@@ -24,9 +24,9 @@ export function parseSwitches(code: string[]) {
 }
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.switches.clear();
-	parseSwitches(graphicData.trimmedCode).forEach(_switch => {
-		graphicData.switches.set(_switch.id, {
+	graphicData.extras.buttons.clear();
+	parseButtons(graphicData.trimmedCode).forEach(_switch => {
+		graphicData.extras.buttons.set(_switch.id, {
 			width: state.graphicHelper.globalViewport.vGrid * 4,
 			height: state.graphicHelper.globalViewport.hGrid,
 			x: graphicData.width - 4 * state.graphicHelper.globalViewport.vGrid,
