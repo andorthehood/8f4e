@@ -45,7 +45,7 @@
 		"husky": "7.0.4",
 		"jest": "27.4.5",
 		"jest-image-snapshot": "4.5.1",
-		"jest-puppeteer": "6.0.3",
+		"jest-puppeteer": "9.0.1",
 		"lint-staged": "12.1.4",
 		"parcel": "2.8.3",
 		"puppeteer": "9.1.1",
