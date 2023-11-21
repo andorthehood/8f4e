@@ -6,7 +6,8 @@
 		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"skipLibCheck": true
 	},
 	"exclude": ["node_modules", "src/**/*.test.ts"],
 	"include": ["src/**/*.ts"],
