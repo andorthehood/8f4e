@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../events';
 import { getModuleId } from '../helpers/codeParsers';
-import { CodeBlock, CodeBlock, CodeBlockGraphicData, EditorSettings, Project, State } from '../types';
+import { CodeBlock, CodeBlockGraphicData, EditorSettings, Project, State } from '../types';
 
 function convertGraphicDataToProjectStructure(
 	codeBlocks: CodeBlockGraphicData[],
