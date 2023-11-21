@@ -10,8 +10,9 @@ import outputs from './graphicHelper/extras/outputs';
 import pianoKeyboards from './graphicHelper/extras/pianoKeyboards';
 import positionOffsetters from './graphicHelper/positionOffsetters';
 import switches from './graphicHelper/extras/switches';
+import { CodeBlockClickEvent } from './codeBlocks/codeBlockDragger';
 
-import { EventDispatcher, EventHandler, EventObject } from '../../events';
+import { EventDispatcher } from '../../events';
 import { CodeBlockGraphicData, State } from '../types';
 import {
 	backSpace,
@@ -23,9 +24,10 @@ import {
 	type,
 } from '../helpers/editor';
 import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../helpers/codeParsers';
+import { InternalKeyboardEvent } from '../../events/humanInterface';
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
-	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: EventObject) {
+	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
 		const [row, col] = moveCaret(
 			codeBlock.code,
 			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.globalViewport.hGrid), codeBlock.gaps),
@@ -90,7 +92,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.id = getModuleId(graphicData.code) || '';
 	};
 
-	const onKeydown: EventHandler = function (event) {
+	const onKeydown = function (event: InternalKeyboardEvent) {
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
 		}
@@ -99,7 +101,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 		let newPosition: [number, number] = [codeBlock.cursor.row, codeBlock.cursor.col];
 
-		switch (event?.key) {
+		switch (event.key) {
 			case undefined:
 				break;
 			case 'ArrowLeft':
@@ -150,11 +152,11 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	};
 
 	events.on('buildError', updateGraphicsAll);
-	events.on('codeBlockClick', onCodeBlockClick);
-	events.on('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
+	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
+	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('init', updateGraphicsAll);
 	events.on('spriteSheetRerendered', updateGraphicsAll);
-	events.on('keydown', onKeydown);
+	events.on<InternalKeyboardEvent>('keydown', onKeydown);
 }

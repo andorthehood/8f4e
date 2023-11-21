@@ -1,4 +1,4 @@
-import { MenuGenerator } from '../../types';
+import { CodeBlockGraphicData, MenuGenerator } from '../../types';
 
 export const mainMenu: MenuGenerator = state => [
 	...(state.graphicHelper.activeViewport !== state.graphicHelper.activeViewport.parent
@@ -56,6 +56,10 @@ export const midiInfoMenu: MenuGenerator = state => [
 		disabled: true,
 	})),
 ];
+
+export interface OpenGroupEvent {
+	codeBlock: CodeBlockGraphicData;
+}
 
 export const moduleMenu: MenuGenerator = state => [
 	{
