@@ -4,6 +4,10 @@ import { EventDispatcher } from '../../../events';
 import { getModuleId } from '../../helpers/codeParsers';
 import { CodeBlockGraphicData, State } from '../../types';
 
+export interface CodeBlockAddedEvent {
+	codeBlock: CodeBlockGraphicData;
+}
+
 const nameList = [
 	'quark',
 	'electron',

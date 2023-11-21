@@ -1,8 +1,8 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { CodeBlockGraphicData, Output, State } from '../../../types';
-import { gapCalculator } from '../../../helpers/editor';
-import { getModuleId } from '../../../helpers/codeParsers';
+import { CodeBlockGraphicData, Output, State } from '../../../../types';
+import { gapCalculator } from '../../../../helpers/editor';
+import { getModuleId } from '../../../../helpers/codeParsers';
 
 export function parseOutputs(code: string[]) {
 	return code.reduce((acc, line, index) => {
