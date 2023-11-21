@@ -1,9 +1,9 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../types';
-import { gapCalculator } from '../../../helpers/editor';
-import { parseCode } from '../../../helpers/multiLineCodeParser';
-import resolveMemoryIdentifier from '../../../helpers/resolveMemoryIdentifier';
+import { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../../types';
+import { gapCalculator } from '../../../../helpers/editor';
+import { parseCode } from '../../../../helpers/multiLineCodeParser';
+import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
 
 export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string, startingNumber: number) {
 	const pressedKeys = new Set<number>();
