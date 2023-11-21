@@ -1,10 +1,10 @@
 import { Engine } from '@8f4e/2d-engine';
 import { Icon } from '@8f4e/sprite-generator';
 
-import { CodeBlockGraphicData, State } from '../../../state/types';
+import { CodeBlockGraphicData, State } from '../../../../state/types';
 
 export default function drawSwitches(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
-	for (const [, { x, y, id: debuggerId, onValue, offValue }] of codeBlock.buttons) {
+	for (const [, { x, y, id: debuggerId, onValue, offValue }] of codeBlock.extras.buttons) {
 		const memory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(debuggerId);
 
 		if (!memory || !state.graphicHelper.spriteLookups) {

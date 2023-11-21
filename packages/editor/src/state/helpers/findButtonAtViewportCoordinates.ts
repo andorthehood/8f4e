@@ -1,4 +1,4 @@
-import { GraphicHelper, CodeBlockGraphicData, Switch } from '../types';
+import { CodeBlockGraphicData, GraphicHelper, Switch } from '../types';
 
 export default function findButtonAtViewportCoordinates(
 	graphicHelper: GraphicHelper,
@@ -6,7 +6,7 @@ export default function findButtonAtViewportCoordinates(
 	x: number,
 	y: number
 ): Switch | undefined {
-	return Array.from(codeBlock.buttons.values()).find(button => {
+	return Array.from(codeBlock.extras.buttons.values()).find(button => {
 		return (
 			x >= codeBlock.x + codeBlock.offsetX + button.x - graphicHelper.activeViewport.viewport.x &&
 			x <= codeBlock.x + codeBlock.offsetX + button.width + button.x - graphicHelper.activeViewport.viewport.x &&
