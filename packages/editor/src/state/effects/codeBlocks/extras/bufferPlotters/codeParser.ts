@@ -1,8 +1,8 @@
 import { Instruction, instructionParser } from '@8f4e/compiler';
 
-import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../../types';
-import { gapCalculator } from '../../../helpers/editor';
-import resolveMemoryIdentifier from '../../../helpers/resolveMemoryIdentifier';
+import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../../../types';
+import { gapCalculator } from '../../../../helpers/editor';
+import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
 
 export function parseBufferPlotters(code: string[]) {
 	return code.reduce(

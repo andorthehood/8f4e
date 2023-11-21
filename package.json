@@ -65,7 +65,7 @@
 	"lint-staged": {
 		"*.ts": [
 			"eslint --cache --fix",
-			"tsc --noEmit",
+			"bash -c tsc --noEmit",
 			"jest --findRelatedTests"
 		]
 	},

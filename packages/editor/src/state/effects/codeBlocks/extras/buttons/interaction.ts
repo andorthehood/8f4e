@@ -1,8 +1,8 @@
 import { MemoryItem } from '@8f4e/compiler';
 
-import { EventDispatcher } from '../../../events';
-import findButtonAtViewportCoordinates from '../../helpers/findButtonAtViewportCoordinates';
-import { State, Switch } from '../../types';
+import { EventDispatcher } from '../../../../../events';
+import findButtonAtViewportCoordinates from '../../../../helpers/findButtonAtViewportCoordinates';
+import { State, Switch } from '../../../../types';
 
 export default function button(state: State, events: EventDispatcher): () => void {
 	let lastPushedButton: Switch | undefined;
