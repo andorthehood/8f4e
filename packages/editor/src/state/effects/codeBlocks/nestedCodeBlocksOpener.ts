@@ -1,8 +1,9 @@
 import { EventDispatcher } from '../../../events';
-import { CodeBlockGraphicData, State } from '../../types';
+import { State } from '../../types';
+import { OpenGroupEvent } from '../menu/menus';
 
 export default function nestedCodeBlocksOpener(state: State, events: EventDispatcher): () => void {
-	const onOpenGroup = function ({ codeBlock }: { codeBlock: CodeBlockGraphicData }) {
+	const onOpenGroup = function ({ codeBlock }: OpenGroupEvent) {
 		state.graphicHelper.activeViewport = codeBlock;
 		events.dispatch('init');
 	};

@@ -1,3 +1,5 @@
+import { CodeBlockClickEvent } from './codeBlockDragger';
+
 import { EventDispatcher } from '../../../events';
 import { State } from '../../types';
 
@@ -10,7 +12,7 @@ export default function codeBlockOpener(state: State, events: EventDispatcher): 
 		}
 	};
 
-	events.on('codeBlockClick', onCodeBlockClick);
+	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 
 	return () => {
 		events.off('codeBlockClick', onCodeBlockClick);

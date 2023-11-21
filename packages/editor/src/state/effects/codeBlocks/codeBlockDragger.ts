@@ -1,41 +1,52 @@
 import { EventDispatcher } from '../../../events';
+import { InternalMouseEvent } from '../../../events/humanInterface';
 import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtViewportCoordinates';
-import { State } from '../../types';
+import { CodeBlockGraphicData, State } from '../../types';
+
+export interface CodeBlockClickEvent {
+	x: number;
+	y: number;
+	relativeX: number;
+	relativeY: number;
+	codeBlock: CodeBlockGraphicData;
+}
 
 export default function codeBlockDragger(state: State, events: EventDispatcher): () => void {
 	let startingPosition: { x: number; y: number } | undefined;
-	function onMouseDown({ x, y }) {
+	function onMouseDown({ x, y }: InternalMouseEvent) {
 		state.graphicHelper.draggedCodeBlock = findCodeBlockAtViewportCoordinates(state.graphicHelper, x, y);
+		const draggedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
-		if (!state.graphicHelper.draggedCodeBlock) {
+		if (!draggedCodeBlock) {
 			return;
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
 		startingPosition = {
-			x: state.graphicHelper.draggedCodeBlock.x,
-			y: state.graphicHelper.draggedCodeBlock.y,
+			x: draggedCodeBlock.x,
+			y: draggedCodeBlock.y,
 		};
 
 		const relativeX = Math.abs(
-			x -
-				(state.graphicHelper.draggedCodeBlock.x +
-					state.graphicHelper.draggedCodeBlock.offsetX -
-					state.graphicHelper.activeViewport.viewport.x)
+			x - (draggedCodeBlock.x + draggedCodeBlock.offsetX - state.graphicHelper.activeViewport.viewport.x)
 		);
 		const relativeY = Math.abs(
-			y -
-				(state.graphicHelper.draggedCodeBlock.y +
-					state.graphicHelper.draggedCodeBlock.offsetY -
-					state.graphicHelper.activeViewport.viewport.y)
+			y - (draggedCodeBlock.y + draggedCodeBlock.offsetY - state.graphicHelper.activeViewport.viewport.y)
 		);
-		events.dispatch('codeBlockClick', { x, y, relativeX, relativeY, codeBlock: state.graphicHelper.draggedCodeBlock });
+
+		events.dispatch<CodeBlockClickEvent>('codeBlockClick', {
+			x,
+			y,
+			relativeX,
+			relativeY,
+			codeBlock: draggedCodeBlock,
+		});
 
 		// Bring dragged module forward.
-		state.graphicHelper.activeViewport.codeBlocks.delete(state.graphicHelper.draggedCodeBlock);
-		state.graphicHelper.activeViewport.codeBlocks.add(state.graphicHelper.draggedCodeBlock);
+		state.graphicHelper.activeViewport.codeBlocks.delete(draggedCodeBlock);
+		state.graphicHelper.activeViewport.codeBlocks.add(draggedCodeBlock);
 	}
 
-	function onMouseMove(event) {
+	function onMouseMove(event: InternalMouseEvent) {
 		const { movementX, movementY } = event;
 		if (state.graphicHelper.draggedCodeBlock) {
 			state.graphicHelper.draggedCodeBlock.x += movementX;
