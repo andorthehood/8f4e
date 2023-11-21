@@ -167,8 +167,6 @@ export interface CodeBlockGraphicData {
 	width: number;
 	minGridWidth: number;
 	height: number;
-	inputs: Map<string, Input>;
-	outputs: Map<string, Output>;
 	code: string[];
 	trimmedCode: string[];
 	padLength: number;
@@ -177,11 +175,6 @@ export interface CodeBlockGraphicData {
 	gaps: Map<number, { size: number }>;
 	cursor: { col: number; row: number; x: number; y: number };
 	id: string;
-	debuggers: Map<string, Debugger>;
-	bufferPlotters: Map<string, BufferPlotter>;
-	switches: Map<string, Switch>;
-	buttons: Map<string, Switch>;
-	pianoKeyboards: Map<number, PianoKeyboard>;
 	positionOffsetterXWordAddress?: number;
 	positionOffsetterYWordAddress?: number;
 	x: number;
@@ -191,14 +184,23 @@ export interface CodeBlockGraphicData {
 	gridX: number;
 	gridY: number;
 	isOpen: boolean;
-	errorMessages: Map<
-		number,
-		{
-			message: string[];
-			x: number;
-			y: number;
-		}
-	>;
+	extras: {
+		inputs: Map<string, Input>;
+		outputs: Map<string, Output>;
+		debuggers: Map<string, Debugger>;
+		bufferPlotters: Map<string, BufferPlotter>;
+		switches: Map<string, Switch>;
+		buttons: Map<string, Switch>;
+		pianoKeyboards: Map<number, PianoKeyboard>;
+		errorMessages: Map<
+			number,
+			{
+				message: string[];
+				x: number;
+				y: number;
+			}
+		>;
+	};
 	viewport: Viewport;
 	parent: CodeBlockGraphicData;
 	codeBlocks: Set<CodeBlockGraphicData>;
