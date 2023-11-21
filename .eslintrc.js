@@ -30,17 +30,5 @@ module.exports = {
 				useTabs: true,
 			},
 		],
-		'sort-imports': [
-			'warn',
-			{
-				allowSeparatedGroups: true,
-				ignoreCase: false,
-				ignoreDeclarationSort: false,
-				ignoreMemberSort: false,
-				memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
-			},
-		],
-
-		'sort-keys': ['warn', 'asc', { caseSensitive: true, natural: false }],
 	},
 };
