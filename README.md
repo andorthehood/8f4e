@@ -9,6 +9,8 @@ The goal of this programming language is to help sound designers in integrating 
 ## Other distinctive features:
 - In 8f4e, variables declared one after another in the code are allocated at memory addresses that follow each other. For example, if an `int foo` is at the 256th byte, then the `int bar` declared next will be at the 260th byte, assuming a word size of 4 bytes.
 - Runtime memory allocation is not supported in 8f4e, developers must pre-plan their software's memory needs while coding. This limitation ensures that memory addresses remain predictable.
+- Buffers in 8f4e always occupy contiguous spaces in memory, allowing for straightforward and efficient iteration.
+- The language utilizes C-style pointer notations and introduces a new notation that retrieves the address of the last word in a buffer.
 - It allows for the modification of variable values in real-time, enabling changes to be made while the program is running, without requiring recompilation.
 
 ## Why the stack-oriented design?
