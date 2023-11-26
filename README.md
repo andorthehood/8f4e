@@ -12,6 +12,7 @@ The goal of this programming language is to help sound designers in integrating 
 - Buffers in 8f4e always occupy contiguous spaces in memory, allowing for straightforward and efficient iteration.
 - Runtime memory allocation is not supported in 8f4e, developers must pre-plan their software's memory needs while coding. This was a design choice favoring performance and efficiency, this limitation also ensures that memory addresses remain predictable.
 - The language utilizes C-style pointer notations and introduces a new notation: `buffer&` that retrieves the address of the last word in a buffer.
+- For performance reasons, 8f4e does not include transcendental functions in its standard library. Instead, it encourages the use of approximations for these functions.
 
 ## Why the stack-oriented design?
 
