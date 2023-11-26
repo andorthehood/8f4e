@@ -2,17 +2,21 @@
 
 # 8f4e
 
-8f4e is stack-oriented programming language with a semi-visual interface specifically designed for generating and processing real-time audio signals. One if its unique features is the ability to change variable values without needing to recompile the code, and its representation of pointers using interconnected wires.
+8f4e is a stack-oriented programming language with a semi-visual interface specifically designed for generating and processing real-time audio signals. One of its unique features is its representation of pointers using interconnected wires.
 
-The objective of this programming language is to help sound designers in integrating complex interactive and/or generative audio components into their web applications with maximum efficiency.
+The goal of this programming language is to help sound designers in integrating complex interactive and/or generative audio components into their web applications with maximum efficiency.
+
+## Other distinctive features:
+- In 8f4e, variables declared one after another in the code are allocated at memory addresses that follow each other. For example, if an `int foo` is at the 256th byte, then the `int bar` declared next will be at the 260th byte, assuming a word size of 4 bytes.
+- Runtime memory allocation is not supported in 8f4e, developers must pre-plan their software's memory needs while coding. This limitation ensures that memory addresses remain predictable.
+- It allows for the modification of variable values in real-time, enabling changes to be made while the program is running, without requiring recompilation.
 
 ## Why the stack-oriented design?
 
-The WebAssembly Virtual Machine uses a stack machine architecture, which offers several advantages for cross-platform compatibility. Stack machines have a simpler instruction set and fewer hardware dependencies than register-based machines, making them easier to port to different platforms.
+The natural environment for 8f4e are virtual machines like WebAssembly, which often use a stack machine architecture. Stack machines have fewer hardware dependencies than register-based machines, making them easier to port to different platforms.
+A programming language that is designed with a stack-oriented approach can perform operations on the stack in a manner that is both efficient and natural, with instructions that can be easily mapped to those of the stack machine.
 
-A programming language that is designed with a stack-oriented approach can perform operations on the stack in a manner that is both efficient and natural, with instructions that can be easily mapped to those of the stack machine. Therefore, a programming language with a stack-oriented design is a natural fit for the WebAssembly Virtual Machine.
-
-## What does semi-visual mean?
+## What do you mean by semi-visual interface?
 
 Visual programming languages use graphical elements, such as icons, symbols, and flowcharts, to represent programming concepts and logic, instead of traditional text-based code. 8f4e combines these graphical elements with text-based code.
 
