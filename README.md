@@ -8,13 +8,14 @@ The goal of this programming language is to help sound designers in integrating 
 
 ## Other distinctive features:
 - The syntax and commands of 8f4e were inspired by assembly languages, but unlike the typical cryptic operation names like `cndjmp`, 8f4e uses more descriptive commands such as `branchIfTrue`.
+- The code is organized into modules, each containing variable declarations and a sequence of commands.
 - It allows for the modification of variable values in real-time, while the program is running, without requiring recompilation.
 - In 8f4e, variables declared one after another in the code are allocated at memory addresses that follow each other. For example, if an `int foo` is at the 256th byte, then the `int bar` declared next will be at the 260th byte, assuming a word size of 4 bytes.
 - Buffers in 8f4e always occupy contiguous spaces in memory, allowing for straightforward and efficient iteration.
 - Runtime memory allocation is not supported in 8f4e; developers must pre-plan their software's memory needs during the coding process. This design choice, favoring performance and efficiency, also ensures that memory addresses remain predictable.
 - The language utilizes C-style pointer notations and introduces a new notation: `buffer&` that retrieves the address of the last word in a buffer.
-- For performance reasons, 8f4e does not include transcendental functions in its standard library. Instead, it encourages the use of polynomial approximations for these functions.
 - The execution order of various code modules is determined by their dependencies. If a module's output is needed as input for others, it is executed first. This creates a sequential flow, where each module executes only after receiving the necessary data from a preceding module's output. This dependency-based ordering ensures that each module gets the necessary data at the right time for the entire system to function effectively.
+- For performance reasons, 8f4e does not include transcendental functions in its standard library. Instead, it encourages the use of polynomial approximations for these functions.
 
 ## Why the stack-oriented design?
 
