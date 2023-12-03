@@ -7,7 +7,7 @@
 The goal of this programming language is to help sound designers in integrating complex interactive and/or generative audio components into their web applications with maximum efficiency.
 
 ## Other distinctive features:
-- The syntax and commands of 8f4e were inspired by assembly languages, but unlike the typical cryptic operation names like `cndjmp`, 8f4e uses more descriptive commands such as `branchIfTrue`.
+- The syntax and commands of 8f4e were inspired by assembly languages, but instead of the typical cryptic mnemonics like `cndjmp`, 8f4e uses more descriptive operation names such as `branchIfTrue`.
 - The code is organized into modules, each containing variable declarations and a sequence of commands.
 - It allows for the modification of variable values in real-time, while the program is running, without requiring recompilation.
 - In 8f4e, variables declared one after another in the code are allocated at memory addresses that follow each other. For example, if an `int foo` is at the 256th byte, then the `int bar` declared next will be at the 260th byte, assuming a word size of 4 bytes.
