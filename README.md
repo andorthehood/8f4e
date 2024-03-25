@@ -2,7 +2,7 @@
 
 # 8f4e
 
-Welcome to what I've dubbed my ultimate 'mental masturbation' project. This whole thing started because I like creating problems just to experience the satisfaction of solving them. It doesn't really serve a bigger purpose or offer much to the public, and there's probably better stuff out there for the same job. The only reason this is public is because I needed version management and didn't want to pay for it.
+Welcome to what refer to as my biggest 'mental masturbation' project. This whole thing started because I like creating problems just to experience the satisfaction of solving them. It doesn't really serve a bigger purpose or offer much to the public, and there's probably better stuff out there for the same job. The only reason this is public is because I needed version management and didn't want to pay for it.
 
 8f4e is a stack-oriented programming language with a semi-visual interface specifically designed for generating and processing real-time audio signals. One of its unique features is its representation of pointers using interconnected wires.
 
