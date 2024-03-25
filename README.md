@@ -4,7 +4,7 @@ Welcome to what refer to as my biggest “mental masturbation” project. This w
 
 # 8f4e
 
-8f4e is a stack-oriented programming language with a semi-visual interface specifically designed for generating and processing real-time audio signals. One of its unique features is its representation of pointers using interconnected wires.
+8f4e is a stack-oriented programming language with a semi-visual interface specifically designed for making algorave music. One of its unique features is its representation of pointers using interconnected wires.
 
 ## Other distinctive features:
 - The syntax and commands of 8f4e were inspired by assembly languages, but instead of the typical cryptic mnemonics like `cndjmp`, 8f4e uses more descriptive operation names such as `branchIfTrue`.
