@@ -17,7 +17,7 @@ Welcome to what refer to as my biggest “mental masturbation” project. This w
 - It's not memory safe, pointers can point to anything within the memory space of the program.
 - The execution order of various code modules is determined by their dependencies. If a module's output is needed as input for others, it is executed first. This creates a sequential flow, where each module executes only after receiving the necessary data from a preceding module's output. This dependency-based ordering ensures that each module gets the necessary data at the right time for the entire system to function effectively.
 - For performance reasons, 8f4e does not include transcendental functions in its standard library. Instead, it encourages the use of polynomial approximations for these functions.
-- It's Turing complete.
+- It's Turing complete, but good luck implementing anything like trigonometric functions.
 
 ## Why the stack-oriented design?
 
