@@ -27,7 +27,3 @@ A programming language that is designed with a stack-oriented approach can perfo
 ## What do you mean by semi-visual interface?
 
 Visual programming languages use graphical elements, such as icons, symbols, and flowcharts, to represent programming concepts and logic, instead of traditional text-based code. 8f4e combines these graphical elements with text-based code.
-
-## Why is this better than exporting a Max/Msp algorithm to JavaScript?
-
-Although Max/Masp may be easier to learn, 8f4e offers superior flexibility, efficiency, and the ability to test audio algorithms in the browser with live-edit capability thanks to its fast compilation time.
