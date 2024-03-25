@@ -10,7 +10,7 @@ Welcome to what refer to as my biggest “mental masturbation” project. This w
 - The syntax and commands of 8f4e were inspired by assembly languages, but instead of the typical cryptic mnemonics like `cndjmp`, 8f4e uses more descriptive operation names such as `branchIfTrue`.
 - The code is organized into modules, each containing variable declarations and a sequence of commands.
 - It allows for manual modification of variable values in real-time, while the program is running, without requiring recompilation.
-- In 8f4e, variables declared one after another in the code are allocated at memory addresses that follow each other. For example, if an `int foo` is at the 256th byte, then the `int bar` declared next will be at the 260th byte, assuming a word size of 4 bytes.
+- In 8f4e, variables which are declared one after another in the code are allocated at memory addresses that follow each other. For example, if an `int foo` is at the 256th byte, then the `int bar` declared next will be at the 260th byte, assuming a word size of 4 bytes.
 - Buffers in 8f4e always occupy contiguous spaces in memory, allowing for straightforward and efficient iteration.
 - Runtime memory allocation is not supported in 8f4e; developers must pre-plan their software's memory needs during the coding process. This design choice, favoring performance and efficiency, also ensures that memory addresses remain predictable.
 - The language utilizes C-style pointer notations and introduces a new notation: `buffer&` that retrieves the address of the last word in a buffer.
