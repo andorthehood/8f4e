@@ -62,6 +62,21 @@ Array [
         "arguments": Array [
           Object {
             "type": "identifier",
+            "value": "test",
+          },
+          Object {
+            "isInteger": true,
+            "type": "literal",
+            "value": 1,
+          },
+        ],
+        "instruction": "int",
+        "lineNumber": 7,
+      },
+      Object {
+        "arguments": Array [
+          Object {
+            "type": "identifier",
             "value": "int",
           },
           Object {
@@ -70,7 +85,7 @@ Array [
           },
         ],
         "instruction": "local",
-        "lineNumber": 9,
+        "lineNumber": 10,
       },
       Object {
         "arguments": Array [
@@ -80,7 +95,7 @@ Array [
           },
         ],
         "instruction": "push",
-        "lineNumber": 12,
+        "lineNumber": 13,
       },
       Object {
         "arguments": Array [
@@ -90,16 +105,6 @@ Array [
           },
         ],
         "instruction": "push",
-        "lineNumber": 13,
-      },
-      Object {
-        "arguments": Array [
-          Object {
-            "type": "identifier",
-            "value": "input",
-          },
-        ],
-        "instruction": "localSet",
         "lineNumber": 14,
       },
       Object {
@@ -109,29 +114,39 @@ Array [
             "value": "input",
           },
         ],
-        "instruction": "push",
+        "instruction": "localSet",
         "lineNumber": 15,
       },
       Object {
         "arguments": Array [
           Object {
-            "isInteger": true,
-            "type": "literal",
-            "value": 0,
+            "type": "identifier",
+            "value": "input",
           },
         ],
         "instruction": "push",
         "lineNumber": 16,
       },
       Object {
-        "arguments": Array [],
-        "instruction": "lessThan",
+        "arguments": Array [
+          Object {
+            "isInteger": true,
+            "type": "literal",
+            "value": 0,
+          },
+        ],
+        "instruction": "push",
         "lineNumber": 17,
       },
       Object {
         "arguments": Array [],
-        "instruction": "if",
+        "instruction": "lessThan",
         "lineNumber": 18,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "if",
+        "lineNumber": 19,
       },
       Object {
         "arguments": Array [
@@ -142,7 +157,7 @@ Array [
           },
         ],
         "instruction": "push",
-        "lineNumber": 19,
+        "lineNumber": 20,
       },
       Object {
         "arguments": Array [
@@ -152,17 +167,17 @@ Array [
           },
         ],
         "instruction": "push",
-        "lineNumber": 20,
-      },
-      Object {
-        "arguments": Array [],
-        "instruction": "sub",
         "lineNumber": 21,
       },
       Object {
         "arguments": Array [],
-        "instruction": "else",
+        "instruction": "sub",
         "lineNumber": 22,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "else",
+        "lineNumber": 23,
       },
       Object {
         "arguments": Array [
@@ -172,22 +187,22 @@ Array [
           },
         ],
         "instruction": "push",
-        "lineNumber": 23,
-      },
-      Object {
-        "arguments": Array [],
-        "instruction": "ifEnd",
         "lineNumber": 24,
       },
       Object {
         "arguments": Array [],
-        "instruction": "store",
+        "instruction": "ifEnd",
         "lineNumber": 25,
       },
       Object {
         "arguments": Array [],
-        "instruction": "moduleEnd",
+        "instruction": "store",
         "lineNumber": 26,
+      },
+      Object {
+        "arguments": Array [],
+        "instruction": "moduleEnd",
+        "lineNumber": 27,
       },
     ],
     "byteAddress": 0,
@@ -267,8 +282,21 @@ Array [
         "wordAddress": 2,
         "wordSize": 1,
       },
+      "test" => Object {
+        "byteAddress": 12,
+        "default": 1,
+        "id": "test",
+        "isInteger": true,
+        "isPointer": false,
+        "isPointingToInteger": false,
+        "isPointingToPointer": false,
+        "lineNumber": 7,
+        "type": "int",
+        "wordAddress": 3,
+        "wordSize": 1,
+      },
     },
-    "memoryWordSize": 3,
+    "memoryWordSize": 4,
     "wordAddress": 0,
   },
 ]
