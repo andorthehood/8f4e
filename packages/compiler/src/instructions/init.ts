@@ -45,8 +45,8 @@ const memory: InstructionHandler = function (line, context) {
 	if (/(\S+)\[(\d+)\]/.test(line.arguments[0].value)) {
 		const [, memoryIdentifier, offset] = line.arguments[0].value.match(/(\S+)\[(\d+)\]/) as [never, string, string];
 		const memoryItem = memory.get(memoryIdentifier);
-		if (memoryItem) {
-			memoryItem.default[parseInt(offset, 10)] = defaultValue;
+		if (memoryItem && memoryItem.default instanceof Map) {
+			memoryItem.default.set(parseInt(offset, 10), defaultValue);
 		}
 	} else {
 		const memoryItem = memory.get(line.arguments[0].value);

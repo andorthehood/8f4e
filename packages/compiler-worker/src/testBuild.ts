@@ -2,12 +2,17 @@ import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/com
 
 let previousCompiledModules: CompiledModuleLookup;
 
-function compareArray(arr1: number[], arr2: number[]): boolean {
-	return arr1.length === arr2.length && arr1.every((item, index) => item === arr2[index]);
+function compareMap(arr1: Map<number, number>, arr2: Map<number, number>): boolean {
+	return (
+		arr1.size === arr2.size &&
+		Array.from(arr1.values()).every((item, index) => item === arr2[index]) &&
+		Array.from(arr1.keys()).every((item, index) => item === arr2[index])
+	);
 }
 
 function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: CompiledModuleLookup | undefined) {
-	const changes: { wordSize: number; wordAddress: number; value: number | number[]; isInteger: boolean }[] = [];
+	const changes: { wordSize: number; wordAddress: number; value: number | Map<number, number>; isInteger: boolean }[] =
+		[];
 
 	if (!previous) {
 		return [];
@@ -25,8 +30,8 @@ function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: 
 				break;
 			}
 
-			if (Array.isArray(memory.default) && Array.isArray(previousMemory.default)) {
-				if (!compareArray(memory.default, previousMemory.default)) {
+			if (memory.default instanceof Map && previousMemory.default instanceof Map) {
+				if (!compareMap(memory.default, previousMemory.default)) {
 					changes.push({
 						wordSize: memory.wordSize,
 						wordAddress: memory.wordAddress,
@@ -104,7 +109,7 @@ export default async function testBuild(
 
 	memoryValueChanges.forEach(change => {
 		if (change.isInteger) {
-			if (Array.isArray(change.value)) {
+			if (change.value instanceof Map) {
 				change.value.forEach((item, index) => {
 					memoryBufferInt[change.wordAddress + index] = item;
 				});
@@ -112,7 +117,7 @@ export default async function testBuild(
 				memoryBufferInt[change.wordAddress] = change.value;
 			}
 		} else {
-			if (Array.isArray(change.value)) {
+			if (change.value instanceof Map) {
 				change.value.forEach((item, index) => {
 					memoryBufferFloat[change.wordAddress + index] = item;
 				});
