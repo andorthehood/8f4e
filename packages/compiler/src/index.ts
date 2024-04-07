@@ -26,6 +26,7 @@ import {
 import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
 import { ErrorCode, getError } from './errors';
 import { sortModules } from './gaphOptimizer';
+import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
 
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
@@ -36,17 +37,6 @@ export { instructionParser } from './compiler';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
-
-export function getInitialMemory(module: CompiledModule): number[] {
-	return Array.from(module.memoryMap.values()).reduce((accumulator, current) => {
-		if (Array.isArray(current.default)) {
-			accumulator = accumulator.concat(current.default);
-		} else {
-			accumulator.push(current.default);
-		}
-		return accumulator;
-	}, [] as number[]);
-}
 
 function collectConstants(ast: AST): Namespace['consts'] {
 	return Object.fromEntries(
@@ -120,8 +110,12 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 
 	return modules.map(ast => {
 		const module = compileModule(ast, builtInConsts, namespaces, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
-
 		memoryAddress += module.memoryWordSize;
+
+		if (options.maxMemorySize * WASM_MEMORY_PAGE_SIZE <= memoryAddress) {
+			throw 'Memory limit exceeded';
+		}
+
 		return module;
 	});
 }
@@ -150,14 +144,17 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 		const instructions: number[] = [];
 
 		Array.from(module.memoryMap.values()).forEach(memory => {
-			if (Array.isArray(memory.default)) {
-				memory.default.forEach(value => {
+			// TODO: figure out something efficient to initialise buffers larger than 32.
+			if (memory.wordSize > 1 && memory.default instanceof Map) {
+				memory.default.forEach((value, relativeWordAddress) => {
 					instructions.push(...(memory.isInteger ? i32store(pointer, value) : f32store(pointer, value)));
-					pointer += Int32Array.BYTES_PER_ELEMENT;
+					pointer += relativeWordAddress * Int32Array.BYTES_PER_ELEMENT;
 				});
-			} else {
+			} else if (memory.default !== 0) {
 				instructions.push(
-					...(memory.isInteger ? i32store(pointer, memory.default) : f32store(pointer, memory.default))
+					...(memory.isInteger
+						? i32store(pointer, memory.default as number)
+						: f32store(pointer, memory.default as number))
 				);
 				pointer += Int32Array.BYTES_PER_ELEMENT;
 			}

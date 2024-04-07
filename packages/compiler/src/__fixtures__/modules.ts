@@ -8,6 +8,7 @@ export default [
             int DEFAULT_VALUE 0
             int* in &DEFAULT_VALUE
             int out 0
+            int test 1
         
             ; locals
             local int input
