@@ -15,10 +15,28 @@ import { CompiledModule, TestModule } from './types';
 import { WORD_LENGTH } from './consts';
 import { compileToAST } from './compiler';
 
-import { compileModules, getInitialMemory } from '.';
+import { compileModules } from '.';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
+
+export function getInitialMemory(module: CompiledModule): number[] {
+	return Array.from(module.memoryMap.values()).reduce((accumulator, current) => {
+		if (current.default instanceof Map) {
+			const defaultBuffer = new Array(current.wordSize);
+			defaultBuffer.fill(0);
+
+			current.default.forEach((value, relativeWordAddress) => {
+				defaultBuffer[value] = relativeWordAddress;
+			});
+
+			accumulator = accumulator.concat(defaultBuffer);
+		} else {
+			accumulator.push(current.default);
+		}
+		return accumulator;
+	}, [] as number[]);
+}
 
 export function createSingleFunctionWASMProgram(functionBody: FunctionBody): Uint8Array {
 	return Uint8Array.from([
