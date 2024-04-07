@@ -65,11 +65,11 @@ export function createLocalDeclaration(type: Type, typeCount = 1): LocalDeclarat
 }
 
 export function createMemorySection(pageSize: number): number[] {
-	const numMemories = 1;
-	const flags = 0;
+	const numberOfMemoryEntries = 1;
+	const flags = 0x01; // Means that there is no maximum memory size.
 	return [
 		Section.MEMORY,
-		...createVector([...unsignedLEB128(numMemories), ...unsignedLEB128(flags), ...unsignedLEB128(pageSize)]),
+		...createVector([...unsignedLEB128(numberOfMemoryEntries), ...unsignedLEB128(flags), ...unsignedLEB128(pageSize)]),
 	];
 }
 
