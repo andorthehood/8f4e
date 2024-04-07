@@ -16,7 +16,7 @@ export interface MemoryItem {
 	byteAddress: number;
 	wordSize: number;
 	wordAddress: number;
-	default: number | number[];
+	default: number | Map<number, number>;
 	lineNumber: number;
 	isInteger: boolean;
 	id: string;

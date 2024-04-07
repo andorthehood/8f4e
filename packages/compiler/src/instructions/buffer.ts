@@ -16,10 +16,6 @@ const buffer: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
-	if (line.arguments[2] && line.arguments[2].type !== ArgumentType.LITERAL) {
-		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-	}
-
 	const memory = new Map(context.namespace.memory);
 	const wordAddress = calculateMemoryWordSize(memory);
 
@@ -43,7 +39,7 @@ const buffer: InstructionHandler = function (line, context) {
 		id: line.arguments[0].value,
 		lineNumber: line.lineNumber,
 		byteAddress: context.startingByteAddress + wordAddress * WORD_LENGTH,
-		default: new Array(wordSize).fill(line.arguments[2]?.value || 0),
+		default: new Map<number, number>(),
 		isInteger: line.instruction === 'int[]' || line.instruction === 'int*[]' || line.instruction === 'float*[]',
 		isPointer: line.instruction === 'int*[]' || line.instruction === 'float*[]',
 		isPointingToInteger: line.instruction === 'int*[]' || line.instruction === 'int**[]',
