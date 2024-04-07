@@ -50,6 +50,8 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	const module: CompiledModule = compileModules([ast], {
 		environmentExtensions: { constants: {}, ignoredKeywords: [] },
 		startingMemoryWordAddress: 0,
+		initialMemorySize: 1,
+		maxMemorySize: 1,
 	})[0];
 	const program = createSingleFunctionWASMProgram(module.functionBody);
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });

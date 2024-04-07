@@ -131,4 +131,6 @@ export interface CompileOptions {
 		constants: Namespace['consts'];
 		ignoredKeywords: string[];
 	};
+	initialMemorySize: number;
+	maxMemorySize: number;
 }
