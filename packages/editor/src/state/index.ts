@@ -20,6 +20,9 @@ import worklet from './effects/worklet';
 
 import { EventDispatcher } from '../events';
 
+const maxMemorySize = 10000;
+const initialMemorySize = 1000;
+
 const defaultState: State = {
 	compiler: {
 		codeBuffer: new Uint8Array(),
@@ -29,11 +32,13 @@ const defaultState: State = {
 		lastCompilationStart: 0,
 		memoryBuffer: new Int32Array(),
 		memoryBufferFloat: new Float32Array(),
-		memoryRef: new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }),
+		memoryRef: new WebAssembly.Memory({ initial: initialMemorySize, maximum: maxMemorySize, shared: true }),
 		timerAccuracy: 0,
 		compiledModules: new Map(),
 		buildErrors: [],
 		compilerOptions: {
+			initialMemorySize,
+			maxMemorySize,
 			startingMemoryWordAddress: 0,
 			environmentExtensions: {
 				constants: {},
