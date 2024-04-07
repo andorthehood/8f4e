@@ -45,7 +45,7 @@ export function isInstructionIsInsideAGroup(blockStack: BlockStack) {
 
 export function calculateMemoryWordSize(memory: MemoryMap): number {
 	return Array.from(memory.values()).reduce((accumulator, current) => {
-		return accumulator + (Array.isArray(current.default) ? current.default.length : 1);
+		return accumulator + current.wordSize;
 	}, 0);
 }
 

@@ -1,0 +1,1 @@
+export const WASM_MEMORY_PAGE_SIZE = 65536;
