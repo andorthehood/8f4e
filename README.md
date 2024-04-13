@@ -11,10 +11,10 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 - The code is organized into modules, each containing variable declarations and a sequence of commands.
 - It allows for manual modification of variable values in real-time, while the program is running, without requiring recompilation.
 - In 8f4e, variables which are declared one after another in the code are allocated at memory addresses that follow each other. For example, if an `int foo` is at the 256th byte, then the `int bar` declared next will be at the 260th byte, assuming a word size of 4 bytes.
-- Buffers in 8f4e always occupy contiguous spaces in memory, allowing for straightforward and efficient iteration.
+- Arrays in 8f4e always occupy contiguous spaces in memory, allowing for straightforward and efficient iteration.
 - All variables in 8f4e are inherently public, with no option to modify visibility.
 - Runtime memory allocation is not supported in 8f4e; developers must pre-plan their software's memory needs during the coding process. This design choice, favoring performance and efficiency, also ensures that memory addresses remain predictable.
-- The language utilizes C-style pointer notations and introduces a new notation: `buffer&` that retrieves the address of the last word in a buffer.
+- The language utilizes C-style pointer notations and introduces a new notation: `array&` that retrieves the address of the last word in an array.
 - It's not memory safe, pointers can point to anything within the memory space of the program, but the wires help developers to find where their pointers are pointing.
 - The execution order of various code modules is determined by their dependencies. If a module's output is needed as input for others, it is executed first. This creates a sequential flow, where each module executes only after receiving the necessary data from a preceding module's output. This dependency-based ordering ensures that each module gets the necessary data at the right time for the entire system to function effectively.
 - For performance reasons, 8f4e does not include transcendental functions in its standard library. Instead, it encourages the use of polynomial approximations for these functions.
