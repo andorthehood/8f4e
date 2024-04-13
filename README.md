@@ -1,10 +1,10 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/21e4864c-e37c-4039-85a0-baf88a997c6b/deploy-status)](https://app.netlify.com/sites/8f4e/deploys)
 
-Welcome to what I refer to as my biggest “mental masturbation” project. This whole thing started because I like creating problems just to experience the satisfaction of solving them. It doesn't really serve a bigger purpose or offer much to the public, and there's probably better stuff out there for the same job. The main reason this is public is because I needed version management and didn't want to pay for it.
+Welcome to what I refer to as my biggest “mental masturbation” project. This whole thing started because I like creating problems just to experience the satisfaction of solving them. It doesn't really serve a bigger purpose or offer much to the public, and there's probably better stuff out there for the same job.
 
 # 8f4e
 
-8f4e is a stack-oriented programming language with a semi-visual interface specifically designed for making algorave music. One of its unique features is its representation of pointers using interconnected wires.
+8f4e is a stack-oriented programming language with a semi-visual interface designed for making generative music on algorave events. One of its unique features is its representation of pointers using interconnected wires.
 
 ## Other distinctive features:
 - The syntax and commands of 8f4e were inspired by assembly languages, but instead of the typical cryptic mnemonics like `cndjmp`, 8f4e uses more descriptive operation names such as `branchIfTrue`.
