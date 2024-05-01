@@ -52,7 +52,6 @@ const memory: InstructionHandler = function (line, context) {
 		const memoryItem = memory.get(line.arguments[0].value);
 
 		if (memoryItem) {
-			memoryItem.default;
 			memoryItem.default = defaultValue;
 		}
 	}

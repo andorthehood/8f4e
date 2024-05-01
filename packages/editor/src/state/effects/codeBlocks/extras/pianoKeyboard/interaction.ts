@@ -41,7 +41,11 @@ export default function pianoKeyboard(state: State, events: EventDispatcher): ()
 			keyboard.pressedKeys.add(key);
 		}
 
-		codeBlock.code[keyboard.pressedNumberOfKeysMemory.lineNumber] =
+		const pressedNumberOfKeysMemoryLineNumber = codeBlock.code.findIndex(line => {
+			line.startsWith('int ' + keyboard.pressedNumberOfKeysMemory.id);
+		});
+
+		codeBlock.code[pressedNumberOfKeysMemoryLineNumber] =
 			'int ' + keyboard.pressedNumberOfKeysMemory.id + ' ' + keyboard.pressedKeys.size;
 
 		codeBlock.code = insertCodeAfterLine(

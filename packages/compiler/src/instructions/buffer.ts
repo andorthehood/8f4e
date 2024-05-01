@@ -37,7 +37,6 @@ const buffer: InstructionHandler = function (line, context) {
 		wordSize: wordSize,
 		wordAddress: context.startingByteAddress / WORD_LENGTH + wordAddress,
 		id: line.arguments[0].value,
-		lineNumber: line.lineNumber,
 		byteAddress: context.startingByteAddress + wordAddress * WORD_LENGTH,
 		default: new Map<number, number>(),
 		isInteger: line.instruction === 'int[]' || line.instruction === 'int*[]' || line.instruction === 'float*[]',

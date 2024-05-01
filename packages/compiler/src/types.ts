@@ -11,13 +11,13 @@ export enum MemoryTypes {
 	'float**',
 }
 
-export interface MemoryItem {
+export interface DataStructure {
 	type: MemoryTypes;
 	byteAddress: number;
 	wordSize: number;
 	wordAddress: number;
-	default: number | Map<number, number>;
-	lineNumber: number;
+	default?: number | Map<number, number>;
+	// lineNumber: number;
 	isInteger: boolean;
 	id: string;
 	isPointer: boolean;
@@ -25,7 +25,7 @@ export interface MemoryItem {
 	isPointingToPointer: boolean;
 }
 
-export type MemoryMap = Map<string, MemoryItem>;
+export type MemoryMap = Map<string, DataStructure>;
 
 export interface CompiledModule {
 	functionBody: number[];
@@ -133,4 +133,5 @@ export interface CompileOptions {
 	};
 	initialMemorySize: number;
 	maxMemorySize: number;
+	globalDataStructures?: DataStructure[];
 }

@@ -16,17 +16,17 @@ export function isMemoryPointerIdentifier(memoryMap: MemoryMap, name: string): b
 	return name.startsWith('*') && memoryMap.has(name.substring(1));
 }
 
-export function getMemoryItem(memoryMap: MemoryMap, id: string) {
+export function getDataStructure(memoryMap: MemoryMap, id: string) {
 	return memoryMap.get(id);
 }
 
-export function getMemoryItemByteAddress(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getMemoryItem(memoryMap, id);
+export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): number {
+	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.byteAddress : 0;
 }
 
 export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getMemoryItem(memoryMap, id);
+	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSize - 1) * WORD_LENGTH : 0;
 }
 

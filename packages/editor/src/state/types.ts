@@ -1,4 +1,4 @@
-import { CompileOptions, CompiledModuleLookup, MemoryBuffer, MemoryItem } from '@8f4e/compiler';
+import { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure } from '@8f4e/compiler';
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { SpriteLookup } from '@8f4e/2d-engine';
 
@@ -45,7 +45,7 @@ export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset' | 
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
-export type MenuGenerator = (state: State, payload?: any) => ContextMenuItem[];
+export type MenuGenerator = (state: State, payload?: any) => ContextMenuItem[] | Promise<ContextMenuItem[]>;
 
 export interface ContextMenu extends Position {
 	highlightedItem: number;
@@ -89,7 +89,7 @@ export interface Midi {
 }
 
 export interface MemoryIdentifier {
-	memory: MemoryItem;
+	memory: DataStructure;
 	showAddress: boolean;
 	showEndAddress: boolean;
 	bufferPointer: number;
@@ -124,7 +124,7 @@ export interface Debugger {
 	x: number;
 	y: number;
 	id: string;
-	memory: MemoryItem;
+	memory: DataStructure;
 	bufferPointer: number;
 	showBinary: boolean;
 }
@@ -138,7 +138,7 @@ export interface Output {
 	id: string;
 	calibratedMax: number;
 	calibratedMin: number;
-	memory: MemoryItem;
+	memory: DataStructure;
 }
 
 export interface Input {
@@ -158,8 +158,8 @@ export interface PianoKeyboard {
 	height: number;
 	keyWidth: number;
 	pressedKeys: Set<number>;
-	pressedKeysListMemory: MemoryItem;
-	pressedNumberOfKeysMemory: MemoryItem;
+	pressedKeysListMemory: DataStructure;
+	pressedNumberOfKeysMemory: DataStructure;
 	startingNumber: number;
 }
 

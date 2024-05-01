@@ -79,7 +79,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		event.stopPropagation = true;
 	};
 
-	const onContextMenu = event => {
+	const onContextMenu = async event => {
 		const { x, y } = event;
 
 		state.graphicHelper.contextMenu.highlightedItem = 0;
@@ -92,9 +92,9 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		const codeBlock = findCodeBlockAtViewportCoordinates(state.graphicHelper, x, y);
 
 		if (codeBlock) {
-			state.graphicHelper.contextMenu.items = decorateMenu(menus.moduleMenu(state));
+			state.graphicHelper.contextMenu.items = decorateMenu(await menus.moduleMenu(state));
 		} else {
-			state.graphicHelper.contextMenu.items = decorateMenu(menus.mainMenu(state));
+			state.graphicHelper.contextMenu.items = decorateMenu(await menus.mainMenu(state));
 		}
 
 		state.graphicHelper.contextMenu.itemWidth =
@@ -104,23 +104,23 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		events.on('mousemove', onMouseMove);
 	};
 
-	const onOpenSubMenu = event => {
+	const onOpenSubMenu = async event => {
 		const { menu } = event;
 		state.graphicHelper.contextMenu.menuStack.push(menu);
 		state.graphicHelper.contextMenu.items = decorateMenu([
 			{ title: '< Back', action: 'menuBack' },
-			...menus[menu](state, event),
+			...(await menus[menu](state, event)),
 		]);
 		state.graphicHelper.contextMenu.itemWidth =
 			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.globalViewport.vGrid;
 	};
 
-	const onMenuBack = () => {
+	const onMenuBack = async () => {
 		state.graphicHelper.contextMenu.menuStack.pop();
 		const menu = state.graphicHelper.contextMenu.menuStack.pop();
 
 		if (!menu) {
-			state.graphicHelper.contextMenu.items = decorateMenu(menus.mainMenu(state));
+			state.graphicHelper.contextMenu.items = decorateMenu(await menus.mainMenu(state));
 			state.graphicHelper.contextMenu.itemWidth =
 				getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.globalViewport.vGrid;
 			return;

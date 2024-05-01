@@ -2,8 +2,8 @@ import { ArgumentLiteral, ArgumentType, InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
 import {
-	getMemoryItem,
-	getMemoryItemByteAddress,
+	getDataStructure,
+	getDataStructureByteAddress,
 	getMemoryStringLastAddress,
 	isInstructionIsInsideAModule,
 	isMemoryIdentifier,
@@ -34,7 +34,7 @@ const push: InstructionHandler = function (line, context) {
 
 	if (argument.type === ArgumentType.IDENTIFIER) {
 		if (isMemoryIdentifier(memory, argument.value)) {
-			const memoryItem = getMemoryItem(memory, argument.value);
+			const memoryItem = getDataStructure(memory, argument.value);
 
 			if (!memoryItem) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
@@ -47,7 +47,7 @@ const push: InstructionHandler = function (line, context) {
 				context,
 			};
 		} else if (isMemoryPointerIdentifier(memory, argument.value)) {
-			const memoryItem = getMemoryItem(memory, argument.value.substring(1));
+			const memoryItem = getDataStructure(memory, argument.value.substring(1));
 
 			if (!memoryItem) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
@@ -67,7 +67,7 @@ const push: InstructionHandler = function (line, context) {
 			context.stack.push({ isInteger: true });
 			if (argument.value.startsWith('&')) {
 				return {
-					byteCode: i32const(getMemoryItemByteAddress(memory, argument.value.substring(1))),
+					byteCode: i32const(getDataStructureByteAddress(memory, argument.value.substring(1))),
 					context,
 				};
 			} else {

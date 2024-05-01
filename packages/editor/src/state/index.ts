@@ -17,6 +17,7 @@ import sampleRate from './effects/sampleRate';
 import save from './effects/save';
 import viewport from './effects/viewport';
 import worklet from './effects/worklet';
+import binaryAsset from './effects/binaryAssets';
 
 import { EventDispatcher } from '../events';
 
@@ -172,6 +173,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	worklet(state, events);
 	colorTheme(state, events);
 	font(state, events);
+	binaryAsset(state, events);
 	events.dispatch('init');
 	return state;
 }
