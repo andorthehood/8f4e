@@ -1,4 +1,4 @@
-import { MemoryItem } from '@8f4e/compiler';
+import { DataStructure } from '@8f4e/compiler';
 
 import { MemoryIdentifier, State } from '../types';
 
@@ -11,7 +11,7 @@ export default function resolveMemoryIdentifier(
 		return;
 	}
 
-	let memory: MemoryItem | undefined;
+	let memory: DataStructure | undefined;
 	let showAddress = false;
 	let showEndAddress = false;
 	let operator: '&' | '*' | undefined;

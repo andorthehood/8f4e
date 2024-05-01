@@ -32,7 +32,7 @@ export function getInitialMemory(module: CompiledModule): number[] {
 
 			accumulator = accumulator.concat(defaultBuffer);
 		} else {
-			accumulator.push(current.default);
+			accumulator.push(current.default || 0);
 		}
 		return accumulator;
 	}, [] as number[]);

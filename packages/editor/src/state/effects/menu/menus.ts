@@ -31,6 +31,9 @@ export const mainMenu: MenuGenerator = state => [
 		close: false,
 	},
 	{ divider: true },
+	{ title: 'Import binary asset', action: 'importBinaryAsset', close: true },
+	{ title: 'Binary assets', action: 'openSubMenu', payload: { menu: 'binaryAssetsMenu' }, close: false },
+	{ divider: true },
 	{ title: 'New Project', action: 'new', close: true },
 	{ divider: true },
 	{ title: 'Open From Disk', action: 'open', close: true },
@@ -43,6 +46,21 @@ export const mainMenu: MenuGenerator = state => [
 	{ divider: true },
 	{ title: 'MIDI Info', action: 'openSubMenu', payload: { menu: 'midiInfoMenu' }, close: false },
 ];
+
+export const binaryAssetsMenu: MenuGenerator = async () => {
+	const opfsRoot = await navigator.storage.getDirectory();
+	// @ts-ignore
+	const entries: AsyncIterator = opfsRoot.entries();
+	// @ts-ignore
+	const files: [string, FileSystemFileHandle][] = await Array.fromAsync(entries);
+
+	return files.map(([name, file]) => ({
+		title: name,
+		action: 'openBinaryAsset',
+		payload: { file },
+		close: true,
+	}));
+};
 
 export const midiInfoMenu: MenuGenerator = state => [
 	{ title: 'Inputs:', disabled: true, isSectionTitle: true },
