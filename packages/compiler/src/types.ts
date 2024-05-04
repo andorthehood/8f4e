@@ -16,7 +16,7 @@ export interface DataStructure {
 	byteAddress: number;
 	wordSize: number;
 	wordAddress: number;
-	default?: number | Map<number, number>;
+	default: number | Map<number, number>;
 	// lineNumber: number;
 	isInteger: boolean;
 	id: string;
