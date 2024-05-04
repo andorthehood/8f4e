@@ -3,7 +3,7 @@
 exports[`compiler generateMemoryInitiatorFunction 1`] = `
 Array [
   65,
-  0,
+  12,
   65,
   1,
   54,
