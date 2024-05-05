@@ -241,6 +241,17 @@ export type GraphicHelper = {
 	};
 };
 
+export interface BinaryAsset {
+	/** The id of the module that the binary data should be loaded into */
+	moduleId?: string;
+	/** The id of the memory that the binary data should be loaded into */
+	memoryId?: string;
+	/** The binary data in base64 format */
+	data: string;
+	/** The file name of the binary data */
+	fileName: string;
+}
+
 export interface Project {
 	title: string;
 	author: string;
@@ -248,6 +259,7 @@ export interface Project {
 	codeBlocks: CodeBlock[];
 	viewport: Viewport;
 	sampleRate: number;
+	binaryAssets: BinaryAsset[];
 }
 
 export interface ExampleModule {
