@@ -46,6 +46,22 @@ export function i32load(alingment = 2, offset = 0): number[] {
 	return [Instruction.I32_LOAD, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
 }
 
+export function i32load8s(alingment = 0, offset = 0): number[] {
+	return [Instruction.I32_LOAD_8_S, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
+}
+
+export function i32load8u(alingment = 0, offset = 0): number[] {
+	return [Instruction.I32_LOAD_8_U, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
+}
+
+export function i32load16s(alingment = 1, offset = 0): number[] {
+	return [Instruction.I32_LOAD_16_S, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
+}
+
+export function i32load16u(alingment = 1, offset = 0): number[] {
+	return [Instruction.I32_LOAD_16_U, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
+}
+
 export function f32load(alingment = 2, offset = 0): number[] {
 	return [Instruction.F32_LOAD, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
 }
