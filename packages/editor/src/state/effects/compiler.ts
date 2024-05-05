@@ -66,6 +66,24 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
 
 				state.compiler.buildErrors = [];
+
+				state.project.binaryAssets.forEach(binaryAsset => {
+					if (binaryAsset.moduleId && binaryAsset.memoryId) {
+						const memoryAssignedToBinaryAsset = state.compiler.compiledModules
+							.get(binaryAsset.moduleId)
+							?.memoryMap.get(binaryAsset.memoryId);
+
+						if (!memoryAssignedToBinaryAsset) {
+							return;
+						}
+
+						const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
+						const binaryAssetDataBuffer = Buffer.from(binaryAsset.data, 'base64');
+
+						memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
+					}
+				});
+
 				events.dispatch('initRuntime');
 				break;
 			case 'buildError':

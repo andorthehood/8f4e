@@ -136,6 +136,7 @@ const defaultState: State = {
 			y: 0,
 		},
 		sampleRate: 44100,
+		binaryAssets: [],
 	},
 	options: {
 		isLocalStorageEnabled: true,
