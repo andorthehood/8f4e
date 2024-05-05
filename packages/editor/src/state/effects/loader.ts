@@ -57,6 +57,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				y: 0,
 			},
 			sampleRate: 44100,
+			binaryAssets: [],
 		};
 
 		Object.keys(newProject).forEach(key => {
