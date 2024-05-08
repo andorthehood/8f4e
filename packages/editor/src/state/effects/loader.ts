@@ -27,7 +27,7 @@ function convertGraphicDataToProjectStructure(
 							x: Math.round(codeBlock.x / vGrid),
 							y: Math.round(codeBlock.y / hGrid),
 							// eslint-disable-next-line
-					  }
+					}
 					: undefined,
 			codeBlocks:
 				codeBlock.codeBlocks.size > 0
@@ -108,8 +108,16 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			});
 		});
 		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
+		state.runtime.runner = state.project.sampleRate <= 1000 ? 'webWorker' : 'audioWorklet';
 
-		events.dispatch('setSampleRate', { sampleRate: state.project.sampleRate });
+		events.dispatch('destroyRuntimes');
+
+		if (state.project.sampleRate <= 1000) {
+			events.dispatch('initRuntime:WebWorker');
+		} else {
+			events.dispatch('initRuntime:AudioWorklet');
+		}
+
 		events.dispatch('init');
 		events.dispatch('saveState');
 	}
