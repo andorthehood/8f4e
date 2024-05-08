@@ -681,7 +681,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 0,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "trigger" => Object {
     "byteAddress": 4,
@@ -693,7 +693,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 1,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "reset" => Object {
     "byteAddress": 8,
@@ -705,7 +705,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 2,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "triggerPreviousValue" => Object {
     "byteAddress": 12,
@@ -717,7 +717,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 3,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "stepMinusOne" => Object {
     "byteAddress": 16,
@@ -729,7 +729,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 4,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "steps" => Object {
     "byteAddress": 20,
@@ -741,7 +741,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 5,
-    "wordSize": 16,
+    "wordSpan": 16,
   },
   "stepPointer" => Object {
     "byteAddress": 84,
@@ -753,7 +753,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 21,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "stepLength" => Object {
     "byteAddress": 88,
@@ -765,7 +765,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 22,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "didTrigger" => Object {
     "byteAddress": 92,
@@ -777,7 +777,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 23,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out" => Object {
     "byteAddress": 96,
@@ -789,7 +789,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 24,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
 }
 `;
