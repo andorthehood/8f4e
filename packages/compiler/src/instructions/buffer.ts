@@ -19,10 +19,10 @@ const buffer: InstructionHandler = function (line, context) {
 	const memory = new Map(context.namespace.memory);
 	const wordAddress = calculateMemoryWordSize(memory);
 
-	let wordSize = 1;
+	let wordSpan = 1;
 
 	if (line.arguments[1].type === ArgumentType.LITERAL) {
-		wordSize = line.arguments[1].value;
+		wordSpan = line.arguments[1].value;
 	} else {
 		const constant = context.namespace.consts[line.arguments[1].value];
 
@@ -30,19 +30,19 @@ const buffer: InstructionHandler = function (line, context) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 		}
 
-		wordSize = constant.value;
+		wordSpan = constant.value;
 	}
 
 	memory.set(line.arguments[0].value, {
-		wordSize: wordSize,
+		wordSpan,
 		wordAddress: context.startingByteAddress / WORD_LENGTH + wordAddress,
 		id: line.arguments[0].value,
 		byteAddress: context.startingByteAddress + wordAddress * WORD_LENGTH,
 		default: new Map<number, number>(),
-		isInteger: line.instruction === 'int[]' || line.instruction === 'int*[]' || line.instruction === 'float*[]',
-		isPointer: line.instruction === 'int*[]' || line.instruction === 'float*[]',
-		isPointingToInteger: line.instruction === 'int*[]' || line.instruction === 'int**[]',
-		isPointingToPointer: line.instruction === 'int**[]' || line.instruction === 'float**[]',
+		isInteger: line.instruction.startsWith('int') || line.instruction.includes('*'),
+		isPointer: line.instruction.includes('*'),
+		isPointingToInteger: line.instruction.startsWith('int') && line.instruction.includes('*'),
+		isPointingToPointer: line.instruction.includes('**'),
 		type: line.instruction.slice(0, -2) as unknown as MemoryTypes,
 	});
 
