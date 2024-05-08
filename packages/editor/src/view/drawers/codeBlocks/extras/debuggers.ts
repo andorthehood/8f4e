@@ -18,7 +18,7 @@ export default function drawConnectors(engine: Engine, state: State, codeBlock: 
 		if (showAddress) {
 			engine.drawText(x, y, '[' + (memory.byteAddress + bufferPointer * 4) + ']');
 		} else if (showEndAddress) {
-			engine.drawText(x, y, '[' + ((memory.wordSize - 1) * 4 + memory.byteAddress) + ']');
+			engine.drawText(x, y, '[' + ((memory.wordSpan - 1) * 4 + memory.byteAddress) + ']');
 		} else {
 			engine.drawText(x, y, '[' + value + ']');
 		}

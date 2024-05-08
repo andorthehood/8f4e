@@ -27,7 +27,7 @@ export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): n
 
 export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSize - 1) * WORD_LENGTH : 0;
+	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSpan - 1) * WORD_LENGTH : 0;
 }
 
 export function isInstructionIsInsideAModule(blockStack: BlockStack) {
@@ -45,7 +45,7 @@ export function isInstructionIsInsideAGroup(blockStack: BlockStack) {
 
 export function calculateMemoryWordSize(memory: MemoryMap): number {
 	return Array.from(memory.values()).reduce((accumulator, current) => {
-		return accumulator + current.wordSize;
+		return accumulator + current.wordSpan;
 	}, 0);
 }
 

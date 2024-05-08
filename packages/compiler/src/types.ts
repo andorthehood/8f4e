@@ -14,7 +14,7 @@ export enum MemoryTypes {
 export interface DataStructure {
 	type: MemoryTypes;
 	byteAddress: number;
-	wordSize: number;
+	wordSpan: number;
 	wordAddress: number;
 	default: number | Map<number, number>;
 	// lineNumber: number;
