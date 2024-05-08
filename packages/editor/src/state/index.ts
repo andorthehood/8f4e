@@ -157,8 +157,9 @@ defaultState.graphicHelper.baseCodeBlock.parent = defaultState.graphicHelper.bas
 export default function init(events: EventDispatcher, project: Project, options: Partial<Options>): State {
 	const state = { ...defaultState, project, options: { ...defaultState.options, ...options } };
 	midi(state, events);
-	loader(state, events, defaultState);
+	worklet(state, events);
 	sampleRate(state, events);
+	loader(state, events, defaultState);
 	codeBlockDragger(state, events);
 	codeBlockOpener(state, events);
 	nestedCodeBlocksOpener(state, events);
@@ -171,7 +172,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	compiler(state, events);
 	graphicHelper(state, events);
 	save(state, events);
-	worklet(state, events);
 	colorTheme(state, events);
 	font(state, events);
 	binaryAsset(state, events);

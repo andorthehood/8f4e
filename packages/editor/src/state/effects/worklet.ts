@@ -4,18 +4,10 @@ import { State } from '../types';
 import { EventDispatcher } from '../../events';
 
 export default async function worklet(state: State, events: EventDispatcher) {
-	let audioContext: AudioContext;
-	let audioWorklet: AudioWorkletNode;
+	let audioContext: AudioContext | null = null;
+	let audioWorklet: AudioWorkletNode | null = null;
 
 	function onInitRuntime() {
-		if (audioWorklet && state.runtime.runner !== 'audioWorklet') {
-			audioWorklet.disconnect();
-		}
-
-		if (!audioWorklet || state.runtime.runner !== 'audioWorklet') {
-			return;
-		}
-
 		const audioModule = state.compiler.compiledModules.get('audioout');
 
 		const addresses = {
@@ -24,12 +16,26 @@ export default async function worklet(state: State, events: EventDispatcher) {
 			channelWordAddress: audioModule?.memoryMap.get('channel')?.wordAddress || 0,
 		};
 
-		audioWorklet.port.postMessage({
-			type: 'init',
-			memoryRef: state.compiler.memoryRef,
-			codeBuffer: state.compiler.codeBuffer,
-			addresses,
-		});
+		if (audioWorklet) {
+			audioWorklet.port.postMessage({
+				type: 'init',
+				memoryRef: state.compiler.memoryRef,
+				codeBuffer: state.compiler.codeBuffer,
+				addresses,
+			});
+		}
+	}
+
+	function onDestroyRuntimes() {
+		if (audioWorklet) {
+			audioWorklet.disconnect();
+			audioWorklet = null;
+		}
+
+		if (audioContext) {
+			audioContext.close();
+			audioContext = null;
+		}
 	}
 
 	async function initAudioContext() {
@@ -52,8 +58,10 @@ export default async function worklet(state: State, events: EventDispatcher) {
 			}
 		};
 		audioWorklet.connect(audioContext.destination);
+		onInitRuntime();
 	}
 
-	events.on('initRuntime', onInitRuntime);
+	events.on('initRuntime:AudioWorklet', onInitRuntime);
+	events.on('destroyRuntimes', onDestroyRuntimes);
 	events.on('mousedown', initAudioContext);
 }
