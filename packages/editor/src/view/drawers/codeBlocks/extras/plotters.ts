@@ -20,7 +20,7 @@ export default function drawer(engine: Engine, state: State, codeBlock: CodeBloc
 			width = state.compiler.memoryBuffer[bufferLength.memory.wordAddress];
 		}
 
-		width = Math.min(width || buffer.memory.wordSize, maxPlotterWidth);
+		width = Math.min(width || buffer.memory.wordSpan, maxPlotterWidth);
 
 		const height = maxValue - minValue;
 		const offset = minValue * -1;

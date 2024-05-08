@@ -983,7 +983,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 0,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "in" => Object {
     "byteAddress": 4,
@@ -995,7 +995,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 1,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out:1" => Object {
     "byteAddress": 8,
@@ -1007,7 +1007,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 2,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out:2" => Object {
     "byteAddress": 12,
@@ -1019,7 +1019,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 3,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out:3" => Object {
     "byteAddress": 16,
@@ -1031,7 +1031,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 4,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out:4" => Object {
     "byteAddress": 20,
@@ -1043,7 +1043,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 5,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out:5" => Object {
     "byteAddress": 24,
@@ -1055,7 +1055,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 6,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out:6" => Object {
     "byteAddress": 28,
@@ -1067,7 +1067,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 7,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out:7" => Object {
     "byteAddress": 32,
@@ -1079,7 +1079,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 8,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out:8" => Object {
     "byteAddress": 36,
@@ -1091,7 +1091,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 9,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
 }
 `;
