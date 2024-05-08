@@ -98,7 +98,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 0,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out" => Object {
     "byteAddress": 4,
@@ -110,7 +110,7 @@ Map {
     "isPointingToPointer": false,
     "type": "float",
     "wordAddress": 1,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
 }
 `;
