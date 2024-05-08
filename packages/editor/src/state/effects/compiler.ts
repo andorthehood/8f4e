@@ -84,7 +84,12 @@ export default async function compiler(state: State, events: EventDispatcher) {
 					}
 				});
 
-				events.dispatch('initRuntime');
+				if (state.project.sampleRate <= 1000) {
+					events.dispatch('initRuntime:WebWorker');
+				} else {
+					events.dispatch('initRuntime:AudioWorklet');
+				}
+
 				break;
 			case 'buildError':
 				state.compiler.buildErrors = [

@@ -9,16 +9,15 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 
 	let worker: Worker | undefined;
 
-	function onInitRuntime() {
-		if (state.runtime.runner !== 'webWorker') {
-			if (worker) {
-				worker.removeEventListener('message', onWorkerMessage);
-				worker.terminate();
-				worker = undefined;
-			}
-			return;
+	function onDestroyRuntimes() {
+		if (worker) {
+			worker.removeEventListener('message', onWorkerMessage);
+			worker.terminate();
+			worker = undefined;
 		}
+	}
 
+	function onInitRuntime() {
 		if (!worker) {
 			worker = new Worker(workerUrl, {
 				type: 'module',
@@ -81,5 +80,6 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 	}
 
 	navigator.requestMIDIAccess().then(onMidiAccess);
-	events.on('initRuntime', onInitRuntime);
+	events.on('initRuntime:WebWorker', onInitRuntime);
+	events.on('destroyRuntimes', onDestroyRuntimes);
 }
