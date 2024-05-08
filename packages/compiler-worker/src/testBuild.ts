@@ -11,7 +11,7 @@ function compareMap(arr1: Map<number, number>, arr2: Map<number, number>): boole
 }
 
 function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: CompiledModuleLookup | undefined) {
-	const changes: { wordSize: number; wordAddress: number; value: number | Map<number, number>; isInteger: boolean }[] =
+	const changes: { wordSpan: number; wordAddress: number; value: number | Map<number, number>; isInteger: boolean }[] =
 		[];
 
 	if (!previous) {
@@ -33,7 +33,7 @@ function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: 
 			if (memory.default instanceof Map && previousMemory.default instanceof Map) {
 				if (!compareMap(memory.default, previousMemory.default)) {
 					changes.push({
-						wordSize: memory.wordSize,
+						wordSpan: memory.wordSpan,
 						wordAddress: memory.wordAddress,
 						value: memory.default,
 						isInteger: memory.isInteger,
@@ -42,7 +42,7 @@ function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: 
 			} else {
 				if (previousMemory.default !== memory.default) {
 					changes.push({
-						wordSize: memory.wordSize,
+						wordSpan: memory.wordSpan,
 						wordAddress: memory.wordAddress,
 						value: memory.default,
 						isInteger: memory.isInteger,

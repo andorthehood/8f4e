@@ -669,7 +669,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 0,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "out" => Object {
     "byteAddress": 4,
@@ -681,7 +681,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 1,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "allocatedNotes" => Object {
     "byteAddress": 8,
@@ -693,7 +693,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 2,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "numberOfNotes" => Object {
     "byteAddress": 12,
@@ -705,7 +705,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 3,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
   "notes" => Object {
     "byteAddress": 16,
@@ -717,7 +717,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 4,
-    "wordSize": 12,
+    "wordSpan": 12,
   },
   "__loopErrorSignaler" => Object {
     "byteAddress": 64,
@@ -729,7 +729,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 16,
-    "wordSize": 1,
+    "wordSpan": 1,
   },
 }
 `;
