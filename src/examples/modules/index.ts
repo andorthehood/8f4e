@@ -65,6 +65,7 @@ import expLookupTable from './expLookupTable';
 import sigmoidPolynomialApproximation from './sigmoidPolynomialApproximation';
 import perceptron from './perceptron';
 import pcmLooper from './pcmLooper';
+import lowPassFilter from './lowPassFilter';
 
 const modules = {
 	audioBufferOut,
@@ -134,6 +135,7 @@ const modules = {
 	sigmoidPolynomialApproximation,
 	perceptron,
 	pcmLooper,
+	lowPassFilter,
 } as const;
 
 export default modules;
