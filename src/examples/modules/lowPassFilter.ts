@@ -6,7 +6,7 @@ const lowPassFilter: ExampleModule = {
 	category: 'Filters',
 	code: `module lowPassFilter
 
-float* in &normalizer.out
+float* in
 float out
 
 float alpha 0.1
