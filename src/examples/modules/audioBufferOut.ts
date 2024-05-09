@@ -10,10 +10,16 @@ float* in
 int channel 0
 
 ; Audio buffer
-float[] buffer 128 0
+float[] buffer 128
 int pointer &buffer
-debug pointer
-debug buffer
+
+plot buffer -2 2
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
 
 ; Increment the buffer 
 ; pointer by the word size
@@ -35,11 +41,6 @@ if void
  store
 ifEnd
 
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
 moduleEnd`,
 	tests: [],
 };
