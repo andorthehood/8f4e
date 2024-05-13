@@ -16,8 +16,7 @@ class Main extends AudioWorkletProcessor {
 		codeBuffer: Uint8Array,
 		addresses: { audioBufferWordAddress: number; outputWordAddress: number; channelWordAddress: number }
 	) {
-		const { memoryBuffer, buffer, init } = await createModule(memoryRef, codeBuffer);
-		init();
+		const { memoryBuffer, buffer } = await createModule(memoryRef, codeBuffer);
 
 		this.audioBufferWordAddress = addresses.audioBufferWordAddress;
 		this.outputWordAddress = addresses.outputWordAddress;
