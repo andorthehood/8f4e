@@ -9,6 +9,10 @@ import {
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
+	isWordSpanIdentifier,
+	isWordSizeIdentifier,
+	getWordSize,
+	getWordSpan,
 } from '../utils';
 
 function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
@@ -76,6 +80,20 @@ const push: InstructionHandler = function (line, context) {
 					context,
 				};
 			}
+		} else if (isWordSpanIdentifier(memory, argument.value)) {
+			context.stack.push({ isInteger: true });
+
+			return {
+				byteCode: i32const(getWordSpan(memory, argument.value.substring(1))),
+				context,
+			};
+		} else if (isWordSizeIdentifier(memory, argument.value)) {
+			context.stack.push({ isInteger: true });
+
+			return {
+				byteCode: i32const(getWordSize(memory, argument.value.substring(1))),
+				context,
+			};
 		} else if (typeof consts[argument.value] !== 'undefined') {
 			context.stack.push({ isInteger: consts[argument.value].isInteger });
 			return {
