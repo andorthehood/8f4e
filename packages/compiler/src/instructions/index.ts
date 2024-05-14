@@ -55,6 +55,7 @@ import pow2 from './pow2';
 import sqrt from './sqrt';
 import loadFloat from './loadFloat';
 import round from './round';
+import ensureNonZero from './ensureNonZero';
 
 const instructions = {
 	and,
@@ -131,6 +132,7 @@ const instructions = {
 	sqrt,
 	loadFloat,
 	round,
+	ensureNonZero,
 } as const;
 
 export default instructions;
