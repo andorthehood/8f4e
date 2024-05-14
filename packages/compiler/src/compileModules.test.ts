@@ -10,6 +10,8 @@ describe('compiler', () => {
 			compileModules(astModules, {
 				startingMemoryWordAddress: 0,
 				environmentExtensions: { constants: {}, ignoredKeywords: [] },
+				maxMemorySize: 1,
+				initialMemorySize: 1,
 			})
 		).toMatchSnapshot();
 	});

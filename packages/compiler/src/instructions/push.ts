@@ -74,7 +74,7 @@ const push: InstructionHandler = function (line, context) {
 			} else {
 				value = getMemoryStringLastAddress(memory, argument.value.slice(0, -1));
 			}
-			context.stack.push({ isInteger: true, isNonZero: value !== 0 });
+			context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
 			return {
 				byteCode: i32const(value),
 				context,
