@@ -24,11 +24,11 @@ const load: InstructionHandler = function (line, context) {
 	}
 
 	if (areAllOperandsIntegers(operand)) {
-		context.stack.push({ isInteger: true, isNonZero: false });
-
 		if (operand.isSafeMemoryAddress) {
+			context.stack.push({ isInteger: true, isNonZero: false });
 			return { byteCode: instructionToByteCodeMap[line.instruction], context };
 		} else {
+			context.stack.push({ isInteger: true, isNonZero: false });
 			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;
 			// Memory overflow protection.
 			return parseSegment(
