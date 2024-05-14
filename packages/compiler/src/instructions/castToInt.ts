@@ -18,7 +18,7 @@ const castToInt: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
 	}
 
-	context.stack.push({ isInteger: true });
+	context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
 	return {
 		byteCode: [WASMInstruction.I32_TUNC_F32_S],
 		context,

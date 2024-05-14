@@ -44,7 +44,7 @@ const push: InstructionHandler = function (line, context) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 			}
 
-			context.stack.push({ isInteger: memoryItem.isInteger });
+			context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: false });
 
 			return {
 				byteCode: [...i32const(memoryItem.byteAddress), ...(memoryItem.isInteger ? i32load() : f32load())],
@@ -57,7 +57,7 @@ const push: InstructionHandler = function (line, context) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 			}
 
-			context.stack.push({ isInteger: memoryItem.isPointingToInteger });
+			context.stack.push({ isInteger: memoryItem.isPointingToInteger, isNonZero: false });
 
 			return {
 				byteCode: [
@@ -68,34 +68,36 @@ const push: InstructionHandler = function (line, context) {
 				context,
 			};
 		} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
-			context.stack.push({ isInteger: true });
+			let value = 0;
 			if (argument.value.startsWith('&')) {
-				return {
-					byteCode: i32const(getDataStructureByteAddress(memory, argument.value.substring(1))),
-					context,
-				};
+				value = getDataStructureByteAddress(memory, argument.value.substring(1));
 			} else {
-				return {
-					byteCode: i32const(getMemoryStringLastAddress(memory, argument.value.slice(0, -1))),
-					context,
-				};
+				value = getMemoryStringLastAddress(memory, argument.value.slice(0, -1));
 			}
+			context.stack.push({ isInteger: true, isNonZero: value !== 0 });
+			return {
+				byteCode: i32const(value),
+				context,
+			};
 		} else if (isWordSpanIdentifier(memory, argument.value)) {
-			context.stack.push({ isInteger: true });
+			context.stack.push({ isInteger: true, isNonZero: true });
 
 			return {
 				byteCode: i32const(getWordSpan(memory, argument.value.substring(1))),
 				context,
 			};
 		} else if (isWordSizeIdentifier(memory, argument.value)) {
-			context.stack.push({ isInteger: true });
+			context.stack.push({ isInteger: true, isNonZero: true });
 
 			return {
 				byteCode: i32const(getWordSize(memory, argument.value.substring(1))),
 				context,
 			};
 		} else if (typeof consts[argument.value] !== 'undefined') {
-			context.stack.push({ isInteger: consts[argument.value].isInteger });
+			context.stack.push({
+				isInteger: consts[argument.value].isInteger,
+				isNonZero: consts[argument.value].value !== 0,
+			});
 			return {
 				byteCode: consts[argument.value].isInteger
 					? i32const(consts[argument.value].value)
@@ -109,12 +111,12 @@ const push: InstructionHandler = function (line, context) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 			}
 
-			context.stack.push({ isInteger: local.isInteger });
+			context.stack.push({ isInteger: local.isInteger, isNonZero: false });
 
 			return { byteCode: localGet(local.index), context };
 		}
 	} else {
-		context.stack.push({ isInteger: argument.isInteger });
+		context.stack.push({ isInteger: argument.isInteger, isNonZero: argument.value !== 0 });
 		return { byteCode: getTypeAppropriateConstInstruction(argument), context };
 	}
 };

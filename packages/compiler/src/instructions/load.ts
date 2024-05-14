@@ -23,7 +23,7 @@ const load: InstructionHandler = function (line, context) {
 	}
 
 	if (areAllOperandsIntegers(operand)) {
-		context.stack.push({ isInteger: true });
+		context.stack.push({ isInteger: true, isNonZero: false });
 		return { byteCode: instructionToByteCodeMap[line.instruction], context };
 	} else {
 		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
