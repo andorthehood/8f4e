@@ -66,6 +66,7 @@ import sigmoidPolynomialApproximation from './sigmoidPolynomialApproximation';
 import perceptron from './perceptron';
 import pcmLooper from './pcmLooper';
 import lowPassFilter from './lowPassFilter';
+import pcmLooperV16bitSigned from './pcmLooperV16bitSigned';
 
 const modules = {
 	audioBufferOut,
@@ -136,6 +137,7 @@ const modules = {
 	perceptron,
 	pcmLooper,
 	lowPassFilter,
+	pcmLooperV16bitSigned,
 } as const;
 
 export default modules;
