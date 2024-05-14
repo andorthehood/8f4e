@@ -208,6 +208,7 @@ exports[`bitwiseAnd if the wat code matches with the snapshot 1`] = `
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
   (func (;0;) (type 0)
+    (local i32 i32)
     i32.const 16
     i32.const 8
     i32.load
@@ -216,6 +217,17 @@ exports[`bitwiseAnd if the wat code matches with the snapshot 1`] = `
     i32.load
     i32.load
     i32.and
+    local.set 1
+    local.set 0
+    local.get 0
+    i32.const 65535
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 0
+    else
+      local.get 0
+    end
+    local.get 1
     i32.store)
   (export \\"test\\" (func 0)))
 "
