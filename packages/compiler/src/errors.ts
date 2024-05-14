@@ -17,6 +17,7 @@ export enum ErrorCode {
 	STACK_EXPECTED_ZERO_ELEMENTS,
 	MISSING_BLOCK_START_INSTRUCTION,
 	INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+	DIVISION_BY_ZERO,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -129,6 +130,13 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'Missing block start instruction.',
+				line,
+				context,
+			};
+		case ErrorCode.DIVISION_BY_ZERO:
+			return {
+				code,
+				message: 'Possible division by zero.',
 				line,
 				context,
 			};

@@ -16,7 +16,7 @@ const or: InstructionHandler = function (line, context) {
 	}
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
-		context.stack.push({ isInteger: true });
+		context.stack.push({ isInteger: true, isNonZero: operand1.isNonZero || operand2.isNonZero });
 		return {
 			byteCode: [WASMInstruction.I32_OR],
 			context,

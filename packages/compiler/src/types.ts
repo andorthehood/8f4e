@@ -101,6 +101,8 @@ export interface CompilationContext {
 
 export interface StackItem {
 	isInteger: boolean;
+	/** A flag for the div operation to check if the divisor is zero. */
+	isNonZero: boolean;
 }
 
 export type Stack = StackItem[];

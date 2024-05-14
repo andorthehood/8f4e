@@ -8,6 +8,7 @@ int out 0
 push &out
 push *in
 push divisor
+ensureNonZero
 div
 store
 

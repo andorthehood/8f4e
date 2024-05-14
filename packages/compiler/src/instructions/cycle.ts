@@ -20,9 +20,9 @@ const cycle: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
 	}
 
-	context.stack.push({ isInteger: true });
-	context.stack.push({ isInteger: true });
-	context.stack.push({ isInteger: true });
+	context.stack.push({ isInteger: true, isNonZero: false });
+	context.stack.push({ isInteger: true, isNonZero: false });
+	context.stack.push({ isInteger: true, isNonZero: false });
 
 	const pointerName = '__pointerCycle_pointerToIncrement' + line.lineNumber;
 	const startPositionName = '__pointerCycle_startPosition' + line.lineNumber;

@@ -18,7 +18,7 @@ const sqrt: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
 	}
 
-	context.stack.push({ isInteger: false });
+	context.stack.push({ isInteger: false, isNonZero: true });
 
 	return {
 		byteCode: [WASMInstruction.F32_SQRT],

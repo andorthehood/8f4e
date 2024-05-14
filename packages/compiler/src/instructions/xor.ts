@@ -16,7 +16,7 @@ const xor: InstructionHandler = function (line, context) {
 	}
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
-		context.stack.push({ isInteger: true });
+		context.stack.push({ isInteger: true, isNonZero: false });
 		return {
 			byteCode: [WASMInstruction.I32_XOR],
 			context,
