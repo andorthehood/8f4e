@@ -16,13 +16,13 @@ const add: InstructionHandler = function (line, context) {
 	}
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
-		context.stack.push({ isInteger: true });
+		context.stack.push({ isInteger: true, isNonZero: false });
 		return {
 			byteCode: [WASMInstruction.I32_ADD],
 			context,
 		};
 	} else if (areAllOperandsFloats(operand1, operand2)) {
-		context.stack.push({ isInteger: false });
+		context.stack.push({ isInteger: false, isNonZero: false });
 		return {
 			byteCode: [WASMInstruction.F32_ADD],
 			context,

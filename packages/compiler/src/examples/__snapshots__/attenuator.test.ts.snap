@@ -103,18 +103,23 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "div",
+    "instruction": "ensureNonZero",
     "lineNumber": 10,
   },
   Object {
     "arguments": Array [],
-    "instruction": "store",
+    "instruction": "div",
     "lineNumber": 11,
   },
   Object {
     "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 12,
+  },
+  Object {
+    "arguments": Array [],
     "instruction": "moduleEnd",
-    "lineNumber": 13,
+    "lineNumber": 14,
   },
 ]
 `;
@@ -181,12 +186,21 @@ exports[`attenuator if the wat code matches with the snapshot 1`] = `
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
   (func (;0;) (type 0)
+    (local i32)
     i32.const 12
     i32.const 4
     i32.load
     i32.load
     i32.const 8
     i32.load
+    local.set 0
+    local.get 0
+    i32.eqz
+    if (result i32)  ;; label = @1
+      i32.const 1
+    else
+      local.get 0
+    end
     i32.div_s
     i32.store)
   (export \\"test\\" (func 0)))

@@ -16,11 +16,15 @@ const div: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
+	if (!operand1.isNonZero) {
+		throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
+	}
+
 	if (areAllOperandsIntegers(operand1, operand2)) {
-		context.stack.push({ isInteger: true });
+		context.stack.push({ isInteger: true, isNonZero: true });
 		return { byteCode: [WASMInstruction.I32_DIV_S], context };
 	} else if (areAllOperandsFloats(operand1, operand2)) {
-		context.stack.push({ isInteger: false });
+		context.stack.push({ isInteger: false, isNonZero: true });
 		return { byteCode: [WASMInstruction.F32_DIV], context };
 	} else {
 		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, context);

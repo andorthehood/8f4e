@@ -16,10 +16,10 @@ const lessThan: InstructionHandler = function (line, context) {
 	}
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
-		context.stack.push({ isInteger: true });
+		context.stack.push({ isInteger: true, isNonZero: false });
 		return { byteCode: [WASMInstruction.I32_LT_S], context };
 	} else if (areAllOperandsFloats(operand1, operand2)) {
-		context.stack.push({ isInteger: true });
+		context.stack.push({ isInteger: true, isNonZero: false });
 		return { byteCode: [WASMInstruction.F32_LT], context };
 	} else {
 		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, context);
