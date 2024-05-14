@@ -109,7 +109,13 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 	);
 
 	return modules.map(ast => {
-		const module = compileModule(ast, builtInConsts, namespaces, memoryAddress * Int32Array.BYTES_PER_ELEMENT);
+		const module = compileModule(
+			ast,
+			builtInConsts,
+			namespaces,
+			memoryAddress * Int32Array.BYTES_PER_ELEMENT,
+			options.maxMemorySize
+		);
 		memoryAddress += module.memoryWordSize;
 
 		if (options.maxMemorySize * WASM_MEMORY_PAGE_SIZE <= memoryAddress) {

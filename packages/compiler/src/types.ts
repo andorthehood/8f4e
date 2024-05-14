@@ -97,12 +97,14 @@ export interface CompilationContext {
 	stack: Stack;
 	blockStack: BlockStack;
 	startingByteAddress: number;
+	memoryByteSize: number;
 }
 
 export interface StackItem {
 	isInteger: boolean;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero: boolean;
+	isSafeMemoryAddress?: boolean;
 }
 
 export type Stack = StackItem[];
@@ -134,7 +136,9 @@ export interface CompileOptions {
 		constants: Namespace['consts'];
 		ignoredKeywords: string[];
 	};
+	/** Initial number of memory pages, with a page being 64KiB (65,536 bytes). */
 	initialMemorySize: number;
+	/** Maximum number of memory pages, with a page being 64KiB (65,536 bytes). */
 	maxMemorySize: number;
 	globalDataStructures?: DataStructure[];
 }
