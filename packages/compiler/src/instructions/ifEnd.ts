@@ -25,6 +25,10 @@ const ifEnd: InstructionHandler = function (line, context) {
 			throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
 		}
 
+		if (!block.expectedResultIsInteger && operand.isInteger) {
+			throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
+		}
+
 		context.stack.push(operand);
 	}
 
