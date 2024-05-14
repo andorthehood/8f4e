@@ -131,6 +131,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 0,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "in" => Object {
@@ -143,6 +144,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 1,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "divisor" => Object {
@@ -155,6 +157,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 2,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "out" => Object {
@@ -167,6 +170,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 3,
+    "wordSize": 4,
     "wordSpan": 1,
   },
 }
