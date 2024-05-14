@@ -15,7 +15,7 @@ const loadFloat: InstructionHandler = function (line, context) {
 	}
 
 	if (areAllOperandsIntegers(operand)) {
-		context.stack.push({ isInteger: false });
+		context.stack.push({ isInteger: false, isNonZero: false });
 		return { byteCode: f32load(), context };
 	} else {
 		throw getError(ErrorCode.ONLY_INTEGERS, line, context);

@@ -17,7 +17,7 @@ const cycle: InstructionHandler = function (line, context) {
 
 	if (operand.isInteger) {
 		// For some reason there is still no abs instruction for integers in Web Assembly.
-		context.stack.push({ isInteger: true });
+		context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
 		const valueName = '__absify_value' + line.lineNumber;
 
 		return parseSegment(
@@ -38,7 +38,7 @@ const cycle: InstructionHandler = function (line, context) {
 			context
 		);
 	} else {
-		context.stack.push({ isInteger: false });
+		context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
 		return {
 			byteCode: [WASMInstruction.F32_ABS],
 			context,

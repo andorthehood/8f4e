@@ -19,7 +19,7 @@ const _localGet: InstructionHandler = function (line, context) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 		}
 
-		context.stack.push({ isInteger: local.isInteger });
+		context.stack.push({ isInteger: local.isInteger, isNonZero: false });
 		return { byteCode: localGet(local.index), context };
 	} else {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);

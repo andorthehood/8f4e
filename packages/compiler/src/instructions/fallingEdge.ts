@@ -14,7 +14,7 @@ const fallingEdge: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
-	context.stack.push({ isInteger: true });
+	context.stack.push({ isInteger: true, isNonZero: false });
 
 	const currentValueName = '__fallingEdgeDetector_currentValue' + line.lineNumber;
 	const previousValueName = '__fallingEdgeDetector_previousValue' + line.lineNumber;

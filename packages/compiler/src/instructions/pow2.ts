@@ -18,7 +18,7 @@ const pow2: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
 	}
 
-	context.stack.push({ isInteger: true });
+	context.stack.push({ isInteger: true, isNonZero: false });
 
 	return parseSegment(['push 2', 'push 1', 'sub', 'swap', 'shiftLeft'], context);
 };
