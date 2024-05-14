@@ -36,6 +36,14 @@ const memory: InstructionHandler = function (line, context) {
 		}
 
 		defaultValue = memoryItem.byteAddress;
+	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '$') {
+		const memoryItem = memory.get(line.arguments[1].value.substring(1));
+
+		if (!memoryItem) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+		}
+
+		defaultValue = memoryItem.wordSpan;
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
 		const constant = context.namespace.consts[line.arguments[1].value];
 
@@ -47,6 +55,7 @@ const memory: InstructionHandler = function (line, context) {
 	}
 
 	memory.set(line.arguments[0].value, {
+		wordSize: 4,
 		wordAddress: context.startingByteAddress / WORD_LENGTH + wordAddress,
 		wordSpan: 1,
 		byteAddress: context.startingByteAddress + wordAddress * WORD_LENGTH,
