@@ -14,6 +14,7 @@ import { ErrorCode, getError } from './errors';
 import { WORD_LENGTH } from './consts';
 import Type from './wasmUtils/type';
 import { calculateMemoryWordSize } from './utils';
+import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
 
 export { MemoryTypes, MemoryMap } from './types';
 
@@ -112,7 +113,8 @@ export function compile(
 	ast: AST,
 	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
-	startingByteAddress = 0
+	startingByteAddress = 0,
+	maxMemorySize: number
 ): CompiledModule {
 	const { byteCode, context } = compileSegment(ast, {
 		namespace: {
@@ -125,6 +127,7 @@ export function compile(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
+		memoryByteSize: maxMemorySize * WASM_MEMORY_PAGE_SIZE,
 	});
 
 	if (!context.namespace.moduleName) {
