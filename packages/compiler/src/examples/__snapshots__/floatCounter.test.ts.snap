@@ -98,6 +98,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 0,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "out" => Object {
@@ -110,6 +111,7 @@ Map {
     "isPointingToPointer": false,
     "type": "float",
     "wordAddress": 1,
+    "wordSize": 4,
     "wordSpan": 1,
   },
 }

@@ -16,6 +16,14 @@ export function isMemoryPointerIdentifier(memoryMap: MemoryMap, name: string): b
 	return name.startsWith('*') && memoryMap.has(name.substring(1));
 }
 
+export function isWordSpanIdentifier(memoryMap: MemoryMap, name: string): boolean {
+	return name.startsWith('$') && memoryMap.has(name.substring(1));
+}
+
+export function isWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
+	return name.startsWith('%') && memoryMap.has(name.substring(1));
+}
+
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
 	return memoryMap.get(id);
 }
@@ -28,6 +36,16 @@ export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): n
 export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSpan - 1) * WORD_LENGTH : 0;
+}
+
+export function getWordSpan(memoryMap: MemoryMap, id: string): number {
+	const memoryItem = getDataStructure(memoryMap, id);
+	return memoryItem ? memoryItem.wordSpan : 0;
+}
+
+export function getWordSize(memoryMap: MemoryMap, id: string): number {
+	const memoryItem = getDataStructure(memoryMap, id);
+	return memoryItem ? memoryItem.wordSize : 0;
 }
 
 export function isInstructionIsInsideAModule(blockStack: BlockStack) {

@@ -12,6 +12,7 @@ export enum MemoryTypes {
 }
 
 export interface DataStructure {
+	wordSize: number;
 	type: MemoryTypes;
 	byteAddress: number;
 	wordSpan: number;
