@@ -368,6 +368,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 0,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "numberOfInputs" => Object {
@@ -380,6 +381,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 1,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "numberOfOutputs" => Object {
@@ -392,6 +394,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 2,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "numberOfDataPlaceholders" => Object {
@@ -404,6 +407,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 3,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "in:1" => Object {
@@ -416,6 +420,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 4,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "in:2" => Object {
@@ -428,6 +433,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 5,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "in:3" => Object {
@@ -440,6 +446,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 6,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "in:4" => Object {
@@ -452,6 +459,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAddress": 7,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "out:1" => Object {
@@ -464,6 +472,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 8,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "out:2" => Object {
@@ -476,6 +485,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 9,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "out:3" => Object {
@@ -488,6 +498,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 10,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "out:4" => Object {
@@ -500,6 +511,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 11,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "data:1" => Object {
@@ -512,6 +524,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 12,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "data:2" => Object {
@@ -524,6 +537,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 13,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "data:3" => Object {
@@ -536,6 +550,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 14,
+    "wordSize": 4,
     "wordSpan": 1,
   },
   "data:4" => Object {
@@ -548,6 +563,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAddress": 15,
+    "wordSize": 4,
     "wordSpan": 1,
   },
 }
