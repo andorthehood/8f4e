@@ -68,6 +68,7 @@ import pcmLooper from './pcmLooper';
 import lowPassFilter from './lowPassFilter';
 import pcmLooperV16bitSigned from './pcmLooperV16bitSigned';
 import pcmLooperVR16bitSigned from './pcmLooperVR16bitSigned';
+import pcmLooperVRP16bitSigned from './pcmLooperVRP16bitSigned';
 import bpmClock from './bpmClock';
 import reverb from './reverb';
 
@@ -142,6 +143,7 @@ const modules = {
 	lowPassFilter,
 	pcmLooperV16bitSigned,
 	pcmLooperVR16bitSigned,
+	pcmLooperVRP16bitSigned,
 	bpmClock,
 	reverb,
 } as const;
