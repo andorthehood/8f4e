@@ -68,8 +68,8 @@ function changeModuleIdInCode(code: string[], id: string) {
 }
 
 function incrementModuleId(id: string) {
-	if (/.*[0-9]+/gm.test(id)) {
-		const [, trailingNumber] = id.match(/.*([0-9]+)/) as [never, string];
+	if (/.*[0-9]+$/gm.test(id)) {
+		const [, trailingNumber] = id.match(/.*([0-9]+$)/) as [never, string];
 		return id.replace(new RegExp(trailingNumber + '$'), `${parseInt(trailingNumber, 10) + 1}`);
 	} else {
 		return id + '2';
