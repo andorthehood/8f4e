@@ -16,14 +16,14 @@ const loadFloat: InstructionHandler = function (line, context) {
 	}
 
 	if (areAllOperandsIntegers(operand)) {
-		context.stack.push({ isInteger: false, isNonZero: false });
-
 		if (operand.isSafeMemoryAddress) {
+			context.stack.push({ isInteger: false, isNonZero: false });
 			return { byteCode: f32load(), context };
 		} else {
+			context.stack.push(operand);
 			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;
 			// Memory overflow protection.
-			return parseSegment(
+			const ret = parseSegment(
 				[
 					`local int ${tempVariableName}`,
 					`localSet ${tempVariableName}`,
@@ -41,6 +41,9 @@ const loadFloat: InstructionHandler = function (line, context) {
 				],
 				context
 			);
+			context.stack.pop();
+			context.stack.push({ isInteger: false, isNonZero: false });
+			return ret;
 		}
 	} else {
 		throw getError(ErrorCode.ONLY_INTEGERS, line, context);

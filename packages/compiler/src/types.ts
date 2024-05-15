@@ -104,6 +104,7 @@ export interface StackItem {
 	isInteger: boolean;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero: boolean;
+	/** A flag for the memory opraions to check if the memory address is within the memory bounds. */
 	isSafeMemoryAddress?: boolean;
 }
 
