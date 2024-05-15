@@ -67,6 +67,7 @@ import perceptron from './perceptron';
 import pcmLooper from './pcmLooper';
 import lowPassFilter from './lowPassFilter';
 import pcmLooperV16bitSigned from './pcmLooperV16bitSigned';
+import pcmLooperVR16bitSigned from './pcmLooperVR16bitSigned';
 
 const modules = {
 	audioBufferOut,
@@ -138,6 +139,7 @@ const modules = {
 	pcmLooper,
 	lowPassFilter,
 	pcmLooperV16bitSigned,
+	pcmLooperVR16bitSigned,
 } as const;
 
 export default modules;
