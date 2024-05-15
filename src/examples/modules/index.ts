@@ -69,6 +69,7 @@ import lowPassFilter from './lowPassFilter';
 import pcmLooperV16bitSigned from './pcmLooperV16bitSigned';
 import pcmLooperVR16bitSigned from './pcmLooperVR16bitSigned';
 import bpmClock from './bpmClock';
+import reverb from './reverb';
 
 const modules = {
 	audioBufferOut,
@@ -142,6 +143,7 @@ const modules = {
 	pcmLooperV16bitSigned,
 	pcmLooperVR16bitSigned,
 	bpmClock,
+	reverb,
 } as const;
 
 export default modules;
