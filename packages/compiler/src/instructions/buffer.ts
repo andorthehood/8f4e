@@ -23,7 +23,7 @@ const buffer: InstructionHandler = function (line, context) {
 	const wordSize = line.instruction.includes('8') ? 1 : line.instruction.includes('16') ? 2 : 4;
 
 	if (line.arguments[1].type === ArgumentType.LITERAL) {
-		wordSpan = Math.ceil(line.arguments[1].value / WORD_LENGTH) * wordSize;
+		wordSpan = line.arguments[1].value;
 	} else {
 		const constant = context.namespace.consts[line.arguments[1].value];
 
@@ -31,7 +31,7 @@ const buffer: InstructionHandler = function (line, context) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 		}
 
-		wordSpan = Math.ceil(constant.value / WORD_LENGTH) * wordSize;
+		wordSpan = constant.value;
 	}
 
 	memory.set(line.arguments[0].value, {
