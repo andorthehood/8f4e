@@ -16,11 +16,11 @@ export function isMemoryPointerIdentifier(memoryMap: MemoryMap, name: string): b
 	return name.startsWith('*') && memoryMap.has(name.substring(1));
 }
 
-export function isWordSpanIdentifier(memoryMap: MemoryMap, name: string): boolean {
+export function isElementCountIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return name.startsWith('$') && memoryMap.has(name.substring(1));
 }
 
-export function isWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
+export function isElementWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return name.startsWith('%') && memoryMap.has(name.substring(1));
 }
 
@@ -33,17 +33,17 @@ export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): n
 	return memoryItem ? memoryItem.byteAddress : 0;
 }
 
-export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): number {
+export function getMemoryStringLastByteAddress(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY : 0;
 }
 
-export function getWordSpan(memoryMap: MemoryMap, id: string): number {
+export function getElementCount(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	return memoryItem ? memoryItem.wordAlignedSize : 0;
+	return memoryItem ? memoryItem.numberOfElements : 0;
 }
 
-export function getWordSize(memoryMap: MemoryMap, id: string): number {
+export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
 	return memoryItem ? memoryItem.elementWordSize : 0;
 }
@@ -61,7 +61,7 @@ export function isInstructionIsInsideAGroup(blockStack: BlockStack) {
 	return blockStack[blockStack.length - 1] && blockStack[blockStack.length - 1].isGroupBlock;
 }
 
-export function calculateMemoryWordSize(memory: MemoryMap): number {
+export function calculateWordAlignedSizeOfMemory(memory: MemoryMap): number {
 	return Array.from(memory.values()).reduce((accumulator, current) => {
 		return accumulator + current.wordAlignedSize;
 	}, 0);

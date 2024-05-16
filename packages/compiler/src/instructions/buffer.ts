@@ -1,6 +1,6 @@
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
+import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
 const buffer: InstructionHandler = function (line, context) {
@@ -17,7 +17,7 @@ const buffer: InstructionHandler = function (line, context) {
 	}
 
 	const memory = new Map(context.namespace.memory);
-	const wordAlignedAddress = calculateMemoryWordSize(memory);
+	const wordAlignedAddress = calculateWordAlignedSizeOfMemory(memory);
 
 	let numberOfElements = 1;
 	const elementWordSize = line.instruction.includes('8') ? 1 : line.instruction.includes('16') ? 2 : 4;
