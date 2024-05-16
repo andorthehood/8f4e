@@ -15,8 +15,8 @@ export interface DataStructure {
 	wordSize: number;
 	type: MemoryTypes;
 	byteAddress: number;
-	alignmentAdjustedSize: number;
-	wordAddress: number;
+	wordAlignedSize: number;
+	wordAlignedAddress: number;
 	default: number | Map<number, number>;
 	// lineNumber: number;
 	isInteger: boolean;
@@ -32,7 +32,7 @@ export interface CompiledModule {
 	functionBody: number[];
 	id: string;
 	byteAddress: number;
-	wordAddress: number;
+	wordAlignedAddress: number;
 	memoryMap: MemoryMap;
 	memoryWordSize: number;
 	ast: AST;

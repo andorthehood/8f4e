@@ -30,15 +30,15 @@ const skip: InstructionHandler = function (line, context) {
 	}
 
 	const memory = context.namespace.memory;
-	const wordAddress = calculateMemoryWordSize(memory);
-	const byteAddress = context.startingByteAddress + wordAddress * GLOBAL_ALIGNMENT_BOUNDARY;
+	const wordAlignedAddress = calculateMemoryWordSize(memory);
+	const byteAddress = context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY;
 
-	memory.set('__sleeper' + wordAddress, {
-		wordAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAddress,
-		alignmentAdjustedSize: 1,
+	memory.set('__sleeper' + wordAlignedAddress, {
+		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
+		wordAlignedSize: 1,
 		wordSize: 4,
 		byteAddress,
-		id: '__sleeper' + wordAddress,
+		id: '__sleeper' + wordAlignedAddress,
 		default: 0,
 		type: MemoryTypes.int,
 		isPointer: false,
