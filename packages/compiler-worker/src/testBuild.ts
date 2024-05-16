@@ -11,8 +11,12 @@ function compareMap(arr1: Map<number, number>, arr2: Map<number, number>): boole
 }
 
 function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: CompiledModuleLookup | undefined) {
-	const changes: { wordAlignedSize: number; wordAlignedAddress: number; value: number | Map<number, number>; isInteger: boolean }[] =
-		[];
+	const changes: {
+		wordAlignedSize: number;
+		wordAlignedAddress: number;
+		value: number | Map<number, number>;
+		isInteger: boolean;
+	}[] = [];
 
 	if (!previous) {
 		return [];
@@ -99,7 +103,9 @@ export default async function testBuild(
 
 	const init = instance.exports.init as CallableFunction;
 
-	if (!previousCompiledModules || didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules)) {
+	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
+
+	if (!previousCompiledModules || memoryStructureChange) {
 		init();
 	}
 
