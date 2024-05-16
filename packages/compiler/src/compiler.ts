@@ -11,7 +11,7 @@ import {
 	Namespaces,
 } from './types';
 import { ErrorCode, getError } from './errors';
-import { WORD_LENGTH } from './consts';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import Type from './wasmUtils/type';
 import { calculateMemoryWordSize } from './utils';
 import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
@@ -151,7 +151,7 @@ export function compile(
 			byteCode
 		),
 		byteAddress: startingByteAddress,
-		wordAddress: startingByteAddress / WORD_LENGTH,
+		wordAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		memoryWordSize: calculateMemoryWordSize(context.namespace.memory),
 		ast,

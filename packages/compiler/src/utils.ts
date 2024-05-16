@@ -1,4 +1,4 @@
-import { WORD_LENGTH } from './consts';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import { BlockStack, CompiledModule, MemoryMap, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
@@ -35,7 +35,7 @@ export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): n
 
 export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSpan - 1) * WORD_LENGTH : 0;
+	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordSpan - 1) * GLOBAL_ALIGNMENT_BOUNDARY : 0;
 }
 
 export function getWordSpan(memoryMap: MemoryMap, id: string): number {
