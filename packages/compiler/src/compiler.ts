@@ -13,7 +13,7 @@ import {
 import { ErrorCode, getError } from './errors';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import Type from './wasmUtils/type';
-import { calculateMemoryWordSize } from './utils';
+import { calculateWordAlignedSizeOfMemory } from './utils';
 import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
 
 export { MemoryTypes, MemoryMap } from './types';
@@ -153,7 +153,7 @@ export function compile(
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
-		memoryWordSize: calculateMemoryWordSize(context.namespace.memory),
+		memoryWordSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
 		ast,
 	};
 }
