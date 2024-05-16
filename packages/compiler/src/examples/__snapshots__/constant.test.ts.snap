@@ -40,15 +40,16 @@ Map {
   "out" => Object {
     "byteAddress": 0,
     "default": 0,
+    "elementWordSize": 4,
     "id": "out",
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
     "isPointingToPointer": false,
+    "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
-    "wordSize": 4,
   },
 }
 `;
