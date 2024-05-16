@@ -411,7 +411,6 @@ Array [
 exports[`stepSequencer if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
@@ -421,10 +420,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "trigger" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "trigger",
@@ -434,10 +433,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "triggerPreviousValue" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "triggerPreviousValue",
@@ -447,10 +446,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "steps" => Object {
-    "wordAlignedSize": 16,
     "byteAddress": 12,
     "default": Map {},
     "id": "steps",
@@ -460,10 +459,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 3,
+    "wordAlignedSize": 16,
     "wordSize": 4,
   },
   "stepPointer" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 76,
     "default": 12,
     "id": "stepPointer",
@@ -473,10 +472,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 19,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "stepLength" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 80,
     "default": 4,
     "id": "stepLength",
@@ -486,10 +485,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 20,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 84,
     "default": 0,
     "id": "out",
@@ -499,6 +498,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 21,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
 }

@@ -89,7 +89,6 @@ Array [
 exports[`floatCounter if the generated memory map matches with the snapshot 1`] = `
 Map {
   "test" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "test",
@@ -99,10 +98,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0.1,
     "id": "out",
@@ -112,6 +111,7 @@ Map {
     "isPointingToPointer": false,
     "type": "float",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
 }
