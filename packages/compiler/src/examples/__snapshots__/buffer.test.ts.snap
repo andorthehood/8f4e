@@ -359,6 +359,7 @@ Array [
 exports[`buffer snapshots if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
@@ -369,9 +370,9 @@ Map {
     "type": "int",
     "wordAddress": 0,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "numberOfInputs" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 4,
     "default": 4,
     "id": "numberOfInputs",
@@ -382,9 +383,9 @@ Map {
     "type": "int",
     "wordAddress": 1,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "numberOfOutputs" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 8,
     "default": 4,
     "id": "numberOfOutputs",
@@ -395,9 +396,9 @@ Map {
     "type": "int",
     "wordAddress": 2,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "numberOfDataPlaceholders" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 12,
     "default": 4,
     "id": "numberOfDataPlaceholders",
@@ -408,9 +409,9 @@ Map {
     "type": "int",
     "wordAddress": 3,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "in:1" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 16,
     "default": 0,
     "id": "in:1",
@@ -421,9 +422,9 @@ Map {
     "type": "int*",
     "wordAddress": 4,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "in:2" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 20,
     "default": 0,
     "id": "in:2",
@@ -434,9 +435,9 @@ Map {
     "type": "int*",
     "wordAddress": 5,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "in:3" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 24,
     "default": 0,
     "id": "in:3",
@@ -447,9 +448,9 @@ Map {
     "type": "int*",
     "wordAddress": 6,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "in:4" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 28,
     "default": 0,
     "id": "in:4",
@@ -460,9 +461,9 @@ Map {
     "type": "int*",
     "wordAddress": 7,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:1" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 32,
     "default": 0,
     "id": "out:1",
@@ -473,9 +474,9 @@ Map {
     "type": "int",
     "wordAddress": 8,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:2" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 36,
     "default": 0,
     "id": "out:2",
@@ -486,9 +487,9 @@ Map {
     "type": "int",
     "wordAddress": 9,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:3" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 40,
     "default": 0,
     "id": "out:3",
@@ -499,9 +500,9 @@ Map {
     "type": "int",
     "wordAddress": 10,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:4" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 44,
     "default": 0,
     "id": "out:4",
@@ -512,9 +513,9 @@ Map {
     "type": "int",
     "wordAddress": 11,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "data:1" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 48,
     "default": 0,
     "id": "data:1",
@@ -525,9 +526,9 @@ Map {
     "type": "int",
     "wordAddress": 12,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "data:2" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 52,
     "default": 0,
     "id": "data:2",
@@ -538,9 +539,9 @@ Map {
     "type": "int",
     "wordAddress": 13,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "data:3" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 56,
     "default": 0,
     "id": "data:3",
@@ -551,9 +552,9 @@ Map {
     "type": "int",
     "wordAddress": 14,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "data:4" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 60,
     "default": 0,
     "id": "data:4",
@@ -564,7 +565,6 @@ Map {
     "type": "int",
     "wordAddress": 15,
     "wordSize": 4,
-    "wordSpan": 1,
   },
 }
 `;

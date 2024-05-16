@@ -672,6 +672,7 @@ Array [
 exports[`triggerSequencer if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
@@ -682,9 +683,9 @@ Map {
     "type": "int",
     "wordAddress": 0,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "trigger" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "trigger",
@@ -695,9 +696,9 @@ Map {
     "type": "int*",
     "wordAddress": 1,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "reset" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "reset",
@@ -708,9 +709,9 @@ Map {
     "type": "int*",
     "wordAddress": 2,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "triggerPreviousValue" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "triggerPreviousValue",
@@ -721,9 +722,9 @@ Map {
     "type": "int",
     "wordAddress": 3,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "stepMinusOne" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 16,
     "default": 0,
     "id": "stepMinusOne",
@@ -734,9 +735,9 @@ Map {
     "type": "int",
     "wordAddress": 4,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "steps" => Object {
+    "alignmentAdjustedSize": 16,
     "byteAddress": 20,
     "default": Map {},
     "id": "steps",
@@ -747,9 +748,9 @@ Map {
     "type": "int",
     "wordAddress": 5,
     "wordSize": 4,
-    "wordSpan": 16,
   },
   "stepPointer" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 84,
     "default": 16,
     "id": "stepPointer",
@@ -760,9 +761,9 @@ Map {
     "type": "int",
     "wordAddress": 21,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "stepLength" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 88,
     "default": 4,
     "id": "stepLength",
@@ -773,9 +774,9 @@ Map {
     "type": "int",
     "wordAddress": 22,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "didTrigger" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 92,
     "default": 0,
     "id": "didTrigger",
@@ -786,9 +787,9 @@ Map {
     "type": "int",
     "wordAddress": 23,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 96,
     "default": 0,
     "id": "out",
@@ -799,7 +800,6 @@ Map {
     "type": "int",
     "wordAddress": 24,
     "wordSize": 4,
-    "wordSpan": 1,
   },
 }
 `;
