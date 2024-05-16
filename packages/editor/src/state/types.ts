@@ -260,6 +260,18 @@ export interface Project {
 	viewport: Viewport;
 	sampleRate: number;
 	binaryAssets: BinaryAsset[];
+	audioInputBuffers: {
+		moduleId: string;
+		memoryId: string;
+		channel: number;
+		input: number;
+	}[];
+	audioOutputBuffers: {
+		moduleId: string;
+		memoryId: string;
+		channel: number;
+		output: number;
+	}[];
 }
 
 export interface ExampleModule {
