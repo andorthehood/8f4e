@@ -1,6 +1,6 @@
 import triggerSequencer from './stepSequencer.asm';
 
-import { WORD_LENGTH } from '../consts';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import { createTestModule } from '../testUtils';
 import { TestModule } from '../types';
 
@@ -50,7 +50,7 @@ describe('stepSequencer', () => {
 		const trigger = memory.allocMemoryForPointer('trigger');
 		memory.set('stepLength', 15);
 
-		for (let i = 0; i < 15 * WORD_LENGTH; i += WORD_LENGTH) {
+		for (let i = 0; i < 15 * GLOBAL_ALIGNMENT_BOUNDARY; i += GLOBAL_ALIGNMENT_BOUNDARY) {
 			expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + i);
 			memory.set(trigger, 1);
 			test();
@@ -67,7 +67,7 @@ describe('stepSequencer', () => {
 
 		for (let i = 0; i < 10; i += 1) {
 			for (let j = 0; j < 3; j++) {
-				expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + WORD_LENGTH * j);
+				expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + GLOBAL_ALIGNMENT_BOUNDARY * j);
 				memory.set(trigger, 1);
 				test();
 				memory.set(trigger, 0);
