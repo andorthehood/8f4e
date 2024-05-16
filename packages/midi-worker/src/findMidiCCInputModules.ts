@@ -19,12 +19,12 @@ export default function findMidCCInputModules(
 				const cc = module.memoryMap.get('cc');
 
 				return [
-					memoryBuffer[channel?.wordAddress || 0] + '' + memoryBuffer[cc?.wordAddress || 0],
+					memoryBuffer[channel?.wordAlignedAddress || 0] + '' + memoryBuffer[cc?.wordAlignedAddress || 0],
 					{
 						moduleId: module.id,
-						valueWordAddress: value?.wordAddress,
-						channelWordAddress: channel?.wordAddress,
-						selectedCCWordAddress: cc?.wordAddress,
+						valueWordAddress: value?.wordAlignedAddress,
+						channelWordAddress: channel?.wordAlignedAddress,
+						selectedCCWordAddress: cc?.wordAlignedAddress,
 					},
 				];
 			})

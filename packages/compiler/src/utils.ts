@@ -35,12 +35,12 @@ export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): n
 
 export function getMemoryStringLastAddress(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	return memoryItem ? memoryItem.byteAddress + (memoryItem.alignmentAdjustedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY : 0;
+	return memoryItem ? memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY : 0;
 }
 
 export function getWordSpan(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	return memoryItem ? memoryItem.alignmentAdjustedSize : 0;
+	return memoryItem ? memoryItem.wordAlignedSize : 0;
 }
 
 export function getWordSize(memoryMap: MemoryMap, id: string): number {
@@ -63,7 +63,7 @@ export function isInstructionIsInsideAGroup(blockStack: BlockStack) {
 
 export function calculateMemoryWordSize(memory: MemoryMap): number {
 	return Array.from(memory.values()).reduce((accumulator, current) => {
-		return accumulator + current.alignmentAdjustedSize;
+		return accumulator + current.wordAlignedSize;
 	}, 0);
 }
 
