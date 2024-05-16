@@ -148,7 +148,7 @@ export interface Input {
 	x: number;
 	y: number;
 	id: string;
-	wordAddress: number;
+	wordAlignedAddress: number;
 }
 
 export interface PianoKeyboard {

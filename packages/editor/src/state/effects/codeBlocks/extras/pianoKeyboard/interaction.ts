@@ -35,7 +35,7 @@ export default function pianoKeyboard(state: State, events: EventDispatcher): ()
 		if (keyboard.pressedKeys.has(key)) {
 			keyboard.pressedKeys.delete(key);
 		} else {
-			if (keyboard.pressedKeys.size === keyboard.pressedKeysListMemory.alignmentAdjustedSize) {
+			if (keyboard.pressedKeys.size === keyboard.pressedKeysListMemory.wordAlignedSize) {
 				return;
 			}
 			keyboard.pressedKeys.add(key);

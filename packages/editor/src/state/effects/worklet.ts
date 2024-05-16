@@ -11,7 +11,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		const audioOutputBuffers = (state.project.audioOutputBuffers || [])
 			.map(({ moduleId, memoryId, output, channel }) => {
 				const audioModule = state.compiler.compiledModules.get(moduleId);
-				const audioBufferWordAddress = audioModule?.memoryMap.get(memoryId)?.wordAddress;
+				const audioBufferWordAddress = audioModule?.memoryMap.get(memoryId)?.wordAlignedAddress;
 
 				return {
 					audioBufferWordAddress,

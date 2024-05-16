@@ -11,8 +11,8 @@ export default function drawSwitches(engine: Engine, state: State, codeBlock: Co
 			continue;
 		}
 
-		const { wordAddress } = memory;
-		const value = state.compiler.memoryBuffer[wordAddress] || 0;
+		const { wordAlignedAddress } = memory;
+		const value = state.compiler.memoryBuffer[wordAlignedAddress] || 0;
 
 		if (value === onValue) {
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);

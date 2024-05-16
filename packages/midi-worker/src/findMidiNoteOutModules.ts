@@ -18,32 +18,32 @@ export default function findMidiNoteOutModules(
 
 			const noteWordAddress = note
 				? note?.isPointer
-					? memoryBuffer[note.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
-					: note.wordAddress
+					? memoryBuffer[note.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: note.wordAlignedAddress
 				: undefined;
 
 			const channelWordAddress = channel
 				? channel?.isPointer
-					? memoryBuffer[channel.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
-					: channel.wordAddress
+					? memoryBuffer[channel.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: channel.wordAlignedAddress
 				: undefined;
 
 			const noteOnOffWordAddress = noteOnOff
 				? noteOnOff?.isPointer
-					? memoryBuffer[noteOnOff.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
-					: noteOnOff.wordAddress
+					? memoryBuffer[noteOnOff.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: noteOnOff.wordAlignedAddress
 				: undefined;
 
 			const velocityWordAddress = velocity
 				? velocity?.isPointer
-					? memoryBuffer[velocity.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
-					: velocity.wordAddress
+					? memoryBuffer[velocity.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: velocity.wordAlignedAddress
 				: undefined;
 
 			const portWordAddress = port
 				? port?.isPointer
-					? memoryBuffer[port.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
-					: port.wordAddress
+					? memoryBuffer[port.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: port.wordAlignedAddress
 				: undefined;
 
 			return {
