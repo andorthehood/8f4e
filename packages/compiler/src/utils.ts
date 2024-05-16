@@ -45,7 +45,7 @@ export function getWordSpan(memoryMap: MemoryMap, id: string): number {
 
 export function getWordSize(memoryMap: MemoryMap, id: string): number {
 	const memoryItem = getDataStructure(memoryMap, id);
-	return memoryItem ? memoryItem.wordSize : 0;
+	return memoryItem ? memoryItem.elementWordSize : 0;
 }
 
 export function isInstructionIsInsideAModule(blockStack: BlockStack) {

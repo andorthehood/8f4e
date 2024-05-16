@@ -55,7 +55,8 @@ const memory: InstructionHandler = function (line, context) {
 	}
 
 	memory.set(line.arguments[0].value, {
-		wordSize: 4,
+		numberOfElements: 1,
+		elementWordSize: 4,
 		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
 		wordAlignedSize: 1,
 		byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,
