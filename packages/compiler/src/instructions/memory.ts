@@ -1,6 +1,6 @@
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
+import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
 const memory: InstructionHandler = function (line, context) {
@@ -9,7 +9,7 @@ const memory: InstructionHandler = function (line, context) {
 	}
 
 	const memory = new Map(context.namespace.memory);
-	const wordAlignedAddress = calculateMemoryWordSize(memory);
+	const wordAlignedAddress = calculateWordAlignedSizeOfMemory(memory);
 
 	if (!line.arguments[0]) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
