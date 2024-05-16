@@ -11,7 +11,7 @@ function compareMap(arr1: Map<number, number>, arr2: Map<number, number>): boole
 }
 
 function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: CompiledModuleLookup | undefined) {
-	const changes: { alignmentAdjustedSize: number; wordAddress: number; value: number | Map<number, number>; isInteger: boolean }[] =
+	const changes: { wordAlignedSize: number; wordAlignedAddress: number; value: number | Map<number, number>; isInteger: boolean }[] =
 		[];
 
 	if (!previous) {
@@ -33,8 +33,8 @@ function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: 
 			if (memory.default instanceof Map && previousMemory.default instanceof Map) {
 				if (!compareMap(memory.default, previousMemory.default)) {
 					changes.push({
-						alignmentAdjustedSize: memory.alignmentAdjustedSize,
-						wordAddress: memory.wordAddress,
+						wordAlignedSize: memory.wordAlignedSize,
+						wordAlignedAddress: memory.wordAlignedAddress,
 						value: memory.default,
 						isInteger: memory.isInteger,
 					});
@@ -42,8 +42,8 @@ function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: 
 			} else {
 				if (previousMemory.default !== memory.default) {
 					changes.push({
-						alignmentAdjustedSize: memory.alignmentAdjustedSize,
-						wordAddress: memory.wordAddress,
+						wordAlignedSize: memory.wordAlignedSize,
+						wordAlignedAddress: memory.wordAlignedAddress,
 						value: memory.default,
 						isInteger: memory.isInteger,
 					});
@@ -111,18 +111,18 @@ export default async function testBuild(
 		if (change.isInteger) {
 			if (change.value instanceof Map) {
 				change.value.forEach((item, index) => {
-					memoryBufferInt[change.wordAddress + index] = item;
+					memoryBufferInt[change.wordAlignedAddress + index] = item;
 				});
 			} else {
-				memoryBufferInt[change.wordAddress] = change.value;
+				memoryBufferInt[change.wordAlignedAddress] = change.value;
 			}
 		} else {
 			if (change.value instanceof Map) {
 				change.value.forEach((item, index) => {
-					memoryBufferFloat[change.wordAddress + index] = item;
+					memoryBufferFloat[change.wordAlignedAddress + index] = item;
 				});
 			} else {
-				memoryBufferFloat[change.wordAddress] = change.value;
+				memoryBufferFloat[change.wordAlignedAddress] = change.value;
 			}
 		}
 	});

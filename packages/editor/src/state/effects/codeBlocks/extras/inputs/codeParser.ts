@@ -30,7 +30,7 @@ export default function inputs(graphicData: CodeBlockGraphicData, state: State) 
 			x: 0,
 			y: gapCalculator(input.lineNumber, graphicData.gaps) * state.graphicHelper.globalViewport.hGrid,
 			id: input.id,
-			wordAddress: memory.wordAddress,
+			wordAlignedAddress: memory.wordAlignedAddress,
 			codeBlock: graphicData,
 		});
 	});

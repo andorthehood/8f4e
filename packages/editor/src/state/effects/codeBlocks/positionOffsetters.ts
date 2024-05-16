@@ -38,10 +38,10 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 		}
 
 		if (offsetter.axis === 'x') {
-			graphicData.positionOffsetterXWordAddress = memory.memory.wordAddress;
+			graphicData.positionOffsetterXWordAddress = memory.memory.wordAlignedAddress;
 		}
 		if (offsetter.axis === 'y') {
-			graphicData.positionOffsetterYWordAddress = memory.memory.wordAddress;
+			graphicData.positionOffsetterYWordAddress = memory.memory.wordAlignedAddress;
 		}
 	});
 }

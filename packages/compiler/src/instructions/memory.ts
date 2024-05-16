@@ -9,7 +9,7 @@ const memory: InstructionHandler = function (line, context) {
 	}
 
 	const memory = new Map(context.namespace.memory);
-	const wordAddress = calculateMemoryWordSize(memory);
+	const wordAlignedAddress = calculateMemoryWordSize(memory);
 
 	if (!line.arguments[0]) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
@@ -43,7 +43,7 @@ const memory: InstructionHandler = function (line, context) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 		}
 
-		defaultValue = memoryItem.alignmentAdjustedSize;
+		defaultValue = memoryItem.wordAlignedSize;
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
 		const constant = context.namespace.consts[line.arguments[1].value];
 
@@ -56,9 +56,9 @@ const memory: InstructionHandler = function (line, context) {
 
 	memory.set(line.arguments[0].value, {
 		wordSize: 4,
-		wordAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAddress,
-		alignmentAdjustedSize: 1,
-		byteAddress: context.startingByteAddress + wordAddress * GLOBAL_ALIGNMENT_BOUNDARY,
+		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
+		wordAlignedSize: 1,
+		byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 		id: line.arguments[0].value,
 		default: defaultValue,
 		type: line.instruction as unknown as MemoryTypes,
