@@ -1,7 +1,7 @@
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
-import { WORD_LENGTH } from '../consts';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
 const buffer: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
@@ -37,9 +37,9 @@ const buffer: InstructionHandler = function (line, context) {
 	memory.set(line.arguments[0].value, {
 		wordSize,
 		wordSpan,
-		wordAddress: context.startingByteAddress / WORD_LENGTH + wordAddress,
+		wordAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAddress,
 		id: line.arguments[0].value,
-		byteAddress: context.startingByteAddress + wordAddress * WORD_LENGTH,
+		byteAddress: context.startingByteAddress + wordAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 		default: new Map<number, number>(),
 		isInteger: line.instruction.startsWith('int') || line.instruction.includes('*'),
 		isPointer: line.instruction.includes('*'),
