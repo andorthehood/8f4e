@@ -71,6 +71,7 @@ import pcmLooperVR16bitSigned from './pcmLooperVR16bitSigned';
 import pcmLooperVRP16bitSigned from './pcmLooperVRP16bitSigned';
 import bpmClock from './bpmClock';
 import reverb from './reverb';
+import delay from './delay';
 
 const modules = {
 	audioBufferOut,
@@ -146,6 +147,7 @@ const modules = {
 	pcmLooperVRP16bitSigned,
 	bpmClock,
 	reverb,
+	delay,
 } as const;
 
 export default modules;
