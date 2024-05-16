@@ -581,7 +581,6 @@ Array [
 exports[`random if the generated memory map matches with the snapshot 1`] = `
 Map {
   "seed" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 69420,
     "id": "seed",
@@ -591,10 +590,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "out",
@@ -604,6 +603,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
 }
