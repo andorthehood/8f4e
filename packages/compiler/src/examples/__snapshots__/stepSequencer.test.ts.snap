@@ -411,6 +411,7 @@ Array [
 exports[`stepSequencer if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
@@ -421,9 +422,9 @@ Map {
     "type": "int",
     "wordAddress": 0,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "trigger" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "trigger",
@@ -434,9 +435,9 @@ Map {
     "type": "int*",
     "wordAddress": 1,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "triggerPreviousValue" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "triggerPreviousValue",
@@ -447,9 +448,9 @@ Map {
     "type": "int",
     "wordAddress": 2,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "steps" => Object {
+    "alignmentAdjustedSize": 16,
     "byteAddress": 12,
     "default": Map {},
     "id": "steps",
@@ -460,9 +461,9 @@ Map {
     "type": "int",
     "wordAddress": 3,
     "wordSize": 4,
-    "wordSpan": 16,
   },
   "stepPointer" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 76,
     "default": 12,
     "id": "stepPointer",
@@ -473,9 +474,9 @@ Map {
     "type": "int",
     "wordAddress": 19,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "stepLength" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 80,
     "default": 4,
     "id": "stepLength",
@@ -486,9 +487,9 @@ Map {
     "type": "int",
     "wordAddress": 20,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 84,
     "default": 0,
     "id": "out",
@@ -499,7 +500,6 @@ Map {
     "type": "int",
     "wordAddress": 21,
     "wordSize": 4,
-    "wordSpan": 1,
   },
 }
 `;

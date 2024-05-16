@@ -127,6 +127,7 @@ Array [
 exports[`attenuator if the generated memory map matches with the snapshot 1`] = `
 Map {
   "zero" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "zero",
@@ -137,9 +138,9 @@ Map {
     "type": "int",
     "wordAddress": 0,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "in" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "in",
@@ -150,9 +151,9 @@ Map {
     "type": "int*",
     "wordAddress": 1,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "divisor" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 8,
     "default": 1,
     "id": "divisor",
@@ -163,9 +164,9 @@ Map {
     "type": "int",
     "wordAddress": 2,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "out",
@@ -176,7 +177,6 @@ Map {
     "type": "int",
     "wordAddress": 3,
     "wordSize": 4,
-    "wordSpan": 1,
   },
 }
 `;

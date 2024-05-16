@@ -660,6 +660,7 @@ Array [
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
 Map {
   "in" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "in",
@@ -670,9 +671,9 @@ Map {
     "type": "int*",
     "wordAddress": 0,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "out",
@@ -683,9 +684,9 @@ Map {
     "type": "int",
     "wordAddress": 1,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "allocatedNotes" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 8,
     "default": 12,
     "id": "allocatedNotes",
@@ -696,9 +697,9 @@ Map {
     "type": "int",
     "wordAddress": 2,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "numberOfNotes" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "numberOfNotes",
@@ -709,9 +710,9 @@ Map {
     "type": "int",
     "wordAddress": 3,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "notes" => Object {
+    "alignmentAdjustedSize": 12,
     "byteAddress": 16,
     "default": Map {},
     "id": "notes",
@@ -722,9 +723,9 @@ Map {
     "type": "int",
     "wordAddress": 4,
     "wordSize": 4,
-    "wordSpan": 12,
   },
   "__loopErrorSignaler" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 64,
     "default": -1,
     "id": "__loopErrorSignaler",
@@ -735,7 +736,6 @@ Map {
     "type": "int",
     "wordAddress": 16,
     "wordSize": 4,
-    "wordSpan": 1,
   },
 }
 `;

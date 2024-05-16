@@ -500,6 +500,7 @@ Array [
 exports[`triggerGenerator module if the generated memory map matches with the snapshot 1`] = `
 Map {
   "counter" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "counter",
@@ -510,9 +511,9 @@ Map {
     "type": "int",
     "wordAddress": 0,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "rate" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "rate",
@@ -523,9 +524,9 @@ Map {
     "type": "int",
     "wordAddress": 1,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "out",
@@ -536,9 +537,9 @@ Map {
     "type": "int",
     "wordAddress": 2,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "defaultValue" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "defaultValue",
@@ -549,9 +550,9 @@ Map {
     "type": "int",
     "wordAddress": 3,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "reset" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 16,
     "default": 12,
     "id": "reset",
@@ -562,7 +563,6 @@ Map {
     "type": "int*",
     "wordAddress": 4,
     "wordSize": 4,
-    "wordSpan": 1,
   },
 }
 `;
