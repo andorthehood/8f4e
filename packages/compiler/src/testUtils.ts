@@ -100,7 +100,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		setInitialMemory(dataView, module);
 
 		// Clear the test data that was out of the module's scope.
-		for (let i = module.memoryWordSize; i < module.memoryWordSize + allocatedMemoryForTestData; i++) {
+		for (let i = module.wordAlignedSize; i < module.wordAlignedSize + allocatedMemoryForTestData; i++) {
 			memoryBuffer[i] = 0;
 		}
 		allocatedMemoryForTestData = 0;
@@ -187,7 +187,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	};
 
 	const allocMemoryForPointer = (address: string | number): number => {
-		const firstFreeAddress = module.memoryWordSize + allocatedMemoryForTestData;
+		const firstFreeAddress = module.wordAlignedSize + allocatedMemoryForTestData;
 		memorySet(address, firstFreeAddress * GLOBAL_ALIGNMENT_BOUNDARY);
 		allocatedMemoryForTestData++;
 		return firstFreeAddress;

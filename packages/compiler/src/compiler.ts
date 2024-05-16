@@ -153,7 +153,7 @@ export function compile(
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
-		memoryWordSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
+		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
 		ast,
 	};
 }
