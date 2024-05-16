@@ -244,6 +244,7 @@ Array [
     "id": "abs",
     "memoryMap": Map {
       "DEFAULT_VALUE" => Object {
+        "alignmentAdjustedSize": 1,
         "byteAddress": 0,
         "default": 0,
         "id": "DEFAULT_VALUE",
@@ -254,9 +255,9 @@ Array [
         "type": "int",
         "wordAddress": 0,
         "wordSize": 4,
-        "wordSpan": 1,
       },
       "in" => Object {
+        "alignmentAdjustedSize": 1,
         "byteAddress": 4,
         "default": 0,
         "id": "in",
@@ -267,9 +268,9 @@ Array [
         "type": "int*",
         "wordAddress": 1,
         "wordSize": 4,
-        "wordSpan": 1,
       },
       "out" => Object {
+        "alignmentAdjustedSize": 1,
         "byteAddress": 8,
         "default": 0,
         "id": "out",
@@ -280,9 +281,9 @@ Array [
         "type": "int",
         "wordAddress": 2,
         "wordSize": 4,
-        "wordSpan": 1,
       },
       "test" => Object {
+        "alignmentAdjustedSize": 1,
         "byteAddress": 12,
         "default": 1,
         "id": "test",
@@ -293,7 +294,6 @@ Array [
         "type": "int",
         "wordAddress": 3,
         "wordSize": 4,
-        "wordSpan": 1,
       },
     },
     "memoryWordSize": 4,

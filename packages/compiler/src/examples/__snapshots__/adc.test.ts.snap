@@ -974,6 +974,7 @@ Array [
 exports[`adc if the generated memory map matches with the snapshot 1`] = `
 Map {
   "default" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "default",
@@ -984,9 +985,9 @@ Map {
     "type": "int",
     "wordAddress": 0,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "in" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "in",
@@ -997,9 +998,9 @@ Map {
     "type": "int*",
     "wordAddress": 1,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:1" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "out:1",
@@ -1010,9 +1011,9 @@ Map {
     "type": "int",
     "wordAddress": 2,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:2" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "out:2",
@@ -1023,9 +1024,9 @@ Map {
     "type": "int",
     "wordAddress": 3,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:3" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 16,
     "default": 0,
     "id": "out:3",
@@ -1036,9 +1037,9 @@ Map {
     "type": "int",
     "wordAddress": 4,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:4" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 20,
     "default": 0,
     "id": "out:4",
@@ -1049,9 +1050,9 @@ Map {
     "type": "int",
     "wordAddress": 5,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:5" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 24,
     "default": 0,
     "id": "out:5",
@@ -1062,9 +1063,9 @@ Map {
     "type": "int",
     "wordAddress": 6,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:6" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 28,
     "default": 0,
     "id": "out:6",
@@ -1075,9 +1076,9 @@ Map {
     "type": "int",
     "wordAddress": 7,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:7" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 32,
     "default": 0,
     "id": "out:7",
@@ -1088,9 +1089,9 @@ Map {
     "type": "int",
     "wordAddress": 8,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out:8" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 36,
     "default": 0,
     "id": "out:8",
@@ -1101,7 +1102,6 @@ Map {
     "type": "int",
     "wordAddress": 9,
     "wordSize": 4,
-    "wordSpan": 1,
   },
 }
 `;

@@ -77,7 +77,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 							return;
 						}
 
-						const allocatedSizeInBytes = memoryAssignedToBinaryAsset.wordSpan * 4;
+						const allocatedSizeInBytes = memoryAssignedToBinaryAsset.alignmentAdjustedSize * 4;
 						const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
 						const binaryAssetDataBuffer = Uint8Array.from(Buffer.from(binaryAsset.data, 'base64')).slice(
 							0,
