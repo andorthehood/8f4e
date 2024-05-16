@@ -1,6 +1,6 @@
 import triggerSequencer from './triggerSequencer.asm';
 
-import { I16_SIGNED_LARGEST_NUMBER, WORD_LENGTH } from '../consts';
+import { I16_SIGNED_LARGEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import { createTestModule } from '../testUtils';
 import { TestModule } from '../types';
 
@@ -42,7 +42,7 @@ describe('triggerSequencer', () => {
 		const trigger = memory.allocMemoryForPointer('trigger');
 		memory.set('stepLength', 15);
 
-		for (let i = 0; i < 15 * WORD_LENGTH; i += WORD_LENGTH) {
+		for (let i = 0; i < 15 * GLOBAL_ALIGNMENT_BOUNDARY; i += GLOBAL_ALIGNMENT_BOUNDARY) {
 			memory.set(trigger, 1);
 			test();
 			memory.set(trigger, 0);
@@ -63,7 +63,7 @@ describe('triggerSequencer', () => {
 				test();
 				memory.set(trigger, 0);
 				test();
-				expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + WORD_LENGTH * j);
+				expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + GLOBAL_ALIGNMENT_BOUNDARY * j);
 			}
 		}
 	});
@@ -81,7 +81,7 @@ describe('triggerSequencer', () => {
 				test();
 				memory.set(trigger, 0);
 				test();
-				expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + WORD_LENGTH * j);
+				expect(memory.get('stepPointer')).toBe(memory.byteAddress('steps') + GLOBAL_ALIGNMENT_BOUNDARY * j);
 			}
 
 			memory.set(reset, 1);

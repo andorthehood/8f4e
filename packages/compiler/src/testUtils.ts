@@ -12,7 +12,7 @@ import {
 } from './wasmUtils/sectionHelpers';
 import { FunctionBody } from './wasmUtils/typeHelpers';
 import { CompiledModule, TestModule } from './types';
-import { WORD_LENGTH } from './consts';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import { compileToAST } from './compiler';
 
 import { compileModules } from '.';
@@ -183,12 +183,12 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 			return memoryItem.byteAddress;
 		}
 
-		return address * WORD_LENGTH;
+		return address * GLOBAL_ALIGNMENT_BOUNDARY;
 	};
 
 	const allocMemoryForPointer = (address: string | number): number => {
 		const firstFreeAddress = module.memoryWordSize + allocatedMemoryForTestData;
-		memorySet(address, firstFreeAddress * WORD_LENGTH);
+		memorySet(address, firstFreeAddress * GLOBAL_ALIGNMENT_BOUNDARY);
 		allocatedMemoryForTestData++;
 		return firstFreeAddress;
 	};
