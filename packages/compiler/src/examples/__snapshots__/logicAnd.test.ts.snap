@@ -225,7 +225,7 @@ Array [
 exports[`logicAnd if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
@@ -234,11 +234,11 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 0,
+    "wordAlignedAddress": 0,
     "wordSize": 4,
   },
   "in:1" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "in:1",
@@ -247,11 +247,11 @@ Map {
     "isPointingToInteger": true,
     "isPointingToPointer": false,
     "type": "int*",
-    "wordAddress": 1,
+    "wordAlignedAddress": 1,
     "wordSize": 4,
   },
   "in:2" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "in:2",
@@ -260,11 +260,11 @@ Map {
     "isPointingToInteger": true,
     "isPointingToPointer": false,
     "type": "int*",
-    "wordAddress": 2,
+    "wordAlignedAddress": 2,
     "wordSize": 4,
   },
   "out" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "out",
@@ -273,7 +273,7 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 3,
+    "wordAlignedAddress": 3,
     "wordSize": 4,
   },
 }

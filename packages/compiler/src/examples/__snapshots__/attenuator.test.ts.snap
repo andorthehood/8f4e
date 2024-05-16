@@ -127,7 +127,7 @@ Array [
 exports[`attenuator if the generated memory map matches with the snapshot 1`] = `
 Map {
   "zero" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "zero",
@@ -136,11 +136,11 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 0,
+    "wordAlignedAddress": 0,
     "wordSize": 4,
   },
   "in" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "in",
@@ -149,11 +149,11 @@ Map {
     "isPointingToInteger": true,
     "isPointingToPointer": false,
     "type": "int*",
-    "wordAddress": 1,
+    "wordAlignedAddress": 1,
     "wordSize": 4,
   },
   "divisor" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 8,
     "default": 1,
     "id": "divisor",
@@ -162,11 +162,11 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 2,
+    "wordAlignedAddress": 2,
     "wordSize": 4,
   },
   "out" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "out",
@@ -175,7 +175,7 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 3,
+    "wordAlignedAddress": 3,
     "wordSize": 4,
   },
 }

@@ -16,20 +16,20 @@ export default function findMidiCCModules(
 
 			const valueWordAddress = value
 				? value?.isPointer
-					? memoryBuffer[value.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
-					: value.wordAddress
+					? memoryBuffer[value.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: value.wordAlignedAddress
 				: undefined;
 
 			const channelWordAddress = channel
 				? channel?.isPointer
-					? memoryBuffer[channel.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
-					: channel.wordAddress
+					? memoryBuffer[channel.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: channel.wordAlignedAddress
 				: undefined;
 
 			const selectedCCWordAddress = cc
 				? cc?.isPointer
-					? memoryBuffer[cc.wordAddress] / memoryBuffer.BYTES_PER_ELEMENT
-					: cc.wordAddress
+					? memoryBuffer[cc.wordAlignedAddress] / memoryBuffer.BYTES_PER_ELEMENT
+					: cc.wordAlignedAddress
 				: undefined;
 
 			return {

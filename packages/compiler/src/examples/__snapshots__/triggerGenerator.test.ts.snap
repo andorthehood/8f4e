@@ -500,7 +500,7 @@ Array [
 exports[`triggerGenerator module if the generated memory map matches with the snapshot 1`] = `
 Map {
   "counter" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "counter",
@@ -509,11 +509,11 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 0,
+    "wordAlignedAddress": 0,
     "wordSize": 4,
   },
   "rate" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "rate",
@@ -522,11 +522,11 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 1,
+    "wordAlignedAddress": 1,
     "wordSize": 4,
   },
   "out" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "out",
@@ -535,11 +535,11 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 2,
+    "wordAlignedAddress": 2,
     "wordSize": 4,
   },
   "defaultValue" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "defaultValue",
@@ -548,11 +548,11 @@ Map {
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "type": "int",
-    "wordAddress": 3,
+    "wordAlignedAddress": 3,
     "wordSize": 4,
   },
   "reset" => Object {
-    "alignmentAdjustedSize": 1,
+    "wordAlignedSize": 1,
     "byteAddress": 16,
     "default": 12,
     "id": "reset",
@@ -561,7 +561,7 @@ Map {
     "isPointingToInteger": true,
     "isPointingToPointer": false,
     "type": "int*",
-    "wordAddress": 4,
+    "wordAlignedAddress": 4,
     "wordSize": 4,
   },
 }

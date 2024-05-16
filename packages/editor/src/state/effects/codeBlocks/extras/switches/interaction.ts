@@ -15,14 +15,14 @@ export default function _switch(state: State, events: EventDispatcher): () => vo
 		if (!memory) {
 			return;
 		}
-		const value = state.compiler.memoryBuffer[memory.wordAddress];
+		const value = state.compiler.memoryBuffer[memory.wordAlignedAddress];
 
 		if (value === _switch.offValue) {
-			state.compiler.memoryBuffer[memory.wordAddress] = _switch.onValue;
+			state.compiler.memoryBuffer[memory.wordAlignedAddress] = _switch.onValue;
 		} else if (value === _switch.onValue) {
-			state.compiler.memoryBuffer[memory.wordAddress] = _switch.offValue;
+			state.compiler.memoryBuffer[memory.wordAlignedAddress] = _switch.offValue;
 		} else {
-			state.compiler.memoryBuffer[memory.wordAddress] = _switch.offValue;
+			state.compiler.memoryBuffer[memory.wordAlignedAddress] = _switch.offValue;
 		}
 	};
 

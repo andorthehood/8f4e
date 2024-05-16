@@ -151,7 +151,7 @@ export function compile(
 			byteCode
 		),
 		byteAddress: startingByteAddress,
-		wordAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
+		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		memoryWordSize: calculateMemoryWordSize(context.namespace.memory),
 		ast,
