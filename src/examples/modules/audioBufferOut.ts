@@ -4,12 +4,10 @@ const audioBufferOut: ExampleModule = {
 	title: 'Audio Buffer Out',
 	author: 'Andor Polgar',
 	category: 'Audio Buffer',
-	code: `module audioBufferOut
+	code: `module audioOut
 
 float* in
-int channel 0
 
-; Audio buffer
 float[] buffer 128
 int pointer &buffer
 
@@ -25,7 +23,7 @@ store
 ; pointer by the word size
 push &pointer
 push pointer
-push WORD_SIZE
+push %buffer
 add
 store
 
