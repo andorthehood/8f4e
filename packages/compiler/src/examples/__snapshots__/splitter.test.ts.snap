@@ -242,7 +242,6 @@ Array [
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
 Map {
   "zero" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "zero",
@@ -252,10 +251,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "in" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "in",
@@ -265,10 +264,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out:1" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "out:1",
@@ -278,10 +277,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out:2" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "out:2",
@@ -291,10 +290,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 3,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out:3" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 16,
     "default": 0,
     "id": "out:3",
@@ -304,10 +303,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 4,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out:4" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 20,
     "default": 0,
     "id": "out:4",
@@ -317,6 +316,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 5,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
 }

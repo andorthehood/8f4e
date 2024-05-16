@@ -38,7 +38,6 @@ Array [
 exports[`constant if the generated memory map matches with the snapshot 1`] = `
 Map {
   "out" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "out",
@@ -48,6 +47,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
 }
