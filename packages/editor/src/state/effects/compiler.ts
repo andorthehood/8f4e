@@ -1,3 +1,5 @@
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler/dist/consts';
+
 import { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
 
@@ -77,7 +79,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 							return;
 						}
 
-						const allocatedSizeInBytes = memoryAssignedToBinaryAsset.wordAlignedSize * 4;
+						const allocatedSizeInBytes = memoryAssignedToBinaryAsset.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 						const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
 						const binaryAssetDataBuffer = Uint8Array.from(Buffer.from(binaryAsset.data, 'base64')).slice(
 							0,
