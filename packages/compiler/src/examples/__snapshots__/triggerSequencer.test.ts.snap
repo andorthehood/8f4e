@@ -672,7 +672,6 @@ Array [
 exports[`triggerSequencer if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
@@ -682,10 +681,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "trigger" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "trigger",
@@ -695,10 +694,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "reset" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "reset",
@@ -708,10 +707,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "triggerPreviousValue" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "triggerPreviousValue",
@@ -721,10 +720,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 3,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "stepMinusOne" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 16,
     "default": 0,
     "id": "stepMinusOne",
@@ -734,10 +733,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 4,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "steps" => Object {
-    "wordAlignedSize": 16,
     "byteAddress": 20,
     "default": Map {},
     "id": "steps",
@@ -747,10 +746,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 5,
+    "wordAlignedSize": 16,
     "wordSize": 4,
   },
   "stepPointer" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 84,
     "default": 16,
     "id": "stepPointer",
@@ -760,10 +759,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 21,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "stepLength" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 88,
     "default": 4,
     "id": "stepLength",
@@ -773,10 +772,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 22,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "didTrigger" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 92,
     "default": 0,
     "id": "didTrigger",
@@ -786,10 +785,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 23,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 96,
     "default": 0,
     "id": "out",
@@ -799,6 +798,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 24,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
 }
