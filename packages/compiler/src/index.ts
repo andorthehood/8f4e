@@ -151,7 +151,7 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 
 		Array.from(module.memoryMap.values()).forEach(memory => {
 			// TODO: figure out something efficient to initialise buffers larger than 32.
-			if (memory.alignmentAdjustedSize > 1 && memory.default instanceof Map) {
+			if (memory.wordAlignedSize > 1 && memory.default instanceof Map) {
 				memory.default.forEach((value, relativeWordAddress) => {
 					instructions.push(
 						...(memory.isInteger
@@ -159,15 +159,15 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 							: f32store(pointer + (relativeWordAddress + 1) * Int32Array.BYTES_PER_ELEMENT, value))
 					);
 				});
-				pointer += memory.alignmentAdjustedSize * Int32Array.BYTES_PER_ELEMENT;
-			} else if (memory.alignmentAdjustedSize === 1 && memory.default !== 0) {
+				pointer += memory.wordAlignedSize * Int32Array.BYTES_PER_ELEMENT;
+			} else if (memory.wordAlignedSize === 1 && memory.default !== 0) {
 				instructions.push(
 					...(memory.isInteger
 						? i32store(pointer, memory.default as number)
 						: f32store(pointer, memory.default as number))
 				);
 				pointer += Int32Array.BYTES_PER_ELEMENT;
-			} else if (memory.alignmentAdjustedSize === 1 && memory.default === 0) {
+			} else if (memory.wordAlignedSize === 1 && memory.default === 0) {
 				pointer += Int32Array.BYTES_PER_ELEMENT;
 			}
 		});

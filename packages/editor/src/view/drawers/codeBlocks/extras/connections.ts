@@ -16,11 +16,11 @@ export default function drawConnections(engine: Engine, state: State): void {
 		for (const [, { x, y, id }] of codeBlock.extras.inputs) {
 			const memory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(id);
 
-			if (!memory || state.compiler.memoryBuffer[memory.wordAddress] === 0) {
+			if (!memory || state.compiler.memoryBuffer[memory.wordAlignedAddress] === 0) {
 				continue;
 			}
 
-			const output = state.graphicHelper.outputsByWordAddress.get(state.compiler.memoryBuffer[memory.wordAddress]);
+			const output = state.graphicHelper.outputsByWordAddress.get(state.compiler.memoryBuffer[memory.wordAlignedAddress]);
 
 			if (!output) {
 				continue;

@@ -17,14 +17,14 @@ export default function drawer(engine: Engine, state: State, codeBlock: CodeBloc
 			? state.compiler.memoryBuffer
 			: state.compiler.memoryBufferFloat;
 
-		const numberOfKeys = state.compiler.memoryBuffer[pressedNumberOfKeysMemory.wordAddress];
+		const numberOfKeys = state.compiler.memoryBuffer[pressedNumberOfKeysMemory.wordAlignedAddress];
 
 		for (let i = 0; i < 24; i++) {
 			engine.drawSprite(i * keyWidth, 0, i % 12);
 		}
 
 		for (let i = 0; i < numberOfKeys; i++) {
-			const keyValue = memoryBuffer[pressedKeysListMemory.wordAddress + i];
+			const keyValue = memoryBuffer[pressedKeysListMemory.wordAlignedAddress + i];
 			if (keyValue - startingNumber >= 24 || keyValue - startingNumber < 0) {
 				continue;
 			}
