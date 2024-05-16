@@ -19,11 +19,11 @@ const buffer: InstructionHandler = function (line, context) {
 	const memory = new Map(context.namespace.memory);
 	const wordAlignedAddress = calculateMemoryWordSize(memory);
 
-	let wordAlignedSize = 1;
-	const wordSize = line.instruction.includes('8') ? 1 : line.instruction.includes('16') ? 2 : 4;
+	let numberOfElements = 1;
+	const elementWordSize = line.instruction.includes('8') ? 1 : line.instruction.includes('16') ? 2 : 4;
 
 	if (line.arguments[1].type === ArgumentType.LITERAL) {
-		wordAlignedSize = line.arguments[1].value;
+		numberOfElements = line.arguments[1].value;
 	} else {
 		const constant = context.namespace.consts[line.arguments[1].value];
 
@@ -31,12 +31,13 @@ const buffer: InstructionHandler = function (line, context) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 		}
 
-		wordAlignedSize = constant.value;
+		numberOfElements = constant.value;
 	}
 
 	memory.set(line.arguments[0].value, {
-		wordSize,
-		wordAlignedSize,
+		numberOfElements,
+		elementWordSize,
+		wordAlignedSize: Math.ceil(numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY,
 		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
 		id: line.arguments[0].value,
 		byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,

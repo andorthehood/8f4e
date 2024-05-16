@@ -34,9 +34,10 @@ const skip: InstructionHandler = function (line, context) {
 	const byteAddress = context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY;
 
 	memory.set('__sleeper' + wordAlignedAddress, {
+		numberOfElements: 1,
 		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
 		wordAlignedSize: 1,
-		wordSize: 4,
+		elementWordSize: 4,
 		byteAddress,
 		id: '__sleeper' + wordAlignedAddress,
 		default: 0,
