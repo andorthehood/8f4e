@@ -12,7 +12,8 @@ export enum MemoryTypes {
 }
 
 export interface DataStructure {
-	wordSize: number;
+	numberOfElements: number;
+	elementWordSize: number;
 	type: MemoryTypes;
 	byteAddress: number;
 	wordAlignedSize: number;
