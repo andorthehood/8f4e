@@ -35,7 +35,7 @@ export interface CompiledModule {
 	byteAddress: number;
 	wordAlignedAddress: number;
 	memoryMap: MemoryMap;
-	memoryWordSize: number;
+	wordAlignedSize: number;
 	ast: AST;
 }
 

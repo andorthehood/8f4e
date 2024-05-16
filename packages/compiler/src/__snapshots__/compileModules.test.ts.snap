@@ -300,8 +300,8 @@ Array [
         "wordAlignedSize": 1,
       },
     },
-    "memoryWordSize": 4,
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 4,
   },
 ]
 `;
