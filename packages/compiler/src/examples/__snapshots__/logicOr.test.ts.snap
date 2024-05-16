@@ -275,6 +275,7 @@ Array [
 exports[`logicOr if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
@@ -285,9 +286,9 @@ Map {
     "type": "int",
     "wordAddress": 0,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "in:1" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "in:1",
@@ -298,9 +299,9 @@ Map {
     "type": "int*",
     "wordAddress": 1,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "in:2" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "in:2",
@@ -311,9 +312,9 @@ Map {
     "type": "int*",
     "wordAddress": 2,
     "wordSize": 4,
-    "wordSpan": 1,
   },
   "out" => Object {
+    "alignmentAdjustedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "out",
@@ -324,7 +325,6 @@ Map {
     "type": "int",
     "wordAddress": 3,
     "wordSize": 4,
-    "wordSpan": 1,
   },
 }
 `;

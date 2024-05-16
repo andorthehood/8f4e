@@ -15,7 +15,7 @@ export interface DataStructure {
 	wordSize: number;
 	type: MemoryTypes;
 	byteAddress: number;
-	wordSpan: number;
+	alignmentAdjustedSize: number;
 	wordAddress: number;
 	default: number | Map<number, number>;
 	// lineNumber: number;
