@@ -43,7 +43,7 @@ const memory: InstructionHandler = function (line, context) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 		}
 
-		defaultValue = memoryItem.wordSpan;
+		defaultValue = memoryItem.alignmentAdjustedSize;
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
 		const constant = context.namespace.consts[line.arguments[1].value];
 
@@ -57,7 +57,7 @@ const memory: InstructionHandler = function (line, context) {
 	memory.set(line.arguments[0].value, {
 		wordSize: 4,
 		wordAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAddress,
-		wordSpan: 1,
+		alignmentAdjustedSize: 1,
 		byteAddress: context.startingByteAddress + wordAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 		id: line.arguments[0].value,
 		default: defaultValue,
