@@ -4,15 +4,15 @@ import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/ins
 import {
 	getDataStructure,
 	getDataStructureByteAddress,
-	getMemoryStringLastAddress,
+	getMemoryStringLastByteAddress,
 	isInstructionIsInsideAModule,
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
-	isWordSpanIdentifier,
-	isWordSizeIdentifier,
-	getWordSize,
-	getWordSpan,
+	isElementCountIdentifier,
+	isElementWordSizeIdentifier,
+	getElementWordSize,
+	getElementCount,
 } from '../utils';
 
 function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
@@ -72,25 +72,25 @@ const push: InstructionHandler = function (line, context) {
 			if (argument.value.startsWith('&')) {
 				value = getDataStructureByteAddress(memory, argument.value.substring(1));
 			} else {
-				value = getMemoryStringLastAddress(memory, argument.value.slice(0, -1));
+				value = getMemoryStringLastByteAddress(memory, argument.value.slice(0, -1));
 			}
 			context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
 			return {
 				byteCode: i32const(value),
 				context,
 			};
-		} else if (isWordSpanIdentifier(memory, argument.value)) {
+		} else if (isElementCountIdentifier(memory, argument.value)) {
 			context.stack.push({ isInteger: true, isNonZero: true });
 
 			return {
-				byteCode: i32const(getWordSpan(memory, argument.value.substring(1))),
+				byteCode: i32const(getElementCount(memory, argument.value.substring(1))),
 				context,
 			};
-		} else if (isWordSizeIdentifier(memory, argument.value)) {
+		} else if (isElementWordSizeIdentifier(memory, argument.value)) {
 			context.stack.push({ isInteger: true, isNonZero: true });
 
 			return {
-				byteCode: i32const(getWordSize(memory, argument.value.substring(1))),
+				byteCode: i32const(getElementWordSize(memory, argument.value.substring(1))),
 				context,
 			};
 		} else if (typeof consts[argument.value] !== 'undefined') {
