@@ -20,7 +20,9 @@ export default function drawConnections(engine: Engine, state: State): void {
 				continue;
 			}
 
-			const output = state.graphicHelper.outputsByWordAddress.get(state.compiler.memoryBuffer[memory.wordAlignedAddress]);
+			const output = state.graphicHelper.outputsByWordAddress.get(
+				state.compiler.memoryBuffer[memory.wordAlignedAddress]
+			);
 
 			if (!output) {
 				continue;
