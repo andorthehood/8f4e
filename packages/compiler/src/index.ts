@@ -23,7 +23,12 @@ import {
 	Namespace,
 	Namespaces,
 } from './types';
-import { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, I32_SIGNED_LARGEST_NUMBER } from './consts';
+import {
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	I16_SIGNED_LARGEST_NUMBER,
+	I16_SIGNED_SMALLEST_NUMBER,
+	I32_SIGNED_LARGEST_NUMBER,
+} from './consts';
 import { ErrorCode, getError } from './errors';
 import { sortModules } from './gaphOptimizer';
 import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
@@ -97,7 +102,7 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
 		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
 		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
-		WORD_SIZE: { value: Int32Array.BYTES_PER_ELEMENT, isInteger: true },
+		WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
 		...options.environmentExtensions.constants,
 	};
 
@@ -113,10 +118,10 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 			ast,
 			builtInConsts,
 			namespaces,
-			memoryAddress * Int32Array.BYTES_PER_ELEMENT,
+			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 			options.maxMemorySize
 		);
-		memoryAddress += module.memoryWordSize;
+		memoryAddress += module.wordAlignedSize;
 
 		if (options.maxMemorySize * WASM_MEMORY_PAGE_SIZE <= memoryAddress) {
 			throw 'Memory limit exceeded';
@@ -155,20 +160,20 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 				memory.default.forEach((value, relativeWordAddress) => {
 					instructions.push(
 						...(memory.isInteger
-							? i32store(pointer + (relativeWordAddress + 1) * Int32Array.BYTES_PER_ELEMENT, value)
-							: f32store(pointer + (relativeWordAddress + 1) * Int32Array.BYTES_PER_ELEMENT, value))
+							? i32store(pointer + (relativeWordAddress + 1) * GLOBAL_ALIGNMENT_BOUNDARY, value)
+							: f32store(pointer + (relativeWordAddress + 1) * GLOBAL_ALIGNMENT_BOUNDARY, value))
 					);
 				});
-				pointer += memory.wordAlignedSize * Int32Array.BYTES_PER_ELEMENT;
+				pointer += memory.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 			} else if (memory.wordAlignedSize === 1 && memory.default !== 0) {
 				instructions.push(
 					...(memory.isInteger
 						? i32store(pointer, memory.default as number)
 						: f32store(pointer, memory.default as number))
 				);
-				pointer += Int32Array.BYTES_PER_ELEMENT;
+				pointer += GLOBAL_ALIGNMENT_BOUNDARY;
 			} else if (memory.wordAlignedSize === 1 && memory.default === 0) {
-				pointer += Int32Array.BYTES_PER_ELEMENT;
+				pointer += GLOBAL_ALIGNMENT_BOUNDARY;
 			}
 		});
 
