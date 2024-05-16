@@ -1,7 +1,7 @@
 import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
-import { calculateMemoryWordSize, isInstructionIsInsideAModule } from '../utils';
+import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
@@ -30,7 +30,7 @@ const skip: InstructionHandler = function (line, context) {
 	}
 
 	const memory = context.namespace.memory;
-	const wordAlignedAddress = calculateMemoryWordSize(memory);
+	const wordAlignedAddress = calculateWordAlignedSizeOfMemory(memory);
 	const byteAddress = context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY;
 
 	memory.set('__sleeper' + wordAlignedAddress, {
