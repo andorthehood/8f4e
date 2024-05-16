@@ -8,20 +8,25 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	let audioWorklet: AudioWorkletNode | null = null;
 
 	function onInitRuntime() {
-		const audioModule = state.compiler.compiledModules.get('audioout');
+		const audioOutputBuffers = (state.project.audioOutputBuffers || [])
+			.map(({ moduleId, memoryId, output, channel }) => {
+				const audioModule = state.compiler.compiledModules.get(moduleId);
+				const audioBufferWordAddress = audioModule?.memoryMap.get(memoryId)?.wordAddress;
 
-		const addresses = {
-			audioBufferWordAddress: audioModule?.memoryMap.get('buffer')?.wordAddress || 0,
-			outputWordAddress: audioModule?.memoryMap.get('output')?.wordAddress || 0,
-			channelWordAddress: audioModule?.memoryMap.get('channel')?.wordAddress || 0,
-		};
+				return {
+					audioBufferWordAddress,
+					output,
+					channel,
+				};
+			})
+			.filter(({ audioBufferWordAddress }) => typeof audioBufferWordAddress !== 'undefined');
 
 		if (audioWorklet) {
 			audioWorklet.port.postMessage({
 				type: 'init',
 				memoryRef: state.compiler.memoryRef,
 				codeBuffer: state.compiler.codeBuffer,
-				addresses,
+				audioOutputBuffers,
 			});
 		}
 	}

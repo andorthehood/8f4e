@@ -6,7 +6,7 @@ class Main extends AudioWorkletProcessor {
 
 		this.port.onmessage = async event => {
 			if (event.data.type === 'init') {
-				this.init(event.data.memoryRef, event.data.codeBuffer, event.data.addresses);
+				this.init(event.data.memoryRef, event.data.codeBuffer, event.data.audioOutputBuffers);
 			}
 		};
 	}
@@ -14,13 +14,11 @@ class Main extends AudioWorkletProcessor {
 	async init(
 		memoryRef: WebAssembly.Memory,
 		codeBuffer: Uint8Array,
-		addresses: { audioBufferWordAddress: number; outputWordAddress: number; channelWordAddress: number }
+		audioOutputBuffers: { channel: number; output: number; audioBufferWordAddress: number }[]
 	) {
 		const { memoryBuffer, buffer } = await createModule(memoryRef, codeBuffer);
 
-		this.audioBufferWordAddress = addresses.audioBufferWordAddress;
-		this.outputWordAddress = addresses.outputWordAddress;
-		this.channelWordAddress = addresses.channelWordAddress;
+		this.audioOutputBuffers = audioOutputBuffers;
 
 		this.buffer = buffer;
 		this.memoryBuffer = memoryBuffer;
@@ -38,9 +36,7 @@ class Main extends AudioWorkletProcessor {
 	};
 
 	memoryBuffer = new Float32Array(128).fill(0);
-	audioBufferWordAddress = 0;
-	outputWordAddress = 0;
-	channelWordAddress = 0;
+	audioOutputBuffers = [] as { channel: number; output: number; audioBufferWordAddress: number }[];
 
 	static get parameterDescriptors() {
 		return [{ name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1 }];
@@ -49,20 +45,22 @@ class Main extends AudioWorkletProcessor {
 	process(inputs, outputs, parameters) {
 		this.buffer();
 
-		const output = outputs[this.memoryBuffer[this.outputWordAddress]];
+		for (let i = 0; i < this.audioOutputBuffers.length; i++) {
+			const output = outputs[this.audioOutputBuffers[i].output];
 
-		if (!output) {
-			return true;
-		}
+			if (!output) {
+				continue;
+			}
 
-		const outputChannel = output[this.memoryBuffer[this.channelWordAddress]];
+			const channel = output[this.audioOutputBuffers[i].channel];
 
-		if (!outputChannel) {
-			return true;
-		}
+			if (!channel) {
+				continue;
+			}
 
-		for (let i = 0; i < outputChannel.length; i++) {
-			outputChannel[i] = this.memoryBuffer[i + this.audioBufferWordAddress];
+			for (let j = 0; j < channel.length; j++) {
+				channel[j] = this.memoryBuffer[j + this.audioOutputBuffers[i].audioBufferWordAddress];
+			}
 		}
 
 		return true;
