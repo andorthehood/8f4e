@@ -368,7 +368,6 @@ Array [
 exports[`square generator module if the generated memory map matches with the snapshot 1`] = `
 Map {
   "counter" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "counter",
@@ -378,10 +377,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "rate" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "rate",
@@ -391,10 +390,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "out",
@@ -404,6 +403,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
 }

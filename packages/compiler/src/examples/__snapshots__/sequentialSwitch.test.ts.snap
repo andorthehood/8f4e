@@ -412,7 +412,6 @@ Array [
 exports[`functional tests if the generated memory map matches with the snapshot 1`] = `
 Map {
   "defaultValue" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 0,
     "default": 0,
     "id": "defaultValue",
@@ -422,10 +421,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "out" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 4,
     "default": 0,
     "id": "out",
@@ -435,10 +434,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "in:clock" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 8,
     "default": 0,
     "id": "in:clock",
@@ -448,10 +447,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "previousClock" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 12,
     "default": 0,
     "id": "previousClock",
@@ -461,10 +460,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 3,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "counter" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 16,
     "default": 0,
     "id": "counter",
@@ -474,10 +473,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int",
     "wordAlignedAddress": 4,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "in:1" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 20,
     "default": 0,
     "id": "in:1",
@@ -487,10 +486,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 5,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "in:2" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 24,
     "default": 0,
     "id": "in:2",
@@ -500,10 +499,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 6,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "in:3" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 28,
     "default": 0,
     "id": "in:3",
@@ -513,10 +512,10 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 7,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
   "in:4" => Object {
-    "wordAlignedSize": 1,
     "byteAddress": 32,
     "default": 0,
     "id": "in:4",
@@ -526,6 +525,7 @@ Map {
     "isPointingToPointer": false,
     "type": "int*",
     "wordAlignedAddress": 8,
+    "wordAlignedSize": 1,
     "wordSize": 4,
   },
 }
