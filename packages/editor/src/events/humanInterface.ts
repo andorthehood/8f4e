@@ -54,8 +54,24 @@ export default function humanInterface(element: HTMLElement, events: EventDispat
 		events.dispatch<InternalMouseEvent>(type, eventObject);
 	}
 
+	function onWheelEvents(event: WheelEvent) {
+		event.preventDefault();
+
+		events.dispatch<InternalMouseEvent>('mousemove', {
+			x: event.offsetX,
+			y: event.offsetY,
+			movementX: event.deltaX,
+			movementY: event.deltaY,
+			buttons: 1,
+			stopPropagation: false,
+			canvasWidth: element.clientWidth,
+			canvasHeight: element.clientHeight,
+		});
+	}
+
 	window.addEventListener('keyup', onKeyboardEvents);
 	window.addEventListener('keydown', onKeyboardEvents);
+	window.addEventListener('wheel', onWheelEvents, { passive: false });
 	element.addEventListener('mouseup', onMouseEvents);
 	element.addEventListener('mousedown', onMouseEvents);
 	element.addEventListener('mousemove', onMouseEvents);
