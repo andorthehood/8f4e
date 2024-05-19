@@ -81,6 +81,7 @@ export interface Compiler {
 	compiledModules: CompiledModuleLookup;
 	buildErrors: BuildError[];
 	compilerOptions: CompileOptions;
+	allocatedMemorySize: number;
 }
 
 export interface Midi {

@@ -4,12 +4,13 @@ import testBuild from './testBuild';
 
 async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
 	try {
-		const { codeBuffer, compiledModules } = await testBuild(memoryRef, modules, compilerOptions);
+		const { codeBuffer, compiledModules, allocatedMemorySize } = await testBuild(memoryRef, modules, compilerOptions);
 		self.postMessage({
 			type: 'buildOk',
 			payload: {
 				codeBuffer,
 				compiledModules,
+				allocatedMemorySize,
 			},
 		});
 	} catch (error) {
