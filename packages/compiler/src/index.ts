@@ -113,13 +113,14 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 		})
 	);
 
-	return modules.map(ast => {
+	return modules.map((ast, index) => {
 		const module = compileModule(
 			ast,
 			builtInConsts,
 			namespaces,
 			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-			options.maxMemorySize
+			options.maxMemorySize,
+			index
 		);
 		memoryAddress += module.wordAlignedSize;
 
@@ -187,6 +188,7 @@ export default function compile(
 ): {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
+	allocatedMemorySize: number;
 } {
 	const astModules = modules.map(({ code }) => compileToAST(code, options));
 	const sortedModules = sortModules(astModules);
@@ -224,5 +226,8 @@ export default function compile(
 			]),
 		]),
 		compiledModules: compiledModulesMap,
+		allocatedMemorySize:
+			compiledModules[compiledModules.length - 1].byteAddress +
+			compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
 	};
 }

@@ -93,8 +93,8 @@ export default async function testBuild(
 	memoryRef: WebAssembly.Memory,
 	modules: Module[],
 	compilerOptions: CompileOptions
-): Promise<{ codeBuffer: Uint8Array; compiledModules: CompiledModuleLookup }> {
-	const { codeBuffer, compiledModules } = compile(modules, compilerOptions);
+): Promise<{ codeBuffer: Uint8Array; compiledModules: CompiledModuleLookup; allocatedMemorySize: number }> {
+	const { codeBuffer, compiledModules, allocatedMemorySize } = compile(modules, compilerOptions);
 	const { instance } = await WebAssembly.instantiate(codeBuffer, {
 		js: {
 			memory: memoryRef,
@@ -135,5 +135,5 @@ export default async function testBuild(
 
 	previousCompiledModules = compiledModules;
 
-	return { codeBuffer, compiledModules };
+	return { codeBuffer, compiledModules, allocatedMemorySize };
 }
