@@ -30,6 +30,7 @@ export interface DataStructure {
 export type MemoryMap = Map<string, DataStructure>;
 
 export interface CompiledModule {
+	index: number;
 	functionBody: number[];
 	id: string;
 	byteAddress: number;

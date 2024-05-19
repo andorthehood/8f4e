@@ -137,6 +137,8 @@ const defaultState: State = {
 		},
 		sampleRate: 44100,
 		binaryAssets: [],
+		audioInputBuffers: [],
+		audioOutputBuffers: [],
 	},
 	options: {
 		isLocalStorageEnabled: true,
