@@ -51,7 +51,7 @@ export default function drawDebugInfo(
 
 	debugText.push(
 		'Compilation time ' +
-			state.compiler.compilationTime +
+			state.compiler.compilationTime.toFixed(2) +
 			'ms  Cycle time:' +
 			state.compiler.cycleTime +
 			'ms  Timer accuracy: ' +

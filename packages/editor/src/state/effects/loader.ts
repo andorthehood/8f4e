@@ -58,6 +58,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			},
 			sampleRate: 44100,
 			binaryAssets: [],
+			audioInputBuffers: [],
+			audioOutputBuffers: [],
 		};
 
 		Object.keys(newProject).forEach(key => {
