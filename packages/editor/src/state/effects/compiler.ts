@@ -62,6 +62,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			case 'buildOk':
 				state.compiler.compiledModules = data.payload.compiledModules;
 				state.compiler.codeBuffer = data.payload.codeBuffer;
+				state.compiler.allocatedMemorySize = data.payload.allocatedMemorySize;
 				state.compiler.memoryBuffer = new Int32Array(state.compiler.memoryRef.buffer);
 				state.compiler.memoryBufferFloat = new Float32Array(state.compiler.memoryRef.buffer);
 				state.compiler.isCompiling = false;
@@ -79,7 +80,8 @@ export default async function compiler(state: State, events: EventDispatcher) {
 							return;
 						}
 
-						const allocatedSizeInBytes = memoryAssignedToBinaryAsset.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+						const allocatedSizeInBytes =
+							memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
 						const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
 						const binaryAssetDataBuffer = Uint8Array.from(Buffer.from(binaryAsset.data, 'base64')).slice(
 							0,

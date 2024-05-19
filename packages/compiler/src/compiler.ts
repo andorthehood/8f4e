@@ -114,7 +114,8 @@ export function compile(
 	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
 	startingByteAddress = 0,
-	maxMemorySize: number
+	maxMemorySize: number,
+	index: number
 ): CompiledModule {
 	const { byteCode, context } = compileSegment(ast, {
 		namespace: {
@@ -155,5 +156,6 @@ export function compile(
 		memoryMap: context.namespace.memory,
 		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
 		ast,
+		index,
 	};
 }
