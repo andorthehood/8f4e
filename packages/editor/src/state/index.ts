@@ -27,10 +27,11 @@ const initialMemorySize = 1000;
 const defaultState: State = {
 	compiler: {
 		codeBuffer: new Uint8Array(),
-		compilationTime: '0',
+		compilationTime: 0,
 		cycleTime: 0,
 		isCompiling: false,
 		lastCompilationStart: 0,
+		allocatedMemorySize: 0,
 		memoryBuffer: new Int32Array(),
 		memoryBufferFloat: new Float32Array(),
 		memoryRef: new WebAssembly.Memory({ initial: initialMemorySize, maximum: maxMemorySize, shared: true }),

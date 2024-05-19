@@ -70,7 +70,7 @@ export interface Runtime {
 
 export interface Compiler {
 	codeBuffer: Uint8Array;
-	compilationTime: string;
+	compilationTime: number;
 	cycleTime: number;
 	isCompiling: boolean;
 	lastCompilationStart: number;
@@ -304,4 +304,5 @@ export interface State {
 	project: Project;
 	options: Options;
 	editorSettings: EditorSettings;
+	compilationTime: number;
 }
