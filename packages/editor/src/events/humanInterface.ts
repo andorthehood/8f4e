@@ -60,8 +60,8 @@ export default function humanInterface(element: HTMLElement, events: EventDispat
 		events.dispatch<InternalMouseEvent>('mousemove', {
 			x: event.offsetX,
 			y: event.offsetY,
-			movementX: event.deltaX,
-			movementY: event.deltaY,
+			movementX: event.deltaX * -1,
+			movementY: event.deltaY * -1,
 			buttons: 1,
 			stopPropagation: false,
 			canvasWidth: element.clientWidth,
