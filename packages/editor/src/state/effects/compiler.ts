@@ -35,6 +35,9 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		// TODO: make it recursive
 		const modules = flattenProjectForCompiler(state.graphicHelper.baseCodeBlock.codeBlocks);
 
+		state.compiler.isCompiling = true;
+		state.compiler.lastCompilationStart = performance.now();
+
 		worker.postMessage({
 			type: 'recompile',
 			payload: {
@@ -66,7 +69,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				state.compiler.memoryBuffer = new Int32Array(state.compiler.memoryRef.buffer);
 				state.compiler.memoryBufferFloat = new Float32Array(state.compiler.memoryRef.buffer);
 				state.compiler.isCompiling = false;
-				state.compiler.compilationTime = (performance.now() - state.compiler.lastCompilationStart).toFixed(2);
+				state.compiler.compilationTime = performance.now() - state.compiler.lastCompilationStart;
 
 				state.compiler.buildErrors = [];
 
@@ -100,6 +103,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 
 				break;
 			case 'buildError':
+				state.compiler.isCompiling = false;
 				state.compiler.buildErrors = [
 					{
 						lineNumber: data.payload?.line?.lineNumber || 1,
