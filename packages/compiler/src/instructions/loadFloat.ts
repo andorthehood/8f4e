@@ -5,7 +5,7 @@ import { f32load } from '../wasmUtils/instructionHelpers';
 import { parseSegment } from '../compiler';
 
 const loadFloat: InstructionHandler = function (line, context) {
-	if (isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
