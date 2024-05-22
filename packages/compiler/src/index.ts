@@ -156,8 +156,7 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 		const instructions: number[] = [];
 
 		Array.from(module.memoryMap.values()).forEach(memory => {
-			// TODO: figure out something efficient to initialise buffers larger than 32.
-			if (memory.wordAlignedSize > 1 && memory.default instanceof Map) {
+			if (memory.numberOfElements > 1 && memory.default instanceof Map) {
 				memory.default.forEach((value, relativeWordAddress) => {
 					instructions.push(
 						...(memory.isInteger
@@ -166,14 +165,14 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 					);
 				});
 				pointer += memory.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
-			} else if (memory.wordAlignedSize === 1 && memory.default !== 0) {
+			} else if (memory.numberOfElements === 1 && memory.default !== 0) {
 				instructions.push(
 					...(memory.isInteger
 						? i32store(pointer, memory.default as number)
 						: f32store(pointer, memory.default as number))
 				);
 				pointer += GLOBAL_ALIGNMENT_BOUNDARY;
-			} else if (memory.wordAlignedSize === 1 && memory.default === 0) {
+			} else if (memory.numberOfElements === 1 && memory.default === 0) {
 				pointer += GLOBAL_ALIGNMENT_BOUNDARY;
 			}
 		});
