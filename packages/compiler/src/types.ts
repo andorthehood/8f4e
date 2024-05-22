@@ -1,4 +1,4 @@
-import { Instruction } from './instructions';
+import { Instruction } from './instructionCompilers';
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
 
