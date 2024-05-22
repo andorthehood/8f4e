@@ -1,32 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`loadFloat  1`] = `
-Array [
-  42,
-  2,
-  0,
-]
-`;
-
-exports[`loadFloat  2`] = `
+exports[`abs  1`] = `
 Array [
   33,
   0,
   32,
   0,
   65,
-  127,
-  74,
+  0,
+  72,
   4,
   127,
   65,
   0,
+  32,
+  0,
+  107,
   5,
   32,
   0,
   11,
-  42,
-  2,
-  0,
+]
+`;
+
+exports[`abs  2`] = `
+Array [
+  139,
 ]
 `;
