@@ -1,4 +1,4 @@
-import { Instruction } from '../../src/instructions';
+import { Instruction } from '../../src/instructionCompilers';
 import { AST, CompilationContext } from '../../src/types';
 
 export function createMockContext(): CompilationContext {
