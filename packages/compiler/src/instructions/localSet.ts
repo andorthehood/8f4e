@@ -4,7 +4,7 @@ import { isInstructionIsInsideAModule } from '../utils';
 import { localSet } from '../wasmUtils/instructionHelpers';
 
 const _localSet: InstructionHandler = function (line, context) {
-	if (isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 

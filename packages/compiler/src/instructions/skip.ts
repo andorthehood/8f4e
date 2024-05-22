@@ -9,7 +9,7 @@ import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 const skip: InstructionHandler = function (line, context) {
 	const { consts } = context.namespace;
 
-	if (isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 

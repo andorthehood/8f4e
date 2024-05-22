@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loadFloat  1`] = `
+Array [
+  42,
+  2,
+  0,
+]
+`;
