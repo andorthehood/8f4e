@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dup if the generated AST, WAT and memory map match the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "dup",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "output1",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "output2",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&output1",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&output2",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 7,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "dup",
+    "lineNumber": 9,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 10,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 11,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "moduleEnd",
+    "lineNumber": 13,
+  },
+]
+`;
+
+exports[`dup if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32 i32 i32)
+    i32.const 4
+    i32.const 8
+    i32.const 0
+    i32.load
+    local.set 0
+    local.get 0
+    local.get 0
+    local.set 2
+    local.set 1
+    local.get 1
+    i32.const 65535
+    i32.gt_s
+    if (result i32)  ;; label = @1
+      i32.const 0
+    else
+      local.get 1
+    end
+    local.get 2
+    i32.store
+    i32.store)
+  (export \\"test\\" (func 0)))
+"
+`;
+
+exports[`dup if the generated AST, WAT and memory map match the snapshot 3`] = `
+Map {
+  "input" => Object {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output1" => Object {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output1",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+  "output2" => Object {
+    "byteAddress": 8,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output2",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
+  },
+}
+`;
