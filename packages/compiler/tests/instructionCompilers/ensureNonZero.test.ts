@@ -1,6 +1,6 @@
 import { createMockASTLeaf, createMockContext } from './testUtils';
 
-import istructions from '../../src/instructions/index';
+import istructions from '../../src/instructionCompilers/index';
 import { AST, CompilationContext } from '../../src/types';
 import { ErrorCode } from '../../src/errors';
 
