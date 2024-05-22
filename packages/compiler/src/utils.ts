@@ -49,7 +49,7 @@ export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
 }
 
 export function isInstructionIsInsideAModule(blockStack: BlockStack) {
-	for (let i = blockStack.length - 1; i > 0; i--) {
+	for (let i = blockStack.length - 1; i >= 0; i--) {
 		if (blockStack[i].isModuleBlock) {
 			return true;
 		}

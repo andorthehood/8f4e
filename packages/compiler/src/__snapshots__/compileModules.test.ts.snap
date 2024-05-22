@@ -242,6 +242,7 @@ Array [
       11,
     ],
     "id": "abs",
+    "index": 0,
     "memoryMap": Map {
       "DEFAULT_VALUE" => Object {
         "byteAddress": 0,
