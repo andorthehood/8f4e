@@ -1,5 +1,5 @@
 import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
-import instructions, { Instruction } from './instructions';
+import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
 	Argument,
