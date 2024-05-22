@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dup  1`] = `
+Array [
+  33,
+  0,
+  32,
+  0,
+  32,
+  0,
+]
+`;
+
+exports[`dup  2`] = `
+Array [
+  33,
+  0,
+  32,
+  0,
+  32,
+  0,
+]
+`;
