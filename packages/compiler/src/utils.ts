@@ -1,5 +1,5 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-import { BlockStack, CompiledModule, MemoryMap, StackItem } from './types';
+import { BlockStack, MemoryMap, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return memoryMap.has(name);
