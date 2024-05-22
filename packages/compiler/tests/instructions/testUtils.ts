@@ -1,4 +1,5 @@
-import { CompilationContext } from '../../src/types';
+import { Instruction } from '../../src/instructions';
+import { AST, CompilationContext } from '../../src/types';
 
 export function createMockContext(): CompilationContext {
 	return {
@@ -22,5 +23,13 @@ export function createMockContext(): CompilationContext {
 		],
 		startingByteAddress: 0,
 		memoryByteSize: 0,
+	};
+}
+
+export function createMockASTLeaf(instruction: Instruction): AST[number] {
+	return {
+		instruction,
+		arguments: [],
+		lineNumber: 0,
 	};
 }
