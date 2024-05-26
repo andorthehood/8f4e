@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`branch (int) if the generated AST, WAT and memory map match the snapshot 1`] = `
+Array [
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "block",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "branch",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  Object {
+    "arguments": Array [
+      Object {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "store",
+    "lineNumber": 7,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "moduleEnd",
+    "lineNumber": 9,
+  },
+]
+`;
+
+exports[`branch (int) if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
+
+exports[`branch (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
+Map {
+  "output" => Object {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
