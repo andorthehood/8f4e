@@ -1,81 +1,41 @@
-import { createTestModule } from './testUtils';
+import { moduleTester } from './testUtils';
 
-import { TestModule } from '../../src/types';
-
-describe('ensureNonZero (int)', () => {
-	let testModule: TestModule;
-
-	const ensureNonZero = `module ensureNonZero
-    int input 
-    int output
+moduleTester(
+	'ensureNonZero (int)',
+	`module ensureNonZero
+int input 
+int output
     
-    push &output
-    push input
-    ensureNonZero
-    store
+push &output
+push input
+ensureNonZero
+ store
     
-    moduleEnd
-    `;
+moduleEnd
+`,
+	[
+		[{ input: 69 }, { output: 69 }],
+		[{ input: 0 }, { output: 1 }],
+		[{ input: -420 }, { output: -420 }],
+	]
+);
 
-	const fixtures: number[] = [69, 0, -420];
-
-	beforeAll(async () => {
-		testModule = await createTestModule(ensureNonZero);
-	});
-
-	beforeEach(() => {
-		testModule.reset();
-	});
-
-	test('if the generated AST, WAT and memory map match the snapshot', () => {
-		expect(testModule.ast).toMatchSnapshot();
-		expect(testModule.wat).toMatchSnapshot();
-		expect(testModule.memoryMap).toMatchSnapshot();
-	});
-
-	test.each(fixtures)('', input => {
-		const { memory, test } = testModule;
-		memory.set('input', input);
-		test();
-		expect(memory.get('output1')).not.toBe(0);
-	});
-});
-
-describe('ensureNonZero (float)', () => {
-	let testModule: TestModule;
-
-	const ensureNonZero = `module ensureNonZero
-    float input 
-    float output
+moduleTester(
+	'ensureNonZero (float)',
+	`module ensureNonZero
+float input 
+float output
     
-    push &output
-    push input
-    ensureNonZero
-    store
+push &output
+push input
+ensureNonZero
+ store
     
-    moduleEnd
-    `;
-
-	const fixtures: number[] = [69.1, 0, -420.1];
-
-	beforeAll(async () => {
-		testModule = await createTestModule(ensureNonZero);
-	});
-
-	beforeEach(() => {
-		testModule.reset();
-	});
-
-	test('if the generated AST, WAT and memory map match the snapshot', () => {
-		expect(testModule.ast).toMatchSnapshot();
-		expect(testModule.wat).toMatchSnapshot();
-		expect(testModule.memoryMap).toMatchSnapshot();
-	});
-
-	test.each(fixtures)('', input => {
-		const { memory, test } = testModule;
-		memory.set('input', input);
-		test();
-		expect(memory.get('output1')).not.toBe(0);
-	});
-});
+moduleEnd
+`,
+	[
+		[{ input: 69.1 }, { output: 69.1 }],
+		[{ input: 0 }, { output: 1 }],
+		[{ input: -420.1 }, { output: -420.1 }],
+	]
+);
