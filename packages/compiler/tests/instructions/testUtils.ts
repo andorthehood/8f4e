@@ -157,3 +157,42 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		ast: module.ast,
 	};
 }
+
+export function moduleTester(
+	description: string,
+	moduleCode: string,
+	fixtures: [inputs: Record<string, number>, outputs: Record<string, number>][]
+) {
+	describe(description, () => {
+		let testModule: TestModule;
+
+		beforeAll(async () => {
+			testModule = await createTestModule(moduleCode);
+		});
+
+		beforeEach(() => {
+			testModule.reset();
+		});
+
+		test('if the generated AST, WAT and memory map match the snapshot', () => {
+			expect(testModule.ast).toMatchSnapshot();
+			expect(testModule.wat).toMatchSnapshot();
+			expect(testModule.memoryMap).toMatchSnapshot();
+		});
+
+		test.each(fixtures)('given inputs: %p, the outputs should be: %p', (inputs, outputs) => {
+			const { memory, test } = testModule;
+
+			Object.entries(inputs).forEach(([key, value]) => {
+				memory.set(key, value);
+			});
+
+			test();
+
+			Object.entries(outputs).forEach(([key, value]) => {
+				memory.set(key, value);
+				expect(memory.get(key)).toBeCloseTo(value);
+			});
+		});
+	});
+}
