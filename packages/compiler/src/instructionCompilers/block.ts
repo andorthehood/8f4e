@@ -9,28 +9,47 @@ const block: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
-	if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'void') {
+	if (!line.arguments[0] || line.arguments[0].type !== ArgumentType.IDENTIFIER) {
+		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
+	}
+
+	if (line.arguments[0].value === 'float') {
 		context.blockStack.push({
 			expectedResultIsInteger: false,
-			hasExpectedResult: false,
+			hasExpectedResult: true,
 			isModuleBlock: false,
 			isGroupBlock: false,
 			isLoop: false,
 			isConditionBlock: false,
+			isFunctionBlock: false,
 		});
-		return { byteCode: [WASMInstruction.BLOCK, Type.VOID], context };
+		return { byteCode: [WASMInstruction.BLOCK, Type.F32], context };
 	}
 
-	// TODO: fix parse argument[0] to determine the result type
+	if (line.arguments[0].value === 'int') {
+		context.blockStack.push({
+			expectedResultIsInteger: true,
+			hasExpectedResult: true,
+			isModuleBlock: false,
+			isGroupBlock: false,
+			isLoop: false,
+			isConditionBlock: false,
+			isFunctionBlock: false,
+		});
+		return { byteCode: [WASMInstruction.BLOCK, Type.I32], context };
+	}
+
 	context.blockStack.push({
-		expectedResultIsInteger: true,
-		hasExpectedResult: true,
+		expectedResultIsInteger: false,
+		hasExpectedResult: false,
 		isModuleBlock: false,
 		isGroupBlock: false,
 		isLoop: false,
 		isConditionBlock: false,
+		isFunctionBlock: false,
 	});
-	return { byteCode: [WASMInstruction.BLOCK, Type.I32], context };
+
+	return { byteCode: [WASMInstruction.BLOCK, Type.VOID], context };
 };
 
 export default block;

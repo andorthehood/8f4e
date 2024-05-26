@@ -196,3 +196,11 @@ export function moduleTester(
 		});
 	});
 }
+
+export function expectModuleToThrow(description: string, moduleCode: string, errorMessage: string) {
+	describe(description, () => {
+		test('throws', async () => {
+			expect(async () => createTestModule(moduleCode)).toThrow(errorMessage);
+		});
+	});
+}
