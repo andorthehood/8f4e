@@ -17,6 +17,7 @@ const loop: InstructionHandler = function (line, context) {
 		isGroupBlock: false,
 		isLoop: true,
 		isConditionBlock: false,
+		isFunctionBlock: false,
 	});
 
 	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
