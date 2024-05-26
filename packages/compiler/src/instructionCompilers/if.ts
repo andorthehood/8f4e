@@ -27,6 +27,7 @@ const _if: InstructionHandler = function (line, context) {
 			isGroupBlock: false,
 			isLoop: false,
 			isConditionBlock: true,
+			isFunctionBlock: false,
 		});
 		return { byteCode: [WASMInstruction.IF, Type.VOID], context };
 	}
@@ -39,6 +40,7 @@ const _if: InstructionHandler = function (line, context) {
 			isGroupBlock: false,
 			isLoop: false,
 			isConditionBlock: true,
+			isFunctionBlock: false,
 		});
 		return { byteCode: [WASMInstruction.IF, Type.F32], context };
 	}
@@ -50,6 +52,7 @@ const _if: InstructionHandler = function (line, context) {
 		isGroupBlock: false,
 		isLoop: false,
 		isConditionBlock: true,
+		isFunctionBlock: false,
 	});
 	return { byteCode: [WASMInstruction.IF, Type.I32], context };
 };
