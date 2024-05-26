@@ -55,6 +55,7 @@ const skip: InstructionHandler = function (line, context) {
 		isGroupBlock: false,
 		isLoop: false,
 		isConditionBlock: false,
+		isFunctionBlock: false,
 	});
 
 	return {
