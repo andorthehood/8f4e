@@ -161,7 +161,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 export function moduleTester(
 	description: string,
 	moduleCode: string,
-	fixtures: [inputs: Record<string, number>, outputs: Record<string, number>][]
+	fixtures: [inputs: Record<string, number>, outputs: Record<string, number>][] = [[{}, {}]]
 ) {
 	describe(description, () => {
 		let testModule: TestModule;
@@ -190,7 +190,6 @@ export function moduleTester(
 			test();
 
 			Object.entries(outputs).forEach(([key, value]) => {
-				memory.set(key, value);
 				expect(memory.get(key)).toBeCloseTo(value);
 			});
 		});
