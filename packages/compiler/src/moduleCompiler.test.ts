@@ -1,4 +1,4 @@
-import { compile, compileToAST } from './compiler';
+import { compileModule, compileToAST } from './compiler';
 
 const fixture = `
 module abs
@@ -39,6 +39,6 @@ describe('moduleCompiler', () => {
 	});
 
 	test('compiled code', () => {
-		expect(compile(ast, {}, new Map(), 0, 1).functionBody).toMatchSnapshot();
+		expect(compileModule(ast, {}, new Map(), 0, 1, 0).functionBody).toMatchSnapshot();
 	});
 });
