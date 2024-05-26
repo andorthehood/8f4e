@@ -56,6 +56,8 @@ import sqrt from './sqrt';
 import loadFloat from './loadFloat';
 import round from './round';
 import ensureNonZero from './ensureNonZero';
+import _function from './function';
+import functionEnd from './functionEnd';
 
 const instructions = {
 	and,
@@ -133,6 +135,8 @@ const instructions = {
 	loadFloat,
 	round,
 	ensureNonZero,
+	function: _function,
+	functionEnd,
 } as const;
 
 export default instructions;
