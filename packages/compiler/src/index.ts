@@ -11,7 +11,8 @@ import {
 } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
-import { compile as compileModule, compileToAST } from './compiler';
+import { compileModule, compileToAST } from './compiler';
+// import standardLibrary from './standardLibrary/index';
 import {
 	AST,
 	ArgumentLiteral,
@@ -190,6 +191,7 @@ export default function compile(
 	allocatedMemorySize: number;
 } {
 	const astModules = modules.map(({ code }) => compileToAST(code, options));
+	// const astFunctions = standardLibrary.map(code => compileToAST(code.split('\n'), options));
 	const sortedModules = sortModules(astModules);
 	const compiledModules = compileModules(sortedModules, { ...options, startingMemoryWordAddress: 1 });
 	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));

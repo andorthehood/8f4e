@@ -56,8 +56,8 @@ export function isValidInstruction(line: string): boolean {
 	return instructionParser.test(line);
 }
 
-export function compileToAST(module: string[], options?: CompileOptions) {
-	return module
+export function compileToAST(code: string[], options?: CompileOptions) {
+	return code
 		.map((line, index) => [index, line] as [number, string])
 		.filter(([, line]) => !isComment(line))
 		.filter(([, line]) => isValidInstruction(line))
@@ -109,7 +109,7 @@ export function parseSegment(
 	return compileSegment(compileToAST(lines), context);
 }
 
-export function compile(
+export function compileModule(
 	ast: AST,
 	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
