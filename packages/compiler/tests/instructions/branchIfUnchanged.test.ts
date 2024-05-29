@@ -1,11 +1,15 @@
-import { createTestModule } from './testUtils';
+import { moduleTester } from './testUtils';
 
-import { TestModule } from '../../src/types';
-
-const branchIfUnchanged = `module branchIfUnchanged
-
+moduleTester(
+	'branchIfUnchanged',
+	`module branchIfUnchanged
+    
 int input 
 int output
+	
+push &output
+push 0
+store
 
 block void
  push input
@@ -14,45 +18,14 @@ block void
   push 1
  store
 blockEnd
-
+	
 moduleEnd
-`;
-
-describe('branchIfUnchanged', () => {
-	let testModule: TestModule;
-
-	beforeAll(async () => {
-		testModule = await createTestModule(branchIfUnchanged);
-	});
-
-	beforeEach(() => {
-		testModule.reset();
-	});
-
-	test('if the generated AST, WAT and memory map match the snapshot', () => {
-		expect(testModule.ast).toMatchSnapshot();
-		expect(testModule.wat).toMatchSnapshot();
-		expect(testModule.memoryMap).toMatchSnapshot();
-	});
-
-	test('', () => {
-		const { memory, test } = testModule;
-
-		memory.set('input', 0);
-		test();
-		test();
-		test();
-		test();
-		expect(memory.get('output')).toBe(0);
-	});
-
-	test('', () => {
-		const { memory, test } = testModule;
-
-		memory.set('input', 0);
-		test();
-		memory.set('input', 1);
-		test();
-		expect(memory.get('output')).toBe(1);
-	});
-});
+`,
+	[
+		[{ input: 0 }, { output: 0 }],
+		[{ input: 0 }, { output: 0 }],
+		[{ input: 1 }, { output: 1 }],
+		[{ input: 1 }, { output: 0 }],
+		[{ input: 1 }, { output: 0 }],
+	]
+);
