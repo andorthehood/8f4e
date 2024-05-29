@@ -161,7 +161,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 export function moduleTester(
 	description: string,
 	moduleCode: string,
-	fixtures: [inputs: Record<string, number>, outputs: Record<string, number>][] = [[{}, {}]]
+	...tests: [inputs: Record<string, number>, outputs: Record<string, number>][][]
 ) {
 	describe(description, () => {
 		let testModule: TestModule;
@@ -180,17 +180,19 @@ export function moduleTester(
 			expect(testModule.memoryMap).toMatchSnapshot();
 		});
 
-		test.each(fixtures)('given inputs: %p, the outputs should be: %p', (inputs, outputs) => {
+		test.each(tests)('testing sequence of inputs: %p', (...fixtures) => {
 			const { memory, test } = testModule;
 
-			Object.entries(inputs).forEach(([key, value]) => {
-				memory.set(key, value);
-			});
+			fixtures.forEach(([inputs, outputs]) => {
+				Object.entries(inputs).forEach(([key, value]) => {
+					memory.set(key, value);
+				});
 
-			test();
+				test();
 
-			Object.entries(outputs).forEach(([key, value]) => {
-				expect(memory.get(key)).toBeCloseTo(value);
+				Object.entries(outputs).forEach(([key, value]) => {
+					expect(memory.get(key)).toBeCloseTo(value);
+				});
 			});
 		});
 	});
