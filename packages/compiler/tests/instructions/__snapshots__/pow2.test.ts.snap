@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`and if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`pow2 if the generated AST, WAT and memory map match the snapshot 1`] = `
 Array [
   Object {
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "and",
+        "value": "pow2",
       },
     ],
     "instruction": "module",
@@ -16,7 +16,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "input1",
+        "value": "input",
       },
     ],
     "instruction": "int",
@@ -26,7 +26,7 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "input2",
+        "value": "output",
       },
     ],
     "instruction": "int",
@@ -36,83 +36,69 @@ Array [
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "output",
+        "value": "&output",
       },
     ],
-    "instruction": "int",
-    "lineNumber": 4,
+    "instruction": "push",
+    "lineNumber": 5,
   },
   Object {
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "&output",
+        "value": "input",
       },
     ],
     "instruction": "push",
     "lineNumber": 6,
   },
   Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "input1",
-      },
-    ],
-    "instruction": "push",
-    "lineNumber": 7,
-  },
-  Object {
-    "arguments": Array [
-      Object {
-        "type": "identifier",
-        "value": "input2",
-      },
-    ],
-    "instruction": "push",
-    "lineNumber": 8,
-  },
-  Object {
     "arguments": Array [],
-    "instruction": "and",
-    "lineNumber": 9,
+    "instruction": "pow2",
+    "lineNumber": 7,
   },
   Object {
     "arguments": Array [],
     "instruction": "store",
-    "lineNumber": 10,
+    "lineNumber": 8,
   },
   Object {
     "arguments": Array [],
     "instruction": "moduleEnd",
-    "lineNumber": 12,
+    "lineNumber": 10,
   },
 ]
 `;
 
-exports[`and if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`pow2 if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
   (func (;0;) (type 0)
-    i32.const 8
+    (local i32 i32)
+    i32.const 4
     i32.const 0
     i32.load
-    i32.const 4
-    i32.load
-    i32.and
+    i32.const 2
+    i32.const 1
+    i32.sub
+    local.set 0
+    local.set 1
+    local.get 0
+    local.get 1
+    i32.shl
     i32.store)
   (export \\"test\\" (func 0)))
 "
 `;
 
-exports[`and if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`pow2 if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "input1" => Object {
+  "input" => Object {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
-    "id": "input1",
+    "id": "input",
     "isInteger": true,
     "isPointer": false,
     "isPointingToInteger": false,
@@ -122,22 +108,8 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "input2" => Object {
-    "byteAddress": 4,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "input2",
-    "isInteger": true,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
-  },
   "output" => Object {
-    "byteAddress": 8,
+    "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
     "id": "output",
@@ -147,7 +119,7 @@ Map {
     "isPointingToPointer": false,
     "numberOfElements": 1,
     "type": "int",
-    "wordAlignedAddress": 2,
+    "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
 }
