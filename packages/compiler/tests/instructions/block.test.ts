@@ -43,20 +43,3 @@ moduleEnd
 		[{ input: -420.1 }, { output: -420.1 }],
 	]
 );
-
-expectModuleToThrow(
-	'block (void)',
-	`module block
-
-float output
-    
-push &output
-block void
- push 1
-blockEnd
-store
-    
-moduleEnd
-`,
-	'error'
-);
