@@ -6,10 +6,12 @@ moduleTester(
 
 int output
 
+block void
 branch 1
 push &output
 push 1
 store
+blockEnd
     
 moduleEnd
 `,
