@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`greaterOrEqual (float) if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`mul (float) if the generated AST, WAT and memory map match the snapshot 1`] = `
 Array [
   Object {
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "greaterOrEqual",
+        "value": "mul",
       },
     ],
     "instruction": "module",
@@ -39,7 +39,7 @@ Array [
         "value": "output",
       },
     ],
-    "instruction": "int",
+    "instruction": "float",
     "lineNumber": 4,
   },
   Object {
@@ -74,7 +74,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "greaterOrEqual",
+    "instruction": "mul",
     "lineNumber": 9,
   },
   Object {
@@ -90,7 +90,7 @@ Array [
 ]
 `;
 
-exports[`greaterOrEqual (float) if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`mul (float) if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
@@ -100,13 +100,13 @@ exports[`greaterOrEqual (float) if the generated AST, WAT and memory map match t
     f32.load
     i32.const 4
     f32.load
-    f32.ge
-    i32.store)
+    f32.mul
+    f32.store)
   (export \\"test\\" (func 0)))
 "
 `;
 
-exports[`greaterOrEqual (float) if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`mul (float) if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
   "input1" => Object {
     "byteAddress": 0,
@@ -141,25 +141,25 @@ Map {
     "default": 0,
     "elementWordSize": 4,
     "id": "output",
-    "isInteger": true,
+    "isInteger": false,
     "isPointer": false,
     "isPointingToInteger": false,
     "isPointingToPointer": false,
     "numberOfElements": 1,
-    "type": "int",
+    "type": "float",
     "wordAlignedAddress": 2,
     "wordAlignedSize": 1,
   },
 }
 `;
 
-exports[`greaterOrEqual (int) if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`mul (int) if the generated AST, WAT and memory map match the snapshot 1`] = `
 Array [
   Object {
     "arguments": Array [
       Object {
         "type": "identifier",
-        "value": "greaterOrEqual",
+        "value": "mul",
       },
     ],
     "instruction": "module",
@@ -227,7 +227,7 @@ Array [
   },
   Object {
     "arguments": Array [],
-    "instruction": "greaterOrEqual",
+    "instruction": "mul",
     "lineNumber": 9,
   },
   Object {
@@ -243,7 +243,7 @@ Array [
 ]
 `;
 
-exports[`greaterOrEqual (int) if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`mul (int) if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import \\"js\\" \\"memory\\" (memory (;0;) 1))
@@ -253,13 +253,13 @@ exports[`greaterOrEqual (int) if the generated AST, WAT and memory map match the
     i32.load
     i32.const 4
     i32.load
-    i32.ge_s
+    i32.mul
     i32.store)
   (export \\"test\\" (func 0)))
 "
 `;
 
-exports[`greaterOrEqual (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`mul (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
   "input1" => Object {
     "byteAddress": 0,
