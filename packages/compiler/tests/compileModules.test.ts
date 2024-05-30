@@ -1,7 +1,7 @@
-import { compileToAST } from './compiler';
 import modules from './__fixtures__/modules';
 
-import { compileModules } from '.';
+import { compileToAST } from '../src/compiler';
+import { compileModules } from '../src';
 
 describe('compiler', () => {
 	test('compileModules', () => {

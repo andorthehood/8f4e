@@ -9,5 +9,6 @@ push 1
 clearStack
 
 moduleEnd
-`
+`,
+	[]
 );

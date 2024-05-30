@@ -1,7 +1,7 @@
 import modules from './__fixtures__/modules';
-import { compileToAST } from './compiler';
 
-import { compileModules, generateMemoryInitiatorFunction } from '.';
+import { compileToAST } from '../src/compiler';
+import { compileModules, generateMemoryInitiatorFunction } from '../src';
 
 describe('compiler', () => {
 	test('generateMemoryInitiatorFunction', () => {
