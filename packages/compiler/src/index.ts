@@ -36,7 +36,6 @@ import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
 
 export * from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER } from './consts';
-export * as examples from './examples';
 export { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
 export { instructionParser } from './compiler';
