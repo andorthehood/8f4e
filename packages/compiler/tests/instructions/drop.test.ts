@@ -8,5 +8,6 @@ push 1
 drop
 
 moduleEnd
-`
+`,
+	[]
 );
