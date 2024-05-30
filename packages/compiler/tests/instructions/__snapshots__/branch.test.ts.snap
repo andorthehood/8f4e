@@ -25,13 +25,23 @@ Array [
   Object {
     "arguments": Array [
       Object {
+        "type": "identifier",
+        "value": "void",
+      },
+    ],
+    "instruction": "block",
+    "lineNumber": 4,
+  },
+  Object {
+    "arguments": Array [
+      Object {
         "isInteger": true,
         "type": "literal",
         "value": 1,
       },
     ],
     "instruction": "branch",
-    "lineNumber": 4,
+    "lineNumber": 5,
   },
   Object {
     "arguments": Array [
@@ -41,7 +51,7 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 5,
+    "lineNumber": 6,
   },
   Object {
     "arguments": Array [
@@ -52,22 +62,40 @@ Array [
       },
     ],
     "instruction": "push",
-    "lineNumber": 6,
-  },
-  Object {
-    "arguments": Array [],
-    "instruction": "store",
     "lineNumber": 7,
   },
   Object {
     "arguments": Array [],
-    "instruction": "moduleEnd",
+    "instruction": "store",
+    "lineNumber": 8,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "blockEnd",
     "lineNumber": 9,
+  },
+  Object {
+    "arguments": Array [],
+    "instruction": "moduleEnd",
+    "lineNumber": 11,
   },
 ]
 `;
 
-exports[`branch (int) if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
+exports[`branch (int) if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    block  ;; label = @1
+      br 1 (;@0;)
+      i32.const 0
+      i32.const 1
+      i32.store
+    end)
+  (export \\"test\\" (func 0)))
+"
+`;
 
 exports[`branch (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
