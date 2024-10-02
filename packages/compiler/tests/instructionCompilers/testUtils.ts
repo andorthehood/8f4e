@@ -19,6 +19,7 @@ export function createMockContext(): CompilationContext {
 				isGroupBlock: false,
 				isLoop: false,
 				isConditionBlock: false,
+				isFunctionBlock: false,
 			},
 		],
 		startingByteAddress: 0,
