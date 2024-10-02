@@ -1,6 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/21e4864c-e37c-4039-85a0-baf88a997c6b/deploy-status)](https://app.netlify.com/sites/8f4e/deploys)
 
-Welcome to what I refer to as my biggest “mental masturbation” project. This whole thing started because I like creating problems just to experience the satisfaction of solving them. It doesn't really serve a bigger purpose or offer much to the public, and honestly, there's probably better stuff out there for the same job.
+Welcome to what I refer to as my biggest “mental masturbation” project. This whole thing started because I like creating problems just to experience the satisfaction of solving them. It doesn't really serve a bigger purpose or offer much to the public, and there's probably better stuff out there for the same job. All the code was written by hand, and I plan to maintain it the old-fashioned way because coding is fun! While it's possible to generate entire software projects with AI, it doesn’t mean we have to use it. We can still enjoy writing code ourselves.
 
 # 8f4e
 
