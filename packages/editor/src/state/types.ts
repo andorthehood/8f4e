@@ -260,14 +260,14 @@ export interface Project {
 	codeBlocks: CodeBlock[];
 	viewport: Viewport;
 	sampleRate: number;
-	binaryAssets: BinaryAsset[];
-	audioInputBuffers: {
+	binaryAssets?: BinaryAsset[];
+	audioInputBuffers?: {
 		moduleId: string;
 		memoryId: string;
 		channel: number;
 		input: number;
 	}[];
-	audioOutputBuffers: {
+	audioOutputBuffers?: {
 		moduleId: string;
 		memoryId: string;
 		channel: number;
