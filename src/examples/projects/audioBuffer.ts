@@ -85,6 +85,7 @@ const project: Project = {
 	],
 	viewport: { x: 0, y: 0 },
 	sampleRate: 44100,
+	audioOutputBuffers: [{ moduleId: 'audioout', memoryId: 'buffer', channel: 0, output: 0 }],
 };
 
 export default project;
