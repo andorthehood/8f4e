@@ -253,6 +253,22 @@ export interface BinaryAsset {
 	fileName: string;
 }
 
+interface MidiNoteIO {
+	moduleId: string;
+	channelMemoryId?: string;
+	portMemoryId?: string;
+	velocityMemoryId?: string;
+	noteOnOffMemoryId?: string;
+	noteMemoryId?: string;
+}
+
+interface MidiCCIO {
+	moduleId: string;
+	channelMemoryId?: string;
+	selectedCCMemoryId?: string;
+	valueMemoryId?: string;
+}
+
 export interface Project {
 	title: string;
 	author: string;
@@ -261,6 +277,10 @@ export interface Project {
 	viewport: Viewport;
 	sampleRate: number;
 	binaryAssets?: BinaryAsset[];
+	midiNoteOutputs?: MidiNoteIO[];
+	midiNoteInputs?: MidiNoteIO[];
+	midiControlChangeOutputs?: MidiCCIO[];
+	midiControlChangeInputs?: MidiCCIO[];
 	audioInputBuffers?: {
 		moduleId: string;
 		memoryId: string;
