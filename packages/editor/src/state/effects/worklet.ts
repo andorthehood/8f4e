@@ -66,9 +66,10 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		onInitRuntime();
 	}
 
+	events.on('initRuntime:AudioWorklet', onInitRuntime);
+	events.on('destroyRuntimes', onDestroyRuntimes);
+
 	if (state.project.audioOutputBuffers || state.project.audioInputBuffers) {
-		events.on('initRuntime:AudioWorklet', onInitRuntime);
-		events.on('destroyRuntimes', onDestroyRuntimes);
 		events.on('mousedown', initAudioContext);
 	}
 }
