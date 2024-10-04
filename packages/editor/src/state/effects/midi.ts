@@ -79,7 +79,16 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 		}
 	}
 
-	navigator.requestMIDIAccess().then(onMidiAccess);
-	events.on('initRuntime:WebWorker', onInitRuntime);
+	// Only init midi when the project has midi inputs or outputs.
+	if (
+		state.project.midiControlChangeInputs ||
+		state.project.midiNoteInputs ||
+		state.project.midiControlChangeOutputs ||
+		state.project.midiNoteOutputs
+	) {
+		navigator.requestMIDIAccess().then(onMidiAccess);
+		events.on('initRuntime:WebWorker', onInitRuntime);
+	}
+
 	events.on('destroyRuntimes', onDestroyRuntimes);
 }
