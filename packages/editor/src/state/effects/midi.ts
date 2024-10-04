@@ -87,8 +87,8 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 		state.project.midiNoteOutputs
 	) {
 		navigator.requestMIDIAccess().then(onMidiAccess);
-		events.on('initRuntime:WebWorker', onInitRuntime);
 	}
 
+	events.on('initRuntime:WebWorker', onInitRuntime);
 	events.on('destroyRuntimes', onDestroyRuntimes);
 }
