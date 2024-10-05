@@ -13,7 +13,7 @@ function formatBytes(bytes: number): string {
 	}
 }
 
-export default function drawDebugInfo(
+export default function drawInfoOverlay(
 	engine: Engine,
 	state: State,
 	{
