@@ -1,7 +1,7 @@
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine } from '@8f4e/2d-engine';
 
-import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawDebugInfo } from './drawers';
+import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import colorSchemes from './colorSchemes';
 
 import { State } from '../state/types';
@@ -51,12 +51,14 @@ export default async function init(
 
 		drawCodeBlocks(engine, state);
 		drawConnections(engine, state);
-		drawDebugInfo(engine, state, {
-			timeToRender,
-			fps,
-			vertices,
-			maxVertices,
-		});
+		if (state.options.showInfoOverlay) {
+			drawInfoOverlay(engine, state, {
+				timeToRender,
+				fps,
+				vertices,
+				maxVertices,
+			});
+		}
 		drawDialog(engine, state);
 		drawArrows(engine, state);
 		drawContextMenu(engine, state);
