@@ -14,7 +14,7 @@ async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
 	const editor = await initEditor(canvas, exampleProjects.audioBuffer, {
 		isLocalStorageEnabled: false,
-		isDebugMode: false,
+		showInfoOverlay: false,
 	});
 	window.state = editor.state;
 
