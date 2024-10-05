@@ -305,7 +305,7 @@ export interface ExampleModule {
 
 export interface Options {
 	isLocalStorageEnabled: boolean;
-	isDebugMode: boolean;
+	showInfoOverlay: boolean;
 	localStorageId: string;
 	exampleProjects: Record<string, Project>;
 	exampleModules: Record<string, ExampleModule>;

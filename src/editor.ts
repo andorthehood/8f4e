@@ -18,7 +18,7 @@ async function init() {
 	canvas.height = window.innerHeight;
 	const editor = await initEditor(canvas, project, {
 		isLocalStorageEnabled: true,
-		isDebugMode: false,
+		showInfoOverlay: true,
 		localStorageId: 'editor',
 		exampleProjects,
 		exampleModules,
