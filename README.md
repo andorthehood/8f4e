@@ -31,10 +31,14 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 ## Instructions
 
 * [Arithmetic instructions](#arithmetic-instructions)
+    * [abs](#abs)
     * [add](#add)
     * [div](#div)
     * [mul](#mul)
+    * [pow2](#pow2)
     * [remainder](#remainder)
+    * [round](#round)
+    * [sqrt](#sqrt)
     * [sub](#sub)
 * [Bitwise instructions](#bitwise-instructions)
     * [and](#and)
@@ -69,6 +73,8 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
  
 ## Arithmetic instructions
 
+### abs
+
 ### add
 
 The "add" instruction operates on two numbers of the same type that are retrieved from the stack. It performs addition on these numbers and then stores the result back onto the stack.
@@ -99,9 +105,15 @@ The "mul" instruction retrieves two numbers of the same type from the stack, mul
     push 0.7    # stack: [ 4, 0.5, 0.7 ]
     add         # stack: [ 4, 0.35 ]
 
+### pow2
+
 ### remainder
 
 The "remainder" instruction retrieves two integer operands from the stack, divides the first operand by the second operand, and then computes the remainder of this division. It then stores the remainder back onto the stack. 
+
+### round
+
+### sqrt
 
 ### sub
 
