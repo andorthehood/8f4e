@@ -10,11 +10,10 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 - The syntax and commands of 8f4e were inspired by assembly languages, but instead of the typical cryptic mnemonics like `cndjmp`, 8f4e uses more descriptive operation names such as `branchIfTrue`.
 - The code is organized into modules, each containing variable declarations and a sequence of commands.
 - It supports real-time manual modification of variable values while the program is running, without needing recompilation.
-- In 8f4e, variables which are declared one after another in the code are allocated at memory addresses that follow each other. For example, if an `int foo` is at the 256th byte, then the `int bar` declared next will be at the 260th byte, assuming a word size of 4 bytes.
 - Variables declared sequentially in the code are allocated in adjacent memory locations. For example, if `int foo` is at byte 256, then the next `int bar` will be at byte 260 (assuming a 4-byte word size).
 - Arrays are also stored in contiguous blocks, enabling straightforward and efficient iteration.
 - All variables in 8f4e are inherently public, with no option to modify visibility.
-- Runtime memory allocation is not supported in 8f4e; developers must pre-plan their software's memory needs during the coding process. This design choice, favoring performance and efficiency, also ensures that memory addresses remain predictable.
+- Runtime memory allocation is not supported in 8f4e; developers must pre-plan their software's memory needs during the coding process.
 - The language utilizes C-style pointer notations and introduces a new notation: `array&` that retrieves the address of the last word in an array.
 - It's not memory safe, pointers can point to anything within the memory space of the program, but the wires help developers to find where their pointers are pointing.
 - The execution order of the code modules is determined by their dependencies. If a module's output is needed as input for others, it is executed first. This creates a sequential flow, where each module executes only after receiving the necessary data from a preceding module's output.
