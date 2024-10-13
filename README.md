@@ -37,7 +37,7 @@ There are currently two browser-based runtimes, both integrated into the develop
 
 ## Challenges
 
-- The sample rate is capped at 50Hz in the `WebWorkerMIDIRuntim`e because, as of now, web browsers lack a precise task scheduling API.
+- The sample rate is capped at 50Hz in the `WebWorkerMIDIRuntime` because, as of now, web browsers lack a precise task scheduling API. Based on my measurements on an M1 MacBook running Chrome, 50Hz provided the least-noticeable time divergences. If you're using an older processor architecture and experience a lot of swinging in your MIDI projects, you may need to reduce the sample rate to improve precision.
 - The `WebWorkerMIDIRuntime` is not supported on Safari or iOS mobile browsers due to Apple’s refusal to implement the Web MIDI API.
 - Due to security and privacy concerns, browsers enforce strict controls over audio and MIDI resource access, therefore explicit user interaction or permission is required to use the `WebWorkerMIDIRuntime` and `AudioWorkletRuntime` browser runtimes. 
 
