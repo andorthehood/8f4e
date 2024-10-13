@@ -269,30 +269,35 @@ interface MidiCCIO {
 	valueMemoryId?: string;
 }
 
+type Runtimes = 'WebWorkerLogicRuntime' | 'AudioWorkletRuntime' | 'WebWorkerMidiRuntime';
+
 export interface Project {
 	title: string;
 	author: string;
 	description: string;
 	codeBlocks: CodeBlock[];
 	viewport: Viewport;
-	sampleRate: number;
+	runtime: {
+		runtime: Runtimes;
+		sampleRate: number;
+		midiNoteOutputs?: MidiNoteIO[];
+		midiNoteInputs?: MidiNoteIO[];
+		midiControlChangeOutputs?: MidiCCIO[];
+		midiControlChangeInputs?: MidiCCIO[];
+		audioInputBuffers?: {
+			moduleId: string;
+			memoryId: string;
+			channel: number;
+			input: number;
+		}[];
+		audioOutputBuffers?: {
+			moduleId: string;
+			memoryId: string;
+			channel: number;
+			output: number;
+		}[];
+	};
 	binaryAssets?: BinaryAsset[];
-	midiNoteOutputs?: MidiNoteIO[];
-	midiNoteInputs?: MidiNoteIO[];
-	midiControlChangeOutputs?: MidiCCIO[];
-	midiControlChangeInputs?: MidiCCIO[];
-	audioInputBuffers?: {
-		moduleId: string;
-		memoryId: string;
-		channel: number;
-		input: number;
-	}[];
-	audioOutputBuffers?: {
-		moduleId: string;
-		memoryId: string;
-		channel: number;
-		output: number;
-	}[];
 }
 
 export interface ExampleModule {

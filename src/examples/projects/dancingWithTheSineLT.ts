@@ -434,7 +434,10 @@ const project: Project = {
 		},
 	],
 	viewport: { x: -71, y: -23 },
-	sampleRate: 50,
+	runtime: {
+		sampleRate: 50,
+		runtime: 'WebWorkerLogicRuntime',
+	},
 };
 
 export default project;

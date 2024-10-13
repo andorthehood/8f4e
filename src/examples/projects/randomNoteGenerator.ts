@@ -1102,7 +1102,10 @@ const project: Project = {
 		},
 	],
 	viewport: { x: -17, y: -11 },
-	sampleRate: 50,
+	runtime: {
+		runtime: 'WebWorkerMidiRuntime',
+		sampleRate: 50,
+	},
 };
 
 export default project;
