@@ -114,15 +114,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			});
 		});
 		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
-
-		events.dispatch('destroyRuntimes');
-
-		if (state.project.runtimeSettings[state.project.selectedRuntime].sampleRate <= 1000) {
-			events.dispatch('initRuntime:WebWorker');
-		} else {
-			events.dispatch('initRuntime:AudioWorklet');
-		}
-
 		events.dispatch('init');
 		events.dispatch('saveState');
 	}
