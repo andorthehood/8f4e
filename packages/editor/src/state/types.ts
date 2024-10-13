@@ -294,13 +294,16 @@ export interface WebWorkerMIDIRuntime {
 	midiControlChangeInputs?: MidiCCIO[];
 }
 
+export type Runtimes = WebWorkerLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
+
 export interface Project {
 	title: string;
 	author: string;
 	description: string;
 	codeBlocks: CodeBlock[];
 	viewport: Viewport;
-	runtime: WebWorkerLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
+	selectedRuntime: number;
+	runtimeSettings: Runtimes[];
 	binaryAssets?: BinaryAsset[];
 }
 
