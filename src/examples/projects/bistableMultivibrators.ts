@@ -297,7 +297,10 @@ const project: Project = {
 		},
 	],
 	viewport: { x: 45, y: 7 },
-	sampleRate: 50,
+	runtime: {
+		sampleRate: 50,
+		runtime: 'WebWorkerLogicRuntime',
+	},
 };
 
 export default project;

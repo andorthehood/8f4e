@@ -1,14 +1,15 @@
-import workletBlobUrl from 'worklet:../../../../audio-worklet/dist/index.js';
+// @ts-expect-error
+import workletBlobUrl from 'worklet:../../../../../audio-worklet/dist/index.js';
 
-import { State } from '../types';
-import { EventDispatcher } from '../../events';
+import { State } from '../../types';
+import { EventDispatcher } from '../../../events';
 
 export default async function worklet(state: State, events: EventDispatcher) {
 	let audioContext: AudioContext | null = null;
 	let audioWorklet: AudioWorkletNode | null = null;
 
 	function onInitRuntime() {
-		const audioOutputBuffers = (state.project.audioOutputBuffers || [])
+		const audioOutputBuffers = (state.project.runtime.audioOutputBuffers || [])
 			.map(({ moduleId, memoryId, output, channel }) => {
 				const audioModule = state.compiler.compiledModules.get(moduleId);
 				const audioBufferWordAddress = audioModule?.memoryMap.get(memoryId)?.wordAlignedAddress;
@@ -48,7 +49,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 			return;
 		}
 
-		audioContext = new AudioContext({ sampleRate: state.project.sampleRate, latencyHint: 'playback' });
+		audioContext = new AudioContext({ sampleRate: state.project.runtime.sampleRate, latencyHint: 'playback' });
 		await audioContext.audioWorklet.addModule(workletBlobUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
 			outputChannelCount: [2],
@@ -69,7 +70,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	events.on('initRuntime:AudioWorklet', onInitRuntime);
 	events.on('destroyRuntimes', onDestroyRuntimes);
 
-	if (state.project.audioOutputBuffers || state.project.audioInputBuffers) {
+	if (state.project.runtime.audioOutputBuffers || state.project.runtime.audioInputBuffers) {
 		events.on('mousedown', initAudioContext);
 	}
 }
