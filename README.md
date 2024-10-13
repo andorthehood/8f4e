@@ -6,7 +6,7 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 
 8f4e is a stack-oriented programming language with a semi-visual interface designed for making generative music on algorave events. One of its unique features is its representation of pointers using interconnected wires.
 
-## Other distinctive features:
+## Other distinctive features of the programming language:
 - The syntax and commands of 8f4e were inspired by assembly languages, but instead of the typical cryptic mnemonics like `cndjmp`, 8f4e uses more descriptive operation names such as `branchIfTrue`.
 - The code is organized into modules, each containing variable declarations and a sequence of commands.
 - It supports real-time manual modification of variable values while the program is running, without needing recompilation.
@@ -23,6 +23,8 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 
 ## Future plans:
 - To write a runtime for microcontrollers.
+- Unify the two browser runtimes for MIDI and Audio I/O.
+- To write a JavaScript runtime for debugging the stack.
 - Add collaborative editing features to the editor.
 - Optimize rendering by offloading certain tasks from JavaScript to shaders.
 - The compilation is already fast, but I want to re-write the compiler in Rust to make it even faster.
