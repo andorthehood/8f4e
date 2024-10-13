@@ -21,6 +21,14 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 - All constants are inlined build-time, they occupy space in the program memory.
 - It's Turing complete, but good luck implementing anything like trigonometric functions.
 
+## Runtimes
+
+There are currently two browser-based runtimes, both integrated into the development editor. These runtimes are designed to handle specific types of real-time data processing, such as MIDI events and audio signals.
+
+- **WebWorkerMIDIRuntime:** This runtime is for handling MIDI (Musical Instrument Digital Interface) events like note on/off and control change messages. The sample rate is limited to a maximum of 50Hz due to timing precision constraints in web browsers. It requires explicit permission from the user to access MIDI resources within the browser. Please note that this runtime is not supported in Safari and iOS mobile browsers due to Apple’s decision not to implement the Web MIDI API.
+
+- **AudioWorkletRuntime:**  This runtime is for handling audio signal processing, ideal for creating synthesizers, audio effects, or real-time audio analysis tools. It supports two standard sample rates: 22050Hz and 44100Hz. Please note that due to browser security policies, access to Audio I/O requires an explicit user action (such as a click or tap) to begin audio playback or processing.
+
 ## Future plans:
 - To write a runtime for microcontrollers.
 - Unify the two browser runtimes for MIDI and Audio I/O.
