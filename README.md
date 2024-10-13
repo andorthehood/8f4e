@@ -12,30 +12,34 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 - It supports real-time manual modification of variable values while the program is running, without needing recompilation.
 - Variables declared sequentially in the code are allocated in adjacent memory locations. For example, if `int foo` is at byte 256, then the next `int bar` will be at byte 260 (assuming a 4-byte word size).
 - Arrays are also stored in contiguous blocks, enabling straightforward and efficient iteration.
-- All variables in 8f4e are inherently public, with no option to modify visibility.
+- All variables in 8f4e are inherently public, with no option to modify visibility. Also, it's not memory safe, pointers can point to anything within the memory space of the program, but the wires help developers to find where their pointers are pointing.
 - Runtime memory allocation is not supported in 8f4e; developers must pre-plan their software's memory needs during the coding process.
 - The language utilizes C-style pointer notations and introduces a new notation: `array&` that retrieves the address of the last word in an array.
-- It's not memory safe, pointers can point to anything within the memory space of the program, but the wires help developers to find where their pointers are pointing.
 - The execution order of the code modules is determined by their dependencies. If a module's output is needed as input for others, it is executed first. This creates a sequential flow, where each module executes only after receiving the necessary data from a preceding module's output.
 - For performance reasons, 8f4e does not include transcendental functions in its standard library. Instead, it encourages the use of polynomial approximations for these functions.
-- All constants are inlined build-time, they occupy space in the program memory.
-- It's Turing complete, but good luck implementing anything like trigonometric functions.
 
 ## Runtimes
 
 There are currently two browser-based runtimes, both integrated into the development editor. These runtimes are designed to handle specific types of real-time data processing, such as MIDI events and audio signals.
 
-- **WebWorkerMIDIRuntime:** This runtime is for handling MIDI events, such as note on/off and control change messages. The sample rate is capped at 50Hz due to the current lack of an API for precise task scheduling in web browsers. It is built on the WebWorker API and leverages the built-in WebAssembly runtime available in most modern browsers. Please note that it requires explicit permission from the user to access MIDI resources within the browser. Also, this runtime is not supported in Safari and iOS mobile browsers due to Apple’s decision not to implement the Web MIDI API.
+- **WebWorkerMIDIRuntime:** This runtime is for handling MIDI events, such as note on/off and control change messages. It is built on the WebWorker API and the built-in WebAssembly runtime. Please note that the sample rate is capped at 50Hz, and it requires permission from the user to access MIDI resources within the browser. Also, this runtime is not supported in Safari and iOS mobile browsers.
 
-- **AudioWorkletRuntime:**  This runtime is for handling audio signal processing, ideal for creating synthesizers, audio effects, or real-time audio analysis tools. It supports two standard sample rates: 22050Hz and 44100Hz. It is based on the AudioWorklet API and the built-in WebAssembly runtime in browsers. Please note that due to browser security policies, access to Audio I/O requires an explicit user action (such as a click or tap) to begin audio playback or processing.
+- **AudioWorkletRuntime:**  This runtime is for handling audio signal processing, ideal for creating synthesizers, audio effects, or real-time audio analysis tools. It supports two standard sample rates: 22050Hz and 44100Hz. It is based on the AudioWorklet API and the built-in WebAssembly runtime in browsers. Please note that due to browser security policies, access to Audio I/O requires a user action (such as a click or tap) to begin audio playback or processing.
 
-## Future plans:
+## Future plans
+
 - To write a runtime for microcontrollers.
 - Unify the two browser runtimes for MIDI and Audio I/O.
 - To write a JavaScript-based runtime for debugging the stack.
 - Add collaborative editing features to the editor.
 - Optimize rendering by offloading certain tasks from JavaScript to shaders.
 - The compilation is already fast, but I want to re-write the compiler in Rust to make it even faster.
+
+## Challenges
+
+- The sample rate is capped at 50Hz in the `WebWorkerMIDIRuntim`e because, as of now, web browsers lack a precise task scheduling API.
+- The `WebWorkerMIDIRuntime` is not supported on Safari or iOS mobile browsers due to Apple’s refusal to implement the Web MIDI API.
+- Due to security and privacy concerns, browsers enforce strict controls over audio and MIDI resource access, therefore explicit user interaction or permission is required to use the `WebWorkerMIDIRuntime` and `AudioWorkletRuntime` browser runtimes. 
 
 ## Instructions
 
