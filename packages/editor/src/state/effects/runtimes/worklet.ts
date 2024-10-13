@@ -9,6 +9,10 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	let audioWorklet: AudioWorkletNode | null = null;
 
 	function onInitRuntime() {
+		if (state.project.runtime.runtime !== 'AudioWorkletRuntime') {
+			return;
+		}
+
 		const audioOutputBuffers = (state.project.runtime.audioOutputBuffers || [])
 			.map(({ moduleId, memoryId, output, channel }) => {
 				const audioModule = state.compiler.compiledModules.get(moduleId);
@@ -45,7 +49,7 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	}
 
 	async function initAudioContext() {
-		if (audioContext || state.runtime.runner !== 'audioWorklet') {
+		if (audioContext || state.project.runtime.runtime !== 'AudioWorkletRuntime') {
 			return;
 		}
 
@@ -70,7 +74,10 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	events.on('initRuntime:AudioWorklet', onInitRuntime);
 	events.on('destroyRuntimes', onDestroyRuntimes);
 
-	if (state.project.runtime.audioOutputBuffers || state.project.runtime.audioInputBuffers) {
+	if (
+		state.project.runtime.runtime === 'AudioWorkletRuntime' &&
+		(state.project.runtime.audioOutputBuffers || state.project.runtime.audioInputBuffers)
+	) {
 		events.on('mousedown', initAudioContext);
 	}
 }
