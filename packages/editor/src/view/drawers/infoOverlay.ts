@@ -42,19 +42,21 @@ export default function drawInfoOverlay(
 	}
 
 	// Runtime info
-	debugText.push('Runtime: ' + state.project.runtime.runtime);
-	debugText.push('Sample rate: ' + state.project.runtime.sampleRate);
+	const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
 
-	if (state.project.runtime.runtime === 'AudioWorkletRuntime' && state.project.runtime.audioInputBuffers) {
-		state.project.runtime.audioInputBuffers.forEach(({ moduleId, memoryId, channel, input }) => {
+	debugText.push('Runtime: ' + runtime.runtime);
+	debugText.push('Sample rate: ' + runtime.sampleRate);
+
+	if (runtime.runtime === 'AudioWorkletRuntime' && runtime.audioInputBuffers) {
+		runtime.audioInputBuffers.forEach(({ moduleId, memoryId, channel, input }) => {
 			debugText.push(
 				'- Audio Input ' + input + ': Channel: ' + channel + ' Module: ' + moduleId + ' Buffer: ' + memoryId
 			);
 		});
 	}
 
-	if (state.project.runtime.runtime === 'AudioWorkletRuntime' && state.project.runtime.audioOutputBuffers) {
-		state.project.runtime.audioOutputBuffers.forEach(({ moduleId, memoryId, channel, output }) => {
+	if (runtime.runtime === 'AudioWorkletRuntime' && runtime.audioOutputBuffers) {
+		runtime.audioOutputBuffers.forEach(({ moduleId, memoryId, channel, output }) => {
 			debugText.push(
 				'- Audio Output ' + output + ': Channel: ' + channel + ' Module: ' + moduleId + ' Buffer: ' + memoryId
 			);
