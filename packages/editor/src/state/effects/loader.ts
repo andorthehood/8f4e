@@ -59,8 +59,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			runtime: {
 				runtime: 'WebWorkerLogicRuntime',
 				sampleRate: 50,
-				audioInputBuffers: [],
-				audioOutputBuffers: [],
 			},
 			binaryAssets: [],
 		};
@@ -113,7 +111,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			});
 		});
 		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
-		state.runtime.runner = state.project.runtime.sampleRate <= 1000 ? 'webWorker' : 'audioWorklet';
 
 		events.dispatch('destroyRuntimes');
 
