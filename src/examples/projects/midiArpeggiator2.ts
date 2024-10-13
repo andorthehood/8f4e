@@ -612,10 +612,13 @@ const midiArpeggiator2: Project = {
 		},
 	],
 	viewport: { x: -90, y: -12 },
-	runtime: {
-		runtime: 'WebWorkerMIDIRuntime',
-		sampleRate: 50,
-	},
+	selectedRuntime: 0,
+	runtimeSettings: [
+		{
+			runtime: 'WebWorkerMIDIRuntime',
+			sampleRate: 50,
+		},
+	],
 };
 
 export default midiArpeggiator2;

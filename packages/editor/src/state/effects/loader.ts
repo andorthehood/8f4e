@@ -56,10 +56,13 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				x: 0,
 				y: 0,
 			},
-			runtime: {
-				runtime: 'WebWorkerLogicRuntime',
-				sampleRate: 50,
-			},
+			selectedRuntime: 0,
+			runtimeSettings: [
+				{
+					runtime: 'WebWorkerLogicRuntime',
+					sampleRate: 50,
+				},
+			],
 			binaryAssets: [],
 		};
 
@@ -114,7 +117,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 		events.dispatch('destroyRuntimes');
 
-		if (state.project.runtime.sampleRate <= 1000) {
+		if (state.project.runtimeSettings[state.project.selectedRuntime].sampleRate <= 1000) {
 			events.dispatch('initRuntime:WebWorker');
 		} else {
 			events.dispatch('initRuntime:AudioWorklet');

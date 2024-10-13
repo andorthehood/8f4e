@@ -207,10 +207,13 @@ const project: Project = {
 		{ code: ['module switches', '', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'], x: 81, y: -68, isOpen: true },
 	],
 	viewport: { x: 73, y: -83 },
-	runtime: {
-		sampleRate: 50,
-		runtime: 'WebWorkerLogicRuntime',
-	},
+	selectedRuntime: 0,
+	runtimeSettings: [
+		{
+			sampleRate: 50,
+			runtime: 'WebWorkerLogicRuntime',
+		},
+	],
 };
 
 export default project;

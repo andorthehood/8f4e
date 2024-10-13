@@ -30,7 +30,7 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 			type: 'init',
 			payload: {
 				memoryRef: state.compiler.memoryRef,
-				sampleRate: state.project.runtime.sampleRate,
+				sampleRate: state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
 				codeBuffer: state.compiler.codeBuffer,
 				compiledModules: state.compiler.compiledModules,
 			},
@@ -79,13 +79,15 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 		}
 	}
 
+	const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
+
 	// Only init midi when the project has midi inputs or outputs.
 	if (
-		state.project.runtime.runtime === 'WebWorkerMIDIRuntime' &&
-		(state.project.runtime.midiControlChangeInputs ||
-			state.project.runtime.midiNoteInputs ||
-			state.project.runtime.midiControlChangeOutputs ||
-			state.project.runtime.midiNoteOutputs)
+		runtime.runtime === 'WebWorkerMIDIRuntime' &&
+		(runtime.midiControlChangeInputs ||
+			runtime.midiNoteInputs ||
+			runtime.midiControlChangeOutputs ||
+			runtime.midiNoteOutputs)
 	) {
 		navigator.requestMIDIAccess().then(onMidiAccess);
 	}

@@ -49,7 +49,10 @@ export default async function compiler(state: State, events: EventDispatcher) {
 						...state.compiler.compilerOptions.environmentExtensions,
 						constants: {
 							...state.compiler.compilerOptions.environmentExtensions.constants,
-							SAMPLE_RATE: { value: state.project.runtime.sampleRate, isInteger: true },
+							SAMPLE_RATE: {
+								value: state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
+								isInteger: true,
+							},
 							AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
 							LEFT_CHANNEL: { value: 0, isInteger: true },
 							RIGHT_CHANNEL: { value: 1, isInteger: true },
@@ -95,7 +98,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 					}
 				});
 
-				if (state.project.runtime.sampleRate <= 1000) {
+				if (state.project.runtimeSettings[state.project.selectedRuntime].sampleRate <= 1000) {
 					events.dispatch('initRuntime:WebWorker');
 				} else {
 					events.dispatch('initRuntime:AudioWorklet');

@@ -3,7 +3,7 @@ import { State } from '../types';
 
 export default async function sampleRate(state: State, events: EventDispatcher): Promise<void> {
 	function onSetSampleRate({ sampleRate }) {
-		state.project.runtime.sampleRate = sampleRate;
+		state.project.runtimeSettings[state.project.selectedRuntime].sampleRate = sampleRate;
 		events.dispatch('initRuntime');
 		events.dispatch('saveState');
 	}
