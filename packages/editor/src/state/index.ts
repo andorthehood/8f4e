@@ -10,14 +10,13 @@ import contextMenu from './effects/menu/contextMenu';
 import font from './effects/font';
 import graphicHelper from './effects/codeBlocks/graphicHelper';
 import loader from './effects/loader';
-import midi from './effects/runtimes/midi';
 import nestedCodeBlocksOpener from './effects/codeBlocks/nestedCodeBlocksOpener';
 import pianoKeyboard from './effects/codeBlocks/extras/pianoKeyboard/interaction';
 import sampleRate from './effects/sampleRate';
 import save from './effects/save';
 import viewport from './effects/viewport';
-import worklet from './effects/runtimes/worklet';
 import binaryAsset from './effects/binaryAssets';
+import runtime from './effects/runtime';
 
 import { EventDispatcher } from '../events';
 
@@ -158,8 +157,7 @@ defaultState.graphicHelper.baseCodeBlock.parent = defaultState.graphicHelper.bas
 
 export default function init(events: EventDispatcher, project: Project, options: Partial<Options>): State {
 	const state = { ...defaultState, project, options: { ...defaultState.options, ...options } };
-	midi(state, events);
-	worklet(state, events);
+	runtime(state, events);
 	sampleRate(state, events);
 	loader(state, events, defaultState);
 	codeBlockDragger(state, events);
