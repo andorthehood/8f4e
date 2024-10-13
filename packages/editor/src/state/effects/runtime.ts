@@ -1,5 +1,5 @@
-import audioWorkletRuntime from './runtimes/worklet';
-import webWorkerMIDIRuntime from './runtimes/midi';
+import audioWorkletRuntime from './runtimes/audioWorkletRuntime';
+import webWorkerMIDIRuntime from './runtimes/webWorkerMIDIRuntime';
 
 import { EventDispatcher } from '../../events';
 import { State, WebWorkerLogicRuntime, AudioWorkletRuntime, WebWorkerMIDIRuntime } from '../types';
