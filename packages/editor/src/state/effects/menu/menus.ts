@@ -150,6 +150,7 @@ export const sampleRateMenu: MenuGenerator = () => [
 
 export const projectSettingsMenu: MenuGenerator = () => [
 	{ title: 'Set Sample Rate', action: 'openSubMenu', payload: { menu: 'sampleRateMenu' }, close: false },
+	{ title: 'Configure Audio I/O', action: 'openSubMenu', payload: { menu: 'configureAudioIO' }, close: false },
 ];
 
 export const editorSettingsMenu: MenuGenerator = () => [
