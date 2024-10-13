@@ -1,5 +1,5 @@
 // @ts-expect-error
-import workletBlobUrl from 'worklet:../../../../../audio-worklet/dist/index.js';
+import workletBlobUrl from 'worklet:../../../../../audio-worklet-runtime/dist/index.js';
 
 import { State } from '../../types';
 import { EventDispatcher } from '../../../events';

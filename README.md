@@ -31,8 +31,9 @@ There are currently two browser-based runtimes, both integrated into the develop
 - To write a runtime for microcontrollers.
 - Unify the two browser runtimes for MIDI and Audio I/O.
 - To write a JavaScript-based runtime for debugging the stack.
+- To write a headless runtime in C++ for the ARM architecture using ALSA for audio playback.  
 - Add collaborative editing features to the editor.
-- Optimize rendering by offloading certain tasks from JavaScript to shaders.
+- Optimize rendering in the editor by offloading certain tasks from JavaScript to shaders.
 - The compilation is already fast, but I want to re-write the compiler in Rust to make it even faster.
 
 ## Challenges
