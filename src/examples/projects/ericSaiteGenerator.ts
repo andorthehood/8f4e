@@ -557,7 +557,7 @@ const ericSaiteGenerator: Project = {
 	],
 	viewport: { x: -241, y: -15 },
 	runtime: {
-		runtime: 'WebWorkerMidiRuntime',
+		runtime: 'WebWorkerMIDIRuntime',
 		sampleRate: 50,
 	},
 };
