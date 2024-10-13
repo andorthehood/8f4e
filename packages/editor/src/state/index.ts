@@ -131,10 +131,13 @@ const defaultState: State = {
 			x: 0,
 			y: 0,
 		},
-		runtime: {
-			sampleRate: 50,
-			runtime: 'WebWorkerLogicRuntime',
-		},
+		selectedRuntime: 0,
+		runtimeSettings: [
+			{
+				sampleRate: 50,
+				runtime: 'WebWorkerLogicRuntime',
+			},
+		],
 		binaryAssets: [],
 	},
 	options: {

@@ -9,11 +9,13 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	let audioWorklet: AudioWorkletNode | null = null;
 
 	function onInitRuntime() {
-		if (state.project.runtime.runtime !== 'AudioWorkletRuntime') {
+		const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
+
+		if (runtime.runtime !== 'AudioWorkletRuntime') {
 			return;
 		}
 
-		const audioOutputBuffers = (state.project.runtime.audioOutputBuffers || [])
+		const audioOutputBuffers = (runtime.audioOutputBuffers || [])
 			.map(({ moduleId, memoryId, output, channel }) => {
 				const audioModule = state.compiler.compiledModules.get(moduleId);
 				const audioBufferWordAddress = audioModule?.memoryMap.get(memoryId)?.wordAlignedAddress;
@@ -49,11 +51,13 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	}
 
 	async function initAudioContext() {
-		if (audioContext || state.project.runtime.runtime !== 'AudioWorkletRuntime') {
+		const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
+
+		if (audioContext || runtime.runtime !== 'AudioWorkletRuntime') {
 			return;
 		}
 
-		audioContext = new AudioContext({ sampleRate: state.project.runtime.sampleRate, latencyHint: 'playback' });
+		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'playback' });
 		await audioContext.audioWorklet.addModule(workletBlobUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
 			outputChannelCount: [2],
@@ -74,10 +78,9 @@ export default async function worklet(state: State, events: EventDispatcher) {
 	events.on('initRuntime:AudioWorklet', onInitRuntime);
 	events.on('destroyRuntimes', onDestroyRuntimes);
 
-	if (
-		state.project.runtime.runtime === 'AudioWorkletRuntime' &&
-		(state.project.runtime.audioOutputBuffers || state.project.runtime.audioInputBuffers)
-	) {
+	const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
+
+	if (runtime.runtime === 'AudioWorkletRuntime' && (runtime.audioOutputBuffers || runtime.audioInputBuffers)) {
 		events.on('mousedown', initAudioContext);
 	}
 }

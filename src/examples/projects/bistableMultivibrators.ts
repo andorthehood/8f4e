@@ -297,10 +297,13 @@ const project: Project = {
 		},
 	],
 	viewport: { x: 45, y: 7 },
-	runtime: {
-		sampleRate: 50,
-		runtime: 'WebWorkerLogicRuntime',
-	},
+	selectedRuntime: 0,
+	runtimeSettings: [
+		{
+			sampleRate: 50,
+			runtime: 'WebWorkerLogicRuntime',
+		},
+	],
 };
 
 export default project;
