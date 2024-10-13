@@ -45,7 +45,7 @@ export default function drawInfoOverlay(
 	debugText.push('Runtime: ' + state.project.runtime.runtime);
 	debugText.push('Sample rate: ' + state.project.runtime.sampleRate);
 
-	if (state.project.runtime.audioInputBuffers) {
+	if (state.project.runtime.runtime === 'AudioWorkletRuntime' && state.project.runtime.audioInputBuffers) {
 		state.project.runtime.audioInputBuffers.forEach(({ moduleId, memoryId, channel, input }) => {
 			debugText.push(
 				'- Audio Input ' + input + ': Channel: ' + channel + ' Module: ' + moduleId + ' Buffer: ' + memoryId
@@ -53,7 +53,7 @@ export default function drawInfoOverlay(
 		});
 	}
 
-	if (state.project.runtime.audioOutputBuffers) {
+	if (state.project.runtime.runtime === 'AudioWorkletRuntime' && state.project.runtime.audioOutputBuffers) {
 		state.project.runtime.audioOutputBuffers.forEach(({ moduleId, memoryId, channel, output }) => {
 			debugText.push(
 				'- Audio Output ' + output + ': Channel: ' + channel + ' Module: ' + moduleId + ' Buffer: ' + memoryId

@@ -62,12 +62,6 @@ export interface BuildError {
 	moduleId: string;
 }
 
-export interface Runtime {
-	runner: 'audioWorklet' | 'webWorker';
-	latency: number;
-	renderQuantum: number;
-}
-
 export interface Compiler {
 	codeBuffer: Uint8Array;
 	compilationTime: number;
@@ -269,7 +263,36 @@ interface MidiCCIO {
 	valueMemoryId?: string;
 }
 
-type Runtimes = 'WebWorkerLogicRuntime' | 'AudioWorkletRuntime' | 'WebWorkerMidiRuntime';
+export interface WebWorkerLogicRuntime {
+	runtime: 'WebWorkerLogicRuntime';
+	sampleRate: number;
+}
+
+export interface AudioWorkletRuntime {
+	runtime: 'AudioWorkletRuntime';
+	sampleRate: number;
+	audioInputBuffers?: {
+		moduleId: string;
+		memoryId: string;
+		channel: number;
+		input: number;
+	}[];
+	audioOutputBuffers?: {
+		moduleId: string;
+		memoryId: string;
+		channel: number;
+		output: number;
+	}[];
+}
+
+export interface WebWorkerMidiRuntime {
+	runtime: 'WebWorkerMidiRuntime';
+	sampleRate: number;
+	midiNoteOutputs?: MidiNoteIO[];
+	midiNoteInputs?: MidiNoteIO[];
+	midiControlChangeOutputs?: MidiCCIO[];
+	midiControlChangeInputs?: MidiCCIO[];
+}
 
 export interface Project {
 	title: string;
@@ -277,26 +300,7 @@ export interface Project {
 	description: string;
 	codeBlocks: CodeBlock[];
 	viewport: Viewport;
-	runtime: {
-		runtime: Runtimes;
-		sampleRate: number;
-		midiNoteOutputs?: MidiNoteIO[];
-		midiNoteInputs?: MidiNoteIO[];
-		midiControlChangeOutputs?: MidiCCIO[];
-		midiControlChangeInputs?: MidiCCIO[];
-		audioInputBuffers?: {
-			moduleId: string;
-			memoryId: string;
-			channel: number;
-			input: number;
-		}[];
-		audioOutputBuffers?: {
-			moduleId: string;
-			memoryId: string;
-			channel: number;
-			output: number;
-		}[];
-	};
+	runtime: WebWorkerLogicRuntime | AudioWorkletRuntime | WebWorkerMidiRuntime;
 	binaryAssets?: BinaryAsset[];
 }
 
@@ -323,7 +327,6 @@ export interface EditorSettings {
 
 export interface State {
 	compiler: Compiler;
-	runtime: Runtime;
 	midi: Midi;
 	graphicHelper: GraphicHelper;
 	project: Project;
