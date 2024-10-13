@@ -613,7 +613,7 @@ const midiArpeggiator2: Project = {
 	],
 	viewport: { x: -90, y: -12 },
 	runtime: {
-		runtime: 'WebWorkerMidiRuntime',
+		runtime: 'WebWorkerMIDIRuntime',
 		sampleRate: 50,
 	},
 };
