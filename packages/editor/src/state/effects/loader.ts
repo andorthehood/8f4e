@@ -56,10 +56,13 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				x: 0,
 				y: 0,
 			},
-			sampleRate: 44100,
+			runtime: {
+				runtime: 'WebWorkerLogicRuntime',
+				sampleRate: 50,
+				audioInputBuffers: [],
+				audioOutputBuffers: [],
+			},
 			binaryAssets: [],
-			audioInputBuffers: [],
-			audioOutputBuffers: [],
 		};
 
 		Object.keys(newProject).forEach(key => {
@@ -110,11 +113,11 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			});
 		});
 		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
-		state.runtime.runner = state.project.sampleRate <= 1000 ? 'webWorker' : 'audioWorklet';
+		state.runtime.runner = state.project.runtime.sampleRate <= 1000 ? 'webWorker' : 'audioWorklet';
 
 		events.dispatch('destroyRuntimes');
 
-		if (state.project.sampleRate <= 1000) {
+		if (state.project.runtime.sampleRate <= 1000) {
 			events.dispatch('initRuntime:WebWorker');
 		} else {
 			events.dispatch('initRuntime:AudioWorklet');
