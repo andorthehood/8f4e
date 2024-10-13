@@ -17,8 +17,8 @@
 		"@8f4e/compiler": "file:packages/compiler",
 		"@8f4e/sprite-generator": "file:packages/sprite-generator",
 		"@8f4e/compiler-worker": "file:packages/compiler-worker",
-		"@8f4e/midi-worker": "file:packages/midi-worker",
-		"@8f4e/audio-worklet": "file:packages/audio-worklet",
+		"@8f4e/web-worker-midi-runtime": "file:packages/web-worker-midi-runtime",
+		"@8f4e/audio-worklet-runtime": "file:packages/audio-worklet-runtime",
 		"buffer": "5.7.1"
 	}
 }

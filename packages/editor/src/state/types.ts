@@ -285,8 +285,8 @@ export interface AudioWorkletRuntime {
 	}[];
 }
 
-export interface WebWorkerMidiRuntime {
-	runtime: 'WebWorkerMidiRuntime';
+export interface WebWorkerMIDIRuntime {
+	runtime: 'WebWorkerMIDIRuntime';
 	sampleRate: number;
 	midiNoteOutputs?: MidiNoteIO[];
 	midiNoteInputs?: MidiNoteIO[];
@@ -300,7 +300,7 @@ export interface Project {
 	description: string;
 	codeBlocks: CodeBlock[];
 	viewport: Viewport;
-	runtime: WebWorkerLogicRuntime | AudioWorkletRuntime | WebWorkerMidiRuntime;
+	runtime: WebWorkerLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
 	binaryAssets?: BinaryAsset[];
 }
 
