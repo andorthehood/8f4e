@@ -84,11 +84,14 @@ const project: Project = {
 		},
 	],
 	viewport: { x: 0, y: 0 },
-	runtime: {
-		sampleRate: 44100,
-		runtime: 'AudioWorkletRuntime',
-		audioOutputBuffers: [{ moduleId: 'audioout', memoryId: 'buffer', channel: 0, output: 0 }],
-	},
+	selectedRuntime: 0,
+	runtimeSettings: [
+		{
+			sampleRate: 44100,
+			runtime: 'AudioWorkletRuntime',
+			audioOutputBuffers: [{ moduleId: 'audioout', memoryId: 'buffer', channel: 0, output: 0 }],
+		},
+	],
 };
 
 export default project;

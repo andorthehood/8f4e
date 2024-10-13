@@ -28,6 +28,7 @@ There are currently two browser-based runtimes, both integrated into the develop
 
 ## Future plans
 
+- To add an init block to the modules, for code that only has to be executed once at the initialisation stage.
 - To write a runtime for microcontrollers.
 - Unify the two browser runtimes for MIDI and Audio I/O.
 - To write a JavaScript-based runtime for debugging the stack.
