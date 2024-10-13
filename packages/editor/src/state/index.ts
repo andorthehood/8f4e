@@ -48,11 +48,6 @@ const defaultState: State = {
 			},
 		},
 	},
-	runtime: {
-		runner: 'webWorker',
-		latency: 0,
-		renderQuantum: 120,
-	},
 	midi: {
 		inputs: [],
 		outputs: [],
@@ -139,8 +134,6 @@ const defaultState: State = {
 		runtime: {
 			sampleRate: 50,
 			runtime: 'WebWorkerLogicRuntime',
-			audioInputBuffers: [],
-			audioOutputBuffers: [],
 		},
 		binaryAssets: [],
 	},
