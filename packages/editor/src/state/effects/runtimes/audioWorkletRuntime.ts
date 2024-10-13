@@ -4,14 +4,14 @@ import workletBlobUrl from 'worklet:../../../../../audio-worklet-runtime/dist/in
 import { State } from '../../types';
 import { EventDispatcher } from '../../../events';
 
-export default async function worklet(state: State, events: EventDispatcher) {
+export default function audioWorkletRuntime(state: State, events: EventDispatcher) {
 	let audioContext: AudioContext | null = null;
 	let audioWorklet: AudioWorkletNode | null = null;
 
-	function onInitRuntime() {
+	function syncCodeAndSettingsWithRuntime() {
 		const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
 
-		if (runtime.runtime !== 'AudioWorkletRuntime') {
+		if (runtime.runtime !== 'AudioWorkletRuntime' || !audioWorklet || !audioContext) {
 			return;
 		}
 
@@ -38,18 +38,6 @@ export default async function worklet(state: State, events: EventDispatcher) {
 		}
 	}
 
-	function onDestroyRuntimes() {
-		if (audioWorklet) {
-			audioWorklet.disconnect();
-			audioWorklet = null;
-		}
-
-		if (audioContext) {
-			audioContext.close();
-			audioContext = null;
-		}
-	}
-
 	async function initAudioContext() {
 		const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
 
@@ -72,15 +60,24 @@ export default async function worklet(state: State, events: EventDispatcher) {
 			}
 		};
 		audioWorklet.connect(audioContext.destination);
-		onInitRuntime();
+
+		syncCodeAndSettingsWithRuntime();
 	}
 
-	events.on('initRuntime:AudioWorklet', onInitRuntime);
-	events.on('destroyRuntimes', onDestroyRuntimes);
+	events.on('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+	events.on('mousedown', initAudioContext);
 
-	const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
+	return () => {
+		events.off('mousedown', initAudioContext);
 
-	if (runtime.runtime === 'AudioWorkletRuntime' && (runtime.audioOutputBuffers || runtime.audioInputBuffers)) {
-		events.on('mousedown', initAudioContext);
-	}
+		if (audioWorklet) {
+			audioWorklet.disconnect();
+			audioWorklet = null;
+		}
+
+		if (audioContext) {
+			audioContext.close();
+			audioContext = null;
+		}
+	};
 }
