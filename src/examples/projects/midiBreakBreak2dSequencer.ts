@@ -720,7 +720,7 @@ const project: Project = {
 	viewport: { x: 24, y: -10 },
 	runtime: {
 		sampleRate: 50,
-		runtime: 'WebWorkerMidiRuntime',
+		runtime: 'WebWorkerMIDIRuntime',
 	},
 };
 
