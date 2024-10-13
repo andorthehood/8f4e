@@ -532,7 +532,10 @@ const midiArpeggiator: Project = {
 		},
 	],
 	viewport: { x: -47, y: -25 },
-	sampleRate: 50,
+	runtime: {
+		sampleRate: 50,
+		runtime: 'WebWorkerMidiRuntime',
+	},
 };
 
 export default midiArpeggiator;
