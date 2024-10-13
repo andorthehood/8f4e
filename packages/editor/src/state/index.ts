@@ -10,13 +10,13 @@ import contextMenu from './effects/menu/contextMenu';
 import font from './effects/font';
 import graphicHelper from './effects/codeBlocks/graphicHelper';
 import loader from './effects/loader';
-import midi from './effects/midi';
+import midi from './effects/runtimes/midi';
 import nestedCodeBlocksOpener from './effects/codeBlocks/nestedCodeBlocksOpener';
 import pianoKeyboard from './effects/codeBlocks/extras/pianoKeyboard/interaction';
 import sampleRate from './effects/sampleRate';
 import save from './effects/save';
 import viewport from './effects/viewport';
-import worklet from './effects/worklet';
+import worklet from './effects/runtimes/worklet';
 import binaryAsset from './effects/binaryAssets';
 
 import { EventDispatcher } from '../events';
@@ -136,10 +136,13 @@ const defaultState: State = {
 			x: 0,
 			y: 0,
 		},
-		sampleRate: 44100,
+		runtime: {
+			sampleRate: 50,
+			runtime: 'WebWorkerLogicRuntime',
+			audioInputBuffers: [],
+			audioOutputBuffers: [],
+		},
 		binaryAssets: [],
-		audioInputBuffers: [],
-		audioOutputBuffers: [],
 	},
 	options: {
 		isLocalStorageEnabled: true,

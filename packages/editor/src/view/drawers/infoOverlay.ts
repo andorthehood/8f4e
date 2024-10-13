@@ -41,7 +41,28 @@ export default function drawInfoOverlay(
 		debugText.push('');
 	}
 
-	debugText.push('Sample rate: ' + state.project.sampleRate);
+	// Runtime info
+	debugText.push('Runtime: ' + state.project.runtime.runtime);
+	debugText.push('Sample rate: ' + state.project.runtime.sampleRate);
+
+	if (state.project.runtime.audioInputBuffers) {
+		state.project.runtime.audioInputBuffers.forEach(({ moduleId, memoryId, channel, input }) => {
+			debugText.push(
+				'- Audio Input ' + input + ': Channel: ' + channel + ' Module: ' + moduleId + ' Buffer: ' + memoryId
+			);
+		});
+	}
+
+	if (state.project.runtime.audioOutputBuffers) {
+		state.project.runtime.audioOutputBuffers.forEach(({ moduleId, memoryId, channel, output }) => {
+			debugText.push(
+				'- Audio Output ' + output + ': Channel: ' + channel + ' Module: ' + moduleId + ' Buffer: ' + memoryId
+			);
+		});
+	}
+
+	// Graphic info
+	debugText.push('');
 	debugText.push('Vertex buffer: ' + Math.round((vertices / maxVertices) * 100) + '%');
 	debugText.push('Graphic load: ' + ((timeToRender / (1000 / 120)) * 100).toFixed(2) + '%');
 	debugText.push('Time to render one frame ' + timeToRender.toFixed(2) + 'ms');
@@ -49,6 +70,7 @@ export default function drawInfoOverlay(
 
 	debugText.push('');
 
+	// Compiler info
 	debugText.push(
 		'Compilation time ' +
 			state.compiler.compilationTime.toFixed(2) +

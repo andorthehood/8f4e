@@ -1,11 +1,11 @@
-import { EventDispatcher } from '../../events';
-import { State } from '../types';
+import { EventDispatcher } from '../../../events';
+import { State } from '../../types';
 
 export default async function midi(state: State, events: EventDispatcher): Promise<void> {
 	let selectedInput: MIDIInput;
 	let midiAccess: MIDIAccess;
 
-	const workerUrl = new URL('../../../../../packages/midi-worker/src/index.ts', import.meta.url);
+	const workerUrl = new URL('../../../../../../packages/midi-worker/src/index.ts', import.meta.url);
 
 	let worker: Worker | undefined;
 
@@ -30,7 +30,7 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 			type: 'init',
 			payload: {
 				memoryRef: state.compiler.memoryRef,
-				sampleRate: state.project.sampleRate,
+				sampleRate: state.project.runtime.sampleRate,
 				codeBuffer: state.compiler.codeBuffer,
 				compiledModules: state.compiler.compiledModules,
 			},
@@ -81,10 +81,10 @@ export default async function midi(state: State, events: EventDispatcher): Promi
 
 	// Only init midi when the project has midi inputs or outputs.
 	if (
-		state.project.midiControlChangeInputs ||
-		state.project.midiNoteInputs ||
-		state.project.midiControlChangeOutputs ||
-		state.project.midiNoteOutputs
+		state.project.runtime.midiControlChangeInputs ||
+		state.project.runtime.midiNoteInputs ||
+		state.project.runtime.midiControlChangeOutputs ||
+		state.project.runtime.midiNoteOutputs
 	) {
 		navigator.requestMIDIAccess().then(onMidiAccess);
 	}
