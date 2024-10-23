@@ -112,14 +112,19 @@ export interface StackItem {
 
 export type Stack = StackItem[];
 
+export enum BLOCK_TYPE {
+	MODULE,
+	LOOP,
+	CONDITION,
+	FUNCTION,
+	BLOCK,
+	INIT,
+}
+
 export type BlockStack = Array<{
 	expectedResultIsInteger: boolean;
 	hasExpectedResult: boolean;
-	isModuleBlock: boolean;
-	isGroupBlock: boolean;
-	isLoop: boolean;
-	isConditionBlock: boolean;
-	isFunctionBlock: boolean;
+	blockType: BLOCK_TYPE;
 }>;
 
 export type InstructionHandler = (

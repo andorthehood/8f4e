@@ -1,4 +1,4 @@
-import { ArgumentType, InstructionHandler } from '../types';
+import { ArgumentType, BLOCK_TYPE, InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
@@ -17,11 +17,7 @@ const block: InstructionHandler = function (line, context) {
 		context.blockStack.push({
 			expectedResultIsInteger: false,
 			hasExpectedResult: true,
-			isModuleBlock: false,
-			isGroupBlock: false,
-			isLoop: false,
-			isConditionBlock: false,
-			isFunctionBlock: false,
+			blockType: BLOCK_TYPE.BLOCK,
 		});
 		return { byteCode: [WASMInstruction.BLOCK, Type.F32], context };
 	}
@@ -30,11 +26,7 @@ const block: InstructionHandler = function (line, context) {
 		context.blockStack.push({
 			expectedResultIsInteger: true,
 			hasExpectedResult: true,
-			isModuleBlock: false,
-			isGroupBlock: false,
-			isLoop: false,
-			isConditionBlock: false,
-			isFunctionBlock: false,
+			blockType: BLOCK_TYPE.BLOCK,
 		});
 		return { byteCode: [WASMInstruction.BLOCK, Type.I32], context };
 	}
@@ -42,11 +34,7 @@ const block: InstructionHandler = function (line, context) {
 	context.blockStack.push({
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
-		isModuleBlock: false,
-		isGroupBlock: false,
-		isLoop: false,
-		isConditionBlock: false,
-		isFunctionBlock: false,
+		blockType: BLOCK_TYPE.BLOCK,
 	});
 
 	return { byteCode: [WASMInstruction.BLOCK, Type.VOID], context };
