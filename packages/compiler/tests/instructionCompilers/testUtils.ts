@@ -1,5 +1,5 @@
 import { Instruction } from '../../src/instructionCompilers';
-import { AST, CompilationContext } from '../../src/types';
+import { AST, BLOCK_TYPE, CompilationContext } from '../../src/types';
 
 export function createMockContext(): CompilationContext {
 	return {
@@ -15,11 +15,7 @@ export function createMockContext(): CompilationContext {
 			{
 				hasExpectedResult: false,
 				expectedResultIsInteger: false,
-				isModuleBlock: true,
-				isGroupBlock: false,
-				isLoop: false,
-				isConditionBlock: false,
-				isFunctionBlock: false,
+				blockType: BLOCK_TYPE.MODULE,
 			},
 		],
 		startingByteAddress: 0,
