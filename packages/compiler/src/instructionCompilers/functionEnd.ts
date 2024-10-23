@@ -1,5 +1,5 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { BLOCK_TYPE, InstructionHandler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
 
 const functionEnd: InstructionHandler = function (line, context) {
@@ -9,7 +9,7 @@ const functionEnd: InstructionHandler = function (line, context) {
 
 	const block = context.blockStack.pop();
 
-	if (!block || !block.isFunctionBlock) {
+	if (!block || block.blockType !== BLOCK_TYPE.FUNCTION) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 

@@ -105,33 +105,37 @@ export default async function testBuild(
 
 	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 
+	console.log('memoryStructureChange', memoryStructureChange);
+
 	if (!previousCompiledModules || memoryStructureChange) {
 		init();
+	} else {
+		const memoryBufferInt = new Int32Array(memoryRef.buffer);
+		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
+		const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
+
+		console.log('memoryValueChanges', memoryValueChanges);
+
+		memoryValueChanges.forEach(change => {
+			if (change.isInteger) {
+				if (change.value instanceof Map) {
+					change.value.forEach((item, index) => {
+						memoryBufferInt[change.wordAlignedAddress + index] = item;
+					});
+				} else {
+					memoryBufferInt[change.wordAlignedAddress] = change.value;
+				}
+			} else {
+				if (change.value instanceof Map) {
+					change.value.forEach((item, index) => {
+						memoryBufferFloat[change.wordAlignedAddress + index] = item;
+					});
+				} else {
+					memoryBufferFloat[change.wordAlignedAddress] = change.value;
+				}
+			}
+		});
 	}
-
-	const memoryBufferInt = new Int32Array(memoryRef.buffer);
-	const memoryBufferFloat = new Float32Array(memoryRef.buffer);
-	const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
-
-	memoryValueChanges.forEach(change => {
-		if (change.isInteger) {
-			if (change.value instanceof Map) {
-				change.value.forEach((item, index) => {
-					memoryBufferInt[change.wordAlignedAddress + index] = item;
-				});
-			} else {
-				memoryBufferInt[change.wordAlignedAddress] = change.value;
-			}
-		} else {
-			if (change.value instanceof Map) {
-				change.value.forEach((item, index) => {
-					memoryBufferFloat[change.wordAlignedAddress + index] = item;
-				});
-			} else {
-				memoryBufferFloat[change.wordAlignedAddress] = change.value;
-			}
-		}
-	});
 
 	previousCompiledModules = compiledModules;
 

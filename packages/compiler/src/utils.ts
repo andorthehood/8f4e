@@ -1,5 +1,5 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-import { BlockStack, MemoryMap, StackItem } from './types';
+import { BLOCK_TYPE, BlockStack, MemoryMap, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return memoryMap.has(name);
@@ -50,15 +50,11 @@ export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
 
 export function isInstructionIsInsideAModule(blockStack: BlockStack) {
 	for (let i = blockStack.length - 1; i >= 0; i--) {
-		if (blockStack[i].isModuleBlock) {
+		if (blockStack[i].blockType === BLOCK_TYPE.MODULE) {
 			return true;
 		}
 	}
 	return false;
-}
-
-export function isInstructionIsInsideAGroup(blockStack: BlockStack) {
-	return blockStack[blockStack.length - 1] && blockStack[blockStack.length - 1].isGroupBlock;
 }
 
 export function calculateWordAlignedSizeOfMemory(memory: MemoryMap): number {

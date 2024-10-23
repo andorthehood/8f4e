@@ -1,4 +1,4 @@
-import { ArgumentType, InstructionHandler } from '../types';
+import { ArgumentType, BLOCK_TYPE, InstructionHandler } from '../types';
 import { ErrorCode, getError } from '../errors';
 
 const _module: InstructionHandler = function (line, context) {
@@ -13,11 +13,7 @@ const _module: InstructionHandler = function (line, context) {
 	context.blockStack.push({
 		hasExpectedResult: false,
 		expectedResultIsInteger: false,
-		isModuleBlock: true,
-		isGroupBlock: false,
-		isLoop: false,
-		isConditionBlock: false,
-		isFunctionBlock: false,
+		blockType: BLOCK_TYPE.MODULE,
 	});
 
 	return {

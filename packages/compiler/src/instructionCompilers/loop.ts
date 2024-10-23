@@ -1,5 +1,5 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { BLOCK_TYPE, InstructionHandler } from '../types';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule } from '../utils';
@@ -13,11 +13,7 @@ const loop: InstructionHandler = function (line, context) {
 	context.blockStack.push({
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
-		isModuleBlock: false,
-		isGroupBlock: false,
-		isLoop: true,
-		isConditionBlock: false,
-		isFunctionBlock: false,
+		blockType: BLOCK_TYPE.LOOP,
 	});
 
 	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
