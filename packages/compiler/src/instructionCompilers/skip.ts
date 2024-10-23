@@ -1,4 +1,4 @@
-import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
+import { ArgumentType, BLOCK_TYPE, InstructionHandler, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
 import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
@@ -51,11 +51,7 @@ const skip: InstructionHandler = function (line, context) {
 	context.blockStack.push({
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
-		isModuleBlock: false,
-		isGroupBlock: false,
-		isLoop: false,
-		isConditionBlock: false,
-		isFunctionBlock: false,
+		blockType: BLOCK_TYPE.BLOCK,
 	});
 
 	return {
