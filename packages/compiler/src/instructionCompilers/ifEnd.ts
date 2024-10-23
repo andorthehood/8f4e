@@ -1,5 +1,5 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { BLOCK_TYPE, InstructionHandler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule } from '../utils';
 
@@ -10,7 +10,7 @@ const ifEnd: InstructionHandler = function (line, context) {
 
 	const block = context.blockStack.pop();
 
-	if (!block || !block.isConditionBlock) {
+	if (!block || block.blockType !== BLOCK_TYPE.CONDITION) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 
