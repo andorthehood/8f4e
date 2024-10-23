@@ -1,6 +1,6 @@
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
-import { InstructionHandler } from '../types';
+import { BLOCK_TYPE, InstructionHandler } from '../types';
 
 const _function: InstructionHandler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
@@ -8,11 +8,7 @@ const _function: InstructionHandler = function (line, context) {
 	}
 
 	context.blockStack.push({
-		isFunctionBlock: true,
-		isConditionBlock: false,
-		isGroupBlock: false,
-		isLoop: false,
-		isModuleBlock: false,
+		blockType: BLOCK_TYPE.FUNCTION,
 		expectedResultIsInteger: false,
 		hasExpectedResult: false,
 	});
