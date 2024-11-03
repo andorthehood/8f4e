@@ -77,7 +77,11 @@ function didProgramOrMemoryStructureChange(
 			return true;
 		}
 
-		if (compiledModule.functionBody.length !== previousModule.functionBody.length) {
+		if (compiledModule.loopFunctionBody.length !== previousModule.loopFunctionBody.length) {
+			return true;
+		}
+
+		if (compiledModule.initFunctionBody.length !== previousModule.initFunctionBody.length) {
 			return true;
 		}
 
@@ -111,8 +115,6 @@ export default async function testBuild(
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
 		const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
-
-		console.log('memoryValueChanges', memoryValueChanges);
 
 		memoryValueChanges.forEach(change => {
 			if (change.isInteger) {
