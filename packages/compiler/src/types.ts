@@ -32,7 +32,7 @@ export type MemoryMap = Map<string, DataStructure>;
 export interface CompiledModule {
 	index: number;
 	initFunctionBody: number[];
-	loopFunctionBody: number[];
+	loopFunction: number[];
 	id: string;
 	byteAddress: number;
 	wordAlignedAddress: number;

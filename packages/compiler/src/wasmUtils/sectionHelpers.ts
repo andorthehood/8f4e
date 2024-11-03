@@ -50,7 +50,7 @@ export function createCodeSection(functionBodies: FunctionBody[]): number[] {
 	const numberOfFunctions = functionBodies.length;
 	return [Section.CODE, ...createVector([...unsignedLEB128(numberOfFunctions), ...functionBodies.flat()])];
 }
-export function createFunctionBody(localDeclarations: LocalDeclaration[], functionBody: number[]): FunctionBody {
+export function createFunction(localDeclarations: LocalDeclaration[], functionBody: number[]): FunctionBody {
 	const localDeclarationCount = localDeclarations.length;
 	return createVector([
 		...unsignedLEB128(localDeclarationCount),
