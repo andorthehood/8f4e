@@ -1,9 +1,9 @@
-import { ArgumentType, InstructionHandler } from '../types';
+import { ArgumentType, InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
-import { parseSegment } from '../compiler';
+import { compileSegment } from '../compiler';
 
-const branchIfUnchanged: InstructionHandler = function (line, context) {
+const branchIfUnchanged: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -29,7 +29,7 @@ const branchIfUnchanged: InstructionHandler = function (line, context) {
 	const previousValueMemoryName = '__branchIfUnchanged_previousValue' + line.lineNumber;
 	const currentValueMemoryName = '__branchIfUnchanged_currentValue' + line.lineNumber;
 
-	return parseSegment(
+	return compileSegment(
 		[
 			`${type} ${previousValueMemoryName} 0`,
 			`local ${type} ${currentValueMemoryName}`,

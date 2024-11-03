@@ -1,7 +1,7 @@
-import { ArgumentType, BLOCK_TYPE, InstructionHandler } from '../types';
+import { ArgumentType, BLOCK_TYPE, InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../errors';
 
-const _module: InstructionHandler = function (line, context) {
+const _module: InstructionCompiler = function (line, context) {
 	if (!line.arguments[0]) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 	}
@@ -16,10 +16,9 @@ const _module: InstructionHandler = function (line, context) {
 		blockType: BLOCK_TYPE.MODULE,
 	});
 
-	return {
-		byteCode: [],
-		context: { ...context, namespace: { ...context.namespace, moduleName: line.arguments[0].value } },
-	};
+	context.namespace.moduleName = line.arguments[0].value;
+
+	return context;
 };
 
 export default _module;

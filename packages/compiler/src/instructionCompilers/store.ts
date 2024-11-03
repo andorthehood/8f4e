@@ -1,10 +1,10 @@
 import { ErrorCode, getError } from '../errors';
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { f32store, i32store } from '../wasmUtils/instructionHelpers';
-import { InstructionHandler } from '../types';
-import { parseSegment } from '../compiler';
+import { InstructionCompiler } from '../types';
+import { compileSegment } from '../compiler';
 
-const store: InstructionHandler = function (line, context) {
+const store: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -21,7 +21,7 @@ const store: InstructionHandler = function (line, context) {
 	}
 
 	if (operand2Address.isSafeMemoryAddress) {
-		return { byteCode: operand1Value.isInteger ? i32store() : f32store(), context };
+		return saveByteCode(context, operand1Value.isInteger ? i32store() : f32store());
 	} else {
 		context.stack.push(operand2Address);
 		context.stack.push(operand1Value);
@@ -29,7 +29,7 @@ const store: InstructionHandler = function (line, context) {
 		const tempAddressVariableName = '__storeAddress_temp_' + line.lineNumber;
 		const tempValueVariableName = '__storeValue_temp_' + line.lineNumber;
 		// Memory overflow protection.
-		const ret = parseSegment(
+		const ret = compileSegment(
 			[
 				`local int ${tempAddressVariableName}`,
 				`local ${operand1Value.isInteger ? 'int' : 'float'} ${tempValueVariableName}`,

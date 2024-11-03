@@ -16,9 +16,9 @@ describe('abs', () => {
 	it('', () => {
 		context.stack.push({ isInteger: true });
 
-		const { byteCode } = istructions.abs(ast, context);
+		const { loopSegmentByteCode } = istructions.abs(ast, context);
 
-		expect(byteCode).toMatchSnapshot();
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(1);
 		expect(context.stack[0].isInteger).toBe(true);
 	});
@@ -26,9 +26,9 @@ describe('abs', () => {
 	it('', () => {
 		context.stack.push({ isInteger: false, isSafeMemoryAddress: false });
 
-		const { byteCode } = istructions.abs(ast, context);
+		const { loopSegmentByteCode } = istructions.abs(ast, context);
 
-		expect(byteCode).toMatchSnapshot();
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(1);
 		expect(context.stack[0].isInteger).toBe(false);
 	});

@@ -73,40 +73,18 @@ export function compileToAST(code: string[], options?: CompileOptions) {
 		});
 }
 
-export function compileLine(
-	line: AST[number],
-	context: CompilationContext
-): { byteCode: number[]; context: CompilationContext } {
+export function compileLine(line: AST[number], context: CompilationContext) {
 	if (!instructions[line.instruction]) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
-	return instructions[line.instruction](line, context);
+	instructions[line.instruction](line, context);
 }
 
-export function compileSegment(
-	lines: AST,
-	context: CompilationContext
-): { byteCode: number[]; context: CompilationContext } {
-	const byteCode = lines.reduce((acc, line) => {
-		const { byteCode, context: newContext } = compileLine(line, context);
-		context = newContext;
-		return [...acc, ...byteCode];
-	}, [] as number[]);
-
-	return {
-		byteCode,
-		context,
-	};
-}
-
-export function parseSegment(
-	lines: string[],
-	context: CompilationContext
-): {
-	byteCode: number[];
-	context: CompilationContext;
-} {
-	return compileSegment(compileToAST(lines), context);
+export function compileSegment(lines: string[], context: CompilationContext) {
+	compileToAST(lines).forEach(line => {
+		compileLine(line, context);
+	});
+	return context;
 }
 
 export function compileModule(
@@ -117,7 +95,7 @@ export function compileModule(
 	maxMemorySize: number,
 	index: number
 ): CompiledModule {
-	const { byteCode, context } = compileSegment(ast, {
+	const context: CompilationContext = {
 		namespace: {
 			namespaces,
 			memory: new Map(),
@@ -125,10 +103,16 @@ export function compileModule(
 			consts: { ...builtInConsts },
 			moduleName: undefined,
 		},
+		initSegmentByteCode: [],
+		loopSegmentByteCode: [],
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
 		memoryByteSize: maxMemorySize * WASM_MEMORY_PAGE_SIZE,
+	};
+
+	ast.forEach(line => {
+		compileLine(line, context);
 	});
 
 	if (!context.namespace.moduleName) {
@@ -149,7 +133,7 @@ export function compileModule(
 			Array.from(context.namespace.locals.values()).map(local => {
 				return createLocalDeclaration(local.isInteger ? Type.I32 : Type.F32, 1);
 			}),
-			byteCode
+			context.loopSegmentByteCode
 		),
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,

@@ -15,16 +15,16 @@ describe('loadFloat', () => {
 
 	it('', () => {
 		context.stack.push({ isInteger: true, isSafeMemoryAddress: true });
-		const { byteCode } = istructions.loadFloat(ast, context);
-		expect(byteCode).toMatchSnapshot();
+		const { loopSegmentByteCode } = istructions.loadFloat(ast, context);
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(1);
 		expect(context.stack[0].isInteger).toBe(false);
 	});
 
 	it('', () => {
 		context.stack.push({ isInteger: true, isSafeMemoryAddress: false });
-		const { byteCode } = istructions.loadFloat(ast, context);
-		expect(byteCode).toMatchSnapshot();
+		const { loopSegmentByteCode } = istructions.loadFloat(ast, context);
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack[0].isInteger).toBe(false);
 	});
 
