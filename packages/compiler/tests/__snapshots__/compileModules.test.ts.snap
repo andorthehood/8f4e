@@ -208,12 +208,8 @@ Array [
     "byteAddress": 0,
     "id": "abs",
     "index": 0,
-    "initFunctionBody": Array [
-      2,
-      0,
-      11,
-    ],
-    "loopFunctionBody": Array [
+    "initFunctionBody": Array [],
+    "loopFunction": Array [
       32,
       1,
       1,
