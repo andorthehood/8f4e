@@ -1,7 +1,7 @@
 import modules from './__fixtures__/modules';
 
 import { compileToAST } from '../src/compiler';
-import { compileModules, generateMemoryInitiatorFunction } from '../src';
+import { compileModules, generateMemoryInitiatorFunctions } from '../src';
 
 describe('compiler', () => {
 	test('generateMemoryInitiatorFunction', () => {
@@ -12,6 +12,6 @@ describe('compiler', () => {
 			maxMemorySize: 1,
 			initialMemorySize: 1,
 		});
-		expect(generateMemoryInitiatorFunction(compiledModules)).toMatchSnapshot();
+		expect(generateMemoryInitiatorFunctions(compiledModules)).toMatchSnapshot();
 	});
 });
