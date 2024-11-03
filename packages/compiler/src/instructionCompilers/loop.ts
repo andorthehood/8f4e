@@ -1,11 +1,11 @@
 import { ErrorCode, getError } from '../errors';
-import { BLOCK_TYPE, InstructionHandler } from '../types';
+import { BLOCK_TYPE, InstructionCompiler } from '../types';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule } from '../utils';
-import { parseSegment } from '../compiler';
+import { compileSegment } from '../compiler';
 
-const loop: InstructionHandler = function (line, context) {
+const loop: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -19,7 +19,7 @@ const loop: InstructionHandler = function (line, context) {
 	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
 	const loopErrorSignalerName = '__loopErrorSignaler';
 
-	return parseSegment(
+	return compileSegment(
 		[
 			`local int ${infiniteLoopProtectionCounterName}`,
 			context.namespace.memory.has(loopErrorSignalerName) ? '' : `int ${loopErrorSignalerName} -1`,

@@ -1,9 +1,9 @@
-import { ArgumentType, InstructionHandler } from '../types';
+import { ArgumentType, InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br_if } from '../wasmUtils/instructionHelpers';
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 
-const branchIfTrue: InstructionHandler = function (line, context) {
+const branchIfTrue: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -26,7 +26,7 @@ const branchIfTrue: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
 	}
 
-	return { byteCode: br_if(line.arguments[0].value), context };
+	return saveByteCode(context, br_if(line.arguments[0].value));
 };
 
 export default branchIfTrue;

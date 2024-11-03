@@ -1,15 +1,14 @@
-import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
+import { ArgumentType, InstructionCompiler, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
-const memory: InstructionHandler = function (line, context) {
+const memory: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
-	const memory = new Map(context.namespace.memory);
-	const wordAlignedAddress = calculateWordAlignedSizeOfMemory(memory);
+	const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 
 	if (!line.arguments[0]) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
@@ -29,7 +28,7 @@ const memory: InstructionHandler = function (line, context) {
 		// Do nothing
 		// Intermodular references are resolved later
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
-		const memoryItem = memory.get(line.arguments[1].value.substring(1));
+		const memoryItem = context.namespace.memory.get(line.arguments[1].value.substring(1));
 
 		if (!memoryItem) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
@@ -37,7 +36,7 @@ const memory: InstructionHandler = function (line, context) {
 
 		defaultValue = memoryItem.byteAddress;
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '$') {
-		const memoryItem = memory.get(line.arguments[1].value.substring(1));
+		const memoryItem = context.namespace.memory.get(line.arguments[1].value.substring(1));
 
 		if (!memoryItem) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
@@ -54,7 +53,7 @@ const memory: InstructionHandler = function (line, context) {
 		defaultValue = constant.value;
 	}
 
-	memory.set(line.arguments[0].value, {
+	context.namespace.memory.set(line.arguments[0].value, {
 		numberOfElements: 1,
 		elementWordSize: 4,
 		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
@@ -78,7 +77,7 @@ const memory: InstructionHandler = function (line, context) {
 			line.instruction === 'float**',
 	});
 
-	return { byteCode: [], context: { ...context, namespace: { ...context.namespace, memory } } };
+	return context;
 };
 
 export default memory;
