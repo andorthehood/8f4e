@@ -1,5 +1,5 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-import { BLOCK_TYPE, BlockStack, MemoryMap, StackItem } from './types';
+import { BLOCK_TYPE, BlockStack, CompilationContext, MemoryMap, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return memoryMap.has(name);
@@ -57,6 +57,15 @@ export function isInstructionIsInsideAModule(blockStack: BlockStack) {
 	return false;
 }
 
+export function isInstructionIsInsideBlock(blockStack: BlockStack, blockType: BLOCK_TYPE) {
+	for (let i = blockStack.length - 1; i >= 0; i--) {
+		if (blockStack[i].blockType === blockType) {
+			return true;
+		}
+	}
+	return false;
+}
+
 export function calculateWordAlignedSizeOfMemory(memory: MemoryMap): number {
 	return Array.from(memory.values()).reduce((accumulator, current) => {
 		return accumulator + current.wordAlignedSize;
@@ -69,4 +78,13 @@ export function areAllOperandsIntegers(...operands: StackItem[]): boolean {
 
 export function areAllOperandsFloats(...operands: StackItem[]): boolean {
 	return !operands.some(operand => operand.isInteger);
+}
+
+export function saveByteCode(context: CompilationContext, byteCode: number[]): CompilationContext {
+	if (isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.INIT)) {
+		context.initSegmentByteCode.push(...byteCode);
+	} else {
+		context.loopSegmentByteCode.push(...byteCode);
+	}
+	return context;
 }

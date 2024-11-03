@@ -1,9 +1,9 @@
-import { ArgumentType, InstructionHandler, MemoryTypes } from '../types';
+import { ArgumentType, InstructionCompiler, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
-const buffer: InstructionHandler = function (line, context) {
+const buffer: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -16,8 +16,7 @@ const buffer: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
-	const memory = new Map(context.namespace.memory);
-	const wordAlignedAddress = calculateWordAlignedSizeOfMemory(memory);
+	const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 
 	let numberOfElements = 1;
 	const elementWordSize = line.instruction.includes('8') ? 1 : line.instruction.includes('16') ? 2 : 4;
@@ -34,7 +33,7 @@ const buffer: InstructionHandler = function (line, context) {
 		numberOfElements = constant.value;
 	}
 
-	memory.set(line.arguments[0].value, {
+	context.namespace.memory.set(line.arguments[0].value, {
 		numberOfElements,
 		elementWordSize,
 		wordAlignedSize: Math.ceil(numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY,
@@ -49,7 +48,7 @@ const buffer: InstructionHandler = function (line, context) {
 		type: line.instruction.slice(0, -2) as unknown as MemoryTypes,
 	});
 
-	return { byteCode: [], context: { ...context, namespace: { ...context.namespace, memory } } };
+	return context;
 };
 
 export default buffer;

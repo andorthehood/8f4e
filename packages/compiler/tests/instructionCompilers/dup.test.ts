@@ -16,9 +16,9 @@ describe('dup', () => {
 	it('', () => {
 		context.stack.push({ isInteger: true });
 
-		const { byteCode } = istructions.dup(ast, context);
+		const { loopSegmentByteCode } = istructions.dup(ast, context);
 
-		expect(byteCode).toMatchSnapshot();
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(2);
 		expect(context.stack[0].isInteger).toBe(true);
 		expect(context.stack[1].isInteger).toBe(true);
@@ -27,9 +27,9 @@ describe('dup', () => {
 	it('', () => {
 		context.stack.push({ isInteger: false });
 
-		const { byteCode } = istructions.dup(ast, context);
+		const { loopSegmentByteCode } = istructions.dup(ast, context);
 
-		expect(byteCode).toMatchSnapshot();
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(2);
 		expect(context.stack[0].isInteger).toBe(false);
 		expect(context.stack[1].isInteger).toBe(false);

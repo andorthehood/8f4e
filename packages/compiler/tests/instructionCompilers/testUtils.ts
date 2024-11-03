@@ -10,6 +10,8 @@ export function createMockContext(): CompilationContext {
 			moduleName: '',
 			namespaces: new Map(),
 		},
+		initSegmentByteCode: [],
+		loopSegmentByteCode: [],
 		stack: [],
 		blockStack: [
 			{

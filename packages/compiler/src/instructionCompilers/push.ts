@@ -1,4 +1,4 @@
-import { ArgumentLiteral, ArgumentType, InstructionHandler } from '../types';
+import { ArgumentLiteral, ArgumentType, InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
 import {
@@ -13,6 +13,7 @@ import {
 	isElementWordSizeIdentifier,
 	getElementWordSize,
 	getElementCount,
+	saveByteCode,
 } from '../utils';
 
 function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
@@ -23,7 +24,7 @@ function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 	}
 }
 
-const push: InstructionHandler = function (line, context) {
+const push: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -46,10 +47,10 @@ const push: InstructionHandler = function (line, context) {
 
 			context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: false });
 
-			return {
-				byteCode: [...i32const(memoryItem.byteAddress), ...(memoryItem.isInteger ? i32load() : f32load())],
-				context,
-			};
+			return saveByteCode(context, [
+				...i32const(memoryItem.byteAddress),
+				...(memoryItem.isInteger ? i32load() : f32load()),
+			]);
 		} else if (isMemoryPointerIdentifier(memory, argument.value)) {
 			const memoryItem = getDataStructure(memory, argument.value.substring(1));
 
@@ -59,14 +60,11 @@ const push: InstructionHandler = function (line, context) {
 
 			context.stack.push({ isInteger: memoryItem.isPointingToInteger, isNonZero: false });
 
-			return {
-				byteCode: [
-					...i32const(memoryItem.byteAddress),
-					...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
-					...(memoryItem.isPointingToInteger ? i32load() : f32load()),
-				],
-				context,
-			};
+			return saveByteCode(context, [
+				...i32const(memoryItem.byteAddress),
+				...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
+				...(memoryItem.isPointingToInteger ? i32load() : f32load()),
+			]);
 		} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
 			let value = 0;
 			if (argument.value.startsWith('&')) {
@@ -75,35 +73,24 @@ const push: InstructionHandler = function (line, context) {
 				value = getMemoryStringLastByteAddress(memory, argument.value.slice(0, -1));
 			}
 			context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
-			return {
-				byteCode: i32const(value),
-				context,
-			};
+			return saveByteCode(context, i32const(value));
 		} else if (isElementCountIdentifier(memory, argument.value)) {
 			context.stack.push({ isInteger: true, isNonZero: true });
-
-			return {
-				byteCode: i32const(getElementCount(memory, argument.value.substring(1))),
-				context,
-			};
+			return saveByteCode(context, i32const(getElementCount(memory, argument.value.substring(1))));
 		} else if (isElementWordSizeIdentifier(memory, argument.value)) {
 			context.stack.push({ isInteger: true, isNonZero: true });
-
-			return {
-				byteCode: i32const(getElementWordSize(memory, argument.value.substring(1))),
-				context,
-			};
+			return saveByteCode(context, i32const(getElementWordSize(memory, argument.value.substring(1))));
 		} else if (typeof consts[argument.value] !== 'undefined') {
 			context.stack.push({
 				isInteger: consts[argument.value].isInteger,
 				isNonZero: consts[argument.value].value !== 0,
 			});
-			return {
-				byteCode: consts[argument.value].isInteger
-					? i32const(consts[argument.value].value)
-					: f32const(consts[argument.value].value),
+			return saveByteCode(
 				context,
-			};
+				consts[argument.value].isInteger
+					? i32const(consts[argument.value].value)
+					: f32const(consts[argument.value].value)
+			);
 		} else {
 			const local = locals.get(argument.value);
 
@@ -113,11 +100,12 @@ const push: InstructionHandler = function (line, context) {
 
 			context.stack.push({ isInteger: local.isInteger, isNonZero: false });
 
-			return { byteCode: localGet(local.index), context };
+			return saveByteCode(context, localGet(local.index));
 		}
 	} else {
 		context.stack.push({ isInteger: argument.isInteger, isNonZero: argument.value !== 0 });
-		return { byteCode: getTypeAppropriateConstInstruction(argument), context };
+
+		return saveByteCode(context, getTypeAppropriateConstInstruction(argument));
 	}
 };
 
