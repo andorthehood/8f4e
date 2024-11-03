@@ -1,6 +1,5 @@
 export default [
 	{
-		state: {},
 		code: `
             module abs
         

@@ -77,7 +77,7 @@ function didProgramOrMemoryStructureChange(
 			return true;
 		}
 
-		if (compiledModule.loopFunctionBody.length !== previousModule.loopFunctionBody.length) {
+		if (compiledModule.loopFunction.length !== previousModule.loopFunction.length) {
 			return true;
 		}
 

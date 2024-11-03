@@ -1,7 +1,7 @@
 import {
 	createCodeSection,
 	createExportSection,
-	createFunctionBody,
+	createFunction,
 	createFunctionExport,
 	createFunctionSection,
 	createFunctionType,
@@ -177,7 +177,9 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 			}
 		});
 
-		return createFunctionBody([], instructions);
+		instructions.push(...module.initFunctionBody);
+
+		return createFunction([], instructions);
 	});
 }
 
@@ -195,7 +197,7 @@ export default function compile(
 	const compiledModules = compileModules(sortedModules, { ...options, startingMemoryWordAddress: 1 });
 	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
-	const loopFunctionBodies = compiledModules.map(({ loopFunctionBody }) => loopFunctionBody);
+	const loopFunctions = compiledModules.map(({ loopFunction }) => loopFunction);
 	// const initFunctionBodies = compiledModules.map(({ initFunctionBody }) => initFunctionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
 	const cycleFunction = compiledModules.map((module, index) => call(index + 3)).flat();
@@ -223,10 +225,10 @@ export default function compile(
 				createFunctionExport('buffer', 0x02),
 			]),
 			...createCodeSection([
-				createFunctionBody([], memoryInitiatorFunction),
-				createFunctionBody([], cycleFunction),
-				createFunctionBody([], new Array(128).fill(call(1)).flat()),
-				...loopFunctionBodies,
+				createFunction([], memoryInitiatorFunction),
+				createFunction([], cycleFunction),
+				createFunction([], new Array(128).fill(call(1)).flat()),
+				...loopFunctions,
 				...memoryInitiatorFunctions,
 			]),
 		]),
