@@ -105,8 +105,6 @@ export default async function testBuild(
 
 	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 
-	console.log('memoryStructureChange', memoryStructureChange);
-
 	if (!previousCompiledModules || memoryStructureChange) {
 		init();
 	} else {

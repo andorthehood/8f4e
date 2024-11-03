@@ -1,9 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import { areAllOperandsFloats, areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
-import { InstructionHandler } from '../types';
+import { areAllOperandsFloats, areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
-const add: InstructionHandler = function (line, context) {
+const add: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -17,16 +17,10 @@ const add: InstructionHandler = function (line, context) {
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
 		context.stack.push({ isInteger: true, isNonZero: false });
-		return {
-			byteCode: [WASMInstruction.I32_ADD],
-			context,
-		};
+		return saveByteCode(context, [WASMInstruction.I32_ADD]);
 	} else if (areAllOperandsFloats(operand1, operand2)) {
 		context.stack.push({ isInteger: false, isNonZero: false });
-		return {
-			byteCode: [WASMInstruction.F32_ADD],
-			context,
-		};
+		return saveByteCode(context, [WASMInstruction.F32_ADD]);
 	} else {
 		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, context);
 	}

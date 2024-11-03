@@ -1,9 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 
-const end: InstructionHandler = function (line, context) {
+const blockEnd: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -28,7 +28,7 @@ const end: InstructionHandler = function (line, context) {
 		context.stack.push(operand);
 	}
 
-	return { byteCode: [WASMInstruction.END], context };
+	return saveByteCode(context, [WASMInstruction.END]);
 };
 
-export default end;
+export default blockEnd;

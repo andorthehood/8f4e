@@ -17,9 +17,9 @@ describe('branchIfUnchanged', () => {
 		ast.arguments.push({ type: ArgumentType.LITERAL, value: 1, isInteger: true });
 		context.stack.push({ isInteger: true });
 
-		const { byteCode } = istructions.branchIfUnchanged(ast, context);
+		const { loopSegmentByteCode } = istructions.branchIfUnchanged(ast, context);
 
-		expect(byteCode).toMatchSnapshot();
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(0);
 	});
 
@@ -27,9 +27,9 @@ describe('branchIfUnchanged', () => {
 		ast.arguments.push({ type: ArgumentType.LITERAL, value: 1, isInteger: true });
 		context.stack.push({ isInteger: false });
 
-		const { byteCode } = istructions.branchIfUnchanged(ast, context);
+		const { loopSegmentByteCode } = istructions.branchIfUnchanged(ast, context);
 
-		expect(byteCode).toMatchSnapshot();
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(0);
 	});
 

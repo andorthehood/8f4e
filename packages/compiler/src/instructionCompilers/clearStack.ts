@@ -1,16 +1,17 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 
-const clearStack: InstructionHandler = function (line, context) {
+const clearStack: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
 	const length = context.stack.length;
 	context.stack = [];
-	return { byteCode: new Array(length).fill(WASMInstruction.DROP), context };
+
+	return saveByteCode(context, new Array(length).fill(WASMInstruction.DROP));
 };
 
 export default clearStack;

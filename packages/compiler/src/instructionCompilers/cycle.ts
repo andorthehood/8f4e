@@ -1,9 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
-import { parseSegment } from '../compiler';
+import { compileSegment } from '../compiler';
 
-const cycle: InstructionHandler = function (line, context) {
+const cycle: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -28,7 +28,7 @@ const cycle: InstructionHandler = function (line, context) {
 	const startPositionName = '__pointerCycle_startPosition' + line.lineNumber;
 	const endPositionName = '__pointerCycle_endPosition' + line.lineNumber;
 
-	return parseSegment(
+	return compileSegment(
 		[
 			`local int ${pointerName}`,
 			`local int ${startPositionName}`,

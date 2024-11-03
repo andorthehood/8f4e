@@ -1,5 +1,3 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler/dist/consts';
-
 import { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
 
@@ -11,7 +9,6 @@ function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { cod
 			flatCodeBlocks.push(codeBlock);
 			if (codeBlock.codeBlocks && codeBlock.codeBlocks.size > 0) {
 				walk(codeBlock.codeBlocks);
-				console.log('he');
 			}
 		});
 	}

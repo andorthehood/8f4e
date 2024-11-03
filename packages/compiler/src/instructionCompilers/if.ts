@@ -1,10 +1,10 @@
-import { ArgumentType, BLOCK_TYPE, InstructionHandler } from '../types';
+import { ArgumentType, BLOCK_TYPE, InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 
-const _if: InstructionHandler = function (line, context) {
+const _if: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -25,7 +25,7 @@ const _if: InstructionHandler = function (line, context) {
 			hasExpectedResult: false,
 			blockType: BLOCK_TYPE.CONDITION,
 		});
-		return { byteCode: [WASMInstruction.IF, Type.VOID], context };
+		return saveByteCode(context, [WASMInstruction.IF, Type.VOID]);
 	}
 
 	if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'float') {
@@ -34,7 +34,7 @@ const _if: InstructionHandler = function (line, context) {
 			hasExpectedResult: true,
 			blockType: BLOCK_TYPE.CONDITION,
 		});
-		return { byteCode: [WASMInstruction.IF, Type.F32], context };
+		return saveByteCode(context, [WASMInstruction.IF, Type.F32]);
 	}
 
 	context.blockStack.push({
@@ -42,7 +42,7 @@ const _if: InstructionHandler = function (line, context) {
 		hasExpectedResult: true,
 		blockType: BLOCK_TYPE.CONDITION,
 	});
-	return { byteCode: [WASMInstruction.IF, Type.I32], context };
+	return saveByteCode(context, [WASMInstruction.IF, Type.I32]);
 };
 
 export default _if;

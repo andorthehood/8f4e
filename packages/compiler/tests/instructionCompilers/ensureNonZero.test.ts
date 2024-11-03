@@ -16,9 +16,9 @@ describe('ensureNonZero', () => {
 	it('', () => {
 		context.stack.push({ isInteger: true });
 
-		const { byteCode } = istructions.ensureNonZero(ast, context);
+		const { loopSegmentByteCode } = istructions.ensureNonZero(ast, context);
 
-		expect(byteCode).toMatchSnapshot();
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(1);
 		expect(context.stack[0].isInteger).toBe(true);
 		expect(context.stack[0].isNonZero).toBe(true);
@@ -27,9 +27,9 @@ describe('ensureNonZero', () => {
 	it('', () => {
 		context.stack.push({ isInteger: false, isSafeMemoryAddress: false });
 
-		const { byteCode } = istructions.ensureNonZero(ast, context);
+		const { loopSegmentByteCode } = istructions.ensureNonZero(ast, context);
 
-		expect(byteCode).toMatchSnapshot();
+		expect(loopSegmentByteCode).toMatchSnapshot();
 		expect(context.stack).toHaveLength(1);
 		expect(context.stack[0].isInteger).toBe(false);
 		expect(context.stack[0].isNonZero).toBe(true);

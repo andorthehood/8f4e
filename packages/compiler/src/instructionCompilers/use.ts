@@ -1,7 +1,7 @@
-import { ArgumentType, InstructionHandler } from '../types';
+import { ArgumentType, InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../errors';
 
-const use: InstructionHandler = function (line, context) {
+const use: InstructionCompiler = function (line, context) {
 	if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
@@ -14,10 +14,7 @@ const use: InstructionHandler = function (line, context) {
 
 	context.namespace.consts = { ...context.namespace.consts, ...namespaceToUse.consts };
 
-	return {
-		byteCode: [],
-		context,
-	};
+	return context;
 };
 
 export default use;

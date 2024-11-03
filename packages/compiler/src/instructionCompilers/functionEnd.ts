@@ -1,8 +1,8 @@
 import { ErrorCode, getError } from '../errors';
-import { BLOCK_TYPE, InstructionHandler } from '../types';
+import { BLOCK_TYPE, InstructionCompiler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
 
-const functionEnd: InstructionHandler = function (line, context) {
+const functionEnd: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -19,7 +19,7 @@ const functionEnd: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS, line, context);
 	}
 
-	return { byteCode: [], context };
+	return context;
 };
 
 export default functionEnd;

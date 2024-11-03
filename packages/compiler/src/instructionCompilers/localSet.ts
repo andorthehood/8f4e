@@ -1,9 +1,9 @@
-import { ArgumentType, InstructionHandler } from '../types';
+import { ArgumentType, InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { localSet } from '../wasmUtils/instructionHelpers';
 
-const _localSet: InstructionHandler = function (line, context) {
+const _localSet: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -33,7 +33,7 @@ const _localSet: InstructionHandler = function (line, context) {
 			throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
 		}
 
-		return { byteCode: localSet(local.index), context };
+		return saveByteCode(context, localSet(local.index));
 	} else {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
