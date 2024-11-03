@@ -1,12 +1,12 @@
-import { ArgumentType, BLOCK_TYPE, InstructionHandler, MemoryTypes } from '../types';
+import { ArgumentType, BLOCK_TYPE, InstructionCompiler, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
-import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
+import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
-const skip: InstructionHandler = function (line, context) {
+const skip: InstructionCompiler = function (line, context) {
 	const { consts } = context.namespace;
 
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
@@ -16,7 +16,7 @@ const skip: InstructionHandler = function (line, context) {
 	let timesToSkip = 0;
 
 	if (!line.arguments[0]) {
-		return { byteCode: [WASMInstruction.RETURN], context };
+		return saveByteCode(context, [WASMInstruction.RETURN]);
 	}
 
 	if (line.arguments[0].type === ArgumentType.LITERAL) {
@@ -54,35 +54,32 @@ const skip: InstructionHandler = function (line, context) {
 		blockType: BLOCK_TYPE.BLOCK,
 	});
 
-	return {
-		byteCode: [
-			WASMInstruction.BLOCK,
-			Type.VOID,
-			// Increment counter
-			...i32const(byteAddress),
-			...i32const(byteAddress),
-			...i32load(),
-			...i32const(1),
-			WASMInstruction.I32_ADD,
-			...i32store(),
-			// Return if the value of the counter is smaller than
-			// the number specified in the argument
-			...i32const(byteAddress),
-			...i32load(),
-			...i32const(timesToSkip),
-			WASMInstruction.I32_LT_S,
-			WASMInstruction.IF,
-			Type.VOID,
-			// WASMInstruction.RETURN,
-			...br(1),
-			WASMInstruction.ELSE,
-			...i32const(byteAddress),
-			...i32const(0),
-			...i32store(),
-			WASMInstruction.END,
-		],
-		context,
-	};
+	return saveByteCode(context, [
+		WASMInstruction.BLOCK,
+		Type.VOID,
+		// Increment counter
+		...i32const(byteAddress),
+		...i32const(byteAddress),
+		...i32load(),
+		...i32const(1),
+		WASMInstruction.I32_ADD,
+		...i32store(),
+		// Return if the value of the counter is smaller than
+		// the number specified in the argument
+		...i32const(byteAddress),
+		...i32load(),
+		...i32const(timesToSkip),
+		WASMInstruction.I32_LT_S,
+		WASMInstruction.IF,
+		Type.VOID,
+		// WASMInstruction.RETURN,
+		...br(1),
+		WASMInstruction.ELSE,
+		...i32const(byteAddress),
+		...i32const(0),
+		...i32store(),
+		WASMInstruction.END,
+	]);
 };
 
 export default skip;

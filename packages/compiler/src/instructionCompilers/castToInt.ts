@@ -1,9 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
-import { InstructionHandler } from '../types';
+import { areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
-const castToInt: InstructionHandler = function (line, context) {
+const castToInt: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -19,10 +19,8 @@ const castToInt: InstructionHandler = function (line, context) {
 	}
 
 	context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
-	return {
-		byteCode: [WASMInstruction.I32_TUNC_F32_S],
-		context,
-	};
+
+	return saveByteCode(context, [WASMInstruction.I32_TUNC_F32_S]);
 };
 
 export default castToInt;

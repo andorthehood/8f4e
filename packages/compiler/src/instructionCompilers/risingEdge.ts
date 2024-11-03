@@ -1,9 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
-import { parseSegment } from '../compiler';
+import { compileSegment } from '../compiler';
 
-const risingEdge: InstructionHandler = function (line, context) {
+const risingEdge: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -19,7 +19,7 @@ const risingEdge: InstructionHandler = function (line, context) {
 	const currentValueName = '__risingEdgeDetector_currentValue' + line.lineNumber;
 	const previousValueName = '__risingEdgeDetector_previousValue' + line.lineNumber;
 
-	return parseSegment(
+	return compileSegment(
 		[
 			`int ${previousValueName} 0`,
 			`local int ${currentValueName}`,

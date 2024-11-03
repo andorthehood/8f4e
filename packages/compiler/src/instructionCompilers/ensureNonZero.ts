@@ -1,10 +1,10 @@
 import { isInstructionIsInsideAModule } from '../utils';
 import { ErrorCode } from '../errors';
-import { ArgumentType, InstructionHandler } from '../types';
+import { ArgumentType, InstructionCompiler } from '../types';
 import { getError } from '../errors';
-import { parseSegment } from '../compiler';
+import { compileSegment } from '../compiler';
 
-const div: InstructionHandler = function (line, context) {
+const div: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -32,7 +32,7 @@ const div: InstructionHandler = function (line, context) {
 	const tempVariableName = '__ensureNonZero_temp_' + line.lineNumber;
 
 	if (operand.isInteger) {
-		const ret = parseSegment(
+		const ret = compileSegment(
 			[
 				`local int ${tempVariableName}`,
 				`localSet ${tempVariableName}`,
@@ -50,7 +50,7 @@ const div: InstructionHandler = function (line, context) {
 		context.stack.push({ isInteger: true, isNonZero: true });
 		return ret;
 	} else {
-		const ret = parseSegment(
+		const ret = compileSegment(
 			[
 				`local float ${tempVariableName}`,
 				`localSet ${tempVariableName}`,

@@ -100,6 +100,8 @@ export interface CompilationContext {
 	blockStack: BlockStack;
 	startingByteAddress: number;
 	memoryByteSize: number;
+	initSegmentByteCode: Array<WASMInstruction | Type | number>;
+	loopSegmentByteCode: Array<WASMInstruction | Type | number>;
 }
 
 export interface StackItem {
@@ -127,14 +129,11 @@ export type BlockStack = Array<{
 	blockType: BLOCK_TYPE;
 }>;
 
-export type InstructionHandler = (
-	line: AST[number],
-	context: CompilationContext
-) => { context: CompilationContext; byteCode: Array<WASMInstruction | Type | number> };
+export type InstructionCompiler = (line: AST[number], context: CompilationContext) => CompilationContext;
 
 export interface Error {
 	message: string;
-	line: Parameters<InstructionHandler>[0];
+	line: Parameters<InstructionCompiler>[0];
 	context?: CompilationContext;
 	code: number;
 }

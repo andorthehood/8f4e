@@ -1,8 +1,8 @@
-import { ArgumentType, InstructionHandler } from '../types';
+import { ArgumentType, InstructionCompiler } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
 
-const memory: InstructionHandler = function (line, context) {
+const init: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -56,7 +56,7 @@ const memory: InstructionHandler = function (line, context) {
 		}
 	}
 
-	return { byteCode: [], context: { ...context, namespace: { ...context.namespace, memory } } };
+	return context;
 };
 
-export default memory;
+export default init;

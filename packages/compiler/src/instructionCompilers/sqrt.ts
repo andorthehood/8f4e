@@ -1,9 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 
-const sqrt: InstructionHandler = function (line, context) {
+const sqrt: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -19,11 +19,7 @@ const sqrt: InstructionHandler = function (line, context) {
 	}
 
 	context.stack.push({ isInteger: false, isNonZero: true });
-
-	return {
-		byteCode: [WASMInstruction.F32_SQRT],
-		context,
-	};
+	return saveByteCode(context, [WASMInstruction.F32_SQRT]);
 };
 
 export default sqrt;
