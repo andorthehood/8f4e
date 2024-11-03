@@ -1,10 +1,10 @@
-import { areAllOperandsFloats, areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
+import { areAllOperandsFloats, areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { ErrorCode } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { getError } from '../errors';
 
-const div: InstructionHandler = function (line, context) {
+const div: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -22,10 +22,10 @@ const div: InstructionHandler = function (line, context) {
 
 	if (areAllOperandsIntegers(operand1, operand2)) {
 		context.stack.push({ isInteger: true, isNonZero: true });
-		return { byteCode: [WASMInstruction.I32_DIV_S], context };
+		return saveByteCode(context, [WASMInstruction.I32_DIV_S]);
 	} else if (areAllOperandsFloats(operand1, operand2)) {
 		context.stack.push({ isInteger: false, isNonZero: true });
-		return { byteCode: [WASMInstruction.F32_DIV], context };
+		return saveByteCode(context, [WASMInstruction.F32_DIV]);
 	} else {
 		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, context);
 	}

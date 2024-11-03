@@ -1,9 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
-import { InstructionHandler } from '../types';
+import { areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
-const round: InstructionHandler = function (line, context) {
+const round: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -19,10 +19,8 @@ const round: InstructionHandler = function (line, context) {
 	}
 
 	context.stack.push({ isInteger: false, isNonZero: false });
-	return {
-		byteCode: [WASMInstruction.F32_NEAREST],
-		context,
-	};
+
+	return saveByteCode(context, [WASMInstruction.F32_NEAREST]);
 };
 
 export default round;

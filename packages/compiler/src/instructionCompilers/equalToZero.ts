@@ -1,10 +1,10 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionIsInsideAModule } from '../utils';
-import { parseSegment } from '../compiler';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { compileSegment } from '../compiler';
 
-const equalToZero: InstructionHandler = function (line, context) {
+const equalToZero: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -17,10 +17,10 @@ const equalToZero: InstructionHandler = function (line, context) {
 
 	if (operand.isInteger) {
 		context.stack.push({ isInteger: true, isNonZero: false });
-		return { byteCode: [WASMInstruction.I32_EQZ], context };
+		return saveByteCode(context, [WASMInstruction.I32_EQZ]);
 	} else {
 		context.stack.push(operand);
-		return parseSegment(['push 0.0', 'equal'], context);
+		return compileSegment(['push 0.0', 'equal'], context);
 	}
 };
 

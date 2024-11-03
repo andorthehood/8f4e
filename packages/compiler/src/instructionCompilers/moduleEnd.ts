@@ -1,8 +1,8 @@
 import { ErrorCode, getError } from '../errors';
-import { BLOCK_TYPE, InstructionHandler } from '../types';
+import { BLOCK_TYPE, InstructionCompiler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
 
-const moduleEnd: InstructionHandler = function (line, context) {
+const moduleEnd: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -13,7 +13,7 @@ const moduleEnd: InstructionHandler = function (line, context) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 
-	return { byteCode: [], context };
+	return context;
 };
 
 export default moduleEnd;

@@ -1,10 +1,10 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionIsInsideAModule } from '../utils';
-import { parseSegment } from '../compiler';
+import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { compileSegment } from '../compiler';
 
-const cycle: InstructionHandler = function (line, context) {
+const abs: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -20,7 +20,7 @@ const cycle: InstructionHandler = function (line, context) {
 		context.stack.push({ isInteger: true, isNonZero: operand.isNonZero });
 		const valueName = '__absify_value' + line.lineNumber;
 
-		return parseSegment(
+		return compileSegment(
 			[
 				`local int ${valueName}`,
 				`localSet ${valueName}`,
@@ -39,11 +39,8 @@ const cycle: InstructionHandler = function (line, context) {
 		);
 	} else {
 		context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
-		return {
-			byteCode: [WASMInstruction.F32_ABS],
-			context,
-		};
+		return saveByteCode(context, [WASMInstruction.F32_ABS]);
 	}
 };
 
-export default cycle;
+export default abs;

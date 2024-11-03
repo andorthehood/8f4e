@@ -1,8 +1,8 @@
 import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers, isInstructionIsInsideAModule } from '../utils';
-import { InstructionHandler } from '../types';
+import { areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { InstructionCompiler } from '../types';
 import { i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '../wasmUtils/instructionHelpers';
-import { parseSegment } from '../compiler';
+import { compileSegment } from '../compiler';
 
 const instructionToByteCodeMap = {
 	load: i32load(),
@@ -12,7 +12,7 @@ const instructionToByteCodeMap = {
 	load16u: i32load16u(),
 };
 
-const load: InstructionHandler = function (line, context) {
+const load: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -26,12 +26,12 @@ const load: InstructionHandler = function (line, context) {
 	if (areAllOperandsIntegers(operand)) {
 		if (operand.isSafeMemoryAddress) {
 			context.stack.push({ isInteger: true, isNonZero: false });
-			return { byteCode: instructionToByteCodeMap[line.instruction], context };
+			return saveByteCode(context, instructionToByteCodeMap[line.instruction]);
 		} else {
 			context.stack.push({ isInteger: true, isNonZero: false });
 			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;
 			// Memory overflow protection.
-			return parseSegment(
+			return compileSegment(
 				[
 					`local int ${tempVariableName}`,
 					`localSet ${tempVariableName}`,

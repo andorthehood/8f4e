@@ -1,9 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionHandler } from '../types';
+import { InstructionCompiler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
-import { parseSegment } from '../compiler';
+import { compileSegment } from '../compiler';
 
-const dup: InstructionHandler = function (line, context) {
+const dup: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
@@ -18,7 +18,7 @@ const dup: InstructionHandler = function (line, context) {
 
 	context.stack.push(operand);
 
-	return parseSegment(
+	return compileSegment(
 		[
 			`local ${operand.isInteger ? 'int' : 'float'} ${tempName}`,
 			`localSet ${tempName}`,
