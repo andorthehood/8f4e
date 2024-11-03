@@ -150,8 +150,8 @@ export function getModuleName(ast: AST) {
 	return argument.value;
 }
 
-export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[]) {
-	return compiledModules.flatMap(module => {
+export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule[]) {
+	return compiledModules.map(module => {
 		let pointer = module.byteAddress;
 		const instructions: number[] = [];
 
@@ -177,7 +177,7 @@ export function generateMemoryInitiatorFunction(compiledModules: CompiledModule[
 			}
 		});
 
-		return instructions;
+		return createFunctionBody([], instructions);
 	});
 }
 
@@ -195,10 +195,14 @@ export default function compile(
 	const compiledModules = compileModules(sortedModules, { ...options, startingMemoryWordAddress: 1 });
 	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
-	const functionBodies = compiledModules.map(({ functionBody }) => functionBody);
+	const loopFunctionBodies = compiledModules.map(({ loopFunctionBody }) => loopFunctionBody);
+	// const initFunctionBodies = compiledModules.map(({ initFunctionBody }) => initFunctionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
 	const cycleFunction = compiledModules.map((module, index) => call(index + 3)).flat();
-	const memoryInitiatorFunction = generateMemoryInitiatorFunction(compiledModules);
+	const memoryInitiatorFunction = compiledModules
+		.map((module, index) => call(index + compiledModules.length + 3))
+		.flat();
+	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(compiledModules);
 
 	return {
 		codeBuffer: Uint8Array.from([
@@ -212,7 +216,7 @@ export default function compile(
 			...createImportSection([
 				createMemoryImport('js', 'memory', options.initialMemorySize, options.maxMemorySize, true),
 			]),
-			...createFunctionSection([0x00, 0x00, 0x00, ...functionSignatures]),
+			...createFunctionSection([0x00, 0x00, 0x00, ...functionSignatures, ...functionSignatures]),
 			...createExportSection([
 				createFunctionExport('init', 0x00),
 				createFunctionExport('cycle', 0x01),
@@ -222,7 +226,8 @@ export default function compile(
 				createFunctionBody([], memoryInitiatorFunction),
 				createFunctionBody([], cycleFunction),
 				createFunctionBody([], new Array(128).fill(call(1)).flat()),
-				...functionBodies,
+				...loopFunctionBodies,
+				...memoryInitiatorFunctions,
 			]),
 		]),
 		compiledModules: compiledModulesMap,

@@ -129,12 +129,13 @@ export function compileModule(
 
 	return {
 		id: context.namespace.moduleName,
-		functionBody: createFunctionBody(
+		loopFunctionBody: createFunctionBody(
 			Array.from(context.namespace.locals.values()).map(local => {
 				return createLocalDeclaration(local.isInteger ? Type.I32 : Type.F32, 1);
 			}),
 			context.loopSegmentByteCode
 		),
+		initFunctionBody: createFunctionBody([], context.initSegmentByteCode),
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,

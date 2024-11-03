@@ -58,6 +58,8 @@ import round from './round';
 import ensureNonZero from './ensureNonZero';
 import _function from './function';
 import functionEnd from './functionEnd';
+import initBlock from './initBlock';
+import initBlockEnd from './initBlockEnd';
 
 const instructions = {
 	and,
@@ -137,6 +139,8 @@ const instructions = {
 	ensureNonZero,
 	function: _function,
 	functionEnd,
+	initBlock,
+	initBlockEnd,
 } as const;
 
 export default instructions;

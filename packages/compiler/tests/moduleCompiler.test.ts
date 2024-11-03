@@ -39,6 +39,6 @@ describe('moduleCompiler', () => {
 	});
 
 	test('compiled code', () => {
-		expect(compileModule(ast, {}, new Map(), 0, 1, 0).functionBody).toMatchSnapshot();
+		expect(compileModule(ast, {}, new Map(), 0, 1, 0).loopFunctionBody).toMatchSnapshot();
 	});
 });
