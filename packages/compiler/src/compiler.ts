@@ -1,4 +1,4 @@
-import { createFunctionBody, createLocalDeclaration } from './wasmUtils/sectionHelpers';
+import { createFunction, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
@@ -129,13 +129,13 @@ export function compileModule(
 
 	return {
 		id: context.namespace.moduleName,
-		loopFunctionBody: createFunctionBody(
+		loopFunction: createFunction(
 			Array.from(context.namespace.locals.values()).map(local => {
 				return createLocalDeclaration(local.isInteger ? Type.I32 : Type.F32, 1);
 			}),
 			context.loopSegmentByteCode
 		),
-		initFunctionBody: createFunctionBody([], context.initSegmentByteCode),
+		initFunctionBody: context.initSegmentByteCode,
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
