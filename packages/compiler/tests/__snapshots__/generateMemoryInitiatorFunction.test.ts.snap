@@ -2,12 +2,17 @@
 
 exports[`compiler generateMemoryInitiatorFunction 1`] = `
 Array [
-  65,
-  12,
-  65,
-  1,
-  54,
-  2,
-  0,
+  Array [
+    9,
+    0,
+    65,
+    12,
+    65,
+    1,
+    54,
+    2,
+    0,
+    11,
+  ],
 ]
 `;
