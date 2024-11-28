@@ -9,6 +9,7 @@ import midiArpeggiator from './midiArpeggiator';
 import midiArpeggiator2 from './midiArpeggiator2';
 import ericSaiteGenerator from './ericSaiteGenerator';
 import neuralNetwork from './neuralNetwork';
+import audioLoopback from './audioLoopback';
 
 const projects = {
 	audioBuffer,
@@ -22,6 +23,7 @@ const projects = {
 	midiArpeggiator2,
 	ericSaiteGenerator,
 	neuralNetwork,
+	audioLoopback,
 } as const;
 
 export default projects;
