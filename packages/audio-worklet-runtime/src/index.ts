@@ -6,7 +6,12 @@ class Main extends AudioWorkletProcessor {
 
 		this.port.onmessage = async event => {
 			if (event.data.type === 'init') {
-				this.init(event.data.memoryRef, event.data.codeBuffer, event.data.audioOutputBuffers);
+				this.init(
+					event.data.memoryRef,
+					event.data.codeBuffer,
+					event.data.audioOutputBuffers,
+					event.data.audioInputBuffers
+				);
 			}
 		};
 	}
@@ -14,11 +19,13 @@ class Main extends AudioWorkletProcessor {
 	async init(
 		memoryRef: WebAssembly.Memory,
 		codeBuffer: Uint8Array,
-		audioOutputBuffers: { channel: number; output: number; audioBufferWordAddress: number }[]
+		audioOutputBuffers: { channel: number; output: number; audioBufferWordAddress: number }[],
+		audioInputBuffers: { channel: number; input: number; audioBufferWordAddress: number }[]
 	) {
 		const { memoryBuffer, buffer } = await createModule(memoryRef, codeBuffer);
 
 		this.audioOutputBuffers = audioOutputBuffers;
+		this.audioInputBuffers = audioInputBuffers;
 
 		this.buffer = buffer;
 		this.memoryBuffer = memoryBuffer;
@@ -37,12 +44,29 @@ class Main extends AudioWorkletProcessor {
 
 	memoryBuffer = new Float32Array(128).fill(0);
 	audioOutputBuffers = [] as { channel: number; output: number; audioBufferWordAddress: number }[];
+	audioInputBuffers = [] as { channel: number; input: number; audioBufferWordAddress: number }[];
 
 	static get parameterDescriptors() {
 		return [{ name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1 }];
 	}
 
 	process(inputs, outputs, parameters) {
+		for (let i = 0; i < this.audioInputBuffers.length; i++) {
+			const input = inputs[this.audioInputBuffers[i].input];
+			if (!input) {
+				continue;
+			}
+
+			const channel = input[this.audioInputBuffers[i].channel];
+			if (!channel) {
+				continue;
+			}
+
+			for (let j = 0; j < channel.length; j++) {
+				this.memoryBuffer[j + this.audioInputBuffers[i].audioBufferWordAddress] = channel[j];
+			}
+		}
+
 		this.buffer();
 
 		for (let i = 0; i < this.audioOutputBuffers.length; i++) {
