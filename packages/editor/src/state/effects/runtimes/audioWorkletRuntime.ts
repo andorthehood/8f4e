@@ -28,12 +28,26 @@ export default function audioWorkletRuntime(state: State, events: EventDispatche
 			})
 			.filter(({ audioBufferWordAddress }) => typeof audioBufferWordAddress !== 'undefined');
 
+		const audioInputBuffers = (runtime.audioInputBuffers || [])
+			.map(({ moduleId, memoryId, input, channel }) => {
+				const audioModule = state.compiler.compiledModules.get(moduleId);
+				const audioBufferWordAddress = audioModule?.memoryMap.get(memoryId)?.wordAlignedAddress;
+
+				return {
+					audioBufferWordAddress,
+					input,
+					channel,
+				};
+			})
+			.filter(({ audioBufferWordAddress }) => typeof audioBufferWordAddress !== 'undefined');
+
 		if (audioWorklet) {
 			audioWorklet.port.postMessage({
 				type: 'init',
 				memoryRef: state.compiler.memoryRef,
 				codeBuffer: state.compiler.codeBuffer,
 				audioOutputBuffers,
+				audioInputBuffers,
 			});
 		}
 	}
@@ -45,11 +59,14 @@ export default function audioWorkletRuntime(state: State, events: EventDispatche
 			return;
 		}
 
-		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'playback' });
+		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'interactive' });
 		await audioContext.audioWorklet.addModule(workletBlobUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
 			outputChannelCount: [2],
 			numberOfOutputs: 1,
+			numberOfInputs: 1, // Specify the number of inputs
+			channelCount: 1,
+			channelCountMode: 'explicit',
 		});
 
 		audioWorklet.port.onmessage = function ({ data }) {
@@ -59,6 +76,17 @@ export default function audioWorkletRuntime(state: State, events: EventDispatche
 					break;
 			}
 		};
+
+		if (runtime.audioInputBuffers) {
+			try {
+				const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+				const source = audioContext.createMediaStreamSource(stream);
+				source.connect(audioWorklet);
+			} catch (error) {
+				console.error('Error accessing the microphone:', error);
+			}
+		}
+
 		audioWorklet.connect(audioContext.destination);
 
 		syncCodeAndSettingsWithRuntime();
