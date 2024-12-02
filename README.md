@@ -22,10 +22,12 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 
 There are currently two browser-based runtimes, both integrated into the development editor. These runtimes are designed to handle specific types of real-time data processing, such as MIDI events and audio signals.
 
-- **WebWorkerMIDIRuntime:** This runtime is for handling MIDI events, such as note on/off and control change messages. It is built on the WebWorker API and the built-in WebAssembly runtime.
-Limitations: Please note that the sample rate is capped at 50Hz, and it requires permission from the user to access MIDI resources within the browser. Also, this runtime is not supported in Safari and iOS mobile browsers.
+- **WebWorkerMIDIRuntime:** This runtime is for sending and receiving MIDI events, such as note on/off and control change messages. It is built on the WebWorker API and uses the borwser's WebAssembly runtime.
+**Limitations:**
+   - The sample rate is capped at 50Hz, and it requires permission from the user to access MIDI resources within the browser.
+   - This runtime is not supported in Safari and iOS mobile browsers.
 
-- **AudioWorkletRuntime:** This runtime handles audio signal processing, ideal for building synthesizers or doing real-time audio analysis. It supports standard sample rates like: 22,050 Hz and 44,100 Hz. It’s built on the AudioWorklet API and uses the browser’s WebAssembly runtime to keep things running smoothly.
+- **AudioWorkletRuntime:** This runtime handles audio signal processing, ideal for building synthesizers or doing real-time audio analysis. It supports standard sample rates like: 22,050 Hz and 44,100 Hz. It’s built on the AudioWorklet API and uses the browser’s WebAssembly runtime.
 **Limitations:**
    - Because of browser security policies, you’ll need a user action (like a click or tap) to start audio playback or processing.
    - The input audio buffer is fine, but don’t expect studio-grade quality. As of 2024, it’s really meant for things like voice memos or audio messages.
