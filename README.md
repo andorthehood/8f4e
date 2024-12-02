@@ -18,7 +18,7 @@ Welcome to what I refer to as my biggest “mental masturbation” project. This
 - The execution order of the code modules is determined by their dependencies. If a module's output is needed as input for others, it is executed first. This creates a sequential flow, where each module executes only after receiving the necessary data from a preceding module's output.
 - For performance reasons, 8f4e does not include transcendental functions in its standard library. Instead, it encourages the use of polynomial approximations for these functions.
 
-## Runtimes
+## Browser runtimes
 
 There are currently two browser-based runtimes, both integrated into the development editor. These runtimes are designed to handle specific types of real-time data processing, such as MIDI events and audio signals.
 
@@ -30,6 +30,10 @@ Limitations: Please note that the sample rate is capped at 50Hz, and it requires
    - Because of browser security policies, you’ll need a user action (like a click or tap) to start audio playback or processing.
    - The input audio buffer is fine, but don’t expect studio-grade quality. As of 2024, it’s really meant for things like voice memos or audio messages.
    - If you’re using both input and output at the same time, the audio quality can take a noticeable hit in Chrome and Firefox. If you want to monitor the output while recording, Safari does a better job handling it (for now).
+ 
+## Native runtimes
+
+Coming soon...
 
 ## Future plans
 
