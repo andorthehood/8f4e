@@ -25,11 +25,11 @@ There are currently two browser-based runtimes, both integrated into the develop
 - **WebWorkerMIDIRuntime:** This runtime is for handling MIDI events, such as note on/off and control change messages. It is built on the WebWorker API and the built-in WebAssembly runtime.
 Limitations: Please note that the sample rate is capped at 50Hz, and it requires permission from the user to access MIDI resources within the browser. Also, this runtime is not supported in Safari and iOS mobile browsers.
 
-- **AudioWorkletRuntime:**  This runtime is for handling audio signal processing, ideal for creating synthesizers, or real-time audio analysis tools. It supports two standard sample rates: 22050Hz and 44100Hz. It is based on the AudioWorklet API and the built-in WebAssembly runtime in browsers.
+- **AudioWorkletRuntime:** This runtime handles audio signal processing, ideal for building synthesizers or doing real-time audio analysis. It supports standard sample rates like: 22,050 Hz and 44,100 Hz. It’s built on the AudioWorklet API and uses the browser’s WebAssembly runtime to keep things running smoothly.
 **Limitations:**
-   - Due to browser security policies, access to Audio I/O requires a user action (such as a click or tap) to begin audio playback or processing.
-   - The audio quality of the input buffer is okay-ish, not suitable for professional audio, I guess it was mainly aimed for recording voice memos or audio messages.
-   - When both input and outputs are enabled the audio quality drops a significanly in Chrome and Firefox, if you want to monitor the the output while recording, I recommend using Safari.
+   - Because of browser security policies, you’ll need a user action (like a click or tap) to start audio playback or processing.
+   - The input audio buffer is fine, but don’t expect studio-grade quality. As of 2024, it’s really meant for things like voice memos or audio messages.
+   - If you’re using both input and output at the same time, the audio quality can take a noticeable hit in Chrome and Firefox. If you want to monitor the output while recording, Safari does a better job handling it (for now).
 
 ## Future plans
 
