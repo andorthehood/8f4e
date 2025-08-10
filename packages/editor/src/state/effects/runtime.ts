@@ -35,9 +35,9 @@ export default async function runtime(state: State, events: EventDispatcher) {
 		selectedRuntime,
 	}: {
 		selectedRuntime:
-		| WebWorkerLogicRuntime['runtime']
-		| AudioWorkletRuntime['runtime']
-		| WebWorkerMIDIRuntime['runtime'];
+			| WebWorkerLogicRuntime['runtime']
+			| AudioWorkletRuntime['runtime']
+			| WebWorkerMIDIRuntime['runtime'];
 	}) {
 		if (onlineRuntime === selectedRuntime) {
 			return;
