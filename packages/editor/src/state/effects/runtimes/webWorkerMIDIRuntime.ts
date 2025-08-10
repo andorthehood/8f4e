@@ -18,7 +18,7 @@ export default function webWorkerMIDIRuntime(state: State, events: EventDispatch
 		}
 	}
 
-	function onMidiAccess(access: MIDIAccess) {
+	function onMidiAccess(access: any) {
 		midiAccess = access;
 
 		access.outputs.forEach(port => {

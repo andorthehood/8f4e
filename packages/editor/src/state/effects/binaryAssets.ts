@@ -16,6 +16,10 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 		});
 
 		const base64data = dataUrl.split(',')[1];
+
+		if (!state.project.binaryAssets) {
+			state.project.binaryAssets = [];
+		}
 		state.project.binaryAssets.push({ data: base64data, fileName: file.name });
 		events.dispatch('saveState');
 	}
