@@ -1,6 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/21e4864c-e37c-4039-85a0-baf88a997c6b/deploy-status)](https://app.netlify.com/sites/8f4e/deploys)
 
-# 8f4e
+# The Endless Framework for Experimentation 
 
 8f4e is a stack-oriented programming language with a semi-visual interface that I originally designed to perform generative music on algorave events. It's meant to be an efficient, but at the same time portable tool for real-time audio signal generation and processing. One of its most unique features is its representation of pointers using interconnected wires.
 
