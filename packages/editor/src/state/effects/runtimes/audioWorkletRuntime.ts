@@ -1,6 +1,5 @@
 // @ts-expect-error
-import workletBlobUrl from 'worklet:../../../../../audio-worklet-runtime/dist/index.js';
-
+import workletUrl from '../../../../../audio-worklet-runtime/dist/index.js?url';
 import { State } from '../../types';
 import { EventDispatcher } from '../../../events';
 
@@ -60,7 +59,7 @@ export default function audioWorkletRuntime(state: State, events: EventDispatche
 		}
 
 		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'interactive' });
-		await audioContext.audioWorklet.addModule(workletBlobUrl);
+		await audioContext.audioWorklet.addModule(workletUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
 			outputChannelCount: [2],
 			numberOfOutputs: 1,

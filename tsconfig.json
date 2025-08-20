@@ -1,13 +1,14 @@
 {
 	"compilerOptions": {
-		"lib": ["esnext", "dom"],
+		"lib": ["esnext", "dom", "dom.iterable"],
 		"module": "esnext",
 		"downlevelIteration": true,
 		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"strictNullChecks": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"types": ["node"]
 	},
 	"exclude": ["node_modules", "src/**/*.test.ts"],
 	"include": ["src/**/*.ts"],

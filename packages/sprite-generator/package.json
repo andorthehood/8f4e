@@ -8,7 +8,7 @@
 	"scripts": {
 		"test": "jest",
 		"build": "tsc",
-		"dev": "parcel visual-testing/index.html --port 3001 --hmr-port 30001 --dist-dir .parcel-dist --cache-dir .parcel-cache"
+		"dev": "vite visual-testing --port 3001 --hmr-port 30001 --config visual-testing/vite.config.js"
 	},
 	"repository": {
 		"type": "git",

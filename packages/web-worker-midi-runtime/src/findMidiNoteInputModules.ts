@@ -14,10 +14,9 @@ export default function findMidCCInputModules(
 					id.startsWith('midiccin') && memoryMap.has('channel') && memoryMap.has('cc') && memoryMap.has('channel')
 			)
 			.map(module => {
-				const notes = module.memoryMap.get('notes');
-				const gates = module.memoryMap.get('gates');
-				const velocities = module.memoryMap.get('velocities');
-				const channel = module.memoryMap.get('cc');
+				const value = module.memoryMap.get('value');
+				const cc = module.memoryMap.get('cc');
+				const channel = module.memoryMap.get('channel');
 
 				return [
 					memoryBuffer[channel?.wordAlignedAddress || 0] + '' + memoryBuffer[cc?.wordAlignedAddress || 0],
