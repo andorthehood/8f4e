@@ -22,6 +22,6 @@
 	},
 	"homepage": "https://github.com/andormade/8f4e#readme",
 	"dependencies": {
-		"@8f4e/2d-engine": "file:packages/2d-engine"
+		"@8f4e/2d-engine": "file:../2d-engine"
 	}
 }
