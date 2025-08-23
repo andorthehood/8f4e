@@ -8,6 +8,7 @@
 	"scripts": {
 		"test": "jest --passWithNoTests",
 		"build": "tsc",
+		"dev": "tsc --watch",
 		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
