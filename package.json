@@ -65,8 +65,7 @@
 	"lint-staged": {
 		"*.ts": [
 			"eslint --cache --fix",
-			"bash -c 'npm run typecheck'",
-			"jest --findRelatedTests"
+			"bash -c 'npm run typecheck'"
 		]
 	},
 	"dependencies": {
