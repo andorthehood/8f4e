@@ -18,7 +18,7 @@
 	},
 	"homepage": "https://github.com/andormade/8f4e#readme",
 	"dependencies": {
-		"@8f4e/compiler": "file:packages/compiler"
+		"@8f4e/compiler": "file:../compiler"
 	},
 	"devDependencies": {
 		"@parcel/packager-ts": "^2.8.3"
