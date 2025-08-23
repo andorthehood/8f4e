@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initBlock (int) if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "ini",
       },
@@ -12,9 +12,9 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -22,9 +22,9 @@ Array [
     "instruction": "int",
     "lineNumber": 2,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "output",
       },
@@ -32,14 +32,14 @@ Array [
     "instruction": "int",
     "lineNumber": 3,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "initBlock",
     "lineNumber": 5,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&output",
       },
@@ -47,9 +47,9 @@ Array [
     "instruction": "push",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 8,
@@ -58,18 +58,18 @@ Array [
     "instruction": "push",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 8,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "initBlockEnd",
     "lineNumber": 9,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 11,
   },
@@ -79,15 +79,15 @@ Array [
 exports[`initBlock (int) if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0))
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 
 exports[`initBlock (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "input" => Object {
+  "input" => {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -101,7 +101,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output" => Object {
+  "output" => {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,

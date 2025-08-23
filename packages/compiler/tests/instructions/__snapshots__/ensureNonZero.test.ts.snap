@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ensureNonZero (float) if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "ensureNonZero",
       },
@@ -12,9 +12,9 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -22,9 +22,9 @@ Array [
     "instruction": "float",
     "lineNumber": 1,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "output",
       },
@@ -32,9 +32,9 @@ Array [
     "instruction": "float",
     "lineNumber": 2,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&output",
       },
@@ -42,9 +42,9 @@ Array [
     "instruction": "push",
     "lineNumber": 4,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -52,18 +52,18 @@ Array [
     "instruction": "push",
     "lineNumber": 5,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "ensureNonZero",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 9,
   },
@@ -73,7 +73,7 @@ Array [
 exports[`ensureNonZero (float) if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local f32)
     i32.const 4
@@ -89,13 +89,13 @@ exports[`ensureNonZero (float) if the generated AST, WAT and memory map match th
       local.get 0
     end
     f32.store)
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 
 exports[`ensureNonZero (float) if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "input" => Object {
+  "input" => {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -109,7 +109,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output" => Object {
+  "output" => {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -127,10 +127,10 @@ Map {
 `;
 
 exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "ensureNonZero",
       },
@@ -138,9 +138,9 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -148,9 +148,9 @@ Array [
     "instruction": "int",
     "lineNumber": 1,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "output",
       },
@@ -158,9 +158,9 @@ Array [
     "instruction": "int",
     "lineNumber": 2,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&output",
       },
@@ -168,9 +168,9 @@ Array [
     "instruction": "push",
     "lineNumber": 4,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -178,18 +178,18 @@ Array [
     "instruction": "push",
     "lineNumber": 5,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "ensureNonZero",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 9,
   },
@@ -199,7 +199,7 @@ Array [
 exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 4
@@ -214,13 +214,13 @@ exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the 
       local.get 0
     end
     i32.store)
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 
 exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "input" => Object {
+  "input" => {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -234,7 +234,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output" => Object {
+  "output" => {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,

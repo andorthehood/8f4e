@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`infinite loop protection if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "loop",
       },
@@ -12,9 +12,9 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "counter",
       },
@@ -22,14 +22,14 @@ Array [
     "instruction": "int",
     "lineNumber": 1,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "loop",
     "lineNumber": 3,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&counter",
       },
@@ -37,9 +37,9 @@ Array [
     "instruction": "push",
     "lineNumber": 4,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "counter",
       },
@@ -47,9 +47,9 @@ Array [
     "instruction": "push",
     "lineNumber": 5,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 1,
@@ -58,23 +58,23 @@ Array [
     "instruction": "push",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "add",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 8,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "loopEnd",
     "lineNumber": 9,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 11,
   },
@@ -84,7 +84,7 @@ Array [
 exports[`infinite loop protection if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 0
@@ -113,13 +113,13 @@ exports[`infinite loop protection if the generated AST, WAT and memory map match
         br 0 (;@2;)
       end
     end)
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 
 exports[`infinite loop protection if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "counter" => Object {
+  "counter" => {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -133,7 +133,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "__loopErrorSignaler" => Object {
+  "__loopErrorSignaler" => {
     "byteAddress": 4,
     "default": -1,
     "elementWordSize": 4,
@@ -151,10 +151,10 @@ Map {
 `;
 
 exports[`loop if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "loop",
       },
@@ -162,9 +162,9 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "counter",
       },
@@ -172,14 +172,14 @@ Array [
     "instruction": "int",
     "lineNumber": 1,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "loop",
     "lineNumber": 3,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "counter",
       },
@@ -187,9 +187,9 @@ Array [
     "instruction": "push",
     "lineNumber": 4,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 10,
@@ -198,14 +198,14 @@ Array [
     "instruction": "push",
     "lineNumber": 5,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "equal",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 1,
@@ -214,9 +214,9 @@ Array [
     "instruction": "branchIfTrue",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&counter",
       },
@@ -224,9 +224,9 @@ Array [
     "instruction": "push",
     "lineNumber": 9,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "counter",
       },
@@ -234,9 +234,9 @@ Array [
     "instruction": "push",
     "lineNumber": 10,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 1,
@@ -245,23 +245,23 @@ Array [
     "instruction": "push",
     "lineNumber": 11,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "add",
     "lineNumber": 12,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 13,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "loopEnd",
     "lineNumber": 14,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 16,
   },
@@ -271,7 +271,7 @@ Array [
 exports[`loop if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 0
@@ -305,13 +305,13 @@ exports[`loop if the generated AST, WAT and memory map match the snapshot 2`] = 
         br 0 (;@2;)
       end
     end)
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 
 exports[`loop if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "counter" => Object {
+  "counter" => {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -325,7 +325,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "__loopErrorSignaler" => Object {
+  "__loopErrorSignaler" => {
     "byteAddress": 4,
     "default": -1,
     "elementWordSize": 4,

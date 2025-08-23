@@ -66,6 +66,7 @@ const defaultState: State = {
 			trimmedCode: [],
 			codeColors: [],
 			codeToRender: [],
+			// @ts-ignore
 			inputs: new Map(),
 			outputs: new Map(),
 			debuggers: new Map(),

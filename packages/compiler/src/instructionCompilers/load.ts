@@ -4,7 +4,7 @@ import { InstructionCompiler } from '../types';
 import { i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
 
-const instructionToByteCodeMap = {
+const instructionToByteCodeMap: Record<string, number[]> = {
 	load: i32load(),
 	load8s: i32load8s(),
 	load8u: i32load8u(),
@@ -26,10 +26,18 @@ const load: InstructionCompiler = function (line, context) {
 	if (areAllOperandsIntegers(operand)) {
 		if (operand.isSafeMemoryAddress) {
 			context.stack.push({ isInteger: true, isNonZero: false });
-			return saveByteCode(context, instructionToByteCodeMap[line.instruction]);
+			const instructions = instructionToByteCodeMap[line.instruction];
+			if (!instructions) {
+				throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
+			}
+			return saveByteCode(context, instructions);
 		} else {
 			context.stack.push({ isInteger: true, isNonZero: false });
 			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;
+			const instructions = instructionToByteCodeMap[line.instruction];
+			if (!instructions) {
+				throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
+			}
 			// Memory overflow protection.
 			return compileSegment(
 				[
@@ -43,7 +51,7 @@ const load: InstructionCompiler = function (line, context) {
 					'else',
 					`localGet ${tempVariableName}`,
 					'ifEnd',
-					...instructionToByteCodeMap[line.instruction].map(wasmInstruction => {
+					...instructions.map((wasmInstruction: number) => {
 						return `wasm ${wasmInstruction}`;
 					}),
 				],

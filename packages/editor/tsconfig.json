@@ -2,6 +2,8 @@
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": "src",
+		"noImplicitAny": false,
+		"strictNullChecks": false,
 		"paths": {
 			"@8f4e/compiler": ["../compiler/src"],
 			"@8f4e/2d-engine": ["../2d-engine/src"],

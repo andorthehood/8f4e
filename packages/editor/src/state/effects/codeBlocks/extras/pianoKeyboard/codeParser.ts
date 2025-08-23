@@ -25,7 +25,7 @@ export function parsePianoKeyboards(code: string[]) {
 				Instruction | ExtendedInstructionSet,
 				string,
 				string,
-				string
+				string,
 			];
 
 			if (instruction === 'piano') {
