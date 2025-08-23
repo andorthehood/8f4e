@@ -1,14 +1,16 @@
 {
+	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["esnext", "dom"],
-		"module": "commonjs",
-		"downlevelIteration": true,
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"outDir": "dist/",
-		"declaration": true,
-		"types": ["offscreencanvas"]
+		"outDir": "dist",
+		"rootDir": "src",
+		"strict": false,
+		"strictNullChecks": false
 	},
-	"include": ["src/**/*.ts"],
-	"exclude": ["**/__tests__/**"]
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"src/**/*.test.ts"
+	]
 }

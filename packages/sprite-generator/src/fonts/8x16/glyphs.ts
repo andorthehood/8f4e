@@ -1,4 +1,4 @@
-import ascii from './ascii';
+// import ascii from './ascii';
 
 import { invert, mirr, pad, same } from '../utils';
 

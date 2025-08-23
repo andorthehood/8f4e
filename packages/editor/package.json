@@ -5,7 +5,8 @@
 	"author": "Andor Polgar",
 	"license": "MIT",
     "scripts": {
-        "build": ""
+        "build": "",
+        "typecheck": "tsc --noEmit"
     },
 	"bugs": {
 		"url": "https://github.com/andormade/8f4e/issues"
