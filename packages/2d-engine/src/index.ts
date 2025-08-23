@@ -39,7 +39,7 @@ export class Engine {
 	bufferSize: number;
 	bufferCounter: number;
 	spriteLookup: SpriteLookup;
-	timeLocation: WebGLUniformLocation;
+	timeLocation: WebGLUniformLocation | null;
 
 	/**
 	 * If enabled, it makes the render function block the main thread until the GPU finishes rendering.
@@ -62,11 +62,7 @@ export class Engine {
 
 		const a_position = this.gl.getAttribLocation(this.program, 'a_position');
 		const a_texcoord = this.gl.getAttribLocation(this.program, 'a_texcoord');
-		const timeLocation = this.gl.getUniformLocation(this.program, 'u_time');
-		if (!timeLocation) {
-			throw new Error('Failed to get u_time uniform location');
-		}
-		this.timeLocation = timeLocation;
+		this.timeLocation = this.gl.getUniformLocation(this.program, 'u_time');
 		this.glTextureCoordinateBuffer = this.gl.createBuffer();
 		this.glPositionBuffer = this.gl.createBuffer();
 
@@ -141,7 +137,9 @@ export class Engine {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
 		const elapsedTime = (Date.now() - this.startTime) / 1000; // convert to seconds
-		this.gl.uniform1f(this.timeLocation, elapsedTime);
+		if (this.timeLocation) {
+			this.gl.uniform1f(this.timeLocation, elapsedTime);
+		}
 
 		callback(timeToRender, fps, triangles, maxTriangles);
 
