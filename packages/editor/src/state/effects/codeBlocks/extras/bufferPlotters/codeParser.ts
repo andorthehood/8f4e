@@ -13,7 +13,7 @@ export function parseBufferPlotters(code: string[]) {
 				string,
 				string,
 				string,
-				string | undefined
+				string | undefined,
 			];
 
 			if (instruction === 'plot') {

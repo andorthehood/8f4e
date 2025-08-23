@@ -38,9 +38,9 @@ declare global {
 		clear(): void;
 	}
 
-	interface MIDIInputMap extends ReadonlyMap<string, MIDIInput> {}
+	type MIDIInputMap = ReadonlyMap<string, MIDIInput>;
 
-	interface MIDIOutputMap extends ReadonlyMap<string, MIDIOutput> {}
+	type MIDIOutputMap = ReadonlyMap<string, MIDIOutput>;
 
 	interface MIDIMessageEvent extends Event {
 		readonly data: Uint8Array | null;

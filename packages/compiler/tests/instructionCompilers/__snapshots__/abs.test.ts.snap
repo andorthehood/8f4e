@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`abs  1`] = `
-Array [
+[
   33,
   0,
   32,
@@ -24,7 +24,7 @@ Array [
 `;
 
 exports[`abs  2`] = `
-Array [
+[
   139,
 ]
 `;

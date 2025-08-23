@@ -56,7 +56,7 @@ import spriteGenerator from '../src';
 		},
 	});
 
-	spriteLookups;
+	void spriteLookups;
 
 	// @ts-ignore convertToBlob
 	const blob = await canvas.convertToBlob();

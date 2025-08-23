@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`branchIfUnchanged if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "branchIfUnchanged",
       },
@@ -12,9 +12,9 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -22,9 +22,9 @@ Array [
     "instruction": "int",
     "lineNumber": 2,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "output",
       },
@@ -32,9 +32,9 @@ Array [
     "instruction": "int",
     "lineNumber": 3,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&output",
       },
@@ -42,9 +42,9 @@ Array [
     "instruction": "push",
     "lineNumber": 5,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 0,
@@ -53,14 +53,14 @@ Array [
     "instruction": "push",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "void",
       },
@@ -68,9 +68,9 @@ Array [
     "instruction": "block",
     "lineNumber": 9,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -78,9 +78,9 @@ Array [
     "instruction": "push",
     "lineNumber": 10,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 1,
@@ -89,9 +89,9 @@ Array [
     "instruction": "branchIfUnchanged",
     "lineNumber": 11,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&output",
       },
@@ -99,9 +99,9 @@ Array [
     "instruction": "push",
     "lineNumber": 12,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 1,
@@ -110,18 +110,18 @@ Array [
     "instruction": "push",
     "lineNumber": 13,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 14,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "blockEnd",
     "lineNumber": 15,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 17,
   },
@@ -131,7 +131,7 @@ Array [
 exports[`branchIfUnchanged if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 4
@@ -153,13 +153,13 @@ exports[`branchIfUnchanged if the generated AST, WAT and memory map match the sn
       i32.const 1
       i32.store
     end)
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 
 exports[`branchIfUnchanged if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "input" => Object {
+  "input" => {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -173,7 +173,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output" => Object {
+  "output" => {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -187,7 +187,7 @@ Map {
     "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
-  "__branchIfUnchanged_previousValue11" => Object {
+  "__branchIfUnchanged_previousValue11" => {
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
