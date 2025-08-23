@@ -180,7 +180,7 @@ export const fontMenu: MenuGenerator = () => [
 ];
 
 export const exampleProjectMenu: MenuGenerator = state =>
-	Object.entries(state.options.exampleProjects).map(([key, project]) => ({
+	Object.entries(state.options.exampleProjects).map(([, project]) => ({
 		title: project.title,
 		action: 'loadProject',
 		payload: { project },

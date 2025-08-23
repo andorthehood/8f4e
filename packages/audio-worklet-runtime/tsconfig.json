@@ -1,17 +1,16 @@
 {
+	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"target": "esnext",
-		"moduleResolution": "node",
-		"lib": ["esnext", "webworker"],
-		"downlevelIteration": true,
-		"esModuleInterop": true,
-		"outFile": "dist/index.js",
-		"declaration": true,
-		"skipLibCheck": true,
-		"strictNullChecks": true,
-		"module": "system",
-        "types": ["audioworklet"]
+		"outDir": "dist",
+		"rootDir": "src",
+		"target": "es2017",
+		"types": ["audioworklet"]
 	},
-	"include": ["./src/**/*.ts"],
-	"exclude": ["node_modules"]
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"src/**/*.test.ts"
+	]
 }

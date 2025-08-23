@@ -1,15 +1,14 @@
 {
+	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["esnext", "dom"],
-		"module": "commonjs",
-		"downlevelIteration": true,
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"outDir": "dist/",
-		"declaration": true,
-		"types": ["jest"],
-		"strictNullChecks": true,
+		"outDir": "dist",
+		"rootDir": "src"
 	},
-	"include": ["src/**/*.ts"],
-	"exclude": ["**/__tests__/**"]
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"src/**/*.test.ts"
+	]
 }

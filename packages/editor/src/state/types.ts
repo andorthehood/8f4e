@@ -45,7 +45,7 @@ export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset' | 
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
-export type MenuGenerator = (state: State, payload?: any) => ContextMenuItem[] | Promise<ContextMenuItem[]>;
+export type MenuGenerator = (state: State, payload?: unknown) => ContextMenuItem[] | Promise<ContextMenuItem[]>;
 
 export interface ContextMenu extends Position {
 	highlightedItem: number;
@@ -231,7 +231,7 @@ export type GraphicHelper = {
 		buttons: Array<{
 			title: string;
 			action: string;
-			payload?: any;
+			payload?: unknown;
 		}>;
 	};
 };
