@@ -13,12 +13,12 @@
 	},
 	"homepage": "https://github.com/andormade/8f4e#readme",
 	"dependencies": {
-		"@8f4e/2d-engine": "file:packages/2d-engine",
-		"@8f4e/compiler": "file:packages/compiler",
-		"@8f4e/sprite-generator": "file:packages/sprite-generator",
-		"@8f4e/compiler-worker": "file:packages/compiler-worker",
-		"@8f4e/web-worker-midi-runtime": "file:packages/web-worker-midi-runtime",
-		"@8f4e/audio-worklet-runtime": "file:packages/audio-worklet-runtime",
+		"@8f4e/2d-engine": "file:../2d-engine",
+		"@8f4e/compiler": "file:../compiler",
+		"@8f4e/sprite-generator": "file:../sprite-generator",
+		"@8f4e/compiler-worker": "file:../compiler-worker",
+		"@8f4e/web-worker-midi-runtime": "file:../web-worker-midi-runtime",
+		"@8f4e/audio-worklet-runtime": "file:../audio-worklet-runtime",
 		"buffer": "5.7.1"
 	}
 }

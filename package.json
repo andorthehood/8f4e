@@ -54,11 +54,12 @@
 	},
 	"workspaces": [
 		"packages/compiler",
-		"packages/worker",
+		"packages/compiler-worker",
 		"packages/2d-engine",
 		"packages/sprite-generator",
 		"packages/editor",
-		"packages/audio-worklet-runtime"
+		"packages/audio-worklet-runtime",
+		"packages/web-worker-midi-runtime"
 	],
 	"lint-staged": {
 		"*.ts": [
