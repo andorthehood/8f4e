@@ -4,23 +4,26 @@ import { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../..
 import { gapCalculator } from '../../../../helpers/editor';
 
 export function parseButtons(code: string[]) {
-	return code.reduce((acc, line, index) => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-			never,
-			Instruction | ExtendedInstructionSet,
-			string,
-			string,
-			string
-		];
-
-		if (instruction === 'button') {
-			return [
-				...acc,
-				{ id: args[0], lineNumber: index, onValue: parseInt(args[2], 10) || 1, offValue: parseInt(args[1], 10) || 0 },
+	return code.reduce(
+		(acc, line, index) => {
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+				never,
+				Instruction | ExtendedInstructionSet,
+				string,
+				string,
+				string,
 			];
-		}
-		return acc;
-	}, [] as Array<{ id: string; lineNumber: number; onValue: number; offValue: number }>);
+
+			if (instruction === 'button') {
+				return [
+					...acc,
+					{ id: args[0], lineNumber: index, onValue: parseInt(args[2], 10) || 1, offValue: parseInt(args[1], 10) || 0 },
+				];
+			}
+			return acc;
+		},
+		[] as Array<{ id: string; lineNumber: number; onValue: number; offValue: number }>
+	);
 }
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {
