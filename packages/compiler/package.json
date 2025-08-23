@@ -8,7 +8,8 @@
 		"test": "jest tests",
 		"coverage": "jest --coverage",
 		"build": "tsc",
-		"dev": "tsc --watch"
+		"dev": "tsc --watch",
+		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
 		"type": "git",

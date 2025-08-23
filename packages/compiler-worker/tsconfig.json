@@ -1,16 +1,14 @@
 {
+	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"target": "esnext",
-		"moduleResolution": "node",
-		"lib": ["esnext", "webworker"],
-		"module": "commonjs",
-		"downlevelIteration": true,
-		"esModuleInterop": true,
-		"outDir": "dist/",
-		"declaration": true,
-		"skipLibCheck": true,
-		"strictNullChecks": true
+		"outDir": "dist",
+		"rootDir": "src"
 	},
-	"include": ["./src/**/*.ts"],
-	"exclude": ["node_modules"]
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"src/**/*.test.ts"
+	]
 }
