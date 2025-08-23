@@ -3,7 +3,6 @@ import { State } from '../../types';
 
 export default function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 	let selectedInput: MIDIInput;
-	let midiAccess: MIDIAccess;
 
 	const workerUrl = new URL('../../../../../../packages/web-worker-midi-runtime/src/index.ts', import.meta.url);
 
@@ -18,9 +17,7 @@ export default function webWorkerMIDIRuntime(state: State, events: EventDispatch
 		}
 	}
 
-	function onMidiAccess(access: any) {
-		midiAccess = access;
-
+	function onMidiAccess(access: MIDIAccess) {
 		access.outputs.forEach(port => {
 			state.midi.outputs.push(port);
 		});

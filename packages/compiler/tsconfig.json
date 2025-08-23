@@ -1,16 +1,14 @@
 {
+	"extends": "../../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["esnext", "dom"],
-		"module": "commonjs",
-		"downlevelIteration": true,
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"outDir": "dist/",
-		"declaration": true,
-		"resolveJsonModule": true,
-		"strictNullChecks": true,
-		"types": ["node"]
+		"outDir": "dist",
+		"rootDir": "src"
 	},
-	"include": ["src/**/*.ts", "src/**/*.asm.ts"],
-	"exclude": ["dist", "node_modules", "tests", "src/**/*.test.ts"]
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"src/**/*.test.ts"
+	]
 }

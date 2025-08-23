@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"lib": ["esnext", "dom"],
+		"lib": ["esnext", "dom", "dom.iterable"],
 		"module": "esnext",
 		"downlevelIteration": true,
 		"moduleResolution": "node",
@@ -9,6 +9,10 @@
 		"strictNullChecks": true,
 		"skipLibCheck": true
 	},
-	"exclude": ["node_modules", "src/**/*.test.ts"],
-	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "packages/**/*", "src/**/*.test.ts"],
+	"include": [
+		"src/editor.ts",
+		"src/index.ts",
+		"src/examples/**/*.ts"
+	]
 }
