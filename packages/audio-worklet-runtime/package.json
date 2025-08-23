@@ -4,7 +4,8 @@
 	"description": "",
 	"scripts": {
 		"test": "jest --passWithNoTests",
-		"build": "parcel build --no-source-maps"
+		"build": "parcel build --no-source-maps",
+		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
 		"type": "git",

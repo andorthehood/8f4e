@@ -50,7 +50,7 @@ class Main extends AudioWorkletProcessor {
 		return [{ name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1 }];
 	}
 
-	process(inputs, outputs, parameters) {
+	process(inputs, outputs) {
 		for (let i = 0; i < this.audioInputBuffers.length; i++) {
 			const input = inputs[this.audioInputBuffers[i].input];
 			if (!input) {
