@@ -4,20 +4,23 @@ import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 
 export function parsePositionOffsetters(code: string[]) {
-	return code.reduce((acc, line) => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-			never,
-			Instruction | ExtendedInstructionSet,
-			string,
-			string,
-			string
-		];
+	return code.reduce(
+		(acc, line) => {
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+				never,
+				Instruction | ExtendedInstructionSet,
+				string,
+				string,
+				string,
+			];
 
-		if (instruction === 'offset') {
-			return [...acc, { axis: args[0], memory: args[1] }];
-		}
-		return acc;
-	}, [] as Array<{ axis: string; memory: string }>);
+			if (instruction === 'offset') {
+				return [...acc, { axis: args[0], memory: args[1] }];
+			}
+			return acc;
+		},
+		[] as Array<{ axis: string; memory: string }>
+	);
 }
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {

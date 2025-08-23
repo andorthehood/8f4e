@@ -1,15 +1,21 @@
 {
 	"compilerOptions": {
-		"lib": ["esnext", "dom", "dom.iterable"],
-		"module": "esnext",
-		"downlevelIteration": true,
+		"target": "ES2022",
+		"lib": ["ES2022", "dom", "dom.iterable"],
+		"module": "ESNext",
 		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
+		"isolatedModules": false,
+		"strict": false,
 		"strictNullChecks": true,
-		"skipLibCheck": true
+		"noImplicitAny": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
 	},
-	"exclude": ["node_modules", "packages/**/*", "src/**/*.test.ts"],
+	"exclude": ["node_modules", "packages/**/*", "src/**/*.test.ts", "dist"],
 	"include": [
 		"src/editor.ts",
 		"src/index.ts",
