@@ -25,7 +25,9 @@ export default function drawContextMenu(engine: Engine, state: State): void {
 					: state.graphicHelper.spriteLookups.fontMenuItemText
 			);
 		}
-		!items[i].divider && engine.drawText(0, 0, items[i].title || '');
+		if (!items[i].divider) {
+			engine.drawText(0, 0, items[i].title || '');
+		}
 		engine.endGroup();
 	}
 	engine.endGroup();

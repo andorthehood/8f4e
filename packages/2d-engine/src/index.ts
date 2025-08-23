@@ -49,7 +49,11 @@ export class Engine {
 	isPerformanceMeasurementMode: boolean;
 
 	constructor(canvas: HTMLCanvasElement) {
-		this.gl = canvas.getContext('webgl', { antialias: false, alpha: false });
+		const gl = canvas.getContext('webgl', { antialias: false, alpha: false });
+		if (!gl) {
+			throw new Error('Failed to get WebGL context');
+		}
+		this.gl = gl;
 
 		this.program = createProgram(this.gl, [
 			createShader(this.gl, textureShader, this.gl.FRAGMENT_SHADER),
@@ -58,7 +62,11 @@ export class Engine {
 
 		const a_position = this.gl.getAttribLocation(this.program, 'a_position');
 		const a_texcoord = this.gl.getAttribLocation(this.program, 'a_texcoord');
-		this.timeLocation = this.gl.getUniformLocation(this.program, 'u_time');
+		const timeLocation = this.gl.getUniformLocation(this.program, 'u_time');
+		if (!timeLocation) {
+			throw new Error('Failed to get u_time uniform location');
+		}
+		this.timeLocation = timeLocation;
 		this.glTextureCoordinateBuffer = this.gl.createBuffer();
 		this.glPositionBuffer = this.gl.createBuffer();
 
@@ -97,7 +105,11 @@ export class Engine {
 	}
 
 	endGroup(): void {
-		const [x, y] = this.offsetGroups.pop();
+		const coordinates = this.offsetGroups.pop();
+		if (!coordinates) {
+			throw new Error('No group to end');
+		}
+		const [x, y] = coordinates;
 		this.offsetX -= x;
 		this.offsetY -= y;
 	}
@@ -255,15 +267,40 @@ export class Engine {
 	drawText(posX: number, posY: number, text: string, sprites?: Array<SpriteLookup | undefined>): void {
 		for (let i = 0; i < text.length; i++) {
 			if (sprites && sprites[i]) {
-				this.spriteLookup = sprites[i];
+				const sprite = sprites[i];
+				if (sprite) {
+					this.spriteLookup = sprite;
+				}
 			}
-			const { x, y, spriteWidth, spriteHeight } = this.spriteLookup[text[i]];
+			const spriteDef = this.spriteLookup[text[i]];
+			if (!spriteDef) {
+				continue; // Skip undefined sprites
+			}
+			const { x, y, spriteWidth, spriteHeight } = spriteDef;
 			this.drawSpriteFromCoordinates(posX + i * spriteWidth, posY, spriteWidth, spriteHeight, x, y);
 		}
 	}
 
-	setUniform(name: string, ...values: unknown[]): void {
+	setUniform(name: string, ...values: number[]): void {
 		const location = this.gl.getUniformLocation(this.program, name);
-		this.gl['uniform' + values.length + 'f'](location, ...values);
+		if (!location) {
+			throw new Error(`Failed to get uniform location for: ${name}`);
+		}
+		switch (values.length) {
+			case 1:
+				this.gl.uniform1f(location, values[0]);
+				break;
+			case 2:
+				this.gl.uniform2f(location, values[0], values[1]);
+				break;
+			case 3:
+				this.gl.uniform3f(location, values[0], values[1], values[2]);
+				break;
+			case 4:
+				this.gl.uniform4f(location, values[0], values[1], values[2], values[3]);
+				break;
+			default:
+				throw new Error(`Unsupported uniform value count: ${values.length}`);
+		}
 	}
 }
