@@ -1,389 +1,389 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`test if the list matches the snapshot 1`] = `
-Array [
-  Object {
+[
+  {
     "name": "bank select",
   },
-  Object {
+  {
     "name": "modulation wheel",
   },
-  Object {
+  {
     "name": "breath controller",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "foot controller",
   },
-  Object {
+  {
     "name": "portamento time",
   },
-  Object {
+  {
     "name": "data entry slider",
   },
-  Object {
+  {
     "name": "main volume",
   },
-  Object {
+  {
     "name": "balance",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "pan position",
   },
-  Object {
+  {
     "name": "expression",
   },
-  Object {
+  {
     "name": "effect control 1",
   },
-  Object {
+  {
     "name": "effect control 2",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "general purpose",
   },
-  Object {
+  {
     "name": "general purpose",
   },
-  Object {
+  {
     "name": "general purpose",
   },
-  Object {
+  {
     "name": "general purpose",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "controller0",
   },
-  Object {
+  {
     "name": "controller1",
   },
-  Object {
+  {
     "name": "controller2",
   },
-  Object {
+  {
     "name": "controller3",
   },
-  Object {
+  {
     "name": "controller4",
   },
-  Object {
+  {
     "name": "controller5",
   },
-  Object {
+  {
     "name": "controller6",
   },
-  Object {
+  {
     "name": "controller7",
   },
-  Object {
+  {
     "name": "controller8",
   },
-  Object {
+  {
     "name": "controller9",
   },
-  Object {
+  {
     "name": "controller10",
   },
-  Object {
+  {
     "name": "controller11",
   },
-  Object {
+  {
     "name": "controller12",
   },
-  Object {
+  {
     "name": "controller13",
   },
-  Object {
+  {
     "name": "controller14",
   },
-  Object {
+  {
     "name": "controller15",
   },
-  Object {
+  {
     "name": "controller16",
   },
-  Object {
+  {
     "name": "controller17",
   },
-  Object {
+  {
     "name": "controller18",
   },
-  Object {
+  {
     "name": "controller19",
   },
-  Object {
+  {
     "name": "controller20",
   },
-  Object {
+  {
     "name": "controller21",
   },
-  Object {
+  {
     "name": "controller22",
   },
-  Object {
+  {
     "name": "controller23",
   },
-  Object {
+  {
     "name": "controller24",
   },
-  Object {
+  {
     "name": "controller25",
   },
-  Object {
+  {
     "name": "controller26",
   },
-  Object {
+  {
     "name": "controller27",
   },
-  Object {
+  {
     "name": "controller28",
   },
-  Object {
+  {
     "name": "controller29",
   },
-  Object {
+  {
     "name": "controller30",
   },
-  Object {
+  {
     "name": "controller31",
   },
-  Object {
+  {
     "name": "hold pedal",
   },
-  Object {
+  {
     "name": "portamento",
   },
-  Object {
+  {
     "name": "sostenuto pedal",
   },
-  Object {
+  {
     "name": "soft pedal",
   },
-  Object {
+  {
     "name": "legato pedal",
   },
-  Object {
+  {
     "name": "hold 2 pedal",
   },
-  Object {
+  {
     "name": "sound variation",
   },
-  Object {
+  {
     "name": "resonance",
   },
-  Object {
+  {
     "name": "sound release time",
   },
-  Object {
+  {
     "name": "sound attack time",
   },
-  Object {
+  {
     "name": "frequency cutoff",
   },
-  Object {
+  {
     "name": "sound control06",
   },
-  Object {
+  {
     "name": "sound control16",
   },
-  Object {
+  {
     "name": "sound control26",
   },
-  Object {
+  {
     "name": "sound control36",
   },
-  Object {
+  {
     "name": "sound control46",
   },
-  Object {
+  {
     "name": "decay",
   },
-  Object {
+  {
     "name": "hi pass filter cutoff",
   },
-  Object {
+  {
     "name": "general purpose button 3",
   },
-  Object {
+  {
     "name": "general purpose button 4",
   },
-  Object {
+  {
     "name": "portamento amount",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "reverb level",
   },
-  Object {
+  {
     "name": "tremolo level",
   },
-  Object {
+  {
     "name": "chorus level",
   },
-  Object {
+  {
     "name": "detune level",
   },
-  Object {
+  {
     "name": "phaser level",
   },
-  Object {
+  {
     "name": "data button increment",
   },
-  Object {
+  {
     "name": "data button decrement",
   },
-  Object {
+  {
     "name": "non-registered parameter",
   },
-  Object {
+  {
     "name": "non-registered parameter",
   },
-  Object {
+  {
     "name": "registered parameter",
   },
-  Object {
+  {
     "name": "registered parameter",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "undefined ",
   },
-  Object {
+  {
     "name": "all sound off",
   },
-  Object {
+  {
     "name": "all controllers off",
   },
-  Object {
+  {
     "name": "local keyboard (on/off)",
   },
-  Object {
+  {
     "name": "all notes off",
   },
-  Object {
+  {
     "name": "omni mode off",
   },
-  Object {
+  {
     "name": "omni mode on",
   },
-  Object {
+  {
     "name": "mono operation",
   },
-  Object {
+  {
     "name": "poly mode",
   },
 ]

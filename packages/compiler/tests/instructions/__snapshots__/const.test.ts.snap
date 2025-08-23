@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`const if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "const",
       },
@@ -12,13 +12,13 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "TEST1",
       },
-      Object {
+      {
         "isInteger": true,
         "type": "literal",
         "value": 420,
@@ -27,13 +27,13 @@ Array [
     "instruction": "const",
     "lineNumber": 2,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "TEST2",
       },
-      Object {
+      {
         "isInteger": false,
         "type": "literal",
         "value": 420.69,
@@ -42,13 +42,13 @@ Array [
     "instruction": "const",
     "lineNumber": 3,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "TEST3",
       },
-      Object {
+      {
         "isInteger": true,
         "type": "literal",
         "value": 69,
@@ -57,9 +57,9 @@ Array [
     "instruction": "const",
     "lineNumber": 4,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "output1",
       },
@@ -67,9 +67,9 @@ Array [
     "instruction": "int",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "output2",
       },
@@ -77,13 +77,13 @@ Array [
     "instruction": "float",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "output3",
       },
-      Object {
+      {
         "type": "identifier",
         "value": "TEST3",
       },
@@ -91,9 +91,9 @@ Array [
     "instruction": "int",
     "lineNumber": 8,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&output1",
       },
@@ -101,9 +101,9 @@ Array [
     "instruction": "push",
     "lineNumber": 10,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "TEST1",
       },
@@ -111,14 +111,14 @@ Array [
     "instruction": "push",
     "lineNumber": 11,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 12,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&output2",
       },
@@ -126,9 +126,9 @@ Array [
     "instruction": "push",
     "lineNumber": 14,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "TEST2",
       },
@@ -136,13 +136,13 @@ Array [
     "instruction": "push",
     "lineNumber": 15,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 16,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 18,
   },
@@ -152,7 +152,7 @@ Array [
 exports[`const if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 0
     i32.const 420
@@ -160,13 +160,13 @@ exports[`const if the generated AST, WAT and memory map match the snapshot 2`] =
     i32.const 4
     f32.const 0x1.a4b0a4p+8 (;=420.69;)
     f32.store)
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 
 exports[`const if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "output1" => Object {
+  "output1" => {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -180,7 +180,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output2" => Object {
+  "output2" => {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -194,7 +194,7 @@ Map {
     "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
-  "output3" => Object {
+  "output3" => {
     "byteAddress": 8,
     "default": 69,
     "elementWordSize": 4,

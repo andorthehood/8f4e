@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`clearStack if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "clearStack",
       },
@@ -12,9 +12,9 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 1,
@@ -23,9 +23,9 @@ Array [
     "instruction": "push",
     "lineNumber": 2,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 1,
@@ -34,13 +34,13 @@ Array [
     "instruction": "push",
     "lineNumber": 3,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "clearStack",
     "lineNumber": 4,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 6,
   },
@@ -50,13 +50,13 @@ Array [
 exports[`clearStack if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     i32.const 1
     i32.const 1
     drop
     drop)
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 

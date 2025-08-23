@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`moduleCompiler ast 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "abs",
       },
@@ -12,13 +12,13 @@ Array [
     "instruction": "module",
     "lineNumber": 1,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "DEFAULT_VALUE",
       },
-      Object {
+      {
         "isInteger": true,
         "type": "literal",
         "value": -1,
@@ -27,13 +27,13 @@ Array [
     "instruction": "int",
     "lineNumber": 4,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "in:1",
       },
-      Object {
+      {
         "type": "identifier",
         "value": "&DEFAULT_VALUE",
       },
@@ -41,13 +41,13 @@ Array [
     "instruction": "int*",
     "lineNumber": 5,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "out",
       },
-      Object {
+      {
         "isInteger": true,
         "type": "literal",
         "value": 0,
@@ -56,18 +56,18 @@ Array [
     "instruction": "int",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "arr",
       },
-      Object {
+      {
         "isInteger": true,
         "type": "literal",
         "value": 32,
       },
-      Object {
+      {
         "isInteger": true,
         "type": "literal",
         "value": -1,
@@ -76,13 +76,13 @@ Array [
     "instruction": "int[]",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "int",
       },
-      Object {
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -90,9 +90,9 @@ Array [
     "instruction": "local",
     "lineNumber": 10,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "out",
       },
@@ -100,9 +100,9 @@ Array [
     "instruction": "push",
     "lineNumber": 13,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "in:1",
       },
@@ -110,19 +110,19 @@ Array [
     "instruction": "push",
     "lineNumber": 14,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "load",
     "lineNumber": 15,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "load",
     "lineNumber": 16,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -130,9 +130,9 @@ Array [
     "instruction": "localSet",
     "lineNumber": 17,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -140,9 +140,9 @@ Array [
     "instruction": "localGet",
     "lineNumber": 18,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 0,
@@ -151,19 +151,19 @@ Array [
     "instruction": "push",
     "lineNumber": 19,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "lessThan",
     "lineNumber": 20,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "if",
     "lineNumber": 21,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 0,
@@ -172,9 +172,9 @@ Array [
     "instruction": "push",
     "lineNumber": 22,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -182,19 +182,19 @@ Array [
     "instruction": "localGet",
     "lineNumber": 23,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "sub",
     "lineNumber": 24,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "else",
     "lineNumber": 25,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -202,18 +202,18 @@ Array [
     "instruction": "localGet",
     "lineNumber": 26,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "ifEnd",
     "lineNumber": 27,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 28,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 29,
   },
@@ -221,7 +221,7 @@ Array [
 `;
 
 exports[`moduleCompiler compiled code 1`] = `
-Array [
+[
   104,
   5,
   1,

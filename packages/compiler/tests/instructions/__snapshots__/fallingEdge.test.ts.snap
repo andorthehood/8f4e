@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`fallingEdge if the generated AST, WAT and memory map match the snapshot 1`] = `
-Array [
-  Object {
-    "arguments": Array [
-      Object {
+[
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "fallingEdge",
       },
@@ -12,9 +12,9 @@ Array [
     "instruction": "module",
     "lineNumber": 0,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -22,9 +22,9 @@ Array [
     "instruction": "int",
     "lineNumber": 2,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "output",
       },
@@ -32,9 +32,9 @@ Array [
     "instruction": "int",
     "lineNumber": 3,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "&output",
       },
@@ -42,9 +42,9 @@ Array [
     "instruction": "push",
     "lineNumber": 5,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "input",
       },
@@ -52,14 +52,14 @@ Array [
     "instruction": "push",
     "lineNumber": 6,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "fallingEdge",
     "lineNumber": 7,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "type": "identifier",
         "value": "int",
       },
@@ -67,9 +67,9 @@ Array [
     "instruction": "if",
     "lineNumber": 8,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 1,
@@ -78,14 +78,14 @@ Array [
     "instruction": "push",
     "lineNumber": 9,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "else",
     "lineNumber": 10,
   },
-  Object {
-    "arguments": Array [
-      Object {
+  {
+    "arguments": [
+      {
         "isInteger": true,
         "type": "literal",
         "value": 0,
@@ -94,18 +94,18 @@ Array [
     "instruction": "push",
     "lineNumber": 11,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "ifEnd",
     "lineNumber": 12,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "store",
     "lineNumber": 13,
   },
-  Object {
-    "arguments": Array [],
+  {
+    "arguments": [],
     "instruction": "moduleEnd",
     "lineNumber": 15,
   },
@@ -115,7 +115,7 @@ Array [
 exports[`fallingEdge if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
-  (import \\"js\\" \\"memory\\" (memory (;0;) 1))
+  (import "js" "memory" (memory (;0;) 1))
   (func (;0;) (type 0)
     (local i32)
     i32.const 4
@@ -140,13 +140,13 @@ exports[`fallingEdge if the generated AST, WAT and memory map match the snapshot
       i32.const 0
     end
     i32.store)
-  (export \\"test\\" (func 0)))
+  (export "test" (func 0)))
 "
 `;
 
 exports[`fallingEdge if the generated AST, WAT and memory map match the snapshot 3`] = `
 Map {
-  "input" => Object {
+  "input" => {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -160,7 +160,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output" => Object {
+  "output" => {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -174,7 +174,7 @@ Map {
     "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
-  "__fallingEdgeDetector_previousValue7" => Object {
+  "__fallingEdgeDetector_previousValue7" => {
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
