@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`compiler compileModules 1`] = `
-Array [
-  Object {
-    "ast": Array [
-      Object {
-        "arguments": Array [
-          Object {
+[
+  {
+    "ast": [
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "abs",
           },
@@ -14,13 +14,13 @@ Array [
         "instruction": "module",
         "lineNumber": 1,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "DEFAULT_VALUE",
           },
-          Object {
+          {
             "isInteger": true,
             "type": "literal",
             "value": 0,
@@ -29,13 +29,13 @@ Array [
         "instruction": "int",
         "lineNumber": 4,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "in",
           },
-          Object {
+          {
             "type": "identifier",
             "value": "&DEFAULT_VALUE",
           },
@@ -43,13 +43,13 @@ Array [
         "instruction": "int*",
         "lineNumber": 5,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "out",
           },
-          Object {
+          {
             "isInteger": true,
             "type": "literal",
             "value": 0,
@@ -58,13 +58,13 @@ Array [
         "instruction": "int",
         "lineNumber": 6,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "test",
           },
-          Object {
+          {
             "isInteger": true,
             "type": "literal",
             "value": 1,
@@ -73,13 +73,13 @@ Array [
         "instruction": "int",
         "lineNumber": 7,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "int",
           },
-          Object {
+          {
             "type": "identifier",
             "value": "input",
           },
@@ -87,9 +87,9 @@ Array [
         "instruction": "local",
         "lineNumber": 10,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "&out",
           },
@@ -97,9 +97,9 @@ Array [
         "instruction": "push",
         "lineNumber": 13,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "in",
           },
@@ -107,9 +107,9 @@ Array [
         "instruction": "push",
         "lineNumber": 14,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "input",
           },
@@ -117,9 +117,9 @@ Array [
         "instruction": "localSet",
         "lineNumber": 15,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "input",
           },
@@ -127,9 +127,9 @@ Array [
         "instruction": "push",
         "lineNumber": 16,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "isInteger": true,
             "type": "literal",
             "value": 0,
@@ -138,19 +138,19 @@ Array [
         "instruction": "push",
         "lineNumber": 17,
       },
-      Object {
-        "arguments": Array [],
+      {
+        "arguments": [],
         "instruction": "lessThan",
         "lineNumber": 18,
       },
-      Object {
-        "arguments": Array [],
+      {
+        "arguments": [],
         "instruction": "if",
         "lineNumber": 19,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "isInteger": true,
             "type": "literal",
             "value": 0,
@@ -159,9 +159,9 @@ Array [
         "instruction": "push",
         "lineNumber": 20,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "input",
           },
@@ -169,19 +169,19 @@ Array [
         "instruction": "push",
         "lineNumber": 21,
       },
-      Object {
-        "arguments": Array [],
+      {
+        "arguments": [],
         "instruction": "sub",
         "lineNumber": 22,
       },
-      Object {
-        "arguments": Array [],
+      {
+        "arguments": [],
         "instruction": "else",
         "lineNumber": 23,
       },
-      Object {
-        "arguments": Array [
-          Object {
+      {
+        "arguments": [
+          {
             "type": "identifier",
             "value": "input",
           },
@@ -189,18 +189,18 @@ Array [
         "instruction": "push",
         "lineNumber": 24,
       },
-      Object {
-        "arguments": Array [],
+      {
+        "arguments": [],
         "instruction": "ifEnd",
         "lineNumber": 25,
       },
-      Object {
-        "arguments": Array [],
+      {
+        "arguments": [],
         "instruction": "store",
         "lineNumber": 26,
       },
-      Object {
-        "arguments": Array [],
+      {
+        "arguments": [],
         "instruction": "moduleEnd",
         "lineNumber": 27,
       },
@@ -208,8 +208,8 @@ Array [
     "byteAddress": 0,
     "id": "abs",
     "index": 0,
-    "initFunctionBody": Array [],
-    "loopFunction": Array [
+    "initFunctionBody": [],
+    "loopFunction": [
       32,
       1,
       1,
@@ -245,7 +245,7 @@ Array [
       11,
     ],
     "memoryMap": Map {
-      "DEFAULT_VALUE" => Object {
+      "DEFAULT_VALUE" => {
         "byteAddress": 0,
         "default": 0,
         "elementWordSize": 4,
@@ -259,7 +259,7 @@ Array [
         "wordAlignedAddress": 0,
         "wordAlignedSize": 1,
       },
-      "in" => Object {
+      "in" => {
         "byteAddress": 4,
         "default": 0,
         "elementWordSize": 4,
@@ -273,7 +273,7 @@ Array [
         "wordAlignedAddress": 1,
         "wordAlignedSize": 1,
       },
-      "out" => Object {
+      "out" => {
         "byteAddress": 8,
         "default": 0,
         "elementWordSize": 4,
@@ -287,7 +287,7 @@ Array [
         "wordAlignedAddress": 2,
         "wordAlignedSize": 1,
       },
-      "test" => Object {
+      "test" => {
         "byteAddress": 12,
         "default": 1,
         "elementWordSize": 4,

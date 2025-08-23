@@ -42,7 +42,7 @@ function blackKey(
 					Command.FILL_COLOR,
 					state === State.HIGHLIGHTED ? colors.pianoKeyBlackHighlighted : colors.pianoKeyBlack,
 					// eslint-disable-next-line no-mixed-spaces-and-tabs
-			  ],
+				],
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
 			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],

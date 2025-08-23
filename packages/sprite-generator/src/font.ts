@@ -187,7 +187,9 @@ export function drawCharacter(
 	const char = typeof charCode === 'string' ? charCode.charCodeAt(0) : charCode;
 	for (let i = 0; i < characterHeight; i++) {
 		forEachBit(font[char * characterHeight + i], characterWidth, function (bit, nthBit) {
-			bit && commands.push([Command.PIXEL, nthBit, i]);
+			if (bit) {
+				commands.push([Command.PIXEL, nthBit, i]);
+			}
 		});
 	}
 	return commands;
@@ -248,7 +250,7 @@ function capitalize(word: string) {
 
 export type FontLookups = {
 	[key in keyof Config['colorScheme']['text'] as `font${Capitalize<string & key>}`]: Record<
-		typeof asciiChars[number] | typeof asciiCodes[number],
+		(typeof asciiChars)[number] | (typeof asciiCodes)[number],
 		SpriteCoordinates
 	>;
 };

@@ -5,19 +5,22 @@ import { gapCalculator } from '../../../../helpers/editor';
 import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
 
 export function parseDebuggers(code: string[]) {
-	return code.reduce((acc, line, index) => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-			never,
-			Instruction | ExtendedInstructionSet,
-			string,
-			string
-		];
+	return code.reduce(
+		(acc, line, index) => {
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+				never,
+				Instruction | ExtendedInstructionSet,
+				string,
+				string,
+			];
 
-		if (instruction === 'debug') {
-			return [...acc, { id: args[0], lineNumber: index }];
-		}
-		return acc;
-	}, [] as Array<{ id: string; lineNumber: number }>);
+			if (instruction === 'debug') {
+				return [...acc, { id: args[0], lineNumber: index }];
+			}
+			return acc;
+		},
+		[] as Array<{ id: string; lineNumber: number }>
+	);
 }
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {
