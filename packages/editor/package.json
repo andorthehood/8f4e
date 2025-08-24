@@ -13,9 +13,9 @@
         "typecheck": "tsc --noEmit"
     },
 	"bugs": {
-		"url": "https://github.com/andormade/8f4e/issues"
+		"url": "https://github.com/andorthehood/8f4e/issues"
 	},
-	"homepage": "https://github.com/andormade/8f4e#readme",
+	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
 		"@8f4e/2d-engine": "file:../2d-engine",
 		"@8f4e/compiler": "file:../compiler",
