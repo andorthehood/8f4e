@@ -1,5 +1,6 @@
 import audioWorkletRuntime from './runtimes/audioWorkletRuntime';
 import webWorkerMIDIRuntime from './runtimes/webWorkerMIDIRuntime';
+import webWorkerLogicRuntime from './runtimes/webWorkerLogicRuntime';
 
 import { EventDispatcher } from '../../events';
 import { State, WebWorkerLogicRuntime, AudioWorkletRuntime, WebWorkerMIDIRuntime } from '../types';
@@ -26,8 +27,8 @@ export default async function runtime(state: State, events: EventDispatcher) {
 				onlineRuntime = 'WebWorkerMIDIRuntime';
 				break;
 			case 'WebWorkerLogicRuntime':
-				runtimeDestroyer = webWorkerMIDIRuntime(state, events);
-				onlineRuntime = 'WebWorkerMIDIRuntime';
+				runtimeDestroyer = webWorkerLogicRuntime(state, events);
+				onlineRuntime = 'WebWorkerLogicRuntime';
 		}
 	}
 
