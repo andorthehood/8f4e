@@ -23,6 +23,7 @@
 		"@8f4e/compiler-worker": "file:../compiler-worker",
 		"@8f4e/web-worker-midi-runtime": "file:../web-worker-midi-runtime",
 		"@8f4e/audio-worklet-runtime": "file:../audio-worklet-runtime",
+		"@8f4e/web-worker-logic-runtime": "file:../web-worker-logic-runtime",
 		"buffer": "5.7.1"
 	}
 }

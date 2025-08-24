@@ -16,6 +16,7 @@
 			"@8f4e/sprite-generator": ["../sprite-generator/src"],
 			"@8f4e/compiler-worker": ["../compiler-worker/src"],
 			"@8f4e/web-worker-midi-runtime": ["../web-worker-midi-runtime/src"],
+			"@8f4e/web-worker-logic-runtime": ["../web-worker-logic-runtime/src"],
 			"@8f4e/audio-worklet-runtime": ["../audio-worklet-runtime/src"]
 		}
 	},
