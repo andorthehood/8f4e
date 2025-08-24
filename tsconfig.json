@@ -17,7 +17,6 @@
 	},
 	"exclude": ["node_modules", "packages/**/*", "src/**/*.test.ts", "dist"],
 	"include": [
-		"src/editor.ts",
 		"src/index.ts",
 		"src/examples/**/*.ts"
 	]
