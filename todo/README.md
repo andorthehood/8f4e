@@ -2,19 +2,6 @@
 
 This directory contains documentation for planned improvements and technical debt. Each TODO item has its own file for better tracking and focused discussions.
 
-## Current TODO Items
-
-### 🔴 High Priority
-- `001-vite-migration.md` - Convert from Parcel to Vite build system
-
-### 🟡 Medium Priority  
-- `002-editor-package-type-safety.md` - Enable strict TypeScript in editor package
-- `003-standardize-build-scripts.md` - Consistent build commands across packages
-
-### 🟢 Low Priority
-- `004-ts-ignore-to-ts-expect-error.md` - Replace @ts-ignore with @ts-expect-error
-- `005-error-handling-patterns.md` - Standardize error handling across codebase
-
 ## File Naming Convention
 
 - **Format**: `NNN-short-description.md` (3-digit number + kebab-case description)

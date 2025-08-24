@@ -57,7 +57,8 @@
 		"packages/sprite-generator",
 		"packages/editor",
 		"packages/audio-worklet-runtime",
-		"packages/web-worker-midi-runtime"
+		"packages/web-worker-midi-runtime",
+		"packages/web-worker-logic-runtime"
 	],
 	"lint-staged": {
 		"*.ts": [
