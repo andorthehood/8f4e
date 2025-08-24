@@ -2,10 +2,13 @@
 	"name": "@8f4e/editor",
 	"version": "1.0.0",
 	"description": "8f4e",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"author": "Andor Polgar",
 	"license": "MIT",
     "scripts": {
-        "build": "",
+        "build": "tsc",
+        "dev": "tsc --watch",
         "test": "jest",
         "typecheck": "tsc --noEmit"
     },
