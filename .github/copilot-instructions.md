@@ -31,14 +31,19 @@ npm run dev
 
 ## Project Structure
 
-8f4e is a monorepo with 7 packages using npm workspaces:
+8f4e is a monorepo with 7 packages total, where 6 are configured as npm workspaces:
+
+**Workspace packages:**
 - `@8f4e/compiler` - TypeScript compiler for the 8f4e language
-- `@8f4e/editor` - Visual editor built with TypeScript and WebGL
+- `@8f4e/editor` - Visual editor built with TypeScript and WebGL  
 - `@8f4e/2d-engine` - 2D rendering engine
 - `@8f4e/sprite-generator` - Sprite generation utilities
 - `@8f4e/audio-worklet-runtime` - Browser audio processing runtime
-- `@8f4e/web-worker-midi-runtime` - Browser MIDI processing runtime
-- `@8f4e/compiler-worker` - Web Worker for compilation
+- Note: `packages/worker` workspace entry is outdated - maps to `@8f4e/compiler-worker`
+
+**Additional packages (not in workspaces):**
+- `@8f4e/compiler-worker` - Web Worker for compilation (in `packages/compiler-worker/`)
+- `@8f4e/web-worker-midi-runtime` - Browser MIDI processing runtime (in `packages/web-worker-midi-runtime/`)
 
 ## Working Effectively
 
@@ -92,6 +97,11 @@ npm run lint
 - ESLint will show warnings about `@ts-ignore` vs `@ts-expect-error` - use `npm run lint` to auto-fix most issues
 - Some unused variables in test files and audio worklet runtime - these are acceptable
 
+### Workspace Test Issues
+- `@8f4e/editor` package has no "test" script defined - this is expected
+- `@8f4e/sprite-generator` will fail with "No tests found" because it doesn't use `--passWithNoTests` 
+- Only `@8f4e/compiler` has meaningful tests (163 tests) - other workspaces either have no tests or use `--passWithNoTests`
+
 ### Build Behavior
 - `npm run build` first builds workspaces, then uses Parcel to bundle the main application
 - Parcel may show "Cannot find module" errors in browser console - these are related to dynamic imports and do not affect core functionality
@@ -104,10 +114,10 @@ npm run lint
 # Run root project tests (~2 seconds, 30 tests)
 npm test
 
-# Run workspace tests (~4 seconds, 163 compiler tests)
+# Run workspace tests (~2 seconds, 163 compiler tests, some packages may fail due to missing tests or scripts)
 npm run test --workspaces
 
-# Run specific workspace (e.g., compiler package)
+# Run specific workspace with tests (only compiler has meaningful tests)
 npm run test --workspace=@8f4e/compiler
 ```
 
@@ -115,7 +125,7 @@ npm run test --workspace=@8f4e/compiler
 After making changes, always:
 
 1. **Build Validation**: Run `npm run build` and ensure it completes without errors
-2. **Test Validation**: Run `npm test` and `npm run test --workspaces`
+2. **Test Validation**: Run `npm test` (30 tests) and optionally `npm run test --workspaces` (expect some failures from packages without tests)
 3. **Development Server**: Start `npm run dev` and verify it serves on localhost:3000
 4. **Landing Page**: Use `npm run dev-website` and test http://localhost:3000/index.html loads
 5. **Linting**: Run `npm run lint` before committing
@@ -172,7 +182,7 @@ moduleEnd
 ## Performance Notes
 
 - **Build Times**: Builds are fast (workspace: ~12 seconds, full: ~15 seconds) due to efficient TypeScript/Parcel pipeline
-- **Test Speed**: Comprehensive test suite runs in ~2-4 seconds (total 193 tests)
+- **Test Speed**: Comprehensive test suite runs in ~1-2 seconds (total 193 tests: 30 root + 163 compiler)
 - **Development**: Hot module replacement available in development mode  
 - **Production**: Optimized bundles with tree shaking and minification
 
