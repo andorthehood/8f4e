@@ -1,6 +1,6 @@
 import createModule from './createModule';
 class Main extends AudioWorkletProcessor {
-	constructor(...args) {
+	constructor(...args: ConstructorParameters<typeof AudioWorkletProcessor>) {
 		// @ts-ignore
 		super(...args);
 
@@ -28,6 +28,7 @@ class Main extends AudioWorkletProcessor {
 		this.audioInputBuffers = audioInputBuffers;
 
 		this.buffer = buffer;
+		// @ts-ignore
 		this.memoryBuffer = memoryBuffer;
 
 		this.port.postMessage({
@@ -50,7 +51,7 @@ class Main extends AudioWorkletProcessor {
 		return [{ name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1 }];
 	}
 
-	process(inputs, outputs, parameters) {
+	process(inputs: Float32Array[][], outputs: Float32Array[][]) {
 		for (let i = 0; i < this.audioInputBuffers.length; i++) {
 			const input = inputs[this.audioInputBuffers[i].input];
 			if (!input) {

@@ -3,11 +3,17 @@ import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/com
 let previousCompiledModules: CompiledModuleLookup;
 
 function compareMap(arr1: Map<number, number>, arr2: Map<number, number>): boolean {
-	return (
-		arr1.size === arr2.size &&
-		Array.from(arr1.values()).every((item, index) => item === arr2[index]) &&
-		Array.from(arr1.keys()).every((item, index) => item === arr2[index])
-	);
+	if (arr1.size !== arr2.size) {
+		return false;
+	}
+
+	for (const [key, value] of arr1) {
+		if (arr2.get(key) !== value) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: CompiledModuleLookup | undefined) {
@@ -99,6 +105,7 @@ export default async function testBuild(
 	compilerOptions: CompileOptions
 ): Promise<{ codeBuffer: Uint8Array; compiledModules: CompiledModuleLookup; allocatedMemorySize: number }> {
 	const { codeBuffer, compiledModules, allocatedMemorySize } = compile(modules, compilerOptions);
+	// @ts-ignore
 	const { instance } = await WebAssembly.instantiate(codeBuffer, {
 		js: {
 			memory: memoryRef,

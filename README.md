@@ -4,6 +4,11 @@
 
 8f4e is a stack-oriented programming language with a semi-visual interface that I originally designed to perform generative music on algorave events. It's meant to be an efficient, but at the same time portable tool for real-time audio signal generation and processing. One of its most unique features is its representation of pointers using interconnected wires.
 
+## Documentation
+
+- [`docs/instructions.md`](./docs/instructions.md) - Language instruction reference
+- [`docs/todo/`](./docs/todo/) - Technical debt and planned improvements (one file per TODO item)
+
 ## Distinctive features of the programming language
 - The syntax and commands of 8f4e were inspired by assembly languages, but instead of the typical cryptic mnemonics like `cndjmp`, 8f4e uses more descriptive operation names such as `branchIfTrue`.
 - The code is organized into modules, each containing variable declarations and a sequence of commands.

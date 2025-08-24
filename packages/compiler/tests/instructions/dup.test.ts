@@ -18,7 +18,7 @@ store
 moduleEnd
 `;
 
-const fixtures: number[] = [69, 0, -420];
+// const fixtures: number[] = [69, 0, -420];
 
 describe('dup', () => {
 	let testModule: TestModule;
