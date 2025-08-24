@@ -1,4 +1,4 @@
-import { moduleTester, expectModuleToThrow } from './testUtils';
+import { moduleTester } from './testUtils';
 
 moduleTester(
 	'block (int)',

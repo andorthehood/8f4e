@@ -4,20 +4,22 @@
 	"description": "",
 	"scripts": {
 		"test": "jest --passWithNoTests",
-		"build": "parcel build --no-source-maps"
+		"build": "parcel build --no-source-maps",
+		"dev": "parcel watch --no-source-maps",
+		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/andormade/8f4e.git"
+		"url": "git+https://github.com/andorthehood/8f4e.git"
 	},
 	"author": "Andor Polgar",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/andormade/8f4e/issues"
+		"url": "https://github.com/andorthehood/8f4e/issues"
 	},
-	"homepage": "https://github.com/andormade/8f4e#readme",
+	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
-		"@8f4e/compiler": "file:packages/compiler"
+		"@8f4e/compiler": "file:../compiler"
 	},
 	"devDependencies": {
 		"@parcel/packager-ts": "^2.8.3"

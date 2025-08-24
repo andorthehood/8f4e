@@ -9,6 +9,7 @@ export default async function createModule(
 }> {
 	const memoryBuffer = new Float32Array(memoryRef.buffer);
 
+	// @ts-ignore
 	const { instance } = await WebAssembly.instantiate(codeBuffer, {
 		js: {
 			memory: memoryRef,

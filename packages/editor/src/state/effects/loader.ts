@@ -118,9 +118,9 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		events.dispatch('saveState');
 	}
 
-	state.options.isLocalStorageEnabled
+	void (state.options.isLocalStorageEnabled
 		? loadProject({ project: localProject })
-		: loadProject({ project: state.project });
+		: loadProject({ project: state.project }));
 
 	function onSaveState() {
 		if (!state.options.isLocalStorageEnabled) {
