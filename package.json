@@ -7,9 +7,7 @@
 		"dev": "rm -rf .parcel-cache && parcel src/index.html --port 3000 --hmr-port 30000",
 		"lint": "npx eslint . --ext .ts --fix",
 		"test": "jest src",
-		"typecheck": "npm run typecheck:packages",
-		"typecheck:all": "npm run typecheck:packages",
-		"typecheck:packages": "cd packages/compiler && npm run typecheck && cd ../2d-engine && npm run typecheck && cd ../sprite-generator && npm run typecheck && cd ../editor && npm run typecheck && cd ../audio-worklet-runtime && npm run typecheck && cd ../compiler-worker && npm run typecheck && cd ../web-worker-midi-runtime && npm run typecheck",
+		"typecheck": "npm run typecheck --workspaces",
 		"prepare": "husky install"
 	},
 	"browserslist": [
