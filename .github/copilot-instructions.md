@@ -39,7 +39,7 @@ npm run dev
 - `@8f4e/2d-engine` - 2D rendering engine
 - `@8f4e/sprite-generator` - Sprite generation utilities
 - `@8f4e/audio-worklet-runtime` - Browser audio processing runtime
-- Note: `packages/worker` workspace entry is outdated - maps to `@8f4e/compiler-worker`
+- Note: `packages/worker` workspace entry in package.json is invalid - the directory does not exist
 
 **Additional packages (not in workspaces):**
 - `@8f4e/compiler-worker` - Web Worker for compilation (in `packages/compiler-worker/`)
@@ -77,7 +77,7 @@ npm run dev
 
 # Start website development server (includes both editor and landing page)
 npm run dev-website  
-# Access at http://localhost:3000/index.html or http://localhost:3000/editor
+# Access at http://localhost:3000/index.html
 
 # Run specific workspace tests
 npm run test --workspaces
@@ -99,8 +99,8 @@ npm run lint
 
 ### Workspace Test Issues
 - `@8f4e/editor` package has no "test" script defined - this is expected
-- `@8f4e/sprite-generator` will fail with "No tests found" because it doesn't use `--passWithNoTests` 
-- Only `@8f4e/compiler` has meaningful tests (163 tests) - other workspaces either have no tests or use `--passWithNoTests`
+- `@8f4e/sprite-generator` will fail because jest is not installed locally in the package 
+- Only `@8f4e/compiler` has meaningful tests (163 tests) - other workspaces either have no tests or missing test dependencies
 
 ### Build Behavior
 - `npm run build` first builds workspaces, then uses Parcel to bundle the main application
@@ -127,8 +127,7 @@ After making changes, always:
 1. **Build Validation**: Run `npm run build` and ensure it completes without errors
 2. **Test Validation**: Run `npm test` (30 tests) and optionally `npm run test --workspaces` (expect some failures from packages without tests)
 3. **Development Server**: Start `npm run dev` and verify it serves on localhost:3000
-4. **Landing Page**: Use `npm run dev-website` and test http://localhost:3000/index.html loads
-5. **Linting**: Run `npm run lint` before committing
+4. **Linting**: Run `npm run lint` before committing
 
 ### Browser Runtime Testing
 The application provides two runtimes:
