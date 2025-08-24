@@ -31,19 +31,16 @@ npm run dev
 
 ## Project Structure
 
-8f4e is a monorepo with 7 packages total, where 6 are configured as npm workspaces:
+8f4e is a monorepo with 7 packages, all configured as npm workspaces:
 
 **Workspace packages:**
 - `@8f4e/compiler` - TypeScript compiler for the 8f4e language
+- `@8f4e/compiler-worker` - Web Worker for compilation
 - `@8f4e/editor` - Visual editor built with TypeScript and WebGL  
 - `@8f4e/2d-engine` - 2D rendering engine
 - `@8f4e/sprite-generator` - Sprite generation utilities
 - `@8f4e/audio-worklet-runtime` - Browser audio processing runtime
-- Note: `packages/worker` workspace entry in package.json is invalid - the directory does not exist
-
-**Additional packages (not in workspaces):**
-- `@8f4e/compiler-worker` - Web Worker for compilation (in `packages/compiler-worker/`)
-- `@8f4e/web-worker-midi-runtime` - Browser MIDI processing runtime (in `packages/web-worker-midi-runtime/`)
+- `@8f4e/web-worker-midi-runtime` - Browser MIDI processing runtime
 
 ## Working Effectively
 
