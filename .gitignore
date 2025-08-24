@@ -5,8 +5,3 @@ node_modules
 .eslintcache
 coverage
 .playwright-mcp
-
-# Visual regression is expensive,
-# for now I don't want to invest in storing the image snapshots online,
-# and don't want the extra build time.
-__image_snapshots__
