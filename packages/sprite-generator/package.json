@@ -1,14 +1,21 @@
 {
 	"name": "@8f4e/sprite-generator",
 	"version": "1.0.0",
-	"description": "",
+	"description": "8f4e sprite generator package",
+	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"devDependencies": {},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"sideEffects": false,
 	"scripts": {
 		"test": "jest --passWithNoTests",
 		"build": "tsc",
-		"dev": "parcel visual-testing/index.html --port 3001 --hmr-port 30001 --dist-dir .parcel-dist --cache-dir .parcel-cache",
+		"dev": "tsc --watch",
 		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
