@@ -4,7 +4,7 @@ import { State } from '../../types';
 export default function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 	let selectedInput: MIDIInput;
 
-	const workerUrl = new URL('../../../../../../packages/web-worker-midi-runtime/src/index.ts', import.meta.url);
+	const workerUrl = new URL('../../../../../../packages/web-worker-midi-runtime/dist/index.js', import.meta.url);
 
 	let worker: Worker | undefined;
 
