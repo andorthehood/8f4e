@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "description": "8f4e",
   "scripts": {
-    "build": "npx nx run-many --target=build && parcel build src/*.html && cp ./src/_headers ./dist/_headers",
+    "build": "npx nx run-many --target=build --all && parcel build src/*.html && cp ./src/_headers ./dist/_headers",
+    "build:affected": "npx nx affected --target=build --base=main",
     "dev": "rm -rf .parcel-cache && parcel src/index.html --port 3000 --hmr-port 30000",
     "lint": "npx eslint . --ext .ts --fix",
-    "test": "npx nx run-many --target=test",
-    "typecheck": "npx nx run-many --target=typecheck",
+    "test": "npx nx run-many --target=test --all",
+    "test:affected": "npx nx affected --target=test --base=main",
+    "typecheck": "npx nx run-many --target=typecheck --all",
+    "typecheck:affected": "npx nx affected --target=typecheck --base=main",
+    "graph": "npx nx graph",
     "prepare": "husky install"
   },
   "repository": {
@@ -21,6 +25,7 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "devDependencies": {
+    "@nx/jest": "^21.4.1",
     "@nx/js": "^21.4.1",
     "@parcel/transformer-worklet": "^2.15.4",
     "@swc/cli": "^0.7.7",
