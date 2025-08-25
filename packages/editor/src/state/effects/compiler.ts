@@ -20,7 +20,7 @@ function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { cod
 }
 
 export default async function compiler(state: State, events: EventDispatcher) {
-	const workerUrl = new URL('../../../../../packages/compiler-worker/src/index.ts', import.meta.url);
+	const workerUrl = new URL('../../../../../packages/compiler-worker/dist/index.js', import.meta.url);
 
 	const worker = new Worker(workerUrl, {
 		type: 'module',
