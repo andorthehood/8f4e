@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 import { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
 
