@@ -30,7 +30,7 @@
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
-		"@8f4e/compiler": "file:../compiler"
+		"@8f4e/compiler": "*"
 	},
 	"devDependencies": {
 		"@types/node": "^24.3.0"
