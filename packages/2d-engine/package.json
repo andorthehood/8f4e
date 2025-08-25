@@ -1,10 +1,17 @@
 {
 	"name": "@8f4e/2d-engine",
 	"version": "1.0.0",
-	"description": "",
+	"description": "8f4e 2D engine package",
+	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"devDependencies": {},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"sideEffects": false,
 	"scripts": {
 		"test": "jest --passWithNoTests",
 		"build": "tsc",
