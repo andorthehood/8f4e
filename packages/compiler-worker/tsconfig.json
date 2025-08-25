@@ -6,8 +6,7 @@
 		"noEmit": false,
 		"declaration": true,
 		"declarationMap": true,
-		"sourceMap": true,
-		"moduleResolution": "node"
+		"sourceMap": true
 	},
 	"include": [
 		"src/**/*.ts"
