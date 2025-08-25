@@ -1,9 +1,17 @@
 {
 	"name": "@8f4e/compiler-worker",
 	"version": "1.0.0",
-	"description": "",
+	"description": "8f4e compiler worker package",
+	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"sideEffects": false,
 	"scripts": {
 		"test": "jest --passWithNoTests",
 		"build": "tsc",
