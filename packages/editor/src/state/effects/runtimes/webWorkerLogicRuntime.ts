@@ -2,7 +2,7 @@ import { EventDispatcher } from '../../../events';
 import { State } from '../../types';
 
 export default function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
-	const workerUrl = new URL('../../../../../../packages/web-worker-logic-runtime/src/index.ts', import.meta.url);
+	const workerUrl = new URL('../../../../../../packages/web-worker-logic-runtime/dist/index.js', import.meta.url);
 
 	let worker: Worker | undefined;
 
