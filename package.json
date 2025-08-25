@@ -10,9 +10,6 @@
 		"typecheck": "npm run typecheck --workspaces",
 		"prepare": "husky install"
 	},
-	"browserslist": [
-		"last 1 Chrome version"
-	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/andorthehood/8f4e.git"
