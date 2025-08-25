@@ -142,7 +142,7 @@ const defaultState: State = {
 	},
 	options: {
 		isLocalStorageEnabled: true,
-		showInfoOverlay: process.env.NODE_ENV === 'development',
+		showInfoOverlay: import.meta.env.DEV,
 		localStorageId: 'default',
 		exampleProjects: {},
 		exampleModules: {},
