@@ -72,4 +72,8 @@ Detailed description of the proposed solution:
 - Implementation notes
 - Historical context
 - Decisions made and why
-- Update log (when status changes) 
+- Update log (when status changes)
+
+## Archive Instructions
+
+When this TODO is completed, move it to the `archived/` folder to keep the main todo directory clean and organized. 
