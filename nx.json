@@ -1,18 +1,29 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": []
+  },
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"],
       "cache": true
     },
     "test": {
+      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
       "cache": true
     },
     "typecheck": {
+      "inputs": ["default", "^default"],
       "cache": true
     }
   },
-  "defaultBase": "main"
+  "generators": {
+    "@nx/js:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "nxCloudAccessToken": null,
+  "defaultBase": "HEAD~1"
 }
