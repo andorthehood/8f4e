@@ -4,10 +4,11 @@ This project now uses Nx for improved monorepo management while keeping Parcel a
 
 ## Key Benefits
 
-- **Intelligent Caching**: Nx caches build outputs and only rebuilds what's changed
+- **Local Caching**: Nx caches build outputs locally and only rebuilds what's changed
 - **Dependency Management**: Automatic build ordering based on project dependencies
 - **Affected Builds**: Only rebuild projects affected by changes
 - **Better Developer Experience**: Rich tooling and project graph visualization
+- **No Cloud Dependencies**: All caching and features work locally without external services
 
 ## Available Commands
 
