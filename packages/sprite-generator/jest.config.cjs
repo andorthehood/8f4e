@@ -1,5 +1,5 @@
 module.exports = {
-	preset: './jest-presets.js',
+	preset: './jest-presets.cjs',
 	globals: {
 		'ts-jest': {
 			tsconfig: 'tsconfig.json',
