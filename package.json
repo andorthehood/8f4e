@@ -63,9 +63,5 @@
 			"eslint --cache --fix",
 			"bash -c 'npm run typecheck'"
 		]
-	},
-	"dependencies": {
-		"@8f4e/editor": "file:packages/editor",
-		"buffer": "5.7.1"
 	}
 }
