@@ -1,6 +1,7 @@
 {
 	"name": "@8f4e/web-worker-midi-runtime",
 	"version": "1.0.0",
+	"private": true,
 	"description": "8f4e web worker MIDI runtime package",
 	"type": "module",
 	"main": "dist/index.js",
@@ -32,6 +33,6 @@
 		"@8f4e/compiler": "file:../compiler"
 	},
 	"devDependencies": {
-		"@types/node": "^22.0.0"
+		"@types/node": "^24.3.0"
 	}
 }
