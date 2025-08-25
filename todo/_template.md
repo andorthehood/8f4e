@@ -3,7 +3,7 @@
 **Priority**: 🔴/🟡/🟢  
 **Estimated Effort**: X hours/days  
 **Created**: YYYY-MM-DD  
-**Status**: Open/In Progress/Completed  
+**Status**: Open/Completed  
 
 ## Problem Description
 
