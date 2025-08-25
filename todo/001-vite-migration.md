@@ -44,13 +44,74 @@ Migrate the entire monorepo to use Vite with proper workspace support:
 - Ensure proper ESM output for modern consumption
 - Expected outcome: All packages build consistently with Vite
 
-### Step 3: Development Experience
+### Step 3: Special File Type Handling ⭐ **BASED ON RESEARCH FINDINGS**
+**Install required Vite plugins:**
+```bash
+npm install --save-dev vite-plugin-glsl vite-plugin-worklet
+# Remove Parcel-specific dependencies:
+npm uninstall @parcel/transformer-worklet glslify-bundle glslify-deps
+```
+
+**Configure Vite with special file type support:**
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import glsl from 'vite-plugin-glsl'
+import worklet from 'vite-plugin-worklet'
+
+export default defineConfig({
+  plugins: [
+    glsl({
+      include: ['**/*.glsl', '**/*.vert', '**/*.frag'],
+      defaultExtension: 'glsl',
+      warnDuplicatedImports: true,
+      watch: true
+    }),
+    worklet()
+  ]
+})
+```
+
+**Update import patterns:**
+- **GLSL shaders**: No changes needed - existing template string exports work directly
+- **AudioWorklet**: Change from `import workletBlobUrl from 'worklet:path'` to `import workletUrl from 'path?worklet'`
+- **WebAssembly**: No changes needed - existing `WebAssembly.instantiate()` works directly
+
+**Specific file changes required:**
+1. **AudioWorklet import in `packages/editor/src/state/effects/runtimes/audioWorkletRuntime.ts`:**
+   ```diff
+   - import workletBlobUrl from 'worklet:../../../../../audio-worklet-runtime/dist/index.js';
+   + import workletBlobUrl from '../../../../../audio-worklet-runtime/dist/index.js?worklet';
+   ```
+
+2. **Add TypeScript declarations in `tsconfig.json`:**
+   ```json
+   {
+     "compilerOptions": {
+       "types": [
+         "vite-plugin-glsl/ext",
+         "vite-plugin-worklet/client"
+       ]
+     }
+   }
+   ```
+
+3. **Package.json dependency updates:**
+   ```diff
+   - "@parcel/transformer-worklet": "^2.15.4",
+   - "glslify-bundle": "5.1.1",
+   - "glslify-deps": "1.3.2",
+   + "vite-plugin-glsl": "^1.7.0",
+   + "vite-plugin-worklet": "^1.0.0",
+   ```
+
+### Step 4: Development Experience
 - Configure dev server with proper proxy settings
 - Ensure HMR works correctly for all entry points
 - Test audio worklet and web worker builds
 - Expected outcome: Development workflow equal or better than current
 
-### Step 4: Production Optimization
+### Step 5: Production Optimization
 - Configure production builds with proper chunking
 - Ensure all special file types (WASM, worklets) are handled
 - Verify cross-origin headers work correctly
