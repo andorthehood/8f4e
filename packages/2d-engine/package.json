@@ -28,5 +28,7 @@
 	"bugs": {
 		"url": "https://github.com/andorthehood/8f4e/issues"
 	},
-	"homepage": "https://github.com/andorthehood/8f4e#readme"
+	"homepage": "https://github.com/andorthehood/8f4e#readme",
+	"dependencies": {},
+	"devDependencies": {}
 }
