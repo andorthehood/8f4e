@@ -1,6 +1,7 @@
 {
 	"name": "@8f4e/audio-worklet-runtime",
 	"version": "1.0.0",
+	"private": true,
 	"description": "8f4e audio worklet runtime package",
 	"type": "module",
 	"main": "dist/index.js",
@@ -30,8 +31,5 @@
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
 		"@8f4e/compiler": "file:../compiler"
-	},
-	"devDependencies": {
-		"@parcel/packager-ts": "^2.8.3"
 	}
 }
