@@ -1,8 +1,7 @@
+import initEditor, { type Project } from '@8f4e/editor';
+
 import exampleProjects from './examples/projects';
 import exampleModules from './examples/modules';
-
-import initEditor from '../packages/editor/src';
-import { Project } from '../packages/editor/src/state/types';
 
 const kebabCaseToCamelCase = (str: string) =>
 	str.replace(/-([a-z])/g, function (g) {
