@@ -1,6 +1,7 @@
 {
 	"name": "@8f4e/compiler-worker",
 	"version": "1.0.0",
+	"private": true,
 	"description": "8f4e compiler worker package",
 	"type": "module",
 	"main": "dist/index.js",
