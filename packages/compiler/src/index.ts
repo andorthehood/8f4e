@@ -34,7 +34,34 @@ import { ErrorCode, getError } from './errors';
 import { sortModules } from './gaphOptimizer';
 import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
 
-export * from './types';
+export {
+	MemoryTypes,
+	type DataStructure,
+	type MemoryMap,
+	type CompiledModule,
+	type CompiledModuleLookup,
+	type MemoryBuffer,
+	type Connection,
+	type Module,
+	ArgumentType,
+	type ArgumentLiteral,
+	type ArgumentIdentifier,
+	type Argument,
+	type AST,
+	type TestModule,
+	type Const,
+	type Consts,
+	type Namespace,
+	type Namespaces,
+	type CompilationContext,
+	type StackItem,
+	type Stack,
+	BLOCK_TYPE,
+	type BlockStack,
+	type InstructionCompiler,
+	type Error,
+	type CompileOptions,
+} from './types';
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
