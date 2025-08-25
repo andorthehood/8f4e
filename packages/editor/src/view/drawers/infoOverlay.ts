@@ -1,5 +1,5 @@
 import { Engine } from '@8f4e/2d-engine';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler/dist/consts';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler';
 
 import { State } from '../../state/types';
 
