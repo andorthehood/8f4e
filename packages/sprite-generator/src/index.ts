@@ -13,7 +13,7 @@ import ascii6x10 from './fonts/6x10/ascii';
 import glyphs8x16 from './fonts/8x16/glyphs';
 import glyphs6x10 from './fonts/6x10/glyphs';
 
-export type { Icon } from './icons';
+export { Icon } from './icons';
 export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
 
