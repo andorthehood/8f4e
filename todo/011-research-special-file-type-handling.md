@@ -7,7 +7,9 @@
 
 ## Problem Description
 
-The project uses several special file types and technologies that require special handling in Vite, unlike the current Parcel setup. These need to be researched and solutions implemented before migration:
+The project uses several special file types and technologies that require special handling in Vite, unlike the current Parcel setup. These need to be researched and solutions implemented before migration. **The main goal of this research is to update `todo/001-vite-migration.md` with a concrete, actionable migration plan based on the findings.**
+
+**GLSL Shaders:**
 
 **GLSL Shaders:**
 - Currently using `glslify-bundle` and `glslify-deps` for shader processing
@@ -42,64 +44,38 @@ The project uses several special file types and technologies that require specia
 
 ## Proposed Solution
 
-Research and implement Vite-compatible solutions for each special file type:
-
-1. **Research Vite plugins** for GLSL shader handling
-2. **Investigate Vite's WASM support** and update usage patterns
-3. **Find AudioWorklet alternatives** that work with Vite
-4. **Test all solutions** to ensure they work correctly
-5. **Document migration steps** for each file type
+Research Vite-compatible solutions for each special file type and document the findings in a concrete migration plan that will be added to `todo/001-vite-migration.md`.
 
 ## Implementation Plan
 
 ### Step 1: Research GLSL shader handling in Vite
 - Investigate Vite plugins for GLSL processing (e.g., `vite-plugin-glsl`, `vite-plugin-glslify`)
 - Compare with current `glslify-bundle` and `glslify-deps` functionality
-- Test shader import/export patterns with Vite
-- Expected outcome: Identified Vite plugin(s) for GLSL handling
+- Expected outcome: Understanding of Vite GLSL handling requirements
 
 ### Step 2: Research WebAssembly handling in Vite
 - Study Vite's built-in WASM support and limitations
 - Research Vite plugins for enhanced WASM handling if needed
-- Test current `WebAssembly.instantiate()` patterns with Vite
-- Verify `wabt` dependency compatibility
-- Expected outcome: Understanding of WASM handling requirements in Vite
+- Expected outcome: Understanding of Vite WASM handling requirements
 
 ### Step 3: Research AudioWorklet alternatives for Vite
 - Investigate Vite plugins for AudioWorklet processing
 - Research alternatives to `@parcel/transformer-worklet`
-- Test AudioWorklet loading and instantiation with Vite
-- Expected outcome: Identified Vite-compatible AudioWorklet solution
+- Expected outcome: Understanding of Vite AudioWorklet handling requirements
 
-### Step 4: Test solutions with sample files
-- Create test cases for each file type
-- Verify that shaders compile and load correctly
-- Test WASM instantiation works as expected
-- Verify AudioWorklet functionality is preserved
-- Expected outcome: Working proof-of-concept for each file type
-
-### Step 5: Plan migration strategy
-- Document required Vite plugins and configurations
+### Step 4: Create migration plan
+- Document required Vite plugins and configurations for each file type
 - Plan dependency updates and removals
 - Identify any code changes needed
-- Create migration checklist for each file type
-- Expected outcome: Complete migration plan for special file types
-
-### Step 6: Update project documentation
-- Document Vite-specific requirements for each file type
-- Update development guidelines for working with special files
-- Create troubleshooting guide for common issues
-- Expected outcome: Comprehensive documentation for developers
+- **Update `todo/001-vite-migration.md` with concrete migration steps based on research findings**
+- Expected outcome: Complete migration plan added to vite-migration.md
 
 ## Success Criteria
 
-- [ ] Vite-compatible GLSL shader handling solution identified and tested
-- [ ] Vite WASM handling requirements understood and documented
-- [ ] Vite-compatible AudioWorklet solution identified and tested
-- [ ] All special file types work correctly with Vite
-- [ ] Migration plan documented with specific steps
-- [ ] Dependencies updated to remove Parcel-specific packages
-- [ ] Development documentation updated for Vite workflow
+- [ ] Vite GLSL shader handling requirements researched and documented
+- [ ] Vite WASM handling requirements researched and documented
+- [ ] Vite AudioWorklet handling requirements researched and documented
+- [ ] **`todo/001-vite-migration.md` updated with concrete migration plan based on research findings**
 
 ## Affected Components
 
@@ -107,19 +83,16 @@ Research and implement Vite-compatible solutions for each special file type:
 - **AudioWorklet**: `packages/audio-worklet-runtime/src/*.ts`
 - **WebAssembly**: All packages using `WebAssembly.instantiate()`
 - **Dependencies**: Root and package-level package.json files
-- **Build Configuration**: Vite config files (to be created)
-- **Documentation**: Development guides and migration docs
+- **Documentation**: `todo/001-vite-migration.md` (to be updated with migration plan)
 
 ## Risks & Considerations
 
 - **Risk 1**: Vite may not have equivalent functionality for some Parcel features
   - Mitigation: Research alternatives, consider custom plugins if needed
-- **Risk 2**: Some file types may require significant code changes
-  - Mitigation: Test thoroughly, plan incremental migration
-- **Risk 3**: Performance characteristics may differ between Parcel and Vite
-  - Mitigation: Benchmark critical operations, optimize if needed
+- **Risk 2**: Research may reveal significant migration challenges
+  - Mitigation: Document all findings thoroughly, plan accordingly
 - **Dependencies**: Should be done before full Vite migration
-- **Breaking Changes**: High risk - may require significant code updates
+- **Scope**: This is research only - no implementation or testing required
 
 ## Related Items
 
