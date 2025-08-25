@@ -1,6 +1,5 @@
 # Migrate to Nx
 
-# Migrate to Nx
 
 ## Status
 - [x] Install Nx globally
