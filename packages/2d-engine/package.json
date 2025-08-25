@@ -1,6 +1,7 @@
 {
 	"name": "@8f4e/2d-engine",
 	"version": "1.0.0",
+	"private": true,
 	"description": "8f4e 2D engine package",
 	"type": "module",
 	"main": "dist/index.js",
