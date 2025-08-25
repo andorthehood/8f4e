@@ -16,7 +16,7 @@ import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils';
 import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
 
-export { MemoryTypes, MemoryMap } from './types';
+export type { MemoryTypes, MemoryMap } from './types';
 
 export const instructionParser =
 	/^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
