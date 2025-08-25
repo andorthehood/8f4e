@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "8f4e",
   "scripts": {
-    "build": "nx run-many --target=build && parcel build src/*.html && cp ./src/_headers ./dist/_headers",
+    "build": "npx nx run-many --target=build && parcel build src/*.html && cp ./src/_headers ./dist/_headers",
     "dev": "rm -rf .parcel-cache && parcel src/index.html --port 3000 --hmr-port 30000",
     "lint": "npx eslint . --ext .ts --fix",
-    "test": "nx run-many --target=test",
-    "typecheck": "nx run-many --target=typecheck",
+    "test": "npx nx run-many --target=test",
+    "typecheck": "npx nx run-many --target=typecheck",
     "prepare": "husky install"
   },
   "repository": {
