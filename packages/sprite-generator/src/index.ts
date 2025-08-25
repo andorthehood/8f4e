@@ -14,7 +14,7 @@ import glyphs8x16 from './fonts/8x16/glyphs';
 import glyphs6x10 from './fonts/6x10/glyphs';
 
 export { Icon } from './icons';
-export { ColorScheme, Font } from './types';
+export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
 
 const fonts: Record<

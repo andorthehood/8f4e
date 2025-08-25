@@ -107,7 +107,8 @@ export const moduleCategoriesMenu: MenuGenerator = state => {
 	});
 };
 
-export const builtInModuleMenu: MenuGenerator = (state, { category }: { category: string }) => {
+export const builtInModuleMenu: MenuGenerator = (state, payload = {}) => {
+	const { category } = payload as { category: string };
 	return Object.entries(state.options.exampleModules)
 		.filter(([, module]) => module.category == category)
 		.map(([, module]) => {
