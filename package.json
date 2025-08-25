@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npx nx run-many --target=build --all && vite build",
     "build:affected": "npx nx affected --target=build --base=main",
-    "dev": "vite",
+    "dev": "concurrently \"npx nx run editor:build --watch\" \"vite\"",
     "lint": "npx eslint . --ext .ts --fix",
     "test": "npx nx run-many --target=test --all",
     "test:affected": "npx nx affected --target=test --base=main",
@@ -38,6 +38,7 @@
     "@types/offscreencanvas": "2019.7.0",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
+    "concurrently": "^9.2.1",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.5.4",
