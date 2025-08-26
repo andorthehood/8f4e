@@ -100,25 +100,30 @@ export const moduleMenu: MenuGenerator = state => [
 	},
 ];
 
-export const moduleCategoriesMenu: MenuGenerator = state => {
-	const categories = [...new Set(Object.entries(state.options.modules).map(([, module]) => module.category))];
+export const moduleCategoriesMenu: MenuGenerator = async state => {
+	const modules = await state.options.getListOfModules();
+	const categories = [...new Set(modules.map(module => module.category))];
 	return categories.map(category => {
 		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
 	});
 };
 
-export const builtInModuleMenu: MenuGenerator = (state, payload = {}) => {
+export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
 	const { category } = payload as { category: string };
-	return Object.entries(state.options.modules)
-		.filter(([, module]) => module.category == category)
-		.map(([, module]) => {
-			return {
-				title: module.title,
-				action: 'addCodeBlock',
-				payload: { code: module.code.split('\n') },
-				close: true,
-			};
+	const modules = await state.options.getListOfModules();
+	const filteredModules = modules.filter(module => module.category === category);
+
+	const menuItems = [];
+	for (const moduleMetadata of filteredModules) {
+		const module = await state.options.getModule(moduleMetadata.slug);
+		menuItems.push({
+			title: module.title,
+			action: 'addCodeBlock',
+			payload: { code: module.code.split('\n') },
+			close: true,
 		});
+	}
+	return menuItems;
 };
 
 export const sampleRateMenu: MenuGenerator = () => [
@@ -180,10 +185,17 @@ export const fontMenu: MenuGenerator = () => [
 	{ title: '6x10', action: 'setFont', payload: { font: '6x10' }, close: false },
 ];
 
-export const projectMenu: MenuGenerator = state =>
-	Object.entries(state.options.projects).map(([, project]) => ({
-		title: project.title,
-		action: 'loadProject',
-		payload: { project },
-		close: true,
-	}));
+export const projectMenu: MenuGenerator = async state => {
+	const projects = await state.options.getListOfProjects();
+	const menuItems = [];
+	for (const projectMetadata of projects) {
+		const project = await state.options.getProject(projectMetadata.slug);
+		menuItems.push({
+			title: project.title,
+			action: 'loadProject',
+			payload: { project },
+			close: true,
+		});
+	}
+	return menuItems;
+};
