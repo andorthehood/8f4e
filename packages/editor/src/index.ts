@@ -5,10 +5,12 @@ import initView from './view';
 import initState from './state';
 
 // Re-export types that consumers might need
-export type { Project, Options } from './state/types';
+export type { Project, Options, State } from './state/types';
+export type { RuntimeFactory, RuntimeType } from './state/effects/runtime';
+export type { EventDispatcher } from './events';
 export type { FeatureFlags, FeatureFlagsConfig } from './config/featureFlags';
 
-export default async function init(canvas: HTMLCanvasElement, project: Project, options: Partial<Options>) {
+export default async function init(canvas: HTMLCanvasElement, project: Project, options: Options) {
 	const events = initEvents();
 	humanInterface(canvas, events);
 	const state = initState(events, project, options);
