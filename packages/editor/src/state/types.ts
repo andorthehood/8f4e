@@ -66,6 +66,14 @@ export interface BuildError {
 	moduleId: string;
 }
 
+export interface CompilationResult {
+	compiledModules: CompiledModuleLookup;
+	codeBuffer: Uint8Array;
+	allocatedMemorySize: number;
+	memoryRef: WebAssembly.Memory;
+	buildErrors: BuildError[]; // Always empty array on success
+}
+
 export interface Compiler {
 	codeBuffer: Uint8Array;
 	compilationTime: number;
@@ -339,6 +347,7 @@ export interface Options {
 	getModule: (slug: string) => Promise<ExampleModule>;
 	getListOfProjects: () => Promise<ProjectMetadata[]>;
 	getProject: (slug: string) => Promise<Project>;
+	compileProject: (project: Project, options: CompileOptions) => Promise<CompilationResult>;
 
 	// Storage callbacks
 	loadProjectFromStorage?: (storageId: string) => Promise<Project | null>;
