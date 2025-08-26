@@ -1,11 +1,10 @@
-import { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure } from '@8f4e/compiler';
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
 
-// Import runtime types early to use in Options interface
 import type { RuntimeFactory, RuntimeType } from './effects/runtime';
+import type { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure } from '@8f4e/compiler';
 
 export interface CodeBlock {
 	code: string[];
