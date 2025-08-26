@@ -1,5 +1,6 @@
 // Import worklet as a URL and create blob manually
-import workletUrl from '../../../../../audio-worklet-runtime/dist/index.js?url';
+import workletUrl from '@8f4e/audio-worklet-runtime?url';
+
 import { State } from '../../types';
 import { EventDispatcher } from '../../../events';
 
@@ -59,6 +60,9 @@ export default function audioWorkletRuntime(state: State, events: EventDispatche
 		}
 
 		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'interactive' });
+
+		console.log('DEBUG: initAudioContext', workletUrl);
+
 		await audioContext.audioWorklet.addModule(workletUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
 			outputChannelCount: [2],
