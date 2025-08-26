@@ -162,15 +162,17 @@ export default function init(events: EventDispatcher, project: Project, options:
 	// Initialize feature flags, maintaining backward compatibility
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	// Apply backward compatibility for existing options
-	if (options.showInfoOverlay !== undefined) {
-		featureFlags.infoOverlay = options.showInfoOverlay;
-	} else {
-		// Maintain DEV environment default for info overlay
-		featureFlags.infoOverlay = import.meta.env.DEV;
+	// Apply backward compatibility: only apply legacy options if feature flags don't override them
+	if (options.featureFlags?.infoOverlay === undefined) {
+		if (options.showInfoOverlay !== undefined) {
+			featureFlags.infoOverlay = options.showInfoOverlay;
+		} else {
+			// Maintain DEV environment default for info overlay
+			featureFlags.infoOverlay = import.meta.env.DEV;
+		}
 	}
 
-	if (options.isLocalStorageEnabled !== undefined) {
+	if (options.featureFlags?.localStorage === undefined && options.isLocalStorageEnabled !== undefined) {
 		featureFlags.localStorage = options.isLocalStorageEnabled;
 	}
 
