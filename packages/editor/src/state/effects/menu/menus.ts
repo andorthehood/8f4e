@@ -37,7 +37,7 @@ export const mainMenu: MenuGenerator = state => [
 	{ title: 'New Project', action: 'new', close: true },
 	{ divider: true },
 	{ title: 'Open From Disk', action: 'open', close: true },
-	{ title: 'Open Example Project', action: 'openSubMenu', payload: { menu: 'exampleProjectMenu' }, close: false },
+	{ title: 'Open Project', action: 'openSubMenu', payload: { menu: 'projectMenu' }, close: false },
 	{ divider: true },
 	{ title: 'Export Project', action: 'save', close: true },
 	{ divider: true },
@@ -101,7 +101,7 @@ export const moduleMenu: MenuGenerator = state => [
 ];
 
 export const moduleCategoriesMenu: MenuGenerator = state => {
-	const categories = [...new Set(Object.entries(state.options.exampleModules).map(([, module]) => module.category))];
+	const categories = [...new Set(Object.entries(state.options.modules).map(([, module]) => module.category))];
 	return categories.map(category => {
 		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
 	});
@@ -109,7 +109,7 @@ export const moduleCategoriesMenu: MenuGenerator = state => {
 
 export const builtInModuleMenu: MenuGenerator = (state, payload = {}) => {
 	const { category } = payload as { category: string };
-	return Object.entries(state.options.exampleModules)
+	return Object.entries(state.options.modules)
 		.filter(([, module]) => module.category == category)
 		.map(([, module]) => {
 			return {
@@ -180,8 +180,8 @@ export const fontMenu: MenuGenerator = () => [
 	{ title: '6x10', action: 'setFont', payload: { font: '6x10' }, close: false },
 ];
 
-export const exampleProjectMenu: MenuGenerator = state =>
-	Object.entries(state.options.exampleProjects).map(([, project]) => ({
+export const projectMenu: MenuGenerator = state =>
+	Object.entries(state.options.projects).map(([, project]) => ({
 		title: project.title,
 		action: 'loadProject',
 		payload: { project },
