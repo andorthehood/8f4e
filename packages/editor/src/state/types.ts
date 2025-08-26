@@ -4,6 +4,9 @@ import { SpriteLookup } from '@8f4e/2d-engine';
 
 import { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
 
+// Import runtime types early to use in Options interface
+import type { RuntimeFactory, RuntimeType } from './effects/runtime';
+
 export interface CodeBlock {
 	code: string[];
 	isOpen: boolean;
@@ -322,7 +325,11 @@ export interface Options {
 	exampleProjects: Record<string, Project>;
 	exampleModules: Record<string, ExampleModule>;
 	featureFlags?: FeatureFlagsConfig;
+	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
 }
+
+// Re-export runtime types from the effects module for convenience
+export type { RuntimeFactory, RuntimeType };
 
 export interface EditorSettings {
 	colorScheme: string;

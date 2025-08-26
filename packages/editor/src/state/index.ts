@@ -1,4 +1,5 @@
-import { Options, Project, State } from './types';
+import { Options, Project, State, CodeBlockGraphicData } from './types';
+import { Font } from '@8f4e/sprite-generator';
 import _switch from './effects/codeBlocks/extras/switches/interaction';
 import button from './effects/codeBlocks/extras/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
@@ -24,7 +25,8 @@ import { EventDispatcher } from '../events';
 const maxMemorySize = 10000;
 const initialMemorySize = 1000;
 
-const defaultState: State = {
+// Default state without the runtime callback (will be merged with provided options)
+const defaultStateBase = {
 	compiler: {
 		codeBuffer: new Uint8Array(),
 		compilationTime: 0,
@@ -67,18 +69,9 @@ const defaultState: State = {
 			trimmedCode: [],
 			codeColors: [],
 			codeToRender: [],
-			// @ts-ignore
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			bufferPlotters: new Map(),
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
 			id: '',
 			gaps: new Map(),
-			errorMessages: new Map(),
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -93,7 +86,17 @@ const defaultState: State = {
 				x: 0,
 				y: 0,
 			},
-			codeBlocks: new Set(),
+			codeBlocks: new Set<CodeBlockGraphicData>(),
+			extras: {
+				inputs: new Map(),
+				outputs: new Map(),
+				debuggers: new Map(),
+				switches: new Map(),
+				buttons: new Map(),
+				pianoKeyboards: new Map(),
+				bufferPlotters: new Map(),
+				errorMessages: new Map(),
+			},
 		},
 		// @ts-ignore
 		activeViewport: undefined,
@@ -123,53 +126,31 @@ const defaultState: State = {
 			menuStack: [],
 		},
 	},
-	project: {
-		title: '',
-		author: '',
-		description: '',
-		codeBlocks: [],
-		viewport: {
-			x: 0,
-			y: 0,
-		},
-		selectedRuntime: 0,
-		runtimeSettings: [
-			{
-				sampleRate: 50,
-				runtime: 'WebWorkerLogicRuntime',
-			},
-		],
-		binaryAssets: [],
-	},
-	options: {
-		localStorageId: 'default',
-		exampleProjects: {},
-		exampleModules: {},
-	},
 	editorSettings: {
 		colorScheme: 'hackerman',
-		font: '8x16',
+		font: '8x16' as Font,
 	},
 	featureFlags: defaultFeatureFlags,
+	compilationTime: 0,
 };
 
-defaultState.graphicHelper.activeViewport = defaultState.graphicHelper.baseCodeBlock;
-defaultState.graphicHelper.baseCodeBlock.parent = defaultState.graphicHelper.baseCodeBlock;
+defaultStateBase.graphicHelper.activeViewport = defaultStateBase.graphicHelper.baseCodeBlock;
+defaultStateBase.graphicHelper.baseCodeBlock.parent = defaultStateBase.graphicHelper.baseCodeBlock;
 
-export default function init(events: EventDispatcher, project: Project, options: Partial<Options>): State {
+export default function init(events: EventDispatcher, project: Project, options: Options): State {
 	// Initialize feature flags
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	const state = {
-		...defaultState,
+	const state: State = {
+		...defaultStateBase,
 		project,
-		options: { ...defaultState.options, ...options },
+		options,
 		featureFlags,
 	};
 
 	runtime(state, events);
 	sampleRate(state, events);
-	loader(state, events, defaultState);
+	loader(state, events, state);
 	codeBlockDragger(state, events);
 	codeBlockOpener(state, events);
 	nestedCodeBlocksOpener(state, events);
