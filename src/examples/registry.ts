@@ -1,325 +1,125 @@
 import type { ExampleModule, ModuleMetadata, Project, ProjectMetadata } from '../../packages/editor/src/state/types';
 
-// Example modules registry with metadata and lazy loading
-interface ModuleRegistryEntry {
-	metadata: ModuleMetadata;
-	loader: () => Promise<ExampleModule>;
-}
+// Module metadata (organized for easy maintenance)
+export const moduleMetadata: Record<string, ModuleMetadata> = {
+	audioBufferOut: { slug: 'audioBufferOut', title: 'Audio Buffer Out', category: 'Audio Buffer' },
+	midiCodes: { slug: 'midiCodes', title: 'MIDI Codes', category: 'MIDI' },
+	quantizer: { slug: 'quantizer', title: 'Quantizer', category: 'Effects' },
+	binaryGateSequencer: { slug: 'binaryGateSequencer', title: 'Binary Gate Sequencer', category: 'Sequencers' },
+	midiNoteOut: { slug: 'midiNoteOut', title: 'MIDI Note Out', category: 'MIDI' },
+	midiCCOut: { slug: 'midiCCOut', title: 'MIDI CC Out', category: 'MIDI' },
+	generalMIDIDrumCodes: { slug: 'generalMIDIDrumCodes', title: 'General MIDI Drum Codes', category: 'MIDI' },
+	bitwiseAnd: { slug: 'bitwiseAnd', title: 'Bitwise And', category: 'Logic' },
+	bitwiseOr: { slug: 'bitwiseOr', title: 'Bitwise Or', category: 'Logic' },
+	bitwiseXor: { slug: 'bitwiseXor', title: 'Bitwise Xor', category: 'Logic' },
+	break16Step1: { slug: 'break16Step1', title: 'Break 16 Step 1', category: 'Sequencers' },
+	break16Step2: { slug: 'break16Step2', title: 'Break 16 Step 2', category: 'Sequencers' },
+	decToBin8bitMSb: { slug: 'decToBin8bitMSb', title: 'Dec to Bin 8bit MSb', category: 'Converters' },
+	amenBreak64Step: { slug: 'amenBreak64Step', title: 'Amen Break 64 Step', category: 'Sequencers' },
+	clockDivider: { slug: 'clockDivider', title: 'Clock Divider', category: 'Timing' },
+	sineLookupTable: { slug: 'sineLookupTable', title: 'Sine Lookup Table', category: 'Oscillators' },
+	sawSignedFloat: { slug: 'sawSignedFloat', title: 'Saw Signed Float', category: 'Oscillators' },
+	sawUnsignedFloat: { slug: 'sawUnsignedFloat', title: 'Saw Unsigned Float', category: 'Oscillators' },
+	squareSignedFloat: { slug: 'squareSignedFloat', title: 'Square Signed Float', category: 'Oscillators' },
+	triangleSignedFloat: { slug: 'triangleSignedFloat', title: 'Triangle Signed Float', category: 'Oscillators' },
+	scopeUnsignedInt: { slug: 'scopeUnsignedInt', title: 'Scope Unsigned Int', category: 'Debug' },
+	scopeSignedFloat: { slug: 'scopeSignedFloat', title: 'Scope Signed Float', category: 'Debug' },
+	binSwitchesLSb: { slug: 'binSwitchesLSb', title: 'Binary Switches LSb', category: 'Input' },
+	binSwitchesMSb: { slug: 'binSwitchesMSb', title: 'Binary Switches MSb', category: 'Input' },
+	switchGatesInt: { slug: 'switchGatesInt', title: 'Switch Gates Int', category: 'Logic' },
+	switchGatesFloat: { slug: 'switchGatesFloat', title: 'Switch Gates Float', category: 'Logic' },
+	mulFloat: { slug: 'mulFloat', title: 'Multiple Float', category: 'Math' },
+	mulInt: { slug: 'mulInt', title: 'Multiple Int', category: 'Math' },
+	sequentialDemuxFloat: { slug: 'sequentialDemuxFloat', title: 'Sequential Demux Float', category: 'Routing' },
+	sequentialDemuxInt: { slug: 'sequentialDemuxInt', title: 'Sequential Demux Int', category: 'Routing' },
+	sequentialMuxFloat: { slug: 'sequentialMuxFloat', title: 'Sequential Mux Float', category: 'Routing' },
+	sequentialMuxInt: { slug: 'sequentialMuxInt', title: 'Sequential Mux Int', category: 'Routing' },
+	sequencerFloat: { slug: 'sequencerFloat', title: 'Sequencer Float', category: 'Sequencers' },
+	sequencerInt: { slug: 'sequencerInt', title: 'Sequencer Int', category: 'Sequencers' },
+	shiftRegisterInt: { slug: 'shiftRegisterInt', title: 'Shift Register Int', category: 'Logic' },
+	shiftRegisterFloat: { slug: 'shiftRegisterFloat', title: 'Shift Register Float', category: 'Logic' },
+	binaryShiftRegister: { slug: 'binaryShiftRegister', title: 'Binary Shift Register', category: 'Logic' },
+	linearCongruentialGenerator: {
+		slug: 'linearCongruentialGenerator',
+		title: 'Linear Congruential Generator',
+		category: 'Random',
+	},
+	peakHolderNegativeFloat: {
+		slug: 'peakHolderNegativeFloat',
+		title: 'Peak Holder Negative Float',
+		category: 'Effects',
+	},
+	XORShift: { slug: 'XORShift', title: 'XOR Shift', category: 'Random' },
+	midiPianoKeyboardC3: { slug: 'midiPianoKeyboardC3', title: 'MIDI Piano Keyboard C3', category: 'Input' },
+	bufferCombinerFloat: { slug: 'bufferCombinerFloat', title: 'Buffer Combiner Float', category: 'Buffers' },
+	bufferCombinerInt: { slug: 'bufferCombinerInt', title: 'Buffer Combiner Int', category: 'Buffers' },
+	bufferCopierFloat: { slug: 'bufferCopierFloat', title: 'Buffer Copier Float', category: 'Buffers' },
+	bufferCopierInt: { slug: 'bufferCopierInt', title: 'Buffer Copier Int', category: 'Buffers' },
+	bufferReverserFloat: { slug: 'bufferReverserFloat', title: 'Buffer Reverser Float', category: 'Buffers' },
+	bufferReverserInt: { slug: 'bufferReverserInt', title: 'Buffer Reverser Int', category: 'Buffers' },
+	bufferReplicatorWithOffsetInt: {
+		slug: 'bufferReplicatorWithOffsetInt',
+		title: 'Buffer Replicator With Offset Int',
+		category: 'Buffers',
+	},
+	bufferReplicatorWithOffsetFloat: {
+		slug: 'bufferReplicatorWithOffsetFloat',
+		title: 'Buffer Replicator With Offset Float',
+		category: 'Buffers',
+	},
+	bufferIntToFloat: { slug: 'bufferIntToFloat', title: 'Buffer Int To Float', category: 'Converters' },
+	bufferFloatToInt: { slug: 'bufferFloatToInt', title: 'Buffer Float To Int', category: 'Converters' },
+	sampleAndHoldFloat: { slug: 'sampleAndHoldFloat', title: 'Sample And Hold Float', category: 'Effects' },
+	sampleAndHoldInt: { slug: 'sampleAndHoldInt', title: 'Sample And Hold Int', category: 'Effects' },
+	masterClock: { slug: 'masterClock', title: 'Master Clock', category: 'Timing' },
+	changeDetectorInt: { slug: 'changeDetectorInt', title: 'Change Detector Int', category: 'Logic' },
+	midiFrequenciesLookupTable: {
+		slug: 'midiFrequenciesLookupTable',
+		title: 'MIDI Frequencies Lookup Table',
+		category: 'MIDI',
+	},
+	mapToRangeFloat: { slug: 'mapToRangeFloat', title: 'Map To Range Float', category: 'Math' },
+	mapToRangeInt: { slug: 'mapToRangeInt', title: 'Map To Range Int', category: 'Math' },
+	mapToRangeFloatToInt: { slug: 'mapToRangeFloatToInt', title: 'Map To Range Float To Int', category: 'Converters' },
+	mapToVariableRangeFloat: { slug: 'mapToVariableRangeFloat', title: 'Map To Variable Range Float', category: 'Math' },
+	strumFloat: { slug: 'strumFloat', title: 'Strum Float', category: 'Effects' },
+	perceptronAnd: { slug: 'perceptronAnd', title: 'Perceptron And', category: 'Neural Networks' },
+	perceptronOr: { slug: 'perceptronOr', title: 'Perceptron Or', category: 'Neural Networks' },
+	expLookupTable: { slug: 'expLookupTable', title: 'Exp Lookup Table', category: 'Math' },
+	sigmoidPolynomialApproximation: {
+		slug: 'sigmoidPolynomialApproximation',
+		title: 'Sigmoid Polynomial Approximation',
+		category: 'Math',
+	},
+	perceptron: { slug: 'perceptron', title: 'Perceptron', category: 'Neural Networks' },
+	pcmLooper: { slug: 'pcmLooper', title: 'PCM Looper', category: 'Audio Buffer' },
+	lowPassFilter: { slug: 'lowPassFilter', title: 'Low Pass Filter', category: 'Effects' },
+	pcmLooperV16bitSigned: {
+		slug: 'pcmLooperV16bitSigned',
+		title: 'PCM Looper V 16bit Signed',
+		category: 'Audio Buffer',
+	},
+	pcmLooperVR16bitSigned: {
+		slug: 'pcmLooperVR16bitSigned',
+		title: 'PCM Looper VR 16bit Signed',
+		category: 'Audio Buffer',
+	},
+	pcmLooperVRP16bitSigned: {
+		slug: 'pcmLooperVRP16bitSigned',
+		title: 'PCM Looper VRP 16bit Signed',
+		category: 'Audio Buffer',
+	},
+	bpmClock: { slug: 'bpmClock', title: 'BPM Clock', category: 'Timing' },
+	reverb: { slug: 'reverb', title: 'Reverb', category: 'Effects' },
+	delay: { slug: 'delay', title: 'Delay', category: 'Effects' },
+};
 
+// Project registry with lazy loading functions (individual loading strategy for projects)
 interface ProjectRegistryEntry {
 	metadata: ProjectMetadata;
 	loader: () => Promise<Project>;
 }
 
-// Module registry with lazy loading functions
-export const moduleRegistry: Record<string, ModuleRegistryEntry> = {
-	audioBufferOut: {
-		metadata: { slug: 'audioBufferOut', title: 'Audio Buffer Out', category: 'Audio Buffer' },
-		loader: () => import('./modules/audioBufferOut').then(m => m.default),
-	},
-	midiCodes: {
-		metadata: { slug: 'midiCodes', title: 'MIDI Codes', category: 'MIDI' },
-		loader: () => import('./modules/midiCodes').then(m => m.default),
-	},
-	quantizer: {
-		metadata: { slug: 'quantizer', title: 'Quantizer', category: 'Effects' },
-		loader: () => import('./modules/quantizer').then(m => m.default),
-	},
-	binaryGateSequencer: {
-		metadata: { slug: 'binaryGateSequencer', title: 'Binary Gate Sequencer', category: 'Sequencers' },
-		loader: () => import('./modules/binaryGateSequencer').then(m => m.default),
-	},
-	midiNoteOut: {
-		metadata: { slug: 'midiNoteOut', title: 'MIDI Note Out', category: 'MIDI' },
-		loader: () => import('./modules/midiNoteOut').then(m => m.default),
-	},
-	midiCCOut: {
-		metadata: { slug: 'midiCCOut', title: 'MIDI CC Out', category: 'MIDI' },
-		loader: () => import('./modules/midiCCOut').then(m => m.default),
-	},
-	generalMIDIDrumCodes: {
-		metadata: { slug: 'generalMIDIDrumCodes', title: 'General MIDI Drum Codes', category: 'MIDI' },
-		loader: () => import('./modules/generalMIDIDrumCodes').then(m => m.default),
-	},
-	bitwiseAnd: {
-		metadata: { slug: 'bitwiseAnd', title: 'Bitwise And', category: 'Logic' },
-		loader: () => import('./modules/bitwiseAnd').then(m => m.default),
-	},
-	bitwiseOr: {
-		metadata: { slug: 'bitwiseOr', title: 'Bitwise Or', category: 'Logic' },
-		loader: () => import('./modules/bitwiseOr').then(m => m.default),
-	},
-	bitwiseXor: {
-		metadata: { slug: 'bitwiseXor', title: 'Bitwise Xor', category: 'Logic' },
-		loader: () => import('./modules/bitwiseXor').then(m => m.default),
-	},
-	break16Step1: {
-		metadata: { slug: 'break16Step1', title: 'Break 16 Step 1', category: 'Sequencers' },
-		loader: () => import('./modules/break16Step1').then(m => m.default),
-	},
-	break16Step2: {
-		metadata: { slug: 'break16Step2', title: 'Break 16 Step 2', category: 'Sequencers' },
-		loader: () => import('./modules/break16Step2').then(m => m.default),
-	},
-	decToBin8bitMSb: {
-		metadata: { slug: 'decToBin8bitMSb', title: 'Dec to Bin 8bit MSb', category: 'Converters' },
-		loader: () => import('./modules/decToBin8bitMSb').then(m => m.default),
-	},
-	amenBreak64Step: {
-		metadata: { slug: 'amenBreak64Step', title: 'Amen Break 64 Step', category: 'Sequencers' },
-		loader: () => import('./modules/amenBreak64Step').then(m => m.default),
-	},
-	clockDivider: {
-		metadata: { slug: 'clockDivider', title: 'Clock Divider', category: 'Timing' },
-		loader: () => import('./modules/clockDivider').then(m => m.default),
-	},
-	sineLookupTable: {
-		metadata: { slug: 'sineLookupTable', title: 'Sine Lookup Table', category: 'Oscillators' },
-		loader: () => import('./modules/sineLookupTable').then(m => m.default),
-	},
-	sawSignedFloat: {
-		metadata: { slug: 'sawSignedFloat', title: 'Saw Signed Float', category: 'Oscillators' },
-		loader: () => import('./modules/sawSignedFloat').then(m => m.default),
-	},
-	sawUnsignedFloat: {
-		metadata: { slug: 'sawUnsignedFloat', title: 'Saw Unsigned Float', category: 'Oscillators' },
-		loader: () => import('./modules/sawUnsigned8bitInt').then(m => m.default),
-	},
-	squareSignedFloat: {
-		metadata: { slug: 'squareSignedFloat', title: 'Square Signed Float', category: 'Oscillators' },
-		loader: () => import('./modules/squareSignedFloat').then(m => m.default),
-	},
-	triangleSignedFloat: {
-		metadata: { slug: 'triangleSignedFloat', title: 'Triangle Signed Float', category: 'Oscillators' },
-		loader: () => import('./modules/triangleSignedFloat').then(m => m.default),
-	},
-	scopeUnsignedInt: {
-		metadata: { slug: 'scopeUnsignedInt', title: 'Scope Unsigned Int', category: 'Debug' },
-		loader: () => import('./modules/scopeUnsignedInt').then(m => m.default),
-	},
-	scopeSignedFloat: {
-		metadata: { slug: 'scopeSignedFloat', title: 'Scope Signed Float', category: 'Debug' },
-		loader: () => import('./modules/scopeSignedFloat').then(m => m.default),
-	},
-	binSwitchesLSb: {
-		metadata: { slug: 'binSwitchesLSb', title: 'Binary Switches LSb', category: 'Input' },
-		loader: () => import('./modules/binSwitchesLSb').then(m => m.default),
-	},
-	binSwitchesMSb: {
-		metadata: { slug: 'binSwitchesMSb', title: 'Binary Switches MSb', category: 'Input' },
-		loader: () => import('./modules/binSwitchesMSb').then(m => m.default),
-	},
-	switchGatesInt: {
-		metadata: { slug: 'switchGatesInt', title: 'Switch Gates Int', category: 'Logic' },
-		loader: () => import('./modules/switchGatesInt').then(m => m.default),
-	},
-	switchGatesFloat: {
-		metadata: { slug: 'switchGatesFloat', title: 'Switch Gates Float', category: 'Logic' },
-		loader: () => import('./modules/switchGatesFloat').then(m => m.default),
-	},
-	mulFloat: {
-		metadata: { slug: 'mulFloat', title: 'Multiple Float', category: 'Math' },
-		loader: () => import('./modules/multipleFloat').then(m => m.default),
-	},
-	mulInt: {
-		metadata: { slug: 'mulInt', title: 'Multiple Int', category: 'Math' },
-		loader: () => import('./modules/multipleInt').then(m => m.default),
-	},
-	sequentialDemuxFloat: {
-		metadata: { slug: 'sequentialDemuxFloat', title: 'Sequential Demux Float', category: 'Routing' },
-		loader: () => import('./modules/sequentialDemuxFloat').then(m => m.default),
-	},
-	sequentialDemuxInt: {
-		metadata: { slug: 'sequentialDemuxInt', title: 'Sequential Demux Int', category: 'Routing' },
-		loader: () => import('./modules/sequentialDemuxInt').then(m => m.default),
-	},
-	sequentialMuxFloat: {
-		metadata: { slug: 'sequentialMuxFloat', title: 'Sequential Mux Float', category: 'Routing' },
-		loader: () => import('./modules/sequentialMuxFloat').then(m => m.default),
-	},
-	sequentialMuxInt: {
-		metadata: { slug: 'sequentialMuxInt', title: 'Sequential Mux Int', category: 'Routing' },
-		loader: () => import('./modules/sequentialMuxInt').then(m => m.default),
-	},
-	sequencerFloat: {
-		metadata: { slug: 'sequencerFloat', title: 'Sequencer Float', category: 'Sequencers' },
-		loader: () => import('./modules/sequencerFloat').then(m => m.default),
-	},
-	sequencerInt: {
-		metadata: { slug: 'sequencerInt', title: 'Sequencer Int', category: 'Sequencers' },
-		loader: () => import('./modules/sequencerInt').then(m => m.default),
-	},
-	shiftRegisterInt: {
-		metadata: { slug: 'shiftRegisterInt', title: 'Shift Register Int', category: 'Logic' },
-		loader: () => import('./modules/shiftRegisterInt').then(m => m.default),
-	},
-	shiftRegisterFloat: {
-		metadata: { slug: 'shiftRegisterFloat', title: 'Shift Register Float', category: 'Logic' },
-		loader: () => import('./modules/shiftRegisterFloat').then(m => m.default),
-	},
-	binaryShiftRegister: {
-		metadata: { slug: 'binaryShiftRegister', title: 'Binary Shift Register', category: 'Logic' },
-		loader: () => import('./modules/binaryShiftRegister').then(m => m.default),
-	},
-	linearCongruentialGenerator: {
-		metadata: { slug: 'linearCongruentialGenerator', title: 'Linear Congruential Generator', category: 'Random' },
-		loader: () => import('./modules/linearCongruentialGenerator').then(m => m.default),
-	},
-	peakHolderNegativeFloat: {
-		metadata: { slug: 'peakHolderNegativeFloat', title: 'Peak Holder Negative Float', category: 'Effects' },
-		loader: () => import('./modules/peakHolderNegativeFloat').then(m => m.default),
-	},
-	XORShift: {
-		metadata: { slug: 'XORShift', title: 'XOR Shift', category: 'Random' },
-		loader: () => import('./modules/XORShift').then(m => m.default),
-	},
-	midiPianoKeyboardC3: {
-		metadata: { slug: 'midiPianoKeyboardC3', title: 'MIDI Piano Keyboard C3', category: 'Input' },
-		loader: () => import('./modules/midiPianoKeyboardC3').then(m => m.default),
-	},
-	bufferCombinerFloat: {
-		metadata: { slug: 'bufferCombinerFloat', title: 'Buffer Combiner Float', category: 'Buffers' },
-		loader: () => import('./modules/bufferCombinerIntFloat').then(m => m.default),
-	},
-	bufferCombinerInt: {
-		metadata: { slug: 'bufferCombinerInt', title: 'Buffer Combiner Int', category: 'Buffers' },
-		loader: () => import('./modules/bufferCombinerInt').then(m => m.default),
-	},
-	bufferCopierFloat: {
-		metadata: { slug: 'bufferCopierFloat', title: 'Buffer Copier Float', category: 'Buffers' },
-		loader: () => import('./modules/bufferCopierFloat').then(m => m.default),
-	},
-	bufferCopierInt: {
-		metadata: { slug: 'bufferCopierInt', title: 'Buffer Copier Int', category: 'Buffers' },
-		loader: () => import('./modules/bufferCopierInt').then(m => m.default),
-	},
-	bufferReverserFloat: {
-		metadata: { slug: 'bufferReverserFloat', title: 'Buffer Reverser Float', category: 'Buffers' },
-		loader: () => import('./modules/bufferReverserFloat').then(m => m.default),
-	},
-	bufferReverserInt: {
-		metadata: { slug: 'bufferReverserInt', title: 'Buffer Reverser Int', category: 'Buffers' },
-		loader: () => import('./modules/bufferReverserInt').then(m => m.default),
-	},
-	bufferReplicatorWithOffsetInt: {
-		metadata: {
-			slug: 'bufferReplicatorWithOffsetInt',
-			title: 'Buffer Replicator With Offset Int',
-			category: 'Buffers',
-		},
-		loader: () => import('./modules/bufferReplicatorWithOffsetInt').then(m => m.default),
-	},
-	bufferReplicatorWithOffsetFloat: {
-		metadata: {
-			slug: 'bufferReplicatorWithOffsetFloat',
-			title: 'Buffer Replicator With Offset Float',
-			category: 'Buffers',
-		},
-		loader: () => import('./modules/bufferReplicatorWithOffsetIntFloat').then(m => m.default),
-	},
-	bufferIntToFloat: {
-		metadata: { slug: 'bufferIntToFloat', title: 'Buffer Int To Float', category: 'Converters' },
-		loader: () => import('./modules/bufferIntToFloat').then(m => m.default),
-	},
-	bufferFloatToInt: {
-		metadata: { slug: 'bufferFloatToInt', title: 'Buffer Float To Int', category: 'Converters' },
-		loader: () => import('./modules/bufferFloatToInt').then(m => m.default),
-	},
-	sampleAndHoldFloat: {
-		metadata: { slug: 'sampleAndHoldFloat', title: 'Sample And Hold Float', category: 'Effects' },
-		loader: () => import('./modules/sampleAndHoldFloat').then(m => m.default),
-	},
-	sampleAndHoldInt: {
-		metadata: { slug: 'sampleAndHoldInt', title: 'Sample And Hold Int', category: 'Effects' },
-		loader: () => import('./modules/sampleAndHoldInt').then(m => m.default),
-	},
-	masterClock: {
-		metadata: { slug: 'masterClock', title: 'Master Clock', category: 'Timing' },
-		loader: () => import('./modules/masterClock').then(m => m.default),
-	},
-	changeDetectorInt: {
-		metadata: { slug: 'changeDetectorInt', title: 'Change Detector Int', category: 'Logic' },
-		loader: () => import('./modules/changeDetectorInt').then(m => m.default),
-	},
-	midiFrequenciesLookupTable: {
-		metadata: { slug: 'midiFrequenciesLookupTable', title: 'MIDI Frequencies Lookup Table', category: 'MIDI' },
-		loader: () => import('./modules/midiFrequenciesLookupTable').then(m => m.default),
-	},
-	mapToRangeFloat: {
-		metadata: { slug: 'mapToRangeFloat', title: 'Map To Range Float', category: 'Math' },
-		loader: () => import('./modules/mapToRangeFloat').then(m => m.default),
-	},
-	mapToRangeInt: {
-		metadata: { slug: 'mapToRangeInt', title: 'Map To Range Int', category: 'Math' },
-		loader: () => import('./modules/mapToRangeInt').then(m => m.default),
-	},
-	mapToRangeFloatToInt: {
-		metadata: { slug: 'mapToRangeFloatToInt', title: 'Map To Range Float To Int', category: 'Converters' },
-		loader: () => import('./modules/mapToRangeFloatToInt').then(m => m.default),
-	},
-	mapToVariableRangeFloat: {
-		metadata: { slug: 'mapToVariableRangeFloat', title: 'Map To Variable Range Float', category: 'Math' },
-		loader: () => import('./modules/mapToVariableRangeFloat').then(m => m.default),
-	},
-	strumFloat: {
-		metadata: { slug: 'strumFloat', title: 'Strum Float', category: 'Effects' },
-		loader: () => import('./modules/strumFloat').then(m => m.default),
-	},
-	perceptronAnd: {
-		metadata: { slug: 'perceptronAnd', title: 'Perceptron And', category: 'Neural Networks' },
-		loader: () => import('./modules/perceptronAnd').then(m => m.default),
-	},
-	perceptronOr: {
-		metadata: { slug: 'perceptronOr', title: 'Perceptron Or', category: 'Neural Networks' },
-		loader: () => import('./modules/perceptronOr').then(m => m.default),
-	},
-	expLookupTable: {
-		metadata: { slug: 'expLookupTable', title: 'Exp Lookup Table', category: 'Math' },
-		loader: () => import('./modules/expLookupTable').then(m => m.default),
-	},
-	sigmoidPolynomialApproximation: {
-		metadata: { slug: 'sigmoidPolynomialApproximation', title: 'Sigmoid Polynomial Approximation', category: 'Math' },
-		loader: () => import('./modules/sigmoidPolynomialApproximation').then(m => m.default),
-	},
-	perceptron: {
-		metadata: { slug: 'perceptron', title: 'Perceptron', category: 'Neural Networks' },
-		loader: () => import('./modules/perceptron').then(m => m.default),
-	},
-	pcmLooper: {
-		metadata: { slug: 'pcmLooper', title: 'PCM Looper', category: 'Audio Buffer' },
-		loader: () => import('./modules/pcmLooper').then(m => m.default),
-	},
-	lowPassFilter: {
-		metadata: { slug: 'lowPassFilter', title: 'Low Pass Filter', category: 'Effects' },
-		loader: () => import('./modules/lowPassFilter').then(m => m.default),
-	},
-	pcmLooperV16bitSigned: {
-		metadata: { slug: 'pcmLooperV16bitSigned', title: 'PCM Looper V 16bit Signed', category: 'Audio Buffer' },
-		loader: () => import('./modules/pcmLooperV16bitSigned').then(m => m.default),
-	},
-	pcmLooperVR16bitSigned: {
-		metadata: { slug: 'pcmLooperVR16bitSigned', title: 'PCM Looper VR 16bit Signed', category: 'Audio Buffer' },
-		loader: () => import('./modules/pcmLooperVR16bitSigned').then(m => m.default),
-	},
-	pcmLooperVRP16bitSigned: {
-		metadata: { slug: 'pcmLooperVRP16bitSigned', title: 'PCM Looper VRP 16bit Signed', category: 'Audio Buffer' },
-		loader: () => import('./modules/pcmLooperVRP16bitSigned').then(m => m.default),
-	},
-	bpmClock: {
-		metadata: { slug: 'bpmClock', title: 'BPM Clock', category: 'Timing' },
-		loader: () => import('./modules/bpmClock').then(m => m.default),
-	},
-	reverb: {
-		metadata: { slug: 'reverb', title: 'Reverb', category: 'Effects' },
-		loader: () => import('./modules/reverb').then(m => m.default),
-	},
-	delay: {
-		metadata: { slug: 'delay', title: 'Delay', category: 'Effects' },
-		loader: () => import('./modules/delay').then(m => m.default),
-	},
-};
-
-// Project registry with lazy loading functions
 export const projectRegistry: Record<string, ProjectRegistryEntry> = {
 	audioBuffer: {
 		metadata: { slug: 'audioBuffer', title: 'Audio Buffer', description: '' },
@@ -371,11 +171,11 @@ export const projectRegistry: Record<string, ProjectRegistryEntry> = {
 	},
 };
 
-// Loading state management
+// Loading state management for modules
 let modulesLoaded = false;
 let loadedModules: Record<string, ExampleModule> = {};
 
-// Batch loading for modules - load all modules when first accessed
+// Single lazy import for all modules - no need to maintain separate import list!
 export async function loadAllModules(): Promise<Record<string, ExampleModule>> {
 	if (modulesLoaded) {
 		return loadedModules;
@@ -383,14 +183,9 @@ export async function loadAllModules(): Promise<Record<string, ExampleModule>> {
 
 	console.log('[Examples] Loading all modules in batch...');
 
-	// Load all modules in parallel
-	const modulePromises = Object.entries(moduleRegistry).map(async ([slug, entry]) => {
-		const module = await entry.loader();
-		return [slug, module] as const;
-	});
-
-	const moduleEntries = await Promise.all(modulePromises);
-	loadedModules = Object.fromEntries(moduleEntries);
+	// Single lazy import loads all modules at once
+	const modulesImport = await import('./modules/index');
+	loadedModules = modulesImport.default;
 	modulesLoaded = true;
 
 	console.log(`[Examples] Loaded ${Object.keys(loadedModules).length} modules`);
@@ -399,7 +194,7 @@ export async function loadAllModules(): Promise<Record<string, ExampleModule>> {
 
 // Get list of modules (metadata only)
 export async function getListOfModules(): Promise<ModuleMetadata[]> {
-	return Object.values(moduleRegistry).map(entry => entry.metadata);
+	return Object.values(moduleMetadata);
 }
 
 // Get specific module (loads all modules if not loaded yet)
@@ -430,12 +225,6 @@ export async function getProject(slug: string): Promise<Project> {
 	return project;
 }
 
-// Type definitions for the module with proper index signatures
-export type ModulesRegistry = typeof moduleRegistry;
-export type ProjectsRegistry = typeof projectRegistry;
-
-// For backwards compatibility, provide types that allow string indexing
-export type ModulesType = { [K in keyof typeof moduleRegistry]: ExampleModule } & {
-	[key: string]: ExampleModule | undefined;
-};
-export type ProjectsType = { [K in keyof typeof projectRegistry]: Project } & { [key: string]: Project | undefined };
+// Type definitions for backwards compatibility
+export type ModulesType = Record<string, ExampleModule> & { [key: string]: ExampleModule | undefined };
+export type ProjectsType = Record<string, Project> & { [key: string]: Project | undefined };
