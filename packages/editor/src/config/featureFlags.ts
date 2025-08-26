@@ -19,8 +19,8 @@ export interface FeatureFlags {
 	/** Enable/disable panning/scrolling of the editor viewport */
 	viewportDragging: boolean;
 
-	/** Enable/disable localStorage functionality */
-	localStorage: boolean;
+	/** Enable/disable persistent storage functionality */
+	persistentStorage: boolean;
 }
 
 /**
@@ -31,7 +31,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	infoOverlay: import.meta.env.DEV,
 	moduleDragging: true,
 	viewportDragging: true,
-	localStorage: true,
+	persistentStorage: true,
 };
 
 /**
