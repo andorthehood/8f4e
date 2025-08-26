@@ -61,8 +61,6 @@ export default function audioWorkletRuntime(state: State, events: EventDispatche
 
 		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'interactive' });
 
-		console.log('DEBUG: initAudioContext', workletUrl);
-
 		await audioContext.audioWorklet.addModule(workletUrl);
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
 			outputChannelCount: [2],
