@@ -4,8 +4,7 @@ import { EventDispatcher } from '../../../events';
 import { State } from '../../types';
 
 export default function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
-	let selectedInput: MIDIInput;
-
+	let selectedInput: MIDIInput | null = null;
 	let worker: Worker | undefined;
 
 	function onMidiMessage(event) {
@@ -73,9 +72,16 @@ export default function webWorkerMIDIRuntime(state: State, events: EventDispatch
 
 	return () => {
 		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+
 		if (selectedInput) {
-			selectedInput.removeEventListener('message', onMidiMessage);
+			selectedInput.removeEventListener('midimessage', onMidiMessage);
+			selectedInput = null;
 		}
+
+		// Clean up MIDI ports from global state
+		state.midi.inputs.length = 0;
+		state.midi.outputs.length = 0;
+
 		if (worker) {
 			worker.removeEventListener('message', onWorkerMessage);
 			worker.terminate();
