@@ -14,6 +14,39 @@ const runtimeFactories: Record<RuntimeType, RuntimeFactory> = {
 	WebWorkerMIDIRuntime: webWorkerMIDIRuntime,
 };
 
+// Implementation of async callback functions for modules and projects
+async function getListOfModules() {
+	return Object.entries(modules).map(([slug, module]) => ({
+		slug,
+		title: module.title,
+		category: module.category,
+	}));
+}
+
+async function getModule(slug: string) {
+	const module = modules[slug];
+	if (!module) {
+		throw new Error(`Module not found: ${slug}`);
+	}
+	return module;
+}
+
+async function getListOfProjects() {
+	return Object.entries(projects).map(([slug, project]) => ({
+		slug,
+		title: project.title,
+		description: project.description,
+	}));
+}
+
+async function getProject(slug: string) {
+	const project = projects[slug];
+	if (!project) {
+		throw new Error(`Project not found: ${slug}`);
+	}
+	return project;
+}
+
 // Implementation of the requestRuntime callback
 async function requestRuntime(runtimeType: RuntimeType): Promise<RuntimeFactory> {
 	const factory = runtimeFactories[runtimeType];
@@ -43,8 +76,10 @@ async function init() {
 			infoOverlay: true,
 		},
 		localStorageId: 'editor',
-		projects,
-		modules,
+		getListOfModules,
+		getModule,
+		getListOfProjects,
+		getProject,
 		requestRuntime, // Add the runtime callback
 	});
 
