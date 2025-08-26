@@ -1,9 +1,10 @@
-import { Instruction, instructionParser } from '@8f4e/compiler';
-
+import instructionParser from '../instructionParser';
 import { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../../types';
 import { gapCalculator } from '../../../../helpers/editor';
 import { parseCode } from '../../../../helpers/multiLineCodeParser';
 import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
+
+import type { Instruction } from '@8f4e/compiler';
 
 export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string, startingNumber: number) {
 	const pressedKeys = new Set<number>();
