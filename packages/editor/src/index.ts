@@ -6,6 +6,7 @@ import initState from './state';
 
 // Re-export types that consumers might need
 export type { Project, Options } from './state/types';
+export type { FeatureFlags, FeatureFlagsConfig } from './config/featureFlags';
 
 export default async function init(canvas: HTMLCanvasElement, project: Project, options: Partial<Options>) {
 	const events = initEvents();
