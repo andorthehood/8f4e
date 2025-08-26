@@ -37,7 +37,7 @@ export const mainMenu: MenuGenerator = state => [
 	{ title: 'New Project', action: 'new', close: true },
 	{ divider: true },
 	{ title: 'Open From Disk', action: 'open', close: true },
-	{ title: 'Open Example Project', action: 'openSubMenu', payload: { menu: 'exampleProjectMenu' }, close: false },
+	{ title: 'Open Project', action: 'openSubMenu', payload: { menu: 'projectMenu' }, close: false },
 	{ divider: true },
 	{ title: 'Export Project', action: 'save', close: true },
 	{ divider: true },
@@ -180,7 +180,7 @@ export const fontMenu: MenuGenerator = () => [
 	{ title: '6x10', action: 'setFont', payload: { font: '6x10' }, close: false },
 ];
 
-export const exampleProjectMenu: MenuGenerator = state =>
+export const projectMenu: MenuGenerator = state =>
 	Object.entries(state.options.projects).map(([, project]) => ({
 		title: project.title,
 		action: 'loadProject',
