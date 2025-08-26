@@ -1,9 +1,10 @@
-import Worker from '@8f4e/web-worker-logic-runtime?worker';
+// Import the types from the editor
+import { State, EventDispatcher } from '@8f4e/editor';
+// Import the runtime dependencies
+import WebWorkerLogicRuntime from '@8f4e/web-worker-logic-runtime?worker';
 
-import { EventDispatcher } from '../../../events';
-import { State } from '../../types';
-
-export default function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
+// WebWorker Logic Runtime Factory
+export function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
 	let worker: Worker | undefined;
 
 	async function onWorkerMessage({ data }) {
@@ -32,7 +33,7 @@ export default function webWorkerLogicRuntime(state: State, events: EventDispatc
 		});
 	}
 
-	worker = new Worker();
+	worker = new WebWorkerLogicRuntime();
 
 	worker.addEventListener('message', onWorkerMessage);
 	syncCodeAndSettingsWithRuntime();
