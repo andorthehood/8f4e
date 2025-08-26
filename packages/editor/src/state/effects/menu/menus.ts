@@ -101,7 +101,7 @@ export const moduleMenu: MenuGenerator = state => [
 ];
 
 export const moduleCategoriesMenu: MenuGenerator = state => {
-	const categories = [...new Set(Object.entries(state.options.exampleModules).map(([, module]) => module.category))];
+	const categories = [...new Set(Object.entries(state.options.modules).map(([, module]) => module.category))];
 	return categories.map(category => {
 		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
 	});
@@ -109,7 +109,7 @@ export const moduleCategoriesMenu: MenuGenerator = state => {
 
 export const builtInModuleMenu: MenuGenerator = (state, payload = {}) => {
 	const { category } = payload as { category: string };
-	return Object.entries(state.options.exampleModules)
+	return Object.entries(state.options.modules)
 		.filter(([, module]) => module.category == category)
 		.map(([, module]) => {
 			return {
@@ -181,7 +181,7 @@ export const fontMenu: MenuGenerator = () => [
 ];
 
 export const exampleProjectMenu: MenuGenerator = state =>
-	Object.entries(state.options.exampleProjects).map(([, project]) => ({
+	Object.entries(state.options.projects).map(([, project]) => ({
 		title: project.title,
 		action: 'loadProject',
 		payload: { project },
