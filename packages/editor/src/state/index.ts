@@ -142,8 +142,6 @@ const defaultState: State = {
 		binaryAssets: [],
 	},
 	options: {
-		isLocalStorageEnabled: true,
-		showInfoOverlay: import.meta.env.DEV,
 		localStorageId: 'default',
 		exampleProjects: {},
 		exampleModules: {},
@@ -159,22 +157,8 @@ defaultState.graphicHelper.activeViewport = defaultState.graphicHelper.baseCodeB
 defaultState.graphicHelper.baseCodeBlock.parent = defaultState.graphicHelper.baseCodeBlock;
 
 export default function init(events: EventDispatcher, project: Project, options: Partial<Options>): State {
-	// Initialize feature flags, maintaining backward compatibility
+	// Initialize feature flags
 	const featureFlags = validateFeatureFlags(options.featureFlags);
-
-	// Apply backward compatibility: only apply legacy options if feature flags don't override them
-	if (options.featureFlags?.infoOverlay === undefined) {
-		if (options.showInfoOverlay !== undefined) {
-			featureFlags.infoOverlay = options.showInfoOverlay;
-		} else {
-			// Maintain DEV environment default for info overlay
-			featureFlags.infoOverlay = import.meta.env.DEV;
-		}
-	}
-
-	if (options.featureFlags?.localStorage === undefined && options.isLocalStorageEnabled !== undefined) {
-		featureFlags.localStorage = options.isLocalStorageEnabled;
-	}
 
 	const state = {
 		...defaultState,
