@@ -1,7 +1,7 @@
 import initEditor, { type Project, type RuntimeFactory, type RuntimeType } from '@8f4e/editor';
 
-import projects from './examples/projects';
-import modules from './examples/modules';
+// Import the registry functions instead of static imports
+import { getListOfModules, getModule, getListOfProjects, getProject, projectRegistry } from './examples/registry';
 // Import the runtime factory functions from separate dedicated files
 import { audioWorkletRuntime } from './audio-worklet-runtime-factory';
 import { webWorkerLogicRuntime } from './web-worker-logic-runtime-factory';
@@ -13,39 +13,6 @@ const runtimeFactories: Record<RuntimeType, RuntimeFactory> = {
 	WebWorkerLogicRuntime: webWorkerLogicRuntime,
 	WebWorkerMIDIRuntime: webWorkerMIDIRuntime,
 };
-
-// Implementation of async callback functions for modules and projects
-async function getListOfModules() {
-	return Object.entries(modules).map(([slug, module]) => ({
-		slug,
-		title: module.title,
-		category: module.category,
-	}));
-}
-
-async function getModule(slug: string) {
-	const module = modules[slug];
-	if (!module) {
-		throw new Error(`Module not found: ${slug}`);
-	}
-	return module;
-}
-
-async function getListOfProjects() {
-	return Object.entries(projects).map(([slug, project]) => ({
-		slug,
-		title: project.title,
-		description: project.description,
-	}));
-}
-
-async function getProject(slug: string) {
-	const project = projects[slug];
-	if (!project) {
-		throw new Error(`Project not found: ${slug}`);
-	}
-	return project;
-}
 
 // Implementation of the requestRuntime callback
 async function requestRuntime(runtimeType: RuntimeType): Promise<RuntimeFactory> {
@@ -65,7 +32,13 @@ const kebabCaseToCamelCase = (str: string) =>
 
 async function init() {
 	const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
-	const project: Project = projects[projectName] || projects.audioBuffer;
+	// Use the registry to get the default project instead of direct access
+	let project: Project;
+	if (projectName && projectRegistry[projectName]) {
+		project = await getProject(projectName);
+	} else {
+		project = await getProject('audioBuffer'); // Default project
+	}
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
 	canvas.width = window.innerWidth;
@@ -83,7 +56,7 @@ async function init() {
 		requestRuntime, // Add the runtime callback
 	});
 
-	// @ts-ignore
+	// @ts-expect-error
 	window.state = editor.state;
 
 	canvas.width = window.innerWidth;
