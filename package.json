@@ -48,6 +48,7 @@
     "lint-staged": "12.1.4",
     "nx": "21.4.1",
     "prettier": "^3.6.2",
+    "rollup-plugin-visualizer": "^6.0.3",
     "ts-jest": "^29.4.1",
     "typescript": "^5.9.2",
     "vite": "^7.1.3",

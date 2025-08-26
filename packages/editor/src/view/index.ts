@@ -51,7 +51,7 @@ export default async function init(
 
 		drawCodeBlocks(engine, state);
 		drawConnections(engine, state);
-		if (state.options.showInfoOverlay) {
+		if (state.featureFlags.infoOverlay) {
 			drawInfoOverlay(engine, state, {
 				timeToRender,
 				fps,
