@@ -1,7 +1,5 @@
 import { Buffer } from 'buffer';
 
-import Worker from '@8f4e/compiler-worker?worker';
-
 import { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
 
@@ -22,8 +20,6 @@ function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { cod
 }
 
 export default async function compiler(state: State, events: EventDispatcher) {
-	const worker = new Worker();
-
 	async function onRecompile() {
 		if (!state.compiler.memoryRef) {
 			return;
@@ -35,85 +31,80 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		state.compiler.isCompiling = true;
 		state.compiler.lastCompilationStart = performance.now();
 
-		worker.postMessage({
-			type: 'recompile',
-			payload: {
-				memoryRef: state.compiler.memoryRef,
-				modules,
-				compilerOptions: {
-					...state.compiler.compilerOptions,
-					environmentExtensions: {
-						...state.compiler.compilerOptions.environmentExtensions,
-						constants: {
-							...state.compiler.compilerOptions.environmentExtensions.constants,
-							SAMPLE_RATE: {
-								value: state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
-								isInteger: true,
-							},
-							AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
-							LEFT_CHANNEL: { value: 0, isInteger: true },
-							RIGHT_CHANNEL: { value: 1, isInteger: true },
+		try {
+			const compilerOptions = {
+				...state.compiler.compilerOptions,
+				environmentExtensions: {
+					...state.compiler.compilerOptions.environmentExtensions,
+					constants: {
+						...state.compiler.compilerOptions.environmentExtensions.constants,
+						SAMPLE_RATE: {
+							value: state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
+							isInteger: true,
 						},
+						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
+						LEFT_CHANNEL: { value: 0, isInteger: true },
+						RIGHT_CHANNEL: { value: 1, isInteger: true },
 					},
 				},
-			},
-		});
-	}
+			};
 
-	async function onWorkerMessage({ data }) {
-		switch (data.type) {
-			case 'buildOk':
-				state.compiler.compiledModules = data.payload.compiledModules;
-				state.compiler.codeBuffer = data.payload.codeBuffer;
-				state.compiler.allocatedMemorySize = data.payload.allocatedMemorySize;
-				state.compiler.memoryBuffer = new Int32Array(state.compiler.memoryRef.buffer);
-				state.compiler.memoryBufferFloat = new Float32Array(state.compiler.memoryRef.buffer);
-				state.compiler.isCompiling = false;
-				state.compiler.compilationTime = performance.now() - state.compiler.lastCompilationStart;
+			const result = await state.options.compileProject(modules, compilerOptions, state.compiler.memoryRef);
 
-				state.compiler.buildErrors = [];
+			// Handle successful compilation
+			state.compiler.compiledModules = result.compiledModules;
+			state.compiler.codeBuffer = result.codeBuffer;
+			state.compiler.allocatedMemorySize = result.allocatedMemorySize;
+			state.compiler.memoryBuffer = new Int32Array(state.compiler.memoryRef.buffer);
+			state.compiler.memoryBufferFloat = new Float32Array(state.compiler.memoryRef.buffer);
+			state.compiler.isCompiling = false;
+			state.compiler.compilationTime = performance.now() - state.compiler.lastCompilationStart;
 
-				(state.project.binaryAssets || []).forEach(binaryAsset => {
-					if (binaryAsset.moduleId && binaryAsset.memoryId) {
-						const memoryAssignedToBinaryAsset = state.compiler.compiledModules
-							.get(binaryAsset.moduleId)
-							?.memoryMap.get(binaryAsset.memoryId);
+			state.compiler.buildErrors = [];
 
-						if (!memoryAssignedToBinaryAsset) {
-							return;
-						}
+			(state.project.binaryAssets || []).forEach(binaryAsset => {
+				if (binaryAsset.moduleId && binaryAsset.memoryId) {
+					const memoryAssignedToBinaryAsset = state.compiler.compiledModules
+						.get(binaryAsset.moduleId)
+						?.memoryMap.get(binaryAsset.memoryId);
 
-						const allocatedSizeInBytes =
-							memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
-						const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
-						const binaryAssetDataBuffer = Uint8Array.from(Buffer.from(binaryAsset.data, 'base64')).slice(
-							0,
-							allocatedSizeInBytes
-						);
-
-						memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
+					if (!memoryAssignedToBinaryAsset) {
+						return;
 					}
-				});
 
-				events.dispatch('buildFinished');
+					const allocatedSizeInBytes =
+						memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
+					const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
+					const binaryAssetDataBuffer = Uint8Array.from(Buffer.from(binaryAsset.data, 'base64')).slice(
+						0,
+						allocatedSizeInBytes
+					);
 
-				break;
-			case 'buildError':
-				state.compiler.isCompiling = false;
-				state.compiler.buildErrors = [
-					{
-						lineNumber: data.payload?.line?.lineNumber || 1,
-						moduleId: data.payload?.context?.namespace?.moduleName || '',
-						code: data.payload.errorCodadde,
-						message: data.payload.message,
-					},
-				];
-				events.dispatch('buildError');
-				break;
+					memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
+				}
+			});
+
+			events.dispatch('buildFinished');
+		} catch (error) {
+			// Handle compilation error
+			state.compiler.isCompiling = false;
+			const errorObject = error as Error & {
+				line?: { lineNumber: number };
+				context?: { namespace?: { moduleName: string } };
+				errorCode?: number;
+			};
+			state.compiler.buildErrors = [
+				{
+					lineNumber: errorObject?.line?.lineNumber || 1,
+					moduleId: errorObject?.context?.namespace?.moduleName || '',
+					code: errorObject?.errorCode || 0,
+					message: errorObject?.message || error?.toString() || 'Compilation failed',
+				},
+			];
+			events.dispatch('buildError');
 		}
 	}
 
-	worker.addEventListener('message', onWorkerMessage);
 	events.on('createConnection', onRecompile);
 	events.on('codeBlockAdded', onRecompile);
 	events.on('deleteCodeBlock', onRecompile);
