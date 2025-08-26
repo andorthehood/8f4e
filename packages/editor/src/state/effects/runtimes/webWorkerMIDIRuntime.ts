@@ -1,10 +1,10 @@
+import Worker from '@8f4e/web-worker-midi-runtime?worker';
+
 import { EventDispatcher } from '../../../events';
 import { State } from '../../types';
 
 export default function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 	let selectedInput: MIDIInput;
-
-	const workerUrl = new URL('../../../../../../packages/web-worker-midi-runtime/src/index.ts', import.meta.url);
 
 	let worker: Worker | undefined;
 
@@ -63,9 +63,7 @@ export default function webWorkerMIDIRuntime(state: State, events: EventDispatch
 		});
 	}
 
-	worker = new Worker(workerUrl, {
-		type: 'module',
-	});
+	worker = new Worker();
 
 	worker.addEventListener('message', onWorkerMessage);
 	syncCodeAndSettingsWithRuntime();

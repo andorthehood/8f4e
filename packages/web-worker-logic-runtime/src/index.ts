@@ -1,7 +1,7 @@
 import createModule from './createModule';
 
-let interval: NodeJS.Timeout;
-let statsInterval: NodeJS.Timeout;
+let interval: number;
+let statsInterval: number;
 let timeToExecute: number;
 let lastIntervalTime: number;
 let drift = 0;
