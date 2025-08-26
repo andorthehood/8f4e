@@ -1,7 +1,29 @@
-import initEditor, { type Project } from '@8f4e/editor';
+import initEditor, { type Project, type RuntimeFactory, type RuntimeType } from '@8f4e/editor';
 
 import exampleProjects from './examples/projects';
 import exampleModules from './examples/modules';
+// Import the runtime factory functions from separate dedicated files
+import { audioWorkletRuntime } from './audio-worklet-runtime-factory';
+import { webWorkerLogicRuntime } from './web-worker-logic-runtime-factory';
+import { webWorkerMIDIRuntime } from './web-worker-midi-runtime-factory';
+
+// Runtime factory registry - this demonstrates how consumers can implement the requestRuntime callback
+const runtimeFactories: Record<RuntimeType, RuntimeFactory> = {
+	AudioWorkletRuntime: audioWorkletRuntime,
+	WebWorkerLogicRuntime: webWorkerLogicRuntime,
+	WebWorkerMIDIRuntime: webWorkerMIDIRuntime,
+};
+
+// Implementation of the requestRuntime callback
+async function requestRuntime(runtimeType: RuntimeType): Promise<RuntimeFactory> {
+	const factory = runtimeFactories[runtimeType];
+	if (!factory) {
+		throw new Error(`Unknown runtime type: ${runtimeType}`);
+	}
+
+	console.log(`[App] Providing runtime factory for: ${runtimeType}`);
+	return factory;
+}
 
 const kebabCaseToCamelCase = (str: string) =>
 	str.replace(/-([a-z])/g, function (g) {
@@ -23,6 +45,7 @@ async function init() {
 		localStorageId: 'editor',
 		exampleProjects,
 		exampleModules,
+		requestRuntime, // Add the runtime callback
 	});
 
 	// @ts-ignore
