@@ -6,6 +6,16 @@ import { getListOfModules, getModule, getListOfProjects, getProject, projectRegi
 import { audioWorkletRuntime } from './audio-worklet-runtime-factory';
 import { webWorkerLogicRuntime } from './web-worker-logic-runtime-factory';
 import { webWorkerMIDIRuntime } from './web-worker-midi-runtime-factory';
+// Import storage and file handling callback implementations
+import {
+	loadProjectFromStorage,
+	saveProjectToStorage,
+	loadEditorSettingsFromStorage,
+	saveEditorSettingsToStorage,
+	loadProjectFromFile,
+	saveProjectToFile,
+	importBinaryAsset,
+} from './storage-callbacks';
 
 // Runtime factory registry - this demonstrates how consumers can implement the requestRuntime callback
 const runtimeFactories: Record<RuntimeType, RuntimeFactory> = {
@@ -45,7 +55,7 @@ async function init() {
 	canvas.height = window.innerHeight;
 	const editor = await initEditor(canvas, project, {
 		featureFlags: {
-			localStorage: true,
+			persistentStorage: true,
 			infoOverlay: true,
 		},
 		localStorageId: 'editor',
@@ -54,9 +64,17 @@ async function init() {
 		getListOfProjects,
 		getProject,
 		requestRuntime, // Add the runtime callback
+		// Add storage and file handling callbacks
+		loadProjectFromStorage,
+		saveProjectToStorage,
+		loadEditorSettingsFromStorage,
+		saveEditorSettingsToStorage,
+		loadProjectFromFile,
+		saveProjectToFile,
+		importBinaryAsset,
 	});
 
-	// @ts-expect-error
+	// @ts-expect-error - Expose state for debugging purposes
 	window.state = editor.state;
 
 	canvas.width = window.innerWidth;
