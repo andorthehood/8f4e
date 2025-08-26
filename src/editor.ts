@@ -1,7 +1,7 @@
 import initEditor, { type Project, type RuntimeFactory, type RuntimeType } from '@8f4e/editor';
 
-import exampleProjects from './examples/projects';
-import exampleModules from './examples/modules';
+import projects from './examples/projects';
+import modules from './examples/modules';
 // Import the runtime factory functions from separate dedicated files
 import { audioWorkletRuntime } from './audio-worklet-runtime-factory';
 import { webWorkerLogicRuntime } from './web-worker-logic-runtime-factory';
@@ -32,7 +32,7 @@ const kebabCaseToCamelCase = (str: string) =>
 
 async function init() {
 	const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
-	const project: Project = exampleProjects[projectName] || exampleProjects.audioBuffer;
+	const project: Project = projects[projectName] || projects.audioBuffer;
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
 	canvas.width = window.innerWidth;
@@ -43,8 +43,8 @@ async function init() {
 			infoOverlay: true,
 		},
 		localStorageId: 'editor',
-		exampleProjects,
-		exampleModules,
+		projects,
+		modules,
 		requestRuntime, // Add the runtime callback
 	});
 
