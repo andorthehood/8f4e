@@ -9,8 +9,8 @@ import findMidiCCInputModules from './findMidiCCInputModules';
 import { MidiCCModuleAddresses } from './types';
 import createModule from './createModule';
 
-let interval: NodeJS.Timeout;
-let statsInterval: NodeJS.Timeout;
+let interval: number;
+let statsInterval: number;
 let memoryBuffer: Int32Array;
 let midiCCInputModules: Map<string, MidiCCModuleAddresses> = new Map();
 let timeToExecute: number;
