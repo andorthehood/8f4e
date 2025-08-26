@@ -15,8 +15,8 @@
 	"sideEffects": false,
 	"scripts": {
 		"test": "jest --passWithNoTests",
-		"build": "tsc",
-		"dev": "tsc --watch",
+		"build": "vite build -c vite.config.worklet.ts",
+		"dev": "vite build -c vite.config.worklet.ts --watch",
 		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
