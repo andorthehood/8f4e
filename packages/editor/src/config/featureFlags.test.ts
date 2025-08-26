@@ -27,7 +27,7 @@ describe('Feature Flags Configuration', () => {
 
 	test('defaultFeatureFlags should have all features enabled', () => {
 		expect(defaultFeatureFlags.contextMenu).toBe(true);
-		expect(defaultFeatureFlags.infoOverlay).toBe(true);
+		expect(defaultFeatureFlags.infoOverlay).toBe(import.meta.env.DEV);
 		expect(defaultFeatureFlags.moduleDragging).toBe(true);
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
 		expect(defaultFeatureFlags.localStorage).toBe(true);
@@ -40,7 +40,7 @@ describe('Feature Flags Configuration', () => {
 		const result = validateFeatureFlags(config);
 
 		expect(result.contextMenu).toBe(false);
-		expect(result.infoOverlay).toBe(true);
+		expect(result.infoOverlay).toBe(import.meta.env.DEV);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
 		expect(result.localStorage).toBe(true);
