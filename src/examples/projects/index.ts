@@ -1,29 +1,28 @@
-import audioBuffer from './audioBuffer';
-import bistableMultivibrators from './bistableMultivibrators';
-import midiBreakBeat from './midiBreakBeat';
-import midiBreakBreak2dSequencer from './midiBreakBreak2dSequencer';
-import dancingWithTheSineLT from './dancingWithTheSineLT';
-import randomGenerators from './randomGenerators';
-import randomNoteGenerator from './randomNoteGenerator';
-import midiArpeggiator from './midiArpeggiator';
-import midiArpeggiator2 from './midiArpeggiator2';
-import ericSaiteGenerator from './ericSaiteGenerator';
-import neuralNetwork from './neuralNetwork';
-import audioLoopback from './audioLoopback';
+import { loadProject, getAllProjectMetadata } from '../registry';
 
-const projects = {
-	audioBuffer,
-	bistableMultivibrators,
-	midiBreakBeat,
-	midiBreakBreak2dSequencer,
-	dancingWithTheSineLT,
-	randomGenerators,
-	randomNoteGenerator,
-	midiArpeggiator,
-	midiArpeggiator2,
-	ericSaiteGenerator,
-	neuralNetwork,
-	audioLoopback,
-} as const;
+// Create a wrapper that provides synchronous metadata access for menus
+// while lazy loading the actual project content when needed
+function createLazyProjectWrappers() {
+	const metadata = getAllProjectMetadata();
+	const projectWrappers: Record<string, unknown> = {};
+
+	for (const [key, meta] of Object.entries(metadata)) {
+		// Create a project wrapper that loads the full project when needed
+		projectWrappers[key] = {
+			title: meta.title,
+			author: meta.author,
+			description: meta.description,
+			// Add a loading method for when the full project is needed
+			async load() {
+				return await loadProject(key);
+			},
+		};
+	}
+
+	return projectWrappers;
+}
+
+// Export the lazy project wrappers
+const projects = createLazyProjectWrappers();
 
 export default projects;

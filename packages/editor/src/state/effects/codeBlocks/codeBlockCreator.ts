@@ -147,4 +147,14 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 	events.on('addCodeBlock', onAddCodeBlock);
 	events.on('copyCodeBlock', onCopyCodeBlock);
 	events.on('deleteCodeBlock', onDeleteCodeBlock);
+
+	// Handle lazy loading of example modules
+	events.on('addExampleModule', async ({ moduleKey }: { moduleKey: string }) => {
+		const moduleWrapper = state.options.exampleModules[moduleKey];
+		if (moduleWrapper && moduleWrapper.code) {
+			const code = await moduleWrapper.code;
+			// Use the same parameters as other module additions
+			await onAddCodeBlock({ x: 0, y: 0, isNew: false, code: code.split('\n') });
+		}
+	});
 }

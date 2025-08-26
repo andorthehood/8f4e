@@ -111,11 +111,11 @@ export const builtInModuleMenu: MenuGenerator = (state, payload = {}) => {
 	const { category } = payload as { category: string };
 	return Object.entries(state.options.exampleModules)
 		.filter(([, module]) => module.category == category)
-		.map(([, module]) => {
+		.map(([key, module]) => {
 			return {
 				title: module.title,
-				action: 'addCodeBlock',
-				payload: { code: module.code.split('\n') },
+				action: 'addExampleModule',
+				payload: { moduleKey: key },
 				close: true,
 			};
 		});
@@ -181,9 +181,9 @@ export const fontMenu: MenuGenerator = () => [
 ];
 
 export const exampleProjectMenu: MenuGenerator = state =>
-	Object.entries(state.options.exampleProjects).map(([, project]) => ({
+	Object.entries(state.options.exampleProjects).map(([key, project]) => ({
 		title: project.title,
-		action: 'loadProject',
-		payload: { project },
+		action: 'loadExampleProject',
+		payload: { projectKey: key },
 		close: true,
 	}));
