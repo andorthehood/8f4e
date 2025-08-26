@@ -19,6 +19,13 @@ The current implementation in `packages/editor/src/state/effects/compiler.ts` di
 
 ## Proposed Solution
 
+**Clarification**: The goal is NOT to replace the `@8f4e/compiler-worker` package entirely, but to move the responsibility of creating and managing it from the editor package to the main application (`src/editor.ts`). This way:
+
+- The editor package becomes more flexible and testable
+- The main application continues to use the existing `@8f4e/compiler-worker` infrastructure
+- The editor package no longer directly imports compiler dependencies
+- The compilation logic remains the same, just managed externally
+
 Add an async compile callback function to the editor's Options interface that allows consumers to provide their own compilation strategy. This will:
 
 - Decouple the editor from specific compiler implementations
@@ -31,15 +38,13 @@ The callback should receive the project data and return compiled modules, code b
 ## Implementation Plan
 
 ### Step 1: Update Options Interface
-- Add `compileProject: (project: Project, options: CompileOptions) => Promise<CompilationResult>` to the Options interface
+- Add `compileProject: (modules: Module[], compilerOptions: CompileOptions, memoryRef: WebAssembly.Memory) => Promise<CompilationResult>` to the Options interface
 - Define a new `CompilationResult` interface with the necessary compilation data:
   ```typescript
   interface CompilationResult {
     compiledModules: CompiledModuleLookup;
     codeBuffer: Uint8Array;
     allocatedMemorySize: number;
-    memoryRef: WebAssembly.Memory;
-    buildErrors: BuildError[]; // Always empty array on success
   }
   ```
 - Update the editor's main entry point to accept this new option
@@ -58,7 +63,7 @@ The callback should receive the project data and return compiled modules, code b
 - Update error handling to work with external compilation
 
 ### Step 4: Update Consumer Examples
-- Modify the main application to provide the compile callback
+- Modify the main application (`src/editor.ts`) to provide the compile callback using the existing `@8f4e/compiler-worker` package
 - Ensure the editor still works with the existing compiler implementation
 - Update any tests that depend on the current compiler integration
 
@@ -71,13 +76,14 @@ The callback should receive the project data and return compiled modules, code b
 - [ ] Error handling works correctly: callback throws errors, editor catches and converts to BuildError format
 - [ ] Bundle size is reduced by removing compiler dependencies
 - [ ] Tests pass with external compilation
+- [ ] **Main application continues to use `@8f4e/compiler-worker` package as before**
 
 ## Affected Components
 
 - `packages/editor/src/state/types.ts` - Add compile callback to Options interface
 - `packages/editor/src/state/effects/compiler.ts` - Refactor to use external callback
 - `packages/editor/src/index.ts` - Update main entry point
-- `src/editor.ts` - Update main application to provide compile callback
+- `src/editor.ts` - Update main application to provide compile callback using compiler-worker
 - `packages/editor/src/state/index.ts` - Update state initialization
 
 ## Risks & Considerations
@@ -88,6 +94,7 @@ The callback should receive the project data and return compiled modules, code b
   - **Mitigation**: Ensure the callback is async and doesn't block the main thread
 - **Dependencies**: The compile callback must provide compatible data structures
 - **Breaking Changes**: Minimal - the change should be additive to existing Options
+- **Important**: The `@8f4e/compiler-worker` package will continue to be used by the main application, just not directly imported by the editor package
 
 ## Related Items
 
@@ -101,13 +108,16 @@ The callback should receive the project data and return compiled modules, code b
 - [Current compiler implementation](packages/editor/src/state/effects/compiler.ts)
 - [Editor Options interface](packages/editor/src/state/types.ts)
 - [Main editor entry point](packages/editor/src/index.ts)
+- [Main application that will provide compile callback](src/editor.ts)
 
 ## Notes
 
 This refactoring follows the same pattern used for runtime loading, where the editor accepts callbacks for external functionality rather than directly importing and managing dependencies. This approach makes the editor more modular and easier to integrate into different environments.
 
+**Key Clarification**: The goal is to move the compiler worker management from the editor package to the main application, NOT to replace the compiler worker entirely. The main application will continue to use the `@8f4e/compiler-worker` package and provide a compile callback to the editor.
+
 The compile callback should handle:
-- Project code compilation
+- Project code compilation using the existing compiler worker infrastructure
 - Memory allocation and management (including WebAssembly.Memory creation)
 - Binary asset handling
 - Throwing errors on compilation failure (editor handles error conversion and display)
@@ -117,6 +127,7 @@ The compile callback should handle:
 - Callback throws errors on failure, editor catches and converts to BuildError format
 - Callback handles both compilation and memory allocation for cleaner separation of concerns
 - Full CompileOptions interface is maintained for maximum flexibility
+- **The `@8f4e/compiler-worker` package remains the primary compilation engine, just managed externally**
 
 ## Archive Instructions
 
