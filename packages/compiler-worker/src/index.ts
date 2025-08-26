@@ -2,6 +2,8 @@ import { CompileOptions, Module } from '@8f4e/compiler';
 
 import testBuild from './testBuild';
 
+console.log('DEBUG: compiler-worker loaded');
+
 async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
 	try {
 		const { codeBuffer, compiledModules, allocatedMemorySize } = await testBuild(memoryRef, modules, compilerOptions);
