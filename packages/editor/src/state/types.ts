@@ -2,6 +2,8 @@ import { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure } fro
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { SpriteLookup } from '@8f4e/2d-engine';
 
+import { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
+
 export interface CodeBlock {
 	code: string[];
 	isOpen: boolean;
@@ -316,11 +318,10 @@ export interface ExampleModule {
 }
 
 export interface Options {
-	isLocalStorageEnabled: boolean;
-	showInfoOverlay: boolean;
 	localStorageId: string;
 	exampleProjects: Record<string, Project>;
 	exampleModules: Record<string, ExampleModule>;
+	featureFlags?: FeatureFlagsConfig;
 }
 
 export interface EditorSettings {
@@ -335,5 +336,6 @@ export interface State {
 	project: Project;
 	options: Options;
 	editorSettings: EditorSettings;
+	featureFlags: FeatureFlags;
 	compilationTime: number;
 }
