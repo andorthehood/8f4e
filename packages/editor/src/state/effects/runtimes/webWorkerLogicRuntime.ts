@@ -1,9 +1,9 @@
+import Worker from '@8f4e/web-worker-logic-runtime?worker';
+
 import { EventDispatcher } from '../../../events';
 import { State } from '../../types';
 
 export default function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
-	const workerUrl = new URL('../../../../../../packages/web-worker-logic-runtime/src/index.ts', import.meta.url);
-
 	let worker: Worker | undefined;
 
 	async function onWorkerMessage({ data }) {
@@ -32,9 +32,7 @@ export default function webWorkerLogicRuntime(state: State, events: EventDispatc
 		});
 	}
 
-	worker = new Worker(workerUrl, {
-		type: 'module',
-	});
+	worker = new Worker();
 
 	worker.addEventListener('message', onWorkerMessage);
 	syncCodeAndSettingsWithRuntime();

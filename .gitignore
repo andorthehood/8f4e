@@ -1,7 +1,6 @@
 .cache
 dist*
 node_modules
-.parcel-cache*
 .eslintcache
 coverage
 .playwright-mcp
