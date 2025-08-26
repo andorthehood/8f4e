@@ -1,9 +1,10 @@
-import Worker from '@8f4e/web-worker-midi-runtime?worker';
+// Import the types from the editor
+import { State, EventDispatcher } from '@8f4e/editor';
+// Import the runtime dependencies
+import WebWorkerMIDIRuntime from '@8f4e/web-worker-midi-runtime?worker';
 
-import { EventDispatcher } from '../../../events';
-import { State } from '../../types';
-
-export default function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
+// WebWorker MIDI Runtime Factory
+export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 	let selectedInput: MIDIInput | null = null;
 	let worker: Worker | undefined;
 
@@ -62,7 +63,7 @@ export default function webWorkerMIDIRuntime(state: State, events: EventDispatch
 		});
 	}
 
-	worker = new Worker();
+	worker = new WebWorkerMIDIRuntime();
 
 	worker.addEventListener('message', onWorkerMessage);
 	syncCodeAndSettingsWithRuntime();

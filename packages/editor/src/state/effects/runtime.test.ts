@@ -1,4 +1,4 @@
-import { RuntimeType } from '../runtime';
+import { RuntimeType } from './runtime';
 
 describe('Runtime System', () => {
 	describe('RuntimeType', () => {
