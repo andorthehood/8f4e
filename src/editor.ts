@@ -2,10 +2,10 @@ import initEditor, { type Project, type RuntimeFactory, type RuntimeType } from 
 
 import exampleProjects from './examples/projects';
 import exampleModules from './examples/modules';
-// Import the runtime factory functions from the separate file
-import { audioWorkletRuntime, webWorkerLogicRuntime, webWorkerMIDIRuntime } from './runtime-factories';
-
-// Runtime implementations moved to src/runtime-factories.ts
+// Import the runtime factory functions from separate dedicated files
+import { audioWorkletRuntime } from './audio-worklet-runtime-factory';
+import { webWorkerLogicRuntime } from './web-worker-logic-runtime-factory';
+import { webWorkerMIDIRuntime } from './web-worker-midi-runtime-factory';
 
 // Runtime factory registry - this demonstrates how consumers can implement the requestRuntime callback
 const runtimeFactories: Record<RuntimeType, RuntimeFactory> = {
