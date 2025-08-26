@@ -1,5 +1,7 @@
 import { Buffer } from 'buffer';
 
+import Worker from '@8f4e/compiler-worker?worker';
+
 import { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
 
@@ -20,11 +22,7 @@ function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { cod
 }
 
 export default async function compiler(state: State, events: EventDispatcher) {
-	const workerUrl = new URL('../../../../../packages/compiler-worker/dist/index.js', import.meta.url);
-
-	const worker = new Worker(workerUrl, {
-		type: 'module',
-	});
+	const worker = new Worker();
 
 	async function onRecompile() {
 		if (!state.compiler.memoryRef) {
