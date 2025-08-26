@@ -321,8 +321,8 @@ export interface ExampleModule {
 
 export interface Options {
 	localStorageId: string;
-	exampleProjects: Record<string, Project>;
-	exampleModules: Record<string, ExampleModule>;
+	projects: Record<string, Project>;
+	modules: Record<string, ExampleModule>;
 	featureFlags?: FeatureFlagsConfig;
 	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
 }
