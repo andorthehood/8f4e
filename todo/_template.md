@@ -1,9 +1,10 @@
 # TODO: [Brief Title]
 
-**Priority**: 🔴/🟡/🟢  
-**Estimated Effort**: X hours/days  
-**Created**: YYYY-MM-DD  
-**Status**: Open/Completed  
+**Priority**: 🔴/🟡/🟢
+**Estimated Effort**: X hours/days
+**Created**: YYYY-MM-DD
+**Status**: Open/Completed
+**Completed**: YYYY-MM-DD
 
 ## Problem Description
 
