@@ -1,0 +1,51 @@
+// Import the types from the editor
+import { State, EventDispatcher } from '@8f4e/editor';
+// Import the runtime dependencies
+import WebWorkerLogicRuntime from '@8f4e/web-worker-logic-runtime?worker';
+
+// WebWorker Logic Runtime Factory
+export function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
+	let worker: Worker | undefined;
+
+	async function onWorkerMessage({ data }) {
+		switch (data.type) {
+			case 'initialized':
+				events.dispatch('runtimeInitialized');
+				break;
+			case 'stats':
+				console.log(data.payload);
+				break;
+		}
+	}
+
+	function syncCodeAndSettingsWithRuntime() {
+		if (!worker) {
+			return;
+		}
+		worker.postMessage({
+			type: 'init',
+			payload: {
+				memoryRef: state.compiler.memoryRef,
+				sampleRate: state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
+				codeBuffer: state.compiler.codeBuffer,
+				compiledModules: state.compiler.compiledModules,
+			},
+		});
+	}
+
+	worker = new WebWorkerLogicRuntime();
+
+	worker.addEventListener('message', onWorkerMessage);
+	syncCodeAndSettingsWithRuntime();
+
+	events.on('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+
+	return () => {
+		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+		if (worker) {
+			worker.removeEventListener('message', onWorkerMessage);
+			worker.terminate();
+			worker = undefined;
+		}
+	};
+}
