@@ -49,7 +49,9 @@ export default async function runtime(state: State, events: EventDispatcher) {
 		} catch (error) {
 			console.error('Failed to initialize runtime:', error);
 			// Throw the error - no fallback mechanisms as per requirements
-			throw new Error(`Failed to load runtime ${runtime.runtime}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			throw new Error(
+				`Failed to load runtime ${runtime.runtime}: ${error instanceof Error ? error.message : 'Unknown error'}`
+			);
 		} finally {
 			isInitializing = false;
 		}
