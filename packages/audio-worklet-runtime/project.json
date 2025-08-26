@@ -7,7 +7,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "tsc",
+        "command": "npm run build",
         "cwd": "{projectRoot}"
       }
     },
