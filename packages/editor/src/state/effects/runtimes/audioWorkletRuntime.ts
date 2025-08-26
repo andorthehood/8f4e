@@ -7,6 +7,8 @@ import { EventDispatcher } from '../../../events';
 export default function audioWorkletRuntime(state: State, events: EventDispatcher) {
 	let audioContext: AudioContext | null = null;
 	let audioWorklet: AudioWorkletNode | null = null;
+	let mediaStream: MediaStream | null = null;
+	let mediaStreamSource: MediaStreamAudioSourceNode | null = null;
 
 	function syncCodeAndSettingsWithRuntime() {
 		const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
@@ -80,9 +82,9 @@ export default function audioWorkletRuntime(state: State, events: EventDispatche
 
 		if (runtime.audioInputBuffers) {
 			try {
-				const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-				const source = audioContext.createMediaStreamSource(stream);
-				source.connect(audioWorklet);
+				mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+				mediaStreamSource = audioContext.createMediaStreamSource(mediaStream);
+				mediaStreamSource.connect(audioWorklet);
 			} catch (error) {
 				console.error('Error accessing the microphone:', error);
 			}
@@ -97,7 +99,19 @@ export default function audioWorkletRuntime(state: State, events: EventDispatche
 	events.on('mousedown', initAudioContext);
 
 	return () => {
+		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
 		events.off('mousedown', initAudioContext);
+
+		// Stop media stream and disconnect source
+		if (mediaStreamSource) {
+			mediaStreamSource.disconnect();
+			mediaStreamSource = null;
+		}
+
+		if (mediaStream) {
+			mediaStream.getTracks().forEach(track => track.stop());
+			mediaStream = null;
+		}
 
 		if (audioWorklet) {
 			audioWorklet.disconnect();
