@@ -18,6 +18,7 @@ import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
 
+import { validateFeatureFlags, defaultFeatureFlags } from '../config/featureFlags';
 import { EventDispatcher } from '../events';
 
 const maxMemorySize = 10000;
@@ -141,8 +142,6 @@ const defaultState: State = {
 		binaryAssets: [],
 	},
 	options: {
-		isLocalStorageEnabled: true,
-		showInfoOverlay: import.meta.env.DEV,
 		localStorageId: 'default',
 		exampleProjects: {},
 		exampleModules: {},
@@ -151,13 +150,23 @@ const defaultState: State = {
 		colorScheme: 'hackerman',
 		font: '8x16',
 	},
+	featureFlags: defaultFeatureFlags,
 };
 
 defaultState.graphicHelper.activeViewport = defaultState.graphicHelper.baseCodeBlock;
 defaultState.graphicHelper.baseCodeBlock.parent = defaultState.graphicHelper.baseCodeBlock;
 
 export default function init(events: EventDispatcher, project: Project, options: Partial<Options>): State {
-	const state = { ...defaultState, project, options: { ...defaultState.options, ...options } };
+	// Initialize feature flags
+	const featureFlags = validateFeatureFlags(options.featureFlags);
+
+	const state = {
+		...defaultState,
+		project,
+		options: { ...defaultState.options, ...options },
+		featureFlags,
+	};
+
 	runtime(state, events);
 	sampleRate(state, events);
 	loader(state, events, defaultState);
