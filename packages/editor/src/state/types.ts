@@ -319,12 +319,26 @@ export interface ExampleModule {
 	category: string;
 }
 
+export interface ModuleMetadata {
+	slug: string;
+	title: string;
+	category: string;
+}
+
+export interface ProjectMetadata {
+	slug: string;
+	title: string;
+	description: string;
+}
+
 export interface Options {
 	localStorageId: string;
-	projects: Record<string, Project>;
-	modules: Record<string, ExampleModule>;
 	featureFlags?: FeatureFlagsConfig;
 	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
+	getListOfModules: () => Promise<ModuleMetadata[]>;
+	getModule: (slug: string) => Promise<ExampleModule>;
+	getListOfProjects: () => Promise<ProjectMetadata[]>;
+	getProject: (slug: string) => Promise<Project>;
 }
 
 // Re-export runtime types from the effects module for convenience
