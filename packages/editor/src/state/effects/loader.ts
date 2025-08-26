@@ -167,4 +167,13 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 	events.on('saveState', onSaveState);
 	events.on('open', onOpen);
 	events.on('loadProject', loadProject);
+
+	// Handle lazy loading of example projects
+	events.on('loadExampleProject', async ({ projectKey }: { projectKey: string }) => {
+		const projectWrapper = state.options.exampleProjects[projectKey] as unknown as { load: () => Promise<Project> };
+		if (projectWrapper && projectWrapper.load) {
+			const project = await projectWrapper.load();
+			loadProject({ project });
+		}
+	});
 }

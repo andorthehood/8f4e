@@ -10,7 +10,11 @@ const kebabCaseToCamelCase = (str: string) =>
 
 async function init() {
 	const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
-	const project: Project = exampleProjects[projectName] || exampleProjects.audioBuffer;
+
+	// Load the specific project needed (this will be lazy loaded)
+	// Fall back to audioBuffer if the project name is not found
+	const projectWrapper = exampleProjects[projectName as keyof typeof exampleProjects] || exampleProjects.audioBuffer;
+	const project: Project = await projectWrapper.load();
 
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
 	canvas.width = window.innerWidth;
