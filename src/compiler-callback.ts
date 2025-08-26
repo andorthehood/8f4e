@@ -1,111 +1,28 @@
+import Worker from '@8f4e/compiler-worker?worker';
+
 import type { Project, CompilationResult } from '@8f4e/editor';
-import compile, { type CompileOptions, type Module, type CompiledModuleLookup } from '@8f4e/compiler';
+import type { CompileOptions, Module } from '@8f4e/compiler';
 
-let previousCompiledModules: CompiledModuleLookup;
+// Global worker instance to maintain state across compilations
+let worker: Worker | null = null;
 
-function compareMap(arr1: Map<number, number>, arr2: Map<number, number>): boolean {
-	if (arr1.size !== arr2.size) {
-		return false;
+/**
+ * Initialize the compiler worker if not already created
+ */
+function getWorker(): Worker {
+	if (!worker) {
+		worker = new Worker();
 	}
-
-	for (const [key, value] of arr1) {
-		if (arr2.get(key) !== value) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
-function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: CompiledModuleLookup | undefined) {
-	const changes: {
-		wordAlignedSize: number;
-		wordAlignedAddress: number;
-		value: number | Map<number, number>;
-		isInteger: boolean;
-	}[] = [];
-
-	if (!previous) {
-		return [];
-	}
-
-	for (const [id, compiledModule] of compiledModules) {
-		const previousModule = previous.get(id);
-		if (!previousModule) {
-			break;
-		}
-
-		for (const [memoryIdentifier, memory] of compiledModule.memoryMap) {
-			const previousMemory = previousModule.memoryMap.get(memoryIdentifier);
-			if (!previousMemory) {
-				break;
-			}
-
-			if (memory.default instanceof Map && previousMemory.default instanceof Map) {
-				if (!compareMap(memory.default, previousMemory.default)) {
-					changes.push({
-						wordAlignedSize: memory.wordAlignedSize,
-						wordAlignedAddress: memory.wordAlignedAddress,
-						value: memory.default,
-						isInteger: memory.isInteger,
-					});
-				}
-			} else {
-				if (previousMemory.default !== memory.default) {
-					changes.push({
-						wordAlignedSize: memory.wordAlignedSize,
-						wordAlignedAddress: memory.wordAlignedAddress,
-						value: memory.default,
-						isInteger: memory.isInteger,
-					});
-				}
-			}
-		}
-	}
-
-	return changes;
-}
-
-function didProgramOrMemoryStructureChange(
-	compiledModules: CompiledModuleLookup,
-	previous: CompiledModuleLookup | undefined
-) {
-	if (!previous) {
-		return true;
-	}
-
-	if (compiledModules.size !== previous.size) {
-		return true;
-	}
-
-	for (const [id, compiledModule] of compiledModules) {
-		const previousModule = previous.get(id);
-		if (!previousModule) {
-			return true;
-		}
-
-		if (compiledModule.loopFunction.length !== previousModule.loopFunction.length) {
-			return true;
-		}
-
-		if (compiledModule.initFunctionBody.length !== previousModule.initFunctionBody.length) {
-			return true;
-		}
-
-		if (compiledModule.wordAlignedSize !== previousModule.wordAlignedSize) {
-			return true;
-		}
-	}
-
-	return false;
+	return worker;
 }
 
 /**
- * Implementation of the compile callback that uses the existing compiler infrastructure.
- * This function receives project data and returns compiled modules, code buffer, and memory information.
+ * Implementation of the compile callback that uses the existing compiler worker.
+ * This function receives project data and delegates to the compiler worker, then
+ * returns compiled modules, code buffer, and memory information.
  */
 export async function compileProject(project: Project, options: CompileOptions): Promise<CompilationResult> {
-	// Convert project code blocks to modules format expected by compiler
+	// Convert project code blocks to modules format expected by compiler worker
 	const modules: Module[] = project.codeBlocks.map(codeBlock => ({
 		code: codeBlock.code,
 	}));
@@ -117,60 +34,43 @@ export async function compileProject(project: Project, options: CompileOptions):
 		shared: true,
 	});
 
-	try {
-		// Compile the modules to get the code buffer and compiled modules
-		const { codeBuffer, compiledModules, allocatedMemorySize } = compile(modules, options);
-		
-		// @ts-ignore - WebAssembly.instantiate expects imports object
-		const { instance } = await WebAssembly.instantiate(codeBuffer, {
-			js: {
-				memory: memoryRef,
-			},
-		});
+	const compilerWorker = getWorker();
 
-		const init = instance.exports.init as CallableFunction;
+	// Return a Promise that resolves when the worker responds
+	return new Promise<CompilationResult>((resolve, reject) => {
+		// Set up one-time message listener for this compilation
+		function onWorkerMessage({ data }: MessageEvent) {
+			compilerWorker.removeEventListener('message', onWorkerMessage);
 
-		const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
-
-		if (!previousCompiledModules || memoryStructureChange) {
-			init();
-		} else {
-			const memoryBufferInt = new Int32Array(memoryRef.buffer);
-			const memoryBufferFloat = new Float32Array(memoryRef.buffer);
-			const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
-
-			memoryValueChanges.forEach(change => {
-				if (change.isInteger) {
-					if (change.value instanceof Map) {
-						change.value.forEach((item, index) => {
-							memoryBufferInt[change.wordAlignedAddress + index] = item;
-						});
-					} else {
-						memoryBufferInt[change.wordAlignedAddress] = change.value;
-					}
-				} else {
-					if (change.value instanceof Map) {
-						change.value.forEach((item, index) => {
-							memoryBufferFloat[change.wordAlignedAddress + index] = item;
-						});
-					} else {
-						memoryBufferFloat[change.wordAlignedAddress] = change.value;
-					}
-				}
-			});
+			switch (data.type) {
+				case 'buildOk':
+					resolve({
+						compiledModules: data.payload.compiledModules,
+						codeBuffer: data.payload.codeBuffer,
+						allocatedMemorySize: data.payload.allocatedMemorySize,
+						memoryRef,
+						buildErrors: [], // Always empty array on success
+					});
+					break;
+				case 'buildError':
+					// Reject with the error so the editor can catch it and convert to BuildError format
+					reject(data.payload);
+					break;
+				default:
+					reject(new Error(`Unknown message type from compiler worker: ${data.type}`));
+			}
 		}
 
-		previousCompiledModules = compiledModules;
+		compilerWorker.addEventListener('message', onWorkerMessage);
 
-		return {
-			compiledModules,
-			codeBuffer,
-			allocatedMemorySize,
-			memoryRef,
-			buildErrors: [], // Always empty array on success
-		};
-	} catch (error) {
-		// Throw the error so the editor can catch it and convert to BuildError format
-		throw error;
-	}
+		// Send compilation request to worker
+		compilerWorker.postMessage({
+			type: 'recompile',
+			payload: {
+				memoryRef,
+				modules,
+				compilerOptions: options,
+			},
+		});
+	});
 }
