@@ -1,6 +1,8 @@
-import { Instruction, instructionParser } from '@8f4e/compiler';
+import instructionParser from './extras/instructionParser';
 
 import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
+
+import type { Instruction } from '@8f4e/compiler';
 
 export default function gaps(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.gaps.clear();
