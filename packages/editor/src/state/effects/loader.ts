@@ -37,10 +37,12 @@ function convertGraphicDataToProjectStructure(
 }
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
-	const localProject = JSON.parse(localStorage.getItem('project_' + state.options.localStorageId) ?? '{}') as Project;
-	const editorSettings = JSON.parse(
-		localStorage.getItem('editorSettings_' + state.options.localStorageId) ?? '{}'
-	) as EditorSettings;
+	const localProject = state.featureFlags.localStorage
+		? (JSON.parse(localStorage.getItem('project_' + state.options.localStorageId) ?? '{}') as Project)
+		: ({} as Project);
+	const editorSettings = state.featureFlags.localStorage
+		? (JSON.parse(localStorage.getItem('editorSettings_' + state.options.localStorageId) ?? '{}') as EditorSettings)
+		: ({} as EditorSettings);
 	const input = document.createElement('input');
 	input.type = 'file';
 
@@ -118,12 +120,12 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		events.dispatch('saveState');
 	}
 
-	void (state.options.isLocalStorageEnabled
+	void (state.featureFlags.localStorage
 		? loadProject({ project: localProject })
 		: loadProject({ project: state.project }));
 
 	function onSaveState() {
-		if (!state.options.isLocalStorageEnabled) {
+		if (!state.featureFlags.localStorage) {
 			return;
 		}
 
