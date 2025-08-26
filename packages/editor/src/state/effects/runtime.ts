@@ -1,15 +1,12 @@
-import audioWorkletRuntime from './runtimes/audioWorkletRuntime';
-import webWorkerMIDIRuntime from './runtimes/webWorkerMIDIRuntime';
-import webWorkerLogicRuntime from './runtimes/webWorkerLogicRuntime';
-
 import { EventDispatcher } from '../../events';
 import { State, WebWorkerLogicRuntime, AudioWorkletRuntime, WebWorkerMIDIRuntime } from '../types';
+import { loadRuntime, RuntimeType } from './runtimes/registry';
 
 export default async function runtime(state: State, events: EventDispatcher) {
 	let runtimeDestroyer: null | (() => void) = null;
 	let onlineRuntime: null | string;
 
-	function initRuntime() {
+	async function initRuntime() {
 		const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
 
 		if (onlineRuntime === runtime.runtime) {
@@ -17,22 +14,24 @@ export default async function runtime(state: State, events: EventDispatcher) {
 			return;
 		}
 
-		switch (runtime.runtime) {
-			case 'AudioWorkletRuntime':
-				runtimeDestroyer = audioWorkletRuntime(state, events);
-				onlineRuntime = 'AudioWorkletRuntime';
-				break;
-			case 'WebWorkerMIDIRuntime':
-				runtimeDestroyer = webWorkerMIDIRuntime(state, events);
-				onlineRuntime = 'WebWorkerMIDIRuntime';
-				break;
-			case 'WebWorkerLogicRuntime':
-				runtimeDestroyer = webWorkerLogicRuntime(state, events);
-				onlineRuntime = 'WebWorkerLogicRuntime';
+		try {
+			console.log(`[Runtime] Loading runtime: ${runtime.runtime}`);
+			// Load the runtime factory using dynamic import
+			const runtimeFactory = await loadRuntime(runtime.runtime as RuntimeType);
+			console.log(`[Runtime] Successfully loaded runtime: ${runtime.runtime}`);
+			
+			// Initialize the runtime
+			runtimeDestroyer = runtimeFactory(state, events);
+			onlineRuntime = runtime.runtime;
+			console.log(`[Runtime] Successfully initialized runtime: ${runtime.runtime}`);
+		} catch (error) {
+			console.error('Failed to initialize runtime:', error);
+			// Could dispatch an error event here for UI handling
+			// events.dispatch('runtimeLoadError', { error, runtimeType: runtime.runtime });
 		}
 	}
 
-	function changeRuntime({
+	async function changeRuntime({
 		selectedRuntime,
 	}: {
 		selectedRuntime:
@@ -61,7 +60,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 				}) - 1;
 		}
 
-		initRuntime();
+		await initRuntime();
 	}
 
 	events.on('buildFinished', initRuntime);
