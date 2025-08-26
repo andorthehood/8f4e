@@ -25,11 +25,10 @@ export interface FeatureFlags {
 
 /**
  * Default feature flags configuration with all features enabled.
- * This maintains backward compatibility with existing editor behavior.
  */
 export const defaultFeatureFlags: FeatureFlags = {
 	contextMenu: true,
-	infoOverlay: true, // Will be overridden by import.meta.env.DEV for backward compatibility
+	infoOverlay: import.meta.env.DEV,
 	moduleDragging: true,
 	viewportDragging: true,
 	localStorage: true,
