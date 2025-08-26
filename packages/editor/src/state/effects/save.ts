@@ -3,17 +3,17 @@ import { State } from '../types';
 
 export default function save(state: State, events: EventDispatcher): void {
 	function onSave() {
-		const json = JSON.stringify(state.project);
+		if (!state.options.saveProjectToFile) {
+			console.warn('No saveProjectToFile callback provided');
+			return;
+		}
 
-		const blob = new Blob([json], { type: 'octet/stream' });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		document.body.appendChild(a);
-		a.style.display = 'none';
-		a.href = url;
-		a.download = '8f4e.json';
-		a.click();
-		URL.revokeObjectURL(url);
+		const filename = `${state.project.title || 'project'}.json`;
+		
+		state.options.saveProjectToFile(state.project, filename)
+			.catch(error => {
+				console.error('Failed to save project to file:', error);
+			});
 	}
 
 	events.on('save', onSave);

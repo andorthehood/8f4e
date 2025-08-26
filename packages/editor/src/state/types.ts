@@ -339,6 +339,17 @@ export interface Options {
 	getModule: (slug: string) => Promise<ExampleModule>;
 	getListOfProjects: () => Promise<ProjectMetadata[]>;
 	getProject: (slug: string) => Promise<Project>;
+
+	// Storage callbacks
+	loadProjectFromStorage?: (storageId: string) => Promise<Project | null>;
+	saveProjectToStorage?: (storageId: string, project: Project) => Promise<void>;
+	loadEditorSettingsFromStorage?: (storageId: string) => Promise<EditorSettings | null>;
+	saveEditorSettingsToStorage?: (storageId: string, settings: EditorSettings) => Promise<void>;
+
+	// File handling callbacks
+	loadProjectFromFile?: (file: File) => Promise<Project>;
+	saveProjectToFile?: (project: Project, filename: string) => Promise<void>;
+	importBinaryAsset?: (file: File) => Promise<{ data: string; fileName: string }>;
 }
 
 // Re-export runtime types from the effects module for convenience
