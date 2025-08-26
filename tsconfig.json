@@ -12,11 +12,12 @@
 		"allowImportingTsExtensions": false,
 		"noEmit": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
+		"types": ["vite/client", "vite-plugin-glsl/ext"]
 	},
 	"exclude": ["node_modules", "packages/**/*", "src/**/*.test.ts", "dist"],
 	"include": [
-		"src/index.ts",
+		"src/editor.ts",
 		"src/examples/**/*.ts"
 	]
 }
