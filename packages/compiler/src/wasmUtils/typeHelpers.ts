@@ -7,9 +7,10 @@ export type LocalName = number[];
 export type Import = number[];
 
 export const ieee754 = (n: number): Uint8Array => {
-	const buf = Buffer.allocUnsafe(4);
-	buf.writeFloatLE(n, 0);
-	return Uint8Array.from(buf);
+	const buf = new ArrayBuffer(4);
+	const view = new DataView(buf);
+	view.setFloat32(0, n, true); // true for little-endian
+	return new Uint8Array(buf);
 };
 
 /**
