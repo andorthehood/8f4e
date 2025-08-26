@@ -16,6 +16,8 @@ import {
 	saveProjectToFile,
 	importBinaryAsset,
 } from './storage-callbacks';
+// Import the compile callback implementation
+import { compileProject } from './compiler-callback';
 
 // Runtime factory registry - this demonstrates how consumers can implement the requestRuntime callback
 const runtimeFactories: Record<RuntimeType, RuntimeFactory> = {
@@ -64,6 +66,7 @@ async function init() {
 		getListOfProjects,
 		getProject,
 		requestRuntime, // Add the runtime callback
+		compileProject, // Add the compile callback
 		// Add storage and file handling callbacks
 		loadProjectFromStorage,
 		saveProjectToStorage,
