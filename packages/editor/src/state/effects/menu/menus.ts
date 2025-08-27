@@ -35,18 +35,14 @@ export const mainMenu: MenuGenerator = state => [
 				},
 				{ divider: true },
 				{ title: 'Import binary asset', action: 'importBinaryAsset', close: true },
-		  ]
+			]
 		: []),
 	{ title: 'Binary assets', action: 'openSubMenu', payload: { menu: 'binaryAssetsMenu' }, close: false },
 	...(state.featureFlags.editing ? [{ divider: true }] : []),
-	...(state.featureFlags.editing
-		? [{ title: 'New Project', action: 'new', close: true }, { divider: true }]
-		: []),
+	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }, { divider: true }] : []),
 	{ title: 'Open From Disk', action: 'open', close: true },
 	{ title: 'Open Project', action: 'openSubMenu', payload: { menu: 'projectMenu' }, close: false },
-	...(state.featureFlags.editing
-		? [{ divider: true }, { title: 'Export Project', action: 'save', close: true }]
-		: []),
+	...(state.featureFlags.editing ? [{ divider: true }, { title: 'Export Project', action: 'save', close: true }] : []),
 	{ divider: true },
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
 	{ title: 'Project Settings', action: 'openSubMenu', payload: { menu: 'projectSettingsMenu' }, close: false },
@@ -96,7 +92,7 @@ export const moduleMenu: MenuGenerator = state => [
 					payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 					close: true,
 				},
-		  ]
+			]
 		: []),
 	{
 		title: 'Copy module',
