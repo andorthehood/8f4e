@@ -67,14 +67,14 @@ export async function loadAllModules(): Promise<Record<string, ExampleModule>> {
 		return loadedModules;
 	}
 
-	console.log('[Examples] Loading all modules in batch...');
+	console.log('Loading all modules in batch...');
 
 	// Single lazy import loads all modules at once
 	const modulesImport = await import('./modules/index');
 	loadedModules = modulesImport.default;
 	modulesLoaded = true;
 
-	console.log(`[Examples] Loaded ${Object.keys(loadedModules).length} modules`);
+	console.log(`Loaded ${Object.keys(loadedModules).length} modules`);
 	return loadedModules;
 }
 
@@ -110,9 +110,9 @@ export async function getProject(slug: string): Promise<Project> {
 		throw new Error(`Project not found: ${slug}`);
 	}
 
-	console.log(`[Examples] Loading project: ${slug}`);
+	console.log(`Loading project: ${slug}`);
 	const project = await entry.loader();
-	console.log(`[Examples] Loaded project: ${project.title}`);
+	console.log(`Loaded project: ${project.title}`);
 	return project;
 }
 
