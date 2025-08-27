@@ -8,7 +8,7 @@ import {
 	loadEditorSettingsFromStorage,
 	saveEditorSettingsToStorage,
 	loadProjectFromFile,
-	saveProjectToFile,
+	exportFile,
 	importBinaryAsset,
 } from './storage-callbacks';
 import { compileProject } from './compiler-callback';
@@ -33,7 +33,7 @@ async function init() {
 		loadEditorSettingsFromStorage,
 		saveEditorSettingsToStorage,
 		loadProjectFromFile,
-		saveProjectToFile,
+		exportFile,
 		importBinaryAsset,
 	});
 
