@@ -314,6 +314,8 @@ export interface Project {
 	selectedRuntime: number;
 	runtimeSettings: Runtimes[];
 	binaryAssets?: BinaryAsset[];
+	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
+	compiledWasm?: string;
 }
 
 // Default empty project structure used when no project is loaded from storage
