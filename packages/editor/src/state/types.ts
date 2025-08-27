@@ -272,6 +272,11 @@ export interface WebWorkerLogicRuntime {
 	sampleRate: number;
 }
 
+export interface MainThreadLogicRuntime {
+	runtime: 'MainThreadLogicRuntime';
+	sampleRate: number;
+}
+
 export interface AudioWorkletRuntime {
 	runtime: 'AudioWorkletRuntime';
 	sampleRate: number;
@@ -298,7 +303,7 @@ export interface WebWorkerMIDIRuntime {
 	midiControlChangeInputs?: MidiCCIO[];
 }
 
-export type Runtimes = WebWorkerLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
+export type Runtimes = WebWorkerLogicRuntime | MainThreadLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
 
 export interface Project {
 	title: string;
