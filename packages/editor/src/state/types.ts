@@ -311,6 +311,26 @@ export interface Project {
 	binaryAssets?: BinaryAsset[];
 }
 
+// Default empty project structure used when no project is loaded from storage
+export const EMPTY_DEFAULT_PROJECT: Project = {
+	title: '',
+	author: '',
+	description: '',
+	codeBlocks: [],
+	viewport: {
+		x: 0,
+		y: 0,
+	},
+	selectedRuntime: 0,
+	runtimeSettings: [
+		{
+			runtime: 'WebWorkerLogicRuntime',
+			sampleRate: 50,
+		},
+	],
+	binaryAssets: [],
+};
+
 export interface ExampleModule {
 	title: string;
 	author: string;
@@ -353,7 +373,7 @@ export interface Options {
 	) => Promise<CompilationResult>;
 
 	// Storage callbacks
-	loadProjectFromStorage?: () => Promise<Project | null>;
+	loadProjectFromStorage: () => Promise<Project | null>;
 	saveProjectToStorage?: (project: Project) => Promise<void>;
 	loadEditorSettingsFromStorage?: () => Promise<EditorSettings | null>;
 	saveEditorSettingsToStorage?: (settings: EditorSettings) => Promise<void>;
