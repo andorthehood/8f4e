@@ -23,7 +23,7 @@ This document provides examples and instructions for integrating the 8f4e editor
         const canvas = document.getElementById('editor');
         
         // Initialize the editor
-        Editor8f4e.default(canvas, {
+        Editor8f4e(canvas, {
             // Required callbacks for storage
             loadProjectFromStorage: async (storageId) => {
                 const stored = localStorage.getItem('project_' + storageId);
@@ -154,7 +154,7 @@ const customStorageCallbacks = {
 
 // Initialize editor with custom storage
 initDB().then(() => {
-    return Editor8f4e.default(canvas, {
+    return Editor8f4e(canvas, {
         ...customStorageCallbacks,
         // ... other callbacks
     });
@@ -205,7 +205,7 @@ const EditorComponent = ({ width = 800, height = 600 }) => {
         
         const initEditor = async () => {
             try {
-                editorRef.current = await window.Editor8f4e.default(canvasRef.current, {
+                editorRef.current = await window.Editor8f4e(canvasRef.current, {
                     // ... your callbacks here
                 });
                 editorRef.current.resize(width, height);
@@ -256,7 +256,7 @@ export default {
     async mounted() {
         if (window.Editor8f4e) {
             try {
-                this.editor = await window.Editor8f4e.default(this.$refs.canvas, {
+                this.editor = await window.Editor8f4e(this.$refs.canvas, {
                     // ... your callbacks here
                 });
                 this.editor.resize(this.width, this.height);
@@ -282,7 +282,7 @@ export default {
 ### Main Function
 
 ```typescript
-Editor8f4e.default(canvas: HTMLCanvasElement, options: Options): Promise<EditorInstance>
+Editor8f4e(canvas: HTMLCanvasElement, options: Options): Promise<EditorInstance>
 ```
 
 ### Options Interface
@@ -366,7 +366,7 @@ const loadEditor = async () => {
 
 ```javascript
 // Enable debug logging (if available)
-Editor8f4e.default(canvas, {
+Editor8f4e(canvas, {
     ...options,
     debug: true
 }).then(editor => {
