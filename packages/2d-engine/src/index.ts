@@ -230,10 +230,13 @@ export class Engine {
 		// Check if cache already exists
 		if (this.textureCache.has(cacheId)) {
 			// Cache exists - ignore all drawing operations and just draw cached texture
+			// First, ensure we're back to the original framebuffer context
+			this.restoreOriginalFramebufferContext();
+			
 			this.isInCacheBlock = false;
 			this.currentCacheId = null;
 			
-			// Draw the cached texture at current offset position
+			// Now safely draw the cached texture at current offset position
 			this.drawCachedTextureAt(cacheId, this.offsetX + this.currentCacheCanvasX, this.offsetY + this.currentCacheCanvasY);
 			return;
 		}
@@ -253,14 +256,8 @@ export class Engine {
 			height: this.cacheHeight
 		});
 
-		// Restore original WebGL state
-		if (this.originalFramebuffer !== null) {
-			this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.originalFramebuffer);
-		}
-		if (this.originalViewport) {
-			this.gl.viewport(this.originalViewport[0], this.originalViewport[1], this.originalViewport[2], this.originalViewport[3]);
-			this.setUniform('u_resolution', this.originalViewport[2], this.originalViewport[3]);
-		}
+		// Restore original WebGL state before drawing cached texture
+		this.restoreOriginalFramebufferContext();
 
 		// Draw the cached texture at current offset position
 		this.drawCachedTextureAt(cacheId, this.offsetX + this.currentCacheCanvasX, this.offsetY + this.currentCacheCanvasY);
@@ -490,23 +487,56 @@ export class Engine {
 		}
 	}
 
+	private restoreOriginalFramebufferContext(): void {
+		// Restore original WebGL state
+		if (this.originalFramebuffer !== null) {
+			this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.originalFramebuffer);
+		}
+		if (this.originalViewport) {
+			this.gl.viewport(this.originalViewport[0], this.originalViewport[1], this.originalViewport[2], this.originalViewport[3]);
+			this.setUniform('u_resolution', this.originalViewport[2], this.originalViewport[3]);
+		}
+	}
+
 	private drawCachedTextureAt(cacheId: string, x: number, y: number): void {
 		const cachedTexture = this.textureCache.get(cacheId);
 		if (!cachedTexture) {
 			throw new Error(`Cached texture not found: ${cacheId}`);
 		}
 
+		// Ensure we've rendered any pending operations with the current texture first
+		this.renderVertexBuffer();
+
 		// Temporarily bind the cached texture
 		const originalTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
 		this.gl.bindTexture(this.gl.TEXTURE_2D, cachedTexture.texture);
 
-		// Draw the cached texture as a sprite
-		this.drawSpriteFromCoordinates(
-			x, y,
-			cachedTexture.width, cachedTexture.height,
+		// Draw the cached texture as a sprite directly to the buffer
+		// This bypasses the cache check since we're not in a cache block when drawing cached content
+		const actualX = x + this.offsetX;
+		const actualY = y + this.offsetY;
+		
+		fillBufferWithRectangleVertices(
+			this.vertexBuffer, 
+			this.bufferPointer, 
+			actualX, 
+			actualY, 
+			cachedTexture.width, 
+			cachedTexture.height
+		);
+		fillBufferWithSpriteCoordinates(
+			this.textureCoordinateBuffer,
+			this.bufferPointer,
 			0, 0,
+			cachedTexture.width, cachedTexture.height,
 			cachedTexture.width, cachedTexture.height
 		);
+
+		this.bufferCounter += 12;
+		this.bufferPointer = this.bufferCounter % this.bufferSize;
+
+		// Render this immediately to avoid texture conflicts
+		this.renderVertexBuffer();
 
 		// Restore original texture binding (sprite sheet)
 		this.gl.bindTexture(this.gl.TEXTURE_2D, originalTexture);
