@@ -1,10 +1,8 @@
 // Bundle entry point for compiler worker - makes worker code available
-// Import the worker implementation to ensure it's included in the bundle
 import { CompileOptions, Module } from '@8f4e/compiler';
 
 import testBuild from './testBuild';
 
-// Make sure the imports are not tree-shaken by using them
 async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
 	try {
 		const { codeBuffer, compiledModules, allocatedMemorySize } = await testBuild(memoryRef, modules, compilerOptions);
@@ -32,6 +30,3 @@ self.onmessage = function (event) {
 			break;
 	}
 };
-
-// Ensure this module is not tree-shaken away
-console.log('8f4e compiler worker loaded');

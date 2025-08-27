@@ -15,6 +15,8 @@ export default defineConfig({
 		rollupOptions: {
 			// Bundle all dependencies - no externals for standalone use
 			external: [],
+			// Disable tree shaking to include all imported code
+			treeshake: false,
 			output: {
 				// Global variable name for UMD
 				globals: {},
