@@ -24,6 +24,52 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			return;
 		}
 
+		// Check if project has pre-compiled WASM bytecode for runtime-only execution
+		if (state.project.compiledWasm) {
+			console.log('[Compiler] Using pre-compiled WASM bytecode from project');
+			
+			try {
+				// Decode base64 WASM back to Uint8Array
+				const base64Data = state.project.compiledWasm;
+				const wasmBytecode = decodeBase64ToUint8Array(base64Data);
+				
+				// Set up the compiler state as if compilation succeeded
+				state.compiler.codeBuffer = wasmBytecode;
+				state.compiler.isCompiling = false;
+				state.compiler.buildErrors = [];
+				state.compiler.compilationTime = 0; // No compilation time since we used pre-compiled
+				
+				// Handle binary assets if present
+				(state.project.binaryAssets || []).forEach(binaryAsset => {
+					if (binaryAsset.moduleId && binaryAsset.memoryId) {
+						const memoryAssignedToBinaryAsset = state.compiler.compiledModules
+							.get(binaryAsset.moduleId)
+							?.memoryMap.get(binaryAsset.memoryId);
+
+						if (!memoryAssignedToBinaryAsset) {
+							return;
+						}
+
+						const allocatedSizeInBytes =
+							memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
+						const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
+						const binaryAssetDataBuffer = decodeBase64ToUint8Array(binaryAsset.data).slice(0, allocatedSizeInBytes);
+
+						memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
+					}
+				});
+
+				console.log('[Compiler] Pre-compiled WASM loaded successfully');
+				events.dispatch('buildFinished');
+				return;
+				
+			} catch (error) {
+				console.error('[Compiler] Failed to load pre-compiled WASM:', error);
+				// Fall through to regular compilation if pre-compiled WASM fails
+			}
+		}
+
+		// Regular compilation path (when no pre-compiled WASM or if it failed to load)
 		// TODO: make it recursive
 		const modules = flattenProjectForCompiler(state.graphicHelper.baseCodeBlock.codeBlocks);
 
