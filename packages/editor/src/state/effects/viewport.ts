@@ -4,7 +4,7 @@ import { EventDispatcher } from '../../events';
 
 export default function viewport(state: State, events: EventDispatcher): () => void {
 	function onMouseMove(event) {
-		if (event.buttons === 1) {
+		if (event.buttons === 1 && state.featureFlags.viewportDragging) {
 			move(state, event.movementX, event.movementY);
 		}
 	}

@@ -2,9 +2,11 @@ import { defineConfig } from 'vite'
 import glsl from 'vite-plugin-glsl'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { resolve } from 'path'
+// import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   plugins: [
+    // visualizer(),
     glsl({
       include: ['**/*.glsl', '**/*.vert', '**/*.frag'],
       defaultExtension: 'glsl',
