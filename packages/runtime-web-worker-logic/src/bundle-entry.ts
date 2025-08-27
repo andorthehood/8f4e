@@ -1,57 +1,62 @@
-// Bundle entry point for logic runtime worker - makes worker code available
+// Bundle entry point for logic runtime worker - exposes functions globally
 import createModule from './createModule';
 
-let interval: number;
-let statsInterval: number;
-let timeToExecute: number;
-let lastIntervalTime: number;
-let drift = 0;
-
-async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
-	try {
-		clearInterval(interval);
-		clearInterval(statsInterval);
-
-		const wasmApp = await createModule(memoryRef, codeBuffer);
-
-		const intervalTime = Math.floor(1000 / sampleRate);
-
-		interval = setInterval(() => {
-			const startTime = performance.now();
-			drift += intervalTime - (startTime - lastIntervalTime);
-			lastIntervalTime = startTime;
-			wasmApp.cycle();
-			const endTime = performance.now();
-			timeToExecute = endTime - startTime;
-		}, intervalTime);
-
-		statsInterval = setInterval(() => {
-			self.postMessage({
-				type: 'stats',
-				payload: {
-					drift,
-					timeToExecute,
-				},
-			});
-		}, 10000);
-
-		self.postMessage({
-			type: 'initialized',
-			payload: {},
-		});
-	} catch (error) {
-		console.log('buildError', error);
-		self.postMessage({
-			type: 'buildError',
-			payload: error,
-		});
-	}
+export async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
+	const wasmApp = await createModule(memoryRef, codeBuffer);
+	
+	return {
+		wasmApp,
+		sampleRate,
+		intervalTime: Math.floor(1000 / sampleRate),
+	};
 }
 
-self.onmessage = function (event) {
-	switch (event.data.type) {
-		case 'init':
-			init(event.data.payload.memoryRef, event.data.payload.sampleRate, event.data.payload.codeBuffer);
-			break;
-	}
-};
+export function createLogicRuntime(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
+	let interval: number | undefined;
+	let statsInterval: number | undefined;
+	let timeToExecute: number;
+	let lastIntervalTime: number;
+	let drift = 0;
+	let wasmApp: any;
+
+	const runtime = {
+		async initialize() {
+			try {
+				if (interval !== undefined) clearInterval(interval);
+				if (statsInterval !== undefined) clearInterval(statsInterval);
+
+				wasmApp = await createModule(memoryRef, codeBuffer);
+
+				const intervalTime = Math.floor(1000 / sampleRate);
+
+				interval = setInterval(() => {
+					const startTime = performance.now();
+					drift += intervalTime - (startTime - lastIntervalTime);
+					lastIntervalTime = startTime;
+					wasmApp.cycle();
+					const endTime = performance.now();
+					timeToExecute = endTime - startTime;
+				}, intervalTime);
+
+				return { success: true };
+			} catch (error) {
+				console.log('buildError', error);
+				return { success: false, error };
+			}
+		},
+
+		getStats() {
+			return {
+				drift,
+				timeToExecute,
+			};
+		},
+
+		stop() {
+			if (interval !== undefined) clearInterval(interval);
+			if (statsInterval !== undefined) clearInterval(statsInterval);
+		}
+	};
+
+	return runtime;
+}
