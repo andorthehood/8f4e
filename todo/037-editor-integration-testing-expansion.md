@@ -27,7 +27,6 @@ Expand integration testing to cover:
 - Data transformation pipelines and workflows
 - Performance and reliability of integrated systems
 
-Note: This focuses on pure logic integration testing. DOM-dependent end-to-end flows will be addressed separately when the view layer is extracted.
 
 ## Implementation Plan
 
