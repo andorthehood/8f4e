@@ -1,4 +1,6 @@
-import initEditor, { type Project, type RuntimeFactory, type RuntimeType } from '@8f4e/editor';
+import initEditor, { type Project, type RuntimeFactory, type RuntimeType, type CompilationResult } from '@8f4e/editor';
+import { type Module, type CompileOptions } from '@8f4e/compiler';
+import CompilerWorker from '@8f4e/compiler-worker?worker';
 
 // Import the registry functions instead of static imports
 import { getListOfModules, getModule, getListOfProjects, getProject, projectRegistry } from './examples/registry';
@@ -35,6 +37,49 @@ async function requestRuntime(runtimeType: RuntimeType): Promise<RuntimeFactory>
 	return factory;
 }
 
+// Implementation of the compileProject callback using the existing compiler-worker
+async function compileProject(modules: Module[], compilerOptions: CompileOptions, memoryRef: WebAssembly.Memory): Promise<CompilationResult> {
+	return new Promise((resolve, reject) => {
+		const worker = new CompilerWorker();
+		
+		const handleMessage = ({ data }: MessageEvent) => {
+			switch (data.type) {
+				case 'buildOk':
+					worker.terminate();
+					resolve({
+						compiledModules: data.payload.compiledModules,
+						codeBuffer: data.payload.codeBuffer,
+						allocatedMemorySize: data.payload.allocatedMemorySize,
+					});
+					break;
+				case 'buildError':
+					worker.terminate();
+					// Create an error object that matches the expected structure
+					const error = new Error(data.payload.message) as Error & {
+						line?: { lineNumber: number };
+						context?: { namespace?: { moduleName: string } };
+						errorCode?: number;
+					};
+					error.line = data.payload?.line;
+					error.context = data.payload?.context;
+					error.errorCode = data.payload?.errorCode;
+					reject(error);
+					break;
+			}
+		};
+
+		worker.addEventListener('message', handleMessage);
+		worker.postMessage({
+			type: 'recompile',
+			payload: {
+				memoryRef,
+				modules,
+				compilerOptions,
+			},
+		});
+	});
+}
+
 const kebabCaseToCamelCase = (str: string) =>
 	str.replace(/-([a-z])/g, function (g) {
 		return g[1].toUpperCase();
@@ -64,6 +109,7 @@ async function init() {
 		getListOfProjects,
 		getProject,
 		requestRuntime, // Add the runtime callback
+		compileProject, // Add the compile callback
 		// Add storage and file handling callbacks
 		loadProjectFromStorage,
 		saveProjectToStorage,
