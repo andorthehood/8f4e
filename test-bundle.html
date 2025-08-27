@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8f4e Editor Bundle Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            display: block;
+            margin: 20px 0;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>8f4e Editor Bundle Test</h1>
+        <p>This page tests the UMD bundle loading via script tag.</p>
+        <p>Bundle size: ~84KB (gzipped: ~22KB)</p>
+    </div>
+    
+    <canvas id="editor" width="800" height="600"></canvas>
+    
+    <div class="info">
+        <p>Check the browser console for any errors.</p>
+        <p>The editor should initialize above if the bundle loads correctly.</p>
+    </div>
+
+    <script src="./packages/editor/bundle/editor-bundle.js"></script>
+    <script>
+        console.log('Editor8f4e loaded:', typeof window.Editor8f4e);
+        
+        if (typeof window.Editor8f4e !== 'undefined') {
+            console.log('Available methods:', Object.keys(window.Editor8f4e));
+            
+            const canvas = document.getElementById('editor');
+            
+            // Basic test options - minimal configuration for testing
+            const options = {
+                loadProjectFromStorage: async (storageId) => null,
+                saveProjectToStorage: async (storageId, project) => {},
+                loadEditorSettingsFromStorage: async (storageId) => null,
+                saveEditorSettingsToStorage: async (storageId, settings) => {},
+                loadProjectFromFile: async (file) => ({}),
+                saveProjectToFile: async (project, filename) => {},
+                importBinaryAsset: async (file) => ({ data: '', fileName: file.name }),
+                runtimeFactories: {
+                    'web-worker-logic': async () => null,
+                    'web-worker-midi': async () => null,
+                    'audio-worklet': async () => null
+                }
+            };
+            
+            try {
+                window.Editor8f4e.default(canvas, options).then(editor => {
+                    console.log('Editor initialized successfully:', editor);
+                    editor.resize(800, 600);
+                }).catch(error => {
+                    console.error('Editor initialization failed:', error);
+                });
+            } catch (error) {
+                console.error('Failed to initialize editor:', error);
+            }
+        } else {
+            console.error('Editor8f4e not found in global scope');
+        }
+    </script>
+</body>
+</html>

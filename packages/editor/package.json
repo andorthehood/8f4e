@@ -15,6 +15,7 @@
 	"sideEffects": false,
 	"scripts": {
 		"build": "tsc",
+		"bundle": "vite build",
 		"dev": "tsc --watch",
 		"test": "jest",
 		"typecheck": "tsc --noEmit"
@@ -37,5 +38,8 @@
 		"@8f4e/sprite-generator": "*",
 		"@8f4e/runtime-web-worker-logic": "*",
 		"@8f4e/runtime-web-worker-midi": "*"
+	},
+	"devDependencies": {
+		"vite": "^7.1.3"
 	}
 }
