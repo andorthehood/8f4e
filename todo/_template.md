@@ -1,9 +1,10 @@
 # TODO: [Brief Title]
 
-**Priority**: 🔴/🟡/🟢  
-**Estimated Effort**: X hours/days  
-**Created**: YYYY-MM-DD  
-**Status**: Open/Completed  
+**Priority**: 🔴/🟡/🟢
+**Estimated Effort**: X hours/days
+**Created**: YYYY-MM-DD
+**Status**: Open/Completed
+**Completed**: YYYY-MM-DD
 
 ## Problem Description
 
@@ -76,4 +77,4 @@ Detailed description of the proposed solution:
 
 ## Archive Instructions
 
-When this TODO is completed, move it to the `archived/` folder to keep the main todo directory clean and organized. 
+When this TODO is completed, move it to the `todo/archived/` folder to keep the main todo directory clean and organized. 
