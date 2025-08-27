@@ -1,6 +1,6 @@
 # TODO: Remove Project Parameter from initEditor Function
 
-**Priority**:
+**Priority**: 🟡
 **Estimated Effort**: 1-2 days
 **Created**: 2025-08-27
 **Status**: Open
