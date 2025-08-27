@@ -18,6 +18,12 @@ export type SpriteCoordinates = {
 
 export type SpriteLookup = Record<string | number, SpriteCoordinates>;
 
+export type CachedTexture = {
+	texture: WebGLTexture;
+	width: number;
+	height: number;
+};
+
 export class Engine {
 	program: WebGLProgram;
 	gl: WebGL2RenderingContext | WebGLRenderingContext;
@@ -40,6 +46,19 @@ export class Engine {
 	bufferCounter: number;
 	spriteLookup: SpriteLookup;
 	timeLocation: WebGLUniformLocation | null;
+
+	// Texture cache related properties
+	private textureCache: Map<string, CachedTexture>;
+	private isInCacheBlock: boolean;
+	private currentCacheId: string | null;
+	private currentCacheCanvasX: number;
+	private currentCacheCanvasY: number;
+	private cacheFramebuffer: WebGLFramebuffer | null;
+	private cacheTexture: WebGLTexture | null;
+	private cacheWidth: number;
+	private cacheHeight: number;
+	private originalViewport: [number, number, number, number] | null;
+	private originalFramebuffer: WebGLFramebuffer | null;
 
 	/**
 	 * If enabled, it makes the render function block the main thread until the GPU finishes rendering.
@@ -92,6 +111,19 @@ export class Engine {
 		this.offsetX = 0;
 		this.offsetY = 0;
 		this.offsetGroups = [];
+
+		// Initialize texture cache properties
+		this.textureCache = new Map();
+		this.isInCacheBlock = false;
+		this.currentCacheId = null;
+		this.currentCacheCanvasX = 0;
+		this.currentCacheCanvasY = 0;
+		this.cacheFramebuffer = null;
+		this.cacheTexture = null;
+		this.cacheWidth = 0;
+		this.cacheHeight = 0;
+		this.originalViewport = null;
+		this.originalFramebuffer = null;
 	}
 
 	startGroup(x: number, y: number): void {
@@ -108,6 +140,137 @@ export class Engine {
 		const [x, y] = coordinates;
 		this.offsetX -= x;
 		this.offsetY -= y;
+	}
+
+	startTextureCacheBlock(cacheId: string, width: number, height: number, x: number, y: number): void {
+		if (this.isInCacheBlock) {
+			throw new Error('Already in cache block. Call endTextureCacheBlock() first.');
+		}
+
+		// Implement offset behavior exactly like startGroup
+		this.offsetX += x;
+		this.offsetY += y;
+		this.offsetGroups.push([x, y]);
+
+		// Store cache parameters
+		this.isInCacheBlock = true;
+		this.currentCacheId = cacheId;
+		this.currentCacheCanvasX = x;
+		this.currentCacheCanvasY = y;
+
+		// Check if texture already exists in cache
+		if (this.textureCache.has(cacheId)) {
+			// Cache exists, no need to create new framebuffer
+			return;
+		}
+
+		// Create new cache - set up WebGL framebuffer
+		this.cacheWidth = width;
+		this.cacheHeight = height;
+
+		// Store original WebGL state
+		this.originalViewport = [
+			this.gl.getParameter(this.gl.VIEWPORT)[0],
+			this.gl.getParameter(this.gl.VIEWPORT)[1],
+			this.gl.getParameter(this.gl.VIEWPORT)[2],
+			this.gl.getParameter(this.gl.VIEWPORT)[3]
+		];
+		this.originalFramebuffer = this.gl.getParameter(this.gl.FRAMEBUFFER_BINDING);
+
+		// Create framebuffer and texture for caching
+		this.cacheFramebuffer = this.gl.createFramebuffer();
+		this.cacheTexture = this.gl.createTexture();
+
+		if (!this.cacheFramebuffer || !this.cacheTexture) {
+			throw new Error('Failed to create cache framebuffer or texture');
+		}
+
+		// Set up the texture
+		this.gl.bindTexture(this.gl.TEXTURE_2D, this.cacheTexture);
+		this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+
+		// Set up the framebuffer
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.cacheFramebuffer);
+		this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.cacheTexture, 0);
+
+		// Check framebuffer completeness
+		const status = this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
+		if (status !== this.gl.FRAMEBUFFER_COMPLETE) {
+			throw new Error('Cache framebuffer is not complete');
+		}
+
+		// Set viewport for cache dimensions and clear
+		this.gl.viewport(0, 0, width, height);
+		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+		// Update resolution uniform for cache rendering
+		this.setUniform('u_resolution', width, height);
+	}
+
+	endTextureCacheBlock(): void {
+		if (!this.isInCacheBlock) {
+			throw new Error('Not in cache block. Call startTextureCacheBlock() first.');
+		}
+
+		// Implement offset behavior exactly like endGroup
+		const coordinates = this.offsetGroups.pop();
+		if (!coordinates) {
+			throw new Error('No group to end');
+		}
+		const [x, y] = coordinates;
+		this.offsetX -= x;
+		this.offsetY -= y;
+
+		const cacheId = this.currentCacheId!;
+
+		// Check if cache already exists
+		if (this.textureCache.has(cacheId)) {
+			// Cache exists - ignore all drawing operations and just draw cached texture
+			this.isInCacheBlock = false;
+			this.currentCacheId = null;
+			
+			// Draw the cached texture at current offset position
+			this.drawCachedTextureAt(cacheId, this.offsetX + this.currentCacheCanvasX, this.offsetY + this.currentCacheCanvasY);
+			return;
+		}
+
+		// Cache is new - finalize the cache creation
+		if (!this.cacheFramebuffer || !this.cacheTexture) {
+			throw new Error('Cache framebuffer or texture is null');
+		}
+
+		// Render any buffered operations to the framebuffer
+		this.renderVertexBuffer();
+
+		// Store the new texture in cache
+		this.textureCache.set(cacheId, {
+			texture: this.cacheTexture,
+			width: this.cacheWidth,
+			height: this.cacheHeight
+		});
+
+		// Restore original WebGL state
+		if (this.originalFramebuffer !== null) {
+			this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.originalFramebuffer);
+		}
+		if (this.originalViewport) {
+			this.gl.viewport(this.originalViewport[0], this.originalViewport[1], this.originalViewport[2], this.originalViewport[3]);
+			this.setUniform('u_resolution', this.originalViewport[2], this.originalViewport[3]);
+		}
+
+		// Draw the cached texture at current offset position
+		this.drawCachedTextureAt(cacheId, this.offsetX + this.currentCacheCanvasX, this.offsetY + this.currentCacheCanvasY);
+
+		// Clean up cache resources
+		this.cleanupCacheResources();
+
+		// Reset cache state
+		this.isInCacheBlock = false;
+		this.currentCacheId = null;
 	}
 
 	growBuffer(newSize: number): void {
@@ -161,6 +324,11 @@ export class Engine {
 	 * @param height height of the reactanlge
 	 */
 	drawRectangle(x: number, y: number, width: number, height: number, sprite: string | number, thickness = 1): void {
+		// If in cache mode and cache already exists, ignore drawing operations
+		if (this.isInCacheBlock && this.currentCacheId && this.textureCache.has(this.currentCacheId)) {
+			return;
+		}
+
 		this.drawLine(x, y, x + width, y, sprite, thickness);
 		this.drawLine(x + width, y, x + width, y + height, sprite, thickness);
 		this.drawLine(x + width, y + height, x, y + height, sprite, thickness);
@@ -183,6 +351,11 @@ export class Engine {
 		spriteWidth: number = width,
 		spriteHeight: number = height
 	): void {
+		// If in cache mode and cache already exists, ignore drawing operations
+		if (this.isInCacheBlock && this.currentCacheId && this.textureCache.has(this.currentCacheId)) {
+			return;
+		}
+
 		x = x + this.offsetX;
 		y = y + this.offsetY;
 		fillBufferWithRectangleVertices(this.vertexBuffer, this.bufferPointer, x, y, width, height);
@@ -202,6 +375,11 @@ export class Engine {
 	}
 
 	drawLine(x1: number, y1: number, x2: number, y2: number, sprite: string | number, thickness: number): void {
+		// If in cache mode and cache already exists, ignore drawing operations
+		if (this.isInCacheBlock && this.currentCacheId && this.textureCache.has(this.currentCacheId)) {
+			return;
+		}
+
 		x1 = x1 + this.offsetX;
 		y1 = y1 + this.offsetY;
 		x2 = x2 + this.offsetX;
@@ -226,6 +404,11 @@ export class Engine {
 	}
 
 	drawSprite(posX: number, posY: number, sprite: string | number, width?: number, height?: number): void {
+		// If in cache mode and cache already exists, ignore drawing operations
+		if (this.isInCacheBlock && this.currentCacheId && this.textureCache.has(this.currentCacheId)) {
+			return;
+		}
+
 		if (!this.spriteLookup[sprite]) {
 			return;
 		}
@@ -263,6 +446,11 @@ export class Engine {
 	}
 
 	drawText(posX: number, posY: number, text: string, sprites?: Array<SpriteLookup | undefined>): void {
+		// If in cache mode and cache already exists, ignore drawing operations
+		if (this.isInCacheBlock && this.currentCacheId && this.textureCache.has(this.currentCacheId)) {
+			return;
+		}
+
 		for (let i = 0; i < text.length; i++) {
 			if (sprites && sprites[i]) {
 				const sprite = sprites[i];
@@ -300,5 +488,51 @@ export class Engine {
 			default:
 				throw new Error(`Unsupported uniform value count: ${values.length}`);
 		}
+	}
+
+	private drawCachedTextureAt(cacheId: string, x: number, y: number): void {
+		const cachedTexture = this.textureCache.get(cacheId);
+		if (!cachedTexture) {
+			throw new Error(`Cached texture not found: ${cacheId}`);
+		}
+
+		// Temporarily bind the cached texture
+		const originalTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
+		this.gl.bindTexture(this.gl.TEXTURE_2D, cachedTexture.texture);
+
+		// Draw the cached texture as a sprite
+		this.drawSpriteFromCoordinates(
+			x, y,
+			cachedTexture.width, cachedTexture.height,
+			0, 0,
+			cachedTexture.width, cachedTexture.height
+		);
+
+		// Restore original texture binding (sprite sheet)
+		this.gl.bindTexture(this.gl.TEXTURE_2D, originalTexture);
+	}
+
+	private cleanupCacheResources(): void {
+		this.cacheFramebuffer = null;
+		this.cacheTexture = null;
+		this.cacheWidth = 0;
+		this.cacheHeight = 0;
+		this.originalViewport = null;
+		this.originalFramebuffer = null;
+	}
+
+	deleteCachedTexture(cacheId: string): void {
+		const cachedTexture = this.textureCache.get(cacheId);
+		if (cachedTexture) {
+			this.gl.deleteTexture(cachedTexture.texture);
+			this.textureCache.delete(cacheId);
+		}
+	}
+
+	clearTextureCache(): void {
+		for (const [cacheId, cachedTexture] of this.textureCache) {
+			this.gl.deleteTexture(cachedTexture.texture);
+		}
+		this.textureCache.clear();
 	}
 }
