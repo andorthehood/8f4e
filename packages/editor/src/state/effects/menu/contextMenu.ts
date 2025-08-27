@@ -80,6 +80,11 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 	};
 
 	const onContextMenu = async event => {
+		// Check if context menu feature is enabled
+		if (!state.featureFlags.contextMenu) {
+			return;
+		}
+
 		const { x, y } = event;
 
 		state.graphicHelper.contextMenu.highlightedItem = 0;
