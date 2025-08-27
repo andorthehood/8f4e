@@ -18,6 +18,13 @@ export type SpriteCoordinates = {
 
 export type SpriteLookup = Record<string | number, SpriteCoordinates>;
 
+export type RenderTexture = {
+	texture: WebGLTexture;
+	framebuffer: WebGLFramebuffer;
+	width: number;
+	height: number;
+};
+
 export class Engine {
 	program: WebGLProgram;
 	gl: WebGL2RenderingContext | WebGLRenderingContext;
@@ -299,6 +306,157 @@ export class Engine {
 				break;
 			default:
 				throw new Error(`Unsupported uniform value count: ${values.length}`);
+		}
+	}
+
+	/**
+	 * Creates a render texture that can be used as an off-screen render target.
+	 * @param width Width of the render texture
+	 * @param height Height of the render texture
+	 * @returns RenderTexture object containing texture and framebuffer references
+	 */
+	createRenderTexture(width: number, height: number): RenderTexture {
+		// Create the texture
+		const texture = this.gl.createTexture();
+		if (!texture) {
+			throw new Error('Failed to create render texture');
+		}
+
+		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+		// Create empty texture with specified dimensions
+		this.gl.texImage2D(
+			this.gl.TEXTURE_2D,
+			0,
+			this.gl.RGBA,
+			width,
+			height,
+			0,
+			this.gl.RGBA,
+			this.gl.UNSIGNED_BYTE,
+			null
+		);
+
+		// Set texture parameters for render target
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+
+		// Create framebuffer
+		const framebuffer = this.gl.createFramebuffer();
+		if (!framebuffer) {
+			this.gl.deleteTexture(texture);
+			throw new Error('Failed to create framebuffer');
+		}
+
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, framebuffer);
+		this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
+
+		// Check framebuffer completeness
+		const status = this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
+		if (status !== this.gl.FRAMEBUFFER_COMPLETE) {
+			this.gl.deleteTexture(texture);
+			this.gl.deleteFramebuffer(framebuffer);
+			throw new Error(`Framebuffer not complete: ${status}`);
+		}
+
+		// Restore original bindings
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+		this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
+
+		return {
+			texture,
+			framebuffer,
+			width,
+			height,
+		};
+	}
+
+	/**
+	 * Renders content to a render texture using the provided callback.
+	 * @param renderTexture The render texture to render to
+	 * @param renderCallback Function that contains the drawing commands
+	 */
+	renderToTexture(renderTexture: RenderTexture, renderCallback: () => void): void {
+		// Save current state
+		const originalViewport = this.gl.getParameter(this.gl.VIEWPORT);
+
+		// Switch to render texture framebuffer
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, renderTexture.framebuffer);
+		this.gl.viewport(0, 0, renderTexture.width, renderTexture.height);
+
+		// Clear the render texture
+		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+		// Save current resolution uniform and update for render texture
+		const originalResolution = [this.gl.canvas.width, this.gl.canvas.height];
+		this.setUniform('u_resolution', renderTexture.width, renderTexture.height);
+
+		// Execute the rendering callback
+		renderCallback();
+
+		// Render any pending vertices to the texture
+		this.renderVertexBuffer();
+
+		// Restore original state
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+		this.gl.viewport(originalViewport[0], originalViewport[1], originalViewport[2], originalViewport[3]);
+		this.setUniform('u_resolution', originalResolution[0], originalResolution[1]);
+	}
+
+	/**
+	 * Draws a texture as a single quad sprite.
+	 * @param texture The WebGL texture to draw
+	 * @param x X position to draw the texture
+	 * @param y Y position to draw the texture
+	 * @param width Width to draw the texture
+	 * @param height Height to draw the texture
+	 */
+	drawTexture(texture: WebGLTexture, x: number, y: number, width: number, height: number): void {
+		// Save current texture binding
+		const currentTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
+
+		// Temporarily switch to the render texture
+		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+		// Save current sprite sheet dimensions
+		const originalSheetWidth = this.spriteSheetWidth;
+		const originalSheetHeight = this.spriteSheetHeight;
+
+		// Temporarily set texture dimensions to 1x1 so that sprite coordinates 0,0,1,1
+		// map to the full texture (0,0 to 1,1 in normalized coordinates)
+		this.spriteSheetWidth = 1;
+		this.spriteSheetHeight = 1;
+
+		// Draw using full texture coordinates (0,0 to 1,1)
+		this.drawSpriteFromCoordinates(
+			x,
+			y,
+			width,
+			height,
+			0, // spriteX: 0
+			0, // spriteY: 0
+			1, // spriteWidth: 1 (full texture width)
+			1 // spriteHeight: 1 (full texture height)
+		);
+
+		// Restore original texture binding and dimensions
+		this.gl.bindTexture(this.gl.TEXTURE_2D, currentTexture);
+		this.spriteSheetWidth = originalSheetWidth;
+		this.spriteSheetHeight = originalSheetHeight;
+	}
+
+	/**
+	 * Disposes of a render texture and its associated framebuffer to free GPU memory.
+	 * @param renderTexture The render texture to dispose
+	 */
+	disposeRenderTexture(renderTexture: RenderTexture): void {
+		if (renderTexture.texture) {
+			this.gl.deleteTexture(renderTexture.texture);
+		}
+		if (renderTexture.framebuffer) {
+			this.gl.deleteFramebuffer(renderTexture.framebuffer);
 		}
 	}
 }
