@@ -41,9 +41,7 @@
     <script>
         console.log('Editor8f4e loaded:', typeof window.Editor8f4e);
         
-        if (typeof window.Editor8f4e !== 'undefined') {
-            console.log('Available methods:', Object.keys(window.Editor8f4e));
-            
+        if (typeof window.Editor8f4e === 'function') {
             const canvas = document.getElementById('editor');
             
             // Basic test options - minimal configuration for testing
@@ -63,7 +61,7 @@
             };
             
             try {
-                window.Editor8f4e.default(canvas, options).then(editor => {
+                window.Editor8f4e(canvas, options).then(editor => {
                     console.log('Editor initialized successfully:', editor);
                     editor.resize(800, 600);
                 }).catch(error => {
