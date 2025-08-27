@@ -7,6 +7,8 @@
 ## Documentation
 
 - [`docs/instructions.md`](./docs/instructions.md) - Language instruction reference
+- [`docs/deployment.md`](./docs/deployment.md) - Editor bundle deployment to DigitalOcean Spaces
+- [`docs/usage.md`](./docs/usage.md) - How to integrate the editor bundle in external websites
 - [`docs/todo/`](./docs/todo/) - Technical debt and planned improvements (one file per TODO item)
 
 ## Distinctive features of the programming language
