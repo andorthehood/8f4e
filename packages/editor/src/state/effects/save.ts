@@ -1,5 +1,6 @@
 import { EventDispatcher } from '../../events';
 import { State } from '../types';
+import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 export default function save(state: State, events: EventDispatcher): void {
 	function onSave() {
@@ -31,8 +32,8 @@ export default function save(state: State, events: EventDispatcher): void {
 		// Create a copy of the project with compiled WASM included
 		const runtimeProject = {
 			...state.project,
-			// Convert WASM bytecode to base64 string
-			compiledWasm: btoa(String.fromCharCode(...state.compiler.codeBuffer))
+			// Convert WASM bytecode to base64 string using chunked encoding to avoid stack overflow
+			compiledWasm: encodeUint8ArrayToBase64(state.compiler.codeBuffer)
 		};
 
 		const filename = `${state.project.title || 'project'}-runtime-ready.json`;
