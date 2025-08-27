@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../events';
 import { getModuleId } from '../helpers/codeParsers';
-import { CodeBlock, CodeBlockGraphicData, EditorSettings, Project, State } from '../types';
+import { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
 
 function convertGraphicDataToProjectStructure(
 	codeBlocks: CodeBlockGraphicData[],
@@ -39,18 +39,24 @@ function convertGraphicDataToProjectStructure(
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
 	// Initialize with loading project and settings from storage if callbacks are provided
 	let initialLoad: Promise<void>;
-	if (state.options.loadProjectFromStorage && state.options.loadEditorSettingsFromStorage && state.featureFlags.persistentStorage) {
+	if (
+		state.options.loadProjectFromStorage &&
+		state.options.loadEditorSettingsFromStorage &&
+		state.featureFlags.persistentStorage
+	) {
 		initialLoad = Promise.all([
 			state.options.loadProjectFromStorage(state.options.localStorageId),
-			state.options.loadEditorSettingsFromStorage(state.options.localStorageId)
-		]).then(([localProject, editorSettings]) => {
-			state.editorSettings = editorSettings || defaultState.editorSettings;
-			loadProject({ project: localProject || state.project });
-		}).catch(error => {
-			console.warn('Failed to load from storage:', error);
-			state.editorSettings = defaultState.editorSettings;
-			loadProject({ project: state.project });
-		});
+			state.options.loadEditorSettingsFromStorage(state.options.localStorageId),
+		])
+			.then(([localProject, editorSettings]) => {
+				state.editorSettings = editorSettings || defaultState.editorSettings;
+				loadProject({ project: localProject || state.project });
+			})
+			.catch(error => {
+				console.warn('Failed to load from storage:', error);
+				state.editorSettings = defaultState.editorSettings;
+				loadProject({ project: state.project });
+			});
 	} else {
 		state.editorSettings = defaultState.editorSettings;
 		initialLoad = Promise.resolve().then(() => loadProject({ project: state.project }));
@@ -126,12 +132,18 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
 		events.dispatch('init');
 		events.dispatch('saveState');
+		console.log('projectLoaded');
+		events.dispatch('projectLoaded');
 	}
 
 	void initialLoad;
 
 	function onSaveState() {
-		if (!state.featureFlags.persistentStorage || !state.options.saveProjectToStorage || !state.options.saveEditorSettingsToStorage) {
+		if (
+			!state.featureFlags.persistentStorage ||
+			!state.options.saveProjectToStorage ||
+			!state.options.saveEditorSettingsToStorage
+		) {
 			return;
 		}
 
@@ -150,7 +162,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		// Use callbacks instead of localStorage
 		Promise.all([
 			state.options.saveProjectToStorage!(state.options.localStorageId, state.project),
-			state.options.saveEditorSettingsToStorage!(state.options.localStorageId, state.editorSettings)
+			state.options.saveEditorSettingsToStorage!(state.options.localStorageId, state.editorSettings),
 		]).catch(error => {
 			console.error('Failed to save to storage:', error);
 		});
@@ -165,14 +177,15 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		const input = document.createElement('input');
 		input.type = 'file';
 		input.accept = '.json';
-		
+
 		input.addEventListener('change', event => {
 			const file = (event.target as HTMLInputElement).files?.[0];
 			if (!file || !state.options.loadProjectFromFile) {
 				return;
 			}
 
-			state.options.loadProjectFromFile(file)
+			state.options
+				.loadProjectFromFile(file)
 				.then(project => {
 					loadProject({ project });
 					events.dispatch('saveState');
