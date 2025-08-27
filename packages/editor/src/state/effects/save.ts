@@ -9,11 +9,10 @@ export default function save(state: State, events: EventDispatcher): void {
 		}
 
 		const filename = `${state.project.title || 'project'}.json`;
-		
-		state.options.saveProjectToFile(state.project, filename)
-			.catch(error => {
-				console.error('Failed to save project to file:', error);
-			});
+
+		state.options.saveProjectToFile(state.project, filename).catch(error => {
+			console.error('Failed to save project to file:', error);
+		});
 	}
 
 	events.on('save', onSave);
