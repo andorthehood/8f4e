@@ -39,26 +39,11 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				state.compiler.buildErrors = [];
 				state.compiler.compilationTime = 0; // No compilation time since we used pre-compiled
 				
-				// Handle binary assets if present
-				(state.project.binaryAssets || []).forEach(binaryAsset => {
-					if (binaryAsset.moduleId && binaryAsset.memoryId) {
-						const memoryAssignedToBinaryAsset = state.compiler.compiledModules
-							.get(binaryAsset.moduleId)
-							?.memoryMap.get(binaryAsset.memoryId);
-
-						if (!memoryAssignedToBinaryAsset) {
-							return;
-						}
-
-						const allocatedSizeInBytes =
-							memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
-						const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
-						const binaryAssetDataBuffer = decodeBase64ToUint8Array(binaryAsset.data).slice(0, allocatedSizeInBytes);
-
-						memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
-					}
-				});
-
+				// Note: Binary assets are not handled for pre-compiled WASM projects
+				// as they should already be embedded in the compiled bytecode.
+				// The compiledModules map is not available for pre-compiled projects
+				// since it contains compilation-time metadata that is not persisted.
+				
 				console.log('[Compiler] Pre-compiled WASM loaded successfully');
 				events.dispatch('buildFinished');
 				return;
