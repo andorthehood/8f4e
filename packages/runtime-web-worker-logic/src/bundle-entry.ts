@@ -1,5 +1,4 @@
 // Bundle entry point for logic runtime worker - makes worker code available
-// Import the worker implementation to ensure it's included in the bundle
 import createModule from './createModule';
 
 let interval: number;
@@ -56,6 +55,3 @@ self.onmessage = function (event) {
 			break;
 	}
 };
-
-// Ensure this module is not tree-shaken away
-console.log('8f4e logic runtime worker loaded');
