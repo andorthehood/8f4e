@@ -8,7 +8,7 @@
 
 ## Problem Description
 
-Currently, the application uses a web worker-based logic runtime (`web-worker-logic-runtime`) to execute WebAssembly modules in a separate thread. While this approach provides non-blocking execution, there are scenarios where running logic directly on the main thread would be beneficial:
+Currently, the application uses a web worker-based logic runtime (`runtime-web-worker-logic`) to execute WebAssembly modules in a separate thread. While this approach provides non-blocking execution, there are scenarios where running logic directly on the main thread would be beneficial:
 
 - **Debugging**: Easier to debug and inspect runtime state when running on main thread
 - **Performance**: Eliminates worker message passing overhead for simple modules
@@ -17,7 +17,7 @@ Currently, the application uses a web worker-based logic runtime (`web-worker-lo
 
 ## Proposed Solution
 
-Create a new runtime package called `main-thread-logic-runtime` that mirrors the functionality of `web-worker-logic-runtime` but executes directly on the browser's main thread. This runtime will:
+Create a new runtime package called `main-thread-logic-runtime` that mirrors the functionality of `runtime-web-worker-logic` but executes directly on the browser's main thread. This runtime will:
 
 - Use the same WebAssembly module interface (`createModule`)
 - Implement the same timing and cycle management logic
@@ -28,7 +28,7 @@ Create a new runtime package called `main-thread-logic-runtime` that mirrors the
 
 ### Step 1: Create Package Structure
 - Create new package directory `packages/main-thread-logic-runtime/`
-- Copy and adapt the structure from `web-worker-logic-runtime`
+- Copy and adapt the structure from `runtime-web-worker-logic`
 - Update package.json with new name and description
 - Update project.json with appropriate tags
 
@@ -40,7 +40,7 @@ Create a new runtime package called `main-thread-logic-runtime` that mirrors the
 
 ### Step 3: Create Runtime Factory
 - Create `src/main-thread-logic-runtime-factory.ts`
-- Adapt the factory pattern from `web-worker-logic-runtime-factory.ts`
+- Adapt the factory pattern from `runtime-web-worker-logic-factory.ts`
 - Remove worker-specific code and implement direct function calls
 - Maintain the same event interface for compatibility
 
@@ -77,7 +77,7 @@ Create a new runtime package called `main-thread-logic-runtime` that mirrors the
 
 ## Related Items
 
-- **Depends on**: Existing `web-worker-logic-runtime` structure and patterns
+- **Depends on**: Existing `runtime-web-worker-logic` structure and patterns
 - **Related**: Runtime selection and configuration in editor
 - **Blocks**: Potential future debugging and development tooling improvements
 
