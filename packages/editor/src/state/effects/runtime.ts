@@ -1,5 +1,11 @@
 import { EventDispatcher } from '../../events';
-import { State, WebWorkerLogicRuntime, MainThreadLogicRuntime, AudioWorkletRuntime, WebWorkerMIDIRuntime } from '../types';
+import {
+	State,
+	WebWorkerLogicRuntime,
+	MainThreadLogicRuntime,
+	AudioWorkletRuntime,
+	WebWorkerMIDIRuntime,
+} from '../types';
 
 // Type for runtime factory function
 export type RuntimeFactory = (state: State, events: EventDispatcher) => () => void;

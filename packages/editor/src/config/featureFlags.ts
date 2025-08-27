@@ -21,6 +21,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable persistent storage functionality */
 	persistentStorage: boolean;
+
+	/** Enable/disable all editing functionality (create, edit, delete, save) */
+	editing: boolean;
 }
 
 /**
@@ -33,6 +36,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	moduleDragging: true,
 	viewportDragging: true,
 	persistentStorage: true,
+	editing: true,
 };
 
 /**
