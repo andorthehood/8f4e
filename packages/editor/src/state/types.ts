@@ -338,7 +338,6 @@ export interface CompilationResult {
 }
 
 export interface Options {
-	localStorageId: string;
 	featureFlags?: FeatureFlagsConfig;
 	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
 	getListOfModules: () => Promise<ModuleMetadata[]>;
@@ -354,10 +353,10 @@ export interface Options {
 	) => Promise<CompilationResult>;
 
 	// Storage callbacks
-	loadProjectFromStorage?: (storageId: string) => Promise<Project | null>;
-	saveProjectToStorage?: (storageId: string, project: Project) => Promise<void>;
-	loadEditorSettingsFromStorage?: (storageId: string) => Promise<EditorSettings | null>;
-	saveEditorSettingsToStorage?: (storageId: string, settings: EditorSettings) => Promise<void>;
+	loadProjectFromStorage?: () => Promise<Project | null>;
+	saveProjectToStorage?: (project: Project) => Promise<void>;
+	loadEditorSettingsFromStorage?: () => Promise<EditorSettings | null>;
+	saveEditorSettingsToStorage?: (settings: EditorSettings) => Promise<void>;
 
 	// File handling callbacks
 	loadProjectFromFile?: (file: File) => Promise<Project>;
