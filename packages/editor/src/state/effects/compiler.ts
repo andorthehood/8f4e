@@ -1,5 +1,4 @@
-import { Buffer } from 'buffer';
-
+import { decodeBase64ToUint8Array } from '../helpers/base64Decoder';
 import { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
 
@@ -75,10 +74,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 					const allocatedSizeInBytes =
 						memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
 					const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
-					const binaryAssetDataBuffer = Uint8Array.from(Buffer.from(binaryAsset.data, 'base64')).slice(
-						0,
-						allocatedSizeInBytes
-					);
+					const binaryAssetDataBuffer = decodeBase64ToUint8Array(binaryAsset.data).slice(0, allocatedSizeInBytes);
 
 					memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
 				}
