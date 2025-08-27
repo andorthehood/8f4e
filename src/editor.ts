@@ -1,9 +1,7 @@
-import initEditor, { type RuntimeFactory, type RuntimeType } from '@8f4e/editor';
+import initEditor from '@8f4e/editor';
 
 import { getListOfModules, getModule, getListOfProjects, getProject } from './examples/registry';
-import { audioWorkletRuntime } from './audio-worklet-runtime-factory';
-import { webWorkerLogicRuntime } from './web-worker-logic-runtime-factory';
-import { webWorkerMIDIRuntime } from './web-worker-midi-runtime-factory';
+import { requestRuntime } from './runtime-loader';
 import {
 	loadProjectFromStorage,
 	saveProjectToStorage,
@@ -14,22 +12,6 @@ import {
 	importBinaryAsset,
 } from './storage-callbacks';
 import { compileProject } from './compiler-callback';
-
-const runtimeFactories: Record<RuntimeType, RuntimeFactory> = {
-	AudioWorkletRuntime: audioWorkletRuntime,
-	WebWorkerLogicRuntime: webWorkerLogicRuntime,
-	WebWorkerMIDIRuntime: webWorkerMIDIRuntime,
-};
-
-async function requestRuntime(runtimeType: RuntimeType): Promise<RuntimeFactory> {
-	const factory = runtimeFactories[runtimeType];
-	if (!factory) {
-		throw new Error(`Unknown runtime type: ${runtimeType}`);
-	}
-
-	console.log(`[App] Providing runtime factory for: ${runtimeType}`);
-	return factory;
-}
 
 async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
