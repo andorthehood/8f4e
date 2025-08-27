@@ -7,6 +7,7 @@
 ## Documentation
 
 - [`docs/instructions.md`](./docs/instructions.md) - Language instruction reference
+- [`docs/bundles.md`](./docs/bundles.md) - UMD bundles for external website integration
 - [`docs/todo/`](./docs/todo/) - Technical debt and planned improvements (one file per TODO item)
 
 ## Distinctive features of the programming language

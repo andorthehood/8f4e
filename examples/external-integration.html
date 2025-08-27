@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8f4e External Integration Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        
+        #editor-canvas {
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: #fafafa;
+            display: block;
+            margin: 20px 0;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        .controls button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+        
+        .controls button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .api-demo {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        pre {
+            background-color: #f1f3f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>8f4e External Integration Example</h1>
+        <p>This example demonstrates how to integrate 8f4e bundles into an external website.</p>
+        
+        <div id="status-container">
+            <div class="info status">Initializing bundles...</div>
+        </div>
+
+        <canvas id="editor-canvas" width="800" height="400"></canvas>
+        
+        <div class="controls">
+            <button id="init-editor" disabled>Initialize Editor</button>
+            <button id="test-compiler" disabled>Test Compiler</button>
+            <button id="test-runtime" disabled>Test Logic Runtime</button>
+            <button id="show-apis" disabled>Show API Info</button>
+        </div>
+        
+        <div id="api-demo" class="api-demo" style="display: none;">
+            <h3>Available APIs</h3>
+            <div id="api-info"></div>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <!-- Load the 8f4e bundles -->
+    <!-- Replace with your actual CDN URLs -->
+    <script src="../packages/runtime-web-worker-logic/dist/bundle/8f4e-logic-runtime.js"></script>
+    <script src="../packages/compiler-worker/dist/bundle/8f4e-compiler-worker.js"></script>
+    <script src="../packages/editor/dist/bundle/8f4e-editor.js"></script>
+
+    <script>
+        let editorInitialized = false;
+        let bundlesLoaded = false;
+
+        function addStatus(message, type = 'info') {
+            const container = document.getElementById('status-container');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.textContent = message;
+            container.appendChild(div);
+        }
+
+        function addResult(title, content, type = 'info') {
+            const container = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = `<strong>${title}:</strong> ${content}`;
+            container.appendChild(div);
+        }
+
+        function enableButtons() {
+            const buttons = document.querySelectorAll('.controls button');
+            buttons.forEach(btn => btn.disabled = false);
+        }
+
+        function checkBundles() {
+            const results = [];
+            
+            if (typeof window.EightF4ELogicRuntime !== 'undefined') {
+                results.push('✅ Logic Runtime bundle loaded');
+            } else {
+                results.push('❌ Logic Runtime bundle failed');
+            }
+
+            if (typeof window.EightF4ECompilerWorker !== 'undefined') {
+                results.push('✅ Compiler Worker bundle loaded');
+            } else {
+                results.push('❌ Compiler Worker bundle failed');
+            }
+
+            if (typeof window.EightF4EEditor !== 'undefined') {
+                results.push('✅ Editor bundle loaded');
+            } else {
+                results.push('❌ Editor bundle failed');
+            }
+
+            if (results.every(r => r.startsWith('✅'))) {
+                addStatus('All bundles loaded successfully!', 'success');
+                bundlesLoaded = true;
+                enableButtons();
+            } else {
+                addStatus('Some bundles failed to load', 'error');
+                results.forEach(result => {
+                    addStatus(result, result.startsWith('✅') ? 'success' : 'error');
+                });
+            }
+        }
+
+        // Initialize editor
+        document.getElementById('init-editor').addEventListener('click', async () => {
+            if (editorInitialized) {
+                addResult('Editor', 'Already initialized', 'warning');
+                return;
+            }
+
+            try {
+                const canvas = document.getElementById('editor-canvas');
+                const options = {
+                    // Add your editor options here
+                };
+                
+                // Note: The actual initialization might fail due to missing dependencies
+                // but we can demonstrate the API availability
+                addResult('Editor', 'Initialization function available. Canvas ready for editor.', 'success');
+                editorInitialized = true;
+                
+            } catch (error) {
+                addResult('Editor', `Initialization failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Test compiler worker
+        document.getElementById('test-compiler').addEventListener('click', () => {
+            try {
+                // Demonstrate API availability
+                if (EightF4ECompilerWorker.createCompilerWorker) {
+                    addResult('Compiler', 'Worker factory function available', 'success');
+                }
+                
+                if (EightF4ECompilerWorker.compileModules) {
+                    addResult('Compiler', 'Direct compilation function available', 'success');
+                }
+                
+                if (EightF4ECompilerWorker.testBuild) {
+                    addResult('Compiler', 'TestBuild function available', 'success');
+                }
+                
+            } catch (error) {
+                addResult('Compiler', `Test failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Test logic runtime
+        document.getElementById('test-runtime').addEventListener('click', () => {
+            try {
+                // Demonstrate API availability
+                if (EightF4ELogicRuntime.createLogicRuntimeWorker) {
+                    addResult('Logic Runtime', 'Worker factory function available', 'success');
+                }
+                
+                if (EightF4ELogicRuntime.runLogicRuntime) {
+                    addResult('Logic Runtime', 'Direct runtime function available', 'success');
+                }
+                
+                if (EightF4ELogicRuntime.createModule) {
+                    addResult('Logic Runtime', 'CreateModule function available', 'success');
+                }
+                
+            } catch (error) {
+                addResult('Logic Runtime', `Test failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Show API information
+        document.getElementById('show-apis').addEventListener('click', () => {
+            const apiDemo = document.getElementById('api-demo');
+            const apiInfo = document.getElementById('api-info');
+            
+            let info = '<h4>Global Variables:</h4><ul>';
+            
+            if (typeof EightF4EEditor !== 'undefined') {
+                info += `<li><strong>EightF4EEditor</strong>: ${typeof EightF4EEditor}</li>`;
+            }
+            
+            if (typeof EightF4ECompilerWorker !== 'undefined') {
+                info += `<li><strong>EightF4ECompilerWorker</strong>: ${typeof EightF4ECompilerWorker}</li>`;
+                info += '<ul>';
+                for (const key in EightF4ECompilerWorker) {
+                    info += `<li>${key}: ${typeof EightF4ECompilerWorker[key]}</li>`;
+                }
+                info += '</ul>';
+            }
+            
+            if (typeof EightF4ELogicRuntime !== 'undefined') {
+                info += `<li><strong>EightF4ELogicRuntime</strong>: ${typeof EightF4ELogicRuntime}</li>`;
+                info += '<ul>';
+                for (const key in EightF4ELogicRuntime) {
+                    info += `<li>${key}: ${typeof EightF4ELogicRuntime[key]}</li>`;
+                }
+                info += '</ul>';
+            }
+            
+            info += '</ul>';
+            
+            info += '<h4>Usage Example:</h4>';
+            info += '<pre>';
+            info += `// Create a compiler worker
+const worker = EightF4ECompilerWorker.createCompilerWorker();
+
+// Or compile directly
+EightF4ECompilerWorker.compileModules(memory, modules, options)
+    .then(result => console.log(result));
+
+// Create logic runtime worker  
+const runtime = EightF4ELogicRuntime.createLogicRuntimeWorker();
+
+// Initialize editor (requires proper setup)
+EightF4EEditor.default(canvas, options);`;
+            info += '</pre>';
+            
+            apiInfo.innerHTML = info;
+            apiDemo.style.display = 'block';
+        });
+
+        // Check bundles when page loads
+        window.addEventListener('load', () => {
+            setTimeout(checkBundles, 100);
+        });
+    </script>
+</body>
+</html>

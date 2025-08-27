@@ -16,6 +16,7 @@
 	"scripts": {
 		"test": "jest --passWithNoTests",
 		"build": "tsc",
+		"bundle": "vite build -c vite.config.bundle.ts",
 		"dev": "tsc --watch",
 		"typecheck": "tsc --noEmit"
 	},
