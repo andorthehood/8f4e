@@ -42,14 +42,6 @@ export default defineConfig({
     rollupOptions: {
       // Ensure proper module resolution for production
       external: [],
-      output: {
-        // Better chunking for production
-        manualChunks: {
-          'editor': ['@8f4e/editor'],
-          'engine': ['@8f4e/2d-engine'],
-          'compiler': ['@8f4e/compiler']
-        }
-      }
     }
   },
   publicDir: false, // Don't copy public dir since we need specific handling
