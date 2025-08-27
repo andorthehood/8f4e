@@ -27,12 +27,12 @@ export default function createMainThreadLogicRuntime(
 			stop();
 
 			wasmApp = await createModule(memoryRef, codeBuffer);
-			
+
 			const intervalTime = Math.floor(1000 / sampleRate);
 
 			interval = setInterval(() => {
 				if (!wasmApp) return;
-				
+
 				const startTime = performance.now();
 				drift += intervalTime - (startTime - lastIntervalTime);
 				lastIntervalTime = startTime;
