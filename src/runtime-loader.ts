@@ -14,6 +14,10 @@ async function getRuntimeFactory(runtimeType: RuntimeType): Promise<RuntimeFacto
 			const { webWorkerLogicRuntime } = await import('./runtime-web-worker-logic-factory');
 			return webWorkerLogicRuntime;
 		}
+		case 'MainThreadLogicRuntime': {
+			const { mainThreadLogicRuntime } = await import('./runtime-main-thread-logic-factory');
+			return mainThreadLogicRuntime;
+		}
 		case 'WebWorkerMIDIRuntime': {
 			const { webWorkerMIDIRuntime } = await import('./runtime-web-worker-midi-factory');
 			return webWorkerMIDIRuntime;
