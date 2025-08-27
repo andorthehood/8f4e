@@ -19,7 +19,7 @@ The editor state effects system (`packages/editor/src/state/effects/`) is a crit
 - Menu system effects (`menu/` directory)
 - Sample rate management (`sampleRate.ts`)
 - Save/load functionality (`save.ts`)
-- Viewport management (`viewport.ts`)
+- Viewport state logic management (`viewport.ts`) (not DOM interactions)
 
 This lack of testing creates risks for future refactoring and makes it difficult to ensure these critical state management functions work correctly.
 
