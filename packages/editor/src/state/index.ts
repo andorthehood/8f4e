@@ -16,6 +16,7 @@ import nestedCodeBlocksOpener from './effects/codeBlocks/nestedCodeBlocksOpener'
 import pianoKeyboard from './effects/codeBlocks/extras/pianoKeyboard/interaction';
 import sampleRate from './effects/sampleRate';
 import save from './effects/save';
+import exportWasm from './effects/exportWasm';
 import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
@@ -164,6 +165,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	compiler(state, events);
 	graphicHelper(state, events);
 	save(state, events);
+	exportWasm(state, events);
 	colorTheme(state, events);
 	font(state, events);
 	binaryAsset(state, events);
