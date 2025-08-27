@@ -1,3 +1,5 @@
+import { getProject, projectRegistry } from './examples/registry';
+
 import type { Project, EditorSettings } from '@8f4e/editor';
 
 // Storage key constants
@@ -6,11 +8,30 @@ const STORAGE_KEYS = {
 	EDITOR_SETTINGS: 'editorSettings_editor',
 } as const;
 
+const kebabCaseToCamelCase = (str: string) =>
+	str.replace(/-([a-z])/g, function (g) {
+		return g[1].toUpperCase();
+	});
+
 // Implementation of storage callbacks using localStorage
 export async function loadProjectFromStorage(): Promise<Project | null> {
 	try {
 		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
-		return stored ? JSON.parse(stored) : null;
+		if (stored) {
+			return JSON.parse(stored);
+		}
+
+		// If no stored project, try to get project from URL hash
+		const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
+		if (projectName && projectRegistry[projectName]) {
+			return await getProject(projectName);
+		} else if (Object.keys(projectRegistry).length > 0) {
+			// Fall back to default project (audioBuffer)
+			return await getProject('audioBuffer');
+		}
+
+		// Return null if no project can be determined - editor will use empty default
+		return null;
 	} catch (error) {
 		console.error('Failed to load project from localStorage:', error);
 		return null;
