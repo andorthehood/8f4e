@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Texture Cache System - No WebGL Feedback Loop</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        canvas { border: 1px solid #ccc; }
+        .status { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Testing Texture Cache System</h2>
+    <canvas id="test-canvas" width="800" height="600"></canvas>
+    <div class="status">
+        <div id="status">Starting test...</div>
+        <div id="error-log" style="color: red;"></div>
+    </div>
+    
+    <script type="module">
+        import { Engine } from './dist/assets/index-D678mYTM.js';
+
+        const canvas = document.getElementById('test-canvas');
+        const statusDiv = document.getElementById('status');
+        const errorDiv = document.getElementById('error-log');
+        
+        let engine;
+        let frameCount = 0;
+        let errors = [];
+
+        // Override console.error to catch WebGL errors
+        const originalError = console.error;
+        console.error = function(...args) {
+            errors.push(args.join(' '));
+            errorDiv.innerHTML = 'ERRORS:<br>' + errors.slice(-5).join('<br>');
+            originalError.apply(console, args);
+        };
+
+        try {
+            engine = new Engine(canvas);
+
+            // Create test sprite lookup similar to codeBlocks
+            const spriteLookup = {
+                'moduleBackground': { x: 0, y: 0, spriteWidth: 200, spriteHeight: 200 },
+                'highlightedCodeLine': { x: 200, y: 0, spriteWidth: 200, spriteHeight: 20 },
+                'A': { x: 0, y: 200, spriteWidth: 10, spriteHeight: 20 },
+                'B': { x: 10, y: 200, spriteWidth: 10, spriteHeight: 20 },
+                '+': { x: 20, y: 200, spriteWidth: 10, spriteHeight: 20 }
+            };
+            
+            // Create test sprite sheet similar to codeBlocks
+            const testCanvas = document.createElement('canvas');
+            testCanvas.width = 400;
+            testCanvas.height = 400;
+            const ctx = testCanvas.getContext('2d');
+            
+            // Draw module background
+            ctx.fillStyle = '#333';
+            ctx.fillRect(0, 0, 200, 200);
+            
+            // Draw highlight line
+            ctx.fillStyle = '#555';
+            ctx.fillRect(200, 0, 200, 20);
+            
+            // Draw letters
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px monospace';
+            ctx.fillText('A', 2, 218);
+            ctx.fillText('B', 12, 218);
+            ctx.fillText('+', 22, 218);
+            
+            engine.loadSpriteSheet(testCanvas);
+            engine.setSpriteLookup(spriteLookup);
+
+            statusDiv.textContent = 'Engine initialized. Starting render loop...';
+
+            // Simulate the codeBlocks drawing pattern that caused the error
+            function simulateCodeBlockDrawing() {
+                const codeBlockId = 'test-codeblock-1';
+                const width = 200;
+                const height = 150;
+                const x = 100;
+                const y = 50;
+
+                try {
+                    // This mimics the user's modification: replace startGroup with startTextureCacheBlock
+                    engine.startTextureCacheBlock(codeBlockId, width, height, x, y);
+                    
+                    // Draw module background (similar to codeBlocks)
+                    engine.drawSprite(0, 0, 'moduleBackground', width, height);
+                    
+                    // Draw highlight line
+                    engine.drawSprite(0, 25, 'highlightedCodeLine', width, 20);
+                    
+                    // Draw corners (similar to codeBlocks)
+                    engine.drawSprite(0, 0, '+');
+                    engine.drawSprite(width - 10, 0, '+');
+                    engine.drawSprite(0, height - 20, '+');
+                    engine.drawSprite(width - 10, height - 20, '+');
+                    
+                    // Draw some text
+                    const text = 'ABAB';
+                    for (let i = 0; i < text.length; i++) {
+                        engine.drawSprite(10 + i * 10, 50, text[i]);
+                    }
+                    
+                    // This mimics the user's modification: replace endGroup with endTextureCacheBlock
+                    engine.endTextureCacheBlock();
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Error in texture cache block:', error);
+                    return false;
+                }
+            }
+
+            // Start rendering with multiple cached blocks
+            engine.render((time, fps, triangles, maxTriangles) => {
+                frameCount++;
+                
+                // Clear canvas
+                engine.gl.clear(engine.gl.COLOR_BUFFER_BIT);
+                
+                // Test multiple cached blocks
+                const success1 = simulateCodeBlockDrawing();
+                
+                // Test second cached block (different ID, will create new cache)
+                const codeBlockId2 = 'test-codeblock-2';
+                engine.startTextureCacheBlock(codeBlockId2, 180, 120, 350, 100);
+                engine.drawSprite(0, 0, 'moduleBackground', 180, 120);
+                engine.drawSprite(20, 20, 'A');
+                engine.drawSprite(30, 20, 'B');
+                engine.endTextureCacheBlock();
+                
+                // Test third cached block (reuse first cache)
+                engine.startTextureCacheBlock('test-codeblock-1', 200, 150, 150, 300);
+                // These drawing operations should be ignored since cache exists
+                engine.drawSprite(0, 0, 'moduleBackground', 200, 150);
+                engine.drawSprite(0, 25, 'highlightedCodeLine', 200, 20);
+                engine.endTextureCacheBlock();
+                
+                if (frameCount % 60 === 0) {
+                    const errorCount = errors.length;
+                    if (errorCount === 0) {
+                        statusDiv.innerHTML = `Frame ${frameCount}: SUCCESS - No WebGL errors detected!<br>FPS: ${fps}, Triangles: ${triangles}`;
+                    } else {
+                        statusDiv.innerHTML = `Frame ${frameCount}: ${errorCount} errors detected<br>FPS: ${fps}, Triangles: ${triangles}`;
+                    }
+                }
+                
+                // Stop after a few seconds to check results
+                if (frameCount > 300) {
+                    if (errors.length === 0) {
+                        statusDiv.innerHTML = `<strong style="color: green;">✅ TEST PASSED!</strong><br>No WebGL feedback loop errors detected after ${frameCount} frames.`;
+                    } else {
+                        statusDiv.innerHTML = `<strong style="color: red;">❌ TEST FAILED!</strong><br>${errors.length} errors detected.`;
+                    }
+                    return; // Stop rendering
+                }
+            });
+
+        } catch (error) {
+            console.error('Failed to initialize engine:', error);
+            statusDiv.textContent = 'Failed to initialize engine: ' + error.message;
+        }
+    </script>
+</body>
+</html>
