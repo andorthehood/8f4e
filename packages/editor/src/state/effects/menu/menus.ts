@@ -40,6 +40,12 @@ export const mainMenu: MenuGenerator = state => [
 	{ title: 'Open Project', action: 'openSubMenu', payload: { menu: 'projectMenu' }, close: false },
 	{ divider: true },
 	{ title: 'Export Project', action: 'save', close: true },
+	{
+		title: 'Export WebAssembly',
+		action: 'exportWasm',
+		close: true,
+		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0,
+	},
 	{ divider: true },
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
 	{ title: 'Project Settings', action: 'openSubMenu', payload: { menu: 'projectSettingsMenu' }, close: false },
