@@ -230,9 +230,7 @@ export class Engine {
 		// Check if cache already exists
 		if (this.textureCache.has(cacheId)) {
 			// Cache exists - ignore all drawing operations and just draw cached texture
-			// First, ensure we're back to the original framebuffer context
-			this.restoreOriginalFramebufferContext();
-			
+			// No need to restore framebuffer context since we never created one
 			this.isInCacheBlock = false;
 			this.currentCacheId = null;
 			
@@ -507,36 +505,46 @@ export class Engine {
 		// Ensure we've rendered any pending operations with the current texture first
 		this.renderVertexBuffer();
 
-		// Temporarily bind the cached texture
+		// Store current texture state
 		const originalTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
-		this.gl.bindTexture(this.gl.TEXTURE_2D, cachedTexture.texture);
 
-		// Draw the cached texture as a sprite directly to the buffer
-		// This bypasses the cache check since we're not in a cache block when drawing cached content
-		const actualX = x + this.offsetX;
-		const actualY = y + this.offsetY;
+		// Use immediate mode rendering to avoid feedback loops
+		// Create a temporary buffer for just this cached texture
+		const tempVertexBuffer = new Float32Array(12);
+		const tempTextureCoordBuffer = new Float32Array(12);
+
+		const actualX = x;
+		const actualY = y;
 		
+		// Fill temporary buffers for the cached texture quad
 		fillBufferWithRectangleVertices(
-			this.vertexBuffer, 
-			this.bufferPointer, 
+			tempVertexBuffer, 
+			0, 
 			actualX, 
 			actualY, 
 			cachedTexture.width, 
 			cachedTexture.height
 		);
 		fillBufferWithSpriteCoordinates(
-			this.textureCoordinateBuffer,
-			this.bufferPointer,
+			tempTextureCoordBuffer,
+			0,
 			0, 0,
 			cachedTexture.width, cachedTexture.height,
 			cachedTexture.width, cachedTexture.height
 		);
 
-		this.bufferCounter += 12;
-		this.bufferPointer = this.bufferCounter % this.bufferSize;
+		// Bind the cached texture
+		this.gl.bindTexture(this.gl.TEXTURE_2D, cachedTexture.texture);
 
-		// Render this immediately to avoid texture conflicts
-		this.renderVertexBuffer();
+		// Upload temporary buffers and render immediately
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glTextureCoordinateBuffer);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, tempTextureCoordBuffer, this.gl.STATIC_DRAW);
+
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glPositionBuffer);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, tempVertexBuffer, this.gl.STATIC_DRAW);
+
+		// Render the cached texture immediately
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
 		// Restore original texture binding (sprite sheet)
 		this.gl.bindTexture(this.gl.TEXTURE_2D, originalTexture);
