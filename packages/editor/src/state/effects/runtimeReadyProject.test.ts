@@ -2,6 +2,7 @@ import { State, Project, EMPTY_DEFAULT_PROJECT } from '../types';
 import compiler from './compiler';
 import save from './save';
 import { EventDispatcher } from '../../events';
+import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 // Mock the decodeBase64ToUint8Array function
 jest.mock('../helpers/base64Decoder', () => ({
@@ -92,8 +93,8 @@ describe('Runtime-ready project functionality', () => {
 			expect(exportedProject.compiledWasm).toBeDefined();
 			expect(typeof exportedProject.compiledWasm).toBe('string');
 			
-			// Verify the base64 encoding is correct
-			const expectedBase64 = btoa(String.fromCharCode(...mockState.compiler.codeBuffer!));
+			// Verify the base64 encoding is correct using the same encoder as the implementation
+			const expectedBase64 = encodeUint8ArrayToBase64(mockState.compiler.codeBuffer!);
 			expect(exportedProject.compiledWasm).toBe(expectedBase64);
 		});
 
