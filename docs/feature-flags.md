@@ -9,6 +9,7 @@ The feature flags system allows you to enable/disable specific editor functional
 - `moduleDragging: boolean` - Enable/disable dragging and repositioning of code block modules
 - `viewportDragging: boolean` - Enable/disable panning/scrolling of the editor viewport
 - `localStorage: boolean` - Enable/disable localStorage functionality
+- `editing: boolean` - Enable/disable all editing functionality (create, edit, delete, save)
 
 ## Usage Examples
 
@@ -35,6 +36,19 @@ const state = init(events, project, {
 });
 ```
 
+### Disable All Editing
+
+```typescript
+import init from '@8f4e/editor';
+
+const state = init(events, project, {
+  featureFlags: {
+    editing: false,          // Disable all editing functionality
+    // All other features remain enabled (context menu, dragging, etc.)
+  }
+});
+```
+
 ### View-Only Mode
 
 ```typescript
@@ -42,9 +56,25 @@ import init from '@8f4e/editor';
 
 const state = init(events, project, {
   featureFlags: {
-    contextMenu: false,
-    moduleDragging: false,
-    viewportDragging: false,
+    editing: false,             // Disable all editing functionality
+    contextMenu: false,         // Disable context menus
+    moduleDragging: false,      // Disable module dragging
+    // viewportDragging, infoOverlay and localStorage remain enabled for navigation
+  }
+});
+```
+
+### Complete View-Only Mode (No Interaction)
+
+```typescript
+import init from '@8f4e/editor';
+
+const state = init(events, project, {
+  featureFlags: {
+    editing: false,             // Disable all editing functionality
+    contextMenu: false,         // Disable context menus
+    moduleDragging: false,      // Disable module dragging
+    viewportDragging: false,    // Disable viewport panning
     // infoOverlay and localStorage remain enabled
   }
 });

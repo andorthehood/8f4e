@@ -194,6 +194,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				codeBlock.cursor.col = newPosition[1];
 				break;
 			case 'Backspace':
+				// Check if editing is enabled before modifying code
+				if (!state.featureFlags.editing) {
+					return;
+				}
 				// eslint-disable-next-line no-case-declarations
 				const bp = backSpace(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
 				codeBlock.cursor.row = bp.row;
@@ -205,6 +209,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				events.dispatch('codeChange');
 				break;
 			case 'Enter':
+				// Check if editing is enabled before modifying code
+				if (!state.featureFlags.editing) {
+					return;
+				}
 				// eslint-disable-next-line no-case-declarations
 				const ent = enter(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
 				codeBlock.cursor.row = ent.row;
@@ -217,6 +225,10 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				break;
 			default:
 				if (event?.key.length === 1) {
+					// Check if editing is enabled before typing
+					if (!state.featureFlags.editing) {
+						return;
+					}
 					// eslint-disable-next-line no-case-declarations
 					const bp = type(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.key);
 					codeBlock.cursor.row = bp.row;
