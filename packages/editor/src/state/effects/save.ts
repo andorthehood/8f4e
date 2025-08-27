@@ -3,6 +3,11 @@ import { State } from '../types';
 
 export default function save(state: State, events: EventDispatcher): void {
 	function onSave() {
+		// Check if editing is enabled
+		if (!state.featureFlags.editing) {
+			return;
+		}
+
 		if (!state.options.saveProjectToFile) {
 			console.warn('No saveProjectToFile callback provided');
 			return;
