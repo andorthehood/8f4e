@@ -1,5 +1,5 @@
 {
-  "name": "@8f4e/web-worker-logic-runtime",
+  "name": "@8f4e/runtime-web-worker-logic",
   "sourceRoot": "src",
   "projectType": "library",
   "targets": {
