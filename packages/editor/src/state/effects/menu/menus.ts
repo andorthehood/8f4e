@@ -42,7 +42,6 @@ export const mainMenu: MenuGenerator = state => [
 	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }, { divider: true }] : []),
 	{ title: 'Open From Disk', action: 'open', close: true },
 	{ title: 'Open Project', action: 'openSubMenu', payload: { menu: 'projectMenu' }, close: false },
-	...(state.featureFlags.editing ? [{ divider: true }, { title: 'Export Project', action: 'save', close: true }] : []),
 	{ divider: true },
 	{ title: 'Export Project', action: 'save', close: true },
 	{
