@@ -11,6 +11,14 @@
         "cwd": "{projectRoot}"
       }
     },
+    "bundle": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/bundle"],
+      "options": {
+        "command": "vite build",
+        "cwd": "{projectRoot}"
+      }
+    },
     "test": {
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
