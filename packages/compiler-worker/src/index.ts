@@ -14,7 +14,7 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compi
 			},
 		});
 	} catch (error) {
-		console.log('buildError', error);
+		console.log('testBuildError', error);
 		self.postMessage({
 			type: 'buildError',
 			payload: error,
