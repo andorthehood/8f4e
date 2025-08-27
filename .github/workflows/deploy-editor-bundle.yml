@@ -1,0 +1,118 @@
+---
+name: Deploy Editor Bundle to DigitalOcean Spaces
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deployment'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  deploy-bundle:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all packages
+        run: npx nx run-many --target=build --all
+
+      - name: Generate editor bundle
+        run: npm run bundle:editor
+
+      - name: Configure AWS CLI for DigitalOcean Spaces
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.DO_SPACES_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.DO_SPACES_SECRET_KEY }}
+          aws-region: ${{ vars.DO_SPACES_REGION || 'nyc3' }}
+
+      - name: Upload bundle to DigitalOcean Spaces
+        env:
+          DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}
+          DO_SPACES_ENDPOINT: ${{ vars.DO_SPACES_ENDPOINT }}
+        run: |
+          # Upload the main bundle file
+          aws s3 cp packages/editor/bundle/editor-bundle.js \
+            s3://$DO_SPACES_BUCKET/editor/editor-bundle.js \
+            --endpoint-url $DO_SPACES_ENDPOINT \
+            --acl public-read \
+            --content-type "application/javascript" \
+            --cache-control "public, max-age=3600"
+          
+          # Upload the source map
+          aws s3 cp packages/editor/bundle/editor-bundle.js.map \
+            s3://$DO_SPACES_BUCKET/editor/editor-bundle.js.map \
+            --endpoint-url $DO_SPACES_ENDPOINT \
+            --acl public-read \
+            --content-type "application/json" \
+            --cache-control "public, max-age=3600"
+          
+          # Create versioned copy with commit SHA
+          aws s3 cp packages/editor/bundle/editor-bundle.js \
+            s3://$DO_SPACES_BUCKET/editor/editor-bundle-${{ github.sha }}.js \
+            --endpoint-url $DO_SPACES_ENDPOINT \
+            --acl public-read \
+            --content-type "application/javascript" \
+            --cache-control "public, max-age=31536000"
+
+      - name: Create deployment info
+        env:
+          DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}
+          DO_SPACES_ENDPOINT: ${{ vars.DO_SPACES_ENDPOINT }}
+        run: |
+          # Create deployment info JSON
+          cat > deployment-info.json << EOF
+          {
+            "version": "${{ github.sha }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "commit": "${{ github.sha }}",
+            "branch": "${{ github.ref_name }}",
+            "bundle_url": "https://$DO_SPACES_BUCKET.${DO_SPACES_ENDPOINT#https://}/editor/editor-bundle.js",
+            "versioned_url": "https://$DO_SPACES_BUCKET.${DO_SPACES_ENDPOINT#https://}/editor/editor-bundle-${{ github.sha }}.js",
+            "size_bytes": $(stat -c%s packages/editor/bundle/editor-bundle.js)
+          }
+          EOF
+          
+          # Upload deployment info
+          aws s3 cp deployment-info.json \
+            s3://$DO_SPACES_BUCKET/editor/deployment-info.json \
+            --endpoint-url $DO_SPACES_ENDPOINT \
+            --acl public-read \
+            --content-type "application/json" \
+            --cache-control "public, max-age=60"
+
+      - name: Bundle deployment summary
+        env:
+          DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}
+          DO_SPACES_ENDPOINT: ${{ vars.DO_SPACES_ENDPOINT }}
+        run: |
+          echo "## Editor Bundle Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Bundle deployed successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**URLs:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Latest: https://$DO_SPACES_BUCKET.${DO_SPACES_ENDPOINT#https://}/editor/editor-bundle.js" >> $GITHUB_STEP_SUMMARY
+          echo "- Versioned: https://$DO_SPACES_BUCKET.${DO_SPACES_ENDPOINT#https://}/editor/editor-bundle-${{ github.sha }}.js" >> $GITHUB_STEP_SUMMARY
+          echo "- Deployment Info: https://$DO_SPACES_BUCKET.${DO_SPACES_ENDPOINT#https://}/editor/deployment-info.json" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Bundle Info:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Size: $(stat -c%s packages/editor/bundle/editor-bundle.js) bytes" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
