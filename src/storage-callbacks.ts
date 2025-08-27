@@ -1,9 +1,15 @@
 import type { Project, EditorSettings } from '@8f4e/editor';
 
+// Storage key constants
+const STORAGE_KEYS = {
+	PROJECT: 'project_editor',
+	EDITOR_SETTINGS: 'editorSettings_editor',
+} as const;
+
 // Implementation of storage callbacks using localStorage
-export async function loadProjectFromStorage(storageId: string): Promise<Project | null> {
+export async function loadProjectFromStorage(): Promise<Project | null> {
 	try {
-		const stored = localStorage.getItem('project_' + storageId);
+		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
 		return stored ? JSON.parse(stored) : null;
 	} catch (error) {
 		console.error('Failed to load project from localStorage:', error);
@@ -11,18 +17,18 @@ export async function loadProjectFromStorage(storageId: string): Promise<Project
 	}
 }
 
-export async function saveProjectToStorage(storageId: string, project: Project): Promise<void> {
+export async function saveProjectToStorage(project: Project): Promise<void> {
 	try {
-		localStorage.setItem('project_' + storageId, JSON.stringify(project));
+		localStorage.setItem(STORAGE_KEYS.PROJECT, JSON.stringify(project));
 	} catch (error) {
 		console.error('Failed to save project to localStorage:', error);
 		throw error;
 	}
 }
 
-export async function loadEditorSettingsFromStorage(storageId: string): Promise<EditorSettings | null> {
+export async function loadEditorSettingsFromStorage(): Promise<EditorSettings | null> {
 	try {
-		const stored = localStorage.getItem('editorSettings_' + storageId);
+		const stored = localStorage.getItem(STORAGE_KEYS.EDITOR_SETTINGS);
 		return stored ? JSON.parse(stored) : null;
 	} catch (error) {
 		console.error('Failed to load editor settings from localStorage:', error);
@@ -30,9 +36,9 @@ export async function loadEditorSettingsFromStorage(storageId: string): Promise<
 	}
 }
 
-export async function saveEditorSettingsToStorage(storageId: string, settings: EditorSettings): Promise<void> {
+export async function saveEditorSettingsToStorage(settings: EditorSettings): Promise<void> {
 	try {
-		localStorage.setItem('editorSettings_' + storageId, JSON.stringify(settings));
+		localStorage.setItem(STORAGE_KEYS.EDITOR_SETTINGS, JSON.stringify(settings));
 	} catch (error) {
 		console.error('Failed to save editor settings to localStorage:', error);
 		throw error;
