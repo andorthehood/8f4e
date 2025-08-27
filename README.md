@@ -4,27 +4,6 @@
 
 8f4e is a stack-oriented programming language with a semi-visual interface that I originally designed to perform generative music on algorave events. It's meant to be an efficient, but at the same time portable tool for real-time audio signal generation and processing. One of its most unique features is its representation of pointers using interconnected wires.
 
-## Editor Bundle
-
-The 8f4e editor is available as a UMD bundle that can be loaded directly via script tags on any website:
-
-```html
-<script src="https://[bucket].[region].digitaloceanspaces.com/editor/editor-bundle.js"></script>
-<script>
-    // Editor8f4e is now available globally
-    Editor8f4e(canvas, options).then(editor => {
-        // Use the editor
-    });
-</script>
-```
-
-- **Bundle Size**: ~84KB (gzipped: ~22KB)
-- **Format**: UMD (Universal Module Definition)
-- **Dependencies**: All bundled internally
-- **Deployment**: Automatic via GitHub Actions to DigitalOcean Spaces
-
-See [`docs/usage.md`](./docs/usage.md) for detailed integration examples and [`docs/deployment.md`](./docs/deployment.md) for deployment information.
-
 ## Documentation
 
 - [`docs/instructions.md`](./docs/instructions.md) - Language instruction reference

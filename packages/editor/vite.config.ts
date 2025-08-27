@@ -27,12 +27,8 @@ export default defineConfig({
 		alias: {
 			// Resolve workspace dependencies to their built versions
 			'@8f4e/2d-engine': resolve(__dirname, '../2d-engine/dist'),
-			'@8f4e/runtime-audio-worklet': resolve(__dirname, '../runtime-audio-worklet/dist'),
 			'@8f4e/compiler': resolve(__dirname, '../compiler/dist'),
-			'@8f4e/compiler-worker': resolve(__dirname, '../compiler-worker/dist'),
 			'@8f4e/sprite-generator': resolve(__dirname, '../sprite-generator/dist'),
-			'@8f4e/runtime-web-worker-logic': resolve(__dirname, '../runtime-web-worker-logic/dist'),
-			'@8f4e/runtime-web-worker-midi': resolve(__dirname, '../runtime-web-worker-midi/dist'),
 		},
 	},
 });
