@@ -26,7 +26,12 @@ describe('Runtime System', () => {
 	describe('Runtime loading integration', () => {
 		test('should have access to runtime types from main module', () => {
 			// This test ensures the types are properly exported from the main runtime module
-			const validRuntimeTypes: RuntimeType[] = ['AudioWorkletRuntime', 'WebWorkerMIDIRuntime', 'WebWorkerLogicRuntime', 'MainThreadLogicRuntime'];
+			const validRuntimeTypes: RuntimeType[] = [
+				'AudioWorkletRuntime',
+				'WebWorkerMIDIRuntime',
+				'WebWorkerLogicRuntime',
+				'MainThreadLogicRuntime',
+			];
 
 			expect(validRuntimeTypes).toHaveLength(4);
 			expect(validRuntimeTypes).toContain('AudioWorkletRuntime');
