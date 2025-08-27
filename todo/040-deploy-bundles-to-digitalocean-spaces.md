@@ -20,7 +20,7 @@ The goal is to create single-file bundles (UMD format) that can be loaded direct
 Create optimized single-file bundles using Vite for three key packages:
 1. **@8f4e/editor** - Main editor interface with all dependencies bundled
 2. **@8f4e/compiler-worker** - Compiler worker for WASM compilation
-3. **@8f4e/web-worker-logic-runtime** - Web worker logic runtime
+3. **@8f4e/runtime-web-worker-logic** - Web worker logic runtime
 
 These bundles will be:
 - UMD format for universal compatibility
@@ -100,7 +100,7 @@ These bundles will be:
 
 - `packages/editor/` - Add Vite config, bundle target, and scripts
 - `packages/compiler-worker/` - Add Vite config, bundle target, and scripts  
-- `packages/web-worker-logic-runtime/` - Add Vite config, bundle target, and scripts
+- `packages/runtime-web-worker-logic/` - Add Vite config, bundle target, and scripts
 - `packages/*/package.json` - Add bundle scripts to each package
 - `packages/*/project.json` - Add bundle targets to Nx configuration
 - `package.json` - Add root-level bundle commands

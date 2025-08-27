@@ -1,5 +1,5 @@
 {
-  "name": "@8f4e/audio-worklet-runtime",
+  "name": "@8f4e/runtime-web-worker-midi",
   "sourceRoot": "src",
   "projectType": "library",
   "targets": {
@@ -7,7 +7,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "npm run build",
+        "command": "tsc",
         "cwd": "{projectRoot}"
       }
     },
@@ -27,5 +27,5 @@
       }
     }
   },
-  "tags": ["type:runtime", "scope:audio"]
+  "tags": ["type:runtime", "scope:midi"]
 }
