@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texture Cache System Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #555;
+        }
+        .test-info {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #333;
+            border-radius: 8px;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .info {
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h1>🎮 Texture Cache System Test</h1>
+        <p>This test validates the newly implemented texture caching system for the 2D engine.</p>
+        
+        <h3>What this test does:</h3>
+        <ul>
+            <li><strong>Frames 1-60:</strong> Measures baseline performance without caching</li>
+            <li><strong>Frame 60:</strong> Creates a texture cache using <code>startTextureCacheBlock()</code></li>
+            <li><strong>Frames 61-120:</strong> Uses cached textures (should be significantly faster)</li>
+            <li><strong>Performance comparison:</strong> Check console for detailed results</li>
+        </ul>
+        
+        <h3>Key Features Tested:</h3>
+        <ul>
+            <li>✅ <code>startTextureCacheBlock(cacheId, width, height, x, y)</code> - Drop-in replacement for <code>startGroup()</code></li>
+            <li>✅ <code>endTextureCacheBlock()</code> - Drop-in replacement for <code>endGroup()</code></li>
+            <li>✅ Transparent caching - drawing operations work exactly the same way</li>
+            <li>✅ Automatic optimization - if cache exists, operations are ignored and cached texture is used</li>
+            <li>✅ WebGL framebuffer implementation for direct texture rendering</li>
+            <li>✅ Cache management with <code>clearTextureCache()</code></li>
+        </ul>
+        
+        <p class="info">📊 <strong>Check the browser console for performance metrics!</strong></p>
+    </div>
+
+    <script type="module" src="/src/texture-cache-test.js"></script>
+</body>
+</html>
