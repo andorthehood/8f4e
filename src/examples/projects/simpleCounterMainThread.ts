@@ -10,19 +10,13 @@ const project: Project = {
 				'module counter',
 				'',
 				'int value 0',
-				'float out',
 				'',
-				'; Increment counter each cycle',
-				'push value',
-				'push 1',
-				'add',
+				'debug value',
+				'',
 				'push &value',
-				'store',
-				'',
-				'; Convert to float and output',
+				'push 1',
 				'push value',
-				'castToFloat',
-				'push &out',
+				'add',
 				'store',
 				'',
 				'moduleEnd',
@@ -37,7 +31,7 @@ const project: Project = {
 	runtimeSettings: [
 		{
 			runtime: 'MainThreadLogicRuntime',
-			sampleRate: 10, // Slower for demonstration
+			sampleRate: 10,
 		},
 	],
 };
