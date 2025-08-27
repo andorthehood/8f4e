@@ -16,13 +16,14 @@ The current 2D engine renders all drawing operations directly to the main canvas
 
 ## Proposed Solution
 
-Implement a texture caching system that allows drawing operations to be cached to WebGL textures and reused. The system will include:
-- `startTextureCacheBlock(cacheId, width, height, canvasX, canvasY)` - Begins caching mode and specifies where the cache area will be positioned on canvas
-- `endTextureCacheBlock()` - Ends caching, creates cached texture, and automatically draws it at the position specified in startTextureCacheBlock
+Implement a texture caching system that works as a drop-in replacement for `startGroup`/`endGroup`. The system will include:
+- `startTextureCacheBlock(cacheId, width, height, x, y)` - Begins caching mode (similar to `startGroup(x, y)`)
+- `endTextureCacheBlock()` - Ends caching mode (similar to `endGroup()`)
 - `deleteCachedTexture(cacheId)` - Removes specific cached texture
 - `clearTextureCache()` - Clears all cached textures
-- Automatic redirection of drawing operations to a WebGL framebuffer when in cache mode
-- Drawing operations inside cache blocks use normal canvas coordinates (0,0 is top-left of canvas)
+- **Drop-in replacement**: Users can replace `startGroup(x, y)` with `startTextureCacheBlock(cacheId, width, height, x, y)` and `endGroup()` with `endTextureCacheBlock()`
+- **Transparent caching**: Drawing operations work exactly the same way, but get cached for reuse
+- **Automatic optimization**: If cache exists, drawing operations are ignored and cached texture is used instead
 - Uses WebGL framebuffers for direct texture rendering (no OffscreenCanvas needed)
 
 ## Implementation Plan
@@ -36,25 +37,27 @@ Implement a texture caching system that allows drawing operations to be cached t
 - Dependencies: None
 
 ### Step 2: Implement startTextureCacheBlock Method
-- Create method signature with `cacheId`, `width`, `height`, `canvasX`, `canvasY` parameters
+- Create method signature with `cacheId`, `width`, `height`, `x`, `y` parameters (similar to `startGroup`)
 - Add validation for cache block state (ensure not already in cache mode)
-- Store `canvasX` and `canvasY` for later use in `endTextureCacheBlock`
+- **Implement offset behavior exactly like `startGroup`**: add `x` and `y` to `this.offsetX` and `this.offsetY`
 - Check if texture already exists in cache (if so, just set cache mode without creating new framebuffer)
 - For new caches: create WebGL framebuffer and texture for caching
 - Store original WebGL state (viewport, framebuffer) to restore later
 - Bind framebuffer and set viewport for cache dimensions
-- Expected outcome: Method successfully enters cache mode and sets up WebGL framebuffer rendering
+- Expected outcome: Method works exactly like `startGroup` but with additional caching functionality
 - Dependencies: Step 1
 
 ### Step 3: Implement endTextureCacheBlock Method
-- Add method signature with no parameters (positioning comes from startTextureCacheBlock)
+- Add method signature with no parameters (similar to `endGroup`)
+- **Implement offset behavior exactly like `endGroup`**: remove the offset that was added in `startTextureCacheBlock`
 - Implement logic to either reuse existing cached texture or create new one
 - For new caches: the texture is already created in the framebuffer from Step 2
 - Store new textures in cache Map with metadata
-- **Automatically draw the cached texture at the (canvasX, canvasY) position** specified in startTextureCacheBlock
+- **If cache exists**: ignore all drawing operations and just draw the cached texture at current offset position
+- **If cache is new**: draw all operations to framebuffer, then draw the resulting texture at current offset position
 - Restore original WebGL state (framebuffer, viewport)
 - Clean up cache resources
-- Expected outcome: Method successfully exits cache mode, creates/uses cached texture, and draws it at specified position
+- Expected outcome: Method works exactly like `endGroup` but with additional caching functionality
 - Dependencies: Steps 1-2
 
 ### Step 4: Modify Existing Drawing Methods for Cache Support
@@ -62,8 +65,10 @@ Implement a texture caching system that allows drawing operations to be cached t
 - Update `drawLine` to check cache mode and redirect to cache framebuffer
 - Update `drawSprite` to check cache mode and redirect to cache framebuffer
 - Update `drawText` to check cache mode and redirect to cache framebuffer
+- **Important**: If cache already exists, these methods should do nothing (operations are ignored)
+- **Important**: If cache is new, these methods should work exactly the same way as normal mode
 - Add cache-specific drawing methods for each type
-- Expected outcome: All drawing methods work in both normal and cache modes
+- Expected outcome: All drawing methods work exactly the same way, but get cached for reuse
 - Dependencies: Steps 1-3
 
 ### Step 5: Implement Cache-Specific Drawing Methods
@@ -107,11 +112,12 @@ Implement a texture caching system that allows drawing operations to be cached t
 
 ## Success Criteria
 
-- [ ] `startTextureCacheBlock` successfully enters cache mode and sets up WebGL framebuffer rendering for new caches
-- [ ] `endTextureCacheBlock` successfully creates new cached textures or reuses existing ones
-- [ ] **Cached textures are automatically drawn at the position specified in startTextureCacheBlock**
-- [ ] All drawing methods (`drawSprite`, `drawLine`, `drawText`, etc.) work in cache mode
-- [ ] Drawing operations inside cache blocks use normal canvas coordinates (0,0 is top-left of canvas)
+- [ ] `startTextureCacheBlock` works exactly like `startGroup` with additional caching functionality
+- [ ] `endTextureCacheBlock` works exactly like `endGroup` with additional caching functionality
+- [ ] **Drop-in replacement**: Users can replace `startGroup`/`endGroup` with `startTextureCacheBlock`/`endTextureCacheBlock` without changing any other code**
+- [ ] **Transparent caching**: If cache exists, drawing operations are ignored and cached texture is used instead
+- [ ] **Offset behavior**: Caching system respects and maintains the same offset behavior as `startGroup`/`endGroup`
+- [ ] All drawing methods work exactly the same way in both normal and cache modes
 - [ ] Cached textures can be deleted individually or all at once
 - [ ] Performance improvement measurable for complex, repeated drawing operations
 - [ ] No memory leaks from cached textures
@@ -150,8 +156,9 @@ Implement a texture caching system that allows drawing operations to be cached t
 ## Notes
 
 - This system is inspired by modern graphics engines that cache complex rendering operations
-- The positioning is built into the cache creation, making it intuitive to use
-- Drawing operations inside cache blocks use normal canvas coordinates, not relative positioning
+- **Drop-in replacement design**: Users can seamlessly upgrade from `startGroup`/`endGroup` to `startTextureCacheBlock`/`endTextureCacheBlock`
+- **Transparent optimization**: The caching is completely invisible to the user - their code works exactly the same way
+- **Offset compatibility**: Maintains exact same offset behavior as existing `startGroup`/`endGroup` system
 - Uses WebGL framebuffers for direct texture rendering - more efficient than OffscreenCanvas
 - Consider adding cache size limits or LRU eviction for production use
 - May want to add cache statistics/monitoring for debugging
