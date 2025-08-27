@@ -44,10 +44,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state.options.loadEditorSettingsFromStorage &&
 		state.featureFlags.persistentStorage
 	) {
-		initialLoad = Promise.all([
-			state.options.loadProjectFromStorage(state.options.localStorageId),
-			state.options.loadEditorSettingsFromStorage(state.options.localStorageId),
-		])
+		initialLoad = Promise.all([state.options.loadProjectFromStorage(), state.options.loadEditorSettingsFromStorage()])
 			.then(([localProject, editorSettings]) => {
 				state.editorSettings = editorSettings || defaultState.editorSettings;
 				loadProject({ project: localProject || state.project });
@@ -161,8 +158,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 		// Use callbacks instead of localStorage
 		Promise.all([
-			state.options.saveProjectToStorage!(state.options.localStorageId, state.project),
-			state.options.saveEditorSettingsToStorage!(state.options.localStorageId, state.editorSettings),
+			state.options.saveProjectToStorage!(state.project),
+			state.options.saveEditorSettingsToStorage!(state.editorSettings),
 		]).catch(error => {
 			console.error('Failed to save to storage:', error);
 		});
