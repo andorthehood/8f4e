@@ -31,11 +31,11 @@
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
 		"@8f4e/2d-engine": "*",
-		"@8f4e/audio-worklet-runtime": "*",
+		"@8f4e/runtime-audio-worklet": "*",
 		"@8f4e/compiler": "*",
 		"@8f4e/compiler-worker": "*",
 		"@8f4e/sprite-generator": "*",
-		"@8f4e/web-worker-logic-runtime": "*",
-		"@8f4e/web-worker-midi-runtime": "*"
+		"@8f4e/runtime-web-worker-logic": "*",
+		"@8f4e/runtime-web-worker-midi": "*"
 	}
 }
