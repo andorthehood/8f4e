@@ -1,5 +1,3 @@
-import { instructions } from '@8f4e/compiler';
-
 import bufferPlotters from './extras/bufferPlotters/codeParser';
 import buttons from './extras/buttons/codeParser';
 import debuggers from './extras/debuggers/codeParser';
@@ -26,6 +24,88 @@ import {
 } from '../../helpers/editor';
 import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
 import { InternalKeyboardEvent } from '../../../events/humanInterface';
+
+const instructions = [
+	'and',
+	'or',
+	'const',
+	'load',
+	'load8u',
+	'load16u',
+	'load8s',
+	'load16s',
+	'localGet',
+	'localSet',
+	'else',
+	'if',
+	'ifEnd',
+	'lessThan',
+	'store',
+	'sub',
+	'div',
+	'xor',
+	'local',
+	'greaterOrEqual',
+	'add',
+	'greaterThan',
+	'branch',
+	'branchIfTrue',
+	'push',
+	'block',
+	'blockEnd',
+	'lessOrEqual',
+	'mul',
+	'loop',
+	'loopEnd',
+	'greaterOrEqualUnsigned',
+	'equalToZero',
+	'shiftLeft',
+	'shiftRight',
+	'shiftRightUnsigned',
+	'remainder',
+	'module',
+	'moduleEnd',
+	'int',
+	'float',
+	'int*',
+	'int**',
+	'float*',
+	'float**',
+	'float[]',
+	'int[]',
+	'int8[]',
+	'int16[]',
+	'int32[]',
+	'float*[]',
+	'float**[]',
+	'int*[]',
+	'int**[]',
+	'castToInt',
+	'castToFloat',
+	'skip',
+	'drop',
+	'clearStack',
+	'risingEdge',
+	'fallingEdge',
+	'dup',
+	'swap',
+	'cycle',
+	'abs',
+	'use',
+	'equal',
+	'wasm',
+	'branchIfUnchanged',
+	'init',
+	'pow2',
+	'sqrt',
+	'loadFloat',
+	'round',
+	'ensureNonZero',
+	'function',
+	'functionEnd',
+	'initBlock',
+	'initBlockEnd',
+];
 
 export default function graphicHelper(state: State, events: EventDispatcher) {
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
@@ -65,7 +145,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
 
 		graphicData.codeColors = generateCodeColorMap(codeWithLineNumbers, state.graphicHelper.spriteLookups, [
-			...Object.keys(instructions),
+			...instructions,
 			...state.compiler.compilerOptions.environmentExtensions.ignoredKeywords,
 		]);
 

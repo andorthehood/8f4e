@@ -1,6 +1,10 @@
-import { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure } from '@8f4e/compiler';
 import { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import { SpriteLookup } from '@8f4e/2d-engine';
+
+import { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
+
+import type { RuntimeFactory, RuntimeType } from './effects/runtime';
+import type { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure, Module } from '@8f4e/compiler';
 
 export interface CodeBlock {
 	code: string[];
@@ -315,13 +319,54 @@ export interface ExampleModule {
 	category: string;
 }
 
-export interface Options {
-	isLocalStorageEnabled: boolean;
-	showInfoOverlay: boolean;
-	localStorageId: string;
-	exampleProjects: Record<string, Project>;
-	exampleModules: Record<string, ExampleModule>;
+export interface ModuleMetadata {
+	slug: string;
+	title: string;
+	category: string;
 }
+
+export interface ProjectMetadata {
+	slug: string;
+	title: string;
+	description: string;
+}
+
+export interface CompilationResult {
+	compiledModules: CompiledModuleLookup;
+	codeBuffer: Uint8Array;
+	allocatedMemorySize: number;
+}
+
+export interface Options {
+	localStorageId: string;
+	featureFlags?: FeatureFlagsConfig;
+	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
+	getListOfModules: () => Promise<ModuleMetadata[]>;
+	getModule: (slug: string) => Promise<ExampleModule>;
+	getListOfProjects: () => Promise<ProjectMetadata[]>;
+	getProject: (slug: string) => Promise<Project>;
+
+	// Compilation callback
+	compileProject: (
+		modules: Module[],
+		compilerOptions: CompileOptions,
+		memoryRef: WebAssembly.Memory
+	) => Promise<CompilationResult>;
+
+	// Storage callbacks
+	loadProjectFromStorage?: (storageId: string) => Promise<Project | null>;
+	saveProjectToStorage?: (storageId: string, project: Project) => Promise<void>;
+	loadEditorSettingsFromStorage?: (storageId: string) => Promise<EditorSettings | null>;
+	saveEditorSettingsToStorage?: (storageId: string, settings: EditorSettings) => Promise<void>;
+
+	// File handling callbacks
+	loadProjectFromFile?: (file: File) => Promise<Project>;
+	saveProjectToFile?: (project: Project, filename: string) => Promise<void>;
+	importBinaryAsset?: (file: File) => Promise<{ data: string; fileName: string }>;
+}
+
+// Re-export runtime types from the effects module for convenience
+export type { RuntimeFactory, RuntimeType };
 
 export interface EditorSettings {
 	colorScheme: string;
@@ -335,5 +380,6 @@ export interface State {
 	project: Project;
 	options: Options;
 	editorSettings: EditorSettings;
+	featureFlags: FeatureFlags;
 	compilationTime: number;
 }
