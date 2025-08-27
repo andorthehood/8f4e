@@ -12,34 +12,41 @@ export const mainMenu: MenuGenerator = state => [
 				// eslint-disable-next-line
 		  ]
 		: []),
-	{
-		title: 'New Module',
-		action: 'addCodeBlock',
-		payload: { isNew: true },
-		close: true,
-	},
-	{
-		title: 'Paste Module',
-		action: 'addCodeBlock',
-		payload: { isPaste: true },
-		close: true,
-	},
-	{
-		title: 'Add Built-in Module',
-		action: 'openSubMenu',
-		payload: { menu: 'moduleCategoriesMenu' },
-		close: false,
-	},
-	{ divider: true },
-	{ title: 'Import binary asset', action: 'importBinaryAsset', close: true },
+	// Only show editing options if editing is enabled
+	...(state.featureFlags.editing
+		? [
+				{
+					title: 'New Module',
+					action: 'addCodeBlock',
+					payload: { isNew: true },
+					close: true,
+				},
+				{
+					title: 'Paste Module',
+					action: 'addCodeBlock',
+					payload: { isPaste: true },
+					close: true,
+				},
+				{
+					title: 'Add Built-in Module',
+					action: 'openSubMenu',
+					payload: { menu: 'moduleCategoriesMenu' },
+					close: false,
+				},
+				{ divider: true },
+				{ title: 'Import binary asset', action: 'importBinaryAsset', close: true },
+		  ]
+		: []),
 	{ title: 'Binary assets', action: 'openSubMenu', payload: { menu: 'binaryAssetsMenu' }, close: false },
-	{ divider: true },
-	{ title: 'New Project', action: 'new', close: true },
-	{ divider: true },
+	...(state.featureFlags.editing ? [{ divider: true }] : []),
+	...(state.featureFlags.editing
+		? [{ title: 'New Project', action: 'new', close: true }, { divider: true }]
+		: []),
 	{ title: 'Open From Disk', action: 'open', close: true },
 	{ title: 'Open Project', action: 'openSubMenu', payload: { menu: 'projectMenu' }, close: false },
-	{ divider: true },
-	{ title: 'Export Project', action: 'save', close: true },
+	...(state.featureFlags.editing
+		? [{ divider: true }, { title: 'Export Project', action: 'save', close: true }]
+		: []),
 	{ divider: true },
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
 	{ title: 'Project Settings', action: 'openSubMenu', payload: { menu: 'projectSettingsMenu' }, close: false },
@@ -80,12 +87,17 @@ export interface OpenGroupEvent {
 }
 
 export const moduleMenu: MenuGenerator = state => [
-	{
-		title: 'Delete module',
-		action: 'deleteCodeBlock',
-		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
-		close: true,
-	},
+	// Only show delete option if editing is enabled
+	...(state.featureFlags.editing
+		? [
+				{
+					title: 'Delete module',
+					action: 'deleteCodeBlock',
+					payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+					close: true,
+				},
+		  ]
+		: []),
 	{
 		title: 'Copy module',
 		action: 'copyCodeBlock',

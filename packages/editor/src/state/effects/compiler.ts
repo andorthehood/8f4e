@@ -20,6 +20,11 @@ function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { cod
 
 export default async function compiler(state: State, events: EventDispatcher) {
 	async function onRecompile() {
+		// Check if editing is enabled
+		if (!state.featureFlags.editing) {
+			return;
+		}
+
 		if (!state.compiler.memoryRef) {
 			return;
 		}
