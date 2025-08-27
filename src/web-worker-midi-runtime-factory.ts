@@ -1,11 +1,11 @@
-import Worker from '@8f4e/web-worker-midi-runtime?worker';
+// Import the types from the editor
+import { State, EventDispatcher } from '@8f4e/editor';
+// Import the runtime dependencies
+import WebWorkerMIDIRuntime from '@8f4e/web-worker-midi-runtime?worker';
 
-import { EventDispatcher } from '../../../events';
-import { State } from '../../types';
-
-export default function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
-	let selectedInput: MIDIInput;
-
+// WebWorker MIDI Runtime Factory
+export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
+	let selectedInput: MIDIInput | null = null;
 	let worker: Worker | undefined;
 
 	function onMidiMessage(event) {
@@ -63,7 +63,7 @@ export default function webWorkerMIDIRuntime(state: State, events: EventDispatch
 		});
 	}
 
-	worker = new Worker();
+	worker = new WebWorkerMIDIRuntime();
 
 	worker.addEventListener('message', onWorkerMessage);
 	syncCodeAndSettingsWithRuntime();
@@ -73,9 +73,16 @@ export default function webWorkerMIDIRuntime(state: State, events: EventDispatch
 
 	return () => {
 		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+
 		if (selectedInput) {
-			selectedInput.removeEventListener('message', onMidiMessage);
+			selectedInput.removeEventListener('midimessage', onMidiMessage);
+			selectedInput = null;
 		}
+
+		// Clean up MIDI ports from global state
+		state.midi.inputs.length = 0;
+		state.midi.outputs.length = 0;
+
 		if (worker) {
 			worker.removeEventListener('message', onWorkerMessage);
 			worker.terminate();
