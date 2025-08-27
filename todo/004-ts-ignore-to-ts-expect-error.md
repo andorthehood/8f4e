@@ -70,7 +70,7 @@ Current locations with `@ts-ignore`:
 ## Affected Components
 
 **High-priority removals** (proper types exist or can be defined):
-- `packages/audio-worklet-runtime/src/index.ts` - AudioWorklet constructor
+- `packages/runtime-audio-worklet/src/index.ts` - AudioWorklet constructor
 - `packages/editor/src/state/index.ts` - Interface mismatch (design issue)
 - Multiple `createModule.ts` files - WebAssembly instantiation
 
