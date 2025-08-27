@@ -7,15 +7,15 @@ import type { RuntimeFactory, RuntimeType } from '@8f4e/editor';
 async function getRuntimeFactory(runtimeType: RuntimeType): Promise<RuntimeFactory> {
 	switch (runtimeType) {
 		case 'AudioWorkletRuntime': {
-			const { audioWorkletRuntime } = await import('./audio-worklet-runtime-factory');
+			const { audioWorkletRuntime } = await import('./runtime-audio-worklet-factory');
 			return audioWorkletRuntime;
 		}
 		case 'WebWorkerLogicRuntime': {
-			const { webWorkerLogicRuntime } = await import('./web-worker-logic-runtime-factory');
+			const { webWorkerLogicRuntime } = await import('./runtime-web-worker-logic-factory');
 			return webWorkerLogicRuntime;
 		}
 		case 'WebWorkerMIDIRuntime': {
-			const { webWorkerMIDIRuntime } = await import('./web-worker-midi-runtime-factory');
+			const { webWorkerMIDIRuntime } = await import('./runtime-web-worker-midi-factory');
 			return webWorkerMIDIRuntime;
 		}
 		default: {
