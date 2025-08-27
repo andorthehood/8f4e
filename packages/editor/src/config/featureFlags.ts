@@ -25,10 +25,11 @@ export interface FeatureFlags {
 
 /**
  * Default feature flags configuration with all features enabled.
+ * Users can override these values when initializing the editor.
  */
 export const defaultFeatureFlags: FeatureFlags = {
 	contextMenu: true,
-	infoOverlay: import.meta.env.DEV,
+	infoOverlay: true, // Default to true, can be overridden
 	moduleDragging: true,
 	viewportDragging: true,
 	persistentStorage: true,
