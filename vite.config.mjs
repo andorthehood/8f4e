@@ -34,6 +34,7 @@ export default defineConfig({
       '@8f4e/sprite-generator': resolve(__dirname, 'packages/sprite-generator/dist'),
       '@8f4e/runtime-audio-worklet': resolve(__dirname, 'packages/runtime-audio-worklet/dist'),
       '@8f4e/runtime-web-worker-logic': resolve(__dirname, 'packages/runtime-web-worker-logic/dist'),
+      '@8f4e/runtime-main-thread-logic': resolve(__dirname, 'packages/runtime-main-thread-logic/dist'),
       '@8f4e/runtime-web-worker-midi': resolve(__dirname, 'packages/runtime-web-worker-midi/dist')
     }
   },
