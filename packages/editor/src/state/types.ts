@@ -385,7 +385,7 @@ export interface Options {
 
 	// File handling callbacks
 	loadProjectFromFile?: (file: File) => Promise<Project>;
-	saveProjectToFile?: (project: Project, filename: string) => Promise<void>;
+	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
 	importBinaryAsset?: (file: File) => Promise<{ data: string; fileName: string }>;
 }
 
