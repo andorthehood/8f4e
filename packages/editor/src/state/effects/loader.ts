@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../events';
 import { getModuleId } from '../helpers/codeParsers';
-import { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
+import { CodeBlock, CodeBlockGraphicData, Project, State, EMPTY_DEFAULT_PROJECT } from '../types';
 
 function convertGraphicDataToProjectStructure(
 	codeBlocks: CodeBlockGraphicData[],
@@ -47,37 +47,20 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		initialLoad = Promise.all([state.options.loadProjectFromStorage(), state.options.loadEditorSettingsFromStorage()])
 			.then(([localProject, editorSettings]) => {
 				state.editorSettings = editorSettings || defaultState.editorSettings;
-				loadProject({ project: localProject || state.project });
+				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
 			})
 			.catch(error => {
 				console.warn('Failed to load from storage:', error);
 				state.editorSettings = defaultState.editorSettings;
-				loadProject({ project: state.project });
+				loadProject({ project: EMPTY_DEFAULT_PROJECT });
 			});
 	} else {
 		state.editorSettings = defaultState.editorSettings;
-		initialLoad = Promise.resolve().then(() => loadProject({ project: state.project }));
+		initialLoad = Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
 	}
 
 	function loadProject({ project: newProject }: { project: Project }) {
-		state['project'] = {
-			title: '',
-			author: '',
-			description: '',
-			codeBlocks: [],
-			viewport: {
-				x: 0,
-				y: 0,
-			},
-			selectedRuntime: 0,
-			runtimeSettings: [
-				{
-					runtime: 'WebWorkerLogicRuntime',
-					sampleRate: 50,
-				},
-			],
-			binaryAssets: [],
-		};
+		state['project'] = { ...EMPTY_DEFAULT_PROJECT };
 
 		Object.keys(newProject).forEach(key => {
 			state['project'][key] = newProject[key] || defaultState.project[key];
