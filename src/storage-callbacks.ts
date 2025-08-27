@@ -114,11 +114,6 @@ export async function exportFile(data: Uint8Array | string, filename: string, mi
 	URL.revokeObjectURL(url);
 }
 
-export async function saveProjectToFile(project: Project, filename: string): Promise<void> {
-	const json = JSON.stringify(project, null, 2);
-	await exportFile(json, filename, 'application/json');
-}
-
 export async function importBinaryAsset(file: File): Promise<{ data: string; fileName: string }> {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader();
