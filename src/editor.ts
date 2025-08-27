@@ -54,7 +54,6 @@ async function init() {
 			persistentStorage: true,
 			infoOverlay: true,
 		},
-		localStorageId: 'editor',
 		getListOfModules,
 		getModule,
 		getListOfProjects,
