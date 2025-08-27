@@ -90,9 +90,17 @@ export async function loadProjectFromFile(file: File): Promise<Project> {
 	});
 }
 
-export async function saveProjectToFile(project: Project, filename: string): Promise<void> {
-	const json = JSON.stringify(project, null, 2);
-	const blob = new Blob([json], { type: 'application/json' });
+export async function exportFile(data: Uint8Array | string, filename: string, mimeType?: string): Promise<void> {
+	let blob: Blob;
+
+	if (typeof data === 'string') {
+		// Handle text data (like JSON for projects)
+		blob = new Blob([data], { type: mimeType || 'application/json' });
+	} else {
+		// Handle binary data (like WASM bytecode)
+		blob = new Blob([data], { type: mimeType || 'application/wasm' });
+	}
+
 	const url = URL.createObjectURL(blob);
 
 	const a = document.createElement('a');
