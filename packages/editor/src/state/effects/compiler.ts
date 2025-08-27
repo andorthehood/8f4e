@@ -108,6 +108,6 @@ export default async function compiler(state: State, events: EventDispatcher) {
 	events.on('createConnection', onRecompile);
 	events.on('codeBlockAdded', onRecompile);
 	events.on('deleteCodeBlock', onRecompile);
-	events.on('init', onRecompile);
+	events.on('projectLoaded', onRecompile);
 	events.on('codeChange', onRecompile);
 }
