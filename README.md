@@ -12,7 +12,7 @@ The 8f4e editor is available as a UMD bundle that can be loaded directly via scr
 <script src="https://[bucket].[region].digitaloceanspaces.com/editor/editor-bundle.js"></script>
 <script>
     // Editor8f4e is now available globally
-    Editor8f4e.default(canvas, options).then(editor => {
+    Editor8f4e(canvas, options).then(editor => {
         // Use the editor
     });
 </script>
