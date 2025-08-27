@@ -56,7 +56,11 @@ export const projectRegistry: Record<string, ProjectRegistryEntry> = {
 		loader: () => import('./projects/audioLoopback').then(m => m.default),
 	},
 	simpleCounterMainThread: {
-		metadata: { slug: 'simpleCounterMainThread', title: 'Simple Counter (Main Thread)', description: 'Demonstrates the MainThreadLogicRuntime' },
+		metadata: {
+			slug: 'simpleCounterMainThread',
+			title: 'Simple Counter (Main Thread)',
+			description: 'Demonstrates the MainThreadLogicRuntime',
+		},
 		loader: () => import('./projects/simpleCounterMainThread').then(m => m.default),
 	},
 };
