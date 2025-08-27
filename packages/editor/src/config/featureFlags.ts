@@ -36,7 +36,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	moduleDragging: true,
 	viewportDragging: true,
 	persistentStorage: true,
-	editing: true, // Default to true for backward compatibility
+	editing: true,
 };
 
 /**
