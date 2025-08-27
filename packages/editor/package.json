@@ -15,6 +15,7 @@
 	"sideEffects": false,
 	"scripts": {
 		"build": "tsc",
+		"bundle": "vite build -c vite.config.bundle.ts",
 		"dev": "tsc --watch",
 		"test": "jest",
 		"typecheck": "tsc --noEmit"

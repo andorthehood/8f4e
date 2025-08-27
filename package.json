@@ -5,6 +5,10 @@
   "scripts": {
     "build": "npx nx run-many --target=build --all && vite build",
     "build:affected": "npx nx affected --target=build --base=main",
+    "bundle": "npx nx run-many --target=bundle --projects=@8f4e/editor,@8f4e/compiler-worker,@8f4e/runtime-web-worker-logic",
+    "bundle:editor": "npx nx run @8f4e/editor:bundle",
+    "bundle:compiler-worker": "npx nx run @8f4e/compiler-worker:bundle", 
+    "bundle:logic-runtime": "npx nx run @8f4e/runtime-web-worker-logic:bundle",
     "dev": "concurrently \"npx nx run editor:build --watch\" \"vite\"",
     "lint": "npx eslint . --ext .ts --fix",
     "test": "npx nx run-many --target=test --all",

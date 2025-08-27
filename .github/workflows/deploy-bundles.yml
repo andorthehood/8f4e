@@ -1,0 +1,177 @@
+name: Deploy Bundles to DigitalOcean Spaces
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/editor/**'
+      - 'packages/compiler-worker/**'
+      - 'packages/runtime-web-worker-logic/**'
+      - '.github/workflows/deploy-bundles.yml'
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deploy all bundles'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build all packages
+      run: npm run build
+      
+    - name: Build UMD bundles
+      run: npm run bundle
+      
+    - name: Configure AWS CLI for DigitalOcean Spaces
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.DO_SPACES_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.DO_SPACES_SECRET_KEY }}
+        aws-region: us-east-1 # DigitalOcean Spaces region
+        
+    - name: Deploy bundles to DigitalOcean Spaces
+      env:
+        DO_SPACES_BUCKET: ${{ secrets.DO_SPACES_BUCKET }}
+        DO_SPACES_ENDPOINT: ${{ secrets.DO_SPACES_ENDPOINT }}
+      run: |
+        # Deploy editor bundle
+        aws s3 cp packages/editor/dist/bundle/8f4e-editor.js \
+          s3://$DO_SPACES_BUCKET/bundles/8f4e-editor.js \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=3600" \
+          --content-type "application/javascript"
+          
+        aws s3 cp packages/editor/dist/bundle/8f4e-editor.js.map \
+          s3://$DO_SPACES_BUCKET/bundles/8f4e-editor.js.map \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=3600" \
+          --content-type "application/json"
+        
+        # Deploy compiler worker bundle
+        aws s3 cp packages/compiler-worker/dist/bundle/8f4e-compiler-worker.js \
+          s3://$DO_SPACES_BUCKET/bundles/8f4e-compiler-worker.js \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=3600" \
+          --content-type "application/javascript"
+          
+        aws s3 cp packages/compiler-worker/dist/bundle/8f4e-compiler-worker.js.map \
+          s3://$DO_SPACES_BUCKET/bundles/8f4e-compiler-worker.js.map \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=3600" \
+          --content-type "application/json"
+        
+        # Deploy logic runtime bundle
+        aws s3 cp packages/runtime-web-worker-logic/dist/bundle/8f4e-logic-runtime.js \
+          s3://$DO_SPACES_BUCKET/bundles/8f4e-logic-runtime.js \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=3600" \
+          --content-type "application/javascript"
+          
+        aws s3 cp packages/runtime-web-worker-logic/dist/bundle/8f4e-logic-runtime.js.map \
+          s3://$DO_SPACES_BUCKET/bundles/8f4e-logic-runtime.js.map \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=3600" \
+          --content-type "application/json"
+        
+    - name: Deploy versioned bundles
+      env:
+        DO_SPACES_BUCKET: ${{ secrets.DO_SPACES_BUCKET }}
+        DO_SPACES_ENDPOINT: ${{ secrets.DO_SPACES_ENDPOINT }}
+        VERSION: ${{ github.sha }}
+      run: |
+        # Create versioned copies for cache busting
+        aws s3 cp packages/editor/dist/bundle/8f4e-editor.js \
+          s3://$DO_SPACES_BUCKET/bundles/v/$VERSION/8f4e-editor.js \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=31536000" \
+          --content-type "application/javascript"
+          
+        aws s3 cp packages/compiler-worker/dist/bundle/8f4e-compiler-worker.js \
+          s3://$DO_SPACES_BUCKET/bundles/v/$VERSION/8f4e-compiler-worker.js \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=31536000" \
+          --content-type "application/javascript"
+          
+        aws s3 cp packages/runtime-web-worker-logic/dist/bundle/8f4e-logic-runtime.js \
+          s3://$DO_SPACES_BUCKET/bundles/v/$VERSION/8f4e-logic-runtime.js \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=31536000" \
+          --content-type "application/javascript"
+          
+    - name: Update bundle manifest
+      env:
+        DO_SPACES_BUCKET: ${{ secrets.DO_SPACES_BUCKET }}
+        DO_SPACES_ENDPOINT: ${{ secrets.DO_SPACES_ENDPOINT }}
+        VERSION: ${{ github.sha }}
+      run: |
+        # Create a manifest file with version information
+        cat > bundle-manifest.json << EOF
+        {
+          "version": "$VERSION",
+          "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+          "bundles": {
+            "editor": {
+              "url": "https://${{ secrets.DO_SPACES_CDN_DOMAIN }}/bundles/8f4e-editor.js",
+              "versionedUrl": "https://${{ secrets.DO_SPACES_CDN_DOMAIN }}/bundles/v/$VERSION/8f4e-editor.js",
+              "size": "$(stat -c%s packages/editor/dist/bundle/8f4e-editor.js)"
+            },
+            "compilerWorker": {
+              "url": "https://${{ secrets.DO_SPACES_CDN_DOMAIN }}/bundles/8f4e-compiler-worker.js",
+              "versionedUrl": "https://${{ secrets.DO_SPACES_CDN_DOMAIN }}/bundles/v/$VERSION/8f4e-compiler-worker.js",
+              "size": "$(stat -c%s packages/compiler-worker/dist/bundle/8f4e-compiler-worker.js)"
+            },
+            "logicRuntime": {
+              "url": "https://${{ secrets.DO_SPACES_CDN_DOMAIN }}/bundles/8f4e-logic-runtime.js",
+              "versionedUrl": "https://${{ secrets.DO_SPACES_CDN_DOMAIN }}/bundles/v/$VERSION/8f4e-logic-runtime.js",
+              "size": "$(stat -c%s packages/runtime-web-worker-logic/dist/bundle/8f4e-logic-runtime.js)"
+            }
+          }
+        }
+        EOF
+        
+        aws s3 cp bundle-manifest.json \
+          s3://$DO_SPACES_BUCKET/bundles/manifest.json \
+          --endpoint-url $DO_SPACES_ENDPOINT \
+          --acl public-read \
+          --cache-control "public, max-age=300" \
+          --content-type "application/json"
+          
+    - name: Display deployment URLs
+      env:
+        CDN_DOMAIN: ${{ secrets.DO_SPACES_CDN_DOMAIN }}
+      run: |
+        echo "🚀 Bundles deployed successfully!"
+        echo ""
+        echo "📦 Bundle URLs:"
+        echo "Editor: https://$CDN_DOMAIN/bundles/8f4e-editor.js"
+        echo "Compiler Worker: https://$CDN_DOMAIN/bundles/8f4e-compiler-worker.js"
+        echo "Logic Runtime: https://$CDN_DOMAIN/bundles/8f4e-logic-runtime.js"
+        echo ""
+        echo "📋 Manifest: https://$CDN_DOMAIN/bundles/manifest.json"
+        echo "🔄 Version: ${{ github.sha }}"
