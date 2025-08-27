@@ -1,28 +1,26 @@
-# TODO: Deploy Single-File Bundles to DigitalOcean Spaces
+# TODO: Deploy Editor Bundle to DigitalOcean Spaces
 
-**Priority**: ��
-**Estimated Effort**: 8-12 hours
-**Created**: 2024-12-19
+**Priority**: 🟡
+**Estimated Effort**: 4-6 hours
+**Created**: 2025-08-27
 **Status**: Open
 **Completed**: 
 
 ## Problem Description
 
-Currently, the 8f4e workspace packages are built using TypeScript compilation (`tsc`) which creates multiple files in `dist/` directories. This makes it difficult to use these packages on external websites via script tags, as users would need to:
+Currently, the 8f4e editor package is built using TypeScript compilation (`tsc`) which creates multiple files in `dist/` directories. This makes it difficult to use the editor on external websites via script tags, as users would need to:
 - Load multiple JavaScript files
 - Handle module resolution and dependencies
 - Deal with import/export compatibility issues
 
-The goal is to create single-file bundles (UMD format) that can be loaded directly via script tags on any external website, enabling easy integration of the 8f4e editor, compiler worker, and web worker logic runtime.
+The goal is to create a single-file bundle (UMD format) that can be loaded directly via script tags on any external website, enabling easy integration of the 8f4e editor.
 
 ## Proposed Solution
 
-Create optimized single-file bundles using Vite for three key packages:
-1. **@8f4e/editor** - Main editor interface with all dependencies bundled
-2. **@8f4e/compiler-worker** - Compiler worker for WASM compilation
-3. **@8f4e/runtime-web-worker-logic** - Web worker logic runtime
+Create an optimized single-file bundle using Vite for the editor package:
+- **@8f4e/editor** - Main editor interface with all dependencies bundled
 
-These bundles will be:
+This bundle will be:
 - UMD format for universal compatibility
 - Self-contained with all dependencies
 - Optimized and minified
@@ -31,28 +29,28 @@ These bundles will be:
 
 ## Implementation Plan
 
-### Step 1: Configure Vite for Each Package
-- Create `vite.config.ts` for each target package
+### Step 1: Configure Vite for Editor Package
+- Create `vite.config.ts` for the editor package
 - Configure UMD library builds with proper entry points
 - Set up dependency bundling and tree-shaking
 - Ensure ES2020 target compatibility
-- **Expected outcome**: Each package can build a single UMD bundle
-- **Dependencies**: Vite must be available in each package
+- **Expected outcome**: Editor package can build a single UMD bundle
+- **Dependencies**: Vite must be available in the editor package
 
-### Step 2: Update Package Configurations
-- Add `bundle` scripts to each package's `package.json`
-- Update `project.json` files to include bundle targets
-- Configure Nx to recognize bundle targets
-- Add bundle commands to root `package.json`
-- **Expected outcome**: `npm run bundle:editor` works and creates optimized bundles
+### Step 2: Update Editor Package Configuration
+- Add `bundle` scripts to the editor package's `package.json`
+- Update `project.json` file to include bundle target
+- Configure Nx to recognize bundle target
+- Add bundle command to root `package.json`
+- **Expected outcome**: `npm run bundle:editor` works and creates optimized bundle
 - **Dependencies**: Step 1 completion
 
 ### Step 3: Test Bundle Generation Locally
-- Run bundle commands for each package
-- Verify UMD output files are generated correctly
+- Run bundle command for the editor package
+- Verify UMD output file is generated correctly
 - Test bundle loading in a simple HTML page
-- Validate that all functionality works as expected
-- **Expected outcome**: Bundles load and function correctly in browser
+- Validate that all editor functionality works as expected
+- **Expected outcome**: Bundle loads and functions correctly in browser
 - **Dependencies**: Steps 1-2 completion
 
 ### Step 4: Set Up DigitalOcean Spaces
@@ -64,7 +62,7 @@ These bundles will be:
 - **Dependencies**: DigitalOcean account access
 
 ### Step 5: Create GitHub Actions Workflow
-- Create `.github/workflows/deploy-bundles.yml`
+- Create `.github/workflows/deploy-editor-bundle.yml`
 - Configure DigitalOcean Spaces authentication
 - Set up bundle building and deployment pipeline
 - Add environment variables and secrets
@@ -73,14 +71,14 @@ These bundles will be:
 
 ### Step 6: Test Deployment Pipeline
 - Push changes to trigger deployment
-- Verify bundles are uploaded to DigitalOcean Spaces
-- Test bundle loading from deployed URLs
+- Verify bundle is uploaded to DigitalOcean Spaces
+- Test bundle loading from deployed URL
 - Validate CDN delivery and performance
-- **Expected outcome**: Bundles are accessible via public URLs
+- **Expected outcome**: Bundle is accessible via public URL
 - **Dependencies**: Step 5 completion
 
 ### Step 7: Create Usage Documentation
-- Document bundle URLs and loading instructions
+- Document bundle URL and loading instructions
 - Provide integration examples for external websites
 - Create troubleshooting guide
 - Update README with deployment information
@@ -89,35 +87,33 @@ These bundles will be:
 
 ## Success Criteria
 
-- [ ] All three packages generate valid UMD bundles
-- [ ] Bundles are automatically deployed to DigitalOcean Spaces
-- [ ] Bundles load correctly via script tags on external websites
+- [ ] Editor package generates valid UMD bundle
+- [ ] Bundle is automatically deployed to DigitalOcean Spaces
+- [ ] Bundle loads correctly via script tags on external websites
 - [ ] Editor functionality works as expected from bundled code
 - [ ] Deployment pipeline runs successfully on every push
-- [ ] Bundle URLs are publicly accessible and performant
+- [ ] Bundle URL is publicly accessible and performant
 
 ## Affected Components
 
 - `packages/editor/` - Add Vite config, bundle target, and scripts
-- `packages/compiler-worker/` - Add Vite config, bundle target, and scripts  
-- `packages/runtime-web-worker-logic/` - Add Vite config, bundle target, and scripts
-- `packages/*/package.json` - Add bundle scripts to each package
-- `packages/*/project.json` - Add bundle targets to Nx configuration
-- `package.json` - Add root-level bundle commands
+- `packages/editor/package.json` - Add bundle scripts
+- `packages/editor/project.json` - Add bundle target to Nx configuration
+- `package.json` - Add root-level bundle command
 - `.github/workflows/` - New deployment workflow file
 - `docs/` - Update with deployment and usage instructions
 
 ## Risks & Considerations
 
-- **Bundle Size**: Large bundles may impact initial page load times
-  - *Mitigation*: Implement code splitting if bundles exceed 1MB
+- **Bundle Size**: Large bundle may impact initial page load times
+  - *Mitigation*: Implement code splitting if bundle exceeds 1MB
 - **Dependency Conflicts**: External websites may have conflicting dependencies
   - *Mitigation*: Use UMD format and scope all dependencies internally
 - **Breaking Changes**: Bundle updates may break external integrations
   - *Mitigation*: Implement versioning strategy and backward compatibility
 - **CORS Issues**: Some browsers may block cross-origin script loading
   - *Mitigation*: Configure proper CORS headers in DigitalOcean Spaces
-- **Dependencies**: Requires Vite to be available in each package
+- **Dependencies**: Requires Vite to be available in the editor package
 - **Breaking Changes**: None - this is additive functionality
 
 ## Related Items
@@ -138,8 +134,7 @@ These bundles will be:
 ## Notes
 
 ### Bundle Strategy Details
-- **Editor Package**: Most complex, bundles all internal dependencies
-- **Worker Packages**: Simpler, focus on WASM and runtime functionality
+- **Editor Package**: Bundles all internal dependencies and UI components
 - **UMD Format**: Ensures compatibility with AMD, CommonJS, and global variables
 
 ### DigitalOcean Spaces Benefits
@@ -151,11 +146,10 @@ These bundles will be:
 ### Deployment Strategy
 - Automatic deployment on push to main branch
 - Manual deployment option for specific packages
-- Affected packages only deployment for efficiency
 - Version control through bundle file names
 
 ### Performance Considerations
-- Bundles will be minified and optimized
+- Bundle will be minified and optimized
 - Tree-shaking removes unused code
 - CDN delivery ensures fast global access
 - Bundle size monitoring recommended
