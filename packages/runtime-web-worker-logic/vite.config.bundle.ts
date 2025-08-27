@@ -27,6 +27,6 @@ export default defineConfig({
 		// ES2020 target for broad compatibility
 		target: 'es2020',
 		sourcemap: true,
-		minify: true,
+		minify: false,
 	},
 });

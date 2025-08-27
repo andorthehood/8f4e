@@ -1,59 +1,37 @@
-// Bundle entry point for compiler worker - provides factory functions for external use
+// Bundle entry point for compiler worker - makes worker code available
+// Import the worker implementation to ensure it's included in the bundle
 import { CompileOptions, Module } from '@8f4e/compiler';
 
-// Re-export the testBuild function for direct use
-export { default as testBuild } from './testBuild';
+import testBuild from './testBuild';
 
-/**
- * Creates a new compiler worker from the bundled code
- * This can be used in external websites to create worker instances
- */
-export function createCompilerWorker(): Worker {
-	// Create a blob URL from the current script for worker instantiation
-	const workerCode = `
-    // Import the bundled compiler worker code
-    importScripts('${getScriptURL()}');
-  `;
-
-	const blob = new Blob([workerCode], { type: 'application/javascript' });
-	const workerURL = URL.createObjectURL(blob);
-	return new Worker(workerURL);
-}
-
-/**
- * Get the URL of the current script (this bundle)
- */
-function getScriptURL(): string {
-	const scripts = document.getElementsByTagName('script');
-	for (let i = scripts.length - 1; i >= 0; i--) {
-		const src = scripts[i].src;
-		if (src && src.includes('8f4e-compiler-worker')) {
-			return src;
-		}
+// Make sure the imports are not tree-shaken by using them
+async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
+	try {
+		const { codeBuffer, compiledModules, allocatedMemorySize } = await testBuild(memoryRef, modules, compilerOptions);
+		self.postMessage({
+			type: 'buildOk',
+			payload: {
+				codeBuffer,
+				compiledModules,
+				allocatedMemorySize,
+			},
+		});
+	} catch (error) {
+		console.log('testBuildError', error);
+		self.postMessage({
+			type: 'buildError',
+			payload: error,
+		});
 	}
-	// Fallback - might need to be set manually
-	return './8f4e-compiler-worker.js';
 }
 
-/**
- * Direct compilation interface for use in main thread
- * Note: This bypasses the worker and runs in main thread
- */
-export async function compileModules(
-	memoryRef: WebAssembly.Memory,
-	modules: Module[],
-	compilerOptions: CompileOptions
-) {
-	const testBuild = await import('./testBuild');
-	return testBuild.default(memoryRef, modules, compilerOptions);
-}
-
-// Default export provides the main factory function
-export default {
-	createCompilerWorker,
-	compileModules,
-	testBuild: async (memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) => {
-		const testBuild = await import('./testBuild');
-		return testBuild.default(memoryRef, modules, compilerOptions);
-	},
+self.onmessage = function (event) {
+	switch (event.data.type) {
+		case 'recompile':
+			recompile(event.data.payload.memoryRef, event.data.payload.modules, event.data.payload.compilerOptions);
+			break;
+	}
 };
+
+// Ensure this module is not tree-shaken away
+console.log('8f4e compiler worker loaded');
