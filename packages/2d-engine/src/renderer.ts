@@ -8,8 +8,8 @@ import createShader from './utils/createShader';
 import createTexture from './utils/createTexture';
 import spriteFragmentShader from './shaders/spriteFragmentShader';
 import spriteVertexShader from './shaders/spriteVertexShader';
-import postProcessVertexShader from './shaders/postProcessVertexShader';
-import scanlineFragmentShader from './shaders/scanlineFragmentShader';
+import { PostProcessManager } from './postProcess/PostProcessManager';
+import { PostProcessEffect } from './types/postProcess';
 
 /**
  * Low-level WebGL renderer - handles buffers, shaders, and GPU operations
@@ -31,13 +31,7 @@ export class Renderer {
 	isPerformanceMeasurementMode: boolean;
 
 	// Post-processing
-	postProcessProgram: WebGLProgram;
-	postProcessPositionBuffer: WebGLBuffer;
-	postProcessTimeLocation: WebGLUniformLocation | null;
-	postProcessResolutionLocation: WebGLUniformLocation | null;
-	postProcessShakeIntensityLocation: WebGLUniformLocation | null;
-	postProcessDistortionIntensityLocation: WebGLUniformLocation | null;
-	postProcessTextureLocation: WebGLUniformLocation | null;
+	postProcessManager: PostProcessManager;
 
 	// Render-to-texture
 	renderFramebuffer: WebGLFramebuffer;
@@ -59,45 +53,17 @@ export class Renderer {
 			createShader(this.gl, spriteVertexShader, this.gl.VERTEX_SHADER),
 		]);
 
-		// Compile and link post-process shader program
-		this.postProcessProgram = createProgram(this.gl, [
-			createShader(this.gl, scanlineFragmentShader, this.gl.FRAGMENT_SHADER),
-			createShader(this.gl, postProcessVertexShader, this.gl.VERTEX_SHADER),
-		]);
-
 		// Get shader variable locations (returns -1 if not found)
 		const a_position = this.gl.getAttribLocation(this.program, 'a_position'); // vertex position attribute
 		const a_texcoord = this.gl.getAttribLocation(this.program, 'a_texcoord'); // texture coordinate attribute
 		this.timeLocation = this.gl.getUniformLocation(this.program, 'u_time'); // time uniform for animations
 
-		// Get post-process shader variable locations
-		this.postProcessTimeLocation = this.gl.getUniformLocation(this.postProcessProgram, 'u_time');
-		this.postProcessResolutionLocation = this.gl.getUniformLocation(this.postProcessProgram, 'u_resolution');
-		this.postProcessShakeIntensityLocation = this.gl.getUniformLocation(this.postProcessProgram, 'u_shakeIntensity');
-		this.postProcessDistortionIntensityLocation = this.gl.getUniformLocation(
-			this.postProcessProgram,
-			'u_distortionIntensity'
-		);
-		this.postProcessTextureLocation = this.gl.getUniformLocation(this.postProcessProgram, 'u_renderTexture');
+		// Initialize post-processing system
+		this.postProcessManager = new PostProcessManager(this.gl, 256);
 
 		// Create GPU buffers (returns WebGLBuffer objects, data uploaded later)
 		this.glTextureCoordinateBuffer = this.gl.createBuffer(); // UV coordinates buffer
 		this.glPositionBuffer = this.gl.createBuffer(); // vertex positions buffer
-
-		// Create post-process quad buffer (full-screen quad: -1,-1 to 1,1)
-		this.postProcessPositionBuffer = this.gl.createBuffer();
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.postProcessPositionBuffer);
-		const quadVertices = new Float32Array([
-			-1,
-			-1, // bottom-left
-			1,
-			-1, // bottom-right
-			-1,
-			1, // top-left
-			1,
-			1, // top-right
-		]);
-		this.gl.bufferData(this.gl.ARRAY_BUFFER, quadVertices, this.gl.STATIC_DRAW);
 
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height); // defines rendering area
 		this.gl.clearColor(0, 0, 0, 1.0); // set clear color to black (RGBA)
@@ -287,7 +253,7 @@ export class Renderer {
 	/**
 	 * Render sprites to texture, then apply post-processing to canvas
 	 */
-	renderWithPostProcessing(elapsedTime: number, shakeIntensity: number = 0.0, distortionIntensity: number = 0.2): void {
+	renderWithPostProcessing(elapsedTime: number): void {
 		// Phase 1: Render sprites to off-screen texture
 		this.startRenderToTexture();
 		this.renderVertexBuffer();
@@ -300,7 +266,7 @@ export class Renderer {
 		this.gl.bindTexture(this.gl.TEXTURE_2D, null);
 
 		// Phase 2: Render textured quad to canvas with post-effects
-		this.renderPostProcess(elapsedTime, shakeIntensity, distortionIntensity);
+		this.renderPostProcess(elapsedTime);
 	}
 
 	/**
@@ -418,52 +384,20 @@ export class Renderer {
 	}
 
 	/**
-	 * Render post-process effects over the entire screen
+	 * Render post-process effects using the new effect system
 	 */
-	renderPostProcess(elapsedTime: number, shakeIntensity: number = 0.0, distortionIntensity: number = 0.2): void {
+	renderPostProcess(elapsedTime: number): void {
 		// Make sure we're rendering to canvas, not framebuffer
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
 
 		// Clear canvas for post-processing
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-		// Switch to post-process shader program
-		this.gl.useProgram(this.postProcessProgram);
-
-		// Bind render texture
-		this.gl.activeTexture(this.gl.TEXTURE0);
-		this.gl.bindTexture(this.gl.TEXTURE_2D, this.renderTexture);
-
-		// Set uniforms
-		if (this.postProcessTimeLocation) {
-			this.gl.uniform1f(this.postProcessTimeLocation, elapsedTime);
-		}
-		if (this.postProcessResolutionLocation) {
-			this.gl.uniform2f(this.postProcessResolutionLocation, this.gl.canvas.width, this.gl.canvas.height);
-		}
-		if (this.postProcessShakeIntensityLocation) {
-			this.gl.uniform1f(this.postProcessShakeIntensityLocation, shakeIntensity);
-		}
-		if (this.postProcessDistortionIntensityLocation) {
-			this.gl.uniform1f(this.postProcessDistortionIntensityLocation, distortionIntensity);
-		}
-		if (this.postProcessTextureLocation) {
-			this.gl.uniform1i(this.postProcessTextureLocation, 0); // Use texture unit 0
-		}
-
-		// Get position attribute location for post-process shader
-		const a_position = this.gl.getAttribLocation(this.postProcessProgram, 'a_position');
-
-		// Bind full-screen quad and configure vertex attributes
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.postProcessPositionBuffer);
-		this.gl.vertexAttribPointer(a_position, 2, this.gl.FLOAT, false, 0, 0);
-		this.gl.enableVertexAttribArray(a_position);
-
 		// Disable blending for direct texture rendering
 		this.gl.disable(this.gl.BLEND);
 
-		// Render full-screen quad as triangle strip
-		this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+		// Use post-process manager to render all effects
+		this.postProcessManager.render(this.renderTexture, elapsedTime, this.gl.canvas.width, this.gl.canvas.height);
 
 		// Re-enable blending for next frame
 		this.gl.enable(this.gl.BLEND);
@@ -483,5 +417,40 @@ export class Renderer {
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glTextureCoordinateBuffer);
 		this.gl.vertexAttribPointer(main_a_texcoord, 2, this.gl.FLOAT, false, 0, 0);
 		this.gl.enableVertexAttribArray(main_a_texcoord);
+	}
+
+	/**
+	 * Add a post-process effect to the rendering pipeline
+	 */
+	addPostProcessEffect(effect: PostProcessEffect): void {
+		this.postProcessManager.addEffect(effect);
+	}
+
+	/**
+	 * Remove a post-process effect from the pipeline
+	 */
+	removePostProcessEffect(name: string): void {
+		this.postProcessManager.removeEffect(name);
+	}
+
+	/**
+	 * Update uniform values in the post-process buffer
+	 */
+	updatePostProcessUniforms(uniforms: Record<string, number | number[]>): void {
+		this.postProcessManager.updateUniforms(uniforms);
+	}
+
+	/**
+	 * Enable or disable a post-process effect
+	 */
+	setPostProcessEffectEnabled(name: string, enabled: boolean): void {
+		this.postProcessManager.setEffectEnabled(name, enabled);
+	}
+
+	/**
+	 * Get direct access to the post-process uniform buffer
+	 */
+	getPostProcessBuffer(): Float32Array {
+		return this.postProcessManager.getBuffer();
 	}
 }
