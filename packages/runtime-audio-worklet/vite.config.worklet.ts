@@ -19,6 +19,6 @@ export default defineConfig({
 			external: [], // inline your own deps
 		},
 		sourcemap: true,
-		minify: false, // easier to debug
+		minify: true,
 	},
 });

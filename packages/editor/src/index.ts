@@ -1,6 +1,6 @@
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
-import { Options, Project } from './state/types';
+import { Options, EMPTY_DEFAULT_PROJECT } from './state/types';
 import initView from './view';
 import initState from './state';
 
@@ -10,10 +10,10 @@ export type { RuntimeFactory, RuntimeType } from './state/effects/runtime';
 export type { EventDispatcher } from './events';
 export type { FeatureFlags, FeatureFlagsConfig } from './config/featureFlags';
 
-export default async function init(canvas: HTMLCanvasElement, project: Project, options: Options) {
+export default async function init(canvas: HTMLCanvasElement, options: Options) {
 	const events = initEvents();
 	humanInterface(canvas, events);
-	const state = initState(events, project, options);
+	const state = initState(events, EMPTY_DEFAULT_PROJECT, options);
 	const view = await initView(state, canvas);
 
 	events.on('setColorScheme', () => {

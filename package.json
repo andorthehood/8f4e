@@ -5,6 +5,7 @@
   "scripts": {
     "build": "npx nx run-many --target=build --all && vite build",
     "build:affected": "npx nx affected --target=build --base=main",
+    "bundle:editor": "npx nx run editor:bundle",
     "dev": "concurrently \"npx nx run editor:build --watch\" \"vite\"",
     "lint": "npx eslint . --ext .ts --fix",
     "test": "npx nx run-many --target=test --all",
