@@ -15,6 +15,7 @@
 	"sideEffects": false,
 	"scripts": {
 		"build": "tsc",
+		"bundle": "vite build",
 		"dev": "tsc --watch",
 		"test": "jest",
 		"typecheck": "tsc --noEmit"
@@ -32,12 +33,9 @@
 	"dependencies": {
 		"@8f4e/2d-engine": "*",
 		"@8f4e/compiler": "*",
-		"@8f4e/sprite-generator": "*",
-		"@8f4e/compiler-worker": "*",
-		"@8f4e/web-worker-midi-runtime": "*",
-		"@8f4e/audio-worklet-runtime": "*",
-		"@8f4e/web-worker-logic-runtime": "*",
-		"buffer": "5.7.1"
+		"@8f4e/sprite-generator": "*"
 	},
-	"devDependencies": {}
+	"devDependencies": {
+		"vite": "^7.1.3"
+	}
 }
