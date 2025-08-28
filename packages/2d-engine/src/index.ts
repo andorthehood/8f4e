@@ -59,6 +59,8 @@ export class Engine {
 	private cacheHeight: number;
 	private originalViewport: [number, number, number, number] | null;
 	private originalFramebuffer: WebGLFramebuffer | null;
+	private originalOffsetX: number;
+	private originalOffsetY: number;
 
 	/**
 	 * If enabled, it makes the render function block the main thread until the GPU finishes rendering.
@@ -124,6 +126,8 @@ export class Engine {
 		this.cacheHeight = 0;
 		this.originalViewport = null;
 		this.originalFramebuffer = null;
+		this.originalOffsetX = 0;
+		this.originalOffsetY = 0;
 	}
 
 	startGroup(x: number, y: number): void {
@@ -158,6 +162,10 @@ export class Engine {
 		this.currentCacheCanvasX = x;
 		this.currentCacheCanvasY = y;
 
+		// Store original offset (before any modifications)
+		this.originalOffsetX = this.offsetX;
+		this.originalOffsetY = this.offsetY;
+
 		// Check if texture already exists in cache
 		if (this.textureCache.has(cacheId)) {
 			// Cache exists, no need to create new framebuffer
@@ -167,6 +175,10 @@ export class Engine {
 		// Create new cache - set up WebGL framebuffer
 		this.cacheWidth = width;
 		this.cacheHeight = height;
+
+		// Set offset to 0 for framebuffer rendering (start from top-left corner)
+		this.offsetX = 0;
+		this.offsetY = 0;
 
 		// Store original WebGL state
 		this.originalViewport = [
@@ -216,23 +228,29 @@ export class Engine {
 			throw new Error('Not in cache block. Call startTextureCacheBlock() first.');
 		}
 
-		// Implement offset behavior exactly like endGroup
-		const coordinates = this.offsetGroups.pop();
-		if (!coordinates) {
-			throw new Error('No group to end');
-		}
-		const [x, y] = coordinates;
-		this.offsetX -= x;
-		this.offsetY -= y;
-
 		const cacheId = this.currentCacheId!;
 
 		// Check if cache already exists
 		if (this.textureCache.has(cacheId)) {
 			// Cache exists - ignore all drawing operations and just draw cached texture
-			// No need to restore framebuffer context since we never created one
+			// Restore original offset first
+			this.offsetX = this.originalOffsetX;
+			this.offsetY = this.originalOffsetY;
+			
+			// Implement offset behavior exactly like endGroup
+			const coordinates = this.offsetGroups.pop();
+			if (!coordinates) {
+				throw new Error('No group to end');
+			}
+			const [x, y] = coordinates;
+			this.offsetX -= x;
+			this.offsetY -= y;
+			
 			this.isInCacheBlock = false;
 			this.currentCacheId = null;
+			
+			// Ensure any pending operations are rendered to main framebuffer before drawing cached texture
+			this.renderVertexBuffer();
 			
 			// Now safely draw the cached texture at current offset position
 			this.drawCachedTextureAt(cacheId, this.offsetX + this.currentCacheCanvasX, this.offsetY + this.currentCacheCanvasY);
@@ -256,6 +274,22 @@ export class Engine {
 
 		// Restore original WebGL state before drawing cached texture
 		this.restoreOriginalFramebufferContext();
+		
+		// Restore original offset
+		this.offsetX = this.originalOffsetX;
+		this.offsetY = this.originalOffsetY;
+
+		// Implement offset behavior exactly like endGroup
+		const coordinates = this.offsetGroups.pop();
+		if (!coordinates) {
+			throw new Error('No group to end');
+		}
+		const [x, y] = coordinates;
+		this.offsetX -= x;
+		this.offsetY -= y;
+
+		// Ensure any pending operations are rendered to main framebuffer before drawing cached texture
+		this.renderVertexBuffer();
 
 		// Draw the cached texture at current offset position
 		this.drawCachedTextureAt(cacheId, this.offsetX + this.currentCacheCanvasX, this.offsetY + this.currentCacheCanvasY);
@@ -501,9 +535,6 @@ export class Engine {
 		if (!cachedTexture) {
 			throw new Error(`Cached texture not found: ${cacheId}`);
 		}
-
-		// Ensure we've rendered any pending operations with the current texture first
-		this.renderVertexBuffer();
 
 		// Store current texture state
 		const originalTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
