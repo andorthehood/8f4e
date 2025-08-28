@@ -2,6 +2,7 @@ export default {
     testEnvironment: 'node',
     roots: ['<rootDir>/src', '<rootDir>/tests'],
     testMatch: ['**/__tests__/**/*.+(ts|tsx|js)', '**/*.(test|spec).+(ts|tsx|js)'],
+    testPathIgnorePatterns: ['/visual/'],  // Visual tests run separately
     transform: {
         "^.+\\.(t|j)sx?$": ["@swc/jest", {
             jsc: {
