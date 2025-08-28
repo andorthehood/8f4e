@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Offset Fix</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        canvas { border: 1px solid #000; display: block; margin: 20px 0; }
+        .info { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Texture Cache Offset Fix Test</h1>
+    <div class="info">
+        <p>This test verifies that the texture caching system correctly handles offsets:</p>
+        <ul>
+            <li>Red rectangle should appear at exactly the same position whether cached or not</li>
+            <li>No WebGL feedback loop errors should appear in console</li>
+            <li>Framebuffer rendering should start from (0,0) and apply offset only when drawing cached texture</li>
+        </ul>
+    </div>
+    
+    <canvas id="canvas" width="800" height="600"></canvas>
+    
+    <div class="info">
+        <button onclick="runTest()">Run Test</button>
+        <button onclick="clearCache()">Clear Cache</button>
+        <div id="status"></div>
+    </div>
+
+    <script type="module">
+        import { Engine } from '/packages/2d-engine/dist/index.js';
+        
+        let engine;
+        let testCounter = 0;
+        
+        async function initEngine() {
+            const canvas = document.getElementById('canvas');
+            engine = new Engine(canvas);
+            
+            // Create a simple sprite texture for testing
+            const spriteData = new Uint8Array(4 * 4 * 4); // 4x4 RGBA
+            for (let i = 0; i < spriteData.length; i += 4) {
+                spriteData[i] = 255;     // Red
+                spriteData[i + 1] = 0;   // Green  
+                spriteData[i + 2] = 0;   // Blue
+                spriteData[i + 3] = 255; // Alpha
+            }
+            
+            const texture = engine.gl.createTexture();
+            engine.gl.bindTexture(engine.gl.TEXTURE_2D, texture);
+            engine.gl.texImage2D(engine.gl.TEXTURE_2D, 0, engine.gl.RGBA, 4, 4, 0, engine.gl.RGBA, engine.gl.UNSIGNED_BYTE, spriteData);
+            engine.gl.texParameteri(engine.gl.TEXTURE_2D, engine.gl.TEXTURE_MIN_FILTER, engine.gl.NEAREST);
+            engine.gl.texParameteri(engine.gl.TEXTURE_2D, engine.gl.TEXTURE_MAG_FILTER, engine.gl.NEAREST);
+            
+            // Set up a basic sprite lookup
+            engine.setSpriteLookup({
+                'red_square': { x: 0, y: 0, width: 4, height: 4 }
+            });
+            
+            engine.resize(800, 600);
+            engine.setUniform('u_resolution', 800, 600);
+        }
+        
+        window.runTest = function() {
+            const status = document.getElementById('status');
+            status.innerHTML = 'Running test...';
+            
+            try {
+                // Clear the canvas
+                engine.gl.clear(engine.gl.COLOR_BUFFER_BIT);
+                
+                // Test coordinates - offset the drawing by 100, 100
+                const offsetX = 100;
+                const offsetY = 100;
+                const cacheId = `test_cache_${testCounter++}`;
+                
+                console.log(`Running test with cache ID: ${cacheId}`);
+                console.log(`Offset: (${offsetX}, ${offsetY})`);
+                
+                // Use texture caching with offset
+                engine.startTextureCacheBlock(cacheId, 200, 200, offsetX, offsetY);
+                
+                // Draw a red rectangle inside the cache block
+                // This should be rendered to framebuffer starting from (0,0)
+                engine.drawSprite(50, 50, 'red_square', 100, 100);
+                
+                engine.endTextureCacheBlock();
+                
+                status.innerHTML = `Test completed successfully! Cache ID: ${cacheId}<br>Check console for any WebGL errors.`;
+                
+                // Test cache reuse
+                setTimeout(() => {
+                    console.log('Testing cache reuse...');
+                    engine.startTextureCacheBlock(cacheId, 200, 200, offsetX + 250, offsetY);
+                    engine.endTextureCacheBlock();
+                    status.innerHTML += '<br>Cache reuse test completed!';
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+                status.innerHTML = `Test failed: ${error.message}`;
+            }
+        };
+        
+        window.clearCache = function() {
+            engine.clearTextureCache();
+            document.getElementById('status').innerHTML = 'Cache cleared.';
+        };
+        
+        // Initialize when page loads
+        initEngine().then(() => {
+            document.getElementById('status').innerHTML = 'Engine initialized. Ready to test.';
+        }).catch(error => {
+            console.error('Failed to initialize engine:', error);
+            document.getElementById('status').innerHTML = `Failed to initialize: ${error.message}`;
+        });
+    </script>
+</body>
+</html>
