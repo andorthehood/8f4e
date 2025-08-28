@@ -2,6 +2,17 @@
 
 A minimal WebGL-based 2D rendering engine designed specifically for sprite sheet rendering.
 
+## Philosophy
+
+This engine was built as a WebGL learning exercise with a focus on minimalism over feature completeness. The goal was to create a no-bloat rendering engine that does one thing well: efficiently rendering sprites from a sprite sheet.
+
+**Core principles:**
+- **Minimal feature set** - Only essential sprite rendering functionality
+- **Performance over safety** - Optimized for speed with minimal error checking
+- **Educational focus** - Clean, readable WebGL code for learning purposes
+- **No dependencies** - Pure WebGL implementation without external libraries
+- **Retro aesthetic** - Designed specifically for pixel-perfect, anti-aliasing-free rendering
+
 ## Features
 
 - **Sprite-only rendering** - Optimized for rendering sprites from a single sprite sheet
@@ -70,9 +81,6 @@ setSpriteLookup(spriteLookup: SpriteLookup): void
 // Draw line with thickness (uses geometric calculation, not rectangular sprites)
 drawLine(x1: number, y1: number, x2: number, y2: number, sprite: string | number, thickness: number): void
 
-// Draw rectangle outline
-drawRectangle(x: number, y: number, width: number, height: number, sprite: string | number, thickness?: number): void
-
 // Draw text using sprite font
 drawText(x: number, y: number, text: string, sprites?: Array<SpriteLookup | undefined>): void
 ```
@@ -121,9 +129,11 @@ type SpriteLookup = Record<string | number, SpriteCoordinates>;
 
 ## Architecture Notes
 
+- **Performance-first**: Optimized for speed over safety - minimal error checking and validation
 - **Rectangular rendering**: All drawing uses rectangular sprites except `drawLine()`
 - **Line geometry**: Lines use trigonometric calculation to create thick lines with proper angles
 - **Pixel-perfect**: Even geometric lines maintain pixelated appearance due to disabled anti-aliasing
+- **Auto-flush rendering**: Buffer automatically flushes and renders when full to prevent overflow
 
 ## Limitations
 
