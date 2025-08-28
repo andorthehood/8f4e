@@ -1,5 +1,6 @@
 import { Renderer } from './renderer';
 import { SpriteLookup } from './types';
+import { PostProcessEffect } from './types/postProcess';
 
 /**
  * High-level 2D engine - provides convenient drawing methods using sprite lookup
@@ -274,5 +275,40 @@ export class Engine {
 
 	set isPerformanceMeasurementMode(value: boolean) {
 		this.renderer.isPerformanceMeasurementMode = value;
+	}
+
+	/**
+	 * Add a post-process effect to the rendering pipeline
+	 */
+	addPostProcessEffect(effect: PostProcessEffect): void {
+		this.renderer.addPostProcessEffect(effect);
+	}
+
+	/**
+	 * Remove a post-process effect from the pipeline
+	 */
+	removePostProcessEffect(name: string): void {
+		this.renderer.removePostProcessEffect(name);
+	}
+
+	/**
+	 * Update uniform values in the post-process buffer
+	 */
+	updatePostProcessUniforms(uniforms: Record<string, number | number[]>): void {
+		this.renderer.updatePostProcessUniforms(uniforms);
+	}
+
+	/**
+	 * Enable or disable a post-process effect
+	 */
+	setPostProcessEffectEnabled(name: string, enabled: boolean): void {
+		this.renderer.setPostProcessEffectEnabled(name, enabled);
+	}
+
+	/**
+	 * Get direct access to the post-process uniform buffer
+	 */
+	getPostProcessBuffer(): Float32Array {
+		return this.renderer.getPostProcessBuffer();
 	}
 }

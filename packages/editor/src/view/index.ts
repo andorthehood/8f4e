@@ -1,9 +1,11 @@
 import generateSprite from '@8f4e/sprite-generator';
-import { Engine } from '@8f4e/2d-engine';
+import { Engine, PostProcessEffect } from '@8f4e/2d-engine';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import colorSchemes from './colorSchemes';
 
+import postProcessVertexShader from '../shaders/postProcessVertexShader';
+import scanlineFragmentShader from '../shaders/scanlineFragmentShader';
 import { State } from '../state/types';
 
 export default async function init(
@@ -27,6 +29,16 @@ export default async function init(
 	const engine = new Engine(canvas);
 
 	engine.loadSpriteSheet(sprite);
+
+	// Add CRT post-processing effect
+	const crtEffect: PostProcessEffect = {
+		name: 'crt',
+		vertexShader: postProcessVertexShader,
+		fragmentShader: scanlineFragmentShader,
+		enabled: true,
+	};
+
+	engine.addPostProcessEffect(crtEffect);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.setSpriteLookup(spriteLookups.background);
