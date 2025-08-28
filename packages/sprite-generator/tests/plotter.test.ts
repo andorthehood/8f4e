@@ -1,7 +1,8 @@
-import generatePlotter, { generateLookup } from '../src/plotter';
-import { Command } from '../src/types';
 import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
 import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates } from './utils/testHelpers';
+
+import generatePlotter, { generateLookup } from '../src/plotter';
+import { Command } from '../src/types';
 
 describe('plotter module', () => {
 	describe('generatePlotter function', () => {
@@ -71,9 +72,7 @@ describe('plotter module', () => {
 			const rectangleCommands = findAllCommands(commands, Command.RECTANGLE);
 
 			// Should have plotter trace color
-			const traceColorCommand = fillColorCommands.find(
-				cmd => cmd[1] === minimalColorScheme.fill.plotterTrace
-			);
+			const traceColorCommand = fillColorCommands.find(cmd => cmd[1] === minimalColorScheme.fill.plotterTrace);
 			expect(traceColorCommand).toBeDefined();
 
 			// Should have many trace rectangles (1x1 pixels)
@@ -131,7 +130,7 @@ describe('plotter module', () => {
 
 			// Check first few trace points have expected pattern
 			const maxValue = characterDimensions8x16.height * 8;
-			
+
 			// First trace point should be at (0, maxValue)
 			const firstTrace = traceRectangles[0];
 			validateDrawingCommand(firstTrace, Command.RECTANGLE, [0, maxValue - 0, 1, 1]);
@@ -152,23 +151,15 @@ describe('plotter module', () => {
 			const commands6x10 = generatePlotter(6, 10, minimalColorScheme.fill);
 
 			// Both should have same background structure
-			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).find(
-				cmd => cmd[3] === 200 && cmd[4] === 200
-			);
-			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).find(
-				cmd => cmd[3] === 200 && cmd[4] === 200
-			);
+			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).find(cmd => cmd[3] === 200 && cmd[4] === 200);
+			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).find(cmd => cmd[3] === 200 && cmd[4] === 200);
 
 			expect(bg8x16).toBeDefined();
 			expect(bg6x10).toBeDefined();
 
 			// But different number of trace points
-			const trace8x16 = findAllCommands(commands8x16, Command.RECTANGLE).filter(
-				cmd => cmd[3] === 1 && cmd[4] === 1
-			);
-			const trace6x10 = findAllCommands(commands6x10, Command.RECTANGLE).filter(
-				cmd => cmd[3] === 1 && cmd[4] === 1
-			);
+			const trace8x16 = findAllCommands(commands8x16, Command.RECTANGLE).filter(cmd => cmd[3] === 1 && cmd[4] === 1);
+			const trace6x10 = findAllCommands(commands6x10, Command.RECTANGLE).filter(cmd => cmd[3] === 1 && cmd[4] === 1);
 
 			expect(trace8x16.length).toBe(16 * 8);
 			expect(trace6x10.length).toBe(10 * 8);
@@ -191,16 +182,13 @@ describe('plotter module', () => {
 
 	describe('generateLookup function', () => {
 		it('should generate correct lookup for 8x16 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const expectedPoints = characterDimensions8x16.height * 8;
-			
+
 			// Should have entries for all trace points
 			expect(Object.keys(lookup)).toHaveLength(expectedPoints);
-			
+
 			// Check specific entries exist
 			expect(lookup[0]).toBeDefined();
 			expect(lookup[1]).toBeDefined();
@@ -208,16 +196,13 @@ describe('plotter module', () => {
 		});
 
 		it('should generate correct lookup for 6x10 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions6x10.width,
-				characterDimensions6x10.height
-			);
+			const lookup = generateLookup(characterDimensions6x10.width, characterDimensions6x10.height);
 
 			const expectedPoints = characterDimensions6x10.height * 8;
-			
+
 			// Should have entries for all trace points
 			expect(Object.keys(lookup)).toHaveLength(expectedPoints);
-			
+
 			// Check specific entries exist
 			expect(lookup[0]).toBeDefined();
 			expect(lookup[1]).toBeDefined();
@@ -225,10 +210,7 @@ describe('plotter module', () => {
 		});
 
 		it('should generate correct sprite coordinates for first point', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const firstPoint = lookup[0];
 
@@ -242,10 +224,7 @@ describe('plotter module', () => {
 		});
 
 		it('should generate correct sprite coordinates with increasing x values', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Check that x coordinates increase by 1 for each point
 			for (let i = 0; i < 10; i++) {
@@ -258,10 +237,7 @@ describe('plotter module', () => {
 		});
 
 		it('should generate coordinates with consistent dimensions', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const coordinates = Object.values(lookup);
 
@@ -299,12 +275,11 @@ describe('plotter module', () => {
 		});
 
 		it('should generate sequential numeric keys', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
-			const keys = Object.keys(lookup).map(Number).sort((a, b) => a - b);
+			const keys = Object.keys(lookup)
+				.map(Number)
+				.sort((a, b) => a - b);
 			const expectedKeys = Array.from({ length: characterDimensions8x16.height * 8 }, (_, i) => i);
 
 			expect(keys).toEqual(expectedKeys);

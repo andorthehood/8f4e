@@ -1,7 +1,8 @@
-import generateFillColors, { generateLookup } from '../src/fillColors';
-import { Command } from '../src/types';
 import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
 import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates } from './utils/testHelpers';
+
+import generateFillColors, { generateLookup } from '../src/fillColors';
+import { Command } from '../src/types';
 
 describe('fillColors module', () => {
 	describe('generateFillColors function', () => {
@@ -93,9 +94,7 @@ describe('fillColors module', () => {
 			expect(translateCommands.length).toBeGreaterThan(1);
 
 			// Some translate commands should move by character width
-			const characterWidthTranslates = translateCommands.filter(
-				cmd => cmd[1] === width && cmd[2] === 0
-			);
+			const characterWidthTranslates = translateCommands.filter(cmd => cmd[1] === width && cmd[2] === 0);
 			expect(characterWidthTranslates.length).toBeGreaterThan(0);
 		});
 
@@ -121,10 +120,7 @@ describe('fillColors module', () => {
 
 	describe('generateLookup function', () => {
 		it('should generate correct lookup for 8x16 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Should have entries for all fill colors
 			expect(Object.keys(lookup)).toContain('background');
@@ -134,10 +130,7 @@ describe('fillColors module', () => {
 		});
 
 		it('should generate correct sprite coordinates for first color', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// First color should be at offset position
 			const firstColorKey = Object.keys(lookup)[0];
@@ -146,7 +139,7 @@ describe('fillColors module', () => {
 			validateSpriteCoordinates(
 				firstCoordinate,
 				0, // offsetX
-				180, // offsetY  
+				180, // offsetY
 				characterDimensions8x16.width,
 				characterDimensions8x16.height
 			);
@@ -169,10 +162,7 @@ describe('fillColors module', () => {
 		});
 
 		it('should generate correct coordinates for 6x10 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions6x10.width,
-				characterDimensions6x10.height
-			);
+			const lookup = generateLookup(characterDimensions6x10.width, characterDimensions6x10.height);
 
 			const keys = Object.keys(lookup);
 			if (keys.length > 0) {

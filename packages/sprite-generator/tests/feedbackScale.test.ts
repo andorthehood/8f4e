@@ -1,7 +1,14 @@
+import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
+import {
+	validateDrawingCommand,
+	findCommand,
+	findAllCommands,
+	validateSpriteCoordinates,
+	createMockBitmap,
+} from './utils/testHelpers';
+
 import generateFeedbackScale, { generateLookup } from '../src/feedbackScale';
 import { Command } from '../src/types';
-import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
-import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates, createMockBitmap } from './utils/testHelpers';
 
 describe('feedbackScale module', () => {
 	describe('generateFeedbackScale function', () => {
@@ -53,8 +60,7 @@ describe('feedbackScale module', () => {
 			// Should have rectangles for each feedback scale item (background rectangles)
 			const rectangleCommands = findAllCommands(commands, Command.RECTANGLE);
 			const backgroundRectangles = rectangleCommands.filter(
-				cmd => cmd[3] === characterDimensions8x16.width * 3 && 
-				       cmd[4] === characterDimensions8x16.height
+				cmd => cmd[3] === characterDimensions8x16.width * 3 && cmd[4] === characterDimensions8x16.height
 			);
 			expect(backgroundRectangles.length).toBe(feedbackScaleLength);
 		});
@@ -69,8 +75,7 @@ describe('feedbackScale module', () => {
 
 			const rectangleCommands = findAllCommands(commands, Command.RECTANGLE);
 			const backgroundRectangles = rectangleCommands.filter(
-				cmd => cmd[3] === characterDimensions8x16.width * 3 && 
-				       cmd[4] === characterDimensions8x16.height
+				cmd => cmd[3] === characterDimensions8x16.width * 3 && cmd[4] === characterDimensions8x16.height
 			);
 
 			// Each background rectangle should have correct dimensions
@@ -116,8 +121,8 @@ describe('feedbackScale module', () => {
 			const feedbackScaleLength = minimalColorScheme.icons.feedbackScale.length;
 
 			// Each feedback scale item has multiple fill color commands
-			const feedbackScaleColorCommands = fillColorCommands.filter(
-				cmd => minimalColorScheme.icons.feedbackScale.includes(cmd[1] as string)
+			const feedbackScaleColorCommands = fillColorCommands.filter(cmd =>
+				minimalColorScheme.icons.feedbackScale.includes(cmd[1] as string)
 			);
 			expect(feedbackScaleColorCommands.length).toBe(feedbackScaleLength);
 		});
@@ -151,32 +156,22 @@ describe('feedbackScale module', () => {
 				minimalColorScheme.icons
 			);
 
-			const pixelCommands = findAllCommands(commands, Command.PIXEL);
-			
 			// Should generate commands even if pixel commands depend on font data
 			// The function should attempt to render characters even with mock font
 			expect(commands.length).toBeGreaterThan(10); // Should have many commands
 		});
 
 		it('should handle different character dimensions correctly', () => {
-			const commands8x16 = generateFeedbackScale(
-				mockFont, 8, 16, minimalColorScheme.icons
-			);
-			const commands6x10 = generateFeedbackScale(
-				mockFont, 6, 10, minimalColorScheme.icons
-			);
+			const commands8x16 = generateFeedbackScale(mockFont, 8, 16, minimalColorScheme.icons);
+			const commands6x10 = generateFeedbackScale(mockFont, 6, 10, minimalColorScheme.icons);
 
 			// Both should have same structure
 			expect(commands8x16[0]).toEqual([Command.RESET_TRANSFORM]);
 			expect(commands6x10[0]).toEqual([Command.RESET_TRANSFORM]);
 
 			// Background rectangles should have different dimensions
-			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).filter(
-				cmd => cmd[3] === 8 * 3 && cmd[4] === 16
-			);
-			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).filter(
-				cmd => cmd[3] === 6 * 3 && cmd[4] === 10
-			);
+			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).filter(cmd => cmd[3] === 8 * 3 && cmd[4] === 16);
+			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).filter(cmd => cmd[3] === 6 * 3 && cmd[4] === 10);
 
 			expect(bg8x16.length).toBeGreaterThan(0);
 			expect(bg6x10.length).toBeGreaterThan(0);
@@ -233,10 +228,10 @@ describe('feedbackScale module', () => {
 			);
 
 			const feedbackScaleLength = minimalColorScheme.icons.feedbackScale.length;
-			
+
 			// Should have entries for all feedback scale colors
 			expect(Object.keys(lookup)).toHaveLength(feedbackScaleLength);
-			
+
 			// Check specific entries exist
 			for (let i = 0; i < feedbackScaleLength; i++) {
 				expect(lookup[i]).toBeDefined();
@@ -251,7 +246,7 @@ describe('feedbackScale module', () => {
 			);
 
 			const feedbackScaleLength = minimalColorScheme.icons.feedbackScale.length;
-			
+
 			// Should have entries for all feedback scale colors
 			expect(Object.keys(lookup)).toHaveLength(feedbackScaleLength);
 		});
@@ -282,11 +277,11 @@ describe('feedbackScale module', () => {
 			);
 
 			const itemWidth = characterDimensions8x16.width * 3;
-			
+
 			// Check that items are spaced correctly
 			for (let i = 0; i < Object.keys(lookup).length; i++) {
 				const item = lookup[i];
-				
+
 				validateSpriteCoordinates(
 					item,
 					i * itemWidth, // x position increases by item width
@@ -316,11 +311,7 @@ describe('feedbackScale module', () => {
 		});
 
 		it('should handle empty feedback scale array', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height,
-				[]
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height, []);
 
 			// Should have no entries
 			expect(Object.keys(lookup)).toHaveLength(0);
@@ -372,7 +363,9 @@ describe('feedbackScale module', () => {
 				minimalColorScheme.icons.feedbackScale
 			);
 
-			const keys = Object.keys(lookup).map(Number).sort((a, b) => a - b);
+			const keys = Object.keys(lookup)
+				.map(Number)
+				.sort((a, b) => a - b);
 			const expectedKeys = Array.from({ length: minimalColorScheme.icons.feedbackScale.length }, (_, i) => i);
 
 			expect(keys).toEqual(expectedKeys);

@@ -1,16 +1,15 @@
-import generateFonts, { FontLookups, generateLookups, drawCharacter, drawCharacterMatrix } from '../src/font';
-import { Command } from '../src/types';
 import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
-import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates, createMockBitmap } from './utils/testHelpers';
+import { findAllCommands, createMockBitmap } from './utils/testHelpers';
+
+import generateFonts, { generateLookups, drawCharacter, drawCharacterMatrix } from '../src/font';
+import { Command } from '../src/types';
 
 describe('font module', () => {
 	describe('drawCharacter function', () => {
-		const mockFont = createMockBitmap(256);
-
 		it('should generate pixel commands for character with set bits', () => {
 			// Create a font with specific bit pattern
 			const testFont = new Array(256 * 16).fill(0);
-			// Set some bits for character 'A' (ASCII 65) 
+			// Set some bits for character 'A' (ASCII 65)
 			testFont[65 * 16] = 0b11111111; // First row all set
 			testFont[65 * 16 + 1] = 0b10000001; // Second row corners set
 
@@ -70,7 +69,7 @@ describe('font module', () => {
 			// Character 65 has no bits set
 
 			const commands = drawCharacter(testFont, 65, 8, 16);
-			
+
 			expect(commands).toEqual([]);
 		});
 	});
@@ -86,33 +85,33 @@ describe('font module', () => {
 		});
 
 		it('should generate translate commands for positioning', () => {
-			const commands = drawCharacterMatrix(mockFont, 8, 16, [[65, 66], [67, 68]]);
+			const commands = drawCharacterMatrix(mockFont, 8, 16, [
+				[65, 66],
+				[67, 68],
+			]);
 			const translateCommands = findAllCommands(commands, Command.TRANSLATE);
 
 			// Should have translate commands for horizontal and vertical positioning
 			expect(translateCommands.length).toBeGreaterThan(0);
 
 			// Should have horizontal translates (characterWidth, 0)
-			const horizontalTranslates = translateCommands.filter(
-				cmd => cmd[1] === 8 && cmd[2] === 0
-			);
+			const horizontalTranslates = translateCommands.filter(cmd => cmd[1] === 8 && cmd[2] === 0);
 			expect(horizontalTranslates.length).toBeGreaterThan(0);
 
 			// Should have vertical translates with negative x and positive y
-			const verticalTranslates = translateCommands.filter(
-				cmd => cmd[1] < 0 && cmd[2] === 16
-			);
+			const verticalTranslates = translateCommands.filter(cmd => cmd[1] < 0 && cmd[2] === 16);
 			expect(verticalTranslates.length).toBeGreaterThan(0);
 		});
 
 		it('should handle 2x2 character matrix correctly', () => {
-			const commands = drawCharacterMatrix(mockFont, 8, 16, [[65, 66], [67, 68]]);
+			const commands = drawCharacterMatrix(mockFont, 8, 16, [
+				[65, 66],
+				[67, 68],
+			]);
 			const translateCommands = findAllCommands(commands, Command.TRANSLATE);
 
 			// Should have translates for each character position
-			const horizontalTranslates = translateCommands.filter(
-				cmd => cmd[1] === 8 && cmd[2] === 0
-			);
+			const horizontalTranslates = translateCommands.filter(cmd => cmd[1] === 8 && cmd[2] === 0);
 			expect(horizontalTranslates.length).toBe(4); // 2 chars per row * 2 rows
 
 			// Should have row reset translates
@@ -135,9 +134,7 @@ describe('font module', () => {
 			const translateCommands = findAllCommands(commands, Command.TRANSLATE);
 
 			// Should have horizontal translate for the character
-			const horizontalTranslates = translateCommands.filter(
-				cmd => cmd[1] === 8 && cmd[2] === 0
-			);
+			const horizontalTranslates = translateCommands.filter(cmd => cmd[1] === 8 && cmd[2] === 0);
 			expect(horizontalTranslates.length).toBe(1);
 		});
 	});
@@ -205,7 +202,7 @@ describe('font module', () => {
 			);
 
 			const translateCommands = findAllCommands(commands, Command.TRANSLATE);
-			
+
 			// Should have translate commands for positioning different font colors
 			expect(translateCommands.length).toBeGreaterThan(0);
 		});
@@ -245,10 +242,7 @@ describe('font module', () => {
 
 	describe('generateLookups function', () => {
 		it('should generate correct lookups for 8x16 characters', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Should have font lookups for all text color types
 			expect(lookups.fontLineNumber).toBeDefined();
@@ -265,10 +259,7 @@ describe('font module', () => {
 		});
 
 		it('should generate correct lookups for 6x10 characters', () => {
-			const lookups = generateLookups(
-				characterDimensions6x10.width,
-				characterDimensions6x10.height
-			);
+			const lookups = generateLookups(characterDimensions6x10.width, characterDimensions6x10.height);
 
 			// Should have same font lookup types
 			expect(lookups.fontLineNumber).toBeDefined();
@@ -277,10 +268,7 @@ describe('font module', () => {
 		});
 
 		it('should generate correct sprite coordinates for ASCII characters', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Check character 'A' (ASCII 65) in first font
 			const charA = lookups.fontLineNumber[65];
@@ -296,10 +284,7 @@ describe('font module', () => {
 		});
 
 		it('should generate correct sprite coordinates for string characters', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Check character 'A' by string and by ASCII code
 			const charAByString = lookups.fontLineNumber['A'];
@@ -311,10 +296,7 @@ describe('font module', () => {
 		});
 
 		it('should generate lookups with different Y positions for different font types', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Different font types should have different Y positions
 			const charALineNumber = lookups.fontLineNumber['A'];
@@ -332,10 +314,7 @@ describe('font module', () => {
 		});
 
 		it('should handle all ASCII characters', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Check space character (ASCII 32)
 			expect(lookups.fontCode[32]).toBeDefined();
@@ -349,10 +328,7 @@ describe('font module', () => {
 		});
 
 		it('should generate coordinates with correct character spacing', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Check that characters are spaced by character width
 			const charA = lookups.fontCode['A']; // ASCII 65
