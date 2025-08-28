@@ -1,5 +1,6 @@
-import { Command, DrawingCommand } from '../src/types';
 import { minimalColorScheme, config8x16, config6x10 } from './utils/testFixtures';
+
+import { Command, DrawingCommand } from '../src/types';
 
 describe('Types and Enums', () => {
 	describe('Command enum', () => {
