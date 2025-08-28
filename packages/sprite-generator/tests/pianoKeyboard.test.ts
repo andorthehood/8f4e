@@ -1,7 +1,14 @@
+import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
+import {
+	validateDrawingCommand,
+	findCommand,
+	findAllCommands,
+	validateSpriteCoordinates,
+	createMockBitmap,
+} from './utils/testHelpers';
+
 import generatePianoKeyboard, { PianoKey, generateLookup } from '../src/pianoKeyboard';
 import { Command } from '../src/types';
-import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
-import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates, createMockBitmap } from './utils/testHelpers';
 
 describe('pianoKeyboard module', () => {
 	describe('PianoKey enum', () => {
@@ -173,24 +180,16 @@ describe('pianoKeyboard module', () => {
 		});
 
 		it('should handle different character dimensions correctly', () => {
-			const commands8x16 = generatePianoKeyboard(
-				mockGlyphFont, mockAsciiFont, 8, 16, minimalColorScheme.icons
-			);
-			const commands6x10 = generatePianoKeyboard(
-				mockGlyphFont, mockAsciiFont, 6, 10, minimalColorScheme.icons
-			);
+			const commands8x16 = generatePianoKeyboard(mockGlyphFont, mockAsciiFont, 8, 16, minimalColorScheme.icons);
+			const commands6x10 = generatePianoKeyboard(mockGlyphFont, mockAsciiFont, 6, 10, minimalColorScheme.icons);
 
 			// Both should have same structure
 			expect(commands8x16[0]).toEqual([Command.RESET_TRANSFORM]);
 			expect(commands6x10[0]).toEqual([Command.RESET_TRANSFORM]);
 
 			// Background rectangles should have different widths but same height
-			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).find(
-				cmd => cmd[4] === 80
-			);
-			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).find(
-				cmd => cmd[4] === 80
-			);
+			const bg8x16 = findAllCommands(commands8x16, Command.RECTANGLE).find(cmd => cmd[4] === 80);
+			const bg6x10 = findAllCommands(commands6x10, Command.RECTANGLE).find(cmd => cmd[4] === 80);
 
 			expect(bg8x16).toBeDefined();
 			expect(bg6x10).toBeDefined();
@@ -243,14 +242,11 @@ describe('pianoKeyboard module', () => {
 
 	describe('generateLookup function', () => {
 		it('should generate correct lookup for 8x16 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Should have 24 entries (24 keys)
 			expect(Object.keys(lookup)).toHaveLength(24);
-			
+
 			// Check specific entries exist
 			expect(lookup[0]).toBeDefined();
 			expect(lookup[1]).toBeDefined();
@@ -258,20 +254,14 @@ describe('pianoKeyboard module', () => {
 		});
 
 		it('should generate correct lookup for 6x10 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions6x10.width,
-				characterDimensions6x10.height
-			);
+			const lookup = generateLookup(characterDimensions6x10.width, characterDimensions6x10.height);
 
 			// Should have 24 entries (24 keys)
 			expect(Object.keys(lookup)).toHaveLength(24);
 		});
 
 		it('should generate correct sprite coordinates for first key', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const firstKey = lookup[0];
 
@@ -285,17 +275,14 @@ describe('pianoKeyboard module', () => {
 		});
 
 		it('should generate correct sprite coordinates with proper spacing', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const keyWidth = characterDimensions8x16.width * 2;
-			
+
 			// Check that keys are spaced correctly
 			for (let i = 0; i < 24; i++) {
 				const key = lookup[i];
-				
+
 				validateSpriteCoordinates(
 					key,
 					i * keyWidth, // x position increases by key width
@@ -307,10 +294,7 @@ describe('pianoKeyboard module', () => {
 		});
 
 		it('should generate correct coordinates for 6x10 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions6x10.width,
-				characterDimensions6x10.height
-			);
+			const lookup = generateLookup(characterDimensions6x10.width, characterDimensions6x10.height);
 
 			const firstKey = lookup[0];
 
@@ -324,10 +308,7 @@ describe('pianoKeyboard module', () => {
 		});
 
 		it('should generate coordinates with increasing x positions', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const coordinates = Object.values(lookup);
 			const keyWidth = characterDimensions8x16.width * 2;
@@ -345,10 +326,7 @@ describe('pianoKeyboard module', () => {
 		});
 
 		it('should maintain consistent Y coordinates and dimensions', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const coordinates = Object.values(lookup);
 
@@ -361,12 +339,11 @@ describe('pianoKeyboard module', () => {
 		});
 
 		it('should generate sequential numeric keys from 0 to 23', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
-			const keys = Object.keys(lookup).map(Number).sort((a, b) => a - b);
+			const keys = Object.keys(lookup)
+				.map(Number)
+				.sort((a, b) => a - b);
 			const expectedKeys = Array.from({ length: 24 }, (_, i) => i);
 
 			expect(keys).toEqual(expectedKeys);
