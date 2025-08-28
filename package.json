@@ -65,5 +65,8 @@
       "eslint --cache --fix",
       "bash -c 'npm run typecheck'"
     ]
+  },
+  "dependencies": {
+    "jest-environment-jsdom": "^30.1.1"
   }
 }

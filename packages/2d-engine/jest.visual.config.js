@@ -13,4 +13,8 @@ export default {
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
     setupFilesAfterEnv: ['<rootDir>/tests/visual/setup.ts'],
     testTimeout: 30000, // Visual tests may take longer
+    globals: {
+        // Add Node.js globals that Playwright might need
+        setImmediate: true,
+    },
 };
