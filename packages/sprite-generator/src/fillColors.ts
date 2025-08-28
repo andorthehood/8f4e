@@ -28,7 +28,7 @@ export enum Icon {
 
 export default function generate(
 	characterWidth: number,
-	characterHight: number,
+	characterHeight: number,
 	colors: ColorScheme['fill']
 ): DrawingCommand[] {
 	return [
@@ -37,7 +37,7 @@ export default function generate(
 		...fillColors.flatMap<DrawingCommand>(color => {
 			return [
 				[Command.FILL_COLOR, colors[color]],
-				[Command.RECTANGLE, 0, 0, characterWidth, characterHight],
+				[Command.RECTANGLE, 0, 0, characterWidth, characterHeight],
 				[Command.TRANSLATE, characterWidth, 0],
 			];
 		}),
