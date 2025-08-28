@@ -15,7 +15,7 @@ export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
 		console.log(stats);
 	}
 
-	function onError(error: any) {
+	function onError(error: unknown) {
 		console.error('Main thread runtime error:', error);
 	}
 
