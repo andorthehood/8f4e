@@ -102,8 +102,8 @@ export class Engine {
 		// Let user code draw sprites (fills the buffers)
 		callback(timeToRender, fps, triangles, maxTriangles);
 
-		// Upload all batched sprites to GPU and render
-		this.renderer.renderVertexBuffer();
+		// Render sprites to texture, then apply post-processing effects
+		this.renderer.renderWithPostProcessing(elapsedTime);
 
 		// Update performance tracking and schedule next frame
 		this.lastRenderFinishTime = performance.now();
