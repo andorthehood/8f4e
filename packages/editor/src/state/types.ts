@@ -272,6 +272,11 @@ export interface WebWorkerLogicRuntime {
 	sampleRate: number;
 }
 
+export interface MainThreadLogicRuntime {
+	runtime: 'MainThreadLogicRuntime';
+	sampleRate: number;
+}
+
 export interface AudioWorkletRuntime {
 	runtime: 'AudioWorkletRuntime';
 	sampleRate: number;
@@ -298,7 +303,7 @@ export interface WebWorkerMIDIRuntime {
 	midiControlChangeInputs?: MidiCCIO[];
 }
 
-export type Runtimes = WebWorkerLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
+export type Runtimes = WebWorkerLogicRuntime | MainThreadLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
 
 export interface Project {
 	title: string;
@@ -309,7 +314,29 @@ export interface Project {
 	selectedRuntime: number;
 	runtimeSettings: Runtimes[];
 	binaryAssets?: BinaryAsset[];
+	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
+	compiledWasm?: string;
 }
+
+// Default empty project structure used when no project is loaded from storage
+export const EMPTY_DEFAULT_PROJECT: Project = {
+	title: '',
+	author: '',
+	description: '',
+	codeBlocks: [],
+	viewport: {
+		x: 0,
+		y: 0,
+	},
+	selectedRuntime: 0,
+	runtimeSettings: [
+		{
+			runtime: 'WebWorkerLogicRuntime',
+			sampleRate: 50,
+		},
+	],
+	binaryAssets: [],
+};
 
 export interface ExampleModule {
 	title: string;
@@ -338,7 +365,6 @@ export interface CompilationResult {
 }
 
 export interface Options {
-	localStorageId: string;
 	featureFlags?: FeatureFlagsConfig;
 	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
 	getListOfModules: () => Promise<ModuleMetadata[]>;
@@ -354,14 +380,14 @@ export interface Options {
 	) => Promise<CompilationResult>;
 
 	// Storage callbacks
-	loadProjectFromStorage?: (storageId: string) => Promise<Project | null>;
-	saveProjectToStorage?: (storageId: string, project: Project) => Promise<void>;
-	loadEditorSettingsFromStorage?: (storageId: string) => Promise<EditorSettings | null>;
-	saveEditorSettingsToStorage?: (storageId: string, settings: EditorSettings) => Promise<void>;
+	loadProjectFromStorage: () => Promise<Project | null>;
+	saveProjectToStorage?: (project: Project) => Promise<void>;
+	loadEditorSettingsFromStorage?: () => Promise<EditorSettings | null>;
+	saveEditorSettingsToStorage?: (settings: EditorSettings) => Promise<void>;
 
 	// File handling callbacks
 	loadProjectFromFile?: (file: File) => Promise<Project>;
-	saveProjectToFile?: (project: Project, filename: string) => Promise<void>;
+	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
 	importBinaryAsset?: (file: File) => Promise<{ data: string; fileName: string }>;
 }
 

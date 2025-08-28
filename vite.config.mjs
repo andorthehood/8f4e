@@ -32,9 +32,10 @@ export default defineConfig({
       '@8f4e/2d-engine': resolve(__dirname, 'packages/2d-engine/dist'),
       '@8f4e/compiler': resolve(__dirname, 'packages/compiler/dist'),
       '@8f4e/sprite-generator': resolve(__dirname, 'packages/sprite-generator/dist'),
-      '@8f4e/audio-worklet-runtime': resolve(__dirname, 'packages/audio-worklet-runtime/dist'),
-      '@8f4e/web-worker-logic-runtime': resolve(__dirname, 'packages/web-worker-logic-runtime/dist'),
-      '@8f4e/web-worker-midi-runtime': resolve(__dirname, 'packages/web-worker-midi-runtime/dist')
+      '@8f4e/runtime-audio-worklet': resolve(__dirname, 'packages/runtime-audio-worklet/dist'),
+      '@8f4e/runtime-web-worker-logic': resolve(__dirname, 'packages/runtime-web-worker-logic/dist'),
+      '@8f4e/runtime-main-thread-logic': resolve(__dirname, 'packages/runtime-main-thread-logic/dist'),
+      '@8f4e/runtime-web-worker-midi': resolve(__dirname, 'packages/runtime-web-worker-midi/dist')
     }
   },
   build: {
@@ -42,14 +43,6 @@ export default defineConfig({
     rollupOptions: {
       // Ensure proper module resolution for production
       external: [],
-      output: {
-        // Better chunking for production
-        manualChunks: {
-          'editor': ['@8f4e/editor'],
-          'engine': ['@8f4e/2d-engine'],
-          'compiler': ['@8f4e/compiler']
-        }
-      }
     }
   },
   publicDir: false, // Don't copy public dir since we need specific handling

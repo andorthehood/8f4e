@@ -47,6 +47,7 @@ describe('Feature Flags Integration', () => {
 		expect(result).toHaveProperty('moduleDragging');
 		expect(result).toHaveProperty('viewportDragging');
 		expect(result).toHaveProperty('persistentStorage');
+		expect(result).toHaveProperty('editing');
 
 		// Should merge correctly
 		expect(result.contextMenu).toBe(false);
@@ -54,5 +55,44 @@ describe('Feature Flags Integration', () => {
 		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
 		expect(result.persistentStorage).toBe(true);
+		expect(result.editing).toBe(true);
+	});
+
+	test('should handle editing flag configuration', () => {
+		const options: Partial<Options> = {
+			featureFlags: {
+				editing: false,
+			},
+		};
+
+		const featureFlags = validateFeatureFlags(options.featureFlags);
+
+		expect(featureFlags.editing).toBe(false);
+		// Other flags should remain at defaults
+		expect(featureFlags.contextMenu).toBe(true);
+		expect(featureFlags.infoOverlay).toBe(true);
+		expect(featureFlags.moduleDragging).toBe(true);
+		expect(featureFlags.viewportDragging).toBe(true);
+		expect(featureFlags.persistentStorage).toBe(true);
+	});
+
+	test('should support view-only mode with editing and contextMenu disabled', () => {
+		const options: Partial<Options> = {
+			featureFlags: {
+				editing: false,
+				contextMenu: false,
+				moduleDragging: false,
+			},
+		};
+
+		const featureFlags = validateFeatureFlags(options.featureFlags);
+
+		expect(featureFlags.editing).toBe(false);
+		expect(featureFlags.contextMenu).toBe(false);
+		expect(featureFlags.moduleDragging).toBe(false);
+		// Navigation and info should remain enabled
+		expect(featureFlags.viewportDragging).toBe(true);
+		expect(featureFlags.infoOverlay).toBe(true);
+		expect(featureFlags.persistentStorage).toBe(true);
 	});
 });

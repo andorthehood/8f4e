@@ -1,8 +1,8 @@
 {
-	"name": "@8f4e/audio-worklet-runtime",
+	"name": "@8f4e/runtime-main-thread-logic",
 	"version": "1.0.0",
 	"private": true,
-	"description": "8f4e audio worklet runtime package",
+	"description": "8f4e main thread logic runtime package",
 	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -15,8 +15,8 @@
 	"sideEffects": false,
 	"scripts": {
 		"test": "jest --passWithNoTests",
-		"build": "vite build -c vite.config.worklet.ts",
-		"dev": "vite build -c vite.config.worklet.ts --watch",
+		"build": "tsc",
+		"dev": "tsc --watch",
 		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
@@ -30,5 +30,7 @@
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {},
-	"devDependencies": {}
+	"devDependencies": {
+		"@types/node": "^24.3.0"
+	}
 }
