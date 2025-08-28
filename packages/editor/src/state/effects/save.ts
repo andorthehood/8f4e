@@ -33,7 +33,7 @@ export default function save(state: State, events: EventDispatcher): void {
 		const runtimeProject = {
 			...state.project,
 			// Convert WASM bytecode to base64 string using chunked encoding to avoid stack overflow
-			compiledWasm: encodeUint8ArrayToBase64(state.compiler.codeBuffer)
+			compiledWasm: encodeUint8ArrayToBase64(state.compiler.codeBuffer),
 		};
 
 		const filename = `${state.project.title || 'project'}-runtime-ready.json`;
