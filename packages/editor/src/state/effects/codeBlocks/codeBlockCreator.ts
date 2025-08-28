@@ -87,6 +87,11 @@ function incrementModuleIdUntilItsNotTaken(state: State, moduleId: string) {
 
 export default function codeBlockCreator(state: State, events: EventDispatcher): void {
 	async function onAddCodeBlock({ x, y, isNew, code = [''] }) {
+		// Check if editing is enabled
+		if (!state.featureFlags.editing) {
+			return;
+		}
+
 		if (isNew) {
 			code = ['module ' + getRandomModuleId(), '', '', 'moduleEnd'];
 		} else if (code.length < 2) {
@@ -138,6 +143,11 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
+		// Check if editing is enabled
+		if (!state.featureFlags.editing) {
+			return;
+		}
+
 		state.graphicHelper.activeViewport.codeBlocks.delete(codeBlock);
 		events.dispatch('saveState');
 	}

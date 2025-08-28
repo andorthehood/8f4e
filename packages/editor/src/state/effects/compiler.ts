@@ -1,5 +1,4 @@
-import { Buffer } from 'buffer';
-
+import { decodeBase64ToUint8Array } from '../helpers/base64Decoder';
 import { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
 
@@ -25,6 +24,36 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			return;
 		}
 
+		// Check if project has pre-compiled WASM bytecode for runtime-only execution
+		if (state.project.compiledWasm) {
+			console.log('[Compiler] Using pre-compiled WASM bytecode from project');
+
+			try {
+				// Decode base64 WASM back to Uint8Array
+				const base64Data = state.project.compiledWasm;
+				const wasmBytecode = decodeBase64ToUint8Array(base64Data);
+
+				// Set up the compiler state as if compilation succeeded
+				state.compiler.codeBuffer = wasmBytecode;
+				state.compiler.isCompiling = false;
+				state.compiler.buildErrors = [];
+				state.compiler.compilationTime = 0; // No compilation time since we used pre-compiled
+
+				// Note: Binary assets are not handled for pre-compiled WASM projects
+				// as they should already be embedded in the compiled bytecode.
+				// The compiledModules map is not available for pre-compiled projects
+				// since it contains compilation-time metadata that is not persisted.
+
+				console.log('[Compiler] Pre-compiled WASM loaded successfully');
+				events.dispatch('buildFinished');
+				return;
+			} catch (error) {
+				console.error('[Compiler] Failed to load pre-compiled WASM:', error);
+				// Fall through to regular compilation if pre-compiled WASM fails
+			}
+		}
+
+		// Regular compilation path (when no pre-compiled WASM or if it failed to load)
 		// TODO: make it recursive
 		const modules = flattenProjectForCompiler(state.graphicHelper.baseCodeBlock.codeBlocks);
 
@@ -75,10 +104,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 					const allocatedSizeInBytes =
 						memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
 					const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
-					const binaryAssetDataBuffer = Uint8Array.from(Buffer.from(binaryAsset.data, 'base64')).slice(
-						0,
-						allocatedSizeInBytes
-					);
+					const binaryAssetDataBuffer = decodeBase64ToUint8Array(binaryAsset.data).slice(0, allocatedSizeInBytes);
 
 					memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
 				}
