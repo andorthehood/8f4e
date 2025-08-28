@@ -48,6 +48,10 @@ export class Engine {
 	 */
 	isPerformanceMeasurementMode: boolean;
 
+	/**
+	 * Creates a new 2D rendering engine instance
+	 * @param canvas - The HTML canvas element to render to
+	 */
 	constructor(canvas: HTMLCanvasElement) {
 		const gl = canvas.getContext('webgl', { antialias: false, alpha: false });
 		if (!gl) {
@@ -94,12 +98,20 @@ export class Engine {
 		this.offsetGroups = [];
 	}
 
+	/**
+	 * Begin a transform group - all subsequent draws will be offset by (x, y)
+	 * @param x - X offset to apply to all draws in this group
+	 * @param y - Y offset to apply to all draws in this group
+	 */
 	startGroup(x: number, y: number): void {
 		this.offsetX += x;
 		this.offsetY += y;
 		this.offsetGroups.push([x, y]);
 	}
 
+	/**
+	 * End the current transform group - restore previous offset
+	 */
 	endGroup(): void {
 		const coordinates = this.offsetGroups.pop();
 		if (!coordinates) {
@@ -110,6 +122,10 @@ export class Engine {
 		this.offsetY -= y;
 	}
 
+	/**
+	 * Allocate new buffers for batching sprites
+	 * @param newSize - Maximum number of sprites the buffer can hold
+	 */
 	growBuffer(newSize: number): void {
 		this.bufferSize = newSize * 12;
 		this.bufferPointer = 0;
@@ -118,11 +134,20 @@ export class Engine {
 		this.textureCoordinateBuffer = new Float32Array(this.bufferSize);
 	}
 
+	/**
+	 * Handle canvas resize - update viewport and shader resolution uniform
+	 * @param width - New canvas width
+	 * @param height - New canvas height
+	 */
 	resize(width: number, height: number): void {
 		this.gl.viewport(0, 0, width, height);
 		this.setUniform('u_resolution', width, height);
 	}
 
+	/**
+	 * Main render loop - calls user callback to populate buffers, then renders everything
+	 * @param callback - Function called each frame to draw sprites
+	 */
 	render(callback: (timeToRender: number, fps: number, triangles: number, maxTriangles: number) => void): void {
 		const triangles = this.bufferCounter / 2;
 		const maxTriangles = Math.floor(this.vertexBuffer.length / 2);
@@ -136,7 +161,7 @@ export class Engine {
 
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-		const elapsedTime = (Date.now() - this.startTime) / 1000; // convert to seconds
+		const elapsedTime = (Date.now() - this.startTime) / 1000;
 		if (this.timeLocation) {
 			this.gl.uniform1f(this.timeLocation, elapsedTime);
 		}
@@ -154,25 +179,26 @@ export class Engine {
 	}
 
 	/**
-	 * Fills the line drawing buffer with indices of a rectangle.
-	 * @param x top left corner X coordinate
-	 * @param y top left corner Y coordinate
-	 * @param width width of the rectanlge
-	 * @param height height of the reactanlge
+	 * Load sprite sheet texture and store dimensions for UV coordinate calculation
+	 * @param image - Image containing all sprites
 	 */
-	drawRectangle(x: number, y: number, width: number, height: number, sprite: string | number, thickness = 1): void {
-		this.drawLine(x, y, x + width, y, sprite, thickness);
-		this.drawLine(x + width, y, x + width, y + height, sprite, thickness);
-		this.drawLine(x + width, y + height, x, y + height, sprite, thickness);
-		this.drawLine(x, y + height, x, y, sprite, thickness);
-	}
-
 	loadSpriteSheet(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas): void {
 		this.spriteSheet = createTexture(this.gl, image);
 		this.spriteSheetWidth = image.width;
 		this.spriteSheetHeight = image.height;
 	}
 
+	/**
+	 * Low-level sprite drawing - specify exact pixel coordinates in sprite sheet
+	 * @param x - Screen X position
+	 * @param y - Screen Y position
+	 * @param width - Rendered width
+	 * @param height - Rendered height
+	 * @param spriteX - X pixel in sprite sheet
+	 * @param spriteY - Y pixel in sprite sheet
+	 * @param spriteWidth - Width in sprite sheet
+	 * @param spriteHeight - Height in sprite sheet
+	 */
 	drawSpriteFromCoordinates(
 		x: number,
 		y: number,
@@ -183,6 +209,13 @@ export class Engine {
 		spriteWidth: number = width,
 		spriteHeight: number = height
 	): void {
+		// Auto-flush buffer if full (prevents overflow)
+		if (this.bufferCounter + 12 > this.bufferSize) {
+			this.renderVertexBuffer();
+			this.bufferCounter = 0;
+			this.bufferPointer = 0;
+		}
+
 		x = x + this.offsetX;
 		y = y + this.offsetY;
 		fillBufferWithRectangleVertices(this.vertexBuffer, this.bufferPointer, x, y, width, height);
@@ -198,10 +231,26 @@ export class Engine {
 		);
 
 		this.bufferCounter += 12;
-		this.bufferPointer = this.bufferCounter % this.bufferSize;
+		this.bufferPointer = this.bufferCounter;
 	}
 
+	/**
+	 * Draw line with thickness using geometric calculation
+	 * @param x1 - Start X coordinate
+	 * @param y1 - Start Y coordinate
+	 * @param x2 - End X coordinate
+	 * @param y2 - End Y coordinate
+	 * @param sprite - Sprite to use for line texture
+	 * @param thickness - Line thickness in pixels
+	 */
 	drawLine(x1: number, y1: number, x2: number, y2: number, sprite: string | number, thickness: number): void {
+		// Auto-flush buffer if full
+		if (this.bufferCounter + 12 > this.bufferSize) {
+			this.renderVertexBuffer();
+			this.bufferCounter = 0;
+			this.bufferPointer = 0;
+		}
+
 		x1 = x1 + this.offsetX;
 		y1 = y1 + this.offsetY;
 		x2 = x2 + this.offsetX;
@@ -222,9 +271,17 @@ export class Engine {
 		);
 
 		this.bufferCounter += 12;
-		this.bufferPointer = this.bufferCounter % this.bufferSize;
+		this.bufferPointer = this.bufferCounter;
 	}
 
+	/**
+	 * High-level sprite drawing - use sprite lookup by name/ID
+	 * @param posX - Screen X position
+	 * @param posY - Screen Y position
+	 * @param sprite - Sprite name or ID from lookup table
+	 * @param width - Optional custom width (uses sprite width if not specified)
+	 * @param height - Optional custom height (uses sprite height if not specified)
+	 */
 	drawSprite(posX: number, posY: number, sprite: string | number, width?: number, height?: number): void {
 		if (!this.spriteLookup[sprite]) {
 			return;
@@ -244,6 +301,9 @@ export class Engine {
 		);
 	}
 
+	/**
+	 * Upload batched vertex data to GPU and render all sprites in one draw call
+	 */
 	renderVertexBuffer(): void {
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glTextureCoordinateBuffer);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.textureCoordinateBuffer, this.gl.STATIC_DRAW);
@@ -258,10 +318,21 @@ export class Engine {
 		}
 	}
 
+	/**
+	 * Set the sprite lookup table (maps names/IDs to sprite sheet coordinates)
+	 * @param spriteLookup - Object mapping sprite keys to coordinates
+	 */
 	setSpriteLookup(spriteLookup: SpriteLookup): void {
 		this.spriteLookup = spriteLookup;
 	}
 
+	/**
+	 * Draw text using sprite font - each character is a sprite
+	 * @param posX - Starting X position
+	 * @param posY - Starting Y position
+	 * @param text - Text string to render
+	 * @param sprites - Optional per-character sprite lookup overrides
+	 */
 	drawText(posX: number, posY: number, text: string, sprites?: Array<SpriteLookup | undefined>): void {
 		for (let i = 0; i < text.length; i++) {
 			if (sprites && sprites[i]) {
@@ -279,6 +350,11 @@ export class Engine {
 		}
 	}
 
+	/**
+	 * Helper to set shader uniform values
+	 * @param name - Uniform variable name in shader
+	 * @param values - 1-4 numeric values to set
+	 */
 	setUniform(name: string, ...values: number[]): void {
 		const location = this.gl.getUniformLocation(this.program, name);
 		if (!location) {
