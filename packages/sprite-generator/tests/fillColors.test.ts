@@ -78,7 +78,7 @@ describe('fillColors module', () => {
 			rectangleCommands.forEach(cmd => {
 				validateDrawingCommand(cmd, Command.RECTANGLE);
 				expect(cmd[3]).toBe(width); // width parameter
-				expect(cmd[4]).toBe(height); // height parameter (misspelled as characterHight in source)
+				expect(cmd[4]).toBe(height); // height parameter
 			});
 		});
 
