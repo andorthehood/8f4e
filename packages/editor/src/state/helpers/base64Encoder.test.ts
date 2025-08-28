@@ -22,7 +22,7 @@ describe('base64Encoder', () => {
 		for (let i = 0; i < largeArray.length; i++) {
 			largeArray[i] = i % 256;
 		}
-		
+
 		// This should not throw a stack overflow error
 		expect(() => {
 			const encoded = encodeUint8ArrayToBase64(largeArray);

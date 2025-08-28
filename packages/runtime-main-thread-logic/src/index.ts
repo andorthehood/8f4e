@@ -11,7 +11,7 @@ export interface MainThreadLogicRuntime {
 export default function createMainThreadLogicRuntime(
 	onInitialized: () => void,
 	onStats: (stats: { drift: number; timeToExecute: number }) => void,
-	onError: (error: any) => void
+	onError: (error: unknown) => void
 ): MainThreadLogicRuntime {
 	let interval: number | undefined;
 	let statsInterval: number | undefined;
