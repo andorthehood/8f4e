@@ -27,27 +27,26 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		// Check if project has pre-compiled WASM bytecode for runtime-only execution
 		if (state.project.compiledWasm) {
 			console.log('[Compiler] Using pre-compiled WASM bytecode from project');
-			
+
 			try {
 				// Decode base64 WASM back to Uint8Array
 				const base64Data = state.project.compiledWasm;
 				const wasmBytecode = decodeBase64ToUint8Array(base64Data);
-				
+
 				// Set up the compiler state as if compilation succeeded
 				state.compiler.codeBuffer = wasmBytecode;
 				state.compiler.isCompiling = false;
 				state.compiler.buildErrors = [];
 				state.compiler.compilationTime = 0; // No compilation time since we used pre-compiled
-				
+
 				// Note: Binary assets are not handled for pre-compiled WASM projects
 				// as they should already be embedded in the compiled bytecode.
 				// The compiledModules map is not available for pre-compiled projects
 				// since it contains compilation-time metadata that is not persisted.
-				
+
 				console.log('[Compiler] Pre-compiled WASM loaded successfully');
 				events.dispatch('buildFinished');
 				return;
-				
 			} catch (error) {
 				console.error('[Compiler] Failed to load pre-compiled WASM:', error);
 				// Fall through to regular compilation if pre-compiled WASM fails
