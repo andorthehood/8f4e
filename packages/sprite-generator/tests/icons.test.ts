@@ -1,8 +1,14 @@
+import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
+import {
+	validateDrawingCommand,
+	findCommand,
+	findAllCommands,
+	validateSpriteCoordinates,
+	createMockBitmap,
+} from './utils/testHelpers';
+
 import generateIcons, { Icon, generateLookup } from '../src/icons';
 import { Command } from '../src/types';
-import { Glyph } from '../src/fonts/types';
-import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
-import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates, createMockBitmap } from './utils/testHelpers';
 
 describe('icons module', () => {
 	describe('Icon enum', () => {
@@ -84,14 +90,15 @@ describe('icons module', () => {
 			);
 
 			const rectangleCommands = findAllCommands(commands, Command.RECTANGLE);
-			
+
 			// Should have rectangles for backgrounds
 			expect(rectangleCommands.length).toBeGreaterThan(0);
 
 			// Check that some rectangles are for multi-character icons
-			const wideRectangles = rectangleCommands.filter(cmd => 
-				cmd[3] === characterDimensions8x16.width * 3 || // INPUT icon width
-				cmd[3] === characterDimensions8x16.width * 4    // SWITCH icon width
+			const wideRectangles = rectangleCommands.filter(
+				cmd =>
+					cmd[3] === characterDimensions8x16.width * 3 || // INPUT icon width
+					cmd[3] === characterDimensions8x16.width * 4 // SWITCH icon width
 			);
 			expect(wideRectangles.length).toBeGreaterThan(0);
 		});
@@ -117,16 +124,8 @@ describe('icons module', () => {
 		});
 
 		it('should handle different character dimensions correctly', () => {
-			const commands8x16 = generateIcons(
-				mockFont,
-				8, 16,
-				minimalColorScheme.icons
-			);
-			const commands6x10 = generateIcons(
-				mockFont,
-				6, 10,
-				minimalColorScheme.icons
-			);
+			const commands8x16 = generateIcons(mockFont, 8, 16, minimalColorScheme.icons);
+			const commands6x10 = generateIcons(mockFont, 6, 10, minimalColorScheme.icons);
 
 			// Both should start with same structure
 			expect(commands8x16[0]).toEqual([Command.RESET_TRANSFORM]);
@@ -148,17 +147,12 @@ describe('icons module', () => {
 		it('should handle missing colors gracefully', () => {
 			const colorsWithUndefined = {
 				...minimalColorScheme.icons,
-				inputConnectorBackground: undefined as any,
-				arrow: undefined as any,
+				inputConnectorBackground: undefined as string | undefined,
+				arrow: undefined as string | undefined,
 			};
 
 			expect(() => {
-				generateIcons(
-					mockFont,
-					characterDimensions8x16.width,
-					characterDimensions8x16.height,
-					colorsWithUndefined
-				);
+				generateIcons(mockFont, characterDimensions8x16.width, characterDimensions8x16.height, colorsWithUndefined);
 			}).not.toThrow();
 		});
 
@@ -178,10 +172,7 @@ describe('icons module', () => {
 
 	describe('generateLookup function', () => {
 		it('should generate correct lookup for 8x16 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			// Should have entries for all icon types
 			expect(Object.keys(lookup)).toHaveLength(7);
@@ -195,10 +186,7 @@ describe('icons module', () => {
 		});
 
 		it('should generate correct sprite coordinates for INPUT icon', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const inputCoordinate = lookup[Icon.INPUT];
 
@@ -212,10 +200,7 @@ describe('icons module', () => {
 		});
 
 		it('should generate correct sprite coordinates for SWITCH icons', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const switchOffCoordinate = lookup[Icon.SWITCH_OFF];
 			const switchOnCoordinate = lookup[Icon.SWITCH_ON];
@@ -229,10 +214,7 @@ describe('icons module', () => {
 		});
 
 		it('should generate correct sprite coordinates for arrow icons', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const arrowTopCoordinate = lookup[Icon.ARROW_TOP];
 			const arrowRightCoordinate = lookup[Icon.ARROW_RIGHT];
@@ -253,10 +235,7 @@ describe('icons module', () => {
 		});
 
 		it('should generate correct coordinates for 6x10 characters', () => {
-			const lookup = generateLookup(
-				characterDimensions6x10.width,
-				characterDimensions6x10.height
-			);
+			const lookup = generateLookup(characterDimensions6x10.width, characterDimensions6x10.height);
 
 			const inputCoordinate = lookup[Icon.INPUT];
 			const arrowCoordinate = lookup[Icon.ARROW_TOP];
@@ -269,10 +248,7 @@ describe('icons module', () => {
 		});
 
 		it('should maintain consistent Y coordinates for all icons', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const coordinates = Object.values(lookup);
 			const yValues = coordinates.map(coord => coord.y);
@@ -283,13 +259,10 @@ describe('icons module', () => {
 		});
 
 		it('should have non-overlapping X coordinates', () => {
-			const lookup = generateLookup(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height
-			);
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height);
 
 			const coordinates = Object.values(lookup);
-			
+
 			// Sort by x coordinate to check for overlaps
 			const sortedCoords = coordinates.sort((a, b) => a.x - b.x);
 
