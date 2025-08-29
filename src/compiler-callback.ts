@@ -2,19 +2,19 @@ import { type Module, type CompileOptions } from '@8f4e/compiler';
 import { type CompilationResult } from '@8f4e/editor';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 
-// Implementation of the compileProject callback using the existing compiler-worker
+// Create worker once at module scope
+// it will live for the entire application lifecycle
+const compilerWorker = new CompilerWorker();
+
 export async function compileProject(
 	modules: Module[],
 	compilerOptions: CompileOptions,
 	memoryRef: WebAssembly.Memory
 ): Promise<CompilationResult> {
 	return new Promise((resolve, reject) => {
-		const worker = new CompilerWorker();
-
 		const handleMessage = ({ data }: MessageEvent) => {
 			switch (data.type) {
 				case 'buildOk':
-					worker.terminate();
 					resolve({
 						compiledModules: data.payload.compiledModules,
 						codeBuffer: data.payload.codeBuffer,
@@ -22,7 +22,6 @@ export async function compileProject(
 					});
 					break;
 				case 'buildError': {
-					worker.terminate();
 					// Create an error object that matches the expected structure
 					const error = new Error(data.payload.message) as Error & {
 						line?: { lineNumber: number };
@@ -38,8 +37,10 @@ export async function compileProject(
 			}
 		};
 
-		worker.addEventListener('message', handleMessage);
-		worker.postMessage({
+		// Add listener for this compilation
+		compilerWorker.addEventListener('message', handleMessage, { once: true });
+
+		compilerWorker.postMessage({
 			type: 'recompile',
 			payload: {
 				memoryRef,
