@@ -1,5 +1,3 @@
-import { Engine } from '@8f4e/2d-engine';
-
 import drawConnectors from './extras/connectors';
 import drawPlotters from './extras/plotters';
 import drawDebuggers from './extras/debuggers';
@@ -10,7 +8,9 @@ import drawPianoKeyboards from './extras/pianoKeyboards';
 
 import { State } from '../../../state/types';
 
-export default function drawModules(engine: Engine, state: State): void {
+import type { CachedEngine } from '@8f4e/2d-engine';
+
+export default function drawModules(engine: CachedEngine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
@@ -38,6 +38,9 @@ export default function drawModules(engine: Engine, state: State): void {
 			codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.globalViewport.height
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
+
+			// Testing cache group
+			engine.startCacheGroup('codeBlock' + codeBlock.id, codeBlock.width, codeBlock.height);
 
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
@@ -100,6 +103,8 @@ export default function drawModules(engine: Engine, state: State): void {
 			drawErrorMessages(engine, state, codeBlock);
 			drawPianoKeyboards(engine, state, codeBlock);
 
+			// Getting a No cache group to end error
+			engine.endCacheGroup();
 			engine.endGroup();
 		}
 	}
