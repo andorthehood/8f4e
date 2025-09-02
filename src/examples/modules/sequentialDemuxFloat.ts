@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const sequentialDemuxFloat: ExampleModule = {
 	title: 'Sequential Demultiplexer (8 output, Float)',
