@@ -2,7 +2,7 @@ import { Engine } from '@8f4e/2d-engine';
 
 const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
-import { State } from '../../state/types';
+import type { State } from '../../state/types';
 
 function formatBytes(bytes: number): string {
 	if (bytes < 1000) {
