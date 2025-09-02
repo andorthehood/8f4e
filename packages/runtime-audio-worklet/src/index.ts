@@ -1,7 +1,6 @@
 import createModule from './createModule';
 class Main extends AudioWorkletProcessor {
 	constructor(...args: ConstructorParameters<typeof AudioWorkletProcessor>) {
-		// @ts-ignore
 		super(...args);
 
 		this.port.onmessage = async event => {
@@ -28,7 +27,6 @@ class Main extends AudioWorkletProcessor {
 		this.audioInputBuffers = audioInputBuffers;
 
 		this.buffer = buffer;
-		// @ts-ignore
 		this.memoryBuffer = memoryBuffer;
 
 		this.port.postMessage({
@@ -43,7 +41,7 @@ class Main extends AudioWorkletProcessor {
 		return;
 	};
 
-	memoryBuffer = new Float32Array(128).fill(0);
+	memoryBuffer: Float32Array = new Float32Array(128).fill(0);
 	audioOutputBuffers = [] as { channel: number; output: number; audioBufferWordAddress: number }[];
 	audioInputBuffers = [] as { channel: number; input: number; audioBufferWordAddress: number }[];
 
