@@ -171,7 +171,7 @@ describe('CachedEngine', () => {
 			engine.endCacheGroup();
 
 			// Mock the drawCachedTexture method
-			const mockRenderer = (engine as { cachedRenderer: CachedRenderer }).cachedRenderer;
+			const mockRenderer = (engine as { renderer: CachedRenderer }).renderer;
 			const drawSpy = jest.spyOn(mockRenderer, 'drawCachedTexture');
 
 			// Draw cached content
@@ -189,7 +189,7 @@ describe('CachedEngine', () => {
 			engine.startGroup(10, 20);
 
 			// Mock the drawCachedTexture method
-			const mockRenderer = (engine as { cachedRenderer: CachedRenderer }).cachedRenderer;
+			const mockRenderer = (engine as { renderer: CachedRenderer }).renderer;
 			const drawSpy = jest.spyOn(mockRenderer, 'drawCachedTexture');
 
 			// Draw cached content - should apply offsets
@@ -201,7 +201,7 @@ describe('CachedEngine', () => {
 		});
 
 		test('should skip drawing non-existent cached content silently', () => {
-			const mockRenderer = (engine as { cachedRenderer: CachedRenderer }).cachedRenderer;
+			const mockRenderer = (engine as { renderer: CachedRenderer }).renderer;
 			const drawSpy = jest.spyOn(mockRenderer, 'drawCachedTexture');
 
 			engine.drawCachedContent('non-existent', 0, 0);
@@ -323,10 +323,24 @@ describe('CachedEngine', () => {
 			}).toThrow();
 		});
 
-		test('should handle ending non-existent cache group', () => {
-			expect(() => {
-				engine.endCacheGroup();
-			}).toThrow('No cache group to end');
+		test('should handle ending non-existent cache group gracefully', () => {
+			const result = engine.endCacheGroup();
+			expect(result).toBeNull();
+		});
+
+		test('should handle existing cache group start/end cycle gracefully', () => {
+			// Create initial cache
+			const firstResult = engine.startCacheGroup('existing-cache', 100, 100);
+			expect(firstResult).toBe(true); // First time should create cache
+			engine.endCacheGroup();
+
+			// Try to use same cache ID again - should not create new cache
+			const secondResult = engine.startCacheGroup('existing-cache', 100, 100);
+			expect(secondResult).toBe(false); // Cache already exists
+
+			// Ending should not throw error, but return null since no new cache was started
+			const endResult = engine.endCacheGroup();
+			expect(endResult).toBeNull();
 		});
 	});
 });
