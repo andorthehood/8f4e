@@ -3,7 +3,7 @@
 **Priority**: 🟡
 **Estimated Effort**: 1-2 days
 **Created**: 2025-08-28
-**Status**: Open
+**Status**: Cancelled
 **Completed**: 
 
 ## Problem Description
