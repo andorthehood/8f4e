@@ -94,6 +94,9 @@ export class CachedRenderer extends Renderer {
 		// Switch to rendering to cache framebuffer
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, cacheFramebuffer);
 		this.gl.viewport(0, 0, width, height);
+
+		// Clear to the same background color as the main canvas
+		this.gl.clearColor(0, 0, 0, 1); // opaque black background like main canvas
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
 		// Evict old cache entries if necessary
@@ -126,6 +129,9 @@ export class CachedRenderer extends Renderer {
 		// Switch back to default framebuffer (canvas)
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+
+		// Restore original clear color
+		this.gl.clearColor(0, 0, 0, 1.0);
 
 		// Clear current cache state
 		this.currentCacheId = null;
