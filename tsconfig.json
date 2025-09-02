@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "ES2022",
-		"lib": ["ES2022", "dom", "dom.iterable"],
+		"target": "esnext",
+		"lib": ["esnext", "dom", "dom.iterable"],
 		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"allowSyntheticDefaultImports": true,
