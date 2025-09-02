@@ -9,8 +9,9 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 		}
 
 		try {
-			// @ts-ignore - FileSystemFileHandle is not yet in TypeScript types
-			const fileHandles: FileSystemFileHandle[] = await window.showOpenFilePicker();
+			const fileHandles = await (
+				window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
+			).showOpenFilePicker();
 			const file = await fileHandles[0].getFile();
 
 			const result = await state.options.importBinaryAsset(file);
