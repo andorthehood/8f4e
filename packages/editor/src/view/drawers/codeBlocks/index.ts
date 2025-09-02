@@ -44,9 +44,11 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 			// Check if we have cached content for this code block (static content)
 			if (engine.hasCachedContent(cacheId)) {
 				// Draw the cached static content
+				console.log(`[CodeBlock] Using cached content for ${cacheId}`);
 				engine.drawCachedContent(cacheId, 0, 0);
 			} else {
 				// No cache exists, create one by drawing static content
+				console.log(`[CodeBlock] Creating cache for ${cacheId}`);
 				const cacheStarted = engine.startCacheGroup(cacheId, codeBlock.width, codeBlock.height);
 
 				if (cacheStarted) {
