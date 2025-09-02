@@ -173,8 +173,8 @@ export function generateCodeColorMap<T>(
 ): T[][] {
 	return code.map(line => {
 		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
-		// @ts-ignore
-		const { indices: instructionIndices } = getInstructionRegExp(instructions).exec(line) || { indices: [[]] };
+		const instructionMatch = getInstructionRegExp(instructions).exec(line);
+		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices?.[0] || [];
 		const { index: numberIndex } = /(?!^)(?:-|)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: commentIndex } = /;/.exec(line) || {};
 		const binaryNumberMatch = /0b([01]+)/.exec(line) || { index: undefined };
