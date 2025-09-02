@@ -6,17 +6,16 @@ import { CachedRenderer } from './CachedRenderer';
  * when drawing complex or frequently-used content.
  */
 export class CachedEngine extends Engine {
-	private cachedRenderer: CachedRenderer;
 	private savedOffsetX: number | null = null;
 	private savedOffsetY: number | null = null;
+	private cacheGroupStarted: boolean = false;
 
 	constructor(canvas: HTMLCanvasElement, maxCacheItems: number = 50) {
 		super(canvas);
 
 		// Replace renderer with cached version
-		this.cachedRenderer = new CachedRenderer(canvas, maxCacheItems);
 		// @ts-expect-error - accessing private property to replace renderer
-		this.renderer = this.cachedRenderer;
+		this.renderer = new CachedRenderer(canvas, maxCacheItems);
 	}
 
 	/**
@@ -35,7 +34,19 @@ export class CachedEngine extends Engine {
 		this.offsetX = 0;
 		this.offsetY = 0;
 
-		return this.cachedRenderer.startCacheGroup(cacheId, width, height);
+		// @ts-expect-error - accessing private property to call cached renderer methods
+		const result = (this.renderer as CachedRenderer).startCacheGroup(cacheId, width, height);
+		this.cacheGroupStarted = result; // Track if we actually started a new cache group
+		
+		// If cache already exists, restore offsets immediately
+		if (!result) {
+			this.offsetX = this.savedOffsetX || 0;
+			this.offsetY = this.savedOffsetY || 0;
+			this.savedOffsetX = null;
+			this.savedOffsetY = null;
+		}
+		
+		return result;
 	}
 
 	/**
@@ -43,7 +54,13 @@ export class CachedEngine extends Engine {
 	 * @returns Cache data if successful, null if no cache group was active
 	 */
 	endCacheGroup(): { texture: WebGLTexture; width: number; height: number } | null {
-		const result = this.cachedRenderer.endCacheGroup();
+		// Only end cache group if we actually started one
+		if (!this.cacheGroupStarted) {
+			return null; // No cache group was started, so nothing to end
+		}
+		
+		// @ts-expect-error - accessing private property to call cached renderer methods
+		const result = (this.renderer as CachedRenderer).endCacheGroup();
 
 		// Restore original offset state
 		if (this.savedOffsetX !== null && this.savedOffsetY !== null) {
@@ -53,6 +70,7 @@ export class CachedEngine extends Engine {
 			this.savedOffsetY = null;
 		}
 
+		this.cacheGroupStarted = false; // Reset flag
 		return result;
 	}
 
@@ -63,7 +81,8 @@ export class CachedEngine extends Engine {
 	 * @param y - Y position to draw at
 	 */
 	drawCachedContent(cacheId: string, x: number, y: number): void {
-		if (!this.cachedRenderer.hasCachedContent(cacheId)) {
+		// @ts-expect-error - accessing private property to call cached renderer methods
+		if (!(this.renderer as CachedRenderer).hasCachedContent(cacheId)) {
 			return; // Cache doesn't exist, skip silently
 		}
 
@@ -72,10 +91,12 @@ export class CachedEngine extends Engine {
 		y = y + this.offsetY;
 
 		// Get cache data
-		const cacheData = this.cachedRenderer.getCachedData(cacheId);
+		// @ts-expect-error - accessing private property to call cached renderer methods
+		const cacheData = (this.renderer as CachedRenderer).getCachedData(cacheId);
 
 		if (cacheData) {
-			this.cachedRenderer.drawCachedTexture(cacheData.texture, cacheData.width, cacheData.height, x, y);
+			// @ts-expect-error - accessing private property to call cached renderer methods
+			(this.renderer as CachedRenderer).drawCachedTexture(cacheData.texture, cacheData.width, cacheData.height, x, y);
 		}
 	}
 
@@ -84,7 +105,8 @@ export class CachedEngine extends Engine {
 	 * @param cacheId - ID to check
 	 */
 	hasCachedContent(cacheId: string): boolean {
-		return this.cachedRenderer.hasCachedContent(cacheId);
+		// @ts-expect-error - accessing private property to call cached renderer methods
+		return (this.renderer as CachedRenderer).hasCachedContent(cacheId);
 	}
 
 	/**
@@ -92,20 +114,23 @@ export class CachedEngine extends Engine {
 	 * @param cacheId - ID of the cache to clear
 	 */
 	clearCache(cacheId: string): void {
-		this.cachedRenderer.clearCache(cacheId);
+		// @ts-expect-error - accessing private property to call cached renderer methods
+		(this.renderer as CachedRenderer).clearCache(cacheId);
 	}
 
 	/**
 	 * Clear all cache entries
 	 */
 	clearAllCache(): void {
-		this.cachedRenderer.clearAllCache();
+		// @ts-expect-error - accessing private property to call cached renderer methods
+		(this.renderer as CachedRenderer).clearAllCache();
 	}
 
 	/**
 	 * Get cache statistics
 	 */
 	getCacheStats(): { itemCount: number; maxItems: number; accessOrder: string[] } {
-		return this.cachedRenderer.getCacheStats();
+		// @ts-expect-error - accessing private property to call cached renderer methods
+		return (this.renderer as CachedRenderer).getCacheStats();
 	}
 }
