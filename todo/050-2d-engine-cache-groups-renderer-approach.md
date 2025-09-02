@@ -21,39 +21,32 @@ The 2D engine currently redraws all UI elements and sprites every frame, even wh
 **Key Insight**: Caching is fundamentally a WebGL concern (framebuffers, textures, render targets) and should be handled at the rendering layer, not the high-level API layer.
 
 **High-level Approach**:
-1. Create `CachedRenderer` that extends base `Renderer`
+1. Create `CachedRenderer` that extends base `Renderer` with integrated cache management
 2. Create lightweight `CachedEngine` that uses `CachedRenderer`
 3. Keep base `Engine` and `Renderer` completely cache-free
 
 ## Implementation Plan
 
-### Phase 1: Core Cache Management
-Create `CacheManager` class for pure cache logic:
+### Phase 1: Cached Renderer (Merged Approach)
+Create `CachedRenderer` that extends base `Renderer` with integrated cache management:
 ```typescript
-class CacheManager {
+class CachedRenderer extends Renderer {
+  // Cache state integrated directly (no separate CacheManager)
   private cacheMap: Map<string, WebGLTexture>
   private cacheFramebuffers: Map<string, WebGLFramebuffer>  
   private cacheSizes: Map<string, {width: number, height: number}>
   private cacheAccessOrder: string[] // For LRU tracking
   private maxCacheItems: number = 50
-  
-  startCacheGroup(cacheId: string, width: number, height: number): boolean
-  endCacheGroup(): {texture: WebGLTexture, width: number, height: number} | null
-  shouldSkipDrawing(): boolean
-  clearCache(cacheId: string): void
-  // ... other cache management methods
-}
-```
-
-### Phase 2: Cached Renderer
-Create `CachedRenderer` that extends base `Renderer`:
-```typescript
-class CachedRenderer extends Renderer {
-  private cacheManager: CacheManager
+  private currentCacheId: string | null = null
+  private currentCacheFramebuffer: WebGLFramebuffer | null = null
 
   constructor(canvas: HTMLCanvasElement, maxCacheItems: number = 50) {
     super(canvas)
-    this.cacheManager = new CacheManager(this.gl, maxCacheItems)
+    this.maxCacheItems = maxCacheItems
+    this.cacheMap = new Map()
+    this.cacheFramebuffers = new Map()
+    this.cacheSizes = new Map()
+    this.cacheAccessOrder = []
   }
 
   // Override drawing methods to respect cache state
@@ -67,14 +60,17 @@ class CachedRenderer extends Renderer {
     super.drawLineFromCoordinates(...args)
   }
 
-  // Cache-specific methods
-  startCacheGroup(cacheId, width, height): boolean
-  endCacheGroup(): CacheInfo | null
-  drawCachedTexture(texture, width, height): void
+  // Cache management methods (integrated directly)
+  startCacheGroup(cacheId: string, width: number, height: number): boolean
+  endCacheGroup(): {texture: WebGLTexture, width: number, height: number} | null
+  shouldSkipDrawing(): boolean
+  clearCache(cacheId: string): void
+  drawCachedTexture(texture: WebGLTexture, width: number, height: number): void
+  // ... other cache management methods
 }
 ```
 
-### Phase 3: Cached Engine
+### Phase 2: Cached Engine
 Create simple `CachedEngine` using renderer inheritance:
 ```typescript
 class CachedEngine extends Engine {
@@ -103,7 +99,7 @@ class CachedEngine extends Engine {
 }
 ```
 
-### Phase 4: Export Strategy
+### Phase 3: Export Strategy
 Provide multiple options for different use cases:
 ```typescript
 // Base classes (no caching)
@@ -113,9 +109,6 @@ export { Renderer } from './renderer'
 // Cached versions
 export { CachedEngine } from './CachedEngine'
 export { CachedRenderer } from './CachedRenderer'
-
-// Standalone cache management
-export { CacheManager } from './CacheManager'
 ```
 
 ## Architecture Benefits
@@ -123,28 +116,29 @@ export { CacheManager } from './CacheManager'
 ### ✅ **Cleaner Separation of Concerns**
 - `Renderer`: WebGL operations + caching at GPU level
 - `Engine`: High-level API + transform management
-- `CacheManager`: Pure cache logic
+- **No artificial separation** between cache logic and WebGL operations
 
 ### ✅ **Simpler Implementation** 
-- No method duplication in `CachedEngine`
-- Direct inheritance leverages existing functionality
-- Cache logic contained at appropriate abstraction level
+- Integrated cache management
+- Direct access to WebGL context and existing state
+- No coordination overhead between separate classes
+- Cache logic integrated where WebGL operations happen
 
 ### ✅ **Better Performance**
 - No composition overhead
+- No need to pass WebGL context between classes
 - Cache decisions made at optimal point in render pipeline
 - Smaller memory footprint
 
 ### ✅ **User Choice**
 - `Engine` + `Renderer`: Lightweight, no caching
 - `CachedEngine` + `CachedRenderer`: Full caching capabilities
-- `CacheManager`: Custom integration scenarios
 
 ## Technical Implementation Details
 
 ### Framebuffer Management
-- Create offscreen framebuffers in `CacheManager`
-- Switch render targets at `CachedRenderer` level
+- Create offscreen framebuffers directly in `CachedRenderer`
+- Switch render targets at renderer level
 - Handle WebGL state management properly
 
 ### Cache Invalidation Strategy
@@ -164,8 +158,7 @@ export { CacheManager } from './CacheManager'
 
 ## Success Criteria
 
-- [ ] `CacheManager` class with pure cache logic implemented
-- [ ] `CachedRenderer` extending base `Renderer` with cache awareness
+- [ ] `CachedRenderer` extending base `Renderer` with integrated cache management
 - [ ] `CachedEngine` using inheritance approach (minimal code)
 - [ ] All drawing operations respect cache state at renderer level
 - [ ] LRU eviction system with configurable limits
@@ -200,32 +193,38 @@ const renderer = new CachedRenderer(canvas)
 ## Migration Benefits
 
 ### From Current Composition Approach:
-- **50% less code** in `CachedEngine` class
+- **Minimal code** in `CachedEngine` class
 - **Better performance** due to inheritance vs composition
 - **Cleaner architecture** with concerns at right abstraction levels
 - **Same public API** - no breaking changes for users
 
+### From Separate CacheManager Approach:
+- **Simpler architecture** to maintain and test
+- **Direct access** to WebGL context and existing state
+- **No coordination overhead** between components
+- **Simpler API** - all cache operations are methods on the renderer
+
 ### Testing Strategy:
-- Unit tests for `CacheManager` (cache logic)
-- Unit tests for `CachedRenderer` (WebGL integration)  
+- Unit tests for `CachedRenderer` (WebGL integration + cache logic)  
 - Integration tests for `CachedEngine` (high-level API)
 - Performance benchmarks comparing approaches
 
 ## Implementation Notes
 
-**Why This Approach is Superior:**
-1. **Natural Layering**: Cache operations happen where WebGL operations happen
-2. **Code Reuse**: Leverage inheritance instead of duplicating methods
-3. **Performance**: No composition overhead, direct method calls
-4. **Maintainability**: Changes to base classes automatically inherited
-5. **Bundle Size**: Smaller footprint due to inheritance vs composition
+**Why This Merged Approach is Superior:**
+1. **Natural Integration**: Cache operations happen where WebGL operations happen
+2. **No Artificial Boundaries**: No need to separate cache logic from WebGL state
+3. **Direct Access**: Cache management has direct access to WebGL context and renderer state
+4. **Simpler State Management**: All cache operations integrated in one place
+5. **Better Performance**: No composition overhead, direct method calls
+6. **Maintainability**: Changes to base classes automatically inherited
+7. **Bundle Size**: Smaller footprint with integrated approach
 
-**Key Insight**: Caching is not a feature of the high-level API - it's an optimization at the rendering layer. By implementing it at the `Renderer` level, we get better architecture and simpler code.
+**Key Insight**: Caching is not a feature of the high-level API - it's an optimization at the rendering layer. By implementing it directly in the `CachedRenderer` class, we get better architecture, simpler code, and better performance.
 
 ## Affected Files
 
-- `src/CacheManager.ts` - New: Pure cache logic
-- `src/CachedRenderer.ts` - New: Renderer with cache capabilities  
+- `src/CachedRenderer.ts` - New: Renderer with integrated cache capabilities  
 - `src/CachedEngine.ts` - New: Engine using cached renderer
 - `src/index.ts` - Updated: Export new classes
 - `tests/` - New comprehensive test suite
@@ -236,3 +235,4 @@ const renderer = new CachedRenderer(canvas)
 - Previous implementation analysis showing composition complexity
 - WebGL framebuffer best practices
 - Performance comparison data favoring inheritance approach
+- Analysis showing integrated approach reduces complexity
