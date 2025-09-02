@@ -129,9 +129,29 @@ export class CachedRenderer extends Renderer {
 
 		// Render any buffered content to the cache
 		if (this.bufferCounter > 0) {
+			console.log(`[Cache] Rendering ${this.bufferCounter / 2} triangles to cache framebuffer`);
 			super.renderVertexBuffer();
 			super.resetBuffers();
 		}
+
+		// Debug: Try to read back pixels from the framebuffer to verify content was rendered
+		const pixelData = new Uint8Array(4 * 4); // Sample 2x2 pixels
+		this.gl.readPixels(0, 0, 2, 2, this.gl.RGBA, this.gl.UNSIGNED_BYTE, pixelData);
+
+		let hasNonBlackPixels = false;
+		for (let i = 0; i < pixelData.length; i += 4) {
+			const r = pixelData[i],
+				g = pixelData[i + 1],
+				b = pixelData[i + 2],
+				a = pixelData[i + 3];
+			if (r > 0 || g > 0 || b > 0 || a !== 255) {
+				hasNonBlackPixels = true;
+				break;
+			}
+		}
+
+		console.log(`[Cache] Framebuffer content check - has non-black pixels: ${hasNonBlackPixels}`);
+		console.log(`[Cache] Sample pixels:`, Array.from(pixelData.slice(0, 8)));
 
 		// Get cache data
 		const cacheTexture = this.cacheMap.get(this.currentCacheId)!;
@@ -218,6 +238,11 @@ export class CachedRenderer extends Renderer {
 
 		console.log(`[Cache] Drawing cached texture at (${x}, ${y}) size ${width}x${height}`);
 
+		// Debug: Check what texture is currently bound
+		const currentTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
+		console.log(`[Cache] Current bound texture before:`, currentTexture);
+		console.log(`[Cache] Target cached texture:`, texture);
+
 		// Auto-flush buffer if full (prevents overflow)
 		if (this.bufferCounter + 12 > this.bufferSize) {
 			super.renderVertexBuffer();
@@ -275,9 +300,42 @@ export class CachedRenderer extends Renderer {
 		this.gl.activeTexture(this.gl.TEXTURE0);
 		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
 
+		// Debug: Verify texture is bound correctly
+		const boundTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
+		console.log(`[Cache] Bound texture after binding:`, boundTexture);
+		console.log(`[Cache] Texture binding successful:`, boundTexture === texture);
+
+		// Debug: Try to read back a single pixel from the texture to verify it has content
+		const framebuffer = this.gl.createFramebuffer();
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, framebuffer);
+		this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
+
+		if (this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER) === this.gl.FRAMEBUFFER_COMPLETE) {
+			const pixel = new Uint8Array(4);
+			this.gl.readPixels(0, 0, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, pixel);
+			console.log(`[Cache] Sample pixel from cached texture: [${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${pixel[3]}]`);
+		} else {
+			console.log(`[Cache] Warning: Cached texture framebuffer not complete for pixel reading`);
+		}
+
+		// Restore main framebuffer
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+		this.gl.deleteFramebuffer(framebuffer);
+
 		// Immediately render this cached texture
 		super.renderVertexBuffer();
 		this.resetBuffers();
+
+		// Debug: Check what texture is bound after rendering
+		const afterTexture = this.gl.getParameter(this.gl.TEXTURE_BINDING_2D);
+		console.log(`[Cache] Bound texture after rendering:`, afterTexture);
+
+		// Restore sprite sheet texture for subsequent normal rendering
+		if (this.spriteSheet) {
+			this.gl.activeTexture(this.gl.TEXTURE0);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
+			console.log(`[Cache] Restored sprite sheet texture:`, this.spriteSheet);
+		}
 	}
 
 	/**
