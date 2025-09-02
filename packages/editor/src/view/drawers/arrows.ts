@@ -1,7 +1,7 @@
 import { Engine } from '@8f4e/2d-engine';
 import { Icon } from '@8f4e/sprite-generator';
 
-import { State } from '../../state/types';
+import type { State } from '../../state/types';
 
 function calculateIntersection(
 	line1StartX: number,
