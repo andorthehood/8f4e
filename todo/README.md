@@ -26,13 +26,7 @@ This directory contains documentation for planned improvements and technical deb
 
 1. **Mark as completed**: Update status to "Completed" in the TODO file
 2. **Move to archived folder**: Move the completed TODO file to `archived/` folder
-3. **Update this README**: Remove from active lists and add to completed section
 4. **Update related TODOs**: Check if completion affects other items and update dependencies
-
-## Completed Items
-
-### ✅ Recently Completed
-- None yet
 
 ## Template
 
@@ -44,13 +38,4 @@ When a TODO is completed:
 1. **Update the TODO file**: Change status from "Open" to "Completed"
 2. **Add completion date**: Note when the task was finished
 3. **Move to archived folder**: Move the file to `todo/archived/` for historical reference
-4. **Update this README**: Remove from active priority sections and add to completed items
 5. **Review dependencies**: Update any other TODOs that depended on this completed item
-
-## Tracking
-
-These items should be reviewed during:
-- Pre-release planning
-- Sprint planning  
-- Architecture reviews
-- Dependency update cycles 
