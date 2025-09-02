@@ -76,6 +76,12 @@ export class CachedRenderer extends Renderer {
 			return false; // Cache already exists
 		}
 
+		// Flush any pending vertex data to the main framebuffer first
+		if (this.bufferCounter > 0) {
+			super.renderVertexBuffer();
+			super.resetBuffers();
+		}
+
 		// Create new cache entry
 		const cacheTexture = this.createCacheTexture(width, height);
 		const cacheFramebuffer = this.createCacheFramebuffer(cacheTexture);
@@ -95,6 +101,12 @@ export class CachedRenderer extends Renderer {
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, cacheFramebuffer);
 		this.gl.viewport(0, 0, width, height);
 
+		// Make sure sprite sheet is bound for rendering to cache
+		if (this.spriteSheet) {
+			this.gl.activeTexture(this.gl.TEXTURE0);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
+		}
+
 		// Clear to the same background color as the main canvas
 		this.gl.clearColor(0, 0, 0, 1); // opaque black background like main canvas
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
@@ -102,6 +114,7 @@ export class CachedRenderer extends Renderer {
 		// Evict old cache entries if necessary
 		this.evictOldCacheEntries();
 
+		console.log(`[Cache] Started cache group ${cacheId} (${width}x${height})`);
 		return true; // New cache created
 	}
 
@@ -115,8 +128,10 @@ export class CachedRenderer extends Renderer {
 		}
 
 		// Render any buffered content to the cache
-		super.renderVertexBuffer();
-		super.resetBuffers();
+		if (this.bufferCounter > 0) {
+			super.renderVertexBuffer();
+			super.resetBuffers();
+		}
 
 		// Get cache data
 		const cacheTexture = this.cacheMap.get(this.currentCacheId)!;
@@ -126,12 +141,22 @@ export class CachedRenderer extends Renderer {
 			height: this.currentCacheSize.height,
 		};
 
+		console.log(
+			`[Cache] Ended cache group ${this.currentCacheId} (${this.currentCacheSize.width}x${this.currentCacheSize.height})`
+		);
+
 		// Switch back to default framebuffer (canvas)
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 
 		// Restore original clear color
 		this.gl.clearColor(0, 0, 0, 1.0);
+
+		// Rebind sprite sheet for main rendering
+		if (this.spriteSheet) {
+			this.gl.activeTexture(this.gl.TEXTURE0);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
+		}
 
 		// Clear current cache state
 		this.currentCacheId = null;
@@ -191,27 +216,68 @@ export class CachedRenderer extends Renderer {
 			this.resetBuffers();
 		}
 
-		// Temporarily replace the sprite sheet with the cached texture
-		const originalSpriteSheet = this.spriteSheet;
-		const originalWidth = this.spriteSheetWidth;
-		const originalHeight = this.spriteSheetHeight;
+		console.log(`[Cache] Drawing cached texture at (${x}, ${y}) size ${width}x${height}`);
 
-		// Set cached texture as the current sprite sheet
-		this.spriteSheet = texture;
-		this.spriteSheetWidth = width;
-		this.spriteSheetHeight = height;
+		// Auto-flush buffer if full (prevents overflow)
+		if (this.bufferCounter + 12 > this.bufferSize) {
+			super.renderVertexBuffer();
+			this.resetBuffers();
+		}
 
-		// Draw full texture as a single sprite (texture coordinates map to full texture)
-		super.drawSpriteFromCoordinates(x, y, width, height, 0, 0, width, height);
+		// Fill vertex buffer with rectangle vertices
+		const bufferOffset = this.bufferPointer;
+
+		// Position vertices (same as regular sprite)
+		const x1 = x;
+		const x2 = x + width;
+		const y1 = y;
+		const y2 = y + height;
+
+		// Triangle 1
+		this.vertexBuffer[bufferOffset] = x1;
+		this.vertexBuffer[bufferOffset + 1] = y1;
+		this.vertexBuffer[bufferOffset + 2] = x2;
+		this.vertexBuffer[bufferOffset + 3] = y1;
+		this.vertexBuffer[bufferOffset + 4] = x1;
+		this.vertexBuffer[bufferOffset + 5] = y2;
+
+		// Triangle 2
+		this.vertexBuffer[bufferOffset + 6] = x1;
+		this.vertexBuffer[bufferOffset + 7] = y2;
+		this.vertexBuffer[bufferOffset + 8] = x2;
+		this.vertexBuffer[bufferOffset + 9] = y1;
+		this.vertexBuffer[bufferOffset + 10] = x2;
+		this.vertexBuffer[bufferOffset + 11] = y2;
+
+		// Texture coordinates - use full texture (0,0 to 1,1)
+		// Note: WebGL framebuffers have flipped Y coordinates compared to regular textures
+		// Triangle 1
+		this.textureCoordinateBuffer[bufferOffset] = 0; // u1
+		this.textureCoordinateBuffer[bufferOffset + 1] = 1; // v1 (flipped)
+		this.textureCoordinateBuffer[bufferOffset + 2] = 1; // u2
+		this.textureCoordinateBuffer[bufferOffset + 3] = 1; // v1 (flipped)
+		this.textureCoordinateBuffer[bufferOffset + 4] = 0; // u1
+		this.textureCoordinateBuffer[bufferOffset + 5] = 0; // v2 (flipped)
+
+		// Triangle 2
+		this.textureCoordinateBuffer[bufferOffset + 6] = 0; // u1
+		this.textureCoordinateBuffer[bufferOffset + 7] = 0; // v2 (flipped)
+		this.textureCoordinateBuffer[bufferOffset + 8] = 1; // u2
+		this.textureCoordinateBuffer[bufferOffset + 9] = 1; // v1 (flipped)
+		this.textureCoordinateBuffer[bufferOffset + 10] = 1; // u2
+		this.textureCoordinateBuffer[bufferOffset + 11] = 0; // v2 (flipped)
+
+		// Advance buffer counters
+		this.bufferCounter += 12;
+		this.bufferPointer = this.bufferCounter;
+
+		// Bind the cached texture
+		this.gl.activeTexture(this.gl.TEXTURE0);
+		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
 
 		// Immediately render this cached texture
 		super.renderVertexBuffer();
 		this.resetBuffers();
-
-		// Restore original sprite sheet
-		this.spriteSheet = originalSpriteSheet;
-		this.spriteSheetWidth = originalWidth;
-		this.spriteSheetHeight = originalHeight;
 	}
 
 	/**
