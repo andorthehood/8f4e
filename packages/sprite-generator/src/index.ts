@@ -61,7 +61,6 @@ export default function generateSprite(config: Config): {
 		canvas.height = 1024;
 	}
 
-	// @ts-ignore
 	const ctx = canvas.getContext('2d', {
 		alpha: true,
 		antialias: false,
