@@ -24,6 +24,90 @@ import runtime from './effects/runtime';
 import { validateFeatureFlags, defaultFeatureFlags } from '../config/featureFlags';
 import { EventDispatcher } from '../events';
 
+// Helper function to create base code block with self-reference
+function createBaseCodeBlock(): CodeBlockGraphicData {
+	const baseCodeBlock: Omit<CodeBlockGraphicData, 'parent'> & { parent?: CodeBlockGraphicData } = {
+		width: 0,
+		minGridWidth: 32,
+		height: 0,
+		code: [],
+		trimmedCode: [],
+		codeColors: [],
+		codeToRender: [],
+		cursor: { col: 0, row: 0, x: 0, y: 0 },
+		id: '',
+		gaps: new Map(),
+		x: 0,
+		y: 0,
+		offsetX: 0,
+		offsetY: 0,
+		gridX: 0,
+		gridY: 0,
+		isOpen: true,
+		padLength: 1,
+		viewport: {
+			x: 0,
+			y: 0,
+		},
+		codeBlocks: new Set<CodeBlockGraphicData>(),
+		extras: {
+			inputs: new Map(),
+			outputs: new Map(),
+			debuggers: new Map(),
+			switches: new Map(),
+			buttons: new Map(),
+			pianoKeyboards: new Map(),
+			bufferPlotters: new Map(),
+			errorMessages: new Map(),
+		},
+	};
+
+	// Set self-reference for parent
+	const result = baseCodeBlock as CodeBlockGraphicData;
+	result.parent = result;
+	return result;
+}
+
+// Helper function to create graphic helper with proper references
+function createGraphicHelper() {
+	const baseCodeBlock = createBaseCodeBlock();
+	return {
+		dialog: {
+			show: false,
+			text: 'Lorem ipsum dolor sit amet',
+			title: 'Dialog',
+			buttons: [{ title: 'Close', action: 'close' }],
+		},
+		baseCodeBlock,
+		activeViewport: baseCodeBlock,
+		outputsByWordAddress: new Map(),
+		globalViewport: {
+			width: 0,
+			height: 0,
+			roundedHeight: 0,
+			roundedWidth: 0,
+			vGrid: 8,
+			hGrid: 16,
+			borderLineCoordinates: {
+				top: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				right: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				left: { startX: 0, startY: 0, endX: 0, endY: 0 },
+			},
+			center: { x: 0, y: 0 },
+		},
+		contextMenu: {
+			highlightedItem: 0,
+			itemWidth: 200,
+			items: [],
+			open: false,
+			x: 0,
+			y: 0,
+			menuStack: [],
+		},
+	};
+}
+
 const maxMemorySize = 10000;
 const initialMemorySize = 1000;
 
@@ -56,78 +140,7 @@ const defaultStateBase = {
 		inputs: [],
 		outputs: [],
 	},
-	graphicHelper: {
-		dialog: {
-			show: false,
-			text: 'Lorem ipsum dolor sit amet',
-			title: 'Dialog',
-			buttons: [{ title: 'Close', action: 'close' }],
-		},
-		baseCodeBlock: {
-			width: 0,
-			minGridWidth: 32,
-			height: 0,
-			code: [],
-			trimmedCode: [],
-			codeColors: [],
-			codeToRender: [],
-			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: '',
-			gaps: new Map(),
-			x: 0,
-			y: 0,
-			offsetX: 0,
-			offsetY: 0,
-			gridX: 0,
-			gridY: 0,
-			isOpen: true,
-			padLength: 1,
-			// @ts-ignore
-			parent: undefined,
-			viewport: {
-				x: 0,
-				y: 0,
-			},
-			codeBlocks: new Set<CodeBlockGraphicData>(),
-			extras: {
-				inputs: new Map(),
-				outputs: new Map(),
-				debuggers: new Map(),
-				switches: new Map(),
-				buttons: new Map(),
-				pianoKeyboards: new Map(),
-				bufferPlotters: new Map(),
-				errorMessages: new Map(),
-			},
-		},
-		// @ts-ignore
-		activeViewport: undefined,
-		outputsByWordAddress: new Map(),
-		globalViewport: {
-			width: 0,
-			height: 0,
-			roundedHeight: 0,
-			roundedWidth: 0,
-			vGrid: 8,
-			hGrid: 16,
-			borderLineCoordinates: {
-				top: { startX: 0, startY: 0, endX: 0, endY: 0 },
-				right: { startX: 0, startY: 0, endX: 0, endY: 0 },
-				bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
-				left: { startX: 0, startY: 0, endX: 0, endY: 0 },
-			},
-			center: { x: 0, y: 0 },
-		},
-		contextMenu: {
-			highlightedItem: 0,
-			itemWidth: 200,
-			items: [],
-			open: false,
-			x: 0,
-			y: 0,
-			menuStack: [],
-		},
-	},
+	graphicHelper: createGraphicHelper(),
 	editorSettings: {
 		colorScheme: 'hackerman',
 		font: '8x16' as Font,
@@ -135,9 +148,6 @@ const defaultStateBase = {
 	featureFlags: defaultFeatureFlags,
 	compilationTime: 0,
 };
-
-defaultStateBase.graphicHelper.activeViewport = defaultStateBase.graphicHelper.baseCodeBlock;
-defaultStateBase.graphicHelper.baseCodeBlock.parent = defaultStateBase.graphicHelper.baseCodeBlock;
 
 export default function init(events: EventDispatcher, project: Project, options: Options): State {
 	// Initialize feature flags
