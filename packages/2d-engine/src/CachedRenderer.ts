@@ -179,21 +179,33 @@ export class CachedRenderer extends Renderer {
 	 * @param y - Y position to draw at (default 0)
 	 */
 	drawCachedTexture(texture: WebGLTexture, width: number, height: number, x: number = 0, y: number = 0): void {
-		// Save current state
-		const currentTexture = this.spriteSheet;
+		// Flush any pending sprites with the current sprite sheet
+		if (this.bufferCounter > 0) {
+			super.renderVertexBuffer();
+			this.resetBuffers();
+		}
 
-		// Use the cached texture as sprite sheet
-		this.gl.activeTexture(this.gl.TEXTURE0);
-		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+		// Temporarily replace the sprite sheet with the cached texture
+		const originalSpriteSheet = this.spriteSheet;
+		const originalWidth = this.spriteSheetWidth;
+		const originalHeight = this.spriteSheetHeight;
 
-		// Draw full texture as a single sprite
+		// Set cached texture as the current sprite sheet
+		this.spriteSheet = texture;
+		this.spriteSheetWidth = width;
+		this.spriteSheetHeight = height;
+
+		// Draw full texture as a single sprite (texture coordinates map to full texture)
 		super.drawSpriteFromCoordinates(x, y, width, height, 0, 0, width, height);
 
+		// Immediately render this cached texture
+		super.renderVertexBuffer();
+		this.resetBuffers();
+
 		// Restore original sprite sheet
-		if (currentTexture) {
-			this.gl.activeTexture(this.gl.TEXTURE0);
-			this.gl.bindTexture(this.gl.TEXTURE_2D, currentTexture);
-		}
+		this.spriteSheet = originalSpriteSheet;
+		this.spriteSheetWidth = originalWidth;
+		this.spriteSheetHeight = originalHeight;
 	}
 
 	/**
@@ -223,7 +235,7 @@ export class CachedRenderer extends Renderer {
 	getCachedData(cacheId: string): { texture: WebGLTexture; width: number; height: number } | null {
 		const texture = this.cacheMap.get(cacheId);
 		const size = this.cacheSizes.get(cacheId);
-		
+
 		if (texture && size) {
 			// Update access order for LRU
 			this.updateAccessOrder(cacheId);
@@ -233,7 +245,7 @@ export class CachedRenderer extends Renderer {
 				height: size.height,
 			};
 		}
-		
+
 		return null;
 	}
 
@@ -295,13 +307,7 @@ export class CachedRenderer extends Renderer {
 		}
 
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, framebuffer);
-		this.gl.framebufferTexture2D(
-			this.gl.FRAMEBUFFER,
-			this.gl.COLOR_ATTACHMENT0,
-			this.gl.TEXTURE_2D,
-			texture,
-			0
-		);
+		this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
 
 		// Check framebuffer completeness
 		if (this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER) !== this.gl.FRAMEBUFFER_COMPLETE) {
