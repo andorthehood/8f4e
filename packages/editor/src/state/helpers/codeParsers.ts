@@ -1,8 +1,11 @@
 export function getLastMemoryInstructionLine(code: string[]): number {
-	// @ts-ignore
-	return code.findLastIndex(line => {
-		return /^\s*memory/.test(line);
-	});
+	// Find last index where the line matches the memory pattern
+	for (let i = code.length - 1; i >= 0; i--) {
+		if (/^\s*memory/.test(code[i])) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 export function getLongestLineLength(code: string[]): number {
