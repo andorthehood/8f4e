@@ -15,6 +15,10 @@ export class CachedRenderer extends Renderer {
 	private segments: Array<{ texture: WebGLTexture | 'SPRITESHEET'; start: number; end?: number }> = [];
 	private currentSegmentTexture: WebGLTexture | 'SPRITESHEET' = 'SPRITESHEET';
 
+	// Dedicated CPU-side buffers for cache capture to avoid touching frame buffers
+	private cacheVertexBuffer: Float32Array;
+	private cacheTexcoordBuffer: Float32Array;
+
 	constructor(canvas: HTMLCanvasElement, maxCacheItems: number = 50) {
 		super(canvas);
 		this.maxCacheItems = maxCacheItems;
@@ -22,6 +26,17 @@ export class CachedRenderer extends Renderer {
 		this.cacheFramebuffers = new Map();
 		this.cacheSizes = new Map();
 		this.cacheAccessOrder = [];
+
+		// Allocate dedicated capture buffers matching current buffer size
+		this.cacheVertexBuffer = new Float32Array(this.bufferSize);
+		this.cacheTexcoordBuffer = new Float32Array(this.bufferSize);
+	}
+
+	/** Ensure dedicated capture buffers track size changes */
+	override growBuffer(newSize: number): void {
+		super.growBuffer(newSize);
+		this.cacheVertexBuffer = new Float32Array(this.bufferSize);
+		this.cacheTexcoordBuffer = new Float32Array(this.bufferSize);
 	}
 
 	/**
@@ -77,11 +92,23 @@ export class CachedRenderer extends Renderer {
 			return false;
 		}
 
-		// Flush any pending vertex data to the main framebuffer first
-		if (this.bufferCounter > 0) {
-			super.renderVertexBuffer();
-			super.resetBuffers();
-		}
+		// Important: do NOT flush the current frame's buffers to the canvas here.
+		// That would render mid-frame to the default framebuffer and also drop
+		// any already-batched geometry (including cached quads), causing visible
+		// blinking. Instead, temporarily swap CPU-side buffers so cache capture
+		// uses its own scratch buffers without disturbing the current frame.
+
+		// Save current CPU-side buffers and counters
+		const savedVertexBuffer = this.vertexBuffer;
+		const savedTexcoordBuffer = this.textureCoordinateBuffer;
+		const savedBufferPointer = this.bufferPointer;
+		const savedBufferCounter = this.bufferCounter;
+
+		// Switch to dedicated capture buffers for cache rendering
+		this.vertexBuffer = this.cacheVertexBuffer;
+		this.textureCoordinateBuffer = this.cacheTexcoordBuffer;
+		this.bufferPointer = 0;
+		this.bufferCounter = 0;
 
 		// Create new cache entry
 		const cacheTexture = this.createCacheTexture(width, height);
@@ -120,7 +147,7 @@ export class CachedRenderer extends Renderer {
 		try {
 			draw();
 		} finally {
-			// Render any buffered content to the cache
+			// Render any buffered content to the cache (using the temporary buffers)
 			if (this.bufferCounter > 0) {
 				super.renderVertexBuffer();
 				super.resetBuffers();
@@ -141,6 +168,12 @@ export class CachedRenderer extends Renderer {
 				this.gl.activeTexture(this.gl.TEXTURE0);
 				this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
 			}
+
+			// Restore original CPU-side buffers and counters
+			this.vertexBuffer = savedVertexBuffer;
+			this.textureCoordinateBuffer = savedTexcoordBuffer;
+			this.bufferPointer = savedBufferPointer;
+			this.bufferCounter = savedBufferCounter;
 
 			// Clear current cache state
 			this.currentCacheId = null;
