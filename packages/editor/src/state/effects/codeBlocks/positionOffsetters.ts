@@ -1,6 +1,6 @@
 import instructionParser from './extras/instructionParser';
 
-import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
+import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 
 import type { Instruction } from '@8f4e/compiler';

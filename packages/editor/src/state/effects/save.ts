@@ -1,5 +1,5 @@
 import { EventDispatcher } from '../../events';
-import { State } from '../types';
+import type { State } from '../types';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 export default function save(state: State, events: EventDispatcher): void {

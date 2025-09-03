@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const decToBin8bitMSb: ExampleModule = {
 	title: 'Decimal to Binary Converter (8bit, MSb)',
