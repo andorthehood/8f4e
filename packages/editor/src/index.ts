@@ -28,6 +28,10 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 		events.dispatch('spriteSheetRerendered');
 	});
 
+	events.on('loadPostProcessEffects', () => {
+		view.loadPostProcessEffects(state.project.postProcessEffects);
+	});
+
 	return {
 		resize: (width: number, height: number) => {
 			events.dispatch('resize', { canvasWidth: width, canvasHeight: height });

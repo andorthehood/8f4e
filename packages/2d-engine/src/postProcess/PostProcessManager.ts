@@ -273,6 +273,24 @@ export class PostProcessManager {
 	}
 
 	/**
+	 * Remove all effects from the pipeline and free their GPU programs
+	 */
+	removeAllEffects(): void {
+		// Delete all effect programs
+		for (const program of this.programs.values()) {
+			this.gl.deleteProgram(program);
+		}
+
+		// Clear all effect-related state
+		this.programs.clear();
+		this.uniformLocations.clear();
+		this.timeLocation.clear();
+		this.resolutionLocation.clear();
+		this.textureLocation.clear();
+		this.effects.length = 0;
+	}
+
+	/**
 	 * Enable or disable an effect
 	 */
 	setEffectEnabled(name: string, enabled: boolean): void {
