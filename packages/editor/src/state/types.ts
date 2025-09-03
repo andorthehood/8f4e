@@ -1,8 +1,6 @@
 import type { Font, SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup } from '@8f4e/2d-engine';
-
 import type { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
-
 import type { RuntimeFactory, RuntimeType } from './effects/runtime';
 import type { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure, Module } from '@8f4e/compiler';
 
@@ -203,6 +201,7 @@ export interface CodeBlockGraphicData {
 	viewport: Viewport;
 	parent: CodeBlockGraphicData;
 	codeBlocks: Set<CodeBlockGraphicData>;
+	lastUpdated: number;
 }
 
 export type GraphicHelper = {
