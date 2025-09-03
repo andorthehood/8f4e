@@ -1,5 +1,5 @@
 // Import the types from the editor
-import { State, EventDispatcher } from '@8f4e/editor';
+import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
 import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
 
