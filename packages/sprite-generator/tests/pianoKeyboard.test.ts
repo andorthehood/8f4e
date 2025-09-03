@@ -8,7 +8,7 @@ import {
 } from './utils/testHelpers';
 
 import generatePianoKeyboard, { PianoKey, generateLookup } from '../src/pianoKeyboard';
-import { Command } from '../src/types';
+import type { Command } from '../src/types';
 
 describe('pianoKeyboard module', () => {
 	describe('PianoKey enum', () => {

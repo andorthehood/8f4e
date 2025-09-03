@@ -1,4 +1,5 @@
-import { ArgumentType, BLOCK_TYPE, InstructionCompiler, MemoryTypes } from '../types';
+import type { InstructionCompiler } from '../types';
+import { ArgumentType, BLOCK_TYPE, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
 import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule, saveByteCode } from '../utils';

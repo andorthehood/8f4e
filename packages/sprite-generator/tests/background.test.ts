@@ -8,7 +8,7 @@ import {
 } from './utils/testHelpers';
 
 import generateBackground, { generateLookup } from '../src/background';
-import { Command } from '../src/types';
+import type { Command } from '../src/types';
 
 describe('background module', () => {
 	describe('generateBackground function', () => {

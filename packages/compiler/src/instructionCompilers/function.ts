@@ -1,6 +1,7 @@
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
-import { BLOCK_TYPE, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
+import { BLOCK_TYPE } from '../types';
 
 const _function: InstructionCompiler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack)) {
