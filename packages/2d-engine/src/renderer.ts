@@ -9,6 +9,7 @@ import createTexture from './utils/createTexture';
 import spriteFragmentShader from './shaders/spriteFragmentShader';
 import spriteVertexShader from './shaders/spriteVertexShader';
 import { PostProcessManager } from './postProcess/PostProcessManager';
+
 import type { PostProcessEffect } from './types/postProcess';
 
 /**
@@ -437,6 +438,13 @@ export class Renderer {
 	 */
 	removePostProcessEffect(name: string): void {
 		this.postProcessManager.removeEffect(name);
+	}
+
+	/**
+	 * Remove all post-process effects from the pipeline
+	 */
+	removeAllPostProcessEffects(): void {
+		this.postProcessManager.removeAllEffects();
 	}
 
 	/**

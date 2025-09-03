@@ -1,8 +1,9 @@
 import { createMockASTLeaf, createMockContext } from './testUtils';
 
 import istructions from '../../src/instructionCompilers/index';
-import type { AST, CompilationContext } from '../../src/types';
 import { ErrorCode } from '../../src/errors';
+
+import type { AST, CompilationContext } from '../../src/types';
 
 describe('dup', () => {
 	let context: CompilationContext;

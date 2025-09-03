@@ -1,4 +1,5 @@
 import { Renderer } from './renderer';
+
 import type { SpriteLookup } from './types';
 import type { PostProcessEffect } from './types/postProcess';
 
@@ -289,6 +290,13 @@ export class Engine {
 	 */
 	removePostProcessEffect(name: string): void {
 		this.renderer.removePostProcessEffect(name);
+	}
+
+	/**
+	 * Remove all post-process effects from the pipeline
+	 */
+	removeAllPostProcessEffects(): void {
+		this.renderer.removeAllPostProcessEffects();
 	}
 
 	/**

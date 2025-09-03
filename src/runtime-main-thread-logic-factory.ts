@@ -1,7 +1,8 @@
 // Import the types from the editor
+import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
+
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime
-import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
 
 // Main Thread Logic Runtime Factory
 export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
