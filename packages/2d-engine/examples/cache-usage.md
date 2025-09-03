@@ -28,11 +28,11 @@ const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const engine = new CachedEngine(canvas, 50); // Max 50 cached items
 
 // Cache UI panel that doesn't change often
-engine.startCacheGroup('ui-panel', 200, 100);
-engine.drawSprite(10, 10, 'button');
-engine.drawSprite(60, 10, 'button');
-engine.drawText(20, 50, 'Menu');
-engine.endCacheGroup(); // Now cached for future frames
+engine.cacheGroup('ui-panel', 200, 100, () => {
+    engine.drawSprite(10, 10, 'button');
+    engine.drawSprite(60, 10, 'button');
+    engine.drawText(20, 50, 'Menu');
+}); // Now cached for future frames
 
 engine.render((timeToRender, fps, triangles, maxTriangles) => {
     // Draw cached UI panel - very fast!
@@ -43,29 +43,18 @@ engine.render((timeToRender, fps, triangles, maxTriangles) => {
 });
 ```
 
-### Option 3: Custom Renderer Integration
+### Option 3: Custom Integration
 
 ```typescript
-import { CachedRenderer } from '@8f4e/2d-engine';
+import { CachedEngine } from '@8f4e/2d-engine';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-const renderer = new CachedRenderer(canvas, 30);
+const engine = new CachedEngine(canvas, 30);
 
-// Build custom engine using cached renderer
-class CustomEngine {
-    private renderer: CachedRenderer;
-    
-    constructor(canvas: HTMLCanvasElement) {
-        this.renderer = new CachedRenderer(canvas);
-    }
-    
-    // Custom drawing methods using cached renderer
-    drawComplexUI() {
-        this.renderer.startCacheGroup('complex-ui', 400, 300);
+function cacheComplexUI() {
+    engine.cacheGroup('complex-ui', 400, 300, () => {
         // Draw complex UI elements...
-        const cacheData = this.renderer.endCacheGroup();
-        return cacheData;
-    }
+    });
 }
 ```
 
@@ -81,24 +70,24 @@ const engine = new CachedEngine(canvas);
 // Cache different UI states
 function cacheGameUI() {
     // Main menu
-    engine.startCacheGroup('main-menu', 400, 300);
-    engine.drawSprite(100, 50, 'title-logo');
-    engine.drawSprite(150, 150, 'play-button');
-    engine.drawSprite(150, 200, 'settings-button');
-    engine.endCacheGroup();
+    engine.cacheGroup('main-menu', 400, 300, () => {
+        engine.drawSprite(100, 50, 'title-logo');
+        engine.drawSprite(150, 150, 'play-button');
+        engine.drawSprite(150, 200, 'settings-button');
+    });
     
     // Pause menu
-    engine.startCacheGroup('pause-menu', 300, 200);
-    engine.drawSprite(100, 50, 'pause-title');
-    engine.drawSprite(125, 100, 'resume-button');
-    engine.drawSprite(125, 150, 'quit-button');
-    engine.endCacheGroup();
+    engine.cacheGroup('pause-menu', 300, 200, () => {
+        engine.drawSprite(100, 50, 'pause-title');
+        engine.drawSprite(125, 100, 'resume-button');
+        engine.drawSprite(125, 150, 'quit-button');
+    });
     
     // HUD elements
-    engine.startCacheGroup('hud-static', 800, 100);
-    engine.drawSprite(10, 10, 'health-bar-bg');
-    engine.drawSprite(10, 50, 'mana-bar-bg');
-    engine.endCacheGroup();
+    engine.cacheGroup('hud-static', 800, 100, () => {
+        engine.drawSprite(10, 10, 'health-bar-bg');
+        engine.drawSprite(10, 50, 'mana-bar-bg');
+    });
 }
 
 // Call once at startup
@@ -139,14 +128,12 @@ class ParticleSystem {
     }
     
     private cacheParticles() {
-        engine.startCacheGroup(this.cacheId, 400, 400);
-        
-        // Draw all particles to cache
-        for (const particle of this.particles) {
-            engine.drawSprite(particle.x, particle.y, 'particle');
-        }
-        
-        engine.endCacheGroup();
+        engine.cacheGroup(this.cacheId, 400, 400, () => {
+            // Draw all particles to cache
+            for (const particle of this.particles) {
+                engine.drawSprite(particle.x, particle.y, 'particle');
+            }
+        });
     }
     
     render() {
@@ -202,10 +189,10 @@ import { CachedEngine } from '@8f4e/2d-engine';
 const engine = new CachedEngine(canvas);
 
 // Cache content that will be transformed
-engine.startCacheGroup('entity-sprite', 64, 64);
-engine.drawSprite(0, 0, 'entity-base');
-engine.drawSprite(16, 16, 'entity-detail');
-engine.endCacheGroup();
+engine.cacheGroup('entity-sprite', 64, 64, () => {
+    engine.drawSprite(0, 0, 'entity-base');
+    engine.drawSprite(16, 16, 'entity-detail');
+});
 
 engine.render(() => {
     // Use transform groups to position cached content
@@ -239,13 +226,13 @@ engine.render(() => {
 
 ```typescript
 // Small UI elements
-engine.startCacheGroup('button', 100, 50);
+engine.cacheGroup('button', 100, 50, () => {});
 
 // Medium UI panels
-engine.startCacheGroup('inventory', 300, 400);
+engine.cacheGroup('inventory', 300, 400, () => {});
 
 // Large backgrounds (use sparingly)
-engine.startCacheGroup('level-bg', 1024, 768);
+engine.cacheGroup('level-bg', 1024, 768, () => {});
 ```
 
 ### Memory Usage
@@ -267,7 +254,7 @@ function estimateCacheMemory() {
 // Before: Standard engine
 const engine = new Engine(canvas);
 
-// After: Cached engine (same API + cache methods)
+// After: Cached engine (plus cache methods)
 const engine = new CachedEngine(canvas);
 
 // All existing code continues to work unchanged
@@ -276,9 +263,9 @@ engine.startGroup(x, y);
 // ... etc
 
 // Add caching for performance improvements
-engine.startCacheGroup('ui', 200, 100);
-// ... draw UI elements
-engine.endCacheGroup();
+engine.cacheGroup('ui', 200, 100, () => {
+  // ... draw UI elements
+});
 
 // Use cached content
 engine.drawCachedContent('ui', 0, 0);
