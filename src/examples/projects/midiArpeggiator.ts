@@ -1,4 +1,4 @@
-import { Project } from '../../../packages/editor/src/state/types';
+import type { Project } from '../../../packages/editor/src/state/types';
 
 const midiArpeggiator: Project = {
 	title: 'MIDI Arpeggiator',

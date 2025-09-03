@@ -8,7 +8,7 @@ import drawButtons from './extras/buttons';
 import drawErrorMessages from './extras/errorMessages';
 import drawPianoKeyboards from './extras/pianoKeyboards';
 
-import { State } from '../../../state/types';
+import type { State } from '../../../state/types';
 
 export default function drawModules(engine: CachedEngine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {
