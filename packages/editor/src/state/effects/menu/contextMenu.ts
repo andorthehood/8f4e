@@ -2,7 +2,7 @@ import * as menus from './menus';
 
 import { EventDispatcher } from '../../../events';
 import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtViewportCoordinates';
-import { ContextMenuItem, State } from '../../types';
+import type { ContextMenuItem, State } from '../../types';
 
 function getHighlightedMenuItem(x, y, width, height) {
 	if (x < 0 || x > width || y < 0) {
