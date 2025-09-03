@@ -1,5 +1,7 @@
-import type { AST, ArgumentType } from '../src/types';
+import { ArgumentType } from '../src/types';
 import { isComment, isValidInstruction, parseArgument, parseLine } from '../src/compiler';
+
+import type { AST } from '../src/types';
 
 describe('parseArgument', () => {
 	const literals: [string, ArgumentType, number, boolean][] = [
