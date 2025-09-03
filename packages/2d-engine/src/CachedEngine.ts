@@ -29,40 +29,31 @@ export class CachedEngine extends Engine {
 			return true;
 		}
 
-		// Save and reset offsets for cache-local coordinates
+		// If cache exists, just draw it at current offset
+		// @ts-expect-error - using CachedRenderer API
+		if ((this.renderer as CachedRenderer).hasCachedContent(cacheId)) {
+			this.drawCachedContent(cacheId, 0, 0);
+			return false;
+		}
+
+		// Save and reset offsets for cache-local coordinates (creation path)
 		this.savedOffsetX = this.offsetX;
 		this.savedOffsetY = this.offsetY;
 		this.offsetX = 0;
 		this.offsetY = 0;
 
-		// @ts-expect-error - accessing private property to call cached renderer methods
-		const created = (this.renderer as CachedRenderer).startCacheGroup(cacheId, width, height);
+		// @ts-expect-error - using CachedRenderer API
+		const created = (this.renderer as CachedRenderer).cacheGroup(cacheId, width, height, draw);
 
-		if (!created) {
-			// Restore offsets and draw cached content immediately
-			this.offsetX = this.savedOffsetX || 0;
-			this.offsetY = this.savedOffsetY || 0;
+		// Restore offsets
+		if (this.savedOffsetX !== null && this.savedOffsetY !== null) {
+			this.offsetX = this.savedOffsetX;
+			this.offsetY = this.savedOffsetY;
 			this.savedOffsetX = null;
 			this.savedOffsetY = null;
-			this.drawCachedContent(cacheId, 0, 0);
-			return false;
 		}
 
-		try {
-			draw();
-		} finally {
-			// @ts-expect-error - accessing private property to call cached renderer methods
-			(this.renderer as CachedRenderer).endCacheGroup();
-			// Restore offsets
-			if (this.savedOffsetX !== null && this.savedOffsetY !== null) {
-				this.offsetX = this.savedOffsetX;
-				this.offsetY = this.savedOffsetY;
-				this.savedOffsetX = null;
-				this.savedOffsetY = null;
-			}
-		}
-
-		return true;
+		return created;
 	}
 
 	/**
