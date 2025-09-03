@@ -259,6 +259,8 @@ export class CachedRenderer extends Renderer {
 		super.renderVertexBuffer();
 
 		// Then render cached quads
+		const savedBufferCounter = this.bufferCounter;
+		const savedBufferPointer = this.bufferPointer;
 		for (const { texture, width, height, x, y } of this.pendingCachedDraws) {
 			// Write quad geometry into buffers (12 floats)
 			const off = 0;
@@ -310,7 +312,9 @@ export class CachedRenderer extends Renderer {
 
 		// Cleanup queue and buffers
 		this.pendingCachedDraws.length = 0;
-		this.resetBuffers();
+		// Restore buffer state so stats reflect the frame's normal draw usage
+		this.bufferCounter = savedBufferCounter;
+		this.bufferPointer = savedBufferPointer;
 
 		this.endRenderToTexture();
 
