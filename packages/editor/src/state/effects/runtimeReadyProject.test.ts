@@ -1,10 +1,11 @@
 import compiler from './compiler';
 import save from './save';
 
-import type { State } from '../types';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
 import { EventDispatcher } from '../../events';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
+
+import type { State } from '../types';
 
 // Mock the decodeBase64ToUint8Array function
 jest.mock('../helpers/base64Decoder', () => ({

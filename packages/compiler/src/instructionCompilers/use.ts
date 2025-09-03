@@ -1,6 +1,7 @@
-import type { InstructionCompiler } from '../types';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
+
+import type { InstructionCompiler } from '../types';
 
 const use: InstructionCompiler = function (line, context) {
 	if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {

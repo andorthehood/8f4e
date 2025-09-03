@@ -1,7 +1,8 @@
 // Import the types from the editor
+import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
+
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
-import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
 
 // AudioWorklet Runtime Factory
 export function audioWorkletRuntime(state: State, events: EventDispatcher) {
