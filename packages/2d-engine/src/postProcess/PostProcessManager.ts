@@ -1,6 +1,7 @@
-import type { PostProcessEffect, EffectUniforms } from '../types/postProcess';
 import createProgram from '../utils/createProgram';
 import createShader from '../utils/createShader';
+
+import type { PostProcessEffect, EffectUniforms } from '../types/postProcess';
 
 /**
  * Manages post-processing effects with buffer-based uniforms

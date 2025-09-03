@@ -1,7 +1,8 @@
-import type { InstructionCompiler } from '../types';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { saveByteCode } from '../utils';
+
+import type { InstructionCompiler } from '../types';
 
 const wasm: InstructionCompiler = function (line, context) {
 	if (!line.arguments[0]) {
