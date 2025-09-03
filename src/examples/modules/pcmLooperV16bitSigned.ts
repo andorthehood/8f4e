@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const pcmLooperV16bitSigned: ExampleModule = {
 	title: 'Variable Speed PCM Looper (16bit signed)',
