@@ -1,11 +1,8 @@
 import generateSprite from '@8f4e/sprite-generator';
-import { CachedEngine, PostProcessEffect } from '@8f4e/2d-engine';
+import { CachedEngine } from '@8f4e/2d-engine';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import colorSchemes from './colorSchemes';
-
-import postProcessVertexShader from '../shaders/postProcessVertexShader';
-import scanlineFragmentShader from '../shaders/scanlineFragmentShader';
 
 import type { State } from '../state/types';
 
@@ -31,7 +28,7 @@ export default async function init(
 
 	engine.loadSpriteSheet(sprite);
 
-	// Load post-process effects from project configuration or use default CRT effect
+	// Load post-process effects from project configuration
 	const projectEffects = state.project.postProcessEffects;
 
 	if (projectEffects && projectEffects.length > 0) {
@@ -39,15 +36,6 @@ export default async function init(
 		for (const effect of projectEffects) {
 			engine.addPostProcessEffect(effect);
 		}
-	} else {
-		// Fallback to default CRT effect for backward compatibility
-		const crtEffect: PostProcessEffect = {
-			name: 'crt',
-			vertexShader: postProcessVertexShader,
-			fragmentShader: scanlineFragmentShader,
-			enabled: true,
-		};
-		engine.addPostProcessEffect(crtEffect);
 	}
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {

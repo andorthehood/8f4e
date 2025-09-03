@@ -1,6 +1,7 @@
 import { EventDispatcher } from '../../../events';
-import type { State } from '../../types';
 import { OpenGroupEvent } from '../menu/menus';
+
+import type { State } from '../../types';
 
 export default function nestedCodeBlocksOpener(state: State, events: EventDispatcher): () => void {
 	const onOpenGroup = function ({ codeBlock }: OpenGroupEvent) {
