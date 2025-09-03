@@ -1,6 +1,6 @@
 import { Renderer } from './renderer';
-import { SpriteLookup } from './types';
-import { PostProcessEffect } from './types/postProcess';
+import type { SpriteLookup } from './types';
+import type { PostProcessEffect } from './types/postProcess';
 
 /**
  * High-level 2D engine - provides convenient drawing methods using sprite lookup

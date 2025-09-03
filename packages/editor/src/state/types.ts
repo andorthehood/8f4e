@@ -1,7 +1,7 @@
-import { Font, SpriteLookups } from '@8f4e/sprite-generator';
-import { SpriteLookup } from '@8f4e/2d-engine';
+import type { Font, SpriteLookups } from '@8f4e/sprite-generator';
+import type { SpriteLookup } from '@8f4e/2d-engine';
 
-import { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
+import type { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
 
 import type { RuntimeFactory, RuntimeType } from './effects/runtime';
 import type { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure, Module } from '@8f4e/compiler';

@@ -1,4 +1,5 @@
-import { ArgumentType, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
+import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br } from '../wasmUtils/instructionHelpers';
 import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
