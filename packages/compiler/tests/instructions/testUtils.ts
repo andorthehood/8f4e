@@ -1,7 +1,7 @@
 import wabt from 'wabt';
 
 import { FunctionBody } from '../../src/wasmUtils/typeHelpers';
-import { CompiledModule, TestModule } from '../../src/types';
+import type { CompiledModule, TestModule } from '../../src/types';
 import { compileToAST } from '../../src/compiler';
 import {
 	createCodeSection,
