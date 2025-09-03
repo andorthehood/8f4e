@@ -34,7 +34,7 @@ const mockGL = {
 	BLEND: 3042,
 	FRAGMENT_SHADER: 35632,
 	VERTEX_SHADER: 35633,
-	
+
 	createTexture: jest.fn(() => mockTexture),
 	bindTexture: jest.fn(),
 	texImage2D: jest.fn(),
@@ -48,11 +48,11 @@ const mockGL = {
 	viewport: jest.fn(),
 	clear: jest.fn(),
 	activeTexture: jest.fn(),
-	
+
 	// Base renderer mocks
 	canvas: mockCanvas,
-	createShader: jest.fn(() => ({} as WebGLShader)),
-	createProgram: jest.fn(() => ({} as WebGLProgram)),
+	createShader: jest.fn(() => ({}) as WebGLShader),
+	createProgram: jest.fn(() => ({}) as WebGLProgram),
 	shaderSource: jest.fn(),
 	compileShader: jest.fn(),
 	getShaderParameter: jest.fn(() => true),
@@ -61,8 +61,8 @@ const mockGL = {
 	getProgramParameter: jest.fn(() => true),
 	useProgram: jest.fn(),
 	getAttribLocation: jest.fn(() => 0),
-	getUniformLocation: jest.fn(() => ({} as WebGLUniformLocation)),
-	createBuffer: jest.fn(() => ({} as WebGLBuffer)),
+	getUniformLocation: jest.fn(() => ({}) as WebGLUniformLocation),
+	createBuffer: jest.fn(() => ({}) as WebGLBuffer),
 	clearColor: jest.fn(),
 	vertexAttribPointer: jest.fn(),
 	blendFunc: jest.fn(),
@@ -74,6 +74,7 @@ const mockGL = {
 	finish: jest.fn(),
 	flush: jest.fn(),
 	disable: jest.fn(),
+	uniform1i: jest.fn(),
 	uniform1f: jest.fn(),
 	uniform2f: jest.fn(),
 	uniform3f: jest.fn(),
@@ -94,7 +95,7 @@ describe('CachedRenderer', () => {
 	describe('Cache Management', () => {
 		test('should create cache entry when starting new cache group', () => {
 			const result = renderer.startCacheGroup('test-cache', 100, 100);
-			
+
 			expect(result).toBe(true); // New cache created
 			expect(mockGL.createTexture).toHaveBeenCalled();
 			expect(mockGL.createFramebuffer).toHaveBeenCalled();
@@ -107,16 +108,16 @@ describe('CachedRenderer', () => {
 			// Create cache first time
 			renderer.startCacheGroup('test-cache', 100, 100);
 			renderer.endCacheGroup();
-			
+
 			// Try to create same cache again
 			const result = renderer.startCacheGroup('test-cache', 100, 100);
-			
+
 			expect(result).toBe(false); // Cache already exists
 		});
 
 		test('should throw error when nesting cache groups', () => {
 			renderer.startCacheGroup('cache1', 100, 100);
-			
+
 			expect(() => {
 				renderer.startCacheGroup('cache2', 100, 100);
 			}).toThrow('Cannot start cache group: already in a cache group');
@@ -125,7 +126,7 @@ describe('CachedRenderer', () => {
 		test('should end cache group correctly', () => {
 			renderer.startCacheGroup('test-cache', 100, 100);
 			const result = renderer.endCacheGroup();
-			
+
 			expect(result).toEqual({
 				texture: mockTexture,
 				width: 100,
@@ -145,7 +146,7 @@ describe('CachedRenderer', () => {
 		test('should correctly identify existing cache', () => {
 			renderer.startCacheGroup('test-cache', 100, 100);
 			renderer.endCacheGroup();
-			
+
 			expect(renderer.hasCachedContent('test-cache')).toBe(true);
 			expect(renderer.hasCachedContent('non-existent')).toBe(false);
 		});
@@ -153,9 +154,9 @@ describe('CachedRenderer', () => {
 		test('should return cache data for existing cache', () => {
 			renderer.startCacheGroup('test-cache', 100, 100);
 			renderer.endCacheGroup();
-			
+
 			const cacheData = renderer.getCachedData('test-cache');
-			
+
 			expect(cacheData).toEqual({
 				texture: mockTexture,
 				width: 100,
@@ -262,17 +263,17 @@ describe('CachedRenderer', () => {
 	describe('Drawing Methods Override', () => {
 		test('should call parent drawSpriteFromCoordinates when not in cache mode', () => {
 			const spy = jest.spyOn(Object.getPrototypeOf(Object.getPrototypeOf(renderer)), 'drawSpriteFromCoordinates');
-			
+
 			renderer.drawSpriteFromCoordinates(10, 20, 30, 40, 50, 60, 70, 80);
-			
+
 			expect(spy).toHaveBeenCalledWith(10, 20, 30, 40, 50, 60, 70, 80);
 		});
 
 		test('should call parent drawLineFromCoordinates when not in cache mode', () => {
 			const spy = jest.spyOn(Object.getPrototypeOf(Object.getPrototypeOf(renderer)), 'drawLineFromCoordinates');
-			
+
 			renderer.drawLineFromCoordinates(10, 20, 30, 40, 50, 60, 70, 80, 5);
-			
+
 			expect(spy).toHaveBeenCalledWith(10, 20, 30, 40, 50, 60, 70, 80, 5);
 		});
 	});
@@ -287,11 +288,11 @@ describe('CachedRenderer', () => {
 
 		test('should handle nested cache group attempts', () => {
 			renderer.startCacheGroup('cache1', 100, 100);
-			
+
 			expect(() => {
 				renderer.startCacheGroup('cache2', 100, 100);
 			}).toThrow('Cannot start cache group: already in a cache group');
-			
+
 			// Clean up
 			renderer.endCacheGroup();
 		});
