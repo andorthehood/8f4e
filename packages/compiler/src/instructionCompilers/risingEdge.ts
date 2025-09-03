@@ -1,5 +1,5 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
 import { compileSegment } from '../compiler';
 
