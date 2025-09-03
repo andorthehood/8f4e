@@ -1,5 +1,5 @@
 import generateSprite from '@8f4e/sprite-generator';
-import { CachedEngine } from '@8f4e/2d-engine';
+import { CachedEngine, PostProcessEffect } from '@8f4e/2d-engine';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import colorSchemes from './colorSchemes';
@@ -9,7 +9,11 @@ import type { State } from '../state/types';
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
-): Promise<{ resize: (width: number, height: number) => void; reloadSpriteSheet: () => void }> {
+): Promise<{
+	resize: (width: number, height: number) => void;
+	reloadSpriteSheet: () => void;
+	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
+}> {
 	const {
 		canvas: sprite,
 		spriteLookups,
@@ -27,16 +31,6 @@ export default async function init(
 	const engine = new CachedEngine(canvas);
 
 	engine.loadSpriteSheet(sprite);
-
-	// Load post-process effects from project configuration
-	const projectEffects = state.project.postProcessEffects;
-
-	if (projectEffects && projectEffects.length > 0) {
-		// Use project-defined effects
-		for (const effect of projectEffects) {
-			engine.addPostProcessEffect(effect);
-		}
-	}
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.setSpriteLookup(spriteLookups.background);
@@ -94,6 +88,15 @@ export default async function init(
 			state.graphicHelper.globalViewport.vGrid = characterWidth;
 
 			engine.loadSpriteSheet(sprite);
+		},
+		loadPostProcessEffects: (projectEffects: PostProcessEffect[] = []) => {
+			if (projectEffects.length < 1) {
+				engine.removeAllPostProcessEffects();
+			}
+
+			for (const effect of projectEffects) {
+				engine.addPostProcessEffect(effect);
+			}
 		},
 	};
 }
