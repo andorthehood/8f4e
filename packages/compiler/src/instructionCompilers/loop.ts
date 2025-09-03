@@ -1,5 +1,6 @@
 import { ErrorCode, getError } from '../errors';
-import { BLOCK_TYPE, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
+import { BLOCK_TYPE } from '../types';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule } from '../utils';

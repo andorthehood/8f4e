@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const generalMIDIDrumCodes: ExampleModule = {
 	title: 'General MIDI Drum Codes',
