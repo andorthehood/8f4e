@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const binSwitchesMSb: ExampleModule = {
 	title: 'Binary Switches (MSb first)',
