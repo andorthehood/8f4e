@@ -1,8 +1,9 @@
-import type { InstructionCompiler, MemoryTypes } from '../types';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+
+import type { InstructionCompiler, MemoryTypes } from '../types';
 
 const buffer: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

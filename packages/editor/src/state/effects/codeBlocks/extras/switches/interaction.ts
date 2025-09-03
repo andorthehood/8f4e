@@ -1,5 +1,6 @@
 import { EventDispatcher } from '../../../../../events';
 import findSwitchAtViewportCoordinates from '../../../../helpers/findSwitchAtViewportCoordinates';
+
 import type { State } from '../../../../types';
 
 export default function _switch(state: State, events: EventDispatcher): () => void {
