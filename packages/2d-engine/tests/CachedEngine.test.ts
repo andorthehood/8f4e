@@ -77,6 +77,7 @@ const mockGL = {
 	finish: jest.fn(),
 	flush: jest.fn(),
 	disable: jest.fn(),
+	uniform1i: jest.fn(),
 	uniform1f: jest.fn(),
 	uniform2f: jest.fn(),
 	uniform3f: jest.fn(),
