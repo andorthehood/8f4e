@@ -1,6 +1,6 @@
 import { ErrorCode, getError } from '../errors';
 import { areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
-import { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 const or: InstructionCompiler = function (line, context) {
