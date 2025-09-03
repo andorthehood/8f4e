@@ -1,6 +1,7 @@
 import { isInstructionIsInsideAModule } from '../utils';
 import { ErrorCode } from '../errors';
-import { ArgumentType, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
+import { ArgumentType } from '../types';
 import { getError } from '../errors';
 import { compileSegment } from '../compiler';
 
