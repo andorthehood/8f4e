@@ -1,6 +1,6 @@
 import { createTestModule } from './testUtils';
 
-import { TestModule } from '../../src/types';
+import type { TestModule } from '../../src/types';
 
 const dup = `module dup
 

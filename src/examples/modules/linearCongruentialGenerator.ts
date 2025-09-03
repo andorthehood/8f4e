@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const linearCongruentialGenerator: ExampleModule = {
 	title: 'Linear Congruential Generator (Signed, Float, 16bit, -1 - 1)',

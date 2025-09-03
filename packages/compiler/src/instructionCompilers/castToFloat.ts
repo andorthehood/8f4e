@@ -1,6 +1,6 @@
 import { ErrorCode, getError } from '../errors';
 import { areAllOperandsFloats, isInstructionIsInsideAModule, saveByteCode } from '../utils';
-import { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 const castToFloat: InstructionCompiler = function (line, context) {

@@ -1,4 +1,4 @@
-import { CodeBlockGraphicData, MenuGenerator } from '../../types';
+import type { CodeBlockGraphicData, MenuGenerator } from '../../types';
 
 export const mainMenu: MenuGenerator = state => [
 	...(state.graphicHelper.activeViewport !== state.graphicHelper.activeViewport.parent

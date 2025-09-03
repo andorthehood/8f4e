@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const mapToVariableRangeFloat: ExampleModule = {
 	title: 'Map Signal to Variable Range (Float)',

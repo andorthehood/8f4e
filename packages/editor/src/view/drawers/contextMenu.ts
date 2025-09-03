@@ -1,6 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 
-import { State } from '../../state/types';
+import type { State } from '../../state/types';
 
 export default function drawContextMenu(engine: Engine, state: State): void {
 	const { open, items, x, y, highlightedItem, itemWidth } = state.graphicHelper.contextMenu;

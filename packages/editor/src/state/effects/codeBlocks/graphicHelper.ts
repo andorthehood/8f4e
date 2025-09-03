@@ -12,7 +12,7 @@ import { CodeBlockClickEvent } from './codeBlockDragger';
 import { CodeBlockAddedEvent } from './codeBlockCreator';
 
 import { EventDispatcher } from '../../../events';
-import { CodeBlockGraphicData, State } from '../../types';
+import type { CodeBlockGraphicData, State } from '../../types';
 import {
 	backSpace,
 	enter,

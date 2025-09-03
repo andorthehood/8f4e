@@ -1,6 +1,6 @@
 import { Font } from '@8f4e/sprite-generator';
 
-import { Options, Project, State, CodeBlockGraphicData } from './types';
+import type { Options, Project, State, CodeBlockGraphicData } from './types';
 import _switch from './effects/codeBlocks/extras/switches/interaction';
 import button from './effects/codeBlocks/extras/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
