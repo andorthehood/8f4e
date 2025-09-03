@@ -1,7 +1,8 @@
 // Import the types from the editor
+import WebWorkerLogicRuntime from '@8f4e/runtime-web-worker-logic?worker';
+
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
-import WebWorkerLogicRuntime from '@8f4e/runtime-web-worker-logic?worker';
 
 // WebWorker Logic Runtime Factory
 export function webWorkerLogicRuntime(state: State, events: EventDispatcher) {

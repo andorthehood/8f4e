@@ -1,9 +1,10 @@
 import { isInstructionIsInsideAModule } from '../utils';
 import { ErrorCode } from '../errors';
-import type { InstructionCompiler } from '../types';
 import { ArgumentType } from '../types';
 import { getError } from '../errors';
 import { compileSegment } from '../compiler';
+
+import type { InstructionCompiler } from '../types';
 
 const div: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
