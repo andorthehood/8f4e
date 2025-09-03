@@ -24,9 +24,10 @@ export class CachedEngine extends Engine {
 	 */
 	cacheGroup(cacheId: string, width: number, height: number, draw: () => void, enabled: boolean = true): boolean {
 		if (!enabled) {
-			// Caching disabled: just draw with existing offsets
+			// Caching disabled: just draw with existing offsets.
+			// Do not read, create, or update any cache entries.
 			draw();
-			return true;
+			return false; // signal no cache was created/used
 		}
 
 		// If cache exists, just draw it at current offset
