@@ -40,11 +40,17 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 
 			if (state.graphicHelper.selectedCodeBlock !== codeBlock) {
-				engine.startCacheGroup(
+				const created = engine.startCacheGroup(
 					'codeBlock' + codeBlock.id + '' + codeBlock.code.length,
 					codeBlock.width,
 					codeBlock.height
 				);
+				// If cache existed, it has been drawn automatically; skip heavy draws
+				if (!created) {
+					engine.endCacheGroup();
+					engine.endGroup();
+					continue;
+				}
 			}
 
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
