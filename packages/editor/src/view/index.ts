@@ -90,9 +90,7 @@ export default async function init(
 			engine.loadSpriteSheet(sprite);
 		},
 		loadPostProcessEffects: (projectEffects: PostProcessEffect[] = []) => {
-			if (projectEffects.length < 1) {
-				engine.removeAllPostProcessEffects();
-			}
+			engine.removeAllPostProcessEffects();
 
 			for (const effect of projectEffects) {
 				engine.addPostProcessEffect(effect);
