@@ -3,8 +3,25 @@
 **Priority**: 🟡
 **Estimated Effort**: 1-2 days
 **Created**: 2025-09-02
-**Status**: Open
-**Completed**: 
+**Status**: Archived — implemented differently
+**Completed**: Yes (via callback-based API)
+
+> Implementation note (2025-09-03)
+>
+> We implemented cache groups using a single callback-style API on `CachedEngine`:
+> `cacheGroup(cacheId, width, height, draw, enabled?)`. This runs `draw` only when
+> creating the cache and draws the cached texture otherwise. As a result, we removed
+> the `startCacheGroup`/`endCacheGroup` methods from `CachedEngine` and eliminated the
+> renderer-level “skip normal draws” bookkeeping (e.g., `shouldSkipDrawing`,
+> `beginSkipNormalDraws`, `endSkipNormalDraws`). The rest of this document remains as
+> an exploration of an earlier approach and may reference the old API.
+
+> Enabled flag semantics:
+> - `enabled = true` (default): creates or reuses the cache. Returns `true` when a new
+>   cache is created and `draw` executed; returns `false` when an existing cache is used
+>   and `draw` is skipped in favor of drawing the cached content.
+> - `enabled = false`: caching is bypassed. `draw` is executed directly with current
+>   engine offsets; no cache is created or used. Returns `true`.
 
 ## Problem Description
 
@@ -197,42 +214,3 @@ const renderer = new CachedRenderer(canvas)
 - **Better performance** due to inheritance vs composition
 - **Cleaner architecture** with concerns at right abstraction levels
 - **Same public API** - no breaking changes for users
-
-### From Separate CacheManager Approach:
-- **Simpler architecture** to maintain and test
-- **Direct access** to WebGL context and existing state
-- **No coordination overhead** between components
-- **Simpler API** - all cache operations are methods on the renderer
-
-### Testing Strategy:
-- Unit tests for `CachedRenderer` (WebGL integration + cache logic)  
-- Integration tests for `CachedEngine` (high-level API)
-- Performance benchmarks comparing approaches
-
-## Implementation Notes
-
-**Why This Merged Approach is Superior:**
-1. **Natural Integration**: Cache operations happen where WebGL operations happen
-2. **No Artificial Boundaries**: No need to separate cache logic from WebGL state
-3. **Direct Access**: Cache management has direct access to WebGL context and renderer state
-4. **Simpler State Management**: All cache operations integrated in one place
-5. **Better Performance**: No composition overhead, direct method calls
-6. **Maintainability**: Changes to base classes automatically inherited
-7. **Bundle Size**: Smaller footprint with integrated approach
-
-**Key Insight**: Caching is not a feature of the high-level API - it's an optimization at the rendering layer. By implementing it directly in the `CachedRenderer` class, we get better architecture, simpler code, and better performance.
-
-## Affected Files
-
-- `src/CachedRenderer.ts` - New: Renderer with integrated cache capabilities  
-- `src/CachedEngine.ts` - New: Engine using cached renderer
-- `src/index.ts` - Updated: Export new classes
-- `tests/` - New comprehensive test suite
-- `examples/` - New usage examples
-
-## References
-
-- Previous implementation analysis showing composition complexity
-- WebGL framebuffer best practices
-- Performance comparison data favoring inheritance approach
-- Analysis showing integrated approach reduces complexity
