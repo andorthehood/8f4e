@@ -1,7 +1,7 @@
 import instructionParser from '../instructionParser';
-import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../../../types';
 import { gapCalculator } from '../../../../helpers/editor';
 
+import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../../../types';
 import type { Instruction } from '@8f4e/compiler';
 
 export function parseSwitches(code: string[]) {

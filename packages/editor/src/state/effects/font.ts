@@ -1,5 +1,6 @@
-import type { State } from '../types';
 import { EventDispatcher } from '../../events';
+
+import type { State } from '../types';
 
 export default function font(state: State, events: EventDispatcher): () => void {
 	function onSetFont({ font }) {

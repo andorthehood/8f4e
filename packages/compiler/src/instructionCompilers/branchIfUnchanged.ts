@@ -1,8 +1,9 @@
-import type { InstructionCompiler } from '../types';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
 import { compileSegment } from '../compiler';
+
+import type { InstructionCompiler } from '../types';
 
 const branchIfUnchanged: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
