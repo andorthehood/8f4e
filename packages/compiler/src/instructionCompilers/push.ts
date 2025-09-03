@@ -1,4 +1,5 @@
-import { ArgumentLiteral, ArgumentType, InstructionCompiler } from '../types';
+import type { ArgumentLiteral, InstructionCompiler } from '../types';
+import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
 import {

@@ -1,5 +1,5 @@
 import { ErrorCode, getError } from '../errors';
-import { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 
