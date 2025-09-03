@@ -39,135 +39,72 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 
-			if (state.graphicHelper.selectedCodeBlock !== codeBlock) {
-				const created = engine.cacheGroup(
-					'codeBlock' + codeBlock.id + '' + codeBlock.code.length,
-					codeBlock.width,
-					codeBlock.height,
-					() => {
-						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+			engine.cacheGroup(
+				'codeBlock' + codeBlock.id + '' + codeBlock.code.length,
+				codeBlock.width,
+				codeBlock.height,
+				() => {
+					engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
-						if (codeBlock === state.graphicHelper.draggedCodeBlock) {
-							engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
-						} else {
-							engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
-						}
+					if (codeBlock === state.graphicHelper.draggedCodeBlock) {
+						engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
+					} else {
+						engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
+					}
 
-						if (state.graphicHelper.selectedCodeBlock === codeBlock) {
-							engine.drawSprite(
-								0,
-								codeBlock.cursor.y,
-								'highlightedCodeLine',
-								codeBlock.width,
-								state.graphicHelper.globalViewport.hGrid
-							);
-						}
-
-						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-
-						const corner = codeBlock.isOpen ? '+' : '+';
-
-						engine.drawText(0, 0, corner);
-						engine.drawText(codeBlock.width - state.graphicHelper.globalViewport.vGrid, 0, corner);
-						engine.drawText(0, codeBlock.height - state.graphicHelper.globalViewport.hGrid, corner);
-						engine.drawText(
-							codeBlock.width - state.graphicHelper.globalViewport.vGrid,
-							codeBlock.height - state.graphicHelper.globalViewport.hGrid,
-							corner
+					if (state.graphicHelper.selectedCodeBlock === codeBlock) {
+						engine.drawSprite(
+							0,
+							codeBlock.cursor.y,
+							'highlightedCodeLine',
+							codeBlock.width,
+							state.graphicHelper.globalViewport.hGrid
 						);
+					}
 
-						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+					engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
-						for (let i = 0; i < codeBlock.codeToRender.length; i++) {
-							for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
-								const lookup = codeBlock.codeColors[i][j];
-								if (lookup) {
-									engine.setSpriteLookup(lookup);
-								}
-								if (codeBlock.codeToRender[i][j] !== 32) {
-									engine.drawSprite(
-										state.graphicHelper.globalViewport.vGrid * (j + 1),
-										state.graphicHelper.globalViewport.hGrid * i,
-										codeBlock.codeToRender[i][j]
-									);
-								}
+					const corner = codeBlock.isOpen ? '+' : '+';
+
+					engine.drawText(0, 0, corner);
+					engine.drawText(codeBlock.width - state.graphicHelper.globalViewport.vGrid, 0, corner);
+					engine.drawText(0, codeBlock.height - state.graphicHelper.globalViewport.hGrid, corner);
+					engine.drawText(
+						codeBlock.width - state.graphicHelper.globalViewport.vGrid,
+						codeBlock.height - state.graphicHelper.globalViewport.hGrid,
+						corner
+					);
+
+					engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+
+					for (let i = 0; i < codeBlock.codeToRender.length; i++) {
+						for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
+							const lookup = codeBlock.codeColors[i][j];
+							if (lookup) {
+								engine.setSpriteLookup(lookup);
+							}
+							if (codeBlock.codeToRender[i][j] !== 32) {
+								engine.drawSprite(
+									state.graphicHelper.globalViewport.vGrid * (j + 1),
+									state.graphicHelper.globalViewport.hGrid * i,
+									codeBlock.codeToRender[i][j]
+								);
 							}
 						}
-
-						if (state.graphicHelper.selectedCodeBlock === codeBlock) {
-							engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
-						}
-
-						drawSwitches(engine, state, codeBlock);
-						drawButtons(engine, state, codeBlock);
-						drawErrorMessages(engine, state, codeBlock);
-						drawPianoKeyboards(engine, state, codeBlock);
 					}
-				);
 
-				// If cache existed and was used, end group early and continue
-				if (!created) {
-					engine.endGroup();
-					continue;
-				}
-			} else {
-				// Selected code block - render without caching
-				engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-
-				if (codeBlock === state.graphicHelper.draggedCodeBlock) {
-					engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
-				} else {
-					engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
-				}
-
-				if (state.graphicHelper.selectedCodeBlock === codeBlock) {
-					engine.drawSprite(
-						0,
-						codeBlock.cursor.y,
-						'highlightedCodeLine',
-						codeBlock.width,
-						state.graphicHelper.globalViewport.hGrid
-					);
-				}
-
-				engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-
-				const corner = codeBlock.isOpen ? '+' : '+';
-
-				engine.drawText(0, 0, corner);
-				engine.drawText(codeBlock.width - state.graphicHelper.globalViewport.vGrid, 0, corner);
-				engine.drawText(0, codeBlock.height - state.graphicHelper.globalViewport.hGrid, corner);
-				engine.drawText(
-					codeBlock.width - state.graphicHelper.globalViewport.vGrid,
-					codeBlock.height - state.graphicHelper.globalViewport.hGrid,
-					corner
-				);
-
-				engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-
-				for (let i = 0; i < codeBlock.codeToRender.length; i++) {
-					for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
-						const lookup = codeBlock.codeColors[i][j];
-						if (lookup) {
-							engine.setSpriteLookup(lookup);
-						}
-						if (codeBlock.codeToRender[i][j] !== 32) {
-							engine.drawSprite(
-								state.graphicHelper.globalViewport.vGrid * (j + 1),
-								state.graphicHelper.globalViewport.hGrid * i,
-								codeBlock.codeToRender[i][j]
-							);
-						}
+					if (state.graphicHelper.selectedCodeBlock === codeBlock) {
+						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
 					}
-				}
 
-				engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
-
-				drawSwitches(engine, state, codeBlock);
-				drawButtons(engine, state, codeBlock);
-				drawErrorMessages(engine, state, codeBlock);
-				drawPianoKeyboards(engine, state, codeBlock);
-			}
+					drawSwitches(engine, state, codeBlock);
+					drawButtons(engine, state, codeBlock);
+					drawErrorMessages(engine, state, codeBlock);
+					drawPianoKeyboards(engine, state, codeBlock);
+				},
+				// Enable caching only when the block is NOT selected
+				state.graphicHelper.selectedCodeBlock !== codeBlock
+			);
 
 			drawConnectors(engine, state, codeBlock);
 			drawPlotters(engine, state, codeBlock);
