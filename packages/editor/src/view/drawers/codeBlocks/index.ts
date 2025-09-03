@@ -39,6 +39,14 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 
+			if (state.graphicHelper.selectedCodeBlock !== codeBlock) {
+				engine.startCacheGroup(
+					'codeBlock' + codeBlock.id + '' + codeBlock.code.length,
+					codeBlock.width,
+					codeBlock.height
+				);
+			}
+
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
 			if (codeBlock === state.graphicHelper.draggedCodeBlock) {
@@ -70,8 +78,6 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 				corner
 			);
 
-			engine.startCacheGroup('codeBlock' + codeBlock.id, codeBlock.width, codeBlock.height);
-
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
 			for (let i = 0; i < codeBlock.codeToRender.length; i++) {
@@ -102,7 +108,9 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 			drawErrorMessages(engine, state, codeBlock);
 			drawPianoKeyboards(engine, state, codeBlock);
 
-			engine.endCacheGroup();
+			if (state.graphicHelper.selectedCodeBlock !== codeBlock) {
+				engine.endCacheGroup();
+			}
 			engine.endGroup();
 		}
 	}
