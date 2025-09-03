@@ -9,6 +9,7 @@ export class CachedEngine extends Engine {
 	private savedOffsetX: number | null = null;
 	private savedOffsetY: number | null = null;
 	private cacheGroupStarted: boolean = false;
+	private isPlaybackSkipping: boolean = false;
 
 	constructor(canvas: HTMLCanvasElement, maxCacheItems: number = 50) {
 		super(canvas);
@@ -30,22 +31,32 @@ export class CachedEngine extends Engine {
 		this.savedOffsetX = this.offsetX;
 		this.savedOffsetY = this.offsetY;
 
-		// Reset offsets to (0,0) for cache creation
+		// Reset offsets to (0,0) for cache creation so local coordinates
+		// map directly into the cache texture
 		this.offsetX = 0;
 		this.offsetY = 0;
 
 		// @ts-expect-error - accessing private property to call cached renderer methods
 		const result = (this.renderer as CachedRenderer).startCacheGroup(cacheId, width, height);
 		this.cacheGroupStarted = result; // Track if we actually started a new cache group
-		
-		// If cache already exists, restore offsets immediately
+
+		// If cache already exists, immediately draw cached content and skip inner drawing
 		if (!result) {
+			// Restore offsets for playback
 			this.offsetX = this.savedOffsetX || 0;
 			this.offsetY = this.savedOffsetY || 0;
 			this.savedOffsetX = null;
 			this.savedOffsetY = null;
+
+			// Draw cached content at current offset (0,0 + offsets)
+			this.drawCachedContent(cacheId, 0, 0);
+
+			// Enter skip mode so subsequent draw calls inside this block are no-ops
+			// @ts-expect-error
+			(this.renderer as CachedRenderer).beginSkipNormalDraws();
+			this.isPlaybackSkipping = true;
 		}
-		
+
 		return result;
 	}
 
@@ -54,11 +65,17 @@ export class CachedEngine extends Engine {
 	 * @returns Cache data if successful, null if no cache group was active
 	 */
 	endCacheGroup(): { texture: WebGLTexture; width: number; height: number } | null {
-		// Only end cache group if we actually started one
+		// If we are in playback skip mode (cache already existed), just end skipping
 		if (!this.cacheGroupStarted) {
-			return null; // No cache group was started, so nothing to end
+			if (this.isPlaybackSkipping) {
+				// @ts-expect-error
+				(this.renderer as CachedRenderer).endSkipNormalDraws();
+				this.isPlaybackSkipping = false;
+			}
+			return null; // Nothing to finalize
 		}
-		
+
+		// Normal cache-capture path
 		// @ts-expect-error - accessing private property to call cached renderer methods
 		const result = (this.renderer as CachedRenderer).endCacheGroup();
 

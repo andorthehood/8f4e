@@ -14,6 +14,9 @@ export class CachedRenderer extends Renderer {
 	private currentCacheId: string | null = null;
 	private currentCacheFramebuffer: WebGLFramebuffer | null = null;
 	private currentCacheSize: { width: number; height: number } | null = null;
+	private isSkippingDraws: boolean = false;
+	private pendingCachedDraws: Array<{ texture: WebGLTexture; width: number; height: number; x: number; y: number }> =
+		[];
 
 	constructor(canvas: HTMLCanvasElement, maxCacheItems: number = 50) {
 		super(canvas);
@@ -101,14 +104,17 @@ export class CachedRenderer extends Renderer {
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, cacheFramebuffer);
 		this.gl.viewport(0, 0, width, height);
 
+		// Update resolution uniform to match cache target
+		this.setUniform('u_resolution', width, height);
+
 		// Make sure sprite sheet is bound for rendering to cache
 		if (this.spriteSheet) {
 			this.gl.activeTexture(this.gl.TEXTURE0);
 			this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
 		}
 
-		// Clear to the same background color as the main canvas
-		this.gl.clearColor(0, 0, 0, 1); // opaque black background like main canvas
+		// Clear to transparent so cached areas don't draw opaque rects
+		this.gl.clearColor(0, 0, 0, 0);
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
 		// Evict old cache entries if necessary
@@ -150,6 +156,9 @@ export class CachedRenderer extends Renderer {
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 
+		// Restore resolution uniform for canvas rendering
+		this.setUniform('u_resolution', this.gl.canvas.width, this.gl.canvas.height);
+
 		// Restore original clear color
 		this.gl.clearColor(0, 0, 0, 1.0);
 
@@ -171,8 +180,16 @@ export class CachedRenderer extends Renderer {
 	 * Check if we should skip drawing (when creating cache)
 	 */
 	private shouldSkipDrawing(): boolean {
-		// Only skip if we're using a cached texture (not creating one)
-		return false; // For now, we always draw - cache usage is handled by drawCachedTexture
+		return this.isSkippingDraws;
+	}
+
+	/** Control skipping of normal draw calls during cache playback */
+	beginSkipNormalDraws(): void {
+		this.isSkippingDraws = true;
+	}
+
+	endSkipNormalDraws(): void {
+		this.isSkippingDraws = false;
 	}
 
 	/**
@@ -211,80 +228,97 @@ export class CachedRenderer extends Renderer {
 	 * @param y - Y position to draw at (default 0)
 	 */
 	drawCachedTexture(texture: WebGLTexture, width: number, height: number, x: number = 0, y: number = 0): void {
-		// Flush any pending sprites with the current sprite sheet
-		if (this.bufferCounter > 0) {
-			super.renderVertexBuffer();
-			this.resetBuffers();
+		// Queue for rendering during renderWithPostProcessing (into off-screen texture)
+		this.pendingCachedDraws.push({ texture, width, height, x, y });
+	}
+
+	/**
+	 * Render buffer content using whatever texture is currently bound to TEXTURE0.
+	 * This avoids the base class behavior of rebinding the sprite sheet.
+	 */
+	private renderVertexBufferWithCurrentTexture(): void {
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glTextureCoordinateBuffer);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.textureCoordinateBuffer, this.gl.STATIC_DRAW);
+
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glPositionBuffer);
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, this.vertexBuffer, this.gl.STATIC_DRAW);
+
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, Math.min(this.bufferCounter / 2, this.bufferSize / 2));
+
+		if (this.isPerformanceMeasurementMode) {
+			this.gl.finish();
 		}
+	}
 
-		console.log(`[Cache] Drawing cached texture at (${x}, ${y}) size ${width}x${height}`);
+	/** Inject pending cached draws into the off-screen render pass */
+	renderWithPostProcessing(elapsedTime: number): void {
+		// Phase 1: Render sprites to off-screen texture
+		this.startRenderToTexture();
 
-		// Auto-flush buffer if full (prevents overflow)
-		if (this.bufferCounter + 12 > this.bufferSize) {
-			super.renderVertexBuffer();
-			this.resetBuffers();
-		}
-
-		// Fill vertex buffer with rectangle vertices
-		const bufferOffset = this.bufferPointer;
-
-		// Position vertices (same as regular sprite)
-		const x1 = x;
-		const x2 = x + width;
-		const y1 = y;
-		const y2 = y + height;
-
-		// Triangle 1
-		this.vertexBuffer[bufferOffset] = x1;
-		this.vertexBuffer[bufferOffset + 1] = y1;
-		this.vertexBuffer[bufferOffset + 2] = x2;
-		this.vertexBuffer[bufferOffset + 3] = y1;
-		this.vertexBuffer[bufferOffset + 4] = x1;
-		this.vertexBuffer[bufferOffset + 5] = y2;
-
-		// Triangle 2
-		this.vertexBuffer[bufferOffset + 6] = x1;
-		this.vertexBuffer[bufferOffset + 7] = y2;
-		this.vertexBuffer[bufferOffset + 8] = x2;
-		this.vertexBuffer[bufferOffset + 9] = y1;
-		this.vertexBuffer[bufferOffset + 10] = x2;
-		this.vertexBuffer[bufferOffset + 11] = y2;
-
-		// Texture coordinates - use full texture (0,0 to 1,1)
-		// Note: WebGL framebuffers have flipped Y coordinates compared to regular textures
-		// Triangle 1
-		this.textureCoordinateBuffer[bufferOffset] = 0; // u1
-		this.textureCoordinateBuffer[bufferOffset + 1] = 1; // v1 (flipped)
-		this.textureCoordinateBuffer[bufferOffset + 2] = 1; // u2
-		this.textureCoordinateBuffer[bufferOffset + 3] = 1; // v1 (flipped)
-		this.textureCoordinateBuffer[bufferOffset + 4] = 0; // u1
-		this.textureCoordinateBuffer[bufferOffset + 5] = 0; // v2 (flipped)
-
-		// Triangle 2
-		this.textureCoordinateBuffer[bufferOffset + 6] = 0; // u1
-		this.textureCoordinateBuffer[bufferOffset + 7] = 0; // v2 (flipped)
-		this.textureCoordinateBuffer[bufferOffset + 8] = 1; // u2
-		this.textureCoordinateBuffer[bufferOffset + 9] = 1; // v1 (flipped)
-		this.textureCoordinateBuffer[bufferOffset + 10] = 1; // u2
-		this.textureCoordinateBuffer[bufferOffset + 11] = 0; // v2 (flipped)
-
-		// Advance buffer counters
-		this.bufferCounter += 12;
-		this.bufferPointer = this.bufferCounter;
-
-		// Bind the cached texture
-		this.gl.activeTexture(this.gl.TEXTURE0);
-		this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-
-		// Immediately render this cached texture
+		// Render batched normal sprites first
 		super.renderVertexBuffer();
+
+		// Then render cached quads
+		for (const { texture, width, height, x, y } of this.pendingCachedDraws) {
+			// Write quad geometry into buffers (12 floats)
+			const off = 0;
+			this.vertexBuffer[off] = x;
+			this.vertexBuffer[off + 1] = y;
+			this.vertexBuffer[off + 2] = x + width;
+			this.vertexBuffer[off + 3] = y;
+			this.vertexBuffer[off + 4] = x;
+			this.vertexBuffer[off + 5] = y + height;
+			this.vertexBuffer[off + 6] = x;
+			this.vertexBuffer[off + 7] = y + height;
+			this.vertexBuffer[off + 8] = x + width;
+			this.vertexBuffer[off + 9] = y;
+			this.vertexBuffer[off + 10] = x + width;
+			this.vertexBuffer[off + 11] = y + height;
+
+			// Use full UVs (0..1); FBO orientation is handled by geometry path
+			this.textureCoordinateBuffer[off] = 0;
+			this.textureCoordinateBuffer[off + 1] = 0;
+			this.textureCoordinateBuffer[off + 2] = 1;
+			this.textureCoordinateBuffer[off + 3] = 0;
+			this.textureCoordinateBuffer[off + 4] = 0;
+			this.textureCoordinateBuffer[off + 5] = 1;
+			this.textureCoordinateBuffer[off + 6] = 0;
+			this.textureCoordinateBuffer[off + 7] = 1;
+			this.textureCoordinateBuffer[off + 8] = 1;
+			this.textureCoordinateBuffer[off + 9] = 0;
+			this.textureCoordinateBuffer[off + 10] = 1;
+			this.textureCoordinateBuffer[off + 11] = 1;
+
+			this.bufferCounter = 12;
+			this.bufferPointer = 12;
+
+			// Ensure the main program samples from texture unit 0
+			const textureLocation = this.gl.getUniformLocation(this.program, 'u_texture');
+			if (textureLocation) {
+				// @ts-ignore WebGLRenderingContext vs WebGL2RenderingContext types
+				this.gl.uniform1i(textureLocation, 0);
+			}
+
+			// Bind cached texture and draw
+			this.gl.activeTexture(this.gl.TEXTURE0);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+			this.renderVertexBufferWithCurrentTexture();
+		}
+
+		// Cleanup queue and buffers
+		this.pendingCachedDraws.length = 0;
 		this.resetBuffers();
 
-		// Restore sprite sheet texture for subsequent normal rendering
-		if (this.spriteSheet) {
-			this.gl.activeTexture(this.gl.TEXTURE0);
-			this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
-		}
+		this.endRenderToTexture();
+
+		// Ensure all rendering to texture is complete
+		this.gl.flush();
+
+		// Explicitly unbind any textures before post-processing
+		this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+
+		// Phase 2: Render textured quad to canvas with post-effects
+		this.renderPostProcess(elapsedTime);
 	}
 
 	/**
