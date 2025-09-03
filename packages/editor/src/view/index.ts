@@ -4,14 +4,16 @@ import { CachedEngine, PostProcessEffect } from '@8f4e/2d-engine';
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import colorSchemes from './colorSchemes';
 
-import postProcessVertexShader from '../shaders/postProcessVertexShader';
-import scanlineFragmentShader from '../shaders/scanlineFragmentShader';
 import type { State } from '../state/types';
 
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
-): Promise<{ resize: (width: number, height: number) => void; reloadSpriteSheet: () => void }> {
+): Promise<{
+	resize: (width: number, height: number) => void;
+	reloadSpriteSheet: () => void;
+	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
+}> {
 	const {
 		canvas: sprite,
 		spriteLookups,
@@ -29,16 +31,6 @@ export default async function init(
 	const engine = new CachedEngine(canvas);
 
 	engine.loadSpriteSheet(sprite);
-
-	// Add CRT post-processing effect
-	const crtEffect: PostProcessEffect = {
-		name: 'crt',
-		vertexShader: postProcessVertexShader,
-		fragmentShader: scanlineFragmentShader,
-		enabled: true,
-	};
-
-	engine.addPostProcessEffect(crtEffect);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.setSpriteLookup(spriteLookups.background);
@@ -96,6 +88,13 @@ export default async function init(
 			state.graphicHelper.globalViewport.vGrid = characterWidth;
 
 			engine.loadSpriteSheet(sprite);
+		},
+		loadPostProcessEffects: (projectEffects: PostProcessEffect[] = []) => {
+			engine.removeAllPostProcessEffects();
+
+			for (const effect of projectEffects) {
+				engine.addPostProcessEffect(effect);
+			}
 		},
 	};
 }

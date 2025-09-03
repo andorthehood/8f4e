@@ -1,6 +1,7 @@
-import type { PostProcessEffect, EffectUniforms } from '../types/postProcess';
 import createProgram from '../utils/createProgram';
 import createShader from '../utils/createShader';
+
+import type { PostProcessEffect, EffectUniforms } from '../types/postProcess';
 
 /**
  * Manages post-processing effects with buffer-based uniforms
@@ -269,6 +270,24 @@ export class PostProcessManager {
 		this.textureLocation.delete(name);
 
 		this.effects = this.effects.filter(effect => effect.name !== name);
+	}
+
+	/**
+	 * Remove all effects from the pipeline and free their GPU programs
+	 */
+	removeAllEffects(): void {
+		// Delete all effect programs
+		for (const program of this.programs.values()) {
+			this.gl.deleteProgram(program);
+		}
+
+		// Clear all effect-related state
+		this.programs.clear();
+		this.uniformLocations.clear();
+		this.timeLocation.clear();
+		this.resolutionLocation.clear();
+		this.textureLocation.clear();
+		this.effects.length = 0;
 	}
 
 	/**
