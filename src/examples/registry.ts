@@ -15,6 +15,14 @@ export const projectRegistry: Record<string, ProjectRegistryEntry> = {
 		metadata: { slug: 'bistableMultivibrators', title: 'Bistable Multivibrators', description: '' },
 		loader: () => import('./projects/bistableMultivibrators').then(m => m.default),
 	},
+	crtEffect: {
+		metadata: {
+			slug: 'crtEffect',
+			title: 'CRT Effect Demo',
+			description: 'Demonstrates post-process shader effects with a classic CRT monitor appearance',
+		},
+		loader: () => import('./projects/crtEffect').then(m => m.default),
+	},
 	midiBreakBeat: {
 		metadata: { slug: 'midiBreakBeat', title: 'MIDI Break Beat', description: '' },
 		loader: () => import('./projects/midiBreakBeat').then(m => m.default),
