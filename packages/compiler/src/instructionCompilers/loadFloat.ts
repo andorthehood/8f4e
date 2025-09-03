@@ -1,8 +1,9 @@
 import { ErrorCode, getError } from '../errors';
 import { areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
-import type { InstructionCompiler } from '../types';
 import { f32load } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
+
+import type { InstructionCompiler } from '../types';
 
 const loadFloat: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

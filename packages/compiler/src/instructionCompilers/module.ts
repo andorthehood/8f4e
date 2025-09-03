@@ -1,6 +1,7 @@
-import type { InstructionCompiler } from '../types';
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
+
+import type { InstructionCompiler } from '../types';
 
 const _module: InstructionCompiler = function (line, context) {
 	if (!line.arguments[0]) {

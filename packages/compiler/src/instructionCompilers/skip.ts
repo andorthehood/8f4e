@@ -1,4 +1,3 @@
-import type { InstructionCompiler } from '../types';
 import { ArgumentType, BLOCK_TYPE, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
@@ -6,6 +5,8 @@ import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule, saveByt
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+
+import type { InstructionCompiler } from '../types';
 
 const skip: InstructionCompiler = function (line, context) {
 	const { consts } = context.namespace;
