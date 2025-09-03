@@ -1,3 +1,5 @@
+import { CachedEngine } from '@8f4e/2d-engine';
+
 import drawConnectors from './extras/connectors';
 import drawPlotters from './extras/plotters';
 import drawDebuggers from './extras/debuggers';
@@ -7,8 +9,6 @@ import drawErrorMessages from './extras/errorMessages';
 import drawPianoKeyboards from './extras/pianoKeyboards';
 
 import { State } from '../../../state/types';
-
-import type { CachedEngine } from '@8f4e/2d-engine';
 
 export default function drawModules(engine: CachedEngine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {
@@ -39,76 +39,15 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 
-			const cacheId = 'codeBlock' + codeBlock.id;
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
-			// Check if we have cached content for this code block (static content)
-			if (engine.hasCachedContent(cacheId)) {
-				// Draw the cached static content
-				console.log(`[CodeBlock] Using cached content for ${cacheId}`);
-				engine.drawCachedContent(cacheId, 0, 0);
-			} else {
-				// No cache exists, create one by drawing static content
-				console.log(`[CodeBlock] Creating cache for ${cacheId}`);
-				const cacheStarted = engine.startCacheGroup(cacheId, codeBlock.width, codeBlock.height);
-
-				if (cacheStarted) {
-					// Draw static content that can be cached
-					engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-					engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
-
-					engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-
-					const corner = codeBlock.isOpen ? '+' : '+';
-					engine.drawText(0, 0, corner);
-					engine.drawText(codeBlock.width - state.graphicHelper.globalViewport.vGrid, 0, corner);
-					engine.drawText(0, codeBlock.height - state.graphicHelper.globalViewport.hGrid, corner);
-					engine.drawText(
-						codeBlock.width - state.graphicHelper.globalViewport.vGrid,
-						codeBlock.height - state.graphicHelper.globalViewport.hGrid,
-						corner
-					);
-
-					// Draw code text (static content)
-					for (let i = 0; i < codeBlock.codeToRender.length; i++) {
-						for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
-							const lookup = codeBlock.codeColors[i][j];
-							if (lookup) {
-								engine.setSpriteLookup(lookup);
-							}
-							if (codeBlock.codeToRender[i][j] !== 32) {
-								engine.drawSprite(
-									state.graphicHelper.globalViewport.vGrid * (j + 1),
-									state.graphicHelper.globalViewport.hGrid * i,
-									codeBlock.codeToRender[i][j]
-								);
-							}
-						}
-					}
-
-					// Draw static extras
-					drawConnectors(engine, state, codeBlock);
-					drawPlotters(engine, state, codeBlock);
-					drawDebuggers(engine, state, codeBlock);
-					drawSwitches(engine, state, codeBlock);
-					drawButtons(engine, state, codeBlock);
-					drawErrorMessages(engine, state, codeBlock);
-					drawPianoKeyboards(engine, state, codeBlock);
-
-					// End the cache group to finalize the cache
-					engine.endCacheGroup();
-				}
-			}
-
-			// Draw dynamic content that should NOT be cached
 			if (codeBlock === state.graphicHelper.draggedCodeBlock) {
-				// Override background for dragged state
-				engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 				engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
+			} else {
+				engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
 			}
 
 			if (state.graphicHelper.selectedCodeBlock === codeBlock) {
-				// Draw selection highlight
-				engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 				engine.drawSprite(
 					0,
 					codeBlock.cursor.y,
@@ -116,12 +55,54 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 					codeBlock.width,
 					state.graphicHelper.globalViewport.hGrid
 				);
+			}
 
-				// Draw cursor
-				engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+
+			const corner = codeBlock.isOpen ? '+' : '+';
+
+			engine.drawText(0, 0, corner);
+			engine.drawText(codeBlock.width - state.graphicHelper.globalViewport.vGrid, 0, corner);
+			engine.drawText(0, codeBlock.height - state.graphicHelper.globalViewport.hGrid, corner);
+			engine.drawText(
+				codeBlock.width - state.graphicHelper.globalViewport.vGrid,
+				codeBlock.height - state.graphicHelper.globalViewport.hGrid,
+				corner
+			);
+
+			engine.startCacheGroup('codeBlock' + codeBlock.id, codeBlock.width, codeBlock.height);
+
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+
+			for (let i = 0; i < codeBlock.codeToRender.length; i++) {
+				for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
+					const lookup = codeBlock.codeColors[i][j];
+					if (lookup) {
+						engine.setSpriteLookup(lookup);
+					}
+					if (codeBlock.codeToRender[i][j] !== 32) {
+						engine.drawSprite(
+							state.graphicHelper.globalViewport.vGrid * (j + 1),
+							state.graphicHelper.globalViewport.hGrid * i,
+							codeBlock.codeToRender[i][j]
+						);
+					}
+				}
+			}
+
+			if (state.graphicHelper.selectedCodeBlock === codeBlock) {
 				engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
 			}
 
+			drawConnectors(engine, state, codeBlock);
+			drawPlotters(engine, state, codeBlock);
+			drawDebuggers(engine, state, codeBlock);
+			drawSwitches(engine, state, codeBlock);
+			drawButtons(engine, state, codeBlock);
+			drawErrorMessages(engine, state, codeBlock);
+			drawPianoKeyboards(engine, state, codeBlock);
+
+			engine.endCacheGroup();
 			engine.endGroup();
 		}
 	}
