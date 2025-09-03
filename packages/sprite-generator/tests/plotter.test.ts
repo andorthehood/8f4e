@@ -2,7 +2,7 @@ import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } 
 import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates } from './utils/testHelpers';
 
 import generatePlotter, { generateLookup } from '../src/plotter';
-import type { Command } from '../src/types';
+import { Command } from '../src/types';
 
 describe('plotter module', () => {
 	describe('generatePlotter function', () => {
