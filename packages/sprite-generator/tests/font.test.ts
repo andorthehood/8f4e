@@ -2,7 +2,7 @@ import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } 
 import { findAllCommands, createMockBitmap } from './utils/testHelpers';
 
 import generateFonts, { generateLookups, drawCharacter, drawCharacterMatrix } from '../src/font';
-import type { Command } from '../src/types';
+import { Command } from '../src/types';
 
 describe('font module', () => {
 	describe('drawCharacter function', () => {

@@ -1,6 +1,8 @@
 import { SpriteCoordinates } from '@8f4e/2d-engine';
 
-import type { DrawingCommand, Command } from '../../src/types';
+import { Command } from '../../src/types';
+
+import type { DrawingCommand } from '../../src/types';
 
 /**
  * Utility to validate sprite coordinates
