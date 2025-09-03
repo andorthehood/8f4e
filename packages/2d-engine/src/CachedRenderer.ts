@@ -276,18 +276,21 @@ export class CachedRenderer extends Renderer {
 			this.vertexBuffer[off + 11] = y + height;
 
 			// Use full UVs (0..1); FBO orientation is handled by geometry path
-			this.textureCoordinateBuffer[off] = 0;
-			this.textureCoordinateBuffer[off + 1] = 0;
-			this.textureCoordinateBuffer[off + 2] = 1;
-			this.textureCoordinateBuffer[off + 3] = 0;
-			this.textureCoordinateBuffer[off + 4] = 0;
-			this.textureCoordinateBuffer[off + 5] = 1;
-			this.textureCoordinateBuffer[off + 6] = 0;
-			this.textureCoordinateBuffer[off + 7] = 1;
-			this.textureCoordinateBuffer[off + 8] = 1;
-			this.textureCoordinateBuffer[off + 9] = 0;
-			this.textureCoordinateBuffer[off + 10] = 1;
-			this.textureCoordinateBuffer[off + 11] = 1;
+			// Flip V only (compensate FBO orientation), keep U as-is
+			// Triangle 1
+			this.textureCoordinateBuffer[off] = 0; // (x, y) -> u=0, v=1
+			this.textureCoordinateBuffer[off + 1] = 1;
+			this.textureCoordinateBuffer[off + 2] = 1; // (x+width, y)
+			this.textureCoordinateBuffer[off + 3] = 1;
+			this.textureCoordinateBuffer[off + 4] = 0; // (x, y+height)
+			this.textureCoordinateBuffer[off + 5] = 0;
+			// Triangle 2
+			this.textureCoordinateBuffer[off + 6] = 0; // (x, y+height)
+			this.textureCoordinateBuffer[off + 7] = 0;
+			this.textureCoordinateBuffer[off + 8] = 1; // (x+width, y)
+			this.textureCoordinateBuffer[off + 9] = 1;
+			this.textureCoordinateBuffer[off + 10] = 1; // (x+width, y+height)
+			this.textureCoordinateBuffer[off + 11] = 0;
 
 			this.bufferCounter = 12;
 			this.bufferPointer = 12;
