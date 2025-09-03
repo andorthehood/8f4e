@@ -293,6 +293,13 @@ export class Engine {
 	}
 
 	/**
+	 * Remove all post-process effects from the pipeline
+	 */
+	removeAllPostProcessEffects(): void {
+		this.renderer.removeAllPostProcessEffects();
+	}
+
+	/**
 	 * Update uniform values in the post-process buffer
 	 */
 	updatePostProcessUniforms(uniforms: Record<string, number | number[]>): void {
