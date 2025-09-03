@@ -1,6 +1,6 @@
 import { CompiledModuleLookup, MemoryBuffer } from '@8f4e/compiler';
 
-import { MidiCCModuleAddresses } from './types';
+import type { MidiCCModuleAddresses } from './types';
 
 export default function findMidiCCModules(
 	compiledModules: CompiledModuleLookup,

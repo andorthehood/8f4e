@@ -1,4 +1,4 @@
-import { PostProcessEffect, EffectUniforms } from '../types/postProcess';
+import type { PostProcessEffect, EffectUniforms } from '../types/postProcess';
 import createProgram from '../utils/createProgram';
 import createShader from '../utils/createShader';
 

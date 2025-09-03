@@ -1,6 +1,6 @@
 import { areAllOperandsFloats, areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { ErrorCode } from '../errors';
-import { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { getError } from '../errors';
 
