@@ -11,8 +11,6 @@ export class CachedRenderer extends Renderer {
 	private cacheAccessOrder: string[]; // For LRU tracking
 	private maxCacheItems: number;
 	private currentCacheId: string | null = null;
-	private currentCacheFramebuffer: WebGLFramebuffer | null = null;
-	private currentCacheSize: { width: number; height: number } | null = null;
 	// Draw order segmentation: preserves relative order between sprite-sheet draws and cached quads
 	private segments: Array<{ texture: WebGLTexture | 'SPRITESHEET'; start: number; end?: number }> = [];
 	private currentSegmentTexture: WebGLTexture | 'SPRITESHEET' = 'SPRITESHEET';
@@ -97,8 +95,6 @@ export class CachedRenderer extends Renderer {
 
 		// Set current cache state
 		this.currentCacheId = cacheId;
-		this.currentCacheFramebuffer = cacheFramebuffer;
-		this.currentCacheSize = { width, height };
 
 		// Switch to rendering to cache framebuffer
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, cacheFramebuffer);
@@ -148,8 +144,6 @@ export class CachedRenderer extends Renderer {
 
 			// Clear current cache state
 			this.currentCacheId = null;
-			this.currentCacheFramebuffer = null;
-			this.currentCacheSize = null;
 		}
 
 		return true;
