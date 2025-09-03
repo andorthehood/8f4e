@@ -8,7 +8,7 @@ import {
 } from './utils/testHelpers';
 
 import generateFeedbackScale, { generateLookup } from '../src/feedbackScale';
-import type { Command } from '../src/types';
+import { Command } from '../src/types';
 
 describe('feedbackScale module', () => {
 	describe('generateFeedbackScale function', () => {
