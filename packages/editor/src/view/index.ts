@@ -6,6 +6,7 @@ import colorSchemes from './colorSchemes';
 
 import postProcessVertexShader from '../shaders/postProcessVertexShader';
 import scanlineFragmentShader from '../shaders/scanlineFragmentShader';
+
 import type { State } from '../state/types';
 
 export default async function init(
@@ -30,15 +31,24 @@ export default async function init(
 
 	engine.loadSpriteSheet(sprite);
 
-	// Add CRT post-processing effect
-	const crtEffect: PostProcessEffect = {
-		name: 'crt',
-		vertexShader: postProcessVertexShader,
-		fragmentShader: scanlineFragmentShader,
-		enabled: true,
-	};
+	// Load post-process effects from project configuration or use default CRT effect
+	const projectEffects = state.project.postProcessEffects;
 
-	engine.addPostProcessEffect(crtEffect);
+	if (projectEffects && projectEffects.length > 0) {
+		// Use project-defined effects
+		for (const effect of projectEffects) {
+			engine.addPostProcessEffect(effect);
+		}
+	} else {
+		// Fallback to default CRT effect for backward compatibility
+		const crtEffect: PostProcessEffect = {
+			name: 'crt',
+			vertexShader: postProcessVertexShader,
+			fragmentShader: scanlineFragmentShader,
+			enabled: true,
+		};
+		engine.addPostProcessEffect(crtEffect);
+	}
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		engine.setSpriteLookup(spriteLookups.background);
