@@ -22,7 +22,13 @@ export class CachedEngine extends Engine {
 	 * Executes the callback only when a new cache is created; otherwise draws the cached content.
 	 * Returns true when a new cache was created (callback ran), false when existing cache was used.
 	 */
-	cacheGroup(cacheId: string, width: number, height: number, draw: () => void): boolean {
+	cacheGroup(cacheId: string, width: number, height: number, draw: () => void, enabled: boolean = true): boolean {
+		if (!enabled) {
+			// Caching disabled: just draw with existing offsets
+			draw();
+			return true;
+		}
+
 		// Save and reset offsets for cache-local coordinates
 		this.savedOffsetX = this.offsetX;
 		this.savedOffsetY = this.offsetY;
