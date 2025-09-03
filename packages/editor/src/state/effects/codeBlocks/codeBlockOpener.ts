@@ -1,7 +1,7 @@
 import { CodeBlockClickEvent } from './codeBlockDragger';
 
 import { EventDispatcher } from '../../../events';
-import { State } from '../../types';
+import type { State } from '../../types';
 
 export default function codeBlockOpener(state: State, events: EventDispatcher): () => void {
 	const onCodeBlockClick = function ({ x, y, codeBlock }) {

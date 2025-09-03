@@ -1,6 +1,7 @@
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
-import { Options, EMPTY_DEFAULT_PROJECT } from './state/types';
+import type { Options } from './state/types';
+import { EMPTY_DEFAULT_PROJECT } from './state/types';
 import initView from './view';
 import initState from './state';
 

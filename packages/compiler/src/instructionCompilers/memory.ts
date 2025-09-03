@@ -1,4 +1,5 @@
-import { ArgumentType, InstructionCompiler, MemoryTypes } from '../types';
+import type { InstructionCompiler, MemoryTypes } from '../types';
+import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule } from '../utils';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
