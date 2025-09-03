@@ -1,7 +1,7 @@
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { f32store, i32store } from '../wasmUtils/instructionHelpers';
-import { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 import { compileSegment } from '../compiler';
 
 const store: InstructionCompiler = function (line, context) {
