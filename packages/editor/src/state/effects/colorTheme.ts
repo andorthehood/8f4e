@@ -1,4 +1,4 @@
-import { State } from '../types';
+import type { State } from '../types';
 import { EventDispatcher } from '../../events';
 
 export default function colorTheme(state: State, events: EventDispatcher): () => void {

@@ -1,5 +1,5 @@
 import { EventDispatcher } from '../../events';
-import { State } from '../types';
+import type { State } from '../types';
 
 export default async function sampleRate(state: State, events: EventDispatcher): Promise<void> {
 	function onSetSampleRate({ sampleRate }) {

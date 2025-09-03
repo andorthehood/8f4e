@@ -1,4 +1,5 @@
-import { AST, ArgumentType } from './types';
+import type { AST } from './types';
+import { ArgumentType } from './types';
 
 export function sortModules(modules: AST[]): AST[] {
 	return modules

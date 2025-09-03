@@ -1,8 +1,10 @@
 import { createMockASTLeaf, createMockContext } from './testUtils';
 
 import istructions from '../../src/instructionCompilers/index';
-import { AST, ArgumentType, CompilationContext } from '../../src/types';
+import { ArgumentType } from '../../src/types';
 import { ErrorCode } from '../../src/errors';
+
+import type { AST, CompilationContext } from '../../src/types';
 
 describe('branchIfUnchanged', () => {
 	let context: CompilationContext;
