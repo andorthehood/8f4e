@@ -21,6 +21,7 @@ This engine was built as a WebGL learning exercise with a focus on minimalism ov
 - **Pixel-perfect rendering** - No anti-aliasing, nearest-neighbor filtering for retro pixelated look
 - **Post-processing effects** - Flexible shader-based effects system with buffer-based uniforms
 - **Performance monitoring** - Built-in FPS and render time tracking
+- **Optional caching** - Cache frequently reused draw blocks to offload per-frame work
 
 ## Quick Start
 
@@ -51,6 +52,20 @@ spriteSheet.onload = () => {
 };
 spriteSheet.src = 'spritesheet.png';
 ```
+
+## How It Renders
+
+The engine renders in two phases each frame:
+
+1) Batch sprites into CPU buffers
+- The `Renderer` accumulates vertices into two `Float32Array` buffers: positions and UVs.
+- Calls like `drawSprite` and `drawLine` append 6 vertices (2 triangles) per quad.
+- If buffers would overflow, they auto-flush (upload & draw) to avoid overflow.
+
+2) Render-to-texture, then post-process to the canvas
+- The batched geometry is rendered into an off-screen `renderTexture` attached to a framebuffer.
+- A `PostProcessManager` then renders a full-screen quad to the canvas using the `renderTexture`, applying any enabled effects.
+- Blending is enabled for sprite transparency; post-process temporarily disables it for the full-screen pass and restores it.
 
 ## Post-Processing Effects
 
@@ -169,6 +184,61 @@ engine.removePostProcessEffect('vignette');
 const buffer = engine.getPostProcessBuffer();
 buffer[0] = Math.sin(Date.now() * 0.001) * 0.5; // animate scanline intensity
 ```
+
+## Caching (CachedEngine)
+
+For complex or frequently reused content (UI panels, static HUD layers, repeated composites), the `CachedEngine` wraps the base `Engine` with a caching layer implemented by `CachedRenderer`.
+
+### How caching works
+
+- Per-ID render targets: Each `cacheGroup(id, w, h, draw)` allocates a dedicated `WebGLTexture` + framebuffer sized to the group. The `draw` callback renders into that framebuffer instead of the main one.
+- Dedicated capture buffers: Cache capture uses dedicated CPU-side buffers so it never interferes with the frame’s in-progress buffers (prevents mid-frame flicker/blink).
+- Immediate first draw: When a cache is created, the engine draws that cache once in the same frame (at 0,0 by default) to avoid a first-frame blink. Reuse path also draws the cached texture.
+- Draw-order segments: During playback, the renderer records segments separating sprite-sheet draws from cached-texture draws, rebinding textures only when necessary to preserve order while minimizing state changes.
+- LRU eviction: Cache entries are tracked with access order and evicted (texture + framebuffer are deleted) when exceeding `maxCacheItems`.
+
+See examples in `packages/2d-engine/examples/cache-usage.md`.
+
+### CachedEngine API
+
+```ts
+import { CachedEngine } from '@8f4e/2d-engine';
+
+const engine = new CachedEngine(canvas, /* maxCacheItems= */ 50);
+
+// Create or reuse a cache; returns true if created this call
+engine.cacheGroup('ui-panel', 200, 100, () => {
+  engine.drawSprite(10, 10, 'button');
+  engine.drawText(20, 60, 'Menu');
+});
+
+// Draw cached content at position
+engine.drawCachedContent('ui-panel', 20, 20);
+
+// Introspection and management
+engine.hasCachedContent('ui-panel');
+engine.clearCache('ui-panel');
+engine.clearAllCache();
+engine.getCacheStats(); // { itemCount, maxItems, accessOrder }
+```
+
+### Behavior details
+
+- Coordinate system: Cache content is drawn in its own local (0,0)–(w,h) space during capture. When drawing cached content, you place that snapshot at any screen position.
+- Resolution uniform: While capturing, `u_resolution` is set to the cache’s size; after capture it is restored to the canvas size.
+- No mid-frame canvas draws: Cache capture never flushes the current frame to the canvas; it binds the cache framebuffer first and uses dedicated buffers.
+- First-use parity: Creating a cache also schedules a quad to draw that cached texture in the same frame to match the reuse path.
+
+### Best practices
+
+- Good candidates: Static UI pieces, repeated composites, particle systems updated less frequently than per-frame, level backgrounds.
+- Avoid caching: Single sprites, content that changes every frame, very large caches (mind GPU memory and max texture size).
+- Sizing: Keep caches tight to content; oversized caches waste memory. Consider grouping related UI into a single cache.
+- Limits: Tune `maxCacheItems` to your scene; monitor with `getCacheStats()`.
+
+### Future optimization: atlas caching
+
+Today, each cache ID has its own texture+framebuffer. A potential future optimization is to render all cache snapshots into a single (or few) large atlas texture(s) and store per-cache UV rectangles. Benefits: fewer texture binds and GL objects. Considerations: rectangle packing, gutters to avoid bleeding, scissor clears, and fragmentation management.
 
 ## API Reference
 
