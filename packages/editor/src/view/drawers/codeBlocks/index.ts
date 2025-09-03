@@ -38,7 +38,7 @@ export default function drawModules(engine: CachedEngine, state: State): void {
 			codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.globalViewport.height
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
-
+			engine.cacheGroup(
 				`codeBlock${codeBlock.id}${codeBlock.lastUpdated}`,
 				codeBlock.width,
 				codeBlock.height,
