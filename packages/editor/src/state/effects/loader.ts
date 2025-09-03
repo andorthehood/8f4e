@@ -1,7 +1,8 @@
 import { EventDispatcher } from '../../events';
 import { getModuleId } from '../helpers/codeParsers';
-import type { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
+
+import type { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
 
 function convertGraphicDataToProjectStructure(
 	codeBlocks: CodeBlockGraphicData[],
@@ -108,6 +109,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 					y: 0,
 				},
 				codeBlocks: new Set(),
+				lastUpdated: Date.now(),
 			});
 		});
 		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
