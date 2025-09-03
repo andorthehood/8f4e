@@ -1,5 +1,5 @@
 import instructionParser from '../instructionParser';
-import { CodeBlockGraphicData, State } from '../../../../types';
+import type { CodeBlockGraphicData, State } from '../../../../types';
 import { gapCalculator } from '../../../../helpers/editor';
 import { getModuleId } from '../../../../helpers/codeParsers';
 
