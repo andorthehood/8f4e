@@ -441,6 +441,13 @@ export class Renderer {
 	}
 
 	/**
+	 * Remove all post-process effects from the pipeline
+	 */
+	removeAllPostProcessEffects(): void {
+		this.postProcessManager.removeAllEffects();
+	}
+
+	/**
 	 * Update uniform values in the post-process buffer
 	 */
 	updatePostProcessUniforms(uniforms: Record<string, number | number[]>): void {
