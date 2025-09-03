@@ -1,6 +1,7 @@
 import { decodeBase64ToUint8Array } from '../helpers/base64Decoder';
-import type { CodeBlockGraphicData, State } from '../types';
 import { EventDispatcher } from '../../events';
+
+import type { CodeBlockGraphicData, State } from '../types';
 
 function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
 	const flatCodeBlocks: { code: string[] }[] = [];

@@ -1,8 +1,8 @@
 import instructionParser from '../instructionParser';
-import type { CodeBlockGraphicData, Output, State } from '../../../../types';
 import { gapCalculator } from '../../../../helpers/editor';
 import { getModuleId } from '../../../../helpers/codeParsers';
 
+import type { CodeBlockGraphicData, Output, State } from '../../../../types';
 import type { Instruction } from '@8f4e/compiler';
 
 export function parseOutputs(code: string[]) {
