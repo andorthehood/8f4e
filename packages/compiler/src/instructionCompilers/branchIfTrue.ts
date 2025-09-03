@@ -1,8 +1,9 @@
-import type { InstructionCompiler } from '../types';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br_if } from '../wasmUtils/instructionHelpers';
 import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
+
+import type { InstructionCompiler } from '../types';
 
 const branchIfTrue: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

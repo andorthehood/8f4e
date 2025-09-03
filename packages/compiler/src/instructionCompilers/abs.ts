@@ -1,8 +1,9 @@
 import { ErrorCode, getError } from '../errors';
-import type { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { compileSegment } from '../compiler';
+
+import type { InstructionCompiler } from '../types';
 
 const abs: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

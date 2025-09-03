@@ -117,6 +117,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		events.dispatch('saveState');
 		console.log('projectLoaded');
 		events.dispatch('projectLoaded');
+		events.dispatch('loadPostProcessEffects', state.project.postProcessEffects);
 	}
 
 	void initialLoad;

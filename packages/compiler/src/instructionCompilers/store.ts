@@ -1,8 +1,9 @@
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { f32store, i32store } from '../wasmUtils/instructionHelpers';
-import type { InstructionCompiler } from '../types';
 import { compileSegment } from '../compiler';
+
+import type { InstructionCompiler } from '../types';
 
 const store: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

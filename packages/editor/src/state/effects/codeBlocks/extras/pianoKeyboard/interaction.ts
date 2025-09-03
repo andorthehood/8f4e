@@ -1,8 +1,9 @@
 import { CodeBlockClickEvent } from '../../codeBlockDragger';
 import { EventDispatcher } from '../../../../../events';
 import findPianoKeyAtViewportCoordinates from '../../../../helpers/findPianoKeyboardAtViewportCoordinates';
-import type { State } from '../../../../types';
 import { insertCodeAfterLine, replaceCode } from '../../../../helpers/multiLineCodeParser';
+
+import type { State } from '../../../../types';
 
 function generateCode(
 	pressedKeys: Set<number>,

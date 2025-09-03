@@ -1,8 +1,9 @@
 import { areAllOperandsFloats, areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { ErrorCode } from '../errors';
-import type { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { getError } from '../errors';
+
+import type { InstructionCompiler } from '../types';
 
 const div: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
