@@ -1,5 +1,5 @@
 import instructionParser from '../instructionParser';
-import { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../../../types';
+import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../../../types';
 import { gapCalculator } from '../../../../helpers/editor';
 import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
 
