@@ -1,4 +1,4 @@
-import { AST, CompilationContext, Error } from './types';
+import type { AST, CompilationContext, Error } from './types';
 
 export enum ErrorCode {
 	INSUFFICIENT_OPERANDS,

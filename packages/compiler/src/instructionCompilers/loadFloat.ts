@@ -1,6 +1,6 @@
 import { ErrorCode, getError } from '../errors';
 import { areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
-import { InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
 import { f32load } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
 

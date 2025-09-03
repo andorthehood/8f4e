@@ -1,6 +1,6 @@
 import { Engine } from '@8f4e/2d-engine';
 
-import { State } from '../../../../state/types';
+import type { State } from '../../../../state/types';
 
 export default function drawConnections(engine: Engine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {

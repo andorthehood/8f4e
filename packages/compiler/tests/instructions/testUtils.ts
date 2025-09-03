@@ -1,7 +1,7 @@
 import wabt from 'wabt';
 
 import { FunctionBody } from '../../src/wasmUtils/typeHelpers';
-import { CompiledModule, TestModule } from '../../src/types';
+import type { CompiledModule, TestModule } from '../../src/types';
 import { compileToAST } from '../../src/compiler';
 import {
 	createCodeSection,
@@ -14,6 +14,12 @@ import {
 	createTypeSection,
 } from '../../src/wasmUtils/sectionHelpers';
 import { compileModules } from '../../src';
+
+// Extended memory buffer interface for testing
+interface ExtendedMemoryBuffer extends Int32Array {
+	get: (id: string) => number | number[] | undefined;
+	set: (id: string, value: number | number[]) => void;
+}
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
@@ -141,14 +147,11 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		return;
 	};
 
-	// @ts-ignore
-	memoryBuffer.get = memoryGet;
-	// @ts-ignore
-	memoryBuffer.set = memorySet;
+	(memoryBuffer as ExtendedMemoryBuffer).get = memoryGet;
+	(memoryBuffer as ExtendedMemoryBuffer).set = memorySet;
 
 	return {
-		// @ts-ignore
-		memory: memoryBuffer,
+		memory: memoryBuffer as ExtendedMemoryBuffer,
 		test,
 		reset,
 		wat,

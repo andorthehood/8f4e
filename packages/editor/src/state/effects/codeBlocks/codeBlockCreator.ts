@@ -2,7 +2,7 @@ import instructionParser from './extras/instructionParser';
 
 import { EventDispatcher } from '../../../events';
 import { getModuleId } from '../../helpers/codeParsers';
-import { CodeBlockGraphicData, State } from '../../types';
+import type { CodeBlockGraphicData, State } from '../../types';
 
 import type { Instruction } from '@8f4e/compiler';
 

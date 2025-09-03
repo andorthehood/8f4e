@@ -1,5 +1,6 @@
 import { ErrorCode, getError } from '../errors';
-import { BLOCK_TYPE, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
+import { BLOCK_TYPE } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
 
 const functionEnd: InstructionCompiler = function (line, context) {

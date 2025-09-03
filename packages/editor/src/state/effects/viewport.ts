@@ -1,4 +1,4 @@
-import { State } from '../types';
+import type { State } from '../types';
 import { move, resize, snapToGrid } from '../mutators/viewport';
 import { EventDispatcher } from '../../events';
 

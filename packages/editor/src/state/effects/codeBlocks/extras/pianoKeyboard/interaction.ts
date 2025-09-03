@@ -1,7 +1,7 @@
 import { CodeBlockClickEvent } from '../../codeBlockDragger';
 import { EventDispatcher } from '../../../../../events';
 import findPianoKeyAtViewportCoordinates from '../../../../helpers/findPianoKeyboardAtViewportCoordinates';
-import { State } from '../../../../types';
+import type { State } from '../../../../types';
 import { insertCodeAfterLine, replaceCode } from '../../../../helpers/multiLineCodeParser';
 
 function generateCode(

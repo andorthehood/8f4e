@@ -1,4 +1,4 @@
-import { State } from '../types';
+import type { State } from '../types';
 
 export function resize(state: State, width: number, height: number): void {
 	state.graphicHelper.globalViewport.width = width;

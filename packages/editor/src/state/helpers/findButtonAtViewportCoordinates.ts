@@ -1,4 +1,4 @@
-import { CodeBlockGraphicData, GraphicHelper, Switch } from '../types';
+import type { CodeBlockGraphicData, GraphicHelper, Switch } from '../types';
 
 export default function findButtonAtViewportCoordinates(
 	graphicHelper: GraphicHelper,
