@@ -6,7 +6,7 @@ import colorSchemes from './colorSchemes';
 
 import postProcessVertexShader from '../shaders/postProcessVertexShader';
 import scanlineFragmentShader from '../shaders/scanlineFragmentShader';
-import { State } from '../state/types';
+import type { State } from '../state/types';
 
 export default async function init(
 	state: State,
