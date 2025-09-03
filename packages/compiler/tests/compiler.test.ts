@@ -1,4 +1,4 @@
-import { AST, ArgumentType } from '../src/types';
+import type { AST, ArgumentType } from '../src/types';
 import { isComment, isValidInstruction, parseArgument, parseLine } from '../src/compiler';
 
 describe('parseArgument', () => {
