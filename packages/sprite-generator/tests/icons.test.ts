@@ -8,7 +8,7 @@ import {
 } from './utils/testHelpers';
 
 import generateIcons, { Icon, generateLookup } from '../src/icons';
-import type { Command } from '../src/types';
+import { Command } from '../src/types';
 
 describe('icons module', () => {
 	describe('Icon enum', () => {

@@ -2,7 +2,7 @@ import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } 
 import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates } from './utils/testHelpers';
 
 import generateFillColors, { generateLookup } from '../src/fillColors';
-import type { Command } from '../src/types';
+import { Command } from '../src/types';
 
 describe('fillColors module', () => {
 	describe('generateFillColors function', () => {
