@@ -1,5 +1,5 @@
 import { validateFeatureFlags } from '../config/featureFlags';
-import { Options } from '../state/types';
+import type { Options } from '../state/types';
 
 describe('Feature Flags Integration', () => {
 	test('should properly merge feature flags with options', () => {

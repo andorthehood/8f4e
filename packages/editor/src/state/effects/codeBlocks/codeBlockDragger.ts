@@ -1,7 +1,7 @@
 import { EventDispatcher } from '../../../events';
 import { InternalMouseEvent } from '../../../events/humanInterface';
 import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtViewportCoordinates';
-import { CodeBlockGraphicData, State } from '../../types';
+import type { CodeBlockGraphicData, State } from '../../types';
 
 export interface CodeBlockClickEvent {
 	x: number;
