@@ -1,9 +1,10 @@
-import type { InstructionCompiler } from '../types';
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
+
+import type { InstructionCompiler } from '../types';
 
 const block: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

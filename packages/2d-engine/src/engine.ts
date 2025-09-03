@@ -1,4 +1,5 @@
 import { Renderer } from './renderer';
+
 import type { SpriteLookup } from './types';
 import type { PostProcessEffect } from './types/postProcess';
 

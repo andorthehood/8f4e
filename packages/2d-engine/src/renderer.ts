@@ -9,6 +9,7 @@ import createTexture from './utils/createTexture';
 import spriteFragmentShader from './shaders/spriteFragmentShader';
 import spriteVertexShader from './shaders/spriteVertexShader';
 import { PostProcessManager } from './postProcess/PostProcessManager';
+
 import type { PostProcessEffect } from './types/postProcess';
 
 /**
