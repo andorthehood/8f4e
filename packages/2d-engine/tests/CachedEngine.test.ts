@@ -117,14 +117,12 @@ describe('CachedEngine', () => {
 			expect(engine.offsetX).toBe(10);
 			expect(engine.offsetY).toBe(20);
 
-			// Start cache group - should reset offsets
-			const result = engine.startCacheGroup('test-cache', 100, 100);
-			expect(result).toBe(true);
-			expect(engine.offsetX).toBe(0);
-			expect(engine.offsetY).toBe(0);
-
-			// End cache group - should restore offsets
-			engine.endCacheGroup();
+			let insideOffset: { x: number; y: number } | null = null;
+			const created = engine.cacheGroup('test-cache', 100, 100, () => {
+				insideOffset = { x: engine.offsetX, y: engine.offsetY };
+			});
+			expect(created).toBe(true);
+			expect(insideOffset).toEqual({ x: 0, y: 0 });
 			expect(engine.offsetX).toBe(10);
 			expect(engine.offsetY).toBe(20);
 
@@ -138,13 +136,11 @@ describe('CachedEngine', () => {
 			expect(engine.offsetX).toBe(15);
 			expect(engine.offsetY).toBe(15);
 
-			// Start cache - should reset
-			engine.startCacheGroup('nested-cache', 100, 100);
-			expect(engine.offsetX).toBe(0);
-			expect(engine.offsetY).toBe(0);
-
-			// End cache - should restore
-			engine.endCacheGroup();
+			let insideOffset: { x: number; y: number } | null = null;
+			engine.cacheGroup('nested-cache', 100, 100, () => {
+				insideOffset = { x: engine.offsetX, y: engine.offsetY };
+			});
+			expect(insideOffset).toEqual({ x: 0, y: 0 });
 			expect(engine.offsetX).toBe(15);
 			expect(engine.offsetY).toBe(15);
 
@@ -153,23 +149,29 @@ describe('CachedEngine', () => {
 			engine.endGroup();
 		});
 
-		test('should return cache data on successful cache group end', () => {
-			engine.startCacheGroup('test-cache', 200, 150);
-			const result = engine.endCacheGroup();
-
-			expect(result).toEqual({
-				texture: mockTexture,
-				width: 200,
-				height: 150,
+		test('should not run draw callback when cache exists', () => {
+			let ran = false;
+			// First call creates cache and runs draw
+			const first = engine.cacheGroup('existing-cache', 200, 150, () => {
+				ran = true;
 			});
+			expect(first).toBe(true);
+			expect(ran).toBe(true);
+
+			ran = false;
+			// Second call uses cache and skips draw
+			const second = engine.cacheGroup('existing-cache', 200, 150, () => {
+				ran = true;
+			});
+			expect(second).toBe(false);
+			expect(ran).toBe(false);
 		});
 	});
 
 	describe('Cached Content Drawing', () => {
 		test('should draw cached content at specified position', () => {
 			// Create a cache
-			engine.startCacheGroup('ui-panel', 100, 50);
-			engine.endCacheGroup();
+			engine.cacheGroup('ui-panel', 100, 50, () => {});
 
 			// Mock the drawCachedTexture method
 			const mockRenderer = (engine as { renderer: CachedRenderer }).renderer;
@@ -183,8 +185,7 @@ describe('CachedEngine', () => {
 
 		test('should apply transform offsets when drawing cached content', () => {
 			// Create a cache
-			engine.startCacheGroup('button', 80, 30);
-			engine.endCacheGroup();
+			engine.cacheGroup('button', 80, 30, () => {});
 
 			// Set transform offsets
 			engine.startGroup(10, 20);
@@ -215,17 +216,14 @@ describe('CachedEngine', () => {
 		test('should correctly identify cached content', () => {
 			expect(engine.hasCachedContent('test-cache')).toBe(false);
 
-			engine.startCacheGroup('test-cache', 100, 100);
-			engine.endCacheGroup();
+			engine.cacheGroup('test-cache', 100, 100, () => {});
 
 			expect(engine.hasCachedContent('test-cache')).toBe(true);
 		});
 
 		test('should clear specific cache entries', () => {
-			engine.startCacheGroup('cache1', 100, 100);
-			engine.endCacheGroup();
-			engine.startCacheGroup('cache2', 100, 100);
-			engine.endCacheGroup();
+			engine.cacheGroup('cache1', 100, 100, () => {});
+			engine.cacheGroup('cache2', 100, 100, () => {});
 
 			expect(engine.hasCachedContent('cache1')).toBe(true);
 			expect(engine.hasCachedContent('cache2')).toBe(true);
@@ -237,10 +235,8 @@ describe('CachedEngine', () => {
 		});
 
 		test('should clear all cache entries', () => {
-			engine.startCacheGroup('cache1', 100, 100);
-			engine.endCacheGroup();
-			engine.startCacheGroup('cache2', 100, 100);
-			engine.endCacheGroup();
+			engine.cacheGroup('cache1', 100, 100, () => {});
+			engine.cacheGroup('cache2', 100, 100, () => {});
 
 			expect(engine.getCacheStats().itemCount).toBe(2);
 
@@ -258,8 +254,7 @@ describe('CachedEngine', () => {
 			expect(stats.itemCount).toBe(0);
 			expect(stats.maxItems).toBe(5);
 
-			engine.startCacheGroup('stats-test', 100, 100);
-			engine.endCacheGroup();
+			engine.cacheGroup('stats-test', 100, 100, () => {});
 
 			stats = engine.getCacheStats();
 			expect(stats.itemCount).toBe(1);
@@ -284,10 +279,11 @@ describe('CachedEngine', () => {
 			expect(engine.offsetY).toBe(10);
 
 			// Test cache groups work within transform groups
-			engine.startCacheGroup('transform-cache', 100, 100);
-			expect(engine.offsetX).toBe(0); // Reset for cache
-
-			engine.endCacheGroup();
+			let insideOffset: { x: number; y: number } | null = null;
+			engine.cacheGroup('transform-cache', 100, 100, () => {
+				insideOffset = { x: engine.offsetX, y: engine.offsetY };
+			});
+			expect(insideOffset).toEqual({ x: 0, y: 0 });
 			expect(engine.offsetX).toBe(10); // Restored
 
 			engine.endGroup();
@@ -315,33 +311,12 @@ describe('CachedEngine', () => {
 
 	describe('Error Handling', () => {
 		test('should handle cache group errors from renderer', () => {
-			// Start first cache group
-			engine.startCacheGroup('cache1', 100, 100);
-
-			// Try to start nested cache group - should throw
+			// Start first cache group and try to nest another
 			expect(() => {
-				engine.startCacheGroup('cache2', 100, 100);
+				engine.cacheGroup('cache1', 100, 100, () => {
+					engine.cacheGroup('cache2', 100, 100, () => {});
+				});
 			}).toThrow();
-		});
-
-		test('should handle ending non-existent cache group gracefully', () => {
-			const result = engine.endCacheGroup();
-			expect(result).toBeNull();
-		});
-
-		test('should handle existing cache group start/end cycle gracefully', () => {
-			// Create initial cache
-			const firstResult = engine.startCacheGroup('existing-cache', 100, 100);
-			expect(firstResult).toBe(true); // First time should create cache
-			engine.endCacheGroup();
-
-			// Try to use same cache ID again - should not create new cache
-			const secondResult = engine.startCacheGroup('existing-cache', 100, 100);
-			expect(secondResult).toBe(false); // Cache already exists
-
-			// Ending should not throw error, but return null since no new cache was started
-			const endResult = engine.endCacheGroup();
-			expect(endResult).toBeNull();
 		});
 	});
 });
