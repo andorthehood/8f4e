@@ -13,7 +13,6 @@ export class CachedRenderer extends Renderer {
 	private currentCacheId: string | null = null;
 	private currentCacheFramebuffer: WebGLFramebuffer | null = null;
 	private currentCacheSize: { width: number; height: number } | null = null;
-	private isSkippingDraws: boolean = false;
 	// Draw order segmentation: preserves relative order between sprite-sheet draws and cached quads
 	private segments: Array<{ texture: WebGLTexture | 'SPRITESHEET'; start: number; end?: number }> = [];
 	private currentSegmentTexture: WebGLTexture | 'SPRITESHEET' = 'SPRITESHEET';
@@ -40,7 +39,6 @@ export class CachedRenderer extends Renderer {
 		spriteWidth: number = width,
 		spriteHeight: number = height
 	): void {
-		if (this.shouldSkipDrawing()) return;
 		// Record that subsequent vertices belong to the sprite sheet segment (only during playback)
 		if (this.currentCacheId === null) {
 			this.ensureSegment('SPRITESHEET');
@@ -59,7 +57,6 @@ export class CachedRenderer extends Renderer {
 		spriteHeight: number,
 		thickness: number
 	): void {
-		if (this.shouldSkipDrawing()) return;
 		if (this.currentCacheId === null) {
 			this.ensureSegment('SPRITESHEET');
 		}
@@ -67,23 +64,19 @@ export class CachedRenderer extends Renderer {
 	}
 
 	/**
-	 * Start a cache group - subsequent drawing operations will be cached
-	 * @param cacheId - Unique identifier for this cache group
-	 * @param width - Width of the cache texture
-	 * @param height - Height of the cache texture
-	 * @returns true if cache was created/started, false if cache already exists
+	 * Cache a drawing block or draw an existing cached texture.
+	 * Returns true if a new cache was created (callback executed), false if reused.
 	 */
-	startCacheGroup(cacheId: string, width: number, height: number): boolean {
-		// Prevent nesting cache groups
+	cacheGroup(cacheId: string, width: number, height: number, draw: () => void): boolean {
 		if (this.currentCacheId !== null) {
 			throw new Error('Cannot start cache group: already in a cache group');
 		}
 
-		// Check if cache already exists
-		if (this.cacheMap.has(cacheId)) {
-			// Update access order for LRU
-			this.updateAccessOrder(cacheId);
-			return false; // Cache already exists
+		// If cache exists, draw it and return false
+		const existing = this.getCachedData(cacheId);
+		if (existing) {
+			this.drawCachedTexture(existing.texture, existing.width, existing.height, 0, 0);
+			return false;
 		}
 
 		// Flush any pending vertex data to the main framebuffer first
@@ -96,7 +89,7 @@ export class CachedRenderer extends Renderer {
 		const cacheTexture = this.createCacheTexture(width, height);
 		const cacheFramebuffer = this.createCacheFramebuffer(cacheTexture);
 
-		// Store cache data
+		// Store cache data and mark as most recently used
 		this.cacheMap.set(cacheId, cacheTexture);
 		this.cacheFramebuffers.set(cacheId, cacheFramebuffer);
 		this.cacheSizes.set(cacheId, { width, height });
@@ -127,76 +120,39 @@ export class CachedRenderer extends Renderer {
 		// Evict old cache entries if necessary
 		this.evictOldCacheEntries();
 
-		console.log(`[Cache] Started cache group ${cacheId} (${width}x${height})`);
-		return true; // New cache created
-	}
+		// Execute drawing callback to populate cache
+		try {
+			draw();
+		} finally {
+			// Render any buffered content to the cache
+			if (this.bufferCounter > 0) {
+				super.renderVertexBuffer();
+				super.resetBuffers();
+			}
 
-	/**
-	 * End the current cache group
-	 * @returns Cache data if successful, null if no cache group was active
-	 */
-	endCacheGroup(): { texture: WebGLTexture; width: number; height: number } | null {
-		if (this.currentCacheId === null || this.currentCacheFramebuffer === null || this.currentCacheSize === null) {
-			throw new Error('No cache group to end');
+			// Switch back to default framebuffer (canvas)
+			this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+			this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+
+			// Restore resolution uniform for canvas rendering
+			this.setUniform('u_resolution', this.gl.canvas.width, this.gl.canvas.height);
+
+			// Restore original clear color
+			this.gl.clearColor(0, 0, 0, 1.0);
+
+			// Rebind sprite sheet for main rendering
+			if (this.spriteSheet) {
+				this.gl.activeTexture(this.gl.TEXTURE0);
+				this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
+			}
+
+			// Clear current cache state
+			this.currentCacheId = null;
+			this.currentCacheFramebuffer = null;
+			this.currentCacheSize = null;
 		}
 
-		// Render any buffered content to the cache
-		if (this.bufferCounter > 0) {
-			console.log(`[Cache] Rendering ${this.bufferCounter / 2} triangles to cache framebuffer`);
-			super.renderVertexBuffer();
-			super.resetBuffers();
-		}
-
-		// Get cache data
-		const cacheTexture = this.cacheMap.get(this.currentCacheId)!;
-		const result = {
-			texture: cacheTexture,
-			width: this.currentCacheSize.width,
-			height: this.currentCacheSize.height,
-		};
-
-		console.log(
-			`[Cache] Ended cache group ${this.currentCacheId} (${this.currentCacheSize.width}x${this.currentCacheSize.height})`
-		);
-
-		// Switch back to default framebuffer (canvas)
-		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
-		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-
-		// Restore resolution uniform for canvas rendering
-		this.setUniform('u_resolution', this.gl.canvas.width, this.gl.canvas.height);
-
-		// Restore original clear color
-		this.gl.clearColor(0, 0, 0, 1.0);
-
-		// Rebind sprite sheet for main rendering
-		if (this.spriteSheet) {
-			this.gl.activeTexture(this.gl.TEXTURE0);
-			this.gl.bindTexture(this.gl.TEXTURE_2D, this.spriteSheet);
-		}
-
-		// Clear current cache state
-		this.currentCacheId = null;
-		this.currentCacheFramebuffer = null;
-		this.currentCacheSize = null;
-
-		return result;
-	}
-
-	/**
-	 * Check if we should skip drawing (when creating cache)
-	 */
-	private shouldSkipDrawing(): boolean {
-		return this.isSkippingDraws;
-	}
-
-	/** Control skipping of normal draw calls during cache playback */
-	beginSkipNormalDraws(): void {
-		this.isSkippingDraws = true;
-	}
-
-	endSkipNormalDraws(): void {
-		this.isSkippingDraws = false;
+		return true;
 	}
 
 	/**

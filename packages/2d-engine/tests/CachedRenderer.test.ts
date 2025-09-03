@@ -93,8 +93,8 @@ describe('CachedRenderer', () => {
 	});
 
 	describe('Cache Management', () => {
-		test('should create cache entry when starting new cache group', () => {
-			const result = renderer.startCacheGroup('test-cache', 100, 100);
+		test('should create cache entry when caching a new group', () => {
+			const result = renderer.cacheGroup('test-cache', 100, 100, () => {});
 
 			expect(result).toBe(true); // New cache created
 			expect(mockGL.createTexture).toHaveBeenCalled();
@@ -104,56 +104,43 @@ describe('CachedRenderer', () => {
 			expect(mockGL.clear).toHaveBeenCalledWith(mockGL.COLOR_BUFFER_BIT);
 		});
 
-		test('should return false when cache already exists', () => {
+		test('should return false and draw cached texture when cache already exists', () => {
 			// Create cache first time
-			renderer.startCacheGroup('test-cache', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('test-cache', 100, 100, () => {});
 
 			// Try to create same cache again
-			const result = renderer.startCacheGroup('test-cache', 100, 100);
+			const result = renderer.cacheGroup('test-cache', 100, 100, () => {
+				throw new Error('should not run draw on reuse');
+			});
 
 			expect(result).toBe(false); // Cache already exists
 		});
 
 		test('should throw error when nesting cache groups', () => {
-			renderer.startCacheGroup('cache1', 100, 100);
-
 			expect(() => {
-				renderer.startCacheGroup('cache2', 100, 100);
+				renderer.cacheGroup('cache1', 100, 100, () => {
+					renderer.cacheGroup('cache2', 100, 100, () => {});
+				});
 			}).toThrow('Cannot start cache group: already in a cache group');
 		});
 
-		test('should end cache group correctly', () => {
-			renderer.startCacheGroup('test-cache', 100, 100);
-			const result = renderer.endCacheGroup();
-
-			expect(result).toEqual({
-				texture: mockTexture,
-				width: 100,
-				height: 100,
-			});
-			expect(mockGL.bindFramebuffer).toHaveBeenCalledWith(mockGL.FRAMEBUFFER, null);
-		});
-
-		test('should throw error when ending non-existent cache group', () => {
-			expect(() => {
-				renderer.endCacheGroup();
-			}).toThrow('No cache group to end');
+		test('should produce cached data with correct size', () => {
+			renderer.cacheGroup('test-cache', 100, 100, () => {});
+			const data = renderer.getCachedData('test-cache');
+			expect(data).toEqual({ texture: mockTexture, width: 100, height: 100 });
 		});
 	});
 
 	describe('Cache Lookup', () => {
 		test('should correctly identify existing cache', () => {
-			renderer.startCacheGroup('test-cache', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('test-cache', 100, 100, () => {});
 
 			expect(renderer.hasCachedContent('test-cache')).toBe(true);
 			expect(renderer.hasCachedContent('non-existent')).toBe(false);
 		});
 
 		test('should return cache data for existing cache', () => {
-			renderer.startCacheGroup('test-cache', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('test-cache', 100, 100, () => {});
 
 			const cacheData = renderer.getCachedData('test-cache');
 
@@ -181,10 +168,8 @@ describe('CachedRenderer', () => {
 			});
 
 			// Add some caches
-			renderer.startCacheGroup('cache1', 100, 100);
-			renderer.endCacheGroup();
-			renderer.startCacheGroup('cache2', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('cache1', 100, 100, () => {});
+			renderer.cacheGroup('cache2', 100, 100, () => {});
 
 			stats = renderer.getCacheStats();
 			expect(stats).toEqual({
@@ -198,16 +183,12 @@ describe('CachedRenderer', () => {
 	describe('LRU Eviction', () => {
 		test('should evict oldest cache when exceeding maxItems', () => {
 			// Fill cache to maximum (3 items)
-			renderer.startCacheGroup('cache1', 100, 100);
-			renderer.endCacheGroup();
-			renderer.startCacheGroup('cache2', 100, 100);
-			renderer.endCacheGroup();
-			renderer.startCacheGroup('cache3', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('cache1', 100, 100, () => {});
+			renderer.cacheGroup('cache2', 100, 100, () => {});
+			renderer.cacheGroup('cache3', 100, 100, () => {});
 
 			// Add fourth item - should evict cache1
-			renderer.startCacheGroup('cache4', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('cache4', 100, 100, () => {});
 
 			expect(renderer.hasCachedContent('cache1')).toBe(false); // Evicted
 			expect(renderer.hasCachedContent('cache2')).toBe(true);
@@ -218,10 +199,8 @@ describe('CachedRenderer', () => {
 		});
 
 		test('should update access order when getting cached data', () => {
-			renderer.startCacheGroup('cache1', 100, 100);
-			renderer.endCacheGroup();
-			renderer.startCacheGroup('cache2', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('cache1', 100, 100, () => {});
+			renderer.cacheGroup('cache2', 100, 100, () => {});
 
 			// Access cache1 - should move to end
 			renderer.getCachedData('cache1');
@@ -233,10 +212,8 @@ describe('CachedRenderer', () => {
 
 	describe('Cache Clearing', () => {
 		test('should clear specific cache entry', () => {
-			renderer.startCacheGroup('cache1', 100, 100);
-			renderer.endCacheGroup();
-			renderer.startCacheGroup('cache2', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('cache1', 100, 100, () => {});
+			renderer.cacheGroup('cache2', 100, 100, () => {});
 
 			renderer.clearCache('cache1');
 
@@ -247,10 +224,8 @@ describe('CachedRenderer', () => {
 		});
 
 		test('should clear all cache entries', () => {
-			renderer.startCacheGroup('cache1', 100, 100);
-			renderer.endCacheGroup();
-			renderer.startCacheGroup('cache2', 100, 100);
-			renderer.endCacheGroup();
+			renderer.cacheGroup('cache1', 100, 100, () => {});
+			renderer.cacheGroup('cache2', 100, 100, () => {});
 
 			renderer.clearAllCache();
 
@@ -287,20 +262,11 @@ describe('CachedRenderer', () => {
 		});
 
 		test('should handle nested cache group attempts', () => {
-			renderer.startCacheGroup('cache1', 100, 100);
-
 			expect(() => {
-				renderer.startCacheGroup('cache2', 100, 100);
+				renderer.cacheGroup('cache1', 100, 100, () => {
+					renderer.cacheGroup('cache2', 100, 100, () => {});
+				});
 			}).toThrow('Cannot start cache group: already in a cache group');
-
-			// Clean up
-			renderer.endCacheGroup();
-		});
-
-		test('should handle ending non-existent cache group', () => {
-			expect(() => {
-				renderer.endCacheGroup();
-			}).toThrow('No cache group to end');
 		});
 	});
 });
