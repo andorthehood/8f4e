@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const shiftRegisterInt: ExampleModule = {
 	title: 'Shift Register (8 outs, Int)',

@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const exp = new Array(512).fill(0).map((value, index) => {
 	return Math.exp(index / 512 - 1);
