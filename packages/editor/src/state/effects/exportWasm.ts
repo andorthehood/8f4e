@@ -1,5 +1,5 @@
 import { EventDispatcher } from '../../events';
-import { State } from '../types';
+import type { State } from '../types';
 
 export default function exportWasm(state: State, events: EventDispatcher): void {
 	function onExportWasm() {

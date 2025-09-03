@@ -1,4 +1,4 @@
-import { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '../../../packages/editor/src/state/types';
 
 const switchGatesInt: ExampleModule = {
 	title: 'Switchable Gates (8x Int)',
