@@ -1,4 +1,5 @@
-import { ArgumentType, BLOCK_TYPE, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
+import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';

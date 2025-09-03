@@ -1,4 +1,5 @@
-import { BLOCK_TYPE, InstructionCompiler } from '../types';
+import type { InstructionCompiler } from '../types';
+import { BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule } from '../utils';
 
