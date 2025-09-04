@@ -73,6 +73,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		startingMemoryWordAddress: 0,
 		initialMemorySize: 1,
 		maxMemorySize: 1,
+		includeAST: true,
 	})[0];
 	const program = createSingleFunctionWASMProgram(module.loopFunction);
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
@@ -158,7 +159,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		wat,
 		program,
 		memoryMap: module.memoryMap,
-		ast: module.ast,
+		ast: module.ast || ast,
 	};
 }
 
