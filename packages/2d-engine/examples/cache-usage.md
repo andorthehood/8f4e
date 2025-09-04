@@ -22,10 +22,10 @@ engine.render((timeToRender, fps, triangles, maxTriangles) => {
 ### Option 2: Cached Engine (Full Caching Capabilities)
 
 ```typescript
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-const engine = new CachedEngine(canvas, 50); // Max 50 cached items
+const engine = new Engine(canvas, { caching: true, maxCacheItems: 50 }); // Enable caching
 
 // Cache UI panel that doesn't change often
 engine.cacheGroup('ui-panel', 200, 100, () => {
@@ -46,10 +46,10 @@ engine.render((timeToRender, fps, triangles, maxTriangles) => {
 ### Option 3: Custom Integration
 
 ```typescript
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-const engine = new CachedEngine(canvas, 30);
+const engine = new Engine(canvas, { caching: true, maxCacheItems: 30 });
 
 function cacheComplexUI() {
     engine.cacheGroup('complex-ui', 400, 300, () => {
@@ -63,9 +63,9 @@ function cacheComplexUI() {
 ### Complex UI Caching
 
 ```typescript
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
-const engine = new CachedEngine(canvas);
+const engine = new Engine(canvas, { caching: true });
 
 // Cache different UI states
 function cacheGameUI() {
@@ -111,9 +111,9 @@ engine.render((timeToRender, fps, triangles, maxTriangles) => {
 ### Dynamic Content with Caching
 
 ```typescript
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
-const engine = new CachedEngine(canvas);
+const engine = new Engine(canvas, { caching: true });
 
 class ParticleSystem {
     private lastCacheTime = 0;
@@ -145,9 +145,9 @@ class ParticleSystem {
 ### Memory Management
 
 ```typescript
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
-const engine = new CachedEngine(canvas, 20); // Limit to 20 cached items
+const engine = new Engine(canvas, { caching: true, maxCacheItems: 20 }); // Limit to 20 cached items
 
 // Monitor cache usage
 function debugCacheUsage() {
@@ -184,9 +184,9 @@ function adaptiveCaching() {
 ### Transform Groups with Caching
 
 ```typescript
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
-const engine = new CachedEngine(canvas);
+const engine = new Engine(canvas, { caching: true });
 
 // Cache content that will be transformed
 engine.cacheGroup('entity-sprite', 64, 64, () => {
@@ -248,14 +248,14 @@ function estimateCacheMemory() {
 }
 ```
 
-## Migration from Non-Cached Engine
+## Migration from Non-Cached to Cached Engine
 
 ```typescript
 // Before: Standard engine
 const engine = new Engine(canvas);
 
-// After: Cached engine (plus cache methods)
-const engine = new CachedEngine(canvas);
+// After: Enable caching with unified API  
+const engine = new Engine(canvas, { caching: true });
 
 // All existing code continues to work unchanged
 engine.drawSprite(10, 10, 'player');
