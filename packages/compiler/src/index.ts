@@ -156,13 +156,6 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 			throw 'Memory limit exceeded';
 		}
 
-		// Strip AST if not requested
-		if (options.includeAST !== true) {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			const { ast, ...moduleWithoutAST } = module;
-			return moduleWithoutAST as CompiledModule;
-		}
-
 		return module;
 	});
 }
@@ -242,8 +235,6 @@ export default function compile(
 	const compiledModules = compileModules(sortedModules, {
 		...options,
 		startingMemoryWordAddress: 1,
-		// Always include AST during compilation for inter-modular connections
-		includeAST: true,
 	});
 	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
