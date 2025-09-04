@@ -3,8 +3,8 @@
 **Priority**: 🟡
 **Estimated Effort**: 1-2 days
 **Created**: 2025-09-02
-**Status**: Archived — implemented differently
-**Completed**: Yes (via callback-based API)
+**Status**: Completed
+**Completed**: 2025-09-03
 
 > Implementation note (2025-09-03)
 >
