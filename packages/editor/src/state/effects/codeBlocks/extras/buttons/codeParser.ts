@@ -1,7 +1,7 @@
 import instructionParser from '../instructionParser';
-import type { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../../types';
 import { gapCalculator } from '../../../../helpers/editor';
 
+import type { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../../types';
 import type { Instruction } from '@8f4e/compiler';
 
 export function parseButtons(code: string[]) {
