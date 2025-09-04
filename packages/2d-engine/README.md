@@ -282,7 +282,12 @@ engine.isCachingEnabled; // true
 ### Runtime Behavior
 
 When caching is **disabled** (default):
-- Caching methods (`cacheGroup`, `drawCachedContent`, etc.) throw clear error messages
+- Caching methods behave gracefully without errors:
+  - `cacheGroup()`: Executes draw function and returns `false`
+  - `drawCachedContent()`: Exits silently (no-op)
+  - `hasCachedContent()`: Returns `false`
+  - `clearCache()` and `clearAllCache()`: Exit silently (no-op)
+  - `getCacheStats()`: Returns `{ itemCount: 0, maxItems: 0, accessOrder: [] }`
 - No performance overhead from caching infrastructure
 - Uses standard `Renderer` for maximum performance
 
