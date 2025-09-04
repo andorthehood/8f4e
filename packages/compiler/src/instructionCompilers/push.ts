@@ -1,4 +1,3 @@
-import type { ArgumentLiteral, InstructionCompiler } from '../types';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
@@ -16,6 +15,8 @@ import {
 	getElementCount,
 	saveByteCode,
 } from '../utils';
+
+import type { ArgumentLiteral, InstructionCompiler } from '../types';
 
 function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 	if (argument.isInteger) {
