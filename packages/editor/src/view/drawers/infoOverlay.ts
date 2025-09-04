@@ -66,13 +66,13 @@ export default function drawInfoOverlay(
 
 	// Graphic info
 	debugText.push('');
-	debugText.push('Vertex buffer: ' + Math.round((vertices / maxVertices) * 100) + '%');
+	debugText.push('Quad count: ' + vertices / 2);
+	debugText.push(
+		'Vertex buffer: ' + vertices + '/' + maxVertices + ' (' + Math.round((vertices / maxVertices) * 100) + '%)'
+	);
 	debugText.push('Graphic load: ' + ((timeToRender / (1000 / 120)) * 100).toFixed(2) + '%');
 	debugText.push('Time to render one frame ' + timeToRender.toFixed(2) + 'ms');
-	debugText.push('FPS: ' + fps + '  Vertex buffer: ' + vertices + '/' + maxVertices);
-
-	debugText.push('');
-
+	debugText.push('FPS: ' + fps);
 	// Cache stats (when using CachedEngine)
 	const cs = engine.getCacheStats();
 	debugText.push('Cache items: ' + cs.itemCount + '/' + cs.maxItems);
