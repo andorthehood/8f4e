@@ -88,7 +88,7 @@ function collectConstants(ast: AST): Namespace['consts'] {
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	compiledModules.forEach(({ ast, memoryMap }) => {
-		ast.forEach(line => {
+		ast!.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
 				['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
@@ -210,6 +210,16 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 	});
 }
 
+function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
+	const strippedModules = new Map<string, CompiledModule>();
+	for (const [id, module] of compiledModules) {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { ast, ...moduleWithoutAST } = module;
+		strippedModules.set(id, moduleWithoutAST as CompiledModule);
+	}
+	return strippedModules;
+}
+
 export default function compile(
 	modules: Module[],
 	options: CompileOptions
@@ -221,7 +231,10 @@ export default function compile(
 	const astModules = modules.map(({ code }) => compileToAST(code, options));
 	// const astFunctions = standardLibrary.map(code => compileToAST(code.split('\n'), options));
 	const sortedModules = sortModules(astModules);
-	const compiledModules = compileModules(sortedModules, { ...options, startingMemoryWordAddress: 1 });
+	const compiledModules = compileModules(sortedModules, {
+		...options,
+		startingMemoryWordAddress: 1,
+	});
 	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
 	const loopFunctions = compiledModules.map(({ loopFunction }) => loopFunction);
@@ -232,6 +245,11 @@ export default function compile(
 		.map((module, index) => call(index + compiledModules.length + 3))
 		.flat();
 	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(compiledModules);
+
+	// Strip AST from final result if not requested
+	const finalCompiledModules = options.includeAST
+		? compiledModulesMap
+		: stripASTFromCompiledModules(compiledModulesMap);
 
 	return {
 		codeBuffer: Uint8Array.from([
@@ -259,7 +277,7 @@ export default function compile(
 				...memoryInitiatorFunctions,
 			]),
 		]),
-		compiledModules: compiledModulesMap,
+		compiledModules: finalCompiledModules,
 		allocatedMemorySize:
 			compiledModules[compiledModules.length - 1].byteAddress +
 			compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
