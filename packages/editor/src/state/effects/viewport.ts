@@ -1,6 +1,7 @@
-import type { State } from '../types';
 import { move, resize, snapToGrid } from '../mutators/viewport';
 import { EventDispatcher } from '../../events';
+
+import type { State } from '../types';
 
 export default function viewport(state: State, events: EventDispatcher): () => void {
 	function onMouseMove(event) {
