@@ -38,7 +38,7 @@ export interface CompiledModule {
 	wordAlignedAddress: number;
 	memoryMap: MemoryMap;
 	wordAlignedSize: number;
-	ast: AST;
+	ast?: AST;
 }
 
 export type CompiledModuleLookup = Map<string, CompiledModule>;
@@ -150,4 +150,6 @@ export interface CompileOptions {
 	/** Maximum number of memory pages, with a page being 64KiB (65,536 bytes). */
 	maxMemorySize: number;
 	globalDataStructures?: DataStructure[];
+	/** Whether to include AST in compiled modules. Default is false to reduce payload size. */
+	includeAST?: boolean;
 }
