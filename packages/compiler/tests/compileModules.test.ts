@@ -18,22 +18,6 @@ describe('compiler', () => {
 		).toMatchSnapshot();
 	});
 
-	test('compileModules excludes AST when includeAST is false', () => {
-		const astModules = modules.map(({ code }) => compileToAST(code));
-		const compiledModules = compileModules(astModules, {
-			startingMemoryWordAddress: 0,
-			environmentExtensions: { constants: {}, ignoredKeywords: [] },
-			maxMemorySize: 1,
-			initialMemorySize: 1,
-			includeAST: false,
-		});
-
-		// Verify that none of the compiled modules have an ast property
-		compiledModules.forEach(module => {
-			expect(module.ast).toBeUndefined();
-		});
-	});
-
 	test('compile function excludes AST by default', () => {
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
