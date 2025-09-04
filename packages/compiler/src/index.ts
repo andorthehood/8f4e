@@ -88,7 +88,6 @@ function collectConstants(ast: AST): Namespace['consts'] {
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	compiledModules.forEach(({ ast, memoryMap }) => {
-		// AST is always present during internal compilation (includeAST: true)
 		ast!.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
