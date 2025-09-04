@@ -1,6 +1,7 @@
 import { Renderer } from './renderer';
+import { CachedRenderer } from './CachedRenderer';
 
-import type { SpriteLookup } from './types';
+import type { SpriteLookup, EngineOptions } from './types';
 import type { PostProcessEffect } from './types/postProcess';
 
 /**
@@ -8,6 +9,11 @@ import type { PostProcessEffect } from './types/postProcess';
  */
 export class Engine {
 	private renderer: Renderer;
+	private readonly cachingEnabled: boolean;
+
+	// Cache-related state (only used when caching is enabled)
+	private savedOffsetX: number | null = null;
+	private savedOffsetY: number | null = null;
 
 	// Performance tracking
 	frameCounter: number;
@@ -26,9 +32,16 @@ export class Engine {
 	/**
 	 * Creates a new 2D rendering engine instance
 	 * @param canvas - The HTML canvas element to render to
+	 * @param options - Optional configuration including caching settings
 	 */
-	constructor(canvas: HTMLCanvasElement) {
-		this.renderer = new Renderer(canvas);
+	constructor(canvas: HTMLCanvasElement, options?: EngineOptions) {
+		this.cachingEnabled = options?.caching ?? false;
+
+		if (this.cachingEnabled) {
+			this.renderer = new CachedRenderer(canvas, options?.maxCacheItems ?? 50);
+		} else {
+			this.renderer = new Renderer(canvas);
+		}
 
 		// Initialize performance tracking and transform state
 		this.startTime = Date.now();
@@ -318,5 +331,150 @@ export class Engine {
 	 */
 	getPostProcessBuffer(): Float32Array {
 		return this.renderer.getPostProcessBuffer();
+	}
+
+	// Caching methods (only available when caching is enabled)
+
+	/**
+	 * Convenience wrapper for caching a drawing block.
+	 * Only available when caching is enabled in constructor options.
+	 * Executes the callback only when a new cache is created; otherwise draws the cached content.
+	 * Returns true when a new cache was created (callback ran), false when existing cache was used.
+	 * @param cacheId - Unique identifier for the cache
+	 * @param width - Cache width in pixels
+	 * @param height - Cache height in pixels
+	 * @param draw - Drawing callback executed when creating cache
+	 * @param enabled - Whether caching is enabled for this call (defaults to true)
+	 */
+	cacheGroup(cacheId: string, width: number, height: number, draw: () => void, enabled: boolean = true): boolean {
+		if (!this.cachingEnabled) {
+			// Caching not enabled: just draw with existing offsets
+			draw();
+			return false; // signal no cache was created/used
+		}
+
+		if (!enabled) {
+			// Caching disabled for this call: just draw with existing offsets.
+			// Do not read, create, or update any cache entries.
+			draw();
+			return false; // signal no cache was created/used
+		}
+
+		const cachedRenderer = this.renderer as CachedRenderer;
+
+		// If cache exists, just draw it at current offset
+		if (cachedRenderer.hasCachedContent(cacheId)) {
+			this.drawCachedContent(cacheId, 0, 0);
+			return false;
+		}
+
+		// Save and reset offsets for cache-local coordinates (creation path)
+		this.savedOffsetX = this.offsetX;
+		this.savedOffsetY = this.offsetY;
+		this.offsetX = 0;
+		this.offsetY = 0;
+
+		const created = cachedRenderer.cacheGroup(cacheId, width, height, draw);
+
+		// Restore offsets
+		if (this.savedOffsetX !== null && this.savedOffsetY !== null) {
+			this.offsetX = this.savedOffsetX;
+			this.offsetY = this.savedOffsetY;
+			this.savedOffsetX = null;
+			this.savedOffsetY = null;
+		}
+
+		return created;
+	}
+
+	/**
+	 * Draw cached content at specified position.
+	 * Only available when caching is enabled in constructor options.
+	 * @param cacheId - ID of the cached content to draw
+	 * @param x - X position to draw at
+	 * @param y - Y position to draw at
+	 */
+	drawCachedContent(cacheId: string, x: number, y: number): void {
+		if (!this.cachingEnabled) {
+			return; // Exit silently when caching is not enabled
+		}
+
+		const cachedRenderer = this.renderer as CachedRenderer;
+
+		if (!cachedRenderer.hasCachedContent(cacheId)) {
+			return; // Cache doesn't exist, skip silently
+		}
+
+		// Apply transform offsets
+		x = x + this.offsetX;
+		y = y + this.offsetY;
+
+		// Get cache data
+		const cacheData = cachedRenderer.getCachedData(cacheId);
+
+		if (cacheData) {
+			cachedRenderer.drawCachedTexture(cacheData.texture, cacheData.width, cacheData.height, x, y);
+		}
+	}
+
+	/**
+	 * Check if cached content exists.
+	 * Only available when caching is enabled in constructor options.
+	 * @param cacheId - ID to check
+	 */
+	hasCachedContent(cacheId: string): boolean {
+		if (!this.cachingEnabled) {
+			return false;
+		}
+
+		const cachedRenderer = this.renderer as CachedRenderer;
+		return cachedRenderer.hasCachedContent(cacheId);
+	}
+
+	/**
+	 * Clear a specific cache entry.
+	 * Only available when caching is enabled in constructor options.
+	 * @param cacheId - ID of the cache to clear
+	 */
+	clearCache(cacheId: string): void {
+		if (!this.cachingEnabled) {
+			return;
+		}
+
+		const cachedRenderer = this.renderer as CachedRenderer;
+		cachedRenderer.clearCache(cacheId);
+	}
+
+	/**
+	 * Clear all cache entries.
+	 * Only available when caching is enabled in constructor options.
+	 */
+	clearAllCache(): void {
+		if (!this.cachingEnabled) {
+			return;
+		}
+
+		const cachedRenderer = this.renderer as CachedRenderer;
+		cachedRenderer.clearAllCache();
+	}
+
+	/**
+	 * Get cache statistics.
+	 * Only available when caching is enabled in constructor options.
+	 */
+	getCacheStats(): { itemCount: number; maxItems: number; accessOrder: string[] } {
+		if (!this.cachingEnabled) {
+			return { itemCount: 0, maxItems: 0, accessOrder: [] };
+		}
+
+		const cachedRenderer = this.renderer as CachedRenderer;
+		return cachedRenderer.getCacheStats();
+	}
+
+	/**
+	 * Check if caching is enabled for this engine instance
+	 */
+	get isCachingEnabled(): boolean {
+		return this.cachingEnabled;
 	}
 }

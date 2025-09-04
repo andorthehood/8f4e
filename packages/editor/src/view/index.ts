@@ -1,5 +1,5 @@
 import generateSprite from '@8f4e/sprite-generator';
-import { CachedEngine, PostProcessEffect } from '@8f4e/2d-engine';
+import { Engine, PostProcessEffect } from '@8f4e/2d-engine';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import colorSchemes from './colorSchemes';
@@ -28,7 +28,7 @@ export default async function init(
 	state.graphicHelper.globalViewport.hGrid = characterHeight;
 	state.graphicHelper.globalViewport.vGrid = characterWidth;
 
-	const engine = new CachedEngine(canvas);
+	const engine = new Engine(canvas, { caching: true });
 
 	engine.loadSpriteSheet(sprite);
 
