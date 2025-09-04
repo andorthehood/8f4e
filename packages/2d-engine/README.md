@@ -237,7 +237,7 @@ const buffer = engine.getPostProcessBuffer();
 buffer[0] = Math.sin(Date.now() * 0.001) * 0.5; // animate scanline intensity
 ```
 
-## Caching (Unified Engine API)
+## Caching
 
 For complex or frequently reused content (UI panels, static HUD layers, repeated composites), enable caching through the unified `Engine` constructor.
 
