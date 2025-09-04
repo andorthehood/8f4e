@@ -25,10 +25,12 @@ This engine was built as a WebGL learning exercise with a focus on minimalism ov
 
 ## Quick Start
 
+### Basic Usage (No Caching)
+
 ```typescript
 import { Engine, SpriteLookup } from '@8f4e/2d-engine';
 
-// Initialize engine
+// Initialize engine without caching
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const engine = new Engine(canvas);
 
@@ -52,6 +54,58 @@ spriteSheet.onload = () => {
 };
 spriteSheet.src = 'spritesheet.png';
 ```
+
+### With Caching (Recommended for Complex Scenes)
+
+```typescript
+import { Engine, SpriteLookup, EngineOptions } from '@8f4e/2d-engine';
+
+// Initialize engine with caching enabled
+const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+const options: EngineOptions = { 
+  caching: true, 
+  maxCacheItems: 100 // Optional: defaults to 50
+};
+const engine = new Engine(canvas, options);
+
+// Same setup as above...
+engine.loadSpriteSheet(spriteSheet);
+engine.setSpriteLookup(sprites);
+
+// Render with caching for complex UI elements
+engine.render((timeToRender, fps, triangles, maxTriangles) => {
+  // Cache a complex UI panel that doesn't change often
+  engine.cacheGroup('ui-panel', 200, 100, () => {
+    engine.drawSprite(10, 10, 'button');
+    engine.drawSprite(60, 10, 'button');
+    engine.drawText(20, 50, 'Menu');
+  }); // Draws cached version on subsequent frames
+  
+  // Draw dynamic content normally
+  engine.drawSprite(player.x, player.y, 'player');
+});
+```
+
+## Constructor Options
+
+The unified `Engine` constructor accepts optional configuration:
+
+```typescript
+interface EngineOptions {
+  /** Enable caching functionality. Defaults to false. */
+  caching?: boolean;
+  /** Maximum number of cache items when caching is enabled. Defaults to 50. */
+  maxCacheItems?: number;
+}
+
+// Examples:
+const basicEngine = new Engine(canvas);                              // No caching
+const fastEngine = new Engine(canvas, { caching: false });          // Explicit no caching  
+const cachedEngine = new Engine(canvas, { caching: true });         // Caching with default limit
+const customEngine = new Engine(canvas, { caching: true, maxCacheItems: 200 }); // Custom limit
+```
+
+**Migration Note:** The separate `CachedEngine` class is deprecated. Use `Engine` with `{ caching: true }` instead.
 
 ## How It Renders
 
@@ -185,9 +239,9 @@ const buffer = engine.getPostProcessBuffer();
 buffer[0] = Math.sin(Date.now() * 0.001) * 0.5; // animate scanline intensity
 ```
 
-## Caching (CachedEngine)
+## Caching (Unified Engine API)
 
-For complex or frequently reused content (UI panels, static HUD layers, repeated composites), the `CachedEngine` wraps the base `Engine` with a caching layer implemented by `CachedRenderer`.
+For complex or frequently reused content (UI panels, static HUD layers, repeated composites), enable caching through the unified `Engine` constructor.
 
 ### How caching works
 
@@ -199,12 +253,14 @@ For complex or frequently reused content (UI panels, static HUD layers, repeated
 
 See examples in `packages/2d-engine/examples/cache-usage.md`.
 
-### CachedEngine API
+### Unified Engine API
 
 ```ts
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine, EngineOptions } from '@8f4e/2d-engine';
 
-const engine = new CachedEngine(canvas, /* maxCacheItems= */ 50);
+// Enable caching when creating the engine
+const options: EngineOptions = { caching: true, maxCacheItems: 50 };
+const engine = new Engine(canvas, options);
 
 // Create or reuse a cache; returns true if created this call
 engine.cacheGroup('ui-panel', 200, 100, () => {
@@ -220,7 +276,30 @@ engine.hasCachedContent('ui-panel');
 engine.clearCache('ui-panel');
 engine.clearAllCache();
 engine.getCacheStats(); // { itemCount, maxItems, accessOrder }
+
+// Check if caching is enabled
+engine.isCachingEnabled; // true
 ```
+
+**Backward Compatibility**: The old `CachedEngine` class is still available but deprecated:
+
+```ts
+// Deprecated - use Engine with { caching: true } instead
+import { CachedEngine } from '@8f4e/2d-engine';
+const engine = new CachedEngine(canvas, 50);
+```
+
+### Runtime Behavior
+
+When caching is **disabled** (default):
+- Caching methods (`cacheGroup`, `drawCachedContent`, etc.) throw clear error messages
+- No performance overhead from caching infrastructure
+- Uses standard `Renderer` for maximum performance
+
+When caching is **enabled**:
+- All caching methods are available and functional  
+- Uses `CachedRenderer` with LRU eviction and draw-order segmentation
+- Small overhead for cache management infrastructure
 
 ### Behavior details
 
