@@ -1,7 +1,8 @@
 // Import the types from the editor
+import WebWorkerMIDIRuntime from '@8f4e/runtime-web-worker-midi?worker';
+
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
-import WebWorkerMIDIRuntime from '@8f4e/runtime-web-worker-midi?worker';
 
 // WebWorker MIDI Runtime Factory
 export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {

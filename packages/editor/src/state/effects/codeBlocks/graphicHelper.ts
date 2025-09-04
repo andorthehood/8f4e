@@ -12,7 +12,6 @@ import { CodeBlockClickEvent } from './codeBlockDragger';
 import { CodeBlockAddedEvent } from './codeBlockCreator';
 
 import { EventDispatcher } from '../../../events';
-import type { CodeBlockGraphicData, State } from '../../types';
 import {
 	backSpace,
 	enter,
@@ -24,6 +23,8 @@ import {
 } from '../../helpers/editor';
 import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
 import { InternalKeyboardEvent } from '../../../events/humanInterface';
+
+import type { CodeBlockGraphicData, State } from '../../types';
 
 const instructions = [
 	'and',
@@ -205,6 +206,8 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 				codeBlock.code = bp.code;
 
+				codeBlock.lastUpdated = Date.now();
+
 				events.dispatch('saveState');
 				events.dispatch('codeChange');
 				break;
@@ -219,6 +222,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				codeBlock.cursor.col = ent.col;
 
 				codeBlock.code = ent.code;
+				codeBlock.lastUpdated = Date.now();
 
 				events.dispatch('saveState');
 				events.dispatch('codeChange');
@@ -235,6 +239,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					codeBlock.cursor.col = bp.col;
 
 					codeBlock.code = bp.code;
+					codeBlock.lastUpdated = Date.now();
 
 					events.dispatch('saveState');
 					events.dispatch('codeChange');

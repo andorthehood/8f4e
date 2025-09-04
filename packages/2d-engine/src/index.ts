@@ -8,5 +8,9 @@ export { Engine } from './engine';
 // Export Renderer for advanced users who want low-level access
 export { Renderer } from './renderer';
 
+// Export cached versions
+export { CachedEngine } from './CachedEngine';
+export { CachedRenderer } from './CachedRenderer';
+
 // Export post-processing system
 export { PostProcessManager } from './postProcess/PostProcessManager';

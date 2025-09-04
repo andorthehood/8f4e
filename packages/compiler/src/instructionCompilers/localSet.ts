@@ -1,8 +1,9 @@
-import type { InstructionCompiler } from '../types';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
 import { localSet } from '../wasmUtils/instructionHelpers';
+
+import type { InstructionCompiler } from '../types';
 
 const _localSet: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

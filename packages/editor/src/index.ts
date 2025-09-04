@@ -1,9 +1,10 @@
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
-import type { Options } from './state/types';
 import { EMPTY_DEFAULT_PROJECT } from './state/types';
 import initView from './view';
 import initState from './state';
+
+import type { Options } from './state/types';
 
 // Re-export types that consumers might need
 export type { Project, Options, State, EditorSettings, CompilationResult } from './state/types';
@@ -25,6 +26,10 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 	events.on('setFont', () => {
 		view.reloadSpriteSheet();
 		events.dispatch('spriteSheetRerendered');
+	});
+
+	events.on('loadPostProcessEffects', () => {
+		view.loadPostProcessEffects(state.project.postProcessEffects);
 	});
 
 	return {
