@@ -9,6 +9,7 @@ import createTexture from './utils/createTexture';
 import spriteFragmentShader from './shaders/spriteFragmentShader';
 import spriteVertexShader from './shaders/spriteVertexShader';
 import { PostProcessManager } from './postProcess/PostProcessManager';
+
 import type { PostProcessEffect } from './types/postProcess';
 
 /**
@@ -70,6 +71,12 @@ export class Renderer {
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT); // fills with clearColor
 		this.gl.useProgram(this.program); // bind shader program for rendering
 		this.setUniform('u_resolution', canvas.width, canvas.height); // pass screen size to vertex shader
+
+		// Set texture uniform to use texture unit 0 (this is critical for texture sampling)
+		const textureLocation = this.gl.getUniformLocation(this.program, 'u_texture');
+		if (textureLocation) {
+			this.gl.uniform1i(textureLocation, 0); // Tell shader to sample from texture unit 0
+		}
 
 		// Configure vertex attributes (tells GPU how to read buffer data)
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.glPositionBuffer); // make this the active buffer
@@ -431,6 +438,13 @@ export class Renderer {
 	 */
 	removePostProcessEffect(name: string): void {
 		this.postProcessManager.removeEffect(name);
+	}
+
+	/**
+	 * Remove all post-process effects from the pipeline
+	 */
+	removeAllPostProcessEffects(): void {
+		this.postProcessManager.removeAllEffects();
 	}
 
 	/**

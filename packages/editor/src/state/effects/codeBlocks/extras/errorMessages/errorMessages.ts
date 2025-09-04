@@ -1,5 +1,6 @@
-import type { CodeBlockGraphicData, State } from '../../../../types';
 import { gapCalculator } from '../../../../helpers/editor';
+
+import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function errorMessages(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.errorMessages.clear();
