@@ -88,10 +88,8 @@ function collectConstants(ast: AST): Namespace['consts'] {
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	compiledModules.forEach(({ ast, memoryMap }) => {
-		if (!ast) {
-			return; // Skip if AST is not available
-		}
-		ast.forEach(line => {
+		// AST is always present during internal compilation (includeAST: true)
+		ast!.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
 				['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
