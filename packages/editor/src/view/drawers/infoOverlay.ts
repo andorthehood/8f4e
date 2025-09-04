@@ -1,4 +1,4 @@
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
 const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
@@ -15,7 +15,7 @@ function formatBytes(bytes: number): string {
 }
 
 export default function drawInfoOverlay(
-	engine: CachedEngine,
+	engine: Engine,
 	state: State,
 	{
 		timeToRender,
@@ -73,7 +73,6 @@ export default function drawInfoOverlay(
 	debugText.push('Graphic load: ' + ((timeToRender / (1000 / 120)) * 100).toFixed(2) + '%');
 	debugText.push('Time to render one frame ' + timeToRender.toFixed(2) + 'ms');
 	debugText.push('FPS: ' + fps);
-	// Cache stats (when using CachedEngine)
 	const cs = engine.getCacheStats();
 	debugText.push('Cache items: ' + cs.itemCount + '/' + cs.maxItems);
 	debugText.push('');
