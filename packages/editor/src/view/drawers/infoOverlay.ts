@@ -1,4 +1,4 @@
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
 const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
@@ -15,7 +15,7 @@ function formatBytes(bytes: number): string {
 }
 
 export default function drawInfoOverlay(
-	engine: CachedEngine,
+	engine: Engine,
 	state: State,
 	{
 		timeToRender,
@@ -73,7 +73,7 @@ export default function drawInfoOverlay(
 
 	debugText.push('');
 
-	// Cache stats (when using CachedEngine)
+	// Cache stats (when caching is enabled)
 	const cs = engine.getCacheStats();
 	debugText.push('Cache items: ' + cs.itemCount + '/' + cs.maxItems);
 	debugText.push('');
