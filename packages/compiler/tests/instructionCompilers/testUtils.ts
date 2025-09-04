@@ -1,6 +1,7 @@
 import { Instruction } from '../../src/instructionCompilers';
-import type { AST, CompilationContext } from '../../src/types';
 import { BLOCK_TYPE } from '../../src/types';
+
+import type { AST, CompilationContext } from '../../src/types';
 
 export function createMockContext(): CompilationContext {
 	return {

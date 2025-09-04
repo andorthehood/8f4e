@@ -1,7 +1,8 @@
 import { ErrorCode, getError } from '../errors';
-import type { InstructionCompiler } from '../types';
 import { isInstructionIsInsideAModule } from '../utils';
 import { compileSegment } from '../compiler';
+
+import type { InstructionCompiler } from '../types';
 
 const pow2: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {
