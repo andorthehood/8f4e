@@ -348,7 +348,9 @@ export class Engine {
 	 */
 	cacheGroup(cacheId: string, width: number, height: number, draw: () => void, enabled: boolean = true): boolean {
 		if (!this.cachingEnabled) {
-			throw new Error('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			// Caching not enabled: just draw with existing offsets
+			draw();
+			return false; // signal no cache was created/used
 		}
 
 		if (!enabled) {
@@ -394,7 +396,7 @@ export class Engine {
 	 */
 	drawCachedContent(cacheId: string, x: number, y: number): void {
 		if (!this.cachingEnabled) {
-			throw new Error('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			return; // Exit silently when caching is not enabled
 		}
 
 		const cachedRenderer = this.renderer as CachedRenderer;
@@ -422,7 +424,7 @@ export class Engine {
 	 */
 	hasCachedContent(cacheId: string): boolean {
 		if (!this.cachingEnabled) {
-			throw new Error('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			return false;
 		}
 
 		const cachedRenderer = this.renderer as CachedRenderer;
@@ -436,7 +438,7 @@ export class Engine {
 	 */
 	clearCache(cacheId: string): void {
 		if (!this.cachingEnabled) {
-			throw new Error('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			return;
 		}
 
 		const cachedRenderer = this.renderer as CachedRenderer;
@@ -449,7 +451,7 @@ export class Engine {
 	 */
 	clearAllCache(): void {
 		if (!this.cachingEnabled) {
-			throw new Error('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			return;
 		}
 
 		const cachedRenderer = this.renderer as CachedRenderer;
@@ -462,7 +464,7 @@ export class Engine {
 	 */
 	getCacheStats(): { itemCount: number; maxItems: number; accessOrder: string[] } {
 		if (!this.cachingEnabled) {
-			throw new Error('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			return { itemCount: 0, maxItems: 0, accessOrder: [] };
 		}
 
 		const cachedRenderer = this.renderer as CachedRenderer;
