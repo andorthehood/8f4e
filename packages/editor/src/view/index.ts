@@ -3,6 +3,7 @@ import { CachedEngine, PostProcessEffect } from '@8f4e/2d-engine';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import colorSchemes from './colorSchemes';
+import drawBackground from './drawers/drawBackground';
 
 import type { State } from '../state/types';
 
@@ -33,26 +34,7 @@ export default async function init(
 	engine.loadSpriteSheet(sprite);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
-		engine.setSpriteLookup(spriteLookups.background);
-
-		for (
-			let i = 0;
-			i < Math.ceil(state.graphicHelper.globalViewport.width / (64 * state.graphicHelper.globalViewport.vGrid));
-			i++
-		) {
-			for (
-				let j = 0;
-				j < Math.ceil(state.graphicHelper.globalViewport.height / (32 * state.graphicHelper.globalViewport.hGrid));
-				j++
-			) {
-				engine.drawSprite(
-					64 * state.graphicHelper.globalViewport.vGrid * i,
-					32 * state.graphicHelper.globalViewport.hGrid * j,
-					0
-				);
-			}
-		}
-
+		drawBackground(engine, state);
 		drawCodeBlocks(engine, state);
 		drawConnections(engine, state);
 		if (state.featureFlags.infoOverlay) {
