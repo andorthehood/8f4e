@@ -1,7 +1,8 @@
 import { ErrorCode, getError } from '../errors';
 import { areAllOperandsFloats, isInstructionIsInsideAModule, saveByteCode } from '../utils';
-import type { InstructionCompiler } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+
+import type { InstructionCompiler } from '../types';
 
 const castToFloat: InstructionCompiler = function (line, context) {
 	if (!isInstructionIsInsideAModule(context.blockStack)) {

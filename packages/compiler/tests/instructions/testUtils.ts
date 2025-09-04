@@ -1,7 +1,6 @@
 import wabt from 'wabt';
 
 import { FunctionBody } from '../../src/wasmUtils/typeHelpers';
-import type { CompiledModule, TestModule } from '../../src/types';
 import { compileToAST } from '../../src/compiler';
 import {
 	createCodeSection,
@@ -14,6 +13,8 @@ import {
 	createTypeSection,
 } from '../../src/wasmUtils/sectionHelpers';
 import { compileModules } from '../../src';
+
+import type { CompiledModule, TestModule } from '../../src/types';
 
 // Extended memory buffer interface for testing
 interface ExtendedMemoryBuffer extends Int32Array {

@@ -1,8 +1,8 @@
 import instructionParser from './extras/instructionParser';
 
-import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 
+import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
 import type { Instruction } from '@8f4e/compiler';
 
 export function parsePositionOffsetters(code: string[]) {

@@ -6,8 +6,9 @@ import broadcastMidiMessages from './broadcastMidiMessages';
 import findMidiCCOutputModules from './findMidiCCOutputModules';
 import broadcastMidiCCMessages from './broadcastMidiCCMessages';
 import findMidiCCInputModules from './findMidiCCInputModules';
-import type { MidiCCModuleAddresses } from './types';
 import createModule from './createModule';
+
+import type { MidiCCModuleAddresses } from './types';
 
 let interval: number;
 let statsInterval: number;
