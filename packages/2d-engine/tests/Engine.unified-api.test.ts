@@ -150,40 +150,41 @@ describe('Engine - Unified API', () => {
 			engine = new Engine(mockCanvas); // No caching
 		});
 
-		test('should throw error when calling cacheGroup without caching enabled', () => {
-			expect(() => {
-				engine.cacheGroup('test', 100, 100, () => {});
-			}).toThrow('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+		test('should handle cacheGroup gracefully without caching enabled', () => {
+			let callbackExecuted = false;
+			const result = engine.cacheGroup('test', 100, 100, () => {
+				callbackExecuted = true;
+			});
+			expect(callbackExecuted).toBe(true); // Draw callback should be executed
+			expect(result).toBe(false); // Should return false indicating no cache was created
 		});
 
-		test('should throw error when calling drawCachedContent without caching enabled', () => {
+		test('should handle drawCachedContent gracefully without caching enabled', () => {
 			expect(() => {
 				engine.drawCachedContent('test', 0, 0);
-			}).toThrow('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			}).not.toThrow(); // Should not throw an error
 		});
 
-		test('should throw error when calling hasCachedContent without caching enabled', () => {
-			expect(() => {
-				engine.hasCachedContent('test');
-			}).toThrow('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+		test('should return false when calling hasCachedContent without caching enabled', () => {
+			const result = engine.hasCachedContent('test');
+			expect(result).toBe(false);
 		});
 
-		test('should throw error when calling clearCache without caching enabled', () => {
+		test('should handle clearCache gracefully without caching enabled', () => {
 			expect(() => {
 				engine.clearCache('test');
-			}).toThrow('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			}).not.toThrow(); // Should not throw an error
 		});
 
-		test('should throw error when calling clearAllCache without caching enabled', () => {
+		test('should handle clearAllCache gracefully without caching enabled', () => {
 			expect(() => {
 				engine.clearAllCache();
-			}).toThrow('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+			}).not.toThrow(); // Should not throw an error
 		});
 
-		test('should throw error when calling getCacheStats without caching enabled', () => {
-			expect(() => {
-				engine.getCacheStats();
-			}).toThrow('Caching is not enabled. Create engine with { caching: true } to use cache methods.');
+		test('should return empty stats when calling getCacheStats without caching enabled', () => {
+			const stats = engine.getCacheStats();
+			expect(stats).toEqual({ itemCount: 0, maxItems: 0, accessOrder: [] });
 		});
 	});
 
