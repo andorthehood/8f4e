@@ -2,8 +2,8 @@ import instructionParser from './extras/instructionParser';
 
 import { EventDispatcher } from '../../../events';
 import { getModuleId } from '../../helpers/codeParsers';
-import type { CodeBlockGraphicData, State } from '../../types';
 
+import type { CodeBlockGraphicData, State } from '../../types';
 import type { Instruction } from '@8f4e/compiler';
 
 export interface CodeBlockAddedEvent {
@@ -128,6 +128,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			isOpen: true,
 			padLength: 2,
 			offsetX: 0,
+			lastUpdated: Date.now(),
 			offsetY: 0,
 			parent: state.graphicHelper.activeViewport,
 			codeBlocks: new Set(),
