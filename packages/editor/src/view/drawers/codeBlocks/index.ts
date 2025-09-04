@@ -1,4 +1,4 @@
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
 import drawConnectors from './extras/connectors';
 import drawPlotters from './extras/plotters';
@@ -10,7 +10,7 @@ import drawPianoKeyboards from './extras/pianoKeyboards';
 
 import type { State } from '../../../state/types';
 
-export default function drawModules(engine: CachedEngine, state: State): void {
+export default function drawModules(engine: Engine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}

@@ -111,9 +111,9 @@ engine.render((timeToRender, fps, triangles, maxTriangles) => {
 ### Dynamic Content with Caching
 
 ```typescript
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
-const engine = new CachedEngine(canvas);
+const engine = new Engine(canvas, { caching: true });
 
 class ParticleSystem {
     private lastCacheTime = 0;
@@ -184,9 +184,9 @@ function adaptiveCaching() {
 ### Transform Groups with Caching
 
 ```typescript
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
-const engine = new CachedEngine(canvas);
+const engine = new Engine(canvas, { caching: true });
 
 // Cache content that will be transformed
 engine.cacheGroup('entity-sprite', 64, 64, () => {
@@ -248,7 +248,7 @@ function estimateCacheMemory() {
 }
 ```
 
-## Migration from Non-Cached Engine
+## Migration from Non-Cached to Cached Engine
 
 ```typescript
 // Before: Standard engine
@@ -269,21 +269,4 @@ engine.cacheGroup('ui', 200, 100, () => {
 
 // Use cached content
 engine.drawCachedContent('ui', 0, 0);
-```
-
-## Migration from CachedEngine
-
-```typescript
-// Before: Separate CachedEngine class
-import { CachedEngine } from '@8f4e/2d-engine';
-const engine = new CachedEngine(canvas, 50);
-
-// After: Unified Engine with caching option
-import { Engine } from '@8f4e/2d-engine';
-const engine = new Engine(canvas, { caching: true, maxCacheItems: 50 });
-
-// All caching methods remain identical
-engine.cacheGroup('ui', 200, 100, () => { /* ... */ });
-engine.drawCachedContent('ui', 0, 0);
-engine.getCacheStats();
 ```

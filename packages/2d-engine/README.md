@@ -105,8 +105,6 @@ const cachedEngine = new Engine(canvas, { caching: true });         // Caching w
 const customEngine = new Engine(canvas, { caching: true, maxCacheItems: 200 }); // Custom limit
 ```
 
-**Migration Note:** The separate `CachedEngine` class is deprecated. Use `Engine` with `{ caching: true }` instead.
-
 ## How It Renders
 
 The engine renders in two phases each frame:
@@ -279,14 +277,6 @@ engine.getCacheStats(); // { itemCount, maxItems, accessOrder }
 
 // Check if caching is enabled
 engine.isCachingEnabled; // true
-```
-
-**Backward Compatibility**: The old `CachedEngine` class is still available but deprecated:
-
-```ts
-// Deprecated - use Engine with { caching: true } instead
-import { CachedEngine } from '@8f4e/2d-engine';
-const engine = new CachedEngine(canvas, 50);
 ```
 
 ### Runtime Behavior
