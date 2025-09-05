@@ -105,7 +105,6 @@ Power-of-Two vs NPOT
 
 - If sprites can never fit under maxW x maxH, implement multi-atlas:
     - Produce AtlasResult[] and multiple canvas pages.
-accept pages.
 
 Testing
 
