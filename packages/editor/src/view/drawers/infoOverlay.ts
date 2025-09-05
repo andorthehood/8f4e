@@ -1,4 +1,4 @@
-import { CachedEngine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/2d-engine';
 
 const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
@@ -15,7 +15,7 @@ function formatBytes(bytes: number): string {
 }
 
 export default function drawInfoOverlay(
-	engine: CachedEngine,
+	engine: Engine,
 	state: State,
 	{
 		timeToRender,
@@ -36,8 +36,8 @@ export default function drawInfoOverlay(
 
 	if (selectedModule) {
 		debugText.push('Selected module: ' + selectedModule.id);
-		debugText.push('Memory footrpint: ' + formatBytes(selectedModule.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY));
-		debugText.push('Memory address: ' + selectedModule.byteAddress);
+		debugText.push('Memory footprint: ' + formatBytes(selectedModule.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY));
+		debugText.push('Memory address: ' + selectedModule.byteAddress + ' (nth byte)');
 		debugText.push('Index: ' + selectedModule.index);
 		debugText.push('');
 	}
@@ -66,16 +66,15 @@ export default function drawInfoOverlay(
 
 	// Graphic info
 	debugText.push('');
-	debugText.push('Vertex buffer: ' + Math.round((vertices / maxVertices) * 100) + '%');
-	debugText.push('Graphic load: ' + ((timeToRender / (1000 / 120)) * 100).toFixed(2) + '%');
+	debugText.push('Quad count: ' + vertices / 6);
+	debugText.push(
+		'Vertex buffer: ' + vertices + '/' + maxVertices + ' (' + Math.round((vertices / maxVertices) * 100) + '%)'
+	);
 	debugText.push('Time to render one frame ' + timeToRender.toFixed(2) + 'ms');
-	debugText.push('FPS: ' + fps + '  Vertex buffer: ' + vertices + '/' + maxVertices);
-
-	debugText.push('');
-
-	// Cache stats (when using CachedEngine)
+	debugText.push('FPS: ' + fps);
+	debugText.push('Graphic load: ' + ((timeToRender / (1000 / fps)) * 100).toFixed(2) + '%');
 	const cs = engine.getCacheStats();
-	debugText.push('Cache items: ' + cs.itemCount + '/' + cs.maxItems);
+	debugText.push('Cached items: ' + cs.itemCount + '/' + cs.maxItems);
 	debugText.push('');
 
 	// Compiler info
