@@ -36,7 +36,7 @@ export default function drawInfoOverlay(
 
 	if (selectedModule) {
 		debugText.push('Selected module: ' + selectedModule.id);
-		debugText.push('Memory footrpint: ' + formatBytes(selectedModule.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY));
+		debugText.push('Memory footprint: ' + formatBytes(selectedModule.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY));
 		debugText.push('Memory address: ' + selectedModule.byteAddress + ' (nth byte)');
 		debugText.push('Index: ' + selectedModule.index);
 		debugText.push('');
