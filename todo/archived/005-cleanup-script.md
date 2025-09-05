@@ -2,7 +2,7 @@
 
 **Priority**: 🟡  
 **Estimated Effort**: 1 hour  
-**Created**: 2024-12-19  
+**Created**: 2025-08-25  
 **Status**: Open  
 
 ## Problem Description
