@@ -3,6 +3,8 @@
 **Created**: 2024-01-18
 **Purpose**: Document Web APIs with limited or inconsistent browser support for future compatibility evaluation
 
+> **⚠️ Important Note**: The browser support information in this document should be verified by an AI agent with web search capabilities before making implementation decisions. Browser support status changes frequently, and this document may not reflect the most current compatibility information.
+
 ## Overview
 
 This document catalogs Web APIs currently used in the 8f4e project that may have compatibility risks across different browsers and versions. This serves as a reference for implementing a browser compatibility evaluator to ensure the application works correctly on users' browsers.
@@ -45,7 +47,7 @@ const entries = (opfsRoot as unknown as {
 
 ### Web MIDI API
 **Risk Level**: 🟡 **Medium-High**
-**Browser Support**: Chrome 43+, Edge 79+, Safari/Firefox: Behind flags or not supported
+**Browser Support**: Chrome 43+, Edge 79+, Safari: Not supported, Firefox: Behind flags or not supported
 
 **Usage Locations**:
 - `src/runtime-web-worker-midi-factory.ts`: `navigator.requestMIDIAccess()`
