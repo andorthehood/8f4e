@@ -62,17 +62,21 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		state.compiler.lastCompilationStart = performance.now();
 
 		try {
+			const currentRuntime = state.project.runtimeSettings[state.project.selectedRuntime];
+			const bufferSize = (currentRuntime.runtime === 'AudioWorkletRuntime' && currentRuntime.bufferSize) ? currentRuntime.bufferSize : 128;
+			
 			const compilerOptions = {
 				...state.compiler.compilerOptions,
+				bufferSize,
 				environmentExtensions: {
 					...state.compiler.compilerOptions.environmentExtensions,
 					constants: {
 						...state.compiler.compilerOptions.environmentExtensions.constants,
 						SAMPLE_RATE: {
-							value: state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
+							value: currentRuntime.sampleRate,
 							isInteger: true,
 						},
-						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
+						AUDIO_BUFFER_SIZE: { value: bufferSize, isInteger: true },
 						LEFT_CHANNEL: { value: 0, isInteger: true },
 						RIGHT_CHANNEL: { value: 1, isInteger: true },
 					},
