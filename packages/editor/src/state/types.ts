@@ -279,8 +279,6 @@ export interface MainThreadLogicRuntime {
 export interface AudioWorkletRuntime {
 	runtime: 'AudioWorkletRuntime';
 	sampleRate: number;
-	/** Number of times the cycle function should be called per audio buffer. Default is 128. */
-	bufferSize?: number;
 	audioInputBuffers?: {
 		moduleId: string;
 		memoryId: string;
