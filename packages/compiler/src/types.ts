@@ -152,4 +152,6 @@ export interface CompileOptions {
 	globalDataStructures?: DataStructure[];
 	/** Whether to include AST in compiled modules. Default is false to reduce payload size. */
 	includeAST?: boolean;
+	/** Number of times the cycle function should be called in the buffer function. Default is 128. */
+	bufferSize?: number;
 }
