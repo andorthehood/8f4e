@@ -89,7 +89,6 @@ const project: Project = {
 		{
 			sampleRate: 44100,
 			runtime: 'AudioWorkletRuntime',
-			bufferSize: 256,
 			audioOutputBuffers: [{ moduleId: 'audioout', memoryId: 'buffer', channel: 0, output: 0 }],
 		},
 	],
