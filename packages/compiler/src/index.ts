@@ -272,7 +272,7 @@ export default function compile(
 			...createCodeSection([
 				createFunction([], memoryInitiatorFunction),
 				createFunction([], cycleFunction),
-				createFunction([], new Array(128).fill(call(1)).flat()),
+				createFunction([], new Array(options.bufferSize || 128).fill(call(1)).flat()),
 				...loopFunctions,
 				...memoryInitiatorFunctions,
 			]),
