@@ -32,11 +32,6 @@ This directory contains documentation for planned improvements and technical deb
 
 Use `_template.md` as the starting point for new TODO items. It includes all the standard sections and formatting.
 
-## Current TODOs by Priority
-
-### 🟡 Medium Priority
-- `057-research-js-webassembly-runtimes-step-execution.md` - Research JS/WASM runtime options for step-by-step execution and debugging
-
 ## Archive Process
 
 When a TODO is completed:
