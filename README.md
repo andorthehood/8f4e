@@ -44,17 +44,6 @@ There are currently two browser-based runtimes, both integrated into the develop
 - **LinuxALSA:** Coming soon...
 - **MacOSCoreAudio:** Work in progress...
 
-## Future plans
-
-- To add an init block to the modules, for code that only has to be executed once at the initialisation stage.
-- To write a runtime for microcontrollers.
-- Unify the two browser runtimes for MIDI and Audio I/O.
-- To write a JavaScript-based runtime for debugging the stack.
-- To write a headless runtime in C++ for the ARM architecture using ALSA for audio playback.  
-- Add collaborative editing features to the editor.
-- Optimize rendering in the editor by offloading certain tasks from JavaScript to shaders.
-- The compilation is already fast, but I want to re-write the compiler in Rust to make it even faster.
-
 ## Challenges
 
 - The sample rate is capped at 50Hz in the `WebWorkerMIDIRuntime` because, as of now, web browsers lack a precise task scheduling API. Based on my measurements on an M1 MacBook running Chrome, 50Hz provided the least-noticeable time divergences. If you're using an older processor architecture and experience a lot of swinging in your MIDI projects, you may need to reduce the sample rate to improve precision.
