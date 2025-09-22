@@ -4,9 +4,6 @@
 **Estimated Effort**: 1-2 days
 **Created**: 2025-08-27
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The editor event system (`packages/editor/src/events/`) coordinates event routing and management between different parts of the editor. Currently, this critical coordination layer has no test coverage, creating risks for:
 
