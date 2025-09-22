@@ -4,9 +4,6 @@
 **Estimated Effort**: 2-3 days
 **Created**: 2025-08-26
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The current editor package tightly couples user interaction handling with the core state management logic. The `packages/editor/src/events/` and various interaction effects contain:
 - Browser-specific event listeners (mouse, keyboard, wheel)
