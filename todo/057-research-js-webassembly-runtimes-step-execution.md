@@ -2,7 +2,7 @@
 
 **Priority**: 🟡  
 **Estimated Effort**: 8-12 hours  
-**Created**: 2025-01-27  
+**Created**: 2025-09-11  
 **Status**: Open  
 
 ## Problem Description
