@@ -2,10 +2,9 @@
 
 **Priority**: 🟡
 **Estimated Effort**: 3–5 hours
-**Created**: 2025-09-04
+**Created**: 2024-12-25
 **Status**: Open
-**Completed**: 
-
+**Completed**: 2025-01-04
 ## Problem Description
 
 The compiler currently includes the parsed AST on each `CompiledModule` in its output. A repo-wide search confirms the AST is not consumed outside the compiler package. Always returning AST increases payload size, serialization cost (when posting from the worker), and coupling of internal structures to the public API.
