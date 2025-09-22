@@ -4,9 +4,6 @@
 **Estimated Effort**: 3-4 hours
 **Created**: 2025-08-27
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 Currently, when users export and share projects, the recipients need the full compiler infrastructure to run them. This creates several barriers:
 

@@ -4,9 +4,6 @@
 **Estimated Effort**: 1 day
 **Created**: 2025-08-27
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The configuration system (`packages/editor/src/config/`) has partial test coverage with only `featureFlags.test.ts` implemented. The configuration system includes:
 

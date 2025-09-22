@@ -4,9 +4,6 @@
 **Estimated Effort**: 6-8 hours
 **Created**: 2025-08-28
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The 2D engine package currently lacks visual regression testing, which means:
 - Rendering bugs may go undetected during refactoring
