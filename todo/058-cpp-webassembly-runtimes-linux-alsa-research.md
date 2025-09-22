@@ -2,11 +2,8 @@
 
 **Priority**: 🟡  
 **Estimated Effort**: 4-6 days  
-**Created**: 2024-12-19  
-**Status**: Open  
-**Completed**: 
-
-## Problem Description
+**Created**: 2025-09-11  
+**Status**: Open
 
 The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the project only supports browser environments (WebWorker and AudioWorklet runtimes), limiting deployment to web applications.
 

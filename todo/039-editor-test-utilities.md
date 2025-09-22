@@ -4,9 +4,6 @@
 **Estimated Effort**: 1-2 days
 **Created**: 2025-08-27
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 As editor testing coverage expands across multiple areas (state effects, events, MIDI, configuration, integration, types), there is a need for:
 
