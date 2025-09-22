@@ -4,9 +4,6 @@
 **Estimated Effort**: 2-3 days
 **Created**: 2025-08-27
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The editor state effects system (`packages/editor/src/state/effects/`) is a critical component that handles binary assets, code blocks, compiler integration, menu system, and runtime management. Currently, only the runtime effects have test coverage (`runtime.test.ts`), leaving significant gaps in testing for:
 

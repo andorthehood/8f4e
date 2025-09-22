@@ -2,11 +2,8 @@
 
 **Priority**: 🟡
 **Estimated Effort**: 5-7 days
-**Created**: 2025-01-27
+**Created**: 2025-09-09
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The 8f4e language currently lacks support for one-time initialization code that executes exactly once at program start. Code that should run only during initialization is currently placed in the main execution loop, causing it to run repeatedly and inefficiently.
 
