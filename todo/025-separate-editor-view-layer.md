@@ -4,9 +4,6 @@
 **Estimated Effort**: 3-5 days
 **Created**: 2025-08-26
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The current editor package tightly couples the state management logic with browser-specific rendering code. The `packages/editor/src/view/` directory contains:
 - Canvas-based rendering using HTML5 Canvas

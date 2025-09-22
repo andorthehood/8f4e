@@ -4,9 +4,6 @@
 **Estimated Effort**: 2-3 days
 **Created**: 2025-08-27
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The integration testing directory (`packages/editor/src/integration/`) currently has minimal coverage with only `featureFlags.test.ts` implemented. Integration testing is critical for ensuring that different editor subsystems work together correctly. Missing integration testing includes:
 
