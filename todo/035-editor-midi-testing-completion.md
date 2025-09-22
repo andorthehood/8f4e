@@ -4,9 +4,6 @@
 **Estimated Effort**: 1 day
 **Created**: 2025-08-27
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The MIDI functionality (`packages/editor/src/midi/`) has partial test coverage with only `ccNames.test.ts` implemented. The MIDI system includes:
 

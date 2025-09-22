@@ -4,9 +4,6 @@
 **Estimated Effort**: 1 day
 **Created**: 2025-08-27
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The editor type system (`packages/editor/src/types/`) currently has no test coverage. The type system includes:
 

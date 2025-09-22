@@ -2,11 +2,8 @@
 
 **Priority**: 🟡
 **Estimated Effort**: 2-3 days
-**Created**: 2025-01-27
+**Created**: 2025-09-08
 **Status**: Open
-**Completed**: 
-
-## Problem Description
 
 The compiler currently performs no strength reduction optimizations, missing opportunities to replace expensive operations with cheaper equivalent operations. Common cases include:
 
