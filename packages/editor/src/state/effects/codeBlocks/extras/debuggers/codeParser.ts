@@ -2,18 +2,12 @@ import instructionParser from '../instructionParser';
 import { gapCalculator } from '../../../../helpers/editor';
 import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
 
-import type { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../../types';
-import type { Instruction } from '@8f4e/compiler';
+import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export function parseDebuggers(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-				never,
-				Instruction | ExtendedInstructionSet,
-				string,
-				string,
-			];
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
 
 			if (instruction === 'debug') {
 				return [...acc, { id: args[0], lineNumber: index }];

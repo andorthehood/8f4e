@@ -32,10 +32,10 @@
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
 		"@8f4e/2d-engine": "*",
-		"@8f4e/compiler": "*",
 		"@8f4e/sprite-generator": "*"
 	},
 	"devDependencies": {
-		"vite": "^7.1.5"
+		"vite": "^7.1.5",
+		"@8f4e/compiler": "*"
 	}
 }

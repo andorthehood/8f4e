@@ -2,19 +2,12 @@ import instructionParser from './extras/instructionParser';
 
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 
-import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
-import type { Instruction } from '@8f4e/compiler';
+import type { CodeBlockGraphicData, State } from '../../types';
 
 export function parsePositionOffsetters(code: string[]) {
 	return code.reduce(
 		(acc, line) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-				never,
-				Instruction | ExtendedInstructionSet,
-				string,
-				string,
-				string,
-			];
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];
 
 			if (instruction === 'offset') {
 				return [...acc, { axis: args[0], memory: args[1] }];

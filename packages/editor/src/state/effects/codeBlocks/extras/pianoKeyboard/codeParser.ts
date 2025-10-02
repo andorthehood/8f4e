@@ -3,8 +3,7 @@ import { gapCalculator } from '../../../../helpers/editor';
 import { parseCode } from '../../../../helpers/multiLineCodeParser';
 import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
 
-import type { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../../types';
-import type { Instruction } from '@8f4e/compiler';
+import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string, startingNumber: number) {
 	const pressedKeys = new Set<number>();
@@ -21,13 +20,7 @@ export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string
 export function parsePianoKeyboards(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-				never,
-				Instruction | ExtendedInstructionSet,
-				string,
-				string,
-				string,
-			];
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];
 
 			if (instruction === 'piano') {
 				const startingNumber = parseInt(args[2] || '0', 10);

@@ -1,7 +1,6 @@
 import instructionParser from './extras/instructionParser';
 
-import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../types';
-import type { Instruction } from '@8f4e/compiler';
+import type { CodeBlockGraphicData, State } from '../../types';
 
 export default function gaps(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.gaps.clear();
@@ -13,7 +12,7 @@ export default function gaps(graphicData: CodeBlockGraphicData, state: State) {
 	});
 
 	graphicData.trimmedCode.forEach((line, lineNumber) => {
-		const [, instruction] = (line.match(instructionParser) ?? []) as [never, Instruction | ExtendedInstructionSet];
+		const [, instruction] = (line.match(instructionParser) ?? []) as [never, string];
 
 		if (instruction === 'plot') {
 			graphicData.gaps.set(lineNumber, { size: 8 });

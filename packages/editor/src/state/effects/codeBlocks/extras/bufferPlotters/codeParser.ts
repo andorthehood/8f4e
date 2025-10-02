@@ -2,15 +2,14 @@ import instructionParser from '../instructionParser';
 import { gapCalculator } from '../../../../helpers/editor';
 import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
 
-import type { ExtendedInstructionSet, CodeBlockGraphicData, State } from '../../../../types';
-import type { Instruction } from '@8f4e/compiler';
+import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export function parseBufferPlotters(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
 				never,
-				Instruction | ExtendedInstructionSet,
+				string,
 				string,
 				string,
 				string,
