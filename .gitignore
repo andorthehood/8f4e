@@ -13,3 +13,5 @@ coverage
 .github/instructions/nx.instructions.md
 
 stats.html
+
+.DS_Store
