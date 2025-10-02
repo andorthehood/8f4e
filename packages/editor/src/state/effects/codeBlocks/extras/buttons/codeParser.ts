@@ -1,19 +1,12 @@
 import instructionParser from '../instructionParser';
 import { gapCalculator } from '../../../../helpers/editor';
 
-import type { CodeBlockGraphicData, ExtendedInstructionSet, State } from '../../../../types';
-import type { Instruction } from '@8f4e/compiler';
+import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export function parseButtons(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-				never,
-				Instruction | ExtendedInstructionSet,
-				string,
-				string,
-				string,
-			];
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];
 
 			if (instruction === 'button') {
 				return [

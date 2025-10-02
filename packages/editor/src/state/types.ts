@@ -43,8 +43,6 @@ interface MenuItemDivider extends ContextMenuButton {
 	title: never;
 }
 
-export type ExtendedInstructionSet = 'debug' | 'button' | 'switch' | 'offset' | 'plot' | 'piano';
-
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
 export type MenuGenerator = (state: State, payload?: unknown) => ContextMenuItem[] | Promise<ContextMenuItem[]>;
