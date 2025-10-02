@@ -4,7 +4,6 @@ import { EventDispatcher } from '../../../events';
 import { getModuleId } from '../../helpers/codeParsers';
 
 import type { CodeBlockGraphicData, State } from '../../types';
-import type { Instruction } from '@8f4e/compiler';
 
 export interface CodeBlockAddedEvent {
 	codeBlock: CodeBlockGraphicData;
@@ -61,7 +60,7 @@ function checkIfModuleIdIsTaken(state: State, id: string) {
 
 function changeModuleIdInCode(code: string[], id: string) {
 	return code.map(line => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
 		if (instruction === 'module') {
 			return line.replace(args[0], id);
 		}

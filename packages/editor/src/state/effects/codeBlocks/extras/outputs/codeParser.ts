@@ -3,12 +3,11 @@ import { gapCalculator } from '../../../../helpers/editor';
 import { getModuleId } from '../../../../helpers/codeParsers';
 
 import type { CodeBlockGraphicData, Output, State } from '../../../../types';
-import type { Instruction } from '@8f4e/compiler';
 
 export function parseOutputs(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, Instruction, string, string];
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
 
 			if (instruction === 'int' || instruction === 'float' || instruction === 'int[]' || instruction === 'float[]') {
 				return [...acc, { id: args[0], lineNumber: index }];
