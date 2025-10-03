@@ -41,4 +41,4 @@ jobs:
           space_name: ${{ env.DO_SPACES_BUCKET }}
           space_region: ${{ env.DO_SPACES_REGION }}
           source: upload
-          out_dir: editor
+          out_dir: andor/8f4e
