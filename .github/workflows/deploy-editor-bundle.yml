@@ -4,6 +4,9 @@ name: Deploy Editor Bundle to DigitalOcean Spaces
 on:
   push:
     branches: [main]
+    paths:
+      - 'packages/editor/**'
+      - '.github/workflows/deploy-editor-bundle.yml'
   workflow_dispatch:
 
 jobs:

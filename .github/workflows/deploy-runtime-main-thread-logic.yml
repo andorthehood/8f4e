@@ -4,6 +4,9 @@ name: Deploy Runtime Main Thread Logic to DigitalOcean Spaces
 on:
   push:
     branches: [main]
+    paths:
+      - 'packages/runtime-main-thread-logic/**'
+      - '.github/workflows/deploy-runtime-main-thread-logic.yml'
   workflow_dispatch:
 
 jobs:
