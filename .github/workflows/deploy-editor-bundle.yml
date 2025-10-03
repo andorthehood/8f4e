@@ -10,8 +10,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}
-      DO_SPACES_ENDPOINT: ${{ vars.DO_SPACES_ENDPOINT }}
+      DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}   # e.g. polgar-assets
+      DO_SPACES_REGION: ${{ vars.DO_SPACES_REGION }}   # e.g. ams3
 
     steps:
       - uses: actions/checkout@v4
@@ -25,28 +25,20 @@ jobs:
       - run: npx nx run-many --target=build --all
       - run: npm run bundle:editor
 
-      - name: Install AWS CLI
-        run: sudo apt-get update && sudo apt-get install -y awscli
-
-      - name: Configure AWS credentials (Spaces)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.DO_SPACES_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.DO_SPACES_SECRET_KEY }}
-          aws-region: us-east-1 # any valid AWS region; endpoint below routes to Spaces
-
-      - name: Upload versioned bundle + map (immutable)
+      # Prepare a tiny upload folder with SHA-versioned filenames
+      - name: Stage versioned files
         run: |
-          aws s3 cp packages/editor/bundle/editor-bundle.js \
-            s3://$DO_SPACES_BUCKET/editor/editor-bundle-${{ github.sha }}.js \
-            --endpoint-url "$DO_SPACES_ENDPOINT" \
-            --content-type "application/javascript; charset=utf-8" \
-            --cache-control "public, max-age=31536000, immutable" \
-            --acl public-read
+          mkdir -p upload
+          cp packages/editor/bundle/editor-bundle.js "upload/editor-bundle-${GITHUB_SHA}.js"
+          cp packages/editor/bundle/editor-bundle.js.map "upload/editor-bundle-${GITHUB_SHA}.js.map"
 
-          aws s3 cp packages/editor/bundle/editor-bundle.js.map \
-            s3://$DO_SPACES_BUCKET/editor/editor-bundle-${{ github.sha }}.js.map \
-            --endpoint-url "$DO_SPACES_ENDPOINT" \
-            --content-type "application/json; charset=utf-8" \
-            --cache-control "public, max-age=31536000, immutable" \
-            --acl public-read
+      # Upload to Spaces (public by default)
+      - name: DigitalOcean Spaces Upload Action
+        uses: BetaHuhn/do-spaces-action@v2.0.146
+        with:
+          access_key: ${{ secrets.DO_SPACES_ACCESS_KEY }}
+          secret_key: ${{ secrets.DO_SPACES_SECRET_KEY }}
+          space_name: ${{ env.DO_SPACES_BUCKET }}
+          space_region: ${{ env.DO_SPACES_REGION }}
+          source: upload
+          out_dir: editor
