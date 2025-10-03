@@ -10,8 +10,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}   # e.g. polgar-assets
-      DO_SPACES_REGION: ${{ vars.DO_SPACES_REGION }}   # e.g. ams3
+      DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}
+      DO_SPACES_REGION: ${{ vars.DO_SPACES_REGION }}
 
     steps:
       - uses: actions/checkout@v4
@@ -25,15 +25,35 @@ jobs:
       - run: npx nx run-many --target=build --all
       - run: npm run bundle:editor
 
-      # Prepare a tiny upload folder with SHA-versioned filenames
+      - name: Read editor package version
+        run: |
+          EDITOR_VERSION=$(node -p "require('./packages/editor/package.json').version")
+          echo "EDITOR_VERSION=$EDITOR_VERSION" >> $GITHUB_ENV
+
+      - name: Check if bundle version already exists
+        id: check_bundle
+        run: |
+          set -euo pipefail
+          BUNDLE_URL="https://${DO_SPACES_BUCKET}.${DO_SPACES_REGION}.digitaloceanspaces.com/andor/8f4e/editor-bundle-${EDITOR_VERSION}.js"
+          if curl -sfI "$BUNDLE_URL" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Bundle $BUNDLE_URL already present; skipping upload."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Bundle $BUNDLE_URL not found; continuing with upload."
+          fi
+
+      # Prepare a tiny upload folder with package-versioned filenames
       - name: Stage versioned files
+        if: steps.check_bundle.outputs.exists == 'false'
         run: |
           mkdir -p upload
-          cp packages/editor/bundle/editor-bundle.js "upload/editor-bundle-${GITHUB_SHA}.js"
-          cp packages/editor/bundle/editor-bundle.js.map "upload/editor-bundle-${GITHUB_SHA}.js.map"
+          cp packages/editor/bundle/editor-bundle.js "upload/editor-bundle-${EDITOR_VERSION}.js"
+          cp packages/editor/bundle/editor-bundle.js.map "upload/editor-bundle-${EDITOR_VERSION}.js.map"
 
       # Upload to Spaces (public by default)
       - name: DigitalOcean Spaces Upload Action
+        if: steps.check_bundle.outputs.exists == 'false'
         uses: BetaHuhn/do-spaces-action@v2.0.146
         with:
           access_key: ${{ secrets.DO_SPACES_ACCESS_KEY }}
