@@ -21,14 +21,12 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci
-      - run: npx nx run-many --target=build --all
-      - run: npm run bundle:editor
-
       - name: Read editor package version
+        id: editor_version
         run: |
           EDITOR_VERSION=$(node -p "require('./packages/editor/package.json').version")
           echo "EDITOR_VERSION=$EDITOR_VERSION" >> $GITHUB_ENV
+          echo "value=$EDITOR_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Check if bundle version already exists
         id: check_bundle
@@ -42,6 +40,15 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
             echo "Bundle $BUNDLE_URL not found; continuing with upload."
           fi
+
+      - run: npm ci
+        if: steps.check_bundle.outputs.exists == 'false'
+
+      - run: npx nx run-many --target=build --all
+        if: steps.check_bundle.outputs.exists == 'false'
+
+      - run: npm run bundle:editor
+        if: steps.check_bundle.outputs.exists == 'false'
 
       # Prepare a tiny upload folder with package-versioned filenames
       - name: Stage versioned files
