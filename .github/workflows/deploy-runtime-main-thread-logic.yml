@@ -1,0 +1,69 @@
+---
+name: Deploy Runtime Main Thread Logic to DigitalOcean Spaces
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}   # e.g. polgar-assets
+      DO_SPACES_REGION: ${{ vars.DO_SPACES_REGION }}   # e.g. ams3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Read runtime package version
+        id: runtime_version
+        run: |
+          RUNTIME_VERSION=$(node -p "require('./packages/runtime-main-thread-logic/package.json').version")
+          echo "RUNTIME_VERSION=$RUNTIME_VERSION" >> $GITHUB_ENV
+          echo "value=$RUNTIME_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check if runtime version already exists
+        id: check_runtime
+        run: |
+          set -euo pipefail
+          RUNTIME_URL="https://${DO_SPACES_BUCKET}.${DO_SPACES_REGION}.digitaloceanspaces.com/andor/8f4e/runtime-main-thread-logic-${RUNTIME_VERSION}.js"
+          if curl -sfI "$RUNTIME_URL" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Runtime $RUNTIME_URL already present; skipping upload."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Runtime $RUNTIME_URL not found; continuing with upload."
+          fi
+
+      - run: npm ci
+        if: steps.check_runtime.outputs.exists == 'false'
+
+      - run: npx nx run runtime-main-thread-logic:build
+        if: steps.check_runtime.outputs.exists == 'false'
+
+      - run: npm run bundle:runtime-main-thread-logic
+        if: steps.check_runtime.outputs.exists == 'false'
+
+      - name: Stage versioned runtime bundle
+        if: steps.check_runtime.outputs.exists == 'false'
+        run: |
+          mkdir -p upload
+          cp packages/runtime-main-thread-logic/bundle/runtime-main-thread-logic.js "upload/runtime-main-thread-logic-${RUNTIME_VERSION}.js"
+          cp packages/runtime-main-thread-logic/bundle/runtime-main-thread-logic.js.map "upload/runtime-main-thread-logic-${RUNTIME_VERSION}.js.map"
+
+      - name: DigitalOcean Spaces Upload Action
+        if: steps.check_runtime.outputs.exists == 'false'
+        uses: BetaHuhn/do-spaces-action@v2.0.146
+        with:
+          access_key: ${{ secrets.DO_SPACES_ACCESS_KEY }}
+          secret_key: ${{ secrets.DO_SPACES_SECRET_KEY }}
+          space_name: ${{ env.DO_SPACES_BUCKET }}
+          space_region: ${{ env.DO_SPACES_REGION }}
+          source: upload
+          out_dir: andor/8f4e

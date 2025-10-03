@@ -16,6 +16,7 @@
 	"scripts": {
 		"test": "jest --passWithNoTests",
 		"build": "tsc",
+		"bundle": "vite build",
 		"dev": "tsc --watch",
 		"typecheck": "tsc --noEmit"
 	},
@@ -31,6 +32,7 @@
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {},
 	"devDependencies": {
-		"@types/node": "^24.3.0"
+		"@types/node": "^24.3.0",
+		"vite": "^7.1.5"
 	}
 }
