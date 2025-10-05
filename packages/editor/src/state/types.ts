@@ -366,10 +366,10 @@ export interface CompilationResult {
 export interface Options {
 	featureFlags?: FeatureFlagsConfig;
 	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
-	getListOfModules: () => Promise<ModuleMetadata[]>;
-	getModule: (slug: string) => Promise<ExampleModule>;
-	getListOfProjects: () => Promise<ProjectMetadata[]>;
-	getProject: (slug: string) => Promise<Project>;
+	getListOfModules?: () => Promise<ModuleMetadata[]>;
+	getModule?: (slug: string) => Promise<ExampleModule>;
+	getListOfProjects?: () => Promise<ProjectMetadata[]>;
+	getProject?: (slug: string) => Promise<Project>;
 
 	// Compilation callback
 	compileProject: (
