@@ -10,7 +10,7 @@ export const mainMenu: MenuGenerator = state => [
 				},
 				{ divider: true },
 				// eslint-disable-next-line
-		  ]
+		]
 		: []),
 	// Only show editing options if editing is enabled
 	...(state.featureFlags.editing
@@ -32,6 +32,7 @@ export const mainMenu: MenuGenerator = state => [
 					action: 'openSubMenu',
 					payload: { menu: 'moduleCategoriesMenu' },
 					close: false,
+					disabled: !state.options.getListOfModules,
 				},
 				{ divider: true },
 				{ title: 'Import binary asset', action: 'importBinaryAsset', close: true },
@@ -40,21 +41,27 @@ export const mainMenu: MenuGenerator = state => [
 	{ title: 'Binary assets', action: 'openSubMenu', payload: { menu: 'binaryAssetsMenu' }, close: false },
 	...(state.featureFlags.editing ? [{ divider: true }] : []),
 	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }, { divider: true }] : []),
-	{ title: 'Open From Disk', action: 'open', close: true },
-	{ title: 'Open Project', action: 'openSubMenu', payload: { menu: 'projectMenu' }, close: false },
+	{ title: 'Open From Disk', action: 'open', close: true, disabled: !state.options.loadProjectFromFile },
+	{
+		title: 'Open Project',
+		action: 'openSubMenu',
+		payload: { menu: 'projectMenu' },
+		close: false,
+		disabled: !state.options.getListOfProjects,
+	},
 	{ divider: true },
-	{ title: 'Export Project', action: 'save', close: true },
+	{ title: 'Export Project', action: 'save', close: true, disabled: !state.options.exportFile },
 	{
 		title: 'Export Runtime-Ready Project',
 		action: 'saveRuntimeReady',
 		close: true,
-		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0,
+		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.options.exportFile,
 	},
 	{
 		title: 'Export WebAssembly',
 		action: 'exportWasm',
 		close: true,
-		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0,
+		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.options.exportFile,
 	},
 	{ divider: true },
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
