@@ -39,27 +39,36 @@ function convertGraphicDataToProjectStructure(
 }
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
-	// Initialize with loading project and settings from storage if callbacks are provided
-	let initialLoad: Promise<void>;
-	if (
-		state.options.loadProjectFromStorage &&
-		state.options.loadEditorSettingsFromStorage &&
-		state.featureFlags.persistentStorage
-	) {
-		initialLoad = Promise.all([state.options.loadProjectFromStorage(), state.options.loadEditorSettingsFromStorage()])
-			.then(([localProject, editorSettings]) => {
-				state.editorSettings = editorSettings || defaultState.editorSettings;
+	state.editorSettings = defaultState.editorSettings;
+
+	const loadEditorSettingsFromStorage = state.options.loadEditorSettingsFromStorage;
+	const settingsPromise =
+		state.featureFlags.persistentStorage && loadEditorSettingsFromStorage
+			? loadEditorSettingsFromStorage()
+					.then(editorSettings => {
+						state.editorSettings = editorSettings || defaultState.editorSettings;
+					})
+					.catch(error => {
+						console.warn('Failed to load editor settings from storage:', error);
+						state.editorSettings = defaultState.editorSettings;
+					})
+			: Promise.resolve();
+
+	const loadProjectFromStorage = state.options.loadProjectFromStorage;
+	const projectPromise = settingsPromise.then(() => {
+		if (!state.featureFlags.persistentStorage || !loadProjectFromStorage) {
+			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
+		}
+
+		return loadProjectFromStorage()
+			.then(localProject => {
 				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
 			})
 			.catch(error => {
-				console.warn('Failed to load from storage:', error);
-				state.editorSettings = defaultState.editorSettings;
+				console.warn('Failed to load project from storage:', error);
 				loadProject({ project: EMPTY_DEFAULT_PROJECT });
 			});
-	} else {
-		state.editorSettings = defaultState.editorSettings;
-		initialLoad = Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
-	}
+	});
 
 	function loadProject({ project: newProject }: { project: Project }) {
 		state['project'] = { ...EMPTY_DEFAULT_PROJECT };
@@ -120,7 +129,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		events.dispatch('loadPostProcessEffects', state.project.postProcessEffects);
 	}
 
-	void initialLoad;
+	void projectPromise;
 
 	function onSaveState() {
 		if (
