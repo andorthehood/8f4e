@@ -14,8 +14,8 @@ export type { FeatureFlags, FeatureFlagsConfig } from './config/featureFlags';
 
 export default async function init(canvas: HTMLCanvasElement, options: Options) {
 	const events = initEvents();
-	humanInterface(canvas, events);
 	const state = initState(events, EMPTY_DEFAULT_PROJECT, options);
+	humanInterface(canvas, events, state);
 	const view = await initView(state, canvas);
 
 	events.on('setColorScheme', () => {
