@@ -1,3 +1,5 @@
+import { State } from 'state/types';
+
 import { EventDispatcher } from '.';
 
 export interface InternalMouseEvent {
@@ -15,7 +17,7 @@ export interface InternalKeyboardEvent {
 	key: string;
 }
 
-export default function humanInterface(element: HTMLElement, events: EventDispatcher) {
+export default function humanInterface(element: HTMLElement, events: EventDispatcher, state: State) {
 	function onKeyboardEvents(event: KeyboardEvent) {
 		const { key, type } = event;
 
@@ -71,7 +73,10 @@ export default function humanInterface(element: HTMLElement, events: EventDispat
 
 	window.addEventListener('keyup', onKeyboardEvents);
 	window.addEventListener('keydown', onKeyboardEvents);
-	window.addEventListener('wheel', onWheelEvents, { passive: false });
+
+	if (state.options.featureFlags.viewportDragging) {
+		window.addEventListener('wheel', onWheelEvents, { passive: false });
+	}
 	element.addEventListener('mouseup', onMouseEvents);
 	element.addEventListener('mousedown', onMouseEvents);
 	element.addEventListener('mousemove', onMouseEvents);
