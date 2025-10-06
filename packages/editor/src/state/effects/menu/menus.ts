@@ -35,7 +35,12 @@ export const mainMenu: MenuGenerator = state => [
 					disabled: !state.options.getListOfModules,
 				},
 				{ divider: true },
-				{ title: 'Import binary asset', action: 'importBinaryAsset', close: true },
+				{
+					title: 'Import binary asset',
+					action: 'importBinaryAsset',
+					close: true,
+					disabled: !state.options.importBinaryAsset,
+				},
 			]
 		: []),
 	{ title: 'Binary assets', action: 'openSubMenu', payload: { menu: 'binaryAssetsMenu' }, close: false },
