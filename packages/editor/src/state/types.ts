@@ -388,6 +388,9 @@ export interface Options {
 	loadProjectFromFile?: (file: File) => Promise<Project>;
 	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
 	importBinaryAsset?: (file: File) => Promise<{ data: string; fileName: string }>;
+
+	// Color scheme loader callback
+	loadColorSchemes?: () => Promise<Record<string, import('@8f4e/sprite-generator').ColorScheme>>;
 }
 
 // Re-export runtime types from the effects module for convenience
