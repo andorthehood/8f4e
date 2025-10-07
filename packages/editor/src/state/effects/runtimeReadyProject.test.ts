@@ -60,6 +60,11 @@ describe('Runtime-ready project functionality', () => {
 				getListOfProjects: jest.fn(),
 				getProject: jest.fn(),
 				compileProject: jest.fn(),
+				loadColorSchemes: jest.fn().mockResolvedValue({
+					default: { text: {}, fill: {}, icons: {} },
+					hackerman: { text: {}, fill: {}, icons: {} },
+					redalert: { text: {}, fill: {}, icons: {} },
+				}),
 			},
 			graphicHelper: {
 				baseCodeBlock: {
