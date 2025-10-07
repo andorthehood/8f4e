@@ -208,11 +208,37 @@ export const editorSettingsMenu: MenuGenerator = () => [
 	},
 ];
 
-export const colorSchemeMenu: MenuGenerator = () => [
-	{ title: 'Hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: false },
-	{ title: 'Red Alert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: false },
-	{ title: 'Default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: false },
-];
+export const colorSchemeMenu: MenuGenerator = async state => {
+	try {
+		// Load color schemes if available
+		const colorSchemes = state.options.loadColorSchemes
+			? await state.options.loadColorSchemes()
+			: { default: { text: {}, fill: {}, icons: {} } };
+
+		// Build menu items from loaded schemes
+		return Object.keys(colorSchemes).map(key => {
+			// Generate title from key (e.g., 'hackerman' -> 'Hackerman', 'redalert' -> 'Red Alert')
+			let title = key.charAt(0).toUpperCase() + key.slice(1);
+			if (key === 'redalert') title = 'Red Alert';
+			if (key === 'default') title = 'Default';
+
+			return {
+				title,
+				action: 'setColorScheme',
+				payload: { colorScheme: key },
+				close: false,
+			};
+		});
+	} catch (error) {
+		console.warn('Failed to load color schemes for menu:', error);
+		// Fallback to hardcoded menu
+		return [
+			{ title: 'Hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: false },
+			{ title: 'Red Alert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: false },
+			{ title: 'Default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: false },
+		];
+	}
+};
 
 export const fontMenu: MenuGenerator = () => [
 	{ title: '8x16', action: 'setFont', payload: { font: '8x16' }, close: false },
