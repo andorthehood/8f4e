@@ -53,13 +53,3 @@ export const defaultColorScheme: ColorScheme = {
 		pianoKeyboardNoteHighlighted: '#ff0000',
 	},
 };
-
-/**
- * Helper function to get a color scheme from a map with fallback to default
- * @param colorSchemes - Map of color schemes
- * @param schemeName - Name of the color scheme to retrieve
- * @returns The requested color scheme, or the 'default' scheme, or the fallback default color scheme
- */
-export function getColorSchemeWithFallback(colorSchemes: Record<string, ColorScheme>, schemeName: string): ColorScheme {
-	return colorSchemes[schemeName] || colorSchemes['default'] || defaultColorScheme;
-}
