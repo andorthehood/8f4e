@@ -1,4 +1,4 @@
-import generateSprite, { defaultColorScheme, getColorSchemeWithFallback } from '@8f4e/sprite-generator';
+import generateSprite, { defaultColorScheme } from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect } from '@8f4e/2d-engine';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
@@ -49,7 +49,7 @@ export default async function init(
 		characterHeight,
 	} = generateSprite({
 		font: state.editorSettings.font || '8x16',
-		colorScheme: getColorSchemeWithFallback(colorSchemes, state.editorSettings.colorScheme),
+		colorScheme: colorSchemes[state.editorSettings.colorScheme],
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;
@@ -92,7 +92,7 @@ export default async function init(
 				characterWidth,
 			} = generateSprite({
 				font: state.editorSettings.font || '8x16',
-				colorScheme: getColorSchemeWithFallback(schemes, state.editorSettings.colorScheme),
+				colorScheme: schemes[state.editorSettings.colorScheme],
 			});
 
 			state.graphicHelper.spriteLookups = spriteLookups;
