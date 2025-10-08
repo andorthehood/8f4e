@@ -16,6 +16,7 @@ import glyphs6x10 from './fonts/6x10/glyphs';
 export { Icon } from './icons';
 export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
+export { defaultColorScheme, getColorSchemeWithFallback } from './defaultColorScheme';
 
 const fonts: Record<
 	Config['font'],
