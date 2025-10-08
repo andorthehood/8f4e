@@ -216,26 +216,19 @@ export const colorSchemeMenu: MenuGenerator = async state => {
 			: { default: { text: {}, fill: {}, icons: {} } };
 
 		// Build menu items from loaded schemes
-		return Object.keys(colorSchemes).map(key => {
-			// Generate title from key (e.g., 'hackerman' -> 'Hackerman', 'redalert' -> 'Red Alert')
-			let title = key.charAt(0).toUpperCase() + key.slice(1);
-			if (key === 'redalert') title = 'Red Alert';
-			if (key === 'default') title = 'Default';
-
-			return {
-				title,
-				action: 'setColorScheme',
-				payload: { colorScheme: key },
-				close: false,
-			};
-		});
+		return Object.keys(colorSchemes).map(key => ({
+			title: key,
+			action: 'setColorScheme',
+			payload: { colorScheme: key },
+			close: false,
+		}));
 	} catch (error) {
 		console.warn('Failed to load color schemes for menu:', error);
 		// Fallback to hardcoded menu
 		return [
-			{ title: 'Hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: false },
-			{ title: 'Red Alert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: false },
-			{ title: 'Default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: false },
+			{ title: 'hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: false },
+			{ title: 'redalert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: false },
+			{ title: 'default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: false },
 		];
 	}
 };
