@@ -40,18 +40,18 @@ function convertGraphicDataToProjectStructure(
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
 	state.editorSettings = defaultState.editorSettings;
-	state.availableColorSchemes = []; // Initialize with empty array
+	state.colorSchemes = {}; // Initialize with empty object
 
 	// Load color schemes first
 	const colorSchemesPromise = state.options.loadColorSchemes
 		? state.options
 				.loadColorSchemes()
 				.then(colorSchemes => {
-					state.availableColorSchemes = Object.keys(colorSchemes);
+					state.colorSchemes = colorSchemes;
 				})
 				.catch(error => {
 					console.warn('Failed to load color schemes:', error);
-					state.availableColorSchemes = [];
+					state.colorSchemes = {};
 				})
 		: Promise.resolve();
 

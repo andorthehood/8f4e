@@ -4,11 +4,7 @@ import { Engine, PostProcessEffect } from '@8f4e/2d-engine';
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import drawBackground from './drawers/drawBackground';
 
-import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { State } from '../state/types';
-
-// Cache for loaded color schemes
-let colorSchemesCache: Record<string, ColorScheme> | null = null;
 
 export default async function init(
 	state: State,
@@ -18,15 +14,6 @@ export default async function init(
 	reloadSpriteSheet: () => void;
 	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
 }> {
-	// Load color schemes if not already cached
-	if (!colorSchemesCache && state.options.loadColorSchemes) {
-		try {
-			colorSchemesCache = await state.options.loadColorSchemes();
-		} catch (error) {
-			console.warn('Failed to load color schemes in view:', error);
-		}
-	}
-
 	const {
 		canvas: sprite,
 		spriteLookups,
@@ -34,7 +21,7 @@ export default async function init(
 		characterHeight,
 	} = generateSprite({
 		font: state.editorSettings.font || '8x16',
-		colorScheme: colorSchemesCache?.[state.editorSettings.colorScheme],
+		colorScheme: state.colorSchemes[state.editorSettings.colorScheme],
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;
@@ -74,7 +61,7 @@ export default async function init(
 				characterWidth,
 			} = generateSprite({
 				font: state.editorSettings.font || '8x16',
-				colorScheme: colorSchemesCache?.[state.editorSettings.colorScheme],
+				colorScheme: state.colorSchemes[state.editorSettings.colorScheme],
 			});
 
 			state.graphicHelper.spriteLookups = spriteLookups;
