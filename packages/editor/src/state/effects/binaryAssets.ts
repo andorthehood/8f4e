@@ -4,7 +4,7 @@ import type { State } from '../types';
 
 export default function binaryAssets(state: State, events: EventDispatcher): () => void {
 	async function onImportBinaryAsset() {
-		if (!state.options.callbacks.importBinaryAsset) {
+		if (!state.callbacks.importBinaryAsset) {
 			console.warn('No importBinaryAsset callback provided');
 			return;
 		}
@@ -15,7 +15,7 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 			).showOpenFilePicker();
 			const file = await fileHandles[0].getFile();
 
-			const result = await state.options.callbacks.importBinaryAsset(file);
+			const result = await state.callbacks.importBinaryAsset(file);
 
 			if (!state.project.binaryAssets) {
 				state.project.binaryAssets = [];

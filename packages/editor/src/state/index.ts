@@ -156,16 +156,10 @@ export default function init(events: EventDispatcher, project: Project, options:
 	// Initialize feature flags
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	// Separate callbacks from feature flags
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { featureFlags: _, ...callbacks } = options;
-
 	const state: State = {
 		...defaultStateBase,
 		project,
-		options: {
-			callbacks,
-		},
+		callbacks: options.callbacks,
 		featureFlags,
 	};
 

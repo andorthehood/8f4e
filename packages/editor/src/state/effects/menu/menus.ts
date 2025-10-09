@@ -32,43 +32,41 @@ export const mainMenu: MenuGenerator = state => [
 					action: 'openSubMenu',
 					payload: { menu: 'moduleCategoriesMenu' },
 					close: false,
-					disabled: !state.options.callbacks.getListOfModules,
+					disabled: !state.callbacks.getListOfModules,
 				},
 				{ divider: true },
 				{
 					title: 'Import binary asset',
 					action: 'importBinaryAsset',
 					close: true,
-					disabled: !state.options.callbacks.importBinaryAsset,
+					disabled: !state.callbacks.importBinaryAsset,
 				},
 			]
 		: []),
 	{ title: 'Binary assets', action: 'openSubMenu', payload: { menu: 'binaryAssetsMenu' }, close: false },
 	...(state.featureFlags.editing ? [{ divider: true }] : []),
 	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }, { divider: true }] : []),
-	{ title: 'Open From Disk', action: 'open', close: true, disabled: !state.options.callbacks.loadProjectFromFile },
+	{ title: 'Open From Disk', action: 'open', close: true, disabled: !state.callbacks.loadProjectFromFile },
 	{
 		title: 'Open Project',
 		action: 'openSubMenu',
 		payload: { menu: 'projectMenu' },
 		close: false,
-		disabled: !state.options.callbacks.getListOfProjects,
+		disabled: !state.callbacks.getListOfProjects,
 	},
 	{ divider: true },
-	{ title: 'Export Project', action: 'save', close: true, disabled: !state.options.callbacks.exportFile },
+	{ title: 'Export Project', action: 'save', close: true, disabled: !state.callbacks.exportFile },
 	{
 		title: 'Export Runtime-Ready Project',
 		action: 'saveRuntimeReady',
 		close: true,
-		disabled:
-			!state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.options.callbacks.exportFile,
+		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.callbacks.exportFile,
 	},
 	{
 		title: 'Export WebAssembly',
 		action: 'exportWasm',
 		close: true,
-		disabled:
-			!state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.options.callbacks.exportFile,
+		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.callbacks.exportFile,
 	},
 	{ divider: true },
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
@@ -137,7 +135,7 @@ export const moduleMenu: MenuGenerator = state => [
 ];
 
 export const moduleCategoriesMenu: MenuGenerator = async state => {
-	const modules = await state.options.callbacks.getListOfModules();
+	const modules = await state.callbacks.getListOfModules();
 	const categories = [...new Set(modules.map(module => module.category))];
 	return categories.map(category => {
 		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
@@ -146,12 +144,12 @@ export const moduleCategoriesMenu: MenuGenerator = async state => {
 
 export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
 	const { category } = payload as { category: string };
-	const modules = await state.options.callbacks.getListOfModules();
+	const modules = await state.callbacks.getListOfModules();
 	const filteredModules = modules.filter(module => module.category === category);
 
 	const menuItems = [];
 	for (const moduleMetadata of filteredModules) {
-		const module = await state.options.callbacks.getModule(moduleMetadata.slug);
+		const module = await state.callbacks.getModule(moduleMetadata.slug);
 		menuItems.push({
 			title: module.title,
 			action: 'addCodeBlock',
@@ -227,10 +225,10 @@ export const fontMenu: MenuGenerator = () => [
 ];
 
 export const projectMenu: MenuGenerator = async state => {
-	const projects = await state.options.callbacks.getListOfProjects();
+	const projects = await state.callbacks.getListOfProjects();
 	const menuItems = [];
 	for (const projectMetadata of projects) {
-		const project = await state.options.callbacks.getProject(projectMetadata.slug);
+		const project = await state.callbacks.getProject(projectMetadata.slug);
 		menuItems.push({
 			title: project.title,
 			action: 'loadProject',
