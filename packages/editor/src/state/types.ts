@@ -410,4 +410,5 @@ export interface State {
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	compilationTime: number;
+	availableColorSchemes: string[];
 }
