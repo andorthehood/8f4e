@@ -149,6 +149,7 @@ const defaultStateBase = {
 	},
 	featureFlags: defaultFeatureFlags,
 	compilationTime: 0,
+	availableColorSchemes: [],
 };
 
 export default function init(events: EventDispatcher, project: Project, options: Options): State {
