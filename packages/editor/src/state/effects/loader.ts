@@ -43,8 +43,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 	state.colorSchemes = {}; // Initialize with empty object
 
 	// Load color schemes first
-	const colorSchemesPromise = state.options.loadColorSchemes
-		? state.options
+	const colorSchemesPromise = state.callbacks.loadColorSchemes
+		? state.callbacks
 				.loadColorSchemes()
 				.then(colorSchemes => {
 					state.colorSchemes = colorSchemes;
@@ -55,7 +55,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				})
 		: Promise.resolve();
 
-	const loadEditorSettingsFromStorage = state.options.loadEditorSettingsFromStorage;
+	const loadEditorSettingsFromStorage = state.callbacks.loadEditorSettingsFromStorage;
 	const settingsPromise = colorSchemesPromise.then(() =>
 		state.featureFlags.persistentStorage && loadEditorSettingsFromStorage
 			? loadEditorSettingsFromStorage()
@@ -69,7 +69,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			: Promise.resolve()
 	);
 
-	const loadProjectFromStorage = state.options.loadProjectFromStorage;
+	const loadProjectFromStorage = state.callbacks.loadProjectFromStorage;
 	const projectPromise = settingsPromise.then(() => {
 		if (!state.featureFlags.persistentStorage || !loadProjectFromStorage) {
 			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
@@ -149,8 +149,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 	function onSaveState() {
 		if (
 			!state.featureFlags.persistentStorage ||
-			!state.options.saveProjectToStorage ||
-			!state.options.saveEditorSettingsToStorage
+			!state.callbacks.saveProjectToStorage ||
+			!state.callbacks.saveEditorSettingsToStorage
 		) {
 			return;
 		}
@@ -169,15 +169,15 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 		// Use callbacks instead of localStorage
 		Promise.all([
-			state.options.saveProjectToStorage!(state.project),
-			state.options.saveEditorSettingsToStorage!(state.editorSettings),
+			state.callbacks.saveProjectToStorage!(state.project),
+			state.callbacks.saveEditorSettingsToStorage!(state.editorSettings),
 		]).catch(error => {
 			console.error('Failed to save to storage:', error);
 		});
 	}
 
 	function onOpen() {
-		if (!state.options.loadProjectFromFile) {
+		if (!state.callbacks.loadProjectFromFile) {
 			console.warn('No loadProjectFromFile callback provided');
 			return;
 		}
@@ -188,11 +188,11 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 		input.addEventListener('change', event => {
 			const file = (event.target as HTMLInputElement).files?.[0];
-			if (!file || !state.options.loadProjectFromFile) {
+			if (!file || !state.callbacks.loadProjectFromFile) {
 				return;
 			}
 
-			state.options
+			state.callbacks
 				.loadProjectFromFile(file)
 				.then(project => {
 					loadProject({ project });

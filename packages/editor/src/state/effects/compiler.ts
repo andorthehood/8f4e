@@ -79,7 +79,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				},
 			};
 
-			const result = await state.options.compileProject(modules, compilerOptions, state.compiler.memoryRef);
+			const result = await state.callbacks.compileProject(modules, compilerOptions, state.compiler.memoryRef);
 
 			// Handle successful compilation
 			state.compiler.compiledModules = result.compiledModules;
