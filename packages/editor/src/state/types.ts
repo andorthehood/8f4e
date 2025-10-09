@@ -1,4 +1,4 @@
-import type { Font, SpriteLookups } from '@8f4e/sprite-generator';
+import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from '@8f4e/2d-engine';
 import type { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
 import type { RuntimeFactory, RuntimeType } from './effects/runtime';
@@ -388,6 +388,9 @@ export interface Options {
 	loadProjectFromFile?: (file: File) => Promise<Project>;
 	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
 	importBinaryAsset?: (file: File) => Promise<{ data: string; fileName: string }>;
+
+	// Color scheme loader callback
+	loadColorSchemes?: () => Promise<Record<string, import('@8f4e/sprite-generator').ColorScheme>>;
 }
 
 // Re-export runtime types from the effects module for convenience
@@ -407,4 +410,5 @@ export interface State {
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	compilationTime: number;
+	colorSchemes: Record<string, ColorScheme>;
 }

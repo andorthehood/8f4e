@@ -73,7 +73,7 @@ export interface ColorScheme {
 export type Font = '6x10' | '8x16';
 
 export interface Config {
-	colorScheme: ColorScheme;
+	colorScheme?: ColorScheme;
 	font: Font;
 }
 
