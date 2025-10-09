@@ -40,9 +40,23 @@ function convertGraphicDataToProjectStructure(
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
 	state.editorSettings = defaultState.editorSettings;
+	state.colorSchemes = {}; // Initialize with empty object
+
+	// Load color schemes first
+	const colorSchemesPromise = state.options.loadColorSchemes
+		? state.options
+				.loadColorSchemes()
+				.then(colorSchemes => {
+					state.colorSchemes = colorSchemes;
+				})
+				.catch(error => {
+					console.warn('Failed to load color schemes:', error);
+					state.colorSchemes = {};
+				})
+		: Promise.resolve();
 
 	const loadEditorSettingsFromStorage = state.options.loadEditorSettingsFromStorage;
-	const settingsPromise =
+	const settingsPromise = colorSchemesPromise.then(() =>
 		state.featureFlags.persistentStorage && loadEditorSettingsFromStorage
 			? loadEditorSettingsFromStorage()
 					.then(editorSettings => {
@@ -52,7 +66,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 						console.warn('Failed to load editor settings from storage:', error);
 						state.editorSettings = defaultState.editorSettings;
 					})
-			: Promise.resolve();
+			: Promise.resolve()
+	);
 
 	const loadProjectFromStorage = state.options.loadProjectFromStorage;
 	const projectPromise = settingsPromise.then(() => {
