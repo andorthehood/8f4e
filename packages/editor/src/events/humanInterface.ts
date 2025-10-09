@@ -74,7 +74,7 @@ export default function humanInterface(element: HTMLElement, events: EventDispat
 	window.addEventListener('keyup', onKeyboardEvents);
 	window.addEventListener('keydown', onKeyboardEvents);
 
-	if (state.options.featureFlags.viewportDragging) {
+	if (state.featureFlags.viewportDragging) {
 		window.addEventListener('wheel', onWheelEvents, { passive: false });
 	}
 	element.addEventListener('mouseup', onMouseEvents);

@@ -159,7 +159,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	const state: State = {
 		...defaultStateBase,
 		project,
-		options,
+		callbacks: options.callbacks,
 		featureFlags,
 	};
 
