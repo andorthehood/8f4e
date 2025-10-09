@@ -193,12 +193,13 @@ export const projectSettingsMenu: MenuGenerator = () => [
 	{ title: 'Configure Audio I/O', action: 'openSubMenu', payload: { menu: 'configureAudioIO' }, close: false },
 ];
 
-export const editorSettingsMenu: MenuGenerator = () => [
+export const editorSettingsMenu: MenuGenerator = state => [
 	{
 		title: 'Theme',
 		action: 'openSubMenu',
 		payload: { menu: 'colorSchemeMenu' },
 		close: false,
+		disabled: !state.availableColorSchemes || state.availableColorSchemes.length === 0,
 	},
 	{
 		title: 'Font',
@@ -219,12 +220,8 @@ export const colorSchemeMenu: MenuGenerator = state => {
 		}));
 	}
 
-	// Fallback to hardcoded menu if no schemes loaded yet
-	return [
-		{ title: 'hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: false },
-		{ title: 'redalert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: false },
-		{ title: 'default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: false },
-	];
+	// Return empty menu if no schemes available
+	return [];
 };
 
 export const fontMenu: MenuGenerator = () => [
