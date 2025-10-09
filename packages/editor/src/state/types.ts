@@ -1,4 +1,4 @@
-import type { Font, SpriteLookups } from '@8f4e/sprite-generator';
+import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from '@8f4e/2d-engine';
 import type { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
 import type { RuntimeFactory, RuntimeType } from './effects/runtime';
@@ -410,5 +410,5 @@ export interface State {
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	compilationTime: number;
-	availableColorSchemes: string[];
+	colorSchemes: Record<string, ColorScheme>;
 }
