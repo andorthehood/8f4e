@@ -5,7 +5,7 @@ import type { State } from '../types';
 
 export default function save(state: State, events: EventDispatcher): void {
 	function onSave() {
-		if (!state.options.exportFile) {
+		if (!state.callbacks.exportFile) {
 			console.warn('No exportFile callback provided');
 			return;
 		}
@@ -13,13 +13,13 @@ export default function save(state: State, events: EventDispatcher): void {
 		const filename = `${state.project.title || 'project'}.json`;
 		const json = JSON.stringify(state.project, null, 2);
 
-		state.options.exportFile(json, filename, 'application/json').catch(error => {
+		state.callbacks.exportFile(json, filename, 'application/json').catch(error => {
 			console.error('Failed to save project to file:', error);
 		});
 	}
 
 	function onSaveRuntimeReady() {
-		if (!state.options.exportFile) {
+		if (!state.callbacks.exportFile) {
 			console.warn('No exportFile callback provided');
 			return;
 		}
@@ -41,7 +41,7 @@ export default function save(state: State, events: EventDispatcher): void {
 		const filename = `${state.project.title || 'project'}-runtime-ready.json`;
 		const json = JSON.stringify(runtimeProject, null, 2);
 
-		state.options.exportFile(json, filename, 'application/json').catch(error => {
+		state.callbacks.exportFile(json, filename, 'application/json').catch(error => {
 			console.error('Failed to save runtime-ready project to file:', error);
 		});
 	}
