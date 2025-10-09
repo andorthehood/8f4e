@@ -393,6 +393,9 @@ export interface Options {
 	loadColorSchemes?: () => Promise<Record<string, import('@8f4e/sprite-generator').ColorScheme>>;
 }
 
+// Callbacks type contains all Options fields except featureFlags
+export type Callbacks = Omit<Options, 'featureFlags'>;
+
 // Re-export runtime types from the effects module for convenience
 export type { RuntimeFactory, RuntimeType };
 
@@ -406,7 +409,7 @@ export interface State {
 	midi: Midi;
 	graphicHelper: GraphicHelper;
 	project: Project;
-	options: Options;
+	callbacks: Callbacks;
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	compilationTime: number;
