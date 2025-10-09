@@ -7,15 +7,17 @@ import generatePlotter, { generateLookup as generateLookupForPlotter } from './p
 import generateBackground, { generateLookup as generateLookupForBackground } from './background';
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
 import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
-import { Command, Config } from './types';
+import { Command, Config, ColorScheme } from './types';
 import ascii8x16 from './fonts/8x16/ascii';
 import ascii6x10 from './fonts/6x10/ascii';
 import glyphs8x16 from './fonts/8x16/glyphs';
 import glyphs6x10 from './fonts/6x10/glyphs';
+import { defaultColorScheme } from './defaultColorScheme';
 
 export { Icon } from './icons';
 export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
+export { defaultColorScheme } from './defaultColorScheme';
 
 const fonts: Record<
 	Config['font'],
@@ -36,7 +38,7 @@ const fonts: Record<
 };
 
 export interface SpriteLookups extends FontLookups {
-	fillColors: Record<keyof Config['colorScheme']['fill'], SpriteCoordinates>;
+	fillColors: Record<keyof ColorScheme['fill'], SpriteCoordinates>;
 	plotter: Record<number, SpriteCoordinates>;
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<Icon, SpriteCoordinates>;
@@ -53,6 +55,9 @@ export default function generateSprite(config: Config): {
 	let canvas: OffscreenCanvas | HTMLCanvasElement;
 	const { characterWidth, characterHeight, asciiBitmap, glyphsBitmap } = fonts[config.font];
 
+	// Use default color scheme if none provided
+	const colorScheme = config.colorScheme || defaultColorScheme;
+
 	if (window.OffscreenCanvas) {
 		canvas = new OffscreenCanvas(1024, 1024);
 	} else {
@@ -67,13 +72,13 @@ export default function generateSprite(config: Config): {
 	}) as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 
 	const commands = [
-		...generatePlotter(characterWidth, characterHeight, config.colorScheme.fill),
-		...generateFillColors(characterWidth, characterHeight, config.colorScheme.fill),
-		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
-		...generateFont(asciiBitmap, characterWidth, characterHeight, config.colorScheme.text),
-		...generateBackground(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.fill),
-		...generateIcons(glyphsBitmap, characterWidth, characterHeight, config.colorScheme.icons),
-		...generatePianoKeyboard(glyphsBitmap, asciiBitmap, characterWidth, characterHeight, config.colorScheme.icons),
+		...generatePlotter(characterWidth, characterHeight, colorScheme.fill),
+		...generateFillColors(characterWidth, characterHeight, colorScheme.fill),
+		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
+		...generateFont(asciiBitmap, characterWidth, characterHeight, colorScheme.text),
+		...generateBackground(glyphsBitmap, characterWidth, characterHeight, colorScheme.fill),
+		...generateIcons(glyphsBitmap, characterWidth, characterHeight, colorScheme.icons),
+		...generatePianoKeyboard(glyphsBitmap, asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {
@@ -109,11 +114,7 @@ export default function generateSprite(config: Config): {
 		spriteLookups: {
 			fillColors: generateLookupForFillColors(characterWidth, characterHeight),
 			...generateLookupsForFonts(characterWidth, characterHeight),
-			feedbackScale: generateLookupForFeedbackScale(
-				characterWidth,
-				characterHeight,
-				config.colorScheme.icons.feedbackScale
-			),
+			feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons.feedbackScale),
 			plotter: generateLookupForPlotter(characterWidth, characterHeight),
 			background: generateLookupForBackground(characterWidth, characterHeight),
 			icons: generateLookupForIcons(characterWidth, characterHeight),
