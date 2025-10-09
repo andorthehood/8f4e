@@ -1,6 +1,6 @@
 import { SpriteCoordinates } from '@8f4e/2d-engine';
 
-import { Command, Config, DrawingCommand } from './types';
+import { Command, DrawingCommand, ColorScheme } from './types';
 
 const offsetX = 0;
 const offsetY = 0;
@@ -144,7 +144,7 @@ const asciiChars = [
 	'',
 ] as const;
 
-const colorNames: Array<keyof Config['colorScheme']['text']> = [
+const colorNames: Array<keyof ColorScheme['text']> = [
 	'lineNumber',
 	'instruction',
 	'codeComment',
@@ -231,7 +231,7 @@ export default function generateFonts(
 	font: number[],
 	characterWidth: number,
 	characterHeight: number,
-	colors: Config['colorScheme']['text']
+	colors: ColorScheme['text']
 ): DrawingCommand[] {
 	return [
 		[Command.RESET_TRANSFORM],
@@ -249,7 +249,7 @@ function capitalize(word: string) {
 }
 
 export type FontLookups = {
-	[key in keyof Config['colorScheme']['text'] as `font${Capitalize<string & key>}`]: Record<
+	[key in keyof ColorScheme['text'] as `font${Capitalize<string & key>}`]: Record<
 		(typeof asciiChars)[number] | (typeof asciiCodes)[number],
 		SpriteCoordinates
 	>;

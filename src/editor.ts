@@ -13,6 +13,18 @@ import {
 } from './storage-callbacks';
 import { compileProject } from './compiler-callback';
 
+import type { ColorScheme } from '@8f4e/sprite-generator';
+
+// Memoized color scheme loader
+let colorSchemesPromise: Promise<Record<string, ColorScheme>> | null = null;
+
+function loadColorSchemes(): Promise<Record<string, ColorScheme>> {
+	if (!colorSchemesPromise) {
+		colorSchemesPromise = import('./color-schemes').then(module => module.default);
+	}
+	return colorSchemesPromise;
+}
+
 async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
 	canvas.width = window.innerWidth;
@@ -35,6 +47,7 @@ async function init() {
 		loadProjectFromFile,
 		exportFile,
 		importBinaryAsset,
+		loadColorSchemes,
 	});
 
 	// @ts-expect-error - Expose state for debugging purposes

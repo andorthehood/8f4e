@@ -2,7 +2,6 @@ import generateSprite from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect } from '@8f4e/2d-engine';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
-import colorSchemes from './colorSchemes';
 import drawBackground from './drawers/drawBackground';
 
 import type { State } from '../state/types';
@@ -22,7 +21,7 @@ export default async function init(
 		characterHeight,
 	} = generateSprite({
 		font: state.editorSettings.font || '8x16',
-		colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['hackerman'],
+		colorScheme: state.colorSchemes[state.editorSettings.colorScheme],
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;
@@ -62,7 +61,7 @@ export default async function init(
 				characterWidth,
 			} = generateSprite({
 				font: state.editorSettings.font || '8x16',
-				colorScheme: colorSchemes[state.editorSettings.colorScheme] || colorSchemes['default'],
+				colorScheme: state.colorSchemes[state.editorSettings.colorScheme],
 			});
 
 			state.graphicHelper.spriteLookups = spriteLookups;
