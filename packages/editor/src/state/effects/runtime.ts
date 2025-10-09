@@ -41,7 +41,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 		try {
 			console.log(`[Runtime] Requesting runtime: ${runtime.runtime}`);
 			// Use the callback to request the runtime factory
-			const runtimeFactory = await state.callbacks.requestRuntime(runtime.runtime as RuntimeType);
+			const runtimeFactory = await state.options.callbacks.requestRuntime(runtime.runtime as RuntimeType);
 			console.log(`[Runtime] Successfully loaded runtime: ${runtime.runtime}`);
 
 			// Validate that we got a function
