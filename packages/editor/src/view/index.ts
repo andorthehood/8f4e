@@ -39,6 +39,11 @@ export default async function init(
 	// Load color schemes during initialization
 	const colorSchemes = await loadColorSchemes(state);
 
+	// Store available color scheme names in state for menu rendering
+	if (colorSchemes) {
+		state.availableColorSchemes = Object.keys(colorSchemes);
+	}
+
 	const {
 		canvas: sprite,
 		spriteLookups,
