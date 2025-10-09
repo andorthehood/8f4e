@@ -10,24 +10,6 @@ import type { State } from '../state/types';
 // Cache for loaded color schemes
 let colorSchemesCache: Record<string, ColorScheme> | null = null;
 
-// Helper function to load color schemes with caching
-async function loadColorSchemes(state: State): Promise<Record<string, ColorScheme> | null> {
-	if (colorSchemesCache) {
-		return colorSchemesCache;
-	}
-
-	try {
-		if (state.options.loadColorSchemes) {
-			colorSchemesCache = await state.options.loadColorSchemes();
-			return colorSchemesCache;
-		}
-	} catch (error) {
-		console.warn('Failed to load color schemes:', error);
-	}
-
-	return null;
-}
-
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
@@ -36,12 +18,13 @@ export default async function init(
 	reloadSpriteSheet: () => void;
 	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
 }> {
-	// Load color schemes during initialization
-	const colorSchemes = await loadColorSchemes(state);
-
-	// Store available color scheme names in state for menu rendering
-	if (colorSchemes) {
-		state.availableColorSchemes = Object.keys(colorSchemes);
+	// Load color schemes if not already cached
+	if (!colorSchemesCache && state.options.loadColorSchemes) {
+		try {
+			colorSchemesCache = await state.options.loadColorSchemes();
+		} catch (error) {
+			console.warn('Failed to load color schemes in view:', error);
+		}
 	}
 
 	const {
@@ -51,7 +34,7 @@ export default async function init(
 		characterHeight,
 	} = generateSprite({
 		font: state.editorSettings.font || '8x16',
-		colorScheme: colorSchemes?.[state.editorSettings.colorScheme],
+		colorScheme: colorSchemesCache?.[state.editorSettings.colorScheme],
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;

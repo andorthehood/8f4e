@@ -199,7 +199,7 @@ export const editorSettingsMenu: MenuGenerator = state => [
 		action: 'openSubMenu',
 		payload: { menu: 'colorSchemeMenu' },
 		close: false,
-		disabled: !state.availableColorSchemes || state.availableColorSchemes.length === 0,
+		disabled: state.availableColorSchemes.length === 0,
 	},
 	{
 		title: 'Font',
@@ -211,17 +211,12 @@ export const editorSettingsMenu: MenuGenerator = state => [
 
 export const colorSchemeMenu: MenuGenerator = state => {
 	// Build menu items from available color schemes in state
-	if (state.availableColorSchemes && state.availableColorSchemes.length > 0) {
-		return state.availableColorSchemes.map(key => ({
-			title: key,
-			action: 'setColorScheme',
-			payload: { colorScheme: key },
-			close: false,
-		}));
-	}
-
-	// Return empty menu if no schemes available
-	return [];
+	return state.availableColorSchemes.map(key => ({
+		title: key,
+		action: 'setColorScheme',
+		payload: { colorScheme: key },
+		close: false,
+	}));
 };
 
 export const fontMenu: MenuGenerator = () => [
