@@ -404,12 +404,17 @@ export interface EditorSettings {
 	font: Font;
 }
 
+// Options structure stored in state with callbacks nested
+export interface StateOptions {
+	callbacks: Callbacks;
+}
+
 export interface State {
 	compiler: Compiler;
 	midi: Midi;
 	graphicHelper: GraphicHelper;
 	project: Project;
-	callbacks: Callbacks;
+	options: StateOptions;
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	compilationTime: number;
