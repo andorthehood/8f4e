@@ -52,22 +52,20 @@ describe('Runtime-ready project functionality', () => {
 				cycleTime: 0,
 				timerAccuracy: 0,
 			},
-			options: {
-				callbacks: {
-					exportFile: mockExportFile,
-					requestRuntime: jest.fn(),
-					getListOfModules: jest.fn(),
-					getModule: jest.fn(),
-					getListOfProjects: jest.fn(),
-					getProject: jest.fn(),
-					compileProject: jest.fn(),
-					loadProjectFromStorage: jest.fn(),
-					loadColorSchemes: jest.fn().mockResolvedValue({
-						default: { text: {}, fill: {}, icons: {} },
-						hackerman: { text: {}, fill: {}, icons: {} },
-						redalert: { text: {}, fill: {}, icons: {} },
-					}),
-				},
+			callbacks: {
+				exportFile: mockExportFile,
+				requestRuntime: jest.fn(),
+				getListOfModules: jest.fn(),
+				getModule: jest.fn(),
+				getListOfProjects: jest.fn(),
+				getProject: jest.fn(),
+				compileProject: jest.fn(),
+				loadProjectFromStorage: jest.fn(),
+				loadColorSchemes: jest.fn().mockResolvedValue({
+					default: { text: {}, fill: {}, icons: {} },
+					hackerman: { text: {}, fill: {}, icons: {} },
+					redalert: { text: {}, fill: {}, icons: {} },
+				}),
 			},
 			graphicHelper: {
 				baseCodeBlock: {
@@ -215,7 +213,7 @@ describe('Runtime-ready project functionality', () => {
 				codeBuffer: new Uint8Array([100, 200]),
 				allocatedMemorySize: 1024,
 			});
-			mockState.options.callbacks.compileProject = mockCompileProject;
+			mockState.callbacks.compileProject = mockCompileProject;
 
 			const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
 

@@ -363,8 +363,8 @@ export interface CompilationResult {
 	allocatedMemorySize: number;
 }
 
-export interface Options {
-	featureFlags?: FeatureFlagsConfig;
+// Callbacks interface contains all callback functions
+export interface Callbacks {
 	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
 	getListOfModules?: () => Promise<ModuleMetadata[]>;
 	getModule?: (slug: string) => Promise<ExampleModule>;
@@ -393,8 +393,10 @@ export interface Options {
 	loadColorSchemes?: () => Promise<Record<string, import('@8f4e/sprite-generator').ColorScheme>>;
 }
 
-// Callbacks type contains all Options fields except featureFlags
-export type Callbacks = Omit<Options, 'featureFlags'>;
+export interface Options {
+	featureFlags?: FeatureFlagsConfig;
+	callbacks: Callbacks;
+}
 
 // Re-export runtime types from the effects module for convenience
 export type { RuntimeFactory, RuntimeType };
@@ -404,17 +406,12 @@ export interface EditorSettings {
 	font: Font;
 }
 
-// Options structure stored in state with callbacks nested
-export interface StateOptions {
-	callbacks: Callbacks;
-}
-
 export interface State {
 	compiler: Compiler;
 	midi: Midi;
 	graphicHelper: GraphicHelper;
 	project: Project;
-	options: StateOptions;
+	callbacks: Callbacks;
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	compilationTime: number;
