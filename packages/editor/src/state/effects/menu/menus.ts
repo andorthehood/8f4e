@@ -193,12 +193,13 @@ export const projectSettingsMenu: MenuGenerator = () => [
 	{ title: 'Configure Audio I/O', action: 'openSubMenu', payload: { menu: 'configureAudioIO' }, close: false },
 ];
 
-export const editorSettingsMenu: MenuGenerator = () => [
+export const editorSettingsMenu: MenuGenerator = state => [
 	{
 		title: 'Theme',
 		action: 'openSubMenu',
 		payload: { menu: 'colorSchemeMenu' },
 		close: false,
+		disabled: Object.keys(state.colorSchemes).length === 0,
 	},
 	{
 		title: 'Font',
@@ -208,11 +209,15 @@ export const editorSettingsMenu: MenuGenerator = () => [
 	},
 ];
 
-export const colorSchemeMenu: MenuGenerator = () => [
-	{ title: 'Hackerman', action: 'setColorScheme', payload: { colorScheme: 'hackerman' }, close: false },
-	{ title: 'Red Alert', action: 'setColorScheme', payload: { colorScheme: 'redalert' }, close: false },
-	{ title: 'Default', action: 'setColorScheme', payload: { colorScheme: 'default' }, close: false },
-];
+export const colorSchemeMenu: MenuGenerator = state => {
+	// Build menu items from available color schemes in state
+	return Object.keys(state.colorSchemes).map(key => ({
+		title: key,
+		action: 'setColorScheme',
+		payload: { colorScheme: key },
+		close: false,
+	}));
+};
 
 export const fontMenu: MenuGenerator = () => [
 	{ title: '8x16', action: 'setFont', payload: { font: '8x16' }, close: false },
