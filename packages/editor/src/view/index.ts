@@ -1,4 +1,4 @@
-import generateSprite, { defaultColorScheme } from '@8f4e/sprite-generator';
+import generateSprite from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect } from '@8f4e/2d-engine';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
@@ -11,7 +11,7 @@ import type { State } from '../state/types';
 let colorSchemesCache: Record<string, ColorScheme> | null = null;
 
 // Helper function to load color schemes with caching
-async function loadColorSchemes(state: State): Promise<Record<string, ColorScheme>> {
+async function loadColorSchemes(state: State): Promise<Record<string, ColorScheme> | null> {
 	if (colorSchemesCache) {
 		return colorSchemesCache;
 	}
@@ -19,16 +19,13 @@ async function loadColorSchemes(state: State): Promise<Record<string, ColorSchem
 	try {
 		if (state.options.loadColorSchemes) {
 			colorSchemesCache = await state.options.loadColorSchemes();
-		} else {
-			// Fallback: return just the default scheme if no loader is provided
-			colorSchemesCache = { default: defaultColorScheme };
+			return colorSchemesCache;
 		}
-		return colorSchemesCache;
 	} catch (error) {
-		console.warn('Failed to load color schemes, using default:', error);
-		colorSchemesCache = { default: defaultColorScheme };
-		return colorSchemesCache;
+		console.warn('Failed to load color schemes:', error);
 	}
+
+	return null;
 }
 
 export default async function init(
@@ -49,7 +46,7 @@ export default async function init(
 		characterHeight,
 	} = generateSprite({
 		font: state.editorSettings.font || '8x16',
-		colorScheme: colorSchemes[state.editorSettings.colorScheme],
+		colorScheme: colorSchemes?.[state.editorSettings.colorScheme],
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;
@@ -82,9 +79,6 @@ export default async function init(
 			engine.resize(width, height);
 		},
 		reloadSpriteSheet: () => {
-			// Use cached color schemes for synchronous reload
-			const schemes = colorSchemesCache || { default: defaultColorScheme };
-
 			const {
 				canvas: sprite,
 				spriteLookups,
@@ -92,7 +86,7 @@ export default async function init(
 				characterWidth,
 			} = generateSprite({
 				font: state.editorSettings.font || '8x16',
-				colorScheme: schemes[state.editorSettings.colorScheme],
+				colorScheme: colorSchemesCache?.[state.editorSettings.colorScheme],
 			});
 
 			state.graphicHelper.spriteLookups = spriteLookups;
