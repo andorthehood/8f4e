@@ -126,7 +126,7 @@ const defaultStateBase = {
 		memoryBufferFloat: new Float32Array(),
 		memoryRef: new WebAssembly.Memory({ initial: initialMemorySize, maximum: maxMemorySize, shared: true }),
 		timerAccuracy: 0,
-		compiledModules: new Map(),
+		compiledModules: {},
 		buildErrors: [],
 		compilerOptions: {
 			initialMemorySize,

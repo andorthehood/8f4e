@@ -21,7 +21,7 @@ export function parseOutputs(code: string[]) {
 export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.outputs.clear();
 	parseOutputs(graphicData.trimmedCode).forEach(output => {
-		const memory = state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(output.id);
+		const memory = state.compiler.compiledModules[getModuleId(graphicData.code) || '']?.memoryMap[output.id];
 
 		if (!memory) {
 			return;
