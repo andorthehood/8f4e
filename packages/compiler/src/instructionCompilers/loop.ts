@@ -24,7 +24,9 @@ const loop: InstructionCompiler = function (line, context) {
 	return compileSegment(
 		[
 			`local int ${infiniteLoopProtectionCounterName}`,
-			infiniteLoopProtectionCounterName in context.namespace.memory ? '' : `int ${loopErrorSignalerName} -1`,
+			Object.hasOwn(context.namespace.memory, infiniteLoopProtectionCounterName)
+				? ''
+				: `int ${loopErrorSignalerName} -1`,
 
 			'push 0',
 			`localSet ${infiniteLoopProtectionCounterName}`,
