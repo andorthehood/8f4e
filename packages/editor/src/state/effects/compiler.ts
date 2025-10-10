@@ -43,6 +43,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.project.memorySnapshot);
 				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.project.memorySnapshot);
 				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
+				state.compiler.compiledModules = state.project.compiledModules || {};
 				state.compiler.isCompiling = false;
 				state.compiler.buildErrors = [];
 				state.compiler.compilationTime = 0; // No compilation time since we used pre-compiled
