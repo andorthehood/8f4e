@@ -98,8 +98,8 @@ exports[`branch (int) if the generated AST, WAT and memory map match the snapsho
 `;
 
 exports[`branch (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "output" => {
+{
+  "output": {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,

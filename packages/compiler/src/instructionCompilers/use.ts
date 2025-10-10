@@ -8,7 +8,7 @@ const use: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
-	const namespaceToUse = context.namespace.namespaces.get(line.arguments[0].value);
+	const namespaceToUse = context.namespace.namespaces[line.arguments[0].value];
 
 	if (!namespaceToUse) {
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);

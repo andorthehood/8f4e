@@ -27,7 +27,7 @@ describe('compiler', () => {
 		});
 
 		// Verify that none of the compiled modules have an ast property
-		for (const [, module] of result.compiledModules) {
+		for (const [, module] of Object.entries(result.compiledModules)) {
 			expect(module.ast).toBeUndefined();
 		}
 	});
@@ -42,7 +42,7 @@ describe('compiler', () => {
 		});
 
 		// Verify that all compiled modules have an ast property
-		for (const [, module] of result.compiledModules) {
+		for (const [, module] of Object.entries(result.compiledModules)) {
 			expect(module.ast).toBeDefined();
 			expect(Array.isArray(module.ast)).toBe(true);
 		}
