@@ -6,15 +6,14 @@ export default function findMidiNoteOutModules(
 	compiledModules: CompiledModuleLookup,
 	memoryBuffer: MemoryBuffer
 ): MidiModuleAddresses[] {
-	return Array.from(compiledModules)
-		.map(([, compiledModule]) => compiledModule)
+	return Object.values(compiledModules)
 		.filter(({ id }) => id.startsWith('midinoteout'))
 		.map(module => {
-			const note = module.memoryMap.get('note');
-			const channel = module.memoryMap.get('channel');
-			const noteOnOff = module.memoryMap.get('gate');
-			const velocity = module.memoryMap.get('velocity');
-			const port = module.memoryMap.get('port');
+			const note = module.memoryMap['note'];
+			const channel = module.memoryMap['channel'];
+			const noteOnOff = module.memoryMap['gate'];
+			const velocity = module.memoryMap['velocity'];
+			const port = module.memoryMap['port'];
 
 			const noteWordAddress = note
 				? note?.isPointer

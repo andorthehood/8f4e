@@ -244,8 +244,8 @@ exports[`compiler compileModules 1`] = `
       0,
       11,
     ],
-    "memoryMap": Map {
-      "DEFAULT_VALUE" => {
+    "memoryMap": {
+      "DEFAULT_VALUE": {
         "byteAddress": 0,
         "default": 0,
         "elementWordSize": 4,
@@ -259,7 +259,7 @@ exports[`compiler compileModules 1`] = `
         "wordAlignedAddress": 0,
         "wordAlignedSize": 1,
       },
-      "in" => {
+      "in": {
         "byteAddress": 4,
         "default": 0,
         "elementWordSize": 4,
@@ -273,7 +273,7 @@ exports[`compiler compileModules 1`] = `
         "wordAlignedAddress": 1,
         "wordAlignedSize": 1,
       },
-      "out" => {
+      "out": {
         "byteAddress": 8,
         "default": 0,
         "elementWordSize": 4,
@@ -287,7 +287,7 @@ exports[`compiler compileModules 1`] = `
         "wordAlignedAddress": 2,
         "wordAlignedSize": 1,
       },
-      "test" => {
+      "test": {
         "byteAddress": 12,
         "default": 1,
         "elementWordSize": 4,

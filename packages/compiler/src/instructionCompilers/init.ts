@@ -9,7 +9,7 @@ const init: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
-	const memory = new Map(context.namespace.memory);
+	const memory = { ...context.namespace.memory };
 
 	let defaultValue = 0;
 
@@ -27,7 +27,7 @@ const init: InstructionCompiler = function (line, context) {
 		// Do nothing
 		// Intermodular references are resolved later
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
-		const memoryItem = memory.get(line.arguments[1].value.substring(1));
+		const memoryItem = memory[line.arguments[1].value.substring(1)];
 
 		if (!memoryItem) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
@@ -46,12 +46,12 @@ const init: InstructionCompiler = function (line, context) {
 
 	if (/(\S+)\[(\d+)\]/.test(line.arguments[0].value)) {
 		const [, memoryIdentifier, offset] = line.arguments[0].value.match(/(\S+)\[(\d+)\]/) as [never, string, string];
-		const memoryItem = memory.get(memoryIdentifier);
-		if (memoryItem && memoryItem.default instanceof Map) {
-			memoryItem.default.set(parseInt(offset, 10), defaultValue);
+		const memoryItem = memory[memoryIdentifier];
+		if (memoryItem && typeof memoryItem.default === 'object') {
+			memoryItem.default[offset] = defaultValue;
 		}
 	} else {
-		const memoryItem = memory.get(line.arguments[0].value);
+		const memoryItem = memory[line.arguments[0].value];
 
 		if (memoryItem) {
 			memoryItem.default = defaultValue;
