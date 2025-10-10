@@ -18,7 +18,7 @@ export function parseInputs(code: string[]): Array<{ id: string; lineNumber: num
 export default function inputs(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.inputs.clear();
 	parseInputs(graphicData.trimmedCode).forEach(input => {
-		const memory = state.compiler.compiledModules.get(getModuleId(graphicData.code) || '')?.memoryMap.get(input.id);
+		const memory = state.compiler.compiledModules[getModuleId(graphicData.code) || '']?.memoryMap[input.id];
 
 		if (!memory) {
 			return;

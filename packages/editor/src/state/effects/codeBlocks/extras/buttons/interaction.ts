@@ -15,7 +15,7 @@ export default function button(state: State, events: EventDispatcher): () => voi
 			return;
 		}
 
-		lastPushedButtonMemory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(lastPushedButton.id);
+		lastPushedButtonMemory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[lastPushedButton.id];
 
 		if (!lastPushedButtonMemory) {
 			return;

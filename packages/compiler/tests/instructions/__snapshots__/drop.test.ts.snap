@@ -47,4 +47,4 @@ exports[`drop if the generated AST, WAT and memory map match the snapshot 2`] = 
 "
 `;
 
-exports[`drop if the generated AST, WAT and memory map match the snapshot 3`] = `Map {}`;
+exports[`drop if the generated AST, WAT and memory map match the snapshot 3`] = `{}`;

@@ -94,7 +94,7 @@ const push: InstructionCompiler = function (line, context) {
 					: f32const(consts[argument.value].value)
 			);
 		} else {
-			const local = locals.get(argument.value);
+			const local = locals[argument.value];
 
 			if (!local) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);

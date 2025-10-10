@@ -30,7 +30,7 @@ const memory: InstructionCompiler = function (line, context) {
 		// Do nothing
 		// Intermodular references are resolved later
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
-		const memoryItem = context.namespace.memory.get(line.arguments[1].value.substring(1));
+		const memoryItem = context.namespace.memory[line.arguments[1].value.substring(1)];
 
 		if (!memoryItem) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
@@ -38,7 +38,7 @@ const memory: InstructionCompiler = function (line, context) {
 
 		defaultValue = memoryItem.byteAddress;
 	} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '$') {
-		const memoryItem = context.namespace.memory.get(line.arguments[1].value.substring(1));
+		const memoryItem = context.namespace.memory[line.arguments[1].value.substring(1)];
 
 		if (!memoryItem) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
@@ -55,7 +55,7 @@ const memory: InstructionCompiler = function (line, context) {
 		defaultValue = constant.value;
 	}
 
-	context.namespace.memory.set(line.arguments[0].value, {
+	context.namespace.memory[line.arguments[0].value] = {
 		numberOfElements: 1,
 		elementWordSize: 4,
 		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
@@ -77,7 +77,7 @@ const memory: InstructionCompiler = function (line, context) {
 			line.instruction === 'float*' ||
 			line.instruction === 'int**' ||
 			line.instruction === 'float**',
-	});
+	};
 
 	return context;
 };
