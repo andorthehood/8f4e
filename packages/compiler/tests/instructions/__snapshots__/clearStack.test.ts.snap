@@ -60,4 +60,4 @@ exports[`clearStack if the generated AST, WAT and memory map match the snapshot 
 "
 `;
 
-exports[`clearStack if the generated AST, WAT and memory map match the snapshot 3`] = `Map {}`;
+exports[`clearStack if the generated AST, WAT and memory map match the snapshot 3`] = `{}`;

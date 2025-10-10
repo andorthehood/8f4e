@@ -100,9 +100,8 @@ export default async function compiler(state: State, events: EventDispatcher) {
 
 			(state.project.binaryAssets || []).forEach(binaryAsset => {
 				if (binaryAsset.moduleId && binaryAsset.memoryId) {
-					const memoryAssignedToBinaryAsset = state.compiler.compiledModules
-						.get(binaryAsset.moduleId)
-						?.memoryMap.get(binaryAsset.memoryId);
+					const memoryAssignedToBinaryAsset =
+						state.compiler.compiledModules[binaryAsset.moduleId]?.memoryMap[binaryAsset.memoryId];
 
 					if (!memoryAssignedToBinaryAsset) {
 						return;

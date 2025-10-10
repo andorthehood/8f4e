@@ -6,13 +6,12 @@ export default function findMidiCCModules(
 	compiledModules: CompiledModuleLookup,
 	memoryBuffer: MemoryBuffer
 ): MidiCCModuleAddresses[] {
-	return Array.from(compiledModules)
-		.map(([, compiledModule]) => compiledModule)
+	return Object.values(compiledModules)
 		.filter(({ id }) => id.startsWith('midiccout'))
 		.map(module => {
-			const value = module.memoryMap.get('value');
-			const channel = module.memoryMap.get('channel');
-			const cc = module.memoryMap.get('cc');
+			const value = module.memoryMap['value'];
+			const channel = module.memoryMap['channel'];
+			const cc = module.memoryMap['cc'];
 
 			const valueWordAddress = value
 				? value?.isPointer

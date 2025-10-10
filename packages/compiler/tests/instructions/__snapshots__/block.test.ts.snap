@@ -96,8 +96,8 @@ exports[`block (float) if the generated AST, WAT and memory map match the snapsh
 `;
 
 exports[`block (float) if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "input" => {
+{
+  "input": {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -111,7 +111,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output" => {
+  "output": {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -224,8 +224,8 @@ exports[`block (int) if the generated AST, WAT and memory map match the snapshot
 `;
 
 exports[`block (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "input" => {
+{
+  "input": {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -239,7 +239,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output" => {
+  "output": {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
