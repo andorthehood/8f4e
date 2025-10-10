@@ -118,22 +118,8 @@ exports[`infinite loop protection if the generated AST, WAT and memory map match
 `;
 
 exports[`infinite loop protection if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "counter" => {
-    "byteAddress": 0,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "counter",
-    "isInteger": true,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
-  },
-  "__loopErrorSignaler" => {
+{
+  "__loopErrorSignaler": {
     "byteAddress": 4,
     "default": -1,
     "elementWordSize": 4,
@@ -145,6 +131,20 @@ Map {
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+  "counter": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "counter",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
 }
@@ -310,22 +310,8 @@ exports[`loop if the generated AST, WAT and memory map match the snapshot 2`] = 
 `;
 
 exports[`loop if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "counter" => {
-    "byteAddress": 0,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "counter",
-    "isInteger": true,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 0,
-    "wordAlignedSize": 1,
-  },
-  "__loopErrorSignaler" => {
+{
+  "__loopErrorSignaler": {
     "byteAddress": 4,
     "default": -1,
     "elementWordSize": 4,
@@ -337,6 +323,20 @@ Map {
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+  "counter": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "counter",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
 }

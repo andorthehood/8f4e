@@ -1,4 +1,4 @@
-import { CompiledModule } from '@8f4e/compiler';
+import { CompiledModuleLookup } from '@8f4e/compiler';
 
 import resetMidi from './resetMidi';
 import findMidiNoteOutModules from './findMidiNoteOutModules';
@@ -22,7 +22,7 @@ async function init(
 	memoryRef: WebAssembly.Memory,
 	sampleRate: number,
 	codeBuffer: Uint8Array,
-	compiledModules: Map<string, CompiledModule>
+	compiledModules: CompiledModuleLookup
 ) {
 	try {
 		clearInterval(interval);

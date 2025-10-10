@@ -35,20 +35,20 @@ const buffer: InstructionCompiler = function (line, context) {
 		numberOfElements = constant.value;
 	}
 
-	context.namespace.memory.set(line.arguments[0].value, {
+	context.namespace.memory[line.arguments[0].value] = {
 		numberOfElements,
 		elementWordSize,
 		wordAlignedSize: Math.ceil(numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY,
 		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
 		id: line.arguments[0].value,
 		byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-		default: new Map<number, number>(),
+		default: {},
 		isInteger: line.instruction.startsWith('int') || line.instruction.includes('*'),
 		isPointer: line.instruction.includes('*'),
 		isPointingToInteger: line.instruction.startsWith('int') && line.instruction.includes('*'),
 		isPointingToPointer: line.instruction.includes('**'),
 		type: line.instruction.slice(0, -2) as unknown as MemoryTypes,
-	});
+	};
 
 	return context;
 };

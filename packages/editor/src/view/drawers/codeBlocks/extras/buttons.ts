@@ -5,7 +5,7 @@ import type { CodeBlockGraphicData, State } from '../../../../state/types';
 
 export default function drawSwitches(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	for (const [, { x, y, id: debuggerId, onValue, offValue }] of codeBlock.extras.buttons) {
-		const memory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(debuggerId);
+		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[debuggerId];
 
 		if (!memory || !state.graphicHelper.spriteLookups) {
 			continue;

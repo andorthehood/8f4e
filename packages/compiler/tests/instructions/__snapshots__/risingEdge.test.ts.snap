@@ -145,8 +145,22 @@ exports[`risingEdge if the generated AST, WAT and memory map match the snapshot 
 `;
 
 exports[`risingEdge if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "input" => {
+{
+  "__risingEdgeDetector_previousValue7": {
+    "byteAddress": 8,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "__risingEdgeDetector_previousValue7",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
+  },
+  "input": {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -160,7 +174,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output" => {
+  "output": {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -172,20 +186,6 @@ Map {
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 1,
-    "wordAlignedSize": 1,
-  },
-  "__risingEdgeDetector_previousValue7" => {
-    "byteAddress": 8,
-    "default": 0,
-    "elementWordSize": 4,
-    "id": "__risingEdgeDetector_previousValue7",
-    "isInteger": true,
-    "isPointer": false,
-    "isPointingToInteger": false,
-    "isPointingToPointer": false,
-    "numberOfElements": 1,
-    "type": "int",
-    "wordAlignedAddress": 2,
     "wordAlignedSize": 1,
   },
 }

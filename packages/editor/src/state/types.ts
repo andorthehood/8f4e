@@ -313,6 +313,7 @@ export interface Project {
 	binaryAssets?: BinaryAsset[];
 	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
 	compiledWasm?: string;
+	compiledModules: CompiledModuleLookup;
 	memorySnapshot?: string;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
@@ -324,6 +325,7 @@ export const EMPTY_DEFAULT_PROJECT: Project = {
 	author: '',
 	description: '',
 	codeBlocks: [],
+	compiledModules: {},
 	viewport: {
 		x: 0,
 		y: 0,

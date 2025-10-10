@@ -11,7 +11,7 @@ export default function _switch(state: State, events: EventDispatcher): () => vo
 			return;
 		}
 
-		const memory = state.compiler.compiledModules.get(codeBlock.id)?.memoryMap.get(_switch.id);
+		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[_switch.id];
 
 		if (!memory) {
 			return;
