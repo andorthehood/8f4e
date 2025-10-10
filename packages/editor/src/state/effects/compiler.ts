@@ -1,4 +1,8 @@
-import { decodeBase64ToUint8Array } from '../helpers/base64Decoder';
+import {
+	decodeBase64ToUint8Array,
+	decodeBase64ToInt32Array,
+	decodeBase64ToFloat32Array,
+} from '../helpers/base64Decoder';
 import { EventDispatcher } from '../../events';
 
 import type { CodeBlockGraphicData, State } from '../types';
@@ -26,16 +30,19 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		}
 
 		// Check if project has pre-compiled WASM bytecode for runtime-only execution
-		if (state.project.compiledWasm) {
+		if (
+			state.project.compiledWasm &&
+			state.project.memorySnapshot &&
+			(state.compiler.codeBuffer.length === 0 || !state.callbacks.compileProject)
+		) {
 			console.log('[Compiler] Using pre-compiled WASM bytecode from project');
 
 			try {
-				// Decode base64 WASM back to Uint8Array
-				const base64Data = state.project.compiledWasm;
-				const wasmBytecode = decodeBase64ToUint8Array(base64Data);
-
 				// Set up the compiler state as if compilation succeeded
-				state.compiler.codeBuffer = wasmBytecode;
+				state.compiler.codeBuffer = decodeBase64ToUint8Array(state.project.compiledWasm);
+				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.project.memorySnapshot);
+				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.project.memorySnapshot);
+				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
 				state.compiler.isCompiling = false;
 				state.compiler.buildErrors = [];
 				state.compiler.compilationTime = 0; // No compilation time since we used pre-compiled
@@ -55,7 +62,6 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		}
 
 		// Regular compilation path (when no pre-compiled WASM or if it failed to load)
-		// TODO: make it recursive
 		const modules = flattenProjectForCompiler(state.graphicHelper.baseCodeBlock.codeBlocks);
 
 		state.compiler.isCompiling = true;
