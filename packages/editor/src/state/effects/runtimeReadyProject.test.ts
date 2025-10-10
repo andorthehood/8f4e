@@ -8,13 +8,40 @@ import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 import type { State } from '../types';
 
 // Mock the decodeBase64ToUint8Array function
-jest.mock('../helpers/base64Decoder', () => ({
-	decodeBase64ToUint8Array: jest.fn((base64: string) => {
+jest.mock('../helpers/base64Decoder', () => {
+	const decodeBase64ToUint8Array = jest.fn((base64: string) => {
 		// Simple mock implementation for testing
 		const binaryString = atob(base64);
 		return new Uint8Array(binaryString.split('').map(char => char.charCodeAt(0)));
-	}),
-}));
+	});
+
+	const createTypedArray = <T extends Int32Array | Float32Array>(
+		ctor: new (buffer: ArrayBuffer, byteOffset: number, length: number) => T,
+		errorMessage: string
+	) => {
+		return jest.fn((base64: string) => {
+			const uint8Array = decodeBase64ToUint8Array(base64);
+
+			if (uint8Array.byteLength % 4 !== 0) {
+				throw new Error(errorMessage);
+			}
+
+			return new ctor(uint8Array.buffer, uint8Array.byteOffset, uint8Array.byteLength / 4);
+		});
+	};
+
+	return {
+		decodeBase64ToUint8Array,
+		decodeBase64ToInt32Array: createTypedArray(
+			Int32Array,
+			'Invalid base64 data: byte length must be a multiple of 4 to decode as Int32Array'
+		),
+		decodeBase64ToFloat32Array: createTypedArray(
+			Float32Array,
+			'Invalid base64 data: byte length must be a multiple of 4 to decode as Float32Array'
+		),
+	};
+});
 
 describe('Runtime-ready project functionality', () => {
 	let mockState: State;
@@ -130,6 +157,39 @@ describe('Runtime-ready project functionality', () => {
 			expect(exportedProject.compiledWasm).toBe(expectedBase64);
 		});
 
+		it('should trim memory snapshot to the allocated memory size', async () => {
+			const backingBuffer = new ArrayBuffer(16);
+			const bytes = new Uint8Array(backingBuffer);
+			for (let i = 0; i < bytes.length; i += 1) {
+				bytes[i] = i + 1;
+			}
+
+			mockState.compiler.memoryBuffer = new Int32Array(backingBuffer);
+			mockState.compiler.memoryBufferFloat = new Float32Array(backingBuffer);
+			mockState.compiler.allocatedMemorySize = 8;
+
+			// Set up save functionality
+			save(mockState, mockEvents);
+
+			// Get the saveRuntimeReady callback
+			const onCalls = (mockEvents.on as jest.Mock).mock.calls;
+			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
+			expect(saveRuntimeReadyCall).toBeDefined();
+
+			const saveRuntimeReadyCallback = saveRuntimeReadyCall[1];
+
+			// Trigger the saveRuntimeReady action
+			await saveRuntimeReadyCallback();
+
+			expect(mockExportFile).toHaveBeenCalledTimes(1);
+
+			const [exportedJson] = mockExportFile.mock.calls[0];
+			const exportedProject = JSON.parse(exportedJson);
+			const expectedBase64 = encodeUint8ArrayToBase64(new Uint8Array(backingBuffer, 0, 8));
+
+			expect(exportedProject.memorySnapshot).toBe(expectedBase64);
+		});
+
 		it('should warn when no compiled WASM is available', async () => {
 			// Remove compiled WASM by setting it to an empty array
 			mockState.compiler.codeBuffer = new Uint8Array(0);
@@ -162,8 +222,15 @@ describe('Runtime-ready project functionality', () => {
 			// Set up a project with pre-compiled WASM
 			const mockWasmBytecode = new Uint8Array([10, 20, 30, 40, 50]);
 			const base64Wasm = btoa(String.fromCharCode(...mockWasmBytecode));
+			const memoryFloats = new Float32Array([1.5, -2.25, 0.5, 2.75]);
+			const memoryBufferCopy = memoryFloats.buffer.slice(0);
+			const base64Memory = encodeUint8ArrayToBase64(new Uint8Array(memoryBufferCopy));
+			const expectedIntMemory = new Int32Array(memoryBufferCopy);
+			const expectedFloatMemory = new Float32Array(memoryBufferCopy);
 
 			mockState.project.compiledWasm = base64Wasm;
+			mockState.project.memorySnapshot = base64Memory;
+			mockState.compiler.codeBuffer = new Uint8Array(0);
 
 			const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
 
@@ -196,6 +263,8 @@ describe('Runtime-ready project functionality', () => {
 
 			// Verify compiler state was set correctly
 			expect(mockState.compiler.codeBuffer).toEqual(mockWasmBytecode);
+			expect(mockState.compiler.memoryBuffer).toEqual(expectedIntMemory);
+			expect(mockState.compiler.memoryBufferFloat).toEqual(expectedFloatMemory);
 			expect(mockState.compiler.isCompiling).toBe(false);
 			expect(mockState.compiler.buildErrors).toEqual([]);
 			expect(mockState.compiler.compilationTime).toBe(0);
@@ -206,6 +275,9 @@ describe('Runtime-ready project functionality', () => {
 		it('should fall back to regular compilation if pre-compiled WASM fails', async () => {
 			// Set up a project with invalid pre-compiled WASM
 			mockState.project.compiledWasm = 'invalid-base64!@#$';
+			const memorySnapshotBytes = new Uint8Array(16); // Valid zeroed snapshot
+			mockState.project.memorySnapshot = encodeUint8ArrayToBase64(memorySnapshotBytes);
+			mockState.compiler.codeBuffer = new Uint8Array(0);
 
 			// Mock the compileProject function
 			const mockCompileProject = jest.fn().mockResolvedValue({
