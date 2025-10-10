@@ -165,8 +165,8 @@ exports[`const if the generated AST, WAT and memory map match the snapshot 2`] =
 `;
 
 exports[`const if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "output1" => {
+{
+  "output1": {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -180,7 +180,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "output2" => {
+  "output2": {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -194,7 +194,7 @@ Map {
     "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
-  "output3" => {
+  "output3": {
     "byteAddress": 8,
     "default": 69,
     "elementWordSize": 4,
