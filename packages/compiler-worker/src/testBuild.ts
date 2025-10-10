@@ -2,13 +2,16 @@ import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/com
 
 let previousCompiledModules: CompiledModuleLookup;
 
-function compareMap(arr1: Map<number, number>, arr2: Map<number, number>): boolean {
-	if (arr1.size !== arr2.size) {
+function compareObject(obj1: Record<string, number>, obj2: Record<string, number>): boolean {
+	const keys1 = Object.keys(obj1);
+	const keys2 = Object.keys(obj2);
+
+	if (keys1.length !== keys2.length) {
 		return false;
 	}
 
-	for (const [key, value] of arr1) {
-		if (arr2.get(key) !== value) {
+	for (const key of keys1) {
+		if (obj2[key] !== obj1[key]) {
 			return false;
 		}
 	}
@@ -20,7 +23,7 @@ function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: 
 	const changes: {
 		wordAlignedSize: number;
 		wordAlignedAddress: number;
-		value: number | Map<number, number>;
+		value: number | Record<string, number>;
 		isInteger: boolean;
 	}[] = [];
 
@@ -28,20 +31,20 @@ function getMemoryValueChanges(compiledModules: CompiledModuleLookup, previous: 
 		return [];
 	}
 
-	for (const [id, compiledModule] of compiledModules) {
-		const previousModule = previous.get(id);
+	for (const [id, compiledModule] of Object.entries(compiledModules)) {
+		const previousModule = previous[id];
 		if (!previousModule) {
 			break;
 		}
 
-		for (const [memoryIdentifier, memory] of compiledModule.memoryMap) {
-			const previousMemory = previousModule.memoryMap.get(memoryIdentifier);
+		for (const [memoryIdentifier, memory] of Object.entries(compiledModule.memoryMap)) {
+			const previousMemory = previousModule.memoryMap[memoryIdentifier];
 			if (!previousMemory) {
 				break;
 			}
 
-			if (memory.default instanceof Map && previousMemory.default instanceof Map) {
-				if (!compareMap(memory.default, previousMemory.default)) {
+			if (typeof memory.default === 'object' && typeof previousMemory.default === 'object') {
+				if (!compareObject(memory.default, previousMemory.default)) {
 					changes.push({
 						wordAlignedSize: memory.wordAlignedSize,
 						wordAlignedAddress: memory.wordAlignedAddress,
@@ -73,12 +76,15 @@ function didProgramOrMemoryStructureChange(
 		return true;
 	}
 
-	if (compiledModules.size !== previous.size) {
+	const currentKeys = Object.keys(compiledModules);
+	const previousKeys = Object.keys(previous);
+
+	if (currentKeys.length !== previousKeys.length) {
 		return true;
 	}
 
-	for (const [id, compiledModule] of compiledModules) {
-		const previousModule = previous.get(id);
+	for (const [id, compiledModule] of Object.entries(compiledModules)) {
+		const previousModule = previous[id];
 		if (!previousModule) {
 			return true;
 		}
@@ -125,17 +131,17 @@ export default async function testBuild(
 
 		memoryValueChanges.forEach(change => {
 			if (change.isInteger) {
-				if (change.value instanceof Map) {
-					change.value.forEach((item, index) => {
-						memoryBufferInt[change.wordAlignedAddress + index] = item;
+				if (typeof change.value === 'object') {
+					Object.entries(change.value).forEach(([index, item]) => {
+						memoryBufferInt[change.wordAlignedAddress + parseInt(index, 10)] = item;
 					});
 				} else {
 					memoryBufferInt[change.wordAlignedAddress] = change.value;
 				}
 			} else {
-				if (change.value instanceof Map) {
-					change.value.forEach((item, index) => {
-						memoryBufferFloat[change.wordAlignedAddress + index] = item;
+				if (typeof change.value === 'object') {
+					Object.entries(change.value).forEach(([index, item]) => {
+						memoryBufferFloat[change.wordAlignedAddress + parseInt(index, 10)] = item;
 					});
 				} else {
 					memoryBufferFloat[change.wordAlignedAddress] = change.value;
