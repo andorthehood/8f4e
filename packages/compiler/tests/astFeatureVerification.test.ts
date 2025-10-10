@@ -26,7 +26,7 @@ describe('AST optional output feature manual verification', () => {
 		});
 
 		const firstModule = Object.values(result.compiledModules)[0];
-		expect('ast' in firstModule).toBe(false);
+		expect(firstModule).not.toHaveProperty('ast');
 		expect(firstModule.ast).toBeUndefined();
 	});
 
@@ -40,7 +40,7 @@ describe('AST optional output feature manual verification', () => {
 		});
 
 		const firstModule = Object.values(result.compiledModules)[0];
-		expect('ast' in firstModule).toBe(false);
+		expect(firstModule).not.toHaveProperty('ast');
 		expect(firstModule.ast).toBeUndefined();
 	});
 
@@ -54,7 +54,7 @@ describe('AST optional output feature manual verification', () => {
 		});
 
 		const firstModule = Object.values(result.compiledModules)[0];
-		expect('ast' in firstModule).toBe(true);
+		expect(firstModule).toHaveProperty('ast');
 		expect(firstModule.ast).toBeDefined();
 		expect(Array.isArray(firstModule.ast)).toBe(true);
 		expect(firstModule.ast!.length).toBeGreaterThan(0);
