@@ -10,7 +10,7 @@ export default function findMidCCInputModules(
 		Object.values(compiledModules)
 			.filter(
 				({ id, memoryMap }) =>
-					id.startsWith('midiccin') && 'channel' in memoryMap && 'cc' in memoryMap && 'channel' in memoryMap
+					id.startsWith('midiccin') && 'channel' in memoryMap && 'cc' in memoryMap
 			)
 			.map(module => {
 				const channel = module.memoryMap['channel'];
