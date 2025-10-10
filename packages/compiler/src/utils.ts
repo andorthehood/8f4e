@@ -4,25 +4,26 @@ import { BLOCK_TYPE } from './types';
 import type { BlockStack, CompilationContext, MemoryMap, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name in memoryMap;
+	return Object.hasOwn(memoryMap, name);
 }
 
 export function isMemoryReferenceIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return (
-		(name.startsWith('&') && name.substring(1) in memoryMap) || (name.endsWith('&') && name.slice(0, -1) in memoryMap)
+		(name.startsWith('&') && Object.hasOwn(memoryMap, name.substring(1))) ||
+		(name.endsWith('&') && Object.hasOwn(memoryMap, name.slice(0, -1)))
 	);
 }
 
 export function isMemoryPointerIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('*') && name.substring(1) in memoryMap;
+	return name.startsWith('*') && Object.hasOwn(memoryMap, name.substring(1));
 }
 
 export function isElementCountIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('$') && name.substring(1) in memoryMap;
+	return name.startsWith('$') && Object.hasOwn(memoryMap, name.substring(1));
 }
 
 export function isElementWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('%') && name.substring(1) in memoryMap;
+	return name.startsWith('%') && Object.hasOwn(memoryMap, name.substring(1));
 }
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
