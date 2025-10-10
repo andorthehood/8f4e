@@ -30,11 +30,21 @@ export default function save(state: State, events: EventDispatcher): void {
 			return;
 		}
 
+		const memorySnapshotBytes =
+			state.compiler.memoryBuffer && state.compiler.allocatedMemorySize > 0
+				? new Uint8Array(
+						state.compiler.memoryBuffer.buffer,
+						state.compiler.memoryBuffer.byteOffset,
+						Math.min(state.compiler.allocatedMemorySize, state.compiler.memoryBuffer.byteLength)
+					)
+				: undefined;
+
 		// Create a copy of the project with compiled WASM included
 		const runtimeProject = {
 			...state.project,
 			// Convert WASM bytecode to base64 string using chunked encoding to avoid stack overflow
 			compiledWasm: encodeUint8ArrayToBase64(state.compiler.codeBuffer),
+			memorySnapshot: memorySnapshotBytes ? encodeUint8ArrayToBase64(memorySnapshotBytes) : undefined,
 			compiledModules: Object.fromEntries(state.compiler.compiledModules.entries()),
 		};
 

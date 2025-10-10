@@ -313,6 +313,7 @@ export interface Project {
 	binaryAssets?: BinaryAsset[];
 	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
 	compiledWasm?: string;
+	memorySnapshot?: string;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
 }
@@ -372,7 +373,7 @@ export interface Callbacks {
 	getProject?: (slug: string) => Promise<Project>;
 
 	// Compilation callback
-	compileProject: (
+	compileProject?: (
 		modules: Module[],
 		compilerOptions: CompileOptions,
 		memoryRef: WebAssembly.Memory
