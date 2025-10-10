@@ -98,8 +98,8 @@ export function compileModule(
 	const context: CompilationContext = {
 		namespace: {
 			namespaces,
-			memory: new Map(),
-			locals: new Map(),
+			memory: {},
+			locals: {},
 			consts: { ...builtInConsts },
 			moduleName: undefined,
 		},
@@ -130,7 +130,7 @@ export function compileModule(
 	return {
 		id: context.namespace.moduleName,
 		loopFunction: createFunction(
-			Array.from(context.namespace.locals.values()).map(local => {
+			Object.values(context.namespace.locals).map(local => {
 				return createLocalDeclaration(local.isInteger ? Type.I32 : Type.F32, 1);
 			}),
 			context.loopSegmentByteCode
