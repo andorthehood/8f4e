@@ -17,10 +17,10 @@ const local: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
-	context.namespace.locals.set(line.arguments[1].value, {
+	context.namespace.locals[line.arguments[1].value] = {
 		isInteger: line.arguments[0].value === 'int',
-		index: context.namespace.locals.size,
-	});
+		index: Object.keys(context.namespace.locals).length,
+	};
 
 	return context;
 };
