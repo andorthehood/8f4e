@@ -122,8 +122,8 @@ exports[`div (float) if the generated AST, WAT and memory map match the snapshot
 `;
 
 exports[`div (float) if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "input1" => {
+{
+  "input1": {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -137,7 +137,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "input2" => {
+  "input2": {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -151,7 +151,7 @@ Map {
     "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
-  "output" => {
+  "output": {
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,
@@ -289,8 +289,8 @@ exports[`div (int) if the generated AST, WAT and memory map match the snapshot 2
 `;
 
 exports[`div (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
-Map {
-  "input1" => {
+{
+  "input1": {
     "byteAddress": 0,
     "default": 0,
     "elementWordSize": 4,
@@ -304,7 +304,7 @@ Map {
     "wordAlignedAddress": 0,
     "wordAlignedSize": 1,
   },
-  "input2" => {
+  "input2": {
     "byteAddress": 4,
     "default": 0,
     "elementWordSize": 4,
@@ -318,7 +318,7 @@ Map {
     "wordAlignedAddress": 1,
     "wordAlignedSize": 1,
   },
-  "output" => {
+  "output": {
     "byteAddress": 8,
     "default": 0,
     "elementWordSize": 4,

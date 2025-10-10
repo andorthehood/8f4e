@@ -87,7 +87,7 @@ function collectConstants(ast: AST): Namespace['consts'] {
 }
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
-	compiledModules.forEach(({ ast, memoryMap }) => {
+	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
 		ast!.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
@@ -101,19 +101,19 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 				// Remove &
 				const [targetModuleId, targetMemoryId] = _arguments[1].value.substring(1).split('.');
 
-				const targetModule = compiledModules.get(targetModuleId);
+				const targetModule = compiledModules[targetModuleId];
 
 				if (!targetModule) {
 					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
 				}
 
-				const targetMemory = targetModule.memoryMap.get(targetMemoryId);
+				const targetMemory = targetModule.memoryMap[targetMemoryId];
 
 				if (!targetMemory) {
 					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
 				}
 
-				const memory = memoryMap.get(_arguments[0].value);
+				const memory = memoryMap[_arguments[0].value];
 
 				if (memory) {
 					memory.default = targetMemory.byteAddress;
@@ -133,7 +133,7 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 		...options.environmentExtensions.constants,
 	};
 
-	const namespaces: Namespaces = new Map(
+	const namespaces: Namespaces = Object.fromEntries(
 		modules.map(ast => {
 			const moduleName = getModuleName(ast);
 			return [moduleName, { consts: collectConstants(ast) }];
@@ -182,13 +182,13 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 		let pointer = module.byteAddress;
 		const instructions: number[] = [];
 
-		Array.from(module.memoryMap.values()).forEach(memory => {
-			if (memory.numberOfElements > 1 && memory.default instanceof Map) {
-				memory.default.forEach((value, relativeWordAddress) => {
+		Object.values(module.memoryMap).forEach(memory => {
+			if (memory.numberOfElements > 1 && typeof memory.default === 'object') {
+				Object.entries(memory.default).forEach(([relativeWordAddress, value]) => {
 					instructions.push(
 						...(memory.isInteger
-							? i32store(pointer + (relativeWordAddress + 1) * GLOBAL_ALIGNMENT_BOUNDARY, value)
-							: f32store(pointer + (relativeWordAddress + 1) * GLOBAL_ALIGNMENT_BOUNDARY, value))
+							? i32store(pointer + (parseInt(relativeWordAddress, 10) + 1) * GLOBAL_ALIGNMENT_BOUNDARY, value)
+							: f32store(pointer + (parseInt(relativeWordAddress, 10) + 1) * GLOBAL_ALIGNMENT_BOUNDARY, value))
 					);
 				});
 				pointer += memory.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
@@ -211,11 +211,11 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 }
 
 function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
-	const strippedModules = new Map<string, CompiledModule>();
-	for (const [id, module] of compiledModules) {
+	const strippedModules: CompiledModuleLookup = {};
+	for (const [id, module] of Object.entries(compiledModules)) {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { ast, ...moduleWithoutAST } = module;
-		strippedModules.set(id, moduleWithoutAST as CompiledModule);
+		strippedModules[id] = moduleWithoutAST as CompiledModule;
 	}
 	return strippedModules;
 }
@@ -235,7 +235,7 @@ export default function compile(
 		...options,
 		startingMemoryWordAddress: 1,
 	});
-	const compiledModulesMap = new Map(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
+	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
 	const loopFunctions = compiledModules.map(({ loopFunction }) => loopFunction);
 	// const initFunctionBodies = compiledModules.map(({ initFunctionBody }) => initFunctionBody);

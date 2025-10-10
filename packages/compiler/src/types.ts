@@ -18,7 +18,7 @@ export interface DataStructure {
 	byteAddress: number;
 	wordAlignedSize: number;
 	wordAlignedAddress: number;
-	default: number | Map<number, number>;
+	default: number | Record<string, number>;
 	// lineNumber: number;
 	isInteger: boolean;
 	id: string;
@@ -27,7 +27,7 @@ export interface DataStructure {
 	isPointingToPointer: boolean;
 }
 
-export type MemoryMap = Map<string, DataStructure>;
+export type MemoryMap = Record<string, DataStructure>;
 
 export interface CompiledModule {
 	index: number;
@@ -41,7 +41,7 @@ export interface CompiledModule {
 	ast?: AST;
 }
 
-export type CompiledModuleLookup = Map<string, CompiledModule>;
+export type CompiledModuleLookup = Record<string, CompiledModule>;
 
 export type MemoryBuffer = Int32Array;
 
@@ -87,14 +87,14 @@ export type Const = { value: number; isInteger: boolean };
 
 export type Consts = Record<string, Const>;
 export interface Namespace {
-	locals: Map<string, { isInteger: boolean; index: number }>;
+	locals: Record<string, { isInteger: boolean; index: number }>;
 	memory: MemoryMap;
 	consts: Consts;
 	moduleName: string | undefined;
 	namespaces: Namespaces;
 }
 
-export type Namespaces = Map<string, { consts: Consts }>;
+export type Namespaces = Record<string, { consts: Consts }>;
 export interface CompilationContext {
 	namespace: Namespace;
 	stack: Stack;

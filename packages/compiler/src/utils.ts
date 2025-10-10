@@ -4,30 +4,30 @@ import { BLOCK_TYPE } from './types';
 import type { BlockStack, CompilationContext, MemoryMap, StackItem } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return memoryMap.has(name);
+	return Object.hasOwn(memoryMap, name);
 }
 
 export function isMemoryReferenceIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return (
-		(name.startsWith('&') && memoryMap.has(name.substring(1))) ||
-		(name.endsWith('&') && memoryMap.has(name.slice(0, -1)))
+		(name.startsWith('&') && Object.hasOwn(memoryMap, name.substring(1))) ||
+		(name.endsWith('&') && Object.hasOwn(memoryMap, name.slice(0, -1)))
 	);
 }
 
 export function isMemoryPointerIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('*') && memoryMap.has(name.substring(1));
+	return name.startsWith('*') && Object.hasOwn(memoryMap, name.substring(1));
 }
 
 export function isElementCountIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('$') && memoryMap.has(name.substring(1));
+	return name.startsWith('$') && Object.hasOwn(memoryMap, name.substring(1));
 }
 
 export function isElementWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('%') && memoryMap.has(name.substring(1));
+	return name.startsWith('%') && Object.hasOwn(memoryMap, name.substring(1));
 }
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
-	return memoryMap.get(id);
+	return memoryMap[id];
 }
 
 export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): number {
@@ -69,7 +69,7 @@ export function isInstructionIsInsideBlock(blockStack: BlockStack, blockType: BL
 }
 
 export function calculateWordAlignedSizeOfMemory(memory: MemoryMap): number {
-	return Array.from(memory.values()).reduce((accumulator, current) => {
+	return Object.values(memory).reduce((accumulator, current) => {
 		return accumulator + current.wordAlignedSize;
 	}, 0);
 }

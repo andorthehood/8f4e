@@ -7,16 +7,15 @@ export default function findMidCCInputModules(
 	memoryBuffer: MemoryBuffer
 ): Map<string, MidiCCModuleAddresses> {
 	return new Map(
-		Array.from(compiledModules)
-			.map(([, compiledModule]) => compiledModule)
+		Object.values(compiledModules)
 			.filter(
 				({ id, memoryMap }) =>
-					id.startsWith('midiccin') && memoryMap.has('channel') && memoryMap.has('cc') && memoryMap.has('channel')
+					id.startsWith('midiccin') && Object.hasOwn(memoryMap, 'channel') && Object.hasOwn(memoryMap, 'cc')
 			)
 			.map(module => {
-				const channel = module.memoryMap.get('channel');
-				const cc = module.memoryMap.get('cc');
-				const value = module.memoryMap.get('value');
+				const channel = module.memoryMap['channel'];
+				const cc = module.memoryMap['cc'];
+				const value = module.memoryMap['value'];
 
 				return [
 					memoryBuffer[channel?.wordAlignedAddress || 0] + '' + memoryBuffer[cc?.wordAlignedAddress || 0],

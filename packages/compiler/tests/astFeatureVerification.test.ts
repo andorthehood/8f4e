@@ -25,8 +25,8 @@ describe('AST optional output feature manual verification', () => {
 			initialMemorySize: 1,
 		});
 
-		const firstModule = Array.from(result.compiledModules.values())[0];
-		expect('ast' in firstModule).toBe(false);
+		const firstModule = Object.values(result.compiledModules)[0];
+		expect(firstModule).not.toHaveProperty('ast');
 		expect(firstModule.ast).toBeUndefined();
 	});
 
@@ -39,8 +39,8 @@ describe('AST optional output feature manual verification', () => {
 			includeAST: false,
 		});
 
-		const firstModule = Array.from(result.compiledModules.values())[0];
-		expect('ast' in firstModule).toBe(false);
+		const firstModule = Object.values(result.compiledModules)[0];
+		expect(firstModule).not.toHaveProperty('ast');
 		expect(firstModule.ast).toBeUndefined();
 	});
 
@@ -53,8 +53,8 @@ describe('AST optional output feature manual verification', () => {
 			includeAST: true,
 		});
 
-		const firstModule = Array.from(result.compiledModules.values())[0];
-		expect('ast' in firstModule).toBe(true);
+		const firstModule = Object.values(result.compiledModules)[0];
+		expect(firstModule).toHaveProperty('ast');
 		expect(firstModule.ast).toBeDefined();
 		expect(Array.isArray(firstModule.ast)).toBe(true);
 		expect(firstModule.ast!.length).toBeGreaterThan(0);
