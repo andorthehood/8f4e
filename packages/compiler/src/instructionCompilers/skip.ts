@@ -35,7 +35,7 @@ const skip: InstructionCompiler = function (line, context) {
 	const wordAlignedAddress = calculateWordAlignedSizeOfMemory(memory);
 	const byteAddress = context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY;
 
-	memory.set('__sleeper' + wordAlignedAddress, {
+	memory['__sleeper' + wordAlignedAddress] = {
 		numberOfElements: 1,
 		wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
 		wordAlignedSize: 1,
@@ -48,7 +48,7 @@ const skip: InstructionCompiler = function (line, context) {
 		isPointingToInteger: false,
 		isPointingToPointer: false,
 		isInteger: true,
-	});
+	};
 
 	context.blockStack.push({
 		expectedResultIsInteger: false,

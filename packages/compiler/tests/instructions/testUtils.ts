@@ -26,13 +26,13 @@ const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
 export function getInitialMemory(module: CompiledModule): number[] {
-	return Array.from(module.memoryMap.values()).reduce((accumulator, current) => {
-		if (current.default instanceof Map) {
+	return Object.values(module.memoryMap).reduce((accumulator, current) => {
+		if (typeof current.default === 'object') {
 			const defaultBuffer = new Array(current.wordAlignedSize);
 			defaultBuffer.fill(0);
 
-			current.default.forEach((value, relativeWordAddress) => {
-				defaultBuffer[value] = relativeWordAddress;
+			Object.entries(current.default).forEach(([relativeWordAddress, value]) => {
+				defaultBuffer[value] = parseInt(relativeWordAddress, 10);
 			});
 
 			accumulator = accumulator.concat(defaultBuffer);
@@ -112,7 +112,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		}) as CallableFunction;
 
 	const memoryGet = (id: string): number | undefined => {
-		const memoryItem = module.memoryMap.get(id);
+		const memoryItem = module.memoryMap[id];
 
 		if (!memoryItem) {
 			return;
@@ -126,7 +126,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	};
 
 	const memorySet = (id: string, value: number | number[]): void => {
-		const memoryItem = module.memoryMap.get(id);
+		const memoryItem = module.memoryMap[id];
 		if (!memoryItem) {
 			return;
 		}
