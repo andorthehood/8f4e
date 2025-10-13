@@ -1,4 +1,4 @@
-import { SpriteCoordinates } from '@8f4e/glugglug';
+import { SpriteCoordinates } from 'glugglug';
 
 import { Command, DrawingCommand, ColorScheme } from './types';
 
