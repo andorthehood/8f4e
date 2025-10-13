@@ -1,4 +1,4 @@
-import { Engine } from '@8f4e/2d-engine';
+import { Engine } from '@8f4e/glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
 import type { State } from '../../state/types';

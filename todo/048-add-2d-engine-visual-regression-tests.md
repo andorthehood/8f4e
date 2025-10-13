@@ -60,10 +60,10 @@ Implement visual regression testing for the 2D engine using:
 
 ## Affected Components
 
-- `packages/2d-engine/tests/` - Visual test directory and fixtures
-- `packages/2d-engine/package.json` - New testing dependencies
-- `packages/2d-engine/jest.config.js` - Visual testing configuration
-- `packages/2d-engine/test-fixtures/` - Test HTML pages and assets
+- `packages/glugglug/tests/` - Visual test directory and fixtures
+- `packages/glugglug/package.json` - New testing dependencies
+- `packages/glugglug/jest.config.js` - Visual testing configuration
+- `packages/glugglug/test-fixtures/` - Test HTML pages and assets
 - CI/CD pipeline configuration
 
 ## Risks & Considerations
@@ -79,8 +79,8 @@ Implement visual regression testing for the 2D engine using:
 
 ## Related Items
 
-- **Blocks**: `todo/047-add-2d-engine-buffer-utilities-tests.md` - Should complete unit tests first
-- **Depends on**: Basic Jest setup for 2d-engine package
+- **Blocks**: `todo/047-add-glugglug-buffer-utilities-tests.md` - Should complete unit tests first
+- **Depends on**: Basic Jest setup for glugglug package
 - **Related**: 
   - `todo/032-editor-test-coverage-plan.md` - General testing strategy
   - `todo/006-render-to-texture-capability.md` - Rendering features

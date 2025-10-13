@@ -1,4 +1,4 @@
-import { SpriteCoordinates } from '@8f4e/2d-engine';
+import { SpriteCoordinates } from '@8f4e/glugglug';
 
 export enum Command {
 	FILL_COLOR,
