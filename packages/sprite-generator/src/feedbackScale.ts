@@ -1,4 +1,4 @@
-import { SpriteCoordinates } from '@8f4e/2d-engine';
+import { SpriteCoordinates } from '@8f4e/glugglug';
 
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';

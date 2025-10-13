@@ -1,5 +1,5 @@
 import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
-import type { SpriteLookup, PostProcessEffect } from '@8f4e/2d-engine';
+import type { SpriteLookup, PostProcessEffect } from '@8f4e/glugglug';
 import type { FeatureFlags, FeatureFlagsConfig } from '../config/featureFlags';
 import type { RuntimeFactory, RuntimeType } from './effects/runtime';
 import type { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure, Module } from '@8f4e/compiler';

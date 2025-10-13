@@ -87,6 +87,6 @@ Incrementally enable strict TypeScript settings by fixing type issues file by fi
 ## Notes
 
 - Work was deferred during Vite migration preparation to focus on essential infrastructure
-- Core packages (compiler, 2d-engine, etc.) already have excellent type safety
+- Core packages (compiler, glugglug, etc.) already have excellent type safety
 - This improvement will significantly enhance developer experience and catch runtime errors
 - Current @ts-ignore comment in `src/state/index.ts` line 69 documents the type mismatch issue 
