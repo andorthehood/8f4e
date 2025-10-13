@@ -283,8 +283,8 @@ console.log(`${stats.count}/${stats.maxItems} caches, ${stats.memoryEstimate} by
 
 ## Affected Components
 
-- `packages/2d-engine/src/index.ts` - Main Engine class modifications
-- `packages/2d-engine/src/utils/createTexture.ts` - May need updates for framebuffer textures
+- `packages/glugglug/src/index.ts` - Main Engine class modifications
+- `packages/glugglug/src/utils/createTexture.ts` - May need updates for framebuffer textures
 - All drawing methods (`drawSprite`, `drawLine`, `drawRectangle`, etc.) - Cache state checking
 - Engine constructor - New cache-related properties initialization
 
