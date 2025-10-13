@@ -81,7 +81,7 @@ Adopt a consistent structure placing unit tests under `__tests__` folders aligne
 
 - `packages/editor` – move unit tests to `src/**/__tests__`.
 - `packages/compiler` – same as above.
-- `packages/2d-engine` – same as above.
+- `packages/glugglug` – same as above.
 - `packages/sprite-generator` – same as above.
 - `packages/runtime-*` and `packages/audio-worklet-runtime` – same as above where unit tests exist.
 - Root app `src/` – if any unit tests exist, move to `src/**/__tests__`.

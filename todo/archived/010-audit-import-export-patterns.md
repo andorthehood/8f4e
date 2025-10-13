@@ -25,7 +25,7 @@ export * from './types';  // This can cause issues with Vite
 // packages/editor/src/index.ts - good pattern
 export default async function init(...) { ... }
 
-// packages/2d-engine/src/index.ts - good pattern
+// packages/glugglug/src/index.ts - good pattern
 export type SpriteCoordinates = { ... };
 export class Engine { ... }
 ```
