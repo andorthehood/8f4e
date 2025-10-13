@@ -61,7 +61,7 @@ The project uses several special file types and technologies that require specia
 ```
 
 **Files affected:**
-- `packages/2d-engine/src/shaders/*.ts` - GLSL shaders
+- `packages/glugglug/src/shaders/*.ts` - GLSL shaders
 - `packages/audio-worklet-runtime/src/*.ts` - AudioWorklet code
 - `packages/web-worker-*/*/src/*.ts` - WebAssembly usage
 - `packages/compiler/src/wasmUtils/*.ts` - WASM compilation tools
@@ -122,7 +122,7 @@ Research Vite-compatible solutions for each special file type and document the f
 
 ## Affected Components
 
-- **GLSL Shaders**: `packages/2d-engine/src/shaders/*.ts`
+- **GLSL Shaders**: `packages/glugglug/src/shaders/*.ts`
 - **AudioWorklet**: `packages/audio-worklet-runtime/src/*.ts`
 - **WebAssembly**: All packages using `WebAssembly.instantiate()`
 - **Dependencies**: Root and package-level package.json files
