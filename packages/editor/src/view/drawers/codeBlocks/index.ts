@@ -1,4 +1,4 @@
-import { Engine } from '@8f4e/glugglug';
+import { Engine } from 'glugglug';
 
 import drawConnectors from './extras/connectors';
 import drawPlotters from './extras/plotters';
