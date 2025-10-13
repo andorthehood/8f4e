@@ -20,8 +20,8 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 
 		const audioOutputBuffers = (runtime.audioOutputBuffers || [])
 			.map(({ moduleId, memoryId, output, channel }) => {
-				const audioModule = state.compiler.compiledModules.get(moduleId);
-				const audioBufferWordAddress = audioModule?.memoryMap.get(memoryId)?.wordAlignedAddress;
+				const audioModule = state.compiler.compiledModules[moduleId];
+				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
 
 				return {
 					audioBufferWordAddress,
@@ -33,8 +33,8 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 
 		const audioInputBuffers = (runtime.audioInputBuffers || [])
 			.map(({ moduleId, memoryId, input, channel }) => {
-				const audioModule = state.compiler.compiledModules.get(moduleId);
-				const audioBufferWordAddress = audioModule?.memoryMap.get(memoryId)?.wordAlignedAddress;
+				const audioModule = state.compiler.compiledModules[moduleId];
+				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
 
 				return {
 					audioBufferWordAddress,
