@@ -31,7 +31,7 @@ Alternative approaches considered:
 ## Implementation Plan
 
 ### Step 1: Baseline snapshot and tests
-- Create a working branch; confirm current HEAD (segment-based) passes typecheck and tests for `@8f4e/glugglug`.
+- Create a working branch; confirm current HEAD (segment-based) passes typecheck and tests for `glugglug`.
 - Add/extend unit tests covering: cached reuse path, creation path, interleaving spritesheet and cached draws, and post-process interaction.
 
 ### Step 2: Bind off-screen FBO for entire frame
@@ -62,7 +62,7 @@ Alternative approaches considered:
 - [ ] Cached quads render with correct textures (never black) and correct ordering without segment tracking.
 - [ ] Post-processing applies to both spritesheet and cached content consistently.
 - [ ] No frame-to-frame ordering regressions when interleaving cached and non-cached draws.
-- [ ] Typecheck and tests pass for `@8f4e/glugglug` and the editor.
+- [ ] Typecheck and tests pass for `glugglug` and the editor.
 - [ ] Examples render identically (or with intended improvements) compared to baseline.
 
 ## Affected Components
