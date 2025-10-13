@@ -1,4 +1,4 @@
-import { Engine } from '@8f4e/glugglug';
+import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
 import type { CodeBlockGraphicData, State } from '../../../../state/types';
