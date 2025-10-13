@@ -1,5 +1,5 @@
 import generateSprite from '@8f4e/sprite-generator';
-import { Engine, PostProcessEffect } from '@8f4e/glugglug';
+import { Engine, PostProcessEffect } from 'glugglug';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import drawBackground from './drawers/drawBackground';

@@ -1,4 +1,4 @@
-import { Engine } from '@8f4e/glugglug';
+import { Engine } from 'glugglug';
 
 const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
