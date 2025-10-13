@@ -26,7 +26,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			// Resolve workspace dependencies to their built versions
-			'@8f4e/2d-engine': resolve(__dirname, '../2d-engine/dist'),
+			'@8f4e/glugglug': resolve(__dirname, '../glugglug/dist'),
 			'@8f4e/compiler': resolve(__dirname, '../compiler/dist'),
 			'@8f4e/sprite-generator': resolve(__dirname, '../sprite-generator/dist'),
 		},
