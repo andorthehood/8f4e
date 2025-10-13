@@ -29,7 +29,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@8f4e/editor': resolve(__dirname, 'packages/editor/dist'),
-      '@8f4e/glugglug': resolve(__dirname, 'packages/glugglug/dist'),
+      'glugglug': resolve(__dirname, 'packages/glugglug/dist'),
       '@8f4e/compiler': resolve(__dirname, 'packages/compiler/dist'),
       '@8f4e/sprite-generator': resolve(__dirname, 'packages/sprite-generator/dist'),
       '@8f4e/runtime-audio-worklet': resolve(__dirname, 'packages/runtime-audio-worklet/dist'),

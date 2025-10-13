@@ -66,7 +66,7 @@ npx nx run @8f4e/compiler:dev
 All packages in `packages/` are automatically detected as Nx projects with their original names:
 
 - `@8f4e/compiler`
-- `@8f4e/glugglug`
+- `glugglug`
 - `@8f4e/sprite-generator`
 - `@8f4e/editor`
 - `@8f4e/runtime-audio-worklet`
