@@ -68,11 +68,11 @@ Add a configuration option to the base `Engine` constructor to enable/disable ca
 
 ## Affected Components
 
-- `packages/2d-engine/src/engine.ts` - Add caching option to constructor and conditional renderer selection
-- `packages/2d-engine/src/CachedEngine.ts` - Mark as deprecated, delegate to unified Engine
-- `packages/2d-engine/src/types.ts` - Add engine options type definitions
-- `packages/2d-engine/README.md` - Update documentation with new unified API
-- `packages/2d-engine/examples/` - Update examples to use unified approach
+- `packages/glugglug/src/engine.ts` - Add caching option to constructor and conditional renderer selection
+- `packages/glugglug/src/CachedEngine.ts` - Mark as deprecated, delegate to unified Engine
+- `packages/glugglug/src/types.ts` - Add engine options type definitions
+- `packages/glugglug/README.md` - Update documentation with new unified API
+- `packages/glugglug/examples/` - Update examples to use unified approach
 - `packages/editor/src/view/index.ts` - Update to use new unified Engine API
 
 ## Risks & Considerations
@@ -91,8 +91,8 @@ Add a configuration option to the base `Engine` constructor to enable/disable ca
 
 ## References
 
-- Current Engine constructor: `packages/2d-engine/src/engine.ts` (lines 20-30)
-- Current CachedEngine constructor: `packages/2d-engine/src/CachedEngine.ts` (lines 12-18)
+- Current Engine constructor: `packages/glugglug/src/engine.ts` (lines 20-30)
+- Current CachedEngine constructor: `packages/glugglug/src/CachedEngine.ts` (lines 12-18)
 - Engine usage in editor: `packages/editor/src/view/index.ts` (line 27)
 
 ## Notes

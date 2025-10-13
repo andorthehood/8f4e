@@ -1,0 +1,3 @@
+[submodule "packages/glugglug"]
+	path = packages/glugglug
+	url = https://github.com/andorthehood/glugglug.git

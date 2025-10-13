@@ -110,7 +110,7 @@ Implement comprehensive unit tests for all sprite generator functions using Jest
 - **Blocks**: None
 - **Depends on**: Jest configuration for sprite-generator package
 - **Related**: 
-  - `todo/047-add-2d-engine-buffer-utilities-tests.md` - Related 2D engine testing
+  - `todo/047-add-glugglug-buffer-utilities-tests.md` - Related 2D engine testing
   - `todo/032-editor-test-coverage-plan.md` - General testing strategy
   - `todo/033-editor-state-effects-testing.md` - Testing patterns
 
