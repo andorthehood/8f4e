@@ -84,7 +84,7 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			startingPosition?.x !== state.graphicHelper.draggedCodeBlock.x ||
 			startingPosition?.y !== state.graphicHelper.draggedCodeBlock.y
 		) {
-			events.dispatch('saveState');
+			events.dispatch('saveProject');
 		}
 
 		state.graphicHelper.draggedCodeBlock = undefined;
