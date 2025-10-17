@@ -39,7 +39,8 @@ function convertGraphicDataToProjectStructure(
 }
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
-	state.editorSettings = defaultState.editorSettings;
+	// Create a fresh copy of editorSettings to avoid shared references
+	state.editorSettings = { ...defaultState.editorSettings };
 	state.colorSchemes = {}; // Initialize with empty object
 
 	// Load color schemes first
@@ -60,11 +61,26 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state.featureFlags.persistentStorage && loadEditorSettingsFromStorage
 			? loadEditorSettingsFromStorage()
 					.then(editorSettings => {
-						state.editorSettings = editorSettings || defaultState.editorSettings;
+						if (editorSettings) {
+							const previousColorScheme = state.editorSettings.colorScheme;
+							const previousFont = state.editorSettings.font;
+							console.log('editorSettings', editorSettings);
+							state.editorSettings = editorSettings;
+
+							// Dispatch events to reload the view if settings changed
+							if (editorSettings.colorScheme !== previousColorScheme) {
+								events.dispatch('setColorScheme', { colorScheme: editorSettings.colorScheme });
+							}
+							if (editorSettings.font !== previousFont) {
+								events.dispatch('setFont', { font: editorSettings.font });
+							}
+						} else {
+							state.editorSettings = { ...defaultState.editorSettings };
+						}
 					})
 					.catch(error => {
 						console.warn('Failed to load editor settings from storage:', error);
-						state.editorSettings = defaultState.editorSettings;
+						state.editorSettings = { ...defaultState.editorSettings };
 					})
 			: Promise.resolve()
 	);
@@ -138,7 +154,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		});
 		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
 		events.dispatch('init');
-		events.dispatch('saveState');
+		events.dispatch('saveProject');
 		console.log('projectLoaded');
 		events.dispatch('projectLoaded');
 		events.dispatch('loadPostProcessEffects', state.project.postProcessEffects);
@@ -146,12 +162,16 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 	void projectPromise;
 
-	function onSaveState() {
-		if (
-			!state.featureFlags.persistentStorage ||
-			!state.callbacks.saveProjectToStorage ||
-			!state.callbacks.saveEditorSettingsToStorage
-		) {
+	function onSaveEditorSettings() {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettingsToStorage) {
+			return;
+		}
+
+		state.callbacks.saveEditorSettingsToStorage(state.editorSettings);
+	}
+
+	function onSaveProject() {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.saveProjectToStorage) {
 			return;
 		}
 
@@ -168,10 +188,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		);
 
 		// Use callbacks instead of localStorage
-		Promise.all([
-			state.callbacks.saveProjectToStorage!(state.project),
-			state.callbacks.saveEditorSettingsToStorage!(state.editorSettings),
-		]).catch(error => {
+		Promise.all([state.callbacks.saveProjectToStorage!(state.project)]).catch(error => {
 			console.error('Failed to save to storage:', error);
 		});
 	}
@@ -196,7 +213,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 				.loadProjectFromFile(file)
 				.then(project => {
 					loadProject({ project });
-					events.dispatch('saveState');
+					events.dispatch('saveProject');
 				})
 				.catch(error => {
 					console.error('Failed to load project from file:', error);
@@ -206,7 +223,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		input.click();
 	}
 
-	events.on('saveState', onSaveState);
+	events.on('saveProject', onSaveProject);
+	events.on('saveEditorSettings', onSaveEditorSettings);
 	events.on('open', onOpen);
 	events.on('loadProject', loadProject);
 }
