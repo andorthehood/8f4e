@@ -18,7 +18,7 @@ When users change the color scheme in the editor, the selection is not properly 
 
 Investigate and fix the color scheme persistence mechanism by ensuring:
 
-1. **Verification of Save Process**: Confirm that `setColorScheme` events properly trigger the `saveState` event and that editor settings are being saved to localStorage
+1. **Verification of Save Process**: Confirm that `setColorScheme` events properly trigger the `saveProject` event and that editor settings are being saved to localStorage
 2. **Verification of Load Process**: Ensure that saved editor settings are properly loaded during initialization and applied to the state
 3. **Load Order Fix**: Check if there's a race condition between loading color schemes and loading editor settings that causes the default to override the saved setting
 4. **State Initialization**: Verify that the editor settings are properly initialized with saved values rather than defaults
@@ -26,7 +26,7 @@ Investigate and fix the color scheme persistence mechanism by ensuring:
 ## Implementation Plan
 
 ### Step 1: Debug Save Process
-- Add console logging to verify `setColorScheme` events trigger `saveState`
+- Add console logging to verify `setColorScheme` events trigger `saveProject`
 - Verify that `saveEditorSettingsToStorage` is called with correct data
 - Check localStorage to confirm settings are actually being written
 
