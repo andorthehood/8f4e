@@ -6,7 +6,7 @@ export default async function sampleRate(state: State, events: EventDispatcher):
 	function onSetSampleRate({ sampleRate }) {
 		state.project.runtimeSettings[state.project.selectedRuntime].sampleRate = sampleRate;
 		events.dispatch('initRuntime');
-		events.dispatch('saveState');
+		events.dispatch('saveProject');
 	}
 
 	events.on('setSampleRate', onSetSampleRate);
