@@ -77,4 +77,8 @@ Detailed description of the proposed solution:
 
 ## Archive Instructions
 
-When this TODO is completed, move it to the `todo/archived/` folder to keep the main todo directory clean and organized. 
+When this TODO is completed:
+1. Move it to the `todo/archived/` folder to keep the main todo directory clean and organized
+2. Update the `todo/_index.md` file to:
+   - Move the TODO from the "Active TODOs" section to the "Completed TODOs" section
+   - Add the completion date to the TODO entry (use `date +%Y-%m-%d` command if current date is not provided in the context) 
