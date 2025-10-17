@@ -62,7 +62,17 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 			? loadEditorSettingsFromStorage()
 					.then(editorSettings => {
 						if (editorSettings) {
+							const previousColorScheme = state.editorSettings.colorScheme;
+							const previousFont = state.editorSettings.font;
 							state.editorSettings = editorSettings;
+
+							// Dispatch events to reload the view if settings changed
+							if (editorSettings.colorScheme !== previousColorScheme) {
+								events.dispatch('setColorScheme', { colorScheme: editorSettings.colorScheme });
+							}
+							if (editorSettings.font !== previousFont) {
+								events.dispatch('setFont', { font: editorSettings.font });
+							}
 						} else {
 							state.editorSettings = { ...defaultState.editorSettings };
 						}
