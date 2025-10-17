@@ -13,6 +13,7 @@ export default async function init(
 	resize: (width: number, height: number) => void;
 	reloadSpriteSheet: () => void;
 	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
+	clearCache: () => void;
 }> {
 	const {
 		canvas: sprite,
@@ -76,6 +77,9 @@ export default async function init(
 			for (const effect of projectEffects) {
 				engine.addPostProcessEffect(effect);
 			}
+		},
+		clearCache: () => {
+			engine.clearAllCache();
 		},
 	};
 }
