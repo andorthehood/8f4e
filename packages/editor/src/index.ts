@@ -19,11 +19,13 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 	const view = await initView(state, canvas);
 
 	events.on('setColorScheme', () => {
+		view.clearCache();
 		view.reloadSpriteSheet();
 		events.dispatch('spriteSheetRerendered');
 	});
 
 	events.on('setFont', () => {
+		view.clearCache();
 		view.reloadSpriteSheet();
 		events.dispatch('spriteSheetRerendered');
 	});
