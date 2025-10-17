@@ -25,6 +25,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 	});
 
 	events.on('setFont', () => {
+		view.clearCache();
 		view.reloadSpriteSheet();
 		events.dispatch('spriteSheetRerendered');
 	});
