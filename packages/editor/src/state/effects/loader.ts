@@ -39,7 +39,8 @@ function convertGraphicDataToProjectStructure(
 }
 
 export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
-	state.editorSettings = defaultState.editorSettings;
+	// Create a fresh copy of editorSettings to avoid shared references
+	state.editorSettings = { ...defaultState.editorSettings };
 	state.colorSchemes = {}; // Initialize with empty object
 
 	// Load color schemes first
@@ -60,11 +61,17 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state.featureFlags.persistentStorage && loadEditorSettingsFromStorage
 			? loadEditorSettingsFromStorage()
 					.then(editorSettings => {
-						state.editorSettings = editorSettings || defaultState.editorSettings;
+						if (editorSettings) {
+							state.editorSettings = editorSettings;
+							console.log('[Loader] Loaded editor settings from storage:', editorSettings);
+						} else {
+							state.editorSettings = { ...defaultState.editorSettings };
+							console.log('[Loader] No saved settings, using defaults:', state.editorSettings);
+						}
 					})
 					.catch(error => {
 						console.warn('Failed to load editor settings from storage:', error);
-						state.editorSettings = defaultState.editorSettings;
+						state.editorSettings = { ...defaultState.editorSettings };
 					})
 			: Promise.resolve()
 	);
@@ -166,6 +173,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state.project.viewport.y = Math.round(
 			state.graphicHelper.activeViewport.viewport.y / state.graphicHelper.globalViewport.hGrid
 		);
+
+		console.log('[Loader] Saving editor settings to storage:', state.editorSettings);
 
 		// Use callbacks instead of localStorage
 		Promise.all([
