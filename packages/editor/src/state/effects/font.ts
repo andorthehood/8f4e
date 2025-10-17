@@ -5,7 +5,7 @@ import type { State } from '../types';
 export default function font(state: State, events: EventDispatcher): () => void {
 	function onSetFont({ font }) {
 		state.editorSettings.font = font;
-		events.dispatch('saveState');
+		events.dispatch('saveEditorSettings');
 	}
 
 	events.on('setFont', onSetFont);
