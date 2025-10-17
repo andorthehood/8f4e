@@ -208,7 +208,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 
 				codeBlock.lastUpdated = Date.now();
 
-				events.dispatch('saveState');
+				events.dispatch('saveProject');
 				events.dispatch('codeChange');
 				break;
 			case 'Enter':
@@ -224,7 +224,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 				codeBlock.code = ent.code;
 				codeBlock.lastUpdated = Date.now();
 
-				events.dispatch('saveState');
+				events.dispatch('saveProject');
 				events.dispatch('codeChange');
 				break;
 			default:
@@ -241,7 +241,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 					codeBlock.code = bp.code;
 					codeBlock.lastUpdated = Date.now();
 
-					events.dispatch('saveState');
+					events.dispatch('saveProject');
 					events.dispatch('codeChange');
 				}
 		}
