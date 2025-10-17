@@ -21,7 +21,7 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 				state.project.binaryAssets = [];
 			}
 			state.project.binaryAssets.push(result);
-			events.dispatch('saveState');
+			events.dispatch('saveProject');
 		} catch (error) {
 			console.error('Failed to import binary asset:', error);
 		}
