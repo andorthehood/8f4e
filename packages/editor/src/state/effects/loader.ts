@@ -63,10 +63,8 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 					.then(editorSettings => {
 						if (editorSettings) {
 							state.editorSettings = editorSettings;
-							console.log('[Loader] Loaded editor settings from storage:', editorSettings);
 						} else {
 							state.editorSettings = { ...defaultState.editorSettings };
-							console.log('[Loader] No saved settings, using defaults:', state.editorSettings);
 						}
 					})
 					.catch(error => {
@@ -173,8 +171,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state.project.viewport.y = Math.round(
 			state.graphicHelper.activeViewport.viewport.y / state.graphicHelper.globalViewport.hGrid
 		);
-
-		console.log('[Loader] Saving editor settings to storage:', state.editorSettings);
 
 		// Use callbacks instead of localStorage
 		Promise.all([
