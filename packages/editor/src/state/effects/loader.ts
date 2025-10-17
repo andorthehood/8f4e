@@ -64,7 +64,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 						if (editorSettings) {
 							const previousColorScheme = state.editorSettings.colorScheme;
 							const previousFont = state.editorSettings.font;
-							console.log('editorSettings', editorSettings);
 							state.editorSettings = editorSettings;
 
 							// Dispatch events to reload the view if settings changed
@@ -155,7 +154,6 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
 		events.dispatch('init');
 		events.dispatch('saveProject');
-		console.log('projectLoaded');
 		events.dispatch('projectLoaded');
 		events.dispatch('loadPostProcessEffects', state.project.postProcessEffects);
 	}
