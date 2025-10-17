@@ -34,6 +34,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 059 | Refactor Unit Tests into __tests__ Folders | 🟡 | 0.5-1d | 2025-09-04 | Inconsistent test organization makes discovery harder and complicates refactors; standardize to `packages/<pkg>/src/**/__tests__/*.test.ts` structure |
 | 062 | Editor Command Queue Refactor | 🟡 | 3-4d | 2025-10-09 | Direct callback storage makes state non-serializable and couples effects to host functions; replace with typed command queue for better testability and side-effect observability |
 | 063 | Fix Color Theme Cache Clearing Bug | 🟡 | 2-3h | 2024-12-19 | Cached code blocks retain old colors when themes change because `setColorScheme` only updates state but doesn't call `engine.clearAllCache()` |
+| 066 | Fix Color Scheme Persistence Bug | 🟡 | 2-3h | 2024-12-19 | Color scheme selection not persisted across browser reloads; reverts to default 'hackerman' instead of user's selected scheme |
 
 ### 🟢 Low Priority
 
