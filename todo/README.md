@@ -19,7 +19,6 @@ This directory contains documentation for planned improvements and technical deb
 1. **Choose next sequential number** (check existing files)
 2. **Use the template**: Copy `_template.md` to `NNN-description.md`
 3. **Fill in details**: Complete all sections in the template
-4. **Update this README**: Add entry to the appropriate priority section
 5. **Assign priority**: Use 🔴🟡🟢 indicators
 
 ## Completing TODOs
@@ -31,11 +30,3 @@ This directory contains documentation for planned improvements and technical deb
 ## Template
 
 Use `_template.md` as the starting point for new TODO items. It includes all the standard sections and formatting.
-
-## Archive Process
-
-When a TODO is completed:
-1. **Update the TODO file**: Change status from "Open" to "Completed"
-2. **Add completion date**: Note when the task was finished
-3. **Move to archived folder**: Move the file to `todo/archived/` for historical reference
-5. **Review dependencies**: Update any other TODOs that depended on this completed item
