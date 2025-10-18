@@ -107,8 +107,8 @@ Standardize all package.json files with consistent, Vite-compatible configuratio
 ## Affected Components
 
 - `packages/compiler/package.json` - Standardize fields and scripts
-- `packages/glugglug/package.json` - Add missing fields
-- `packages/sprite-generator/package.json` - Remove Parcel-specific config
+- `packages/editor/packages/glugglug/package.json` - Add missing fields
+- `packages/editor/packages/sprite-generator/package.json` - Remove Parcel-specific config
 - `packages/audio-worklet-runtime/package.json` - Add main/types/exports
 - `packages/web-worker-*/*/package.json` - Add missing fields
 - `packages/editor/package.json` - Ensure consistency
