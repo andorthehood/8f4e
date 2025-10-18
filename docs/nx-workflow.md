@@ -63,16 +63,17 @@ npx nx run @8f4e/compiler:dev
 
 ## Project Structure
 
-All packages in `packages/` are automatically detected as Nx projects with their original names:
+All packages in `packages/` (including nested directories) are automatically detected as Nx projects with their original names:
 
-- `@8f4e/compiler`
-- `glugglug`
-- `@8f4e/sprite-generator`
 - `@8f4e/editor`
-- `@8f4e/runtime-audio-worklet`
-- `@8f4e/runtime-web-worker-midi`
-- `@8f4e/runtime-web-worker-logic`
+- `glugglug` (`packages/editor/packages/glugglug`)
+- `@8f4e/sprite-generator` (`packages/editor/packages/sprite-generator`)
+- `@8f4e/compiler`
 - `@8f4e/compiler-worker`
+- `@8f4e/runtime-audio-worklet`
+- `@8f4e/runtime-main-thread-logic`
+- `@8f4e/runtime-web-worker-logic`
+- `@8f4e/runtime-web-worker-midi`
 
 ## Configuration
 

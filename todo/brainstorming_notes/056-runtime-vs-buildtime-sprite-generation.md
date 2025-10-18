@@ -1,7 +1,7 @@
 What you have now
 
 - Runtime: The generator draws into a 1024x1024 canvas using flat fills and few colors and returns
-lookups (packages/sprite-generator/src/index.ts). Fonts are small arrays (~12 KB each; total
+lookups (packages/editor/packages/sprite-generator/src/index.ts). Fonts are small arrays (~12 KB each; total
 fonts+glyphs ~32 KB).
 - Bundle footprint: The dist for the package is ~296 KB including maps; min+gzip of just the generator
 code and tables will be far lower in the final app bundle.
@@ -49,9 +49,9 @@ Suggested implementation steps
 
 - Refactor a tiny seam in the generator to return “drawing commands” separately (you already have a
 Command enum and arrays), so the same code can run in a headless context.
-- Add a script under packages/sprite-generator/scripts that:
+- Add a script under packages/editor/packages/sprite-generator/scripts that:
     - Renders a sheet in a headless browser (or Node canvas) using your existing visual-testing setup.
-    - Writes PNG8 and WebP to packages/sprite-generator/dist/sprites/.
+    - Writes PNG8 and WebP to packages/editor/packages/sprite-generator/dist/sprites/.
     - Emits sprite-lookups.json from generateLookup functions.
     - Logs sizes and writes a manifest indicating the chosen asset per theme/font.
 - Add an editor loader branch:

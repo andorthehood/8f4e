@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Package Scope & Layout
-- Path: `packages/sprite-generator`; source in `src/`, output in `dist/`.
+- Path: `packages/editor/packages/sprite-generator`; source in `src/`, output in `dist/`.
 - Alias: `@8f4e/sprite-generator`.
 
 ## Build, Test, Dev

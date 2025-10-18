@@ -21,7 +21,7 @@ Without tests, there's a risk of:
 
 ## Proposed Solution
 
-Implement comprehensive unit tests for all buffer utility functions in `packages/glugglug/src/utils/buffer.ts`:
+Implement comprehensive unit tests for all buffer utility functions in `packages/editor/packages/glugglug/src/utils/buffer.ts`:
 
 - **`fillBufferWithRectangleVertices`**: Test vertex coordinate calculations and triangle formation
 - **`fillBufferWithSpriteCoordinates`**: Test UV coordinate normalization and mapping
@@ -32,7 +32,7 @@ Use Jest as the testing framework (already configured in package.json) and creat
 ## Implementation Plan
 
 ### Step 1: Set up test infrastructure
-- Create `packages/glugglug/tests/` directory
+- Create `packages/editor/packages/glugglug/tests/` directory
 - Set up Jest configuration for the glugglug package
 - Create test utilities for buffer validation
 
@@ -63,10 +63,10 @@ Use Jest as the testing framework (already configured in package.json) and creat
 
 ## Affected Components
 
-- `packages/glugglug/src/utils/buffer.ts` - Main functions to be tested
-- `packages/glugglug/tests/` - New test directory and files
-- `packages/glugglug/jest.config.js` - Jest configuration (may need creation)
-- `packages/glugglug/package.json` - Test script verification
+- `packages/editor/packages/glugglug/src/utils/buffer.ts` - Main functions to be tested
+- `packages/editor/packages/glugglug/tests/` - New test directory and files
+- `packages/editor/packages/glugglug/jest.config.js` - Jest configuration (may need creation)
+- `packages/editor/packages/glugglug/package.json` - Test script verification
 
 ## Risks & Considerations
 

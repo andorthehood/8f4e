@@ -35,15 +35,15 @@ Alternative approaches considered:
 - Add/extend unit tests covering: cached reuse path, creation path, interleaving spritesheet and cached draws, and post-process interaction.
 
 ### Step 2: Bind off-screen FBO for entire frame
-- In `packages/glugglug/src/engine.ts`, move “start render to texture” from `Renderer.renderWithPostProcessing` to wrap the user callback: bind FBO and set viewport before invoking the callback; unbind after draws are scheduled.
+- In `packages/editor/packages/glugglug/src/engine.ts`, move “start render to texture” from `Renderer.renderWithPostProcessing` to wrap the user callback: bind FBO and set viewport before invoking the callback; unbind after draws are scheduled.
 - Ensure `Renderer.updateTime`, `clearScreen`, and other per-frame setup still run in the correct order.
 
 ### Step 3: Adjust renderWithPostProcessing
-- In `packages/glugglug/src/renderer.ts`, change `renderWithPostProcessing` to assume the FBO already contains the final scene; it should only end the FBO pass if still bound, then run post-processing to the canvas.
+- In `packages/editor/packages/glugglug/src/renderer.ts`, change `renderWithPostProcessing` to assume the FBO already contains the final scene; it should only end the FBO pass if still bound, then run post-processing to the canvas.
 - Verify no mid-function rebinding to the default framebuffer occurs before post-processing completes.
 
 ### Step 4: Make cached draws immediate and remove segments
-- In `packages/glugglug/src/CachedRenderer.ts`:
+- In `packages/editor/packages/glugglug/src/CachedRenderer.ts`:
   - Update `drawCachedTexture` to flush pending spritesheet data, bind cached texture, draw the cached quad immediately to the FBO, and resume batching.
   - Remove segment tracking code (`segments`, `ensureSegment`, segment replay in `renderWithPostProcessing`).
   - Keep cache management (maps, FBO creation, LRU) unchanged.
@@ -54,7 +54,7 @@ Alternative approaches considered:
 - Confirm post-process effects still apply uniformly to both sprites and cached content.
 
 ### Step 6: Documentation and cleanup
-- Update `packages/glugglug/examples/cache-usage.md` to note that `cacheGroup` both creates and draws at the call site; no special ordering considerations are necessary.
+- Update `packages/editor/packages/glugglug/examples/cache-usage.md` to note that `cacheGroup` both creates and draws at the call site; no special ordering considerations are necessary.
 - Remove obsolete comments referencing segment logic.
 
 ## Success Criteria
@@ -67,11 +67,11 @@ Alternative approaches considered:
 
 ## Affected Components
 
-- `packages/glugglug/src/engine.ts` — Move FBO binding around user callback in `render`.
-- `packages/glugglug/src/renderer.ts` — Adjust `renderWithPostProcessing` lifecycle (end FBO + post-process only).
-- `packages/glugglug/src/CachedRenderer.ts` — Simplify cached draw path; remove segment tracking; immediate draws to FBO.
+- `packages/editor/packages/glugglug/src/engine.ts` — Move FBO binding around user callback in `render`.
+- `packages/editor/packages/glugglug/src/renderer.ts` — Adjust `renderWithPostProcessing` lifecycle (end FBO + post-process only).
+- `packages/editor/packages/glugglug/src/CachedRenderer.ts` — Simplify cached draw path; remove segment tracking; immediate draws to FBO.
 - `packages/editor/src/view/drawers/...` — No code changes expected; validate behavior with `cacheGroup` sites.
-- `packages/glugglug/tests/*` — Update tests to align with immediate cached draws and FBO-wrapped frame.
+- `packages/editor/packages/glugglug/tests/*` — Update tests to align with immediate cached draws and FBO-wrapped frame.
 
 ## Risks & Considerations
 
@@ -89,9 +89,9 @@ Alternative approaches considered:
 ## References
 
 - Files:
-  - `packages/glugglug/src/engine.ts`
-  - `packages/glugglug/src/renderer.ts`
-  - `packages/glugglug/src/CachedRenderer.ts`
+  - `packages/editor/packages/glugglug/src/engine.ts`
+  - `packages/editor/packages/glugglug/src/renderer.ts`
+  - `packages/editor/packages/glugglug/src/CachedRenderer.ts`
   - `packages/editor/src/view/drawers/codeBlocks/index.ts`
 - Concepts: WebGL FBO rendering, post-processing pipelines, batching and texture binding.
 

@@ -75,7 +75,7 @@ Current locations with `@ts-ignore`:
 - Multiple `createModule.ts` files - WebAssembly instantiation
 
 **Medium-priority removals** (may need custom type definitions):
-- `packages/sprite-generator/visual-testing/index.ts` - Canvas `convertToBlob`
+- `packages/editor/packages/sprite-generator/visual-testing/index.ts` - Canvas `convertToBlob`
 - Browser API gaps that can be properly typed
 
 ## Risks & Considerations

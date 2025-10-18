@@ -72,8 +72,8 @@ Clear all cached content when the color scheme changes by calling `engine.clearA
 
 ## References
 
-- [Glugglug caching documentation](packages/glugglug/README.md#caching)
-- [Cache clearing API](packages/glugglug/src/engine.ts#clearAllCache)
+- [Glugglug caching documentation](packages/editor/packages/glugglug/README.md#caching)
+- [Cache clearing API](packages/editor/packages/glugglug/src/engine.ts#clearAllCache)
 - [Color theme effect](packages/editor/src/state/effects/colorTheme.ts)
 
 ## Notes
