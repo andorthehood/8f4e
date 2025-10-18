@@ -4,6 +4,26 @@
 
 8f4e is a stack-oriented programming language with a semi-visual interface that I originally designed to perform generative music on algorave events. It's meant to be an efficient, but at the same time portable tool for real-time audio signal generation and processing. One of its most unique features is its representation of pointers using interconnected wires.
 
+## Package Architecture
+
+The 8f4e project is organized as an Nx monorepo with the following package hierarchy:
+
+```
+8f4e/
+├── packages/
+│   ├── compiler (The core compiler that transforms 8f4e code into WebAssembly)
+│   ├── compiler-worker (Web Worker wrapper around the compiler)
+│   ├── editor (The main editor package with UI components and state management)
+|   │   └── packages/
+│   │       ├── glugglug (Graphics utilities)
+│   │       ├── sate-manager
+│   │       └── sprite-generator
+│   ├── runtime-audio-worklet     ┐ 
+│   ├── runtime-main-thread-logic │ (Various runtime environments 
+│   ├── runtime-web-worker-logic  │ for different execution contexts)
+│   └── runtime-web-worker-midi   ┘
+```
+
 ## Documentation
 
 - [`docs/instructions.md`](./docs/instructions.md) - Language instruction reference
