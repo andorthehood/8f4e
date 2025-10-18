@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "8f4e",
   "scripts": {
+    "preinstall": "git submodule update --init --recursive",
     "build": "npx nx run-many --target=build --all && vite build",
     "build:affected": "npx nx affected --target=build --base=main",
     "bundle:editor": "npx nx run editor:bundle",
