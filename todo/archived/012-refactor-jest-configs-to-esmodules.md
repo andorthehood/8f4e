@@ -33,7 +33,7 @@ module.exports = {
   // ...
 };
 
-// packages/sprite-generator/jest.config.cjs - uses preset with ts-jest
+// packages/editor/packages/sprite-generator/jest.config.cjs - uses preset with ts-jest
 module.exports = {
   preset: './jest-presets.cjs',
   // ...
@@ -101,8 +101,8 @@ Standardize all Jest configurations to use ES modules and consistent transform a
 
 - `packages/compiler/jest.config.cjs` → `jest.config.js` with ES module syntax
 - `packages/editor/jest.config.cjs` → `jest.config.js` with ES module syntax
-- `packages/sprite-generator/jest.config.cjs` → `jest.config.js` with ES module syntax
-- `packages/sprite-generator/jest-presets.cjs` → `jest-presets.js` with ES module syntax
+- `packages/editor/packages/sprite-generator/jest.config.cjs` → `jest.config.js` with ES module syntax
+- `packages/editor/packages/sprite-generator/jest-presets.cjs` → `jest-presets.js` with ES module syntax
 - Package-level `package.json` files - add `"type": "module"`
 - Jest dependencies - ensure ES module compatibility
 
