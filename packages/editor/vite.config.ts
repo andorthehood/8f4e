@@ -26,9 +26,9 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			// Resolve workspace dependencies to their built versions
-			glugglug: resolve(__dirname, '../glugglug/dist'),
+			glugglug: resolve(__dirname, './packages/glugglug/dist'),
 			'@8f4e/compiler': resolve(__dirname, '../compiler/dist'),
-			'@8f4e/sprite-generator': resolve(__dirname, '../sprite-generator/dist'),
+			'@8f4e/sprite-generator': resolve(__dirname, './packages/sprite-generator/dist'),
 		},
 	},
 });

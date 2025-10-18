@@ -81,8 +81,8 @@ The editor package should become a pure state machine that can be coupled with a
 
 - Current view implementation: `packages/editor/src/view/`
 - State types: `packages/editor/src/state/types.ts`
-- 2D Engine dependency: `packages/glugglug/`
-- Sprite Generator: `packages/sprite-generator/`
+- 2D Engine dependency: `packages/editor/packages/glugglug/`
+- Sprite Generator: `packages/editor/packages/sprite-generator/`
 
 ## Notes
 

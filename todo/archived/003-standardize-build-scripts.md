@@ -18,7 +18,7 @@ Current inconsistencies:
 - `packages/editor/package.json` - Empty build script
 - `packages/audio-worklet-runtime` - Uses Parcel with custom targets
 - `packages/compiler` - Uses TypeScript directly
-- `packages/sprite-generator` - Has dev script with Parcel
+- `packages/editor/packages/sprite-generator` - Has dev script with Parcel
 
 ## Proposed Solution
 
