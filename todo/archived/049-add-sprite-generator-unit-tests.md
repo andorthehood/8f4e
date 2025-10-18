@@ -36,7 +36,7 @@ Implement comprehensive unit tests for all sprite generator functions using Jest
 ## Implementation Plan
 
 ### Step 1: Set up test infrastructure
-- Create `packages/sprite-generator/tests/` directory
+- Create `packages/editor/packages/sprite-generator/tests/` directory
 - Set up Jest configuration for the sprite-generator package
 - Create test utilities for sprite coordinate validation
 - Set up test fixtures with known color schemes and configurations
@@ -83,16 +83,16 @@ Implement comprehensive unit tests for all sprite generator functions using Jest
 
 ## Affected Components
 
-- `packages/sprite-generator/src/index.ts` - Main generation function
-- `packages/sprite-generator/src/font.ts` - Font generation and lookups
-- `packages/sprite-generator/src/icons.ts` - Icon generation
-- `packages/sprite-generator/src/pianoKeyboard.ts` - Piano keyboard generation
-- `packages/sprite-generator/src/plotter.ts` - Plotter sprite generation
-- `packages/sprite-generator/src/background.ts` - Background pattern generation
-- `packages/sprite-generator/src/fillColors.ts` - Fill color generation
-- `packages/sprite-generator/src/feedbackScale.ts` - Feedback scale generation
-- `packages/sprite-generator/src/types.ts` - Type definitions and enums
-- `packages/sprite-generator/tests/` - New test directory and files
+- `packages/editor/packages/sprite-generator/src/index.ts` - Main generation function
+- `packages/editor/packages/sprite-generator/src/font.ts` - Font generation and lookups
+- `packages/editor/packages/sprite-generator/src/icons.ts` - Icon generation
+- `packages/editor/packages/sprite-generator/src/pianoKeyboard.ts` - Piano keyboard generation
+- `packages/editor/packages/sprite-generator/src/plotter.ts` - Plotter sprite generation
+- `packages/editor/packages/sprite-generator/src/background.ts` - Background pattern generation
+- `packages/editor/packages/sprite-generator/src/fillColors.ts` - Fill color generation
+- `packages/editor/packages/sprite-generator/src/feedbackScale.ts` - Feedback scale generation
+- `packages/editor/packages/sprite-generator/src/types.ts` - Type definitions and enums
+- `packages/editor/packages/sprite-generator/tests/` - New test directory and files
 
 ## Risks & Considerations
 

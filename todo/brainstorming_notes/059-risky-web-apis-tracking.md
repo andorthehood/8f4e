@@ -82,8 +82,8 @@ const entries = (opfsRoot as unknown as {
 **Browser Support**: Canvas.convertToBlob (Chrome 50+, Firefox 19+, Safari 12+), OffscreenCanvas (Chrome 69+, Firefox 105+, Safari 16.4+)
 
 **Usage Locations**:
-- `packages/sprite-generator/visual-testing/index.ts`: `canvas.convertToBlob()`
-- `packages/sprite-generator/src/index.ts`: `window.OffscreenCanvas` feature detection
+- `packages/editor/packages/sprite-generator/visual-testing/index.ts`: `canvas.convertToBlob()`
+- `packages/editor/packages/sprite-generator/src/index.ts`: `window.OffscreenCanvas` feature detection
 
 **Context**: Canvas operations and off-main-thread rendering
 **Compatibility Issues**:
@@ -160,7 +160,7 @@ if (window.OffscreenCanvas) {
 
 **Usage Locations**:
 - `src/storage-callbacks.ts`: File download functionality
-- `packages/sprite-generator/visual-testing/index.ts`: Image blob handling
+- `packages/editor/packages/sprite-generator/visual-testing/index.ts`: Image blob handling
 
 **Context**: Creating downloadable files and object URLs
 **Considerations**: Memory cleanup (URL.revokeObjectURL), size limits
@@ -181,7 +181,7 @@ if (window.OffscreenCanvas) {
 **Browser Support**: Universally supported
 
 **Usage Locations**:
-- `packages/glugglug/src/engine.ts`: Frame rendering loop
+- `packages/editor/packages/glugglug/src/engine.ts`: Frame rendering loop
 
 **Context**: Smooth animation scheduling
 **Considerations**: Frame rate varies by display, may be throttled in background tabs
