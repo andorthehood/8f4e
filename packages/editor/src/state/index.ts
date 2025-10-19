@@ -1,4 +1,5 @@
 import { Font } from '@8f4e/sprite-generator';
+import createStateManager from '@8f4e/state-manager';
 
 import _switch from './effects/codeBlocks/extras/switches/interaction';
 import button from './effects/codeBlocks/extras/buttons/interaction';
@@ -156,12 +157,14 @@ export default function init(events: EventDispatcher, project: Project, options:
 	// Initialize feature flags
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	const state: State = {
+	const stateManager = createStateManager<State>({
 		...defaultStateBase,
 		project,
 		callbacks: options.callbacks,
 		featureFlags,
-	};
+	});
+
+	const state = stateManager.getState();
 
 	runtime(state, events);
 	sampleRate(state, events);
