@@ -10,18 +10,18 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 
 ```
 8f4e/
-├── packages/
-│   ├── compiler (The core compiler that transforms 8f4e code into WebAssembly)
-│   ├── compiler-worker (Web Worker wrapper around the compiler)
-│   ├── editor (The main editor package with UI components and state management)
-|   │   └── packages/
-│   │       ├── glugglug (Graphics utilities)
-│   │       ├── sate-manager
-│   │       └── sprite-generator
-│   ├── runtime-audio-worklet     ┐ 
-│   ├── runtime-main-thread-logic │ (Various runtime environments 
-│   ├── runtime-web-worker-logic  │ for different execution contexts)
-│   └── runtime-web-worker-midi   ┘
+└── packages/
+    ├── compiler (The core compiler that transforms 8f4e code into WebAssembly)
+    ├── compiler-worker (Web Worker wrapper around the compiler)
+    ├── editor (The main editor package with UI components and state management)
+    │   └── packages/
+    │       ├── glugglug (2D WebGL graphics utilities)
+    │       ├── sate-manager
+    │       └── sprite-generator (All UI graphics are generative)
+    ├── runtime-audio-worklet     ┐ 
+    ├── runtime-main-thread-logic │ (Various runtime environments 
+    ├── runtime-web-worker-logic  │ for different execution contexts)
+    └── runtime-web-worker-midi   ┘
 ```
 
 ## Documentation
