@@ -29,6 +29,7 @@ export default defineConfig({
 			glugglug: resolve(__dirname, './packages/glugglug/dist'),
 			'@8f4e/compiler': resolve(__dirname, '../compiler/dist'),
 			'@8f4e/sprite-generator': resolve(__dirname, './packages/sprite-generator/dist'),
+			'@8f4e/state-manager': resolve(__dirname, './packages/state-manager/dist'),
 		},
 	},
 });
