@@ -16,7 +16,7 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     ├── editor (The main editor package with UI components and state management)
     │   └── packages/
     │       ├── glugglug (2D WebGL graphics utilities)
-    │       ├── sate-manager
+    │       ├── state-manager
     │       └── sprite-generator (All UI graphics are generative)
     ├── runtime-audio-worklet     ┐ 
     ├── runtime-main-thread-logic │ (Various runtime environments 
