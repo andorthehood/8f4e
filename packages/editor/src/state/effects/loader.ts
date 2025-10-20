@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import { EventDispatcher } from '../../events';
 import { getModuleId } from '../helpers/codeParsers';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
@@ -38,7 +40,8 @@ function convertGraphicDataToProjectStructure(
 		}));
 }
 
-export default function loader(state: State, events: EventDispatcher, defaultState: State): void {
+export default function loader(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
+	const state = store.getState();
 	// Create a fresh copy of editorSettings to avoid shared references
 	state.editorSettings = { ...defaultState.editorSettings };
 	state.colorSchemes = {}; // Initialize with empty object
@@ -68,7 +71,7 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 
 							// Dispatch events to reload the view if settings changed
 							if (editorSettings.colorScheme !== previousColorScheme) {
-								events.dispatch('setColorScheme', { colorScheme: editorSettings.colorScheme });
+								store.set('editorSettings.colorScheme', editorSettings.colorScheme);
 							}
 							if (editorSettings.font !== previousFont) {
 								events.dispatch('setFont', { font: editorSettings.font });
