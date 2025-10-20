@@ -1,14 +1,14 @@
 import { EventDispatcher } from '../../../../../events';
 import findButtonAtViewportCoordinates from '../../../../helpers/findButtonAtViewportCoordinates';
 
-import type { State, Switch } from '../../../../types';
+import type { State, Switch, CodeBlockGraphicData } from '../../../../types';
 import type { DataStructure } from '@8f4e/compiler';
 
 export default function button(state: State, events: EventDispatcher): () => void {
 	let lastPushedButton: Switch | undefined;
 	let lastPushedButtonMemory: DataStructure | undefined;
 
-	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: any }) {
+	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
 		lastPushedButton = findButtonAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
 
 		if (!lastPushedButton) {
