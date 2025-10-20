@@ -8,7 +8,7 @@
     "build:affected": "npx nx affected --target=build --base=main",
     "bundle:editor": "npx nx run editor:bundle",
     "bundle:runtime-main-thread-logic": "npx nx run runtime-main-thread-logic:bundle",
-    "dev": "concurrently \"npx nx run editor:build --watch\" \"vite\"",
+    "dev": "vite",
     "lint": "npx eslint . --ext .ts --fix",
     "test": "npx nx run-many --target=test --all",
     "test:affected": "npx nx affected --target=test --base=main",
