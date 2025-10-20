@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import * as menus from './menus';
 
 import { EventDispatcher } from '../../../events';
@@ -50,7 +52,8 @@ function decorateMenu(menuItems: ContextMenuItem[]) {
 	});
 }
 
-export default function contextMenu(state: State, events: EventDispatcher): () => void {
+export default function contextMenu(store: StateManager<State>, events: EventDispatcher): () => void {
+	const state = store.getState();
 	const onMouseMove = (event: MouseEvent) => {
 		const { itemWidth, x, y } = state.graphicHelper.contextMenu;
 		state.graphicHelper.contextMenu.highlightedItem = getHighlightedMenuItem(
@@ -72,10 +75,10 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		const { highlightedItem, items } = state.graphicHelper.contextMenu;
 
 		if (items[highlightedItem]) {
-			const action = items[highlightedItem].action;
-
-			if (action) {
-				events.dispatch(action, {
+			if (items[highlightedItem].selector) {
+				store.set(items[highlightedItem].selector, items[highlightedItem].value);
+			} else if (items[highlightedItem].action) {
+				events.dispatch(items[highlightedItem].action, {
 					...items[highlightedItem].payload,
 					x: event.x,
 					y: event.y,
