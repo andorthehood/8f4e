@@ -14,11 +14,12 @@ export type { FeatureFlags, FeatureFlagsConfig } from './config/featureFlags';
 
 export default async function init(canvas: HTMLCanvasElement, options: Options) {
 	const events = initEvents();
-	const state = initState(events, EMPTY_DEFAULT_PROJECT, options);
+	const store = initState(events, EMPTY_DEFAULT_PROJECT, options);
+	const state = store.getState();
 	humanInterface(canvas, events, state);
 	const view = await initView(state, canvas);
 
-	events.on('setColorScheme', () => {
+	store.subscribe('editorSettings.colorScheme', () => {
 		view.clearCache();
 		view.reloadSpriteSheet();
 		events.dispatch('spriteSheetRerendered');
