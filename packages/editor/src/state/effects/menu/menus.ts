@@ -216,8 +216,8 @@ export const colorSchemeMenu: MenuGenerator = state => {
 	// Build menu items from available color schemes in state
 	return Object.keys(state.colorSchemes).map(key => ({
 		title: key,
-		action: 'setColorScheme',
-		payload: { colorScheme: key },
+		selector: 'editorSettings.colorScheme',
+		value: key,
 		close: false,
 	}));
 };
