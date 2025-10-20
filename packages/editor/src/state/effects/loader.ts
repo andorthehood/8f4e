@@ -104,7 +104,9 @@ export default function loader(state: State, events: EventDispatcher, defaultSta
 		state['project'] = { ...EMPTY_DEFAULT_PROJECT };
 
 		Object.keys(newProject).forEach(key => {
-			(state.project as any)[key] = (newProject as any)[key] || (defaultState.project as any)[key];
+			(state.project as unknown as Record<string, unknown>)[key] =
+				(newProject as unknown as Record<string, unknown>)[key] ||
+				(defaultState.project as unknown as Record<string, unknown>)[key];
 		});
 
 		state.graphicHelper.baseCodeBlock.codeBlocks.clear();
