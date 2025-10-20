@@ -30,6 +30,8 @@ export type Viewport = {
 
 interface ContextMenuButton {
 	action?: string;
+	selector?: string;
+	value?: unknown;
 	close?: boolean;
 	payload?: Record<string, unknown>;
 	disabled?: boolean;
