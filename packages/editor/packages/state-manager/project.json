@@ -15,7 +15,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "command": "jest tests",
+        "command": "jest src",
         "cwd": "{projectRoot}"
       }
     },
