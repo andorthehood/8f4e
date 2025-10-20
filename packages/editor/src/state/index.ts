@@ -1,12 +1,11 @@
 import { Font } from '@8f4e/sprite-generator';
-import createStateManager from '@8f4e/state-manager';
+import createStateManager, { StateManager } from '@8f4e/state-manager';
 
 import _switch from './effects/codeBlocks/extras/switches/interaction';
 import button from './effects/codeBlocks/extras/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
 import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
 import codeBlockOpener from './effects/codeBlocks/codeBlockOpener';
-import colorTheme from './effects/colorTheme';
 import compiler from './effects/compiler';
 import contextMenu from './effects/menu/contextMenu';
 import font from './effects/font';
@@ -152,7 +151,7 @@ const defaultStateBase = {
 	colorSchemes: {},
 };
 
-export default function init(events: EventDispatcher, project: Project, options: Options): State {
+export default function init(events: EventDispatcher, project: Project, options: Options): StateManager<State> {
 	// Initialize feature flags
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
@@ -167,22 +166,21 @@ export default function init(events: EventDispatcher, project: Project, options:
 
 	runtime(state, events);
 	sampleRate(state, events);
-	loader(state, events, state);
+	loader(store, events, state);
 	codeBlockDragger(state, events);
 	codeBlockOpener(state, events);
 	_switch(state, events);
 	button(state, events);
 	pianoKeyboard(state, events);
 	viewport(state, events);
-	contextMenu(state, events);
+	contextMenu(store, events);
 	codeBlockCreator(state, events);
 	compiler(state, events);
 	graphicHelper(state, events);
 	save(state, events);
 	exportWasm(state, events);
-	colorTheme(state, events);
 	font(state, events);
 	binaryAsset(state, events);
 	events.dispatch('init');
-	return state;
+	return store;
 }
