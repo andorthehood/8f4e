@@ -255,9 +255,10 @@ describe('StateManager', () => {
 			const callback1 = jest.fn();
 			const callback2 = jest.fn();
 
-			const subscription = stateManager.subscribe('name', callback1);
+			const subscription1 = stateManager.subscribe('name', callback1);
+			stateManager.subscribe('name', callback2);
 
-			stateManager.unsubscribe(subscription);
+			stateManager.unsubscribe(subscription1);
 			stateManager.set('name', 'New Name');
 
 			expect(callback1).not.toHaveBeenCalled();
