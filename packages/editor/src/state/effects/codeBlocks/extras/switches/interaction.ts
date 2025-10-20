@@ -4,7 +4,7 @@ import findSwitchAtViewportCoordinates from '../../../../helpers/findSwitchAtVie
 import type { State } from '../../../../types';
 
 export default function _switch(state: State, events: EventDispatcher): () => void {
-	const onCodeBlockClick = function ({ x, y, codeBlock }) {
+	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: any }) {
 		const _switch = findSwitchAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
 
 		if (!_switch) {
