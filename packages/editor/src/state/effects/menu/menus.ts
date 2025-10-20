@@ -77,8 +77,10 @@ export const mainMenu: MenuGenerator = state => [
 
 export const binaryAssetsMenu: MenuGenerator = async () => {
 	const opfsRoot = await navigator.storage.getDirectory();
-	const entries = (opfsRoot as unknown as { entries: () => AsyncIterableIterator<[string, FileSystemFileHandle]> }).entries();
-	
+	const entries = (
+		opfsRoot as unknown as { entries: () => AsyncIterableIterator<[string, FileSystemFileHandle]> }
+	).entries();
+
 	const files: [string, FileSystemFileHandle][] = [];
 	for await (const [name, file] of entries) {
 		files.push([name, file]);
