@@ -85,7 +85,7 @@ function incrementModuleIdUntilItsNotTaken(state: State, moduleId: string) {
 }
 
 export default function codeBlockCreator(state: State, events: EventDispatcher): void {
-	async function onAddCodeBlock({ x, y, isNew, code = [''] }) {
+	async function onAddCodeBlock({ x, y, isNew, code = [''] }: { x: number; y: number; isNew: boolean; code?: string[] }) {
 		// Check if editing is enabled
 		if (!state.featureFlags.editing) {
 			return;
