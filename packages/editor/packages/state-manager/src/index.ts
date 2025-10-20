@@ -1,18 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Path<State> = string & Record<never, never>;
-
-type PathValue<State, P extends string> = P extends `${infer K}.${infer Rest}`
-	? K extends keyof State
-		? PathValue<State[K], Rest>
-		: unknown
-	: P extends keyof State
-		? State[P]
-		: unknown;
-
-export type Subscription<State, P extends Path<State> = Path<State>> = [
-	selector: P,
-	callback: (value: PathValue<State, P>) => void,
-];
+import type { Path, PathValue, Subscription } from './types';
 
 export interface StateManager<State> {
 	getState: () => State;
@@ -30,36 +16,61 @@ function createStateManager<State>(state: State): StateManager<State> {
 	return {
 		getState: () => state,
 		set<P extends Path<State>>(selector: P, value: PathValue<State, P>) {
-			if (typeof selector === 'string' && selector.includes('.')) {
-				const keys = selector.split('.');
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				let current = state as any;
+			const path = String(selector);
+			const keys = path.split('.');
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			let current: any = state;
 
+			if (keys.length === 1) {
+				current[keys[0]] = value;
+			} else {
 				for (let i = 0; i < keys.length - 1; i++) {
 					current = current[keys[i]];
 				}
-
 				current[keys[keys.length - 1]] = value;
-			} else {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				(state as any)[selector] = value;
 			}
 
 			subscriptions.forEach(subscription => {
-				if (selector === subscription[0]) {
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(subscription[1] as (value: any) => void)(value);
+				const { tokens, callback } = subscription;
+				const comparisonLength = Math.min(tokens.length, keys.length);
+
+				for (let i = 0; i < comparisonLength; i++) {
+					if (tokens[i] !== keys[i]) {
+						return;
+					}
 				}
+
+				let target: unknown = state;
+				for (const token of tokens) {
+					if (target === null) {
+						target = undefined;
+						break;
+					}
+
+					if (typeof target === 'object' || typeof target === 'function') {
+						target = (target as Record<string, unknown>)[token];
+					} else {
+						target = undefined;
+						break;
+					}
+				}
+
+				(callback as (value: unknown) => void)(target);
 			});
 		},
 		subscribe<P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void) {
+			const tokens = String(selector).split('.');
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const subscription: Subscription<State, P> = [selector, callback as (value: any) => void];
-			subscriptions.add(subscription as Subscription<State>);
+			const subscription: Subscription<State, P> = {
+				selector,
+				tokens,
+				callback,
+			};
+			subscriptions.add(subscription as unknown as Subscription<State>);
 			return subscription;
 		},
 		unsubscribe<P extends Path<State>>(subscription: Subscription<State, P>) {
-			subscriptions.delete(subscription as Subscription<State>);
+			subscriptions.delete(subscription as unknown as Subscription<State>);
 		},
 	};
 }
