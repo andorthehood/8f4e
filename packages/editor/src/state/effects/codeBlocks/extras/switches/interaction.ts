@@ -1,10 +1,10 @@
 import { EventDispatcher } from '../../../../../events';
 import findSwitchAtViewportCoordinates from '../../../../helpers/findSwitchAtViewportCoordinates';
 
-import type { State } from '../../../../types';
+import type { State, CodeBlockGraphicData } from '../../../../types';
 
 export default function _switch(state: State, events: EventDispatcher): () => void {
-	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: any }) {
+	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
 		const _switch = findSwitchAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
 
 		if (!_switch) {
