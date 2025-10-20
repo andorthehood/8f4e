@@ -43,7 +43,9 @@ export default function drawModules(engine: Engine, state: State): void {
 				codeBlock.width,
 				codeBlock.height,
 				() => {
-					engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+					if (state.graphicHelper.spriteLookups?.fillColors) {
+						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+					}
 
 					if (codeBlock === state.graphicHelper.draggedCodeBlock) {
 						engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
@@ -61,7 +63,9 @@ export default function drawModules(engine: Engine, state: State): void {
 						);
 					}
 
-					engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+					if (state.graphicHelper.spriteLookups?.fontCode) {
+						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+					}
 
 					const corner = codeBlock.isOpen ? '+' : '+';
 
@@ -74,7 +78,9 @@ export default function drawModules(engine: Engine, state: State): void {
 						corner
 					);
 
-					engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+					if (state.graphicHelper.spriteLookups?.fontCode) {
+						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+					}
 
 					for (let i = 0; i < codeBlock.codeToRender.length; i++) {
 						for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {

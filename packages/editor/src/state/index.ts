@@ -12,7 +12,6 @@ import contextMenu from './effects/menu/contextMenu';
 import font from './effects/font';
 import graphicHelper from './effects/codeBlocks/graphicHelper';
 import loader from './effects/loader';
-import nestedCodeBlocksOpener from './effects/codeBlocks/nestedCodeBlocksOpener';
 import pianoKeyboard from './effects/codeBlocks/extras/pianoKeyboard/interaction';
 import sampleRate from './effects/sampleRate';
 import save from './effects/save';
@@ -157,21 +156,20 @@ export default function init(events: EventDispatcher, project: Project, options:
 	// Initialize feature flags
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	const stateManager = createStateManager<State>({
+	const store = createStateManager<State>({
 		...defaultStateBase,
 		project,
 		callbacks: options.callbacks,
 		featureFlags,
 	});
 
-	const state = stateManager.getState();
+	const state = store.getState();
 
 	runtime(state, events);
 	sampleRate(state, events);
 	loader(state, events, state);
 	codeBlockDragger(state, events);
 	codeBlockOpener(state, events);
-	nestedCodeBlocksOpener(state, events);
 	_switch(state, events);
 	button(state, events);
 	pianoKeyboard(state, events);

@@ -3,7 +3,9 @@ import { Engine } from 'glugglug';
 import type { State } from '../../state/types';
 
 export default function drawBackground(engine: Engine, state: State): void {
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.background);
+	if (state.graphicHelper.spriteLookups?.background) {
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.background);
+	}
 
 	for (
 		let i = 0;

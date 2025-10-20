@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, MenuGenerator } from '../../types';
+import type { CodeBlockGraphicData, MenuGenerator, ContextMenuItem } from '../../types';
 
 export const mainMenu: MenuGenerator = state => [
 	...(state.graphicHelper.activeViewport !== state.graphicHelper.activeViewport.parent
@@ -77,11 +77,12 @@ export const mainMenu: MenuGenerator = state => [
 
 export const binaryAssetsMenu: MenuGenerator = async () => {
 	const opfsRoot = await navigator.storage.getDirectory();
-	const entries = (opfsRoot as unknown as { entries: () => AsyncIterator<[string, FileSystemFileHandle]> }).entries();
-	const asyncIterableEntries = {
-		[Symbol.asyncIterator]: () => entries,
-	};
-	const files: [string, FileSystemFileHandle][] = await Array.fromAsync(asyncIterableEntries);
+	const entries = (opfsRoot as unknown as { entries: () => AsyncIterableIterator<[string, FileSystemFileHandle]> }).entries();
+	
+	const files: [string, FileSystemFileHandle][] = [];
+	for await (const [name, file] of entries) {
+		files.push([name, file]);
+	}
 
 	return files.map(([name, file]) => ({
 		title: name,
@@ -126,15 +127,12 @@ export const moduleMenu: MenuGenerator = state => [
 		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 		close: true,
 	},
-	{
-		title: 'Open group',
-		action: 'openGroup',
-		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
-		close: true,
-	},
 ];
 
 export const moduleCategoriesMenu: MenuGenerator = async state => {
+	if (!state.callbacks.getListOfModules) {
+		return [];
+	}
 	const modules = await state.callbacks.getListOfModules();
 	const categories = [...new Set(modules.map(module => module.category))];
 	return categories.map(category => {
@@ -144,10 +142,13 @@ export const moduleCategoriesMenu: MenuGenerator = async state => {
 
 export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
 	const { category } = payload as { category: string };
+	if (!state.callbacks.getListOfModules || !state.callbacks.getModule) {
+		return [];
+	}
 	const modules = await state.callbacks.getListOfModules();
 	const filteredModules = modules.filter(module => module.category === category);
 
-	const menuItems = [];
+	const menuItems: ContextMenuItem[] = [];
 	for (const moduleMetadata of filteredModules) {
 		const module = await state.callbacks.getModule(moduleMetadata.slug);
 		menuItems.push({
@@ -225,8 +226,11 @@ export const fontMenu: MenuGenerator = () => [
 ];
 
 export const projectMenu: MenuGenerator = async state => {
+	if (!state.callbacks.getListOfProjects || !state.callbacks.getProject) {
+		return [];
+	}
 	const projects = await state.callbacks.getListOfProjects();
-	const menuItems = [];
+	const menuItems: ContextMenuItem[] = [];
 	for (const projectMetadata of projects) {
 		const project = await state.callbacks.getProject(projectMetadata.slug);
 		menuItems.push({
