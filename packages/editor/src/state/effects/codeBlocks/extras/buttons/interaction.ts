@@ -8,7 +8,7 @@ export default function button(state: State, events: EventDispatcher): () => voi
 	let lastPushedButton: Switch | undefined;
 	let lastPushedButtonMemory: DataStructure | undefined;
 
-	const onCodeBlockClick = function ({ x, y, codeBlock }) {
+	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: any }) {
 		lastPushedButton = findButtonAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
 
 		if (!lastPushedButton) {

@@ -4,13 +4,13 @@ import { EventDispatcher } from '../../events';
 import type { State } from '../types';
 
 export default function viewport(state: State, events: EventDispatcher): () => void {
-	function onMouseMove(event) {
+	function onMouseMove(event: any) {
 		if (event.buttons === 1 && state.featureFlags.viewportDragging) {
 			move(state, event.movementX, event.movementY);
 		}
 	}
 
-	function onResize(event) {
+	function onResize(event: any) {
 		resize(state, event.canvasWidth, event.canvasHeight);
 	}
 
