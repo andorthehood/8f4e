@@ -7,6 +7,7 @@ A type-safe state manager with deep nesting support and subscription capabilitie
 - **Type-safe**: Full TypeScript support with automatic type inference
 - **Deep nesting**: Support for unlimited levels of nested object properties
 - **Subscriptions**: Subscribe to specific state changes with type-safe callbacks
+- **Cascading updates**: Parent selectors fire when nested values change, and child selectors fire when parents are replaced
 - **Zero dependencies**: Lightweight implementation with no external dependencies
 
 ## Installation
@@ -99,6 +100,24 @@ stateManager.subscribe('user.settings.preferences.display.fontSize', (fontSize) 
   console.log('Font size changed to:', fontSize);
   // fontSize is automatically typed as number
 });
+
+// Parent subscriptions fire when descendants change
+stateManager.subscribe('user.settings.preferences', (preferences) => {
+  console.log('Preferences updated:', preferences);
+});
+
+// Child subscriptions fire when a parent object is replaced
+stateManager.subscribe('user.settings.preferences.display.animations', (animations) => {
+  console.log('Animations toggled:', animations);
+});
+
+// Replacing the parent notifies both parent and child subscribers
+stateManager.set('user.settings.preferences.display', {
+  fontSize: 24,
+  animations: false,
+  accessibility: initialState.user.settings.preferences.display.accessibility,
+});
+
 ```
 
 ### Unsubscribing

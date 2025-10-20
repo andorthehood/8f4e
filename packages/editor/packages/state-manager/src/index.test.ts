@@ -1,4 +1,6 @@
-import createStateManager, { Subscription } from './index';
+import createStateManager from './index';
+
+import type { Subscription } from './types';
 
 // Test interface for state manager with deep nesting
 interface TestState {
@@ -209,6 +211,58 @@ describe('StateManager', () => {
 			expect(callback).toHaveBeenCalledTimes(1);
 		});
 
+		it('should notify parent subscriptions when nested property changes', () => {
+			const preferencesCallback = jest.fn();
+			const displayCallback = jest.fn();
+			const fontSizeCallback = jest.fn();
+
+			stateManager.subscribe('settings.preferences', preferencesCallback);
+			stateManager.subscribe('settings.preferences.display', displayCallback);
+			stateManager.subscribe('settings.preferences.display.fontSize', fontSizeCallback);
+
+			stateManager.set('settings.preferences.display.fontSize', 24);
+
+			expect(fontSizeCallback).toHaveBeenCalledWith(24);
+			expect(fontSizeCallback).toHaveBeenCalledTimes(1);
+			expect(displayCallback).toHaveBeenCalledWith(stateManager.getState().settings.preferences.display);
+			expect(displayCallback).toHaveBeenCalledTimes(1);
+			expect(preferencesCallback).toHaveBeenCalledWith(stateManager.getState().settings.preferences);
+			expect(preferencesCallback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should notify child subscriptions when parent property is replaced', () => {
+			const displayCallback = jest.fn();
+			const fontSizeCallback = jest.fn();
+			const animationsCallback = jest.fn();
+
+			stateManager.subscribe('settings.preferences.display', displayCallback);
+			stateManager.subscribe('settings.preferences.display.fontSize', fontSizeCallback);
+			stateManager.subscribe('settings.preferences.display.animations', animationsCallback);
+
+			stateManager.set('settings.preferences.display', {
+				fontSize: 30,
+				animations: false,
+				accessibility: stateManager.getState().settings.preferences.display.accessibility,
+			});
+
+			expect(displayCallback).toHaveBeenCalledWith(stateManager.getState().settings.preferences.display);
+			expect(fontSizeCallback).toHaveBeenCalledWith(30);
+			expect(animationsCallback).toHaveBeenCalledWith(false);
+		});
+
+		it('should not notify subscriptions that only partially match the path', () => {
+			const partialCallback = jest.fn();
+			const exactCallback = jest.fn();
+
+			stateManager.subscribe('settings.preferences.display.font', partialCallback);
+			stateManager.subscribe('settings.preferences.display.fontSize', exactCallback);
+
+			stateManager.set('settings.preferences.display.fontSize', 20);
+
+			expect(exactCallback).toHaveBeenCalledWith(20);
+			expect(partialCallback).not.toHaveBeenCalled();
+		});
+
 		it('should not call callback for different property changes', () => {
 			const callback = jest.fn();
 			stateManager.subscribe('name', callback);
@@ -236,7 +290,9 @@ describe('StateManager', () => {
 			const callback = jest.fn();
 			const subscription = stateManager.subscribe('name', callback);
 
-			expect(subscription).toEqual(['name', callback]);
+			expect(subscription.selector).toBe('name');
+			expect(subscription.tokens).toEqual(['name']);
+			expect(subscription.callback).toBe(callback);
 		});
 	});
 
@@ -266,7 +322,11 @@ describe('StateManager', () => {
 		});
 
 		it('should handle unsubscribing non-existent subscription gracefully', () => {
-			const fakeSubscription = ['name', jest.fn()] as Subscription<TestState>;
+			const fakeSubscription = {
+				selector: 'name',
+				tokens: ['name'],
+				callback: jest.fn(),
+			} as Subscription<TestState>;
 
 			expect(() => {
 				stateManager.unsubscribe(fakeSubscription);
