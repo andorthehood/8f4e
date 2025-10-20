@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
-		"lib": ["esnext", "dom", "dom.iterable"],
+		"target": "es2022",
+		"lib": ["es2023", "dom", "dom.iterable"],
 		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"allowSyntheticDefaultImports": true,
@@ -9,6 +9,7 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"strict": true,
+		"downlevelIteration": true,
 		"allowImportingTsExtensions": false,
 		"noEmit": true,
 		"skipLibCheck": true,
