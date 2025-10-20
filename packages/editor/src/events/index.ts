@@ -7,28 +7,28 @@ export interface EventDispatcher {
 }
 
 export default function events(): EventDispatcher {
-	const subscriptions = {};
+	const subscriptions: Record<string, EventHandler<any>[]> = {};
 
-	function on(eventName, callback) {
+	function on<T>(eventName: string, callback: EventHandler<T>): void {
 		if (!subscriptions[eventName]) {
 			subscriptions[eventName] = [];
 		}
 		subscriptions[eventName].push(callback);
 	}
 
-	function off(eventName, callback) {
-		if (subscriptions[eventName].indexOf(callback) === -1) {
+	function off<T>(eventName: string, callback: EventHandler<T>): void {
+		if (subscriptions[eventName]?.indexOf(callback) === -1) {
 			return;
 		}
-		subscriptions[eventName].splice(subscriptions[eventName].indexOf(callback), 1);
+		subscriptions[eventName]?.splice(subscriptions[eventName].indexOf(callback), 1);
 	}
 
-	function dispatch(type, eventObject) {
+	function dispatch<T>(type: string, eventObject?: T): void {
 		if (!subscriptions[type]) {
 			return console.warn('No subscription to event type:', type);
 		}
 		for (let i = 0; i < subscriptions[type].length; i++) {
-			if (eventObject && eventObject.stopPropagation) {
+			if (eventObject && (eventObject as any).stopPropagation) {
 				return;
 			}
 			subscriptions[type][i](eventObject);

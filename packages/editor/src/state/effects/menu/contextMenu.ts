@@ -5,7 +5,7 @@ import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtVie
 
 import type { ContextMenuItem, State } from '../../types';
 
-function getHighlightedMenuItem(x, y, width, height) {
+function getHighlightedMenuItem(x: number, y: number, width: number, height: number) {
 	if (x < 0 || x > width || y < 0) {
 		return Infinity;
 	}
@@ -39,7 +39,7 @@ function decorateMenu(menuItems: ContextMenuItem[]) {
 }
 
 export default function contextMenu(state: State, events: EventDispatcher): () => void {
-	const onMouseMove = event => {
+	const onMouseMove = (event: any) => {
 		const { itemWidth, x, y } = state.graphicHelper.contextMenu;
 		state.graphicHelper.contextMenu.highlightedItem = getHighlightedMenuItem(
 			event.x - x,
@@ -56,7 +56,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		state.graphicHelper.contextMenu.open = false;
 	};
 
-	const onMouseDown = event => {
+	const onMouseDown = (event: any) => {
 		const { highlightedItem, items } = state.graphicHelper.contextMenu;
 
 		if (items[highlightedItem]) {
@@ -80,7 +80,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		event.stopPropagation = true;
 	};
 
-	const onContextMenu = async event => {
+	const onContextMenu = async (event: any) => {
 		// Check if context menu feature is enabled
 		if (!state.featureFlags.contextMenu) {
 			return;
@@ -110,12 +110,12 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 		events.on('mousemove', onMouseMove);
 	};
 
-	const onOpenSubMenu = async event => {
+	const onOpenSubMenu = async (event: any) => {
 		const { menu } = event;
 		state.graphicHelper.contextMenu.menuStack.push(menu);
 		state.graphicHelper.contextMenu.items = decorateMenu([
 			{ title: '< Back', action: 'menuBack' },
-			...(await menus[menu](state, event)),
+			...(await (menus as any)[menu](state, event)),
 		]);
 		state.graphicHelper.contextMenu.itemWidth =
 			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.globalViewport.vGrid;
@@ -134,7 +134,7 @@ export default function contextMenu(state: State, events: EventDispatcher): () =
 
 		state.graphicHelper.contextMenu.items = decorateMenu([
 			{ title: '< Back', action: 'menuBack' },
-			...menus[menu](state),
+			...(menus as any)[menu](state),
 		]);
 		state.graphicHelper.contextMenu.itemWidth =
 			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.globalViewport.vGrid;
