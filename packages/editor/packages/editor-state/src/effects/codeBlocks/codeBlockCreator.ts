@@ -1,6 +1,6 @@
 import instructionParser from './extras/instructionParser';
 
-import { EventDispatcher } from '../../../events';
+import { EventDispatcher } from '../../types';
 import { getModuleId } from '../../helpers/codeParsers';
 
 import type { CodeBlockGraphicData, State } from '../../types';

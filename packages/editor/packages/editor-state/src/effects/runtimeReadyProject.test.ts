@@ -2,7 +2,7 @@ import compiler from './compiler';
 import save from './save';
 
 import { EMPTY_DEFAULT_PROJECT } from '../types';
-import { EventDispatcher } from '../../events';
+import { EventDispatcher } from '../types';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 import type { State } from '../types';

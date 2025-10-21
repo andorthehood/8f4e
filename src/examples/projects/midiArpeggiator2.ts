@@ -1,4 +1,4 @@
-import type { Project } from '../../../packages/editor/src/state/types';
+import type { Project } from '@8f4e/editor-state-types';
 
 const midiArpeggiator2: Project = {
 	title: 'MIDI Generative Melody',

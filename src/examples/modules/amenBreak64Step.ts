@@ -1,4 +1,4 @@
-import type { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '@8f4e/editor-state-types';
 
 const amenBreak64Step: ExampleModule = {
 	title: 'Amen Break 64 Step',
