@@ -1,4 +1,4 @@
-import { EventDispatcher } from '../../events';
+import { EventDispatcher } from '../types';
 
 import type { State } from '../types';
 import type { Font } from '@8f4e/sprite-generator';
