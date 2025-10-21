@@ -4,7 +4,7 @@ import { Engine, PostProcessEffect } from 'glugglug';
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import drawBackground from './drawers/drawBackground';
 
-import type { State } from '@8f4e/editor';
+import type { State } from '@8f4e/editor-state-types';
 
 export default async function init(
 	state: State,

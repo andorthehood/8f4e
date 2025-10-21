@@ -1,7 +1,7 @@
 import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
-import type { State } from '@8f4e/editor';
+import type { State } from '@8f4e/editor-state-types';
 
 function calculateIntersection(
 	line1StartX: number,

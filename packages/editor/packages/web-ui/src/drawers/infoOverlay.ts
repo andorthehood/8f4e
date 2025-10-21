@@ -2,7 +2,7 @@ import { Engine } from 'glugglug';
 
 const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
-import type { State } from '@8f4e/editor';
+import type { State } from '@8f4e/editor-state-types';
 
 function formatBytes(bytes: number): string {
 	if (bytes < 1000) {
