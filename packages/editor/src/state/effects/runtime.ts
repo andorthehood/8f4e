@@ -1,21 +1,10 @@
 import { EventDispatcher } from '../../events';
-import {
-	State,
-	WebWorkerLogicRuntime,
-	MainThreadLogicRuntime,
-	AudioWorkletRuntime,
-	WebWorkerMIDIRuntime,
-} from '../types';
 
-// Type for runtime factory function
-export type RuntimeFactory = (state: State, events: EventDispatcher) => () => void;
+import type { State } from '../types';
+import type { RuntimeType } from '@8f4e/editor-state-types';
 
-// Runtime type union
-export type RuntimeType =
-	| WebWorkerLogicRuntime['runtime']
-	| MainThreadLogicRuntime['runtime']
-	| AudioWorkletRuntime['runtime']
-	| WebWorkerMIDIRuntime['runtime'];
+// Re-export types from shared package
+export type { RuntimeFactory, RuntimeType } from '@8f4e/editor-state-types';
 
 export default async function runtime(state: State, events: EventDispatcher) {
 	let runtimeDestroyer: null | (() => void) = null;
@@ -64,14 +53,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 		}
 	}
 
-	async function changeRuntime({
-		selectedRuntime,
-	}: {
-		selectedRuntime:
-			| WebWorkerLogicRuntime['runtime']
-			| AudioWorkletRuntime['runtime']
-			| WebWorkerMIDIRuntime['runtime'];
-	}) {
+	async function changeRuntime({ selectedRuntime }: { selectedRuntime: RuntimeType }) {
 		// Prevent runtime changes during initialization
 		if (isInitializing) {
 			console.log('[Runtime] Cannot change runtime while initialization is in progress');
