@@ -13,7 +13,7 @@ The `@8f4e/web-ui` package is responsible for:
 
 ## Architecture
 
-This package was extracted from the `@8f4e/editor` package to separate rendering concerns from editor state management. It imports state types from `@8f4e/editor` but does not have a runtime dependency on it, avoiding circular dependencies in the build process.
+This package was extracted from the `@8f4e/editor` package to separate rendering concerns from editor state management. It imports state types from `@8f4e/editor-state-types` (a shared types package) to avoid circular dependencies in the build process.
 
 ### Key Components
 
@@ -30,7 +30,7 @@ This package was extracted from the `@8f4e/editor` package to separate rendering
 
 - `glugglug`: 2D WebGL rendering engine
 - `@8f4e/sprite-generator`: Generates sprite sheets for characters and UI elements
-- `@8f4e/editor`: Provides type definitions for editor state (dev dependency only)
+- `@8f4e/editor-state-types`: Provides type definitions for editor state (shared types package)
 
 ## Usage
 

@@ -1,7 +1,8 @@
-// Re-export all types from the shared editor-state-types package
+// Re-export types needed by web-ui and other consumers
+export type { State, CodeBlockGraphicData } from './types';
+
+// Also export types that editor consumers need
 export type {
-	State,
-	CodeBlockGraphicData,
 	Project,
 	Options,
 	EditorSettings,
@@ -34,11 +35,11 @@ export type {
 	Input,
 	PianoKeyboard,
 	ContextMenu,
-	RuntimeFactory,
-	RuntimeType,
-	FeatureFlags,
-	FeatureFlagsConfig,
-} from '@8f4e/editor-state-types';
+} from './types';
 
-// Re-export EMPTY_DEFAULT_PROJECT as a value
-export { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state-types';
+// Export EMPTY_DEFAULT_PROJECT as a value
+export { EMPTY_DEFAULT_PROJECT } from './types';
+
+export type { RuntimeFactory, RuntimeType } from './runtime';
+export type { FeatureFlags, FeatureFlagsConfig } from './featureFlags';
+export type { EventDispatcher } from './eventDispatcher';

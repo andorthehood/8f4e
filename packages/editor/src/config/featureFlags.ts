@@ -6,31 +6,14 @@
  * during editor instantiation.
  */
 
-export interface FeatureFlags {
-	/** Enable/disable right-click context menu functionality */
-	contextMenu: boolean;
-
-	/** Enable/disable info overlay display (development information) */
-	infoOverlay: boolean;
-
-	/** Enable/disable dragging and repositioning of code block modules */
-	moduleDragging: boolean;
-
-	/** Enable/disable panning/scrolling of the editor viewport */
-	viewportDragging: boolean;
-
-	/** Enable/disable persistent storage functionality */
-	persistentStorage: boolean;
-
-	/** Enable/disable all editing functionality (create, edit, delete, save) */
-	editing: boolean;
-}
+// Re-export types from shared package
+export type { FeatureFlags, FeatureFlagsConfig } from '@8f4e/editor-state-types';
 
 /**
  * Default feature flags configuration with all features enabled.
  * Users can override these values when initializing the editor.
  */
-export const defaultFeatureFlags: FeatureFlags = {
+export const defaultFeatureFlags = {
 	contextMenu: true,
 	infoOverlay: true, // Default to true, can be overridden
 	moduleDragging: true,
@@ -45,15 +28,11 @@ export const defaultFeatureFlags: FeatureFlags = {
  * @param flags - Partial feature flags configuration
  * @returns Complete feature flags configuration with validated values
  */
-export function validateFeatureFlags(flags: Partial<FeatureFlags> = {}): FeatureFlags {
+export function validateFeatureFlags(
+	flags: Partial<import('@8f4e/editor-state-types').FeatureFlags> = {}
+): import('@8f4e/editor-state-types').FeatureFlags {
 	return {
 		...defaultFeatureFlags,
 		...flags,
 	};
 }
-
-/**
- * Type for partial feature flags used in editor configuration.
- * This allows users to specify only the flags they want to override.
- */
-export type FeatureFlagsConfig = Partial<FeatureFlags>;
