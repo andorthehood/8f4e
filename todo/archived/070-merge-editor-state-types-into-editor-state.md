@@ -1,10 +1,13 @@
-# TODO: Merge Editor State Types into Editor State Package
+---
+title: 'TODO: Merge Editor State Types into Editor State Package'
+priority: Medium
+effort: 2-3d
+created: 2025-10-21
+status: Completed
+completed: 2025-10-21
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 2-3d
-**Created**: 2025-10-21
-**Completed**: 2025-10-21
-**Status**: Completed
+# TODO: Merge Editor State Types into Editor State Package
 
 ## Problem Description
 

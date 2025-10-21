@@ -1,10 +1,13 @@
-# TODO: Editor state callbacks refactor
+---
+title: 'TODO: Editor state callbacks refactor'
+priority: Medium
+effort: 1.5 days
+created: 2025-10-09
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 1.5 days
-**Created**: 2025-10-09
-**Status**: Open
-**Completed**: 
+# TODO: Editor state callbacks refactor
 
 ## Problem Description
 

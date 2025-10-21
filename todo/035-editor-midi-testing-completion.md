@@ -1,9 +1,13 @@
-# TODO: Complete MIDI Functionality Testing Coverage
+---
+title: 'TODO: Complete MIDI Functionality Testing Coverage'
+priority: Low
+effort: 1 day
+created: 2025-08-27
+status: Open
+completed: null
+---
 
-**Priority**: 🟢
-**Estimated Effort**: 1 day
-**Created**: 2025-08-27
-**Status**: Open
+# TODO: Complete MIDI Functionality Testing Coverage
 
 The MIDI functionality (`packages/editor/src/midi/`) has partial test coverage with only `ccNames.test.ts` implemented. The MIDI system includes:
 

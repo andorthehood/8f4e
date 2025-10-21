@@ -1,9 +1,13 @@
-# TODO: Create shell script to remove untracked node_modules and dist folders
+---
+title: 'TODO: Create shell script to remove untracked node_modules and dist folders'
+priority: Low
+effort: 1 hour
+created: 2025-08-25
+status: Open
+completed: null
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 1 hour  
-**Created**: 2025-08-25  
-**Status**: Open  
+# TODO: Create shell script to remove untracked node_modules and dist folders
 
 ## Problem Description
 

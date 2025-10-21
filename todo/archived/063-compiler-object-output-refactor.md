@@ -1,10 +1,13 @@
-# TODO: Compiler Object Output Refactor
+---
+title: 'TODO: Compiler Object Output Refactor'
+priority: Medium
+effort: 4-5 days
+created: 2025-10-10
+status: Open
+completed: 2025-10-10
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 4-5 days
-**Created**: 2025-10-10
-**Status**: Open
-**Completed**: 2025-10-10
+# TODO: Compiler Object Output Refactor
 
 ## Problem Description
 

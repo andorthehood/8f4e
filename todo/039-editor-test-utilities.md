@@ -1,9 +1,13 @@
-# TODO: Create Editor Test Utilities and Cross-Cutting Testing Infrastructure
+---
+title: 'TODO: Create Editor Test Utilities and Cross-Cutting Testing Infrastructure'
+priority: Medium
+effort: 1-2 days
+created: 2025-08-27
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 1-2 days
-**Created**: 2025-08-27
-**Status**: Open
+# TODO: Create Editor Test Utilities and Cross-Cutting Testing Infrastructure
 
 As editor testing coverage expands across multiple areas (state effects, events, MIDI, configuration, integration, types), there is a need for:
 

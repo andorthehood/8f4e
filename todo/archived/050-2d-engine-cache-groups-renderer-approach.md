@@ -1,10 +1,14 @@
+---
+title: 'TODO: 2D Engine Cache Groups - Renderer Inheritance Approach'
+priority: Medium
+effort: 1-2 days
+created: 2025-09-02
+status: Completed
+completed: 2025-09-04
+---
+
 # 050 - 2D Engine Cache Groups - Renderer Inheritance Approach
 
-**Priority**: 🟡
-**Estimated Effort**: 1-2 days
-**Created**: 2025-09-02
-**Status**: Completed
-**Completed**: 2025-09-04
 
 > Implementation note (2025-09-03)
 >

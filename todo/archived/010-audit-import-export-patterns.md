@@ -1,9 +1,13 @@
-# TODO: Audit Import/Export Patterns for Vite Compatibility
+---
+title: 'TODO: Audit Import/Export Patterns for Vite Compatibility'
+priority: Medium
+effort: 4-5 hours
+created: 2025-08-25
+status: Open
+completed: null
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 4-5 hours  
-**Created**: 2025-08-25  
-**Status**: Open  
+# TODO: Audit Import/Export Patterns for Vite Compatibility
 
 ## Problem Description
 

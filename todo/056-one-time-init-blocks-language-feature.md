@@ -1,9 +1,13 @@
-# TODO: Add startInit / endInit one-time init blocks in code modules
+---
+title: 'TODO: Add startInit / endInit one-time init blocks in code modules'
+priority: Medium
+effort: 5-7 days
+created: 2025-09-09
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 5-7 days
-**Created**: 2025-09-09
-**Status**: Open
+# TODO: Add startInit / endInit one-time init blocks in code modules
 
 The 8f4e language currently lacks support for one-time initialization code that executes exactly once at program start. Code that should run only during initialization is currently placed in the main execution loop, causing it to run repeatedly and inefficiently.
 

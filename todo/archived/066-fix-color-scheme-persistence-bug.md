@@ -1,10 +1,13 @@
-# TODO: Fix Color Scheme Persistence Bug
+---
+title: 'TODO: Fix Color Scheme Persistence Bug'
+priority: Medium
+effort: 2-3 hours
+created: 2025-10-17
+status: Completed
+completed: 2025-10-17
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 2-3 hours
-**Created**: 2025-10-17 
-**Status**: Completed
-**Completed**: 2025-10-17
+# TODO: Fix Color Scheme Persistence Bug
 
 ## Problem Description
 
