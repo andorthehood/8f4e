@@ -1,17 +1,13 @@
 import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
-import type { CodeBlockGraphicData, State } from '../../../../state/types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor';
 
 export default function drawSwitches(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
-	if (!state.graphicHelper.spriteLookups) {
-		return;
-	}
-
-	for (const [, { x, y, id: debuggerId, onValue, offValue }] of codeBlock.extras.switches) {
+	for (const [, { x, y, id: debuggerId, onValue, offValue }] of codeBlock.extras.buttons) {
 		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[debuggerId];
 
-		if (!memory) {
+		if (!memory || !state.graphicHelper.spriteLookups) {
 			continue;
 		}
 

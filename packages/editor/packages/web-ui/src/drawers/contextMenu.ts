@@ -1,6 +1,6 @@
 import { Engine } from 'glugglug';
 
-import type { State } from '../../state/types';
+import type { State } from '@8f4e/editor';
 
 export default function drawContextMenu(engine: Engine, state: State): void {
 	const { open, items, x, y, highlightedItem, itemWidth } = state.graphicHelper.contextMenu;
