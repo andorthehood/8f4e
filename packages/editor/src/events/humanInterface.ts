@@ -1,21 +1,6 @@
-import { State } from 'state/types';
-
 import { EventDispatcher } from '.';
 
-export interface InternalMouseEvent {
-	x: number;
-	y: number;
-	movementX: number;
-	movementY: number;
-	buttons: number;
-	stopPropagation: boolean;
-	canvasWidth: number;
-	canvasHeight: number;
-}
-
-export interface InternalKeyboardEvent {
-	key: string;
-}
+import type { State, InternalMouseEvent, InternalKeyboardEvent } from '@8f4e/editor-state-types';
 
 export default function humanInterface(element: HTMLElement, events: EventDispatcher, state: State) {
 	function onKeyboardEvents(event: KeyboardEvent) {

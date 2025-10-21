@@ -1,17 +1,27 @@
 import initView from '@8f4e/web-ui';
+import initState from '@8f4e/editor-state';
+import { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state-types';
 
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
-import { EMPTY_DEFAULT_PROJECT } from './state/types';
-import initState from './state';
 
-import type { Options } from './state/types';
+import type { Options } from '@8f4e/editor-state-types';
 
 // Re-export types that consumers might need
-export type { Project, Options, State, EditorSettings, CompilationResult, CodeBlockGraphicData } from './state/types';
-export type { RuntimeFactory, RuntimeType } from './state/effects/runtime';
+export type {
+	Project,
+	Options,
+	State,
+	EditorSettings,
+	CompilationResult,
+	CodeBlockGraphicData,
+	RuntimeFactory,
+	RuntimeType,
+	FeatureFlags,
+	FeatureFlagsConfig,
+} from '@8f4e/editor-state-types';
 export type { EventDispatcher } from './events';
-export type { FeatureFlags, FeatureFlagsConfig } from './config/featureFlags';
+export { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state-types';
 
 export default async function init(canvas: HTMLCanvasElement, options: Options) {
 	const events = initEvents();
