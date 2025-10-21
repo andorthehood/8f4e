@@ -4,7 +4,7 @@ priority: Low
 effort: 2-3 hours
 created: 2025-09-02
 status: Open
-completed: null
+completed: 2025-09-05
 ---
 
 # TODO: Standardize Type Imports with `import type` and `import { type }`
