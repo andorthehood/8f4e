@@ -1,6 +1,6 @@
 import { CodeBlockClickEvent } from './codeBlockDragger';
 
-import { EventDispatcher } from '../../../events';
+import { EventDispatcher } from '../../types';
 
 import type { State, CodeBlockGraphicData } from '../../types';
 
