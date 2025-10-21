@@ -1,7 +1,7 @@
 import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
-import type { CodeBlockGraphicData, State } from '@8f4e/editor';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 
 export default function drawSwitches(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	for (const [, { x, y, id: debuggerId, onValue, offValue }] of codeBlock.extras.buttons) {
