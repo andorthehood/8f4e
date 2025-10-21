@@ -1,6 +1,6 @@
 import { Engine } from 'glugglug';
 
-import type { State } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state';
 
 export default function drawDialog(engine: Engine, state: State): void {
 	const { show } = state.graphicHelper.dialog;
