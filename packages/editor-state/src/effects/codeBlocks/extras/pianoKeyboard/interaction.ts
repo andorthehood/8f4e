@@ -1,5 +1,5 @@
 import { CodeBlockClickEvent } from '../../codeBlockDragger';
-import { EventDispatcher } from '../../../../../events';
+import { EventDispatcher } from '../../../../types';
 import findPianoKeyAtViewportCoordinates from '../../../../helpers/findPianoKeyboardAtViewportCoordinates';
 import { insertCodeAfterLine, replaceCode } from '../../../../helpers/multiLineCodeParser';
 
