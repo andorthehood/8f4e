@@ -1,4 +1,4 @@
-import type { Project } from '@8f4e/editor-state-types';
+import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
 	title: 'Random Note Generator',

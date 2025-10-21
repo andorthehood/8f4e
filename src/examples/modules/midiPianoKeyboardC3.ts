@@ -1,4 +1,4 @@
-import type { ExampleModule } from '@8f4e/editor-state-types';
+import type { ExampleModule } from '@8f4e/editor-state';
 
 const midiPianoKeyboardC3: ExampleModule = {
 	title: 'MIDI Piano Keyboard (First key: C3)',

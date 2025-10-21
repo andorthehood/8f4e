@@ -32,7 +32,7 @@
 	"dependencies": {
 		"glugglug": "*",
 		"@8f4e/sprite-generator": "*",
-		"@8f4e/editor-state-types": "*"
+		"@8f4e/editor-state": "*"
 	},
 	"devDependencies": {}
 }

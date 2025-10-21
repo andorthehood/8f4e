@@ -35,7 +35,6 @@ export default defineConfig(({ command }) => {
       alias: {
         '@8f4e/editor': resolvePath(`packages/editor/${isBuild ? 'dist' : 'src'}`),
         '@8f4e/editor-state': resolvePath(`packages/editor/packages/editor-state/${isBuild ? 'dist' : 'src'}`),
-        '@8f4e/editor-state-types': resolvePath(`packages/editor/packages/editor-state-types/${isBuild ? 'dist' : 'src'}`),
         '@8f4e/web-ui': resolvePath(`packages/editor/packages/web-ui/${isBuild ? 'dist' : 'src'}`),
         'glugglug': resolvePath(`packages/editor/packages/glugglug/${isBuild ? 'dist' : 'src'}`),
         '@8f4e/compiler': resolvePath(`packages/compiler/${isBuild ? 'dist' : 'src'}`),
