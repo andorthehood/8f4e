@@ -9,8 +9,6 @@ completed: 2025-08-27
 
 # TODO: Implement Lazy-Loaded Runtime Factories
 
-**Priority**: ��
-
 ## Problem Description
 
 Currently, all runtime factories are imported statically at the top of `src/editor.ts`, which means:
