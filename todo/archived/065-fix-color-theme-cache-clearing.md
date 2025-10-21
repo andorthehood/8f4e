@@ -1,10 +1,13 @@
-# TODO: Fix Color Theme Cache Clearing Bug
+---
+title: 'TODO: Fix Color Theme Cache Clearing Bug'
+priority: Medium
+effort: 2-3 hours
+created: 2025-10-17
+status: Completed
+completed: 2025-10-17
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 2-3 hours
-**Status**: Completed
-**Created**: 2025-10-17
-**Completed** 2025-10-17
+# TODO: Fix Color Theme Cache Clearing Bug
 
 ## Problem Description
 

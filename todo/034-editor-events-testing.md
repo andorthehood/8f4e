@@ -1,9 +1,13 @@
-# TODO: Comprehensive Testing for Editor Event System
+---
+title: 'TODO: Comprehensive Testing for Editor Event System'
+priority: Medium
+effort: 1-2 days
+created: 2025-08-27
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 1-2 days
-**Created**: 2025-08-27
-**Status**: Open
+# TODO: Comprehensive Testing for Editor Event System
 
 The editor event system (`packages/editor/src/events/`) coordinates event routing and management between different parts of the editor. Currently, this critical coordination layer has no test coverage, creating risks for:
 
