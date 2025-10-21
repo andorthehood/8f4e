@@ -34,7 +34,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 059 | Refactor Unit Tests into __tests__ Folders | 🟡 | 0.5-1d | 2025-09-04 | Inconsistent test organization makes discovery harder and complicates refactors; standardize to `packages/<pkg>/src/**/__tests__/*.test.ts` structure |
 | 062 | Editor Command Queue Refactor | 🟡 | 3-4d | 2025-10-09 | Direct callback storage makes state non-serializable and couples effects to host functions; replace with typed command queue for better testability and side-effect observability |
 | 069 | Extract Editor State Into Dedicated Package | 🟡 | 3d | 2025-10-21 | Split editor state logic into `@8f4e/editor-state` to remove deep imports, clarify boundaries, and enable reuse |
-| 070 | Merge Editor State Types Into Editor State Package | 🟡 | 2-3d | 2025-10-21 | Consolidate the standalone types package back into `@8f4e/editor-state`, update configs/dependencies, and remove redundant aliases |
 
 ### 🟢 Low Priority
 
@@ -51,6 +50,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 070 | Merge Editor State Types Into Editor State Package | 🟡 | 2-3d | 2025-10-21 | Consolidated the standalone types package back into `@8f4e/editor-state`, updated configs/dependencies, and removed redundant aliases |
 | 068 | Split Editor View Into @8f4e/web-ui Package | 🟡 | 3-5d | 2025-10-21 | Externalized canvas rendering layer into dedicated @8f4e/web-ui Nx package with shared state types, dynamic imports, and updated build wiring |
 | 066 | Fix Color Scheme Persistence Bug | 🟡 | 2-3h | 2024-12-19 | Color scheme selection not persisted across browser reloads; reverts to default 'hackerman' instead of user's selected scheme |
 | 063 | Compiler Object Output Refactor | 🟡 | 2-3d | Recent | Refactor compiler to output structured objects instead of raw arrays |
