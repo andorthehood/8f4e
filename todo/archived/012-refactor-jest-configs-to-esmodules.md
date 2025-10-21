@@ -1,10 +1,13 @@
-# TODO: Refactor Jest Configs to ES Modules
+---
+title: 'TODO: Refactor Jest Configs to ES Modules'
+priority: �
+effort: 3-4 hours
+created: 2025-08-25
+status: Completed
+completed: 2025-09-04
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 3-4 hours  
-**Created**: 2025-08-25
-**Status**: Completed
-**Completed**: 2025-09-04
+# TODO: Refactor Jest Configs to ES Modules
 
 ## Problem Description
 
