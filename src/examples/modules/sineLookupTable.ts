@@ -1,4 +1,4 @@
-import type { ExampleModule } from '@8f4e/editor-state-types';
+import type { ExampleModule } from '@8f4e/editor-state';
 
 const sine = new Array(256).fill(0).map((value, index) => {
 	return Math.sin((index / 255) * (2 * Math.PI));

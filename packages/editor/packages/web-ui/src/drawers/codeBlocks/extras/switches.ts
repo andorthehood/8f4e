@@ -1,7 +1,7 @@
 import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 
 export default function drawSwitches(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {
