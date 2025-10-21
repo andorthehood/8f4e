@@ -42,4 +42,4 @@ export { EMPTY_DEFAULT_PROJECT } from './types';
 
 export type { RuntimeFactory, RuntimeType } from './runtime';
 export type { FeatureFlags, FeatureFlagsConfig } from './featureFlags';
-export type { EventDispatcher } from './eventDispatcher';
+export type { EventDispatcher, InternalMouseEvent, InternalKeyboardEvent } from './eventDispatcher';

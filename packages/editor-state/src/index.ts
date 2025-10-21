@@ -18,11 +18,9 @@ import exportWasm from './effects/exportWasm';
 import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
+import { validateFeatureFlags, defaultFeatureFlags } from './featureFlags';
 
-import { validateFeatureFlags, defaultFeatureFlags } from '../config/featureFlags';
-import { EventDispatcher } from '../events';
-
-import type { Options, Project, State, CodeBlockGraphicData } from './types';
+import type { Options, Project, State, CodeBlockGraphicData, EventDispatcher } from './types';
 
 // Helper function to create base code block with self-reference
 function createBaseCodeBlock(): CodeBlockGraphicData {
