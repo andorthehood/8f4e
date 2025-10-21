@@ -29,7 +29,7 @@ The project uses several special file types and technologies that require specia
 - **Code change needed**: 1 import statement in `audioWorkletRuntime.ts`
 
 ### WebAssembly Compatibility
-- - **Migration**: No changes needed - current `WebAssembly.instantiate()` works directly
+- **Migration**: No changes needed - current `WebAssembly.instantiate()` works directly
 - **Dependencies**: `wabt` remains compatible
 
 **📄 Migration Plan Added**: Detailed steps added to `todo/001-vite-migration.md`
@@ -176,7 +176,6 @@ Research Vite-compatible solutions for each special file type and document the f
 **3. unplugin-glsl**
 - **Stars**: 7+ | **Maintainer**: YunYouJun
 - **Features**: Cross-bundler GLSL support (Vite, Webpack, Rollup)
-- 
 ### AudioWorklet Plugin Evaluated
 
 **vite-plugin-worklet (Selected Solution)**

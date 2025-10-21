@@ -9,7 +9,6 @@ completed: 2025-08-27
 
 # TODO: Implement WebAssembly Export Functionality
 
-**Priority**: ��
 
 ## Problem Description
 
