@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Align dev watcher paths across packages'
-priority: �
+priority: Medium
 effort: 1-2 days
 created: 2025-10-20
 status: Completed

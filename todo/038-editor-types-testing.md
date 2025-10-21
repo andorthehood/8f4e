@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Comprehensive Testing for Editor Type System'
-priority: �
+priority: Low
 effort: 1 day
 created: 2025-08-27
 status: Open

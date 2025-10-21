@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Pass Runtime Instances Through initEditor Options'
-priority: �
+priority: Medium
 effort: 3-4 days
 created: 2025-08-26
 status: Completed

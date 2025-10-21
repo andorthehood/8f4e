@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Standardize Package.json Fields Across All Packages'
-priority: �
+priority: Low
 effort: 2-3 hours
 created: 2025-08-25
 status: Completed
