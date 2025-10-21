@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Feature Flags Configuration System'
-priority: �
+priority: Low
 effort: 2-3 days
 created: 2025-08-26
 status: Completed

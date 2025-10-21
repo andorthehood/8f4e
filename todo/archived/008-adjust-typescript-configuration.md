@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Adjust TypeScript Configuration for Vite Migration'
-priority: �
+priority: Medium
 effort: 3-4 hours
 created: 2025-08-25
 status: Completed

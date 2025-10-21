@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Editor Command Queue Refactor'
-priority: �
+priority: Medium
 effort: 3-4 days
 created: 2025-10-09
 status: Open
