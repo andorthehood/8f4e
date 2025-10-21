@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Add Sprite Generator Unit Tests'
-priority: 🟡
+priority: Low
 effort: 5-7 hours
 created: 2025-08-28
 status: Closed

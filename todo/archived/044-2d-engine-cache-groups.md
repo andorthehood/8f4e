@@ -1,6 +1,6 @@
 ---
 title: 'TODO: 2D Engine Cache Groups Implementation'
-priority: 🟡
+priority: Medium
 effort: 1-2 days
 created: 2025-08-28
 status: Cancelled

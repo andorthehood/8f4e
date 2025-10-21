@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Remove localStorageId from Editor Options'
-priority: �
+priority: Low
 effort: 0.5-1 day
 created: 2025-08-26
 status: Completed

@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Outsource Compiler from Editor'
-priority: �
+priority: Medium
 effort: 2-3 days
 created: 2025-08-26
 status: Completed
