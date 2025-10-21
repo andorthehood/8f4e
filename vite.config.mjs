@@ -9,6 +9,7 @@ export default defineConfig(({ command }) => {
   const resolvePath = (path) => resolve(__dirname, path)
 
   return {
+    root: 'src',
     plugins: [
       // visualizer(),
       glsl({
@@ -20,11 +21,11 @@ export default defineConfig(({ command }) => {
       viteStaticCopy({
         targets: [
           {
-            src: 'src/_headers',
+            src: '_headers',
             dest: ''
           },
           {
-            src: 'packages/editor/packages/web-ui/src/textures/cursor.png',
+            src: './cursor.png',
             dest: 'assets'
           }
         ]
@@ -48,7 +49,7 @@ export default defineConfig(({ command }) => {
       }
     },
     build: {
-      outDir: 'dist',
+      outDir: '../dist',
       rollupOptions: {
         // Ensure proper module resolution for production
         external: []
