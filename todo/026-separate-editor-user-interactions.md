@@ -1,9 +1,13 @@
-# TODO: Separate Editor User Interactions into Standalone Package
+---
+title: 'TODO: Separate Editor User Interactions into Standalone Package'
+priority: Medium
+effort: 2-3 days
+created: 2025-08-26
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 2-3 days
-**Created**: 2025-08-26
-**Status**: Open
+# TODO: Separate Editor User Interactions into Standalone Package
 
 The current editor package tightly couples user interaction handling with the core state management logic. The `packages/editor/src/events/` and various interaction effects contain:
 - Browser-specific event listeners (mouse, keyboard, wheel)
