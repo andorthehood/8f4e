@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`loadFloat  1`] = `
+exports[`loadFloat >  1`] = `
 [
   42,
   2,
@@ -8,7 +8,7 @@ exports[`loadFloat  1`] = `
 ]
 `;
 
-exports[`loadFloat  2`] = `
+exports[`loadFloat >  2`] = `
 [
   33,
   0,
