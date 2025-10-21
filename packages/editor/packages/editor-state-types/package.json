@@ -1,8 +1,8 @@
 {
-	"name": "@8f4e/editor",
-	"version": "0.0.4",
+	"name": "@8f4e/editor-state-types",
+	"version": "1.0.0",
 	"private": true,
-	"description": "8f4e editor package",
+	"description": "8f4e editor state types package - shared type definitions",
 	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -14,10 +14,9 @@
 	},
 	"sideEffects": false,
 	"scripts": {
+		"test": "jest --passWithNoTests",
 		"build": "tsc",
-		"bundle": "vite build",
 		"dev": "tsc --watch",
-		"test": "jest",
 		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
@@ -33,12 +32,7 @@
 	"dependencies": {
 		"glugglug": "*",
 		"@8f4e/sprite-generator": "*",
-		"@8f4e/state-manager": "*",
-		"@8f4e/editor-state-types": "*",
-		"@8f4e/web-ui": "*"
-	},
-	"devDependencies": {
-		"vite": "^7.1.5",
 		"@8f4e/compiler": "*"
-	}
+	},
+	"devDependencies": {}
 }
