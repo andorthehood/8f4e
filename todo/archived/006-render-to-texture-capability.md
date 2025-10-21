@@ -9,8 +9,6 @@ completed: null
 
 # TODO: Implement Texture Caching System
 
-**Priority**: ��
-
 The current 2D engine renders all drawing operations directly to the main canvas every frame, which can be inefficient for complex, frequently-drawn elements like UI panels, complex shapes, or repeated patterns. This leads to:
 - Unnecessary GPU work for static or rarely-changing content
 - Performance degradation when drawing complex scenes
