@@ -1,10 +1,13 @@
-# TODO: Remove Project Parameter from initEditor Function
+---
+title: 'TODO: Remove Project Parameter from initEditor Function'
+priority: Medium
+effort: 1-2 days
+created: 2025-08-26
+status: Completed
+completed: 2025-09-04
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 1-2 days
-**Created**: 2025-08-26
-**Status**: Completed
-**Completed**: 2025-09-04
+# TODO: Remove Project Parameter from initEditor Function
 
 ## Problem Description
 

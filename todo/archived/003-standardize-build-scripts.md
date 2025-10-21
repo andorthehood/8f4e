@@ -1,9 +1,13 @@
-# TODO: Standardize Build Scripts Across Packages
+---
+title: 'TODO: Standardize Build Scripts Across Packages'
+priority: Medium
+effort: 1 day
+created: 2025-08-23
+status: Open
+completed: null
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 1 day  
-**Created**: 2025-08-23  
-**Status**: Open  
+# TODO: Standardize Build Scripts Across Packages
 
 ## Problem Description
 
