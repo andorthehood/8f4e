@@ -1,10 +1,15 @@
+---
+title: 'TODO: Implement Lazy-Loaded Runtime Factories'
+priority: 🟡
+effort: 2-3 hours
+created: 2025-08-27
+status: Completed
+completed: 2025-08-27
+---
+
 # TODO: Implement Lazy-Loaded Runtime Factories
 
 **Priority**: ��
-**Estimated Effort**: 2-3 hours
-**Created**: 2025-08-27
-**Status**: Completed ✅
-**Completed**: 2025-08-27
 
 ## Problem Description
 

@@ -1,9 +1,13 @@
-# TODO: Remove @ts-ignore Comments Through Proper Typing
+---
+title: 'TODO: Remove @ts-ignore Comments Through Proper Typing'
+priority: �
+effort: 1-2 days
+created: 2025-08-23
+status: Completed
+completed: null
+---
 
-**Priority**: 🟢  
-**Estimated Effort**: 1-2 days  
-**Created**: 2025-08-23  
-**Status**: Completed  
+# TODO: Remove @ts-ignore Comments Through Proper Typing
 
 ## Problem Description
 

@@ -1,9 +1,13 @@
-# TODO: Runtime Loading UI Improvements
+---
+title: 'TODO: Runtime Loading UI Improvements'
+priority: �
+effort: 2-3 days
+created: 2025-08-26
+status: Open
+completed: null
+---
 
-**Priority**: 🟢
-**Estimated Effort**: 2-3 days
-**Created**: 2025-08-26
-**Status**: Open
+# TODO: Runtime Loading UI Improvements
 
 ## Problem Description
 

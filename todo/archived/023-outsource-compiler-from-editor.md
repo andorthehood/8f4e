@@ -1,10 +1,13 @@
-# TODO: Outsource Compiler from Editor
+---
+title: 'TODO: Outsource Compiler from Editor'
+priority: �
+effort: 2-3 days
+created: 2025-08-26
+status: Completed
+completed: 2025-08-27
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 2-3 days
-**Created**: 2025-08-26
-**Status**: Completed
-**Completed**: 2025-08-27
+# TODO: Outsource Compiler from Editor
 
 ## Problem Description
 

@@ -1,10 +1,13 @@
-# TODO: Add compiler option to include AST in output (default false)
+---
+title: 'TODO: Add compiler option to include AST in output (default false)'
+priority: �
+effort: 3–5 hours
+created: 2025-09-04
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 3–5 hours
-**Created**: 2025-09-04
-**Status**: Open
-**Completed**: 2025-09-04
+# TODO: Add compiler option to include AST in output (default false)
 
 The compiler currently includes the parsed AST on each `CompiledModule` in its output. A repo-wide search confirms the AST is not consumed outside the compiler package. Always returning AST increases payload size, serialization cost (when posting from the worker), and coupling of internal structures to the public API.
 

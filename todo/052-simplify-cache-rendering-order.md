@@ -1,9 +1,14 @@
+---
+title: 'null'
+priority: �
+effort: 2–3 days
+created: 2025-09-03
+status: Open
+completed: null
+---
+
 # 052 - Simplify Cache Rendering Order
 
-**Priority**: 🟡
-**Estimated Effort**: 2–3 days
-**Created**: 2025-09-03
-**Status**: Open
 
 The 2D engine supports caching of complex draw blocks via `cacheGroup`. The current implementation in `CachedRenderer` preserves draw order across different textures (sprite sheet vs cached textures) using a “segment” system that records texture switches and replays draws in a single render pass. While it works, it adds complexity and has been a source of regressions when experimenting with simplifications.
 

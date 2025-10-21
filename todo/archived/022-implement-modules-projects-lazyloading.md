@@ -1,10 +1,13 @@
-# TODO: Implement Lazy Loading for Modules and Projects
+---
+title: 'TODO: Implement Lazy Loading for Modules and Projects'
+priority: �
+effort: 4-6 days
+created: 2025-08-26
+status: Completed
+completed: 2025-09-04
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 4-6 days  
-**Created**: 2025-08-26  
-**Status**: ✅ COMPLETED  
-**Completed**: 2025-09-04
+# TODO: Implement Lazy Loading for Modules and Projects
 
 ## ✅ Implementation Summary
 

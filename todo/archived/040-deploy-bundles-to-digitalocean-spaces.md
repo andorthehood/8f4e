@@ -1,10 +1,13 @@
-# TODO: Deploy Editor Bundle to DigitalOcean Spaces
+---
+title: 'TODO: Deploy Editor Bundle to DigitalOcean Spaces'
+priority: �
+effort: 4-6 hours
+created: 2025-08-27
+status: Completed
+completed: 2025-08-27
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 4-6 hours
-**Created**: 2025-08-27
-**Status**: Completed
-**Completed**: 2025-08-27
+# TODO: Deploy Editor Bundle to DigitalOcean Spaces
 
 ## Problem Description
 

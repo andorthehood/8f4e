@@ -1,10 +1,14 @@
+---
+title: 'TODO: 2D Engine Cache Groups Implementation'
+priority: 🟡
+effort: 1-2 days
+created: 2025-08-28
+status: Cancelled
+completed: null
+---
+
 # 044 - 2D Engine Cache Groups Implementation
 
-**Priority**: 🟡
-**Estimated Effort**: 1-2 days
-**Created**: 2025-08-28
-**Status**: Cancelled
-**Completed**: 2025-09-02
 
 The current 2D engine redraws complex UI elements and sprites every frame, even when they haven't changed. This creates performance bottlenecks for:
 - Complex UI panels with multiple sprites and text

@@ -1,10 +1,13 @@
-# TODO: Feature Flags Configuration System
+---
+title: 'TODO: Feature Flags Configuration System'
+priority: �
+effort: 2-3 days
+created: 2025-08-26
+status: Completed
+completed: 2025-09-04
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 2-3 days  
-**Created**: 2025-08-26
-**Status**: Completed  
-**Completed**: 2025-09-04
+# TODO: Feature Flags Configuration System
 
 ## Problem Description
 
