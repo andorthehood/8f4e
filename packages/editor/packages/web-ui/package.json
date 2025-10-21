@@ -31,7 +31,8 @@
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
 		"glugglug": "*",
-		"@8f4e/sprite-generator": "*"
+		"@8f4e/sprite-generator": "*",
+		"@8f4e/editor-state-types": "*"
 	},
 	"devDependencies": {}
 }
