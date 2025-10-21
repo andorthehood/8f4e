@@ -13,9 +13,9 @@ export default mergeConfig(
 			exclude: [
 				'**/node_modules/**',
 				'**/dist/**',
-				'**/testUtils.ts',
-				'**/testFixtures.ts',
-				'**/testHelpers.ts',
+				'src/**/testUtils.ts',
+				'src/**/testFixtures.ts',
+				'src/**/testHelpers.ts',
 				'**/packages/glugglug/**',
 			],
 		},
