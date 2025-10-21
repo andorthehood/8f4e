@@ -1,4 +1,4 @@
-import type { FeatureFlags, FeatureFlagsConfig } from '@8f4e/editor-state-types';
+import type { FeatureFlags, FeatureFlagsConfig } from './types';
 
 /**
  * Default feature flags configuration with all features enabled.
