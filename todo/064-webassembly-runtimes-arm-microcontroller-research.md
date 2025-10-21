@@ -1,9 +1,13 @@
-# TODO: Research WebAssembly Runtimes for ARM Microcontroller Support
+---
+title: 'TODO: Research WebAssembly Runtimes for ARM Microcontroller Support'
+priority: Medium
+effort: 3-5 days
+created: 2025-09-10
+status: Open
+completed: null
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 3-5 days  
-**Created**: 2025-09-10  
-**Status**: Open  
+# TODO: Research WebAssembly Runtimes for ARM Microcontroller Support
 
 The 8f4e project currently supports browser-based WebAssembly runtimes (WebWorker and AudioWorklet) but lacks native runtimes for embedded ARM microcontrollers. To implement the planned microcontroller runtime and DaisyARMCortexM7 support, we need comprehensive research on available WebAssembly runtimes suitable for ARM-based embedded systems.
 
