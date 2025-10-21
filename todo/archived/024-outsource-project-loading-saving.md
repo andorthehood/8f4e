@@ -1,10 +1,13 @@
-# TODO: Outsource Project Loading and Saving
+---
+title: 'TODO: Outsource Project Loading and Saving'
+priority: �
+effort: 1-2 days
+created: 2025-08-26
+status: Completed
+completed: 2025-09-04
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 1-2 days
-**Created**: 2025-08-26
-**Status**: Completed
-**Completed**: 2025-09-04
+# TODO: Outsource Project Loading and Saving
 
 ## Problem Description
 
