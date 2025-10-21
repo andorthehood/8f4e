@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`branchIfUnchanged  1`] = `
+exports[`branchIfUnchanged >  1`] = `
 [
   33,
   0,
@@ -24,7 +24,7 @@ exports[`branchIfUnchanged  1`] = `
 ]
 `;
 
-exports[`branchIfUnchanged  2`] = `
+exports[`branchIfUnchanged >  2`] = `
 [
   33,
   0,
