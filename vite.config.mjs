@@ -24,7 +24,7 @@ export default defineConfig(({ command }) => {
             dest: ''
           },
           {
-            src: 'packages/editor/src/view/textures/cursor.png',
+            src: 'packages/editor/packages/web-ui/src/textures/cursor.png',
             dest: 'assets'
           }
         ]
@@ -33,6 +33,7 @@ export default defineConfig(({ command }) => {
     resolve: {
       alias: {
         '@8f4e/editor': resolvePath(`packages/editor/${isBuild ? 'dist' : 'src'}`),
+        '@8f4e/web-ui': resolvePath(`packages/editor/packages/web-ui/${isBuild ? 'dist' : 'src'}`),
         'glugglug': resolvePath(`packages/editor/packages/glugglug/${isBuild ? 'dist' : 'src'}`),
         '@8f4e/compiler': resolvePath(`packages/compiler/${isBuild ? 'dist' : 'src'}`),
         '@8f4e/sprite-generator': resolvePath(`packages/editor/packages/sprite-generator/${isBuild ? 'dist' : 'src'}`),

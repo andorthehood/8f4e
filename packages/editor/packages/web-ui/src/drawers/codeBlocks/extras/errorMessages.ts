@@ -1,6 +1,6 @@
 import { Engine } from 'glugglug';
 
-import type { CodeBlockGraphicData, State } from '../../../../state/types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor';
 
 export default function drawErrorMessages(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {
