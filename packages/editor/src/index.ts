@@ -1,13 +1,14 @@
+import initView from '@8f4e/web-ui';
+
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
 import { EMPTY_DEFAULT_PROJECT } from './state/types';
-import initView from './view';
 import initState from './state';
 
 import type { Options } from './state/types';
 
 // Re-export types that consumers might need
-export type { Project, Options, State, EditorSettings, CompilationResult } from './state/types';
+export type { Project, Options, State, EditorSettings, CompilationResult, CodeBlockGraphicData } from './state/types';
 export type { RuntimeFactory, RuntimeType } from './state/effects/runtime';
 export type { EventDispatcher } from './events';
 export type { FeatureFlags, FeatureFlagsConfig } from './config/featureFlags';
