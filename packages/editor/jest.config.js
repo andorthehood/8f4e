@@ -11,4 +11,7 @@ export default {
         }],
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+    moduleNameMapper: {
+        '^@8f4e/editor-state-types$': '<rootDir>/packages/editor-state-types/src/index.ts',
+    },
 }; 
