@@ -37,7 +37,7 @@
 		"@8f4e/web-ui": "*"
 	},
 	"devDependencies": {
-		"vite": "^7.1.5",
+		"vite": "^7.1.11",
 		"@8f4e/compiler": "*"
 	}
 }
