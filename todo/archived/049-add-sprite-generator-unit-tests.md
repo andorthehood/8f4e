@@ -9,7 +9,6 @@ completed: 2025-09-04
 
 # TODO: Add Sprite Generator Unit Tests
 
-**Priority**:
 
 ## Problem Description
 

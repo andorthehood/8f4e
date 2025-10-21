@@ -9,7 +9,6 @@ completed: 2025-09-04
 
 # TODO: Add 2D Engine Buffer Utilities Tests
 
-**Priority**: ��
 
 ## Problem Description
 
