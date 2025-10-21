@@ -1,4 +1,4 @@
-import type { ExampleModule } from '@8f4e/editor-state-types';
+import type { ExampleModule } from '@8f4e/editor-state';
 
 const bufferCopierFloat: ExampleModule = {
 	title: 'Buffer Copier (Float)',
