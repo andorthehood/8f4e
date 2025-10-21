@@ -11,7 +11,7 @@ import switches from './extras/switches/codeParser';
 import { CodeBlockClickEvent } from './codeBlockDragger';
 import { CodeBlockAddedEvent } from './codeBlockCreator';
 
-import { EventDispatcher } from '../../../events';
+import { EventDispatcher } from '../../types';
 import {
 	backSpace,
 	enter,
@@ -22,7 +22,7 @@ import {
 	type,
 } from '../../helpers/editor';
 import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
-import { InternalKeyboardEvent } from '../../../events/humanInterface';
+import { InternalKeyboardEvent } from '../../types';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 

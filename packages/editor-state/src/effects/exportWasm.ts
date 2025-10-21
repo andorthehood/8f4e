@@ -1,4 +1,4 @@
-import { EventDispatcher } from '../../events';
+import { EventDispatcher } from '../types';
 
 import type { State } from '../types';
 
