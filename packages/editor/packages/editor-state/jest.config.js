@@ -16,6 +16,6 @@ export default {
 		],
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-	coverageDirectory: '../../coverage/packages/editor-state',
+	coverageDirectory: '../../../../coverage/packages/editor/packages/editor-state',
 	collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.test.{ts,tsx}', '!src/**/*.spec.{ts,tsx}'],
 };
