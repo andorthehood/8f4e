@@ -1,4 +1,4 @@
-import { EventDispatcher } from '../../../../../events';
+import { EventDispatcher } from '../../../../types';
 import findButtonAtViewportCoordinates from '../../../../helpers/findButtonAtViewportCoordinates';
 
 import type { State, Switch, CodeBlockGraphicData } from '../../../../types';
