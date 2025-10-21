@@ -1,7 +1,7 @@
 import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
-import type { CodeBlockGraphicData, State } from '../../../../state/types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 
 export default function drawConnectors(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups) {

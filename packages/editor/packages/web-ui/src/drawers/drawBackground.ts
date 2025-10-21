@@ -1,6 +1,6 @@
 import { Engine } from 'glugglug';
 
-import type { State } from '../../state/types';
+import type { State } from '@8f4e/editor-state-types';
 
 export default function drawBackground(engine: Engine, state: State): void {
 	if (state.graphicHelper.spriteLookups?.background) {
