@@ -1,5 +1,5 @@
 ---
-title: TODO: [Brief Title]
+title: 'TODO: [Brief Title]'
 priority: 🔴/🟡/🟢
 effort: X hours/days
 created: YYYY-MM-DD
