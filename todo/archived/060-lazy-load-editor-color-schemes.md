@@ -1,10 +1,13 @@
-# TODO: Lazy-Load Editor Color Schemes
+---
+title: 'TODO: Lazy-Load Editor Color Schemes'
+priority: �
+effort: 1-2 days
+created: 2025-10-07
+status: Completed
+completed: 2025-10-09
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 1-2 days
-**Created**: 2025-10-07
-**Status**: ✅ Completed
-**Completed**: 2025-10-09
+# TODO: Lazy-Load Editor Color Schemes
 
 ## Problem Description
 
