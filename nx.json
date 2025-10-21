@@ -11,7 +11,7 @@
       "cache": true
     },
     "test": {
-      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
+      "inputs": ["default", "^default", "{workspaceRoot}/vitest.preset.ts"],
       "cache": true
     },
     "typecheck": {
@@ -21,7 +21,7 @@
   },
   "generators": {
     "@nx/js:library": {
-      "unitTestRunner": "jest"
+      "unitTestRunner": "vitest"
     }
   },
   "nxCloudAccessToken": null,
