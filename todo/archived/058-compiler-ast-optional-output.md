@@ -4,7 +4,7 @@ priority: Medium
 effort: 3–5 hours
 created: 2025-09-04
 status: Open
-completed: null
+completed: 2025-09-04
 ---
 
 # TODO: Add compiler option to include AST in output (default false)
