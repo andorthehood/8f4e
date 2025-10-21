@@ -1,10 +1,7 @@
-import { EventDispatcher } from '../types';
+import type { State, EventDispatcher, RuntimeType } from '../types';
 
-import type { State } from '../types';
-import type { RuntimeType } from '@8f4e/editor-state-types';
-
-// Re-export types from shared package
-export type { RuntimeFactory, RuntimeType } from '@8f4e/editor-state-types';
+// Re-export types for convenience
+export type { RuntimeFactory, RuntimeType } from '../types';
 
 export default async function runtime(state: State, events: EventDispatcher) {
 	let runtimeDestroyer: null | (() => void) = null;
