@@ -1,0 +1,40 @@
+{
+	"name": "@8f4e/editor-state",
+	"version": "1.0.0",
+	"private": true,
+	"description": "8f4e editor state management package",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"sideEffects": false,
+	"scripts": {
+		"test": "jest src",
+		"coverage": "jest --coverage src",
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"typecheck": "tsc --noEmit"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andorthehood/8f4e.git"
+	},
+	"author": "Andor Polgar",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/andorthehood/8f4e/issues"
+	},
+	"homepage": "https://github.com/andorthehood/8f4e#readme",
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "^24.3.0",
+		"jest": "^29.7.0",
+		"@swc/jest": "^0.2.39",
+		"@types/jest": "^29.5.12"
+	}
+}

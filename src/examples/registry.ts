@@ -1,4 +1,4 @@
-import type { ExampleModule, ModuleMetadata, Project, ProjectMetadata } from '../../packages/editor/src/state/types';
+import type { ExampleModule, ModuleMetadata, Project, ProjectMetadata } from '@8f4e/editor-state-types';
 
 // Project registry with lazy loading functions (individual loading strategy for projects)
 interface ProjectRegistryEntry {

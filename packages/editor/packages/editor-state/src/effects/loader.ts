@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { EventDispatcher } from '../../events';
+import { EventDispatcher } from '../types';
 import { getModuleId } from '../helpers/codeParsers';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
 
