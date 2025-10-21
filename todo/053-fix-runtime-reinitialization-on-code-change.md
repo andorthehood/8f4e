@@ -1,9 +1,13 @@
-# TODO: Fix Runtime Reinitialization on Code Change
+---
+title: 'TODO: Fix Runtime Reinitialization on Code Change'
+priority: �
+effort: 4-6 hours
+created: 2025-09-03
+status: Open
+completed: null
+---
 
-**Priority**: 🔴
-**Estimated Effort**: 4-6 hours
-**Created**: 2025-09-03
-**Status**: Open
+# TODO: Fix Runtime Reinitialization on Code Change
 
 ## Problem Description
 
