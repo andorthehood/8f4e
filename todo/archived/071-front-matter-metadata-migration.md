@@ -1,10 +1,10 @@
 ---
 title: 'TODO: Front Matter Metadata Migration'
-priority: 🟡
+priority: Medium
 effort: 0.5-1d
 created: 2025-10-21
-status: Open
-completed: null
+status: Completed
+completed: 2025-10-21
 ---
 
 # TODO: Front Matter Metadata Migration

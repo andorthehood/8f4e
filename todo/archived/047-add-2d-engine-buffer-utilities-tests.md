@@ -1,10 +1,14 @@
+---
+title: 'TODO: Add 2D Engine Buffer Utilities Tests'
+priority: Low
+effort: 3-4 hours
+created: 2025-08-28
+status: Completed
+completed: 2025-09-04
+---
+
 # TODO: Add 2D Engine Buffer Utilities Tests
 
-**Priority**: ��
-**Estimated Effort**: 3-4 hours
-**Created**: 2025-08-28
-**Status**: Completed
-**Completed**: 2025-09-04
 
 ## Problem Description
 

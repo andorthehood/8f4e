@@ -1,9 +1,15 @@
+---
+title: 'TODO: Enable Runtime-Only Project Execution'
+priority: Medium
+effort: 3-4 hours
+created: 2025-08-27
+status: Open
+completed: null
+---
+
 # TODO: Enable Runtime-Only Project Execution
 
 **Priority**:
-**Estimated Effort**: 3-4 hours
-**Created**: 2025-08-27
-**Status**: Open
 
 Currently, when users export and share projects, the recipients need the full compiler infrastructure to run them. This creates several barriers:
 

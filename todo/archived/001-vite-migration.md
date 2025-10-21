@@ -1,9 +1,13 @@
-# TODO: Convert from Parcel to Vite Build System
+---
+title: 'TODO: Convert from Parcel to Vite Build System'
+priority: High
+effort: 1-2 weeks
+created: 2025-08-23
+status: Completed
+completed: null
+---
 
-**Priority**: 🔴  
-**Estimated Effort**: 1-2 weeks  
-**Created**: 2025-08-23  
-**Status**: ✅ **COMPLETED**  
+# TODO: Convert from Parcel to Vite Build System
 
 ## Problem Description
 
