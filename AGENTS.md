@@ -9,7 +9,7 @@
 ## Build, Test, and Development Commands
 - `npm run dev`: Watches `packages/editor` and starts Vite on `http://localhost:3000`.
 - `npm run build`: Builds all Nx packages, then Vite production build to `dist/`.
-- `npm run test`: Runs Jest for all packages via Nx.
+- `npm run test`: Runs Vitest for all packages via Nx.
 - `npm run typecheck`: Type-checks all packages.
 - `npm run lint`: ESLint with autofix; also runs on pre-commit via Husky/lint-staged.
 - `npm run graph`: Opens Nx project dependency graph.
@@ -22,10 +22,13 @@
 - Files/dirs: kebab-case for packages, `.ts` for sources; keep `src/` clean and cohesive by domain.
 
 ## Testing Guidelines
-- Framework: Jest with `@swc/jest` transform.
+- Framework: Vitest with built-in ESM support and first-class Vite integration.
 - Locations: `**/__tests__/**` or `*.test.ts` / `*.spec.ts` alongside sources.
-- Run: `npm test` (all) or `npm run test` inside a package.
+- Run: `npm test` (all) or `npx vitest` inside a package.
+- Configuration: Shared preset at `vitest.preset.ts`, per-package configs in `vitest.config.ts`.
+- Globals: Vitest globals enabled (`describe`, `it`, `expect`, `vi` for mocks/spies).
 - Aim for meaningful unit tests around compiler/editor logic; snapshot tests OK for view models. Keep tests fast; no browser required.
+- Note: The `glugglug` submodule still uses Jest and maintains its own test configuration.
 
 ## Commit & Pull Request Guidelines
 - Commits: Imperative mood, concise scope (e.g., "editor: fix drag selection"). Reference issues (`#123`) when relevant.
