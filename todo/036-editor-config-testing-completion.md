@@ -1,9 +1,13 @@
-# TODO: Complete Configuration System Testing Coverage
+---
+title: 'TODO: Complete Configuration System Testing Coverage'
+priority: Low
+effort: 1 day
+created: 2025-08-27
+status: Open
+completed: null
+---
 
-**Priority**: 🟢
-**Estimated Effort**: 1 day
-**Created**: 2025-08-27
-**Status**: Open
+# TODO: Complete Configuration System Testing Coverage
 
 The configuration system (`packages/editor/src/config/`) has partial test coverage with only `featureFlags.test.ts` implemented. The configuration system includes:
 

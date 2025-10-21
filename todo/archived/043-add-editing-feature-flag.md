@@ -1,10 +1,14 @@
+---
+title: 'TODO: Add Editing Feature Flag'
+priority: Medium
+effort: 2-3 days
+created: 2025-08-27
+status: Completed
+completed: 2025-08-27
+---
+
 # TODO: Add Editing Feature Flag
 
-**Priority**: ��
-**Estimated Effort**: 2-3 days
-**Created**: 2025-08-27
-**Status**: Completed
-**Completed**: 2025-08-27
 
 ## Problem Description
 

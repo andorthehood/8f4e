@@ -1,9 +1,13 @@
-# TODO: Standardize Package.json Fields Across All Packages
+---
+title: 'TODO: Standardize Package.json Fields Across All Packages'
+priority: Low
+effort: 2-3 hours
+created: 2025-08-25
+status: Completed
+completed: 2025-08-25
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 2-3 hours  
-**Created**: 2025-08-25  
-**Status**: ✅ Completed  
+# TODO: Standardize Package.json Fields Across All Packages
 
 ## Problem Description
 
@@ -147,7 +151,6 @@ Standardize all package.json files with consistent, Vite-compatible configuratio
 
 ## Completion Summary
 
-**Completed**: 2025-08-25
 
 All package.json files have been successfully standardized with the following changes:
 

@@ -1,9 +1,13 @@
-# TODO: Benchmark Unrolled vs Normal Loop in Audio Buffer Filler
+---
+title: 'TODO: Benchmark Unrolled vs Normal Loop in Audio Buffer Filler'
+priority: Medium
+effort: 8-12 hours
+created: 2025-09-07
+status: Open
+completed: null
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 8-12 hours  
-**Created**: 2025-09-07  
-**Status**: Open
+# TODO: Benchmark Unrolled vs Normal Loop in Audio Buffer Filler
 
 The audio buffer filler loop is currently implemented using an unrolled approach in `packages/compiler/src/index.ts` (line 275):
 
