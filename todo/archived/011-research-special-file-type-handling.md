@@ -1,9 +1,13 @@
-# TODO: Research Vite Handling of Special File Types
+---
+title: 'TODO: Research Vite Handling of Special File Types'
+priority: Low
+effort: 6-8 hours
+created: 2024-12-19
+status: Completed
+completed: null
+---
 
-**Priority**: 🔴  
-**Estimated Effort**: 6-8 hours  
-**Created**: 2024-12-19  
-**Status**: ✅ Completed  
+# TODO: Research Vite Handling of Special File Types
 
 ## Problem Description
 
@@ -25,7 +29,6 @@ The project uses several special file types and technologies that require specia
 - **Code change needed**: 1 import statement in `audioWorkletRuntime.ts`
 
 ### WebAssembly Compatibility
-- **Status**: ✅ Fully compatible out-of-the-box
 - **Migration**: No changes needed - current `WebAssembly.instantiate()` works directly
 - **Dependencies**: `wabt` remains compatible
 
@@ -173,8 +176,6 @@ Research Vite-compatible solutions for each special file type and document the f
 **3. unplugin-glsl**
 - **Stars**: 7+ | **Maintainer**: YunYouJun
 - **Features**: Cross-bundler GLSL support (Vite, Webpack, Rollup)
-- **Status**: Newer, smaller community
-
 ### AudioWorklet Plugin Evaluated
 
 **vite-plugin-worklet (Selected Solution)**

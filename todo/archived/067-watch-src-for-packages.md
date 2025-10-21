@@ -1,10 +1,13 @@
-# TODO: Align dev watcher paths across packages
+---
+title: 'TODO: Align dev watcher paths across packages'
+priority: Medium
+effort: 1-2 days
+created: 2025-10-20
+status: Completed
+completed: 2026-10-20
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 1-2 days
-**Created**: 2025-10-20
-**Status**: Completed
-**Completed**: 2026-10-20
+# TODO: Align dev watcher paths across packages
 
 ## Problem Description
 
