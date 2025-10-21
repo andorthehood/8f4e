@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`dup  1`] = `
+exports[`dup >  1`] = `
 [
   33,
   0,
@@ -11,7 +11,7 @@ exports[`dup  1`] = `
 ]
 `;
 
-exports[`dup  2`] = `
+exports[`dup >  2`] = `
 [
   33,
   0,
