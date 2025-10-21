@@ -10,6 +10,9 @@ export interface EventDispatcher {
 	dispatch: <T>(eventName: string, eventObject?: T) => void;
 }
 
+// Re-export event types from shared package
+export type { InternalMouseEvent, InternalKeyboardEvent } from '@8f4e/editor-state-types';
+
 export default function events(): EventDispatcher {
 	const subscriptions: Record<string, EventHandler<unknown>[]> = {};
 
