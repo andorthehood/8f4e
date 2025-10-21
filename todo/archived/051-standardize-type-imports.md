@@ -1,10 +1,13 @@
-# TODO: Standardize Type Imports with `import type` and `import { type }`
+---
+title: 'TODO: Standardize Type Imports with `import type` and `import { type }`'
+priority: �
+effort: 2-3 hours
+created: 2025-09-02
+status: Open
+completed: null
+---
 
-**Priority**: 🟢  
-**Estimated Effort**: 2-3 hours  
-**Created**: 2025-09-02  
-**Status**: Open
-**Completed**: 2025-09-05
+# TODO: Standardize Type Imports with `import type` and `import { type }`
 
 ## Problem Description
 

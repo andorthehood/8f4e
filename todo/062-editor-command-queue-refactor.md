@@ -1,10 +1,13 @@
-# TODO: Editor Command Queue Refactor
+---
+title: 'TODO: Editor Command Queue Refactor'
+priority: �
+effort: 3-4 days
+created: 2025-10-09
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 3-4 days
-**Created**: 2025-10-09
-**Status**: Open
-**Completed**: TBD
+# TODO: Editor Command Queue Refactor
 
 ## Problem Description
 

@@ -1,9 +1,13 @@
-# TODO: Separate Editor View Layer into Standalone Package
+---
+title: 'TODO: Separate Editor View Layer into Standalone Package'
+priority: �
+effort: 3-5 days
+created: 2025-08-26
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 3-5 days
-**Created**: 2025-08-26
-**Status**: Open
+# TODO: Separate Editor View Layer into Standalone Package
 
 The current editor package tightly couples the state management logic with browser-specific rendering code. The `packages/editor/src/view/` directory contains:
 - Canvas-based rendering using HTML5 Canvas

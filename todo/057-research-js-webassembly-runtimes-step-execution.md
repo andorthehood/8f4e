@@ -1,9 +1,13 @@
-# TODO: Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution
+---
+title: 'TODO: Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution'
+priority: �
+effort: 8-12 hours
+created: 2025-09-09
+status: Open
+completed: null
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 8-12 hours  
-**Created**: 2025-09-09  
-**Status**: Open  
+# TODO: Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution
 
 ## Problem Description
 

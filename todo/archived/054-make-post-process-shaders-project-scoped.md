@@ -1,9 +1,13 @@
-# TODO: Make Post-Process Shaders Project-Scoped
+---
+title: 'TODO: Make Post-Process Shaders Project-Scoped'
+priority: �
+effort: 4-6 hours
+created: 2025-09-03
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 4-6 hours
-**Created**: 2025-09-03
-**Status**: Open
+# TODO: Make Post-Process Shaders Project-Scoped
 
 ## Problem Description
 

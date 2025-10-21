@@ -1,10 +1,15 @@
+---
+title: 'TODO: Implement WebAssembly Export Functionality'
+priority: 🟡
+effort: 4-6 hours
+created: 2025-08-27
+status: Completed
+completed: 2025-08-27
+---
+
 # TODO: Implement WebAssembly Export Functionality
 
 **Priority**: ��
-**Estimated Effort**: 4-6 hours
-**Created**: 2025-08-27
-**Status**: Completed
-**Completed**: 2025-08-27
 
 ## Problem Description
 
