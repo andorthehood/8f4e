@@ -1,10 +1,13 @@
-# TODO: Extract Editor State Into Dedicated Package
+---
+title: 'TODO: Extract Editor State Into Dedicated Package'
+priority: �
+effort: 3 days
+created: 2025-10-21
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 3 days
-**Created**: 2025-10-21
-**Status**: Open
-**Completed**: TBD
+# TODO: Extract Editor State Into Dedicated Package
 
 ## Problem Description
 

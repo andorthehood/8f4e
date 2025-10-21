@@ -1,10 +1,13 @@
-# TODO: Refactor unit tests into __tests__ folders
+---
+title: 'TODO: Refactor unit tests into __tests__ folders'
+priority: �
+effort: 0.5–1 day
+created: 2025-09-04
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 0.5–1 day
-**Created**: 2025-09-04
-**Status**: Open
-**Completed**: 
+# TODO: Refactor unit tests into __tests__ folders
 
 ## Problem Description
 
