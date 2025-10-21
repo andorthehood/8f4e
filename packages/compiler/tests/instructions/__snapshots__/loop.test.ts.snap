@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`infinite loop protection if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`infinite loop protection > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -81,7 +81,7 @@ exports[`infinite loop protection if the generated AST, WAT and memory map match
 ]
 `;
 
-exports[`infinite loop protection if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`infinite loop protection > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -117,7 +117,7 @@ exports[`infinite loop protection if the generated AST, WAT and memory map match
 "
 `;
 
-exports[`infinite loop protection if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`infinite loop protection > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__loopErrorSignaler": {
     "byteAddress": 4,
@@ -150,7 +150,7 @@ exports[`infinite loop protection if the generated AST, WAT and memory map match
 }
 `;
 
-exports[`loop if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -268,7 +268,7 @@ exports[`loop if the generated AST, WAT and memory map match the snapshot 1`] = 
 ]
 `;
 
-exports[`loop if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`loop > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -309,7 +309,7 @@ exports[`loop if the generated AST, WAT and memory map match the snapshot 2`] = 
 "
 `;
 
-exports[`loop if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`loop > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "__loopErrorSignaler": {
     "byteAddress": 4,
