@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`round if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`round > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -70,7 +70,7 @@ exports[`round if the generated AST, WAT and memory map match the snapshot 1`] =
 ]
 `;
 
-exports[`round if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`round > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -84,7 +84,7 @@ exports[`round if the generated AST, WAT and memory map match the snapshot 2`] =
 "
 `;
 
-exports[`round if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`round > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
     "byteAddress": 0,
