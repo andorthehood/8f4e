@@ -38,6 +38,9 @@ export type {
 	RuntimeType,
 	FeatureFlags,
 	FeatureFlagsConfig,
+	EventDispatcher,
+	InternalMouseEvent,
+	InternalKeyboardEvent,
 } from '@8f4e/editor-state-types';
 
 // Re-export EMPTY_DEFAULT_PROJECT as a value

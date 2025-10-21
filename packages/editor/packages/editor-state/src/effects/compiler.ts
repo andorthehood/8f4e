@@ -3,7 +3,7 @@ import {
 	decodeBase64ToInt32Array,
 	decodeBase64ToFloat32Array,
 } from '../helpers/base64Decoder';
-import { EventDispatcher } from '../../events';
+import { EventDispatcher } from '../types';
 
 import type { CodeBlockGraphicData, State } from '../types';
 
