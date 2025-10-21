@@ -1,3 +1,5 @@
+import { vi, type MockInstance } from 'vitest';
+
 import compiler from './compiler';
 import save from './save';
 
@@ -8,8 +10,8 @@ import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 import type { State } from '../types';
 
 // Mock the decodeBase64ToUint8Array function
-jest.mock('../helpers/base64Decoder', () => {
-	const decodeBase64ToUint8Array = jest.fn((base64: string) => {
+vi.mock('../helpers/base64Decoder', () => {
+	const decodeBase64ToUint8Array = vi.fn((base64: string) => {
 		// Simple mock implementation for testing
 		const binaryString = atob(base64);
 		return new Uint8Array(binaryString.split('').map(char => char.charCodeAt(0)));
@@ -19,7 +21,7 @@ jest.mock('../helpers/base64Decoder', () => {
 		ctor: new (buffer: ArrayBuffer, byteOffset: number, length: number) => T,
 		errorMessage: string
 	) => {
-		return jest.fn((base64: string) => {
+		return vi.fn((base64: string) => {
 			const uint8Array = decodeBase64ToUint8Array(base64);
 
 			if (uint8Array.byteLength % 4 !== 0) {
@@ -46,10 +48,10 @@ jest.mock('../helpers/base64Decoder', () => {
 describe('Runtime-ready project functionality', () => {
 	let mockState: State;
 	let mockEvents: EventDispatcher;
-	let mockExportFile: jest.Mock;
+	let mockExportFile: MockInstance;
 
 	beforeEach(() => {
-		mockExportFile = jest.fn().mockResolvedValue(undefined);
+		mockExportFile = vi.fn().mockResolvedValue(undefined);
 
 		mockState = {
 			project: {
@@ -81,14 +83,14 @@ describe('Runtime-ready project functionality', () => {
 			},
 			callbacks: {
 				exportFile: mockExportFile,
-				requestRuntime: jest.fn(),
-				getListOfModules: jest.fn(),
-				getModule: jest.fn(),
-				getListOfProjects: jest.fn(),
-				getProject: jest.fn(),
-				compileProject: jest.fn(),
-				loadProjectFromStorage: jest.fn(),
-				loadColorSchemes: jest.fn().mockResolvedValue({
+				requestRuntime: vi.fn(),
+				getListOfModules: vi.fn(),
+				getModule: vi.fn(),
+				getListOfProjects: vi.fn(),
+				getProject: vi.fn(),
+				compileProject: vi.fn(),
+				loadProjectFromStorage: vi.fn(),
+				loadColorSchemes: vi.fn().mockResolvedValue({
 					default: { text: {}, fill: {}, icons: {} },
 					hackerman: { text: {}, fill: {}, icons: {} },
 					redalert: { text: {}, fill: {}, icons: {} },
@@ -119,9 +121,9 @@ describe('Runtime-ready project functionality', () => {
 		} as unknown as State;
 
 		mockEvents = {
-			on: jest.fn(),
-			off: jest.fn(),
-			dispatch: jest.fn(),
+			on: vi.fn(),
+			off: vi.fn(),
+			dispatch: vi.fn(),
 		} as EventDispatcher;
 	});
 
@@ -131,7 +133,7 @@ describe('Runtime-ready project functionality', () => {
 			save(mockState, mockEvents);
 
 			// Get the saveRuntimeReady callback
-			const onCalls = (mockEvents.on as jest.Mock).mock.calls;
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
 			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
 			expect(saveRuntimeReadyCall).toBeDefined();
 
@@ -172,7 +174,7 @@ describe('Runtime-ready project functionality', () => {
 			save(mockState, mockEvents);
 
 			// Get the saveRuntimeReady callback
-			const onCalls = (mockEvents.on as jest.Mock).mock.calls;
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
 			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
 			expect(saveRuntimeReadyCall).toBeDefined();
 
@@ -194,13 +196,13 @@ describe('Runtime-ready project functionality', () => {
 			// Remove compiled WASM by setting it to an empty array
 			mockState.compiler.codeBuffer = new Uint8Array(0);
 
-			const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+			const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
 
 			// Set up save functionality
 			save(mockState, mockEvents);
 
 			// Get the saveRuntimeReady callback
-			const onCalls = (mockEvents.on as jest.Mock).mock.calls;
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
 			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
 			const saveRuntimeReadyCallback = saveRuntimeReadyCall[1];
 
@@ -232,13 +234,13 @@ describe('Runtime-ready project functionality', () => {
 			mockState.project.memorySnapshot = base64Memory;
 			mockState.compiler.codeBuffer = new Uint8Array(0);
 
-			const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+			const consoleSpy = vi.spyOn(console, 'log').mockImplementation();
 
 			// Set up compiler functionality
 			compiler(mockState, mockEvents);
 
 			// Get the onRecompile callback
-			const onCalls = (mockEvents.on as jest.Mock).mock.calls;
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
 			const recompileCall = onCalls.find(
 				call =>
 					call[0] === 'createConnection' ||
@@ -280,20 +282,20 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.codeBuffer = new Uint8Array(0);
 
 			// Mock the compileProject function
-			const mockCompileProject = jest.fn().mockResolvedValue({
+			const mockCompileProject = vi.fn().mockResolvedValue({
 				compiledModules: new Map(),
 				codeBuffer: new Uint8Array([100, 200]),
 				allocatedMemorySize: 1024,
 			});
 			mockState.callbacks.compileProject = mockCompileProject;
 
-			const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+			const consoleSpy = vi.spyOn(console, 'error').mockImplementation();
 
 			// Set up compiler functionality
 			compiler(mockState, mockEvents);
 
 			// Get the onRecompile callback
-			const onCalls = (mockEvents.on as jest.Mock).mock.calls;
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
 			const recompileCall = onCalls.find(
 				call =>
 					call[0] === 'createConnection' ||

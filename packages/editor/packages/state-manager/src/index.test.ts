@@ -152,7 +152,7 @@ describe('StateManager', () => {
 
 	describe('subscribe', () => {
 		it('should call callback when subscribed property changes', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			stateManager.subscribe('name', callback);
 
 			stateManager.set('name', 'New Name');
@@ -162,7 +162,7 @@ describe('StateManager', () => {
 		});
 
 		it('should call callback for nested property changes', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			stateManager.subscribe('settings.theme', callback);
 
 			stateManager.set('settings.theme', 'light');
@@ -172,7 +172,7 @@ describe('StateManager', () => {
 		});
 
 		it('should call callback for deep nested property changes (3 levels)', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			stateManager.subscribe('settings.preferences.language', callback);
 
 			stateManager.set('settings.preferences.language', 'fr');
@@ -182,7 +182,7 @@ describe('StateManager', () => {
 		});
 
 		it('should call callback for deep nested property changes (4 levels)', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			stateManager.subscribe('settings.preferences.display.fontSize', callback);
 
 			stateManager.set('settings.preferences.display.fontSize', 18);
@@ -192,7 +192,7 @@ describe('StateManager', () => {
 		});
 
 		it('should call callback for very deep nested property changes (5 levels)', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			stateManager.subscribe('settings.preferences.display.accessibility.screenReader', callback);
 
 			stateManager.set('settings.preferences.display.accessibility.screenReader', true);
@@ -202,7 +202,7 @@ describe('StateManager', () => {
 		});
 
 		it('should call callback for very deep nested property changes (6 levels)', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			stateManager.subscribe('user.profile.personal.contact.email', callback);
 
 			stateManager.set('user.profile.personal.contact.email', 'newemail@example.com');
@@ -212,9 +212,9 @@ describe('StateManager', () => {
 		});
 
 		it('should notify parent subscriptions when nested property changes', () => {
-			const preferencesCallback = jest.fn();
-			const displayCallback = jest.fn();
-			const fontSizeCallback = jest.fn();
+			const preferencesCallback = vi.fn();
+			const displayCallback = vi.fn();
+			const fontSizeCallback = vi.fn();
 
 			stateManager.subscribe('settings.preferences', preferencesCallback);
 			stateManager.subscribe('settings.preferences.display', displayCallback);
@@ -231,9 +231,9 @@ describe('StateManager', () => {
 		});
 
 		it('should notify child subscriptions when parent property is replaced', () => {
-			const displayCallback = jest.fn();
-			const fontSizeCallback = jest.fn();
-			const animationsCallback = jest.fn();
+			const displayCallback = vi.fn();
+			const fontSizeCallback = vi.fn();
+			const animationsCallback = vi.fn();
 
 			stateManager.subscribe('settings.preferences.display', displayCallback);
 			stateManager.subscribe('settings.preferences.display.fontSize', fontSizeCallback);
@@ -251,8 +251,8 @@ describe('StateManager', () => {
 		});
 
 		it('should not notify subscriptions that only partially match the path', () => {
-			const partialCallback = jest.fn();
-			const exactCallback = jest.fn();
+			const partialCallback = vi.fn();
+			const exactCallback = vi.fn();
 
 			stateManager.subscribe('settings.preferences.display.font', partialCallback);
 			stateManager.subscribe('settings.preferences.display.fontSize', exactCallback);
@@ -264,7 +264,7 @@ describe('StateManager', () => {
 		});
 
 		it('should not call callback for different property changes', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			stateManager.subscribe('name', callback);
 
 			stateManager.set('age', 25);
@@ -274,8 +274,8 @@ describe('StateManager', () => {
 		});
 
 		it('should call multiple callbacks for the same property', () => {
-			const callback1 = jest.fn();
-			const callback2 = jest.fn();
+			const callback1 = vi.fn();
+			const callback2 = vi.fn();
 
 			stateManager.subscribe('name', callback1);
 			stateManager.subscribe('name', callback2);
@@ -287,7 +287,7 @@ describe('StateManager', () => {
 		});
 
 		it('should return subscription object', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			const subscription = stateManager.subscribe('name', callback);
 
 			expect(subscription.selector).toBe('name');
@@ -298,7 +298,7 @@ describe('StateManager', () => {
 
 	describe('unsubscribe', () => {
 		it('should remove subscription and stop calling callback', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			const subscription = stateManager.subscribe('name', callback);
 
 			stateManager.unsubscribe(subscription);
@@ -308,8 +308,8 @@ describe('StateManager', () => {
 		});
 
 		it('should only remove the specific subscription', () => {
-			const callback1 = jest.fn();
-			const callback2 = jest.fn();
+			const callback1 = vi.fn();
+			const callback2 = vi.fn();
 
 			const subscription1 = stateManager.subscribe('name', callback1);
 			stateManager.subscribe('name', callback2);
@@ -325,7 +325,7 @@ describe('StateManager', () => {
 			const fakeSubscription = {
 				selector: 'name',
 				tokens: ['name'],
-				callback: jest.fn(),
+				callback: vi.fn(),
 			} as Subscription<TestState>;
 
 			expect(() => {
@@ -336,10 +336,10 @@ describe('StateManager', () => {
 
 	describe('integration', () => {
 		it('should handle complex state updates with multiple subscriptions', () => {
-			const nameCallback = jest.fn();
-			const ageCallback = jest.fn();
-			const themeCallback = jest.fn();
-			const notificationsCallback = jest.fn();
+			const nameCallback = vi.fn();
+			const ageCallback = vi.fn();
+			const themeCallback = vi.fn();
+			const notificationsCallback = vi.fn();
 
 			stateManager.subscribe('name', nameCallback);
 			stateManager.subscribe('age', ageCallback);
@@ -366,7 +366,7 @@ describe('StateManager', () => {
 		});
 
 		it('should update state by direct mutation', () => {
-			const callback = jest.fn();
+			const callback = vi.fn();
 			const subscription = stateManager.subscribe('name', callback);
 
 			// Unsubscribe
