@@ -1,4 +1,4 @@
-import type { ExampleModule } from '../../../packages/editor/src/state/types';
+import type { ExampleModule } from '@8f4e/editor-state-types';
 
 const changeDetectorInt: ExampleModule = {
 	title: 'Change Detector (Int)',
