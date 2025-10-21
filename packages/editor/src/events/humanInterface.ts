@@ -1,6 +1,6 @@
 import { EventDispatcher } from '.';
 
-import type { State, InternalMouseEvent, InternalKeyboardEvent } from '@8f4e/editor-state-types';
+import type { State, InternalMouseEvent, InternalKeyboardEvent } from '@8f4e/editor-state';
 
 export default function humanInterface(element: HTMLElement, events: EventDispatcher, state: State) {
 	function onKeyboardEvents(event: KeyboardEvent) {
