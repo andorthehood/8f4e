@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Remove @ts-ignore Comments Through Proper Typing'
-priority: �
+priority: Low
 effort: 1-2 days
 created: 2025-08-23
 status: Completed

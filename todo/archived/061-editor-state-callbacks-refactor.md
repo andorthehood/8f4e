@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Editor state callbacks refactor'
-priority: �
+priority: Medium
 effort: 1.5 days
 created: 2025-10-09
 status: Open

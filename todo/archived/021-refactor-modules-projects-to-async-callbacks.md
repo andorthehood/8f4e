@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Refactor Modules and Projects to Use Async Callback Functions'
-priority: �
+priority: Medium
 effort: 2-3 days
 created: 2025-08-26
 status: Completed

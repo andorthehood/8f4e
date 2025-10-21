@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Standardize Build Scripts Across Packages'
-priority: �
+priority: Medium
 effort: 1 day
 created: 2025-08-23
 status: Open
