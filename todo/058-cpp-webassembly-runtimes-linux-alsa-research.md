@@ -1,9 +1,13 @@
-# TODO: Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support
+---
+title: 'TODO: Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support'
+priority: �
+effort: 4-6 days
+created: 2025-09-11
+status: Open
+completed: null
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 4-6 days  
-**Created**: 2025-09-11  
-**Status**: Open
+# TODO: Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support
 
 The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the project only supports browser environments (WebWorker and AudioWorklet runtimes), limiting deployment to web applications.
 

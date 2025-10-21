@@ -1,9 +1,13 @@
-# TODO: Lazy Load Examples (Projects & Modules)
+---
+title: 'TODO: Lazy Load Examples (Projects & Modules)'
+priority: �
+effort: 3-4 days
+created: 2025-08-26
+status: Cancelled
+completed: null
+---
 
-**Priority**: 🟢  
-**Estimated Effort**: 3-4 days  
-**Created**: 2025-08-26
-**Status**: Cancelled  
+# TODO: Lazy Load Examples (Projects & Modules)
 
 ## Problem Description
 

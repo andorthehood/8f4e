@@ -1,10 +1,13 @@
-# TODO: Refactor Runtime Package Names
+---
+title: 'TODO: Refactor Runtime Package Names'
+priority: �
+effort: 2-3 hours
+created: 2025-08-27
+status: Completed
+completed: 2025-09-04
+---
 
-**Priority**: 🟢
-**Estimated Effort**: 2-3 hours
-**Created**: 2025-08-27
-**Status**: Completed
-**Completed**: 2025-09-04
+# TODO: Refactor Runtime Package Names
 
 ## Problem Description
 
