@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Lazy Load Runtimes'
-priority: �
+priority: Medium
 effort: 5-7 days
 created: 2025-08-26
 status: Completed

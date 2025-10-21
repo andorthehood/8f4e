@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Deploy Editor Bundle to DigitalOcean Spaces'
-priority: �
+priority: Medium
 effort: 4-6 hours
 created: 2025-08-27
 status: Completed

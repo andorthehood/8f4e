@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Lazy-Load Editor Color Schemes'
-priority: �
+priority: Low
 effort: 1-2 days
 created: 2025-10-07
 status: Completed
