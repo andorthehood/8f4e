@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Refactor Runtime Package Names'
-priority: �
+priority: Medium
 effort: 2-3 hours
 created: 2025-08-27
 status: Completed

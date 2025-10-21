@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Lazy Load Examples (Projects & Modules)'
-priority: �
+priority: Low
 effort: 3-4 days
 created: 2025-08-26
 status: Cancelled

@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Create Editor Test Utilities and Cross-Cutting Testing Infrastructure'
-priority: �
+priority: Medium
 effort: 1-2 days
 created: 2025-08-27
 status: Open
