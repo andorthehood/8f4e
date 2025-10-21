@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ensureNonZero  1`] = `
+exports[`ensureNonZero >  1`] = `
 [
   33,
   0,
@@ -18,7 +18,7 @@ exports[`ensureNonZero  1`] = `
 ]
 `;
 
-exports[`ensureNonZero  2`] = `
+exports[`ensureNonZero >  2`] = `
 [
   33,
   0,

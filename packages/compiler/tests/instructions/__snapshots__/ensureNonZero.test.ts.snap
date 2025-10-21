@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ensureNonZero (float) if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -70,7 +70,7 @@ exports[`ensureNonZero (float) if the generated AST, WAT and memory map match th
 ]
 `;
 
-exports[`ensureNonZero (float) if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -93,7 +93,7 @@ exports[`ensureNonZero (float) if the generated AST, WAT and memory map match th
 "
 `;
 
-exports[`ensureNonZero (float) if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`ensureNonZero (float) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
     "byteAddress": 0,
@@ -126,7 +126,7 @@ exports[`ensureNonZero (float) if the generated AST, WAT and memory map match th
 }
 `;
 
-exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -196,7 +196,7 @@ exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the 
 ]
 `;
 
-exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -218,7 +218,7 @@ exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the 
 "
 `;
 
-exports[`ensureNonZero (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`ensureNonZero (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
     "byteAddress": 0,

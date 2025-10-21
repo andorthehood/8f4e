@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`moduleCompiler ast 1`] = `
+exports[`moduleCompiler > ast 1`] = `
 [
   {
     "arguments": [
@@ -220,7 +220,7 @@ exports[`moduleCompiler ast 1`] = `
 ]
 `;
 
-exports[`moduleCompiler compiled code 1`] = `
+exports[`moduleCompiler > compiled code 1`] = `
 [
   104,
   5,
