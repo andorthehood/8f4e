@@ -33,6 +33,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 064 | Research WebAssembly Runtimes for ARM Microcontroller Support | 🟡 | 3-5d | 2025-09-10 | Browser runtimes limited to web; need embedded WASM runtime for ARM Cortex-M7 with real-time audio constraints and minimal memory footprint |
 | 059 | Refactor Unit Tests into __tests__ Folders | 🟡 | 0.5-1d | 2025-09-04 | Inconsistent test organization makes discovery harder and complicates refactors; standardize to `packages/<pkg>/src/**/__tests__/*.test.ts` structure |
 | 062 | Editor Command Queue Refactor | 🟡 | 3-4d | 2025-10-09 | Direct callback storage makes state non-serializable and couples effects to host functions; replace with typed command queue for better testability and side-effect observability |
+| 069 | Extract Editor State Into Dedicated Package | 🟡 | 3d | 2025-10-21 | Split editor state logic into `@8f4e/editor-state` to remove deep imports, clarify boundaries, and enable reuse |
 
 ### 🟢 Low Priority
 
