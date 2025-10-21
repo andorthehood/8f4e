@@ -182,3 +182,51 @@ export default function init(events: EventDispatcher, project: Project, options:
 	events.dispatch('init');
 	return store;
 }
+
+// Export all types from types module
+export type {
+	State,
+	CodeBlockGraphicData,
+	Project,
+	Options,
+	EditorSettings,
+	CompilationResult,
+	CodeBlock,
+	Viewport,
+	Size,
+	Position,
+	ContextMenuItem,
+	MenuGenerator,
+	BuildError,
+	Compiler,
+	Midi,
+	GraphicHelper,
+	BinaryAsset,
+	Callbacks,
+	ExampleModule,
+	ModuleMetadata,
+	ProjectMetadata,
+	Runtimes,
+	WebWorkerLogicRuntime,
+	MainThreadLogicRuntime,
+	AudioWorkletRuntime,
+	WebWorkerMIDIRuntime,
+	MemoryIdentifier,
+	BufferPlotter,
+	Switch,
+	Debugger,
+	Output,
+	Input,
+	PianoKeyboard,
+	ContextMenu,
+	RuntimeFactory,
+	RuntimeType,
+	FeatureFlags,
+	FeatureFlagsConfig,
+	EventDispatcher,
+	InternalMouseEvent,
+	InternalKeyboardEvent,
+} from './types';
+
+// Export EMPTY_DEFAULT_PROJECT as a value
+export { EMPTY_DEFAULT_PROJECT } from './types';
