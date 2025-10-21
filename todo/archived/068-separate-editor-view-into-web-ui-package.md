@@ -1,10 +1,13 @@
-# TODO: Split Editor View Into @8f4e/web-ui Package
+---
+title: 'TODO: Split Editor View Into @8f4e/web-ui Package'
+priority: Medium
+effort: 3-5d
+created: 2025-10-21
+status: Open
+completed: null
+---
 
-**Priority**: 🟡
-**Estimated Effort**: 3-5d
-**Created**: 2025-10-21
-**Status**: Open
-**Completed**: N/A
+# TODO: Split Editor View Into @8f4e/web-ui Package
 
 ## Problem Description
 

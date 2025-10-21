@@ -1,9 +1,13 @@
-# TODO: Comprehensive Testing for Editor Type System
+---
+title: 'TODO: Comprehensive Testing for Editor Type System'
+priority: Low
+effort: 1 day
+created: 2025-08-27
+status: Open
+completed: null
+---
 
-**Priority**: 🟢
-**Estimated Effort**: 1 day
-**Created**: 2025-08-27
-**Status**: Open
+# TODO: Comprehensive Testing for Editor Type System
 
 The editor type system (`packages/editor/src/types/`) currently has no test coverage. The type system includes:
 

@@ -1,10 +1,13 @@
-# TODO: Rename exampleProjects and exampleModules to projects and modules
+---
+title: 'TODO: Rename exampleProjects and exampleModules to projects and modules'
+priority: Low
+effort: 2-3 hours
+created: 2025-08-26
+status: Completed
+completed: 2025-08-26
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 2-3 hours  
-**Created**: 2025-08-26
-**Status**: Completed  
-**Completed**: 2025-08-26
+# TODO: Rename exampleProjects and exampleModules to projects and modules
 
 ## Problem Description
 

@@ -1,9 +1,13 @@
-# TODO: Enable Strict TypeScript in Editor Package
+---
+title: 'TODO: Enable Strict TypeScript in Editor Package'
+priority: Medium
+effort: 2-3 days
+created: 2025-08-23
+status: Open
+completed: null
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 2-3 days  
-**Created**: 2025-08-23  
-**Status**: Open  
+# TODO: Enable Strict TypeScript in Editor Package
 
 ## Problem Description
 

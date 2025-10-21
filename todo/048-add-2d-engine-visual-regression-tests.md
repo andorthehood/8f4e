@@ -1,9 +1,15 @@
+---
+title: 'TODO: Add 2D Engine Visual Regression Tests'
+priority: Medium
+effort: 6-8 hours
+created: 2025-08-28
+status: Open
+completed: null
+---
+
 # TODO: Add 2D Engine Visual Regression Tests
 
 **Priority**: ��
-**Estimated Effort**: 6-8 hours
-**Created**: 2025-08-28
-**Status**: Open
 
 The 2D engine package currently lacks visual regression testing, which means:
 - Rendering bugs may go undetected during refactoring

@@ -1,10 +1,13 @@
-# TODO: Lazy Load Runtimes
+---
+title: 'TODO: Lazy Load Runtimes'
+priority: Medium
+effort: 5-7 days
+created: 2025-08-26
+status: Completed
+completed: 2025-09-04
+---
 
-**Priority**: 🟡  
-**Estimated Effort**: 5-7 days  
-**Created**: 2025-08-26
-**Status**: Completed
-**Completed**: 2025-09-04
+# TODO: Lazy Load Runtimes
 
 ## Problem Description
 
