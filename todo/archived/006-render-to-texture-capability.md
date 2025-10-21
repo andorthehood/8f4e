@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Implement Texture Caching System'
-priority: 🟡
+priority: Medium
 effort: 2-3 days
 created: 2025-08-25
 status: Cancelled

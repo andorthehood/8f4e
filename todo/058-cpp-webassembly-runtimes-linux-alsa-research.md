@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support'
-priority: �
+priority: Medium
 effort: 4-6 days
 created: 2025-09-11
 status: Open

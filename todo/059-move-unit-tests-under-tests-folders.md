@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Refactor unit tests into __tests__ folders'
-priority: �
+priority: Medium
 effort: 0.5–1 day
 created: 2025-09-04
 status: Open

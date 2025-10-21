@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Refactor Jest Configs to ES Modules'
-priority: �
+priority: Medium
 effort: 3-4 hours
 created: 2025-08-25
 status: Completed

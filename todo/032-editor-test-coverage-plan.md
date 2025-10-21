@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Plan and Implement Comprehensive Test Coverage for Editor Package'
-priority: �
+priority: Medium
 effort: 3-5 days
 created: 2025-08-27
 status: Open

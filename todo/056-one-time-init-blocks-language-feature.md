@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Add startInit / endInit one-time init blocks in code modules'
-priority: �
+priority: Medium
 effort: 5-7 days
 created: 2025-09-09
 status: Open

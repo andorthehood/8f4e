@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Research WebAssembly Runtimes for ARM Microcontroller Support'
-priority: �
+priority: Medium
 effort: 3-5 days
 created: 2025-09-10
 status: Open

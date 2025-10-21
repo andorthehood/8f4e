@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Split Editor View Into @8f4e/web-ui Package'
-priority: �
+priority: Medium
 effort: 3-5d
 created: 2025-10-21
 status: Open

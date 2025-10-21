@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Make Post-Process Shaders Project-Scoped'
-priority: �
+priority: Medium
 effort: 4-6 hours
 created: 2025-09-03
 status: Open
