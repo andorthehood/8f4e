@@ -2,7 +2,7 @@ import { StateManager } from '@8f4e/state-manager';
 
 import * as menus from './menus';
 
-import { EventDispatcher } from '../../../events';
+import { EventDispatcher } from '../../types';
 import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtViewportCoordinates';
 
 import type { ContextMenuItem, State } from '../../types';
