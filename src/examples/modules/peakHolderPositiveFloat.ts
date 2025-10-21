@@ -1,4 +1,4 @@
-import type { ExampleModule } from '@8f4e/editor-state-types';
+import type { ExampleModule } from '@8f4e/editor-state';
 
 const peakHolderPositiveFloat: ExampleModule = {
 	title: 'Peak Holder (Positive, Float)',
