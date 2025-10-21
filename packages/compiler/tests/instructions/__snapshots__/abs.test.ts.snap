@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`abs (float) if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`abs (float) > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -70,7 +70,7 @@ exports[`abs (float) if the generated AST, WAT and memory map match the snapshot
 ]
 `;
 
-exports[`abs (float) if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`abs (float) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -84,7 +84,7 @@ exports[`abs (float) if the generated AST, WAT and memory map match the snapshot
 "
 `;
 
-exports[`abs (float) if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`abs (float) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
     "byteAddress": 0,
@@ -117,7 +117,7 @@ exports[`abs (float) if the generated AST, WAT and memory map match the snapshot
 }
 `;
 
-exports[`abs (int) if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`abs (int) > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -187,7 +187,7 @@ exports[`abs (int) if the generated AST, WAT and memory map match the snapshot 1
 ]
 `;
 
-exports[`abs (int) if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`abs (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -212,7 +212,7 @@ exports[`abs (int) if the generated AST, WAT and memory map match the snapshot 2
 "
 `;
 
-exports[`abs (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`abs (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
     "byteAddress": 0,

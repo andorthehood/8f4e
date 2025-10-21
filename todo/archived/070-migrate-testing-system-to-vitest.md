@@ -3,8 +3,8 @@ title: 'TODO: Migrate testing system to Vitest'
 priority: High
 effort: 3-4 days
 created: 2025-10-21
-status: Open
-completed: null
+status: Completed
+completed: 2025-10-21
 ---
 
 # TODO: Migrate testing system to Vitest

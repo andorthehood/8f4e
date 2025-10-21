@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`block (float) if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`block (float) > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -80,7 +80,7 @@ exports[`block (float) if the generated AST, WAT and memory map match the snapsh
 ]
 `;
 
-exports[`block (float) if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`block (float) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -95,7 +95,7 @@ exports[`block (float) if the generated AST, WAT and memory map match the snapsh
 "
 `;
 
-exports[`block (float) if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`block (float) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
     "byteAddress": 0,
@@ -128,7 +128,7 @@ exports[`block (float) if the generated AST, WAT and memory map match the snapsh
 }
 `;
 
-exports[`block (int) if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`block (int) > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -208,7 +208,7 @@ exports[`block (int) if the generated AST, WAT and memory map match the snapshot
 ]
 `;
 
-exports[`block (int) if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`block (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -223,7 +223,7 @@ exports[`block (int) if the generated AST, WAT and memory map match the snapshot
 "
 `;
 
-exports[`block (int) if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`block (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "input": {
     "byteAddress": 0,
