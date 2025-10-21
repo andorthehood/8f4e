@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Standardize Type Imports with `import type` and `import { type }`'
-priority: �
+priority: Low
 effort: 2-3 hours
 created: 2025-09-02
 status: Open

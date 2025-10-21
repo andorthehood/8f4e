@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Fix Runtime Reinitialization on Code Change'
-priority: �
+priority: High
 effort: 4-6 hours
 created: 2025-09-03
 status: Open

@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Create shell script to remove untracked node_modules and dist folders'
-priority: �
+priority: Low
 effort: 1 hour
 created: 2025-08-25
 status: Open

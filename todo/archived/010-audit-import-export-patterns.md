@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Audit Import/Export Patterns for Vite Compatibility'
-priority: �
+priority: Medium
 effort: 4-5 hours
 created: 2025-08-25
 status: Open

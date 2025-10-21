@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Fix Color Scheme Persistence Bug'
-priority: �
+priority: Medium
 effort: 2-3 hours
 created: 2025-10-17
 status: Completed

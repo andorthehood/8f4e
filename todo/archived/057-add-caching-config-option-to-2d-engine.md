@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Add Caching Config Option to 2D Engine Constructor'
-priority: �
+priority: Low
 effort: 2-3 hours
 created: 2025-09-04
 status: Completed

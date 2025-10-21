@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Separate Editor View Layer into Standalone Package'
-priority: �
+priority: Medium
 effort: 3-5 days
 created: 2025-08-26
 status: Open

@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Outsource Project Loading and Saving'
-priority: �
+priority: Medium
 effort: 1-2 days
 created: 2025-08-26
 status: Completed

@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Add 2D Engine Visual Regression Tests'
-priority: 🟡
+priority: Medium
 effort: 6-8 hours
 created: 2025-08-28
 status: Open
