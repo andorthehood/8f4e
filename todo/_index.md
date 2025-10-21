@@ -52,6 +52,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 070 | Merge Editor State Types Into Editor State Package | 🟡 | 2-3d | 2025-10-21 | Consolidated the standalone types package back into `@8f4e/editor-state`, updated configs/dependencies, and removed redundant aliases |
 | 068 | Split Editor View Into @8f4e/web-ui Package | 🟡 | 3-5d | 2025-10-21 | Externalized canvas rendering layer into dedicated @8f4e/web-ui Nx package with shared state types, dynamic imports, and updated build wiring |
 | 066 | Fix Color Scheme Persistence Bug | 🟡 | 2-3h | 2024-12-19 | Color scheme selection not persisted across browser reloads; reverts to default 'hackerman' instead of user's selected scheme |
 | 063 | Compiler Object Output Refactor | 🟡 | 2-3d | Recent | Refactor compiler to output structured objects instead of raw arrays |
