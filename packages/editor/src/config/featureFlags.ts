@@ -7,7 +7,7 @@
  */
 
 // Re-export types from shared package
-export type { FeatureFlags, FeatureFlagsConfig } from '@8f4e/editor-state-types';
+export type { FeatureFlags, FeatureFlagsConfig } from '@8f4e/editor-state';
 
 /**
  * Default feature flags configuration with all features enabled.
@@ -29,8 +29,8 @@ export const defaultFeatureFlags = {
  * @returns Complete feature flags configuration with validated values
  */
 export function validateFeatureFlags(
-	flags: Partial<import('@8f4e/editor-state-types').FeatureFlags> = {}
-): import('@8f4e/editor-state-types').FeatureFlags {
+	flags: Partial<import('@8f4e/editor-state').FeatureFlags> = {}
+): import('@8f4e/editor-state').FeatureFlags {
 	return {
 		...defaultFeatureFlags,
 		...flags,

@@ -1,11 +1,11 @@
 import initView from '@8f4e/web-ui';
 import initState from '@8f4e/editor-state';
-import { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state-types';
+import { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state';
 
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
 
-import type { Options } from '@8f4e/editor-state-types';
+import type { Options } from '@8f4e/editor-state';
 
 // Re-export types that consumers might need
 export type {
@@ -19,9 +19,9 @@ export type {
 	RuntimeType,
 	FeatureFlags,
 	FeatureFlagsConfig,
-} from '@8f4e/editor-state-types';
+} from '@8f4e/editor-state';
 export type { EventDispatcher } from './events';
-export { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state-types';
+export { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state';
 
 export default async function init(canvas: HTMLCanvasElement, options: Options) {
 	const events = initEvents();
