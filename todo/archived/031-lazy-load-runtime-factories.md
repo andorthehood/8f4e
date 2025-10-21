@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Implement Lazy-Loaded Runtime Factories'
-priority: 🟡
+priority: Medium
 effort: 2-3 hours
 created: 2025-08-27
 status: Completed

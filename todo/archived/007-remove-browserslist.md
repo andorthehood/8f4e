@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Remove browserslist from the project'
-priority: �
+priority: Low
 effort: 1-2 hours
 created: 2025-08-25
 status: Completed

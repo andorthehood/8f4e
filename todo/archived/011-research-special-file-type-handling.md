@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Research Vite Handling of Special File Types'
-priority: �
+priority: Low
 effort: 6-8 hours
 created: 2024-12-19
 status: Completed

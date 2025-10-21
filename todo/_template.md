@@ -1,6 +1,6 @@
 ---
 title: 'TODO: [Brief Title]'
-priority: 🔴/🟡/🟢
+priority: High/Medium/Low
 effort: X hours/days
 created: YYYY-MM-DD
 status: Open/Completed

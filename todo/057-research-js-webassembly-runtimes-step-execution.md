@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution'
-priority: �
+priority: Low
 effort: 8-12 hours
 created: 2025-09-09
 status: Open

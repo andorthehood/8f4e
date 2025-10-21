@@ -10,16 +10,16 @@ This directory contains documentation for planned improvements and technical deb
 
 ## Priority Levels
 
-- 🔴 **High** - Should be addressed before major releases
-- 🟡 **Medium** - Should be addressed in next development cycle
-- 🟢 **Low** - Nice to have, address when convenient
+- **High** (🔴) - Should be addressed before major releases
+- **Medium** (🟡) - Should be addressed in next development cycle
+- **Low** (🟢) - Nice to have, address when convenient
 
 ## Adding New TODOs
 
 1. **Choose next sequential number** (check existing files)
 2. **Use the template**: Copy `_template.md` to `NNN-description.md`
 3. **Fill in details**: Complete all sections in the template
-5. **Assign priority**: Use 🔴🟡🟢 indicators
+5. **Assign priority**: Use High/Medium/Low values in front matter
 
 ## Completing TODOs
 

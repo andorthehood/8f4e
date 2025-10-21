@@ -1,6 +1,6 @@
 ---
 title: 'Brainstorming: Risky Web APIs Used in 8f4e Project'
-priority: 🟡
+priority: Medium
 effort: TBD
 created: 2025-09-06
 status: Open

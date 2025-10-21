@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Merge Editor State Types into Editor State Package'
-priority: �
+priority: Medium
 effort: 2-3d
 created: 2025-10-21
 status: Completed

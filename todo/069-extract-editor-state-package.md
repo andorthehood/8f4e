@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Extract Editor State Into Dedicated Package'
-priority: �
+priority: Medium
 effort: 3 days
 created: 2025-10-21
 status: Open

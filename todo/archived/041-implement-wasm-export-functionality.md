@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Implement WebAssembly Export Functionality'
-priority: 🟡
+priority: Medium
 effort: 4-6 hours
 created: 2025-08-27
 status: Completed

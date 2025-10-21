@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Comprehensive Testing for Editor State Effects System'
-priority: �
+priority: Medium
 effort: 2-3 days
 created: 2025-08-27
 status: Open

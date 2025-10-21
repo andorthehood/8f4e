@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Convert from Parcel to Vite Build System'
-priority: �
+priority: High
 effort: 1-2 weeks
 created: 2025-08-23
 status: Completed

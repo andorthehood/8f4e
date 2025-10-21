@@ -1,6 +1,6 @@
 ---
 title: 'TODO: Rename exampleProjects and exampleModules to projects and modules'
-priority: �
+priority: Low
 effort: 2-3 hours
 created: 2025-08-26
 status: Completed
