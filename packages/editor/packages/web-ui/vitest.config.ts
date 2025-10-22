@@ -7,6 +7,12 @@ export default mergeConfig(
 	defineConfig({
 		test: {
 			passWithNoTests: true,
+			environment: 'jsdom',
+			include: ['**/*.{test,spec}.{ts,tsx}', '**/tests/**/*.{ts,tsx}'],
+		},
+		define: {
+			// Ensure proper environment for browser testing
+			'process.env.NODE_ENV': '"test"',
 		},
 	})
 );

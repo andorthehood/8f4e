@@ -14,7 +14,15 @@
 	},
 	"sideEffects": false,
 	"scripts": {
-		"test": "jest --passWithNoTests",
+		"test": "vitest",
+		"test:ui": "vitest --ui",
+		"test:run": "vitest run",
+		"test:coverage": "vitest run --coverage",
+		"test:screenshot": "playwright test",
+		"test:screenshot:update": "playwright test --update-snapshots",
+		"test:screenshot:ui": "playwright test --ui",
+		"test:screenshot:headed": "playwright test --headed",
+		"test:screenshot:debug": "playwright test --debug",
 		"build": "tsc",
 		"dev": "tsc --watch",
 		"typecheck": "tsc --noEmit"
