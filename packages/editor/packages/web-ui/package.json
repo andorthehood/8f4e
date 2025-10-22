@@ -25,6 +25,7 @@
 		"test:screenshot:debug": "playwright test --debug",
 		"build": "tsc",
 		"dev": "tsc --watch",
+		"dev:test": "vite --config screenshot-tests/vite.config.ts",
 		"typecheck": "tsc --noEmit"
 	},
 	"repository": {
@@ -42,5 +43,7 @@
 		"@8f4e/sprite-generator": "*",
 		"@8f4e/editor-state": "*"
 	},
-	"devDependencies": {}
+	"devDependencies": {
+		"vite": "^5.0.0"
+	}
 }
