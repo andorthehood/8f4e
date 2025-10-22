@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+* {
+	padding: 0;
+	margin: 0;
+	cursor: url('./assets/cursor.png'), auto;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	background: #000000;
+}
+
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+}
+
+canvas {
+	image-rendering: pixelated;
+}
+	</style>
+</head>
+	<body>
+		<canvas id="test-canvas" width="800" height="600"></canvas>
+		<script type="module" src="./test-init.ts"></script>
+	</body>
+</html>
