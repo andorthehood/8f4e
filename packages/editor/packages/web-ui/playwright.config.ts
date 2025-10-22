@@ -18,6 +18,14 @@ export default defineConfig({
 			maxDiffPixels: 0,
 		},
 	},
+	// Configure web server for testing
+	webServer: {
+		command: 'npm run dev:test',
+		port: 3001,
+		reuseExistingServer: !process.env.CI,
+		stdout: 'pipe',
+		stderr: 'pipe',
+	},
 	projects: [
 		{
 			name: 'chromium',
