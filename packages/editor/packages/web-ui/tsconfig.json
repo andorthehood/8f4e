@@ -2,7 +2,7 @@
 	"extends": "../../../../tsconfig.json",
 	"compilerOptions": {
 		"outDir": "dist",
-		"rootDir": "src",
+		"rootDir": ".",
 		"noEmit": false,
 		"declaration": true,
 		"declarationMap": true,
@@ -13,7 +13,8 @@
 		}
 	},
 	"include": [
-		"src/**/*.ts"
+		"src/**/*.ts",
+		"screenshot-tests/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",

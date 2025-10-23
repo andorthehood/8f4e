@@ -97,7 +97,7 @@ describe('Runtime-ready project functionality', () => {
 				}),
 			},
 			graphicHelper: {
-				baseCodeBlock: {
+				activeViewport: {
 					codeBlocks: new Set(),
 				},
 			},
