@@ -619,6 +619,7 @@ const midiArpeggiator2: Project = {
 			sampleRate: 50,
 		},
 	],
+	compiledModules: {},
 };
 
 export default midiArpeggiator2;
