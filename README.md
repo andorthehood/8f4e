@@ -33,6 +33,77 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 - [`docs/usage.md`](./docs/usage.md) - How to integrate the editor bundle in external websites
 - [`docs/todo/`](./docs/todo/) - Technical debt and planned improvements (one file per TODO item)
 
+## Development
+
+### Getting Started
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Build all packages:**
+   ```bash
+   npm run build
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at http://localhost:3000
+
+### Development Workflow
+
+The project uses Nx for monorepo orchestration. All packages are built to their `dist/` directories, and the Vite development server consumes these compiled artifacts.
+
+**Key commands:**
+
+- `npm run dev` - Builds all packages once, then starts Vite dev server with HMR
+- `npm run build` - Builds all packages and creates production bundle
+- `npm run test` - Runs unit tests across all packages
+- `npm run typecheck` - Type-checks all packages
+- `npm run lint` - Lints and auto-fixes all TypeScript files
+
+**Working with packages:**
+
+To rebuild a specific package during development:
+```bash
+npx nx run @8f4e/compiler:build
+```
+
+To watch a specific package for changes (in a separate terminal):
+```bash
+npx nx run @8f4e/compiler:dev
+```
+
+To watch all packages for changes (optional, for continuous rebuilding):
+```bash
+npm run dev:watch-packages
+```
+This uses `nx watch` to automatically rebuild packages when their source files change. Run this in a separate terminal alongside `npm run dev` for the best development experience with instant package hot-reload.
+
+**Project graph:**
+
+To visualize the project dependency graph:
+```bash
+npm run graph
+```
+
+### Testing
+
+- **Unit tests:** `npm run test`
+- **Screenshot tests:** `npm run test:screenshot`
+- **Update screenshots:** `npm run test:screenshot:update`
+- **Screenshot test UI:** `npm run test:screenshot:ui`
+
+### Architecture Notes
+
+- All packages output TypeScript-compiled JavaScript to their `dist/` directories
+- The Vite app always imports from `dist/`, not `src/`, ensuring consistent behavior between dev and production
+- Package dependencies are managed through Nx's task pipeline - building the app automatically builds all required packages
+- Each package has a `dev` target for watch mode during active development
+
 ## Distinctive features of the programming language
 - The syntax and commands of 8f4e were inspired by assembly languages, but instead of the typical cryptic mnemonics like `cndjmp`, 8f4e uses more descriptive operation names such as `branchIfTrue`.
 - The code is organized into modules, each containing variable declarations and a sequence of commands.
