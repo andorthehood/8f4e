@@ -539,6 +539,7 @@ const midiArpeggiator: Project = {
 			runtime: 'WebWorkerMIDIRuntime',
 		},
 	],
+	compiledModules: {},
 };
 
 export default midiArpeggiator;

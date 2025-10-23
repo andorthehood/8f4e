@@ -9,7 +9,7 @@ export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 	let selectedInput: MIDIInput | null = null;
 	let worker: Worker | undefined;
 
-	function onMidiMessage(event) {
+	function onMidiMessage(event: MIDIMessageEvent) {
 		if (worker) {
 			worker.postMessage({
 				type: 'midimessage',
@@ -33,7 +33,7 @@ export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 		}
 	}
 
-	async function onWorkerMessage({ data }) {
+	async function onWorkerMessage({ data }: MessageEvent) {
 		switch (data.type) {
 			case 'midiMessage':
 				if (data.payload.port && state.midi.outputs[data.payload.port - 1]) {
