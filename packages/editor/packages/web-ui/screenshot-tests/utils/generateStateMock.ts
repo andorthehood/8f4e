@@ -1,6 +1,6 @@
 import { CodeBlockGraphicData, Output, State } from '@8f4e/editor-state';
 
-export default function (codeBlocks: Set<CodeBlockGraphicData>): State {
+export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): State {
 	return {
 		colorSchemes: {
 			default: {
