@@ -4,11 +4,11 @@
   "description": "8f4e",
   "scripts": {
     "preinstall": "git submodule update --init --recursive",
-    "build": "npx nx run-many --target=build --all && vite build",
+    "build": "npx nx run app:build",
     "build:affected": "npx nx affected --target=build --base=main",
     "bundle:editor": "npx nx run editor:bundle",
     "bundle:runtime-main-thread-logic": "npx nx run runtime-main-thread-logic:bundle",
-    "dev": "vite",
+    "dev": "npx nx run app:dev",
     "lint": "npx eslint . --ext .ts --fix",
     "test": "npx nx run-many --target=test --all --exclude=@8f4e/web-ui",
     "test:affected": "npx nx affected --target=test --base=main",
