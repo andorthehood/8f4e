@@ -1,8 +1,8 @@
 import init from '@8f4e/web-ui';
 
-import generateCodeBlockMock from './utils/generateCodeBlockMock';
-import generateStateMock from './utils/generateStateMock';
-import generateColorMapMock from './utils/generateColorMapMock';
+import generateCodeBlockMock from '../utils/generateCodeBlockMock';
+import generateStateMock from '../utils/generateStateMock';
+import generateColorMapMock from '../utils/generateColorMapMock';
 
 async function initializeWebUI() {
 	const canvas = document.getElementById('test-canvas') as HTMLCanvasElement;
