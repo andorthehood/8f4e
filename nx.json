@@ -10,6 +10,10 @@
       "inputs": ["default", "^default"],
       "cache": true
     },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
     "test": {
       "inputs": ["default", "^default", "{workspaceRoot}/vitest.preset.ts"],
       "cache": true
