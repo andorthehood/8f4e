@@ -139,7 +139,6 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			offsetX: 0,
 			lastUpdated: Date.now(),
 			offsetY: 0,
-			parent: state.graphicHelper.activeViewport,
 			codeBlocks: new Set(),
 			viewport: {
 				x: 0,
