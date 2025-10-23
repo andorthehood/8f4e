@@ -61,10 +61,7 @@ function createBaseCodeBlock(): CodeBlockGraphicData {
 		lastUpdated: Date.now(),
 	};
 
-	// Set self-reference for parent
-	const result = baseCodeBlock as CodeBlockGraphicData;
-	result.parent = result;
-	return result;
+	return baseCodeBlock as CodeBlockGraphicData;
 }
 
 // Helper function to create graphic helper with proper references
@@ -77,7 +74,6 @@ function createGraphicHelper() {
 			title: 'Dialog',
 			buttons: [{ title: 'Close', action: 'close' }],
 		},
-		baseCodeBlock,
 		activeViewport: baseCodeBlock,
 		outputsByWordAddress: new Map(),
 		globalViewport: {

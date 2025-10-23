@@ -257,7 +257,6 @@ export interface CodeBlockGraphicData {
 		>;
 	};
 	viewport: Viewport;
-	parent: CodeBlockGraphicData;
 	codeBlocks: Set<CodeBlockGraphicData>;
 	lastUpdated: number;
 }
@@ -280,7 +279,6 @@ export type GraphicHelper = {
 		};
 		center: { x: number; y: number };
 	};
-	baseCodeBlock: CodeBlockGraphicData;
 	activeViewport: CodeBlockGraphicData;
 	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;

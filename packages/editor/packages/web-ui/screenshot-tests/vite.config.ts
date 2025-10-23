@@ -13,6 +13,10 @@ export default defineConfig({
 	},
 	root: __dirname,
 	publicDir: 'fixtures',
+	esbuild: {
+		target: 'esnext',
+	},
+	plugins: [],
 	resolve: {
 		alias: {
 			// Point to the built web-ui package
