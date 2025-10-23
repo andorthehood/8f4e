@@ -21,11 +21,11 @@
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
+        "command": "vitest run --config vitest.config.ts",
+        "cwd": "{projectRoot}"
       }
     },
     "typecheck": {
