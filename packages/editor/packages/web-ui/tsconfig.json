@@ -12,10 +12,7 @@
 			"@8f4e/sprite-generator": ["../sprite-generator/dist/index.d.ts"]
 		}
 	},
-	"include": [
-		"src/**/*.ts",
-		"screenshot-tests/**/*.ts"
-	],
+	"include": ["src/**/*.ts"],
 	"exclude": [
 		"node_modules",
 		"src/**/*.test.ts"
