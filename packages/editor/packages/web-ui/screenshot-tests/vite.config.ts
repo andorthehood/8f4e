@@ -12,7 +12,6 @@ export default defineConfig({
 		open: false, // Don't auto-open browser
 	},
 	root: __dirname,
-	publicDir: 'fixtures',
 	esbuild: {
 		target: 'esnext',
 	},
