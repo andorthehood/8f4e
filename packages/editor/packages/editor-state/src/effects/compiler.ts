@@ -63,7 +63,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		}
 
 		// Regular compilation path (when no pre-compiled WASM or if it failed to load)
-		const modules = flattenProjectForCompiler(state.graphicHelper.baseCodeBlock.codeBlocks);
+		const modules = flattenProjectForCompiler(state.graphicHelper.activeViewport.codeBlocks);
 
 		state.compiler.isCompiling = true;
 		state.compiler.lastCompilationStart = performance.now();
