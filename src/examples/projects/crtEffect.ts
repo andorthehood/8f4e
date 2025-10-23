@@ -131,6 +131,7 @@ void main() {
 			enabled: true,
 		},
 	],
+	compiledModules: {},
 };
 
 export default project;

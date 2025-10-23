@@ -8,7 +8,7 @@ import type { State, EventDispatcher } from '@8f4e/editor';
 export function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
 	let worker: Worker | undefined;
 
-	async function onWorkerMessage({ data }) {
+	async function onWorkerMessage({ data }: MessageEvent) {
 		switch (data.type) {
 			case 'initialized':
 				events.dispatch('runtimeInitialized');
