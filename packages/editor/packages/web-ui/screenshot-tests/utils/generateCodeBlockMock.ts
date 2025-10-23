@@ -1,7 +1,7 @@
 import { CodeBlockGraphicData } from '@8f4e/editor-state';
 import { SpriteLookup } from 'glugglug';
 
-export default function (lines: string[], codeColors?: (SpriteLookup | undefined)[][]): CodeBlockGraphicData {
+export default function (lines: string[], x: number = 16, y: number = 16, codeColors?: (SpriteLookup | undefined)[][], id: string = ''): CodeBlockGraphicData {
 	const codeToRender = lines.map(line => line.split('').map(char => char.charCodeAt(0)));
 	const height = lines.length * 16;
 
@@ -25,7 +25,7 @@ export default function (lines: string[], codeColors?: (SpriteLookup | undefined
 		gridX: 0, // Not relevant for the rendering
 		gridY: 0, // Not relevant for the rendering
 		height,
-		id: '', // Not relevant for the rendering
+		id,
 		isOpen: true,
 		lastUpdated: 0,
 		minGridWidth: 32,
@@ -37,7 +37,7 @@ export default function (lines: string[], codeColors?: (SpriteLookup | undefined
 		trimmedCode: [], // Not relevant for the rendering
 		viewport: { x: 0, y: 0 },
 		width: 256,
-		x: -256,
-		y: -176,
+		x,
+		y,
 	};
 }
