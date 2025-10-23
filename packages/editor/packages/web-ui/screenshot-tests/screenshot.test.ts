@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const testCases = ['font-color-rendering', 'dragged-module'];
+const testCases = ['font-color-rendering', 'dragged-module', 'context-menu'];
 
 test.describe('Web-UI Screenshot Tests', () => {
 	for (const testCase of testCases) {
