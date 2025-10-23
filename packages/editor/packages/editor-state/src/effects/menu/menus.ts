@@ -1,18 +1,6 @@
 import type { CodeBlockGraphicData, MenuGenerator, ContextMenuItem } from '../../types';
 
 export const mainMenu: MenuGenerator = state => [
-	...(state.graphicHelper.activeViewport !== state.graphicHelper.activeViewport.parent
-		? [
-				{
-					title: 'Go back',
-					action: 'goBack',
-					close: true,
-				},
-				{ divider: true },
-				// eslint-disable-next-line
-		]
-		: []),
-	// Only show editing options if editing is enabled
 	...(state.featureFlags.editing
 		? [
 				{

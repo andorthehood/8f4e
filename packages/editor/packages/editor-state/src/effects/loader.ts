@@ -112,12 +112,12 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				(defaultState.project as unknown as Record<string, unknown>)[key];
 		});
 
-		state.graphicHelper.baseCodeBlock.codeBlocks.clear();
+		state.graphicHelper.activeViewport.codeBlocks.clear();
 		state.graphicHelper.activeViewport.viewport.x = state.project.viewport.x * state.graphicHelper.globalViewport.vGrid;
 		state.graphicHelper.activeViewport.viewport.y = state.project.viewport.y * state.graphicHelper.globalViewport.hGrid;
 		// TODO: make it recursive
 		state.project.codeBlocks.forEach(codeBlock => {
-			state.graphicHelper.baseCodeBlock.codeBlocks.add({
+			state.graphicHelper.activeViewport.codeBlocks.add({
 				width: 0,
 				minGridWidth: 32,
 				height: 0,
@@ -146,8 +146,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				gridY: codeBlock.y,
 				isOpen: codeBlock.isOpen,
 				padLength: 1,
-				// TODO
-				parent: state.graphicHelper.baseCodeBlock,
 				viewport: {
 					x: 0,
 					y: 0,
@@ -156,7 +154,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				lastUpdated: Date.now(),
 			});
 		});
-		state.graphicHelper.activeViewport.codeBlocks = state.graphicHelper.baseCodeBlock.codeBlocks;
 		events.dispatch('init');
 		events.dispatch('saveProject');
 		events.dispatch('projectLoaded');
@@ -179,7 +176,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		}
 
 		state.project.codeBlocks = convertGraphicDataToProjectStructure(
-			Array.from(state.graphicHelper.baseCodeBlock.codeBlocks),
+			Array.from(state.graphicHelper.activeViewport.codeBlocks),
 			state.graphicHelper.globalViewport.vGrid,
 			state.graphicHelper.globalViewport.hGrid
 		);

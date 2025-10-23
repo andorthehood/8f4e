@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
 	testDir: './screenshot-tests',
@@ -9,6 +9,7 @@ export default defineConfig({
 	reporter: 'list',
 	use: {
 		trace: 'on-first-retry',
+		viewport: { width: 1024, height: 768 },
 	},
 	expect: {
 		// Configure screenshot comparison
@@ -29,7 +30,9 @@ export default defineConfig({
 	projects: [
 		{
 			name: 'chromium',
-			use: { ...devices['Desktop Chrome'] },
+			use: {
+				channel: 'chrome',
+			},
 		},
 	],
 });
