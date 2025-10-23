@@ -2,7 +2,7 @@ import init from '@8f4e/web-ui';
 
 import generateCodeBlockMock from '../utils/generateCodeBlockMock';
 import generateStateMock from '../utils/generateStateMock';
-import generateColorMapMock from '../utils/generateColorMapMock';
+import { generateColorMapWithAllColors } from '../utils/generateColorMapMock';
 
 async function initializeWebUI() {
 	const canvas = document.getElementById('test-canvas') as HTMLCanvasElement;
@@ -24,7 +24,9 @@ async function initializeWebUI() {
 				'quis nostrud exercitation',
 				'',
 			],
-			generateColorMapMock(mockState.graphicHelper.spriteLookups)
+			16,
+			16,
+			generateColorMapWithAllColors(mockState.graphicHelper.spriteLookups)
 		);
 
 		mockState.graphicHelper.draggedCodeBlock = codeBlockMock;

@@ -1,6 +1,7 @@
 import { SpriteLookups } from '@8f4e/sprite-generator';
+import { SpriteLookup } from 'glugglug';
 
-export default function (spriteLookups: SpriteLookups) {
+export function generateColorMapWithAllColors(spriteLookups: SpriteLookups) {
 	return [
 		[spriteLookups.fontBinaryOne],
 		[spriteLookups.fontBinaryZero],
@@ -14,4 +15,8 @@ export default function (spriteLookups: SpriteLookups) {
 		[spriteLookups.fontMenuItemTextHighlighted],
 		[spriteLookups.fontNumbers],
 	];
+}
+
+export function generateColorMapWithOneColor(color: SpriteLookup, lines: number) {
+	return new Array(lines).fill([color]);
 }
