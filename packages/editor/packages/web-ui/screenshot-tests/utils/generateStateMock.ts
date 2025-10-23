@@ -122,7 +122,7 @@ export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): Sta
 				offsetY: 0,
 				padLength: 1,
 				trimmedCode: [],
-				viewport: { x: -280, y: -208 },
+				viewport: { x: 0, y: 0 },
 				width: 0,
 				x: 0,
 				y: 0,
