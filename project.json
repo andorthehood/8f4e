@@ -2,6 +2,12 @@
   "name": "app",
   "sourceRoot": "src",
   "projectType": "application",
+  "implicitDependencies": [
+    "@8f4e/compiler-worker",
+    "@8f4e/runtime-web-worker-logic",
+    "@8f4e/runtime-web-worker-midi",
+    "@8f4e/runtime-audio-worklet"
+  ],
   "targets": {
     "dev": {
       "executor": "nx:run-commands",
