@@ -1,47 +1,43 @@
 import { CodeBlockGraphicData } from '@8f4e/editor-state';
+import { SpriteLookup } from 'glugglug';
 
-export default function () {
-	return new Set<CodeBlockGraphicData>([
-		{
-			code: ['module test', '', '; Hello world', '', 'moduleEnd'],
-			codeBlocks: new Set(),
-			codeColors: [[], [], [], [], []],
-			codeToRender: [
-				[48, 32, 109, 111, 100, 117, 108, 101, 32, 116, 101, 115, 116],
-				[49, 32],
-				[50, 32, 59, 32, 72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100],
-				[51, 32],
-				[52, 32, 109, 111, 100, 117, 108, 101, 69, 110, 100],
-			],
-			cursor: { x: 112, y: 0, row: 0, col: 11 },
-			extras: {
-				inputs: new Map(),
-				outputs: new Map(),
-				debuggers: new Map(),
-				switches: new Map(),
-				buttons: new Map(),
-				pianoKeyboards: new Map(),
-				bufferPlotters: new Map(),
-				errorMessages: new Map(),
-			},
-			gaps: new Map(),
-			gridX: -32,
-			gridY: -11,
-			height: 80,
-			id: 'test',
-			isOpen: true,
-			lastUpdated: 0,
-			minGridWidth: 32,
-			offsetX: 0,
-			offsetY: 0,
-			padLength: 1,
-			positionOffsetterXWordAddress: undefined,
-			positionOffsetterYWordAddress: undefined,
-			trimmedCode: ['module test', '', '; Hello world', '', 'moduleEnd'],
-			viewport: { x: 0, y: 0 },
-			width: 256,
-			x: -256,
-			y: -176,
+export default function (lines: string[], codeColors?: (SpriteLookup | undefined)[][]): CodeBlockGraphicData {
+	const codeToRender = lines.map(line => line.split('').map(char => char.charCodeAt(0)));
+	const height = lines.length * 16;
+
+	return {
+		code: [], // Not relevant for the rendering
+		codeBlocks: new Set(),
+		codeColors: codeColors || new Array(lines.length).fill([]),
+		codeToRender,
+		cursor: { x: 112, y: 0, row: 0, col: 11 },
+		extras: {
+			inputs: new Map(),
+			outputs: new Map(),
+			debuggers: new Map(),
+			switches: new Map(),
+			buttons: new Map(),
+			pianoKeyboards: new Map(),
+			bufferPlotters: new Map(),
+			errorMessages: new Map(),
 		},
-	]);
+		gaps: new Map(),
+		gridX: 0, // Not relevant for the rendering
+		gridY: 0, // Not relevant for the rendering
+		height,
+		id: '', // Not relevant for the rendering
+		isOpen: true,
+		lastUpdated: 0,
+		minGridWidth: 32,
+		offsetX: 0,
+		offsetY: 0,
+		padLength: 1,
+		positionOffsetterXWordAddress: undefined,
+		positionOffsetterYWordAddress: undefined,
+		trimmedCode: [], // Not relevant for the rendering
+		viewport: { x: 0, y: 0 },
+		width: 256,
+		x: -256,
+		y: -176,
+	};
 }
