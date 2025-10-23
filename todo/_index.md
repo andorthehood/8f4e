@@ -8,6 +8,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Created | Summary |
 |----|-------|----------|--------|---------|---------|
+| 073 | Make Packages Self-Contained for Dist-First Usage | 🔴 | 2-3d | 2025-10-23 | Align Nx dev/build pipeline to consume dist artifacts and split unit vs screenshot test commands |
 | 053 | Fix Runtime Reinitialization on Code Change | 🔴 | 4-6h | 2025-09-03 | Runtime destroys and recreates completely on every code change instead of syncing existing instance, causing audio glitches, performance degradation, and loss of runtime state |
 
 ### 🟡 Medium Priority
