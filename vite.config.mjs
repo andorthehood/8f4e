@@ -5,7 +5,6 @@ import { resolve } from 'path'
 // import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig(({ command }) => {
-  const isBuild = command === 'build'
   const resolvePath = (path) => resolve(__dirname, path)
 
   return {
@@ -33,19 +32,17 @@ export default defineConfig(({ command }) => {
     ],
     resolve: {
       alias: {
-        '@8f4e/editor': resolvePath(`packages/editor/${isBuild ? 'dist' : 'src'}`),
-        '@8f4e/editor-state': resolvePath(`packages/editor/packages/editor-state/${isBuild ? 'dist' : 'src'}`),
-        '@8f4e/web-ui': resolvePath(`packages/editor/packages/web-ui/${isBuild ? 'dist' : 'src'}`),
-        'glugglug': resolvePath(`packages/editor/packages/glugglug/${isBuild ? 'dist' : 'src'}`),
-        '@8f4e/compiler': resolvePath(`packages/compiler/${isBuild ? 'dist' : 'src'}`),
-        '@8f4e/sprite-generator': resolvePath(`packages/editor/packages/sprite-generator/${isBuild ? 'dist' : 'src'}`),
-        '@8f4e/state-manager': resolvePath(
-          `packages/editor/packages/state-manager/${isBuild ? 'dist' : 'src'}`
-        ),
+        '@8f4e/editor': resolvePath('packages/editor/dist'),
+        '@8f4e/editor-state': resolvePath('packages/editor/packages/editor-state/dist'),
+        '@8f4e/web-ui': resolvePath('packages/editor/packages/web-ui/dist'),
+        'glugglug': resolvePath('packages/editor/packages/glugglug/dist'),
+        '@8f4e/compiler': resolvePath('packages/compiler/dist'),
+        '@8f4e/sprite-generator': resolvePath('packages/editor/packages/sprite-generator/dist'),
+        '@8f4e/state-manager': resolvePath('packages/editor/packages/state-manager/dist'),
         '@8f4e/runtime-audio-worklet': resolvePath('packages/runtime-audio-worklet/dist'),
-        '@8f4e/runtime-web-worker-logic': resolvePath(`packages/runtime-web-worker-logic/${isBuild ? 'dist' : 'src'}`),
-        '@8f4e/runtime-main-thread-logic': resolvePath(`packages/runtime-main-thread-logic/${isBuild ? 'dist' : 'src'}`),
-        '@8f4e/runtime-web-worker-midi': resolvePath(`packages/runtime-web-worker-midi/${isBuild ? 'dist' : 'src'}`)
+        '@8f4e/runtime-web-worker-logic': resolvePath('packages/runtime-web-worker-logic/dist'),
+        '@8f4e/runtime-main-thread-logic': resolvePath('packages/runtime-main-thread-logic/dist'),
+        '@8f4e/runtime-web-worker-midi': resolvePath('packages/runtime-web-worker-midi/dist')
       }
     },
     build: {
