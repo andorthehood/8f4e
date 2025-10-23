@@ -98,7 +98,8 @@ export async function exportFile(data: Uint8Array | string, filename: string, mi
 		blob = new Blob([data], { type: mimeType || 'application/json' });
 	} else {
 		// Handle binary data (like WASM bytecode)
-		blob = new Blob([data], { type: mimeType || 'application/wasm' });
+		// Create a new Uint8Array to ensure ArrayBuffer compatibility
+		blob = new Blob([new Uint8Array(data)], { type: mimeType || 'application/wasm' });
 	}
 
 	const url = URL.createObjectURL(blob);

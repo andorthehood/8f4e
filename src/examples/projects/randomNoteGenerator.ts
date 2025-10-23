@@ -1109,6 +1109,7 @@ const project: Project = {
 			sampleRate: 50,
 		},
 	],
+	compiledModules: {},
 };
 
 export default project;
