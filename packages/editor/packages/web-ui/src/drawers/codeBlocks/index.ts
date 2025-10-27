@@ -102,15 +102,15 @@ export default function drawModules(engine: Engine, state: State): void {
 						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
 					}
 
-					drawSwitches(engine, state, codeBlock);
-					drawButtons(engine, state, codeBlock);
-					drawErrorMessages(engine, state, codeBlock);
 					drawPianoKeyboards(engine, state, codeBlock);
 				},
 				// Enable caching only when the block is NOT selected
 				state.graphicHelper.selectedCodeBlock !== codeBlock
 			);
 
+			drawErrorMessages(engine, state, codeBlock);
+			drawSwitches(engine, state, codeBlock);
+			drawButtons(engine, state, codeBlock);
 			drawConnectors(engine, state, codeBlock);
 			drawPlotters(engine, state, codeBlock);
 			drawDebuggers(engine, state, codeBlock);
