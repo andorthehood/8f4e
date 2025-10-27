@@ -3,15 +3,14 @@ import { Icon } from '@8f4e/sprite-generator';
 
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 
-export default function drawSwitches(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
+export default function drawButtons(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	for (const [, { x, y, id: debuggerId, onValue, offValue }] of codeBlock.extras.buttons) {
-		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[debuggerId];
-
-		if (!memory || !state.graphicHelper.spriteLookups) {
+		if (!state.graphicHelper.spriteLookups) {
 			continue;
 		}
 
-		const { wordAlignedAddress } = memory;
+		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[debuggerId];
+		const { wordAlignedAddress = 0 } = memory || {};
 		const value = state.compiler.memoryBuffer[wordAlignedAddress] || 0;
 
 		if (value === onValue) {
