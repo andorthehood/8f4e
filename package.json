@@ -2,6 +2,10 @@
   "name": "8f4e",
   "version": "1.0.0",
   "description": "8f4e",
+  "engines": {
+    "node": ">=24.11.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "preinstall": "git submodule update --init --recursive",
     "build": "npx nx run app:build",
@@ -32,8 +36,8 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "devDependencies": {
-    "@nx/js": "^21.4.1",
-    "@nx/vite": "^21.6.5",
+    "@nx/js": "^22.0.2",
+    "@nx/vite": "^22.0.2",
     "@playwright/test": "^1.56.1",
     "@swc/cli": "^0.7.7",
     "@swc/core": "^1.13.3",
@@ -50,7 +54,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "husky": "7.0.4",
     "lint-staged": "12.1.4",
-    "nx": "21.4.1",
+    "nx": "22.0.2",
     "playwright": "^1.56.1",
     "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
