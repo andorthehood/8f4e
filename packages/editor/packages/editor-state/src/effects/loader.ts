@@ -104,6 +104,26 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 	});
 
 	function loadProject({ project: newProject }: { project: Project }) {
+		// Reset compiler state
+		const { initialMemorySize, maxMemorySize } = state.compiler.compilerOptions;
+		state.compiler.memoryRef = new WebAssembly.Memory({
+			initial: initialMemorySize,
+			maximum: maxMemorySize,
+			shared: true,
+		});
+		state.compiler.memoryBuffer = new Int32Array();
+		state.compiler.memoryBufferFloat = new Float32Array();
+		state.compiler.codeBuffer = new Uint8Array();
+		state.compiler.compiledModules = {};
+		state.compiler.allocatedMemorySize = 0;
+		state.compiler.buildErrors = [];
+		state.compiler.isCompiling = false;
+
+		// Clear graphic helper caches that depend on compiler output
+		state.graphicHelper.outputsByWordAddress.clear();
+		state.graphicHelper.selectedCodeBlock = undefined;
+		state.graphicHelper.draggedCodeBlock = undefined;
+
 		state['project'] = { ...EMPTY_DEFAULT_PROJECT };
 
 		Object.keys(newProject).forEach(key => {
