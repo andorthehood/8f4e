@@ -1,6 +1,10 @@
 import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
 
-let previousCompiledModules: CompiledModuleLookup;
+let previousCompiledModules: CompiledModuleLookup | undefined;
+
+export function resetCompiledModulesCache(): void {
+	previousCompiledModules = undefined;
+}
 
 function compareObject(obj1: Record<string, number>, obj2: Record<string, number>): boolean {
 	const keys1 = Object.keys(obj1);
