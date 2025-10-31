@@ -1,4 +1,8 @@
-import { RuntimeType } from './runtime';
+import { vi, type MockInstance } from 'vitest';
+
+import runtimeEffect, { RuntimeType } from './runtime';
+
+import type { EventDispatcher, State } from '../types';
 
 describe('Runtime System', () => {
 	describe('RuntimeType', () => {
@@ -38,6 +42,71 @@ describe('Runtime System', () => {
 			expect(validRuntimeTypes).toContain('WebWorkerMIDIRuntime');
 			expect(validRuntimeTypes).toContain('WebWorkerLogicRuntime');
 			expect(validRuntimeTypes).toContain('MainThreadLogicRuntime');
+		});
+	});
+
+	describe('Runtime lifecycle integration', () => {
+		it('should destroy previous runtime when runtime type changes without changeRuntime event', async () => {
+			const audioDestroyer = vi.fn();
+			const mainDestroyer = vi.fn();
+			const audioRuntimeFactory = vi.fn(() => audioDestroyer);
+			const mainRuntimeFactory = vi.fn(() => mainDestroyer);
+
+			const requestRuntime = vi.fn(async (runtimeType: RuntimeType) => {
+				if (runtimeType === 'AudioWorkletRuntime') {
+					return audioRuntimeFactory;
+				}
+
+				if (runtimeType === 'MainThreadLogicRuntime') {
+					return mainRuntimeFactory;
+				}
+
+				throw new Error(`Unexpected runtime ${runtimeType}`);
+			});
+
+			const state = {
+				project: {
+					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
+					selectedRuntime: 0,
+				},
+				callbacks: {
+					requestRuntime,
+				},
+			} as unknown as State;
+
+			const events = {
+				on: vi.fn(),
+				off: vi.fn(),
+				dispatch: vi.fn(),
+			} as unknown as EventDispatcher;
+
+			await runtimeEffect(state, events);
+
+			const onCalls = (events.on as MockInstance).mock.calls;
+			const buildFinishedCall = onCalls.find(call => call[0] === 'buildFinished');
+			expect(buildFinishedCall).toBeDefined();
+
+			const buildFinishedHandler = buildFinishedCall![1] as () => Promise<void>;
+
+			await buildFinishedHandler();
+
+			expect(requestRuntime).toHaveBeenCalledTimes(1);
+			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
+			expect(audioDestroyer).not.toHaveBeenCalled();
+
+			state.project.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
+			state.project.selectedRuntime = 0;
+
+			await buildFinishedHandler();
+
+			expect(audioDestroyer).toHaveBeenCalledTimes(1);
+			expect(mainRuntimeFactory).toHaveBeenCalledTimes(1);
+			expect(requestRuntime).toHaveBeenCalledTimes(2);
+
+			const destroyOrder = audioDestroyer.mock.invocationCallOrder[0];
+			const mainFactoryOrder = mainRuntimeFactory.mock.invocationCallOrder[0];
+
+			expect(destroyOrder).toBeLessThan(mainFactoryOrder);
 		});
 	});
 });

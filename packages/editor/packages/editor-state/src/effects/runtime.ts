@@ -25,6 +25,13 @@ export default async function runtime(state: State, events: EventDispatcher) {
 		isInitializing = true;
 
 		try {
+			if (runtimeDestroyer) {
+				console.log(`[Runtime] Destroying runtime: ${onlineRuntime}`);
+				runtimeDestroyer();
+				runtimeDestroyer = null;
+				onlineRuntime = null;
+			}
+
 			console.log(`[Runtime] Requesting runtime: ${runtime.runtime}`);
 			// Use the callback to request the runtime factory
 			const runtimeFactory = await state.callbacks.requestRuntime(runtime.runtime as RuntimeType);
