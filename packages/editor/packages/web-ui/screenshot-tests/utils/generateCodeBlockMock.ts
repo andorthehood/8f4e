@@ -1,4 +1,4 @@
-import { CodeBlockGraphicData } from '@8f4e/editor-state';
+import { CodeBlockGraphicData, Switch } from '@8f4e/editor-state';
 import { SpriteLookup } from 'glugglug';
 
 export default function (
@@ -6,7 +6,8 @@ export default function (
 	x: number = 16,
 	y: number = 16,
 	codeColors?: (SpriteLookup | undefined)[][],
-	id: string = ''
+	id: string = '',
+	buttons: Map<string, Switch> = new Map()
 ): CodeBlockGraphicData {
 	const codeToRender = lines.map(line => line.split('').map(char => char.charCodeAt(0)));
 	const height = lines.length * 16;
@@ -22,19 +23,7 @@ export default function (
 			outputs: new Map(),
 			debuggers: new Map(),
 			switches: new Map(),
-			buttons: new Map(
-				Object.entries({
-					set: {
-						width: 32,
-						height: 16,
-						x: 100,
-						y: 100,
-						id: 'set',
-						offValue: 0,
-						onValue: 1,
-					},
-				})
-			),
+			buttons,
 			pianoKeyboards: new Map(),
 			bufferPlotters: new Map(),
 			errorMessages: new Map(),
