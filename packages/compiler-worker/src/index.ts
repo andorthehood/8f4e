@@ -1,6 +1,6 @@
 import { CompileOptions, Module } from '@8f4e/compiler';
 
-import testBuild from './testBuild';
+import testBuild, { resetCompiledModulesCache } from './testBuild';
 
 async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
 	try {
@@ -26,6 +26,9 @@ self.onmessage = function (event) {
 	switch (event.data.type) {
 		case 'recompile':
 			recompile(event.data.payload.memoryRef, event.data.payload.modules, event.data.payload.compilerOptions);
+			break;
+		case 'reset':
+			resetCompiledModulesCache();
 			break;
 	}
 };
