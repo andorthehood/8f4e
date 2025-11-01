@@ -8,10 +8,11 @@ import generateBackground, { generateLookup as generateLookupForBackground } fro
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
 import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
 import { Command, Config, ColorScheme } from './types';
-import ascii8x16 from './fonts/8x16/ascii';
-import ascii6x10 from './fonts/6x10/ascii';
-import glyphs8x16 from './fonts/8x16/glyphs';
-import glyphs6x10 from './fonts/6x10/glyphs';
+import { decodeFontBase64 } from './fonts/font-decoder';
+import { fontMetadata as ascii8x16Metadata } from './fonts/8x16/generated/ascii';
+import { fontMetadata as ascii6x10Metadata } from './fonts/6x10/generated/ascii';
+import { fontMetadata as glyphs8x16Metadata } from './fonts/8x16/generated/glyphs';
+import { fontMetadata as glyphs6x10Metadata } from './fonts/6x10/generated/glyphs';
 import { defaultColorScheme } from './defaultColorScheme';
 
 export { Icon } from './icons';
@@ -24,14 +25,14 @@ const fonts: Record<
 	{ asciiBitmap: number[]; glyphsBitmap: number[]; characterWidth: number; characterHeight: number }
 > = {
 	'8x16': {
-		asciiBitmap: ascii8x16,
-		glyphsBitmap: glyphs8x16,
+		asciiBitmap: decodeFontBase64(ascii8x16Metadata),
+		glyphsBitmap: decodeFontBase64(glyphs8x16Metadata),
 		characterWidth: 8,
 		characterHeight: 16,
 	},
 	'6x10': {
-		asciiBitmap: ascii6x10,
-		glyphsBitmap: glyphs6x10,
+		asciiBitmap: decodeFontBase64(ascii6x10Metadata),
+		glyphsBitmap: decodeFontBase64(glyphs6x10Metadata),
 		characterWidth: 6,
 		characterHeight: 10,
 	},
