@@ -67,7 +67,6 @@
   },
   "workspaces": [
     "packages/*",
-    "!packages/glugglug",
     "packages/*/*",
     "packages/*/*/*"
   ],
