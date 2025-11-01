@@ -1,6 +1,4 @@
-import { asciiGlyphsToFont } from '../ascii-converter';
-
-const glyphs = [
+export const glyphs = [
 	[
 		// 0
 		'        ',
@@ -2434,5 +2432,3 @@ const glyphs = [
 		'        ',
 	],
 ];
-
-export default asciiGlyphsToFont(glyphs, 8);
