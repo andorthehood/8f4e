@@ -1,6 +1,6 @@
 /**
  * Converts ASCII art font glyphs to numeric bitmap arrays and vice versa.
- * 
+ *
  * ASCII art format uses ' ' for unset pixels and '#' for set pixels.
  * Bitmaps are stored as arrays of numbers where each number represents a row,
  * with the most significant bit being the leftmost pixel.
@@ -8,11 +8,11 @@
 
 /**
  * Converts a single ASCII art glyph to a numeric bitmap array.
- * 
+ *
  * @param asciiGlyph - Array of strings where each string is a row of the glyph
  * @param characterWidth - Width of the character in pixels
  * @returns Array of numbers representing the bitmap
- * 
+ *
  * @example
  * ```ts
  * const glyph = [
@@ -38,34 +38,9 @@ export function asciiToBitmap(asciiGlyph: string[], characterWidth: number): num
 }
 
 /**
- * Converts a numeric bitmap array to ASCII art format.
- * 
- * @param bitmap - Array of numbers representing the bitmap
- * @param characterWidth - Width of the character in pixels
- * @returns Array of strings where each string is a row of the glyph
- * 
- * @example
- * ```ts
- * const bitmap = [0b000100, 0b001110, 0b010001];
- * const glyph = bitmapToAscii(bitmap, 6);
- * // Returns: ['   #  ', '  ###  ', ' #   # ']
- * ```
- */
-export function bitmapToAscii(bitmap: number[], characterWidth: number): string[] {
-	return bitmap.map(byte => {
-		let row = '';
-		for (let i = 0; i < characterWidth; i++) {
-			const mask = 1 << (characterWidth - 1 - i);
-			row += (byte & mask) ? '#' : ' ';
-		}
-		return row;
-	});
-}
-
-/**
  * Converts an array of ASCII art glyphs to a flat array of numbers.
  * This is the format expected by the font rendering system.
- * 
+ *
  * @param asciiGlyphs - Array of ASCII art glyphs
  * @param characterWidth - Width of each character in pixels
  * @returns Flattened array of numbers representing all glyphs
