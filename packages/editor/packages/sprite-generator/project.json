@@ -3,9 +3,21 @@
   "sourceRoot": "src",
   "projectType": "library",
   "targets": {
+    "generate-fonts": {
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{projectRoot}/src/fonts/8x16/generated",
+        "{projectRoot}/src/fonts/6x10/generated"
+      ],
+      "options": {
+        "command": "node tools/generate-font-bitmaps.mjs",
+        "cwd": "{projectRoot}"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
+      "dependsOn": ["generate-fonts"],
       "options": {
         "command": "tsc",
         "cwd": "{projectRoot}"
@@ -13,6 +25,7 @@
     },
     "dev": {
       "executor": "nx:run-commands",
+      "dependsOn": ["generate-fonts"],
       "options": {
         "command": "tsc --watch",
         "cwd": "{projectRoot}"
@@ -21,6 +34,7 @@
     "test": {
       "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["generate-fonts"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
         "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
@@ -28,6 +42,7 @@
     },
     "typecheck": {
       "executor": "nx:run-commands",
+      "dependsOn": ["generate-fonts"],
       "options": {
         "command": "tsc --noEmit",
         "cwd": "{projectRoot}"
