@@ -17,7 +17,7 @@
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
-      "dependsOn": ["generate-fonts"],
+      "dependsOn": ["^build", "generate-fonts"],
       "options": {
         "command": "tsc",
         "cwd": "{projectRoot}"
@@ -25,7 +25,7 @@
     },
     "dev": {
       "executor": "nx:run-commands",
-      "dependsOn": ["generate-fonts"],
+      "dependsOn": ["^build", "generate-fonts"],
       "options": {
         "command": "tsc --watch",
         "cwd": "{projectRoot}"
@@ -42,7 +42,7 @@
     },
     "typecheck": {
       "executor": "nx:run-commands",
-      "dependsOn": ["generate-fonts"],
+      "dependsOn": ["^build", "generate-fonts"],
       "options": {
         "command": "tsc --noEmit",
         "cwd": "{projectRoot}"
