@@ -3,8 +3,8 @@ title: 'TODO: Human-readable sprite font glyphs'
 priority: Medium
 effort: 2-3 days
 created: 2025-10-31
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-01
 ---
 
 # TODO: Human-readable sprite font glyphs
