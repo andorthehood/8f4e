@@ -1,3 +1,5 @@
+import { moduleManifest } from './modules/index';
+
 import type { ExampleModule, ModuleMetadata, Project, ProjectMetadata } from '@8f4e/editor-state';
 
 // Project registry with lazy loading functions (individual loading strategy for projects)
@@ -73,45 +75,78 @@ export const projectRegistry: Record<string, ProjectRegistryEntry> = {
 	},
 };
 
-// Loading state management for modules
-let modulesLoaded = false;
-let loadedModules: Record<string, ExampleModule> = {};
+// Cache for loaded modules to avoid redundant loading
+const loadedModulesCache: Record<string, ExampleModule> = {};
+let metadataCache: ModuleMetadata[] | null = null;
 
-// Single lazy import for all modules - load on demand
-export async function loadAllModules(): Promise<Record<string, ExampleModule>> {
-	if (modulesLoaded) {
-		return loadedModules;
+/**
+ * Get list of modules with metadata only.
+ * This loads all modules once to extract metadata, then caches the result.
+ * Individual modules are loaded on-demand when getModule is called.
+ */
+export async function getListOfModules(): Promise<ModuleMetadata[]> {
+	if (metadataCache) {
+		return metadataCache;
 	}
 
-	console.log('Loading all modules in batch...');
+	console.log('Loading module metadata...');
 
-	// Single lazy import loads all modules at once
-	const modulesImport = await import('./modules/index');
-	loadedModules = modulesImport.default;
-	modulesLoaded = true;
+	// Load all modules to extract metadata
+	// This is necessary because metadata is embedded in the module objects
+	const metadataPromises = Object.entries(moduleManifest).map(async ([slug, loader]) => {
+		const module = await loader();
+		// Cache the loaded module for future use
+		loadedModulesCache[slug] = module;
+		return {
+			slug,
+			title: module.title,
+			category: module.category,
+		};
+	});
 
-	console.log(`Loaded ${Object.keys(loadedModules).length} modules`);
-	return loadedModules;
+	metadataCache = await Promise.all(metadataPromises);
+	console.log(`Loaded metadata for ${metadataCache.length} modules`);
+
+	return metadataCache;
 }
 
-// Get list of modules (loads all modules and derives metadata from them)
-export async function getListOfModules(): Promise<ModuleMetadata[]> {
-	const modules = await loadAllModules();
-	return Object.entries(modules).map(([slug, module]) => ({
-		slug,
-		title: module.title,
-		category: module.category,
-	}));
-}
-
-// Get specific module (loads all modules if not loaded yet)
+/**
+ * Get a specific module by slug.
+ * Uses cached version if available, otherwise loads on-demand.
+ */
 export async function getModule(slug: string): Promise<ExampleModule> {
-	const modules = await loadAllModules();
-	const module = modules[slug];
-	if (!module) {
+	// Check cache first
+	if (loadedModulesCache[slug]) {
+		console.log(`Module ${slug} loaded from cache`);
+		return loadedModulesCache[slug];
+	}
+
+	// Load from manifest
+	const loader = moduleManifest[slug];
+	if (!loader) {
 		throw new Error(`Module not found: ${slug}`);
 	}
+
+	console.log(`Loading module: ${slug}`);
+	const module = await loader();
+	loadedModulesCache[slug] = module;
+	console.log(`Loaded module: ${module.title}`);
+
 	return module;
+}
+
+/**
+ * @deprecated Use getListOfModules and getModule instead.
+ * This function is kept for backwards compatibility but now loads modules lazily.
+ */
+export async function loadAllModules(): Promise<Record<string, ExampleModule>> {
+	console.log('Loading all modules (lazy)...');
+
+	// Ensure all modules are loaded
+	await getListOfModules();
+
+	// Return the cache which now contains all modules
+	return { ...loadedModulesCache };
 }
 
 // Get list of projects (metadata only)
