@@ -74,6 +74,81 @@ npm run typecheck
 npm run dev
 ```
 
+## Visual Regression Testing
+
+The sprite generator includes Playwright-driven screenshot tests to ensure visual consistency and catch rendering regressions early.
+
+### Prerequisites
+
+Before running screenshot tests, ensure the sprite-generator package is built:
+
+```bash
+# Build the package (required for Vite aliases to resolve)
+npx nx run @8f4e/sprite-generator:build
+
+# Or from the sprite-generator directory
+npm run build
+```
+
+### Running Screenshot Tests
+
+```bash
+# Run all screenshot tests (from sprite-generator directory)
+npm run test:screenshot
+
+# Or using Nx from project root
+npx nx run @8f4e/sprite-generator:test:screenshot
+
+# Run with UI mode for debugging
+npm run test:screenshot:ui
+
+# Run in headed mode (visible browser)
+npm run test:screenshot:headed
+
+# Debug tests step-by-step
+npm run test:screenshot:debug
+```
+
+### Updating Snapshots
+
+When sprite rendering changes are intentional (e.g., new features or bug fixes), update the baseline snapshots:
+
+```bash
+# Update all snapshots
+npm run test:screenshot:update
+
+# Or using Nx
+npx nx run @8f4e/sprite-generator:test:screenshot:update
+```
+
+### Test Structure
+
+Screenshot tests are located in `screenshot-tests/`:
+- `screenshot.test.ts` - Main Playwright test file
+- `test-cases/` - HTML and TypeScript files for each test scenario
+- `screenshot.test.ts-snapshots/` - Baseline snapshot images (committed to git)
+- `vite.config.ts` - Vite configuration for the test server (port 3002)
+
+### Test Cases
+
+Current test scenarios include:
+- **sprite-sheet-basic** - Default 8x16 font with standard color scheme
+- **sprite-sheet-custom-colors** - 6x10 font with custom vibrant color scheme
+
+### Adding New Test Cases
+
+1. Create a new HTML file in `screenshot-tests/test-cases/` (e.g., `my-test.html`)
+2. Create a corresponding TypeScript file (e.g., `my-test.ts`)
+3. Add the test case name to the `testCases` array in `screenshot.test.ts`
+4. Run `npm run test:screenshot:update` to capture the baseline snapshot
+
+### CI Integration
+
+Screenshot tests run automatically in CI. If a test fails:
+1. Review the diff in the CI output
+2. If the change is intentional, update snapshots locally and commit
+3. If the change is unintentional, fix the rendering issue
+
 ## Bundle Size
 
 Font bitmaps before optimization: ~79KB
