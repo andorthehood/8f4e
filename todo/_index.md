@@ -51,6 +51,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 076 | Precompute Font Bitmaps as Base64 Assets | 🟡 | 8-12h | 2025-11-01 | Reduced sprite-generator bundle size by 90% (79KB → 8KB) by precomputing font bitmaps at build time and encoding as Base64 instead of shipping ASCII art sources |
 | 073 | Make Packages Self-Contained for Dist-First Usage | 🔴 | 2-3d | 2025-10-23 | Aligned Nx dev/build pipeline to consume dist artifacts, removed src/dist conditional in vite config, added package watch targets, and documented new workflow |
 | 070 | Migrate Testing System to Vitest | 🔴 | 3-4d | 2025-10-21 | Migrated all packages from Jest to Vitest with improved ESM support and Vite integration; 243 tests passing across 11 packages |
 | 071 | Front Matter Metadata Migration | 🟡 | 0.5-1d | 2025-10-21 | Migrated 70 TODO files from inline bold metadata format to YAML front matter for better parsing and automation |
