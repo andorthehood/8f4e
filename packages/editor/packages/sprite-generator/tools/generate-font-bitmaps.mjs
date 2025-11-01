@@ -43,6 +43,10 @@ function asciiGlyphsToFont(asciiGlyphs, characterWidth) {
 /**
  * Extracts glyphs array from a TypeScript source file.
  * This is a simple parser for the known structure of our font files.
+ * 
+ * Note: Uses eval() to parse the array structure, but only in a controlled
+ * build-time context on trusted source files. The alternative would be a full
+ * TypeScript parser which would add significant complexity.
  */
 function extractGlyphsFromSource(sourceContent) {
 	// Find the glyphs array declaration
@@ -54,8 +58,30 @@ function extractGlyphsFromSource(sourceContent) {
 	// Parse the glyphs - they're arrays of string arrays
 	const glyphsArrayContent = glyphsMatch[1];
 
-	// Use a more robust approach: execute the code in a controlled way
-	// We'll use eval with proper context
+	// Validate that the content doesn't contain dangerous patterns
+	// Block common injection patterns while allowing our expected content
+	const dangerousPatterns = [
+		/require\s*\(/,
+		/import\s+/,
+		/__dirname/,
+		/__filename/,
+		/process\./,
+		/eval\s*\(/,
+		/Function\s*\(/,
+	];
+	
+	for (const pattern of dangerousPatterns) {
+		if (pattern.test(glyphsArrayContent)) {
+			throw new Error('Font source contains potentially dangerous code patterns');
+		}
+	}
+
+	// Use eval in controlled context with trusted source files
+	// This is safe because:
+	// 1. Only runs at build time, not in browser
+	// 2. Only processes our own source files
+	// 3. Content is validated to not contain dangerous patterns
+	// 4. Alternative (full TS parser) would add significant complexity
 	const glyphs = eval(`[${glyphsArrayContent}]`);
 
 	return glyphs;
