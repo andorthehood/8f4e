@@ -32,6 +32,7 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 - [`docs/deployment.md`](./docs/deployment.md) - Editor bundle deployment to DigitalOcean Spaces
 - [`docs/usage.md`](./docs/usage.md) - How to integrate the editor bundle in external websites
 - [`docs/todo/`](./docs/todo/) - Technical debt and planned improvements (one file per TODO item)
+- [`postmortems/`](./postmortems/) - Postmortem analyses of significant issues and lessons learned
 
 ## Development
 
