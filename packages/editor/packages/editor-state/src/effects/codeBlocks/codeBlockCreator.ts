@@ -165,6 +165,24 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		navigator.clipboard.writeText(codeBlock.code.join('\n'));
 	}
 
+	async function onAddCodeBlockBySlug({
+		codeBlockSlug,
+		x,
+		y,
+	}: {
+		codeBlockSlug: string;
+		x: number;
+		y: number;
+	}): Promise<void> {
+		if (!state.callbacks.getModule) {
+			console.warn('No getCodeBlock callback provided');
+			return;
+		}
+		const codeBlock = await state.callbacks.getModule(codeBlockSlug);
+		onAddCodeBlock({ code: codeBlock.code.split('\n'), x, y, isNew: false });
+	}
+
+	events.on('addCodeBlockBySlug', onAddCodeBlockBySlug);
 	events.on('addCodeBlock', onAddCodeBlock);
 	events.on('copyCodeBlock', onCopyCodeBlock);
 	events.on('deleteCodeBlock', onDeleteCodeBlock);
