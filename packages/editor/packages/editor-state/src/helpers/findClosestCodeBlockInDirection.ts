@@ -1,9 +1,19 @@
-import type { CodeBlockGraphicData } from '../types';
-
 /**
  * Direction types for navigation
  */
 export type Direction = 'left' | 'right' | 'up' | 'down';
+
+/**
+ * Minimal positional data required for spatial navigation
+ */
+export interface CodeBlockPosition {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	offsetX: number;
+	offsetY: number;
+}
 
 /**
  * Weight factor for alignment preference in distance calculation.
@@ -34,11 +44,11 @@ const ALIGNMENT_WEIGHT = 1.0;
  * );
  * ```
  */
-export default function findClosestCodeBlockInDirection(
-	codeBlocks: Set<CodeBlockGraphicData>,
-	selectedBlock: CodeBlockGraphicData,
+export default function findClosestCodeBlockInDirection<T extends CodeBlockPosition>(
+	codeBlocks: Set<T>,
+	selectedBlock: T,
 	direction: Direction
-): CodeBlockGraphicData {
+): T {
 	// Calculate the center point of the selected block (accounting for offsets)
 	const selectedX = selectedBlock.x + selectedBlock.offsetX + selectedBlock.width / 2;
 	const selectedY = selectedBlock.y + selectedBlock.offsetY + selectedBlock.height / 2;
