@@ -132,8 +132,8 @@ Screenshot tests are located in `screenshot-tests/`:
 ### Test Cases
 
 Current test scenarios include:
-- **sprite-sheet-basic** - Default 8x16 font with standard color scheme
-- **sprite-sheet-custom-colors** - 6x10 font with custom vibrant color scheme
+- **sprite-sheet-with-8x16-font** - Default 8x16 font with standard color scheme
+- **sprite-sheet-with-6x10-font** - 6x10 font with custom vibrant color scheme
 
 ### Adding New Test Cases
 
