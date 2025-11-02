@@ -57,6 +57,7 @@ export interface InternalMouseEvent {
 
 export interface InternalKeyboardEvent {
 	key: string;
+	metaKey: boolean;
 }
 
 // Type for runtime factory function
