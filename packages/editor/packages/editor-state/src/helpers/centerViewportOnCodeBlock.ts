@@ -1,4 +1,16 @@
-import type { Viewport, CodeBlockGraphicData } from '../types';
+import type { Viewport } from '../types';
+
+/**
+ * Minimal positional data required for viewport centering
+ */
+export interface CodeBlockBounds {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	offsetX: number;
+	offsetY: number;
+}
 
 /**
  * Centers the viewport on a given code block, ensuring the top edge is always visible.
@@ -39,9 +51,9 @@ import type { Viewport, CodeBlockGraphicData } from '../types';
  * - Negative viewport coordinates are allowed (viewport can pan anywhere)
  * - O(1) calculation time, suitable for frequent calls
  */
-export default function centerViewportOnCodeBlock(
+export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
 	viewport: Viewport,
-	codeBlock: CodeBlockGraphicData,
+	codeBlock: T,
 	globalViewport: { width: number; height: number }
 ): void {
 	// Calculate the code block's center point (absolute coordinates)
