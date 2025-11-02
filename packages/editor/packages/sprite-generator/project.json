@@ -47,6 +47,27 @@
         "command": "tsc --noEmit",
         "cwd": "{projectRoot}"
       }
+    },
+    "test:screenshot": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "test:screenshot:ui": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test --ui",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "test:screenshot:update": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test --update-snapshots",
+        "cwd": "{projectRoot}"
+      }
     }
   },
   "tags": ["type:library", "scope:graphics"]
