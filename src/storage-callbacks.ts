@@ -1,4 +1,4 @@
-import { getProject, projectRegistry } from './examples/registry';
+import { getProject, projectManifest } from './examples/registry';
 
 import type { Project, EditorSettings } from '@8f4e/editor';
 
@@ -18,7 +18,7 @@ export async function loadProjectFromStorage(): Promise<Project | null> {
 	try {
 		// First, check if there's a project specified in the URL hash
 		const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
-		if (projectName && projectRegistry[projectName]) {
+		if (projectName && projectManifest[projectName]) {
 			console.log('Loading project from URL hash:', projectName);
 			return await getProject(projectName);
 		}
@@ -31,7 +31,7 @@ export async function loadProjectFromStorage(): Promise<Project | null> {
 		}
 
 		// Fall back to default project (audioBuffer) if available
-		if (Object.keys(projectRegistry).length > 0) {
+		if (Object.keys(projectManifest).length > 0) {
 			console.log('Loading default project: audioBuffer');
 			return await getProject('audioBuffer');
 		}
