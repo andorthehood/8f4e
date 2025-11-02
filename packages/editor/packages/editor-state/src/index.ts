@@ -230,3 +230,4 @@ export { EMPTY_DEFAULT_PROJECT } from './types';
 // Export helper functions
 export { default as findClosestCodeBlockInDirection } from './helpers/findClosestCodeBlockInDirection';
 export type { Direction, CodeBlockPosition } from './helpers/findClosestCodeBlockInDirection';
+export { default as centerViewportOnCodeBlock } from './helpers/centerViewportOnCodeBlock';
