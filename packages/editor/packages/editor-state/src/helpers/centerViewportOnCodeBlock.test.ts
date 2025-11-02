@@ -1,6 +1,6 @@
-import centerViewportOnCodeBlock from './centerViewportOnCodeBlock';
+import centerViewportOnCodeBlock, { CodeBlockBounds } from './centerViewportOnCodeBlock';
 
-import type { Viewport, CodeBlockGraphicData } from '../types';
+import type { Viewport } from '../types';
 
 /**
  * Helper function to create a mock viewport for testing
@@ -19,7 +19,7 @@ function createMockCodeBlock(
 	height: number,
 	offsetX = 0,
 	offsetY = 0
-): CodeBlockGraphicData {
+): CodeBlockBounds {
 	return {
 		x,
 		y,
@@ -27,33 +27,7 @@ function createMockCodeBlock(
 		height,
 		offsetX,
 		offsetY,
-		// Other required properties with minimal mock values
-		minGridWidth: 32,
-		code: [],
-		trimmedCode: [],
-		codeColors: [],
-		codeToRender: [],
-		cursor: { col: 0, row: 0, x: 0, y: 0 },
-		id: 'test-block',
-		gaps: new Map(),
-		gridX: 0,
-		gridY: 0,
-		isOpen: true,
-		padLength: 1,
-		viewport: { x: 0, y: 0 },
-		codeBlocks: new Set(),
-		extras: {
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			bufferPlotters: new Map(),
-			errorMessages: new Map(),
-		},
-		lastUpdated: Date.now(),
-	} as CodeBlockGraphicData;
+	};
 }
 
 describe('centerViewportOnCodeBlock', () => {
