@@ -1,9 +1,7 @@
-import findClosestCodeBlockInDirection from './findClosestCodeBlockInDirection';
-
-import type { CodeBlockGraphicData } from '../types';
+import findClosestCodeBlockInDirection, { CodeBlockPosition } from './findClosestCodeBlockInDirection';
 
 /**
- * Helper function to create a mock CodeBlockGraphicData object for testing
+ * Helper function to create a simple code block position object for testing
  */
 function createMockCodeBlock(
 	id: string,
@@ -13,7 +11,7 @@ function createMockCodeBlock(
 	height = 100,
 	offsetX = 0,
 	offsetY = 0
-): CodeBlockGraphicData {
+): CodeBlockPosition & { id: string } {
 	return {
 		id,
 		x,
@@ -22,31 +20,7 @@ function createMockCodeBlock(
 		height,
 		offsetX,
 		offsetY,
-		minGridWidth: 32,
-		code: [],
-		trimmedCode: [],
-		codeColors: [],
-		codeToRender: [],
-		cursor: { col: 0, row: 0, x: 0, y: 0 },
-		gaps: new Map(),
-		gridX: 0,
-		gridY: 0,
-		isOpen: true,
-		padLength: 1,
-		viewport: { x: 0, y: 0 },
-		codeBlocks: new Set(),
-		extras: {
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			bufferPlotters: new Map(),
-			errorMessages: new Map(),
-		},
-		lastUpdated: Date.now(),
-	} as CodeBlockGraphicData;
+	};
 }
 
 describe('findClosestCodeBlockInDirection', () => {
