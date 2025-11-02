@@ -1,153 +1,139 @@
-import audioBufferOut from './audioBufferOut';
-import midiCodes from './midiCodes';
-import quantizer from './quantizer';
-import binaryGateSequencer from './binaryGateSequencer';
-import midiNoteOut from './midiNoteOut';
-import midiCCOut from './midiCCOut';
-import generalMIDIDrumCodes from './generalMIDIDrumCodes';
-import bitwiseAnd from './bitwiseAnd';
-import bitwiseOr from './bitwiseOr';
-import bitwiseXor from './bitwiseXor';
-import break16Step1 from './break16Step1';
-import break16Step2 from './break16Step2';
-import decToBin8bitMSb from './decToBin8bitMSb';
-import amenBreak64Step from './amenBreak64Step';
-import clockDivider from './clockDivider';
-import sineLookupTable from './sineLookupTable';
-import sawSignedFloat from './sawSignedFloat';
-import sawUnsignedFloat from './sawUnsigned8bitInt';
-import squareSignedFloat from './squareSignedFloat';
-import triangleSignedFloat from './triangleSignedFloat';
-import scopeUnsignedInt from './scopeUnsignedInt';
-import scopeSignedFloat from './scopeSignedFloat';
-import binSwitchesLSb from './binSwitchesLSb';
-import binSwitchesMSb from './binSwitchesMSb';
-import switchGatesInt from './switchGatesInt';
-import switchGatesFloat from './switchGatesFloat';
-import mulFloat from './multipleFloat';
-import mulInt from './multipleInt';
-import sequentialDemuxFloat from './sequentialDemuxFloat';
-import sequentialDemuxInt from './sequentialDemuxInt';
-import sequentialMuxFloat from './sequentialMuxFloat';
-import sequentialMuxInt from './sequentialMuxInt';
-import sequencerFloat from './sequencerFloat';
-import sequencerInt from './sequencerInt';
-import shiftRegisterInt from './shiftRegisterInt';
-import shiftRegisterFloat from './shiftRegisterFloat';
-import binaryShiftRegister from './binaryShiftRegister';
-import linearCongruentialGenerator from './linearCongruentialGenerator';
-import peakHolderNegativeFloat from './peakHolderNegativeFloat';
-import XORShift from './XORShift';
-import midiPianoKeyboardC3 from './midiPianoKeyboardC3';
-import bufferCombinerFloat from './bufferCombinerIntFloat';
-import bufferCombinerInt from './bufferCombinerInt';
-import bufferCopierFloat from './bufferCopierFloat';
-import bufferCopierInt from './bufferCopierInt';
-import bufferReverserFloat from './bufferReverserFloat';
-import bufferReverserInt from './bufferReverserInt';
-import bufferReplicatorWithOffsetInt from './bufferReplicatorWithOffsetInt';
-import bufferReplicatorWithOffsetFloat from './bufferReplicatorWithOffsetIntFloat';
-import bufferIntToFloat from './bufferIntToFloat';
-import bufferFloatToInt from './bufferFloatToInt';
-import sampleAndHoldFloat from './sampleAndHoldFloat';
-import sampleAndHoldInt from './sampleAndHoldInt';
-import masterClock from './masterClock';
-import changeDetectorInt from './changeDetectorInt';
-import midiFrequenciesLookupTable from './midiFrequenciesLookupTable';
-import mapToRangeInt from './mapToRangeInt';
-import mapToRangeFloat from './mapToRangeFloat';
-import mapToRangeFloatToInt from './mapToRangeFloatToInt';
-import mapToVariableRangeFloat from './mapToVariableRangeFloat';
-import strumFloat from './strumFloat';
-import perceptronAnd from './perceptronAnd';
-import perceptronOr from './perceptronOr';
-import expLookupTable from './expLookupTable';
-import sigmoidPolynomialApproximation from './sigmoidPolynomialApproximation';
-import perceptron from './perceptron';
-import pcmLooper from './pcmLooper';
-import lowPassFilter from './lowPassFilter';
-import pcmLooperV16bitSigned from './pcmLooperV16bitSigned';
-import pcmLooperVR16bitSigned from './pcmLooperVR16bitSigned';
-import pcmLooperVRP16bitSigned from './pcmLooperVRP16bitSigned';
-import bpmClock from './bpmClock';
-import reverb from './reverb';
-import delay from './delay';
+import type { ExampleModule, ModuleMetadata } from '@8f4e/editor-state';
 
-const modules = {
-	audioBufferOut,
-	midiCodes,
-	quantizer,
-	binaryGateSequencer,
-	midiNoteOut,
-	midiCCOut,
-	generalMIDIDrumCodes,
-	bitwiseAnd,
-	bitwiseOr,
-	bitwiseXor,
-	break16Step1,
-	break16Step2,
-	decToBin8bitMSb,
-	amenBreak64Step,
-	clockDivider,
-	sineLookupTable,
-	sawSignedFloat,
-	sawUnsignedFloat,
-	squareSignedFloat,
-	triangleSignedFloat,
-	scopeUnsignedInt,
-	scopeSignedFloat,
-	binSwitchesLSb,
-	binSwitchesMSb,
-	switchGatesInt,
-	switchGatesFloat,
-	mulFloat,
-	mulInt,
-	sequentialDemuxFloat,
-	sequentialDemuxInt,
-	sequentialMuxFloat,
-	sequentialMuxInt,
-	sequencerFloat,
-	sequencerInt,
-	shiftRegisterInt,
-	shiftRegisterFloat,
-	binaryShiftRegister,
-	linearCongruentialGenerator,
-	peakHolderNegativeFloat,
-	XORShift,
-	midiPianoKeyboardC3,
-	bufferCombinerFloat,
-	bufferCombinerInt,
-	bufferCopierFloat,
-	bufferCopierInt,
-	bufferReverserFloat,
-	bufferReverserInt,
-	bufferReplicatorWithOffsetInt,
-	bufferReplicatorWithOffsetFloat,
-	bufferIntToFloat,
-	bufferFloatToInt,
-	sampleAndHoldFloat,
-	sampleAndHoldInt,
-	masterClock,
-	changeDetectorInt,
-	midiFrequenciesLookupTable,
-	mapToRangeFloat,
-	mapToRangeInt,
-	mapToRangeFloatToInt,
-	mapToVariableRangeFloat,
-	strumFloat,
-	perceptronAnd,
-	perceptronOr,
-	expLookupTable,
-	sigmoidPolynomialApproximation,
-	perceptron,
-	pcmLooper,
-	lowPassFilter,
-	pcmLooperV16bitSigned,
-	pcmLooperVR16bitSigned,
-	pcmLooperVRP16bitSigned,
-	bpmClock,
-	reverb,
-	delay,
-} as const;
+/**
+ * Lazy module loaders using Vite's import.meta.glob.
+ * Each loader returns a Promise that resolves to the module's default export.
+ * This prevents bundling module code until it's actually requested.
+ */
+const moduleLoaders = import.meta.glob<ExampleModule>('./*.ts', {
+	eager: false,
+	import: 'default',
+});
 
-export default modules;
+/**
+ * Extracts the module slug from the file path.
+ * Example: "./audioBufferOut.ts" -> "audioBufferOut"
+ */
+function getSlugFromPath(path: string): string {
+	return path.replace(/^\.\//, '').replace(/\.ts$/, '');
+}
+
+/**
+ * Manifest of available modules with their lazy loaders.
+ * Maps slug -> loader function.
+ */
+export const moduleManifest: Record<string, () => Promise<ExampleModule>> = Object.fromEntries(
+	Object.entries(moduleLoaders).map(([path, loader]) => [getSlugFromPath(path), loader])
+);
+
+/**
+ * Hardcoded metadata for all modules.
+ * This allows listing modules without loading their heavy code payloads.
+ * Metadata is kept in sync with actual module files.
+ */
+export const moduleMetadata: ModuleMetadata[] = [
+	{ slug: 'XORShift', title: 'XORShift (Signed, Float, -1 - 1)', category: 'Random' },
+	{ slug: 'amenBreak64Step', title: 'Amen Break 64 Step', category: 'Break Beats' },
+	{ slug: 'audioBufferOut', title: 'Audio Buffer Out', category: 'Audio Buffer' },
+	{ slug: 'binSwitchesLSb', title: 'Binary Switches (LSb first)', category: 'Controllers' },
+	{ slug: 'binSwitchesMSb', title: 'Binary Switches (MSb first)', category: 'Controllers' },
+	{ slug: 'binaryGateSequencer', title: 'Binary Gate Sequencer', category: 'Sequencers' },
+	{ slug: 'binaryShiftRegister', title: 'Binary Shift Register', category: 'Bitwise' },
+	{ slug: 'bitcrusher', title: 'Bitcrusher', category: 'Effects' },
+	{ slug: 'bitwiseAnd', title: 'Bitwise AND', category: 'Bitwise' },
+	{ slug: 'bitwiseOr', title: 'Bitwise OR', category: 'Bitwise' },
+	{ slug: 'bitwiseXor', title: 'Bitwise XOR', category: 'Bitwise' },
+	{ slug: 'bpmClock', title: 'BPM Clock', category: 'Clock' },
+	{ slug: 'break16Step1', title: '16 Step Break 1', category: 'Break Beats' },
+	{ slug: 'break16Step2', title: '16 Step Break 2', category: 'Break Beats' },
+	{ slug: 'bufferCombinerInt', title: 'Buffer Combiner (Int)', category: 'Buffer' },
+	{ slug: 'bufferCombinerIntFloat', title: 'Buffer Combiner (Float)', category: 'Buffer' },
+	{ slug: 'bufferCopierFloat', title: 'Buffer Copier (Float)', category: 'Buffer' },
+	{ slug: 'bufferCopierInt', title: 'Buffer Copier (Int)', category: 'Buffer' },
+	{ slug: 'bufferFloatToInt', title: 'Float Buffer to Int Buffer Converter', category: 'Buffer' },
+	{ slug: 'bufferIntToFloat', title: 'Int Buffer to Float Buffer Converter', category: 'Buffer' },
+	{
+		slug: 'bufferReplicatorWithOffsetInt',
+		title: 'Buffer Replicator with Offset (Int)',
+		category: 'Buffer',
+	},
+	{
+		slug: 'bufferReplicatorWithOffsetIntFloat',
+		title: 'Buffer Replicator with Offset (Int)',
+		category: 'Buffer',
+	},
+	{ slug: 'bufferReverserFloat', title: 'Buffer Reverser (Float)', category: 'Buffer' },
+	{ slug: 'bufferReverserInt', title: 'Buffer Reverser (Int)', category: 'Buffer' },
+	{ slug: 'changeDetectorInt', title: 'Change Detector (Int)', category: 'Trigger' },
+	{ slug: 'clockDivider', title: 'Clock Divider', category: 'Clock' },
+	{ slug: 'decToBin8bitMSb', title: 'Decimal to Binary Converter (8bit, MSb)', category: 'Bitwise' },
+	{ slug: 'delay', title: 'Delay', category: 'Effects' },
+	{ slug: 'expLookupTable', title: 'Exponent Function Lookup Table (-1...1)', category: 'Lookup Tables' },
+	{ slug: 'generalMIDIDrumCodes', title: 'General MIDI Drum Codes', category: 'MIDI' },
+	{
+		slug: 'linearCongruentialGenerator',
+		title: 'Linear Congruential Generator (Signed, Float, 16bit, -1 - 1)',
+		category: 'Random',
+	},
+	{ slug: 'lowPassFilter', title: 'Low-pass Filter', category: 'Filters' },
+	{ slug: 'mapToRangeFloat', title: 'Map Signal to Range (Float)', category: 'Utils' },
+	{ slug: 'mapToRangeFloatToInt', title: 'Map Signal to Range (Float to Int)', category: 'Utils' },
+	{ slug: 'mapToRangeInt', title: 'Map Signal to Range (Int)', category: 'Utils' },
+	{ slug: 'mapToVariableRangeFloat', title: 'Map Signal to Variable Range (Float)', category: 'Utils' },
+	{ slug: 'masterClock', title: 'Master Clock', category: 'Clock' },
+	{ slug: 'midiCCOut', title: 'MIDI CC Out', category: 'MIDI' },
+	{ slug: 'midiCodes', title: 'MIDI Codes', category: 'MIDI' },
+	{ slug: 'midiFrequenciesLookupTable', title: 'MIDI Frequencies Lookup Table', category: 'Lookup Tables' },
+	{ slug: 'midiNoteOut', title: 'MIDI Note Out', category: 'MIDI' },
+	{ slug: 'midiPianoKeyboardC3', title: 'MIDI Piano Keyboard (First key: C3)', category: 'MIDI' },
+	{ slug: 'multipleFloat', title: 'Multiple (8x Float)', category: 'Utilities' },
+	{ slug: 'multipleInt', title: 'Multiple (8x Int)', category: 'Utilities' },
+	{ slug: 'pcmLooper', title: 'PCM Looper (8bit unsigned)', category: 'PCM' },
+	{ slug: 'pcmLooperV16bitSigned', title: 'Variable Speed PCM Looper (16bit signed)', category: 'PCM' },
+	{
+		slug: 'pcmLooperVR16bitSigned',
+		title: 'Variable Speed and Retriggerable PCM Looper (16bit signed)',
+		category: 'PCM',
+	},
+	{
+		slug: 'pcmLooperVRP16bitSigned',
+		title: 'Retriggerable PCM Looper with Variable Speed and Start Position (16bit signed)',
+		category: 'PCM',
+	},
+	{ slug: 'peakHolderNegativeFloat', title: 'Peak Holder (Negative, Float)', category: 'Debug Tools' },
+	{ slug: 'peakHolderPositiveFloat', title: 'Peak Holder (Positive, Float)', category: 'Debug Tools' },
+	{ slug: 'perceptron', title: 'Perceptron (Untrained)', category: 'Machine Learning' },
+	{ slug: 'perceptronAnd', title: 'Perceptron (with AND gate training)', category: 'Machine Learning' },
+	{ slug: 'perceptronOr', title: 'Perceptron (with OR gate training)', category: 'Machine Learning' },
+	{ slug: 'quantizer', title: 'Quantizer', category: 'Quantizers' },
+	{ slug: 'reverb', title: 'Reverb', category: 'Effects' },
+	{ slug: 'sampleAndHoldFloat', title: 'Sample & Hold (Float)', category: 'Utils' },
+	{ slug: 'sampleAndHoldInt', title: 'Sample & Hold (Int)', category: 'Utils' },
+	{ slug: 'sawSignedFloat', title: 'Saw (Signed, Float)', category: 'Oscillators' },
+	{ slug: 'sawUnsigned8bitInt', title: 'Saw (Unsigned, Int, 8bit)', category: 'Oscillators' },
+	{ slug: 'scopeSignedFloat', title: 'Scope (Signed, Float, -1-1)', category: 'Debug Tools' },
+	{ slug: 'scopeUnsignedInt', title: 'Scope (Unsigned, Int, 0-255)', category: 'Debug Tools' },
+	{ slug: 'sequencerFloat', title: 'Sequencer (Float)', category: 'Sequencers' },
+	{ slug: 'sequencerInt', title: 'Sequencer (Int)', category: 'Sequencers' },
+	{ slug: 'sequentialDemuxFloat', title: 'Sequential Demultiplexer (8 output, Float)', category: 'Sequencers' },
+	{ slug: 'sequentialDemuxInt', title: 'Sequential Demultiplexer (8 output, Int)', category: 'Sequencers' },
+	{ slug: 'sequentialMuxFloat', title: 'Sequential Multiplexer (8 input, Float)', category: 'Sequencers' },
+	{ slug: 'sequentialMuxInt', title: 'Sequential Multiplexer (8 input, Int)', category: 'Sequencers' },
+	{ slug: 'shiftRegisterFloat', title: 'Shift Register (8 outs, Float)', category: 'Utilities' },
+	{ slug: 'shiftRegisterInt', title: 'Shift Register (8 outs, Int)', category: 'Utilities' },
+	{
+		slug: 'sigmoidPolynomialApproximation',
+		title: 'Sigmoid Function (Polynomial Approximation)',
+		category: 'Machine Learning',
+	},
+	{ slug: 'sineLookupTable', title: 'Sine Lookup Table', category: 'Lookup Tables' },
+	{ slug: 'squareSignedFloat', title: 'Square (Signed, Float)', category: 'Oscillators' },
+	{ slug: 'strumFloat', title: 'Strum (Float)', category: 'Sequencers' },
+	{ slug: 'switchGatesFloat', title: 'Switchable Gates (8x Float)', category: 'Controllers' },
+	{ slug: 'switchGatesInt', title: 'Switchable Gates (8x Int)', category: 'Controllers' },
+	{ slug: 'triangleSignedFloat', title: 'Triangle (Signed, Float)', category: 'Oscillators' },
+];
+
+// For backwards compatibility, export a default object that matches the old API
+// but note: accessing properties will not trigger loading - use the registry functions instead
+export default moduleManifest;
