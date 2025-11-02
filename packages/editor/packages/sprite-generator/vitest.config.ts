@@ -8,6 +8,7 @@ export default mergeConfig(
 		test: {
 			passWithNoTests: true,
 			include: ['tests/**/*.{test,spec}.ts'],
+			exclude: ['**/node_modules/**', '**/dist/**', 'screenshot-tests/**'],
 		},
 	})
 );
