@@ -1,0 +1,67 @@
+import type { Viewport, CodeBlockGraphicData } from '../types';
+
+/**
+ * Centers the viewport on a given code block, ensuring the top edge is always visible.
+ *
+ * This function mutates the viewport object to position it such that the code block
+ * appears centered on screen. For blocks smaller than the viewport, perfect centering
+ * is achieved. For blocks larger than the viewport, the top edge is prioritized and
+ * remains visible while the bottom may extend beyond the viewport.
+ *
+ * @param viewport - The viewport object to mutate (will be modified in place)
+ * @param codeBlock - The code block to center on
+ * @param globalViewport - The global viewport dimensions (width and height)
+ *
+ * @example
+ * ```typescript
+ * // Center viewport on a selected code block
+ * centerViewportOnCodeBlock(
+ *   state.graphicHelper.activeViewport.viewport,
+ *   selectedCodeBlock,
+ *   state.graphicHelper.globalViewport
+ * );
+ * // viewport.x and viewport.y are now updated to center the block
+ * ```
+ *
+ * @remarks
+ * **Centering Behavior:**
+ * - Horizontally: Block is centered within the viewport width
+ * - Vertically: Block is centered, but constrained so top edge is always visible
+ *
+ * **Constraints:**
+ * - The top edge of the code block never goes offscreen
+ * - For large blocks (taller than viewport), only the bottom may be clipped
+ * - Code block offsets (offsetX, offsetY) are included in calculations
+ *
+ * **Implementation Notes:**
+ * - This function mutates the viewport parameter directly
+ * - Coordinates use pixels, not grid units (grid conversion happens elsewhere)
+ * - Negative viewport coordinates are allowed (viewport can pan anywhere)
+ * - O(1) calculation time, suitable for frequent calls
+ */
+export default function centerViewportOnCodeBlock(
+	viewport: Viewport,
+	codeBlock: CodeBlockGraphicData,
+	globalViewport: { width: number; height: number }
+): void {
+	// Calculate the code block's center point (absolute coordinates)
+	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
+	const blockCenterY = codeBlock.y + codeBlock.offsetY + codeBlock.height / 2;
+
+	// Calculate viewport center
+	const viewportCenterX = globalViewport.width / 2;
+	const viewportCenterY = globalViewport.height / 2;
+
+	// Calculate ideal viewport position (block center aligns with viewport center)
+	const idealViewportX = blockCenterX - viewportCenterX;
+	const idealViewportY = blockCenterY - viewportCenterY;
+
+	// Apply top constraint: viewport Y cannot be greater than block top
+	// This ensures the top of the block is always visible
+	const blockTop = codeBlock.y + codeBlock.offsetY;
+	const constrainedViewportY = Math.min(blockTop, idealViewportY);
+
+	// Mutate viewport object
+	viewport.x = idealViewportX;
+	viewport.y = constrainedViewportY;
+}
