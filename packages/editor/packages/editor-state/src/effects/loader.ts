@@ -103,6 +103,15 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 			});
 	});
 
+	async function loadProjectBySlug({ projectSlug }: { projectSlug: string }) {
+		if (!state.callbacks.getProject) {
+			console.warn('No getProject callback provided');
+			return;
+		}
+		const project = await state.callbacks.getProject(projectSlug);
+		loadProject({ project });
+	}
+
 	function loadProject({ project: newProject }: { project: Project }) {
 		// Reset compiler state
 		const { initialMemorySize, maxMemorySize } = state.compiler.compilerOptions;
@@ -247,4 +256,5 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 	events.on('saveEditorSettings', onSaveEditorSettings);
 	events.on('open', onOpen);
 	events.on('loadProject', loadProject);
+	events.on('loadProjectBySlug', loadProjectBySlug);
 }
