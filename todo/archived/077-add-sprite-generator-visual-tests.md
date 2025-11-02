@@ -3,8 +3,8 @@ title: 'TODO: Add Sprite Generator Visual Regression Tests'
 priority: Medium
 effort: 1-2d
 created: 2025-11-01
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-01
 ---
 
 # TODO: Add Sprite Generator Visual Regression Tests
