@@ -83,6 +83,7 @@ const entries = (opfsRoot as unknown as {
 - Not available in very old browsers
 - SharedArrayBuffer features require COOP/COEP headers
 - Memory allocation limits vary by browser
+- Some security-focused IT environments disable WebAssembly entirely due to perceived exploit risk
 **Recommendation**: Critical API - provide clear error messaging if not supported
 
 ### Canvas.convertToBlob() & OffscreenCanvas

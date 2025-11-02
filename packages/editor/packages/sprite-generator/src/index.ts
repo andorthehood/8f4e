@@ -48,24 +48,16 @@ export interface SpriteLookups extends FontLookups {
 }
 
 export default function generateSprite(config: Config): {
-	canvas: OffscreenCanvas | HTMLCanvasElement;
+	canvas: OffscreenCanvas;
 	spriteLookups: SpriteLookups;
 	characterWidth: number;
 	characterHeight: number;
 } {
-	let canvas: OffscreenCanvas | HTMLCanvasElement;
+	const canvas = new OffscreenCanvas(1024, 1024);
 	const { characterWidth, characterHeight, asciiBitmap, glyphsBitmap } = fonts[config.font];
 
 	// Use default color scheme if none provided
 	const colorScheme = config.colorScheme || defaultColorScheme;
-
-	if (window.OffscreenCanvas) {
-		canvas = new OffscreenCanvas(1024, 1024);
-	} else {
-		canvas = document.createElement('canvas');
-		canvas.width = 1024;
-		canvas.height = 1024;
-	}
 
 	const ctx = canvas.getContext('2d', {
 		alpha: true,
