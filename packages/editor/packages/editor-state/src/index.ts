@@ -226,3 +226,7 @@ export type {
 
 // Export EMPTY_DEFAULT_PROJECT as a value
 export { EMPTY_DEFAULT_PROJECT } from './types';
+
+// Export helper functions
+export { default as findClosestCodeBlockInDirection } from './helpers/findClosestCodeBlockInDirection';
+export type { Direction } from './helpers/findClosestCodeBlockInDirection';
