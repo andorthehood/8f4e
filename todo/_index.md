@@ -35,6 +35,8 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 062 | Editor Command Queue Refactor | 🟡 | 3-4d | 2025-10-09 | Direct callback storage makes state non-serializable and couples effects to host functions; replace with typed command queue for better testability and side-effect observability |
 | 069 | Extract Editor State Into Dedicated Package | 🟡 | 3d | 2025-10-21 | Split editor state logic into `@8f4e/editor-state` to remove deep imports, clarify boundaries, and enable reuse |
 | 070 | Merge Editor State Types Into Editor State Package | 🟡 | 2-3d | 2025-10-21 | Consolidate the standalone types package back into `@8f4e/editor-state`, update configs/dependencies, and remove redundant aliases |
+| 077 | Add Sprite Generator Visual Regression Tests | 🟡 | 1-2d | 2025-11-01 | Add Playwright-based screenshot coverage for the sprite generator package |
+| 078 | Modularize Example Module Imports | 🟡 | 1-2d | 2025-11-01 | Split example module registry into lazy `import.meta.glob` loaders to keep heavy code strings out of the initial bundle |
 
 ### 🟢 Low Priority
 
