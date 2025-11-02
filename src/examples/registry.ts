@@ -1,4 +1,4 @@
-import { moduleManifest } from './modules/index';
+import { moduleManifest, moduleMetadata } from './modules/index';
 
 import type { ExampleModule, ModuleMetadata, Project, ProjectMetadata } from '@8f4e/editor-state';
 
@@ -77,37 +77,13 @@ export const projectRegistry: Record<string, ProjectRegistryEntry> = {
 
 // Cache for loaded modules to avoid redundant loading
 const loadedModulesCache: Record<string, ExampleModule> = {};
-let metadataCache: ModuleMetadata[] | null = null;
 
 /**
  * Get list of modules with metadata only.
- * This loads all modules once to extract metadata, then caches the result.
- * Individual modules are loaded on-demand when getModule is called.
+ * Returns hardcoded metadata without loading any module code.
  */
 export async function getListOfModules(): Promise<ModuleMetadata[]> {
-	if (metadataCache) {
-		return metadataCache;
-	}
-
-	console.log('Loading module metadata...');
-
-	// Load all modules to extract metadata
-	// This is necessary because metadata is embedded in the module objects
-	const metadataPromises = Object.entries(moduleManifest).map(async ([slug, loader]) => {
-		const module = await loader();
-		// Cache the loaded module for future use
-		loadedModulesCache[slug] = module;
-		return {
-			slug,
-			title: module.title,
-			category: module.category,
-		};
-	});
-
-	metadataCache = await Promise.all(metadataPromises);
-	console.log(`Loaded metadata for ${metadataCache.length} modules`);
-
-	return metadataCache;
+	return moduleMetadata;
 }
 
 /**
