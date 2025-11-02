@@ -4,12 +4,13 @@ import type { State, InternalMouseEvent, InternalKeyboardEvent } from '@8f4e/edi
 
 export default function humanInterface(element: HTMLElement, events: EventDispatcher, state: State) {
 	function onKeyboardEvents(event: KeyboardEvent) {
-		const { key, type } = event;
+		const { key, type, metaKey } = event;
 
 		event.preventDefault();
 
 		events.dispatch<InternalKeyboardEvent>(type, {
 			key,
+			metaKey,
 		});
 	}
 
