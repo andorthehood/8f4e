@@ -3,8 +3,8 @@ title: 'TODO: Add Directional Navigation Function for Code Blocks'
 priority: Medium
 effort: 4-6 hours
 created: 2025-11-02
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-02
 ---
 
 # TODO: Add Directional Navigation Function for Code Blocks
