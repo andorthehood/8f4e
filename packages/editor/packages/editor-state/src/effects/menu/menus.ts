@@ -140,11 +140,10 @@ export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
 
 	const menuItems: ContextMenuItem[] = [];
 	for (const moduleMetadata of filteredModules) {
-		const module = await state.callbacks.getModule(moduleMetadata.slug);
 		menuItems.push({
-			title: module.title,
-			action: 'addCodeBlock',
-			payload: { code: module.code.split('\n') },
+			title: moduleMetadata.title,
+			action: 'addCodeBlockBySlug',
+			payload: { codeBlockSlug: moduleMetadata.slug },
 			close: true,
 		});
 	}
@@ -222,11 +221,10 @@ export const projectMenu: MenuGenerator = async state => {
 	const projects = await state.callbacks.getListOfProjects();
 	const menuItems: ContextMenuItem[] = [];
 	for (const projectMetadata of projects) {
-		const project = await state.callbacks.getProject(projectMetadata.slug);
 		menuItems.push({
-			title: project.title,
-			action: 'loadProject',
-			payload: { project },
+			title: projectMetadata.title,
+			action: 'loadProjectBySlug',
+			payload: { projectSlug: projectMetadata.slug },
 			close: true,
 		});
 	}
