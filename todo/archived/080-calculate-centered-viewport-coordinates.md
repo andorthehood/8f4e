@@ -3,8 +3,8 @@ title: 'TODO: Calculate Centered Viewport Coordinates for Code Block'
 priority: Medium
 effort: 3-4 hours
 created: 2025-11-02
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-02
 ---
 
 # TODO: Calculate Centered Viewport Coordinates for Code Block
