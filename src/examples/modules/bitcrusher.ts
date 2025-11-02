@@ -6,7 +6,7 @@ const bitcrusher: ExampleModule = {
 	category: 'Effects',
 	code: `module bitcrusher
 
-float* in &pcmLooper2.out
+float* in
 float defAmount 0.9
 float* amount &defAmount
 float out
