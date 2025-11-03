@@ -1,4 +1,5 @@
 import { Engine } from 'glugglug';
+import { Icon } from '@8f4e/sprite-generator';
 
 import drawConnectors from './extras/connectors';
 import drawPlotters from './extras/plotters';
@@ -7,6 +8,7 @@ import drawSwitches from './extras/switches';
 import drawButtons from './extras/buttons';
 import drawErrorMessages from './extras/errorMessages';
 import drawPianoKeyboards from './extras/pianoKeyboards';
+import { checkVisibility } from './visibilityHelper';
 
 import type { State } from '@8f4e/editor-state';
 
@@ -31,12 +33,9 @@ export default function drawModules(engine: Engine, state: State): void {
 			codeBlock.offsetY = state.compiler.memoryBuffer[codeBlock.positionOffsetterYWordAddress];
 		}
 
-		if (
-			codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
-			codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
-			codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.globalViewport.width &&
-			codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.globalViewport.height
-		) {
+		const { isVisible, arrowPlacement } = checkVisibility(codeBlock, offsetX, offsetY, state);
+
+		if (isVisible) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 			engine.cacheGroup(
 				`codeBlock${codeBlock.id}${codeBlock.lastUpdated}`,
@@ -116,6 +115,33 @@ export default function drawModules(engine: Engine, state: State): void {
 			drawDebuggers(engine, state, codeBlock);
 
 			engine.endGroup();
+		} else {
+			// Module is off-screen, draw arrow indicators
+			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
+
+			if (arrowPlacement.top) {
+				engine.drawSprite(arrowPlacement.top.x, arrowPlacement.top.y, Icon.ARROW_TOP);
+			}
+
+			if (arrowPlacement.right) {
+				engine.drawSprite(
+					arrowPlacement.right.x - state.graphicHelper.globalViewport.vGrid,
+					arrowPlacement.right.y,
+					Icon.ARROW_RIGHT
+				);
+			}
+
+			if (arrowPlacement.bottom) {
+				engine.drawSprite(
+					arrowPlacement.bottom.x,
+					arrowPlacement.bottom.y - state.graphicHelper.globalViewport.hGrid,
+					Icon.ARROW_BOTTOM
+				);
+			}
+
+			if (arrowPlacement.left) {
+				engine.drawSprite(arrowPlacement.left.x, arrowPlacement.left.y, Icon.ARROW_LEFT);
+			}
 		}
 	}
 
