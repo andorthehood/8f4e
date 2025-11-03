@@ -24,6 +24,15 @@ describe('codeBlockNavigation', () => {
 
 		// Create mock state
 		state = {
+			featureFlags: {
+				contextMenu: true,
+				infoOverlay: true,
+				moduleDragging: true,
+				viewportDragging: true,
+				viewportAnimations: false,
+				persistentStorage: true,
+				editing: true,
+			},
 			graphicHelper: {
 				selectedCodeBlock: selectedBlock,
 				activeViewport: {
@@ -111,6 +120,26 @@ describe('codeBlockNavigation', () => {
 
 		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+	});
+
+	it('should enable viewportAnimations flag when navigating to a different block', () => {
+		// Initially false
+		expect(state.featureFlags.viewportAnimations).toBe(false);
+
+		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
+
+		// Should be enabled for animation
+		expect(state.featureFlags.viewportAnimations).toBe(true);
+	});
+
+	it('should not enable viewportAnimations flag when no navigation occurs', () => {
+		// Remove all blocks except selected
+		state.graphicHelper.activeViewport.codeBlocks = new Set([selectedBlock]);
+
+		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
+
+		// Should remain false since no navigation occurred
+		expect(state.featureFlags.viewportAnimations).toBe(false);
 	});
 });
 
