@@ -18,6 +18,7 @@ export const defaultFeatureFlags = {
 	infoOverlay: true, // Default to true, can be overridden
 	moduleDragging: true,
 	viewportDragging: true,
+	viewportAnimations: false,
 	persistentStorage: true,
 	editing: true,
 };
