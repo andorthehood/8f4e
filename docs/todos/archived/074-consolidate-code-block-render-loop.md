@@ -3,8 +3,8 @@ title: 'TODO: Consolidate module and arrow drawing loops'
 priority: Medium
 effort: 0.5 days
 created: 2025-10-31
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-03
 ---
 
 # TODO: Consolidate module and arrow drawing loops
