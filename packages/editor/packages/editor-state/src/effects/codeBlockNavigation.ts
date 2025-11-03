@@ -54,18 +54,11 @@ export default function codeBlockNavigation(state: State, events: EventDispatche
 		const codeBlocks = state.graphicHelper.activeViewport.codeBlocks;
 		const currentBlock = state.graphicHelper.selectedCodeBlock;
 
-		// Enrich the current block with cursor Y for horizontal navigation
-		// Note: We create a new object to avoid mutating the original state.
-		// The shallow copy is intentional - we only need to add the cursorY field.
-		const enrichedCurrentBlock = { ...currentBlock, cursorY: currentBlock.cursor.y };
-
 		// Find the closest code block in the specified direction
-		const targetBlock = findClosestCodeBlockInDirection(codeBlocks, enrichedCurrentBlock, direction);
+		const targetBlock = findClosestCodeBlockInDirection(codeBlocks, currentBlock, direction);
 
-		// If the target is not the enriched block (i.e., a different block was found),
-		// it will be one from the original codeBlocks Set, so we can use it directly.
-		// If it is the enriched block, it means no candidates were found, so don't update.
-		if (targetBlock !== enrichedCurrentBlock) {
+		// If we found a different block, select it and center viewport on it
+		if (targetBlock !== currentBlock) {
 			state.graphicHelper.selectedCodeBlock = targetBlock;
 			// Enable animation for this programmatic viewport change
 			state.featureFlags.viewportAnimations = true;
