@@ -10,7 +10,8 @@ function createMockCodeBlock(
 	width = 100,
 	height = 100,
 	offsetX = 0,
-	offsetY = 0
+	offsetY = 0,
+	cursorY?: number
 ): CodeBlockPosition & { id: string } {
 	return {
 		id,
@@ -20,6 +21,7 @@ function createMockCodeBlock(
 		height,
 		offsetX,
 		offsetY,
+		...(cursorY !== undefined && { cursorY }),
 	};
 }
 
@@ -401,6 +403,156 @@ describe('findClosestCodeBlockInDirection', () => {
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
 
 			expect(result.id).toBe('farAligned');
+		});
+	});
+
+	describe('cursor-aware horizontal navigation', () => {
+		it('should use cursor Y position for horizontal navigation when provided', () => {
+			// Tall selected block (height=300) with cursor near the top at Y=110
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 300, 0, 0, 110);
+			// Two neighbors to the right at different heights
+			const topNeighbor = createMockCodeBlock('topNeighbor', 200, 50, 100, 100);
+			const bottomNeighbor = createMockCodeBlock('bottomNeighbor', 200, 200, 100, 100);
+			const codeBlocks = new Set([selected, topNeighbor, bottomNeighbor]);
+
+			// Cursor at Y=110, topNeighbor center at Y=100, bottomNeighbor center at Y=250
+			// topNeighbor: distance from cursor = |100 - 110| = 10
+			// bottomNeighbor: distance from cursor = |250 - 110| = 140
+			// topNeighbor should win
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('topNeighbor');
+		});
+
+		it('should prefer bottom neighbor when cursor is near the bottom of tall block', () => {
+			// Tall selected block (height=300) with cursor near the bottom at Y=280
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 300, 0, 0, 280);
+			// Two neighbors to the right at different heights
+			const topNeighbor = createMockCodeBlock('topNeighbor', 200, 50, 100, 100);
+			const bottomNeighbor = createMockCodeBlock('bottomNeighbor', 200, 200, 100, 100);
+			const codeBlocks = new Set([selected, topNeighbor, bottomNeighbor]);
+
+			// Cursor at Y=280, topNeighbor center at Y=100, bottomNeighbor center at Y=250
+			// topNeighbor: distance from cursor = |100 - 280| = 180
+			// bottomNeighbor: distance from cursor = |250 - 280| = 30
+			// bottomNeighbor should win
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('bottomNeighbor');
+		});
+
+		it('should work with left navigation and cursor position', () => {
+			// Selected block with cursor near the top
+			const selected = createMockCodeBlock('selected', 400, 0, 100, 300, 0, 0, 110);
+			// Two neighbors to the left at different heights
+			const topNeighbor = createMockCodeBlock('topNeighbor', 200, 50, 100, 100);
+			const bottomNeighbor = createMockCodeBlock('bottomNeighbor', 200, 200, 100, 100);
+			const codeBlocks = new Set([selected, topNeighbor, bottomNeighbor]);
+
+			// Cursor at Y=110, topNeighbor center at Y=100, bottomNeighbor center at Y=250
+			// topNeighbor should win due to cursor proximity
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
+
+			expect(result.id).toBe('topNeighbor');
+		});
+
+		it('should handle multiple neighbors and choose closest to cursor', () => {
+			// Tall selected block with cursor in the middle
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 400, 0, 0, 200);
+			// Multiple neighbors at different heights
+			const top = createMockCodeBlock('top', 200, 0, 100, 80);
+			const upperMiddle = createMockCodeBlock('upperMiddle', 200, 100, 100, 80);
+			const middle = createMockCodeBlock('middle', 200, 180, 100, 80); // Center at Y=220
+			const lowerMiddle = createMockCodeBlock('lowerMiddle', 200, 260, 100, 80);
+			const bottom = createMockCodeBlock('bottom', 200, 340, 100, 80);
+			const codeBlocks = new Set([selected, top, upperMiddle, middle, lowerMiddle, bottom]);
+
+			// Cursor at Y=200, middle center at Y=220 (distance=20)
+			// All others are farther from Y=200
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('middle');
+		});
+
+		it('should fall back to block center when cursor position is not provided', () => {
+			// Selected block without cursor position
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 300);
+			// Two neighbors at different heights
+			const topNeighbor = createMockCodeBlock('topNeighbor', 200, 50, 100, 100);
+			const bottomNeighbor = createMockCodeBlock('bottomNeighbor', 200, 200, 100, 100);
+			const codeBlocks = new Set([selected, topNeighbor, bottomNeighbor]);
+
+			// Without cursor, selected center is at Y=150
+			// topNeighbor center at Y=100 (distance=50)
+			// bottomNeighbor center at Y=250 (distance=100)
+			// topNeighbor should win
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('topNeighbor');
+		});
+
+		it('should not affect vertical navigation (up/down)', () => {
+			// Selected block with cursor position
+			const selected = createMockCodeBlock('selected', 0, 200, 100, 100, 0, 0, 250);
+			// Blocks above and below
+			const above = createMockCodeBlock('above', 0, 0, 100, 100);
+			const below = createMockCodeBlock('below', 0, 400, 100, 100);
+			const codeBlocks = new Set([selected, above, below]);
+
+			// Vertical navigation should use block centers, not cursor
+			const upResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'up');
+			expect(upResult.id).toBe('above');
+
+			const downResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
+			expect(downResult.id).toBe('below');
+		});
+
+		it('should handle cursor at the edge of a tall block', () => {
+			// Very tall selected block with cursor at the very top
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 500, 0, 0, 10);
+			// Multiple neighbors spanning the height
+			const veryTop = createMockCodeBlock('veryTop', 200, 0, 100, 100);
+			const middle = createMockCodeBlock('middle', 200, 200, 100, 100);
+			const bottom = createMockCodeBlock('bottom', 200, 400, 100, 100);
+			const codeBlocks = new Set([selected, veryTop, middle, bottom]);
+
+			// Cursor at Y=10, veryTop center at Y=50 (distance=40)
+			// middle and bottom are much farther
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('veryTop');
+		});
+
+		it('should handle cursor near neighbor boundaries', () => {
+			// Selected block with cursor at Y=150
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 300, 0, 0, 150);
+			// Neighbor that spans Y=100 to Y=200 (center at Y=150)
+			const perfectMatch = createMockCodeBlock('perfectMatch', 200, 100, 100, 100);
+			// Other neighbor
+			const other = createMockCodeBlock('other', 200, 250, 100, 100);
+			const codeBlocks = new Set([selected, perfectMatch, other]);
+
+			// Cursor at Y=150 perfectly matches perfectMatch center
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('perfectMatch');
+		});
+
+		it('should balance primary distance with cursor-aware secondary distance', () => {
+			// Selected block with cursor at Y=100
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 200, 0, 0, 100);
+			// Close but cursor-misaligned neighbor
+			const closeButMisaligned = createMockCodeBlock('close', 150, 300, 100, 100); // Center at Y=350
+			// Farther but cursor-aligned neighbor
+			const farButAligned = createMockCodeBlock('aligned', 300, 80, 100, 100); // Center at Y=130
+			const codeBlocks = new Set([selected, closeButMisaligned, farButAligned]);
+
+			// close: primary = 150-100 = 50, secondary = |350-100| = 250, score = 50 + 250*2 = 550
+			// aligned: primary = 300-100 = 200, secondary = |130-100| = 30, score = 200 + 30*2 = 260
+			// aligned should win despite being farther
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('aligned');
 		});
 	});
 });
