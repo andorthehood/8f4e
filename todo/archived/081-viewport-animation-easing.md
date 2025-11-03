@@ -3,8 +3,8 @@ title: 'TODO: Implement CSS-Like Viewport Animation for Code Block Navigation'
 priority: Medium
 effort: 4-6 hours
 created: 2025-11-03
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-03
 ---
 
 # TODO: Implement CSS-Like Viewport Animation for Code Block Navigation
