@@ -215,6 +215,7 @@ const midiArpeggiator: Project = {
 				'push IN_RANGE_MAX',
 				'push IN_RANGE_MIN',
 				'sub',
+				'ensureNonZero',
 				'div',
 				'push *outRangeMax',
 				'push *outRangeMin',
