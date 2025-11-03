@@ -16,6 +16,9 @@ export interface FeatureFlags {
 	/** Enable/disable panning/scrolling of the editor viewport */
 	viewportDragging: boolean;
 
+	/** Enable/disable viewport animations for programmatic viewport changes */
+	viewportAnimations: boolean;
+
 	/** Enable/disable persistent storage functionality */
 	persistentStorage: boolean;
 
@@ -85,6 +88,7 @@ export interface Position {
 export type Viewport = {
 	x: number;
 	y: number;
+	animationDurationMs?: number;
 };
 
 interface ContextMenuButton {
