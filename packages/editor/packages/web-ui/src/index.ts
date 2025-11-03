@@ -80,7 +80,6 @@ export default async function init(
 			// Animation complete
 			if (progress >= 1.0) {
 				animationState = null;
-				state.featureFlags.viewportAnimations = false;
 				return { x: actualViewport.x, y: actualViewport.y };
 			}
 
