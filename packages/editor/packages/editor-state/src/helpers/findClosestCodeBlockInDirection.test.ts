@@ -45,9 +45,9 @@ describe('findClosestCodeBlockInDirection', () => {
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
 			// The algorithm should balance distance and alignment
-			// With ALIGNMENT_WEIGHT = 1.0:
-			// close: primaryDistance=150, secondaryDistance=200, score=350
-			// aligned: primaryDistance=300, secondaryDistance=10, score=310
+			// With edge-based calculation and ALIGNMENT_WEIGHT = 2.0:
+			// close: primaryDistance=150-100=50, secondaryDistance=200, score=450
+			// aligned: primaryDistance=300-100=200, secondaryDistance=10, score=220
 			expect(result.id).toBe('aligned');
 		});
 
@@ -105,9 +105,9 @@ describe('findClosestCodeBlockInDirection', () => {
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'up');
 
-			// With ALIGNMENT_WEIGHT = 1.0:
-			// close: primaryDistance=150, secondaryDistance=200, score=350
-			// aligned: primaryDistance=300, secondaryDistance=10, score=310
+			// With edge-based calculation and ALIGNMENT_WEIGHT = 2.0:
+			// close: primaryDistance=400-350=50, secondaryDistance=200, score=450
+			// aligned: primaryDistance=400-200=200, secondaryDistance=10, score=220
 			expect(result.id).toBe('aligned');
 		});
 
@@ -259,6 +259,148 @@ describe('findClosestCodeBlockInDirection', () => {
 			expect(findClosestCodeBlockInDirection(codeBlocks, selected, 'down').id).toBe('down');
 			expect(findClosestCodeBlockInDirection(codeBlocks, selected, 'left').id).toBe('left');
 			expect(findClosestCodeBlockInDirection(codeBlocks, selected, 'right').id).toBe('right');
+		});
+	});
+
+	describe('edge-based navigation (diagonal and staggered layouts)', () => {
+		it('should prefer directly below block over diagonally closer block when moving down', () => {
+			// Setup: selected block at (0, 0), directlyBelow at (0, 200), diagonalCloser at (80, 150)
+			// With edge-based logic:
+			// - directlyBelow: primaryDistance = 200-100 = 100, secondaryDistance = 0, score = 100
+			// - diagonalCloser: primaryDistance = 150-100 = 50, secondaryDistance = 80, score = 50 + 80*2 = 210
+			// directlyBelow should win despite being farther away
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 100);
+			const directlyBelow = createMockCodeBlock('directlyBelow', 0, 200, 100, 100);
+			const diagonalCloser = createMockCodeBlock('diagonalCloser', 80, 150, 100, 100);
+			const codeBlocks = new Set([selected, directlyBelow, diagonalCloser]);
+
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
+
+			expect(result.id).toBe('directlyBelow');
+		});
+
+		it('should prefer directly above block over diagonally closer block when moving up', () => {
+			// Setup similar to above but for upward movement
+			const selected = createMockCodeBlock('selected', 0, 300, 100, 100);
+			const directlyAbove = createMockCodeBlock('directlyAbove', 0, 100, 100, 100);
+			const diagonalCloser = createMockCodeBlock('diagonalCloser', 80, 150, 100, 100);
+			const codeBlocks = new Set([selected, directlyAbove, diagonalCloser]);
+
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'up');
+
+			expect(result.id).toBe('directlyAbove');
+		});
+
+		it('should prefer directly right block over diagonally closer block when moving right', () => {
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 100);
+			const directlyRight = createMockCodeBlock('directlyRight', 200, 0, 100, 100);
+			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100);
+			const codeBlocks = new Set([selected, directlyRight, diagonalCloser]);
+
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('directlyRight');
+		});
+
+		it('should prefer directly left block over diagonally closer block when moving left', () => {
+			const selected = createMockCodeBlock('selected', 300, 0, 100, 100);
+			const directlyLeft = createMockCodeBlock('directlyLeft', 100, 0, 100, 100);
+			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100);
+			const codeBlocks = new Set([selected, directlyLeft, diagonalCloser]);
+
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
+
+			expect(result.id).toBe('directlyLeft');
+		});
+
+		it('should handle staggered vertical layout correctly', () => {
+			// Create a staggered layout:
+			//   [A]
+			//      [B]  <- selected
+			//   [C]
+			//      [D]
+			const selected = createMockCodeBlock('B', 200, 100, 100, 80);
+			const blockA = createMockCodeBlock('A', 50, 0, 100, 80);
+			const blockC = createMockCodeBlock('C', 50, 200, 100, 80);
+			const blockD = createMockCodeBlock('D', 200, 300, 100, 80);
+			const codeBlocks = new Set([selected, blockA, blockC, blockD]);
+
+			// Moving up should go to A (even though it's offset)
+			const upResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'up');
+			expect(upResult.id).toBe('A');
+
+			// Moving down should go to D (directly below, even though C is also below)
+			const downResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
+			expect(downResult.id).toBe('D');
+		});
+
+		it('should handle staggered horizontal layout correctly', () => {
+			// Create a staggered layout:
+			//   [A]  [B-selected]  [C]  [D]
+			//         (B slightly lower)
+			const selected = createMockCodeBlock('B', 200, 100, 100, 80);
+			const blockA = createMockCodeBlock('A', 0, 50, 100, 80);
+			const blockC = createMockCodeBlock('C', 400, 50, 100, 80);
+			const blockD = createMockCodeBlock('D', 600, 100, 100, 80);
+			const codeBlocks = new Set([selected, blockA, blockC, blockD]);
+
+			// Moving left should go to A
+			const leftResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
+			expect(leftResult.id).toBe('A');
+
+			// Moving right should go to C (better aligned than D)
+			const rightResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+			expect(rightResult.id).toBe('C');
+		});
+
+		it('should use edge-based filtering to exclude overlapping blocks', () => {
+			// Selected block: x=100, y=100, width=100, height=100
+			//   → boundaries: left=100, top=100, right=200, bottom=200
+			// Overlapping block: x=150, y=150, width=100, height=100
+			//   → boundaries: left=150, top=150, right=250, bottom=250
+			//   → top (150) is NOT >= selected's bottom (200), so it gets filtered out
+			// Properly below block: x=100, y=250, width=100, height=100
+			//   → boundaries: left=100, top=250, right=200, bottom=350
+			//   → top (250) >= selected's bottom (200), so it passes the filter
+			const selected = createMockCodeBlock('selected', 100, 100, 100, 100);
+			const overlapping = createMockCodeBlock('overlapping', 150, 150, 100, 100);
+			const properlyBelow = createMockCodeBlock('properlyBelow', 100, 250, 100, 100);
+			const codeBlocks = new Set([selected, overlapping, properlyBelow]);
+
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
+
+			// Edge-based filtering excludes 'overlapping' because its top edge (150) is below
+			// the selected block's top (100) but above its bottom edge (200), making it overlap.
+			// Only 'properlyBelow' passes the filter: top >= selectedBottom (250 >= 200).
+			expect(result.id).toBe('properlyBelow');
+		});
+
+		it('should handle edge case where blocks are adjacent with no gap', () => {
+			// Blocks that touch edge-to-edge (no gap between them)
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 100);
+			const adjacent = createMockCodeBlock('adjacent', 0, 100, 100, 100); // top edge exactly at selected's bottom
+			const codeBlocks = new Set([selected, adjacent]);
+
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
+
+			// Should find adjacent with 0 primary distance
+			expect(result.id).toBe('adjacent');
+		});
+
+		it('should prioritize alignment with increased weight', () => {
+			// With ALIGNMENT_WEIGHT = 2.0, test that alignment is more important
+			const selected = createMockCodeBlock('selected', 100, 100, 100, 100);
+			// farAligned: far but perfectly aligned
+			const farAligned = createMockCodeBlock('farAligned', 100, 300, 100, 100);
+			// closeMisaligned: closer but significantly misaligned
+			const closeMisaligned = createMockCodeBlock('closeMisaligned', 250, 220, 100, 100);
+			const codeBlocks = new Set([selected, farAligned, closeMisaligned]);
+
+			// farAligned: primary = 300-200 = 100, secondary = 0, score = 100
+			// closeMisaligned: primary = 220-200 = 20, secondary = 200, score = 20 + 200*2 = 420
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
+
+			expect(result.id).toBe('farAligned');
 		});
 	});
 });

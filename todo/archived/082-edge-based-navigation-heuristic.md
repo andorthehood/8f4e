@@ -3,8 +3,8 @@ title: 'TODO: Implement Edge-Based Code Block Navigation'
 priority: Medium
 effort: 1-2d
 created: 2025-02-14
-status: Open
-completed: null
+status: Completed
+completed: 2025-02-14
 ---
 
 # TODO: Implement Edge-Based Code Block Navigation
@@ -43,9 +43,9 @@ completed: null
 
 ## Success Criteria
 
-- [ ] Edge distance calculations replace center-based logic in helper functions.
-- [ ] Updated tests confirm predictable navigation in diagonal/staggered layouts.
-- [ ] Existing navigation scenarios continue passing without regressions.
+- [x] Edge distance calculations replace center-based logic in helper functions.
+- [x] Updated tests confirm predictable navigation in diagonal/staggered layouts.
+- [x] Existing navigation scenarios continue passing without regressions.
 
 ## Affected Components
 
