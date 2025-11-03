@@ -34,6 +34,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 059 | Refactor Unit Tests into __tests__ Folders | 🟡 | 0.5-1d | 2025-09-04 | Inconsistent test organization makes discovery harder and complicates refactors; standardize to `packages/<pkg>/src/**/__tests__/*.test.ts` structure |
 | 062 | Editor Command Queue Refactor | 🟡 | 3-4d | 2025-10-09 | Direct callback storage makes state non-serializable and couples effects to host functions; replace with typed command queue for better testability and side-effect observability |
 | 069 | Extract Editor State Into Dedicated Package | 🟡 | 3d | 2025-10-21 | Split editor state logic into `@8f4e/editor-state` to remove deep imports, clarify boundaries, and enable reuse |
+| 075 | Implement Edge-Based Code Block Navigation | 🟡 | 1-2d | 2025-02-14 | Replace center-based heuristic with edge distance scoring so directional jumps prefer blocks on the intended axis |
 | 070 | Merge Editor State Types Into Editor State Package | 🟡 | 2-3d | 2025-10-21 | Consolidate the standalone types package back into `@8f4e/editor-state`, update configs/dependencies, and remove redundant aliases |
 | 079 | Add Directional Navigation Function for Code Blocks | 🟡 | 4-6h | 2025-11-02 | Implemented spatial navigation algorithm for code blocks supporting keyboard-based navigation between blocks in all four directions |
 
