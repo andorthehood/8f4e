@@ -587,5 +587,24 @@ describe('findClosestCodeBlockInDirection', () => {
 
 			expect(result.id).toBe('aligned');
 		});
+
+		it('should prefer blocks that overlap with cursor Y position over those that do not', () => {
+			// Selected block with cursor in the middle
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 400, 0, 0, 200);
+			// Three neighbors at same horizontal distance
+			const top = createMockCodeBlock('top', 200, 0, 100, 100); // Range [0, 100]
+			const middle = createMockCodeBlock('middle', 200, 150, 100, 100); // Range [150, 250] - overlaps cursor at 200
+			const bottom = createMockCodeBlock('bottom', 200, 300, 100, 100); // Range [300, 400]
+			const codeBlocks = new Set([selected, top, middle, bottom]);
+
+			// Cursor at Y=200
+			// top: range [0,100], cursor not in range, distance = 200-100 = 100
+			// middle: range [150,250], cursor IS in range, distance = 0
+			// bottom: range [300,400], cursor not in range, distance = 300-200 = 100
+			// All have same primary distance, so middle wins due to overlap
+			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
+
+			expect(result.id).toBe('middle');
+		});
 	});
 });
