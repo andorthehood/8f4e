@@ -39,27 +39,37 @@ function getBlockBounds(block: CodeBlockPosition) {
  * For 'up': distance from candidate bottom edge to selected top edge
  * For 'right': distance from selected right edge to candidate left edge
  * For 'left': distance from candidate right edge to selected left edge
+ *
+ * Returns a non-negative distance. Negative values (which would indicate overlapping blocks)
+ * are clamped to 0 as a defensive measure, though the filtering logic should already exclude such cases.
  */
 function calculatePrimaryDistance(
 	selectedBounds: ReturnType<typeof getBlockBounds>,
 	candidateBounds: ReturnType<typeof getBlockBounds>,
 	direction: Direction
 ): number {
+	let distance: number;
 	switch (direction) {
 		case 'down':
-			return candidateBounds.top - selectedBounds.bottom;
+			distance = candidateBounds.top - selectedBounds.bottom;
+			break;
 		case 'up':
-			return selectedBounds.top - candidateBounds.bottom;
+			distance = selectedBounds.top - candidateBounds.bottom;
+			break;
 		case 'right':
-			return candidateBounds.left - selectedBounds.right;
+			distance = candidateBounds.left - selectedBounds.right;
+			break;
 		case 'left':
-			return selectedBounds.left - candidateBounds.right;
+			distance = selectedBounds.left - candidateBounds.right;
+			break;
 		default: {
 			// Exhaustiveness check: if we get here, TypeScript will error if a direction is missing
 			const exhaustiveCheck: never = direction;
 			throw new Error(`Unhandled direction: ${exhaustiveCheck}`);
 		}
 	}
+	// Clamp negative distances to 0 for defensive programming
+	return Math.max(0, distance);
 }
 
 /**
