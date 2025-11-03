@@ -354,15 +354,24 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should use edge-based filtering to exclude overlapping blocks', () => {
-			// Block that partially overlaps horizontally should not be considered when moving down
-			const selected = createMockCodeBlock('selected', 100, 100, 100, 100); // right edge at 200
-			const overlapping = createMockCodeBlock('overlapping', 150, 150, 100, 100); // left edge at 150, top at 150
-			const properlyBelow = createMockCodeBlock('properlyBelow', 100, 250, 100, 100); // top at 250
+			// Selected block: x=100, y=100, width=100, height=100
+			//   → boundaries: left=100, top=100, right=200, bottom=200
+			// Overlapping block: x=150, y=150, width=100, height=100
+			//   → boundaries: left=150, top=150, right=250, bottom=250
+			//   → top (150) is NOT >= selected's bottom (200), so it gets filtered out
+			// Properly below block: x=100, y=250, width=100, height=100
+			//   → boundaries: left=100, top=250, right=200, bottom=350
+			//   → top (250) >= selected's bottom (200), so it passes the filter
+			const selected = createMockCodeBlock('selected', 100, 100, 100, 100);
+			const overlapping = createMockCodeBlock('overlapping', 150, 150, 100, 100);
+			const properlyBelow = createMockCodeBlock('properlyBelow', 100, 250, 100, 100);
 			const codeBlocks = new Set([selected, overlapping, properlyBelow]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
 
-			// Should select properlyBelow because overlapping's top (150) is not >= selected's bottom (200)
+			// Edge-based filtering excludes 'overlapping' because its top edge (150) is below
+			// the selected block's top (100) but above its bottom edge (200), making it overlap.
+			// Only 'properlyBelow' passes the filter: top >= selectedBottom (250 >= 200).
 			expect(result.id).toBe('properlyBelow');
 		});
 
