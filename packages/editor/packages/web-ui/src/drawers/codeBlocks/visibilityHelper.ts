@@ -1,6 +1,11 @@
 import type { State } from '@8f4e/editor-state';
 import type { CodeBlockGraphicData } from '@8f4e/editor-state';
 
+/**
+ * Represents the placement coordinates for directional arrow indicators.
+ * Each direction is optional and only present when an off-screen module
+ * is positioned in that direction relative to the viewport center.
+ */
 export interface ArrowPlacement {
 	top?: { x: number; y: number };
 	right?: { x: number; y: number };
@@ -8,11 +13,21 @@ export interface ArrowPlacement {
 	left?: { x: number; y: number };
 }
 
+/**
+ * Result of a visibility check for a code block.
+ */
 export interface VisibilityResult {
+	/** True if the code block intersects with the viewport and should be rendered */
 	isVisible: boolean;
+	/** Arrow placement data for off-screen indicators. Only populated when isVisible is false */
 	arrowPlacement: ArrowPlacement;
 }
 
+/**
+ * Calculates the intersection point of two line segments.
+ *
+ * @returns The intersection coordinates, or null if lines are parallel or don't intersect
+ */
 function calculateIntersection(
 	line1StartX: number,
 	line1StartY: number,
@@ -50,6 +65,19 @@ function calculateIntersection(
 	return { x: intersectionX, y: intersectionY };
 }
 
+/**
+ * Checks if a code block is visible in the current viewport and calculates arrow placements
+ * for off-screen modules.
+ *
+ * @param codeBlock - The code block graphic data to check visibility for
+ * @param offsetX - The X offset from the viewport (typically -viewport.x)
+ * @param offsetY - The Y offset from the viewport (typically -viewport.y)
+ * @param state - The editor state containing viewport and global viewport information
+ * @returns An object containing:
+ *   - isVisible: boolean indicating if the code block intersects the viewport
+ *   - arrowPlacement: object with directional arrow positions (top, right, bottom, left)
+ *     for off-screen modules. Arrow placements are only calculated when isVisible is false.
+ */
 export function checkVisibility(
 	codeBlock: CodeBlockGraphicData,
 	offsetX: number,
