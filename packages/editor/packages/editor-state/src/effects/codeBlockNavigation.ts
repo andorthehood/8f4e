@@ -54,17 +54,25 @@ export default function codeBlockNavigation(state: State, events: EventDispatche
 		const codeBlocks = state.graphicHelper.activeViewport.codeBlocks;
 		const currentBlock = state.graphicHelper.selectedCodeBlock;
 
-		// Find the closest code block in the specified direction
-		const targetBlock = findClosestCodeBlockInDirection(codeBlocks, currentBlock, direction);
+		// Enrich the current block with cursor Y for horizontal navigation
+		const enrichedCurrentBlock = { ...currentBlock, cursorY: currentBlock.cursor.y };
 
-		// If we found a different block, select it and center viewport on it
-		if (targetBlock !== currentBlock) {
-			state.graphicHelper.selectedCodeBlock = targetBlock;
+		// Find the closest code block in the specified direction
+		const targetBlock = findClosestCodeBlockInDirection(codeBlocks, enrichedCurrentBlock, direction);
+
+		// If we found a different block (comparing by reference to the original blocks in the set)
+		// Note: targetBlock might be enrichedCurrentBlock if no candidates found, so we check against codeBlocks
+		const actualTargetBlock = Array.from(codeBlocks).find(
+			block => block.x === targetBlock.x && block.y === targetBlock.y && block.id === targetBlock.id
+		);
+
+		if (actualTargetBlock && actualTargetBlock !== currentBlock) {
+			state.graphicHelper.selectedCodeBlock = actualTargetBlock;
 			// Enable animation for this programmatic viewport change
 			state.featureFlags.viewportAnimations = true;
 			centerViewportOnCodeBlock(
 				state.graphicHelper.activeViewport.viewport,
-				targetBlock,
+				actualTargetBlock,
 				state.graphicHelper.globalViewport
 			);
 		}
