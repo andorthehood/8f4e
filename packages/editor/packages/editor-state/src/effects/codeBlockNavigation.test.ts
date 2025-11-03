@@ -24,6 +24,15 @@ describe('codeBlockNavigation', () => {
 
 		// Create mock state
 		state = {
+			featureFlags: {
+				contextMenu: true,
+				infoOverlay: true,
+				moduleDragging: true,
+				viewportDragging: true,
+				viewportAnimations: false,
+				persistentStorage: true,
+				editing: true,
+			},
 			graphicHelper: {
 				selectedCodeBlock: selectedBlock,
 				activeViewport: {

@@ -3,6 +3,7 @@ import { Engine, PostProcessEffect } from 'glugglug';
 
 import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import drawBackground from './drawers/drawBackground';
+import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
 
 import type { State } from '@8f4e/editor-state';
 
@@ -15,6 +16,13 @@ export default async function init(
 	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
 	clearCache: () => void;
 }> {
+	// Animation state - local to web-ui, not part of editor-state
+	const animationState: { current: AnimationState | null } = { current: null };
+	const previousViewport = {
+		x: state.graphicHelper.activeViewport.viewport.x,
+		y: state.graphicHelper.activeViewport.viewport.y,
+	};
+
 	const {
 		canvas: sprite,
 		spriteLookups,
@@ -34,6 +42,20 @@ export default async function init(
 	engine.loadSpriteSheet(sprite);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
+		// Get effective viewport (possibly animated)
+		const effectiveViewport = calculateAnimatedViewport(state, performance.now(), animationState, previousViewport);
+
+		// Save original viewport
+		const originalViewport = {
+			x: state.graphicHelper.activeViewport.viewport.x,
+			y: state.graphicHelper.activeViewport.viewport.y,
+		};
+
+		// Temporarily override viewport for rendering
+		state.graphicHelper.activeViewport.viewport.x = effectiveViewport.x;
+		state.graphicHelper.activeViewport.viewport.y = effectiveViewport.y;
+
+		// Render with effective viewport
 		drawBackground(engine, state);
 		drawCodeBlocks(engine, state);
 		drawConnections(engine, state);
@@ -48,6 +70,10 @@ export default async function init(
 		drawDialog(engine, state);
 		drawArrows(engine, state);
 		drawContextMenu(engine, state);
+
+		// Restore original viewport
+		state.graphicHelper.activeViewport.viewport.x = originalViewport.x;
+		state.graphicHelper.activeViewport.viewport.y = originalViewport.y;
 	});
 
 	return {

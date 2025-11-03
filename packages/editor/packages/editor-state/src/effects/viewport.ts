@@ -17,6 +17,8 @@ interface ResizeEvent {
 export default function viewport(state: State, events: EventDispatcher): () => void {
 	function onMouseMove(event: MouseMoveEvent) {
 		if (event.buttons === 1 && state.featureFlags.viewportDragging) {
+			// Disable animation when user manually drags viewport
+			state.featureFlags.viewportAnimations = false;
 			move(state, event.movementX, event.movementY);
 		}
 	}
