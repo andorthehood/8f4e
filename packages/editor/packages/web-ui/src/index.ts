@@ -1,7 +1,7 @@
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect } from 'glugglug';
 
-import { drawArrows, drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
+import { drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
 import drawBackground from './drawers/drawBackground';
 import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
 
@@ -68,7 +68,6 @@ export default async function init(
 			});
 		}
 		drawDialog(engine, state);
-		drawArrows(engine, state);
 		drawContextMenu(engine, state);
 
 		// Restore original viewport
