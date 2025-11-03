@@ -52,6 +52,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 083 | Cursor-Aware Horizontal Navigation | 🟡 | 1 day | 2025-11-03 | Implemented cursor-aware horizontal navigation for code blocks to improve spatial intuition when navigating between tall blocks and multiple neighbors |
 | 082 | Implement Edge-Based Code Block Navigation | 🟡 | 1-2d | 2025-02-14 | Replaced center-based heuristic with edge distance scoring for more intuitive directional navigation in staggered and diagonal layouts |
 | 081 | Implement CSS-Like Viewport Animation for Code Block Navigation | 🟡 | 4-6 hours | 2025-11-03 | Added smooth viewport animations for code block navigation using Command+Arrow keys; animations isolated in web-ui layer with feature flag control |
 | 080 | Calculate Centered Viewport Coordinates for Code Block | 🟡 | 3-4 hours | 2025-11-02 | Implemented utility function to calculate viewport coordinates that center a code block on screen with top-edge visibility constraint |
