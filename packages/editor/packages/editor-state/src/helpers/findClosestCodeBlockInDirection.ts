@@ -1,21 +1,9 @@
+import type { CodeBlockGraphicData } from '../types';
+
 /**
  * Direction types for navigation
  */
 export type Direction = 'left' | 'right' | 'up' | 'down';
-
-/**
- * Minimal positional data required for spatial navigation
- */
-export interface CodeBlockPosition {
-	x: number;
-	y: number;
-	width: number;
-	height: number;
-	offsetX: number;
-	offsetY: number;
-	/** Cursor Y position within the block (absolute, viewport-aligned). Optional for backward compatibility. */
-	cursorY?: number;
-}
 
 /**
  * Weight factor for alignment preference in distance calculation.
@@ -27,7 +15,7 @@ const ALIGNMENT_WEIGHT = 2.0;
 /**
  * Calculate the absolute position boundaries of a code block including offsets.
  */
-function getBlockBounds(block: CodeBlockPosition) {
+function getBlockBounds(block: CodeBlockGraphicData) {
 	const left = block.x + block.offsetX;
 	const top = block.y + block.offsetY;
 	const right = left + block.width;
@@ -81,7 +69,7 @@ function calculatePrimaryDistance(
  * This helps prefer blocks that are better aligned on the perpendicular axis.
  */
 function calculateSecondaryDistance(
-	selectedBlock: CodeBlockPosition,
+	selectedBlock: CodeBlockGraphicData,
 	selectedBounds: ReturnType<typeof getBlockBounds>,
 	candidateBounds: ReturnType<typeof getBlockBounds>,
 	direction: Direction
@@ -96,8 +84,8 @@ function calculateSecondaryDistance(
 		}
 		case 'left':
 		case 'right': {
-			// For horizontal movement, use cursor position if available, otherwise use block center
-			const selectedY = selectedBlock.cursorY ?? (selectedBounds.top + selectedBounds.bottom) / 2;
+			// For horizontal movement, use cursor Y position directly
+			const selectedY = selectedBlock.cursor.y;
 			const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
 			return Math.abs(candidateCenterY - selectedY);
 		}
@@ -142,11 +130,11 @@ function calculateSecondaryDistance(
  * );
  * ```
  */
-export default function findClosestCodeBlockInDirection<T extends CodeBlockPosition>(
-	codeBlocks: Set<T>,
-	selectedBlock: T,
+export default function findClosestCodeBlockInDirection(
+	codeBlocks: Set<CodeBlockGraphicData>,
+	selectedBlock: CodeBlockGraphicData,
 	direction: Direction
-): T {
+): CodeBlockGraphicData {
 	const selectedBounds = getBlockBounds(selectedBlock);
 
 	// Filter candidates based on direction using edge-based comparison

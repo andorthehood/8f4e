@@ -1,7 +1,10 @@
-import findClosestCodeBlockInDirection, { CodeBlockPosition } from './findClosestCodeBlockInDirection';
+import findClosestCodeBlockInDirection from './findClosestCodeBlockInDirection';
+
+import type { CodeBlockGraphicData } from '../types';
 
 /**
- * Helper function to create a simple code block position object for testing
+ * Helper function to create a mock CodeBlockGraphicData object for testing.
+ * Provides all required fields with sensible defaults, focusing on positioning and cursor data.
  */
 function createMockCodeBlock(
 	id: string,
@@ -12,7 +15,7 @@ function createMockCodeBlock(
 	offsetX = 0,
 	offsetY = 0,
 	cursorY?: number
-): CodeBlockPosition & { id: string } {
+): CodeBlockGraphicData {
 	return {
 		id,
 		x,
@@ -21,7 +24,37 @@ function createMockCodeBlock(
 		height,
 		offsetX,
 		offsetY,
-		...(cursorY !== undefined && { cursorY }),
+		// Cursor position - cursorY parameter controls the Y coordinate
+		cursor: {
+			col: 0,
+			row: 0,
+			x: 0,
+			y: cursorY ?? y + offsetY + height / 2, // Default to vertical center if not provided
+		},
+		// Grid positioning
+		gridX: x,
+		gridY: y,
+		// Minimum required fields with dummy values
+		minGridWidth: width,
+		code: [],
+		trimmedCode: [],
+		padLength: 0,
+		codeToRender: [],
+		codeColors: [],
+		gaps: new Map(),
+		positionOffsetterXWordAddress: undefined,
+		positionOffsetterYWordAddress: undefined,
+		isOpen: false,
+		extras: {
+			inputs: new Map(),
+			outputs: new Map(),
+			debuggers: new Map(),
+			bufferPlotters: new Map(),
+			switches: new Map(),
+			buttons: new Map(),
+			pianoKeyboards: new Map(),
+			errorMessages: new Map(),
+		},
 	};
 }
 
