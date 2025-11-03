@@ -60,6 +60,8 @@ export default function codeBlockNavigation(state: State, events: EventDispatche
 		// If we found a different block, select it and center viewport on it
 		if (targetBlock !== currentBlock) {
 			state.graphicHelper.selectedCodeBlock = targetBlock;
+			// Enable animation for this programmatic viewport change
+			state.featureFlags.viewportAnimations = true;
 			centerViewportOnCodeBlock(
 				state.graphicHelper.activeViewport.viewport,
 				targetBlock,
