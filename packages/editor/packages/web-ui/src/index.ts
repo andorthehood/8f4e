@@ -121,35 +121,29 @@ export default async function init(
 		// Get effective viewport (possibly animated)
 		const effectiveViewport = calculateEffectiveViewport(performance.now());
 
-		// Save original viewport
-		const originalViewport = {
-			x: state.graphicHelper.activeViewport.viewport.x,
-			y: state.graphicHelper.activeViewport.viewport.y,
-		};
+		// Create a render-time view of state with animated viewport
+		// This doesn't mutate the original state - it creates a derived object
+		// The animation position/delta is kept entirely in web-ui
+		const renderState = Object.create(state) as State;
+		renderState.graphicHelper = Object.create(state.graphicHelper);
+		renderState.graphicHelper.activeViewport = Object.create(state.graphicHelper.activeViewport);
+		renderState.graphicHelper.activeViewport.viewport = effectiveViewport;
 
-		// Temporarily override viewport for rendering
-		state.graphicHelper.activeViewport.viewport.x = effectiveViewport.x;
-		state.graphicHelper.activeViewport.viewport.y = effectiveViewport.y;
-
-		// Render with effective viewport
-		drawBackground(engine, state);
-		drawCodeBlocks(engine, state);
-		drawConnections(engine, state);
+		// Render with animated viewport (original state unchanged)
+		drawBackground(engine, renderState);
+		drawCodeBlocks(engine, renderState);
+		drawConnections(engine, renderState);
 		if (state.featureFlags.infoOverlay) {
-			drawInfoOverlay(engine, state, {
+			drawInfoOverlay(engine, renderState, {
 				timeToRender,
 				fps,
 				vertices,
 				maxVertices,
 			});
 		}
-		drawDialog(engine, state);
-		drawArrows(engine, state);
-		drawContextMenu(engine, state);
-
-		// Restore original viewport
-		state.graphicHelper.activeViewport.viewport.x = originalViewport.x;
-		state.graphicHelper.activeViewport.viewport.y = originalViewport.y;
+		drawDialog(engine, renderState);
+		drawArrows(engine, renderState);
+		drawContextMenu(engine, renderState);
 	});
 
 	return {
