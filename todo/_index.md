@@ -52,6 +52,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 081 | Implement CSS-Like Viewport Animation for Code Block Navigation | 🟡 | 4-6 hours | 2025-11-03 | Added smooth viewport animations for code block navigation using Command+Arrow keys; animations isolated in web-ui layer with feature flag control |
 | 080 | Calculate Centered Viewport Coordinates for Code Block | 🟡 | 3-4 hours | 2025-11-02 | Implemented utility function to calculate viewport coordinates that center a code block on screen with top-edge visibility constraint |
 | 078 | Modularize Example Module Imports | 🟡 | 1-2d | 2025-11-01 | Implemented lazy loading using `import.meta.glob` for 76+ example modules; each module now code-split into separate chunk (0.2-2.2 KB), preventing main bundle from including unused module code |
 | 077 | Add Sprite Generator Visual Regression Tests | 🟡 | 1-2d | 2025-11-01 | Added Playwright-based screenshot tests for sprite-generator package to ensure visual consistency and prevent rendering regressions |
