@@ -26,6 +26,9 @@ function easeInOutCubic(t: number): number {
 	return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+/** Animation duration in milliseconds for viewport transitions */
+const ANIMATION_DURATION_MS = 300;
+
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
@@ -37,7 +40,10 @@ export default async function init(
 }> {
 	// Animation state - local to web-ui, not part of editor-state
 	let animationState: AnimationState | null = null;
-	let previousViewport = { x: 0, y: 0 };
+	let previousViewport = {
+		x: state.graphicHelper.activeViewport.viewport.x,
+		y: state.graphicHelper.activeViewport.viewport.y,
+	};
 
 	/**
 	 * Calculate effective viewport position considering animations.
@@ -57,7 +63,7 @@ export default async function init(
 				startViewport: { ...previousViewport },
 				targetViewport: { x: actualViewport.x, y: actualViewport.y },
 				startTime: currentTime,
-				duration: 300, // 300ms animation duration
+				duration: ANIMATION_DURATION_MS,
 			};
 			previousViewport = { x: actualViewport.x, y: actualViewport.y };
 		} else if (viewportChanged) {
