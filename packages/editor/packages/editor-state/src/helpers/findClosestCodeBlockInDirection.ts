@@ -13,6 +13,8 @@ export interface CodeBlockPosition {
 	height: number;
 	offsetX: number;
 	offsetY: number;
+	/** Cursor Y position within the block (absolute, viewport-aligned). Optional for backward compatibility. */
+	cursorY?: number;
 }
 
 /**
@@ -75,10 +77,11 @@ function calculatePrimaryDistance(
 /**
  * Calculate the perpendicular offset between blocks (for alignment scoring).
  * For vertical movement: measures horizontal offset between block centers
- * For horizontal movement: measures vertical offset between block centers
+ * For horizontal movement: measures vertical offset between cursor and candidate center
  * This helps prefer blocks that are better aligned on the perpendicular axis.
  */
 function calculateSecondaryDistance(
+	selectedBlock: CodeBlockPosition,
 	selectedBounds: ReturnType<typeof getBlockBounds>,
 	candidateBounds: ReturnType<typeof getBlockBounds>,
 	direction: Direction
@@ -93,10 +96,10 @@ function calculateSecondaryDistance(
 		}
 		case 'left':
 		case 'right': {
-			// For horizontal movement, measure vertical alignment
-			const selectedCenterY = (selectedBounds.top + selectedBounds.bottom) / 2;
+			// For horizontal movement, use cursor position if available, otherwise use block center
+			const selectedY = selectedBlock.cursorY ?? (selectedBounds.top + selectedBounds.bottom) / 2;
 			const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
-			return Math.abs(candidateCenterY - selectedCenterY);
+			return Math.abs(candidateCenterY - selectedY);
 		}
 		default: {
 			// Exhaustiveness check: if we get here, TypeScript will error if a direction is missing
@@ -178,7 +181,7 @@ export default function findClosestCodeBlockInDirection<T extends CodeBlockPosit
 
 		// Calculate edge-to-edge primary distance and perpendicular alignment
 		const primaryDistance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
-		const secondaryDistance = calculateSecondaryDistance(selectedBounds, candidateBounds, direction);
+		const secondaryDistance = calculateSecondaryDistance(selectedBlock, selectedBounds, candidateBounds, direction);
 
 		// Calculate weighted score - lower is better
 		// Alignment (secondary distance) is weighted to strongly prefer aligned blocks
