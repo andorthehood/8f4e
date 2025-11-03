@@ -65,7 +65,8 @@ function calculatePrimaryDistance(
 /**
  * Calculate the perpendicular offset between blocks (for alignment scoring).
  * For vertical movement: measures horizontal offset between block centers
- * For horizontal movement: measures vertical offset between cursor and candidate center
+ * For horizontal movement: measures vertical offset from cursor to candidate block,
+ * prioritizing blocks that overlap with the cursor's Y position.
  * This helps prefer blocks that are better aligned on the perpendicular axis.
  */
 function calculateSecondaryDistance(
@@ -84,10 +85,20 @@ function calculateSecondaryDistance(
 		}
 		case 'left':
 		case 'right': {
-			// For horizontal movement, use cursor Y position directly
-			const selectedY = selectedBlock.cursor.y;
-			const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
-			return Math.abs(candidateCenterY - selectedY);
+			// For horizontal movement, check if cursor Y overlaps with candidate block's vertical range
+			const cursorY = selectedBlock.cursor.y;
+
+			// If cursor is within the candidate block's vertical bounds, return 0 (perfect alignment)
+			if (cursorY >= candidateBounds.top && cursorY <= candidateBounds.bottom) {
+				return 0;
+			}
+
+			// Otherwise, calculate distance from cursor to the nearest edge of the candidate block
+			if (cursorY < candidateBounds.top) {
+				return candidateBounds.top - cursorY;
+			} else {
+				return cursorY - candidateBounds.bottom;
+			}
 		}
 		default: {
 			// Exhaustiveness check: if we get here, TypeScript will error if a direction is missing
