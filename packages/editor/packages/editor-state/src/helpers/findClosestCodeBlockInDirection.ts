@@ -54,6 +54,11 @@ function calculatePrimaryDistance(
 			return candidateBounds.left - selectedBounds.right;
 		case 'left':
 			return selectedBounds.left - candidateBounds.right;
+		default: {
+			// Exhaustiveness check: if we get here, TypeScript will error if a direction is missing
+			const exhaustiveCheck: never = direction;
+			throw new Error(`Unhandled direction: ${exhaustiveCheck}`);
+		}
 	}
 }
 
@@ -68,16 +73,26 @@ function calculateSecondaryDistance(
 	candidateBounds: ReturnType<typeof getBlockBounds>,
 	direction: Direction
 ): number {
-	if (direction === 'up' || direction === 'down') {
-		// For vertical movement, measure horizontal alignment
-		const selectedCenterX = (selectedBounds.left + selectedBounds.right) / 2;
-		const candidateCenterX = (candidateBounds.left + candidateBounds.right) / 2;
-		return Math.abs(candidateCenterX - selectedCenterX);
-	} else {
-		// For horizontal movement, measure vertical alignment
-		const selectedCenterY = (selectedBounds.top + selectedBounds.bottom) / 2;
-		const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
-		return Math.abs(candidateCenterY - selectedCenterY);
+	switch (direction) {
+		case 'up':
+		case 'down': {
+			// For vertical movement, measure horizontal alignment
+			const selectedCenterX = (selectedBounds.left + selectedBounds.right) / 2;
+			const candidateCenterX = (candidateBounds.left + candidateBounds.right) / 2;
+			return Math.abs(candidateCenterX - selectedCenterX);
+		}
+		case 'left':
+		case 'right': {
+			// For horizontal movement, measure vertical alignment
+			const selectedCenterY = (selectedBounds.top + selectedBounds.bottom) / 2;
+			const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
+			return Math.abs(candidateCenterY - selectedCenterY);
+		}
+		default: {
+			// Exhaustiveness check: if we get here, TypeScript will error if a direction is missing
+			const exhaustiveCheck: never = direction;
+			throw new Error(`Unhandled direction: ${exhaustiveCheck}`);
+		}
 	}
 }
 
