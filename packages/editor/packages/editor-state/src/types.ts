@@ -88,6 +88,7 @@ export interface Position {
 export type Viewport = {
 	x: number;
 	y: number;
+	animationDurationMs?: number;
 };
 
 interface ContextMenuButton {
