@@ -24,5 +24,6 @@ Each postmortem includes:
 
 ## Index
 
+- [2025-11-03: Git Push "bad object" Error](./2025-11-03-git-push-bad-object-error.md) - Branch divergence after GitHub PR merge caused push failure
 - [2025-11-01: sprite-generator CI Build Failures](./2025-11-01-sprite-generator-ci-build-failure.md) - Race condition in Nx parallel builds due to missing `^build` dependency
 
