@@ -6,6 +6,26 @@ import drawBackground from './drawers/drawBackground';
 
 import type { State } from '@8f4e/editor-state';
 
+/**
+ * Animation state for viewport transitions.
+ * Kept local to web-ui package - editor-state remains unaware of animations.
+ */
+interface AnimationState {
+	isAnimating: boolean;
+	startViewport: { x: number; y: number };
+	targetViewport: { x: number; y: number };
+	startTime: number;
+	duration: number;
+}
+
+/**
+ * Cubic ease-in-out easing function for smooth animations.
+ * Accelerates at the start and decelerates at the end.
+ */
+function easeInOutCubic(t: number): number {
+	return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement
@@ -15,6 +35,65 @@ export default async function init(
 	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
 	clearCache: () => void;
 }> {
+	// Animation state - local to web-ui, not part of editor-state
+	let animationState: AnimationState | null = null;
+	let previousViewport = { x: 0, y: 0 };
+
+	/**
+	 * Calculate effective viewport position considering animations.
+	 * Detects viewport changes and initiates animations when feature flag is enabled.
+	 * Returns interpolated position during animation, or actual position otherwise.
+	 */
+	function calculateEffectiveViewport(currentTime: number): { x: number; y: number } {
+		const actualViewport = state.graphicHelper.activeViewport.viewport;
+
+		// Check if viewport has changed and animation flag is enabled
+		const viewportChanged = actualViewport.x !== previousViewport.x || actualViewport.y !== previousViewport.y;
+
+		if (viewportChanged && state.featureFlags.viewportAnimations) {
+			// Start new animation
+			animationState = {
+				isAnimating: true,
+				startViewport: { ...previousViewport },
+				targetViewport: { x: actualViewport.x, y: actualViewport.y },
+				startTime: currentTime,
+				duration: 300, // 300ms animation duration
+			};
+			previousViewport = { x: actualViewport.x, y: actualViewport.y };
+		} else if (viewportChanged) {
+			// Viewport changed but animation disabled - cancel any active animation
+			animationState = null;
+			previousViewport = { x: actualViewport.x, y: actualViewport.y };
+		}
+
+		// Calculate interpolated position if animation is active
+		if (animationState && animationState.isAnimating) {
+			const elapsed = currentTime - animationState.startTime;
+			const progress = Math.min(elapsed / animationState.duration, 1.0);
+
+			// Animation complete
+			if (progress >= 1.0) {
+				animationState = null;
+				state.featureFlags.viewportAnimations = false;
+				return { x: actualViewport.x, y: actualViewport.y };
+			}
+
+			// Interpolate position with easing
+			const easedProgress = easeInOutCubic(progress);
+			const x =
+				animationState.startViewport.x +
+				(animationState.targetViewport.x - animationState.startViewport.x) * easedProgress;
+			const y =
+				animationState.startViewport.y +
+				(animationState.targetViewport.y - animationState.startViewport.y) * easedProgress;
+
+			return { x, y };
+		}
+
+		// No animation - return actual viewport
+		return { x: actualViewport.x, y: actualViewport.y };
+	}
+
 	const {
 		canvas: sprite,
 		spriteLookups,
@@ -34,6 +113,20 @@ export default async function init(
 	engine.loadSpriteSheet(sprite);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
+		// Get effective viewport (possibly animated)
+		const effectiveViewport = calculateEffectiveViewport(performance.now());
+
+		// Save original viewport
+		const originalViewport = {
+			x: state.graphicHelper.activeViewport.viewport.x,
+			y: state.graphicHelper.activeViewport.viewport.y,
+		};
+
+		// Temporarily override viewport for rendering
+		state.graphicHelper.activeViewport.viewport.x = effectiveViewport.x;
+		state.graphicHelper.activeViewport.viewport.y = effectiveViewport.y;
+
+		// Render with effective viewport
 		drawBackground(engine, state);
 		drawCodeBlocks(engine, state);
 		drawConnections(engine, state);
@@ -48,6 +141,10 @@ export default async function init(
 		drawDialog(engine, state);
 		drawArrows(engine, state);
 		drawContextMenu(engine, state);
+
+		// Restore original viewport
+		state.graphicHelper.activeViewport.viewport.x = originalViewport.x;
+		state.graphicHelper.activeViewport.viewport.y = originalViewport.y;
 	});
 
 	return {
