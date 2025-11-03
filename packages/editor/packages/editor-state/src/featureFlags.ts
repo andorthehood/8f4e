@@ -9,6 +9,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	infoOverlay: true,
 	moduleDragging: true,
 	viewportDragging: true,
+	viewportAnimations: false,
 	persistentStorage: true,
 	editing: true,
 };
