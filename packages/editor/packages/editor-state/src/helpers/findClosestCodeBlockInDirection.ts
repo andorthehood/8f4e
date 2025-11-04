@@ -156,11 +156,11 @@ export default function findClosestCodeBlockInDirection(
 
 		switch (direction) {
 			case 'left':
-				// For left navigation, find blocks whose center is to the left of the cursor
-				return (candidateBounds.left + candidateBounds.right) / 2 < selectedBlock.cursor.x;
+				// For left navigation, find blocks whose right edge is to the left of the selected block's left edge
+				return candidateBounds.right <= selectedBounds.left;
 			case 'right':
-				// For right navigation, find blocks whose center is to the right of the cursor
-				return (candidateBounds.left + candidateBounds.right) / 2 > selectedBlock.cursor.x;
+				// For right navigation, find blocks whose left edge is to the right of the selected block's right edge
+				return candidateBounds.left >= selectedBounds.right;
 			case 'up':
 				return candidateBounds.bottom <= selectedBounds.top;
 			case 'down':
