@@ -148,7 +148,7 @@ export default function findClosestCodeBlockInDirection(
 ): CodeBlockGraphicData {
 	const selectedBounds = getBlockBounds(selectedBlock);
 
-	// Filter candidates based on direction using edge-based comparison
+	// Filter candidates based on direction
 	const candidates = Array.from(codeBlocks).filter(block => {
 		if (block === selectedBlock) return false;
 
@@ -156,9 +156,11 @@ export default function findClosestCodeBlockInDirection(
 
 		switch (direction) {
 			case 'left':
-				return candidateBounds.right <= selectedBounds.left;
+				// For left navigation, find blocks whose center is to the left of the cursor
+				return (candidateBounds.left + candidateBounds.right) / 2 < selectedBlock.cursor.x;
 			case 'right':
-				return candidateBounds.left >= selectedBounds.right;
+				// For right navigation, find blocks whose center is to the right of the cursor
+				return (candidateBounds.left + candidateBounds.right) / 2 > selectedBlock.cursor.x;
 			case 'up':
 				return candidateBounds.bottom <= selectedBounds.top;
 			case 'down':
@@ -171,23 +173,38 @@ export default function findClosestCodeBlockInDirection(
 		return selectedBlock;
 	}
 
-	// Find the closest candidate using edge-based weighted distance
+	// Find the closest candidate
 	let closestBlock = candidates[0];
-	let minScore = Infinity;
+	let minDistance = Infinity;
 
 	for (const candidate of candidates) {
 		const candidateBounds = getBlockBounds(candidate);
 
-		// Calculate edge-to-edge primary distance and perpendicular alignment
-		const primaryDistance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
-		const secondaryDistance = calculateSecondaryDistance(selectedBlock, selectedBounds, candidateBounds, direction);
+		let distance: number;
 
-		// Calculate weighted score - lower is better
-		// Alignment (secondary distance) is weighted to strongly prefer aligned blocks
-		const score = primaryDistance + secondaryDistance * ALIGNMENT_WEIGHT;
+		switch (direction) {
+			case 'left':
+			case 'right': {
+				// For horizontal navigation, calculate straight-line distance from cursor to candidate center
+				const cursorX = selectedBlock.cursor.x;
+				const cursorY = selectedBlock.cursor.y;
+				const candidateCenterX = (candidateBounds.left + candidateBounds.right) / 2;
+				const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
+				distance = Math.sqrt(Math.pow(candidateCenterX - cursorX, 2) + Math.pow(candidateCenterY - cursorY, 2));
+				break;
+			}
+			case 'up':
+			case 'down': {
+				// For vertical navigation, use the existing weighted approach
+				const primaryDistance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
+				const secondaryDistance = calculateSecondaryDistance(selectedBlock, selectedBounds, candidateBounds, direction);
+				distance = primaryDistance + secondaryDistance * ALIGNMENT_WEIGHT;
+				break;
+			}
+		}
 
-		if (score < minScore) {
-			minScore = score;
+		if (distance < minDistance) {
+			minDistance = distance;
 			closestBlock = candidate;
 		}
 	}

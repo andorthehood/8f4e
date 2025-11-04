@@ -28,7 +28,7 @@ function createMockCodeBlock(
 		cursor: {
 			col: 0,
 			row: 0,
-			x: 0,
+			x: x + offsetX + width / 2, // Default to horizontal center
 			y: cursorY ?? y + offsetY + height / 2, // Default to vertical center if not provided
 		},
 		// Grid positioning
@@ -71,19 +71,18 @@ describe('findClosestCodeBlockInDirection', () => {
 			expect(result.id).toBe('right1');
 		});
 
-		it('should prefer aligned blocks over closer misaligned blocks', () => {
-			const selected = createMockCodeBlock('selected', 0, 0);
-			const closeButMisaligned = createMockCodeBlock('close', 150, 200); // Closer but far vertically
-			const alignedButFarther = createMockCodeBlock('aligned', 300, 10); // Farther but more aligned
+		it('should find closest block to cursor for horizontal navigation', () => {
+			const selected = createMockCodeBlock('selected', 0, 0); // cursor at (50, 50)
+			const closeButMisaligned = createMockCodeBlock('close', 150, 200); // center at (200, 250), distance ~250
+			const alignedButFarther = createMockCodeBlock('aligned', 300, 10); // center at (350, 60), distance ~300
 			const codeBlocks = new Set([selected, closeButMisaligned, alignedButFarther]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
-			// The algorithm should balance distance and alignment
-			// With edge-based calculation and ALIGNMENT_WEIGHT = 2.0:
-			// close: primaryDistance=150-100=50, secondaryDistance=200, score=450
-			// aligned: primaryDistance=300-100=200, secondaryDistance=10, score=220
-			expect(result.id).toBe('aligned');
+			// With cursor-based navigation, the algorithm finds the closest block to the cursor position
+			// close: distance from (50,50) to (200, 250) = sqrt(150^2 + 200^2) ≈ 250
+			// aligned: distance from (50,50) to (350, 60) = sqrt(300^2 + 10^2) ≈ 300
+			expect(result.id).toBe('close');
 		});
 
 		it('should return selected block if no blocks to the right', () => {
@@ -326,26 +325,28 @@ describe('findClosestCodeBlockInDirection', () => {
 			expect(result.id).toBe('directlyAbove');
 		});
 
-		it('should prefer directly right block over diagonally closer block when moving right', () => {
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 100);
-			const directlyRight = createMockCodeBlock('directlyRight', 200, 0, 100, 100);
-			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100);
+		it('should find closest block to cursor when moving right', () => {
+			const selected = createMockCodeBlock('selected', 0, 0, 100, 100); // cursor at (50, 50)
+			const directlyRight = createMockCodeBlock('directlyRight', 200, 0, 100, 100); // center at (250, 50), distance=200
+			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100); // center at (200, 130), distance ~170
 			const codeBlocks = new Set([selected, directlyRight, diagonalCloser]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
-			expect(result.id).toBe('directlyRight');
+			// With cursor-based navigation, diagonalCloser is actually closer to the cursor
+			expect(result.id).toBe('diagonalCloser');
 		});
 
-		it('should prefer directly left block over diagonally closer block when moving left', () => {
-			const selected = createMockCodeBlock('selected', 300, 0, 100, 100);
-			const directlyLeft = createMockCodeBlock('directlyLeft', 100, 0, 100, 100);
-			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100);
+		it('should find closest block to cursor when moving left', () => {
+			const selected = createMockCodeBlock('selected', 300, 0, 100, 100); // cursor at (350, 50)
+			const directlyLeft = createMockCodeBlock('directlyLeft', 100, 0, 100, 100); // center at (150, 50), distance=200
+			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100); // center at (200, 130), distance ~170
 			const codeBlocks = new Set([selected, directlyLeft, diagonalCloser]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
 
-			expect(result.id).toBe('directlyLeft');
+			// With cursor-based navigation, diagonalCloser is actually closer to the cursor
+			expect(result.id).toBe('diagonalCloser');
 		});
 
 		it('should handle staggered vertical layout correctly', () => {
@@ -571,21 +572,21 @@ describe('findClosestCodeBlockInDirection', () => {
 			expect(result.id).toBe('perfectMatch');
 		});
 
-		it('should balance primary distance with cursor-aware secondary distance', () => {
-			// Selected block with cursor at Y=100
+		it('should find closest block to cursor position regardless of alignment', () => {
+			// Selected block with cursor at (50, 100)
 			const selected = createMockCodeBlock('selected', 0, 0, 100, 200, 0, 0, 100);
-			// Close but cursor-misaligned neighbor
-			const closeButMisaligned = createMockCodeBlock('close', 150, 300, 100, 100); // Center at Y=350
-			// Farther but cursor-aligned neighbor
-			const farButAligned = createMockCodeBlock('aligned', 300, 80, 100, 100); // Center at Y=130
+			// Close but vertically misaligned neighbor
+			const closeButMisaligned = createMockCodeBlock('close', 150, 300, 100, 100); // Center at (200, 350)
+			// Farther but vertically aligned neighbor
+			const farButAligned = createMockCodeBlock('aligned', 300, 80, 100, 100); // Center at (350, 130)
 			const codeBlocks = new Set([selected, closeButMisaligned, farButAligned]);
 
-			// close: primary = 150-100 = 50, secondary = |350-100| = 250, score = 50 + 250*2 = 550
-			// aligned: primary = 300-100 = 200, secondary = |130-100| = 30, score = 200 + 30*2 = 260
-			// aligned should win despite being farther
+			// close: distance from (50,100) to (200, 350) = sqrt(150^2 + 250^2) ≈ 291
+			// aligned: distance from (50,100) to (350, 130) = sqrt(300^2 + 30^2) ≈ 302
+			// close wins due to being slightly closer overall
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
-			expect(result.id).toBe('aligned');
+			expect(result.id).toBe('close');
 		});
 
 		it('should prefer blocks that overlap with cursor Y position over those that do not', () => {
