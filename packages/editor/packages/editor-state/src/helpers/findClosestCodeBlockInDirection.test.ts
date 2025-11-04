@@ -242,11 +242,13 @@ describe('findClosestCodeBlockInDirection', () => {
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
-			// With Y-only distance, smallRight is closer vertically
-			// selected cursor: (25, 25)
-			// largeRight center: (300, 100), Y distance = 75
-			// smallRight center: (412.5, 12.5), Y distance = 12.5
-			expect(result.id).toBe('smallRight');
+			// With weighted approach (primary distance + Y distance * 2):
+			// selected cursor: (25, 25), right edge: 50
+			// largeRight: left edge 200, center (300, 100)
+			//   primary = 200-50 = 150, Y distance = 75, score = 150 + 75*2 = 300
+			// smallRight: left edge 400, center (412.5, 12.5)
+			//   primary = 400-50 = 350, Y distance = 12.5, score = 350 + 12.5*2 = 375
+			expect(result.id).toBe('largeRight');
 		});
 	});
 
@@ -388,12 +390,15 @@ describe('findClosestCodeBlockInDirection', () => {
 			const leftResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
 			expect(leftResult.id).toBe('A');
 
-			// Moving right should go to D (same vertical level, Y distance = 0)
-			// selected cursor: (250, 140)
-			// C center: (450, 90), Y distance = 50
-			// D center: (650, 140), Y distance = 0
+			// Moving right with weighted approach (primary + Y*2):
+			// selected cursor: (250, 140), right edge: 300
+			// C: left edge 400, center (450, 90)
+			//   primary = 400-300 = 100, Y distance = 50, score = 100 + 50*2 = 200
+			// D: left edge 600, center (650, 140)
+			//   primary = 600-300 = 300, Y distance = 0, score = 300 + 0*2 = 300
+			// C wins due to being closer horizontally despite worse Y alignment
 			const rightResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
-			expect(rightResult.id).toBe('D');
+			expect(rightResult.id).toBe('C');
 		});
 
 		it('should use edge-based filtering to exclude overlapping blocks', () => {
