@@ -185,10 +185,15 @@ export default function findClosestCodeBlockInDirection(
 		switch (direction) {
 			case 'left':
 			case 'right': {
-				// For horizontal navigation, only consider vertical distance from cursor to candidate center
+				// For horizontal navigation, use a weighted combination of:
+				// 1. Primary distance: horizontal edge-to-edge distance
+				// 2. Secondary distance: vertical cursor alignment
+				const primaryDistance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
 				const cursorY = selectedBlock.cursor.y;
 				const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
-				distance = Math.abs(candidateCenterY - cursorY);
+				const secondaryDistance = Math.abs(candidateCenterY - cursorY);
+				// Weight the vertical alignment to prefer blocks at the same vertical level
+				distance = primaryDistance + secondaryDistance * ALIGNMENT_WEIGHT;
 				break;
 			}
 			case 'up':
