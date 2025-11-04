@@ -13,13 +13,36 @@ import { calculateArrowPlacement } from './arrowPlacement';
 import type { State } from '@8f4e/editor-state';
 import type { CodeBlockGraphicData } from '@8f4e/editor-state';
 
-function checkVisibility(codeBlock: CodeBlockGraphicData, offsetX: number, offsetY: number, state: State): boolean {
-	return (
-		codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
-		codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
-		codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.globalViewport.width &&
-		codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.globalViewport.height
-	);
+function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state: State): void {
+	const arrowPlacement = calculateArrowPlacement(codeBlock, state);
+
+	if (state.graphicHelper.spriteLookups) {
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
+	}
+
+	if (arrowPlacement.top) {
+		engine.drawSprite(arrowPlacement.top.x, arrowPlacement.top.y, Icon.ARROW_TOP);
+	}
+
+	if (arrowPlacement.right) {
+		engine.drawSprite(
+			arrowPlacement.right.x - state.graphicHelper.globalViewport.vGrid,
+			arrowPlacement.right.y,
+			Icon.ARROW_RIGHT
+		);
+	}
+
+	if (arrowPlacement.bottom) {
+		engine.drawSprite(
+			arrowPlacement.bottom.x,
+			arrowPlacement.bottom.y - state.graphicHelper.globalViewport.hGrid,
+			Icon.ARROW_BOTTOM
+		);
+	}
+
+	if (arrowPlacement.left) {
+		engine.drawSprite(arrowPlacement.left.x, arrowPlacement.left.y, Icon.ARROW_LEFT);
+	}
 }
 
 export default function drawModules(engine: Engine, state: State): void {
@@ -43,9 +66,12 @@ export default function drawModules(engine: Engine, state: State): void {
 			codeBlock.offsetY = state.compiler.memoryBuffer[codeBlock.positionOffsetterYWordAddress];
 		}
 
-		const isVisible = checkVisibility(codeBlock, offsetX, offsetY, state);
-
-		if (isVisible) {
+		if (
+			codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
+			codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
+			codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.globalViewport.width &&
+			codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.globalViewport.height
+		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 			engine.cacheGroup(
 				`codeBlock${codeBlock.id}${codeBlock.lastUpdated}`,
@@ -127,33 +153,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.endGroup();
 		} else {
 			// Module is off-screen, draw arrow indicators
-			const arrowPlacement = calculateArrowPlacement(codeBlock, state);
-
-			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
-
-			if (arrowPlacement.top) {
-				engine.drawSprite(arrowPlacement.top.x, arrowPlacement.top.y, Icon.ARROW_TOP);
-			}
-
-			if (arrowPlacement.right) {
-				engine.drawSprite(
-					arrowPlacement.right.x - state.graphicHelper.globalViewport.vGrid,
-					arrowPlacement.right.y,
-					Icon.ARROW_RIGHT
-				);
-			}
-
-			if (arrowPlacement.bottom) {
-				engine.drawSprite(
-					arrowPlacement.bottom.x,
-					arrowPlacement.bottom.y - state.graphicHelper.globalViewport.hGrid,
-					Icon.ARROW_BOTTOM
-				);
-			}
-
-			if (arrowPlacement.left) {
-				engine.drawSprite(arrowPlacement.left.x, arrowPlacement.left.y, Icon.ARROW_LEFT);
-			}
+			drawArrow(engine, codeBlock, state);
 		}
 	}
 
