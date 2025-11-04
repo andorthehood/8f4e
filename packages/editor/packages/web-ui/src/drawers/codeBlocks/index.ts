@@ -8,9 +8,19 @@ import drawSwitches from './extras/switches';
 import drawButtons from './extras/buttons';
 import drawErrorMessages from './extras/errorMessages';
 import drawPianoKeyboards from './extras/pianoKeyboards';
-import { checkVisibility } from './visibilityHelper';
+import { calculateArrowPlacement } from './arrowPlacement';
 
 import type { State } from '@8f4e/editor-state';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state';
+
+function checkVisibility(codeBlock: CodeBlockGraphicData, offsetX: number, offsetY: number, state: State): boolean {
+	return (
+		codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
+		codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
+		codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.globalViewport.width &&
+		codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.globalViewport.height
+	);
+}
 
 export default function drawModules(engine: Engine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {
@@ -33,7 +43,7 @@ export default function drawModules(engine: Engine, state: State): void {
 			codeBlock.offsetY = state.compiler.memoryBuffer[codeBlock.positionOffsetterYWordAddress];
 		}
 
-		const { isVisible, arrowPlacement } = checkVisibility(codeBlock, offsetX, offsetY, state);
+		const isVisible = checkVisibility(codeBlock, offsetX, offsetY, state);
 
 		if (isVisible) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
@@ -117,6 +127,8 @@ export default function drawModules(engine: Engine, state: State): void {
 			engine.endGroup();
 		} else {
 			// Module is off-screen, draw arrow indicators
+			const arrowPlacement = calculateArrowPlacement(codeBlock, state);
+
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
 
 			if (arrowPlacement.top) {
