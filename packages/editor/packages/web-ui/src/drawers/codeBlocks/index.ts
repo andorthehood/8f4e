@@ -7,6 +7,7 @@ import drawSwitches from './extras/switches';
 import drawButtons from './extras/buttons';
 import drawErrorMessages from './extras/errorMessages';
 import drawPianoKeyboards from './extras/pianoKeyboards';
+import { drawArrow } from './drawArrow';
 
 import type { State } from '@8f4e/editor-state';
 
@@ -116,6 +117,9 @@ export default function drawModules(engine: Engine, state: State): void {
 			drawDebuggers(engine, state, codeBlock);
 
 			engine.endGroup();
+		} else {
+			// Module is off-screen, draw arrow indicators
+			drawArrow(engine, codeBlock, state);
 		}
 	}
 
