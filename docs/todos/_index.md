@@ -52,6 +52,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 074 | Consolidate Module and Arrow Drawing Loops | 🟡 | 0.5d | 2025-11-03 | Consolidated separate rendering passes for visible code blocks and off-screen arrow indicators into a single iteration pass with shared visibility helper, reducing duplicate iteration and maintenance overhead |
 | 082 | Implement Edge-Based Code Block Navigation | 🟡 | 1-2d | 2025-02-14 | Replaced center-based heuristic with edge distance scoring for more intuitive directional navigation in staggered and diagonal layouts |
 | 081 | Implement CSS-Like Viewport Animation for Code Block Navigation | 🟡 | 4-6 hours | 2025-11-03 | Added smooth viewport animations for code block navigation using Command+Arrow keys; animations isolated in web-ui layer with feature flag control |
 | 080 | Calculate Centered Viewport Coordinates for Code Block | 🟡 | 3-4 hours | 2025-11-02 | Implemented utility function to calculate viewport coordinates that center a code block on screen with top-edge visibility constraint |
