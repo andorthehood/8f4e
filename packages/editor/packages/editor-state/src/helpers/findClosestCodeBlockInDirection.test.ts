@@ -73,16 +73,16 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should find closest block to cursor for horizontal navigation', () => {
 			const selected = createMockCodeBlock('selected', 0, 0); // cursor at (50, 50)
-			const closeButMisaligned = createMockCodeBlock('close', 150, 200); // center at (200, 250), distance ~250
-			const alignedButFarther = createMockCodeBlock('aligned', 300, 10); // center at (350, 60), distance ~300
+			const closeButMisaligned = createMockCodeBlock('close', 150, 200); // center at (200, 250), Y distance = 200
+			const alignedButFarther = createMockCodeBlock('aligned', 300, 10); // center at (350, 60), Y distance = 10
 			const codeBlocks = new Set([selected, closeButMisaligned, alignedButFarther]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
-			// With cursor-based navigation, the algorithm finds the closest block to the cursor position
-			// close: distance from (50,50) to (200, 250) = sqrt(150^2 + 200^2) ≈ 250
-			// aligned: distance from (50,50) to (350, 60) = sqrt(300^2 + 10^2) ≈ 300
-			expect(result.id).toBe('close');
+			// With Y-only distance for horizontal navigation, aligned is closer vertically
+			// close: Y distance = |250 - 50| = 200
+			// aligned: Y distance = |60 - 50| = 10
+			expect(result.id).toBe('aligned');
 		});
 
 		it('should return selected block if no blocks to the right', () => {
@@ -242,7 +242,11 @@ describe('findClosestCodeBlockInDirection', () => {
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
-			expect(result.id).toBe('largeRight');
+			// With Y-only distance, smallRight is closer vertically
+			// selected cursor: (25, 25)
+			// largeRight center: (300, 100), Y distance = 75
+			// smallRight center: (412.5, 12.5), Y distance = 12.5
+			expect(result.id).toBe('smallRight');
 		});
 	});
 
@@ -327,26 +331,26 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should find closest block to cursor when moving right', () => {
 			const selected = createMockCodeBlock('selected', 0, 0, 100, 100); // cursor at (50, 50)
-			const directlyRight = createMockCodeBlock('directlyRight', 200, 0, 100, 100); // center at (250, 50), distance=200
-			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100); // center at (200, 130), distance ~170
+			const directlyRight = createMockCodeBlock('directlyRight', 200, 0, 100, 100); // center at (250, 50), Y distance=0
+			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100); // center at (200, 130), Y distance=80
 			const codeBlocks = new Set([selected, directlyRight, diagonalCloser]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
-			// With cursor-based navigation, diagonalCloser is actually closer to the cursor
-			expect(result.id).toBe('diagonalCloser');
+			// With Y-only distance, directlyRight is at the same vertical level (Y distance = 0)
+			expect(result.id).toBe('directlyRight');
 		});
 
 		it('should find closest block to cursor when moving left', () => {
 			const selected = createMockCodeBlock('selected', 300, 0, 100, 100); // cursor at (350, 50)
-			const directlyLeft = createMockCodeBlock('directlyLeft', 100, 0, 100, 100); // center at (150, 50), distance=200
-			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100); // center at (200, 130), distance ~170
+			const directlyLeft = createMockCodeBlock('directlyLeft', 100, 0, 100, 100); // center at (150, 50), Y distance=0
+			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100); // center at (200, 130), Y distance=80
 			const codeBlocks = new Set([selected, directlyLeft, diagonalCloser]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
 
-			// With cursor-based navigation, diagonalCloser is actually closer to the cursor
-			expect(result.id).toBe('diagonalCloser');
+			// With Y-only distance, directlyLeft is at the same vertical level (Y distance = 0)
+			expect(result.id).toBe('directlyLeft');
 		});
 
 		it('should handle staggered vertical layout correctly', () => {
@@ -384,9 +388,12 @@ describe('findClosestCodeBlockInDirection', () => {
 			const leftResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
 			expect(leftResult.id).toBe('A');
 
-			// Moving right should go to C (better aligned than D)
+			// Moving right should go to D (same vertical level, Y distance = 0)
+			// selected cursor: (250, 140)
+			// C center: (450, 90), Y distance = 50
+			// D center: (650, 140), Y distance = 0
 			const rightResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
-			expect(rightResult.id).toBe('C');
+			expect(rightResult.id).toBe('D');
 		});
 
 		it('should use edge-based filtering to exclude overlapping blocks', () => {
@@ -576,17 +583,17 @@ describe('findClosestCodeBlockInDirection', () => {
 			// Selected block with cursor at (50, 100)
 			const selected = createMockCodeBlock('selected', 0, 0, 100, 200, 0, 0, 100);
 			// Close but vertically misaligned neighbor
-			const closeButMisaligned = createMockCodeBlock('close', 150, 300, 100, 100); // Center at (200, 350)
+			const closeButMisaligned = createMockCodeBlock('close', 150, 300, 100, 100); // Center at (200, 350), Y distance = 250
 			// Farther but vertically aligned neighbor
-			const farButAligned = createMockCodeBlock('aligned', 300, 80, 100, 100); // Center at (350, 130)
+			const farButAligned = createMockCodeBlock('aligned', 300, 80, 100, 100); // Center at (350, 130), Y distance = 30
 			const codeBlocks = new Set([selected, closeButMisaligned, farButAligned]);
 
-			// close: distance from (50,100) to (200, 350) = sqrt(150^2 + 250^2) ≈ 291
-			// aligned: distance from (50,100) to (350, 130) = sqrt(300^2 + 30^2) ≈ 302
-			// close wins due to being slightly closer overall
+			// With Y-only distance, aligned is much closer vertically
+			// close: Y distance = |350 - 100| = 250
+			// aligned: Y distance = |130 - 100| = 30
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
 
-			expect(result.id).toBe('close');
+			expect(result.id).toBe('aligned');
 		});
 
 		it('should prefer blocks that overlap with cursor Y position over those that do not', () => {
