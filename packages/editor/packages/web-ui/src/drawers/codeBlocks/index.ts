@@ -1,5 +1,4 @@
 import { Engine } from 'glugglug';
-import { Icon } from '@8f4e/sprite-generator';
 
 import drawConnectors from './extras/connectors';
 import drawPlotters from './extras/plotters';
@@ -8,42 +7,9 @@ import drawSwitches from './extras/switches';
 import drawButtons from './extras/buttons';
 import drawErrorMessages from './extras/errorMessages';
 import drawPianoKeyboards from './extras/pianoKeyboards';
-import { calculateArrowPlacement } from './arrowPlacement';
+import { drawArrow } from './drawArrow';
 
 import type { State } from '@8f4e/editor-state';
-import type { CodeBlockGraphicData } from '@8f4e/editor-state';
-
-function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state: State): void {
-	const arrowPlacement = calculateArrowPlacement(codeBlock, state);
-
-	if (state.graphicHelper.spriteLookups) {
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
-	}
-
-	if (arrowPlacement.top) {
-		engine.drawSprite(arrowPlacement.top.x, arrowPlacement.top.y, Icon.ARROW_TOP);
-	}
-
-	if (arrowPlacement.right) {
-		engine.drawSprite(
-			arrowPlacement.right.x - state.graphicHelper.globalViewport.vGrid,
-			arrowPlacement.right.y,
-			Icon.ARROW_RIGHT
-		);
-	}
-
-	if (arrowPlacement.bottom) {
-		engine.drawSprite(
-			arrowPlacement.bottom.x,
-			arrowPlacement.bottom.y - state.graphicHelper.globalViewport.hGrid,
-			Icon.ARROW_BOTTOM
-		);
-	}
-
-	if (arrowPlacement.left) {
-		engine.drawSprite(arrowPlacement.left.x, arrowPlacement.left.y, Icon.ARROW_LEFT);
-	}
-}
 
 export default function drawModules(engine: Engine, state: State): void {
 	if (!state.graphicHelper.spriteLookups) {
