@@ -185,12 +185,10 @@ export default function findClosestCodeBlockInDirection(
 		switch (direction) {
 			case 'left':
 			case 'right': {
-				// For horizontal navigation, calculate straight-line distance from cursor to candidate center
-				const cursorX = selectedBlock.cursor.x;
+				// For horizontal navigation, only consider vertical distance from cursor to candidate center
 				const cursorY = selectedBlock.cursor.y;
-				const candidateCenterX = (candidateBounds.left + candidateBounds.right) / 2;
 				const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
-				distance = Math.sqrt(Math.pow(candidateCenterX - cursorX, 2) + Math.pow(candidateCenterY - cursorY, 2));
+				distance = Math.abs(candidateCenterY - cursorY);
 				break;
 			}
 			case 'up':
