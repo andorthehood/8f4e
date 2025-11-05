@@ -28,7 +28,7 @@ describe('Loader - Project-specific memory configuration', () => {
 				compiledModules: {},
 				compilerOptions: {
 					startingMemoryWordAddress: 0,
-					memorySize: 1000,
+					memorySizeBytes: 1000 * 65536,
 					environmentExtensions: {
 						constants: {},
 						ignoredKeywords: [],
@@ -134,7 +134,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		loadProjectCallback({ project: projectWithoutMemory });
 
 		// Verify compiler options use defaults
-		expect(mockState.compiler.compilerOptions.memorySize).toBe(1000);
+		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(1000 * 65536);
 	});
 
 	it('should use project-specific memory settings when available', async () => {
@@ -152,7 +152,7 @@ describe('Loader - Project-specific memory configuration', () => {
 			...EMPTY_DEFAULT_PROJECT,
 			title: 'Test Project',
 			memory: {
-				memorySize: 500,
+				memorySizeBytes: 500 * 65536,
 			},
 		};
 
@@ -160,7 +160,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		loadProjectCallback({ project: projectWithMemory });
 
 		// Verify compiler options use project-specific settings
-		expect(mockState.compiler.compilerOptions.memorySize).toBe(500);
+		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(500 * 65536);
 	});
 
 	it('should create WebAssembly.Memory with project-specific settings', async () => {
@@ -176,7 +176,7 @@ describe('Loader - Project-specific memory configuration', () => {
 			...EMPTY_DEFAULT_PROJECT,
 			title: 'Test Project',
 			memory: {
-				memorySize: 2000,
+				memorySizeBytes: 2000 * 65536,
 			},
 		};
 
@@ -187,6 +187,6 @@ describe('Loader - Project-specific memory configuration', () => {
 		expect(mockState.compiler.memoryRef).toBeDefined();
 		// Note: We can't directly inspect WebAssembly.Memory constructor parameters,
 		// but we can verify the compiler options were updated
-		expect(mockState.compiler.compilerOptions.memorySize).toBe(2000);
+		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(2000 * 65536);
 	});
 });

@@ -146,12 +146,12 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 			builtInConsts,
 			namespaces,
 			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-			options.memorySize,
+			options.memorySizeBytes,
 			index
 		);
 		memoryAddress += module.wordAlignedSize;
 
-		if (options.memorySize * WASM_MEMORY_PAGE_SIZE <= memoryAddress) {
+		if (options.memorySizeBytes <= memoryAddress) {
 			throw 'Memory limit exceeded';
 		}
 
@@ -261,7 +261,9 @@ export default function compile(
 				createFunctionType([Type.I32, Type.I32], [Type.I32]),
 			]),
 			...createImportSection([
-				createMemoryImport('js', 'memory', options.memorySize, options.memorySize, true),
+				const WASM_PAGE_SIZE = 65536;
+			const memorySizePages = Math.ceil(options.memorySizeBytes / WASM_PAGE_SIZE);
+			createMemoryImport('js', 'memory', memorySizePages, memorySizePages, true),
 			]),
 			...createFunctionSection([0x00, 0x00, 0x00, ...functionSignatures, ...functionSignatures]),
 			...createExportSection([
