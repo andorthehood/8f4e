@@ -322,10 +322,10 @@ interface EditorInstance {
 
 ### Memory Configuration
 
-Projects can specify custom WebAssembly memory settings to optimize for their specific needs. By default, projects use 1000 pages (where each page is 64KiB = 65,536 bytes).
+Projects can specify custom WebAssembly memory settings to optimize for their specific needs. By default, projects use 65,536,000 bytes (≈ 64MB, equivalent to 1000 pages where each page is 64KiB).
 
 #### Default Memory Settings
-- **Memory Size**: 1000 pages (≈ 64MB)
+- **Memory Size**: 65,536,000 bytes (≈ 64MB)
 
 #### Custom Memory Configuration
 
@@ -337,7 +337,7 @@ You can specify custom memory settings in your project JSON:
   "author": "Your Name",
   "description": "Project description",
   "memory": {
-    "memorySize": 500
+    "memorySizeBytes": 32768000
   },
   "codeBlocks": [],
   "viewport": { "x": 0, "y": 0 },
@@ -352,21 +352,21 @@ You can specify custom memory settings in your project JSON:
 ```json
 {
   "memory": {
-    "memorySize": 100
+    "memorySizeBytes": 6553600
   }
 }
 ```
-Use smaller values for simple projects to reduce memory footprint and improve load times.
+Use smaller values (e.g., 6,553,600 bytes ≈ 6.25MB) for simple projects to reduce memory footprint and improve load times.
 
 **Increase memory for complex projects:**
 ```json
 {
   "memory": {
-    "memorySize": 2000
+    "memorySizeBytes": 131072000
   }
 }
 ```
-Use larger values for projects with:
+Use larger values (e.g., 131,072,000 bytes ≈ 125MB) for projects with:
 - Large audio buffers
 - Complex data structures
 - Multiple concurrent processes
@@ -380,7 +380,7 @@ Use larger values for projects with:
 
 3. **Set appropriate size**: Choose a value that provides adequate memory for your project's needs while avoiding waste.
 
-4. **Validation**: The editor respects browser limits for WebAssembly memory.
+4. **Validation**: The editor respects browser limits for WebAssembly memory. Memory is allocated in page-sized chunks (64KiB), so the actual allocated size will be rounded up to the nearest page.
 
 5. **Persistence**: Memory settings are preserved through save/export operations and runtime-ready bundles.
 
@@ -390,7 +390,7 @@ Use larger values for projects with:
 {
   "title": "Audio DSP Project",
   "memory": {
-    "memorySize": 1500
+    "memorySizeBytes": 98304000
   },
   "runtimeSettings": [
     {
