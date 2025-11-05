@@ -28,7 +28,6 @@ const project: Project = {
 			],
 			x: 167,
 			y: 30,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -52,7 +51,6 @@ const project: Project = {
 			],
 			x: 167,
 			y: 12,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -76,7 +74,6 @@ const project: Project = {
 			],
 			x: 167,
 			y: -6,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -100,7 +97,6 @@ const project: Project = {
 			],
 			x: 167,
 			y: -24,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -118,7 +114,6 @@ const project: Project = {
 			],
 			x: 201,
 			y: -24,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -136,7 +131,6 @@ const project: Project = {
 			],
 			x: 201,
 			y: 30,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -154,7 +148,6 @@ const project: Project = {
 			],
 			x: 201,
 			y: 12,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -172,7 +165,6 @@ const project: Project = {
 			],
 			x: 201,
 			y: -6,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -203,7 +195,6 @@ const project: Project = {
 			],
 			x: 39,
 			y: -13,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -234,7 +225,6 @@ const project: Project = {
 			],
 			x: 5,
 			y: -13,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -308,7 +298,6 @@ const project: Project = {
 			],
 			x: 238,
 			y: -24,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -375,7 +364,6 @@ const project: Project = {
 			],
 			x: 121,
 			y: -13,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -416,7 +404,6 @@ const project: Project = {
 			],
 			x: 85,
 			y: 13,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -447,7 +434,6 @@ const project: Project = {
 			],
 			x: 80,
 			y: -13,
-			isOpen: true,
 		},
 	],
 	viewport: { x: 37, y: -25 },
