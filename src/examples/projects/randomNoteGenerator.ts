@@ -1,6 +1,7 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
+	memorySizeBytes: 65536,
 	title: 'Random Note Generator',
 	author: 'Andor Polgar',
 	description: '',

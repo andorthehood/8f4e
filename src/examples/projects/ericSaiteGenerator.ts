@@ -1,6 +1,7 @@
 import type { Project } from '@8f4e/editor-state';
 
 const ericSaiteGenerator: Project = {
+	memorySizeBytes: 65536,
 	title: 'Eric Saite Generator',
 	author: 'Andor Polgar & Eric Saite',
 	description: '',

@@ -104,8 +104,8 @@ function createGraphicHelper() {
 	};
 }
 
-const maxMemorySize = 10000;
-const initialMemorySize = 1000;
+const WASM_PAGE_SIZE = 65536; // 64KiB
+const memorySizeBytes = 1048576; // 1MB default
 
 // Default state without the runtime callback (will be merged with provided options)
 const defaultStateBase = {
@@ -118,13 +118,12 @@ const defaultStateBase = {
 		allocatedMemorySize: 0,
 		memoryBuffer: new Int32Array(),
 		memoryBufferFloat: new Float32Array(),
-		memoryRef: new WebAssembly.Memory({ initial: initialMemorySize, maximum: maxMemorySize, shared: true }),
+		memoryRef: new WebAssembly.Memory({ initial: memorySizeBytes / WASM_PAGE_SIZE, maximum: memorySizeBytes / WASM_PAGE_SIZE, shared: true }),
 		timerAccuracy: 0,
 		compiledModules: {},
 		buildErrors: [],
 		compilerOptions: {
-			initialMemorySize,
-			maxMemorySize,
+			memorySizeBytes,
 			startingMemoryWordAddress: 0,
 			environmentExtensions: {
 				constants: {},

@@ -88,7 +88,15 @@ export default function drawInfoOverlay(
 			'%'
 	);
 	debugText.push('WASM byte code size: ' + formatBytes(state.compiler.codeBuffer.length));
-	debugText.push('Allocated memory: ' + formatBytes(state.compiler.allocatedMemorySize));
+	debugText.push(
+		'Allocated memory: ' +
+			formatBytes(state.compiler.allocatedMemorySize) +
+			' / ' +
+			formatBytes(state.compiler.compilerOptions.memorySizeBytes) +
+			' (' +
+			Math.round((state.compiler.allocatedMemorySize / state.compiler.compilerOptions.memorySizeBytes) * 100) +
+			'%)'
+	);
 
 	engine.startGroup(
 		0,
