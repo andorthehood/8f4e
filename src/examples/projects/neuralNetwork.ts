@@ -29,7 +29,6 @@ const project: Project = {
 			],
 			x: 262,
 			y: -71,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -60,7 +59,6 @@ const project: Project = {
 			],
 			x: 118,
 			y: -81,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -91,7 +89,6 @@ const project: Project = {
 			],
 			x: 118,
 			y: -55,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -122,13 +119,11 @@ const project: Project = {
 			],
 			x: 190,
 			y: -71,
-			isOpen: true,
 		},
 		{
 			code: ['module result', '', 'int* in &activationFunction.out', '', 'debug *in', '', 'moduleEnd'],
 			x: 76,
 			y: -61,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -153,7 +148,6 @@ const project: Project = {
 			],
 			x: 154,
 			y: -81,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -178,7 +172,6 @@ const project: Project = {
 			],
 			x: 154,
 			y: -55,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -203,9 +196,8 @@ const project: Project = {
 			],
 			x: 226,
 			y: -71,
-			isOpen: true,
 		},
-		{ code: ['module switches', '', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'], x: 81, y: -68, isOpen: true },
+		{ code: ['module switches', '', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'], x: 81, y: -68 },
 	],
 	viewport: { x: 73, y: -83 },
 	selectedRuntime: 0,
