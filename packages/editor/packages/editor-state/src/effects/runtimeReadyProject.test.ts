@@ -318,4 +318,64 @@ describe('Runtime-ready project functionality', () => {
 			consoleSpy.mockRestore();
 		});
 	});
+
+	describe('Project-specific memory configuration', () => {
+		it('should export memory configuration when saving project', async () => {
+			// Set custom memory settings in compiler options
+			mockState.compiler.compilerOptions.initialMemorySize = 500;
+			mockState.compiler.compilerOptions.maxMemorySize = 5000;
+
+			// Set up save functionality
+			save(mockState, mockEvents);
+
+			// Get the save callback
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const saveCall = onCalls.find(call => call[0] === 'save');
+			expect(saveCall).toBeDefined();
+
+			const saveCallback = saveCall[1];
+
+			// Trigger the save action
+			await saveCallback();
+
+			// Verify exportFile was called
+			expect(mockExportFile).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportFile.mock.calls[0];
+
+			// Parse the exported JSON and verify it contains memory configuration
+			const exportedProject = JSON.parse(exportedJson);
+			expect(exportedProject.memory).toBeDefined();
+			expect(exportedProject.memory.initialPages).toBe(500);
+			expect(exportedProject.memory.maxPages).toBe(5000);
+		});
+
+		it('should export memory configuration in runtime-ready project', async () => {
+			// Set custom memory settings
+			mockState.compiler.compilerOptions.initialMemorySize = 2000;
+			mockState.compiler.compilerOptions.maxMemorySize = 8000;
+
+			// Set up save functionality
+			save(mockState, mockEvents);
+
+			// Get the saveRuntimeReady callback
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
+			expect(saveRuntimeReadyCall).toBeDefined();
+
+			const saveRuntimeReadyCallback = saveRuntimeReadyCall[1];
+
+			// Trigger the saveRuntimeReady action
+			await saveRuntimeReadyCallback();
+
+			// Verify exportFile was called
+			expect(mockExportFile).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportFile.mock.calls[0];
+
+			// Parse the exported JSON and verify memory configuration
+			const exportedProject = JSON.parse(exportedJson);
+			expect(exportedProject.memory).toBeDefined();
+			expect(exportedProject.memory.initialPages).toBe(2000);
+			expect(exportedProject.memory.maxPages).toBe(8000);
+		});
+	});
 });
