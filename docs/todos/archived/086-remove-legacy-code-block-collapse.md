@@ -3,8 +3,8 @@ title: 'TODO: Remove legacy code block collapse remnants'
 priority: Medium
 effort: 1-2d
 created: 2025-11-05
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-05
 ---
 
 # TODO: Remove legacy code block collapse remnants
