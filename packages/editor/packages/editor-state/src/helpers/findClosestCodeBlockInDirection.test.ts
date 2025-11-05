@@ -386,12 +386,13 @@ describe('findClosestCodeBlockInDirection', () => {
 			const blockD = createMockCodeBlock('D', 600, 100, 100, 80);
 			const codeBlocks = new Set([selected, blockA, blockC, blockD]);
 
-			// Moving left should go to A
+			// Moving left with cursor Y=140 (100 + 40):
+			// A: Y range [50, 130], cursor 140 is NOT in range - no movement
 			const leftResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
-			expect(leftResult.id).toBe('A');
+			expect(leftResult.id).toBe('B'); // Stays at selected block
 
 			// Moving right with Y-overlap priority:
-			// selected cursor: (250, 140)
+			// selected cursor: absolute Y = 100 + 40 = 140
 			// C: Y range [50, 130], cursor 140 is NOT in range
 			// D: Y range [100, 180], cursor 140 IS in range
 			// D wins because cursor Y overlaps with its vertical range
