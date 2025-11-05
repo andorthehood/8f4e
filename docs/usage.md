@@ -322,11 +322,10 @@ interface EditorInstance {
 
 ### Memory Configuration
 
-Projects can specify custom WebAssembly memory settings to optimize for their specific needs. By default, projects use 1000 initial pages and a maximum of 10000 pages (where each page is 64KiB = 65,536 bytes).
+Projects can specify custom WebAssembly memory settings to optimize for their specific needs. By default, projects use 1000 pages (where each page is 64KiB = 65,536 bytes).
 
 #### Default Memory Settings
-- **Initial Pages**: 1000 (≈ 64MB)
-- **Maximum Pages**: 10000 (≈ 640MB)
+- **Memory Size**: 1000 pages (≈ 64MB)
 
 #### Custom Memory Configuration
 
@@ -338,8 +337,7 @@ You can specify custom memory settings in your project JSON:
   "author": "Your Name",
   "description": "Project description",
   "memory": {
-    "initialPages": 500,
-    "maxPages": 5000
+    "memorySize": 500
   },
   "codeBlocks": [],
   "viewport": { "x": 0, "y": 0 },
@@ -354,8 +352,7 @@ You can specify custom memory settings in your project JSON:
 ```json
 {
   "memory": {
-    "initialPages": 100,
-    "maxPages": 1000
+    "memorySize": 100
   }
 }
 ```
@@ -365,8 +362,7 @@ Use smaller values for simple projects to reduce memory footprint and improve lo
 ```json
 {
   "memory": {
-    "initialPages": 2000,
-    "maxPages": 15000
+    "memorySize": 2000
   }
 }
 ```
@@ -382,11 +378,9 @@ Use larger values for projects with:
 
 2. **Monitor memory usage**: Use browser developer tools to check actual memory consumption.
 
-3. **Balance initial and maximum**: 
-   - Set `initialPages` to your typical working set
-   - Set `maxPages` with headroom for peaks
+3. **Set appropriate size**: Choose a value that provides adequate memory for your project's needs while avoiding waste.
 
-4. **Validation**: The editor ensures `initialPages ≤ maxPages` and respects browser limits.
+4. **Validation**: The editor respects browser limits for WebAssembly memory.
 
 5. **Persistence**: Memory settings are preserved through save/export operations and runtime-ready bundles.
 
@@ -396,8 +390,7 @@ Use larger values for projects with:
 {
   "title": "Audio DSP Project",
   "memory": {
-    "initialPages": 1500,
-    "maxPages": 12000
+    "memorySize": 1500
   },
   "runtimeSettings": [
     {
