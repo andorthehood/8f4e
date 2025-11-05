@@ -24,7 +24,7 @@
         "command": "vite build",
         "cwd": "{workspaceRoot}"
       },
-      "dependsOn": ["^build"]
+      "dependsOn": ["typecheck", "^build"]
     },
     "serve": {
       "executor": "nx:run-commands",
