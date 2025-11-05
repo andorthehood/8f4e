@@ -5,7 +5,6 @@ import _switch from './effects/codeBlocks/extras/switches/interaction';
 import button from './effects/codeBlocks/extras/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
 import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
-import codeBlockOpener from './effects/codeBlocks/codeBlockOpener';
 import codeBlockNavigation from './effects/codeBlockNavigation';
 import compiler from './effects/compiler';
 import contextMenu from './effects/menu/contextMenu';
@@ -42,7 +41,6 @@ function createBaseCodeBlock(): CodeBlockGraphicData {
 		offsetY: 0,
 		gridX: 0,
 		gridY: 0,
-		isOpen: true,
 		padLength: 1,
 		viewport: {
 			x: 0,
@@ -118,7 +116,11 @@ const defaultStateBase = {
 		allocatedMemorySize: 0,
 		memoryBuffer: new Int32Array(),
 		memoryBufferFloat: new Float32Array(),
-		memoryRef: new WebAssembly.Memory({ initial: memorySizeBytes / WASM_PAGE_SIZE, maximum: memorySizeBytes / WASM_PAGE_SIZE, shared: true }),
+		memoryRef: new WebAssembly.Memory({
+			initial: memorySizeBytes / WASM_PAGE_SIZE,
+			maximum: memorySizeBytes / WASM_PAGE_SIZE,
+			shared: true,
+		}),
 		timerAccuracy: 0,
 		compiledModules: {},
 		buildErrors: [],
@@ -162,7 +164,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	sampleRate(state, events);
 	loader(store, events, state);
 	codeBlockDragger(state, events);
-	codeBlockOpener(state, events);
 	codeBlockNavigation(state, events);
 	_switch(state, events);
 	button(state, events);
