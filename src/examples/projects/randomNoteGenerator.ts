@@ -1045,6 +1045,7 @@ const project: Project = {
 				'push 1.0',
 				'add',
 				'push 2.0',
+				'ensureNonZero',
 				'div',
 				'push 54.0',
 				'mul',
