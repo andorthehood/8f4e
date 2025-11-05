@@ -35,6 +35,9 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 062 | Editor Command Queue Refactor | 🟡 | 3-4d | 2025-10-09 | Direct callback storage makes state non-serializable and couples effects to host functions; replace with typed command queue for better testability and side-effect observability |
 | 069 | Extract Editor State Into Dedicated Package | 🟡 | 3d | 2025-10-21 | Split editor state logic into `@8f4e/editor-state` to remove deep imports, clarify boundaries, and enable reuse |
 | 070 | Merge Editor State Types Into Editor State Package | 🟡 | 2-3d | 2025-10-21 | Consolidate the standalone types package back into `@8f4e/editor-state`, update configs/dependencies, and remove redundant aliases |
+| 084 | Add Per-Code-Block Theme Variants | 🟡 | 2-3d | 2025-11-05 | Allow each color scheme to expose three block palettes selectable per code block |
+| 085 | Highlight Paired Block Scopes | 🟡 | 2-3d | 2025-11-05 | Draw theme-colored rectangles behind start/end block pairs to show scope boundaries |
+| 086 | Remove Legacy Code Block Collapse Remnants | 🟡 | 1-2d | 2025-11-05 | Strip leftover fields and logic from the old code block collapse feature |
 | 079 | Add Directional Navigation Function for Code Blocks | 🟡 | 4-6h | 2025-11-02 | Implemented spatial navigation algorithm for code blocks supporting keyboard-based navigation between blocks in all four directions |
 
 ### 🟢 Low Priority
