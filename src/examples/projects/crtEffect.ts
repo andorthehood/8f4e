@@ -27,7 +27,6 @@ const project: Project = {
 			],
 			x: 10,
 			y: 10,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -59,7 +58,6 @@ const project: Project = {
 			],
 			x: 50,
 			y: 10,
-			isOpen: true,
 		},
 	],
 	viewport: {
