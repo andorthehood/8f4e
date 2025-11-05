@@ -71,7 +71,7 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: new Map(),
 				compilerOptions: {
 					startingMemoryWordAddress: 0,
-					memorySizeBytes: 1 * 65536,
+					memorySizeBytes: 1048576, // 1MB
 					environmentExtensions: {
 						constants: {},
 						ignoredKeywords: [],
@@ -342,8 +342,8 @@ describe('Runtime-ready project functionality', () => {
 
 			// Parse the exported JSON and verify it contains memory configuration
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.memory).toBeDefined();
-			expect(exportedProject.memory.memorySizeBytes).toBe(500 * 65536);
+			expect(exportedProject.memorySizeBytes).toBeDefined();
+			expect(exportedProject.memorySizeBytes).toBe(500 * 65536);
 		});
 
 		it('should export memory configuration in runtime-ready project', async () => {
@@ -369,8 +369,8 @@ describe('Runtime-ready project functionality', () => {
 
 			// Parse the exported JSON and verify memory configuration
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.memory).toBeDefined();
-			expect(exportedProject.memory.memorySizeBytes).toBe(2000 * 65536);
+			expect(exportedProject.memorySizeBytes).toBeDefined();
+			expect(exportedProject.memorySizeBytes).toBe(2000 * 65536);
 		});
 	});
 });
