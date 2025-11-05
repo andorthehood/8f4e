@@ -24,7 +24,6 @@ const project: Project = {
 			],
 			x: 0,
 			y: 0,
-			isOpen: true,
 		},
 	],
 	viewport: { x: 0, y: 0 },
