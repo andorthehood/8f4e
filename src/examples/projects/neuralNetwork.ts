@@ -1,6 +1,7 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
+	memorySizeBytes: 65536,
 	title: 'Neural Network',
 	author: 'Andor Polgar',
 	description: 'A simple neural network pre-trained as an XOR gate.',
