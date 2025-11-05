@@ -390,15 +390,13 @@ describe('findClosestCodeBlockInDirection', () => {
 			const leftResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
 			expect(leftResult.id).toBe('A');
 
-			// Moving right with weighted approach (primary + Y*2):
-			// selected cursor: (250, 140), right edge: 300
-			// C: left edge 400, center (450, 90)
-			//   primary = 400-300 = 100, Y distance = 50, score = 100 + 50*2 = 200
-			// D: left edge 600, center (650, 140)
-			//   primary = 600-300 = 300, Y distance = 0, score = 300 + 0*2 = 300
-			// C wins due to being closer horizontally despite worse Y alignment
+			// Moving right with Y-overlap priority:
+			// selected cursor: (250, 140)
+			// C: Y range [50, 130], cursor 140 is NOT in range
+			// D: Y range [100, 180], cursor 140 IS in range
+			// D wins because cursor Y overlaps with its vertical range
 			const rightResult = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
-			expect(rightResult.id).toBe('C');
+			expect(rightResult.id).toBe('D');
 		});
 
 		it('should use edge-based filtering to exclude overlapping blocks', () => {
