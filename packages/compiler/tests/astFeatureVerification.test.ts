@@ -21,8 +21,7 @@ describe('AST optional output feature manual verification', () => {
 		const result = compile([testModule], {
 			startingMemoryWordAddress: 0,
 			environmentExtensions: { constants: {}, ignoredKeywords: [] },
-			maxMemorySize: 1,
-			initialMemorySize: 1,
+			memorySizeBytes: 65536,
 		});
 
 		const firstModule = Object.values(result.compiledModules)[0];
@@ -34,8 +33,7 @@ describe('AST optional output feature manual verification', () => {
 		const result = compile([testModule], {
 			startingMemoryWordAddress: 0,
 			environmentExtensions: { constants: {}, ignoredKeywords: [] },
-			maxMemorySize: 1,
-			initialMemorySize: 1,
+			memorySizeBytes: 65536,
 			includeAST: false,
 		});
 
@@ -48,8 +46,7 @@ describe('AST optional output feature manual verification', () => {
 		const result = compile([testModule], {
 			startingMemoryWordAddress: 0,
 			environmentExtensions: { constants: {}, ignoredKeywords: [] },
-			maxMemorySize: 1,
-			initialMemorySize: 1,
+			memorySizeBytes: 65536,
 			includeAST: true,
 		});
 

@@ -1,6 +1,7 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
+	memorySizeBytes: 65536,
 	title: 'Dancing with the Sine Lookup Table',
 	author: 'Andor Polgar',
 	description: '',

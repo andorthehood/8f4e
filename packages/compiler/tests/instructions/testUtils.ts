@@ -71,8 +71,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	const module: CompiledModule = compileModules([ast], {
 		environmentExtensions: { constants: {}, ignoredKeywords: [] },
 		startingMemoryWordAddress: 0,
-		initialMemorySize: 1,
-		maxMemorySize: 1,
+		memorySizeBytes: 65536,
 		includeAST: true,
 	})[0];
 	const program = createSingleFunctionWASMProgram(module.loopFunction);
