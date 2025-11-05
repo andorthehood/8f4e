@@ -54,7 +54,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -96,
 			y: -2,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -69,7 +68,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -187,
 			y: -2,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -84,7 +82,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -187,
 			y: 13,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -99,7 +96,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -238,
 			y: -2,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -114,7 +110,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -238,
 			y: 13,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -140,7 +135,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -175,
 			y: -23,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -189,7 +183,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -140,
 			y: -46,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -238,7 +231,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -105,
 			y: -46,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -276,7 +268,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -187,
 			y: 53,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -313,7 +304,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -150,
 			y: 53,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -334,7 +324,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -50,
 			y: 38,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -355,7 +344,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -50,
 			y: -10,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -376,7 +364,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -50,
 			y: 6,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -397,7 +384,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -50,
 			y: 22,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -457,7 +443,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -136,
 			y: -2,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -536,7 +521,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -115,
 			y: 53,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -555,7 +539,6 @@ const ericSaiteGenerator: Project = {
 			],
 			x: -187,
 			y: 28,
-			isOpen: true,
 		},
 	],
 	viewport: { x: -241, y: -15 },
