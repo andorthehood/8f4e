@@ -116,7 +116,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		// Reset compiler state
 		// Use project-specific memory settings if available, otherwise fallback to defaults
 		const WASM_PAGE_SIZE = 65536; // 64KiB per page
-		const memorySizeBytes = newProject.memory?.memorySizeBytes ?? state.compiler.compilerOptions.memorySizeBytes;
+		const memorySizeBytes = newProject.memorySizeBytes ?? state.compiler.compilerOptions.memorySizeBytes;
 		const memorySizePages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
 		state.compiler.memoryRef = new WebAssembly.Memory({
 			initial: memorySizePages,
