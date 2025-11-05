@@ -118,7 +118,11 @@ const defaultStateBase = {
 		allocatedMemorySize: 0,
 		memoryBuffer: new Int32Array(),
 		memoryBufferFloat: new Float32Array(),
-		memoryRef: new WebAssembly.Memory({ initial: memorySizeBytes / WASM_PAGE_SIZE, maximum: memorySizeBytes / WASM_PAGE_SIZE, shared: true }),
+		memoryRef: new WebAssembly.Memory({
+			initial: memorySizeBytes / WASM_PAGE_SIZE,
+			maximum: memorySizeBytes / WASM_PAGE_SIZE,
+			shared: true,
+		}),
 		timerAccuracy: 0,
 		compiledModules: {},
 		buildErrors: [],
