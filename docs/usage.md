@@ -318,6 +318,97 @@ interface EditorInstance {
 }
 ```
 
+## Project Structure
+
+### Memory Configuration
+
+Projects can specify custom WebAssembly memory settings to optimize for their specific needs. By default, projects use 1000 initial pages and a maximum of 10000 pages (where each page is 64KiB = 65,536 bytes).
+
+#### Default Memory Settings
+- **Initial Pages**: 1000 (≈ 64MB)
+- **Maximum Pages**: 10000 (≈ 640MB)
+
+#### Custom Memory Configuration
+
+You can specify custom memory settings in your project JSON:
+
+```json
+{
+  "title": "My Project",
+  "author": "Your Name",
+  "description": "Project description",
+  "memory": {
+    "initialPages": 500,
+    "maxPages": 5000
+  },
+  "codeBlocks": [],
+  "viewport": { "x": 0, "y": 0 },
+  "selectedRuntime": 0,
+  "runtimeSettings": [...]
+}
+```
+
+#### When to Adjust Memory Settings
+
+**Reduce memory for lean projects:**
+```json
+{
+  "memory": {
+    "initialPages": 100,
+    "maxPages": 1000
+  }
+}
+```
+Use smaller values for simple projects to reduce memory footprint and improve load times.
+
+**Increase memory for complex projects:**
+```json
+{
+  "memory": {
+    "initialPages": 2000,
+    "maxPages": 15000
+  }
+}
+```
+Use larger values for projects with:
+- Large audio buffers
+- Complex data structures
+- Multiple concurrent processes
+- Extensive binary assets
+
+#### Memory Configuration Best Practices
+
+1. **Start with defaults**: Only adjust if you encounter memory issues or want to optimize.
+
+2. **Monitor memory usage**: Use browser developer tools to check actual memory consumption.
+
+3. **Balance initial and maximum**: 
+   - Set `initialPages` to your typical working set
+   - Set `maxPages` with headroom for peaks
+
+4. **Validation**: The editor ensures `initialPages ≤ maxPages` and respects browser limits.
+
+5. **Persistence**: Memory settings are preserved through save/export operations and runtime-ready bundles.
+
+#### Example: Audio Processing Project
+
+```json
+{
+  "title": "Audio DSP Project",
+  "memory": {
+    "initialPages": 1500,
+    "maxPages": 12000
+  },
+  "runtimeSettings": [
+    {
+      "runtime": "AudioWorkletRuntime",
+      "sampleRate": 44100,
+      "audioOutputBuffers": [...]
+    }
+  ]
+}
+```
+
 ## Performance Considerations
 
 ### Bundle Size
