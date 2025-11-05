@@ -24,6 +24,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable all editing functionality (create, edit, delete, save) */
 	editing: boolean;
+
+	/** Enable/disable automatic demo mode with periodic code block navigation */
+	demoMode: boolean;
 }
 
 /**
