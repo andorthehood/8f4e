@@ -11,8 +11,7 @@ describe('compiler', () => {
 			compileModules(astModules, {
 				startingMemoryWordAddress: 0,
 				environmentExtensions: { constants: {}, ignoredKeywords: [] },
-				maxMemorySize: 1,
-				initialMemorySize: 1,
+				memorySizeBytes: 65536,
 				includeAST: true,
 			})
 		).toMatchSnapshot();
@@ -22,8 +21,7 @@ describe('compiler', () => {
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
 			environmentExtensions: { constants: {}, ignoredKeywords: [] },
-			maxMemorySize: 1,
-			initialMemorySize: 1,
+			memorySizeBytes: 65536,
 		});
 
 		// Verify that none of the compiled modules have an ast property
@@ -36,8 +34,7 @@ describe('compiler', () => {
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
 			environmentExtensions: { constants: {}, ignoredKeywords: [] },
-			maxMemorySize: 1,
-			initialMemorySize: 1,
+			memorySizeBytes: 65536,
 			includeAST: true,
 		});
 

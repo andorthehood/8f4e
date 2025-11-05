@@ -11,7 +11,12 @@ export default function save(state: State, events: EventDispatcher): void {
 		}
 
 		const filename = `${state.project.title || 'project'}.json`;
-		const json = JSON.stringify(state.project, null, 2);
+		// Include memory configuration in saved project
+		const projectToSave = {
+			...state.project,
+			memorySizeBytes: state.compiler.compilerOptions.memorySizeBytes,
+		};
+		const json = JSON.stringify(projectToSave, null, 2);
 
 		state.callbacks.exportFile(json, filename, 'application/json').catch(error => {
 			console.error('Failed to save project to file:', error);
@@ -46,6 +51,8 @@ export default function save(state: State, events: EventDispatcher): void {
 			compiledWasm: encodeUint8ArrayToBase64(state.compiler.codeBuffer),
 			memorySnapshot: memorySnapshotBytes ? encodeUint8ArrayToBase64(memorySnapshotBytes) : undefined,
 			compiledModules: state.compiler.compiledModules,
+			// Include memory configuration in runtime-ready exports
+			memorySizeBytes: state.compiler.compilerOptions.memorySizeBytes,
 		};
 
 		const filename = `${state.project.title || 'project'}-runtime-ready.json`;
