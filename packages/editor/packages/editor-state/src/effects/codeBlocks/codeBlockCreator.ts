@@ -134,7 +134,6 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			y: state.graphicHelper.activeViewport.viewport.y + y,
 			gridX: Math.round((state.graphicHelper.activeViewport.viewport.x + x) / state.graphicHelper.globalViewport.vGrid),
 			gridY: Math.round((state.graphicHelper.activeViewport.viewport.y + y) / state.graphicHelper.globalViewport.hGrid),
-			isOpen: true,
 			padLength: 2,
 			offsetX: 0,
 			lastUpdated: Date.now(),
