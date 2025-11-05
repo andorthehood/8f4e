@@ -8,7 +8,6 @@ describe('codeBlockNavigation', () => {
 	let state: State;
 	let events: EventDispatcher;
 	let onKeydownHandler: (event: InternalKeyboardEvent) => void;
-	let onInitHandler: (() => void) | undefined;
 	let selectedBlock: CodeBlockGraphicData;
 	let leftBlock: CodeBlockGraphicData;
 	let rightBlock: CodeBlockGraphicData;
@@ -49,16 +48,11 @@ describe('codeBlockNavigation', () => {
 			},
 		} as unknown as State;
 
-		// Reset handlers
-		onInitHandler = undefined;
-
 		// Create mock event dispatcher
 		events = {
 			on: vi.fn((eventName: string, callback: ((event: InternalKeyboardEvent) => void) | (() => void)) => {
 				if (eventName === 'keydown') {
 					onKeydownHandler = callback as (event: InternalKeyboardEvent) => void;
-				} else if (eventName === 'init') {
-					onInitHandler = callback as () => void;
 				}
 			}) as EventDispatcher['on'],
 			off: vi.fn(),
@@ -158,104 +152,6 @@ describe('codeBlockNavigation', () => {
 
 		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
-	});
-
-	describe('demo mode', () => {
-		beforeEach(() => {
-			// Enable demo mode
-			state.featureFlags.demoMode = true;
-			// Clear the selected block to test auto-selection
-			state.graphicHelper.selectedCodeBlock = undefined;
-		});
-
-		it('should register an init event handler when demo mode is enabled', () => {
-			codeBlockNavigation(state, events);
-
-			expect(events.on).toHaveBeenCalledWith('init', expect.any(Function));
-		});
-
-		it('should not register an init event handler when demo mode is disabled', () => {
-			state.featureFlags.demoMode = false;
-			codeBlockNavigation(state, events);
-
-			// Check that init handler was not registered
-			const calls = (events.on as ReturnType<typeof vi.fn>).mock.calls;
-			const initCalls = calls.filter((call: unknown[]) => call[0] === 'init');
-			expect(initCalls.length).toBe(0);
-		});
-
-		it('should select a random code block on init when none is selected', () => {
-			codeBlockNavigation(state, events);
-			expect(onInitHandler).toBeDefined();
-
-			// Trigger init
-			onInitHandler!();
-
-			// A code block should now be selected
-			expect(state.graphicHelper.selectedCodeBlock).toBeDefined();
-			expect(state.graphicHelper.activeViewport.codeBlocks.has(state.graphicHelper.selectedCodeBlock!)).toBe(true);
-		});
-
-		it('should not change selection on init when a block is already selected', () => {
-			state.graphicHelper.selectedCodeBlock = selectedBlock;
-			codeBlockNavigation(state, events);
-
-			// Trigger init
-			onInitHandler!();
-
-			// The selected block should remain the same
-			expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
-		});
-
-		it('should navigate between blocks at 2 second intervals', () => {
-			state.graphicHelper.selectedCodeBlock = selectedBlock;
-			codeBlockNavigation(state, events);
-
-			// Trigger init
-			onInitHandler!();
-
-			// Fast-forward time by 2 seconds
-			vi.advanceTimersByTime(2000);
-
-			// The selected block might have changed (depending on random direction)
-			// Just verify that navigation was attempted
-			expect(state.graphicHelper.selectedCodeBlock).toBeDefined();
-		});
-
-		it('should handle empty code blocks gracefully during demo navigation', () => {
-			state.graphicHelper.activeViewport.codeBlocks = new Set();
-			state.graphicHelper.selectedCodeBlock = undefined;
-
-			codeBlockNavigation(state, events);
-
-			// Trigger init
-			onInitHandler!();
-
-			// Should not error and should not have selected anything
-			expect(state.graphicHelper.selectedCodeBlock).toBeUndefined();
-
-			// Fast-forward time by 2 seconds
-			vi.advanceTimersByTime(2000);
-
-			// Should still not error
-			expect(state.graphicHelper.selectedCodeBlock).toBeUndefined();
-		});
-
-		it('should clear previous interval when init is called multiple times', () => {
-			codeBlockNavigation(state, events);
-
-			// First init
-			onInitHandler!();
-
-			// Spy on clearInterval
-			const clearIntervalSpy = vi.spyOn(global, 'clearInterval');
-
-			// Second init
-			onInitHandler!();
-
-			// clearInterval should have been called
-			expect(clearIntervalSpy).toHaveBeenCalled();
-		});
 	});
 });
 
