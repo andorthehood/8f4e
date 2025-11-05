@@ -251,6 +251,9 @@ export default function compile(
 		? compiledModulesMap
 		: stripASTFromCompiledModules(compiledModulesMap);
 
+	const WASM_PAGE_SIZE = 65536;
+	const memorySizePages = Math.ceil(options.memorySizeBytes / WASM_PAGE_SIZE);
+
 	return {
 		codeBuffer: Uint8Array.from([
 			...HEADER,
@@ -261,9 +264,7 @@ export default function compile(
 				createFunctionType([Type.I32, Type.I32], [Type.I32]),
 			]),
 			...createImportSection([
-				const WASM_PAGE_SIZE = 65536;
-			const memorySizePages = Math.ceil(options.memorySizeBytes / WASM_PAGE_SIZE);
-			createMemoryImport('js', 'memory', memorySizePages, memorySizePages, true),
+				createMemoryImport('js', 'memory', memorySizePages, memorySizePages, true),
 			]),
 			...createFunctionSection([0x00, 0x00, 0x00, ...functionSignatures, ...functionSignatures]),
 			...createExportSection([
