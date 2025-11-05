@@ -105,7 +105,7 @@ function createGraphicHelper() {
 }
 
 const WASM_PAGE_SIZE = 65536; // 64KiB
-const memorySizeBytes = 1000 * WASM_PAGE_SIZE; // 1000 pages = ~64MB
+const memorySizeBytes = 1048576; // 1MB default
 
 // Default state without the runtime callback (will be merged with provided options)
 const defaultStateBase = {

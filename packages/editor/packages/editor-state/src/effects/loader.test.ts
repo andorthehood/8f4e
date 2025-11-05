@@ -28,7 +28,7 @@ describe('Loader - Project-specific memory configuration', () => {
 				compiledModules: {},
 				compilerOptions: {
 					startingMemoryWordAddress: 0,
-					memorySizeBytes: 1000 * 65536,
+					memorySizeBytes: 1048576, // 1MB
 					environmentExtensions: {
 						constants: {},
 						ignoredKeywords: [],
@@ -134,7 +134,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		loadProjectCallback({ project: projectWithoutMemory });
 
 		// Verify compiler options use defaults
-		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(1000 * 65536);
+		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(1048576);
 	});
 
 	it('should use project-specific memory settings when available', async () => {
@@ -151,9 +151,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		const projectWithMemory: Project = {
 			...EMPTY_DEFAULT_PROJECT,
 			title: 'Test Project',
-			memory: {
-				memorySizeBytes: 500 * 65536,
-			},
+			memorySizeBytes: 500 * 65536,
 		};
 
 		// Load the project
@@ -175,9 +173,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		const projectWithMemory: Project = {
 			...EMPTY_DEFAULT_PROJECT,
 			title: 'Test Project',
-			memory: {
-				memorySizeBytes: 2000 * 65536,
-			},
+			memorySizeBytes: 2000 * 65536,
 		};
 
 		// Load the project
