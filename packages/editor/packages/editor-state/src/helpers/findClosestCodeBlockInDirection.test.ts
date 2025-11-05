@@ -28,8 +28,8 @@ function createMockCodeBlock(
 		cursor: {
 			col: 0,
 			row: 0,
-			x: x + offsetX + width / 2, // Default to horizontal center
-			y: cursorY ?? y + offsetY + height / 2, // Default to vertical center if not provided
+			x: x + offsetX + width / 2, // Default to horizontal center (absolute)
+			y: cursorY ?? height / 2, // Default to vertical center (RELATIVE to block), or use provided cursorY
 		},
 		// Grid positioning
 		gridX: x,
