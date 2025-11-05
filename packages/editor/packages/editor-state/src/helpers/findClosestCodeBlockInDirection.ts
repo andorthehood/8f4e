@@ -187,12 +187,13 @@ export default function findClosestCodeBlockInDirection(
 			case 'left':
 			case 'right': {
 				// For horizontal navigation, check if cursor Y is within candidate's vertical range
-				const cursorY = selectedBlock.cursor.y;
+				// cursor.y is relative to the block, so convert to absolute coordinates
+				const absoluteCursorY = selectedBounds.top + selectedBlock.cursor.y;
 				const candidateTop = candidateBounds.top;
 				const candidateBottom = candidateBounds.bottom;
 
 				// If cursor Y is within the candidate block's vertical range, give it priority
-				if (cursorY >= candidateTop && cursorY <= candidateBottom) {
+				if (absoluteCursorY >= candidateTop && absoluteCursorY <= candidateBottom) {
 					// Cursor is within this block's Y range - use horizontal distance only
 					distance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
 				} else {
