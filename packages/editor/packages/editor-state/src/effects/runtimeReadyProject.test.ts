@@ -71,8 +71,7 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: new Map(),
 				compilerOptions: {
 					startingMemoryWordAddress: 0,
-					initialMemorySize: 1,
-					maxMemorySize: 10,
+					memorySize: 1,
 					environmentExtensions: {
 						constants: {},
 						ignoredKeywords: [],
@@ -322,8 +321,7 @@ describe('Runtime-ready project functionality', () => {
 	describe('Project-specific memory configuration', () => {
 		it('should export memory configuration when saving project', async () => {
 			// Set custom memory settings in compiler options
-			mockState.compiler.compilerOptions.initialMemorySize = 500;
-			mockState.compiler.compilerOptions.maxMemorySize = 5000;
+			mockState.compiler.compilerOptions.memorySize = 500;
 
 			// Set up save functionality
 			save(mockState, mockEvents);
@@ -345,14 +343,12 @@ describe('Runtime-ready project functionality', () => {
 			// Parse the exported JSON and verify it contains memory configuration
 			const exportedProject = JSON.parse(exportedJson);
 			expect(exportedProject.memory).toBeDefined();
-			expect(exportedProject.memory.initialPages).toBe(500);
-			expect(exportedProject.memory.maxPages).toBe(5000);
+			expect(exportedProject.memory.memorySize).toBe(500);
 		});
 
 		it('should export memory configuration in runtime-ready project', async () => {
 			// Set custom memory settings
-			mockState.compiler.compilerOptions.initialMemorySize = 2000;
-			mockState.compiler.compilerOptions.maxMemorySize = 8000;
+			mockState.compiler.compilerOptions.memorySize = 2000;
 
 			// Set up save functionality
 			save(mockState, mockEvents);
@@ -374,8 +370,7 @@ describe('Runtime-ready project functionality', () => {
 			// Parse the exported JSON and verify memory configuration
 			const exportedProject = JSON.parse(exportedJson);
 			expect(exportedProject.memory).toBeDefined();
-			expect(exportedProject.memory.initialPages).toBe(2000);
-			expect(exportedProject.memory.maxPages).toBe(8000);
+			expect(exportedProject.memory.memorySize).toBe(2000);
 		});
 	});
 });
