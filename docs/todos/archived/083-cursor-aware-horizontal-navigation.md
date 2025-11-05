@@ -3,8 +3,8 @@ title: 'TODO: Cursor-aware horizontal navigation'
 priority: Medium
 effort: 1 day
 created: 2025-11-03
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-03
 ---
 
 # TODO: Cursor-aware horizontal navigation
