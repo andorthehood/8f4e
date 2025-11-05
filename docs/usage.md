@@ -318,6 +318,82 @@ interface EditorInstance {
 }
 ```
 
+## Project Structure
+
+### Memory Configuration
+
+Projects specify WebAssembly memory settings to optimize for their specific needs. The default is 1,048,576 bytes (1MB).
+
+#### Default Memory Settings
+- **Memory Size**: 1,048,576 bytes (1MB)
+
+#### Custom Memory Configuration
+
+You can specify custom memory settings in your project JSON:
+
+```json
+{
+  "title": "My Project",
+  "author": "Your Name",
+  "description": "Project description",
+  "memorySizeBytes": 2097152,
+  "codeBlocks": [],
+  "viewport": { "x": 0, "y": 0 },
+  "selectedRuntime": 0,
+  "runtimeSettings": [...]
+}
+```
+
+#### When to Adjust Memory Settings
+
+**Keep default for simple projects:**
+```json
+{
+  "memorySizeBytes": 1048576
+}
+```
+The 1MB default is suitable for most simple projects.
+
+**Increase memory for complex projects:**
+```json
+{
+  "memorySizeBytes": 10485760
+}
+```
+Use larger values (e.g., 10,485,760 bytes = 10MB) for projects with:
+- Large audio buffers
+- Complex data structures
+- Multiple concurrent processes
+- Extensive binary assets
+
+#### Memory Configuration Best Practices
+
+1. **Start with defaults**: The 1MB default is suitable for most projects. Only adjust if you encounter memory issues.
+
+2. **Monitor memory usage**: Use browser developer tools to check actual memory consumption.
+
+3. **Set appropriate size**: Choose a value that provides adequate memory for your project's needs while avoiding waste.
+
+4. **Validation**: The editor respects browser limits for WebAssembly memory. Memory is allocated in page-sized chunks (64KiB), so the actual allocated size will be rounded up to the nearest page.
+
+5. **Persistence**: Memory settings are preserved through save/export operations and runtime-ready bundles.
+
+#### Example: Audio Processing Project
+
+```json
+{
+  "title": "Audio DSP Project",
+  "memorySizeBytes": 5242880,
+  "runtimeSettings": [
+    {
+      "runtime": "AudioWorkletRuntime",
+      "sampleRate": 44100,
+      "audioOutputBuffers": [...]
+    }
+  ]
+}
+```
+
 ## Performance Considerations
 
 ### Bundle Size

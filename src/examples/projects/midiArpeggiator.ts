@@ -1,6 +1,7 @@
 import type { Project } from '@8f4e/editor-state';
 
 const midiArpeggiator: Project = {
+	memorySizeBytes: 65536,
 	title: 'MIDI Arpeggiator',
 	author: 'Andor Polgar',
 	description: '',
