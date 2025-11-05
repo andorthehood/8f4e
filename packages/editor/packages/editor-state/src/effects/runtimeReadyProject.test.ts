@@ -71,7 +71,7 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: new Map(),
 				compilerOptions: {
 					startingMemoryWordAddress: 0,
-					memorySize: 1,
+					memorySizeBytes: 1 * 65536,
 					environmentExtensions: {
 						constants: {},
 						ignoredKeywords: [],
@@ -321,7 +321,7 @@ describe('Runtime-ready project functionality', () => {
 	describe('Project-specific memory configuration', () => {
 		it('should export memory configuration when saving project', async () => {
 			// Set custom memory settings in compiler options
-			mockState.compiler.compilerOptions.memorySize = 500;
+			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
 
 			// Set up save functionality
 			save(mockState, mockEvents);
@@ -343,12 +343,12 @@ describe('Runtime-ready project functionality', () => {
 			// Parse the exported JSON and verify it contains memory configuration
 			const exportedProject = JSON.parse(exportedJson);
 			expect(exportedProject.memory).toBeDefined();
-			expect(exportedProject.memory.memorySize).toBe(500);
+			expect(exportedProject.memory.memorySizeBytes).toBe(500 * 65536);
 		});
 
 		it('should export memory configuration in runtime-ready project', async () => {
 			// Set custom memory settings
-			mockState.compiler.compilerOptions.memorySize = 2000;
+			mockState.compiler.compilerOptions.memorySizeBytes = 2000 * 65536;
 
 			// Set up save functionality
 			save(mockState, mockEvents);
@@ -370,7 +370,7 @@ describe('Runtime-ready project functionality', () => {
 			// Parse the exported JSON and verify memory configuration
 			const exportedProject = JSON.parse(exportedJson);
 			expect(exportedProject.memory).toBeDefined();
-			expect(exportedProject.memory.memorySize).toBe(2000);
+			expect(exportedProject.memory.memorySizeBytes).toBe(2000 * 65536);
 		});
 	});
 });
