@@ -138,7 +138,7 @@ function createMockCodeBlock(x: number, y: number): CodeBlockGraphicData {
 		trimmedCode: [],
 		codeColors: [],
 		codeToRender: [],
-		cursor: { col: 0, row: 0, x: x + 50, y: y + 50 }, // Set cursor to center of block
+		cursor: { col: 0, row: 0, x: x + 50, y: 50 }, // Cursor Y is relative to block (height/2)
 		id: `block-${x}-${y}`,
 		gaps: new Map(),
 		gridX: 0,
