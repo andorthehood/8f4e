@@ -64,8 +64,7 @@ export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): Sta
 			compilationTime: 0,
 			compiledModules: {},
 			compilerOptions: {
-				initialMemorySize: 1000,
-				maxMemorySize: 10000,
+				memorySizeBytes: 1048576, // 1MB
 				startingMemoryWordAddress: 0,
 				environmentExtensions: {
 					constants: {},
@@ -78,7 +77,7 @@ export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): Sta
 
 			memoryBuffer: new Int32Array(),
 			memoryBufferFloat: new Float32Array(),
-			memoryRef: new WebAssembly.Memory({ initial: 1000, maximum: 10000, shared: true }),
+			memoryRef: new WebAssembly.Memory({ initial: 1000, maximum: 1000, shared: true }),
 			timerAccuracy: 0,
 		},
 		editorSettings: {
@@ -203,6 +202,7 @@ export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): Sta
 				},
 			],
 			compiledModules: {},
+			memorySizeBytes: 1048576, // 1MB
 		},
 		callbacks: {
 			requestRuntime: async () => () => () => {},

@@ -1,6 +1,7 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
+	memorySizeBytes: 65536,
 	title: 'Simple Counter (Main Thread)',
 	author: 'Andor Polgar',
 	description: 'A simple counter demonstration running on the main thread logic runtime',

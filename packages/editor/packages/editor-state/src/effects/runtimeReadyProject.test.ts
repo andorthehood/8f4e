@@ -71,8 +71,7 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: new Map(),
 				compilerOptions: {
 					startingMemoryWordAddress: 0,
-					initialMemorySize: 1,
-					maxMemorySize: 10,
+					memorySizeBytes: 1048576, // 1MB
 					environmentExtensions: {
 						constants: {},
 						ignoredKeywords: [],
@@ -316,6 +315,62 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockCompileProject).toHaveBeenCalled();
 
 			consoleSpy.mockRestore();
+		});
+	});
+
+	describe('Project-specific memory configuration', () => {
+		it('should export memory configuration when saving project', async () => {
+			// Set custom memory settings in compiler options
+			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
+
+			// Set up save functionality
+			save(mockState, mockEvents);
+
+			// Get the save callback
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const saveCall = onCalls.find(call => call[0] === 'save');
+			expect(saveCall).toBeDefined();
+
+			const saveCallback = saveCall[1];
+
+			// Trigger the save action
+			await saveCallback();
+
+			// Verify exportFile was called
+			expect(mockExportFile).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportFile.mock.calls[0];
+
+			// Parse the exported JSON and verify it contains memory configuration
+			const exportedProject = JSON.parse(exportedJson);
+			expect(exportedProject.memorySizeBytes).toBeDefined();
+			expect(exportedProject.memorySizeBytes).toBe(500 * 65536);
+		});
+
+		it('should export memory configuration in runtime-ready project', async () => {
+			// Set custom memory settings
+			mockState.compiler.compilerOptions.memorySizeBytes = 2000 * 65536;
+
+			// Set up save functionality
+			save(mockState, mockEvents);
+
+			// Get the saveRuntimeReady callback
+			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
+			expect(saveRuntimeReadyCall).toBeDefined();
+
+			const saveRuntimeReadyCallback = saveRuntimeReadyCall[1];
+
+			// Trigger the saveRuntimeReady action
+			await saveRuntimeReadyCallback();
+
+			// Verify exportFile was called
+			expect(mockExportFile).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportFile.mock.calls[0];
+
+			// Parse the exported JSON and verify memory configuration
+			const exportedProject = JSON.parse(exportedJson);
+			expect(exportedProject.memorySizeBytes).toBeDefined();
+			expect(exportedProject.memorySizeBytes).toBe(2000 * 65536);
 		});
 	});
 });
