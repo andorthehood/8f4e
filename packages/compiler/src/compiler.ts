@@ -14,7 +14,6 @@ import { ErrorCode, getError } from './errors';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils';
-import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
