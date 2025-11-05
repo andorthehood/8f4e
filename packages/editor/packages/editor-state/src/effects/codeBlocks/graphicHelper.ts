@@ -21,7 +21,7 @@ import {
 	reverseGapCalculator,
 	type,
 } from '../../helpers/editor';
-import { getLastMemoryInstructionLine, getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
+import { getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
 import { InternalKeyboardEvent } from '../../types';
 
 import type { CodeBlockGraphicData, State } from '../../types';
@@ -132,7 +132,7 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		}
 
 		graphicData.padLength = graphicData.code.length.toString().length;
-		const length = graphicData.isOpen ? graphicData.code.length : getLastMemoryInstructionLine(graphicData.code);
+		const length = graphicData.code.length;
 
 		graphicData.x = graphicData.gridX * state.graphicHelper.globalViewport.vGrid;
 		graphicData.y = graphicData.gridY * state.graphicHelper.globalViewport.hGrid;

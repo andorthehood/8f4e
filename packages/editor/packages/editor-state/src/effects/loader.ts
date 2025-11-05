@@ -24,7 +24,6 @@ function convertGraphicDataToProjectStructure(
 			code: codeBlock.code,
 			x: codeBlock.gridX,
 			y: codeBlock.gridY,
-			isOpen: codeBlock.isOpen,
 			viewport:
 				codeBlock.codeBlocks.size > 0
 					? {
@@ -178,7 +177,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				offsetY: 0,
 				gridX: codeBlock.x,
 				gridY: codeBlock.y,
-				isOpen: codeBlock.isOpen,
 				padLength: 1,
 				viewport: {
 					x: 0,
