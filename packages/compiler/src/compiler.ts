@@ -92,7 +92,7 @@ export function compileModule(
 	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
 	startingByteAddress = 0,
-	maxMemorySize: number,
+	memorySize: number,
 	index: number
 ): CompiledModule {
 	const context: CompilationContext = {
@@ -108,7 +108,7 @@ export function compileModule(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-		memoryByteSize: maxMemorySize * WASM_MEMORY_PAGE_SIZE,
+		memoryByteSize: memorySize * WASM_MEMORY_PAGE_SIZE,
 	};
 
 	ast.forEach(line => {

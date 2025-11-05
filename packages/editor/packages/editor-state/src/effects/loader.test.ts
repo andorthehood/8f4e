@@ -28,8 +28,7 @@ describe('Loader - Project-specific memory configuration', () => {
 				compiledModules: {},
 				compilerOptions: {
 					startingMemoryWordAddress: 0,
-					initialMemorySize: 1000,
-					maxMemorySize: 10000,
+					memorySize: 1000,
 					environmentExtensions: {
 						constants: {},
 						ignoredKeywords: [],
@@ -135,8 +134,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		loadProjectCallback({ project: projectWithoutMemory });
 
 		// Verify compiler options use defaults
-		expect(mockState.compiler.compilerOptions.initialMemorySize).toBe(1000);
-		expect(mockState.compiler.compilerOptions.maxMemorySize).toBe(10000);
+		expect(mockState.compiler.compilerOptions.memorySize).toBe(1000);
 	});
 
 	it('should use project-specific memory settings when available', async () => {
@@ -154,8 +152,7 @@ describe('Loader - Project-specific memory configuration', () => {
 			...EMPTY_DEFAULT_PROJECT,
 			title: 'Test Project',
 			memory: {
-				initialPages: 500,
-				maxPages: 5000,
+				memorySize: 500,
 			},
 		};
 
@@ -163,8 +160,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		loadProjectCallback({ project: projectWithMemory });
 
 		// Verify compiler options use project-specific settings
-		expect(mockState.compiler.compilerOptions.initialMemorySize).toBe(500);
-		expect(mockState.compiler.compilerOptions.maxMemorySize).toBe(5000);
+		expect(mockState.compiler.compilerOptions.memorySize).toBe(500);
 	});
 
 	it('should create WebAssembly.Memory with project-specific settings', async () => {
@@ -180,8 +176,7 @@ describe('Loader - Project-specific memory configuration', () => {
 			...EMPTY_DEFAULT_PROJECT,
 			title: 'Test Project',
 			memory: {
-				initialPages: 2000,
-				maxPages: 8000,
+				memorySize: 2000,
 			},
 		};
 
@@ -192,7 +187,6 @@ describe('Loader - Project-specific memory configuration', () => {
 		expect(mockState.compiler.memoryRef).toBeDefined();
 		// Note: We can't directly inspect WebAssembly.Memory constructor parameters,
 		// but we can verify the compiler options were updated
-		expect(mockState.compiler.compilerOptions.initialMemorySize).toBe(2000);
-		expect(mockState.compiler.compilerOptions.maxMemorySize).toBe(8000);
+		expect(mockState.compiler.compilerOptions.memorySize).toBe(2000);
 	});
 });

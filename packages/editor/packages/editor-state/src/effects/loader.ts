@@ -115,16 +115,14 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 	function loadProject({ project: newProject }: { project: Project }) {
 		// Reset compiler state
 		// Use project-specific memory settings if available, otherwise fallback to defaults
-		const initialMemorySize = newProject.memory?.initialPages ?? state.compiler.compilerOptions.initialMemorySize;
-		const maxMemorySize = newProject.memory?.maxPages ?? state.compiler.compilerOptions.maxMemorySize;
+		const memorySize = newProject.memory?.memorySize ?? state.compiler.compilerOptions.memorySize;
 		state.compiler.memoryRef = new WebAssembly.Memory({
-			initial: initialMemorySize,
-			maximum: maxMemorySize,
+			initial: memorySize,
+			maximum: memorySize,
 			shared: true,
 		});
 		// Update compiler options to reflect the resolved values
-		state.compiler.compilerOptions.initialMemorySize = initialMemorySize;
-		state.compiler.compilerOptions.maxMemorySize = maxMemorySize;
+		state.compiler.compilerOptions.memorySize = memorySize;
 		state.compiler.memoryBuffer = new Int32Array();
 		state.compiler.memoryBufferFloat = new Float32Array();
 		state.compiler.codeBuffer = new Uint8Array();

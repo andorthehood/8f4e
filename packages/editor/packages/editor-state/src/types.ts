@@ -380,10 +380,9 @@ export interface Project {
 	memorySnapshot?: string;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
-	/** WebAssembly memory configuration with initial and maximum page counts (64KiB per page) */
+	/** WebAssembly memory configuration with page count (64KiB per page) */
 	memory?: {
-		initialPages: number;
-		maxPages: number;
+		memorySize: number;
 	};
 }
 
