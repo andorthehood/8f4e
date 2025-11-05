@@ -174,6 +174,7 @@ export default function findClosestCodeBlockInDirection(
 	}
 
 	// Find the closest candidate
+	// For horizontal navigation, prioritize blocks whose vertical range contains cursor Y
 	let closestBlock = candidates[0];
 	let minDistance = Infinity;
 
@@ -185,15 +186,19 @@ export default function findClosestCodeBlockInDirection(
 		switch (direction) {
 			case 'left':
 			case 'right': {
-				// For horizontal navigation, use a weighted combination of:
-				// 1. Primary distance: horizontal edge-to-edge distance
-				// 2. Secondary distance: vertical cursor alignment
-				const primaryDistance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
+				// For horizontal navigation, check if cursor Y is within candidate's vertical range
 				const cursorY = selectedBlock.cursor.y;
-				const candidateCenterY = (candidateBounds.top + candidateBounds.bottom) / 2;
-				const secondaryDistance = Math.abs(candidateCenterY - cursorY);
-				// Weight the vertical alignment to prefer blocks at the same vertical level
-				distance = primaryDistance + secondaryDistance * ALIGNMENT_WEIGHT;
+				const candidateTop = candidateBounds.top;
+				const candidateBottom = candidateBounds.bottom;
+
+				// If cursor Y is within the candidate block's vertical range, give it priority
+				if (cursorY >= candidateTop && cursorY <= candidateBottom) {
+					// Cursor is within this block's Y range - use horizontal distance only
+					distance = calculatePrimaryDistance(selectedBounds, candidateBounds, direction);
+				} else {
+					// Cursor is not within this block's Y range - heavily penalize
+					distance = Infinity;
+				}
 				break;
 			}
 			case 'up':
