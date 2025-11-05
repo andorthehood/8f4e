@@ -203,6 +203,10 @@ export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): Sta
 				},
 			],
 			compiledModules: {},
+			memory: {
+				initialPages: 1000,
+				maxPages: 10000,
+			},
 		},
 		callbacks: {
 			requestRuntime: async () => () => () => {},
