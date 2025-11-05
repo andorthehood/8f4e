@@ -218,5 +218,10 @@ export default function findClosestCodeBlockInDirection(
 		}
 	}
 
+	// For horizontal navigation, if no block is aligned with cursor Y, return selected block (no movement)
+	if ((direction === 'left' || direction === 'right') && minDistance === Infinity) {
+		return selectedBlock;
+	}
+
 	return closestBlock;
 }
