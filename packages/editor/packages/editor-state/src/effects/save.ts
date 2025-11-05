@@ -14,9 +14,7 @@ export default function save(state: State, events: EventDispatcher): void {
 		// Include memory configuration in saved project
 		const projectToSave = {
 			...state.project,
-			memory: {
-				memorySizeBytes: state.compiler.compilerOptions.memorySizeBytes,
-			},
+			memorySizeBytes: state.compiler.compilerOptions.memorySizeBytes,
 		};
 		const json = JSON.stringify(projectToSave, null, 2);
 
@@ -54,9 +52,7 @@ export default function save(state: State, events: EventDispatcher): void {
 			memorySnapshot: memorySnapshotBytes ? encodeUint8ArrayToBase64(memorySnapshotBytes) : undefined,
 			compiledModules: state.compiler.compiledModules,
 			// Include memory configuration in runtime-ready exports
-			memory: {
-				memorySizeBytes: state.compiler.compilerOptions.memorySizeBytes,
-			},
+			memorySizeBytes: state.compiler.compilerOptions.memorySizeBytes,
 		};
 
 		const filename = `${state.project.title || 'project'}-runtime-ready.json`;

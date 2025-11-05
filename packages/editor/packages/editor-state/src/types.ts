@@ -380,10 +380,8 @@ export interface Project {
 	memorySnapshot?: string;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
-	/** WebAssembly memory configuration in bytes */
-	memory?: {
-		memorySizeBytes: number;
-	};
+	/** WebAssembly memory size in bytes */
+	memorySizeBytes: number;
 }
 
 // Default empty project structure used when no project is loaded from storage
@@ -405,6 +403,7 @@ export const EMPTY_DEFAULT_PROJECT: Project = {
 		},
 	],
 	binaryAssets: [],
+	memorySizeBytes: 1048576, // 1MB default
 };
 
 export interface ExampleModule {

@@ -64,7 +64,7 @@ export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): Sta
 			compilationTime: 0,
 			compiledModules: {},
 			compilerOptions: {
-				memorySizeBytes: 1000 * 65536,
+				memorySizeBytes: 1048576, // 1MB
 				startingMemoryWordAddress: 0,
 				environmentExtensions: {
 					constants: {},
@@ -202,9 +202,7 @@ export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): Sta
 				},
 			],
 			compiledModules: {},
-			memory: {
-				memorySizeBytes: 1000 * 65536,
-			},
+			memorySizeBytes: 1048576, // 1MB
 		},
 		callbacks: {
 			requestRuntime: async () => () => () => {},
