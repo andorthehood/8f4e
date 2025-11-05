@@ -322,10 +322,10 @@ interface EditorInstance {
 
 ### Memory Configuration
 
-Projects can specify custom WebAssembly memory settings to optimize for their specific needs. By default, projects use 65,536,000 bytes (≈ 64MB, equivalent to 1000 pages where each page is 64KiB).
+Projects specify WebAssembly memory settings to optimize for their specific needs. The default is 1,048,576 bytes (1MB).
 
 #### Default Memory Settings
-- **Memory Size**: 65,536,000 bytes (≈ 64MB)
+- **Memory Size**: 1,048,576 bytes (1MB)
 
 #### Custom Memory Configuration
 
@@ -336,9 +336,7 @@ You can specify custom memory settings in your project JSON:
   "title": "My Project",
   "author": "Your Name",
   "description": "Project description",
-  "memory": {
-    "memorySizeBytes": 32768000
-  },
+  "memorySizeBytes": 2097152,
   "codeBlocks": [],
   "viewport": { "x": 0, "y": 0 },
   "selectedRuntime": 0,
@@ -348,25 +346,21 @@ You can specify custom memory settings in your project JSON:
 
 #### When to Adjust Memory Settings
 
-**Reduce memory for lean projects:**
+**Keep default for simple projects:**
 ```json
 {
-  "memory": {
-    "memorySizeBytes": 6553600
-  }
+  "memorySizeBytes": 1048576
 }
 ```
-Use smaller values (e.g., 6,553,600 bytes ≈ 6.25MB) for simple projects to reduce memory footprint and improve load times.
+The 1MB default is suitable for most simple projects.
 
 **Increase memory for complex projects:**
 ```json
 {
-  "memory": {
-    "memorySizeBytes": 131072000
-  }
+  "memorySizeBytes": 10485760
 }
 ```
-Use larger values (e.g., 131,072,000 bytes ≈ 125MB) for projects with:
+Use larger values (e.g., 10,485,760 bytes = 10MB) for projects with:
 - Large audio buffers
 - Complex data structures
 - Multiple concurrent processes
@@ -374,7 +368,7 @@ Use larger values (e.g., 131,072,000 bytes ≈ 125MB) for projects with:
 
 #### Memory Configuration Best Practices
 
-1. **Start with defaults**: Only adjust if you encounter memory issues or want to optimize.
+1. **Start with defaults**: The 1MB default is suitable for most projects. Only adjust if you encounter memory issues.
 
 2. **Monitor memory usage**: Use browser developer tools to check actual memory consumption.
 
@@ -389,9 +383,7 @@ Use larger values (e.g., 131,072,000 bytes ≈ 125MB) for projects with:
 ```json
 {
   "title": "Audio DSP Project",
-  "memory": {
-    "memorySizeBytes": 98304000
-  },
+  "memorySizeBytes": 5242880,
   "runtimeSettings": [
     {
       "runtime": "AudioWorkletRuntime",
