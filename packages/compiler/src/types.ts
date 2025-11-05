@@ -145,8 +145,8 @@ export interface CompileOptions {
 		constants: Namespace['consts'];
 		ignoredKeywords: string[];
 	};
-	/** Number of memory pages, with a page being 64KiB (65,536 bytes). */
-	memorySize: number;
+	/** Memory size in bytes. */
+	memorySizeBytes: number;
 	globalDataStructures?: DataStructure[];
 	/** Whether to include AST in compiled modules. Default is false to reduce payload size. */
 	includeAST?: boolean;
