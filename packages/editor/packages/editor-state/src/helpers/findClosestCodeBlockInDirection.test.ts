@@ -44,7 +44,6 @@ function createMockCodeBlock(
 		gaps: new Map(),
 		positionOffsetterXWordAddress: undefined,
 		positionOffsetterYWordAddress: undefined,
-		isOpen: false,
 		extras: {
 			inputs: new Map(),
 			outputs: new Map(),

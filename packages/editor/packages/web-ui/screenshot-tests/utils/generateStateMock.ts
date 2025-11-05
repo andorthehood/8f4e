@@ -114,7 +114,6 @@ export default function (codeBlocks: Set<CodeBlockGraphicData> = new Set()): Sta
 				gridY: 0,
 				height: 0,
 				id: '',
-				isOpen: true,
 				lastUpdated: 0,
 				minGridWidth: 32,
 				offsetX: 0,
