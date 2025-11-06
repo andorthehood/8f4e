@@ -27,13 +27,15 @@ export function navigateToCodeBlockInDirection(state: State, direction: Directio
 	// If we found a different block, select it and center viewport on it
 	if (targetBlock !== currentBlock) {
 		state.graphicHelper.selectedCodeBlock = targetBlock;
-		// Enable animation for this programmatic viewport change
+		// Enable animation for this programmatic viewport change, but restore original value after
+		const originalViewportAnimations = state.featureFlags.viewportAnimations;
 		state.featureFlags.viewportAnimations = true;
 		centerViewportOnCodeBlock(
 			state.graphicHelper.activeViewport.viewport,
 			targetBlock,
 			state.graphicHelper.globalViewport
 		);
+		state.featureFlags.viewportAnimations = originalViewportAnimations;
 		return true;
 	}
 
