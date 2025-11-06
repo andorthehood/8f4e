@@ -19,6 +19,7 @@ import exportWasm from './effects/exportWasm';
 import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
+import keyboardShortcuts from './effects/keyboardShortcuts';
 import { validateFeatureFlags, defaultFeatureFlags } from './featureFlags';
 
 import type { Options, Project, State, CodeBlockGraphicData, EventDispatcher } from './types';
@@ -192,6 +193,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	exportWasm(state, events);
 	font(state, events);
 	binaryAsset(state, events);
+	keyboardShortcuts(state, events);
 	events.dispatch('init');
 	return store;
 }
