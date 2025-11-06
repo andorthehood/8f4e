@@ -42,12 +42,17 @@ export function convertGraphicDataToProjectStructure(
 /**
  * Serializes current runtime state to Project format for saving to file
  * @param state Current editor state
+ * @param options Optional parameters for serialization
+ * @param options.includeCompiled If true, includes compiledWasm and memorySnapshot (for runtime-ready projects)
  * @returns Project object ready for serialization to JSON
  */
-export function serializeToProject(state: State): Project {
+export function serializeToProject(
+	state: State,
+	options?: { includeCompiled?: boolean; encodeToBase64?: (data: Uint8Array) => string }
+): Project {
 	const { graphicHelper, compiler, projectInfo } = state;
 
-	return {
+	const project: Project = {
 		title: projectInfo.title,
 		author: projectInfo.author,
 		description: projectInfo.description,
@@ -67,4 +72,21 @@ export function serializeToProject(state: State): Project {
 		memorySizeBytes: compiler.compilerOptions.memorySizeBytes,
 		postProcessEffects: graphicHelper.postProcessEffects,
 	};
+
+	// Optionally include compiled WASM and memory snapshot for runtime-ready exports
+	if (options?.includeCompiled && options?.encodeToBase64) {
+		if (compiler.codeBuffer.length > 0) {
+			project.compiledWasm = options.encodeToBase64(compiler.codeBuffer);
+		}
+		if (compiler.allocatedMemorySize > 0 && compiler.memoryBuffer.byteLength > 0) {
+			const memorySnapshotBytes = new Uint8Array(
+				compiler.memoryBuffer.buffer,
+				compiler.memoryBuffer.byteOffset,
+				Math.min(compiler.allocatedMemorySize, compiler.memoryBuffer.byteLength)
+			);
+			project.memorySnapshot = options.encodeToBase64(memorySnapshotBytes);
+		}
+	}
+
+	return project;
 }
