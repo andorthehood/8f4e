@@ -1,3 +1,5 @@
+import { navigateToCodeBlockInDirection } from './codeBlockNavigation';
+
 import centerViewportOnCodeBlock from '../helpers/centerViewportOnCodeBlock';
 
 import type { State, EventDispatcher } from '../types';
@@ -42,13 +44,8 @@ function selectRandomCodeBlock(state: State): boolean {
  *
  * @param state - The editor state
  * @param events - The event dispatcher
- * @param navigateToCodeBlockInDirection - Navigation helper function from codeBlockNavigation
  */
-export default function demoModeNavigation(
-	state: State,
-	events: EventDispatcher,
-	navigateToCodeBlockInDirection: (state: State, direction: Direction) => boolean
-): void {
+export default function demoModeNavigation(state: State, events: EventDispatcher): void {
 	if (!state.featureFlags.demoMode) {
 		return;
 	}
