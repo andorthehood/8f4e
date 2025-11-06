@@ -30,26 +30,27 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		}
 
 		// Check if project has pre-compiled WASM bytecode for runtime-only execution
-		// NOTE: This is the only remaining valid use of state.project, kept for backward
-		// compatibility with pre-compiled WASM projects. All other code should use the
-		// new state locations (projectInfo, compiler.*, graphicHelper.*).
 		if (
-			state.project.compiledWasm &&
-			state.project.memorySnapshot &&
+			state.compiler.compiledWasm &&
+			state.compiler.memorySnapshot &&
 			(state.compiler.codeBuffer.length === 0 || !state.callbacks.compileProject)
 		) {
 			console.log('[Compiler] Using pre-compiled WASM bytecode from project');
 
 			try {
 				// Set up the compiler state as if compilation succeeded
-				state.compiler.codeBuffer = decodeBase64ToUint8Array(state.project.compiledWasm);
-				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.project.memorySnapshot);
-				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.project.memorySnapshot);
+				state.compiler.codeBuffer = decodeBase64ToUint8Array(state.compiler.compiledWasm);
+				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.compiler.memorySnapshot);
+				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.compiler.memorySnapshot);
 				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
-				state.compiler.compiledModules = state.project.compiledModules || {};
+				// compiledModules already set from loadProject
 				state.compiler.isCompiling = false;
 				state.compiler.buildErrors = [];
 				state.compiler.compilationTime = 0; // No compilation time since we used pre-compiled
+
+				// Clear the pre-compiled data after using it
+				state.compiler.compiledWasm = undefined;
+				state.compiler.memorySnapshot = undefined;
 
 				// Note: Binary assets are not handled for pre-compiled WASM projects
 				// as they should already be embedded in the compiled bytecode.

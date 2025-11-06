@@ -3,7 +3,6 @@ import { vi, type MockInstance } from 'vitest';
 import compiler from './compiler';
 import save from './save';
 
-import { EMPTY_DEFAULT_PROJECT } from '../types';
 import { EventDispatcher } from '../types';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
@@ -58,10 +57,6 @@ describe('Runtime-ready project functionality', () => {
 				title: 'Test Project',
 				author: '',
 				description: '',
-			},
-			project: {
-				...EMPTY_DEFAULT_PROJECT,
-				title: 'Test Project',
 			},
 			compiler: {
 				memoryRef: new WebAssembly.Memory({ initial: 1 }),
@@ -278,8 +273,8 @@ describe('Runtime-ready project functionality', () => {
 			const expectedIntMemory = new Int32Array(memoryBufferCopy);
 			const expectedFloatMemory = new Float32Array(memoryBufferCopy);
 
-			mockState.project.compiledWasm = base64Wasm;
-			mockState.project.memorySnapshot = base64Memory;
+			mockState.compiler.compiledWasm = base64Wasm;
+			mockState.compiler.memorySnapshot = base64Memory;
 			mockState.compiler.codeBuffer = new Uint8Array(0);
 
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation();
@@ -324,9 +319,9 @@ describe('Runtime-ready project functionality', () => {
 
 		it('should fall back to regular compilation if pre-compiled WASM fails', async () => {
 			// Set up a project with invalid pre-compiled WASM
-			mockState.project.compiledWasm = 'invalid-base64!@#$';
+			mockState.compiler.compiledWasm = 'invalid-base64!@#$';
 			const memorySnapshotBytes = new Uint8Array(16); // Valid zeroed snapshot
-			mockState.project.memorySnapshot = encodeUint8ArrayToBase64(memorySnapshotBytes);
+			mockState.compiler.memorySnapshot = encodeUint8ArrayToBase64(memorySnapshotBytes);
 			mockState.compiler.codeBuffer = new Uint8Array(0);
 
 			// Mock the compileProject function
