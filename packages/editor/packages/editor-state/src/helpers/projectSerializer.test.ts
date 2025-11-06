@@ -223,6 +223,11 @@ describe('projectSerializer', () => {
 	describe('serializeToProject', () => {
 		it('creates a valid Project object from state', () => {
 			const mockState = {
+				projectInfo: {
+					title: 'Test Project',
+					author: 'Test Author',
+					description: 'Test Description',
+				},
 				project: {
 					title: 'Test Project',
 					author: 'Test Author',
@@ -245,12 +250,16 @@ describe('projectSerializer', () => {
 						vGrid: 8,
 						hGrid: 16,
 					},
+					postProcessEffects: [],
 				},
 				compiler: {
 					compiledModules: {},
 					compilerOptions: {
 						memorySizeBytes: 1048576,
 					},
+					selectedRuntime: 0,
+					runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime' as const, sampleRate: 50 }],
+					binaryAssets: [],
 				},
 			} as unknown as State;
 

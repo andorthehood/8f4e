@@ -45,12 +45,12 @@ export function convertGraphicDataToProjectStructure(
  * @returns Project object ready for serialization to JSON
  */
 export function serializeToProject(state: State): Project {
-	const { graphicHelper, compiler } = state;
+	const { graphicHelper, compiler, projectInfo } = state;
 
 	return {
-		title: state.project.title,
-		author: state.project.author,
-		description: state.project.description,
+		title: projectInfo.title,
+		author: projectInfo.author,
+		description: projectInfo.description,
 		codeBlocks: convertGraphicDataToProjectStructure(
 			Array.from(graphicHelper.activeViewport.codeBlocks),
 			graphicHelper.globalViewport.vGrid,
@@ -60,12 +60,12 @@ export function serializeToProject(state: State): Project {
 			x: Math.round(graphicHelper.activeViewport.viewport.x / graphicHelper.globalViewport.vGrid),
 			y: Math.round(graphicHelper.activeViewport.viewport.y / graphicHelper.globalViewport.hGrid),
 		},
-		selectedRuntime: state.project.selectedRuntime,
-		runtimeSettings: state.project.runtimeSettings,
-		binaryAssets: state.project.binaryAssets,
+		selectedRuntime: compiler.selectedRuntime,
+		runtimeSettings: compiler.runtimeSettings,
+		binaryAssets: compiler.binaryAssets,
 		compiledModules: compiler.compiledModules,
 		memorySizeBytes: compiler.compilerOptions.memorySizeBytes,
-		postProcessEffects: state.project.postProcessEffects,
+		postProcessEffects: graphicHelper.postProcessEffects,
 	};
 }
 
