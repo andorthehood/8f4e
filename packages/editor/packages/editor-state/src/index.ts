@@ -6,6 +6,7 @@ import button from './effects/codeBlocks/extras/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
 import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
 import codeBlockNavigation from './effects/codeBlockNavigation';
+import demoModeNavigation from './effects/demoModeNavigation';
 import compiler from './effects/compiler';
 import contextMenu from './effects/menu/contextMenu';
 import font from './effects/font';
@@ -165,6 +166,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	loader(store, events, state);
 	codeBlockDragger(state, events);
 	codeBlockNavigation(state, events);
+	demoModeNavigation(state, events);
 	_switch(state, events);
 	button(state, events);
 	pianoKeyboard(state, events);
@@ -234,3 +236,4 @@ export { default as findClosestCodeBlockInDirection } from './helpers/findCloses
 export type { Direction } from './helpers/findClosestCodeBlockInDirection';
 export { default as centerViewportOnCodeBlock } from './helpers/centerViewportOnCodeBlock';
 export type { CodeBlockBounds } from './helpers/centerViewportOnCodeBlock';
+export { navigateToCodeBlockInDirection } from './effects/codeBlockNavigation';
