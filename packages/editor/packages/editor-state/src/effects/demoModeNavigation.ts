@@ -23,13 +23,15 @@ function selectRandomCodeBlock(state: State): boolean {
 	const selectedBlock = codeBlocks[randomIndex];
 
 	state.graphicHelper.selectedCodeBlock = selectedBlock;
-	// Enable animation for this programmatic viewport change
+	// Enable animation for this programmatic viewport change, then restore original value
+	const originalViewportAnimations = state.featureFlags.viewportAnimations;
 	state.featureFlags.viewportAnimations = true;
 	centerViewportOnCodeBlock(
 		state.graphicHelper.activeViewport.viewport,
 		selectedBlock,
 		state.graphicHelper.globalViewport
 	);
+	state.featureFlags.viewportAnimations = originalViewportAnimations;
 
 	return true;
 }
@@ -44,10 +46,11 @@ function selectRandomCodeBlock(state: State): boolean {
  *
  * @param state - The editor state
  * @param events - The event dispatcher
+ * @returns Cleanup function to clear interval and unregister event handler
  */
-export default function demoModeNavigation(state: State, events: EventDispatcher): void {
+export default function demoModeNavigation(state: State, events: EventDispatcher): () => void {
 	if (!state.featureFlags.demoMode) {
-		return;
+		return () => {}; // Return no-op cleanup function
 	}
 
 	let demoInterval: ReturnType<typeof setInterval> | null = null;
@@ -82,4 +85,11 @@ export default function demoModeNavigation(state: State, events: EventDispatcher
 	};
 
 	events.on('init', onInit);
+
+	return () => {
+		if (demoInterval) {
+			clearInterval(demoInterval);
+		}
+		events.off('init', onInit);
+	};
 }
