@@ -168,7 +168,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 
 	const store = createStateManager<State>({
 		...defaultStateBase,
-		project,
 		callbacks: options.callbacks,
 		featureFlags,
 	});

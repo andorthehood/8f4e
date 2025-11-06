@@ -68,23 +68,3 @@ export function serializeToProject(state: State): Project {
 		postProcessEffects: graphicHelper.postProcessEffects,
 	};
 }
-
-/**
- * Deserializes Project format into runtime state
- * This is called when loading a project from file or storage.
- *
- * Note: This function only populates state.project for backward compatibility.
- * The actual new state locations (projectInfo, compiler.*, graphicHelper.*) are
- * populated directly in loader.ts before calling this function.
- *
- * @param project Project data to deserialize
- * @param state Current state to populate
- */
-export function deserializeFromProject(project: Project, state: State): void {
-	// Populate state.project for backward compatibility during migration
-	// This is needed for pre-compiled WASM loading in compiler.ts
-	state.project = {
-		...state.project,
-		...project,
-	};
-}
