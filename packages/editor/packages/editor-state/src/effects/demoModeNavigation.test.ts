@@ -1,9 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import demoModeNavigation from './demoModeNavigation';
-import { navigateToCodeBlockInDirection } from './codeBlockNavigation';
+import * as codeBlockNavigationModule from './codeBlockNavigation';
 
 import type { State, EventDispatcher, CodeBlockGraphicData } from '../types';
+
+// Mock the navigateToCodeBlockInDirection function
+vi.mock('./codeBlockNavigation', () => ({
+	navigateToCodeBlockInDirection: vi.fn(() => true),
+}));
 
 describe('demoModeNavigation', () => {
 	let state: State;
@@ -14,12 +19,14 @@ describe('demoModeNavigation', () => {
 	let rightBlock: CodeBlockGraphicData;
 	let upBlock: CodeBlockGraphicData;
 	let downBlock: CodeBlockGraphicData;
-	let navigateSpy: ReturnType<typeof vi.fn>;
 
 	beforeEach(() => {
 		// Clear all timers before each test
 		vi.clearAllTimers();
 		vi.useFakeTimers();
+
+		// Clear mock calls
+		vi.clearAllMocks();
 
 		// Create mock code blocks
 		selectedBlock = createMockCodeBlock(200, 200);
@@ -63,20 +70,17 @@ describe('demoModeNavigation', () => {
 			off: vi.fn(),
 			dispatch: vi.fn(),
 		};
-
-		// Create a spy for the navigate function
-		navigateSpy = vi.fn(navigateToCodeBlockInDirection);
 	});
 
 	it('should register an init event handler when demo mode is enabled', () => {
-		demoModeNavigation(state, events, navigateSpy);
+		demoModeNavigation(state, events);
 
 		expect(events.on).toHaveBeenCalledWith('init', expect.any(Function));
 	});
 
 	it('should not register an init event handler when demo mode is disabled', () => {
 		state.featureFlags.demoMode = false;
-		demoModeNavigation(state, events, navigateSpy);
+		demoModeNavigation(state, events);
 
 		// Check that init handler was not registered
 		const calls = (events.on as ReturnType<typeof vi.fn>).mock.calls;
@@ -85,7 +89,7 @@ describe('demoModeNavigation', () => {
 	});
 
 	it('should select a random code block on init when none is selected', () => {
-		demoModeNavigation(state, events, navigateSpy);
+		demoModeNavigation(state, events);
 		expect(onInitHandler).toBeDefined();
 
 		// Trigger init
@@ -98,7 +102,7 @@ describe('demoModeNavigation', () => {
 
 	it('should not change selection on init when a block is already selected', () => {
 		state.graphicHelper.selectedCodeBlock = selectedBlock;
-		demoModeNavigation(state, events, navigateSpy);
+		demoModeNavigation(state, events);
 
 		// Trigger init
 		onInitHandler!();
@@ -109,7 +113,7 @@ describe('demoModeNavigation', () => {
 
 	it('should navigate between blocks at 2 second intervals', () => {
 		state.graphicHelper.selectedCodeBlock = selectedBlock;
-		demoModeNavigation(state, events, navigateSpy);
+		demoModeNavigation(state, events);
 
 		// Trigger init
 		onInitHandler!();
@@ -118,14 +122,14 @@ describe('demoModeNavigation', () => {
 		vi.advanceTimersByTime(2000);
 
 		// Navigation should have been called
-		expect(navigateSpy).toHaveBeenCalled();
+		expect(codeBlockNavigationModule.navigateToCodeBlockInDirection).toHaveBeenCalled();
 	});
 
 	it('should handle empty code blocks gracefully during demo navigation', () => {
 		state.graphicHelper.activeViewport.codeBlocks = new Set();
 		state.graphicHelper.selectedCodeBlock = undefined;
 
-		demoModeNavigation(state, events, navigateSpy);
+		demoModeNavigation(state, events);
 
 		// Trigger init
 		onInitHandler!();
@@ -141,7 +145,7 @@ describe('demoModeNavigation', () => {
 	});
 
 	it('should clear previous interval when init is called multiple times', () => {
-		demoModeNavigation(state, events, navigateSpy);
+		demoModeNavigation(state, events);
 
 		// First init
 		onInitHandler!();

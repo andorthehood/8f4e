@@ -6,7 +6,7 @@ import button from './effects/codeBlocks/extras/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
 import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
 import codeBlockOpener from './effects/codeBlocks/codeBlockOpener';
-import codeBlockNavigation, { navigateToCodeBlockInDirection } from './effects/codeBlockNavigation';
+import codeBlockNavigation from './effects/codeBlockNavigation';
 import demoModeNavigation from './effects/demoModeNavigation';
 import compiler from './effects/compiler';
 import contextMenu from './effects/menu/contextMenu';
@@ -169,7 +169,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	codeBlockDragger(state, events);
 	codeBlockOpener(state, events);
 	codeBlockNavigation(state, events);
-	demoModeNavigation(state, events, navigateToCodeBlockInDirection);
+	demoModeNavigation(state, events);
 	_switch(state, events);
 	button(state, events);
 	pianoKeyboard(state, events);
