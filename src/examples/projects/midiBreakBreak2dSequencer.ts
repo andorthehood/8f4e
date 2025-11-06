@@ -28,7 +28,6 @@ const project: Project = {
 			],
 			x: 191,
 			y: 17,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -52,7 +51,6 @@ const project: Project = {
 			],
 			x: 191,
 			y: 35,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -76,7 +74,6 @@ const project: Project = {
 			],
 			x: 191,
 			y: 53,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -100,7 +97,6 @@ const project: Project = {
 			],
 			x: 225,
 			y: 17,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -118,7 +114,6 @@ const project: Project = {
 			],
 			x: 267,
 			y: 17,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -136,7 +131,6 @@ const project: Project = {
 			],
 			x: 267,
 			y: 29,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -153,7 +147,6 @@ const project: Project = {
 			],
 			x: 267,
 			y: 41,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -171,7 +164,6 @@ const project: Project = {
 			],
 			x: 301,
 			y: 17,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -245,7 +237,6 @@ const project: Project = {
 			],
 			x: 339,
 			y: 17,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -269,7 +260,6 @@ const project: Project = {
 			],
 			x: 225,
 			y: 53,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -293,7 +283,6 @@ const project: Project = {
 			],
 			x: 225,
 			y: 35,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -317,7 +306,6 @@ const project: Project = {
 			],
 			x: 225,
 			y: 71,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -335,7 +323,6 @@ const project: Project = {
 			],
 			x: 301,
 			y: 29,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -350,7 +337,6 @@ const project: Project = {
 			],
 			x: 25,
 			y: 19,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -393,7 +379,6 @@ const project: Project = {
 			],
 			x: 64,
 			y: 56,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -434,7 +419,6 @@ const project: Project = {
 			],
 			x: 25,
 			y: 32,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -501,7 +485,6 @@ const project: Project = {
 			],
 			x: 144,
 			y: 17,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -551,7 +534,6 @@ const project: Project = {
 			],
 			x: 106,
 			y: 17,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -591,7 +573,6 @@ const project: Project = {
 			],
 			x: 64,
 			y: 17,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -622,7 +603,6 @@ const project: Project = {
 			],
 			x: 166,
 			y: -9,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -653,7 +633,6 @@ const project: Project = {
 			],
 			x: 132,
 			y: -9,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -684,7 +663,6 @@ const project: Project = {
 			],
 			x: 98,
 			y: -9,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -715,7 +693,6 @@ const project: Project = {
 			],
 			x: 64,
 			y: -9,
-			isOpen: true,
 		},
 	],
 	viewport: { x: 24, y: -10 },

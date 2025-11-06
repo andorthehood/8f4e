@@ -22,7 +22,6 @@ const midiArpeggiator: Project = {
 			],
 			x: -43,
 			y: -1,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -40,7 +39,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 7,
 			y: -1,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -66,7 +64,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 150,
 			y: -38,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -115,7 +112,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 184,
 			y: -38,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -132,7 +128,6 @@ const midiArpeggiator: Project = {
 			],
 			x: -4,
 			y: -12,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -193,7 +188,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 102,
 			y: 6,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -230,7 +224,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 99,
 			y: -26,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -251,7 +244,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 226,
 			y: 6,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -311,7 +303,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 59,
 			y: 6,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -390,7 +381,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 184,
 			y: 6,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -485,7 +475,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 145,
 			y: 6,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -532,7 +521,6 @@ const midiArpeggiator: Project = {
 			],
 			x: 64,
 			y: -36,
-			isOpen: true,
 		},
 	],
 	viewport: { x: -47, y: -25 },
