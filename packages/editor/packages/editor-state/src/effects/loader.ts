@@ -183,7 +183,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 			});
 		});
 		events.dispatch('init');
-		events.dispatch('saveProject');
+		// Removed automatic save - user must manually save with Command+S
 		events.dispatch('projectLoaded');
 		events.dispatch('loadPostProcessEffects', state.graphicHelper.postProcessEffects);
 	}
@@ -232,7 +232,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				.loadProjectFromFile(file)
 				.then(project => {
 					loadProject({ project });
-					events.dispatch('saveProject');
+					// Removed automatic save - user must manually save with Command+S
 				})
 				.catch(error => {
 					console.error('Failed to load project from file:', error);
