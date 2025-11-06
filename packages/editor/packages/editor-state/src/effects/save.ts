@@ -1,5 +1,6 @@
 import { EventDispatcher } from '../types';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
+import { serializeToProject } from '../helpers/projectSerializer';
 
 import type { State } from '../types';
 
@@ -10,12 +11,8 @@ export default function save(state: State, events: EventDispatcher): void {
 			return;
 		}
 
-		const filename = `${state.project.title || 'project'}.json`;
-		// Include memory configuration in saved project
-		const projectToSave = {
-			...state.project,
-			memorySizeBytes: state.compiler.compilerOptions.memorySizeBytes,
-		};
+		const projectToSave = serializeToProject(state);
+		const filename = `${projectToSave.title || 'project'}.json`;
 		const json = JSON.stringify(projectToSave, null, 2);
 
 		state.callbacks.exportFile(json, filename, 'application/json').catch(error => {
@@ -44,18 +41,15 @@ export default function save(state: State, events: EventDispatcher): void {
 					)
 				: undefined;
 
-		// Create a copy of the project with compiled WASM included
+		// Serialize to project format, then add compiled fields
 		const runtimeProject = {
-			...state.project,
+			...serializeToProject(state),
 			// Convert WASM bytecode to base64 string using chunked encoding to avoid stack overflow
 			compiledWasm: encodeUint8ArrayToBase64(state.compiler.codeBuffer),
 			memorySnapshot: memorySnapshotBytes ? encodeUint8ArrayToBase64(memorySnapshotBytes) : undefined,
-			compiledModules: state.compiler.compiledModules,
-			// Include memory configuration in runtime-ready exports
-			memorySizeBytes: state.compiler.compilerOptions.memorySizeBytes,
 		};
 
-		const filename = `${state.project.title || 'project'}-runtime-ready.json`;
+		const filename = `${runtimeProject.title || 'project'}-runtime-ready.json`;
 		const json = JSON.stringify(runtimeProject, null, 2);
 
 		state.callbacks.exportFile(json, filename, 'application/json').catch(error => {
