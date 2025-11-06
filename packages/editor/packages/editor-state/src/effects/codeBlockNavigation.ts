@@ -1,5 +1,3 @@
-import demoModeNavigation from './demoModeNavigation';
-
 import findClosestCodeBlockInDirection, { Direction } from '../helpers/findClosestCodeBlockInDirection';
 import centerViewportOnCodeBlock from '../helpers/centerViewportOnCodeBlock';
 
@@ -89,7 +87,4 @@ export default function codeBlockNavigation(state: State, events: EventDispatche
 
 	// Register the keyboard event handler
 	events.on<InternalKeyboardEvent>('keydown', onKeydown);
-
-	// Initialize demo mode navigation if enabled
-	demoModeNavigation(state, events, navigateToCodeBlockInDirection);
 }
