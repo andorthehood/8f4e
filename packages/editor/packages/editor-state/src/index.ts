@@ -5,7 +5,6 @@ import _switch from './effects/codeBlocks/extras/switches/interaction';
 import button from './effects/codeBlocks/extras/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
 import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
-import codeBlockOpener from './effects/codeBlocks/codeBlockOpener';
 import codeBlockNavigation from './effects/codeBlockNavigation';
 import demoModeNavigation from './effects/demoModeNavigation';
 import compiler from './effects/compiler';
@@ -43,7 +42,6 @@ function createBaseCodeBlock(): CodeBlockGraphicData {
 		offsetY: 0,
 		gridX: 0,
 		gridY: 0,
-		isOpen: true,
 		padLength: 1,
 		viewport: {
 			x: 0,
@@ -167,7 +165,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	sampleRate(state, events);
 	loader(store, events, state);
 	codeBlockDragger(state, events);
-	codeBlockOpener(state, events);
 	codeBlockNavigation(state, events);
 	demoModeNavigation(state, events);
 	_switch(state, events);
