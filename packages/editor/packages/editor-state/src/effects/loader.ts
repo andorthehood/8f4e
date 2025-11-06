@@ -3,41 +3,9 @@ import { StateManager } from '@8f4e/state-manager';
 import { EventDispatcher } from '../types';
 import { getModuleId } from '../helpers/codeParsers';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
+import { deserializeFromProject, serializeToProject } from '../helpers/projectSerializer';
 
-import type { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
-
-function convertGraphicDataToProjectStructure(
-	codeBlocks: CodeBlockGraphicData[],
-	vGrid: number,
-	hGrid: number
-): CodeBlock[] {
-	return codeBlocks
-		.sort((codeBlockA, codeBlockB) => {
-			if (codeBlockA.id > codeBlockB.id) {
-				return 1;
-			} else if (codeBlockA.id < codeBlockB.id) {
-				return -1;
-			}
-			return 0;
-		})
-		.map(codeBlock => ({
-			code: codeBlock.code,
-			x: codeBlock.gridX,
-			y: codeBlock.gridY,
-			viewport:
-				codeBlock.codeBlocks.size > 0
-					? {
-							x: Math.round(codeBlock.x / vGrid),
-							y: Math.round(codeBlock.y / hGrid),
-							// eslint-disable-next-line
-					}
-					: undefined,
-			codeBlocks:
-				codeBlock.codeBlocks.size > 0
-					? convertGraphicDataToProjectStructure(Array.from(codeBlock.codeBlocks), vGrid, hGrid)
-					: undefined,
-		}));
-}
+import type { Project, State } from '../types';
 
 export default function loader(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
 	const state = store.getState();
@@ -132,24 +100,28 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		state.compiler.buildErrors = [];
 		state.compiler.isCompiling = false;
 
+		// Populate new state locations (Step 4)
+		state.projectInfo.title = newProject.title || '';
+		state.projectInfo.author = newProject.author || '';
+		state.projectInfo.description = newProject.description || '';
+		state.compiler.binaryAssets = newProject.binaryAssets || [];
+		state.compiler.runtimeSettings = newProject.runtimeSettings || defaultState.compiler.runtimeSettings;
+		state.compiler.selectedRuntime = newProject.selectedRuntime ?? defaultState.compiler.selectedRuntime;
+		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
+
 		// Clear graphic helper caches that depend on compiler output
 		state.graphicHelper.outputsByWordAddress.clear();
 		state.graphicHelper.selectedCodeBlock = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
 
-		state['project'] = { ...EMPTY_DEFAULT_PROJECT };
-
-		Object.keys(newProject).forEach(key => {
-			(state.project as unknown as Record<string, unknown>)[key] =
-				(newProject as unknown as Record<string, unknown>)[key] ||
-				(defaultState.project as unknown as Record<string, unknown>)[key];
-		});
+		// Populate state.project for backward compatibility (will be removed in Step 9)
+		deserializeFromProject(newProject, state);
 
 		state.graphicHelper.activeViewport.codeBlocks.clear();
-		state.graphicHelper.activeViewport.viewport.x = state.project.viewport.x * state.graphicHelper.globalViewport.vGrid;
-		state.graphicHelper.activeViewport.viewport.y = state.project.viewport.y * state.graphicHelper.globalViewport.hGrid;
+		state.graphicHelper.activeViewport.viewport.x = newProject.viewport.x * state.graphicHelper.globalViewport.vGrid;
+		state.graphicHelper.activeViewport.viewport.y = newProject.viewport.y * state.graphicHelper.globalViewport.hGrid;
 		// TODO: make it recursive
-		state.project.codeBlocks.forEach(codeBlock => {
+		newProject.codeBlocks.forEach(codeBlock => {
 			state.graphicHelper.activeViewport.codeBlocks.add({
 				width: 0,
 				minGridWidth: 32,
@@ -189,7 +161,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		events.dispatch('init');
 		events.dispatch('saveProject');
 		events.dispatch('projectLoaded');
-		events.dispatch('loadPostProcessEffects', state.project.postProcessEffects);
+		events.dispatch('loadPostProcessEffects', state.graphicHelper.postProcessEffects);
 	}
 
 	void projectPromise;
@@ -207,20 +179,14 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 			return;
 		}
 
-		state.project.codeBlocks = convertGraphicDataToProjectStructure(
-			Array.from(state.graphicHelper.activeViewport.codeBlocks),
-			state.graphicHelper.globalViewport.vGrid,
-			state.graphicHelper.globalViewport.hGrid
-		);
-		state.project.viewport.x = Math.round(
-			state.graphicHelper.activeViewport.viewport.x / state.graphicHelper.globalViewport.vGrid
-		);
-		state.project.viewport.y = Math.round(
-			state.graphicHelper.activeViewport.viewport.y / state.graphicHelper.globalViewport.hGrid
-		);
+		// Serialize current state to Project format
+		const projectToSave = serializeToProject(state);
+
+		// Update state.project for backward compatibility (will be removed in Step 9)
+		state.project = projectToSave;
 
 		// Use callbacks instead of localStorage
-		Promise.all([state.callbacks.saveProjectToStorage!(state.project)]).catch(error => {
+		Promise.all([state.callbacks.saveProjectToStorage!(projectToSave)]).catch(error => {
 			console.error('Failed to save to storage:', error);
 		});
 	}
