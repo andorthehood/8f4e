@@ -130,8 +130,8 @@ describe('projectSerializer', () => {
 					x: 10,
 					y: 8,
 					viewport: {
-						x: 10, // 80 / 8 (using block's x position, not viewport.x)
-						y: 8, // 128 / 16 (using block's y position, not viewport.y)
+						x: 5, // 40 / 8 (using viewport.x - the scroll position within the nested block container)
+						y: 4, // 64 / 16 (using viewport.y - the scroll position within the nested block container)
 					},
 					codeBlocks: [
 						{
