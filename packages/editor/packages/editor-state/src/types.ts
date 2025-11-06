@@ -149,6 +149,10 @@ export interface Compiler {
 	runtimeSettings: Runtimes[];
 	/** Index of currently selected runtime */
 	selectedRuntime: number;
+	/** Compiled WebAssembly bytecode encoded as base64 string (for pre-compiled projects) */
+	compiledWasm?: string;
+	/** Memory snapshot encoded as base64 string (for pre-compiled projects) */
+	memorySnapshot?: string;
 }
 
 export interface Midi {
@@ -497,16 +501,6 @@ export interface State {
 	compiler: Compiler;
 	midi: Midi;
 	graphicHelper: GraphicHelper;
-	/**
-	 * @deprecated This field is maintained for backward compatibility with pre-compiled WASM projects only.
-	 * For all other uses, prefer projectInfo, compiler.*, and graphicHelper.* instead.
-	 * This field contains stale data during editing and should not be used to read current state.
-	 * For serialization, use the helpers in projectSerializer.ts
-	 *
-	 * TODO: Refactor pre-compiled WASM loading in compiler.ts to not rely on this field,
-	 * then remove it completely.
-	 */
-	project: Project;
 	callbacks: Callbacks;
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
