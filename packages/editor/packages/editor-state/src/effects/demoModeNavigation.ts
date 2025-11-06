@@ -23,15 +23,12 @@ function selectRandomCodeBlock(state: State): boolean {
 	const selectedBlock = codeBlocks[randomIndex];
 
 	state.graphicHelper.selectedCodeBlock = selectedBlock;
-	// Enable animation for this programmatic viewport change, then restore original value
-	const originalViewportAnimations = state.featureFlags.viewportAnimations;
-	state.featureFlags.viewportAnimations = true;
+
 	centerViewportOnCodeBlock(
 		state.graphicHelper.activeViewport.viewport,
 		selectedBlock,
 		state.graphicHelper.globalViewport
 	);
-	state.featureFlags.viewportAnimations = originalViewportAnimations;
 
 	return true;
 }
