@@ -264,18 +264,20 @@ describe('Runtime-ready project functionality', () => {
 
 	describe('Pre-compiled WASM loading', () => {
 		it('should use pre-compiled WASM bytecode when available', async () => {
-			// Set up a project with pre-compiled WASM
+			// Set up a project with pre-compiled WASM already decoded (as done by loader)
 			const mockWasmBytecode = new Uint8Array([10, 20, 30, 40, 50]);
-			const base64Wasm = btoa(String.fromCharCode(...mockWasmBytecode));
 			const memoryFloats = new Float32Array([1.5, -2.25, 0.5, 2.75]);
 			const memoryBufferCopy = memoryFloats.buffer.slice(0);
-			const base64Memory = encodeUint8ArrayToBase64(new Uint8Array(memoryBufferCopy));
 			const expectedIntMemory = new Int32Array(memoryBufferCopy);
 			const expectedFloatMemory = new Float32Array(memoryBufferCopy);
 
-			mockState.compiler.compiledWasm = base64Wasm;
-			mockState.compiler.memorySnapshot = base64Memory;
-			mockState.compiler.codeBuffer = new Uint8Array(0);
+			// Simulate loader having already decoded the pre-compiled data
+			mockState.compiler.codeBuffer = mockWasmBytecode;
+			mockState.compiler.memoryBuffer = expectedIntMemory;
+			mockState.compiler.memoryBufferFloat = expectedFloatMemory;
+			mockState.compiler.allocatedMemorySize = expectedIntMemory.byteLength;
+			// No compileProject callback for runtime-only projects
+			mockState.callbacks.compileProject = undefined;
 
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation();
 
@@ -299,14 +301,13 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger recompilation
 			await onRecompileCallback();
 
-			// Verify pre-compiled WASM was used
-			expect(consoleSpy).toHaveBeenCalledWith('[Compiler] Using pre-compiled WASM bytecode from project');
-			expect(consoleSpy).toHaveBeenCalledWith('[Compiler] Pre-compiled WASM loaded successfully');
+			// Verify pre-compiled WASM was recognized
+			expect(consoleSpy).toHaveBeenCalledWith('[Compiler] Using pre-compiled WASM from runtime-ready project');
 
 			// Verify buildFinished was dispatched
 			expect(mockEvents.dispatch).toHaveBeenCalledWith('buildFinished');
 
-			// Verify compiler state was set correctly
+			// Verify compiler state is still correct
 			expect(mockState.compiler.codeBuffer).toEqual(mockWasmBytecode);
 			expect(mockState.compiler.memoryBuffer).toEqual(expectedIntMemory);
 			expect(mockState.compiler.memoryBufferFloat).toEqual(expectedFloatMemory);
@@ -317,12 +318,9 @@ describe('Runtime-ready project functionality', () => {
 			consoleSpy.mockRestore();
 		});
 
-		it('should fall back to regular compilation if pre-compiled WASM fails', async () => {
-			// Set up a project with invalid pre-compiled WASM
-			mockState.compiler.compiledWasm = 'invalid-base64!@#$';
-			const memorySnapshotBytes = new Uint8Array(16); // Valid zeroed snapshot
-			mockState.compiler.memorySnapshot = encodeUint8ArrayToBase64(memorySnapshotBytes);
-			mockState.compiler.codeBuffer = new Uint8Array(0);
+		it('should compile normally when no pre-compiled WASM is available', async () => {
+			// Set up a project without pre-compiled WASM (normal project)
+			mockState.compiler.codeBuffer = new Uint8Array(0); // No pre-compiled data
 
 			// Mock the compileProject function
 			const mockCompileProject = vi.fn().mockResolvedValue({
@@ -331,8 +329,6 @@ describe('Runtime-ready project functionality', () => {
 				allocatedMemorySize: 1024,
 			});
 			mockState.callbacks.compileProject = mockCompileProject;
-
-			const consoleSpy = vi.spyOn(console, 'error').mockImplementation();
 
 			// Set up compiler functionality
 			compiler(mockState, mockEvents);
@@ -352,13 +348,8 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger recompilation
 			await onRecompileCallback();
 
-			// Verify error was logged
-			expect(consoleSpy).toHaveBeenCalledWith('[Compiler] Failed to load pre-compiled WASM:', expect.anything());
-
 			// Verify regular compilation was attempted
 			expect(mockCompileProject).toHaveBeenCalled();
-
-			consoleSpy.mockRestore();
 		});
 	});
 
