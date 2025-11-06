@@ -19,7 +19,6 @@ describe('Loader - Project-specific memory configuration', () => {
 				author: '',
 				description: '',
 			},
-			project: EMPTY_DEFAULT_PROJECT,
 			compiler: {
 				memoryRef: new WebAssembly.Memory({ initial: 1, maximum: 10 }),
 				codeBuffer: new Uint8Array(0),

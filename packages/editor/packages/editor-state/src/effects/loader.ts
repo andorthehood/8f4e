@@ -3,7 +3,7 @@ import { StateManager } from '@8f4e/state-manager';
 import { EventDispatcher } from '../types';
 import { getModuleId } from '../helpers/codeParsers';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
-import { deserializeFromProject, serializeToProject } from '../helpers/projectSerializer';
+import { serializeToProject } from '../helpers/projectSerializer';
 
 import type { Project, State } from '../types';
 
@@ -100,7 +100,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		state.compiler.buildErrors = [];
 		state.compiler.isCompiling = false;
 
-		// Populate new state locations (Step 4)
+		// Populate new state locations
 		state.projectInfo.title = newProject.title || '';
 		state.projectInfo.author = newProject.author || '';
 		state.projectInfo.description = newProject.description || '';
@@ -109,13 +109,17 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		state.compiler.selectedRuntime = newProject.selectedRuntime ?? defaultState.compiler.selectedRuntime;
 		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
 
+		// Store pre-compiled WASM data if present (for runtime-only projects)
+		state.compiler.compiledWasm = newProject.compiledWasm;
+		state.compiler.memorySnapshot = newProject.memorySnapshot;
+		if (newProject.compiledModules) {
+			state.compiler.compiledModules = newProject.compiledModules;
+		}
+
 		// Clear graphic helper caches that depend on compiler output
 		state.graphicHelper.outputsByWordAddress.clear();
 		state.graphicHelper.selectedCodeBlock = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
-
-		// Populate state.project for backward compatibility (will be removed in Step 9)
-		deserializeFromProject(newProject, state);
 
 		state.graphicHelper.activeViewport.codeBlocks.clear();
 		state.graphicHelper.activeViewport.viewport.x = newProject.viewport.x * state.graphicHelper.globalViewport.vGrid;
@@ -181,9 +185,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 
 		// Serialize current state to Project format
 		const projectToSave = serializeToProject(state);
-
-		// Update state.project for backward compatibility (will be removed in Step 9)
-		state.project = projectToSave;
 
 		// Use callbacks instead of localStorage
 		Promise.all([state.callbacks.saveProjectToStorage!(projectToSave)]).catch(error => {

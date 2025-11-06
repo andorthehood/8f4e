@@ -228,19 +228,6 @@ describe('projectSerializer', () => {
 					author: 'Test Author',
 					description: 'Test Description',
 				},
-				project: {
-					title: 'Test Project',
-					author: 'Test Author',
-					description: 'Test Description',
-					selectedRuntime: 0,
-					runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime' as const, sampleRate: 50 }],
-					binaryAssets: [],
-					postProcessEffects: [],
-					codeBlocks: [],
-					viewport: { x: 0, y: 0 },
-					compiledModules: {},
-					memorySizeBytes: 1048576,
-				},
 				graphicHelper: {
 					activeViewport: {
 						codeBlocks: new Set(),
