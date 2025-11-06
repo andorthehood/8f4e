@@ -6,7 +6,7 @@ export default async function sampleRate(state: State, events: EventDispatcher):
 	function onSetSampleRate({ sampleRate }: { sampleRate: number }) {
 		state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate = sampleRate;
 		events.dispatch('initRuntime');
-		events.dispatch('saveProject');
+		// Removed automatic save - user must manually save with Command+S
 	}
 
 	events.on('setSampleRate', onSetSampleRate);

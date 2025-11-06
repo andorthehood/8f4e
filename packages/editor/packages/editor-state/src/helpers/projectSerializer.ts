@@ -28,8 +28,8 @@ export function convertGraphicDataToProjectStructure(
 			viewport:
 				codeBlock.codeBlocks.size > 0
 					? {
-							x: Math.round(codeBlock.x / vGrid),
-							y: Math.round(codeBlock.y / hGrid),
+							x: Math.round(codeBlock.viewport.x / vGrid),
+							y: Math.round(codeBlock.viewport.y / hGrid),
 						}
 					: undefined,
 			codeBlocks:
