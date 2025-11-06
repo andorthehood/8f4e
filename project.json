@@ -39,7 +39,8 @@
       "options": {
         "command": "tsc --noEmit",
         "cwd": "{workspaceRoot}"
-      }
+      },
+      "dependsOn": ["^build"]
     }
   },
   "tags": ["type:application", "scope:root"]

@@ -68,7 +68,7 @@ export default function drawModules(engine: Engine, state: State): void {
 						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 					}
 
-					const corner = codeBlock.isOpen ? '+' : '+';
+					const corner = '+';
 
 					engine.drawText(0, 0, corner);
 					engine.drawText(codeBlock.width - state.graphicHelper.globalViewport.vGrid, 0, corner);
