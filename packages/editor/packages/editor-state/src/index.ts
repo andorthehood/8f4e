@@ -240,4 +240,3 @@ export type { Direction } from './helpers/findClosestCodeBlockInDirection';
 export { default as centerViewportOnCodeBlock } from './helpers/centerViewportOnCodeBlock';
 export type { CodeBlockBounds } from './helpers/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './effects/codeBlockNavigation';
-export { default as demoModeNavigation } from './effects/demoModeNavigation';
