@@ -149,10 +149,6 @@ export interface Compiler {
 	runtimeSettings: Runtimes[];
 	/** Index of currently selected runtime */
 	selectedRuntime: number;
-	/** Compiled WebAssembly bytecode encoded as base64 string (for pre-compiled projects) */
-	compiledWasm?: string;
-	/** Memory snapshot encoded as base64 string (for pre-compiled projects) */
-	memorySnapshot?: string;
 }
 
 export interface Midi {

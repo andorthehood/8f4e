@@ -4,6 +4,11 @@ import { EventDispatcher } from '../types';
 import { getModuleId } from '../helpers/codeParsers';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
 import { serializeToProject } from '../helpers/projectSerializer';
+import {
+	decodeBase64ToUint8Array,
+	decodeBase64ToInt32Array,
+	decodeBase64ToFloat32Array,
+} from '../helpers/base64Decoder';
 
 import type { Project, State } from '../types';
 
@@ -109,10 +114,25 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		state.compiler.selectedRuntime = newProject.selectedRuntime ?? defaultState.compiler.selectedRuntime;
 		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
 
-		// Store pre-compiled WASM data if present (for runtime-only projects)
-		state.compiler.compiledWasm = newProject.compiledWasm;
-		state.compiler.memorySnapshot = newProject.memorySnapshot;
-		if (newProject.compiledModules) {
+		// If loading a runtime-ready project with pre-compiled WASM, decode it immediately
+		if (newProject.compiledWasm && newProject.memorySnapshot) {
+			try {
+				state.compiler.codeBuffer = decodeBase64ToUint8Array(newProject.compiledWasm);
+				state.compiler.memoryBuffer = decodeBase64ToInt32Array(newProject.memorySnapshot);
+				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(newProject.memorySnapshot);
+				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
+				if (newProject.compiledModules) {
+					state.compiler.compiledModules = newProject.compiledModules;
+				}
+				console.log('[Loader] Pre-compiled WASM loaded and decoded successfully');
+			} catch (error) {
+				console.error('[Loader] Failed to decode pre-compiled WASM:', error);
+				// Reset to empty buffers if decoding fails
+				state.compiler.codeBuffer = new Uint8Array();
+				state.compiler.memoryBuffer = new Int32Array();
+				state.compiler.memoryBufferFloat = new Float32Array();
+			}
+		} else if (newProject.compiledModules) {
 			state.compiler.compiledModules = newProject.compiledModules;
 		}
 
