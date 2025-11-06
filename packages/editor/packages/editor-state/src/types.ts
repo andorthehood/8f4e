@@ -498,9 +498,13 @@ export interface State {
 	midi: Midi;
 	graphicHelper: GraphicHelper;
 	/**
-	 * @deprecated Use projectInfo, compiler.*, and graphicHelper.* instead.
-	 * This field maintains duplicate data and will be removed in a future version.
+	 * @deprecated This field is maintained for backward compatibility with pre-compiled WASM projects only.
+	 * For all other uses, prefer projectInfo, compiler.*, and graphicHelper.* instead.
+	 * This field contains stale data during editing and should not be used to read current state.
 	 * For serialization, use the helpers in projectSerializer.ts
+	 *
+	 * TODO: Refactor pre-compiled WASM loading in compiler.ts to not rely on this field,
+	 * then remove it completely.
 	 */
 	project: Project;
 	callbacks: Callbacks;
