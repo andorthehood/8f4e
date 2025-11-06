@@ -43,7 +43,6 @@ const project: Project = {
 			],
 			x: 6,
 			y: 3,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -88,7 +87,6 @@ const project: Project = {
 			],
 			x: 48,
 			y: 1,
-			isOpen: true,
 		},
 		{
 			code: [
@@ -133,7 +131,6 @@ const project: Project = {
 			],
 			x: 90,
 			y: 1,
-			isOpen: true,
 		},
 	],
 	viewport: { x: -17, y: -3 },

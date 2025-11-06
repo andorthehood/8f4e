@@ -33,7 +33,6 @@ export default function (
 		gridY: 0, // Not relevant for the rendering
 		height,
 		id,
-		isOpen: true,
 		lastUpdated: 0,
 		minGridWidth: 32,
 		offsetX: 0,

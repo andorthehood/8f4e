@@ -175,7 +175,6 @@ function createMockCodeBlock(x: number, y: number): CodeBlockGraphicData {
 		gaps: new Map(),
 		gridX: 0,
 		gridY: 0,
-		isOpen: true,
 		padLength: 1,
 		minGridWidth: 32,
 		viewport: { x: 0, y: 0 },
