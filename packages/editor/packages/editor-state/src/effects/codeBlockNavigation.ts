@@ -9,7 +9,7 @@ import type { State, EventDispatcher, InternalKeyboardEvent } from '../types';
  *
  * @param state - The editor state
  * @param direction - The direction to navigate
- * @returns true if navigation occurred, false otherwise
+ * @returns {boolean} true if navigation to a different block occurred, false if no block is selected or the target is the same as the current block
  */
 export function navigateToCodeBlockInDirection(state: State, direction: Direction): boolean {
 	// Only proceed if a code block is currently selected
