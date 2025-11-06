@@ -54,6 +54,11 @@ describe('Runtime-ready project functionality', () => {
 		mockExportFile = vi.fn().mockResolvedValue(undefined);
 
 		mockState = {
+			projectInfo: {
+				title: 'Test Project',
+				author: '',
+				description: '',
+			},
 			project: {
 				...EMPTY_DEFAULT_PROJECT,
 				title: 'Test Project',
@@ -79,6 +84,14 @@ describe('Runtime-ready project functionality', () => {
 				},
 				cycleTime: 0,
 				timerAccuracy: 0,
+				binaryAssets: [],
+				runtimeSettings: [
+					{
+						runtime: 'WebWorkerLogicRuntime',
+						sampleRate: 50,
+					},
+				],
+				selectedRuntime: 0,
 			},
 			callbacks: {
 				exportFile: mockExportFile,
@@ -98,7 +111,40 @@ describe('Runtime-ready project functionality', () => {
 			graphicHelper: {
 				activeViewport: {
 					codeBlocks: new Set(),
+					viewport: { x: 0, y: 0 },
 				},
+				outputsByWordAddress: new Map(),
+				globalViewport: {
+					width: 1024,
+					height: 768,
+					roundedWidth: 1024,
+					roundedHeight: 768,
+					vGrid: 8,
+					hGrid: 16,
+					borderLineCoordinates: {
+						top: { startX: 0, startY: 0, endX: 0, endY: 0 },
+						right: { startX: 0, startY: 0, endX: 0, endY: 0 },
+						bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
+						left: { startX: 0, startY: 0, endX: 0, endY: 0 },
+					},
+					center: { x: 0, y: 0 },
+				},
+				contextMenu: {
+					highlightedItem: 0,
+					itemWidth: 200,
+					items: [],
+					open: false,
+					x: 0,
+					y: 0,
+					menuStack: [],
+				},
+				dialog: {
+					show: false,
+					text: '',
+					title: '',
+					buttons: [],
+				},
+				postProcessEffects: [],
 			},
 			midi: {
 				outputs: [],
@@ -115,8 +161,11 @@ describe('Runtime-ready project functionality', () => {
 				viewportDragging: true,
 				persistentStorage: true,
 				editing: true,
+				demoMode: false,
+				viewportAnimations: true,
 			},
 			compilationTime: 0,
+			colorSchemes: {},
 		} as unknown as State;
 
 		mockEvents = {
