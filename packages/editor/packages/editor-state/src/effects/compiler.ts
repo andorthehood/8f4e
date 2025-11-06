@@ -30,6 +30,9 @@ export default async function compiler(state: State, events: EventDispatcher) {
 		}
 
 		// Check if project has pre-compiled WASM bytecode for runtime-only execution
+		// NOTE: This is the only remaining valid use of state.project, kept for backward
+		// compatibility with pre-compiled WASM projects. All other code should use the
+		// new state locations (projectInfo, compiler.*, graphicHelper.*).
 		if (
 			state.project.compiledWasm &&
 			state.project.memorySnapshot &&
