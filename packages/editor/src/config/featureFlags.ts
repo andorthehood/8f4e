@@ -21,6 +21,7 @@ export const defaultFeatureFlags = {
 	viewportAnimations: false,
 	persistentStorage: true,
 	editing: true,
+	demoMode: false,
 };
 
 /**
