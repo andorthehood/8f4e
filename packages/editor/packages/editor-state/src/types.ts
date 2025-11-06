@@ -71,7 +71,6 @@ export type RuntimeFactory = (state: State, events: EventDispatcher) => () => vo
 
 export interface CodeBlock {
 	code: string[];
-	isOpen: boolean;
 	x: number;
 	y: number;
 	viewport?: Viewport;
@@ -246,7 +245,6 @@ export interface CodeBlockGraphicData {
 	offsetY: number;
 	gridX: number;
 	gridY: number;
-	isOpen: boolean;
 	extras: {
 		inputs: Map<string, Input>;
 		outputs: Map<string, Output>;
