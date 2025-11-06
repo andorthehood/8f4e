@@ -100,6 +100,7 @@ function createGraphicHelper() {
 			y: 0,
 			menuStack: [],
 		},
+		postProcessEffects: [],
 	};
 }
 
@@ -108,6 +109,11 @@ const memorySizeBytes = 1048576; // 1MB default
 
 // Default state without the runtime callback (will be merged with provided options)
 const defaultStateBase = {
+	projectInfo: {
+		title: '',
+		author: '',
+		description: '',
+	},
 	compiler: {
 		codeBuffer: new Uint8Array(),
 		compilationTime: 0,
@@ -133,6 +139,14 @@ const defaultStateBase = {
 				ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 			},
 		},
+		binaryAssets: [],
+		runtimeSettings: [
+			{
+				runtime: 'WebWorkerLogicRuntime' as const,
+				sampleRate: 50,
+			},
+		],
+		selectedRuntime: 0,
 	},
 	midi: {
 		inputs: [],
@@ -188,6 +202,7 @@ export type {
 	State,
 	CodeBlockGraphicData,
 	Project,
+	ProjectInfo,
 	Options,
 	EditorSettings,
 	CompilationResult,
