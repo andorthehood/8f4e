@@ -76,7 +76,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 					constants: {
 						...state.compiler.compilerOptions.environmentExtensions.constants,
 						SAMPLE_RATE: {
-							value: state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
+							value: state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
 							isInteger: true,
 						},
 						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
@@ -103,7 +103,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 
 			state.compiler.buildErrors = [];
 
-			(state.project.binaryAssets || []).forEach(binaryAsset => {
+			state.compiler.binaryAssets.forEach(binaryAsset => {
 				if (binaryAsset.moduleId && binaryAsset.memoryId) {
 					const memoryAssignedToBinaryAsset =
 						state.compiler.compiledModules[binaryAsset.moduleId]?.memoryMap[binaryAsset.memoryId];
