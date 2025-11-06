@@ -69,6 +69,10 @@ describe('Runtime System', () => {
 					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
 					selectedRuntime: 0,
 				},
+				compiler: {
+					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
+					selectedRuntime: 0,
+				},
 				callbacks: {
 					requestRuntime,
 				},
@@ -96,6 +100,8 @@ describe('Runtime System', () => {
 
 			state.project.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
 			state.project.selectedRuntime = 0;
+			state.compiler.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
+			state.compiler.selectedRuntime = 0;
 
 			await buildFinishedHandler();
 
