@@ -18,7 +18,7 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 			const result = await state.callbacks.importBinaryAsset(file);
 
 			state.compiler.binaryAssets.push(result);
-			events.dispatch('saveProject');
+			// Removed automatic save - user must manually save with Command+S
 		} catch (error) {
 			console.error('Failed to import binary asset:', error);
 		}
