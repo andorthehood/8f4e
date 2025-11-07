@@ -1,5 +1,5 @@
 import { type Module, type CompileOptions } from '@8f4e/compiler';
-import { type CompilationResult } from '@8f4e/editor';
+import { type CompilationResult, type MemoryRef } from '@8f4e/editor';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 
 // Create worker once at module scope
@@ -9,7 +9,7 @@ const compilerWorker = new CompilerWorker();
 export async function compileProject(
 	modules: Module[],
 	compilerOptions: CompileOptions,
-	memoryRef: WebAssembly.Memory
+	memoryRef: MemoryRef
 ): Promise<CompilationResult> {
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
