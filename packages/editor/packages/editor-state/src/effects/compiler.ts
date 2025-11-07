@@ -1,8 +1,4 @@
-import {
-	decodeBase64ToUint8Array,
-	decodeBase64ToInt32Array,
-	decodeBase64ToFloat32Array,
-} from '../helpers/base64Decoder';
+import { decodeBase64ToUint8Array } from '../helpers/base64Decoder';
 import { EventDispatcher } from '../types';
 
 import type { CodeBlockGraphicData, State } from '../types';
@@ -29,40 +25,17 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			return;
 		}
 
-		// Check if project has pre-compiled WASM bytecode for runtime-only execution
-		if (
-			state.project.compiledWasm &&
-			state.project.memorySnapshot &&
-			(state.compiler.codeBuffer.length === 0 || !state.callbacks.compileProject)
-		) {
-			console.log('[Compiler] Using pre-compiled WASM bytecode from project');
-
-			try {
-				// Set up the compiler state as if compilation succeeded
-				state.compiler.codeBuffer = decodeBase64ToUint8Array(state.project.compiledWasm);
-				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.project.memorySnapshot);
-				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.project.memorySnapshot);
-				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
-				state.compiler.compiledModules = state.project.compiledModules || {};
-				state.compiler.isCompiling = false;
-				state.compiler.buildErrors = [];
-				state.compiler.compilationTime = 0; // No compilation time since we used pre-compiled
-
-				// Note: Binary assets are not handled for pre-compiled WASM projects
-				// as they should already be embedded in the compiled bytecode.
-				// The compiledModules map is not available for pre-compiled projects
-				// since it contains compilation-time metadata that is not persisted.
-
-				console.log('[Compiler] Pre-compiled WASM loaded successfully');
-				events.dispatch('buildFinished');
-				return;
-			} catch (error) {
-				console.error('[Compiler] Failed to load pre-compiled WASM:', error);
-				// Fall through to regular compilation if pre-compiled WASM fails
-			}
+		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
+		// If codeBuffer is populated and we don't have a compiler, skip compilation
+		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
+			console.log('[Compiler] Using pre-compiled WASM from runtime-ready project');
+			state.compiler.isCompiling = false;
+			state.compiler.buildErrors = [];
+			events.dispatch('buildFinished');
+			return;
 		}
 
-		// Regular compilation path (when no pre-compiled WASM or if it failed to load)
+		// Regular compilation path
 		const modules = flattenProjectForCompiler(state.graphicHelper.activeViewport.codeBlocks);
 
 		state.compiler.isCompiling = true;
@@ -76,7 +49,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 					constants: {
 						...state.compiler.compilerOptions.environmentExtensions.constants,
 						SAMPLE_RATE: {
-							value: state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
+							value: state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
 							isInteger: true,
 						},
 						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
@@ -103,7 +76,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 
 			state.compiler.buildErrors = [];
 
-			(state.project.binaryAssets || []).forEach(binaryAsset => {
+			state.compiler.binaryAssets.forEach(binaryAsset => {
 				if (binaryAsset.moduleId && binaryAsset.memoryId) {
 					const memoryAssignedToBinaryAsset =
 						state.compiler.compiledModules[binaryAsset.moduleId]?.memoryMap[binaryAsset.memoryId];

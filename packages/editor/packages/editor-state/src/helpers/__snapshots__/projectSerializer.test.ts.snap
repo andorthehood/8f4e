@@ -1,0 +1,66 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`projectSerializer > convertGraphicDataToProjectStructure > converts graphic data to simplified project structure 1`] = `
+[
+  {
+    "code": [
+      "test code",
+    ],
+    "codeBlocks": undefined,
+    "viewport": undefined,
+    "x": 10,
+    "y": 8,
+  },
+]
+`;
+
+exports[`projectSerializer > convertGraphicDataToProjectStructure > includes viewport for code blocks with nested code blocks 1`] = `
+[
+  {
+    "code": [
+      "parent code",
+    ],
+    "codeBlocks": [
+      {
+        "code": [
+          "nested code",
+        ],
+        "codeBlocks": undefined,
+        "viewport": undefined,
+        "x": 2,
+        "y": 2,
+      },
+    ],
+    "viewport": {
+      "x": 5,
+      "y": 4,
+    },
+    "x": 10,
+    "y": 8,
+  },
+]
+`;
+
+exports[`projectSerializer > serializeToProject > creates a valid Project object from state 1`] = `
+{
+  "author": "Test Author",
+  "binaryAssets": [],
+  "codeBlocks": [],
+  "compiledModules": {},
+  "description": "Test Description",
+  "memorySizeBytes": 1048576,
+  "postProcessEffects": [],
+  "runtimeSettings": [
+    {
+      "runtime": "WebWorkerLogicRuntime",
+      "sampleRate": 50,
+    },
+  ],
+  "selectedRuntime": 0,
+  "title": "Test Project",
+  "viewport": {
+    "x": 0,
+    "y": 0,
+  },
+}
+`;
