@@ -1,7 +1,11 @@
 {
 	"compilerOptions": {
 		"target": "esnext",
-		"lib": ["esnext", "dom", "dom.iterable"],
+		"lib": [
+			"esnext",
+			"dom",
+			"dom.iterable"
+		],
 		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"allowSyntheticDefaultImports": true,
@@ -9,10 +13,11 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"strict": true,
-		"allowImportingTsExtensions": false,
-		"noEmit": false,
+		"downlevelIteration": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
+		"allowImportingTsExtensions": false,
+		"noEmit": false,
 		"outDir": "dist",
 		"rootDir": "src",
 		"declaration": true,
