@@ -13,8 +13,8 @@ export default function createMainThreadLogicRuntime(
 	onStats: (stats: { drift: number; timeToExecute: number }) => void,
 	onError: (error: unknown) => void
 ): MainThreadLogicRuntime {
-	let interval: number | undefined;
-	let statsInterval: number | undefined;
+	let interval: ReturnType<typeof setInterval> | undefined;
+	let statsInterval: ReturnType<typeof setInterval> | undefined;
 	let timeToExecute = 0;
 	let lastIntervalTime = 0;
 	let drift = 0;
