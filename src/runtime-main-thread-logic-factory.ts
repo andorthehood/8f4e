@@ -1,6 +1,8 @@
 // Import the types from the editor
 import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
 
+import { getMemory } from './compiler-callback';
+
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime
 
@@ -24,8 +26,13 @@ export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
 		if (!runtime) {
 			return;
 		}
+		const memory = getMemory();
+		if (!memory) {
+			console.warn('[Runtime] Memory not yet created, skipping runtime init');
+			return;
+		}
 		runtime.init(
-			state.compiler.memoryRef as WebAssembly.Memory,
+			memory,
 			state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
 			state.compiler.codeBuffer
 		);
