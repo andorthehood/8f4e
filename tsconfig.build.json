@@ -1,0 +1,19 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"paths": {
+			"@8f4e/editor": ["packages/editor/dist/index.d.ts"],
+			"@8f4e/editor-state": ["packages/editor/packages/editor-state/dist/index.d.ts"],
+			"@8f4e/web-ui": ["packages/editor/packages/web-ui/dist/index.d.ts"],
+			"glugglug": ["packages/editor/packages/glugglug/dist/index.d.ts"],
+			"@8f4e/compiler": ["packages/compiler/dist/index.d.ts"],
+			"@8f4e/sprite-generator": ["packages/editor/packages/sprite-generator/dist/index.d.ts"],
+			"@8f4e/state-manager": ["packages/editor/packages/state-manager/dist/index.d.ts"],
+			"@8f4e/runtime-audio-worklet": ["packages/runtime-audio-worklet/dist/index.d.ts"],
+			"@8f4e/runtime-web-worker-logic": ["packages/runtime-web-worker-logic/dist/index.d.ts"],
+			"@8f4e/runtime-main-thread-logic": ["packages/runtime-main-thread-logic/dist/index.d.ts"],
+			"@8f4e/runtime-web-worker-midi": ["packages/runtime-web-worker-midi/dist/index.d.ts"]
+		}
+	}
+}
+
