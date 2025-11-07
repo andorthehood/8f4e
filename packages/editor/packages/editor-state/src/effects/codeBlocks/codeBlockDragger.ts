@@ -80,13 +80,6 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.globalViewport.hGrid) *
 			state.graphicHelper.globalViewport.hGrid;
 
-		if (
-			startingPosition?.x !== state.graphicHelper.draggedCodeBlock.x ||
-			startingPosition?.y !== state.graphicHelper.draggedCodeBlock.y
-		) {
-			events.dispatch('saveProject');
-		}
-
 		state.graphicHelper.draggedCodeBlock = undefined;
 	}
 
