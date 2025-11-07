@@ -56,7 +56,7 @@ export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 		worker.postMessage({
 			type: 'init',
 			payload: {
-				memoryRef: state.compiler.memoryRef,
+				memoryRef: state.compiler.memoryRef as WebAssembly.Memory,
 				sampleRate: state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
 				codeBuffer: state.compiler.codeBuffer,
 				compiledModules: state.compiler.compiledModules,

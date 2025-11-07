@@ -40,6 +40,12 @@ async function init() {
 			getListOfProjects,
 			getProject,
 			requestRuntime,
+			createMemory: (initial, maximum, shared) =>
+				new WebAssembly.Memory({
+					initial,
+					maximum,
+					shared,
+				}),
 			compileProject,
 			loadProjectFromStorage,
 			saveProjectToStorage,
