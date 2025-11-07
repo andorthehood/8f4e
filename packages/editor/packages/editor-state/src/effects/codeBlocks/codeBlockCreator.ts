@@ -147,7 +147,6 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 
 		state.graphicHelper.activeViewport.codeBlocks.add(codeBlock);
 		events.dispatch('codeBlockAdded', { codeBlock });
-		events.dispatch('saveProject');
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
@@ -157,7 +156,6 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		}
 
 		state.graphicHelper.activeViewport.codeBlocks.delete(codeBlock);
-		events.dispatch('saveProject');
 	}
 
 	function onCopyCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {

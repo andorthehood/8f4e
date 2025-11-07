@@ -43,7 +43,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 	});
 
 	events.on('loadPostProcessEffects', () => {
-		view.loadPostProcessEffects(state.project.postProcessEffects || []);
+		view.loadPostProcessEffects(state.graphicHelper.postProcessEffects);
 	});
 
 	return {

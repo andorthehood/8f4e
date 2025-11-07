@@ -60,7 +60,6 @@ export default function pianoKeyboard(state: State, events: EventDispatcher): ()
 			)
 		);
 
-		events.dispatch('saveProject');
 		events.dispatch('codeChange');
 	};
 
