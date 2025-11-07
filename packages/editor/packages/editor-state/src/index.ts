@@ -19,6 +19,7 @@ import exportWasm from './effects/exportWasm';
 import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
+import keyboardShortcuts from './effects/keyboardShortcuts';
 import { validateFeatureFlags, defaultFeatureFlags } from './featureFlags';
 
 import type { Options, Project, State, CodeBlockGraphicData, EventDispatcher } from './types';
@@ -100,6 +101,7 @@ function createGraphicHelper() {
 			y: 0,
 			menuStack: [],
 		},
+		postProcessEffects: [],
 	};
 }
 
@@ -108,6 +110,11 @@ const memorySizeBytes = 1048576; // 1MB default
 
 // Default state without the runtime callback (will be merged with provided options)
 const defaultStateBase = {
+	projectInfo: {
+		title: '',
+		author: '',
+		description: '',
+	},
 	compiler: {
 		codeBuffer: new Uint8Array(),
 		compilationTime: 0,
@@ -133,6 +140,14 @@ const defaultStateBase = {
 				ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 			},
 		},
+		binaryAssets: [],
+		runtimeSettings: [
+			{
+				runtime: 'WebWorkerLogicRuntime' as const,
+				sampleRate: 50,
+			},
+		],
+		selectedRuntime: 0,
 	},
 	midi: {
 		inputs: [],
@@ -154,7 +169,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 
 	const store = createStateManager<State>({
 		...defaultStateBase,
-		project,
 		callbacks: options.callbacks,
 		featureFlags,
 	});
@@ -179,6 +193,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	exportWasm(state, events);
 	font(state, events);
 	binaryAsset(state, events);
+	keyboardShortcuts(state, events);
 	events.dispatch('init');
 	return store;
 }
@@ -188,6 +203,7 @@ export type {
 	State,
 	CodeBlockGraphicData,
 	Project,
+	ProjectInfo,
 	Options,
 	EditorSettings,
 	CompilationResult,

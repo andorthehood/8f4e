@@ -26,7 +26,7 @@ export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
 		}
 		runtime.init(
 			state.compiler.memoryRef,
-			state.project.runtimeSettings[state.project.selectedRuntime].sampleRate,
+			state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
 			state.compiler.codeBuffer
 		);
 	}

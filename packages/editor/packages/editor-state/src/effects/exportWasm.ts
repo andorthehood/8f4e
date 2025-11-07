@@ -16,7 +16,7 @@ export default function exportWasm(state: State, events: EventDispatcher): void 
 		}
 
 		// Generate filename based on project title
-		const projectName = state.project.title || 'project';
+		const projectName = state.projectInfo.title || 'project';
 		const filename = `${projectName}.wasm`;
 
 		// Export the compiled WASM bytecode

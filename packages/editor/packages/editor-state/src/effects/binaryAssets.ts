@@ -17,11 +17,7 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 
 			const result = await state.callbacks.importBinaryAsset(file);
 
-			if (!state.project.binaryAssets) {
-				state.project.binaryAssets = [];
-			}
-			state.project.binaryAssets.push(result);
-			events.dispatch('saveProject');
+			state.compiler.binaryAssets.push(result);
 		} catch (error) {
 			console.error('Failed to import binary asset:', error);
 		}

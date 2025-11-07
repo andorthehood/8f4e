@@ -14,7 +14,11 @@ describe('Loader - Project-specific memory configuration', () => {
 
 	beforeEach(() => {
 		mockState = {
-			project: EMPTY_DEFAULT_PROJECT,
+			projectInfo: {
+				title: '',
+				author: '',
+				description: '',
+			},
 			compiler: {
 				memoryRef: new WebAssembly.Memory({ initial: 1, maximum: 10 }),
 				codeBuffer: new Uint8Array(0),
@@ -36,6 +40,14 @@ describe('Loader - Project-specific memory configuration', () => {
 				},
 				cycleTime: 0,
 				timerAccuracy: 0,
+				binaryAssets: [],
+				runtimeSettings: [
+					{
+						runtime: 'WebWorkerLogicRuntime',
+						sampleRate: 50,
+					},
+				],
+				selectedRuntime: 0,
 			},
 			callbacks: {
 				requestRuntime: vi.fn(),
@@ -80,6 +92,7 @@ describe('Loader - Project-specific memory configuration', () => {
 					title: '',
 					buttons: [],
 				},
+				postProcessEffects: [],
 			},
 			midi: {
 				outputs: [],

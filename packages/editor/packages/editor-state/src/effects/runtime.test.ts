@@ -65,7 +65,7 @@ describe('Runtime System', () => {
 			});
 
 			const state = {
-				project: {
+				compiler: {
 					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
 					selectedRuntime: 0,
 				},
@@ -94,8 +94,9 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			state.project.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
-			state.project.selectedRuntime = 0;
+			// Update to new runtime - only modify the new state locations (not deprecated state.project)
+			state.compiler.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
+			state.compiler.selectedRuntime = 0;
 
 			await buildFinishedHandler();
 

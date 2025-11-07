@@ -43,7 +43,7 @@ export default function drawInfoOverlay(
 	}
 
 	// Runtime info
-	const runtime = state.project.runtimeSettings[state.project.selectedRuntime];
+	const runtime = state.compiler.runtimeSettings[state.compiler.selectedRuntime];
 
 	debugText.push('Runtime: ' + runtime.runtime);
 	debugText.push('Sample rate: ' + runtime.sampleRate);

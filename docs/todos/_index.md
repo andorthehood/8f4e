@@ -54,6 +54,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 089 | Remove state.project Redundancy | 🟡 | 3-5d | 2025-11-06 | Successfully refactored editor state to eliminate duplicate data structures by creating dedicated serialization layer, migrating all code to use new state locations (projectInfo, compiler.*, graphicHelper.*), and establishing single source of truth for code blocks |
 | 086 | Remove Legacy Code Block Collapse Remnants | 🟡 | 1-2d | 2025-11-05 | Removed all legacy collapse-related code including `isOpen` fields, `codeBlockOpener` effect, conditional rendering, and 140+ occurrences in example files |
 | 083 | Cursor-Aware Horizontal Navigation | 🟡 | 1 day | 2025-11-03 | Implemented cursor-aware horizontal navigation for code blocks to improve spatial intuition when navigating between tall blocks and multiple neighbors |
 | 074 | Consolidate Module and Arrow Drawing Loops | 🟡 | 0.5d | 2025-11-03 | Consolidated separate rendering passes for visible code blocks and off-screen arrow indicators into a single iteration pass with shared visibility helper, reducing duplicate iteration and maintenance overhead |

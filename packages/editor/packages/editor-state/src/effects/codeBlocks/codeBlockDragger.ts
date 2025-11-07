@@ -13,7 +13,6 @@ export interface CodeBlockClickEvent {
 }
 
 export default function codeBlockDragger(state: State, events: EventDispatcher): () => void {
-	let startingPosition: { x: number; y: number } | undefined;
 	function onMouseDown({ x, y }: InternalMouseEvent) {
 		// Check if module dragging feature is enabled
 		if (!state.featureFlags.moduleDragging) {
@@ -27,10 +26,6 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			return;
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
-		startingPosition = {
-			x: draggedCodeBlock.x,
-			y: draggedCodeBlock.y,
-		};
 
 		const relativeX = Math.abs(
 			x - (draggedCodeBlock.x + draggedCodeBlock.offsetX - state.graphicHelper.activeViewport.viewport.x)
@@ -79,13 +74,6 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 		state.graphicHelper.draggedCodeBlock.y =
 			Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.globalViewport.hGrid) *
 			state.graphicHelper.globalViewport.hGrid;
-
-		if (
-			startingPosition?.x !== state.graphicHelper.draggedCodeBlock.x ||
-			startingPosition?.y !== state.graphicHelper.draggedCodeBlock.y
-		) {
-			events.dispatch('saveProject');
-		}
 
 		state.graphicHelper.draggedCodeBlock = undefined;
 	}
