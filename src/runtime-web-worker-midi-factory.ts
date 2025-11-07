@@ -1,6 +1,8 @@
 // Import the types from the editor
 import WebWorkerMIDIRuntime from '@8f4e/runtime-web-worker-midi?worker';
 
+import { getMemory } from './compiler-callback';
+
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
 
@@ -53,10 +55,15 @@ export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 		if (!worker) {
 			return;
 		}
+		const memory = getMemory();
+		if (!memory) {
+			console.warn('[Runtime] Memory not yet created, skipping runtime init');
+			return;
+		}
 		worker.postMessage({
 			type: 'init',
 			payload: {
-				memoryRef: state.compiler.memoryRef as WebAssembly.Memory,
+				memoryRef: memory,
 				sampleRate: state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
 				codeBuffer: state.compiler.codeBuffer,
 				compiledModules: state.compiler.compiledModules,
