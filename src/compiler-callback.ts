@@ -1,16 +1,38 @@
 import { type Module, type CompileOptions } from '@8f4e/compiler';
-import { type CompilationResult, type MemoryRef } from '@8f4e/editor';
+import { type CompilationResult } from '@8f4e/editor';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 
 // Create worker once at module scope
 // it will live for the entire application lifecycle
 const compilerWorker = new CompilerWorker();
 
-export async function compileProject(
-	modules: Module[],
-	compilerOptions: CompileOptions,
-	memoryRef: MemoryRef
-): Promise<CompilationResult> {
+// Create WebAssembly memory for compilation
+// This memory is shared with the compiler worker and runtimes
+let memoryRef: WebAssembly.Memory | null = null;
+let currentMemorySize = 0;
+
+export function getOrCreateMemory(memorySizeBytes: number): WebAssembly.Memory {
+	const WASM_PAGE_SIZE = 65536; // 64KiB per page
+	const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
+
+	// Create new memory only if it doesn't exist or if we need more space
+	// We keep existing memory if it's large enough to avoid unnecessary recreations
+	if (!memoryRef || currentMemorySize < memorySizeBytes) {
+		memoryRef = new WebAssembly.Memory({
+			initial: pages,
+			maximum: pages,
+			shared: true,
+		});
+		currentMemorySize = memorySizeBytes;
+	}
+
+	return memoryRef;
+}
+
+export async function compileProject(modules: Module[], compilerOptions: CompileOptions): Promise<CompilationResult> {
+	// Create or reuse memory
+	const memory = getOrCreateMemory(compilerOptions.memorySizeBytes);
+
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
 			switch (data.type) {
@@ -19,6 +41,8 @@ export async function compileProject(
 						compiledModules: data.payload.compiledModules,
 						codeBuffer: data.payload.codeBuffer,
 						allocatedMemorySize: data.payload.allocatedMemorySize,
+						memoryBuffer: new Int32Array(memory.buffer),
+						memoryBufferFloat: new Float32Array(memory.buffer),
 					});
 					break;
 				case 'buildError': {
@@ -43,10 +67,15 @@ export async function compileProject(
 		compilerWorker.postMessage({
 			type: 'recompile',
 			payload: {
-				memoryRef,
+				memoryRef: memory,
 				modules,
 				compilerOptions,
 			},
 		});
 	});
+}
+
+// Export memory getter for runtimes to access
+export function getMemory(): WebAssembly.Memory | null {
+	return memoryRef;
 }

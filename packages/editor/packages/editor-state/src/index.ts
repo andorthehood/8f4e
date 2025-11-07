@@ -105,11 +105,10 @@ function createGraphicHelper() {
 	};
 }
 
-const WASM_PAGE_SIZE = 65536; // 64KiB
 const memorySizeBytes = 1048576; // 1MB default
 
-// Function to create default state with provided callbacks
-function createDefaultState(callbacks: Options['callbacks']) {
+// Function to create default state
+function createDefaultState() {
 	return {
 		projectInfo: {
 			title: '',
@@ -125,9 +124,6 @@ function createDefaultState(callbacks: Options['callbacks']) {
 			allocatedMemorySize: 0,
 			memoryBuffer: new Int32Array(),
 			memoryBufferFloat: new Float32Array(),
-			memoryRef: callbacks.createMemory?.(memorySizeBytes / WASM_PAGE_SIZE, memorySizeBytes / WASM_PAGE_SIZE, true) ?? {
-				buffer: new ArrayBuffer(0),
-			},
 			timerAccuracy: 0,
 			compiledModules: {},
 			buildErrors: [],
@@ -168,7 +164,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
 	const store = createStateManager<State>({
-		...createDefaultState(options.callbacks),
+		...createDefaultState(),
 		callbacks: options.callbacks,
 		featureFlags,
 	});
@@ -207,7 +203,6 @@ export type {
 	Options,
 	EditorSettings,
 	CompilationResult,
-	MemoryRef,
 	CodeBlock,
 	Viewport,
 	Size,

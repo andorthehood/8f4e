@@ -20,7 +20,6 @@ describe('Loader - Project-specific memory configuration', () => {
 				description: '',
 			},
 			compiler: {
-				memoryRef: { buffer: new SharedArrayBuffer(65536) },
 				codeBuffer: new Uint8Array(0),
 				isCompiling: false,
 				buildErrors: [],
@@ -51,9 +50,6 @@ describe('Loader - Project-specific memory configuration', () => {
 			},
 			callbacks: {
 				requestRuntime: vi.fn(),
-				createMemory: (initial: number, maximum: number, shared: boolean) => ({
-					buffer: shared ? new SharedArrayBuffer(initial * 65536) : new ArrayBuffer(initial * 65536),
-				}),
 				loadProjectFromStorage: vi.fn().mockResolvedValue(null),
 				loadColorSchemes: vi.fn().mockResolvedValue({
 					default: { text: {}, fill: {}, icons: {} },
@@ -195,10 +191,6 @@ describe('Loader - Project-specific memory configuration', () => {
 		// Load the project
 		loadProjectCallback({ project: projectWithMemory });
 
-		// Verify memory was created with correct settings
-		expect(mockState.compiler.memoryRef).toBeDefined();
-		// Verify the memory buffer has the correct size (2000 pages * 65536 bytes per page)
-		expect(mockState.compiler.memoryRef.buffer.byteLength).toBe(2000 * 65536);
 		// Verify the compiler options were updated
 		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(2000 * 65536);
 	});
