@@ -13,7 +13,13 @@
             "scope:graphics"
           ],
           "metadata": {
-            "targetGroups": {},
+            "targetGroups": {
+              "NPM Scripts": [
+                "test:screenshot:headed",
+                "test:screenshot:debug",
+                "dev:test"
+              ]
+            },
             "description": "8f4e sprite generator package",
             "js": {
               "packageName": "@8f4e/sprite-generator",
@@ -29,6 +35,42 @@
             }
           },
           "targets": {
+            "test:screenshot:headed": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "test:screenshot:headed"
+              },
+              "metadata": {
+                "scriptContent": "playwright test --headed",
+                "runCommand": "npm run test:screenshot:headed"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test:screenshot:debug": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "test:screenshot:debug"
+              },
+              "metadata": {
+                "scriptContent": "playwright test --debug",
+                "runCommand": "npm run test:screenshot:debug"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "dev:test": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "dev:test"
+              },
+              "metadata": {
+                "scriptContent": "vite --config screenshot-tests/vite.config.ts",
+                "runCommand": "npm run dev:test"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
             "generate-fonts": {
               "executor": "nx:run-commands",
               "outputs": [
@@ -48,6 +90,7 @@
                 "{projectRoot}/dist"
               ],
               "dependsOn": [
+                "^build",
                 "generate-fonts"
               ],
               "options": {
@@ -65,6 +108,7 @@
             "dev": {
               "executor": "nx:run-commands",
               "dependsOn": [
+                "^build",
                 "generate-fonts"
               ],
               "options": {
@@ -99,6 +143,7 @@
             "typecheck": {
               "executor": "nx:run-commands",
               "dependsOn": [
+                "^build",
                 "generate-fonts"
               ],
               "options": {
@@ -112,6 +157,33 @@
                 "^default"
               ],
               "cache": true
+            },
+            "test:screenshot": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "playwright test",
+                "cwd": "packages/editor/packages/sprite-generator"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test:screenshot:ui": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "playwright test --ui",
+                "cwd": "packages/editor/packages/sprite-generator"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test:screenshot:update": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "playwright test --update-snapshots",
+                "cwd": "packages/editor/packages/sprite-generator"
+              },
+              "configurations": {},
+              "parallelism": true
             }
           },
           "sourceRoot": "src",
@@ -1207,7 +1279,7 @@
                 "script": "coverage"
               },
               "metadata": {
-                "scriptContent": "jest --coverage",
+                "scriptContent": "vitest run --coverage",
                 "runCommand": "npm run coverage"
               },
               "configurations": {},
@@ -1300,7 +1372,7 @@
             "description": "8f4e editor package",
             "js": {
               "packageName": "@8f4e/editor",
-              "packageVersion": "0.0.5",
+              "packageVersion": "0.0.7",
               "packageExports": {
                 ".": {
                   "types": "./dist/index.d.ts",
@@ -1624,11 +1696,11 @@
                 "command": "vite",
                 "cwd": ""
               },
+              "configurations": {},
+              "parallelism": true,
               "dependsOn": [
                 "^build"
               ],
-              "configurations": {},
-              "parallelism": true,
               "cache": false
             },
             "build": {
@@ -1641,6 +1713,7 @@
                 "cwd": ""
               },
               "dependsOn": [
+                "typecheck",
                 "^build"
               ],
               "configurations": {},
@@ -1666,9 +1739,12 @@
             "typecheck": {
               "executor": "nx:run-commands",
               "options": {
-                "command": "tsc --noEmit",
+                "command": "tsc --noEmit --project tsconfig.build.json",
                 "cwd": ""
               },
+              "dependsOn": [
+                "^build"
+              ],
               "configurations": {},
               "parallelism": true,
               "inputs": [

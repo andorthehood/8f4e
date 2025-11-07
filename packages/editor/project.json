@@ -35,13 +35,14 @@
         "cwd": "{projectRoot}"
       }
     },
-    "typecheck": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "tsc --noEmit",
-        "cwd": "{projectRoot}"
-      }
-    }
+  "typecheck": {
+    "executor": "nx:run-commands",
+    "options": {
+      "command": "tsc --noEmit",
+      "cwd": "{projectRoot}"
+    },
+    "dependsOn": ["^build"]
+  }
   },
   "tags": ["type:application", "scope:ui"]
 }
