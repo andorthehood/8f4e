@@ -143,6 +143,12 @@ export interface Compiler {
 	buildErrors: BuildError[];
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
+	/** Binary assets to be loaded into memory */
+	binaryAssets: BinaryAsset[];
+	/** Runtime configuration settings */
+	runtimeSettings: Runtimes[];
+	/** Index of currently selected runtime */
+	selectedRuntime: number;
 }
 
 export interface Midi {
@@ -299,6 +305,8 @@ export type GraphicHelper = {
 			payload?: unknown;
 		}>;
 	};
+	/** Post-process effects configuration for custom visual effects */
+	postProcessEffects: PostProcessEffect[];
 };
 
 export interface BinaryAsset {
@@ -427,6 +435,16 @@ export interface ProjectMetadata {
 	description: string;
 }
 
+/**
+ * Basic project information (title, author, description)
+ * Separate from runtime state for better organization
+ */
+export interface ProjectInfo {
+	title: string;
+	author: string;
+	description: string;
+}
+
 export interface CompilationResult {
 	compiledModules: CompiledModuleLookup;
 	codeBuffer: Uint8Array;
@@ -474,10 +492,11 @@ export interface EditorSettings {
 }
 
 export interface State {
+	/** Basic project information (title, author, description) */
+	projectInfo: ProjectInfo;
 	compiler: Compiler;
 	midi: Midi;
 	graphicHelper: GraphicHelper;
-	project: Project;
 	callbacks: Callbacks;
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
