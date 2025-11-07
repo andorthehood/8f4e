@@ -3,8 +3,8 @@ title: 'TODO: demo mode demo navigation'
 priority: Medium
 effort: 1-2 days
 created: 2025-11-05
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-04
 ---
 
 # TODO: demo mode demo navigation
