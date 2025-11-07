@@ -1,6 +1,8 @@
 // Import the types from the editor
 import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
 
+import { getMemory } from './compiler-callback';
+
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
 
@@ -15,6 +17,12 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 		const runtime = state.compiler.runtimeSettings[state.compiler.selectedRuntime];
 
 		if (runtime.runtime !== 'AudioWorkletRuntime' || !audioWorklet || !audioContext) {
+			return;
+		}
+
+		const memory = getMemory();
+		if (!memory) {
+			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
 
@@ -47,7 +55,7 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 		if (audioWorklet) {
 			audioWorklet.port.postMessage({
 				type: 'init',
-				memoryRef: state.compiler.memoryRef as WebAssembly.Memory,
+				memoryRef: memory,
 				codeBuffer: state.compiler.codeBuffer,
 				audioOutputBuffers,
 				audioInputBuffers,

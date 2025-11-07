@@ -1,6 +1,8 @@
 // Import the types from the editor
 import WebWorkerLogicRuntime from '@8f4e/runtime-web-worker-logic?worker';
 
+import { getMemory } from './compiler-callback';
+
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
 
@@ -23,10 +25,15 @@ export function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
 		if (!worker) {
 			return;
 		}
+		const memory = getMemory();
+		if (!memory) {
+			console.warn('[Runtime] Memory not yet created, skipping runtime init');
+			return;
+		}
 		worker.postMessage({
 			type: 'init',
 			payload: {
-				memoryRef: state.compiler.memoryRef as WebAssembly.Memory,
+				memoryRef: memory,
 				sampleRate: state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
 				codeBuffer: state.compiler.codeBuffer,
 				compiledModules: state.compiler.compiledModules,
