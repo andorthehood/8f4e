@@ -3,7 +3,7 @@ title: 'TODO: Separate Editor User Interactions into Standalone Package'
 priority: Medium
 effort: 2-3 days
 created: 2025-08-26
-status: Open
+status: Completed
 completed: null
 ---
 
