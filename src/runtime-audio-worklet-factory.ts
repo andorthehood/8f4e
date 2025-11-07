@@ -47,7 +47,7 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 		if (audioWorklet) {
 			audioWorklet.port.postMessage({
 				type: 'init',
-				memoryRef: state.compiler.memoryRef,
+				memoryRef: state.compiler.memoryRef as WebAssembly.Memory,
 				codeBuffer: state.compiler.codeBuffer,
 				audioOutputBuffers,
 				audioInputBuffers,
