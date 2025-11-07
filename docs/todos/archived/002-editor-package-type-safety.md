@@ -3,7 +3,7 @@ title: 'TODO: Enable Strict TypeScript in Editor Package'
 priority: Medium
 effort: 2-3 days
 created: 2025-08-23
-status: Open
+status: Completed
 completed: null
 ---
 

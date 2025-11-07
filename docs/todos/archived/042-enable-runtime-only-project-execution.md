@@ -3,7 +3,7 @@ title: 'TODO: Enable Runtime-Only Project Execution'
 priority: Medium
 effort: 3-4 hours
 created: 2025-08-27
-status: Open
+status: Completed
 completed: null
 ---
 
