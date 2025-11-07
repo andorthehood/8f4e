@@ -14,6 +14,7 @@ export type {
 	State,
 	EditorSettings,
 	CompilationResult,
+	MemoryRef,
 	CodeBlockGraphicData,
 	RuntimeFactory,
 	RuntimeType,

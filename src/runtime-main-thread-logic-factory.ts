@@ -25,7 +25,7 @@ export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
 			return;
 		}
 		runtime.init(
-			state.compiler.memoryRef,
+			state.compiler.memoryRef as WebAssembly.Memory,
 			state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
 			state.compiler.codeBuffer
 		);
