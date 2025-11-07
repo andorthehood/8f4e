@@ -1,7 +1,7 @@
 import createModule from './createModule';
 
-let interval: number;
-let statsInterval: number;
+let interval: ReturnType<typeof setInterval>;
+let statsInterval: ReturnType<typeof setInterval>;
 let timeToExecute: number;
 let lastIntervalTime: number;
 let drift = 0;

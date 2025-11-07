@@ -1,6 +1,20 @@
 {
-	"extends": "../../tsconfig.json",
 	"compilerOptions": {
+		"target": "es2022",
+	"lib": [
+		"es2023",
+		"DOM"
+	],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"strict": true,
+		"downlevelIteration": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
 		"baseUrl": "src",
 		"outDir": "dist",
 		"rootDir": "src",
@@ -11,12 +25,24 @@
 		"noImplicitAny": true,
 		"strictNullChecks": true,
 		"paths": {
-			"@8f4e/state-manager": ["../packages/state-manager/dist/index.d.ts"],
-			"@8f4e/compiler": ["../compiler/dist/index.d.ts"],
-			"@8f4e/sprite-generator": ["../packages/sprite-generator/dist/index.d.ts"],
-			"@8f4e/editor-state-types": ["../packages/editor-state-types/dist/index.d.ts"],
-			"@8f4e/web-ui": ["../packages/web-ui/dist/index.d.ts"],
-			"@8f4e/editor-state": ["../packages/editor-state/dist/index.d.ts"]
+			"@8f4e/state-manager": [
+				"../packages/state-manager/dist/index.d.ts"
+			],
+			"@8f4e/compiler": [
+				"../compiler/dist/index.d.ts"
+			],
+			"@8f4e/sprite-generator": [
+				"../packages/sprite-generator/dist/index.d.ts"
+			],
+			"@8f4e/editor-state-types": [
+				"../packages/editor-state-types/dist/index.d.ts"
+			],
+			"@8f4e/web-ui": [
+				"../packages/web-ui/dist/index.d.ts"
+			],
+			"@8f4e/editor-state": [
+				"../packages/editor-state/dist/index.d.ts"
+			]
 		}
 	},
 	"include": [
@@ -27,4 +53,4 @@
 		"node_modules",
 		"src/**/*.test.ts"
 	]
-} 
+}
