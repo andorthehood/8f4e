@@ -20,7 +20,7 @@ describe('Loader - Project-specific memory configuration', () => {
 				description: '',
 			},
 			compiler: {
-				memoryRef: new WebAssembly.Memory({ initial: 1, maximum: 10 }),
+				memoryRef: { buffer: new SharedArrayBuffer(65536) },
 				codeBuffer: new Uint8Array(0),
 				isCompiling: false,
 				buildErrors: [],
@@ -51,6 +51,9 @@ describe('Loader - Project-specific memory configuration', () => {
 			},
 			callbacks: {
 				requestRuntime: vi.fn(),
+				createMemory: (initial: number, maximum: number, shared: boolean) => ({
+					buffer: shared ? new SharedArrayBuffer(initial * 65536) : new ArrayBuffer(initial * 65536),
+				}),
 				loadProjectFromStorage: vi.fn().mockResolvedValue(null),
 				loadColorSchemes: vi.fn().mockResolvedValue({
 					default: { text: {}, fill: {}, icons: {} },
@@ -174,7 +177,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(500 * 65536);
 	});
 
-	it('should create WebAssembly.Memory with project-specific settings', async () => {
+	it('should create memory with project-specific settings', async () => {
 		loader(mockStore, mockEvents, mockState);
 
 		// Get the loadProject callback
@@ -192,10 +195,11 @@ describe('Loader - Project-specific memory configuration', () => {
 		// Load the project
 		loadProjectCallback({ project: projectWithMemory });
 
-		// Verify WebAssembly.Memory was created with correct settings
+		// Verify memory was created with correct settings
 		expect(mockState.compiler.memoryRef).toBeDefined();
-		// Note: We can't directly inspect WebAssembly.Memory constructor parameters,
-		// but we can verify the compiler options were updated
+		// Verify the memory buffer has the correct size (2000 pages * 65536 bytes per page)
+		expect(mockState.compiler.memoryRef.buffer.byteLength).toBe(2000 * 65536);
+		// Verify the compiler options were updated
 		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(2000 * 65536);
 	});
 });

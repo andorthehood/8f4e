@@ -59,7 +59,7 @@ describe('Runtime-ready project functionality', () => {
 				description: '',
 			},
 			compiler: {
-				memoryRef: new WebAssembly.Memory({ initial: 1 }),
+				memoryRef: { buffer: new ArrayBuffer(65536) },
 				codeBuffer: new Uint8Array([1, 2, 3, 4, 5]), // Mock compiled WASM
 				isCompiling: false,
 				buildErrors: [],

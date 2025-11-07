@@ -2,6 +2,17 @@ import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from 'glugglug';
 import type { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure, Module } from '@8f4e/compiler';
 
+/**
+ * Platform-agnostic memory interface.
+ * Abstracts WebAssembly.Memory to allow the editor-state package to be platform-independent.
+ */
+export interface MemoryRef {
+	/** The underlying buffer (ArrayBuffer or SharedArrayBuffer) */
+	buffer: ArrayBufferLike;
+	/** Optional method to grow memory by specified number of pages (64KiB each). Returns previous size in pages. */
+	grow?: (pages: number) => number;
+}
+
 // Feature Flags types
 export interface FeatureFlags {
 	/** Enable/disable right-click context menu functionality */
@@ -137,7 +148,7 @@ export interface Compiler {
 	lastCompilationStart: number;
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
-	memoryRef: WebAssembly.Memory;
+	memoryRef: MemoryRef;
 	timerAccuracy: number;
 	compiledModules: CompiledModuleLookup;
 	buildErrors: BuildError[];
@@ -459,11 +470,14 @@ export interface Callbacks {
 	getListOfProjects?: () => Promise<ProjectMetadata[]>;
 	getProject?: (slug: string) => Promise<Project>;
 
+	// Memory creation callback (platform-specific)
+	createMemory?: (initial: number, maximum: number, shared: boolean) => MemoryRef;
+
 	// Compilation callback
 	compileProject?: (
 		modules: Module[],
 		compilerOptions: CompileOptions,
-		memoryRef: WebAssembly.Memory
+		memoryRef: MemoryRef
 	) => Promise<CompilationResult>;
 
 	// Storage callbacks
