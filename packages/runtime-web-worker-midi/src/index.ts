@@ -10,8 +10,8 @@ import createModule from './createModule';
 
 import type { MidiCCModuleAddresses } from './types';
 
-let interval: number;
-let statsInterval: number;
+let interval: ReturnType<typeof setInterval>;
+let statsInterval: ReturnType<typeof setInterval>;
 let memoryBuffer: Int32Array;
 let midiCCInputModules: Map<string, MidiCCModuleAddresses> = new Map();
 let timeToExecute: number;
