@@ -9,6 +9,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | ID | Title | Priority | Effort | Created | Summary |
 |----|-------|----------|--------|---------|---------|
 | 053 | Fix Runtime Reinitialization on Code Change | 🔴 | 4-6h | 2025-09-03 | Runtime destroys and recreates completely on every code change instead of syncing existing instance, causing audio glitches, performance degradation, and loss of runtime state |
+| 091 | Optimize Dev Workflow with Nx Caching and Incremental Builds | 🔴 | 2-3d | 2025-11-07 | Replace current Vite-watches-all-sources setup with Nx-managed incremental builds to leverage caching and only rebuild affected packages |
 
 ### 🟡 Medium Priority
 
