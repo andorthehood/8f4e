@@ -137,7 +137,6 @@ export interface Compiler {
 	lastCompilationStart: number;
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
-	memoryRef: WebAssembly.Memory;
 	timerAccuracy: number;
 	compiledModules: CompiledModuleLookup;
 	buildErrors: BuildError[];
@@ -449,6 +448,8 @@ export interface CompilationResult {
 	compiledModules: CompiledModuleLookup;
 	codeBuffer: Uint8Array;
 	allocatedMemorySize: number;
+	memoryBuffer: MemoryBuffer;
+	memoryBufferFloat: Float32Array;
 }
 
 // Callbacks interface contains all callback functions
@@ -460,11 +461,7 @@ export interface Callbacks {
 	getProject?: (slug: string) => Promise<Project>;
 
 	// Compilation callback
-	compileProject?: (
-		modules: Module[],
-		compilerOptions: CompileOptions,
-		memoryRef: WebAssembly.Memory
-	) => Promise<CompilationResult>;
+	compileProject?: (modules: Module[], compilerOptions: CompileOptions) => Promise<CompilationResult>;
 
 	// Storage callbacks
 	loadProjectFromStorage: () => Promise<Project | null>;
