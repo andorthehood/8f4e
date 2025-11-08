@@ -41,9 +41,6 @@
 	},
 	"devDependencies": {
 		"@types/node": "^24.3.0",
-		"vitest": "^3.2.4",
-		"jest": "^29.7.0",
-		"@swc/jest": "^0.2.39",
-		"@types/jest": "^29.5.12"
+		"vitest": "^3.2.4"
 	}
 }

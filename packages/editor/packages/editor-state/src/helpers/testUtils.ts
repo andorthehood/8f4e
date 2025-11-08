@@ -84,7 +84,7 @@ export function createMockCodeBlock(
 
 		overrides = {
 			x,
-			y: y,
+			y,
 			width: w,
 			height: h,
 			offsetX: ox,
@@ -191,7 +191,6 @@ export function createMockState(overrides: Partial<State> = {}): State {
 			description: '',
 		},
 		compiler: {
-			memoryRef: new WebAssembly.Memory({ initial: 1, maximum: 10 }),
 			codeBuffer: new Uint8Array(0),
 			isCompiling: false,
 			buildErrors: [],
