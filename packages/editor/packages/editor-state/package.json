@@ -10,12 +10,16 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
+		},
+		"./testing": {
+			"types": "./dist/testing.d.ts",
+			"default": "./dist/testing.js"
 		}
 	},
 	"sideEffects": false,
 	"scripts": {
-		"test": "jest src",
-		"coverage": "jest --coverage src",
+		"test": "vitest",
+		"coverage": "vitest --coverage",
 		"build": "tsc",
 		"dev": "tsc --watch",
 		"typecheck": "tsc --noEmit"
@@ -37,8 +41,6 @@
 	},
 	"devDependencies": {
 		"@types/node": "^24.3.0",
-		"jest": "^29.7.0",
-		"@swc/jest": "^0.2.39",
-		"@types/jest": "^29.5.12"
+		"vitest": "^3.2.4"
 	}
 }
