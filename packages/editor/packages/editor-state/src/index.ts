@@ -253,3 +253,11 @@ export type { Direction } from './helpers/findClosestCodeBlockInDirection';
 export { default as centerViewportOnCodeBlock } from './helpers/centerViewportOnCodeBlock';
 export type { CodeBlockBounds } from './helpers/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './effects/codeBlockNavigation';
+
+// Export testing utilities (for use in tests)
+export {
+	createMockCodeBlock,
+	createMockViewport,
+	createMockEventDispatcher,
+	createMockState,
+} from './helpers/testUtils';
