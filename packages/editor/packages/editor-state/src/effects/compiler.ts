@@ -21,10 +21,6 @@ function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { cod
 
 export default async function compiler(state: State, events: EventDispatcher) {
 	async function onRecompile() {
-		if (!state.compiler.memoryRef) {
-			return;
-		}
-
 		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
 		// If codeBuffer is populated and we don't have a compiler, skip compilation
 		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
@@ -59,7 +55,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 				},
 			};
 
-			const result = await state.callbacks.compileProject?.(modules, compilerOptions, state.compiler.memoryRef);
+			const result = await state.callbacks.compileProject?.(modules, compilerOptions);
 
 			if (!result) {
 				return;
@@ -69,8 +65,8 @@ export default async function compiler(state: State, events: EventDispatcher) {
 			state.compiler.compiledModules = result.compiledModules;
 			state.compiler.codeBuffer = result.codeBuffer;
 			state.compiler.allocatedMemorySize = result.allocatedMemorySize;
-			state.compiler.memoryBuffer = new Int32Array(state.compiler.memoryRef.buffer);
-			state.compiler.memoryBufferFloat = new Float32Array(state.compiler.memoryRef.buffer);
+			state.compiler.memoryBuffer = result.memoryBuffer;
+			state.compiler.memoryBufferFloat = result.memoryBufferFloat;
 			state.compiler.isCompiling = false;
 			state.compiler.compilationTime = performance.now() - state.compiler.lastCompilationStart;
 
@@ -87,7 +83,7 @@ export default async function compiler(state: State, events: EventDispatcher) {
 
 					const allocatedSizeInBytes =
 						memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
-					const memoryBuffer = new Uint8Array(state.compiler.memoryRef.buffer);
+					const memoryBuffer = new Uint8Array(state.compiler.memoryBuffer.buffer);
 					const binaryAssetDataBuffer = decodeBase64ToUint8Array(binaryAsset.data).slice(0, allocatedSizeInBytes);
 
 					memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
