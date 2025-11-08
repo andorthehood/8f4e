@@ -1,61 +1,7 @@
 import findClosestCodeBlockInDirection from './findClosestCodeBlockInDirection';
+import { createMockCodeBlock } from './testUtils';
 
 import type { CodeBlockGraphicData } from '../types';
-
-/**
- * Helper function to create a mock CodeBlockGraphicData object for testing.
- * Provides all required fields with sensible defaults, focusing on positioning and cursor data.
- */
-function createMockCodeBlock(
-	id: string,
-	x: number,
-	y: number,
-	width = 100,
-	height = 100,
-	offsetX = 0,
-	offsetY = 0,
-	cursorY?: number
-): CodeBlockGraphicData {
-	return {
-		id,
-		x,
-		y,
-		width,
-		height,
-		offsetX,
-		offsetY,
-		// Cursor position - cursorY parameter controls the Y coordinate
-		cursor: {
-			col: 0,
-			row: 0,
-			x: x + offsetX + width / 2, // Default to horizontal center (absolute)
-			y: cursorY ?? height / 2, // Default to vertical center (RELATIVE to block), or use provided cursorY
-		},
-		// Grid positioning
-		gridX: x,
-		gridY: y,
-		// Minimum required fields with dummy values
-		minGridWidth: width,
-		code: [],
-		trimmedCode: [],
-		padLength: 0,
-		codeToRender: [],
-		codeColors: [],
-		gaps: new Map(),
-		positionOffsetterXWordAddress: undefined,
-		positionOffsetterYWordAddress: undefined,
-		extras: {
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			bufferPlotters: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			errorMessages: new Map(),
-		},
-	};
-}
 
 describe('findClosestCodeBlockInDirection', () => {
 	describe('right direction', () => {
