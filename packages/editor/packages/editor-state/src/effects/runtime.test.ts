@@ -2,7 +2,7 @@ import { vi, type MockInstance } from 'vitest';
 
 import runtimeEffect, { RuntimeType } from './runtime';
 
-import type { EventDispatcher, State } from '../types';
+import { createMockState, createMockEventDispatcher } from '../helpers/testUtils';
 
 describe('Runtime System', () => {
 	describe('RuntimeType', () => {
@@ -64,7 +64,7 @@ describe('Runtime System', () => {
 				throw new Error(`Unexpected runtime ${runtimeType}`);
 			});
 
-			const state = {
+			const state = createMockState({
 				compiler: {
 					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
 					selectedRuntime: 0,
@@ -72,13 +72,9 @@ describe('Runtime System', () => {
 				callbacks: {
 					requestRuntime,
 				},
-			} as unknown as State;
+			});
 
-			const events = {
-				on: vi.fn(),
-				off: vi.fn(),
-				dispatch: vi.fn(),
-			} as unknown as EventDispatcher;
+			const events = createMockEventDispatcher();
 
 			await runtimeEffect(state, events);
 
