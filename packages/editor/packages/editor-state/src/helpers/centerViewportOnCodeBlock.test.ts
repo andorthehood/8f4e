@@ -1,16 +1,8 @@
 import centerViewportOnCodeBlock, { CodeBlockBounds } from './centerViewportOnCodeBlock';
-
-import type { Viewport } from '../types';
-
-/**
- * Helper function to create a mock viewport for testing
- */
-function createMockViewport(x = 0, y = 0): Viewport {
-	return { x, y };
-}
+import { createMockViewport } from './testUtils';
 
 /**
- * Helper function to create a mock code block with essential properties
+ * Helper function to create a mock code block with essential properties for viewport centering tests
  */
 function createMockCodeBlock(
 	x: number,

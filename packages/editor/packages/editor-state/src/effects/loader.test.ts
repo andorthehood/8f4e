@@ -3,127 +3,25 @@ import { StateManager } from '@8f4e/state-manager';
 
 import loader from './loader';
 
+import { createMockState, createMockEventDispatcher } from '../helpers/testUtils';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
 
-import type { State, EventDispatcher, Project } from '../types';
+import type { State, Project } from '../types';
 
 describe('Loader - Project-specific memory configuration', () => {
 	let mockState: State;
 	let mockStore: StateManager<State>;
-	let mockEvents: EventDispatcher;
+	let mockEvents: ReturnType<typeof createMockEventDispatcher>;
 
 	beforeEach(() => {
-		mockState = {
-			projectInfo: {
-				title: '',
-				author: '',
-				description: '',
-			},
-			compiler: {
-				codeBuffer: new Uint8Array(0),
-				isCompiling: false,
-				buildErrors: [],
-				compilationTime: 0,
-				lastCompilationStart: 0,
-				allocatedMemorySize: 0,
-				memoryBuffer: new Int32Array(0),
-				memoryBufferFloat: new Float32Array(0),
-				compiledModules: {},
-				compilerOptions: {
-					startingMemoryWordAddress: 0,
-					memorySizeBytes: 1048576, // 1MB
-					environmentExtensions: {
-						constants: {},
-						ignoredKeywords: [],
-					},
-				},
-				cycleTime: 0,
-				timerAccuracy: 0,
-				binaryAssets: [],
-				runtimeSettings: [
-					{
-						runtime: 'WebWorkerLogicRuntime',
-						sampleRate: 50,
-					},
-				],
-				selectedRuntime: 0,
-			},
-			callbacks: {
-				requestRuntime: vi.fn(),
-				loadProjectFromStorage: vi.fn().mockResolvedValue(null),
-				loadColorSchemes: vi.fn().mockResolvedValue({
-					default: { text: {}, fill: {}, icons: {} },
-				}),
-			},
-			graphicHelper: {
-				activeViewport: {
-					codeBlocks: new Set(),
-					viewport: { x: 0, y: 0 },
-				},
-				outputsByWordAddress: new Map(),
-				globalViewport: {
-					width: 1024,
-					height: 768,
-					roundedWidth: 1024,
-					roundedHeight: 768,
-					vGrid: 8,
-					hGrid: 16,
-					borderLineCoordinates: {
-						top: { startX: 0, startY: 0, endX: 0, endY: 0 },
-						right: { startX: 0, startY: 0, endX: 0, endY: 0 },
-						bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
-						left: { startX: 0, startY: 0, endX: 0, endY: 0 },
-					},
-					center: { x: 0, y: 0 },
-				},
-				contextMenu: {
-					highlightedItem: 0,
-					itemWidth: 200,
-					items: [],
-					open: false,
-					x: 0,
-					y: 0,
-					menuStack: [],
-				},
-				dialog: {
-					show: false,
-					text: '',
-					title: '',
-					buttons: [],
-				},
-				postProcessEffects: [],
-			},
-			midi: {
-				outputs: [],
-				inputs: [],
-			},
-			editorSettings: {
-				colorScheme: 'default',
-				font: '8x16',
-			},
-			featureFlags: {
-				contextMenu: true,
-				infoOverlay: true,
-				moduleDragging: true,
-				viewportDragging: true,
-				persistentStorage: false,
-				editing: true,
-				viewportAnimations: true,
-			},
-			compilationTime: 0,
-			colorSchemes: {},
-		} as unknown as State;
+		mockState = createMockState();
 
 		mockStore = {
 			getState: () => mockState,
 			set: vi.fn(),
 		} as unknown as StateManager<State>;
 
-		mockEvents = {
-			on: vi.fn(),
-			off: vi.fn(),
-			dispatch: vi.fn(),
-		} as EventDispatcher;
+		mockEvents = createMockEventDispatcher();
 	});
 
 	it('should use default memory settings when project has no memory configuration', async () => {
