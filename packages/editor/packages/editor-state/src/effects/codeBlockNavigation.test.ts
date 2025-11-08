@@ -2,11 +2,13 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import codeBlockNavigation from './codeBlockNavigation';
 
-import type { State, EventDispatcher, InternalKeyboardEvent, CodeBlockGraphicData } from '../types';
+import { createMockCodeBlock, createMockEventDispatcher, createMockState } from '../helpers/testUtils';
+
+import type { InternalKeyboardEvent, CodeBlockGraphicData } from '../types';
 
 describe('codeBlockNavigation', () => {
-	let state: State;
-	let events: EventDispatcher;
+	let state: ReturnType<typeof createMockState>;
+	let events: ReturnType<typeof createMockEventDispatcher>;
 	let onKeydownHandler: (event: InternalKeyboardEvent) => void;
 	let selectedBlock: CodeBlockGraphicData;
 	let leftBlock: CodeBlockGraphicData;
@@ -19,15 +21,15 @@ describe('codeBlockNavigation', () => {
 		vi.clearAllTimers();
 		vi.useFakeTimers();
 
-		// Create mock code blocks
+		// Create mock code blocks using shared utility
 		selectedBlock = createMockCodeBlock(200, 200);
 		leftBlock = createMockCodeBlock(0, 200);
 		rightBlock = createMockCodeBlock(400, 200);
 		upBlock = createMockCodeBlock(200, 0);
 		downBlock = createMockCodeBlock(200, 400);
 
-		// Create mock state
-		state = {
+		// Create mock state using shared utility
+		state = createMockState({
 			featureFlags: {
 				contextMenu: true,
 				infoOverlay: true,
@@ -43,21 +45,20 @@ describe('codeBlockNavigation', () => {
 				activeViewport: {
 					codeBlocks: new Set([selectedBlock, leftBlock, rightBlock, upBlock, downBlock]),
 					viewport: { x: 0, y: 0 },
-				},
+				} as CodeBlockGraphicData,
 				globalViewport: { width: 800, height: 600, vGrid: 8, hGrid: 16 },
 			},
-		} as unknown as State;
+		});
 
-		// Create mock event dispatcher
-		events = {
-			on: vi.fn((eventName: string, callback: ((event: InternalKeyboardEvent) => void) | (() => void)) => {
+		// Create mock event dispatcher using shared utility
+		events = createMockEventDispatcher();
+		(events.on as ReturnType<typeof vi.fn>).mockImplementation(
+			(eventName: string, callback: ((event: InternalKeyboardEvent) => void) | (() => void)) => {
 				if (eventName === 'keydown') {
 					onKeydownHandler = callback as (event: InternalKeyboardEvent) => void;
 				}
-			}) as EventDispatcher['on'],
-			off: vi.fn(),
-			dispatch: vi.fn(),
-		};
+			}
+		);
 	});
 
 	it('should register a keydown event handler', () => {
@@ -154,41 +155,3 @@ describe('codeBlockNavigation', () => {
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
 	});
 });
-
-/**
- * Helper to create a mock code block for testing
- */
-function createMockCodeBlock(x: number, y: number): CodeBlockGraphicData {
-	return {
-		x,
-		y,
-		width: 100,
-		height: 100,
-		offsetX: 0,
-		offsetY: 0,
-		code: [],
-		trimmedCode: [],
-		codeColors: [],
-		codeToRender: [],
-		cursor: { col: 0, row: 0, x: x + 50, y: 50 }, // Cursor Y is relative to block (height/2)
-		id: `block-${x}-${y}`,
-		gaps: new Map(),
-		gridX: 0,
-		gridY: 0,
-		padLength: 1,
-		minGridWidth: 32,
-		viewport: { x: 0, y: 0 },
-		codeBlocks: new Set(),
-		lastUpdated: Date.now(),
-		extras: {
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			bufferPlotters: new Map(),
-			errorMessages: new Map(),
-		},
-	} as CodeBlockGraphicData;
-}
