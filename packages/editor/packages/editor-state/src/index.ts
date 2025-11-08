@@ -105,70 +105,66 @@ function createGraphicHelper() {
 	};
 }
 
-const WASM_PAGE_SIZE = 65536; // 64KiB
 const memorySizeBytes = 1048576; // 1MB default
 
-// Default state without the runtime callback (will be merged with provided options)
-const defaultStateBase = {
-	projectInfo: {
-		title: '',
-		author: '',
-		description: '',
-	},
-	compiler: {
-		codeBuffer: new Uint8Array(),
-		compilationTime: 0,
-		cycleTime: 0,
-		isCompiling: false,
-		lastCompilationStart: 0,
-		allocatedMemorySize: 0,
-		memoryBuffer: new Int32Array(),
-		memoryBufferFloat: new Float32Array(),
-		memoryRef: new WebAssembly.Memory({
-			initial: memorySizeBytes / WASM_PAGE_SIZE,
-			maximum: memorySizeBytes / WASM_PAGE_SIZE,
-			shared: true,
-		}),
-		timerAccuracy: 0,
-		compiledModules: {},
-		buildErrors: [],
-		compilerOptions: {
-			memorySizeBytes,
-			startingMemoryWordAddress: 0,
-			environmentExtensions: {
-				constants: {},
-				ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
-			},
+// Function to create default state
+function createDefaultState() {
+	return {
+		projectInfo: {
+			title: '',
+			author: '',
+			description: '',
 		},
-		binaryAssets: [],
-		runtimeSettings: [
-			{
-				runtime: 'WebWorkerLogicRuntime' as const,
-				sampleRate: 50,
+		compiler: {
+			codeBuffer: new Uint8Array(),
+			compilationTime: 0,
+			cycleTime: 0,
+			isCompiling: false,
+			lastCompilationStart: 0,
+			allocatedMemorySize: 0,
+			memoryBuffer: new Int32Array(),
+			memoryBufferFloat: new Float32Array(),
+			timerAccuracy: 0,
+			compiledModules: {},
+			buildErrors: [],
+			compilerOptions: {
+				memorySizeBytes,
+				startingMemoryWordAddress: 0,
+				environmentExtensions: {
+					constants: {},
+					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
+				},
 			},
-		],
-		selectedRuntime: 0,
-	},
-	midi: {
-		inputs: [],
-		outputs: [],
-	},
-	graphicHelper: createGraphicHelper(),
-	editorSettings: {
-		colorScheme: 'hackerman',
-		font: '8x16' as Font,
-	},
-	featureFlags: defaultFeatureFlags,
-	compilationTime: 0,
-	colorSchemes: {},
-};
+			binaryAssets: [],
+			runtimeSettings: [
+				{
+					runtime: 'WebWorkerLogicRuntime' as const,
+					sampleRate: 50,
+				},
+			],
+			selectedRuntime: 0,
+		},
+		midi: {
+			inputs: [],
+			outputs: [],
+		},
+		graphicHelper: createGraphicHelper(),
+		editorSettings: {
+			colorScheme: 'hackerman',
+			font: '8x16' as Font,
+		},
+		featureFlags: defaultFeatureFlags,
+		compilationTime: 0,
+		colorSchemes: {},
+	};
+}
 
 export default function init(events: EventDispatcher, project: Project, options: Options): StateManager<State> {
 	// Initialize feature flags
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
 	const store = createStateManager<State>({
-		...defaultStateBase,
+		...createDefaultState(),
 		callbacks: options.callbacks,
 		featureFlags,
 	});
