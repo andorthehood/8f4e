@@ -3,7 +3,9 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import demoModeNavigation from './demoModeNavigation';
 import * as codeBlockNavigationModule from './codeBlockNavigation';
 
-import type { State, EventDispatcher, CodeBlockGraphicData } from '../types';
+import { createMockCodeBlock, createMockEventDispatcher, createMockState } from '../helpers/testUtils';
+
+import type { CodeBlockGraphicData } from '../types';
 
 // Mock the navigateToCodeBlockInDirection function
 vi.mock('./codeBlockNavigation', () => ({
@@ -11,8 +13,8 @@ vi.mock('./codeBlockNavigation', () => ({
 }));
 
 describe('demoModeNavigation', () => {
-	let state: State;
-	let events: EventDispatcher;
+	let state: ReturnType<typeof createMockState>;
+	let events: ReturnType<typeof createMockEventDispatcher>;
 	let onInitHandler: (() => void) | undefined;
 	let selectedBlock: CodeBlockGraphicData;
 	let leftBlock: CodeBlockGraphicData;
@@ -28,15 +30,15 @@ describe('demoModeNavigation', () => {
 		// Clear mock calls
 		vi.clearAllMocks();
 
-		// Create mock code blocks
+		// Create mock code blocks using shared utility
 		selectedBlock = createMockCodeBlock(200, 200);
 		leftBlock = createMockCodeBlock(0, 200);
 		rightBlock = createMockCodeBlock(400, 200);
 		upBlock = createMockCodeBlock(200, 0);
 		downBlock = createMockCodeBlock(200, 400);
 
-		// Create mock state with demo mode enabled
-		state = {
+		// Create mock state with demo mode enabled using shared utility
+		state = createMockState({
 			featureFlags: {
 				contextMenu: true,
 				infoOverlay: true,
@@ -52,24 +54,21 @@ describe('demoModeNavigation', () => {
 				activeViewport: {
 					codeBlocks: new Set([selectedBlock, leftBlock, rightBlock, upBlock, downBlock]),
 					viewport: { x: 0, y: 0 },
-				},
+				} as CodeBlockGraphicData,
 				globalViewport: { width: 800, height: 600, vGrid: 8, hGrid: 16 },
 			},
-		} as unknown as State;
+		});
 
 		// Reset handlers
 		onInitHandler = undefined;
 
-		// Create mock event dispatcher
-		events = {
-			on: vi.fn((eventName: string, callback: () => void) => {
-				if (eventName === 'init') {
-					onInitHandler = callback;
-				}
-			}) as EventDispatcher['on'],
-			off: vi.fn(),
-			dispatch: vi.fn(),
-		};
+		// Create mock event dispatcher using shared utility
+		events = createMockEventDispatcher();
+		(events.on as ReturnType<typeof vi.fn>).mockImplementation((eventName: string, callback: () => void) => {
+			if (eventName === 'init') {
+				onInitHandler = callback;
+			}
+		});
 	});
 
 	it('should register an init event handler when demo mode is enabled', () => {
@@ -160,42 +159,3 @@ describe('demoModeNavigation', () => {
 		expect(clearIntervalSpy).toHaveBeenCalled();
 	});
 });
-
-/**
- * Helper to create a mock code block for testing
- */
-function createMockCodeBlock(x: number, y: number): CodeBlockGraphicData {
-	return {
-		x,
-		y,
-		width: 100,
-		height: 100,
-		offsetX: 0,
-		offsetY: 0,
-		code: [],
-		trimmedCode: [],
-		codeColors: [],
-		codeToRender: [],
-		cursor: { col: 0, row: 0, x: x + 50, y: 50 }, // Cursor Y is relative to block (height/2)
-		id: `block-${x}-${y}`,
-		gaps: new Map(),
-		gridX: 0,
-		gridY: 0,
-		isOpen: true,
-		padLength: 1,
-		minGridWidth: 32,
-		viewport: { x: 0, y: 0 },
-		codeBlocks: new Set(),
-		lastUpdated: Date.now(),
-		extras: {
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			bufferPlotters: new Map(),
-			errorMessages: new Map(),
-		},
-	} as CodeBlockGraphicData;
-}
