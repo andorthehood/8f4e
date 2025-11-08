@@ -3,7 +3,7 @@ import { vi, type MockInstance } from 'vitest';
 import compiler from './compiler';
 import save from './save';
 
-import { EventDispatcher } from '../types';
+import { createMockState, createMockEventDispatcher } from '../helpers/testUtils';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 import type { State } from '../types';
@@ -46,47 +46,21 @@ vi.mock('../helpers/base64Decoder', () => {
 
 describe('Runtime-ready project functionality', () => {
 	let mockState: State;
-	let mockEvents: EventDispatcher;
+	let mockEvents: ReturnType<typeof createMockEventDispatcher>;
 	let mockExportFile: MockInstance;
 
 	beforeEach(() => {
 		mockExportFile = vi.fn().mockResolvedValue(undefined);
 
-		mockState = {
+		mockState = createMockState({
 			projectInfo: {
 				title: 'Test Project',
 				author: '',
 				description: '',
 			},
 			compiler: {
-				memoryRef: new WebAssembly.Memory({ initial: 1 }),
 				codeBuffer: new Uint8Array([1, 2, 3, 4, 5]), // Mock compiled WASM
-				isCompiling: false,
-				buildErrors: [],
-				compilationTime: 0,
-				lastCompilationStart: 0,
-				allocatedMemorySize: 0,
-				memoryBuffer: new Int32Array(0),
-				memoryBufferFloat: new Float32Array(0),
 				compiledModules: new Map(),
-				compilerOptions: {
-					startingMemoryWordAddress: 0,
-					memorySizeBytes: 1048576, // 1MB
-					environmentExtensions: {
-						constants: {},
-						ignoredKeywords: [],
-					},
-				},
-				cycleTime: 0,
-				timerAccuracy: 0,
-				binaryAssets: [],
-				runtimeSettings: [
-					{
-						runtime: 'WebWorkerLogicRuntime',
-						sampleRate: 50,
-					},
-				],
-				selectedRuntime: 0,
 			},
 			callbacks: {
 				exportFile: mockExportFile,
@@ -97,53 +71,6 @@ describe('Runtime-ready project functionality', () => {
 				getProject: vi.fn(),
 				compileProject: vi.fn(),
 				loadProjectFromStorage: vi.fn(),
-				loadColorSchemes: vi.fn().mockResolvedValue({
-					default: { text: {}, fill: {}, icons: {} },
-					hackerman: { text: {}, fill: {}, icons: {} },
-					redalert: { text: {}, fill: {}, icons: {} },
-				}),
-			},
-			graphicHelper: {
-				activeViewport: {
-					codeBlocks: new Set(),
-					viewport: { x: 0, y: 0 },
-				},
-				outputsByWordAddress: new Map(),
-				globalViewport: {
-					width: 1024,
-					height: 768,
-					roundedWidth: 1024,
-					roundedHeight: 768,
-					vGrid: 8,
-					hGrid: 16,
-					borderLineCoordinates: {
-						top: { startX: 0, startY: 0, endX: 0, endY: 0 },
-						right: { startX: 0, startY: 0, endX: 0, endY: 0 },
-						bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
-						left: { startX: 0, startY: 0, endX: 0, endY: 0 },
-					},
-					center: { x: 0, y: 0 },
-				},
-				contextMenu: {
-					highlightedItem: 0,
-					itemWidth: 200,
-					items: [],
-					open: false,
-					x: 0,
-					y: 0,
-					menuStack: [],
-				},
-				dialog: {
-					show: false,
-					text: '',
-					title: '',
-					buttons: [],
-				},
-				postProcessEffects: [],
-			},
-			midi: {
-				outputs: [],
-				inputs: [],
 			},
 			editorSettings: {
 				colorScheme: 'default',
@@ -159,15 +86,9 @@ describe('Runtime-ready project functionality', () => {
 				demoMode: false,
 				viewportAnimations: true,
 			},
-			compilationTime: 0,
-			colorSchemes: {},
-		} as unknown as State;
+		});
 
-		mockEvents = {
-			on: vi.fn(),
-			off: vi.fn(),
-			dispatch: vi.fn(),
-		} as EventDispatcher;
+		mockEvents = createMockEventDispatcher();
 	});
 
 	describe('Runtime-ready export', () => {
