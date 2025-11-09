@@ -1,21 +1,13 @@
 import init from '@8f4e/web-ui';
-import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing';
+import { createMockCodeBlock } from '@8f4e/editor-state/testing';
 
+import createMockStateWithColors from '../utils/createMockStateWithColors';
 import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 
 (async function initializeWebUI() {
 	const canvas = document.getElementById('test-canvas') as HTMLCanvasElement;
 
-	const mockState = createMockState({
-		featureFlags: {
-			contextMenu: true,
-			infoOverlay: false,
-			moduleDragging: false,
-			viewportDragging: false,
-			persistentStorage: false,
-			editing: false,
-		},
-	});
+	const mockState = createMockStateWithColors();
 	await init(mockState, canvas);
 
 	const allCharacters = Array.from({ length: 128 }, (_, i) => String.fromCharCode(i));
