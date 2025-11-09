@@ -1,4 +1,5 @@
 import { createMockState } from '@8f4e/editor-state/testing';
+
 import type { State } from '@8f4e/editor-state';
 
 /**
@@ -80,6 +81,8 @@ export default function createMockStateWithColors(overrides: Partial<State> = {}
 			viewportDragging: false,
 			persistentStorage: false,
 			editing: false,
+			demoMode: false,
+			viewportAnimations: false,
 		},
 		...overrides,
 	});
