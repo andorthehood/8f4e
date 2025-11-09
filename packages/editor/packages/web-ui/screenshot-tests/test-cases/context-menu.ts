@@ -1,6 +1,6 @@
 import init from '@8f4e/web-ui';
 
-import generateStateMock from '../utils/generateStateMock';
+import createMockStateWithColors from '../utils/createMockStateWithColors';
 import generateContextMenuMock from '../utils/generateContextMenuMock';
 
 async function initializeWebUI() {
@@ -9,7 +9,7 @@ async function initializeWebUI() {
 		throw new Error('Canvas element not found');
 	}
 
-	const mockState = generateStateMock();
+	const mockState = createMockStateWithColors();
 	const webUI = await init(mockState, canvas);
 
 	mockState.graphicHelper.contextMenu = generateContextMenuMock();
