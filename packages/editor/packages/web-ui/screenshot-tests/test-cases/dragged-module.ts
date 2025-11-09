@@ -1,7 +1,7 @@
 import init from '@8f4e/web-ui';
+import { createMockCodeBlock } from '@8f4e/editor-state/testing';
 
-import generateCodeBlockMock from '../utils/generateCodeBlockMock';
-import generateStateMock from '../utils/generateStateMock';
+import createMockStateWithColors from '../utils/createMockStateWithColors';
 import { generateColorMapWithAllColors } from '../utils/generateColorMapMock';
 
 async function initializeWebUI() {
@@ -10,24 +10,29 @@ async function initializeWebUI() {
 		throw new Error('Canvas element not found');
 	}
 
-	const mockState = generateStateMock();
+	const mockState = createMockStateWithColors();
 	const webUI = await init(mockState, canvas);
 
 	if (mockState.graphicHelper.spriteLookups) {
-		const codeBlockMock = generateCodeBlockMock(
-			[
-				'',
-				'lorem ipsum dolor sit amet',
-				'consectetur adipiscing elit',
-				'sed do eiusmod tempor',
-				'ut enim ad minim veniam',
-				'quis nostrud exercitation',
-				'',
-			],
-			16,
-			16,
-			generateColorMapWithAllColors(mockState.graphicHelper.spriteLookups)
-		);
+		const codeLines = [
+			'',
+			'lorem ipsum dolor sit amet',
+			'consectetur adipiscing elit',
+			'sed do eiusmod tempor',
+			'ut enim ad minim veniam',
+			'quis nostrud exercitation',
+			'',
+		];
+		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
+		
+		const codeBlockMock = createMockCodeBlock({
+			x: 16,
+			y: 16,
+			width: 256,
+			height: codeLines.length * 16,
+			codeToRender,
+			codeColors: generateColorMapWithAllColors(mockState.graphicHelper.spriteLookups),
+		});
 
 		mockState.graphicHelper.draggedCodeBlock = codeBlockMock;
 

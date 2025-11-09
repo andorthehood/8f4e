@@ -3,7 +3,8 @@ import { vi, type MockInstance } from 'vitest';
 import compiler from './compiler';
 import save from './save';
 
-import { createMockState, createMockEventDispatcher } from '../helpers/testUtils';
+import { createMockState } from '../helpers/testUtils';
+import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 import type { State } from '../types';
@@ -46,7 +47,7 @@ vi.mock('../helpers/base64Decoder', () => {
 
 describe('Runtime-ready project functionality', () => {
 	let mockState: State;
-	let mockEvents: ReturnType<typeof createMockEventDispatcher>;
+	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let mockExportFile: MockInstance;
 
 	beforeEach(() => {
@@ -88,7 +89,7 @@ describe('Runtime-ready project functionality', () => {
 			},
 		});
 
-		mockEvents = createMockEventDispatcher();
+		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
 	describe('Runtime-ready export', () => {
