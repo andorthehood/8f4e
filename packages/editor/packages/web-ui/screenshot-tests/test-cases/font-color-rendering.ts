@@ -1,13 +1,21 @@
 import init from '@8f4e/web-ui';
+import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing';
 
-import generateCodeBlockMock from '../utils/generateCodeBlockMock';
-import generateStateMock from '../utils/generateStateMock';
 import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 
 (async function initializeWebUI() {
 	const canvas = document.getElementById('test-canvas') as HTMLCanvasElement;
 
-	const mockState = generateStateMock();
+	const mockState = createMockState({
+		featureFlags: {
+			contextMenu: true,
+			infoOverlay: false,
+			moduleDragging: false,
+			viewportDragging: false,
+			persistentStorage: false,
+			editing: false,
+		},
+	});
 	await init(mockState, canvas);
 
 	const allCharacters = Array.from({ length: 128 }, (_, i) => String.fromCharCode(i));
@@ -41,14 +49,19 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 		}
 
 		const color = mockState.graphicHelper.spriteLookups[colorName];
+		const codeLines = ['', colorName, ...lines.map(line => line.join('')), ''];
+		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
+		
 		mockState.graphicHelper.activeViewport.codeBlocks.add(
-			generateCodeBlockMock(
-				['', colorName, ...lines.map(line => line.join('')), ''],
-				(index % 4) * 8 * 32,
-				16 * 12 * Math.floor(index / 4),
-				generateColorMapWithOneColor(color, 10),
-				`codeBlock${index}`
-			)
+			createMockCodeBlock({
+				id: `codeBlock${index}`,
+				x: (index % 4) * 8 * 32,
+				y: 16 * 12 * Math.floor(index / 4),
+				width: 256,
+				height: codeLines.length * 16,
+				codeToRender,
+				codeColors: generateColorMapWithOneColor(color, 10),
+			})
 		);
 	});
 
