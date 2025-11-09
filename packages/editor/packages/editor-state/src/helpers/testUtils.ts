@@ -1,6 +1,18 @@
-import { vi } from 'vitest';
-
 import type { CodeBlockGraphicData, Viewport, EventDispatcher, State } from '../types';
+
+/**
+ * Creates a no-op function that can be used as a mock in any testing framework
+ */
+function createMockFunction<T extends (...args: any[]) => any>(): T {
+	return (() => {}) as T;
+}
+
+/**
+ * Creates a mock function that returns a resolved promise with the given value
+ */
+function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
+	return async () => returnValue;
+}
 
 /**
  * Helper to create a mock code block for testing with customizable properties.
@@ -160,17 +172,17 @@ export function createMockViewport(x = 0, y = 0, animationDurationMs?: number): 
 
 /**
  * Helper to create a mock EventDispatcher for testing
- * @returns A mocked EventDispatcher with vi.fn() for all methods
+ * @returns A mocked EventDispatcher with no-op functions
  *
  * @example
  * const events = createMockEventDispatcher();
- * expect(events.on).toHaveBeenCalledWith('eventName', expect.any(Function));
+ * // Can be used with any testing framework (Vitest, Jest, Playwright, etc.)
  */
 export function createMockEventDispatcher(): EventDispatcher {
 	return {
-		on: vi.fn(),
-		off: vi.fn(),
-		dispatch: vi.fn(),
+		on: createMockFunction(),
+		off: createMockFunction(),
+		dispatch: createMockFunction(),
 	};
 }
 
@@ -220,9 +232,9 @@ export function createMockState(overrides: Partial<State> = {}): State {
 			selectedRuntime: 0,
 		},
 		callbacks: {
-			requestRuntime: vi.fn(),
-			loadProjectFromStorage: vi.fn().mockResolvedValue(null),
-			loadColorSchemes: vi.fn().mockResolvedValue({
+			requestRuntime: createMockAsyncFunction(() => () => {}),
+			loadProjectFromStorage: createMockAsyncFunction(null),
+			loadColorSchemes: createMockAsyncFunction({
 				default: { text: {}, fill: {}, icons: {} },
 			}),
 		},
