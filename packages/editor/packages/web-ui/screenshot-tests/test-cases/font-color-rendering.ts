@@ -43,7 +43,7 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 		const color = mockState.graphicHelper.spriteLookups[colorName];
 		const codeLines = ['', colorName, ...lines.map(line => line.join('')), ''];
 		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
-		
+
 		mockState.graphicHelper.activeViewport.codeBlocks.add(
 			createMockCodeBlock({
 				id: `codeBlock${index}`,
@@ -56,6 +56,4 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 			})
 		);
 	});
-
-	console.log(mockState.graphicHelper.activeViewport.codeBlocks);
 })();
