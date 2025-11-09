@@ -70,3 +70,62 @@ npm run dev
 ```
 
 Runs TypeScript in watch mode for development.
+
+## Testing
+
+The package uses Vitest for unit tests and Playwright for screenshot tests.
+
+### Running Tests
+
+```bash
+# Run unit tests
+npm test
+
+# Run unit tests with UI
+npm run test:ui
+
+# Run unit tests once (no watch mode)
+npm run test:run
+
+# Run screenshot tests
+npm run test:screenshot
+
+# Update screenshot baselines
+npm run test:screenshot:update
+```
+
+### Writing Tests
+
+When writing unit tests for web-ui components, use the testing utilities provided by `@8f4e/editor-state/testing`:
+
+```typescript
+import { createMockState, createMockCodeBlock, createMockViewport } from '@8f4e/editor-state/testing';
+
+describe('MyFunction', () => {
+  it('should work with mock state', () => {
+    const state = createMockState({
+      projectInfo: { title: 'Test Project' },
+      featureFlags: { viewportAnimations: true }
+    });
+    
+    const block = createMockCodeBlock(100, 200, 150, 150);
+    const viewport = createMockViewport(0, 0, 300);
+    
+    // Use in your tests...
+  });
+});
+```
+
+#### Available Testing Utilities
+
+- **`createMockState(overrides?)`** - Creates a complete State object with sensible defaults. Use partial overrides to customize specific properties.
+- **`createMockCodeBlock(params)`** - Creates mock CodeBlockGraphicData. Supports object overrides or positional parameters (x, y, width, height).
+- **`createMockViewport(x, y, animationDurationMs?)`** - Creates mock Viewport objects.
+- **`createMockEventDispatcher()`** - Creates a mocked EventDispatcher with vi.fn() stubs.
+
+For more details, see [@8f4e/editor-state/TESTING.md](../editor-state/TESTING.md).
+
+### Test Organization
+
+- Unit tests: Place `.test.ts` files next to the source files they test in `src/`
+- Screenshot tests: Located in `screenshot-tests/` and run with Playwright
