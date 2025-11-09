@@ -1,7 +1,8 @@
 import { vi } from 'vitest';
 
-import type { EventDispatcher } from '../types';
 import { createMockEventDispatcher } from './testUtils';
+
+import type { EventDispatcher } from '../types';
 
 /**
  * Wraps a plain event dispatcher with vitest mocks for testing.
@@ -11,8 +12,8 @@ import { createMockEventDispatcher } from './testUtils';
 export function createMockEventDispatcherWithVitest(): EventDispatcher {
 	const baseDispatcher = createMockEventDispatcher();
 	return {
-		on: vi.fn(baseDispatcher.on),
-		off: vi.fn(baseDispatcher.off),
-		dispatch: vi.fn(baseDispatcher.dispatch),
+		on: vi.fn(baseDispatcher.on) as EventDispatcher['on'],
+		off: vi.fn(baseDispatcher.off) as EventDispatcher['off'],
+		dispatch: vi.fn(baseDispatcher.dispatch) as EventDispatcher['dispatch'],
 	};
 }
