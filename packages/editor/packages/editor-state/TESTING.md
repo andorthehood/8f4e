@@ -82,7 +82,7 @@ expect(events.on).toHaveBeenCalledWith('eventName', expect.any(Function));
 Create comprehensive State objects with sensible defaults:
 
 ```typescript
-const state = createMockState(); // Uses all defaults including a default color scheme
+const state = createMockState(); // Uses all defaults
 
 const state = createMockState({
   projectInfo: { title: 'My Project' },
@@ -90,17 +90,6 @@ const state = createMockState({
     codeBuffer: new Uint8Array([1, 2, 3]) 
   }
 });
-
-// Override color schemes
-const state = createMockState({
-  colorSchemes: {
-    custom: {
-      text: { code: '#00ff00', ... },
-      fill: { background: '#000000', ... },
-      icons: { arrow: '#ffffff', ... }
-    }
-  }
-});
 ```
 
-The `createMockState` function uses deep merging, so you only need to specify the properties you want to override. It includes a comprehensive default color scheme that can be customized by passing overrides.
+The `createMockState` function uses deep merging, so you only need to specify the properties you want to override.
