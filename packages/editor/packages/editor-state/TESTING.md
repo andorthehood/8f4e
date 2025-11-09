@@ -1,6 +1,6 @@
 # Testing Utilities
 
-The `@8f4e/editor-state` package exports testing utilities that can be used in tests for this package and other packages.
+The `@8f4e/editor-state` package exports testing utilities that can be used in tests for this package and other packages. These utilities are **framework-agnostic** and work with any testing framework (Vitest, Jest, Playwright, etc.).
 
 ## Usage
 
@@ -18,7 +18,7 @@ import {
 ## Example: Using in web-ui tests
 
 ```typescript
-// In packages/editor/packages/web-ui/src/some.test.ts
+// Works with any testing framework (Vitest, Playwright, Jest, etc.)
 import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing';
 
 describe('MyComponent', () => {
@@ -68,13 +68,13 @@ const viewport = createMockViewport(100, 200, 500); // with animation duration
 
 ### createMockEventDispatcher
 
-Create a mock EventDispatcher with vi.fn() stubs:
+Create a mock EventDispatcher with no-op functions (framework-agnostic):
 
 ```typescript
 const events = createMockEventDispatcher();
 
-// All methods are mocked with vi.fn()
-expect(events.on).toHaveBeenCalledWith('eventName', expect.any(Function));
+// All methods are simple no-op functions that work with any testing framework
+// You can wrap them with your framework's spy/mock utilities if needed
 ```
 
 ### createMockState
