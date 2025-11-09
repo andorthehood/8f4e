@@ -1,12 +1,20 @@
 import init from '@8f4e/web-ui';
+import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing';
 
-import generateCodeBlockMock from '../utils/generateCodeBlockMock';
-import generateStateMock from '../utils/generateStateMock';
 import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 
 (async function initializeWebUI() {
 	const canvas = document.getElementById('test-canvas') as HTMLCanvasElement;
-	const mockState = generateStateMock();
+	const mockState = createMockState({
+		featureFlags: {
+			contextMenu: true,
+			infoOverlay: false,
+			moduleDragging: false,
+			viewportDragging: false,
+			persistentStorage: false,
+			editing: false,
+		},
+	});
 	const webUI = await init(mockState, canvas);
 
 	const buttons = new Map(
@@ -24,28 +32,54 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 	);
 
 	if (mockState.graphicHelper.spriteLookups) {
-		const codeBlockMock = generateCodeBlockMock(
-			['selected code block', '', '', '', '', '', '', '', ''],
-			16,
-			16,
-			generateColorMapWithOneColor(mockState.graphicHelper.spriteLookups.fontCode, 10),
-			'',
-			buttons
-		);
+		const lines1 = ['selected code block', '', '', '', '', '', '', '', ''];
+		const codeToRender1 = lines1.map(line => line.split('').map(char => char.charCodeAt(0)));
+		
+		const codeBlockMock = createMockCodeBlock({
+			x: 16,
+			y: 16,
+			width: 256,
+			height: lines1.length * 16,
+			codeToRender: codeToRender1,
+			codeColors: generateColorMapWithOneColor(mockState.graphicHelper.spriteLookups.fontCode, 10),
+			extras: {
+				inputs: new Map(),
+				outputs: new Map(),
+				debuggers: new Map(),
+				switches: new Map(),
+				buttons,
+				pianoKeyboards: new Map(),
+				bufferPlotters: new Map(),
+				errorMessages: new Map(),
+			},
+		});
 
 		mockState.graphicHelper.selectedCodeBlock = codeBlockMock;
 
 		mockState.graphicHelper.activeViewport.codeBlocks.add(codeBlockMock);
 
+		const lines2 = ['not selected code block', '', '', '', '', '', '', '', ''];
+		const codeToRender2 = lines2.map(line => line.split('').map(char => char.charCodeAt(0)));
+		
 		mockState.graphicHelper.activeViewport.codeBlocks.add(
-			generateCodeBlockMock(
-				['not selected code block', '', '', '', '', '', '', '', ''],
-				288,
-				16,
-				generateColorMapWithOneColor(mockState.graphicHelper.spriteLookups.fontCode, 10),
-				'',
-				buttons
-			)
+			createMockCodeBlock({
+				x: 288,
+				y: 16,
+				width: 256,
+				height: lines2.length * 16,
+				codeToRender: codeToRender2,
+				codeColors: generateColorMapWithOneColor(mockState.graphicHelper.spriteLookups.fontCode, 10),
+				extras: {
+					inputs: new Map(),
+					outputs: new Map(),
+					debuggers: new Map(),
+					switches: new Map(),
+					buttons,
+					pianoKeyboards: new Map(),
+					bufferPlotters: new Map(),
+					errorMessages: new Map(),
+				},
+			})
 		);
 	}
 

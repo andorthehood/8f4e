@@ -1,6 +1,6 @@
 import init from '@8f4e/web-ui';
+import { createMockState } from '@8f4e/editor-state/testing';
 
-import generateStateMock from '../utils/generateStateMock';
 import generateContextMenuMock from '../utils/generateContextMenuMock';
 
 async function initializeWebUI() {
@@ -9,7 +9,16 @@ async function initializeWebUI() {
 		throw new Error('Canvas element not found');
 	}
 
-	const mockState = generateStateMock();
+	const mockState = createMockState({
+		featureFlags: {
+			contextMenu: true,
+			infoOverlay: false,
+			moduleDragging: false,
+			viewportDragging: false,
+			persistentStorage: false,
+			editing: false,
+		},
+	});
 	const webUI = await init(mockState, canvas);
 
 	mockState.graphicHelper.contextMenu = generateContextMenuMock();
