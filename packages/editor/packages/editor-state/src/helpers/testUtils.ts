@@ -3,7 +3,7 @@ import type { CodeBlockGraphicData, Viewport, EventDispatcher, State } from '../
 /**
  * Creates a no-op function that can be used as a mock in any testing framework
  */
-function createMockFunction<T extends (...args: any[]) => any>(): T {
+function createMockFunction<T extends (...args: unknown[]) => unknown>(): T {
 	return (() => {}) as T;
 }
 
@@ -234,9 +234,6 @@ export function createMockState(overrides: Partial<State> = {}): State {
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
 			loadProjectFromStorage: createMockAsyncFunction(null),
-			loadColorSchemes: createMockAsyncFunction({
-				default: { text: {}, fill: {}, icons: {} },
-			}),
 		},
 		graphicHelper: {
 			activeViewport: {
