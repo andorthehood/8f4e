@@ -3,7 +3,7 @@ title: 'TODO: Make WebAssembly memory sizing project-specific'
 priority: Medium
 effort: 2-3d
 created: 2025-11-05
-status: Open
+status: Completed
 completed: null
 ---
 
