@@ -3,7 +3,8 @@ import { StateManager } from '@8f4e/state-manager';
 
 import loader from './loader';
 
-import { createMockState, createMockEventDispatcher } from '../helpers/testUtils';
+import { createMockState } from '../helpers/testUtils';
+import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
 
 import type { State, Project } from '../types';
@@ -11,7 +12,7 @@ import type { State, Project } from '../types';
 describe('Loader - Project-specific memory configuration', () => {
 	let mockState: State;
 	let mockStore: StateManager<State>;
-	let mockEvents: ReturnType<typeof createMockEventDispatcher>;
+	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 
 	beforeEach(() => {
 		mockState = createMockState();
@@ -21,7 +22,7 @@ describe('Loader - Project-specific memory configuration', () => {
 			set: vi.fn(),
 		} as unknown as StateManager<State>;
 
-		mockEvents = createMockEventDispatcher();
+		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
 	it('should use default memory settings when project has no memory configuration', async () => {
