@@ -2,7 +2,8 @@ import { vi, type MockInstance } from 'vitest';
 
 import runtimeEffect, { RuntimeType } from './runtime';
 
-import { createMockState, createMockEventDispatcher } from '../helpers/testUtils';
+import { createMockState } from '../helpers/testUtils';
+import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
 
 describe('Runtime System', () => {
 	describe('RuntimeType', () => {
@@ -74,7 +75,7 @@ describe('Runtime System', () => {
 				},
 			});
 
-			const events = createMockEventDispatcher();
+			const events = createMockEventDispatcherWithVitest();
 
 			await runtimeEffect(state, events);
 

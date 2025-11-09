@@ -1,35 +1,16 @@
 import type { CodeBlockGraphicData, Viewport, EventDispatcher, State } from '../types';
 
-// Conditional import of vitest for framework-agnostic support
-let vitestMock: any;
-try {
-	// Try to import vitest if available (for internal tests)
-	vitestMock = require('vitest');
-} catch {
-	// Vitest not available, will use plain functions
-	vitestMock = null;
-}
-
 /**
- * Creates a mock function that works with any testing framework.
- * Uses vitest's vi.fn() if available (for internal tests), otherwise returns a plain no-op function.
- * This allows the utilities to work both in vitest tests and in other frameworks like Playwright.
+ * Creates a no-op function that can be used as a mock in any testing framework
  */
 function createMockFunction<T extends (...args: unknown[]) => unknown>(): T {
-	if (vitestMock?.vi?.fn) {
-		return vitestMock.vi.fn() as T;
-	}
 	return (() => {}) as T;
 }
 
 /**
- * Creates a mock function that returns a resolved promise with the given value.
- * Uses vitest's mockResolvedValue if available, otherwise returns a plain async function.
+ * Creates a mock function that returns a resolved promise with the given value
  */
 function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
-	if (vitestMock?.vi?.fn) {
-		return vitestMock.vi.fn().mockResolvedValue(returnValue);
-	}
 	return async () => returnValue;
 }
 
