@@ -79,12 +79,14 @@ export function calculateAnimatedViewport(
 
 		// Interpolate position with easing
 		const easedProgress = easeInOutCubic(progress);
-		const x =
+		const x = Math.round(
 			animationState.current.startViewport.x +
-			(animationState.current.targetViewport.x - animationState.current.startViewport.x) * easedProgress;
-		const y =
+				(animationState.current.targetViewport.x - animationState.current.startViewport.x) * easedProgress
+		);
+		const y = Math.round(
 			animationState.current.startViewport.y +
-			(animationState.current.targetViewport.y - animationState.current.startViewport.y) * easedProgress;
+				(animationState.current.targetViewport.y - animationState.current.startViewport.y) * easedProgress
+		);
 
 		return { x, y };
 	}
