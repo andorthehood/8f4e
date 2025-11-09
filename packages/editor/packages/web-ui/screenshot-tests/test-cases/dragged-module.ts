@@ -1,6 +1,7 @@
 import init from '@8f4e/web-ui';
-import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing';
+import { createMockCodeBlock } from '@8f4e/editor-state/testing';
 
+import createMockStateWithColors from '../utils/createMockStateWithColors';
 import { generateColorMapWithAllColors } from '../utils/generateColorMapMock';
 
 async function initializeWebUI() {
@@ -9,16 +10,7 @@ async function initializeWebUI() {
 		throw new Error('Canvas element not found');
 	}
 
-	const mockState = createMockState({
-		featureFlags: {
-			contextMenu: true,
-			infoOverlay: false,
-			moduleDragging: false,
-			viewportDragging: false,
-			persistentStorage: false,
-			editing: false,
-		},
-	});
+	const mockState = createMockStateWithColors();
 	const webUI = await init(mockState, canvas);
 
 	if (mockState.graphicHelper.spriteLookups) {
