@@ -39,6 +39,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 084 | Add Per-Code-Block Theme Variants | 🟡 | 2-3d | 2025-11-05 | Allow each color scheme to expose three block palettes selectable per code block |
 | 085 | Highlight Paired Block Scopes | 🟡 | 2-3d | 2025-11-05 | Draw theme-colored rectangles behind start/end block pairs to show scope boundaries |
 | 079 | Add Directional Navigation Function for Code Blocks | 🟡 | 4-6h | 2025-11-02 | Implemented spatial navigation algorithm for code blocks supporting keyboard-based navigation between blocks in all four directions |
+| 093 | Add Typecheck GitHub Action | 🟡 | 2-3h | 2025-11-09 | Add CI workflow that runs `npm run typecheck` (Nx run-many) on push/PR to main and staging to block type regressions |
 
 ### 🟢 Low Priority
 
