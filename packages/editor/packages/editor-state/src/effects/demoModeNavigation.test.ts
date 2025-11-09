@@ -3,7 +3,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import demoModeNavigation from './demoModeNavigation';
 import * as codeBlockNavigationModule from './codeBlockNavigation';
 
-import { createMockCodeBlock, createMockEventDispatcher, createMockState } from '../helpers/testUtils';
+import { createMockCodeBlock, createMockState } from '../helpers/testUtils';
+import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
 
 import type { CodeBlockGraphicData } from '../types';
 
@@ -14,7 +15,7 @@ vi.mock('./codeBlockNavigation', () => ({
 
 describe('demoModeNavigation', () => {
 	let state: ReturnType<typeof createMockState>;
-	let events: ReturnType<typeof createMockEventDispatcher>;
+	let events: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let onInitHandler: (() => void) | undefined;
 	let selectedBlock: CodeBlockGraphicData;
 	let leftBlock: CodeBlockGraphicData;
@@ -63,7 +64,7 @@ describe('demoModeNavigation', () => {
 		onInitHandler = undefined;
 
 		// Create mock event dispatcher using shared utility
-		events = createMockEventDispatcher();
+		events = createMockEventDispatcherWithVitest();
 		(events.on as ReturnType<typeof vi.fn>).mockImplementation((eventName: string, callback: () => void) => {
 			if (eventName === 'init') {
 				onInitHandler = callback;
