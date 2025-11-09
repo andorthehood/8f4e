@@ -19,6 +19,7 @@ export default defineConfig({
 			maxDiffPixels: 0,
 		},
 	},
+	snapshotPathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}{ext}',
 	// Configure web server for testing
 	webServer: {
 		command: 'npm run dev:test',
