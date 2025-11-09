@@ -39,7 +39,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 084 | Add Per-Code-Block Theme Variants | 🟡 | 2-3d | 2025-11-05 | Allow each color scheme to expose three block palettes selectable per code block |
 | 085 | Highlight Paired Block Scopes | 🟡 | 2-3d | 2025-11-05 | Draw theme-colored rectangles behind start/end block pairs to show scope boundaries |
 | 079 | Add Directional Navigation Function for Code Blocks | 🟡 | 4-6h | 2025-11-02 | Implemented spatial navigation algorithm for code blocks supporting keyboard-based navigation between blocks in all four directions |
-| 092 | Use Editor State Testing Utilities in Web-UI Tests | 🟡 | 4-6h | 2025-11-09 | Import and use testing utilities from @8f4e/editor-state/testing in web-ui tests to avoid duplicating mock creation logic and maintain consistency |
 
 ### 🟢 Low Priority
 
@@ -56,6 +55,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 092 | Use Editor State Testing Utilities in Web-UI Tests | 🟡 | 4-6h | 2025-11-09 | Established testing pattern for web-ui by creating example unit tests using @8f4e/editor-state/testing utilities, documented patterns in README, and configured vitest to use node environment |
 | 089 | Remove state.project Redundancy | 🟡 | 3-5d | 2025-11-06 | Successfully refactored editor state to eliminate duplicate data structures by creating dedicated serialization layer, migrating all code to use new state locations (projectInfo, compiler.*, graphicHelper.*), and establishing single source of truth for code blocks |
 | 086 | Remove Legacy Code Block Collapse Remnants | 🟡 | 1-2d | 2025-11-05 | Removed all legacy collapse-related code including `isOpen` fields, `codeBlockOpener` effect, conditional rendering, and 140+ occurrences in example files |
 | 083 | Cursor-Aware Horizontal Navigation | 🟡 | 1 day | 2025-11-03 | Implemented cursor-aware horizontal navigation for code blocks to improve spatial intuition when navigating between tall blocks and multiple neighbors |
