@@ -3,8 +3,8 @@ title: 'TODO: Use Editor State Testing Utilities in Web-UI Tests'
 priority: Medium
 effort: 4-6 hours
 created: 2025-11-09
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-09
 ---
 
 # TODO: Use Editor State Testing Utilities in Web-UI Tests
