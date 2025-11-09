@@ -2,13 +2,14 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import codeBlockNavigation from './codeBlockNavigation';
 
-import { createMockCodeBlock, createMockEventDispatcher, createMockState } from '../helpers/testUtils';
+import { createMockCodeBlock, createMockState } from '../helpers/testUtils';
+import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
 
 import type { InternalKeyboardEvent, CodeBlockGraphicData } from '../types';
 
 describe('codeBlockNavigation', () => {
 	let state: ReturnType<typeof createMockState>;
-	let events: ReturnType<typeof createMockEventDispatcher>;
+	let events: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let onKeydownHandler: (event: InternalKeyboardEvent) => void;
 	let selectedBlock: CodeBlockGraphicData;
 	let leftBlock: CodeBlockGraphicData;
@@ -51,7 +52,7 @@ describe('codeBlockNavigation', () => {
 		});
 
 		// Create mock event dispatcher using shared utility
-		events = createMockEventDispatcher();
+		events = createMockEventDispatcherWithVitest();
 		(events.on as ReturnType<typeof vi.fn>).mockImplementation(
 			(eventName: string, callback: ((event: InternalKeyboardEvent) => void) | (() => void)) => {
 				if (eventName === 'keydown') {
