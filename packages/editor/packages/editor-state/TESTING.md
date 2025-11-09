@@ -2,6 +2,13 @@
 
 The `@8f4e/editor-state` package exports testing utilities that can be used in tests for this package and other packages. These utilities are **framework-agnostic** and work with any testing framework (Vitest, Jest, Playwright, etc.).
 
+## Framework Compatibility
+
+The utilities automatically detect and use Vitest's mocking capabilities when available (for internal editor-state tests), but fall back to plain JavaScript functions when used in other contexts (like Playwright tests). This ensures:
+
+- **Internal tests** (using Vitest) get full mock functionality with assertions and call tracking
+- **External tests** (using Playwright, Jest, etc.) get simple mock functions that work without dependencies
+
 ## Usage
 
 Import the testing utilities using the `/testing` sub-path export:
