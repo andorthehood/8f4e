@@ -9,7 +9,7 @@ import type { State, EventDispatcher, CodeBlockGraphicData } from '../../../../t
 describe('switch interaction', () => {
 	let mockState: State;
 	let mockEvents: EventDispatcher;
-	let onCallbacks: Map<string, Function>;
+	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
@@ -31,12 +31,12 @@ describe('switch interaction', () => {
 						},
 					},
 				},
-				memoryBuffer: new Float32Array(100),
+				memoryBuffer: new Int32Array(100),
 			},
-		} as any);
+		});
 
 		mockEvents = {
-			on: vi.fn((event: string, callback: Function) => {
+			on: vi.fn((event: string, callback: (...args: unknown[]) => void) => {
 				onCallbacks.set(event, callback);
 			}),
 			off: vi.fn(),

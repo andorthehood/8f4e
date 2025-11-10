@@ -5,6 +5,7 @@ import updateSwitchesGraphicData from './updateGraphicData';
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
+import type { DataStructure } from '@8f4e/compiler';
 
 describe('updateSwitchesGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -25,7 +26,7 @@ describe('updateSwitchesGraphicData', () => {
 					hGrid: 20,
 				},
 			},
-		} as any);
+		});
 	});
 
 	it('should add switch to graphicData extras', () => {
@@ -43,7 +44,16 @@ describe('updateSwitchesGraphicData', () => {
 	});
 
 	it('should clear existing switches before updating', () => {
-		mockGraphicData.extras.switches.set('oldSwitch', {} as any);
+		mockGraphicData.extras.switches.set('oldSwitch', {
+			width: 0,
+			height: 0,
+			x: 0,
+			y: 0,
+			id: 'oldSwitch',
+			onValue: 1,
+			offValue: 0,
+			memory: { wordAlignedAddress: 0 } as DataStructure,
+		});
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 

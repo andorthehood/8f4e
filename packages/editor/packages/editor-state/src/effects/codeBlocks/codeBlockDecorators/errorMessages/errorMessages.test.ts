@@ -32,7 +32,7 @@ describe('errorMessages', () => {
 					},
 				],
 			},
-		} as any);
+		});
 	});
 
 	it('should add error message to graphicData extras', () => {

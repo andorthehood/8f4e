@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { parseBufferPlotters } from './codeParser';
 
 describe('parseBufferPlotters', () => {
@@ -98,4 +99,3 @@ describe('parseBufferPlotters', () => {
 		]);
 	});
 });
-
