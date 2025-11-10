@@ -5,6 +5,8 @@ export const vitestPreset = defineConfig({
 	test: {
 		globals: true,
 		environment: 'node',
+		testTimeout: 30000, // 30 seconds max per test
+		hookTimeout: 10000, // 10 seconds max for beforeEach/afterEach
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'json', 'html'],
