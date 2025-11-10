@@ -52,18 +52,18 @@ describe('errorMessages', () => {
 
 	it('should handle multiple error messages', () => {
 		mockState.compiler.buildErrors = [
-		{
-			moduleId: 'test-block',
-			lineNumber: 1,
-			code: 0,
-			message: 'First error',
-		},
-		{
-			moduleId: 'test-block',
-			lineNumber: 3,
-			code: 0,
-			message: 'Second error',
-		},
+			{
+				moduleId: 'test-block',
+				lineNumber: 1,
+				code: 0,
+				message: 'First error',
+			},
+			{
+				moduleId: 'test-block',
+				lineNumber: 3,
+				code: 0,
+				message: 'Second error',
+			},
 		];
 
 		errorMessages(mockGraphicData, mockState);
@@ -74,18 +74,18 @@ describe('errorMessages', () => {
 
 	it('should ignore errors from different modules', () => {
 		mockState.compiler.buildErrors = [
-		{
-			moduleId: 'test-block',
-			lineNumber: 1,
-			code: 0,
-			message: 'My error',
-		},
-		{
-			moduleId: 'other-block',
-			lineNumber: 2,
-			code: 0,
-			message: 'Other error',
-		},
+			{
+				moduleId: 'test-block',
+				lineNumber: 1,
+				code: 0,
+				message: 'My error',
+			},
+			{
+				moduleId: 'other-block',
+				lineNumber: 2,
+				code: 0,
+				message: 'Other error',
+			},
 		];
 
 		errorMessages(mockGraphicData, mockState);
@@ -118,12 +118,12 @@ describe('errorMessages', () => {
 	it('should position errors correctly with gaps', () => {
 		mockGraphicData.gaps = new Map([[1, { size: 1 }]]); // Gap at line 1
 		mockState.compiler.buildErrors = [
-		{
-			moduleId: 'test-block',
-			lineNumber: 2,
-			code: 0,
-			message: 'Error after gap',
-		},
+			{
+				moduleId: 'test-block',
+				lineNumber: 2,
+				code: 0,
+				message: 'Error after gap',
+			},
 		];
 
 		errorMessages(mockGraphicData, mockState);
