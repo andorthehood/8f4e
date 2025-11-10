@@ -5,6 +5,7 @@ import updateInputsGraphicData from './updateGraphicData';
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
+import { MemoryTypes } from '@8f4e/compiler';
 
 describe('updateInputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -37,7 +38,7 @@ describe('updateInputsGraphicData', () => {
 					},
 				},
 			},
-		} as any);
+		});
 	});
 
 	it('should add input to graphicData extras', () => {
@@ -52,7 +53,7 @@ describe('updateInputsGraphicData', () => {
 
 		const input = mockGraphicData.extras.inputs.get('input1');
 		// Exclude codeBlock from snapshot as it creates circular reference
-		const { codeBlock, ...inputWithoutCodeBlock } = input || {};
+		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
 		expect(input?.codeBlock).toBe(mockGraphicData);
 	});
@@ -66,7 +67,15 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('should clear existing inputs before updating', () => {
-		mockGraphicData.extras.inputs.set('oldInput', {} as any);
+		mockGraphicData.extras.inputs.set('oldInput', {
+			codeBlock: mockGraphicData,
+			width: 0,
+			height: 0,
+			x: 0,
+			y: 0,
+			id: 'oldInput',
+			wordAlignedAddress: 0,
+		});
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
@@ -78,14 +87,24 @@ describe('updateInputsGraphicData', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['input2'] = {
 			wordAlignedAddress: 6,
 			byteAddress: 24,
-		} as any;
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.float,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: false,
+			id: 'input2',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.extras.inputs.size).toBe(2);
 		// Exclude codeBlock references from snapshot
 		const entries = Array.from(mockGraphicData.extras.inputs.entries()).map(([key, value]) => {
-			const { codeBlock, ...rest } = value;
+			const { codeBlock: _codeBlock, ...rest } = value;
 			return [key, rest];
 		});
 		expect(entries).toMatchSnapshot();
@@ -96,12 +115,22 @@ describe('updateInputsGraphicData', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['input1'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,
-		} as any;
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'input1',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
 		const input = mockGraphicData.extras.inputs.get('input1');
-		const { codeBlock, ...inputWithoutCodeBlock } = input || {};
+		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
 	});
 });
