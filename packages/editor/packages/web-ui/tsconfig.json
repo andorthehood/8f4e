@@ -19,15 +19,7 @@
 		"noEmit": false,
 		"declaration": true,
 		"declarationMap": true,
-		"sourceMap": true,
-		"paths": {
-			"@8f4e/editor-state-types": [
-				"../../editor-state-types/dist/index.d.ts"
-			],
-			"@8f4e/sprite-generator": [
-				"../sprite-generator/dist/index.d.ts"
-			]
-		}
+		"sourceMap": true
 	},
 	"include": [
 		"src/**/*.ts"
