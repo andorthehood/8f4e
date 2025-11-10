@@ -1,12 +1,12 @@
 import { Engine } from 'glugglug';
 
-import drawConnectors from './extras/connectors';
-import drawPlotters from './extras/plotters';
-import drawDebuggers from './extras/debuggers';
-import drawSwitches from './extras/switches';
-import drawButtons from './extras/buttons';
-import drawErrorMessages from './extras/errorMessages';
-import drawPianoKeyboards from './extras/pianoKeyboards';
+import drawConnectors from './codeBlockDecorators/connectors';
+import drawPlotters from './codeBlockDecorators/plotters';
+import drawDebuggers from './codeBlockDecorators/debuggers';
+import drawSwitches from './codeBlockDecorators/switches';
+import drawButtons from './codeBlockDecorators/buttons';
+import drawErrorMessages from './codeBlockDecorators/errorMessages';
+import drawPianoKeyboards from './codeBlockDecorators/pianoKeyboards';
 import { drawArrow } from './drawArrow';
 
 import type { State } from '@8f4e/editor-state';
