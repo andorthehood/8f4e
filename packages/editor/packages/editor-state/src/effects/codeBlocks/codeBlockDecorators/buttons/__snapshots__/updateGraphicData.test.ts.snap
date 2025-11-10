@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`updateButtonsGraphicData > should calculate correct dimensions and position 1`] = `
+{
+  "height": 20,
+  "id": "btn1",
+  "offValue": 0,
+  "onValue": 1,
+  "width": 40,
+  "x": 60,
+  "y": 0,
+}
+`;
+
+exports[`updateButtonsGraphicData > should handle multiple buttons 1`] = `
+[
+  [
+    "btn1",
+    {
+      "height": 20,
+      "id": "btn1",
+      "offValue": 0,
+      "onValue": 1,
+      "width": 40,
+      "x": 60,
+      "y": 0,
+    },
+  ],
+  [
+    "btn2",
+    {
+      "height": 20,
+      "id": "btn2",
+      "offValue": 5,
+      "onValue": 10,
+      "width": 40,
+      "x": 60,
+      "y": 20,
+    },
+  ],
+]
+`;
+
+exports[`updateButtonsGraphicData > should position buttons at correct y coordinate based on line number 1`] = `
+{
+  "height": 20,
+  "id": "btn1",
+  "offValue": 0,
+  "onValue": 1,
+  "width": 40,
+  "x": 60,
+  "y": 40,
+}
+`;
