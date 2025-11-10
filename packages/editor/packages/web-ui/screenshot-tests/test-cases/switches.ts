@@ -26,7 +26,7 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 	if (mockState.graphicHelper.spriteLookups) {
 		const lines1 = ['selected code block', '', '', '', '', '', '', '', ''];
 		const codeToRender1 = lines1.map(line => line.split('').map(char => char.charCodeAt(0)));
-		
+
 		const codeBlockMock = createMockCodeBlock({
 			x: 16,
 			y: 16,
@@ -52,7 +52,7 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 
 		const lines2 = ['not selected code block', '', '', '', '', '', '', '', ''];
 		const codeToRender2 = lines2.map(line => line.split('').map(char => char.charCodeAt(0)));
-		
+
 		mockState.graphicHelper.activeViewport.codeBlocks.add(
 			createMockCodeBlock({
 				x: 288,
