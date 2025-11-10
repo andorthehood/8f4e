@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { MemoryTypes } from '@8f4e/compiler';
 
 import updateBufferPlottersGraphicData from './updateGraphicData';
 
@@ -6,7 +7,6 @@ import { createMockCodeBlock, createMockState } from '../../../../helpers/testUt
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '../../../../types';
 import type { DataStructure } from '@8f4e/compiler';
-import { MemoryTypes } from '@8f4e/compiler';
 
 describe('updateBufferPlottersGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;

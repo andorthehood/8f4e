@@ -5,7 +5,6 @@ import updateSwitchesGraphicData from './updateGraphicData';
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
-import type { DataStructure } from '@8f4e/compiler';
 
 describe('updateSwitchesGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
