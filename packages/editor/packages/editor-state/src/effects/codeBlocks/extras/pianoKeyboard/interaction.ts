@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import { CodeBlockClickEvent } from '../../codeBlockDragger';
 import { EventDispatcher } from '../../../../types';
 import findPianoKeyAtViewportCoordinates from '../../../../helpers/findPianoKeyboardAtViewportCoordinates';
@@ -23,7 +25,8 @@ function removeCode(code: string[], pressedKeysListMemoryId: string) {
 	return replaceCode(code, pattern, []);
 }
 
-export default function pianoKeyboard(state: State, events: EventDispatcher): () => void {
+export default function pianoKeyboard(store: StateManager<State>, events: EventDispatcher): () => void {
+	const state = store.getState();
 	const onCodeBlockClick = function ({ x, y, codeBlock }: CodeBlockClickEvent) {
 		const keyboard = findPianoKeyAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
 
@@ -60,7 +63,7 @@ export default function pianoKeyboard(state: State, events: EventDispatcher): ()
 			)
 		);
 
-		events.dispatch('codeChange');
+		store.set('graphicHelper.selectedCodeBlock.code', codeBlock.code);
 	};
 
 	events.on('codeBlockClick', onCodeBlockClick);
