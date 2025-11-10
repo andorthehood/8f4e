@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import bufferPlotters from './extras/bufferPlotters/codeParser';
 import buttons from './extras/buttons/codeParser';
 import debuggers from './extras/debuggers/codeParser';
@@ -12,17 +14,8 @@ import { CodeBlockClickEvent } from './codeBlockDragger';
 import { CodeBlockAddedEvent } from './codeBlockCreator';
 
 import { EventDispatcher } from '../../types';
-import {
-	backSpace,
-	enter,
-	gapCalculator,
-	generateCodeColorMap,
-	moveCaret,
-	reverseGapCalculator,
-	type,
-} from '../../helpers/editor';
+import { gapCalculator, generateCodeColorMap, moveCaret, reverseGapCalculator } from '../../helpers/editor';
 import { getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
-import { InternalKeyboardEvent } from '../../types';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
@@ -108,7 +101,8 @@ const instructions = [
 	'initBlockEnd',
 ];
 
-export default function graphicHelper(state: State, events: EventDispatcher) {
+export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
+	const state = store.getState();
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
 		const [row, col] = moveCaret(
 			codeBlock.code,
@@ -174,78 +168,6 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 		graphicData.id = getModuleId(graphicData.code) || '';
 	};
 
-	const onKeydown = function (event: InternalKeyboardEvent) {
-		if (!state.graphicHelper.selectedCodeBlock) {
-			return;
-		}
-
-		const codeBlock = state.graphicHelper.selectedCodeBlock;
-
-		let newPosition: [number, number] = [codeBlock.cursor.row, codeBlock.cursor.col];
-
-		switch (event.key) {
-			case undefined:
-				break;
-			case 'ArrowLeft':
-			case 'ArrowUp':
-			case 'ArrowRight':
-			case 'ArrowDown':
-				newPosition = moveCaret(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.key);
-				codeBlock.cursor.row = newPosition[0];
-				codeBlock.cursor.col = newPosition[1];
-				break;
-			case 'Backspace':
-				// Check if editing is enabled before modifying code
-				if (!state.featureFlags.editing) {
-					return;
-				}
-				// eslint-disable-next-line no-case-declarations
-				const bp = backSpace(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
-				codeBlock.cursor.row = bp.row;
-				codeBlock.cursor.col = bp.col;
-
-				codeBlock.code = bp.code;
-
-				codeBlock.lastUpdated = Date.now();
-
-				events.dispatch('codeChange');
-				break;
-			case 'Enter':
-				// Check if editing is enabled before modifying code
-				if (!state.featureFlags.editing) {
-					return;
-				}
-				// eslint-disable-next-line no-case-declarations
-				const ent = enter(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
-				codeBlock.cursor.row = ent.row;
-				codeBlock.cursor.col = ent.col;
-
-				codeBlock.code = ent.code;
-				codeBlock.lastUpdated = Date.now();
-
-				events.dispatch('codeChange');
-				break;
-			default:
-				if (event?.key.length === 1) {
-					// Check if editing is enabled before typing
-					if (!state.featureFlags.editing) {
-						return;
-					}
-					// eslint-disable-next-line no-case-declarations
-					const bp = type(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.key);
-					codeBlock.cursor.row = bp.row;
-					codeBlock.cursor.col = bp.col;
-
-					codeBlock.code = bp.code;
-					codeBlock.lastUpdated = Date.now();
-
-					events.dispatch('codeChange');
-				}
-		}
-
-		updateGraphics(codeBlock);
-	};
-
 	events.on('buildError', updateGraphicsAll);
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
@@ -253,5 +175,9 @@ export default function graphicHelper(state: State, events: EventDispatcher) {
 	events.on<CodeBlockAddedEvent>('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('init', updateGraphicsAll);
 	events.on('spriteSheetRerendered', updateGraphicsAll);
-	events.on<InternalKeyboardEvent>('keydown', onKeydown);
+	store.subscribe('graphicHelper.selectedCodeBlock', () => {
+		if (state.graphicHelper.selectedCodeBlock) {
+			updateGraphics(state.graphicHelper.selectedCodeBlock);
+		}
+	});
 }
