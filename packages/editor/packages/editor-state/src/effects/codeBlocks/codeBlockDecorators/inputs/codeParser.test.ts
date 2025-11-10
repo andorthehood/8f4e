@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { parseInputs } from './codeParser';
 
 describe('parseInputs', () => {
@@ -111,4 +112,3 @@ describe('parseInputs', () => {
 		]);
 	});
 });
-

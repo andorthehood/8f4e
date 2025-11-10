@@ -5,6 +5,8 @@ import updateOutputsGraphicData from './updateGraphicData';
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
+import type { DataStructure } from '@8f4e/compiler';
+import { MemoryTypes } from '@8f4e/compiler';
 
 describe('updateOutputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -39,7 +41,7 @@ describe('updateOutputsGraphicData', () => {
 					},
 				},
 			},
-		} as any);
+		});
 	});
 
 	it('should add output to graphicData extras', () => {
@@ -54,7 +56,7 @@ describe('updateOutputsGraphicData', () => {
 
 		const output = mockGraphicData.extras.outputs.get('output1');
 		// Exclude codeBlock and memory from snapshot as they create circular references
-		const { codeBlock, memory, ...outputWithoutRefs } = output || {};
+		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();
 		expect(output?.codeBlock).toBe(mockGraphicData);
 	});
@@ -79,7 +81,17 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('should clear existing outputs before updating', () => {
-		mockGraphicData.extras.outputs.set('oldOutput', {} as any);
+		mockGraphicData.extras.outputs.set('oldOutput', {
+			codeBlock: mockGraphicData,
+			width: 0,
+			height: 0,
+			x: 0,
+			y: 0,
+			id: 'oldOutput',
+			calibratedMax: 1,
+			calibratedMin: 0,
+			memory: { wordAlignedAddress: 0 } as DataStructure,
+		});
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -91,7 +103,17 @@ describe('updateOutputsGraphicData', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['output2'] = {
 			wordAlignedAddress: 6,
 			byteAddress: 24,
-		} as any;
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.float,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: false,
+			id: 'output2',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -100,7 +122,7 @@ describe('updateOutputsGraphicData', () => {
 
 		// Exclude codeBlock and memory references from snapshot
 		const entries = Array.from(mockGraphicData.extras.outputs.entries()).map(([key, value]) => {
-			const { codeBlock, memory, ...rest } = value;
+			const { codeBlock: _codeBlock, memory: _memory, ...rest } = value;
 			return [key, rest];
 		});
 		expect(entries).toMatchSnapshot();
@@ -111,12 +133,22 @@ describe('updateOutputsGraphicData', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,
-		} as any;
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'output1',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		const output = mockGraphicData.extras.outputs.get('output1');
-		const { codeBlock, memory, ...outputWithoutRefs } = output || {};
+		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();
 	});
 });

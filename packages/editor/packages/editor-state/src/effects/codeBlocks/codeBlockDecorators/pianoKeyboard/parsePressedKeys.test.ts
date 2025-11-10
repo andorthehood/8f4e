@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { parsePressedKeys } from './parsePressedKeys';
 
 describe('parsePressedKeys', () => {
@@ -23,4 +24,3 @@ describe('parsePressedKeys', () => {
 		expect(result).toBeInstanceOf(Set);
 	});
 });
-

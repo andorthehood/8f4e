@@ -5,6 +5,8 @@ import updateDebuggersGraphicData from './updateGraphicData';
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
+import type { DataStructure } from '@8f4e/compiler';
+import { MemoryTypes } from '@8f4e/compiler';
 
 describe('updateDebuggersGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -37,7 +39,7 @@ describe('updateDebuggersGraphicData', () => {
 					},
 				},
 			},
-		} as any);
+		});
 	});
 
 	it('should add debugger to graphicData extras', () => {
@@ -65,7 +67,18 @@ describe('updateDebuggersGraphicData', () => {
 	});
 
 	it('should clear existing debuggers before updating', () => {
-		mockGraphicData.extras.debuggers.set('oldDebugger', {} as any);
+		mockGraphicData.extras.debuggers.set('oldDebugger', {
+			width: 0,
+			height: 0,
+			showAddress: false,
+			showEndAddress: false,
+			x: 0,
+			y: 0,
+			id: 'oldDebugger',
+			memory: { wordAlignedAddress: 0 } as DataStructure,
+			bufferPointer: 0,
+			showBinary: false,
+		});
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
@@ -77,11 +90,31 @@ describe('updateDebuggersGraphicData', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['var1'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,
-		} as any;
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'var1',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
 		mockState.compiler.compiledModules['test-block'].memoryMap['var2'] = {
 			wordAlignedAddress: 6,
 			byteAddress: 24,
-		} as any;
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'var2',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
@@ -94,7 +127,17 @@ describe('updateDebuggersGraphicData', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['myVar'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,
-		} as any;
+			numberOfElements: 1,
+			elementWordSize: 1,
+			type: MemoryTypes.int,
+			wordAlignedSize: 1,
+			default: 0,
+			isInteger: true,
+			id: 'myVar',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 

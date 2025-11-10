@@ -4,7 +4,7 @@ import { parsePianoKeyboards } from './codeParser';
 
 // Mock parsePressedKeys
 vi.mock('./parsePressedKeys', () => ({
-	parsePressedKeys: vi.fn((code, memoryId, startingNumber) => {
+	parsePressedKeys: vi.fn((_code, memoryId, _startingNumber) => {
 		const keys = new Set<number>();
 		if (memoryId === 'keys1') {
 			keys.add(0);

@@ -5,6 +5,7 @@ import updatePianoKeyboardsGraphicData from './updateGraphicData';
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
+import type { DataStructure } from '@8f4e/compiler';
 
 describe('updatePianoKeyboardsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -49,7 +50,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 					},
 				},
 			},
-		} as any);
+		});
 	});
 
 	it('should add piano keyboard to graphicData extras', () => {
@@ -64,7 +65,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		const piano = mockGraphicData.extras.pianoKeyboards.get(0);
 		// Exclude memory references from snapshot
-		const { pressedKeysListMemory, pressedNumberOfKeysMemory, ...pianoWithoutRefs } = piano || {};
+		const { pressedKeysListMemory: _pressedKeysListMemory, pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, ...pianoWithoutRefs } = piano || {};
 		expect(pianoWithoutRefs).toMatchSnapshot();
 	});
 
@@ -83,7 +84,17 @@ describe('updatePianoKeyboardsGraphicData', () => {
 	});
 
 	it('should clear existing piano keyboards before updating', () => {
-		mockGraphicData.extras.pianoKeyboards.set(5, {} as any);
+		mockGraphicData.extras.pianoKeyboards.set(5, {
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0,
+			startingNumber: 60,
+			numberOfKeys: 12,
+			pressedKeysListMemory: { wordAlignedAddress: 0 } as DataStructure,
+			pressedNumberOfKeysMemory: { wordAlignedAddress: 0 } as DataStructure,
+			pressedKeys: new Set(),
+		});
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
@@ -104,7 +115,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
 		const piano = mockGraphicData.extras.pianoKeyboards.get(2);
-		const { pressedKeysListMemory, pressedNumberOfKeysMemory, ...pianoWithoutRefs } = piano || {};
+		const { pressedKeysListMemory: _pressedKeysListMemory, pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, ...pianoWithoutRefs } = piano || {};
 		expect(pianoWithoutRefs).toMatchSnapshot();
 	});
 });

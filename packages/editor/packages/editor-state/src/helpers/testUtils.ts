@@ -1,6 +1,15 @@
 import type { CodeBlockGraphicData, Viewport, EventDispatcher, State } from '../types';
 
 /**
+ * Deep partial type that makes all properties and nested properties optional
+ */
+type DeepPartial<T> = T extends object
+	? {
+			[P in keyof T]?: DeepPartial<T[P]>;
+		}
+	: T;
+
+/**
  * Creates a no-op function that can be used as a mock in any testing framework
  */
 function createMockFunction<T extends (...args: unknown[]) => unknown>(): T {
@@ -188,14 +197,15 @@ export function createMockEventDispatcher(): EventDispatcher {
 
 /**
  * Helper to create a mock State object for testing with customizable properties
- * @param overrides Optional partial State to override defaults
+ * @param overrides Optional deep partial State to override defaults (nested properties can be partially specified)
  * @returns A complete State object with sensible defaults
  *
  * @example
  * const state = createMockState();
  * const state = createMockState({ projectInfo: { title: 'My Project' } });
+ * const state = createMockState({ compiler: { memoryBuffer: new Float32Array(100) } });
  */
-export function createMockState(overrides: Partial<State> = {}): State {
+export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const defaults: State = {
 		projectInfo: {
 			title: '',
@@ -296,44 +306,59 @@ export function createMockState(overrides: Partial<State> = {}): State {
 	};
 
 	// Deep merge overrides with defaults
-	return mergeDeep(defaults, overrides) as State;
+	return mergeDeep(defaults, overrides);
 }
 
 /**
  * Deep merge helper for combining default state with overrides
  * @param target The target object
- * @param source The source object with overrides
+ * @param source The source object with overrides (can be deeply partial)
  * @returns The merged object
  */
-function mergeDeep<T>(target: T, source: Partial<T>): T {
-	const result = { ...target };
+function mergeDeep<T>(target: T, source: DeepPartial<T>): T {
+	if (typeof target !== 'object' || target === null || Array.isArray(target)) {
+		return target;
+	}
 
-	for (const key in source) {
-		if (Object.prototype.hasOwnProperty.call(source, key)) {
-			const sourceValue = source[key];
-			const targetValue = result[key];
+	const result = { ...target } as T;
+	const sourceObj = source as Record<string, unknown>;
 
-			if (sourceValue && typeof sourceValue === 'object' && !Array.isArray(sourceValue) && targetValue) {
-				// For objects (but not arrays), recursively merge
-				if (
-					typeof targetValue === 'object' &&
-					!Array.isArray(targetValue) &&
-					!(targetValue instanceof WebAssembly.Memory) &&
-					!(targetValue instanceof Int32Array) &&
-					!(targetValue instanceof Float32Array) &&
-					!(targetValue instanceof Uint8Array) &&
-					!(targetValue instanceof Map) &&
-					!(targetValue instanceof Set)
-				) {
-					result[key] = mergeDeep(targetValue, sourceValue as Partial<typeof targetValue>);
-				} else {
-					// For special types, just replace
-					result[key] = sourceValue as T[Extract<keyof T, string>];
-				}
-			} else {
-				// For primitives, arrays, and other types, just replace
-				result[key] = sourceValue as T[Extract<keyof T, string>];
-			}
+	for (const key in sourceObj) {
+		if (!Object.prototype.hasOwnProperty.call(sourceObj, key)) {
+			continue;
+		}
+
+		const sourceValue = sourceObj[key];
+		const targetKey = key as keyof T;
+		const targetValue = result[targetKey];
+
+		// Skip undefined values
+		if (sourceValue === undefined) {
+			continue;
+		}
+
+		// Check if we should recursively merge (both are plain objects)
+		const shouldMerge =
+			sourceValue !== null &&
+			typeof sourceValue === 'object' &&
+			!Array.isArray(sourceValue) &&
+			targetValue !== null &&
+			targetValue !== undefined &&
+			typeof targetValue === 'object' &&
+			!Array.isArray(targetValue) &&
+			!(targetValue instanceof WebAssembly.Memory) &&
+			!(targetValue instanceof Int32Array) &&
+			!(targetValue instanceof Float32Array) &&
+			!(targetValue instanceof Uint8Array) &&
+			!(targetValue instanceof Map) &&
+			!(targetValue instanceof Set);
+
+		if (shouldMerge) {
+			// Recursively merge nested objects
+			result[targetKey] = mergeDeep(targetValue, sourceValue as DeepPartial<typeof targetValue>);
+		} else {
+			// Replace with source value
+			result[targetKey] = sourceValue as T[keyof T];
 		}
 	}
 
