@@ -52,7 +52,6 @@ describe('updateButtonsGraphicData', () => {
 			id: 'oldButton',
 			onValue: 1,
 			offValue: 0,
-			memory: { wordAlignedAddress: 0 } as DataStructure,
 		});
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
