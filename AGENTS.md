@@ -10,7 +10,7 @@
 - `npm run dev`: Watches `packages/editor` and starts Vite on `http://localhost:3000`.
 - `npm run build`: Builds all Nx packages, then Vite production build to `dist/`.
 - `npm run test`: Runs Vitest for all packages via Nx.
-- `npm run typecheck`: Type-checks all packages.
+- `npm run typecheck`: Type-checks all packages. Runs on pre-commit via Husky/lint-staged and in CI on push/PR to main and staging.
 - `npm run lint`: ESLint with autofix; also runs on pre-commit via Husky/lint-staged.
 - `npm run graph`: Opens Nx project dependency graph.
 
