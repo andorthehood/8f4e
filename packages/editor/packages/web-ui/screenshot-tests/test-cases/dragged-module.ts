@@ -24,7 +24,7 @@ async function initializeWebUI() {
 			'',
 		];
 		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
-		
+
 		const codeBlockMock = createMockCodeBlock({
 			x: 16,
 			y: 16,
