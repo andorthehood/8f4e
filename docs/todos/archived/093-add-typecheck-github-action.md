@@ -3,8 +3,8 @@ title: 'TODO: Add Typecheck GitHub Action'
 priority: Medium
 effort: 2-3h
 created: 2025-11-09
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-09
 ---
 
 # TODO: Add Typecheck GitHub Action
