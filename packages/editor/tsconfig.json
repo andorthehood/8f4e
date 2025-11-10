@@ -23,27 +23,7 @@
 		"declarationMap": true,
 		"sourceMap": true,
 		"noImplicitAny": true,
-		"strictNullChecks": true,
-		"paths": {
-			"@8f4e/state-manager": [
-				"../packages/state-manager/dist/index.d.ts"
-			],
-			"@8f4e/compiler": [
-				"../compiler/dist/index.d.ts"
-			],
-			"@8f4e/sprite-generator": [
-				"../packages/sprite-generator/dist/index.d.ts"
-			],
-			"@8f4e/editor-state-types": [
-				"../packages/editor-state-types/dist/index.d.ts"
-			],
-			"@8f4e/web-ui": [
-				"../packages/web-ui/dist/index.d.ts"
-			],
-			"@8f4e/editor-state": [
-				"../packages/editor-state/dist/index.d.ts"
-			]
-		}
+		"strictNullChecks": true
 	},
 	"include": [
 		"src/**/*.ts",
