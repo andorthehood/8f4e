@@ -5,7 +5,7 @@ import updatePianoKeyboardsGraphicData from './updateGraphicData';
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
-import type { DataStructure } from '@8f4e/compiler';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
 describe('updatePianoKeyboardsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -31,20 +31,32 @@ describe('updatePianoKeyboardsGraphicData', () => {
 					'test-block': {
 						memoryMap: {
 							keys1: {
+								id: 'keys1',
 								wordAlignedAddress: 5,
-								memory: {
-									id: 'keys1',
-									wordAlignedAddress: 5,
-									isInteger: true,
-									wordAlignedSize: 10,
-								},
+								byteAddress: 20,
+								isInteger: true,
+								wordAlignedSize: 10,
+								numberOfElements: 10,
+								elementWordSize: 1,
+								type: MemoryTypes.int,
+								default: 0,
+								isPointer: false,
+								isPointingToInteger: false,
+								isPointingToPointer: false,
 							},
 							numKeys: {
+								id: 'numKeys',
 								wordAlignedAddress: 6,
-								memory: {
-									id: 'numKeys',
-									wordAlignedAddress: 6,
-								},
+								byteAddress: 24,
+								isInteger: true,
+								wordAlignedSize: 1,
+								numberOfElements: 1,
+								elementWordSize: 1,
+								type: MemoryTypes.int,
+								default: 0,
+								isPointer: false,
+								isPointingToInteger: false,
+								isPointingToPointer: false,
 							},
 						},
 					},
@@ -65,6 +77,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		const piano = mockGraphicData.extras.pianoKeyboards.get(0);
 		// Exclude memory references from snapshot
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { pressedKeysListMemory: _pressedKeysListMemory, pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, ...pianoWithoutRefs } = piano || {};
 		expect(pianoWithoutRefs).toMatchSnapshot();
 	});
@@ -89,8 +102,8 @@ describe('updatePianoKeyboardsGraphicData', () => {
 			y: 0,
 			width: 0,
 			height: 0,
+			keyWidth: 8,
 			startingNumber: 60,
-			numberOfKeys: 12,
 			pressedKeysListMemory: { wordAlignedAddress: 0 } as DataStructure,
 			pressedNumberOfKeysMemory: { wordAlignedAddress: 0 } as DataStructure,
 			pressedKeys: new Set(),
@@ -115,6 +128,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
 		const piano = mockGraphicData.extras.pianoKeyboards.get(2);
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { pressedKeysListMemory: _pressedKeysListMemory, pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, ...pianoWithoutRefs } = piano || {};
 		expect(pianoWithoutRefs).toMatchSnapshot();
 	});
