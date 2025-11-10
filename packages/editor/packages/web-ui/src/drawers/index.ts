@@ -1,4 +1,4 @@
-export { default as drawConnections } from './codeBlocks/extras/connections';
+export { default as drawConnections } from './codeBlocks/codeBlockDecorators/connections';
 export { default as drawContextMenu } from './contextMenu';
 export { default as drawCodeBlocks } from './codeBlocks';
 export { default as drawDialog } from './dialog';
