@@ -78,7 +78,7 @@ describe('updateBufferPlottersGraphicData', () => {
 				showEndAddress: false,
 				bufferPointer: 0,
 				showBinary: false,
-			},
+			} as MemoryIdentifier,
 			bufferLength: undefined,
 		});
 

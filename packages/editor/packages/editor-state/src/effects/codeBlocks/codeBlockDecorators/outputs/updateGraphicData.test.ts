@@ -56,6 +56,7 @@ describe('updateOutputsGraphicData', () => {
 
 		const output = mockGraphicData.extras.outputs.get('output1');
 		// Exclude codeBlock and memory from snapshot as they create circular references
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();
 		expect(output?.codeBlock).toBe(mockGraphicData);
@@ -122,6 +123,7 @@ describe('updateOutputsGraphicData', () => {
 
 		// Exclude codeBlock and memory references from snapshot
 		const entries = Array.from(mockGraphicData.extras.outputs.entries()).map(([key, value]) => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { codeBlock: _codeBlock, memory: _memory, ...rest } = value;
 			return [key, rest];
 		});
@@ -148,6 +150,7 @@ describe('updateOutputsGraphicData', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		const output = mockGraphicData.extras.outputs.get('output1');
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();
 	});
