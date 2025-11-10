@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`updateOutputsGraphicData > should calculate correct dimensions and position 1`] = `
+{
+  "calibratedMax": 0,
+  "calibratedMin": 0,
+  "height": 20,
+  "id": "output1",
+  "width": 20,
+  "x": 70,
+  "y": 0,
+}
+`;
+
+exports[`updateOutputsGraphicData > should handle multiple outputs 1`] = `
+[
+  [
+    "output1",
+    {
+      "calibratedMax": 0,
+      "calibratedMin": 0,
+      "height": 20,
+      "id": "output1",
+      "width": 20,
+      "x": 70,
+      "y": 0,
+    },
+  ],
+  [
+    "output2",
+    {
+      "calibratedMax": 0,
+      "calibratedMin": 0,
+      "height": 20,
+      "id": "output2",
+      "width": 20,
+      "x": 70,
+      "y": 20,
+    },
+  ],
+]
+`;
+
+exports[`updateOutputsGraphicData > should position outputs at correct y coordinate based on line number 1`] = `
+{
+  "calibratedMax": 0,
+  "calibratedMin": 0,
+  "height": 20,
+  "id": "output1",
+  "width": 20,
+  "x": 70,
+  "y": 40,
+}
+`;
