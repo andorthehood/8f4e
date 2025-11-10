@@ -1,0 +1,66 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`updateSwitchesGraphicData > should calculate correct dimensions and position 1`] = `
+{
+  "height": 20,
+  "id": "sw1",
+  "offValue": 0,
+  "onValue": 1,
+  "width": 40,
+  "x": 60,
+  "y": 0,
+}
+`;
+
+exports[`updateSwitchesGraphicData > should handle multiple switches 1`] = `
+[
+  [
+    "sw1",
+    {
+      "height": 20,
+      "id": "sw1",
+      "offValue": 0,
+      "onValue": 1,
+      "width": 40,
+      "x": 60,
+      "y": 0,
+    },
+  ],
+  [
+    "sw2",
+    {
+      "height": 20,
+      "id": "sw2",
+      "offValue": 5,
+      "onValue": 10,
+      "width": 40,
+      "x": 60,
+      "y": 20,
+    },
+  ],
+]
+`;
+
+exports[`updateSwitchesGraphicData > should handle switches with custom values 1`] = `
+{
+  "height": 20,
+  "id": "sw1",
+  "offValue": -5,
+  "onValue": 100,
+  "width": 40,
+  "x": 60,
+  "y": 0,
+}
+`;
+
+exports[`updateSwitchesGraphicData > should position switches at correct y coordinate based on line number 1`] = `
+{
+  "height": 20,
+  "id": "sw1",
+  "offValue": 0,
+  "onValue": 1,
+  "width": 40,
+  "x": 60,
+  "y": 40,
+}
+`;
