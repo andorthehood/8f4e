@@ -4,7 +4,9 @@ import updateBufferPlottersGraphicData from './updateGraphicData';
 
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
-import type { CodeBlockGraphicData, State } from '../../../../types';
+import type { CodeBlockGraphicData, State, MemoryIdentifier } from '../../../../types';
+import type { DataStructure } from '@8f4e/compiler';
+import { MemoryTypes } from '@8f4e/compiler';
 
 describe('updateBufferPlottersGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -37,7 +39,7 @@ describe('updateBufferPlottersGraphicData', () => {
 					},
 				},
 			},
-		} as any);
+		});
 	});
 
 	it('should add buffer plotter to graphicData extras', () => {
@@ -63,7 +65,22 @@ describe('updateBufferPlottersGraphicData', () => {
 	});
 
 	it('should clear existing plotters before updating', () => {
-		mockGraphicData.extras.bufferPlotters.set('oldPlotter', {} as any);
+		mockGraphicData.extras.bufferPlotters.set('oldPlotter', {
+			width: 0,
+			height: 0,
+			x: 0,
+			y: 0,
+			minValue: -8,
+			maxValue: 8,
+			buffer: {
+				memory: { wordAlignedAddress: 0 } as DataStructure,
+				showAddress: false,
+				showEndAddress: false,
+				bufferPointer: 0,
+				showBinary: false,
+			},
+			bufferLength: undefined,
+		});
 
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
@@ -75,7 +92,17 @@ describe('updateBufferPlottersGraphicData', () => {
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
-		} as any;
+			numberOfElements: 100,
+			elementWordSize: 1,
+			type: MemoryTypes['int*'],
+			wordAlignedSize: 100,
+			default: 0,
+			isInteger: true,
+			id: 'buffer2',
+			isPointer: false,
+			isPointingToInteger: false,
+			isPointingToPointer: false,
+		};
 
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 

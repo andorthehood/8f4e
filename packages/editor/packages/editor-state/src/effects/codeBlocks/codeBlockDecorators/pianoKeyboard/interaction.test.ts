@@ -12,7 +12,7 @@ describe('pianoKeyboard interaction', () => {
 	let mockStore: StateManager<State>;
 	let mockEvents: EventDispatcher;
 	let mockState: State;
-	let onCallbacks: Map<string, Function>;
+	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
@@ -48,7 +48,7 @@ describe('pianoKeyboard interaction', () => {
 					},
 				},
 			},
-		} as any);
+		});
 
 		mockStore = {
 			getState: vi.fn(() => mockState),
@@ -56,7 +56,7 @@ describe('pianoKeyboard interaction', () => {
 		} as unknown as StateManager<State>;
 
 		mockEvents = {
-			on: vi.fn((event: string, callback: Function) => {
+			on: vi.fn((event: string, callback: (...args: unknown[]) => void) => {
 				onCallbacks.set(event, callback);
 			}),
 			off: vi.fn(),

@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import instructionParser from './instructionParser';
 
 describe('instructionParser', () => {
@@ -151,4 +152,3 @@ describe('instructionParser', () => {
 		expect(match?.[8]).toBe('arg7');
 	});
 });
-
