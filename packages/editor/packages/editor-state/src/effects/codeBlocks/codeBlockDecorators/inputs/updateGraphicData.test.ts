@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { MemoryTypes } from '@8f4e/compiler';
 
 import updateInputsGraphicData from './updateGraphicData';
 
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
-import { MemoryTypes } from '@8f4e/compiler';
 
 describe('updateInputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;

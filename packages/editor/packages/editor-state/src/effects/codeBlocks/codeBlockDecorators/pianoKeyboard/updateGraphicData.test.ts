@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
 import updatePianoKeyboardsGraphicData from './updateGraphicData';
 
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
-import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
 describe('updatePianoKeyboardsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -77,8 +77,11 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		const piano = mockGraphicData.extras.pianoKeyboards.get(0);
 		// Exclude memory references from snapshot
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { pressedKeysListMemory: _pressedKeysListMemory, pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, ...pianoWithoutRefs } = piano || {};
+		const {
+			pressedKeysListMemory: _pressedKeysListMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
+			pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
+			...pianoWithoutRefs
+		} = piano || {};
 		expect(pianoWithoutRefs).toMatchSnapshot();
 	});
 
@@ -128,8 +131,11 @@ describe('updatePianoKeyboardsGraphicData', () => {
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
 		const piano = mockGraphicData.extras.pianoKeyboards.get(2);
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { pressedKeysListMemory: _pressedKeysListMemory, pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, ...pianoWithoutRefs } = piano || {};
+		const {
+			pressedKeysListMemory: _pressedKeysListMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
+			pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
+			...pianoWithoutRefs
+		} = piano || {};
 		expect(pianoWithoutRefs).toMatchSnapshot();
 	});
 });
