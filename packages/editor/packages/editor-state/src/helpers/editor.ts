@@ -169,11 +169,11 @@ export function generateCodeColorMap<T>(
 		fontBinaryZero: T;
 		fontBinaryOne: T;
 	},
-	instructions: string[]
+	instructionsToHighlight: string[]
 ): T[][] {
 	return code.map(line => {
 		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
-		const instructionMatch = getInstructionRegExp(instructions).exec(line);
+		const instructionMatch = getInstructionRegExp(instructionsToHighlight).exec(line);
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
 		const { index: numberIndex } = /(?!^)(?:-|)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: commentIndex } = /;/.exec(line) || {};

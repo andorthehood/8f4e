@@ -19,7 +19,7 @@ import { getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
-const instructions = [
+const instructionsToHighlight = [
 	'and',
 	'or',
 	'const',
@@ -114,12 +114,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		codeBlock.cursor.col = col;
 	};
 
-	const updateGraphicsAll = function () {
-		for (const graphicData of state.graphicHelper.activeViewport.codeBlocks) {
-			updateGraphics(graphicData);
-		}
-	};
-
 	const updateGraphics = function (graphicData: CodeBlockGraphicData) {
 		if (!state.graphicHelper.spriteLookups) {
 			return;
@@ -140,7 +134,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
 
 		graphicData.codeColors = generateCodeColorMap(codeWithLineNumbers, state.graphicHelper.spriteLookups, [
-			...instructions,
+			...instructionsToHighlight,
 			...state.compiler.compilerOptions.environmentExtensions.ignoredKeywords,
 		]);
 
@@ -168,6 +162,19 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.id = getModuleId(graphicData.code) || '';
 	};
 
+	const updateGraphicsAll = function () {
+		for (const graphicData of state.graphicHelper.activeViewport.codeBlocks) {
+			updateGraphics(graphicData);
+		}
+	};
+
+	const updateSelectedCodeBlock = function () {
+		if (!state.graphicHelper.selectedCodeBlock) {
+			return;
+		}
+		updateGraphics(state.graphicHelper.selectedCodeBlock);
+	};
+
 	events.on('buildError', updateGraphicsAll);
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
@@ -175,9 +182,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	events.on<CodeBlockAddedEvent>('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('init', updateGraphicsAll);
 	events.on('spriteSheetRerendered', updateGraphicsAll);
-	store.subscribe('graphicHelper.selectedCodeBlock', () => {
-		if (state.graphicHelper.selectedCodeBlock) {
-			updateGraphics(state.graphicHelper.selectedCodeBlock);
-		}
-	});
+	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
+	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
 }
