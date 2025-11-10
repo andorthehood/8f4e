@@ -23,8 +23,7 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}",
-        "reporter": "verbose"
+        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
       }
     },
   "typecheck": {
