@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import { decodeBase64ToUint8Array } from '../helpers/base64Decoder';
 import { EventDispatcher } from '../types';
 
@@ -19,7 +21,8 @@ function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { cod
 	return flatCodeBlocks;
 }
 
-export default async function compiler(state: State, events: EventDispatcher) {
+export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
+	const state = store.getState();
 	async function onRecompile() {
 		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
 		// If codeBuffer is populated and we don't have a compiler, skip compilation
@@ -115,5 +118,5 @@ export default async function compiler(state: State, events: EventDispatcher) {
 	events.on('codeBlockAdded', onRecompile);
 	events.on('deleteCodeBlock', onRecompile);
 	events.on('projectLoaded', onRecompile);
-	events.on('codeChange', onRecompile);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', onRecompile);
 }

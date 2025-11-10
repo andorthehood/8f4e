@@ -4,10 +4,11 @@ import compiler from './compiler';
 import save from './save';
 
 import { createMockState } from '../helpers/testUtils';
-import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
+import { createMockEventDispatcherWithVitest, createMockStateManager } from '../helpers/vitestTestUtils';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 import type { State } from '../types';
+import type { StateManager } from '@8f4e/state-manager';
 
 // Mock the decodeBase64ToUint8Array function
 vi.mock('../helpers/base64Decoder', () => {
@@ -47,6 +48,7 @@ vi.mock('../helpers/base64Decoder', () => {
 
 describe('Runtime-ready project functionality', () => {
 	let mockState: State;
+	let mockStore: StateManager<State>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let mockExportFile: MockInstance;
 
@@ -90,6 +92,7 @@ describe('Runtime-ready project functionality', () => {
 		});
 
 		mockEvents = createMockEventDispatcherWithVitest();
+		mockStore = createMockStateManager(mockState);
 	});
 
 	describe('Runtime-ready export', () => {
@@ -204,7 +207,7 @@ describe('Runtime-ready project functionality', () => {
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation();
 
 			// Set up compiler functionality
-			compiler(mockState, mockEvents);
+			compiler(mockStore, mockEvents);
 
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -213,8 +216,7 @@ describe('Runtime-ready project functionality', () => {
 					call[0] === 'createConnection' ||
 					call[0] === 'codeBlockAdded' ||
 					call[0] === 'deleteCodeBlock' ||
-					call[0] === 'projectLoaded' ||
-					call[0] === 'codeChange'
+					call[0] === 'projectLoaded'
 			);
 			expect(recompileCall).toBeDefined();
 
@@ -253,7 +255,7 @@ describe('Runtime-ready project functionality', () => {
 			mockState.callbacks.compileProject = mockCompileProject;
 
 			// Set up compiler functionality
-			compiler(mockState, mockEvents);
+			compiler(mockStore, mockEvents);
 
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -262,8 +264,7 @@ describe('Runtime-ready project functionality', () => {
 					call[0] === 'createConnection' ||
 					call[0] === 'codeBlockAdded' ||
 					call[0] === 'deleteCodeBlock' ||
-					call[0] === 'projectLoaded' ||
-					call[0] === 'codeChange'
+					call[0] === 'projectLoaded'
 			);
 			const onRecompileCallback = recompileCall[1];
 
