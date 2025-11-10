@@ -53,6 +53,7 @@ describe('updateInputsGraphicData', () => {
 
 		const input = mockGraphicData.extras.inputs.get('input1');
 		// Exclude codeBlock from snapshot as it creates circular reference
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
 		expect(input?.codeBlock).toBe(mockGraphicData);
@@ -104,6 +105,7 @@ describe('updateInputsGraphicData', () => {
 		expect(mockGraphicData.extras.inputs.size).toBe(2);
 		// Exclude codeBlock references from snapshot
 		const entries = Array.from(mockGraphicData.extras.inputs.entries()).map(([key, value]) => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { codeBlock: _codeBlock, ...rest } = value;
 			return [key, rest];
 		});
@@ -130,6 +132,7 @@ describe('updateInputsGraphicData', () => {
 		updateInputsGraphicData(mockGraphicData, mockState);
 
 		const input = mockGraphicData.extras.inputs.get('input1');
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
 	});

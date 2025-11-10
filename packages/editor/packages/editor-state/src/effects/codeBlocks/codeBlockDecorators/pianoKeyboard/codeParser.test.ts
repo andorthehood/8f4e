@@ -4,6 +4,7 @@ import { parsePianoKeyboards } from './codeParser';
 
 // Mock parsePressedKeys
 vi.mock('./parsePressedKeys', () => ({
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	parsePressedKeys: vi.fn((_code, memoryId, _startingNumber) => {
 		const keys = new Set<number>();
 		if (memoryId === 'keys1') {
