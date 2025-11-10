@@ -24,20 +24,6 @@
 		"sourceMap": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-		"paths": {
-			"@8f4e/state-manager": [
-				"../../state-manager/dist/index.d.ts"
-			],
-			"@8f4e/compiler": [
-				"../../../../compiler/dist/index.d.ts"
-			],
-			"@8f4e/sprite-generator": [
-				"../../sprite-generator/dist/index.d.ts"
-			],
-			"@8f4e/editor-state-types": [
-				"../../editor-state-types/dist/index.d.ts"
-			]
-		}
 	},
 	"include": [
 		"src/**/*.ts"
