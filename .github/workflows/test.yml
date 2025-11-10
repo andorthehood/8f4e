@@ -10,6 +10,7 @@ name: Test
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -34,3 +35,4 @@ jobs:
 
       - name: Run tests
         run: npm test
+        timeout-minutes: 10
