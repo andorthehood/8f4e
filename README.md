@@ -63,7 +63,7 @@ The project uses Nx for monorepo orchestration. All packages are built to their 
 - `npm run dev` - Builds all packages once, then starts Vite dev server with HMR
 - `npm run build` - Builds all packages and creates production bundle
 - `npm run test` - Runs unit tests across all packages
-- `npm run typecheck` - Type-checks all packages
+- `npm run typecheck` - Type-checks all packages (runs in CI on push/PR to main and staging)
 - `npm run lint` - Lints and auto-fixes all TypeScript files
 
 **Working with packages:**
