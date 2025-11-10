@@ -1,0 +1,60 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`updateDebuggersGraphicData > should handle multiple debuggers 1`] = `
+[
+  [
+    "var1",
+    {
+      "bufferPointer": 0,
+      "height": 20,
+      "id": "var1",
+      "memory": {
+        "byteAddress": 20,
+        "wordAlignedAddress": 5,
+      },
+      "showAddress": false,
+      "showBinary": false,
+      "showEndAddress": false,
+      "width": 20,
+      "x": 150,
+      "y": 0,
+    },
+  ],
+  [
+    "var2",
+    {
+      "bufferPointer": 0,
+      "height": 20,
+      "id": "var2",
+      "memory": {
+        "byteAddress": 24,
+        "wordAlignedAddress": 6,
+      },
+      "showAddress": false,
+      "showBinary": false,
+      "showEndAddress": false,
+      "width": 20,
+      "x": 150,
+      "y": 20,
+    },
+  ],
+]
+`;
+
+exports[`updateDebuggersGraphicData > should position debuggers at correct y coordinate based on line number 1`] = `
+{
+  "bufferPointer": 0,
+  "height": 20,
+  "id": "myVar",
+  "memory": {
+    "byteAddress": 20,
+    "wordAlignedAddress": 5,
+  },
+  "showAddress": false,
+  "showBinary": false,
+  "showEndAddress": false,
+  "width": 20,
+  "x": 160,
+  "y": 40,
+}
+`;
