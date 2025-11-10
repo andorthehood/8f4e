@@ -4,13 +4,13 @@ import button from './interaction';
 
 import { createMockState } from '../../../../helpers/testUtils';
 
-import type { State, EventDispatcher } from '../../../../types';
+import type { State, EventDispatcher, CodeBlockGraphicData } from '../../../../types';
 
 describe('button interaction', () => {
 	let mockState: State;
 	let mockEvents: EventDispatcher;
-	let onCallbacks: Map<string, Function>;
-	let offCallbacks: Map<string, Function>;
+	let onCallbacks: Map<string, (...args: unknown[]) => void>;
+	let offCallbacks: Map<string, (...args: unknown[]) => void>;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
@@ -33,15 +33,15 @@ describe('button interaction', () => {
 						},
 					},
 				},
-				memoryBuffer: new Float32Array(100),
+				memoryBuffer: new Int32Array(100),
 			},
-		} as any);
+		});
 
 		mockEvents = {
-			on: vi.fn((event: string, callback: Function) => {
+			on: vi.fn((event: string, callback: (...args: unknown[]) => void) => {
 				onCallbacks.set(event, callback);
 			}),
-			off: vi.fn((event: string, callback: Function) => {
+			off: vi.fn((event: string, callback: (...args: unknown[]) => void) => {
 				offCallbacks.set(event, callback);
 			}),
 		} as unknown as EventDispatcher;
