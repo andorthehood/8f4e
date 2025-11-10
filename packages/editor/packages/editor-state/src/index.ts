@@ -1,6 +1,7 @@
 import { Font } from '@8f4e/sprite-generator';
 import createStateManager, { StateManager } from '@8f4e/state-manager';
 
+import codeEditing from './effects/codeBlocks/codeEditing';
 import _switch from './effects/codeBlocks/extras/switches/interaction';
 import button from './effects/codeBlocks/extras/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
@@ -179,12 +180,13 @@ export default function init(events: EventDispatcher, project: Project, options:
 	demoModeNavigation(state, events);
 	_switch(state, events);
 	button(state, events);
-	pianoKeyboard(state, events);
+	pianoKeyboard(store, events);
 	viewport(state, events);
 	contextMenu(store, events);
 	codeBlockCreator(state, events);
-	compiler(state, events);
-	graphicHelper(state, events);
+	compiler(store, events);
+	graphicHelper(store, events);
+	codeEditing(store, events);
 	save(state, events);
 	exportWasm(state, events);
 	font(state, events);
