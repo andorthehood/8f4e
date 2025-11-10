@@ -5,6 +5,7 @@ import updateButtonsGraphicData from './updateGraphicData';
 import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
+import type { DataStructure } from '@8f4e/compiler';
 
 describe('updateButtonsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -25,7 +26,7 @@ describe('updateButtonsGraphicData', () => {
 					hGrid: 20,
 				},
 			},
-		} as any);
+		});
 	});
 
 	it('should add button to graphicData extras', () => {
@@ -43,7 +44,16 @@ describe('updateButtonsGraphicData', () => {
 	});
 
 	it('should clear existing buttons before updating', () => {
-		mockGraphicData.extras.buttons.set('oldButton', {} as any);
+		mockGraphicData.extras.buttons.set('oldButton', {
+			width: 0,
+			height: 0,
+			x: 0,
+			y: 0,
+			id: 'oldButton',
+			onValue: 1,
+			offValue: 0,
+			memory: { wordAlignedAddress: 0 } as DataStructure,
+		});
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
