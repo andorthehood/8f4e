@@ -1,4 +1,4 @@
-import instructionParser from './extras/instructionParser';
+import instructionParser from './codeBlockDecorators/instructionParser';
 
 import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
 

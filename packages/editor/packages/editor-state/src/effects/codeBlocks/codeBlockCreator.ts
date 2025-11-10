@@ -1,4 +1,4 @@
-import instructionParser from './extras/instructionParser';
+import instructionParser from './codeBlockDecorators/instructionParser';
 
 import { EventDispatcher } from '../../types';
 import { getModuleId } from '../../helpers/codeParsers';

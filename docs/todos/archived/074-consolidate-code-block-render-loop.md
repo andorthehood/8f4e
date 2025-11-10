@@ -41,7 +41,7 @@ Run the editor locally (`npm run dev`) to confirm visible modules render normall
 
 - `packages/editor/packages/web-ui/src/drawers/codeBlocks/index.ts` - consolidate visibility and rendering logic
 - `packages/editor/packages/web-ui/src/drawers/arrows.ts` - remove redundant loop or convert to utility
-- `packages/editor/packages/web-ui/src/drawers/codeBlocks/extras/connections.ts` - sanity-check compatibility with refactored visibility helper
+- `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/connections.ts` - sanity-check compatibility with refactored visibility helper
 
 ## Risks & Considerations
 

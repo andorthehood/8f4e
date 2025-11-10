@@ -1,15 +1,15 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import bufferPlotters from './extras/bufferPlotters/codeParser';
-import buttons from './extras/buttons/codeParser';
-import debuggers from './extras/debuggers/codeParser';
-import errorMessages from './extras/errorMessages/errorMessages';
+import bufferPlotters from './codeBlockDecorators/bufferPlotters/codeParser';
+import buttons from './codeBlockDecorators/buttons/codeParser';
+import debuggers from './codeBlockDecorators/debuggers/codeParser';
+import errorMessages from './codeBlockDecorators/errorMessages/errorMessages';
 import gaps from './gaps';
-import inputs from './extras/inputs/codeParser';
-import outputs from './extras/outputs/codeParser';
-import pianoKeyboards from './extras/pianoKeyboard/codeParser';
+import inputs from './codeBlockDecorators/inputs/codeParser';
+import outputs from './codeBlockDecorators/outputs/codeParser';
+import pianoKeyboards from './codeBlockDecorators/pianoKeyboard/codeParser';
 import positionOffsetters from './positionOffsetters';
-import switches from './extras/switches/codeParser';
+import switches from './codeBlockDecorators/switches/codeParser';
 import { CodeBlockClickEvent } from './codeBlockDragger';
 import { CodeBlockAddedEvent } from './codeBlockCreator';
 
