@@ -13,42 +13,14 @@ describe('projectSerializer', () => {
 					id: 'test-module',
 					code: ['test code'],
 					trimmedCode: ['test code'],
-					x: 80, // 10 * vGrid
-					y: 128, // 8 * hGrid
+					x: 80,
+					y: 128,
 					gridX: 10,
 					gridY: 8,
 				}),
 			];
 
-			const result = convertGraphicDataToProjectStructure(graphicData, 8, 16);
-
-			expect(result).toMatchSnapshot();
-		});
-
-		it('includes viewport for code blocks with nested code blocks', () => {
-			const nestedBlock = createMockCodeBlock({
-				id: 'nested-module',
-				code: ['nested code'],
-				trimmedCode: ['nested code'],
-				x: 16,
-				y: 32,
-				gridX: 2,
-				gridY: 2,
-			});
-
-			const parentBlock = createMockCodeBlock({
-				id: 'parent-module',
-				code: ['parent code'],
-				trimmedCode: ['parent code'],
-				x: 80,
-				y: 128,
-				gridX: 10,
-				gridY: 8,
-				viewport: { x: 40, y: 64 },
-				codeBlocks: new Set([nestedBlock]),
-			});
-
-			const result = convertGraphicDataToProjectStructure([parentBlock], 8, 16);
+			const result = convertGraphicDataToProjectStructure(graphicData);
 
 			expect(result).toMatchSnapshot();
 		});
@@ -66,7 +38,7 @@ describe('projectSerializer', () => {
 				trimmedCode: ['code a'],
 			});
 
-			const result = convertGraphicDataToProjectStructure([blockA, blockB], 8, 16);
+			const result = convertGraphicDataToProjectStructure([blockA, blockB]);
 
 			expect(result[0].code).toEqual(['code a']);
 			expect(result[1].code).toEqual(['code b']);
