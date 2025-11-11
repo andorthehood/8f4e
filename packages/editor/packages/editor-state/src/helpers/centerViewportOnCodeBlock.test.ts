@@ -25,11 +25,10 @@ function createMockCodeBlock(
 describe('centerViewportOnCodeBlock', () => {
 	describe('horizontal centering', () => {
 		it('should center a small block horizontally in the viewport', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 100, 200, 100);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 100 + 0 + 200/2 = 200
 			// Viewport center X: 800/2 = 400
@@ -38,11 +37,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should center a block at the origin horizontally', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 400, 300);
 			const codeBlock = createMockCodeBlock(0, 0, 100, 100);
-			const viewport = { width: 400, height: 300 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 0 + 0 + 100/2 = 50
 			// Viewport center X: 400/2 = 200
@@ -51,11 +49,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should center a wide block horizontally', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(0, 0, 1000, 100);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 0 + 0 + 1000/2 = 500
 			// Viewport center X: 800/2 = 400
@@ -66,11 +63,10 @@ describe('centerViewportOnCodeBlock', () => {
 
 	describe('vertical centering with top constraint', () => {
 		it('should center a small block vertically when it fits in viewport', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 200, 100, 100);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center Y: 200 + 0 + 100/2 = 250
 			// Viewport center Y: 600/2 = 300
@@ -81,11 +77,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should constrain viewport Y to block top for large blocks', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 100, 100, 800);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center Y: 100 + 0 + 800/2 = 500
 			// Viewport center Y: 600/2 = 300
@@ -96,11 +91,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should show top of block when block is taller than viewport', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(0, 0, 100, 1000);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center Y: 0 + 0 + 1000/2 = 500
 			// Viewport center Y: 600/2 = 300
@@ -113,11 +107,10 @@ describe('centerViewportOnCodeBlock', () => {
 
 	describe('code block with offsets', () => {
 		it('should account for offsetX in horizontal centering', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 100, 200, 100, 50, 0);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 100 + 50 + 200/2 = 250
 			// Viewport center X: 800/2 = 400
@@ -126,11 +119,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should account for offsetY in vertical centering', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 100, 100, 100, 0, 50);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center Y: 100 + 50 + 100/2 = 200
 			// Viewport center Y: 600/2 = 300
@@ -141,11 +133,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should account for both offsetX and offsetY', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 200, 200, 100, 30, 40);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 100 + 30 + 200/2 = 230
 			// Viewport center X: 800/2 = 400
@@ -161,11 +152,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should apply top constraint with offsetY for large blocks', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(0, 100, 100, 800, 0, 50);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center Y: 100 + 50 + 800/2 = 550
 			// Viewport center Y: 600/2 = 300
@@ -178,11 +168,10 @@ describe('centerViewportOnCodeBlock', () => {
 
 	describe('edge cases', () => {
 		it('should handle zero-sized blocks', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 100, 0, 0);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 100 + 0 + 0/2 = 100
 			// Viewport center X: 800/2 = 400
@@ -198,11 +187,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should handle blocks with negative coordinates', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(-200, -100, 100, 100);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: -200 + 0 + 100/2 = -150
 			// Viewport center X: 800/2 = 400
@@ -218,11 +206,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should handle negative offsets', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 100, 100, 100, -20, -30);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 100 + (-20) + 100/2 = 130
 			// Viewport center X: 800/2 = 400
@@ -238,11 +225,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should handle very small viewport', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 50, 50);
 			const codeBlock = createMockCodeBlock(100, 100, 100, 100);
-			const viewport = { width: 50, height: 50 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 100 + 0 + 100/2 = 150
 			// Viewport center X: 50/2 = 25
@@ -260,12 +246,11 @@ describe('centerViewportOnCodeBlock', () => {
 
 	describe('mutation behavior', () => {
 		it('should mutate the provided viewport object', () => {
-			const viewport = createMockViewport(999, 888);
+			const viewport = createMockViewport(999, 888, 800, 600);
 			const codeBlock = createMockCodeBlock(100, 100, 200, 100);
-			const viewport = { width: 800, height: 600 };
 
 			const originalViewport = viewport;
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Verify it's the same object (mutated in place)
 			expect(viewport).toBe(originalViewport);
@@ -275,11 +260,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should update both x and y coordinates', () => {
-			const viewport = createMockViewport(0, 0);
+			const viewport = createMockViewport(0, 0, 800, 600);
 			const codeBlock = createMockCodeBlock(500, 400, 100, 100);
-			const viewport = { width: 800, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Both coordinates should be updated
 			expect(viewport.x).not.toBe(0);
@@ -289,11 +273,10 @@ describe('centerViewportOnCodeBlock', () => {
 
 	describe('various viewport and block size combinations', () => {
 		it('should handle square viewport and square block', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 600, 600);
 			const codeBlock = createMockCodeBlock(400, 400, 200, 200);
-			const viewport = { width: 600, height: 600 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center: (500, 500)
 			// Viewport center: (300, 300)
@@ -305,11 +288,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should handle wide viewport and narrow block', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 1200, 400);
 			const codeBlock = createMockCodeBlock(100, 100, 50, 100);
-			const viewport = { width: 1200, height: 400 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center X: 100 + 0 + 50/2 = 125
 			// Viewport center X: 1200/2 = 600
@@ -318,11 +300,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should handle tall viewport and short block', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 400, 1000);
 			const codeBlock = createMockCodeBlock(100, 100, 100, 50);
-			const viewport = { width: 400, height: 1000 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center Y: 100 + 0 + 50/2 = 125
 			// Viewport center Y: 1000/2 = 500
@@ -335,11 +316,10 @@ describe('centerViewportOnCodeBlock', () => {
 
 	describe('realistic scenarios', () => {
 		it('should center a typical code block in a desktop viewport', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 1920, 1080);
 			const codeBlock = createMockCodeBlock(500, 300, 400, 300);
-			const viewport = { width: 1920, height: 1080 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center: (700, 450)
 			// Viewport center: (960, 540)
@@ -351,11 +331,10 @@ describe('centerViewportOnCodeBlock', () => {
 		});
 
 		it('should handle centering on a mobile-sized viewport', () => {
-			const viewport = createMockViewport();
+			const viewport = createMockViewport(0, 0, 375, 667);
 			const codeBlock = createMockCodeBlock(200, 200, 300, 400);
-			const viewport = { width: 375, height: 667 };
 
-			centerViewportOnCodeBlock(viewport, codeBlock, viewport);
+			centerViewportOnCodeBlock(viewport, codeBlock);
 
 			// Block center: (350, 400)
 			// Viewport center: (187.5, 333.5)
