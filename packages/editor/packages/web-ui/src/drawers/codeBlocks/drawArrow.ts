@@ -27,7 +27,7 @@ export function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state
 
 	if (arrowPlacement.right) {
 		engine.drawSprite(
-			arrowPlacement.right.x - state.graphicHelper.globalViewport.vGrid,
+			arrowPlacement.right.x - state.graphicHelper.viewport.vGrid,
 			arrowPlacement.right.y,
 			Icon.ARROW_RIGHT
 		);
@@ -36,7 +36,7 @@ export function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state
 	if (arrowPlacement.bottom) {
 		engine.drawSprite(
 			arrowPlacement.bottom.x,
-			arrowPlacement.bottom.y - state.graphicHelper.globalViewport.hGrid,
+			arrowPlacement.bottom.y - state.graphicHelper.viewport.hGrid,
 			Icon.ARROW_BOTTOM
 		);
 	}

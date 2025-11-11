@@ -14,12 +14,12 @@ export default function drawErrorMessages(engine: Engine, state: State, codeBloc
 			y,
 			'errorMessageBackground',
 			codeBlock.width,
-			message.length * state.graphicHelper.globalViewport.hGrid
+			message.length * state.graphicHelper.viewport.hGrid
 		);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 		for (let i = 0; i < message.length; i++) {
-			engine.drawText(x, y + i * state.graphicHelper.globalViewport.hGrid, ' ' + message[i]);
+			engine.drawText(x, y + i * state.graphicHelper.viewport.hGrid, ' ' + message[i]);
 		}
 	}
 }
