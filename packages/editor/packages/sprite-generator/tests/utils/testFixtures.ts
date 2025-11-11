@@ -33,6 +33,9 @@ export const minimalColorScheme: ColorScheme = {
 		highlightedCodeLine: '#333333',
 		plotterTrace: '#ffffff',
 		plotterBackground: '#000000',
+		codeBlockHighlightLevel1: '#333300',
+		codeBlockHighlightLevel2: '#333333',
+		codeBlockHighlightLevel3: '#003333',
 	},
 	icons: {
 		inputConnector: '#ffffff',
