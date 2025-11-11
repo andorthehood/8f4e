@@ -229,6 +229,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		input.click();
 	}
 
+	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveProject);
 	events.on('saveProject', onSaveProject);
 	events.on('saveEditorSettings', onSaveEditorSettings);
 	events.on('open', onOpen);
