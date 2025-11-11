@@ -11,14 +11,14 @@ export default function drawContextMenu(engine: Engine, state: State): void {
 
 	engine.startGroup(x, y);
 	for (let i = 0; i < items.length; i++) {
-		engine.startGroup(0, i * state.graphicHelper.globalViewport.hGrid);
+		engine.startGroup(0, i * state.graphicHelper.viewport.hGrid);
 		if (i === highlightedItem && !items[i].disabled && !items[i].divider) {
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-			engine.drawSprite(0, 0, 'menuItemBackgroundHighlighted', itemWidth, state.graphicHelper.globalViewport.hGrid);
+			engine.drawSprite(0, 0, 'menuItemBackgroundHighlighted', itemWidth, state.graphicHelper.viewport.hGrid);
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontMenuItemTextHighlighted);
 		} else {
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-			engine.drawSprite(0, 0, 'menuItemBackground', itemWidth, state.graphicHelper.globalViewport.hGrid);
+			engine.drawSprite(0, 0, 'menuItemBackground', itemWidth, state.graphicHelper.viewport.hGrid);
 			engine.setSpriteLookup(
 				items[i].disabled
 					? state.graphicHelper.spriteLookups.fontLineNumber

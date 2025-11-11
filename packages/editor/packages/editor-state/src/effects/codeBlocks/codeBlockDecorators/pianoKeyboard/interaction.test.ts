@@ -19,15 +19,11 @@ describe('pianoKeyboard interaction', () => {
 
 		mockState = createMockState({
 			graphicHelper: {
-				globalViewport: {
+				viewport: {
 					vGrid: 10,
 					hGrid: 20,
-				},
-				activeViewport: {
-					viewport: {
-						x: 0,
-						y: 0,
-					},
+					x: 0,
+					y: 0,
 				},
 			},
 			compiler: {
