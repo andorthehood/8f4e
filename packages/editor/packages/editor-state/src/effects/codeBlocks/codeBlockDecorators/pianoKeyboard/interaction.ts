@@ -34,7 +34,7 @@ export default function pianoKeyboard(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const key = Math.floor((x - (codeBlock.x - state.graphicHelper.activeViewport.viewport.x)) / keyboard.keyWidth);
+		const key = Math.floor((x - (codeBlock.x - state.graphicHelper.viewport.x)) / keyboard.keyWidth);
 
 		if (keyboard.pressedKeys.has(key)) {
 			keyboard.pressedKeys.delete(key);

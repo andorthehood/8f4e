@@ -48,12 +48,12 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 
 		mockState.graphicHelper.selectedCodeBlock = codeBlockMock;
 
-		mockState.graphicHelper.activeViewport.codeBlocks.add(codeBlockMock);
+		mockState.graphicHelper.codeBlocks.add(codeBlockMock);
 
 		const lines2 = ['not selected code block', '', '', '', '', '', '', '', ''];
 		const codeToRender2 = lines2.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		mockState.graphicHelper.activeViewport.codeBlocks.add(
+		mockState.graphicHelper.codeBlocks.add(
 			createMockCodeBlock({
 				x: 288,
 				y: 16,
