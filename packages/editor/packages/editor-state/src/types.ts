@@ -251,6 +251,13 @@ export interface CodeBlockGraphicData {
 	gridX: number;
 	gridY: number;
 	extras: {
+		blockHighlights: Array<{
+			x: number;
+			y: number;
+			height: number;
+			width: number;
+			color: string;
+		}>;
 		inputs: Map<string, Input>;
 		outputs: Map<string, Output>;
 		debuggers: Map<string, Debugger>;

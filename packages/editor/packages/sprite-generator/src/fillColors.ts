@@ -18,6 +18,9 @@ const fillColors: Array<keyof ColorScheme['fill']> = [
 	'dialogBackground',
 	'dialogDimmer',
 	'highlightedCodeLine',
+	'codeBlockHighlightLevel1',
+	'codeBlockHighlightLevel2',
+	'codeBlockHighlightLevel3',
 ];
 
 export enum Icon {
