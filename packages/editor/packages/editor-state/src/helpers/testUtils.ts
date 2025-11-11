@@ -325,7 +325,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			viewportAnimations: true,
 			demoMode: false,
 		},
-		compilationTime: 0,
 		colorSchemes: {},
 	};
 
