@@ -148,6 +148,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				codeColors: [],
 				codeToRender: [],
 				extras: {
+					blockHighlights: [],
 					inputs: new Map(),
 					outputs: new Map(),
 					debuggers: new Map(),
