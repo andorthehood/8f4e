@@ -8,6 +8,10 @@ export default function keyboardShortcuts(state: State, events: EventDispatcher)
 		if (metaKey && key.toLowerCase() === 's') {
 			events.dispatch('saveProject');
 		}
+
+		if (metaKey && key.toLowerCase() === 'z') {
+			events.dispatch('undo');
+		}
 	}
 
 	events.on<InternalKeyboardEvent>('keydown', onKeydown);
