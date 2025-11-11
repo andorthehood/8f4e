@@ -27,6 +27,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable automatic demo mode with periodic code block navigation */
 	demoMode: boolean;
+
+	/** Enable/disable history tracking for undo/redo functionality */
+	historyTracking?: boolean;
 }
 
 /**
@@ -392,7 +395,7 @@ export interface Project {
 	binaryAssets?: BinaryAsset[];
 	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
 	compiledWasm?: string;
-	compiledModules: CompiledModuleLookup;
+	compiledModules?: CompiledModuleLookup;
 	memorySnapshot?: string;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
@@ -505,6 +508,6 @@ export interface State {
 	callbacks: Callbacks;
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
-	compilationTime: number;
 	colorSchemes: Record<string, ColorScheme>;
+	history: Project[];
 }
