@@ -8,6 +8,7 @@ import drawButtons from './codeBlockDecorators/buttons';
 import drawErrorMessages from './codeBlockDecorators/errorMessages';
 import drawPianoKeyboards from './codeBlockDecorators/pianoKeyboards';
 import { drawArrow } from './drawArrow';
+import drawBlockHighlights from './codeBlockDecorators/blockHighlights';
 
 import type { State } from '@8f4e/editor-state';
 
@@ -53,6 +54,8 @@ export default function drawModules(engine: Engine, state: State): void {
 					} else {
 						engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
 					}
+
+					drawBlockHighlights(engine, state, codeBlock);
 
 					if (state.graphicHelper.selectedCodeBlock === codeBlock) {
 						engine.drawSprite(
