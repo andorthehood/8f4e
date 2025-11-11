@@ -15,9 +15,10 @@ export function getOrCreateMemory(memorySizeBytes: number): WebAssembly.Memory {
 	const WASM_PAGE_SIZE = 65536; // 64KiB per page
 	const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
 
-	// Create new memory only if it doesn't exist or if we need more space
-	// We keep existing memory if it's large enough to avoid unnecessary recreations
-	if (!memoryRef || currentMemorySize < memorySizeBytes) {
+	// Create new memory only if it doesn't exist or if the size differs
+	// We must recreate when size changes (even when shrinking) because the WASM module's
+	// declared maximum must match the memory's maximum exactly
+	if (!memoryRef || currentMemorySize !== memorySizeBytes) {
 		memoryRef = new WebAssembly.Memory({
 			initial: pages,
 			maximum: pages,
