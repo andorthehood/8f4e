@@ -145,6 +145,7 @@ export function createMockCodeBlock(
 		codeBlocks: new Set(),
 		lastUpdated: Date.now(),
 		extras: {
+			blockHighlights: [],
 			inputs: new Map(),
 			outputs: new Map(),
 			debuggers: new Map(),
