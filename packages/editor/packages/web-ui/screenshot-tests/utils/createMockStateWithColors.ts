@@ -35,6 +35,9 @@ const defaultColorScheme = {
 		highlightedCodeLine: '#333333',
 		plotterBackground: '#001100',
 		plotterTrace: '#66ff66',
+		codeBlockHighlightLevel1: '#333300',
+		codeBlockHighlightLevel2: '#333333',
+		codeBlockHighlightLevel3: '#003333',
 	},
 	icons: {
 		outputConnectorBackground: '#003300',
