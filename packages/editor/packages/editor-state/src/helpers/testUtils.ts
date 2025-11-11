@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, Viewport, EventDispatcher, State } from '../types';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '../types';
 
 /**
  * Deep partial type that makes all properties and nested properties optional
@@ -159,19 +159,44 @@ export function createMockCodeBlock(
 }
 
 /**
- * Helper to create a mock viewport for testing
+ * Helper to create a mock viewport for testing (GraphicHelper viewport type)
  * @param x - X coordinate (defaults to 0)
  * @param y - Y coordinate (defaults to 0)
+ * @param width - Viewport width (defaults to 800)
+ * @param height - Viewport height (defaults to 600)
  * @param animationDurationMs - Optional animation duration in milliseconds
- * @returns A Viewport object
+ * @returns A GraphicHelper viewport object
  *
  * @example
  * const viewport = createMockViewport();
  * const viewport = createMockViewport(100, 200);
- * const viewport = createMockViewport(100, 200, 500);
+ * const viewport = createMockViewport(100, 200, 1920, 1080);
+ * const viewport = createMockViewport(100, 200, 800, 600, 500);
  */
-export function createMockViewport(x = 0, y = 0, animationDurationMs?: number): Viewport {
-	const viewport: Viewport = { x, y };
+export function createMockViewport(
+	x = 0,
+	y = 0,
+	width = 800,
+	height = 600,
+	animationDurationMs?: number
+): State['graphicHelper']['viewport'] {
+	const viewport: State['graphicHelper']['viewport'] = {
+		x,
+		y,
+		width,
+		height,
+		roundedWidth: width,
+		roundedHeight: height,
+		vGrid: 8,
+		hGrid: 16,
+		borderLineCoordinates: {
+			top: { startX: 0, startY: 0, endX: 0, endY: 0 },
+			right: { startX: 0, startY: 0, endX: 0, endY: 0 },
+			bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
+			left: { startX: 0, startY: 0, endX: 0, endY: 0 },
+		},
+		center: { x: 0, y: 0 },
+	};
 	if (animationDurationMs !== undefined) {
 		viewport.animationDurationMs = animationDurationMs;
 	}
