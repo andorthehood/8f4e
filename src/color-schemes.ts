@@ -31,6 +31,9 @@ const colorSchemes: Record<string, ColorScheme> = {
 			highlightedCodeLine: '#333333',
 			plotterBackground: '#001100',
 			plotterTrace: '#66ff66',
+			codeBlockHighlightLevel1: '#111111',
+			codeBlockHighlightLevel2: '#222222',
+			codeBlockHighlightLevel3: '#333333',
 		},
 		icons: {
 			outputConnectorBackground: '#003300',
@@ -81,6 +84,9 @@ const colorSchemes: Record<string, ColorScheme> = {
 			highlightedCodeLine: '#002200',
 			plotterBackground: '#001100',
 			plotterTrace: '#99ff99',
+			codeBlockHighlightLevel1: '#003300',
+			codeBlockHighlightLevel2: '#002200',
+			codeBlockHighlightLevel3: '#001100',
 		},
 		icons: {
 			outputConnectorBackground: '#002200',
@@ -131,6 +137,9 @@ const colorSchemes: Record<string, ColorScheme> = {
 			highlightedCodeLine: '#660000',
 			plotterBackground: '#001100',
 			plotterTrace: '#00ff00',
+			codeBlockHighlightLevel1: '#660000',
+			codeBlockHighlightLevel2: '#440000',
+			codeBlockHighlightLevel3: '#220000',
 		},
 		icons: {
 			outputConnectorBackground: '#220000',
