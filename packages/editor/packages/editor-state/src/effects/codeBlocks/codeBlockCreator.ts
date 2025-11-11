@@ -118,6 +118,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			codeColors: [],
 			codeToRender: [],
 			extras: {
+				blockHighlights: [],
 				inputs: new Map(),
 				outputs: new Map(),
 				debuggers: new Map(),
