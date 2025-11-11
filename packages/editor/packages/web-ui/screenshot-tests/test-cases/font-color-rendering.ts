@@ -44,7 +44,7 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 		const codeLines = ['', colorName, ...lines.map(line => line.join('')), ''];
 		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		mockState.graphicHelper.activeViewport.codeBlocks.add(
+		mockState.graphicHelper.codeBlocks.add(
 			createMockCodeBlock({
 				id: `codeBlock${index}`,
 				x: (index % 4) * 8 * 32,

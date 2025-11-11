@@ -18,7 +18,7 @@ export function navigateToCodeBlockInDirection(state: State, direction: Directio
 	}
 
 	// Get the current viewport's code blocks
-	const codeBlocks = state.graphicHelper.activeViewport.codeBlocks;
+	const codeBlocks = state.graphicHelper.codeBlocks;
 	const currentBlock = state.graphicHelper.selectedCodeBlock;
 
 	// Find the closest code block in the specified direction
@@ -30,11 +30,7 @@ export function navigateToCodeBlockInDirection(state: State, direction: Directio
 		// Enable animation for this programmatic viewport change, but restore original value after
 		const originalViewportAnimations = state.featureFlags.viewportAnimations;
 		state.featureFlags.viewportAnimations = true;
-		centerViewportOnCodeBlock(
-			state.graphicHelper.activeViewport.viewport,
-			targetBlock,
-			state.graphicHelper.globalViewport
-		);
+		centerViewportOnCodeBlock(state.graphicHelper.viewport, targetBlock);
 		state.featureFlags.viewportAnimations = originalViewportAnimations;
 		return true;
 	}

@@ -19,8 +19,8 @@ export default async function init(
 	// Animation state - local to web-ui, not part of editor-state
 	const animationState: { current: AnimationState | null } = { current: null };
 	const previousViewport = {
-		x: state.graphicHelper.activeViewport.viewport.x,
-		y: state.graphicHelper.activeViewport.viewport.y,
+		x: state.graphicHelper.viewport.x,
+		y: state.graphicHelper.viewport.y,
 	};
 
 	const {
@@ -34,8 +34,8 @@ export default async function init(
 	});
 
 	state.graphicHelper.spriteLookups = spriteLookups;
-	state.graphicHelper.globalViewport.hGrid = characterHeight;
-	state.graphicHelper.globalViewport.vGrid = characterWidth;
+	state.graphicHelper.viewport.hGrid = characterHeight;
+	state.graphicHelper.viewport.vGrid = characterWidth;
 
 	const engine = new Engine(canvas, { caching: true });
 
@@ -47,13 +47,13 @@ export default async function init(
 
 		// Save original viewport
 		const originalViewport = {
-			x: state.graphicHelper.activeViewport.viewport.x,
-			y: state.graphicHelper.activeViewport.viewport.y,
+			x: state.graphicHelper.viewport.x,
+			y: state.graphicHelper.viewport.y,
 		};
 
 		// Temporarily override viewport for rendering
-		state.graphicHelper.activeViewport.viewport.x = effectiveViewport.x;
-		state.graphicHelper.activeViewport.viewport.y = effectiveViewport.y;
+		state.graphicHelper.viewport.x = effectiveViewport.x;
+		state.graphicHelper.viewport.y = effectiveViewport.y;
 
 		// Render with effective viewport
 		drawBackground(engine, state);
@@ -71,8 +71,8 @@ export default async function init(
 		drawContextMenu(engine, state);
 
 		// Restore original viewport
-		state.graphicHelper.activeViewport.viewport.x = originalViewport.x;
-		state.graphicHelper.activeViewport.viewport.y = originalViewport.y;
+		state.graphicHelper.viewport.x = originalViewport.x;
+		state.graphicHelper.viewport.y = originalViewport.y;
 	});
 
 	return {
@@ -91,8 +91,8 @@ export default async function init(
 			});
 
 			state.graphicHelper.spriteLookups = spriteLookups;
-			state.graphicHelper.globalViewport.hGrid = characterHeight;
-			state.graphicHelper.globalViewport.vGrid = characterWidth;
+			state.graphicHelper.viewport.hGrid = characterHeight;
+			state.graphicHelper.viewport.vGrid = characterWidth;
 
 			engine.loadSpriteSheet(sprite);
 		},

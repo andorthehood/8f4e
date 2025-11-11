@@ -40,7 +40,7 @@ export function calculateAnimatedViewport(
 	animationState: { current: AnimationState | null },
 	previousViewport: { x: number; y: number }
 ): { x: number; y: number } {
-	const actualViewport = state.graphicHelper.activeViewport.viewport;
+	const actualViewport = state.graphicHelper.viewport;
 
 	// Check if viewport has changed and animation flag is enabled
 	const viewportChanged = actualViewport.x !== previousViewport.x || actualViewport.y !== previousViewport.y;

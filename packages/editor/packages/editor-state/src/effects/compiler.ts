@@ -8,15 +8,9 @@ import type { CodeBlockGraphicData, State } from '../types';
 function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
 	const flatCodeBlocks: { code: string[] }[] = [];
 
-	function walk(codeBlocks: Set<CodeBlockGraphicData>) {
-		codeBlocks.forEach(codeBlock => {
-			flatCodeBlocks.push(codeBlock);
-			if (codeBlock.codeBlocks && codeBlock.codeBlocks.size > 0) {
-				walk(codeBlock.codeBlocks);
-			}
-		});
-	}
-	walk(codeBlocks);
+	codeBlocks.forEach(codeBlock => {
+		flatCodeBlocks.push(codeBlock);
+	});
 
 	return flatCodeBlocks;
 }
@@ -35,7 +29,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		}
 
 		// Regular compilation path
-		const modules = flattenProjectForCompiler(state.graphicHelper.activeViewport.codeBlocks);
+		const modules = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 
 		state.compiler.isCompiling = true;
 		state.compiler.lastCompilationStart = performance.now();

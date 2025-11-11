@@ -141,8 +141,6 @@ export function createMockCodeBlock(
 		gridY: 0,
 		padLength: 1,
 		minGridWidth: 32,
-		viewport: { x: 0, y: 0 },
-		codeBlocks: new Set(),
 		lastUpdated: Date.now(),
 		extras: {
 			blockHighlights: [],
@@ -247,12 +245,11 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			loadProjectFromStorage: createMockAsyncFunction(null),
 		},
 		graphicHelper: {
-			activeViewport: {
-				codeBlocks: new Set(),
-				viewport: { x: 0, y: 0 },
-			} as CodeBlockGraphicData,
-			outputsByWordAddress: new Map(),
-			globalViewport: {
+			codeBlocks: new Set(),
+			viewport: {
+				x: 0,
+				y: 0,
+
 				width: 1024,
 				height: 768,
 				roundedWidth: 1024,
@@ -267,6 +264,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				},
 				center: { x: 0, y: 0 },
 			},
+			outputsByWordAddress: new Map(),
 			contextMenu: {
 				highlightedItem: 0,
 				itemWidth: 200,

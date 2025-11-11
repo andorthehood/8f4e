@@ -7,11 +7,7 @@ import type { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
  * @param hGrid Horizontal grid size (for converting pixel coordinates to grid coordinates)
  * @returns Array of simplified code blocks suitable for file format
  */
-export function convertGraphicDataToProjectStructure(
-	codeBlocks: CodeBlockGraphicData[],
-	vGrid: number,
-	hGrid: number
-): CodeBlock[] {
+export function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): CodeBlock[] {
 	return codeBlocks
 		.sort((codeBlockA, codeBlockB) => {
 			if (codeBlockA.id > codeBlockB.id) {
@@ -25,17 +21,6 @@ export function convertGraphicDataToProjectStructure(
 			code: codeBlock.code,
 			x: codeBlock.gridX,
 			y: codeBlock.gridY,
-			viewport:
-				codeBlock.codeBlocks.size > 0
-					? {
-							x: Math.round(codeBlock.viewport.x / vGrid),
-							y: Math.round(codeBlock.viewport.y / hGrid),
-						}
-					: undefined,
-			codeBlocks:
-				codeBlock.codeBlocks.size > 0
-					? convertGraphicDataToProjectStructure(Array.from(codeBlock.codeBlocks), vGrid, hGrid)
-					: undefined,
 		}));
 }
 
@@ -56,14 +41,10 @@ export function serializeToProject(
 		title: projectInfo.title,
 		author: projectInfo.author,
 		description: projectInfo.description,
-		codeBlocks: convertGraphicDataToProjectStructure(
-			Array.from(graphicHelper.activeViewport.codeBlocks),
-			graphicHelper.globalViewport.vGrid,
-			graphicHelper.globalViewport.hGrid
-		),
+		codeBlocks: convertGraphicDataToProjectStructure(Array.from(graphicHelper.codeBlocks)),
 		viewport: {
-			x: Math.round(graphicHelper.activeViewport.viewport.x / graphicHelper.globalViewport.vGrid),
-			y: Math.round(graphicHelper.activeViewport.viewport.y / graphicHelper.globalViewport.hGrid),
+			x: Math.round(graphicHelper.viewport.x / graphicHelper.viewport.vGrid),
+			y: Math.round(graphicHelper.viewport.y / graphicHelper.viewport.hGrid),
 		},
 		selectedRuntime: compiler.selectedRuntime,
 		runtimeSettings: compiler.runtimeSettings,

@@ -135,7 +135,7 @@ function calculateSecondaryDistance(
  * @example
  * ```typescript
  * const closestBlock = findClosestCodeBlockInDirection(
- *   graphicHelper.activeViewport.codeBlocks,
+ *   graphicHelper.codeBlocks,
  *   graphicHelper.selectedCodeBlock,
  *   'right'
  * );

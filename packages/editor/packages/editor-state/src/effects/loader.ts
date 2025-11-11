@@ -134,12 +134,12 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		state.graphicHelper.selectedCodeBlock = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
 
-		state.graphicHelper.activeViewport.codeBlocks.clear();
-		state.graphicHelper.activeViewport.viewport.x = newProject.viewport.x * state.graphicHelper.globalViewport.vGrid;
-		state.graphicHelper.activeViewport.viewport.y = newProject.viewport.y * state.graphicHelper.globalViewport.hGrid;
+		state.graphicHelper.codeBlocks.clear();
+		state.graphicHelper.viewport.x = newProject.viewport.x * state.graphicHelper.viewport.vGrid;
+		state.graphicHelper.viewport.y = newProject.viewport.y * state.graphicHelper.viewport.hGrid;
 		// TODO: make it recursive
 		newProject.codeBlocks.forEach(codeBlock => {
-			state.graphicHelper.activeViewport.codeBlocks.add({
+			state.graphicHelper.codeBlocks.add({
 				width: 0,
 				minGridWidth: 32,
 				height: 0,
@@ -161,18 +161,13 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
 				id: getModuleId(codeBlock.code) || '',
 				gaps: new Map(),
-				x: codeBlock.x * state.graphicHelper.globalViewport.vGrid,
-				y: codeBlock.y * state.graphicHelper.globalViewport.hGrid,
+				x: codeBlock.x * state.graphicHelper.viewport.vGrid,
+				y: codeBlock.y * state.graphicHelper.viewport.hGrid,
 				offsetX: 0,
 				offsetY: 0,
 				gridX: codeBlock.x,
 				gridY: codeBlock.y,
 				padLength: 1,
-				viewport: {
-					x: 0,
-					y: 0,
-				},
-				codeBlocks: new Set(),
 				lastUpdated: Date.now(),
 			});
 		});

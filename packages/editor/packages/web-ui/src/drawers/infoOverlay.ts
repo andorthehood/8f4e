@@ -100,25 +100,21 @@ export default function drawInfoOverlay(
 
 	engine.startGroup(
 		0,
-		state.graphicHelper.globalViewport.roundedHeight - state.graphicHelper.globalViewport.hGrid * (debugText.length + 1)
+		state.graphicHelper.viewport.roundedHeight - state.graphicHelper.viewport.hGrid * (debugText.length + 1)
 	);
 
 	for (let i = 0; i < debugText.length; i++) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 		engine.drawSprite(
 			0,
-			i * state.graphicHelper.globalViewport.hGrid,
+			i * state.graphicHelper.viewport.hGrid,
 			'moduleBackground',
-			(debugText[i].length + 2) * state.graphicHelper.globalViewport.vGrid,
-			state.graphicHelper.globalViewport.hGrid
+			(debugText[i].length + 2) * state.graphicHelper.viewport.vGrid,
+			state.graphicHelper.viewport.hGrid
 		);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-		engine.drawText(
-			state.graphicHelper.globalViewport.vGrid,
-			i * state.graphicHelper.globalViewport.hGrid,
-			debugText[i]
-		);
+		engine.drawText(state.graphicHelper.viewport.vGrid, i * state.graphicHelper.viewport.hGrid, debugText[i]);
 	}
 
 	engine.endGroup();

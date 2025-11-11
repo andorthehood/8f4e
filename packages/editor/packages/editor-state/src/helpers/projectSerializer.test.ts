@@ -82,11 +82,10 @@ describe('projectSerializer', () => {
 					description: 'Test Description',
 				},
 				graphicHelper: {
-					activeViewport: {
-						codeBlocks: new Set(),
-						viewport: { x: 0, y: 0 },
-					},
-					globalViewport: {
+					codeBlocks: new Set(),
+					viewport: {
+						x: 0,
+						y: 0,
 						vGrid: 8,
 						hGrid: 16,
 					},

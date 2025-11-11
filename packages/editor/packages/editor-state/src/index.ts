@@ -23,53 +23,10 @@ import runtime from './effects/runtime';
 import keyboardShortcuts from './effects/keyboardShortcuts';
 import { validateFeatureFlags, defaultFeatureFlags } from './featureFlags';
 
-import type { Options, Project, State, CodeBlockGraphicData, EventDispatcher } from './types';
-
-// Helper function to create base code block with self-reference
-function createBaseCodeBlock(): CodeBlockGraphicData {
-	const baseCodeBlock: Omit<CodeBlockGraphicData, 'parent'> & { parent?: CodeBlockGraphicData } = {
-		width: 0,
-		minGridWidth: 32,
-		height: 0,
-		code: [],
-		trimmedCode: [],
-		codeColors: [],
-		codeToRender: [],
-		cursor: { col: 0, row: 0, x: 0, y: 0 },
-		id: '',
-		gaps: new Map(),
-		x: 0,
-		y: 0,
-		offsetX: 0,
-		offsetY: 0,
-		gridX: 0,
-		gridY: 0,
-		padLength: 1,
-		viewport: {
-			x: 0,
-			y: 0,
-		},
-		codeBlocks: new Set<CodeBlockGraphicData>(),
-		extras: {
-			blockHighlights: [],
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			bufferPlotters: new Map(),
-			errorMessages: new Map(),
-		},
-		lastUpdated: Date.now(),
-	};
-
-	return baseCodeBlock as CodeBlockGraphicData;
-}
+import type { Options, Project, State, CodeBlockGraphicData, EventDispatcher, GraphicHelper } from './types';
 
 // Helper function to create graphic helper with proper references
-function createGraphicHelper() {
-	const baseCodeBlock = createBaseCodeBlock();
+function createGraphicHelper(): GraphicHelper {
 	return {
 		dialog: {
 			show: false,
@@ -77,9 +34,12 @@ function createGraphicHelper() {
 			title: 'Dialog',
 			buttons: [{ title: 'Close', action: 'close' }],
 		},
-		activeViewport: baseCodeBlock,
+		codeBlocks: new Set<CodeBlockGraphicData>(),
 		outputsByWordAddress: new Map(),
-		globalViewport: {
+		viewport: {
+			x: 0,
+			y: 0,
+			animationDurationMs: 0,
 			width: 0,
 			height: 0,
 			roundedHeight: 0,

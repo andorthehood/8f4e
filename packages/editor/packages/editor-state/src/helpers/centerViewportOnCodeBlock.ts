@@ -1,4 +1,4 @@
-import type { Viewport } from '../types';
+import { GraphicHelper } from '../types';
 
 /**
  * Minimal positional data required for viewport centering
@@ -22,18 +22,6 @@ export interface CodeBlockBounds {
  *
  * @param viewport - The viewport object to mutate (will be modified in place)
  * @param codeBlock - The code block to center on
- * @param globalViewport - The global viewport dimensions (width and height)
- *
- * @example
- * ```typescript
- * // Center viewport on a selected code block
- * centerViewportOnCodeBlock(
- *   state.graphicHelper.activeViewport.viewport,
- *   selectedCodeBlock,
- *   state.graphicHelper.globalViewport
- * );
- * // viewport.x and viewport.y are now updated to center the block
- * ```
  *
  * @remarks
  * **Centering Behavior:**
@@ -52,17 +40,16 @@ export interface CodeBlockBounds {
  * - O(1) calculation time, suitable for frequent calls
  */
 export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
-	viewport: Viewport,
-	codeBlock: T,
-	globalViewport: { width: number; height: number }
+	viewport: GraphicHelper['viewport'],
+	codeBlock: T
 ): void {
 	// Calculate the code block's center point (absolute coordinates)
 	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
 	const blockCenterY = codeBlock.y + codeBlock.offsetY + codeBlock.height / 2;
 
 	// Calculate viewport center
-	const viewportCenterX = globalViewport.width / 2;
-	const viewportCenterY = globalViewport.height / 2;
+	const viewportCenterX = viewport.width / 2;
+	const viewportCenterY = viewport.height / 2;
 
 	// Calculate ideal viewport position (block center aligns with viewport center)
 	const idealViewportX = blockCenterX - viewportCenterX;

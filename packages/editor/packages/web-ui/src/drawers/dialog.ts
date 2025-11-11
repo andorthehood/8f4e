@@ -11,13 +11,7 @@ export default function drawDialog(engine: Engine, state: State): void {
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 	engine.startGroup(0, 0);
-	engine.drawSprite(
-		0,
-		0,
-		'dialogDimmer',
-		state.graphicHelper.globalViewport.width,
-		state.graphicHelper.globalViewport.height
-	);
+	engine.drawSprite(0, 0, 'dialogDimmer', state.graphicHelper.viewport.width, state.graphicHelper.viewport.height);
 
 	engine.drawSprite(100, 100, 'dialogBackground', 100, 100);
 
