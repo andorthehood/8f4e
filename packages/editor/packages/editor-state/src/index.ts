@@ -51,6 +51,7 @@ function createBaseCodeBlock(): CodeBlockGraphicData {
 		},
 		codeBlocks: new Set<CodeBlockGraphicData>(),
 		extras: {
+			blockHighlights: [],
 			inputs: new Map(),
 			outputs: new Map(),
 			debuggers: new Map(),
@@ -193,6 +194,11 @@ export default function init(events: EventDispatcher, project: Project, options:
 	binaryAsset(state, events);
 	keyboardShortcuts(state, events);
 	events.dispatch('init');
+
+	events.on('consoleLog', event => {
+		console.log(event);
+	});
+
 	return store;
 }
 
