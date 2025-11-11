@@ -30,14 +30,14 @@ export default function drawer(engine: Engine, state: State, codeBlock: CodeBloc
 				? state.compiler.memoryBuffer[buffer.memory.wordAlignedAddress + i]
 				: state.compiler.memoryBufferFloat[buffer.memory.wordAlignedAddress + i];
 
-			const normalizedValue = Math.round(((value + offset) / height) * (state.graphicHelper.globalViewport.hGrid * 8));
+			const normalizedValue = Math.round(((value + offset) / height) * (state.graphicHelper.viewport.hGrid * 8));
 
 			engine.drawSprite(
 				i * Math.floor(maxPlotterWidth / width),
 				0,
 				normalizedValue,
 				Math.floor(maxPlotterWidth / width),
-				state.graphicHelper.globalViewport.hGrid * 8
+				state.graphicHelper.viewport.hGrid * 8
 			);
 		}
 

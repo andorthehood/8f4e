@@ -274,15 +274,13 @@ export interface CodeBlockGraphicData {
 			}
 		>;
 	};
-	viewport: Viewport;
-	codeBlocks: Set<CodeBlockGraphicData>;
 	lastUpdated: number;
 }
 
 export type GraphicHelper = {
 	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
-	globalViewport: {
+	viewport: {
 		width: number;
 		height: number;
 		roundedWidth: number;
@@ -296,8 +294,11 @@ export type GraphicHelper = {
 			left: { startX: number; startY: number; endX: number; endY: number };
 		};
 		center: { x: number; y: number };
+		x: number;
+		y: number;
+		animationDurationMs?: number;
 	};
-	activeViewport: CodeBlockGraphicData;
+	codeBlocks: Set<CodeBlockGraphicData>;
 	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;

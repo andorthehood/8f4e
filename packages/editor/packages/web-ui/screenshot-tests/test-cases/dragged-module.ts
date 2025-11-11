@@ -36,7 +36,7 @@ async function initializeWebUI() {
 
 		mockState.graphicHelper.draggedCodeBlock = codeBlockMock;
 
-		mockState.graphicHelper.activeViewport.codeBlocks.add(codeBlockMock);
+		mockState.graphicHelper.codeBlocks.add(codeBlockMock);
 	}
 
 	console.log('Web-UI initialized:', webUI);

@@ -27,12 +27,8 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
-		const relativeX = Math.abs(
-			x - (draggedCodeBlock.x + draggedCodeBlock.offsetX - state.graphicHelper.activeViewport.viewport.x)
-		);
-		const relativeY = Math.abs(
-			y - (draggedCodeBlock.y + draggedCodeBlock.offsetY - state.graphicHelper.activeViewport.viewport.y)
-		);
+		const relativeX = Math.abs(x - (draggedCodeBlock.x + draggedCodeBlock.offsetX - state.graphicHelper.viewport.x));
+		const relativeY = Math.abs(y - (draggedCodeBlock.y + draggedCodeBlock.offsetY - state.graphicHelper.viewport.y));
 
 		events.dispatch<CodeBlockClickEvent>('codeBlockClick', {
 			x,
@@ -43,8 +39,8 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 		});
 
 		// Bring dragged module forward.
-		state.graphicHelper.activeViewport.codeBlocks.delete(draggedCodeBlock);
-		state.graphicHelper.activeViewport.codeBlocks.add(draggedCodeBlock);
+		state.graphicHelper.codeBlocks.delete(draggedCodeBlock);
+		state.graphicHelper.codeBlocks.add(draggedCodeBlock);
 	}
 
 	function onMouseMove(event: InternalMouseEvent) {
@@ -62,18 +58,18 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 		}
 
 		state.graphicHelper.draggedCodeBlock.gridX = Math.round(
-			state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.globalViewport.vGrid
+			state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid
 		);
 		state.graphicHelper.draggedCodeBlock.gridY = Math.round(
-			state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.globalViewport.hGrid
+			state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.viewport.hGrid
 		);
 
 		state.graphicHelper.draggedCodeBlock.x =
-			Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.globalViewport.vGrid) *
-			state.graphicHelper.globalViewport.vGrid;
+			Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid) *
+			state.graphicHelper.viewport.vGrid;
 		state.graphicHelper.draggedCodeBlock.y =
-			Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.globalViewport.hGrid) *
-			state.graphicHelper.globalViewport.hGrid;
+			Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.viewport.hGrid) *
+			state.graphicHelper.viewport.hGrid;
 
 		state.graphicHelper.draggedCodeBlock = undefined;
 	}

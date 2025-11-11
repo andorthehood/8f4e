@@ -18,7 +18,7 @@ describe('errorMessages', () => {
 
 		mockState = createMockState({
 			graphicHelper: {
-				globalViewport: {
+				viewport: {
 					vGrid: 10,
 					hGrid: 20,
 				},

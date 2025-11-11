@@ -43,11 +43,8 @@ describe('codeBlockNavigation', () => {
 			},
 			graphicHelper: {
 				selectedCodeBlock: selectedBlock,
-				activeViewport: {
-					codeBlocks: new Set([selectedBlock, leftBlock, rightBlock, upBlock, downBlock]),
-					viewport: { x: 0, y: 0 },
-				} as CodeBlockGraphicData,
-				globalViewport: { width: 800, height: 600, vGrid: 8, hGrid: 16 },
+				codeBlocks: new Set([selectedBlock, leftBlock, rightBlock, upBlock, downBlock]),
+				viewport: { x: 0, y: 0, width: 800, height: 600, vGrid: 8, hGrid: 16 },
 			},
 		});
 
@@ -132,15 +129,14 @@ describe('codeBlockNavigation', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
 
-		const initialViewportX = state.graphicHelper.activeViewport.viewport.x;
-		const initialViewportY = state.graphicHelper.activeViewport.viewport.y;
+		const initialViewportX = state.graphicHelper.viewport.x;
+		const initialViewportY = state.graphicHelper.viewport.y;
 
 		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
 
 		// Verify viewport has changed
 		const viewportChanged =
-			state.graphicHelper.activeViewport.viewport.x !== initialViewportX ||
-			state.graphicHelper.activeViewport.viewport.y !== initialViewportY;
+			state.graphicHelper.viewport.x !== initialViewportX || state.graphicHelper.viewport.y !== initialViewportY;
 
 		expect(viewportChanged).toBe(true);
 	});
@@ -150,7 +146,7 @@ describe('codeBlockNavigation', () => {
 		codeBlockNavigation(state, events);
 
 		// Remove all blocks except selected
-		state.graphicHelper.activeViewport.codeBlocks = new Set([selectedBlock]);
+		state.graphicHelper.codeBlocks = new Set([selectedBlock]);
 
 		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
