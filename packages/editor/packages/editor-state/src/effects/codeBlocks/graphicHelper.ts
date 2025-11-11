@@ -10,6 +10,7 @@ import outputs from './codeBlockDecorators/outputs/updateGraphicData';
 import pianoKeyboards from './codeBlockDecorators/pianoKeyboard/updateGraphicData';
 import positionOffsetters from './positionOffsetters';
 import switches from './codeBlockDecorators/switches/updateGraphicData';
+import blockHighlights from './codeBlockDecorators/blockHighlights/updateGraphicData';
 import { CodeBlockClickEvent } from './codeBlockDragger';
 import { CodeBlockAddedEvent } from './codeBlockCreator';
 
@@ -153,6 +154,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		switches(graphicData, state);
 		buttons(graphicData, state);
 		positionOffsetters(graphicData, state);
+		blockHighlights(graphicData, state);
 
 		graphicData.height = graphicData.codeToRender.length * state.graphicHelper.globalViewport.hGrid;
 		graphicData.cursor.x =
