@@ -12,10 +12,10 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 		}
 
 		graphicData.extras.blockHighlights.push({
-			x: state.graphicHelper.globalViewport.vGrid * (2 + graphicData.padLength),
-			y: gapCalculator(block.startLineNumber, graphicData.gaps) * state.graphicHelper.globalViewport.hGrid,
-			width: graphicData.width - state.graphicHelper.globalViewport.vGrid * (2 + graphicData.padLength),
-			height: (block.endLineNumber - block.startLineNumber + 1) * state.graphicHelper.globalViewport.hGrid,
+			x: state.graphicHelper.viewport.vGrid * (2 + graphicData.padLength),
+			y: gapCalculator(block.startLineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
+			width: graphicData.width - state.graphicHelper.viewport.vGrid * (2 + graphicData.padLength),
+			height: (block.endLineNumber - block.startLineNumber + 1) * state.graphicHelper.viewport.hGrid,
 			color: 'codeBlockHighlightLevel' + ((block.depth % 3) + 1),
 		});
 	});

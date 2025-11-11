@@ -8,10 +8,10 @@ export default function findButtonAtViewportCoordinates(
 ): Switch | undefined {
 	return Array.from(codeBlock.extras.buttons.values()).find(button => {
 		return (
-			x >= codeBlock.x + codeBlock.offsetX + button.x - graphicHelper.activeViewport.viewport.x &&
-			x <= codeBlock.x + codeBlock.offsetX + button.width + button.x - graphicHelper.activeViewport.viewport.x &&
-			y >= codeBlock.y + codeBlock.offsetY + button.y - graphicHelper.activeViewport.viewport.y &&
-			y <= codeBlock.y + codeBlock.offsetY + button.height + button.y - graphicHelper.activeViewport.viewport.y
+			x >= codeBlock.x + codeBlock.offsetX + button.x - graphicHelper.viewport.x &&
+			x <= codeBlock.x + codeBlock.offsetX + button.width + button.x - graphicHelper.viewport.x &&
+			y >= codeBlock.y + codeBlock.offsetY + button.y - graphicHelper.viewport.y &&
+			y <= codeBlock.y + codeBlock.offsetY + button.height + button.y - graphicHelper.viewport.y
 		);
 	});
 }

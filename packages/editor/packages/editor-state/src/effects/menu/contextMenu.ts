@@ -60,7 +60,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 			event.x - x,
 			event.y - y,
 			itemWidth,
-			state.graphicHelper.globalViewport.hGrid
+			state.graphicHelper.viewport.hGrid
 		);
 		event.stopPropagation = true;
 	};
@@ -105,9 +105,9 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 
 		state.graphicHelper.contextMenu.highlightedItem = 0;
 		state.graphicHelper.contextMenu.x =
-			Math.round(x / state.graphicHelper.globalViewport.vGrid) * state.graphicHelper.globalViewport.vGrid;
+			Math.round(x / state.graphicHelper.viewport.vGrid) * state.graphicHelper.viewport.vGrid;
 		state.graphicHelper.contextMenu.y =
-			Math.round(y / state.graphicHelper.globalViewport.hGrid) * state.graphicHelper.globalViewport.hGrid;
+			Math.round(y / state.graphicHelper.viewport.hGrid) * state.graphicHelper.viewport.hGrid;
 		state.graphicHelper.contextMenu.open = true;
 
 		const codeBlock = findCodeBlockAtViewportCoordinates(state.graphicHelper, x, y);
@@ -119,7 +119,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 		}
 
 		state.graphicHelper.contextMenu.itemWidth =
-			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.globalViewport.vGrid;
+			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 
 		events.on('mousedown', onMouseDown);
 		events.on('mousemove', onMouseMove);
@@ -136,7 +136,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 			)),
 		]);
 		state.graphicHelper.contextMenu.itemWidth =
-			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.globalViewport.vGrid;
+			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 	};
 
 	const onMenuBack = async () => {
@@ -146,7 +146,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 		if (!menu) {
 			state.graphicHelper.contextMenu.items = decorateMenu(await menus.mainMenu(state));
 			state.graphicHelper.contextMenu.itemWidth =
-				getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.globalViewport.vGrid;
+				getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 			return;
 		}
 
@@ -155,7 +155,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 			...(menus as Record<string, (state: State) => ContextMenuItem[]>)[menu](state),
 		]);
 		state.graphicHelper.contextMenu.itemWidth =
-			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.globalViewport.vGrid;
+			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 	};
 
 	events.on('openSubMenu', onOpenSubMenu);

@@ -12,7 +12,7 @@ import type { Direction } from '../helpers/findClosestCodeBlockInDirection';
  * @returns true if a block was selected, false otherwise
  */
 function selectRandomCodeBlock(state: State): boolean {
-	const codeBlocks = Array.from(state.graphicHelper.activeViewport.codeBlocks);
+	const codeBlocks = Array.from(state.graphicHelper.codeBlocks);
 
 	if (codeBlocks.length === 0) {
 		return false;
@@ -24,11 +24,7 @@ function selectRandomCodeBlock(state: State): boolean {
 
 	state.graphicHelper.selectedCodeBlock = selectedBlock;
 
-	centerViewportOnCodeBlock(
-		state.graphicHelper.activeViewport.viewport,
-		selectedBlock,
-		state.graphicHelper.globalViewport
-	);
+	centerViewportOnCodeBlock(state.graphicHelper.viewport, selectedBlock);
 
 	return true;
 }
@@ -68,7 +64,7 @@ export default function demoModeNavigation(state: State, events: EventDispatcher
 		// Start the demo navigation interval
 		demoInterval = setInterval(() => {
 			// Check if we still have code blocks available
-			if (state.graphicHelper.activeViewport.codeBlocks.size === 0) {
+			if (state.graphicHelper.codeBlocks.size === 0) {
 				return;
 			}
 

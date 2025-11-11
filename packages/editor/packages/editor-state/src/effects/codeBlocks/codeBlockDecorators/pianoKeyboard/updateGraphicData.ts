@@ -27,10 +27,10 @@ export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGr
 
 		graphicData.extras.pianoKeyboards.set(pianoKeyboard.lineNumber, {
 			x: 0,
-			y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.globalViewport.hGrid,
-			width: 24 * (state.graphicHelper.globalViewport.vGrid * 2),
-			height: state.graphicHelper.globalViewport.hGrid * 5,
-			keyWidth: state.graphicHelper.globalViewport.vGrid * 2,
+			y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
+			width: 24 * (state.graphicHelper.viewport.vGrid * 2),
+			height: state.graphicHelper.viewport.hGrid * 5,
+			keyWidth: state.graphicHelper.viewport.vGrid * 2,
 			pressedKeys: pianoKeyboard.pressedKeys,
 			pressedKeysListMemory: memoryIdentifierKeysList.memory,
 			pressedNumberOfKeysMemory: memoryIdentifierNumberOfKeys.memory,
