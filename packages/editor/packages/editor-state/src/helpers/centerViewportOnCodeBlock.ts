@@ -37,17 +37,14 @@ export interface CodeBlockBounds {
  * - This function mutates the viewport parameter directly
  * - Coordinates use pixels, not grid units (grid conversion happens elsewhere)
  * - Negative viewport coordinates are allowed (viewport can pan anywhere)
- * - O(1) calculation time, suitable for frequent calls
  */
 export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
 	viewport: GraphicHelper['viewport'],
 	codeBlock: T
 ): void {
-	// Calculate the code block's center point (absolute coordinates)
 	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
 	const blockCenterY = codeBlock.y + codeBlock.offsetY + codeBlock.height / 2;
 
-	// Calculate viewport center
 	const viewportCenterX = viewport.width / 2;
 	const viewportCenterY = viewport.height / 2;
 
@@ -60,7 +57,6 @@ export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
 	const blockTop = codeBlock.y + codeBlock.offsetY;
 	const constrainedViewportY = Math.min(blockTop, idealViewportY);
 
-	// Mutate viewport object
-	viewport.x = idealViewportX;
-	viewport.y = constrainedViewportY;
+	viewport.x = Math.round(idealViewportX);
+	viewport.y = Math.round(constrainedViewportY);
 }
