@@ -16,7 +16,6 @@ describe('updateOutputsGraphicData', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			code: ['module test-block', 'int output1'],
-			trimmedCode: ['int output1'],
 			width: 100,
 			gaps: new Map(),
 		});
@@ -73,7 +72,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('should not add output when memory is not found', () => {
-		mockGraphicData.trimmedCode = ['int nonExistentOutput'];
+		mockGraphicData.code = ['int nonExistentOutput'];
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -100,7 +99,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('should handle multiple outputs', () => {
-		mockGraphicData.trimmedCode = ['int output1', 'float output2'];
+		mockGraphicData.code = ['module test-block', 'int output1', 'float output2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['output2'] = {
 			wordAlignedAddress: 6,
 			byteAddress: 24,
@@ -131,7 +130,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('should position outputs at correct y coordinate based on line number', () => {
-		mockGraphicData.trimmedCode = ['nop', 'nop', 'int output1'];
+		mockGraphicData.code = ['nop', 'nop', 'int output1'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,
