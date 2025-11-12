@@ -7,7 +7,7 @@ import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function updateInputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.inputs.clear();
-	parseInputs(graphicData.trimmedCode).forEach(input => {
+	parseInputs(graphicData.code).forEach(input => {
 		const memory = state.compiler.compiledModules[getModuleId(graphicData.code) || '']?.memoryMap[input.id];
 
 		if (!memory) {

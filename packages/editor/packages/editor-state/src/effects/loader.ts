@@ -144,7 +144,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				minGridWidth: 32,
 				height: 0,
 				code: codeBlock.code,
-				trimmedCode: codeBlock.code,
 				codeColors: [],
 				codeToRender: [],
 				extras: {
