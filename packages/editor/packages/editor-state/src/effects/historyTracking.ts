@@ -16,7 +16,7 @@ export default function historyTracking(store: StateManager<State>, events: Even
 			state.historyStack.shift();
 		}
 
-		state.historyStack.push(serializeToProject(state));
+		state.historyStack.push(serializeToProject(state, { includeCompiled: false }));
 		state.redoStack = [];
 	}
 
