@@ -11,6 +11,11 @@ export default function historyTracking(store: StateManager<State>, events: Even
 		return;
 	}
 
+	// Capture initial state
+	if (state.historyStack.length === 0) {
+		state.historyStack.push(serializeToProject(state, { includeCompiled: false }));
+	}
+
 	function onSaveHistory() {
 		if (state.historyStack.length >= 10) {
 			state.historyStack.shift();
@@ -31,13 +36,14 @@ export default function historyTracking(store: StateManager<State>, events: Even
 		}
 	}
 
+	// Redo the last action
 	function redo() {
 		const nextState = state.redoStack.pop();
 		if (nextState) {
 			if (state.historyStack.length >= 10) {
 				state.historyStack.shift();
 			}
-			state.historyStack.push(serializeToProject(state));
+			state.historyStack.push(serializeToProject(state, { includeCompiled: false }));
 			events.dispatch('loadProject', { project: nextState });
 		}
 	}
