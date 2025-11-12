@@ -15,7 +15,6 @@ describe('updateInputsGraphicData', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			code: ['module test-block', 'int* input1'],
-			trimmedCode: ['int* input1'],
 			gaps: new Map(),
 		});
 
@@ -60,7 +59,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('should not add input when memory is not found', () => {
-		mockGraphicData.trimmedCode = ['int* nonExistentInput'];
+		mockGraphicData.code = ['int* nonExistentInput'];
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
@@ -84,7 +83,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('should handle multiple inputs', () => {
-		mockGraphicData.trimmedCode = ['int* input1', 'float* input2'];
+		mockGraphicData.code = ['module test-block', 'int* input1', 'float* input2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['input2'] = {
 			wordAlignedAddress: 6,
 			byteAddress: 24,
@@ -113,7 +112,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('should position inputs at correct y coordinate based on line number', () => {
-		mockGraphicData.trimmedCode = ['nop', 'nop', 'int* input1'];
+		mockGraphicData.code = ['nop', 'nop', 'int* input1'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['input1'] = {
 			wordAlignedAddress: 5,
 			byteAddress: 20,

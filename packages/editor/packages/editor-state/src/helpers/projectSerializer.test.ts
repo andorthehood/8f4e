@@ -12,7 +12,6 @@ describe('projectSerializer', () => {
 				createMockCodeBlock({
 					id: 'test-module',
 					code: ['test code'],
-					trimmedCode: ['test code'],
 					x: 80,
 					y: 128,
 					gridX: 10,
@@ -29,13 +28,11 @@ describe('projectSerializer', () => {
 			const blockA = createMockCodeBlock({
 				id: 'module-b',
 				code: ['code b'],
-				trimmedCode: ['code b'],
 			});
 
 			const blockB = createMockCodeBlock({
 				id: 'module-a',
 				code: ['code a'],
-				trimmedCode: ['code a'],
 			});
 
 			const result = convertGraphicDataToProjectStructure([blockA, blockB]);
