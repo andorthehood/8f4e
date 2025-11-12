@@ -27,6 +27,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable automatic demo mode with periodic code block navigation */
 	demoMode: boolean;
+
+	/** Enable/disable history tracking for undo/redo functionality */
+	historyTracking?: boolean;
 }
 
 /**
@@ -235,12 +238,21 @@ export interface CodeBlockGraphicData {
 	minGridWidth: number;
 	height: number;
 	code: string[];
-	trimmedCode: string[];
 	padLength: number;
 	codeToRender: number[][];
 	codeColors: Array<Array<SpriteLookup | undefined>>;
+	/** The gaps between lines */
 	gaps: Map<number, { size: number }>;
-	cursor: { col: number; row: number; x: number; y: number };
+	cursor: {
+		/** The column of the cursor */
+		col: number;
+		/** The row of the cursor */
+		row: number;
+		/** The x position of the cursor calculated considering the grid and the line numbers. */
+		x: number;
+		/** The y position of the cursor calculated considering the grid and the gaps between lines. */
+		y: number;
+	};
 	id: string;
 	positionOffsetterXWordAddress?: number;
 	positionOffsetterYWordAddress?: number;
@@ -392,7 +404,7 @@ export interface Project {
 	binaryAssets?: BinaryAsset[];
 	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
 	compiledWasm?: string;
-	compiledModules: CompiledModuleLookup;
+	compiledModules?: CompiledModuleLookup;
 	memorySnapshot?: string;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
@@ -505,6 +517,7 @@ export interface State {
 	callbacks: Callbacks;
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
-	compilationTime: number;
 	colorSchemes: Record<string, ColorScheme>;
+	historyStack: Project[];
+	redoStack: Project[];
 }

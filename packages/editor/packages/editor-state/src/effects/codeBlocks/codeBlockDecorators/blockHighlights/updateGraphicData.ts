@@ -6,7 +6,7 @@ import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.blockHighlights = [];
-	parseCodeBlocks(graphicData.trimmedCode).forEach(block => {
+	parseCodeBlocks(graphicData.code).forEach(block => {
 		if (!block.endLineNumber) {
 			return;
 		}

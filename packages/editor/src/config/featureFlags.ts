@@ -22,6 +22,7 @@ export const defaultFeatureFlags = {
 	persistentStorage: true,
 	editing: true,
 	demoMode: false,
+	historyTracking: true,
 };
 
 /**

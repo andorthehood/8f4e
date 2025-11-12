@@ -15,7 +15,7 @@ describe('updateBufferPlottersGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
-			trimmedCode: ['plot buffer1 -10 10'],
+			code: ['plot buffer1 -10 10'],
 			gaps: new Map(),
 			width: 100,
 		});
@@ -57,7 +57,7 @@ describe('updateBufferPlottersGraphicData', () => {
 	});
 
 	it('should not add plotter when buffer memory is not found', () => {
-		mockGraphicData.trimmedCode = ['plot nonExistentBuffer -10 10'];
+		mockGraphicData.code = ['plot nonExistentBuffer -10 10'];
 
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
@@ -88,7 +88,7 @@ describe('updateBufferPlottersGraphicData', () => {
 	});
 
 	it('should handle multiple buffer plotters', () => {
-		mockGraphicData.trimmedCode = ['plot buffer1 -10 10', 'plot buffer2 0 100'];
+		mockGraphicData.code = ['plot buffer1 -10 10', 'plot buffer2 0 100'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,

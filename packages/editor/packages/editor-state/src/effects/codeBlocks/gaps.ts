@@ -11,7 +11,7 @@ export default function gaps(graphicData: CodeBlockGraphicData, state: State) {
 		graphicData.gaps.set(buildError.lineNumber, { size: 2 });
 	});
 
-	graphicData.trimmedCode.forEach((line, lineNumber) => {
+	graphicData.code.forEach((line, lineNumber) => {
 		const [, instruction] = (line.match(instructionParser) ?? []) as [never, string];
 
 		if (instruction === 'plot') {

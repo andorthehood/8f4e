@@ -7,7 +7,7 @@ import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function updateBufferPlottersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.bufferPlotters.clear();
-	parseBufferPlotters(graphicData.trimmedCode).forEach(plotter => {
+	parseBufferPlotters(graphicData.code).forEach(plotter => {
 		const buffer = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferMemoryId);
 		const bufferLength = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferLengthMemoryId);
 
