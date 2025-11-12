@@ -1,10 +1,13 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import { EventDispatcher } from '../types';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 import { serializeToProject } from '../helpers/projectSerializer';
 
 import type { State } from '../types';
 
-export default function save(state: State, events: EventDispatcher): void {
+export default function save(store: StateManager<State>, events: EventDispatcher): void {
+	const state = store.getState();
 	function onSave() {
 		if (!state.callbacks.exportFile) {
 			console.warn('No exportFile callback provided');
