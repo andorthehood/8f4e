@@ -1,14 +1,14 @@
 import { vi, type MockInstance } from 'vitest';
+import createStateManager from '@8f4e/state-manager';
 
 import compiler from './compiler';
 import save from './save';
 
 import { createMockState } from '../helpers/testUtils';
-import { createMockEventDispatcherWithVitest, createMockStateManager } from '../helpers/vitestTestUtils';
+import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 import type { State } from '../types';
-import type { StateManager } from '@8f4e/state-manager';
 
 // Mock the decodeBase64ToUint8Array function
 vi.mock('../helpers/base64Decoder', () => {
@@ -48,7 +48,7 @@ vi.mock('../helpers/base64Decoder', () => {
 
 describe('Runtime-ready project functionality', () => {
 	let mockState: State;
-	let mockStore: StateManager<State>;
+	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let mockExportFile: MockInstance;
 
@@ -92,13 +92,13 @@ describe('Runtime-ready project functionality', () => {
 		});
 
 		mockEvents = createMockEventDispatcherWithVitest();
-		mockStore = createMockStateManager(mockState);
+		store = createStateManager(mockState);
 	});
 
 	describe('Runtime-ready export', () => {
 		it('should export project with compiled WASM as base64', async () => {
 			// Set up save functionality
-			save(mockState, mockEvents);
+			save(store, mockEvents);
 
 			// Get the saveRuntimeReady callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -139,7 +139,7 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.allocatedMemorySize = 8;
 
 			// Set up save functionality
-			save(mockState, mockEvents);
+			save(store, mockEvents);
 
 			// Get the saveRuntimeReady callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -167,7 +167,7 @@ describe('Runtime-ready project functionality', () => {
 			const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
 
 			// Set up save functionality
-			save(mockState, mockEvents);
+			save(store, mockEvents);
 
 			// Get the saveRuntimeReady callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -207,7 +207,7 @@ describe('Runtime-ready project functionality', () => {
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation();
 
 			// Set up compiler functionality
-			compiler(mockStore, mockEvents);
+			compiler(store, mockEvents);
 
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -255,7 +255,7 @@ describe('Runtime-ready project functionality', () => {
 			mockState.callbacks.compileProject = mockCompileProject;
 
 			// Set up compiler functionality
-			compiler(mockStore, mockEvents);
+			compiler(store, mockEvents);
 
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -282,7 +282,7 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
 
 			// Set up save functionality
-			save(mockState, mockEvents);
+			save(store, mockEvents);
 
 			// Get the save callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -309,7 +309,7 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.compilerOptions.memorySizeBytes = 2000 * 65536;
 
 			// Set up save functionality
-			save(mockState, mockEvents);
+			save(store, mockEvents);
 
 			// Get the saveRuntimeReady callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;

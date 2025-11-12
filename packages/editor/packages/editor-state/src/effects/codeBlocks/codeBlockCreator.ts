@@ -114,7 +114,6 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			minGridWidth: 32,
 			height: 0,
 			code,
-			trimmedCode: code,
 			codeColors: [],
 			codeToRender: [],
 			extras: {
