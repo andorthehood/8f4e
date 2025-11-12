@@ -131,7 +131,6 @@ export function createMockCodeBlock(
 		offsetX: 0,
 		offsetY: 0,
 		code: [],
-		trimmedCode: [],
 		codeColors: [],
 		codeToRender: [],
 		cursor: { col: 0, row: 0, x: 0, y: 0 },
@@ -325,8 +324,9 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			viewportAnimations: true,
 			demoMode: false,
 		},
-		compilationTime: 0,
 		colorSchemes: {},
+		historyStack: [],
+		redoStack: [],
 	};
 
 	// Deep merge overrides with defaults
