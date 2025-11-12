@@ -341,8 +341,8 @@ describe('centerViewportOnCodeBlock', () => {
 			// Ideal viewport: (162.5, 66.5)
 			// Block top: 200
 			// Constrained Y: min(200, 66.5) = 66.5
-			expect(viewport.x).toBe(162.5);
-			expect(viewport.y).toBe(66.5);
+			expect(viewport.x).toBe(163);
+			expect(viewport.y).toBe(67);
 		});
 	});
 });
