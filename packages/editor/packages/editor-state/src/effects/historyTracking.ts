@@ -16,7 +16,7 @@ export default function historyTracking(store: StateManager<State>, events: Even
 			state.history.shift();
 		}
 
-		state.history.push(serializeToProject(state));
+		state.history.push(serializeToProject(state, { includeCompiled: false }));
 	}
 
 	function undo() {
