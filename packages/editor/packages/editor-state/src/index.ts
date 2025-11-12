@@ -1,6 +1,7 @@
 import { Font } from '@8f4e/sprite-generator';
 import createStateManager, { StateManager } from '@8f4e/state-manager';
 
+import historyTracking from './effects/historyTracking';
 import codeEditing from './effects/codeBlocks/codeEditing';
 import _switch from './effects/codeBlocks/codeBlockDecorators/switches/interaction';
 import button from './effects/codeBlocks/codeBlockDecorators/buttons/interaction';
@@ -116,8 +117,9 @@ function createDefaultState() {
 			font: '8x16' as Font,
 		},
 		featureFlags: defaultFeatureFlags,
-		compilationTime: 0,
 		colorSchemes: {},
+		historyStack: [],
+		redoStack: [],
 	};
 }
 
@@ -148,11 +150,12 @@ export default function init(events: EventDispatcher, project: Project, options:
 	compiler(store, events);
 	graphicHelper(store, events);
 	codeEditing(store, events);
-	save(state, events);
+	save(store, events);
 	exportWasm(state, events);
 	font(state, events);
 	binaryAsset(state, events);
 	keyboardShortcuts(state, events);
+	historyTracking(store, events);
 	events.dispatch('init');
 
 	events.on('consoleLog', event => {
