@@ -99,7 +99,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('should handle multiple outputs', () => {
-		mockGraphicData.code = ['int output1', 'float output2'];
+		mockGraphicData.code = ['module test-block', 'int output1', 'float output2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['output2'] = {
 			wordAlignedAddress: 6,
 			byteAddress: 24,

@@ -1,4 +1,4 @@
-import { type MockInstance } from 'vitest';
+import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import loader from './loader';
@@ -24,11 +24,11 @@ describe('Loader - Project-specific memory configuration', () => {
 		loader(store, mockEvents, mockState);
 
 		// Get the loadProject callback
-		const onCalls = (mockEvents.on as MockInstance).mock.calls;
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 		const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 		expect(loadProjectCall).toBeDefined();
 
-		const loadProjectCallback = loadProjectCall[1];
+		const loadProjectCallback = loadProjectCall![1];
 
 		// Create a project without memory configuration
 		const projectWithoutMemory: Project = {
@@ -47,11 +47,11 @@ describe('Loader - Project-specific memory configuration', () => {
 		loader(store, mockEvents, mockState);
 
 		// Get the loadProject callback
-		const onCalls = (mockEvents.on as MockInstance).mock.calls;
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 		const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 		expect(loadProjectCall).toBeDefined();
 
-		const loadProjectCallback = loadProjectCall[1];
+		const loadProjectCallback = loadProjectCall![1];
 
 		// Create a project with custom memory configuration
 		const projectWithMemory: Project = {
@@ -71,9 +71,9 @@ describe('Loader - Project-specific memory configuration', () => {
 		loader(store, mockEvents, mockState);
 
 		// Get the loadProject callback
-		const onCalls = (mockEvents.on as MockInstance).mock.calls;
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 		const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
-		const loadProjectCallback = loadProjectCall[1];
+		const loadProjectCallback = loadProjectCall![1];
 
 		// Create a project with custom memory configuration
 		const projectWithMemory: Project = {
