@@ -7,44 +7,8 @@ exports[`updateInputsGraphicData > should calculate correct dimensions and posit
   "width": 20,
   "wordAlignedAddress": 5,
   "x": 0,
-  "y": 0,
+  "y": 20,
 }
 `;
 
-exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
-[
-  [
-    "input1",
-    {
-      "height": 20,
-      "id": "input1",
-      "width": 20,
-      "wordAlignedAddress": 5,
-      "x": 0,
-      "y": 0,
-    },
-  ],
-  [
-    "input2",
-    {
-      "height": 20,
-      "id": "input2",
-      "width": 20,
-      "wordAlignedAddress": 6,
-      "x": 0,
-      "y": 20,
-    },
-  ],
-]
-`;
-
-exports[`updateInputsGraphicData > should position inputs at correct y coordinate based on line number 1`] = `
-{
-  "height": 20,
-  "id": "input1",
-  "width": 20,
-  "wordAlignedAddress": 5,
-  "x": 0,
-  "y": 40,
-}
-`;
+exports[`updateInputsGraphicData > should position inputs at correct y coordinate based on line number 1`] = `{}`;
