@@ -518,5 +518,6 @@ export interface State {
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	colorSchemes: Record<string, ColorScheme>;
-	history: Project[];
+	historyStack: Project[];
+	redoStack: Project[];
 }
