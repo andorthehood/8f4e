@@ -12,20 +12,37 @@ export default function historyTracking(store: StateManager<State>, events: Even
 	}
 
 	function onSaveHistory() {
-		if (state.history.length >= 10) {
-			state.history.shift();
+		if (state.historyStack.length >= 10) {
+			state.historyStack.shift();
 		}
 
-		state.history.push(serializeToProject(state));
+		state.historyStack.push(serializeToProject(state));
+		state.redoStack = [];
 	}
 
 	function undo() {
-		const previousState = state.history.pop();
+		const previousState = state.historyStack.pop();
 		if (previousState) {
+			if (state.redoStack.length >= 10) {
+				state.redoStack.shift();
+			}
+			state.redoStack.push(serializeToProject(state));
 			events.dispatch('loadProject', { project: previousState });
+		}
+	}
+
+	function redo() {
+		const nextState = state.redoStack.pop();
+		if (nextState) {
+			if (state.historyStack.length >= 10) {
+				state.historyStack.shift();
+			}
+			state.historyStack.push(serializeToProject(state));
+			events.dispatch('loadProject', { project: nextState });
 		}
 	}
 
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveHistory);
 	events.on('undo', undo);
+	events.on('redo', redo);
 }

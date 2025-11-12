@@ -118,7 +118,8 @@ function createDefaultState() {
 		},
 		featureFlags: defaultFeatureFlags,
 		colorSchemes: {},
-		history: [],
+		historyStack: [],
+		redoStack: [],
 	};
 }
 
