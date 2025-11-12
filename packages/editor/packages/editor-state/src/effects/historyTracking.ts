@@ -11,12 +11,10 @@ export default function historyTracking(store: StateManager<State>, events: Even
 		return;
 	}
 
-	// Capture initial state
-	if (state.historyStack.length === 0) {
-		state.historyStack.push(serializeToProject(state, { includeCompiled: false }));
-	}
+	let saveTimeout: ReturnType<typeof setTimeout> | null = null;
+	const DEBOUNCE_DELAY = 1000;
 
-	function onSaveHistory() {
+	function saveHistory() {
 		if (state.historyStack.length >= 10) {
 			state.historyStack.shift();
 		}
@@ -25,7 +23,23 @@ export default function historyTracking(store: StateManager<State>, events: Even
 		state.redoStack = [];
 	}
 
+	function onCodeChange() {
+		if (saveTimeout) {
+			clearTimeout(saveTimeout);
+		}
+
+		saveTimeout = setTimeout(() => {
+			saveHistory();
+			saveTimeout = null;
+		}, DEBOUNCE_DELAY);
+	}
+
 	function undo() {
+		if (saveTimeout) {
+			clearTimeout(saveTimeout);
+			saveTimeout = null;
+		}
+
 		const previousState = state.historyStack.pop();
 		if (previousState) {
 			if (state.redoStack.length >= 10) {
@@ -36,8 +50,12 @@ export default function historyTracking(store: StateManager<State>, events: Even
 		}
 	}
 
-	// Redo the last action
 	function redo() {
+		if (saveTimeout) {
+			clearTimeout(saveTimeout);
+			saveTimeout = null;
+		}
+
 		const nextState = state.redoStack.pop();
 		if (nextState) {
 			if (state.historyStack.length >= 10) {
@@ -48,7 +66,7 @@ export default function historyTracking(store: StateManager<State>, events: Even
 		}
 	}
 
-	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveHistory);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', onCodeChange);
 	events.on('undo', undo);
 	events.on('redo', redo);
 }
