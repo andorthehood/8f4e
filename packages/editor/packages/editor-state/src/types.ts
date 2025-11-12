@@ -238,12 +238,21 @@ export interface CodeBlockGraphicData {
 	minGridWidth: number;
 	height: number;
 	code: string[];
-	trimmedCode: string[];
 	padLength: number;
 	codeToRender: number[][];
 	codeColors: Array<Array<SpriteLookup | undefined>>;
+	/** The gaps between lines */
 	gaps: Map<number, { size: number }>;
-	cursor: { col: number; row: number; x: number; y: number };
+	cursor: {
+		/** The column of the cursor */
+		col: number;
+		/** The row of the cursor */
+		row: number;
+		/** The x position of the cursor calculated considering the grid and the line numbers. */
+		x: number;
+		/** The y position of the cursor calculated considering the grid and the gaps between lines. */
+		y: number;
+	};
 	id: string;
 	positionOffsetterXWordAddress?: number;
 	positionOffsetterYWordAddress?: number;
