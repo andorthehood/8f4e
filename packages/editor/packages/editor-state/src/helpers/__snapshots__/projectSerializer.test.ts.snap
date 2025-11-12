@@ -17,7 +17,7 @@ exports[`projectSerializer > serializeToProject > creates a valid Project object
   "author": "Test Author",
   "binaryAssets": [],
   "codeBlocks": [],
-  "compiledModules": {},
+  "compiledModules": undefined,
   "description": "Test Description",
   "memorySizeBytes": 1048576,
   "postProcessEffects": [],

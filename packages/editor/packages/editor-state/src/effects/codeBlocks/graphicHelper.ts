@@ -121,14 +121,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 
 		graphicData.padLength = graphicData.code.length.toString().length;
-		const length = graphicData.code.length;
 
 		graphicData.x = graphicData.gridX * state.graphicHelper.viewport.vGrid;
 		graphicData.y = graphicData.gridY * state.graphicHelper.viewport.hGrid;
 
-		graphicData.trimmedCode = [...graphicData.code.slice(0, length + 1)];
-
-		const codeWithLineNumbers = graphicData.trimmedCode.map(
+		const codeWithLineNumbers = graphicData.code.map(
 			(line, index) => `${index}`.padStart(graphicData.padLength, '0') + ' ' + line
 		);
 
