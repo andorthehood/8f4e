@@ -14,7 +14,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
-			trimmedCode: ['piano keys1 numKeys 60'],
+			code: ['piano keys1 numKeys 60'],
 			gaps: new Map(),
 			minGridWidth: 0,
 		});
@@ -92,7 +92,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 	});
 
 	it('should not add piano keyboard when memory is not found', () => {
-		mockGraphicData.trimmedCode = ['piano nonExistent numKeys 60'];
+		mockGraphicData.code = ['piano nonExistent numKeys 60'];
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
@@ -126,7 +126,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 	});
 
 	it('should position piano keyboards at correct y coordinate based on line number', () => {
-		mockGraphicData.trimmedCode = ['nop', 'nop', 'piano keys1 numKeys 60'];
+		mockGraphicData.code = ['nop', 'nop', 'piano keys1 numKeys 60'];
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 

@@ -144,7 +144,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				minGridWidth: 32,
 				height: 0,
 				code: codeBlock.code,
-				trimmedCode: codeBlock.code,
 				codeColors: [],
 				codeToRender: [],
 				extras: {
@@ -229,6 +228,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		input.click();
 	}
 
+	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveProject);
 	events.on('saveProject', onSaveProject);
 	events.on('saveEditorSettings', onSaveEditorSettings);
 	events.on('open', onOpen);

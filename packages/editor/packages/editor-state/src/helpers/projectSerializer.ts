@@ -49,7 +49,7 @@ export function serializeToProject(
 		selectedRuntime: compiler.selectedRuntime,
 		runtimeSettings: compiler.runtimeSettings,
 		binaryAssets: compiler.binaryAssets,
-		compiledModules: compiler.compiledModules,
+		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
 		memorySizeBytes: compiler.compilerOptions.memorySizeBytes,
 		postProcessEffects: graphicHelper.postProcessEffects,
 	};

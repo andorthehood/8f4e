@@ -7,6 +7,10 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 	const state = store.getState();
 
 	const onKeydown = function (event: InternalKeyboardEvent) {
+		if (event.metaKey) {
+			return;
+		}
+
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
 		}

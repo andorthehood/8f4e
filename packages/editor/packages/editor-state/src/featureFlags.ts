@@ -13,6 +13,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	persistentStorage: true,
 	editing: true,
 	demoMode: false,
+	historyTracking: true,
 };
 
 /**
