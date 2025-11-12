@@ -21,7 +21,7 @@ export function parsePositionOffsetters(code: string[]) {
 export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.positionOffsetterXWordAddress = undefined;
 	graphicData.positionOffsetterYWordAddress = undefined;
-	const offsetters = parsePositionOffsetters(graphicData.trimmedCode);
+	const offsetters = parsePositionOffsetters(graphicData.code);
 
 	if (offsetters.length === 0) {
 		graphicData.offsetX = 0;

@@ -7,7 +7,7 @@ import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.pianoKeyboards.clear();
-	parsePianoKeyboards(graphicData.trimmedCode).forEach(pianoKeyboard => {
+	parsePianoKeyboards(graphicData.code).forEach(pianoKeyboard => {
 		const memoryIdentifierKeysList = resolveMemoryIdentifier(
 			state,
 			graphicData.id,
