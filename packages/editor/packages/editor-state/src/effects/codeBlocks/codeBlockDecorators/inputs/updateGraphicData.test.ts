@@ -83,7 +83,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('should handle multiple inputs', () => {
-		mockGraphicData.code = ['int* input1', 'float* input2'];
+		mockGraphicData.code = ['module test-block', 'int* input1', 'float* input2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['input2'] = {
 			wordAlignedAddress: 6,
 			byteAddress: 24,
