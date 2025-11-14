@@ -10,6 +10,7 @@ import {
 	loadProjectFromFile,
 	exportFile,
 	importBinaryAsset,
+	getStorageQuota,
 } from './storage-callbacks';
 import { compileProject } from './compiler-callback';
 
@@ -49,6 +50,7 @@ async function init() {
 			exportFile,
 			importBinaryAsset,
 			loadColorSchemes,
+			getStorageQuota,
 		},
 	});
 

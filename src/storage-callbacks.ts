@@ -115,19 +115,38 @@ export async function exportFile(data: Uint8Array | string, filename: string, mi
 	URL.revokeObjectURL(url);
 }
 
-export async function importBinaryAsset(file: File): Promise<{ data: string; fileName: string }> {
+export async function importBinaryAsset(): Promise<{ buffer: ArrayBuffer; fileName: string }> {
+	const fileHandles = await (
+		window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
+	).showOpenFilePicker();
+	const file = await fileHandles[0].getFile();
+
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader();
 		reader.onload = event => {
 			try {
-				const dataUrl = event.target?.result as string;
-				const base64data = dataUrl.split(',')[1];
-				resolve({ data: base64data, fileName: file.name });
+				const buffer = event.target?.result as ArrayBuffer;
+				resolve({ buffer, fileName: file.name });
 			} catch (error) {
 				reject(new Error('Failed to process binary asset: ' + error));
 			}
 		};
 		reader.onerror = () => reject(new Error('Failed to read binary asset file'));
-		reader.readAsDataURL(file);
+		reader.readAsArrayBuffer(file);
 	});
+}
+
+export async function getStorageQuota(): Promise<{ usedBytes: number; totalBytes: number }> {
+	if (navigator.storage && navigator.storage.estimate) {
+		const estimate = await navigator.storage.estimate();
+		return {
+			usedBytes: estimate.usage || 0,
+			totalBytes: estimate.quota || 0,
+		};
+	} else {
+		return {
+			usedBytes: 0,
+			totalBytes: 0,
+		};
+	}
 }

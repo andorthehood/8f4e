@@ -10,13 +10,7 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 		}
 
 		try {
-			const fileHandles = await (
-				window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
-			).showOpenFilePicker();
-			const file = await fileHandles[0].getFile();
-
-			const result = await state.callbacks.importBinaryAsset(file);
-
+			const result = await state.callbacks.importBinaryAsset();
 			state.compiler.binaryAssets.push(result);
 		} catch (error) {
 			console.error('Failed to import binary asset:', error);

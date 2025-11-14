@@ -334,7 +334,7 @@ export interface BinaryAsset {
 	/** The id of the memory that the binary data should be loaded into */
 	memoryId?: string;
 	/** The binary data in base64 format */
-	data: string;
+	buffer: ArrayBuffer;
 	/** The file name of the binary data */
 	fileName: string;
 }
@@ -492,7 +492,8 @@ export interface Callbacks {
 	// File handling callbacks
 	loadProjectFromFile?: (file: File) => Promise<Project>;
 	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
-	importBinaryAsset?: (file: File) => Promise<{ data: string; fileName: string }>;
+	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
+	importBinaryAsset?: () => Promise<{ buffer: ArrayBuffer; fileName: string }>;
 
 	// Color scheme loader callback
 	loadColorSchemes?: () => Promise<Record<string, import('@8f4e/sprite-generator').ColorScheme>>;
@@ -520,4 +521,5 @@ export interface State {
 	colorSchemes: Record<string, ColorScheme>;
 	historyStack: Project[];
 	redoStack: Project[];
+	storageQuota: { usedBytes: number; totalBytes: number };
 }
