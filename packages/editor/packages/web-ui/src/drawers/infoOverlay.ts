@@ -9,8 +9,10 @@ function formatBytes(bytes: number): string {
 		return bytes + ' bytes';
 	} else if (bytes < 1000000) {
 		return (bytes / 1000).toFixed(2) + ' KB';
-	} else {
+	} else if (bytes < 1000000000) {
 		return (bytes / 1000000).toFixed(2) + ' MB';
+	} else {
+		return (bytes / 1000000000).toFixed(2) + ' GB';
 	}
 }
 
@@ -97,6 +99,18 @@ export default function drawInfoOverlay(
 			Math.round((state.compiler.allocatedMemorySize / state.compiler.compilerOptions.memorySizeBytes) * 100) +
 			'%)'
 	);
+
+	if (state.storageQuota.usedBytes > 0 && state.storageQuota.totalBytes > 0) {
+		debugText.push(
+			'Storage usage: ' +
+				formatBytes(state.storageQuota.usedBytes) +
+				' / ' +
+				formatBytes(state.storageQuota.totalBytes) +
+				' (' +
+				Math.round((state.storageQuota.usedBytes / state.storageQuota.totalBytes) * 100) +
+				'%)'
+		);
+	}
 
 	engine.startGroup(
 		0,
