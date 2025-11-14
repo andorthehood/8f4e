@@ -120,6 +120,7 @@ function createDefaultState() {
 		colorSchemes: {},
 		historyStack: [],
 		redoStack: [],
+		storageQuota: { usedBytes: 0, totalBytes: 0 },
 	};
 }
 

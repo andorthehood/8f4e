@@ -327,6 +327,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		colorSchemes: {},
 		historyStack: [],
 		redoStack: [],
+		storageQuota: { usedBytes: 0, totalBytes: 0 },
 	};
 
 	// Deep merge overrides with defaults
