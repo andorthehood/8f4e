@@ -3,7 +3,6 @@ import { StateManager } from '@8f4e/state-manager';
 import { EventDispatcher } from '../types';
 import { getModuleId } from '../helpers/codeParsers';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
-import { serializeToProject } from '../helpers/projectSerializer';
 import {
 	decodeBase64ToUint8Array,
 	decodeBase64ToInt32Array,
@@ -59,13 +58,13 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 			: Promise.resolve()
 	);
 
-	const loadProjectFromStorage = state.callbacks.loadProjectFromStorage;
 	const projectPromise = settingsPromise.then(() => {
-		if (!state.featureFlags.persistentStorage || !loadProjectFromStorage) {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.loadProjectFromStorage) {
 			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
 		}
 
-		return loadProjectFromStorage()
+		return state.callbacks
+			.loadProjectFromStorage()
 			.then(localProject => {
 				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
 			})
@@ -177,28 +176,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 
 	void projectPromise;
 
-	function onSaveEditorSettings() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettingsToStorage) {
-			return;
-		}
-
-		state.callbacks.saveEditorSettingsToStorage(state.editorSettings);
-	}
-
-	function onSaveProject() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveProjectToStorage) {
-			return;
-		}
-
-		// Serialize current state to Project format
-		const projectToSave = serializeToProject(state);
-
-		// Use callbacks instead of localStorage
-		Promise.all([state.callbacks.saveProjectToStorage!(projectToSave)]).catch(error => {
-			console.error('Failed to save to storage:', error);
-		});
-	}
-
 	function onOpen() {
 		if (!state.callbacks.loadProjectFromFile) {
 			console.warn('No loadProjectFromFile callback provided');
@@ -228,9 +205,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		input.click();
 	}
 
-	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveProject);
-	events.on('saveProject', onSaveProject);
-	events.on('saveEditorSettings', onSaveEditorSettings);
 	events.on('open', onOpen);
 	events.on('loadProject', loadProject);
 	events.on('loadProjectBySlug', loadProjectBySlug);
