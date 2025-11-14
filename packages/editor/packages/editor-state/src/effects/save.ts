@@ -49,6 +49,34 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		});
 	}
 
+	function onSaveEditorSettings() {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettingsToStorage) {
+			return;
+		}
+
+		state.callbacks.saveEditorSettingsToStorage(state.editorSettings);
+	}
+
+	async function onSaveProject() {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.saveProjectToStorage) {
+			return;
+		}
+
+		// Serialize current state to Project format
+		const projectToSave = serializeToProject(state);
+
+		// Use callbacks instead of localStorage
+		await state.callbacks.saveProjectToStorage(projectToSave);
+
+		const storageQuota = await state.callbacks.getStorageQuota!();
+		if (storageQuota) {
+			store.set('storageQuota', storageQuota);
+		}
+	}
+
+	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveProject);
+	events.on('saveProject', onSaveProject);
+	events.on('saveEditorSettings', onSaveEditorSettings);
 	events.on('save', onSave);
 	events.on('saveRuntimeReady', onSaveRuntimeReady);
 }
