@@ -8,8 +8,9 @@ import {
 	loadEditorSettings,
 	saveEditorSettings,
 	importProject,
-	exportFile,
-	importBinaryAsset,
+	exportProject,
+	importBinaryFile,
+	exportBinaryFile,
 	getStorageQuota,
 } from './storage-callbacks';
 import { compileProject } from './compiler-callback';
@@ -47,8 +48,9 @@ async function init() {
 			loadEditorSettings,
 			saveEditorSettings,
 			importProject,
-			exportFile,
-			importBinaryAsset,
+			exportProject,
+			importBinaryFile,
+			exportBinaryFile,
 			loadColorSchemes,
 			getStorageQuota,
 		},

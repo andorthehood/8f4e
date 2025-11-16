@@ -25,9 +25,9 @@ export const mainMenu: MenuGenerator = state => [
 				{ divider: true },
 				{
 					title: 'Import binary asset',
-					action: 'importBinaryAsset',
+					action: 'importBinaryFile',
 					close: true,
-					disabled: !state.callbacks.importBinaryAsset,
+					disabled: !state.callbacks.importBinaryFile,
 				},
 			]
 		: []),
@@ -43,18 +43,18 @@ export const mainMenu: MenuGenerator = state => [
 		disabled: !state.callbacks.getListOfProjects,
 	},
 	{ divider: true },
-	{ title: 'Export Project', action: 'save', close: true, disabled: !state.callbacks.exportFile },
+	{ title: 'Export Project', action: 'save', close: true, disabled: !state.callbacks.exportProject },
 	{
 		title: 'Export Runtime-Ready Project',
 		action: 'saveRuntimeReady',
 		close: true,
-		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.callbacks.exportFile,
+		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.callbacks.exportProject,
 	},
 	{
 		title: 'Export WebAssembly',
 		action: 'exportWasm',
 		close: true,
-		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.callbacks.exportFile,
+		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.callbacks.exportBinaryFile,
 	},
 	{ divider: true },
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
