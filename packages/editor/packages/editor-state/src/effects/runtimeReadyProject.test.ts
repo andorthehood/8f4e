@@ -50,10 +50,10 @@ describe('Runtime-ready project functionality', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
-	let mockExportFile: MockInstance;
+	let mockExportProject: MockInstance;
 
 	beforeEach(() => {
-		mockExportFile = vi.fn().mockResolvedValue(undefined);
+		mockExportProject = vi.fn().mockResolvedValue(undefined);
 
 		mockState = createMockState({
 			projectInfo: {
@@ -66,7 +66,7 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: new Map(),
 			},
 			callbacks: {
-				exportProject: mockExportFile,
+				exportProject: mockExportProject,
 				requestRuntime: vi.fn(),
 				getListOfModules: vi.fn(),
 				getModule: vi.fn(),
@@ -111,11 +111,10 @@ describe('Runtime-ready project functionality', () => {
 			await saveRuntimeReadyCallback();
 
 			// Verify exportProject was called with the right parameters
-			expect(mockExportFile).toHaveBeenCalledTimes(1);
-			const [exportedJson, filename, mimeType] = mockExportFile.mock.calls[0];
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson, filename] = mockExportProject.mock.calls[0];
 
 			expect(filename).toBe('Test Project-runtime-ready.json');
-			expect(mimeType).toBe('application/json');
 
 			// Parse the exported JSON and verify it contains compiledWasm
 			const exportedProject = JSON.parse(exportedJson);
@@ -151,9 +150,9 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger the saveRuntimeReady action
 			await saveRuntimeReadyCallback();
 
-			expect(mockExportFile).toHaveBeenCalledTimes(1);
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
 
-			const [exportedJson] = mockExportFile.mock.calls[0];
+			const [exportedJson] = mockExportProject.mock.calls[0];
 			const exportedProject = JSON.parse(exportedJson);
 			const expectedBase64 = encodeUint8ArrayToBase64(new Uint8Array(backingBuffer, 0, 8));
 
@@ -181,7 +180,7 @@ describe('Runtime-ready project functionality', () => {
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'No compiled WebAssembly code available. Please compile your project first.'
 			);
-			expect(mockExportFile).not.toHaveBeenCalled();
+			expect(mockExportProject).not.toHaveBeenCalled();
 
 			consoleSpy.mockRestore();
 		});
@@ -295,8 +294,8 @@ describe('Runtime-ready project functionality', () => {
 			await saveCallback();
 
 			// Verify exportProject was called
-			expect(mockExportFile).toHaveBeenCalledTimes(1);
-			const [exportedJson] = mockExportFile.mock.calls[0];
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportProject.mock.calls[0];
 
 			// Parse the exported JSON and verify it contains memory configuration
 			const exportedProject = JSON.parse(exportedJson);
@@ -322,8 +321,8 @@ describe('Runtime-ready project functionality', () => {
 			await saveRuntimeReadyCallback();
 
 			// Verify exportProject was called
-			expect(mockExportFile).toHaveBeenCalledTimes(1);
-			const [exportedJson] = mockExportFile.mock.calls[0];
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportProject.mock.calls[0];
 
 			// Parse the exported JSON and verify memory configuration
 			const exportedProject = JSON.parse(exportedJson);
