@@ -266,7 +266,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		},
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
-			loadProjectFromStorage: createMockAsyncFunction(null),
+			loadSession: createMockAsyncFunction(null),
 		},
 		graphicHelper: {
 			codeBlocks: new Set(),

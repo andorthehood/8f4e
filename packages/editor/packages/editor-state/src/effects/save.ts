@@ -9,8 +9,8 @@ import type { State } from '../types';
 export default function save(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 	function onSave() {
-		if (!state.callbacks.exportFile) {
-			console.warn('No exportFile callback provided');
+		if (!state.callbacks.exportProject) {
+			console.warn('No exportProject callback provided');
 			return;
 		}
 
@@ -18,14 +18,14 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		const filename = `${projectToSave.title || 'project'}.json`;
 		const json = JSON.stringify(projectToSave, null, 2);
 
-		state.callbacks.exportFile(json, filename, 'application/json').catch(error => {
+		state.callbacks.exportProject(json, filename, 'application/json').catch(error => {
 			console.error('Failed to save project to file:', error);
 		});
 	}
 
 	function onSaveRuntimeReady() {
-		if (!state.callbacks.exportFile) {
-			console.warn('No exportFile callback provided');
+		if (!state.callbacks.exportProject) {
+			console.warn('No exportProject callback provided');
 			return;
 		}
 
@@ -44,21 +44,21 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		const filename = `${runtimeProject.title || 'project'}-runtime-ready.json`;
 		const json = JSON.stringify(runtimeProject, null, 2);
 
-		state.callbacks.exportFile(json, filename, 'application/json').catch(error => {
+		state.callbacks.exportProject(json, filename, 'application/json').catch(error => {
 			console.error('Failed to save runtime-ready project to file:', error);
 		});
 	}
 
 	function onSaveEditorSettings() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettingsToStorage) {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettings) {
 			return;
 		}
 
-		state.callbacks.saveEditorSettingsToStorage(state.editorSettings);
+		state.callbacks.saveEditorSettings(state.editorSettings);
 	}
 
 	async function onSaveProject() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveProjectToStorage) {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.saveSession) {
 			return;
 		}
 
@@ -66,7 +66,7 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		const projectToSave = serializeToProject(state);
 
 		// Use callbacks instead of localStorage
-		await state.callbacks.saveProjectToStorage(projectToSave);
+		await state.callbacks.saveSession(projectToSave);
 
 		const storageQuota = await state.callbacks.getStorageQuota!();
 		if (storageQuota) {
