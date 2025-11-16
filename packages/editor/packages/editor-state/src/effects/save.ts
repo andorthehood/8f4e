@@ -18,7 +18,7 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		const filename = `${projectToSave.title || 'project'}.json`;
 		const json = JSON.stringify(projectToSave, null, 2);
 
-		state.callbacks.exportProject(json, filename, 'application/json').catch(error => {
+		state.callbacks.exportProject(json, filename).catch(error => {
 			console.error('Failed to save project to file:', error);
 		});
 	}
@@ -44,7 +44,7 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		const filename = `${runtimeProject.title || 'project'}-runtime-ready.json`;
 		const json = JSON.stringify(runtimeProject, null, 2);
 
-		state.callbacks.exportProject(json, filename, 'application/json').catch(error => {
+		state.callbacks.exportProject(json, filename).catch(error => {
 			console.error('Failed to save runtime-ready project to file:', error);
 		});
 	}
