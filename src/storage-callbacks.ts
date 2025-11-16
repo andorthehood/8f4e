@@ -90,7 +90,7 @@ export async function importProject(file: File): Promise<Project> {
 	});
 }
 
-export async function exportProject(data: Uint8Array | string, filename: string, mimeType?: string): Promise<void> {
+export async function exportFile(data: Uint8Array | string, filename: string, mimeType?: string): Promise<void> {
 	let blob: Blob;
 
 	if (typeof data === 'string') {
