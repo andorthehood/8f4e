@@ -491,7 +491,7 @@ export interface Callbacks {
 
 	// File handling callbacks
 	importProject?: (file: File) => Promise<Project>;
-	exportProject?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
+	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 	importBinaryAsset?: () => Promise<{ buffer: ArrayBuffer; fileName: string }>;
 
