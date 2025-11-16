@@ -14,7 +14,7 @@ const kebabCaseToCamelCase = (str: string) =>
 	});
 
 // Implementation of storage callbacks using localStorage
-export async function loadProjectFromStorage(): Promise<Project | null> {
+export async function loadSession(): Promise<Project | null> {
 	try {
 		// First, check if there's a project specified in the URL hash
 		const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
@@ -44,7 +44,7 @@ export async function loadProjectFromStorage(): Promise<Project | null> {
 	}
 }
 
-export async function saveProjectToStorage(project: Project): Promise<void> {
+export async function saveSession(project: Project): Promise<void> {
 	try {
 		localStorage.setItem(STORAGE_KEYS.PROJECT, JSON.stringify(project));
 	} catch (error) {
@@ -53,7 +53,7 @@ export async function saveProjectToStorage(project: Project): Promise<void> {
 	}
 }
 
-export async function loadEditorSettingsFromStorage(): Promise<EditorSettings | null> {
+export async function loadEditorSettings(): Promise<EditorSettings | null> {
 	try {
 		const stored = localStorage.getItem(STORAGE_KEYS.EDITOR_SETTINGS);
 		return stored ? JSON.parse(stored) : null;
@@ -63,7 +63,7 @@ export async function loadEditorSettingsFromStorage(): Promise<EditorSettings | 
 	}
 }
 
-export async function saveEditorSettingsToStorage(settings: EditorSettings): Promise<void> {
+export async function saveEditorSettings(settings: EditorSettings): Promise<void> {
 	try {
 		localStorage.setItem(STORAGE_KEYS.EDITOR_SETTINGS, JSON.stringify(settings));
 	} catch (error) {
@@ -73,7 +73,7 @@ export async function saveEditorSettingsToStorage(settings: EditorSettings): Pro
 }
 
 // Implementation of file handling callbacks using browser APIs
-export async function loadProjectFromFile(file: File): Promise<Project> {
+export async function importProject(file: File): Promise<Project> {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader();
 		reader.onload = event => {
@@ -90,7 +90,7 @@ export async function loadProjectFromFile(file: File): Promise<Project> {
 	});
 }
 
-export async function exportFile(data: Uint8Array | string, filename: string, mimeType?: string): Promise<void> {
+export async function exportProject(data: Uint8Array | string, filename: string, mimeType?: string): Promise<void> {
 	let blob: Blob;
 
 	if (typeof data === 'string') {

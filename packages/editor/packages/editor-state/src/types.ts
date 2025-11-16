@@ -484,14 +484,14 @@ export interface Callbacks {
 	compileProject?: (modules: Module[], compilerOptions: CompileOptions) => Promise<CompilationResult>;
 
 	// Storage callbacks
-	loadProjectFromStorage: () => Promise<Project | null>;
-	saveProjectToStorage?: (project: Project) => Promise<void>;
-	loadEditorSettingsFromStorage?: () => Promise<EditorSettings | null>;
-	saveEditorSettingsToStorage?: (settings: EditorSettings) => Promise<void>;
+	loadSession: () => Promise<Project | null>;
+	saveSession?: (project: Project) => Promise<void>;
+	loadEditorSettings?: () => Promise<EditorSettings | null>;
+	saveEditorSettings?: (settings: EditorSettings) => Promise<void>;
 
 	// File handling callbacks
-	loadProjectFromFile?: (file: File) => Promise<Project>;
-	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
+	importProject?: (file: File) => Promise<Project>;
+	exportProject?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 	importBinaryAsset?: () => Promise<{ buffer: ArrayBuffer; fileName: string }>;
 
