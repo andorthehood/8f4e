@@ -491,9 +491,10 @@ export interface Callbacks {
 
 	// File handling callbacks
 	importProject?: (file: File) => Promise<Project>;
-	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
+	exportProject?: (data: string, filename: string) => Promise<void>;
+	importBinaryFile?: () => Promise<{ buffer: ArrayBuffer; fileName: string }>;
+	exportBinaryFile?: (data: Uint8Array, filename: string, mimeType: string) => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
-	importBinaryAsset?: () => Promise<{ buffer: ArrayBuffer; fileName: string }>;
 
 	// Color scheme loader callback
 	loadColorSchemes?: () => Promise<Record<string, import('@8f4e/sprite-generator').ColorScheme>>;
