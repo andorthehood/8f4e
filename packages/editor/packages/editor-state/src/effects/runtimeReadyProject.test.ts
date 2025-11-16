@@ -66,14 +66,14 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: new Map(),
 			},
 			callbacks: {
-				exportFile: mockExportFile,
+				exportProject: mockExportFile,
 				requestRuntime: vi.fn(),
 				getListOfModules: vi.fn(),
 				getModule: vi.fn(),
 				getListOfProjects: vi.fn(),
 				getProject: vi.fn(),
 				compileProject: vi.fn(),
-				loadProjectFromStorage: vi.fn(),
+				loadSession: vi.fn(),
 			},
 			editorSettings: {
 				colorScheme: 'default',
@@ -110,7 +110,7 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger the saveRuntimeReady action
 			await saveRuntimeReadyCallback();
 
-			// Verify exportFile was called with the right parameters
+			// Verify exportProject was called with the right parameters
 			expect(mockExportFile).toHaveBeenCalledTimes(1);
 			const [exportedJson, filename, mimeType] = mockExportFile.mock.calls[0];
 
@@ -294,7 +294,7 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger the save action
 			await saveCallback();
 
-			// Verify exportFile was called
+			// Verify exportProject was called
 			expect(mockExportFile).toHaveBeenCalledTimes(1);
 			const [exportedJson] = mockExportFile.mock.calls[0];
 
@@ -321,7 +321,7 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger the saveRuntimeReady action
 			await saveRuntimeReadyCallback();
 
-			// Verify exportFile was called
+			// Verify exportProject was called
 			expect(mockExportFile).toHaveBeenCalledTimes(1);
 			const [exportedJson] = mockExportFile.mock.calls[0];
 
