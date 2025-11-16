@@ -8,7 +8,7 @@ import {
 	loadEditorSettings,
 	saveEditorSettings,
 	importProject,
-	exportProject,
+	exportFile,
 	importBinaryAsset,
 	getStorageQuota,
 } from './storage-callbacks';
@@ -47,7 +47,7 @@ async function init() {
 			loadEditorSettings,
 			saveEditorSettings,
 			importProject,
-			exportProject,
+			exportFile,
 			importBinaryAsset,
 			loadColorSchemes,
 			getStorageQuota,

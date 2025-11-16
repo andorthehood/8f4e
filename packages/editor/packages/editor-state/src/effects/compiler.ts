@@ -1,6 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { decodeBase64ToUint8Array } from '../helpers/base64Decoder';
 import { EventDispatcher } from '../types';
 
 import type { CodeBlockGraphicData, State } from '../types';
