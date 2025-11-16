@@ -90,20 +90,9 @@ export async function importProject(file: File): Promise<Project> {
 	});
 }
 
-export async function exportFile(data: Uint8Array | string, filename: string, mimeType?: string): Promise<void> {
-	let blob: Blob;
-
-	if (typeof data === 'string') {
-		// Handle text data (like JSON for projects)
-		blob = new Blob([data], { type: mimeType || 'application/json' });
-	} else {
-		// Handle binary data (like WASM bytecode)
-		// Create a new Uint8Array to ensure ArrayBuffer compatibility
-		blob = new Blob([new Uint8Array(data)], { type: mimeType || 'application/wasm' });
-	}
-
+export async function exportProject(data: string, filename: string): Promise<void> {
+	const blob = new Blob([data], { type: 'application/json' });
 	const url = URL.createObjectURL(blob);
-
 	const a = document.createElement('a');
 	document.body.appendChild(a);
 	a.style.display = 'none';
@@ -115,7 +104,21 @@ export async function exportFile(data: Uint8Array | string, filename: string, mi
 	URL.revokeObjectURL(url);
 }
 
-export async function importBinaryAsset(): Promise<{ buffer: ArrayBuffer; fileName: string }> {
+export async function exportBinaryFile(data: Uint8Array, filename: string, mimeType: string): Promise<void> {
+	const blob = new Blob([new Uint8Array(data)], { type: mimeType });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	document.body.appendChild(a);
+	a.style.display = 'none';
+	a.href = url;
+	a.download = filename;
+	a.click();
+
+	document.body.removeChild(a);
+	URL.revokeObjectURL(url);
+}
+
+export async function importBinaryFile(): Promise<{ buffer: ArrayBuffer; fileName: string }> {
 	const fileHandles = await (
 		window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
 	).showOpenFilePicker();
