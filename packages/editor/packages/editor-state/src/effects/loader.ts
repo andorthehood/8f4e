@@ -30,10 +30,10 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				})
 		: Promise.resolve();
 
-	const loadEditorSettingsFromStorage = state.callbacks.loadEditorSettingsFromStorage;
+	const loadEditorSettings = state.callbacks.loadEditorSettings;
 	const settingsPromise = colorSchemesPromise.then(() =>
-		state.featureFlags.persistentStorage && loadEditorSettingsFromStorage
-			? loadEditorSettingsFromStorage()
+		state.featureFlags.persistentStorage && loadEditorSettings
+			? loadEditorSettings()
 					.then(editorSettings => {
 						if (editorSettings) {
 							const previousColorScheme = state.editorSettings.colorScheme;
@@ -59,12 +59,12 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 	);
 
 	const projectPromise = settingsPromise.then(() => {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.loadProjectFromStorage) {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.loadSession) {
 			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
 		}
 
 		return state.callbacks
-			.loadProjectFromStorage()
+			.loadSession()
 			.then(localProject => {
 				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
 			})
@@ -177,8 +177,8 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 	void projectPromise;
 
 	function onOpen() {
-		if (!state.callbacks.loadProjectFromFile) {
-			console.warn('No loadProjectFromFile callback provided');
+		if (!state.callbacks.importProject) {
+			console.warn('No importProject callback provided');
 			return;
 		}
 
@@ -188,12 +188,12 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 
 		input.addEventListener('change', event => {
 			const file = (event.target as HTMLInputElement).files?.[0];
-			if (!file || !state.callbacks.loadProjectFromFile) {
+			if (!file || !state.callbacks.importProject) {
 				return;
 			}
 
 			state.callbacks
-				.loadProjectFromFile(file)
+				.importProject(file)
 				.then(project => {
 					loadProject({ project });
 				})
