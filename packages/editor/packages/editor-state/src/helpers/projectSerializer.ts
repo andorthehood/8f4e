@@ -48,7 +48,7 @@ export function serializeToProject(
 		},
 		selectedRuntime: compiler.selectedRuntime,
 		runtimeSettings: compiler.runtimeSettings,
-		binaryAssets: compiler.binaryAssets,
+		binaryAssets: state.binaryAssets,
 		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
 		memorySizeBytes: compiler.compilerOptions.memorySizeBytes,
 		postProcessEffects: graphicHelper.postProcessEffects,
