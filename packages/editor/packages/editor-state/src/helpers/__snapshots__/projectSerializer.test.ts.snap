@@ -15,7 +15,7 @@ exports[`projectSerializer > convertGraphicDataToProjectStructure > converts gra
 exports[`projectSerializer > serializeToProject > creates a valid Project object from state 1`] = `
 {
   "author": "Test Author",
-  "binaryAssets": [],
+  "binaryAssets": undefined,
   "codeBlocks": [],
   "compiledModules": undefined,
   "description": "Test Description",
