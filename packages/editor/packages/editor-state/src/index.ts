@@ -12,10 +12,11 @@ import demoModeNavigation from './effects/demoModeNavigation';
 import compiler from './effects/compiler';
 import contextMenu from './effects/menu/contextMenu';
 import graphicHelper from './effects/codeBlocks/graphicHelper';
-import loader from './effects/loader';
+import editorSettings from './effects/editorSettings';
+import projectImport from './effects/projectImport';
+import projectExport from './effects/projectExport';
 import pianoKeyboard from './effects/codeBlocks/codeBlockDecorators/pianoKeyboard/interaction';
 import sampleRate from './effects/sampleRate';
-import save from './effects/save';
 import exportWasm from './effects/exportWasm';
 import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
@@ -135,9 +136,12 @@ export default function init(events: EventDispatcher, project: Project, options:
 
 	const state = store.getState();
 
+	// Initialize editor settings and color schemes first
+	editorSettings(store, events, state);
+
 	runtime(state, events);
 	sampleRate(state, events);
-	loader(store, events, state);
+	projectImport(store, events, state);
 	codeBlockDragger(state, events);
 	codeBlockNavigation(state, events);
 	demoModeNavigation(state, events);
@@ -150,7 +154,7 @@ export default function init(events: EventDispatcher, project: Project, options:
 	compiler(store, events);
 	graphicHelper(store, events);
 	codeEditing(store, events);
-	save(store, events);
+	projectExport(store, events);
 	exportWasm(state, events);
 	binaryAsset(state, events);
 	keyboardShortcuts(state, events);
