@@ -3,8 +3,8 @@ title: 'TODO: Split Loader and Save Effects Into Dedicated Modules'
 priority: Medium
 effort: 1-2 days
 created: 2025-11-17
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-17
 ---
 
 # TODO: Split Loader and Save Effects Into Dedicated Modules
