@@ -11,41 +11,11 @@ import {
 
 import type { Project, State } from '../types';
 
-export default function loader(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
+export default function projectImport(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
 	const state = store.getState();
-	// Create a fresh copy of editorSettings to avoid shared references
-	state.editorSettings = { ...defaultState.editorSettings };
 
-	// Load color schemes first
-	const colorSchemesPromise = state.callbacks.getListOfColorSchemes
-		? state.callbacks
-				.getListOfColorSchemes()
-				.then(colorSchemes => {
-					state.colorSchemes = colorSchemes;
-				})
-				.catch(error => {
-					console.warn('Failed to load color schemes:', error);
-					state.colorSchemes = [];
-				})
-		: Promise.resolve();
-
-	const loadEditorSettings = state.callbacks.loadEditorSettings;
-	const settingsPromise = colorSchemesPromise.then(() =>
-		state.featureFlags.persistentStorage && loadEditorSettings
-			? loadEditorSettings()
-					.then(editorSettings => {
-						if (editorSettings) {
-							store.set('editorSettings', editorSettings);
-						}
-					})
-					.catch(error => {
-						console.warn('Failed to load editor settings from storage:', error);
-						state.editorSettings = { ...defaultState.editorSettings };
-					})
-			: Promise.resolve()
-	);
-
-	const projectPromise = settingsPromise.then(() => {
+	// Load session on initialization
+	const projectPromise = Promise.resolve().then(() => {
 		if (!state.featureFlags.persistentStorage || !state.callbacks.loadSession) {
 			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
 		}
@@ -179,12 +149,6 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 			});
 	}
 
-	store.subscribe('editorSettings.colorScheme', async () => {
-		// Reload color scheme from callback
-		if (state.callbacks.getColorScheme) {
-			store.set('colorScheme', await state.callbacks.getColorScheme(state.editorSettings.colorScheme));
-		}
-	});
 	events.on('importProject', onImportProject);
 	events.on('loadProject', loadProject);
 	events.on('loadProjectBySlug', loadProjectBySlug);
