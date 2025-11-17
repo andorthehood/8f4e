@@ -13,7 +13,7 @@ completed: null
 
 `packages/editor/packages/editor-state/src/effects/loader.ts` and `save.ts` have both become "god" effects that mix unrelated behaviors:
 
-- Loader currently bootstraps editor settings, color schemes, project metadata, runtime buffers, and event bindings for importing projects. It directly mutates compiler/runtime state and dispatches multiple events before promises resolve, which makes it hard to test individual responsibilities.
+- Loader currently bootstraps editor settings, color schemes, project metadata, runtime buffers, and event bindings for importing projects. It directly mutates compiler/runtime state before promises resolve, which makes it hard to test individual responsibilities.
 - Save handles exporting JSON, exporting runtime-ready builds, persisting editor settings, updating storage quotas, and re-saving the session on any code edit. The mix of file export and persistent session state logic makes the callbacks difficult to stub and reason about.
 - Because everything lives in two large files, we cannot selectively import logic (e.g., reusing project export without storage callbacks) and any regression requires exercising the entire loader/save pipeline.
 
@@ -25,7 +25,7 @@ Break loader/save into three dedicated effects and register them directly in `in
 
 - `projectImport.ts` – owns session persistence and runtime-ready project hydration (callbacks like `loadSession`, `loadProject`, `loadProjectBySlug`, and import flows), emitting events once compiler state is in sync.
 - `projectExport.ts` – contains `onExportProject` and `onExportRuntimeReadyProject`, owns JSON serialization, runtime-ready exports, filename generation, storage quota refresh, and error handling.
-- `editorSettings.ts` – encapsulates loading and saving color schemes + editor settings; it dispatches `setFont`/`setColorScheme` events when values change and handles persistence callbacks.
+- `editorSettings.ts` – encapsulates loading and saving editor settings (including color scheme selection and font) and handles persistence callbacks.
 - Remove `loader.ts` entirely and delete `save.ts`; move any remaining orchestration logic into the new modules or `index.ts` so each effect self-registers only the handlers it needs.
 - Add Vitest coverage for each new effect file to ensure callbacks are invoked with the right payloads and events/subscriptions remain intact.
 
