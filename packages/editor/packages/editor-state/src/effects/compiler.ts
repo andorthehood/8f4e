@@ -68,7 +68,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			state.compiler.buildErrors = [];
 
-			events.dispatch('loadBinaryAssetsIntoMemory');
+			events.dispatch('loadBinaryFilesIntoMemory');
 			events.dispatch('buildFinished');
 		} catch (error) {
 			// Handle compilation error
