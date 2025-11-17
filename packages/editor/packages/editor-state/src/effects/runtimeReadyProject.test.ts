@@ -2,7 +2,7 @@ import { vi, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import compiler from './compiler';
-import save from './save';
+import projectExport from './projectExport';
 
 import { createMockState } from '../helpers/testUtils';
 import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
@@ -98,7 +98,7 @@ describe('Runtime-ready project functionality', () => {
 	describe('Runtime-ready export', () => {
 		it('should export project with compiled WASM as base64', async () => {
 			// Set up save functionality
-			save(store, mockEvents);
+			projectExport(store, mockEvents);
 
 			// Get the exportRuntimeReadyProject callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -138,7 +138,7 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.allocatedMemorySize = 8;
 
 			// Set up save functionality
-			save(store, mockEvents);
+			projectExport(store, mockEvents);
 
 			// Get the exportRuntimeReadyProject callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -166,7 +166,7 @@ describe('Runtime-ready project functionality', () => {
 			const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
 
 			// Set up save functionality
-			save(store, mockEvents);
+			projectExport(store, mockEvents);
 
 			// Get the exportRuntimeReadyProject callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -281,7 +281,7 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
 
 			// Set up save functionality
-			save(store, mockEvents);
+			projectExport(store, mockEvents);
 
 			// Get the save callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
@@ -308,7 +308,7 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.compilerOptions.memorySizeBytes = 2000 * 65536;
 
 			// Set up save functionality
-			save(store, mockEvents);
+			projectExport(store, mockEvents);
 
 			// Get the exportRuntimeReadyProject callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
