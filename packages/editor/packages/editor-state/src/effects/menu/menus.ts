@@ -216,8 +216,8 @@ export const colorSchemeMenu: MenuGenerator = state => {
 };
 
 export const fontMenu: MenuGenerator = () => [
-	{ title: '8x16', action: 'setFont', selector: 'editorSettings.font', value: '8x16', close: false },
-	{ title: '6x10', action: 'setFont', selector: 'editorSettings.font', value: '6x10', close: false },
+	{ title: '8x16', selector: 'editorSettings.font', value: '8x16', close: false },
+	{ title: '6x10', selector: 'editorSettings.font', value: '6x10', close: false },
 ];
 
 export const projectMenu: MenuGenerator = async state => {
