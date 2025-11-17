@@ -78,13 +78,13 @@ export default function generateContextMenuMock(): ContextMenu {
 			},
 			{
 				title: '................ Export Project',
-				action: 'save',
+				action: 'exportProject',
 				close: true,
 				disabled: false,
 			},
 			{
 				title: '.. Export Runtime-Ready Project',
-				action: 'saveRuntimeReady',
+				action: 'exportRuntimeReadyProject',
 				close: true,
 				disabled: false,
 			},
