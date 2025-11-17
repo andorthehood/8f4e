@@ -98,7 +98,6 @@ function createDefaultState() {
 					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 				},
 			},
-			binaryAssets: [],
 			runtimeSettings: [
 				{
 					runtime: 'WebWorkerLogicRuntime' as const,
@@ -121,6 +120,7 @@ function createDefaultState() {
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
+		binaryAssets: [],
 	};
 }
 
