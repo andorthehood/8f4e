@@ -16,7 +16,7 @@ describe('updateDebuggersGraphicData', () => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
 			code: ['debug myVar'],
-			padLength: 2,
+			lineNumberColumnWidth: 2,
 			gaps: new Map(),
 		});
 
