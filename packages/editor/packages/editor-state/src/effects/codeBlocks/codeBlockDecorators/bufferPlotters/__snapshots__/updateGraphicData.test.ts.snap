@@ -17,7 +17,7 @@ exports[`updateBufferPlottersGraphicData > should calculate correct dimensions a
   "maxValue": 10,
   "minValue": -10,
   "width": 20,
-  "x": 0,
+  "x": 30,
   "y": 20,
 }
 `;
@@ -42,7 +42,7 @@ exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotter
       "maxValue": 10,
       "minValue": -10,
       "width": 20,
-      "x": 0,
+      "x": 30,
       "y": 20,
     },
   ],
@@ -74,7 +74,7 @@ exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotter
       "maxValue": 100,
       "minValue": -8,
       "width": 20,
-      "x": 0,
+      "x": 30,
       "y": 40,
     },
   ],
