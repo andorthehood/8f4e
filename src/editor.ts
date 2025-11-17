@@ -3,13 +3,15 @@ import initEditor from '@8f4e/editor';
 import { getListOfModules, getModule, getListOfProjects, getProject } from './examples/registry';
 import { requestRuntime } from './runtime-loader';
 import {
-	loadProjectFromStorage,
-	saveProjectToStorage,
-	loadEditorSettingsFromStorage,
-	saveEditorSettingsToStorage,
-	loadProjectFromFile,
-	exportFile,
-	importBinaryAsset,
+	loadSession,
+	saveSession,
+	loadEditorSettings,
+	saveEditorSettings,
+	importProject,
+	exportProject,
+	importBinaryFile,
+	exportBinaryFile,
+	getStorageQuota,
 } from './storage-callbacks';
 import { compileProject } from './compiler-callback';
 
@@ -41,14 +43,16 @@ async function init() {
 			getProject,
 			requestRuntime,
 			compileProject,
-			loadProjectFromStorage,
-			saveProjectToStorage,
-			loadEditorSettingsFromStorage,
-			saveEditorSettingsToStorage,
-			loadProjectFromFile,
-			exportFile,
-			importBinaryAsset,
+			loadSession,
+			saveSession,
+			loadEditorSettings,
+			saveEditorSettings,
+			importProject,
+			exportProject,
+			importBinaryFile,
+			exportBinaryFile,
 			loadColorSchemes,
+			getStorageQuota,
 		},
 	});
 

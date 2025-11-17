@@ -3,7 +3,6 @@ import { StateManager } from '@8f4e/state-manager';
 import { EventDispatcher } from '../types';
 import { getModuleId } from '../helpers/codeParsers';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
-import { serializeToProject } from '../helpers/projectSerializer';
 import {
 	decodeBase64ToUint8Array,
 	decodeBase64ToInt32Array,
@@ -31,10 +30,10 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 				})
 		: Promise.resolve();
 
-	const loadEditorSettingsFromStorage = state.callbacks.loadEditorSettingsFromStorage;
+	const loadEditorSettings = state.callbacks.loadEditorSettings;
 	const settingsPromise = colorSchemesPromise.then(() =>
-		state.featureFlags.persistentStorage && loadEditorSettingsFromStorage
-			? loadEditorSettingsFromStorage()
+		state.featureFlags.persistentStorage && loadEditorSettings
+			? loadEditorSettings()
 					.then(editorSettings => {
 						if (editorSettings) {
 							const previousColorScheme = state.editorSettings.colorScheme;
@@ -59,13 +58,13 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 			: Promise.resolve()
 	);
 
-	const loadProjectFromStorage = state.callbacks.loadProjectFromStorage;
 	const projectPromise = settingsPromise.then(() => {
-		if (!state.featureFlags.persistentStorage || !loadProjectFromStorage) {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.loadSession) {
 			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
 		}
 
-		return loadProjectFromStorage()
+		return state.callbacks
+			.loadSession()
 			.then(localProject => {
 				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
 			})
@@ -102,7 +101,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		state.projectInfo.title = newProject.title || '';
 		state.projectInfo.author = newProject.author || '';
 		state.projectInfo.description = newProject.description || '';
-		state.compiler.binaryAssets = newProject.binaryAssets || [];
+		state.binaryAssets = newProject.binaryAssets || [];
 		state.compiler.runtimeSettings = newProject.runtimeSettings || defaultState.compiler.runtimeSettings;
 		state.compiler.selectedRuntime = newProject.selectedRuntime ?? defaultState.compiler.selectedRuntime;
 		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
@@ -177,61 +176,23 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 
 	void projectPromise;
 
-	function onSaveEditorSettings() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettingsToStorage) {
+	function onImportProject() {
+		if (!state.callbacks.importProject) {
+			console.warn('No importProject callback provided');
 			return;
 		}
 
-		state.callbacks.saveEditorSettingsToStorage(state.editorSettings);
+		state.callbacks
+			.importProject()
+			.then(project => {
+				loadProject({ project });
+			})
+			.catch(error => {
+				console.error('Failed to load project from file:', error);
+			});
 	}
 
-	function onSaveProject() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveProjectToStorage) {
-			return;
-		}
-
-		// Serialize current state to Project format
-		const projectToSave = serializeToProject(state);
-
-		// Use callbacks instead of localStorage
-		Promise.all([state.callbacks.saveProjectToStorage!(projectToSave)]).catch(error => {
-			console.error('Failed to save to storage:', error);
-		});
-	}
-
-	function onOpen() {
-		if (!state.callbacks.loadProjectFromFile) {
-			console.warn('No loadProjectFromFile callback provided');
-			return;
-		}
-
-		const input = document.createElement('input');
-		input.type = 'file';
-		input.accept = '.json';
-
-		input.addEventListener('change', event => {
-			const file = (event.target as HTMLInputElement).files?.[0];
-			if (!file || !state.callbacks.loadProjectFromFile) {
-				return;
-			}
-
-			state.callbacks
-				.loadProjectFromFile(file)
-				.then(project => {
-					loadProject({ project });
-				})
-				.catch(error => {
-					console.error('Failed to load project from file:', error);
-				});
-		});
-
-		input.click();
-	}
-
-	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveProject);
-	events.on('saveProject', onSaveProject);
-	events.on('saveEditorSettings', onSaveEditorSettings);
-	events.on('open', onOpen);
+	events.on('importProject', onImportProject);
 	events.on('loadProject', loadProject);
 	events.on('loadProjectBySlug', loadProjectBySlug);
 }
