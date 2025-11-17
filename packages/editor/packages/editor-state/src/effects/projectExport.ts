@@ -6,8 +6,9 @@ import { serializeToProject } from '../helpers/projectSerializer';
 
 import type { State } from '../types';
 
-export default function save(store: StateManager<State>, events: EventDispatcher): void {
+export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
+
 	function onExportProject() {
 		if (!state.callbacks.exportProject) {
 			console.warn('No exportProject callback provided');
@@ -49,14 +50,6 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		});
 	}
 
-	function onSaveEditorSettings() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettings) {
-			return;
-		}
-
-		state.callbacks.saveEditorSettings(state.editorSettings);
-	}
-
 	async function onSaveSession() {
 		if (!state.featureFlags.persistentStorage || !state.callbacks.saveSession) {
 			return;
@@ -74,7 +67,6 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		}
 	}
 
-	store.subscribe('editorSettings', onSaveEditorSettings);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveSession);
 	events.on('saveSession', onSaveSession);
 	events.on('exportProject', onExportProject);
