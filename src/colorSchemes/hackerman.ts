@@ -26,7 +26,7 @@ export default {
 		dialogBackground: '#000000',
 		dialogDimmer: 'rgba(0,0,0,0.5)',
 		highlightedCodeLine: '#002200',
-		plotterBackground: '#001100',
+		plotterBackground: '#000000',
 		plotterTrace: '#99ff99',
 		codeBlockHighlightLevel1: '#003300',
 		codeBlockHighlightLevel2: '#002200',
