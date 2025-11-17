@@ -30,15 +30,15 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 	humanInterface(canvas, events, state);
 	const view = await initView(state, canvas);
 
-	store.subscribe('editorSettings.colorScheme', () => {
-		view.clearCache();
+	store.subscribe('colorScheme', () => {
 		view.reloadSpriteSheet();
+		view.clearCache();
 		events.dispatch('spriteSheetRerendered');
 	});
 
-	events.on('setFont', () => {
-		view.clearCache();
+	store.subscribe('editorSettings.font', () => {
 		view.reloadSpriteSheet();
+		view.clearCache();
 		events.dispatch('spriteSheetRerendered');
 	});
 

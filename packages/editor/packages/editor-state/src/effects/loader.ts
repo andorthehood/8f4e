@@ -15,18 +15,17 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 	const state = store.getState();
 	// Create a fresh copy of editorSettings to avoid shared references
 	state.editorSettings = { ...defaultState.editorSettings };
-	state.colorSchemes = {}; // Initialize with empty object
 
 	// Load color schemes first
-	const colorSchemesPromise = state.callbacks.loadColorSchemes
+	const colorSchemesPromise = state.callbacks.getListOfColorSchemes
 		? state.callbacks
-				.loadColorSchemes()
+				.getListOfColorSchemes()
 				.then(colorSchemes => {
 					state.colorSchemes = colorSchemes;
 				})
 				.catch(error => {
 					console.warn('Failed to load color schemes:', error);
-					state.colorSchemes = {};
+					state.colorSchemes = [];
 				})
 		: Promise.resolve();
 
@@ -36,19 +35,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 			? loadEditorSettings()
 					.then(editorSettings => {
 						if (editorSettings) {
-							const previousColorScheme = state.editorSettings.colorScheme;
-							const previousFont = state.editorSettings.font;
-							state.editorSettings = editorSettings;
-
-							// Dispatch events to reload the view if settings changed
-							if (editorSettings.colorScheme !== previousColorScheme) {
-								store.set('editorSettings.colorScheme', editorSettings.colorScheme);
-							}
-							if (editorSettings.font !== previousFont) {
-								events.dispatch('setFont', { font: editorSettings.font });
-							}
-						} else {
-							state.editorSettings = { ...defaultState.editorSettings };
+							store.set('editorSettings', editorSettings);
 						}
 					})
 					.catch(error => {
@@ -192,6 +179,12 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 			});
 	}
 
+	store.subscribe('editorSettings.colorScheme', async () => {
+		// Reload color scheme from callback
+		if (state.callbacks.getColorScheme) {
+			store.set('colorScheme', await state.callbacks.getColorScheme(state.editorSettings.colorScheme));
+		}
+	});
 	events.on('importProject', onImportProject);
 	events.on('loadProject', loadProject);
 	events.on('loadProjectBySlug', loadProjectBySlug);
