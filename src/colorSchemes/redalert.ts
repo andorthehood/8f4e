@@ -39,7 +39,7 @@ export default {
 		inputConnector: '#4499ff',
 		outputConnector: '#4499ff',
 		feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
-		arrow: 'cc0000',
+		arrow: '#cc0000',
 		pianoKeyWhite: '#ffffff',
 		pianoKeyWhiteHighlighted: '#ff0000',
 		pianoKeyWhitePressed: '#cccccc',
