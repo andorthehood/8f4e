@@ -5,7 +5,7 @@ import type { State } from '../types';
 export default function keyboardShortcuts(state: State, events: EventDispatcher): void {
 	function onKeydown({ key, metaKey }: InternalKeyboardEvent) {
 		if (metaKey && key.toLowerCase() === 's') {
-			events.dispatch('saveProject');
+			events.dispatch('saveSession');
 		}
 
 		if (metaKey && key.toLowerCase() === 'z') {
