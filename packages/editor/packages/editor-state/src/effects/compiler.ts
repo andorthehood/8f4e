@@ -1,6 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { decodeBase64ToUint8Array } from '../helpers/base64Decoder';
 import { EventDispatcher } from '../types';
 
 import type { CodeBlockGraphicData, State } from '../types';
@@ -69,24 +68,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			state.compiler.buildErrors = [];
 
-			state.compiler.binaryAssets.forEach(binaryAsset => {
-				if (binaryAsset.moduleId && binaryAsset.memoryId) {
-					const memoryAssignedToBinaryAsset =
-						state.compiler.compiledModules[binaryAsset.moduleId]?.memoryMap[binaryAsset.memoryId];
-
-					if (!memoryAssignedToBinaryAsset) {
-						return;
-					}
-
-					const allocatedSizeInBytes =
-						memoryAssignedToBinaryAsset.numberOfElements * memoryAssignedToBinaryAsset.elementWordSize;
-					const memoryBuffer = new Uint8Array(state.compiler.memoryBuffer.buffer);
-					const binaryAssetDataBuffer = decodeBase64ToUint8Array(binaryAsset.data).slice(0, allocatedSizeInBytes);
-
-					memoryBuffer.set(binaryAssetDataBuffer, memoryAssignedToBinaryAsset.byteAddress);
-				}
-			});
-
+			events.dispatch('loadBinaryAssetsIntoMemory');
 			events.dispatch('buildFinished');
 		} catch (error) {
 			// Handle compilation error

@@ -35,7 +35,7 @@ export default function generateContextMenuMock(): ContextMenu {
 			},
 			{
 				title: '........... Import binary asset',
-				action: 'importBinaryAsset',
+				action: 'importBinaryFile',
 				close: true,
 				disabled: false,
 			},
@@ -78,13 +78,13 @@ export default function generateContextMenuMock(): ContextMenu {
 			},
 			{
 				title: '................ Export Project',
-				action: 'save',
+				action: 'exportProject',
 				close: true,
 				disabled: false,
 			},
 			{
 				title: '.. Export Runtime-Ready Project',
-				action: 'saveRuntimeReady',
+				action: 'exportRuntimeReadyProject',
 				close: true,
 				disabled: false,
 			},
