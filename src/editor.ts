@@ -1,4 +1,5 @@
 import initEditor from '@8f4e/editor';
+import { ColorScheme } from '@8f4e/sprite-generator';
 
 import { getListOfModules, getModule, getListOfProjects, getProject } from './examples/registry';
 import { requestRuntime } from './runtime-loader';
@@ -15,16 +16,14 @@ import {
 } from './storage-callbacks';
 import { compileProject } from './compiler-callback';
 
-import type { ColorScheme } from '@8f4e/sprite-generator';
+async function getListOfColorSchemes(): Promise<string[]> {
+	return ['hackerman', 'redalert', 'default'];
+}
 
-// Memoized color scheme loader
-let colorSchemesPromise: Promise<Record<string, ColorScheme>> | null = null;
-
-function loadColorSchemes(): Promise<Record<string, ColorScheme>> {
-	if (!colorSchemesPromise) {
-		colorSchemesPromise = import('./color-schemes').then(module => module.default);
-	}
-	return colorSchemesPromise;
+async function getColorScheme(name: string): Promise<ColorScheme> {
+	// Lazy import color scheme
+	const module = await import(`./colorSchemes/${name}.ts`);
+	return module.default;
 }
 
 async function init() {
@@ -51,7 +50,8 @@ async function init() {
 			exportProject,
 			importBinaryFile,
 			exportBinaryFile,
-			loadColorSchemes,
+			getListOfColorSchemes,
+			getColorScheme,
 			getStorageQuota,
 		},
 	});

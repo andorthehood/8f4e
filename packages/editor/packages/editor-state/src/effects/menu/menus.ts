@@ -207,7 +207,7 @@ export const editorSettingsMenu: MenuGenerator = state => [
 
 export const colorSchemeMenu: MenuGenerator = state => {
 	// Build menu items from available color schemes in state
-	return Object.keys(state.colorSchemes).map(key => ({
+	return state.colorSchemes.map(key => ({
 		title: key,
 		selector: 'editorSettings.colorScheme',
 		value: key,
@@ -216,8 +216,8 @@ export const colorSchemeMenu: MenuGenerator = state => {
 };
 
 export const fontMenu: MenuGenerator = () => [
-	{ title: '8x16', action: 'setFont', payload: { font: '8x16' }, close: false },
-	{ title: '6x10', action: 'setFont', payload: { font: '6x10' }, close: false },
+	{ title: '8x16', selector: 'editorSettings.font', value: '8x16', close: false },
+	{ title: '6x10', selector: 'editorSettings.font', value: '6x10', close: false },
 ];
 
 export const projectMenu: MenuGenerator = async state => {
