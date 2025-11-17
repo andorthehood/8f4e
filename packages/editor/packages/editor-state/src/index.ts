@@ -11,7 +11,6 @@ import codeBlockNavigation from './effects/codeBlockNavigation';
 import demoModeNavigation from './effects/demoModeNavigation';
 import compiler from './effects/compiler';
 import contextMenu from './effects/menu/contextMenu';
-import font from './effects/font';
 import graphicHelper from './effects/codeBlocks/graphicHelper';
 import loader from './effects/loader';
 import pianoKeyboard from './effects/codeBlocks/codeBlockDecorators/pianoKeyboard/interaction';
@@ -116,7 +115,7 @@ function createDefaultState() {
 			font: '8x16' as Font,
 		},
 		featureFlags: defaultFeatureFlags,
-		colorSchemes: {},
+		colorSchemes: [],
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
@@ -153,7 +152,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 	codeEditing(store, events);
 	save(store, events);
 	exportWasm(state, events);
-	font(state, events);
 	binaryAsset(state, events);
 	keyboardShortcuts(state, events);
 	historyTracking(store, events);
