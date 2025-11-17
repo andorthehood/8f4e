@@ -18,7 +18,7 @@ export default function updateBufferPlottersGraphicData(graphicData: CodeBlockGr
 		graphicData.extras.bufferPlotters.set(plotter.bufferMemoryId, {
 			width: state.graphicHelper.viewport.vGrid * 2,
 			height: state.graphicHelper.viewport.hGrid,
-			x: 0,
+			x: (graphicData.lineNumberColumnWidth + 2) * state.graphicHelper.viewport.vGrid,
 			y: (gapCalculator(plotter.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
 			buffer,
 			minValue: plotter.minValue,
