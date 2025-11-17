@@ -255,7 +255,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			},
 			cycleTime: 0,
 			timerAccuracy: 0,
-			binaryAssets: [],
 			runtimeSettings: [
 				{
 					runtime: 'WebWorkerLogicRuntime',
@@ -266,7 +265,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		},
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
-			loadProjectFromStorage: createMockAsyncFunction(null),
+			loadSession: createMockAsyncFunction(null),
 		},
 		graphicHelper: {
 			codeBlocks: new Set(),
@@ -327,6 +326,8 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		colorSchemes: {},
 		historyStack: [],
 		redoStack: [],
+		storageQuota: { usedBytes: 0, totalBytes: 0 },
+		binaryAssets: [],
 	};
 
 	// Deep merge overrides with defaults

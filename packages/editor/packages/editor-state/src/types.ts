@@ -77,7 +77,6 @@ export interface CodeBlock {
 	x: number;
 	y: number;
 	viewport?: Viewport;
-	codeBlocks?: CodeBlock[];
 }
 
 export interface Size {
@@ -145,11 +144,7 @@ export interface Compiler {
 	buildErrors: BuildError[];
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
-	/** Binary assets to be loaded into memory */
-	binaryAssets: BinaryAsset[];
-	/** Runtime configuration settings */
 	runtimeSettings: Runtimes[];
-	/** Index of currently selected runtime */
 	selectedRuntime: number;
 }
 
@@ -333,10 +328,16 @@ export interface BinaryAsset {
 	moduleId?: string;
 	/** The id of the memory that the binary data should be loaded into */
 	memoryId?: string;
-	/** The binary data in base64 format */
-	data: string;
 	/** The file name of the binary data */
 	fileName: string;
+	/** Non-cryptographic hash for versioning */
+	contentHash?: string;
+	/** Web, data or relative file URL */
+	url?: string;
+	/** MIME type of the binary data */
+	mimeType?: string;
+	/** Size of the binary data in bytes */
+	sizeBytes?: number;
 }
 
 interface MidiNoteIO {
@@ -475,6 +476,8 @@ export interface CompilationResult {
 // Callbacks interface contains all callback functions
 export interface Callbacks {
 	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
+
+	// Module and project loading callbacks
 	getListOfModules?: () => Promise<ModuleMetadata[]>;
 	getModule?: (slug: string) => Promise<ExampleModule>;
 	getListOfProjects?: () => Promise<ProjectMetadata[]>;
@@ -483,19 +486,22 @@ export interface Callbacks {
 	// Compilation callback
 	compileProject?: (modules: Module[], compilerOptions: CompileOptions) => Promise<CompilationResult>;
 
-	// Storage callbacks
-	loadProjectFromStorage: () => Promise<Project | null>;
-	saveProjectToStorage?: (project: Project) => Promise<void>;
-	loadEditorSettingsFromStorage?: () => Promise<EditorSettings | null>;
-	saveEditorSettingsToStorage?: (settings: EditorSettings) => Promise<void>;
+	// Session storage callbacks
+	loadSession: () => Promise<Project | null>;
+	saveSession?: (project: Project) => Promise<void>;
+	loadEditorSettings?: () => Promise<EditorSettings | null>;
+	saveEditorSettings?: (settings: EditorSettings) => Promise<void>;
 
 	// File handling callbacks
-	loadProjectFromFile?: (file: File) => Promise<Project>;
-	exportFile?: (data: Uint8Array | string, filename: string, mimeType?: string) => Promise<void>;
-	importBinaryAsset?: (file: File) => Promise<{ data: string; fileName: string }>;
+	importProject?: () => Promise<Project>;
+	exportProject?: (data: string, fileName: string) => Promise<void>;
+	importBinaryFile?: () => Promise<{ fileName: string }>;
+	exportBinaryFile?: (data: Uint8Array, fileName: string, mimeType: string) => Promise<void>;
+	loadBinaryFileIntoMemory?: (file: BinaryAsset) => Promise<void>;
+	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
 	// Color scheme loader callback
-	loadColorSchemes?: () => Promise<Record<string, import('@8f4e/sprite-generator').ColorScheme>>;
+	loadColorSchemes?: () => Promise<Record<string, ColorScheme>>;
 }
 
 export interface Options {
@@ -520,4 +526,6 @@ export interface State {
 	colorSchemes: Record<string, ColorScheme>;
 	historyStack: Project[];
 	redoStack: Project[];
+	storageQuota: { usedBytes: number; totalBytes: number };
+	binaryAssets: BinaryAsset[];
 }
