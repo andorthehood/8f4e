@@ -4,28 +4,34 @@ import type { State } from '../types';
 
 export default function binaryAssets(state: State, events: EventDispatcher): () => void {
 	async function onImportBinaryAsset() {
-		if (!state.callbacks.importBinaryAsset) {
-			console.warn('No importBinaryAsset callback provided');
+		if (!state.callbacks.importBinaryFile) {
+			console.warn('No importBinaryFile callback provided');
 			return;
 		}
 
 		try {
-			const fileHandles = await (
-				window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
-			).showOpenFilePicker();
-			const file = await fileHandles[0].getFile();
-
-			const result = await state.callbacks.importBinaryAsset(file);
-
-			state.compiler.binaryAssets.push(result);
+			const result = await state.callbacks.importBinaryFile();
+			state.binaryAssets.push(result);
 		} catch (error) {
 			console.error('Failed to import binary asset:', error);
 		}
 	}
 
-	events.on('importBinaryAsset', onImportBinaryAsset);
+	async function onLoadBinaryFilesIntoMemory() {
+		if (!state.callbacks.loadBinaryFileIntoMemory) {
+			console.warn('No loadBinaryFileIntoMemory callback provided');
+			return;
+		}
+
+		state.binaryAssets.forEach(async asset => {
+			state.callbacks.loadBinaryFileIntoMemory!(asset);
+		});
+	}
+
+	events.on('importBinaryFile', onImportBinaryAsset);
+	events.on('loadBinaryFilesIntoMemory', onLoadBinaryFilesIntoMemory);
 
 	return () => {
-		events.off('importBinaryAsset', onImportBinaryAsset);
+		events.off('importBinaryFile', onImportBinaryAsset);
 	};
 }
