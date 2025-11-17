@@ -93,7 +93,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.graphicHelper.codeBlocks.clear();
 		state.graphicHelper.viewport.x = newProject.viewport.x * state.graphicHelper.viewport.vGrid;
 		state.graphicHelper.viewport.y = newProject.viewport.y * state.graphicHelper.viewport.hGrid;
-		// TODO: make it recursive
+
 		newProject.codeBlocks.forEach(codeBlock => {
 			state.graphicHelper.codeBlocks.add({
 				width: 0,
@@ -122,7 +122,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				offsetY: 0,
 				gridX: codeBlock.x,
 				gridY: codeBlock.y,
-				padLength: 1,
+				lineNumberColumnWidth: 1,
 				lastUpdated: Date.now(),
 			});
 		});

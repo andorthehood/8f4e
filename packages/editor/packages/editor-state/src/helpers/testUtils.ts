@@ -138,7 +138,7 @@ export function createMockCodeBlock(
 		gaps: new Map(),
 		gridX: 0,
 		gridY: 0,
-		padLength: 1,
+		lineNumberColumnWidth: 1,
 		minGridWidth: 32,
 		lastUpdated: Date.now(),
 		extras: {
