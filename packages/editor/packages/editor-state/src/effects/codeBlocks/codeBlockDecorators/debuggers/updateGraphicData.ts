@@ -18,7 +18,7 @@ export default function updateDebuggersGraphicData(graphicData: CodeBlockGraphic
 			width: state.graphicHelper.viewport.vGrid * 2,
 			height: state.graphicHelper.viewport.hGrid,
 			x:
-				state.graphicHelper.viewport.vGrid * (3 + graphicData.padLength) +
+				state.graphicHelper.viewport.vGrid * (3 + graphicData.lineNumberColumnWidth) +
 				state.graphicHelper.viewport.vGrid * graphicData.code[_debugger.lineNumber].length,
 			y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
 			id: _debugger.id,

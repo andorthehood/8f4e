@@ -12,9 +12,9 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 		}
 
 		graphicData.extras.blockHighlights.push({
-			x: state.graphicHelper.viewport.vGrid * (2 + graphicData.padLength),
+			x: state.graphicHelper.viewport.vGrid * (2 + graphicData.lineNumberColumnWidth),
 			y: gapCalculator(block.startLineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
-			width: graphicData.width - state.graphicHelper.viewport.vGrid * (2 + graphicData.padLength),
+			width: graphicData.width - state.graphicHelper.viewport.vGrid * (2 + graphicData.lineNumberColumnWidth),
 			height: (block.endLineNumber - block.startLineNumber + 1) * state.graphicHelper.viewport.hGrid,
 			color: 'codeBlockHighlightLevel' + ((block.depth % 3) + 1),
 		});
