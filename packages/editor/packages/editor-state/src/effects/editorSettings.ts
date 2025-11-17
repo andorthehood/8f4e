@@ -10,37 +10,33 @@ export default function editorSettings(store: StateManager<State>, events: Event
 	// Create a fresh copy of editorSettings to avoid shared references
 	state.editorSettings = { ...defaultState.editorSettings };
 
-	// Load color schemes first
-	const colorSchemesPromise = state.callbacks.getListOfColorSchemes
-		? state.callbacks
-				.getListOfColorSchemes()
-				.then(colorSchemes => {
-					state.colorSchemes = colorSchemes;
-				})
-				.catch(error => {
-					console.warn('Failed to load color schemes:', error);
-					state.colorSchemes = [];
-				})
-		: Promise.resolve();
+	// Load color schemes and settings asynchronously
+	void (async () => {
+		// Load color schemes first
+		if (state.callbacks.getListOfColorSchemes) {
+			try {
+				const colorSchemes = await state.callbacks.getListOfColorSchemes();
+				state.colorSchemes = colorSchemes;
+			} catch (error) {
+				console.warn('Failed to load color schemes:', error);
+				state.colorSchemes = [];
+			}
+		}
 
-	const loadEditorSettings = state.callbacks.loadEditorSettings;
-	const settingsPromise = colorSchemesPromise.then(() =>
-		state.featureFlags.persistentStorage && loadEditorSettings
-			? loadEditorSettings()
-					.then(loadedEditorSettings => {
-						if (loadedEditorSettings) {
-							store.set('editorSettings', loadedEditorSettings);
-						}
-					})
-					.catch(error => {
-						console.warn('Failed to load editor settings from storage:', error);
-						state.editorSettings = { ...defaultState.editorSettings };
-					})
-			: Promise.resolve()
-	);
-
-	// Wait for settings to load before returning
-	void settingsPromise;
+		// Then load editor settings
+		const loadEditorSettings = state.callbacks.loadEditorSettings;
+		if (state.featureFlags.persistentStorage && loadEditorSettings) {
+			try {
+				const loadedEditorSettings = await loadEditorSettings();
+				if (loadedEditorSettings) {
+					store.set('editorSettings', loadedEditorSettings);
+				}
+			} catch (error) {
+				console.warn('Failed to load editor settings from storage:', error);
+				state.editorSettings = { ...defaultState.editorSettings };
+			}
+		}
+	})();
 
 	function onSaveEditorSettings() {
 		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettings) {
