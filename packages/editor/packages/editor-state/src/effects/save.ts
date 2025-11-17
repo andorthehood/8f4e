@@ -62,20 +62,34 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 			return;
 		}
 
-		// Serialize current state to Project format
-		const projectToSave = serializeToProject(state);
+		try {
+			// Serialize current state to Project format
+			const projectToSave = serializeToProject(state);
 
-		// Use callbacks instead of localStorage
-		await state.callbacks.saveSession(projectToSave);
+			// Use callbacks instead of localStorage
+			await state.callbacks.saveSession(projectToSave);
 
-		const storageQuota = await state.callbacks.getStorageQuota!();
-		if (storageQuota) {
-			store.set('storageQuota', storageQuota);
+			if (state.callbacks.getStorageQuota) {
+				const storageQuota = await state.callbacks.getStorageQuota();
+				if (storageQuota) {
+					store.set('storageQuota', storageQuota);
+				}
+			}
+		} catch (error) {
+			console.error('Failed to save session:', error);
 		}
 	}
 
-	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveSession);
-	events.on('saveSession', onSaveSession);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
+		onSaveSession().catch(error => {
+			console.error('Failed to save session:', error);
+		});
+	});
+	events.on('saveSession', () => {
+		onSaveSession().catch(error => {
+			console.error('Failed to save session:', error);
+		});
+	});
 	events.on('saveEditorSettings', onSaveEditorSettings);
 	events.on('exportProject', onExportProject);
 	events.on('exportRuntimeReadyProject', onExportRuntimeReadyProject);
