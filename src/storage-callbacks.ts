@@ -1,3 +1,5 @@
+import { BinaryAsset } from '@8f4e/editor-state';
+
 import { getProject, projectManifest } from './examples/registry';
 
 import type { Project, EditorSettings } from '@8f4e/editor';
@@ -72,53 +74,77 @@ export async function saveEditorSettings(settings: EditorSettings): Promise<void
 	}
 }
 
-// Implementation of file handling callbacks using browser APIs
-export async function importProject(file: File): Promise<Project> {
+export async function importProject(): Promise<Project> {
+	const input = document.createElement('input');
+	input.type = 'file';
+	input.accept = '.json';
+
 	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onload = event => {
-			try {
-				const content = event.target?.result as string;
-				const project = JSON.parse(content);
-				resolve(project);
-			} catch (error) {
-				reject(new Error('Failed to parse project file: ' + error));
+		input.addEventListener('change', event => {
+			const file = (event.target as HTMLInputElement).files?.[0];
+			if (!file) {
+				return;
 			}
-		};
-		reader.onerror = () => reject(new Error('Failed to read file'));
-		reader.readAsText(file, 'UTF-8');
+
+			const reader = new FileReader();
+			reader.onload = event => {
+				try {
+					const content = event.target?.result as string;
+					const project = JSON.parse(content);
+					resolve(project);
+				} catch (error) {
+					reject(new Error('Failed to parse project file: ' + error));
+				}
+			};
+			reader.onerror = () => reject(new Error('Failed to read file'));
+			reader.readAsText(file, 'UTF-8');
+		});
+
+		input.click();
 	});
 }
 
-export async function exportProject(data: string, filename: string): Promise<void> {
+export async function exportProject(data: string, fileName: string): Promise<void> {
 	const blob = new Blob([data], { type: 'application/json' });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	document.body.appendChild(a);
 	a.style.display = 'none';
 	a.href = url;
-	a.download = filename;
+	a.download = fileName;
 	a.click();
 
 	document.body.removeChild(a);
 	URL.revokeObjectURL(url);
 }
 
-export async function exportBinaryFile(data: Uint8Array, filename: string, mimeType: string): Promise<void> {
+export async function exportBinaryFile(data: Uint8Array, fileName: string, mimeType: string): Promise<void> {
 	const blob = new Blob([new Uint8Array(data)], { type: mimeType });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	document.body.appendChild(a);
 	a.style.display = 'none';
 	a.href = url;
-	a.download = filename;
+	a.download = fileName;
 	a.click();
 
 	document.body.removeChild(a);
 	URL.revokeObjectURL(url);
 }
 
-export async function importBinaryFile(): Promise<{ buffer: ArrayBuffer; fileName: string }> {
+function arrayBufferToDataUrl(arrayBuffer: ArrayBuffer, mimeType: string): string {
+	const bytes = new Uint8Array(arrayBuffer);
+	let binary = '';
+
+	for (let i = 0; i < bytes.length; i++) {
+		binary += String.fromCharCode(bytes[i]);
+	}
+
+	const base64 = btoa(binary);
+	return `data:${mimeType};base64,${base64}`;
+}
+
+export async function importBinaryFile(): Promise<BinaryAsset> {
 	const fileHandles = await (
 		window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
 	).showOpenFilePicker();
@@ -129,7 +155,10 @@ export async function importBinaryFile(): Promise<{ buffer: ArrayBuffer; fileNam
 		reader.onload = event => {
 			try {
 				const buffer = event.target?.result as ArrayBuffer;
-				resolve({ buffer, fileName: file.name });
+				// TODO: only convert small files to data URLs, for larger files use OPFS or similar
+				const url = arrayBufferToDataUrl(buffer, file.type);
+
+				resolve({ url, fileName: file.name, mimeType: file.type, sizeBytes: file.size });
 			} catch (error) {
 				reject(new Error('Failed to process binary asset: ' + error));
 			}
