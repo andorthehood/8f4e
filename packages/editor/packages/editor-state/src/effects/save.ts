@@ -74,9 +74,9 @@ export default function save(store: StateManager<State>, events: EventDispatcher
 		}
 	}
 
+	store.subscribe('editorSettings', onSaveEditorSettings);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveSession);
 	events.on('saveSession', onSaveSession);
-	events.on('saveEditorSettings', onSaveEditorSettings);
 	events.on('exportProject', onExportProject);
 	events.on('exportRuntimeReadyProject', onExportRuntimeReadyProject);
 }
