@@ -233,7 +233,7 @@ export interface CodeBlockGraphicData {
 	minGridWidth: number;
 	height: number;
 	code: string[];
-	padLength: number;
+	lineNumberColumnWidth: number;
 	codeToRender: number[][];
 	codeColors: Array<Array<SpriteLookup | undefined>>;
 	/** The gaps between lines */
