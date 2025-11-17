@@ -4,8 +4,8 @@ import type { State } from '../types';
 
 export default function exportWasm(state: State, events: EventDispatcher): void {
 	function onExportWasm() {
-		if (!state.callbacks.exportFile) {
-			console.warn('No exportFile callback provided');
+		if (!state.callbacks.exportBinaryFile) {
+			console.warn('No exportProject callback provided');
 			return;
 		}
 
@@ -15,12 +15,12 @@ export default function exportWasm(state: State, events: EventDispatcher): void 
 			return;
 		}
 
-		// Generate filename based on project title
+		// Generate fileName based on project title
 		const projectName = state.projectInfo.title || 'project';
-		const filename = `${projectName}.wasm`;
+		const fileName = `${projectName}.wasm`;
 
 		// Export the compiled WASM bytecode
-		state.callbacks.exportFile(state.compiler.codeBuffer, filename, 'application/wasm').catch(error => {
+		state.callbacks.exportBinaryFile(state.compiler.codeBuffer, fileName, 'application/wasm').catch(error => {
 			console.error('Failed to export WebAssembly file:', error);
 		});
 	}

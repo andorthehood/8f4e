@@ -1,3 +1,5 @@
+import { BinaryAsset } from '@8f4e/editor-state';
+
 import { getProject, projectManifest } from './examples/registry';
 
 import type { Project, EditorSettings } from '@8f4e/editor';
@@ -14,7 +16,7 @@ const kebabCaseToCamelCase = (str: string) =>
 	});
 
 // Implementation of storage callbacks using localStorage
-export async function loadProjectFromStorage(): Promise<Project | null> {
+export async function loadSession(): Promise<Project | null> {
 	try {
 		// First, check if there's a project specified in the URL hash
 		const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
@@ -44,7 +46,7 @@ export async function loadProjectFromStorage(): Promise<Project | null> {
 	}
 }
 
-export async function saveProjectToStorage(project: Project): Promise<void> {
+export async function saveSession(project: Project): Promise<void> {
 	try {
 		localStorage.setItem(STORAGE_KEYS.PROJECT, JSON.stringify(project));
 	} catch (error) {
@@ -53,7 +55,7 @@ export async function saveProjectToStorage(project: Project): Promise<void> {
 	}
 }
 
-export async function loadEditorSettingsFromStorage(): Promise<EditorSettings | null> {
+export async function loadEditorSettings(): Promise<EditorSettings | null> {
 	try {
 		const stored = localStorage.getItem(STORAGE_KEYS.EDITOR_SETTINGS);
 		return stored ? JSON.parse(stored) : null;
@@ -63,7 +65,7 @@ export async function loadEditorSettingsFromStorage(): Promise<EditorSettings | 
 	}
 }
 
-export async function saveEditorSettingsToStorage(settings: EditorSettings): Promise<void> {
+export async function saveEditorSettings(settings: EditorSettings): Promise<void> {
 	try {
 		localStorage.setItem(STORAGE_KEYS.EDITOR_SETTINGS, JSON.stringify(settings));
 	} catch (error) {
@@ -72,62 +74,111 @@ export async function saveEditorSettingsToStorage(settings: EditorSettings): Pro
 	}
 }
 
-// Implementation of file handling callbacks using browser APIs
-export async function loadProjectFromFile(file: File): Promise<Project> {
+export async function importProject(): Promise<Project> {
+	const input = document.createElement('input');
+	input.type = 'file';
+	input.accept = '.json';
+
 	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onload = event => {
-			try {
-				const content = event.target?.result as string;
-				const project = JSON.parse(content);
-				resolve(project);
-			} catch (error) {
-				reject(new Error('Failed to parse project file: ' + error));
+		input.addEventListener('change', event => {
+			const file = (event.target as HTMLInputElement).files?.[0];
+			if (!file) {
+				return;
 			}
-		};
-		reader.onerror = () => reject(new Error('Failed to read file'));
-		reader.readAsText(file, 'UTF-8');
+
+			const reader = new FileReader();
+			reader.onload = event => {
+				try {
+					const content = event.target?.result as string;
+					const project = JSON.parse(content);
+					resolve(project);
+				} catch (error) {
+					reject(new Error('Failed to parse project file: ' + error));
+				}
+			};
+			reader.onerror = () => reject(new Error('Failed to read file'));
+			reader.readAsText(file, 'UTF-8');
+		});
+
+		input.click();
 	});
 }
 
-export async function exportFile(data: Uint8Array | string, filename: string, mimeType?: string): Promise<void> {
-	let blob: Blob;
-
-	if (typeof data === 'string') {
-		// Handle text data (like JSON for projects)
-		blob = new Blob([data], { type: mimeType || 'application/json' });
-	} else {
-		// Handle binary data (like WASM bytecode)
-		// Create a new Uint8Array to ensure ArrayBuffer compatibility
-		blob = new Blob([new Uint8Array(data)], { type: mimeType || 'application/wasm' });
-	}
-
+export async function exportProject(data: string, fileName: string): Promise<void> {
+	const blob = new Blob([data], { type: 'application/json' });
 	const url = URL.createObjectURL(blob);
-
 	const a = document.createElement('a');
 	document.body.appendChild(a);
 	a.style.display = 'none';
 	a.href = url;
-	a.download = filename;
+	a.download = fileName;
 	a.click();
 
 	document.body.removeChild(a);
 	URL.revokeObjectURL(url);
 }
 
-export async function importBinaryAsset(file: File): Promise<{ data: string; fileName: string }> {
+export async function exportBinaryFile(data: Uint8Array, fileName: string, mimeType: string): Promise<void> {
+	const blob = new Blob([new Uint8Array(data)], { type: mimeType });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	document.body.appendChild(a);
+	a.style.display = 'none';
+	a.href = url;
+	a.download = fileName;
+	a.click();
+
+	document.body.removeChild(a);
+	URL.revokeObjectURL(url);
+}
+
+function arrayBufferToDataUrl(arrayBuffer: ArrayBuffer, mimeType: string): string {
+	const bytes = new Uint8Array(arrayBuffer);
+	let binary = '';
+
+	for (let i = 0; i < bytes.length; i++) {
+		binary += String.fromCharCode(bytes[i]);
+	}
+
+	const base64 = btoa(binary);
+	return `data:${mimeType};base64,${base64}`;
+}
+
+export async function importBinaryFile(): Promise<BinaryAsset> {
+	const fileHandles = await (
+		window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
+	).showOpenFilePicker();
+	const file = await fileHandles[0].getFile();
+
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader();
 		reader.onload = event => {
 			try {
-				const dataUrl = event.target?.result as string;
-				const base64data = dataUrl.split(',')[1];
-				resolve({ data: base64data, fileName: file.name });
+				const buffer = event.target?.result as ArrayBuffer;
+				// TODO: only convert small files to data URLs, for larger files use OPFS or similar
+				const url = arrayBufferToDataUrl(buffer, file.type);
+
+				resolve({ url, fileName: file.name, mimeType: file.type, sizeBytes: file.size });
 			} catch (error) {
 				reject(new Error('Failed to process binary asset: ' + error));
 			}
 		};
 		reader.onerror = () => reject(new Error('Failed to read binary asset file'));
-		reader.readAsDataURL(file);
+		reader.readAsArrayBuffer(file);
 	});
+}
+
+export async function getStorageQuota(): Promise<{ usedBytes: number; totalBytes: number }> {
+	if (navigator.storage && navigator.storage.estimate) {
+		const estimate = await navigator.storage.estimate();
+		return {
+			usedBytes: estimate.usage || 0,
+			totalBytes: estimate.quota || 0,
+		};
+	} else {
+		return {
+			usedBytes: 0,
+			totalBytes: 0,
+		};
+	}
 }
