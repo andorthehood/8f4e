@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import loader from './loader';
+import projectImport from './projectImport';
 
 import { createMockState } from '../helpers/testUtils';
 import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
@@ -21,7 +21,7 @@ describe('Loader - Project-specific memory configuration', () => {
 	});
 
 	it('should use default memory settings when project has no memory configuration', async () => {
-		loader(store, mockEvents, mockState);
+		projectImport(store, mockEvents, mockState);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -44,7 +44,7 @@ describe('Loader - Project-specific memory configuration', () => {
 	});
 
 	it('should use project-specific memory settings when available', async () => {
-		loader(store, mockEvents, mockState);
+		projectImport(store, mockEvents, mockState);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -68,7 +68,7 @@ describe('Loader - Project-specific memory configuration', () => {
 	});
 
 	it('should create memory with project-specific settings', async () => {
-		loader(store, mockEvents, mockState);
+		projectImport(store, mockEvents, mockState);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
