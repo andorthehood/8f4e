@@ -34,7 +34,7 @@ export const mainMenu: MenuGenerator = state => [
 	{ title: 'Binary assets', action: 'openSubMenu', payload: { menu: 'binaryAssetsMenu' }, close: false },
 	...(state.featureFlags.editing ? [{ divider: true }] : []),
 	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }, { divider: true }] : []),
-	{ title: 'Open From Disk', action: 'open', close: true, disabled: !state.callbacks.importProject },
+	{ title: 'Open From Disk', action: 'importProject', close: true, disabled: !state.callbacks.importProject },
 	{
 		title: 'Open Project',
 		action: 'openSubMenu',
@@ -43,10 +43,10 @@ export const mainMenu: MenuGenerator = state => [
 		disabled: !state.callbacks.getListOfProjects,
 	},
 	{ divider: true },
-	{ title: 'Export Project', action: 'save', close: true, disabled: !state.callbacks.exportProject },
+	{ title: 'Export Project', action: 'exportProject', close: true, disabled: !state.callbacks.exportProject },
 	{
 		title: 'Export Runtime-Ready Project',
-		action: 'saveRuntimeReady',
+		action: 'exportRuntimeReadyProject',
 		close: true,
 		disabled: !state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0 || !state.callbacks.exportProject,
 	},
