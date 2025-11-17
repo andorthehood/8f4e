@@ -108,7 +108,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const [row, col] = moveCaret(
 			codeBlock.code,
 			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.viewport.hGrid), codeBlock.gaps),
-			Math.floor(relativeX / state.graphicHelper.viewport.vGrid) - (codeBlock.padLength + 2),
+			Math.floor(relativeX / state.graphicHelper.viewport.vGrid) - (codeBlock.lineNumberColumnWidth + 2),
 			'Jump'
 		);
 		codeBlock.cursor.row = row;
@@ -120,13 +120,13 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		graphicData.padLength = graphicData.code.length.toString().length;
+		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
 		graphicData.x = graphicData.gridX * state.graphicHelper.viewport.vGrid;
 		graphicData.y = graphicData.gridY * state.graphicHelper.viewport.hGrid;
 
 		const codeWithLineNumbers = graphicData.code.map(
-			(line, index) => `${index}`.padStart(graphicData.padLength, '0') + ' ' + line
+			(line, index) => `${index}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ' + line
 		);
 
 		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
@@ -154,7 +154,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		blockHighlights(graphicData, state);
 
 		graphicData.height = graphicData.codeToRender.length * state.graphicHelper.viewport.hGrid;
-		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.padLength + 2)) * state.graphicHelper.viewport.vGrid;
+		graphicData.cursor.x =
+			(graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.graphicHelper.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.graphicHelper.viewport.hGrid;
 		graphicData.id = getModuleId(graphicData.code) || '';
 	};
