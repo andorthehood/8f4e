@@ -101,7 +101,7 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 		state.projectInfo.title = newProject.title || '';
 		state.projectInfo.author = newProject.author || '';
 		state.projectInfo.description = newProject.description || '';
-		state.compiler.binaryAssets = newProject.binaryAssets || [];
+		state.binaryAssets = newProject.binaryAssets || [];
 		state.compiler.runtimeSettings = newProject.runtimeSettings || defaultState.compiler.runtimeSettings;
 		state.compiler.selectedRuntime = newProject.selectedRuntime ?? defaultState.compiler.selectedRuntime;
 		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
@@ -176,36 +176,23 @@ export default function loader(store: StateManager<State>, events: EventDispatch
 
 	void projectPromise;
 
-	function onOpen() {
+	function onImportProject() {
 		if (!state.callbacks.importProject) {
 			console.warn('No importProject callback provided');
 			return;
 		}
 
-		const input = document.createElement('input');
-		input.type = 'file';
-		input.accept = '.json';
-
-		input.addEventListener('change', event => {
-			const file = (event.target as HTMLInputElement).files?.[0];
-			if (!file || !state.callbacks.importProject) {
-				return;
-			}
-
-			state.callbacks
-				.importProject(file)
-				.then(project => {
-					loadProject({ project });
-				})
-				.catch(error => {
-					console.error('Failed to load project from file:', error);
-				});
-		});
-
-		input.click();
+		state.callbacks
+			.importProject()
+			.then(project => {
+				loadProject({ project });
+			})
+			.catch(error => {
+				console.error('Failed to load project from file:', error);
+			});
 	}
 
-	events.on('open', onOpen);
+	events.on('importProject', onImportProject);
 	events.on('loadProject', loadProject);
 	events.on('loadProjectBySlug', loadProjectBySlug);
 }
