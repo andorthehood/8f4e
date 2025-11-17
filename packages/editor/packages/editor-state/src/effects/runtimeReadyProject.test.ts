@@ -50,10 +50,10 @@ describe('Runtime-ready project functionality', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
-	let mockExportFile: MockInstance;
+	let mockExportProject: MockInstance;
 
 	beforeEach(() => {
-		mockExportFile = vi.fn().mockResolvedValue(undefined);
+		mockExportProject = vi.fn().mockResolvedValue(undefined);
 
 		mockState = createMockState({
 			projectInfo: {
@@ -66,14 +66,14 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: new Map(),
 			},
 			callbacks: {
-				exportFile: mockExportFile,
+				exportProject: mockExportProject,
 				requestRuntime: vi.fn(),
 				getListOfModules: vi.fn(),
 				getModule: vi.fn(),
 				getListOfProjects: vi.fn(),
 				getProject: vi.fn(),
 				compileProject: vi.fn(),
-				loadProjectFromStorage: vi.fn(),
+				loadSession: vi.fn(),
 			},
 			editorSettings: {
 				colorScheme: 'default',
@@ -100,22 +100,21 @@ describe('Runtime-ready project functionality', () => {
 			// Set up save functionality
 			save(store, mockEvents);
 
-			// Get the saveRuntimeReady callback
+			// Get the exportRuntimeReadyProject callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
-			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
-			expect(saveRuntimeReadyCall).toBeDefined();
+			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
+			expect(exportRuntimeReadyProjectCall).toBeDefined();
 
-			const saveRuntimeReadyCallback = saveRuntimeReadyCall[1];
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall[1];
 
-			// Trigger the saveRuntimeReady action
-			await saveRuntimeReadyCallback();
+			// Trigger the exportRuntimeReadyProject action
+			await exportRuntimeReadyProjectCallback();
 
-			// Verify exportFile was called with the right parameters
-			expect(mockExportFile).toHaveBeenCalledTimes(1);
-			const [exportedJson, filename, mimeType] = mockExportFile.mock.calls[0];
+			// Verify exportProject was called with the right parameters
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson, fileName] = mockExportProject.mock.calls[0];
 
-			expect(filename).toBe('Test Project-runtime-ready.json');
-			expect(mimeType).toBe('application/json');
+			expect(fileName).toBe('Test Project-runtime-ready.json');
 
 			// Parse the exported JSON and verify it contains compiledWasm
 			const exportedProject = JSON.parse(exportedJson);
@@ -141,19 +140,19 @@ describe('Runtime-ready project functionality', () => {
 			// Set up save functionality
 			save(store, mockEvents);
 
-			// Get the saveRuntimeReady callback
+			// Get the exportRuntimeReadyProject callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
-			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
-			expect(saveRuntimeReadyCall).toBeDefined();
+			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
+			expect(exportRuntimeReadyProjectCall).toBeDefined();
 
-			const saveRuntimeReadyCallback = saveRuntimeReadyCall[1];
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall[1];
 
-			// Trigger the saveRuntimeReady action
-			await saveRuntimeReadyCallback();
+			// Trigger the exportRuntimeReadyProject action
+			await exportRuntimeReadyProjectCallback();
 
-			expect(mockExportFile).toHaveBeenCalledTimes(1);
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
 
-			const [exportedJson] = mockExportFile.mock.calls[0];
+			const [exportedJson] = mockExportProject.mock.calls[0];
 			const exportedProject = JSON.parse(exportedJson);
 			const expectedBase64 = encodeUint8ArrayToBase64(new Uint8Array(backingBuffer, 0, 8));
 
@@ -169,19 +168,19 @@ describe('Runtime-ready project functionality', () => {
 			// Set up save functionality
 			save(store, mockEvents);
 
-			// Get the saveRuntimeReady callback
+			// Get the exportRuntimeReadyProject callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
-			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
-			const saveRuntimeReadyCallback = saveRuntimeReadyCall[1];
+			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall[1];
 
-			// Trigger the saveRuntimeReady action
-			await saveRuntimeReadyCallback();
+			// Trigger the exportRuntimeReadyProject action
+			await exportRuntimeReadyProjectCallback();
 
 			// Verify warning was logged and export was not called
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'No compiled WebAssembly code available. Please compile your project first.'
 			);
-			expect(mockExportFile).not.toHaveBeenCalled();
+			expect(mockExportProject).not.toHaveBeenCalled();
 
 			consoleSpy.mockRestore();
 		});
@@ -286,7 +285,7 @@ describe('Runtime-ready project functionality', () => {
 
 			// Get the save callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
-			const saveCall = onCalls.find(call => call[0] === 'save');
+			const saveCall = onCalls.find(call => call[0] === 'exportProject');
 			expect(saveCall).toBeDefined();
 
 			const saveCallback = saveCall[1];
@@ -294,9 +293,9 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger the save action
 			await saveCallback();
 
-			// Verify exportFile was called
-			expect(mockExportFile).toHaveBeenCalledTimes(1);
-			const [exportedJson] = mockExportFile.mock.calls[0];
+			// Verify exportProject was called
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportProject.mock.calls[0];
 
 			// Parse the exported JSON and verify it contains memory configuration
 			const exportedProject = JSON.parse(exportedJson);
@@ -311,19 +310,19 @@ describe('Runtime-ready project functionality', () => {
 			// Set up save functionality
 			save(store, mockEvents);
 
-			// Get the saveRuntimeReady callback
+			// Get the exportRuntimeReadyProject callback
 			const onCalls = (mockEvents.on as MockInstance).mock.calls;
-			const saveRuntimeReadyCall = onCalls.find(call => call[0] === 'saveRuntimeReady');
-			expect(saveRuntimeReadyCall).toBeDefined();
+			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
+			expect(exportRuntimeReadyProjectCall).toBeDefined();
 
-			const saveRuntimeReadyCallback = saveRuntimeReadyCall[1];
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall[1];
 
-			// Trigger the saveRuntimeReady action
-			await saveRuntimeReadyCallback();
+			// Trigger the exportRuntimeReadyProject action
+			await exportRuntimeReadyProjectCallback();
 
-			// Verify exportFile was called
-			expect(mockExportFile).toHaveBeenCalledTimes(1);
-			const [exportedJson] = mockExportFile.mock.calls[0];
+			// Verify exportProject was called
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportProject.mock.calls[0];
 
 			// Parse the exported JSON and verify memory configuration
 			const exportedProject = JSON.parse(exportedJson);
