@@ -501,7 +501,8 @@ export interface Callbacks {
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
 	// Color scheme loader callback
-	loadColorSchemes?: () => Promise<Record<string, ColorScheme>>;
+	getListOfColorSchemes?: () => Promise<string[]>;
+	getColorScheme?: (name: string) => Promise<ColorScheme>;
 }
 
 export interface Options {
@@ -523,7 +524,8 @@ export interface State {
 	callbacks: Callbacks;
 	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
-	colorSchemes: Record<string, ColorScheme>;
+	colorSchemes: string[];
+	colorScheme?: ColorScheme;
 	historyStack: Project[];
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
