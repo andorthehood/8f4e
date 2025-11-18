@@ -3,7 +3,7 @@ title: 'TODO: Create Editor Test Utilities and Cross-Cutting Testing Infrastruct
 priority: Medium
 effort: 1-2 days
 created: 2025-08-27
-status: Open
+status: Completed
 completed: null
 ---
 
