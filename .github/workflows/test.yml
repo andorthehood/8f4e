@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify package isolation
+        run: npm run verify:package-isolation
+
       - name: Run linting
         run: npm run lint
 
