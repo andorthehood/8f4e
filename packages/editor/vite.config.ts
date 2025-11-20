@@ -1,11 +1,9 @@
-import { resolve } from 'path';
-
 import { defineConfig } from 'vite';
 
 export default defineConfig({
 	build: {
 		lib: {
-			entry: resolve(__dirname, 'src/index.ts'),
+			entry: './src/index.ts',
 			name: 'Editor8f4e',
 			formats: ['umd'],
 			fileName: () => 'editor-bundle.js',
@@ -23,13 +21,5 @@ export default defineConfig({
 		sourcemap: true,
 		target: 'es2020',
 	},
-	resolve: {
-		alias: {
-			// Resolve workspace dependencies to their built versions
-			glugglug: resolve(__dirname, './packages/glugglug/dist'),
-			'@8f4e/compiler': resolve(__dirname, '../compiler/dist'),
-			'@8f4e/sprite-generator': resolve(__dirname, './packages/sprite-generator/dist'),
-			'@8f4e/state-manager': resolve(__dirname, './packages/state-manager/dist'),
-		},
-	},
+	// Remove custom resolve aliases - let Vite resolve through package.json dependencies
 });
