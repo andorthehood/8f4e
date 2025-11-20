@@ -3,7 +3,7 @@ title: 'TODO: Highlight paired block scopes with backdrop rectangles'
 priority: Medium
 effort: 2-3d
 created: 2025-11-05
-status: Open
+status: Closed
 completed: null
 ---
 
