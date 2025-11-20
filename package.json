@@ -22,6 +22,7 @@
     "test:screenshot:ui": "npx nx run web-ui:test:screenshot:ui",
     "typecheck": "npx nx run-many --target=typecheck --all",
     "typecheck:affected": "npx nx affected --target=typecheck --base=main",
+    "verify:package-isolation": "bash scripts/verify-package-isolation.sh",
     "graph": "npx nx graph",
     "prepare": "husky install"
   },
