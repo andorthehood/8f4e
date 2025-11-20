@@ -18,11 +18,9 @@ export default defineConfig({
 	plugins: [],
 	resolve: {
 		alias: {
-			// Point to the built web-ui package
+			// Point to the parent package's built output (within package boundary)
 			'@8f4e/web-ui': resolve(__dirname, '../dist'),
-			'@8f4e/editor-state': resolve(__dirname, '../../../packages/editor-state/dist'),
-			'@8f4e/sprite-generator': resolve(__dirname, '../../../packages/sprite-generator/dist'),
-			glugglug: resolve(__dirname, '../../../packages/glugglug/dist'),
+			// Other packages will be resolved through npm workspaces
 		},
 	},
 });
