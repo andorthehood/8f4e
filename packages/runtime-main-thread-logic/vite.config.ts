@@ -1,11 +1,9 @@
-import { resolve } from 'path';
-
 import { defineConfig } from 'vite';
 
 export default defineConfig({
 	build: {
 		lib: {
-			entry: resolve(__dirname, 'src/index.ts'),
+			entry: './src/index.ts',
 			name: 'RuntimeMainThreadLogic',
 			formats: ['umd'],
 			fileName: () => 'runtime-main-thread-logic.js',

@@ -3,8 +3,8 @@ title: 'TODO: Enforce Package Config Isolation'
 priority: High
 effort: 2-3 days
 created: 2025-11-20
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-21
 ---
 
 # TODO: Enforce Package Config Isolation
@@ -73,7 +73,54 @@ completed: null
 - `packages/editor/vite.config.ts` and screenshot Vite configs (examples of filesystem aliasing).
 - ADR requiring packages to be self-contained and isolated.
 
+## Implementation Summary
+
+### Completed 2025-11-20
+
+All package configuration isolation issues have been resolved:
+
+1. **Vitest Configuration Isolation**: 
+   - Inlined the vitest preset configuration into all 11 package-level `vitest.config.ts` files
+   - Removed all imports of `../../vitest.preset.ts`
+   - Updated `nx.json` to remove `vitest.preset.ts` from test target inputs
+   - Each package now has self-contained test configuration
+
+2. **Vite Configuration Isolation**:
+   - Removed cross-package path references from `packages/editor/vite.config.ts`
+   - Simplified screenshot test vite configs to only reference parent package dist (within boundary)
+   - Simplified `packages/runtime-main-thread-logic/vite.config.ts`
+   - Added `dependsOn: ["^build"]` to editor bundle target to ensure dependencies are built
+   - Configs now rely on npm workspace resolution for cross-package dependencies
+
+3. **Package Lock Cleanup**:
+   - Removed stale `package-lock.json` files from three workspace packages:
+     - `packages/runtime-web-worker-logic/package-lock.json`
+     - `packages/runtime-web-worker-midi/package-lock.json`
+     - `packages/editor/package-lock.json`
+   - These files contained `file:` references and are not needed in npm workspaces
+
+4. **Verification and Prevention**:
+   - Created `scripts/verify-package-isolation.sh` to check for:
+     - vitest.preset.ts imports in package configs
+     - Cross-package path references in vite configs
+     - Package-lock.json files in workspace packages
+     - file: references in package.json dependencies
+   - Added `verify:package-isolation` npm script
+   - Integrated verification into CI workflow (`.github/workflows/test.yml`)
+   - All checks pass successfully
+
+### Verification
+
+All builds, tests, and type checks pass:
+- `npm run build` ✓
+- `npm run test` ✓
+- `npm run typecheck` ✓
+- `npm run bundle:editor` ✓
+- `npm run bundle:runtime-main-thread-logic` ✓
+- `npm run verify:package-isolation` ✓
+
 ## Notes
 
-- Consider adding an Nx lint target that scans for `../` paths leaving `{projectRoot}` within configs.
-- Once complete, move this TODO to `docs/todos/archived/` and update `_index.md`.
+- The verification script runs on every CI build to prevent future regressions.
+- Package configurations are now fully self-contained and ready for independent publishing.
+- The root `vitest.preset.ts` can be kept for reference but is no longer used by packages.
