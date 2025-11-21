@@ -6,7 +6,7 @@
 
 ## Build, Test, Dev
 - From root: `npx nx run runtime-web-worker-logic:build|test|typecheck`.
-- From package: `npm run build`, `npm run dev`, `npm run test`, `npm run typecheck`.
+- From package directory: use `npx nx run runtime-web-worker-logic:<target>` (e.g., `npx nx run runtime-web-worker-logic:dev`).
 
 ## Coding Style
 - TypeScript + ESLint + Prettier (repo defaults). Avoid DOM APIs in worker code.

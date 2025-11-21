@@ -62,16 +62,16 @@ This approach reduces the production bundle size by ~90% compared to shipping AS
 
 ```bash
 # Build the package
-npm run build
+npx nx run sprite-generator:build
 
 # Run tests
-npm run test
+npx nx run sprite-generator:test
 
 # Type check
-npm run typecheck
+npx nx run sprite-generator:typecheck
 
 # Development mode with watch
-npm run dev
+npx nx run sprite-generator:dev
 ```
 
 ## Visual Regression Testing
@@ -84,29 +84,23 @@ Before running screenshot tests, ensure the sprite-generator package is built:
 
 ```bash
 # Build the package (required for Vite aliases to resolve)
-npx nx run @8f4e/sprite-generator:build
-
-# Or from the sprite-generator directory
-npm run build
+npx nx run sprite-generator:build
 ```
 
 ### Running Screenshot Tests
 
 ```bash
-# Run all screenshot tests (from sprite-generator directory)
-npm run test:screenshot
-
-# Or using Nx from project root
-npx nx run @8f4e/sprite-generator:test:screenshot
+# Run all screenshot tests
+npx nx run sprite-generator:test:screenshot
 
 # Run with UI mode for debugging
-npm run test:screenshot:ui
+npx nx run sprite-generator:test:screenshot:ui
 
 # Run in headed mode (visible browser)
-npm run test:screenshot:headed
+npx nx run sprite-generator:test:screenshot:headed
 
 # Debug tests step-by-step
-npm run test:screenshot:debug
+npx nx run sprite-generator:test:screenshot:debug
 ```
 
 ### Updating Snapshots
@@ -115,10 +109,7 @@ When sprite rendering changes are intentional (e.g., new features or bug fixes),
 
 ```bash
 # Update all snapshots
-npm run test:screenshot:update
-
-# Or using Nx
-npx nx run @8f4e/sprite-generator:test:screenshot:update
+npx nx run sprite-generator:test:screenshot:update
 ```
 
 ### Test Structure
