@@ -28,7 +28,8 @@
         "package-lock.json": true
     },
     "editor.formatOnSave": false,
-    "jest.jestCommandLine": "npx jest",
-    "liveServer.settings.root": "./dist",
-    "nxConsole.generateAiAgentRules": true
+    "terminal.integrated.env.linux": {
+        "NODE_PATH": "${env:HOME}/.nvm/versions/node/v24.11.0/lib/node_modules",
+        "PATH": "${env:HOME}/.nvm/versions/node/v24.11.0/bin:${env:PATH}"
+    },
 }
