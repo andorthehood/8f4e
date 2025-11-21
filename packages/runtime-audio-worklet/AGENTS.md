@@ -6,7 +6,7 @@
 
 ## Build, Test, Dev
 - From root: `npx nx run runtime-audio-worklet:build|test|typecheck`.
-- From package: `npm run build` (worklet Vite config), `npm run dev`, `npm run test` (`--passWithNoTests` acceptable), `npm run typecheck`.
+- From package directory: use `npx nx run runtime-audio-worklet:<target>` (e.g., `npx nx run runtime-audio-worklet:dev`).
 - Build before integrating in root Vite to ensure alias resolution.
 
 ## Coding Style

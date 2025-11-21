@@ -3,8 +3,8 @@ title: 'TODO: Enforce Nx-Only Package Entrypoints'
 priority: Medium
 effort: 0.5-1d
 created: 2025-11-21
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-21
 ---
 
 # TODO: Enforce Nx-Only Package Entrypoints
@@ -34,9 +34,9 @@ Per-package `package.json` scripts (`dev`, `build`, `test`, `lint`, `typecheck`,
 
 ### Step 3: Remove package.json scripts and root proxies
 - Delete all package-level scripts (no exceptions) once Nx parity is confirmed.
-- Remove root npm scripts entirely, or reduce to a minimal set that directly shells to `nx` without duplicating command bodies; prefer documenting raw Nx usage.
+- Remove all root npm scripts except lifecycle hooks (preinstall, prepare, etc.). Do not keep convenience proxy scripts.
 - Update docs/README/dev guides/todo entries to show `nx run <project>:<target>` usage for dev/build/test/typecheck/bundle/screenshot (and `nx run-many`/`nx affected` where helpful); replace any lingering npm-script references.
-- Outcome: Package `scripts` sections are empty/absent; root `package.json` has no redundant workflows; documentation reflects Nx-only usage with no npm-script references.
+- Outcome: Package `scripts` sections are empty/absent; root `package.json` has only lifecycle hooks; documentation reflects Nx-only usage with no npm-script references.
 
 ### Step 4: Verify Nx-only flow
 - Run `npm run lint`, `npm run typecheck`, and `npm run test` (Nx-backed) to confirm pipeline works.

@@ -13,18 +13,6 @@
 		}
 	},
 	"sideEffects": false,
-	"scripts": {
-		"test": "jest --passWithNoTests",
-		"test:screenshot": "playwright test",
-		"test:screenshot:update": "playwright test --update-snapshots",
-		"test:screenshot:ui": "playwright test --ui",
-		"test:screenshot:headed": "playwright test --headed",
-		"test:screenshot:debug": "playwright test --debug",
-		"build": "tsc",
-		"dev": "tsc --watch",
-		"dev:test": "vite --config screenshot-tests/vite.config.ts",
-		"typecheck": "tsc --noEmit"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/andorthehood/8f4e.git"
