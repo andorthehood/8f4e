@@ -68,14 +68,26 @@ The project uses Nx for monorepo orchestration. All packages are built to their 
 
 **Working with packages:**
 
-To rebuild a specific package during development:
-```bash
-npx nx run @8f4e/compiler:build
-```
+All package development commands use Nx targets directly:
 
-To watch a specific package for changes (in a separate terminal):
+- Build a package: `npx nx run <project>:build`
+- Watch a package: `npx nx run <project>:dev`
+- Test a package: `npx nx run <project>:test`
+- Typecheck a package: `npx nx run <project>:typecheck`
+
+Examples:
 ```bash
-npx nx run @8f4e/compiler:dev
+# Build the compiler package
+npx nx run compiler:build
+
+# Watch the compiler for changes (in a separate terminal)
+npx nx run compiler:dev
+
+# Run tests for the compiler
+npx nx run compiler:test
+
+# Bundle the editor package
+npx nx run editor:bundle
 ```
 
 To watch all packages for changes (optional, for continuous rebuilding):
@@ -83,6 +95,19 @@ To watch all packages for changes (optional, for continuous rebuilding):
 npm run dev:watch-packages
 ```
 This uses `nx watch` to automatically rebuild packages when their source files change. Run this in a separate terminal alongside `npm run dev` for the best development experience with instant package hot-reload.
+
+**Running multiple targets:**
+
+```bash
+# Build all packages
+npx nx run-many --target=build --all
+
+# Test all packages
+npx nx run-many --target=test --all
+
+# Build only affected packages
+npx nx affected --target=build
+```
 
 **Project graph:**
 
@@ -93,10 +118,18 @@ npm run graph
 
 ### Testing
 
-- **Unit tests:** `npm run test`
-- **Screenshot tests:** `npm run test:screenshot`
-- **Update screenshots:** `npm run test:screenshot:update`
-- **Screenshot test UI:** `npm run test:screenshot:ui`
+**Unit tests:**
+- Run all tests: `npm run test` or `npx nx run-many --target=test --all`
+- Run tests for a specific package: `npx nx run <project>:test`
+
+**Screenshot tests:**
+- Run screenshot tests: `npm run test:screenshot` or `npx nx run web-ui:test:screenshot`
+- Update screenshots: `npm run test:screenshot:update` or `npx nx run web-ui:test:screenshot:update`
+- Screenshot test UI: `npm run test:screenshot:ui` or `npx nx run web-ui:test:screenshot:ui`
+- Additional screenshot test options:
+  - `npx nx run web-ui:test:screenshot:headed` - Run with visible browser
+  - `npx nx run web-ui:test:screenshot:debug` - Run in debug mode
+  - `npx nx run sprite-generator:test:screenshot` - Run sprite-generator screenshot tests
 
 ### Architecture Notes
 
