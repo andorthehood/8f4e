@@ -6,7 +6,8 @@
 
 ## Build, Test, Dev
 - From root: `npx nx run sprite-generator:build|test|typecheck`.
-- From package: `npm run build`, `npm run dev`, `npm run test` (may be `--passWithNoTests`), `npm run typecheck`.
+- From package directory: use `npx nx run sprite-generator:<target>` (e.g., `npx nx run sprite-generator:dev`).
+- Screenshot tests: `npx nx run sprite-generator:test:screenshot` and variants (:ui, :update, :headed, :debug).
 
 ## Coding Style
 - TypeScript; ESLint + Prettier per root config. Keep pure, deterministic functions.
