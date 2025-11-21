@@ -2,19 +2,23 @@ import { resolve } from 'path';
 
 import { defineConfig } from 'vitest/config';
 
-import { vitestPreset } from '../../vitest.preset';
-
-const presetTestConfig = vitestPreset.test ?? {};
-
 export default defineConfig({
-	...vitestPreset,
 	root: __dirname,
 	test: {
-		...presetTestConfig,
+		globals: true,
 		environment: 'node',
+		testTimeout: 30000,
+		hookTimeout: 10000,
+		reporters: process.env.CI ? ['basic'] : ['default'],
+		coverage: {
+			provider: 'v8',
+			reporter: ['text', 'json', 'html'],
+			exclude: ['node_modules/', 'dist/', '**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.{test,spec}.ts'],
+		},
 		include: ['src/**/*.{test,spec}.{ts,tsx}'],
 		exclude: [
-			...(presetTestConfig.exclude ?? []),
+			'**/node_modules/**',
+			'**/dist/**',
 			'src/**/testUtils.ts',
 			'src/**/testFixtures.ts',
 			'src/**/testHelpers.ts',

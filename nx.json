@@ -14,7 +14,7 @@
 		"cache": false
 	},
     "test": {
-      "inputs": ["default", "^default", "{workspaceRoot}/vitest.preset.ts"],
+      "inputs": ["default", "^default"],
       "cache": true
     },
     "typecheck": {
