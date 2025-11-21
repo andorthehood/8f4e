@@ -39,7 +39,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 084 | Add Per-Code-Block Theme Variants | 🟡 | 2-3d | 2025-11-05 | Allow each color scheme to expose three block palettes selectable per code block |
 | 085 | Highlight Paired Block Scopes | 🟡 | 2-3d | 2025-11-05 | Draw theme-colored rectangles behind start/end block pairs to show scope boundaries |
 | 094 | Handle Large Binary Assets with OPFS | 🟡 | 1-2d | 2025-11-17 | Large binary imports always convert to base64 data URLs, causing freezes and storage bloat; add size-aware logic that routes big files into OPFS or a fallback store |
-| 096 | Enforce Nx-Only Package Entrypoints | 🟡 | 0.5-1d | 2025-11-21 | Remove package-level and root npm scripts; drive all dev/build/test/typecheck/bundle/screenshot tasks through Nx targets and update docs to reference Nx only |
+| 097 | Enforce Nx-Only Package Entrypoints | 🟡 | 0.5-1d | 2025-11-21 | Remove package-level and root npm scripts; drive all dev/build/test/typecheck/bundle/screenshot tasks through Nx targets and update docs to reference Nx only |
 | 079 | Add Directional Navigation Function for Code Blocks | 🟡 | 4-6h | 2025-11-02 | Implemented spatial navigation algorithm for code blocks supporting keyboard-based navigation between blocks in all four directions |
 
 ### 🟢 Low Priority
