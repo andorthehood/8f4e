@@ -52,7 +52,7 @@ jobs:
       - run: npx nx run runtime-main-thread-logic:build
         if: steps.check_runtime.outputs.exists == 'false'
 
-      - run: npm run bundle:runtime-main-thread-logic
+      - run: npx nx run runtime-main-thread-logic:bundle
         if: steps.check_runtime.outputs.exists == 'false'
 
       - name: Stage versioned runtime bundle

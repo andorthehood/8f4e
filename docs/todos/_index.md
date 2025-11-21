@@ -39,7 +39,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 084 | Add Per-Code-Block Theme Variants | 🟡 | 2-3d | 2025-11-05 | Allow each color scheme to expose three block palettes selectable per code block |
 | 085 | Highlight Paired Block Scopes | 🟡 | 2-3d | 2025-11-05 | Draw theme-colored rectangles behind start/end block pairs to show scope boundaries |
 | 094 | Handle Large Binary Assets with OPFS | 🟡 | 1-2d | 2025-11-17 | Large binary imports always convert to base64 data URLs, causing freezes and storage bloat; add size-aware logic that routes big files into OPFS or a fallback store |
-| 097 | Enforce Nx-Only Package Entrypoints | 🟡 | 0.5-1d | 2025-11-21 | Remove package-level and root npm scripts; drive all dev/build/test/typecheck/bundle/screenshot tasks through Nx targets and update docs to reference Nx only |
 | 079 | Add Directional Navigation Function for Code Blocks | 🟡 | 4-6h | 2025-11-02 | Implemented spatial navigation algorithm for code blocks supporting keyboard-based navigation between blocks in all four directions |
 
 ### 🟢 Low Priority
@@ -57,6 +56,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 097 | Enforce Nx-Only Package Entrypoints | 🟡 | 0.5-1d | 2025-11-21 | Removed all package-level scripts from 11 packages; added missing Nx targets for screenshot test variants and dev:test; updated README.md with comprehensive Nx command examples; all workflows now use Nx targets exclusively |
 | 095 | Split Loader/Save Effects into Dedicated Modules | 🟡 | 1-2d | 2025-11-17 | Replaced monolithic loader.ts and save.ts with three focused modules: projectImport.ts (session persistence, project loading), projectExport.ts (JSON/runtime-ready exports, storage quota), and editorSettings.ts (color scheme/font settings); added 48 comprehensive tests |
 | 093 | Add Typecheck GitHub Action | 🟡 | 2-3h | 2025-11-09 | Added CI workflow step that runs `npm run typecheck` (Nx run-many) on push/PR to main and staging to block type regressions |
 | 092 | Use Editor State Testing Utilities in Web-UI Tests | 🟡 | 4-6h | 2025-11-09 | Established testing pattern for web-ui by creating example unit tests using @8f4e/editor-state/testing utilities, documented patterns in README, and configured vitest to use node environment |

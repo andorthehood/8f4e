@@ -6,7 +6,7 @@
 
 ## Build, Bundle, Dev
 - From root: `npx nx run editor:build|bundle|test|typecheck`.
-- From package: `npm run build` (tsc), `npm run bundle` (Vite), `npm run dev` (watch), `npm run test`, `npm run typecheck`.
+- From package directory: use `npx nx run editor:<target>` (e.g., `npx nx run editor:dev`).
 - Ensure `dist/` exists before root `vite build` after API changes.
 
 ## Coding Style

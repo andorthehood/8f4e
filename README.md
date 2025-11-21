@@ -45,12 +45,12 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 
 2. **Build all packages:**
    ```bash
-   npm run build
+   npx nx run app:build
    ```
 
 3. **Start the development server:**
    ```bash
-   npm run dev
+   npx nx run app:dev
    ```
    The app will be available at http://localhost:3000
 
@@ -60,43 +60,76 @@ The project uses Nx for monorepo orchestration. All packages are built to their 
 
 **Key commands:**
 
-- `npm run dev` - Builds all packages once, then starts Vite dev server with HMR
-- `npm run build` - Builds all packages and creates production bundle
-- `npm run test` - Runs unit tests across all packages
-- `npm run typecheck` - Type-checks all packages (runs in CI on push/PR to main and staging)
-- `npm run lint` - Lints and auto-fixes all TypeScript files
+- `npx nx run app:dev` - Builds all packages once, then starts Vite dev server with HMR
+- `npx nx run app:build` - Builds all packages and creates production bundle
+- `npx nx run-many --target=test --all` - Runs unit tests across all packages
+- `npx nx run-many --target=typecheck --all` - Type-checks all packages (runs in CI on push/PR to main and staging)
+- `npx eslint . --ext .ts --fix` - Lints and auto-fixes all TypeScript files
 
 **Working with packages:**
 
-To rebuild a specific package during development:
-```bash
-npx nx run @8f4e/compiler:build
-```
+All package development commands use Nx targets directly:
 
-To watch a specific package for changes (in a separate terminal):
+- Build a package: `npx nx run <project>:build`
+- Watch a package: `npx nx run <project>:dev`
+- Test a package: `npx nx run <project>:test`
+- Typecheck a package: `npx nx run <project>:typecheck`
+
+Examples:
 ```bash
-npx nx run @8f4e/compiler:dev
+# Build the compiler package
+npx nx run compiler:build
+
+# Watch the compiler for changes (in a separate terminal)
+npx nx run compiler:dev
+
+# Run tests for the compiler
+npx nx run compiler:test
+
+# Bundle the editor package
+npx nx run editor:bundle
 ```
 
 To watch all packages for changes (optional, for continuous rebuilding):
 ```bash
-npm run dev:watch-packages
+npx nx watch --all --includeDependentProjects -- npx nx run \$NX_PROJECT_NAME:build
 ```
-This uses `nx watch` to automatically rebuild packages when their source files change. Run this in a separate terminal alongside `npm run dev` for the best development experience with instant package hot-reload.
+This uses `nx watch` to automatically rebuild packages when their source files change. Run this in a separate terminal alongside `npx nx run app:dev` for the best development experience with instant package hot-reload.
+
+**Running multiple targets:**
+
+```bash
+# Build all packages
+npx nx run-many --target=build --all
+
+# Test all packages
+npx nx run-many --target=test --all
+
+# Build only affected packages
+npx nx affected --target=build
+```
 
 **Project graph:**
 
 To visualize the project dependency graph:
 ```bash
-npm run graph
+npx nx graph
 ```
 
 ### Testing
 
-- **Unit tests:** `npm run test`
-- **Screenshot tests:** `npm run test:screenshot`
-- **Update screenshots:** `npm run test:screenshot:update`
-- **Screenshot test UI:** `npm run test:screenshot:ui`
+**Unit tests:**
+- Run all tests: `npx nx run-many --target=test --all`
+- Run tests for a specific package: `npx nx run <project>:test`
+
+**Screenshot tests:**
+- Run screenshot tests: `npx nx run web-ui:test:screenshot`
+- Update screenshots: `npx nx run web-ui:test:screenshot:update`
+- Screenshot test UI: `npx nx run web-ui:test:screenshot:ui`
+- Additional screenshot test options:
+  - `npx nx run web-ui:test:screenshot:headed` - Run with visible browser
+  - `npx nx run web-ui:test:screenshot:debug` - Run in debug mode
+  - `npx nx run sprite-generator:test:screenshot` - Run sprite-generator screenshot tests
 
 ### Architecture Notes
 
