@@ -3,8 +3,8 @@ title: 'TODO: Enforce Nx-Only Package Entrypoints'
 priority: Medium
 effort: 0.5-1d
 created: 2025-11-21
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-21
 ---
 
 # TODO: Enforce Nx-Only Package Entrypoints
