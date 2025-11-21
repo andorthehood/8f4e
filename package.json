@@ -8,21 +8,6 @@
   },
   "scripts": {
     "preinstall": "git submodule update --init --recursive",
-    "build": "npx nx run app:build",
-    "build:affected": "npx nx affected --target=build --base=main",
-    "bundle:editor": "npx nx run editor:bundle",
-    "bundle:runtime-main-thread-logic": "npx nx run runtime-main-thread-logic:bundle",
-    "dev": "npx nx run app:dev",
-    "dev:watch-packages": "npx nx watch --all --includeDependentProjects -- npx nx run \\$NX_PROJECT_NAME:build",
-    "lint": "npx eslint . --ext .ts --fix",
-    "test": "npx nx run-many --target=test --all --exclude=@8f4e/web-ui --exclude=app",
-    "test:affected": "npx nx affected --target=test --base=main",
-    "test:screenshot": "npx nx run web-ui:test:screenshot",
-    "test:screenshot:update": "npx nx run web-ui:test:screenshot:update",
-    "test:screenshot:ui": "npx nx run web-ui:test:screenshot:ui",
-    "typecheck": "npx nx run-many --target=typecheck --all",
-    "typecheck:affected": "npx nx affected --target=typecheck --base=main",
-    "graph": "npx nx graph",
     "prepare": "husky install"
   },
   "repository": {
@@ -73,7 +58,7 @@
   "lint-staged": {
     "*.ts": [
       "eslint --cache --fix",
-      "bash -c 'npm run typecheck'"
+      "bash -c 'npx nx run-many --target=typecheck --all'"
     ]
   }
 }
