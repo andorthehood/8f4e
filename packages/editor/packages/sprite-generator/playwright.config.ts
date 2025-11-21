@@ -20,7 +20,7 @@ export default defineConfig({
 	},
 	// Configure web server for testing
 	webServer: {
-		command: 'npm run dev:test',
+		command: 'npx nx run sprite-generator:dev:test',
 		port: 3002,
 		reuseExistingServer: !process.env.CI,
 		stdout: 'pipe',

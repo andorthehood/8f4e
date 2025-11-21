@@ -28,11 +28,11 @@ jobs:
         run: npm ci
 
       - name: Run linting
-        run: npm run lint
+        run: npx eslint . --ext .ts --fix
 
       - name: Run typecheck
-        run: npm run typecheck
+        run: npx nx run-many --target=typecheck --all
 
       - name: Run tests
-        run: npm test
+        run: npx nx run-many --target=test --all --exclude=@8f4e/web-ui --exclude=app
         timeout-minutes: 10

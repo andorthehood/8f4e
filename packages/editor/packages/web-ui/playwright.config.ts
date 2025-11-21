@@ -22,7 +22,7 @@ export default defineConfig({
 	snapshotPathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}{ext}',
 	// Configure web server for testing
 	webServer: {
-		command: 'npm run dev:test',
+		command: 'npx nx run web-ui:dev:test',
 		port: 3001,
 		reuseExistingServer: !process.env.CI,
 		stdout: 'pipe',
