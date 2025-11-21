@@ -58,7 +58,7 @@ view.clearCache();
 ## Build
 
 ```bash
-npm run build
+npx nx run web-ui:build
 ```
 
 This compiles the TypeScript source to JavaScript in the `dist/` directory.
@@ -66,7 +66,7 @@ This compiles the TypeScript source to JavaScript in the `dist/` directory.
 ## Development
 
 ```bash
-npm run dev
+npx nx run web-ui:dev
 ```
 
 Runs TypeScript in watch mode for development.
