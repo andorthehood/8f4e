@@ -6,7 +6,7 @@
 
 ## Build, Test, Dev
 - From root: `npx nx run compiler-worker:build|test|typecheck`.
-- From package: `npm run build`, `npm run dev`, `npm run test` (may be `--passWithNoTests`), `npm run typecheck`.
+- From package directory: use `npx nx run compiler-worker:<target>` (e.g., `npx nx run compiler-worker:dev`).
 
 ## Coding Style
 - TypeScript; ESLint with repo rules, Prettier formatting.
