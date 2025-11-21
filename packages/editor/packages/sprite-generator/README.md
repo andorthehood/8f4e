@@ -110,7 +110,6 @@ When sprite rendering changes are intentional (e.g., new features or bug fixes),
 ```bash
 # Update all snapshots
 npx nx run sprite-generator:test:screenshot:update
-npx nx run @8f4e/sprite-generator:test:screenshot:update
 ```
 
 ### Test Structure
