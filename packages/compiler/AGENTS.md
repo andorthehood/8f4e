@@ -6,7 +6,7 @@
 
 ## Build, Test, Dev
 - From root: `npx nx run compiler:build|test|typecheck`.
-- From package: `npm run build`, `npm run dev`, `npm run test`, `npm run coverage`, `npm run typecheck`.
+- From package directory: use `npx nx run compiler:<target>` (e.g., `npx nx run compiler:dev`).
 - Artifacts in `dist/` must exist before root Vite build when APIs change.
 
 ## Coding Style
