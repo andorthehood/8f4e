@@ -13,13 +13,6 @@
 		}
 	},
 	"sideEffects": false,
-	"scripts": {
-		"build": "tsc",
-		"bundle": "vite build",
-		"dev": "tsc --watch",
-		"test": "jest",
-		"typecheck": "tsc --noEmit"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/andorthehood/8f4e.git"
