@@ -6,7 +6,7 @@
 
 ## Build, Test, Dev
 - From root: `npx nx run runtime-web-worker-midi:build|test|typecheck`.
-- From package: `npm run build`, `npm run dev`, `npm run test`, `npm run typecheck`.
+- From package directory: use `npx nx run runtime-web-worker-midi:<target>` (e.g., `npx nx run runtime-web-worker-midi:dev`).
 
 ## Coding Style
 - TypeScript with ESLint/Prettier. Keep worker code pure and messages versioned.

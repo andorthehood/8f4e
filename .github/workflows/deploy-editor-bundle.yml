@@ -52,7 +52,7 @@ jobs:
       - run: npx nx run-many --target=build --all
         if: steps.check_bundle.outputs.exists == 'false'
 
-      - run: npm run bundle:editor
+      - run: npx nx run editor:bundle
         if: steps.check_bundle.outputs.exists == 'false'
 
       # Prepare a tiny upload folder with package-versioned filenames

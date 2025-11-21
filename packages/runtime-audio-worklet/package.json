@@ -13,12 +13,6 @@
 		}
 	},
 	"sideEffects": false,
-	"scripts": {
-		"test": "jest --passWithNoTests",
-		"build": "vite build -c vite.config.worklet.ts",
-		"dev": "vite build -c vite.config.worklet.ts --watch",
-		"typecheck": "tsc --noEmit"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/andorthehood/8f4e.git"
