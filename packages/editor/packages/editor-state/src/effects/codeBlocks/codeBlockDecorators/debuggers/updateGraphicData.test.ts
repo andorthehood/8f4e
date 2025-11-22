@@ -45,8 +45,8 @@ describe('updateDebuggersGraphicData', () => {
 	it('should add debugger to graphicData extras', () => {
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.debuggers.size).toBe(1);
-		expect(mockGraphicData.extras.debuggers.has('myVar')).toBe(true);
+		expect(Object.keys(mockGraphicData.extras.debuggers).length).toBe(1);
+		expect('myVar' in mockGraphicData.extras.debuggers).toBe(true);
 	});
 
 	it('should calculate correct dimensions and position', () => {
@@ -63,11 +63,11 @@ describe('updateDebuggersGraphicData', () => {
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.debuggers.size).toBe(0);
+		expect(Object.keys(mockGraphicData.extras.debuggers).length).toBe(0);
 	});
 
 	it('should clear existing debuggers before updating', () => {
-		mockGraphicData.extras.debuggers.set('oldDebugger', {
+		mockGraphicData.extras.debuggers['oldDebugger'] = {
 			width: 0,
 			height: 0,
 			showAddress: false,
@@ -78,11 +78,11 @@ describe('updateDebuggersGraphicData', () => {
 			memory: { wordAlignedAddress: 0 } as DataStructure,
 			bufferPointer: 0,
 			showBinary: false,
-		});
+		};
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.debuggers.has('oldDebugger')).toBe(false);
+		expect('oldDebugger' in mockGraphicData.extras.debuggers).toBe(false);
 	});
 
 	it('should handle multiple debuggers', () => {
@@ -118,8 +118,8 @@ describe('updateDebuggersGraphicData', () => {
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.debuggers.size).toBe(2);
-		expect(Array.from(mockGraphicData.extras.debuggers.entries())).toMatchSnapshot();
+		expect(Object.keys(mockGraphicData.extras.debuggers).length).toBe(2);
+		expect(mockGraphicData.extras.debuggers).toMatchSnapshot();
 	});
 
 	it('should position debuggers at correct y coordinate based on line number', () => {
@@ -141,7 +141,7 @@ describe('updateDebuggersGraphicData', () => {
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		const dbg = mockGraphicData.extras.debuggers.get('myVar');
+		const dbg = mockGraphicData.extras.debuggers['myVar'];
 		expect(dbg).toMatchSnapshot();
 	});
 });
