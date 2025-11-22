@@ -81,7 +81,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('should clear existing outputs before updating', () => {
-		mockGraphicData.extras.outputs['oldOutput'] = {
+		mockGraphicData.extras.outputs.push({
 			codeBlock: mockGraphicData,
 			width: 0,
 			height: 0,
@@ -91,7 +91,7 @@ describe('updateOutputsGraphicData', () => {
 			calibratedMax: 1,
 			calibratedMin: 0,
 			memory: { wordAlignedAddress: 0 } as DataStructure,
-		};
+		});
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 

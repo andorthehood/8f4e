@@ -55,8 +55,8 @@ The rest of the state model largely uses plain arrays and objects, so the `Map` 
 ### Step 5: Update tests and snapshots
 
 - Update editor-state unit tests that currently assert on `extras` as `Map`s (e.g. `buttons/updateGraphicData.test.ts`, `switches/updateGraphicData.test.ts`, `debuggers/updateGraphicData.test.ts`, `outputs/updateGraphicData.test.ts`, `inputs/updateGraphicData.test.ts`, `pianoKeyboard/updateGraphicData.test.ts`, `errorMessages/errorMessages.test.ts`):
-  - Replace `.size`, `.has`, `.get`, and `Array.from(...entries())` with object-based checks (`Object.keys(extras.<name>).length`, key membership, direct snapshot of the object).
-- Update screenshot tests in `packages/editor/packages/web-ui/screenshot-tests` to construct extras as plain objects and update snapshots to the new, JSON-friendly representation.
+  - Replace `.size`, `.has`, `.get`, and `Array.from(...entries())` with array-based operations (`.length`, `findExtrasById` helper for lookups, direct array snapshots).
+- Update screenshot tests in `packages/editor/packages/web-ui/screenshot-tests` to construct extras as plain arrays and update snapshots to the new, JSON-friendly representation.
 
 ### Step 6: Clean up serialization and persistence
 
