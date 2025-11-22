@@ -6,7 +6,7 @@ import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function updateBufferPlottersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.bufferPlotters.clear();
+	graphicData.extras.bufferPlotters = [];
 	parseBufferPlotters(graphicData.code).forEach(plotter => {
 		const buffer = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferMemoryId);
 		const bufferLength = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferLengthMemoryId);
@@ -15,7 +15,7 @@ export default function updateBufferPlottersGraphicData(graphicData: CodeBlockGr
 			return;
 		}
 
-		graphicData.extras.bufferPlotters.set(plotter.bufferMemoryId, {
+		graphicData.extras.bufferPlotters.push({
 			width: state.graphicHelper.viewport.vGrid * 2,
 			height: state.graphicHelper.viewport.hGrid,
 			x: (graphicData.lineNumberColumnWidth + 2) * state.graphicHelper.viewport.vGrid,

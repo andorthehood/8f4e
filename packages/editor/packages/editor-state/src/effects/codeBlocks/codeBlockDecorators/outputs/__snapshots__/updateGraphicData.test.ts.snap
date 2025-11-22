@@ -15,7 +15,7 @@ exports[`updateOutputsGraphicData > should calculate correct dimensions and posi
 exports[`updateOutputsGraphicData > should handle multiple outputs 1`] = `
 [
   [
-    "output1",
+    "0",
     {
       "calibratedMax": 0,
       "calibratedMin": 0,
@@ -27,7 +27,7 @@ exports[`updateOutputsGraphicData > should handle multiple outputs 1`] = `
     },
   ],
   [
-    "output2",
+    "1",
     {
       "calibratedMax": 0,
       "calibratedMin": 0,
