@@ -114,7 +114,8 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.pianoKeyboards.length > 5).toBe(false);
+		expect(mockGraphicData.extras.pianoKeyboards.length).toBe(1);
+		expect(mockGraphicData.extras.pianoKeyboards[5]).toBeUndefined();
 	});
 
 	it('should handle multiple piano keyboards', () => {
