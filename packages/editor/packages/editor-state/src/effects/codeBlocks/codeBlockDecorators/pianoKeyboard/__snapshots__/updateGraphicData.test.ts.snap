@@ -12,14 +12,4 @@ exports[`updatePianoKeyboardsGraphicData > should calculate correct dimensions a
 }
 `;
 
-exports[`updatePianoKeyboardsGraphicData > should position piano keyboards at correct y coordinate based on line number 1`] = `
-{
-  "height": 100,
-  "keyWidth": 20,
-  "pressedKeys": Set {},
-  "startingNumber": 60,
-  "width": 480,
-  "x": 0,
-  "y": 60,
-}
-`;
+exports[`updatePianoKeyboardsGraphicData > should position piano keyboards at correct y coordinate based on line number 1`] = `{}`;

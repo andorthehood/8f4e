@@ -13,8 +13,8 @@ exports[`updateButtonsGraphicData > should calculate correct dimensions and posi
 `;
 
 exports[`updateButtonsGraphicData > should handle multiple buttons 1`] = `
-{
-  "btn1": {
+[
+  {
     "height": 20,
     "id": "btn1",
     "offValue": 0,
@@ -23,7 +23,7 @@ exports[`updateButtonsGraphicData > should handle multiple buttons 1`] = `
     "x": 60,
     "y": 0,
   },
-  "btn2": {
+  {
     "height": 20,
     "id": "btn2",
     "offValue": 5,
@@ -32,7 +32,7 @@ exports[`updateButtonsGraphicData > should handle multiple buttons 1`] = `
     "x": 60,
     "y": 20,
   },
-}
+]
 `;
 
 exports[`updateButtonsGraphicData > should position buttons at correct y coordinate based on line number 1`] = `

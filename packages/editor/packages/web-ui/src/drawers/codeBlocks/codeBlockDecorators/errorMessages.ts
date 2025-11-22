@@ -7,7 +7,7 @@ export default function drawErrorMessages(engine: Engine, state: State, codeBloc
 		return;
 	}
 
-	for (const { x, y, message } of Object.values(codeBlock.extras.errorMessages)) {
+	for (const { x, y, message } of codeBlock.extras.errorMessages) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 		engine.drawSprite(
 			x,
