@@ -131,7 +131,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		const piano = mockGraphicData.extras.pianoKeyboards[2];
+		const piano = mockGraphicData.extras.pianoKeyboards[0];
 		const {
 			pressedKeysListMemory: _pressedKeysListMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
 			pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
