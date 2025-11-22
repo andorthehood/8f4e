@@ -9,7 +9,7 @@
  * import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing';
  *
  * const state = createMockState({ projectInfo: { title: 'Test' } });
- * const block = createMockCodeBlock(100, 200);
+ * const block = createMockCodeBlock({ x: 100, y: 200 });
  * ```
  */
 

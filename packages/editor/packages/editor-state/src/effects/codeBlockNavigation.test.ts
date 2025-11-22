@@ -23,11 +23,11 @@ describe('codeBlockNavigation', () => {
 		vi.useFakeTimers();
 
 		// Create mock code blocks using shared utility
-		selectedBlock = createMockCodeBlock(200, 200);
-		leftBlock = createMockCodeBlock(0, 200);
-		rightBlock = createMockCodeBlock(400, 200);
-		upBlock = createMockCodeBlock(200, 0);
-		downBlock = createMockCodeBlock(200, 400);
+		selectedBlock = createMockCodeBlock({ x: 200, y: 200 });
+		leftBlock = createMockCodeBlock({ x: 0, y: 200 });
+		rightBlock = createMockCodeBlock({ x: 400, y: 200 });
+		upBlock = createMockCodeBlock({ x: 200, y: 0 });
+		downBlock = createMockCodeBlock({ x: 200, y: 400 });
 
 		// Create mock state using shared utility
 		state = createMockState({
