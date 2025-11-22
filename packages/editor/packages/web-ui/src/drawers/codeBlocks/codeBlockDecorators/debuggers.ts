@@ -11,8 +11,9 @@ export default function drawConnectors(engine: Engine, state: State, codeBlock: 
 		return;
 	}
 
-	for (const [, { x, y, memory, showAddress, showEndAddress, showBinary, bufferPointer }] of codeBlock.extras
-		.debuggers) {
+	for (const { x, y, memory, showAddress, showEndAddress, showBinary, bufferPointer } of Object.values(
+		codeBlock.extras.debuggers
+	)) {
 		const value = memory.isInteger
 			? state.compiler.memoryBuffer[memory.wordAlignedAddress + bufferPointer].toString(showBinary ? 2 : 10)
 			: state.compiler.memoryBufferFloat[memory.wordAlignedAddress + bufferPointer].toFixed(4);

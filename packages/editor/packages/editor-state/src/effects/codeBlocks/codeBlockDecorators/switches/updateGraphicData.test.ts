@@ -31,19 +31,19 @@ describe('updateSwitchesGraphicData', () => {
 	it('should add switch to graphicData extras', () => {
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.switches.size).toBe(1);
-		expect(mockGraphicData.extras.switches.has('sw1')).toBe(true);
+		expect(Object.keys(mockGraphicData.extras.switches).length).toBe(1);
+		expect('sw1' in mockGraphicData.extras.switches).toBe(true);
 	});
 
 	it('should calculate correct dimensions and position', () => {
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		const sw = mockGraphicData.extras.switches.get('sw1');
+		const sw = mockGraphicData.extras.switches['sw1'];
 		expect(sw).toMatchSnapshot();
 	});
 
 	it('should clear existing switches before updating', () => {
-		mockGraphicData.extras.switches.set('oldSwitch', {
+		mockGraphicData.extras.switches['oldSwitch'] = {
 			width: 0,
 			height: 0,
 			x: 0,
@@ -51,11 +51,11 @@ describe('updateSwitchesGraphicData', () => {
 			id: 'oldSwitch',
 			onValue: 1,
 			offValue: 0,
-		});
+		};
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.switches.has('oldSwitch')).toBe(false);
+		expect('oldSwitch' in mockGraphicData.extras.switches).toBe(false);
 	});
 
 	it('should handle multiple switches', () => {
@@ -63,8 +63,8 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.switches.size).toBe(2);
-		expect(Array.from(mockGraphicData.extras.switches.entries())).toMatchSnapshot();
+		expect(Object.keys(mockGraphicData.extras.switches).length).toBe(2);
+		expect(mockGraphicData.extras.switches).toMatchSnapshot();
 	});
 
 	it('should position switches at correct y coordinate based on line number', () => {
@@ -72,7 +72,7 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		const sw = mockGraphicData.extras.switches.get('sw1');
+		const sw = mockGraphicData.extras.switches['sw1'];
 		expect(sw).toMatchSnapshot();
 	});
 
@@ -81,7 +81,7 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		const sw = mockGraphicData.extras.switches.get('sw1');
+		const sw = mockGraphicData.extras.switches['sw1'];
 		expect(sw).toMatchSnapshot();
 	});
 
@@ -91,8 +91,8 @@ describe('updateSwitchesGraphicData', () => {
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
-		const sw1 = mockGraphicData.extras.switches.get('sw1');
-		const sw2 = mockGraphicData.extras.switches.get('sw2');
+		const sw1 = mockGraphicData.extras.switches['sw1'];
+		const sw2 = mockGraphicData.extras.switches['sw2'];
 
 		expect(sw1?.y).toBe(0); // First switch at line 0
 		expect(sw2?.y).toBeGreaterThan(sw1!.y); // Second switch should be below

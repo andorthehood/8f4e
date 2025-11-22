@@ -45,14 +45,14 @@ describe('updateBufferPlottersGraphicData', () => {
 	it('should add buffer plotter to graphicData extras', () => {
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.bufferPlotters.size).toBe(1);
-		expect(mockGraphicData.extras.bufferPlotters.has('buffer1')).toBe(true);
+		expect(Object.keys(mockGraphicData.extras.bufferPlotters).length).toBe(1);
+		expect('buffer1' in mockGraphicData.extras.bufferPlotters).toBe(true);
 	});
 
 	it('should calculate correct dimensions and position', () => {
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
-		const plotter = mockGraphicData.extras.bufferPlotters.get('buffer1');
+		const plotter = mockGraphicData.extras.bufferPlotters['buffer1'];
 		expect(plotter).toMatchSnapshot();
 	});
 
@@ -61,11 +61,11 @@ describe('updateBufferPlottersGraphicData', () => {
 
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.bufferPlotters.size).toBe(0);
+		expect(Object.keys(mockGraphicData.extras.bufferPlotters).length).toBe(0);
 	});
 
 	it('should clear existing plotters before updating', () => {
-		mockGraphicData.extras.bufferPlotters.set('oldPlotter', {
+		mockGraphicData.extras.bufferPlotters['oldPlotter'] = {
 			width: 0,
 			height: 0,
 			x: 0,
@@ -80,11 +80,11 @@ describe('updateBufferPlottersGraphicData', () => {
 				showBinary: false,
 			} as MemoryIdentifier,
 			bufferLength: undefined,
-		});
+		};
 
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.bufferPlotters.has('oldPlotter')).toBe(false);
+		expect('oldPlotter' in mockGraphicData.extras.bufferPlotters).toBe(false);
 	});
 
 	it('should handle multiple buffer plotters', () => {
@@ -106,7 +106,7 @@ describe('updateBufferPlottersGraphicData', () => {
 
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.bufferPlotters.size).toBe(2);
-		expect(Array.from(mockGraphicData.extras.bufferPlotters.entries())).toMatchSnapshot();
+		expect(Object.keys(mockGraphicData.extras.bufferPlotters).length).toBe(2);
+		expect(mockGraphicData.extras.bufferPlotters).toMatchSnapshot();
 	});
 });
