@@ -6,7 +6,7 @@ import { getModuleId } from '../../../../helpers/codeParsers';
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function updateInputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.inputs.clear();
+	graphicData.extras.inputs = {};
 	parseInputs(graphicData.code).forEach(input => {
 		const memory = state.compiler.compiledModules[getModuleId(graphicData.code) || '']?.memoryMap[input.id];
 
@@ -14,7 +14,7 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 			return;
 		}
 
-		graphicData.extras.inputs.set(input.id, {
+		graphicData.extras.inputs[input.id] = {
 			width: state.graphicHelper.viewport.vGrid * 2,
 			height: state.graphicHelper.viewport.hGrid,
 			x: 0,
@@ -22,6 +22,6 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 			id: input.id,
 			wordAlignedAddress: memory.wordAlignedAddress,
 			codeBlock: graphicData,
-		});
+		};
 	});
 }

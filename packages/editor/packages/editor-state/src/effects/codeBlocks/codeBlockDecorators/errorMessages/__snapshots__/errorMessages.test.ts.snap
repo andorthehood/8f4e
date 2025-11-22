@@ -14,7 +14,7 @@ exports[`errorMessages > should calculate correct position and message 1`] = `
 exports[`errorMessages > should handle multiple error messages 1`] = `
 [
   [
-    1,
+    "1",
     {
       "message": [
         "Error:",
@@ -25,7 +25,7 @@ exports[`errorMessages > should handle multiple error messages 1`] = `
     },
   ],
   [
-    3,
+    "3",
     {
       "message": [
         "Error:",

@@ -5,7 +5,7 @@ import { createMockCodeBlock } from './testUtils';
 import type { CodeBlockGraphicData } from '../types';
 
 /**
- * Normalize a block for snapshot testing by converting Maps to arrays
+ * Normalize a block for snapshot testing by converting Maps to arrays/objects
  * and setting lastUpdated to a fixed value
  */
 function normalizeBlock(block: CodeBlockGraphicData) {
@@ -15,14 +15,7 @@ function normalizeBlock(block: CodeBlockGraphicData) {
 		gaps: Array.from(block.gaps.entries()),
 		extras: {
 			...block.extras,
-			inputs: Array.from(block.extras.inputs.entries()),
-			outputs: Array.from(block.extras.outputs.entries()),
-			debuggers: Array.from(block.extras.debuggers.entries()),
-			switches: Array.from(block.extras.switches.entries()),
-			buttons: Array.from(block.extras.buttons.entries()),
-			pianoKeyboards: Array.from(block.extras.pianoKeyboards.entries()),
-			bufferPlotters: Array.from(block.extras.bufferPlotters.entries()),
-			errorMessages: Array.from(block.extras.errorMessages.entries()),
+			// extras are now plain objects, no need to convert
 		},
 	};
 }

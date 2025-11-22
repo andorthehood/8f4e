@@ -6,7 +6,7 @@ import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.pianoKeyboards.clear();
+	graphicData.extras.pianoKeyboards = {};
 	parsePianoKeyboards(graphicData.code).forEach(pianoKeyboard => {
 		const memoryIdentifierKeysList = resolveMemoryIdentifier(
 			state,
@@ -25,7 +25,7 @@ export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGr
 
 		graphicData.minGridWidth = 48;
 
-		graphicData.extras.pianoKeyboards.set(pianoKeyboard.lineNumber, {
+		graphicData.extras.pianoKeyboards[pianoKeyboard.lineNumber] = {
 			x: 0,
 			y: (gapCalculator(pianoKeyboard.lineNumber, graphicData.gaps) + 1) * state.graphicHelper.viewport.hGrid,
 			width: 24 * (state.graphicHelper.viewport.vGrid * 2),
@@ -35,6 +35,6 @@ export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGr
 			pressedKeysListMemory: memoryIdentifierKeysList.memory,
 			pressedNumberOfKeysMemory: memoryIdentifierNumberOfKeys.memory,
 			startingNumber: pianoKeyboard.startingNumber,
-		});
+		};
 	});
 }
