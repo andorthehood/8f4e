@@ -68,8 +68,8 @@ describe('updatePianoKeyboardsGraphicData', () => {
 	it('should add piano keyboard to graphicData extras', () => {
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.pianoKeyboards).length).toBe(1);
-		expect(0 in mockGraphicData.extras.pianoKeyboards).toBe(true);
+		expect(mockGraphicData.extras.pianoKeyboards.length).toBe(1);
+		expect(mockGraphicData.extras.pianoKeyboards.length > 0).toBe(true);
 	});
 
 	it('should calculate correct dimensions and position', () => {
@@ -96,7 +96,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.pianoKeyboards).length).toBe(0);
+		expect(mockGraphicData.extras.pianoKeyboards.length).toBe(0);
 	});
 
 	it('should clear existing piano keyboards before updating', () => {
@@ -114,7 +114,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(5 in mockGraphicData.extras.pianoKeyboards).toBe(false);
+		expect(mockGraphicData.extras.pianoKeyboards.length > 5).toBe(false);
 	});
 
 	it('should handle multiple piano keyboards', () => {
@@ -122,7 +122,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 		// which is difficult to properly mock. For now, verify single keyboard works
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.pianoKeyboards).length).toBeGreaterThanOrEqual(0);
+		expect(mockGraphicData.extras.pianoKeyboards.length).toBeGreaterThanOrEqual(0);
 	});
 
 	it('should position piano keyboards at correct y coordinate based on line number', () => {
