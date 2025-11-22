@@ -67,7 +67,7 @@ describe('updateDebuggersGraphicData', () => {
 	});
 
 	it('should clear existing debuggers before updating', () => {
-		mockGraphicData.extras.debuggers['oldDebugger'] = {
+		mockGraphicData.extras.debuggers.push({
 			width: 0,
 			height: 0,
 			showAddress: false,
@@ -78,7 +78,7 @@ describe('updateDebuggersGraphicData', () => {
 			memory: { wordAlignedAddress: 0 } as DataStructure,
 			bufferPointer: 0,
 			showBinary: false,
-		};
+		});
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
