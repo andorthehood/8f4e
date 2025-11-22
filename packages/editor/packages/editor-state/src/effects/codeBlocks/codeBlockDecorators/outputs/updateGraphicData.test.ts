@@ -65,7 +65,7 @@ describe('updateOutputsGraphicData', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(1);
-		expect(mockState.graphicHelper.outputsByWordAddress.has(20)).toBeDefined();
+		expect(mockState.graphicHelper.outputsByWordAddress.has(20)).toBe(true);
 
 		const output = mockState.graphicHelper.outputsByWordAddress.get(20);
 		expect(output?.id).toBe('output1');
