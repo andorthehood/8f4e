@@ -8,7 +8,7 @@ export default function drawConnectors(engine: Engine, state: State, codeBlock: 
 		return;
 	}
 
-	for (const output of Object.values(codeBlock.extras.outputs)) {
+	for (const output of codeBlock.extras.outputs) {
 		const { x, y, memory } = output;
 
 		const value = memory.isInteger
@@ -30,7 +30,7 @@ export default function drawConnectors(engine: Engine, state: State, codeBlock: 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 	}
 
-	for (const { x, y } of Object.values(codeBlock.extras.inputs)) {
+	for (const { x, y } of codeBlock.extras.inputs) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
 		engine.drawSprite(x, y, Icon.INPUT);
 	}

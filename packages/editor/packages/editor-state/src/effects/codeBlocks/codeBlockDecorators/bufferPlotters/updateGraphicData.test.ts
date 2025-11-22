@@ -3,7 +3,7 @@ import { MemoryTypes } from '@8f4e/compiler';
 
 import updateBufferPlottersGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '../../../../types';
 import type { DataStructure } from '@8f4e/compiler';
@@ -46,7 +46,7 @@ describe('updateBufferPlottersGraphicData', () => {
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
 		expect(Object.keys(mockGraphicData.extras.bufferPlotters).length).toBe(1);
-		expect('buffer1' in mockGraphicData.extras.bufferPlotters).toBe(true);
+		expect('buffer1' in mockGraphicData.extras.bufferPlotters).toBeDefined();
 	});
 
 	it('should calculate correct dimensions and position', () => {
@@ -65,7 +65,7 @@ describe('updateBufferPlottersGraphicData', () => {
 	});
 
 	it('should clear existing plotters before updating', () => {
-		mockGraphicData.extras.bufferPlotters['oldPlotter'] = {
+		mockGraphicData.extras.bufferPlotters.push({
 			width: 0,
 			height: 0,
 			x: 0,
@@ -80,11 +80,11 @@ describe('updateBufferPlottersGraphicData', () => {
 				showBinary: false,
 			} as MemoryIdentifier,
 			bufferLength: undefined,
-		};
+		});
 
 		updateBufferPlottersGraphicData(mockGraphicData, mockState);
 
-		expect('oldPlotter' in mockGraphicData.extras.bufferPlotters).toBe(false);
+		expect(findExtrasById(mockGraphicData.extras.bufferPlotters, 'oldPlotter')).toBeUndefined();
 	});
 
 	it('should handle multiple buffer plotters', () => {

@@ -39,14 +39,15 @@ describe('errorMessages', () => {
 	it('should add error message to graphicData extras', () => {
 		errorMessages(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.errorMessages).length).toBe(1);
-		expect(2 in mockGraphicData.extras.errorMessages).toBe(true);
+		expect(mockGraphicData.extras.errorMessages.length).toBe(1);
+		expect(mockGraphicData.extras.errorMessages[0]).toBeDefined();
+		expect(mockGraphicData.extras.errorMessages[0].lineNumber).toBe(2);
 	});
 
 	it('should calculate correct position and message', () => {
 		errorMessages(mockGraphicData, mockState);
 
-		const error = mockGraphicData.extras.errorMessages[2];
+		const error = mockGraphicData.extras.errorMessages[0];
 		expect(error).toMatchSnapshot();
 	});
 
@@ -68,8 +69,8 @@ describe('errorMessages', () => {
 
 		errorMessages(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.errorMessages).length).toBe(2);
-		expect(Object.entries(mockGraphicData.extras.errorMessages)).toMatchSnapshot();
+		expect(mockGraphicData.extras.errorMessages.length).toBe(2);
+		expect(mockGraphicData.extras.errorMessages).toMatchSnapshot();
 	});
 
 	it('should ignore errors from different modules', () => {
@@ -90,21 +91,21 @@ describe('errorMessages', () => {
 
 		errorMessages(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.errorMessages).length).toBe(1);
-		expect(1 in mockGraphicData.extras.errorMessages).toBe(true);
-		expect(2 in mockGraphicData.extras.errorMessages).toBe(false);
+		expect(mockGraphicData.extras.errorMessages.length).toBe(1);
+		expect(mockGraphicData.extras.errorMessages[0].lineNumber).toBe(1);
 	});
 
 	it('should clear existing error messages before updating', () => {
-		mockGraphicData.extras.errorMessages[5] = {
+		mockGraphicData.extras.errorMessages.push({
 			x: 0,
 			y: 0,
 			message: ['Old error'],
-		};
+			lineNumber: 5,
+		});
 
 		errorMessages(mockGraphicData, mockState);
 
-		expect(5 in mockGraphicData.extras.errorMessages).toBe(false);
+		expect(mockGraphicData.extras.errorMessages.find(e => e.lineNumber === 5)).toBeUndefined();
 	});
 
 	it('should handle empty build errors', () => {
@@ -112,7 +113,7 @@ describe('errorMessages', () => {
 
 		errorMessages(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.errorMessages).length).toBe(0);
+		expect(mockGraphicData.extras.errorMessages.length).toBe(0);
 	});
 
 	it('should position errors correctly with gaps', () => {
@@ -128,7 +129,7 @@ describe('errorMessages', () => {
 
 		errorMessages(mockGraphicData, mockState);
 
-		const error = mockGraphicData.extras.errorMessages[2];
+		const error = mockGraphicData.extras.errorMessages[0];
 		// gapCalculator should account for gaps
 		expect(error).toBeDefined();
 		expect(error?.y).toBeGreaterThan(0);

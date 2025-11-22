@@ -13,8 +13,8 @@ exports[`updateSwitchesGraphicData > should calculate correct dimensions and pos
 `;
 
 exports[`updateSwitchesGraphicData > should handle multiple switches 1`] = `
-{
-  "sw1": {
+[
+  {
     "height": 20,
     "id": "sw1",
     "offValue": 0,
@@ -23,7 +23,7 @@ exports[`updateSwitchesGraphicData > should handle multiple switches 1`] = `
     "x": 60,
     "y": 0,
   },
-  "sw2": {
+  {
     "height": 20,
     "id": "sw2",
     "offValue": 5,
@@ -32,7 +32,7 @@ exports[`updateSwitchesGraphicData > should handle multiple switches 1`] = `
     "x": 60,
     "y": 20,
   },
-}
+]
 `;
 
 exports[`updateSwitchesGraphicData > should handle switches with custom values 1`] = `
