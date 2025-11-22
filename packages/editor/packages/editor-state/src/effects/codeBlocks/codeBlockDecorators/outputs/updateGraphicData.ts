@@ -6,7 +6,7 @@ import { getModuleId } from '../../../../helpers/codeParsers';
 import type { CodeBlockGraphicData, Output, State } from '../../../../types';
 
 export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.outputs.clear();
+	graphicData.extras.outputs = [];
 	parseOutputs(graphicData.code).forEach(output => {
 		const memory = state.compiler.compiledModules[getModuleId(graphicData.code) || '']?.memoryMap[output.id];
 
@@ -26,7 +26,7 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 			memory,
 		};
 
-		graphicData.extras.outputs.set(output.id, out);
+		graphicData.extras.outputs.push(out);
 		state.graphicHelper.outputsByWordAddress.set(memory.byteAddress, out);
 	});
 }
