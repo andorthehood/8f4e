@@ -23,60 +23,54 @@ exports[`updateBufferPlottersGraphicData > should calculate correct dimensions a
 `;
 
 exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotters 1`] = `
-[
-  [
-    "buffer1",
-    {
-      "buffer": {
-        "bufferPointer": 0,
-        "memory": {
-          "byteAddress": 0,
-          "wordAlignedAddress": 0,
-        },
-        "showAddress": false,
-        "showBinary": false,
-        "showEndAddress": false,
+{
+  "buffer1": {
+    "buffer": {
+      "bufferPointer": 0,
+      "memory": {
+        "byteAddress": 0,
+        "wordAlignedAddress": 0,
       },
-      "bufferLength": undefined,
-      "height": 20,
-      "maxValue": 10,
-      "minValue": -10,
-      "width": 20,
-      "x": 30,
-      "y": 20,
+      "showAddress": false,
+      "showBinary": false,
+      "showEndAddress": false,
     },
-  ],
-  [
-    "buffer2",
-    {
-      "buffer": {
-        "bufferPointer": 0,
-        "memory": {
-          "byteAddress": 4,
-          "default": 0,
-          "elementWordSize": 1,
-          "id": "buffer2",
-          "isInteger": true,
-          "isPointer": false,
-          "isPointingToInteger": false,
-          "isPointingToPointer": false,
-          "numberOfElements": 100,
-          "type": 1,
-          "wordAlignedAddress": 1,
-          "wordAlignedSize": 100,
-        },
-        "showAddress": false,
-        "showBinary": false,
-        "showEndAddress": false,
+    "bufferLength": undefined,
+    "height": 20,
+    "maxValue": 10,
+    "minValue": -10,
+    "width": 20,
+    "x": 30,
+    "y": 20,
+  },
+  "buffer2": {
+    "buffer": {
+      "bufferPointer": 0,
+      "memory": {
+        "byteAddress": 4,
+        "default": 0,
+        "elementWordSize": 1,
+        "id": "buffer2",
+        "isInteger": true,
+        "isPointer": false,
+        "isPointingToInteger": false,
+        "isPointingToPointer": false,
+        "numberOfElements": 100,
+        "type": 1,
+        "wordAlignedAddress": 1,
+        "wordAlignedSize": 100,
       },
-      "bufferLength": undefined,
-      "height": 20,
-      "maxValue": 100,
-      "minValue": -8,
-      "width": 20,
-      "x": 30,
-      "y": 40,
+      "showAddress": false,
+      "showBinary": false,
+      "showEndAddress": false,
     },
-  ],
-]
+    "bufferLength": undefined,
+    "height": 20,
+    "maxValue": 100,
+    "minValue": -8,
+    "width": 20,
+    "x": 30,
+    "y": 40,
+  },
+}
 `;

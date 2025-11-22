@@ -4,7 +4,7 @@ import { Icon } from '@8f4e/sprite-generator';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
 
 export default function drawButtons(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
-	for (const [, { x, y, id: debuggerId, onValue, offValue }] of codeBlock.extras.buttons) {
+	for (const { x, y, id: debuggerId, onValue, offValue } of Object.values(codeBlock.extras.buttons)) {
 		if (!state.graphicHelper.spriteLookups) {
 			continue;
 		}
