@@ -14,7 +14,7 @@ exports[`updateInputsGraphicData > should calculate correct dimensions and posit
 exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
 [
   [
-    "input1",
+    "0",
     {
       "height": 20,
       "id": "input1",
@@ -25,7 +25,7 @@ exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
     },
   ],
   [
-    "input2",
+    "1",
     {
       "height": 20,
       "id": "input2",

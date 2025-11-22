@@ -9,9 +9,8 @@ export default function drawer(engine: Engine, state: State, codeBlock: CodeBloc
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.pianoKeys);
 
-	for (const { x, y, keyWidth, pressedKeysListMemory, pressedNumberOfKeysMemory, startingNumber } of Object.values(
-		codeBlock.extras.pianoKeyboards
-	)) {
+	for (const { x, y, keyWidth, pressedKeysListMemory, pressedNumberOfKeysMemory, startingNumber } of codeBlock.extras
+		.pianoKeyboards) {
 		engine.startGroup(x, y);
 
 		const memoryBuffer = pressedKeysListMemory.isInteger
