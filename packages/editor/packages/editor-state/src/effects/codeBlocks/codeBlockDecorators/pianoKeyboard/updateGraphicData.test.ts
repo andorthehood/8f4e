@@ -68,14 +68,14 @@ describe('updatePianoKeyboardsGraphicData', () => {
 	it('should add piano keyboard to graphicData extras', () => {
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.pianoKeyboards.size).toBe(1);
-		expect(mockGraphicData.extras.pianoKeyboards.has(0)).toBe(true);
+		expect(Object.keys(mockGraphicData.extras.pianoKeyboards).length).toBe(1);
+		expect(0 in mockGraphicData.extras.pianoKeyboards).toBe(true);
 	});
 
 	it('should calculate correct dimensions and position', () => {
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		const piano = mockGraphicData.extras.pianoKeyboards.get(0);
+		const piano = mockGraphicData.extras.pianoKeyboards[0];
 		// Exclude memory references from snapshot
 		const {
 			pressedKeysListMemory: _pressedKeysListMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -96,11 +96,11 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.pianoKeyboards.size).toBe(0);
+		expect(Object.keys(mockGraphicData.extras.pianoKeyboards).length).toBe(0);
 	});
 
 	it('should clear existing piano keyboards before updating', () => {
-		mockGraphicData.extras.pianoKeyboards.set(5, {
+		mockGraphicData.extras.pianoKeyboards[5] = {
 			x: 0,
 			y: 0,
 			width: 0,
@@ -110,11 +110,11 @@ describe('updatePianoKeyboardsGraphicData', () => {
 			pressedKeysListMemory: { wordAlignedAddress: 0 } as DataStructure,
 			pressedNumberOfKeysMemory: { wordAlignedAddress: 0 } as DataStructure,
 			pressedKeys: new Set(),
-		});
+		};
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.pianoKeyboards.has(5)).toBe(false);
+		expect(5 in mockGraphicData.extras.pianoKeyboards).toBe(false);
 	});
 
 	it('should handle multiple piano keyboards', () => {
@@ -122,7 +122,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 		// which is difficult to properly mock. For now, verify single keyboard works
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.pianoKeyboards.size).toBeGreaterThanOrEqual(0);
+		expect(Object.keys(mockGraphicData.extras.pianoKeyboards).length).toBeGreaterThanOrEqual(0);
 	});
 
 	it('should position piano keyboards at correct y coordinate based on line number', () => {
@@ -130,7 +130,7 @@ describe('updatePianoKeyboardsGraphicData', () => {
 
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
-		const piano = mockGraphicData.extras.pianoKeyboards.get(2);
+		const piano = mockGraphicData.extras.pianoKeyboards[2];
 		const {
 			pressedKeysListMemory: _pressedKeysListMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
 			pressedNumberOfKeysMemory: _pressedNumberOfKeysMemory, // eslint-disable-line @typescript-eslint/no-unused-vars
