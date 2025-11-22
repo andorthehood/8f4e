@@ -14,30 +14,24 @@ exports[`updateButtonsGraphicData > should calculate correct dimensions and posi
 
 exports[`updateButtonsGraphicData > should handle multiple buttons 1`] = `
 [
-  [
-    "btn1",
-    {
-      "height": 20,
-      "id": "btn1",
-      "offValue": 0,
-      "onValue": 1,
-      "width": 40,
-      "x": 60,
-      "y": 0,
-    },
-  ],
-  [
-    "btn2",
-    {
-      "height": 20,
-      "id": "btn2",
-      "offValue": 5,
-      "onValue": 10,
-      "width": 40,
-      "x": 60,
-      "y": 20,
-    },
-  ],
+  {
+    "height": 20,
+    "id": "btn1",
+    "offValue": 0,
+    "onValue": 1,
+    "width": 40,
+    "x": 60,
+    "y": 0,
+  },
+  {
+    "height": 20,
+    "id": "btn2",
+    "offValue": 5,
+    "onValue": 10,
+    "width": 40,
+    "x": 60,
+    "y": 20,
+  },
 ]
 `;
 
