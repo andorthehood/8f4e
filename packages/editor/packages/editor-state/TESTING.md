@@ -27,7 +27,7 @@ describe('MyComponent', () => {
       projectInfo: { title: 'Test Project' }
     });
     
-    const block = createMockCodeBlock(100, 200, 150, 150);
+    const block = createMockCodeBlock({ x: 100, y: 200, width: 150, height: 150 });
     
     // Use state and block in your tests...
   });
@@ -38,10 +38,16 @@ describe('MyComponent', () => {
 
 ### createMockCodeBlock
 
-Create mock CodeBlockGraphicData objects with flexible calling patterns:
+Create mock CodeBlockGraphicData objects using an options object:
 
 ```typescript
-// Object-based (recommended for complex scenarios)
+// Basic usage with defaults
+const block = createMockCodeBlock();
+
+// Specify position and dimensions
+const block = createMockCodeBlock({ x: 100, y: 200, width: 150, height: 150 });
+
+// With ID and code
 const block = createMockCodeBlock({ 
   id: 'my-block', 
   x: 100, 
@@ -49,11 +55,13 @@ const block = createMockCodeBlock({
   code: ['test code']
 });
 
-// Positional (x, y)
-const block = createMockCodeBlock(100, 200);
-
-// With ID
-const block = createMockCodeBlock('custom-id', 100, 200, 150, 150);
+// Use cursorY convenience parameter
+const block = createMockCodeBlock({ 
+  id: 'my-block', 
+  x: 100, 
+  y: 200, 
+  cursorY: 75 
+});
 ```
 
 ### createMockViewport
