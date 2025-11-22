@@ -49,8 +49,8 @@ The rest of the state model largely uses plain arrays and objects, so the `Map` 
 
 - In editor-state helpers (`findButtonAtViewportCoordinates`, `findSwitchAtViewportCoordinates`, `findPianoKeyboardAtViewportCoordinates`), replace `Object.values(extras.<name>).find(...)` with direct array `find()` calls.
 - In web-ui drawers, replace `for (const item of Object.values(extras.<name>))` with `for (const item of extras.<name>)` for direct array iteration.
-- In web-ui drawers under `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/*.ts`, replace `for (const [, item] of codeBlock.extras.<name>)` with `for (const item of Object.values(codeBlock.extras.<name>))` and adjust any `Map` APIs (`get`, `has`, `size`) to object semantics (property access, `in` checks, `Object.keys`/`Object.values` length).
-- Keep `GraphicHelper.outputsByWordAddress` as a `Map`, but populate it from the new object-based `extras.outputs` instead of from a `Map` on the extras itself.
+- In web-ui drawers under `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/*.ts`, replace `for (const [, item] of codeBlock.extras.<name>)` with `for (const item of codeBlock.extras.<name>)` and adjust any `Map` APIs (`get`, `has`, `size`) to array semantics (index access, `.includes`, `.length`).
+- Keep `GraphicHelper.outputsByWordAddress` as a `Map`, but populate it from the new array-based `extras.outputs` instead of from a `Map` on the extras itself.
 
 ### Step 5: Update tests and snapshots
 
