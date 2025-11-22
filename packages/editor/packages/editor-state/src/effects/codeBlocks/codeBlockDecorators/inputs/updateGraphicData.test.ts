@@ -67,7 +67,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('should clear existing inputs before updating', () => {
-		mockGraphicData.extras.inputs['oldInput'] = {
+		mockGraphicData.extras.inputs.push({
 			codeBlock: mockGraphicData,
 			width: 0,
 			height: 0,
@@ -75,7 +75,7 @@ describe('updateInputsGraphicData', () => {
 			y: 0,
 			id: 'oldInput',
 			wordAlignedAddress: 0,
-		};
+		});
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
