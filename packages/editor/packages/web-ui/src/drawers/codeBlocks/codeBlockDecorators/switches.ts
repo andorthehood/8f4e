@@ -8,7 +8,7 @@ export default function drawSwitches(engine: Engine, state: State, codeBlock: Co
 		return;
 	}
 
-	for (const { x, y, id: debuggerId, onValue, offValue } of Object.values(codeBlock.extras.switches)) {
+	for (const { x, y, id: debuggerId, onValue, offValue } of codeBlock.extras.switches) {
 		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[debuggerId];
 
 		if (!memory) {

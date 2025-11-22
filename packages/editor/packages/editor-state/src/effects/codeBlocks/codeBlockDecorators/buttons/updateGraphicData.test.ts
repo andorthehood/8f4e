@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import updateButtonsGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
@@ -31,19 +31,19 @@ describe('updateButtonsGraphicData', () => {
 	it('should add button to graphicData extras', () => {
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.buttons).length).toBe(1);
-		expect('btn1' in mockGraphicData.extras.buttons).toBe(true);
+		expect(mockGraphicData.extras.buttons.length).toBe(1);
+		expect(findExtrasById(mockGraphicData.extras.buttons, 'btn1')).toBeDefined();
 	});
 
 	it('should calculate correct dimensions and position', () => {
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		const btn = mockGraphicData.extras.buttons['btn1'];
+		const btn = findExtrasById(mockGraphicData.extras.buttons, 'btn1');
 		expect(btn).toMatchSnapshot();
 	});
 
 	it('should clear existing buttons before updating', () => {
-		mockGraphicData.extras.buttons['oldButton'] = {
+		mockGraphicData.extras.buttons.push({
 			width: 0,
 			height: 0,
 			x: 0,
@@ -51,11 +51,11 @@ describe('updateButtonsGraphicData', () => {
 			id: 'oldButton',
 			onValue: 1,
 			offValue: 0,
-		};
+		});
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		expect('oldButton' in mockGraphicData.extras.buttons).toBe(false);
+		expect(findExtrasById(mockGraphicData.extras.buttons, 'oldButton')).toBeUndefined();
 	});
 
 	it('should handle multiple buttons', () => {
@@ -63,7 +63,7 @@ describe('updateButtonsGraphicData', () => {
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		expect(Object.keys(mockGraphicData.extras.buttons).length).toBe(2);
+		expect(mockGraphicData.extras.buttons.length).toBe(2);
 		expect(mockGraphicData.extras.buttons).toMatchSnapshot();
 	});
 
@@ -72,7 +72,7 @@ describe('updateButtonsGraphicData', () => {
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		const btn = mockGraphicData.extras.buttons['btn1'];
+		const btn = findExtrasById(mockGraphicData.extras.buttons, 'btn1');
 		expect(btn).toMatchSnapshot();
 	});
 });
