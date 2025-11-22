@@ -25,121 +25,75 @@ function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
 
 /**
  * Helper to create a mock code block for testing with customizable properties.
- * Supports multiple calling patterns for flexibility:
+ * All parameters are specified via an options object.
  *
- * @param overridesOrIdOrX - Either a partial CodeBlockGraphicData object, an id string, or the x coordinate
- * @param yOrX - Optional: If first param is string (id), this is x; if first param is number, this is y
- * @param yOrWidth - Optional: If first param is string (id), this is y; if first param is number, this is width
- * @param width - Optional width (only used when first param is string)
- * @param height - Optional height
- * @param offsetX - Optional offsetX
- * @param offsetY - Optional offsetY
- * @param cursorY - Optional cursor Y position (relative to block)
+ * @param options - Optional configuration object with any CodeBlockGraphicData properties plus cursorY convenience parameter
+ * @param options.cursorY - Optional convenience parameter to set cursor.y (relative to block)
  * @returns A complete CodeBlockGraphicData object with sensible defaults
  *
  * @example
- * // Object-based usage (recommended for complex scenarios)
- * const block = createMockCodeBlock({ id: 'my-block', x: 100, y: 200 });
+ * // Basic usage with defaults
+ * const block = createMockCodeBlock();
  *
  * @example
- * // Positional usage with x, y
- * const block = createMockCodeBlock(100, 200); // x, y
+ * // Specify position and dimensions
+ * const block = createMockCodeBlock({ x: 100, y: 200, width: 150, height: 150 });
  *
  * @example
- * // Positional usage with id, x, y
- * const block = createMockCodeBlock('my-block', 100, 200); // id, x, y
+ * // Use cursorY convenience parameter
+ * const block = createMockCodeBlock({ id: 'my-block', x: 100, y: 200, cursorY: 75 });
  *
  * @example
- * // Full positional with dimensions and cursor
- * const block = createMockCodeBlock('my-block', 100, 200, 150, 150, 10, 10, 75);
+ * // Override any property
+ * const block = createMockCodeBlock({ id: 'custom', code: ['test'], offsetX: 10, offsetY: 10 });
  */
 export function createMockCodeBlock(
-	overridesOrIdOrX: Partial<CodeBlockGraphicData> | string | number = {},
-	yOrX?: number,
-	yOrWidth?: number,
-	width?: number,
-	height?: number,
-	offsetX?: number,
-	offsetY?: number,
-	cursorY?: number
+	options: Partial<CodeBlockGraphicData> & { cursorY?: number } = {}
 ): CodeBlockGraphicData {
-	// Determine if we're using positional parameters or object overrides
-	let overrides: Partial<CodeBlockGraphicData>;
+	// Extract cursorY if provided (not part of CodeBlockGraphicData)
+	const { cursorY, ...overrides } = options;
 
-	if (typeof overridesOrIdOrX === 'string') {
-		// String id as first parameter: createMockCodeBlock('id', x, y, ...)
-		const id = overridesOrIdOrX;
-		const x = yOrX ?? 0;
-		const y = yOrWidth ?? 0;
-		const w = width ?? 100;
-		const h = height ?? 100;
-		const ox = offsetX ?? 0;
-		const oy = offsetY ?? 0;
+	// Set defaults for commonly used properties
+	const x = overrides.x ?? 0;
+	const y = overrides.y ?? 0;
+	const width = overrides.width ?? 100;
+	const height = overrides.height ?? 100;
+	const offsetX = overrides.offsetX ?? 0;
+	const offsetY = overrides.offsetY ?? 0;
+	const id = overrides.id ?? 'test-block';
 
-		overrides = {
-			id,
-			x,
-			y,
-			width: w,
-			height: h,
-			offsetX: ox,
-			offsetY: oy,
-			gridX: x,
-			gridY: y,
-			minGridWidth: w,
-			cursor: {
-				col: 0,
-				row: 0,
-				x: x + ox + w / 2, // Cursor X is absolute (center of block)
-				y: cursorY ?? h / 2, // Cursor Y is relative to block (default to center)
-			},
-		};
-	} else if (typeof overridesOrIdOrX === 'number') {
-		// Numeric x as first parameter: createMockCodeBlock(x, y, ...)
-		const x = overridesOrIdOrX;
-		const y = yOrX ?? 0;
-		const w = yOrWidth ?? 100;
-		const h = width ?? 100;
-		const ox = height ?? 0;
-		const oy = offsetX ?? 0;
+	// Compute derived defaults
+	const gridX = overrides.gridX ?? x;
+	const gridY = overrides.gridY ?? y;
+	const minGridWidth = overrides.minGridWidth ?? width;
 
-		overrides = {
-			x,
-			y,
-			width: w,
-			height: h,
-			offsetX: ox,
-			offsetY: oy,
-			id: `block-${x}-${y}`,
-			cursor: {
-				col: 0,
-				row: 0,
-				x: x + ox + w / 2, // Cursor X is absolute (center of block)
-				y: offsetY ?? h / 2, // Cursor Y is relative to block (default to center)
-			},
-		};
-	} else {
-		// Object override mode
-		overrides = overridesOrIdOrX;
-	}
+	// Compute cursor defaults only if cursor is not explicitly overridden
+	const cursorX = x + offsetX + width / 2; // Cursor X is absolute (center of block)
+	const cursorYValue = cursorY ?? height / 2; // Cursor Y is relative to block (default to center)
+	const cursor = overrides.cursor ?? {
+		col: 0,
+		row: 0,
+		x: cursorX,
+		y: cursorYValue,
+	};
 
 	const defaults: CodeBlockGraphicData = {
-		x: 0,
-		y: 0,
-		width: 100,
-		height: 100,
-		offsetX: 0,
-		offsetY: 0,
+		x,
+		y,
+		width,
+		height,
+		offsetX,
+		offsetY,
+		gridX,
+		gridY,
+		minGridWidth,
+		cursor,
+		id,
 		code: [],
 		codeColors: [],
 		codeToRender: [],
-		cursor: { col: 0, row: 0, x: 0, y: 0 },
-		id: 'test-block',
 		gaps: new Map(),
-		gridX: 0,
-		gridY: 0,
 		lineNumberColumnWidth: 1,
-		minGridWidth: 32,
 		lastUpdated: Date.now(),
 		extras: {
 			blockHighlights: [],
