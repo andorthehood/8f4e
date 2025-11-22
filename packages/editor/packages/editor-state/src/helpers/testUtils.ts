@@ -67,7 +67,7 @@ export function createMockCodeBlock(
 	const gridY = overrides.gridY ?? y;
 	const minGridWidth = overrides.minGridWidth ?? width;
 
-	// Compute cursor defaults
+	// Compute cursor defaults only if cursor is not explicitly overridden
 	const cursorX = x + offsetX + width / 2; // Cursor X is absolute (center of block)
 	const cursorYValue = cursorY ?? height / 2; // Cursor Y is relative to block (default to center)
 	const cursor = overrides.cursor ?? {
@@ -108,7 +108,7 @@ export function createMockCodeBlock(
 		},
 	};
 
-	return { ...defaults, ...overrides, cursor };
+	return { ...defaults, ...overrides };
 }
 
 /**
