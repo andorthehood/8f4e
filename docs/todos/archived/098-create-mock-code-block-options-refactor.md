@@ -3,8 +3,8 @@ title: 'TODO: Refactor createMockCodeBlock to options object'
 priority: Medium
 effort: 4-6h
 created: 2025-11-22
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-22
 ---
 
 # TODO: Refactor createMockCodeBlock to options object
