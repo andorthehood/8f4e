@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import updateButtonsGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
@@ -31,19 +31,19 @@ describe('updateButtonsGraphicData', () => {
 	it('should add button to graphicData extras', () => {
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.buttons.size).toBe(1);
-		expect(mockGraphicData.extras.buttons.has('btn1')).toBe(true);
+		expect(mockGraphicData.extras.buttons.length).toBe(1);
+		expect(findExtrasById(mockGraphicData.extras.buttons, 'btn1')).toBeDefined();
 	});
 
 	it('should calculate correct dimensions and position', () => {
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		const btn = mockGraphicData.extras.buttons.get('btn1');
+		const btn = findExtrasById(mockGraphicData.extras.buttons, 'btn1');
 		expect(btn).toMatchSnapshot();
 	});
 
 	it('should clear existing buttons before updating', () => {
-		mockGraphicData.extras.buttons.set('oldButton', {
+		mockGraphicData.extras.buttons.push({
 			width: 0,
 			height: 0,
 			x: 0,
@@ -55,7 +55,7 @@ describe('updateButtonsGraphicData', () => {
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.buttons.has('oldButton')).toBe(false);
+		expect(findExtrasById(mockGraphicData.extras.buttons, 'oldButton')).toBeUndefined();
 	});
 
 	it('should handle multiple buttons', () => {
@@ -63,8 +63,8 @@ describe('updateButtonsGraphicData', () => {
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.buttons.size).toBe(2);
-		expect(Array.from(mockGraphicData.extras.buttons.entries())).toMatchSnapshot();
+		expect(mockGraphicData.extras.buttons.length).toBe(2);
+		expect(mockGraphicData.extras.buttons).toMatchSnapshot();
 	});
 
 	it('should position buttons at correct y coordinate based on line number', () => {
@@ -72,7 +72,7 @@ describe('updateButtonsGraphicData', () => {
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
-		const btn = mockGraphicData.extras.buttons.get('btn1');
+		const btn = findExtrasById(mockGraphicData.extras.buttons, 'btn1');
 		expect(btn).toMatchSnapshot();
 	});
 });

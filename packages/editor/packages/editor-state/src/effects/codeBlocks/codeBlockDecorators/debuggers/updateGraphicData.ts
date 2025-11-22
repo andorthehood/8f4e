@@ -6,7 +6,7 @@ import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function updateDebuggersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.debuggers.clear();
+	graphicData.extras.debuggers = [];
 	parseDebuggers(graphicData.code).forEach(_debugger => {
 		const memory = resolveMemoryIdentifier(state, graphicData.id, _debugger.id);
 
@@ -14,7 +14,7 @@ export default function updateDebuggersGraphicData(graphicData: CodeBlockGraphic
 			return;
 		}
 
-		graphicData.extras.debuggers.set(_debugger.id, {
+		graphicData.extras.debuggers.push({
 			width: state.graphicHelper.viewport.vGrid * 2,
 			height: state.graphicHelper.viewport.hGrid,
 			x:

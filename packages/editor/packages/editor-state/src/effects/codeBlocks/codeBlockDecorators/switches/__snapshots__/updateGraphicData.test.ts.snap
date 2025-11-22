@@ -14,30 +14,24 @@ exports[`updateSwitchesGraphicData > should calculate correct dimensions and pos
 
 exports[`updateSwitchesGraphicData > should handle multiple switches 1`] = `
 [
-  [
-    "sw1",
-    {
-      "height": 20,
-      "id": "sw1",
-      "offValue": 0,
-      "onValue": 1,
-      "width": 40,
-      "x": 60,
-      "y": 0,
-    },
-  ],
-  [
-    "sw2",
-    {
-      "height": 20,
-      "id": "sw2",
-      "offValue": 5,
-      "onValue": 10,
-      "width": 40,
-      "x": 60,
-      "y": 20,
-    },
-  ],
+  {
+    "height": 20,
+    "id": "sw1",
+    "offValue": 0,
+    "onValue": 1,
+    "width": 40,
+    "x": 60,
+    "y": 0,
+  },
+  {
+    "height": 20,
+    "id": "sw2",
+    "offValue": 5,
+    "onValue": 10,
+    "width": 40,
+    "x": 60,
+    "y": 20,
+  },
 ]
 `;
 

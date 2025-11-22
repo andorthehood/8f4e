@@ -97,18 +97,34 @@ export function createMockCodeBlock(
 		lastUpdated: Date.now(),
 		extras: {
 			blockHighlights: [],
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			bufferPlotters: new Map(),
-			errorMessages: new Map(),
+			inputs: [],
+			outputs: [],
+			debuggers: [],
+			switches: [],
+			buttons: [],
+			pianoKeyboards: [],
+			bufferPlotters: [],
+			errorMessages: [],
 		},
 	};
 
 	return { ...defaults, ...overrides };
+}
+
+/**
+ * Helper to find an item by id in an extras array
+ * Useful for test assertions on array-based extras
+ *
+ * @param array - The extras array to search
+ * @param id - The id to find
+ * @returns The item with the matching id, or undefined if not found
+ *
+ * @example
+ * const button = findExtrasById(mockGraphicData.extras.buttons, 'btn1');
+ * expect(button).toBeDefined();
+ */
+export function findExtrasById<T extends { id: string }>(array: T[], id: string): T | undefined {
+	return array.find(item => item.id === id);
 }
 
 /**

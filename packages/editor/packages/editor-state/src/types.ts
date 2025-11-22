@@ -265,21 +265,19 @@ export interface CodeBlockGraphicData {
 			width: number;
 			color: string;
 		}>;
-		inputs: Map<string, Input>;
-		outputs: Map<string, Output>;
-		debuggers: Map<string, Debugger>;
-		bufferPlotters: Map<string, BufferPlotter>;
-		switches: Map<string, Switch>;
-		buttons: Map<string, Switch>;
-		pianoKeyboards: Map<number, PianoKeyboard>;
-		errorMessages: Map<
-			number,
-			{
-				message: string[];
-				x: number;
-				y: number;
-			}
-		>;
+		inputs: Input[];
+		outputs: Output[];
+		debuggers: Debugger[];
+		bufferPlotters: BufferPlotter[];
+		switches: Switch[];
+		buttons: Switch[];
+		pianoKeyboards: PianoKeyboard[];
+		errorMessages: Array<{
+			message: string[];
+			x: number;
+			y: number;
+			lineNumber: number;
+		}>;
 	};
 	lastUpdated: number;
 }

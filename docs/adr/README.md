@@ -20,4 +20,5 @@ Each ADR follows this structure:
 - [ADR-001: Source-Based Development Mode](001-source-based-development.md) - 2025-11-07
 - [ADR-002: Self-Contained Package Configurations](002-self-contained-packages.md) - 2025-11-07
 - [ADR-003: Dual TypeScript Configuration for Build Isolation](003-dual-tsconfig-for-build-isolation.md) - 2025-11-07
+- [ADR-004: Prioritize Render Path Performance in Data Structure Selection](004-prioritize-render-path-performance.md) - 2025-11-22
 

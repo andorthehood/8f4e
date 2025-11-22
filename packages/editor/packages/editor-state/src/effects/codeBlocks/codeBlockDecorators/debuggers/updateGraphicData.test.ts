@@ -3,7 +3,7 @@ import { MemoryTypes } from '@8f4e/compiler';
 
 import updateDebuggersGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../helpers/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 import type { DataStructure } from '@8f4e/compiler';
@@ -45,8 +45,8 @@ describe('updateDebuggersGraphicData', () => {
 	it('should add debugger to graphicData extras', () => {
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.debuggers.size).toBe(1);
-		expect(mockGraphicData.extras.debuggers.has('myVar')).toBe(true);
+		expect(mockGraphicData.extras.debuggers.length).toBe(1);
+		expect(findExtrasById(mockGraphicData.extras.debuggers, 'myVar')).toBeDefined();
 	});
 
 	it('should calculate correct dimensions and position', () => {
@@ -63,11 +63,11 @@ describe('updateDebuggersGraphicData', () => {
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.debuggers.size).toBe(0);
+		expect(mockGraphicData.extras.debuggers.length).toBe(0);
 	});
 
 	it('should clear existing debuggers before updating', () => {
-		mockGraphicData.extras.debuggers.set('oldDebugger', {
+		mockGraphicData.extras.debuggers.push({
 			width: 0,
 			height: 0,
 			showAddress: false,
@@ -82,7 +82,7 @@ describe('updateDebuggersGraphicData', () => {
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.debuggers.has('oldDebugger')).toBe(false);
+		expect(findExtrasById(mockGraphicData.extras.debuggers, 'oldDebugger')).toBeUndefined();
 	});
 
 	it('should handle multiple debuggers', () => {
@@ -118,8 +118,8 @@ describe('updateDebuggersGraphicData', () => {
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		expect(mockGraphicData.extras.debuggers.size).toBe(2);
-		expect(Array.from(mockGraphicData.extras.debuggers.entries())).toMatchSnapshot();
+		expect(mockGraphicData.extras.debuggers.length).toBe(2);
+		expect(mockGraphicData.extras.debuggers).toMatchSnapshot();
 	});
 
 	it('should position debuggers at correct y coordinate based on line number', () => {
@@ -141,7 +141,7 @@ describe('updateDebuggersGraphicData', () => {
 
 		updateDebuggersGraphicData(mockGraphicData, mockState);
 
-		const dbg = mockGraphicData.extras.debuggers.get('myVar');
+		const dbg = findExtrasById(mockGraphicData.extras.debuggers, 'myVar');
 		expect(dbg).toMatchSnapshot();
 	});
 });

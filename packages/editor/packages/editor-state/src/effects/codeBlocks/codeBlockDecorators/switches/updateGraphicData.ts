@@ -5,9 +5,9 @@ import { gapCalculator } from '../../../../helpers/editor';
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
 export default function updateSwitchesGraphicData(graphicData: CodeBlockGraphicData, state: State) {
-	graphicData.extras.switches.clear();
+	graphicData.extras.switches = [];
 	parseSwitches(graphicData.code).forEach(_switch => {
-		graphicData.extras.switches.set(_switch.id, {
+		graphicData.extras.switches.push({
 			width: state.graphicHelper.viewport.vGrid * 4,
 			height: state.graphicHelper.viewport.hGrid,
 			x: graphicData.width - 4 * state.graphicHelper.viewport.vGrid,

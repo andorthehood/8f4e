@@ -6,7 +6,7 @@ export default function findSwitchAtViewportCoordinates(
 	x: number,
 	y: number
 ): Switch | undefined {
-	return Array.from(codeBlock.extras.switches.values()).find(_switch => {
+	return codeBlock.extras.switches.find(_switch => {
 		return (
 			x >= codeBlock.x + codeBlock.offsetX + _switch.x - graphicHelper.viewport.x &&
 			x <= codeBlock.x + codeBlock.offsetX + _switch.width + _switch.x - graphicHelper.viewport.x &&
