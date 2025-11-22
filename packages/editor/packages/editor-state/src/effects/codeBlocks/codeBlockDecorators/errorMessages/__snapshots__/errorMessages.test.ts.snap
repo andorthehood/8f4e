@@ -2,6 +2,7 @@
 
 exports[`errorMessages > should calculate correct position and message 1`] = `
 {
+  "lineNumber": 2,
   "message": [
     "Error:",
     "Syntax error",
@@ -13,27 +14,23 @@ exports[`errorMessages > should calculate correct position and message 1`] = `
 
 exports[`errorMessages > should handle multiple error messages 1`] = `
 [
-  [
-    "1",
-    {
-      "message": [
-        "Error:",
-        "First error",
-      ],
-      "x": 0,
-      "y": 40,
-    },
-  ],
-  [
-    "3",
-    {
-      "message": [
-        "Error:",
-        "Second error",
-      ],
-      "x": 0,
-      "y": 80,
-    },
-  ],
+  {
+    "lineNumber": 1,
+    "message": [
+      "Error:",
+      "First error",
+    ],
+    "x": 0,
+    "y": 40,
+  },
+  {
+    "lineNumber": 3,
+    "message": [
+      "Error:",
+      "Second error",
+    ],
+    "x": 0,
+    "y": 80,
+  },
 ]
 `;

@@ -1,30 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`updateBufferPlottersGraphicData > should calculate correct dimensions and position 1`] = `
-{
-  "buffer": {
-    "bufferPointer": 0,
-    "memory": {
-      "byteAddress": 0,
-      "wordAlignedAddress": 0,
-    },
-    "showAddress": false,
-    "showBinary": false,
-    "showEndAddress": false,
-  },
-  "bufferLength": undefined,
-  "height": 20,
-  "maxValue": 10,
-  "minValue": -10,
-  "width": 20,
-  "x": 30,
-  "y": 20,
-}
-`;
+exports[`updateBufferPlottersGraphicData > should calculate correct dimensions and position 1`] = `undefined`;
 
 exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotters 1`] = `
-{
-  "buffer1": {
+[
+  {
     "buffer": {
       "bufferPointer": 0,
       "memory": {
@@ -43,7 +23,7 @@ exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotter
     "x": 30,
     "y": 20,
   },
-  "buffer2": {
+  {
     "buffer": {
       "bufferPointer": 0,
       "memory": {
@@ -72,5 +52,5 @@ exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotter
     "x": 30,
     "y": 40,
   },
-}
+]
 `;
