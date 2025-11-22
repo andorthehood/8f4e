@@ -97,14 +97,14 @@ export function createMockCodeBlock(
 		lastUpdated: Date.now(),
 		extras: {
 			blockHighlights: [],
-			inputs: new Map(),
-			outputs: new Map(),
-			debuggers: new Map(),
-			switches: new Map(),
-			buttons: new Map(),
-			pianoKeyboards: new Map(),
-			bufferPlotters: new Map(),
-			errorMessages: new Map(),
+			inputs: {},
+			outputs: {},
+			debuggers: {},
+			switches: {},
+			buttons: {},
+			pianoKeyboards: {},
+			bufferPlotters: {},
+			errorMessages: {},
 		},
 	};
 

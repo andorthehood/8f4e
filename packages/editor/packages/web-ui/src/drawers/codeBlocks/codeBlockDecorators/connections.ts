@@ -13,7 +13,7 @@ export default function drawConnections(engine: Engine, state: State): void {
 
 	for (const codeBlock of state.graphicHelper.codeBlocks) {
 		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
-		for (const [, { x, y, id }] of codeBlock.extras.inputs) {
+		for (const { x, y, id } of Object.values(codeBlock.extras.inputs)) {
 			const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[id];
 
 			if (!memory || state.compiler.memoryBuffer[memory.wordAlignedAddress] === 0) {
