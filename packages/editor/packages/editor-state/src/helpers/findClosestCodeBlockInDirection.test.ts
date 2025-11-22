@@ -6,9 +6,9 @@ import type { CodeBlockGraphicData } from '../types';
 describe('findClosestCodeBlockInDirection', () => {
 	describe('right direction', () => {
 		it('should find the closest block to the right', () => {
-			const selected = createMockCodeBlock('selected', 0, 0);
-			const right1 = createMockCodeBlock('right1', 200, 0);
-			const right2 = createMockCodeBlock('right2', 400, 0);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0 });
+			const right1 = createMockCodeBlock({ id: 'right1', x: 200, y: 0 });
+			const right2 = createMockCodeBlock({ id: 'right2', x: 400, y: 0 });
 			const codeBlocks = new Set([selected, right1, right2]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
@@ -17,9 +17,9 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should find closest block to cursor for horizontal navigation', () => {
-			const selected = createMockCodeBlock('selected', 0, 0); // cursor at (50, 50)
-			const closeButMisaligned = createMockCodeBlock('close', 150, 200); // center at (200, 250), Y distance = 200
-			const alignedButFarther = createMockCodeBlock('aligned', 300, 10); // center at (350, 60), Y distance = 10
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0 }); // cursor at (50, 50)
+			const closeButMisaligned = createMockCodeBlock({ id: 'close', x: 150, y: 200 }); // center at (200, 250), Y distance = 200
+			const alignedButFarther = createMockCodeBlock({ id: 'aligned', x: 300, y: 10 }); // center at (350, 60), Y distance = 10
 			const codeBlocks = new Set([selected, closeButMisaligned, alignedButFarther]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
@@ -31,8 +31,8 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should return selected block if no blocks to the right', () => {
-			const selected = createMockCodeBlock('selected', 100, 0);
-			const left = createMockCodeBlock('left', 0, 0);
+			const selected = createMockCodeBlock({ id: 'selected', x: 100, y: 0 });
+			const left = createMockCodeBlock({ id: 'left', x: 0, y: 0 });
 			const codeBlocks = new Set([selected, left]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
@@ -43,9 +43,9 @@ describe('findClosestCodeBlockInDirection', () => {
 
 	describe('left direction', () => {
 		it('should find the closest block to the left', () => {
-			const selected = createMockCodeBlock('selected', 400, 0);
-			const left1 = createMockCodeBlock('left1', 200, 0);
-			const left2 = createMockCodeBlock('left2', 0, 0);
+			const selected = createMockCodeBlock({ id: 'selected', x: 400, y: 0 });
+			const left1 = createMockCodeBlock({ id: 'left1', x: 200, y: 0 });
+			const left2 = createMockCodeBlock({ id: 'left2', x: 0, y: 0 });
 			const codeBlocks = new Set([selected, left1, left2]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
@@ -54,8 +54,8 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should return selected block if no blocks to the left', () => {
-			const selected = createMockCodeBlock('selected', 0, 0);
-			const right = createMockCodeBlock('right', 200, 0);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0 });
+			const right = createMockCodeBlock({ id: 'right', x: 200, y: 0 });
 			const codeBlocks = new Set([selected, right]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
@@ -66,9 +66,9 @@ describe('findClosestCodeBlockInDirection', () => {
 
 	describe('up direction', () => {
 		it('should find the closest block above', () => {
-			const selected = createMockCodeBlock('selected', 0, 400);
-			const up1 = createMockCodeBlock('up1', 0, 200);
-			const up2 = createMockCodeBlock('up2', 0, 0);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 400 });
+			const up1 = createMockCodeBlock({ id: 'up1', x: 0, y: 200 });
+			const up2 = createMockCodeBlock({ id: 'up2', x: 0, y: 0 });
 			const codeBlocks = new Set([selected, up1, up2]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'up');
@@ -77,9 +77,9 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should prefer aligned blocks over closer misaligned blocks', () => {
-			const selected = createMockCodeBlock('selected', 0, 400);
-			const closeButMisaligned = createMockCodeBlock('close', 200, 250); // Closer but far horizontally
-			const alignedButFarther = createMockCodeBlock('aligned', 10, 100); // Farther but more aligned
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 400 });
+			const closeButMisaligned = createMockCodeBlock({ id: 'close', x: 200, y: 250 }); // Closer but far horizontally
+			const alignedButFarther = createMockCodeBlock({ id: 'aligned', x: 10, y: 100 }); // Farther but more aligned
 			const codeBlocks = new Set([selected, closeButMisaligned, alignedButFarther]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'up');
@@ -91,8 +91,8 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should return selected block if no blocks above', () => {
-			const selected = createMockCodeBlock('selected', 0, 0);
-			const down = createMockCodeBlock('down', 0, 200);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0 });
+			const down = createMockCodeBlock({ id: 'down', x: 0, y: 200 });
 			const codeBlocks = new Set([selected, down]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'up');
@@ -103,9 +103,9 @@ describe('findClosestCodeBlockInDirection', () => {
 
 	describe('down direction', () => {
 		it('should find the closest block below', () => {
-			const selected = createMockCodeBlock('selected', 0, 0);
-			const down1 = createMockCodeBlock('down1', 0, 200);
-			const down2 = createMockCodeBlock('down2', 0, 400);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0 });
+			const down1 = createMockCodeBlock({ id: 'down1', x: 0, y: 200 });
+			const down2 = createMockCodeBlock({ id: 'down2', x: 0, y: 400 });
 			const codeBlocks = new Set([selected, down1, down2]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
@@ -114,8 +114,8 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should return selected block if no blocks below', () => {
-			const selected = createMockCodeBlock('selected', 0, 200);
-			const up = createMockCodeBlock('up', 0, 0);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 200 });
+			const up = createMockCodeBlock({ id: 'up', x: 0, y: 0 });
 			const codeBlocks = new Set([selected, up]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
@@ -126,7 +126,7 @@ describe('findClosestCodeBlockInDirection', () => {
 
 	describe('edge cases', () => {
 		it('should handle only the selected block', () => {
-			const selected = createMockCodeBlock('selected', 0, 0);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0 });
 			const codeBlocks = new Set([selected]);
 
 			expect(findClosestCodeBlockInDirection(codeBlocks, selected, 'right').id).toBe('selected');
@@ -136,7 +136,7 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should handle empty set by returning selected block', () => {
-			const selected = createMockCodeBlock('selected', 0, 0);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0 });
 			const codeBlocks = new Set<CodeBlockGraphicData>();
 			codeBlocks.add(selected);
 
@@ -146,8 +146,24 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should handle blocks with offsets', () => {
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 100, 10, 10);
-			const right = createMockCodeBlock('right', 200, 0, 100, 100, 20, 20);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 100,
+				offsetX: 10,
+				offsetY: 10,
+			});
+			const right = createMockCodeBlock({
+				id: 'right',
+				x: 200,
+				y: 0,
+				width: 100,
+				height: 100,
+				offsetX: 20,
+				offsetY: 20,
+			});
 			const codeBlocks = new Set([selected, right]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
@@ -156,9 +172,9 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should handle overlapping positions', () => {
-			const selected = createMockCodeBlock('selected', 100, 100);
-			const overlap = createMockCodeBlock('overlap', 100, 100);
-			const right = createMockCodeBlock('right', 300, 100);
+			const selected = createMockCodeBlock({ id: 'selected', x: 100, y: 100 });
+			const overlap = createMockCodeBlock({ id: 'overlap', x: 100, y: 100 });
+			const right = createMockCodeBlock({ id: 'right', x: 300, y: 100 });
 			const codeBlocks = new Set([selected, overlap, right]);
 
 			// Even though overlap is at same position, center calculation means it won't be selected
@@ -170,8 +186,8 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should use center points for distance calculation', () => {
 			// Test that blocks are compared using their center points
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 100); // center at (50, 50)
-			const right = createMockCodeBlock('right', 150, 0, 100, 100); // center at (200, 50)
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0, width: 100, height: 100 }); // center at (50, 50)
+			const right = createMockCodeBlock({ id: 'right', x: 150, y: 0, width: 100, height: 100 }); // center at (200, 50)
 			const codeBlocks = new Set([selected, right]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
@@ -180,9 +196,9 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should handle blocks with different dimensions', () => {
-			const selected = createMockCodeBlock('selected', 0, 0, 50, 50);
-			const largeRight = createMockCodeBlock('largeRight', 200, 0, 200, 200);
-			const smallRight = createMockCodeBlock('smallRight', 400, 0, 25, 25);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0, width: 50, height: 50 });
+			const largeRight = createMockCodeBlock({ id: 'largeRight', x: 200, y: 0, width: 200, height: 200 });
+			const smallRight = createMockCodeBlock({ id: 'smallRight', x: 400, y: 0, width: 25, height: 25 });
 			const codeBlocks = new Set([selected, largeRight, smallRight]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
@@ -200,15 +216,15 @@ describe('findClosestCodeBlockInDirection', () => {
 	describe('complex scenarios', () => {
 		it('should handle a grid of blocks correctly', () => {
 			// Create a 3x3 grid of blocks
-			const selected = createMockCodeBlock('center', 200, 200);
-			const topLeft = createMockCodeBlock('topLeft', 0, 0);
-			const top = createMockCodeBlock('top', 200, 0);
-			const topRight = createMockCodeBlock('topRight', 400, 0);
-			const left = createMockCodeBlock('left', 0, 200);
-			const right = createMockCodeBlock('right', 400, 200);
-			const bottomLeft = createMockCodeBlock('bottomLeft', 0, 400);
-			const bottom = createMockCodeBlock('bottom', 200, 400);
-			const bottomRight = createMockCodeBlock('bottomRight', 400, 400);
+			const selected = createMockCodeBlock({ id: 'center', x: 200, y: 200 });
+			const topLeft = createMockCodeBlock({ id: 'topLeft', x: 0, y: 0 });
+			const top = createMockCodeBlock({ id: 'top', x: 200, y: 0 });
+			const topRight = createMockCodeBlock({ id: 'topRight', x: 400, y: 0 });
+			const left = createMockCodeBlock({ id: 'left', x: 0, y: 200 });
+			const right = createMockCodeBlock({ id: 'right', x: 400, y: 200 });
+			const bottomLeft = createMockCodeBlock({ id: 'bottomLeft', x: 0, y: 400 });
+			const bottom = createMockCodeBlock({ id: 'bottom', x: 200, y: 400 });
+			const bottomRight = createMockCodeBlock({ id: 'bottomRight', x: 400, y: 400 });
 
 			const codeBlocks = new Set([selected, topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight]);
 
@@ -219,9 +235,9 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should handle when multiple blocks are at equal distance', () => {
-			const selected = createMockCodeBlock('selected', 200, 200);
-			const right1 = createMockCodeBlock('right1', 400, 200);
-			const right2 = createMockCodeBlock('right2', 400, 200);
+			const selected = createMockCodeBlock({ id: 'selected', x: 200, y: 200 });
+			const right1 = createMockCodeBlock({ id: 'right1', x: 400, y: 200 });
+			const right2 = createMockCodeBlock({ id: 'right2', x: 400, y: 200 });
 			const codeBlocks = new Set([selected, right1, right2]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
@@ -233,11 +249,11 @@ describe('findClosestCodeBlockInDirection', () => {
 
 	describe('all four directions independently', () => {
 		it('should navigate in all four directions from a central block', () => {
-			const selected = createMockCodeBlock('selected', 200, 200);
-			const up = createMockCodeBlock('up', 200, 0);
-			const down = createMockCodeBlock('down', 200, 400);
-			const left = createMockCodeBlock('left', 0, 200);
-			const right = createMockCodeBlock('right', 400, 200);
+			const selected = createMockCodeBlock({ id: 'selected', x: 200, y: 200 });
+			const up = createMockCodeBlock({ id: 'up', x: 200, y: 0 });
+			const down = createMockCodeBlock({ id: 'down', x: 200, y: 400 });
+			const left = createMockCodeBlock({ id: 'left', x: 0, y: 200 });
+			const right = createMockCodeBlock({ id: 'right', x: 400, y: 200 });
 			const codeBlocks = new Set([selected, up, down, left, right]);
 
 			expect(findClosestCodeBlockInDirection(codeBlocks, selected, 'up').id).toBe('up');
@@ -254,9 +270,9 @@ describe('findClosestCodeBlockInDirection', () => {
 			// - directlyBelow: primaryDistance = 200-100 = 100, secondaryDistance = 0, score = 100
 			// - diagonalCloser: primaryDistance = 150-100 = 50, secondaryDistance = 80, score = 50 + 80*2 = 210
 			// directlyBelow should win despite being farther away
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 100);
-			const directlyBelow = createMockCodeBlock('directlyBelow', 0, 200, 100, 100);
-			const diagonalCloser = createMockCodeBlock('diagonalCloser', 80, 150, 100, 100);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0, width: 100, height: 100 });
+			const directlyBelow = createMockCodeBlock({ id: 'directlyBelow', x: 0, y: 200, width: 100, height: 100 });
+			const diagonalCloser = createMockCodeBlock({ id: 'diagonalCloser', x: 80, y: 150, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, directlyBelow, diagonalCloser]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
@@ -266,9 +282,9 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should prefer directly above block over diagonally closer block when moving up', () => {
 			// Setup similar to above but for upward movement
-			const selected = createMockCodeBlock('selected', 0, 300, 100, 100);
-			const directlyAbove = createMockCodeBlock('directlyAbove', 0, 100, 100, 100);
-			const diagonalCloser = createMockCodeBlock('diagonalCloser', 80, 150, 100, 100);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 300, width: 100, height: 100 });
+			const directlyAbove = createMockCodeBlock({ id: 'directlyAbove', x: 0, y: 100, width: 100, height: 100 });
+			const diagonalCloser = createMockCodeBlock({ id: 'diagonalCloser', x: 80, y: 150, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, directlyAbove, diagonalCloser]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'up');
@@ -277,9 +293,9 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should find closest block to cursor when moving right', () => {
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 100); // cursor at (50, 50)
-			const directlyRight = createMockCodeBlock('directlyRight', 200, 0, 100, 100); // center at (250, 50), Y distance=0
-			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100); // center at (200, 130), Y distance=80
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0, width: 100, height: 100 }); // cursor at (50, 50)
+			const directlyRight = createMockCodeBlock({ id: 'directlyRight', x: 200, y: 0, width: 100, height: 100 }); // center at (250, 50), Y distance=0
+			const diagonalCloser = createMockCodeBlock({ id: 'diagonalCloser', x: 150, y: 80, width: 100, height: 100 }); // center at (200, 130), Y distance=80
 			const codeBlocks = new Set([selected, directlyRight, diagonalCloser]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
@@ -289,9 +305,9 @@ describe('findClosestCodeBlockInDirection', () => {
 		});
 
 		it('should find closest block to cursor when moving left', () => {
-			const selected = createMockCodeBlock('selected', 300, 0, 100, 100); // cursor at (350, 50)
-			const directlyLeft = createMockCodeBlock('directlyLeft', 100, 0, 100, 100); // center at (150, 50), Y distance=0
-			const diagonalCloser = createMockCodeBlock('diagonalCloser', 150, 80, 100, 100); // center at (200, 130), Y distance=80
+			const selected = createMockCodeBlock({ id: 'selected', x: 300, y: 0, width: 100, height: 100 }); // cursor at (350, 50)
+			const directlyLeft = createMockCodeBlock({ id: 'directlyLeft', x: 100, y: 0, width: 100, height: 100 }); // center at (150, 50), Y distance=0
+			const diagonalCloser = createMockCodeBlock({ id: 'diagonalCloser', x: 150, y: 80, width: 100, height: 100 }); // center at (200, 130), Y distance=80
 			const codeBlocks = new Set([selected, directlyLeft, diagonalCloser]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'left');
@@ -306,10 +322,10 @@ describe('findClosestCodeBlockInDirection', () => {
 			//      [B]  <- selected
 			//   [C]
 			//      [D]
-			const selected = createMockCodeBlock('B', 200, 100, 100, 80);
-			const blockA = createMockCodeBlock('A', 50, 0, 100, 80);
-			const blockC = createMockCodeBlock('C', 50, 200, 100, 80);
-			const blockD = createMockCodeBlock('D', 200, 300, 100, 80);
+			const selected = createMockCodeBlock({ id: 'B', x: 200, y: 100, width: 100, height: 80 });
+			const blockA = createMockCodeBlock({ id: 'A', x: 50, y: 0, width: 100, height: 80 });
+			const blockC = createMockCodeBlock({ id: 'C', x: 50, y: 200, width: 100, height: 80 });
+			const blockD = createMockCodeBlock({ id: 'D', x: 200, y: 300, width: 100, height: 80 });
 			const codeBlocks = new Set([selected, blockA, blockC, blockD]);
 
 			// Moving up should go to A (even though it's offset)
@@ -325,10 +341,10 @@ describe('findClosestCodeBlockInDirection', () => {
 			// Create a staggered layout:
 			//   [A]  [B-selected]  [C]  [D]
 			//         (B slightly lower)
-			const selected = createMockCodeBlock('B', 200, 100, 100, 80);
-			const blockA = createMockCodeBlock('A', 0, 50, 100, 80);
-			const blockC = createMockCodeBlock('C', 400, 50, 100, 80);
-			const blockD = createMockCodeBlock('D', 600, 100, 100, 80);
+			const selected = createMockCodeBlock({ id: 'B', x: 200, y: 100, width: 100, height: 80 });
+			const blockA = createMockCodeBlock({ id: 'A', x: 0, y: 50, width: 100, height: 80 });
+			const blockC = createMockCodeBlock({ id: 'C', x: 400, y: 50, width: 100, height: 80 });
+			const blockD = createMockCodeBlock({ id: 'D', x: 600, y: 100, width: 100, height: 80 });
 			const codeBlocks = new Set([selected, blockA, blockC, blockD]);
 
 			// Moving left with cursor Y=140 (100 + 40):
@@ -354,9 +370,9 @@ describe('findClosestCodeBlockInDirection', () => {
 			// Properly below block: x=100, y=250, width=100, height=100
 			//   → boundaries: left=100, top=250, right=200, bottom=350
 			//   → top (250) >= selected's bottom (200), so it passes the filter
-			const selected = createMockCodeBlock('selected', 100, 100, 100, 100);
-			const overlapping = createMockCodeBlock('overlapping', 150, 150, 100, 100);
-			const properlyBelow = createMockCodeBlock('properlyBelow', 100, 250, 100, 100);
+			const selected = createMockCodeBlock({ id: 'selected', x: 100, y: 100, width: 100, height: 100 });
+			const overlapping = createMockCodeBlock({ id: 'overlapping', x: 150, y: 150, width: 100, height: 100 });
+			const properlyBelow = createMockCodeBlock({ id: 'properlyBelow', x: 100, y: 250, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, overlapping, properlyBelow]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
@@ -369,8 +385,8 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should handle edge case where blocks are adjacent with no gap', () => {
 			// Blocks that touch edge-to-edge (no gap between them)
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 100);
-			const adjacent = createMockCodeBlock('adjacent', 0, 100, 100, 100); // top edge exactly at selected's bottom
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0, width: 100, height: 100 });
+			const adjacent = createMockCodeBlock({ id: 'adjacent', x: 0, y: 100, width: 100, height: 100 }); // top edge exactly at selected's bottom
 			const codeBlocks = new Set([selected, adjacent]);
 
 			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'down');
@@ -381,11 +397,11 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should prioritize alignment with increased weight', () => {
 			// With ALIGNMENT_WEIGHT = 2.0, test that alignment is more important
-			const selected = createMockCodeBlock('selected', 100, 100, 100, 100);
+			const selected = createMockCodeBlock({ id: 'selected', x: 100, y: 100, width: 100, height: 100 });
 			// farAligned: far but perfectly aligned
-			const farAligned = createMockCodeBlock('farAligned', 100, 300, 100, 100);
+			const farAligned = createMockCodeBlock({ id: 'farAligned', x: 100, y: 300, width: 100, height: 100 });
 			// closeMisaligned: closer but significantly misaligned
-			const closeMisaligned = createMockCodeBlock('closeMisaligned', 250, 220, 100, 100);
+			const closeMisaligned = createMockCodeBlock({ id: 'closeMisaligned', x: 250, y: 220, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, farAligned, closeMisaligned]);
 
 			// farAligned: primary = 300-200 = 100, secondary = 0, score = 100
@@ -399,10 +415,19 @@ describe('findClosestCodeBlockInDirection', () => {
 	describe('cursor-aware horizontal navigation', () => {
 		it('should use cursor Y position for horizontal navigation when provided', () => {
 			// Tall selected block (height=300) with cursor near the top at Y=110
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 300, 0, 0, 110);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 300,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 110,
+			});
 			// Two neighbors to the right at different heights
-			const topNeighbor = createMockCodeBlock('topNeighbor', 200, 50, 100, 100);
-			const bottomNeighbor = createMockCodeBlock('bottomNeighbor', 200, 200, 100, 100);
+			const topNeighbor = createMockCodeBlock({ id: 'topNeighbor', x: 200, y: 50, width: 100, height: 100 });
+			const bottomNeighbor = createMockCodeBlock({ id: 'bottomNeighbor', x: 200, y: 200, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, topNeighbor, bottomNeighbor]);
 
 			// Cursor at Y=110, topNeighbor center at Y=100, bottomNeighbor center at Y=250
@@ -416,10 +441,19 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should prefer bottom neighbor when cursor is near the bottom of tall block', () => {
 			// Tall selected block (height=300) with cursor near the bottom at Y=280
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 300, 0, 0, 280);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 300,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 280,
+			});
 			// Two neighbors to the right at different heights
-			const topNeighbor = createMockCodeBlock('topNeighbor', 200, 50, 100, 100);
-			const bottomNeighbor = createMockCodeBlock('bottomNeighbor', 200, 200, 100, 100);
+			const topNeighbor = createMockCodeBlock({ id: 'topNeighbor', x: 200, y: 50, width: 100, height: 100 });
+			const bottomNeighbor = createMockCodeBlock({ id: 'bottomNeighbor', x: 200, y: 200, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, topNeighbor, bottomNeighbor]);
 
 			// Cursor at Y=280, topNeighbor center at Y=100, bottomNeighbor center at Y=250
@@ -433,10 +467,19 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should work with left navigation and cursor position', () => {
 			// Selected block with cursor near the top
-			const selected = createMockCodeBlock('selected', 400, 0, 100, 300, 0, 0, 110);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 400,
+				y: 0,
+				width: 100,
+				height: 300,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 110,
+			});
 			// Two neighbors to the left at different heights
-			const topNeighbor = createMockCodeBlock('topNeighbor', 200, 50, 100, 100);
-			const bottomNeighbor = createMockCodeBlock('bottomNeighbor', 200, 200, 100, 100);
+			const topNeighbor = createMockCodeBlock({ id: 'topNeighbor', x: 200, y: 50, width: 100, height: 100 });
+			const bottomNeighbor = createMockCodeBlock({ id: 'bottomNeighbor', x: 200, y: 200, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, topNeighbor, bottomNeighbor]);
 
 			// Cursor at Y=110, topNeighbor center at Y=100, bottomNeighbor center at Y=250
@@ -448,13 +491,22 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should handle multiple neighbors and choose closest to cursor', () => {
 			// Tall selected block with cursor in the middle
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 400, 0, 0, 200);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 400,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 200,
+			});
 			// Multiple neighbors at different heights
-			const top = createMockCodeBlock('top', 200, 0, 100, 80);
-			const upperMiddle = createMockCodeBlock('upperMiddle', 200, 100, 100, 80);
-			const middle = createMockCodeBlock('middle', 200, 180, 100, 80); // Center at Y=220
-			const lowerMiddle = createMockCodeBlock('lowerMiddle', 200, 260, 100, 80);
-			const bottom = createMockCodeBlock('bottom', 200, 340, 100, 80);
+			const top = createMockCodeBlock({ id: 'top', x: 200, y: 0, width: 100, height: 80 });
+			const upperMiddle = createMockCodeBlock({ id: 'upperMiddle', x: 200, y: 100, width: 100, height: 80 });
+			const middle = createMockCodeBlock({ id: 'middle', x: 200, y: 180, width: 100, height: 80 }); // Center at Y=220
+			const lowerMiddle = createMockCodeBlock({ id: 'lowerMiddle', x: 200, y: 260, width: 100, height: 80 });
+			const bottom = createMockCodeBlock({ id: 'bottom', x: 200, y: 340, width: 100, height: 80 });
 			const codeBlocks = new Set([selected, top, upperMiddle, middle, lowerMiddle, bottom]);
 
 			// Cursor at Y=200, middle center at Y=220 (distance=20)
@@ -466,10 +518,10 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should fall back to block center when cursor position is not provided', () => {
 			// Selected block without cursor position
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 300);
+			const selected = createMockCodeBlock({ id: 'selected', x: 0, y: 0, width: 100, height: 300 });
 			// Two neighbors at different heights
-			const topNeighbor = createMockCodeBlock('topNeighbor', 200, 50, 100, 100);
-			const bottomNeighbor = createMockCodeBlock('bottomNeighbor', 200, 200, 100, 100);
+			const topNeighbor = createMockCodeBlock({ id: 'topNeighbor', x: 200, y: 50, width: 100, height: 100 });
+			const bottomNeighbor = createMockCodeBlock({ id: 'bottomNeighbor', x: 200, y: 200, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, topNeighbor, bottomNeighbor]);
 
 			// Without cursor, selected center is at Y=150
@@ -483,10 +535,19 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should not affect vertical navigation (up/down)', () => {
 			// Selected block with cursor position
-			const selected = createMockCodeBlock('selected', 0, 200, 100, 100, 0, 0, 250);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 200,
+				width: 100,
+				height: 100,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 250,
+			});
 			// Blocks above and below
-			const above = createMockCodeBlock('above', 0, 0, 100, 100);
-			const below = createMockCodeBlock('below', 0, 400, 100, 100);
+			const above = createMockCodeBlock({ id: 'above', x: 0, y: 0, width: 100, height: 100 });
+			const below = createMockCodeBlock({ id: 'below', x: 0, y: 400, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, above, below]);
 
 			// Vertical navigation should use block centers, not cursor
@@ -499,11 +560,20 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should handle cursor at the edge of a tall block', () => {
 			// Very tall selected block with cursor at the very top
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 500, 0, 0, 10);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 500,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 10,
+			});
 			// Multiple neighbors spanning the height
-			const veryTop = createMockCodeBlock('veryTop', 200, 0, 100, 100);
-			const middle = createMockCodeBlock('middle', 200, 200, 100, 100);
-			const bottom = createMockCodeBlock('bottom', 200, 400, 100, 100);
+			const veryTop = createMockCodeBlock({ id: 'veryTop', x: 200, y: 0, width: 100, height: 100 });
+			const middle = createMockCodeBlock({ id: 'middle', x: 200, y: 200, width: 100, height: 100 });
+			const bottom = createMockCodeBlock({ id: 'bottom', x: 200, y: 400, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, veryTop, middle, bottom]);
 
 			// Cursor at Y=10, veryTop center at Y=50 (distance=40)
@@ -515,11 +585,20 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should handle cursor near neighbor boundaries', () => {
 			// Selected block with cursor at Y=150
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 300, 0, 0, 150);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 300,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 150,
+			});
 			// Neighbor that spans Y=100 to Y=200 (center at Y=150)
-			const perfectMatch = createMockCodeBlock('perfectMatch', 200, 100, 100, 100);
+			const perfectMatch = createMockCodeBlock({ id: 'perfectMatch', x: 200, y: 100, width: 100, height: 100 });
 			// Other neighbor
-			const other = createMockCodeBlock('other', 200, 250, 100, 100);
+			const other = createMockCodeBlock({ id: 'other', x: 200, y: 250, width: 100, height: 100 });
 			const codeBlocks = new Set([selected, perfectMatch, other]);
 
 			// Cursor at Y=150 perfectly matches perfectMatch center
@@ -530,11 +609,20 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should find closest block to cursor position regardless of alignment', () => {
 			// Selected block with cursor at (50, 100)
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 200, 0, 0, 100);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 200,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 100,
+			});
 			// Close but vertically misaligned neighbor
-			const closeButMisaligned = createMockCodeBlock('close', 150, 300, 100, 100); // Center at (200, 350), Y distance = 250
+			const closeButMisaligned = createMockCodeBlock({ id: 'close', x: 150, y: 300, width: 100, height: 100 }); // Center at (200, 350), Y distance = 250
 			// Farther but vertically aligned neighbor
-			const farButAligned = createMockCodeBlock('aligned', 300, 80, 100, 100); // Center at (350, 130), Y distance = 30
+			const farButAligned = createMockCodeBlock({ id: 'aligned', x: 300, y: 80, width: 100, height: 100 }); // Center at (350, 130), Y distance = 30
 			const codeBlocks = new Set([selected, closeButMisaligned, farButAligned]);
 
 			// With Y-only distance, aligned is much closer vertically
@@ -547,11 +635,20 @@ describe('findClosestCodeBlockInDirection', () => {
 
 		it('should prefer blocks that overlap with cursor Y position over those that do not', () => {
 			// Selected block with cursor in the middle
-			const selected = createMockCodeBlock('selected', 0, 0, 100, 400, 0, 0, 200);
+			const selected = createMockCodeBlock({
+				id: 'selected',
+				x: 0,
+				y: 0,
+				width: 100,
+				height: 400,
+				offsetX: 0,
+				offsetY: 0,
+				cursorY: 200,
+			});
 			// Three neighbors at same horizontal distance
-			const top = createMockCodeBlock('top', 200, 0, 100, 100); // Range [0, 100]
-			const middle = createMockCodeBlock('middle', 200, 150, 100, 100); // Range [150, 250] - overlaps cursor at 200
-			const bottom = createMockCodeBlock('bottom', 200, 300, 100, 100); // Range [300, 400]
+			const top = createMockCodeBlock({ id: 'top', x: 200, y: 0, width: 100, height: 100 }); // Range [0, 100]
+			const middle = createMockCodeBlock({ id: 'middle', x: 200, y: 150, width: 100, height: 100 }); // Range [150, 250] - overlaps cursor at 200
+			const bottom = createMockCodeBlock({ id: 'bottom', x: 200, y: 300, width: 100, height: 100 }); // Range [300, 400]
 			const codeBlocks = new Set([selected, top, middle, bottom]);
 
 			// Cursor at Y=200
