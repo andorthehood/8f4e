@@ -3,7 +3,7 @@ title: 'TODO: Typecheck Tests Without Including Them in Bundles'
 priority: Medium
 effort: 0.5-1 day
 created: 2025-11-22
-status: Open
+status: Cancelled
 completed: null
 ---
 
