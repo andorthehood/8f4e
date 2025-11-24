@@ -2,8 +2,8 @@ title: 'TODO: Run Existing Screenshot-Based Visual Regression Tests with Vitest'
 priority: Medium
 effort: 1-2d
 created: 2025-11-23
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-24
 ---
 
 # TODO: Run Existing Screenshot-Based Visual Regression Tests with Vitest
@@ -58,11 +58,11 @@ Use Vitest as the primary runner for the existing screenshot-based visual regres
 
 ## Success Criteria
 
-- [ ] The existing screenshot-based visual regression tests for the 2D engine run under Vitest without reducing or expanding their coverage.
-- [ ] Visual regression tests can be invoked via Nx (e.g., `nx test` or a dedicated `nx visual-test` target) and run only against Chromium.
-- [ ] Baseline images are stored and managed in a predictable directory structure (for example `tests/__screenshots__/...`) and are easy to update when intentional changes occur, without including platform-specific suffixes in filenames.
-- [ ] CI configuration avoids running screenshot-based visual regression tests on every pipeline run by default, with any CI usage explicitly opt-in to control costs.
-- [ ] No separate Jest/Playwright-only pipeline is required for running the existing visual regression tests unless explicitly justified.
+- [x] The existing screenshot-based visual regression tests for the 2D engine run under Vitest without reducing or expanding their coverage.
+- [x] Visual regression tests can be invoked via Nx (e.g., `nx test` or a dedicated `nx visual-test` target) and run only against Chromium.
+- [x] Baseline images are stored and managed in a predictable directory structure (for example `tests/__screenshots__/...`) and are easy to update when intentional changes occur, without including platform-specific suffixes in filenames.
+- [x] CI configuration avoids running screenshot-based visual regression tests on every pipeline run by default, with any CI usage explicitly opt-in to control costs.
+- [x] No separate Jest/Playwright-only pipeline is required for running the existing visual regression tests unless explicitly justified.
 
 ## Affected Components
 

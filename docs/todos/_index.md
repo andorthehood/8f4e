@@ -57,6 +57,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 101 | Run Existing Screenshot-Based Visual Regression Tests with Vitest | 🟡 | 1-2d | 2025-11-24 | Implemented screenshot-based visual regression testing for glugglug 2D engine using Vitest 4.x browser mode with @vitest/browser-playwright provider; created visual test infrastructure with dedicated Nx targets; documented workflow in README; visual tests excluded from CI by default |
 | 097 | Enforce Nx-Only Package Entrypoints | 🟡 | 0.5-1d | 2025-11-21 | Removed all package-level scripts from 11 packages; added missing Nx targets for screenshot test variants and dev:test; updated README.md with comprehensive Nx command examples; all workflows now use Nx targets exclusively |
 | 095 | Split Loader/Save Effects into Dedicated Modules | 🟡 | 1-2d | 2025-11-17 | Replaced monolithic loader.ts and save.ts with three focused modules: projectImport.ts (session persistence, project loading), projectExport.ts (JSON/runtime-ready exports, storage quota), and editorSettings.ts (color scheme/font settings); added 48 comprehensive tests |
 | 093 | Add Typecheck GitHub Action | 🟡 | 2-3h | 2025-11-09 | Added CI workflow step that runs `npm run typecheck` (Nx run-many) on push/PR to main and staging to block type regressions |
