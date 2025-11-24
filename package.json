@@ -33,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "@vitest/browser": "^4.0.13",
+    "@vitest/browser-playwright": "^4.0.13",
     "@vitest/ui": "^4.0.13",
     "concurrently": "^9.2.1",
     "eslint": "^8.57.0",
