@@ -5,7 +5,6 @@ export default defineWorkspace([
 	'packages/compiler-worker/vitest.config.ts',
 	'packages/editor/vitest.config.ts',
 	'packages/editor/packages/editor-state/vitest.config.ts',
-	'packages/editor/packages/glugglug/vitest.config.ts',
 	'packages/editor/packages/sprite-generator/vitest.config.ts',
 	'packages/editor/packages/state-manager/vitest.config.ts',
 	'packages/editor/packages/web-ui/vitest.config.ts',
