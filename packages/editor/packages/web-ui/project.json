@@ -35,55 +35,13 @@
       },
       "dependsOn": ["build"]
     },
-  "typecheck": {
-    "executor": "nx:run-commands",
-    "options": {
-      "command": "tsc --noEmit",
-      "cwd": "{projectRoot}"
-    },
-    "dependsOn": ["^build"]
-  },
-    "test:screenshot": {
+    "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "playwright test",
+        "command": "tsc --noEmit",
         "cwd": "{projectRoot}"
-      }
-    },
-    "test:screenshot:ui": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "playwright test --ui",
-        "cwd": "{projectRoot}"
-      }
-    },
-    "test:screenshot:update": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "playwright test --update-snapshots",
-        "cwd": "{projectRoot}"
-      }
-    },
-    "test:screenshot:headed": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "playwright test --headed",
-        "cwd": "{projectRoot}"
-      }
-    },
-    "test:screenshot:debug": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "playwright test --debug",
-        "cwd": "{projectRoot}"
-      }
-    },
-    "dev:test": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "vite --config screenshot-tests/vite.config.ts",
-        "cwd": "{projectRoot}"
-      }
+      },
+      "dependsOn": ["^build"]
     }
   },
   "tags": ["type:library", "scope:ui"]
