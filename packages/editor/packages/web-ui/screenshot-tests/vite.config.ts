@@ -23,4 +23,7 @@ export default defineConfig({
 			// Other packages will be resolved through npm workspaces
 		},
 	},
+	optimizeDeps: {
+		exclude: ['vitest', '@vitest/expect', '@vitest/runner', '@vitest/utils'],
+	},
 });
