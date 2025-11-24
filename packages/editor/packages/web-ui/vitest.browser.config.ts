@@ -27,8 +27,8 @@ export default defineConfig({
 		testTimeout: 30000,
 		hookTimeout: 10000,
 		reporters: ['default'],
-		include: ['screenshot-tests/minimal.test.ts'],
-		exclude: ['**/node_modules/**', '**/dist/**', 'src/**'],
+		include: ['screenshot-vitest.test.ts', 'minimal.test.ts'],
+		exclude: ['**/node_modules/**', '**/dist/**', 'src/**', 'screenshot-tests/**'],
 	},
 	root: __dirname,
 	resolve: {
