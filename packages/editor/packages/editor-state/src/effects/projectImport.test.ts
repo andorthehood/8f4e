@@ -78,7 +78,7 @@ describe('projectImport', () => {
 		});
 
 		it('should handle loadSession errors gracefully', async () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.featureFlags.persistentStorage = true;
 			mockState.callbacks.loadSession = vi.fn().mockRejectedValue(new Error('Storage error'));
@@ -175,7 +175,7 @@ describe('projectImport', () => {
 				memorySnapshot: 'AQAAAA==', // base64 for minimal Int32Array
 			};
 
-			const consoleSpy = vi.spyOn(console, 'log').mockImplementation();
+			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
 
 			loadProjectCallback({ project: runtimeReadyProject });
 
@@ -198,7 +198,7 @@ describe('projectImport', () => {
 				memorySnapshot: 'invalid-base64!!!',
 			};
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation();
+			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
 			loadProjectCallback({ project: invalidProject });
 
@@ -230,7 +230,7 @@ describe('projectImport', () => {
 		});
 
 		it('should warn when no importProject callback is provided', () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.callbacks.importProject = undefined;
 			projectImport(store, mockEvents, mockState);
@@ -247,7 +247,7 @@ describe('projectImport', () => {
 		});
 
 		it('should handle import errors gracefully', async () => {
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation();
+			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
 			mockState.callbacks.importProject = vi.fn().mockRejectedValue(new Error('Import failed'));
 			projectImport(store, mockEvents, mockState);
@@ -292,7 +292,7 @@ describe('projectImport', () => {
 		});
 
 		it('should warn when no getProject callback is provided', async () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.callbacks.getProject = undefined;
 			projectImport(store, mockEvents, mockState);

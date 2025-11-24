@@ -14,12 +14,14 @@ import {
 } from '../../src/wasmUtils/sectionHelpers';
 import { compileModules } from '../../src';
 
-import type { CompiledModule, TestModule } from '../../src/types';
+import type { CompiledModule, TestModule, MemoryBuffer } from '../../src/types';
 
 // Extended memory buffer interface for testing
-interface ExtendedMemoryBuffer extends Int32Array {
+interface ExtendedMemoryBuffer {
 	get: (id: string) => number | number[] | undefined;
 	set: (id: string, value: number | number[]) => void;
+	[index: number]: number;
+	length: number;
 }
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
@@ -82,11 +84,11 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	let wat = '';
 
 	try {
-		const webAssemblyInstantiatedSource = await WebAssembly.instantiate(program, {
+		const webAssemblyInstantiatedSource = (await WebAssembly.instantiate(program, {
 			js: {
 				memory: memoryRef,
 			},
-		});
+		})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
 		instance = webAssemblyInstantiatedSource.instance;
 
 		wat = await new Promise(resolve => {
@@ -148,11 +150,16 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		return;
 	};
 
-	(memoryBuffer as ExtendedMemoryBuffer).get = memoryGet;
-	(memoryBuffer as ExtendedMemoryBuffer).set = memorySet;
+	(memoryBuffer as unknown as ExtendedMemoryBuffer).get = memoryGet;
+	(memoryBuffer as unknown as ExtendedMemoryBuffer).set = memorySet;
 
 	return {
-		memory: memoryBuffer as ExtendedMemoryBuffer,
+		memory: memoryBuffer as unknown as MemoryBuffer & {
+			get: (address: number | string) => number;
+			byteAddress: (address: number | string) => number;
+			set: (address: number | string, value: number | number[]) => void;
+			allocMemoryForPointer: (address: number | string) => number;
+		},
 		test,
 		reset,
 		wat,

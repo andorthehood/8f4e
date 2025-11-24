@@ -3,8 +3,8 @@ title: 'TODO: Use Vitest for Test Typechecking'
 priority: Medium
 effort: 0.5-1d
 created: 2025-11-23
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-24
 ---
 
 # TODO: Use Vitest for Test Typechecking
@@ -22,6 +22,68 @@ There is interest in leveraging Vitest itself to enforce type safety for test fi
 - Contributors can rely on a single, familiar command (`nx test` or `npm test`) to catch both runtime and type errors in tests.
 
 We need a clear plan to evaluate and, if feasible, adopt Vitest-based typechecking for test files across the workspace, while keeping build output free of test code.
+
+## Implementation Summary
+
+**Status: COMPLETED** ✅
+
+This TODO has been implemented using Vitest's built-in `typecheck` feature (available since Vitest 0.31.0).
+
+### Approach Taken
+
+Rather than running a separate `tsc --noEmit` command, we configured Vitest to handle typechecking of test files natively using its `test.typecheck` configuration option. This provides a cleaner, more integrated developer experience.
+
+### Changes Made
+
+1. **Created `tsconfig.test.json` for each package with tests**
+   - Extends the main `tsconfig.json`
+   - Includes both `src/**/*.ts` and test files (`src/**/*.test.ts`, `tests/**/*.test.ts`)
+   - Sets `noEmit: true` and `rootDir: "."` to properly typecheck test files
+   - Includes `vitest/globals` types for test globals
+
+2. **Updated Vitest configuration files**
+   - Added `typecheck` configuration to `vitest.preset.ts`:
+     ```typescript
+     typecheck: {
+       enabled: true,
+       tsconfig: './tsconfig.test.json',
+     }
+     ```
+   - Applied same configuration to individual package `vitest.config.ts` files
+   - Updated reporters to use new 'default' format instead of deprecated 'basic'
+
+3. **Fixed type errors discovered in test files**
+   - Fixed incorrect import paths (e.g., `'../state/types'` → `'@8f4e/editor-state'`)
+   - Fixed Map vs Record type mismatches in mock data
+   - Added non-null assertions where tests verify values are defined before use
+   - Fixed missing required fields in test objects (e.g., `memorySizeBytes` in Project)
+   - Added type casts for Vitest mock functions where needed
+
+4. **Packages updated**
+   - `@8f4e/compiler` ✅
+   - `@8f4e/editor` ✅
+   - `@8f4e/editor-state` ✅
+   - `@8f4e/sprite-generator` ✅
+   - `@8f4e/state-manager` ✅
+   - `@8f4e/web-ui` ✅
+
+### Alternative Approach Considered
+
+Initially, a separate `tsc --noEmit --project tsconfig.test.json` command was run before `vitest run`. However, this was replaced with Vitest's native `typecheck` feature for better integration and simpler workflow.
+
+**Why Vitest's typecheck over separate tsc?**
+- Single command runs both tests and typechecking
+- Better integration with test reporting
+- Automatic discovery of test files matches typecheck coverage
+- Simpler CI/CD configuration
+- Consistent with Vitest's design philosophy
+
+### Technical Notes
+
+- Vitest's `typecheck` feature uses `tsc` under the hood but integrates it into the test runner
+- The `typecheck.tsconfig` option points to a dedicated tsconfig that includes test files
+- Type errors are reported alongside test failures in a unified format
+- The main `tsconfig.json` still excludes test files to keep production builds clean
 
 ## Proposed Solution
 

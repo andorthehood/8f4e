@@ -63,7 +63,7 @@ describe('Runtime-ready project functionality', () => {
 			},
 			compiler: {
 				codeBuffer: new Uint8Array([1, 2, 3, 4, 5]), // Mock compiled WASM
-				compiledModules: new Map(),
+				compiledModules: {},
 			},
 			callbacks: {
 				exportProject: mockExportProject,
@@ -101,11 +101,11 @@ describe('Runtime-ready project functionality', () => {
 			projectExport(store, mockEvents);
 
 			// Get the exportRuntimeReadyProject callback
-			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
 			expect(exportRuntimeReadyProjectCall).toBeDefined();
 
-			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall[1];
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
 
 			// Trigger the exportRuntimeReadyProject action
 			await exportRuntimeReadyProjectCallback();
@@ -141,11 +141,11 @@ describe('Runtime-ready project functionality', () => {
 			projectExport(store, mockEvents);
 
 			// Get the exportRuntimeReadyProject callback
-			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
 			expect(exportRuntimeReadyProjectCall).toBeDefined();
 
-			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall[1];
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
 
 			// Trigger the exportRuntimeReadyProject action
 			await exportRuntimeReadyProjectCallback();
@@ -163,15 +163,15 @@ describe('Runtime-ready project functionality', () => {
 			// Remove compiled WASM by setting it to an empty array
 			mockState.compiler.codeBuffer = new Uint8Array(0);
 
-			const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
 			// Set up save functionality
 			projectExport(store, mockEvents);
 
 			// Get the exportRuntimeReadyProject callback
-			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
-			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall[1];
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
 
 			// Trigger the exportRuntimeReadyProject action
 			await exportRuntimeReadyProjectCallback();
@@ -203,13 +203,13 @@ describe('Runtime-ready project functionality', () => {
 			// No compileProject callback for runtime-only projects
 			mockState.callbacks.compileProject = undefined;
 
-			const consoleSpy = vi.spyOn(console, 'log').mockImplementation();
+			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
 			// Set up compiler functionality
 			compiler(store, mockEvents);
 
 			// Get the onRecompile callback
-			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const recompileCall = onCalls.find(
 				call =>
 					call[0] === 'createConnection' ||
@@ -219,7 +219,7 @@ describe('Runtime-ready project functionality', () => {
 			);
 			expect(recompileCall).toBeDefined();
 
-			const onRecompileCallback = recompileCall[1];
+			const onRecompileCallback = recompileCall![1];
 
 			// Trigger recompilation
 			await onRecompileCallback();
@@ -247,7 +247,7 @@ describe('Runtime-ready project functionality', () => {
 
 			// Mock the compileProject function
 			const mockCompileProject = vi.fn().mockResolvedValue({
-				compiledModules: new Map(),
+				compiledModules: {},
 				codeBuffer: new Uint8Array([100, 200]),
 				allocatedMemorySize: 1024,
 			});
@@ -257,7 +257,7 @@ describe('Runtime-ready project functionality', () => {
 			compiler(store, mockEvents);
 
 			// Get the onRecompile callback
-			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const recompileCall = onCalls.find(
 				call =>
 					call[0] === 'createConnection' ||
@@ -265,7 +265,7 @@ describe('Runtime-ready project functionality', () => {
 					call[0] === 'deleteCodeBlock' ||
 					call[0] === 'projectLoaded'
 			);
-			const onRecompileCallback = recompileCall[1];
+			const onRecompileCallback = recompileCall![1];
 
 			// Trigger recompilation
 			await onRecompileCallback();
@@ -284,11 +284,11 @@ describe('Runtime-ready project functionality', () => {
 			projectExport(store, mockEvents);
 
 			// Get the save callback
-			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const saveCall = onCalls.find(call => call[0] === 'exportProject');
 			expect(saveCall).toBeDefined();
 
-			const saveCallback = saveCall[1];
+			const saveCallback = saveCall![1];
 
 			// Trigger the save action
 			await saveCallback();
@@ -311,11 +311,11 @@ describe('Runtime-ready project functionality', () => {
 			projectExport(store, mockEvents);
 
 			// Get the exportRuntimeReadyProject callback
-			const onCalls = (mockEvents.on as MockInstance).mock.calls;
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
 			expect(exportRuntimeReadyProjectCall).toBeDefined();
 
-			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall[1];
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
 
 			// Trigger the exportRuntimeReadyProject action
 			await exportRuntimeReadyProjectCallback();

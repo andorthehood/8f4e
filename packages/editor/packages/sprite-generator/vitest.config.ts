@@ -6,14 +6,26 @@ export default defineConfig({
 		environment: 'node',
 		testTimeout: 30000,
 		hookTimeout: 10000,
-		reporters: process.env.CI ? ['basic'] : ['default'],
+		reporters: process.env.CI
+			? [
+					[
+						'default',
+						{
+							summary: false,
+						},
+					],
+				]
+			: ['default'],
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'json', 'html'],
 			exclude: ['node_modules/', 'dist/', '**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.{test,spec}.ts'],
 		},
-		include: ['tests/**/*.{test,spec}.ts'],
-		exclude: ['**/node_modules/**', '**/dist/**', 'screenshot-tests/**'],
-		passWithNoTests: true,
+		include: ['tests/**/*.{test,spec}.ts', 'src/**/*.{test,spec}.ts'],
+		exclude: ['**/node_modules/**', '**/dist/**'],
+		typecheck: {
+			enabled: true,
+			tsconfig: './tsconfig.test.json',
+		},
 	},
 });
