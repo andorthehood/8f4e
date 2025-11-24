@@ -24,6 +24,8 @@ export default defineConfig({
 		},
 	},
 	optimizeDeps: {
+		// Exclude Vitest packages to prevent conflicts with Playwright test runner
+		// These packages define global matchers that conflict with Playwright's expect
 		exclude: ['vitest', '@vitest/expect', '@vitest/runner', '@vitest/utils'],
 	},
 });
