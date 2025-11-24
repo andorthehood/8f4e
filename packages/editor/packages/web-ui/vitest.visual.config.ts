@@ -24,7 +24,7 @@ export default mergeConfig(
 			},
 			// Only include visual test files
 			include: ['vitest-visual-tests/**/*.visual.test.ts'],
-			exclude: ['**/node_modules/**', '**/dist/**', 'screenshot-tests/**'],
+			exclude: ['**/node_modules/**', '**/dist/**'],
 		},
 	})
 );
