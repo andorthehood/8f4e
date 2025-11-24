@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`should render a gradient > gradient-canvas.png 1`] = `"/home/runner/work/8f4e/8f4e/packages/editor/packages/web-ui/vitest-visual-tests/__screenshots__/canvas-rendering.visual.test.ts/should-render-a-gradient-1.png"`;
+
+exports[`should render a simple colored canvas > simple-colored-canvas.png 1`] = `"/home/runner/work/8f4e/8f4e/packages/editor/packages/web-ui/vitest-visual-tests/__screenshots__/canvas-rendering.visual.test.ts/should-render-a-simple-colored-canvas-1.png"`;

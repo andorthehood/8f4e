@@ -41,6 +41,14 @@
         "cwd": "{projectRoot}"
       }
     },
+    "visual-test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/vitest-visual-tests/__screenshots__"],
+      "options": {
+        "command": "vitest --config=vitest.visual.config.ts",
+        "cwd": "{projectRoot}"
+      }
+    },
     "test:screenshot:ui": {
       "executor": "nx:run-commands",
       "options": {
