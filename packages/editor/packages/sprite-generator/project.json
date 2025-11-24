@@ -32,16 +32,12 @@
       }
     },
     "test": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["generate-fonts"],
       "options": {
-        "commands": [
-          "tsc --noEmit --project tsconfig.test.json",
-          "vitest run --config vitest.config.ts"
-        ],
-        "cwd": "{projectRoot}",
-        "parallel": false
+        "config": "{projectRoot}/vitest.config.ts",
+        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
       }
     },
     "typecheck": {
