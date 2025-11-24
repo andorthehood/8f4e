@@ -1,5 +1,4 @@
----
-title: 'TODO: Use Vitest for Screenshot-Based Visual Regression Testing'
+title: 'TODO: Run Existing Screenshot-Based Visual Regression Tests with Vitest'
 priority: Medium
 effort: 1-2d
 created: 2025-11-23
@@ -7,65 +6,63 @@ status: Open
 completed: null
 ---
 
-# TODO: Use Vitest for Screenshot-Based Visual Regression Testing
+# TODO: Run Existing Screenshot-Based Visual Regression Tests with Vitest
 
 ## Problem Description
 
-The current plan for visual regression testing in the 2D engine (see TODO-048) assumes Jest + Puppeteer or Playwright as the primary tooling for screenshot capture and comparison.
+The current plan for visual regression testing in the 2D engine assumes Playwright as the primary tooling for screenshot capture and comparison.
 However, the rest of the workspace is moving toward Vitest with first-class Vite integration, which creates a tooling split between unit/integration tests and visual regression tests.
 
 This split has several drawbacks:
-- Separate configuration and tooling (Jest/Playwright vs Vitest) increases maintenance overhead.
+- Separate configuration and tooling (Playwright vs Vitest) increases maintenance overhead.
 - Test utilities, fixtures, and mocking patterns are not shared across all test types.
 - CI pipelines must orchestrate multiple test runners, slowing feedback and complicating caching.
 - Developers have to switch mental models and tooling when adding or debugging tests.
 
-We want to explore and adopt a Vitest-based approach for screenshot/visual regression testing so that visual tests align with the rest of the testing stack.
+We want existing screenshot/visual regression tests to be executed via Vitest so that visual tests align with the rest of the testing stack, without changing which visual scenarios are covered or requiring new visual tests to be written as part of this TODO.
 
 ## Proposed Solution
 
-Adopt Vitest as the primary runner for screenshot-based visual regression tests by:
-- Evaluating browser/DOM environments compatible with Vitest (e.g., jsdom, @vitest/browser, or a headless browser bridge).
-- Implementing a reusable screenshot utility that:
-  - Renders 2D engine scenes in a controlled environment.
-  - Captures rendered frames to image buffers.
-  - Compares screenshots against stored baselines with configurable tolerances.
-- Integrating the screenshot workflow into the existing Vitest configuration and Nx targets.
-- Phasing out any separate Jest/Playwright-only visual regression stack in favor of a unified Vitest approach, where practical.
-- Aligning with the official Vitest browser visual regression testing guide (including `toMatchScreenshot` and browser providers such as `@vitest/browser-playwright`) where it fits the 2D engine use cases.
+Use Vitest as the primary runner for the existing screenshot-based visual regression tests by:
+- Evaluating browser/DOM environments compatible with Vitest (e.g., jsdom, @vitest/browser, or a headless browser bridge) that can host the current visual test harness.
+- Adapting the existing screenshot utilities and baselines from the 2D engine visual regression work so they can be invoked from Vitest without changing their coverage or behavior.
+- Integrating the existing screenshot workflow into the Vitest configuration and Nx targets so developers use the same test runner for unit, integration, and visual tests.
+- Phasing out any separate Jest/Playwright-only entrypoints for the current visual regression suite in favor of Vitest orchestration, where practical.
+- Aligning with the official Vitest browser visual regression testing guide (including `toMatchScreenshot` and browser providers such as `@vitest/browser-playwright`) where it helps run the existing visual tests, not to define new ones.
 
 ## Implementation Plan
 
 ### Step 1: Research Vitest-Compatible Visual Regression Approaches
 - Survey existing libraries and patterns for screenshot testing with Vitest (including browser mode and external headless browsers).
 - Review the official Vitest visual regression docs: https://vitest.dev/guide/browser/visual-regression-testing.html and capture recommended patterns (e.g., `toMatchScreenshot`, `tests/__screenshots__` directory conventions, reference/actual/diff outputs).
-- Document trade-offs (performance, flakiness, CI compatibility, maintenance).
-- Choose an initial approach that fits the 2D engine use cases and Nx/Vite setup.
+- Inventory the current or planned screenshot-based visual regression tests for the 2D engine, including where baselines live and how screenshots are generated.
+- Document trade-offs (performance, flakiness, CI compatibility, maintenance) for approaches that can host the existing tests under Vitest.
+- Choose an approach that runs the existing visual regression suite under Vitest with minimal changes to test definitions and assets.
 
-### Step 2: Prototype Vitest Screenshot Tests for the 2D Engine
-- Add a minimal Vitest-powered visual regression prototype for one or two simple 2D engine scenes.
-- Implement baseline image generation and comparison logic with configurable thresholds.
-- Verify that tests can be run locally via Nx (e.g., `nx test`) and integrate with the existing Vitest workspace config.
-- Configure Vitest browser mode using a supported provider (for example `@vitest/browser-playwright` as shown in the Vitest docs), but restrict tests to a single browser (`chromium`) only.
-- Use `expect(...).toMatchScreenshot()` so that reference, actual, and diff images are generated in a predictable structure (e.g., under `tests/__screenshots__/`), and adjust naming conventions so that filenames do not encode the host platform (OS) since the rendering pipeline is fully controlled and should be pixel-identical across environments.
+### Step 2: Run Existing Screenshot Tests Under Vitest
+- Adapt one existing 2D engine screenshot-based visual regression test (or small group of tests) to run under Vitest without changing its intent or coverage.
+- Ensure baseline image generation and comparison logic remain the same, or are wrapped so that the baselines and thresholds do not need to be redefined.
+- Verify that the migrated tests can be run locally via Nx (e.g., `nx test`) and integrate with the existing Vitest workspace config.
+- Configure Vitest browser mode using a supported provider (for example `@vitest/browser-playwright` as shown in the Vitest docs), but restrict tests to a single browser (`chromium`) only to keep behavior deterministic.
+- Use `expect(...).toMatchScreenshot()` and the recommended directory structure (e.g., `tests/__screenshots__/`) only as far as needed to support the existing tests, avoiding new scenarios or suites as part of this TODO.
 
 ### Step 3: Generalize Utilities and Optional CI Integration
-- Extract screenshot helpers and fixtures into shared utilities under the 2D engine package (or a dedicated testing utils package).
-- Ensure visual regression tests can be run locally via Nx (e.g., a dedicated `nx visual-test` target) without being part of the default CI pipeline.
-- Optionally provide a separate, opt-in CI job or manual workflow for running visual regression tests when needed (e.g., pre-release checks), while avoiding running them on every CI push to control costs.
-- Decide how to store and version-control baseline images (e.g., under `tests/fixtures/visual/` or `tests/__screenshots__/`), and consider using Git LFS for large screenshot suites as recommended by the Vitest docs.
+- Extract or wrap existing screenshot helpers and fixtures into shared utilities under the 2D engine package (or a dedicated testing utils package) so they can be called from Vitest.
+- Ensure the current visual regression tests can be run locally via Nx (e.g., `nx test` or a dedicated `nx visual-test` target) using Vitest as the runner.
+- Optionally provide a separate, opt-in CI job or manual workflow for running the existing visual regression tests when needed (e.g., pre-release checks), while avoiding running them on every CI push to control costs.
+- Keep the existing baseline image directory structure where possible; if changes are needed to integrate with Vitest conventions (e.g., `tests/__screenshots__/`), migrate the baselines without expanding the test suite and consider using Git LFS for large screenshot suites as recommended by the Vitest docs.
 
-### Step 4: Align TODO-048 with Vitest Strategy
-- Update TODO-048 (Add 2D Engine Visual Regression Tests) to reference the chosen Vitest-based approach instead of Jest/Playwright, or mark this TODO as the preferred implementation path.
-- Remove or de-prioritize plans that assume a separate Jest/Playwright stack once Vitest-based visual regression is proven.
+### Step 4: Align Visual Regression Strategy with Vitest
+- Ensure the broader 2D engine visual regression strategy consistently assumes Vitest as the preferred runner for any current visual regression coverage.
+- Keep coverage expansion and scenario design tracked in the appropriate visual regression planning documents, while this TODO remains focused on running the existing screenshot-based visual regression suite under Vitest.
 
 ## Success Criteria
 
-- [ ] Screenshot-based visual regression tests for the 2D engine run under Vitest.
+- [ ] The existing screenshot-based visual regression tests for the 2D engine run under Vitest without reducing or expanding their coverage.
 - [ ] Visual regression tests can be invoked via Nx (e.g., `nx test` or a dedicated `nx visual-test` target) and run only against Chromium.
 - [ ] Baseline images are stored and managed in a predictable directory structure (for example `tests/__screenshots__/...`) and are easy to update when intentional changes occur, without including platform-specific suffixes in filenames.
 - [ ] CI configuration avoids running screenshot-based visual regression tests on every pipeline run by default, with any CI usage explicitly opt-in to control costs.
-- [ ] No separate Jest/Playwright-only pipeline is required for visual regression tests unless explicitly justified.
+- [ ] No separate Jest/Playwright-only pipeline is required for running the existing visual regression tests unless explicitly justified.
 
 ## Affected Components
 
@@ -87,8 +84,6 @@ Adopt Vitest as the primary runner for screenshot-based visual regression tests 
 
 ## Related Items
 
-- **Depends on**:
-  - `docs/todos/048-add-2d-engine-visual-regression-tests.md` (overall visual regression plan for 2D engine).
 - **Related**:
   - `docs/todos/032-editor-test-coverage-plan.md` (overall editor testing strategy).
   - `vitest.preset.ts`, `vitest.workspace.ts` (shared Vitest configuration).
@@ -99,11 +94,6 @@ Adopt Vitest as the primary runner for screenshot-based visual regression tests 
 - Vitest documentation and browser mode references.
 - Existing 2D engine visual regression TODO and any prototypes under `packages/editor/packages/glugglug/`.
 - CI configuration for current Vitest runs.
-
-## Notes
-
-- This TODO focuses on **how** visual regression tests are implemented (Vitest-based) rather than **what** scenarios are covered; TODO-048 remains the source of truth for coverage scope.
-- If Vitest-based screenshot testing proves impractical for some scenarios, a hybrid approach (Vitest + external headless browser) may still be acceptable, but should be documented clearly.
 
 ## Archive Instructions
 
