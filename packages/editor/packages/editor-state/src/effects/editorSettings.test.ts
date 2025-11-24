@@ -46,7 +46,7 @@ describe('editorSettings', () => {
 		});
 
 		it('should handle color scheme loading errors gracefully', async () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.callbacks.getListOfColorSchemes = vi.fn().mockRejectedValue(new Error('Failed to load'));
 
@@ -109,7 +109,7 @@ describe('editorSettings', () => {
 		});
 
 		it('should handle loading errors gracefully', async () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 			const defaultState = createMockState();
 
 			mockState.featureFlags.persistentStorage = true;
