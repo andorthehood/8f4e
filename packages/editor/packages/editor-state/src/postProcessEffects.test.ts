@@ -24,6 +24,7 @@ describe('Project postProcessEffects', () => {
 				},
 			],
 			compiledModules: {},
+			memorySizeBytes: 1048576,
 		};
 
 		expect(projectWithEffects.postProcessEffects).toBeDefined();
@@ -46,6 +47,7 @@ describe('Project postProcessEffects', () => {
 					sampleRate: 50,
 				},
 			],
+			memorySizeBytes: 1048576,
 		};
 
 		expect(projectWithoutEffects.postProcessEffects).toBeUndefined();
@@ -80,6 +82,7 @@ describe('Project postProcessEffects', () => {
 					enabled: false,
 				},
 			],
+			memorySizeBytes: 1048576,
 		};
 
 		expect(projectWithMultipleEffects.postProcessEffects).toBeDefined();
