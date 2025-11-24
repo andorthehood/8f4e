@@ -9,7 +9,16 @@ export default defineConfig({
 		environment: 'node',
 		testTimeout: 30000,
 		hookTimeout: 10000,
-		reporters: process.env.CI ? ['basic'] : ['default'],
+		reporters: process.env.CI
+			? [
+					[
+						'default',
+						{
+							summary: false,
+						},
+					],
+				]
+			: ['default'],
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'json', 'html'],
@@ -25,6 +34,10 @@ export default defineConfig({
 			'src/**/__tests__/**/fixtures/**',
 			'packages/**',
 		],
+		typecheck: {
+			enabled: true,
+			tsconfig: './tsconfig.test.json',
+		},
 	},
 	resolve: {
 		alias: {

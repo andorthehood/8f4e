@@ -219,7 +219,7 @@ describe('Runtime-ready project functionality', () => {
 			);
 			expect(recompileCall).toBeDefined();
 
-			const onRecompileCallback = recompileCall[1];
+			const onRecompileCallback = recompileCall![1];
 
 			// Trigger recompilation
 			await onRecompileCallback();
@@ -265,7 +265,7 @@ describe('Runtime-ready project functionality', () => {
 					call[0] === 'deleteCodeBlock' ||
 					call[0] === 'projectLoaded'
 			);
-			const onRecompileCallback = recompileCall[1];
+			const onRecompileCallback = recompileCall![1];
 
 			// Trigger recompilation
 			await onRecompileCallback();
@@ -288,7 +288,7 @@ describe('Runtime-ready project functionality', () => {
 			const saveCall = onCalls.find(call => call[0] === 'exportProject');
 			expect(saveCall).toBeDefined();
 
-			const saveCallback = saveCall[1];
+			const saveCallback = saveCall![1];
 
 			// Trigger the save action
 			await saveCallback();
