@@ -27,7 +27,9 @@ export default defineConfig({
 		testTimeout: 30000,
 		hookTimeout: 10000,
 		reporters: ['default'],
-		include: ['screenshot-vitest.test.ts', 'minimal.test.ts'],
+		// Include Vitest browser tests - these are kept separate from Playwright tests
+		// to avoid conflicts between test runners
+		include: ['*vitest.test.ts', 'minimal.test.ts'],
 		exclude: ['**/node_modules/**', '**/dist/**', 'src/**', 'screenshot-tests/**'],
 	},
 	root: __dirname,

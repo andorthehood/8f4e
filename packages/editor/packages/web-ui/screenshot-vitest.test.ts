@@ -100,6 +100,10 @@ const testCases = [
 	{ name: 'context-menu', init: initContextMenu },
 ];
 
+// Time to wait for rendering to complete before taking screenshot
+// Matches the delay used in the Playwright screenshot tests for consistency
+const RENDERING_WAIT_MS = 2000;
+
 describe('Web-UI Screenshot Tests', () => {
 	for (const testCase of testCases) {
 		test(`should display web-ui canvas renderer for ${testCase.name}`, async () => {
@@ -115,7 +119,7 @@ describe('Web-UI Screenshot Tests', () => {
 				await testCase.init(canvas);
 
 				// Wait for rendering to complete
-				await new Promise(resolve => setTimeout(resolve, 2000));
+				await new Promise(resolve => setTimeout(resolve, RENDERING_WAIT_MS));
 
 				// Take screenshot and compare
 				await expect.element(canvas).toMatchScreenshot(`${testCase.name}.png`);
