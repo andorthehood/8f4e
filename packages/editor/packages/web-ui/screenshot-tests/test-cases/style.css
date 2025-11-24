@@ -1,0 +1,18 @@
+* {
+	padding: 0;
+	margin: 0;
+	cursor: url('./assets/cursor.png'), auto;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	background: #000000;
+}
+
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+}
+
+canvas {
+	image-rendering: pixelated;
+}

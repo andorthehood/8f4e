@@ -26,6 +26,15 @@
         "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
       }
     },
+    "test:visual": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "config": "{projectRoot}/vitest.browser.config.ts",
+        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
+      },
+      "dependsOn": ["build"]
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
