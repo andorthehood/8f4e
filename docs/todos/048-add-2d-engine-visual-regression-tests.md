@@ -9,7 +9,9 @@ completed: null
 
 # TODO: Add 2D Engine Visual Regression Tests
 
-**Priority**: ��
+**Priority**: ⚠️
+
+**NOTE**: The implementation approach for this TODO should follow the Vitest-based visual regression testing pattern established in TODO-101 (completed 2025-11-24) rather than the Jest + Puppeteer approach originally outlined below.
 
 The 2D engine package currently lacks visual regression testing, which means:
 - Rendering bugs may go undetected during refactoring
@@ -20,15 +22,27 @@ The 2D engine package currently lacks visual regression testing, which means:
 
 Visual regression tests would provide confidence that the engine continues to render correctly as code evolves.
 
-## Proposed Solution
+## Recommended Solution (Updated)
 
-Implement visual regression testing for the 2D engine using:
-- **Jest + Puppeteer** or **Playwright** for headless browser testing
-- **Pixel-perfect screenshot comparison** for rendering validation
+Implement visual regression testing for the 2D engine using **Vitest browser mode** (see TODO-101 for infrastructure):
+- **Vitest + Playwright provider** for headless browser testing (Chromium only)
+- **Pixel-perfect screenshot comparison** using Vitest's native snapshot system
 - **Test fixtures** with known sprite sheets and rendering scenarios
-- **Automated baseline generation** and comparison
-- **CI/CD integration** for catching visual regressions early
+- **Automated baseline generation** via `vitest --update`
+- **Opt-in CI/CD integration** to control costs (not run by default)
 
+See `packages/editor/packages/web-ui/vitest-visual-tests/` for a working prototype and pattern to follow.
+
+## Original Proposed Solution (Deprecated)
+
+~~Implement visual regression testing for the 2D engine using:~~
+- ~~**Jest + Puppeteer** or **Playwright** for headless browser testing~~
+- ~~**Pixel-perfect screenshot comparison** for rendering validation~~
+- ~~**Test fixtures** with known sprite sheets and rendering scenarios~~
+- ~~**Automated baseline generation** and comparison~~
+- ~~**CI/CD integration** for catching visual regressions early~~
+
+**This approach is superseded by the Vitest-based approach documented in TODO-101.**
 ## Implementation Plan
 
 ### Step 1: Set up visual testing infrastructure
