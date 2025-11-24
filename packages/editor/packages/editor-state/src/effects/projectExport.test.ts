@@ -104,7 +104,7 @@ describe('projectExport', () => {
 		});
 
 		it('should warn when no exportProject callback is provided', () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.callbacks.exportProject = undefined;
 
@@ -122,7 +122,7 @@ describe('projectExport', () => {
 		});
 
 		it('should handle export errors gracefully', async () => {
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation();
+			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
 			mockState.callbacks.exportProject = vi.fn().mockRejectedValue(new Error('Export failed'));
 
@@ -163,7 +163,7 @@ describe('projectExport', () => {
 		});
 
 		it('should warn when no compiled WASM is available', () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.compiler.codeBuffer = new Uint8Array(0);
 
@@ -184,7 +184,7 @@ describe('projectExport', () => {
 		});
 
 		it('should handle runtime-ready export errors gracefully', async () => {
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation();
+			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
 			mockState.compiler.codeBuffer = new Uint8Array([1, 2, 3]);
 			mockState.callbacks.exportProject = vi.fn().mockRejectedValue(new Error('Export failed'));
