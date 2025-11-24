@@ -26,5 +26,10 @@ export const vitestPreset = defineConfig({
 		},
 		include: ['**/*.{test,spec}.{ts,tsx}', '**/tests/**/*.{test,spec}.{ts,tsx}'],
 		exclude: ['**/node_modules/**', '**/dist/**'],
+		// Enable typechecking for test files using tsconfig.test.json if it exists
+		typecheck: {
+			enabled: true,
+			tsconfig: './tsconfig.test.json',
+		},
 	},
 });
