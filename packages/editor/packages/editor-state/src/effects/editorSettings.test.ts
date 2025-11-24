@@ -46,7 +46,7 @@ describe('editorSettings', () => {
 		});
 
 		it('should handle color scheme loading errors gracefully', async () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.callbacks.getListOfColorSchemes = vi.fn().mockRejectedValue(new Error('Failed to load'));
 
@@ -109,7 +109,7 @@ describe('editorSettings', () => {
 		});
 
 		it('should handle loading errors gracefully', async () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation();
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 			const defaultState = createMockState();
 
 			mockState.featureFlags.persistentStorage = true;
@@ -165,7 +165,7 @@ describe('editorSettings', () => {
 			expect(settingsSubscription).toBeDefined();
 
 			const settingsChangeCallback = settingsSubscription![1];
-			settingsChangeCallback();
+			(settingsChangeCallback as () => void)();
 
 			expect(mockSaveEditorSettings).toHaveBeenCalledWith(mockState.editorSettings);
 
@@ -186,7 +186,7 @@ describe('editorSettings', () => {
 			const settingsSubscription = subscribeSpy.mock.calls.find(call => call[0] === 'editorSettings');
 			const settingsChangeCallback = settingsSubscription![1];
 
-			settingsChangeCallback();
+			(settingsChangeCallback as () => void)();
 
 			expect(mockSaveEditorSettings).not.toHaveBeenCalled();
 
@@ -206,7 +206,7 @@ describe('editorSettings', () => {
 			const settingsChangeCallback = settingsSubscription![1];
 
 			// Should not throw error
-			expect(() => settingsChangeCallback()).not.toThrow();
+			expect(() => (settingsChangeCallback as () => void)()).not.toThrow();
 
 			subscribeSpy.mockRestore();
 		});
@@ -226,7 +226,7 @@ describe('editorSettings', () => {
 			expect(colorSchemeSubscription).toBeDefined();
 
 			const colorSchemeChangeCallback = colorSchemeSubscription![1];
-			await colorSchemeChangeCallback();
+			await (colorSchemeChangeCallback as () => Promise<void>)();
 
 			expect(mockState.callbacks.getColorScheme).toHaveBeenCalledWith(mockState.editorSettings.colorScheme);
 
@@ -245,7 +245,7 @@ describe('editorSettings', () => {
 			const colorSchemeChangeCallback = colorSchemeSubscription![1];
 
 			// Should not throw error
-			await expect(colorSchemeChangeCallback()).resolves.toBeUndefined();
+			await expect((colorSchemeChangeCallback as () => Promise<void>)()).resolves.toBeUndefined();
 
 			subscribeSpy.mockRestore();
 		});
