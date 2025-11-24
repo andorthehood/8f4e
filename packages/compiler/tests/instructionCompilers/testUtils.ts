@@ -6,11 +6,11 @@ import type { AST, CompilationContext } from '../../src/types';
 export function createMockContext(): CompilationContext {
 	return {
 		namespace: {
-			locals: new Map(),
-			memory: new Map(),
+			locals: {},
+			memory: {},
 			consts: {},
 			moduleName: '',
-			namespaces: new Map(),
+			namespaces: {},
 		},
 		initSegmentByteCode: [],
 		loopSegmentByteCode: [],

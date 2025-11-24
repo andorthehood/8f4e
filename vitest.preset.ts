@@ -9,7 +9,16 @@ export const vitestPreset = defineConfig({
 		hookTimeout: 10000, // 10 seconds max for beforeEach/afterEach
 		// Use 'default' reporter which shows test names and failures without breaking CI
 		// CI detection: GitHub Actions sets CI=true
-		reporters: process.env.CI ? ['basic'] : ['default'],
+		reporters: process.env.CI
+			? [
+					[
+						'default',
+						{
+							summary: false,
+						},
+					],
+				]
+			: ['default'],
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'json', 'html'],
