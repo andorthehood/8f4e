@@ -23,5 +23,9 @@ export default defineConfig({
 		},
 		include: ['tests/**/*.test.ts'],
 		exclude: ['**/node_modules/**', '**/dist/**', '**/testUtils.ts', '**/__fixtures__/**'],
+		typecheck: {
+			enabled: true,
+			tsconfig: './tsconfig.test.json',
+		},
 	},
 });
