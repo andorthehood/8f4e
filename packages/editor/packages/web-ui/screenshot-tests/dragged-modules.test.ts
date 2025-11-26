@@ -1,17 +1,15 @@
+import { expect, test } from 'vitest';
 import init from '@8f4e/web-ui';
 import { createMockCodeBlock } from '@8f4e/editor-state/testing';
 
-import createMockStateWithColors from '../utils/createMockStateWithColors';
-import { generateColorMapWithAllColors } from '../utils/generateColorMapMock';
+import createMockStateWithColors from './utils/createMockStateWithColors';
+import createCanvas from './utils/createCanvas';
+import { generateColorMapWithAllColors } from './utils/generateColorMapMock';
 
-async function initializeWebUI() {
-	const canvas = document.getElementById('test-canvas') as HTMLCanvasElement;
-	if (!canvas) {
-		throw new Error('Canvas element not found');
-	}
-
+test('dragged module', async () => {
+	const canvas = createCanvas();
 	const mockState = createMockStateWithColors();
-	const webUI = await init(mockState, canvas);
+	await init(mockState, canvas);
 
 	if (mockState.graphicHelper.spriteLookups) {
 		const codeLines = [
@@ -39,8 +37,5 @@ async function initializeWebUI() {
 		mockState.graphicHelper.codeBlocks.add(codeBlockMock);
 	}
 
-	console.log('Web-UI initialized:', webUI);
-	return webUI;
-}
-
-initializeWebUI().catch(console.error);
+	await expect(canvas).toMatchScreenshot();
+});
