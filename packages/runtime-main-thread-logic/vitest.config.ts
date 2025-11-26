@@ -6,7 +6,7 @@ export default defineConfig({
 		environment: 'node',
 		testTimeout: 30000,
 		hookTimeout: 10000,
-		reporters: process.env.CI ? ['basic'] : ['default'],
+		reporters: process.env.CI ? ['default'] : ['default'],
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'json', 'html'],
