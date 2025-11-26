@@ -24,11 +24,17 @@
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
-		"glugglug": "*",
+		"@8f4e/editor-state": "*",
 		"@8f4e/sprite-generator": "*",
-		"@8f4e/editor-state": "*"
+		"glugglug": "*"
 	},
 	"devDependencies": {
-		"vite": "^7.1.11"
+		"@vitest/browser": "4.0.13",
+		"@vitest/browser-playwright": "4.0.13",
+		"playwright": "^1.56.1",
+		"vitest": "^4.0.13"
+	},
+	"scripts": {
+		"test:browser": "vitest --config=vitest.browser.config.ts"
 	}
 }

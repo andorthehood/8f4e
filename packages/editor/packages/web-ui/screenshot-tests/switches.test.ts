@@ -1,27 +1,27 @@
+import { expect, test } from 'vitest';
 import init from '@8f4e/web-ui';
 import { createMockCodeBlock } from '@8f4e/editor-state/testing';
 
-import createMockStateWithColors from '../utils/createMockStateWithColors';
-import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
+import createMockStateWithColors from './utils/createMockStateWithColors';
+import createCanvas from './utils/createCanvas';
+import { generateColorMapWithOneColor } from './utils/generateColorMapMock';
 
-(async function initializeWebUI() {
-	const canvas = document.getElementById('test-canvas') as HTMLCanvasElement;
+test('switches', async () => {
+	const canvas = createCanvas();
 	const mockState = createMockStateWithColors();
-	const webUI = await init(mockState, canvas);
+	await init(mockState, canvas);
 
-	const buttons = new Map(
-		Object.entries({
-			set: {
-				width: 32,
-				height: 16,
-				x: 100,
-				y: 100,
-				id: 'set',
-				offValue: 0,
-				onValue: 1,
-			},
-		})
-	);
+	const buttons = [
+		{
+			width: 32,
+			height: 16,
+			x: 100,
+			y: 100,
+			id: 'set',
+			offValue: 0,
+			onValue: 1,
+		},
+	];
 
 	if (mockState.graphicHelper.spriteLookups) {
 		const lines1 = ['selected code block', '', '', '', '', '', '', '', ''];
@@ -35,14 +35,15 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 			codeToRender: codeToRender1,
 			codeColors: generateColorMapWithOneColor(mockState.graphicHelper.spriteLookups.fontCode, 10),
 			extras: {
-				inputs: new Map(),
-				outputs: new Map(),
-				debuggers: new Map(),
-				switches: new Map(),
+				inputs: [],
+				outputs: [],
+				debuggers: [],
+				switches: [],
 				buttons,
-				pianoKeyboards: new Map(),
-				bufferPlotters: new Map(),
-				errorMessages: new Map(),
+				pianoKeyboards: [],
+				bufferPlotters: [],
+				errorMessages: [],
+				blockHighlights: [],
 			},
 		});
 
@@ -62,18 +63,19 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 				codeToRender: codeToRender2,
 				codeColors: generateColorMapWithOneColor(mockState.graphicHelper.spriteLookups.fontCode, 10),
 				extras: {
-					inputs: new Map(),
-					outputs: new Map(),
-					debuggers: new Map(),
-					switches: new Map(),
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
 					buttons,
-					pianoKeyboards: new Map(),
-					bufferPlotters: new Map(),
-					errorMessages: new Map(),
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					errorMessages: [],
+					blockHighlights: [],
 				},
 			})
 		);
 	}
 
-	return webUI;
-})();
+	await expect(canvas).toMatchScreenshot();
+});
