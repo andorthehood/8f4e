@@ -5,7 +5,9 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["{projectRoot}/dist"],
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
       "options": {
         "command": "tsc",
         "cwd": "{projectRoot}"
@@ -19,21 +21,25 @@
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "executor": "@nx/vitest:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
         "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
       }
     },
-  "typecheck": {
-    "executor": "nx:run-commands",
-    "options": {
-      "command": "tsc --noEmit",
-      "cwd": "{projectRoot}"
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit",
+        "cwd": "{projectRoot}"
+      },
+      "dependsOn": [
+        "^build"
+      ]
     },
-    "dependsOn": ["^build"]
-  },
     "test:screenshot": {
       "executor": "nx:run-commands",
       "options": {
@@ -77,5 +83,8 @@
       }
     }
   },
-  "tags": ["type:library", "scope:ui"]
+  "tags": [
+    "type:library",
+    "scope:ui"
+  ]
 }

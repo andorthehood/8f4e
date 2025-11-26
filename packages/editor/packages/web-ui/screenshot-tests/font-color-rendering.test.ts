@@ -1,12 +1,13 @@
+import { expect, test } from 'vitest';
 import init from '@8f4e/web-ui';
 import { createMockCodeBlock } from '@8f4e/editor-state/testing';
 
-import createMockStateWithColors from '../utils/createMockStateWithColors';
-import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
+import createMockStateWithColors from './utils/createMockStateWithColors';
+import createCanvas from './utils/createCanvas';
+import { generateColorMapWithOneColor } from './utils/generateColorMapMock';
 
-(async function initializeWebUI() {
-	const canvas = document.getElementById('test-canvas') as HTMLCanvasElement;
-
+test('font color rendering', async () => {
+	const canvas = createCanvas();
 	const mockState = createMockStateWithColors();
 	await init(mockState, canvas);
 
@@ -56,4 +57,6 @@ import { generateColorMapWithOneColor } from '../utils/generateColorMapMock';
 			})
 		);
 	});
-})();
+
+	await expect(canvas).toMatchScreenshot();
+});
