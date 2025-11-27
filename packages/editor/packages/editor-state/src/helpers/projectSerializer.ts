@@ -1,11 +1,10 @@
 import type { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
 
 /**
- * Converts graphic data code blocks to simplified project structure for serialization
+ * Converts graphic data code blocks to simplified project structure for serialization.
+ * Uses gridCoordinates for persistent storage.
  * @param codeBlocks Array of code blocks with full graphic data
- * @param vGrid Vertical grid size (for converting pixel coordinates to grid coordinates)
- * @param hGrid Horizontal grid size (for converting pixel coordinates to grid coordinates)
- * @returns Array of simplified code blocks suitable for file format
+ * @returns Array of simplified code blocks suitable for file format with gridCoordinates
  */
 export function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): CodeBlock[] {
 	return codeBlocks
@@ -19,13 +18,16 @@ export function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphi
 		})
 		.map(codeBlock => ({
 			code: codeBlock.code,
-			x: codeBlock.gridX,
-			y: codeBlock.gridY,
+			gridCoordinates: {
+				x: codeBlock.gridX,
+				y: codeBlock.gridY,
+			},
 		}));
 }
 
 /**
- * Serializes current runtime state to Project format for saving to file
+ * Serializes current runtime state to Project format for saving to file.
+ * Converts pixel coordinates to grid coordinates for persistent storage.
  * @param state Current editor state
  * @param options Optional parameters for serialization
  * @param options.includeCompiled If true, includes compiledWasm and memorySnapshot (for runtime-ready projects)
@@ -43,8 +45,11 @@ export function serializeToProject(
 		description: projectInfo.description,
 		codeBlocks: convertGraphicDataToProjectStructure(Array.from(graphicHelper.codeBlocks)),
 		viewport: {
-			x: Math.round(graphicHelper.viewport.x / graphicHelper.viewport.vGrid),
-			y: Math.round(graphicHelper.viewport.y / graphicHelper.viewport.hGrid),
+			// Convert pixel coordinates to grid coordinates for persistent storage
+			gridCoordinates: {
+				x: Math.round(graphicHelper.viewport.x / graphicHelper.viewport.vGrid),
+				y: Math.round(graphicHelper.viewport.y / graphicHelper.viewport.hGrid),
+			},
 		},
 		selectedRuntime: compiler.selectedRuntime,
 		runtimeSettings: compiler.runtimeSettings,

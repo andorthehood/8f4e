@@ -3,8 +3,8 @@ title: 'TODO: Clarify Project Viewport Grid Coordinates'
 priority: Medium
 effort: 2–4 hours
 created: 2025-11-27
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-27
 ---
 
 # TODO: Clarify Project Viewport Grid Coordinates
