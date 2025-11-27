@@ -437,7 +437,6 @@ const project: Project = {
 			runtime: 'WebWorkerLogicRuntime',
 		},
 	],
-	compiledModules: {},
 };
 
 export default project;
