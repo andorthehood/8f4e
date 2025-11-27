@@ -26,8 +26,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 167,
-			y: 30,
+			gridCoordinates: { x: 167, y: 30 },
 		},
 		{
 			code: [
@@ -49,8 +48,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 167,
-			y: 12,
+			gridCoordinates: { x: 167, y: 12 },
 		},
 		{
 			code: [
@@ -72,8 +70,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 167,
-			y: -6,
+			gridCoordinates: { x: 167, y: -6 },
 		},
 		{
 			code: [
@@ -95,8 +92,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 167,
-			y: -24,
+			gridCoordinates: { x: 167, y: -24 },
 		},
 		{
 			code: [
@@ -112,8 +108,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 201,
-			y: -24,
+			gridCoordinates: { x: 201, y: -24 },
 		},
 		{
 			code: [
@@ -129,8 +124,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 201,
-			y: 30,
+			gridCoordinates: { x: 201, y: 30 },
 		},
 		{
 			code: [
@@ -146,8 +140,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 201,
-			y: 12,
+			gridCoordinates: { x: 201, y: 12 },
 		},
 		{
 			code: [
@@ -163,8 +156,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 201,
-			y: -6,
+			gridCoordinates: { x: 201, y: -6 },
 		},
 		{
 			code: [
@@ -193,8 +185,7 @@ const project: Project = {
 				'int last   0b00000000',
 				'moduleEnd',
 			],
-			x: 39,
-			y: -13,
+			gridCoordinates: { x: 39, y: -13 },
 		},
 		{
 			code: [
@@ -223,8 +214,7 @@ const project: Project = {
 				'int last   0b00000000',
 				'moduleEnd',
 			],
-			x: 5,
-			y: -13,
+			gridCoordinates: { x: 5, y: -13 },
 		},
 		{
 			code: [
@@ -296,8 +286,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 238,
-			y: -24,
+			gridCoordinates: { x: 238, y: -24 },
 		},
 		{
 			code: [
@@ -362,8 +351,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 121,
-			y: -13,
+			gridCoordinates: { x: 121, y: -13 },
 		},
 		{
 			code: [
@@ -402,8 +390,7 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			x: 85,
-			y: 13,
+			gridCoordinates: { x: 85, y: 13 },
 		},
 		{
 			code: [
@@ -432,11 +419,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 80,
-			y: -13,
+			gridCoordinates: { x: 80, y: -13 },
 		},
 	],
-	viewport: { x: 37, y: -25 },
+	viewport: { gridCoordinates: { x: 37, y: -25 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{

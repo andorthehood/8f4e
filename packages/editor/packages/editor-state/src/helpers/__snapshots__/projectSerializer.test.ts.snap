@@ -6,8 +6,10 @@ exports[`projectSerializer > convertGraphicDataToProjectStructure > converts gra
     "code": [
       "test code",
     ],
-    "x": 10,
-    "y": 8,
+    "gridCoordinates": {
+      "x": 10,
+      "y": 8,
+    },
   },
 ]
 `;
@@ -30,8 +32,10 @@ exports[`projectSerializer > serializeToProject > creates a valid Project object
   "selectedRuntime": 0,
   "title": "Test Project",
   "viewport": {
-    "x": 0,
-    "y": 0,
+    "gridCoordinates": {
+      "x": 0,
+      "y": 0,
+    },
   },
 }
 `;

@@ -20,8 +20,7 @@ const project: Project = {
 				'init notes[5] 52.0',
 				'moduleEnd',
 			],
-			x: -12,
-			y: -6,
+			gridCoordinates: { x: -12, y: -6 },
 		},
 		{
 			code: [
@@ -37,8 +36,7 @@ const project: Project = {
 				'init notes[5] 53.0',
 				'moduleEnd',
 			],
-			x: 38,
-			y: -6,
+			gridCoordinates: { x: 38, y: -6 },
 		},
 		{
 			code: [
@@ -53,8 +51,7 @@ const project: Project = {
 				'init notes[4] 55.0',
 				'moduleEnd',
 			],
-			x: -12,
-			y: 11,
+			gridCoordinates: { x: -12, y: 11 },
 		},
 		{
 			code: [
@@ -66,8 +63,7 @@ const project: Project = {
 				'init notes[1] 38.0',
 				'moduleEnd',
 			],
-			x: 38,
-			y: 11,
+			gridCoordinates: { x: 38, y: 11 },
 		},
 		{
 			code: [
@@ -91,8 +87,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 31,
-			y: 40,
+			gridCoordinates: { x: 31, y: 40 },
 		},
 		{
 			code: [
@@ -131,8 +126,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 67,
-			y: 40,
+			gridCoordinates: { x: 67, y: 40 },
 		},
 		{
 			code: [
@@ -176,8 +170,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 31,
-			y: 61,
+			gridCoordinates: { x: 31, y: 61 },
 		},
 		{
 			code: [
@@ -195,8 +188,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 69,
-			y: 77,
+			gridCoordinates: { x: 69, y: 77 },
 		},
 		{
 			code: [
@@ -232,8 +224,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 119,
-			y: -53,
+			gridCoordinates: { x: 119, y: -53 },
 		},
 		{
 			code: [
@@ -246,8 +237,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 91,
-			y: 19,
+			gridCoordinates: { x: 91, y: 19 },
 		},
 		{
 			code: [
@@ -320,8 +310,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 181,
-			y: 6,
+			gridCoordinates: { x: 181, y: 6 },
 		},
 		{
 			code: [
@@ -394,8 +383,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 263,
-			y: 6,
+			gridCoordinates: { x: 263, y: 6 },
 		},
 		{
 			code: [
@@ -468,8 +456,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 346,
-			y: 6,
+			gridCoordinates: { x: 346, y: 6 },
 		},
 		{
 			code: [
@@ -542,8 +529,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 429,
-			y: 6,
+			gridCoordinates: { x: 429, y: 6 },
 		},
 		{
 			code: [
@@ -622,8 +608,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 141,
-			y: 6,
+			gridCoordinates: { x: 141, y: 6 },
 		},
 		{
 			code: [
@@ -698,8 +683,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 223,
-			y: 6,
+			gridCoordinates: { x: 223, y: 6 },
 		},
 		{
 			code: [
@@ -774,8 +758,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 305,
-			y: 6,
+			gridCoordinates: { x: 305, y: 6 },
 		},
 		{
 			code: [
@@ -850,8 +833,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 388,
-			y: 6,
+			gridCoordinates: { x: 388, y: 6 },
 		},
 		{
 			code: [
@@ -882,8 +864,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 85,
-			y: -53,
+			gridCoordinates: { x: 85, y: -53 },
 		},
 		{
 			code: [
@@ -945,8 +926,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 104,
-			y: 40,
+			gridCoordinates: { x: 104, y: 40 },
 		},
 		{
 			code: [
@@ -1008,8 +988,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 157,
-			y: -54,
+			gridCoordinates: { x: 157, y: -54 },
 		},
 		{
 			code: [
@@ -1037,8 +1016,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 201,
-			y: -41,
+			gridCoordinates: { x: 201, y: -41 },
 		},
 		{
 			code: [
@@ -1083,11 +1061,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 49,
-			y: -53,
+			gridCoordinates: { x: 49, y: -53 },
 		},
 	],
-	viewport: { x: -17, y: -11 },
+	viewport: { gridCoordinates: { x: -17, y: -11 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{

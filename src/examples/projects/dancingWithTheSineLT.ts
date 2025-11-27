@@ -269,8 +269,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -68,
-			y: -9,
+			gridCoordinates: { x: -68, y: -9 },
 		},
 		{
 			code: [
@@ -309,8 +308,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -34,
-			y: -9,
+			gridCoordinates: { x: -34, y: -9 },
 		},
 		{
 			code: [
@@ -346,8 +344,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 1,
-			y: -9,
+			gridCoordinates: { x: 1, y: -9 },
 		},
 		{
 			code: [
@@ -384,8 +381,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 36,
-			y: -9,
+			gridCoordinates: { x: 36, y: -9 },
 		},
 		{
 			code: [
@@ -425,11 +421,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 89,
-			y: -12,
+			gridCoordinates: { x: 89, y: -12 },
 		},
 	],
-	viewport: { x: -71, y: -23 },
+	viewport: { gridCoordinates: { x: -71, y: -23 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{
