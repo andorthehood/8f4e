@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { decodeBase64ToFloat32Array, decodeBase64ToInt32Array, decodeBase64ToUint8Array } from './base64Decoder';
 
 describe('decodeBase64ToUint8Array', () => {

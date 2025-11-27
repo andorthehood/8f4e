@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { decodeFontBase64 } from '../src/fonts/font-decoder';
 import { fontMetadata as ascii8x16Metadata } from '../src/fonts/8x16/generated/ascii';
 import { fontMetadata as glyphs8x16Metadata } from '../src/fonts/8x16/generated/glyphs';
