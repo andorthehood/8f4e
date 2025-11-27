@@ -278,8 +278,6 @@ export interface CodeBlockGraphicData {
 	y: number;
 	offsetX: number;
 	offsetY: number;
-	gridX: number;
-	gridY: number;
 	extras: {
 		blockHighlights: Array<{
 			x: number;
