@@ -91,7 +91,6 @@ const project: Project = {
 			audioOutputBuffers: [{ moduleId: 'audioout', memoryId: 'buffer', channel: 0, output: 0 }],
 		},
 	],
-	compiledModules: {},
 };
 
 export default project;
