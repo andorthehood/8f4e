@@ -23,6 +23,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		return state.callbacks
 			.loadSession()
 			.then(localProject => {
+				console.log('ezttoltibe', localProject);
 				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
 			})
 			.catch(error => {
