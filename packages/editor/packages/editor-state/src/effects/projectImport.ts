@@ -122,8 +122,6 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				y: codeBlock.gridCoordinates.y * state.graphicHelper.viewport.hGrid,
 				offsetX: 0,
 				offsetY: 0,
-				gridX: codeBlock.gridCoordinates.x,
-				gridY: codeBlock.gridCoordinates.y,
 				lineNumberColumnWidth: 1,
 				lastUpdated: Date.now(),
 			});
