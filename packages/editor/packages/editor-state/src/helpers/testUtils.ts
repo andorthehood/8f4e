@@ -63,8 +63,6 @@ export function createMockCodeBlock(
 	const id = overrides.id ?? 'test-block';
 
 	// Compute derived defaults
-	const gridX = overrides.gridX ?? x;
-	const gridY = overrides.gridY ?? y;
 	const minGridWidth = overrides.minGridWidth ?? width;
 
 	// Compute cursor defaults only if cursor is not explicitly overridden
@@ -84,8 +82,6 @@ export function createMockCodeBlock(
 		height,
 		offsetX,
 		offsetY,
-		gridX,
-		gridY,
 		minGridWidth,
 		cursor,
 		id,

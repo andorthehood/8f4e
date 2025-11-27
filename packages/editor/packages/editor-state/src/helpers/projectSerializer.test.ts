@@ -14,12 +14,11 @@ describe('projectSerializer', () => {
 					code: ['test code'],
 					x: 80,
 					y: 128,
-					gridX: 10,
-					gridY: 8,
 				}),
 			];
 
-			const result = convertGraphicDataToProjectStructure(graphicData);
+			// vGrid = 8, hGrid = 16, so x=80 -> gridX=10, y=128 -> gridY=8
+			const result = convertGraphicDataToProjectStructure(graphicData, 8, 16);
 
 			expect(result).toMatchSnapshot();
 		});
@@ -35,7 +34,7 @@ describe('projectSerializer', () => {
 				code: ['code a'],
 			});
 
-			const result = convertGraphicDataToProjectStructure([blockA, blockB]);
+			const result = convertGraphicDataToProjectStructure([blockA, blockB], 8, 16);
 
 			expect(result[0].code).toEqual(['code a']);
 			expect(result[1].code).toEqual(['code b']);
