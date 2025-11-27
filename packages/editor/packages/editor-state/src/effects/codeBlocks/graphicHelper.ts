@@ -122,9 +122,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
-		graphicData.x = graphicData.gridX * state.graphicHelper.viewport.vGrid;
-		graphicData.y = graphicData.gridY * state.graphicHelper.viewport.hGrid;
-
 		const codeWithLineNumbers = graphicData.code.map(
 			(line, index) => `${index}`.padStart(graphicData.lineNumberColumnWidth, '0') + ' ' + line
 		);
