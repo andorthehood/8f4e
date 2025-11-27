@@ -81,8 +81,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 34,
-			y: 5,
+			gridCoordinates: { x: 34, y: 5 },
 		},
 		{
 			code: [
@@ -95,8 +94,7 @@ const midiArpeggiator2: Project = {
 				'init notes[2] 52.0',
 				'moduleEnd',
 			],
-			x: -19,
-			y: 4,
+			gridCoordinates: { x: -19, y: 4 },
 		},
 		{
 			code: [
@@ -109,8 +107,7 @@ const midiArpeggiator2: Project = {
 				'init notes[2] 65.0',
 				'moduleEnd',
 			],
-			x: -19,
-			y: 17,
+			gridCoordinates: { x: -19, y: 17 },
 		},
 		{
 			code: [
@@ -134,8 +131,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 30,
-			y: -41,
+			gridCoordinates: { x: 30, y: -41 },
 		},
 		{
 			code: [
@@ -182,8 +178,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 64,
-			y: -41,
+			gridCoordinates: { x: 64, y: -41 },
 		},
 		{
 			code: [
@@ -219,8 +214,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -89,
-			y: -31,
+			gridCoordinates: { x: -89, y: -31 },
 		},
 		{
 			code: [
@@ -256,8 +250,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -125,
-			y: -31,
+			gridCoordinates: { x: -125, y: -31 },
 		},
 		{
 			code: [
@@ -295,8 +288,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -18,
-			y: -31,
+			gridCoordinates: { x: -18, y: -31 },
 		},
 		{
 			code: [
@@ -333,8 +325,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -55,
-			y: 6,
+			gridCoordinates: { x: -55, y: 6 },
 		},
 		{
 			code: [
@@ -371,8 +362,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -53,
-			y: -31,
+			gridCoordinates: { x: -53, y: -31 },
 		},
 		{
 			code: [
@@ -391,8 +381,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 20,
-			y: -13,
+			gridCoordinates: { x: 20, y: -13 },
 		},
 		{
 			code: [
@@ -469,8 +458,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 119,
-			y: 5,
+			gridCoordinates: { x: 119, y: 5 },
 		},
 		{
 			code: [
@@ -555,8 +543,7 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 72,
-			y: 5,
+			gridCoordinates: { x: 72, y: 5 },
 		},
 		{
 			code: [
@@ -601,11 +588,10 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -89,
-			y: 2,
+			gridCoordinates: { x: -89, y: 2 },
 		},
 	],
-	viewport: { x: -90, y: -12 },
+	viewport: { gridCoordinates: { x: -90, y: -12 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{

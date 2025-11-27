@@ -72,11 +72,29 @@ export interface InternalKeyboardEvent {
 // Type for runtime factory function
 export type RuntimeFactory = (state: State, events: EventDispatcher) => () => void;
 
-export interface CodeBlock {
-	code: string[];
+/**
+ * Grid coordinates represent logical cell positions in the editor grid.
+ * These are distinct from pixel coordinates used at runtime.
+ */
+export interface GridCoordinates {
 	x: number;
 	y: number;
-	viewport?: Viewport;
+}
+
+/**
+ * Project-level viewport using grid coordinates.
+ * Used in Project for persistent storage - converted to pixel coordinates at runtime.
+ */
+export interface ProjectViewport {
+	gridCoordinates: GridCoordinates;
+	animationDurationMs?: number;
+}
+
+export interface CodeBlock {
+	code: string[];
+	/** Grid coordinates for the code block position in the editor */
+	gridCoordinates: GridCoordinates;
+	viewport?: ProjectViewport;
 }
 
 export interface Size {
@@ -89,6 +107,11 @@ export interface Position {
 	y: number;
 }
 
+/**
+ * Runtime viewport type using pixel coordinates.
+ * Used in graphicHelper.viewport for runtime rendering.
+ * This is separate from ProjectViewport which uses grid coordinates for persistence.
+ */
 export type Viewport = {
 	x: number;
 	y: number;
@@ -397,7 +420,8 @@ export interface Project {
 	author: string;
 	description: string;
 	codeBlocks: CodeBlock[];
-	viewport: Viewport;
+	/** Viewport position using grid coordinates for persistent storage */
+	viewport: ProjectViewport;
 	selectedRuntime: number;
 	runtimeSettings: Runtimes[];
 	binaryAssets?: BinaryAsset[];
@@ -419,8 +443,7 @@ export const EMPTY_DEFAULT_PROJECT: Project = {
 	codeBlocks: [],
 	compiledModules: {},
 	viewport: {
-		x: 0,
-		y: 0,
+		gridCoordinates: { x: 0, y: 0 },
 	},
 	selectedRuntime: 0,
 	runtimeSettings: [
