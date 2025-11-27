@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { minimalColorScheme, config8x16, config6x10 } from './utils/testFixtures';
 
 import { Command } from '../src/types';

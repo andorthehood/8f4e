@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { encodeUint8ArrayToBase64 } from './base64Encoder';
 import { decodeBase64ToUint8Array } from './base64Decoder';
 

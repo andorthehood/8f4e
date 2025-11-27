@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 // Shared Vitest configuration for all packages
 export const vitestPreset = defineConfig({
 	test: {
-		globals: true,
+		globals: false,
 		environment: 'node',
 		testTimeout: 30000, // 30 seconds max per test
 		hookTimeout: 10000, // 10 seconds max for beforeEach/afterEach
