@@ -549,7 +549,6 @@ const ericSaiteGenerator: Project = {
 			sampleRate: 50,
 		},
 	],
-	compiledModules: {},
 };
 
 export default ericSaiteGenerator;
