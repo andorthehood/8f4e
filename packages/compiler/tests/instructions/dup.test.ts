@@ -1,3 +1,5 @@
+import { describe, test, expect, beforeEach, beforeAll } from 'vitest';
+
 import { createTestModule } from './testUtils';
 
 import type { TestModule } from '../../src/types';

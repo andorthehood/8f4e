@@ -4,7 +4,7 @@
 		"noEmit": true,
 		"rootDir": ".",
 		"lib": ["es2023", "webworker"],
-		"types": ["vitest/globals", "node"]
+		"types": ["node"]
 	},
 	"include": [
 		"src/**/*.ts",

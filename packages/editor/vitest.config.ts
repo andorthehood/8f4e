@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	root: __dirname,
 	test: {
-		globals: true,
+		globals: false,
 		environment: 'node',
 		testTimeout: 30000,
 		hookTimeout: 10000,
