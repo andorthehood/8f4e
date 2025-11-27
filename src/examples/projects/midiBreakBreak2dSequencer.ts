@@ -703,7 +703,6 @@ const project: Project = {
 			runtime: 'WebWorkerMIDIRuntime',
 		},
 	],
-	compiledModules: {},
 };
 
 export default project;
