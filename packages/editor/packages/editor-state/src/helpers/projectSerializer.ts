@@ -2,11 +2,17 @@ import type { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
 
 /**
  * Converts graphic data code blocks to simplified project structure for serialization.
- * Uses gridCoordinates for persistent storage.
+ * Uses gridCoordinates for persistent storage, computed from pixel positions.
  * @param codeBlocks Array of code blocks with full graphic data
+ * @param vGrid Vertical grid size for converting pixels to grid coordinates
+ * @param hGrid Horizontal grid size for converting pixels to grid coordinates
  * @returns Array of simplified code blocks suitable for file format with gridCoordinates
  */
-export function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): CodeBlock[] {
+export function convertGraphicDataToProjectStructure(
+	codeBlocks: CodeBlockGraphicData[],
+	vGrid: number,
+	hGrid: number
+): CodeBlock[] {
 	return codeBlocks
 		.sort((codeBlockA, codeBlockB) => {
 			if (codeBlockA.id > codeBlockB.id) {
@@ -19,8 +25,8 @@ export function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphi
 		.map(codeBlock => ({
 			code: codeBlock.code,
 			gridCoordinates: {
-				x: codeBlock.gridX,
-				y: codeBlock.gridY,
+				x: Math.round(codeBlock.x / vGrid),
+				y: Math.round(codeBlock.y / hGrid),
 			},
 		}));
 }
@@ -43,7 +49,11 @@ export function serializeToProject(
 		title: projectInfo.title,
 		author: projectInfo.author,
 		description: projectInfo.description,
-		codeBlocks: convertGraphicDataToProjectStructure(Array.from(graphicHelper.codeBlocks)),
+		codeBlocks: convertGraphicDataToProjectStructure(
+			Array.from(graphicHelper.codeBlocks),
+			graphicHelper.viewport.vGrid,
+			graphicHelper.viewport.hGrid
+		),
 		viewport: {
 			// Convert pixel coordinates to grid coordinates for persistent storage
 			gridCoordinates: {
