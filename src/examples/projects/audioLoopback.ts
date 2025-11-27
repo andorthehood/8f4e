@@ -41,8 +41,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 6,
-			y: 3,
+			gridCoordinates: { x: 6, y: 3 },
 		},
 		{
 			code: [
@@ -85,8 +84,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 48,
-			y: 1,
+			gridCoordinates: { x: 48, y: 1 },
 		},
 		{
 			code: [
@@ -129,11 +127,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 90,
-			y: 1,
+			gridCoordinates: { x: 90, y: 1 },
 		},
 	],
-	viewport: { x: -17, y: -3 },
+	viewport: { gridCoordinates: { x: -17, y: -3 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{
