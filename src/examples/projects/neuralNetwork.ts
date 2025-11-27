@@ -27,8 +27,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 262,
-			y: -71,
+			gridCoordinates: { x: 262, y: -71 },
 		},
 		{
 			code: [
@@ -57,8 +56,7 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			x: 118,
-			y: -81,
+			gridCoordinates: { x: 118, y: -81 },
 		},
 		{
 			code: [
@@ -87,8 +85,7 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			x: 118,
-			y: -55,
+			gridCoordinates: { x: 118, y: -55 },
 		},
 		{
 			code: [
@@ -117,13 +114,11 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			x: 190,
-			y: -71,
+			gridCoordinates: { x: 190, y: -71 },
 		},
 		{
 			code: ['module result', '', 'int* in &activationFunction.out', '', 'debug *in', '', 'moduleEnd'],
-			x: 76,
-			y: -61,
+			gridCoordinates: { x: 76, y: -61 },
 		},
 		{
 			code: [
@@ -146,8 +141,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 154,
-			y: -81,
+			gridCoordinates: { x: 154, y: -81 },
 		},
 		{
 			code: [
@@ -170,8 +164,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 154,
-			y: -55,
+			gridCoordinates: { x: 154, y: -55 },
 		},
 		{
 			code: [
@@ -194,12 +187,14 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 226,
-			y: -71,
+			gridCoordinates: { x: 226, y: -71 },
 		},
-		{ code: ['module switches', '', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'], x: 81, y: -68 },
+		{
+			code: ['module switches', '', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'],
+			gridCoordinates: { x: 81, y: -68 },
+		},
 	],
-	viewport: { x: 73, y: -83 },
+	viewport: { gridCoordinates: { x: 73, y: -83 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{

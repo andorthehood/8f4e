@@ -91,8 +91,9 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.graphicHelper.draggedCodeBlock = undefined;
 
 		state.graphicHelper.codeBlocks.clear();
-		state.graphicHelper.viewport.x = newProject.viewport.x * state.graphicHelper.viewport.vGrid;
-		state.graphicHelper.viewport.y = newProject.viewport.y * state.graphicHelper.viewport.hGrid;
+		// Convert grid coordinates to pixel coordinates for runtime viewport
+		state.graphicHelper.viewport.x = newProject.viewport.gridCoordinates.x * state.graphicHelper.viewport.vGrid;
+		state.graphicHelper.viewport.y = newProject.viewport.gridCoordinates.y * state.graphicHelper.viewport.hGrid;
 
 		newProject.codeBlocks.forEach(codeBlock => {
 			state.graphicHelper.codeBlocks.add({
@@ -116,12 +117,13 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
 				id: getModuleId(codeBlock.code) || '',
 				gaps: new Map(),
-				x: codeBlock.x * state.graphicHelper.viewport.vGrid,
-				y: codeBlock.y * state.graphicHelper.viewport.hGrid,
+				// Convert grid coordinates to pixel coordinates for runtime
+				x: codeBlock.gridCoordinates.x * state.graphicHelper.viewport.vGrid,
+				y: codeBlock.gridCoordinates.y * state.graphicHelper.viewport.hGrid,
 				offsetX: 0,
 				offsetY: 0,
-				gridX: codeBlock.x,
-				gridY: codeBlock.y,
+				gridX: codeBlock.gridCoordinates.x,
+				gridY: codeBlock.gridCoordinates.y,
 				lineNumberColumnWidth: 1,
 				lastUpdated: Date.now(),
 			});
