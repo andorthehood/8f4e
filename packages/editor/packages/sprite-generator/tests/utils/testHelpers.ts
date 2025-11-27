@@ -1,3 +1,4 @@
+import { expect } from 'vitest';
 import { SpriteCoordinates } from 'glugglug';
 
 import { Command } from '../../src/types';

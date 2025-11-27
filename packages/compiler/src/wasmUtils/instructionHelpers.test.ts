@@ -1,3 +1,5 @@
+import { test, expect } from 'vitest';
+
 import { call, f32const, i32const, localGet, localSet } from './instructionHelpers';
 
 test('localGet', () => {
