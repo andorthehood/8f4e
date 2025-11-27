@@ -23,7 +23,6 @@ describe('Project postProcessEffects', () => {
 					enabled: true,
 				},
 			],
-			compiledModules: {},
 			memorySizeBytes: 1048576,
 		};
 
@@ -38,7 +37,6 @@ describe('Project postProcessEffects', () => {
 			author: 'Test Author',
 			description: 'Test Description',
 			codeBlocks: [],
-			compiledModules: {},
 			viewport: { x: 0, y: 0 },
 			selectedRuntime: 0,
 			runtimeSettings: [
@@ -59,7 +57,6 @@ describe('Project postProcessEffects', () => {
 			author: 'Test Author',
 			description: 'Test Description',
 			codeBlocks: [],
-			compiledModules: {},
 			viewport: { x: 0, y: 0 },
 			selectedRuntime: 0,
 			runtimeSettings: [
