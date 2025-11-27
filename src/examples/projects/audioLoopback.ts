@@ -147,7 +147,6 @@ const project: Project = {
 		},
 	],
 	binaryAssets: [],
-	compiledModules: {},
 };
 
 export default project;
