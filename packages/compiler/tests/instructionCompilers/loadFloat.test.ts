@@ -1,3 +1,5 @@
+import { describe, it, expect, beforeEach } from 'vitest';
+
 import { createMockContext, createMockASTLeaf } from './testUtils';
 
 import istructions from '../../src/instructionCompilers/index';

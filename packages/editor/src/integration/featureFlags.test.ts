@@ -1,3 +1,5 @@
+import { describe, test, expect } from 'vitest';
+
 import { validateFeatureFlags } from '../config/featureFlags';
 
 import type { Options } from '@8f4e/editor-state';
