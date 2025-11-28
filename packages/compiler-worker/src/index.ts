@@ -2,19 +2,19 @@ import { CompileOptions, Module } from '@8f4e/compiler';
 
 import testBuild, { resetCompiledModulesCache } from './testBuild';
 
-async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compilerOptions: CompileOptions) {
+async function recompile(modules: Module[], compilerOptions: CompileOptions) {
 	try {
-		const { codeBuffer, compiledModules, allocatedMemorySize } = await testBuild(memoryRef, modules, compilerOptions);
+		const { codeBuffer, compiledModules, allocatedMemorySize, memoryRef } = await testBuild(modules, compilerOptions);
 		self.postMessage({
 			type: 'buildOk',
 			payload: {
 				codeBuffer,
 				compiledModules,
 				allocatedMemorySize,
+				wasmMemory: memoryRef,
 			},
 		});
 	} catch (error) {
-		console.log('testBuildError', error);
 		self.postMessage({
 			type: 'buildError',
 			payload: error,
@@ -25,7 +25,7 @@ async function recompile(memoryRef: WebAssembly.Memory, modules: Module[], compi
 self.onmessage = function (event) {
 	switch (event.data.type) {
 		case 'recompile':
-			recompile(event.data.payload.memoryRef, event.data.payload.modules, event.data.payload.compilerOptions);
+			recompile(event.data.payload.modules, event.data.payload.compilerOptions);
 			break;
 		case 'reset':
 			resetCompiledModulesCache();
