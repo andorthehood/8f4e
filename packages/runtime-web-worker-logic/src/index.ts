@@ -39,9 +39,9 @@ async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffe
 			payload: {},
 		});
 	} catch (error) {
-		console.log('buildError', error);
+		console.log('compilationError', error);
 		self.postMessage({
-			type: 'buildError',
+			type: 'compilationError',
 			payload: error,
 		});
 	}
