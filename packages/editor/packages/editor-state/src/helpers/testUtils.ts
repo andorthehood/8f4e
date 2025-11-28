@@ -204,7 +204,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		compiler: {
 			codeBuffer: new Uint8Array(0),
 			isCompiling: false,
-			buildErrors: [],
+			compilationErrors: [],
 			compilationTime: 0,
 			lastCompilationStart: 0,
 			allocatedMemorySize: 0,
