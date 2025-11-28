@@ -52,8 +52,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -96,
-			y: -2,
+			gridCoordinates: { x: -96, y: -2 },
 		},
 		{
 			code: [
@@ -66,8 +65,7 @@ const ericSaiteGenerator: Project = {
 				'init notes[2] 66.0',
 				'moduleEnd',
 			],
-			x: -187,
-			y: -2,
+			gridCoordinates: { x: -187, y: -2 },
 		},
 		{
 			code: [
@@ -80,8 +78,7 @@ const ericSaiteGenerator: Project = {
 				'init notes[2] 61.0',
 				'moduleEnd',
 			],
-			x: -187,
-			y: 13,
+			gridCoordinates: { x: -187, y: 13 },
 		},
 		{
 			code: [
@@ -94,8 +91,7 @@ const ericSaiteGenerator: Project = {
 				'init notes[0] 43.0',
 				'moduleEnd',
 			],
-			x: -238,
-			y: -2,
+			gridCoordinates: { x: -238, y: -2 },
 		},
 		{
 			code: [
@@ -108,8 +104,7 @@ const ericSaiteGenerator: Project = {
 				'init notes[2] -1.0',
 				'moduleEnd',
 			],
-			x: -238,
-			y: 13,
+			gridCoordinates: { x: -238, y: 13 },
 		},
 		{
 			code: [
@@ -133,8 +128,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -175,
-			y: -23,
+			gridCoordinates: { x: -175, y: -23 },
 		},
 		{
 			code: [
@@ -181,8 +175,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -140,
-			y: -46,
+			gridCoordinates: { x: -140, y: -46 },
 		},
 		{
 			code: [
@@ -229,8 +222,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -105,
-			y: -46,
+			gridCoordinates: { x: -105, y: -46 },
 		},
 		{
 			code: [
@@ -266,8 +258,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -187,
-			y: 53,
+			gridCoordinates: { x: -187, y: 53 },
 		},
 		{
 			code: [
@@ -302,8 +293,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -150,
-			y: 53,
+			gridCoordinates: { x: -150, y: 53 },
 		},
 		{
 			code: [
@@ -322,8 +312,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -50,
-			y: 38,
+			gridCoordinates: { x: -50, y: 38 },
 		},
 		{
 			code: [
@@ -342,8 +331,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -50,
-			y: -10,
+			gridCoordinates: { x: -50, y: -10 },
 		},
 		{
 			code: [
@@ -362,8 +350,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -50,
-			y: 6,
+			gridCoordinates: { x: -50, y: 6 },
 		},
 		{
 			code: [
@@ -382,8 +369,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -50,
-			y: 22,
+			gridCoordinates: { x: -50, y: 22 },
 		},
 		{
 			code: [
@@ -441,8 +427,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -136,
-			y: -2,
+			gridCoordinates: { x: -136, y: -2 },
 		},
 		{
 			code: [
@@ -519,8 +504,7 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -115,
-			y: 53,
+			gridCoordinates: { x: -115, y: 53 },
 		},
 		{
 			code: [
@@ -537,11 +521,10 @@ const ericSaiteGenerator: Project = {
 				'init notes[6] 81.0',
 				'moduleEnd',
 			],
-			x: -187,
-			y: 28,
+			gridCoordinates: { x: -187, y: 28 },
 		},
 	],
-	viewport: { x: -241, y: -15 },
+	viewport: { gridCoordinates: { x: -241, y: -15 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{

@@ -33,8 +33,7 @@ const project: Project = {
 				'ifEnd',
 				'moduleEnd',
 			],
-			x: 2,
-			y: 1,
+			gridCoordinates: { x: 2, y: 1 },
 		},
 		{
 			code: [
@@ -78,11 +77,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 37,
-			y: 1,
+			gridCoordinates: { x: 37, y: 1 },
 		},
 	],
-	viewport: { x: 0, y: 0 },
+	viewport: { gridCoordinates: { x: 0, y: 0 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{
