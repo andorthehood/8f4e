@@ -320,6 +320,41 @@ interface EditorInstance {
 
 ## Project Structure
 
+### Grid Coordinates vs. Pixel Coordinates
+
+The editor uses two coordinate systems:
+
+1. **Grid Coordinates** (project files): Logical cell positions stored in project JSON files. These represent positions in terms of grid cells, making projects portable across different font sizes and grid configurations.
+
+2. **Pixel Coordinates** (runtime): Actual screen positions calculated by multiplying grid coordinates by grid size (`vGrid` for horizontal, `hGrid` for vertical). Used internally for rendering.
+
+#### Project File Format
+
+Both viewport and code block positions use explicit `gridCoordinates` objects:
+
+```json
+{
+  "title": "My Project",
+  "author": "Your Name",
+  "description": "Project description",
+  "memorySizeBytes": 2097152,
+  "codeBlocks": [
+    {
+      "code": ["module example", "...", "moduleEnd"],
+      "gridCoordinates": { "x": 10, "y": 5 }
+    }
+  ],
+  "viewport": { "gridCoordinates": { "x": 0, "y": 0 } },
+  "selectedRuntime": 0,
+  "runtimeSettings": [...]
+}
+```
+
+This naming makes it clear that:
+- Viewport position is in grid coordinates (not pixels)
+- Code block positions are in grid coordinates (not pixels)
+- Negative coordinates are valid (for viewports positioned to the left/above origin)
+
 ### Memory Configuration
 
 Projects specify WebAssembly memory settings to optimize for their specific needs. The default is 1,048,576 bytes (1MB).
@@ -338,7 +373,7 @@ You can specify custom memory settings in your project JSON:
   "description": "Project description",
   "memorySizeBytes": 2097152,
   "codeBlocks": [],
-  "viewport": { "x": 0, "y": 0 },
+  "viewport": { "gridCoordinates": { "x": 0, "y": 0 } },
   "selectedRuntime": 0,
   "runtimeSettings": [...]
 }

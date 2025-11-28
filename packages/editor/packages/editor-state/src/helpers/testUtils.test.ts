@@ -38,8 +38,8 @@ describe('createMockCodeBlock', () => {
 			expect(normalizeBlock(block)).toMatchSnapshot();
 		});
 
-		it('should allow independent override of grid properties', () => {
-			const block = createMockCodeBlock({ x: 100, y: 200, gridX: 150, gridY: 250, minGridWidth: 64 });
+		it('should allow independent override of minGridWidth', () => {
+			const block = createMockCodeBlock({ x: 100, y: 200, minGridWidth: 64 });
 			expect(normalizeBlock(block)).toMatchSnapshot();
 		});
 
