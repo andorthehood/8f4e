@@ -57,13 +57,7 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			return;
 		}
 
-		state.graphicHelper.draggedCodeBlock.gridX = Math.round(
-			state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid
-		);
-		state.graphicHelper.draggedCodeBlock.gridY = Math.round(
-			state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.viewport.hGrid
-		);
-
+		// Snap to grid by rounding pixel coordinates
 		state.graphicHelper.draggedCodeBlock.x =
 			Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid) *
 			state.graphicHelper.viewport.vGrid;
