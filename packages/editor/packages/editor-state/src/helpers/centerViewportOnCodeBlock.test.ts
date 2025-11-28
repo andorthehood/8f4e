@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import centerViewportOnCodeBlock, { CodeBlockBounds } from './centerViewportOnCodeBlock';
 import { createMockViewport } from './testUtils';
 
