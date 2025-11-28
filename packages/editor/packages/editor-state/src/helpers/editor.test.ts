@@ -1,3 +1,5 @@
+import { describe, test, expect } from 'vitest';
+
 import { backSpace, generateCodeColorMap, moveCaret, type } from './editor';
 
 const testCode = ['lorem', 'ipsum 1', 'dolor sit 0', 'amet'];

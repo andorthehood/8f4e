@@ -3,8 +3,8 @@ title: 'TODO: Fix expect imports and typings in tests'
 priority: Medium
 effort: 0.5-1d
 created: 2025-11-27
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-27
 ---
 
 # TODO: Fix expect imports and typings in tests

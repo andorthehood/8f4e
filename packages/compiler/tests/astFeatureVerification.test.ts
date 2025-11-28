@@ -1,3 +1,5 @@
+import { describe, test, expect } from 'vitest';
+
 import compile from '../src';
 
 const testModule = {

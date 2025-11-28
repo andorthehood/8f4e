@@ -1,3 +1,5 @@
+import { test, expect } from 'vitest';
+
 import { createFunctionSection } from '../../src/wasmUtils/sectionHelpers';
 
 test('createFunctionSection', () => {
