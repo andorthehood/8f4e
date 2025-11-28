@@ -170,7 +170,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(state.graphicHelper.selectedCodeBlock);
 	};
 
-	events.on('buildError', updateGraphicsAll);
+	events.on('compilationError', updateGraphicsAll);
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
