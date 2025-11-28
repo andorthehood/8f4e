@@ -51,7 +51,7 @@ export default function createMainThreadLogicRuntime(
 			isRunning = true;
 			onInitialized();
 		} catch (error) {
-			console.log('buildError', error);
+			console.log('compilationError', error);
 			onError(error);
 		}
 	}

@@ -12,7 +12,7 @@ export async function compileProject(modules: Module[], compilerOptions: Compile
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
 			switch (data.type) {
-				case 'buildOk':
+				case 'success':
 					memoryRef = data.payload.wasmMemory;
 					resolve({
 						compiledModules: data.payload.compiledModules,
@@ -22,7 +22,7 @@ export async function compileProject(modules: Module[], compilerOptions: Compile
 						memoryBufferFloat: new Float32Array(data.payload.wasmMemory.buffer),
 					});
 					break;
-				case 'buildError': {
+				case 'compilationError': {
 					// Create an error object that matches the expected structure
 					const error = new Error(data.payload.message) as Error & {
 						line?: { lineNumber: number };
@@ -42,7 +42,7 @@ export async function compileProject(modules: Module[], compilerOptions: Compile
 		compilerWorker.addEventListener('message', handleMessage, { once: true });
 
 		compilerWorker.postMessage({
-			type: 'recompile',
+			type: 'compile',
 			payload: {
 				modules,
 				compilerOptions,
