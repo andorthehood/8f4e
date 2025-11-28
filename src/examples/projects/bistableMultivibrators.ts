@@ -35,8 +35,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 95,
-			y: 8,
+			gridCoordinates: { x: 95, y: 8 },
 		},
 		{
 			code: [
@@ -51,8 +50,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 131,
-			y: 14,
+			gridCoordinates: { x: 131, y: 14 },
 		},
 		{
 			code: [
@@ -81,8 +79,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 243,
-			y: 6,
+			gridCoordinates: { x: 243, y: 6 },
 		},
 		{
 			code: [
@@ -111,8 +108,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 243,
-			y: 31,
+			gridCoordinates: { x: 243, y: 31 },
 		},
 		{
 			code: [
@@ -134,8 +130,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 207,
-			y: 33,
+			gridCoordinates: { x: 207, y: 33 },
 		},
 		{
 			code: [
@@ -166,8 +161,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 95,
-			y: 35,
+			gridCoordinates: { x: 95, y: 35 },
 		},
 		{
 			code: [
@@ -180,8 +174,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 47,
-			y: 17,
+			gridCoordinates: { x: 47, y: 17 },
 		},
 		{
 			code: [
@@ -194,8 +187,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 47,
-			y: 27,
+			gridCoordinates: { x: 47, y: 27 },
 		},
 		{
 			code: [
@@ -228,8 +220,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 131,
-			y: 26,
+			gridCoordinates: { x: 131, y: 26 },
 		},
 		{
 			code: [
@@ -248,8 +239,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 196,
-			y: 16,
+			gridCoordinates: { x: 196, y: 16 },
 		},
 		{
 			code: [
@@ -282,11 +272,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 279,
-			y: 19,
+			gridCoordinates: { x: 279, y: 19 },
 		},
 	],
-	viewport: { x: 45, y: 7 },
+	viewport: { gridCoordinates: { x: 45, y: 7 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{

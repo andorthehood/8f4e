@@ -20,8 +20,7 @@ const midiArpeggiator: Project = {
 				'init notes[5] 60.0',
 				'moduleEnd',
 			],
-			x: -43,
-			y: -1,
+			gridCoordinates: { x: -43, y: -1 },
 		},
 		{
 			code: [
@@ -37,8 +36,7 @@ const midiArpeggiator: Project = {
 				'init notes[5] 67.0',
 				'moduleEnd',
 			],
-			x: 7,
-			y: -1,
+			gridCoordinates: { x: 7, y: -1 },
 		},
 		{
 			code: [
@@ -62,8 +60,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 150,
-			y: -38,
+			gridCoordinates: { x: 150, y: -38 },
 		},
 		{
 			code: [
@@ -110,8 +107,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 184,
-			y: -38,
+			gridCoordinates: { x: 184, y: -38 },
 		},
 		{
 			code: [
@@ -126,8 +122,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: -4,
-			y: -12,
+			gridCoordinates: { x: -4, y: -12 },
 		},
 		{
 			code: [
@@ -186,8 +181,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 102,
-			y: 6,
+			gridCoordinates: { x: 102, y: 6 },
 		},
 		{
 			code: [
@@ -222,8 +216,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 99,
-			y: -26,
+			gridCoordinates: { x: 99, y: -26 },
 		},
 		{
 			code: [
@@ -242,8 +235,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 226,
-			y: 6,
+			gridCoordinates: { x: 226, y: 6 },
 		},
 		{
 			code: [
@@ -301,8 +293,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 59,
-			y: 6,
+			gridCoordinates: { x: 59, y: 6 },
 		},
 		{
 			code: [
@@ -379,8 +370,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 184,
-			y: 6,
+			gridCoordinates: { x: 184, y: 6 },
 		},
 		{
 			code: [
@@ -473,8 +463,7 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 145,
-			y: 6,
+			gridCoordinates: { x: 145, y: 6 },
 		},
 		{
 			code: [
@@ -519,11 +508,10 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 64,
-			y: -36,
+			gridCoordinates: { x: 64, y: -36 },
 		},
 	],
-	viewport: { x: -47, y: -25 },
+	viewport: { gridCoordinates: { x: -47, y: -25 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{

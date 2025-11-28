@@ -22,11 +22,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			x: 0,
-			y: 0,
+			gridCoordinates: { x: 0, y: 0 },
 		},
 	],
-	viewport: { x: 0, y: 0 },
+	viewport: { gridCoordinates: { x: 0, y: 0 } },
 	selectedRuntime: 0,
 	runtimeSettings: [
 		{

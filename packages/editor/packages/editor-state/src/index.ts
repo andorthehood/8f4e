@@ -179,6 +179,8 @@ export type {
 	CompilationResult,
 	CodeBlock,
 	Viewport,
+	ProjectViewport,
+	GridCoordinates,
 	Size,
 	Position,
 	ContextMenuItem,
