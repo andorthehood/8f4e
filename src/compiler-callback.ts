@@ -6,47 +6,23 @@ import CompilerWorker from '@8f4e/compiler-worker?worker';
 // it will live for the entire application lifecycle
 const compilerWorker = new CompilerWorker();
 
-// Create WebAssembly memory for compilation
-// This memory is shared with the compiler worker and runtimes
 let memoryRef: WebAssembly.Memory | null = null;
-let currentMemorySize = 0;
-
-export function getOrCreateMemory(memorySizeBytes: number): WebAssembly.Memory {
-	const WASM_PAGE_SIZE = 65536; // 64KiB per page
-	const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
-
-	// Create new memory only if it doesn't exist or if the size differs
-	// We must recreate when size changes (even when shrinking) because the WASM module's
-	// declared maximum must match the memory's maximum exactly
-	if (!memoryRef || currentMemorySize !== memorySizeBytes) {
-		memoryRef = new WebAssembly.Memory({
-			initial: pages,
-			maximum: pages,
-			shared: true,
-		});
-		currentMemorySize = memorySizeBytes;
-	}
-
-	return memoryRef;
-}
 
 export async function compileProject(modules: Module[], compilerOptions: CompileOptions): Promise<CompilationResult> {
-	// Create or reuse memory
-	const memory = getOrCreateMemory(compilerOptions.memorySizeBytes);
-
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
 			switch (data.type) {
-				case 'buildOk':
+				case 'success':
+					memoryRef = data.payload.wasmMemory;
 					resolve({
 						compiledModules: data.payload.compiledModules,
 						codeBuffer: data.payload.codeBuffer,
 						allocatedMemorySize: data.payload.allocatedMemorySize,
-						memoryBuffer: new Int32Array(memory.buffer),
-						memoryBufferFloat: new Float32Array(memory.buffer),
+						memoryBuffer: new Int32Array(data.payload.wasmMemory.buffer),
+						memoryBufferFloat: new Float32Array(data.payload.wasmMemory.buffer),
 					});
 					break;
-				case 'buildError': {
+				case 'compilationError': {
 					// Create an error object that matches the expected structure
 					const error = new Error(data.payload.message) as Error & {
 						line?: { lineNumber: number };
@@ -66,9 +42,8 @@ export async function compileProject(modules: Module[], compilerOptions: Compile
 		compilerWorker.addEventListener('message', handleMessage, { once: true });
 
 		compilerWorker.postMessage({
-			type: 'recompile',
+			type: 'compile',
 			payload: {
-				memoryRef: memory,
 				modules,
 				compilerOptions,
 			},

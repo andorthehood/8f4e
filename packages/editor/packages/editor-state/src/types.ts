@@ -147,7 +147,7 @@ export interface ContextMenu extends Position {
 	menuStack: string[];
 }
 
-export interface BuildError {
+export interface CompilationError {
 	lineNumber: number;
 	code: number;
 	message: string;
@@ -164,7 +164,7 @@ export interface Compiler {
 	memoryBufferFloat: Float32Array;
 	timerAccuracy: number;
 	compiledModules: CompiledModuleLookup;
-	buildErrors: BuildError[];
+	compilationErrors: CompilationError[];
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
 	runtimeSettings: Runtimes[];
