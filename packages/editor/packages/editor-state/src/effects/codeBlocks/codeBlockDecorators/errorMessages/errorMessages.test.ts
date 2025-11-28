@@ -24,7 +24,7 @@ describe('errorMessages', () => {
 				},
 			},
 			compiler: {
-				buildErrors: [
+				compilationErrors: [
 					{
 						moduleId: 'test-block',
 						lineNumber: 2,
@@ -52,7 +52,7 @@ describe('errorMessages', () => {
 	});
 
 	it('should handle multiple error messages', () => {
-		mockState.compiler.buildErrors = [
+		mockState.compiler.compilationErrors = [
 			{
 				moduleId: 'test-block',
 				lineNumber: 1,
@@ -74,7 +74,7 @@ describe('errorMessages', () => {
 	});
 
 	it('should ignore errors from different modules', () => {
-		mockState.compiler.buildErrors = [
+		mockState.compiler.compilationErrors = [
 			{
 				moduleId: 'test-block',
 				lineNumber: 1,
@@ -109,7 +109,7 @@ describe('errorMessages', () => {
 	});
 
 	it('should handle empty build errors', () => {
-		mockState.compiler.buildErrors = [];
+		mockState.compiler.compilationErrors = [];
 
 		errorMessages(mockGraphicData, mockState);
 
@@ -118,7 +118,7 @@ describe('errorMessages', () => {
 
 	it('should position errors correctly with gaps', () => {
 		mockGraphicData.gaps = new Map([[1, { size: 1 }]]); // Gap at line 1
-		mockState.compiler.buildErrors = [
+		mockState.compiler.compilationErrors = [
 			{
 				moduleId: 'test-block',
 				lineNumber: 2,
