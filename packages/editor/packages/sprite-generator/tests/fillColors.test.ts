@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
 import { validateDrawingCommand, findCommand, findAllCommands, validateSpriteCoordinates } from './utils/testHelpers';
 
