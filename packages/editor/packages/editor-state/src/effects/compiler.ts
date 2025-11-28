@@ -22,7 +22,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
 			console.log('[Compiler] Using pre-compiled WASM from runtime-ready project');
 			state.compiler.isCompiling = false;
-			state.compiler.buildErrors = [];
+			state.compiler.compilationErrors = [];
 			events.dispatch('buildFinished');
 			return;
 		}
@@ -66,7 +66,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 			state.compiler.isCompiling = false;
 			state.compiler.compilationTime = performance.now() - state.compiler.lastCompilationStart;
 
-			state.compiler.buildErrors = [];
+			state.compiler.compilationErrors = [];
 
 			events.dispatch('loadBinaryFilesIntoMemory');
 			events.dispatch('buildFinished');
@@ -78,7 +78,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 				context?: { namespace?: { moduleName: string } };
 				errorCode?: number;
 			};
-			state.compiler.buildErrors = [
+			state.compiler.compilationErrors = [
 				{
 					lineNumber: errorObject?.line?.lineNumber || 1,
 					moduleId: errorObject?.context?.namespace?.moduleName || '',
@@ -86,7 +86,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 					message: errorObject?.message || error?.toString() || 'Compilation failed',
 				},
 			];
-			events.dispatch('buildError');
+			events.dispatch('compilationError');
 		}
 	}
 

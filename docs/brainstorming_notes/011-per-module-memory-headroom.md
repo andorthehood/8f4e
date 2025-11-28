@@ -100,7 +100,7 @@ After each compile, we can compare:
 
 If all modules’ base addresses and slot sizes are unchanged:
 
-- The recompile is **layout-compatible**.
+- The compile is **layout-compatible**.
 - The runtime can:
   - Reuse the existing `WebAssembly.Memory` instance.
   - Swap out the code buffer and optionally re-run only necessary init code.
@@ -108,7 +108,7 @@ If all modules’ base addresses and slot sizes are unchanged:
 
 If any module’s base address or `wordAlignedSize` changed:
 
-- The recompile is **layout-incompatible**.
+- The compile is **layout-incompatible**.
 - The runtime falls back to the current behaviour:
   - Rebuild and reinitialise memory.
   - A one-off audio hiccup is acceptable in this overflow case.
