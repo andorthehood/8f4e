@@ -2,10 +2,6 @@ import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/com
 
 let previousCompiledModules: CompiledModuleLookup | undefined;
 
-export function resetCompiledModulesCache(): void {
-	previousCompiledModules = undefined;
-}
-
 function compareObject(obj1: Record<string, number>, obj2: Record<string, number>): boolean {
 	const keys1 = Object.keys(obj1);
 	const keys2 = Object.keys(obj2);
@@ -129,7 +125,7 @@ export function getOrCreateMemory(memorySizeBytes: number): WebAssembly.Memory {
 	return memoryRefCache;
 }
 
-export default async function testBuild(
+export default async function compileAndUpdateMemory(
 	modules: Module[],
 	compilerOptions: CompileOptions
 ): Promise<{
