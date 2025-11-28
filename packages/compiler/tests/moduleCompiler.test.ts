@@ -1,3 +1,5 @@
+import { describe, test, expect } from 'vitest';
+
 import { compileModule, compileToAST } from '../src/compiler';
 
 const fixture = `

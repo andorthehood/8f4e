@@ -1,3 +1,5 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import createStateManager from './index';
 
 import type { Subscription } from './types';
