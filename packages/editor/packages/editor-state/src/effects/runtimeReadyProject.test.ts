@@ -210,16 +210,16 @@ describe('Runtime-ready project functionality', () => {
 
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const recompileCall = onCalls.find(
+			const compileCall = onCalls.find(
 				call =>
 					call[0] === 'createConnection' ||
 					call[0] === 'codeBlockAdded' ||
 					call[0] === 'deleteCodeBlock' ||
 					call[0] === 'projectLoaded'
 			);
-			expect(recompileCall).toBeDefined();
+			expect(compileCall).toBeDefined();
 
-			const onRecompileCallback = recompileCall![1];
+			const onRecompileCallback = compileCall![1];
 
 			// Trigger recompilation
 			await onRecompileCallback();
@@ -235,7 +235,7 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockState.compiler.memoryBuffer).toEqual(expectedIntMemory);
 			expect(mockState.compiler.memoryBufferFloat).toEqual(expectedFloatMemory);
 			expect(mockState.compiler.isCompiling).toBe(false);
-			expect(mockState.compiler.buildErrors).toEqual([]);
+			expect(mockState.compiler.compilationErrors).toEqual([]);
 			expect(mockState.compiler.compilationTime).toBe(0);
 
 			consoleSpy.mockRestore();
@@ -258,14 +258,14 @@ describe('Runtime-ready project functionality', () => {
 
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const recompileCall = onCalls.find(
+			const compileCall = onCalls.find(
 				call =>
 					call[0] === 'createConnection' ||
 					call[0] === 'codeBlockAdded' ||
 					call[0] === 'deleteCodeBlock' ||
 					call[0] === 'projectLoaded'
 			);
-			const onRecompileCallback = recompileCall![1];
+			const onRecompileCallback = compileCall![1];
 
 			// Trigger recompilation
 			await onRecompileCallback();

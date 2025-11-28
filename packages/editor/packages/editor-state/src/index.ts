@@ -89,7 +89,7 @@ function createDefaultState() {
 			memoryBufferFloat: new Float32Array(),
 			timerAccuracy: 0,
 			compiledModules: {},
-			buildErrors: [],
+			compilationErrors: [],
 			compilerOptions: {
 				memorySizeBytes,
 				startingMemoryWordAddress: 0,
@@ -185,7 +185,7 @@ export type {
 	Position,
 	ContextMenuItem,
 	MenuGenerator,
-	BuildError,
+	CompilationError,
 	Compiler,
 	Midi,
 	GraphicHelper,
