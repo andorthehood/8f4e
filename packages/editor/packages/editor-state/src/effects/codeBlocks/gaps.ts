@@ -4,11 +4,11 @@ import type { CodeBlockGraphicData, State } from '../../types';
 
 export default function gaps(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.gaps.clear();
-	state.compiler.buildErrors.forEach(buildError => {
-		if (buildError.moduleId !== graphicData.id) {
+	state.compiler.compilationErrors.forEach(compilationError => {
+		if (compilationError.moduleId !== graphicData.id) {
 			return;
 		}
-		graphicData.gaps.set(buildError.lineNumber, { size: 2 });
+		graphicData.gaps.set(compilationError.lineNumber, { size: 2 });
 	});
 
 	graphicData.code.forEach((line, lineNumber) => {
