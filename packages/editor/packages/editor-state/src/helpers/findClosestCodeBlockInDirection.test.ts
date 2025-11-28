@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import findClosestCodeBlockInDirection from './findClosestCodeBlockInDirection';
 import { createMockCodeBlock } from './testUtils';
 

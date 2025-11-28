@@ -1,4 +1,4 @@
-import { vi, type MockInstance } from 'vitest';
+import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import compiler from './compiler';

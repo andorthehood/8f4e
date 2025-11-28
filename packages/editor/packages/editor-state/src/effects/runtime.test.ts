@@ -1,4 +1,4 @@
-import { vi, type MockInstance } from 'vitest';
+import { describe, test, expect, it, vi, type MockInstance } from 'vitest';
 
 import runtimeEffect, { RuntimeType } from './runtime';
 

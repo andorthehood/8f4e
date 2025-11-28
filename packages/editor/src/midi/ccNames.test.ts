@@ -1,3 +1,5 @@
+import { test, expect } from 'vitest';
+
 import ccNames from './ccNames';
 
 test('test if the list matches the snapshot', () => {
