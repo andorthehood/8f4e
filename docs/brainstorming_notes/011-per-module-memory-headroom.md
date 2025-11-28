@@ -1,8 +1,8 @@
-# Per-Module Memory Sandboxes for Live Coding
+# Per-Module Memory Reservations for Live Coding
 
 ## Overview
 
-This document captures brainstorming and planning notes for introducing per-module memory sandboxes in the compiler to support live coding / algorave scenarios without interrupting generative audio playback.
+This document captures brainstorming and planning notes for introducing per-module memory reservations (headroom) in the compiler to support live coding / algorave scenarios without interrupting generative audio playback.
 
 ## Current Memory Model
 
@@ -38,20 +38,20 @@ In live coding / algorave scenarios, performers edit code while audio is running
 
 We want a way for coders to make small, local changes (like adding a new variable) without forcing a global memory reset, as long as they stay within some pre-declared budget.
 
-## Goal: Per-Module Memory Sandboxes
+## Goal: Per-Module Memory Reservations (Headroom)
 
 High-level objective:
 
-- Give each module its own “sandbox” area in memory where it can freely grow and shrink (within a budget) without disturbing others.
-- As long as a module’s total memory usage stays within its pre-allocated sandbox:
+- Give each module its own reserved headroom area in memory where it can freely grow and shrink (within a budget) without disturbing others.
+- As long as a module’s total memory usage stays within its pre-allocated reservation:
   - Its own base address and size remain stable.
   - The base addresses of all following modules remain stable.
   - The runtime can reload code without resetting or shuffling the existing memory contents, preserving audio buffers and state.
-- If a module exceeds its sandbox:
+- If a module exceeds its reserved headroom:
   - The system gracefully falls back to the current behaviour: modules are repacked and memory is reinitialised, which may cause an audible hiccup.
   - This “overflow” should be rare and intentional, not the default live-coding path.
 
-## Planned Mechanism: `allocate` Instruction (Soft Sandbox)
+## Planned Mechanism: `allocate` Instruction (Soft Reservation)
 
 Introduce a new module-level instruction:
 
@@ -70,7 +70,7 @@ Introduce a new module-level instruction:
     - Its slot size is fixed at `reservedWordSize`, regardless of small changes in declarations.
     - Later modules’ base addresses remain unchanged — the layout is stable and safe for live hot-swapping.
   - If `actualWordSize > reservedWordSize`:
-    - The hint is exceeded; the module needs more space than its sandbox.
+    - The hint is exceeded; the module needs more space than its reserved headroom.
     - We set `slotWordSize = actualWordSize` (no error) and repack modules exactly as today.
     - The global layout may shift, and a full memory rebuild is acceptable in this “overflow” case.
 
@@ -87,7 +87,7 @@ Introduce a new module-level instruction:
   - Internal `DataStructure.byteAddress` / `wordAlignedAddress` remain contiguous within the module; the reserved slack is simply unused trailing space.
 - `compileModules`:
   - Continues to use `module.wordAlignedSize` to advance the global `memoryAddress` as today.
-  - With `allocate` in place, `wordAlignedSize` may be larger than strictly necessary, effectively creating per-module “sandboxes”.
+  - With `allocate` in place, `wordAlignedSize` may be larger than strictly necessary, effectively creating per-module reserved headroom.
 - `allocatedMemorySize`:
   - Still computed as “start of last module + its `wordAlignedSize`”, now including reserved slack.
 
@@ -120,4 +120,3 @@ For performers:
   - You can add/remove declarations without interrupting generative music playback.
 - If you overflow the budget:
   - The compiler still works, but the change may cause a one-off glitch as memory is rebuilt — similar to the current behaviour.
-
