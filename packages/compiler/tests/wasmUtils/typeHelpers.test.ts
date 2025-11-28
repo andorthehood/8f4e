@@ -1,3 +1,5 @@
+import { test, expect } from 'vitest';
+
 import { signedLEB128, unsignedLEB128 } from '../../src/wasmUtils/typeHelpers';
 
 test('signedLEB128', () => {

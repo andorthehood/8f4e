@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeAll, beforeEach } from 'vitest';
 import wabt from 'wabt';
 
 import { FunctionBody } from '../../src/wasmUtils/typeHelpers';
