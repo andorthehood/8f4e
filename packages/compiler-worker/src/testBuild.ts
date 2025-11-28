@@ -109,22 +109,58 @@ function didProgramOrMemoryStructureChange(
 	return false;
 }
 
+// Create WebAssembly memory for compilation
+// This memory is shared with the compiler worker and runtimes
+let memoryRefCache: WebAssembly.Memory | null = null;
+let currentMemorySize = 0;
+const WASM_PAGE_SIZE = 65536; // 64KiB per page
+
+export function getOrCreateMemory(memorySizeBytes: number): WebAssembly.Memory {
+	const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
+
+	if (!memoryRefCache) {
+		memoryRefCache = new WebAssembly.Memory({
+			initial: pages,
+			maximum: pages,
+			shared: true,
+		});
+	}
+
+	return memoryRefCache;
+}
+
 export default async function testBuild(
-	memoryRef: WebAssembly.Memory,
 	modules: Module[],
 	compilerOptions: CompileOptions
-): Promise<{ codeBuffer: Uint8Array; compiledModules: CompiledModuleLookup; allocatedMemorySize: number }> {
+): Promise<{
+	codeBuffer: Uint8Array;
+	compiledModules: CompiledModuleLookup;
+	allocatedMemorySize: number;
+	memoryRef: WebAssembly.Memory;
+}> {
 	const { codeBuffer, compiledModules, allocatedMemorySize } = compile(modules, compilerOptions);
+	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
+	// We must recreate when size changes (even when shrinking) because the WASM module's
+	// declared maximum must match the memory's maximum exactly
+	const memorySizeChange = currentMemorySize !== compilerOptions.memorySizeBytes;
+	currentMemorySize = compilerOptions.memorySizeBytes;
+
+	if (memoryStructureChange || memorySizeChange) {
+		memoryRefCache = null;
+	}
+
+	// Create new memory only if it doesn't exist or if the size differs
+	const memoryRef = getOrCreateMemory(compilerOptions.memorySizeBytes);
+
 	const result = (await WebAssembly.instantiate(codeBuffer, {
 		js: {
 			memory: memoryRef,
 		},
+		// TODO: revisit this once in a while to check if types have been improved
 	})) as unknown as { instance: WebAssembly.Instance; module: WebAssembly.Module };
 	const instance = result.instance;
 
 	const init = instance.exports.init as CallableFunction;
-
-	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 
 	if (!previousCompiledModules || memoryStructureChange) {
 		init();
@@ -156,5 +192,5 @@ export default async function testBuild(
 
 	previousCompiledModules = compiledModules;
 
-	return { codeBuffer, compiledModules, allocatedMemorySize };
+	return { codeBuffer, compiledModules, allocatedMemorySize, memoryRef };
 }
