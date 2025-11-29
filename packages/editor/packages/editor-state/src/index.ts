@@ -36,6 +36,7 @@ function createGraphicHelper(): GraphicHelper {
 			buttons: [{ title: 'Close', action: 'close' }],
 		},
 		codeBlocks: new Set<CodeBlockGraphicData>(),
+		nextCodeBlockCreationIndex: 0,
 		outputsByWordAddress: new Map(),
 		viewport: {
 			x: 0,
