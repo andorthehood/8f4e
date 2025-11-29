@@ -91,6 +91,7 @@ export function createMockCodeBlock(
 		gaps: new Map(),
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),
+		creationIndex: 0,
 		extras: {
 			blockHighlights: [],
 			inputs: [],
@@ -235,6 +236,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		},
 		graphicHelper: {
 			codeBlocks: new Set(),
+			nextCodeBlockCreationIndex: 0,
 			viewport: {
 				x: 0,
 				y: 0,
