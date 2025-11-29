@@ -3,8 +3,8 @@ title: 'Track Module Creation Index in Editor (Non-Persisted)'
 priority: Medium
 effort: 2-3h
 created: 2025-11-29
-status: Open
-completed: null
+status: Done
+completed: 2025-11-29
 ---
 
 # 105 - Track Module Creation Index in Editor (Non-Persisted)
@@ -56,11 +56,11 @@ Impact:
 
 ## Success Criteria
 
-- [ ] Each code block in `graphicHelper.codeBlocks` has a stable `creationIndex` that never changes during the session.
-- [ ] Compiler module lists are ordered by `creationIndex`, with newly added modules appearing at the end.
-- [ ] Visual reordering (Z-index changes) does not affect `creationIndex` or compiler ordering.
-- [ ] Project save/load flows remain unchanged (no `creationIndex` in persisted data), and code blocks get valid `creationIndex` values on load.
-- [ ] Relevant editor state tests pass, and new tests (if added) cover creation index behavior.
+- [x] Each code block in `graphicHelper.codeBlocks` has a stable `creationIndex` that never changes during the session.
+- [x] Compiler module lists are ordered by `creationIndex`, with newly added modules appearing at the end.
+- [x] Visual reordering (Z-index changes) does not affect `creationIndex` or compiler ordering.
+- [x] Project save/load flows remain unchanged (no `creationIndex` in persisted data), and code blocks get valid `creationIndex` values on load.
+- [x] Relevant editor state tests pass, and new tests (if added) cover creation index behavior.
 
 ## Affected Components
 
