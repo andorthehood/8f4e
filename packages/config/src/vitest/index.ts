@@ -14,7 +14,7 @@ import type { InlineConfig } from 'vitest/node';
  */
 export const sharedCoverage = {
 	provider: 'v8' as const,
-	reporter: ['text', 'json', 'html'] as ('text' | 'json' | 'html')[],
+	reporter: ['text', 'json', 'html'],
 	exclude: ['node_modules/', 'dist/', '**/*.test.ts', '**/*.spec.ts', '**/tests/**/*.{test,spec}.ts'],
 };
 
