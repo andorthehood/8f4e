@@ -3,6 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import codeBlockCreator from './codeBlockCreator';
 
+import { flattenProjectForCompiler } from '../compiler';
 import projectImport from '../projectImport';
 import { createMockState, createMockCodeBlock } from '../../helpers/testUtils';
 import { createMockEventDispatcherWithVitest } from '../../helpers/vitestTestUtils';
@@ -149,8 +150,8 @@ describe('creationIndex', () => {
 
 	describe('compiler ordering', () => {
 		it('should sort code blocks by creationIndex for compilation', () => {
-			// This test verifies that code blocks are sorted by creationIndex
-			// We create code blocks with out-of-order creationIndex and verify sorting
+			// This test verifies that flattenProjectForCompiler correctly sorts by creationIndex
+			// We create code blocks with out-of-order creationIndex and verify the actual function
 
 			const block1 = createMockCodeBlock({
 				id: 'a',
@@ -171,13 +172,13 @@ describe('creationIndex', () => {
 			// Create a Set to simulate graphicHelper.codeBlocks (insertion order)
 			const codeBlocksSet = new Set([block1, block2, block3]);
 
-			// Sort by creationIndex (same logic as flattenProjectForCompiler)
-			const sortedBlocks = Array.from(codeBlocksSet).sort((a, b) => a.creationIndex - b.creationIndex);
+			// Use the actual flattenProjectForCompiler function
+			const sortedBlocks = flattenProjectForCompiler(codeBlocksSet);
 
 			// Verify blocks are sorted by creationIndex
-			expect(sortedBlocks[0].id).toBe('b'); // creationIndex 0
-			expect(sortedBlocks[1].id).toBe('c'); // creationIndex 1
-			expect(sortedBlocks[2].id).toBe('a'); // creationIndex 2
+			expect(sortedBlocks[0].code).toEqual(['module b', 'moduleEnd']); // creationIndex 0
+			expect(sortedBlocks[1].code).toEqual(['module c', 'moduleEnd']); // creationIndex 1
+			expect(sortedBlocks[2].code).toEqual(['module a', 'moduleEnd']); // creationIndex 2
 		});
 	});
 });
