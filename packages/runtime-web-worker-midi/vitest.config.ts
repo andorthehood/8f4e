@@ -1,19 +1,9 @@
 import { defineConfig } from 'vitest/config';
+import { createNodePreset } from '@8f4e/config/vitest';
 
-export default defineConfig({
-	test: {
-		globals: false,
-		environment: 'node',
-		testTimeout: 30000,
-		hookTimeout: 10000,
-		reporters: process.env.CI ? ['default'] : ['default'],
-		coverage: {
-			provider: 'v8',
-			reporter: ['text', 'json', 'html'],
-			exclude: ['node_modules/', 'dist/', '**/*.test.ts', '**/*.spec.ts'],
-		},
-		include: ['**/*.{test,spec}.{ts,tsx}', '**/tests/**/*.{test,spec}.{ts,tsx}'],
-		exclude: ['**/node_modules/**', '**/dist/**'],
+export default defineConfig(
+	createNodePreset({
 		passWithNoTests: true,
-	},
-});
+		typecheckEnabled: false,
+	})
+);
