@@ -109,6 +109,10 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 
 		code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, getModuleId(code)));
 
+		// Assign creationIndex and increment counter for stable ordering
+		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
+		state.graphicHelper.nextCodeBlockCreationIndex++;
+
 		const codeBlock: CodeBlockGraphicData = {
 			width: 0,
 			minGridWidth: 32,
@@ -136,6 +140,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			offsetX: 0,
 			lastUpdated: Date.now(),
 			offsetY: 0,
+			creationIndex,
 		};
 
 		state.graphicHelper.codeBlocks.add(codeBlock);

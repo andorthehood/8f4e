@@ -39,6 +39,25 @@ describe('projectSerializer', () => {
 			expect(result[0].code).toEqual(['code a']);
 			expect(result[1].code).toEqual(['code b']);
 		});
+
+		it('does not include creationIndex in serialized output', () => {
+			const graphicData = [
+				createMockCodeBlock({
+					id: 'test-module',
+					code: ['test code'],
+					x: 80,
+					y: 128,
+					creationIndex: 5, // This should NOT appear in output
+				}),
+			];
+
+			const result = convertGraphicDataToProjectStructure(graphicData, 8, 16);
+
+			// Verify creationIndex is not in the output
+			expect(result[0]).not.toHaveProperty('creationIndex');
+			// Verify we only have the expected properties
+			expect(Object.keys(result[0]).sort()).toEqual(['code', 'gridCoordinates'].sort());
+		});
 	});
 
 	describe('serializeToProject', () => {
