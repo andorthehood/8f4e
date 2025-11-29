@@ -4,14 +4,13 @@ import { EventDispatcher } from '../types';
 
 import type { CodeBlockGraphicData, State } from '../types';
 
-function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
-	const flatCodeBlocks: { code: string[] }[] = [];
-
-	codeBlocks.forEach(codeBlock => {
-		flatCodeBlocks.push(codeBlock);
-	});
-
-	return flatCodeBlocks;
+/**
+ * Converts code blocks from a Set to an array sorted by creationIndex.
+ * This ensures that newer modules appear at the end of the compiler module list
+ * for stable memory layout ordering, independent of visual Z-index.
+ */
+export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
+	return Array.from(codeBlocks).sort((a, b) => a.creationIndex - b.creationIndex);
 }
 
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
