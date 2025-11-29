@@ -2,7 +2,7 @@ title: 'TODO: Run Existing Screenshot-Based Visual Regression Tests with Vitest'
 priority: Medium
 effort: 1-2d
 created: 2025-11-23
-status: Open
+status: Completed
 completed: null
 ---
 
