@@ -9,7 +9,7 @@ import type { CodeBlockGraphicData, State } from '../types';
  * This ensures that newer modules appear at the end of the compiler module list
  * for stable memory layout ordering, independent of visual Z-index.
  */
-function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
+export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
 	return Array.from(codeBlocks).sort((a, b) => a.creationIndex - b.creationIndex);
 }
 
