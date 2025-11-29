@@ -91,11 +91,17 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.graphicHelper.draggedCodeBlock = undefined;
 
 		state.graphicHelper.codeBlocks.clear();
+		// Reset creationIndex counter when loading a new project
+		state.graphicHelper.nextCodeBlockCreationIndex = 0;
 		// Convert grid coordinates to pixel coordinates for runtime viewport
 		state.graphicHelper.viewport.x = newProject.viewport.gridCoordinates.x * state.graphicHelper.viewport.vGrid;
 		state.graphicHelper.viewport.y = newProject.viewport.gridCoordinates.y * state.graphicHelper.viewport.hGrid;
 
 		newProject.codeBlocks.forEach(codeBlock => {
+			// Assign creationIndex based on insertion order and increment counter
+			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
+			state.graphicHelper.nextCodeBlockCreationIndex++;
+
 			state.graphicHelper.codeBlocks.add({
 				width: 0,
 				minGridWidth: 32,
@@ -124,6 +130,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				offsetY: 0,
 				lineNumberColumnWidth: 1,
 				lastUpdated: Date.now(),
+				creationIndex,
 			});
 		});
 		events.dispatch('init');

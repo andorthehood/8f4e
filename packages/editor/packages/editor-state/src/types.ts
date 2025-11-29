@@ -301,6 +301,12 @@ export interface CodeBlockGraphicData {
 		}>;
 	};
 	lastUpdated: number;
+	/**
+	 * Monotonically increasing index assigned when the code block is created.
+	 * Used to maintain stable ordering for compiler module list.
+	 * This is a runtime-only value and is NOT persisted.
+	 */
+	creationIndex: number;
 }
 
 export type GraphicHelper = {
@@ -325,6 +331,12 @@ export type GraphicHelper = {
 		animationDurationMs?: number;
 	};
 	codeBlocks: Set<CodeBlockGraphicData>;
+	/**
+	 * Monotonically increasing counter for assigning creationIndex to new code blocks.
+	 * Incremented each time a new code block is created.
+	 * This is a runtime-only value and is NOT persisted.
+	 */
+	nextCodeBlockCreationIndex: number;
 	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;
