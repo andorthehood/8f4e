@@ -27,8 +27,8 @@ export interface LibBuildOptions {
 	formats?: LibraryOptions['formats'];
 	/** Output directory (defaults to 'dist') */
 	outDir?: string;
-	/** Custom filename function */
-	fileName?: string | ((format: string, entryName: string) => string);
+	/** Custom filename function or string */
+	fileName?: LibraryOptions['fileName'];
 	/** Target ES version (defaults to 'es2020') */
 	target?: string;
 	/** Whether to empty outDir before build (defaults to true) */
@@ -70,7 +70,7 @@ export function createLibConfig(options: LibBuildOptions): UserConfig {
 	}
 
 	if (fileName) {
-		libOptions.fileName = fileName as LibraryOptions['fileName'];
+		libOptions.fileName = fileName;
 	}
 
 	return {
