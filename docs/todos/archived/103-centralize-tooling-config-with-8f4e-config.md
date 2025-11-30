@@ -3,8 +3,8 @@ title: 'TODO: Centralize tooling config with @8f4e/config'
 priority: Medium
 effort: 1-2 days
 created: 2025-11-24
-status: Open
-completed: null
+status: Completed
+completed: 2025-11-29
 ---
 
 # TODO: Centralize tooling config with @8f4e/config
@@ -70,11 +70,11 @@ Packages remain self-contained by keeping thin local config entrypoints (e.g. `t
 
 ## Success Criteria
 
-- [ ] Most package `tsconfig.json` files delegate their common options to `@8f4e/config/ts`, with only small, package-specific differences.
-- [ ] Most `vitest.config.ts` files use helpers from `@8f4e/config/vitest`, and updating defaults (coverage, timeouts, reporters) can be done centrally.
-- [ ] Vite library and screenshot/dev configs share helpers from `@8f4e/config/vite`, reducing boilerplate and keeping build behavior consistent.
-- [ ] ESLint rules and Prettier options are defined in `@8f4e/config/eslint` and consumed by the root (and optionally per-package) configs.
-- [ ] No new Jest configuration is added; Vitest is the default test runner for new work.
+- [x] Most package `tsconfig.json` files delegate their common options to `@8f4e/config/ts`, with only small, package-specific differences.
+- [x] Most `vitest.config.ts` files use helpers from `@8f4e/config/vitest`, and updating defaults (coverage, timeouts, reporters) can be done centrally.
+- [x] Vite library and screenshot/dev configs share helpers from `@8f4e/config/vite`, reducing boilerplate and keeping build behavior consistent.
+- [x] ESLint rules and Prettier options are defined in `@8f4e/config/eslint` and consumed by the root (and optionally per-package) configs.
+- [x] No new Jest configuration is added; Vitest is the default test runner for new work.
 
 ## Affected Components
 
