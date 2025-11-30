@@ -3,11 +3,45 @@ import { parsePathArgument } from './parsePathArgument';
 
 import type { Command, CommandType, CompileError } from '../types';
 
-/** Regex to match a complete line with command and optional argument, stripping trailing comments */
-const LINE_REGEX = /^\s*(\w+)(?:\s+(.+?))?\s*(?:;.*)?$/;
-
 /** Valid command types (case-sensitive) */
 const VALID_COMMANDS = new Set<CommandType>(['push', 'set', 'append', 'scope', 'rescopeTop', 'rescope', 'endScope']);
+
+/**
+ * Strips trailing comment from a line, respecting string literals
+ * Returns the line without trailing comments
+ */
+function stripTrailingComment(line: string): string {
+	let inString = false;
+	let escaped = false;
+
+	for (let i = 0; i < line.length; i++) {
+		const char = line[i];
+
+		if (escaped) {
+			escaped = false;
+			continue;
+		}
+
+		if (char === '\\') {
+			escaped = true;
+			continue;
+		}
+
+		if (char === '"') {
+			inString = !inString;
+			continue;
+		}
+
+		if (char === ';' && !inString) {
+			return line.slice(0, i).trimEnd();
+		}
+	}
+
+	return line;
+}
+
+/** Regex to match a complete line with command and optional argument */
+const LINE_REGEX = /^\s*(\w+)(?:\s+(.+))?\s*$/;
 
 /**
  * Parses a single line into a command
@@ -20,7 +54,10 @@ export function parseLine(line: string, lineNumber: number): Command | CompileEr
 		return null;
 	}
 
-	const match = trimmed.match(LINE_REGEX);
+	// Strip trailing comment (respecting string literals)
+	const withoutComment = stripTrailingComment(trimmed);
+
+	const match = withoutComment.match(LINE_REGEX);
 	if (!match) {
 		return { line: lineNumber, message: `Invalid syntax: ${trimmed}` };
 	}
@@ -67,6 +104,24 @@ export function parseLine(line: string, lineNumber: number): Command | CompileEr
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
+
+	describe('stripTrailingComment', () => {
+		it('should strip trailing comment', () => {
+			expect(stripTrailingComment('push 42 ; comment')).toBe('push 42');
+		});
+
+		it('should preserve semicolon inside string', () => {
+			expect(stripTrailingComment('push "a;b"')).toBe('push "a;b"');
+		});
+
+		it('should handle escaped quotes', () => {
+			expect(stripTrailingComment('push "\\";" ; comment')).toBe('push "\\";"');
+		});
+
+		it('should return line unchanged if no comment', () => {
+			expect(stripTrailingComment('push 42')).toBe('push 42');
+		});
+	});
 
 	describe('parseLine', () => {
 		it('should return null for empty line', () => {
@@ -144,6 +199,22 @@ if (import.meta.vitest) {
 		it('should strip trailing comments after set', () => {
 			expect(parseLine('set ; save the value', 1)).toEqual({
 				type: 'set',
+				lineNumber: 1,
+			});
+		});
+
+		it('should preserve semicolons inside string literals', () => {
+			expect(parseLine('push "text ; with semicolon"', 1)).toEqual({
+				type: 'push',
+				argument: 'text ; with semicolon',
+				lineNumber: 1,
+			});
+		});
+
+		it('should handle escaped quotes before semicolons', () => {
+			expect(parseLine('push "say \\"hello\\"" ; comment', 1)).toEqual({
+				type: 'push',
+				argument: 'say "hello"',
 				lineNumber: 1,
 			});
 		});
