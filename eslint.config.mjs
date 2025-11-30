@@ -33,10 +33,13 @@ export default [
 				...globals.browser,
 				...globals.node,
 				...globals.commonjs,
-				// AudioWorklet globals (runtime values, not types)
+				// AudioWorklet globals (runtime values)
 				sampleRate: 'readonly',
 				currentTime: 'readonly',
 				currentFrame: 'readonly',
+				// File System Access API types (used in type annotations)
+				FileSystemFileHandle: 'readonly',
+				FileSystemDirectoryHandle: 'readonly',
 			},
 		},
 		plugins: {
@@ -49,9 +52,6 @@ export default [
 			'@typescript-eslint/ban-ts-comment': 'warn',
 			'import/order': importOrderRule,
 			'prettier/prettier': ['error', prettierOptions],
-			// Disable no-undef for TypeScript files - TypeScript handles undefined variable checking
-			// This prevents false positives for TypeScript type interfaces like FileSystemFileHandle
-			'no-undef': 'off',
 		},
 	},
 ];
