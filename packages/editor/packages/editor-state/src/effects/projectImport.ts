@@ -131,6 +131,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				lineNumberColumnWidth: 1,
 				lastUpdated: Date.now(),
 				creationIndex,
+				blockType: 'unknown', // Will be updated by blockTypeUpdater effect
 			});
 		});
 		events.dispatch('init');

@@ -60,6 +60,8 @@ const instructionsToHighlight = [
 	'remainder',
 	'module',
 	'moduleEnd',
+	'config',
+	'configEnd',
 	'int',
 	'float',
 	'int*',

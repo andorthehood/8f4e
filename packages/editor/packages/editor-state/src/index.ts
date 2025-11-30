@@ -10,6 +10,7 @@ import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
 import codeBlockNavigation from './effects/codeBlockNavigation';
 import demoModeNavigation from './effects/demoModeNavigation';
 import compiler from './effects/compiler';
+import configEffect from './effects/config';
 import contextMenu from './effects/menu/contextMenu';
 import graphicHelper from './effects/codeBlocks/graphicHelper';
 import editorSettings from './effects/editorSettings';
@@ -22,6 +23,7 @@ import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
 import keyboardShortcuts from './effects/keyboardShortcuts';
+import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
 import { validateFeatureFlags, defaultFeatureFlags } from './featureFlags';
 
 import type { Options, Project, State, CodeBlockGraphicData, EventDispatcher, GraphicHelper } from './types';
@@ -152,6 +154,8 @@ export default function init(events: EventDispatcher, project: Project, options:
 	viewport(state, events);
 	contextMenu(store, events);
 	codeBlockCreator(state, events);
+	blockTypeUpdater(store, events); // Must run before compiler to classify blocks first
+	configEffect(store, events); // Config must run before compiler to apply settings first
 	compiler(store, events);
 	graphicHelper(store, events);
 	codeEditing(store, events);
@@ -173,11 +177,13 @@ export default function init(events: EventDispatcher, project: Project, options:
 export type {
 	State,
 	CodeBlockGraphicData,
+	CodeBlockType,
 	Project,
 	ProjectInfo,
 	Options,
 	EditorSettings,
 	CompilationResult,
+	ConfigCompilationResult,
 	CodeBlock,
 	Viewport,
 	ProjectViewport,

@@ -141,6 +141,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			lastUpdated: Date.now(),
 			offsetY: 0,
 			creationIndex,
+			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
 		};
 
 		state.graphicHelper.codeBlocks.add(codeBlock);
