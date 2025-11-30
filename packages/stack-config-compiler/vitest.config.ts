@@ -1,10 +1,17 @@
 import { defineConfig } from 'vitest/config';
-import { createNodePreset } from '@8f4e/config/vitest';
 
-export default defineConfig(
-	createNodePreset({
+export default defineConfig({
+	test: {
 		include: ['tests/**/*.test.ts'],
-		additionalExclude: ['**/testUtils.ts', '**/__fixtures__/**'],
-		typecheckEnabled: true,
-	})
-);
+		includeSource: ['src/**/*.ts'],
+		exclude: ['**/node_modules/**', '**/dist/**', '**/testUtils.ts', '**/__fixtures__/**'],
+		environment: 'node',
+		typecheck: {
+			enabled: true,
+			tsconfig: './tsconfig.test.json',
+		},
+	},
+	define: {
+		'import.meta.vitest': 'undefined',
+	},
+});
