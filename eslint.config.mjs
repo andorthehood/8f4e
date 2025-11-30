@@ -12,7 +12,15 @@ import { prettierOptions, importOrderRule } from '@8f4e/config/eslint';
 export default [
 	// Global ignores (replaces .eslintignore)
 	{
-		ignores: ['**/node_modules/**', '**/dist/**', '**/.vscode/**', '**/jest.config.js'],
+		ignores: [
+			'**/node_modules/**',
+			'**/dist/**',
+			'**/.vscode/**',
+			'**/jest.config.js',
+			'**/jest.image.ts',
+			// Ignore glugglug submodule (has its own linting config)
+			'**/packages/editor/packages/glugglug/**',
+		],
 	},
 	eslint.configs.recommended,
 	{
@@ -25,6 +33,13 @@ export default [
 				...globals.browser,
 				...globals.node,
 				...globals.commonjs,
+				// File System Access API
+				FileSystemFileHandle: 'readonly',
+				FileSystemDirectoryHandle: 'readonly',
+				// AudioWorklet globals
+				sampleRate: 'readonly',
+				currentTime: 'readonly',
+				currentFrame: 'readonly',
 			},
 		},
 		plugins: {
