@@ -2,6 +2,7 @@
 
 exports[`createMockCodeBlock > cursor calculation > should calculate cursor position correctly 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -39,6 +40,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
 
 exports[`createMockCodeBlock > cursor calculation > should calculate cursor with offsets 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -76,6 +78,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
 
 exports[`createMockCodeBlock > cursor calculation > should prefer explicit cursor override over cursorY 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -113,6 +116,7 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
 
 exports[`createMockCodeBlock > cursor calculation > should use cursorY convenience parameter 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -150,6 +154,7 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
 
 exports[`createMockCodeBlock > default values > should create a block with default values when called with no arguments 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -187,6 +192,7 @@ exports[`createMockCodeBlock > default values > should create a block with defau
 
 exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -224,6 +230,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
 
 exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -261,6 +268,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
 
 exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -298,6 +306,7 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
 
 exports[`createMockCodeBlock > override behavior > should allow independent override of minGridWidth 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -335,6 +344,7 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
 
 exports[`createMockCodeBlock > override behavior > should allow override of code and other properties 1`] = `
 {
+  "blockType": "unknown",
   "code": [
     "line1",
     "line2",
@@ -375,6 +385,7 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
 
 exports[`createMockCodeBlock > override behavior > should override id and offsets 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
@@ -412,6 +423,7 @@ exports[`createMockCodeBlock > override behavior > should override id and offset
 
 exports[`createMockCodeBlock > override behavior > should override position and dimensions 1`] = `
 {
+  "blockType": "unknown",
   "code": [],
   "codeColors": [],
   "codeToRender": [],
