@@ -2,7 +2,8 @@
  * Append command - appends values from the data stack to an array at the current scope path
  */
 
-import { appendAtPath, getCurrentScope } from '../vm';
+import { appendAtPath } from '../vm/appendAtPath';
+import { getCurrentScope } from '../vm/getCurrentScope';
 
 import type { VMState } from '../types';
 
