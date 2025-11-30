@@ -1,35 +1,13 @@
 {
+	"extends": "@8f4e/config/tsconfig.base.json",
 	"compilerOptions": {
-		"target": "esnext",
-		"lib": [
-			"esnext",
-			"dom",
-			"dom.iterable"
-		],
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true,
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"strict": true,
-		"downlevelIteration": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"allowImportingTsExtensions": false,
-		"noEmit": false,
 		"outDir": "dist",
 		"rootDir": "src",
-		"declaration": true,
-		"declarationMap": true,
-		"sourceMap": true,
+		"target": "esnext",
+		"lib": ["esnext", "dom", "dom.iterable"],
+		"allowImportingTsExtensions": false,
 		"types": []
 	},
-	"include": [
-		"src/**/*.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"src/**/*.test.ts"
-	]
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "src/**/*.test.ts"]
 }

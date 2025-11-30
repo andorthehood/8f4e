@@ -26,7 +26,11 @@
 		"./eslint": {
 			"types": "./dist/eslint/index.d.ts",
 			"default": "./dist/eslint/index.js"
-		}
+		},
+		"./tsconfig.base.json": "./tsconfig.base.json",
+		"./tsconfig.node.json": "./tsconfig.node.json",
+		"./tsconfig.dom.json": "./tsconfig.dom.json",
+		"./tsconfig.webworker.json": "./tsconfig.webworker.json"
 	},
 	"repository": {
 		"type": "git",
