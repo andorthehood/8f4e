@@ -6,12 +6,6 @@
 		"lib": ["es2023"],
 		"types": ["node"]
 	},
-	"include": [
-		"src/**/*.ts",
-		"tests/**/*.test.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"dist"
-	]
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
 }
