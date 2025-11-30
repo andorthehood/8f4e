@@ -33,10 +33,15 @@ export default [
 				...globals.browser,
 				...globals.node,
 				...globals.commonjs,
-				// AudioWorklet globals (runtime values)
+				// AudioWorklet globals (runtime values available in AudioWorkletProcessor context)
 				sampleRate: 'readonly',
 				currentTime: 'readonly',
 				currentFrame: 'readonly',
+				// File System Access API types - these are TypeScript type interfaces from the DOM lib
+				// that ESLint's no-undef rule doesn't recognize. Added here to satisfy ESLint while
+				// TypeScript provides the actual type checking.
+				FileSystemFileHandle: 'readonly',
+				FileSystemDirectoryHandle: 'readonly',
 			},
 		},
 		plugins: {
@@ -49,18 +54,6 @@ export default [
 			'@typescript-eslint/ban-ts-comment': 'warn',
 			'import/order': importOrderRule,
 			'prettier/prettier': ['error', prettierOptions],
-		},
-	},
-	// Files that use File System Access API types - these are DOM types that TypeScript
-	// understands but ESLint's no-undef rule doesn't recognize. Disable no-undef for these
-	// specific files rather than adding fake globals or disabling globally.
-	{
-		files: [
-			'packages/editor/packages/editor-state/src/effects/menu/menus.ts',
-			'src/storage-callbacks.ts',
-		],
-		rules: {
-			'no-undef': 'off',
 		},
 	},
 ];
