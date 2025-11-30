@@ -251,6 +251,14 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
+/**
+ * The type of a code block, determined by its content markers.
+ * - 'module': Contains module/moduleEnd markers (compiled to WASM)
+ * - 'config': Contains config/configEnd markers (compiled to JSON configuration)
+ * - 'unknown': Mixed or incomplete markers, or no recognizable markers
+ */
+export type CodeBlockType = 'module' | 'config' | 'unknown';
+
 export interface CodeBlockGraphicData {
 	width: number;
 	minGridWidth: number;
@@ -307,6 +315,11 @@ export interface CodeBlockGraphicData {
 	 * This is a runtime-only value and is NOT persisted.
 	 */
 	creationIndex: number;
+	/**
+	 * The type of the code block, determined by its content markers.
+	 * Updated automatically when code changes.
+	 */
+	blockType: CodeBlockType;
 }
 
 export type GraphicHelper = {
@@ -534,6 +547,26 @@ export interface Callbacks {
 	// Color scheme loader callback
 	getListOfColorSchemes?: () => Promise<string[]>;
 	getColorScheme?: (name: string) => Promise<ColorScheme>;
+
+	// Config compilation callback
+	/**
+	 * Compiles a stack-config program source into a JSON configuration object.
+	 * Used by config blocks to generate runtime configuration.
+	 *
+	 * @param source - The config program source code (one command per line)
+	 * @returns Promise containing the compiled config object and any errors
+	 */
+	compileConfig?: (source: string) => Promise<ConfigCompilationResult>;
+}
+
+/**
+ * Result of compiling a stack-config program
+ */
+export interface ConfigCompilationResult {
+	/** The resulting JSON-compatible configuration object, or null if there were errors */
+	config: unknown | null;
+	/** Array of error objects with line numbers and messages */
+	errors: { line: number; message: string }[];
 }
 
 export interface Options {
