@@ -70,7 +70,7 @@ Packages remain self-contained by keeping thin local config entrypoints (e.g. `t
 
 ## Success Criteria
 
-- [ ] Most package `tsconfig.json` files delegate their common options to `@8f4e/config/ts`, with only small, package-specific differences.
+- [x] Most package `tsconfig.json` files delegate their common options to `@8f4e/config/ts`, with only small, package-specific differences.
 - [x] Most `vitest.config.ts` files use helpers from `@8f4e/config/vitest`, and updating defaults (coverage, timeouts, reporters) can be done centrally.
 - [x] Vite library and screenshot/dev configs share helpers from `@8f4e/config/vite`, reducing boilerplate and keeping build behavior consistent.
 - [x] ESLint rules and Prettier options are defined in `@8f4e/config/eslint` and consumed by the root (and optionally per-package) configs.

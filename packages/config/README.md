@@ -8,18 +8,33 @@ This package provides shared configuration helpers that allow packages to mainta
 
 ### TypeScript Configuration
 
-Import TypeScript configuration helpers in your package:
+Packages can extend the shared TypeScript base configurations:
 
-```ts
-// In your package's vitest.config.ts or other tool config
-import { baseCompilerOptions, libBuildOptions, libs } from '@8f4e/config/ts';
+```json
+{
+  "extends": "@8f4e/config/tsconfig.node.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "src/**/*.test.ts"]
+}
 ```
 
-Your `tsconfig.json` can use these patterns:
+Available base configurations:
+- `@8f4e/config/tsconfig.base.json` - Core compiler options (strict, module, etc.)
+- `@8f4e/config/tsconfig.node.json` - For pure library packages (es2023 lib)
+- `@8f4e/config/tsconfig.dom.json` - For browser/DOM packages (es2023 + DOM lib)
+- `@8f4e/config/tsconfig.webworker.json` - For web worker packages (es2023 + webworker lib)
 
-- **Node library** (no DOM): `lib: libs.node`
-- **Browser/DOM package**: `lib: libs.dom`
-- **Web worker package**: `lib: libs.webworker`
+Note: `outDir`, `rootDir`, `include`, and `exclude` must be specified in each package's tsconfig.json as they are path-relative.
+
+For programmatic access to TypeScript options:
+
+```ts
+import { baseCompilerOptions, libBuildOptions, libs } from '@8f4e/config/ts';
+```
 
 ### Vitest Configuration
 
@@ -57,16 +72,17 @@ Available helpers:
 
 ### ESLint Configuration
 
-```js
-const { createEslintConfig } = require('@8f4e/config/eslint');
+The root `eslint.config.mjs` uses ESLint flat config format and imports shared settings:
 
-module.exports = createEslintConfig({ root: true });
+```js
+import { prettierOptions, importOrderRule } from '@8f4e/config/eslint';
 ```
 
-Or use individual exports:
-- `sharedRules` - Shared rule configuration
+Available exports:
 - `prettierOptions` - Prettier settings
 - `importOrderRule` - Import ordering rules
+- `sharedRules` - Shared rule configuration (legacy format)
+- `createEslintConfig()` - Factory for legacy ESLint config
 
 ## Philosophy
 
