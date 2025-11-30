@@ -37,9 +37,6 @@ export default [
 				sampleRate: 'readonly',
 				currentTime: 'readonly',
 				currentFrame: 'readonly',
-				// File System Access API types (used in type annotations)
-				FileSystemFileHandle: 'readonly',
-				FileSystemDirectoryHandle: 'readonly',
 			},
 		},
 		plugins: {
@@ -52,6 +49,18 @@ export default [
 			'@typescript-eslint/ban-ts-comment': 'warn',
 			'import/order': importOrderRule,
 			'prettier/prettier': ['error', prettierOptions],
+		},
+	},
+	// Files that use File System Access API types - these are DOM types that TypeScript
+	// understands but ESLint's no-undef rule doesn't recognize. Disable no-undef for these
+	// specific files rather than adding fake globals or disabling globally.
+	{
+		files: [
+			'packages/editor/packages/editor-state/src/effects/menu/menus.ts',
+			'src/storage-callbacks.ts',
+		],
+		rules: {
+			'no-undef': 'off',
 		},
 	},
 ];
