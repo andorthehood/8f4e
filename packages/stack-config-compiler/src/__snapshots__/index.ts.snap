@@ -50,6 +50,7 @@ line2	tabbed",
   ],
   "message": "He said "hello"",
   "path": "C:\\Users\\test",
+  "semicolonTest": "text ; with semicolon",
   "settings": {
     "audio": {
       "gain": 0.75,
