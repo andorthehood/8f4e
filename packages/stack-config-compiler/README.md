@@ -88,13 +88,16 @@ scope "parent.array[3].child"
 
 ### Comments
 
-Lines starting with `;` are treated as comments:
+Lines starting with `;` are treated as comments. **Note:** Inline comments are not supported.
 
 ```
 ; This is a comment
 scope "name"
-push "value"  ; This is not supported (inline comments)
+push "value"
 set
+
+; Comments must be on their own line
+; push "unused"  ; This entire line is a comment
 ```
 
 ## API

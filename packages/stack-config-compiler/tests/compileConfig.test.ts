@@ -551,6 +551,17 @@ set
 			expect(result.errors.length).toBe(1);
 			expect(result.errors[0].message).toContain('Invalid string literal');
 		});
+
+		test('should return error for malformed path (unclosed bracket)', () => {
+			const result = compileConfig(`
+scope "items[0"
+push "value"
+set
+`);
+			expect(result.config).toBeNull();
+			expect(result.errors.length).toBeGreaterThanOrEqual(1);
+			expect(result.errors[0].message).toContain('unclosed bracket');
+		});
 	});
 
 	describe('string escaping', () => {
