@@ -17,7 +17,8 @@ export type CommandType = 'push' | 'set' | 'append' | 'scope' | 'rescopeTop' | '
  */
 export interface Command {
 	type: CommandType;
-	argument?: Literal | string; // For push: Literal; for scope commands: path string
+	argument?: Literal; // For push: literal value
+	pathSegments?: string[]; // For scope commands: pre-parsed path segments
 	lineNumber: number;
 }
 
