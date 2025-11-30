@@ -1,0 +1,30 @@
+{
+	"name": "@8f4e/stack-config-compiler",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Stack-machine-inspired config language compiler for 8f4e",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andorthehood/8f4e.git"
+	},
+	"author": "Andor Polgar",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/andorthehood/8f4e/issues"
+	},
+	"homepage": "https://github.com/andorthehood/8f4e#readme",
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "^24.3.0"
+	}
+}

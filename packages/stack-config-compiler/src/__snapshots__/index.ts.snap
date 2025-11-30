@@ -1,0 +1,114 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compileConfig > should compile a comprehensive example covering all features 1`] = `
+{
+  "channels": [
+    "left",
+    "right",
+  ],
+  "data": {
+    "items": [
+      {
+        "name": "first",
+      },
+    ],
+  },
+  "effects": [
+    "reverb",
+    "delay",
+    "chorus",
+  ],
+  "formatted": "line1
+line2	tabbed",
+  "icons": {
+    "piano": {
+      "color": "blue",
+      "size": 48,
+    },
+  },
+  "instrument": {
+    "enabled": true,
+    "muted": false,
+    "name": "Piano",
+    "notes": [
+      "C4",
+      "E4",
+      "G4",
+    ],
+    "parent": null,
+    "tags": [
+      "keyboard",
+      "acoustic",
+    ],
+    "volume": 0.8,
+  },
+  "matrix": [
+    [
+      1,
+      2,
+    ],
+  ],
+  "message": "He said "hello"",
+  "path": "C:\\Users\\test",
+  "semicolonTest": "text ; with semicolon",
+  "settings": {
+    "audio": {
+      "gain": 0.75,
+    },
+  },
+}
+`;
+
+exports[`compileConfig > should return error for append to non-array 1`] = `
+[
+  {
+    "line": 6,
+    "message": "Cannot append to non-array value at path "name"",
+  },
+]
+`;
+
+exports[`compileConfig > should return error for malformed path 1`] = `
+[
+  {
+    "line": 2,
+    "message": "Malformed path: unclosed bracket in "items[0"",
+  },
+]
+`;
+
+exports[`compileConfig > should return error for operations on empty stacks 1`] = `
+[
+  {
+    "line": 2,
+    "message": "Cannot set at root scope (scope stack is empty)",
+  },
+]
+`;
+
+exports[`compileConfig > should return error for type conflict 1`] = `
+[
+  {
+    "line": 8,
+    "message": "Type conflict: cannot navigate through scalar value",
+  },
+]
+`;
+
+exports[`compileConfig > should return error for unclosed string literal 1`] = `
+[
+  {
+    "line": 3,
+    "message": "Invalid string literal: "unclosed",
+  },
+]
+`;
+
+exports[`compileConfig > should return errors for invalid input 1`] = `
+[
+  {
+    "line": 3,
+    "message": "Unknown command: unknownCommand",
+  },
+]
+`;
