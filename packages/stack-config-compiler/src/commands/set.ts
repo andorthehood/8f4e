@@ -2,7 +2,8 @@
  * Set command - pops values from the data stack and sets them at the current scope path
  */
 
-import { getCurrentScope, setAtPath } from '../vm';
+import { getCurrentScope } from '../vm/getCurrentScope';
+import { setAtPath } from '../vm/setAtPath';
 
 import type { VMState } from '../types';
 
