@@ -27,8 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build config package
+        run: npx nx run @8f4e/config:build
+
       - name: Run linting
-        run: npx eslint . --ext .ts --fix
+        run: npx eslint "**/*.ts" --fix
 
       - name: Run typecheck
         run: npx nx run-many --target=typecheck --all
