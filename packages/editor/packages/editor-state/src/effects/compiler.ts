@@ -6,11 +6,15 @@ import type { CodeBlockGraphicData, State } from '../types';
 
 /**
  * Converts code blocks from a Set to an array sorted by creationIndex.
- * This ensures that newer modules appear at the end of the compiler module list
- * for stable memory layout ordering, independent of visual Z-index.
+ * Only includes blocks with blockType === 'module'.
+ * This ensures that:
+ * - Only module blocks are compiled (config blocks are excluded)
+ * - Newer modules appear at the end of the compiler module list for stable memory layout ordering
  */
 export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
-	return Array.from(codeBlocks).sort((a, b) => a.creationIndex - b.creationIndex);
+	return Array.from(codeBlocks)
+		.filter(block => block.blockType === 'module')
+		.sort((a, b) => a.creationIndex - b.creationIndex);
 }
 
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
