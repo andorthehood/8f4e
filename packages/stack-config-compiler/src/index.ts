@@ -177,6 +177,11 @@ rescope "formatted"
 push "line1\\nline2\\ttabbed"
 set
 
+; Semicolon inside string (should not be treated as comment)
+rescope "semicolonTest"
+push "text ; with semicolon"
+set
+
 ; Mixed object and array paths
 rescope "matrix[0][0]"
 push 1
