@@ -3,10 +3,10 @@ import { parsePathArgument } from './parsePathArgument';
 
 import type { Command, CommandType, CompileError } from '../types';
 
-/** Regex to match a complete line with command and optional argument */
-const LINE_REGEX = /^\s*(\w+)(?:\s+(.+))?\s*$/;
+/** Regex to match a complete line with command and optional argument, stripping trailing comments */
+const LINE_REGEX = /^\s*(\w+)(?:\s+(.+?))?\s*(?:;.*)?$/;
 
-/** Valid command types */
+/** Valid command types (case-sensitive) */
 const VALID_COMMANDS = new Set<CommandType>(['push', 'set', 'append', 'scope', 'rescopeTop', 'rescope', 'endScope']);
 
 /**
@@ -15,7 +15,7 @@ const VALID_COMMANDS = new Set<CommandType>(['push', 'set', 'append', 'scope', '
 export function parseLine(line: string, lineNumber: number): Command | CompileError | null {
 	const trimmed = line.trim();
 
-	// Skip empty lines and comments
+	// Skip empty lines and lines that start with a comment
 	if (!trimmed || trimmed.startsWith(';')) {
 		return null;
 	}
@@ -26,17 +26,15 @@ export function parseLine(line: string, lineNumber: number): Command | CompileEr
 	}
 
 	const [, commandName, argument] = match;
-	const normalizedCommand = commandName.toLowerCase();
 
-	// Find matching command (case-insensitive)
-	const matchedCommand = Array.from(VALID_COMMANDS).find(cmd => cmd.toLowerCase() === normalizedCommand);
-	if (!matchedCommand) {
+	// Case-sensitive command matching
+	if (!VALID_COMMANDS.has(commandName as CommandType)) {
 		return { line: lineNumber, message: `Unknown command: ${commandName}` };
 	}
 
-	const command: Command = { type: matchedCommand, lineNumber };
+	const command: Command = { type: commandName as CommandType, lineNumber };
 
-	switch (matchedCommand) {
+	switch (commandName) {
 		case 'push': {
 			if (!argument) {
 				return { line: lineNumber, message: 'push requires a literal argument' };
@@ -53,7 +51,7 @@ export function parseLine(line: string, lineNumber: number): Command | CompileEr
 		case 'rescopeTop':
 		case 'rescope': {
 			if (!argument) {
-				return { line: lineNumber, message: `${matchedCommand} requires a path argument` };
+				return { line: lineNumber, message: `${commandName} requires a path argument` };
 			}
 			const pathResult = parsePathArgument(argument);
 			if ('error' in pathResult) {
@@ -128,10 +126,24 @@ if (import.meta.vitest) {
 			});
 		});
 
-		it('should be case-insensitive for commands', () => {
+		it('should be case-sensitive for commands', () => {
 			expect(parseLine('PUSH 123', 1)).toEqual({
+				line: 1,
+				message: 'Unknown command: PUSH',
+			});
+		});
+
+		it('should strip trailing comments', () => {
+			expect(parseLine('push "hello" ; this is a comment', 1)).toEqual({
 				type: 'push',
-				argument: 123,
+				argument: 'hello',
+				lineNumber: 1,
+			});
+		});
+
+		it('should strip trailing comments after set', () => {
+			expect(parseLine('set ; save the value', 1)).toEqual({
+				type: 'set',
 				lineNumber: 1,
 			});
 		});
