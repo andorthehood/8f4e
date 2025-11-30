@@ -23,13 +23,19 @@ export function getCurrentScope(state: VMState): string {
 }
 
 /**
+ * Result of splitting a path - either segments or an error
+ */
+export type SplitPathResult = { segments: string[]; error: null } | { segments: null; error: string };
+
+/**
  * Splits a path string into segments, handling both dot notation and array indices
  * Examples: "foo.bar" -> ["foo", "bar"]
  *           "foo[0].bar" -> ["foo", "[0]", "bar"]
  *           "foo.bar[2].x" -> ["foo", "bar", "[2]", "x"]
+ * Returns an error if the path is malformed (e.g., unclosed brackets)
  */
-export function splitPath(path: string): string[] {
-	if (!path) return [];
+export function splitPath(path: string): SplitPathResult {
+	if (!path) return { segments: [], error: null };
 
 	const segments: string[] = [];
 	let current = '';
@@ -50,12 +56,10 @@ export function splitPath(path: string): string[] {
 			// Find matching ]
 			const endBracket = path.indexOf(']', i);
 			if (endBracket === -1) {
-				// Invalid path, but we'll handle this gracefully
-				current += char;
-			} else {
-				segments.push(path.slice(i, endBracket + 1));
-				i = endBracket;
+				return { segments: null, error: `Malformed path: unclosed bracket in "${path}"` };
 			}
+			segments.push(path.slice(i, endBracket + 1));
+			i = endBracket;
 		} else {
 			current += char;
 		}
@@ -65,7 +69,7 @@ export function splitPath(path: string): string[] {
 		segments.push(current);
 	}
 
-	return segments;
+	return { segments, error: null };
 }
 
 /**
@@ -143,7 +147,13 @@ function navigateToPath(
  * Sets a value at a path in the config
  */
 function setAtPath(config: Record<string, unknown>, path: string, value: unknown): string | null {
-	const segments = splitPath(path);
+	const pathResult = splitPath(path);
+
+	if (pathResult.error !== null) {
+		return pathResult.error;
+	}
+
+	const segments = pathResult.segments;
 
 	if (segments.length === 0) {
 		// Cannot set at root level
@@ -168,7 +178,13 @@ function setAtPath(config: Record<string, unknown>, path: string, value: unknown
  * Appends a value to an array at a path in the config
  */
 function appendAtPath(config: Record<string, unknown>, path: string, value: unknown): string | null {
-	const segments = splitPath(path);
+	const pathResult = splitPath(path);
+
+	if (pathResult.error !== null) {
+		return pathResult.error;
+	}
+
+	const segments = pathResult.segments;
 
 	if (segments.length === 0) {
 		return 'Cannot append at root scope';
@@ -264,8 +280,11 @@ export function executeCommand(state: VMState, command: Command): string | null 
 
 		case 'scope': {
 			const path = command.argument as string;
-			const segments = splitPath(path);
-			for (const segment of segments) {
+			const pathResult = splitPath(path);
+			if (pathResult.error !== null) {
+				return pathResult.error;
+			}
+			for (const segment of pathResult.segments) {
 				if (segment) {
 					state.scopeStack.push(segment);
 				}
@@ -283,8 +302,11 @@ export function executeCommand(state: VMState, command: Command): string | null 
 
 			// Push new segments
 			const path = command.argument as string;
-			const segments = splitPath(path);
-			for (const segment of segments) {
+			const pathResult = splitPath(path);
+			if (pathResult.error !== null) {
+				return pathResult.error;
+			}
+			for (const segment of pathResult.segments) {
 				if (segment) {
 					state.scopeStack.push(segment);
 				}
@@ -298,8 +320,11 @@ export function executeCommand(state: VMState, command: Command): string | null 
 
 			// Push new segments
 			const path = command.argument as string;
-			const segments = splitPath(path);
-			for (const segment of segments) {
+			const pathResult = splitPath(path);
+			if (pathResult.error !== null) {
+				return pathResult.error;
+			}
+			for (const segment of pathResult.segments) {
 				if (segment) {
 					state.scopeStack.push(segment);
 				}
