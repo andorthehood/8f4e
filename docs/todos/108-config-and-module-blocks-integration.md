@@ -290,6 +290,8 @@ This should compile (via `@8f4e/stack-config-compiler`) to a JSON object that ca
 - `selectedRuntime`
 - `runtimeSettings[0]` (including `runtime`, `sampleRate`, `audioOutputBuffers`, `audioInputBuffers`)
 
+Note: this is shown as a single, large `config` block for clarity, but the same configuration can be split across multiple smaller `config` blocks (for example, one block for project metadata, one for runtime selection, and one for audio routing). The editor-state config effect should support concatenating or otherwise merging multiple config blocks into a single effective config object.
+
 ## Success Criteria
 
 - [ ] Code blocks are classified as `module`, `config`, or `unknown` based on their contents.
