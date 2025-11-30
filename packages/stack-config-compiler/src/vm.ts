@@ -2,7 +2,18 @@
  * VM (Virtual Machine) for executing stack config commands
  */
 
-import type { Command, CompileError, Literal, VMState } from './types';
+import {
+	executeAppend,
+	executeEndScope,
+	executePush,
+	executeRescope,
+	executeRescopeTop,
+	executeScope,
+	executeSet,
+} from './commands';
+import { splitPathSegments } from './utils';
+
+import type { Command, CompileError, VMState } from './types';
 
 /**
  * Creates a fresh VM state
@@ -20,56 +31,6 @@ export function createVMState(): VMState {
  */
 export function getCurrentScope(state: VMState): string {
 	return state.scopeStack.join('.');
-}
-
-/**
- * Result of splitting a path - either segments or an error
- */
-export type SplitPathResult = { segments: string[]; error: null } | { segments: null; error: string };
-
-/**
- * Splits a path string into segments, handling both dot notation and array indices
- * Examples: "foo.bar" -> ["foo", "bar"]
- *           "foo[0].bar" -> ["foo", "[0]", "bar"]
- *           "foo.bar[2].x" -> ["foo", "bar", "[2]", "x"]
- * Returns an error if the path is malformed (e.g., unclosed brackets)
- */
-export function splitPath(path: string): SplitPathResult {
-	if (!path) return { segments: [], error: null };
-
-	const segments: string[] = [];
-	let current = '';
-
-	for (let i = 0; i < path.length; i++) {
-		const char = path[i];
-
-		if (char === '.') {
-			if (current) {
-				segments.push(current);
-				current = '';
-			}
-		} else if (char === '[') {
-			if (current) {
-				segments.push(current);
-				current = '';
-			}
-			// Find matching ]
-			const endBracket = path.indexOf(']', i);
-			if (endBracket === -1) {
-				return { segments: null, error: `Malformed path: unclosed bracket in "${path}"` };
-			}
-			segments.push(path.slice(i, endBracket + 1));
-			i = endBracket;
-		} else {
-			current += char;
-		}
-	}
-
-	if (current) {
-		segments.push(current);
-	}
-
-	return { segments, error: null };
 }
 
 /**
@@ -95,7 +56,6 @@ function navigateToPath(
 	segments: string[]
 ): { parent: Record<string, unknown> | unknown[]; key: string | number } | null {
 	if (segments.length === 0) {
-		// Setting at root level isn't directly supported through this mechanism
 		return null;
 	}
 
@@ -116,7 +76,6 @@ function navigateToPath(
 
 			const next = arr[index];
 			if (typeof next !== 'object' || next === null) {
-				// Type conflict: can't navigate through a scalar
 				return null;
 			}
 			current = next as Record<string, unknown> | unknown[];
@@ -129,7 +88,6 @@ function navigateToPath(
 
 			const next = obj[segment];
 			if (typeof next !== 'object' || next === null) {
-				// Type conflict: can't navigate through a scalar
 				return null;
 			}
 			current = next as Record<string, unknown> | unknown[];
@@ -146,17 +104,10 @@ function navigateToPath(
 /**
  * Sets a value at a path in the config
  */
-function setAtPath(config: Record<string, unknown>, path: string, value: unknown): string | null {
-	const pathResult = splitPath(path);
-
-	if (pathResult.error !== null) {
-		return pathResult.error;
-	}
-
-	const segments = pathResult.segments;
+export function setAtPath(config: Record<string, unknown>, path: string, value: unknown): string | null {
+	const segments = splitPathSegments(path);
 
 	if (segments.length === 0) {
-		// Cannot set at root level
 		return 'Cannot set at root scope';
 	}
 
@@ -177,14 +128,8 @@ function setAtPath(config: Record<string, unknown>, path: string, value: unknown
 /**
  * Appends a value to an array at a path in the config
  */
-function appendAtPath(config: Record<string, unknown>, path: string, value: unknown): string | null {
-	const pathResult = splitPath(path);
-
-	if (pathResult.error !== null) {
-		return pathResult.error;
-	}
-
-	const segments = pathResult.segments;
+export function appendAtPath(config: Record<string, unknown>, path: string, value: unknown): string | null {
+	const segments = splitPathSegments(path);
 
 	if (segments.length === 0) {
 		return 'Cannot append at root scope';
@@ -226,120 +171,20 @@ function appendAtPath(config: Record<string, unknown>, path: string, value: unkn
  */
 export function executeCommand(state: VMState, command: Command): string | null {
 	switch (command.type) {
-		case 'push': {
-			state.dataStack.push(command.argument as Literal);
-			return null;
-		}
-
-		case 'set': {
-			const currentScope = getCurrentScope(state);
-
-			if (!currentScope) {
-				return 'Cannot set at root scope (scope stack is empty)';
-			}
-
-			if (state.dataStack.length === 0) {
-				return 'Cannot set: data stack is empty';
-			}
-
-			// Pop all values from the stack
-			const values = state.dataStack.splice(0, state.dataStack.length);
-
-			// If exactly one value, use it directly; otherwise create an array
-			const value = values.length === 1 ? values[0] : values;
-
-			const error = setAtPath(state.config, currentScope, value);
-			if (error) {
-				return error;
-			}
-			return null;
-		}
-
-		case 'append': {
-			const currentScope = getCurrentScope(state);
-
-			if (!currentScope) {
-				return 'Cannot append at root scope (scope stack is empty)';
-			}
-
-			if (state.dataStack.length === 0) {
-				return 'Cannot append: data stack is empty';
-			}
-
-			// Pop all values from the stack and append each one
-			const values = state.dataStack.splice(0, state.dataStack.length);
-
-			for (const val of values) {
-				const error = appendAtPath(state.config, currentScope, val);
-				if (error) {
-					return error;
-				}
-			}
-			return null;
-		}
-
-		case 'scope': {
-			const path = command.argument as string;
-			const pathResult = splitPath(path);
-			if (pathResult.error !== null) {
-				return pathResult.error;
-			}
-			for (const segment of pathResult.segments) {
-				if (segment) {
-					state.scopeStack.push(segment);
-				}
-			}
-			return null;
-		}
-
-		case 'rescopeTop': {
-			if (state.scopeStack.length === 0) {
-				return 'Cannot rescopeTop: scope stack is empty';
-			}
-
-			// Pop the top segment
-			state.scopeStack.pop();
-
-			// Push new segments
-			const path = command.argument as string;
-			const pathResult = splitPath(path);
-			if (pathResult.error !== null) {
-				return pathResult.error;
-			}
-			for (const segment of pathResult.segments) {
-				if (segment) {
-					state.scopeStack.push(segment);
-				}
-			}
-			return null;
-		}
-
-		case 'rescope': {
-			// Clear the scope stack
-			state.scopeStack.length = 0;
-
-			// Push new segments
-			const path = command.argument as string;
-			const pathResult = splitPath(path);
-			if (pathResult.error !== null) {
-				return pathResult.error;
-			}
-			for (const segment of pathResult.segments) {
-				if (segment) {
-					state.scopeStack.push(segment);
-				}
-			}
-			return null;
-		}
-
-		case 'endScope': {
-			if (state.scopeStack.length === 0) {
-				return 'Cannot endScope: scope stack is empty';
-			}
-			state.scopeStack.pop();
-			return null;
-		}
-
+		case 'push':
+			return executePush(state, command);
+		case 'set':
+			return executeSet(state);
+		case 'append':
+			return executeAppend(state);
+		case 'scope':
+			return executeScope(state, command);
+		case 'rescopeTop':
+			return executeRescopeTop(state, command);
+		case 'rescope':
+			return executeRescope(state, command);
+		case 'endScope':
+			return executeEndScope(state);
 		default:
 			return `Unknown command: ${(command as Command).type}`;
 	}

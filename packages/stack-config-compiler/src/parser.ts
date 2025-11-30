@@ -3,200 +3,136 @@
  * Converts line-based source into an array of commands
  */
 
+import { splitPathSegments } from './utils';
+
 import type { Command, CommandType, CompileError, Literal } from './types';
 
-/**
- * Checks if a line is a comment (starts with ';')
- */
-function isComment(line: string): boolean {
-	return line.trimStart().startsWith(';');
-}
+/** Regex to match a complete line with command and optional argument */
+const LINE_REGEX = /^\s*(\w+)(?:\s+(.+))?\s*$/;
+
+/** Regex to match string literals with escape sequences */
+const STRING_LITERAL_REGEX = /^"((?:[^"\\]|\\.)*)"/;
+
+/** Valid command types */
+const VALID_COMMANDS = new Set<CommandType>(['push', 'set', 'append', 'scope', 'rescopeTop', 'rescope', 'endScope']);
 
 /**
- * Checks if a line is empty or whitespace only
+ * Parses escape sequences in a string
  */
-function isEmptyLine(line: string): boolean {
-	return line.trim() === '';
-}
-
-/**
- * Parses a string literal (quoted with double quotes)
- */
-function parseStringLiteral(token: string): { value: string; consumed: number } | null {
-	if (!token.startsWith('"')) {
-		return null;
-	}
-
-	// Find the closing quote
-	let i = 1;
-	let result = '';
-	while (i < token.length) {
-		const char = token[i];
-		if (char === '\\' && i + 1 < token.length) {
-			// Handle escape sequences
-			const next = token[i + 1];
-			switch (next) {
-				case '"':
-					result += '"';
-					break;
-				case '\\':
-					result += '\\';
-					break;
-				case 'n':
-					result += '\n';
-					break;
-				case 't':
-					result += '\t';
-					break;
-				default:
-					result += next;
-			}
-			i += 2;
-		} else if (char === '"') {
-			return { value: result, consumed: i + 1 };
-		} else {
-			result += char;
-			i++;
+function parseEscapes(str: string): string {
+	return str.replace(/\\(.)/g, (_, char) => {
+		switch (char) {
+			case 'n':
+				return '\n';
+			case 't':
+				return '\t';
+			case '"':
+				return '"';
+			case '\\':
+				return '\\';
+			default:
+				return char;
 		}
-	}
-
-	// Unclosed string
-	return null;
+	});
 }
 
 /**
  * Parses a literal value (string, number, boolean, null)
  */
 function parseLiteral(token: string): Literal | { error: string } {
-	// Check for string literal
-	if (token.startsWith('"')) {
-		const result = parseStringLiteral(token);
-		if (!result) {
-			return { error: `Invalid string literal: ${token}` };
-		}
-		return result.value;
+	// String literal
+	const stringMatch = token.match(STRING_LITERAL_REGEX);
+	if (stringMatch) {
+		return parseEscapes(stringMatch[1]);
 	}
 
-	// Check for boolean
+	// Unclosed string
+	if (token.startsWith('"')) {
+		return { error: `Invalid string literal: ${token}` };
+	}
+
+	// Boolean
 	if (token === 'true') return true;
 	if (token === 'false') return false;
 
-	// Check for null
+	// Null
 	if (token === 'null') return null;
 
-	// Check for number
+	// Number
 	const num = parseFloat(token);
-	if (!isNaN(num)) {
-		return num;
-	}
+	if (!isNaN(num)) return num;
 
 	return { error: `Invalid literal: ${token}` };
 }
 
 /**
- * Tokenizes a line into command and arguments
- * Handles quoted strings correctly
+ * Splits a path string into segments with error checking
+ * Examples: "foo.bar" -> ["foo", "bar"]
+ *           "foo[0].bar" -> ["foo", "[0]", "bar"]
  */
-function tokenizeLine(line: string): string[] {
-	const tokens: string[] = [];
-	let i = 0;
-
-	while (i < line.length) {
-		// Skip whitespace
-		while (i < line.length && /\s/.test(line[i])) {
-			i++;
-		}
-
-		if (i >= line.length) break;
-
-		// Check for quoted string
-		if (line[i] === '"') {
-			const start = i;
-			i++; // Skip opening quote
-			while (i < line.length && line[i] !== '"') {
-				if (line[i] === '\\' && i + 1 < line.length) {
-					i += 2; // Skip escaped character
-				} else {
-					i++;
-				}
-			}
-			if (i < line.length) {
-				i++; // Skip closing quote
-			}
-			tokens.push(line.slice(start, i));
-		} else {
-			// Regular token
-			const start = i;
-			while (i < line.length && !/\s/.test(line[i])) {
-				i++;
-			}
-			tokens.push(line.slice(start, i));
-		}
+function splitPath(path: string): string[] | { error: string } {
+	// Check for unclosed brackets
+	const openBrackets = (path.match(/\[/g) || []).length;
+	const closeBrackets = (path.match(/\]/g) || []).length;
+	if (openBrackets !== closeBrackets) {
+		return { error: `Malformed path: unclosed bracket in "${path}"` };
 	}
 
-	return tokens;
+	return splitPathSegments(path);
 }
 
 /**
- * Valid command types in the language
+ * Parses a path argument (quoted or unquoted)
  */
-const VALID_COMMANDS: Set<CommandType> = new Set([
-	'push',
-	'set',
-	'append',
-	'scope',
-	'rescopeTop',
-	'rescope',
-	'endScope',
-]);
+function parsePathArgument(arg: string): string[] | { error: string } {
+	let path = arg;
+
+	// Handle quoted path
+	const stringMatch = arg.match(STRING_LITERAL_REGEX);
+	if (stringMatch) {
+		path = parseEscapes(stringMatch[1]);
+	} else if (arg.startsWith('"')) {
+		return { error: `Invalid path: ${arg}` };
+	}
+
+	return splitPath(path);
+}
 
 /**
  * Parses a single line into a command
  */
 function parseLine(line: string, lineNumber: number): Command | CompileError | null {
+	const trimmed = line.trim();
+
 	// Skip empty lines and comments
-	if (isEmptyLine(line) || isComment(line)) {
+	if (!trimmed || trimmed.startsWith(';')) {
 		return null;
 	}
 
-	const tokens = tokenizeLine(line.trim());
-
-	if (tokens.length === 0) {
-		return null;
+	const match = trimmed.match(LINE_REGEX);
+	if (!match) {
+		return { line: lineNumber, message: `Invalid syntax: ${trimmed}` };
 	}
 
-	const commandName = tokens[0].toLowerCase();
+	const [, commandName, argument] = match;
+	const normalizedCommand = commandName.toLowerCase();
 
-	// Handle case-insensitive command names but preserve case for matching
-	const matchedCommand = Array.from(VALID_COMMANDS).find(cmd => cmd.toLowerCase() === commandName);
-
+	// Find matching command (case-insensitive)
+	const matchedCommand = Array.from(VALID_COMMANDS).find(cmd => cmd.toLowerCase() === normalizedCommand);
 	if (!matchedCommand) {
-		return {
-			line: lineNumber,
-			message: `Unknown command: ${tokens[0]}`,
-		};
+		return { line: lineNumber, message: `Unknown command: ${commandName}` };
 	}
 
-	const command: Command = {
-		type: matchedCommand,
-		lineNumber,
-	};
+	const command: Command = { type: matchedCommand, lineNumber };
 
 	switch (matchedCommand) {
 		case 'push': {
-			if (tokens.length < 2) {
-				return {
-					line: lineNumber,
-					message: 'push requires a literal argument',
-				};
+			if (!argument) {
+				return { line: lineNumber, message: 'push requires a literal argument' };
 			}
-
-			const literal = parseLiteral(tokens[1]);
+			const literal = parseLiteral(argument);
 			if (typeof literal === 'object' && literal !== null && 'error' in literal) {
-				return {
-					line: lineNumber,
-					message: literal.error,
-				};
+				return { line: lineNumber, message: literal.error };
 			}
 			command.argument = literal;
 			break;
@@ -205,36 +141,16 @@ function parseLine(line: string, lineNumber: number): Command | CompileError | n
 		case 'scope':
 		case 'rescopeTop':
 		case 'rescope': {
-			if (tokens.length < 2) {
-				return {
-					line: lineNumber,
-					message: `${matchedCommand} requires a path argument`,
-				};
+			if (!argument) {
+				return { line: lineNumber, message: `${matchedCommand} requires a path argument` };
 			}
-
-			// Parse the path - it should be a quoted string
-			const pathArg = tokens[1];
-			if (pathArg.startsWith('"')) {
-				const result = parseStringLiteral(pathArg);
-				if (!result) {
-					return {
-						line: lineNumber,
-						message: `Invalid path: ${pathArg}`,
-					};
-				}
-				command.argument = result.value;
-			} else {
-				// Allow unquoted paths for convenience
-				command.argument = pathArg;
+			const pathResult = parsePathArgument(argument);
+			if ('error' in pathResult) {
+				return { line: lineNumber, message: pathResult.error };
 			}
+			command.pathSegments = pathResult;
 			break;
 		}
-
-		case 'set':
-		case 'append':
-		case 'endScope':
-			// These commands don't take arguments
-			break;
 	}
 
 	return command;
@@ -249,19 +165,13 @@ export function parse(source: string): { commands: Command[]; errors: CompileErr
 	const errors: CompileError[] = [];
 
 	for (let i = 0; i < lines.length; i++) {
-		const lineNumber = i + 1; // 1-based line numbers
-		const result = parseLine(lines[i], lineNumber);
+		const result = parseLine(lines[i], i + 1);
 
-		if (result === null) {
-			// Empty line or comment, skip
-			continue;
-		}
+		if (result === null) continue;
 
 		if ('message' in result) {
-			// It's an error
 			errors.push(result);
 		} else {
-			// It's a valid command
 			commands.push(result);
 		}
 	}
