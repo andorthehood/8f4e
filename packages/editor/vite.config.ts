@@ -1,24 +1,11 @@
 import { defineConfig } from 'vite';
+import { createUmdBundleConfig } from '@8f4e/config/vite';
 
-export default defineConfig({
-	build: {
-		lib: {
-			entry: './src/index.ts',
-			name: 'Editor8f4e',
-			formats: ['umd'],
-			fileName: () => 'editor-bundle.js',
-		},
+export default defineConfig(
+	createUmdBundleConfig({
+		entry: './src/index.ts',
+		name: 'Editor8f4e',
 		outDir: 'bundle',
-		rollupOptions: {
-			// Bundle all dependencies for standalone use
-			external: [],
-			output: {
-				// Global variable name when loaded via script tag
-				globals: {},
-			},
-		},
-		minify: true,
-		sourcemap: true,
-		target: 'es2020',
-	},
-});
+		fileName: 'editor-bundle.js',
+	})
+);
