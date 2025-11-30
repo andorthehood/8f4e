@@ -92,6 +92,7 @@ export function createMockCodeBlock(
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),
 		creationIndex: 0,
+		blockType: 'unknown',
 		extras: {
 			blockHighlights: [],
 			inputs: [],
