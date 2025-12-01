@@ -125,7 +125,6 @@ function createDefaultState() {
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
 		configErrors: [],
-		compiledConfig: {},
 	};
 }
 

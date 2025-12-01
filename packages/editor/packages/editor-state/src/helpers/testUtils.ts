@@ -298,7 +298,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
 		configErrors: [],
-		compiledConfig: {},
 	};
 
 	// Deep merge overrides with defaults
