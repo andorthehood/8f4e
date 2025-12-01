@@ -20,6 +20,24 @@ import { compileToAST } from '../src/compiler';
 const projectsDir = path.resolve(__dirname, '../../../src/examples/projects');
 
 /**
+ * Shared compiler options that mirror what the app shell provides.
+ * Includes runtime constants like SAMPLE_RATE that modules may reference.
+ */
+const COMPILER_OPTIONS = {
+	memorySizeBytes: 65536,
+	startingMemoryWordAddress: 0,
+	environmentExtensions: {
+		constants: {
+			SAMPLE_RATE: { value: 44100, isInteger: true },
+			AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
+			LEFT_CHANNEL: { value: 0, isInteger: true },
+			RIGHT_CHANNEL: { value: 1, isInteger: true },
+		},
+		ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
+	},
+};
+
+/**
  * Determines the type of a code block based on its first non-empty line.
  * Returns 'module', 'config', or 'unknown'.
  */
@@ -86,34 +104,17 @@ describe('Example Projects Compilation', () => {
 					return;
 				}
 
-				// Compile all module blocks together (they may reference each other)
-				// Use the same compile options as the app shell
-				// Include runtime constants that the app shell provides
-				const compilerOptions = {
-					memorySizeBytes: 65536,
-					startingMemoryWordAddress: 0,
-					environmentExtensions: {
-						constants: {
-							SAMPLE_RATE: { value: 44100, isInteger: true },
-							AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
-							LEFT_CHANNEL: { value: 0, isInteger: true },
-							RIGHT_CHANNEL: { value: 1, isInteger: true },
-						},
-						ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
-					},
-				};
-
 				// First compile to AST to catch parsing errors
-				const astModules = moduleBlocks.map(({ code }) => compileToAST(code, compilerOptions));
+				const astModules = moduleBlocks.map(({ code }) => compileToAST(code, COMPILER_OPTIONS));
 
 				// Then compile all modules together
 				expect(() => {
-					compile(moduleBlocks, compilerOptions);
+					compile(moduleBlocks, COMPILER_OPTIONS);
 				}).not.toThrow();
 
 				// Also verify compileModules works
 				const compiledModules = compileModules(astModules, {
-					...compilerOptions,
+					...COMPILER_OPTIONS,
 					startingMemoryWordAddress: 1,
 				});
 
@@ -163,59 +164,6 @@ describe('Example Projects Compilation', () => {
 					// Assert no errors
 					expect(result.errors, `Config block ${index} in project ${slug} had compilation errors`).toEqual([]);
 					expect(result.config, `Config block ${index} in project ${slug} produced null config`).not.toBeNull();
-				});
-			});
-		});
-	});
-
-	describe('Full Project Compilation', () => {
-		const projectFiles = discoverProjectFiles();
-
-		projectFiles.forEach(filePath => {
-			const slug = path.basename(filePath, '.ts');
-
-			it(`should compile all blocks in project: ${slug}`, async () => {
-				const { project } = await loadProject(filePath);
-
-				const moduleBlocks = project.codeBlocks
-					.filter(block => getBlockType(block.code) === 'module')
-					.map(block => ({ code: block.code }));
-
-				const configBlocks = project.codeBlocks.filter(block => getBlockType(block.code) === 'config');
-
-				// Compile modules
-				if (moduleBlocks.length > 0) {
-					const compilerOptions = {
-						memorySizeBytes: 65536,
-						startingMemoryWordAddress: 0,
-						environmentExtensions: {
-							constants: {
-								SAMPLE_RATE: { value: 44100, isInteger: true },
-								AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
-								LEFT_CHANNEL: { value: 0, isInteger: true },
-								RIGHT_CHANNEL: { value: 1, isInteger: true },
-							},
-							ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
-						},
-					};
-
-					const result = compile(moduleBlocks, compilerOptions);
-					expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
-					expect(result.codeBuffer.length).toBeGreaterThan(0);
-				}
-
-				// Compile configs
-				configBlocks.forEach(block => {
-					const code = block.code;
-					const configStartIndex = code.findIndex(line => line.trim() === 'config');
-					const configEndIndex = code.findIndex(line => line.trim() === 'configEnd');
-
-					if (configStartIndex !== -1 && configEndIndex !== -1) {
-						const configBody = code.slice(configStartIndex + 1, configEndIndex);
-						const source = configBody.join('\n');
-						const result = compileConfig(source);
-						expect(result.errors).toEqual([]);
-					}
 				});
 			});
 		});
