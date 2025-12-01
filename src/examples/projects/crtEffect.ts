@@ -81,7 +81,7 @@ const project: Project = {
 				'remainder',
 				'push 0',
 				'equal',
-				'if',
+				'if void',
 				'  ; Reset counter every 100',
 				'  push 0',
 				'  push &count',
