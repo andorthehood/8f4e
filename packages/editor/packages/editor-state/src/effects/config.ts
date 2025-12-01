@@ -103,26 +103,23 @@ function applyConfigToState(state: State, config: unknown): void {
 
 	// Apply runtime settings
 	if (Array.isArray(typedConfig.runtimeSettings)) {
-		// Validate each runtime setting has the required fields
+		// Valid runtime type values
+		const validRuntimeTypes = [
+			'WebWorkerLogicRuntime',
+			'MainThreadLogicRuntime',
+			'AudioWorkletRuntime',
+			'WebWorkerMIDIRuntime',
+		];
+
+		// Validate each runtime setting has the required fields and valid runtime type
 		const validRuntimeSettings = typedConfig.runtimeSettings.filter((setting): setting is Runtimes => {
 			if (!isPlainObject(setting)) return false;
 			const s = setting as Record<string, unknown>;
-			return typeof s.runtime === 'string' && typeof s.sampleRate === 'number';
+			return typeof s.runtime === 'string' && validRuntimeTypes.includes(s.runtime) && typeof s.sampleRate === 'number';
 		});
 
 		if (validRuntimeSettings.length > 0) {
 			state.compiler.runtimeSettings = validRuntimeSettings;
-		}
-	}
-}
-
-/**
- * Clears config errors from all config blocks.
- */
-function clearConfigErrors(state: State): void {
-	for (const block of state.graphicHelper.codeBlocks) {
-		if (block.blockType === 'config') {
-			// Clear any config-related error messages (we don't add any for now)
 		}
 	}
 }
@@ -165,9 +162,6 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 				console.warn('[Config] Compilation errors:', result.errors);
 				return;
 			}
-
-			// Clear any previous config errors
-			clearConfigErrors(state);
 
 			// Apply the config to state
 			if (result.config !== null) {
