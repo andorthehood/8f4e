@@ -100,7 +100,6 @@ export interface OpenGroupEvent {
 }
 
 export const moduleMenu: MenuGenerator = state => [
-	// Only show delete option if editing is enabled
 	...(state.featureFlags.editing
 		? [
 				{
@@ -206,7 +205,6 @@ export const editorSettingsMenu: MenuGenerator = state => [
 ];
 
 export const colorSchemeMenu: MenuGenerator = state => {
-	// Build menu items from available color schemes in state
 	return state.colorSchemes.map(key => ({
 		title: key,
 		selector: 'editorSettings.colorScheme',

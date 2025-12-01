@@ -9,10 +9,8 @@ export function executeRescopeTop(state: VMState, command: Command): string | nu
 		return 'Cannot rescopeTop: scope stack is empty';
 	}
 
-	// Pop the top segment
 	state.scopeStack.pop();
 
-	// Push new segments
 	const segments = command.pathSegments || [];
 	for (const segment of segments) {
 		if (segment) {
