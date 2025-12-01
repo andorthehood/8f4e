@@ -143,6 +143,68 @@ Resulting `config`:
 }
 ```
 
+#### `concat`
+
+Concatenate all values on the data stack into a single string.
+
+Stack before:
+
+```txt
+(... v1 v2 ... vn)     ; one or more values
+```
+
+Process:
+
+1. Pop all values from the stack (bottom to top).
+2. Convert each value to a string via `String(value)`.
+3. Join all string representations with no separator.
+4. Push the concatenated string back onto the stack.
+
+Stack after:
+
+```txt
+(... concatenated_string)
+```
+
+Example:
+
+```txt
+scope "greeting"
+push "Hello, "
+push "World"
+push "!"
+concat
+set
+```
+
+Resulting `config`:
+
+```json
+{
+  "greeting": "Hello, World!"
+}
+```
+
+Example with type coercion:
+
+```txt
+scope "message"
+push "Count: "
+push 42
+push ", active: "
+push true
+concat
+set
+```
+
+Resulting `config`:
+
+```json
+{
+  "message": "Count: 42, active: true"
+}
+```
+
 #### `scope <path>`
 
 Push one or more new scope segments onto `scopeStack`.
@@ -284,6 +346,7 @@ Implementations must error on:
 
 - Writing through an intermediate scalar (type conflict).
 - `append` on a non-array value.
+- `concat` when `dataStack` is empty.
 - Invalid literal syntax.
 - `rescopeTop` when `scopeStack` is empty.
 
