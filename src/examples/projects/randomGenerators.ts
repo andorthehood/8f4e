@@ -1,11 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
-	memorySizeBytes: 65536,
-	title: 'Random Generators',
-	author: 'Andor Polgar',
-	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "Random Generators"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar"',
+				'set',
+				'rescopeTop "description"',
+				'push ""',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "runtime"',
+				'push "WebWorkerLogicRuntime"',
+				'set',
+				'rescopeTop "sampleRate"',
+				'push 50',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -35, y: 1 },
+		},
 		{
 			code: [
 				'module lcg',
@@ -146,13 +182,6 @@ const project: Project = {
 		},
 	],
 	viewport: { gridCoordinates: { x: 0, y: 0 } },
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			runtime: 'WebWorkerLogicRuntime',
-			sampleRate: 50,
-		},
-	],
 };
 
 export default project;

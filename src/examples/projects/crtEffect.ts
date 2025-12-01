@@ -1,12 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
-	memorySizeBytes: 65536,
-	title: 'CRT Effect Demo',
-	author: 'Andor Polgar',
-	description:
-		'Demonstrates post-process shader effects with a classic CRT monitor appearance including barrel distortion, scanlines, and flicker.',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "CRT Effect Demo"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar"',
+				'set',
+				'rescopeTop "description"',
+				'push "Demonstrates post-process shader effects with a classic CRT monitor appearance including barrel distortion, scanlines, and flicker."',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "runtime"',
+				'push "WebWorkerLogicRuntime"',
+				'set',
+				'rescopeTop "sampleRate"',
+				'push 50',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -30, y: 10 },
+		},
 		{
 			code: [
 				'module main',
@@ -61,14 +96,6 @@ const project: Project = {
 	viewport: {
 		gridCoordinates: { x: 0, y: 0 },
 	},
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			runtime: 'WebWorkerLogicRuntime',
-			sampleRate: 50,
-		},
-	],
-	binaryAssets: [],
 	postProcessEffects: [
 		{
 			name: 'crt',

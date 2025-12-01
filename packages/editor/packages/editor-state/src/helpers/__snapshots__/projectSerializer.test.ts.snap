@@ -16,21 +16,10 @@ exports[`projectSerializer > convertGraphicDataToProjectStructure > converts gra
 
 exports[`projectSerializer > serializeToProject > creates a valid Project object from state 1`] = `
 {
-  "author": "Test Author",
   "binaryAssets": undefined,
   "codeBlocks": [],
   "compiledModules": undefined,
-  "description": "Test Description",
-  "memorySizeBytes": 1048576,
   "postProcessEffects": [],
-  "runtimeSettings": [
-    {
-      "runtime": "WebWorkerLogicRuntime",
-      "sampleRate": 50,
-    },
-  ],
-  "selectedRuntime": 0,
-  "title": "Test Project",
   "viewport": {
     "gridCoordinates": {
       "x": 0,

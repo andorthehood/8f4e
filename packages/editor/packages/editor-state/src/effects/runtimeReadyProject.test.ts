@@ -4,7 +4,7 @@ import createStateManager from '@8f4e/state-manager';
 import compiler from './compiler';
 import projectExport from './projectExport';
 
-import { createMockState } from '../helpers/testUtils';
+import { createMockState, createMockCodeBlock } from '../helpers/testUtils';
 import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
@@ -51,9 +51,31 @@ describe('Runtime-ready project functionality', () => {
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let mockExportProject: MockInstance;
+	let mockCompileConfig: MockInstance;
 
 	beforeEach(() => {
 		mockExportProject = vi.fn().mockResolvedValue(undefined);
+		mockCompileConfig = vi.fn().mockResolvedValue({
+			config: { projectInfo: { title: 'Test Project' }, memorySizeBytes: 1048576 },
+			errors: [],
+		});
+
+		// Create a config block for testing
+		const configBlock = createMockCodeBlock({
+			id: 'config-block',
+			code: [
+				'config',
+				'scope "projectInfo"',
+				'scope "title"',
+				'push "Test Project"',
+				'set',
+				'popScope',
+				'popScope',
+				'configEnd',
+			],
+			creationIndex: 0,
+			blockType: 'config',
+		});
 
 		mockState = createMockState({
 			projectInfo: {
@@ -67,6 +89,7 @@ describe('Runtime-ready project functionality', () => {
 			},
 			callbacks: {
 				exportProject: mockExportProject,
+				compileConfig: mockCompileConfig,
 				requestRuntime: vi.fn(),
 				getListOfModules: vi.fn(),
 				getModule: vi.fn(),
@@ -90,6 +113,9 @@ describe('Runtime-ready project functionality', () => {
 				viewportAnimations: true,
 			},
 		});
+
+		// Add the config block to the state
+		mockState.graphicHelper.codeBlocks.add(configBlock);
 
 		mockEvents = createMockEventDispatcherWithVitest();
 		store = createStateManager(mockState);
@@ -124,6 +150,31 @@ describe('Runtime-ready project functionality', () => {
 			// Verify the base64 encoding is correct using the same encoder as the implementation
 			const expectedBase64 = encodeUint8ArrayToBase64(mockState.compiler.codeBuffer!);
 			expect(exportedProject.compiledWasm).toBe(expectedBase64);
+		});
+
+		it('should include compiledConfig in runtime-ready export', async () => {
+			// Set up save functionality
+			projectExport(store, mockEvents);
+
+			// Get the exportRuntimeReadyProject callback
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
+			expect(exportRuntimeReadyProjectCall).toBeDefined();
+
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
+
+			// Trigger the exportRuntimeReadyProject action
+			await exportRuntimeReadyProjectCallback();
+
+			// Verify exportProject was called with the right parameters
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportProject.mock.calls[0];
+
+			// Parse the exported JSON and verify it contains compiledConfig
+			const exportedProject = JSON.parse(exportedJson);
+			expect(exportedProject.compiledConfig).toBeDefined();
+			expect(exportedProject.compiledConfig.projectInfo.title).toBe('Test Project');
+			expect(exportedProject.compiledConfig.memorySizeBytes).toBe(1048576);
 		});
 
 		it('should trim memory snapshot to the allocated memory size', async () => {
@@ -276,7 +327,7 @@ describe('Runtime-ready project functionality', () => {
 	});
 
 	describe('Project-specific memory configuration', () => {
-		it('should export memory configuration when saving project', async () => {
+		it('should export project structure when saving project', async () => {
 			// Set custom memory settings in compiler options
 			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
 
@@ -297,13 +348,14 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
 			const [exportedJson] = mockExportProject.mock.calls[0];
 
-			// Parse the exported JSON and verify it contains memory configuration
+			// Parse the exported JSON and verify project structure
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.memorySizeBytes).toBeDefined();
-			expect(exportedProject.memorySizeBytes).toBe(500 * 65536);
+			// memorySizeBytes is no longer in Project - config blocks are the source of truth
+			expect(exportedProject.codeBlocks).toBeDefined();
+			expect(exportedProject.viewport).toBeDefined();
 		});
 
-		it('should export memory configuration in runtime-ready project', async () => {
+		it('should export project structure in runtime-ready project', async () => {
 			// Set custom memory settings
 			mockState.compiler.compilerOptions.memorySizeBytes = 2000 * 65536;
 
@@ -324,10 +376,11 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
 			const [exportedJson] = mockExportProject.mock.calls[0];
 
-			// Parse the exported JSON and verify memory configuration
+			// Parse the exported JSON and verify project structure
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.memorySizeBytes).toBeDefined();
-			expect(exportedProject.memorySizeBytes).toBe(2000 * 65536);
+			// memorySizeBytes is no longer in Project - config blocks are the source of truth
+			expect(exportedProject.codeBlocks).toBeDefined();
+			expect(exportedProject.viewport).toBeDefined();
 		});
 	});
 });

@@ -1,11 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
-	memorySizeBytes: 65536,
-	title: 'Dancing with the Sine Lookup Table',
-	author: 'Andor Polgar',
-	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "Dancing with the Sine Lookup Table"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar"',
+				'set',
+				'rescopeTop "description"',
+				'push ""',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "sampleRate"',
+				'push 50',
+				'set',
+				'rescopeTop "runtime"',
+				'push "WebWorkerLogicRuntime"',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -100, y: -9 },
+		},
 		{
 			code: [
 				'module sineLT',
@@ -425,13 +461,6 @@ const project: Project = {
 		},
 	],
 	viewport: { gridCoordinates: { x: -71, y: -23 } },
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			sampleRate: 50,
-			runtime: 'WebWorkerLogicRuntime',
-		},
-	],
 };
 
 export default project;
