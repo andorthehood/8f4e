@@ -47,7 +47,7 @@
 
 import { parse } from './parser';
 import { executeCommands } from './vm';
-import { preprocessSchema, collectRequiredPaths } from './schema';
+import { preprocessSchema, findMissingRequiredFields } from './schema';
 
 import type { CompileError, CompileOptions, CompileResult } from './types';
 
@@ -113,20 +113,8 @@ export function compileConfig(source: string, options?: CompileOptions): Compile
 	}
 
 	// Check for missing required fields if schema provided
-	const schemaErrors: CompileError[] = [];
-	if (schemaRoot && writtenPaths) {
-		const requiredPaths = collectRequiredPaths(schemaRoot);
-		for (const requiredPath of requiredPaths) {
-			if (!writtenPaths.has(requiredPath)) {
-				schemaErrors.push({
-					line: 1,
-					message: `Missing required field "${requiredPath}"`,
-					kind: 'schema',
-					path: requiredPath,
-				});
-			}
-		}
-	}
+	const schemaErrors: CompileError[] =
+		schemaRoot && writtenPaths ? findMissingRequiredFields(schemaRoot, writtenPaths) : [];
 
 	if (schemaErrors.length > 0) {
 		return {

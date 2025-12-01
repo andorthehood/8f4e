@@ -306,6 +306,42 @@ export function collectRequiredPaths(node: SchemaNode, currentPath: string = '')
 	return requiredPaths;
 }
 
+/**
+ * Error object for missing required fields
+ */
+export interface MissingFieldError {
+	line: number;
+	message: string;
+	kind: 'schema';
+	path: string;
+}
+
+/**
+ * Finds missing required fields by comparing schema requirements against written paths.
+ * Returns errors for each required field that was not written.
+ *
+ * @param schemaRoot - The root schema node
+ * @param writtenPaths - Set of paths that were written during execution
+ * @returns Array of error objects for missing required fields
+ */
+export function findMissingRequiredFields(schemaRoot: SchemaNode, writtenPaths: Set<string>): MissingFieldError[] {
+	const errors: MissingFieldError[] = [];
+	const requiredPaths = collectRequiredPaths(schemaRoot);
+
+	for (const requiredPath of requiredPaths) {
+		if (!writtenPaths.has(requiredPath)) {
+			errors.push({
+				line: 1,
+				message: `Missing required field "${requiredPath}"`,
+				kind: 'schema',
+				path: requiredPath,
+			});
+		}
+	}
+
+	return errors;
+}
+
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
@@ -483,6 +519,85 @@ if (import.meta.vitest) {
 			expect(paths).toContain('name');
 			expect(paths).toContain('info');
 			expect(paths).toContain('info.title');
+		});
+	});
+
+	describe('findMissingRequiredFields', () => {
+		it('should return errors for missing required fields', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				properties: {
+					name: { type: 'string' },
+					email: { type: 'string' },
+				},
+				required: ['name', 'email'],
+			};
+
+			const root = preprocessSchema(schema);
+			const writtenPaths = new Set(['name']);
+			const errors = findMissingRequiredFields(root, writtenPaths);
+
+			expect(errors).toHaveLength(1);
+			expect(errors[0].path).toBe('email');
+			expect(errors[0].kind).toBe('schema');
+			expect(errors[0].line).toBe(1);
+			expect(errors[0].message).toContain('Missing required field');
+		});
+
+		it('should return empty array when all required fields are present', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				properties: {
+					name: { type: 'string' },
+					email: { type: 'string' },
+				},
+				required: ['name', 'email'],
+			};
+
+			const root = preprocessSchema(schema);
+			const writtenPaths = new Set(['name', 'email']);
+			const errors = findMissingRequiredFields(root, writtenPaths);
+
+			expect(errors).toHaveLength(0);
+		});
+
+		it('should detect nested missing required fields', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				properties: {
+					info: {
+						type: 'object',
+						properties: {
+							title: { type: 'string' },
+							author: { type: 'string' },
+						},
+						required: ['title', 'author'],
+					},
+				},
+				required: ['info'],
+			};
+
+			const root = preprocessSchema(schema);
+			const writtenPaths = new Set(['info', 'info.title']);
+			const errors = findMissingRequiredFields(root, writtenPaths);
+
+			expect(errors).toHaveLength(1);
+			expect(errors[0].path).toBe('info.author');
+		});
+
+		it('should return empty array when no required fields are defined', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				properties: {
+					name: { type: 'string' },
+				},
+			};
+
+			const root = preprocessSchema(schema);
+			const writtenPaths = new Set<string>();
+			const errors = findMissingRequiredFields(root, writtenPaths);
+
+			expect(errors).toHaveLength(0);
 		});
 	});
 }
