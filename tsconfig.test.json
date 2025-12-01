@@ -1,0 +1,20 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"types": ["node", "vitest/globals"],
+		"paths": {
+			"@8f4e/compiler": ["packages/compiler/src/index.ts"],
+			"@8f4e/stack-config-compiler": ["packages/stack-config-compiler/src/index.ts"],
+			"@8f4e/editor-state": ["packages/editor/packages/editor-state/src/index.ts"]
+		}
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/__tests__/**/*.test.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}
