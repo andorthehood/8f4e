@@ -2,7 +2,7 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
-import { serializeToProject } from '../helpers/projectSerializer';
+import { serializeToProject, serializeToRuntimeReadyProject } from '../helpers/projectSerializer';
 
 import type { State } from '../types';
 
@@ -24,7 +24,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		});
 	}
 
-	function onExportRuntimeReadyProject() {
+	async function onExportRuntimeReadyProject() {
 		if (!state.callbacks.exportProject) {
 			console.warn('No exportProject callback provided');
 			return;
@@ -36,11 +36,8 @@ export default function projectExport(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		// Serialize to project format with compiled WASM and memory snapshot
-		const runtimeProject = serializeToProject(state, {
-			includeCompiled: true,
-			encodeToBase64: encodeUint8ArrayToBase64,
-		});
+		// Serialize to project format with compiled WASM, memory snapshot, and config
+		const runtimeProject = await serializeToRuntimeReadyProject(state, encodeUint8ArrayToBase64);
 
 		const fileName = `${state.projectInfo.title || 'project'}-runtime-ready.json`;
 		const json = JSON.stringify(runtimeProject, null, 2);
