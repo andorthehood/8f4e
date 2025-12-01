@@ -3,6 +3,7 @@
  */
 
 export { executeAppend } from './append';
+export { executeConcat } from './concat';
 export { executePopScope } from './popScope';
 export { executePush } from './push';
 export { executeRescope } from './rescope';
