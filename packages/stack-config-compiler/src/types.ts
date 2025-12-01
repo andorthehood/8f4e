@@ -10,7 +10,7 @@ export type Literal = string | number | boolean | null;
 /**
  * Supported commands in the stack config language
  */
-export type CommandType = 'push' | 'set' | 'append' | 'scope' | 'rescopeTop' | 'rescope' | 'popScope';
+export type CommandType = 'push' | 'set' | 'append' | 'concat' | 'scope' | 'rescopeTop' | 'rescope' | 'popScope';
 
 /**
  * An internal representation of a parsed command
