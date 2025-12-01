@@ -18,6 +18,7 @@ exports[`projectSerializer > serializeToProject > creates a valid Project object
 {
   "binaryAssets": undefined,
   "codeBlocks": [],
+  "compiledConfig": undefined,
   "compiledModules": undefined,
   "postProcessEffects": [],
   "viewport": {

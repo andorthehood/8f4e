@@ -65,6 +65,7 @@ describe('Runtime-ready project functionality', () => {
 				codeBuffer: new Uint8Array([1, 2, 3, 4, 5]), // Mock compiled WASM
 				compiledModules: {},
 			},
+			compiledConfig: { projectInfo: { title: 'Test Project' }, memorySizeBytes: 1048576 },
 			callbacks: {
 				exportProject: mockExportProject,
 				requestRuntime: vi.fn(),
@@ -124,6 +125,31 @@ describe('Runtime-ready project functionality', () => {
 			// Verify the base64 encoding is correct using the same encoder as the implementation
 			const expectedBase64 = encodeUint8ArrayToBase64(mockState.compiler.codeBuffer!);
 			expect(exportedProject.compiledWasm).toBe(expectedBase64);
+		});
+
+		it('should include compiledConfig in runtime-ready export', async () => {
+			// Set up save functionality
+			projectExport(store, mockEvents);
+
+			// Get the exportRuntimeReadyProject callback
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
+			expect(exportRuntimeReadyProjectCall).toBeDefined();
+
+			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
+
+			// Trigger the exportRuntimeReadyProject action
+			await exportRuntimeReadyProjectCallback();
+
+			// Verify exportProject was called with the right parameters
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportProject.mock.calls[0];
+
+			// Parse the exported JSON and verify it contains compiledConfig
+			const exportedProject = JSON.parse(exportedJson);
+			expect(exportedProject.compiledConfig).toBeDefined();
+			expect(exportedProject.compiledConfig.projectInfo.title).toBe('Test Project');
+			expect(exportedProject.compiledConfig.memorySizeBytes).toBe(1048576);
 		});
 
 		it('should trim memory snapshot to the allocated memory size', async () => {
