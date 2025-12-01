@@ -42,10 +42,8 @@ export default function projectImport(store: StateManager<State>, events: EventD
 
 	function loadProject({ project: newProject }: { project: Project }) {
 		// Reset compiler state
-		// Use project-specific memory settings if available, otherwise fallback to defaults
-		const memorySizeBytes = newProject.memorySizeBytes ?? state.compiler.compilerOptions.memorySizeBytes;
-		// Update compiler options to reflect the resolved values
-		state.compiler.compilerOptions.memorySizeBytes = memorySizeBytes;
+		// Use default memory settings - config blocks will override via config effect
+		state.compiler.compilerOptions.memorySizeBytes = defaultState.compiler.compilerOptions.memorySizeBytes;
 		state.compiler.memoryBuffer = new Int32Array();
 		state.compiler.memoryBufferFloat = new Float32Array();
 		state.compiler.codeBuffer = new Uint8Array();
@@ -54,13 +52,14 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.compiler.compilationErrors = [];
 		state.compiler.isCompiling = false;
 
-		// Populate new state locations
-		state.projectInfo.title = newProject.title || '';
-		state.projectInfo.author = newProject.author || '';
-		state.projectInfo.description = newProject.description || '';
+		// Reset project info - config blocks will populate via config effect
+		state.projectInfo.title = '';
+		state.projectInfo.author = '';
+		state.projectInfo.description = '';
 		state.binaryAssets = newProject.binaryAssets || [];
-		state.compiler.runtimeSettings = newProject.runtimeSettings || defaultState.compiler.runtimeSettings;
-		state.compiler.selectedRuntime = newProject.selectedRuntime ?? defaultState.compiler.selectedRuntime;
+		// Reset runtime settings - config blocks will populate via config effect
+		state.compiler.runtimeSettings = defaultState.compiler.runtimeSettings;
+		state.compiler.selectedRuntime = defaultState.compiler.selectedRuntime;
 		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
 
 		// If loading a runtime-ready project with pre-compiled WASM, decode it immediately
