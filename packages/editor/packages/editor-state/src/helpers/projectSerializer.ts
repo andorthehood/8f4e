@@ -43,12 +43,9 @@ export function serializeToProject(
 	state: State,
 	options?: { includeCompiled?: boolean; encodeToBase64?: (data: Uint8Array) => string }
 ): Project {
-	const { graphicHelper, compiler, projectInfo } = state;
+	const { graphicHelper, compiler } = state;
 
 	const project: Project = {
-		title: projectInfo.title,
-		author: projectInfo.author,
-		description: projectInfo.description,
 		codeBlocks: convertGraphicDataToProjectStructure(
 			Array.from(graphicHelper.codeBlocks),
 			graphicHelper.viewport.vGrid,
@@ -61,11 +58,8 @@ export function serializeToProject(
 				y: Math.round(graphicHelper.viewport.y / graphicHelper.viewport.hGrid),
 			},
 		},
-		selectedRuntime: compiler.selectedRuntime,
-		runtimeSettings: compiler.runtimeSettings,
 		binaryAssets: state.binaryAssets,
 		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
-		memorySizeBytes: compiler.compilerOptions.memorySizeBytes,
 		postProcessEffects: graphicHelper.postProcessEffects,
 	};
 
