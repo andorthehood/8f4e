@@ -55,10 +55,8 @@ export type { CompileResult, CompileError, Literal, Command, CommandType } from 
  * ```
  */
 export function compileConfig(source: string): CompileResult {
-	// Parse the source into commands
 	const { commands, errors: parseErrors } = parse(source);
 
-	// If there were parse errors, return them immediately
 	if (parseErrors.length > 0) {
 		return {
 			config: null,
@@ -66,10 +64,8 @@ export function compileConfig(source: string): CompileResult {
 		};
 	}
 
-	// Execute the commands
 	const { config, errors: execErrors } = executeCommands(commands);
 
-	// If there were execution errors, return null config
 	if (execErrors.length > 0) {
 		return {
 			config: null,

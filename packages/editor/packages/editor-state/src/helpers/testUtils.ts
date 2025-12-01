@@ -50,10 +50,8 @@ function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
 export function createMockCodeBlock(
 	options: Partial<CodeBlockGraphicData> & { cursorY?: number } = {}
 ): CodeBlockGraphicData {
-	// Extract cursorY if provided (not part of CodeBlockGraphicData)
 	const { cursorY, ...overrides } = options;
 
-	// Set defaults for commonly used properties
 	const x = overrides.x ?? 0;
 	const y = overrides.y ?? 0;
 	const width = overrides.width ?? 100;
@@ -62,12 +60,10 @@ export function createMockCodeBlock(
 	const offsetY = overrides.offsetY ?? 0;
 	const id = overrides.id ?? 'test-block';
 
-	// Compute derived defaults
 	const minGridWidth = overrides.minGridWidth ?? width;
 
-	// Compute cursor defaults only if cursor is not explicitly overridden
-	const cursorX = x + offsetX + width / 2; // Cursor X is absolute (center of block)
-	const cursorYValue = cursorY ?? height / 2; // Cursor Y is relative to block (default to center)
+	const cursorX = x + offsetX + width / 2;
+	const cursorYValue = cursorY ?? height / 2;
 	const cursor = overrides.cursor ?? {
 		col: 0,
 		row: 0,
@@ -300,7 +296,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		configErrors: [],
 	};
 
-	// Deep merge overrides with defaults
 	return mergeDeep(defaults, overrides);
 }
 
@@ -327,12 +322,10 @@ function mergeDeep<T>(target: T, source: DeepPartial<T>): T {
 		const targetKey = key as keyof T;
 		const targetValue = result[targetKey];
 
-		// Skip undefined values
 		if (sourceValue === undefined) {
 			continue;
 		}
 
-		// Check if we should recursively merge (both are plain objects)
 		const shouldMerge =
 			sourceValue !== null &&
 			typeof sourceValue === 'object' &&
@@ -349,10 +342,8 @@ function mergeDeep<T>(target: T, source: DeepPartial<T>): T {
 			!(targetValue instanceof Set);
 
 		if (shouldMerge) {
-			// Recursively merge nested objects
 			result[targetKey] = mergeDeep(targetValue, sourceValue as DeepPartial<typeof targetValue>);
 		} else {
-			// Replace with source value
 			result[targetKey] = sourceValue as T[keyof T];
 		}
 	}
