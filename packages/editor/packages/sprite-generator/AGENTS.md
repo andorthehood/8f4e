@@ -13,7 +13,7 @@
 - TypeScript; ESLint + Prettier per root config. Keep pure, deterministic functions.
 
 ## Testing
-- Jest with `@swc/jest`. Prefer unit tests and golden/snapshot tests for outputs.
+- Vitest (via Nx). Prefer unit tests and golden/snapshot tests for outputs.
 
 ## Commits & PRs
 - Commits: `sprite-generator: <change>`; PRs include rationale and test notes.

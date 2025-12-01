@@ -12,7 +12,7 @@
 - TypeScript with ESLint/Prettier. Keep worker code pure and messages versioned.
 
 ## Testing
-- Jest with `@swc/jest`. Unit test MIDI message parsing and routing; mock timers.
+- Vitest (via Nx). Unit test MIDI message parsing and routing; mock timers.
 
 ## Commits & PRs
 - Commits: `runtime-web-worker-midi: <change>`; PRs link issues and document behavior changes.

@@ -12,7 +12,7 @@
 - TypeScript + ESLint + Prettier (repo defaults). Avoid DOM APIs in worker code.
 
 ## Testing
-- Jest with `@swc/jest`. Test message handling and utilities; mock `postMessage`.
+- Vitest (via Nx). Test message handling and utilities; mock `postMessage`.
 
 ## Commits & PRs
 - Commits: `runtime-web-worker-logic: <change>`; PRs describe protocol changes.

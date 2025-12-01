@@ -14,7 +14,7 @@
 - Prettier: tabs, single quotes, semi, width 120, trailing commas.
 
 ## Testing
-- Jest with `@swc/jest`. Place tests in `tests/`, `__tests__/`, or `*.test.ts`.
+- Vitest (via Nx). Place tests in `tests/`, `__tests__/`, or `*.test.ts`.
 - Focus on deterministic, fast unit tests for parsing, IR, and transforms.
 
 ## Commits & PRs
