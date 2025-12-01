@@ -163,7 +163,6 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	 * Rebuilds the config from all config blocks and applies it to state.
 	 * Each config block is compiled independently to allow proper error mapping.
 	 * Errors are saved to state.configErrors with the creationIndex of the source block.
-	 * The merged config is saved to state.compiledConfig for runtime-ready export.
 	 */
 	async function rebuildConfig(): Promise<void> {
 		// If no compileConfig callback, skip
@@ -178,8 +177,6 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		state.configErrors = [];
 
 		if (configBlocks.length === 0) {
-			// Reset compiled config when no config blocks exist
-			state.compiledConfig = {};
 			return;
 		}
 
@@ -219,9 +216,6 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		// Save all errors to state
 		state.configErrors = allErrors;
 
-		// Save compiled config to state for runtime-ready export
-		state.compiledConfig = mergedConfig;
-
 		// Apply the merged config to state
 		applyConfigToState(state, mergedConfig);
 	}
@@ -236,3 +230,47 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 
 // Export for testing
 export { extractConfigBody, collectConfigBlocks, deepMergeConfig, applyConfigToState };
+
+/**
+ * Compiles all config blocks and returns the merged config.
+ * Used for runtime-ready project export.
+ * @param state The current editor state
+ * @returns Promise resolving to the merged config object
+ */
+export async function compileConfigForExport(state: State): Promise<Record<string, unknown>> {
+	// If no compileConfig callback, return empty object
+	if (!state.callbacks.compileConfig) {
+		return {};
+	}
+
+	// Collect all config blocks
+	const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
+
+	if (configBlocks.length === 0) {
+		return {};
+	}
+
+	// Compile each config block independently and merge results
+	let mergedConfig: Record<string, unknown> = {};
+
+	for (const { source } of configBlocks) {
+		try {
+			const result = await state.callbacks.compileConfig(source);
+
+			// Skip blocks with errors
+			if (result.errors.length > 0) {
+				continue;
+			}
+
+			// Merge the config into the accumulated result
+			if (result.config !== null && isPlainObject(result.config)) {
+				mergedConfig = deepMergeConfig(mergedConfig, result.config as Record<string, unknown>);
+			}
+		} catch {
+			// Skip blocks that fail to compile
+			continue;
+		}
+	}
+
+	return mergedConfig;
+}
