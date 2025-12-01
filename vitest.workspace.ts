@@ -1,6 +1,7 @@
 import { defineWorkspace } from 'vitest/config';
 
 export default defineWorkspace([
+	'vitest.config.ts',
 	'packages/compiler/vitest.config.ts',
 	'packages/compiler-worker/vitest.config.ts',
 	'packages/editor/vitest.config.ts',
