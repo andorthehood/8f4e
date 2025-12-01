@@ -18,10 +18,8 @@ export function executeSet(state: VMState): string | null {
 		return 'Cannot set: data stack is empty';
 	}
 
-	// Pop all values from the stack
 	const values = state.dataStack.splice(0, state.dataStack.length);
 
-	// If exactly one value, use it directly; otherwise create an array
 	const value = values.length === 1 ? values[0] : values;
 
 	return setAtPath(state.config, currentScope, value);
