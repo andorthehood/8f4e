@@ -3,7 +3,7 @@
  */
 
 export { executeAppend } from './append';
-export { executeEndScope } from './endScope';
+export { executePopScope } from './popScope';
 export { executePush } from './push';
 export { executeRescope } from './rescope';
 export { executeRescopeTop } from './rescopeTop';
