@@ -4,7 +4,7 @@ import createStateManager from '@8f4e/state-manager';
 import compiler from './compiler';
 import projectExport from './projectExport';
 
-import { createMockState } from '../helpers/testUtils';
+import { createMockState, createMockCodeBlock } from '../helpers/testUtils';
 import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
@@ -51,9 +51,31 @@ describe('Runtime-ready project functionality', () => {
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let mockExportProject: MockInstance;
+	let mockCompileConfig: MockInstance;
 
 	beforeEach(() => {
 		mockExportProject = vi.fn().mockResolvedValue(undefined);
+		mockCompileConfig = vi.fn().mockResolvedValue({
+			config: { projectInfo: { title: 'Test Project' }, memorySizeBytes: 1048576 },
+			errors: [],
+		});
+
+		// Create a config block for testing
+		const configBlock = createMockCodeBlock({
+			id: 'config-block',
+			code: [
+				'config',
+				'scope "projectInfo"',
+				'scope "title"',
+				'push "Test Project"',
+				'set',
+				'popScope',
+				'popScope',
+				'configEnd',
+			],
+			creationIndex: 0,
+			blockType: 'config',
+		});
 
 		mockState = createMockState({
 			projectInfo: {
@@ -65,9 +87,9 @@ describe('Runtime-ready project functionality', () => {
 				codeBuffer: new Uint8Array([1, 2, 3, 4, 5]), // Mock compiled WASM
 				compiledModules: {},
 			},
-			compiledConfig: { projectInfo: { title: 'Test Project' }, memorySizeBytes: 1048576 },
 			callbacks: {
 				exportProject: mockExportProject,
+				compileConfig: mockCompileConfig,
 				requestRuntime: vi.fn(),
 				getListOfModules: vi.fn(),
 				getModule: vi.fn(),
@@ -91,6 +113,9 @@ describe('Runtime-ready project functionality', () => {
 				viewportAnimations: true,
 			},
 		});
+
+		// Add the config block to the state
+		mockState.graphicHelper.codeBlocks.add(configBlock);
 
 		mockEvents = createMockEventDispatcherWithVitest();
 		store = createStateManager(mockState);
