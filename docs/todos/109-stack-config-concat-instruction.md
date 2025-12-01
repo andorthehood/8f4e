@@ -88,7 +88,7 @@ Add a `concat` instruction to the stack-config-compiler that operates on all cur
 
 - [x] Source programs using `push "foo"`, `push "bar"`, `concat`, `set` compile successfully and produce `"foobar"` in the resulting JSON.
 - [x] `concat` is recognized by the parser and appears in the command stream with correct line information.
-- [x] Executing `concat` on an empty or single-element stack produces a clear, actionable error in `errors`.
+- [x] Executing `concat` on an empty stack produces a clear, actionable error in `errors`.
 - [x] Behaviour for non-string operands (coercion via `String(value)`) is covered by tests.
 - [x] `concat` is documented in the stack-config-compiler README and any relevant language docs.
 
