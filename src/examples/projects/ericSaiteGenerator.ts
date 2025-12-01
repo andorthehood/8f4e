@@ -6,7 +6,6 @@ const ericSaiteGenerator: Project = {
 			code: [
 				'config',
 				'',
-				'scope "projectInfo"',
 				'scope "title"',
 				'push "Eric Saite Generator"',
 				'set',

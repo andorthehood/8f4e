@@ -11,6 +11,13 @@
         "cwd": "{projectRoot}"
       }
     },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint src --fix",
+        "cwd": "{projectRoot}"
+      }
+    },
     "dev": {
       "executor": "nx:run-commands",
       "options": {

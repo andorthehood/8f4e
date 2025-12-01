@@ -6,7 +6,6 @@ const project: Project = {
 			code: [
 				'config',
 				'',
-				'scope "projectInfo"',
 				'scope "title"',
 				'push "Dancing with the Sine Lookup Table"',
 				'set',

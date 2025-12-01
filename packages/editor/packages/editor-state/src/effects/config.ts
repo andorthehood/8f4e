@@ -63,11 +63,9 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  * Interface for the expected config object structure
  */
 interface ConfigObject {
-	projectInfo?: {
-		title?: string;
-		author?: string;
-		description?: string;
-	};
+	title?: string;
+	author?: string;
+	description?: string;
 	memorySizeBytes?: number;
 	selectedRuntime?: number;
 	runtimeSettings?: Runtimes[];
@@ -85,16 +83,15 @@ function applyConfigToState(state: State, config: unknown): void {
 	const typedConfig = config as ConfigObject;
 
 	// Apply project info
-	if (isPlainObject(typedConfig.projectInfo)) {
-		const projectInfo = typedConfig.projectInfo;
-		if (typeof projectInfo.title === 'string') {
-			state.projectInfo.title = projectInfo.title;
+	if (isPlainObject(typedConfig)) {
+		if (typeof typedConfig.title === 'string') {
+			state.projectInfo.title = typedConfig.title;
 		}
-		if (typeof projectInfo.author === 'string') {
-			state.projectInfo.author = projectInfo.author;
+		if (typeof typedConfig.author === 'string') {
+			state.projectInfo.author = typedConfig.author;
 		}
-		if (typeof projectInfo.description === 'string') {
-			state.projectInfo.description = projectInfo.description;
+		if (typeof typedConfig.description === 'string') {
+			state.projectInfo.description = typedConfig.description;
 		}
 	}
 
