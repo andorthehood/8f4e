@@ -6,10 +6,10 @@ import type { CodeBlockGraphicData, State } from '../types';
 
 /**
  * Converts code blocks from a Set to an array sorted by creationIndex.
- * Only includes blocks with blockType === 'module'.
- * This ensures that:
- * - Only module blocks are compiled (config blocks are excluded)
- * - Newer modules appear at the end of the compiler module list for stable memory layout ordering
+ *
+ * @param codeBlocks - Set of code blocks to filter and sort
+ * @returns Array of blocks with blockType === 'module', sorted by creationIndex.
+ *          Config blocks are excluded from the WASM compilation pipeline.
  */
 export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
 	return Array.from(codeBlocks)
