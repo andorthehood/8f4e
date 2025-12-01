@@ -63,6 +63,7 @@ See [`docs/brainstorming_notes/013-stack-oriented-config-language.md`](../../doc
 | `push <literal>` | Push a literal (string, number, boolean, null) onto the data stack |
 | `set` | Pop all values from the stack and set them at the current scope path |
 | `append` | Pop all values and append them to an array at the current scope path |
+| `concat` | Concatenate all stack values into a single string (using `String()` coercion) |
 | `scope <path>` | Push path segments onto the scope stack |
 | `rescopeTop <path>` | Replace the top scope segment with new path segments |
 | `rescope <path>` | Replace the entire scope stack with new path segments |
@@ -84,6 +85,28 @@ scope "key"
 scope "parent.child"
 scope "arrayKey[0]"
 scope "parent.array[3].child"
+```
+
+### String Concatenation
+
+The `concat` command joins all values on the stack into a single string. Non-string values are coerced via `String()`.
+
+```
+scope "message"
+push "Hello, "
+push "World"
+push "!"
+concat
+set
+; Result: { message: "Hello, World!" }
+
+; Coercion example
+scope "info"
+push "Count: "
+push 42
+concat
+set
+; Result: { info: "Count: 42" }
 ```
 
 ### Comments
