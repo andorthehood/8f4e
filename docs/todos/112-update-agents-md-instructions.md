@@ -3,8 +3,8 @@ title: 'TODO: Audit and Update AGENTS.md Instructions'
 priority: Medium
 effort: 1–2d
 created: 2025-12-01
-status: Open
-completed: null
+status: Done
+completed: 2025-12-01
 ---
 
 # TODO: Audit and Update AGENTS.md Instructions
