@@ -87,7 +87,7 @@ export async function getProject(slug: string): Promise<Project> {
 	console.log(`Loading project: ${slug}`);
 	const project = await loader();
 	loadedProjectsCache[slug] = project;
-	console.log(`Loaded project: ${project.title}`);
+	console.log(`Loaded project: ${slug}`);
 
 	return project;
 }
