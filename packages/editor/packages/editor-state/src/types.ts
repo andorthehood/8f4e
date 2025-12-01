@@ -154,6 +154,19 @@ export interface CompilationError {
 	moduleId: string;
 }
 
+/**
+ * Represents an error from config block compilation.
+ * Includes creationIndex to identify which config block the error belongs to.
+ */
+export interface ConfigError {
+	/** Line number within the config block body (1-based) */
+	line: number;
+	/** Error message from the config compiler */
+	message: string;
+	/** The creationIndex of the config block this error belongs to */
+	creationIndex: number;
+}
+
 export interface Compiler {
 	codeBuffer: Uint8Array;
 	compilationTime: number;
@@ -251,6 +264,14 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
+/**
+ * The type of a code block, determined by its content markers.
+ * - 'module': Contains module/moduleEnd markers (compiled to WASM)
+ * - 'config': Contains config/configEnd markers (compiled to JSON configuration)
+ * - 'unknown': Mixed or incomplete markers, or no recognizable markers
+ */
+export type CodeBlockType = 'module' | 'config' | 'unknown';
+
 export interface CodeBlockGraphicData {
 	width: number;
 	minGridWidth: number;
@@ -307,6 +328,11 @@ export interface CodeBlockGraphicData {
 	 * This is a runtime-only value and is NOT persisted.
 	 */
 	creationIndex: number;
+	/**
+	 * The type of the code block, determined by its content markers.
+	 * Updated automatically when code changes.
+	 */
+	blockType: CodeBlockType;
 }
 
 export type GraphicHelper = {
@@ -426,44 +452,28 @@ export interface WebWorkerMIDIRuntime {
 export type Runtimes = WebWorkerLogicRuntime | MainThreadLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
 
 export interface Project {
-	title: string;
-	author: string;
-	description: string;
 	codeBlocks: CodeBlock[];
 	/** Viewport position using grid coordinates for persistent storage */
 	viewport: ProjectViewport;
-	selectedRuntime: number;
-	runtimeSettings: Runtimes[];
 	binaryAssets?: BinaryAsset[];
 	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
 	compiledWasm?: string;
 	compiledModules?: CompiledModuleLookup;
 	memorySnapshot?: string;
+	/** Compiled configuration from config blocks for runtime-only execution */
+	compiledConfig?: Record<string, unknown>;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
-	/** WebAssembly memory size in bytes */
-	memorySizeBytes: number;
 }
 
 // Default empty project structure used when no project is loaded from storage
 export const EMPTY_DEFAULT_PROJECT: Project = {
-	title: '',
-	author: '',
-	description: '',
 	codeBlocks: [],
 	compiledModules: {},
 	viewport: {
 		gridCoordinates: { x: 0, y: 0 },
 	},
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			runtime: 'WebWorkerLogicRuntime',
-			sampleRate: 50,
-		},
-	],
 	binaryAssets: [],
-	memorySizeBytes: 1048576, // 1MB default
 };
 
 export interface ExampleModule {
@@ -534,6 +544,26 @@ export interface Callbacks {
 	// Color scheme loader callback
 	getListOfColorSchemes?: () => Promise<string[]>;
 	getColorScheme?: (name: string) => Promise<ColorScheme>;
+
+	// Config compilation callback
+	/**
+	 * Compiles a stack-config program source into a JSON configuration object.
+	 * Used by config blocks to generate runtime configuration.
+	 *
+	 * @param source - The config program source code (one command per line)
+	 * @returns Promise containing the compiled config object and any errors
+	 */
+	compileConfig?: (source: string) => Promise<ConfigCompilationResult>;
+}
+
+/**
+ * Result of compiling a stack-config program
+ */
+export interface ConfigCompilationResult {
+	/** The resulting JSON-compatible configuration object, or null if there were errors */
+	config: unknown | null;
+	/** Array of error objects with line numbers and messages */
+	errors: { line: number; message: string }[];
 }
 
 export interface Options {
@@ -561,4 +591,6 @@ export interface State {
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
+	/** Errors from config block compilation */
+	configErrors: ConfigError[];
 }

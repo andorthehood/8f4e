@@ -1,11 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const ericSaiteGenerator: Project = {
-	memorySizeBytes: 65536,
-	title: 'Eric Saite Generator',
-	author: 'Andor Polgar & Eric Saite',
-	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "Eric Saite Generator"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar & Eric Saite"',
+				'set',
+				'rescopeTop "description"',
+				'push ""',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "runtime"',
+				'push "WebWorkerMIDIRuntime"',
+				'set',
+				'rescopeTop "sampleRate"',
+				'push 50',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -280, y: -2 },
+		},
 		{
 			code: [
 				'module bufferToOut',
@@ -525,13 +561,6 @@ const ericSaiteGenerator: Project = {
 		},
 	],
 	viewport: { gridCoordinates: { x: -241, y: -15 } },
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			runtime: 'WebWorkerMIDIRuntime',
-			sampleRate: 50,
-		},
-	],
 };
 
 export default ericSaiteGenerator;
