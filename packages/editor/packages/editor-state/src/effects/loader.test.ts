@@ -20,7 +20,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
-	it('should use default memory settings when project has no memory configuration', async () => {
+	it('should use default memory settings when loading project', async () => {
 		projectImport(store, mockEvents, mockState);
 
 		// Get the loadProject callback
@@ -30,21 +30,27 @@ describe('Loader - Project-specific memory configuration', () => {
 
 		const loadProjectCallback = loadProjectCall![1];
 
-		// Create a project without memory configuration
-		const projectWithoutMemory: Project = {
+		// Create a project (memory config now comes from config blocks)
+		const project: Project = {
 			...EMPTY_DEFAULT_PROJECT,
-			title: 'Test Project',
 		};
 
 		// Load the project
-		loadProjectCallback({ project: projectWithoutMemory });
+		loadProjectCallback({ project });
 
-		// Verify compiler options use defaults
+		// Verify compiler options use defaults (config effect will update from config blocks)
 		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(1048576);
 	});
 
-	it('should use project-specific memory settings when available', async () => {
-		projectImport(store, mockEvents, mockState);
+	it('should reset memory settings to defaults when loading new project', async () => {
+		// Create a separate defaultState that won't be modified
+		const originalDefault = createMockState();
+		const defaultMemorySize = originalDefault.compiler.compilerOptions.memorySizeBytes;
+
+		// Set custom memory first
+		mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
+
+		projectImport(store, mockEvents, originalDefault);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -53,21 +59,23 @@ describe('Loader - Project-specific memory configuration', () => {
 
 		const loadProjectCallback = loadProjectCall![1];
 
-		// Create a project with custom memory configuration
-		const projectWithMemory: Project = {
+		// Create a project (memory config now comes from config blocks)
+		const project: Project = {
 			...EMPTY_DEFAULT_PROJECT,
-			title: 'Test Project',
-			memorySizeBytes: 500 * 65536,
 		};
 
 		// Load the project
-		loadProjectCallback({ project: projectWithMemory });
+		loadProjectCallback({ project });
 
-		// Verify compiler options use project-specific settings
-		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(500 * 65536);
+		// Verify compiler options reset to defaults (config effect will update from config blocks)
+		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(defaultMemorySize);
 	});
 
-	it('should create memory with project-specific settings', async () => {
+	it('should reset project info to empty when loading new project', async () => {
+		// Set some project info first
+		mockState.projectInfo.title = 'Previous Project';
+		mockState.projectInfo.author = 'Previous Author';
+
 		projectImport(store, mockEvents, mockState);
 
 		// Get the loadProject callback
@@ -75,17 +83,16 @@ describe('Loader - Project-specific memory configuration', () => {
 		const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 		const loadProjectCallback = loadProjectCall![1];
 
-		// Create a project with custom memory configuration
-		const projectWithMemory: Project = {
+		// Create a project (project info now comes from config blocks)
+		const project: Project = {
 			...EMPTY_DEFAULT_PROJECT,
-			title: 'Test Project',
-			memorySizeBytes: 2000 * 65536,
 		};
 
 		// Load the project
-		loadProjectCallback({ project: projectWithMemory });
+		loadProjectCallback({ project });
 
-		// Verify the compiler options were updated
-		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(2000 * 65536);
+		// Verify project info reset to empty (config effect will update from config blocks)
+		expect(mockState.projectInfo.title).toBe('');
+		expect(mockState.projectInfo.author).toBe('');
 	});
 });
