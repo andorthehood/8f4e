@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import type { CodeBlockGraphicData, EventDispatcher, State, Runtimes } from '../types';
+import type { CodeBlockGraphicData, ConfigError, EventDispatcher, State, Runtimes } from '../types';
 
 /**
  * Extracts the body content between config and configEnd markers.
@@ -162,6 +162,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	/**
 	 * Rebuilds the config from all config blocks and applies it to state.
 	 * Each config block is compiled independently to allow proper error mapping.
+	 * Errors are saved to state.configErrors with the creationIndex of the source block.
 	 */
 	async function rebuildConfig(): Promise<void> {
 		// If no compileConfig callback, skip
@@ -172,20 +173,29 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		// Collect all config blocks
 		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
+		// Clear previous config errors
+		state.configErrors = [];
+
 		if (configBlocks.length === 0) {
 			return;
 		}
 
 		// Compile each config block independently and merge results
 		let mergedConfig: Record<string, unknown> = {};
+		const allErrors: ConfigError[] = [];
 
 		for (const { block, source } of configBlocks) {
 			try {
 				const result = await state.callbacks.compileConfig(source);
 
 				if (result.errors.length > 0) {
-					// Log errors with block reference for debugging
-					console.warn(`[Config] Compilation errors in block "${block.id}":`, result.errors);
+					// Map errors to ConfigError format with creationIndex
+					const blockErrors: ConfigError[] = result.errors.map(error => ({
+						line: error.line,
+						message: error.message,
+						creationIndex: block.creationIndex,
+					}));
+					allErrors.push(...blockErrors);
 					continue; // Skip this block but continue with others
 				}
 
@@ -194,9 +204,17 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 					mergedConfig = deepMergeConfig(mergedConfig, result.config as Record<string, unknown>);
 				}
 			} catch (error) {
-				console.error(`[Config] Compilation failed for block "${block.id}":`, error);
+				// For unexpected errors, create a generic error entry
+				allErrors.push({
+					line: 1,
+					message: error instanceof Error ? error.message : String(error),
+					creationIndex: block.creationIndex,
+				});
 			}
 		}
+
+		// Save all errors to state
+		state.configErrors = allErrors;
 
 		// Apply the merged config to state
 		applyConfigToState(state, mergedConfig);

@@ -154,6 +154,19 @@ export interface CompilationError {
 	moduleId: string;
 }
 
+/**
+ * Represents an error from config block compilation.
+ * Includes creationIndex to identify which config block the error belongs to.
+ */
+export interface ConfigError {
+	/** Line number within the config block body (1-based) */
+	line: number;
+	/** Error message from the config compiler */
+	message: string;
+	/** The creationIndex of the config block this error belongs to */
+	creationIndex: number;
+}
+
 export interface Compiler {
 	codeBuffer: Uint8Array;
 	compilationTime: number;
@@ -594,4 +607,6 @@ export interface State {
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
+	/** Errors from config block compilation */
+	configErrors: ConfigError[];
 }
