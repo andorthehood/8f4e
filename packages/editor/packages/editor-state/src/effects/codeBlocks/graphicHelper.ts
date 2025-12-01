@@ -66,7 +66,7 @@ const instructionsToHighlight = [
 	'scope',
 	'rescope',
 	'rescopeTop',
-	'endScope',
+	'popScope',
 	'int',
 	'float',
 	'int*',
