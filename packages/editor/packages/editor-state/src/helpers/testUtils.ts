@@ -92,6 +92,7 @@ export function createMockCodeBlock(
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),
 		creationIndex: 0,
+		blockType: 'unknown',
 		extras: {
 			blockHighlights: [],
 			inputs: [],
@@ -296,6 +297,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
+		configErrors: [],
 	};
 
 	// Deep merge overrides with defaults

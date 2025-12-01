@@ -3,8 +3,8 @@ title: 'TODO: Config vs Module Blocks Integration'
 priority: Medium
 effort: 1–2 days
 created: 2025-11-30
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-01
 ---
 
 # TODO: Config vs Module Blocks Integration

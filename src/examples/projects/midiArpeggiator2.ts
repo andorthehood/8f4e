@@ -1,11 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const midiArpeggiator2: Project = {
-	memorySizeBytes: 65536,
-	title: 'MIDI Generative Melody',
-	author: 'Andor Polgar',
-	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "MIDI Generative Melody"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar"',
+				'set',
+				'rescopeTop "description"',
+				'push ""',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "runtime"',
+				'push "WebWorkerMIDIRuntime"',
+				'set',
+				'rescopeTop "sampleRate"',
+				'push 50',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -130, y: 5 },
+		},
 		{
 			code: [
 				'module bufferCombiner',
@@ -592,13 +628,6 @@ const midiArpeggiator2: Project = {
 		},
 	],
 	viewport: { gridCoordinates: { x: -90, y: -12 } },
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			runtime: 'WebWorkerMIDIRuntime',
-			sampleRate: 50,
-		},
-	],
 };
 
 export default midiArpeggiator2;

@@ -1,11 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
-	memorySizeBytes: 65536,
-	title: 'MIDI Break Beat with 2D Sequencer',
-	author: 'Andor Polgar',
-	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "MIDI Break Beat with 2D Sequencer"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar"',
+				'set',
+				'rescopeTop "description"',
+				'push ""',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "sampleRate"',
+				'push 50',
+				'set',
+				'rescopeTop "runtime"',
+				'push "WebWorkerMIDIRuntime"',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -15, y: 17 },
+		},
 		{
 			code: [
 				'module bitwiseAnd',
@@ -673,13 +709,6 @@ const project: Project = {
 		},
 	],
 	viewport: { gridCoordinates: { x: 24, y: -10 } },
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			sampleRate: 50,
-			runtime: 'WebWorkerMIDIRuntime',
-		},
-	],
 };
 
 export default project;

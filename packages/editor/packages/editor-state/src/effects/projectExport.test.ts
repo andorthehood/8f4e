@@ -85,7 +85,9 @@ describe('projectExport', () => {
 			expect(typeof exportedJson).toBe('string');
 
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.title).toBe('Test Project');
+			// Project no longer contains title field - config blocks are the source of truth
+			expect(exportedProject.codeBlocks).toBeDefined();
+			expect(exportedProject.viewport).toBeDefined();
 		});
 
 		it('should use default filename when project has no title', async () => {
