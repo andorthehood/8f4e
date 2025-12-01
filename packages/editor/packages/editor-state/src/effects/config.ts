@@ -163,6 +163,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	 * Rebuilds the config from all config blocks and applies it to state.
 	 * Each config block is compiled independently to allow proper error mapping.
 	 * Errors are saved to state.configErrors with the creationIndex of the source block.
+	 * The merged config is saved to state.compiledConfig for runtime-ready export.
 	 */
 	async function rebuildConfig(): Promise<void> {
 		// If no compileConfig callback, skip
@@ -177,6 +178,8 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		state.configErrors = [];
 
 		if (configBlocks.length === 0) {
+			// Reset compiled config when no config blocks exist
+			state.compiledConfig = {};
 			return;
 		}
 
@@ -215,6 +218,9 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 
 		// Save all errors to state
 		state.configErrors = allErrors;
+
+		// Save compiled config to state for runtime-ready export
+		state.compiledConfig = mergedConfig;
 
 		// Apply the merged config to state
 		applyConfigToState(state, mergedConfig);
