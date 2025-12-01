@@ -182,21 +182,21 @@ describe('config effect', () => {
 	});
 
 	describe('applyConfigToState', () => {
-		it('should apply projectInfo.title', () => {
+		it('should apply title', () => {
 			const state = createMockState();
-			applyConfigToState(state, { projectInfo: { title: 'Test Title' } });
+			applyConfigToState(state, { title: 'Test Title' });
 			expect(state.projectInfo.title).toBe('Test Title');
 		});
 
-		it('should apply projectInfo.author', () => {
+		it('should apply author', () => {
 			const state = createMockState();
-			applyConfigToState(state, { projectInfo: { author: 'Test Author' } });
+			applyConfigToState(state, { author: 'Test Author' });
 			expect(state.projectInfo.author).toBe('Test Author');
 		});
 
-		it('should apply projectInfo.description', () => {
+		it('should apply description', () => {
 			const state = createMockState();
-			applyConfigToState(state, { projectInfo: { description: 'Test Description' } });
+			applyConfigToState(state, { description: 'Test Description' });
 			expect(state.projectInfo.description).toBe('Test Description');
 		});
 
@@ -245,11 +245,11 @@ describe('config effect', () => {
 			expect(() => applyConfigToState(state, 42)).not.toThrow();
 		});
 
-		it('should handle partial projectInfo', () => {
+		it('should handle partial config', () => {
 			const state = createMockState();
 			state.projectInfo.title = 'Original';
 			state.projectInfo.author = 'Original Author';
-			applyConfigToState(state, { projectInfo: { title: 'New Title' } });
+			applyConfigToState(state, { title: 'New Title' });
 			expect(state.projectInfo.title).toBe('New Title');
 			expect(state.projectInfo.author).toBe('Original Author');
 		});
