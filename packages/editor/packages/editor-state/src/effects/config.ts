@@ -26,23 +26,30 @@ function extractConfigBody(code: string[]): string[] {
 }
 
 /**
- * Collects all config blocks and builds a single config source string.
- * Config blocks are concatenated in creation order.
+ * Represents a config block source with its block reference for error mapping.
  */
-function collectConfigSource(codeBlocks: Set<CodeBlockGraphicData>): string {
-	const configBlocks = Array.from(codeBlocks)
+interface ConfigBlockSource {
+	block: CodeBlockGraphicData;
+	source: string;
+}
+
+/**
+ * Collects all config blocks and returns their sources individually.
+ * Config blocks are sorted in creation order.
+ * Each config block is compiled independently to allow proper error mapping.
+ */
+function collectConfigBlocks(codeBlocks: Set<CodeBlockGraphicData>): ConfigBlockSource[] {
+	return Array.from(codeBlocks)
 		.filter(block => block.blockType === 'config')
-		.sort((a, b) => a.creationIndex - b.creationIndex);
-
-	const sources: string[] = [];
-	for (const block of configBlocks) {
-		const body = extractConfigBody(block.code);
-		if (body.length > 0) {
-			sources.push(body.join('\n'));
-		}
-	}
-
-	return sources.join('\n');
+		.sort((a, b) => a.creationIndex - b.creationIndex)
+		.map(block => {
+			const body = extractConfigBody(block.code);
+			return {
+				block,
+				source: body.join('\n'),
+			};
+		})
+		.filter(item => item.source.trim().length > 0);
 }
 
 /**
@@ -125,14 +132,36 @@ function applyConfigToState(state: State, config: unknown): void {
 }
 
 /**
+ * Deep merges two config objects. Later values override earlier values.
+ * Arrays are replaced entirely, not merged.
+ */
+function deepMergeConfig(target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> {
+	const result: Record<string, unknown> = { ...target };
+
+	for (const key of Object.keys(source)) {
+		const sourceValue = source[key];
+		const targetValue = result[key];
+
+		if (isPlainObject(sourceValue) && isPlainObject(targetValue)) {
+			result[key] = deepMergeConfig(targetValue, sourceValue);
+		} else {
+			result[key] = sourceValue;
+		}
+	}
+
+	return result;
+}
+
+/**
  * Effect that compiles config blocks and applies the resulting configuration to state.
- * Config blocks are processed in creation order and their outputs are merged.
+ * Each config block is compiled independently and results are deep merged in creation order.
  */
 export default function configEffect(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 
 	/**
 	 * Rebuilds the config from all config blocks and applies it to state.
+	 * Each config block is compiled independently to allow proper error mapping.
 	 */
 	async function rebuildConfig(): Promise<void> {
 		// If no compileConfig callback, skip
@@ -140,36 +169,37 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 			return;
 		}
 
-		// Check if there are any config blocks
-		const hasConfigBlocks = Array.from(state.graphicHelper.codeBlocks).some(block => block.blockType === 'config');
+		// Collect all config blocks
+		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
-		if (!hasConfigBlocks) {
+		if (configBlocks.length === 0) {
 			return;
 		}
 
-		// Collect all config source
-		const source = collectConfigSource(state.graphicHelper.codeBlocks);
+		// Compile each config block independently and merge results
+		let mergedConfig: Record<string, unknown> = {};
 
-		if (!source.trim()) {
-			return;
+		for (const { block, source } of configBlocks) {
+			try {
+				const result = await state.callbacks.compileConfig(source);
+
+				if (result.errors.length > 0) {
+					// Log errors with block reference for debugging
+					console.warn(`[Config] Compilation errors in block "${block.id}":`, result.errors);
+					continue; // Skip this block but continue with others
+				}
+
+				// Merge the config into the accumulated result
+				if (result.config !== null && isPlainObject(result.config)) {
+					mergedConfig = deepMergeConfig(mergedConfig, result.config as Record<string, unknown>);
+				}
+			} catch (error) {
+				console.error(`[Config] Compilation failed for block "${block.id}":`, error);
+			}
 		}
 
-		try {
-			const result = await state.callbacks.compileConfig(source);
-
-			if (result.errors.length > 0) {
-				// Log errors for now - could be surfaced to UI in future
-				console.warn('[Config] Compilation errors:', result.errors);
-				return;
-			}
-
-			// Apply the config to state
-			if (result.config !== null) {
-				applyConfigToState(state, result.config);
-			}
-		} catch (error) {
-			console.error('[Config] Compilation failed:', error);
-		}
+		// Apply the merged config to state
+		applyConfigToState(state, mergedConfig);
 	}
 
 	// Wire up event handlers
@@ -181,4 +211,4 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 }
 
 // Export for testing
-export { extractConfigBody, collectConfigSource, applyConfigToState };
+export { extractConfigBody, collectConfigBlocks, deepMergeConfig, applyConfigToState };

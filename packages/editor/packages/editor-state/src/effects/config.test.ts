@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { extractConfigBody, collectConfigSource, applyConfigToState } from './config';
+import { extractConfigBody, collectConfigBlocks, deepMergeConfig, applyConfigToState } from './config';
 
 import { createMockCodeBlock, createMockState } from '../helpers/testUtils';
 
@@ -49,8 +49,8 @@ describe('config effect', () => {
 		});
 	});
 
-	describe('collectConfigSource', () => {
-		it('should collect and concatenate config block sources', () => {
+	describe('collectConfigBlocks', () => {
+		it('should collect config blocks with their sources', () => {
 			const block1 = createMockCodeBlock({
 				code: ['config', 'push 1', 'configEnd'],
 				blockType: 'config',
@@ -63,25 +63,32 @@ describe('config effect', () => {
 			});
 			const codeBlocks = new Set([block1, block2]);
 
-			const source = collectConfigSource(codeBlocks);
-			expect(source).toBe('push 1\npush 2');
+			const result = collectConfigBlocks(codeBlocks);
+			expect(result).toHaveLength(2);
+			expect(result[0].source).toBe('push 1');
+			expect(result[0].block).toBe(block1);
+			expect(result[1].source).toBe('push 2');
+			expect(result[1].block).toBe(block2);
 		});
 
 		it('should sort config blocks by creationIndex', () => {
 			const block1 = createMockCodeBlock({
+				id: 'first',
 				code: ['config', 'push first', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 			});
 			const block2 = createMockCodeBlock({
+				id: 'second',
 				code: ['config', 'push second', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
 			const codeBlocks = new Set([block1, block2]);
 
-			const source = collectConfigSource(codeBlocks);
-			expect(source).toBe('push second\npush first');
+			const result = collectConfigBlocks(codeBlocks);
+			expect(result[0].block.id).toBe('second');
+			expect(result[1].block.id).toBe('first');
 		});
 
 		it('should skip non-config blocks', () => {
@@ -97,11 +104,12 @@ describe('config effect', () => {
 			});
 			const codeBlocks = new Set([configBlock, moduleBlock]);
 
-			const source = collectConfigSource(codeBlocks);
-			expect(source).toBe('push 1');
+			const result = collectConfigBlocks(codeBlocks);
+			expect(result).toHaveLength(1);
+			expect(result[0].source).toBe('push 1');
 		});
 
-		it('should return empty string if no config blocks', () => {
+		it('should return empty array if no config blocks', () => {
 			const moduleBlock = createMockCodeBlock({
 				code: ['module test', 'moduleEnd'],
 				blockType: 'module',
@@ -109,8 +117,8 @@ describe('config effect', () => {
 			});
 			const codeBlocks = new Set([moduleBlock]);
 
-			const source = collectConfigSource(codeBlocks);
-			expect(source).toBe('');
+			const result = collectConfigBlocks(codeBlocks);
+			expect(result).toHaveLength(0);
 		});
 
 		it('should skip config blocks with empty bodies', () => {
@@ -126,8 +134,50 @@ describe('config effect', () => {
 			});
 			const codeBlocks = new Set([emptyBlock, contentBlock]);
 
-			const source = collectConfigSource(codeBlocks);
-			expect(source).toBe('push 1');
+			const result = collectConfigBlocks(codeBlocks);
+			expect(result).toHaveLength(1);
+			expect(result[0].source).toBe('push 1');
+		});
+	});
+
+	describe('deepMergeConfig', () => {
+		it('should merge flat objects', () => {
+			const target = { a: 1, b: 2 };
+			const source = { b: 3, c: 4 };
+			const result = deepMergeConfig(target, source);
+			expect(result).toEqual({ a: 1, b: 3, c: 4 });
+		});
+
+		it('should deep merge nested objects', () => {
+			const target = { nested: { a: 1, b: 2 } };
+			const source = { nested: { b: 3, c: 4 } };
+			const result = deepMergeConfig(target, source);
+			expect(result).toEqual({ nested: { a: 1, b: 3, c: 4 } });
+		});
+
+		it('should replace arrays entirely', () => {
+			const target = { items: [1, 2, 3] };
+			const source = { items: [4, 5] };
+			const result = deepMergeConfig(target, source);
+			expect(result).toEqual({ items: [4, 5] });
+		});
+
+		it('should not mutate the original objects', () => {
+			const target = { a: 1 };
+			const source = { b: 2 };
+			const result = deepMergeConfig(target, source);
+			expect(target).toEqual({ a: 1 });
+			expect(source).toEqual({ b: 2 });
+			expect(result).toEqual({ a: 1, b: 2 });
+		});
+
+		it('should handle projectInfo-like structure', () => {
+			const target = { projectInfo: { title: 'Title', author: 'Author' } };
+			const source = { projectInfo: { description: 'Description' } };
+			const result = deepMergeConfig(target, source);
+			expect(result).toEqual({
+				projectInfo: { title: 'Title', author: 'Author', description: 'Description' },
+			});
 		});
 	});
 
