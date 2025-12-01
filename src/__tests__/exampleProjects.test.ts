@@ -9,6 +9,7 @@
  */
 import * as path from 'path';
 import * as fs from 'fs';
+import { pathToFileURL } from 'url';
 
 import { describe, it, expect } from 'vitest';
 import compile from '@8f4e/compiler';
@@ -65,8 +66,8 @@ function discoverProjectFiles(): string[] {
  */
 async function loadProject(filePath: string): Promise<{ slug: string; project: { codeBlocks: { code: string[] }[] } }> {
 	const slug = path.basename(filePath, '.ts');
-	// Use file:// URL for ESM compatibility
-	const fileUrl = `file://${filePath}`;
+	// Use pathToFileURL for cross-platform compatibility (handles Windows paths correctly)
+	const fileUrl = pathToFileURL(filePath).href;
 	const module = await import(fileUrl);
 	return { slug, project: module.default };
 }
@@ -142,7 +143,10 @@ describe('Example Projects Compilation', () => {
 					const result = compileConfig(source);
 
 					// Assert no errors
-					expect(result.errors, `Config block ${index} in project ${slug} had compilation errors: ${JSON.stringify(result.errors)}`).toEqual([]);
+					expect(
+						result.errors,
+						`Config block ${index} in project ${slug} had compilation errors: ${JSON.stringify(result.errors)}`
+					).toEqual([]);
 					expect(result.config, `Config block ${index} in project ${slug} produced null config`).not.toBeNull();
 				});
 			});
