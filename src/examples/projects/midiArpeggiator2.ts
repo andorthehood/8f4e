@@ -6,7 +6,6 @@ const midiArpeggiator2: Project = {
 			code: [
 				'config',
 				'',
-				'scope "projectInfo"',
 				'scope "title"',
 				'push "MIDI Generative Melody"',
 				'set',
