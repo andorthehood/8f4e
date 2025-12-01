@@ -1,5 +1,6 @@
 import {
 	executeAppend,
+	executeConcat,
 	executePopScope,
 	executePush,
 	executeRescope,
@@ -22,6 +23,8 @@ export function executeCommand(state: VMState, command: Command): string | null 
 			return executeSet(state);
 		case 'append':
 			return executeAppend(state);
+		case 'concat':
+			return executeConcat(state);
 		case 'scope':
 			return executeScope(state, command);
 		case 'rescopeTop':
@@ -55,6 +58,13 @@ if (import.meta.vitest) {
 			const state = { config: {}, dataStack: [42], scopeStack: ['name'] };
 			executeCommand(state, { type: 'set', lineNumber: 1 });
 			expect(state.config).toEqual({ name: 42 });
+		});
+
+		it('should execute concat command', () => {
+			const state = { config: {}, dataStack: ['foo', 'bar'], scopeStack: [] };
+			const result = executeCommand(state, { type: 'concat', lineNumber: 1 });
+			expect(result).toBeNull();
+			expect(state.dataStack).toEqual(['foobar']);
 		});
 
 		it('should execute popScope command', () => {

@@ -4,7 +4,16 @@ import { parsePathArgument } from './parsePathArgument';
 import type { Command, CommandType, CompileError } from '../types';
 
 /** Valid command types (case-sensitive) */
-const VALID_COMMANDS = new Set<CommandType>(['push', 'set', 'append', 'scope', 'rescopeTop', 'rescope', 'popScope']);
+const VALID_COMMANDS = new Set<CommandType>([
+	'push',
+	'set',
+	'append',
+	'concat',
+	'scope',
+	'rescopeTop',
+	'rescope',
+	'popScope',
+]);
 
 /**
  * Strips trailing comment from a line, respecting string literals
@@ -215,6 +224,20 @@ if (import.meta.vitest) {
 			expect(parseLine('push "say \\"hello\\"" ; comment', 1)).toEqual({
 				type: 'push',
 				argument: 'say "hello"',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse concat command', () => {
+			expect(parseLine('concat', 1)).toEqual({
+				type: 'concat',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse concat command with trailing comment', () => {
+			expect(parseLine('concat ; concatenate stack values', 1)).toEqual({
+				type: 'concat',
 				lineNumber: 1,
 			});
 		});
