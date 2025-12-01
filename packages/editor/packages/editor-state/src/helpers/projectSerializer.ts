@@ -56,7 +56,6 @@ export function serializeToProject(
 			graphicHelper.viewport.hGrid
 		),
 		viewport: {
-			// Convert pixel coordinates to grid coordinates for persistent storage
 			gridCoordinates: {
 				x: Math.round(graphicHelper.viewport.x / graphicHelper.viewport.vGrid),
 				y: Math.round(graphicHelper.viewport.y / graphicHelper.viewport.hGrid),
@@ -67,7 +66,6 @@ export function serializeToProject(
 		postProcessEffects: graphicHelper.postProcessEffects,
 	};
 
-	// Optionally include compiled WASM and memory snapshot
 	if (options?.includeCompiled && options?.encodeToBase64) {
 		if (compiler.codeBuffer.length > 0) {
 			project.compiledWasm = options.encodeToBase64(compiler.codeBuffer);
@@ -97,10 +95,8 @@ export async function serializeToRuntimeReadyProject(
 	state: State,
 	encodeToBase64: (data: Uint8Array) => string
 ): Promise<Project> {
-	// Start with the base serialization
 	const project = serializeToProject(state, { includeCompiled: true, encodeToBase64 });
 
-	// Compile config on-demand for runtime-ready export
 	const compiledConfig = await compileConfigForExport(state);
 	if (Object.keys(compiledConfig).length > 0) {
 		project.compiledConfig = compiledConfig;

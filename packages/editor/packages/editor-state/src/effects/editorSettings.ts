@@ -7,12 +7,9 @@ import type { State } from '../types';
 export default function editorSettings(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
 	const state = store.getState();
 
-	// Create a fresh copy of editorSettings to avoid shared references
 	state.editorSettings = { ...defaultState.editorSettings };
 
-	// Load color schemes and settings asynchronously
 	void (async () => {
-		// Load color schemes first
 		if (state.callbacks.getListOfColorSchemes) {
 			try {
 				const colorSchemes = await state.callbacks.getListOfColorSchemes();
@@ -23,7 +20,6 @@ export default function editorSettings(store: StateManager<State>, events: Event
 			}
 		}
 
-		// Then load editor settings
 		const loadEditorSettings = state.callbacks.loadEditorSettings;
 		if (state.featureFlags.persistentStorage && loadEditorSettings) {
 			try {
@@ -47,7 +43,6 @@ export default function editorSettings(store: StateManager<State>, events: Event
 	}
 
 	store.subscribe('editorSettings.colorScheme', async () => {
-		// Reload color scheme from callback
 		if (state.callbacks.getColorScheme) {
 			store.set('colorScheme', await state.callbacks.getColorScheme(state.editorSettings.colorScheme));
 		}

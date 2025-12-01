@@ -111,7 +111,6 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
 		events.off('mousedown', initAudioContext);
 
-		// Stop media stream and disconnect source
 		if (mediaStreamSource) {
 			mediaStreamSource.disconnect();
 			mediaStreamSource = null;

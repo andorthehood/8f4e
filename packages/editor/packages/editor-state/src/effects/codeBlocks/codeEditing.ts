@@ -32,7 +32,6 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 
 				break;
 			case 'Backspace':
-				// Check if editing is enabled before modifying code
 				if (!state.featureFlags.editing) {
 					return;
 				}
@@ -44,7 +43,6 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 				store.set('graphicHelper.selectedCodeBlock.lastUpdated', Date.now());
 				break;
 			case 'Enter':
-				// Check if editing is enabled before modifying code
 				if (!state.featureFlags.editing) {
 					return;
 				}
@@ -57,7 +55,6 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 				break;
 			default:
 				if (event?.key.length === 1) {
-					// Check if editing is enabled before typing
 					if (!state.featureFlags.editing) {
 						return;
 					}

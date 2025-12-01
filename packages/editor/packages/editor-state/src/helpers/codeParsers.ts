@@ -1,7 +1,6 @@
 import type { CodeBlockType } from '../types';
 
 export function getLastMemoryInstructionLine(code: string[]): number {
-	// Find last index where the line matches the memory pattern
 	return code.findLastIndex(line => /^\s*memory/.test(line));
 }
 
@@ -33,16 +32,13 @@ export function getBlockType(code: string[]): CodeBlockType {
 	const hasConfig = code.some(line => /^\s*config(\s|$)/.test(line));
 	const hasConfigEnd = code.some(line => /^\s*configEnd(\s|$)/.test(line));
 
-	// Module block: has module/moduleEnd and no config markers
 	if (hasModule && hasModuleEnd && !hasConfig && !hasConfigEnd) {
 		return 'module';
 	}
 
-	// Config block: has config/configEnd and no module markers
 	if (hasConfig && hasConfigEnd && !hasModule && !hasModuleEnd) {
 		return 'config';
 	}
 
-	// Unknown: mixed, incomplete, or no recognizable markers
 	return 'unknown';
 }
