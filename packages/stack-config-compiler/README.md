@@ -66,7 +66,7 @@ See [`docs/brainstorming_notes/013-stack-oriented-config-language.md`](../../doc
 | `scope <path>` | Push path segments onto the scope stack |
 | `rescopeTop <path>` | Replace the top scope segment with new path segments |
 | `rescope <path>` | Replace the entire scope stack with new path segments |
-| `endScope` | Pop one segment from the scope stack |
+| `popScope` | Pop one segment from the scope stack |
 
 ### Literals
 

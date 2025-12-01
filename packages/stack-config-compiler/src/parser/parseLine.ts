@@ -4,7 +4,7 @@ import { parsePathArgument } from './parsePathArgument';
 import type { Command, CommandType, CompileError } from '../types';
 
 /** Valid command types (case-sensitive) */
-const VALID_COMMANDS = new Set<CommandType>(['push', 'set', 'append', 'scope', 'rescopeTop', 'rescope', 'endScope']);
+const VALID_COMMANDS = new Set<CommandType>(['push', 'set', 'append', 'scope', 'rescopeTop', 'rescope', 'popScope']);
 
 /**
  * Strips trailing comment from a line, respecting string literals
