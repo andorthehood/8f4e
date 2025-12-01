@@ -14,7 +14,6 @@ export interface CodeBlockClickEvent {
 
 export default function codeBlockDragger(state: State, events: EventDispatcher): () => void {
 	function onMouseDown({ x, y }: InternalMouseEvent) {
-		// Check if module dragging feature is enabled
 		if (!state.featureFlags.moduleDragging) {
 			return;
 		}
@@ -38,7 +37,6 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			codeBlock: draggedCodeBlock,
 		});
 
-		// Bring dragged module forward.
 		state.graphicHelper.codeBlocks.delete(draggedCodeBlock);
 		state.graphicHelper.codeBlocks.add(draggedCodeBlock);
 	}
@@ -57,7 +55,6 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			return;
 		}
 
-		// Snap to grid by rounding pixel coordinates
 		state.graphicHelper.draggedCodeBlock.x =
 			Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid) *
 			state.graphicHelper.viewport.vGrid;
