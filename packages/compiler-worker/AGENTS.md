@@ -13,7 +13,7 @@
 - Keep worker boundaries explicit; prefer message types in a shared module.
 
 ## Testing
-- Jest with `@swc/jest`. Test message handling and compile orchestration with unit tests.
+- Vitest (via Nx). Test message handling and compile orchestration with unit tests.
 
 ## Commits & PRs
 - Commits: `compiler-worker: <change>`; PRs describe protocol changes and include tests.

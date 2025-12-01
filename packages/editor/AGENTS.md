@@ -14,7 +14,7 @@
 - Prefer alias imports for internal packages.
 
 ## Testing
-- Jest with `@swc/jest`. Tests under `__tests__` or `*.test.ts`.
+- Vitest (via Nx). Tests under `__tests__` or `*.test.ts`.
 - Favor unit tests for view-models and utilities; snapshot tests acceptable.
 
 ## Commits & PRs

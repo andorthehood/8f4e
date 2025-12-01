@@ -14,7 +14,7 @@
 - Keep worklet entrypoints small and dependency-free; avoid DOM APIs.
 
 ## Testing
-- Jest (`@swc/jest`). Unit-test helpers; integration tests can mock AudioWorklet.
+- Vitest (via Nx). Unit-test helpers; integration tests can mock AudioWorklet.
 
 ## Commits & PRs
 - Commits: `runtime-audio-worklet: <change>`; PRs should describe audio thread implications.
