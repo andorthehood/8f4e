@@ -16,7 +16,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		}
 
 		const projectToSave = serializeToProject(state);
-		const fileName = `${projectToSave.title || 'project'}.json`;
+		const fileName = `${state.projectInfo.title || 'project'}.json`;
 		const json = JSON.stringify(projectToSave, null, 2);
 
 		state.callbacks.exportProject(json, fileName).catch(error => {
@@ -42,7 +42,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 			encodeToBase64: encodeUint8ArrayToBase64,
 		});
 
-		const fileName = `${runtimeProject.title || 'project'}-runtime-ready.json`;
+		const fileName = `${state.projectInfo.title || 'project'}-runtime-ready.json`;
 		const json = JSON.stringify(runtimeProject, null, 2);
 
 		state.callbacks.exportProject(json, fileName).catch(error => {
