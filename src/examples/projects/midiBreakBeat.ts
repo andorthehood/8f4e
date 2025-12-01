@@ -6,7 +6,6 @@ const project: Project = {
 			code: [
 				'config',
 				'',
-				'scope "projectInfo"',
 				'scope "title"',
 				'push "MIDI Break Beat"',
 				'set',
