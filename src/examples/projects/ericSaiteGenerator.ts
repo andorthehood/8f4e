@@ -2,10 +2,34 @@ import type { Project } from '@8f4e/editor-state';
 
 const ericSaiteGenerator: Project = {
 	memorySizeBytes: 65536,
-	title: 'Eric Saite Generator',
-	author: 'Andor Polgar & Eric Saite',
+	title: '',
+	author: '',
 	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "projectInfo"',
+				'  scope "title"',
+				'    push "Eric Saite Generator"',
+				'    set',
+				'  popScope',
+				'  scope "author"',
+				'    push "Andor Polgar & Eric Saite"',
+				'    set',
+				'  popScope',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'  push 65536',
+				'  set',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -280, y: -2 },
+		},
 		{
 			code: [
 				'module bufferToOut',

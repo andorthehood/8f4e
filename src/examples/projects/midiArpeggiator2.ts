@@ -2,10 +2,34 @@ import type { Project } from '@8f4e/editor-state';
 
 const midiArpeggiator2: Project = {
 	memorySizeBytes: 65536,
-	title: 'MIDI Generative Melody',
-	author: 'Andor Polgar',
+	title: '',
+	author: '',
 	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "projectInfo"',
+				'  scope "title"',
+				'    push "MIDI Generative Melody"',
+				'    set',
+				'  popScope',
+				'  scope "author"',
+				'    push "Andor Polgar"',
+				'    set',
+				'  popScope',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'  push 65536',
+				'  set',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -130, y: 5 },
+		},
 		{
 			code: [
 				'module bufferCombiner',
