@@ -452,14 +452,19 @@ export interface WebWorkerMIDIRuntime {
 export type Runtimes = WebWorkerLogicRuntime | MainThreadLogicRuntime | AudioWorkletRuntime | WebWorkerMIDIRuntime;
 
 export interface Project {
-	title: string;
-	author: string;
-	description: string;
+	/** @deprecated Use config block instead. Will be removed in a future version. */
+	title?: string;
+	/** @deprecated Use config block instead. Will be removed in a future version. */
+	author?: string;
+	/** @deprecated Use config block instead. Will be removed in a future version. */
+	description?: string;
 	codeBlocks: CodeBlock[];
 	/** Viewport position using grid coordinates for persistent storage */
 	viewport: ProjectViewport;
-	selectedRuntime: number;
-	runtimeSettings: Runtimes[];
+	/** @deprecated Use config block instead. Will be removed in a future version. */
+	selectedRuntime?: number;
+	/** @deprecated Use config block instead. Will be removed in a future version. */
+	runtimeSettings?: Runtimes[];
 	binaryAssets?: BinaryAsset[];
 	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
 	compiledWasm?: string;
@@ -467,8 +472,8 @@ export interface Project {
 	memorySnapshot?: string;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
-	/** WebAssembly memory size in bytes */
-	memorySizeBytes: number;
+	/** @deprecated Use config block instead. Will be removed in a future version. */
+	memorySizeBytes?: number;
 }
 
 // Default empty project structure used when no project is loaded from storage
