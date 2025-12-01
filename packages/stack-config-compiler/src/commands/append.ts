@@ -18,7 +18,6 @@ export function executeAppend(state: VMState): string | null {
 		return 'Cannot append: data stack is empty';
 	}
 
-	// Pop all values from the stack and append each one
 	const values = state.dataStack.splice(0, state.dataStack.length);
 
 	for (const val of values) {
