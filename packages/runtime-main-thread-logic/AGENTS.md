@@ -13,7 +13,7 @@
 - Keep browser-side logic separated from worker/audio code paths.
 
 ## Testing
-- Jest with `@swc/jest`. Unit tests only; mock timers and postMessage as needed.
+- Vitest (via Nx). Unit tests only; mock timers and postMessage as needed.
 
 ## Commits & PRs
 - Commits: `runtime-main-thread-logic: <change>`; PRs document behavior changes and link issues.
