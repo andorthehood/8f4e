@@ -142,7 +142,7 @@ describe('Example Projects Compilation', () => {
 					const result = compileConfig(source);
 
 					// Assert no errors
-					expect(result.errors, `Config block ${index} in project ${slug} had compilation errors`).toEqual([]);
+					expect(result.errors, `Config block ${index} in project ${slug} had compilation errors: ${JSON.stringify(result.errors)}`).toEqual([]);
 					expect(result.config, `Config block ${index} in project ${slug} produced null config`).not.toBeNull();
 				});
 			});
