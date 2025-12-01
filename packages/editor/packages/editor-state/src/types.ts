@@ -593,6 +593,4 @@ export interface State {
 	binaryAssets: BinaryAsset[];
 	/** Errors from config block compilation */
 	configErrors: ConfigError[];
-	/** Compiled configuration from config blocks */
-	compiledConfig: Record<string, unknown>;
 }

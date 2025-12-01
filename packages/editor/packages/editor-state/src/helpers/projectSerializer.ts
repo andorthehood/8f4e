@@ -1,3 +1,5 @@
+import { compileConfigForExport } from '../effects/config';
+
 import type { CodeBlock, CodeBlockGraphicData, Project, State } from '../types';
 
 /**
@@ -34,9 +36,11 @@ export function convertGraphicDataToProjectStructure(
 /**
  * Serializes current runtime state to Project format for saving to file.
  * Converts pixel coordinates to grid coordinates for persistent storage.
+ * Note: This is the synchronous version that doesn't include compiled config.
+ * For runtime-ready exports with compiled config, use serializeToRuntimeReadyProject.
  * @param state Current editor state
  * @param options Optional parameters for serialization
- * @param options.includeCompiled If true, includes compiledWasm, memorySnapshot, and compiledConfig (for runtime-ready projects)
+ * @param options.includeCompiled If true, includes compiledWasm and memorySnapshot (but not compiledConfig)
  * @returns Project object ready for serialization to JSON
  */
 export function serializeToProject(
@@ -60,11 +64,10 @@ export function serializeToProject(
 		},
 		binaryAssets: state.binaryAssets,
 		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
-		compiledConfig: options?.includeCompiled ? state.compiledConfig : undefined,
 		postProcessEffects: graphicHelper.postProcessEffects,
 	};
 
-	// Optionally include compiled WASM and memory snapshot for runtime-ready exports
+	// Optionally include compiled WASM and memory snapshot
 	if (options?.includeCompiled && options?.encodeToBase64) {
 		if (compiler.codeBuffer.length > 0) {
 			project.compiledWasm = options.encodeToBase64(compiler.codeBuffer);
@@ -77,6 +80,30 @@ export function serializeToProject(
 			);
 			project.memorySnapshot = options.encodeToBase64(memorySnapshotBytes);
 		}
+	}
+
+	return project;
+}
+
+/**
+ * Serializes current runtime state to runtime-ready Project format.
+ * Includes compiled WASM, memory snapshot, and compiled config.
+ * This is async because it compiles config blocks on-demand.
+ * @param state Current editor state
+ * @param encodeToBase64 Function to encode binary data to base64
+ * @returns Promise resolving to Project object ready for serialization to JSON
+ */
+export async function serializeToRuntimeReadyProject(
+	state: State,
+	encodeToBase64: (data: Uint8Array) => string
+): Promise<Project> {
+	// Start with the base serialization
+	const project = serializeToProject(state, { includeCompiled: true, encodeToBase64 });
+
+	// Compile config on-demand for runtime-ready export
+	const compiledConfig = await compileConfigForExport(state);
+	if (Object.keys(compiledConfig).length > 0) {
+		project.compiledConfig = compiledConfig;
 	}
 
 	return project;
