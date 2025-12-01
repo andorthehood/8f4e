@@ -248,6 +248,48 @@ export function validateNavigation(
 }
 
 /**
+ * Segment validation error
+ */
+export interface SegmentValidationError {
+	message: string;
+	kind: 'schema';
+	path: string;
+}
+
+/**
+ * Validates and pushes path segments onto the scope stack with schema validation.
+ * Shared helper for scope/rescope/rescopeTop commands.
+ *
+ * @param state - The VM state containing schemaRoot and scopeStack
+ * @param segments - Path segments to validate and push
+ * @returns Array of validation errors (empty if all valid)
+ */
+export function validateAndPushSegments(
+	state: { schemaRoot?: SchemaNode; scopeStack: string[] },
+	segments: string[]
+): SegmentValidationError[] {
+	const errors: SegmentValidationError[] = [];
+
+	for (const segment of segments) {
+		if (segment) {
+			if (state.schemaRoot) {
+				const navError = validateNavigation(state.schemaRoot, state.scopeStack, segment);
+				if (navError) {
+					errors.push({
+						message: navError.message,
+						kind: 'schema',
+						path: navError.path,
+					});
+				}
+			}
+			state.scopeStack.push(segment);
+		}
+	}
+
+	return errors;
+}
+
+/**
  * Validates a value against a schema node
  *
  * @param node - The schema node to validate against
@@ -317,8 +359,36 @@ export interface MissingFieldError {
 }
 
 /**
+ * Checks if a required path is satisfied by the written paths.
+ * A required path is satisfied if:
+ * - The exact path was written, OR
+ * - Any child path of the required path was written (e.g., writing "info.title" satisfies "info")
+ *
+ * @param requiredPath - The path that is required
+ * @param writtenPaths - Set of paths that were written during execution
+ * @returns True if the required path is satisfied
+ */
+function isPathSatisfied(requiredPath: string, writtenPaths: Set<string>): boolean {
+	// Check if exact path was written
+	if (writtenPaths.has(requiredPath)) {
+		return true;
+	}
+
+	// Check if any child path was written
+	const pathPrefix = requiredPath + '.';
+	for (const writtenPath of writtenPaths) {
+		if (writtenPath.startsWith(pathPrefix)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Finds missing required fields by comparing schema requirements against written paths.
  * Returns errors for each required field that was not written.
+ * A required field is considered satisfied if it was directly written or if any of its child paths were written.
  *
  * @param schemaRoot - The root schema node
  * @param writtenPaths - Set of paths that were written during execution
@@ -329,7 +399,7 @@ export function findMissingRequiredFields(schemaRoot: SchemaNode, writtenPaths: 
 	const requiredPaths = collectRequiredPaths(schemaRoot);
 
 	for (const requiredPath of requiredPaths) {
-		if (!writtenPaths.has(requiredPath)) {
+		if (!isPathSatisfied(requiredPath, writtenPaths)) {
 			errors.push({
 				line: 1,
 				message: `Missing required field "${requiredPath}"`,
@@ -497,6 +567,40 @@ if (import.meta.vitest) {
 		});
 	});
 
+	describe('validateAndPushSegments', () => {
+		it('should push segments to scope stack without schema', () => {
+			const state = { scopeStack: [] as string[] };
+			const errors = validateAndPushSegments(state, ['foo', 'bar']);
+			expect(errors).toHaveLength(0);
+			expect(state.scopeStack).toEqual(['foo', 'bar']);
+		});
+
+		it('should validate and push segments with schema', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				properties: {
+					name: { type: 'string' },
+				},
+				additionalProperties: false,
+			};
+			const schemaRoot = preprocessSchema(schema);
+			const state = { schemaRoot, scopeStack: [] as string[] };
+
+			const errors = validateAndPushSegments(state, ['unknown']);
+			expect(errors).toHaveLength(1);
+			expect(errors[0].kind).toBe('schema');
+			expect(errors[0].message).toContain('Unknown key');
+			expect(state.scopeStack).toEqual(['unknown']); // Still pushes to stack
+		});
+
+		it('should skip empty segments', () => {
+			const state = { scopeStack: [] as string[] };
+			const errors = validateAndPushSegments(state, ['foo', '', 'bar']);
+			expect(errors).toHaveLength(0);
+			expect(state.scopeStack).toEqual(['foo', 'bar']);
+		});
+	});
+
 	describe('collectRequiredPaths', () => {
 		it('should collect required paths', () => {
 			const schema: JSONSchemaLike = {
@@ -595,6 +699,55 @@ if (import.meta.vitest) {
 
 			const root = preprocessSchema(schema);
 			const writtenPaths = new Set<string>();
+			const errors = findMissingRequiredFields(root, writtenPaths);
+
+			expect(errors).toHaveLength(0);
+		});
+
+		it('should consider parent path satisfied when child path is written', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				properties: {
+					info: {
+						type: 'object',
+						properties: {
+							title: { type: 'string' },
+							description: { type: 'string' },
+						},
+						required: ['title'],
+					},
+				},
+				required: ['info'],
+			};
+
+			const root = preprocessSchema(schema);
+			// Only write info.description - this should satisfy the 'info' requirement
+			const writtenPaths = new Set(['info.description']);
+			const errors = findMissingRequiredFields(root, writtenPaths);
+
+			// 'info' should be satisfied because we wrote to info.description
+			// But 'info.title' is still missing
+			expect(errors).toHaveLength(1);
+			expect(errors[0].path).toBe('info.title');
+		});
+
+		it('should not report parent as missing when any child is written', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				properties: {
+					config: {
+						type: 'object',
+						properties: {
+							setting: { type: 'string' },
+						},
+					},
+				},
+				required: ['config'],
+			};
+
+			const root = preprocessSchema(schema);
+			// Write only a child path - this should satisfy the parent requirement
+			const writtenPaths = new Set(['config.setting']);
 			const errors = findMissingRequiredFields(root, writtenPaths);
 
 			expect(errors).toHaveLength(0);
