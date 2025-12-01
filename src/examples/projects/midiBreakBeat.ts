@@ -1,11 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
-	memorySizeBytes: 65536,
-	title: 'MIDI Break Beat',
-	author: 'Andor Polgar',
-	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "MIDI Break Beat"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar"',
+				'set',
+				'rescopeTop "description"',
+				'push ""',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "sampleRate"',
+				'push 50',
+				'set',
+				'rescopeTop "runtime"',
+				'push "WebWorkerMIDIRuntime"',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -35, y: -13 },
+		},
 		{
 			code: [
 				'module and4',
@@ -423,13 +459,6 @@ const project: Project = {
 		},
 	],
 	viewport: { gridCoordinates: { x: 37, y: -25 } },
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			sampleRate: 50,
-			runtime: 'WebWorkerMIDIRuntime',
-		},
-	],
 };
 
 export default project;
