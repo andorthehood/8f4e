@@ -16,6 +16,13 @@
         "cwd": "{workspaceRoot}"
       }
     },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint src --fix",
+        "cwd": "{workspaceRoot}"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist"],

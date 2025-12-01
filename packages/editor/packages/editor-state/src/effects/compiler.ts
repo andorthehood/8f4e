@@ -6,11 +6,15 @@ import type { CodeBlockGraphicData, State } from '../types';
 
 /**
  * Converts code blocks from a Set to an array sorted by creationIndex.
- * This ensures that newer modules appear at the end of the compiler module list
- * for stable memory layout ordering, independent of visual Z-index.
+ *
+ * @param codeBlocks - Set of code blocks to filter and sort
+ * @returns Array of blocks with blockType === 'module', sorted by creationIndex.
+ *          Config blocks are excluded from the WASM compilation pipeline.
  */
 export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): { code: string[] }[] {
-	return Array.from(codeBlocks).sort((a, b) => a.creationIndex - b.creationIndex);
+	return Array.from(codeBlocks)
+		.filter(block => block.blockType === 'module')
+		.sort((a, b) => a.creationIndex - b.creationIndex);
 }
 
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
@@ -93,5 +97,10 @@ export default async function compiler(store: StateManager<State>, events: Event
 	events.on('codeBlockAdded', onRecompile);
 	events.on('deleteCodeBlock', onRecompile);
 	events.on('projectLoaded', onRecompile);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', onRecompile);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
+		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'module') {
+			return;
+		}
+		onRecompile();
+	});
 }
