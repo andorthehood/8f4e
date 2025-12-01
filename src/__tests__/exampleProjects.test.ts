@@ -97,11 +97,6 @@ describe('Example Projects Compilation', () => {
 					.filter(block => getBlockType(block.code) === 'module')
 					.map(block => ({ code: block.code }));
 
-				if (moduleBlocks.length === 0) {
-					// Skip projects with no module blocks (shouldn't happen but handle gracefully)
-					return;
-				}
-
 				// Compile all modules together and verify success
 				const result = compile(moduleBlocks, COMPILER_OPTIONS);
 
