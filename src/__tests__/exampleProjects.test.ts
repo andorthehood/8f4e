@@ -11,13 +11,11 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 import { describe, it, expect } from 'vitest';
+import compile from '@8f4e/compiler';
 import { compileConfig } from '@8f4e/stack-config-compiler';
 
-import compile, { compileModules } from '../src';
-import { compileToAST } from '../src/compiler';
-
-// Path to the examples/projects directory relative to repository root
-const projectsDir = path.resolve(__dirname, '../../../src/examples/projects');
+// Path to the examples/projects directory relative to project root
+const projectsDir = path.resolve(__dirname, '../examples/projects');
 
 /**
  * Shared compiler options that mirror what the app shell provides.
@@ -104,25 +102,12 @@ describe('Example Projects Compilation', () => {
 					return;
 				}
 
-				// First compile to AST to catch parsing errors
-				const astModules = moduleBlocks.map(({ code }) => compileToAST(code, COMPILER_OPTIONS));
+				// Compile all modules together and verify success
+				const result = compile(moduleBlocks, COMPILER_OPTIONS);
 
-				// Then compile all modules together
-				expect(() => {
-					compile(moduleBlocks, COMPILER_OPTIONS);
-				}).not.toThrow();
-
-				// Also verify compileModules works
-				const compiledModules = compileModules(astModules, {
-					...COMPILER_OPTIONS,
-					startingMemoryWordAddress: 1,
-				});
-
-				expect(compiledModules.length).toBe(moduleBlocks.length);
-				compiledModules.forEach(module => {
-					expect(module.id).toBeDefined();
-					expect(module.loopFunction).toBeDefined();
-				});
+				expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
+				expect(result.codeBuffer.length).toBeGreaterThan(0);
+				expect(Object.keys(result.compiledModules).length).toBe(moduleBlocks.length);
 			});
 		});
 	});
