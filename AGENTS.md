@@ -5,6 +5,7 @@
 - Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`, `editor/packages/glugglug`, `editor/packages/sprite-generator`). Each builds to its own `dist/` directory under the package root.
 - Builds: Vite outputs to `dist/` (root). Package bundles are consumed via aliases like `@8f4e/editor`.
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
+- Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
 
 ## Build, Test, and Development Commands
 - `npm run dev`: Watches `packages/editor` and starts Vite on `http://localhost:3000`.
@@ -13,6 +14,11 @@
 - `npm run typecheck`: Type-checks all packages. Runs on pre-commit via Husky/lint-staged and in CI on push/PR to main and staging.
 - `npm run lint`: ESLint with autofix; also runs on pre-commit via Husky/lint-staged.
 - `npm run graph`: Opens Nx project dependency graph.
+
+## Comment & Documentation Style
+- Do not add inline implementation comments inside code (e.g. trailing `//` remarks or per-line explanations).
+- You may add or update JSDoc-style comments for functions, classes, and modules when they improve clarity.
+- Prefer expressing intent via JSDoc and clear naming rather than scattered inline comments.
 
 ## Coding Style & Naming Conventions
 - Language: TypeScript (ES modules). Target: modern browsers/node.
@@ -38,6 +44,10 @@
 - Node: use `nvm use` (repo uses `v22.15.1`).
 - Dev server: Vite sets COOP/COEP headers; prefer running only one instance on port `3000`.
 - Verify aliases resolve to built outputs: run package `build` before `vite build` when changing package APIs.
+
+## Maintenance Note
+- When changing tooling (e.g. build/test commands, Nx targets), remember to update relevant `AGENTS.md` files.
+- Nested `AGENTS.md` files in packages should stay in sync with root guidance; update them when workflows or conventions change.
 
 
 <!-- nx configuration start-->
