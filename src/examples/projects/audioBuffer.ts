@@ -2,10 +2,34 @@ import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
 	memorySizeBytes: 65536,
-	title: 'Audio Buffer',
-	author: 'Andor Polgar',
+	title: '',
+	author: '',
 	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "projectInfo"',
+				'  scope "title"',
+				'    push "Audio Buffer"',
+				'    set',
+				'  popScope',
+				'  scope "author"',
+				'    push "Andor Polgar"',
+				'    set',
+				'  popScope',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'  push 65536',
+				'  set',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -30, y: 1 },
+		},
 		{
 			code: [
 				'module saw',

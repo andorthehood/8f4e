@@ -2,10 +2,34 @@ import type { Project } from '@8f4e/editor-state';
 
 const midiArpeggiator: Project = {
 	memorySizeBytes: 65536,
-	title: 'MIDI Arpeggiator',
-	author: 'Andor Polgar',
+	title: '',
+	author: '',
 	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "projectInfo"',
+				'  scope "title"',
+				'    push "MIDI Arpeggiator"',
+				'    set',
+				'  popScope',
+				'  scope "author"',
+				'    push "Andor Polgar"',
+				'    set',
+				'  popScope',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'  push 65536',
+				'  set',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -80, y: -1 },
+		},
 		{
 			code: [
 				'module chord1',

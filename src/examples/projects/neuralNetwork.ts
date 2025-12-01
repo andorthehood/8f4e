@@ -2,10 +2,38 @@ import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
 	memorySizeBytes: 65536,
-	title: 'Neural Network',
-	author: 'Andor Polgar',
-	description: 'A simple neural network pre-trained as an XOR gate.',
+	title: '',
+	author: '',
+	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "projectInfo"',
+				'  scope "title"',
+				'    push "Neural Network"',
+				'    set',
+				'  popScope',
+				'  scope "author"',
+				'    push "Andor Polgar"',
+				'    set',
+				'  popScope',
+				'  scope "description"',
+				'    push "A simple neural network pre-trained as an XOR gate."',
+				'    set',
+				'  popScope',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'  push 65536',
+				'  set',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: 40, y: -81 },
+		},
 		{
 			code: [
 				'module activationFunction',
