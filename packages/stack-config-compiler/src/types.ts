@@ -2,6 +2,8 @@
  * Types for the stack config compiler
  */
 
+import type { JSONSchemaLike, SchemaNode } from './schema';
+
 /**
  * A literal value that can be pushed onto the data stack
  */
@@ -23,11 +25,28 @@ export interface Command {
 }
 
 /**
+ * Error kind distinguishes schema errors from parse/runtime errors
+ */
+export type CompileErrorKind = 'parse' | 'exec' | 'schema';
+
+/**
  * Error object returned when compilation fails
  */
 export interface CompileError {
 	line: number;
 	message: string;
+	/** Error kind: parse, exec, or schema */
+	kind?: CompileErrorKind;
+	/** Config path where the error occurred (for schema errors) */
+	path?: string;
+}
+
+/**
+ * Options for compiling a stack config program
+ */
+export interface CompileOptions {
+	/** Optional JSON Schema to validate the resulting config against */
+	schema?: JSONSchemaLike;
 }
 
 /**
@@ -47,4 +66,10 @@ export interface VMState {
 	config: Record<string, unknown>;
 	dataStack: Literal[];
 	scopeStack: string[];
+	/** Schema node tree for validation (if schema provided) */
+	schemaRoot?: SchemaNode;
+	/** Current schema node based on current scope */
+	currentSchemaNode?: SchemaNode;
+	/** Set of paths that have been written to (for required field tracking) */
+	writtenPaths?: Set<string>;
 }
