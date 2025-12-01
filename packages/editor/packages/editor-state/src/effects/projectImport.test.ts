@@ -62,7 +62,6 @@ describe('projectImport', () => {
 		it('should load session from callback when persistentStorage is enabled', async () => {
 			const mockProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				title: 'Saved Project',
 			};
 
 			mockState.featureFlags.persistentStorage = true;
@@ -74,7 +73,8 @@ describe('projectImport', () => {
 			await new Promise(resolve => setTimeout(resolve, 10));
 
 			expect(mockState.callbacks.loadSession).toHaveBeenCalled();
-			expect(mockState.projectInfo.title).toBe('Saved Project');
+			// Project info is now reset to empty - config blocks are the source of truth
+			expect(mockState.projectInfo.title).toBe('');
 		});
 
 		it('should handle loadSession errors gracefully', async () => {
@@ -95,39 +95,45 @@ describe('projectImport', () => {
 	});
 
 	describe('loadProject', () => {
-		it('should use default memory settings when project has no memory configuration', () => {
+		it('should use default memory settings when loading project', () => {
 			projectImport(store, mockEvents, mockState);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 			const loadProjectCallback = loadProjectCall![1];
 
-			const projectWithoutMemory: Project = {
+			const project: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				title: 'Test Project',
 			};
 
-			loadProjectCallback({ project: projectWithoutMemory });
+			loadProjectCallback({ project });
 
+			// Memory settings now come from config blocks
 			expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(1048576);
 		});
 
-		it('should use project-specific memory settings when available', () => {
-			projectImport(store, mockEvents, mockState);
+		it('should reset to defaults when loading new project', () => {
+			// Create a separate defaultState that won't be modified
+			const originalDefault = createMockState();
+			const defaultMemorySize = originalDefault.compiler.compilerOptions.memorySizeBytes;
+
+			// Set custom memory first
+			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
+
+			projectImport(store, mockEvents, originalDefault);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 			const loadProjectCallback = loadProjectCall![1];
 
-			const projectWithMemory: Project = {
+			const project: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				title: 'Test Project',
-				memorySizeBytes: 500 * 65536,
 			};
 
-			loadProjectCallback({ project: projectWithMemory });
+			loadProjectCallback({ project });
 
-			expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(500 * 65536);
+			// Should reset to defaults (config effect will update from config blocks)
+			expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(defaultMemorySize);
 		});
 
 		it('should reset compiler state when loading a project', () => {
@@ -213,7 +219,6 @@ describe('projectImport', () => {
 		it('should trigger importProject callback when event is fired', async () => {
 			const mockProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				title: 'Imported Project',
 			};
 
 			mockState.callbacks.importProject = vi.fn().mockResolvedValue(mockProject);
@@ -226,7 +231,8 @@ describe('projectImport', () => {
 			await importProjectCallback();
 
 			expect(mockState.callbacks.importProject).toHaveBeenCalled();
-			expect(mockState.projectInfo.title).toBe('Imported Project');
+			// Project info is now reset to empty - config blocks are the source of truth
+			expect(mockState.projectInfo.title).toBe('');
 		});
 
 		it('should warn when no importProject callback is provided', () => {

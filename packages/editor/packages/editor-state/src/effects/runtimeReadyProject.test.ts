@@ -276,7 +276,7 @@ describe('Runtime-ready project functionality', () => {
 	});
 
 	describe('Project-specific memory configuration', () => {
-		it('should export memory configuration when saving project', async () => {
+		it('should export project structure when saving project', async () => {
 			// Set custom memory settings in compiler options
 			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
 
@@ -297,13 +297,14 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
 			const [exportedJson] = mockExportProject.mock.calls[0];
 
-			// Parse the exported JSON and verify it contains memory configuration
+			// Parse the exported JSON and verify project structure
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.memorySizeBytes).toBeDefined();
-			expect(exportedProject.memorySizeBytes).toBe(500 * 65536);
+			// memorySizeBytes is no longer in Project - config blocks are the source of truth
+			expect(exportedProject.codeBlocks).toBeDefined();
+			expect(exportedProject.viewport).toBeDefined();
 		});
 
-		it('should export memory configuration in runtime-ready project', async () => {
+		it('should export project structure in runtime-ready project', async () => {
 			// Set custom memory settings
 			mockState.compiler.compilerOptions.memorySizeBytes = 2000 * 65536;
 
@@ -324,10 +325,11 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
 			const [exportedJson] = mockExportProject.mock.calls[0];
 
-			// Parse the exported JSON and verify memory configuration
+			// Parse the exported JSON and verify project structure
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.memorySizeBytes).toBeDefined();
-			expect(exportedProject.memorySizeBytes).toBe(2000 * 65536);
+			// memorySizeBytes is no longer in Project - config blocks are the source of truth
+			expect(exportedProject.codeBlocks).toBeDefined();
+			expect(exportedProject.viewport).toBeDefined();
 		});
 	});
 });
