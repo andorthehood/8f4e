@@ -2,10 +2,38 @@ import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
 	memorySizeBytes: 65536,
-	title: 'Simple Counter (Main Thread)',
-	author: 'Andor Polgar',
-	description: 'A simple counter demonstration running on the main thread logic runtime',
+	title: '',
+	author: '',
+	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "projectInfo"',
+				'  scope "title"',
+				'    push "Simple Counter (Main Thread)"',
+				'    set',
+				'  popScope',
+				'  scope "author"',
+				'    push "Andor Polgar"',
+				'    set',
+				'  popScope',
+				'  scope "description"',
+				'    push "A simple counter demonstration running on the main thread logic runtime"',
+				'    set',
+				'  popScope',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'  push 65536',
+				'  set',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -35, y: 0 },
+		},
 		{
 			code: [
 				'module counter',
