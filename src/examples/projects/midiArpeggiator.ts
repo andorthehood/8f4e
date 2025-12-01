@@ -6,7 +6,6 @@ const midiArpeggiator: Project = {
 			code: [
 				'config',
 				'',
-				'scope "projectInfo"',
 				'scope "title"',
 				'push "MIDI Arpeggiator"',
 				'set',
