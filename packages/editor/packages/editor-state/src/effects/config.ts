@@ -222,7 +222,12 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	events.on('codeBlockAdded', rebuildConfig);
 	events.on('deleteCodeBlock', rebuildConfig);
 	events.on('projectLoaded', rebuildConfig);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', rebuildConfig);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
+		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'config') {
+			return;
+		}
+		rebuildConfig();
+	});
 }
 
 // Export for testing
