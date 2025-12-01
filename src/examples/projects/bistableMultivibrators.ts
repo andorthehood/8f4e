@@ -1,11 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
-	memorySizeBytes: 65536,
-	title: 'Bistable Multivibrators',
-	author: 'Andor Polgar',
-	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "Bistable Multivibrators"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar"',
+				'set',
+				'rescopeTop "description"',
+				'push ""',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "sampleRate"',
+				'push 50',
+				'set',
+				'rescopeTop "runtime"',
+				'push "WebWorkerLogicRuntime"',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: 0, y: 8 },
+		},
 		{
 			code: [
 				'module norGate2',
@@ -276,13 +312,6 @@ const project: Project = {
 		},
 	],
 	viewport: { gridCoordinates: { x: 45, y: 7 } },
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			sampleRate: 50,
-			runtime: 'WebWorkerLogicRuntime',
-		},
-	],
 };
 
 export default project;

@@ -1,11 +1,47 @@
 import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
-	memorySizeBytes: 65536,
-	title: 'Random Note Generator',
-	author: 'Andor Polgar',
-	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "title"',
+				'push "Random Note Generator"',
+				'set',
+				'rescopeTop "author"',
+				'push "Andor Polgar"',
+				'set',
+				'rescopeTop "description"',
+				'push ""',
+				'set',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "selectedRuntime"',
+				'push 0',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope 0',
+				'scope "runtime"',
+				'push "WebWorkerMIDIRuntime"',
+				'set',
+				'rescopeTop "sampleRate"',
+				'push 50',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -50, y: -6 },
+		},
 		{
 			code: [
 				'module chord',
@@ -1065,13 +1101,6 @@ const project: Project = {
 		},
 	],
 	viewport: { gridCoordinates: { x: -17, y: -11 } },
-	selectedRuntime: 0,
-	runtimeSettings: [
-		{
-			runtime: 'WebWorkerMIDIRuntime',
-			sampleRate: 50,
-		},
-	],
 };
 
 export default project;

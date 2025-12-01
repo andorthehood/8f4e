@@ -157,16 +157,19 @@ describe('creationIndex', () => {
 				id: 'a',
 				creationIndex: 2,
 				code: ['module a', 'moduleEnd'],
+				blockType: 'module',
 			});
 			const block2 = createMockCodeBlock({
 				id: 'b',
 				creationIndex: 0,
 				code: ['module b', 'moduleEnd'],
+				blockType: 'module',
 			});
 			const block3 = createMockCodeBlock({
 				id: 'c',
 				creationIndex: 1,
 				code: ['module c', 'moduleEnd'],
+				blockType: 'module',
 			});
 
 			// Create a Set to simulate graphicHelper.codeBlocks (insertion order)
