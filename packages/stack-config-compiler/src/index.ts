@@ -136,8 +136,8 @@ scope "color"
 push "blue"
 set
 
-; endScope pops scope level
-endScope
+; popScope pops scope level
+popScope
 scope "size"
 push 48
 set

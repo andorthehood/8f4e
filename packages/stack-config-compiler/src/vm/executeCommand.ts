@@ -1,6 +1,6 @@
 import {
 	executeAppend,
-	executeEndScope,
+	executePopScope,
 	executePush,
 	executeRescope,
 	executeRescopeTop,
@@ -28,8 +28,8 @@ export function executeCommand(state: VMState, command: Command): string | null 
 			return executeRescopeTop(state, command);
 		case 'rescope':
 			return executeRescope(state, command);
-		case 'endScope':
-			return executeEndScope(state);
+		case 'popScope':
+			return executePopScope(state);
 		default:
 			return `Unknown command: ${(command as Command).type}`;
 	}
@@ -57,9 +57,9 @@ if (import.meta.vitest) {
 			expect(state.config).toEqual({ name: 42 });
 		});
 
-		it('should execute endScope command', () => {
+		it('should execute popScope command', () => {
 			const state = { config: {}, dataStack: [], scopeStack: ['foo', 'bar'] };
-			executeCommand(state, { type: 'endScope', lineNumber: 1 });
+			executeCommand(state, { type: 'popScope', lineNumber: 1 });
 			expect(state.scopeStack).toEqual(['foo']);
 		});
 
