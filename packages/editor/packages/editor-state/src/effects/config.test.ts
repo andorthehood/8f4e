@@ -180,6 +180,14 @@ describe('config effect', () => {
 			expect(state.compiler.runtimeSettings).toEqual(originalSettings);
 		});
 
+		it('should not apply runtimeSettings with invalid runtime type', () => {
+			const state = createMockState();
+			const originalSettings = [...state.compiler.runtimeSettings];
+			// Invalid: runtime is not a valid enum value
+			applyConfigToState(state, { runtimeSettings: [{ runtime: 'InvalidRuntime', sampleRate: 44100 }] });
+			expect(state.compiler.runtimeSettings).toEqual(originalSettings);
+		});
+
 		it('should not throw for non-object config', () => {
 			const state = createMockState();
 			expect(() => applyConfigToState(state, null)).not.toThrow();
