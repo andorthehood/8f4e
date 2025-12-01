@@ -22,7 +22,6 @@ async function getListOfColorSchemes(): Promise<string[]> {
 }
 
 async function getColorScheme(name: string): Promise<ColorScheme> {
-	// Lazy import color scheme
 	const module = await import(`./colorSchemes/${name}.ts`);
 	return module.default;
 }

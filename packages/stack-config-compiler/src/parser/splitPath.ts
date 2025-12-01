@@ -6,7 +6,6 @@ import { splitPathSegments } from '../utils';
  *           "foo[0].bar" -> ["foo", "[0]", "bar"]
  */
 export function splitPath(path: string): string[] | { error: string } {
-	// Check for unclosed brackets
 	const openBrackets = (path.match(/\[/g) || []).length;
 	const closeBrackets = (path.match(/\]/g) || []).length;
 	if (openBrackets !== closeBrackets) {

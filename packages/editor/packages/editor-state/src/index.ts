@@ -129,7 +129,6 @@ function createDefaultState() {
 }
 
 export default function init(events: EventDispatcher, project: Project, options: Options): StateManager<State> {
-	// Initialize feature flags
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
 	const store = createStateManager<State>({
@@ -140,7 +139,6 @@ export default function init(events: EventDispatcher, project: Project, options:
 
 	const state = store.getState();
 
-	// Initialize editor settings and color schemes first
 	editorSettings(store, events, state);
 
 	runtime(state, events);
