@@ -2,10 +2,34 @@ import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
 	memorySizeBytes: 65536,
-	title: 'Random Generators',
-	author: 'Andor Polgar',
+	title: '',
+	author: '',
 	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "projectInfo"',
+				'  scope "title"',
+				'    push "Random Generators"',
+				'    set',
+				'  popScope',
+				'  scope "author"',
+				'    push "Andor Polgar"',
+				'    set',
+				'  popScope',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'  push 65536',
+				'  set',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -35, y: 1 },
+		},
 		{
 			code: [
 				'module lcg',

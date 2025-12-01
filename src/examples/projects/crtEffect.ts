@@ -2,11 +2,38 @@ import type { Project } from '@8f4e/editor-state';
 
 const project: Project = {
 	memorySizeBytes: 65536,
-	title: 'CRT Effect Demo',
-	author: 'Andor Polgar',
-	description:
-		'Demonstrates post-process shader effects with a classic CRT monitor appearance including barrel distortion, scanlines, and flicker.',
+	title: '',
+	author: '',
+	description: '',
 	codeBlocks: [
+		{
+			code: [
+				'config',
+				'',
+				'scope "projectInfo"',
+				'  scope "title"',
+				'    push "CRT Effect Demo"',
+				'    set',
+				'  popScope',
+				'  scope "author"',
+				'    push "Andor Polgar"',
+				'    set',
+				'  popScope',
+				'  scope "description"',
+				'    push "Demonstrates post-process shader effects with a classic CRT monitor appearance including barrel distortion, scanlines, and flicker."',
+				'    set',
+				'  popScope',
+				'popScope',
+				'',
+				'scope "memorySizeBytes"',
+				'  push 65536',
+				'  set',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -30, y: 10 },
+		},
 		{
 			code: [
 				'module main',
