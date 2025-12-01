@@ -124,6 +124,7 @@ function createDefaultState() {
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
+		configErrors: [],
 	};
 }
 
@@ -193,6 +194,7 @@ export type {
 	ContextMenuItem,
 	MenuGenerator,
 	CompilationError,
+	ConfigError,
 	Compiler,
 	Midi,
 	GraphicHelper,
