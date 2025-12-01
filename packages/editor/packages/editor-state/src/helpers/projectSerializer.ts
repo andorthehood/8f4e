@@ -36,7 +36,7 @@ export function convertGraphicDataToProjectStructure(
  * Converts pixel coordinates to grid coordinates for persistent storage.
  * @param state Current editor state
  * @param options Optional parameters for serialization
- * @param options.includeCompiled If true, includes compiledWasm and memorySnapshot (for runtime-ready projects)
+ * @param options.includeCompiled If true, includes compiledWasm, memorySnapshot, and compiledConfig (for runtime-ready projects)
  * @returns Project object ready for serialization to JSON
  */
 export function serializeToProject(
@@ -60,6 +60,7 @@ export function serializeToProject(
 		},
 		binaryAssets: state.binaryAssets,
 		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
+		compiledConfig: options?.includeCompiled ? state.compiledConfig : undefined,
 		postProcessEffects: graphicHelper.postProcessEffects,
 	};
 

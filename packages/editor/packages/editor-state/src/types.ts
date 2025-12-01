@@ -460,6 +460,8 @@ export interface Project {
 	compiledWasm?: string;
 	compiledModules?: CompiledModuleLookup;
 	memorySnapshot?: string;
+	/** Compiled configuration from config blocks for runtime-only execution */
+	compiledConfig?: Record<string, unknown>;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
 }
@@ -591,4 +593,6 @@ export interface State {
 	binaryAssets: BinaryAsset[];
 	/** Errors from config block compilation */
 	configErrors: ConfigError[];
+	/** Compiled configuration from config blocks */
+	compiledConfig: Record<string, unknown>;
 }
