@@ -68,6 +68,19 @@ exports[`compileConfig > should return error for append to non-array 1`] = `
 ]
 `;
 
+exports[`compileConfig > should return error for concat on empty stack 1`] = `
+[
+  {
+    "line": 3,
+    "message": "Cannot concat: data stack is empty",
+  },
+  {
+    "line": 4,
+    "message": "Cannot set: data stack is empty",
+  },
+]
+`;
+
 exports[`compileConfig > should return error for malformed path 1`] = `
 [
   {
