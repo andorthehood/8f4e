@@ -1,13 +1,13 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
-import { getModuleId } from '../helpers/codeParsers';
+import getModuleId from '../pureHelpers/codeParsers/getModuleId';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
 import {
 	decodeBase64ToUint8Array,
 	decodeBase64ToInt32Array,
 	decodeBase64ToFloat32Array,
-} from '../helpers/base64Decoder';
+} from '../pureHelpers/base64/base64Decoder';
 
 import type { Project, State } from '../types';
 
