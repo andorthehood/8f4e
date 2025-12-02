@@ -7,7 +7,7 @@ import {
 	decodeBase64ToUint8Array,
 	decodeBase64ToInt32Array,
 	decodeBase64ToFloat32Array,
-} from '../helpers/base64Decoder';
+} from '../helpers/base64/base64Decoder';
 
 import type { Project, State } from '../types';
 

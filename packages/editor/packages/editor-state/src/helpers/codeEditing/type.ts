@@ -1,5 +1,13 @@
 import { moveCaret } from './moveCaret';
 
+/**
+ * Inserts a character at the caret position and advances the caret by one column.
+ * @param code Current program text split by line.
+ * @param row Caret row index.
+ * @param col Caret column index.
+ * @param char Character to insert.
+ * @returns Updated code buffer plus the new caret coordinates.
+ */
 export function type(
 	code: string[],
 	row: number,
