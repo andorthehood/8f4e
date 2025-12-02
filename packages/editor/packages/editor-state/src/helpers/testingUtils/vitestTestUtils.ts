@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 
 import { createMockEventDispatcher } from './testUtils';
 
-import type { EventDispatcher, State } from '../types';
+import type { EventDispatcher, State } from '../../types';
 import type { StateManager } from '@8f4e/state-manager';
 
 /**

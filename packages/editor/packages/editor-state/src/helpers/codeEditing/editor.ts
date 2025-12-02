@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData } from '../types';
+import type { CodeBlockGraphicData } from '../../types';
 
 export function moveCaret(
 	code: string[],
