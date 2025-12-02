@@ -2,8 +2,8 @@ import { describe, test, expect, it, vi, type MockInstance } from 'vitest';
 
 import runtimeEffect, { RuntimeType } from './runtime';
 
-import { createMockState } from '../helpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../helpers/testingUtils/vitestTestUtils';
+import { createMockState } from '../pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
 
 describe('Runtime System', () => {
 	describe('RuntimeType', () => {
