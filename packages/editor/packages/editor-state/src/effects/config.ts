@@ -82,7 +82,6 @@ function applyConfigToState(state: State, config: unknown): void {
 
 	const typedConfig = config as ConfigObject;
 
-	// Apply project info
 	if (isPlainObject(typedConfig)) {
 		if (typeof typedConfig.title === 'string') {
 			state.projectInfo.title = typedConfig.title;
@@ -95,19 +94,15 @@ function applyConfigToState(state: State, config: unknown): void {
 		}
 	}
 
-	// Apply memory size
 	if (typeof typedConfig.memorySizeBytes === 'number') {
 		state.compiler.compilerOptions.memorySizeBytes = typedConfig.memorySizeBytes;
 	}
 
-	// Apply selected runtime
 	if (typeof typedConfig.selectedRuntime === 'number') {
 		state.compiler.selectedRuntime = typedConfig.selectedRuntime;
 	}
 
-	// Apply runtime settings
 	if (Array.isArray(typedConfig.runtimeSettings)) {
-		// Valid runtime type values
 		const validRuntimeTypes = [
 			'WebWorkerLogicRuntime',
 			'MainThreadLogicRuntime',
@@ -115,7 +110,6 @@ function applyConfigToState(state: State, config: unknown): void {
 			'WebWorkerMIDIRuntime',
 		];
 
-		// Validate each runtime setting has the required fields and valid runtime type
 		const validRuntimeSettings = typedConfig.runtimeSettings.filter((setting): setting is Runtimes => {
 			if (!isPlainObject(setting)) return false;
 			const s = setting as Record<string, unknown>;
@@ -162,22 +156,18 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	 * Errors are saved to state.configErrors with the creationIndex of the source block.
 	 */
 	async function rebuildConfig(): Promise<void> {
-		// If no compileConfig callback, skip
 		if (!state.callbacks.compileConfig) {
 			return;
 		}
 
-		// Collect all config blocks
 		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
-		// Clear previous config errors
 		state.configErrors = [];
 
 		if (configBlocks.length === 0) {
 			return;
 		}
 
-		// Compile each config block independently and merge results
 		let mergedConfig: Record<string, unknown> = {};
 		const allErrors: ConfigError[] = [];
 
