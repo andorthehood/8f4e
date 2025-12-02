@@ -22,19 +22,51 @@
  * // result.config = { instrument: { name: "Piano", volume: 0.8 } }
  * // result.errors = []
  * ```
+ *
+ * @example
+ * ```ts
+ * // With schema validation
+ * const schema = {
+ *   type: 'object',
+ *   properties: {
+ *     instrument: {
+ *       type: 'object',
+ *       properties: {
+ *         name: { type: 'string' },
+ *         volume: { type: 'number' }
+ *       },
+ *       required: ['name']
+ *     }
+ *   }
+ * };
+ *
+ * const result = compileConfig(source, { schema });
+ * // Schema errors will include path and kind: 'schema'
+ * ```
  */
 
 import { parse } from './parser';
 import { executeCommands } from './vm';
+import { preprocessSchema, findMissingRequiredFields } from './schema';
 
-import type { CompileResult } from './types';
+import type { CompileError, CompileOptions, CompileResult } from './types';
 
-export type { CompileResult, CompileError, Literal, Command, CommandType } from './types';
+export type {
+	CompileResult,
+	CompileError,
+	CompileOptions,
+	CompileErrorKind,
+	Literal,
+	Command,
+	CommandType,
+} from './types';
+export type { JSONSchemaLike, JSONSchemaType } from './schema';
 
 /**
  * Compiles a stack config source program into a JSON-compatible object.
  *
  * @param source - The source code in stack config language (one command per line)
+ * @param options - Optional configuration including JSON Schema for validation
  * @returns An object containing:
  *   - `config`: The resulting JSON-compatible object, or `null` if there were errors
  *   - `errors`: An array of error objects with `line` (1-based) and `message` properties
@@ -54,26 +86,34 @@ export type { CompileResult, CompileError, Literal, Command, CommandType } from 
  * }
  * ```
  */
-export function compileConfig(source: string): CompileResult {
-	// Parse the source into commands
+export function compileConfig(source: string, options?: CompileOptions): CompileResult {
 	const { commands, errors: parseErrors } = parse(source);
 
-	// If there were parse errors, return them immediately
 	if (parseErrors.length > 0) {
 		return {
 			config: null,
-			errors: parseErrors,
+			errors: parseErrors.map(e => ({ ...e, kind: 'parse' as const })),
 		};
 	}
 
-	// Execute the commands
-	const { config, errors: execErrors } = executeCommands(commands);
+	const schemaRoot = options?.schema ? preprocessSchema(options.schema) : undefined;
+	const { config, errors: execErrors, writtenPaths } = executeCommands(commands, schemaRoot);
 
-	// If there were execution errors, return null config
 	if (execErrors.length > 0) {
 		return {
 			config: null,
 			errors: execErrors,
+		};
+	}
+
+	// Check for missing required fields if schema provided
+	const schemaErrors: CompileError[] =
+		schemaRoot && writtenPaths ? findMissingRequiredFields(schemaRoot, writtenPaths) : [];
+
+	if (schemaErrors.length > 0) {
+		return {
+			config: null,
+			errors: schemaErrors,
 		};
 	}
 
@@ -335,6 +375,226 @@ set
 			const result = compileConfig(source);
 			expect(result.errors).toEqual([]);
 			expect(result.config).toEqual({ single: 'only' });
+		});
+
+		describe('with schema validation', () => {
+			it('should pass validation when config conforms to schema', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						name: { type: 'string' as const },
+						age: { type: 'number' as const },
+					},
+					required: ['name'],
+				};
+
+				const source = `
+scope "name"
+push "John"
+set
+
+rescope "age"
+push 30
+set
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.errors).toEqual([]);
+				expect(result.config).toEqual({ name: 'John', age: 30 });
+			});
+
+			it('should detect unknown keys at navigation (scope)', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						title: { type: 'string' as const },
+					},
+					additionalProperties: false,
+				};
+
+				const source = `
+scope "titel"
+push "My Title"
+set
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.config).toBeNull();
+				expect(result.errors).toHaveLength(1);
+				expect(result.errors[0].kind).toBe('schema');
+				expect(result.errors[0].path).toBe('titel');
+				expect(result.errors[0].message).toContain('Unknown key "titel"');
+			});
+
+			it('should detect type mismatch at set', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						count: { type: 'number' as const },
+					},
+				};
+
+				const source = `
+scope "count"
+push "not a number"
+set
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.config).toBeNull();
+				expect(result.errors).toHaveLength(1);
+				expect(result.errors[0].kind).toBe('schema');
+				expect(result.errors[0].path).toBe('count');
+				expect(result.errors[0].message).toContain('Expected type number, got string');
+			});
+
+			it('should detect enum violation', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						status: { type: 'string' as const, enum: ['active', 'inactive', 'pending'] as const },
+					},
+				};
+
+				const source = `
+scope "status"
+push "unknown"
+set
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.config).toBeNull();
+				expect(result.errors).toHaveLength(1);
+				expect(result.errors[0].kind).toBe('schema');
+				expect(result.errors[0].message).toContain('not in allowed values');
+			});
+
+			it('should detect missing required fields', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						name: { type: 'string' as const },
+						email: { type: 'string' as const },
+					},
+					required: ['name', 'email'],
+				};
+
+				const source = `
+scope "name"
+push "John"
+set
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.config).toBeNull();
+				expect(result.errors).toHaveLength(1);
+				expect(result.errors[0].kind).toBe('schema');
+				expect(result.errors[0].path).toBe('email');
+				expect(result.errors[0].line).toBe(1);
+				expect(result.errors[0].message).toContain('Missing required field');
+			});
+
+			it('should detect nested unknown keys', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						projectInfo: {
+							type: 'object' as const,
+							properties: {
+								title: { type: 'string' as const },
+								author: { type: 'string' as const },
+							},
+							additionalProperties: false,
+						},
+					},
+				};
+
+				const source = `
+scope "projectInfo"
+scope "titel"
+push "My Project"
+set
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.config).toBeNull();
+				expect(result.errors).toHaveLength(1);
+				expect(result.errors[0].kind).toBe('schema');
+				expect(result.errors[0].message).toContain('Unknown key "titel"');
+			});
+
+			it('should validate array items', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						items: {
+							type: 'array' as const,
+							items: { type: 'number' as const },
+						},
+					},
+				};
+
+				const source = `
+scope "items"
+push "not a number"
+append
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.config).toBeNull();
+				expect(result.errors.some(e => e.kind === 'schema' && e.message.includes('Expected type number'))).toBe(true);
+			});
+
+			it('should allow additional properties when not restricted', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						name: { type: 'string' as const },
+					},
+				};
+
+				const source = `
+scope "name"
+push "John"
+set
+
+rescope "extraField"
+push "allowed"
+set
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.errors).toEqual([]);
+				expect(result.config).toEqual({ name: 'John', extraField: 'allowed' });
+			});
+
+			it('should not break existing callers who do not pass schema', () => {
+				const source = `
+scope "anyField"
+push "anyValue"
+set
+`;
+				const result = compileConfig(source);
+				expect(result.errors).toEqual([]);
+				expect(result.config).toEqual({ anyField: 'anyValue' });
+			});
+
+			it('should validate nested required fields', () => {
+				const schema = {
+					type: 'object' as const,
+					properties: {
+						info: {
+							type: 'object' as const,
+							properties: {
+								title: { type: 'string' as const },
+							},
+							required: ['title'],
+						},
+					},
+					required: ['info'],
+				};
+
+				const source = `
+scope "info.description"
+push "Some text"
+set
+`;
+				const result = compileConfig(source, { schema });
+				expect(result.config).toBeNull();
+				expect(result.errors.some(e => e.path === 'info.title')).toBe(true);
+			});
 		});
 	});
 }
