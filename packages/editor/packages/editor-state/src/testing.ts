@@ -18,4 +18,4 @@ export {
 	createMockViewport,
 	createMockEventDispatcher,
 	createMockState,
-} from './helpers/testingUtils/testUtils';
+} from './pureHelpers/testingUtils/testUtils';
