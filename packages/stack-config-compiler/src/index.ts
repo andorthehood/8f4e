@@ -87,10 +87,8 @@ export type { JSONSchemaLike, JSONSchemaType } from './schema';
  * ```
  */
 export function compileConfig(source: string, options?: CompileOptions): CompileResult {
-	// Parse the source into commands
 	const { commands, errors: parseErrors } = parse(source);
 
-	// If there were parse errors, return them immediately
 	if (parseErrors.length > 0) {
 		return {
 			config: null,
@@ -98,13 +96,9 @@ export function compileConfig(source: string, options?: CompileOptions): Compile
 		};
 	}
 
-	// Preprocess schema if provided
 	const schemaRoot = options?.schema ? preprocessSchema(options.schema) : undefined;
-
-	// Execute the commands with optional schema validation
 	const { config, errors: execErrors, writtenPaths } = executeCommands(commands, schemaRoot);
 
-	// If there were execution errors, return null config
 	if (execErrors.length > 0) {
 		return {
 			config: null,
