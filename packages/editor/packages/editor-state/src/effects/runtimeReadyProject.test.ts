@@ -4,14 +4,14 @@ import createStateManager from '@8f4e/state-manager';
 import compiler from './compiler';
 import projectExport from './projectExport';
 
-import { createMockState, createMockCodeBlock } from '../helpers/testUtils';
-import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
-import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
+import { createMockState, createMockCodeBlock } from '../pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
+import { encodeUint8ArrayToBase64 } from '../pureHelpers/base64/base64Encoder';
 
 import type { State } from '../types';
 
 // Mock the decodeBase64ToUint8Array function
-vi.mock('../helpers/base64Decoder', () => {
+vi.mock('../helpers/base64/base64Decoder', () => {
 	const decodeBase64ToUint8Array = vi.fn((base64: string) => {
 		// Simple mock implementation for testing
 		const binaryString = atob(base64);
