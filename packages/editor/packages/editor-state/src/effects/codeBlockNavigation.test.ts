@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import codeBlockNavigation from './codeBlockNavigation';
 
-import { createMockCodeBlock, createMockState } from '../helpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../helpers/testingUtils/vitestTestUtils';
+import { createMockCodeBlock, createMockState } from '../pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
 
 import type { InternalKeyboardEvent, CodeBlockGraphicData } from '../types';
 
