@@ -1,6 +1,6 @@
 # @8f4e/stack-config-compiler
 
-A stack-machine-inspired config language compiler for 8f4e. Parses and executes stack-based config programs to produce JSON objects.
+A stack-machine-inspired config language compiler for 8f4e. Parses and executes stack-based config programs to produce JSON objects. Optionally validates the resulting config against a JSON Schema.
 
 ## Installation
 
@@ -125,16 +125,113 @@ push "unused" ; This value is unused
 
 ## API
 
-### `compileConfig(source: string): CompileResult`
+### `compileConfig(source: string, options?: CompileOptions): CompileResult`
 
 Compiles a stack config source program into a JSON-compatible object.
 
 **Parameters:**
 - `source` - The source code in stack config language (one command per line)
+- `options` - Optional configuration object
+  - `schema` - A JSON Schema object to validate the resulting config against
 
 **Returns:**
 - `config` - The resulting JSON-compatible object, or `null` if there were errors
-- `errors` - An array of error objects with `line` (1-based) and `message` properties
+- `errors` - An array of error objects
+
+### Error Object Properties
+
+Each error object contains:
+- `line` - 1-based line number where the error occurred
+- `message` - Human-readable error description
+- `kind` - Error category: `'parse'`, `'exec'`, or `'schema'`
+- `path` - (schema errors only) The config path where the error occurred
+
+## Schema Validation
+
+The compiler supports optional JSON Schema validation to catch configuration mistakes early with precise error messages.
+
+### Supported JSON Schema Features
+
+The v1 implementation supports a focused subset of JSON Schema:
+
+- `type`: `string`, `number`, `boolean`, `null`, `object`, `array`
+- `enum`: Allowed values for primitive types
+- `properties`: Object property definitions
+- `required`: Required object properties
+- `items`: Array item schema
+- `additionalProperties`: Control whether extra keys are allowed (boolean or schema)
+
+### Schema Validation Example
+
+```typescript
+import { compileConfig } from '@8f4e/stack-config-compiler';
+
+const schema = {
+  type: 'object',
+  properties: {
+    projectInfo: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        author: { type: 'string' },
+        version: { type: 'number' }
+      },
+      required: ['title'],
+      additionalProperties: false
+    },
+    settings: {
+      type: 'object',
+      properties: {
+        runtime: { type: 'number', enum: [0, 1, 2] }
+      }
+    }
+  },
+  required: ['projectInfo']
+};
+
+const source = `
+scope "projectInfo.title"
+push "My Project"
+set
+
+rescope "projectInfo.author"
+push "Alice"
+set
+`;
+
+const result = compileConfig(source, { schema });
+
+if (result.errors.length === 0) {
+  console.log(result.config);
+} else {
+  console.error('Validation errors:', result.errors);
+}
+```
+
+### Error Semantics
+
+Schema validation produces errors at specific locations:
+
+1. **Navigation errors** (unknown keys, invalid paths):
+   - Reported at the line of the `scope` / `rescope` / `rescopeTop` command
+   - Example: `Unknown key "titel". Known keys: title, author`
+
+2. **Value errors** (type mismatch, enum violation):
+   - Reported at the line of the `set` / `append` command
+   - Example: `Expected type number, got string`
+
+3. **Missing required fields**:
+   - Reported at line 1 (program start)
+   - Example: `Missing required field "projectInfo.title"`
+
+### Catching Common Mistakes
+
+Schema validation catches:
+
+- **Typos in keys**: `scope "titel"` when schema only allows `title`
+- **Type mismatches**: `push "hello"` into a number field
+- **Invalid enum values**: `push 5` when enum only allows `[0, 1, 2]`
+- **Missing required fields**: Forgetting to set a required config value
 
 ## Error Handling
 
@@ -148,7 +245,7 @@ push "value"
 set
 `);
 
-// result.errors = [{ line: 3, message: "Unknown command: unknownCommand" }]
+// result.errors = [{ line: 3, message: "Unknown command: unknownCommand", kind: "parse" }]
 // result.config = null
 ```
 
@@ -159,4 +256,5 @@ set
 ## Related
 
 - [Language Specification](../../docs/brainstorming_notes/013-stack-oriented-config-language.md)
+- [Schema Validation Design](../../docs/brainstorming_notes/014-stack-config-schema-validation.md)
 - [TODO Document](../../docs/todos/107-stack-config-compiler-package.md)
