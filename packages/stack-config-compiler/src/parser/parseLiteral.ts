@@ -9,25 +9,20 @@ const STRING_LITERAL_REGEX = /^"((?:[^"\\]|\\.)*)"/;
  * Parses a literal value (string, number, boolean, null)
  */
 export function parseLiteral(token: string): Literal | { error: string } {
-	// String literal
 	const stringMatch = token.match(STRING_LITERAL_REGEX);
 	if (stringMatch) {
 		return parseEscapes(stringMatch[1]);
 	}
 
-	// Unclosed string
 	if (token.startsWith('"')) {
 		return { error: `Invalid string literal: ${token}` };
 	}
 
-	// Boolean
 	if (token === 'true') return true;
 	if (token === 'false') return false;
 
-	// Null
 	if (token === 'null') return null;
 
-	// Number
 	const num = parseFloat(token);
 	if (!isNaN(num)) return num;
 
