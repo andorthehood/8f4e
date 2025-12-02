@@ -13,7 +13,6 @@ export function createVMState(schemaRoot?: SchemaNode): VMState {
 
 	if (schemaRoot) {
 		state.schemaRoot = schemaRoot;
-		state.currentSchemaNode = schemaRoot;
 		state.writtenPaths = new Set();
 	}
 
