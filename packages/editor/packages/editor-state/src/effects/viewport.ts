@@ -1,4 +1,4 @@
-import { move, resize, snapToGrid } from '../mutators/viewport';
+import { move, resize, snapToGrid } from '../impureHelpers/viewport/viewport';
 import { EventDispatcher } from '../types';
 
 import type { State } from '../types';

@@ -1,5 +1,5 @@
-import findClosestCodeBlockInDirection, { Direction } from '../helpers/finders/findClosestCodeBlockInDirection';
-import centerViewportOnCodeBlock from '../helpers/centerViewportOnCodeBlock';
+import findClosestCodeBlockInDirection, { Direction } from '../pureHelpers/finders/findClosestCodeBlockInDirection';
+import centerViewportOnCodeBlock from '../pureHelpers/centerViewportOnCodeBlock';
 
 import type { State, EventDispatcher, InternalKeyboardEvent } from '../types';
 

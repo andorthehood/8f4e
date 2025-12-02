@@ -2,9 +2,9 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { CodeBlockClickEvent } from '../../codeBlockDragger';
 import { EventDispatcher } from '../../../../types';
-import findPianoKeyAtViewportCoordinates from '../../../../helpers/finders/findPianoKeyboardAtViewportCoordinates';
-import insertCodeAfterLine from '../../../../helpers/codeParsers/insertCodeAfterLine';
-import replaceCode from '../../../../helpers/codeParsers/replaceCode';
+import findPianoKeyAtViewportCoordinates from '../../../../pureHelpers/finders/findPianoKeyboardAtViewportCoordinates';
+import insertCodeAfterLine from '../../../../pureHelpers/codeParsers/insertCodeAfterLine';
+import replaceCode from '../../../../pureHelpers/codeParsers/replaceCode';
 
 import type { State } from '../../../../types';
 

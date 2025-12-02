@@ -1,4 +1,4 @@
-import { gapCalculator } from '../../../../helpers/codeEditing/gapCalculator';
+import { gapCalculator } from '../../../../pureHelpers/codeEditing/gapCalculator';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
