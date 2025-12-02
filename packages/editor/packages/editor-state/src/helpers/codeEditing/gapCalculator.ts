@@ -1,5 +1,16 @@
 import type { CodeBlockGraphicData } from '../../types';
 
+/**
+ * Calculates the physical row index by adding the size of every gap that starts before the logical row.
+ * Gaps are produced by `effects/codeBlocks/gaps.ts` to insert additional blank rows after a line
+ * whenever a decoration (plot/piano visualizers or compilation errors) needs vertical space in the
+ * rendered block. Each entry stores how many extra rows were spliced into `codeToRender` after that
+ * logical line, so downstream consumers must translate logical line numbers into physical rows before
+ * turning them into pixel coordinates.
+ * @param row Logical row within the editor before accounting for the inserted gap rows.
+ * @param gaps Gap metadata keyed by logical row whose size indicates the number of additional rows inserted.
+ * @returns The adjusted physical row that includes the cumulative gap offsets.
+ */
 export function gapCalculator(row: number, gaps: CodeBlockGraphicData['gaps']) {
 	let physicalRowCounter = row;
 	for (const [gapStartLine, { size }] of gaps) {
