@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../types';
 import { InternalMouseEvent } from '../../types';
-import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtViewportCoordinates';
+import findCodeBlockAtViewportCoordinates from '../../pureHelpers/finders/findCodeBlockAtViewportCoordinates';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
@@ -14,7 +14,6 @@ export interface CodeBlockClickEvent {
 
 export default function codeBlockDragger(state: State, events: EventDispatcher): () => void {
 	function onMouseDown({ x, y }: InternalMouseEvent) {
-		// Check if module dragging feature is enabled
 		if (!state.featureFlags.moduleDragging) {
 			return;
 		}

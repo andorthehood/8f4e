@@ -3,8 +3,8 @@ title: 'TODO: Add JSON Schema-Based Validation to stack-config-compiler'
 priority: Medium
 effort: 2–3d
 created: 2025-12-01
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-01
 ---
 
 # TODO: Add JSON Schema-Based Validation to stack-config-compiler
@@ -167,13 +167,13 @@ See `docs/brainstorming_notes/014-stack-config-schema-validation.md` for detaile
 
 ## Success Criteria
 
-- [ ] `compileConfig` accepts an optional JSON Schema (or schema-like) parameter without breaking existing callers.
-- [ ] Navigation into paths not defined in the schema (unknown keys) produces clear errors at the navigation instruction line.
-- [ ] Assigning values at `set` / `append` that violate schema-defined types or enums produces clear, line-mapped schema errors.
-- [ ] Required fields defined in the schema that are never written by the program produce “missing required field” errors anchored at line 1.
-- [ ] Schema-related errors are clearly distinguishable from parse and runtime errors via error kind and include both path and line where applicable.
-- [ ] Tests cover navigation errors, value errors, missing required fields, and fully valid configs.
-- [ ] Documentation for stack-config-compiler is updated to describe schema validation and how to integrate it.
+- [x] `compileConfig` accepts an optional JSON Schema (or schema-like) parameter without breaking existing callers.
+- [x] Navigation into paths not defined in the schema (unknown keys) produces clear errors at the navigation instruction line.
+- [x] Assigning values at `set` / `append` that violate schema-defined types or enums produces clear, line-mapped schema errors.
+- [x] Required fields defined in the schema that are never written by the program produce “missing required field” errors anchored at line 1.
+- [x] Schema-related errors are clearly distinguishable from parse and runtime errors via error kind and include both path and line where applicable.
+- [x] Tests cover navigation errors, value errors, missing required fields, and fully valid configs.
+- [x] Documentation for stack-config-compiler is updated to describe schema validation and how to integrate it.
 
 ## Affected Components
 

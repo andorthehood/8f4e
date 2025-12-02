@@ -9,11 +9,9 @@ export function executeConcat(state: VMState): string | null {
 		return 'Cannot concat: data stack is empty';
 	}
 
-	// Take all values from the stack (bottom to top), convert to strings, and concatenate
 	const values = state.dataStack.splice(0, state.dataStack.length);
 	const concatenated = values.map(v => String(v)).join('');
 
-	// Replace the entire stack with the single concatenated string
 	state.dataStack.push(concatenated);
 
 	return null;

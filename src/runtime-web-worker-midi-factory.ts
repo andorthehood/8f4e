@@ -87,7 +87,6 @@ export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 			selectedInput = null;
 		}
 
-		// Clean up MIDI ports from global state
 		state.midi.inputs.length = 0;
 		state.midi.outputs.length = 0;
 

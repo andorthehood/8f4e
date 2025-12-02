@@ -2,22 +2,19 @@
  * RescopeTop command - replaces the top scope segment with new path segments
  */
 
-import type { Command, VMState } from '../types';
+import { validateAndPushSegments } from '../schema';
 
-export function executeRescopeTop(state: VMState, command: Command): string | null {
+import type { Command, VMState } from '../types';
+import type { CommandError } from '../vm/executeCommand';
+
+export function executeRescopeTop(state: VMState, command: Command): CommandError[] | null {
 	if (state.scopeStack.length === 0) {
-		return 'Cannot rescopeTop: scope stack is empty';
+		return [{ message: 'Cannot rescopeTop: scope stack is empty', kind: 'exec' }];
 	}
 
-	// Pop the top segment
 	state.scopeStack.pop();
 
-	// Push new segments
 	const segments = command.pathSegments || [];
-	for (const segment of segments) {
-		if (segment) {
-			state.scopeStack.push(segment);
-		}
-	}
-	return null;
+	const errors = validateAndPushSegments(state, segments);
+	return errors.length > 0 ? errors : null;
 }

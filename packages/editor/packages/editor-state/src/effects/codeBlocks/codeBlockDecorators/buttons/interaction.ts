@@ -1,5 +1,5 @@
 import { EventDispatcher } from '../../../../types';
-import findButtonAtViewportCoordinates from '../../../../helpers/findButtonAtViewportCoordinates';
+import findButtonAtViewportCoordinates from '../../../../pureHelpers/finders/findButtonAtViewportCoordinates';
 
 import type { State, Switch, CodeBlockGraphicData } from '../../../../types';
 import type { DataStructure } from '@8f4e/compiler';

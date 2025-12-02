@@ -2,14 +2,13 @@
  * Scope command - pushes path segments onto the scope stack
  */
 
-import type { Command, VMState } from '../types';
+import { validateAndPushSegments } from '../schema';
 
-export function executeScope(state: VMState, command: Command): string | null {
+import type { Command, VMState } from '../types';
+import type { CommandError } from '../vm/executeCommand';
+
+export function executeScope(state: VMState, command: Command): CommandError[] | null {
 	const segments = command.pathSegments || [];
-	for (const segment of segments) {
-		if (segment) {
-			state.scopeStack.push(segment);
-		}
-	}
-	return null;
+	const errors = validateAndPushSegments(state, segments);
+	return errors.length > 0 ? errors : null;
 }
