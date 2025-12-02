@@ -1,5 +1,13 @@
 import type { CodeBlockGraphicData, GraphicHelper, Switch } from '../../types';
 
+/**
+ * Performs a hit test against switch decorations inside a code block using viewport-relative coordinates.
+ * @param graphicHelper Graphic helper describing the viewport offset.
+ * @param codeBlock Code block containing switches to check.
+ * @param x Viewport-relative x coordinate.
+ * @param y Viewport-relative y coordinate.
+ * @returns The first switch that intersects the point, or `undefined` if none do.
+ */
 export default function findSwitchAtViewportCoordinates(
 	graphicHelper: GraphicHelper,
 	codeBlock: CodeBlockGraphicData,

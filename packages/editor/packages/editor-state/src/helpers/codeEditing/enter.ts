@@ -1,5 +1,12 @@
 import { moveCaret } from './moveCaret';
 
+/**
+ * Splits the current line at the caret and moves the caret to the start of the next line.
+ * @param code Document contents split by line.
+ * @param row Caret row index.
+ * @param col Caret column index.
+ * @returns Updated document and caret location after inserting a newline.
+ */
 export function enter(
 	code: string[],
 	row: number,
