@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import pianoKeyboard from './interaction';
 
-import { createMockState } from '../../../../helpers/testUtils';
+import { createMockState } from '../../../../helpers/testingUtils/testUtils';
 
 import type { State } from '../../../../types';
 import type { StateManager } from '@8f4e/state-manager';
