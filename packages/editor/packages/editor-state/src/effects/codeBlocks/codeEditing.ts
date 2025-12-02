@@ -1,6 +1,9 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { backSpace, enter, moveCaret, type } from '../../helpers/editor';
+import { backSpace } from '../../pureHelpers/codeEditing/backSpace';
+import { enter } from '../../pureHelpers/codeEditing/enter';
+import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
+import { type } from '../../pureHelpers/codeEditing/type';
 import { EventDispatcher, InternalKeyboardEvent, State } from '../../types';
 
 export default function codeEditing(store: StateManager<State>, events: EventDispatcher) {
@@ -32,7 +35,6 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 
 				break;
 			case 'Backspace':
-				// Check if editing is enabled before modifying code
 				if (!state.featureFlags.editing) {
 					return;
 				}
@@ -44,7 +46,6 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 				store.set('graphicHelper.selectedCodeBlock.lastUpdated', Date.now());
 				break;
 			case 'Enter':
-				// Check if editing is enabled before modifying code
 				if (!state.featureFlags.editing) {
 					return;
 				}
@@ -57,7 +58,6 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 				break;
 			default:
 				if (event?.key.length === 1) {
-					// Check if editing is enabled before typing
 					if (!state.featureFlags.editing) {
 						return;
 					}

@@ -1,20 +1,19 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
-import { getModuleId } from '../helpers/codeParsers';
+import getModuleId from '../pureHelpers/codeParsers/getModuleId';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
 import {
 	decodeBase64ToUint8Array,
 	decodeBase64ToInt32Array,
 	decodeBase64ToFloat32Array,
-} from '../helpers/base64Decoder';
+} from '../pureHelpers/base64/base64Decoder';
 
 import type { Project, State } from '../types';
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
 	const state = store.getState();
 
-	// Load session on initialization
 	const projectPromise = Promise.resolve().then(() => {
 		if (!state.featureFlags.persistentStorage || !state.callbacks.loadSession) {
 			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
@@ -41,8 +40,6 @@ export default function projectImport(store: StateManager<State>, events: EventD
 	}
 
 	function loadProject({ project: newProject }: { project: Project }) {
-		// Reset compiler state
-		// Use default memory settings - config blocks will override via config effect
 		state.compiler.compilerOptions.memorySizeBytes = defaultState.compiler.compilerOptions.memorySizeBytes;
 		state.compiler.memoryBuffer = new Int32Array();
 		state.compiler.memoryBufferFloat = new Float32Array();
@@ -52,17 +49,14 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.compiler.compilationErrors = [];
 		state.compiler.isCompiling = false;
 
-		// Reset project info - config blocks will populate via config effect
 		state.projectInfo.title = '';
 		state.projectInfo.author = '';
 		state.projectInfo.description = '';
 		state.binaryAssets = newProject.binaryAssets || [];
-		// Reset runtime settings - config blocks will populate via config effect
 		state.compiler.runtimeSettings = defaultState.compiler.runtimeSettings;
 		state.compiler.selectedRuntime = defaultState.compiler.selectedRuntime;
 		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
 
-		// If loading a runtime-ready project with pre-compiled WASM, decode it immediately
 		if (newProject.compiledWasm && newProject.memorySnapshot) {
 			try {
 				state.compiler.codeBuffer = decodeBase64ToUint8Array(newProject.compiledWasm);
@@ -75,7 +69,6 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				console.log('[Loader] Pre-compiled WASM loaded and decoded successfully');
 			} catch (error) {
 				console.error('[Loader] Failed to decode pre-compiled WASM:', error);
-				// Reset to empty buffers if decoding fails
 				state.compiler.codeBuffer = new Uint8Array();
 				state.compiler.memoryBuffer = new Int32Array();
 				state.compiler.memoryBufferFloat = new Float32Array();
@@ -84,20 +77,16 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			state.compiler.compiledModules = newProject.compiledModules;
 		}
 
-		// Clear graphic helper caches that depend on compiler output
 		state.graphicHelper.outputsByWordAddress.clear();
 		state.graphicHelper.selectedCodeBlock = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
 
 		state.graphicHelper.codeBlocks.clear();
-		// Reset creationIndex counter when loading a new project
 		state.graphicHelper.nextCodeBlockCreationIndex = 0;
-		// Convert grid coordinates to pixel coordinates for runtime viewport
 		state.graphicHelper.viewport.x = newProject.viewport.gridCoordinates.x * state.graphicHelper.viewport.vGrid;
 		state.graphicHelper.viewport.y = newProject.viewport.gridCoordinates.y * state.graphicHelper.viewport.hGrid;
 
 		newProject.codeBlocks.forEach(codeBlock => {
-			// Assign creationIndex based on insertion order and increment counter
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 			state.graphicHelper.nextCodeBlockCreationIndex++;
 
@@ -122,7 +111,6 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
 				id: getModuleId(codeBlock.code) || '',
 				gaps: new Map(),
-				// Convert grid coordinates to pixel coordinates for runtime
 				x: codeBlock.gridCoordinates.x * state.graphicHelper.viewport.vGrid,
 				y: codeBlock.gridCoordinates.y * state.graphicHelper.viewport.hGrid,
 				offsetX: 0,

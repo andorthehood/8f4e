@@ -5,7 +5,8 @@
 		"rootDir": "src",
 		"baseUrl": "src",
 		"noImplicitAny": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"types": ["vitest/importMeta"]
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules", "dist", "src/**/*.test.ts"]

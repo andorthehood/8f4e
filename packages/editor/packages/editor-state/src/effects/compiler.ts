@@ -30,7 +30,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 			return;
 		}
 
-		// Regular compilation path
 		const modules = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 
 		state.compiler.isCompiling = true;
@@ -60,7 +59,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 				return;
 			}
 
-			// Handle successful compilation
 			state.compiler.compiledModules = result.compiledModules;
 			state.compiler.codeBuffer = result.codeBuffer;
 			state.compiler.allocatedMemorySize = result.allocatedMemorySize;
@@ -74,7 +72,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 			events.dispatch('loadBinaryFilesIntoMemory');
 			events.dispatch('buildFinished');
 		} catch (error) {
-			// Handle compilation error
 			state.compiler.isCompiling = false;
 			const errorObject = error as Error & {
 				line?: { lineNumber: number };

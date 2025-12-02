@@ -1,7 +1,7 @@
 import instructionParser from './codeBlockDecorators/instructionParser';
 
 import { EventDispatcher } from '../../types';
-import { getModuleId } from '../../helpers/codeParsers';
+import getModuleId from '../../pureHelpers/codeParsers/getModuleId';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
@@ -96,7 +96,6 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		isNew: boolean;
 		code?: string[];
 	}) {
-		// Check if editing is enabled
 		if (!state.featureFlags.editing) {
 			return;
 		}
@@ -109,7 +108,6 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 
 		code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, getModuleId(code)));
 
-		// Assign creationIndex and increment counter for stable ordering
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 		state.graphicHelper.nextCodeBlockCreationIndex++;
 
@@ -149,7 +147,6 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		// Check if editing is enabled
 		if (!state.featureFlags.editing) {
 			return;
 		}
