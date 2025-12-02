@@ -8,7 +8,6 @@ import type { Command, VMState } from '../types';
 import type { CommandError } from '../vm/executeCommand';
 
 export function executeRescope(state: VMState, command: Command): CommandError[] | null {
-	// Clear the scope stack
 	state.scopeStack.length = 0;
 
 	// Push new segments with schema validation

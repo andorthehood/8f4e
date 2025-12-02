@@ -20,7 +20,6 @@ export function executeAppend(state: VMState): CommandError[] | null {
 		return [{ message: 'Cannot append: data stack is empty', kind: 'exec' }];
 	}
 
-	// Pop all values from the stack and append each one
 	const values = state.dataStack.splice(0, state.dataStack.length);
 	const errors: CommandError[] = [];
 
