@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, GraphicHelper } from '../types';
+import type { CodeBlockGraphicData, GraphicHelper } from '../../types';
 
 export default function findCodeBlockAtViewportCoordinates(
 	graphicHelper: GraphicHelper,
