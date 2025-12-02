@@ -10,7 +10,6 @@ const STRING_LITERAL_REGEX = /^"((?:[^"\\]|\\.)*)"/;
 export function parsePathArgument(arg: string): string[] | { error: string } {
 	let path = arg;
 
-	// Handle quoted path
 	const stringMatch = arg.match(STRING_LITERAL_REGEX);
 	if (stringMatch) {
 		path = parseEscapes(stringMatch[1]);

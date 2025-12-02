@@ -25,13 +25,11 @@ export async function getListOfModules(): Promise<ModuleMetadata[]> {
  * Uses cached version if available, otherwise loads on-demand.
  */
 export async function getModule(slug: string): Promise<ExampleModule> {
-	// Check cache first
 	if (loadedModulesCache[slug]) {
 		console.log(`Module ${slug} loaded from cache`);
 		return loadedModulesCache[slug];
 	}
 
-	// Load from manifest
 	const loader = moduleManifest[slug];
 	if (!loader) {
 		throw new Error(`Module not found: ${slug}`);
@@ -52,10 +50,8 @@ export async function getModule(slug: string): Promise<ExampleModule> {
 export async function loadAllModules(): Promise<Record<string, ExampleModule>> {
 	console.log('Loading all modules (lazy)...');
 
-	// Ensure all modules are loaded
 	await getListOfModules();
 
-	// Return the cache which now contains all modules
 	return { ...loadedModulesCache };
 }
 
@@ -72,13 +68,11 @@ export async function getListOfProjects(): Promise<ProjectMetadata[]> {
  * Uses cached version if available, otherwise loads on-demand.
  */
 export async function getProject(slug: string): Promise<Project> {
-	// Check cache first
 	if (loadedProjectsCache[slug]) {
 		console.log(`Project ${slug} loaded from cache`);
 		return loadedProjectsCache[slug];
 	}
 
-	// Load from manifest
 	const loader = projectManifest[slug];
 	if (!loader) {
 		throw new Error(`Project not found: ${slug}`);

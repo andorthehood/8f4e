@@ -44,7 +44,6 @@ export default function drawInfoOverlay(
 		debugText.push('');
 	}
 
-	// Runtime info
 	const runtime = state.compiler.runtimeSettings[state.compiler.selectedRuntime];
 
 	debugText.push('Runtime: ' + runtime.runtime);
@@ -66,7 +65,6 @@ export default function drawInfoOverlay(
 		});
 	}
 
-	// Graphic info
 	debugText.push('');
 	debugText.push('Quad count: ' + vertices / 6);
 	debugText.push(
@@ -79,7 +77,6 @@ export default function drawInfoOverlay(
 	debugText.push('Cached items: ' + cs.itemCount + '/' + cs.maxItems);
 	debugText.push('');
 
-	// Compiler info
 	debugText.push(
 		'Compilation time ' +
 			state.compiler.compilationTime.toFixed(2) +

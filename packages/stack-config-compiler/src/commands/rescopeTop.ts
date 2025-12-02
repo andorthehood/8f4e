@@ -12,10 +12,8 @@ export function executeRescopeTop(state: VMState, command: Command): CommandErro
 		return [{ message: 'Cannot rescopeTop: scope stack is empty', kind: 'exec' }];
 	}
 
-	// Pop the top segment
 	state.scopeStack.pop();
 
-	// Push new segments with schema validation
 	const segments = command.pathSegments || [];
 	const errors = validateAndPushSegments(state, segments);
 	return errors.length > 0 ? errors : null;
