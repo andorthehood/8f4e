@@ -58,12 +58,10 @@ const LINE_REGEX = /^\s*(\w+)(?:\s+(.+))?\s*$/;
 export function parseLine(line: string, lineNumber: number): Command | CompileError | null {
 	const trimmed = line.trim();
 
-	// Skip empty lines and lines that start with a comment
 	if (!trimmed || trimmed.startsWith(';')) {
 		return null;
 	}
 
-	// Strip trailing comment (respecting string literals)
 	const withoutComment = stripTrailingComment(trimmed);
 
 	const match = withoutComment.match(LINE_REGEX);
@@ -73,7 +71,6 @@ export function parseLine(line: string, lineNumber: number): Command | CompileEr
 
 	const [, commandName, argument] = match;
 
-	// Case-sensitive command matching
 	if (!VALID_COMMANDS.has(commandName as CommandType)) {
 		return { line: lineNumber, message: `Unknown command: ${commandName}` };
 	}
