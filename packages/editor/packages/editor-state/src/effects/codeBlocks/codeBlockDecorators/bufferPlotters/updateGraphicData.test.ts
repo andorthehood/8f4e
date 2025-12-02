@@ -3,7 +3,7 @@ import { MemoryTypes } from '@8f4e/compiler';
 
 import updateBufferPlottersGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState } from '../../../../helpers/testingUtils/testUtils';
 
 import type { CodeBlockGraphicData, State, MemoryIdentifier } from '../../../../types';
 import type { DataStructure } from '@8f4e/compiler';
