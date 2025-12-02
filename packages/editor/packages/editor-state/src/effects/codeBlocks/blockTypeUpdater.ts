@@ -50,7 +50,6 @@ export default function blockTypeUpdater(store: StateManager<State>, events: Eve
 		}
 	}
 
-	// Wire up event handlers
 	events.on<CodeBlockAddedEvent>('codeBlockAdded', onCodeBlockAdded);
 	events.on('projectLoaded', updateAllBlockTypes);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSelectedCodeBlockCodeChange);

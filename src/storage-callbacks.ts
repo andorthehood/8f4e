@@ -18,27 +18,23 @@ const kebabCaseToCamelCase = (str: string) =>
 // Implementation of storage callbacks using localStorage
 export async function loadSession(): Promise<Project | null> {
 	try {
-		// First, check if there's a project specified in the URL hash
 		const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
 		if (projectName && projectManifest[projectName]) {
 			console.log('Loading project from URL hash:', projectName);
 			return await getProject(projectName);
 		}
 
-		// If no URL hash project, try to load from localStorage
 		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
 		if (stored) {
 			console.log('Loading project from localStorage');
 			return JSON.parse(stored);
 		}
 
-		// Fall back to default project (audioBuffer) if available
 		if (Object.keys(projectManifest).length > 0) {
 			console.log('Loading default project: audioBuffer');
 			return await getProject('audioBuffer');
 		}
 
-		// Return null if no project can be determined - editor will use empty default
 		return null;
 	} catch (error) {
 		console.error('Failed to load project from localStorage:', error);
