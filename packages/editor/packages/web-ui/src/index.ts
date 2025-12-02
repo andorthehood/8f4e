@@ -42,20 +42,16 @@ export default async function init(
 	engine.loadSpriteSheet(sprite);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
-		// Get effective viewport (possibly animated)
 		const effectiveViewport = calculateAnimatedViewport(state, performance.now(), animationState, previousViewport);
 
-		// Save original viewport
 		const originalViewport = {
 			x: state.graphicHelper.viewport.x,
 			y: state.graphicHelper.viewport.y,
 		};
 
-		// Temporarily override viewport for rendering
 		state.graphicHelper.viewport.x = effectiveViewport.x;
 		state.graphicHelper.viewport.y = effectiveViewport.y;
 
-		// Render with effective viewport
 		drawBackground(engine, state);
 		drawCodeBlocks(engine, state);
 		drawConnections(engine, state);
@@ -70,7 +66,6 @@ export default async function init(
 		drawDialog(engine, state);
 		drawContextMenu(engine, state);
 
-		// Restore original viewport
 		state.graphicHelper.viewport.x = originalViewport.x;
 		state.graphicHelper.viewport.y = originalViewport.y;
 	});

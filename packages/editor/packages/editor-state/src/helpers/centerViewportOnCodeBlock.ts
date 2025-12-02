@@ -48,12 +48,9 @@ export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
 	const viewportCenterX = viewport.width / 2;
 	const viewportCenterY = viewport.height / 2;
 
-	// Calculate ideal viewport position (block center aligns with viewport center)
 	const idealViewportX = blockCenterX - viewportCenterX;
 	const idealViewportY = blockCenterY - viewportCenterY;
 
-	// Apply top constraint: viewport Y cannot be greater than block top
-	// This ensures the top of the block is always visible
 	const blockTop = codeBlock.y + codeBlock.offsetY;
 	const constrainedViewportY = Math.min(blockTop, idealViewportY);
 

@@ -2,18 +2,16 @@
  * Rescope command - replaces the entire scope stack with new path segments
  */
 
-import type { Command, VMState } from '../types';
+import { validateAndPushSegments } from '../schema';
 
-export function executeRescope(state: VMState, command: Command): string | null {
-	// Clear the scope stack
+import type { Command, VMState } from '../types';
+import type { CommandError } from '../vm/executeCommand';
+
+export function executeRescope(state: VMState, command: Command): CommandError[] | null {
 	state.scopeStack.length = 0;
 
-	// Push new segments
+	// Push new segments with schema validation
 	const segments = command.pathSegments || [];
-	for (const segment of segments) {
-		if (segment) {
-			state.scopeStack.push(segment);
-		}
-	}
-	return null;
+	const errors = validateAndPushSegments(state, segments);
+	return errors.length > 0 ? errors : null;
 }
