@@ -1,5 +1,14 @@
 import type { CodeBlockGraphicData, GraphicHelper } from '../../types';
 
+/**
+ * Searches all code blocks (topmost first) for the one that contains the viewport-relative coordinates.
+ * This is used to forward click/drag gestures to the correct block while respecting z-order determined
+ * by the rendering stack (`codeBlocks` is iterated in reverse so later blocks, which render on top, win).
+ * @param graphicHelper Graphic helper that tracks visible blocks and viewport offsets.
+ * @param searchX Viewport-relative x coordinate to test.
+ * @param searchY Viewport-relative y coordinate to test.
+ * @returns The foremost block containing the point, or `undefined` when none overlap it.
+ */
 export default function findCodeBlockAtViewportCoordinates(
 	graphicHelper: GraphicHelper,
 	searchX: number,

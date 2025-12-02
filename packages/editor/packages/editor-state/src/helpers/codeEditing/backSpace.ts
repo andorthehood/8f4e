@@ -1,5 +1,12 @@
 import { moveCaret } from './moveCaret';
 
+/**
+ * Deletes the character before the caret or merges lines when positioned at column zero.
+ * @param code Current document represented as an array of lines.
+ * @param row Caret row index.
+ * @param col Caret column index within the row.
+ * @returns Updated document and caret coordinates after the deletion attempt.
+ */
 export function backSpace(code: string[], row: number, col: number): { code: string[]; row: number; col: number } {
 	const newCode = [...code];
 
