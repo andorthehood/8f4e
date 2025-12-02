@@ -3,7 +3,7 @@ import { navigateToCodeBlockInDirection } from './codeBlockNavigation';
 import centerViewportOnCodeBlock from '../helpers/centerViewportOnCodeBlock';
 
 import type { State, EventDispatcher } from '../types';
-import type { Direction } from '../helpers/findClosestCodeBlockInDirection';
+import type { Direction } from '../helpers/finders/findClosestCodeBlockInDirection';
 
 /**
  * Selects a random code block from the available code blocks.

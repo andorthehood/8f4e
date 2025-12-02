@@ -1,4 +1,4 @@
-import serializeToProject from './serializeProject';
+import serializeToProject from './serializeToProject';
 
 import { compileConfigForExport } from '../../effects/config';
 import { createMockCodeBlock, createMockState } from '../testUtils';
