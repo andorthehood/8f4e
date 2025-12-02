@@ -2,9 +2,9 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import _switch from './interaction';
 
-import { createMockState } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/testingUtils/testUtils';
 
-import type { State, EventDispatcher, CodeBlockGraphicData } from '../../../../types';
+import type { State, EventDispatcher } from '../../../../types';
 
 describe('switch interaction', () => {
 	let mockState: State;
@@ -62,31 +62,24 @@ describe('switch interaction', () => {
 		const cleanup = _switch(mockState, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
-		const mockCodeBlock: CodeBlockGraphicData = {
-			id: 'test-block',
-			extras: {
-				switches: new Map([
-					[
-						'testSwitch',
-						{
-							id: 'testSwitch',
-							x: 100,
-							y: 100,
-							width: 40,
-							height: 20,
-							offValue: 0,
-							onValue: 1,
-						},
-					],
-				]),
+		const mockCodeBlock = createMockCodeBlock({ id: 'test-block' });
+		mockCodeBlock.extras.switches = [
+			{
+				id: 'testSwitch',
+				x: 50,
+				y: 50,
+				width: 40,
+				height: 20,
+				offValue: 0,
+				onValue: 1,
 			},
-		} as unknown as CodeBlockGraphicData;
+		];
 
 		// Set initial value to off
 		mockState.compiler.memoryBuffer[5] = 0;
 
 		// Mock findSwitchAtViewportCoordinates to return our switch
-		vi.mock('../../../../helpers/findSwitchAtViewportCoordinates', () => ({
+		vi.mock('../../../../pureHelpers/findSwitchAtViewportCoordinates', () => ({
 			default: vi.fn(() => ({
 				id: 'testSwitch',
 				onValue: 1,
@@ -94,7 +87,7 @@ describe('switch interaction', () => {
 			})),
 		}));
 
-		codeBlockClickCallback?.({ x: 110, y: 110, codeBlock: mockCodeBlock });
+		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
 		expect(mockState.compiler.memoryBuffer[5]).toBe(1);
 
@@ -105,30 +98,23 @@ describe('switch interaction', () => {
 		const cleanup = _switch(mockState, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
-		const mockCodeBlock: CodeBlockGraphicData = {
-			id: 'test-block',
-			extras: {
-				switches: new Map([
-					[
-						'testSwitch',
-						{
-							id: 'testSwitch',
-							x: 100,
-							y: 100,
-							width: 40,
-							height: 20,
-							offValue: 0,
-							onValue: 1,
-						},
-					],
-				]),
+		const mockCodeBlock = createMockCodeBlock({ id: 'test-block' });
+		mockCodeBlock.extras.switches = [
+			{
+				id: 'testSwitch',
+				x: 50,
+				y: 50,
+				width: 40,
+				height: 20,
+				offValue: 0,
+				onValue: 1,
 			},
-		} as unknown as CodeBlockGraphicData;
+		];
 
 		// Set initial value to on
 		mockState.compiler.memoryBuffer[5] = 1;
 
-		codeBlockClickCallback?.({ x: 110, y: 110, codeBlock: mockCodeBlock });
+		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
 		expect(mockState.compiler.memoryBuffer[5]).toBe(0);
 
@@ -139,30 +125,23 @@ describe('switch interaction', () => {
 		const cleanup = _switch(mockState, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
-		const mockCodeBlock: CodeBlockGraphicData = {
-			id: 'test-block',
-			extras: {
-				switches: new Map([
-					[
-						'testSwitch',
-						{
-							id: 'testSwitch',
-							x: 100,
-							y: 100,
-							width: 40,
-							height: 20,
-							offValue: 0,
-							onValue: 1,
-						},
-					],
-				]),
+		const mockCodeBlock = createMockCodeBlock({ id: 'test-block' });
+		mockCodeBlock.extras.switches = [
+			{
+				id: 'testSwitch',
+				x: 50,
+				y: 50,
+				width: 40,
+				height: 20,
+				offValue: 0,
+				onValue: 1,
 			},
-		} as unknown as CodeBlockGraphicData;
+		];
 
 		// Set initial value to something else
 		mockState.compiler.memoryBuffer[5] = 42;
 
-		codeBlockClickCallback?.({ x: 110, y: 110, codeBlock: mockCodeBlock });
+		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
 		expect(mockState.compiler.memoryBuffer[5]).toBe(0);
 
