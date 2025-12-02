@@ -1,4 +1,4 @@
-import { createMockCodeBlock } from '../testUtils';
+import { createMockCodeBlock } from '../testingUtils/testUtils';
 
 import type { CodeBlock, CodeBlockGraphicData } from '../../types';
 

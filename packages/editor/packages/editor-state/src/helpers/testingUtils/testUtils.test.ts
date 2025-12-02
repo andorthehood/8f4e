@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import { createMockCodeBlock } from './testUtils';
 
-import type { CodeBlockGraphicData } from '../types';
+import type { CodeBlockGraphicData } from '../../types';
 
 /**
  * Normalize a block for snapshot testing by converting Maps to arrays

@@ -3,7 +3,7 @@ import { StateManager } from '@8f4e/state-manager';
 import { CodeBlockClickEvent } from '../../codeBlockDragger';
 import { EventDispatcher } from '../../../../types';
 import findPianoKeyAtViewportCoordinates from '../../../../helpers/finders/findPianoKeyboardAtViewportCoordinates';
-import { insertCodeAfterLine, replaceCode } from '../../../../helpers/multiLineCodeParser';
+import { insertCodeAfterLine, replaceCode } from '../../../../helpers/codeParsers/multiLineCodeParser';
 
 import type { State } from '../../../../types';
 
