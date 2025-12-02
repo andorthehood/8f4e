@@ -1,6 +1,9 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { backSpace, enter, moveCaret, type } from '../../helpers/editor';
+import { backSpace } from '../../pureHelpers/codeEditing/backSpace';
+import { enter } from '../../pureHelpers/codeEditing/enter';
+import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
+import { type } from '../../pureHelpers/codeEditing/type';
 import { EventDispatcher, InternalKeyboardEvent, State } from '../../types';
 
 export default function codeEditing(store: StateManager<State>, events: EventDispatcher) {
