@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import errorMessages from './errorMessages';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/testingUtils/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 

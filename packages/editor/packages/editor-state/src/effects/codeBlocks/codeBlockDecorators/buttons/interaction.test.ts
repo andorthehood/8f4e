@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import button from './interaction';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/testingUtils/testUtils';
 
 import type { State, EventDispatcher } from '../../../../types';
 
