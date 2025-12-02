@@ -1,6 +1,6 @@
 import parseCodeBlocks from './codeParser';
 
-import { gapCalculator } from '../../../../helpers/editor';
+import { gapCalculator } from '../../../../helpers/codeEditing/editor';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
