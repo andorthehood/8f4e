@@ -1,14 +1,22 @@
 import type { VMState } from '../types';
+import type { SchemaNode } from '../schema';
 
 /**
  * Creates a fresh VM state
  */
-export function createVMState(): VMState {
-	return {
+export function createVMState(schemaRoot?: SchemaNode): VMState {
+	const state: VMState = {
 		config: {},
 		dataStack: [],
 		scopeStack: [],
 	};
+
+	if (schemaRoot) {
+		state.schemaRoot = schemaRoot;
+		state.writtenPaths = new Set();
+	}
+
+	return state;
 }
 
 if (import.meta.vitest) {
@@ -32,6 +40,12 @@ if (import.meta.vitest) {
 			const state2 = createVMState();
 			state1.dataStack.push(1);
 			expect(state2.dataStack).toEqual([]);
+		});
+
+		it('should not have schema properties without schema', () => {
+			const state = createVMState();
+			expect(state.schemaRoot).toBeUndefined();
+			expect(state.writtenPaths).toBeUndefined();
 		});
 	});
 }
