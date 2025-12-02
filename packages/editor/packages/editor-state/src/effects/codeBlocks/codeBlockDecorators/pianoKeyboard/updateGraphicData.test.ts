@@ -3,7 +3,7 @@ import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
 import updatePianoKeyboardsGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/testingUtils/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
