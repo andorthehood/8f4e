@@ -1,7 +1,7 @@
 import { parseInputs } from './codeParser';
 
 import { gapCalculator } from '../../../../helpers/codeEditing/gapCalculator';
-import { getModuleId } from '../../../../helpers/codeParsers/codeParsers';
+import getModuleId from '../../../../helpers/codeParsers/getModuleId';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
