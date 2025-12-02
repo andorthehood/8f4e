@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import _switch from './interaction';
 
-import { createMockCodeBlock, createMockState } from '../../../../helpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/testingUtils/testUtils';
 
 import type { State, EventDispatcher } from '../../../../types';
 
@@ -79,7 +79,7 @@ describe('switch interaction', () => {
 		mockState.compiler.memoryBuffer[5] = 0;
 
 		// Mock findSwitchAtViewportCoordinates to return our switch
-		vi.mock('../../../../helpers/findSwitchAtViewportCoordinates', () => ({
+		vi.mock('../../../../pureHelpers/findSwitchAtViewportCoordinates', () => ({
 			default: vi.fn(() => ({
 				id: 'testSwitch',
 				onValue: 1,
