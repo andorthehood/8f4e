@@ -5,8 +5,8 @@ import codeBlockCreator from './codeBlockCreator';
 
 import { flattenProjectForCompiler } from '../compiler';
 import projectImport from '../projectImport';
-import { createMockState, createMockCodeBlock } from '../../helpers/testUtils';
-import { createMockEventDispatcherWithVitest } from '../../helpers/vitestTestUtils';
+import { createMockState, createMockCodeBlock } from '../../helpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../../helpers/testingUtils/vitestTestUtils';
 import { EMPTY_DEFAULT_PROJECT } from '../../types';
 
 import type { State, Project } from '../../types';
