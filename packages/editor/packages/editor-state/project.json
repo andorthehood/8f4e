@@ -7,14 +7,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "tsc",
-        "cwd": "{projectRoot}"
-      }
-    },
-    "dev": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "tsc --watch",
+        "command": "tsc --emitDeclarationOnly && vite build",
         "cwd": "{projectRoot}"
       }
     },
