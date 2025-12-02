@@ -2,9 +2,9 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import button from './interaction';
 
-import { createMockState } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/testingUtils/testUtils';
 
-import type { State, EventDispatcher, CodeBlockGraphicData } from '../../../../types';
+import type { State, EventDispatcher } from '../../../../types';
 
 describe('button interaction', () => {
 	let mockState: State;
@@ -68,36 +68,20 @@ describe('button interaction', () => {
 		const cleanup = button(mockState, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
-		const mockCodeBlock: CodeBlockGraphicData = {
-			id: 'test-block',
-			extras: {
-				buttons: new Map([
-					[
-						'testButton',
-						{
-							id: 'testButton',
-							x: 100,
-							y: 100,
-							width: 40,
-							height: 20,
-							offValue: 0,
-							onValue: 1,
-						},
-					],
-				]),
-			},
-		} as unknown as CodeBlockGraphicData;
-
-		// Mock findButtonAtViewportCoordinates to return our button
-		vi.mock('../../../../helpers/findButtonAtViewportCoordinates', () => ({
-			default: vi.fn(() => ({
+		const mockCodeBlock = createMockCodeBlock({ id: 'test-block' });
+		mockCodeBlock.extras.buttons = [
+			{
 				id: 'testButton',
-				onValue: 1,
+				x: 50,
+				y: 50,
+				width: 40,
+				height: 20,
 				offValue: 0,
-			})),
-		}));
+				onValue: 1,
+			},
+		];
 
-		codeBlockClickCallback?.({ x: 110, y: 110, codeBlock: mockCodeBlock });
+		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
 		expect(mockState.compiler.memoryBuffer[5]).toBe(1);
 
@@ -109,28 +93,20 @@ describe('button interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 		const mouseUpCallback = onCallbacks.get('mouseup');
 
-		const mockCodeBlock: CodeBlockGraphicData = {
-			id: 'test-block',
-			extras: {
-				buttons: new Map([
-					[
-						'testButton',
-						{
-							id: 'testButton',
-							x: 100,
-							y: 100,
-							width: 40,
-							height: 20,
-							offValue: 0,
-							onValue: 1,
-						},
-					],
-				]),
+		const mockCodeBlock = createMockCodeBlock({ id: 'test-block' });
+		mockCodeBlock.extras.buttons = [
+			{
+				id: 'testButton',
+				x: 50,
+				y: 50,
+				width: 40,
+				height: 20,
+				offValue: 0,
+				onValue: 1,
 			},
-		} as unknown as CodeBlockGraphicData;
+		];
 
-		// First click the button
-		codeBlockClickCallback?.({ x: 110, y: 110, codeBlock: mockCodeBlock });
+		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 		expect(mockState.compiler.memoryBuffer[5]).toBe(1);
 
 		// Then release mouse

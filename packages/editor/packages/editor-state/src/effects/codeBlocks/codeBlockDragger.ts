@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../../types';
 import { InternalMouseEvent } from '../../types';
-import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtViewportCoordinates';
+import findCodeBlockAtViewportCoordinates from '../../pureHelpers/finders/findCodeBlockAtViewportCoordinates';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 

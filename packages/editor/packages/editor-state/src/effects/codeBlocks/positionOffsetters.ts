@@ -1,6 +1,6 @@
 import instructionParser from './codeBlockDecorators/instructionParser';
 
-import resolveMemoryIdentifier from '../../helpers/resolveMemoryIdentifier';
+import resolveMemoryIdentifier from '../../pureHelpers/resolveMemoryIdentifier';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
