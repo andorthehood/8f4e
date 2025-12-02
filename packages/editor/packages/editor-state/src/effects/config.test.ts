@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import { extractConfigBody, collectConfigBlocks, deepMergeConfig, applyConfigToState } from './config';
 
-import { createMockCodeBlock, createMockState } from '../helpers/testUtils';
+import { createMockCodeBlock, createMockState } from '../helpers/testingUtils/testUtils';
 
 describe('config effect', () => {
 	describe('extractConfigBody', () => {
