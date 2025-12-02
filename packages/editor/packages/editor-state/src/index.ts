@@ -1,6 +1,6 @@
-import { Font } from '@8f4e/sprite-generator';
 import createStateManager, { StateManager } from '@8f4e/state-manager';
 
+import createDefaultState from './pureHelpers/state/createDefaultState';
 import historyTracking from './effects/historyTracking';
 import codeEditing from './effects/codeBlocks/codeEditing';
 import _switch from './effects/codeBlocks/codeBlockDecorators/switches/interaction';
@@ -24,109 +24,11 @@ import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
 import keyboardShortcuts from './effects/keyboardShortcuts';
 import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
-import { validateFeatureFlags, defaultFeatureFlags } from './featureFlags';
+import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 
-import type { Options, Project, State, CodeBlockGraphicData, EventDispatcher, GraphicHelper } from './types';
-
-// Helper function to create graphic helper with proper references
-function createGraphicHelper(): GraphicHelper {
-	return {
-		dialog: {
-			show: false,
-			text: 'Lorem ipsum dolor sit amet',
-			title: 'Dialog',
-			buttons: [{ title: 'Close', action: 'close' }],
-		},
-		codeBlocks: new Set<CodeBlockGraphicData>(),
-		nextCodeBlockCreationIndex: 0,
-		outputsByWordAddress: new Map(),
-		viewport: {
-			x: 0,
-			y: 0,
-			animationDurationMs: 0,
-			width: 0,
-			height: 0,
-			roundedHeight: 0,
-			roundedWidth: 0,
-			vGrid: 8,
-			hGrid: 16,
-			borderLineCoordinates: {
-				top: { startX: 0, startY: 0, endX: 0, endY: 0 },
-				right: { startX: 0, startY: 0, endX: 0, endY: 0 },
-				bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
-				left: { startX: 0, startY: 0, endX: 0, endY: 0 },
-			},
-			center: { x: 0, y: 0 },
-		},
-		contextMenu: {
-			highlightedItem: 0,
-			itemWidth: 200,
-			items: [],
-			open: false,
-			x: 0,
-			y: 0,
-			menuStack: [],
-		},
-		postProcessEffects: [],
-	};
-}
-
-const memorySizeBytes = 1048576; // 1MB default
+import type { Options, Project, State, EventDispatcher } from './types';
 
 // Function to create default state
-function createDefaultState() {
-	return {
-		projectInfo: {
-			title: '',
-			author: '',
-			description: '',
-		},
-		compiler: {
-			codeBuffer: new Uint8Array(),
-			compilationTime: 0,
-			cycleTime: 0,
-			isCompiling: false,
-			lastCompilationStart: 0,
-			allocatedMemorySize: 0,
-			memoryBuffer: new Int32Array(),
-			memoryBufferFloat: new Float32Array(),
-			timerAccuracy: 0,
-			compiledModules: {},
-			compilationErrors: [],
-			compilerOptions: {
-				memorySizeBytes,
-				startingMemoryWordAddress: 0,
-				environmentExtensions: {
-					constants: {},
-					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
-				},
-			},
-			runtimeSettings: [
-				{
-					runtime: 'WebWorkerLogicRuntime' as const,
-					sampleRate: 50,
-				},
-			],
-			selectedRuntime: 0,
-		},
-		midi: {
-			inputs: [],
-			outputs: [],
-		},
-		graphicHelper: createGraphicHelper(),
-		editorSettings: {
-			colorScheme: 'hackerman',
-			font: '8x16' as Font,
-		},
-		featureFlags: defaultFeatureFlags,
-		colorSchemes: [],
-		historyStack: [],
-		redoStack: [],
-		storageQuota: { usedBytes: 0, totalBytes: 0 },
-		binaryAssets: [],
-		configErrors: [],
-	};
-}
 
 export default function init(events: EventDispatcher, project: Project, options: Options): StateManager<State> {
 	const featureFlags = validateFeatureFlags(options.featureFlags);
