@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, GraphicHelper, PianoKeyboard } from '../types';
+import type { CodeBlockGraphicData, GraphicHelper, PianoKeyboard } from '../../types';
 
 export default function findPianoKeyboardAtViewportCoordinates(
 	graphicHelper: GraphicHelper,
