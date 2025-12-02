@@ -1,4 +1,4 @@
-import type { CodeBlockType } from '../types';
+import type { CodeBlockType } from '../../types';
 
 export function getLastMemoryInstructionLine(code: string[]): number {
 	return code.findLastIndex(line => /^\s*memory/.test(line));
