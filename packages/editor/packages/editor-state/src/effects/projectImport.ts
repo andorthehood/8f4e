@@ -1,7 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
-import { getModuleId } from '../helpers/codeParsers/codeParsers';
+import getModuleId from '../helpers/codeParsers/getModuleId';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
 import {
 	decodeBase64ToUint8Array,

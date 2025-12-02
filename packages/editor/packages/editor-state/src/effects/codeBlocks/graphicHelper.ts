@@ -19,7 +19,8 @@ import { gapCalculator } from '../../helpers/codeEditing/gapCalculator';
 import { generateCodeColorMap } from '../../helpers/codeEditing/generateCodeColorMap';
 import { moveCaret } from '../../helpers/codeEditing/moveCaret';
 import { reverseGapCalculator } from '../../helpers/codeEditing/reverseGapCalculator';
-import { getLongestLineLength, getModuleId } from '../../helpers/codeParsers/codeParsers';
+import getLongestLineLength from '../../helpers/codeParsers/getLongestLineLength';
+import getModuleId from '../../helpers/codeParsers/getModuleId';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 

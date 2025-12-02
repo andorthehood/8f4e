@@ -1,4 +1,4 @@
-import { parseCode } from '../../../../helpers/codeParsers/multiLineCodeParser';
+import parseCode from '../../../../helpers/codeParsers/parseCode';
 
 export function parsePressedKeys(code: string[], pressedKeysListMemoryId: string, startingNumber: number) {
 	const pressedKeys = new Set<number>();
