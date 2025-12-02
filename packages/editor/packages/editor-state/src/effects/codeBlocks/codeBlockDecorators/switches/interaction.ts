@@ -1,5 +1,5 @@
 import { EventDispatcher } from '../../../../types';
-import findSwitchAtViewportCoordinates from '../../../../helpers/findSwitchAtViewportCoordinates';
+import findSwitchAtViewportCoordinates from '../../../../pureHelpers/finders/findSwitchAtViewportCoordinates';
 
 import type { State, CodeBlockGraphicData } from '../../../../types';
 

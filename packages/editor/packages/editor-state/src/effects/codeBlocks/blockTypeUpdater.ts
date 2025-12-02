@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { getBlockType } from '../../helpers/codeParsers';
+import getBlockType from '../../pureHelpers/codeParsers/getBlockType';
 
 import type { CodeBlockGraphicData, EventDispatcher, State } from '../../types';
 
@@ -50,7 +50,6 @@ export default function blockTypeUpdater(store: StateManager<State>, events: Eve
 		}
 	}
 
-	// Wire up event handlers
 	events.on<CodeBlockAddedEvent>('codeBlockAdded', onCodeBlockAdded);
 	events.on('projectLoaded', updateAllBlockTypes);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSelectedCodeBlockCodeChange);

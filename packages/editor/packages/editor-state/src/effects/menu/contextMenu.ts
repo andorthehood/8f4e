@@ -3,7 +3,7 @@ import { StateManager } from '@8f4e/state-manager';
 import * as menus from './menus';
 
 import { EventDispatcher } from '../../types';
-import findCodeBlockAtViewportCoordinates from '../../helpers/findCodeBlockAtViewportCoordinates';
+import findCodeBlockAtViewportCoordinates from '../../pureHelpers/finders/findCodeBlockAtViewportCoordinates';
 
 import type { ContextMenuItem, State } from '../../types';
 
@@ -96,7 +96,6 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 	};
 
 	const onContextMenu = async (event: MouseEvent) => {
-		// Check if context menu feature is enabled
 		if (!state.featureFlags.contextMenu) {
 			return;
 		}
