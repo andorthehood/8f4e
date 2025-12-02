@@ -96,7 +96,6 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 	};
 
 	const onContextMenu = async (event: MouseEvent) => {
-		// Check if context menu feature is enabled
 		if (!state.featureFlags.contextMenu) {
 			return;
 		}

@@ -23,7 +23,6 @@ export async function compileProject(modules: Module[], compilerOptions: Compile
 					});
 					break;
 				case 'compilationError': {
-					// Create an error object that matches the expected structure
 					const error = new Error(data.payload.message) as Error & {
 						line?: { lineNumber: number };
 						context?: { namespace?: { moduleName: string } };
@@ -38,7 +37,6 @@ export async function compileProject(modules: Module[], compilerOptions: Compile
 			}
 		};
 
-		// Add listener for this compilation
 		compilerWorker.addEventListener('message', handleMessage, { once: true });
 
 		compilerWorker.postMessage({

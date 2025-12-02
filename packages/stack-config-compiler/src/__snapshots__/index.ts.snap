@@ -62,6 +62,7 @@ line2	tabbed",
 exports[`compileConfig > should return error for append to non-array 1`] = `
 [
   {
+    "kind": "exec",
     "line": 6,
     "message": "Cannot append to non-array value at path "name"",
   },
@@ -71,10 +72,12 @@ exports[`compileConfig > should return error for append to non-array 1`] = `
 exports[`compileConfig > should return error for concat on empty stack 1`] = `
 [
   {
+    "kind": "exec",
     "line": 3,
     "message": "Cannot concat: data stack is empty",
   },
   {
+    "kind": "exec",
     "line": 4,
     "message": "Cannot set: data stack is empty",
   },
@@ -84,6 +87,7 @@ exports[`compileConfig > should return error for concat on empty stack 1`] = `
 exports[`compileConfig > should return error for malformed path 1`] = `
 [
   {
+    "kind": "parse",
     "line": 2,
     "message": "Malformed path: unclosed bracket in "items[0"",
   },
@@ -93,6 +97,7 @@ exports[`compileConfig > should return error for malformed path 1`] = `
 exports[`compileConfig > should return error for operations on empty stacks 1`] = `
 [
   {
+    "kind": "exec",
     "line": 2,
     "message": "Cannot set at root scope (scope stack is empty)",
   },
@@ -102,6 +107,7 @@ exports[`compileConfig > should return error for operations on empty stacks 1`] 
 exports[`compileConfig > should return error for type conflict 1`] = `
 [
   {
+    "kind": "exec",
     "line": 8,
     "message": "Type conflict: cannot navigate through scalar value",
   },
@@ -111,6 +117,7 @@ exports[`compileConfig > should return error for type conflict 1`] = `
 exports[`compileConfig > should return error for unclosed string literal 1`] = `
 [
   {
+    "kind": "parse",
     "line": 3,
     "message": "Invalid string literal: "unclosed",
   },
@@ -120,6 +127,7 @@ exports[`compileConfig > should return error for unclosed string literal 1`] = `
 exports[`compileConfig > should return errors for invalid input 1`] = `
 [
   {
+    "kind": "parse",
     "line": 3,
     "message": "Unknown command: unknownCommand",
   },
