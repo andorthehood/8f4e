@@ -2,27 +2,34 @@ import { createVMState } from './createVMState';
 import { executeCommand } from './executeCommand';
 
 import type { Command, CompileError } from '../types';
+import type { SchemaNode } from '../schema';
 
 /**
  * Executes a list of commands and returns the final config or errors
  */
-export function executeCommands(commands: Command[]): { config: Record<string, unknown>; errors: CompileError[] } {
-	const state = createVMState();
+export function executeCommands(
+	commands: Command[],
+	schemaRoot?: SchemaNode
+): { config: Record<string, unknown>; errors: CompileError[]; writtenPaths?: Set<string> } {
+	const state = createVMState(schemaRoot);
 	const errors: CompileError[] = [];
 
 	for (const command of commands) {
-		const error = executeCommand(state, command);
-		if (error) {
-			errors.push({
-				line: command.lineNumber,
-				message: error,
-			});
+		const commandErrors = executeCommand(state, command);
+		if (commandErrors) {
+			for (const error of commandErrors) {
+				errors.push({
+					line: command.lineNumber,
+					...error,
+				});
+			}
 		}
 	}
 
 	return {
 		config: state.config,
 		errors,
+		writtenPaths: state.writtenPaths,
 	};
 }
 
@@ -31,7 +38,7 @@ if (import.meta.vitest) {
 
 	describe('executeCommands', () => {
 		it('should execute empty command list', () => {
-			expect(executeCommands([])).toEqual({ config: {}, errors: [] });
+			expect(executeCommands([])).toMatchObject({ config: {}, errors: [] });
 		});
 
 		it('should execute single command', () => {
