@@ -1,4 +1,4 @@
-import findClosestCodeBlockInDirection, { Direction } from '../helpers/findClosestCodeBlockInDirection';
+import findClosestCodeBlockInDirection, { Direction } from '../helpers/finders/findClosestCodeBlockInDirection';
 import centerViewportOnCodeBlock from '../helpers/centerViewportOnCodeBlock';
 
 import type { State, EventDispatcher, InternalKeyboardEvent } from '../types';
