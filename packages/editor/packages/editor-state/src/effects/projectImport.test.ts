@@ -144,7 +144,7 @@ describe('projectImport', () => {
 			const loadProjectCallback = loadProjectCall![1];
 
 			// Set some existing state
-			mockState.compiler.compilationErrors = [{ message: 'Error', line: 1, column: 1 }];
+			mockState.compiler.compilationErrors = [{ message: 'Error', lineNumber: 1, code: 1, moduleId: '1' }];
 			mockState.compiler.isCompiling = true;
 
 			loadProjectCallback({ project: EMPTY_DEFAULT_PROJECT });
@@ -277,7 +277,6 @@ describe('projectImport', () => {
 		it('should load project by slug using callback', async () => {
 			const mockProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				title: 'Project from Slug',
 			};
 
 			mockState.callbacks.getProject = vi.fn().mockResolvedValue(mockProject);
