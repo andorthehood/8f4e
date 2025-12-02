@@ -1,6 +1,5 @@
 import initView from '@8f4e/web-ui';
 import initState from '@8f4e/editor-state';
-import { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state';
 
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
@@ -21,11 +20,10 @@ export type {
 	FeatureFlagsConfig,
 } from '@8f4e/editor-state';
 export type { EventDispatcher } from './events';
-export { EMPTY_DEFAULT_PROJECT } from '@8f4e/editor-state';
 
 export default async function init(canvas: HTMLCanvasElement, options: Options) {
 	const events = initEvents();
-	const store = initState(events, EMPTY_DEFAULT_PROJECT, options);
+	const store = initState(events, options);
 	const state = store.getState();
 	humanInterface(canvas, events, state);
 	const view = await initView(state, canvas);

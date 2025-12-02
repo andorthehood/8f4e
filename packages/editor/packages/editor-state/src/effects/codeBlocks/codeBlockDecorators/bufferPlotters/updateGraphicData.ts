@@ -1,7 +1,7 @@
 import { parseBufferPlotters } from './codeParser';
 
-import { gapCalculator } from '../../../../helpers/editor';
-import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
+import { gapCalculator } from '../../../../pureHelpers/codeEditing/gapCalculator';
+import resolveMemoryIdentifier from '../../../../pureHelpers/resolveMemoryIdentifier';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
