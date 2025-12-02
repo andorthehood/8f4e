@@ -26,11 +26,10 @@ import keyboardShortcuts from './effects/keyboardShortcuts';
 import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 
-import type { Options, Project, State, EventDispatcher } from './types';
+import type { Options, State, EventDispatcher } from './types';
 
 // Function to create default state
-
-export default function init(events: EventDispatcher, project: Project, options: Options): StateManager<State> {
+export default function init(events: EventDispatcher, options: Options): StateManager<State> {
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
 	const store = createStateManager<State>({
