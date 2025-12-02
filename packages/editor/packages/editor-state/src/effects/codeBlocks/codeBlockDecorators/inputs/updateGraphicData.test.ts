@@ -3,7 +3,7 @@ import { MemoryTypes } from '@8f4e/compiler';
 
 import updateInputsGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../helpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../pureHelpers/testingUtils/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
