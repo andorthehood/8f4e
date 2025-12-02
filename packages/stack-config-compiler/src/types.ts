@@ -68,8 +68,6 @@ export interface VMState {
 	scopeStack: string[];
 	/** Schema node tree for validation (if schema provided) */
 	schemaRoot?: SchemaNode;
-	/** Current schema node based on current scope */
-	currentSchemaNode?: SchemaNode;
 	/** Set of paths that have been written to (for required field tracking) */
 	writtenPaths?: Set<string>;
 }
