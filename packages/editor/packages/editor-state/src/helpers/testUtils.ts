@@ -31,6 +31,11 @@ function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
  * @param options.cursorY - Optional convenience parameter to set cursor.y (relative to block)
  * @returns A complete CodeBlockGraphicData object with sensible defaults
  *
+ * @remarks
+ * **Cursor Coordinate System:**
+ * - `cursor.x` is absolute (computed as block center: x + offsetX + width/2)
+ * - `cursor.y` is relative to the block (defaults to height/2, i.e., center of block)
+ *
  * @example
  * // Basic usage with defaults
  * const block = createMockCodeBlock();
