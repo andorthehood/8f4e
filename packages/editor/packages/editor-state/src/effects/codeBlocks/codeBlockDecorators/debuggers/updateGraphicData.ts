@@ -1,6 +1,6 @@
 import { parseDebuggers } from './codeParser';
 
-import { gapCalculator } from '../../../../helpers/codeEditing/editor';
+import { gapCalculator } from '../../../../helpers/codeEditing/gapCalculator';
 import resolveMemoryIdentifier from '../../../../helpers/resolveMemoryIdentifier';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';

@@ -4,8 +4,8 @@ import createStateManager from '@8f4e/state-manager';
 import compiler from './compiler';
 import projectExport from './projectExport';
 
-import { createMockState, createMockCodeBlock } from '../helpers/testUtils';
-import { createMockEventDispatcherWithVitest } from '../helpers/vitestTestUtils';
+import { createMockState, createMockCodeBlock } from '../helpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../helpers/testingUtils/vitestTestUtils';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
 
 import type { State } from '../types';
