@@ -2,8 +2,8 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
 import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
-import serializeToProject from '../helpers/projectSerializing/serializeProject';
-import serializeToRuntimeReadyProject from '../helpers/projectSerializing/serializeRuntimeReadyProject';
+import serializeToProject from '../helpers/projectSerializing/serializeToProject';
+import serializeToRuntimeReadyProject from '../helpers/projectSerializing/serializeToRuntimeReadyProject';
 
 import type { State } from '../types';
 

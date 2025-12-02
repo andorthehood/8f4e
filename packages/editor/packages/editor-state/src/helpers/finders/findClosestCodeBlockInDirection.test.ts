@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest';
 
 import findClosestCodeBlockInDirection from './findClosestCodeBlockInDirection';
-import { createMockCodeBlock } from './testUtils';
 
-import type { CodeBlockGraphicData } from '../types';
+import { createMockCodeBlock } from '../testUtils';
+
+import type { CodeBlockGraphicData } from '../../types';
 
 describe('findClosestCodeBlockInDirection', () => {
 	describe('right direction', () => {
