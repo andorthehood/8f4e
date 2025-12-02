@@ -1,5 +1,13 @@
 export type MoveDirection = 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Jump';
 
+/**
+ * Calculates a new caret position after moving in the requested direction while clamping to document bounds.
+ * @param code Document contents as an array of lines.
+ * @param row Current caret row index.
+ * @param col Current caret column index.
+ * @param direction Movement direction requested by the user.
+ * @returns Tuple containing the resulting row and column.
+ */
 export function moveCaret(code: string[], row: number, col: number, direction: MoveDirection): [number, number] {
 	switch (direction) {
 		case 'ArrowUp': {
