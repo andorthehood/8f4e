@@ -6,12 +6,12 @@ import projectExport from './projectExport';
 
 import { createMockState, createMockCodeBlock } from '../helpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../helpers/testingUtils/vitestTestUtils';
-import { encodeUint8ArrayToBase64 } from '../helpers/base64Encoder';
+import { encodeUint8ArrayToBase64 } from '../helpers/base64/base64Encoder';
 
 import type { State } from '../types';
 
 // Mock the decodeBase64ToUint8Array function
-vi.mock('../helpers/base64Decoder', () => {
+vi.mock('../helpers/base64/base64Decoder', () => {
 	const decodeBase64ToUint8Array = vi.fn((base64: string) => {
 		// Simple mock implementation for testing
 		const binaryString = atob(base64);
