@@ -20,6 +20,8 @@ export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>)
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
 	async function onRecompile() {
+		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
+		// If codeBuffer is populated and we don't have a compiler, skip compilation
 		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
 			console.log('[Compiler] Using pre-compiled WASM from runtime-ready project');
 			state.compiler.isCompiling = false;
