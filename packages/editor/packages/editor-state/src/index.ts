@@ -227,8 +227,8 @@ export type {
 export { EMPTY_DEFAULT_PROJECT } from './types';
 
 // Export helper functions
-export { default as findClosestCodeBlockInDirection } from './helpers/finders/findClosestCodeBlockInDirection';
-export type { Direction } from './helpers/finders/findClosestCodeBlockInDirection';
-export { default as centerViewportOnCodeBlock } from './helpers/centerViewportOnCodeBlock';
-export type { CodeBlockBounds } from './helpers/centerViewportOnCodeBlock';
+export { default as findClosestCodeBlockInDirection } from './pureHelpers/finders/findClosestCodeBlockInDirection';
+export type { Direction } from './pureHelpers/finders/findClosestCodeBlockInDirection';
+export { default as centerViewportOnCodeBlock } from './pureHelpers/centerViewportOnCodeBlock';
+export type { CodeBlockBounds } from './pureHelpers/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './effects/codeBlockNavigation';
