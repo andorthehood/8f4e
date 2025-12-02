@@ -37,6 +37,7 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			codeBlock: draggedCodeBlock,
 		});
 
+		// Bring dragged module forward.
 		state.graphicHelper.codeBlocks.delete(draggedCodeBlock);
 		state.graphicHelper.codeBlocks.add(draggedCodeBlock);
 	}
