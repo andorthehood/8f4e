@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import updateSwitchesGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../helpers/testUtils';
+import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../pureHelpers/testingUtils/testUtils';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';
 
