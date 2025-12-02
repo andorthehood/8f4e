@@ -1,3 +1,8 @@
+/**
+ * Builds a deterministic regexp that matches instructions while preferring longer tokens.
+ * @param instructions Instruction mnemonics that should be highlighted.
+ * @returns Regular expression used to find instruction boundaries with indices data.
+ */
 const getInstructionRegExp = (instructions: string[]) =>
 	new RegExp(
 		'\\b(?:' +
@@ -11,6 +16,13 @@ const getInstructionRegExp = (instructions: string[]) =>
 		'd'
 	);
 
+/**
+ * Generates a 2D lookup where each cell contains the sprite used to render a code character.
+ * @param code Program text split into lines.
+ * @param spriteLookups Mapping of syntax roles to sprite identifiers.
+ * @param instructionsToHighlight Instruction names that should receive special styling.
+ * @returns A matrix of sprite identifiers aligned to every character in the document.
+ */
 export function generateCodeColorMap<T>(
 	code: string[],
 	spriteLookups: {
