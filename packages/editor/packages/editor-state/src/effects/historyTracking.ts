@@ -1,7 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
-import serializeToProject from '../helpers/projectSerializing/serializeToProject';
+import serializeToProject from '../pureHelpers/projectSerializing/serializeToProject';
 
 import type { State } from '../types';
 
