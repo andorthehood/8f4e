@@ -15,8 +15,12 @@ import { CodeBlockClickEvent } from './codeBlockDragger';
 import { CodeBlockAddedEvent } from './codeBlockCreator';
 
 import { EventDispatcher } from '../../types';
-import { gapCalculator, generateCodeColorMap, moveCaret, reverseGapCalculator } from '../../helpers/editor';
-import { getLongestLineLength, getModuleId } from '../../helpers/codeParsers';
+import { gapCalculator } from '../../pureHelpers/codeEditing/gapCalculator';
+import { generateCodeColorMap } from '../../pureHelpers/codeEditing/generateCodeColorMap';
+import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
+import { reverseGapCalculator } from '../../pureHelpers/codeEditing/reverseGapCalculator';
+import getLongestLineLength from '../../pureHelpers/codeParsers/getLongestLineLength';
+import getModuleId from '../../pureHelpers/codeParsers/getModuleId';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
