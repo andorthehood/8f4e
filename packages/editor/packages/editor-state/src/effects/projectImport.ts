@@ -8,6 +8,7 @@ import {
 	decodeBase64ToInt32Array,
 	decodeBase64ToFloat32Array,
 } from '../pureHelpers/base64/base64Decoder';
+import { log, warn, error } from '../impureHelpers/logger';
 
 import type { Project, State } from '../types';
 
@@ -24,14 +25,16 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			.then(localProject => {
 				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
 			})
-			.catch(error => {
-				console.warn('Failed to load project from storage:', error);
+			.catch(err => {
+				warn(state, 'Failed to load project from storage:', err);
+				console.warn('Failed to load project from storage:', err);
 				loadProject({ project: EMPTY_DEFAULT_PROJECT });
 			});
 	});
 
 	async function loadProjectBySlug({ projectSlug }: { projectSlug: string }) {
 		if (!state.callbacks.getProject) {
+			warn(state, 'No getProject callback provided');
 			console.warn('No getProject callback provided');
 			return;
 		}
@@ -66,9 +69,10 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				if (newProject.compiledModules) {
 					state.compiler.compiledModules = newProject.compiledModules;
 				}
-				console.log('[Loader] Pre-compiled WASM loaded and decoded successfully');
-			} catch (error) {
-				console.error('[Loader] Failed to decode pre-compiled WASM:', error);
+				log(state, '[Loader] Pre-compiled WASM loaded and decoded successfully');
+			} catch (err) {
+				error(state, '[Loader] Failed to decode pre-compiled WASM:', err);
+				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
 				state.compiler.codeBuffer = new Uint8Array();
 				state.compiler.memoryBuffer = new Int32Array();
 				state.compiler.memoryBufferFloat = new Float32Array();
@@ -130,6 +134,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 
 	function onImportProject() {
 		if (!state.callbacks.importProject) {
+			warn(state, 'No importProject callback provided');
 			console.warn('No importProject callback provided');
 			return;
 		}
@@ -139,8 +144,9 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			.then(project => {
 				loadProject({ project });
 			})
-			.catch(error => {
-				console.error('Failed to load project from file:', error);
+			.catch(err => {
+				error(state, 'Failed to load project from file:', err);
+				console.error('Failed to load project from file:', err);
 			});
 	}
 

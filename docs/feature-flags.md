@@ -6,6 +6,7 @@ The feature flags system allows you to enable/disable specific editor functional
 
 - `contextMenu: boolean` - Enable/disable right-click context menu functionality
 - `infoOverlay: boolean` - Enable/disable info overlay display (development information)  
+- `consoleOverlay: boolean` - Enable/disable console overlay display (internal logging) (default: false)
 - `moduleDragging: boolean` - Enable/disable dragging and repositioning of code block modules
 - `viewportDragging: boolean` - Enable/disable panning/scrolling of the editor viewport
 - `localStorage: boolean` - Enable/disable localStorage functionality
@@ -118,6 +119,28 @@ Demo mode features:
 - Navigates between code blocks every 2 seconds in random directions
 - Smoothly animates viewport transitions for a polished presentation
 - Perfect for automated demos, presentations, or showcase displays
+
+### Debug Mode (With Console Overlay)
+
+```typescript
+import init from '@8f4e/editor';
+
+const state = init(events, project, {
+  featureFlags: {
+    consoleOverlay: true,   // Enable console overlay for debugging
+    infoOverlay: true,      // Also show info overlay
+    // Other features remain enabled
+  }
+});
+```
+
+Console overlay features:
+- Displays internal editor logs on the right side of the screen
+- Shows timestamped log entries with level indicators (log, warn, error, info)
+- Uses color-coded backgrounds: red for errors, yellow/orange for warnings
+- Automatically limits to 100 log entries (circular buffer)
+- Truncates long messages to fit the screen width
+- Perfect for debugging editor behavior without opening DevTools
 
 ### Completely Locked Editor
 
