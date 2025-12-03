@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
+import { warn } from '../impureHelpers/logger';
 
 import type { State } from '../types';
 
@@ -14,8 +15,9 @@ export default function editorSettings(store: StateManager<State>, events: Event
 			try {
 				const colorSchemes = await state.callbacks.getListOfColorSchemes();
 				state.colorSchemes = colorSchemes;
-			} catch (error) {
-				console.warn('Failed to load color schemes:', error);
+			} catch (err) {
+				warn(state, 'Failed to load color schemes:', err);
+				console.warn('Failed to load color schemes:', err);
 				state.colorSchemes = [];
 			}
 		}
@@ -27,8 +29,9 @@ export default function editorSettings(store: StateManager<State>, events: Event
 				if (loadedEditorSettings) {
 					store.set('editorSettings', loadedEditorSettings);
 				}
-			} catch (error) {
-				console.warn('Failed to load editor settings from storage:', error);
+			} catch (err) {
+				warn(state, 'Failed to load editor settings from storage:', err);
+				console.warn('Failed to load editor settings from storage:', err);
 				state.editorSettings = { ...defaultState.editorSettings };
 			}
 		}

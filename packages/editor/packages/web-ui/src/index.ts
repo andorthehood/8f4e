@@ -1,7 +1,14 @@
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect } from 'glugglug';
 
-import { drawCodeBlocks, drawConnections, drawContextMenu, drawDialog, drawInfoOverlay } from './drawers';
+import {
+	drawCodeBlocks,
+	drawConnections,
+	drawContextMenu,
+	drawDialog,
+	drawInfoOverlay,
+	drawConsoleOverlay,
+} from './drawers';
 import drawBackground from './drawers/drawBackground';
 import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
 
@@ -62,6 +69,9 @@ export default async function init(
 				vertices,
 				maxVertices,
 			});
+		}
+		if (state.featureFlags.consoleOverlay) {
+			drawConsoleOverlay(engine, state);
 		}
 		drawDialog(engine, state);
 		drawContextMenu(engine, state);
