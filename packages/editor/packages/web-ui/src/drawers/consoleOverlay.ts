@@ -4,6 +4,8 @@ import type { State, LogMessage } from '@8f4e/editor-state';
 
 const PANEL_WIDTH_CHARS = 60;
 const PADDING_CHARS = 2;
+const ELLIPSIS = '...';
+const TIMESTAMP_LENGTH = 12;
 
 function formatTimestamp(timestamp: number): string {
 	const date = new Date(timestamp);
@@ -45,7 +47,7 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 	const maxVisibleLogs = Math.floor(viewportHeight / hGrid) - 2;
 	const visibleLogs = logs.slice(-maxVisibleLogs);
 
-	const maxMessageLength = PANEL_WIDTH_CHARS - 12;
+	const maxMessageLength = PANEL_WIDTH_CHARS - TIMESTAMP_LENGTH;
 
 	engine.startGroup(panelX, 0);
 
@@ -55,7 +57,7 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 		let message = logEntry.message;
 
 		if (message.length > maxMessageLength) {
-			message = message.substring(0, maxMessageLength - 3) + '...';
+			message = message.substring(0, maxMessageLength - ELLIPSIS.length) + ELLIPSIS;
 		}
 
 		const fullText = `${timestamp} ${message}`;

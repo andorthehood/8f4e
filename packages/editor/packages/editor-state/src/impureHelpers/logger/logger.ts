@@ -52,8 +52,8 @@ function addLogEntry(state: State, level: LogLevel, ...args: unknown[]): void {
 
 	state.console.logs.push(logEntry);
 
-	while (state.console.logs.length > state.console.maxLogs) {
-		state.console.logs.shift();
+	if (state.console.logs.length > state.console.maxLogs) {
+		state.console.logs = state.console.logs.slice(-state.console.maxLogs);
 	}
 }
 
