@@ -16,8 +16,8 @@ export default function editorSettings(store: StateManager<State>, events: Event
 				const colorSchemes = await state.callbacks.getListOfColorSchemes();
 				state.colorSchemes = colorSchemes;
 			} catch (err) {
-				warn(state, 'Failed to load color schemes:', err);
 				console.warn('Failed to load color schemes:', err);
+				warn(state, 'Failed to load color schemes');
 				state.colorSchemes = [];
 			}
 		}
@@ -30,8 +30,8 @@ export default function editorSettings(store: StateManager<State>, events: Event
 					store.set('editorSettings', loadedEditorSettings);
 				}
 			} catch (err) {
-				warn(state, 'Failed to load editor settings from storage:', err);
 				console.warn('Failed to load editor settings from storage:', err);
+				warn(state, 'Failed to load editor settings from storage');
 				state.editorSettings = { ...defaultState.editorSettings };
 			}
 		}

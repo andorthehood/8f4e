@@ -22,12 +22,6 @@ describe('logger', () => {
 			expect(mockState.console.logs[0].message).toBe('Test message');
 			expect(mockState.console.logs[0].timestamp).toBeGreaterThan(0);
 		});
-
-		it('should handle multiple arguments', () => {
-			log(mockState, 'Hello', 'World', 123);
-
-			expect(mockState.console.logs[0].message).toBe('Hello World 123');
-		});
 	});
 
 	describe('warn', () => {
@@ -35,6 +29,7 @@ describe('logger', () => {
 			warn(mockState, 'Warning message');
 
 			expect(mockState.console.logs[0].level).toBe('warn');
+			expect(mockState.console.logs[0].message).toBe('Warning message');
 		});
 	});
 
@@ -43,13 +38,7 @@ describe('logger', () => {
 			error(mockState, 'Error message');
 
 			expect(mockState.console.logs[0].level).toBe('error');
-		});
-
-		it('should serialize Error objects', () => {
-			const testError = new Error('Test error');
-			error(mockState, 'Failed:', testError);
-
-			expect(mockState.console.logs[0].message).toContain('Error: Test error');
+			expect(mockState.console.logs[0].message).toBe('Error message');
 		});
 	});
 
@@ -58,69 +47,7 @@ describe('logger', () => {
 			info(mockState, 'Info message');
 
 			expect(mockState.console.logs[0].level).toBe('info');
-		});
-	});
-
-	describe('serialization', () => {
-		it('should serialize null', () => {
-			log(mockState, null);
-
-			expect(mockState.console.logs[0].message).toBe('null');
-		});
-
-		it('should serialize undefined', () => {
-			log(mockState, undefined);
-
-			expect(mockState.console.logs[0].message).toBe('undefined');
-		});
-
-		it('should serialize numbers', () => {
-			log(mockState, 42);
-
-			expect(mockState.console.logs[0].message).toBe('42');
-		});
-
-		it('should serialize booleans', () => {
-			log(mockState, true);
-
-			expect(mockState.console.logs[0].message).toBe('true');
-		});
-
-		it('should serialize small arrays inline', () => {
-			log(mockState, [1, 2, 3]);
-
-			expect(mockState.console.logs[0].message).toBe('[1, 2, 3]');
-		});
-
-		it('should summarize large arrays', () => {
-			log(mockState, [1, 2, 3, 4, 5]);
-
-			expect(mockState.console.logs[0].message).toBe('[Array(5)]');
-		});
-
-		it('should serialize small objects inline', () => {
-			log(mockState, { a: 1, b: 2 });
-
-			expect(mockState.console.logs[0].message).toBe('{a: 1, b: 2}');
-		});
-
-		it('should summarize large objects', () => {
-			log(mockState, { a: 1, b: 2, c: 3, d: 4, e: 5 });
-
-			expect(mockState.console.logs[0].message).toBe('{Object(5 keys)}');
-		});
-
-		it('should serialize functions', () => {
-			function testFunction() {}
-			log(mockState, testFunction);
-
-			expect(mockState.console.logs[0].message).toBe('[Function: testFunction]');
-		});
-
-		it('should serialize anonymous functions', () => {
-			log(mockState, () => {});
-
-			expect(mockState.console.logs[0].message).toBe('[Function: anonymous]');
+			expect(mockState.console.logs[0].message).toBe('Info message');
 		});
 	});
 

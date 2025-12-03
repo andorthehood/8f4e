@@ -26,16 +26,16 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
 			})
 			.catch(err => {
-				warn(state, 'Failed to load project from storage:', err);
 				console.warn('Failed to load project from storage:', err);
+				warn(state, 'Failed to load project from storage');
 				loadProject({ project: EMPTY_DEFAULT_PROJECT });
 			});
 	});
 
 	async function loadProjectBySlug({ projectSlug }: { projectSlug: string }) {
 		if (!state.callbacks.getProject) {
-			warn(state, 'No getProject callback provided');
 			console.warn('No getProject callback provided');
+			warn(state, 'No getProject callback provided');
 			return;
 		}
 		const project = await state.callbacks.getProject(projectSlug);
@@ -69,10 +69,11 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				if (newProject.compiledModules) {
 					state.compiler.compiledModules = newProject.compiledModules;
 				}
+				console.log('[Loader] Pre-compiled WASM loaded and decoded successfully');
 				log(state, '[Loader] Pre-compiled WASM loaded and decoded successfully');
 			} catch (err) {
-				error(state, '[Loader] Failed to decode pre-compiled WASM:', err);
 				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
+				error(state, '[Loader] Failed to decode pre-compiled WASM');
 				state.compiler.codeBuffer = new Uint8Array();
 				state.compiler.memoryBuffer = new Int32Array();
 				state.compiler.memoryBufferFloat = new Float32Array();
@@ -134,8 +135,8 @@ export default function projectImport(store: StateManager<State>, events: EventD
 
 	function onImportProject() {
 		if (!state.callbacks.importProject) {
-			warn(state, 'No importProject callback provided');
 			console.warn('No importProject callback provided');
+			warn(state, 'No importProject callback provided');
 			return;
 		}
 
@@ -145,8 +146,8 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				loadProject({ project });
 			})
 			.catch(err => {
-				error(state, 'Failed to load project from file:', err);
 				console.error('Failed to load project from file:', err);
+				error(state, 'Failed to load project from file');
 			});
 	}
 
