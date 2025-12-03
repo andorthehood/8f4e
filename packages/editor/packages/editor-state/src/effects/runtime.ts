@@ -12,6 +12,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 
 	async function initRuntime() {
 		if (isInitializing) {
+			console.log('[Runtime] Runtime is already initializing, skipping...');
 			log(state, '[Runtime] Runtime is already initializing, skipping...');
 			return;
 		}
@@ -27,14 +28,17 @@ export default async function runtime(state: State, events: EventDispatcher) {
 
 		try {
 			if (runtimeDestroyer) {
+				console.log(`[Runtime] Destroying runtime: ${onlineRuntime}`);
 				log(state, `[Runtime] Destroying runtime: ${onlineRuntime}`);
 				runtimeDestroyer();
 				runtimeDestroyer = null;
 				onlineRuntime = null;
 			}
 
+			console.log(`[Runtime] Requesting runtime: ${runtime.runtime}`);
 			log(state, `[Runtime] Requesting runtime: ${runtime.runtime}`);
 			const runtimeFactory = await state.callbacks.requestRuntime(runtime.runtime as RuntimeType);
+			console.log(`[Runtime] Successfully loaded runtime: ${runtime.runtime}`);
 			log(state, `[Runtime] Successfully loaded runtime: ${runtime.runtime}`);
 
 			if (typeof runtimeFactory !== 'function') {
@@ -43,10 +47,11 @@ export default async function runtime(state: State, events: EventDispatcher) {
 
 			runtimeDestroyer = runtimeFactory(state, events);
 			onlineRuntime = runtime.runtime;
+			console.log(`[Runtime] Successfully initialized runtime: ${runtime.runtime}`);
 			log(state, `[Runtime] Successfully initialized runtime: ${runtime.runtime}`);
 		} catch (err) {
-			error(state, 'Failed to initialize runtime:', err);
 			console.error('Failed to initialize runtime:', err);
+			error(state, `Failed to initialize runtime: ${err instanceof Error ? err.message : 'Unknown error'}`);
 			throw new Error(
 				`Failed to load runtime ${runtime.runtime}: ${err instanceof Error ? err.message : 'Unknown error'}`
 			);
@@ -57,6 +62,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 
 	async function changeRuntime({ selectedRuntime }: { selectedRuntime: RuntimeType }) {
 		if (isInitializing) {
+			console.log('[Runtime] Cannot change runtime while initialization is in progress');
 			log(state, '[Runtime] Cannot change runtime while initialization is in progress');
 			return;
 		}
