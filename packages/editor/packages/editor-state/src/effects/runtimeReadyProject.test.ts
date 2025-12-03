@@ -254,8 +254,6 @@ describe('Runtime-ready project functionality', () => {
 			// No compileProject callback for runtime-only projects
 			mockState.callbacks.compileProject = undefined;
 
-			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
 			// Set up compiler functionality
 			compiler(store, mockEvents);
 
@@ -275,8 +273,8 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger recompilation
 			await onRecompileCallback();
 
-			// Verify pre-compiled WASM was recognized
-			expect(consoleSpy).toHaveBeenCalledWith('[Compiler] Using pre-compiled WASM from runtime-ready project');
+			// Verify pre-compiled WASM was recognized via internal logger
+			expect(mockState.console.logs.some(log => log.message.includes('[Compiler] Using pre-compiled WASM'))).toBe(true);
 
 			// Verify buildFinished was dispatched
 			expect(mockEvents.dispatch).toHaveBeenCalledWith('buildFinished');
@@ -288,8 +286,6 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockState.compiler.isCompiling).toBe(false);
 			expect(mockState.compiler.compilationErrors).toEqual([]);
 			expect(mockState.compiler.compilationTime).toBe(0);
-
-			consoleSpy.mockRestore();
 		});
 
 		it('should compile normally when no pre-compiled WASM is available', async () => {
