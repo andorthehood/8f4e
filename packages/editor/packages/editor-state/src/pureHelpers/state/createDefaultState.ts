@@ -93,5 +93,9 @@ export default function createDefaultState() {
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
 		configErrors: [],
+		console: {
+			logs: [],
+			maxLogs: 100,
+		},
 	};
 }

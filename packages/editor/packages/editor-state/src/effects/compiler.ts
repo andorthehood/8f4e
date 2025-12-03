@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
+import { log } from '../impureHelpers/logger';
 
 import type { CodeBlockGraphicData, State } from '../types';
 
@@ -23,7 +24,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
 		// If codeBuffer is populated and we don't have a compiler, skip compilation
 		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
-			console.log('[Compiler] Using pre-compiled WASM from runtime-ready project');
+			log(state, '[Compiler] Using pre-compiled WASM from runtime-ready project');
 			state.compiler.isCompiling = false;
 			state.compiler.compilationErrors = [];
 			events.dispatch('buildFinished');
