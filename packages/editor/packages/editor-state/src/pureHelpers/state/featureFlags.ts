@@ -14,6 +14,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	editing: true,
 	demoMode: false,
 	historyTracking: true,
+	consoleOverlay: false,
 };
 
 /**
