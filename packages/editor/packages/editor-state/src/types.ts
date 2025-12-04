@@ -515,6 +515,9 @@ export interface CompilationResult {
 	allocatedMemorySize: number;
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
+	hasMemoryBeenInitialized: boolean;
+	hasMemoryBeenReset: boolean;
+	hasWasmInstanceBeenReset: boolean;
 }
 
 // Callbacks interface contains all callback functions
