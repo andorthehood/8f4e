@@ -5,15 +5,7 @@ import type { State, LogMessage } from '@8f4e/editor-state';
 const PANEL_WIDTH_CHARS = 60;
 const PADDING_CHARS = 2;
 const ELLIPSIS = '...';
-const TIMESTAMP_LENGTH = 12;
-
-function formatTimestamp(timestamp: number): string {
-	const date = new Date(timestamp);
-	const hours = String(date.getHours()).padStart(2, '0');
-	const minutes = String(date.getMinutes()).padStart(2, '0');
-	const seconds = String(date.getSeconds()).padStart(2, '0');
-	return `[${hours}:${minutes}:${seconds}]`;
-}
+const FORMATTED_TIMESTAMP_LENGTH = 10;
 
 function getBackgroundSprite(level: LogMessage['level']): string {
 	switch (level) {
@@ -51,20 +43,19 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 
 	const panelHeightPixels = visibleCount * hGrid;
 
-	const maxMessageLength = PANEL_WIDTH_CHARS - TIMESTAMP_LENGTH;
+	const maxMessageLength = PANEL_WIDTH_CHARS - FORMATTED_TIMESTAMP_LENGTH;
 
 	engine.startGroup(panelX, viewportHeight - panelHeightPixels);
 
 	for (let i = 0; i < visibleCount; i++) {
 		const logEntry = logs[startIndex + i];
-		const timestamp = formatTimestamp(logEntry.timestamp);
 		let message = logEntry.message;
 
 		if (message.length > maxMessageLength) {
 			message = message.substring(0, maxMessageLength - ELLIPSIS.length) + ELLIPSIS;
 		}
 
-		const fullText = `${timestamp} ${message}`;
+		const fullText = `${logEntry.formattedTimestamp} ${message}`;
 		const backgroundSprite = getBackgroundSprite(logEntry.level);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
