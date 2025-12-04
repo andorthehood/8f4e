@@ -581,6 +581,8 @@ export interface EditorSettings {
 
 export interface LogMessage {
 	level: 'log' | 'warn' | 'error' | 'info';
+	category?: string;
+	timestamp: string;
 	message: string;
 }
 
