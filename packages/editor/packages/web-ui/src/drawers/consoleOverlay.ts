@@ -42,15 +42,18 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 	const viewportHeight = state.graphicHelper.viewport.roundedHeight;
 
 	const panelWidthPixels = (PANEL_WIDTH_CHARS + PADDING_CHARS) * vGrid;
+
 	const panelX = viewportWidth - panelWidthPixels;
 
-	const maxVisibleLogs = Math.floor(viewportHeight / hGrid) - 2;
+	const maxVisibleLogs = Math.floor(viewportHeight / hGrid / 2);
 	const startIndex = Math.max(0, logs.length - maxVisibleLogs);
 	const visibleCount = Math.min(logs.length, maxVisibleLogs);
 
+	const panelHeightPixels = visibleCount * hGrid;
+
 	const maxMessageLength = PANEL_WIDTH_CHARS - TIMESTAMP_LENGTH;
 
-	engine.startGroup(panelX, 0);
+	engine.startGroup(panelX, viewportHeight - panelHeightPixels);
 
 	for (let i = 0; i < visibleCount; i++) {
 		const logEntry = logs[startIndex + i];
