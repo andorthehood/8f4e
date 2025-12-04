@@ -183,7 +183,11 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project: runtimeReadyProject });
 
-			expect(mockState.console.logs.some(log => log.message.includes('[Loader] Pre-compiled WASM loaded'))).toBe(true);
+			expect(
+				mockState.console.logs.some(
+					log => log.message.includes('Pre-compiled WASM loaded') && log.category === '[Loader]'
+				)
+			).toBe(true);
 			expect(mockState.compiler.codeBuffer).not.toEqual(new Uint8Array());
 		});
 
