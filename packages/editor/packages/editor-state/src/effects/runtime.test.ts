@@ -80,12 +80,12 @@ describe('Runtime System', () => {
 			await runtimeEffect(state, events);
 
 			const onCalls = (events.on as MockInstance).mock.calls;
-			const buildFinishedCall = onCalls.find(call => call[0] === 'buildFinished');
-			expect(buildFinishedCall).toBeDefined();
+			const compilationFinishedCall = onCalls.find(call => call[0] === 'compilationFinished');
+			expect(compilationFinishedCall).toBeDefined();
 
-			const buildFinishedHandler = buildFinishedCall![1] as () => Promise<void>;
+			const compilationFinishedHandler = compilationFinishedCall![1] as () => Promise<void>;
 
-			await buildFinishedHandler();
+			await compilationFinishedHandler();
 
 			expect(requestRuntime).toHaveBeenCalledTimes(1);
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
@@ -95,7 +95,7 @@ describe('Runtime System', () => {
 			state.compiler.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
 			state.compiler.selectedRuntime = 0;
 
-			await buildFinishedHandler();
+			await compilationFinishedHandler();
 
 			expect(audioDestroyer).toHaveBeenCalledTimes(1);
 			expect(mainRuntimeFactory).toHaveBeenCalledTimes(1);
