@@ -3,8 +3,8 @@ title: 'TODO: Add Tests to Ensure src/examples/projects/* Compile Without Errors
 priority: Medium
 effort: 1–2d
 created: 2025-12-01
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-01
 ---
 
 # TODO: Add Tests to Ensure src/examples/projects/* Compile Without Errors
