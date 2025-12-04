@@ -27,7 +27,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
 			state.compiler.isCompiling = false;
 			state.compiler.compilationErrors = [];
-			events.dispatch('compilationFinished');
+			events.dispatch('buildFinished');
 			return;
 		}
 
@@ -85,7 +85,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 				'Compiler'
 			);
 
-			events.dispatch('compilationFinished');
+			events.dispatch('buildFinished');
 		} catch (error) {
 			state.compiler.isCompiling = false;
 			const errorObject = error as Error & {
