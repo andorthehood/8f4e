@@ -274,7 +274,11 @@ describe('Runtime-ready project functionality', () => {
 			await onRecompileCallback();
 
 			// Verify pre-compiled WASM was recognized via internal logger
-			expect(mockState.console.logs.some(log => log.message.includes('[Compiler] Using pre-compiled WASM'))).toBe(true);
+			expect(
+				mockState.console.logs.some(
+					log => log.message.includes('Using pre-compiled WASM') && log.category === '[Compiler]'
+				)
+			).toBe(true);
 
 			// Verify buildFinished was dispatched
 			expect(mockEvents.dispatch).toHaveBeenCalledWith('buildFinished');
