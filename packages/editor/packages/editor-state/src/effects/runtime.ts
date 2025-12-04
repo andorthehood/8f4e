@@ -12,8 +12,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 
 	async function initRuntime() {
 		if (isInitializing) {
-			console.log('[Runtime] Runtime is already initializing, skipping...');
-			log(state, '[Runtime] Runtime is already initializing, skipping...');
+			log(state, 'Runtime is already initializing, skipping...', 'Runtime');
 			return;
 		}
 
@@ -28,18 +27,15 @@ export default async function runtime(state: State, events: EventDispatcher) {
 
 		try {
 			if (runtimeDestroyer) {
-				console.log(`[Runtime] Destroying runtime: ${onlineRuntime}`);
-				log(state, `[Runtime] Destroying runtime: ${onlineRuntime}`);
+				log(state, `Destroying runtime: ${onlineRuntime}`, 'Runtime');
 				runtimeDestroyer();
 				runtimeDestroyer = null;
 				onlineRuntime = null;
 			}
 
-			console.log(`[Runtime] Requesting runtime: ${runtime.runtime}`);
-			log(state, `[Runtime] Requesting runtime: ${runtime.runtime}`);
+			log(state, `Requesting runtime: ${runtime.runtime}`, 'Runtime');
 			const runtimeFactory = await state.callbacks.requestRuntime(runtime.runtime as RuntimeType);
-			console.log(`[Runtime] Successfully loaded runtime: ${runtime.runtime}`);
-			log(state, `[Runtime] Successfully loaded runtime: ${runtime.runtime}`);
+			log(state, `Successfully loaded runtime: ${runtime.runtime}`, 'Runtime');
 
 			if (typeof runtimeFactory !== 'function') {
 				throw new Error(`Runtime ${runtime.runtime} callback did not return a valid factory function`);
@@ -47,8 +43,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 
 			runtimeDestroyer = runtimeFactory(state, events);
 			onlineRuntime = runtime.runtime;
-			console.log(`[Runtime] Successfully initialized runtime: ${runtime.runtime}`);
-			log(state, `[Runtime] Successfully initialized runtime: ${runtime.runtime}`);
+			log(state, `Successfully initialized runtime: ${runtime.runtime}`, 'Runtime');
 		} catch (err) {
 			console.error('Failed to initialize runtime:', err);
 			error(state, `Failed to initialize runtime: ${err instanceof Error ? err.message : 'Unknown error'}`);
@@ -62,8 +57,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 
 	async function changeRuntime({ selectedRuntime }: { selectedRuntime: RuntimeType }) {
 		if (isInitializing) {
-			console.log('[Runtime] Cannot change runtime while initialization is in progress');
-			log(state, '[Runtime] Cannot change runtime while initialization is in progress');
+			log(state, 'Cannot change runtime while initialization is in progress', 'Runtime');
 			return;
 		}
 
