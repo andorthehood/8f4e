@@ -3,7 +3,8 @@ title: 'TODO: Console Overlay'
 priority: Medium
 effort: 3-5 days
 created: 2025-12-03
-status: Open
+status: Completed
+completed: 2025-12-04
 ---
 
 # TODO: Console Overlay
