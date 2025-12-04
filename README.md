@@ -8,23 +8,25 @@
 
 The 8f4e project is organized as an Nx monorepo with the following package hierarchy:
 
-```
+<pre>
 8f4e/
 └── packages/
     ├── compiler (The core compiler that transforms 8f4e code into WebAssembly)
     ├── compiler-worker (Web Worker wrapper around the compiler)
+    ├── <a href="./packages/config/README.md">config</a> (Shared tooling and configuration helpers for the workspace)
     ├── editor (The main editor package with UI components and state management)
     │   └── packages/
     │       ├── editor-state (Editor state management)
-    │       ├── glugglug (2D WebGL graphics utilities)
-    │       ├── sprite-generator (All UI graphics are generative)
-    │       ├── state-manager (State manager with subscriptions)
-    │       └── web-ui (WebGL rendering for the editor interface)
+    │       ├── <a href="./packages/editor/packages/glugglug/README.md">glugglug</a> (2D WebGL graphics utilities)
+    │       ├── <a href="./packages/editor/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
+    │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
+    │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)
     ├── runtime-audio-worklet     ┐ 
     ├── runtime-main-thread-logic │ (Various runtime environments 
     ├── runtime-web-worker-logic  │ for different execution contexts)
-    └── runtime-web-worker-midi   ┘
-```
+    ├── runtime-web-worker-midi   ┘
+    └── <a href="./packages/stack-config-compiler/README.md">stack-config-compiler</a> (Stack-machine-inspired config language compiler)
+</pre>
 
 ## Documentation
 
