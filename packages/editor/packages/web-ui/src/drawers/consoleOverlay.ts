@@ -2,7 +2,7 @@ import { Engine } from 'glugglug';
 
 import type { State, LogMessage } from '@8f4e/editor-state';
 
-const PADDING_CHARS = 2;
+const PADDING_CHARS = 1;
 const ELLIPSIS = '...';
 
 function getBackgroundSprite(level: LogMessage['level']): string {
@@ -26,23 +26,20 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 		return;
 	}
 
-	const vGrid = state.graphicHelper.viewport.vGrid;
-	const hGrid = state.graphicHelper.viewport.hGrid;
-	const viewportWidth = state.graphicHelper.viewport.roundedWidth;
-	const viewportHeight = state.graphicHelper.viewport.roundedHeight;
-
-	const panelWidthPixels = Math.floor(viewportWidth / 2) + PADDING_CHARS * vGrid;
-	const panelWidthChars = Math.floor(viewportWidth / 2 / vGrid);
-
-	const panelX = viewportWidth - panelWidthPixels;
+	const { vGrid, hGrid, roundedWidth: viewportWidth, roundedHeight: viewportHeight } = state.graphicHelper.viewport;
 
 	const maxVisibleLogs = Math.floor(viewportHeight / hGrid / 2);
 	const startIndex = Math.max(0, logs.length - maxVisibleLogs);
 	const visibleCount = Math.min(logs.length, maxVisibleLogs);
 
+	const panelWidthChars = Math.floor(viewportWidth / 2 / vGrid);
+	const panelWidthPixels = Math.floor(viewportWidth / 2) + PADDING_CHARS * vGrid;
 	const panelHeightPixels = visibleCount * hGrid;
 
-	engine.startGroup(panelX, viewportHeight - panelHeightPixels);
+	const panelX = viewportWidth - panelWidthPixels;
+	const panelY = viewportHeight - panelHeightPixels - PADDING_CHARS * hGrid;
+
+	engine.startGroup(panelX, panelY);
 
 	for (let i = 0; i < visibleCount; i++) {
 		const logEntry = logs[startIndex + i];
