@@ -30,6 +30,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable history tracking for undo/redo functionality */
 	historyTracking?: boolean;
+
+	/** Enable/disable console overlay display (internal logging) */
+	consoleOverlay: boolean;
 }
 
 /**
@@ -576,6 +579,18 @@ export interface EditorSettings {
 	font: Font;
 }
 
+export interface LogMessage {
+	level: 'log' | 'warn' | 'error' | 'info';
+	category?: string;
+	timestamp: string;
+	message: string;
+}
+
+export interface ConsoleState {
+	logs: LogMessage[];
+	maxLogs: number;
+}
+
 export interface State {
 	/** Basic project information (title, author, description) */
 	projectInfo: ProjectInfo;
@@ -593,4 +608,6 @@ export interface State {
 	binaryAssets: BinaryAsset[];
 	/** Errors from config block compilation */
 	configErrors: ConfigError[];
+	/** Console state for internal logging */
+	console: ConsoleState;
 }
