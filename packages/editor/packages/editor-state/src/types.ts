@@ -582,7 +582,6 @@ export interface EditorSettings {
 export interface LogMessage {
 	level: 'log' | 'warn' | 'error' | 'info';
 	message: string;
-	formattedTimestamp: string;
 }
 
 export interface ConsoleState {
