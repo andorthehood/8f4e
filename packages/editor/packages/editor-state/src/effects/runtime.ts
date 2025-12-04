@@ -41,7 +41,6 @@ export default async function runtime(state: State, events: EventDispatcher) {
 				throw new Error(`Runtime ${runtime.runtime} callback did not return a valid factory function`);
 			}
 
-			runtimeDestroyer = runtimeFactory(state, events);
 			onlineRuntime = runtime.runtime;
 			log(state, `Successfully initialized runtime: ${runtime.runtime}`, 'Runtime');
 		} catch (err) {
@@ -85,6 +84,6 @@ export default async function runtime(state: State, events: EventDispatcher) {
 		await initRuntime();
 	}
 
-	events.on('buildFinished', initRuntime);
+	events.on('compilationFinished', initRuntime);
 	events.on('changeRuntime', changeRuntime);
 }
