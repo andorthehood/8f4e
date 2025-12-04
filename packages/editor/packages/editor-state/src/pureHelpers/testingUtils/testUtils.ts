@@ -292,6 +292,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			editing: true,
 			viewportAnimations: true,
 			demoMode: false,
+			consoleOverlay: false,
 		},
 		colorSchemes: [],
 		historyStack: [],
@@ -299,6 +300,10 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
 		configErrors: [],
+		console: {
+			logs: [],
+			maxLogs: 100,
+		},
 	};
 
 	return mergeDeep(defaults, overrides);
