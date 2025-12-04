@@ -23,6 +23,7 @@ export const defaultFeatureFlags = {
 	editing: true,
 	demoMode: false,
 	historyTracking: true,
+	consoleOverlay: true,
 };
 
 /**

@@ -122,6 +122,8 @@ export type {
 	EventDispatcher,
 	InternalMouseEvent,
 	InternalKeyboardEvent,
+	LogMessage,
+	ConsoleState,
 } from './types';
 
 // Export EMPTY_DEFAULT_PROJECT as a value
