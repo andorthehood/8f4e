@@ -13,8 +13,7 @@ function formatTimestamp(): string {
 function addLogEntry(state: State, level: LogLevel, message: string): void {
 	const logEntry: LogMessage = {
 		level,
-		message,
-		formattedTimestamp: formatTimestamp(),
+		message: `${formatTimestamp()} ${message}`,
 	};
 
 	state.console.logs.push(logEntry);
