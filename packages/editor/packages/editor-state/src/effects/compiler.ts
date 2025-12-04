@@ -27,7 +27,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
 			state.compiler.isCompiling = false;
 			state.compiler.compilationErrors = [];
-			events.dispatch('buildFinished');
+			events.dispatch('compilationFinished');
 			return;
 		}
 
@@ -70,14 +70,22 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			state.compiler.compilationErrors = [];
 
+			if (result.hasMemoryBeenReset) {
+				log(state, 'WASM Memory instance was (re)created', 'Compiler');
+			}
+
+			if (result.hasMemoryBeenInitialized) {
+				log(state, 'Memory was (re)initialized', 'Compiler');
+				events.dispatch('loadBinaryFilesIntoMemory');
+			}
+
 			log(
 				state,
 				'Compilation succeeded in ' + Math.round(state.compiler.compilationTime * 100) / 100 + 'ms',
 				'Compiler'
 			);
 
-			events.dispatch('loadBinaryFilesIntoMemory');
-			events.dispatch('buildFinished');
+			events.dispatch('compilationFinished');
 		} catch (error) {
 			state.compiler.isCompiling = false;
 			const errorObject = error as Error & {
