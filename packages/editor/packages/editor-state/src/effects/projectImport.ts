@@ -69,11 +69,10 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				if (newProject.compiledModules) {
 					state.compiler.compiledModules = newProject.compiledModules;
 				}
-				console.log('[Loader] Pre-compiled WASM loaded and decoded successfully');
-				log(state, '[Loader] Pre-compiled WASM loaded and decoded successfully');
+				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
 			} catch (err) {
 				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
-				error(state, '[Loader] Failed to decode pre-compiled WASM');
+				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
 				state.compiler.codeBuffer = new Uint8Array();
 				state.compiler.memoryBuffer = new Int32Array();
 				state.compiler.memoryBufferFloat = new Float32Array();
