@@ -24,8 +24,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
 		// If codeBuffer is populated and we don't have a compiler, skip compilation
 		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
-			console.log('[Compiler] Using pre-compiled WASM from runtime-ready project');
-			log(state, '[Compiler] Using pre-compiled WASM from runtime-ready project');
+			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
 			state.compiler.isCompiling = false;
 			state.compiler.compilationErrors = [];
 			events.dispatch('buildFinished');
@@ -71,6 +70,12 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			state.compiler.compilationErrors = [];
 
+			log(
+				state,
+				'Compilation succeeded in ' + Math.round(state.compiler.compilationTime * 100) / 100 + 'ms',
+				'Compiler'
+			);
+
 			events.dispatch('loadBinaryFilesIntoMemory');
 			events.dispatch('buildFinished');
 		} catch (error) {
@@ -88,6 +93,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 					message: errorObject?.message || error?.toString() || 'Compilation failed',
 				},
 			];
+
 			events.dispatch('compilationError');
 		}
 	}
