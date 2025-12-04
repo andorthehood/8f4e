@@ -19,7 +19,16 @@ describe('logger', () => {
 
 			expect(mockState.console.logs).toHaveLength(1);
 			expect(mockState.console.logs[0].level).toBe('log');
-			expect(mockState.console.logs[0].message).toMatch(/^\[\d{2}:\d{2}:\d{2}\] Test message$/);
+			expect(mockState.console.logs[0].message).toBe('Test message');
+			expect(mockState.console.logs[0].timestamp).toMatch(/^\[\d{2}:\d{2}:\d{2}\]$/);
+			expect(mockState.console.logs[0].category).toBeUndefined();
+		});
+
+		it('should add a log entry with category', () => {
+			log(mockState, 'Test message', 'TestCategory');
+
+			expect(mockState.console.logs[0].message).toBe('Test message');
+			expect(mockState.console.logs[0].category).toBe('[TestCategory]');
 		});
 	});
 
@@ -28,7 +37,8 @@ describe('logger', () => {
 			warn(mockState, 'Warning message');
 
 			expect(mockState.console.logs[0].level).toBe('warn');
-			expect(mockState.console.logs[0].message).toMatch(/^\[\d{2}:\d{2}:\d{2}\] Warning message$/);
+			expect(mockState.console.logs[0].message).toBe('Warning message');
+			expect(mockState.console.logs[0].timestamp).toMatch(/^\[\d{2}:\d{2}:\d{2}\]$/);
 		});
 	});
 
@@ -37,7 +47,8 @@ describe('logger', () => {
 			error(mockState, 'Error message');
 
 			expect(mockState.console.logs[0].level).toBe('error');
-			expect(mockState.console.logs[0].message).toMatch(/^\[\d{2}:\d{2}:\d{2}\] Error message$/);
+			expect(mockState.console.logs[0].message).toBe('Error message');
+			expect(mockState.console.logs[0].timestamp).toMatch(/^\[\d{2}:\d{2}:\d{2}\]$/);
 		});
 	});
 
@@ -46,7 +57,8 @@ describe('logger', () => {
 			info(mockState, 'Info message');
 
 			expect(mockState.console.logs[0].level).toBe('info');
-			expect(mockState.console.logs[0].message).toMatch(/^\[\d{2}:\d{2}:\d{2}\] Info message$/);
+			expect(mockState.console.logs[0].message).toBe('Info message');
+			expect(mockState.console.logs[0].timestamp).toMatch(/^\[\d{2}:\d{2}:\d{2}\]$/);
 		});
 	});
 
@@ -59,8 +71,8 @@ describe('logger', () => {
 			}
 
 			expect(mockState.console.logs).toHaveLength(5);
-			expect(mockState.console.logs[0].message).toMatch(/^\[\d{2}:\d{2}:\d{2}\] Message 5$/);
-			expect(mockState.console.logs[4].message).toMatch(/^\[\d{2}:\d{2}:\d{2}\] Message 9$/);
+			expect(mockState.console.logs[0].message).toBe('Message 5');
+			expect(mockState.console.logs[4].message).toBe('Message 9');
 		});
 	});
 });
