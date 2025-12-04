@@ -20,6 +20,9 @@ export async function compileProject(modules: Module[], compilerOptions: Compile
 						allocatedMemorySize: data.payload.allocatedMemorySize,
 						memoryBuffer: new Int32Array(data.payload.wasmMemory.buffer),
 						memoryBufferFloat: new Float32Array(data.payload.wasmMemory.buffer),
+						hasMemoryBeenInitialized: data.payload.hasMemoryBeenInitialized,
+						hasMemoryBeenReset: data.payload.hasMemoryBeenReset,
+						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
 					});
 					break;
 				case 'compilationError': {
