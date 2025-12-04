@@ -2,7 +2,6 @@ import { Engine } from 'glugglug';
 
 import type { State, LogMessage } from '@8f4e/editor-state';
 
-const PANEL_WIDTH_CHARS = 60;
 const PADDING_CHARS = 2;
 const ELLIPSIS = '...';
 
@@ -32,7 +31,8 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 	const viewportWidth = state.graphicHelper.viewport.roundedWidth;
 	const viewportHeight = state.graphicHelper.viewport.roundedHeight;
 
-	const panelWidthPixels = (PANEL_WIDTH_CHARS + PADDING_CHARS) * vGrid;
+	const panelWidthPixels = Math.floor(viewportWidth / 2) + PADDING_CHARS * vGrid;
+	const panelWidthChars = Math.floor(viewportWidth / 2 / vGrid);
 
 	const panelX = viewportWidth - panelWidthPixels;
 
@@ -48,17 +48,26 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 		const logEntry = logs[startIndex + i];
 		let message = logEntry.message;
 
-		if (message.length > PANEL_WIDTH_CHARS) {
-			message = message.substring(0, PANEL_WIDTH_CHARS - ELLIPSIS.length) + ELLIPSIS;
+		if (message.length > panelWidthChars) {
+			message = message.substring(0, panelWidthChars - ELLIPSIS.length) + ELLIPSIS;
 		}
+
+		const messageWithTimestamp =
+			message + ' ' + (logEntry.category ? `${logEntry.category} ` : '') + logEntry.timestamp;
 
 		const backgroundSprite = getBackgroundSprite(logEntry.level);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-		engine.drawSprite(0, i * hGrid, backgroundSprite, panelWidthPixels, hGrid);
+		engine.drawSprite(
+			(panelWidthChars - messageWithTimestamp.length) * vGrid,
+			i * hGrid,
+			backgroundSprite,
+			panelWidthPixels,
+			hGrid
+		);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-		engine.drawText(vGrid, i * hGrid, message);
+		engine.drawText((panelWidthChars - messageWithTimestamp.length) * vGrid, i * hGrid, messageWithTimestamp);
 	}
 
 	engine.endGroup();
