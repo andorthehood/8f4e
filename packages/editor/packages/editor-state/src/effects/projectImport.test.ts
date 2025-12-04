@@ -181,14 +181,14 @@ describe('projectImport', () => {
 				memorySnapshot: 'AQAAAA==', // base64 for minimal Int32Array
 			};
 
-			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
-
 			loadProjectCallback({ project: runtimeReadyProject });
 
-			expect(consoleSpy).toHaveBeenCalledWith('[Loader] Pre-compiled WASM loaded and decoded successfully');
+			expect(
+				mockState.console.logs.some(
+					log => log.message.includes('Pre-compiled WASM loaded') && log.category === '[Loader]'
+				)
+			).toBe(true);
 			expect(mockState.compiler.codeBuffer).not.toEqual(new Uint8Array());
-
-			consoleSpy.mockRestore();
 		});
 
 		it('should handle decoding errors gracefully', () => {
