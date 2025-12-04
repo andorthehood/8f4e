@@ -5,7 +5,6 @@ import type { State, LogMessage } from '@8f4e/editor-state';
 const PANEL_WIDTH_CHARS = 60;
 const PADDING_CHARS = 2;
 const ELLIPSIS = '...';
-const FORMATTED_TIMESTAMP_LENGTH = 10;
 
 function getBackgroundSprite(level: LogMessage['level']): string {
 	switch (level) {
@@ -43,26 +42,23 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 
 	const panelHeightPixels = visibleCount * hGrid;
 
-	const maxMessageLength = PANEL_WIDTH_CHARS - FORMATTED_TIMESTAMP_LENGTH;
-
 	engine.startGroup(panelX, viewportHeight - panelHeightPixels);
 
 	for (let i = 0; i < visibleCount; i++) {
 		const logEntry = logs[startIndex + i];
 		let message = logEntry.message;
 
-		if (message.length > maxMessageLength) {
-			message = message.substring(0, maxMessageLength - ELLIPSIS.length) + ELLIPSIS;
+		if (message.length > PANEL_WIDTH_CHARS) {
+			message = message.substring(0, PANEL_WIDTH_CHARS - ELLIPSIS.length) + ELLIPSIS;
 		}
 
-		const fullText = `${logEntry.formattedTimestamp} ${message}`;
 		const backgroundSprite = getBackgroundSprite(logEntry.level);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 		engine.drawSprite(0, i * hGrid, backgroundSprite, panelWidthPixels, hGrid);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-		engine.drawText(vGrid, i * hGrid, fullText);
+		engine.drawText(vGrid, i * hGrid, message);
 	}
 
 	engine.endGroup();
