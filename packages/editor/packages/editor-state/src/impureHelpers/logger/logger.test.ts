@@ -20,7 +20,7 @@ describe('logger', () => {
 			expect(mockState.console.logs).toHaveLength(1);
 			expect(mockState.console.logs[0].level).toBe('log');
 			expect(mockState.console.logs[0].message).toBe('Test message');
-			expect(mockState.console.logs[0].timestamp).toBeGreaterThan(0);
+			expect(mockState.console.logs[0].formattedTimestamp).toMatch(/^\[\d{2}:\d{2}:\d{2}\]$/);
 		});
 	});
 
