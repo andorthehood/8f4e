@@ -60,6 +60,9 @@ export default async function init(
 		state.graphicHelper.viewport.y = effectiveViewport.y;
 
 		drawBackground(engine, state);
+		if (state.featureFlags.consoleOverlay) {
+			drawConsoleOverlay(engine, state);
+		}
 		drawCodeBlocks(engine, state);
 		drawConnections(engine, state);
 		if (state.featureFlags.infoOverlay) {
@@ -69,9 +72,6 @@ export default async function init(
 				vertices,
 				maxVertices,
 			});
-		}
-		if (state.featureFlags.consoleOverlay) {
-			drawConsoleOverlay(engine, state);
 		}
 		drawDialog(engine, state);
 		drawContextMenu(engine, state);
