@@ -56,7 +56,7 @@ export default async function compileAndUpdateMemory(
 
 	let hasMemoryBeenInitialized = false;
 
-	if (!previousCompiledModules || memoryStructureChange) {
+	if (!previousCompiledModules || memoryStructureChange || hasMemoryBeenReset) {
 		init();
 		hasMemoryBeenInitialized = true;
 	} else {
