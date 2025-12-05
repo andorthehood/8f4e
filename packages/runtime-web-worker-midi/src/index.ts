@@ -14,9 +14,9 @@ let interval: ReturnType<typeof setInterval>;
 let statsInterval: ReturnType<typeof setInterval>;
 let memoryBuffer: Int32Array;
 let midiCCInputModules: Map<string, MidiCCModuleAddresses> = new Map();
-let timeToExecute: number;
+let timeToExecuteLoopMs: number;
 let lastIntervalTime: number;
-let drift = 0;
+let timerDriftMs: number;
 
 async function init(
 	memoryRef: WebAssembly.Memory,
@@ -41,11 +41,11 @@ async function init(
 
 		interval = setInterval(() => {
 			const startTime = performance.now();
-			drift += intervalTime - (startTime - lastIntervalTime);
+			timerDriftMs = startTime - lastIntervalTime - intervalTime;
 			lastIntervalTime = startTime;
 			wasmApp.cycle();
 			const endTime = performance.now();
-			timeToExecute = endTime - startTime;
+			timeToExecuteLoopMs = endTime - startTime;
 			broadcastMidiCCMessages(midiCCOutputModules, memoryBuffer);
 			broadcastMidiMessages(midiNoteModules, memoryBuffer);
 		}, intervalTime);
@@ -54,8 +54,10 @@ async function init(
 			self.postMessage({
 				type: 'stats',
 				payload: {
-					drift,
-					timeToExecute,
+					timerPrecisionPercentage: 100 - Math.abs(timerDriftMs / intervalTime) * 100,
+					timeToExecuteLoopMs,
+					timerDriftMs,
+					timerExpectedIntervalTimeMs: intervalTime,
 				},
 			});
 		}, 10000);

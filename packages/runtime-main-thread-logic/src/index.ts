@@ -4,20 +4,24 @@ export interface MainThreadLogicRuntime {
 	init: (memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) => Promise<void>;
 	start: () => void;
 	stop: () => void;
-	getStats: () => { drift: number; timeToExecute: number };
 	isRunning: () => boolean;
 }
 
 export default function createMainThreadLogicRuntime(
 	onInitialized: () => void,
-	onStats: (stats: { drift: number; timeToExecute: number }) => void,
+	onStats: (stats: {
+		timerPrecisionPercentage: number;
+		timeToExecuteLoopMs: number;
+		timerDriftMs: number;
+		timerExpectedIntervalTimeMs: number;
+	}) => void,
 	onError: (error: unknown) => void
 ): MainThreadLogicRuntime {
 	let interval: ReturnType<typeof setInterval> | undefined;
 	let statsInterval: ReturnType<typeof setInterval> | undefined;
-	let timeToExecute = 0;
+	let timeToExecuteLoopMs = 0;
 	let lastIntervalTime = 0;
-	let drift = 0;
+	let timerDriftMs = 0;
 	let wasmApp: { cycle: CallableFunction } | null = null;
 	let isRunning = false;
 
@@ -32,19 +36,20 @@ export default function createMainThreadLogicRuntime(
 
 			interval = setInterval(() => {
 				if (!wasmApp) return;
-
 				const startTime = performance.now();
-				drift += intervalTime - (startTime - lastIntervalTime);
+				timerDriftMs = startTime - lastIntervalTime - intervalTime;
 				lastIntervalTime = startTime;
 				wasmApp.cycle();
 				const endTime = performance.now();
-				timeToExecute = endTime - startTime;
+				timeToExecuteLoopMs = endTime - startTime;
 			}, intervalTime);
 
 			statsInterval = setInterval(() => {
 				onStats({
-					drift,
-					timeToExecute,
+					timerPrecisionPercentage: 100 - Math.abs(timerDriftMs / intervalTime) * 100,
+					timeToExecuteLoopMs,
+					timerDriftMs,
+					timerExpectedIntervalTimeMs: intervalTime,
 				});
 			}, 10000);
 
@@ -74,13 +79,6 @@ export default function createMainThreadLogicRuntime(
 		isRunning = false;
 	}
 
-	function getStats() {
-		return {
-			drift,
-			timeToExecute,
-		};
-	}
-
 	function getIsRunning() {
 		return isRunning;
 	}
@@ -89,7 +87,6 @@ export default function createMainThreadLogicRuntime(
 		init,
 		start,
 		stop,
-		getStats,
 		isRunning: getIsRunning,
 	};
 }
