@@ -34,7 +34,7 @@ describe('applyConfigToState', () => {
 	it('should apply selectedRuntime', () => {
 		const state = createMockState();
 		applyConfigToState(state, { selectedRuntime: 1 });
-		expect(state.compiler.selectedRuntime).toBe(1);
+		expect(state.runtime.selectedRuntime).toBe(1);
 	});
 
 	it('should apply runtimeSettings', () => {
@@ -44,23 +44,23 @@ describe('applyConfigToState', () => {
 			{ runtime: 'WebWorkerLogicRuntime' as const, sampleRate: 50 },
 		];
 		applyConfigToState(state, { runtimeSettings });
-		expect(state.compiler.runtimeSettings).toEqual(runtimeSettings);
+		expect(state.runtime.runtimeSettings).toEqual(runtimeSettings);
 	});
 
 	it('should not apply invalid runtimeSettings', () => {
 		const state = createMockState();
-		const originalSettings = [...state.compiler.runtimeSettings];
+		const originalSettings = [...state.runtime.runtimeSettings];
 		const config = { runtimeSettings: [{ invalid: true }] } as unknown as ConfigObject;
 		applyConfigToState(state, config);
-		expect(state.compiler.runtimeSettings).toEqual(originalSettings);
+		expect(state.runtime.runtimeSettings).toEqual(originalSettings);
 	});
 
 	it('should not apply runtimeSettings with invalid runtime type', () => {
 		const state = createMockState();
-		const originalSettings = [...state.compiler.runtimeSettings];
+		const originalSettings = [...state.runtime.runtimeSettings];
 		const config = { runtimeSettings: [{ runtime: 'InvalidRuntime', sampleRate: 44100 }] } as unknown as ConfigObject;
 		applyConfigToState(state, config);
-		expect(state.compiler.runtimeSettings).toEqual(originalSettings);
+		expect(state.runtime.runtimeSettings).toEqual(originalSettings);
 	});
 
 	it('should handle partial config', () => {
