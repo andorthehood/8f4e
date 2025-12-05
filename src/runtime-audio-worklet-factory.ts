@@ -14,7 +14,7 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 	let mediaStreamSource: MediaStreamAudioSourceNode | null = null;
 
 	function syncCodeAndSettingsWithRuntime() {
-		const runtime = state.compiler.runtimeSettings[state.compiler.selectedRuntime];
+		const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
 
 		if (runtime.runtime !== 'AudioWorkletRuntime' || !audioWorklet || !audioContext) {
 			return;
@@ -64,7 +64,7 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 	}
 
 	async function initAudioContext() {
-		const runtime = state.compiler.runtimeSettings[state.compiler.selectedRuntime];
+		const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
 
 		if (audioContext || runtime.runtime !== 'AudioWorkletRuntime') {
 			return;

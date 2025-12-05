@@ -14,8 +14,18 @@ export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
 		events.dispatch('runtimeInitialized');
 	}
 
-	function onStats(stats: { drift: number; timeToExecute: number }) {
-		console.log(stats);
+	function onStats(stats: {
+		timerPrecisionPercentage: number;
+		timeToExecuteLoopMs: number;
+		timerDriftMs: number;
+		timerExpectedIntervalTimeMs: number;
+	}) {
+		state.runtime.stats = {
+			timerPrecisionPercentage: stats.timerPrecisionPercentage,
+			timeToExecuteLoopMs: stats.timeToExecuteLoopMs,
+			timerDriftMs: stats.timerDriftMs,
+			timerExpectedIntervalTimeMs: stats.timerExpectedIntervalTimeMs,
+		};
 	}
 
 	function onError(error: unknown) {
@@ -33,7 +43,7 @@ export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
 		}
 		runtime.init(
 			memory,
-			state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
+			state.runtime.runtimeSettings[state.runtime.selectedRuntime].sampleRate,
 			state.compiler.codeBuffer
 		);
 	}
