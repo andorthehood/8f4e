@@ -39,6 +39,7 @@ async function init(
 
 		const intervalTime = Math.floor(1000 / sampleRate);
 
+		lastIntervalTime = performance.now();
 		interval = setInterval(() => {
 			const startTime = performance.now();
 			timerDriftMs = startTime - lastIntervalTime - intervalTime;
