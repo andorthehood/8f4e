@@ -44,7 +44,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 					constants: {
 						...state.compiler.compilerOptions.environmentExtensions.constants,
 						SAMPLE_RATE: {
-							value: state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
+							value: state.runtime.runtimeSettings[state.runtime.selectedRuntime].sampleRate,
 							isInteger: true,
 						},
 						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
@@ -70,13 +70,17 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			state.compiler.compilationErrors = [];
 
-			log(
-				state,
-				'Compilation succeeded in ' + Math.round(state.compiler.compilationTime * 100) / 100 + 'ms',
-				'Compiler'
-			);
+			if (result.hasMemoryBeenReset) {
+				log(state, 'WASM Memory instance was (re)created', 'Compiler');
+			}
 
-			events.dispatch('loadBinaryFilesIntoMemory');
+			if (result.hasMemoryBeenInitialized) {
+				log(state, 'Memory was (re)initialized', 'Compiler');
+				events.dispatch('loadBinaryFilesIntoMemory');
+			}
+
+			log(state, 'Compilation succeeded in ' + state.compiler.compilationTime.toFixed(2) + 'ms', 'Compiler');
+
 			events.dispatch('buildFinished');
 		} catch (error) {
 			state.compiler.isCompiling = false;

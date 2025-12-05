@@ -16,7 +16,7 @@ export default async function runtime(state: State, events: EventDispatcher) {
 			return;
 		}
 
-		const runtime = state.compiler.runtimeSettings[state.compiler.selectedRuntime];
+		const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
 
 		if (onlineRuntime === runtime.runtime) {
 			events.dispatch('syncCodeAndSettingsWithRuntime');
@@ -70,13 +70,13 @@ export default async function runtime(state: State, events: EventDispatcher) {
 			runtimeDestroyer = null;
 		}
 
-		const preSavedRuntime = state.compiler.runtimeSettings.findIndex(({ runtime }) => runtime === selectedRuntime);
+		const preSavedRuntime = state.runtime.runtimeSettings.findIndex(({ runtime }) => runtime === selectedRuntime);
 
 		if (preSavedRuntime !== -1) {
-			state.compiler.selectedRuntime = preSavedRuntime;
+			state.runtime.selectedRuntime = preSavedRuntime;
 		} else {
-			state.compiler.selectedRuntime =
-				state.compiler.runtimeSettings.push({
+			state.runtime.selectedRuntime =
+				state.runtime.runtimeSettings.push({
 					runtime: selectedRuntime,
 					sampleRate: 50,
 				}) - 1;
