@@ -173,18 +173,14 @@ export interface ConfigError {
 export interface Compiler {
 	codeBuffer: Uint8Array;
 	compilationTime: number;
-	cycleTime: number;
 	isCompiling: boolean;
 	lastCompilationStart: number;
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
-	timerAccuracy: number;
 	compiledModules: CompiledModuleLookup;
 	compilationErrors: CompilationError[];
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
-	runtimeSettings: Runtimes[];
-	selectedRuntime: number;
 }
 
 export interface Midi {
@@ -515,6 +511,9 @@ export interface CompilationResult {
 	allocatedMemorySize: number;
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
+	hasMemoryBeenInitialized: boolean;
+	hasMemoryBeenReset: boolean;
+	hasWasmInstanceBeenReset: boolean;
 }
 
 // Callbacks interface contains all callback functions
@@ -591,6 +590,13 @@ export interface ConsoleState {
 	maxLogs: number;
 }
 
+export interface RuntimeStats {
+	timerPrecisionPercentage: number;
+	timeToExecuteLoopMs: number;
+	timerDriftMs: number;
+	timerExpectedIntervalTimeMs: number;
+}
+
 export interface State {
 	/** Basic project information (title, author, description) */
 	projectInfo: ProjectInfo;
@@ -610,4 +616,9 @@ export interface State {
 	configErrors: ConfigError[];
 	/** Console state for internal logging */
 	console: ConsoleState;
+	runtime: {
+		runtimeSettings: Runtimes[];
+		selectedRuntime: number;
+		stats: RuntimeStats;
+	};
 }
