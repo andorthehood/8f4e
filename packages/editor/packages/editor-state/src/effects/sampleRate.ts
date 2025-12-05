@@ -4,7 +4,7 @@ import type { State } from '../types';
 
 export default async function sampleRate(state: State, events: EventDispatcher): Promise<void> {
 	function onSetSampleRate({ sampleRate }: { sampleRate: number }) {
-		state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate = sampleRate;
+		state.runtime.runtimeSettings[state.runtime.selectedRuntime].sampleRate = sampleRate;
 		events.dispatch('initRuntime');
 	}
 
