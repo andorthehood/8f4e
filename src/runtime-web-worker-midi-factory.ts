@@ -46,7 +46,12 @@ export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 				events.dispatch('runtimeInitialized');
 				break;
 			case 'stats':
-				console.log(data.payload);
+				state.runtime.stats = {
+					timerPrecisionPercentage: data.payload.timerPrecisionPercentage,
+					timeToExecuteLoopMs: data.payload.timeToExecuteLoopMs,
+					timerDriftMs: data.payload.timerDriftMs,
+					timerExpectedIntervalTimeMs: data.payload.timerExpectedIntervalTimeMs,
+				};
 				break;
 		}
 	}
@@ -64,7 +69,7 @@ export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 			type: 'init',
 			payload: {
 				memoryRef: memory,
-				sampleRate: state.compiler.runtimeSettings[state.compiler.selectedRuntime].sampleRate,
+				sampleRate: state.runtime.runtimeSettings[state.runtime.selectedRuntime].sampleRate,
 				codeBuffer: state.compiler.codeBuffer,
 				compiledModules: state.compiler.compiledModules,
 			},

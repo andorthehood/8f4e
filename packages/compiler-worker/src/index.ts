@@ -4,10 +4,15 @@ import compileAndUpdateMemory from './compileAndUpdateMemory';
 
 async function compile(modules: Module[], compilerOptions: CompileOptions) {
 	try {
-		const { codeBuffer, compiledModules, allocatedMemorySize, memoryRef } = await compileAndUpdateMemory(
-			modules,
-			compilerOptions
-		);
+		const {
+			codeBuffer,
+			compiledModules,
+			allocatedMemorySize,
+			memoryRef,
+			hasMemoryBeenInitialized,
+			hasMemoryBeenReset,
+			hasWasmInstanceBeenReset,
+		} = await compileAndUpdateMemory(modules, compilerOptions);
 		self.postMessage({
 			type: 'success',
 			payload: {
@@ -15,6 +20,9 @@ async function compile(modules: Module[], compilerOptions: CompileOptions) {
 				compiledModules,
 				allocatedMemorySize,
 				wasmMemory: memoryRef,
+				hasMemoryBeenInitialized,
+				hasMemoryBeenReset,
+				hasWasmInstanceBeenReset,
 			},
 		});
 	} catch (error) {

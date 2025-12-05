@@ -222,15 +222,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 					ignoredKeywords: [],
 				},
 			},
-			cycleTime: 0,
-			timerAccuracy: 0,
-			runtimeSettings: [
-				{
-					runtime: 'WebWorkerLogicRuntime',
-					sampleRate: 50,
-				},
-			],
-			selectedRuntime: 0,
 		},
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
@@ -303,6 +294,21 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		console: {
 			logs: [],
 			maxLogs: 100,
+		},
+		runtime: {
+			runtimeSettings: [
+				{
+					runtime: 'WebWorkerLogicRuntime',
+					sampleRate: 50,
+				},
+			],
+			selectedRuntime: 0,
+			stats: {
+				timeToExecuteLoopMs: 0,
+				timerPrecisionPercentage: 0,
+				timerDriftMs: 0,
+				timerExpectedIntervalTimeMs: 0,
+			},
 		},
 	};
 
