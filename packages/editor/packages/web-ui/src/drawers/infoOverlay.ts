@@ -41,13 +41,9 @@ export default function drawInfoOverlay(
 		debugText.push('Memory footprint: ' + formatBytes(selectedModule.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY));
 		debugText.push('Memory address: ' + selectedModule.byteAddress + ' (nth byte)');
 		debugText.push('Index: ' + selectedModule.index);
-		debugText.push('');
 	}
 
-	const runtime = state.compiler.runtimeSettings[state.compiler.selectedRuntime];
-
-	debugText.push('Runtime: ' + runtime.runtime);
-	debugText.push('Sample rate: ' + runtime.sampleRate);
+	const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
 
 	if (runtime.runtime === 'AudioWorkletRuntime' && runtime.audioInputBuffers) {
 		runtime.audioInputBuffers.forEach(({ moduleId, memoryId, channel, input }) => {
@@ -65,6 +61,7 @@ export default function drawInfoOverlay(
 		});
 	}
 
+	// Graphic stats
 	debugText.push('');
 	debugText.push('Quad count: ' + vertices / 6);
 	debugText.push(
@@ -75,17 +72,10 @@ export default function drawInfoOverlay(
 	debugText.push('Graphic load: ' + ((timeToRender / (1000 / fps)) * 100).toFixed(2) + '%');
 	const cs = engine.getCacheStats();
 	debugText.push('Cached items: ' + cs.itemCount + '/' + cs.maxItems);
-	debugText.push('');
 
-	debugText.push(
-		'Compilation time ' +
-			state.compiler.compilationTime.toFixed(2) +
-			'ms  Cycle time:' +
-			state.compiler.cycleTime +
-			'ms  Timer accuracy: ' +
-			state.compiler.timerAccuracy +
-			'%'
-	);
+	// Compiler stats
+	debugText.push('');
+	debugText.push('Compilation time: ' + state.compiler.compilationTime.toFixed(2) + 'ms');
 	debugText.push('WASM byte code size: ' + formatBytes(state.compiler.codeBuffer.length));
 	debugText.push(
 		'Allocated memory: ' +
@@ -97,7 +87,21 @@ export default function drawInfoOverlay(
 			'%)'
 	);
 
+	// Runtime stats
+	debugText.push('');
+	debugText.push('Runtime: ' + runtime.runtime);
+
+	if (state.runtime.stats.timerExpectedIntervalTimeMs) {
+		debugText.push(
+			'Sample rate: ' + runtime.sampleRate + ' Hz (' + state.runtime.stats.timerExpectedIntervalTimeMs + ' ms interval)'
+		);
+		debugText.push('Loop time: ' + state.runtime.stats.timeToExecuteLoopMs.toFixed(2) + 'ms');
+		debugText.push('Timer accuracy: ' + state.runtime.stats.timerPrecisionPercentage.toFixed(2) + '%');
+		debugText.push('Timer drift: ' + state.runtime.stats.timerDriftMs.toFixed(2) + 'ms');
+	}
+
 	if (state.storageQuota.usedBytes > 0 && state.storageQuota.totalBytes > 0) {
+		debugText.push('');
 		debugText.push(
 			'Storage usage: ' +
 				formatBytes(state.storageQuota.usedBytes) +

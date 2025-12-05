@@ -34,7 +34,7 @@ export function applyConfigToState(state: State, config: ConfigObject): void {
 	}
 
 	if (typeof config.selectedRuntime === 'number') {
-		state.compiler.selectedRuntime = config.selectedRuntime;
+		state.runtime.selectedRuntime = config.selectedRuntime;
 	}
 
 	if (Array.isArray(config.runtimeSettings)) {
@@ -52,7 +52,7 @@ export function applyConfigToState(state: State, config: ConfigObject): void {
 		});
 
 		if (validRuntimeSettings.length > 0) {
-			state.compiler.runtimeSettings = validRuntimeSettings;
+			state.runtime.runtimeSettings = validRuntimeSettings;
 		}
 	}
 }
