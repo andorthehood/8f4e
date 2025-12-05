@@ -80,22 +80,22 @@ describe('Runtime System', () => {
 			await runtimeEffect(state, events);
 
 			const onCalls = (events.on as MockInstance).mock.calls;
-			const compilationFinishedCall = onCalls.find(call => call[0] === 'compilationFinished');
-			expect(compilationFinishedCall).toBeDefined();
+			const buildFinishedCall = onCalls.find(call => call[0] === 'buildFinished');
+			expect(buildFinishedCall).toBeDefined();
 
-			const compilationFinishedHandler = compilationFinishedCall![1] as () => Promise<void>;
+			const buildFinishedHandler = buildFinishedCall![1] as () => Promise<void>;
 
-			await compilationFinishedHandler();
+			await buildFinishedHandler();
 
 			expect(requestRuntime).toHaveBeenCalledTimes(1);
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
 			// Update to new runtime - only modify the new state locations (not deprecated state.project)
-			state.compiler.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
-			state.compiler.selectedRuntime = 0;
+			state.runtime.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
+			state.runtime.selectedRuntime = 0;
 
-			await compilationFinishedHandler();
+			await buildFinishedHandler();
 
 			expect(audioDestroyer).toHaveBeenCalledTimes(1);
 			expect(mainRuntimeFactory).toHaveBeenCalledTimes(1);
