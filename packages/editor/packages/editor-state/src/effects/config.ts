@@ -1,5 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
+import { log } from '../impureHelpers/logger';
 import { applyConfigToState } from '../impureHelpers/config';
 import { isPlainObject } from '../pureHelpers/isPlainObject';
 import { deepMergeConfig } from '../pureHelpers/config/deepMergeConfig';
@@ -78,6 +79,9 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		}
 
 		const { mergedConfig, errors } = await buildConfigFromBlocks(configBlocks, compileConfig);
+
+		console.log(`[Config] Config loaded:`, mergedConfig);
+		log(state, `Config loaded with ${errors.length} error(s).`, 'Config');
 
 		// Save all errors to state
 		state.configErrors = errors;
