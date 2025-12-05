@@ -2,9 +2,9 @@ import createModule from './createModule';
 
 let interval: ReturnType<typeof setInterval>;
 let statsInterval: ReturnType<typeof setInterval>;
-let timeToExecute: number;
+let timeToExecuteLoopMs: number;
 let lastIntervalTime: number;
-let drift = 0;
+let timerDriftMs: number;
 
 async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
 	try {
@@ -15,21 +15,24 @@ async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffe
 
 		const intervalTime = Math.floor(1000 / sampleRate);
 
+		lastIntervalTime = performance.now();
 		interval = setInterval(() => {
 			const startTime = performance.now();
-			drift += intervalTime - (startTime - lastIntervalTime);
+			timerDriftMs = startTime - lastIntervalTime - intervalTime;
 			lastIntervalTime = startTime;
 			wasmApp.cycle();
 			const endTime = performance.now();
-			timeToExecute = endTime - startTime;
+			timeToExecuteLoopMs = endTime - startTime;
 		}, intervalTime);
 
 		statsInterval = setInterval(() => {
 			self.postMessage({
 				type: 'stats',
 				payload: {
-					drift,
-					timeToExecute,
+					timerPrecisionPercentage: 100 - Math.abs(timerDriftMs / intervalTime) * 100,
+					timeToExecuteLoopMs,
+					timerDriftMs,
+					timerExpectedIntervalTimeMs: intervalTime,
 				},
 			});
 		}, 10000);
