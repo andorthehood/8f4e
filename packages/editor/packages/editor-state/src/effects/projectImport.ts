@@ -56,8 +56,8 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.projectInfo.author = '';
 		state.projectInfo.description = '';
 		state.binaryAssets = newProject.binaryAssets || [];
-		state.compiler.runtimeSettings = defaultState.compiler.runtimeSettings;
-		state.compiler.selectedRuntime = defaultState.compiler.selectedRuntime;
+		state.runtime.runtimeSettings = defaultState.runtime.runtimeSettings;
+		state.runtime.selectedRuntime = defaultState.runtime.selectedRuntime;
 		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
 
 		if (newProject.compiledWasm && newProject.memorySnapshot) {
