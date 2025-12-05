@@ -13,12 +13,23 @@ const project: Project = {
 				'push "Andor Polgar"',
 				'set',
 				'rescopeTop "description"',
-				'push "A simple neural network pre-trained as an XOR gate."',
+				'push "A simple neural network "',
+				'push "pre-trained to be a "',
+				'push "XOR gate"',
+				'concat',
 				'set',
 				'popScope',
 				'',
+				'configEnd',
+			],
+			gridCoordinates: { x: -51, y: -70 },
+		},
+		{
+			code: [
+				'config',
+				'',
 				'scope "memorySizeBytes"',
-				'push 65536',
+				'push 128',
 				'set',
 				'popScope',
 				'',
@@ -30,7 +41,7 @@ const project: Project = {
 				'scope "runtimeSettings"',
 				'scope 0',
 				'scope "sampleRate"',
-				'push 50',
+				'push 40',
 				'set',
 				'rescopeTop "runtime"',
 				'push "WebWorkerLogicRuntime"',
@@ -40,7 +51,7 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: 40, y: -81 },
+			gridCoordinates: { x: -9, y: -73 },
 		},
 		{
 			code: [
@@ -63,7 +74,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 262, y: -71 },
+			gridCoordinates: { x: 268, y: -65 },
 		},
 		{
 			code: [
@@ -73,8 +84,10 @@ const project: Project = {
 				'float* in1 &switches.out1',
 				'float* in2 &switches.out2',
 				'float out',
+				'int he',
+				'float ke',
 				'',
-				'; Training data',
+				'; Weights',
 				'const w1 10.056234',
 				'const w2 -42.53689',
 				'const bias -3.92453',
@@ -92,7 +105,7 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 118, y: -81 },
+			gridCoordinates: { x: 118, y: -82 },
 		},
 		{
 			code: [
@@ -103,7 +116,7 @@ const project: Project = {
 				'float* in2 &switches.out2',
 				'float out',
 				'',
-				'; Training data',
+				'; Weights',
 				'const w1 -70.313797',
 				'const w2 24.76387',
 				'const bias -8.765101',
@@ -132,7 +145,7 @@ const project: Project = {
 				'float* in2 &sigmoid2.out',
 				'float out ',
 				'',
-				'; Training data',
+				'; Weights',
 				'const w1 6.94625',
 				'const w2 6.64608',
 				'const bias 6.05782',
@@ -150,11 +163,11 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 190, y: -71 },
+			gridCoordinates: { x: 193, y: -65 },
 		},
 		{
 			code: ['module result', '', 'int* in &activationFunction.out', '', 'debug *in', '', 'moduleEnd'],
-			gridCoordinates: { x: 76, y: -61 },
+			gridCoordinates: { x: 74, y: -46 },
 		},
 		{
 			code: [
@@ -177,7 +190,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 154, y: -81 },
+			gridCoordinates: { x: 153, y: -82 },
 		},
 		{
 			code: [
@@ -200,7 +213,7 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 154, y: -55 },
+			gridCoordinates: { x: 153, y: -55 },
 		},
 		{
 			code: [
@@ -223,14 +236,16 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 226, y: -71 },
+			gridCoordinates: { x: 228, y: -65 },
 		},
 		{
-			code: ['module switches', '', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'],
-			gridCoordinates: { x: 81, y: -68 },
+			code: ['module switches', '', 'int he', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'],
+			gridCoordinates: { x: 74, y: -62 },
 		},
 	],
-	viewport: { gridCoordinates: { x: 73, y: -83 } },
+	viewport: { gridCoordinates: { x: 55, y: -88 } },
+	binaryAssets: [],
+	postProcessEffects: [],
 };
 
 export default project;
