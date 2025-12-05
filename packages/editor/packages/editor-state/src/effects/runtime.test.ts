@@ -66,7 +66,7 @@ describe('Runtime System', () => {
 			});
 
 			const state = createMockState({
-				compiler: {
+				runtime: {
 					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
 					selectedRuntime: 0,
 				},
