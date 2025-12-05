@@ -66,7 +66,7 @@ describe('Runtime System', () => {
 			});
 
 			const state = createMockState({
-				compiler: {
+				runtime: {
 					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
 					selectedRuntime: 0,
 				},
@@ -92,8 +92,8 @@ describe('Runtime System', () => {
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
 			// Update to new runtime - only modify the new state locations (not deprecated state.project)
-			state.compiler.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
-			state.compiler.selectedRuntime = 0;
+			state.runtime.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
+			state.runtime.selectedRuntime = 0;
 
 			await buildFinishedHandler();
 
