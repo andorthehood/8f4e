@@ -14,13 +14,11 @@ export default function createDefaultState() {
 		compiler: {
 			codeBuffer: new Uint8Array(),
 			compilationTime: 0,
-			cycleTime: 0,
 			isCompiling: false,
 			lastCompilationStart: 0,
 			allocatedMemorySize: 0,
 			memoryBuffer: new Int32Array(),
 			memoryBufferFloat: new Float32Array(),
-			timerAccuracy: 0,
 			compiledModules: {},
 			compilationErrors: [],
 			compilerOptions: {
@@ -31,13 +29,6 @@ export default function createDefaultState() {
 					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 				},
 			},
-			runtimeSettings: [
-				{
-					runtime: 'WebWorkerLogicRuntime' as const,
-					sampleRate: 50,
-				},
-			],
-			selectedRuntime: 0,
 		},
 		midi: {
 			inputs: [],
@@ -96,6 +87,21 @@ export default function createDefaultState() {
 		console: {
 			logs: [],
 			maxLogs: 100,
+		},
+		runtime: {
+			runtimeSettings: [
+				{
+					runtime: 'WebWorkerLogicRuntime' as const,
+					sampleRate: 50,
+				},
+			],
+			selectedRuntime: 0,
+			stats: {
+				timeToExecuteLoopMs: 0,
+				timerPrecisionPercentage: 0,
+				timerDriftMs: 0,
+				timerExpectedIntervalTimeMs: 0,
+			},
 		},
 	};
 }
