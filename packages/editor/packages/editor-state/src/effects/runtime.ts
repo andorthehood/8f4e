@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import { log, error } from '../impureHelpers/logger';
 
 import type { State, EventDispatcher, RuntimeType } from '../types';
@@ -5,7 +7,9 @@ import type { State, EventDispatcher, RuntimeType } from '../types';
 // Re-export types for convenience
 export type { RuntimeFactory, RuntimeType } from '../types';
 
-export default async function runtime(state: State, events: EventDispatcher) {
+export default async function runtime(store: StateManager<State>, events: EventDispatcher) {
+	const state = store.getState();
+
 	let runtimeDestroyer: null | (() => void) = null;
 	let onlineRuntime: null | string;
 	let isInitializing = false;
@@ -55,36 +59,5 @@ export default async function runtime(state: State, events: EventDispatcher) {
 		}
 	}
 
-	async function changeRuntime({ selectedRuntime }: { selectedRuntime: RuntimeType }) {
-		if (isInitializing) {
-			log(state, 'Cannot change runtime while initialization is in progress', 'Runtime');
-			return;
-		}
-
-		if (onlineRuntime === selectedRuntime) {
-			return;
-		}
-
-		if (runtimeDestroyer) {
-			runtimeDestroyer();
-			runtimeDestroyer = null;
-		}
-
-		const preSavedRuntime = state.runtime.runtimeSettings.findIndex(({ runtime }) => runtime === selectedRuntime);
-
-		if (preSavedRuntime !== -1) {
-			state.runtime.selectedRuntime = preSavedRuntime;
-		} else {
-			state.runtime.selectedRuntime =
-				state.runtime.runtimeSettings.push({
-					runtime: selectedRuntime,
-					sampleRate: 50,
-				}) - 1;
-		}
-
-		await initRuntime();
-	}
-
-	events.on('buildFinished', initRuntime);
-	events.on('changeRuntime', changeRuntime);
+	store.subscribe('runtime', initRuntime);
 }
