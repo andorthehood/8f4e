@@ -67,6 +67,7 @@ See [`docs/brainstorming_notes/013-stack-oriented-config-language.md`](../../doc
 | `scope <path>` | Push path segments onto the scope stack |
 | `rescopeTop <path>` | Replace the top scope segment with new path segments |
 | `rescope <path>` | Replace the entire scope stack with new path segments |
+| `rescopeSuffix <path>` | Replace the trailing suffix of the scope stack with new path segments |
 | `popScope` | Pop one segment from the scope stack |
 
 ### Literals
@@ -86,6 +87,34 @@ scope "parent.child"
 scope "arrayKey[0]"
 scope "parent.array[3].child"
 ```
+
+### Suffix Rescoping
+
+The `rescopeSuffix` command replaces the trailing suffix of the current scope with a new suffix. The number of segments replaced equals the number of segments in the argument path.
+
+```
+; Replace suffix example
+scope "icons.piano.title"
+push "Piano Icon"
+set
+
+rescopeSuffix "harp.title"
+push "Harp Icon"
+set
+; Result: { icons: { piano: { title: "Piano Icon" }, harp: { title: "Harp Icon" } } }
+
+; Array index example
+scope "settings.runtime[0].config"
+push "dev"
+set
+
+rescopeSuffix "runtime[1].config"
+push "prod"
+set
+; Result: { settings: { runtime: [{ config: "dev" }, { config: "prod" }] } }
+```
+
+This is useful for transforming related paths without losing the common prefix, making config programs more composable and readable.
 
 ### String Concatenation
 
