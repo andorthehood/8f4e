@@ -20,7 +20,7 @@ export function executeRescopeSuffix(state: VMState, command: Command): CommandE
 	}
 
 	// Pop the last n segments
-	state.scopeStack.splice(-segments.length);
+	state.scopeStack.splice(-segments.length, segments.length);
 
 	// Push new segments with schema validation
 	const errors = validateAndPushSegments(state, segments);
