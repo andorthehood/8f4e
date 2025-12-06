@@ -119,6 +119,17 @@ if (import.meta.vitest) {
 			]);
 		});
 
+		it('should allow rescopeSuffix when suffix equals entire scope stack', () => {
+			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo', 'bar'] };
+			const result = executeCommand(state, {
+				type: 'rescopeSuffix',
+				pathSegments: ['baz', 'qux'],
+				lineNumber: 1,
+			});
+			expect(result).toBeNull();
+			expect(state.scopeStack).toEqual(['baz', 'qux']);
+		});
+
 		it('should return error for unknown command type', () => {
 			const state: VMState = { config: {}, dataStack: [], scopeStack: [] };
 			const result = executeCommand(state, { type: 'unknown' as 'push', lineNumber: 1 });
