@@ -288,7 +288,7 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockState.compiler.memoryBuffer).toEqual(expectedIntMemory);
 			expect(mockState.compiler.memoryBufferFloat).toEqual(expectedFloatMemory);
 			expect(mockState.compiler.isCompiling).toBe(false);
-			expect(mockState.compiler.compilationErrors).toEqual([]);
+			expect(mockState.codeErrors.compilationErrors).toEqual([]);
 			expect(mockState.compiler.compilationTime).toBe(0);
 		});
 
