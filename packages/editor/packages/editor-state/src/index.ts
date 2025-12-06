@@ -92,8 +92,6 @@ export type {
 	Position,
 	ContextMenuItem,
 	MenuGenerator,
-	CompilationError,
-	ConfigError,
 	Compiler,
 	Midi,
 	GraphicHelper,
@@ -124,6 +122,7 @@ export type {
 	InternalKeyboardEvent,
 	LogMessage,
 	ConsoleState,
+	CodeError,
 } from './types';
 
 // Export EMPTY_DEFAULT_PROJECT as a value

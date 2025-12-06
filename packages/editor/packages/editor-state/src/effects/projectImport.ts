@@ -49,7 +49,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.compiler.codeBuffer = new Uint8Array();
 		state.compiler.compiledModules = {};
 		state.compiler.allocatedMemorySize = 0;
-		store.set('compiler.compilationErrors', []);
+		store.set('codeErrors.compilationErrors', []);
 		state.compiler.isCompiling = false;
 
 		state.projectInfo.title = '';
