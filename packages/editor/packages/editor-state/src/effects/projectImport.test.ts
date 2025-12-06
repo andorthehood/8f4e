@@ -144,12 +144,12 @@ describe('projectImport', () => {
 			const loadProjectCallback = loadProjectCall![1];
 
 			// Set some existing state
-			mockState.compiler.compilationErrors = [{ message: 'Error', lineNumber: 1, code: 1, moduleId: '1' }];
+			mockState.codeErrors.compilationErrors = [{ message: 'Error', lineNumber: 1, codeBlockId: '1' }];
 			mockState.compiler.isCompiling = true;
 
 			loadProjectCallback({ project: EMPTY_DEFAULT_PROJECT });
 
-			expect(mockState.compiler.compilationErrors).toEqual([]);
+			expect(mockState.codeErrors.compilationErrors).toEqual([]);
 			expect(mockState.compiler.isCompiling).toBe(false);
 			expect(mockState.compiler.codeBuffer).toEqual(new Uint8Array());
 		});
