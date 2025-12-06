@@ -12,6 +12,7 @@ const VALID_COMMANDS = new Set<CommandType>([
 	'scope',
 	'rescopeTop',
 	'rescope',
+	'rescopeSuffix',
 	'popScope',
 ]);
 
@@ -92,7 +93,8 @@ export function parseLine(line: string, lineNumber: number): Command | CompileEr
 
 		case 'scope':
 		case 'rescopeTop':
-		case 'rescope': {
+		case 'rescope':
+		case 'rescopeSuffix': {
 			if (!argument) {
 				return { line: lineNumber, message: `${commandName} requires a path argument` };
 			}
@@ -162,6 +164,37 @@ if (import.meta.vitest) {
 			expect(parseLine('scope "foo.bar"', 1)).toEqual({
 				type: 'scope',
 				pathSegments: ['foo', 'bar'],
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse rescopeSuffix command', () => {
+			expect(parseLine('rescopeSuffix "harp.title"', 1)).toEqual({
+				type: 'rescopeSuffix',
+				pathSegments: ['harp', 'title'],
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse rescopeSuffix with array indices', () => {
+			expect(parseLine('rescopeSuffix "runtime[1].config"', 1)).toEqual({
+				type: 'rescopeSuffix',
+				pathSegments: ['runtime', '[1]', 'config'],
+				lineNumber: 1,
+			});
+		});
+
+		it('should return error for rescopeSuffix without argument', () => {
+			expect(parseLine('rescopeSuffix', 1)).toEqual({
+				line: 1,
+				message: 'rescopeSuffix requires a path argument',
+			});
+		});
+
+		it('should parse rescopeSuffix with trailing comment', () => {
+			expect(parseLine('rescopeSuffix "bar.baz" ; replace suffix', 1)).toEqual({
+				type: 'rescopeSuffix',
+				pathSegments: ['bar', 'baz'],
 				lineNumber: 1,
 			});
 		});
