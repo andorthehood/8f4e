@@ -72,8 +72,6 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 
 		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
-		state.configErrors = [];
-
 		if (configBlocks.length === 0) {
 			return;
 		}
@@ -84,7 +82,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		log(state, `Config loaded with ${errors.length} error(s).`, 'Config');
 
 		// Save all errors to state
-		state.configErrors = errors;
+		store.set('configErrors', errors);
 
 		// Apply the merged config to state
 		if (isPlainObject(mergedConfig)) {
