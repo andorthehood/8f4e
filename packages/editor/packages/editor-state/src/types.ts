@@ -150,26 +150,6 @@ export interface ContextMenu extends Position {
 	menuStack: string[];
 }
 
-export interface CompilationError {
-	lineNumber: number;
-	code: number;
-	message: string;
-	moduleId: string;
-}
-
-/**
- * Represents an error from config block compilation.
- * Includes creationIndex to identify which config block the error belongs to.
- */
-export interface ConfigError {
-	/** Line number within the config block body (1-based) */
-	line: number;
-	/** Error message from the config compiler */
-	message: string;
-	/** The creationIndex of the config block this error belongs to */
-	creationIndex: number;
-}
-
 export interface Compiler {
 	codeBuffer: Uint8Array;
 	compilationTime: number;
@@ -178,7 +158,6 @@ export interface Compiler {
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
 	compiledModules: CompiledModuleLookup;
-	compilationErrors: CompilationError[];
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
 }
@@ -597,6 +576,12 @@ export interface RuntimeStats {
 	timerExpectedIntervalTimeMs: number;
 }
 
+export interface CodeError {
+	lineNumber: number;
+	message: string;
+	codeBlockId: string | number;
+}
+
 export interface State {
 	/** Basic project information (title, author, description) */
 	projectInfo: ProjectInfo;
@@ -612,13 +597,15 @@ export interface State {
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
-	/** Errors from config block compilation */
-	configErrors: ConfigError[];
 	/** Console state for internal logging */
 	console: ConsoleState;
 	runtime: {
 		runtimeSettings: Runtimes[];
 		selectedRuntime: number;
 		stats: RuntimeStats;
+	};
+	codeErrors: {
+		compilationErrors: CodeError[];
+		configErrors: CodeError[];
 	};
 }
