@@ -130,6 +130,17 @@ if (import.meta.vitest) {
 			expect(state.scopeStack).toEqual(['baz', 'qux']);
 		});
 
+		it('should handle rescopeSuffix with empty path segments', () => {
+			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo', 'bar'] };
+			const result = executeCommand(state, {
+				type: 'rescopeSuffix',
+				pathSegments: [],
+				lineNumber: 1,
+			});
+			expect(result).toBeNull();
+			expect(state.scopeStack).toEqual(['foo', 'bar']);
+		});
+
 		it('should return error for unknown command type', () => {
 			const state: VMState = { config: {}, dataStack: [], scopeStack: [] };
 			const result = executeCommand(state, { type: 'unknown' as 'push', lineNumber: 1 });
