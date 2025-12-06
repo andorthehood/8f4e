@@ -45,7 +45,7 @@ export default function drawInfoOverlay(
 
 	const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
 
-	if (runtime.runtime === 'AudioWorkletRuntime' && runtime.audioInputBuffers) {
+	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioInputBuffers)) {
 		runtime.audioInputBuffers.forEach(({ moduleId, memoryId, channel, input }) => {
 			debugText.push(
 				'- Audio Input ' + input + ': Channel: ' + channel + ' Module: ' + moduleId + ' Buffer: ' + memoryId
@@ -53,7 +53,7 @@ export default function drawInfoOverlay(
 		});
 	}
 
-	if (runtime.runtime === 'AudioWorkletRuntime' && runtime.audioOutputBuffers) {
+	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioOutputBuffers)) {
 		runtime.audioOutputBuffers.forEach(({ moduleId, memoryId, channel, output }) => {
 			debugText.push(
 				'- Audio Output ' + output + ': Channel: ' + channel + ' Module: ' + moduleId + ' Buffer: ' + memoryId
