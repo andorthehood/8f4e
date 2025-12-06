@@ -20,7 +20,6 @@ export default function createDefaultState() {
 			memoryBuffer: new Int32Array(),
 			memoryBufferFloat: new Float32Array(),
 			compiledModules: {},
-			compilationErrors: [],
 			compilerOptions: {
 				memorySizeBytes: 1048576, // 1MB default
 				startingMemoryWordAddress: 0,
@@ -83,7 +82,10 @@ export default function createDefaultState() {
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
-		configErrors: [],
+		codeErrors: {
+			compilationErrors: [],
+			configErrors: [],
+		},
 		console: {
 			logs: [],
 			maxLogs: 100,
