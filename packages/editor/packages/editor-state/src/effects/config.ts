@@ -7,13 +7,13 @@ import { deepMergeConfig } from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
 
 import type { ConfigObject } from '../impureHelpers/config';
-import type { ConfigError, EventDispatcher, State } from '../types';
+import type { CodeError, EventDispatcher, State } from '../types';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 
 interface ConfigBuildResult {
 	mergedConfig: Record<string, unknown>;
-	errors: ConfigError[];
+	errors: CodeError[];
 }
 
 async function buildConfigFromBlocks(
@@ -21,17 +21,17 @@ async function buildConfigFromBlocks(
 	compileConfig: CompileConfigFn
 ): Promise<ConfigBuildResult> {
 	let mergedConfig: Record<string, unknown> = {};
-	const errors: ConfigError[] = [];
+	const errors: CodeError[] = [];
 
 	for (const { block, source } of configBlocks) {
 		try {
 			const result = await compileConfig(source);
 
 			if (result.errors.length > 0) {
-				const blockErrors: ConfigError[] = result.errors.map(error => ({
-					line: error.line,
+				const blockErrors: CodeError[] = result.errors.map(error => ({
+					lineNumber: error.line,
 					message: error.message,
-					creationIndex: block.creationIndex,
+					codeBlockId: block.creationIndex,
 				}));
 				errors.push(...blockErrors);
 				continue;
@@ -42,9 +42,9 @@ async function buildConfigFromBlocks(
 			}
 		} catch (error) {
 			errors.push({
-				line: 1,
+				lineNumber: 1,
 				message: error instanceof Error ? error.message : String(error),
-				creationIndex: block.creationIndex,
+				codeBlockId: block.creationIndex,
 			});
 		}
 	}
@@ -62,7 +62,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	/**
 	 * Rebuilds the config from all config blocks and applies it to state.
 	 * Each config block is compiled independently to allow proper error mapping.
-	 * Errors are saved to state.configErrors with the creationIndex of the source block.
+	 * Errors are saved to codeErrors.configErrors with the creationIndex of the source block.
 	 */
 	async function rebuildConfig(): Promise<void> {
 		const compileConfig = state.callbacks.compileConfig;
@@ -71,8 +71,6 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		}
 
 		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
-
-		state.configErrors = [];
 
 		if (configBlocks.length === 0) {
 			return;
@@ -84,7 +82,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		log(state, `Config loaded with ${errors.length} error(s).`, 'Config');
 
 		// Save all errors to state
-		state.configErrors = errors;
+		store.set('codeErrors.configErrors', errors);
 
 		// Apply the merged config to state
 		if (isPlainObject(mergedConfig)) {
