@@ -12,11 +12,23 @@ function createMockStore(state: State) {
 		getState: () => state,
 		set: vi.fn((path: string, value: unknown) => {
 			const parts = path.split('.');
+			const dangerousKeys = new Set(['__proto__', 'constructor', 'prototype']);
+			if (parts.some(part => dangerousKeys.has(part))) {
+				throw new Error(`Prototype pollution attempt detected: ${path}`);
+			}
 			let current: unknown = state;
 			for (let i = 0; i < parts.length - 1; i++) {
-				current = (current as Record<string, unknown>)[parts[i]];
+				const key = parts[i];
+				if (current !== null && typeof current === 'object' && Object.hasOwn(current, key)) {
+					current = (current as Record<string, unknown>)[key];
+				} else {
+					return;
+				}
 			}
-			(current as Record<string, unknown>)[parts[parts.length - 1]] = value;
+			const lastKey = parts[parts.length - 1];
+			if (current !== null && typeof current === 'object' && Object.hasOwn(current, lastKey)) {
+				(current as Record<string, unknown>)[lastKey] = value;
+			}
 
 			for (const [subscribedPath, callbacks] of subscribers.entries()) {
 				if (path.startsWith(subscribedPath)) {
@@ -263,7 +275,7 @@ describe('errorMessages', () => {
 			expect(codeBlock1.extras.errorMessages[0].lineNumber).toBe(5);
 		});
 
-		it('should calculate y position based on line number and hGrid', () => {
+		it('should calculate y position based on line number and hGrid when no gaps', () => {
 			const error: CodeError = {
 				lineNumber: 3,
 				message: 'Error',
@@ -275,6 +287,24 @@ describe('errorMessages', () => {
 			errorMessages(store);
 
 			const expectedY = (3 + 1) * mockState.graphicHelper.viewport.hGrid;
+			expect(codeBlock1.extras.errorMessages[0].y).toBe(expectedY);
+		});
+
+		it('should calculate y position accounting for gaps', () => {
+			codeBlock1.gaps.set(1, { size: 2 });
+
+			const error: CodeError = {
+				lineNumber: 3,
+				message: 'Error',
+				codeBlockId: 'block-1',
+			};
+			mockState.codeErrors.compilationErrors = [error];
+
+			const store = createMockStore(mockState);
+			errorMessages(store);
+
+			const physicalRow = 3 + 2;
+			const expectedY = (physicalRow + 1) * mockState.graphicHelper.viewport.hGrid;
 			expect(codeBlock1.extras.errorMessages[0].y).toBe(expectedY);
 		});
 	});
