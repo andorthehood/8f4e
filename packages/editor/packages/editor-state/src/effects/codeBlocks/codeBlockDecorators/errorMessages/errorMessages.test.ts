@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import createStateManager from '@8f4e/state-manager';
 
 import errorMessages from './errorMessages';
 
@@ -6,47 +7,9 @@ import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/te
 
 import type { CodeBlockGraphicData, State, CodeError } from '../../../../types';
 
-function createMockStore(state: State) {
-	const subscribers = new Map<string, Array<() => void>>();
-	return {
-		getState: () => state,
-		set: vi.fn((path: string, value: unknown) => {
-			const parts = path.split('.');
-			const dangerousKeys = new Set(['__proto__', 'constructor', 'prototype']);
-			if (parts.some(part => dangerousKeys.has(part))) {
-				throw new Error(`Prototype pollution attempt detected: ${path}`);
-			}
-			let current: unknown = state;
-			for (let i = 0; i < parts.length - 1; i++) {
-				const key = parts[i];
-				if (current !== null && typeof current === 'object' && Object.hasOwn(current, key)) {
-					current = (current as Record<string, unknown>)[key];
-				} else {
-					return;
-				}
-			}
-			const lastKey = parts[parts.length - 1];
-			if (current !== null && typeof current === 'object' && Object.hasOwn(current, lastKey)) {
-				(current as Record<string, unknown>)[lastKey] = value;
-			}
-
-			for (const [subscribedPath, callbacks] of subscribers.entries()) {
-				if (path.startsWith(subscribedPath)) {
-					callbacks.forEach(cb => cb());
-				}
-			}
-		}),
-		subscribe: vi.fn((path: string, callback: () => void) => {
-			if (!subscribers.has(path)) {
-				subscribers.set(path, []);
-			}
-			subscribers.get(path)!.push(callback);
-		}),
-	};
-}
-
 describe('errorMessages', () => {
 	let mockState: State;
+	let store: ReturnType<typeof createStateManager<State>>;
 	let codeBlock1: CodeBlockGraphicData;
 	let codeBlock2: CodeBlockGraphicData;
 
@@ -78,6 +41,8 @@ describe('errorMessages', () => {
 				configErrors: [],
 			},
 		});
+
+		store = createStateManager(mockState);
 	});
 
 	describe('error filtering by codeBlockId', () => {
@@ -89,7 +54,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [compilationError];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages.length).toBe(1);
@@ -104,7 +68,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.configErrors = [configError];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages.length).toBe(0);
@@ -119,7 +82,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [compilationError];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages.length).toBe(0);
@@ -138,7 +100,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [compilationError];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			const errorMsg = codeBlock1.extras.errorMessages[0];
@@ -154,7 +115,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [compilationError];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages[0].message[0]).toBe('Error:');
@@ -176,7 +136,6 @@ describe('errorMessages', () => {
 			mockState.codeErrors.compilationErrors = [compilationError];
 			mockState.codeErrors.configErrors = [configError];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages.length).toBe(2);
@@ -195,7 +154,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [error1, error2];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages.length).toBe(1);
@@ -205,14 +163,14 @@ describe('errorMessages', () => {
 
 	describe('subscription updates', () => {
 		it('should subscribe to codeErrors changes', () => {
-			const store = createMockStore(mockState);
+			const subscribeSpy = vi.spyOn(store, 'subscribe');
 			errorMessages(store);
 
-			expect(store.subscribe).toHaveBeenCalledWith('codeErrors', expect.any(Function));
+			expect(subscribeSpy).toHaveBeenCalledWith('codeErrors', expect.any(Function));
+			subscribeSpy.mockRestore();
 		});
 
 		it('should update error messages when codeErrors changes', () => {
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages.length).toBe(0);
@@ -235,7 +193,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [error];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages.length).toBe(1);
@@ -255,7 +212,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [error];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages[0].x).toBe(0);
@@ -269,7 +225,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [error];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages[0].lineNumber).toBe(5);
@@ -283,7 +238,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [error];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			const expectedY = (3 + 1) * mockState.graphicHelper.viewport.hGrid;
@@ -300,7 +254,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [error];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			const physicalRow = 3 + 2;
@@ -318,7 +271,6 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [error];
 
-			const store = createMockStore(mockState);
 			errorMessages(store);
 
 			expect(codeBlock1.extras.errorMessages.length).toBe(1);
@@ -332,10 +284,11 @@ describe('errorMessages', () => {
 			};
 			mockState.codeErrors.compilationErrors = [error];
 
-			const store = createMockStore(mockState);
+			const setSpy = vi.spyOn(store, 'set');
 			errorMessages(store);
 
-			expect(store.set).toHaveBeenCalledWith('graphicHelper.codeBlocks', mockState.graphicHelper.codeBlocks);
+			expect(setSpy).toHaveBeenCalledWith('graphicHelper.codeBlocks', mockState.graphicHelper.codeBlocks);
+			setSpy.mockRestore();
 		});
 	});
 });
