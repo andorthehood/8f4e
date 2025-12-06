@@ -75,7 +75,7 @@ describe('applyConfigToState', () => {
 		const originalSelectedRuntime = state.runtime.selectedRuntime;
 		const config = { runtimeSettings: [{ invalid: true }] } as unknown as ConfigObject;
 		applyConfigToState(store, config);
-		// When all runtimeSettings are invalid, the function should not update the runtime state
+		// When all runtime settings are invalid, the runtime state should remain unchanged to preserve existing settings
 		expect(state.runtime.runtimeSettings).toEqual(originalSettings);
 		expect(state.runtime.selectedRuntime).toBe(originalSelectedRuntime);
 	});
@@ -87,7 +87,7 @@ describe('applyConfigToState', () => {
 		const originalSelectedRuntime = state.runtime.selectedRuntime;
 		const config = { runtimeSettings: [{ runtime: 'InvalidRuntime', sampleRate: 44100 }] } as unknown as ConfigObject;
 		applyConfigToState(store, config);
-		// When all runtimeSettings are invalid, the function should not update the runtime state
+		// When all runtime settings are invalid, the runtime state should remain unchanged to preserve existing settings
 		expect(state.runtime.runtimeSettings).toEqual(originalSettings);
 		expect(state.runtime.selectedRuntime).toBe(originalSelectedRuntime);
 	});

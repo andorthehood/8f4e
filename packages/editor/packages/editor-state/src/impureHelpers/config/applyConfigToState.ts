@@ -59,7 +59,9 @@ export function applyConfigToState(store: StateManager<State>, config: ConfigObj
 				stats: state.runtime.stats,
 				runtimeSettings: validRuntimeSettings,
 				selectedRuntime:
-					config.selectedRuntime !== undefined && validRuntimeSettings[config.selectedRuntime]
+					config.selectedRuntime !== undefined &&
+					config.selectedRuntime < validRuntimeSettings.length &&
+					validRuntimeSettings[config.selectedRuntime]
 						? config.selectedRuntime
 						: 0,
 			});
