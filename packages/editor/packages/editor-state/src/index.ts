@@ -42,7 +42,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	editorSettings(store, events, state);
 
-	runtime(state, events);
+	runtime(store, events);
 	sampleRate(state, events);
 	projectImport(store, events, state);
 	codeBlockDragger(state, events);
@@ -55,7 +55,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	contextMenu(store, events);
 	codeBlockCreator(state, events);
 	blockTypeUpdater(store, events); // Must run before compiler to classify blocks first
-	configEffect(store, events); // Config must run before compiler to apply settings first
+	configEffect(store, events);
 	compiler(store, events);
 	graphicHelper(store, events);
 	codeEditing(store, events);
