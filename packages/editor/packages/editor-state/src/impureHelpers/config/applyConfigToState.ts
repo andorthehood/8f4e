@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import { isPlainObject } from '../../pureHelpers/isPlainObject';
 
 import type { State, Runtimes } from '../../types';
@@ -18,7 +20,9 @@ export interface ConfigObject {
  * Applies the compiled config object to the editor state.
  * Maps specific config paths to state properties.
  */
-export function applyConfigToState(state: State, config: ConfigObject): void {
+export function applyConfigToState(store: StateManager<State>, config: ConfigObject): void {
+	const state = store.getState();
+
 	if (typeof config.title === 'string') {
 		state.projectInfo.title = config.title;
 	}
@@ -31,10 +35,6 @@ export function applyConfigToState(state: State, config: ConfigObject): void {
 
 	if (typeof config.memorySizeBytes === 'number') {
 		state.compiler.compilerOptions.memorySizeBytes = config.memorySizeBytes;
-	}
-
-	if (typeof config.selectedRuntime === 'number') {
-		state.runtime.selectedRuntime = config.selectedRuntime;
 	}
 
 	if (Array.isArray(config.runtimeSettings)) {
@@ -51,8 +51,13 @@ export function applyConfigToState(state: State, config: ConfigObject): void {
 			return typeof s.runtime === 'string' && validRuntimeTypes.includes(s.runtime) && typeof s.sampleRate === 'number';
 		});
 
-		if (validRuntimeSettings.length > 0) {
-			state.runtime.runtimeSettings = validRuntimeSettings;
-		}
+		console.log('Applying runtime settings from config:', validRuntimeSettings);
+
+		store.set('runtime', {
+			stats: state.runtime.stats,
+			runtimeSettings: validRuntimeSettings,
+			selectedRuntime:
+				config.selectedRuntime && validRuntimeSettings[config.selectedRuntime] ? config.selectedRuntime : 0,
+		});
 	}
 }
