@@ -7,65 +7,29 @@ import { State } from '../../../../types';
 export default function errorMessages(store: StateManager<State>) {
 	const state = store.getState();
 
-	function updateCompilationErrors() {
+	function updateErrorMessages() {
+		const codeErrors = [...state.codeErrors.compilationErrors, ...state.codeErrors.configErrors];
 		state.graphicHelper.codeBlocks.forEach(codeBlock => {
-			if (codeBlock.blockType !== 'module') {
-				return;
-			}
-
 			codeBlock.extras.errorMessages = [];
-			state.compiler.compilationErrors.forEach(compilationError => {
-				if (codeBlock.id === compilationError.moduleId) {
-					const message = wrapText(compilationError.message, codeBlock.width / state.graphicHelper.viewport.vGrid - 1);
+			codeErrors.forEach(codeError => {
+				if (codeBlock.creationIndex === codeError.codeBlockId || codeBlock.id === codeError.codeBlockId) {
+					const message = wrapText(codeError.message, codeBlock.width / state.graphicHelper.viewport.vGrid - 1);
 
 					codeBlock.extras.errorMessages.push({
 						x: 0,
-						y: (gapCalculator(compilationError.lineNumber, codeBlock.gaps) + 1) * state.graphicHelper.viewport.hGrid,
+						y: (gapCalculator(codeError.lineNumber, codeBlock.gaps) + 1) * state.graphicHelper.viewport.hGrid,
 						message: ['Error:', ...message],
-						lineNumber: compilationError.lineNumber,
+						lineNumber: codeError.lineNumber,
 					});
-
-					// To trigger rerender TODO: refactor this
-					store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
 				}
 			});
 		});
+
+		// To trigger rerender TODO: refactor this
+		store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
 	}
 
-	function updateConfigErrors() {
-		state.graphicHelper.codeBlocks.forEach(codeBlock => {
-			if (codeBlock.blockType !== 'config') {
-				return;
-			}
+	updateErrorMessages();
 
-			codeBlock.extras.errorMessages = [];
-
-			// If the error got fixed, we need to trigger rerender to make the gap disappear. TODO: refactor this.
-			if (state.configErrors.length === 0) {
-				store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
-			}
-
-			state.configErrors.forEach(configError => {
-				if (codeBlock.creationIndex === configError.creationIndex) {
-					const message = wrapText(configError.message, codeBlock.width / state.graphicHelper.viewport.vGrid - 1);
-
-					codeBlock.extras.errorMessages.push({
-						x: 0,
-						y: (gapCalculator(configError.line, codeBlock.gaps) + 1) * state.graphicHelper.viewport.hGrid,
-						message: ['Error:', ...message],
-						lineNumber: configError.line,
-					});
-
-					// To trigger rerender TODO: refactor this
-					store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
-				}
-			});
-		});
-	}
-
-	updateConfigErrors();
-	updateCompilationErrors();
-
-	store.subscribe('configErrors', updateConfigErrors);
-	store.subscribe('compiler.compilationErrors', updateCompilationErrors);
+	store.subscribe('codeErrors', updateErrorMessages);
 }
