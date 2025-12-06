@@ -55,7 +55,7 @@ describe('calculateAnimatedViewportState', () => {
 
 	it('completes the animation when progress reaches 1', () => {
 		const actualViewport = { x: 500, y: 600, animationDurationMs: 1000 };
-		const previousViewport = { x: 100, y: 200 };
+		const previousViewport = { x: 500, y: 600 }; // Should match target when animation was created
 		const animationState: AnimationState = {
 			isAnimating: true,
 			startViewport: { x: 100, y: 200 },

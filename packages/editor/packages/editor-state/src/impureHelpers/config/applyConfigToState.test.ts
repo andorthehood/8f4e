@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import createStateManager from '@8f4e/state-manager';
 
 import { applyConfigToState } from './applyConfigToState';
 
@@ -9,65 +10,94 @@ import type { ConfigObject } from './applyConfigToState';
 describe('applyConfigToState', () => {
 	it('should apply title', () => {
 		const state = createMockState();
-		applyConfigToState(state, { title: 'Test Title' });
+		const store = createStateManager(state);
+		applyConfigToState(store, { title: 'Test Title' });
 		expect(state.projectInfo.title).toBe('Test Title');
 	});
 
 	it('should apply author', () => {
 		const state = createMockState();
-		applyConfigToState(state, { author: 'Test Author' });
+		const store = createStateManager(state);
+		applyConfigToState(store, { author: 'Test Author' });
 		expect(state.projectInfo.author).toBe('Test Author');
 	});
 
 	it('should apply description', () => {
 		const state = createMockState();
-		applyConfigToState(state, { description: 'Test Description' });
+		const store = createStateManager(state);
+		applyConfigToState(store, { description: 'Test Description' });
 		expect(state.projectInfo.description).toBe('Test Description');
 	});
 
 	it('should apply memorySizeBytes', () => {
 		const state = createMockState();
-		applyConfigToState(state, { memorySizeBytes: 65536 });
+		const store = createStateManager(state);
+		applyConfigToState(store, { memorySizeBytes: 65536 });
 		expect(state.compiler.compilerOptions.memorySizeBytes).toBe(65536);
 	});
 
 	it('should apply selectedRuntime', () => {
-		const state = createMockState();
-		applyConfigToState(state, { selectedRuntime: 1 });
+		const state = createMockState({
+			runtime: {
+				runtimeSettings: [
+					{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
+					{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
+				],
+				selectedRuntime: 0,
+			},
+		});
+		const store = createStateManager(state);
+		applyConfigToState(store, {
+			runtimeSettings: [
+				{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
+				{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
+			],
+			selectedRuntime: 1,
+		});
 		expect(state.runtime.selectedRuntime).toBe(1);
 	});
 
 	it('should apply runtimeSettings', () => {
 		const state = createMockState();
+		const store = createStateManager(state);
 		const runtimeSettings = [
 			{ runtime: 'AudioWorkletRuntime' as const, sampleRate: 44100 },
 			{ runtime: 'WebWorkerLogicRuntime' as const, sampleRate: 50 },
 		];
-		applyConfigToState(state, { runtimeSettings });
+		applyConfigToState(store, { runtimeSettings });
 		expect(state.runtime.runtimeSettings).toEqual(runtimeSettings);
 	});
 
 	it('should not apply invalid runtimeSettings', () => {
 		const state = createMockState();
+		const store = createStateManager(state);
 		const originalSettings = [...state.runtime.runtimeSettings];
+		const originalSelectedRuntime = state.runtime.selectedRuntime;
 		const config = { runtimeSettings: [{ invalid: true }] } as unknown as ConfigObject;
-		applyConfigToState(state, config);
+		applyConfigToState(store, config);
+		// When all runtimeSettings are invalid, the function should not update the runtime state
 		expect(state.runtime.runtimeSettings).toEqual(originalSettings);
+		expect(state.runtime.selectedRuntime).toBe(originalSelectedRuntime);
 	});
 
 	it('should not apply runtimeSettings with invalid runtime type', () => {
 		const state = createMockState();
+		const store = createStateManager(state);
 		const originalSettings = [...state.runtime.runtimeSettings];
+		const originalSelectedRuntime = state.runtime.selectedRuntime;
 		const config = { runtimeSettings: [{ runtime: 'InvalidRuntime', sampleRate: 44100 }] } as unknown as ConfigObject;
-		applyConfigToState(state, config);
+		applyConfigToState(store, config);
+		// When all runtimeSettings are invalid, the function should not update the runtime state
 		expect(state.runtime.runtimeSettings).toEqual(originalSettings);
+		expect(state.runtime.selectedRuntime).toBe(originalSelectedRuntime);
 	});
 
 	it('should handle partial config', () => {
 		const state = createMockState();
+		const store = createStateManager(state);
 		state.projectInfo.title = 'Original';
 		state.projectInfo.author = 'Original Author';
-		applyConfigToState(state, { title: 'New Title' });
+		applyConfigToState(store, { title: 'New Title' });
 		expect(state.projectInfo.title).toBe('New Title');
 		expect(state.projectInfo.author).toBe('Original Author');
 	});
