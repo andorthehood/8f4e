@@ -152,7 +152,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			Math.max(graphicData.minGridWidth, getLongestLineLength(codeWithLineNumbers) + 4) *
 			state.graphicHelper.viewport.vGrid;
 
-		// errorMessages(graphicData, state);
 		bufferPlotters(graphicData, state);
 		outputs(graphicData, state);
 		inputs(graphicData, state);
