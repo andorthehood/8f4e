@@ -207,7 +207,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		compiler: {
 			codeBuffer: new Uint8Array(0),
 			isCompiling: false,
-			compilationErrors: [],
 			compilationTime: 0,
 			lastCompilationStart: 0,
 			allocatedMemorySize: 0,
@@ -290,7 +289,10 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
-		configErrors: [],
+		codeErrors: {
+			compilationErrors: [],
+			configErrors: [],
+		},
 		console: {
 			logs: [],
 			maxLogs: 100,
