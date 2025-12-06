@@ -88,7 +88,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 
 		// Apply the merged config to state
 		if (isPlainObject(mergedConfig)) {
-			applyConfigToState(state, mergedConfig as ConfigObject);
+			applyConfigToState(store, mergedConfig as ConfigObject);
 		}
 	}
 
