@@ -21,9 +21,13 @@ exports[`compileConfig > should compile a comprehensive example covering all fea
   "formatted": "line1
 line2	tabbed",
   "icons": {
+    "harp": {
+      "title": "Harp Icon",
+    },
     "piano": {
       "color": "blue",
       "size": 48,
+      "title": "Piano Icon",
     },
   },
   "instrument": {
@@ -55,6 +59,14 @@ line2	tabbed",
     "audio": {
       "gain": 0.75,
     },
+    "runtime": [
+      {
+        "config": "dev",
+      },
+      {
+        "config": "prod",
+      },
+    ],
   },
 }
 `;
