@@ -1,4 +1,5 @@
-import { describe, test, expect, it, vi, type MockInstance } from 'vitest';
+import { describe, test, expect, it, vi } from 'vitest';
+import createStateManager from '@8f4e/state-manager';
 
 import runtimeEffect, { RuntimeType } from './runtime';
 
@@ -75,27 +76,34 @@ describe('Runtime System', () => {
 				},
 			});
 
+			const store = createStateManager(state);
 			const events = createMockEventDispatcherWithVitest();
 
-			await runtimeEffect(state, events);
+			await runtimeEffect(store, events);
 
-			const onCalls = (events.on as MockInstance).mock.calls;
-			const buildFinishedCall = onCalls.find(call => call[0] === 'buildFinished');
-			expect(buildFinishedCall).toBeDefined();
+			// Trigger initial runtime initialization by updating the runtime state
+			store.set('runtime', {
+				stats: state.runtime.stats,
+				runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
+				selectedRuntime: 0,
+			});
 
-			const buildFinishedHandler = buildFinishedCall![1] as () => Promise<void>;
-
-			await buildFinishedHandler();
+			// Give the subscription callback time to execute
+			await new Promise(resolve => setTimeout(resolve, 10));
 
 			expect(requestRuntime).toHaveBeenCalledTimes(1);
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			// Update to new runtime - only modify the new state locations (not deprecated state.project)
-			state.runtime.runtimeSettings = [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }];
-			state.runtime.selectedRuntime = 0;
+			// Update to new runtime by using store.set to trigger the subscription
+			store.set('runtime', {
+				stats: state.runtime.stats,
+				runtimeSettings: [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }],
+				selectedRuntime: 0,
+			});
 
-			await buildFinishedHandler();
+			// Give the subscription callback time to execute
+			await new Promise(resolve => setTimeout(resolve, 10));
 
 			expect(audioDestroyer).toHaveBeenCalledTimes(1);
 			expect(mainRuntimeFactory).toHaveBeenCalledTimes(1);
