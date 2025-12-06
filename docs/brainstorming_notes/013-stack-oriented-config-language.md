@@ -271,6 +271,35 @@ rescope "drums.color"                  ; scopeStack: ["drums", "color"]      →
 rescope "instrument.name"              ; scopeStack: ["instrument", "name"]  → "instrument.name"
 ```
 
+#### `rescopeSuffix <path>`
+
+Replace the trailing suffix of the current scope with a new suffix.
+
+Process:
+
+1. Split `<path>` on `"."` into segments, resulting in `n` segments.
+2. Require `scopeStack.length >= n` (else error).
+3. Pop the last `n` segments from `scopeStack`.
+4. For each segment from `<path>`, push it onto `scopeStack`.
+
+The number of segments replaced equals the number of segments in the argument path, preserving the unchanged prefix.
+
+Examples:
+
+```txt
+; scopeStack: ["icons", "piano", "title"]       (currentScope = "icons.piano.title")
+rescopeSuffix "harp.title"                      ; scopeStack: ["icons", "harp", "title"]       → "icons.harp.title"
+
+; scopeStack: ["settings", "runtime", "[0]", "config"]       (currentScope = "settings.runtime[0].config")
+rescopeSuffix "runtime[1].config"                            ; scopeStack: ["settings", "runtime", "[1]", "config"]  → "settings.runtime[1].config"
+
+; Error case: insufficient scope depth
+; scopeStack: ["foo"]                           (currentScope = "foo")
+rescopeSuffix "bar.baz"                         ; ERROR: Cannot rescopeSuffix: scope stack has 1 segment(s), but suffix has 2 segment(s)
+```
+
+This is useful for transforming related paths without losing the common prefix, making config programs more composable and readable.
+
 #### `endScope`
 
 Pop a single entry from `scopeStack`.  
