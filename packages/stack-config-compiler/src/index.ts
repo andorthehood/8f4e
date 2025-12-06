@@ -234,6 +234,24 @@ set
 rescope "data.items[0].name"
 push "first"
 set
+
+; rescopeSuffix replaces trailing suffix
+rescope "icons.piano.title"
+push "Piano Icon"
+set
+
+rescopeSuffix "harp.title"
+push "Harp Icon"
+set
+
+; rescopeSuffix with array indices
+rescope "settings.runtime[0].config"
+push "dev"
+set
+
+rescopeSuffix "runtime[1].config"
+push "prod"
+set
 `;
 
 			const result = compileConfig(source);
