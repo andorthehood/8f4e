@@ -26,7 +26,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
 			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
 			state.compiler.isCompiling = false;
-			state.compiler.compilationErrors = [];
+			store.set('compiler.compilationErrors', []);
 			events.dispatch('buildFinished');
 			return;
 		}
@@ -68,7 +68,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 			state.compiler.isCompiling = false;
 			state.compiler.compilationTime = performance.now() - state.compiler.lastCompilationStart;
 
-			state.compiler.compilationErrors = [];
+			store.set('compiler.compilationErrors', []);
 
 			if (result.hasMemoryBeenReset) {
 				log(state, 'WASM Memory instance was (re)created', 'Compiler');
@@ -89,16 +89,15 @@ export default async function compiler(store: StateManager<State>, events: Event
 				context?: { namespace?: { moduleName: string } };
 				errorCode?: number;
 			};
-			state.compiler.compilationErrors = [
+
+			store.set('compiler.compilationErrors', [
 				{
 					lineNumber: errorObject?.line?.lineNumber || 1,
 					moduleId: errorObject?.context?.namespace?.moduleName || '',
 					code: errorObject?.errorCode || 0,
 					message: errorObject?.message || error?.toString() || 'Compilation failed',
 				},
-			];
-
-			events.dispatch('compilationError');
+			]);
 		}
 	}
 

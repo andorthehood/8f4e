@@ -111,6 +111,7 @@ const instructionsToHighlight = [
 	'functionEnd',
 	'initBlock',
 	'initBlockEnd',
+	'concat',
 ];
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
@@ -144,14 +145,14 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			...state.compiler.compilerOptions.environmentExtensions.ignoredKeywords,
 		]);
 
-		gaps(graphicData, state);
+		gaps(graphicData);
 		pianoKeyboards(graphicData, state);
 
 		graphicData.width =
 			Math.max(graphicData.minGridWidth, getLongestLineLength(codeWithLineNumbers) + 4) *
 			state.graphicHelper.viewport.vGrid;
 
-		errorMessages(graphicData, state);
+		// errorMessages(graphicData, state);
 		bufferPlotters(graphicData, state);
 		outputs(graphicData, state);
 		inputs(graphicData, state);
@@ -181,13 +182,15 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(state.graphicHelper.selectedCodeBlock);
 	};
 
-	events.on('compilationError', updateGraphicsAll);
+	errorMessages(store);
+
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on<CodeBlockAddedEvent>('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('init', updateGraphicsAll);
 	events.on('spriteSheetRerendered', updateGraphicsAll);
+	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
 }

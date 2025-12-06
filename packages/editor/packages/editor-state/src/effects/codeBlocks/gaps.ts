@@ -1,14 +1,12 @@
 import instructionParser from './codeBlockDecorators/instructionParser';
 
-import type { CodeBlockGraphicData, State } from '../../types';
+import type { CodeBlockGraphicData } from '../../types';
 
-export default function gaps(graphicData: CodeBlockGraphicData, state: State) {
+export default function gaps(graphicData: CodeBlockGraphicData) {
 	graphicData.gaps.clear();
-	state.compiler.compilationErrors.forEach(compilationError => {
-		if (compilationError.moduleId !== graphicData.id) {
-			return;
-		}
-		graphicData.gaps.set(compilationError.lineNumber, { size: 2 });
+
+	graphicData.extras.errorMessages.forEach(error => {
+		graphicData.gaps.set(error.lineNumber, { size: error.message.length });
 	});
 
 	graphicData.code.forEach((line, lineNumber) => {
