@@ -4,6 +4,7 @@ import {
 	executePopScope,
 	executePush,
 	executeRescope,
+	executeRescopeSuffix,
 	executeRescopeTop,
 	executeScope,
 	executeSet,
@@ -40,6 +41,8 @@ export function executeCommand(state: VMState, command: Command): CommandError[]
 			return executeRescopeTop(state, command);
 		case 'rescope':
 			return executeRescope(state, command);
+		case 'rescopeSuffix':
+			return executeRescopeSuffix(state, command);
 		case 'popScope':
 			return wrapError(executePopScope(state));
 		default:
@@ -88,6 +91,32 @@ if (import.meta.vitest) {
 			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo', 'bar'] };
 			executeCommand(state, { type: 'popScope', lineNumber: 1 });
 			expect(state.scopeStack).toEqual(['foo']);
+		});
+
+		it('should execute rescopeSuffix command', () => {
+			const state: VMState = { config: {}, dataStack: [], scopeStack: ['icons', 'piano', 'title'] };
+			const result = executeCommand(state, {
+				type: 'rescopeSuffix',
+				pathSegments: ['harp', 'title'],
+				lineNumber: 1,
+			});
+			expect(result).toBeNull();
+			expect(state.scopeStack).toEqual(['icons', 'harp', 'title']);
+		});
+
+		it('should return error for rescopeSuffix with insufficient scope', () => {
+			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo'] };
+			const result = executeCommand(state, {
+				type: 'rescopeSuffix',
+				pathSegments: ['bar', 'baz'],
+				lineNumber: 1,
+			});
+			expect(result).toEqual([
+				{
+					message: 'Cannot rescopeSuffix: scope stack has 1 segment(s), but suffix has 2 segment(s)',
+					kind: 'exec',
+				},
+			]);
 		});
 
 		it('should return error for unknown command type', () => {
