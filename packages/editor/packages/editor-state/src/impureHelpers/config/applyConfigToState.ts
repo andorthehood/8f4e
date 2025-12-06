@@ -53,11 +53,16 @@ export function applyConfigToState(store: StateManager<State>, config: ConfigObj
 
 		console.log('Applying runtime settings from config:', validRuntimeSettings);
 
-		store.set('runtime', {
-			stats: state.runtime.stats,
-			runtimeSettings: validRuntimeSettings,
-			selectedRuntime:
-				config.selectedRuntime && validRuntimeSettings[config.selectedRuntime] ? config.selectedRuntime : 0,
-		});
+		// Only apply runtime settings if there are valid settings
+		if (validRuntimeSettings.length > 0) {
+			store.set('runtime', {
+				stats: state.runtime.stats,
+				runtimeSettings: validRuntimeSettings,
+				selectedRuntime:
+					config.selectedRuntime !== undefined && validRuntimeSettings[config.selectedRuntime]
+						? config.selectedRuntime
+						: 0,
+			});
+		}
 	}
 }
