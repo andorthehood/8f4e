@@ -2,8 +2,52 @@ import { isPlainObject } from '../isPlainObject';
 
 /**
  * Deep merges two config objects. Later values override earlier values.
- * Arrays are replaced entirely, not merged.
+ * Arrays of plain objects are merged by index; other arrays are replaced.
  */
+
+function cloneConfigValue(value: unknown): unknown {
+	if (Array.isArray(value)) {
+		return value.map(item => cloneConfigValue(item));
+	}
+
+	if (isPlainObject(value)) {
+		const result: Record<string, unknown> = {};
+		for (const key of Object.keys(value)) {
+			result[key] = cloneConfigValue(value[key]);
+		}
+		return result;
+	}
+
+	return value;
+}
+
+function isArrayOfPlainObjects(value: unknown): value is Record<string, unknown>[] {
+	return Array.isArray(value) && value.every(item => item === undefined || isPlainObject(item));
+}
+
+function mergeArrayOfPlainObjects(
+	target: Record<string, unknown>[],
+	source: Record<string, unknown>[]
+): Record<string, unknown>[] {
+	const maxLength = Math.max(target.length, source.length);
+	const merged: Record<string, unknown>[] = [];
+
+	for (let i = 0; i < maxLength; i += 1) {
+		const targetItem = target[i];
+		const sourceItem = source[i];
+
+		if (targetItem && sourceItem) {
+			merged[i] = deepMergeConfig(targetItem, sourceItem);
+		} else if (sourceItem) {
+			merged[i] = cloneConfigValue(sourceItem) as Record<string, unknown>;
+		} else if (targetItem) {
+			merged[i] = cloneConfigValue(targetItem) as Record<string, unknown>;
+		}
+	}
+
+	return merged;
+}
+
 export function deepMergeConfig(
 	target: Record<string, unknown>,
 	source: Record<string, unknown>
@@ -14,7 +58,11 @@ export function deepMergeConfig(
 		const sourceValue = source[key];
 		const targetValue = result[key];
 
-		if (isPlainObject(sourceValue) && isPlainObject(targetValue)) {
+		if (isArrayOfPlainObjects(sourceValue) && Array.isArray(targetValue) && isArrayOfPlainObjects(targetValue)) {
+			result[key] = mergeArrayOfPlainObjects(targetValue, sourceValue);
+		} else if (Array.isArray(sourceValue)) {
+			result[key] = cloneConfigValue(sourceValue);
+		} else if (isPlainObject(sourceValue) && isPlainObject(targetValue)) {
 			result[key] = deepMergeConfig(targetValue, sourceValue);
 		} else {
 			result[key] = sourceValue;
@@ -43,10 +91,92 @@ if (import.meta.vitest) {
 		});
 
 		it('should replace arrays entirely', () => {
-			const target = { items: [1, 2, 3] };
-			const source = { items: [4, 5] };
+			const target = { items: [{ value: 1 }] };
+			const sourceArray = [{ value: 2 }, { value: 3 }];
+			const source = { items: sourceArray };
 			const result = deepMergeConfig(target, source);
-			expect(result).toEqual({ items: [4, 5] });
+			expect(result).toEqual({ items: [{ value: 2 }, { value: 3 }] });
+			sourceArray[0]!.value = 42;
+			expect(result).toEqual({ items: [{ value: 2 }, { value: 3 }] });
+		});
+
+		it('should replace nested arrays entirely without mutation', () => {
+			const target = { nested: { items: [{ value: 1 }] } };
+			const nestedSourceArray = [{ value: 2 }, { value: 3 }];
+			const source = { nested: { items: nestedSourceArray } };
+			const result = deepMergeConfig(target, source);
+			expect(result).toEqual({ nested: { items: [{ value: 2 }, { value: 3 }] } });
+			nestedSourceArray[1]!.value = 99;
+			expect(result).toEqual({ nested: { items: [{ value: 2 }, { value: 3 }] } });
+		});
+
+		it('should merge arrays of objects by index', () => {
+			const one = {
+				runtimeSettings: [
+					{
+						audioInputBuffers: [
+							{
+								moduleId: 'audioin',
+								memoryId: 'buffer',
+								channel: 0,
+								input: 0,
+							},
+						],
+					},
+				],
+			};
+
+			const two = {
+				runtimeSettings: [
+					{
+						audioOutputBuffers: [
+							{
+								moduleId: 'audiooutL',
+								memoryId: 'buffer',
+								channel: 0,
+								output: 0,
+							},
+							{
+								moduleId: 'audiooutR',
+								memoryId: 'buffer',
+								channel: 1,
+								output: 0,
+							},
+						],
+					},
+				],
+			};
+
+			const result = deepMergeConfig(one, two);
+
+			expect(result).toEqual({
+				runtimeSettings: [
+					{
+						audioInputBuffers: [
+							{
+								moduleId: 'audioin',
+								memoryId: 'buffer',
+								channel: 0,
+								input: 0,
+							},
+						],
+						audioOutputBuffers: [
+							{
+								moduleId: 'audiooutL',
+								memoryId: 'buffer',
+								channel: 0,
+								output: 0,
+							},
+							{
+								moduleId: 'audiooutR',
+								memoryId: 'buffer',
+								channel: 1,
+								output: 0,
+							},
+						],
+					},
+				],
+			});
 		});
 
 		it('should not mutate the original objects', () => {
