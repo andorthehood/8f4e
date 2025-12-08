@@ -19,12 +19,16 @@ function resolveAudioBufferMemory(
 	legacyModuleId?: string
 ): { moduleId: string; memoryName: string } | undefined {
 	// Check if memoryId contains a dot (unified format: 'module.memory')
-	if (memoryId.includes('.')) {
+	// Use regex pattern similar to resolveMemoryIdentifier for consistency
+	if (/(\S+)\.(\S+)/.test(memoryId)) {
 		const parts = memoryId.split('.');
-		if (parts.length === 2 && parts[0] && parts[1]) {
+		const moduleIdPart = parts[0];
+		const memoryNamePart = parts.slice(1).join('.'); // Join remaining parts to handle dots in memory name
+
+		if (moduleIdPart && memoryNamePart) {
 			return {
-				moduleId: parts[0],
-				memoryName: parts[1],
+				moduleId: moduleIdPart,
+				memoryName: memoryNamePart,
 			};
 		}
 	}
