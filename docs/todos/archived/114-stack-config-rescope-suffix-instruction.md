@@ -3,8 +3,8 @@ title: 'TODO: Add rescopeSuffix instruction to stack-config-compiler'
 priority: Medium
 effort: 4-6 hours
 created: 2025-12-06
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-05
 ---
 
 # TODO: Add rescopeSuffix instruction to stack-config-compiler
