@@ -9,6 +9,7 @@ import type { State, EventDispatcher } from '@8f4e/editor';
 /**
  * Resolves a memory identifier into module and memory name components.
  * Supports both unified format ('module.memory') and legacy format (separate moduleId + memoryId).
+ * Parsing logic mirrors the approach used in resolveMemoryIdentifier for consistency.
  *
  * @param memoryId - Memory identifier, can be 'module.memory' or just 'memory'
  * @param legacyModuleId - Optional legacy moduleId for backward compatibility
@@ -19,11 +20,10 @@ function resolveAudioBufferMemory(
 	legacyModuleId?: string
 ): { moduleId: string; memoryName: string } | undefined {
 	// Check if memoryId contains a dot (unified format: 'module.memory')
-	// Use regex pattern similar to resolveMemoryIdentifier for consistency
+	// Use the same regex pattern as resolveMemoryIdentifier for consistency
 	if (/(\S+)\.(\S+)/.test(memoryId)) {
-		const parts = memoryId.split('.');
-		const moduleIdPart = parts[0];
-		const memoryNamePart = parts.slice(1).join('.'); // Join remaining parts to handle dots in memory name
+		const moduleIdPart = memoryId.split('.')[0];
+		const memoryNamePart = memoryId.split('.')[1];
 
 		if (moduleIdPart && memoryNamePart) {
 			return {
