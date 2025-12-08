@@ -6,6 +6,40 @@ import { getMemory } from './compiler-callback';
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
 
+/**
+ * Resolves a memory identifier into module and memory name components.
+ * Supports both unified format ('module.memory') and legacy format (separate moduleId + memoryId).
+ *
+ * @param memoryId - Memory identifier, can be 'module.memory' or just 'memory'
+ * @param legacyModuleId - Optional legacy moduleId for backward compatibility
+ * @returns Object with moduleId and memoryName, or undefined if parsing fails
+ */
+function resolveAudioBufferMemory(
+	memoryId: string,
+	legacyModuleId?: string
+): { moduleId: string; memoryName: string } | undefined {
+	// Check if memoryId contains a dot (unified format: 'module.memory')
+	if (memoryId.includes('.')) {
+		const parts = memoryId.split('.');
+		if (parts.length === 2 && parts[0] && parts[1]) {
+			return {
+				moduleId: parts[0],
+				memoryName: parts[1],
+			};
+		}
+	}
+
+	// Fallback to legacy format: use separate moduleId + memoryId
+	if (legacyModuleId) {
+		return {
+			moduleId: legacyModuleId,
+			memoryName: memoryId,
+		};
+	}
+
+	return undefined;
+}
+
 // AudioWorklet Runtime Factory
 export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 	let audioContext: AudioContext | null = null;
@@ -28,8 +62,13 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 
 		const audioOutputBuffers = (runtime.audioOutputBuffers || [])
 			.map(({ moduleId, memoryId, output, channel }) => {
-				const audioModule = state.compiler.compiledModules[moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
+				const resolved = resolveAudioBufferMemory(memoryId, moduleId);
+				if (!resolved) {
+					return { audioBufferWordAddress: undefined, output, channel };
+				}
+
+				const audioModule = state.compiler.compiledModules[resolved.moduleId];
+				const audioBufferWordAddress = audioModule?.memoryMap[resolved.memoryName]?.wordAlignedAddress;
 
 				return {
 					audioBufferWordAddress,
@@ -41,8 +80,13 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 
 		const audioInputBuffers = (runtime.audioInputBuffers || [])
 			.map(({ moduleId, memoryId, input, channel }) => {
-				const audioModule = state.compiler.compiledModules[moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
+				const resolved = resolveAudioBufferMemory(memoryId, moduleId);
+				if (!resolved) {
+					return { audioBufferWordAddress: undefined, input, channel };
+				}
+
+				const audioModule = state.compiler.compiledModules[resolved.moduleId];
+				const audioBufferWordAddress = audioModule?.memoryMap[resolved.memoryName]?.wordAlignedAddress;
 
 				return {
 					audioBufferWordAddress,
