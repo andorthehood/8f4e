@@ -8,17 +8,13 @@ import type { State, EventDispatcher } from '@8f4e/editor';
 
 /**
  * Resolves a memory identifier into module and memory name components.
- * Supports both unified format ('module.memory') and legacy format (separate moduleId + memoryId).
+ * Parses the unified format ('module.memory').
  * Parsing logic mirrors the approach used in resolveMemoryIdentifier for consistency.
  *
- * @param memoryId - Memory identifier, can be 'module.memory' or just 'memory'
- * @param legacyModuleId - Optional legacy moduleId for backward compatibility
+ * @param memoryId - Memory identifier in unified format 'module.memory'
  * @returns Object with moduleId and memoryName, or undefined if parsing fails
  */
-function resolveAudioBufferMemory(
-	memoryId: string,
-	legacyModuleId?: string
-): { moduleId: string; memoryName: string } | undefined {
+function resolveAudioBufferMemory(memoryId: string): { moduleId: string; memoryName: string } | undefined {
 	// Check if memoryId contains a dot (unified format: 'module.memory')
 	// Use the same regex pattern as resolveMemoryIdentifier for consistency
 	if (/(\S+)\.(\S+)/.test(memoryId)) {
@@ -31,14 +27,6 @@ function resolveAudioBufferMemory(
 				memoryName: memoryNamePart,
 			};
 		}
-	}
-
-	// Fallback to legacy format: use separate moduleId + memoryId
-	if (legacyModuleId) {
-		return {
-			moduleId: legacyModuleId,
-			memoryName: memoryId,
-		};
 	}
 
 	return undefined;
@@ -65,8 +53,8 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 		}
 
 		const audioOutputBuffers = (runtime.audioOutputBuffers || [])
-			.map(({ moduleId, memoryId, output, channel }) => {
-				const resolved = resolveAudioBufferMemory(memoryId, moduleId);
+			.map(({ memoryId, output, channel }) => {
+				const resolved = resolveAudioBufferMemory(memoryId);
 				if (!resolved) {
 					return { audioBufferWordAddress: undefined, output, channel };
 				}
@@ -83,8 +71,8 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 			.filter(({ audioBufferWordAddress }) => typeof audioBufferWordAddress !== 'undefined');
 
 		const audioInputBuffers = (runtime.audioInputBuffers || [])
-			.map(({ moduleId, memoryId, input, channel }) => {
-				const resolved = resolveAudioBufferMemory(memoryId, moduleId);
+			.map(({ memoryId, input, channel }) => {
+				const resolved = resolveAudioBufferMemory(memoryId);
 				if (!resolved) {
 					return { audioBufferWordAddress: undefined, input, channel };
 				}
