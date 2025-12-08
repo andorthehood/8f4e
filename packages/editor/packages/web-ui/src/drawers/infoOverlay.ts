@@ -4,25 +4,6 @@ const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 
 import type { State } from '@8f4e/editor-state';
 
-/**
- * Formats an audio buffer identifier for display.
- * Handles both unified format ('module.memory') and legacy format (separate moduleId + memoryId).
- */
-function formatAudioBufferId(memoryId: string, legacyModuleId?: string): string {
-	// If memoryId already contains a dot, it's in unified format
-	if (memoryId.includes('.')) {
-		return memoryId;
-	}
-
-	// Otherwise, combine with legacyModuleId if available
-	if (legacyModuleId) {
-		return `${legacyModuleId}.${memoryId}`;
-	}
-
-	// Fallback to just memoryId
-	return memoryId;
-}
-
 function formatBytes(bytes: number): string {
 	if (bytes < 1000) {
 		return bytes + ' bytes';
@@ -65,16 +46,14 @@ export default function drawInfoOverlay(
 	const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
 
 	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioInputBuffers)) {
-		runtime.audioInputBuffers.forEach(({ moduleId, memoryId, channel, input }) => {
-			const bufferId = formatAudioBufferId(memoryId, moduleId);
-			debugText.push('- Audio Input ' + input + ': Channel: ' + channel + ' Buffer: ' + bufferId);
+		runtime.audioInputBuffers.forEach(({ memoryId, channel, input }) => {
+			debugText.push('- Audio Input ' + input + ': Channel: ' + channel + ' Buffer: ' + memoryId);
 		});
 	}
 
 	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioOutputBuffers)) {
-		runtime.audioOutputBuffers.forEach(({ moduleId, memoryId, channel, output }) => {
-			const bufferId = formatAudioBufferId(memoryId, moduleId);
-			debugText.push('- Audio Output ' + output + ': Channel: ' + channel + ' Buffer: ' + bufferId);
+		runtime.audioOutputBuffers.forEach(({ memoryId, channel, output }) => {
+			debugText.push('- Audio Output ' + output + ': Channel: ' + channel + ' Buffer: ' + memoryId);
 		});
 	}
 
