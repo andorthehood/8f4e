@@ -8,7 +8,11 @@ const compilerWorker = new CompilerWorker();
 
 let memoryRef: WebAssembly.Memory | null = null;
 
-export async function compileProject(modules: Module[], compilerOptions: CompileOptions): Promise<CompilationResult> {
+export async function compileProject(
+	modules: Module[],
+	compilerOptions: CompileOptions,
+	functions?: Module[]
+): Promise<CompilationResult> {
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
 			switch (data.type) {
@@ -47,6 +51,7 @@ export async function compileProject(modules: Module[], compilerOptions: Compile
 			payload: {
 				modules,
 				compilerOptions,
+				functions,
 			},
 		});
 	});
