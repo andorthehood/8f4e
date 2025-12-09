@@ -1,6 +1,8 @@
 import { ErrorCode, getError } from '../errors';
 import { BLOCK_TYPE, ArgumentType } from '../types';
 import { isInstructionInsideFunction } from '../utils';
+import Type from '../wasmUtils/type';
+import { createFunctionType } from '../wasmUtils/sectionHelpers';
 
 import type { InstructionCompiler } from '../types';
 
@@ -43,6 +45,20 @@ const functionEnd: InstructionCompiler = function (line, context) {
 	// Update function signature with return types
 	if (context.currentFunctionSignature) {
 		context.currentFunctionSignature.returns = returnTypes;
+
+		// Register type signature in the type registry if available
+		if (context.functionTypeRegistry) {
+			const params = context.currentFunctionSignature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
+			const results = returnTypes.map(type => (type === 'int' ? Type.I32 : Type.F32));
+
+			const signature = JSON.stringify({ params, results });
+
+			if (!context.functionTypeRegistry.signatureMap.has(signature)) {
+				const typeIndex = context.functionTypeRegistry.baseTypeIndex + context.functionTypeRegistry.types.length;
+				context.functionTypeRegistry.signatureMap.set(signature, typeIndex);
+				context.functionTypeRegistry.types.push(createFunctionType(params, results));
+			}
+		}
 	}
 
 	// Clear the stack (return values are consumed)
