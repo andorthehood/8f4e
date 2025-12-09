@@ -5,7 +5,7 @@ import {
 	getDataStructure,
 	getDataStructureByteAddress,
 	getMemoryStringLastByteAddress,
-	isInstructionIsInsideAModule,
+	isInstructionInsideModuleOrFunction,
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
@@ -27,7 +27,7 @@ function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 }
 
 const push: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
