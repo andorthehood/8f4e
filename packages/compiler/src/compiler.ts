@@ -152,7 +152,8 @@ export function compileModule(
 export function compileFunction(
 	ast: AST,
 	builtInConsts: Namespace['consts'],
-	namespaces: Namespaces
+	namespaces: Namespaces,
+	wasmIndex: number
 ): CompiledFunction {
 	const context: CompilationContext = {
 		namespace: {
@@ -204,6 +205,7 @@ export function compileFunction(
 			context.loopSegmentByteCode
 		),
 		locals: localDeclarations,
+		wasmIndex,
 		ast,
 	};
 }
