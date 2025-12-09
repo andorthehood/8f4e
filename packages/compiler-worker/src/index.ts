@@ -7,6 +7,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 		const {
 			codeBuffer,
 			compiledModules,
+			compiledFunctions,
 			allocatedMemorySize,
 			memoryRef,
 			hasMemoryBeenInitialized,
@@ -23,6 +24,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 				hasMemoryBeenInitialized,
 				hasMemoryBeenReset,
 				hasWasmInstanceBeenReset,
+				compiledFunctions,
 			},
 		});
 	} catch (error) {
