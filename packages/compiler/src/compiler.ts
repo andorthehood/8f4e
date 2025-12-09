@@ -7,6 +7,8 @@ import {
 	CompilationContext,
 	CompileOptions,
 	CompiledModule,
+	CompiledFunction,
+	CompiledFunctionLookup,
 	Namespace,
 	Namespaces,
 } from './types';
@@ -92,7 +94,8 @@ export function compileModule(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	memorySizeBytes: number,
-	index: number
+	index: number,
+	functions?: CompiledFunctionLookup
 ): CompiledModule {
 	const context: CompilationContext = {
 		namespace: {
@@ -101,6 +104,7 @@ export function compileModule(
 			locals: {},
 			consts: { ...builtInConsts },
 			moduleName: undefined,
+			functions,
 		},
 		initSegmentByteCode: [],
 		loopSegmentByteCode: [],
@@ -108,6 +112,7 @@ export function compileModule(
 		blockStack: [],
 		startingByteAddress,
 		memoryByteSize: memorySizeBytes,
+		mode: 'module',
 	};
 
 	ast.forEach(line => {
@@ -141,5 +146,64 @@ export function compileModule(
 		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
 		ast,
 		index,
+	};
+}
+
+export function compileFunction(
+	ast: AST,
+	builtInConsts: Namespace['consts'],
+	namespaces: Namespaces
+): CompiledFunction {
+	const context: CompilationContext = {
+		namespace: {
+			namespaces,
+			memory: {},
+			locals: {},
+			consts: { ...builtInConsts },
+			moduleName: undefined,
+			functions: {},
+		},
+		initSegmentByteCode: [],
+		loopSegmentByteCode: [],
+		stack: [],
+		blockStack: [],
+		startingByteAddress: 0,
+		memoryByteSize: 0,
+		mode: 'function',
+	};
+
+	ast.forEach(line => {
+		compileLine(line, context);
+	});
+
+	if (!context.currentFunctionId) {
+		throw getError(ErrorCode.MISSING_FUNCTION_ID, { lineNumber: 0, instruction: 'function', arguments: [] }, context);
+	}
+
+	if (!context.currentFunctionSignature) {
+		throw getError(
+			ErrorCode.INVALID_FUNCTION_SIGNATURE,
+			{ lineNumber: 0, instruction: 'function', arguments: [] },
+			context
+		);
+	}
+
+	// Collect locals (excluding parameters)
+	const localDeclarations = Object.entries(context.namespace.locals)
+		.filter(([name]) => !name.startsWith('param'))
+		.map(([, local]) => ({
+			isInteger: local.isInteger,
+			count: 1,
+		}));
+
+	return {
+		id: context.currentFunctionId,
+		signature: context.currentFunctionSignature,
+		body: createFunction(
+			localDeclarations.map(local => createLocalDeclaration(local.isInteger ? Type.I32 : Type.F32, local.count)),
+			context.loopSegmentByteCode
+		),
+		locals: localDeclarations,
+		ast,
 	};
 }

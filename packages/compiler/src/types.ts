@@ -43,6 +43,22 @@ export interface CompiledModule {
 
 export type CompiledModuleLookup = Record<string, CompiledModule>;
 
+export interface FunctionSignature {
+	parameters: Array<'int' | 'float'>;
+	returns: Array<'int' | 'float'>;
+}
+
+export interface CompiledFunction {
+	id: string;
+	signature: FunctionSignature;
+	body: number[];
+	locals: Array<{ isInteger: boolean; count: number }>;
+	wasmIndex?: number;
+	ast?: AST;
+}
+
+export type CompiledFunctionLookup = Record<string, CompiledFunction>;
+
 export type MemoryBuffer = Int32Array;
 
 export interface Connection {
@@ -92,9 +108,13 @@ export interface Namespace {
 	consts: Consts;
 	moduleName: string | undefined;
 	namespaces: Namespaces;
+	functions?: CompiledFunctionLookup;
 }
 
 export type Namespaces = Record<string, { consts: Consts }>;
+
+export type CompilationMode = 'module' | 'function';
+
 export interface CompilationContext {
 	namespace: Namespace;
 	stack: Stack;
@@ -103,6 +123,9 @@ export interface CompilationContext {
 	memoryByteSize: number;
 	initSegmentByteCode: Array<WASMInstruction | Type | number>;
 	loopSegmentByteCode: Array<WASMInstruction | Type | number>;
+	mode?: CompilationMode;
+	currentFunctionId?: string;
+	currentFunctionSignature?: FunctionSignature;
 }
 
 export interface StackItem {
