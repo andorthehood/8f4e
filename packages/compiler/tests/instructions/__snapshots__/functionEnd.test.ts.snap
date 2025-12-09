@@ -1,0 +1,301 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`functionEnd validates stack > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [],
+    "instruction": "loop",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "addTwo",
+      },
+    ],
+    "instruction": "call",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "loopEnd",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 9,
+  },
+]
+`;
+
+exports[`functionEnd validates stack > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
+
+exports[`functionEnd validates stack > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "__loopErrorSignaler": {
+    "byteAddress": 8,
+    "default": -1,
+    "elementWordSize": 4,
+    "id": "__loopErrorSignaler",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`functionEnd with float return > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [],
+    "instruction": "loop",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "getPi",
+      },
+    ],
+    "instruction": "call",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "loopEnd",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 9,
+  },
+]
+`;
+
+exports[`functionEnd with float return > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
+
+exports[`functionEnd with float return > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "__loopErrorSignaler": {
+    "byteAddress": 8,
+    "default": -1,
+    "elementWordSize": 4,
+    "id": "__loopErrorSignaler",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`functionEnd with int return > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [],
+    "instruction": "loop",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "getFortyTwo",
+      },
+    ],
+    "instruction": "call",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "loopEnd",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 9,
+  },
+]
+`;
+
+exports[`functionEnd with int return > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
+
+exports[`functionEnd with int return > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "__loopErrorSignaler": {
+    "byteAddress": 8,
+    "default": -1,
+    "elementWordSize": 4,
+    "id": "__loopErrorSignaler",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
