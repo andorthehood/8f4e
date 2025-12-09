@@ -1,11 +1,13 @@
 import { ErrorCode, getError } from '../errors';
-import { BLOCK_TYPE } from '../types';
-import { isInstructionIsInsideAModule } from '../utils';
+import { BLOCK_TYPE, ArgumentType } from '../types';
+import { isInstructionInsideFunction } from '../utils';
+import Type from '../wasmUtils/type';
+import { createFunctionType } from '../wasmUtils/sectionHelpers';
 
 import type { InstructionCompiler } from '../types';
 
 const functionEnd: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionInsideFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
@@ -15,11 +17,52 @@ const functionEnd: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
 	}
 
-	const operand = context.stack.pop();
+	// Parse return types: functionEnd [<returnType1> <returnType2> ...]
+	const returnTypes = line.arguments.map(arg => {
+		if (arg.type !== ArgumentType.IDENTIFIER || (arg.value !== 'int' && arg.value !== 'float')) {
+			throw getError(ErrorCode.INVALID_FUNCTION_SIGNATURE, line, context);
+		}
+		return arg.value as 'int' | 'float';
+	});
 
-	if (operand) {
-		throw getError(ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS, line, context);
+	if (returnTypes.length > 8) {
+		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
 	}
+
+	// Validate stack matches return types
+	if (context.stack.length !== returnTypes.length) {
+		throw getError(ErrorCode.STACK_MISMATCH_FUNCTION_RETURN, line, context);
+	}
+
+	for (let i = 0; i < returnTypes.length; i++) {
+		const stackItem = context.stack[context.stack.length - returnTypes.length + i];
+		const expectedInteger = returnTypes[i] === 'int';
+		if (stackItem.isInteger !== expectedInteger) {
+			throw getError(ErrorCode.TYPE_MISMATCH, line, context);
+		}
+	}
+
+	// Update function signature with return types
+	if (context.currentFunctionSignature) {
+		context.currentFunctionSignature.returns = returnTypes;
+
+		// Register type signature in the type registry if available
+		if (context.functionTypeRegistry) {
+			const params = context.currentFunctionSignature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
+			const results = returnTypes.map(type => (type === 'int' ? Type.I32 : Type.F32));
+
+			const signature = JSON.stringify({ params, results });
+
+			if (!context.functionTypeRegistry.signatureMap.has(signature)) {
+				const typeIndex = context.functionTypeRegistry.baseTypeIndex + context.functionTypeRegistry.types.length;
+				context.functionTypeRegistry.signatureMap.set(signature, typeIndex);
+				context.functionTypeRegistry.types.push(createFunctionType(params, results));
+			}
+		}
+	}
+
+	// Clear the stack (return values are consumed)
+	context.stack = [];
 
 	return context;
 };
