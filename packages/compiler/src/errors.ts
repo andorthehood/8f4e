@@ -18,6 +18,13 @@ export enum ErrorCode {
 	MISSING_BLOCK_START_INSTRUCTION,
 	INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 	DIVISION_BY_ZERO,
+	MISSING_FUNCTION_ID,
+	INVALID_FUNCTION_SIGNATURE,
+	FUNCTION_SIGNATURE_OVERFLOW,
+	STACK_MISMATCH_FUNCTION_RETURN,
+	TYPE_MISMATCH,
+	MEMORY_ACCESS_IN_PURE_FUNCTION,
+	UNDEFINED_FUNCTION,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -139,6 +146,55 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'Possible division by zero. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.MISSING_FUNCTION_ID:
+			return {
+				code,
+				message: 'Missing function ID. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.INVALID_FUNCTION_SIGNATURE:
+			return {
+				code,
+				message: 'Invalid function signature. Parameters and returns must be "int" or "float". (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.FUNCTION_SIGNATURE_OVERFLOW:
+			return {
+				code,
+				message: 'Function signature overflow. Maximum 8 parameters and 8 return values. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.STACK_MISMATCH_FUNCTION_RETURN:
+			return {
+				code,
+				message: 'Stack elements do not match function return signature. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.TYPE_MISMATCH:
+			return {
+				code,
+				message: 'Type mismatch. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION:
+			return {
+				code,
+				message: 'Memory access is not allowed in pure functions. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.UNDEFINED_FUNCTION:
+			return {
+				code,
+				message: 'Undefined function. (' + code + ')',
 				line,
 				context,
 			};
