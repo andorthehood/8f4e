@@ -43,8 +43,12 @@ const _function: InstructionCompiler = function (line, context) {
 		};
 	});
 
-	// Push parameters onto the stack (they're implicitly available in WASM)
-	paramTypes.forEach(type => {
+	// Generate local.get instructions to load parameters onto the stack
+	// In WASM, function parameters are local variables at indices 0, 1, 2, etc.
+	// We need to explicitly load them onto the stack for the function body to use
+	paramTypes.forEach((type, index) => {
+		context.loopSegmentByteCode.push(0x20); // local.get
+		context.loopSegmentByteCode.push(index); // local index
 		context.stack.push({ isInteger: type === 'int' });
 	});
 
