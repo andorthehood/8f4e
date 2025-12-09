@@ -181,4 +181,6 @@ export interface CompileOptions {
 	globalDataStructures?: DataStructure[];
 	/** Whether to include AST in compiled modules. Default is false to reduce payload size. */
 	includeAST?: boolean;
+	/** Disable shared memory for tests (wabt doesn't support shared memory). Default is false (shared enabled). */
+	disableSharedMemory?: boolean;
 }
