@@ -1,13 +1,10 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { isInstructionIsInsideAModule } from '../utils';
 
 import type { InstructionCompiler } from '../types';
 
 const _const: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
+	// Constants can be declared at any level (top-level, in modules, or in functions)
 
 	if (!line.arguments[0] || !line.arguments[1]) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
