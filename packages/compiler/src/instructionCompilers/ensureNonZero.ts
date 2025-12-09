@@ -1,4 +1,4 @@
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionInsideModuleOrFunction } from '../utils';
 import { ErrorCode } from '../errors';
 import { ArgumentType } from '../types';
 import { getError } from '../errors';
@@ -7,7 +7,7 @@ import { compileSegment } from '../compiler';
 import type { InstructionCompiler } from '../types';
 
 const div: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 

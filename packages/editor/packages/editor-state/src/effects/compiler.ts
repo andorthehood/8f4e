@@ -66,6 +66,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 				return;
 			}
 
+			state.compiler.compiledFunctions = result.compiledFunctions;
 			state.compiler.compiledModules = result.compiledModules;
 			state.compiler.codeBuffer = result.codeBuffer;
 			state.compiler.allocatedMemorySize = result.allocatedMemorySize;
