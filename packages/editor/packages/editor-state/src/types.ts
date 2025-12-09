@@ -401,17 +401,27 @@ export interface MainThreadLogicRuntime {
 	sampleRate: number;
 }
 
+/**
+ * AudioWorklet runtime configuration.
+ *
+ * Audio buffers use a unified `memoryId` format in the form `'module.memory'` (e.g., 'audiooutL.buffer').
+ * This aligns with the `module.memory` syntax used elsewhere in the editor.
+ */
 export interface AudioWorkletRuntime {
 	runtime: 'AudioWorkletRuntime';
 	sampleRate: number;
 	audioInputBuffers?: {
-		moduleId: string;
+		/**
+		 * Memory identifier in unified format `'module.memory'` (e.g., 'audioin.buffer').
+		 */
 		memoryId: string;
 		channel: number;
 		input: number;
 	}[];
 	audioOutputBuffers?: {
-		moduleId: string;
+		/**
+		 * Memory identifier in unified format `'module.memory'` (e.g., 'audiooutL.buffer').
+		 */
 		memoryId: string;
 		channel: number;
 		output: number;
