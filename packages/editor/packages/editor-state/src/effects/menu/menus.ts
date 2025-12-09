@@ -6,7 +6,13 @@ export const mainMenu: MenuGenerator = state => [
 				{
 					title: 'New Module',
 					action: 'addCodeBlock',
-					payload: { isNew: true },
+					payload: { isNew: true, blockType: 'module' },
+					close: true,
+				},
+				{
+					title: 'New Function',
+					action: 'addCodeBlock',
+					payload: { isNew: true, blockType: 'function' },
 					close: true,
 				},
 				{
@@ -99,30 +105,35 @@ export interface OpenGroupEvent {
 	codeBlock: CodeBlockGraphicData;
 }
 
-export const moduleMenu: MenuGenerator = state => [
-	...(state.featureFlags.editing
-		? [
-				{
-					title: 'Delete module',
-					action: 'deleteCodeBlock',
-					payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
-					close: true,
-				},
-			]
-		: []),
-	{
-		title: 'Copy module',
-		action: 'copyCodeBlock',
-		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
-		close: true,
-	},
-	{
-		title: 'Log module info to console',
-		action: 'consoleLog',
-		payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
-		close: true,
-	},
-];
+export const moduleMenu: MenuGenerator = state => {
+	const blockType = state.graphicHelper.selectedCodeBlock?.blockType;
+	const blockLabel = blockType === 'function' ? 'function' : 'module';
+
+	return [
+		...(state.featureFlags.editing
+			? [
+					{
+						title: `Delete ${blockLabel}`,
+						action: 'deleteCodeBlock',
+						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+						close: true,
+					},
+				]
+			: []),
+		{
+			title: `Copy ${blockLabel}`,
+			action: 'copyCodeBlock',
+			payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+			close: true,
+		},
+		{
+			title: `Log ${blockLabel} info to console`,
+			action: 'consoleLog',
+			payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+			close: true,
+		},
+	];
+};
 
 export const moduleCategoriesMenu: MenuGenerator = async state => {
 	if (!state.callbacks.getListOfModules) {
