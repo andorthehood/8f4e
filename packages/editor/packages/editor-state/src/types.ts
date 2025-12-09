@@ -517,7 +517,11 @@ export interface Callbacks {
 	getProject?: (slug: string) => Promise<Project>;
 
 	// Compilation callback
-	compileProject?: (modules: Module[], compilerOptions: CompileOptions) => Promise<CompilationResult>;
+	compileProject?: (
+		modules: Module[],
+		compilerOptions: CompileOptions,
+		functions?: Module[]
+	) => Promise<CompilationResult>;
 
 	// Session storage callbacks
 	loadSession: () => Promise<Project | null>;
