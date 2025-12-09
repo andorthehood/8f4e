@@ -48,12 +48,19 @@ export interface FunctionSignature {
 	returns: Array<'int' | 'float'>;
 }
 
+export interface FunctionTypeRegistry {
+	types: Array<ReturnType<typeof import('./wasmUtils/sectionHelpers').createFunctionType>>;
+	signatureMap: Map<string, number>;
+	baseTypeIndex: number;
+}
+
 export interface CompiledFunction {
 	id: string;
 	signature: FunctionSignature;
 	body: number[];
 	locals: Array<{ isInteger: boolean; count: number }>;
 	wasmIndex?: number;
+	typeIndex?: number;
 	ast?: AST;
 }
 
@@ -126,6 +133,7 @@ export interface CompilationContext {
 	mode?: CompilationMode;
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
+	functionTypeRegistry?: FunctionTypeRegistry;
 }
 
 export interface StackItem {

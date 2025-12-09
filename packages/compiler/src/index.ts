@@ -20,6 +20,7 @@ import {
 	CompiledModule,
 	CompiledModuleLookup,
 	CompiledFunctionLookup,
+	FunctionTypeRegistry,
 	Module,
 	Namespace,
 	Namespaces,
@@ -248,44 +249,25 @@ export default function compile(
 		})
 	);
 
-	// Compile functions first with WASM indices
+	// Compile functions first with WASM indices and type registry
 	const astFunctions = functions ? functions.map(({ code }) => compileToAST(code, options)) : [];
+
+	// Create a shared type registry for all functions
+	// Base type index is 3 (after the 3 built-in types)
+	const functionTypeRegistry: FunctionTypeRegistry = {
+		types: [],
+		signatureMap: new Map(),
+		baseTypeIndex: 3,
+	};
+
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, builtInConsts, namespaces, EXPORTED_FUNCTION_COUNT + index)
+		compileFunction(ast, builtInConsts, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 
-	// Create function type signatures
-	const userFunctionTypes: Array<{ params: Type[]; results: Type[] }> = [];
-	const userFunctionSignatureIndices: number[] = [];
-
-	compiledFunctions.forEach(func => {
-		const params = func.signature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
-		const results = func.signature.returns.map(type => (type === 'int' ? Type.I32 : Type.F32));
-
-		// Track type signature for each function
-		userFunctionTypes.push({ params, results });
-	});
-
-	// Build unique type signatures for the type section
-	const uniqueUserFunctionTypes: Array<ReturnType<typeof createFunctionType>> = [];
-	const seenTypeSignatures = new Map<string, number>();
-
-	userFunctionTypes.forEach(({ params, results }) => {
-		const signature = JSON.stringify({ params, results });
-		if (!seenTypeSignatures.has(signature)) {
-			const typeIndex = 3 + uniqueUserFunctionTypes.length;
-			seenTypeSignatures.set(signature, typeIndex);
-			uniqueUserFunctionTypes.push(createFunctionType(params, results));
-		}
-	});
-
-	// Map each function to its type index
-	userFunctionTypes.forEach(({ params, results }) => {
-		const signature = JSON.stringify({ params, results });
-		const typeIndex = seenTypeSignatures.get(signature)!;
-		userFunctionSignatureIndices.push(typeIndex);
-	});
+	// Extract the unique function types and type indices from the registry
+	const uniqueUserFunctionTypes = functionTypeRegistry.types;
+	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
 	// Compile modules with function context available
 	const compiledModules = compileModules(
