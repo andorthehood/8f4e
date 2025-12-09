@@ -228,7 +228,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 
 	const module = result.compiledModules[Object.keys(result.compiledModules)[0]];
 	const program = result.codeBuffer;
-	const memoryRef = new WebAssembly.Memory({ initial: 1 });
+	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 	const dataView = new DataView(memoryRef.buffer);
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 	let instance: WebAssembly.Instance | undefined;
@@ -252,18 +252,18 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 		console.log(error);
 	}
 
-	const reset = () => {
-		setInitialMemory(dataView, module);
-	};
-
-	reset();
-
 	// Call init to initialize memory
 	const init = (instance?.exports.init ||
 		function () {
 			return;
 		}) as CallableFunction;
-	init();
+
+	const reset = () => {
+		setInitialMemory(dataView, module);
+		init();
+	};
+
+	reset();
 
 	const cycle = (instance?.exports.cycle ||
 		function () {
