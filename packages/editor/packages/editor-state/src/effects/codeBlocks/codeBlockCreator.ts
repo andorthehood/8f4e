@@ -2,6 +2,7 @@ import instructionParser from './codeBlockDecorators/instructionParser';
 
 import { EventDispatcher } from '../../types';
 import getModuleId from '../../pureHelpers/codeParsers/getModuleId';
+import getFunctionId from '../../pureHelpers/codeParsers/getFunctionId';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
@@ -68,6 +69,16 @@ function changeModuleIdInCode(code: string[], id: string) {
 	});
 }
 
+function changeFunctionIdInCode(code: string[], id: string) {
+	return code.map(line => {
+		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
+		if (instruction === 'function') {
+			return line.replace(args[0], id);
+		}
+		return line;
+	});
+}
+
 function incrementModuleId(id: string) {
 	if (/.*[0-9]+$/gm.test(id)) {
 		const [, trailingNumber] = id.match(/.*([0-9]+$)/) as [never, string];
@@ -89,11 +100,13 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		x,
 		y,
 		isNew,
+		blockType,
 		code = [''],
 	}: {
 		x: number;
 		y: number;
 		isNew: boolean;
+		blockType?: 'module' | 'function';
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -101,12 +114,24 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		}
 
 		if (isNew) {
-			code = ['module ' + getRandomModuleId(), '', '', 'moduleEnd'];
+			if (blockType === 'function') {
+				code = ['function ' + getRandomModuleId(), '', '', 'functionEnd'];
+			} else {
+				code = ['module ' + getRandomModuleId(), '', '', 'moduleEnd'];
+			}
 		} else if (code.length < 2) {
 			code = (await navigator.clipboard.readText()).split('\n');
 		}
 
-		code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, getModuleId(code)));
+		// Update ID based on block type
+		const moduleId = getModuleId(code);
+		const functionId = getFunctionId(code);
+
+		if (functionId) {
+			code = changeFunctionIdInCode(code, incrementModuleIdUntilItsNotTaken(state, functionId));
+		} else if (moduleId) {
+			code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, moduleId));
+		}
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 		state.graphicHelper.nextCodeBlockCreationIndex++;
@@ -130,7 +155,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 				errorMessages: [],
 			},
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: getModuleId(code) || '',
+			id: getFunctionId(code) || getModuleId(code) || '',
 			gaps: new Map(),
 			x: state.graphicHelper.viewport.x + x,
 			y: state.graphicHelper.viewport.y + y,
