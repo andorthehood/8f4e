@@ -232,7 +232,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i);
 	});
 
 	test('should reject load operations in functions', () => {
@@ -248,7 +248,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i);
 	});
 
 	test('should reject store operations in functions', () => {
@@ -264,7 +264,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i);
 	});
 
 	test('should reject buffer declarations in functions', () => {
@@ -280,7 +280,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i);
 	});
 
 	test('should reject functions with more than 8 parameters', () => {

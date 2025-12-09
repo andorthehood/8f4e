@@ -96,6 +96,7 @@ export function createMemoryImport(
 	max?: number,
 	isShared = false
 ): Import {
+	// Memory flags: 0x00 = no max, 0x01 = has max, 0x02 = is_shared (threading), 0x03 = has max + is_shared
 	let flags = 0x00;
 	if (isShared) {
 		flags = 0x03;
