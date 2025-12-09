@@ -1,7 +1,7 @@
 import { ArgumentType, BLOCK_TYPE, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
-import { calculateWordAlignedSizeOfMemory, isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { calculateWordAlignedSizeOfMemory, isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
@@ -11,7 +11,7 @@ import type { InstructionCompiler } from '../types';
 const skip: InstructionCompiler = function (line, context) {
 	const { consts } = context.namespace;
 
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 

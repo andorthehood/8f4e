@@ -1,11 +1,11 @@
 import { ErrorCode, getError } from '../errors';
-import { isInstructionIsInsideAModule } from '../utils';
+import { isInstructionInsideModuleOrFunction } from '../utils';
 import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
 const pow2: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
