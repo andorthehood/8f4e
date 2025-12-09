@@ -1,12 +1,12 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br } from '../wasmUtils/instructionHelpers';
-import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
 
 import type { InstructionCompiler } from '../types';
 
 const branch: InstructionCompiler = function branch(line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
