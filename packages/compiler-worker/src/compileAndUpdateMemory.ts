@@ -31,7 +31,8 @@ async function getOrCreateWasmInstanceRef(
 
 export default async function compileAndUpdateMemory(
 	modules: Module[],
-	compilerOptions: CompileOptions
+	compilerOptions: CompileOptions,
+	functions?: Module[]
 ): Promise<{
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
@@ -41,7 +42,7 @@ export default async function compileAndUpdateMemory(
 	hasMemoryBeenReset: boolean;
 	hasWasmInstanceBeenReset: boolean;
 }> {
-	const { codeBuffer, compiledModules, allocatedMemorySize } = compile(modules, compilerOptions);
+	const { codeBuffer, compiledModules, allocatedMemorySize } = compile(modules, compilerOptions, functions);
 	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
