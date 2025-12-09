@@ -1,186 +1,74 @@
-import { describe, test, expect } from 'vitest';
+import { moduleTesterWithFunctions } from './testUtils';
 
-import compile from '../../src/index';
+moduleTesterWithFunctions(
+	'function returns constant',
+	`module test
+int output
 
-import type { Module } from '../../src/types';
+loop
+  push &output
+  call getFortyTwo
+  store
+loopEnd
 
-const defaultOptions = {
-	startingMemoryWordAddress: 1,
-	environmentExtensions: {
-		constants: {},
-		ignoredKeywords: [],
-	},
-	memorySizeBytes: 65536,
-	includeAST: true,
-};
+moduleEnd`,
+	[
+		`function getFortyTwo
+push 42
+functionEnd int`,
+	],
+	[[{}, { output: 42 }]]
+);
 
-describe('function instruction', () => {
-	test('should compile a function with no parameters', () => {
-		const functions: Module[] = [
-			{
-				code: ['function noop', 'functionEnd'],
-			},
-		];
+moduleTesterWithFunctions(
+	'function with parameter',
+	`module test
+int input
+int output
 
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
+loop
+  push &output
+  push input
+  call double
+  store
+loopEnd
 
-		const result = compile(modules, defaultOptions, functions);
+moduleEnd`,
+	[
+		`function double int
+push 2
+mul
+functionEnd int`,
+	],
+	[
+		[{ input: 5 }, { output: 10 }],
+		[{ input: 10 }, { output: 20 }],
+	]
+);
 
-		expect(result.compiledFunctions).toBeDefined();
-		expect(result.compiledFunctions!.noop).toBeDefined();
-		expect(result.compiledFunctions!.noop.signature.parameters).toEqual([]);
-	});
+moduleTesterWithFunctions(
+	'function with two parameters',
+	`module test
+int input1
+int input2
+int output
 
-	test('should compile a function with int parameters', () => {
-		const functions: Module[] = [
-			{
-				code: ['function add int int', 'add', 'functionEnd int'],
-			},
-		];
+loop
+  push &output
+  push input1
+  push input2
+  call add
+  store
+loopEnd
 
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
-
-		const result = compile(modules, defaultOptions, functions);
-
-		expect(result.compiledFunctions!.add.signature.parameters).toEqual(['int', 'int']);
-	});
-
-	test('should compile a function with float parameters', () => {
-		const functions: Module[] = [
-			{
-				code: ['function mul float float', 'mul', 'functionEnd float'],
-			},
-		];
-
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
-
-		const result = compile(modules, defaultOptions, functions);
-
-		expect(result.compiledFunctions!.mul.signature.parameters).toEqual(['float', 'float']);
-	});
-
-	test('should compile a function with mixed parameter types', () => {
-		const functions: Module[] = [
-			{
-				code: ['function mixed int float', 'drop', 'castToFloat', 'functionEnd float'],
-			},
-		];
-
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
-
-		const result = compile(modules, defaultOptions, functions);
-
-		expect(result.compiledFunctions!.mixed.signature.parameters).toEqual(['int', 'float']);
-	});
-
-	test('should reject function with more than 8 parameters', () => {
-		const functions: Module[] = [
-			{
-				code: ['function tooMany int int int int int int int int int', 'functionEnd'],
-			},
-		];
-
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
-
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
-	});
-
-	test('should reject function with invalid parameter type', () => {
-		const functions: Module[] = [
-			{
-				code: ['function invalid invalidType', 'functionEnd'],
-			},
-		];
-
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
-
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
-	});
-
-	test('should reject function without name', () => {
-		const functions: Module[] = [
-			{
-				code: ['function', 'functionEnd'],
-			},
-		];
-
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
-
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
-	});
-
-	test('should reject nested functions', () => {
-		const functions: Module[] = [
-			{
-				code: ['function outer', 'function inner', 'functionEnd', 'functionEnd'],
-			},
-		];
-
-		const modules: Module[] = [
-			{
-				code: ['module test', 'moduleEnd'],
-			},
-		];
-
-		expect(() => compile(modules, defaultOptions, functions)).toThrow();
-	});
-
-	test('should compile and use function in module', () => {
-		const functions: Module[] = [
-			{
-				code: ['function add int int', 'add', 'functionEnd int'],
-			},
-		];
-
-		const modules: Module[] = [
-			{
-				code: [
-					'module test',
-					'int output',
-					'loop',
-					'push &output',
-					'push 5',
-					'push 3',
-					'call add',
-					'store',
-					'loopEnd',
-					'moduleEnd',
-				],
-			},
-		];
-
-		const result = compile(modules, defaultOptions, functions);
-
-		expect(result.codeBuffer).toBeDefined();
-		expect(result.compiledFunctions!.add).toBeDefined();
-		expect(result.compiledModules.test).toBeDefined();
-	});
-});
+moduleEnd`,
+	[
+		`function add int int
+add
+functionEnd int`,
+	],
+	[
+		[{ input1: 3, input2: 4 }, { output: 7 }],
+		[{ input1: -5, input2: 10 }, { output: 5 }],
+	]
+);
