@@ -130,23 +130,11 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 export function compileModules(
 	modules: AST[],
 	options: CompileOptions,
+	builtInConsts: Namespace['consts'],
+	namespaces: Namespaces,
 	compiledFunctions?: CompiledFunctionLookup
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress;
-	const builtInConsts: Namespace['consts'] = {
-		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
-		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
-		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
-		WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
-		...options.environmentExtensions.constants,
-	};
-
-	const namespaces: Namespaces = Object.fromEntries(
-		modules.map(ast => {
-			const moduleName = getModuleName(ast);
-			return [moduleName, { consts: collectConstants(ast) }];
-		})
-	);
 
 	return modules.map((ast, index) => {
 		const module = compileModule(
@@ -304,6 +292,8 @@ export default function compile(
 			...options,
 			startingMemoryWordAddress: 1,
 		},
+		builtInConsts,
+		namespaces,
 		compiledFunctionsMap
 	);
 
