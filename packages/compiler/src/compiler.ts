@@ -9,6 +9,7 @@ import {
 	CompiledModule,
 	CompiledFunction,
 	CompiledFunctionLookup,
+	FunctionTypeRegistry,
 	Namespace,
 	Namespaces,
 } from './types';
@@ -153,7 +154,8 @@ export function compileFunction(
 	ast: AST,
 	builtInConsts: Namespace['consts'],
 	namespaces: Namespaces,
-	wasmIndex: number
+	wasmIndex: number,
+	typeRegistry: FunctionTypeRegistry
 ): CompiledFunction {
 	const context: CompilationContext = {
 		namespace: {
@@ -171,6 +173,7 @@ export function compileFunction(
 		startingByteAddress: 0,
 		memoryByteSize: 0,
 		mode: 'function',
+		functionTypeRegistry: typeRegistry,
 	};
 
 	ast.forEach(line => {
@@ -197,6 +200,12 @@ export function compileFunction(
 			count: 1,
 		}));
 
+	// Get the type index for this function's signature
+	const params = context.currentFunctionSignature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
+	const results = context.currentFunctionSignature.returns.map(type => (type === 'int' ? Type.I32 : Type.F32));
+	const signature = JSON.stringify({ params, results });
+	const typeIndex = typeRegistry.signatureMap.get(signature);
+
 	return {
 		id: context.currentFunctionId,
 		signature: context.currentFunctionSignature,
@@ -206,6 +215,7 @@ export function compileFunction(
 		),
 		locals: localDeclarations,
 		wasmIndex,
+		typeIndex,
 		ast,
 	};
 }
