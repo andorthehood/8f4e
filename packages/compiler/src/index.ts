@@ -11,7 +11,7 @@ import {
 } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
-import { compileModule, compileToAST } from './compiler';
+import { compileModule, compileToAST, compileFunction } from './compiler';
 import {
 	AST,
 	ArgumentLiteral,
@@ -19,6 +19,7 @@ import {
 	CompileOptions,
 	CompiledModule,
 	CompiledModuleLookup,
+	CompiledFunctionLookup,
 	Module,
 	Namespace,
 	Namespaces,
@@ -39,6 +40,9 @@ export {
 	type MemoryMap,
 	type CompiledModule,
 	type CompiledModuleLookup,
+	type CompiledFunction,
+	type CompiledFunctionLookup,
+	type FunctionSignature,
 	type MemoryBuffer,
 	type Connection,
 	type Module,
@@ -53,6 +57,7 @@ export {
 	type Namespace,
 	type Namespaces,
 	type CompilationContext,
+	type CompilationMode,
 	type StackItem,
 	type Stack,
 	BLOCK_TYPE,
@@ -122,7 +127,11 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	});
 }
 
-export function compileModules(modules: AST[], options: CompileOptions): CompiledModule[] {
+export function compileModules(
+	modules: AST[],
+	options: CompileOptions,
+	compiledFunctions?: CompiledFunctionLookup
+): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress;
 	const builtInConsts: Namespace['consts'] = {
 		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
@@ -146,7 +155,8 @@ export function compileModules(modules: AST[], options: CompileOptions): Compile
 			namespaces,
 			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 			options.memorySizeBytes,
-			index
+			index,
+			compiledFunctions
 		);
 		memoryAddress += module.wordAlignedSize;
 
@@ -221,26 +231,92 @@ function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): Com
 
 export default function compile(
 	modules: Module[],
-	options: CompileOptions
+	options: CompileOptions,
+	functions?: Module[]
 ): {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
+	compiledFunctions?: CompiledFunctionLookup;
 	allocatedMemorySize: number;
 } {
 	const astModules = modules.map(({ code }) => compileToAST(code, options));
 	const sortedModules = sortModules(astModules);
-	const compiledModules = compileModules(sortedModules, {
-		...options,
-		startingMemoryWordAddress: 1,
+
+	const builtInConsts: Namespace['consts'] = {
+		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
+		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
+		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
+		WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
+		...options.environmentExtensions.constants,
+	};
+
+	const namespaces: Namespaces = Object.fromEntries(
+		sortedModules.map(ast => {
+			const moduleName = getModuleName(ast);
+			return [moduleName, { consts: collectConstants(ast) }];
+		})
+	);
+
+	// Compile functions first
+	const astFunctions = functions ? functions.map(({ code }) => compileToAST(code, options)) : [];
+	const compiledFunctions = astFunctions.map(ast => compileFunction(ast, builtInConsts, namespaces));
+	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
+
+	// Create function type signatures and assign WASM indices
+	const userFunctionTypes: Array<{ params: Type[]; results: Type[] }> = [];
+	const userFunctionSignatureIndices: number[] = [];
+
+	compiledFunctions.forEach(func => {
+		const params = func.signature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
+		const results = func.signature.returns.map(type => (type === 'int' ? Type.I32 : Type.F32));
+
+		// Assign WASM index: after the 3 exported functions (init, cycle, buffer)
+		func.wasmIndex = 3 + userFunctionTypes.length;
+
+		// Track type signature for each function
+		userFunctionTypes.push({ params, results });
 	});
+
+	// Build unique type signatures for the type section
+	const uniqueUserFunctionTypes: Array<ReturnType<typeof createFunctionType>> = [];
+	const seenTypeSignatures = new Map<string, number>();
+
+	userFunctionTypes.forEach(({ params, results }) => {
+		const signature = JSON.stringify({ params, results });
+		if (!seenTypeSignatures.has(signature)) {
+			const typeIndex = 3 + uniqueUserFunctionTypes.length;
+			seenTypeSignatures.set(signature, typeIndex);
+			uniqueUserFunctionTypes.push(createFunctionType(params, results));
+		}
+	});
+
+	// Map each function to its type index
+	userFunctionTypes.forEach(({ params, results }) => {
+		const signature = JSON.stringify({ params, results });
+		const typeIndex = seenTypeSignatures.get(signature)!;
+		userFunctionSignatureIndices.push(typeIndex);
+	});
+
+	// Compile modules with function context available
+	const compiledModules = compileModules(
+		sortedModules,
+		{
+			...options,
+			startingMemoryWordAddress: 1,
+		},
+		compiledFunctionsMap
+	);
+
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
 	const loopFunctions = compiledModules.map(({ loopFunction }) => loopFunction);
-	// const initFunctionBodies = compiledModules.map(({ initFunctionBody }) => initFunctionBody);
 	const functionSignatures = compiledModules.map(() => 0x00);
-	const cycleFunction = compiledModules.map((module, index) => call(index + 3)).flat();
+
+	// Offset for user functions and module functions
+	const userFunctionCount = compiledFunctions.length;
+	const cycleFunction = compiledModules.map((module, index) => call(index + 3 + userFunctionCount)).flat();
 	const memoryInitiatorFunction = compiledModules
-		.map((module, index) => call(index + compiledModules.length + 3))
+		.map((module, index) => call(index + compiledModules.length + 3 + userFunctionCount))
 		.flat();
 	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(compiledModules);
 
@@ -259,9 +335,17 @@ export default function compile(
 				createFunctionType([], []),
 				createFunctionType([Type.I32], [Type.I32]),
 				createFunctionType([Type.I32, Type.I32], [Type.I32]),
+				...uniqueUserFunctionTypes,
 			]),
 			...createImportSection([createMemoryImport('js', 'memory', memorySizePages, memorySizePages, true)]),
-			...createFunctionSection([0x00, 0x00, 0x00, ...functionSignatures, ...functionSignatures]),
+			...createFunctionSection([
+				0x00,
+				0x00,
+				0x00,
+				...userFunctionSignatureIndices,
+				...functionSignatures,
+				...functionSignatures,
+			]),
 			...createExportSection([
 				createFunctionExport('init', 0x00),
 				createFunctionExport('cycle', 0x01),
@@ -271,11 +355,13 @@ export default function compile(
 				createFunction([], memoryInitiatorFunction),
 				createFunction([], cycleFunction),
 				createFunction([], new Array(128).fill(call(1)).flat()),
+				...compiledFunctions.map(func => func.body),
 				...loopFunctions,
 				...memoryInitiatorFunctions,
 			]),
 		]),
 		compiledModules: finalCompiledModules,
+		compiledFunctions: compiledFunctionsMap,
 		allocatedMemorySize:
 			compiledModules[compiledModules.length - 1].byteAddress +
 			compiledModules[compiledModules.length - 1].wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
