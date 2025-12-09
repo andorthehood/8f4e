@@ -248,21 +248,20 @@ export default function compile(
 		})
 	);
 
-	// Compile functions first
+	// Compile functions first with WASM indices
 	const astFunctions = functions ? functions.map(({ code }) => compileToAST(code, options)) : [];
-	const compiledFunctions = astFunctions.map(ast => compileFunction(ast, builtInConsts, namespaces));
+	const compiledFunctions = astFunctions.map((ast, index) =>
+		compileFunction(ast, builtInConsts, namespaces, EXPORTED_FUNCTION_COUNT + index)
+	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 
-	// Create function type signatures and assign WASM indices
+	// Create function type signatures
 	const userFunctionTypes: Array<{ params: Type[]; results: Type[] }> = [];
 	const userFunctionSignatureIndices: number[] = [];
 
 	compiledFunctions.forEach(func => {
 		const params = func.signature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
 		const results = func.signature.returns.map(type => (type === 'int' ? Type.I32 : Type.F32));
-
-		// Assign WASM index: after the exported functions (init, cycle, buffer)
-		func.wasmIndex = EXPORTED_FUNCTION_COUNT + userFunctionTypes.length;
 
 		// Track type signature for each function
 		userFunctionTypes.push({ params, results });
