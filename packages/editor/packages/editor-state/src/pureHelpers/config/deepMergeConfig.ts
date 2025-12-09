@@ -116,8 +116,7 @@ if (import.meta.vitest) {
 					{
 						audioInputBuffers: [
 							{
-								moduleId: 'audioin',
-								memoryId: 'buffer',
+								memoryId: 'audioin.buffer',
 								channel: 0,
 								input: 0,
 							},
@@ -131,14 +130,12 @@ if (import.meta.vitest) {
 					{
 						audioOutputBuffers: [
 							{
-								moduleId: 'audiooutL',
-								memoryId: 'buffer',
+								memoryId: 'audiooutL.buffer',
 								channel: 0,
 								output: 0,
 							},
 							{
-								moduleId: 'audiooutR',
-								memoryId: 'buffer',
+								memoryId: 'audiooutR.buffer',
 								channel: 1,
 								output: 0,
 							},
@@ -154,22 +151,19 @@ if (import.meta.vitest) {
 					{
 						audioInputBuffers: [
 							{
-								moduleId: 'audioin',
-								memoryId: 'buffer',
+								memoryId: 'audioin.buffer',
 								channel: 0,
 								input: 0,
 							},
 						],
 						audioOutputBuffers: [
 							{
-								moduleId: 'audiooutL',
-								memoryId: 'buffer',
+								memoryId: 'audiooutL.buffer',
 								channel: 0,
 								output: 0,
 							},
 							{
-								moduleId: 'audiooutR',
-								memoryId: 'buffer',
+								memoryId: 'audiooutR.buffer',
 								channel: 1,
 								output: 0,
 							},
