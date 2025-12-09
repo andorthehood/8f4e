@@ -1,6 +1,13 @@
 import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from 'glugglug';
-import type { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure, Module } from '@8f4e/compiler';
+import type {
+	CompileOptions,
+	CompiledModuleLookup,
+	MemoryBuffer,
+	DataStructure,
+	Module,
+	CompiledFunctionLookup,
+} from '@8f4e/compiler';
 
 // Feature Flags types
 export interface FeatureFlags {
@@ -160,6 +167,7 @@ export interface Compiler {
 	compiledModules: CompiledModuleLookup;
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
+	compiledFunctions?: CompiledFunctionLookup;
 }
 
 export interface Midi {
@@ -504,6 +512,7 @@ export interface CompilationResult {
 	hasMemoryBeenInitialized: boolean;
 	hasMemoryBeenReset: boolean;
 	hasWasmInstanceBeenReset: boolean;
+	compiledFunctions?: CompiledFunctionLookup;
 }
 
 // Callbacks interface contains all callback functions
