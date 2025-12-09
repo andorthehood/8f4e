@@ -176,12 +176,42 @@ describe('creationIndex', () => {
 			const codeBlocksSet = new Set([block1, block2, block3]);
 
 			// Use the actual flattenProjectForCompiler function
-			const sortedBlocks = flattenProjectForCompiler(codeBlocksSet);
+			const { modules } = flattenProjectForCompiler(codeBlocksSet);
 
 			// Verify blocks are sorted by creationIndex
-			expect(sortedBlocks[0].code).toEqual(['module b', 'moduleEnd']); // creationIndex 0
-			expect(sortedBlocks[1].code).toEqual(['module c', 'moduleEnd']); // creationIndex 1
-			expect(sortedBlocks[2].code).toEqual(['module a', 'moduleEnd']); // creationIndex 2
+			expect(modules[0].code).toEqual(['module b', 'moduleEnd']); // creationIndex 0
+			expect(modules[1].code).toEqual(['module c', 'moduleEnd']); // creationIndex 1
+			expect(modules[2].code).toEqual(['module a', 'moduleEnd']); // creationIndex 2
+		});
+
+		it('should separate modules and functions for compilation', () => {
+			const moduleBlock = createMockCodeBlock({
+				id: 'testModule',
+				creationIndex: 0,
+				code: ['module testModule', 'moduleEnd'],
+				blockType: 'module',
+			});
+			const functionBlock = createMockCodeBlock({
+				id: 'testFunc',
+				creationIndex: 1,
+				code: ['function testFunc', 'functionEnd'],
+				blockType: 'function',
+			});
+			const configBlock = createMockCodeBlock({
+				id: 'testConfig',
+				creationIndex: 2,
+				code: ['config', 'configEnd'],
+				blockType: 'config',
+			});
+
+			const codeBlocksSet = new Set([moduleBlock, functionBlock, configBlock]);
+
+			const { modules, functions } = flattenProjectForCompiler(codeBlocksSet);
+
+			expect(modules.length).toBe(1);
+			expect(modules[0].code).toEqual(['module testModule', 'moduleEnd']);
+			expect(functions.length).toBe(1);
+			expect(functions[0].code).toEqual(['function testFunc', 'functionEnd']);
 		});
 	});
 });
