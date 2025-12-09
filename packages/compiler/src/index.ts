@@ -313,7 +313,9 @@ export default function compile(
 				createFunctionType([Type.I32, Type.I32], [Type.I32]),
 				...uniqueUserFunctionTypes,
 			]),
-			...createImportSection([createMemoryImport('js', 'memory', memorySizePages, memorySizePages, true)]),
+			...createImportSection([
+				createMemoryImport('js', 'memory', memorySizePages, memorySizePages, !options.disableSharedMemory),
+			]),
 			...createFunctionSection([
 				0x00,
 				0x00,

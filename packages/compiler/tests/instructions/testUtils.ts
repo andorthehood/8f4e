@@ -222,13 +222,14 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 			startingMemoryWordAddress: 0,
 			memorySizeBytes: 65536,
 			includeAST: true,
+			disableSharedMemory: true,
 		},
 		functions
 	);
 
 	const module = result.compiledModules[Object.keys(result.compiledModules)[0]];
 	const program = result.codeBuffer;
-	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
+	const memoryRef = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: false });
 	const dataView = new DataView(memoryRef.buffer);
 	const memoryBuffer = new Int32Array(memoryRef.buffer);
 	let instance: WebAssembly.Instance | undefined;
