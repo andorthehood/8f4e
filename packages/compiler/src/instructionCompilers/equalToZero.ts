@@ -1,12 +1,12 @@
 import { ErrorCode, getError } from '../errors';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
 import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
 const equalToZero: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
+	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
