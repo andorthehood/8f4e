@@ -60,6 +60,7 @@ import _function from './function';
 import functionEnd from './functionEnd';
 import initBlock from './initBlock';
 import initBlockEnd from './initBlockEnd';
+import call from './call';
 
 const instructions = {
 	and,
@@ -141,6 +142,7 @@ const instructions = {
 	functionEnd,
 	initBlock,
 	initBlockEnd,
+	call,
 } as const;
 
 export default instructions;
