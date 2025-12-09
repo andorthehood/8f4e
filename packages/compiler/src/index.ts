@@ -74,6 +74,9 @@ export { instructionParser } from './compiler';
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
 
+// Number of exported WASM functions (init, cycle, buffer)
+const EXPORTED_FUNCTION_COUNT = 3;
+
 function collectConstants(ast: AST): Namespace['consts'] {
 	return Object.fromEntries(
 		ast
@@ -258,8 +261,8 @@ export default function compile(
 		const params = func.signature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
 		const results = func.signature.returns.map(type => (type === 'int' ? Type.I32 : Type.F32));
 
-		// Assign WASM index: after the 3 exported functions (init, cycle, buffer)
-		func.wasmIndex = 3 + userFunctionTypes.length;
+		// Assign WASM index: after the exported functions (init, cycle, buffer)
+		func.wasmIndex = EXPORTED_FUNCTION_COUNT + userFunctionTypes.length;
 
 		// Track type signature for each function
 		userFunctionTypes.push({ params, results });
@@ -304,9 +307,11 @@ export default function compile(
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
-	const cycleFunction = compiledModules.map((module, index) => call(index + 3 + userFunctionCount)).flat();
+	const cycleFunction = compiledModules
+		.map((module, index) => call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount))
+		.flat();
 	const memoryInitiatorFunction = compiledModules
-		.map((module, index) => call(index + compiledModules.length + 3 + userFunctionCount))
+		.map((module, index) => call(index + compiledModules.length + EXPORTED_FUNCTION_COUNT + userFunctionCount))
 		.flat();
 	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(compiledModules);
 
