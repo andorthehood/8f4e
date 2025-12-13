@@ -2,17 +2,18 @@ import { CompileOptions, Module } from '@8f4e/compiler';
 
 import compileAndUpdateMemory from './compileAndUpdateMemory';
 
-async function compile(modules: Module[], compilerOptions: CompileOptions) {
+async function compile(modules: Module[], compilerOptions: CompileOptions, functions?: Module[]) {
 	try {
 		const {
 			codeBuffer,
 			compiledModules,
+			compiledFunctions,
 			allocatedMemorySize,
 			memoryRef,
 			hasMemoryBeenInitialized,
 			hasMemoryBeenReset,
 			hasWasmInstanceBeenReset,
-		} = await compileAndUpdateMemory(modules, compilerOptions);
+		} = await compileAndUpdateMemory(modules, compilerOptions, functions);
 		self.postMessage({
 			type: 'success',
 			payload: {
@@ -23,6 +24,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions) {
 				hasMemoryBeenInitialized,
 				hasMemoryBeenReset,
 				hasWasmInstanceBeenReset,
+				compiledFunctions,
 			},
 		});
 	} catch (error) {
@@ -36,7 +38,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions) {
 self.onmessage = function (event) {
 	switch (event.data.type) {
 		case 'compile':
-			compile(event.data.payload.modules, event.data.payload.compilerOptions);
+			compile(event.data.payload.modules, event.data.payload.compilerOptions, event.data.payload.functions);
 			break;
 	}
 };

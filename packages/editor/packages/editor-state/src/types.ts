@@ -1,6 +1,13 @@
 import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from 'glugglug';
-import type { CompileOptions, CompiledModuleLookup, MemoryBuffer, DataStructure, Module } from '@8f4e/compiler';
+import type {
+	CompileOptions,
+	CompiledModuleLookup,
+	MemoryBuffer,
+	DataStructure,
+	Module,
+	CompiledFunctionLookup,
+} from '@8f4e/compiler';
 
 // Feature Flags types
 export interface FeatureFlags {
@@ -160,6 +167,7 @@ export interface Compiler {
 	compiledModules: CompiledModuleLookup;
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
+	compiledFunctions?: CompiledFunctionLookup;
 }
 
 export interface Midi {
@@ -246,9 +254,10 @@ export interface PianoKeyboard {
  * The type of a code block, determined by its content markers.
  * - 'module': Contains module/moduleEnd markers (compiled to WASM)
  * - 'config': Contains config/configEnd markers (compiled to JSON configuration)
+ * - 'function': Contains function/functionEnd markers (compiled to WASM as reusable helper)
  * - 'unknown': Mixed or incomplete markers, or no recognizable markers
  */
-export type CodeBlockType = 'module' | 'config' | 'unknown';
+export type CodeBlockType = 'module' | 'config' | 'function' | 'unknown';
 
 export interface CodeBlockGraphicData {
 	width: number;
@@ -503,6 +512,7 @@ export interface CompilationResult {
 	hasMemoryBeenInitialized: boolean;
 	hasMemoryBeenReset: boolean;
 	hasWasmInstanceBeenReset: boolean;
+	compiledFunctions?: CompiledFunctionLookup;
 }
 
 // Callbacks interface contains all callback functions
@@ -516,7 +526,11 @@ export interface Callbacks {
 	getProject?: (slug: string) => Promise<Project>;
 
 	// Compilation callback
-	compileProject?: (modules: Module[], compilerOptions: CompileOptions) => Promise<CompilationResult>;
+	compileProject?: (
+		modules: Module[],
+		compilerOptions: CompileOptions,
+		functions?: Module[]
+	) => Promise<CompilationResult>;
 
 	// Session storage callbacks
 	loadSession: () => Promise<Project | null>;

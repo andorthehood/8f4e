@@ -3,8 +3,8 @@ title: 'TODO: Add Pure Function Support to Compiler'
 priority: Medium
 effort: 5-7d
 created: 2025-12-09
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-09
 ---
 
 # TODO: Add Pure Function Support to Compiler

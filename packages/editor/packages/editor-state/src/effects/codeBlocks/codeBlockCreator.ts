@@ -2,6 +2,7 @@ import instructionParser from './codeBlockDecorators/instructionParser';
 
 import { EventDispatcher } from '../../types';
 import getModuleId from '../../pureHelpers/codeParsers/getModuleId';
+import getFunctionId from '../../pureHelpers/codeParsers/getFunctionId';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
@@ -48,11 +49,11 @@ const nameList = [
 	'trion',
 ];
 
-function getRandomModuleId() {
+function getRandomCodeBlockId() {
 	return nameList[Math.floor(Math.random() * nameList.length)];
 }
 
-function checkIfModuleIdIsTaken(state: State, id: string) {
+function checkIfCodeBlockIdIsTaken(state: State, id: string) {
 	return Array.from(state.graphicHelper.codeBlocks).some(codeBlock => {
 		return codeBlock.id === id;
 	});
@@ -60,15 +61,41 @@ function checkIfModuleIdIsTaken(state: State, id: string) {
 
 function changeModuleIdInCode(code: string[], id: string) {
 	return code.map(line => {
-		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
-		if (instruction === 'module') {
-			return line.replace(args[0], id);
+		const match = line.match(instructionParser) as RegExpMatchArray | null;
+		if (match && match[1] === 'module' && match[2]) {
+			// Reconstruct line with new ID, preserving spacing and everything after the ID
+			const beforeInstruction = line.slice(0, match.index!);
+			const instruction = match[1];
+			const spacingAfterInstruction = line.slice(
+				match.index! + instruction.length,
+				line.indexOf(match[2], match.index!)
+			);
+			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
+			return beforeInstruction + instruction + spacingAfterInstruction + id + afterOldId;
 		}
 		return line;
 	});
 }
 
-function incrementModuleId(id: string) {
+function changeFunctionIdInCode(code: string[], id: string) {
+	return code.map(line => {
+		const match = line.match(instructionParser) as RegExpMatchArray | null;
+		if (match && match[1] === 'function' && match[2]) {
+			// Reconstruct line with new ID, preserving spacing and everything after the ID
+			const beforeInstruction = line.slice(0, match.index!);
+			const instruction = match[1];
+			const spacingAfterInstruction = line.slice(
+				match.index! + instruction.length,
+				line.indexOf(match[2], match.index!)
+			);
+			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
+			return beforeInstruction + instruction + spacingAfterInstruction + id + afterOldId;
+		}
+		return line;
+	});
+}
+
+function incrementCodeBlockId(id: string) {
 	if (/.*[0-9]+$/gm.test(id)) {
 		const [, trailingNumber] = id.match(/.*([0-9]+$)/) as [never, string];
 		return id.replace(new RegExp(trailingNumber + '$'), `${parseInt(trailingNumber, 10) + 1}`);
@@ -77,11 +104,11 @@ function incrementModuleId(id: string) {
 	}
 }
 
-function incrementModuleIdUntilItsNotTaken(state: State, moduleId: string) {
-	while (checkIfModuleIdIsTaken(state, moduleId)) {
-		moduleId = incrementModuleId(moduleId);
+function incrementCodeBlockIdUntilUnique(state: State, blockId: string) {
+	while (checkIfCodeBlockIdIsTaken(state, blockId)) {
+		blockId = incrementCodeBlockId(blockId);
 	}
-	return moduleId;
+	return blockId;
 }
 
 export default function codeBlockCreator(state: State, events: EventDispatcher): void {
@@ -89,11 +116,13 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		x,
 		y,
 		isNew,
+		blockType,
 		code = [''],
 	}: {
 		x: number;
 		y: number;
 		isNew: boolean;
+		blockType?: 'module' | 'function';
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -101,12 +130,24 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		}
 
 		if (isNew) {
-			code = ['module ' + getRandomModuleId(), '', '', 'moduleEnd'];
+			if (blockType === 'function') {
+				code = ['function ' + getRandomCodeBlockId(), '', '', 'functionEnd'];
+			} else {
+				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
+			}
 		} else if (code.length < 2) {
 			code = (await navigator.clipboard.readText()).split('\n');
 		}
 
-		code = changeModuleIdInCode(code, incrementModuleIdUntilItsNotTaken(state, getModuleId(code)));
+		// Update ID based on block type
+		const moduleId = getModuleId(code);
+		const functionId = getFunctionId(code);
+
+		if (functionId) {
+			code = changeFunctionIdInCode(code, incrementCodeBlockIdUntilUnique(state, functionId));
+		} else if (moduleId) {
+			code = changeModuleIdInCode(code, incrementCodeBlockIdUntilUnique(state, moduleId));
+		}
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 		state.graphicHelper.nextCodeBlockCreationIndex++;
@@ -130,7 +171,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 				errorMessages: [],
 			},
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: getModuleId(code) || '',
+			id: getFunctionId(code) || getModuleId(code) || '',
 			gaps: new Map(),
 			x: state.graphicHelper.viewport.x + x,
 			y: state.graphicHelper.viewport.y + y,
