@@ -1,7 +1,7 @@
 import type { CodeBlockType } from '../../types';
 
 /**
- * Detects whether a block of code represents a module, config, or unknown block by scanning for marker pairs.
+ * Detects whether a block of code represents a module, config, function, or unknown block by scanning for marker pairs.
  * @param code - Code block represented as an array of lines.
  * @returns The inferred code block type.
  */
@@ -10,13 +10,19 @@ export default function getBlockType(code: string[]): CodeBlockType {
 	const hasModuleEnd = code.some(line => /^\s*moduleEnd(\s|$)/.test(line));
 	const hasConfig = code.some(line => /^\s*config(\s|$)/.test(line));
 	const hasConfigEnd = code.some(line => /^\s*configEnd(\s|$)/.test(line));
+	const hasFunction = code.some(line => /^\s*function(\s|$)/.test(line));
+	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
 
-	if (hasModule && hasModuleEnd && !hasConfig && !hasConfigEnd) {
+	if (hasModule && hasModuleEnd && !hasConfig && !hasConfigEnd && !hasFunction && !hasFunctionEnd) {
 		return 'module';
 	}
 
-	if (hasConfig && hasConfigEnd && !hasModule && !hasModuleEnd) {
+	if (hasConfig && hasConfigEnd && !hasModule && !hasModuleEnd && !hasFunction && !hasFunctionEnd) {
 		return 'config';
+	}
+
+	if (hasFunction && hasFunctionEnd && !hasModule && !hasModuleEnd && !hasConfig && !hasConfigEnd) {
+		return 'function';
 	}
 
 	return 'unknown';
@@ -66,6 +72,24 @@ if (import.meta.vitest) {
 			});
 		});
 
+		describe('function detection', () => {
+			it('detects a complete function block', () => {
+				expect(getBlockType(['function add int int', 'add', 'functionEnd int'])).toBe('function');
+			});
+
+			it('detects function with leading whitespace', () => {
+				expect(getBlockType(['  function square int', '  push 2', '  mul', '  functionEnd int'])).toBe('function');
+			});
+
+			it('does not detect function if functionEnd is missing', () => {
+				expect(getBlockType(['function add int int', 'add'])).toBe('unknown');
+			});
+
+			it('does not detect function if function is missing', () => {
+				expect(getBlockType(['add', 'functionEnd int'])).toBe('unknown');
+			});
+		});
+
 		describe('unknown states', () => {
 			it('returns unknown for empty code', () => {
 				expect(getBlockType([])).toBe('unknown');
@@ -86,6 +110,14 @@ if (import.meta.vitest) {
 			it('returns unknown when module block contains config markers', () => {
 				expect(getBlockType(['module test', 'config', 'configEnd', 'moduleEnd'])).toBe('unknown');
 			});
+
+			it('returns unknown when function block contains module markers', () => {
+				expect(getBlockType(['function add', 'module test', 'moduleEnd', 'functionEnd'])).toBe('unknown');
+			});
+
+			it('returns unknown when module block contains function markers', () => {
+				expect(getBlockType(['module test', 'function add', 'functionEnd', 'moduleEnd'])).toBe('unknown');
+			});
 		});
 
 		describe('edge cases', () => {
@@ -97,12 +129,20 @@ if (import.meta.vitest) {
 				expect(getBlockType(['someconfig', 'configEnd'])).toBe('unknown');
 			});
 
+			it('does not match function within another word', () => {
+				expect(getBlockType(['somefunction test', 'functionEnd'])).toBe('unknown');
+			});
+
 			it('matches module keyword at end of line', () => {
 				expect(getBlockType(['module', 'moduleEnd'])).toBe('module');
 			});
 
 			it('matches config keyword at end of line', () => {
 				expect(getBlockType(['config', 'configEnd'])).toBe('config');
+			});
+
+			it('matches function keyword at end of line', () => {
+				expect(getBlockType(['function', 'functionEnd'])).toBe('function');
 			});
 		});
 	});
