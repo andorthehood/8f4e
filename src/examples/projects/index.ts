@@ -42,11 +42,6 @@ export const projectMetadata: ProjectMetadata[] = [
 	},
 	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', description: '' },
 	{ slug: 'ericSaiteGenerator', title: 'Eric Saite Generator', description: '' },
-	{
-		slug: 'functionExample',
-		title: 'Function Example',
-		description: 'Demonstrates using a helper function to square numbers',
-	},
 	{ slug: 'midiArpeggiator', title: 'MIDI Arpeggiator', description: '' },
 	{ slug: 'midiArpeggiator2', title: 'MIDI Arpeggiator 2', description: '' },
 	{ slug: 'midiBreakBeat', title: 'MIDI Break Beat', description: '' },
