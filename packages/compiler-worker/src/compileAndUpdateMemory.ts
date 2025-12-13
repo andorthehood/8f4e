@@ -1,4 +1,4 @@
-import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
+import compile, { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup, Module } from '@8f4e/compiler';
 
 import { didProgramOrMemoryStructureChange } from './didProgramOrMemoryStructureChange';
 import { getMemoryValueChanges } from './getMemoryValueChanges';
@@ -31,17 +31,23 @@ async function getOrCreateWasmInstanceRef(
 
 export default async function compileAndUpdateMemory(
 	modules: Module[],
-	compilerOptions: CompileOptions
+	compilerOptions: CompileOptions,
+	functions?: Module[]
 ): Promise<{
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
+	compiledFunctions?: CompiledFunctionLookup;
 	allocatedMemorySize: number;
 	memoryRef: WebAssembly.Memory;
 	hasMemoryBeenInitialized: boolean;
 	hasMemoryBeenReset: boolean;
 	hasWasmInstanceBeenReset: boolean;
 }> {
-	const { codeBuffer, compiledModules, allocatedMemorySize } = compile(modules, compilerOptions);
+	const { codeBuffer, compiledModules, allocatedMemorySize, compiledFunctions } = compile(
+		modules,
+		compilerOptions,
+		functions
+	);
 	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
@@ -90,6 +96,7 @@ export default async function compileAndUpdateMemory(
 	return {
 		codeBuffer,
 		compiledModules,
+		compiledFunctions,
 		allocatedMemorySize,
 		memoryRef,
 		hasMemoryBeenInitialized,
