@@ -9,27 +9,13 @@ export function getOrCreateMemory(
 	memoryStructureChanged: boolean
 ): { hasMemoryBeenReset: boolean; memoryRef: WebAssembly.Memory; memoryAction: MemoryAction } {
 	const memorySizeChange = currentMemorySize !== memorySizeBytes;
-	const shouldRecreate = memoryStructureChanged || memorySizeChange;
+	const shouldRecreate = !memoryRefCache || memoryStructureChanged || memorySizeChange;
 	let hasMemoryBeenReset = false;
 	let memoryAction: MemoryAction;
 
-	if (!memoryRefCache) {
-		// No existing memory instance
-		const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
-
-		memoryRefCache = new WebAssembly.Memory({
-			initial: pages,
-			maximum: pages,
-			shared: true,
-		});
-		currentMemorySize = memorySizeBytes;
-
-		hasMemoryBeenReset = true;
-		memoryAction = { action: 'recreated', reason: { kind: 'no-instance' } };
-	} else if (shouldRecreate) {
-		// Existing memory, but needs to be recreated
-		const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
+	if (shouldRecreate) {
 		const prevBytes = currentMemorySize;
+		const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
 
 		memoryRefCache = new WebAssembly.Memory({
 			initial: pages,
@@ -41,7 +27,9 @@ export function getOrCreateMemory(
 		hasMemoryBeenReset = true;
 
 		// Determine the reason for recreation
-		if (memorySizeChange) {
+		if (prevBytes === 0) {
+			memoryAction = { action: 'recreated', reason: { kind: 'no-instance' } };
+		} else if (memorySizeChange) {
 			memoryAction = {
 				action: 'recreated',
 				reason: { kind: 'memory-size-changed', prevBytes, nextBytes: memorySizeBytes },
@@ -55,5 +43,5 @@ export function getOrCreateMemory(
 		memoryAction = { action: 'reused' };
 	}
 
-	return { hasMemoryBeenReset, memoryRef: memoryRefCache, memoryAction };
+	return { hasMemoryBeenReset, memoryRef: memoryRefCache!, memoryAction };
 }
