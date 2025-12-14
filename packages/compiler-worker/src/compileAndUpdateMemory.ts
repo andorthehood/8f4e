@@ -1,10 +1,10 @@
-import compile, { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup, Module } from '@8f4e/compiler';
+import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
 
 import { didProgramOrMemoryStructureChange } from './didProgramOrMemoryStructureChange';
 import { getMemoryValueChanges } from './getMemoryValueChanges';
 import { getOrCreateMemory } from './getOrCreateMemory';
 
-import type { MemoryAction } from './memoryReinitTypes';
+import type { CompileAndUpdateMemoryResult, GetOrCreateWasmInstanceResult } from './types';
 
 let previousCompiledModules: CompiledModuleLookup | undefined;
 
@@ -14,7 +14,7 @@ async function getOrCreateWasmInstanceRef(
 	codeBuffer: Uint8Array,
 	memoryRef: WebAssembly.Memory,
 	hasMemoryBeenReset: boolean
-): Promise<{ wasmInstanceRef: WebAssembly.Instance; hasWasmInstanceBeenReset: boolean }> {
+): Promise<GetOrCreateWasmInstanceResult> {
 	if (wasmInstanceRef && !hasMemoryBeenReset) {
 		return { wasmInstanceRef: wasmInstanceRef, hasWasmInstanceBeenReset: false };
 	}
@@ -35,17 +35,7 @@ export default async function compileAndUpdateMemory(
 	modules: Module[],
 	compilerOptions: CompileOptions,
 	functions?: Module[]
-): Promise<{
-	codeBuffer: Uint8Array;
-	compiledModules: CompiledModuleLookup;
-	compiledFunctions?: CompiledFunctionLookup;
-	allocatedMemorySize: number;
-	memoryRef: WebAssembly.Memory;
-	hasMemoryBeenInitialized: boolean;
-	hasMemoryBeenReset: boolean;
-	hasWasmInstanceBeenReset: boolean;
-	memoryAction: MemoryAction;
-}> {
+): Promise<CompileAndUpdateMemoryResult> {
 	const { codeBuffer, compiledModules, allocatedMemorySize, compiledFunctions } = compile(
 		modules,
 		compilerOptions,

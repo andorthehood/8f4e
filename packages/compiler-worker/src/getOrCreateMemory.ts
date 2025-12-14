@@ -1,13 +1,10 @@
-import type { MemoryAction } from './memoryReinitTypes';
+import type { GetOrCreateMemoryResult, MemoryAction } from './types';
 
 let memoryRefCache: WebAssembly.Memory | null = null;
 let currentMemorySize = 0;
 const WASM_PAGE_SIZE = 65536;
 
-export function getOrCreateMemory(
-	memorySizeBytes: number,
-	memoryStructureChanged: boolean
-): { hasMemoryBeenReset: boolean; memoryRef: WebAssembly.Memory; memoryAction: MemoryAction } {
+export function getOrCreateMemory(memorySizeBytes: number, memoryStructureChanged: boolean): GetOrCreateMemoryResult {
 	const memorySizeChange = currentMemorySize !== memorySizeBytes;
 	const shouldRecreate = !memoryRefCache || memoryStructureChanged || memorySizeChange;
 	let hasMemoryBeenReset = false;
