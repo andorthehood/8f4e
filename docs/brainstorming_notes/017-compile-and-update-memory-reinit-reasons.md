@@ -4,28 +4,48 @@
 
 Have `compileAndUpdateMemory` return a structured result that indicates whether the WASM instance was reused or recreated, and (if recreated) why.
 
+Clarify two related but distinct decisions:
+
+- **WASM instance reuse**: do we keep the existing `WebAssembly.Instance` or instantiate a new one?
+- **Memory reuse**: do we keep the existing `WebAssembly.Memory` or allocate a new one?
+
 ## Proposed result type
 
-- `action: 'reused'`
-- `action: 'recreated'` with a reason:
-  - `no-instance`
-  - `memory-size-changed`
-  - `memory-structure-changed`
+- `instance.action: 'reused' | 'recreated'`
+- `memory.action: 'reused' | 'recreated'`
+- When an action is `recreated`, include a structured reason.
 
 Suggested shape:
 
 ```ts
+export type WasmInstanceReinitReason =
+	| { kind: 'no-instance' }
+	| { kind: 'code-changed'; prevChecksum: string; nextChecksum: string }
+	| { kind: 'memory-recreated' };
+
 export type MemoryReinitReason =
 	| { kind: 'no-instance' }
 	| { kind: 'memory-size-changed'; prevBytes: number; nextBytes: number }
 	| { kind: 'memory-structure-changed'; prevSignature: string; nextSignature: string };
 
-export type CompileAndUpdateMemoryResult =
-	| { action: 'reused' }
-	| { action: 'recreated'; reason: MemoryReinitReason };
+export type CompileAndUpdateMemoryResult = {
+	instance:
+		| { action: 'reused' }
+		| { action: 'recreated'; reason: WasmInstanceReinitReason };
+	memory:
+		| { action: 'reused' }
+		| { action: 'recreated'; reason: MemoryReinitReason };
+};
 ```
 
+For `MemoryReinitReason`, `kind: 'no-instance'` means “there is no existing memory to reuse”.
+
 ## Memory structure checksum
+
+Motivation: `didProgramOrMemoryStructureChange` currently mixes “program changed” and “memory layout changed”, and relies on weak signals (array lengths). A deterministic layout signature makes memory reuse decisions both:
+
+- cheaper to compute (no deep diffs at runtime), and
+- easier to explain/debug via reason payloads.
 
 ## Current implementation context (`packages/compiler-worker`)
 
@@ -44,7 +64,7 @@ What it currently treats as a “program or memory structure change”:
 
 Memory size changes are handled separately by `getOrCreateMemory(compilerOptions.memorySizeBytes, memoryStructureChange)`.
 
-Also note: the WASM instance currently cannot be reused because `compileAndUpdateMemory` forces a reset via `hasMemoryBeenReset || true`. A true `action: 'reused'` path will require removing that unconditional reset (or replacing it with real code-change detection).
+Also note: the WASM instance currently cannot be reused because `compileAndUpdateMemory` forces a reset via `hasMemoryBeenReset || true`. A true reuse path requires removing that unconditional reset and replacing it with real code-change detection (see “WASM code checksum” below).
 
 ### Compiler output to use
 
@@ -58,7 +78,7 @@ The compiler currently emits enough data for a deterministic layout checksum via
 
 - Use a non-cryptographic checksum, but minimize collisions.
 - Treat offsets, types, order, and all available structure fields as meaningful (“everything”).
-- No backward compatibility required for older compiler results (runtime can assume checksum is present).
+- No backward compatibility required for older compiler results: runtime assumes checksums are present and should treat missing checksums as an error (not “changed”).
 
 ### Proposed checksum
 
@@ -67,23 +87,64 @@ The compiler currently emits enough data for a deterministic layout checksum via
 
 Canonical byte stream rules (to be specified exactly during implementation):
 
-- Feed modules in the compiler’s emitted module order.
-- Feed `memoryMap` entries in the emitted property order (no sorting).
-- For each entry, feed the identifier plus all `DataStructure` fields that represent structure and meaning (including offsets, sizes, types, defaults, and flags).
+- Feed modules in a defined order.
+  - Prefer emitting an explicit ordered list of module ids/keys from the compiler (to avoid JS object enumeration edge cases, especially integer-like keys).
+- Feed `memoryMap` entries in a defined order.
+  - Prefer emitting an explicit ordered list of data structure keys from the compiler (same reasoning).
+- For each entry, feed the identifier plus all `DataStructure` fields that represent structure and meaning.
+  - From `packages/compiler/src/types.ts`, `DataStructure` fields are:
+    - `numberOfElements`, `elementWordSize`, `type`
+    - `byteAddress`, `wordAlignedSize`, `wordAlignedAddress`
+    - `default` (number or record)
+    - `isInteger`, `id`, `isPointer`, `isPointingToInteger`, `isPointingToPointer`
 - Use tagged encoding to prevent ambiguity between fields/values.
+
+Encoding sketch for `memlayout-v1` (not final, but concrete enough to implement against):
+
+- Start with ASCII `memlayout-v1\0` as a domain separator.
+- Encode all integers as unsigned little-endian (`u32` unless a value may exceed; keep it consistent).
+- Encode booleans as a single byte `0x00`/`0x01`.
+- Encode strings as `u32 byteLength` + UTF-8 bytes.
+- Encode `default`:
+  - If number: a tag byte `0x00` then `f64` little-endian.
+  - If record: a tag byte `0x01`, then `u32 entryCount`, then for each entry:
+    - key string, then `f64` value
+    - Sort record keys lexicographically to avoid non-semantic ordering affecting the checksum.
+
+Note: `memoryMap`/module ordering should remain significant; only the `default` record keys should be sorted (since it behaves like a map, not a sequence).
+
+## WASM code checksum
+
+Instance reuse needs a “code unchanged” signal. The current helper only compares `loopFunction.length` and `initFunctionBody.length`, which can miss changes that preserve length.
+
+Proposed approach:
+
+- Compute a `codeChecksum` as `FNV-1a 64-bit` over `codeBuffer` bytes.
+- Store `previousCodeChecksum` in `packages/compiler-worker` and recreate the instance when it changes.
+- Emit as a versioned string: `wasmcode-v1-<16-hex>`.
 
 ## Runtime decision policy
 
-- If there is no current instance: recreate (`no-instance`).
+Memory decision:
+
+- If there is no current memory: recreate (`no-instance`).
 - If memory size differs: recreate (`memory-size-changed`).
-  - Do not attempt `memory.grow` (memory size changes typically correspond to loading a new project).
-- Else if layout checksum differs: recreate (`memory-structure-changed`).
-- Else: reuse (`reused`).
+  - Do not attempt `memory.grow` (memory size changes typically correspond to loading a new project, and `maximum` must match exactly).
+- Else if layout signature differs: recreate (`memory-structure-changed`).
+- Else: reuse.
+
+Instance decision:
+
+- If there is no current instance: recreate (`no-instance`).
+- Else if memory was recreated: recreate (`memory-recreated`) (new memory import => must re-instantiate).
+- Else if code checksum differs: recreate (`code-changed`).
+- Else: reuse.
 
 ## Implementation plan (current)
 
 1. Inspect compiler `compiledModules` output (done).
 2. Specify canonical ordered layout bytes (pending).
-3. Add `FNV-1a 64-bit` checksum to compiler output (pending).
-4. Plumb checksum into runtime decisions (`compileAndUpdateMemory`) (pending).
-5. Update result type and tests (pending).
+3. Add `FNV-1a 64-bit` layout checksum to compiler output (pending).
+4. Add `FNV-1a 64-bit` code checksum for `codeBuffer` (pending).
+5. Plumb checksums into runtime decisions (`compileAndUpdateMemory`) (pending).
+6. Update result type and tests (pending).
