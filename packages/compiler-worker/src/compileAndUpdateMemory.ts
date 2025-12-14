@@ -4,6 +4,8 @@ import { didProgramOrMemoryStructureChange } from './didProgramOrMemoryStructure
 import { getMemoryValueChanges } from './getMemoryValueChanges';
 import { getOrCreateMemory } from './getOrCreateMemory';
 
+import type { MemoryAction } from './memoryReinitTypes';
+
 let previousCompiledModules: CompiledModuleLookup | undefined;
 
 let wasmInstanceRef: WebAssembly.Instance | null = null;
@@ -42,6 +44,7 @@ export default async function compileAndUpdateMemory(
 	hasMemoryBeenInitialized: boolean;
 	hasMemoryBeenReset: boolean;
 	hasWasmInstanceBeenReset: boolean;
+	memoryAction: MemoryAction;
 }> {
 	const { codeBuffer, compiledModules, allocatedMemorySize, compiledFunctions } = compile(
 		modules,
@@ -51,7 +54,10 @@ export default async function compileAndUpdateMemory(
 	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
-	const { memoryRef, hasMemoryBeenReset } = getOrCreateMemory(compilerOptions.memorySizeBytes, memoryStructureChange);
+	const { memoryRef, hasMemoryBeenReset, memoryAction } = getOrCreateMemory(
+		compilerOptions.memorySizeBytes,
+		memoryStructureChange
+	);
 	const { wasmInstanceRef, hasWasmInstanceBeenReset } = await getOrCreateWasmInstanceRef(
 		codeBuffer,
 		memoryRef,
@@ -102,5 +108,6 @@ export default async function compileAndUpdateMemory(
 		hasMemoryBeenInitialized,
 		hasMemoryBeenReset,
 		hasWasmInstanceBeenReset,
+		memoryAction,
 	};
 }
