@@ -13,6 +13,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 			hasMemoryBeenInitialized,
 			hasMemoryBeenReset,
 			hasWasmInstanceBeenReset,
+			memoryAction,
 		} = await compileAndUpdateMemory(modules, compilerOptions, functions);
 		self.postMessage({
 			type: 'success',
@@ -25,6 +26,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 				hasMemoryBeenReset,
 				hasWasmInstanceBeenReset,
 				compiledFunctions,
+				memoryAction,
 			},
 		});
 	} catch (error) {
