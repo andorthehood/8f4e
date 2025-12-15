@@ -21,11 +21,7 @@ export default function serializeToProject(
 	const { graphicHelper, compiler } = state;
 
 	const project: Project = {
-		codeBlocks: convertGraphicDataToProjectStructure(
-			Array.from(graphicHelper.codeBlocks),
-			graphicHelper.viewport.vGrid,
-			graphicHelper.viewport.hGrid
-		),
+		codeBlocks: convertGraphicDataToProjectStructure(Array.from(graphicHelper.codeBlocks)),
 		viewport: {
 			// Convert pixel coordinates to grid coordinates for persistent storage
 			gridCoordinates: {
