@@ -23,7 +23,6 @@ export default async function runtime(store: StateManager<State>, events: EventD
 		const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
 
 		if (onlineRuntime === runtime.runtime) {
-			events.dispatch('syncCodeAndSettingsWithRuntime');
 			return;
 		}
 
@@ -45,7 +44,7 @@ export default async function runtime(store: StateManager<State>, events: EventD
 				throw new Error(`Runtime ${runtime.runtime} callback did not return a valid factory function`);
 			}
 
-			runtimeDestroyer = runtimeFactory(state, events);
+			runtimeDestroyer = runtimeFactory(store, events);
 			onlineRuntime = runtime.runtime;
 			log(state, `Successfully initialized runtime: ${runtime.runtime}`, 'Runtime');
 		} catch (err) {

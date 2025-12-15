@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from 'glugglug';
 import type {
@@ -84,7 +86,7 @@ export interface InternalKeyboardEvent {
 }
 
 // Type for runtime factory function
-export type RuntimeFactory = (state: State, events: EventDispatcher) => () => void;
+export type RuntimeFactory = (store: StateManager<State>, events: EventDispatcher) => () => void;
 
 /**
  * Grid coordinates represent logical cell positions in the editor grid.

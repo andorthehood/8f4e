@@ -31,16 +31,15 @@ export default async function compiler(store: StateManager<State>, events: Event
 		// If codeBuffer is populated and we don't have a compiler, skip compilation
 		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
 			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
-			state.compiler.isCompiling = false;
+			store.set('compiler.isCompiling', false);
 			store.set('codeErrors.compilationErrors', []);
-			events.dispatch('buildFinished');
 			return;
 		}
 
 		const { modules, functions } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 
-		state.compiler.isCompiling = true;
-		state.compiler.lastCompilationStart = performance.now();
+		store.set('compiler.isCompiling', true);
+		store.set('codeErrors.lastCompilationStart', performance.now());
 
 		try {
 			const compilerOptions = {
@@ -66,18 +65,15 @@ export default async function compiler(store: StateManager<State>, events: Event
 				return;
 			}
 
-			state.compiler.compiledFunctions = result.compiledFunctions;
-			state.compiler.compiledModules = result.compiledModules;
-			state.compiler.codeBuffer = result.codeBuffer;
-			state.compiler.allocatedMemorySize = result.allocatedMemorySize;
-			state.compiler.memoryBuffer = result.memoryBuffer;
-			state.compiler.memoryBufferFloat = result.memoryBufferFloat;
-			state.compiler.isCompiling = false;
-			state.compiler.compilationTime = performance.now() - state.compiler.lastCompilationStart;
-
+			store.set('compiler.compiledFunctions', result.compiledFunctions);
+			store.set('compiler.compiledModules', result.compiledModules);
+			store.set('compiler.codeBuffer', result.codeBuffer);
+			store.set('compiler.allocatedMemorySize', result.allocatedMemorySize);
+			store.set('compiler.memoryBuffer', result.memoryBuffer);
+			store.set('compiler.memoryBufferFloat', result.memoryBufferFloat);
+			store.set('compiler.isCompiling', false);
+			store.set('compiler.compilationTime', performance.now() - state.compiler.lastCompilationStart);
 			store.set('codeErrors.compilationErrors', []);
-
-			console.log('memoryAction', result.memoryAction);
 
 			if (result.memoryAction.action === 'recreated') {
 				log(state, 'WASM Memory instance was (re)created', 'Compiler');
@@ -86,8 +82,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 			}
 
 			log(state, 'Compilation succeeded in ' + state.compiler.compilationTime.toFixed(2) + 'ms', 'Compiler');
-
-			events.dispatch('buildFinished');
 		} catch (error) {
 			state.compiler.isCompiling = false;
 			const errorObject = error as Error & {
