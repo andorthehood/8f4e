@@ -41,7 +41,7 @@ describe('Pure Function Compilation', () => {
 	test('should compile a function with int parameters', () => {
 		const functions: Module[] = [
 			{
-				code: ['function add int int', 'add', 'functionEnd int'],
+				code: ['function add', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
 			},
 		];
 
@@ -61,7 +61,15 @@ describe('Pure Function Compilation', () => {
 	test('should compile a function with float parameters', () => {
 		const functions: Module[] = [
 			{
-				code: ['function multiply float float', 'mul', 'functionEnd float'],
+				code: [
+					'function multiply',
+					'param float x',
+					'param float y',
+					'localGet x',
+					'localGet y',
+					'mul',
+					'functionEnd float',
+				],
 			},
 		];
 
@@ -81,7 +89,16 @@ describe('Pure Function Compilation', () => {
 	test('should compile a function with mixed int and float parameters', () => {
 		const functions: Module[] = [
 			{
-				code: ['function convert int float', 'drop', 'castToFloat', 'functionEnd float'],
+				code: [
+					'function convert',
+					'param int x',
+					'param float y',
+					'localGet x',
+					'localGet y',
+					'drop',
+					'castToFloat',
+					'functionEnd float',
+				],
 			},
 		];
 
@@ -101,7 +118,7 @@ describe('Pure Function Compilation', () => {
 	test('should compile a function with multiple return values', () => {
 		const functions: Module[] = [
 			{
-				code: ['function duplicate int', 'dup', 'functionEnd int int'],
+				code: ['function duplicate', 'param int x', 'localGet x', 'dup', 'functionEnd int int'],
 			},
 		];
 
@@ -121,7 +138,7 @@ describe('Pure Function Compilation', () => {
 	test('should support calling a function from a module', () => {
 		const functions: Module[] = [
 			{
-				code: ['function square int', 'dup', 'mul', 'functionEnd int'],
+				code: ['function square', 'param int x', 'localGet x', 'dup', 'mul', 'functionEnd int'],
 			},
 		];
 
@@ -143,8 +160,12 @@ describe('Pure Function Compilation', () => {
 		const functions: Module[] = [
 			{
 				code: [
-					'function addWithLocal int int',
+					'function addWithLocal',
+					'param int x',
+					'param int y',
 					'local int temp',
+					'localGet x',
+					'localGet y',
 					'add',
 					'localSet temp',
 					'localGet temp',
@@ -189,13 +210,13 @@ describe('Pure Function Compilation', () => {
 	test('should compile multiple functions', () => {
 		const functions: Module[] = [
 			{
-				code: ['function add int int', 'add', 'functionEnd int'],
+				code: ['function add', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
 			},
 			{
-				code: ['function sub int int', 'sub', 'functionEnd int'],
+				code: ['function sub', 'param int x', 'param int y', 'localGet x', 'localGet y', 'sub', 'functionEnd int'],
 			},
 			{
-				code: ['function mul int int', 'mul', 'functionEnd int'],
+				code: ['function mul', 'param int x', 'param int y', 'localGet x', 'localGet y', 'mul', 'functionEnd int'],
 			},
 		];
 
@@ -232,13 +253,15 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i);
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(
+			/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i
+		);
 	});
 
 	test('should reject load operations in functions', () => {
 		const functions: Module[] = [
 			{
-				code: ['function invalid int', 'load', 'functionEnd int'],
+				code: ['function invalid', 'param int x', 'localGet x', 'load', 'functionEnd int'],
 			},
 		];
 
@@ -248,13 +271,15 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i);
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(
+			/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i
+		);
 	});
 
 	test('should reject store operations in functions', () => {
 		const functions: Module[] = [
 			{
-				code: ['function invalid int int', 'store', 'functionEnd'],
+				code: ['function invalid', 'param int x', 'param int y', 'localGet x', 'localGet y', 'store', 'functionEnd'],
 			},
 		];
 
@@ -264,7 +289,9 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i);
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(
+			/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i
+		);
 	});
 
 	test('should reject buffer declarations in functions', () => {
@@ -280,13 +307,27 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile(modules, defaultOptions, functions)).toThrow(/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i);
+		expect(() => compile(modules, defaultOptions, functions)).toThrow(
+			/Memory access is not allowed in pure functions|This instruction can only be used within a block or a module/i
+		);
 	});
 
 	test('should reject functions with more than 8 parameters', () => {
 		const functions: Module[] = [
 			{
-				code: ['function tooManyParams int int int int int int int int int', 'functionEnd'],
+				code: [
+					'function tooManyParams',
+					'param int p1',
+					'param int p2',
+					'param int p3',
+					'param int p4',
+					'param int p5',
+					'param int p6',
+					'param int p7',
+					'param int p8',
+					'param int p9',
+					'functionEnd',
+				],
 			},
 		];
 
@@ -330,7 +371,7 @@ describe('Pure Function Validation', () => {
 	test('should reject invalid parameter types', () => {
 		const functions: Module[] = [
 			{
-				code: ['function invalid invalidType', 'functionEnd'],
+				code: ['function invalid', 'param invalidType x', 'functionEnd'],
 			},
 		];
 
@@ -404,7 +445,7 @@ describe('Pure Function Validation', () => {
 	test('should reject function call with wrong argument types', () => {
 		const functions: Module[] = [
 			{
-				code: ['function addInts int int', 'add', 'functionEnd int'],
+				code: ['function addInts', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
 			},
 		];
 
@@ -420,7 +461,7 @@ describe('Pure Function Validation', () => {
 	test('should reject function call with insufficient arguments', () => {
 		const functions: Module[] = [
 			{
-				code: ['function add int int', 'add', 'functionEnd int'],
+				code: ['function add', 'param int x', 'param int y', 'localGet x', 'localGet y', 'add', 'functionEnd int'],
 			},
 		];
 
@@ -473,7 +514,19 @@ describe('Pure Function Edge Cases', () => {
 	test('should support control flow in functions', () => {
 		const functions: Module[] = [
 			{
-				code: ['function abs int', 'dup', 'push 0', 'lessThan', 'if int', 'push -1', 'mul', 'ifEnd', 'functionEnd int'],
+				code: [
+					'function abs',
+					'param int x',
+					'localGet x',
+					'dup',
+					'push 0',
+					'lessThan',
+					'if int',
+					'push -1',
+					'mul',
+					'ifEnd',
+					'functionEnd int',
+				],
 			},
 		];
 
@@ -490,7 +543,16 @@ describe('Pure Function Edge Cases', () => {
 	test('should handle functions that use stack manipulation', () => {
 		const functions: Module[] = [
 			{
-				code: ['function swapAndAdd int int', 'swap', 'add', 'functionEnd int'],
+				code: [
+					'function swapAndAdd',
+					'param int x',
+					'param int y',
+					'localGet x',
+					'localGet y',
+					'swap',
+					'add',
+					'functionEnd int',
+				],
 			},
 		];
 
