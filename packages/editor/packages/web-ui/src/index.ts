@@ -99,6 +99,12 @@ export default async function init(
 			state.graphicHelper.viewport.hGrid = characterHeight;
 			state.graphicHelper.viewport.vGrid = characterWidth;
 
+			// Recompute all code block pixel positions from grid coordinates
+			for (const codeBlock of state.graphicHelper.codeBlocks) {
+				codeBlock.x = codeBlock.gridX * characterWidth;
+				codeBlock.y = codeBlock.gridY * characterHeight;
+			}
+
 			engine.loadSpriteSheet(sprite);
 		},
 		loadPostProcessEffects: (projectEffects: PostProcessEffect[] = []) => {
