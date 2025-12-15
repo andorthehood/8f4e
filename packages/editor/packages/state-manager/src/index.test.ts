@@ -2,8 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import createStateManager from './index';
 
-import type { Subscription } from './types';
-
 // Test interface for state manager with deep nesting
 interface TestState {
 	name: string;
@@ -301,9 +299,20 @@ describe('StateManager', () => {
 	describe('unsubscribe', () => {
 		it('should remove subscription and stop calling callback', () => {
 			const callback = vi.fn();
-			const subscription = stateManager.subscribe('name', callback);
+			stateManager.subscribe('name', callback);
 
-			stateManager.unsubscribe(subscription);
+			stateManager.unsubscribe('name', callback);
+			stateManager.set('name', 'New Name');
+
+			expect(callback).not.toHaveBeenCalled();
+		});
+
+		it('should remove subscription by selector and callback', () => {
+			const callback = vi.fn();
+
+			stateManager.subscribe('name', callback);
+
+			stateManager.unsubscribe('name', callback);
 			stateManager.set('name', 'New Name');
 
 			expect(callback).not.toHaveBeenCalled();
@@ -313,10 +322,24 @@ describe('StateManager', () => {
 			const callback1 = vi.fn();
 			const callback2 = vi.fn();
 
-			const subscription1 = stateManager.subscribe('name', callback1);
+			stateManager.subscribe('name', callback1);
 			stateManager.subscribe('name', callback2);
 
-			stateManager.unsubscribe(subscription1);
+			stateManager.unsubscribe('name', callback1);
+			stateManager.set('name', 'New Name');
+
+			expect(callback1).not.toHaveBeenCalled();
+			expect(callback2).toHaveBeenCalledWith('New Name');
+		});
+
+		it('should only remove the specific subscription by selector and callback', () => {
+			const callback1 = vi.fn();
+			const callback2 = vi.fn();
+
+			stateManager.subscribe('name', callback1);
+			stateManager.subscribe('name', callback2);
+
+			stateManager.unsubscribe('name', callback1);
 			stateManager.set('name', 'New Name');
 
 			expect(callback1).not.toHaveBeenCalled();
@@ -324,14 +347,8 @@ describe('StateManager', () => {
 		});
 
 		it('should handle unsubscribing non-existent subscription gracefully', () => {
-			const fakeSubscription = {
-				selector: 'name',
-				tokens: ['name'],
-				callback: vi.fn(),
-			} as Subscription<TestState>;
-
 			expect(() => {
-				stateManager.unsubscribe(fakeSubscription);
+				stateManager.unsubscribe('name', vi.fn());
 			}).not.toThrow();
 		});
 	});
@@ -369,10 +386,10 @@ describe('StateManager', () => {
 
 		it('should update state by direct mutation', () => {
 			const callback = vi.fn();
-			const subscription = stateManager.subscribe('name', callback);
+			stateManager.subscribe('name', callback);
 
 			// Unsubscribe
-			stateManager.unsubscribe(subscription);
+			stateManager.unsubscribe('name', callback);
 
 			// Update state
 			stateManager.set('name', 'New Name');
