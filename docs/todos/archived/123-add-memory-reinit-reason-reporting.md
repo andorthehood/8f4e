@@ -3,8 +3,8 @@ title: 'TODO: Add Memory Reinit Reason Reporting'
 priority: Medium
 effort: 2-4 hours
 created: 2025-12-14
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-15
 ---
 
 # TODO: Add Memory Reinit Reason Reporting
