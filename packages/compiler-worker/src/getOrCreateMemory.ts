@@ -7,7 +7,6 @@ const WASM_PAGE_SIZE = 65536;
 export function getOrCreateMemory(memorySizeBytes: number, memoryStructureChanged: boolean): GetOrCreateMemoryResult {
 	const memorySizeChange = currentMemorySize !== memorySizeBytes;
 	const shouldRecreate = !memoryRefCache || memoryStructureChanged || memorySizeChange;
-	let hasMemoryBeenReset = false;
 	let memoryAction: MemoryAction;
 
 	if (shouldRecreate) {
@@ -20,8 +19,6 @@ export function getOrCreateMemory(memorySizeBytes: number, memoryStructureChange
 			shared: true,
 		});
 		currentMemorySize = memorySizeBytes;
-
-		hasMemoryBeenReset = true;
 
 		// Determine the reason for recreation
 		if (prevBytes === 0) {
@@ -40,5 +37,5 @@ export function getOrCreateMemory(memorySizeBytes: number, memoryStructureChange
 		memoryAction = { action: 'reused' };
 	}
 
-	return { hasMemoryBeenReset, memoryRef: memoryRefCache!, memoryAction };
+	return { memoryRef: memoryRefCache!, memoryAction };
 }

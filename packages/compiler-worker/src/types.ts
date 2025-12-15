@@ -8,7 +8,6 @@ export type MemoryReinitReason =
 export type MemoryAction = { action: 'reused' } | { action: 'recreated'; reason: MemoryReinitReason };
 
 export type GetOrCreateMemoryResult = {
-	hasMemoryBeenReset: boolean;
 	memoryRef: WebAssembly.Memory;
 	memoryAction: MemoryAction;
 };
@@ -24,8 +23,6 @@ export type CompileAndUpdateMemoryResult = {
 	compiledFunctions?: CompiledFunctionLookup;
 	allocatedMemorySize: number;
 	memoryRef: WebAssembly.Memory;
-	hasMemoryBeenInitialized: boolean;
-	hasMemoryBeenReset: boolean;
 	hasWasmInstanceBeenReset: boolean;
 	memoryAction: MemoryAction;
 };

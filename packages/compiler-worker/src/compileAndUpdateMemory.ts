@@ -13,9 +13,9 @@ let wasmInstanceRef: WebAssembly.Instance | null = null;
 async function getOrCreateWasmInstanceRef(
 	codeBuffer: Uint8Array,
 	memoryRef: WebAssembly.Memory,
-	hasMemoryBeenReset: boolean
+	memoryWasRecreated: boolean
 ): Promise<GetOrCreateWasmInstanceResult> {
-	if (wasmInstanceRef && !hasMemoryBeenReset) {
+	if (wasmInstanceRef && !memoryWasRecreated) {
 		return { wasmInstanceRef: wasmInstanceRef, hasWasmInstanceBeenReset: false };
 	}
 
@@ -44,23 +44,25 @@ export default async function compileAndUpdateMemory(
 	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
-	const { memoryRef, hasMemoryBeenReset, memoryAction } = getOrCreateMemory(
-		compilerOptions.memorySizeBytes,
-		memoryStructureChange
-	);
+	const { memoryRef, memoryAction } = getOrCreateMemory(compilerOptions.memorySizeBytes, memoryStructureChange);
+
+	const memoryWasRecreated = memoryAction.action === 'recreated';
 	const { wasmInstanceRef, hasWasmInstanceBeenReset } = await getOrCreateWasmInstanceRef(
 		codeBuffer,
 		memoryRef,
 		// TODO: add code change detection to this as well, until then we force reset
-		hasMemoryBeenReset || true
+		memoryWasRecreated || true
 	);
 	const init = wasmInstanceRef.exports.init as CallableFunction;
 
-	let hasMemoryBeenInitialized = false;
+	// Memory needs initialization when:
+	// - First compilation (!previousCompiledModules)
+	// - Memory structure changed
+	// - Memory was recreated
+	const needsInitialization = !previousCompiledModules || memoryStructureChange || memoryWasRecreated;
 
-	if (!previousCompiledModules || memoryStructureChange || hasMemoryBeenReset) {
+	if (needsInitialization) {
 		init();
-		hasMemoryBeenInitialized = true;
 	} else {
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
@@ -95,8 +97,6 @@ export default async function compileAndUpdateMemory(
 		compiledFunctions,
 		allocatedMemorySize,
 		memoryRef,
-		hasMemoryBeenInitialized,
-		hasMemoryBeenReset,
 		hasWasmInstanceBeenReset,
 		memoryAction,
 	};
