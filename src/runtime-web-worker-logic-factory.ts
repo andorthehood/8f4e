@@ -1,5 +1,6 @@
 // Import the types from the editor
 import WebWorkerLogicRuntime from '@8f4e/runtime-web-worker-logic?worker';
+import { StateManager } from '@8f4e/state-manager';
 
 import { getMemory } from './compiler-callback';
 
@@ -7,7 +8,8 @@ import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
 
 // WebWorker Logic Runtime Factory
-export function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
+export function webWorkerLogicRuntime(store: StateManager<State>, events: EventDispatcher) {
+	const state = store.getState();
 	let worker: Worker | undefined;
 
 	async function onWorkerMessage({ data }: MessageEvent) {
@@ -51,10 +53,10 @@ export function webWorkerLogicRuntime(state: State, events: EventDispatcher) {
 	worker.addEventListener('message', onWorkerMessage);
 	syncCodeAndSettingsWithRuntime();
 
-	events.on('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+	store.subscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
 
 	return () => {
-		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
 		if (worker) {
 			worker.removeEventListener('message', onWorkerMessage);
 			worker.terminate();
