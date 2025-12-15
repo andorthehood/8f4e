@@ -21,41 +21,41 @@ push 0
 store
 
 loop 
- ; Calculate destination
- ; address
- push &buffer
- push pointer
- push WORD_SIZE
- mul
- add
+; Calculate destination
+; address
+push &buffer
+push pointer
+push WORD_SIZE
+mul
+add
 
- ; Calculate source
- ; address
- push bufferIn
- push pointer
- push WORD_SIZE
- mul
- add
+; Calculate source
+; address
+push bufferIn
+push pointer
+push WORD_SIZE
+mul
+add
  
- load ; value from src
- castToFloat
+load ; value from src
+castToFloat
 
- store ; value to dst
+store ; value to dst
  
- ; Guard
- push pointer
- push length
- push 1
- sub
- greaterOrEqual
- branchIfTrue 1
+; Guard
+push pointer
+push length
+push 1
+sub
+greaterOrEqual
+branchIfTrue 1
 
- ; Increment buffer pointer
- push &pointer
- push pointer
- push 1
- add
- store
+; Increment buffer pointer
+push &pointer
+push pointer
+push 1
+add
+store
 loopEnd
 
 moduleEnd`,
