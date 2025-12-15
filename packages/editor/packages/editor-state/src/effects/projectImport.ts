@@ -94,6 +94,14 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 			state.graphicHelper.nextCodeBlockCreationIndex++;
 
+			// Compute grid coordinates first as source of truth
+			const gridX = codeBlock.gridCoordinates.x;
+			const gridY = codeBlock.gridCoordinates.y;
+
+			// Compute pixel coordinates from grid coordinates
+			const pixelX = gridX * state.graphicHelper.viewport.vGrid;
+			const pixelY = gridY * state.graphicHelper.viewport.hGrid;
+
 			state.graphicHelper.codeBlocks.add({
 				width: 0,
 				minGridWidth: 32,
@@ -115,8 +123,10 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
 				id: getModuleId(codeBlock.code) || '',
 				gaps: new Map(),
-				x: codeBlock.gridCoordinates.x * state.graphicHelper.viewport.vGrid,
-				y: codeBlock.gridCoordinates.y * state.graphicHelper.viewport.hGrid,
+				gridX,
+				gridY,
+				x: pixelX,
+				y: pixelY,
 				offsetX: 0,
 				offsetY: 0,
 				lineNumberColumnWidth: 1,

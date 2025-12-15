@@ -56,13 +56,15 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 			return;
 		}
 
-		// Snap to grid by rounding pixel coordinates
-		state.graphicHelper.draggedCodeBlock.x =
-			Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid) *
-			state.graphicHelper.viewport.vGrid;
-		state.graphicHelper.draggedCodeBlock.y =
-			Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.viewport.hGrid) *
-			state.graphicHelper.viewport.hGrid;
+		// Compute grid coordinates from pixel position
+		const gridX = Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid);
+		const gridY = Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.viewport.hGrid);
+
+		// Update grid coordinates and recompute snapped pixel coordinates
+		state.graphicHelper.draggedCodeBlock.gridX = gridX;
+		state.graphicHelper.draggedCodeBlock.gridY = gridY;
+		state.graphicHelper.draggedCodeBlock.x = gridX * state.graphicHelper.viewport.vGrid;
+		state.graphicHelper.draggedCodeBlock.y = gridY * state.graphicHelper.viewport.hGrid;
 
 		state.graphicHelper.draggedCodeBlock = undefined;
 	}

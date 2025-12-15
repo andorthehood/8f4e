@@ -4,17 +4,11 @@ import type { CodeBlock, CodeBlockGraphicData } from '../../types';
 
 /**
  * Converts graphic data code blocks to simplified project structure for serialization.
- * Uses gridCoordinates for persistent storage, computed from pixel positions.
+ * Uses gridX/gridY from code blocks for persistent storage.
  * @param codeBlocks Array of code blocks with full graphic data
- * @param vGrid Vertical grid size for converting pixels to grid coordinates
- * @param hGrid Horizontal grid size for converting pixels to grid coordinates
  * @returns Array of simplified code blocks suitable for file format with gridCoordinates
  */
-export default function convertGraphicDataToProjectStructure(
-	codeBlocks: CodeBlockGraphicData[],
-	vGrid: number,
-	hGrid: number
-): CodeBlock[] {
+export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): CodeBlock[] {
 	const codeBlocksCopy = [...codeBlocks];
 
 	return codeBlocksCopy
@@ -29,8 +23,8 @@ export default function convertGraphicDataToProjectStructure(
 		.map(codeBlock => ({
 			code: codeBlock.code,
 			gridCoordinates: {
-				x: Math.round(codeBlock.x / vGrid),
-				y: Math.round(codeBlock.y / hGrid),
+				x: codeBlock.gridX,
+				y: codeBlock.gridY,
 			},
 		}));
 }
@@ -41,21 +35,21 @@ if (import.meta.vitest) {
 	describe('convertGraphicDataToProjectStructure', () => {
 		it('sorts code blocks by id before mapping', () => {
 			const blocks: CodeBlockGraphicData[] = [
-				createMockCodeBlock({ id: 'b', code: ['line 1'], x: 10, y: 20 }),
-				createMockCodeBlock({ id: 'a', code: ['line 2'], x: 30, y: 40 }),
+				createMockCodeBlock({ id: 'b', code: ['line 1'], gridX: 1, gridY: 2 }),
+				createMockCodeBlock({ id: 'a', code: ['line 2'], gridX: 3, gridY: 4 }),
 			];
 
-			const result = convertGraphicDataToProjectStructure(blocks, 10, 10);
+			const result = convertGraphicDataToProjectStructure(blocks);
 
 			expect(result.map(block => block.code[0])).toEqual(['line 2', 'line 1']);
 		});
 
-		it('converts pixel coordinates to rounded grid coordinates', () => {
-			const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ id: '1', code: ['code'], x: 15, y: 24 })];
+		it('uses gridX and gridY directly for gridCoordinates', () => {
+			const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ id: '1', code: ['code'], gridX: 5, gridY: 7 })];
 
-			const result = convertGraphicDataToProjectStructure(blocks, 10, 10);
+			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0].gridCoordinates).toEqual({ x: 2, y: 2 });
+			expect(result[0].gridCoordinates).toEqual({ x: 5, y: 7 });
 		});
 	});
 }
