@@ -38,14 +38,15 @@ const COMPILER_OPTIONS = {
 
 /**
  * Determines the type of a code block based on its first non-empty line.
- * Returns 'module', 'config', or 'unknown'.
+ * Returns 'module', 'config', 'function', or 'unknown'.
  */
-function getBlockType(code: string[]): 'module' | 'config' | 'unknown' {
+function getBlockType(code: string[]): 'module' | 'config' | 'function' | 'unknown' {
 	for (const line of code) {
 		const trimmed = line.trim();
 		if (trimmed === '') continue;
 		if (trimmed === 'config') return 'config';
 		if (trimmed.startsWith('module ')) return 'module';
+		if (trimmed.startsWith('function ')) return 'function';
 		break;
 	}
 	return 'unknown';
@@ -98,8 +99,13 @@ describe('Example Projects Compilation', () => {
 					.filter(block => getBlockType(block.code) === 'module')
 					.map(block => ({ code: block.code }));
 
-				// Compile all modules together and verify success
-				const result = compile(moduleBlocks, COMPILER_OPTIONS);
+				// Extract function blocks
+				const functionBlocks = project.codeBlocks
+					.filter(block => getBlockType(block.code) === 'function')
+					.map(block => ({ code: block.code }));
+
+				// Compile all modules together (with functions if present) and verify success
+				const result = compile(moduleBlocks, COMPILER_OPTIONS, functionBlocks.length > 0 ? functionBlocks : undefined);
 
 				expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
 				expect(result.codeBuffer.length).toBeGreaterThan(0);
