@@ -288,7 +288,13 @@ export interface CodeBlockGraphicData {
 	id: string;
 	positionOffsetterXWordAddress?: number;
 	positionOffsetterYWordAddress?: number;
+	/** Grid-space X coordinate (source of truth for horizontal position) */
+	gridX: number;
+	/** Grid-space Y coordinate (source of truth for vertical position) */
+	gridY: number;
+	/** Pixel-space X coordinate, computed from gridX * vGrid */
 	x: number;
+	/** Pixel-space Y coordinate, computed from gridY * hGrid */
 	y: number;
 	offsetX: number;
 	offsetY: number;
