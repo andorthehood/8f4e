@@ -175,6 +175,15 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 	};
 
+	const recomputePixelCoordinatesFromGrid = function () {
+		// When viewport grid dimensions change (e.g., font change), recompute pixel positions
+		// from the stable grid coordinates to maintain grid-aligned placement
+		for (const codeBlock of state.graphicHelper.codeBlocks) {
+			codeBlock.x = codeBlock.gridX * state.graphicHelper.viewport.vGrid;
+			codeBlock.y = codeBlock.gridY * state.graphicHelper.viewport.hGrid;
+		}
+	};
+
 	const updateSelectedCodeBlock = function () {
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
@@ -189,6 +198,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on<CodeBlockAddedEvent>('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('init', updateGraphicsAll);
+	events.on('spriteSheetRerendered', recomputePixelCoordinatesFromGrid);
 	events.on('spriteSheetRerendered', updateGraphicsAll);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
