@@ -35,7 +35,9 @@ loopEnd
 
 moduleEnd`,
 	[
-		`function double int
+		`function double
+param int x
+localGet x
 push 2
 mul
 functionEnd int`,
