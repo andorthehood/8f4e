@@ -10,8 +10,6 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 			compiledFunctions,
 			allocatedMemorySize,
 			memoryRef,
-			hasMemoryBeenInitialized,
-			hasMemoryBeenReset,
 			hasWasmInstanceBeenReset,
 			memoryAction,
 		} = await compileAndUpdateMemory(modules, compilerOptions, functions);
@@ -22,8 +20,6 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 				compiledModules,
 				allocatedMemorySize,
 				wasmMemory: memoryRef,
-				hasMemoryBeenInitialized,
-				hasMemoryBeenReset,
 				hasWasmInstanceBeenReset,
 				compiledFunctions,
 				memoryAction,
