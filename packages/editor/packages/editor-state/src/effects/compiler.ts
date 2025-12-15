@@ -77,6 +77,8 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			store.set('codeErrors.compilationErrors', []);
 
+			console.log('memoryAction', result.memoryAction);
+
 			if (result.hasMemoryBeenReset) {
 				log(state, 'WASM Memory instance was (re)created', 'Compiler');
 			}
@@ -107,10 +109,9 @@ export default async function compiler(store: StateManager<State>, events: Event
 		}
 	}
 
-	events.on('createConnection', onRecompile);
 	events.on('codeBlockAdded', onRecompile);
 	events.on('deleteCodeBlock', onRecompile);
-	events.on('projectLoaded', onRecompile);
+	store.subscribe('compiler.compilerOptions', onRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'module') {
 			return;
