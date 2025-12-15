@@ -83,7 +83,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			log(state, 'Compilation succeeded in ' + state.compiler.compilationTime.toFixed(2) + 'ms', 'Compiler');
 		} catch (error) {
-			state.compiler.isCompiling = false;
+			store.set('compiler.isCompiling', false);
 			const errorObject = error as Error & {
 				line?: { lineNumber: number };
 				context?: { namespace?: { moduleName: string } };
