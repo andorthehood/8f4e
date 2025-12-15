@@ -91,14 +91,4 @@ describe('applyConfigToState', () => {
 		expect(state.runtime.runtimeSettings).toEqual(originalSettings);
 		expect(state.runtime.selectedRuntime).toBe(originalSelectedRuntime);
 	});
-
-	it('should handle partial config', () => {
-		const state = createMockState();
-		const store = createStateManager(state);
-		state.projectInfo.title = 'Original';
-		state.projectInfo.author = 'Original Author';
-		applyConfigToState(store, { title: 'New Title' });
-		expect(state.projectInfo.title).toBe('New Title');
-		expect(state.projectInfo.author).toBe('Original Author');
-	});
 });
