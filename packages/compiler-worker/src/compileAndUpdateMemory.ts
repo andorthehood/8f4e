@@ -1,6 +1,5 @@
 import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
 
-import { didProgramOrMemoryStructureChange } from './didProgramOrMemoryStructureChange';
 import { getMemoryValueChanges } from './getMemoryValueChanges';
 import { getOrCreateMemory } from './getOrCreateMemory';
 
@@ -41,10 +40,13 @@ export default async function compileAndUpdateMemory(
 		compilerOptions,
 		functions
 	);
-	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
-	const { memoryRef, memoryAction } = getOrCreateMemory(compilerOptions.memorySizeBytes, memoryStructureChange);
+	const { memoryRef, memoryAction } = getOrCreateMemory(
+		compilerOptions.memorySizeBytes,
+		compiledModules,
+		previousCompiledModules
+	);
 
 	const memoryWasRecreated = memoryAction.action === 'recreated';
 	const { wasmInstanceRef, hasWasmInstanceBeenReset } = await getOrCreateWasmInstanceRef(
@@ -59,7 +61,7 @@ export default async function compileAndUpdateMemory(
 	// - First compilation (!previousCompiledModules)
 	// - Memory structure changed
 	// - Memory was recreated
-	const needsInitialization = !previousCompiledModules || memoryStructureChange || memoryWasRecreated;
+	const needsInitialization = !previousCompiledModules || memoryWasRecreated;
 
 	if (needsInitialization) {
 		init();
