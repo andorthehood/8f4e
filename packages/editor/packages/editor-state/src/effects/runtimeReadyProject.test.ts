@@ -260,11 +260,7 @@ describe('Runtime-ready project functionality', () => {
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const compileCall = onCalls.find(
-				call =>
-					call[0] === 'createConnection' ||
-					call[0] === 'codeBlockAdded' ||
-					call[0] === 'deleteCodeBlock' ||
-					call[0] === 'projectLoaded'
+				call => call[0] === 'codeBlockAdded' || call[0] === 'deleteCodeBlock' || call[0] === 'projectLoaded'
 			);
 			expect(compileCall).toBeDefined();
 
@@ -310,11 +306,7 @@ describe('Runtime-ready project functionality', () => {
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const compileCall = onCalls.find(
-				call =>
-					call[0] === 'createConnection' ||
-					call[0] === 'codeBlockAdded' ||
-					call[0] === 'deleteCodeBlock' ||
-					call[0] === 'projectLoaded'
+				call => call[0] === 'codeBlockAdded' || call[0] === 'deleteCodeBlock' || call[0] === 'projectLoaded'
 			);
 			const onRecompileCallback = compileCall![1];
 

@@ -72,8 +72,6 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 
 		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
-		console.log(configBlocks);
-
 		if (configBlocks.length === 0) {
 			return;
 		}
