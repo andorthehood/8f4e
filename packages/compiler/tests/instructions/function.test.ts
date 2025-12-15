@@ -35,7 +35,9 @@ loopEnd
 
 moduleEnd`,
 	[
-		`function double int
+		`function double
+param int x
+localGet x
 push 2
 mul
 functionEnd int`,
@@ -63,7 +65,11 @@ loopEnd
 
 moduleEnd`,
 	[
-		`function add int int
+		`function add
+param int x
+param int y
+localGet x
+localGet y
 add
 functionEnd int`,
 	],
