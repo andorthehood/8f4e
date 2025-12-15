@@ -39,7 +39,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		const { modules, functions } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 
 		store.set('compiler.isCompiling', true);
-		store.set('codeErrors.lastCompilationStart', performance.now());
+		store.set('compiler.lastCompilationStart', performance.now());
 
 		try {
 			const compilerOptions = {
