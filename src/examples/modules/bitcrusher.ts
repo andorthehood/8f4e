@@ -15,26 +15,26 @@ debug out
 
 push &out
 
- push *in
- push 1.0
- push *amount
- sub
- push 128.0
- mul
+push *in
+push 1.0
+push *amount
+sub
+push 128.0
+mul
 
- mul
- round
- castToInt
- castToFloat
+mul
+round
+castToInt
+castToFloat
 
- push 1.0
- push *amount
- sub
- push 128.0
- mul
+push 1.0
+push *amount
+sub
+push 128.0
+mul
 
- ensureNonZero
- div
+ensureNonZero
+div
 store
 
 moduleEnd`,

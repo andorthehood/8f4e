@@ -44,10 +44,10 @@ const LOW 0
 push *trigger
 risingEdge
 if void
- push &stepPointer
- push &step1
- push &last
- cycle
+push &stepPointer
+push &step1
+push &last
+cycle
 ifEnd
 
 push &bitPointer
@@ -55,39 +55,39 @@ push 0
 store
 
 loop
- ; Exit loop if bitPointer
- ; is greater than 7
- push bitPointer
- push 7
- greaterThan
- branchIfTrue 1
+; Exit loop if bitPointer
+; is greater than 7
+push bitPointer
+push 7
+greaterThan
+branchIfTrue 1
  
- ; Calculate output address
- push &out1
- push bitPointer
- push WORD_SIZE
- mul
- add
+; Calculate output address
+push &out1
+push bitPointer
+push WORD_SIZE
+mul
+add
 
- push *stepPointer
- push 0b10000000
- push bitPointer
- shiftRight
- and
- if int
-  push HIGH
- else
-  push LOW
+push *stepPointer
+push 0b10000000
+push bitPointer
+shiftRight
+and
+if int
+push HIGH
+else
+push LOW
 ifEnd 
 
- store
+store
 
- ; Increment bitPointer
- push &bitPointer
- push bitPointer
- push 1
- add
- store
+; Increment bitPointer
+push &bitPointer
+push bitPointer
+push 1
+add
+store
 
 loopEnd
 

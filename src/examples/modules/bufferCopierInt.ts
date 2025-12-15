@@ -21,44 +21,44 @@ push 0
 store
 
 loop
- ; Guard
- push pointer
- push length
- greaterOrEqual
- branchIfTrue 1 
+; Guard
+push pointer
+push length
+greaterOrEqual
+branchIfTrue 1 
  
- ; Calculate destination
- ; address
- push &buffer
- push pointer
- push WORD_SIZE
- mul
- add
+; Calculate destination
+; address
+push &buffer
+push pointer
+push WORD_SIZE
+mul
+add
 
- ; Calculate source
- ; address
- push bufferIn
- push pointer
- push WORD_SIZE
- mul
- add
+; Calculate source
+; address
+push bufferIn
+push pointer
+push WORD_SIZE
+mul
+add
  
- load ; value from src
+load ; value from src
  
- ; =-=-=-=-=-=-=-=-=-=-=
- ; You can add code here
- ; that manipulates
- ; the values
- ; =-=-=-=-=-=-=-=-=-=-=
+; =-=-=-=-=-=-=-=-=-=-=
+; You can add code here
+; that manipulates
+; the values
+; =-=-=-=-=-=-=-=-=-=-=
 
- store ; value to dst
+store ; value to dst
  
- ; Increment buffer pointer
- push &pointer
- push pointer
- push 1
- add
- store
+; Increment buffer pointer
+push &pointer
+push pointer
+push 1
+add
+store
 loopEnd
 
 moduleEnd`,
