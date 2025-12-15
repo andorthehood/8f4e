@@ -34,9 +34,9 @@ push pointer
 push buffer&
 greaterThan
 if void
- push &pointer
- push &buffer
- store
+push &pointer
+push &buffer
+store
 ifEnd
 
 moduleEnd`,
