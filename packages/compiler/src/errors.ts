@@ -25,6 +25,8 @@ export enum ErrorCode {
 	TYPE_MISMATCH,
 	MEMORY_ACCESS_IN_PURE_FUNCTION,
 	UNDEFINED_FUNCTION,
+	PARAM_AFTER_FUNCTION_BODY,
+	DUPLICATE_PARAMETER_NAME,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -195,6 +197,23 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'Undefined function. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.PARAM_AFTER_FUNCTION_BODY:
+			return {
+				code,
+				message:
+					'Parameter declarations must come immediately after the function declaration, before any other instructions or local variable declarations. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.DUPLICATE_PARAMETER_NAME:
+			return {
+				code,
+				message: 'Duplicate parameter name. Each parameter must have a unique name. (' + code + ')',
 				line,
 				context,
 			};
