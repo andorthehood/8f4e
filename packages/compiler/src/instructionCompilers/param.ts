@@ -25,7 +25,7 @@ const param: InstructionCompiler = function (line, context) {
 	const localCount = Object.keys(context.namespace.locals).length;
 
 	if (localCount > paramCount || context.loopSegmentByteCode.length > 0) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+		throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
 	}
 
 	if (!line.arguments[0] || !line.arguments[1]) {
@@ -43,6 +43,11 @@ const param: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.INVALID_FUNCTION_SIGNATURE, line, context);
 	}
 
+	// Check for duplicate parameter names
+	if (context.namespace.locals[paramName] !== undefined) {
+		throw getError(ErrorCode.DUPLICATE_PARAMETER_NAME, line, context);
+	}
+
 	// Register parameter as a local variable with the given name
 	// Parameters get local indices starting from 0
 	const paramIndex = Object.keys(context.namespace.locals).length;
@@ -53,13 +58,9 @@ const param: InstructionCompiler = function (line, context) {
 	};
 
 	// Add parameter type to the function signature being built
-	if (!context.currentFunctionSignature) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
+	context.currentFunctionSignature!.parameters.push(paramType);
 
-	context.currentFunctionSignature.parameters.push(paramType);
-
-	if (context.currentFunctionSignature.parameters.length > 8) {
+	if (context.currentFunctionSignature!.parameters.length > 8) {
 		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
 	}
 
