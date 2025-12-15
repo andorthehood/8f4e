@@ -123,6 +123,7 @@ export type {
 	LogMessage,
 	ConsoleState,
 	CodeError,
+	MemoryAction,
 } from './types';
 
 // Export EMPTY_DEFAULT_PROJECT as a value

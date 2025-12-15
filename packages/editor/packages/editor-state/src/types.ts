@@ -8,6 +8,10 @@ import type {
 	Module,
 	CompiledFunctionLookup,
 } from '@8f4e/compiler';
+import type { CompileAndUpdateMemoryResult, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
+
+// Re-export MemoryAction for use by consumers
+export type { CompilerMemoryAction as MemoryAction };
 
 // Feature Flags types
 export interface FeatureFlags {
@@ -503,16 +507,9 @@ export interface ProjectInfo {
 	description: string;
 }
 
-export interface CompilationResult {
-	compiledModules: CompiledModuleLookup;
-	codeBuffer: Uint8Array;
-	allocatedMemorySize: number;
+export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'memoryRef'> {
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
-	hasMemoryBeenInitialized: boolean;
-	hasMemoryBeenReset: boolean;
-	hasWasmInstanceBeenReset: boolean;
-	compiledFunctions?: CompiledFunctionLookup;
 }
 
 // Callbacks interface contains all callback functions
