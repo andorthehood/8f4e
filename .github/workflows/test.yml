@@ -37,5 +37,5 @@ jobs:
         run: npx nx run-many --target=typecheck --all
 
       - name: Run tests
-        run: npx nx run-many --target=test --all --exclude=@8f4e/web-ui --exclude=app
+        run: npx nx run-many --target=test --all --exclude=@8f4e/web-ui
         timeout-minutes: 10
