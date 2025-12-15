@@ -58,6 +58,7 @@ import round from './round';
 import ensureNonZero from './ensureNonZero';
 import _function from './function';
 import functionEnd from './functionEnd';
+import param from './param';
 import initBlock from './initBlock';
 import initBlockEnd from './initBlockEnd';
 import call from './call';
@@ -140,6 +141,7 @@ const instructions = {
 	ensureNonZero,
 	function: _function,
 	functionEnd,
+	param,
 	initBlock,
 	initBlockEnd,
 	call,
