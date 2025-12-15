@@ -24,8 +24,6 @@ export async function compileProject(
 						allocatedMemorySize: data.payload.allocatedMemorySize,
 						memoryBuffer: new Int32Array(data.payload.wasmMemory.buffer),
 						memoryBufferFloat: new Float32Array(data.payload.wasmMemory.buffer),
-						hasMemoryBeenInitialized: data.payload.hasMemoryBeenInitialized,
-						hasMemoryBeenReset: data.payload.hasMemoryBeenReset,
 						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
 						memoryAction: data.payload.memoryAction,
 						compiledFunctions: data.payload.compiledFunctions,

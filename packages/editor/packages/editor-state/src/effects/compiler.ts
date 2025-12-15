@@ -79,11 +79,8 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			console.log('memoryAction', result.memoryAction);
 
-			if (result.hasMemoryBeenReset) {
+			if (result.memoryAction.action === 'recreated') {
 				log(state, 'WASM Memory instance was (re)created', 'Compiler');
-			}
-
-			if (result.hasMemoryBeenInitialized) {
 				log(state, 'Memory was (re)initialized', 'Compiler');
 				events.dispatch('loadBinaryFilesIntoMemory');
 			}
