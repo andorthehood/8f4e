@@ -40,39 +40,39 @@ push 0
 store
 
 loop
- ; Exit loop if bitPointer
- ; is greater than 7
- push bitPointer
- push 7
- greaterThan
- branchIfTrue 1
+; Exit loop if bitPointer
+; is greater than 7
+push bitPointer
+push 7
+greaterThan
+branchIfTrue 1
  
- ; Load switch state
- push &bit0
- push bitPointer
- push WORD_SIZE
- mul
- add
- load
+; Load switch state
+push &bit0
+push bitPointer
+push WORD_SIZE
+mul
+add
+load
 
- push 1
- greaterOrEqual
- if void
-  push &out 
-  push out
-  push 0b00000001
-  push bitPointer
-  shiftLeft
-  or
-  store
- ifEnd
+push 1
+greaterOrEqual
+if void
+push &out 
+push out
+push 0b00000001
+push bitPointer
+shiftLeft
+or
+store
+ifEnd
  
- ; Increment bitPointer
- push &bitPointer
- push bitPointer
- push 1
- add
- store
+; Increment bitPointer
+push &bitPointer
+push bitPointer
+push 1
+add
+store
  
 loopEnd
 

@@ -32,47 +32,47 @@ equal
 branchIfTrue 0
 
 loop
- ; Guard
- push _pointer
- push length
- greaterOrEqual
- branchIfTrue 1 
+; Guard
+push _pointer
+push length
+greaterOrEqual
+branchIfTrue 1 
  
- ; Calculate destination
- ; address
- push &buffer
- push _pointer
- push WORD_SIZE
- mul
- add
+; Calculate destination
+; address
+push &buffer
+push _pointer
+push WORD_SIZE
+mul
+add
 
- ; Calculate source
- ; address
- push bufferIn
- push _pointer
- push *lengthIn
- remainder
- push WORD_SIZE
- mul
- add
+; Calculate source
+; address
+push bufferIn
+push _pointer
+push *lengthIn
+remainder
+push WORD_SIZE
+mul
+add
  
- load ; value from src
+load ; value from src
  
- push _pointer
- push *lengthIn
- div
- push OFFSET
- mul
- add
+push _pointer
+push *lengthIn
+div
+push OFFSET
+mul
+add
 
- store ; value to dst
+store ; value to dst
  
- ; Increment buffer pointer
- push &_pointer
- push _pointer
- push 1
- add
- store
+; Increment buffer pointer
+push &_pointer
+push _pointer
+push 1
+add
+store
 loopEnd
 
 moduleEnd`,
