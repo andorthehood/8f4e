@@ -1,4 +1,4 @@
-import { ArgumentType, BLOCK_TYPE } from '../types';
+import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { isInstructionInsideFunction } from '../utils';
 
@@ -9,11 +9,15 @@ const param: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
-	// Validate param comes immediately after function (no other function body instructions yet)
-	// We check if there's any bytecode generated for the function body yet
-	// The function instruction itself doesn't add body bytecode, so if there's any, it's from other instructions
-	const currentBlock = context.blockStack[context.blockStack.length - 1];
-	if (currentBlock?.blockType === BLOCK_TYPE.FUNCTION && context.loopSegmentByteCode.length > 0) {
+	// Validate param comes immediately after function (before any non-param locals or bytecode)
+	// Check if any non-parameter locals have been declared
+	// Parameters must be at indices 0, 1, 2, etc. in order
+	const paramCount = context.currentFunctionSignature?.parameters.length || 0;
+	const localCount = Object.keys(context.namespace.locals).length;
+
+	// If there are more locals than parameters, it means a non-param local was declared
+	// or if there's any bytecode, params must come first
+	if (localCount > paramCount || context.loopSegmentByteCode.length > 0) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 	}
 
