@@ -173,6 +173,8 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
 			id: getFunctionId(code) || getModuleId(code) || '',
 			gaps: new Map(),
+			gridX: Math.round((state.graphicHelper.viewport.x + x) / state.graphicHelper.viewport.vGrid),
+			gridY: Math.round((state.graphicHelper.viewport.y + y) / state.graphicHelper.viewport.hGrid),
 			x: state.graphicHelper.viewport.x + x,
 			y: state.graphicHelper.viewport.y + y,
 			lineNumberColumnWidth: 2,

@@ -28,8 +28,8 @@ exports[`serializeToProject > serializes basic project state without compiled da
         "10 example",
       ],
       "gridCoordinates": {
-        "x": 2,
-        "y": 3,
+        "x": 3,
+        "y": 2,
       },
     },
   ],
