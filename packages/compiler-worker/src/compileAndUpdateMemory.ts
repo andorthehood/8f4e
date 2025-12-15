@@ -1,8 +1,9 @@
-import compile, { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup, Module } from '@8f4e/compiler';
+import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
 
-import { didProgramOrMemoryStructureChange } from './didProgramOrMemoryStructureChange';
 import { getMemoryValueChanges } from './getMemoryValueChanges';
 import { getOrCreateMemory } from './getOrCreateMemory';
+
+import type { CompileAndUpdateMemoryResult, GetOrCreateWasmInstanceResult } from './types';
 
 let previousCompiledModules: CompiledModuleLookup | undefined;
 
@@ -11,9 +12,9 @@ let wasmInstanceRef: WebAssembly.Instance | null = null;
 async function getOrCreateWasmInstanceRef(
 	codeBuffer: Uint8Array,
 	memoryRef: WebAssembly.Memory,
-	hasMemoryBeenReset: boolean
-): Promise<{ wasmInstanceRef: WebAssembly.Instance; hasWasmInstanceBeenReset: boolean }> {
-	if (wasmInstanceRef && !hasMemoryBeenReset) {
+	memoryWasRecreated: boolean
+): Promise<GetOrCreateWasmInstanceResult> {
+	if (wasmInstanceRef && !memoryWasRecreated) {
 		return { wasmInstanceRef: wasmInstanceRef, hasWasmInstanceBeenReset: false };
 	}
 
@@ -33,38 +34,37 @@ export default async function compileAndUpdateMemory(
 	modules: Module[],
 	compilerOptions: CompileOptions,
 	functions?: Module[]
-): Promise<{
-	codeBuffer: Uint8Array;
-	compiledModules: CompiledModuleLookup;
-	compiledFunctions?: CompiledFunctionLookup;
-	allocatedMemorySize: number;
-	memoryRef: WebAssembly.Memory;
-	hasMemoryBeenInitialized: boolean;
-	hasMemoryBeenReset: boolean;
-	hasWasmInstanceBeenReset: boolean;
-}> {
+): Promise<CompileAndUpdateMemoryResult> {
 	const { codeBuffer, compiledModules, allocatedMemorySize, compiledFunctions } = compile(
 		modules,
 		compilerOptions,
 		functions
 	);
-	const memoryStructureChange = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
-	const { memoryRef, hasMemoryBeenReset } = getOrCreateMemory(compilerOptions.memorySizeBytes, memoryStructureChange);
+	const { memoryRef, memoryAction } = getOrCreateMemory(
+		compilerOptions.memorySizeBytes,
+		compiledModules,
+		previousCompiledModules
+	);
+
+	const memoryWasRecreated = memoryAction.action === 'recreated';
 	const { wasmInstanceRef, hasWasmInstanceBeenReset } = await getOrCreateWasmInstanceRef(
 		codeBuffer,
 		memoryRef,
 		// TODO: add code change detection to this as well, until then we force reset
-		hasMemoryBeenReset || true
+		memoryWasRecreated || true
 	);
 	const init = wasmInstanceRef.exports.init as CallableFunction;
 
-	let hasMemoryBeenInitialized = false;
+	// Memory needs initialization when:
+	// - First compilation (!previousCompiledModules)
+	// - Memory structure changed
+	// - Memory was recreated
+	const needsInitialization = !previousCompiledModules || memoryWasRecreated;
 
-	if (!previousCompiledModules || memoryStructureChange || hasMemoryBeenReset) {
+	if (needsInitialization) {
 		init();
-		hasMemoryBeenInitialized = true;
 	} else {
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
@@ -99,8 +99,7 @@ export default async function compileAndUpdateMemory(
 		compiledFunctions,
 		allocatedMemorySize,
 		memoryRef,
-		hasMemoryBeenInitialized,
-		hasMemoryBeenReset,
 		hasWasmInstanceBeenReset,
+		memoryAction,
 	};
 }

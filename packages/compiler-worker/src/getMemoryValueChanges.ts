@@ -1,17 +1,13 @@
 import { compareObject } from './compareObject';
 
 import type { CompiledModuleLookup } from '@8f4e/compiler';
+import type { MemoryValueChange } from './types';
 
 export function getMemoryValueChanges(
 	compiledModules: CompiledModuleLookup,
 	previous: CompiledModuleLookup | undefined
-) {
-	const changes: {
-		wordAlignedSize: number;
-		wordAlignedAddress: number;
-		value: number | Record<string, number>;
-		isInteger: boolean;
-	}[] = [];
+): MemoryValueChange[] {
+	const changes: MemoryValueChange[] = [];
 
 	if (!previous) {
 		return [];

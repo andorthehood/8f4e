@@ -1,5 +1,6 @@
 // Import the types from the editor
 import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
+import { StateManager } from '@8f4e/state-manager';
 
 import { getMemory } from './compiler-callback';
 
@@ -7,7 +8,8 @@ import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime
 
 // Main Thread Logic Runtime Factory
-export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
+export function mainThreadLogicRuntime(store: StateManager<State>, events: EventDispatcher) {
+	const state = store.getState();
 	let runtime: ReturnType<typeof createMainThreadLogicRuntime> | undefined;
 
 	function onInitialized() {
@@ -51,10 +53,10 @@ export function mainThreadLogicRuntime(state: State, events: EventDispatcher) {
 	runtime = createMainThreadLogicRuntime(onInitialized, onStats, onError);
 	syncCodeAndSettingsWithRuntime();
 
-	events.on('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+	store.subscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
 
 	return () => {
-		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
 		if (runtime) {
 			runtime.stop();
 			runtime = undefined;
