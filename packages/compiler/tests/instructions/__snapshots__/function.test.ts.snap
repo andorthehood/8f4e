@@ -501,6 +501,7 @@ exports[`function with parameter > if the generated AST, WAT and memory map matc
     call 1
     call 1)
   (func (;3;) (type 3) (param i32) (result i32)
+    (local i32)
     local.get 0
     i32.const 2
     i32.mul)
@@ -834,6 +835,7 @@ exports[`function with two parameters > if the generated AST, WAT and memory map
     call 1
     call 1)
   (func (;3;) (type 3) (param i32 i32) (result i32)
+    (local i32 i32)
     local.get 0
     local.get 1
     i32.add)
