@@ -123,12 +123,12 @@ stateManager.set('user.settings.preferences.display', {
 ### Unsubscribing
 
 ```typescript
-const subscription = stateManager.subscribe('user.name', (name) => {
+const onNameChanged = (name: string) => {
   console.log('Name changed:', name);
-});
+};
 
-// Later, unsubscribe
-stateManager.unsubscribe(subscription);
+// Later, unsubscribe by selector + callback
+stateManager.unsubscribe('user.name', onNameChanged);
 ```
 
 ### Getting State

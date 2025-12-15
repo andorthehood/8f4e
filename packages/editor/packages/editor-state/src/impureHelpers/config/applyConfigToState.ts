@@ -23,18 +23,14 @@ export interface ConfigObject {
 export function applyConfigToState(store: StateManager<State>, config: ConfigObject): void {
 	const state = store.getState();
 
-	if (typeof config.title === 'string') {
-		state.projectInfo.title = config.title;
-	}
-	if (typeof config.author === 'string') {
-		state.projectInfo.author = config.author;
-	}
-	if (typeof config.description === 'string') {
-		state.projectInfo.description = config.description;
-	}
+	store.set('projectInfo', {
+		title: config.title || '',
+		author: config.author || '',
+		description: config.description || '',
+	});
 
 	if (typeof config.memorySizeBytes === 'number') {
-		state.compiler.compilerOptions.memorySizeBytes = config.memorySizeBytes;
+		store.set('compiler.compilerOptions.memorySizeBytes', config.memorySizeBytes);
 	}
 
 	if (Array.isArray(config.runtimeSettings)) {
