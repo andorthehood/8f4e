@@ -11,7 +11,6 @@ describe('getOrCreateMemory', () => {
 				action: 'recreated',
 				reason: { kind: 'no-instance' },
 			});
-			expect(result.hasMemoryBeenReset).toBe(true);
 			expect(result.memoryRef).toBeInstanceOf(WebAssembly.Memory);
 		});
 
@@ -30,7 +29,6 @@ describe('getOrCreateMemory', () => {
 					nextBytes: 131072,
 				},
 			});
-			expect(result.hasMemoryBeenReset).toBe(true);
 		});
 
 		it('should report "memory-structure-changed" reason when structure changes', () => {
@@ -44,7 +42,6 @@ describe('getOrCreateMemory', () => {
 				action: 'recreated',
 				reason: { kind: 'memory-structure-changed' },
 			});
-			expect(result.hasMemoryBeenReset).toBe(true);
 		});
 
 		it('should report "reused" action when memory is reused', () => {
@@ -57,7 +54,6 @@ describe('getOrCreateMemory', () => {
 			expect(result.memoryAction).toEqual({
 				action: 'reused',
 			});
-			expect(result.hasMemoryBeenReset).toBe(false);
 		});
 
 		it('should prioritize memory-size-changed over memory-structure-changed when both occur', () => {
@@ -75,7 +71,6 @@ describe('getOrCreateMemory', () => {
 					nextBytes: 131072,
 				},
 			});
-			expect(result.hasMemoryBeenReset).toBe(true);
 		});
 	});
 
