@@ -248,14 +248,86 @@ If proceeding with Option 1 (recommended):
 
 ## Alternative Considerations
 
+### Option 1a: Explicit Parameter Declaration with `param` Instruction
+
+An alternative syntax that builds on Option 1 would introduce explicit `param` instructions for declaring named parameters:
+
+**Syntax**:
+```
+function add
+param int x
+param int y
+localGet x
+localGet y
+add
+functionEnd int
+```
+
+**Design**:
+- Function declaration line contains only the function name (no type signature)
+- Each parameter is declared with a `param <type> <name>` instruction
+- The order of `param` instructions defines the function's type signature
+- Parameters are accessed using `localGet <name>` or a new `paramGet <name>` instruction
+- No backwards compatibility needed since language not yet released
+
+**Advantages**:
+- **Consistency**: Mirrors the existing `local int x` syntax pattern
+- **Readability**: Named parameters (`x`, `y`) are clearer than `param0`, `param1`
+- **Separation of concerns**: Parameter declaration is separate from function definition
+- **Extensibility**: Easier to add features like optional parameters, default values, or parameter attributes in the future
+- **Self-documenting**: Parameter names serve as inline documentation
+
+**Disadvantages**:
+- **Verbosity**: Requires additional lines for each parameter
+- **Indirection**: Type signature not immediately visible on function declaration line
+- **Parser complexity**: Need to collect `param` instructions before compiling function body
+- **Ordering validation**: Need to ensure `param` instructions come before other function body instructions
+
+**Implementation considerations**:
+- The `function` instruction parser would only expect a function name
+- A new `param` instruction compiler would register parameters in order
+- Function signature would be built from the sequence of `param` declarations
+- Could use either `localGet <name>` (reusing existing instruction) or introduce `paramGet <name>`
+- Need validation to ensure `param` instructions come immediately after `function` and before any other instructions
+
+**Example comparison**:
+
+Original (with auto-loading):
+```
+function add int int
+add
+functionEnd int
+```
+
+Option 1 (explicit with positional names):
+```
+function add int int
+localGet param0
+localGet param1
+add
+functionEnd int
+```
+
+Option 1a (explicit with named params):
+```
+function add
+param int x
+param int y
+localGet x
+localGet y
+add
+functionEnd int
+```
+
+This alternative provides the benefits of Option 1 (explicit control) while improving code readability through named parameters.
+
 ### Should we auto-generate parameter names?
 
-Currently, parameters are named `param0`, `param1`, etc. We could consider:
-- Allowing named parameters: `function add(x int, y int)`
+If not implementing Option 1a with explicit `param` instructions, parameters could still be named `param0`, `param1`, etc. Alternative naming schemes to consider:
 - Auto-generating better names: `param_int_0`, `param_float_1`
 - Using position-based names: `p0`, `p1`
 
-This is orthogonal to the auto-loading issue and could be addressed separately.
+This is orthogonal to the auto-loading issue and could be addressed separately if Option 1a is not chosen.
 
 ### Should we support parameter ordering flexibility?
 
