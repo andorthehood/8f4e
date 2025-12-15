@@ -273,3 +273,16 @@ This provides flexibility but might be confusing. Documentation would need to be
 ## Conclusion
 
 The current automatic parameter loading is unconventional and limits flexibility. Removing it (Option 1) aligns with WebAssembly standards and provides users with explicit control over parameter access. While this is a breaking change, it improves the long-term quality and maintainability of the compiler. A clear migration path and updated documentation will help users transition smoothly.
+
+## Decision
+
+**Option 1 (Remove Auto-Loading) has been selected for implementation.**
+
+Rationale:
+- The programming language has not been released to the public yet, so backwards compatibility is not a concern
+- This approach aligns with WebAssembly conventions and best practices
+- It provides users with explicit control over parameter access order and timing
+- It removes "magic" behavior that could confuse users and make debugging difficult
+- The implementation is cleaner and more maintainable long-term
+
+Implementation tracking: See `docs/todos/122-remove-function-parameter-auto-loading.md`
