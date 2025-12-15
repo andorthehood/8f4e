@@ -290,7 +290,7 @@ describe('Param Instruction', () => {
 		expect(result.compiledFunctions!.noParams.signature.parameters).toEqual([]);
 	});
 
-	test('should allow param after local in functions with no params initially', () => {
+	test('should reject param after local (param must come before local)', () => {
 		// This test ensures param can only come immediately after function, not after local
 		const functions: Module[] = [
 			{
@@ -305,6 +305,22 @@ describe('Param Instruction', () => {
 		];
 
 		// This should fail because param must come before local
+		expect(() => compile(modules, defaultOptions, functions)).toThrow();
+	});
+
+	test('should reject duplicate parameter names', () => {
+		const functions: Module[] = [
+			{
+				code: ['function invalid', 'param int x', 'param int x', 'functionEnd'],
+			},
+		];
+
+		const modules: Module[] = [
+			{
+				code: ['module test', 'moduleEnd'],
+			},
+		];
+
 		expect(() => compile(modules, defaultOptions, functions)).toThrow();
 	});
 });
