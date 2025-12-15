@@ -27,6 +27,8 @@ export async function compileProject(
 						hasMemoryBeenInitialized: data.payload.hasMemoryBeenInitialized,
 						hasMemoryBeenReset: data.payload.hasMemoryBeenReset,
 						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
+						memoryAction: data.payload.memoryAction,
+						compiledFunctions: data.payload.compiledFunctions,
 					});
 					break;
 				case 'compilationError': {
