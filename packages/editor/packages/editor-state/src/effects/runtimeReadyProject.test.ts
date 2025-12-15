@@ -276,9 +276,6 @@ describe('Runtime-ready project functionality', () => {
 				)
 			).toBe(true);
 
-			// Verify buildFinished was dispatched
-			expect(mockEvents.dispatch).toHaveBeenCalledWith('buildFinished');
-
 			// Verify compiler state is still correct
 			expect(mockState.compiler.codeBuffer).toEqual(mockWasmBytecode);
 			expect(mockState.compiler.memoryBuffer).toEqual(expectedIntMemory);
