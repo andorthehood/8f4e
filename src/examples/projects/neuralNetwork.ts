@@ -53,10 +53,12 @@ const project: Project = {
 		},
 		{
 			code: [
-				'function sigmoid float',
+				'function sigmoid',
+				'param float x',
 				'; Polynomial sigmoid',
 				'; func. approximation',
 				'',
+				'localGet x',
 				'dup',
 				'abs',
 				'push 1.0',

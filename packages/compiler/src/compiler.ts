@@ -193,8 +193,11 @@ export function compileFunction(
 	}
 
 	// Collect locals (excluding parameters)
+	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
+	// Regular locals declared with the 'local' instruction come after parameters
+	const parameterCount = context.currentFunctionSignature.parameters.length;
 	const localDeclarations = Object.entries(context.namespace.locals)
-		.filter(([name]) => !name.startsWith('param'))
+		.filter(([, local]) => local.index >= parameterCount)
 		.map(([, local]) => ({
 			isInteger: local.isInteger,
 			count: 1,
