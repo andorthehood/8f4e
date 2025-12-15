@@ -1,3 +1,5 @@
+import { StateManager } from '@8f4e/state-manager';
+
 import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from 'glugglug';
 import type {
@@ -8,6 +10,10 @@ import type {
 	Module,
 	CompiledFunctionLookup,
 } from '@8f4e/compiler';
+import type { CompileAndUpdateMemoryResult, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
+
+// Re-export MemoryAction for use by consumers
+export type { CompilerMemoryAction as MemoryAction };
 
 // Feature Flags types
 export interface FeatureFlags {
@@ -80,7 +86,7 @@ export interface InternalKeyboardEvent {
 }
 
 // Type for runtime factory function
-export type RuntimeFactory = (state: State, events: EventDispatcher) => () => void;
+export type RuntimeFactory = (store: StateManager<State>, events: EventDispatcher) => () => void;
 
 /**
  * Grid coordinates represent logical cell positions in the editor grid.
@@ -503,16 +509,9 @@ export interface ProjectInfo {
 	description: string;
 }
 
-export interface CompilationResult {
-	compiledModules: CompiledModuleLookup;
-	codeBuffer: Uint8Array;
-	allocatedMemorySize: number;
+export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'memoryRef'> {
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
-	hasMemoryBeenInitialized: boolean;
-	hasMemoryBeenReset: boolean;
-	hasWasmInstanceBeenReset: boolean;
-	compiledFunctions?: CompiledFunctionLookup;
 }
 
 // Callbacks interface contains all callback functions
