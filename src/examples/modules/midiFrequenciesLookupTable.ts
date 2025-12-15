@@ -12,9 +12,10 @@ const midiFrequenciesLookupTable: ExampleModule = {
 	category: 'Lookup Tables',
 	code: `module midiLUT
 
+float[] notes 128
 ${midiFrequencies
 	.map((value, note) => {
-		return `float note${note} ${value.toFixed(4)}`;
+		return `init notes[${note}] ${value.toFixed(4)}`;
 	})
 	.join('\n')}
 
