@@ -63,8 +63,6 @@ export default async function init(
 		if (state.featureFlags.consoleOverlay) {
 			drawConsoleOverlay(engine, state);
 		}
-		drawCodeBlocks(engine, state);
-		drawConnections(engine, state);
 		if (state.featureFlags.infoOverlay) {
 			drawInfoOverlay(engine, state, {
 				timeToRender,
@@ -73,6 +71,8 @@ export default async function init(
 				maxVertices,
 			});
 		}
+		drawCodeBlocks(engine, state);
+		drawConnections(engine, state);
 		drawDialog(engine, state);
 		drawContextMenu(engine, state);
 

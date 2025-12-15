@@ -124,7 +124,7 @@ export default function drawInfoOverlay(
 			state.graphicHelper.viewport.hGrid
 		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontLineNumber);
 		engine.drawText(state.graphicHelper.viewport.vGrid, i * state.graphicHelper.viewport.hGrid, debugText[i]);
 	}
 

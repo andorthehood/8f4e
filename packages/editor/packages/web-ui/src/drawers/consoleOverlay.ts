@@ -63,7 +63,7 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 			hGrid
 		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontLineNumber);
 		engine.drawText((panelWidthChars - messageWithTimestamp.length) * vGrid, i * hGrid, messageWithTimestamp);
 	}
 
