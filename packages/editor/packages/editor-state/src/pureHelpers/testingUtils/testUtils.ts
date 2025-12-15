@@ -65,6 +65,14 @@ export function createMockCodeBlock(
 	const offsetY = overrides.offsetY ?? 0;
 	const id = overrides.id ?? 'test-block';
 
+	// Default grid size for testing (matches common font sizes)
+	const defaultVGrid = 8;
+	const defaultHGrid = 16;
+
+	// If gridX/gridY are provided, use them. Otherwise compute from x/y
+	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
+	const gridY = overrides.gridY ?? Math.round(y / defaultHGrid);
+
 	const minGridWidth = overrides.minGridWidth ?? width;
 
 	const cursorX = x + offsetX + width / 2;
@@ -79,6 +87,8 @@ export function createMockCodeBlock(
 	const defaults: CodeBlockGraphicData = {
 		x,
 		y,
+		gridX,
+		gridY,
 		width,
 		height,
 		offsetX,
