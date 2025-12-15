@@ -14,13 +14,13 @@ int out
 push *trigger
 risingEdge
 if void
- push &out
-  push out
-  push 1
-  shiftLeft
-  push *in
-  or
- store
+push &out
+push out
+push 1
+shiftLeft
+push *in
+or
+store
 ifEnd
 
 moduleEnd`,
