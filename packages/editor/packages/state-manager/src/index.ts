@@ -7,7 +7,7 @@ export interface StateManager<State> {
 		selector: P,
 		callback: (value: PathValue<State, P>) => void
 	) => Subscription<State, P>;
-	unsubscribe: <P extends Path<State>>(subscription: Subscription<State, P>) => void;
+	unsubscribe: <P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void) => void;
 }
 
 function createStateManager<State>(state: State): StateManager<State> {
@@ -69,8 +69,12 @@ function createStateManager<State>(state: State): StateManager<State> {
 			subscriptions.add(subscription as unknown as Subscription<State>);
 			return subscription;
 		},
-		unsubscribe<P extends Path<State>>(subscription: Subscription<State, P>) {
-			subscriptions.delete(subscription as unknown as Subscription<State>);
+		unsubscribe<P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void) {
+			for (const subscription of subscriptions) {
+				if (subscription.selector === selector && subscription.callback === callback) {
+					subscriptions.delete(subscription);
+				}
+			}
 		},
 	};
 }

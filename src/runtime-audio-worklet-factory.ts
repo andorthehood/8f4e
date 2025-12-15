@@ -1,5 +1,6 @@
 // Import the types from the editor
 import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
+import { StateManager } from '@8f4e/state-manager';
 
 import { getMemory } from './compiler-callback';
 
@@ -33,7 +34,8 @@ function resolveAudioBufferMemory(memoryId: string): { moduleId: string; memoryN
 }
 
 // AudioWorklet Runtime Factory
-export function audioWorkletRuntime(state: State, events: EventDispatcher) {
+export function audioWorkletRuntime(store: StateManager<State>, events: EventDispatcher) {
+	const state = store.getState();
 	let audioContext: AudioContext | null = null;
 	let audioWorklet: AudioWorkletNode | null = null;
 	let mediaStream: MediaStream | null = null;
@@ -140,11 +142,11 @@ export function audioWorkletRuntime(state: State, events: EventDispatcher) {
 		syncCodeAndSettingsWithRuntime();
 	}
 
-	events.on('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+	store.subscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
 	events.on('mousedown', initAudioContext);
 
 	return () => {
-		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
 		events.off('mousedown', initAudioContext);
 
 		if (mediaStreamSource) {
