@@ -1,5 +1,6 @@
 // Import the types from the editor
 import WebWorkerMIDIRuntime from '@8f4e/runtime-web-worker-midi?worker';
+import { StateManager } from '@8f4e/state-manager';
 
 import { getMemory } from './compiler-callback';
 
@@ -7,7 +8,8 @@ import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
 
 // WebWorker MIDI Runtime Factory
-export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
+export function webWorkerMIDIRuntime(store: StateManager<State>, events: EventDispatcher) {
+	const state = store.getState();
 	let selectedInput: MIDIInput | null = null;
 	let worker: Worker | undefined;
 
@@ -82,10 +84,10 @@ export function webWorkerMIDIRuntime(state: State, events: EventDispatcher) {
 	syncCodeAndSettingsWithRuntime();
 
 	navigator.requestMIDIAccess().then(onMidiAccess);
-	events.on('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+	store.subscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
 
 	return () => {
-		events.off('syncCodeAndSettingsWithRuntime', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
 
 		if (selectedInput) {
 			selectedInput.removeEventListener('midimessage', onMidiMessage);
