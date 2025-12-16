@@ -29,10 +29,6 @@ export function applyConfigToState(store: StateManager<State>, config: ConfigObj
 		description: config.description || '',
 	});
 
-	if (typeof config.memorySizeBytes === 'number') {
-		store.set('compiler.compilerOptions.memorySizeBytes', config.memorySizeBytes);
-	}
-
 	if (Array.isArray(config.runtimeSettings)) {
 		const validRuntimeTypes = [
 			'WebWorkerLogicRuntime',
@@ -60,5 +56,9 @@ export function applyConfigToState(store: StateManager<State>, config: ConfigObj
 						: 0,
 			});
 		}
+	}
+
+	if (typeof config.memorySizeBytes === 'number') {
+		store.set('compiler.compilerOptions.memorySizeBytes', config.memorySizeBytes);
 	}
 }
