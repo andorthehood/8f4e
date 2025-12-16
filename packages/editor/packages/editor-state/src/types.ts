@@ -487,6 +487,7 @@ export const EMPTY_DEFAULT_PROJECT: Project = {
 
 export interface ExampleModule {
 	title: string;
+	description?: string;
 	author: string;
 	code: string;
 	tests: unknown[];
@@ -496,6 +497,7 @@ export interface ExampleModule {
 export interface ModuleMetadata {
 	slug: string;
 	title: string;
+	description?: string;
 	category: string;
 }
 
