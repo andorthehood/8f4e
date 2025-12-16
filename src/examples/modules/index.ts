@@ -138,6 +138,8 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'switchGatesFloat', title: 'Switchable Gates (8x Float)', category: 'Controllers' },
 	{ slug: 'switchGatesInt', title: 'Switchable Gates (8x Int)', category: 'Controllers' },
 	{ slug: 'triangleSignedFloat', title: 'Triangle (Signed, Float)', category: 'Oscillators' },
+	{ slug: 'sine', title: 'Sine [-PI, PI] (Polynomial Approximation)', category: 'Functions' },
+	{ slug: 'sigmoid', title: 'Sigmoid (Polynomial Approximation)', category: 'Functions' },
 ];
 
 // For backwards compatibility, export a default object that matches the old API
