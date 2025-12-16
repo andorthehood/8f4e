@@ -14,7 +14,7 @@ dup
 abs
 push 1.0
 add
-ensureNonZero'
+ensureNonZero
 div
 
 functionEnd float`,
