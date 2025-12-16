@@ -127,6 +127,12 @@ export const moduleMetadata: ModuleMetadata[] = [
 		category: 'Machine Learning',
 	},
 	{ slug: 'sineLookupTable', title: 'Sine Lookup Table', category: 'Lookup Tables' },
+	{
+		slug: 'phaseAccumulator',
+		title: 'Phase Accumulator (Periodic, Float)',
+		description: 'Phase accumulator that can drive any periodic function (defaults to sine).',
+		category: 'Oscillators',
+	},
 	{ slug: 'squareSignedFloat', title: 'Square (Signed, Float)', category: 'Oscillators' },
 	{ slug: 'strumFloat', title: 'Strum (Float)', category: 'Sequencers' },
 	{ slug: 'switchGatesFloat', title: 'Switchable Gates (8x Float)', category: 'Controllers' },
