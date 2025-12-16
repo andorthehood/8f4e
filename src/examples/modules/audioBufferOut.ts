@@ -8,7 +8,7 @@ const audioBufferOut: ExampleModule = {
 
 float* in
 
-float[] buffer 128
+float[] buffer AUDIO_BUFFER_SIZE
 int pointer &buffer
 
 plot buffer -2 2
