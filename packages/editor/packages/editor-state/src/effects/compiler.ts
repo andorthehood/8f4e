@@ -104,7 +104,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 	events.on('deleteCodeBlock', onRecompile);
 	store.subscribe('compiler.compilerOptions', onRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
-		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'module') {
+		if (state.graphicHelper.selectedCodeBlock?.blockType === 'config') {
 			return;
 		}
 		onRecompile();
