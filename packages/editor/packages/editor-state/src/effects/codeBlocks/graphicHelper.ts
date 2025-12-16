@@ -113,6 +113,7 @@ const instructionsToHighlight = [
 	'initBlockEnd',
 	'concat',
 	'call',
+	'param',
 ];
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
