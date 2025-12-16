@@ -12,9 +12,9 @@ const sine: ExampleModule = {
 ; [-PI, PI]
 param float x
 
-const PI      3.1415926535
-const HALF_PI 1.5707963267
-const TWO_PI  6.2831853071
+const PI      3.141592653589793
+const HALF_PI 1.570796326794896
+const TWO_PI  6.283185307179586
 
 ; Fold to [-pi/2, pi/2]
 localGet x
