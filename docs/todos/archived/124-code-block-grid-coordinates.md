@@ -3,8 +3,8 @@ title: 'TODO: Persist Code Block Grid Coordinates'
 priority: Medium
 effort: 2-4h
 created: 2025-12-15
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-15
 ---
 
 # TODO: Persist Code Block Grid Coordinates
