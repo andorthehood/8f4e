@@ -177,28 +177,6 @@ export const moduleCategoriesMenu: MenuGenerator = async (state, payload = {}) =
 	return menuItems;
 };
 
-export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
-	// This menu is now deprecated in favor of the unified moduleCategoriesMenu
-	// but kept for backwards compatibility
-	const { category } = payload as { category: string };
-	if (!state.callbacks.getListOfModules || !state.callbacks.getModule) {
-		return [];
-	}
-	const modules = await state.callbacks.getListOfModules();
-	const filteredModules = modules.filter(module => module.category === category);
-
-	const menuItems: ContextMenuItem[] = [];
-	for (const moduleMetadata of filteredModules) {
-		menuItems.push({
-			title: moduleMetadata.title,
-			action: 'addCodeBlockBySlug',
-			payload: { codeBlockSlug: moduleMetadata.slug },
-			close: true,
-		});
-	}
-	return menuItems;
-};
-
 export const sampleRateMenu: MenuGenerator = () => [
 	{
 		title: '44100 Hz (buffered, for audio and MIDI CC)',
@@ -299,24 +277,5 @@ export const projectCategoriesMenu: MenuGenerator = async (state, payload = {}) 
 		});
 	}
 
-	return menuItems;
-};
-
-export const projectMenu: MenuGenerator = async state => {
-	// This menu is now deprecated in favor of the unified projectCategoriesMenu
-	// but kept for backwards compatibility
-	if (!state.callbacks.getListOfProjects || !state.callbacks.getProject) {
-		return [];
-	}
-	const projects = await state.callbacks.getListOfProjects();
-	const menuItems: ContextMenuItem[] = [];
-	for (const projectMetadata of projects) {
-		menuItems.push({
-			title: projectMetadata.title,
-			action: 'loadProjectBySlug',
-			payload: { projectSlug: projectMetadata.slug },
-			close: true,
-		});
-	}
 	return menuItems;
 };
