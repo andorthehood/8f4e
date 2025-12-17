@@ -124,7 +124,7 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{
 		slug: 'sigmoidPolynomialApproximation',
 		title: 'Sigmoid Function (Polynomial Approximation)',
-		category: 'Machine Learning',
+		category: 'Machine Learning/Functions',
 	},
 	{ slug: 'sineLookupTable', title: 'Sine Lookup Table', category: 'Lookup Tables' },
 	{
@@ -138,8 +138,8 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'switchGatesFloat', title: 'Switchable Gates (8x Float)', category: 'Controllers' },
 	{ slug: 'switchGatesInt', title: 'Switchable Gates (8x Int)', category: 'Controllers' },
 	{ slug: 'triangleSignedFloat', title: 'Triangle (Signed, Float)', category: 'Oscillators' },
-	{ slug: 'sine', title: 'Sine [-PI, PI] (Polynomial Approximation)', category: 'Functions' },
-	{ slug: 'sigmoid', title: 'Sigmoid (Polynomial Approximation)', category: 'Functions' },
+	{ slug: 'sine', title: 'Sine [-PI, PI] (Polynomial Approximation)', category: 'Functions/Trigonometric' },
+	{ slug: 'sigmoid', title: 'Sigmoid (Polynomial Approximation)', category: 'Functions/Activation' },
 ];
 
 // For backwards compatibility, export a default object that matches the old API
