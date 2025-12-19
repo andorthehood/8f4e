@@ -3,8 +3,8 @@ title: 'TODO: Add Non-Zero Guardrails for `remainder`'
 priority: Medium
 effort: 1-2h
 created: 2025-12-19
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-19
 ---
 
 # TODO: Add Non-Zero Guardrails for `remainder`
