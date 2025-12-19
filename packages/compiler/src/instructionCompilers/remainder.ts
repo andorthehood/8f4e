@@ -16,6 +16,10 @@ const remainder: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
+	if (!operand1.isNonZero) {
+		throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
+	}
+
 	if (areAllOperandsIntegers(operand1, operand2)) {
 		context.stack.push({ isInteger: true, isNonZero: false });
 		return saveByteCode(context, [WASMInstruction.I32_REM_S]);
