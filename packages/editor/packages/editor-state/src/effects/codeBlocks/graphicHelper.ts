@@ -93,6 +93,7 @@ const instructionsToHighlight = [
 	'clearStack',
 	'risingEdge',
 	'fallingEdge',
+	'hasChanged',
 	'dup',
 	'swap',
 	'cycle',
