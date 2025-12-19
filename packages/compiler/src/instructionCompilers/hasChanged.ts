@@ -15,11 +15,11 @@ const hasChanged: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
-	context.stack.push({ isInteger: true, isNonZero: false });
-
 	const currentValueName = '__hasChangedDetector_currentValue' + line.lineNumber;
 	const previousValueName = '__hasChangedDetector_previousValue' + line.lineNumber;
 	const memoryType = operand.isInteger ? 'int' : 'float';
+
+	context.stack.push({ isInteger: operand.isInteger, isNonZero: false });
 
 	return compileSegment(
 		[
