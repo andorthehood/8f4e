@@ -42,7 +42,7 @@ export function buildCategoryTree(items: CategoryItem[]): CategoryTreeNode {
 		category: item.category || 'Uncategorized',
 	}));
 
-	// Build tree structure
+	// Build tree structure, sorting as we go
 	for (const item of categorizedItems) {
 		const segments = item.category.split('/').filter(s => s.trim());
 		let currentNode = root;
@@ -62,35 +62,27 @@ export function buildCategoryTree(items: CategoryItem[]): CategoryTreeNode {
 					children: [],
 					items: [],
 				};
-				currentNode.children.push(childNode);
+				// Insert child in sorted position
+				const insertIndex = currentNode.children.findIndex(c => c.label.localeCompare(segment) > 0);
+				if (insertIndex === -1) {
+					currentNode.children.push(childNode);
+				} else {
+					currentNode.children.splice(insertIndex, 0, childNode);
+				}
 			}
 			currentNode = childNode;
 		}
 
-		// Add item to the leaf node
-		currentNode.items.push(item);
+		// Insert item in sorted position
+		const insertIndex = currentNode.items.findIndex(i => i.title.localeCompare(item.title) > 0);
+		if (insertIndex === -1) {
+			currentNode.items.push(item);
+		} else {
+			currentNode.items.splice(insertIndex, 0, item);
+		}
 	}
-
-	// Sort all levels alphabetically
-	sortTreeNode(root);
 
 	return root;
-}
-
-/**
- * Recursively sorts a tree node's children and items alphabetically.
- */
-function sortTreeNode(node: CategoryTreeNode): void {
-	// Sort child nodes by label
-	node.children.sort((a, b) => a.label.localeCompare(b.label));
-
-	// Sort items by title
-	node.items.sort((a, b) => a.title.localeCompare(b.title));
-
-	// Recursively sort children
-	for (const child of node.children) {
-		sortTreeNode(child);
-	}
 }
 
 /**
