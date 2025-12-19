@@ -423,6 +423,7 @@ const project: Project = {
 				'',
 				'push counter',
 				'push *divider',
+				'ensureNonZero',
 				'remainder',
 				'push 0',
 				'equal',
