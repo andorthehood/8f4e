@@ -125,7 +125,7 @@ describe('withValidation', () => {
 			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.MISSING_ARGUMENT}`);
 		});
 
-		it('should restore stack when operand count check fails', () => {
+		it('should not mutate stack when operand count check fails', () => {
 			context.stack.push({ isInteger: true });
 			const compiler = withValidation({ minOperands: 2 }, mockCompiler);
 			try {
@@ -134,6 +134,27 @@ describe('withValidation', () => {
 				// Expected to throw
 			}
 			expect(context.stack).toHaveLength(1);
+		});
+
+		it('should not mutate stack when type validation fails', () => {
+			context.stack.push({ isInteger: true });
+			context.stack.push({ isInteger: false });
+			const compiler = withValidation(
+				{
+					minOperands: 2,
+					operandTypes: 'int',
+					onInvalidTypes: ErrorCode.ONLY_INTEGERS,
+				},
+				mockCompiler
+			);
+			try {
+				compiler(ast, context);
+			} catch {
+				// Expected to throw
+			}
+			expect(context.stack).toHaveLength(2);
+			expect(context.stack[0].isInteger).toBe(true);
+			expect(context.stack[1].isInteger).toBe(false);
 		});
 	});
 
