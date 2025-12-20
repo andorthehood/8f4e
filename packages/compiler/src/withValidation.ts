@@ -11,7 +11,7 @@ import {
 
 import type { BlockStack, CompilationContext, InstructionCompiler, StackItem } from './types';
 
-export type OperandRule = 'int' | 'float' | 'any' | 'matching';
+export type OperandRule = 'int' | 'float' | 'matching';
 export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'init' | 'block';
 
 export interface ValidationSpec {
@@ -75,10 +75,6 @@ function inferErrorCodeFromRule(rule: OperandRule | OperandRule[]): ErrorCode {
 		return ErrorCode.ONLY_FLOATS;
 	} else if (rule === 'matching') {
 		return ErrorCode.UNMATCHING_OPERANDS;
-	} else if (rule === 'any') {
-		// 'any' means no type validation, so this should never be called
-		// but we handle it defensively
-		return ErrorCode.TYPE_MISMATCH;
 	}
 	// This should never be reached
 	throw new Error(`Unexpected operand rule: ${rule}`);
@@ -139,7 +135,7 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 				throw getError(spec.onInsufficientOperands ?? ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 			}
 
-			if (spec.operandTypes && spec.operandTypes !== 'any') {
+			if (spec.operandTypes) {
 				validateOperandTypes(operands, spec.operandTypes, line, context);
 			}
 		}
