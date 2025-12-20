@@ -28,9 +28,9 @@ export default {
 		highlightedCodeLine: '#660000',
 		plotterBackground: '#220000',
 		plotterTrace: '#ffffff',
-		codeBlockHighlightLevel1: '#660000',
+		codeBlockHighlightLevel1: '#330000',
 		codeBlockHighlightLevel2: '#440000',
-		codeBlockHighlightLevel3: '#220000',
+		codeBlockHighlightLevel3: '#550000',
 	},
 	icons: {
 		outputConnectorBackground: '#220000',
