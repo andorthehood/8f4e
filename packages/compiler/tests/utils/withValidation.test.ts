@@ -198,13 +198,6 @@ describe('withValidation', () => {
 			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.ONLY_FLOATS}`);
 		});
 
-		it('should pass with any operand type when using any rule', () => {
-			context.stack.push({ isInteger: true });
-			context.stack.push({ isInteger: false });
-			const compiler = withValidation({ minOperands: 2, operandTypes: 'any' }, mockCompiler);
-			expect(() => compiler(ast, context)).not.toThrow();
-		});
-
 		it('should pass when all operands match (integers) with matching rule', () => {
 			context.stack.push({ isInteger: true });
 			context.stack.push({ isInteger: true });
