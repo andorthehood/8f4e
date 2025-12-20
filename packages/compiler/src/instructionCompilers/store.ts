@@ -11,7 +11,7 @@ const store: InstructionCompiler = withValidation(
 		scope: 'module',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 2,
-		operandTypes: ['int', 'matching'],
+		operandTypes: ['int'],
 		onInsufficientOperands: ErrorCode.INSUFFICIENT_OPERANDS,
 	},
 	(line, context) => {
