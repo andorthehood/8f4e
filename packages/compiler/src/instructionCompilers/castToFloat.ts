@@ -1,27 +1,23 @@
-import { ErrorCode, getError } from '../errors';
-import { areAllOperandsFloats, isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
+import { saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
-const castToFloat: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+const castToFloat: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+		minOperands: 1,
+		operandTypes: 'int',
+	},
+	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 1 operand exists
+		const operand = context.stack.pop()!;
+
+		context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
+
+		return saveByteCode(context, [WASMInstruction.F32_CONVERT_I32_S]);
 	}
-
-	const operand = context.stack.pop();
-
-	if (!operand) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	if (areAllOperandsFloats(operand)) {
-		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
-	}
-
-	context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
-
-	return saveByteCode(context, [WASMInstruction.F32_CONVERT_I32_S]);
-};
+);
 
 export default castToFloat;
