@@ -66,13 +66,7 @@ function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
 	return operands;
 }
 
-function isValidatableOperandType(
-	type: OperandRule | OperandRule[]
-): type is Exclude<OperandRule, 'any'> | OperandRule[] {
-	return type !== 'any';
-}
-
-function inferErrorCodeFromRule(rule: Exclude<OperandRule, 'any'> | OperandRule[]): ErrorCode {
+function inferErrorCodeFromRule(rule: OperandRule | OperandRule[]): ErrorCode {
 	if (Array.isArray(rule)) {
 		return ErrorCode.TYPE_MISMATCH;
 	} else if (rule === 'int') {
@@ -81,14 +75,18 @@ function inferErrorCodeFromRule(rule: Exclude<OperandRule, 'any'> | OperandRule[
 		return ErrorCode.ONLY_FLOATS;
 	} else if (rule === 'matching') {
 		return ErrorCode.UNMATCHING_OPERANDS;
+	} else if (rule === 'any') {
+		// 'any' means no type validation, so this should never be called
+		// but we handle it defensively
+		return ErrorCode.TYPE_MISMATCH;
 	}
-	// This should never be reached due to type system and caller checks
+	// This should never be reached
 	throw new Error(`Unexpected operand rule: ${rule}`);
 }
 
 function validateOperandTypes(
 	operands: StackItem[],
-	rule: Exclude<OperandRule, 'any'> | OperandRule[],
+	rule: OperandRule | OperandRule[],
 	line: Parameters<InstructionCompiler>[0],
 	context: CompilationContext
 ): void {
@@ -141,7 +139,7 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 				throw getError(spec.onInsufficientOperands ?? ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 			}
 
-			if (spec.operandTypes && isValidatableOperandType(spec.operandTypes)) {
+			if (spec.operandTypes && spec.operandTypes !== 'any') {
 				validateOperandTypes(operands, spec.operandTypes, line, context);
 			}
 		}
