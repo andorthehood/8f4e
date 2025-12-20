@@ -19,7 +19,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 122 | Add Function Code Blocks to Editor | 🟡 | 3-4d | 2025-12-09 | Editor still only surfaces module/config blocks; introduce function blocks in UI/state and send them to the compiler |
 | 123 | Add Memory Reinit Reason Reporting | 🟡 | 2-4h | 2025-12-14 | Add `MemoryReinitReason` to `compileAndUpdateMemory` results without changing existing memory reinit/recreate decision logic |
 | 124 | Persist Code Block Grid Coordinates | 🟡 | 2-4h | 2025-12-15 | Add `gridX/gridY` to `CodeBlockGraphicData` and recompute cached `x/y` on drag and font grid changes |
-| 127 | Update Deprecated npm Dependencies | 🟡 | 2-4h | 2025-12-17 | Upgrade deprecated tooling deps (ESLint/rimraf/glob) and update configs to eliminate `npm install` warnings |
 | 128 | Add Non-Zero Guardrails for `remainder` | 🟡 | 1-2h | 2025-12-19 | Mirror `div`’s compile-time `isNonZero` guard so `remainder` can’t trap on a zero divisor |
 | 130 | Add Instruction Compiler Validation Helper | 🟡 | 1-2d | 2025-12-20 | Introduce shared `withValidation` wrapper to centralize scope/operand checks while preserving existing error codes |
 | 144 | Infer Validation Errors from Operand Rules | 🟡 | 4-6h | 2025-12-20 | Remove explicit type error overrides in `withValidation` and infer errors from operand rules |
@@ -65,6 +64,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 127 | Update Deprecated npm Dependencies | 🟡 | 2-4h | 2025-12-20 | Upgraded ESLint from v8.57.0 to v9.39.2, added @eslint/js@9.39.2 and globals@16.5.0, updated typescript-eslint packages to 8.50.0, removed .eslintignore file; eliminated deprecation warnings for eslint, rimraf, and @humanwhocodes packages |
 | 097 | Enforce Nx-Only Package Entrypoints | 🟡 | 0.5-1d | 2025-11-21 | Removed all package-level scripts from 11 packages; added missing Nx targets for screenshot test variants and dev:test; updated README.md with comprehensive Nx command examples; all workflows now use Nx targets exclusively |
 | 095 | Split Loader/Save Effects into Dedicated Modules | 🟡 | 1-2d | 2025-11-17 | Replaced monolithic loader.ts and save.ts with three focused modules: projectImport.ts (session persistence, project loading), projectExport.ts (JSON/runtime-ready exports, storage quota), and editorSettings.ts (color scheme/font settings); added 48 comprehensive tests |
 | 093 | Add Typecheck GitHub Action | 🟡 | 2-3h | 2025-11-09 | Added CI workflow step that runs `npm run typecheck` (Nx run-many) on push/PR to main and staging to block type regressions |
