@@ -66,6 +66,12 @@ function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
 	return operands;
 }
 
+function isValidatableOperandType(
+	type: OperandRule | OperandRule[]
+): type is Exclude<OperandRule, 'any'> | OperandRule[] {
+	return type !== 'any';
+}
+
 function inferErrorCodeFromRule(rule: Exclude<OperandRule, 'any'> | OperandRule[]): ErrorCode {
 	if (Array.isArray(rule)) {
 		return ErrorCode.TYPE_MISMATCH;
@@ -135,8 +141,8 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 				throw getError(spec.onInsufficientOperands ?? ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 			}
 
-			if (spec.operandTypes && spec.operandTypes !== 'any') {
-				validateOperandTypes(operands, spec.operandTypes as Exclude<OperandRule, 'any'> | OperandRule[], line, context);
+			if (spec.operandTypes && isValidatableOperandType(spec.operandTypes)) {
+				validateOperandTypes(operands, spec.operandTypes, line, context);
 			}
 		}
 
