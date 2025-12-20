@@ -3,8 +3,8 @@ title: 'TODO: Infer Validation Errors from Operand Rules'
 priority: Medium
 effort: 4-6h
 created: 2025-12-20
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-20
 ---
 
 # TODO: Infer Validation Errors from Operand Rules
