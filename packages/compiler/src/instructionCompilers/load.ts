@@ -1,5 +1,6 @@
 import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import { i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
 
@@ -13,18 +14,17 @@ const instructionToByteCodeMap: Record<string, number[]> = {
 	load16u: i32load16u(),
 };
 
-const load: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
+const load: InstructionCompiler = withValidation(
+	{
+		scope: 'module',
+		minOperands: 1,
+		operandTypes: 'int',
+		onInvalidTypes: ErrorCode.ONLY_INTEGERS,
+	},
+	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 1 integer operand exists
+		const operand = context.stack.pop()!;
 
-	const operand = context.stack.pop();
-
-	if (!operand) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	if (areAllOperandsIntegers(operand)) {
 		if (operand.isSafeMemoryAddress) {
 			context.stack.push({ isInteger: true, isNonZero: false });
 			const instructions = instructionToByteCodeMap[line.instruction];
@@ -39,7 +39,6 @@ const load: InstructionCompiler = function (line, context) {
 			if (!instructions) {
 				throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 			}
-			// Memory overflow protection.
 			return compileSegment(
 				[
 					`local int ${tempVariableName}`,
@@ -59,9 +58,7 @@ const load: InstructionCompiler = function (line, context) {
 				context
 			);
 		}
-	} else {
-		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
-};
+);
 
 export default load;
