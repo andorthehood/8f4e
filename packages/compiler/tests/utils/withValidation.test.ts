@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import { withValidation } from '../../src/utils';
+import { withValidation } from '../../src/withValidation';
 import { ErrorCode } from '../../src/errors';
 import { BLOCK_TYPE } from '../../src/types';
 
