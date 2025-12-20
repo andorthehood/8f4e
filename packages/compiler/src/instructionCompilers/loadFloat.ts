@@ -1,29 +1,25 @@
-import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers, isInstructionIsInsideAModule, saveByteCode } from '../utils';
+import { saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import { f32load } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
-const loadFloat: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
+const loadFloat: InstructionCompiler = withValidation(
+	{
+		scope: 'module',
+		minOperands: 1,
+		operandTypes: 'int',
+	},
+	(line, context) => {
+		const operand = context.stack.pop()!;
 
-	const operand = context.stack.pop();
-
-	if (!operand) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	if (areAllOperandsIntegers(operand)) {
 		if (operand.isSafeMemoryAddress) {
 			context.stack.push({ isInteger: false, isNonZero: false });
 			return saveByteCode(context, f32load());
 		} else {
 			context.stack.push(operand);
 			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;
-			// Memory overflow protection.
 			const ret = compileSegment(
 				[
 					`local int ${tempVariableName}`,
@@ -46,9 +42,7 @@ const loadFloat: InstructionCompiler = function (line, context) {
 			context.stack.push({ isInteger: false, isNonZero: false });
 			return ret;
 		}
-	} else {
-		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
-};
+);
 
 export default loadFloat;
