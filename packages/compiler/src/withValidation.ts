@@ -55,6 +55,18 @@ function validateScope(
 	}
 }
 
+function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
+	if (stack.length < count) {
+		return [];
+	}
+	const operands: StackItem[] = [];
+	const startIndex = stack.length - count;
+	for (let i = 0; i < count; i++) {
+		operands.push(stack[startIndex + i]);
+	}
+	return operands;
+}
+
 function validateOperandTypes(
 	operands: StackItem[],
 	rule: OperandRule[] | OperandRule,
@@ -101,31 +113,23 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 		}
 
 		const operandsNeeded = spec.minOperands ?? 0;
-		const operands: StackItem[] = [];
 
-		for (let i = 0; i < operandsNeeded; i++) {
-			const operand = context.stack.pop();
-			if (!operand) {
-				for (let j = operands.length - 1; j >= 0; j--) {
-					context.stack.push(operands[j]);
-				}
+		if (operandsNeeded > 0) {
+			const operands = peekStackOperands(context.stack, operandsNeeded);
+
+			if (operands.length < operandsNeeded) {
 				throw getError(spec.onInsufficientOperands ?? ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 			}
-			operands.unshift(operand);
-		}
 
-		if (spec.operandTypes && operands.length > 0) {
-			validateOperandTypes(
-				operands,
-				spec.operandTypes,
-				line,
-				context,
-				spec.onInvalidTypes ?? ErrorCode.UNMATCHING_OPERANDS
-			);
-		}
-
-		for (let i = 0; i < operands.length; i++) {
-			context.stack.push(operands[i]);
+			if (spec.operandTypes) {
+				validateOperandTypes(
+					operands,
+					spec.operandTypes,
+					line,
+					context,
+					spec.onInvalidTypes ?? ErrorCode.UNMATCHING_OPERANDS
+				);
+			}
 		}
 
 		return compiler(line, context);
