@@ -13,7 +13,7 @@ const _if: InstructionCompiler = withValidation(
 		operandTypes: 'int',
 	},
 	(line, context) => {
-		// Non-null assertion is safe: withValidation ensures 1 operand exists
+		// Non-null assertion is safe: withValidation confirmed 1 operand exists before this function was called
 		context.stack.pop()!;
 
 		if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'void') {
