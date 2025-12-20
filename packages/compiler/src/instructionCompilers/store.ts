@@ -26,6 +26,7 @@ const store: InstructionCompiler = withValidation(
 
 			const tempAddressVariableName = '__storeAddress_temp_' + line.lineNumber;
 			const tempValueVariableName = '__storeValue_temp_' + line.lineNumber;
+			// Memory overflow protection.
 			const ret = compileSegment(
 				[
 					`local int ${tempAddressVariableName}`,
