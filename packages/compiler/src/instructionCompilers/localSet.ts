@@ -19,13 +19,12 @@ const _localSet: InstructionCompiler = withValidation(
 		}
 
 		if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
+			const operand = context.stack.pop()!;
 			const local = context.namespace.locals[line.arguments[0].value];
 
 			if (!local) {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 			}
-
-			const operand = context.stack.pop()!;
 
 			if (local.isInteger && !operand.isInteger) {
 				throw getError(ErrorCode.ONLY_INTEGERS, line, context);
