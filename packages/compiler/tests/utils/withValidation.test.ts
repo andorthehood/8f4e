@@ -143,7 +143,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: 'int',
-					onInvalidTypes: ErrorCode.ONLY_INTEGERS,
 				},
 				mockCompiler
 			);
@@ -173,7 +172,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: 'int',
-					onInvalidTypes: ErrorCode.ONLY_INTEGERS,
 				},
 				mockCompiler
 			);
@@ -194,7 +192,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: 'float',
-					onInvalidTypes: ErrorCode.ONLY_FLOATS,
 				},
 				mockCompiler
 			);
@@ -229,7 +226,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: 'matching',
-					onInvalidTypes: ErrorCode.UNMATCHING_OPERANDS,
 				},
 				mockCompiler
 			);
@@ -258,7 +254,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: ['int', 'float'],
-					onInvalidTypes: ErrorCode.TYPE_MISMATCH,
 				},
 				mockCompiler
 			);
@@ -272,7 +267,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: ['int', 'float'],
-					onInvalidTypes: ErrorCode.TYPE_MISMATCH,
 				},
 				mockCompiler
 			);

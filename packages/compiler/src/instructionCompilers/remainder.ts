@@ -10,7 +10,6 @@ const remainder: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		minOperands: 2,
 		operandTypes: 'int',
-		onInvalidTypes: ErrorCode.ONLY_INTEGERS,
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation ensures 2 operands exist
