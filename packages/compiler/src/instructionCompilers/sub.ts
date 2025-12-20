@@ -1,4 +1,3 @@
-import { ErrorCode } from '../errors';
 import { areAllOperandsIntegers, saveByteCode } from '../utils';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
@@ -10,7 +9,6 @@ const sub: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		minOperands: 2,
 		operandTypes: 'matching',
-		onInvalidTypes: ErrorCode.UNMATCHING_OPERANDS,
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation ensures 2 operands exist

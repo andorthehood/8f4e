@@ -1,4 +1,3 @@
-import { ErrorCode } from '../errors';
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
 
@@ -9,7 +8,6 @@ const pow2: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		minOperands: 1,
 		operandTypes: 'int',
-		onInvalidTypes: ErrorCode.EXPECTED_INTEGER_OPERAND,
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation ensures 1 operand exists

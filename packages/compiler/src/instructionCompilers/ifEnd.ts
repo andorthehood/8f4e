@@ -24,11 +24,11 @@ const ifEnd: InstructionCompiler = function (line, context) {
 		}
 
 		if (block.expectedResultIsInteger && !operand.isInteger) {
-			throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
+			throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 		}
 
 		if (!block.expectedResultIsInteger && operand.isInteger) {
-			throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
+			throw getError(ErrorCode.ONLY_FLOATS, line, context);
 		}
 
 		context.stack.push(operand);
