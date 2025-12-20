@@ -3,8 +3,8 @@ title: 'TODO: Migrate Control Flow Instructions (Batch 2) to withValidation'
 priority: Medium
 effort: 2-3h
 created: 2025-12-20
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-20
 ---
 
 # TODO: Migrate Control Flow Instructions (Batch 2) to withValidation
