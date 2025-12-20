@@ -8,11 +8,9 @@ export enum ErrorCode {
 	MISSING_ARGUMENT,
 	UNDECLARED_IDENTIFIER,
 	EXPECTED_IDENTIFIER,
-	EXPECTED_INTEGER_OPERAND,
 	UNRECOGNISED_INSTRUCTION,
 	EXPECTED_VALUE,
 	MISSING_MODULE_ID,
-	EXPECTED_FLOAT_OPERAND,
 	UNKNOWN_ERROR,
 	STACK_EXPECTED_ZERO_ELEMENTS,
 	MISSING_BLOCK_START_INSTRUCTION,
@@ -87,13 +85,6 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 				line,
 				context,
 			};
-		case ErrorCode.EXPECTED_INTEGER_OPERAND:
-			return {
-				code,
-				message: 'Expected one of the operands to be an integer value. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.UNRECOGNISED_INSTRUCTION:
 			return {
 				code,
@@ -112,13 +103,6 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'Missing module ID. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.EXPECTED_FLOAT_OPERAND:
-			return {
-				code,
-				message: 'Expected one of the operands to be a floating point value. (' + code + ')',
 				line,
 				context,
 			};
