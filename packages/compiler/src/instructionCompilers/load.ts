@@ -21,6 +21,7 @@ const load: InstructionCompiler = withValidation(
 		onInvalidTypes: ErrorCode.ONLY_INTEGERS,
 	},
 	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 1 integer operand exists
 		const operand = context.stack.pop()!;
 
 		if (operand.isSafeMemoryAddress) {
