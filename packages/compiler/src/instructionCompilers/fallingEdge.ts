@@ -9,7 +9,7 @@ const fallingEdge: InstructionCompiler = withValidation(
 		minOperands: 1,
 	},
 	(line, context) => {
-		// Non-null assertion is safe: withValidation ensures 1 operand exists
+		// Non-null assertion is safe: withValidation with minOperands: 1 guarantees at least 1 operand exists on the stack
 		context.stack.pop()!;
 
 		context.stack.push({ isInteger: true, isNonZero: false });
