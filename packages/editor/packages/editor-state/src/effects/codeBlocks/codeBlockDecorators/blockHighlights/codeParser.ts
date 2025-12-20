@@ -1,8 +1,8 @@
 import instructionParser from '../instructionParser';
 
-const startInstructions = ['if', 'loop'];
+const startInstructions = ['if', 'loop', 'block'];
 
-const endInstructions = ['ifEnd', 'loopEnd'];
+const endInstructions = ['ifEnd', 'loopEnd', 'blockEnd'];
 
 interface CodeBlock {
 	startInstruction: string;
