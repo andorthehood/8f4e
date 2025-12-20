@@ -17,3 +17,22 @@ const clearStack: InstructionCompiler = withValidation(
 );
 
 export default clearStack;
+
+
+
+if (import.meta.vitest) {
+	const { moduleTester } = await import('./testUtils');
+
+moduleTester(
+	'clearStack',
+	`module clearStack
+
+push 1
+push 1
+clearStack
+
+moduleEnd
+`,
+	[]
+);
+}

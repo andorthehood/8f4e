@@ -17,3 +17,21 @@ const drop: InstructionCompiler = withValidation(
 );
 
 export default drop;
+
+
+
+if (import.meta.vitest) {
+	const { moduleTester } = await import('./testUtils');
+
+moduleTester(
+	'drop',
+	`module drop
+
+push 1
+drop
+
+moduleEnd
+`,
+	[]
+);
+}

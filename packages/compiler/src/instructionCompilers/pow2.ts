@@ -20,3 +20,27 @@ const pow2: InstructionCompiler = withValidation(
 );
 
 export default pow2;
+
+
+
+if (import.meta.vitest) {
+	const { moduleTester } = await import('./testUtils');
+
+moduleTester(
+	'pow2',
+	`module pow2
+
+int input
+int output
+
+push &output
+push input
+pow2
+store
+
+moduleEnd
+`,
+	[[{ input: 2 }, { output: 4 }]],
+	[[{ input: 4 }, { output: 16 }]]
+);
+}
