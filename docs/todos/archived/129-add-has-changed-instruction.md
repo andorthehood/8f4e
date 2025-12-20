@@ -3,8 +3,8 @@ title: 'TODO: Add hasChanged Instruction'
 priority: Medium
 effort: 1-2 days
 created: 2025-12-19
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-19
 ---
 
 # TODO: Add hasChanged Instruction

@@ -21,6 +21,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 124 | Persist Code Block Grid Coordinates | 🟡 | 2-4h | 2025-12-15 | Add `gridX/gridY` to `CodeBlockGraphicData` and recompute cached `x/y` on drag and font grid changes |
 | 127 | Update Deprecated npm Dependencies | 🟡 | 2-4h | 2025-12-17 | Upgrade deprecated tooling deps (ESLint/rimraf/glob) and update configs to eliminate `npm install` warnings |
 | 128 | Add Non-Zero Guardrails for `remainder` | 🟡 | 1-2h | 2025-12-19 | Mirror `div`’s compile-time `isNonZero` guard so `remainder` can’t trap on a zero divisor |
+| 130 | Add Instruction Compiler Validation Helper | 🟡 | 1-2d | 2025-12-20 | Introduce shared `withValidation` wrapper to centralize scope/operand checks while preserving existing error codes |
 | 002 | Enable Strict TypeScript in Editor Package | 🟡 | 2-3d | 2025-08-23 | Currently has 52 type errors when strict settings enabled, causing missing null checks and implicit any types that reduce type safety and developer experience |
 | 025 | Separate Editor View Layer into Standalone Package | 🟡 | 3-5d | 2025-08-26 | Extract Canvas-based rendering and sprite management into `@8f4e/browser-view` package to make core editor a pure state machine compatible with any renderer |
 | 026 | Separate Editor User Interactions into Standalone Package | 🟡 | 2-3d | 2025-08-26 | Extract DOM event handling and input logic into `@8f4e/browser-input` package to enable alternative input systems (touch, joystick, terminal) |
