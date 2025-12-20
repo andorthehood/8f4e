@@ -66,7 +66,7 @@ function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
 	return operands;
 }
 
-function inferErrorCodeFromRule(rule: OperandRule[] | OperandRule): ErrorCode {
+function inferErrorCodeFromRule(rule: Exclude<OperandRule, 'any'> | OperandRule[]): ErrorCode {
 	if (Array.isArray(rule)) {
 		return ErrorCode.TYPE_MISMATCH;
 	} else if (rule === 'int') {
@@ -76,13 +76,13 @@ function inferErrorCodeFromRule(rule: OperandRule[] | OperandRule): ErrorCode {
 	} else if (rule === 'matching') {
 		return ErrorCode.UNMATCHING_OPERANDS;
 	}
-	// 'any' should not validate, so this should never be reached
-	return ErrorCode.TYPE_MISMATCH;
+	// This should never be reached due to type system and caller checks
+	throw new Error(`Unexpected operand rule: ${rule}`);
 }
 
 function validateOperandTypes(
 	operands: StackItem[],
-	rule: OperandRule[] | OperandRule,
+	rule: Exclude<OperandRule, 'any'> | OperandRule[],
 	line: Parameters<InstructionCompiler>[0],
 	context: CompilationContext
 ): void {
@@ -136,7 +136,7 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 			}
 
 			if (spec.operandTypes && spec.operandTypes !== 'any') {
-				validateOperandTypes(operands, spec.operandTypes, line, context);
+				validateOperandTypes(operands, spec.operandTypes as Exclude<OperandRule, 'any'> | OperandRule[], line, context);
 			}
 		}
 
