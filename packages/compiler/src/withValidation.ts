@@ -11,7 +11,7 @@ import {
 
 import type { BlockStack, CompilationContext, InstructionCompiler, StackItem } from './types';
 
-export type OperandRule = 'int' | 'float' | 'any' | 'matching';
+export type OperandRule = 'int' | 'float' | 'matching';
 export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'init' | 'block';
 
 export interface ValidationSpec {
@@ -20,7 +20,6 @@ export interface ValidationSpec {
 	operandTypes?: OperandRule[] | OperandRule;
 	onInsufficientOperands?: ErrorCode;
 	onInvalidScope?: ErrorCode;
-	onInvalidTypes?: ErrorCode;
 }
 
 function validateScope(
@@ -67,13 +66,28 @@ function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
 	return operands;
 }
 
+function inferErrorCodeFromRule(rule: OperandRule | OperandRule[]): ErrorCode {
+	if (Array.isArray(rule)) {
+		return ErrorCode.TYPE_MISMATCH;
+	} else if (rule === 'int') {
+		return ErrorCode.ONLY_INTEGERS;
+	} else if (rule === 'float') {
+		return ErrorCode.ONLY_FLOATS;
+	} else if (rule === 'matching') {
+		return ErrorCode.UNMATCHING_OPERANDS;
+	}
+	// This should never be reached
+	throw new Error(`Unexpected operand rule: ${rule}`);
+}
+
 function validateOperandTypes(
 	operands: StackItem[],
-	rule: OperandRule[] | OperandRule,
+	rule: OperandRule | OperandRule[],
 	line: Parameters<InstructionCompiler>[0],
-	context: CompilationContext,
-	errorCode: ErrorCode
+	context: CompilationContext
 ): void {
+	const errorCode = inferErrorCodeFromRule(rule);
+
 	if (Array.isArray(rule)) {
 		for (let i = 0; i < rule.length && i < operands.length; i++) {
 			const operand = operands[i];
@@ -122,13 +136,7 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 			}
 
 			if (spec.operandTypes) {
-				validateOperandTypes(
-					operands,
-					spec.operandTypes,
-					line,
-					context,
-					spec.onInvalidTypes ?? ErrorCode.UNMATCHING_OPERANDS
-				);
+				validateOperandTypes(operands, spec.operandTypes, line, context);
 			}
 		}
 

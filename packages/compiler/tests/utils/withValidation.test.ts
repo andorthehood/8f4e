@@ -143,7 +143,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: 'int',
-					onInvalidTypes: ErrorCode.ONLY_INTEGERS,
 				},
 				mockCompiler
 			);
@@ -173,7 +172,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: 'int',
-					onInvalidTypes: ErrorCode.ONLY_INTEGERS,
 				},
 				mockCompiler
 			);
@@ -194,18 +192,10 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: 'float',
-					onInvalidTypes: ErrorCode.ONLY_FLOATS,
 				},
 				mockCompiler
 			);
 			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.ONLY_FLOATS}`);
-		});
-
-		it('should pass with any operand type when using any rule', () => {
-			context.stack.push({ isInteger: true });
-			context.stack.push({ isInteger: false });
-			const compiler = withValidation({ minOperands: 2, operandTypes: 'any' }, mockCompiler);
-			expect(() => compiler(ast, context)).not.toThrow();
 		});
 
 		it('should pass when all operands match (integers) with matching rule', () => {
@@ -229,7 +219,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: 'matching',
-					onInvalidTypes: ErrorCode.UNMATCHING_OPERANDS,
 				},
 				mockCompiler
 			);
@@ -258,7 +247,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: ['int', 'float'],
-					onInvalidTypes: ErrorCode.TYPE_MISMATCH,
 				},
 				mockCompiler
 			);
@@ -272,7 +260,6 @@ describe('withValidation', () => {
 				{
 					minOperands: 2,
 					operandTypes: ['int', 'float'],
-					onInvalidTypes: ErrorCode.TYPE_MISMATCH,
 				},
 				mockCompiler
 			);
