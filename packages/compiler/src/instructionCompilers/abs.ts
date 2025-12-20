@@ -1,5 +1,6 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode, withValidation } from '../utils';
+import { saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
