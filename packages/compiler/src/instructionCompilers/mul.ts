@@ -1,4 +1,3 @@
-import { ErrorCode } from '../errors';
 import { areAllOperandsIntegers, saveByteCode } from '../utils';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
