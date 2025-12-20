@@ -20,7 +20,6 @@ export interface ValidationSpec {
 	operandTypes?: OperandRule[] | OperandRule;
 	onInsufficientOperands?: ErrorCode;
 	onInvalidScope?: ErrorCode;
-	onInvalidTypes?: ErrorCode;
 }
 
 function validateScope(
@@ -67,13 +66,28 @@ function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
 	return operands;
 }
 
+function inferErrorCodeFromRule(rule: OperandRule[] | OperandRule): ErrorCode {
+	if (Array.isArray(rule)) {
+		return ErrorCode.TYPE_MISMATCH;
+	} else if (rule === 'int') {
+		return ErrorCode.ONLY_INTEGERS;
+	} else if (rule === 'float') {
+		return ErrorCode.ONLY_FLOATS;
+	} else if (rule === 'matching') {
+		return ErrorCode.UNMATCHING_OPERANDS;
+	}
+	// 'any' should not validate, so this should never be reached
+	return ErrorCode.TYPE_MISMATCH;
+}
+
 function validateOperandTypes(
 	operands: StackItem[],
 	rule: OperandRule[] | OperandRule,
 	line: Parameters<InstructionCompiler>[0],
-	context: CompilationContext,
-	errorCode: ErrorCode
+	context: CompilationContext
 ): void {
+	const errorCode = inferErrorCodeFromRule(rule);
+
 	if (Array.isArray(rule)) {
 		for (let i = 0; i < rule.length && i < operands.length; i++) {
 			const operand = operands[i];
@@ -121,14 +135,8 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 				throw getError(spec.onInsufficientOperands ?? ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 			}
 
-			if (spec.operandTypes) {
-				validateOperandTypes(
-					operands,
-					spec.operandTypes,
-					line,
-					context,
-					spec.onInvalidTypes ?? ErrorCode.UNMATCHING_OPERANDS
-				);
+			if (spec.operandTypes && spec.operandTypes !== 'any') {
+				validateOperandTypes(operands, spec.operandTypes, line, context);
 			}
 		}
 
