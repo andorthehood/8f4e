@@ -18,7 +18,7 @@ const store: InstructionCompiler = function (line, context) {
 	}
 
 	if (!operand2Address.isInteger) {
-		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
+		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
 	if (operand2Address.isSafeMemoryAddress) {

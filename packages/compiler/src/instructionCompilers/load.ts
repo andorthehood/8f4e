@@ -19,7 +19,6 @@ const load: InstructionCompiler = withValidation(
 		scope: 'module',
 		minOperands: 1,
 		operandTypes: 'int',
-		onInvalidTypes: ErrorCode.ONLY_INTEGERS,
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation ensures 1 integer operand exists

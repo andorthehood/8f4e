@@ -25,7 +25,7 @@ const branchIfTrue: InstructionCompiler = function (line, context) {
 	}
 
 	if (!operand.isInteger) {
-		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
+		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
 	return saveByteCode(context, br_if(line.arguments[0].value));

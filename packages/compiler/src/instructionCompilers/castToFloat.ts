@@ -16,7 +16,7 @@ const castToFloat: InstructionCompiler = function (line, context) {
 	}
 
 	if (areAllOperandsFloats(operand)) {
-		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
+		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
 	context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });

@@ -10,7 +10,6 @@ const div: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		minOperands: 2,
 		operandTypes: 'matching',
-		onInvalidTypes: ErrorCode.UNMATCHING_OPERANDS,
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation ensures 2 operands exist
