@@ -10,6 +10,7 @@ const abs: InstructionCompiler = withValidation(
 		minOperands: 1,
 	},
 	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 1 operand exists
 		const operand = context.stack.pop()!;
 
 		if (operand.isInteger) {

@@ -12,6 +12,7 @@ const add: InstructionCompiler = withValidation(
 		onInvalidTypes: ErrorCode.UNMATCHING_OPERANDS,
 	},
 	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 2 operands exist
 		const operand2 = context.stack.pop()!;
 		const operand1 = context.stack.pop()!;
 
