@@ -1,35 +1,26 @@
-import { ErrorCode, getError } from '../errors';
-import {
-	areAllOperandsFloats,
-	areAllOperandsIntegers,
-	isInstructionInsideModuleOrFunction,
-	saveByteCode,
-} from '../utils';
+import { ErrorCode } from '../errors';
+import { areAllOperandsIntegers, saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
-const sub: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
+const sub: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+		minOperands: 2,
+		operandTypes: 'matching',
+		onInvalidTypes: ErrorCode.UNMATCHING_OPERANDS,
+	},
+	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 2 operands exist
+		const operand2 = context.stack.pop()!;
+		const operand1 = context.stack.pop()!;
 
-	const operand1 = context.stack.pop();
-	const operand2 = context.stack.pop();
-
-	if (!operand1 || !operand2) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
+		const isInteger = areAllOperandsIntegers(operand1, operand2);
+		context.stack.push({ isInteger, isNonZero: false });
+		return saveByteCode(context, [isInteger ? WASMInstruction.I32_SUB : WASMInstruction.F32_SUB]);
 	}
-
-	if (areAllOperandsIntegers(operand1, operand2)) {
-		context.stack.push({ isInteger: true, isNonZero: false });
-		return saveByteCode(context, [WASMInstruction.I32_SUB]);
-	} else if (areAllOperandsFloats(operand1, operand2)) {
-		context.stack.push({ isInteger: false, isNonZero: false });
-		return saveByteCode(context, [WASMInstruction.F32_SUB]);
-	} else {
-		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, context);
-	}
-};
+);
 
 export default sub;
