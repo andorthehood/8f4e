@@ -1,5 +1,6 @@
 import { ErrorCode } from '../errors';
-import { areAllOperandsIntegers, saveByteCode, withValidation } from '../utils';
+import { areAllOperandsIntegers, saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';

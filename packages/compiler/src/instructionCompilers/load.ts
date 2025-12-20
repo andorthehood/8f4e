@@ -1,5 +1,6 @@
 import { ErrorCode, getError } from '../errors';
-import { saveByteCode, withValidation } from '../utils';
+import { saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import { i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
 
