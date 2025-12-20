@@ -1,4 +1,3 @@
-import { ErrorCode } from '../errors';
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
 
