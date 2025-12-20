@@ -1,45 +1,43 @@
-import { ErrorCode, getError } from '../errors';
-import { isInstructionIsInsideAModule } from '../utils';
 import { compileSegment } from '../compiler';
+import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
-const fallingEdge: InstructionCompiler = function (line, context) {
-	if (!isInstructionIsInsideAModule(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+const fallingEdge: InstructionCompiler = withValidation(
+	{
+		scope: 'module',
+		minOperands: 1,
+	},
+	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 1 operand exists
+		context.stack.pop()!;
+
+		context.stack.push({ isInteger: true, isNonZero: false });
+
+		const currentValueName = '__fallingEdgeDetector_currentValue' + line.lineNumber;
+		const previousValueName = '__fallingEdgeDetector_previousValue' + line.lineNumber;
+
+		return compileSegment(
+			[
+				`int ${previousValueName} 0`,
+				`local int ${currentValueName}`,
+				`localSet ${currentValueName}`,
+				`localGet ${currentValueName}`,
+				`push &${previousValueName}`,
+				'load',
+				'lessThan',
+				'if int',
+				'push 1',
+				'else',
+				'push 0',
+				'ifEnd',
+				`push &${previousValueName}`,
+				`localGet ${currentValueName}`,
+				'store',
+			],
+			context
+		);
 	}
-
-	const operand = context.stack.pop();
-
-	if (!operand) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	context.stack.push({ isInteger: true, isNonZero: false });
-
-	const currentValueName = '__fallingEdgeDetector_currentValue' + line.lineNumber;
-	const previousValueName = '__fallingEdgeDetector_previousValue' + line.lineNumber;
-
-	return compileSegment(
-		[
-			`int ${previousValueName} 0`,
-			`local int ${currentValueName}`,
-			`localSet ${currentValueName}`,
-			`localGet ${currentValueName}`,
-			`push &${previousValueName}`,
-			'load',
-			'lessThan',
-			'if int',
-			'push 1',
-			'else',
-			'push 0',
-			'ifEnd',
-			`push &${previousValueName}`,
-			`localGet ${currentValueName}`,
-			'store',
-		],
-		context
-	);
-};
+);
 
 export default fallingEdge;
