@@ -18,7 +18,7 @@ const _if: InstructionCompiler = function (line, context) {
 	}
 
 	if (!operand.isInteger) {
-		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
+		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
 	if (line.arguments[0] && line.arguments[0].type === ArgumentType.IDENTIFIER && line.arguments[0].value === 'void') {
