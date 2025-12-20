@@ -1,35 +1,24 @@
-import { ErrorCode, getError } from '../errors';
-import {
-	areAllOperandsFloats,
-	areAllOperandsIntegers,
-	isInstructionInsideModuleOrFunction,
-	saveByteCode,
-} from '../utils';
+import { ErrorCode } from '../errors';
+import { areAllOperandsIntegers, saveByteCode, withValidation } from '../utils';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
-const add: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
+const add: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+		minOperands: 2,
+		operandTypes: 'matching',
+		onInvalidTypes: ErrorCode.UNMATCHING_OPERANDS,
+	},
+	(line, context) => {
+		const operand2 = context.stack.pop()!;
+		const operand1 = context.stack.pop()!;
 
-	const operand1 = context.stack.pop();
-	const operand2 = context.stack.pop();
-
-	if (!operand1 || !operand2) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
+		const isInteger = areAllOperandsIntegers(operand1, operand2);
+		context.stack.push({ isInteger, isNonZero: false });
+		return saveByteCode(context, [isInteger ? WASMInstruction.I32_ADD : WASMInstruction.F32_ADD]);
 	}
-
-	if (areAllOperandsIntegers(operand1, operand2)) {
-		context.stack.push({ isInteger: true, isNonZero: false });
-		return saveByteCode(context, [WASMInstruction.I32_ADD]);
-	} else if (areAllOperandsFloats(operand1, operand2)) {
-		context.stack.push({ isInteger: false, isNonZero: false });
-		return saveByteCode(context, [WASMInstruction.F32_ADD]);
-	} else {
-		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, context);
-	}
-};
+);
 
 export default add;
