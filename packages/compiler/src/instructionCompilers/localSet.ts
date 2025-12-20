@@ -28,11 +28,11 @@ const _localSet: InstructionCompiler = function (line, context) {
 		}
 
 		if (local.isInteger && !operand.isInteger) {
-			throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
+			throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 		}
 
 		if (!local.isInteger && operand.isInteger) {
-			throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
+			throw getError(ErrorCode.ONLY_FLOATS, line, context);
 		}
 
 		return saveByteCode(context, localSet(local.index));

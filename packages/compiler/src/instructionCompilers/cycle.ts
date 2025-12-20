@@ -18,7 +18,7 @@ const cycle: InstructionCompiler = function (line, context) {
 	}
 
 	if (!operandEndPosition.isInteger || !operandStartPosition.isInteger || !operandPointer.isInteger) {
-		throw getError(ErrorCode.EXPECTED_INTEGER_OPERAND, line, context);
+		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
 
 	context.stack.push({ isInteger: true, isNonZero: false });
