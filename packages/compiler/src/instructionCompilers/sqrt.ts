@@ -1,26 +1,22 @@
-import { ErrorCode, getError } from '../errors';
+import { saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
 
 import type { InstructionCompiler } from '../types';
 
-const sqrt: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+const sqrt: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+		minOperands: 1,
+		operandTypes: 'float',
+	},
+	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 1 operand exists
+		context.stack.pop()!;
+
+		context.stack.push({ isInteger: false, isNonZero: true });
+		return saveByteCode(context, [WASMInstruction.F32_SQRT]);
 	}
-
-	const operand1 = context.stack.pop();
-
-	if (!operand1) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	if (operand1.isInteger) {
-		throw getError(ErrorCode.ONLY_FLOATS, line, context);
-	}
-
-	context.stack.push({ isInteger: false, isNonZero: true });
-	return saveByteCode(context, [WASMInstruction.F32_SQRT]);
-};
+);
 
 export default sqrt;
