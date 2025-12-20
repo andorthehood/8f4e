@@ -10,6 +10,7 @@ const cycle: InstructionCompiler = withValidation(
 		operandTypes: 'int',
 	},
 	(line, context) => {
+		// Pop 3 operands: end position, start position, pointer (in reverse order)
 		context.stack.pop();
 		context.stack.pop();
 		context.stack.pop();
