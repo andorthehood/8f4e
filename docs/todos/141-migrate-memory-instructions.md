@@ -3,8 +3,8 @@ title: 'TODO: Migrate Memory-Related Instructions to withValidation'
 priority: Medium
 effort: 2-3h
 created: 2025-12-20
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-20
 ---
 
 # TODO: Migrate Memory-Related Instructions to withValidation
@@ -46,11 +46,11 @@ Refactor these memory instruction compilers to use the `withValidation` helper w
 
 ## Success Criteria
 
-- [ ] All applicable instructions use `withValidation` wrapper
-- [ ] All existing tests pass without modification
-- [ ] Memory operation semantics unchanged
-- [ ] Type checking passes
-- [ ] Linting passes
+- [x] All applicable instructions use `withValidation` wrapper
+- [x] All existing tests pass without modification
+- [x] Memory operation semantics unchanged
+- [x] Type checking passes
+- [x] Linting passes
 
 ## Affected Components
 
