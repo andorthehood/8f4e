@@ -1,0 +1,212 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`const > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "const",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "TEST1",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 420,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "TEST2",
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 420.69,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "TEST3",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 69,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output1",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output2",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output3",
+      },
+      {
+        "type": "identifier",
+        "value": "TEST3",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output1",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "TEST1",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 11,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 12,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output2",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 14,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "TEST2",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 15,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 16,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 18,
+  },
+]
+`;
+
+exports[`const > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    i32.const 420
+    i32.store
+    i32.const 4
+    f32.const 0x1.a4b0a4p+8 (;=420.69;)
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`const > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output1": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output1",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output2": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output2",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+  "output3": {
+    "byteAddress": 8,
+    "default": 69,
+    "elementWordSize": 4,
+    "id": "output3",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
+  },
+}
+`;

@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`drop > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "drop",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [],
+    "instruction": "drop",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 5,
+  },
+]
+`;
+
+exports[`drop > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 1
+    drop)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`drop > if the generated AST, WAT and memory map match the snapshot 3`] = `{}`;

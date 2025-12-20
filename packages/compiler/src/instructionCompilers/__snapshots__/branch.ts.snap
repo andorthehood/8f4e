@@ -1,0 +1,117 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`branch (int) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "block",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "void",
+      },
+    ],
+    "instruction": "block",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "branch",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [],
+    "instruction": "blockEnd",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 11,
+  },
+]
+`;
+
+exports[`branch (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    block  ;; label = @1
+      br 1 (;@0;)
+      i32.const 0
+      i32.const 1
+      i32.store
+    end)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`branch (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;

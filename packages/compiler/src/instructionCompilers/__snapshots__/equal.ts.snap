@@ -1,0 +1,154 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`equal > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "equal",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input1",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input2",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input1",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input2",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [],
+    "instruction": "equal",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 12,
+  },
+]
+`;
+
+exports[`equal > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 8
+    i32.const 0
+    i32.load
+    i32.const 4
+    i32.load
+    i32.eq
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`equal > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input1": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input1",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "input2": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input2",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 8,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 2,
+    "wordAlignedSize": 1,
+  },
+}
+`;
