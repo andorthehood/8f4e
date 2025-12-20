@@ -12,6 +12,7 @@ const or: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation ensures 2 operands exist
+		// We need to access operand values to track isNonZero for the OR operation
 		const operand2 = context.stack.pop()!;
 		const operand1 = context.stack.pop()!;
 
