@@ -1,18 +1,19 @@
-import { ErrorCode, getError } from '../errors';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
+import { saveByteCode } from '../utils';
 
 import type { InstructionCompiler } from '../types';
 
-const clearStack: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+const clearStack: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+	},
+	(line, context) => {
+		const length = context.stack.length;
+		context.stack = [];
+
+		return saveByteCode(context, new Array(length).fill(WASMInstruction.DROP));
 	}
-
-	const length = context.stack.length;
-	context.stack = [];
-
-	return saveByteCode(context, new Array(length).fill(WASMInstruction.DROP));
-};
+);
 
 export default clearStack;

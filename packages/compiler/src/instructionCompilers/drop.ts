@@ -1,21 +1,19 @@
-import { ErrorCode, getError } from '../errors';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
+import { saveByteCode } from '../utils';
 
 import type { InstructionCompiler } from '../types';
 
-const drop: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+const drop: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+		minOperands: 1,
+	},
+	(line, context) => {
+		context.stack.pop();
+
+		return saveByteCode(context, [WASMInstruction.DROP]);
 	}
-
-	const operand = context.stack.pop();
-
-	if (!operand) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	return saveByteCode(context, [WASMInstruction.DROP]);
-};
+);
 
 export default drop;
