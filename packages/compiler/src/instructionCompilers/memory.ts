@@ -18,11 +18,13 @@ const memory: InstructionCompiler = withValidation(
 		}
 
 		let defaultValue = 0;
+		let id = '';
 
 		if (line.arguments[0]?.type === ArgumentType.LITERAL) {
 			// If the first argument is a literal, use its value as the default value.
 			// E.g.: int 42
 			defaultValue = line.arguments[0].value;
+			id = '__anonymous__' + line.lineNumber;
 		} else if (line.arguments[0]?.type === ArgumentType.IDENTIFIER) {
 			// If the first argument is a reference to a constant, get its value.
 			// If it's not a constant, then we assume it's a memory identifier and handle it later.
@@ -31,6 +33,10 @@ const memory: InstructionCompiler = withValidation(
 
 			if (constant) {
 				defaultValue = constant.value;
+				id = '__anonymous__' + line.lineNumber;
+			} else {
+				// If it's not a constant, assume it's a memory identifier.
+				id = line.arguments[0].value;
 			}
 		}
 
@@ -73,9 +79,6 @@ const memory: InstructionCompiler = withValidation(
 
 			defaultValue = constant.value;
 		}
-
-		const id =
-			line.arguments[0]?.type === ArgumentType.IDENTIFIER ? line.arguments[0].value : '__anonymous__' + line.lineNumber;
 
 		context.namespace.memory[id] = {
 			numberOfElements: 1,

@@ -27,6 +27,30 @@ describe('parseOutputs', () => {
 		]);
 	});
 
+	it('should parse anonymous allocation', () => {
+		const code = ['int 2'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should parse anonymous allocation with const', () => {
+		const code = ['int CONST'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should parse int[] instruction', () => {
 		const code = ['int[] myOutput'];
 		const result = parseOutputs(code);
