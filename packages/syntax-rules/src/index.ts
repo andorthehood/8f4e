@@ -12,7 +12,7 @@ export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 export {
 	hasMemoryReferencePrefix,
 	extractMemoryReferenceBase,
-	hasMemoryPointerPrefix,
+	isMemoryPointerIdentifier,
 	extractMemoryPointerBase,
 	hasElementCountPrefix,
 	extractElementCountBase,

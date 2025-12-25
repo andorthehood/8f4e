@@ -22,7 +22,7 @@ export function extractMemoryReferenceBase(name: string): string {
 /**
  * Checks if a string has a memory pointer prefix (*)
  */
-export function hasMemoryPointerPrefix(name: string): boolean {
+export function isMemoryPointerIdentifier(name: string): boolean {
 	return name.startsWith('*');
 }
 
