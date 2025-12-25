@@ -132,6 +132,8 @@ export function parseMemoryInstructionArguments(
 	} catch (error) {
 		if (error instanceof SyntaxRulesError) {
 			// Wrap syntax error as compiler error
+			// Currently only MISSING_ARGUMENT can be thrown from parseMemoryInstructionArgumentsShape
+			// Future syntax errors should be mapped appropriately here
 			throw getError(ErrorCode.MISSING_ARGUMENT, lineForError, context);
 		}
 		throw error;
