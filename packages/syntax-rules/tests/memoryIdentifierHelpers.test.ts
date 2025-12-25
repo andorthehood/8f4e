@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import {
 	hasMemoryReferencePrefix,
 	extractMemoryReferenceBase,
-	hasMemoryPointerPrefix,
+	isMemoryPointerIdentifier,
 	extractMemoryPointerBase,
 	hasElementCountPrefix,
 	extractElementCountBase,
@@ -46,17 +46,17 @@ describe('memoryIdentifierHelpers', () => {
 		});
 	});
 
-	describe('hasMemoryPointerPrefix', () => {
+	describe('isMemoryPointerIdentifier', () => {
 		it('detects * prefix', () => {
-			expect(hasMemoryPointerPrefix('*myVar')).toBe(true);
+			expect(isMemoryPointerIdentifier('*myVar')).toBe(true);
 		});
 
 		it('returns false for plain identifiers', () => {
-			expect(hasMemoryPointerPrefix('myVar')).toBe(false);
+			expect(isMemoryPointerIdentifier('myVar')).toBe(false);
 		});
 
 		it('returns false for other prefixes', () => {
-			expect(hasMemoryPointerPrefix('&myVar')).toBe(false);
+			expect(isMemoryPointerIdentifier('&myVar')).toBe(false);
 		});
 	});
 

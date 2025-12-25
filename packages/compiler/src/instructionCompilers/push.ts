@@ -7,7 +7,7 @@ import {
 	getDataStructureByteAddress,
 	getMemoryStringLastByteAddress,
 	isMemoryIdentifier,
-	isMemoryPointerIdentifier,
+	isMemoryPointer,
 	isMemoryReferenceIdentifier,
 	isElementCountIdentifier,
 	isElementWordSizeIdentifier,
@@ -53,7 +53,7 @@ const push: InstructionCompiler = withValidation(
 					...i32const(memoryItem.byteAddress),
 					...(memoryItem.isInteger ? i32load() : f32load()),
 				]);
-			} else if (isMemoryPointerIdentifier(memory, argument.value)) {
+			} else if (isMemoryPointer(memory, argument.value)) {
 				const memoryItem = getDataStructure(memory, argument.value.substring(1));
 
 				if (!memoryItem) {
