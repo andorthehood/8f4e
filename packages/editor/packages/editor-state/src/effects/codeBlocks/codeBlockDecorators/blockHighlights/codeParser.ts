@@ -1,4 +1,4 @@
-import instructionParser from '../instructionParser';
+import { instructionParser } from '@8f4e/syntax-rules';
 
 const startInstructions = ['if', 'loop', 'block'];
 
