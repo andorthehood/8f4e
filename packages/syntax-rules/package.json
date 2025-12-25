@@ -1,8 +1,8 @@
 {
-	"name": "@8f4e/compiler",
+	"name": "@8f4e/syntax-rules",
 	"version": "1.0.0",
 	"private": true,
-	"description": "8f4e compiler package",
+	"description": "Syntax validation utilities for 8f4e",
 	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -23,9 +23,7 @@
 		"url": "https://github.com/andorthehood/8f4e/issues"
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
-	"dependencies": {
-		"@8f4e/syntax-rules": "*"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "^24.3.0"
 	}
