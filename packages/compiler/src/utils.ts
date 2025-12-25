@@ -1,7 +1,8 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-import { BLOCK_TYPE } from './types';
+import { BLOCK_TYPE, ArgumentType } from './types';
+import { ErrorCode, getError } from './errors';
 
-import type { BlockStack, CompilationContext, MemoryMap, StackItem } from './types';
+import type { BlockStack, CompilationContext, MemoryMap, StackItem, Argument } from './types';
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return Object.hasOwn(memoryMap, name);
@@ -102,4 +103,86 @@ export function saveByteCode(context: CompilationContext, byteCode: number[]): C
 		context.loopSegmentByteCode.push(...byteCode);
 	}
 	return context;
+}
+
+export function parseMemoryInstructionArguments(
+	args: Array<Argument>,
+	lineNumber: number,
+	instruction: string,
+	context: CompilationContext
+): { id: string; defaultValue: number } {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const lineForError = { lineNumber, instruction, arguments: args } as any;
+
+	if (!args[0]) {
+		throw getError(ErrorCode.MISSING_ARGUMENT, lineForError, context);
+	}
+
+	let defaultValue = 0;
+	let id = '';
+
+	if (args[0]?.type === ArgumentType.LITERAL) {
+		defaultValue = args[0].value;
+		id = '__anonymous__' + lineNumber;
+	} else if (args[0]?.type === ArgumentType.IDENTIFIER) {
+		const constant = context.namespace.consts[args[0].value];
+
+		if (constant) {
+			defaultValue = constant.value;
+			id = '__anonymous__' + lineNumber;
+		} else {
+			id = args[0].value;
+		}
+	}
+
+	if (args[1]?.type === ArgumentType.LITERAL) {
+		defaultValue = args[1].value;
+	} else if (args[1]?.type === ArgumentType.IDENTIFIER && /&(\S+)\.(\S+)/.test(args[1].value)) {
+		// Intermodular references are resolved later
+	} else if (args[1]?.type === ArgumentType.IDENTIFIER && args[1].value[0] === '&') {
+		const memoryItem = context.namespace.memory[args[1].value.substring(1)];
+
+		if (!memoryItem) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+		}
+
+		defaultValue = memoryItem.byteAddress;
+	} else if (args[1]?.type === ArgumentType.IDENTIFIER && args[1].value[0] === '$') {
+		const memoryItem = context.namespace.memory[args[1].value.substring(1)];
+
+		if (!memoryItem) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+		}
+
+		defaultValue = memoryItem.wordAlignedSize;
+	} else if (args[1]?.type === ArgumentType.IDENTIFIER) {
+		const constant = context.namespace.consts[args[1].value];
+
+		if (!constant) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+		}
+
+		defaultValue = constant.value;
+	}
+
+	return { id, defaultValue };
+}
+
+export function getPointerDepth(instruction: string): number {
+	const matches = instruction.match(/\*+$/);
+	return matches ? matches[0].length : 0;
+}
+
+export function getMemoryFlags(baseType: 'int' | 'float', pointerDepth: number) {
+	const isPointer = pointerDepth > 0;
+	const isPointingToInteger = isPointer && baseType === 'int';
+	const isPointingToPointer = pointerDepth === 2;
+	const isInteger = baseType === 'int' || isPointer;
+
+	return {
+		isPointer,
+		isPointingToInteger,
+		isPointingToPointer,
+		isInteger,
+	};
 }
