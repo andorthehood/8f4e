@@ -1,3 +1,5 @@
+import { isConstantName } from '@8f4e/syntax-rules';
+
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 
@@ -15,6 +17,10 @@ const _const: InstructionCompiler = function (line, context) {
 	}
 
 	const constantName = line.arguments[0].value;
+
+	if (!isConstantName(constantName)) {
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
+	}
 
 	let value = { value: 0, isInteger: true };
 
