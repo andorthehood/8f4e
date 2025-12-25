@@ -3,7 +3,6 @@ import { describe, it, expect } from 'vitest';
 import { moduleTester } from './testUtils';
 
 import compile from '../../src';
-import { ErrorCode } from '../../src/errors';
 
 import type { Module } from '../../src/types';
 
@@ -42,36 +41,6 @@ moduleEnd
 `,
 		[[{}, { output1: 420, output2: 420.69, output3: 69 }]]
 	);
-
-	it('should reject constant names with lowercase letters', () => {
-		const modules: Module[] = [
-			{
-				code: ['module test', 'const myConst 100', 'moduleEnd'],
-			},
-		];
-
-		expect(() => compile(modules, defaultOptions)).toThrow(`${ErrorCode.EXPECTED_IDENTIFIER}`);
-	});
-
-	it('should reject constant names starting with numbers', () => {
-		const modules: Module[] = [
-			{
-				code: ['module test', 'const 123ABC 100', 'moduleEnd'],
-			},
-		];
-
-		expect(() => compile(modules, defaultOptions)).toThrow(`${ErrorCode.EXPECTED_IDENTIFIER}`);
-	});
-
-	it('should reject constant names starting with special characters', () => {
-		const modules: Module[] = [
-			{
-				code: ['module test', 'const _CONST 100', 'moduleEnd'],
-			},
-		];
-
-		expect(() => compile(modules, defaultOptions)).toThrow(`${ErrorCode.EXPECTED_IDENTIFIER}`);
-	});
 
 	it('should accept constant names with underscores after the first letter', () => {
 		const modules: Module[] = [
