@@ -1,4 +1,4 @@
-import { isConstantName } from '@8f4e/compiler';
+import { isConstantName } from '@8f4e/syntax-rules';
 
 import instructionParser from '../instructionParser';
 
