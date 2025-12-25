@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`const > if the generated AST, WAT and memory map match the snapshot 1`] = `
+exports[`const instruction > const with valid constant names > if the generated AST, WAT and memory map match the snapshot 1`] = `
 [
   {
     "arguments": [
@@ -149,7 +149,7 @@ exports[`const > if the generated AST, WAT and memory map match the snapshot 1`]
 ]
 `;
 
-exports[`const > if the generated AST, WAT and memory map match the snapshot 2`] = `
+exports[`const instruction > const with valid constant names > if the generated AST, WAT and memory map match the snapshot 2`] = `
 "(module
   (type (;0;) (func))
   (import "js" "memory" (memory (;0;) 1))
@@ -164,7 +164,7 @@ exports[`const > if the generated AST, WAT and memory map match the snapshot 2`]
 "
 `;
 
-exports[`const > if the generated AST, WAT and memory map match the snapshot 3`] = `
+exports[`const instruction > const with valid constant names > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
   "output1": {
     "byteAddress": 0,

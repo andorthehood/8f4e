@@ -135,4 +135,36 @@ describe('parseOutputs', () => {
 			},
 		]);
 	});
+
+	it('should not treat PascalCase names as anonymous allocations', () => {
+		const code = ['int MyVariable', 'float AnotherVar'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'MyVariable',
+				lineNumber: 0,
+			},
+			{
+				id: 'AnotherVar',
+				lineNumber: 1,
+			},
+		]);
+	});
+
+	it('should treat all-uppercase names as anonymous allocations', () => {
+		const code = ['int MY_CONSTANT', 'float ANOTHER_CONST'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+			{
+				id: '__anonymous__1',
+				lineNumber: 1,
+			},
+		]);
+	});
 });
