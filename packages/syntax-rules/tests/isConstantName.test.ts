@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { isConstantName } from '../src/utils';
+import { isConstantName } from '../src/isConstantName';
 
 describe('isConstantName', () => {
 	it('returns true for all uppercase names', () => {
