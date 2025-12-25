@@ -27,6 +27,30 @@ describe('parseOutputs', () => {
 		]);
 	});
 
+	it('should parse anonymous allocation', () => {
+		const code = ['int 2'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should parse anonymous allocation with const', () => {
+		const code = ['int CONST'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should parse int[] instruction', () => {
 		const code = ['int[] myOutput'];
 		const result = parseOutputs(code);
@@ -108,6 +132,22 @@ describe('parseOutputs', () => {
 			{
 				id: 'output2',
 				lineNumber: 5,
+			},
+		]);
+	});
+
+	it('should treat all-uppercase names as anonymous allocations', () => {
+		const code = ['int MY_CONSTANT', 'float ANOTHER_CONST'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: '__anonymous__0',
+				lineNumber: 0,
+			},
+			{
+				id: '__anonymous__1',
+				lineNumber: 1,
 			},
 		]);
 	});
