@@ -66,6 +66,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 148 | Consolidate syntax-related logic into syntax-rules package | 🟡 | 2-3d | 2025-12-25 | Consolidated all syntax validation and parsing logic from compiler and editor-state packages into dedicated @8f4e/syntax-rules package; created comprehensive test suite (70 tests); maintained backward compatibility through re-exports; improved separation of concerns and eliminated code duplication |
 | 127 | Update Deprecated npm Dependencies | 🟡 | 2-4h | 2025-12-20 | Upgraded ESLint from v8.57.0 to v9.39.2, added @eslint/js@9.39.2 and globals@16.5.0, updated typescript-eslint packages to 8.50.0, removed .eslintignore file; eliminated deprecation warnings for eslint, rimraf, and @humanwhocodes packages |
 | 097 | Enforce Nx-Only Package Entrypoints | 🟡 | 0.5-1d | 2025-11-21 | Removed all package-level scripts from 11 packages; added missing Nx targets for screenshot test variants and dev:test; updated README.md with comprehensive Nx command examples; all workflows now use Nx targets exclusively |
 | 095 | Split Loader/Save Effects into Dedicated Modules | 🟡 | 1-2d | 2025-11-17 | Replaced monolithic loader.ts and save.ts with three focused modules: projectImport.ts (session persistence, project loading), projectExport.ts (JSON/runtime-ready exports, storage quota), and editorSettings.ts (color scheme/font settings); added 48 comprehensive tests |
