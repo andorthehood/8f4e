@@ -1,5 +1,19 @@
+import {
+	hasMemoryReferencePrefix,
+	extractMemoryReferenceBase,
+	hasMemoryPointerPrefix,
+	extractMemoryPointerBase,
+	hasElementCountPrefix,
+	extractElementCountBase,
+	hasElementWordSizePrefix,
+	extractElementWordSizeBase,
+	getPointerDepth as getPointerDepthFromSyntax,
+	parseMemoryInstructionArgumentsShape,
+	SyntaxRulesError,
+} from '@8f4e/syntax-rules';
+
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
-import { BLOCK_TYPE, ArgumentType } from './types';
+import { BLOCK_TYPE } from './types';
 import { ErrorCode, getError } from './errors';
 
 import type { BlockStack, CompilationContext, MemoryMap, StackItem, Argument } from './types';
@@ -9,22 +23,19 @@ export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean 
 }
 
 export function isMemoryReferenceIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return (
-		(name.startsWith('&') && Object.hasOwn(memoryMap, name.substring(1))) ||
-		(name.endsWith('&') && Object.hasOwn(memoryMap, name.slice(0, -1)))
-	);
+	return hasMemoryReferencePrefix(name) && Object.hasOwn(memoryMap, extractMemoryReferenceBase(name));
 }
 
 export function isMemoryPointerIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('*') && Object.hasOwn(memoryMap, name.substring(1));
+	return hasMemoryPointerPrefix(name) && Object.hasOwn(memoryMap, extractMemoryPointerBase(name));
 }
 
 export function isElementCountIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('$') && Object.hasOwn(memoryMap, name.substring(1));
+	return hasElementCountPrefix(name) && Object.hasOwn(memoryMap, extractElementCountBase(name));
 }
 
 export function isElementWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return name.startsWith('%') && Object.hasOwn(memoryMap, name.substring(1));
+	return hasElementWordSizePrefix(name) && Object.hasOwn(memoryMap, extractElementWordSizeBase(name));
 }
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
@@ -114,63 +125,74 @@ export function parseMemoryInstructionArguments(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const lineForError = { lineNumber, instruction, arguments: args } as any;
 
-	if (!args[0]) {
-		throw getError(ErrorCode.MISSING_ARGUMENT, lineForError, context);
+	// Use syntax-rules parser for syntax-level validation
+	let parsedArgs;
+	try {
+		parsedArgs = parseMemoryInstructionArgumentsShape(args);
+	} catch (error) {
+		if (error instanceof SyntaxRulesError) {
+			// Wrap syntax error as compiler error
+			throw getError(ErrorCode.MISSING_ARGUMENT, lineForError, context);
+		}
+		throw error;
 	}
 
 	let defaultValue = 0;
 	let id = '';
 
-	if (args[0]?.type === ArgumentType.LITERAL) {
-		defaultValue = args[0].value;
+	// Process first argument
+	if (parsedArgs.firstArg.type === 'literal') {
+		defaultValue = parsedArgs.firstArg.value;
 		id = '__anonymous__' + lineNumber;
-	} else if (args[0]?.type === ArgumentType.IDENTIFIER) {
-		const constant = context.namespace.consts[args[0].value];
+	} else if (parsedArgs.firstArg.type === 'identifier') {
+		const constant = context.namespace.consts[parsedArgs.firstArg.value];
 
 		if (constant) {
 			defaultValue = constant.value;
 			id = '__anonymous__' + lineNumber;
 		} else {
-			id = args[0].value;
+			id = parsedArgs.firstArg.value;
 		}
 	}
 
-	if (args[1]?.type === ArgumentType.LITERAL) {
-		defaultValue = args[1].value;
-	} else if (args[1]?.type === ArgumentType.IDENTIFIER && /&(\S+)\.(\S+)/.test(args[1].value)) {
-		// Intermodular references are resolved later
-	} else if (args[1]?.type === ArgumentType.IDENTIFIER && args[1].value[0] === '&') {
-		const memoryItem = context.namespace.memory[args[1].value.substring(1)];
+	// Process second argument if present
+	if (parsedArgs.secondArg) {
+		if (parsedArgs.secondArg.type === 'literal') {
+			defaultValue = parsedArgs.secondArg.value;
+		} else if (parsedArgs.secondArg.type === 'intermodular-reference') {
+			// Intermodular references are resolved later
+		} else if (parsedArgs.secondArg.type === 'memory-reference') {
+			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
 
-		if (!memoryItem) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+			if (!memoryItem) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+			}
+
+			defaultValue = memoryItem.byteAddress;
+		} else if (parsedArgs.secondArg.type === 'element-count') {
+			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
+
+			if (!memoryItem) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+			}
+
+			defaultValue = memoryItem.wordAlignedSize;
+		} else if (parsedArgs.secondArg.type === 'identifier') {
+			const constant = context.namespace.consts[parsedArgs.secondArg.value];
+
+			if (!constant) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
+			}
+
+			defaultValue = constant.value;
 		}
-
-		defaultValue = memoryItem.byteAddress;
-	} else if (args[1]?.type === ArgumentType.IDENTIFIER && args[1].value[0] === '$') {
-		const memoryItem = context.namespace.memory[args[1].value.substring(1)];
-
-		if (!memoryItem) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
-		}
-
-		defaultValue = memoryItem.wordAlignedSize;
-	} else if (args[1]?.type === ArgumentType.IDENTIFIER) {
-		const constant = context.namespace.consts[args[1].value];
-
-		if (!constant) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
-		}
-
-		defaultValue = constant.value;
 	}
 
 	return { id, defaultValue };
 }
 
 export function getPointerDepth(instruction: string): number {
-	const matches = instruction.match(/\*+$/);
-	return matches ? matches[0].length : 0;
+	return getPointerDepthFromSyntax(instruction);
 }
 
 export function getMemoryFlags(baseType: 'int' | 'float', pointerDepth: number) {
