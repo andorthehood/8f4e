@@ -1,0 +1,1 @@
+export { isConstantName } from './isConstantName';
