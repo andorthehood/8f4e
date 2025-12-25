@@ -17,20 +17,40 @@ const memory: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 		}
 
-		if (line.arguments[0].type === ArgumentType.LITERAL) {
-			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
+		let defaultValue = 0;
+		let id = '';
+
+		if (line.arguments[0]?.type === ArgumentType.LITERAL) {
+			// If the first argument is a literal, use its value as the default value.
+			// E.g.: int 42
+			defaultValue = line.arguments[0].value;
+			id = '__anonymous__' + line.lineNumber;
+		} else if (line.arguments[0]?.type === ArgumentType.IDENTIFIER) {
+			// If the first argument is a reference to a constant, get its value.
+			// If it's not a constant, then we assume it's a memory identifier and handle it later.
+			// E.g.: int CONSTANT_NAME
+			const constant = context.namespace.consts[line.arguments[0].value];
+
+			if (constant) {
+				defaultValue = constant.value;
+				id = '__anonymous__' + line.lineNumber;
+			} else {
+				// If it's not a constant, assume it's a memory identifier.
+				id = line.arguments[0].value;
+			}
 		}
 
-		let defaultValue = 0;
-
-		if (!line.arguments[1]) {
-			defaultValue = 0;
-		} else if (line.arguments[1].type === ArgumentType.LITERAL) {
+		if (line.arguments[1]?.type === ArgumentType.LITERAL) {
+			// If the second argument is a literal, use its value.
+			// E.g.: int foo 42
 			defaultValue = line.arguments[1].value;
-		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && /&(\S+)\.(\S+)/.test(line.arguments[1].value)) {
-			// Do nothing
-			// Intermodular references are resolved later
-		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
+		} else if (line.arguments[1]?.type === ArgumentType.IDENTIFIER && /&(\S+)\.(\S+)/.test(line.arguments[1].value)) {
+			// If the second argument is a reference to another module's memory item, do nothing.
+			// Intermodular references are resolved later.
+			// E.g.: int foo &moduleName.memoryItem
+		} else if (line.arguments[1]?.type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
+			// If the second argument is a reference to another memory item's address in the same module, get its byte address.
+			// E.g.: int foo &memoryItem
 			const memoryItem = context.namespace.memory[line.arguments[1].value.substring(1)];
 
 			if (!memoryItem) {
@@ -38,7 +58,9 @@ const memory: InstructionCompiler = withValidation(
 			}
 
 			defaultValue = memoryItem.byteAddress;
-		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '$') {
+		} else if (line.arguments[1]?.type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '$') {
+			// If the second argument is a reference to another memory item's word-aligned size in the same module, get its word-aligned size.
+			// E.g.: int foo $memoryItem
 			const memoryItem = context.namespace.memory[line.arguments[1].value.substring(1)];
 
 			if (!memoryItem) {
@@ -46,7 +68,9 @@ const memory: InstructionCompiler = withValidation(
 			}
 
 			defaultValue = memoryItem.wordAlignedSize;
-		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
+		} else if (line.arguments[1]?.type === ArgumentType.IDENTIFIER) {
+			// If the second argument is a reference to a constant, get its value.
+			// E.g.: int foo CONSTANT_NAME
 			const constant = context.namespace.consts[line.arguments[1].value];
 
 			if (!constant) {
@@ -56,13 +80,13 @@ const memory: InstructionCompiler = withValidation(
 			defaultValue = constant.value;
 		}
 
-		context.namespace.memory[line.arguments[0].value] = {
+		context.namespace.memory[id] = {
 			numberOfElements: 1,
 			elementWordSize: 4,
 			wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
 			wordAlignedSize: 1,
 			byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,
-			id: line.arguments[0].value,
+			id,
 			default: defaultValue,
 			type: line.instruction as unknown as MemoryTypes,
 			isPointer:
