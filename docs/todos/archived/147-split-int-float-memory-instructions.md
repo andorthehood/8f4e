@@ -3,8 +3,8 @@ title: 'TODO: Split Memory Instruction Into int/float With Shared Helpers'
 priority: Medium
 effort: 4-6 hours
 created: 2025-12-25
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-25
 ---
 
 # TODO: Split Memory Instruction Into int/float With Shared Helpers

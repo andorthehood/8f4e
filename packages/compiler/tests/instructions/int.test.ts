@@ -1,7 +1,7 @@
 import { moduleTester } from './testUtils';
 
 moduleTester(
-	'memory: int with literal (anonymous allocation)',
+	'int: with literal (anonymous allocation)',
 	`module test
 int 42
 int output
@@ -14,7 +14,7 @@ moduleEnd
 );
 
 moduleTester(
-	'memory: int with named identifier',
+	'int: with named identifier',
 	`module test
 int foo 42
 int output
@@ -27,7 +27,7 @@ moduleEnd
 );
 
 moduleTester(
-	'memory: int with constant identifier (anonymous allocation)',
+	'int: with constant identifier (anonymous allocation)',
 	`module test
 const MY_VALUE 100
 int MY_VALUE
@@ -41,34 +41,7 @@ moduleEnd
 );
 
 moduleTester(
-	'memory: float with literal (anonymous allocation)',
-	`module test
-float 3.14
-float output
-push &output
-push __anonymous__1
-store
-moduleEnd
-`,
-	[[{}, { output: 3.14 }]]
-);
-
-moduleTester(
-	'memory: float with constant identifier (anonymous allocation)',
-	`module test
-const PI 3.14159
-float PI
-float output
-push &output
-push __anonymous__2
-store
-moduleEnd
-`,
-	[[{}, { output: 3.14159 }]]
-);
-
-moduleTester(
-	'memory: multiple anonymous allocations',
+	'int: multiple anonymous allocations',
 	`module test
 int 10
 int 20
@@ -87,7 +60,7 @@ moduleEnd
 );
 
 moduleTester(
-	'memory: mix of anonymous and named allocations',
+	'int: mix of anonymous and named allocations',
 	`module test
 int 5
 int named 10
@@ -106,7 +79,7 @@ moduleEnd
 );
 
 moduleTester(
-	'memory: anonymous allocation with negative literal',
+	'int: anonymous allocation with negative literal',
 	`module test
 int -42
 int output
@@ -116,17 +89,4 @@ store
 moduleEnd
 `,
 	[[{}, { output: -42 }]]
-);
-
-moduleTester(
-	'memory: anonymous float with negative literal',
-	`module test
-float -2.5
-float output
-push &output
-push __anonymous__1
-store
-moduleEnd
-`,
-	[[{}, { output: -2.5 }]]
 );
