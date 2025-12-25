@@ -1,6 +1,5 @@
 import { isConstantName } from '@8f4e/syntax-rules';
-
-import instructionParser from '../instructionParser';
+import { instructionParser } from '@8f4e/syntax-rules';
 
 export function parseOutputs(code: string[]) {
 	return code.reduce(
