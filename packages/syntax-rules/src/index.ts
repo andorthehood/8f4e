@@ -1,1 +1,1 @@
-export { isConstantName } from './utils';
+export { isConstantName } from './isConstantName';
