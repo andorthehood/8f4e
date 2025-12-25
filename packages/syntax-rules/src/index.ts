@@ -8,3 +8,20 @@ export {
 	type ArgumentIdentifier,
 } from './parseArgument';
 export { getBlockType, getModuleId, getFunctionId, type CodeBlockType } from './blockTypeDetection';
+export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
+export {
+	hasMemoryReferencePrefix,
+	extractMemoryReferenceBase,
+	hasMemoryPointerPrefix,
+	extractMemoryPointerBase,
+	hasElementCountPrefix,
+	extractElementCountBase,
+	hasElementWordSizePrefix,
+	extractElementWordSizeBase,
+	getPointerDepth,
+} from './memoryIdentifierHelpers';
+export {
+	parseMemoryInstructionArgumentsShape,
+	type MemoryArgumentShape,
+	type ParsedMemoryInstructionArguments,
+} from './memoryInstructionParser';
