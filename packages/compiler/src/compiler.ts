@@ -1,9 +1,9 @@
+import { instructionParser, parseArgument, isComment, isValidInstruction } from '@8f4e/syntax-rules';
+
 import { createFunction, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
-	Argument,
-	ArgumentType,
 	CompilationContext,
 	CompileOptions,
 	CompiledModule,
@@ -20,21 +20,8 @@ import { calculateWordAlignedSizeOfMemory } from './utils';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
-export const instructionParser =
-	/^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
-
-export function parseArgument(argument: string): Argument {
-	switch (true) {
-		case /^-?[0-9.]+$/.test(argument):
-			return { value: parseFloat(argument), type: ArgumentType.LITERAL, isInteger: /^-?[0-9]+$/.test(argument) };
-		case /^-?0x[0-9a-fA-F]+$/.test(argument):
-			return { value: parseInt(argument.replace('0x', ''), 16), type: ArgumentType.LITERAL, isInteger: true };
-		case /^-?0b[0-1]+$/.test(argument):
-			return { value: parseInt(argument.replace('0b', ''), 2), type: ArgumentType.LITERAL, isInteger: true };
-		default:
-			return { value: argument, type: ArgumentType.IDENTIFIER };
-	}
-}
+// Re-export for backward compatibility
+export { instructionParser, isComment, isValidInstruction, parseArgument };
 
 export function parseLine(line: string, lineNumber: number): AST[number] {
 	const [, instruction, ...args] = (line.match(instructionParser) || []) as [never, Instruction, string, string];
@@ -48,14 +35,6 @@ export function parseLine(line: string, lineNumber: number): AST[number] {
 			})
 			.map(parseArgument),
 	};
-}
-
-export function isComment(line: string): boolean {
-	return /^\s*;/.test(line);
-}
-
-export function isValidInstruction(line: string): boolean {
-	return instructionParser.test(line);
 }
 
 export function compileToAST(code: string[], options?: CompileOptions) {
