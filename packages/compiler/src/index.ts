@@ -71,6 +71,7 @@ export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
 export { instructionParser } from './compiler';
+export { isConstantName } from './utils';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
 const VERSION = [0x01, 0x00, 0x00, 0x00];
