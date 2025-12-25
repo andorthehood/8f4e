@@ -1,3 +1,5 @@
+import { isConstantName } from '@8f4e/syntax-rules';
+
 import instructionParser from '../instructionParser';
 
 export function parseOutputs(code: string[]) {
@@ -11,8 +13,8 @@ export function parseOutputs(code: string[]) {
 				}
 
 				let id: string;
-				// If args[0] is a number or starts with a capital letter, it's an anonymous memory allocation.
-				if (!isNaN(Number(args[0])) || (args[0][0] >= 'A' && args[0][0] <= 'Z')) {
+				// If args[0] is a number or a constant name, it's an anonymous memory allocation.
+				if (!isNaN(Number(args[0])) || isConstantName(args[0])) {
 					id = '__anonymous__' + index;
 				} else {
 					id = args[0];
