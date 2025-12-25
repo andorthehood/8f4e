@@ -1,0 +1,351 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`float: anonymous float with negative literal > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": -2.5,
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "__anonymous__1",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 6,
+  },
+]
+`;
+
+exports[`float: anonymous float with negative literal > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    f32.load
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`float: anonymous float with negative literal > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "__anonymous__1": {
+    "byteAddress": 0,
+    "default": -2.5,
+    "elementWordSize": 4,
+    "id": "__anonymous__1",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`float: with constant identifier (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "PI",
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 3.14159,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "PI",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "__anonymous__2",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 7,
+  },
+]
+`;
+
+exports[`float: with constant identifier (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    f32.load
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`float: with constant identifier (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "__anonymous__2": {
+    "byteAddress": 0,
+    "default": 3.14159,
+    "elementWordSize": 4,
+    "id": "__anonymous__2",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`float: with literal (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 3.14,
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "__anonymous__1",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 6,
+  },
+]
+`;
+
+exports[`float: with literal (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    f32.load
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`float: with literal (anonymous allocation) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "__anonymous__1": {
+    "byteAddress": 0,
+    "default": 3.14,
+    "elementWordSize": 4,
+    "id": "__anonymous__1",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;

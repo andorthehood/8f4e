@@ -23,7 +23,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 130 | Add Instruction Compiler Validation Helper | 🟡 | 1-2d | 2025-12-20 | Introduce shared `withValidation` wrapper to centralize scope/operand checks while preserving existing error codes |
 | 144 | Infer Validation Errors from Operand Rules | 🟡 | 4-6h | 2025-12-20 | Remove explicit type error overrides in `withValidation` and infer errors from operand rules |
 | 146 | Investigate Index Arithmetic Support | 🟡 | 2-4h | 2025-12-25 | Assess impact and effort to add C-style index arithmetic beyond byte-only addressing |
-| 147 | Split Memory Instruction Into int/float With Shared Helpers | 🟡 | 4-6h | 2025-12-25 | Split `memory.ts` into `int.ts`/`float.ts`, add shared helpers, and split `memory.test.ts` into `int.test.ts`/`float.test.ts` |
 | 002 | Enable Strict TypeScript in Editor Package | 🟡 | 2-3d | 2025-08-23 | Currently has 52 type errors when strict settings enabled, causing missing null checks and implicit any types that reduce type safety and developer experience |
 | 025 | Separate Editor View Layer into Standalone Package | 🟡 | 3-5d | 2025-08-26 | Extract Canvas-based rendering and sprite management into `@8f4e/browser-view` package to make core editor a pure state machine compatible with any renderer |
 | 026 | Separate Editor User Interactions into Standalone Package | 🟡 | 2-3d | 2025-08-26 | Extract DOM event handling and input logic into `@8f4e/browser-input` package to enable alternative input systems (touch, joystick, terminal) |
@@ -66,6 +65,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 147 | Split Memory Instruction Into int/float With Shared Helpers | 🟡 | 4-6h | 2025-12-25 | Split `memory.ts` into `int.ts`/`float.ts`, add shared helpers for argument parsing, pointer depth, and memory flags, split `memory.test.ts` into `int.test.ts`/`float.test.ts`; all tests pass, typecheck passes, lint passes |
 | 148 | Consolidate syntax-related logic into syntax-rules package | 🟡 | 2-3d | 2025-12-25 | Consolidated all syntax validation and parsing logic from compiler and editor-state packages into dedicated @8f4e/syntax-rules package; created comprehensive test suite (70 tests); maintained backward compatibility through re-exports; improved separation of concerns and eliminated code duplication |
 | 127 | Update Deprecated npm Dependencies | 🟡 | 2-4h | 2025-12-20 | Upgraded ESLint from v8.57.0 to v9.39.2, added @eslint/js@9.39.2 and globals@16.5.0, updated typescript-eslint packages to 8.50.0, removed .eslintignore file; eliminated deprecation warnings for eslint, rimraf, and @humanwhocodes packages |
 | 097 | Enforce Nx-Only Package Entrypoints | 🟡 | 0.5-1d | 2025-11-21 | Removed all package-level scripts from 11 packages; added missing Nx targets for screenshot test variants and dev:test; updated README.md with comprehensive Nx command examples; all workflows now use Nx targets exclusively |
