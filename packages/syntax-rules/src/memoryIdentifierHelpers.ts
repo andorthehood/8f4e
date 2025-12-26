@@ -80,9 +80,10 @@ export function extractElementWordSizeBase(name: string): string {
 
 /**
  * Checks if a string matches the intermodular reference pattern (&module.identifier)
+ * Allows dots in module and identifier names to support nested references like &notesMux2.out.notes
  */
 export function isIntermodularReference(value: string): boolean {
-	return /^&[a-zA-Z_][a-zA-Z0-9_]*\.[a-zA-Z_][a-zA-Z0-9_]*$/.test(value);
+	return /^&\S+\.\S+$/.test(value);
 }
 
 /**
