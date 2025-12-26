@@ -5,6 +5,7 @@ import {
 	hasElementCountPrefix,
 	extractMemoryReferenceBase,
 	extractElementCountBase,
+	isIntermodularReference,
 } from './memoryIdentifierHelpers';
 
 export type MemoryArgumentShape =
@@ -52,7 +53,7 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 	}
 
 	// Check for intermodular reference pattern (e.g., "&module.identifier")
-	if (/&(\S+)\.(\S+)/.test(arg.value)) {
+	if (isIntermodularReference(arg.value)) {
 		return {
 			type: 'intermodular-reference',
 			pattern: arg.value,
