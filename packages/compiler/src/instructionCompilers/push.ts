@@ -1,14 +1,3 @@
-import {
-	isMemoryPointerIdentifier,
-	hasMemoryReferencePrefix,
-	hasMemoryReferencePrefixStart,
-	extractMemoryReferenceBase,
-	hasElementCountPrefix,
-	extractElementCountBase,
-	hasElementWordSizePrefix,
-	extractElementWordSizeBase,
-} from '@8f4e/syntax-rules';
-
 import { withValidation } from '../withValidation';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
@@ -18,6 +7,10 @@ import {
 	getDataStructureByteAddress,
 	getMemoryStringLastByteAddress,
 	isMemoryIdentifier,
+	isMemoryPointerIdentifier,
+	isMemoryReferenceIdentifier,
+	isElementCountIdentifier,
+	isElementWordSizeIdentifier,
 	getElementWordSize,
 	getElementCount,
 	saveByteCode,
@@ -60,7 +53,7 @@ const push: InstructionCompiler = withValidation(
 					...i32const(memoryItem.byteAddress),
 					...(memoryItem.isInteger ? i32load() : f32load()),
 				]);
-			} else if (isMemoryPointerIdentifier(argument.value)) {
+			} else if (isMemoryPointerIdentifier(memory, argument.value)) {
 				const memoryItem = getDataStructure(memory, argument.value.substring(1));
 
 				if (!memoryItem) {
@@ -74,33 +67,21 @@ const push: InstructionCompiler = withValidation(
 					...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
 					...(memoryItem.isPointingToInteger ? i32load() : f32load()),
 				]);
-			} else if (
-				hasMemoryReferencePrefix(argument.value) &&
-				Object.hasOwn(memory, extractMemoryReferenceBase(argument.value))
-			) {
-				const base = extractMemoryReferenceBase(argument.value);
+			} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
 				let value = 0;
-				if (hasMemoryReferencePrefixStart(argument.value)) {
-					value = getDataStructureByteAddress(memory, base);
+				if (argument.value.startsWith('&')) {
+					value = getDataStructureByteAddress(memory, argument.value.substring(1));
 				} else {
-					value = getMemoryStringLastByteAddress(memory, base);
+					value = getMemoryStringLastByteAddress(memory, argument.value.slice(0, -1));
 				}
 				context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
 				return saveByteCode(context, i32const(value));
-			} else if (
-				hasElementCountPrefix(argument.value) &&
-				Object.hasOwn(memory, extractElementCountBase(argument.value))
-			) {
-				const base = extractElementCountBase(argument.value);
+			} else if (isElementCountIdentifier(memory, argument.value)) {
 				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementCount(memory, base)));
-			} else if (
-				hasElementWordSizePrefix(argument.value) &&
-				Object.hasOwn(memory, extractElementWordSizeBase(argument.value))
-			) {
-				const base = extractElementWordSizeBase(argument.value);
+				return saveByteCode(context, i32const(getElementCount(memory, argument.value.substring(1))));
+			} else if (isElementWordSizeIdentifier(memory, argument.value)) {
 				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementWordSize(memory, base)));
+				return saveByteCode(context, i32const(getElementWordSize(memory, argument.value.substring(1))));
 			} else if (typeof consts[argument.value] !== 'undefined') {
 				context.stack.push({
 					isInteger: consts[argument.value].isInteger,
