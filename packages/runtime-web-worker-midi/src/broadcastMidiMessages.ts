@@ -1,7 +1,6 @@
-import { MemoryBuffer } from '@8f4e/compiler';
-
 import { Event } from './midiEnums';
 
+import type { MemoryBuffer } from '@8f4e/compiler';
 import type { MidiModuleAddresses } from './types';
 
 const wasOn = new Map<string, boolean>();
