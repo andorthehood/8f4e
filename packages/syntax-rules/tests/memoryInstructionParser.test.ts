@@ -91,7 +91,8 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 			{ type: ArgumentType.IDENTIFIER, value: '&module.identifier&' },
 		]);
 
-		// Should be classified as memory-reference instead
+		// Trailing ampersand invalidates the intermodular reference pattern,
+		// so it's classified as memory-reference instead
 		expect(result.secondArg).toEqual({
 			type: 'memory-reference',
 			base: 'module.identifier&',
@@ -105,7 +106,8 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 			{ type: ArgumentType.IDENTIFIER, value: 'module.identifier&' },
 		]);
 
-		// Should be classified as memory-reference due to trailing &
+		// Lack of leading ampersand invalidates the intermodular reference pattern,
+		// but trailing ampersand makes it a memory-reference
 		expect(result.secondArg).toEqual({
 			type: 'memory-reference',
 			base: 'module.identifier',

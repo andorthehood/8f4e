@@ -68,7 +68,7 @@ export function extractElementWordSizeBase(name: string): string {
  * Checks if a string matches the intermodular reference pattern (&module.identifier)
  */
 export function isIntermodularReference(value: string): boolean {
-	return /^&[^&.\s]+\.[^&.\s]+$/.test(value);
+	return /^&[a-zA-Z_][a-zA-Z0-9_]*\.[a-zA-Z_][a-zA-Z0-9_]*$/.test(value);
 }
 
 /**
