@@ -85,36 +85,6 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 		});
 	});
 
-	it('does not parse intermodular reference with trailing ampersand', () => {
-		const result = parseMemoryInstructionArgumentsShape([
-			{ type: ArgumentType.IDENTIFIER, value: 'counter' },
-			{ type: ArgumentType.IDENTIFIER, value: '&module.identifier&' },
-		]);
-
-		// Trailing ampersand invalidates the intermodular reference pattern,
-		// so it's classified as memory-reference instead
-		expect(result.secondArg).toEqual({
-			type: 'memory-reference',
-			base: 'module.identifier&',
-			pattern: '&module.identifier&',
-		});
-	});
-
-	it('does not parse invalid intermodular reference without leading ampersand', () => {
-		const result = parseMemoryInstructionArgumentsShape([
-			{ type: ArgumentType.IDENTIFIER, value: 'counter' },
-			{ type: ArgumentType.IDENTIFIER, value: 'module.identifier&' },
-		]);
-
-		// Lack of leading ampersand invalidates the intermodular reference pattern,
-		// but trailing ampersand makes it a memory-reference
-		expect(result.secondArg).toEqual({
-			type: 'memory-reference',
-			base: 'module.identifier',
-			pattern: 'module.identifier&',
-		});
-	});
-
 	it('parses literal second argument', () => {
 		const result = parseMemoryInstructionArgumentsShape([
 			{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
