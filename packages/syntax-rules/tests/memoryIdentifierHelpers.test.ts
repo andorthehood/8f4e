@@ -175,6 +175,11 @@ describe('memoryIdentifierHelpers', () => {
 			expect(isIntermodularReference('&module.identifier')).toBe(true);
 		});
 
+		it('detects valid intermodular reference with nested modules', () => {
+			expect(isIntermodularReference('&notesMux2.out.notes')).toBe(true);
+			expect(isIntermodularReference('&module.sub.identifier')).toBe(true);
+		});
+
 		it('returns false for reference without ampersand', () => {
 			expect(isIntermodularReference('module.identifier')).toBe(false);
 		});
@@ -191,10 +196,6 @@ describe('memoryIdentifierHelpers', () => {
 		it('returns false for plain identifiers', () => {
 			expect(isIntermodularReference('&identifier')).toBe(false);
 			expect(isIntermodularReference('identifier')).toBe(false);
-		});
-
-		it('returns false for identifiers with multiple dots', () => {
-			expect(isIntermodularReference('&module.sub.identifier')).toBe(false);
 		});
 	});
 });
