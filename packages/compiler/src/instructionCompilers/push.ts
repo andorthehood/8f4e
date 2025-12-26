@@ -1,6 +1,7 @@
 import {
 	isMemoryPointerIdentifier,
 	hasMemoryReferencePrefix,
+	hasMemoryReferencePrefixStart,
 	extractMemoryReferenceBase,
 	hasElementCountPrefix,
 	extractElementCountBase,
@@ -76,7 +77,7 @@ const push: InstructionCompiler = withValidation(
 			} else if (hasMemoryReferencePrefix(argument.value)) {
 				const base = extractMemoryReferenceBase(argument.value);
 				let value = 0;
-				if (argument.value.startsWith('&')) {
+				if (hasMemoryReferencePrefixStart(argument.value)) {
 					value = getDataStructureByteAddress(memory, base);
 				} else {
 					value = getMemoryStringLastByteAddress(memory, base);

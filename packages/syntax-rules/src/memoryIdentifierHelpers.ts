@@ -6,6 +6,20 @@ export function hasMemoryReferencePrefix(name: string): boolean {
 }
 
 /**
+ * Checks if a string has a memory reference as prefix (&prefix)
+ */
+export function hasMemoryReferencePrefixStart(name: string): boolean {
+	return name.startsWith('&');
+}
+
+/**
+ * Checks if a string has a memory reference as suffix (suffix&)
+ */
+export function hasMemoryReferencePrefixEnd(name: string): boolean {
+	return name.endsWith('&');
+}
+
+/**
  * Extracts the base identifier from a memory reference identifier
  * Removes the & prefix or suffix
  */

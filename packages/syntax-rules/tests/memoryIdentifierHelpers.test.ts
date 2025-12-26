@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 
 import {
 	hasMemoryReferencePrefix,
+	hasMemoryReferencePrefixStart,
+	hasMemoryReferencePrefixEnd,
 	extractMemoryReferenceBase,
 	isMemoryPointerIdentifier,
 	extractMemoryPointerBase,
@@ -30,6 +32,34 @@ describe('memoryIdentifierHelpers', () => {
 		it('returns false for other prefixes', () => {
 			expect(hasMemoryReferencePrefix('*myVar')).toBe(false);
 			expect(hasMemoryReferencePrefix('$myVar')).toBe(false);
+		});
+	});
+
+	describe('hasMemoryReferencePrefixStart', () => {
+		it('detects & prefix', () => {
+			expect(hasMemoryReferencePrefixStart('&myVar')).toBe(true);
+		});
+
+		it('returns false for & suffix', () => {
+			expect(hasMemoryReferencePrefixStart('myVar&')).toBe(false);
+		});
+
+		it('returns false for plain identifiers', () => {
+			expect(hasMemoryReferencePrefixStart('myVar')).toBe(false);
+		});
+	});
+
+	describe('hasMemoryReferencePrefixEnd', () => {
+		it('detects & suffix', () => {
+			expect(hasMemoryReferencePrefixEnd('myVar&')).toBe(true);
+		});
+
+		it('returns false for & prefix', () => {
+			expect(hasMemoryReferencePrefixEnd('&myVar')).toBe(false);
+		});
+
+		it('returns false for plain identifiers', () => {
+			expect(hasMemoryReferencePrefixEnd('myVar')).toBe(false);
 		});
 	});
 

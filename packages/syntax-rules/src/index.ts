@@ -11,6 +11,8 @@ export { getBlockType, getModuleId, getFunctionId, type CodeBlockType } from './
 export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 export {
 	hasMemoryReferencePrefix,
+	hasMemoryReferencePrefixStart,
+	hasMemoryReferencePrefixEnd,
 	extractMemoryReferenceBase,
 	isMemoryPointerIdentifier,
 	extractMemoryPointerBase,
