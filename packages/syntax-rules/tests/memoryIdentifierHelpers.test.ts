@@ -9,6 +9,7 @@ import {
 	extractElementCountBase,
 	hasElementWordSizePrefix,
 	extractElementWordSizeBase,
+	isIntermodularReference,
 	getPointerDepth,
 } from '../src/memoryIdentifierHelpers';
 
@@ -43,6 +44,10 @@ describe('memoryIdentifierHelpers', () => {
 
 		it('returns unchanged for plain identifiers', () => {
 			expect(extractMemoryReferenceBase('myVar')).toBe('myVar');
+		});
+
+		it('handles both prefix and suffix by removing prefix only', () => {
+			expect(extractMemoryReferenceBase('&myVar&')).toBe('myVar&');
 		});
 	});
 
@@ -136,6 +141,34 @@ describe('memoryIdentifierHelpers', () => {
 
 		it('returns correct depth for multiple pointers', () => {
 			expect(getPointerDepth('int***')).toBe(3);
+		});
+	});
+
+	describe('isIntermodularReference', () => {
+		it('detects valid intermodular reference', () => {
+			expect(isIntermodularReference('&module.identifier')).toBe(true);
+		});
+
+		it('returns false for reference without ampersand', () => {
+			expect(isIntermodularReference('module.identifier')).toBe(false);
+		});
+
+		it('returns false for reference with trailing ampersand', () => {
+			expect(isIntermodularReference('&module.identifier&')).toBe(false);
+		});
+
+		it('returns false for reference with spaces', () => {
+			expect(isIntermodularReference('&module .identifier')).toBe(false);
+			expect(isIntermodularReference('&module. identifier')).toBe(false);
+		});
+
+		it('returns false for plain identifiers', () => {
+			expect(isIntermodularReference('&identifier')).toBe(false);
+			expect(isIntermodularReference('identifier')).toBe(false);
+		});
+
+		it('returns false for identifiers with multiple dots', () => {
+			expect(isIntermodularReference('&module.sub.identifier')).toBe(false);
 		});
 	});
 });

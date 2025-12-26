@@ -1,3 +1,5 @@
+import { isMemoryPointerIdentifier } from '@8f4e/syntax-rules';
+
 import { withValidation } from '../withValidation';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
@@ -7,7 +9,6 @@ import {
 	getDataStructureByteAddress,
 	getMemoryStringLastByteAddress,
 	isMemoryIdentifier,
-	isMemoryPointer,
 	isMemoryReferenceIdentifier,
 	isElementCountIdentifier,
 	isElementWordSizeIdentifier,
@@ -53,7 +54,7 @@ const push: InstructionCompiler = withValidation(
 					...i32const(memoryItem.byteAddress),
 					...(memoryItem.isInteger ? i32load() : f32load()),
 				]);
-			} else if (isMemoryPointer(memory, argument.value)) {
+			} else if (isMemoryPointerIdentifier(argument.value)) {
 				const memoryItem = getDataStructure(memory, argument.value.substring(1));
 
 				if (!memoryItem) {
