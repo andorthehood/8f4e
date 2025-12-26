@@ -18,6 +18,7 @@ export {
 	extractElementCountBase,
 	hasElementWordSizePrefix,
 	extractElementWordSizeBase,
+	isIntermodularReference,
 	getPointerDepth,
 } from './memoryIdentifierHelpers';
 export {

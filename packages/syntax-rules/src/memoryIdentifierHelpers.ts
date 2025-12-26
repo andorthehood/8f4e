@@ -65,6 +65,13 @@ export function extractElementWordSizeBase(name: string): string {
 }
 
 /**
+ * Checks if a string matches the intermodular reference pattern (&module.identifier)
+ */
+export function isIntermodularReference(value: string): boolean {
+	return /^&[^&.\s]+\.[^&.\s]+$/.test(value);
+}
+
+/**
  * Parses pointer depth from an instruction string (e.g., "int**" returns 2)
  */
 export function getPointerDepth(instruction: string): number {
