@@ -3,8 +3,8 @@ title: 'TODO: Extract syntax parsing and errors into syntax-rules'
 priority: Medium
 effort: 1-2 days
 created: 2025-12-25
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-26
 ---
 
 # TODO: Extract syntax parsing and errors into syntax-rules
@@ -22,11 +22,11 @@ Move syntax-only parsing and validation into `@8f4e/syntax-rules`, along with a 
 ### Step 1: Add syntax parsing helpers and errors
 - Introduce string-shape helpers for memory identifier prefixes and pointer depth in `@8f4e/syntax-rules`.
 - Add a syntax-oriented argument parser for memory instructions that classifies argument shapes without touching compiler state.
-- Define a `SyntaxRulesError` (and codes) for pure syntax failures.
+- Define a `SyntaxError` (and codes) for pure syntax failures.
 
 ### Step 2: Refactor compiler utilities
 - Split `parseMemoryInstructionArguments` into syntax and semantic layers.
-- Catch `SyntaxRulesError` in the compiler and wrap it with existing compiler error formatting.
+- Catch `SyntaxError` in the compiler and wrap it with existing compiler error formatting.
 - Keep memory/const lookups and module/function validation inside compiler.
 
 ### Step 3: Update tests and docs
