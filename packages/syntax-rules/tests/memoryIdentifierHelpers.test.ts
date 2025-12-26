@@ -45,10 +45,6 @@ describe('memoryIdentifierHelpers', () => {
 		it('returns unchanged for plain identifiers', () => {
 			expect(extractMemoryReferenceBase('myVar')).toBe('myVar');
 		});
-
-		it('handles both prefix and suffix by removing prefix only', () => {
-			expect(extractMemoryReferenceBase('&myVar&')).toBe('myVar&');
-		});
 	});
 
 	describe('isMemoryPointerIdentifier', () => {

@@ -1,10 +1,4 @@
 import {
-	hasMemoryReferencePrefix,
-	extractMemoryReferenceBase,
-	hasElementCountPrefix,
-	extractElementCountBase,
-	hasElementWordSizePrefix,
-	extractElementWordSizeBase,
 	getPointerDepth as getPointerDepthFromSyntax,
 	parseMemoryInstructionArgumentsShape,
 	SyntaxRulesError,
@@ -18,18 +12,6 @@ import type { BlockStack, CompilationContext, MemoryMap, StackItem, Argument } f
 
 export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return Object.hasOwn(memoryMap, name);
-}
-
-export function isMemoryReferenceIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return hasMemoryReferencePrefix(name) && Object.hasOwn(memoryMap, extractMemoryReferenceBase(name));
-}
-
-export function isElementCountIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return hasElementCountPrefix(name) && Object.hasOwn(memoryMap, extractElementCountBase(name));
-}
-
-export function isElementWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
-	return hasElementWordSizePrefix(name) && Object.hasOwn(memoryMap, extractElementWordSizeBase(name));
 }
 
 export function getDataStructure(memoryMap: MemoryMap, id: string) {
