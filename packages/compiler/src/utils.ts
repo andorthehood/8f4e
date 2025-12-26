@@ -1,8 +1,6 @@
 import {
 	hasMemoryReferencePrefix,
 	extractMemoryReferenceBase,
-	isMemoryPointerIdentifier,
-	extractMemoryPointerBase,
 	hasElementCountPrefix,
 	extractElementCountBase,
 	hasElementWordSizePrefix,
@@ -24,10 +22,6 @@ export function isMemoryIdentifier(memoryMap: MemoryMap, name: string): boolean 
 
 export function isMemoryReferenceIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return hasMemoryReferencePrefix(name) && Object.hasOwn(memoryMap, extractMemoryReferenceBase(name));
-}
-
-export function isMemoryPointer(memoryMap: MemoryMap, name: string): boolean {
-	return isMemoryPointerIdentifier(name) && Object.hasOwn(memoryMap, extractMemoryPointerBase(name));
 }
 
 export function isElementCountIdentifier(memoryMap: MemoryMap, name: string): boolean {

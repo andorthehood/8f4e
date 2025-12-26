@@ -85,6 +85,34 @@ describe('parseMemoryInstructionArgumentsShape', () => {
 		});
 	});
 
+	it('does not parse intermodular reference with trailing ampersand', () => {
+		const result = parseMemoryInstructionArgumentsShape([
+			{ type: ArgumentType.IDENTIFIER, value: 'counter' },
+			{ type: ArgumentType.IDENTIFIER, value: '&module.identifier&' },
+		]);
+
+		// Should be classified as memory-reference instead
+		expect(result.secondArg).toEqual({
+			type: 'memory-reference',
+			base: 'module.identifier&',
+			pattern: '&module.identifier&',
+		});
+	});
+
+	it('does not parse invalid intermodular reference without leading ampersand', () => {
+		const result = parseMemoryInstructionArgumentsShape([
+			{ type: ArgumentType.IDENTIFIER, value: 'counter' },
+			{ type: ArgumentType.IDENTIFIER, value: 'module.identifier&' },
+		]);
+
+		// Should be classified as memory-reference due to trailing &
+		expect(result.secondArg).toEqual({
+			type: 'memory-reference',
+			base: 'module.identifier',
+			pattern: 'module.identifier&',
+		});
+	});
+
 	it('parses literal second argument', () => {
 		const result = parseMemoryInstructionArgumentsShape([
 			{ type: ArgumentType.IDENTIFIER, value: 'myVar' },
