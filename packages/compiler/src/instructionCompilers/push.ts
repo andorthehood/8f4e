@@ -74,7 +74,10 @@ const push: InstructionCompiler = withValidation(
 					...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
 					...(memoryItem.isPointingToInteger ? i32load() : f32load()),
 				]);
-			} else if (hasMemoryReferencePrefix(argument.value)) {
+			} else if (
+				hasMemoryReferencePrefix(argument.value) &&
+				Object.hasOwn(memory, extractMemoryReferenceBase(argument.value))
+			) {
 				const base = extractMemoryReferenceBase(argument.value);
 				let value = 0;
 				if (hasMemoryReferencePrefixStart(argument.value)) {
@@ -84,11 +87,17 @@ const push: InstructionCompiler = withValidation(
 				}
 				context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
 				return saveByteCode(context, i32const(value));
-			} else if (hasElementCountPrefix(argument.value)) {
+			} else if (
+				hasElementCountPrefix(argument.value) &&
+				Object.hasOwn(memory, extractElementCountBase(argument.value))
+			) {
 				const base = extractElementCountBase(argument.value);
 				context.stack.push({ isInteger: true, isNonZero: true });
 				return saveByteCode(context, i32const(getElementCount(memory, base)));
-			} else if (hasElementWordSizePrefix(argument.value)) {
+			} else if (
+				hasElementWordSizePrefix(argument.value) &&
+				Object.hasOwn(memory, extractElementWordSizeBase(argument.value))
+			) {
 				const base = extractElementWordSizeBase(argument.value);
 				context.stack.push({ isInteger: true, isNonZero: true });
 				return saveByteCode(context, i32const(getElementWordSize(memory, base)));
