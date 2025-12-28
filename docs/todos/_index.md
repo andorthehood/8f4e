@@ -24,6 +24,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 144 | Infer Validation Errors from Operand Rules | 🟡 | 4-6h | 2025-12-20 | Remove explicit type error overrides in `withValidation` and infer errors from operand rules |
 | 146 | Investigate Index Arithmetic Support | 🟡 | 2-4h | 2025-12-25 | Assess impact and effort to add C-style index arithmetic beyond byte-only addressing |
 | 149 | Extract Syntax Parsing and Errors into syntax-rules | 🟡 | 1-2d | 2025-12-25 | Move syntax-only parsing and errors into `@8f4e/syntax-rules`, wrap in compiler |
+| 150 | Add Test Module Type | 🟡 | 2-4d | 2025-12-28 | Introduce a test-specific module type with compiler/runtime support and editor tooling for automated verification |
 | 002 | Enable Strict TypeScript in Editor Package | 🟡 | 2-3d | 2025-08-23 | Currently has 52 type errors when strict settings enabled, causing missing null checks and implicit any types that reduce type safety and developer experience |
 | 025 | Separate Editor View Layer into Standalone Package | 🟡 | 3-5d | 2025-08-26 | Extract Canvas-based rendering and sprite management into `@8f4e/browser-view` package to make core editor a pure state machine compatible with any renderer |
 | 026 | Separate Editor User Interactions into Standalone Package | 🟡 | 2-3d | 2025-08-26 | Extract DOM event handling and input logic into `@8f4e/browser-input` package to enable alternative input systems (touch, joystick, terminal) |
