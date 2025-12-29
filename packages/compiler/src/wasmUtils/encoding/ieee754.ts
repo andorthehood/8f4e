@@ -1,5 +1,6 @@
 /**
  * Converts a JavaScript number to IEEE 754 single-precision (32-bit) floating-point format.
+ * Returns bytes in little-endian format.
  *
  * @param n - The number to convert
  * @returns A Uint8Array containing the little-endian byte representation
