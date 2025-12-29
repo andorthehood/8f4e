@@ -7,6 +7,7 @@ Its primary target is the WebAssembly virtual machine, as I wanted an efficient 
 ## Table of Contents
 
 - [Stack Oriented Execution Model](#stack-oriented-execution-model)
+- [Instruction Reference](#instruction-reference)
 - [Memory Access and Pointers](#memory-access-and-pointers)
 - [Endless Execution Loop](#endless-execution-loop)
 - [Memory Layout and Allocation](#memory-layout-and-allocation)
@@ -38,6 +39,8 @@ push 10
 div
 ; Now 5 again
 ```
+
+The full instruction set reference lives alongside the compiler docs. See [Instruction Reference](../packages/compiler/docs/instructions.md).
 
 ## Memory Access and Pointers
 
