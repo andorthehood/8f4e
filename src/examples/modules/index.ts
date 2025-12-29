@@ -104,6 +104,7 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'peakHolderPositiveFloat', title: 'Peak Holder (Positive, Float)', category: 'Debug Tools' },
 	{ slug: 'quantizer', title: 'Quantizer', category: 'Quantizers' },
 	{ slug: 'reverb', title: 'Reverb', category: 'Effects' },
+	{ slug: 'ringModulator', title: 'Ring Modulator', category: 'Modulation' },
 	{ slug: 'sampleAndHoldFloat', title: 'Sample & Hold (Float)', category: 'Utils' },
 	{ slug: 'sampleAndHoldInt', title: 'Sample & Hold (Int)', category: 'Utils' },
 	{ slug: 'sawSignedFloat', title: 'Saw (Signed, Float)', category: 'Oscillators' },
