@@ -1,35 +1,32 @@
-import { ErrorCode, getError } from '../errors';
-import {
-	areAllOperandsFloats,
-	areAllOperandsIntegers,
-	isInstructionInsideModuleOrFunction,
-	saveByteCode,
-} from '../utils';
+import { areAllOperandsIntegers, saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
-const greaterOrEqual: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
+/**
+ * Instruction compiler for `greaterOrEqual`.
+ * @see [Instruction docs](../../docs/instructions/comparison.md)
+ */
+const greaterOrEqual: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+		minOperands: 2,
+		operandTypes: 'matching',
+	},
+	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 2 operands exist
+		const operand2 = context.stack.pop()!;
+		const operand1 = context.stack.pop()!;
 
-	const operand1 = context.stack.pop();
-	const operand2 = context.stack.pop();
-
-	if (!operand1 || !operand2) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
+		if (areAllOperandsIntegers(operand1, operand2)) {
+			context.stack.push({ isInteger: true, isNonZero: false });
+			return saveByteCode(context, [WASMInstruction.I32_GE_S]);
+		} else {
+			context.stack.push({ isInteger: true, isNonZero: false });
+			return saveByteCode(context, [WASMInstruction.F32_GE]);
+		}
 	}
-
-	if (areAllOperandsIntegers(operand1, operand2)) {
-		context.stack.push({ isInteger: true, isNonZero: false });
-		return saveByteCode(context, [WASMInstruction.I32_GE_S]);
-	} else if (areAllOperandsFloats(operand1, operand2)) {
-		context.stack.push({ isInteger: true, isNonZero: false });
-		return saveByteCode(context, [WASMInstruction.F32_GE]);
-	} else {
-		throw getError(ErrorCode.UNMATCHING_OPERANDS, line, context);
-	}
-};
+);
 
 export default greaterOrEqual;

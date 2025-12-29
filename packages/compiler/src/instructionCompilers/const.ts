@@ -1,8 +1,14 @@
+import { isConstantName } from '@8f4e/syntax-rules';
+
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `const`.
+ * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
+ */
 const _const: InstructionCompiler = function (line, context) {
 	// Constants can be declared at any level (top-level, in modules, or in functions)
 
@@ -11,6 +17,12 @@ const _const: InstructionCompiler = function (line, context) {
 	}
 
 	if (line.arguments[0].type === ArgumentType.LITERAL) {
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
+	}
+
+	const constantName = line.arguments[0].value;
+
+	if (!isConstantName(constantName)) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 	}
 
@@ -26,7 +38,7 @@ const _const: InstructionCompiler = function (line, context) {
 		value = line.arguments[1];
 	}
 
-	context.namespace.consts[line.arguments[0].value] = value;
+	context.namespace.consts[constantName] = value;
 
 	return context;
 };

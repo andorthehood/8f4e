@@ -1,27 +1,27 @@
-import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers, isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
+import { saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
-const round: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+/**
+ * Instruction compiler for `round`.
+ * @see [Instruction docs](../../docs/instructions/math-helpers.md)
+ */
+const round: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+		minOperands: 1,
+		operandTypes: 'float',
+	},
+	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 1 operand exists
+		context.stack.pop()!;
+
+		context.stack.push({ isInteger: false, isNonZero: false });
+
+		return saveByteCode(context, [WASMInstruction.F32_NEAREST]);
 	}
-
-	const operand = context.stack.pop();
-
-	if (!operand) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	if (areAllOperandsIntegers(operand)) {
-		throw getError(ErrorCode.EXPECTED_FLOAT_OPERAND, line, context);
-	}
-
-	context.stack.push({ isInteger: false, isNonZero: false });
-
-	return saveByteCode(context, [WASMInstruction.F32_NEAREST]);
-};
+);
 
 export default round;

@@ -4,6 +4,15 @@ import { BLOCK_TYPE, ArgumentType } from '../types';
 
 import type { InstructionCompiler } from '../types';
 
+// Note: This instruction does not use withValidation because it requires inverted scope validation:
+// it must NOT be inside a module or function, which is the opposite of the standard scope rules
+// that withValidation supports. The withValidation helper is designed for positive scope assertions
+// (must be inside X), not negative ones (must NOT be inside X).
+
+/**
+ * Instruction compiler for `function`.
+ * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
+ */
 const _function: InstructionCompiler = function (line, context) {
 	if (isInstructionIsInsideAModule(context.blockStack) || isInstructionInsideFunction(context.blockStack)) {
 		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);

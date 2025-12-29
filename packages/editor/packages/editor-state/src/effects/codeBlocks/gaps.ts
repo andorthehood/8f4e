@@ -1,4 +1,4 @@
-import instructionParser from './codeBlockDecorators/instructionParser';
+import { instructionParser } from '@8f4e/syntax-rules';
 
 import type { CodeBlockGraphicData } from '../../types';
 

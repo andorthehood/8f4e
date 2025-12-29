@@ -1,5 +1,3 @@
-import { CompiledModuleLookup } from '@8f4e/compiler';
-
 import resetMidi from './resetMidi';
 import findMidiNoteOutModules from './findMidiNoteOutModules';
 import broadcastMidiMessages from './broadcastMidiMessages';
@@ -8,6 +6,7 @@ import broadcastMidiCCMessages from './broadcastMidiCCMessages';
 import findMidiCCInputModules from './findMidiCCInputModules';
 import createModule from './createModule';
 
+import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { MidiCCModuleAddresses } from './types';
 
 let interval: ReturnType<typeof setInterval>;

@@ -32,7 +32,8 @@ import shiftRight from './shiftRight';
 import remainder from './remainder';
 import _module from './module';
 import moduleEnd from './moduleEnd';
-import memory from './memory';
+import int from './int';
+import float from './float';
 import castToInt from './castToInt';
 import castToFloat from './castToFloat';
 import skip from './skip';
@@ -41,6 +42,7 @@ import drop from './drop';
 import clearStack from './clearStack';
 import risingEdge from './risingEdge';
 import fallingEdge from './fallingEdge';
+import hasChanged from './hasChanged';
 import dup from './dup';
 import swap from './swap';
 import cycle from './cycle';
@@ -103,12 +105,12 @@ const instructions = {
 	remainder,
 	module: _module,
 	moduleEnd,
-	int: memory,
-	float: memory,
-	'int*': memory,
-	'int**': memory,
-	'float*': memory,
-	'float**': memory,
+	int: int,
+	float: float,
+	'int*': int,
+	'int**': int,
+	'float*': float,
+	'float**': float,
 	'float[]': buffer,
 	'int[]': buffer,
 	'int8[]': buffer,
@@ -125,6 +127,7 @@ const instructions = {
 	clearStack,
 	risingEdge,
 	fallingEdge,
+	hasChanged,
 	dup,
 	swap,
 	cycle,
