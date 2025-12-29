@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { instructionParser } from '@8f4e/syntax-rules';
+import { instructionParser } from '@8f4e/compiler/syntax';
 
 describe('instructionParser', () => {
 	it('should parse instruction with no arguments', () => {
