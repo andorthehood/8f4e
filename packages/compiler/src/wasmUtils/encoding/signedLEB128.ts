@@ -18,7 +18,7 @@ export function signedLEB128(n: number): number[] {
 		if (isNegative) {
 			n = n | -(0b1 << (bitCount - 8));
 		}
-		if ((n === 0 && (byte & 0b1000000) === 0) || (n === -1 && (byte & 0b1000000) == 0b1000000)) {
+		if ((n === 0 && (byte & 0b1000000) === 0) || (n === -1 && (byte & 0b1000000) === 0b1000000)) {
 			more = false;
 		} else {
 			byte |= 0b10000000;
