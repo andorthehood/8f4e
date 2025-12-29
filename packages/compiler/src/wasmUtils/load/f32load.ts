@@ -1,4 +1,4 @@
-import { unsignedLEB128 } from '../unsignedLEB128';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
 import Instruction from '../wasmInstruction';
 
 /**

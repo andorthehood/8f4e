@@ -1,5 +1,5 @@
-import { unsignedLEB128, createVector } from './typeHelpers';
-import { Section } from './section';
+import { unsignedLEB128, createVector } from '../typeHelpers';
+import { Section } from '../section';
 
 /**
  * Creates a WebAssembly memory section defining linear memory size limits.
