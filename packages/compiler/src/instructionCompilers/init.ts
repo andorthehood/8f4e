@@ -4,6 +4,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `init`.
+ * @see [Instruction docs](../../docs/instructions/memory.md)
+ */
 const init: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

@@ -4,6 +4,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `initBlockEnd`.
+ * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
+ */
 const initBlockEnd: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `round`.
+ * @see [Instruction docs](../../docs/instructions/math-helpers.md)
+ */
 const round: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

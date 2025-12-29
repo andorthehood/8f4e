@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `equal`.
+ * @see [Instruction docs](../../docs/instructions/comparison.md)
+ */
 const equal: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',
