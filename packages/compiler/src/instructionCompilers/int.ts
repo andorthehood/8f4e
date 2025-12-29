@@ -9,6 +9,10 @@ import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
 import type { InstructionCompiler, MemoryTypes } from '../types';
 
+/**
+ * Instruction compiler for `int`.
+ * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
+ */
 const int: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

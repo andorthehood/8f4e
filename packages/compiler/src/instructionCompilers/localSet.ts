@@ -6,6 +6,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `localSet`.
+ * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
+ */
 const _localSet: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

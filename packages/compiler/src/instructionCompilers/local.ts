@@ -4,6 +4,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `local`.
+ * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
+ */
 const local: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

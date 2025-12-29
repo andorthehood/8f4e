@@ -6,6 +6,11 @@ import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
 import type { InstructionCompiler, MemoryTypes } from '../types';
 
+/**
+ * Instruction compiler for `int[]` and `float[]`.
+ * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
+ * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
+ */
 const buffer: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

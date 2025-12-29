@@ -3,6 +3,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `risingEdge`.
+ * @see [Instruction docs](../../docs/instructions/signal-helpers.md)
+ */
 const risingEdge: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

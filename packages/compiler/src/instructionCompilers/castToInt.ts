@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `castToInt`.
+ * @see [Instruction docs](../../docs/instructions/conversion.md)
+ */
 const castToInt: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

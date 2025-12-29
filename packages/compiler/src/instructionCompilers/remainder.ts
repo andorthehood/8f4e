@@ -5,6 +5,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `remainder`.
+ * @see [Instruction docs](../../docs/instructions/arithmetic.md)
+ */
 const remainder: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

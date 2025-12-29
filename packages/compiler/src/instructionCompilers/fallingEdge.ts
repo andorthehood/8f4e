@@ -3,6 +3,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `fallingEdge`.
+ * @see [Instruction docs](../../docs/instructions/signal-helpers.md)
+ */
 const fallingEdge: InstructionCompiler = withValidation(
 	{
 		scope: 'module',
