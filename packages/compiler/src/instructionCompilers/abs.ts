@@ -5,6 +5,10 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `abs`.
+ * @see [Instruction docs](../../docs/instructions/math-helpers.md)
+ */
 const abs: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

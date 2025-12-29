@@ -3,6 +3,10 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `dup`.
+ * @see [Instruction docs](../../docs/instructions/stack.md)
+ */
 const dup: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

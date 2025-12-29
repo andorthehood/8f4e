@@ -3,6 +3,10 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `hasChanged`.
+ * @see [Instruction docs](../../docs/instructions/signal-helpers.md)
+ */
 const hasChanged: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

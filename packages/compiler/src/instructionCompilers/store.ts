@@ -6,6 +6,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `store`.
+ * @see [Instruction docs](../../docs/instructions/memory.md)
+ */
 const store: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

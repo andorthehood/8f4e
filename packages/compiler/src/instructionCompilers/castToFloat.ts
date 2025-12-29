@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `castToFloat`.
+ * @see [Instruction docs](../../docs/instructions/conversion.md)
+ */
 const castToFloat: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

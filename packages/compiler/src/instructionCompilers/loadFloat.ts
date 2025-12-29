@@ -5,6 +5,10 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `loadFloat`.
+ * @see [Instruction docs](../../docs/instructions/memory.md)
+ */
 const loadFloat: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

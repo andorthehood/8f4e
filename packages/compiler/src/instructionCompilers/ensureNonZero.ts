@@ -4,6 +4,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `ensureNonZero`.
+ * @see [Instruction docs](../../docs/instructions/math-helpers.md)
+ */
 const ensureNonZero: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',
