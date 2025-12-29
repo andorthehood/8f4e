@@ -1,3 +1,5 @@
+import { buildCategoryTree, findNodeByPath } from './categoryTree';
+
 import type { CodeBlockGraphicData, MenuGenerator, ContextMenuItem } from '../../types';
 
 export const mainMenu: MenuGenerator = state => [
@@ -44,7 +46,7 @@ export const mainMenu: MenuGenerator = state => [
 	{
 		title: 'Open Project',
 		action: 'openSubMenu',
-		payload: { menu: 'projectMenu' },
+		payload: { menu: 'projectCategoriesMenu' },
 		close: false,
 		disabled: !state.callbacks.getListOfProjects,
 	},
@@ -135,34 +137,43 @@ export const moduleMenu: MenuGenerator = state => {
 	];
 };
 
-export const moduleCategoriesMenu: MenuGenerator = async state => {
+export const moduleCategoriesMenu: MenuGenerator = async (state, payload = {}) => {
 	if (!state.callbacks.getListOfModules) {
 		return [];
 	}
-	const modules = await state.callbacks.getListOfModules();
-	const categories = [...new Set(modules.map(module => module.category))];
-	return categories.map(category => {
-		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
-	});
-};
 
-export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
-	const { category } = payload as { category: string };
-	if (!state.callbacks.getListOfModules || !state.callbacks.getModule) {
+	const { categoryPath = '' } = payload as { categoryPath?: string };
+	const modules = await state.callbacks.getListOfModules();
+	const tree = buildCategoryTree(modules);
+
+	// Find the current node in the tree
+	const currentNode = findNodeByPath(tree, categoryPath);
+	if (!currentNode) {
 		return [];
 	}
-	const modules = await state.callbacks.getListOfModules();
-	const filteredModules = modules.filter(module => module.category === category);
 
 	const menuItems: ContextMenuItem[] = [];
-	for (const moduleMetadata of filteredModules) {
+
+	// Add submenu items for child categories
+	for (const childNode of currentNode.children) {
 		menuItems.push({
-			title: moduleMetadata.title,
+			title: childNode.label,
+			action: 'openSubMenu',
+			payload: { menu: 'moduleCategoriesMenu', categoryPath: childNode.path },
+			close: false,
+		});
+	}
+
+	// Add leaf items (modules) at this level
+	for (const item of currentNode.items) {
+		menuItems.push({
+			title: item.title,
 			action: 'addCodeBlockBySlug',
-			payload: { codeBlockSlug: moduleMetadata.slug },
+			payload: { codeBlockSlug: item.slug },
 			close: true,
 		});
 	}
+
 	return menuItems;
 };
 
@@ -229,19 +240,42 @@ export const fontMenu: MenuGenerator = () => [
 	{ title: '6x10', selector: 'editorSettings.font', value: '6x10', close: false },
 ];
 
-export const projectMenu: MenuGenerator = async state => {
+export const projectCategoriesMenu: MenuGenerator = async (state, payload = {}) => {
 	if (!state.callbacks.getListOfProjects || !state.callbacks.getProject) {
 		return [];
 	}
+
+	const { categoryPath = '' } = payload as { categoryPath?: string };
 	const projects = await state.callbacks.getListOfProjects();
+	const tree = buildCategoryTree(projects);
+
+	// Find the current node in the tree
+	const currentNode = findNodeByPath(tree, categoryPath);
+	if (!currentNode) {
+		return [];
+	}
+
 	const menuItems: ContextMenuItem[] = [];
-	for (const projectMetadata of projects) {
+
+	// Add submenu items for child categories
+	for (const childNode of currentNode.children) {
 		menuItems.push({
-			title: projectMetadata.title,
+			title: childNode.label,
+			action: 'openSubMenu',
+			payload: { menu: 'projectCategoriesMenu', categoryPath: childNode.path },
+			close: false,
+		});
+	}
+
+	// Add leaf items (projects) at this level
+	for (const item of currentNode.items) {
+		menuItems.push({
+			title: item.title,
 			action: 'loadProjectBySlug',
-			payload: { projectSlug: projectMetadata.slug },
+			payload: { projectSlug: item.slug },
 			close: true,
 		});
 	}
+
 	return menuItems;
 };
