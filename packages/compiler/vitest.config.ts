@@ -3,7 +3,7 @@ import { createNodePreset } from '@8f4e/config/vitest';
 
 export default defineConfig(
 	createNodePreset({
-		include: ['tests/**/*.test.ts'],
+		include: ['tests/**/*.test.ts', 'src/**/*.ts'],
 		additionalExclude: ['**/testUtils.ts', '**/__fixtures__/**'],
 		typecheckEnabled: true,
 	})
