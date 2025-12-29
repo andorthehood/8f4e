@@ -1,5 +1,4 @@
-import { isConstantName } from '@8f4e/syntax-rules';
-
+import { isConstantName } from '../syntax';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 
