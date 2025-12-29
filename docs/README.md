@@ -4,6 +4,16 @@
 
 Its primary target is the WebAssembly virtual machine, as I wanted an efficient yet portable tool for real time audio signal generation and processing.
 
+## Table of Contents
+
+- [Stack Oriented Execution Model](#stack-oriented-execution-model)
+- [Memory Access and Pointers](#memory-access-and-pointers)
+- [Endless Execution Loop](#endless-execution-loop)
+- [Memory Layout and Allocation](#memory-layout-and-allocation)
+- [Modules and Execution Order](#modules-and-execution-order)
+- [Live Variable Editing](#live-variable-editing)
+- [Visibility and Memory Safety](#visibility-and-memory-safety)
+
 ## Stack Oriented Execution Model
 
 Stack oriented programming means that, instead of using registers, instructions take their operands from a stack and push their results back onto the same stack for the next instruction.
