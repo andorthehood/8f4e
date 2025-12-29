@@ -3,8 +3,8 @@ title: 'TODO: Export Syntax Helpers via Compiler Subpath'
 priority: Medium
 effort: 1-2d
 created: 2025-12-29
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-29
 ---
 
 # TODO: Export Syntax Helpers via Compiler Subpath
@@ -35,9 +35,9 @@ Move syntax-related helpers into a dedicated folder inside the compiler package 
 
 ## Success Criteria
 
-- [ ] `@8f4e/compiler/syntax` can be imported without bundling the compiler entrypoint
-- [ ] Syntax helpers remain independently testable
-- [ ] `@8f4e/editor-state` uses syntax helpers without a compiler dependency
+- [x] `@8f4e/compiler/syntax` can be imported without bundling the compiler entrypoint
+- [x] Syntax helpers remain independently testable
+- [x] `@8f4e/editor-state` uses syntax helpers without a compiler dependency
 
 ## Affected Components
 
@@ -58,3 +58,13 @@ Move syntax-related helpers into a dedicated folder inside the compiler package 
 ## Notes
 
 - Goal is to merge syntax helpers into compiler while preserving lightweight consumption via subpath exports
+- **Implementation completed on 2025-12-29**:
+  - Created `packages/compiler/src/syntax/` directory with all syntax-related files from `@8f4e/syntax-rules`
+  - Added `./syntax` subpath export to `packages/compiler/package.json`
+  - Updated all internal compiler imports to use local `./syntax/` paths
+  - Migrated all `@8f4e/editor-state` imports from `@8f4e/syntax-rules` to `@8f4e/compiler/syntax`
+  - Removed `@8f4e/syntax-rules` dependency from both compiler and editor-state packages
+  - Added `@8f4e/compiler/syntax` path alias to root `tsconfig.json`
+  - Verified that syntax helpers have no dependencies on compiler internals
+  - All tests pass for both compiler and editor-state packages
+  - Full build successful with proper subpath export resolution in bundler context
