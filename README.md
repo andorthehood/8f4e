@@ -4,7 +4,7 @@
 
 8f4e is a stack oriented programming language that I created to perform generative music at algorave events. I wanted an efficient and portable tool for real time audio signal generation and processing. This monorepo contains the compiler, runtimes, and a browser based visual code editor I designed specifically for the 8f4e language.
 
-More details about the language design and documentation can be found at [https://8f4e.com](https://8f4e.com)
+More details about the language design and documentation can be found at [./docs/README.md](./docs/README.md)
 
 ## Package Architecture
 
