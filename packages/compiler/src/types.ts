@@ -1,5 +1,4 @@
-import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier } from '@8f4e/syntax-rules';
-
+import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier } from './syntax';
 import { Instruction } from './instructionCompilers';
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';

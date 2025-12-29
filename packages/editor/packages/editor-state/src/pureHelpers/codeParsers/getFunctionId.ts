@@ -1,3 +1,3 @@
-import { getFunctionId } from '@8f4e/syntax-rules';
+import { getFunctionId } from '@8f4e/compiler/syntax';
 
 export default getFunctionId;
