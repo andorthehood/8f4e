@@ -1,4 +1,4 @@
-import { instructionParser } from '@8f4e/syntax-rules';
+import { instructionParser } from '@8f4e/compiler/syntax';
 
 import { EventDispatcher } from '../../types';
 import getModuleId from '../../pureHelpers/codeParsers/getModuleId';
