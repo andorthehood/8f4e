@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `add`.
+ * @see [Instruction docs](../../docs/instructions/arithmetic.md)
+ */
 const add: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

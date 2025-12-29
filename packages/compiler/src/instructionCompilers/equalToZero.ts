@@ -5,6 +5,10 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `equalToZero`.
+ * @see [Instruction docs](../../docs/instructions/comparison.md)
+ */
 const equalToZero: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

@@ -3,6 +3,10 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `swap`.
+ * @see [Instruction docs](../../docs/instructions/stack.md)
+ */
 const swap: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

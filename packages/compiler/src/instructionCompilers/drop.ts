@@ -4,6 +4,10 @@ import { saveByteCode } from '../utils';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `drop`.
+ * @see [Instruction docs](../../docs/instructions/stack.md)
+ */
 const drop: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

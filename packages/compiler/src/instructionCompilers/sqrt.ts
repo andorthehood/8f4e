@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `sqrt`.
+ * @see [Instruction docs](../../docs/instructions/math-helpers.md)
+ */
 const sqrt: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

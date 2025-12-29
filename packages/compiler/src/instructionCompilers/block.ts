@@ -7,6 +7,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `block`.
+ * @see [Instruction docs](../../docs/instructions/control-flow.md)
+ */
 const block: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

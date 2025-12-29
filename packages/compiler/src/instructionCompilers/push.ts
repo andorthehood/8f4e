@@ -26,6 +26,10 @@ function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 	}
 }
 
+/**
+ * Instruction compiler for `push`.
+ * @see [Instruction docs](../../docs/instructions/stack.md)
+ */
 const push: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

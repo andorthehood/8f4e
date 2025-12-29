@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `xor`.
+ * @see [Instruction docs](../../docs/instructions/bitwise.md)
+ */
 const xor: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

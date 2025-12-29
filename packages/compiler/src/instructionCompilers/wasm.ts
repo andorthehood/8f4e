@@ -4,6 +4,10 @@ import { saveByteCode } from '../utils';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `wasm`.
+ * @see [Instruction docs](../../docs/instructions/low-level.md)
+ */
 const wasm: InstructionCompiler = function (line, context) {
 	if (!line.arguments[0]) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
