@@ -1,3 +1,5 @@
+import { buildCategoryTree, type CategoryItem } from './categoryTree';
+
 import type { CodeBlockGraphicData, MenuGenerator, ContextMenuItem } from '../../types';
 
 export const mainMenu: MenuGenerator = state => [
@@ -44,7 +46,7 @@ export const mainMenu: MenuGenerator = state => [
 	{
 		title: 'Open Project',
 		action: 'openSubMenu',
-		payload: { menu: 'projectMenu' },
+		payload: { menu: 'projectCategoriesMenu' },
 		close: false,
 		disabled: !state.callbacks.getListOfProjects,
 	},
@@ -140,30 +142,95 @@ export const moduleCategoriesMenu: MenuGenerator = async state => {
 		return [];
 	}
 	const modules = await state.callbacks.getListOfModules();
-	const categories = [...new Set(modules.map(module => module.category))];
-	return categories.map(category => {
-		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
-	});
+	const tree = buildCategoryTree(modules as CategoryItem[]);
+
+	function buildMenuFromTree(nodes: ReturnType<typeof buildCategoryTree>): ContextMenuItem[] {
+		const items: ContextMenuItem[] = [];
+
+		for (const node of nodes) {
+			if (node.children.length > 0 || node.items.length > 0) {
+				if (node.items.length > 0 && node.children.length === 0) {
+					items.push({
+						title: node.label,
+						action: 'openSubMenu',
+						payload: { menu: 'builtInModuleMenu', categoryPath: node.path },
+						close: false,
+					});
+				} else if (node.children.length > 0) {
+					items.push({
+						title: node.label,
+						action: 'openSubMenu',
+						payload: { menu: 'moduleCategoriesMenu', categoryPath: node.path },
+						close: false,
+					});
+				}
+			}
+		}
+
+		return items;
+	}
+
+	return buildMenuFromTree(tree);
 };
 
 export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
-	const { category } = payload as { category: string };
+	const { categoryPath } = payload as { categoryPath?: string };
 	if (!state.callbacks.getListOfModules || !state.callbacks.getModule) {
 		return [];
 	}
 	const modules = await state.callbacks.getListOfModules();
-	const filteredModules = modules.filter(module => module.category === category);
+	const tree = buildCategoryTree(modules as CategoryItem[]);
 
-	const menuItems: ContextMenuItem[] = [];
-	for (const moduleMetadata of filteredModules) {
-		menuItems.push({
-			title: moduleMetadata.title,
-			action: 'addCodeBlockBySlug',
-			payload: { codeBlockSlug: moduleMetadata.slug },
-			close: true,
-		});
+	function findNodeByPath(
+		nodes: ReturnType<typeof buildCategoryTree>,
+		path: string
+	): ReturnType<typeof buildCategoryTree>[0] | null {
+		for (const node of nodes) {
+			if (node.path === path) {
+				return node;
+			}
+			const found: ReturnType<typeof buildCategoryTree>[0] | null = findNodeByPath(node.children, path);
+			if (found) {
+				return found;
+			}
+		}
+		return null;
 	}
-	return menuItems;
+
+	const targetNode = categoryPath ? findNodeByPath(tree, categoryPath) : null;
+
+	if (!targetNode) {
+		return [];
+	}
+
+	function buildMenuFromNode(node: ReturnType<typeof buildCategoryTree>[0]): ContextMenuItem[] {
+		const items: ContextMenuItem[] = [];
+
+		for (const child of node.children) {
+			items.push({
+				title: child.label,
+				action: 'openSubMenu',
+				payload: {
+					menu: child.children.length > 0 ? 'moduleCategoriesMenu' : 'builtInModuleMenu',
+					categoryPath: child.path,
+				},
+				close: false,
+			});
+		}
+
+		for (const item of node.items) {
+			items.push({
+				title: item.title,
+				action: 'addCodeBlockBySlug',
+				payload: { codeBlockSlug: item.slug },
+				close: true,
+			});
+		}
+
+		return items;
+	}
+
+	return buildMenuFromNode(targetNode);
 };
 
 export const sampleRateMenu: MenuGenerator = () => [
@@ -229,19 +296,160 @@ export const fontMenu: MenuGenerator = () => [
 	{ title: '6x10', selector: 'editorSettings.font', value: '6x10', close: false },
 ];
 
-export const projectMenu: MenuGenerator = async state => {
+export const projectCategoriesMenu: MenuGenerator = async (state, payload = {}) => {
+	if (!state.callbacks.getListOfProjects) {
+		return [];
+	}
+	const projects = await state.callbacks.getListOfProjects();
+	const tree = buildCategoryTree(projects as CategoryItem[]);
+	const { categoryPath } = payload as { categoryPath?: string };
+
+	function findNodeByPath(
+		nodes: ReturnType<typeof buildCategoryTree>,
+		path: string
+	): ReturnType<typeof buildCategoryTree>[0] | null {
+		for (const node of nodes) {
+			if (node.path === path) {
+				return node;
+			}
+			const found: ReturnType<typeof buildCategoryTree>[0] | null = findNodeByPath(node.children, path);
+			if (found) {
+				return found;
+			}
+		}
+		return null;
+	}
+
+	function buildMenuFromTree(nodes: ReturnType<typeof buildCategoryTree>): ContextMenuItem[] {
+		const items: ContextMenuItem[] = [];
+
+		for (const node of nodes) {
+			if (node.children.length > 0 || node.items.length > 0) {
+				if (node.items.length > 0 && node.children.length === 0) {
+					items.push({
+						title: node.label,
+						action: 'openSubMenu',
+						payload: { menu: 'projectMenu', categoryPath: node.path },
+						close: false,
+					});
+				} else if (node.children.length > 0) {
+					items.push({
+						title: node.label,
+						action: 'openSubMenu',
+						payload: { menu: 'projectCategoriesMenu', categoryPath: node.path },
+						close: false,
+					});
+				}
+			}
+		}
+
+		return items;
+	}
+
+	if (categoryPath) {
+		const targetNode = findNodeByPath(tree, categoryPath);
+		if (!targetNode) {
+			return [];
+		}
+
+		function buildMenuFromNode(node: ReturnType<typeof buildCategoryTree>[0]): ContextMenuItem[] {
+			const items: ContextMenuItem[] = [];
+
+			for (const child of node.children) {
+				items.push({
+					title: child.label,
+					action: 'openSubMenu',
+					payload: {
+						menu: child.children.length > 0 ? 'projectCategoriesMenu' : 'projectMenu',
+						categoryPath: child.path,
+					},
+					close: false,
+				});
+			}
+
+			for (const item of node.items) {
+				items.push({
+					title: item.title,
+					action: 'loadProjectBySlug',
+					payload: { projectSlug: item.slug },
+					close: true,
+				});
+			}
+
+			return items;
+		}
+
+		return buildMenuFromNode(targetNode);
+	}
+
+	return buildMenuFromTree(tree);
+};
+
+export const projectMenu: MenuGenerator = async (state, payload = {}) => {
+	const { categoryPath } = payload as { categoryPath?: string };
 	if (!state.callbacks.getListOfProjects || !state.callbacks.getProject) {
 		return [];
 	}
 	const projects = await state.callbacks.getListOfProjects();
-	const menuItems: ContextMenuItem[] = [];
-	for (const projectMetadata of projects) {
-		menuItems.push({
-			title: projectMetadata.title,
-			action: 'loadProjectBySlug',
-			payload: { projectSlug: projectMetadata.slug },
-			close: true,
-		});
+	const tree = buildCategoryTree(projects as CategoryItem[]);
+
+	function findNodeByPath(
+		nodes: ReturnType<typeof buildCategoryTree>,
+		path: string
+	): ReturnType<typeof buildCategoryTree>[0] | null {
+		for (const node of nodes) {
+			if (node.path === path) {
+				return node;
+			}
+			const found: ReturnType<typeof buildCategoryTree>[0] | null = findNodeByPath(node.children, path);
+			if (found) {
+				return found;
+			}
+		}
+		return null;
 	}
-	return menuItems;
+
+	const targetNode = categoryPath ? findNodeByPath(tree, categoryPath) : null;
+
+	if (!targetNode) {
+		const items: ContextMenuItem[] = [];
+		for (const projectMetadata of projects) {
+			items.push({
+				title: projectMetadata.title,
+				action: 'loadProjectBySlug',
+				payload: { projectSlug: projectMetadata.slug },
+				close: true,
+			});
+		}
+		return items;
+	}
+
+	function buildMenuFromNode(node: ReturnType<typeof buildCategoryTree>[0]): ContextMenuItem[] {
+		const items: ContextMenuItem[] = [];
+
+		for (const child of node.children) {
+			items.push({
+				title: child.label,
+				action: 'openSubMenu',
+				payload: {
+					menu: child.children.length > 0 ? 'projectCategoriesMenu' : 'projectMenu',
+					categoryPath: child.path,
+				},
+				close: false,
+			});
+		}
+
+		for (const item of node.items) {
+			items.push({
+				title: item.title,
+				action: 'loadProjectBySlug',
+				payload: { projectSlug: item.slug },
+				close: true,
+			});
+		}
+
+		return items;
+	}
+
+	return buildMenuFromNode(targetNode);
 };

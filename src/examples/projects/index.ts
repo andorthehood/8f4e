@@ -32,27 +32,34 @@ export const projectManifest: Record<string, () => Promise<Project>> = Object.fr
  * Metadata is kept in sync with actual project files.
  */
 export const projectMetadata: ProjectMetadata[] = [
-	{ slug: 'audioBuffer', title: 'Audio Buffer', description: '' },
-	{ slug: 'audioLoopback', title: 'Audio Loopback', description: '' },
-	{ slug: 'bistableMultivibrators', title: 'Bistable Multivibrators', description: '' },
+	{ slug: 'audioBuffer', title: 'Audio Buffer', description: '', category: 'Audio' },
+	{ slug: 'audioLoopback', title: 'Audio Loopback', description: '', category: 'Audio' },
+	{ slug: 'bistableMultivibrators', title: 'Bistable Multivibrators', description: '', category: 'Circuits' },
 	{
 		slug: 'crtEffect',
 		title: 'CRT Effect Demo',
 		description: 'Demonstrates post-process shader effects with a classic CRT monitor appearance',
+		category: 'Visual/Effects',
 	},
-	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', description: '' },
-	{ slug: 'ericSaiteGenerator', title: 'Eric Saite Generator', description: '' },
-	{ slug: 'midiArpeggiator', title: 'MIDI Arpeggiator', description: '' },
-	{ slug: 'midiArpeggiator2', title: 'MIDI Arpeggiator 2', description: '' },
-	{ slug: 'midiBreakBeat', title: 'MIDI Break Beat', description: '' },
-	{ slug: 'midiBreakBreak2dSequencer', title: 'MIDI Break Break 2D Sequencer', description: '' },
-	{ slug: 'neuralNetwork', title: 'Neural Network', description: '' },
-	{ slug: 'randomGenerators', title: 'Random Generators', description: '' },
-	{ slug: 'randomNoteGenerator', title: 'Random Note Generator', description: '' },
+	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', description: '', category: 'Visual/Demos' },
+	{ slug: 'ericSaiteGenerator', title: 'Eric Saite Generator', description: '', category: 'Audio/Generative' },
+	{ slug: 'midiArpeggiator', title: 'MIDI Arpeggiator', description: '', category: 'MIDI/Instruments' },
+	{ slug: 'midiArpeggiator2', title: 'MIDI Arpeggiator 2', description: '', category: 'MIDI/Instruments' },
+	{ slug: 'midiBreakBeat', title: 'MIDI Break Beat', description: '', category: 'MIDI/Rhythm' },
+	{
+		slug: 'midiBreakBreak2dSequencer',
+		title: 'MIDI Break Break 2D Sequencer',
+		description: '',
+		category: 'MIDI/Rhythm',
+	},
+	{ slug: 'neuralNetwork', title: 'Neural Network', description: '', category: 'Machine Learning' },
+	{ slug: 'randomGenerators', title: 'Random Generators', description: '', category: 'Utilities' },
+	{ slug: 'randomNoteGenerator', title: 'Random Note Generator', description: '', category: 'MIDI/Generative' },
 	{
 		slug: 'simpleCounterMainThread',
 		title: 'Simple Counter (Main Thread)',
 		description: 'Demonstrates the MainThreadLogicRuntime',
+		category: 'Examples/Runtime',
 	},
 ];
 
