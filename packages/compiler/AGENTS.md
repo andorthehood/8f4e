@@ -5,6 +5,15 @@
 - Consumed via alias `@8f4e/compiler`.
 - Compiles custom assembly language into WebAssembly bytecode.
 - Supports modules (stateful, with memory) and pure functions (stateless, stack-only).
+- **Subpath exports**:
+  - `@8f4e/compiler` - Main compiler API
+  - `@8f4e/compiler/syntax` - Syntax helpers only (no compiler dependencies)
+
+## Syntax Subpath Export
+- The `@8f4e/compiler/syntax` subpath provides syntax parsing utilities without the full compiler.
+- Located in `src/syntax/` and built to `dist/syntax/`.
+- Includes: `instructionParser`, `isConstantName`, `parseArgument`, `getBlockType`, `getModuleId`, `getFunctionId`, memory helpers, and syntax errors.
+- Use for lightweight syntax checking, parsing, or IDE support without bundling the entire compiler.
 
 ## Build, Test, Dev
 - From root: `npx nx run compiler:build|test|typecheck`.
