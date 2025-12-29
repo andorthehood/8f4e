@@ -1,4 +1,4 @@
-import { instructionParser } from '@8f4e/syntax-rules';
+import { instructionParser } from '@8f4e/compiler/syntax';
 
 export function parseInputs(code: string[]): Array<{ id: string; lineNumber: number }> {
 	return code.reduce<Array<{ id: string; lineNumber: number }>>((acc, line, index) => {

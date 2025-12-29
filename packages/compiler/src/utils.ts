@@ -1,5 +1,4 @@
-import { parseMemoryInstructionArgumentsShape, SyntaxRulesError } from '@8f4e/syntax-rules';
-
+import { parseMemoryInstructionArgumentsShape, SyntaxRulesError } from './syntax';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import { BLOCK_TYPE } from './types';
 import { ErrorCode, getError } from './errors';

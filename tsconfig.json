@@ -22,6 +22,7 @@
 		"@8f4e/web-ui": ["packages/editor/packages/web-ui/src/index.ts"],
 		"glugglug": ["packages/editor/packages/glugglug/src/index.ts"],
 		"@8f4e/compiler": ["packages/compiler/src/index.ts"],
+		"@8f4e/compiler/syntax": ["packages/compiler/src/syntax/index.ts"],
 		"@8f4e/sprite-generator": ["packages/editor/packages/sprite-generator/src/index.ts"],
 		"@8f4e/state-manager": ["packages/editor/packages/state-manager/src/index.ts"],
 		"@8f4e/runtime-audio-worklet": ["packages/runtime-audio-worklet/src/index.ts"],
