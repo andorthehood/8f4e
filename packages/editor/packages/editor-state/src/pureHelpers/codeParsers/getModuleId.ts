@@ -1,3 +1,3 @@
-import { getModuleId } from '@8f4e/syntax-rules';
+import { getModuleId } from '@8f4e/compiler/syntax';
 
 export default getModuleId;
