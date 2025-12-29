@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `shiftRightUnsigned`.
+ * @see [Instruction docs](../../docs/instructions/bitwise.md)
+ */
 const shiftRightUnsigned: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

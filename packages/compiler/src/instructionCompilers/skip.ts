@@ -9,6 +9,10 @@ import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `skip`.
+ * @see [Instruction docs](../../docs/instructions/control-flow.md)
+ */
 const skip: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

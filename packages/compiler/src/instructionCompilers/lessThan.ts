@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `lessThan`.
+ * @see [Instruction docs](../../docs/instructions/comparison.md)
+ */
 const lessThan: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

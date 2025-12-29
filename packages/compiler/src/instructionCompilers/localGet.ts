@@ -6,6 +6,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `localGet`.
+ * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
+ */
 const _localGet: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

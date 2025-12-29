@@ -5,6 +5,10 @@ import { ErrorCode, getError } from '../errors';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `const`.
+ * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
+ */
 const _const: InstructionCompiler = function (line, context) {
 	// Constants can be declared at any level (top-level, in modules, or in functions)
 

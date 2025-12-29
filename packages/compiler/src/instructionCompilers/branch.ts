@@ -6,6 +6,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `branch`.
+ * @see [Instruction docs](../../docs/instructions/control-flow.md)
+ */
 const branch: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

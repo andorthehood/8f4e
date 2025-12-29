@@ -6,6 +6,14 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `load` variants.
+ * @see [Instruction docs](../../docs/instructions/memory.md)
+ * @see [Instruction docs](../../docs/instructions/memory.md)
+ * @see [Instruction docs](../../docs/instructions/memory.md)
+ * @see [Instruction docs](../../docs/instructions/memory.md)
+ * @see [Instruction docs](../../docs/instructions/memory.md)
+ */
 const instructionToByteCodeMap: Record<string, number[]> = {
 	load: i32load(),
 	load8s: i32load8s(),

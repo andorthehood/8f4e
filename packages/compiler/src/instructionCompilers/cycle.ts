@@ -3,6 +3,10 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `cycle`.
+ * @see [Instruction docs](../../docs/instructions/signal-helpers.md)
+ */
 const cycle: InstructionCompiler = withValidation(
 	{
 		scope: 'module',

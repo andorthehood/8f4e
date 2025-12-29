@@ -3,6 +3,10 @@ import { compileSegment } from '../compiler';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `pow2`.
+ * @see [Instruction docs](../../docs/instructions/math-helpers.md)
+ */
 const pow2: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

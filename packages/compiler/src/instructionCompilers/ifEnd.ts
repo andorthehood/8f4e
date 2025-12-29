@@ -6,6 +6,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `ifEnd`.
+ * @see [Instruction docs](../../docs/instructions/control-flow.md)
+ */
 const ifEnd: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

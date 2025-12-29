@@ -6,6 +6,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `functionEnd`.
+ * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
+ */
 const functionEnd: InstructionCompiler = withValidation(
 	{
 		scope: 'function',

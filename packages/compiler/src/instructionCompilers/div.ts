@@ -5,6 +5,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `div`.
+ * @see [Instruction docs](../../docs/instructions/arithmetic.md)
+ */
 const div: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

@@ -4,6 +4,10 @@ import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `greaterOrEqualUnsigned`.
+ * @see [Instruction docs](../../docs/instructions/comparison.md)
+ */
 const greaterOrEqualUnsigned: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',

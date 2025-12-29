@@ -3,6 +3,10 @@ import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `initBlock`.
+ * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
+ */
 const initBlock: InstructionCompiler = withValidation(
 	{
 		scope: 'module',
