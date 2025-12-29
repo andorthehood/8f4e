@@ -3,6 +3,14 @@ import { ErrorCode, getError } from '../errors';
 
 import type { InstructionCompiler } from '../types';
 
+// Note: This instruction does not use withValidation because it defines a module scope
+// rather than operating within one. The withValidation helper is designed for instructions
+// that must be inside a specific scope, not for instructions that create new scopes.
+
+/**
+ * Instruction compiler for `module`.
+ * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
+ */
 const _module: InstructionCompiler = function (line, context) {
 	if (!line.arguments[0]) {
 		throw getError(ErrorCode.MISSING_ARGUMENT, line, context);

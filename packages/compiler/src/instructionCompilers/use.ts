@@ -3,6 +3,10 @@ import { ErrorCode, getError } from '../errors';
 
 import type { InstructionCompiler } from '../types';
 
+/**
+ * Instruction compiler for `use`.
+ * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
+ */
 const use: InstructionCompiler = function (line, context) {
 	if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
 		throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);

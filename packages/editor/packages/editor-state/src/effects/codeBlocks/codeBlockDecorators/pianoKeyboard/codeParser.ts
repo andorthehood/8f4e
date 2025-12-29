@@ -1,6 +1,6 @@
-import { parsePressedKeys } from './parsePressedKeys';
+import { instructionParser } from '@8f4e/syntax-rules';
 
-import instructionParser from '../instructionParser';
+import { parsePressedKeys } from './parsePressedKeys';
 
 export function parsePianoKeyboards(code: string[]) {
 	return code.reduce(

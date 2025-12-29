@@ -1,27 +1,27 @@
-import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers, isInstructionInsideModuleOrFunction, saveByteCode } from '../utils';
+import { saveByteCode } from '../utils';
+import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { InstructionCompiler } from '../types';
 
-const shiftRight: InstructionCompiler = function (line, context) {
-	if (!isInstructionInsideModuleOrFunction(context.blockStack)) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
+/**
+ * Instruction compiler for `shiftRight`.
+ * @see [Instruction docs](../../docs/instructions/bitwise.md)
+ */
+const shiftRight: InstructionCompiler = withValidation(
+	{
+		scope: 'moduleOrFunction',
+		minOperands: 2,
+		operandTypes: 'int',
+	},
+	(line, context) => {
+		// Non-null assertion is safe: withValidation ensures 2 operands exist
+		context.stack.pop()!;
+		context.stack.pop()!;
 
-	const operand1 = context.stack.pop();
-	const operand2 = context.stack.pop();
-
-	if (!operand1 || !operand2) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	if (areAllOperandsIntegers(operand1, operand2)) {
 		context.stack.push({ isInteger: true, isNonZero: false });
 		return saveByteCode(context, [WASMInstruction.I32_SHR_S]);
-	} else {
-		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 	}
-};
+);
 
 export default shiftRight;

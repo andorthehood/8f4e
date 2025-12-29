@@ -1,3 +1,5 @@
+import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier } from '@8f4e/syntax-rules';
+
 import { Instruction } from './instructionCompilers';
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
@@ -79,15 +81,8 @@ export interface Module {
 	code: string[];
 }
 
-export const enum ArgumentType {
-	LITERAL = 'literal',
-	IDENTIFIER = 'identifier',
-}
-
-export type ArgumentLiteral = { type: ArgumentType.LITERAL; value: number; isInteger: boolean };
-export type ArgumentIdentifier = { type: ArgumentType.IDENTIFIER; value: string };
-
-export type Argument = ArgumentLiteral | ArgumentIdentifier;
+// Re-export types from syntax-rules for backward compatibility
+export { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier };
 
 export type AST = Array<{ lineNumber: number; instruction: Instruction; arguments: Array<Argument> }>;
 
