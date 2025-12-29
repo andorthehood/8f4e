@@ -115,7 +115,7 @@ export function parseMemoryInstructionArguments(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const lineForError = { lineNumber, instruction, arguments: args } as any;
 
-	// Use syntax-rules parser for syntax-level validation and classification
+	// Use syntax parser for syntax-level validation and classification
 	let parsedArgs;
 	try {
 		parsedArgs = parseMemoryInstructionArgumentsShape(args);
