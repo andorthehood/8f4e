@@ -1,5 +1,4 @@
-import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier } from '@8f4e/syntax-rules';
-
+import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier } from './syntax';
 import { Instruction } from './instructionCompilers';
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
@@ -81,7 +80,7 @@ export interface Module {
 	code: string[];
 }
 
-// Re-export types from syntax-rules for backward compatibility
+// Re-export types from syntax subpath for backward compatibility
 export { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier };
 
 export type AST = Array<{ lineNumber: number; instruction: Instruction; arguments: Array<Argument> }>;

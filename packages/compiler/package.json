@@ -10,6 +10,10 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
+		},
+		"./syntax": {
+			"types": "./dist/syntax/index.d.ts",
+			"default": "./dist/syntax/index.js"
 		}
 	},
 	"sideEffects": false,
@@ -23,9 +27,7 @@
 		"url": "https://github.com/andorthehood/8f4e/issues"
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
-	"dependencies": {
-		"@8f4e/syntax-rules": "*"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "^24.3.0"
 	}
