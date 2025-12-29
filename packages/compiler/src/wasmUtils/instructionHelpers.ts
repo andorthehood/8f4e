@@ -1,10 +1,10 @@
-export { localGet } from './localGet';
-export { localSet } from './localSet';
-export { call } from './call';
-export { i32const } from './i32const';
-export { f32const } from './f32const';
-export { i32store } from './i32store';
-export { f32store } from './f32store';
+export { localGet } from './local/localGet';
+export { localSet } from './local/localSet';
+export { call } from './call/call';
+export { i32const } from './const/i32const';
+export { f32const } from './const/f32const';
+export { i32store } from './store/i32store';
+export { f32store } from './store/f32store';
 export { i32load } from './load/i32load';
 export { i32load8s } from './load/i32load8s';
 export { i32load8u } from './load/i32load8u';
