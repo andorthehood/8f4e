@@ -1,6 +1,12 @@
-export { createFunctionType, createTypeSection, createFunctionSection } from './typeFunctionSections';
-export { createFunctionExport, createExportSection } from './exportSection';
-export { createLocalDeclaration, createFunction, createCodeSection } from './codeSection';
+export { createFunctionType } from './typeFunction/createFunctionType';
+export { createTypeSection } from './typeFunction/createTypeSection';
+export { createFunctionSection } from './typeFunction/createFunctionSection';
+export { createFunctionExport } from './export/createFunctionExport';
+export { createExportSection } from './export/createExportSection';
+export { createLocalDeclaration } from './codeSection/createLocalDeclaration';
+export { createFunction } from './codeSection/createFunction';
+export { createCodeSection } from './codeSection/createCodeSection';
 export { createMemorySection } from './memorySection';
-export { createMemoryImport, createImportSection } from './importSection';
+export { createMemoryImport } from './import/createMemoryImport';
+export { createImportSection } from './import/createImportSection';
 export { createFunctionName, createNameSection } from './nameSection';

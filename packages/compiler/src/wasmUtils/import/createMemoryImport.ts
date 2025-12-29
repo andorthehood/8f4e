@@ -1,5 +1,5 @@
-import { Import, unsignedLEB128, createVector, encodeString } from './typeHelpers';
-import { ImportDesc, Section } from './section';
+import { Import, unsignedLEB128, encodeString } from '../typeHelpers';
+import { ImportDesc } from '../section';
 
 /**
  * Creates a memory import entry to import linear memory from the host environment.
@@ -35,17 +35,6 @@ export function createMemoryImport(
 	];
 }
 
-/**
- * Creates a WebAssembly import section containing import declarations.
- *
- * @param imports - Array of import entries
- * @returns Byte array representing the complete import section
- */
-export function createImportSection(imports: Import[]): number[] {
-	const numImports = imports.length;
-	return [Section.IMPORT, ...createVector([...unsignedLEB128(numImports), ...imports.flat()])];
-}
-
 if (import.meta.vitest) {
 	const { test, expect } = import.meta.vitest;
 
@@ -57,11 +46,5 @@ if (import.meta.vitest) {
 	test('createMemoryImport handles shared memory', () => {
 		const imp = createMemoryImport('js', 'memory', 1, 10, true);
 		expect(imp).toContain(0x03);
-	});
-
-	test('createImportSection wraps imports correctly', () => {
-		const imports = [createMemoryImport('js', 'memory')];
-		const section = createImportSection(imports);
-		expect(section[0]).toBe(Section.IMPORT);
 	});
 }
