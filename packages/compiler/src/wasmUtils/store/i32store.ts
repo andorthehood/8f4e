@@ -1,6 +1,6 @@
-import { unsignedLEB128 } from './unsignedLEB128';
-import { i32const } from './i32const';
-import Instruction from './wasmInstruction';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import { i32const } from '../const/i32const';
+import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.store instruction to store a 32-bit integer to memory.

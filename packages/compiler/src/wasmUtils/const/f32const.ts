@@ -1,5 +1,5 @@
-import { ieee754 } from './ieee754';
-import Instruction from './wasmInstruction';
+import { ieee754 } from '../encoding/ieee754';
+import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly f32.const instruction to push a 32-bit floating-point constant onto the stack.

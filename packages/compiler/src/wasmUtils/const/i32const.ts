@@ -1,5 +1,5 @@
-import { signedLEB128 } from './signedLEB128';
-import Instruction from './wasmInstruction';
+import { signedLEB128 } from '../encoding/signedLEB128';
+import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.const instruction to push a signed 32-bit integer constant onto the stack.
