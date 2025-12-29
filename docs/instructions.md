@@ -93,13 +93,13 @@ The "add" instruction operates on two numbers of the same type that are retrieve
 #### Examples
 
 ```
-push 1    # stack: [ 1 ]
-push 2    # stack: [ 1, 2 ]
-add       # stack: [ 3 ]
+push 1    ; stack: [ 1 ]
+push 2    ; stack: [ 1, 2 ]
+add       ; stack: [ 3 ]
 
-push 0.5    # stack: [ 3, 0.5 ]
-push 0.7    # stack: [ 3, 0.5, 0.7 ]
-add         # stack: [ 3, 1.2 ]
+push 0.5    ; stack: [ 3, 0.5 ]
+push 0.7    ; stack: [ 3, 0.5, 0.7 ]
+add         ; stack: [ 3, 1.2 ]
 ```
 
 ### div
@@ -111,13 +111,13 @@ The "div" instruction retrieves two numbers of the same type from the stack and 
 The "mul" instruction retrieves two numbers of the same type from the stack, multiplies them together, and then stores the result back onto the stack.
 
 ```
-push 1    # stack: [ 2 ]
-push 2    # stack: [ 2, 2 ]
-mul       # stack: [ 4 ]
+push 1    ; stack: [ 2 ]
+push 2    ; stack: [ 2, 2 ]
+mul       ; stack: [ 4 ]
 
-push 0.5    # stack: [ 4, 0.5 ]
-push 0.7    # stack: [ 4, 0.5, 0.7 ]
-add         # stack: [ 4, 0.35 ]
+push 0.5    ; stack: [ 4, 0.5 ]
+push 0.7    ; stack: [ 4, 0.5, 0.7 ]
+add         ; stack: [ 4, 0.35 ]
 ```
 
 ### remainder
@@ -129,13 +129,13 @@ The "remainder" instruction retrieves two integer operands from the stack, divid
 The "sub" instruction operates on two numbers of the same type that are retrieved from the stack. It subtracts the second operand from the first operand, and then stores the result back onto the stack.
 
 ```
-push 1    # stack: [ 2 ]
-push 2    # stack: [ 2, 3 ]
-sub       # stack: [ -1 ]
+push 1    ; stack: [ 2 ]
+push 2    ; stack: [ 2, 3 ]
+sub       ; stack: [ -1 ]
 
-push 0.5    # stack: [ -1, 0.5 ]
-push 0.7    # stack: [ -1, 0.5, 0.7 ]
-add         # stack: [ -1, -0.2 ]
+push 0.5    ; stack: [ -1, 0.5 ]
+push 0.7    ; stack: [ -1, 0.5, 0.7 ]
+add         ; stack: [ -1, -0.2 ]
 ```
 
 ## Bitwise instructions
@@ -145,15 +145,15 @@ add         # stack: [ -1, -0.2 ]
 The "and" instruction retrieves two integers from the stack and performs a bitwise AND operation on them. Specifically, each bit of the resulting value is computed by performing a logical AND between the corresponding bits of the two operands. The resulting value is then stored back onto the stack. 
 
 ```
-push 0b00001    # stack: [ 0b00001 ]
-push 0b00100    # stack: [ 0b00001, 0b00100 ]
-and             # stack: [ 0b00000 ]
+push 0b00001    ; stack: [ 0b00001 ]
+push 0b00100    ; stack: [ 0b00001, 0b00100 ]
+and             ; stack: [ 0b00000 ]
 
 clearStack
 
-push 0b00001    # stack [ 0b00001 ]
-push 0b00001    # stack [ 0b00001, 0b00001 ]
-and             # stack [ 0b00001 ]
+push 0b00001    ; stack [ 0b00001 ]
+push 0b00001    ; stack [ 0b00001, 0b00001 ]
+and             ; stack [ 0b00001 ]
 ```
 
 ### or
@@ -161,15 +161,15 @@ and             # stack [ 0b00001 ]
 The "or" instruction retrieves two integers from the stack and performs a bitwise OR operation on them. Specifically, each bit of the resulting value is computed by performing a logical OR between the corresponding bits of the two operands. The resulting value is then stored back onto the stack.
 
 ```
-push 0b00001    # stack: [ 0b00001 ]
-push 0b00100    # stack: [ 0b00001, 0b00100 ]
-and             # stack: [ 0b00101 ]
+push 0b00001    ; stack: [ 0b00001 ]
+push 0b00100    ; stack: [ 0b00001, 0b00100 ]
+and             ; stack: [ 0b00101 ]
 
 clearStack
 
-push 0b00001    # stack [ 0b00001 ]
-push 0b00001    # stack [ 0b00001, 0b00001 ]
-and             # stack [ 0b00001 ]
+push 0b00001    ; stack [ 0b00001 ]
+push 0b00001    ; stack [ 0b00001, 0b00001 ]
+and             ; stack [ 0b00001 ]
 ```
 
 ### shiftLeft
