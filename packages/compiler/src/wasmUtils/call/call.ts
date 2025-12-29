@@ -1,5 +1,5 @@
-import { unsignedLEB128 } from './unsignedLEB128';
-import Instruction from './wasmInstruction';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import Instruction from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly call instruction to invoke a function by index.
