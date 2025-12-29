@@ -43,7 +43,7 @@ Move syntax-related helpers into a dedicated folder inside the compiler package 
 
 - `packages/compiler` - New syntax subpath entrypoint and exports
 - `packages/editor/packages/editor-state` - Import path updates
-- `packages/syntax-rules` - Merge or migration path into compiler
+- `packages/syntax-rules` - **Removed** (merged into compiler)
 
 ## Risks & Considerations
 
@@ -53,7 +53,8 @@ Move syntax-related helpers into a dedicated folder inside the compiler package 
 
 ## Related Items
 
-- **Related**: docs/todos/149-extract-syntax-parsing-and-errors-into-syntax-rules.md
+- **Supersedes**: docs/todos/archived/148-consolidate-syntax-logic-into-syntax-rules.md
+- **Supersedes**: docs/todos/archived/149-extract-syntax-parsing-and-errors-into-syntax-rules.md
 
 ## Notes
 
@@ -68,3 +69,4 @@ Move syntax-related helpers into a dedicated folder inside the compiler package 
   - Verified that syntax helpers have no dependencies on compiler internals
   - All tests pass for both compiler and editor-state packages
   - Full build successful with proper subpath export resolution in bundler context
+  - **Removed `packages/syntax-rules` package entirely** as it's now integrated into compiler

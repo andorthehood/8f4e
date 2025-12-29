@@ -3,11 +3,14 @@ title: 'TODO: Consolidate syntax-related logic into syntax-rules package'
 priority: Medium
 effort: 2-3 days
 created: 2025-12-25
-status: Completed
+status: Superseded
 completed: 2025-12-25
+superseded_by: 152-compiler-subpath-syntax-exports.md
 ---
 
 # TODO: Consolidate syntax-related logic into syntax-rules package
+
+**Note:** This TODO has been superseded by TODO 152. The syntax helpers are now integrated directly into the `@8f4e/compiler` package and exposed via the `@8f4e/compiler/syntax` subpath export. The standalone `@8f4e/syntax-rules` package has been removed.
 
 ## Problem Description
 
