@@ -27,8 +27,7 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     ├── runtime-main-thread-logic │ (Various runtime environments 
     ├── runtime-web-worker-logic  │ for different execution contexts)
     ├── runtime-web-worker-midi   ┘
-    ├── <a href="./packages/stack-config-compiler/README.md">stack-config-compiler</a> (Stack-machine-inspired config language compiler)
-    └── <a href="./packages/syntax-rules/README.md">syntax-rules</a> Utils to parse and enforce the syntax of 8f4e
+    └── <a href="./packages/stack-config-compiler/README.md">stack-config-compiler</a> (Stack-machine-inspired config language compiler)
 </pre>
 
 You can use `npx nx graph` to explore the relationship between the packages.
