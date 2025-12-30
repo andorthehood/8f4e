@@ -1,4 +1,5 @@
 import { ArgumentType, type AST } from '../types';
+import { ErrorCode, getError } from '../errors';
 
 /**
  * Extracts the constants block name from an AST.
@@ -10,13 +11,17 @@ export function getConstantsName(ast: AST): string {
 	const constantsInstruction = ast.find(line => line.instruction === 'constants');
 
 	if (!constantsInstruction) {
-		throw 'Missing constants instruction';
+		throw new Error('Missing constants instruction');
 	}
 
 	const argument = constantsInstruction.arguments[0];
 
+	if (!argument) {
+		throw getError(ErrorCode.MISSING_ARGUMENT, constantsInstruction);
+	}
+
 	if (argument.type !== ArgumentType.IDENTIFIER) {
-		throw 'Constants instruction argument type invalid';
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, constantsInstruction);
 	}
 
 	return argument.value;
@@ -43,6 +48,18 @@ if (import.meta.vitest) {
 			expect(() => getConstantsName(ast)).toThrow('Missing constants instruction');
 		});
 
+		it('should throw when arguments are missing', () => {
+			const ast: AST = [
+				{
+					instruction: 'constants',
+					arguments: [],
+					lineNumber: 1,
+				},
+			];
+
+			expect(() => getConstantsName(ast)).toThrow('Missing argument');
+		});
+
 		it('should throw when argument type is not identifier', () => {
 			const ast: AST = [
 				{
@@ -52,7 +69,7 @@ if (import.meta.vitest) {
 				},
 			];
 
-			expect(() => getConstantsName(ast)).toThrow('Constants instruction argument type invalid');
+			expect(() => getConstantsName(ast)).toThrow('Expected identifier');
 		});
 	});
 }
