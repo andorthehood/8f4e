@@ -11,11 +11,12 @@ import {
 } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
-import { compileModule, compileToAST, compileFunction } from './compiler';
+import { compileModule, compileToAST, compileFunction, compileLine } from './compiler';
 import {
 	AST,
 	ArgumentLiteral,
 	ArgumentType,
+	CompilationContext,
 	CompileOptions,
 	CompiledModule,
 	CompiledModuleLookup,
@@ -92,6 +93,29 @@ function collectConstants(ast: AST): Namespace['consts'] {
 				];
 			})
 	);
+}
+
+function validateConstantsBlock(ast: AST, builtInConsts: Namespace['consts'], namespaces: Namespaces): void {
+	const context: CompilationContext = {
+		namespace: {
+			namespaces,
+			memory: {},
+			locals: {},
+			consts: { ...builtInConsts },
+			moduleName: undefined,
+		},
+		initSegmentByteCode: [],
+		loopSegmentByteCode: [],
+		stack: [],
+		blockStack: [],
+		startingByteAddress: 0,
+		memoryByteSize: 0,
+		mode: 'module',
+	};
+
+	ast.forEach(line => {
+		compileLine(line, context);
+	});
 }
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
@@ -263,6 +287,12 @@ export default function compile(
 
 	// Collect constants from constants blocks
 	const astConstants = constants ? constants.map(({ code }) => compileToAST(code, options)) : [];
+
+	// Validate each constants block
+	astConstants.forEach(ast => {
+		validateConstantsBlock(ast, builtInConsts, {});
+	});
+
 	const constantsNamespaces: Namespaces = Object.fromEntries(
 		astConstants.map(ast => {
 			const constantsName = getConstantsName(ast);
