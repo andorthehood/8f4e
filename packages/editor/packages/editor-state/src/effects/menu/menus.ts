@@ -1,3 +1,5 @@
+import { buildCategoryTree, getSortedCategories, getSortedItems } from './categoryTree';
+
 import type { CodeBlockGraphicData, MenuGenerator, ContextMenuItem } from '../../types';
 
 export const mainMenu: MenuGenerator = state => [
@@ -135,15 +137,51 @@ export const moduleMenu: MenuGenerator = state => {
 	];
 };
 
-export const moduleCategoriesMenu: MenuGenerator = async state => {
+export const moduleCategoriesMenu: MenuGenerator = async (state, payload = {}) => {
 	if (!state.callbacks.getListOfModules) {
 		return [];
 	}
 	const modules = await state.callbacks.getListOfModules();
-	const categories = [...new Set(modules.map(module => module.category))];
-	return categories.map(category => {
-		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
-	});
+	const tree = buildCategoryTree(modules);
+
+	const { categoryPath } = payload as { categoryPath?: string };
+	let currentNode = tree;
+
+	if (categoryPath) {
+		const parts = categoryPath.split('/');
+		for (const part of parts) {
+			const child = currentNode.children.get(part);
+			if (!child) {
+				return [];
+			}
+			currentNode = child;
+		}
+	}
+
+	const menuItems: ContextMenuItem[] = [];
+
+	const sortedCategories = getSortedCategories(currentNode);
+	for (const category of sortedCategories) {
+		const childNode = currentNode.children.get(category)!;
+		menuItems.push({
+			title: category,
+			action: 'openSubMenu',
+			payload: { menu: 'moduleCategoriesMenu', categoryPath: childNode.path },
+			close: false,
+		});
+	}
+
+	const sortedItems = getSortedItems(currentNode);
+	for (const item of sortedItems) {
+		menuItems.push({
+			title: item.title,
+			action: 'addCodeBlockBySlug',
+			payload: { codeBlockSlug: item.slug },
+			close: true,
+		});
+	}
+
+	return menuItems;
 };
 
 export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
@@ -229,19 +267,49 @@ export const fontMenu: MenuGenerator = () => [
 	{ title: '6x10', selector: 'editorSettings.font', value: '6x10', close: false },
 ];
 
-export const projectMenu: MenuGenerator = async state => {
+export const projectMenu: MenuGenerator = async (state, payload = {}) => {
 	if (!state.callbacks.getListOfProjects || !state.callbacks.getProject) {
 		return [];
 	}
 	const projects = await state.callbacks.getListOfProjects();
+	const tree = buildCategoryTree(projects);
+
+	const { categoryPath } = payload as { categoryPath?: string };
+	let currentNode = tree;
+
+	if (categoryPath) {
+		const parts = categoryPath.split('/');
+		for (const part of parts) {
+			const child = currentNode.children.get(part);
+			if (!child) {
+				return [];
+			}
+			currentNode = child;
+		}
+	}
+
 	const menuItems: ContextMenuItem[] = [];
-	for (const projectMetadata of projects) {
+
+	const sortedCategories = getSortedCategories(currentNode);
+	for (const category of sortedCategories) {
+		const childNode = currentNode.children.get(category)!;
 		menuItems.push({
-			title: projectMetadata.title,
+			title: category,
+			action: 'openSubMenu',
+			payload: { menu: 'projectMenu', categoryPath: childNode.path },
+			close: false,
+		});
+	}
+
+	const sortedItems = getSortedItems(currentNode);
+	for (const item of sortedItems) {
+		menuItems.push({
+			title: item.title,
 			action: 'loadProjectBySlug',
-			payload: { projectSlug: projectMetadata.slug },
+			payload: { projectSlug: item.slug },
 			close: true,
 		});
 	}
+
 	return menuItems;
 };
