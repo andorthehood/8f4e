@@ -6,21 +6,23 @@ import { log } from '../impureHelpers/logger';
 import type { CodeBlockGraphicData, State } from '../types';
 
 /**
- * Converts code blocks from a Set to separate arrays for modules and functions, sorted by creationIndex.
+ * Converts code blocks from a Set to separate arrays for modules, functions, and constants, sorted by creationIndex.
  *
  * @param codeBlocks - Set of code blocks to filter and sort
- * @returns Object containing modules and functions arrays, each sorted by creationIndex.
+ * @returns Object containing modules, functions, and constants arrays, each sorted by creationIndex.
  *          Config blocks are excluded from the WASM compilation pipeline.
  */
 export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): {
 	modules: { code: string[] }[];
 	functions: { code: string[] }[];
+	constants: { code: string[] }[];
 } {
 	const allBlocks = Array.from(codeBlocks).sort((a, b) => a.creationIndex - b.creationIndex);
 
 	return {
 		modules: allBlocks.filter(block => block.blockType === 'module'),
 		functions: allBlocks.filter(block => block.blockType === 'function'),
+		constants: allBlocks.filter(block => block.blockType === 'constants'),
 	};
 }
 
@@ -36,7 +38,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 			return;
 		}
 
-		const { modules, functions } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
+		const { modules, functions, constants } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 
 		store.set('compiler.isCompiling', true);
 		store.set('compiler.lastCompilationStart', performance.now());
@@ -59,7 +61,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 				},
 			};
 
-			const result = await state.callbacks.compileProject?.(modules, compilerOptions, functions);
+			const result = await state.callbacks.compileProject?.(modules, compilerOptions, functions, constants);
 
 			if (!result) {
 				return;
