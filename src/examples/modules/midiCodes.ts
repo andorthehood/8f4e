@@ -3,8 +3,8 @@ import type { ExampleModule } from '@8f4e/editor-state';
 const midiCodes: ExampleModule = {
 	title: 'MIDI Codes',
 	author: 'Andor Polgar',
-	category: 'MIDI',
-	code: `module midiCodes
+	category: 'Constants',
+	code: `constants midiCodes
 
 const A0  21
 const A#0 22
@@ -158,7 +158,7 @@ const F#9 126
 const GB9 126
 const G9  127
 
-moduleEnd`,
+constantsEnd`,
 	tests: [],
 };
 
