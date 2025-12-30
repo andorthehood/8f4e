@@ -94,6 +94,18 @@ function collectConstants(ast: AST): Namespace['consts'] {
 	);
 }
 
+function validateConstantsBlock(ast: AST): void {
+	// Check that only const, constants, and constantsEnd instructions are used
+	const allowedInstructions = ['const', 'constants', 'constantsEnd'];
+	for (const line of ast) {
+		if (!allowedInstructions.includes(line.instruction)) {
+			throw new Error(
+				`Instruction '${line.instruction}' is not allowed inside constants blocks. Only 'const' declarations are permitted.`
+			);
+		}
+	}
+}
+
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
 		ast!.forEach(line => {
@@ -265,6 +277,12 @@ export default function compile(
 		sortedModules.map(ast => {
 			// Determine if this is a constants block or regular module
 			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+
+			// Validate constants blocks only allow const instructions
+			if (isConstantsBlock) {
+				validateConstantsBlock(ast);
+			}
+
 			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
 			return [name, { consts: collectConstants(ast) }];
 		})

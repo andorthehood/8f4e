@@ -20,6 +20,7 @@ export interface ValidationSpec {
 	operandTypes?: OperandRule[] | OperandRule;
 	onInsufficientOperands?: ErrorCode;
 	onInvalidScope?: ErrorCode;
+	disallowedInConstants?: boolean;
 }
 
 function validateScope(
@@ -119,6 +120,11 @@ function validateOperandTypes(
 
 export function withValidation(spec: ValidationSpec, compiler: InstructionCompiler): InstructionCompiler {
 	return function (line, context) {
+		// Check if instruction is disallowed in constants blocks
+		if (spec.disallowedInConstants && isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS)) {
+			throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+		}
+
 		if (spec.scope) {
 			validateScope(
 				context.blockStack,
