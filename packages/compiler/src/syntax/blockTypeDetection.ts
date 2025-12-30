@@ -1,3 +1,5 @@
+import { instructionParser } from './instructionParser';
+
 export type CodeBlockType = 'module' | 'config' | 'function' | 'constants' | 'unknown';
 
 /**
@@ -77,7 +79,7 @@ export function getBlockType(code: string[]): CodeBlockType {
  */
 export function getModuleId(code: string[]) {
 	for (let i = 0; i < code.length; i++) {
-		const [, instruction, ...args] = code[i].match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || [];
+		const [, instruction, ...args] = code[i].match(instructionParser) || [];
 		if (instruction === 'module') {
 			return args[0] || '';
 		}
@@ -92,7 +94,7 @@ export function getModuleId(code: string[]) {
  */
 export function getFunctionId(code: string[]) {
 	for (let i = 0; i < code.length; i++) {
-		const [, instruction, ...args] = code[i].match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || [];
+		const [, instruction, ...args] = code[i].match(instructionParser) || [];
 		if (instruction === 'function') {
 			return args[0] || '';
 		}
@@ -107,7 +109,7 @@ export function getFunctionId(code: string[]) {
  */
 export function getConstantsId(code: string[]) {
 	for (let i = 0; i < code.length; i++) {
-		const [, instruction, ...args] = code[i].match(/\s*(\S+)\s*(\S*)\s*(\S*)\s*(\S*)/) || [];
+		const [, instruction, ...args] = code[i].match(instructionParser) || [];
 		if (instruction === 'constants') {
 			return args[0] || '';
 		}

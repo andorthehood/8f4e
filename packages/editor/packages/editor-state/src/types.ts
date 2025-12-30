@@ -536,8 +536,7 @@ export interface Callbacks {
 	compileProject?: (
 		modules: Module[],
 		compilerOptions: CompileOptions,
-		functions?: Module[],
-		constants?: Module[]
+		functions?: Module[]
 	) => Promise<CompilationResult>;
 
 	// Session storage callbacks
