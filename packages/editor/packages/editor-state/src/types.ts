@@ -263,7 +263,7 @@ export interface PianoKeyboard {
  * - 'function': Contains function/functionEnd markers (compiled to WASM as reusable helper)
  * - 'unknown': Mixed or incomplete markers, or no recognizable markers
  */
-export type CodeBlockType = 'module' | 'config' | 'function' | 'unknown';
+export type CodeBlockType = 'module' | 'config' | 'function' | 'constants' | 'unknown';
 
 export interface CodeBlockGraphicData {
 	width: number;

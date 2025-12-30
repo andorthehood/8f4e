@@ -1,69 +1,14 @@
 # Program structure and functions
 
-### module
+## Block Instructions
 
-The module instruction begins a module block with the provided name.
+Block instructions define the structure of your program. See detailed documentation in the `blocks/` folder:
 
-#### Examples
+- [Module blocks](./blocks/module.md) - `module` and `moduleEnd`
+- [Function blocks](./blocks/function.md) - `function`, `param`, and `functionEnd`
+- [Constants blocks](./blocks/constants.md) - `constants` and `constantsEnd`
 
-```
-module demo
-moduleEnd
-```
-
-### moduleEnd
-
-The moduleEnd instruction ends a module block.
-
-#### Examples
-
-```
-module demo
-moduleEnd
-```
-
-### function
-
-The function instruction begins a function block with the provided name.
-
-#### Examples
-
-```
-function add
-param int x
-param int y
-localGet x
-localGet y
-add
-functionEnd int
-```
-
-### param
-
-The param instruction declares a function parameter (`param int name` or `param float name`). Parameters must be declared before any other function body instructions.
-
-#### Examples
-
-```
-function double
-param int x
-localGet x
-push 2
-mul
-functionEnd int
-```
-
-### functionEnd
-
-The functionEnd instruction ends a function block and declares the return types (`functionEnd int float`).
-
-#### Examples
-
-```
-function getFortyTwo
-push 42
-functionEnd int
-```
+## Other Instructions
 
 ### initBlock
 
@@ -111,3 +56,10 @@ The use instruction imports constants from another namespace into the current on
 use math
 push TAU
 ```
+
+#### Notes
+
+- Constants can be imported from both constants blocks and modules
+- Multiple `use` statements can be used in sequence
+- When the same constant name exists in multiple namespaces, the last `use` statement wins
+
