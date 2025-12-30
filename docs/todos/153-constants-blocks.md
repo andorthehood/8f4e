@@ -3,8 +3,8 @@ title: 'TODO: Add Constants Code Blocks to Compiler'
 priority: Medium
 effort: 1-2d
 created: 2025-12-30
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-30
 ---
 
 # TODO: Add Constants Code Blocks to Compiler
@@ -28,8 +28,9 @@ constantsEnd
 ```
 
 Modules can import a constants namespace using `use math`. The order of `use` statements should remain
-last-applied wins when merging constants. Constants blocks must be named and must not conflict with module
-names. Only `const` is allowed inside the block.
+last-applied wins when merging constants. Constants blocks must be named. When a constants block and a
+module share the same name, their constants are merged using last-applied wins semantics. Only `const`
+is allowed inside the block.
 
 ## Implementation Plan
 
@@ -43,7 +44,7 @@ names. Only `const` is allowed inside the block.
 
 ### Step 3: Integrate constants blocks into compiler namespaces
 - Collect constants from constants blocks into the namespaces map.
-- Reject name conflicts between constants blocks and modules.
+- Allow constants blocks and modules to share names with last-applied wins semantics.
 - Keep `use` merge behavior with last-applied wins.
 
 ### Step 4: Add tests for constants blocks
@@ -53,11 +54,11 @@ names. Only `const` is allowed inside the block.
 
 ## Success Criteria
 
-- [ ] `constants` / `constantsEnd` blocks are recognized and surfaced in the editor and compiler pipeline.
-- [ ] Constants blocks only accept `const` instructions and are top-level only.
-- [ ] `use <constantsName>` imports constants with last-applied wins semantics.
-- [ ] Name conflicts with modules produce a clear compiler error.
-- [ ] Tests cover syntax detection and compiler behavior.
+- [x] `constants` / `constantsEnd` blocks are recognized and surfaced in the editor and compiler pipeline.
+- [x] Constants blocks only accept `const` instructions and are top-level only.
+- [x] `use <constantsName>` imports constants with last-applied wins semantics.
+- [x] Constants blocks and modules can share names with last-applied wins semantics for namespace merging.
+- [x] Tests cover syntax detection and compiler behavior.
 
 ## Affected Components
 
@@ -72,7 +73,7 @@ names. Only `const` is allowed inside the block.
 
 ## Risks & Considerations
 
-- **Name conflicts**: enforce unique names to avoid ambiguous `use` resolution.
+- **Name merging**: constants blocks and modules with the same name will have their constants merged using last-applied wins semantics.
 - **Editor integration**: ensure constants blocks are not treated as config blocks.
 - **Breaking changes**: adding a new instruction pair requires sync with syntax and tests.
 
@@ -82,4 +83,4 @@ names. Only `const` is allowed inside the block.
 
 ## Notes
 
-- Spec: named constants block, top-level only, const-only, conflict with module name is invalid, `use` order wins.
+- Spec: named constants block, top-level only, const-only, constants blocks and modules can share names with last-applied wins semantics, `use` order wins.

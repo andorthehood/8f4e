@@ -25,6 +25,7 @@ export enum ErrorCode {
 	UNDEFINED_FUNCTION,
 	PARAM_AFTER_FUNCTION_BODY,
 	DUPLICATE_PARAMETER_NAME,
+	INSTRUCTION_MUST_BE_TOP_LEVEL,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -198,6 +199,13 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'Duplicate parameter name. Each parameter must have a unique name. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.INSTRUCTION_MUST_BE_TOP_LEVEL:
+			return {
+				code,
+				message: 'This instruction must be used at the top level. (' + code + ')',
 				line,
 				context,
 			};
