@@ -30,8 +30,7 @@
 	"dependencies": {
 		"glugglug": "*",
 		"@8f4e/sprite-generator": "*",
-		"@8f4e/compiler": "*",
-		"@8f4e/syntax-rules": "*"
+		"@8f4e/compiler": "*"
 	},
 	"devDependencies": {
 		"@types/node": "^24.3.0",

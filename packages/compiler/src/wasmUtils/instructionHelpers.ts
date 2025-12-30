@@ -1,87 +1,18 @@
-import { ieee754, signedLEB128, unsignedLEB128 } from './typeHelpers';
-import Instruction from './wasmInstruction';
-import Type from './type';
-
-export function localGet(index: number): number[] {
-	return [Instruction.LOCAL_GET, ...unsignedLEB128(index)];
-}
-
-export function localSet(index: number): number[] {
-	return [Instruction.LOCAL_SET, ...unsignedLEB128(index)];
-}
-
-export function call(functionIndex: number): number[] {
-	return [Instruction.CALL, ...unsignedLEB128(functionIndex)];
-}
-
-export function i32const(number: number): number[] {
-	return [Instruction.I32_CONST, ...signedLEB128(number)];
-}
-
-export function f32const(number: number): number[] {
-	return [Instruction.F32_CONST, ...ieee754(number)];
-}
-
-export function i32store(address?: number, value?: number, alingment = 2, offset = 0): number[] {
-	return [
-		...(typeof address === 'undefined' ? [] : i32const(address)),
-		...(typeof value === 'undefined' ? [] : i32const(value)),
-		Instruction.I32_STORE,
-		...unsignedLEB128(alingment),
-		...unsignedLEB128(offset),
-	];
-}
-
-export function f32store(address?: number, value?: number, alingment = 2, offset = 0): number[] {
-	return [
-		...(typeof address === 'undefined' ? [] : i32const(address)),
-		...(typeof value === 'undefined' ? [] : f32const(value)),
-		Instruction.F32_STORE,
-		...unsignedLEB128(alingment),
-		...unsignedLEB128(offset),
-	];
-}
-
-export function i32load(alingment = 2, offset = 0): number[] {
-	return [Instruction.I32_LOAD, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
-}
-
-export function i32load8s(alingment = 0, offset = 0): number[] {
-	return [Instruction.I32_LOAD_8_S, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
-}
-
-export function i32load8u(alingment = 0, offset = 0): number[] {
-	return [Instruction.I32_LOAD_8_U, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
-}
-
-export function i32load16s(alingment = 1, offset = 0): number[] {
-	return [Instruction.I32_LOAD_16_S, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
-}
-
-export function i32load16u(alingment = 1, offset = 0): number[] {
-	return [Instruction.I32_LOAD_16_U, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
-}
-
-export function f32load(alingment = 2, offset = 0): number[] {
-	return [Instruction.F32_LOAD, ...unsignedLEB128(alingment), ...unsignedLEB128(offset)];
-}
-
-export function ifelse(resultType: Type, trueBranch: number[], falseBranch: number[] = []): number[] {
-	return [Instruction.IF, resultType, ...trueBranch, Instruction.ELSE, ...falseBranch, Instruction.END];
-}
-
-export function br(breakDepth: number): number[] {
-	return [Instruction.BR, ...unsignedLEB128(breakDepth)];
-}
-
-export function br_if(breakDepth: number): number[] {
-	return [Instruction.BR_IF, ...unsignedLEB128(breakDepth)];
-}
-
-export function loop(resultType: Type, code: number[]): number[] {
-	return [Instruction.LOOP, resultType, ...code, ...br(0), Instruction.END];
-}
-
-export function block(resultType: Type, code: number[]): number[] {
-	return [Instruction.BLOCK, resultType, ...code, Instruction.END];
-}
+export { localGet } from './local/localGet';
+export { localSet } from './local/localSet';
+export { call } from './call/call';
+export { i32const } from './const/i32const';
+export { f32const } from './const/f32const';
+export { i32store } from './store/i32store';
+export { f32store } from './store/f32store';
+export { i32load } from './load/i32load';
+export { i32load8s } from './load/i32load8s';
+export { i32load8u } from './load/i32load8u';
+export { i32load16s } from './load/i32load16s';
+export { i32load16u } from './load/i32load16u';
+export { f32load } from './load/f32load';
+export { ifelse } from './controlFlow/ifelse';
+export { br } from './controlFlow/br';
+export { br_if } from './controlFlow/br_if';
+export { loop } from './controlFlow/loop';
+export { block } from './controlFlow/block';
