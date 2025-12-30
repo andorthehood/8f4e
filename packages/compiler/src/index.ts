@@ -290,13 +290,15 @@ export default function compile(
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
-	// Separate constants blocks and regular modules
-	const constantsBlocks = sortedModules.filter(ast => ast.some(line => line.instruction === 'constants'));
-	const regularModules = sortedModules.filter(ast => !ast.some(line => line.instruction === 'constants'));
+	// Sort modules to put constants blocks first, then regular modules
+	const modulesInOrder = [
+		...sortedModules.filter(ast => ast.some(line => line.instruction === 'constants')),
+		...sortedModules.filter(ast => !ast.some(line => line.instruction === 'constants')),
+	];
 
-	// Compile constants blocks first, then regular modules
-	const compiledConstantsBlocks = compileModules(
-		constantsBlocks,
+	// Compile all modules (constants blocks first, then regular modules)
+	const compiledModules = compileModules(
+		modulesInOrder,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
@@ -305,23 +307,6 @@ export default function compile(
 		namespaces,
 		compiledFunctionsMap
 	);
-
-	// Calculate starting memory address for regular modules (after constants blocks)
-	const constantsBlocksMemorySize = compiledConstantsBlocks.reduce((sum, block) => sum + block.wordAlignedSize, 0);
-
-	const compiledRegularModules = compileModules(
-		regularModules,
-		{
-			...options,
-			startingMemoryWordAddress: 1 + constantsBlocksMemorySize,
-		},
-		builtInConsts,
-		namespaces,
-		compiledFunctionsMap
-	);
-
-	// Combine constants blocks and regular modules (constants first)
-	const compiledModules = [...compiledConstantsBlocks, ...compiledRegularModules];
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
