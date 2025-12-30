@@ -114,9 +114,8 @@ describe('constants block validation', () => {
 			},
 		];
 
-		// This validation will be added in a separate PR - for now this should compile
-		const result = compile(modules, defaultOptions);
-		expect(result.codeBuffer).toBeDefined();
+		// int instruction should be rejected inside constants block
+		expect(() => compile(modules, defaultOptions)).toThrow();
 	});
 
 	test('should reject constants block inside module', () => {
