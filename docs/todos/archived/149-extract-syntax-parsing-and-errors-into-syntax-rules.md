@@ -3,11 +3,14 @@ title: 'TODO: Extract syntax parsing and errors into syntax-rules'
 priority: Medium
 effort: 1-2 days
 created: 2025-12-25
-status: Completed
+status: Superseded
 completed: 2025-12-26
+superseded_by: 152-compiler-subpath-syntax-exports.md
 ---
 
 # TODO: Extract syntax parsing and errors into syntax-rules
+
+**Note:** This TODO has been superseded by TODO 152. The syntax helpers are now integrated directly into the `@8f4e/compiler` package and exposed via the `@8f4e/compiler/syntax` subpath export. The standalone `@8f4e/syntax-rules` package has been removed.
 
 ## Problem Description
 
