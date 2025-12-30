@@ -12,9 +12,9 @@ import {
 import Type from './wasmUtils/type';
 import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
 import { compileModule, compileToAST, compileFunction } from './compiler';
+import { getModuleName, getConstantsName, collectConstants } from './astUtils';
 import {
 	AST,
-	ArgumentLiteral,
 	ArgumentType,
 	CompileOptions,
 	CompiledModule,
@@ -70,6 +70,7 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
+export { getModuleName, getConstantsName, collectConstants } from './astUtils';
 export { instructionParser } from './compiler';
 
 const HEADER = [0x00, 0x61, 0x73, 0x6d];
@@ -77,22 +78,6 @@ const VERSION = [0x01, 0x00, 0x00, 0x00];
 
 // Number of exported WASM functions (init, cycle, buffer)
 const EXPORTED_FUNCTION_COUNT = 3;
-
-function collectConstants(ast: AST): Namespace['consts'] {
-	return Object.fromEntries(
-		ast
-			.filter(({ instruction }) => instruction === 'const')
-			.map(({ arguments: _arguments }) => {
-				return [
-					_arguments[0].value,
-					{
-						value: parseFloat(_arguments[1].value.toString()),
-						isInteger: (_arguments[1] as ArgumentLiteral).isInteger,
-					},
-				];
-			})
-	);
-}
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
@@ -160,24 +145,6 @@ export function compileModules(
 	});
 }
 
-export function getModuleName(ast: AST) {
-	const moduleInstruction = ast.find(line => {
-		return line.instruction === 'module';
-	});
-
-	if (!moduleInstruction) {
-		throw 'Missing module instruction';
-	}
-
-	const argument = moduleInstruction.arguments[0];
-
-	if (argument.type !== ArgumentType.IDENTIFIER) {
-		throw 'Module instruction argument type invalid';
-	}
-
-	return argument.value;
-}
-
 export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule[]) {
 	return compiledModules.map(module => {
 		let pointer = module.byteAddress;
@@ -242,10 +209,13 @@ export default function compile(
 		...options.environmentExtensions.constants,
 	};
 
+	// Collect namespaces from all modules (includes both regular modules and constants blocks)
 	const namespaces: Namespaces = Object.fromEntries(
 		sortedModules.map(ast => {
-			const moduleName = getModuleName(ast);
-			return [moduleName, { consts: collectConstants(ast) }];
+			// Determine if this is a constants block or regular module
+			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+			return [name, { consts: collectConstants(ast) }];
 		})
 	);
 
@@ -269,7 +239,7 @@ export default function compile(
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
-	// Compile modules with function context available
+	// Compile all modules (constants blocks are already sorted first by sortModules)
 	const compiledModules = compileModules(
 		sortedModules,
 		{
