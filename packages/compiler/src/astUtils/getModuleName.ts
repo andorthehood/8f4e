@@ -1,4 +1,5 @@
 import { ArgumentType, type AST } from '../types';
+import { ErrorCode, getError } from '../errors';
 
 /**
  * Extracts the module name from an AST.
@@ -10,13 +11,17 @@ export function getModuleName(ast: AST): string {
 	const moduleInstruction = ast.find(line => line.instruction === 'module');
 
 	if (!moduleInstruction) {
-		throw 'Missing module instruction';
+		throw new Error('Missing module instruction');
 	}
 
 	const argument = moduleInstruction.arguments[0];
 
+	if (!argument) {
+		throw getError(ErrorCode.MISSING_ARGUMENT, moduleInstruction);
+	}
+
 	if (argument.type !== ArgumentType.IDENTIFIER) {
-		throw 'Module instruction argument type invalid';
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, moduleInstruction);
 	}
 
 	return argument.value;
@@ -43,6 +48,18 @@ if (import.meta.vitest) {
 			expect(() => getModuleName(ast)).toThrow('Missing module instruction');
 		});
 
+		it('should throw when arguments are missing', () => {
+			const ast: AST = [
+				{
+					instruction: 'module',
+					arguments: [],
+					lineNumber: 1,
+				},
+			];
+
+			expect(() => getModuleName(ast)).toThrow('Missing argument');
+		});
+
 		it('should throw when argument type is not identifier', () => {
 			const ast: AST = [
 				{
@@ -52,7 +69,7 @@ if (import.meta.vitest) {
 				},
 			];
 
-			expect(() => getModuleName(ast)).toThrow('Module instruction argument type invalid');
+			expect(() => getModuleName(ast)).toThrow('Expected identifier');
 		});
 	});
 }

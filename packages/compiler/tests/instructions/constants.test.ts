@@ -43,7 +43,7 @@ describe('constants instruction', () => {
 		expect(result.codeBuffer).toBeDefined();
 	});
 
-	test('should reject name conflict between constants and module', () => {
+	test('should allow same name for constants block and module (last-wins semantics)', () => {
 		const modules: Module[] = [
 			{
 				code: ['constants testModule', 'const PI 3.14159', 'constantsEnd'],
@@ -53,7 +53,7 @@ describe('constants instruction', () => {
 			},
 		];
 
-		// Name conflicts are now allowed - namespaces are merged with last-wins
+		// Name conflicts are allowed - namespaces are merged with last-wins
 		const result = compile(modules, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
 	});
