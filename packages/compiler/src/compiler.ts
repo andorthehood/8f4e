@@ -3,6 +3,7 @@ import { createFunction, createLocalDeclaration } from './wasmUtils/sectionHelpe
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
+	BLOCK_TYPE,
 	CompilationContext,
 	CompileOptions,
 	CompiledModule,
@@ -57,6 +58,15 @@ export function compileLine(line: AST[number], context: CompilationContext) {
 	if (!instructions[line.instruction]) {
 		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 	}
+
+	// Check if we're inside a constants block
+	const insideConstantsBlock = context.blockStack.some(block => block.blockType === BLOCK_TYPE.CONSTANTS);
+
+	// If inside constants block, only allow const, constants, and constantsEnd instructions
+	if (insideConstantsBlock && !['const', 'constants', 'constantsEnd'].includes(line.instruction)) {
+		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+	}
+
 	instructions[line.instruction](line, context);
 }
 
