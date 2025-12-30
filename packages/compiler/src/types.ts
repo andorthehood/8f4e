@@ -147,6 +147,7 @@ export enum BLOCK_TYPE {
 	FUNCTION,
 	BLOCK,
 	INIT,
+	CONSTANTS,
 }
 
 export type BlockStack = Array<{

@@ -11,6 +11,7 @@ import type { CodeBlockGraphicData, State } from '../types';
  * @param codeBlocks - Set of code blocks to filter and sort
  * @returns Object containing modules and functions arrays, each sorted by creationIndex.
  *          Config blocks are excluded from the WASM compilation pipeline.
+ *          Constants blocks are included in modules array.
  */
 export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): {
 	modules: { code: string[] }[];
@@ -19,7 +20,7 @@ export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>)
 	const allBlocks = Array.from(codeBlocks).sort((a, b) => a.creationIndex - b.creationIndex);
 
 	return {
-		modules: allBlocks.filter(block => block.blockType === 'module'),
+		modules: allBlocks.filter(block => block.blockType === 'module' || block.blockType === 'constants'),
 		functions: allBlocks.filter(block => block.blockType === 'function'),
 	};
 }

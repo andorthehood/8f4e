@@ -12,7 +12,7 @@ import {
 import type { BlockStack, CompilationContext, InstructionCompiler, StackItem } from './types';
 
 export type OperandRule = 'int' | 'float' | 'matching';
-export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'init' | 'block';
+export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'init' | 'block' | 'constants';
 
 export interface ValidationSpec {
 	scope?: ScopeRule;
@@ -20,6 +20,7 @@ export interface ValidationSpec {
 	operandTypes?: OperandRule[] | OperandRule;
 	onInsufficientOperands?: ErrorCode;
 	onInvalidScope?: ErrorCode;
+	allowedInConstantsBlocks?: boolean;
 }
 
 function validateScope(
@@ -46,6 +47,9 @@ function validateScope(
 			break;
 		case 'block':
 			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.BLOCK);
+			break;
+		case 'constants':
+			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.CONSTANTS);
 			break;
 	}
 
@@ -116,6 +120,12 @@ function validateOperandTypes(
 
 export function withValidation(spec: ValidationSpec, compiler: InstructionCompiler): InstructionCompiler {
 	return function (line, context) {
+		// Check if instruction is allowed in constants blocks (defaults to false)
+		const insideConstantsBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS);
+		if (insideConstantsBlock && !spec.allowedInConstantsBlocks) {
+			throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+		}
+
 		if (spec.scope) {
 			validateScope(
 				context.blockStack,
