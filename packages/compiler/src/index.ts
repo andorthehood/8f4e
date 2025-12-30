@@ -11,12 +11,11 @@ import {
 } from './wasmUtils/sectionHelpers';
 import Type from './wasmUtils/type';
 import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
-import { compileModule, compileToAST, compileFunction, compileLine } from './compiler';
+import { compileModule, compileToAST, compileFunction } from './compiler';
 import {
 	AST,
 	ArgumentLiteral,
 	ArgumentType,
-	CompilationContext,
 	CompileOptions,
 	CompiledModule,
 	CompiledModuleLookup,
@@ -93,29 +92,6 @@ function collectConstants(ast: AST): Namespace['consts'] {
 				];
 			})
 	);
-}
-
-function validateConstantsBlock(ast: AST, builtInConsts: Namespace['consts'], namespaces: Namespaces): void {
-	const context: CompilationContext = {
-		namespace: {
-			namespaces,
-			memory: {},
-			locals: {},
-			consts: { ...builtInConsts },
-			moduleName: undefined,
-		},
-		initSegmentByteCode: [],
-		loopSegmentByteCode: [],
-		stack: [],
-		blockStack: [],
-		startingByteAddress: 0,
-		memoryByteSize: 0,
-		mode: 'module',
-	};
-
-	ast.forEach(line => {
-		compileLine(line, context);
-	});
 }
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
@@ -266,8 +242,7 @@ function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): Com
 export default function compile(
 	modules: Module[],
 	options: CompileOptions,
-	functions?: Module[],
-	constants?: Module[]
+	functions?: Module[]
 ): {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
@@ -285,38 +260,15 @@ export default function compile(
 		...options.environmentExtensions.constants,
 	};
 
-	// Collect constants from constants blocks
-	const astConstants = constants ? constants.map(({ code }) => compileToAST(code, options)) : [];
-
-	// Validate each constants block
-	astConstants.forEach(ast => {
-		validateConstantsBlock(ast, builtInConsts, {});
-	});
-
-	const constantsNamespaces: Namespaces = Object.fromEntries(
-		astConstants.map(ast => {
-			const constantsName = getConstantsName(ast);
-			return [constantsName, { consts: collectConstants(ast) }];
-		})
-	);
-
-	// Collect constants from modules
-	const moduleNamespaces: Namespaces = Object.fromEntries(
+	// Collect namespaces from all modules (includes both regular modules and constants blocks)
+	const namespaces: Namespaces = Object.fromEntries(
 		sortedModules.map(ast => {
-			const moduleName = getModuleName(ast);
-			return [moduleName, { consts: collectConstants(ast) }];
+			// Determine if this is a constants block or regular module
+			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+			return [name, { consts: collectConstants(ast) }];
 		})
 	);
-
-	// Check for name conflicts between constants blocks and modules
-	for (const constantsName of Object.keys(constantsNamespaces)) {
-		if (moduleNamespaces[constantsName]) {
-			throw new Error(`Name conflict: '${constantsName}' is used as both a constants block and a module name`);
-		}
-	}
-
-	// Merge namespaces (constants blocks and modules)
-	const namespaces: Namespaces = { ...constantsNamespaces, ...moduleNamespaces };
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = functions ? functions.map(({ code }) => compileToAST(code, options)) : [];
@@ -338,9 +290,10 @@ export default function compile(
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
-	// Compile modules with function context available
+	// Compile modules with function context available (exclude constants blocks)
+	const modulesToCompile = sortedModules.filter(ast => !ast.some(line => line.instruction === 'constants'));
 	const compiledModules = compileModules(
-		sortedModules,
+		modulesToCompile,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
