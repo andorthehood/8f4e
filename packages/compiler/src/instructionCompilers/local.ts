@@ -12,7 +12,6 @@ const local: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
-		disallowedInConstants: true,
 	},
 	(line, context) => {
 		if (!line.arguments[0] || !line.arguments[1]) {

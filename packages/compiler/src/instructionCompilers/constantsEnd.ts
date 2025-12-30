@@ -10,6 +10,7 @@ import type { InstructionCompiler } from '../types';
 const constantsEnd: InstructionCompiler = withValidation(
 	{
 		scope: 'constants',
+		allowedInConstantsBlocks: true,
 	},
 	(line, context) => {
 		const block = context.blockStack.pop();

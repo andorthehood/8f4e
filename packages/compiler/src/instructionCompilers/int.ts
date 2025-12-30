@@ -16,7 +16,6 @@ import type { InstructionCompiler, MemoryTypes } from '../types';
 const int: InstructionCompiler = withValidation(
 	{
 		scope: 'module',
-		disallowedInConstants: true,
 	},
 	(line, context) => {
 		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
