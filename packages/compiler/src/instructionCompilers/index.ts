@@ -64,6 +64,8 @@ import param from './param';
 import initBlock from './initBlock';
 import initBlockEnd from './initBlockEnd';
 import call from './call';
+import constants from './constants';
+import constantsEnd from './constantsEnd';
 
 const instructions = {
 	and,
@@ -148,6 +150,8 @@ const instructions = {
 	initBlock,
 	initBlockEnd,
 	call,
+	constants,
+	constantsEnd,
 } as const;
 
 export default instructions;
