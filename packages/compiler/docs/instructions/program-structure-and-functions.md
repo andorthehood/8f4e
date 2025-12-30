@@ -1,69 +1,14 @@
 # Program structure and functions
 
-### module
+## Block Instructions
 
-The module instruction begins a module block with the provided name.
+Block instructions define the structure of your program. See detailed documentation in the `blocks/` folder:
 
-#### Examples
+- [Module blocks](./blocks/module.md) - `module` and `moduleEnd`
+- [Function blocks](./blocks/function.md) - `function`, `param`, and `functionEnd`
+- [Constants blocks](./blocks/constants.md) - `constants` and `constantsEnd`
 
-```
-module demo
-moduleEnd
-```
-
-### moduleEnd
-
-The moduleEnd instruction ends a module block.
-
-#### Examples
-
-```
-module demo
-moduleEnd
-```
-
-### function
-
-The function instruction begins a function block with the provided name.
-
-#### Examples
-
-```
-function add
-param int x
-param int y
-localGet x
-localGet y
-add
-functionEnd int
-```
-
-### param
-
-The param instruction declares a function parameter (`param int name` or `param float name`). Parameters must be declared before any other function body instructions.
-
-#### Examples
-
-```
-function double
-param int x
-localGet x
-push 2
-mul
-functionEnd int
-```
-
-### functionEnd
-
-The functionEnd instruction ends a function block and declares the return types (`functionEnd int float`).
-
-#### Examples
-
-```
-function getFortyTwo
-push 42
-functionEnd int
-```
+## Other Instructions
 
 ### initBlock
 
@@ -112,75 +57,9 @@ use math
 push TAU
 ```
 
-### constants
+#### Notes
 
-The constants instruction begins a constants block with the provided name. Constants blocks can only contain `const` declarations and must be defined at the top level (outside of modules and functions).
+- Constants can be imported from both constants blocks and modules
+- Multiple `use` statements can be used in sequence
+- When the same constant name exists in multiple namespaces, the last `use` statement wins
 
-#### Examples
-
-```
-constants math
-const PI 3.14159
-const TAU 6.28318
-constantsEnd
-```
-
-### constantsEnd
-
-The constantsEnd instruction ends a constants block.
-
-#### Examples
-
-```
-constants physics
-const GRAVITY 9.81
-const SPEED_OF_LIGHT 299792458
-constantsEnd
-```
-
-#### Usage with modules
-
-Constants from a constants block can be imported into modules using the `use` instruction:
-
-```
-constants math
-const PI 3.14159
-const TAU 6.28318
-constantsEnd
-
-module circleCalc
-use math
-int radius 5
-float circumference 0.0
-push circumference
-push radius
-castToFloat
-push TAU
-mul
-store
-moduleEnd
-```
-
-#### Last-wins semantics
-
-When multiple namespaces are used, constants with the same name are resolved using last-applied wins semantics:
-
-```
-constants first
-const VALUE 10
-constantsEnd
-
-constants second
-const VALUE 20
-constantsEnd
-
-module example
-use first
-use second
-; VALUE will be 20 (from second namespace)
-moduleEnd
-```
-
-#### Name conflicts
-
-Constants blocks and modules cannot share the same name - the compiler will produce an error if there is a naming conflict.
