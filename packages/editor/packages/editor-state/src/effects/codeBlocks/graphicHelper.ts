@@ -115,6 +115,8 @@ const instructionsToHighlight = [
 	'concat',
 	'call',
 	'param',
+	'constants',
+	'constantsEnd',
 ];
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
