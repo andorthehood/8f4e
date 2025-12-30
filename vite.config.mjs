@@ -37,6 +37,7 @@ export default defineConfig(({ command }) => {
 			'@8f4e/editor-state': resolvePath(isDev ? 'packages/editor/packages/editor-state/src/index.ts' : 'packages/editor/packages/editor-state/dist'),
 			'@8f4e/web-ui': resolvePath(isDev ? 'packages/editor/packages/web-ui/src/index.ts' : 'packages/editor/packages/web-ui/dist'),
 			'glugglug': resolvePath(isDev ? 'packages/editor/packages/glugglug/src/index.ts' : 'packages/editor/packages/glugglug/dist'),
+			'@8f4e/compiler/syntax': resolvePath(isDev ? 'packages/compiler/src/syntax/index.ts' : 'packages/compiler/dist/syntax'),
 			'@8f4e/compiler': resolvePath(isDev ? 'packages/compiler/src/index.ts' : 'packages/compiler/dist'),
 			'@8f4e/sprite-generator': resolvePath(isDev ? 'packages/editor/packages/sprite-generator/src/index.ts' : 'packages/editor/packages/sprite-generator/dist'),
 			'@8f4e/state-manager': resolvePath(isDev ? 'packages/editor/packages/state-manager/src/index.ts' : 'packages/editor/packages/state-manager/dist'),
