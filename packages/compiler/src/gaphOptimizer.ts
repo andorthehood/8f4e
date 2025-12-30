@@ -3,7 +3,12 @@ import { ArgumentType } from './types';
 import type { AST } from './types';
 
 export function sortModules(modules: AST[]): AST[] {
-	return modules
+	// First, separate constants blocks from regular modules
+	const constantsBlocks = modules.filter(ast => ast.some(line => line.instruction === 'constants'));
+	const regularModules = modules.filter(ast => !ast.some(line => line.instruction === 'constants'));
+
+	// Sort regular modules by ID and dependencies
+	const sortedRegularModules = regularModules
 		.sort((astA, astB) => {
 			const moduleIdA =
 				(astA.find(({ instruction }) => {
@@ -72,4 +77,7 @@ export function sortModules(modules: AST[]): AST[] {
 				return 0;
 			}
 		});
+
+	// Return constants blocks first, then sorted regular modules
+	return [...constantsBlocks, ...sortedRegularModules];
 }
