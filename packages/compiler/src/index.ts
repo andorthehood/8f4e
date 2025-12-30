@@ -178,6 +178,24 @@ export function getModuleName(ast: AST) {
 	return argument.value;
 }
 
+export function getConstantsName(ast: AST) {
+	const constantsInstruction = ast.find(line => {
+		return line.instruction === 'constants';
+	});
+
+	if (!constantsInstruction) {
+		throw 'Missing constants instruction';
+	}
+
+	const argument = constantsInstruction.arguments[0];
+
+	if (argument.type !== ArgumentType.IDENTIFIER) {
+		throw 'Constants instruction argument type invalid';
+	}
+
+	return argument.value;
+}
+
 export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule[]) {
 	return compiledModules.map(module => {
 		let pointer = module.byteAddress;
@@ -224,7 +242,8 @@ function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): Com
 export default function compile(
 	modules: Module[],
 	options: CompileOptions,
-	functions?: Module[]
+	functions?: Module[],
+	constants?: Module[]
 ): {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
@@ -242,12 +261,32 @@ export default function compile(
 		...options.environmentExtensions.constants,
 	};
 
-	const namespaces: Namespaces = Object.fromEntries(
+	// Collect constants from constants blocks
+	const astConstants = constants ? constants.map(({ code }) => compileToAST(code, options)) : [];
+	const constantsNamespaces: Namespaces = Object.fromEntries(
+		astConstants.map(ast => {
+			const constantsName = getConstantsName(ast);
+			return [constantsName, { consts: collectConstants(ast) }];
+		})
+	);
+
+	// Collect constants from modules
+	const moduleNamespaces: Namespaces = Object.fromEntries(
 		sortedModules.map(ast => {
 			const moduleName = getModuleName(ast);
 			return [moduleName, { consts: collectConstants(ast) }];
 		})
 	);
+
+	// Check for name conflicts between constants blocks and modules
+	for (const constantsName of Object.keys(constantsNamespaces)) {
+		if (moduleNamespaces[constantsName]) {
+			throw new Error(`Name conflict: '${constantsName}' is used as both a constants block and a module name`);
+		}
+	}
+
+	// Merge namespaces (constants blocks and modules)
+	const namespaces: Namespaces = { ...constantsNamespaces, ...moduleNamespaces };
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = functions ? functions.map(({ code }) => compileToAST(code, options)) : [];
