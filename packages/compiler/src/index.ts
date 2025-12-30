@@ -94,18 +94,6 @@ function collectConstants(ast: AST): Namespace['consts'] {
 	);
 }
 
-function validateConstantsBlock(ast: AST): void {
-	// Check that only const, constants, and constantsEnd instructions are used
-	const allowedInstructions = ['const', 'constants', 'constantsEnd'];
-	for (const line of ast) {
-		if (!allowedInstructions.includes(line.instruction)) {
-			throw new Error(
-				`Instruction '${line.instruction}' is not allowed inside constants blocks. Only 'const' declarations are permitted.`
-			);
-		}
-	}
-}
-
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
 		ast!.forEach(line => {
@@ -277,12 +265,6 @@ export default function compile(
 		sortedModules.map(ast => {
 			// Determine if this is a constants block or regular module
 			const isConstantsBlock = ast.some(line => line.instruction === 'constants');
-
-			// Validate constants blocks only allow const instructions
-			if (isConstantsBlock) {
-				validateConstantsBlock(ast);
-			}
-
 			const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
 			return [name, { consts: collectConstants(ast) }];
 		})
@@ -308,10 +290,13 @@ export default function compile(
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
-	// Compile modules with function context available (exclude constants blocks)
-	const modulesToCompile = sortedModules.filter(ast => !ast.some(line => line.instruction === 'constants'));
-	const compiledModules = compileModules(
-		modulesToCompile,
+	// Separate constants blocks and regular modules
+	const constantsBlocks = sortedModules.filter(ast => ast.some(line => line.instruction === 'constants'));
+	const regularModules = sortedModules.filter(ast => !ast.some(line => line.instruction === 'constants'));
+
+	// Compile constants blocks first, then regular modules
+	const compiledConstantsBlocks = compileModules(
+		constantsBlocks,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
@@ -320,6 +305,23 @@ export default function compile(
 		namespaces,
 		compiledFunctionsMap
 	);
+
+	// Calculate starting memory address for regular modules (after constants blocks)
+	const constantsBlocksMemorySize = compiledConstantsBlocks.reduce((sum, block) => sum + block.wordAlignedSize, 0);
+
+	const compiledRegularModules = compileModules(
+		regularModules,
+		{
+			...options,
+			startingMemoryWordAddress: 1 + constantsBlocksMemorySize,
+		},
+		builtInConsts,
+		namespaces,
+		compiledFunctionsMap
+	);
+
+	// Combine constants blocks and regular modules (constants first)
+	const compiledModules = [...compiledConstantsBlocks, ...compiledRegularModules];
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
