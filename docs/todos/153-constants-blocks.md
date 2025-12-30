@@ -3,8 +3,8 @@ title: 'TODO: Add Constants Code Blocks to Compiler'
 priority: Medium
 effort: 1-2d
 created: 2025-12-30
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-30
 ---
 
 # TODO: Add Constants Code Blocks to Compiler
@@ -53,11 +53,11 @@ names. Only `const` is allowed inside the block.
 
 ## Success Criteria
 
-- [ ] `constants` / `constantsEnd` blocks are recognized and surfaced in the editor and compiler pipeline.
-- [ ] Constants blocks only accept `const` instructions and are top-level only.
-- [ ] `use <constantsName>` imports constants with last-applied wins semantics.
-- [ ] Name conflicts with modules produce a clear compiler error.
-- [ ] Tests cover syntax detection and compiler behavior.
+- [x] `constants` / `constantsEnd` blocks are recognized and surfaced in the editor and compiler pipeline.
+- [x] Constants blocks only accept `const` instructions and are top-level only.
+- [x] `use <constantsName>` imports constants with last-applied wins semantics.
+- [x] Name conflicts with modules produce a clear compiler error.
+- [x] Tests cover syntax detection and compiler behavior.
 
 ## Affected Components
 
