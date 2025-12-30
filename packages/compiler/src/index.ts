@@ -239,15 +239,9 @@ export default function compile(
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = compiledFunctions.map(func => func.typeIndex!);
 
-	// Sort modules to put constants blocks first, then regular modules
-	const modulesInOrder = [
-		...sortedModules.filter(ast => ast.some(line => line.instruction === 'constants')),
-		...sortedModules.filter(ast => !ast.some(line => line.instruction === 'constants')),
-	];
-
-	// Compile all modules (constants blocks first, then regular modules)
+	// Compile all modules (constants blocks are already sorted first by sortModules)
 	const compiledModules = compileModules(
-		modulesInOrder,
+		sortedModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
