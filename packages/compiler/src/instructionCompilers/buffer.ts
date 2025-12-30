@@ -14,6 +14,7 @@ import type { InstructionCompiler, MemoryTypes } from '../types';
 const buffer: InstructionCompiler = withValidation(
 	{
 		scope: 'module',
+		disallowedInConstants: true,
 	},
 	(line, context) => {
 		if (!line.arguments[0] || !line.arguments[1]) {
