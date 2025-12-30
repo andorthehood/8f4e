@@ -32,7 +32,7 @@ constantsEnd
 
 module audio
 use audioConstants
-; Now PI, TAU, and other constants from math namespace are available
+; Now SAMPLE_RATE, BUFFER_SIZE, MAX_CHANNELS, and other constants from audioConstants are available
 float samplePosition 0.0
 moduleEnd
 ```
