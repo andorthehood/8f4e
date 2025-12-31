@@ -1,5 +1,5 @@
 import { ErrorCode, getError } from '../errors';
-import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../utils';
+import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../utils/blockStack';
 import { BLOCK_TYPE, ArgumentType } from '../types';
 
 import type { InstructionCompiler } from '../types';

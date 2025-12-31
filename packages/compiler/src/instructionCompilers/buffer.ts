@@ -1,6 +1,6 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { calculateWordAlignedSizeOfMemory } from '../utils';
+import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 

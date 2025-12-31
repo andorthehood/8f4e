@@ -1,4 +1,6 @@
-import { calculateWordAlignedSizeOfMemory, parseMemoryInstructionArguments, getMemoryFlags } from '../utils';
+import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
+import { parseMemoryInstructionArguments } from '../utils/memoryInstructionParser';
+import { getMemoryFlags } from '../utils/memoryFlags';
 import { getPointerDepth } from '../syntax/memoryIdentifierHelpers';
 import { withValidation } from '../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
