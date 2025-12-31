@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`int instruction compiler > creates an int memory entry 1`] = `
+{
+  "counter": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "counter",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;

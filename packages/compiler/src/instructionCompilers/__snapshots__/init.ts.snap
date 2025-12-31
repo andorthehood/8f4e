@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`init instruction compiler > sets memory default value 1`] = `
+{
+  "buffer": {
+    "byteAddress": 0,
+    "default": 9,
+    "elementWordSize": 4,
+    "id": "buffer",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;

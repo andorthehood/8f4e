@@ -2,8 +2,9 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { f32load } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `loadFloat`.
@@ -50,3 +51,33 @@ const loadFloat: InstructionCompiler = withValidation(
 );
 
 export default loadFloat;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('loadFloat instruction compiler', () => {
+		it('loads from a safe memory address', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
+
+			loadFloat({ lineNumber: 1, instruction: 'loadFloat', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('wraps unsafe address with bounds check', () => {
+			const context = createInstructionCompilerTestContext({ memoryByteSize: 16 });
+			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: false });
+
+			loadFloat({ lineNumber: 2, instruction: 'loadFloat', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

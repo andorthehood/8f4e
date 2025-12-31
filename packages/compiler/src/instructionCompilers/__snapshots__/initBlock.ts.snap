@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`initBlock instruction compiler > pushes the init block 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 5,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+}
+`;
