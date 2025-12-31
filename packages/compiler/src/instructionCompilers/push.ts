@@ -15,6 +15,13 @@ import {
 	getElementCount,
 	saveByteCode,
 } from '../utils';
+import {
+	hasMemoryReferencePrefixStart,
+	extractMemoryReferenceBase,
+	extractMemoryPointerBase,
+	extractElementCountBase,
+	extractElementWordSizeBase,
+} from '../syntax/memoryIdentifierHelpers';
 
 import type { ArgumentLiteral, InstructionCompiler } from '../types';
 
@@ -58,7 +65,8 @@ const push: InstructionCompiler = withValidation(
 					...(memoryItem.isInteger ? i32load() : f32load()),
 				]);
 			} else if (isMemoryPointerIdentifier(memory, argument.value)) {
-				const memoryItem = getDataStructure(memory, argument.value.substring(1));
+				const base = extractMemoryPointerBase(argument.value);
+				const memoryItem = getDataStructure(memory, base);
 
 				if (!memoryItem) {
 					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
@@ -72,20 +80,23 @@ const push: InstructionCompiler = withValidation(
 					...(memoryItem.isPointingToInteger ? i32load() : f32load()),
 				]);
 			} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
+				const base = extractMemoryReferenceBase(argument.value);
 				let value = 0;
-				if (argument.value.startsWith('&')) {
-					value = getDataStructureByteAddress(memory, argument.value.substring(1));
+				if (hasMemoryReferencePrefixStart(argument.value)) {
+					value = getDataStructureByteAddress(memory, base);
 				} else {
-					value = getMemoryStringLastByteAddress(memory, argument.value.slice(0, -1));
+					value = getMemoryStringLastByteAddress(memory, base);
 				}
 				context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
 				return saveByteCode(context, i32const(value));
 			} else if (isElementCountIdentifier(memory, argument.value)) {
+				const base = extractElementCountBase(argument.value);
 				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementCount(memory, argument.value.substring(1))));
+				return saveByteCode(context, i32const(getElementCount(memory, base)));
 			} else if (isElementWordSizeIdentifier(memory, argument.value)) {
+				const base = extractElementWordSizeBase(argument.value);
 				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementWordSize(memory, argument.value.substring(1))));
+				return saveByteCode(context, i32const(getElementWordSize(memory, base)));
 			} else if (typeof consts[argument.value] !== 'undefined') {
 				context.stack.push({
 					isInteger: consts[argument.value].isInteger,
