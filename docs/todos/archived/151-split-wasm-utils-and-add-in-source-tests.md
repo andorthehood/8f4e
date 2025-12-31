@@ -3,8 +3,8 @@ title: 'TODO: Split wasmUtils utilities into per-file modules and add in-source 
 priority: Medium
 effort: 1-2d
 created: 2025-12-29
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-29
 ---
 
 # TODO: Split wasmUtils utilities into per-file modules and add in-source tests

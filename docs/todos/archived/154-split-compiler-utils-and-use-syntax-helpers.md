@@ -3,8 +3,8 @@ title: 'TODO: Split compiler utils and use syntax helpers'
 priority: Medium
 effort: 1-2d
 created: 2025-12-30
-status: Open
-completed: null
+status: Completed
+completed: 2025-12-31
 ---
 
 # TODO: Split compiler utils and use syntax helpers
