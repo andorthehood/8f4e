@@ -18,10 +18,3 @@ exports[`buffer instruction compiler > creates a memory buffer entry 1`] = `
   },
 }
 `;
-
-exports[`buffer instruction compiler > throws on missing arguments 1`] = `
-{
-  "code": 4,
-  "message": "Missing argument. (4)",
-}
-`;
