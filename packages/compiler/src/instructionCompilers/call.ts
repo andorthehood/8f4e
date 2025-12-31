@@ -3,8 +3,9 @@ import { ArgumentType } from '../types';
 import { saveByteCode } from '../utils/compilation';
 import { call as wasmCall } from '../wasmUtils/instructionHelpers';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, CompilationContext, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `call`.
@@ -62,3 +63,52 @@ const call: InstructionCompiler = withValidation(
 );
 
 export default call;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('call instruction compiler', () => {
+		it('emits call bytecode and pushes returns', () => {
+			const context = createInstructionCompilerTestContext();
+			context.namespace.functions = {
+				foo: {
+					id: 'foo',
+					signature: { parameters: ['int', 'float'], returns: ['int'] },
+					body: [],
+					locals: [],
+					wasmIndex: 2,
+				},
+			} as CompilationContext['namespace']['functions'];
+			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: false });
+
+			call(
+				{
+					lineNumber: 1,
+					instruction: 'call',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on undefined function', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				call(
+					{
+						lineNumber: 1,
+						instruction: 'call',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
+		});
+	});
+}

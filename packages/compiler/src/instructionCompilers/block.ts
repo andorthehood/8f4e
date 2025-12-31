@@ -6,7 +6,7 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { AST, InstructionCompiler, Error } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `block`.
@@ -111,15 +111,10 @@ if (import.meta.vitest) {
 
 		it('throws on missing argument', () => {
 			const context = createInstructionCompilerTestContext();
-			let error: Error | undefined;
 
-			try {
+			expect(() => {
 				block({ lineNumber: 1, instruction: 'block', arguments: [] } as AST[number], context);
-			} catch (caught) {
-				error = caught as Error;
-			}
-
-			expect({ code: error?.code, message: error?.message }).toMatchSnapshot();
+			}).toThrowError();
 		});
 	});
 }

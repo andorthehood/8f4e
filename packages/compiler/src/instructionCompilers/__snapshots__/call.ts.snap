@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`call instruction compiler > emits call bytecode and pushes returns 1`] = `
+{
+  "loopSegmentByteCode": [
+    16,
+    2,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+    },
+  ],
+}
+`;
+
+exports[`call instruction compiler > throws on undefined function 1`] = `
+{
+  "code": 21,
+  "message": "Undefined function. (21)",
+}
+`;

@@ -1,8 +1,9 @@
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { saveByteCode } from '../utils/compilation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `clearStack`.
@@ -21,3 +22,21 @@ const clearStack: InstructionCompiler = withValidation(
 );
 
 export default clearStack;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('clearStack instruction compiler', () => {
+		it('drops all stack values', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: false, isNonZero: true });
+
+			clearStack({ lineNumber: 1, instruction: 'clearStack', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

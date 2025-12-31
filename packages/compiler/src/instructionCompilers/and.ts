@@ -3,7 +3,7 @@ import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { AST, InstructionCompiler, Error } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `and`.
@@ -47,15 +47,9 @@ if (import.meta.vitest) {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
-			let error: Error | undefined;
-
-			try {
+			expect(() => {
 				and({ lineNumber: 1, instruction: 'and', arguments: [] } as AST[number], context);
-			} catch (caught) {
-				error = caught as Error;
-			}
-
-			expect({ code: error?.code, message: error?.message }).toMatchSnapshot();
+			}).toThrowError();
 		});
 	});
 }

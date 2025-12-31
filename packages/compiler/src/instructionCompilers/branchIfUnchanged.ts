@@ -2,8 +2,9 @@ import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `branchIfUnchanged`.
@@ -55,3 +56,39 @@ const branchIfUnchanged: InstructionCompiler = withValidation(
 );
 
 export default branchIfUnchanged;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('branchIfUnchanged instruction compiler', () => {
+		it('compiles the unchanged check segment', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: true });
+
+			branchIfUnchanged(
+				{
+					lineNumber: 4,
+					instruction: 'branchIfUnchanged',
+					arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+				memory: context.namespace.memory,
+				locals: context.namespace.locals,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on missing argument', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: false });
+
+			expect(() => {
+				branchIfUnchanged({ lineNumber: 1, instruction: 'branchIfUnchanged', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}
