@@ -16,21 +16,21 @@ int seed 69420
 float out
 
 push &seed
- push MULTIPLIER
- push seed
- mul
- push INCREMENT
- add
- push MODULUS
- remainder
+push MULTIPLIER
+push seed
+mul
+push INCREMENT
+add
+push MODULUS
+remainder
 store
 
 push &out
- push seed
- castToFloat
- push MODULUS
- castToFloat
- div 
+push seed
+castToFloat
+push MODULUS
+castToFloat
+div 
 store
 
 moduleEnd`,

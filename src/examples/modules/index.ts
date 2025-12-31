@@ -71,7 +71,8 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'decToBin8bitMSb', title: 'Decimal to Binary Converter (8bit, MSb)', category: 'Bitwise' },
 	{ slug: 'delay', title: 'Delay', category: 'Effects' },
 	{ slug: 'expLookupTable', title: 'Exponent Function Lookup Table (-1...1)', category: 'Lookup Tables' },
-	{ slug: 'generalMIDIDrumCodes', title: 'General MIDI Drum Codes', category: 'MIDI' },
+	{ slug: 'generalMIDIDrumCodes', title: 'General MIDI Drum Codes', category: 'Constants' },
+	{ slug: 'highPassFilter', title: 'High-pass Filter', category: 'Filters' },
 	{
 		slug: 'linearCongruentialGenerator',
 		title: 'Linear Congruential Generator (Signed, Float, 16bit, -1 - 1)',
