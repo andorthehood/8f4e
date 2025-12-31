@@ -2,12 +2,13 @@ import { withValidation } from '../withValidation';
 import { ArgumentType, BLOCK_TYPE, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
-import { calculateWordAlignedSizeOfMemory, saveByteCode } from '../utils';
+import { calculateWordAlignedSizeOfMemory, saveByteCode } from '../utils/compilation';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `skip`.
@@ -91,3 +92,38 @@ const skip: InstructionCompiler = withValidation(
 );
 
 export default skip;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('skip instruction compiler', () => {
+		it('returns early without arguments', () => {
+			const context = createInstructionCompilerTestContext();
+
+			skip({ lineNumber: 1, instruction: 'skip', arguments: [] } as AST[number], context);
+
+			expect({
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('allocates a sleeper counter with literal argument', () => {
+			const context = createInstructionCompilerTestContext();
+
+			skip(
+				{
+					lineNumber: 2,
+					instruction: 'skip',
+					arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				memory: context.namespace.memory,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

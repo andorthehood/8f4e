@@ -1,10 +1,11 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br_if } from '../wasmUtils/instructionHelpers';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `branchIfTrue`.
@@ -33,3 +34,37 @@ const branchIfTrue: InstructionCompiler = withValidation(
 );
 
 export default branchIfTrue;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('branchIfTrue instruction compiler', () => {
+		it('emits br_if bytecode', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: true });
+
+			branchIfTrue(
+				{
+					lineNumber: 1,
+					instruction: 'branchIfTrue',
+					arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on missing argument', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: true });
+
+			expect(() => {
+				branchIfTrue({ lineNumber: 1, instruction: 'branchIfTrue', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

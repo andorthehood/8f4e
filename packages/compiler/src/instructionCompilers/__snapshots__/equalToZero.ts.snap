@@ -1,0 +1,34 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`equalToZero instruction compiler > emits I32_EQZ for integer operands 1`] = `
+{
+  "loopSegmentByteCode": [
+    69,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`equalToZero instruction compiler > emits float comparison segment 1`] = `
+{
+  "loopSegmentByteCode": [
+    67,
+    0,
+    0,
+    0,
+    0,
+    91,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;

@@ -12,7 +12,9 @@ import {
 import Type from './wasmUtils/type';
 import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
 import { compileModule, compileToAST, compileFunction } from './compiler';
-import { getModuleName, getConstantsName, collectConstants } from './astUtils';
+import { collectConstants } from './astUtils/collectConstants';
+import { getConstantsName } from './astUtils/getConstantsName';
+import { getModuleName } from './astUtils/getModuleName';
 import {
 	AST,
 	ArgumentType,
@@ -26,13 +28,16 @@ import {
 	Namespaces,
 } from './types';
 import {
+	EXPORTED_FUNCTION_COUNT,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	HEADER,
 	I16_SIGNED_LARGEST_NUMBER,
 	I16_SIGNED_SMALLEST_NUMBER,
 	I32_SIGNED_LARGEST_NUMBER,
+	VERSION,
 } from './consts';
 import { ErrorCode, getError } from './errors';
-import { sortModules } from './gaphOptimizer';
+import { sortModules } from './graphOptimizer';
 import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
 
 export {
@@ -70,14 +75,10 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { getModuleName, getConstantsName, collectConstants } from './astUtils';
+export { collectConstants } from './astUtils/collectConstants';
+export { getConstantsName } from './astUtils/getConstantsName';
+export { getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
-
-const HEADER = [0x00, 0x61, 0x73, 0x6d];
-const VERSION = [0x01, 0x00, 0x00, 0x00];
-
-// Number of exported WASM functions (init, cycle, buffer)
-const EXPORTED_FUNCTION_COUNT = 3;
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {

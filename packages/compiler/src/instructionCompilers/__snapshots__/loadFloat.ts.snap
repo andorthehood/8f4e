@@ -1,0 +1,48 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`loadFloat instruction compiler > loads from a safe memory address 1`] = `
+{
+  "loopSegmentByteCode": [
+    42,
+    2,
+    0,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`loadFloat instruction compiler > wraps unsafe address with bounds check 1`] = `
+{
+  "loopSegmentByteCode": [
+    33,
+    0,
+    32,
+    0,
+    65,
+    15,
+    74,
+    4,
+    127,
+    65,
+    0,
+    5,
+    32,
+    0,
+    11,
+    42,
+    2,
+    0,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
