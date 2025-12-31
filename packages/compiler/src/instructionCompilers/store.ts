@@ -3,8 +3,9 @@ import { saveByteCode } from '../utils/compilation';
 import { f32store, i32store } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `store`.
@@ -64,3 +65,39 @@ const store: InstructionCompiler = withValidation(
 );
 
 export default store;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('store instruction compiler', () => {
+		it('stores to a safe memory address', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push(
+				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true },
+				{ isInteger: true, isNonZero: false }
+			);
+
+			store({ lineNumber: 1, instruction: 'store', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('wraps unsafe address with bounds check', () => {
+			const context = createInstructionCompilerTestContext({ memoryByteSize: 16 });
+			context.stack.push(
+				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: false },
+				{ isInteger: true, isNonZero: false }
+			);
+
+			store({ lineNumber: 2, instruction: 'store', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

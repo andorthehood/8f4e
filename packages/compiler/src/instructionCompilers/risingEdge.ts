@@ -1,7 +1,8 @@
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `risingEdge`.
@@ -45,3 +46,23 @@ const risingEdge: InstructionCompiler = withValidation(
 );
 
 export default risingEdge;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('risingEdge instruction compiler', () => {
+		it('compiles the rising edge segment', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			risingEdge({ lineNumber: 4, instruction: 'risingEdge', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				memory: context.namespace.memory,
+				locals: context.namespace.locals,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

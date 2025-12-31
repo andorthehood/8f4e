@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`round instruction compiler > rounds a float operand 1`] = `
+{
+  "loopSegmentByteCode": [
+    144,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;

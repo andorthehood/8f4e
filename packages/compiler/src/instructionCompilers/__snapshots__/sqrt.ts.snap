@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sqrt instruction compiler > emits F32_SQRT for float operands 1`] = `
+{
+  "loopSegmentByteCode": [
+    145,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
