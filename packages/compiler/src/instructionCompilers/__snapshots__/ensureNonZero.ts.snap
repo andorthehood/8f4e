@@ -1,0 +1,73 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ensureNonZero instruction compiler > ensures float operand is non-zero with literal default 1`] = `
+{
+  "locals": {
+    "__ensureNonZero_temp_2": {
+      "index": 0,
+      "isInteger": false,
+    },
+  },
+  "loopSegmentByteCode": [
+    33,
+    0,
+    32,
+    0,
+    67,
+    0,
+    0,
+    0,
+    0,
+    91,
+    4,
+    125,
+    67,
+    0,
+    0,
+    32,
+    64,
+    5,
+    32,
+    0,
+    11,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`ensureNonZero instruction compiler > ensures integer operand is non-zero 1`] = `
+{
+  "locals": {
+    "__ensureNonZero_temp_1": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+  "loopSegmentByteCode": [
+    33,
+    0,
+    32,
+    0,
+    69,
+    4,
+    127,
+    65,
+    1,
+    5,
+    32,
+    0,
+    11,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;

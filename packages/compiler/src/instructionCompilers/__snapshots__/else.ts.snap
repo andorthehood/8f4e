@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`else instruction compiler > emits else bytecode and restores block 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 4,
+      "expectedResultIsInteger": true,
+      "hasExpectedResult": true,
+    },
+  ],
+  "loopSegmentByteCode": [
+    5,
+  ],
+  "stack": [],
+}
+`;
