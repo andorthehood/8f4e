@@ -1,6 +1,7 @@
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -67,7 +68,14 @@ if (import.meta.vitest) {
 
 	describe('cycle instruction compiler', () => {
 		it('compiles the cycle segment', () => {
-			const context = createInstructionCompilerTestContext();
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					consts: {
+						WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
+					},
+				},
+			});
 			context.stack.push(
 				{ isInteger: true, isNonZero: false },
 				{ isInteger: true, isNonZero: false },

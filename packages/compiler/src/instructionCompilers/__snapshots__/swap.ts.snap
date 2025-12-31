@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`swap instruction compiler > swaps the top two stack values 1`] = `
+{
+  "locals": {
+    "__swapTempA3": {
+      "index": 0,
+      "isInteger": false,
+    },
+    "__swapTempB3": {
+      "index": 1,
+      "isInteger": true,
+    },
+  },
+  "loopSegmentByteCode": [
+    33,
+    0,
+    33,
+    1,
+    32,
+    0,
+    32,
+    1,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": false,
+    },
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;

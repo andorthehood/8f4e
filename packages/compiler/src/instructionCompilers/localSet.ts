@@ -3,8 +3,9 @@ import { ErrorCode, getError } from '../errors';
 import { saveByteCode } from '../utils/compilation';
 import { localSet } from '../wasmUtils/instructionHelpers';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `localSet`.
@@ -46,3 +47,44 @@ const _localSet: InstructionCompiler = withValidation(
 );
 
 export default _localSet;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('localSet instruction compiler', () => {
+		it('stores a local value', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					locals: {
+						value: { isInteger: true, index: 0 },
+					},
+				},
+			});
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			_localSet(
+				{
+					lineNumber: 1,
+					instruction: 'localSet',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on missing arguments', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			expect(() => {
+				_localSet({ lineNumber: 1, instruction: 'localSet', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

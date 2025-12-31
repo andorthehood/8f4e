@@ -4,8 +4,10 @@ import { getMemoryFlags } from '../utils/memoryFlags';
 import { getPointerDepth } from '../syntax/memoryIdentifierHelpers';
 import { withValidation } from '../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import { ArgumentType } from '../types';
 
-import type { InstructionCompiler, MemoryTypes } from '../types';
+import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
 /**
  * Instruction compiler for `int`.
@@ -43,3 +45,24 @@ const int: InstructionCompiler = withValidation(
 );
 
 export default int;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('int instruction compiler', () => {
+		it('creates an int memory entry', () => {
+			const context = createInstructionCompilerTestContext();
+
+			int(
+				{
+					lineNumber: 1,
+					instruction: 'int',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'counter' }],
+				} as AST[number],
+				context
+			);
+
+			expect(context.namespace.memory).toMatchSnapshot();
+		});
+	});
+}

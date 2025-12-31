@@ -1,7 +1,8 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 // Note: This instruction does not use withValidation because it defines a module scope
 // rather than operating within one. The withValidation helper is designed for instructions
@@ -32,3 +33,35 @@ const _module: InstructionCompiler = function (line, context) {
 };
 
 export default _module;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('module instruction compiler', () => {
+		it('starts a module block', () => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
+
+			_module(
+				{
+					lineNumber: 1,
+					instruction: 'module',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'demo' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				moduleName: context.namespace.moduleName,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on missing argument', () => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
+
+			expect(() => {
+				_module({ lineNumber: 1, instruction: 'module', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

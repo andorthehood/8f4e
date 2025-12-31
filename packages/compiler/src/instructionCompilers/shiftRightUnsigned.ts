@@ -1,8 +1,9 @@
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `shiftRightUnsigned`.
@@ -25,3 +26,21 @@ const shiftRightUnsigned: InstructionCompiler = withValidation(
 );
 
 export default shiftRightUnsigned;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('shiftRightUnsigned instruction compiler', () => {
+		it('emits I32_SHR_U for integer operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+
+			shiftRightUnsigned({ lineNumber: 1, instruction: 'shiftRightUnsigned', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

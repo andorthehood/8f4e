@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`use instruction compiler > merges constants from a namespace 1`] = `
+{
+  "BASE": {
+    "isInteger": true,
+    "value": 1,
+  },
+  "EXTRA": {
+    "isInteger": true,
+    "value": 2,
+  },
+}
+`;
