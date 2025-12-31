@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`and instruction compiler > emits I32_AND for integer operands 1`] = `
+{
+  "loopSegmentByteCode": [
+    113,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`and instruction compiler > rejects non-integer operands 1`] = `
+{
+  "code": 2,
+  "message": "The operation only accepts integer values as operands. (2)",
+}
+`;
