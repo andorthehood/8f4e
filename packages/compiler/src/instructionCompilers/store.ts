@@ -1,5 +1,5 @@
 import { ErrorCode } from '../errors';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { f32store, i32store } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';

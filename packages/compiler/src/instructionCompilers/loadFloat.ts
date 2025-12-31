@@ -1,4 +1,4 @@
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { f32load } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';

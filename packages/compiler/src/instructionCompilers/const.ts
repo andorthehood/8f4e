@@ -1,4 +1,4 @@
-import { isConstantName } from '../syntax';
+import { isConstantName } from '../syntax/isConstantName';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';

@@ -1,4 +1,5 @@
-import { areAllOperandsIntegers, saveByteCode } from '../utils';
+import { areAllOperandsIntegers } from '../utils/operandTypes';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 

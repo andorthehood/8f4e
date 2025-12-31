@@ -1,7 +1,7 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br_if } from '../wasmUtils/instructionHelpers';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';

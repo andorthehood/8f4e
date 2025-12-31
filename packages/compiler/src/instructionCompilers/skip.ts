@@ -2,7 +2,7 @@ import { withValidation } from '../withValidation';
 import { ArgumentType, BLOCK_TYPE, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
-import { calculateWordAlignedSizeOfMemory, saveByteCode } from '../utils';
+import { calculateWordAlignedSizeOfMemory, saveByteCode } from '../utils/compilation';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';

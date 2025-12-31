@@ -1,13 +1,12 @@
 import { BLOCK_TYPE } from './types';
 import { ErrorCode, getError } from './errors';
+import { areAllOperandsFloats, areAllOperandsIntegers } from './utils/operandTypes';
 import {
-	areAllOperandsFloats,
-	areAllOperandsIntegers,
 	isInstructionInsideFunction,
 	isInstructionInsideModuleOrFunction,
 	isInstructionIsInsideAModule,
 	isInstructionIsInsideBlock,
-} from './utils';
+} from './utils/blockStack';
 
 import type { BlockStack, CompilationContext, InstructionCompiler, StackItem } from './types';
 
