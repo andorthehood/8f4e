@@ -3,8 +3,9 @@ import { areAllOperandsIntegers } from '../utils/operandTypes';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `div`.
@@ -32,3 +33,42 @@ const div: InstructionCompiler = withValidation(
 );
 
 export default div;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('div instruction compiler', () => {
+		it('emits I32_DIV_S for integer operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: true });
+
+			div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('emits F32_DIV for float operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: true }, { isInteger: false, isNonZero: true });
+
+			div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on division by zero', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: true }, { isInteger: true, isNonZero: false });
+
+			expect(() => {
+				div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}
