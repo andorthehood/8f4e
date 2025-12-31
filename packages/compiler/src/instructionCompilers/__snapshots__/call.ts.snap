@@ -13,10 +13,3 @@ exports[`call instruction compiler > emits call bytecode and pushes returns 1`] 
   ],
 }
 `;
-
-exports[`call instruction compiler > throws on undefined function 1`] = `
-{
-  "code": 21,
-  "message": "Undefined function. (21)",
-}
-`;

@@ -62,10 +62,3 @@ exports[`block instruction compiler > emits a void block for unknown type 1`] = 
   ],
 }
 `;
-
-exports[`block instruction compiler > throws on missing argument 1`] = `
-{
-  "code": 4,
-  "message": "Missing argument. (4)",
-}
-`;

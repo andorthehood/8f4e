@@ -13,10 +13,3 @@ exports[`blockEnd instruction compiler > restores expected result on the stack 1
   ],
 }
 `;
-
-exports[`blockEnd instruction compiler > throws when no matching block start exists 1`] = `
-{
-  "code": undefined,
-  "message": undefined,
-}
-`;

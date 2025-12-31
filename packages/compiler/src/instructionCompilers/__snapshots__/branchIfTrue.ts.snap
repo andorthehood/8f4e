@@ -9,10 +9,3 @@ exports[`branchIfTrue instruction compiler > emits br_if bytecode 1`] = `
   "stack": [],
 }
 `;
-
-exports[`branchIfTrue instruction compiler > throws on missing argument 1`] = `
-{
-  "code": 4,
-  "message": "Missing argument. (4)",
-}
-`;
