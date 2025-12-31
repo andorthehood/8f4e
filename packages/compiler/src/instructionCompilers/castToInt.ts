@@ -1,8 +1,9 @@
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `castToInt`.
@@ -25,3 +26,21 @@ const castToInt: InstructionCompiler = withValidation(
 );
 
 export default castToInt;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('castToInt instruction compiler', () => {
+		it('converts float operand to int', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: true });
+
+			castToInt({ lineNumber: 1, instruction: 'castToInt', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

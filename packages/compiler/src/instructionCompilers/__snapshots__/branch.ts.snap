@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`branch instruction compiler > emits br bytecode 1`] = `
+{
+  "loopSegmentByteCode": [
+    12,
+    0,
+  ],
+}
+`;
+
+exports[`branch instruction compiler > throws on missing argument 1`] = `
+{
+  "code": 4,
+  "message": "Missing argument. (4)",
+}
+`;
