@@ -1,30 +1,32 @@
 import type { ExampleModule } from '@8f4e/editor-state';
 
-const lowPassFilter: ExampleModule = {
-	title: 'Low-pass Filter',
+const highPassFilter: ExampleModule = {
+	title: 'High-pass Filter',
 	author: 'Andor Polgar',
 	category: 'Filters',
-	code: `module lowPassFilter
+	code: `module highPassFilter
 
-float* in
+float* in &vca.out
 float out
 
 float alpha 0.1
 
 push &out
+push *in
+push out
 push alpha
 push *in
 mul
-push 1.0
-push alpha
-sub
 push out
+push alpha
 mul
-add 
+sub
+add
+sub
 store
 
 moduleEnd`,
 	tests: [],
 };
 
-export default lowPassFilter;
+export default highPassFilter;
