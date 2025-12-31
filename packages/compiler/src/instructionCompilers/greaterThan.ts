@@ -2,8 +2,9 @@ import { areAllOperandsIntegers } from '../utils/operandTypes';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `greaterThan`.
@@ -27,3 +28,33 @@ const greaterThan: InstructionCompiler = withValidation(
 );
 
 export default greaterThan;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('greaterThan instruction compiler', () => {
+		it('emits I32_GT_S for integer operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+
+			greaterThan({ lineNumber: 1, instruction: 'greaterThan', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('emits F32_GT for float operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+
+			greaterThan({ lineNumber: 1, instruction: 'greaterThan', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

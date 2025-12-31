@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`castToInt instruction compiler > converts float operand to int 1`] = `
+{
+  "loopSegmentByteCode": [
+    168,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;

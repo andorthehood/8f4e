@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`function instruction compiler > starts a new function block 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 3,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "currentFunctionId": "doThing",
+  "currentFunctionSignature": {
+    "parameters": [],
+    "returns": [],
+  },
+  "locals": {},
+  "mode": "function",
+}
+`;
