@@ -1,9 +1,10 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `abs`.
@@ -47,3 +48,34 @@ const abs: InstructionCompiler = withValidation(
 );
 
 export default abs;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('abs instruction compiler', () => {
+		it('emits F32_ABS for float operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: true });
+
+			abs({ lineNumber: 1, instruction: 'abs', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('compiles int abs via segment instructions', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: true });
+
+			abs({ lineNumber: 3, instruction: 'abs', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+				locals: context.namespace.locals,
+			}).toMatchSnapshot();
+		});
+	});
+}

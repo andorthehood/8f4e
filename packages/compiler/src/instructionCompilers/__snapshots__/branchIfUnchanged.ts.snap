@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`branchIfUnchanged instruction compiler > compiles the unchanged check segment 1`] = `
+{
+  "locals": {
+    "__branchIfUnchanged_currentValue4": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+  "loopSegmentByteCode": [
+    33,
+    0,
+    65,
+    0,
+    40,
+    2,
+    0,
+    32,
+    0,
+    70,
+    13,
+    1,
+    65,
+    0,
+    32,
+    0,
+    54,
+    2,
+    0,
+  ],
+  "memory": {
+    "__branchIfUnchanged_previousValue4": {
+      "byteAddress": 0,
+      "default": 0,
+      "elementWordSize": 4,
+      "id": "__branchIfUnchanged_previousValue4",
+      "isInteger": true,
+      "isPointer": false,
+      "isPointingToInteger": false,
+      "isPointingToPointer": false,
+      "numberOfElements": 1,
+      "type": "int",
+      "wordAlignedAddress": 0,
+      "wordAlignedSize": 1,
+    },
+  },
+  "stack": [],
+}
+`;

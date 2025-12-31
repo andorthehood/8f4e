@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`greaterOrEqual instruction compiler > emits F32_GE for float operands 1`] = `
+{
+  "loopSegmentByteCode": [
+    96,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`greaterOrEqual instruction compiler > emits I32_GE_S for integer operands 1`] = `
+{
+  "loopSegmentByteCode": [
+    78,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;

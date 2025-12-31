@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`local instruction compiler > adds a local variable 1`] = `
+{
+  "count": {
+    "index": 0,
+    "isInteger": true,
+  },
+}
+`;

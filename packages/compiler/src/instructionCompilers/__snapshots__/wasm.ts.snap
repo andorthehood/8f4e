@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`wasm instruction compiler > emits the provided wasm opcode 1`] = `
+{
+  "loopSegmentByteCode": [
+    42,
+  ],
+}
+`;

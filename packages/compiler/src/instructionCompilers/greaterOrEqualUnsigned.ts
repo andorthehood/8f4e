@@ -1,8 +1,10 @@
-import { areAllOperandsIntegers, saveByteCode } from '../utils';
+import { areAllOperandsIntegers } from '../utils/operandTypes';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `greaterOrEqualUnsigned`.
@@ -30,3 +32,39 @@ const greaterOrEqualUnsigned: InstructionCompiler = withValidation(
 );
 
 export default greaterOrEqualUnsigned;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('greaterOrEqualUnsigned instruction compiler', () => {
+		it('emits I32_GE_U for integer operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+
+			greaterOrEqualUnsigned(
+				{ lineNumber: 1, instruction: 'greaterOrEqualUnsigned', arguments: [] } as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('emits F32_GE for float operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+
+			greaterOrEqualUnsigned(
+				{ lineNumber: 1, instruction: 'greaterOrEqualUnsigned', arguments: [] } as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

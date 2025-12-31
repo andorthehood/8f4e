@@ -1,9 +1,10 @@
-import { isConstantName } from '../syntax';
+import { isConstantName } from '../syntax/isConstantName';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `const`.
@@ -49,3 +50,45 @@ const _const: InstructionCompiler = withValidation(
 );
 
 export default _const;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('const instruction compiler', () => {
+		it('records constant value', () => {
+			const context = createInstructionCompilerTestContext();
+
+			_const(
+				{
+					lineNumber: 1,
+					instruction: 'const',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' },
+						{ type: ArgumentType.LITERAL, value: 7, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			expect({ consts: context.namespace.consts }).toMatchSnapshot();
+		});
+
+		it('throws on undeclared identifier', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				_const(
+					{
+						lineNumber: 1,
+						instruction: 'const',
+						arguments: [
+							{ type: ArgumentType.IDENTIFIER, value: 'MY_CONST' },
+							{ type: ArgumentType.IDENTIFIER, value: 'missing' },
+						],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
+		});
+	});
+}

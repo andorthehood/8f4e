@@ -1,8 +1,9 @@
-import { ArgumentType } from '../types';
+import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `param`.
@@ -74,3 +75,76 @@ const param: InstructionCompiler = withValidation(
 );
 
 export default param;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('param instruction compiler', () => {
+		it('registers a function parameter', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.FUNCTION,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+				],
+				currentFunctionSignature: { parameters: [], returns: [] },
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					locals: {},
+				},
+			});
+
+			param(
+				{
+					lineNumber: 1,
+					instruction: 'param',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'int' },
+						{ type: ArgumentType.IDENTIFIER, value: 'value' },
+					],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				locals: context.namespace.locals,
+				currentFunctionSignature: context.currentFunctionSignature,
+			}).toMatchSnapshot();
+		});
+
+		it('throws when declared after locals', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.FUNCTION,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+				],
+				currentFunctionSignature: { parameters: [], returns: [] },
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					locals: { existing: { isInteger: true, index: 0 } },
+				},
+			});
+
+			expect(() => {
+				param(
+					{
+						lineNumber: 1,
+						instruction: 'param',
+						arguments: [
+							{ type: ArgumentType.IDENTIFIER, value: 'int' },
+							{ type: ArgumentType.IDENTIFIER, value: 'late' },
+						],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
+		});
+	});
+}

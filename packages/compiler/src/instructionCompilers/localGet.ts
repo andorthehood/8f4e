@@ -1,10 +1,11 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { localGet } from '../wasmUtils/instructionHelpers';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `localGet`.
@@ -37,3 +38,49 @@ const _localGet: InstructionCompiler = withValidation(
 );
 
 export default _localGet;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('localGet instruction compiler', () => {
+		it('loads a local value', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					locals: {
+						value: { isInteger: true, index: 0 },
+					},
+				},
+			});
+
+			_localGet(
+				{
+					lineNumber: 1,
+					instruction: 'localGet',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'value' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on undeclared local', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				_localGet(
+					{
+						lineNumber: 1,
+						instruction: 'localGet',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
+		});
+	});
+}

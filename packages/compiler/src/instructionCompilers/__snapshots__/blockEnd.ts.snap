@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`blockEnd instruction compiler > restores expected result on the stack 1`] = `
+{
+  "loopSegmentByteCode": [
+    11,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;

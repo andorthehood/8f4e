@@ -1,7 +1,9 @@
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `cycle`.
@@ -60,3 +62,33 @@ const cycle: InstructionCompiler = withValidation(
 );
 
 export default cycle;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('cycle instruction compiler', () => {
+		it('compiles the cycle segment', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					consts: {
+						WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
+					},
+				},
+			});
+			context.stack.push(
+				{ isInteger: true, isNonZero: false },
+				{ isInteger: true, isNonZero: false },
+				{ isInteger: true, isNonZero: false }
+			);
+
+			cycle({ lineNumber: 2, instruction: 'cycle', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				locals: context.namespace.locals,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

@@ -35,6 +35,7 @@
     "@typescript-eslint/parser": "^8.50.0",
     "@vitest/browser": "4.0.13",
     "@vitest/browser-playwright": "4.0.13",
+    "@vitest/coverage-v8": "^4.0.13",
     "@vitest/ui": "4.0.13",
     "concurrently": "^9.2.1",
     "eslint": "^9.39.2",

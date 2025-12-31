@@ -1,8 +1,9 @@
 import { ErrorCode, getError } from '../errors';
 import { BLOCK_TYPE } from '../types';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `moduleEnd`.
@@ -27,3 +28,26 @@ const moduleEnd: InstructionCompiler = withValidation(
 );
 
 export default moduleEnd;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('moduleEnd instruction compiler', () => {
+		it('pops the module block', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.MODULE,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+				],
+			});
+
+			moduleEnd({ lineNumber: 1, instruction: 'moduleEnd', arguments: [] } as AST[number], context);
+
+			expect({ blockStack: context.blockStack }).toMatchSnapshot();
+		});
+	});
+}

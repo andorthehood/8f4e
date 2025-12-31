@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`fallingEdge instruction compiler > compiles the falling edge segment 1`] = `
+{
+  "locals": {
+    "__fallingEdgeDetector_currentValue5": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+  "loopSegmentByteCode": [
+    33,
+    0,
+    32,
+    0,
+    65,
+    0,
+    40,
+    2,
+    0,
+    72,
+    4,
+    127,
+    65,
+    1,
+    5,
+    65,
+    0,
+    11,
+    65,
+    0,
+    32,
+    0,
+    54,
+    2,
+    0,
+  ],
+  "memory": {
+    "__fallingEdgeDetector_previousValue5": {
+      "byteAddress": 0,
+      "default": 0,
+      "elementWordSize": 4,
+      "id": "__fallingEdgeDetector_previousValue5",
+      "isInteger": true,
+      "isPointer": false,
+      "isPointingToInteger": false,
+      "isPointingToPointer": false,
+      "numberOfElements": 1,
+      "type": "int",
+      "wordAlignedAddress": 0,
+      "wordAlignedSize": 1,
+    },
+  },
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
