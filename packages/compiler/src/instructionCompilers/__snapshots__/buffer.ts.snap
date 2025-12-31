@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buffer instruction compiler > creates a memory buffer entry 1`] = `
+{
+  "values": {
+    "byteAddress": 0,
+    "default": {},
+    "elementWordSize": 4,
+    "id": "values",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "numberOfElements": 3,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 3,
+  },
+}
+`;
+
+exports[`buffer instruction compiler > throws on missing arguments 1`] = `
+{
+  "code": 4,
+  "message": "Missing argument. (4)",
+}
+`;
