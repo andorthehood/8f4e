@@ -34,6 +34,8 @@ export const moduleManifest: Record<string, () => Promise<ExampleModule>> = Obje
 export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'XORShift', title: 'XORShift (Signed, Float, -1 - 1)', category: 'Random' },
 	{ slug: 'amenBreak64Step', title: 'Amen Break 64 Step', category: 'Break Beats' },
+	{ slug: 'arEnvelope', title: 'Attack-Release Envelope', category: 'Envelopes' },
+	{ slug: 'asEnvelope', title: 'Attack-Sustain Envelope', category: 'Envelopes' },
 	{ slug: 'audioBufferOut', title: 'Audio Buffer Out', category: 'Audio Buffer' },
 	{ slug: 'binSwitchesLSb', title: 'Binary Switches (LSb first)', category: 'Controllers' },
 	{ slug: 'binSwitchesMSb', title: 'Binary Switches (MSb first)', category: 'Controllers' },
