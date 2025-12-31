@@ -1,8 +1,9 @@
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../utils/blockStack';
 import { BLOCK_TYPE, ArgumentType } from '../types';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 // Note: This instruction does not use withValidation because it requires inverted scope validation:
 // it must NOT be inside a module or function, which is the opposite of the standard scope rules
@@ -46,3 +47,45 @@ const _function: InstructionCompiler = function (line, context) {
 };
 
 export default _function;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('function instruction compiler', () => {
+		it('starts a new function block', () => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
+
+			_function(
+				{
+					lineNumber: 1,
+					instruction: 'function',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'doThing' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				currentFunctionId: context.currentFunctionId,
+				currentFunctionSignature: context.currentFunctionSignature,
+				mode: context.mode,
+				locals: context.namespace.locals,
+			}).toMatchSnapshot();
+		});
+
+		it('throws when declared inside a module', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				_function(
+					{
+						lineNumber: 1,
+						instruction: 'function',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'nested' }],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
+		});
+	});
+}

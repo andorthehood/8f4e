@@ -2,8 +2,9 @@ import { areAllOperandsIntegers } from '../utils/operandTypes';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `equal`.
@@ -27,3 +28,33 @@ const equal: InstructionCompiler = withValidation(
 );
 
 export default equal;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('equal instruction compiler', () => {
+		it('emits I32_EQ for integer operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+
+			equal({ lineNumber: 1, instruction: 'equal', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('emits F32_EQ for float operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+
+			equal({ lineNumber: 1, instruction: 'equal', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

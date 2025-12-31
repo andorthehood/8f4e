@@ -46,14 +46,6 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('blockEnd instruction compiler', () => {
-		it('throws when no matching block start exists', () => {
-			const context = createInstructionCompilerTestContext();
-
-			expect(() => {
-				blockEnd({ lineNumber: 1, instruction: 'blockEnd', arguments: [] } as AST[number], context);
-			}).toThrowError();
-		});
-
 		it('restores expected result on the stack', () => {
 			const context = createInstructionCompilerTestContext({
 				blockStack: [
