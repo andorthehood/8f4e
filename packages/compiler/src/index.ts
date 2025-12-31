@@ -28,10 +28,13 @@ import {
 	Namespaces,
 } from './types';
 import {
+	EXPORTED_FUNCTION_COUNT,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	HEADER,
 	I16_SIGNED_LARGEST_NUMBER,
 	I16_SIGNED_SMALLEST_NUMBER,
 	I32_SIGNED_LARGEST_NUMBER,
+	VERSION,
 } from './consts';
 import { ErrorCode, getError } from './errors';
 import { sortModules } from './graphOptimizer';
@@ -76,12 +79,6 @@ export { collectConstants } from './astUtils/collectConstants';
 export { getConstantsName } from './astUtils/getConstantsName';
 export { getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
-
-const HEADER = [0x00, 0x61, 0x73, 0x6d];
-const VERSION = [0x01, 0x00, 0x00, 0x00];
-
-// Number of exported WASM functions (init, cycle, buffer)
-const EXPORTED_FUNCTION_COUNT = 3;
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
