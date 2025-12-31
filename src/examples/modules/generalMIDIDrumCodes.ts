@@ -3,8 +3,8 @@ import type { ExampleModule } from '@8f4e/editor-state';
 const generalMIDIDrumCodes: ExampleModule = {
 	title: 'General MIDI Drum Codes',
 	author: 'Andor Polgar',
-	category: 'MIDI',
-	code: `module MIDIDrumCodes
+	category: 'Constants',
+	code: `constants MIDIDrumCodes
 
 const LASER 27
 const WHIP 28
@@ -70,7 +70,7 @@ const SNARE_DRUM_ROD 91
 const OCEAN_DRUM 92
 const SNARE_DRUM_BRUSH 93
 
-moduleEnd`,
+constantsEnd`,
 	tests: [],
 };
 
