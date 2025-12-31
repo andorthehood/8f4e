@@ -1,7 +1,7 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 
 import type { InstructionCompiler } from '../types';

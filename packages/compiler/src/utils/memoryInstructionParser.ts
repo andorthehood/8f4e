@@ -1,4 +1,5 @@
-import { parseMemoryInstructionArgumentsShape, SyntaxRulesError } from '../syntax';
+import { parseMemoryInstructionArgumentsShape } from '../syntax/memoryInstructionParser';
+import { SyntaxRulesError } from '../syntax/syntaxError';
 import { ArgumentType } from '../syntax/parseArgument';
 import { ErrorCode, getError } from '../errors';
 

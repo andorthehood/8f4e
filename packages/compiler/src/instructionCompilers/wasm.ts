@@ -1,6 +1,6 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 
 import type { InstructionCompiler } from '../types';
 

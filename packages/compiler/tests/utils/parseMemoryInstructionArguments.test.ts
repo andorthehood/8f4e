@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { parseMemoryInstructionArguments } from '../../src/utils';
+import { parseMemoryInstructionArguments } from '../../src/utils/memoryInstructionParser';
 import { ArgumentType, type CompilationContext } from '../../src/types';
 
 describe('parseMemoryInstructionArguments', () => {

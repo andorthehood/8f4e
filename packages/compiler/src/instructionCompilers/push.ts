@@ -6,15 +6,17 @@ import {
 	getDataStructure,
 	getDataStructureByteAddress,
 	getMemoryStringLastByteAddress,
+	getElementWordSize,
+	getElementCount,
+} from '../utils/memoryData';
+import {
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
 	isElementCountIdentifier,
 	isElementWordSizeIdentifier,
-	getElementWordSize,
-	getElementCount,
-	saveByteCode,
-} from '../utils';
+} from '../utils/memoryIdentifier';
+import { saveByteCode } from '../utils/compilation';
 import {
 	hasMemoryReferencePrefixStart,
 	extractMemoryReferenceBase,
