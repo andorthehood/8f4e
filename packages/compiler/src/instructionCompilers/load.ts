@@ -3,8 +3,9 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '../wasmUtils/instructionHelpers';
 import { compileSegment } from '../compiler';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `load` variants.
@@ -69,3 +70,33 @@ const load: InstructionCompiler = withValidation(
 );
 
 export default load;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('load instruction compiler', () => {
+		it('loads from a safe memory address', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
+
+			load({ lineNumber: 1, instruction: 'load', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('wraps unsafe address with bounds check', () => {
+			const context = createInstructionCompilerTestContext({ memoryByteSize: 32 });
+			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: false });
+
+			load({ lineNumber: 2, instruction: 'load8u', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

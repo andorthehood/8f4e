@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`or instruction compiler > emits I32_OR and tracks non-zero state 1`] = `
+{
+  "loopSegmentByteCode": [
+    114,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;

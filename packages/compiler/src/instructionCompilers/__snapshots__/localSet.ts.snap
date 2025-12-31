@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`localSet instruction compiler > stores a local value 1`] = `
+{
+  "loopSegmentByteCode": [
+    33,
+    0,
+  ],
+  "stack": [],
+}
+`;

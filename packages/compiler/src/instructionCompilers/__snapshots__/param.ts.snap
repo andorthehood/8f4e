@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`param instruction compiler > registers a function parameter 1`] = `
+{
+  "currentFunctionSignature": {
+    "parameters": [
+      "int",
+    ],
+    "returns": [],
+  },
+  "locals": {
+    "value": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+}
+`;
