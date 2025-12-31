@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`moduleEnd instruction compiler > pops the module block 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+}
+`;

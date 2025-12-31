@@ -2,10 +2,11 @@ import { ErrorCode, getError } from '../errors';
 import { BLOCK_TYPE } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { br } from '../wasmUtils/instructionHelpers';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `loopEnd`.
@@ -41,3 +42,37 @@ const loopEnd: InstructionCompiler = withValidation(
 );
 
 export default loopEnd;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('loopEnd instruction compiler', () => {
+		it('ends a loop block', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.LOOP,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+				],
+			});
+
+			loopEnd({ lineNumber: 1, instruction: 'loopEnd', arguments: [] } as AST[number], context);
+
+			expect({
+				blockStack: context.blockStack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws when missing loop block', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				loopEnd({ lineNumber: 1, instruction: 'loopEnd', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

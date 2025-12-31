@@ -1,8 +1,9 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `local`.
@@ -32,3 +33,35 @@ const local: InstructionCompiler = withValidation(
 );
 
 export default local;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('local instruction compiler', () => {
+		it('adds a local variable', () => {
+			const context = createInstructionCompilerTestContext();
+
+			local(
+				{
+					lineNumber: 1,
+					instruction: 'local',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'int' },
+						{ type: ArgumentType.IDENTIFIER, value: 'count' },
+					],
+				} as AST[number],
+				context
+			);
+
+			expect(context.namespace.locals).toMatchSnapshot();
+		});
+
+		it('throws on missing arguments', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				local({ lineNumber: 1, instruction: 'local', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

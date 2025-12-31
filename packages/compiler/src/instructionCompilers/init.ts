@@ -1,8 +1,9 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
 /**
  * Instruction compiler for `init`.
@@ -67,3 +68,55 @@ const init: InstructionCompiler = withValidation(
 );
 
 export default init;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('init instruction compiler', () => {
+		it('sets memory default value', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					memory: {
+						buffer: {
+							id: 'buffer',
+							numberOfElements: 1,
+							elementWordSize: 4,
+							wordAlignedAddress: 0,
+							wordAlignedSize: 1,
+							byteAddress: 0,
+							default: {},
+							isInteger: true,
+							isPointer: false,
+							isPointingToInteger: false,
+							isPointingToPointer: false,
+							type: 'int' as unknown as MemoryTypes,
+						},
+					},
+				},
+			});
+
+			init(
+				{
+					lineNumber: 1,
+					instruction: 'init',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'buffer' },
+						{ type: ArgumentType.LITERAL, value: 9, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			expect(context.namespace.memory).toMatchSnapshot();
+		});
+
+		it('throws on missing arguments', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				init({ lineNumber: 1, instruction: 'init', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

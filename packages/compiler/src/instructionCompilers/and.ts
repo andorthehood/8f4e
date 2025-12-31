@@ -1,8 +1,9 @@
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `and`.
@@ -25,3 +26,30 @@ const and: InstructionCompiler = withValidation(
 );
 
 export default and;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('and instruction compiler', () => {
+		it('emits I32_AND for integer operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+
+			and({ lineNumber: 1, instruction: 'and', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('rejects non-integer operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+
+			expect(() => {
+				and({ lineNumber: 1, instruction: 'and', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

@@ -1,8 +1,9 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `constants`.
@@ -37,3 +38,35 @@ const constants: InstructionCompiler = withValidation(
 );
 
 export default constants;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('constants instruction compiler', () => {
+		it('starts constants block and records module name', () => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
+
+			constants(
+				{
+					lineNumber: 1,
+					instruction: 'constants',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'demo' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				moduleName: context.namespace.moduleName,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on missing argument', () => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
+
+			expect(() => {
+				constants({ lineNumber: 1, instruction: 'constants', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

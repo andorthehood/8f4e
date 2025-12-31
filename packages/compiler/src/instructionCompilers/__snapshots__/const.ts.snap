@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`const instruction compiler > records constant value 1`] = `
+{
+  "consts": {
+    "MY_CONST": {
+      "isInteger": true,
+      "type": "literal",
+      "value": 7,
+    },
+  },
+}
+`;

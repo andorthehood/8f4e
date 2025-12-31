@@ -1,9 +1,13 @@
-import { calculateWordAlignedSizeOfMemory, parseMemoryInstructionArguments, getMemoryFlags } from '../utils';
+import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
+import { parseMemoryInstructionArguments } from '../utils/memoryInstructionParser';
+import { getMemoryFlags } from '../utils/memoryFlags';
 import { getPointerDepth } from '../syntax/memoryIdentifierHelpers';
 import { withValidation } from '../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import { ArgumentType } from '../types';
 
-import type { InstructionCompiler, MemoryTypes } from '../types';
+import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
 /**
  * Instruction compiler for `float`.
@@ -41,3 +45,24 @@ const float: InstructionCompiler = withValidation(
 );
 
 export default float;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('float instruction compiler', () => {
+		it('creates a float memory entry', () => {
+			const context = createInstructionCompilerTestContext();
+
+			float(
+				{
+					lineNumber: 1,
+					instruction: 'float',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'temperature' }],
+				} as AST[number],
+				context
+			);
+
+			expect(context.namespace.memory).toMatchSnapshot();
+		});
+	});
+}

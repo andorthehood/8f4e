@@ -1,0 +1,42 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`store instruction compiler > stores to a safe memory address 1`] = `
+{
+  "loopSegmentByteCode": [
+    54,
+    2,
+    0,
+  ],
+  "stack": [],
+}
+`;
+
+exports[`store instruction compiler > wraps unsafe address with bounds check 1`] = `
+{
+  "loopSegmentByteCode": [
+    33,
+    1,
+    33,
+    0,
+    32,
+    0,
+    65,
+    15,
+    74,
+    4,
+    127,
+    65,
+    0,
+    5,
+    32,
+    0,
+    11,
+    32,
+    1,
+    54,
+    2,
+    0,
+  ],
+  "stack": [],
+}
+`;

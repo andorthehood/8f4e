@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`constants instruction compiler > starts constants block and records module name 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 6,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "moduleName": "demo",
+}
+`;

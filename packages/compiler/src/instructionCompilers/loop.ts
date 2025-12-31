@@ -3,8 +3,9 @@ import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `loop`.
@@ -60,3 +61,22 @@ const loop: InstructionCompiler = withValidation(
 );
 
 export default loop;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('loop instruction compiler', () => {
+		it('compiles the loop segment', () => {
+			const context = createInstructionCompilerTestContext();
+
+			loop({ lineNumber: 2, instruction: 'loop', arguments: [] } as AST[number], context);
+
+			expect({
+				blockStack: context.blockStack,
+				memory: context.namespace.memory,
+				locals: context.namespace.locals,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

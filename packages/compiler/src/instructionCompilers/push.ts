@@ -6,15 +6,17 @@ import {
 	getDataStructure,
 	getDataStructureByteAddress,
 	getMemoryStringLastByteAddress,
+	getElementWordSize,
+	getElementCount,
+} from '../utils/memoryData';
+import {
 	isMemoryIdentifier,
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
 	isElementCountIdentifier,
 	isElementWordSizeIdentifier,
-	getElementWordSize,
-	getElementCount,
-	saveByteCode,
-} from '../utils';
+} from '../utils/memoryIdentifier';
+import { saveByteCode } from '../utils/compilation';
 import {
 	hasMemoryReferencePrefixStart,
 	extractMemoryReferenceBase,
@@ -22,8 +24,9 @@ import {
 	extractElementCountBase,
 	extractElementWordSizeBase,
 } from '../syntax/memoryIdentifierHelpers';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { ArgumentLiteral, InstructionCompiler } from '../types';
+import type { AST, ArgumentLiteral, InstructionCompiler } from '../types';
 
 function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 	if (argument.isInteger) {
@@ -128,3 +131,60 @@ const push: InstructionCompiler = withValidation(
 );
 
 export default push;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('push instruction compiler', () => {
+		it('pushes a literal value', () => {
+			const context = createInstructionCompilerTestContext();
+
+			push(
+				{
+					lineNumber: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.LITERAL, value: 5, isInteger: true }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('pushes a constant value', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					consts: {
+						ANSWER: { value: 42, isInteger: true },
+					},
+				},
+			});
+
+			push(
+				{
+					lineNumber: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'ANSWER' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on missing argument', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				push({ lineNumber: 1, instruction: 'push', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

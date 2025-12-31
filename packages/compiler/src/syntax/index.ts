@@ -7,7 +7,7 @@ export {
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
 } from './parseArgument';
-export { getBlockType, getModuleId, getFunctionId, getConstantsId, type CodeBlockType } from './blockTypeDetection';
+export { getBlockType, getModuleId, getFunctionId, type CodeBlockType } from './blockTypeDetection';
 export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 export {
 	hasMemoryReferencePrefix,

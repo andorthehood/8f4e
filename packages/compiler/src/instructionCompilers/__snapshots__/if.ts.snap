@@ -1,0 +1,43 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`if instruction compiler > emits a float if block 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 2,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": true,
+    },
+  ],
+  "loopSegmentByteCode": [
+    4,
+    125,
+  ],
+}
+`;
+
+exports[`if instruction compiler > emits a void if block 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 2,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "loopSegmentByteCode": [
+    4,
+    64,
+  ],
+}
+`;

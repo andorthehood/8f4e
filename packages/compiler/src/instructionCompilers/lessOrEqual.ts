@@ -1,8 +1,10 @@
-import { areAllOperandsIntegers, saveByteCode } from '../utils';
+import { areAllOperandsIntegers } from '../utils/operandTypes';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `lessOrEqual`.
@@ -26,3 +28,33 @@ const lessOrEqual: InstructionCompiler = withValidation(
 );
 
 export default lessOrEqual;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('lessOrEqual instruction compiler', () => {
+		it('emits I32_LE_S for integer operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false }, { isInteger: true, isNonZero: false });
+
+			lessOrEqual({ lineNumber: 1, instruction: 'lessOrEqual', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('emits F32_LE for float operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
+
+			lessOrEqual({ lineNumber: 1, instruction: 'lessOrEqual', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

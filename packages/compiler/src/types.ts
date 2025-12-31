@@ -1,4 +1,4 @@
-import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier } from './syntax';
+import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier } from './syntax/parseArgument';
 import { Instruction } from './instructionCompilers';
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
