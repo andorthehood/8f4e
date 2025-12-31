@@ -1,10 +1,11 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { br } from '../wasmUtils/instructionHelpers';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `branch`.
@@ -28,3 +29,34 @@ const branch: InstructionCompiler = withValidation(
 );
 
 export default branch;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('branch instruction compiler', () => {
+		it('emits br bytecode', () => {
+			const context = createInstructionCompilerTestContext();
+
+			branch(
+				{
+					lineNumber: 1,
+					instruction: 'branch',
+					arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on missing argument', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				branch({ lineNumber: 1, instruction: 'branch', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

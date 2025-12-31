@@ -1,9 +1,11 @@
 import { ErrorCode, getError } from '../errors';
+import { BLOCK_TYPE } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `else`.
@@ -43,3 +45,39 @@ const _else: InstructionCompiler = withValidation(
 );
 
 export default _else;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('else instruction compiler', () => {
+		it('emits else bytecode and restores block', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.BLOCK,
+						expectedResultIsInteger: true,
+						hasExpectedResult: true,
+					},
+				],
+			});
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			_else({ lineNumber: 1, instruction: 'else', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				blockStack: context.blockStack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws when no matching block start exists', () => {
+			const context = createInstructionCompilerTestContext({ blockStack: [] });
+
+			expect(() => {
+				_else({ lineNumber: 1, instruction: 'else', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

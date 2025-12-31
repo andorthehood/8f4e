@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hasChanged instruction compiler > compiles the change detector segment 1`] = `
+{
+  "locals": {
+    "__hasChangedDetector_currentValue3": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+  "loopSegmentByteCode": [
+    33,
+    0,
+    32,
+    0,
+    65,
+    0,
+    40,
+    2,
+    0,
+    70,
+    69,
+    65,
+    0,
+    32,
+    0,
+    54,
+    2,
+    0,
+  ],
+  "memory": {
+    "__hasChangedDetector_previousValue3": {
+      "byteAddress": 0,
+      "default": 0,
+      "elementWordSize": 4,
+      "id": "__hasChangedDetector_previousValue3",
+      "isInteger": true,
+      "isPointer": false,
+      "isPointingToInteger": false,
+      "isPointingToPointer": false,
+      "numberOfElements": 1,
+      "type": "int",
+      "wordAlignedAddress": 0,
+      "wordAlignedSize": 1,
+    },
+  },
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;

@@ -1,9 +1,11 @@
 import { ErrorCode, getError } from '../errors';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import { BLOCK_TYPE } from '../types';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `blockEnd`.
@@ -39,3 +41,30 @@ const blockEnd: InstructionCompiler = withValidation(
 );
 
 export default blockEnd;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('blockEnd instruction compiler', () => {
+		it('restores expected result on the stack', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.BLOCK,
+						expectedResultIsInteger: true,
+						hasExpectedResult: true,
+					},
+				],
+			});
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			blockEnd({ lineNumber: 1, instruction: 'blockEnd', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

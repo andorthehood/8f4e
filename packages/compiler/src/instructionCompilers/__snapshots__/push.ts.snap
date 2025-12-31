@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`push instruction compiler > pushes a constant value 1`] = `
+{
+  "loopSegmentByteCode": [
+    65,
+    42,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > pushes a literal value 1`] = `
+{
+  "loopSegmentByteCode": [
+    65,
+    5,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;

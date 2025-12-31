@@ -1,0 +1,75 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`loop instruction compiler > compiles the loop segment 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 1,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "locals": {
+    "__infiniteLoopProtectionCounter2": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
+  "loopSegmentByteCode": [
+    65,
+    0,
+    33,
+    0,
+    2,
+    64,
+    3,
+    64,
+    32,
+    0,
+    65,
+    232,
+    7,
+    78,
+    4,
+    64,
+    65,
+    0,
+    65,
+    2,
+    54,
+    2,
+    0,
+    12,
+    2,
+    11,
+    32,
+    0,
+    65,
+    1,
+    106,
+    33,
+    0,
+  ],
+  "memory": {
+    "__loopErrorSignaler": {
+      "byteAddress": 0,
+      "default": -1,
+      "elementWordSize": 4,
+      "id": "__loopErrorSignaler",
+      "isInteger": true,
+      "isPointer": false,
+      "isPointingToInteger": false,
+      "isPointingToPointer": false,
+      "numberOfElements": 1,
+      "type": "int",
+      "wordAlignedAddress": 0,
+      "wordAlignedSize": 1,
+    },
+  },
+}
+`;

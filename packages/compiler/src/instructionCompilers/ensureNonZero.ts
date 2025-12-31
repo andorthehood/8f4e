@@ -1,8 +1,9 @@
 import { ArgumentType } from '../types';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `ensureNonZero`.
@@ -74,3 +75,42 @@ const ensureNonZero: InstructionCompiler = withValidation(
 );
 
 export default ensureNonZero;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('ensureNonZero instruction compiler', () => {
+		it('ensures integer operand is non-zero', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			ensureNonZero({ lineNumber: 1, instruction: 'ensureNonZero', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				locals: context.namespace.locals,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('ensures float operand is non-zero with literal default', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: false });
+
+			ensureNonZero(
+				{
+					lineNumber: 2,
+					instruction: 'ensureNonZero',
+					arguments: [{ type: ArgumentType.LITERAL, value: 2.5, isInteger: false }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				locals: context.namespace.locals,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

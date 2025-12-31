@@ -1,7 +1,8 @@
 import { BLOCK_TYPE } from '../types';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `initBlock`.
@@ -23,3 +24,17 @@ const initBlock: InstructionCompiler = withValidation(
 );
 
 export default initBlock;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('initBlock instruction compiler', () => {
+		it('pushes the init block', () => {
+			const context = createInstructionCompilerTestContext();
+
+			initBlock({ lineNumber: 1, instruction: 'initBlock', arguments: [] } as AST[number], context);
+
+			expect({ blockStack: context.blockStack }).toMatchSnapshot();
+		});
+	});
+}
