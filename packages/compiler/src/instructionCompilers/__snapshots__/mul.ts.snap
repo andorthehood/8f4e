@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mul instruction compiler > emits F32_MUL for float operands 1`] = `
+{
+  "loopSegmentByteCode": [
+    148,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`mul instruction compiler > emits I32_MUL for integer operands 1`] = `
+{
+  "loopSegmentByteCode": [
+    108,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
