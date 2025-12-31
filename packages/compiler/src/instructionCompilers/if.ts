@@ -1,10 +1,11 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `if`.
@@ -52,3 +53,47 @@ const _if: InstructionCompiler = withValidation(
 );
 
 export default _if;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('if instruction compiler', () => {
+		it('emits a void if block', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			_if(
+				{
+					lineNumber: 1,
+					instruction: 'if',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'void' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('emits a float if block', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			_if(
+				{
+					lineNumber: 1,
+					instruction: 'if',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+	});
+}

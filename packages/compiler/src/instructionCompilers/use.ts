@@ -1,7 +1,8 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `use`.
@@ -24,3 +25,49 @@ const use: InstructionCompiler = function (line, context) {
 };
 
 export default use;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('use instruction compiler', () => {
+		it('merges constants from a namespace', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					consts: { BASE: { value: 1, isInteger: true } },
+					namespaces: {
+						shared: {
+							consts: { EXTRA: { value: 2, isInteger: true } },
+						},
+					},
+				},
+			});
+
+			use(
+				{
+					lineNumber: 1,
+					instruction: 'use',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'shared' }],
+				} as AST[number],
+				context
+			);
+
+			expect(context.namespace.consts).toMatchSnapshot();
+		});
+
+		it('throws on unknown namespace', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				use(
+					{
+						lineNumber: 1,
+						instruction: 'use',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missing' }],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
+		});
+	});
+}

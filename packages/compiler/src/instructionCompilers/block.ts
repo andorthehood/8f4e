@@ -2,10 +2,11 @@ import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `block`.
@@ -49,3 +50,71 @@ const block: InstructionCompiler = withValidation(
 );
 
 export default block;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('block instruction compiler', () => {
+		it('emits a typed block for float', () => {
+			const context = createInstructionCompilerTestContext();
+
+			block(
+				{
+					lineNumber: 1,
+					instruction: 'block',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('emits a typed block for int', () => {
+			const context = createInstructionCompilerTestContext();
+
+			block(
+				{
+					lineNumber: 1,
+					instruction: 'block',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('emits a void block for unknown type', () => {
+			const context = createInstructionCompilerTestContext();
+
+			block(
+				{
+					lineNumber: 1,
+					instruction: 'block',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'void' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				blockStack: context.blockStack,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on missing argument', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				block({ lineNumber: 1, instruction: 'block', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}

@@ -1,4 +1,5 @@
-import { instructionParser, parseArgument, isComment, isValidInstruction } from './syntax';
+import { instructionParser, isComment, isValidInstruction } from './syntax/instructionParser';
+import { parseArgument } from './syntax/parseArgument';
 import { createFunction, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import instructions, { Instruction } from './instructionCompilers';
 import {
@@ -15,7 +16,7 @@ import {
 import { ErrorCode, getError } from './errors';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import Type from './wasmUtils/type';
-import { calculateWordAlignedSizeOfMemory } from './utils';
+import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
