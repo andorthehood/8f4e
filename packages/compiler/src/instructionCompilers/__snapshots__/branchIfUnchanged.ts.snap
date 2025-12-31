@@ -48,10 +48,3 @@ exports[`branchIfUnchanged instruction compiler > compiles the unchanged check s
   "stack": [],
 }
 `;
-
-exports[`branchIfUnchanged instruction compiler > throws on missing argument 1`] = `
-{
-  "code": 4,
-  "message": "Missing argument. (4)",
-}
-`;

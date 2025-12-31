@@ -13,10 +13,3 @@ exports[`and instruction compiler > emits I32_AND for integer operands 1`] = `
   ],
 }
 `;
-
-exports[`and instruction compiler > rejects non-integer operands 1`] = `
-{
-  "code": 2,
-  "message": "The operation only accepts integer values as operands. (2)",
-}
-`;
