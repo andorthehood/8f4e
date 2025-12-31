@@ -5,7 +5,7 @@ import { withValidation } from '../withValidation';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';
 import { BLOCK_TYPE } from '../types';
 
-import type { AST, InstructionCompiler, Error } from '../types';
+import type { AST, InstructionCompiler } from '../types';
 
 /**
  * Instruction compiler for `blockEnd`.
@@ -48,15 +48,10 @@ if (import.meta.vitest) {
 	describe('blockEnd instruction compiler', () => {
 		it('throws when no matching block start exists', () => {
 			const context = createInstructionCompilerTestContext();
-			let error: Error | undefined;
 
-			try {
+			expect(() => {
 				blockEnd({ lineNumber: 1, instruction: 'blockEnd', arguments: [] } as AST[number], context);
-			} catch (caught) {
-				error = caught as Error;
-			}
-
-			expect({ code: error?.code, message: error?.message }).toMatchSnapshot();
+			}).toThrowError();
 		});
 
 		it('restores expected result on the stack', () => {

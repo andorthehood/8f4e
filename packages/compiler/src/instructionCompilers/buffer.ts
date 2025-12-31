@@ -3,8 +3,9 @@ import { ErrorCode, getError } from '../errors';
 import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler, MemoryTypes } from '../types';
+import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
 /**
  * Instruction compiler for `int[]` and `float[]`.
@@ -61,3 +62,35 @@ const buffer: InstructionCompiler = withValidation(
 );
 
 export default buffer;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('buffer instruction compiler', () => {
+		it('creates a memory buffer entry', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'values' },
+						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			expect(context.namespace.memory).toMatchSnapshot();
+		});
+
+		it('throws on missing arguments', () => {
+			const context = createInstructionCompilerTestContext();
+
+			expect(() => {
+				buffer({ lineNumber: 1, instruction: 'int[]', arguments: [] } as AST[number], context);
+			}).toThrowError();
+		});
+	});
+}
