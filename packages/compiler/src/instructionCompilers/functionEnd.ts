@@ -3,8 +3,9 @@ import { BLOCK_TYPE, ArgumentType } from '../types';
 import Type from '../wasmUtils/type';
 import { createFunctionType } from '../wasmUtils/sectionHelpers';
 import { withValidation } from '../withValidation';
+import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
-import type { InstructionCompiler } from '../types';
+import type { AST, InstructionCompiler, FunctionTypeRegistry } from '../types';
 
 /**
  * Instruction compiler for `functionEnd`.
@@ -74,3 +75,65 @@ const functionEnd: InstructionCompiler = withValidation(
 );
 
 export default functionEnd;
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('functionEnd instruction compiler', () => {
+		it('updates function signature and clears stack', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.FUNCTION,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+				],
+				currentFunctionSignature: { parameters: ['int'], returns: [] },
+				functionTypeRegistry: {
+					baseTypeIndex: 0,
+					signatureMap: new Map<string, number>(),
+					types: [],
+				} as FunctionTypeRegistry,
+			});
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			functionEnd(
+				{
+					lineNumber: 1,
+					instruction: 'functionEnd',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				blockStack: context.blockStack,
+				currentFunctionSignature: context.currentFunctionSignature,
+				functionTypeRegistry: {
+					baseTypeIndex: context.functionTypeRegistry?.baseTypeIndex,
+					signatureMapSize: context.functionTypeRegistry?.signatureMap.size,
+					typesLength: context.functionTypeRegistry?.types.length,
+				},
+			}).toMatchSnapshot();
+		});
+
+		it('throws when missing function block', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: true, isNonZero: false });
+
+			expect(() => {
+				functionEnd(
+					{
+						lineNumber: 1,
+						instruction: 'functionEnd',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
+		});
+	});
+}
