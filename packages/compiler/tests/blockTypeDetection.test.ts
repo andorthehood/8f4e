@@ -1,6 +1,9 @@
 import { describe, test, expect } from 'vitest';
 
-import { getBlockType, getModuleId, getFunctionId, getConstantsId } from '../src/syntax/blockTypeDetection';
+import { getBlockType } from '../src/syntax/getBlockType';
+import { getConstantsId } from '../src/syntax/getConstantsId';
+import { getFunctionId } from '../src/syntax/getFunctionId';
+import { getModuleId } from '../src/syntax/getModuleId';
 
 describe('getBlockType', () => {
 	test('detects module blocks', () => {

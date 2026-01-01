@@ -6,20 +6,19 @@
 export const instructionParser =
 	/^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
 
-/**
- * Checks if a line is a comment (starts with semicolon after optional whitespace).
- * @param line - The line to check.
- * @returns True if the line is a comment, false otherwise.
- */
-export function isComment(line: string): boolean {
-	return /^\s*;/.test(line);
-}
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
 
-/**
- * Checks if a line is a valid instruction (matches the instruction parser pattern).
- * @param line - The line to validate.
- * @returns True if the line is a valid instruction, false otherwise.
- */
-export function isValidInstruction(line: string): boolean {
-	return instructionParser.test(line);
+	describe('instructionParser', () => {
+		it('captures instruction and arguments', () => {
+			const match = 'push 1 2 3'.match(instructionParser);
+			expect(match?.slice(1, 5)).toEqual(['push', '1', '2', '3']);
+		});
+
+		it('ignores trailing comments', () => {
+			const match = 'add 1 2 ; comment'.match(instructionParser);
+			expect(match?.[1]).toBe('add');
+			expect(match?.[2]).toBe('1');
+		});
+	});
 }
