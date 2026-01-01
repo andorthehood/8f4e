@@ -1,4 +1,6 @@
-import { instructionParser, isComment, isValidInstruction } from './syntax/instructionParser';
+import { instructionParser } from './syntax/instructionParser';
+import { isComment } from './syntax/isComment';
+import { isValidInstruction } from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
 import { createFunction, createLocalDeclaration } from './wasmUtils/sectionHelpers';
 import instructions, { Instruction } from './instructionCompilers';

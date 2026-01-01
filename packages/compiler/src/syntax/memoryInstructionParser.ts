@@ -1,12 +1,10 @@
 import { ArgumentType, type Argument } from './parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
-import {
-	hasMemoryReferencePrefix,
-	hasElementCountPrefix,
-	extractMemoryReferenceBase,
-	extractElementCountBase,
-	isIntermodularReference,
-} from './memoryIdentifierHelpers';
+import { hasMemoryReferencePrefix } from './hasMemoryReferencePrefix';
+import { hasElementCountPrefix } from './hasElementCountPrefix';
+import { extractMemoryReferenceBase } from './extractMemoryReferenceBase';
+import { extractElementCountBase } from './extractElementCountBase';
+import { isIntermodularReference } from './isIntermodularReference';
 
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }
@@ -82,4 +80,47 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		type: 'identifier',
 		value: arg.value,
 	};
+}
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('parseMemoryInstructionArgumentsShape', () => {
+		it('throws when first argument is missing', () => {
+			expect(() => parseMemoryInstructionArgumentsShape([])).toThrow(SyntaxRulesError);
+		});
+
+		it('parses literal argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.LITERAL, value: 3, isInteger: true }]);
+			expect(result.firstArg).toEqual({ type: 'literal', value: 3 });
+		});
+
+		it('parses intermodular reference argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&mod.id' }]);
+			expect(result.firstArg).toEqual({ type: 'intermodular-reference', pattern: '&mod.id' });
+		});
+
+		it('parses memory reference argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&foo' }]);
+			expect(result.firstArg).toEqual({ type: 'memory-reference', base: 'foo', pattern: '&foo' });
+		});
+
+		it('parses element count argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '$foo' }]);
+			expect(result.firstArg).toEqual({ type: 'element-count', base: 'foo' });
+		});
+
+		it('parses identifier argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: 'foo' }]);
+			expect(result.firstArg).toEqual({ type: 'identifier', value: 'foo' });
+		});
+
+		it('parses second argument when provided', () => {
+			const result = parseMemoryInstructionArgumentsShape([
+				{ type: ArgumentType.IDENTIFIER, value: 'foo' },
+				{ type: ArgumentType.LITERAL, value: 7, isInteger: true },
+			]);
+			expect(result.secondArg).toEqual({ type: 'literal', value: 7 });
+		});
+	});
 }
