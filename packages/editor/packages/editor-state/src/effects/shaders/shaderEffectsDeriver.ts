@@ -1,5 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
+import { log } from '../../impureHelpers/logger/logger';
 import derivePostProcessEffects from '../../pureHelpers/shaderEffects/derivePostProcessEffects';
 
 import type { EventDispatcher, State } from '../../types';
@@ -21,6 +22,8 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 	function recomputeShaderEffects(): void {
 		const codeBlocksArray = Array.from(state.graphicHelper.codeBlocks);
 		const { effects, errors } = derivePostProcessEffects(codeBlocksArray);
+
+		log(state, 'Recomputed shader effects', 'Shaders');
 
 		// Update the post-process effects
 		state.graphicHelper.postProcessEffects = effects;
