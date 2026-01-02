@@ -563,9 +563,27 @@ export interface Callbacks {
 	 * Used by config blocks to generate runtime configuration.
 	 *
 	 * @param source - The config program source code (one command per line)
+	 * @param schema - JSON Schema describing the expected config structure
 	 * @returns Promise containing the compiled config object and any errors
 	 */
-	compileConfig?: (source: string) => Promise<ConfigCompilationResult>;
+	compileConfig?: (source: string, schema: ConfigSchema) => Promise<ConfigCompilationResult>;
+}
+
+/**
+ * Supported primitive types in config schema subset
+ */
+export type ConfigSchemaType = 'string' | 'number' | 'boolean' | 'null' | 'object' | 'array';
+
+/**
+ * A subset of JSON Schema used for config validation
+ */
+export interface ConfigSchema {
+	type?: ConfigSchemaType | ConfigSchemaType[];
+	enum?: readonly (string | number | boolean | null)[];
+	properties?: Record<string, ConfigSchema>;
+	required?: readonly string[];
+	items?: ConfigSchema;
+	additionalProperties?: boolean | ConfigSchema;
 }
 
 /**
