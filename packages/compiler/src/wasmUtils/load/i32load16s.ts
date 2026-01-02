@@ -1,4 +1,4 @@
-import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import Instruction from '../wasmInstruction';
 
 /**
@@ -8,7 +8,7 @@ import Instruction from '../wasmInstruction';
  * @param offset - Static offset from the address, defaults to 0
  * @returns Byte array representing the i32.load16_s instruction
  */
-export function i32load16s(alignment = 1, offset = 0): number[] {
+export default function i32load16s(alignment = 1, offset = 0): number[] {
 	return [Instruction.I32_LOAD_16_S, ...unsignedLEB128(alignment), ...unsignedLEB128(offset)];
 }
 

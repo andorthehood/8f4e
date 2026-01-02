@@ -1,11 +1,11 @@
-import { parseLine } from './parseLine';
+import parseLine from './parseLine';
 
 import type { Command, CompileError } from '../types';
 
 /**
  * Parses a source string into an array of commands
  */
-export function parse(source: string): { commands: Command[]; errors: CompileError[] } {
+export default function parse(source: string): { commands: Command[]; errors: CompileError[] } {
 	const lines = source.split('\n');
 	const commands: Command[] = [];
 	const errors: CompileError[] = [];

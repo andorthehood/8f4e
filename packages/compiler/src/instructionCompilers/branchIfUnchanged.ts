@@ -2,7 +2,7 @@ import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

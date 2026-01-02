@@ -9,7 +9,7 @@ import type { CodeBlockGraphicData } from '../../types';
  * @param gaps Gap metadata keyed by logical row identifying how many physical rows were inserted after it.
  * @returns A non-negative logical row with gap offsets removed.
  */
-export function reverseGapCalculator(physicalRow: number, gaps: CodeBlockGraphicData['gaps']) {
+export default function reverseGapCalculator(physicalRow: number, gaps: CodeBlockGraphicData['gaps']) {
 	let startLineOffset = 0;
 	for (const [gapStartLine, { size }] of gaps) {
 		if (physicalRow > gapStartLine + startLineOffset) {

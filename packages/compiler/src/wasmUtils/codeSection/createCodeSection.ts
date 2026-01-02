@@ -1,7 +1,7 @@
-import { createFunction } from './createFunction';
+import createFunction from './createFunction';
 
-import { createVector } from '../encoding/createVector';
-import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import createVector from '../encoding/createVector';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { Section } from '../section';
 
 import type { FunctionBody } from '../section';
@@ -12,7 +12,7 @@ import type { FunctionBody } from '../section';
  * @param functionBodies - Array of function bodies to include
  * @returns Byte array representing the complete code section
  */
-export function createCodeSection(functionBodies: FunctionBody[]): number[] {
+export default function createCodeSection(functionBodies: FunctionBody[]): number[] {
 	const numberOfFunctions = functionBodies.length;
 	return [Section.CODE, ...createVector([...unsignedLEB128(numberOfFunctions), ...functionBodies.flat()])];
 }

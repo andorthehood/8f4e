@@ -8,7 +8,7 @@ import { moveCaret } from './moveCaret';
  * @param char Character to insert.
  * @returns Updated code buffer plus the new caret coordinates.
  */
-export function type(
+export default function type(
 	code: string[],
 	row: number,
 	col: number,

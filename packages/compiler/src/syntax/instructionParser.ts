@@ -3,7 +3,7 @@
  * Matches an instruction keyword followed by up to 7 arguments, ignoring comments.
  * Format: instruction arg1 arg2 ... arg7 ; optional comment
  */
-export const instructionParser =
+const instructionParser =
 	/^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
 
 if (import.meta.vitest) {
@@ -22,3 +22,5 @@ if (import.meta.vitest) {
 		});
 	});
 }
+
+export default instructionParser;

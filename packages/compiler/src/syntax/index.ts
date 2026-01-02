@@ -1,7 +1,7 @@
-export { isConstantName } from './isConstantName';
-export { instructionParser } from './instructionParser';
-export { isComment } from './isComment';
-export { isValidInstruction } from './isValidInstruction';
+export { default as isConstantName } from './isConstantName';
+export { default as instructionParser } from './instructionParser';
+export { default as isComment } from './isComment';
+export { default as isValidInstruction } from './isValidInstruction';
 export {
 	ArgumentType,
 	parseArgument,
@@ -10,21 +10,21 @@ export {
 	type ArgumentIdentifier,
 } from './parseArgument';
 export { getBlockType, type CodeBlockType } from './getBlockType';
-export { getModuleId } from './getModuleId';
-export { getFunctionId } from './getFunctionId';
+export { default as getModuleId } from './getModuleId';
+export { default as getFunctionId } from './getFunctionId';
 export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
-export { hasMemoryReferencePrefix } from './hasMemoryReferencePrefix';
-export { hasMemoryReferencePrefixStart } from './hasMemoryReferencePrefixStart';
-export { hasMemoryReferencePrefixEnd } from './hasMemoryReferencePrefixEnd';
-export { extractMemoryReferenceBase } from './extractMemoryReferenceBase';
-export { isMemoryPointerIdentifier } from './isMemoryPointerIdentifier';
-export { extractMemoryPointerBase } from './extractMemoryPointerBase';
-export { hasElementCountPrefix } from './hasElementCountPrefix';
-export { extractElementCountBase } from './extractElementCountBase';
-export { hasElementWordSizePrefix } from './hasElementWordSizePrefix';
-export { extractElementWordSizeBase } from './extractElementWordSizeBase';
-export { isIntermodularReference } from './isIntermodularReference';
-export { getPointerDepth } from './getPointerDepth';
+export { default as hasMemoryReferencePrefix } from './hasMemoryReferencePrefix';
+export { default as hasMemoryReferencePrefixStart } from './hasMemoryReferencePrefixStart';
+export { default as hasMemoryReferencePrefixEnd } from './hasMemoryReferencePrefixEnd';
+export { default as extractMemoryReferenceBase } from './extractMemoryReferenceBase';
+export { default as isMemoryPointerIdentifier } from './isMemoryPointerIdentifier';
+export { default as extractMemoryPointerBase } from './extractMemoryPointerBase';
+export { default as hasElementCountPrefix } from './hasElementCountPrefix';
+export { default as extractElementCountBase } from './extractElementCountBase';
+export { default as hasElementWordSizePrefix } from './hasElementWordSizePrefix';
+export { default as extractElementWordSizeBase } from './extractElementWordSizeBase';
+export { default as isIntermodularReference } from './isIntermodularReference';
+export { default as getPointerDepth } from './getPointerDepth';
 export {
 	parseMemoryInstructionArgumentsShape,
 	type MemoryArgumentShape,

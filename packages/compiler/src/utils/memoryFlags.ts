@@ -1,4 +1,4 @@
-export function getMemoryFlags(baseType: 'int' | 'float', pointerDepth: number) {
+export default function getMemoryFlags(baseType: 'int' | 'float', pointerDepth: number) {
 	const isPointer = pointerDepth > 0;
 	const isPointingToInteger = isPointer && baseType === 'int';
 	const isPointingToPointer = pointerDepth === 2;

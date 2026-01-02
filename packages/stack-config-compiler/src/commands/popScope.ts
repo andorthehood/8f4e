@@ -4,7 +4,7 @@
 
 import type { VMState } from '../types';
 
-export function executePopScope(state: VMState): string | null {
+export default function executePopScope(state: VMState): string | null {
 	if (state.scopeStack.length === 0) {
 		return 'Cannot popScope: scope stack is empty';
 	}

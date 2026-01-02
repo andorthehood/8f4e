@@ -1,6 +1,6 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

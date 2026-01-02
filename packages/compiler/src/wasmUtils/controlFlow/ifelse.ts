@@ -9,7 +9,7 @@ import Type from '../type';
  * @param falseBranch - Instructions to execute if condition is false (defaults to empty)
  * @returns Byte array representing the if-else-end structure
  */
-export function ifelse(resultType: Type, trueBranch: number[], falseBranch: number[] = []): number[] {
+export default function ifelse(resultType: Type, trueBranch: number[], falseBranch: number[] = []): number[] {
 	return [Instruction.IF, resultType, ...trueBranch, Instruction.ELSE, ...falseBranch, Instruction.END];
 }
 

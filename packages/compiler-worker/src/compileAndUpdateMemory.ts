@@ -1,7 +1,7 @@
 import compile, { CompileOptions, CompiledModuleLookup, Module } from '@8f4e/compiler';
 
-import { getMemoryValueChanges } from './getMemoryValueChanges';
-import { getOrCreateMemory } from './getOrCreateMemory';
+import getMemoryValueChanges from './getMemoryValueChanges';
+import getOrCreateMemory from './getOrCreateMemory';
 
 import type { CompileAndUpdateMemoryResult, GetOrCreateWasmInstanceResult } from './types';
 

@@ -1,4 +1,4 @@
-export const glyphs = [
+const glyphs = [
 	[
 		// 0
 		'      ',
@@ -273,3 +273,5 @@ export const glyphs = [
 		'      ',
 	],
 ];
+
+export default glyphs;

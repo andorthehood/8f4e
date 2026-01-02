@@ -1,5 +1,5 @@
-import { createVector } from '../encoding/createVector';
-import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import createVector from '../encoding/createVector';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { Section } from '../section';
 
 /**
@@ -9,7 +9,7 @@ import { Section } from '../section';
  * @param maxPageSize - Optional maximum memory size in 64KB pages
  * @returns Byte array representing the complete memory section
  */
-export function createMemorySection(pageSize: number, maxPageSize?: number): number[] {
+export default function createMemorySection(pageSize: number, maxPageSize?: number): number[] {
 	const numberOfMemoryEntries = 1;
 	const flags = maxPageSize !== undefined ? 0x01 : 0x00;
 	return [

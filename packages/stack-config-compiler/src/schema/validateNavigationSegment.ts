@@ -11,7 +11,7 @@ import type { SchemaNode } from './types';
  * @param segment - The path segment to navigate to
  * @returns An error message if invalid, null if valid
  */
-export function validateNavigationSegment(currentNode: SchemaNode, segment: string): string | null {
+export default function validateNavigationSegment(currentNode: SchemaNode, segment: string): string | null {
 	// Check if this is an array index
 	if (segment.startsWith('[') && segment.endsWith(']')) {
 		// Array index access - check if current node allows arrays
@@ -40,7 +40,7 @@ export function validateNavigationSegment(currentNode: SchemaNode, segment: stri
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { preprocessSchema } = await import('./preprocessSchema');
+	const { default: preprocessSchema } = await import('./preprocessSchema');
 
 	describe('validateNavigationSegment', () => {
 		it('should allow known property', () => {
