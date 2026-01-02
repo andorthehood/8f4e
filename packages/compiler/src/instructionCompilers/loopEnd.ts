@@ -1,10 +1,10 @@
 import { ErrorCode, getError } from '../errors';
 import { BLOCK_TYPE } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { br } from '../wasmUtils/controlFlow/br';
+import br from '../wasmUtils/controlFlow/br';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 
