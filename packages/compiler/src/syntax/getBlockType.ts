@@ -1,7 +1,7 @@
-export type CodeBlockType = 'module' | 'config' | 'function' | 'constants' | 'unknown';
+export type CodeBlockType = 'module' | 'config' | 'function' | 'constants' | 'comment' | 'unknown';
 
 /**
- * Detects whether a block of code represents a module, config, function, or unknown block by scanning for marker pairs.
+ * Detects whether a block of code represents a module, config, function, comment, or unknown block by scanning for marker pairs.
  * @param code - Code block represented as an array of lines.
  * @returns The inferred code block type.
  */
@@ -14,6 +14,8 @@ export function getBlockType(code: string[]): CodeBlockType {
 	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
 	const hasConstants = code.some(line => /^\s*constants(\s|$)/.test(line));
 	const hasConstantsEnd = code.some(line => /^\s*constantsEnd(\s|$)/.test(line));
+	const hasComment = code.some(line => /^\s*comment(\s|$)/.test(line));
+	const hasCommentEnd = code.some(line => /^\s*commentEnd(\s|$)/.test(line));
 
 	if (
 		hasModule &&
@@ -23,7 +25,9 @@ export function getBlockType(code: string[]): CodeBlockType {
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
-		!hasConstantsEnd
+		!hasConstantsEnd &&
+		!hasComment &&
+		!hasCommentEnd
 	) {
 		return 'module';
 	}
@@ -36,7 +40,9 @@ export function getBlockType(code: string[]): CodeBlockType {
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
-		!hasConstantsEnd
+		!hasConstantsEnd &&
+		!hasComment &&
+		!hasCommentEnd
 	) {
 		return 'config';
 	}
@@ -49,7 +55,9 @@ export function getBlockType(code: string[]): CodeBlockType {
 		!hasConfig &&
 		!hasConfigEnd &&
 		!hasConstants &&
-		!hasConstantsEnd
+		!hasConstantsEnd &&
+		!hasComment &&
+		!hasCommentEnd
 	) {
 		return 'function';
 	}
@@ -62,9 +70,26 @@ export function getBlockType(code: string[]): CodeBlockType {
 		!hasConfig &&
 		!hasConfigEnd &&
 		!hasFunction &&
-		!hasFunctionEnd
+		!hasFunctionEnd &&
+		!hasComment &&
+		!hasCommentEnd
 	) {
 		return 'constants';
+	}
+
+	if (
+		hasComment &&
+		hasCommentEnd &&
+		!hasModule &&
+		!hasModuleEnd &&
+		!hasConfig &&
+		!hasConfigEnd &&
+		!hasFunction &&
+		!hasFunctionEnd &&
+		!hasConstants &&
+		!hasConstantsEnd
+	) {
+		return 'comment';
 	}
 
 	return 'unknown';
@@ -88,6 +113,10 @@ if (import.meta.vitest) {
 
 		it('detects constants blocks', () => {
 			expect(getBlockType(['constants', 'constantsEnd'])).toBe('constants');
+		});
+
+		it('detects comment blocks', () => {
+			expect(getBlockType(['comment', 'This is a comment', 'commentEnd'])).toBe('comment');
 		});
 
 		it('returns unknown for mixed markers', () => {
