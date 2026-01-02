@@ -1,4 +1,4 @@
-import instructionParser from './instructionParser';
+import { instructionParser } from '@8f4e/compiler/syntax';
 
 /**
  * Extracts the identifier provided to the first vertexShader instruction within a block of code.

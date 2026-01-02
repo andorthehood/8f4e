@@ -1,8 +1,8 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 import { getModuleId } from '@8f4e/compiler/syntax';
 import { getFunctionId } from '@8f4e/compiler/syntax';
-import { getVertexShaderId } from '@8f4e/compiler/syntax';
-import { getFragmentShaderId } from '@8f4e/compiler/syntax';
+import getVertexShaderId from '../../pureHelpers/shaderUtils/getVertexShaderId';
+import getFragmentShaderId from '../../pureHelpers/shaderUtils/getFragmentShaderId';
 
 import { EventDispatcher } from '../../types';
 
