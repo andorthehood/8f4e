@@ -309,4 +309,49 @@ describe('projectImport', () => {
 			consoleWarnSpy.mockRestore();
 		});
 	});
+
+	describe('Runtime-ready project loading', () => {
+		it('should store compiledConfig when loading a runtime-ready project', () => {
+			const runtimeReadyProject: Project = {
+				...EMPTY_DEFAULT_PROJECT,
+				compiledConfig: {
+					memorySizeBytes: 2097152,
+					selectedRuntime: 1,
+					disableCompilation: true,
+				},
+				compiledWasm: 'base64encodedwasm',
+				memorySnapshot: 'base64encodedmemory',
+			};
+
+			projectImport(store, mockEvents, mockState);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
+			const loadProjectCallback = loadProjectCall![1];
+
+			loadProjectCallback({ project: runtimeReadyProject });
+
+			expect(mockState.compiler.compiledConfig).toEqual({
+				memorySizeBytes: 2097152,
+				selectedRuntime: 1,
+				disableCompilation: true,
+			});
+		});
+
+		it('should not set compiledConfig when not present in project', () => {
+			const regularProject: Project = {
+				...EMPTY_DEFAULT_PROJECT,
+			};
+
+			projectImport(store, mockEvents, mockState);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
+			const loadProjectCallback = loadProjectCall![1];
+
+			loadProjectCallback({ project: regularProject });
+
+			expect(mockState.compiler.compiledConfig).toBeUndefined();
+		});
+	});
 });
