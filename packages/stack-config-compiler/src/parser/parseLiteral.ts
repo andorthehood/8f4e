@@ -1,4 +1,4 @@
-import { parseEscapes } from './parseEscapes';
+import parseEscapes from './parseEscapes';
 
 import type { Literal } from '../types';
 
@@ -8,7 +8,7 @@ const STRING_LITERAL_REGEX = /^"((?:[^"\\]|\\.)*)"/;
 /**
  * Parses a literal value (string, number, boolean, null)
  */
-export function parseLiteral(token: string): Literal | { error: string } {
+export default function parseLiteral(token: string): Literal | { error: string } {
 	const stringMatch = token.match(STRING_LITERAL_REGEX);
 	if (stringMatch) {
 		return parseEscapes(stringMatch[1]);

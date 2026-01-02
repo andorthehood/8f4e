@@ -5,7 +5,7 @@ import { ErrorCode, getError } from '../errors';
 
 import type { CompilationContext, Argument } from '../types';
 
-export function parseMemoryInstructionArguments(
+export default function parseMemoryInstructionArguments(
 	args: Array<Argument>,
 	lineNumber: number,
 	instruction: string,

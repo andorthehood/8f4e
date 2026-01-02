@@ -1,7 +1,7 @@
 /**
  * Checks if a string has a memory pointer prefix (*).
  */
-export function isMemoryPointerIdentifier(name: string): boolean {
+export default function isMemoryPointerIdentifier(name: string): boolean {
 	return name.startsWith('*');
 }
 
