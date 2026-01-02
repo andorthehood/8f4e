@@ -14,13 +14,13 @@ import type { FontMetadata } from './8x16/generated/ascii';
  * @example
  * ```ts
  * import { fontMetadata } from './fonts/8x16/generated/ascii';
- * import { decodeFontBase64 } from './fonts/font-decoder';
+ * import decodeFontBase64 from './fonts/font-decoder';
  *
  * const bitmap = decodeFontBase64(fontMetadata);
  * // bitmap is now a number[] ready for rendering
  * ```
  */
-export function decodeFontBase64(metadata: FontMetadata): number[] {
+export default function decodeFontBase64(metadata: FontMetadata): number[] {
 	// Decode base64 to binary
 	const binaryString = atob(metadata.base64Data);
 

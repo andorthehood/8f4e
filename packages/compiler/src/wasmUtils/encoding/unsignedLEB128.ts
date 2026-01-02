@@ -7,7 +7,7 @@
  * @param n - The unsigned integer to encode
  * @returns An array of bytes representing the LEB128-encoded value
  */
-export function unsignedLEB128(n: number): number[] {
+export default function unsignedLEB128(n: number): number[] {
 	const buffer: number[] = [];
 	do {
 		let byte = n & 0b1111111;

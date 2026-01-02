@@ -23,7 +23,7 @@ const getInstructionRegExp = (instructions: string[]) =>
  * @param instructionsToHighlight Instruction names that should receive special styling.
  * @returns A matrix of sprite identifiers aligned to every character in the document.
  */
-export function generateCodeColorMap<T>(
+export default function generateCodeColorMap<T>(
 	code: string[],
 	spriteLookups: {
 		fontLineNumber: T;

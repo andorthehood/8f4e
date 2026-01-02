@@ -1,9 +1,9 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { backSpace } from '../../pureHelpers/codeEditing/backSpace';
-import { enter } from '../../pureHelpers/codeEditing/enter';
+import backSpace from '../../pureHelpers/codeEditing/backSpace';
+import enter from '../../pureHelpers/codeEditing/enter';
 import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
-import { type } from '../../pureHelpers/codeEditing/type';
+import type from '../../pureHelpers/codeEditing/type';
 import { EventDispatcher, InternalKeyboardEvent, State } from '../../types';
 
 export default function codeEditing(store: StateManager<State>, events: EventDispatcher) {
@@ -61,7 +61,7 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 					if (!state.featureFlags.editing) {
 						return;
 					}
-					// eslint-disable-next-line no-case-declarations
+
 					const bp = type(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.key);
 					store.set('graphicHelper.selectedCodeBlock.cursor.row', bp.row);
 					store.set('graphicHelper.selectedCodeBlock.cursor.col', bp.col);
