@@ -1,5 +1,5 @@
-import { parseLiteral } from './parseLiteral';
-import { parsePathArgument } from './parsePathArgument';
+import parseLiteral from './parseLiteral';
+import parsePathArgument from './parsePathArgument';
 
 import type { Command, CommandType, CompileError } from '../types';
 
@@ -56,7 +56,7 @@ const LINE_REGEX = /^\s*(\w+)(?:\s+(.+))?\s*$/;
 /**
  * Parses a single line into a command
  */
-export function parseLine(line: string, lineNumber: number): Command | CompileError | null {
+export default function parseLine(line: string, lineNumber: number): Command | CompileError | null {
 	const trimmed = line.trim();
 
 	if (!trimmed || trimmed.startsWith(';')) {

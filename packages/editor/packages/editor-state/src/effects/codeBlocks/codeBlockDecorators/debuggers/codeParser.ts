@@ -1,6 +1,6 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 
-export function parseDebuggers(code: string[]) {
+export default function parseDebuggers(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];

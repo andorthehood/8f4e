@@ -1,7 +1,7 @@
 /**
  * Checks if a string has an element count prefix ($).
  */
-export function hasElementCountPrefix(name: string): boolean {
+export default function hasElementCountPrefix(name: string): boolean {
 	return name.startsWith('$');
 }
 

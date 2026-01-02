@@ -1,7 +1,10 @@
-import { createFunction } from './createFunction';
+import createFunction from './createFunction';
 
-import { FunctionBody, unsignedLEB128, createVector } from '../typeHelpers';
+import createVector from '../encoding/createVector';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { Section } from '../section';
+
+import type { FunctionBody } from '../section';
 
 /**
  * Creates a WebAssembly code section containing function bodies.
@@ -9,7 +12,7 @@ import { Section } from '../section';
  * @param functionBodies - Array of function bodies to include
  * @returns Byte array representing the complete code section
  */
-export function createCodeSection(functionBodies: FunctionBody[]): number[] {
+export default function createCodeSection(functionBodies: FunctionBody[]): number[] {
 	const numberOfFunctions = functionBodies.length;
 	return [Section.CODE, ...createVector([...unsignedLEB128(numberOfFunctions), ...functionBodies.flat()])];
 }

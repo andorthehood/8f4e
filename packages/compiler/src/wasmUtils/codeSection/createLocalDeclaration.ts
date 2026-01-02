@@ -1,5 +1,7 @@
-import { LocalDeclaration, unsignedLEB128 } from '../typeHelpers';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import Type from '../type';
+
+import type { LocalDeclaration } from '../section';
 
 /**
  * Creates a local variable declaration for a WebAssembly function.
@@ -8,7 +10,7 @@ import Type from '../type';
  * @param typeCount - Number of consecutive locals of this type (defaults to 1)
  * @returns Byte array representing the local declaration
  */
-export function createLocalDeclaration(type: Type, typeCount = 1): LocalDeclaration {
+export default function createLocalDeclaration(type: Type, typeCount = 1): LocalDeclaration {
 	return [...unsignedLEB128(typeCount), type];
 }
 

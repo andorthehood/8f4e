@@ -1,7 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import wrapText from '../../../../pureHelpers/wrapText';
-import { gapCalculator } from '../../../../pureHelpers/codeEditing/gapCalculator';
+import gapCalculator from '../../../../pureHelpers/codeEditing/gapCalculator';
 import { State } from '../../../../types';
 
 export default function errorMessages(store: StateManager<State>) {

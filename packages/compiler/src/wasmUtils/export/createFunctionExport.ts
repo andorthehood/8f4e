@@ -1,5 +1,7 @@
-import { FunctionExport, encodeString } from '../typeHelpers';
+import encodeString from '../encoding/encodeString';
 import { ExportDesc } from '../section';
+
+import type { FunctionExport } from '../section';
 
 /**
  * Creates a function export entry that makes a function accessible from outside the module.
@@ -8,7 +10,7 @@ import { ExportDesc } from '../section';
  * @param reference - The function index to export
  * @returns Byte array representing the function export entry
  */
-export function createFunctionExport(name: string, reference: number): FunctionExport {
+export default function createFunctionExport(name: string, reference: number): FunctionExport {
 	return [...encodeString(name), ExportDesc.FUNC, reference];
 }
 
