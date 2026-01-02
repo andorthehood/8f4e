@@ -2,7 +2,7 @@ import extractShaderSource from './extractShaderSource';
 
 import getVertexShaderId from '../shaderUtils/getVertexShaderId';
 import getFragmentShaderId from '../shaderUtils/getFragmentShaderId';
-import getBlockType from '../shaderUtils/getBlockType';
+import getBlockType from '../codeParsers/getBlockType';
 
 import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlockGraphicData, CodeError } from '../../types';
