@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { derivePostProcessEffects } from '../../pureHelpers/shaderEffects/derivePostProcessEffects';
+import derivePostProcessEffects from '../../pureHelpers/shaderEffects/derivePostProcessEffects';
 
 import type { EventDispatcher, State } from '../../types';
 
@@ -9,7 +9,7 @@ import type { EventDispatcher, State } from '../../types';
  * Recomputes effects when:
  * - projectLoaded: When a project is loaded
  * - codeBlockAdded: When a new shader block is added
- * - code changes: When any shader block's code changes
+ * - code changes: When shader block's code changes
  * - deleteCodeBlock: When a shader block is deleted
  */
 export default function shaderEffectsDeriver(store: StateManager<State>, events: EventDispatcher): void {
@@ -44,9 +44,13 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 	// Recompute when a code block is deleted
 	events.on('deleteCodeBlock', recomputeShaderEffects);
 
-	// Recompute when any shader block's code changes
-	// We subscribe to the entire codeBlocks set and check if any shader blocks changed
-	store.subscribe('graphicHelper.codeBlocks', () => {
-		recomputeShaderEffects();
+	// Recompute when shader block's code changes
+	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
+		if (
+			state.graphicHelper.selectedCodeBlock?.blockType === 'fragmentShader' ||
+			state.graphicHelper.selectedCodeBlock?.blockType === 'vertexShader'
+		) {
+			recomputeShaderEffects();
+		}
 	});
 }
