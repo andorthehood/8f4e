@@ -71,6 +71,12 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 			return;
 		}
 
+		// Check if compilation is disabled by config
+		if (state.compiler.disableCompilation) {
+			log(state, 'Config compilation skipped: disableCompilation flag is set', 'Config');
+			return;
+		}
+
 		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
 		if (configBlocks.length === 0) {
@@ -111,6 +117,11 @@ export default function configEffect(store: StateManager<State>, events: EventDi
  * @returns Promise resolving to the merged config object
  */
 export async function compileConfigForExport(state: State): Promise<Record<string, unknown>> {
+	// If compilation is disabled, return the stored compiled config if available
+	if (state.compiler.disableCompilation) {
+		return state.compiler.compiledConfig || {};
+	}
+
 	// If no compileConfig callback, return empty object
 	const compileConfig = state.callbacks.compileConfig;
 	if (!compileConfig) {

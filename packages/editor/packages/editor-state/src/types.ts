@@ -174,6 +174,8 @@ export interface Compiler {
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
 	compiledFunctions?: CompiledFunctionLookup;
+	disableCompilation: boolean;
+	compiledConfig?: Record<string, unknown>;
 }
 
 export interface Midi {

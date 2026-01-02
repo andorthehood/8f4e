@@ -226,6 +226,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 					ignoredKeywords: [],
 				},
 			},
+			disableCompilation: false,
 		},
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
