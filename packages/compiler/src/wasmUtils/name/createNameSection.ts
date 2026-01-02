@@ -1,7 +1,11 @@
 import { createFunctionName } from './createFunctionName';
 
-import { FunctionName, unsignedLEB128, createVector, encodeString } from '../typeHelpers';
+import { createVector } from '../encoding/createVector';
+import { encodeString } from '../encoding/encodeString';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
 import { NameSection, Section } from '../section';
+
+import type { FunctionName } from '../section';
 
 /**
  * Creates a WebAssembly name section for debugging information.
