@@ -9,6 +9,7 @@ export default defineConfig(
 			'src/astUtils/**/*.ts',
 			'src/utils/**/*.ts',
 			'src/instructionCompilers/**/*.ts',
+			'src/syntax/**/*.ts',
 		],
 		additionalExclude: [
 			'**/testUtils.ts',
@@ -17,10 +18,11 @@ export default defineConfig(
 			'**/sectionHelpers.ts',
 			'**/typeHelpers.ts',
 			'**/type.ts',
-			'**/section.ts',
 			'**/wasmInstruction.ts',
 			'**/consts.ts',
 			'**/index.ts',
+			'**/section.ts',
+			'**/syntaxError.ts',
 		],
 		typecheckEnabled: true,
 	})
