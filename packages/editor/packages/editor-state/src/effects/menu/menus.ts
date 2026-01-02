@@ -67,6 +67,13 @@ export const mainMenu: MenuGenerator = state => [
 		disabled: !state.callbacks.getListOfProjects,
 	},
 	{ divider: true },
+	{
+		title: 'Compile Code',
+		action: 'compileCode',
+		close: true,
+		disabled: !state.callbacks.compileCode || !state.callbacks.compileConfig,
+	},
+	{ divider: true },
 	{ title: 'Export Project', action: 'exportProject', close: true, disabled: !state.callbacks.exportProject },
 	{
 		title: 'Export Runtime-Ready Project',
