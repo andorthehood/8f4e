@@ -3,8 +3,8 @@ title: 'TODO: Add GLSL Shader Code Blocks for Post-Process Effects'
 priority: Medium
 effort: 2-4d
 created: 2026-01-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-02
 ---
 
 # TODO: Add GLSL Shader Code Blocks for Post-Process Effects
