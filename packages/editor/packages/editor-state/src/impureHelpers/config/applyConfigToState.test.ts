@@ -70,4 +70,20 @@ describe('applyConfigToState', () => {
 		expect(state.runtime.runtimeSettings).toEqual(originalSettings);
 		expect(state.runtime.selectedRuntime).toBe(originalSelectedRuntime);
 	});
+
+	it('should apply disableCompilation flag', () => {
+		const state = createMockState();
+		const store = createStateManager(state);
+		expect(state.compiler.disableCompilation).toBe(false);
+		applyConfigToState(store, { disableCompilation: true });
+		expect(state.compiler.disableCompilation).toBe(true);
+	});
+
+	it('should not change disableCompilation when not in config', () => {
+		const state = createMockState();
+		const store = createStateManager(state);
+		state.compiler.disableCompilation = true;
+		applyConfigToState(store, { memorySizeBytes: 65536 });
+		expect(state.compiler.disableCompilation).toBe(true);
+	});
 });
