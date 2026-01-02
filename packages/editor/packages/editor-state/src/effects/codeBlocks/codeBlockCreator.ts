@@ -1,6 +1,8 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 import { getModuleId } from '@8f4e/compiler/syntax';
 import { getFunctionId } from '@8f4e/compiler/syntax';
+import { getVertexShaderId } from '@8f4e/compiler/syntax';
+import { getFragmentShaderId } from '@8f4e/compiler/syntax';
 
 import { EventDispatcher } from '../../types';
 
@@ -95,6 +97,42 @@ function changeFunctionIdInCode(code: string[], id: string) {
 	});
 }
 
+function changeVertexShaderIdInCode(code: string[], id: string) {
+	return code.map(line => {
+		const match = line.match(instructionParser) as RegExpMatchArray | null;
+		if (match && match[1] === 'vertexShader' && match[2]) {
+			// Reconstruct line with new ID, preserving spacing and everything after the ID
+			const beforeInstruction = line.slice(0, match.index!);
+			const instruction = match[1];
+			const spacingAfterInstruction = line.slice(
+				match.index! + instruction.length,
+				line.indexOf(match[2], match.index!)
+			);
+			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
+			return beforeInstruction + instruction + spacingAfterInstruction + id + afterOldId;
+		}
+		return line;
+	});
+}
+
+function changeFragmentShaderIdInCode(code: string[], id: string) {
+	return code.map(line => {
+		const match = line.match(instructionParser) as RegExpMatchArray | null;
+		if (match && match[1] === 'fragmentShader' && match[2]) {
+			// Reconstruct line with new ID, preserving spacing and everything after the ID
+			const beforeInstruction = line.slice(0, match.index!);
+			const instruction = match[1];
+			const spacingAfterInstruction = line.slice(
+				match.index! + instruction.length,
+				line.indexOf(match[2], match.index!)
+			);
+			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
+			return beforeInstruction + instruction + spacingAfterInstruction + id + afterOldId;
+		}
+		return line;
+	});
+}
+
 function incrementCodeBlockId(id: string) {
 	if (/.*[0-9]+$/gm.test(id)) {
 		const [, trailingNumber] = id.match(/.*([0-9]+$)/) as [never, string];
@@ -122,7 +160,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		x: number;
 		y: number;
 		isNew: boolean;
-		blockType?: 'module' | 'function';
+		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader';
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -132,6 +170,10 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		if (isNew) {
 			if (blockType === 'function') {
 				code = ['function ' + getRandomCodeBlockId(), '', '', 'functionEnd'];
+			} else if (blockType === 'vertexShader') {
+				code = ['vertexShader ' + getRandomCodeBlockId(), '', '', 'vertexShaderEnd'];
+			} else if (blockType === 'fragmentShader') {
+				code = ['fragmentShader ' + getRandomCodeBlockId(), '', '', 'fragmentShaderEnd'];
 			} else {
 				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
 			}
@@ -142,11 +184,17 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		// Update ID based on block type
 		const moduleId = getModuleId(code);
 		const functionId = getFunctionId(code);
+		const vertexShaderId = getVertexShaderId(code);
+		const fragmentShaderId = getFragmentShaderId(code);
 
 		if (functionId) {
 			code = changeFunctionIdInCode(code, incrementCodeBlockIdUntilUnique(state, functionId));
 		} else if (moduleId) {
 			code = changeModuleIdInCode(code, incrementCodeBlockIdUntilUnique(state, moduleId));
+		} else if (vertexShaderId) {
+			code = changeVertexShaderIdInCode(code, incrementCodeBlockIdUntilUnique(state, vertexShaderId));
+		} else if (fragmentShaderId) {
+			code = changeFragmentShaderIdInCode(code, incrementCodeBlockIdUntilUnique(state, fragmentShaderId));
 		}
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
@@ -171,7 +219,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 				errorMessages: [],
 			},
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: getFunctionId(code) || getModuleId(code) || '',
+			id: getFunctionId(code) || getModuleId(code) || getVertexShaderId(code) || getFragmentShaderId(code) || '',
 			gaps: new Map(),
 			gridX: Math.round((state.graphicHelper.viewport.x + x) / state.graphicHelper.viewport.vGrid),
 			gridY: Math.round((state.graphicHelper.viewport.y + y) / state.graphicHelper.viewport.hGrid),
