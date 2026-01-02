@@ -1,7 +1,7 @@
 /**
  * Extracts the base identifier from an element count identifier by removing the $ prefix.
  */
-export function extractElementCountBase(name: string): string {
+export default function extractElementCountBase(name: string): string {
 	return name.startsWith('$') ? name.substring(1) : name;
 }
 

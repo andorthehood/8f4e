@@ -3,7 +3,7 @@
  * Allows dots in module and identifier names to support nested references like &notesMux2.out.notes.
  * Rejects patterns with trailing ampersands or spaces.
  */
-export function isIntermodularReference(value: string): boolean {
+export default function isIntermodularReference(value: string): boolean {
 	return /^&[^\s&]+\.[^\s&]+$/.test(value);
 }
 

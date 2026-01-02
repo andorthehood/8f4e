@@ -1,7 +1,7 @@
 /**
  * Extracts the base identifier from an element word size identifier by removing the % prefix.
  */
-export function extractElementWordSizeBase(name: string): string {
+export default function extractElementWordSizeBase(name: string): string {
 	return name.startsWith('%') ? name.substring(1) : name;
 }
 

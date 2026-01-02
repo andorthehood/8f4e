@@ -1,10 +1,10 @@
 import { ArgumentType, type Argument } from './parseArgument';
 import { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
-import { hasMemoryReferencePrefix } from './hasMemoryReferencePrefix';
-import { hasElementCountPrefix } from './hasElementCountPrefix';
-import { extractMemoryReferenceBase } from './extractMemoryReferenceBase';
-import { extractElementCountBase } from './extractElementCountBase';
-import { isIntermodularReference } from './isIntermodularReference';
+import hasMemoryReferencePrefix from './hasMemoryReferencePrefix';
+import hasElementCountPrefix from './hasElementCountPrefix';
+import extractMemoryReferenceBase from './extractMemoryReferenceBase';
+import extractElementCountBase from './extractElementCountBase';
+import isIntermodularReference from './isIntermodularReference';
 
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }

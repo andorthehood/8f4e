@@ -1,7 +1,7 @@
 /**
  * Checks if a string has an element word size prefix (%).
  */
-export function hasElementWordSizePrefix(name: string): boolean {
+export default function hasElementWordSizePrefix(name: string): boolean {
 	return name.startsWith('%');
 }
 

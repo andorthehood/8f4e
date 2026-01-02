@@ -50,7 +50,7 @@ export interface FunctionSignature {
 }
 
 export interface FunctionTypeRegistry {
-	types: Array<ReturnType<typeof import('./wasmUtils/typeFunction/createFunctionType').createFunctionType>>;
+	types: Array<ReturnType<typeof import('./wasmUtils/typeFunction/createFunctionType').default>>;
 	signatureMap: Map<string, number>;
 	baseTypeIndex: number;
 }

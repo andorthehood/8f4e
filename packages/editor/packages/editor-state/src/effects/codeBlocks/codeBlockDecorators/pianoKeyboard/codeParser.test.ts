@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import { parsePianoKeyboards } from './codeParser';
+import parsePianoKeyboards from './codeParser';
 
 // Mock parsePressedKeys
 vi.mock('./parsePressedKeys', () => ({
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	parsePressedKeys: vi.fn((_code, memoryId, _startingNumber) => {
+	default: vi.fn((_code, memoryId, _startingNumber) => {
 		const keys = new Set<number>();
 		if (memoryId === 'keys1') {
 			keys.add(0);

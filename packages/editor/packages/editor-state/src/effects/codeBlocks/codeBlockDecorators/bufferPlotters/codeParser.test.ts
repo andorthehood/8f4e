@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { parseBufferPlotters } from './codeParser';
+import parseBufferPlotters from './codeParser';
 
 describe('parseBufferPlotters', () => {
 	it('should parse plot instruction with all arguments', () => {

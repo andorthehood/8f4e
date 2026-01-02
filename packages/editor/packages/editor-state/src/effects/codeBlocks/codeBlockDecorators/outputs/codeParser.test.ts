@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { parseOutputs } from './codeParser';
+import parseOutputs from './codeParser';
 
 describe('parseOutputs', () => {
 	it('should parse int instruction', () => {

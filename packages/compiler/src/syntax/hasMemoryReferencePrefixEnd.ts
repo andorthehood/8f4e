@@ -1,7 +1,7 @@
 /**
  * Checks if a string has a memory reference as suffix (suffix&).
  */
-export function hasMemoryReferencePrefixEnd(name: string): boolean {
+export default function hasMemoryReferencePrefixEnd(name: string): boolean {
 	return name.endsWith('&');
 }
 

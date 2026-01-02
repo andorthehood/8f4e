@@ -1,7 +1,7 @@
 /**
  * Parses escape sequences in a string
  */
-export function parseEscapes(str: string): string {
+export default function parseEscapes(str: string): string {
 	return str.replace(/\\(.)/g, (_, char) => {
 		switch (char) {
 			case 'n':

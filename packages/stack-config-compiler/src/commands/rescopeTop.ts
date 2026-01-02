@@ -7,7 +7,7 @@ import { validateAndPushSegments } from '../schema';
 import type { Command, VMState } from '../types';
 import type { CommandError } from '../vm/executeCommand';
 
-export function executeRescopeTop(state: VMState, command: Command): CommandError[] | null {
+export default function executeRescopeTop(state: VMState, command: Command): CommandError[] | null {
 	if (state.scopeStack.length === 0) {
 		return [{ message: 'Cannot rescopeTop: scope stack is empty', kind: 'exec' }];
 	}

@@ -7,7 +7,7 @@ import { moveCaret } from './moveCaret';
  * @param col Caret column index.
  * @returns Updated document and caret location after inserting a newline.
  */
-export function enter(
+export default function enter(
 	code: string[],
 	row: number,
 	col: number

@@ -1,5 +1,5 @@
-import { unsignedLEB128 } from '../encoding/unsignedLEB128';
-import { i32const } from '../const/i32const';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
+import i32const from '../const/i32const';
 import Instruction from '../wasmInstruction';
 
 /**
@@ -11,7 +11,7 @@ import Instruction from '../wasmInstruction';
  * @param offset - Static offset from the address, defaults to 0
  * @returns Byte array representing the i32.store instruction and optional setup
  */
-export function i32store(address?: number, value?: number, alignment = 2, offset = 0): number[] {
+export default function i32store(address?: number, value?: number, alignment = 2, offset = 0): number[] {
 	return [
 		...(typeof address === 'undefined' ? [] : i32const(address)),
 		...(typeof value === 'undefined' ? [] : i32const(value)),

@@ -1,6 +1,6 @@
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

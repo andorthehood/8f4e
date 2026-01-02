@@ -2,8 +2,8 @@
  * Validates navigation for a single path segment
  */
 
-import { lookupSchemaNode } from './lookupSchemaNode';
-import { validateNavigationSegment } from './validateNavigationSegment';
+import lookupSchemaNode from './lookupSchemaNode';
+import validateNavigationSegment from './validateNavigationSegment';
 
 import type { SchemaNode, SchemaValidationError } from './types';
 
@@ -16,7 +16,7 @@ import type { SchemaNode, SchemaValidationError } from './types';
  * @param segment - The segment being navigated to
  * @returns An error object if invalid, null if valid
  */
-export function validateNavigation(
+export default function validateNavigation(
 	schemaRoot: SchemaNode,
 	scopeStack: string[],
 	segment: string

@@ -2,7 +2,7 @@
  * Finds missing required fields by comparing schema requirements against written paths
  */
 
-import { collectRequiredPaths } from './collectRequiredPaths';
+import collectRequiredPaths from './collectRequiredPaths';
 
 import type { MissingFieldError, SchemaNode } from './types';
 
@@ -42,7 +42,10 @@ function isPathSatisfied(requiredPath: string, writtenPaths: Set<string>): boole
  * @param writtenPaths - Set of paths that were written during execution
  * @returns Array of error objects for missing required fields
  */
-export function findMissingRequiredFields(schemaRoot: SchemaNode, writtenPaths: Set<string>): MissingFieldError[] {
+export default function findMissingRequiredFields(
+	schemaRoot: SchemaNode,
+	writtenPaths: Set<string>
+): MissingFieldError[] {
 	const errors: MissingFieldError[] = [];
 	const requiredPaths = collectRequiredPaths(schemaRoot);
 
@@ -62,7 +65,7 @@ export function findMissingRequiredFields(schemaRoot: SchemaNode, writtenPaths: 
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { preprocessSchema } = await import('./preprocessSchema');
+	const { default: preprocessSchema } = await import('./preprocessSchema');
 
 	describe('findMissingRequiredFields', () => {
 		it('should return errors for missing required fields', () => {

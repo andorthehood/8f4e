@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { isPlainObject } from '../../pureHelpers/isPlainObject';
+import isPlainObject from '../../pureHelpers/isPlainObject';
 
 import type { State, Runtimes } from '../../types';
 
