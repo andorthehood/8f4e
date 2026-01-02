@@ -81,7 +81,7 @@ describe('Example Projects Compilation', () => {
 		// Verify we found the expected project files
 		const projectSlugs = projectFiles.map(f => path.basename(f, '.ts'));
 		expect(projectSlugs).toContain('audioBuffer');
-		expect(projectSlugs).toContain('crtEffect');
+		expect(projectSlugs).toContain('rippleEffect');
 		expect(projectSlugs).toContain('simpleCounterMainThread');
 	});
 
