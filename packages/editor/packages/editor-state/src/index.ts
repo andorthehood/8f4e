@@ -83,6 +83,7 @@ export type {
 	Options,
 	EditorSettings,
 	CompilationResult,
+	ConfigSchema,
 	ConfigCompilationResult,
 	CodeBlock,
 	Viewport,
