@@ -4,7 +4,7 @@
 
 import type { VMState } from '../types';
 
-export function executeConcat(state: VMState): string | null {
+export default function executeConcat(state: VMState): string | null {
 	if (state.dataStack.length === 0) {
 		return 'Cannot concat: data stack is empty';
 	}

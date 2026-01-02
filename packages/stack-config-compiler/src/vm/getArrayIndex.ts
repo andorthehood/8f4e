@@ -1,7 +1,7 @@
 /**
  * Extracts the numeric index from an array index segment (e.g., "[0]" -> 0)
  */
-export function getArrayIndex(segment: string): number {
+export default function getArrayIndex(segment: string): number {
 	return parseInt(segment.slice(1, -1), 10);
 }
 

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { getOrCreateMemory } from '../getOrCreateMemory';
+import getOrCreateMemory from '../getOrCreateMemory';
 
 describe('getOrCreateMemory', () => {
 	// Helper to create a minimal CompiledModuleLookup for testing
