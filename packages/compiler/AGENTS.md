@@ -27,6 +27,7 @@
 ## Testing
 - Vitest (via Nx). Place tests in `tests/`, `__tests__/`, or `*.test.ts`.
 - Focus on deterministic, fast unit tests for parsing, IR, and transforms.
+- In-source tests (`import.meta.vitest`) are enabled for `src/syntax/**/*.ts` via Vitest config.
 
 ## Pure Function Feature
 
