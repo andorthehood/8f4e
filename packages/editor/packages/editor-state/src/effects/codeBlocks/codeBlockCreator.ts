@@ -61,73 +61,19 @@ function checkIfCodeBlockIdIsTaken(state: State, id: string) {
 	});
 }
 
-function changeModuleIdInCode(code: string[], id: string) {
+function changeCodeBlockIdInCode(code: string[], instruction: string, id: string) {
 	return code.map(line => {
 		const match = line.match(instructionParser) as RegExpMatchArray | null;
-		if (match && match[1] === 'module' && match[2]) {
+		if (match && match[1] === instruction && match[2]) {
 			// Reconstruct line with new ID, preserving spacing and everything after the ID
 			const beforeInstruction = line.slice(0, match.index!);
-			const instruction = match[1];
+			const matchedInstruction = match[1];
 			const spacingAfterInstruction = line.slice(
-				match.index! + instruction.length,
+				match.index! + matchedInstruction.length,
 				line.indexOf(match[2], match.index!)
 			);
 			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
-			return beforeInstruction + instruction + spacingAfterInstruction + id + afterOldId;
-		}
-		return line;
-	});
-}
-
-function changeFunctionIdInCode(code: string[], id: string) {
-	return code.map(line => {
-		const match = line.match(instructionParser) as RegExpMatchArray | null;
-		if (match && match[1] === 'function' && match[2]) {
-			// Reconstruct line with new ID, preserving spacing and everything after the ID
-			const beforeInstruction = line.slice(0, match.index!);
-			const instruction = match[1];
-			const spacingAfterInstruction = line.slice(
-				match.index! + instruction.length,
-				line.indexOf(match[2], match.index!)
-			);
-			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
-			return beforeInstruction + instruction + spacingAfterInstruction + id + afterOldId;
-		}
-		return line;
-	});
-}
-
-function changeVertexShaderIdInCode(code: string[], id: string) {
-	return code.map(line => {
-		const match = line.match(instructionParser) as RegExpMatchArray | null;
-		if (match && match[1] === 'vertexShader' && match[2]) {
-			// Reconstruct line with new ID, preserving spacing and everything after the ID
-			const beforeInstruction = line.slice(0, match.index!);
-			const instruction = match[1];
-			const spacingAfterInstruction = line.slice(
-				match.index! + instruction.length,
-				line.indexOf(match[2], match.index!)
-			);
-			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
-			return beforeInstruction + instruction + spacingAfterInstruction + id + afterOldId;
-		}
-		return line;
-	});
-}
-
-function changeFragmentShaderIdInCode(code: string[], id: string) {
-	return code.map(line => {
-		const match = line.match(instructionParser) as RegExpMatchArray | null;
-		if (match && match[1] === 'fragmentShader' && match[2]) {
-			// Reconstruct line with new ID, preserving spacing and everything after the ID
-			const beforeInstruction = line.slice(0, match.index!);
-			const instruction = match[1];
-			const spacingAfterInstruction = line.slice(
-				match.index! + instruction.length,
-				line.indexOf(match[2], match.index!)
-			);
-			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
-			return beforeInstruction + instruction + spacingAfterInstruction + id + afterOldId;
+			return beforeInstruction + matchedInstruction + spacingAfterInstruction + id + afterOldId;
 		}
 		return line;
 	});
@@ -188,13 +134,13 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		const fragmentShaderId = getFragmentShaderId(code);
 
 		if (functionId) {
-			code = changeFunctionIdInCode(code, incrementCodeBlockIdUntilUnique(state, functionId));
+			code = changeCodeBlockIdInCode(code, 'function', incrementCodeBlockIdUntilUnique(state, functionId));
 		} else if (moduleId) {
-			code = changeModuleIdInCode(code, incrementCodeBlockIdUntilUnique(state, moduleId));
+			code = changeCodeBlockIdInCode(code, 'module', incrementCodeBlockIdUntilUnique(state, moduleId));
 		} else if (vertexShaderId) {
-			code = changeVertexShaderIdInCode(code, incrementCodeBlockIdUntilUnique(state, vertexShaderId));
+			code = changeCodeBlockIdInCode(code, 'vertexShader', incrementCodeBlockIdUntilUnique(state, vertexShaderId));
 		} else if (fragmentShaderId) {
-			code = changeFragmentShaderIdInCode(code, incrementCodeBlockIdUntilUnique(state, fragmentShaderId));
+			code = changeCodeBlockIdInCode(code, 'fragmentShader', incrementCodeBlockIdUntilUnique(state, fragmentShaderId));
 		}
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
