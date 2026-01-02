@@ -101,7 +101,7 @@ const configSchema: ConfigSchema = {
 			type: 'array',
 			items: runtimeSettingsSchema,
 		},
-		disableCompilation: { type: 'boolean' },
+		disableAutoCompilation: { type: 'boolean' },
 	},
 	additionalProperties: false,
 };
