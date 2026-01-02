@@ -24,6 +24,7 @@ import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
 import keyboardShortcuts from './effects/keyboardShortcuts';
 import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
+import shaderEffectsDeriver from './effects/shaders/shaderEffectsDeriver';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 
 import type { Options, State, EventDispatcher } from './types';
@@ -55,6 +56,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	contextMenu(store, events);
 	codeBlockCreator(state, events);
 	blockTypeUpdater(store, events); // Must run before compiler to classify blocks first
+	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	configEffect(store, events);
 	compiler(store, events);
 	graphicHelper(store, events);
