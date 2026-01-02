@@ -6,11 +6,6 @@ import type { CodeBlockGraphicData } from '../../types';
 
 export default function createDefaultState() {
 	return {
-		projectInfo: {
-			title: '',
-			author: '',
-			description: '',
-		},
 		compiler: {
 			codeBuffer: new Uint8Array(),
 			compilationTime: 0,
