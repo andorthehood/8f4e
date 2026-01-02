@@ -24,7 +24,7 @@ import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing
 describe('MyComponent', () => {
   it('should render with mock state', () => {
     const state = createMockState({
-      projectInfo: { title: 'Test Project' }
+      compiler: { compilationTime: 120 }
     });
     
     const block = createMockCodeBlock({ x: 100, y: 200, width: 150, height: 150 });
@@ -93,8 +93,8 @@ Create comprehensive State objects with sensible defaults:
 const state = createMockState(); // Uses all defaults
 
 const state = createMockState({
-  projectInfo: { title: 'My Project' },
-  compiler: { 
+  compiler: {
+    compilationTime: 120,
     codeBuffer: new Uint8Array([1, 2, 3]) 
   }
 });

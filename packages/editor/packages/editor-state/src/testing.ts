@@ -8,7 +8,7 @@
  * ```typescript
  * import { createMockState, createMockCodeBlock } from '@8f4e/editor-state/testing';
  *
- * const state = createMockState({ projectInfo: { title: 'Test' } });
+ * const state = createMockState({ compiler: { compilationTime: 123 } });
  * const block = createMockCodeBlock({ x: 100, y: 200 });
  * ```
  */
