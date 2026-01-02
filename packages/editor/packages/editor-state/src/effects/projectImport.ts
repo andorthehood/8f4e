@@ -3,12 +3,10 @@ import { getModuleId } from '@8f4e/compiler/syntax';
 
 import { EventDispatcher } from '../types';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
-import {
-	decodeBase64ToUint8Array,
-	decodeBase64ToInt32Array,
-	decodeBase64ToFloat32Array,
-} from '../pureHelpers/base64/base64Decoder';
-import { log, warn, error } from '../impureHelpers/logger';
+import { decodeBase64ToUint8Array } from '../pureHelpers/base64/decodeBase64ToUint8Array';
+import { decodeBase64ToInt32Array } from '../pureHelpers/base64/decodeBase64ToInt32Array';
+import { decodeBase64ToFloat32Array } from '../pureHelpers/base64/decodeBase64ToFloat32Array';
+import { log, warn, error } from '../impureHelpers/logger/logger';
 
 import type { Project, State } from '../types';
 
