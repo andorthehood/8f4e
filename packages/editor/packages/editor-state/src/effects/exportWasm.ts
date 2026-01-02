@@ -14,7 +14,7 @@ export default function exportWasm(state: State, events: EventDispatcher): void 
 			return;
 		}
 
-		const projectName = state.projectInfo.title || 'project';
+		const projectName = 'project';
 		const fileName = `${projectName}.wasm`;
 
 		state.callbacks.exportBinaryFile(state.compiler.codeBuffer, fileName, 'application/wasm').catch(error => {

@@ -204,16 +204,11 @@ export function createMockEventDispatcher(): EventDispatcher {
  *
  * @example
  * const state = createMockState();
- * const state = createMockState({ projectInfo: { title: 'My Project' } });
+ * const state = createMockState({ compiler: { compilationTime: 123 } });
  * const state = createMockState({ compiler: { memoryBuffer: new Float32Array(100) } });
  */
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const defaults: State = {
-		projectInfo: {
-			title: '',
-			author: '',
-			description: '',
-		},
 		compiler: {
 			codeBuffer: new Uint8Array(0),
 			isCompiling: false,
