@@ -5,6 +5,7 @@ import { applyConfigToState } from '../impureHelpers/config/applyConfigToState';
 import isPlainObject from '../pureHelpers/isPlainObject';
 import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
+import configSchema from '../configSchema';
 
 import type { ConfigObject } from '../impureHelpers/config/applyConfigToState';
 import type { CodeError, EventDispatcher, State } from '../types';
@@ -25,7 +26,7 @@ async function buildConfigFromBlocks(
 
 	for (const { block, source } of configBlocks) {
 		try {
-			const result = await compileConfig(source);
+			const result = await compileConfig(source, configSchema);
 
 			if (result.errors.length > 0) {
 				const blockErrors: CodeError[] = result.errors.map(error => ({
