@@ -3,8 +3,8 @@ title: 'TODO: Disable Compilation for Runtime-Ready Projects'
 priority: Medium
 effort: 3-5h
 created: 2026-01-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-02
 ---
 
 # TODO: Disable Compilation for Runtime-Ready Projects
@@ -45,10 +45,10 @@ Alternative approaches considered:
 
 ## Success Criteria
 
-- [ ] Projects with `disableCompilation: true` do not call any compile callbacks.
-- [ ] Runtime-ready exports with the flag set do not attempt to compile config or modules.
-- [ ] A clear log or error message is emitted when compilation is skipped.
-- [ ] Relevant tests cover the new behavior.
+- [x] Projects with `disableCompilation: true` do not call any compile callbacks.
+- [x] Runtime-ready exports with the flag set do not attempt to compile config or modules.
+- [x] A clear log or error message is emitted when compilation is skipped.
+- [x] Relevant tests cover the new behavior.
 
 ## Affected Components
 
