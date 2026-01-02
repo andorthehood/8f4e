@@ -1,4 +1,11 @@
-export type CodeBlockType = 'module' | 'config' | 'function' | 'constants' | 'unknown';
+export type CodeBlockType =
+	| 'module'
+	| 'config'
+	| 'function'
+	| 'constants'
+	| 'vertexShader'
+	| 'fragmentShader'
+	| 'unknown';
 
 /**
  * Detects whether a block of code represents a module, config, function, or unknown block by scanning for marker pairs.
@@ -14,6 +21,10 @@ export function getBlockType(code: string[]): CodeBlockType {
 	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
 	const hasConstants = code.some(line => /^\s*constants(\s|$)/.test(line));
 	const hasConstantsEnd = code.some(line => /^\s*constantsEnd(\s|$)/.test(line));
+	const hasVertexShader = code.some(line => /^\s*vertexShader(\s|$)/.test(line));
+	const hasVertexShaderEnd = code.some(line => /^\s*vertexShaderEnd(\s|$)/.test(line));
+	const hasFragmentShader = code.some(line => /^\s*fragmentShader(\s|$)/.test(line));
+	const hasFragmentShaderEnd = code.some(line => /^\s*fragmentShaderEnd(\s|$)/.test(line));
 
 	if (
 		hasModule &&
@@ -23,7 +34,11 @@ export function getBlockType(code: string[]): CodeBlockType {
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
-		!hasConstantsEnd
+		!hasConstantsEnd &&
+		!hasVertexShader &&
+		!hasVertexShaderEnd &&
+		!hasFragmentShader &&
+		!hasFragmentShaderEnd
 	) {
 		return 'module';
 	}
@@ -36,7 +51,11 @@ export function getBlockType(code: string[]): CodeBlockType {
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
-		!hasConstantsEnd
+		!hasConstantsEnd &&
+		!hasVertexShader &&
+		!hasVertexShaderEnd &&
+		!hasFragmentShader &&
+		!hasFragmentShaderEnd
 	) {
 		return 'config';
 	}
@@ -49,7 +68,11 @@ export function getBlockType(code: string[]): CodeBlockType {
 		!hasConfig &&
 		!hasConfigEnd &&
 		!hasConstants &&
-		!hasConstantsEnd
+		!hasConstantsEnd &&
+		!hasVertexShader &&
+		!hasVertexShaderEnd &&
+		!hasFragmentShader &&
+		!hasFragmentShaderEnd
 	) {
 		return 'function';
 	}
@@ -62,9 +85,47 @@ export function getBlockType(code: string[]): CodeBlockType {
 		!hasConfig &&
 		!hasConfigEnd &&
 		!hasFunction &&
-		!hasFunctionEnd
+		!hasFunctionEnd &&
+		!hasVertexShader &&
+		!hasVertexShaderEnd &&
+		!hasFragmentShader &&
+		!hasFragmentShaderEnd
 	) {
 		return 'constants';
+	}
+
+	if (
+		hasVertexShader &&
+		hasVertexShaderEnd &&
+		!hasModule &&
+		!hasModuleEnd &&
+		!hasConfig &&
+		!hasConfigEnd &&
+		!hasFunction &&
+		!hasFunctionEnd &&
+		!hasConstants &&
+		!hasConstantsEnd &&
+		!hasFragmentShader &&
+		!hasFragmentShaderEnd
+	) {
+		return 'vertexShader';
+	}
+
+	if (
+		hasFragmentShader &&
+		hasFragmentShaderEnd &&
+		!hasModule &&
+		!hasModuleEnd &&
+		!hasConfig &&
+		!hasConfigEnd &&
+		!hasFunction &&
+		!hasFunctionEnd &&
+		!hasConstants &&
+		!hasConstantsEnd &&
+		!hasVertexShader &&
+		!hasVertexShaderEnd
+	) {
+		return 'fragmentShader';
 	}
 
 	return 'unknown';
@@ -90,8 +151,20 @@ if (import.meta.vitest) {
 			expect(getBlockType(['constants', 'constantsEnd'])).toBe('constants');
 		});
 
+		it('detects vertexShader blocks', () => {
+			expect(getBlockType(['vertexShader crt', 'vertexShaderEnd'])).toBe('vertexShader');
+		});
+
+		it('detects fragmentShader blocks', () => {
+			expect(getBlockType(['fragmentShader crt', 'fragmentShaderEnd'])).toBe('fragmentShader');
+		});
+
 		it('returns unknown for mixed markers', () => {
 			expect(getBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
+		});
+
+		it('returns unknown for mixed shader and module markers', () => {
+			expect(getBlockType(['module foo', 'vertexShaderEnd'])).toBe('unknown');
 		});
 	});
 }
