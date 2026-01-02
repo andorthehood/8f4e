@@ -53,7 +53,6 @@ export default [
 			...tsPlugin.configs.recommended.rules,
 			'@typescript-eslint/ban-ts-comment': 'warn',
 			'import/order': importOrderRule,
-			'import/prefer-default-export': 'error',
 			'prettier/prettier': ['error', prettierOptions],
 		},
 	},
