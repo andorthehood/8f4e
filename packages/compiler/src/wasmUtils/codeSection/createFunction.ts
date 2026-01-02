@@ -1,5 +1,8 @@
-import { FunctionBody, LocalDeclaration, unsignedLEB128, createVector } from '../typeHelpers';
+import createVector from '../encoding/createVector';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import Instruction from '../wasmInstruction';
+
+import type { FunctionBody, LocalDeclaration } from '../section';
 
 /**
  * Creates a complete WebAssembly function body with local declarations and instructions.
@@ -8,7 +11,7 @@ import Instruction from '../wasmInstruction';
  * @param functionBody - The function's instruction bytecode
  * @returns Byte array representing the complete function body (with size prefix)
  */
-export function createFunction(localDeclarations: LocalDeclaration[], functionBody: number[]): FunctionBody {
+export default function createFunction(localDeclarations: LocalDeclaration[], functionBody: number[]): FunctionBody {
 	const localDeclarationCount = localDeclarations.length;
 	return createVector([
 		...unsignedLEB128(localDeclarationCount),

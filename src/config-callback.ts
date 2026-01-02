@@ -9,6 +9,6 @@ import type { ConfigCompilationResult } from '@8f4e/editor-state';
  * @param source - The config program source code (one command per line)
  * @returns Promise containing the compiled config object and any errors
  */
-export async function compileConfig(source: string): Promise<ConfigCompilationResult> {
+export default async function compileConfig(source: string): Promise<ConfigCompilationResult> {
 	return compileStackConfig(source);
 }

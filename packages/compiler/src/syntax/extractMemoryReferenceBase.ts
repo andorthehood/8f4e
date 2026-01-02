@@ -1,7 +1,7 @@
 /**
  * Extracts the base identifier from a memory reference identifier by removing the & prefix or suffix.
  */
-export function extractMemoryReferenceBase(name: string): string {
+export default function extractMemoryReferenceBase(name: string): string {
 	if (name.startsWith('&')) {
 		return name.substring(1);
 	}

@@ -1,5 +1,8 @@
-import { Import, unsignedLEB128, encodeString } from '../typeHelpers';
 import { ImportDesc } from '../section';
+import encodeString from '../encoding/encodeString';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
+
+import type { Import } from '../section';
 
 /**
  * Creates a memory import entry to import linear memory from the host environment.
@@ -11,7 +14,7 @@ import { ImportDesc } from '../section';
  * @param isShared - Whether the memory is shared (for threading support)
  * @returns Byte array representing the memory import entry
  */
-export function createMemoryImport(
+export default function createMemoryImport(
 	moduleName: string,
 	fieldName: string,
 	initial = 1,

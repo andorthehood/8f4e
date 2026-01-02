@@ -2,7 +2,7 @@
  * Validates and pushes path segments onto the scope stack
  */
 
-import { validateNavigation } from './validateNavigation';
+import validateNavigation from './validateNavigation';
 
 import type { SchemaNode, SegmentValidationError } from './types';
 
@@ -14,7 +14,7 @@ import type { SchemaNode, SegmentValidationError } from './types';
  * @param segments - Path segments to validate and push
  * @returns Array of validation errors (empty if all valid)
  */
-export function validateAndPushSegments(
+export default function validateAndPushSegments(
 	state: { schemaRoot?: SchemaNode; scopeStack: string[] },
 	segments: string[]
 ): SegmentValidationError[] {
@@ -41,7 +41,7 @@ export function validateAndPushSegments(
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { preprocessSchema } = await import('./preprocessSchema');
+	const { default: preprocessSchema } = await import('./preprocessSchema');
 
 	describe('validateAndPushSegments', () => {
 		it('should push segments to scope stack without schema', () => {

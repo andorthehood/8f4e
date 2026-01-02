@@ -1,10 +1,10 @@
-import { calculateBorderLineCoordinates } from './calculateBorderLineCoordinates';
+import calculateBorderLineCoordinates from './calculateBorderLineCoordinates';
 
 import { createMockState } from '../../pureHelpers/testingUtils/testUtils';
 
 import type { State } from '../../types';
 
-export function snapToGrid(state: State): void {
+export default function snapToGrid(state: State): void {
 	state.graphicHelper.viewport.x =
 		Math.round(state.graphicHelper.viewport.x / state.graphicHelper.viewport.vGrid) *
 		state.graphicHelper.viewport.vGrid;

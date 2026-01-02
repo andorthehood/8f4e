@@ -1,6 +1,6 @@
 import { CompiledModuleLookup } from '@8f4e/compiler';
 
-import { didProgramOrMemoryStructureChange } from './didProgramOrMemoryStructureChange';
+import didProgramOrMemoryStructureChange from './didProgramOrMemoryStructureChange';
 
 import type { GetOrCreateMemoryResult, MemoryAction } from './types';
 
@@ -8,7 +8,7 @@ let memoryRefCache: WebAssembly.Memory | null = null;
 let currentMemorySize = 0;
 const WASM_PAGE_SIZE = 65536;
 
-export function getOrCreateMemory(
+export default function getOrCreateMemory(
 	memorySizeBytes: number,
 	compiledModules: CompiledModuleLookup,
 	previousCompiledModules?: CompiledModuleLookup

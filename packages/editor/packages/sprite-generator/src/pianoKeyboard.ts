@@ -1,6 +1,6 @@
 import { ColorScheme, Command, DrawingCommand } from './types';
 import { drawCharacterMatrix } from './font';
-import { Glyph } from './fonts/types';
+import Glyph from './fonts/types';
 
 const enum State {
 	PRESSED,
@@ -38,11 +38,7 @@ function blackKey(
 	return [
 		state === State.PRESSED
 			? [Command.FILL_COLOR, colors.pianoKeyBlackPressed]
-			: [
-					Command.FILL_COLOR,
-					state === State.HIGHLIGHTED ? colors.pianoKeyBlackHighlighted : colors.pianoKeyBlack,
-					// eslint-disable-next-line no-mixed-spaces-and-tabs
-				],
+			: [Command.FILL_COLOR, state === State.HIGHLIGHTED ? colors.pianoKeyBlackHighlighted : colors.pianoKeyBlack],
 		...drawCharacterMatrix(font, characterWidth, characterHeight, [
 			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],
 			state === State.NORMAL ? [Glyph.FILL, Glyph.FILL] : [Glyph.SLASH, Glyph.SLASH],

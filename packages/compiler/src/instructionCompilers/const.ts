@@ -1,8 +1,8 @@
-import { isConstantName } from '../syntax/isConstantName';
+import isConstantName from '../syntax/isConstantName';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

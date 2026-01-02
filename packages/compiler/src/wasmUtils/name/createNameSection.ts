@@ -1,7 +1,11 @@
-import { createFunctionName } from './createFunctionName';
+import createFunctionName from './createFunctionName';
 
-import { FunctionName, unsignedLEB128, createVector, encodeString } from '../typeHelpers';
+import createVector from '../encoding/createVector';
+import encodeString from '../encoding/encodeString';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { NameSection, Section } from '../section';
+
+import type { FunctionName } from '../section';
 
 /**
  * Creates a WebAssembly name section for debugging information.
@@ -9,7 +13,7 @@ import { NameSection, Section } from '../section';
  * @param functionNames - Array of function name entries
  * @returns Byte array representing the complete custom name section
  */
-export function createNameSection(functionNames: FunctionName[]): number[] {
+export default function createNameSection(functionNames: FunctionName[]): number[] {
 	const numFunctions = functionNames.length;
 	return [
 		Section.CUSTOM,

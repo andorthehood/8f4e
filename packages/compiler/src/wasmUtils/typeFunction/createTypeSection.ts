@@ -1,7 +1,10 @@
-import { createFunctionType } from './createFunctionType';
+import createFunctionType from './createFunctionType';
 
-import { FunctionType, unsignedLEB128, createVector } from '../typeHelpers';
+import createVector from '../encoding/createVector';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { Section } from '../section';
+
+import type { FunctionType } from '../section';
 
 /**
  * Creates a WebAssembly type section containing function type signatures.
@@ -9,7 +12,7 @@ import { Section } from '../section';
  * @param types - Array of function types to include in the section
  * @returns Byte array representing the complete type section
  */
-export function createTypeSection(types: FunctionType[]): number[] {
+export default function createTypeSection(types: FunctionType[]): number[] {
 	const numberOfTypes = types.length;
 	return [Section.TYPE, ...createVector([...unsignedLEB128(numberOfTypes), ...types.flat()])];
 }

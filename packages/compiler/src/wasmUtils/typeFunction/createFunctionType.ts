@@ -1,5 +1,7 @@
-import { FunctionType, unsignedLEB128 } from '../typeHelpers';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import Type from '../type';
+
+import type { FunctionType } from '../section';
 
 /**
  * Creates a WebAssembly function type signature (param types → result types).
@@ -8,7 +10,7 @@ import Type from '../type';
  * @param resultTypes - Array of result types (defaults to empty)
  * @returns Byte array representing the function type
  */
-export function createFunctionType(parameterTypes: Type[], resultTypes: Type[] = []): FunctionType {
+export default function createFunctionType(parameterTypes: Type[], resultTypes: Type[] = []): FunctionType {
 	const numberOfParameters = parameterTypes.length;
 	const numberOfResults = resultTypes.length;
 

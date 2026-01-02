@@ -1,14 +1,12 @@
-import {
-	executeAppend,
-	executeConcat,
-	executePopScope,
-	executePush,
-	executeRescope,
-	executeRescopeSuffix,
-	executeRescopeTop,
-	executeScope,
-	executeSet,
-} from '../commands';
+import executeAppend from '../commands/append';
+import executeConcat from '../commands/concat';
+import executePopScope from '../commands/popScope';
+import executePush from '../commands/push';
+import executeRescope from '../commands/rescope';
+import executeRescopeSuffix from '../commands/rescopeSuffix';
+import executeRescopeTop from '../commands/rescopeTop';
+import executeScope from '../commands/scope';
+import executeSet from '../commands/set';
 
 import type { Command, VMState, CompileErrorKind } from '../types';
 

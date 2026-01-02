@@ -15,7 +15,7 @@ import {
 	getStorageQuota,
 } from './storage-callbacks';
 import { compileProject } from './compiler-callback';
-import { compileConfig } from './config-callback';
+import compileConfig from './config-callback';
 
 async function getListOfColorSchemes(): Promise<string[]> {
 	return ['hackerman', 'redalert', 'default'];

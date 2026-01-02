@@ -1,8 +1,8 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
+import { getModuleId } from '@8f4e/compiler/syntax';
+import { getFunctionId } from '@8f4e/compiler/syntax';
 
 import { EventDispatcher } from '../../types';
-import getModuleId from '../../pureHelpers/codeParsers/getModuleId';
-import getFunctionId from '../../pureHelpers/codeParsers/getFunctionId';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
