@@ -95,9 +95,6 @@ const runtimeSettingsSchema: ConfigSchema = {
 const configSchema: ConfigSchema = {
 	type: 'object',
 	properties: {
-		title: { type: 'string' },
-		author: { type: 'string' },
-		description: { type: 'string' },
 		memorySizeBytes: { type: 'number' },
 		selectedRuntime: { type: 'number' },
 		runtimeSettings: {
