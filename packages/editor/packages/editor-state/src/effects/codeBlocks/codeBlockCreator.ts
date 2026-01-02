@@ -1,9 +1,9 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 import { getModuleId } from '@8f4e/compiler/syntax';
 import { getFunctionId } from '@8f4e/compiler/syntax';
+
 import getVertexShaderId from '../../pureHelpers/shaderUtils/getVertexShaderId';
 import getFragmentShaderId from '../../pureHelpers/shaderUtils/getFragmentShaderId';
-
 import { EventDispatcher } from '../../types';
 
 import type { CodeBlockGraphicData, State } from '../../types';
@@ -106,7 +106,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 		x: number;
 		y: number;
 		isNew: boolean;
-		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader';
+		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader' | 'comment';
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -120,6 +120,8 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 				code = ['vertexShader ' + getRandomCodeBlockId(), '', '', 'vertexShaderEnd'];
 			} else if (blockType === 'fragmentShader') {
 				code = ['fragmentShader ' + getRandomCodeBlockId(), '', '', 'fragmentShaderEnd'];
+			} else if (blockType === 'comment') {
+				code = ['comment', '', '', 'commentEnd'];
 			} else {
 				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
 			}
