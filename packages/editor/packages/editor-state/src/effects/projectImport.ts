@@ -53,7 +53,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.binaryAssets = newProject.binaryAssets || [];
 		state.runtime.runtimeSettings = defaultState.runtime.runtimeSettings;
 		state.runtime.selectedRuntime = defaultState.runtime.selectedRuntime;
-		state.graphicHelper.postProcessEffects = newProject.postProcessEffects || [];
+		// postProcessEffects are now derived from shader code blocks, not loaded from project data
 
 		if (newProject.compiledWasm && newProject.memorySnapshot) {
 			try {
@@ -132,7 +132,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		});
 		events.dispatch('init');
 		events.dispatch('projectLoaded');
-		events.dispatch('loadPostProcessEffects', state.graphicHelper.postProcessEffects);
+		// loadPostProcessEffects will be dispatched by shaderEffectsDeriver
 	}
 
 	void projectPromise;

@@ -5,7 +5,6 @@ exports[`serializeToRuntimeReadyProject > omits compiled config when no config b
   "binaryAssets": [],
   "codeBlocks": [],
   "compiledModules": {},
-  "postProcessEffects": [],
   "viewport": {
     "gridCoordinates": {
       "x": 0,
@@ -39,7 +38,6 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
   },
   "compiledWasm": "b64:1",
   "memorySnapshot": "b64:2,0",
-  "postProcessEffects": [],
   "viewport": {
     "gridCoordinates": {
       "x": 0,
