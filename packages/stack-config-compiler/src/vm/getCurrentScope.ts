@@ -3,7 +3,7 @@ import type { VMState } from '../types';
 /**
  * Gets the current scope path as a string
  */
-export function getCurrentScope(state: VMState): string {
+export default function getCurrentScope(state: VMState): string {
 	return state.scopeStack.join('.');
 }
 

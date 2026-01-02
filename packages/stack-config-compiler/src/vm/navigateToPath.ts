@@ -1,11 +1,11 @@
-import { getArrayIndex } from './getArrayIndex';
-import { isArrayIndex } from './isArrayIndex';
+import getArrayIndex from './getArrayIndex';
+import isArrayIndex from './isArrayIndex';
 
 /**
  * Navigates to a location in the config object, creating intermediate objects/arrays as needed
  * Returns the parent object and the final key for the target location
  */
-export function navigateToPath(
+export default function navigateToPath(
 	config: Record<string, unknown>,
 	segments: string[]
 ): { parent: Record<string, unknown> | unknown[]; key: string | number } | null {

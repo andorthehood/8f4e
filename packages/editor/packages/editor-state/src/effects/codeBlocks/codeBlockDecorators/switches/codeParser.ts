@@ -1,6 +1,6 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 
-export function parseSwitches(code: string[]) {
+export default function parseSwitches(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];

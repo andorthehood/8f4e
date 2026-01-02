@@ -1,4 +1,4 @@
-import { encodeString } from '../encoding/encodeString';
+import encodeString from '../encoding/encodeString';
 import { ExportDesc } from '../section';
 
 import type { FunctionExport } from '../section';
@@ -10,7 +10,7 @@ import type { FunctionExport } from '../section';
  * @param reference - The function index to export
  * @returns Byte array representing the function export entry
  */
-export function createFunctionExport(name: string, reference: number): FunctionExport {
+export default function createFunctionExport(name: string, reference: number): FunctionExport {
 	return [...encodeString(name), ExportDesc.FUNC, reference];
 }
 

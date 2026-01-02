@@ -1,5 +1,5 @@
-import { encodeString } from '../encoding/encodeString';
-import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import encodeString from '../encoding/encodeString';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 
 import type { FunctionName } from '../section';
 
@@ -10,7 +10,7 @@ import type { FunctionName } from '../section';
  * @param name - The debug name for the function
  * @returns Byte array representing the function name entry
  */
-export function createFunctionName(functionIndex: number, name: string): FunctionName {
+export default function createFunctionName(functionIndex: number, name: string): FunctionName {
 	return [...unsignedLEB128(functionIndex), ...encodeString(name)];
 }
 

@@ -1,4 +1,4 @@
-import { isPlainObject } from '../isPlainObject';
+import isPlainObject from '../isPlainObject';
 
 /**
  * Deep merges two config objects. Later values override earlier values.
@@ -48,7 +48,7 @@ function mergeArrayOfPlainObjects(
 	return merged;
 }
 
-export function deepMergeConfig(
+export default function deepMergeConfig(
 	target: Record<string, unknown>,
 	source: Record<string, unknown>
 ): Record<string, unknown> {

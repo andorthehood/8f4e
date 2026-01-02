@@ -11,7 +11,7 @@ import type { CodeBlockGraphicData } from '../../types';
  * @param gaps Gap metadata keyed by logical row whose size indicates the number of additional rows inserted.
  * @returns The adjusted physical row that includes the cumulative gap offsets.
  */
-export function gapCalculator(row: number, gaps: CodeBlockGraphicData['gaps']) {
+export default function gapCalculator(row: number, gaps: CodeBlockGraphicData['gaps']) {
 	let physicalRowCounter = row;
 	for (const [gapStartLine, { size }] of gaps) {
 		if (row > gapStartLine) {

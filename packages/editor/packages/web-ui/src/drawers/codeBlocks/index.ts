@@ -7,7 +7,7 @@ import drawSwitches from './codeBlockDecorators/switches';
 import drawButtons from './codeBlockDecorators/buttons';
 import drawErrorMessages from './codeBlockDecorators/errorMessages';
 import drawPianoKeyboards from './codeBlockDecorators/pianoKeyboards';
-import { drawArrow } from './drawArrow';
+import drawArrow from './drawArrow';
 import drawBlockHighlights from './codeBlockDecorators/blockHighlights';
 
 import type { State } from '@8f4e/editor-state';

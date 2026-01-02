@@ -1,5 +1,5 @@
-import { parseEscapes } from './parseEscapes';
-import { splitPath } from './splitPath';
+import parseEscapes from './parseEscapes';
+import splitPath from './splitPath';
 
 /** Regex to match string literals with escape sequences */
 const STRING_LITERAL_REGEX = /^"((?:[^"\\]|\\.)*)"/;
@@ -7,7 +7,7 @@ const STRING_LITERAL_REGEX = /^"((?:[^"\\]|\\.)*)"/;
 /**
  * Parses a path argument (quoted or unquoted)
  */
-export function parsePathArgument(arg: string): string[] | { error: string } {
+export default function parsePathArgument(arg: string): string[] | { error: string } {
 	let path = arg;
 
 	const stringMatch = arg.match(STRING_LITERAL_REGEX);

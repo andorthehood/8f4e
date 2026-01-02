@@ -13,7 +13,7 @@ import type { SchemaNode } from './types';
  * @param pathSegments - Path segments (e.g., ['projectInfo', 'title'] or ['items', '[0]'])
  * @returns The schema node at the path, or null if the path is not allowed
  */
-export function lookupSchemaNode(root: SchemaNode, pathSegments: string[]): SchemaNode | null {
+export default function lookupSchemaNode(root: SchemaNode, pathSegments: string[]): SchemaNode | null {
 	let current = root;
 
 	for (const segment of pathSegments) {
@@ -55,7 +55,7 @@ export function lookupSchemaNode(root: SchemaNode, pathSegments: string[]): Sche
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { preprocessSchema } = await import('./preprocessSchema');
+	const { default: preprocessSchema } = await import('./preprocessSchema');
 
 	describe('lookupSchemaNode', () => {
 		it('should find a child node', () => {
