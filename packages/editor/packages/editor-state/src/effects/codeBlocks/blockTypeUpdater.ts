@@ -1,5 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
-import getBlockType from '../../pureHelpers/shaderUtils/getBlockType';
+
+import getBlockType from '../../pureHelpers/codeParsers/getBlockType';
 
 import type { CodeBlockGraphicData, EventDispatcher, State } from '../../types';
 
