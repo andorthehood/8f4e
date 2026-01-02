@@ -17,7 +17,6 @@ import editorSettings from './effects/editorSettings';
 import projectImport from './effects/projectImport';
 import projectExport from './effects/projectExport';
 import pianoKeyboard from './effects/codeBlocks/codeBlockDecorators/pianoKeyboard/interaction';
-import sampleRate from './effects/sampleRate';
 import exportWasm from './effects/exportWasm';
 import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
@@ -44,7 +43,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	editorSettings(store, events, state);
 
 	runtime(store, events);
-	sampleRate(state, events);
 	projectImport(store, events, state);
 	codeBlockDragger(state, events);
 	codeBlockNavigation(state, events);
