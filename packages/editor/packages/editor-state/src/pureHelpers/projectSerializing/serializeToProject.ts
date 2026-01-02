@@ -31,7 +31,7 @@ export default function serializeToProject(
 		},
 		binaryAssets: state.binaryAssets,
 		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
-		postProcessEffects: graphicHelper.postProcessEffects,
+		// postProcessEffects are now derived from shader code blocks and not persisted
 	};
 
 	// Optionally include compiled WASM and memory snapshot
