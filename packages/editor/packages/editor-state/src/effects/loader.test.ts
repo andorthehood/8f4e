@@ -70,29 +70,4 @@ describe('Loader - Project-specific memory configuration', () => {
 		// Verify compiler options reset to defaults (config effect will update from config blocks)
 		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(defaultMemorySize);
 	});
-
-	it('should reset project info to empty when loading new project', async () => {
-		// Set some project info first
-		mockState.projectInfo.title = 'Previous Project';
-		mockState.projectInfo.author = 'Previous Author';
-
-		projectImport(store, mockEvents, mockState);
-
-		// Get the loadProject callback
-		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
-		const loadProjectCallback = loadProjectCall![1];
-
-		// Create a project (project info now comes from config blocks)
-		const project: Project = {
-			...EMPTY_DEFAULT_PROJECT,
-		};
-
-		// Load the project
-		loadProjectCallback({ project });
-
-		// Verify project info reset to empty (config effect will update from config blocks)
-		expect(mockState.projectInfo.title).toBe('');
-		expect(mockState.projectInfo.author).toBe('');
-	});
 });

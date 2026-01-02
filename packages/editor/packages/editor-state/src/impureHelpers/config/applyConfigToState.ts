@@ -8,9 +8,6 @@ import type { State, Runtimes } from '../../types';
  * Interface for the expected config object structure
  */
 export interface ConfigObject {
-	title?: string;
-	author?: string;
-	description?: string;
 	memorySizeBytes?: number;
 	selectedRuntime?: number;
 	runtimeSettings?: Runtimes[];
@@ -22,12 +19,6 @@ export interface ConfigObject {
  */
 export function applyConfigToState(store: StateManager<State>, config: ConfigObject): void {
 	const state = store.getState();
-
-	store.set('projectInfo', {
-		title: config.title || '',
-		author: config.author || '',
-		description: config.description || '',
-	});
 
 	if (Array.isArray(config.runtimeSettings)) {
 		const validRuntimeTypes = [
