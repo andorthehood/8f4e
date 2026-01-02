@@ -261,9 +261,19 @@ export interface PianoKeyboard {
  * - 'module': Contains module/moduleEnd markers (compiled to WASM)
  * - 'config': Contains config/configEnd markers (compiled to JSON configuration)
  * - 'function': Contains function/functionEnd markers (compiled to WASM as reusable helper)
+ * - 'constants': Contains constants/constantsEnd markers
+ * - 'vertexShader': Contains vertexShader/vertexShaderEnd markers (GLSL vertex shader)
+ * - 'fragmentShader': Contains fragmentShader/fragmentShaderEnd markers (GLSL fragment shader)
  * - 'unknown': Mixed or incomplete markers, or no recognizable markers
  */
-export type CodeBlockType = 'module' | 'config' | 'function' | 'constants' | 'unknown';
+export type CodeBlockType =
+	| 'module'
+	| 'config'
+	| 'function'
+	| 'constants'
+	| 'vertexShader'
+	| 'fragmentShader'
+	| 'unknown';
 
 export interface CodeBlockGraphicData {
 	width: number;
