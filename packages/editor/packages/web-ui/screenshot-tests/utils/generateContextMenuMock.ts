@@ -106,14 +106,6 @@ export default function generateContextMenuMock(): ContextMenu {
 				close: false,
 			},
 			{
-				title: '............ Project Settings >',
-				action: 'openSubMenu',
-				payload: {
-					menu: 'projectSettingsMenu',
-				},
-				close: false,
-			},
-			{
 				divider: true,
 			},
 			{
