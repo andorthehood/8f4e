@@ -317,7 +317,7 @@ describe('projectImport', () => {
 				compiledConfig: {
 					memorySizeBytes: 2097152,
 					selectedRuntime: 1,
-					disableCompilation: true,
+					disableAutoCompilation: true,
 				},
 				compiledWasm: 'base64encodedwasm',
 				memorySnapshot: 'base64encodedmemory',
@@ -334,7 +334,7 @@ describe('projectImport', () => {
 			expect(mockState.compiler.compiledConfig).toEqual({
 				memorySizeBytes: 2097152,
 				selectedRuntime: 1,
-				disableCompilation: true,
+				disableAutoCompilation: true,
 			});
 		});
 

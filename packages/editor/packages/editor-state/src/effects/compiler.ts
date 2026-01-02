@@ -27,24 +27,8 @@ export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>)
 
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
-	async function onRecompile() {
-		// Check if compilation is disabled by config
-		if (state.compiler.disableCompilation) {
-			log(state, 'Compilation skipped: disableCompilation flag is set', 'Compiler');
-			store.set('compiler.isCompiling', false);
-			store.set('codeErrors.compilationErrors', []);
-			return;
-		}
 
-		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
-		// If codeBuffer is populated and we don't have a compiler, skip compilation
-		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
-			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
-			store.set('compiler.isCompiling', false);
-			store.set('codeErrors.compilationErrors', []);
-			return;
-		}
-
+	async function onForceCompile() {
 		const { modules, functions } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 
 		store.set('compiler.isCompiling', true);
@@ -68,7 +52,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 				},
 			};
 
-			const result = await state.callbacks.compileProject?.(modules, compilerOptions, functions);
+			const result = await state.callbacks.compileCode?.(modules, compilerOptions, functions);
 
 			if (!result) {
 				return;
@@ -109,6 +93,26 @@ export default async function compiler(store: StateManager<State>, events: Event
 		}
 	}
 
+	function onRecompile() {
+		// Check if compilation is disabled by config
+		if (state.compiler.disableAutoCompilation) {
+			log(state, 'Compilation skipped: disableAutoCompilation flag is set', 'Compiler');
+			return;
+		}
+
+		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
+		// If codeBuffer is populated and we don't have a compiler, skip compilation
+		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileCode) {
+			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
+			store.set('compiler.isCompiling', false);
+			store.set('codeErrors.compilationErrors', []);
+			return;
+		}
+
+		onForceCompile();
+	}
+
+	events.on('compileCode', onForceCompile);
 	events.on('codeBlockAdded', onRecompile);
 	events.on('deleteCodeBlock', onRecompile);
 	store.subscribe('compiler.compilerOptions', onRecompile);

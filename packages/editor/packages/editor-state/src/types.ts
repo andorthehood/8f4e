@@ -174,7 +174,7 @@ export interface Compiler {
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
 	compiledFunctions?: CompiledFunctionLookup;
-	disableCompilation: boolean;
+	disableAutoCompilation: boolean;
 	compiledConfig?: Record<string, unknown>;
 }
 
@@ -536,7 +536,7 @@ export interface Callbacks {
 	getProject?: (slug: string) => Promise<Project>;
 
 	// Compilation callback
-	compileProject?: (
+	compileCode?: (
 		modules: Module[],
 		compilerOptions: CompileOptions,
 		functions?: Module[]

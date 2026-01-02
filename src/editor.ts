@@ -14,7 +14,7 @@ import {
 	exportBinaryFile,
 	getStorageQuota,
 } from './storage-callbacks';
-import { compileProject } from './compiler-callback';
+import { compileCode } from './compiler-callback';
 import compileConfig from './config-callback';
 
 async function getListOfColorSchemes(): Promise<string[]> {
@@ -41,7 +41,7 @@ async function init() {
 			getListOfProjects,
 			getProject,
 			requestRuntime,
-			compileProject,
+			compileCode,
 			compileConfig,
 			loadSession,
 			saveSession,

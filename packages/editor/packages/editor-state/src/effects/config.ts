@@ -72,8 +72,8 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		}
 
 		// Check if compilation is disabled by config
-		if (state.compiler.disableCompilation) {
-			log(state, 'Config compilation skipped: disableCompilation flag is set', 'Config');
+		if (state.compiler.disableAutoCompilation) {
+			log(state, 'Config compilation skipped: disableAutoCompilation flag is set', 'Config');
 			return;
 		}
 
@@ -118,7 +118,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
  */
 export async function compileConfigForExport(state: State): Promise<Record<string, unknown>> {
 	// If compilation is disabled, return the stored compiled config if available
-	if (state.compiler.disableCompilation) {
+	if (state.compiler.disableAutoCompilation) {
 		return state.compiler.compiledConfig || {};
 	}
 
