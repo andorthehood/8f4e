@@ -76,6 +76,11 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			state.compiler.compiledModules = newProject.compiledModules;
 		}
 
+		// Store compiled config from runtime-ready projects
+		if (newProject.compiledConfig) {
+			state.compiler.compiledConfig = newProject.compiledConfig;
+		}
+
 		state.graphicHelper.outputsByWordAddress.clear();
 		state.graphicHelper.selectedCodeBlock = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;

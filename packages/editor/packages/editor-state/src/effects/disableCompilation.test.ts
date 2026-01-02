@@ -168,6 +168,22 @@ describe('disableCompilation feature', () => {
 			expect(result).toEqual({});
 		});
 
+		it('should return stored compiledConfig when disableCompilation is true and config exists', async () => {
+			mockState.compiler.disableCompilation = true;
+			mockState.compiler.compiledConfig = {
+				memorySizeBytes: 2097152,
+				selectedRuntime: 1,
+			};
+
+			const result = await compileConfigForExport(mockState);
+
+			expect(mockCompileConfig).not.toHaveBeenCalled();
+			expect(result).toEqual({
+				memorySizeBytes: 2097152,
+				selectedRuntime: 1,
+			});
+		});
+
 		it('should compile config for export when disableCompilation is false', async () => {
 			mockState.compiler.disableCompilation = false;
 
