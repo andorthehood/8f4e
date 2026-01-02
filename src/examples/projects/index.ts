@@ -36,8 +36,8 @@ export const projectMetadata: ProjectMetadata[] = [
 	{ slug: 'audioLoopback', title: 'Audio Loopback' },
 	{ slug: 'bistableMultivibrators', title: 'Bistable Multivibrators' },
 	{
-		slug: 'crtEffect',
-		title: 'CRT Effect Demo',
+		slug: 'rippleEffect',
+		title: 'Ripple Effect Demo',
 	},
 	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT' },
 	{ slug: 'ericSaiteGenerator', title: 'Eric Saite Generator' },

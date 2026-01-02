@@ -117,6 +117,10 @@ const instructionsToHighlight = [
 	'param',
 	'constants',
 	'constantsEnd',
+	'vertexShader',
+	'vertexShaderEnd',
+	'fragmentShader',
+	'fragmentShaderEnd',
 ];
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
