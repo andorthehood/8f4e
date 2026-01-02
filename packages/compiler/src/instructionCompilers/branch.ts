@@ -1,9 +1,9 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { br } from '../wasmUtils/instructionHelpers';
+import br from '../wasmUtils/controlFlow/br';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

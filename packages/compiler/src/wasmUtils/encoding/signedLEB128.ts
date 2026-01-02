@@ -7,7 +7,7 @@
  * @param n - The signed integer to encode
  * @returns An array of bytes representing the LEB128-encoded value
  */
-export function signedLEB128(n: number): number[] {
+export default function signedLEB128(n: number): number[] {
 	const buffer: number[] = [];
 	let more = true;
 	const isNegative = n < 0;

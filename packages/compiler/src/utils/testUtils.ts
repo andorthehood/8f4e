@@ -2,7 +2,9 @@ import { BLOCK_TYPE } from '../types';
 
 import type { CompilationContext } from '../types';
 
-export function createInstructionCompilerTestContext(overrides: Partial<CompilationContext> = {}): CompilationContext {
+export default function createInstructionCompilerTestContext(
+	overrides: Partial<CompilationContext> = {}
+): CompilationContext {
 	const base: CompilationContext = {
 		namespace: {
 			namespaces: {},

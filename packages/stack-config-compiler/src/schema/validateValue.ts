@@ -11,7 +11,7 @@ import type { JSONSchemaType, SchemaNode } from './types';
  * @param value - The value to validate
  * @returns An error message if invalid, null if valid
  */
-export function validateValue(node: SchemaNode, value: unknown): string | null {
+export default function validateValue(node: SchemaNode, value: unknown): string | null {
 	// Determine the actual type of the value
 	let actualType: JSONSchemaType;
 	if (value === null) {
@@ -41,7 +41,7 @@ export function validateValue(node: SchemaNode, value: unknown): string | null {
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { preprocessSchema } = await import('./preprocessSchema');
+	const { default: preprocessSchema } = await import('./preprocessSchema');
 
 	describe('validateValue', () => {
 		it('should validate correct type', () => {

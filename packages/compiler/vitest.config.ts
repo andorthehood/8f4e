@@ -14,9 +14,6 @@ export default defineConfig(
 		additionalExclude: [
 			'**/testUtils.ts',
 			'**/__fixtures__/**',
-			'**/instructionHelpers.ts',
-			'**/sectionHelpers.ts',
-			'**/typeHelpers.ts',
 			'**/type.ts',
 			'**/wasmInstruction.ts',
 			'**/consts.ts',

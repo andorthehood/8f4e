@@ -1,9 +1,10 @@
 import { ErrorCode } from '../errors';
 import { saveByteCode } from '../utils/compilation';
-import { f32store, i32store } from '../wasmUtils/instructionHelpers';
+import f32store from '../wasmUtils/store/f32store';
+import i32store from '../wasmUtils/store/i32store';
 import { compileSegment } from '../compiler';
 import { withValidation } from '../withValidation';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

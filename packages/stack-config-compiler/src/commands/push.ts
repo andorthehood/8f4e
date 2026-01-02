@@ -4,7 +4,7 @@
 
 import type { Command, Literal, VMState } from '../types';
 
-export function executePush(state: VMState, command: Command): string | null {
+export default function executePush(state: VMState, command: Command): string | null {
 	state.dataStack.push(command.argument as Literal);
 	return null;
 }

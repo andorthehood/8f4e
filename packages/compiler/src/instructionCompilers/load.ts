@@ -1,9 +1,13 @@
 import { ErrorCode, getError } from '../errors';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '../wasmUtils/instructionHelpers';
+import i32load from '../wasmUtils/load/i32load';
+import i32load16s from '../wasmUtils/load/i32load16s';
+import i32load16u from '../wasmUtils/load/i32load16u';
+import i32load8s from '../wasmUtils/load/i32load8s';
+import i32load8u from '../wasmUtils/load/i32load8u';
 import { compileSegment } from '../compiler';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

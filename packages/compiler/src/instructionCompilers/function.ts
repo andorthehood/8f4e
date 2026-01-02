@@ -1,7 +1,7 @@
 import { ErrorCode, getError } from '../errors';
 import { isInstructionIsInsideAModule, isInstructionInsideFunction } from '../utils/blockStack';
 import { BLOCK_TYPE, ArgumentType } from '../types';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

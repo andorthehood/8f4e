@@ -1,8 +1,8 @@
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { f32load } from '../wasmUtils/instructionHelpers';
+import f32load from '../wasmUtils/load/f32load';
 import { compileSegment } from '../compiler';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
 

@@ -1,6 +1,6 @@
 import type { CompiledModuleLookup } from '@8f4e/compiler';
 
-export function didProgramOrMemoryStructureChange(
+export default function didProgramOrMemoryStructureChange(
 	compiledModules: CompiledModuleLookup,
 	previous: CompiledModuleLookup | undefined
 ) {

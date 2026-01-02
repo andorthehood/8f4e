@@ -2,7 +2,7 @@ import { SpriteCoordinates } from 'glugglug';
 
 import { drawCharacter } from './font';
 import { ColorScheme, Command, DrawingCommand } from './types';
-import { Glyph } from './fonts/types';
+import Glyph from './fonts/types';
 
 const offsetX = 0;
 const offsetY = 150;
