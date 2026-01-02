@@ -1,6 +1,8 @@
 import { describe, test, expect } from 'vitest';
 
-import { getBlockType, getModuleId, getFunctionId, getConstantsId } from '../src/syntax/blockTypeDetection';
+import { getBlockType } from '../src/syntax/getBlockType';
+import { getFunctionId } from '../src/syntax/getFunctionId';
+import { getModuleId } from '../src/syntax/getModuleId';
 
 describe('getBlockType', () => {
 	test('detects module blocks', () => {
@@ -60,17 +62,5 @@ describe('getFunctionId', () => {
 	test('returns empty string if no function instruction', () => {
 		const code = ['int x 5', 'add'];
 		expect(getFunctionId(code)).toBe('');
-	});
-});
-
-describe('getConstantsId', () => {
-	test('extracts constants identifier', () => {
-		const code = ['constants math', 'const PI 3.14159', 'constantsEnd'];
-		expect(getConstantsId(code)).toBe('math');
-	});
-
-	test('returns empty string if no constants instruction', () => {
-		const code = ['int x 5', 'add'];
-		expect(getConstantsId(code)).toBe('');
 	});
 });

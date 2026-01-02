@@ -26,3 +26,30 @@ export function parseArgument(argument: string): Argument {
 			return { value: argument, type: ArgumentType.IDENTIFIER };
 	}
 }
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	describe('parseArgument', () => {
+		it('parses decimal integers', () => {
+			expect(parseArgument('42')).toEqual({ value: 42, type: ArgumentType.LITERAL, isInteger: true });
+			expect(parseArgument('-7')).toEqual({ value: -7, type: ArgumentType.LITERAL, isInteger: true });
+		});
+
+		it('parses decimal floats', () => {
+			expect(parseArgument('3.14')).toEqual({ value: 3.14, type: ArgumentType.LITERAL, isInteger: false });
+		});
+
+		it('parses hex integers', () => {
+			expect(parseArgument('0x10')).toEqual({ value: 16, type: ArgumentType.LITERAL, isInteger: true });
+		});
+
+		it('parses binary integers', () => {
+			expect(parseArgument('0b101')).toEqual({ value: 5, type: ArgumentType.LITERAL, isInteger: true });
+		});
+
+		it('parses identifiers', () => {
+			expect(parseArgument('value')).toEqual({ value: 'value', type: ArgumentType.IDENTIFIER });
+		});
+	});
+}
