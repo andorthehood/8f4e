@@ -31,12 +31,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 154 | Split compiler utils and use syntax helpers | 🟡 | 1-2d | 2025-12-30 | Split `packages/compiler/src/utils.ts` into per-function modules with in-source tests and replace syntax checks with syntax helpers |
 | 155 | Add Framebuffer Memory Accounting in glugglug | 🟡 | 2-4h | 2025-12-30 | Track estimated render target and cache framebuffer memory usage for debugging and profiling |
 | 156 | Add GLSL Shader Code Blocks for Post-Process Effects | 🟡 | 2-4d | 2026-01-02 | Replace project `postProcessEffects` with vertex/fragment shader code blocks and derive effects from block pairs |
-<<<<<<< Updated upstream
-| 157 | Disable Compilation for Runtime-Ready Projects | 🟡 | 3-5h | 2026-01-02 | Add a `disableCompilation` config flag to hard-block compilation and skip config/module compilation paths |
-=======
-| 157 | Add Comment Code Blocks | 🟡 | 1-2d | 2026-01-02 | Add a non-compiled comment block type for editor notes and documentation |
 | 158 | Add Background Effects | 🟡 | 2-4d | 2026-01-02 | Add background-only effects analogous to post-process effects without impacting UI |
->>>>>>> Stashed changes
 | 002 | Enable Strict TypeScript in Editor Package | 🟡 | 2-3d | 2025-08-23 | Currently has 52 type errors when strict settings enabled, causing missing null checks and implicit any types that reduce type safety and developer experience |
 | 025 | Separate Editor View Layer into Standalone Package | 🟡 | 3-5d | 2025-08-26 | Extract Canvas-based rendering and sprite management into `@8f4e/browser-view` package to make core editor a pure state machine compatible with any renderer |
 | 026 | Separate Editor User Interactions into Standalone Package | 🟡 | 2-3d | 2025-08-26 | Extract DOM event handling and input logic into `@8f4e/browser-input` package to enable alternative input systems (touch, joystick, terminal) |
@@ -79,6 +74,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 157 | Disable Compilation for Runtime-Ready Projects | 🟡 | 3-5h | 2026-01-02 | Added `disableCompilation` config flag to hard-block compilation and skip config/module compilation paths; comprehensive tests added covering compiler, config effects, and runtime-ready export |
 | 147 | Split Memory Instruction Into int/float With Shared Helpers | 🟡 | 4-6h | 2025-12-25 | Split `memory.ts` into `int.ts`/`float.ts`, add shared helpers for argument parsing, pointer depth, and memory flags, split `memory.test.ts` into `int.test.ts`/`float.test.ts`; all tests pass, typecheck passes, lint passes |
 | 148 | Consolidate syntax-related logic into syntax-rules package | 🟡 | 2-3d | 2025-12-25 | Archived - syntax logic consolidated into `@8f4e/compiler/syntax` subpath; superseded by TODO 152 |
 | 127 | Update Deprecated npm Dependencies | 🟡 | 2-4h | 2025-12-20 | Upgraded ESLint from v8.57.0 to v9.39.2, added @eslint/js@9.39.2 and globals@16.5.0, updated typescript-eslint packages to 8.50.0, removed .eslintignore file; eliminated deprecation warnings for eslint, rimraf, and @humanwhocodes packages |
