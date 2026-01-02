@@ -18,11 +18,6 @@ describe('projectExport', () => {
 		mockExportProject = vi.fn().mockResolvedValue(undefined);
 
 		mockState = createMockState({
-			projectInfo: {
-				title: 'Test Project',
-				author: '',
-				description: '',
-			},
 			callbacks: {
 				exportProject: mockExportProject,
 			},
@@ -81,28 +76,13 @@ describe('projectExport', () => {
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
 			const [exportedJson, fileName] = mockExportProject.mock.calls[0];
 
-			expect(fileName).toBe('Test Project.json');
+			expect(fileName).toBe('project.json');
 			expect(typeof exportedJson).toBe('string');
 
 			const exportedProject = JSON.parse(exportedJson);
 			// Project no longer contains title field - config blocks are the source of truth
 			expect(exportedProject.codeBlocks).toBeDefined();
 			expect(exportedProject.viewport).toBeDefined();
-		});
-
-		it('should use default filename when project has no title', async () => {
-			mockState.projectInfo.title = '';
-
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportProjectCall = onCalls.find(call => call[0] === 'exportProject');
-			const exportProjectCallback = exportProjectCall![1];
-
-			await exportProjectCallback();
-
-			const [, fileName] = mockExportProject.mock.calls[0];
-			expect(fileName).toBe('project.json');
 		});
 
 		it('should warn when no exportProject callback is provided', () => {
@@ -157,7 +137,7 @@ describe('projectExport', () => {
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
 			const [exportedJson, fileName] = mockExportProject.mock.calls[0];
 
-			expect(fileName).toBe('Test Project-runtime-ready.json');
+			expect(fileName).toBe('project-runtime-ready.json');
 
 			const exportedProject = JSON.parse(exportedJson);
 			expect(exportedProject.compiledWasm).toBeDefined();

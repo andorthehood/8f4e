@@ -17,7 +17,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		}
 
 		const projectToSave = serializeToProject(state);
-		const fileName = `${state.projectInfo.title || 'project'}.json`;
+		const fileName = 'project.json';
 		const json = JSON.stringify(projectToSave, null, 2);
 
 		state.callbacks.exportProject(json, fileName).catch(error => {
@@ -40,7 +40,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		// Serialize to project format with compiled WASM, memory snapshot, and config
 		const runtimeProject = await serializeToRuntimeReadyProject(state, encodeUint8ArrayToBase64);
 
-		const fileName = `${state.projectInfo.title || 'project'}-runtime-ready.json`;
+		const fileName = 'project-runtime-ready.json';
 		const json = JSON.stringify(runtimeProject, null, 2);
 
 		state.callbacks.exportProject(json, fileName).catch(error => {

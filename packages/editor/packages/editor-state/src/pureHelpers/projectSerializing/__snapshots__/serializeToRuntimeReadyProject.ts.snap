@@ -22,7 +22,7 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
     {
       "code": [
         "config",
-        "title "Snapshot Project"",
+        "memorySizeBytes 65536",
         "configEnd",
       ],
       "gridCoordinates": {
@@ -32,7 +32,7 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
     },
   ],
   "compiledConfig": {
-    "title": "Snapshot Project",
+    "memorySizeBytes": 65536,
   },
   "compiledModules": {
     "mod": {},

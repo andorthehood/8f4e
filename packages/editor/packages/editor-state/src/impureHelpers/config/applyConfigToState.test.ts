@@ -8,27 +8,6 @@ import { createMockState } from '../../pureHelpers/testingUtils/testUtils';
 import type { ConfigObject } from './applyConfigToState';
 
 describe('applyConfigToState', () => {
-	it('should apply title', () => {
-		const state = createMockState();
-		const store = createStateManager(state);
-		applyConfigToState(store, { title: 'Test Title' });
-		expect(state.projectInfo.title).toBe('Test Title');
-	});
-
-	it('should apply author', () => {
-		const state = createMockState();
-		const store = createStateManager(state);
-		applyConfigToState(store, { author: 'Test Author' });
-		expect(state.projectInfo.author).toBe('Test Author');
-	});
-
-	it('should apply description', () => {
-		const state = createMockState();
-		const store = createStateManager(state);
-		applyConfigToState(store, { description: 'Test Description' });
-		expect(state.projectInfo.description).toBe('Test Description');
-	});
-
 	it('should apply memorySizeBytes', () => {
 		const state = createMockState();
 		const store = createStateManager(state);
