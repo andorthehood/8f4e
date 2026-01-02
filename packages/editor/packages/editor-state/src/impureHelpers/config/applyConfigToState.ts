@@ -11,6 +11,7 @@ export interface ConfigObject {
 	memorySizeBytes?: number;
 	selectedRuntime?: number;
 	runtimeSettings?: Runtimes[];
+	disableCompilation?: boolean;
 }
 
 /**
@@ -51,5 +52,9 @@ export function applyConfigToState(store: StateManager<State>, config: ConfigObj
 
 	if (typeof config.memorySizeBytes === 'number') {
 		store.set('compiler.compilerOptions.memorySizeBytes', config.memorySizeBytes);
+	}
+
+	if (typeof config.disableCompilation === 'boolean') {
+		store.set('compiler.disableCompilation', config.disableCompilation);
 	}
 }
