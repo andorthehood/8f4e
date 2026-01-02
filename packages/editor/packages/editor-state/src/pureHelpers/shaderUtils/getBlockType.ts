@@ -1,11 +1,4 @@
-export type CodeBlockType =
-	| 'module'
-	| 'config'
-	| 'function'
-	| 'constants'
-	| 'vertexShader'
-	| 'fragmentShader'
-	| 'unknown';
+import type { CodeBlockType } from '../../types';
 
 /**
  * Detects whether a block of code represents a shader, module, config, function, or unknown block by scanning for marker pairs.

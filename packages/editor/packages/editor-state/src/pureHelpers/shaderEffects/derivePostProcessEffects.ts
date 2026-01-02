@@ -33,12 +33,24 @@ export default function derivePostProcessEffects(codeBlocks: CodeBlockGraphicDat
 			if (id) {
 				const source = extractShaderSource(block.code, 'vertexShader');
 				vertexShaders.set(id, { block, source });
+			} else {
+				errors.push({
+					lineNumber: 1,
+					message: 'Vertex shader block is missing an ID',
+					codeBlockId: block.id,
+				});
 			}
 		} else if (blockType === 'fragmentShader') {
 			const id = getFragmentShaderId(block.code);
 			if (id) {
 				const source = extractShaderSource(block.code, 'fragmentShader');
 				fragmentShaders.set(id, { block, source });
+			} else {
+				errors.push({
+					lineNumber: 1,
+					message: 'Fragment shader block is missing an ID',
+					codeBlockId: block.id,
+				});
 			}
 		}
 	}

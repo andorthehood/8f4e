@@ -28,9 +28,15 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 		// Update the post-process effects
 		state.graphicHelper.postProcessEffects = effects;
 
-		// Update shader errors
+		// Update shader errors - filter out previous shader-related errors
+		// We identify shader errors by checking for specific shader-related error messages
+		const SHADER_ERROR_MARKERS = [
+			'matching fragment shader',
+			'matching vertex shader',
+			'shader block is missing an ID',
+		];
 		const existingErrors = state.codeErrors.compilationErrors.filter(
-			err => !err.message.includes('matching fragment shader') && !err.message.includes('matching vertex shader')
+			err => !SHADER_ERROR_MARKERS.some(marker => err.message.includes(marker))
 		);
 		state.codeErrors.compilationErrors = [...existingErrors, ...errors];
 
