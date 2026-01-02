@@ -504,13 +504,8 @@ export interface ModuleMetadata {
 export interface ProjectMetadata {
 	slug: string;
 	title: string;
-	description: string;
 }
 
-/**
- * Basic project information (title, author, description)
- * Separate from runtime state for better organization
- */
 export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'memoryRef'> {
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
