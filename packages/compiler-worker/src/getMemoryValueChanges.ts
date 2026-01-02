@@ -1,9 +1,9 @@
-import { compareObject } from './compareObject';
+import compareObject from './compareObject';
 
 import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { MemoryValueChange } from './types';
 
-export function getMemoryValueChanges(
+export default function getMemoryValueChanges(
 	compiledModules: CompiledModuleLookup,
 	previous: CompiledModuleLookup | undefined
 ): MemoryValueChange[] {

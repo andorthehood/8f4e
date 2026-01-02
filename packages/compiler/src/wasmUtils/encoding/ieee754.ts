@@ -5,7 +5,7 @@
  * @param n - The number to convert
  * @returns A Uint8Array containing the little-endian byte representation
  */
-export const ieee754 = (n: number): Uint8Array => {
+const ieee754 = (n: number): Uint8Array => {
 	const buf = new ArrayBuffer(4);
 	const view = new DataView(buf);
 	view.setFloat32(0, n, true);
@@ -24,3 +24,5 @@ if (import.meta.vitest) {
 		expect(Array.from(ieee754(3.14))).toStrictEqual([195, 245, 72, 64]);
 	});
 }
+
+export default ieee754;

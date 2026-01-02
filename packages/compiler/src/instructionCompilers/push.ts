@@ -1,11 +1,11 @@
 import { withValidation } from '../withValidation';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { f32const } from '../wasmUtils/const/f32const';
-import { i32const } from '../wasmUtils/const/i32const';
-import { f32load } from '../wasmUtils/load/f32load';
-import { i32load } from '../wasmUtils/load/i32load';
-import { localGet } from '../wasmUtils/local/localGet';
+import f32const from '../wasmUtils/const/f32const';
+import i32const from '../wasmUtils/const/i32const';
+import f32load from '../wasmUtils/load/f32load';
+import i32load from '../wasmUtils/load/i32load';
+import localGet from '../wasmUtils/local/localGet';
 import {
 	getDataStructure,
 	getDataStructureByteAddress,
@@ -21,12 +21,12 @@ import {
 	isElementWordSizeIdentifier,
 } from '../utils/memoryIdentifier';
 import { saveByteCode } from '../utils/compilation';
-import { extractElementCountBase } from '../syntax/extractElementCountBase';
-import { extractElementWordSizeBase } from '../syntax/extractElementWordSizeBase';
-import { extractMemoryPointerBase } from '../syntax/extractMemoryPointerBase';
-import { extractMemoryReferenceBase } from '../syntax/extractMemoryReferenceBase';
-import { hasMemoryReferencePrefixStart } from '../syntax/hasMemoryReferencePrefixStart';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import extractElementCountBase from '../syntax/extractElementCountBase';
+import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
+import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
+import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
+import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, ArgumentLiteral, InstructionCompiler } from '../types';
 

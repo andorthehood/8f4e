@@ -2,7 +2,7 @@ import { ErrorCode, getError } from '../errors';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
-import { createInstructionCompilerTestContext } from '../utils/testUtils';
+import createInstructionCompilerTestContext from '../utils/testUtils';
 import { BLOCK_TYPE } from '../types';
 
 import type { AST, InstructionCompiler } from '../types';

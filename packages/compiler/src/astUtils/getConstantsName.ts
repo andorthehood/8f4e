@@ -7,7 +7,7 @@ import { ErrorCode, getError } from '../errors';
  * @returns The constants block name
  * @throws Error if constants instruction is missing or has invalid argument type
  */
-export function getConstantsName(ast: AST): string {
+export default function getConstantsName(ast: AST): string {
 	const constantsInstruction = ast.find(line => line.instruction === 'constants');
 
 	if (!constantsInstruction) {
