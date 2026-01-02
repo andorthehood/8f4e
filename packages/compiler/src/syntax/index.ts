@@ -12,8 +12,6 @@ export {
 export { getBlockType, type CodeBlockType } from './getBlockType';
 export { default as getModuleId } from './getModuleId';
 export { default as getFunctionId } from './getFunctionId';
-export { default as getVertexShaderId } from './getVertexShaderId';
-export { default as getFragmentShaderId } from './getFragmentShaderId';
 export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 export { default as hasMemoryReferencePrefix } from './hasMemoryReferencePrefix';
 export { default as hasMemoryReferencePrefixStart } from './hasMemoryReferencePrefixStart';
