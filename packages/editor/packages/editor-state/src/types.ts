@@ -511,12 +511,6 @@ export interface ProjectMetadata {
  * Basic project information (title, author, description)
  * Separate from runtime state for better organization
  */
-export interface ProjectInfo {
-	title: string;
-	author: string;
-	description: string;
-}
-
 export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'memoryRef'> {
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
@@ -632,8 +626,6 @@ export interface CodeError {
 }
 
 export interface State {
-	/** Basic project information (title, author, description) */
-	projectInfo: ProjectInfo;
 	compiler: Compiler;
 	midi: Midi;
 	graphicHelper: GraphicHelper;

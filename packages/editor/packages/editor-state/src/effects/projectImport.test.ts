@@ -73,8 +73,6 @@ describe('projectImport', () => {
 			await new Promise(resolve => setTimeout(resolve, 10));
 
 			expect(mockState.callbacks.loadSession).toHaveBeenCalled();
-			// Project info is now reset to empty - config blocks are the source of truth
-			expect(mockState.projectInfo.title).toBe('');
 		});
 
 		it('should handle loadSession errors gracefully', async () => {
@@ -231,8 +229,6 @@ describe('projectImport', () => {
 			await importProjectCallback();
 
 			expect(mockState.callbacks.importProject).toHaveBeenCalled();
-			// Project info is now reset to empty - config blocks are the source of truth
-			expect(mockState.projectInfo.title).toBe('');
 		});
 
 		it('should warn when no importProject callback is provided', () => {

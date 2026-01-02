@@ -182,12 +182,12 @@ if (import.meta.vitest) {
 			expect(result).toEqual({ a: 1, b: 2 });
 		});
 
-		it('should handle projectInfo-like structure', () => {
-			const target = { projectInfo: { title: 'Title', author: 'Author' } };
-			const source = { projectInfo: { description: 'Description' } };
+		it('should handle nested object structure', () => {
+			const target = { settings: { alpha: 1, beta: 2 } };
+			const source = { settings: { gamma: 3 } };
 			const result = deepMergeConfig(target, source);
 			expect(result).toEqual({
-				projectInfo: { title: 'Title', author: 'Author', description: 'Description' },
+				settings: { alpha: 1, beta: 2, gamma: 3 },
 			});
 		});
 	});
