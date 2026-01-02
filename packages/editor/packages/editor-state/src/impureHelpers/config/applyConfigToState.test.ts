@@ -71,19 +71,19 @@ describe('applyConfigToState', () => {
 		expect(state.runtime.selectedRuntime).toBe(originalSelectedRuntime);
 	});
 
-	it('should apply disableCompilation flag', () => {
+	it('should apply disableAutoCompilation flag', () => {
 		const state = createMockState();
 		const store = createStateManager(state);
-		expect(state.compiler.disableCompilation).toBe(false);
-		applyConfigToState(store, { disableCompilation: true });
-		expect(state.compiler.disableCompilation).toBe(true);
+		expect(state.compiler.disableAutoCompilation).toBe(false);
+		applyConfigToState(store, { disableAutoCompilation: true });
+		expect(state.compiler.disableAutoCompilation).toBe(true);
 	});
 
-	it('should not change disableCompilation when not in config', () => {
+	it('should not change disableAutoCompilation when not in config', () => {
 		const state = createMockState();
 		const store = createStateManager(state);
-		state.compiler.disableCompilation = true;
+		state.compiler.disableAutoCompilation = true;
 		applyConfigToState(store, { memorySizeBytes: 65536 });
-		expect(state.compiler.disableCompilation).toBe(true);
+		expect(state.compiler.disableAutoCompilation).toBe(true);
 	});
 });

@@ -23,7 +23,7 @@ export default function createDefaultState() {
 					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 				},
 			},
-			disableCompilation: false,
+			disableAutoCompilation: false,
 		},
 		midi: {
 			inputs: [],
