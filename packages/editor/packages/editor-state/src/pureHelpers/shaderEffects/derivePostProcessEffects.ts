@@ -17,8 +17,9 @@ function extractShaderSource(code: string[], blockType: 'vertexShader' | 'fragme
 
 	for (let i = 0; i < code.length; i++) {
 		const trimmedLine = code[i].trim();
-		// Check if line starts with the marker (allowing for whitespace before)
-		if (trimmedLine.startsWith(startMarker + ' ') || trimmedLine === startMarker) {
+		// Check if line starts with the marker followed by a space and ID
+		// We require an ID to be present, so "vertexShader" alone won't match
+		if (trimmedLine.startsWith(startMarker + ' ')) {
 			startIndex = i;
 		} else if (trimmedLine === endMarker) {
 			endIndex = i;
