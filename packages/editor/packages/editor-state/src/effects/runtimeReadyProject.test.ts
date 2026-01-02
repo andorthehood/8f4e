@@ -83,7 +83,7 @@ describe('Runtime-ready project functionality', () => {
 				getModule: vi.fn(),
 				getListOfProjects: vi.fn(),
 				getProject: vi.fn(),
-				compileProject: vi.fn(),
+				compileCode: vi.fn(),
 				loadSession: vi.fn(),
 			},
 			editorSettings: {
@@ -238,8 +238,8 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.memoryBuffer = expectedIntMemory;
 			mockState.compiler.memoryBufferFloat = expectedFloatMemory;
 			mockState.compiler.allocatedMemorySize = expectedIntMemory.byteLength;
-			// No compileProject callback for runtime-only projects
-			mockState.callbacks.compileProject = undefined;
+			// No compileCode callback for runtime-only projects
+			mockState.callbacks.compileCode = undefined;
 
 			// Set up compiler functionality
 			compiler(store, mockEvents);
@@ -276,13 +276,13 @@ describe('Runtime-ready project functionality', () => {
 			// Set up a project without pre-compiled WASM (normal project)
 			mockState.compiler.codeBuffer = new Uint8Array(0); // No pre-compiled data
 
-			// Mock the compileProject function
-			const mockCompileProject = vi.fn().mockResolvedValue({
+			// Mock the compileCode function
+			const mockCompileCode = vi.fn().mockResolvedValue({
 				compiledModules: {},
 				codeBuffer: new Uint8Array([100, 200]),
 				allocatedMemorySize: 1024,
 			});
-			mockState.callbacks.compileProject = mockCompileProject;
+			mockState.callbacks.compileCode = mockCompileCode;
 
 			// Set up compiler functionality
 			compiler(store, mockEvents);
@@ -298,7 +298,7 @@ describe('Runtime-ready project functionality', () => {
 			await onRecompileCallback();
 
 			// Verify regular compilation was attempted
-			expect(mockCompileProject).toHaveBeenCalled();
+			expect(mockCompileCode).toHaveBeenCalled();
 		});
 	});
 
