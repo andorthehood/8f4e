@@ -1,4 +1,4 @@
-import { createVMState } from './createVMState';
+import createVMState from './createVMState';
 import { executeCommand } from './executeCommand';
 
 import type { Command, CompileError } from '../types';
@@ -7,7 +7,7 @@ import type { SchemaNode } from '../schema';
 /**
  * Executes a list of commands and returns the final config or errors
  */
-export function executeCommands(
+export default function executeCommands(
 	commands: Command[],
 	schemaRoot?: SchemaNode
 ): { config: Record<string, unknown>; errors: CompileError[]; writtenPaths?: Set<string> } {

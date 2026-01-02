@@ -2,7 +2,7 @@ import { ArgumentType } from './types';
 
 import type { AST } from './types';
 
-export function sortModules(modules: AST[]): AST[] {
+export default function sortModules(modules: AST[]): AST[] {
 	// First, separate constants blocks from regular modules
 	const constantsBlocks = modules.filter(ast => ast.some(line => line.instruction === 'constants'));
 	const regularModules = modules.filter(ast => !ast.some(line => line.instruction === 'constants'));

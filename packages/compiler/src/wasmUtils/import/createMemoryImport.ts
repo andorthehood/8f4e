@@ -1,6 +1,6 @@
 import { ImportDesc } from '../section';
-import { encodeString } from '../encoding/encodeString';
-import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import encodeString from '../encoding/encodeString';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 
 import type { Import } from '../section';
 
@@ -14,7 +14,7 @@ import type { Import } from '../section';
  * @param isShared - Whether the memory is shared (for threading support)
  * @returns Byte array representing the memory import entry
  */
-export function createMemoryImport(
+export default function createMemoryImport(
 	moduleName: string,
 	fieldName: string,
 	initial = 1,

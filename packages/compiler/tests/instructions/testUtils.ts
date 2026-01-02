@@ -2,14 +2,14 @@ import { describe, test, expect, beforeAll, beforeEach } from 'vitest';
 import wabt from 'wabt';
 
 import { compileToAST } from '../../src/compiler';
-import { createCodeSection } from '../../src/wasmUtils/codeSection/createCodeSection';
-import { createExportSection } from '../../src/wasmUtils/export/createExportSection';
-import { createFunctionExport } from '../../src/wasmUtils/export/createFunctionExport';
-import { createImportSection } from '../../src/wasmUtils/import/createImportSection';
-import { createMemoryImport } from '../../src/wasmUtils/import/createMemoryImport';
-import { createFunctionSection } from '../../src/wasmUtils/typeFunction/createFunctionSection';
-import { createFunctionType } from '../../src/wasmUtils/typeFunction/createFunctionType';
-import { createTypeSection } from '../../src/wasmUtils/typeFunction/createTypeSection';
+import createCodeSection from '../../src/wasmUtils/codeSection/createCodeSection';
+import createExportSection from '../../src/wasmUtils/export/createExportSection';
+import createFunctionExport from '../../src/wasmUtils/export/createFunctionExport';
+import createImportSection from '../../src/wasmUtils/import/createImportSection';
+import createMemoryImport from '../../src/wasmUtils/import/createMemoryImport';
+import createFunctionSection from '../../src/wasmUtils/typeFunction/createFunctionSection';
+import createFunctionType from '../../src/wasmUtils/typeFunction/createFunctionType';
+import createTypeSection from '../../src/wasmUtils/typeFunction/createTypeSection';
 import { compileModules } from '../../src';
 import compile from '../../src/index';
 

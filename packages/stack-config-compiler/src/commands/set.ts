@@ -2,14 +2,14 @@
  * Set command - pops values from the data stack and sets them at the current scope path
  */
 
-import { getCurrentScope } from '../vm/getCurrentScope';
-import { setAtPath } from '../vm/setAtPath';
+import getCurrentScope from '../vm/getCurrentScope';
+import setAtPath from '../vm/setAtPath';
 import { lookupSchemaNode, validateValue } from '../schema';
 
 import type { VMState } from '../types';
 import type { CommandError } from '../vm/executeCommand';
 
-export function executeSet(state: VMState): CommandError[] | null {
+export default function executeSet(state: VMState): CommandError[] | null {
 	const currentScope = getCurrentScope(state);
 
 	if (!currentScope) {

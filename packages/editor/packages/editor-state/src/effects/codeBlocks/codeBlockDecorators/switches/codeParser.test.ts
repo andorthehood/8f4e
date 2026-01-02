@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { parseSwitches } from './codeParser';
+import parseSwitches from './codeParser';
 
 describe('parseSwitches', () => {
 	it('should parse switch instruction with all arguments', () => {
