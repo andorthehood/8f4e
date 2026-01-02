@@ -1,7 +1,11 @@
 import { withValidation } from '../withValidation';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { f32const, f32load, i32const, i32load, localGet } from '../wasmUtils/instructionHelpers';
+import { f32const } from '../wasmUtils/const/f32const';
+import { i32const } from '../wasmUtils/const/i32const';
+import { f32load } from '../wasmUtils/load/f32load';
+import { i32load } from '../wasmUtils/load/i32load';
+import { localGet } from '../wasmUtils/local/localGet';
 import {
 	getDataStructure,
 	getDataStructureByteAddress,

@@ -1,6 +1,6 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { br_if } from '../wasmUtils/instructionHelpers';
+import { br_if } from '../wasmUtils/controlFlow/br_if';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';

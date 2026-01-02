@@ -1,7 +1,7 @@
 import { ErrorCode, getError } from '../errors';
 import { BLOCK_TYPE, ArgumentType } from '../types';
 import Type from '../wasmUtils/type';
-import { createFunctionType } from '../wasmUtils/sectionHelpers';
+import { createFunctionType } from '../wasmUtils/typeFunction/createFunctionType';
 import { withValidation } from '../withValidation';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';
 

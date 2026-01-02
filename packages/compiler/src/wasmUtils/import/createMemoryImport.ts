@@ -1,5 +1,8 @@
-import { Import, unsignedLEB128, encodeString } from '../typeHelpers';
 import { ImportDesc } from '../section';
+import { encodeString } from '../encoding/encodeString';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+
+import type { Import } from '../section';
 
 /**
  * Creates a memory import entry to import linear memory from the host environment.

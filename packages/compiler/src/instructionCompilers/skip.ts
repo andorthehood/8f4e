@@ -1,7 +1,10 @@
 import { withValidation } from '../withValidation';
 import { ArgumentType, BLOCK_TYPE, MemoryTypes } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { br, i32const, i32load, i32store } from '../wasmUtils/instructionHelpers';
+import { i32const } from '../wasmUtils/const/i32const';
+import { br } from '../wasmUtils/controlFlow/br';
+import { i32load } from '../wasmUtils/load/i32load';
+import { i32store } from '../wasmUtils/store/i32store';
 import { calculateWordAlignedSizeOfMemory, saveByteCode } from '../utils/compilation';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
