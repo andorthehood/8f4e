@@ -30,6 +30,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 153 | Add Constants Code Blocks to Compiler | 🟡 | 1-2d | 2025-12-30 | Add named `constants` / `constantsEnd` blocks to define shared constants namespaces consumed via `use` |
 | 154 | Split compiler utils and use syntax helpers | 🟡 | 1-2d | 2025-12-30 | Split `packages/compiler/src/utils.ts` into per-function modules with in-source tests and replace syntax checks with syntax helpers |
 | 155 | Add Framebuffer Memory Accounting in glugglug | 🟡 | 2-4h | 2025-12-30 | Track estimated render target and cache framebuffer memory usage for debugging and profiling |
+| 156 | Add GLSL Shader Code Blocks for Post-Process Effects | 🟡 | 2-4d | 2026-01-02 | Replace project `postProcessEffects` with vertex/fragment shader code blocks and derive effects from block pairs |
 | 002 | Enable Strict TypeScript in Editor Package | 🟡 | 2-3d | 2025-08-23 | Currently has 52 type errors when strict settings enabled, causing missing null checks and implicit any types that reduce type safety and developer experience |
 | 025 | Separate Editor View Layer into Standalone Package | 🟡 | 3-5d | 2025-08-26 | Extract Canvas-based rendering and sprite management into `@8f4e/browser-view` package to make core editor a pure state machine compatible with any renderer |
 | 026 | Separate Editor User Interactions into Standalone Package | 🟡 | 2-3d | 2025-08-26 | Extract DOM event handling and input logic into `@8f4e/browser-input` package to enable alternative input systems (touch, joystick, terminal) |
