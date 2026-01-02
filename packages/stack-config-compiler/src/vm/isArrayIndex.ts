@@ -1,7 +1,7 @@
 /**
  * Checks if a path segment is an array index (e.g., "[0]", "[3]")
  */
-export function isArrayIndex(segment: string): boolean {
+export default function isArrayIndex(segment: string): boolean {
 	return /^\[\d+\]$/.test(segment);
 }
 

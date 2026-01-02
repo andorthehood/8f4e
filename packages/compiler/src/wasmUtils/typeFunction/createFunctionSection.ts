@@ -1,4 +1,5 @@
-import { unsignedLEB128, createVector } from '../typeHelpers';
+import createVector from '../encoding/createVector';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { Section } from '../section';
 
 /**
@@ -7,7 +8,7 @@ import { Section } from '../section';
  * @param functionTypeIndexes - Array of type indices for each function
  * @returns Byte array representing the complete function section
  */
-export function createFunctionSection(functionTypeIndexes: number[]): number[] {
+export default function createFunctionSection(functionTypeIndexes: number[]): number[] {
 	const numberOfFunctions = functionTypeIndexes.length;
 
 	return [Section.FUNCTION, ...createVector([...unsignedLEB128(numberOfFunctions), ...functionTypeIndexes])];

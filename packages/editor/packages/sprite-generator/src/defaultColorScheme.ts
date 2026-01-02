@@ -3,7 +3,7 @@ import type { ColorScheme } from './types';
 /**
  * Default fallback color scheme used when no color scheme is specified
  */
-export const defaultColorScheme: ColorScheme = {
+const defaultColorScheme: ColorScheme = {
 	text: {
 		lineNumber: 'rgba(51,51,51,255)',
 		instruction: 'rgba(136,126,203,255)',
@@ -56,3 +56,5 @@ export const defaultColorScheme: ColorScheme = {
 		pianoKeyboardNoteHighlighted: '#ff0000',
 	},
 };
+
+export default defaultColorScheme;

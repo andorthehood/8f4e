@@ -8,17 +8,17 @@ import generateBackground, { generateLookup as generateLookupForBackground } fro
 import generateIcons, { Icon, generateLookup as generateLookupForIcons } from './icons';
 import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } from './pianoKeyboard';
 import { Command, Config, ColorScheme } from './types';
-import { decodeFontBase64 } from './fonts/font-decoder';
+import decodeFontBase64 from './fonts/font-decoder';
 import { fontMetadata as ascii8x16Metadata } from './fonts/8x16/generated/ascii';
 import { fontMetadata as ascii6x10Metadata } from './fonts/6x10/generated/ascii';
 import { fontMetadata as glyphs8x16Metadata } from './fonts/8x16/generated/glyphs';
 import { fontMetadata as glyphs6x10Metadata } from './fonts/6x10/generated/glyphs';
-import { defaultColorScheme } from './defaultColorScheme';
+import defaultColorScheme from './defaultColorScheme';
 
 export { Icon } from './icons';
 export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
-export { defaultColorScheme } from './defaultColorScheme';
+export { default as defaultColorScheme } from './defaultColorScheme';
 
 const fonts: Record<
 	Config['font'],

@@ -1,4 +1,6 @@
-import { move, resize, snapToGrid } from '../impureHelpers/viewport';
+import move from '../impureHelpers/viewport/move';
+import resize from '../impureHelpers/viewport/resize';
+import snapToGrid from '../impureHelpers/viewport/snapToGrid';
 import { EventDispatcher } from '../types';
 
 import type { State } from '../types';

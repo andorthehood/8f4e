@@ -1,8 +1,8 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 
-import { parsePressedKeys } from './parsePressedKeys';
+import parsePressedKeys from './parsePressedKeys';
 
-export function parsePianoKeyboards(code: string[]) {
+export default function parsePianoKeyboards(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];

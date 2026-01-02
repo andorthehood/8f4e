@@ -1,8 +1,9 @@
-import { instructionParser } from './syntax/instructionParser';
-import { isComment } from './syntax/isComment';
-import { isValidInstruction } from './syntax/isValidInstruction';
+import instructionParser from './syntax/instructionParser';
+import isComment from './syntax/isComment';
+import isValidInstruction from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
-import { createFunction, createLocalDeclaration } from './wasmUtils/sectionHelpers';
+import createFunction from './wasmUtils/codeSection/createFunction';
+import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';
 import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,

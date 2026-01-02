@@ -1,10 +1,10 @@
-import { calculateBorderLineCoordinates } from './calculateBorderLineCoordinates';
+import calculateBorderLineCoordinates from './calculateBorderLineCoordinates';
 
 import { createMockState } from '../../pureHelpers/testingUtils/testUtils';
 
 import type { State } from '../../types';
 
-export function resize(state: State, width: number, height: number): void {
+export default function resize(state: State, width: number, height: number): void {
 	state.graphicHelper.viewport.width = width;
 	state.graphicHelper.viewport.height = height;
 	state.graphicHelper.viewport.roundedWidth =

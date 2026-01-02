@@ -1,4 +1,4 @@
-export enum Glyph {
+enum Glyph {
 	SPACE,
 	DOT,
 	ARROW_TOP,
@@ -21,3 +21,5 @@ export enum Glyph {
 	SLIM_LINE_RIGHT,
 	SLASH,
 }
+
+export default Glyph;
