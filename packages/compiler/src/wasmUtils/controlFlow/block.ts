@@ -8,7 +8,7 @@ import Type from '../type';
  * @param code - Instructions to execute in the block
  * @returns Byte array representing the block-end structure
  */
-export function block(resultType: Type, code: number[]): number[] {
+export default function block(resultType: Type, code: number[]): number[] {
 	return [Instruction.BLOCK, resultType, ...code, Instruction.END];
 }
 

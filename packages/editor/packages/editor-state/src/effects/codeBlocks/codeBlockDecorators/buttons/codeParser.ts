@@ -1,6 +1,6 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 
-export function parseButtons(code: string[]) {
+export default function parseButtons(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];

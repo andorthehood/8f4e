@@ -2,14 +2,14 @@
  * Append command - appends values from the data stack to an array at the current scope path
  */
 
-import { appendAtPath } from '../vm/appendAtPath';
-import { getCurrentScope } from '../vm/getCurrentScope';
+import appendAtPath from '../vm/appendAtPath';
+import getCurrentScope from '../vm/getCurrentScope';
 import { lookupSchemaNode, validateValue } from '../schema';
 
 import type { VMState } from '../types';
 import type { CommandError } from '../vm/executeCommand';
 
-export function executeAppend(state: VMState): CommandError[] | null {
+export default function executeAppend(state: VMState): CommandError[] | null {
 	const currentScope = getCurrentScope(state);
 
 	if (!currentScope) {

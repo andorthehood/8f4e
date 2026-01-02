@@ -5,7 +5,7 @@ import { ArgumentType, type AST, type ArgumentLiteral, type Namespace } from '..
  * @param ast - The AST to collect constants from
  * @returns Object mapping constant names to their values
  */
-export function collectConstants(ast: AST): Namespace['consts'] {
+export default function collectConstants(ast: AST): Namespace['consts'] {
 	return Object.fromEntries(
 		ast
 			.filter(({ instruction }) => instruction === 'const')

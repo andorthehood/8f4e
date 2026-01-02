@@ -6,7 +6,7 @@ import projectExport from './projectExport';
 
 import { createMockState, createMockCodeBlock } from '../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
-import { encodeUint8ArrayToBase64 } from '../pureHelpers/base64/base64Encoder';
+import encodeUint8ArrayToBase64 from '../pureHelpers/base64/base64Encoder';
 
 import type { State } from '../types';
 

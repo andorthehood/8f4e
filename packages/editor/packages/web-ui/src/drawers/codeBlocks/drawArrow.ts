@@ -14,7 +14,7 @@ import type { CodeBlockGraphicData } from '@8f4e/editor-state';
  * @param codeBlock - The off-screen code block to draw arrows for
  * @param state - The editor state containing viewport and sprite lookup information
  */
-export function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state: State): void {
+export default function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state: State): void {
 	const arrowPlacement = calculateArrowPlacement(codeBlock, state);
 
 	if (state.graphicHelper.spriteLookups) {

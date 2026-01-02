@@ -3,7 +3,7 @@
  * @param line - The line to check.
  * @returns True if the line is a comment, false otherwise.
  */
-export function isComment(line: string): boolean {
+export default function isComment(line: string): boolean {
 	return /^\s*;/.test(line);
 }
 

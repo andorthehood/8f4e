@@ -4,7 +4,7 @@ import type { SchemaNode } from '../schema';
 /**
  * Creates a fresh VM state
  */
-export function createVMState(schemaRoot?: SchemaNode): VMState {
+export default function createVMState(schemaRoot?: SchemaNode): VMState {
 	const state: VMState = {
 		config: {},
 		dataStack: [],

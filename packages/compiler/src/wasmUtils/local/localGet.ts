@@ -1,4 +1,4 @@
-import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import Instruction from '../wasmInstruction';
 
 /**
@@ -7,7 +7,7 @@ import Instruction from '../wasmInstruction';
  * @param index - The index of the local variable
  * @returns Byte array representing the local.get instruction
  */
-export function localGet(index: number): number[] {
+export default function localGet(index: number): number[] {
 	return [Instruction.LOCAL_GET, ...unsignedLEB128(index)];
 }
 

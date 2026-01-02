@@ -11,7 +11,7 @@ import type { SchemaNode } from './types';
  * @param currentPath - The current path prefix
  * @returns Array of required paths in dot notation
  */
-export function collectRequiredPaths(node: SchemaNode, currentPath: string = ''): string[] {
+export default function collectRequiredPaths(node: SchemaNode, currentPath: string = ''): string[] {
 	const requiredPaths: string[] = [];
 
 	for (const requiredKey of node.requiredChildren) {
@@ -30,7 +30,7 @@ export function collectRequiredPaths(node: SchemaNode, currentPath: string = '')
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { preprocessSchema } = await import('./preprocessSchema');
+	const { default: preprocessSchema } = await import('./preprocessSchema');
 
 	describe('collectRequiredPaths', () => {
 		it('should collect required paths', () => {

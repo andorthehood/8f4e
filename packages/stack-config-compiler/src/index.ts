@@ -45,8 +45,8 @@
  * ```
  */
 
-import { parse } from './parser/parse';
-import { executeCommands } from './vm/executeCommands';
+import parse from './parser/parse';
+import executeCommands from './vm/executeCommands';
 import { preprocessSchema, findMissingRequiredFields } from './schema';
 
 import type { CompileError, CompileOptions, CompileResult } from './types';

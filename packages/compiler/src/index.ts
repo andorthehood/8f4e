@@ -1,20 +1,20 @@
-import { createCodeSection } from './wasmUtils/codeSection/createCodeSection';
-import { createFunction } from './wasmUtils/codeSection/createFunction';
-import { createExportSection } from './wasmUtils/export/createExportSection';
-import { createFunctionExport } from './wasmUtils/export/createFunctionExport';
-import { createImportSection } from './wasmUtils/import/createImportSection';
-import { createMemoryImport } from './wasmUtils/import/createMemoryImport';
-import { createFunctionSection } from './wasmUtils/typeFunction/createFunctionSection';
-import { createFunctionType } from './wasmUtils/typeFunction/createFunctionType';
-import { createTypeSection } from './wasmUtils/typeFunction/createTypeSection';
+import createCodeSection from './wasmUtils/codeSection/createCodeSection';
+import createFunction from './wasmUtils/codeSection/createFunction';
+import createExportSection from './wasmUtils/export/createExportSection';
+import createFunctionExport from './wasmUtils/export/createFunctionExport';
+import createImportSection from './wasmUtils/import/createImportSection';
+import createMemoryImport from './wasmUtils/import/createMemoryImport';
+import createFunctionSection from './wasmUtils/typeFunction/createFunctionSection';
+import createFunctionType from './wasmUtils/typeFunction/createFunctionType';
+import createTypeSection from './wasmUtils/typeFunction/createTypeSection';
 import Type from './wasmUtils/type';
-import { call } from './wasmUtils/call/call';
-import { f32store } from './wasmUtils/store/f32store';
-import { i32store } from './wasmUtils/store/i32store';
+import call from './wasmUtils/call/call';
+import f32store from './wasmUtils/store/f32store';
+import i32store from './wasmUtils/store/i32store';
 import { compileModule, compileToAST, compileFunction } from './compiler';
-import { collectConstants } from './astUtils/collectConstants';
-import { getConstantsName } from './astUtils/getConstantsName';
-import { getModuleName } from './astUtils/getModuleName';
+import collectConstants from './astUtils/collectConstants';
+import getConstantsName from './astUtils/getConstantsName';
+import getModuleName from './astUtils/getModuleName';
 import {
 	AST,
 	ArgumentType,
@@ -37,8 +37,8 @@ import {
 	VERSION,
 } from './consts';
 import { ErrorCode, getError } from './errors';
-import { sortModules } from './graphOptimizer';
-import { WASM_MEMORY_PAGE_SIZE } from './wasmUtils/consts';
+import sortModules from './graphOptimizer';
+import WASM_MEMORY_PAGE_SIZE from './wasmUtils/consts';
 
 export {
 	MemoryTypes,
@@ -75,9 +75,9 @@ export {
 export { I16_SIGNED_LARGEST_NUMBER, I16_SIGNED_SMALLEST_NUMBER, GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 export type { Instruction } from './instructionCompilers';
 export { default as instructions } from './instructionCompilers';
-export { collectConstants } from './astUtils/collectConstants';
-export { getConstantsName } from './astUtils/getConstantsName';
-export { getModuleName } from './astUtils/getModuleName';
+export { default as collectConstants } from './astUtils/collectConstants';
+export { default as getConstantsName } from './astUtils/getConstantsName';
+export { default as getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {

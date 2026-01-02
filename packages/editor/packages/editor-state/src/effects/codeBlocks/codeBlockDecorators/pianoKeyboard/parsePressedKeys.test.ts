@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { parsePressedKeys } from './parsePressedKeys';
+import parsePressedKeys from './parsePressedKeys';
 
 describe('parsePressedKeys', () => {
 	it('should return empty set when no keys are pressed', () => {

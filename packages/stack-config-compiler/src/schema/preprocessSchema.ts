@@ -25,7 +25,7 @@ function normalizeTypes(type: JSONSchemaType | JSONSchemaType[] | undefined): Se
  * @param schema - The JSON Schema to preprocess
  * @returns A SchemaNode tree for efficient path and value validation
  */
-export function preprocessSchema(schema: JSONSchemaLike): SchemaNode {
+export default function preprocessSchema(schema: JSONSchemaLike): SchemaNode {
 	const types = normalizeTypes(schema.type);
 	const isArray = types.has('array');
 

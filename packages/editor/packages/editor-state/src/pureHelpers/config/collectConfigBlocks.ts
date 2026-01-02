@@ -1,4 +1,4 @@
-import { extractConfigBody } from './extractConfigBody';
+import extractConfigBody from './extractConfigBody';
 
 import type { CodeBlockGraphicData } from '../../types';
 

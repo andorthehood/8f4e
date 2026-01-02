@@ -1,11 +1,11 @@
-import { extractElementCountBase } from '../syntax/extractElementCountBase';
-import { extractElementWordSizeBase } from '../syntax/extractElementWordSizeBase';
-import { extractMemoryPointerBase } from '../syntax/extractMemoryPointerBase';
-import { extractMemoryReferenceBase } from '../syntax/extractMemoryReferenceBase';
-import { hasElementCountPrefix } from '../syntax/hasElementCountPrefix';
-import { hasElementWordSizePrefix } from '../syntax/hasElementWordSizePrefix';
-import { hasMemoryReferencePrefix } from '../syntax/hasMemoryReferencePrefix';
-import { isMemoryPointerIdentifier as isMemoryPointerSyntax } from '../syntax/isMemoryPointerIdentifier';
+import extractElementCountBase from '../syntax/extractElementCountBase';
+import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
+import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
+import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
+import hasElementCountPrefix from '../syntax/hasElementCountPrefix';
+import hasElementWordSizePrefix from '../syntax/hasElementWordSizePrefix';
+import hasMemoryReferencePrefix from '../syntax/hasMemoryReferencePrefix';
+import isMemoryPointerSyntax from '../syntax/isMemoryPointerIdentifier';
 
 import type { MemoryMap } from '../types';
 

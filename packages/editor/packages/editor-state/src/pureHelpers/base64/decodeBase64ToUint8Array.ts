@@ -2,7 +2,7 @@
  * Decodes base64 data into a Uint8Array instance.
  * Handles binary payloads that may be too large for spread syntax conversion.
  */
-export function decodeBase64ToUint8Array(base64Data: string): Uint8Array {
+export default function decodeBase64ToUint8Array(base64Data: string): Uint8Array {
 	return Uint8Array.from(
 		atob(base64Data)
 			.split('')

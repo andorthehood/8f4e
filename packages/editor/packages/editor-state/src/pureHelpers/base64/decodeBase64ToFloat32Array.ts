@@ -1,10 +1,10 @@
-import { decodeBase64ToUint8Array } from './decodeBase64ToUint8Array';
+import decodeBase64ToUint8Array from './decodeBase64ToUint8Array';
 
 /**
  * Decodes base64 data into a Float32Array view.
  * Throws if the byte length is not divisible by 4.
  */
-export function decodeBase64ToFloat32Array(base64Data: string): Float32Array {
+export default function decodeBase64ToFloat32Array(base64Data: string): Float32Array {
 	const uint8Array = decodeBase64ToUint8Array(base64Data);
 
 	if (uint8Array.byteLength % 4 !== 0) {

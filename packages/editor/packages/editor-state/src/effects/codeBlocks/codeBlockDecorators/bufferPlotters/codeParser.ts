@@ -1,6 +1,6 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 
-export function parseBufferPlotters(code: string[]) {
+export default function parseBufferPlotters(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [

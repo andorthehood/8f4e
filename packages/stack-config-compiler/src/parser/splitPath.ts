@@ -5,7 +5,7 @@ import { splitPathSegments } from '../utils';
  * Examples: "foo.bar" -> ["foo", "bar"]
  *           "foo[0].bar" -> ["foo", "[0]", "bar"]
  */
-export function splitPath(path: string): string[] | { error: string } {
+export default function splitPath(path: string): string[] | { error: string } {
 	const openBrackets = (path.match(/\[/g) || []).length;
 	const closeBrackets = (path.match(/\]/g) || []).length;
 	if (openBrackets !== closeBrackets) {
