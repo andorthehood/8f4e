@@ -50,9 +50,6 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		store.set('codeErrors.compilationErrors', []);
 		state.compiler.isCompiling = false;
 
-		state.projectInfo.title = '';
-		state.projectInfo.author = '';
-		state.projectInfo.description = '';
 		state.binaryAssets = newProject.binaryAssets || [];
 		state.runtime.runtimeSettings = defaultState.runtime.runtimeSettings;
 		state.runtime.selectedRuntime = defaultState.runtime.selectedRuntime;
