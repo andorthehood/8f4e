@@ -9,7 +9,6 @@ exports[`serializeToProject > includes compiled modules, wasm and memory snapsho
   },
   "compiledWasm": "b64:1,2,3",
   "memorySnapshot": "b64:4,0",
-  "postProcessEffects": [],
   "viewport": {
     "gridCoordinates": {
       "x": 0,
@@ -34,7 +33,6 @@ exports[`serializeToProject > serializes basic project state without compiled da
     },
   ],
   "compiledModules": undefined,
-  "postProcessEffects": [],
   "viewport": {
     "gridCoordinates": {
       "x": 4,

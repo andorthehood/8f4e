@@ -16,6 +16,18 @@ export const mainMenu: MenuGenerator = state => [
 					close: true,
 				},
 				{
+					title: 'New Vertex Shader',
+					action: 'addCodeBlock',
+					payload: { isNew: true, blockType: 'vertexShader' },
+					close: true,
+				},
+				{
+					title: 'New Fragment Shader',
+					action: 'addCodeBlock',
+					payload: { isNew: true, blockType: 'fragmentShader' },
+					close: true,
+				},
+				{
 					title: 'Paste Module',
 					action: 'addCodeBlock',
 					payload: { isPaste: true },
@@ -107,7 +119,15 @@ export interface OpenGroupEvent {
 
 export const moduleMenu: MenuGenerator = state => {
 	const blockType = state.graphicHelper.selectedCodeBlock?.blockType;
-	const blockLabel = blockType === 'function' ? 'function' : 'module';
+	let blockLabel = 'module';
+
+	if (blockType === 'function') {
+		blockLabel = 'function';
+	} else if (blockType === 'vertexShader') {
+		blockLabel = 'vertex shader';
+	} else if (blockType === 'fragmentShader') {
+		blockLabel = 'fragment shader';
+	}
 
 	return [
 		...(state.featureFlags.editing
