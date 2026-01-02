@@ -117,9 +117,9 @@ export default function configEffect(store: StateManager<State>, events: EventDi
  * @returns Promise resolving to the merged config object
  */
 export async function compileConfigForExport(state: State): Promise<Record<string, unknown>> {
-	// If compilation is disabled, return empty object
+	// If compilation is disabled, return the stored compiled config if available
 	if (state.compiler.disableCompilation) {
-		return {};
+		return state.compiler.compiledConfig || {};
 	}
 
 	// If no compileConfig callback, return empty object
