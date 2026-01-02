@@ -38,7 +38,7 @@ if (import.meta.vitest) {
 				id: 'config-1',
 				blockType: 'config',
 				creationIndex: 1,
-				code: ['config', 'title "Snapshot Project"', 'configEnd'],
+				code: ['config', 'memorySizeBytes 65536', 'configEnd'],
 			});
 
 			const state = createMockState({
@@ -53,7 +53,7 @@ if (import.meta.vitest) {
 				},
 				callbacks: {
 					compileConfig: async () => ({
-						config: { title: 'Snapshot Project' },
+						config: { memorySizeBytes: 65536 },
 						errors: [],
 					}),
 				},

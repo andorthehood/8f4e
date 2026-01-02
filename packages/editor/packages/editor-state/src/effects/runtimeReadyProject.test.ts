@@ -58,33 +58,19 @@ describe('Runtime-ready project functionality', () => {
 	beforeEach(() => {
 		mockExportProject = vi.fn().mockResolvedValue(undefined);
 		mockCompileConfig = vi.fn().mockResolvedValue({
-			config: { projectInfo: { title: 'Test Project' }, memorySizeBytes: 1048576 },
+			config: { memorySizeBytes: 1048576 },
 			errors: [],
 		});
 
 		// Create a config block for testing
 		const configBlock = createMockCodeBlock({
 			id: 'config-block',
-			code: [
-				'config',
-				'scope "projectInfo"',
-				'scope "title"',
-				'push "Test Project"',
-				'set',
-				'popScope',
-				'popScope',
-				'configEnd',
-			],
+			code: ['config', 'scope "memorySizeBytes"', 'push 1048576', 'set', 'popScope', 'configEnd'],
 			creationIndex: 0,
 			blockType: 'config',
 		});
 
 		mockState = createMockState({
-			projectInfo: {
-				title: 'Test Project',
-				author: '',
-				description: '',
-			},
 			compiler: {
 				codeBuffer: new Uint8Array([1, 2, 3, 4, 5]), // Mock compiled WASM
 				compiledModules: {},
@@ -142,7 +128,7 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
 			const [exportedJson, fileName] = mockExportProject.mock.calls[0];
 
-			expect(fileName).toBe('Test Project-runtime-ready.json');
+			expect(fileName).toBe('project-runtime-ready.json');
 
 			// Parse the exported JSON and verify it contains compiledWasm
 			const exportedProject = JSON.parse(exportedJson);
@@ -175,7 +161,6 @@ describe('Runtime-ready project functionality', () => {
 			// Parse the exported JSON and verify it contains compiledConfig
 			const exportedProject = JSON.parse(exportedJson);
 			expect(exportedProject.compiledConfig).toBeDefined();
-			expect(exportedProject.compiledConfig.projectInfo.title).toBe('Test Project');
 			expect(exportedProject.compiledConfig.memorySizeBytes).toBe(1048576);
 		});
 

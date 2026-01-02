@@ -79,7 +79,6 @@ export type {
 	CodeBlockGraphicData,
 	CodeBlockType,
 	Project,
-	ProjectInfo,
 	Options,
 	EditorSettings,
 	CompilationResult,
