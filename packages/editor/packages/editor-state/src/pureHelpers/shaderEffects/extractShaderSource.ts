@@ -12,8 +12,9 @@ export default function extractShaderSource(code: string[], blockType: 'vertexSh
 
 	for (let i = 0; i < code.length; i++) {
 		const trimmedLine = code[i].trim();
-		// Check if line starts with the marker followed by a space and ID
-		// We require an ID to be present, so "vertexShader" alone won't match
+		// Check if line starts with the marker followed by a space
+		// This requires a space after the marker (e.g., "vertexShader crt")
+		// Lines with just the marker and no space (e.g., "vertexShader") won't match
 		if (trimmedLine.startsWith(startMarker + ' ')) {
 			startIndex = i;
 		} else if (trimmedLine === endMarker) {
