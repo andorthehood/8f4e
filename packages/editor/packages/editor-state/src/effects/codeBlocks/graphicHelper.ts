@@ -1,4 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
+import { getModuleId } from '@8f4e/compiler/syntax';
 
 import bufferPlotters from './codeBlockDecorators/bufferPlotters/updateGraphicData';
 import buttons from './codeBlockDecorators/buttons/updateGraphicData';
@@ -20,7 +21,6 @@ import { generateCodeColorMap } from '../../pureHelpers/codeEditing/generateCode
 import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
 import { reverseGapCalculator } from '../../pureHelpers/codeEditing/reverseGapCalculator';
 import getLongestLineLength from '../../pureHelpers/codeParsers/getLongestLineLength';
-import getModuleId from '../../pureHelpers/codeParsers/getModuleId';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
