@@ -17,13 +17,11 @@ import {
 	isElementWordSizeIdentifier,
 } from '../utils/memoryIdentifier';
 import { saveByteCode } from '../utils/compilation';
-import {
-	hasMemoryReferencePrefixStart,
-	extractMemoryReferenceBase,
-	extractMemoryPointerBase,
-	extractElementCountBase,
-	extractElementWordSizeBase,
-} from '../syntax/memoryIdentifierHelpers';
+import { extractElementCountBase } from '../syntax/extractElementCountBase';
+import { extractElementWordSizeBase } from '../syntax/extractElementWordSizeBase';
+import { extractMemoryPointerBase } from '../syntax/extractMemoryPointerBase';
+import { extractMemoryReferenceBase } from '../syntax/extractMemoryReferenceBase';
+import { hasMemoryReferencePrefixStart } from '../syntax/hasMemoryReferencePrefixStart';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';
 
 import type { AST, ArgumentLiteral, InstructionCompiler } from '../types';
