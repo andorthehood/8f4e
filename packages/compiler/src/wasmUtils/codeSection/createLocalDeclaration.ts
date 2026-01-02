@@ -1,5 +1,7 @@
-import { LocalDeclaration, unsignedLEB128 } from '../typeHelpers';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
 import Type from '../type';
+
+import type { LocalDeclaration } from '../section';
 
 /**
  * Creates a local variable declaration for a WebAssembly function.

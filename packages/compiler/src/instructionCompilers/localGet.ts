@@ -1,7 +1,7 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { saveByteCode } from '../utils/compilation';
-import { localGet } from '../wasmUtils/instructionHelpers';
+import { localGet } from '../wasmUtils/local/localGet';
 import { withValidation } from '../withValidation';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';
 

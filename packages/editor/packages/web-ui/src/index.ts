@@ -1,14 +1,12 @@
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect } from 'glugglug';
 
-import {
-	drawCodeBlocks,
-	drawConnections,
-	drawContextMenu,
-	drawDialog,
-	drawInfoOverlay,
-	drawConsoleOverlay,
-} from './drawers';
+import drawCodeBlocks from './drawers/codeBlocks';
+import drawConnections from './drawers/codeBlocks/codeBlockDecorators/connections';
+import drawContextMenu from './drawers/contextMenu';
+import drawDialog from './drawers/dialog';
+import drawInfoOverlay from './drawers/infoOverlay';
+import drawConsoleOverlay from './drawers/consoleOverlay';
 import drawBackground from './drawers/drawBackground';
 import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
 

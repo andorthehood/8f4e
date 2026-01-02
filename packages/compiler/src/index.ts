@@ -1,16 +1,16 @@
-import {
-	createCodeSection,
-	createExportSection,
-	createFunction,
-	createFunctionExport,
-	createFunctionSection,
-	createFunctionType,
-	createImportSection,
-	createMemoryImport,
-	createTypeSection,
-} from './wasmUtils/sectionHelpers';
+import { createCodeSection } from './wasmUtils/codeSection/createCodeSection';
+import { createFunction } from './wasmUtils/codeSection/createFunction';
+import { createExportSection } from './wasmUtils/export/createExportSection';
+import { createFunctionExport } from './wasmUtils/export/createFunctionExport';
+import { createImportSection } from './wasmUtils/import/createImportSection';
+import { createMemoryImport } from './wasmUtils/import/createMemoryImport';
+import { createFunctionSection } from './wasmUtils/typeFunction/createFunctionSection';
+import { createFunctionType } from './wasmUtils/typeFunction/createFunctionType';
+import { createTypeSection } from './wasmUtils/typeFunction/createTypeSection';
 import Type from './wasmUtils/type';
-import { call, f32store, i32store } from './wasmUtils/instructionHelpers';
+import { call } from './wasmUtils/call/call';
+import { f32store } from './wasmUtils/store/f32store';
+import { i32store } from './wasmUtils/store/i32store';
 import { compileModule, compileToAST, compileFunction } from './compiler';
 import { collectConstants } from './astUtils/collectConstants';
 import { getConstantsName } from './astUtils/getConstantsName';

@@ -1,4 +1,7 @@
-import { FunctionName, unsignedLEB128, encodeString } from '../typeHelpers';
+import { encodeString } from '../encoding/encodeString';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+
+import type { FunctionName } from '../section';
 
 /**
  * Creates a function name entry for the name section.

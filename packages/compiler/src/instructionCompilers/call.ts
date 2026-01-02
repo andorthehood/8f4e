@@ -1,7 +1,7 @@
 import { ErrorCode, getError } from '../errors';
 import { ArgumentType } from '../types';
 import { saveByteCode } from '../utils/compilation';
-import { call as wasmCall } from '../wasmUtils/instructionHelpers';
+import { call as wasmCall } from '../wasmUtils/call/call';
 import { withValidation } from '../withValidation';
 import { createInstructionCompilerTestContext } from '../utils/testUtils';
 

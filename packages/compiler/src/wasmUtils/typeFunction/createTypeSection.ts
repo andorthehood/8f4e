@@ -1,7 +1,10 @@
 import { createFunctionType } from './createFunctionType';
 
-import { FunctionType, unsignedLEB128, createVector } from '../typeHelpers';
+import { createVector } from '../encoding/createVector';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
 import { Section } from '../section';
+
+import type { FunctionType } from '../section';
 
 /**
  * Creates a WebAssembly type section containing function type signatures.

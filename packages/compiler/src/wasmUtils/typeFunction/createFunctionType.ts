@@ -1,5 +1,7 @@
-import { FunctionType, unsignedLEB128 } from '../typeHelpers';
+import { unsignedLEB128 } from '../encoding/unsignedLEB128';
 import Type from '../type';
+
+import type { FunctionType } from '../section';
 
 /**
  * Creates a WebAssembly function type signature (param types → result types).
