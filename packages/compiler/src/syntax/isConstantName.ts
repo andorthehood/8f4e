@@ -6,7 +6,7 @@
  * @param name - The variable name to check.
  * @returns True if the name is a constant name, false otherwise.
  */
-export function isConstantName(name: string): boolean {
+export default function isConstantName(name: string): boolean {
 	// Must start with uppercase letter and contain no lowercase letters
 	return /^[A-Z]/.test(name) && !/[a-z]/.test(name);
 }

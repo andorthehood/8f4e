@@ -2,7 +2,7 @@ import { createMockState } from '../../pureHelpers/testingUtils/testUtils';
 
 import type { State } from '../../types';
 
-export function calculateBorderLineCoordinates(state: State): void {
+export default function calculateBorderLineCoordinates(state: State): void {
 	const viewport = state.graphicHelper.viewport;
 	const { borderLineCoordinates, center, x, y, width, height } = viewport;
 

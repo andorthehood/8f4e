@@ -7,7 +7,7 @@ import { ErrorCode, getError } from '../errors';
  * @returns The module name
  * @throws Error if module instruction is missing or has invalid argument type
  */
-export function getModuleName(ast: AST): string {
+export default function getModuleName(ast: AST): string {
 	const moduleInstruction = ast.find(line => line.instruction === 'module');
 
 	if (!moduleInstruction) {

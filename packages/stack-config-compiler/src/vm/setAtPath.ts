@@ -1,11 +1,11 @@
-import { navigateToPath } from './navigateToPath';
+import navigateToPath from './navigateToPath';
 
 import { splitPathSegments } from '../utils';
 
 /**
  * Sets a value at a path in the config
  */
-export function setAtPath(config: Record<string, unknown>, path: string, value: unknown): string | null {
+export default function setAtPath(config: Record<string, unknown>, path: string, value: unknown): string | null {
 	const segments = splitPathSegments(path);
 
 	if (segments.length === 0) {

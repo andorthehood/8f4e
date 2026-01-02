@@ -2,7 +2,7 @@
  * Extracts the body content between config and configEnd markers.
  * Returns the lines between the markers (exclusive).
  */
-export function extractConfigBody(code: string[]): string[] {
+export default function extractConfigBody(code: string[]): string[] {
 	let startIndex = -1;
 	let endIndex = -1;
 

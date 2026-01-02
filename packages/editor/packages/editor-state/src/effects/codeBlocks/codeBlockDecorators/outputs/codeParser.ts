@@ -1,7 +1,7 @@
 import { isConstantName } from '@8f4e/compiler/syntax';
 import { instructionParser } from '@8f4e/compiler/syntax';
 
-export function parseOutputs(code: string[]) {
+export default function parseOutputs(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];

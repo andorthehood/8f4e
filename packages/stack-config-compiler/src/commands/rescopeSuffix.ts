@@ -7,7 +7,7 @@ import { validateAndPushSegments } from '../schema';
 import type { Command, VMState } from '../types';
 import type { CommandError } from '../vm/executeCommand';
 
-export function executeRescopeSuffix(state: VMState, command: Command): CommandError[] | null {
+export default function executeRescopeSuffix(state: VMState, command: Command): CommandError[] | null {
 	const segments = command.pathSegments || [];
 
 	if (state.scopeStack.length < segments.length) {

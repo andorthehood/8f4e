@@ -7,7 +7,7 @@ import { validateAndPushSegments } from '../schema';
 import type { Command, VMState } from '../types';
 import type { CommandError } from '../vm/executeCommand';
 
-export function executeRescope(state: VMState, command: Command): CommandError[] | null {
+export default function executeRescope(state: VMState, command: Command): CommandError[] | null {
 	state.scopeStack.length = 0;
 
 	// Push new segments with schema validation

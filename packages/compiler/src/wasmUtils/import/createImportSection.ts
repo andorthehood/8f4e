@@ -1,7 +1,7 @@
-import { createMemoryImport } from './createMemoryImport';
+import createMemoryImport from './createMemoryImport';
 
-import { createVector } from '../encoding/createVector';
-import { unsignedLEB128 } from '../encoding/unsignedLEB128';
+import createVector from '../encoding/createVector';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { Section } from '../section';
 
 import type { Import } from '../section';
@@ -12,7 +12,7 @@ import type { Import } from '../section';
  * @param imports - Array of import entries
  * @returns Byte array representing the complete import section
  */
-export function createImportSection(imports: Import[]): number[] {
+export default function createImportSection(imports: Import[]): number[] {
 	const numImports = imports.length;
 	return [Section.IMPORT, ...createVector([...unsignedLEB128(numImports), ...imports.flat()])];
 }

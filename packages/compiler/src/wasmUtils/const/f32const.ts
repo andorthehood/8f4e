@@ -1,4 +1,4 @@
-import { ieee754 } from '../encoding/ieee754';
+import ieee754 from '../encoding/ieee754';
 import Instruction from '../wasmInstruction';
 
 /**
@@ -7,7 +7,7 @@ import Instruction from '../wasmInstruction';
  * @param number - The floating-point value
  * @returns Byte array representing the f32.const instruction
  */
-export function f32const(number: number): number[] {
+export default function f32const(number: number): number[] {
 	return [Instruction.F32_CONST, ...ieee754(number)];
 }
 
