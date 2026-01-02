@@ -264,6 +264,7 @@ export interface PianoKeyboard {
  * - 'constants': Contains constants/constantsEnd markers
  * - 'vertexShader': Contains vertexShader/vertexShaderEnd markers (GLSL vertex shader)
  * - 'fragmentShader': Contains fragmentShader/fragmentShaderEnd markers (GLSL fragment shader)
+ * - 'comment': Contains comment/commentEnd markers (documentation, excluded from compilation)
  * - 'unknown': Mixed or incomplete markers, or no recognizable markers
  */
 export type CodeBlockType =
@@ -273,6 +274,7 @@ export type CodeBlockType =
 	| 'constants'
 	| 'vertexShader'
 	| 'fragmentShader'
+	| 'comment'
 	| 'unknown';
 
 export interface CodeBlockGraphicData {

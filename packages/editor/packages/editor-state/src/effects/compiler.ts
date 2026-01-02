@@ -10,7 +10,7 @@ import type { CodeBlockGraphicData, State } from '../types';
  *
  * @param codeBlocks - Set of code blocks to filter and sort
  * @returns Object containing modules and functions arrays, each sorted by creationIndex.
- *          Config blocks are excluded from the WASM compilation pipeline.
+ *          Config blocks and comment blocks are excluded from the WASM compilation pipeline.
  *          Constants blocks are included in modules array.
  */
 export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): {
