@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import codeBlockCreator from './codeBlockCreator';
+import graphicHelper from './graphicHelper';
 
 import { flattenProjectForCompiler } from '../compiler';
 import projectImport from '../projectImport';
@@ -100,7 +101,8 @@ describe('creationIndex', () => {
 
 	describe('projectImport', () => {
 		it('should assign creationIndex to code blocks when loading a project', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
+			graphicHelper(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -127,7 +129,8 @@ describe('creationIndex', () => {
 		});
 
 		it('should reset creationIndex counter when loading a new project', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
+			graphicHelper(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
