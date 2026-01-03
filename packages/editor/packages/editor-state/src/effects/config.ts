@@ -64,7 +64,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	 * Each config block is compiled independently to allow proper error mapping.
 	 * Errors are saved to codeErrors.configErrors with the creationIndex of the source block.
 	 */
-	async function forceCompileConfig(): Promise<void> {
+	async function rebuildConfig(): Promise<void> {
 		const compileConfig = state.callbacks.compileConfig;
 		if (!compileConfig) {
 			return;
@@ -90,19 +90,9 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		}
 	}
 
-	function rebuildConfig() {
-		// Check if compilation is disabled by config
-		if (state.compiler.disableAutoCompilation) {
-			log(state, 'Config compilation skipped: disableAutoCompilation flag is set', 'Config');
-			return;
-		}
-
-		forceCompileConfig();
-	}
-
 	// Wire up event handlers
 	// rebuildConfig runs BEFORE module compilation because blockTypeUpdater runs first
-	events.on('compileConfig', forceCompileConfig);
+	events.on('compileConfig', rebuildConfig);
 	store.subscribe('initialProjectState', () => {
 		if (state.initialProjectState?.compiledConfig) {
 			applyConfigToState(store, state.initialProjectState.compiledConfig);
@@ -124,15 +114,10 @@ export default function configEffect(store: StateManager<State>, events: EventDi
  * @returns Promise resolving to the merged config object
  */
 export async function compileConfigForExport(state: State): Promise<ConfigObject> {
-	// If compilation is disabled, return the stored compiled config if available
-	if (state.compiler.disableAutoCompilation) {
-		return state.compiledConfig || {};
-	}
-
 	// If no compileConfig callback, return empty object
 	const compileConfig = state.callbacks.compileConfig;
 	if (!compileConfig) {
-		return {};
+		return state.compiledConfig || {};
 	}
 
 	// Collect all config blocks
