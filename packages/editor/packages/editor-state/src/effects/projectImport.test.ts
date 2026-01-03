@@ -54,9 +54,7 @@ describe('projectImport', () => {
 			// Give time for promises to resolve
 			await new Promise(resolve => setTimeout(resolve, 10));
 
-			const dispatchCalls = (mockEvents.dispatch as unknown as MockInstance).mock.calls;
-			const projectLoadedCall = dispatchCalls.find(call => call[0] === 'projectLoaded');
-			expect(projectLoadedCall).toBeDefined();
+			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
 		});
 
 		it('should load session from callback when persistentStorage is enabled', async () => {
@@ -152,7 +150,7 @@ describe('projectImport', () => {
 			expect(mockState.compiler.codeBuffer).toEqual(new Uint8Array());
 		});
 
-		it('should dispatch projectLoaded event after loading', () => {
+		it('should store initial project state after loading', () => {
 			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -161,9 +159,7 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project: EMPTY_DEFAULT_PROJECT });
 
-			const dispatchCalls = (mockEvents.dispatch as unknown as MockInstance).mock.calls;
-			const projectLoadedCall = dispatchCalls.find(call => call[0] === 'projectLoaded');
-			expect(projectLoadedCall).toBeDefined();
+			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
 		});
 
 		it('should load runtime-ready project with pre-compiled WASM', () => {
@@ -286,10 +282,7 @@ describe('projectImport', () => {
 
 			expect(mockState.callbacks.getProject).toHaveBeenCalledWith('test-slug');
 
-			// Verify project was loaded by checking if projectLoaded event was dispatched
-			const dispatchCalls = (mockEvents.dispatch as unknown as MockInstance).mock.calls;
-			const projectLoadedCall = dispatchCalls.find(call => call[0] === 'projectLoaded');
-			expect(projectLoadedCall).toBeDefined();
+			expect(mockState.initialProjectState).toEqual(mockProject);
 		});
 
 		it('should warn when no getProject callback is provided', async () => {
