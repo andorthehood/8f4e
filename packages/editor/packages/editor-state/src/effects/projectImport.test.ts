@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
+import compiler from './compiler';
+import configEffect from './config';
 import projectImport from './projectImport';
 
 import { createMockState } from '../pureHelpers/testingUtils/testUtils';
@@ -93,6 +95,7 @@ describe('projectImport', () => {
 	describe('loadProject', () => {
 		it('should use default memory settings when loading project', () => {
 			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -117,6 +120,7 @@ describe('projectImport', () => {
 			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
 
 			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -134,6 +138,7 @@ describe('projectImport', () => {
 
 		it('should reset compiler state when loading a project', () => {
 			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -164,6 +169,7 @@ describe('projectImport', () => {
 
 		it('should load runtime-ready project with pre-compiled WASM', () => {
 			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -187,6 +193,7 @@ describe('projectImport', () => {
 
 		it('should handle decoding errors gracefully', () => {
 			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -317,6 +324,7 @@ describe('projectImport', () => {
 			};
 
 			projectImport(store, mockEvents);
+			configEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');

@@ -104,6 +104,11 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	// Wire up event handlers
 	// rebuildConfig runs BEFORE module compilation because blockTypeUpdater runs first
 	events.on('compileConfig', forceCompileConfig);
+	store.subscribe('initialProjectState', () => {
+		if (state.initialProjectState?.compiledConfig) {
+			applyConfigToState(store, state.initialProjectState.compiledConfig);
+		}
+	});
 	store.subscribe('graphicHelper.codeBlocks', rebuildConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'config') {
