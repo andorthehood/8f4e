@@ -68,12 +68,8 @@ describe('disableAutoCompilation feature', () => {
 
 			compiler(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
-			expect(compileCall).toBeDefined();
-
-			const onRecompileCallback = compileCall![1];
-			await onRecompileCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockCompileCode).not.toHaveBeenCalled();
 			expect(mockState.compiler.isCompiling).toBe(false);
@@ -92,11 +88,8 @@ describe('disableAutoCompilation feature', () => {
 
 			compiler(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
-			const onRecompileCallback = compileCall![1];
-
-			await onRecompileCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockCompileCode).toHaveBeenCalled();
 		});
@@ -108,11 +101,8 @@ describe('disableAutoCompilation feature', () => {
 
 			compiler(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
-			const onRecompileCallback = compileCall![1];
-
-			await onRecompileCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(
 				mockState.console.logs.some(log =>
@@ -129,12 +119,8 @@ describe('disableAutoCompilation feature', () => {
 
 			configEffect(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
-			expect(configCall).toBeDefined();
-
-			const rebuildConfigCallback = configCall![1];
-			await rebuildConfigCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockCompileConfig).not.toHaveBeenCalled();
 			expect(
@@ -151,11 +137,8 @@ describe('disableAutoCompilation feature', () => {
 
 			configEffect(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
-			const rebuildConfigCallback = configCall![1];
-
-			await rebuildConfigCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockCompileConfig).toHaveBeenCalled();
 		});
@@ -215,11 +198,8 @@ describe('disableAutoCompilation feature', () => {
 
 			configEffect(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
-			const rebuildConfigCallback = configCall![1];
-
-			await rebuildConfigCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockState.compiler.disableAutoCompilation).toBe(true);
 		});
@@ -234,11 +214,8 @@ describe('disableAutoCompilation feature', () => {
 
 			configEffect(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
-			const rebuildConfigCallback = configCall![1];
-
-			await rebuildConfigCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockState.compiler.disableAutoCompilation).toBe(false);
 		});
