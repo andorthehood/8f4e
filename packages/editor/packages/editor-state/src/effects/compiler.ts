@@ -132,12 +132,12 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 		if (state.initialProjectState?.compiledWasm && state.initialProjectState.compiledModules) {
 			try {
-				state.compiler.codeBuffer = decodeBase64ToUint8Array(state.initialProjectState.compiledWasm);
 				state.compiler.compiledModules = state.initialProjectState.compiledModules;
+				store.set('compiler.codeBuffer', decodeBase64ToUint8Array(state.initialProjectState.compiledWasm));
 				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
 			} catch (err) {
-				state.compiler.codeBuffer = new Uint8Array();
 				state.compiler.compiledModules = {};
+				store.set('compiler.codeBuffer', new Uint8Array());
 				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
 				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
 			}
