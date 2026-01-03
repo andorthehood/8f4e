@@ -1,16 +1,12 @@
 import { StateManager } from '@8f4e/state-manager';
-import { getModuleId } from '@8f4e/compiler/syntax';
 
 import { EventDispatcher } from '../types';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
-import decodeBase64ToUint8Array from '../pureHelpers/base64/decodeBase64ToUint8Array';
-import decodeBase64ToInt32Array from '../pureHelpers/base64/decodeBase64ToInt32Array';
-import decodeBase64ToFloat32Array from '../pureHelpers/base64/decodeBase64ToFloat32Array';
-import { log, warn, error } from '../impureHelpers/logger/logger';
+import { warn, error } from '../impureHelpers/logger/logger';
 
 import type { Project, State } from '../types';
 
-export default function projectImport(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
+export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 
 	const projectPromise = Promise.resolve().then(() => {
@@ -41,103 +37,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 	}
 
 	function loadProject({ project: newProject }: { project: Project }) {
-		state.compiler.compilerOptions.memorySizeBytes = defaultState.compiler.compilerOptions.memorySizeBytes;
-		state.compiler.memoryBuffer = new Int32Array();
-		state.compiler.memoryBufferFloat = new Float32Array();
-		state.compiler.codeBuffer = new Uint8Array();
-		state.compiler.compiledModules = {};
-		state.compiler.allocatedMemorySize = 0;
-		store.set('codeErrors.compilationErrors', []);
-		state.compiler.isCompiling = false;
-
-		state.binaryAssets = newProject.binaryAssets || [];
-		state.runtime.runtimeSettings = defaultState.runtime.runtimeSettings;
-		state.runtime.selectedRuntime = defaultState.runtime.selectedRuntime;
-		// postProcessEffects are now derived from shader code blocks, not loaded from project data
-
-		if (newProject.compiledWasm && newProject.memorySnapshot) {
-			try {
-				state.compiler.codeBuffer = decodeBase64ToUint8Array(newProject.compiledWasm);
-				state.compiler.memoryBuffer = decodeBase64ToInt32Array(newProject.memorySnapshot);
-				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(newProject.memorySnapshot);
-				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
-				if (newProject.compiledModules) {
-					state.compiler.compiledModules = newProject.compiledModules;
-				}
-				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
-			} catch (err) {
-				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
-				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
-				state.compiler.codeBuffer = new Uint8Array();
-				state.compiler.memoryBuffer = new Int32Array();
-				state.compiler.memoryBufferFloat = new Float32Array();
-			}
-		} else if (newProject.compiledModules) {
-			state.compiler.compiledModules = newProject.compiledModules;
-		}
-
-		// Store compiled config from runtime-ready projects
-		if (newProject.compiledConfig) {
-			state.compiler.compiledConfig = newProject.compiledConfig;
-		}
-
-		state.graphicHelper.outputsByWordAddress.clear();
-		state.graphicHelper.selectedCodeBlock = undefined;
-		state.graphicHelper.draggedCodeBlock = undefined;
-
-		state.graphicHelper.codeBlocks.clear();
-		state.graphicHelper.nextCodeBlockCreationIndex = 0;
-		state.graphicHelper.viewport.x = newProject.viewport.gridCoordinates.x * state.graphicHelper.viewport.vGrid;
-		state.graphicHelper.viewport.y = newProject.viewport.gridCoordinates.y * state.graphicHelper.viewport.hGrid;
-
-		newProject.codeBlocks.forEach(codeBlock => {
-			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
-			state.graphicHelper.nextCodeBlockCreationIndex++;
-
-			// Compute grid coordinates first as source of truth
-			const gridX = codeBlock.gridCoordinates.x;
-			const gridY = codeBlock.gridCoordinates.y;
-
-			// Compute pixel coordinates from grid coordinates
-			const pixelX = gridX * state.graphicHelper.viewport.vGrid;
-			const pixelY = gridY * state.graphicHelper.viewport.hGrid;
-
-			state.graphicHelper.codeBlocks.add({
-				width: 0,
-				minGridWidth: 32,
-				height: 0,
-				code: codeBlock.code,
-				codeColors: [],
-				codeToRender: [],
-				extras: {
-					blockHighlights: [],
-					inputs: [],
-					outputs: [],
-					debuggers: [],
-					switches: [],
-					buttons: [],
-					pianoKeyboards: [],
-					bufferPlotters: [],
-					errorMessages: [],
-				},
-				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				id: getModuleId(codeBlock.code) || '',
-				gaps: new Map(),
-				gridX,
-				gridY,
-				x: pixelX,
-				y: pixelY,
-				offsetX: 0,
-				offsetY: 0,
-				lineNumberColumnWidth: 1,
-				lastUpdated: Date.now(),
-				creationIndex,
-				blockType: 'unknown', // Will be updated by blockTypeUpdater effect
-			});
-		});
-		events.dispatch('init');
-		events.dispatch('projectLoaded');
-		// loadPostProcessEffects will be dispatched by shaderEffectsDeriver
+		store.set('initialProjectState', newProject);
 	}
 
 	void projectPromise;

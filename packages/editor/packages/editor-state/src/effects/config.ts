@@ -65,15 +65,9 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	 * Each config block is compiled independently to allow proper error mapping.
 	 * Errors are saved to codeErrors.configErrors with the creationIndex of the source block.
 	 */
-	async function rebuildConfig(): Promise<void> {
+	async function forceCompileConfig(): Promise<void> {
 		const compileConfig = state.callbacks.compileConfig;
 		if (!compileConfig) {
-			return;
-		}
-
-		// Check if compilation is disabled by config
-		if (state.compiler.disableAutoCompilation) {
-			log(state, 'Config compilation skipped: disableAutoCompilation flag is set', 'Config');
 			return;
 		}
 
@@ -97,11 +91,20 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		}
 	}
 
+	function rebuildConfig() {
+		// Check if compilation is disabled by config
+		if (state.compiler.disableAutoCompilation) {
+			log(state, 'Config compilation skipped: disableAutoCompilation flag is set', 'Config');
+			return;
+		}
+
+		forceCompileConfig();
+	}
+
 	// Wire up event handlers
 	// rebuildConfig runs BEFORE module compilation because blockTypeUpdater runs first
-	events.on('codeBlockAdded', rebuildConfig);
-	events.on('deleteCodeBlock', rebuildConfig);
-	events.on('projectLoaded', rebuildConfig);
+	events.on('compileConfig', forceCompileConfig);
+	store.subscribe('graphicHelper.codeBlocks', rebuildConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'config') {
 			return;
@@ -116,10 +119,10 @@ export default function configEffect(store: StateManager<State>, events: EventDi
  * @param state The current editor state
  * @returns Promise resolving to the merged config object
  */
-export async function compileConfigForExport(state: State): Promise<Record<string, unknown>> {
+export async function compileConfigForExport(state: State): Promise<ConfigObject> {
 	// If compilation is disabled, return the stored compiled config if available
 	if (state.compiler.disableAutoCompilation) {
-		return state.compiler.compiledConfig || {};
+		return state.compiledConfig || {};
 	}
 
 	// If no compileConfig callback, return empty object
