@@ -1,5 +1,4 @@
 import { StateManager } from '@8f4e/state-manager';
-import { ConfigObject } from 'impureHelpers/config/applyConfigToState';
 
 import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from 'glugglug';
@@ -632,6 +631,13 @@ export interface CodeError {
 	lineNumber: number;
 	message: string;
 	codeBlockId: string | number;
+}
+
+export interface ConfigObject {
+	memorySizeBytes?: number;
+	selectedRuntime?: number;
+	runtimeSettings?: Runtimes[];
+	disableAutoCompilation?: boolean;
 }
 
 export interface State {

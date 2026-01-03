@@ -7,8 +7,7 @@ import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
 import configSchema from '../configSchema';
 
-import type { ConfigObject } from '../impureHelpers/config/applyConfigToState';
-import type { CodeError, EventDispatcher, State } from '../types';
+import type { CodeError, EventDispatcher, State, ConfigObject } from '../types';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 
