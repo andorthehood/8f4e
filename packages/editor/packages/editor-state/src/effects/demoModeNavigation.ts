@@ -12,7 +12,7 @@ import type { Direction } from '../pureHelpers/finders/findClosestCodeBlockInDir
  * @returns true if a block was selected, false otherwise
  */
 function selectRandomCodeBlock(state: State): boolean {
-	const codeBlocks = Array.from(state.graphicHelper.codeBlocks);
+	const codeBlocks = state.graphicHelper.codeBlocks;
 
 	if (codeBlocks.length === 0) {
 		return false;
@@ -64,7 +64,7 @@ export default function demoModeNavigation(state: State, events: EventDispatcher
 		// Start the demo navigation interval
 		demoInterval = setInterval(() => {
 			// Check if we still have code blocks available
-			if (state.graphicHelper.codeBlocks.size === 0) {
+			if (state.graphicHelper.codeBlocks.length === 0) {
 				return;
 			}
 

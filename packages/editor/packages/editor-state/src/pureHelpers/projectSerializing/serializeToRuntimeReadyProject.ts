@@ -43,7 +43,7 @@ if (import.meta.vitest) {
 
 			const state = createMockState({
 				graphicHelper: {
-					codeBlocks: new Set([configBlock]),
+					codeBlocks: [configBlock],
 				},
 				compiler: {
 					compiledModules: { mod: {} },

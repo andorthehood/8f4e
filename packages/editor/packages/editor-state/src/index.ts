@@ -17,7 +17,6 @@ import editorSettings from './effects/editorSettings';
 import projectImport from './effects/projectImport';
 import projectExport from './effects/projectExport';
 import pianoKeyboard from './effects/codeBlocks/codeBlockDecorators/pianoKeyboard/interaction';
-import sampleRate from './effects/sampleRate';
 import exportWasm from './effects/exportWasm';
 import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
@@ -44,9 +43,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	editorSettings(store, events, state);
 
 	runtime(store, events);
-	sampleRate(state, events);
-	projectImport(store, events, state);
-	codeBlockDragger(state, events);
+	projectImport(store, events);
+	codeBlockDragger(store, events);
 	codeBlockNavigation(state, events);
 	demoModeNavigation(state, events);
 	_switch(state, events);
@@ -54,8 +52,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	pianoKeyboard(store, events);
 	viewport(state, events);
 	contextMenu(store, events);
-	codeBlockCreator(state, events);
-	blockTypeUpdater(store, events); // Must run before compiler to classify blocks first
+	codeBlockCreator(store, events);
+	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	configEffect(store, events);
 	compiler(store, events);

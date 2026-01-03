@@ -9,15 +9,15 @@ import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils
 
 import type { State } from '../types';
 
-describe('disableCompilation feature', () => {
+describe('disableAutoCompilation feature', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
-	let mockCompileProject: MockInstance;
+	let mockCompileCode: MockInstance;
 	let mockCompileConfig: MockInstance;
 
 	beforeEach(() => {
-		mockCompileProject = vi.fn().mockResolvedValue({
+		mockCompileCode = vi.fn().mockResolvedValue({
 			compiledModules: {},
 			codeBuffer: new Uint8Array([1, 2, 3]),
 			allocatedMemorySize: 1024,
@@ -47,120 +47,106 @@ describe('disableCompilation feature', () => {
 
 		mockState = createMockState({
 			compiler: {
-				disableCompilation: false,
+				disableAutoCompilation: false,
 			},
 			callbacks: {
-				compileProject: mockCompileProject,
+				compileCode: mockCompileCode,
 				compileConfig: mockCompileConfig,
 			},
 		});
 
-		mockState.graphicHelper.codeBlocks.add(moduleBlock);
-		mockState.graphicHelper.codeBlocks.add(configBlock);
+		mockState.graphicHelper.codeBlocks.push(moduleBlock);
+		mockState.graphicHelper.codeBlocks.push(configBlock);
 
 		mockEvents = createMockEventDispatcherWithVitest();
 		store = createStateManager(mockState);
 	});
 
 	describe('Project compilation', () => {
-		it('should skip compilation when disableCompilation is true', async () => {
-			store.set('compiler.disableCompilation', true);
+		it('should skip compilation when disableAutoCompilation is true', async () => {
+			store.set('compiler.disableAutoCompilation', true);
 
 			compiler(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'codeBlockAdded');
-			expect(compileCall).toBeDefined();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
-			const onRecompileCallback = compileCall![1];
-			await onRecompileCallback();
-
-			expect(mockCompileProject).not.toHaveBeenCalled();
+			expect(mockCompileCode).not.toHaveBeenCalled();
 			expect(mockState.compiler.isCompiling).toBe(false);
 			expect(mockState.codeErrors.compilationErrors).toEqual([]);
 			expect(
 				mockState.console.logs.some(
 					log =>
-						log.message.includes('Compilation skipped: disableCompilation flag is set') && log.category === '[Compiler]'
+						log.message.includes('Compilation skipped: disableAutoCompilation flag is set') &&
+						log.category === '[Compiler]'
 				)
 			).toBe(true);
 		});
 
-		it('should compile normally when disableCompilation is false', async () => {
-			store.set('compiler.disableCompilation', false);
+		it('should compile normally when disableAutoCompilation is false', async () => {
+			store.set('compiler.disableAutoCompilation', false);
 
 			compiler(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'codeBlockAdded');
-			const onRecompileCallback = compileCall![1];
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
-			await onRecompileCallback();
-
-			expect(mockCompileProject).toHaveBeenCalled();
+			expect(mockCompileCode).toHaveBeenCalled();
 		});
 
-		it('should prioritize disableCompilation check over pre-compiled WASM check', async () => {
-			store.set('compiler.disableCompilation', true);
+		it('should prioritize disableAutoCompilation check over pre-compiled WASM check', async () => {
+			store.set('compiler.disableAutoCompilation', true);
 			store.set('compiler.codeBuffer', new Uint8Array([1, 2, 3, 4, 5]));
-			mockState.callbacks.compileProject = undefined;
+			mockState.callbacks.compileCode = undefined;
 
 			compiler(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'codeBlockAdded');
-			const onRecompileCallback = compileCall![1];
-
-			await onRecompileCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(
-				mockState.console.logs.some(log => log.message.includes('Compilation skipped: disableCompilation flag is set'))
+				mockState.console.logs.some(log =>
+					log.message.includes('Compilation skipped: disableAutoCompilation flag is set')
+				)
 			).toBe(true);
 			expect(mockState.console.logs.some(log => log.message.includes('Using pre-compiled WASM'))).toBe(false);
 		});
 	});
 
 	describe('Config compilation', () => {
-		it('should skip config compilation when disableCompilation is true', async () => {
-			store.set('compiler.disableCompilation', true);
+		it('should skip config compilation when disableAutoCompilation is true', async () => {
+			store.set('compiler.disableAutoCompilation', true);
 
 			configEffect(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'codeBlockAdded');
-			expect(configCall).toBeDefined();
-
-			const rebuildConfigCallback = configCall![1];
-			await rebuildConfigCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockCompileConfig).not.toHaveBeenCalled();
 			expect(
 				mockState.console.logs.some(
 					log =>
-						log.message.includes('Config compilation skipped: disableCompilation flag is set') &&
+						log.message.includes('Config compilation skipped: disableAutoCompilation flag is set') &&
 						log.category === '[Config]'
 				)
 			).toBe(true);
 		});
 
-		it('should compile config normally when disableCompilation is false', async () => {
-			store.set('compiler.disableCompilation', false);
+		it('should compile config normally when disableAutoCompilation is false', async () => {
+			store.set('compiler.disableAutoCompilation', false);
 
 			configEffect(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'codeBlockAdded');
-			const rebuildConfigCallback = configCall![1];
-
-			await rebuildConfigCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockCompileConfig).toHaveBeenCalled();
 		});
 	});
 
 	describe('Runtime-ready export', () => {
-		it('should skip config compilation for export when disableCompilation is true', async () => {
-			mockState.compiler.disableCompilation = true;
+		it('should skip config compilation for export when disableAutoCompilation is true', async () => {
+			mockState.compiler.disableAutoCompilation = true;
 
 			const result = await compileConfigForExport(mockState);
 
@@ -168,9 +154,9 @@ describe('disableCompilation feature', () => {
 			expect(result).toEqual({});
 		});
 
-		it('should return stored compiledConfig when disableCompilation is true and config exists', async () => {
-			mockState.compiler.disableCompilation = true;
-			mockState.compiler.compiledConfig = {
+		it('should return stored compiledConfig when disableAutoCompilation is true and config exists', async () => {
+			mockState.compiler.disableAutoCompilation = true;
+			mockState.compiledConfig = {
 				memorySizeBytes: 2097152,
 				selectedRuntime: 1,
 			};
@@ -184,8 +170,8 @@ describe('disableCompilation feature', () => {
 			});
 		});
 
-		it('should compile config for export when disableCompilation is false', async () => {
-			mockState.compiler.disableCompilation = false;
+		it('should compile config for export when disableAutoCompilation is false', async () => {
+			mockState.compiler.disableAutoCompilation = false;
 
 			const result = await compileConfigForExport(mockState);
 
@@ -194,7 +180,7 @@ describe('disableCompilation feature', () => {
 		});
 
 		it('should return empty config when no compileConfig callback is provided', async () => {
-			mockState.compiler.disableCompilation = false;
+			mockState.compiler.disableAutoCompilation = false;
 			mockState.callbacks.compileConfig = undefined;
 
 			const result = await compileConfigForExport(mockState);
@@ -204,25 +190,22 @@ describe('disableCompilation feature', () => {
 	});
 
 	describe('applyConfigToState integration', () => {
-		it('should set disableCompilation flag from config', async () => {
+		it('should set disableAutoCompilation flag from config', async () => {
 			mockCompileConfig.mockResolvedValue({
-				config: { disableCompilation: true },
+				config: { disableAutoCompilation: true },
 				errors: [],
 			});
 
 			configEffect(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'codeBlockAdded');
-			const rebuildConfigCallback = configCall![1];
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
-			await rebuildConfigCallback();
-
-			expect(mockState.compiler.disableCompilation).toBe(true);
+			expect(mockState.compiler.disableAutoCompilation).toBe(true);
 		});
 
-		it('should not change disableCompilation flag when not in config', async () => {
-			store.set('compiler.disableCompilation', false);
+		it('should not change disableAutoCompilation flag when not in config', async () => {
+			store.set('compiler.disableAutoCompilation', false);
 
 			mockCompileConfig.mockResolvedValue({
 				config: { memorySizeBytes: 2097152 },
@@ -231,13 +214,10 @@ describe('disableCompilation feature', () => {
 
 			configEffect(store, mockEvents);
 
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'codeBlockAdded');
-			const rebuildConfigCallback = configCall![1];
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
-			await rebuildConfigCallback();
-
-			expect(mockState.compiler.disableCompilation).toBe(false);
+			expect(mockState.compiler.disableAutoCompilation).toBe(false);
 		});
 	});
 });

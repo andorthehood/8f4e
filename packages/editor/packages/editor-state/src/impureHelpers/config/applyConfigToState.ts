@@ -2,17 +2,7 @@ import { StateManager } from '@8f4e/state-manager';
 
 import isPlainObject from '../../pureHelpers/isPlainObject';
 
-import type { State, Runtimes } from '../../types';
-
-/**
- * Interface for the expected config object structure
- */
-export interface ConfigObject {
-	memorySizeBytes?: number;
-	selectedRuntime?: number;
-	runtimeSettings?: Runtimes[];
-	disableCompilation?: boolean;
-}
+import type { State, Runtimes, ConfigObject } from '../../types';
 
 /**
  * Applies the compiled config object to the editor state.
@@ -20,6 +10,8 @@ export interface ConfigObject {
  */
 export function applyConfigToState(store: StateManager<State>, config: ConfigObject): void {
 	const state = store.getState();
+
+	state.compiledConfig = config;
 
 	if (Array.isArray(config.runtimeSettings)) {
 		const validRuntimeTypes = [
@@ -50,11 +42,11 @@ export function applyConfigToState(store: StateManager<State>, config: ConfigObj
 		}
 	}
 
-	if (typeof config.memorySizeBytes === 'number') {
-		store.set('compiler.compilerOptions.memorySizeBytes', config.memorySizeBytes);
+	if (typeof config.disableAutoCompilation === 'boolean') {
+		store.set('compiler.disableAutoCompilation', config.disableAutoCompilation);
 	}
 
-	if (typeof config.disableCompilation === 'boolean') {
-		store.set('compiler.disableCompilation', config.disableCompilation);
+	if (typeof config.memorySizeBytes === 'number') {
+		store.set('compiler.compilerOptions.memorySizeBytes', config.memorySizeBytes);
 	}
 }

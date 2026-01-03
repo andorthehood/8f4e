@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
+import compiler from './compiler';
+import configEffect from './config';
 import projectImport from './projectImport';
 
 import { createMockState } from '../pureHelpers/testingUtils/testUtils';
@@ -22,7 +24,7 @@ describe('projectImport', () => {
 
 	describe('Event wiring', () => {
 		it('should register importProject event handler', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const importProjectCall = onCalls.find(call => call[0] === 'importProject');
@@ -30,7 +32,7 @@ describe('projectImport', () => {
 		});
 
 		it('should register loadProject event handler', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -38,7 +40,7 @@ describe('projectImport', () => {
 		});
 
 		it('should register loadProjectBySlug event handler', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
@@ -49,14 +51,12 @@ describe('projectImport', () => {
 	describe('Initial session loading', () => {
 		it('should load empty project when persistentStorage is disabled', async () => {
 			mockState.featureFlags.persistentStorage = false;
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			// Give time for promises to resolve
 			await new Promise(resolve => setTimeout(resolve, 10));
 
-			const dispatchCalls = (mockEvents.dispatch as unknown as MockInstance).mock.calls;
-			const projectLoadedCall = dispatchCalls.find(call => call[0] === 'projectLoaded');
-			expect(projectLoadedCall).toBeDefined();
+			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
 		});
 
 		it('should load session from callback when persistentStorage is enabled', async () => {
@@ -67,7 +67,7 @@ describe('projectImport', () => {
 			mockState.featureFlags.persistentStorage = true;
 			mockState.callbacks.loadSession = vi.fn().mockResolvedValue(mockProject);
 
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			// Give time for promises to resolve
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -81,7 +81,7 @@ describe('projectImport', () => {
 			mockState.featureFlags.persistentStorage = true;
 			mockState.callbacks.loadSession = vi.fn().mockRejectedValue(new Error('Storage error'));
 
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			// Give time for promises to resolve
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -94,7 +94,8 @@ describe('projectImport', () => {
 
 	describe('loadProject', () => {
 		it('should use default memory settings when loading project', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -118,7 +119,8 @@ describe('projectImport', () => {
 			// Set custom memory first
 			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
 
-			projectImport(store, mockEvents, originalDefault);
+			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -135,7 +137,8 @@ describe('projectImport', () => {
 		});
 
 		it('should reset compiler state when loading a project', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -152,8 +155,8 @@ describe('projectImport', () => {
 			expect(mockState.compiler.codeBuffer).toEqual(new Uint8Array());
 		});
 
-		it('should dispatch projectLoaded event after loading', () => {
-			projectImport(store, mockEvents, mockState);
+		it('should store initial project state after loading', () => {
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -161,13 +164,12 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project: EMPTY_DEFAULT_PROJECT });
 
-			const dispatchCalls = (mockEvents.dispatch as unknown as MockInstance).mock.calls;
-			const projectLoadedCall = dispatchCalls.find(call => call[0] === 'projectLoaded');
-			expect(projectLoadedCall).toBeDefined();
+			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
 		});
 
 		it('should load runtime-ready project with pre-compiled WASM', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -190,7 +192,8 @@ describe('projectImport', () => {
 		});
 
 		it('should handle decoding errors gracefully', () => {
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
+			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -220,7 +223,7 @@ describe('projectImport', () => {
 			};
 
 			mockState.callbacks.importProject = vi.fn().mockResolvedValue(mockProject);
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const importProjectCall = onCalls.find(call => call[0] === 'importProject');
@@ -235,7 +238,7 @@ describe('projectImport', () => {
 			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.callbacks.importProject = undefined;
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const importProjectCall = onCalls.find(call => call[0] === 'importProject');
@@ -252,7 +255,7 @@ describe('projectImport', () => {
 			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
 			mockState.callbacks.importProject = vi.fn().mockRejectedValue(new Error('Import failed'));
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const importProjectCall = onCalls.find(call => call[0] === 'importProject');
@@ -276,7 +279,7 @@ describe('projectImport', () => {
 			};
 
 			mockState.callbacks.getProject = vi.fn().mockResolvedValue(mockProject);
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
@@ -286,17 +289,14 @@ describe('projectImport', () => {
 
 			expect(mockState.callbacks.getProject).toHaveBeenCalledWith('test-slug');
 
-			// Verify project was loaded by checking if projectLoaded event was dispatched
-			const dispatchCalls = (mockEvents.dispatch as unknown as MockInstance).mock.calls;
-			const projectLoadedCall = dispatchCalls.find(call => call[0] === 'projectLoaded');
-			expect(projectLoadedCall).toBeDefined();
+			expect(mockState.initialProjectState).toEqual(mockProject);
 		});
 
 		it('should warn when no getProject callback is provided', async () => {
 			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
 			mockState.callbacks.getProject = undefined;
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
@@ -317,13 +317,14 @@ describe('projectImport', () => {
 				compiledConfig: {
 					memorySizeBytes: 2097152,
 					selectedRuntime: 1,
-					disableCompilation: true,
+					disableAutoCompilation: true,
 				},
 				compiledWasm: 'base64encodedwasm',
 				memorySnapshot: 'base64encodedmemory',
 			};
 
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
+			configEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -331,10 +332,10 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project: runtimeReadyProject });
 
-			expect(mockState.compiler.compiledConfig).toEqual({
+			expect(mockState.compiledConfig).toEqual({
 				memorySizeBytes: 2097152,
 				selectedRuntime: 1,
-				disableCompilation: true,
+				disableAutoCompilation: true,
 			});
 		});
 
@@ -343,7 +344,7 @@ describe('projectImport', () => {
 				...EMPTY_DEFAULT_PROJECT,
 			};
 
-			projectImport(store, mockEvents, mockState);
+			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -351,7 +352,7 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project: regularProject });
 
-			expect(mockState.compiler.compiledConfig).toBeUndefined();
+			expect(mockState.compiledConfig).toBeUndefined();
 		});
 	});
 });

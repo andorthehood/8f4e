@@ -174,8 +174,7 @@ export interface Compiler {
 	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
 	compiledFunctions?: CompiledFunctionLookup;
-	disableCompilation: boolean;
-	compiledConfig?: Record<string, unknown>;
+	disableAutoCompilation: boolean;
 }
 
 export interface Midi {
@@ -369,7 +368,7 @@ export type GraphicHelper = {
 		y: number;
 		animationDurationMs?: number;
 	};
-	codeBlocks: Set<CodeBlockGraphicData>;
+	codeBlocks: CodeBlockGraphicData[];
 	/**
 	 * Monotonically increasing counter for assigning creationIndex to new code blocks.
 	 * Incremented each time a new code block is created.
@@ -484,7 +483,7 @@ export interface Project {
 	compiledModules?: CompiledModuleLookup;
 	memorySnapshot?: string;
 	/** Compiled configuration from config blocks for runtime-only execution */
-	compiledConfig?: Record<string, unknown>;
+	compiledConfig?: ConfigObject;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
 }
@@ -536,7 +535,7 @@ export interface Callbacks {
 	getProject?: (slug: string) => Promise<Project>;
 
 	// Compilation callback
-	compileProject?: (
+	compileCode?: (
 		modules: Module[],
 		compilerOptions: CompileOptions,
 		functions?: Module[]
@@ -634,6 +633,13 @@ export interface CodeError {
 	codeBlockId: string | number;
 }
 
+export interface ConfigObject {
+	memorySizeBytes?: number;
+	selectedRuntime?: number;
+	runtimeSettings?: Runtimes[];
+	disableAutoCompilation?: boolean;
+}
+
 export interface State {
 	compiler: Compiler;
 	midi: Midi;
@@ -644,6 +650,8 @@ export interface State {
 	colorSchemes: string[];
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
+	initialProjectState?: Project;
+	compiledConfig?: ConfigObject;
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
