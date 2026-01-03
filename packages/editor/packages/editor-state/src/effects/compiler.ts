@@ -1,7 +1,10 @@
 import { StateManager } from '@8f4e/state-manager';
 
+import decodeBase64ToUint8Array from '../pureHelpers/base64/decodeBase64ToUint8Array';
+import decodeBase64ToInt32Array from '../pureHelpers/base64/decodeBase64ToInt32Array';
+import decodeBase64ToFloat32Array from '../pureHelpers/base64/decodeBase64ToFloat32Array';
 import { EventDispatcher } from '../types';
-import { log } from '../impureHelpers/logger/logger';
+import { error, log } from '../impureHelpers/logger/logger';
 
 import type { CodeBlockGraphicData, State } from '../types';
 
@@ -115,40 +118,48 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 	events.on('compileCode', onForceCompile);
 	store.subscribe('compiler.compilerOptions', onRecompile);
-	store.subscribe('graphicHelper.codeBlocks', () => {
-		// state.compiler.compilerOptions.memorySizeBytes = defaultState.compiler.compilerOptions.memorySizeBytes;
-		// state.compiler.memoryBuffer = new Int32Array();
-		// state.compiler.memoryBufferFloat = new Float32Array();
-		// state.compiler.codeBuffer = new Uint8Array();
-		// state.compiler.compiledModules = {};
-		// state.compiler.allocatedMemorySize = 0;
-		// store.set('codeErrors.compilationErrors', []);
-		// state.compiler.isCompiling = false;
-		// state.binaryAssets = newProject.binaryAssets || [];
-		// state.runtime.runtimeSettings = defaultState.runtime.runtimeSettings;
-		// state.runtime.selectedRuntime = defaultState.runtime.selectedRuntime;
-		// // postProcessEffects are now derived from shader code blocks, not loaded from project data
-		// if (newProject.compiledWasm && newProject.memorySnapshot) {
-		// 	try {
-		// 		state.compiler.codeBuffer = decodeBase64ToUint8Array(newProject.compiledWasm);
-		// 		state.compiler.memoryBuffer = decodeBase64ToInt32Array(newProject.memorySnapshot);
-		// 		state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(newProject.memorySnapshot);
-		// 		state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
-		// 		if (newProject.compiledModules) {
-		// 			state.compiler.compiledModules = newProject.compiledModules;
-		// 		}
-		// 		log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
-		// 	} catch (err) {
-		// 		console.error('[Loader] Failed to decode pre-compiled WASM:', err);
-		// 		error(state, 'Failed to decode pre-compiled WASM', 'Loader');
-		// 		state.compiler.codeBuffer = new Uint8Array();
-		// 		state.compiler.memoryBuffer = new Int32Array();
-		// 		state.compiler.memoryBufferFloat = new Float32Array();
-		// 	}
-		// } else if (newProject.compiledModules) {
-		// 	state.compiler.compiledModules = newProject.compiledModules;
-		// }
+	store.subscribe('initialProjectState', () => {
+		store.set('codeErrors.compilationErrors', []);
+		state.binaryAssets = state.initialProjectState?.binaryAssets || [];
+
+		// Return to default compiler state
+		state.compiler.isCompiling = false;
+		state.compiler.compilerOptions.memorySizeBytes = 1048576; // Default to 1MB if not specified
+		state.compiler.codeBuffer = new Uint8Array();
+		state.compiler.compiledModules = {};
+		state.compiler.memoryBuffer = new Int32Array();
+		state.compiler.memoryBufferFloat = new Float32Array();
+		state.compiler.allocatedMemorySize = 0;
+
+		if (state.initialProjectState?.compiledWasm && state.initialProjectState.compiledModules) {
+			try {
+				state.compiler.codeBuffer = decodeBase64ToUint8Array(state.initialProjectState.compiledWasm);
+				state.compiler.compiledModules = state.initialProjectState.compiledModules;
+				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
+			} catch (err) {
+				state.compiler.codeBuffer = new Uint8Array();
+				state.compiler.compiledModules = {};
+				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
+				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
+			}
+		}
+
+		if (state.initialProjectState?.memorySnapshot) {
+			try {
+				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.initialProjectState.memorySnapshot);
+				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.initialProjectState.memorySnapshot);
+				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
+				log(state, 'Memory snapshot loaded and decoded successfully', 'Loader');
+			} catch (err) {
+				state.compiler.memoryBuffer = new Int32Array();
+				state.compiler.memoryBufferFloat = new Float32Array();
+				state.compiler.allocatedMemorySize = 0;
+				console.error('[Loader] Failed to decode memory snapshot:', err);
+				error(state, 'Failed to decode memory snapshot', 'Loader');
+			}
+		}
 	});
+	store.subscribe('graphicHelper.codeBlocks', onRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&
