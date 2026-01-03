@@ -10,39 +10,43 @@ import encodeUint8ArrayToBase64 from '../pureHelpers/base64/base64Encoder';
 
 import type { State } from '../types';
 
-const decodeBase64ToUint8ArrayMock = vi.fn((base64: string) => {
-	const binaryString = atob(base64);
-	return new Uint8Array(binaryString.split('').map(char => char.charCodeAt(0)));
+const { decodeBase64ToUint8ArrayMock, createTypedArrayMock } = vi.hoisted(() => {
+	const decodeBase64ToUint8ArrayMock = vi.fn((base64: string) => {
+		const binaryString = atob(base64);
+		return new Uint8Array(binaryString.split('').map(char => char.charCodeAt(0)));
+	});
+
+	const createTypedArrayMock = <T extends Int32Array | Float32Array>(
+		ctor: new (buffer: ArrayBuffer, byteOffset: number, length: number) => T,
+		errorMessage: string
+	) => {
+		return vi.fn((base64: string) => {
+			const uint8Array = decodeBase64ToUint8ArrayMock(base64);
+
+			if (uint8Array.byteLength % 4 !== 0) {
+				throw new Error(errorMessage);
+			}
+
+			return new ctor(uint8Array.buffer, uint8Array.byteOffset, uint8Array.byteLength / 4);
+		});
+	};
+
+	return { decodeBase64ToUint8ArrayMock, createTypedArrayMock };
 });
 
-const createTypedArrayMock = <T extends Int32Array | Float32Array>(
-	ctor: new (buffer: ArrayBuffer, byteOffset: number, length: number) => T,
-	errorMessage: string
-) => {
-	return vi.fn((base64: string) => {
-		const uint8Array = decodeBase64ToUint8ArrayMock(base64);
-
-		if (uint8Array.byteLength % 4 !== 0) {
-			throw new Error(errorMessage);
-		}
-
-		return new ctor(uint8Array.buffer, uint8Array.byteOffset, uint8Array.byteLength / 4);
-	});
-};
-
 vi.mock('../pureHelpers/base64/decodeBase64ToUint8Array', () => ({
-	decodeBase64ToUint8Array: decodeBase64ToUint8ArrayMock,
+	default: decodeBase64ToUint8ArrayMock,
 }));
 
 vi.mock('../pureHelpers/base64/decodeBase64ToInt32Array', () => ({
-	decodeBase64ToInt32Array: createTypedArrayMock(
+	default: createTypedArrayMock(
 		Int32Array,
 		'Invalid base64 data: byte length must be a multiple of 4 to decode as Int32Array'
 	),
 }));
 
 vi.mock('../pureHelpers/base64/decodeBase64ToFloat32Array', () => ({
-	decodeBase64ToFloat32Array: createTypedArrayMock(
+	default: createTypedArrayMock(
 		Float32Array,
 		'Invalid base64 data: byte length must be a multiple of 4 to decode as Float32Array'
 	),
@@ -83,7 +87,7 @@ describe('Runtime-ready project functionality', () => {
 				getModule: vi.fn(),
 				getListOfProjects: vi.fn(),
 				getProject: vi.fn(),
-				compileProject: vi.fn(),
+				compileCode: vi.fn(),
 				loadSession: vi.fn(),
 			},
 			editorSettings: {
@@ -103,7 +107,7 @@ describe('Runtime-ready project functionality', () => {
 		});
 
 		// Add the config block to the state
-		mockState.graphicHelper.codeBlocks.add(configBlock);
+		mockState.graphicHelper.codeBlocks.push(configBlock);
 
 		mockEvents = createMockEventDispatcherWithVitest();
 		store = createStateManager(mockState);
@@ -238,23 +242,14 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.memoryBuffer = expectedIntMemory;
 			mockState.compiler.memoryBufferFloat = expectedFloatMemory;
 			mockState.compiler.allocatedMemorySize = expectedIntMemory.byteLength;
-			// No compileProject callback for runtime-only projects
-			mockState.callbacks.compileProject = undefined;
+			// No compileCode callback for runtime-only projects
+			mockState.callbacks.compileCode = undefined;
 
 			// Set up compiler functionality
 			compiler(store, mockEvents);
 
-			// Get the onRecompile callback
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(
-				call => call[0] === 'codeBlockAdded' || call[0] === 'deleteCodeBlock' || call[0] === 'projectLoaded'
-			);
-			expect(compileCall).toBeDefined();
-
-			const onRecompileCallback = compileCall![1];
-
-			// Trigger recompilation
-			await onRecompileCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			// Verify pre-compiled WASM was recognized via internal logger
 			expect(
@@ -276,29 +271,23 @@ describe('Runtime-ready project functionality', () => {
 			// Set up a project without pre-compiled WASM (normal project)
 			mockState.compiler.codeBuffer = new Uint8Array(0); // No pre-compiled data
 
-			// Mock the compileProject function
-			const mockCompileProject = vi.fn().mockResolvedValue({
+			// Mock the compileCode function
+			const mockCompileCode = vi.fn().mockResolvedValue({
 				compiledModules: {},
 				codeBuffer: new Uint8Array([100, 200]),
 				allocatedMemorySize: 1024,
+				memoryAction: { action: 'reused' },
 			});
-			mockState.callbacks.compileProject = mockCompileProject;
+			mockState.callbacks.compileCode = mockCompileCode;
 
 			// Set up compiler functionality
 			compiler(store, mockEvents);
 
-			// Get the onRecompile callback
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(
-				call => call[0] === 'codeBlockAdded' || call[0] === 'deleteCodeBlock' || call[0] === 'projectLoaded'
-			);
-			const onRecompileCallback = compileCall![1];
-
-			// Trigger recompilation
-			await onRecompileCallback();
+			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			await new Promise(resolve => setTimeout(resolve, 0));
 
 			// Verify regular compilation was attempted
-			expect(mockCompileProject).toHaveBeenCalled();
+			expect(mockCompileCode).toHaveBeenCalled();
 		});
 	});
 

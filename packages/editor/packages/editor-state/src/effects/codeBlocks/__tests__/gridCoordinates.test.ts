@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import { createMockCodeBlock } from '../../../pureHelpers/testingUtils/testUtils';
 
-import type { CodeBlockGraphicData, State } from '../../../types';
+import type { State } from '../../../types';
 
 describe('Grid Coordinates Integration', () => {
 	let mockState: Pick<State, 'graphicHelper'>;
@@ -16,7 +16,7 @@ describe('Grid Coordinates Integration', () => {
 					x: 0,
 					y: 0,
 				},
-				codeBlocks: new Set<CodeBlockGraphicData>(),
+				codeBlocks: [],
 			} as State['graphicHelper'],
 		};
 	});
@@ -88,7 +88,7 @@ describe('Grid Coordinates Integration', () => {
 				y: 160,
 			});
 
-			mockState.graphicHelper.codeBlocks.add(codeBlock);
+			mockState.graphicHelper.codeBlocks.push(codeBlock);
 
 			// Verify initial state with 8x16 font
 			expect(codeBlock.x).toBe(80);
@@ -132,8 +132,8 @@ describe('Grid Coordinates Integration', () => {
 				y: 240,
 			});
 
-			mockState.graphicHelper.codeBlocks.add(block1);
-			mockState.graphicHelper.codeBlocks.add(block2);
+			mockState.graphicHelper.codeBlocks.push(block1);
+			mockState.graphicHelper.codeBlocks.push(block2);
 
 			// Calculate initial grid spacing
 			const initialGridSpacingX = block2.gridX - block1.gridX;
