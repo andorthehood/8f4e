@@ -42,11 +42,6 @@ export function applyConfigToState(store: StateManager<State>, config: ConfigObj
 		}
 	}
 
-	if (typeof config.disableAutoCompilation === 'boolean') {
-		store.set('compiler.disableAutoCompilation', config.disableAutoCompilation);
-	}
-
-	if (typeof config.memorySizeBytes === 'number') {
-		store.set('compiler.compilerOptions.memorySizeBytes', config.memorySizeBytes);
-	}
+	store.set('compiler.disableAutoCompilation', config.disableAutoCompilation ?? false);
+	store.set('compiler.compilerOptions.memorySizeBytes', config.memorySizeBytes ?? 1048576); // 1MB default
 }
