@@ -43,7 +43,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	editorSettings(store, events, state);
 
 	runtime(store, events);
-	projectImport(store, events, state);
+	projectImport(store, events);
 	codeBlockDragger(store, events);
 	codeBlockNavigation(state, events);
 	demoModeNavigation(state, events);
@@ -53,7 +53,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	viewport(state, events);
 	contextMenu(store, events);
 	codeBlockCreator(store, events);
-	blockTypeUpdater(store, events); // Must run before compiler to classify blocks first
+	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	configEffect(store, events);
 	compiler(store, events);
