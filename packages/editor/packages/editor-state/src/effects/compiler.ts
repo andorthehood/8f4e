@@ -114,7 +114,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 	}
 
 	events.on('compileCode', onForceCompile);
-	events.on('deleteCodeBlock', onRecompile);
 	store.subscribe('compiler.compilerOptions', onRecompile);
 	store.subscribe('graphicHelper.codeBlocks', () => {
 		// state.compiler.compilerOptions.memorySizeBytes = defaultState.compiler.compilerOptions.memorySizeBytes;
