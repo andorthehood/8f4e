@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
+import compiler from './compiler';
 import projectImport from './projectImport';
 
 import { createMockState } from '../pureHelpers/testingUtils/testUtils';
@@ -21,7 +22,8 @@ describe('Loader - Project-specific memory configuration', () => {
 	});
 
 	it('should use default memory settings when loading project', async () => {
-		projectImport(store, mockEvents, mockState);
+		projectImport(store, mockEvents);
+		compiler(store, mockEvents);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -50,7 +52,8 @@ describe('Loader - Project-specific memory configuration', () => {
 		// Set custom memory first
 		mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
 
-		projectImport(store, mockEvents, originalDefault);
+		projectImport(store, mockEvents);
+		compiler(store, mockEvents);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;

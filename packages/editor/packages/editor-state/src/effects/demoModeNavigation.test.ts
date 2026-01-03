@@ -52,7 +52,7 @@ describe('demoModeNavigation', () => {
 			},
 			graphicHelper: {
 				selectedCodeBlock: undefined,
-				codeBlocks: new Set([selectedBlock, leftBlock, rightBlock, upBlock, downBlock]),
+				codeBlocks: [selectedBlock, leftBlock, rightBlock, upBlock, downBlock],
 				viewport: { x: 0, y: 0, width: 800, height: 600, vGrid: 8, hGrid: 16 },
 			},
 		});
@@ -94,7 +94,7 @@ describe('demoModeNavigation', () => {
 
 		// A code block should now be selected
 		expect(state.graphicHelper.selectedCodeBlock).toBeDefined();
-		expect(state.graphicHelper.codeBlocks.has(state.graphicHelper.selectedCodeBlock!)).toBe(true);
+		expect(state.graphicHelper.codeBlocks.includes(state.graphicHelper.selectedCodeBlock!)).toBe(true);
 	});
 
 	it('should not change selection on init when a block is already selected', () => {
@@ -123,7 +123,7 @@ describe('demoModeNavigation', () => {
 	});
 
 	it('should handle empty code blocks gracefully during demo navigation', () => {
-		state.graphicHelper.codeBlocks = new Set();
+		state.graphicHelper.codeBlocks = [];
 		state.graphicHelper.selectedCodeBlock = undefined;
 
 		demoModeNavigation(state, events);

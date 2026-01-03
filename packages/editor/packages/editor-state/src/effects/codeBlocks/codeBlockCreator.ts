@@ -6,11 +6,8 @@ import getVertexShaderId from '../../pureHelpers/shaderUtils/getVertexShaderId';
 import getFragmentShaderId from '../../pureHelpers/shaderUtils/getFragmentShaderId';
 import { EventDispatcher } from '../../types';
 
+import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State } from '../../types';
-
-export interface CodeBlockAddedEvent {
-	codeBlock: CodeBlockGraphicData;
-}
 
 const nameList = [
 	'quark',
@@ -56,7 +53,7 @@ function getRandomCodeBlockId() {
 }
 
 function checkIfCodeBlockIdIsTaken(state: State, id: string) {
-	return Array.from(state.graphicHelper.codeBlocks).some(codeBlock => {
+	return state.graphicHelper.codeBlocks.some(codeBlock => {
 		return codeBlock.id === id;
 	});
 }
@@ -95,7 +92,8 @@ function incrementCodeBlockIdUntilUnique(state: State, blockId: string) {
 	return blockId;
 }
 
-export default function codeBlockCreator(state: State, events: EventDispatcher): void {
+export default function codeBlockCreator(store: StateManager<State>, events: EventDispatcher): void {
+	const state = store.getState();
 	async function onAddCodeBlock({
 		x,
 		y,
@@ -181,8 +179,7 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
 		};
 
-		state.graphicHelper.codeBlocks.add(codeBlock);
-		events.dispatch('codeBlockAdded', { codeBlock });
+		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks, codeBlock]);
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
@@ -190,7 +187,10 @@ export default function codeBlockCreator(state: State, events: EventDispatcher):
 			return;
 		}
 
-		state.graphicHelper.codeBlocks.delete(codeBlock);
+		store.set(
+			'graphicHelper.codeBlocks',
+			state.graphicHelper.codeBlocks.filter(block => block !== codeBlock)
+		);
 	}
 
 	function onCopyCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {

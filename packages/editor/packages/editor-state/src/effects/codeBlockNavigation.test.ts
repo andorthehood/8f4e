@@ -43,7 +43,7 @@ describe('codeBlockNavigation', () => {
 			},
 			graphicHelper: {
 				selectedCodeBlock: selectedBlock,
-				codeBlocks: new Set([selectedBlock, leftBlock, rightBlock, upBlock, downBlock]),
+				codeBlocks: [selectedBlock, leftBlock, rightBlock, upBlock, downBlock],
 				viewport: { x: 0, y: 0, width: 800, height: 600, vGrid: 8, hGrid: 16 },
 			},
 		});
@@ -146,7 +146,7 @@ describe('codeBlockNavigation', () => {
 		codeBlockNavigation(state, events);
 
 		// Remove all blocks except selected
-		state.graphicHelper.codeBlocks = new Set([selectedBlock]);
+		state.graphicHelper.codeBlocks = [selectedBlock];
 
 		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);

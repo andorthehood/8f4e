@@ -21,7 +21,7 @@ export default function serializeToProject(
 	const { graphicHelper, compiler } = state;
 
 	const project: Project = {
-		codeBlocks: convertGraphicDataToProjectStructure(Array.from(graphicHelper.codeBlocks)),
+		codeBlocks: convertGraphicDataToProjectStructure(graphicHelper.codeBlocks),
 		viewport: {
 			// Convert pixel coordinates to grid coordinates for persistent storage
 			gridCoordinates: {
@@ -59,14 +59,14 @@ if (import.meta.vitest) {
 		it('serializes basic project state without compiled data', () => {
 			const state = createMockState({
 				graphicHelper: {
-					codeBlocks: new Set([
+					codeBlocks: [
 						createMockCodeBlock({
 							id: 'block-1',
 							code: ['10 example'],
 							x: 20,
 							y: 30,
 						}),
-					]),
+					],
 					viewport: {
 						x: 40,
 						y: 50,
@@ -88,7 +88,7 @@ if (import.meta.vitest) {
 		it('includes compiled modules, wasm and memory snapshot when requested', () => {
 			const state = createMockState({
 				graphicHelper: {
-					codeBlocks: new Set(),
+					codeBlocks: [],
 					viewport: {
 						x: 0,
 						y: 0,

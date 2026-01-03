@@ -6,7 +6,7 @@ import type { CodeBlockGraphicData } from '../types';
 
 describe('flattenProjectForCompiler', () => {
 	it('should exclude comment blocks from compilation', () => {
-		const mockCodeBlocks = new Set<CodeBlockGraphicData>([
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
 			{
 				code: ['module test', 'moduleEnd'],
 				blockType: 'module',
@@ -27,7 +27,7 @@ describe('flattenProjectForCompiler', () => {
 				blockType: 'comment',
 				creationIndex: 3,
 			} as CodeBlockGraphicData,
-		]);
+		];
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
@@ -38,7 +38,7 @@ describe('flattenProjectForCompiler', () => {
 	});
 
 	it('should include constants blocks but not comment blocks', () => {
-		const mockCodeBlocks = new Set<CodeBlockGraphicData>([
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
 			{
 				code: ['constants', 'constantsEnd'],
 				blockType: 'constants',
@@ -49,7 +49,7 @@ describe('flattenProjectForCompiler', () => {
 				blockType: 'comment',
 				creationIndex: 1,
 			} as CodeBlockGraphicData,
-		]);
+		];
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
@@ -59,7 +59,7 @@ describe('flattenProjectForCompiler', () => {
 	});
 
 	it('should handle only comment blocks', () => {
-		const mockCodeBlocks = new Set<CodeBlockGraphicData>([
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
 			{
 				code: ['comment', 'Comment 1', 'commentEnd'],
 				blockType: 'comment',
@@ -70,7 +70,7 @@ describe('flattenProjectForCompiler', () => {
 				blockType: 'comment',
 				creationIndex: 1,
 			} as CodeBlockGraphicData,
-		]);
+		];
 
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 

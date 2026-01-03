@@ -1,23 +1,26 @@
 import { StateManager } from '@8f4e/state-manager';
 
+import decodeBase64ToUint8Array from '../pureHelpers/base64/decodeBase64ToUint8Array';
+import decodeBase64ToInt32Array from '../pureHelpers/base64/decodeBase64ToInt32Array';
+import decodeBase64ToFloat32Array from '../pureHelpers/base64/decodeBase64ToFloat32Array';
 import { EventDispatcher } from '../types';
-import { log } from '../impureHelpers/logger/logger';
+import { error, log } from '../impureHelpers/logger/logger';
 
 import type { CodeBlockGraphicData, State } from '../types';
 
 /**
- * Converts code blocks from a Set to separate arrays for modules and functions, sorted by creationIndex.
+ * Converts code blocks into separate arrays for modules and functions, sorted by creationIndex.
  *
- * @param codeBlocks - Set of code blocks to filter and sort
+ * @param codeBlocks - List of code blocks to filter and sort
  * @returns Object containing modules and functions arrays, each sorted by creationIndex.
  *          Config blocks and comment blocks are excluded from the WASM compilation pipeline.
  *          Constants blocks are included in modules array.
  */
-export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): {
+export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	modules: { code: string[] }[];
 	functions: { code: string[] }[];
 } {
-	const allBlocks = Array.from(codeBlocks).sort((a, b) => a.creationIndex - b.creationIndex);
+	const allBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
 
 	return {
 		modules: allBlocks.filter(block => block.blockType === 'module' || block.blockType === 'constants'),
@@ -27,24 +30,8 @@ export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>)
 
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
-	async function onRecompile() {
-		// Check if compilation is disabled by config
-		if (state.compiler.disableCompilation) {
-			log(state, 'Compilation skipped: disableCompilation flag is set', 'Compiler');
-			store.set('compiler.isCompiling', false);
-			store.set('codeErrors.compilationErrors', []);
-			return;
-		}
 
-		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
-		// If codeBuffer is populated and we don't have a compiler, skip compilation
-		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileProject) {
-			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
-			store.set('compiler.isCompiling', false);
-			store.set('codeErrors.compilationErrors', []);
-			return;
-		}
-
+	async function onForceCompile() {
 		const { modules, functions } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 
 		store.set('compiler.isCompiling', true);
@@ -68,7 +55,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 				},
 			};
 
-			const result = await state.callbacks.compileProject?.(modules, compilerOptions, functions);
+			const result = await state.callbacks.compileCode?.(modules, compilerOptions, functions);
 
 			if (!result) {
 				return;
@@ -109,9 +96,69 @@ export default async function compiler(store: StateManager<State>, events: Event
 		}
 	}
 
-	events.on('codeBlockAdded', onRecompile);
-	events.on('deleteCodeBlock', onRecompile);
+	function onRecompile() {
+		// Check if compilation is disabled by config
+		if (state.compiler.disableAutoCompilation) {
+			log(state, 'Compilation skipped: disableAutoCompilation flag is set', 'Compiler');
+			return;
+		}
+
+		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
+		// If codeBuffer is populated and we don't have a compiler, skip compilation
+		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileCode) {
+			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
+			store.set('compiler.isCompiling', false);
+			store.set('codeErrors.compilationErrors', []);
+			return;
+		}
+
+		onForceCompile();
+	}
+
+	events.on('compileCode', onForceCompile);
 	store.subscribe('compiler.compilerOptions', onRecompile);
+	store.subscribe('initialProjectState', () => {
+		store.set('codeErrors.compilationErrors', []);
+		state.binaryAssets = state.initialProjectState?.binaryAssets || [];
+
+		// Return to default compiler state
+		state.compiler.isCompiling = false;
+		state.compiler.compilerOptions.memorySizeBytes = 1048576; // Default to 1MB if not specified
+		state.compiler.codeBuffer = new Uint8Array();
+		state.compiler.compiledModules = {};
+		state.compiler.memoryBuffer = new Int32Array();
+		state.compiler.memoryBufferFloat = new Float32Array();
+		state.compiler.allocatedMemorySize = 0;
+
+		if (state.initialProjectState?.compiledWasm && state.initialProjectState.compiledModules) {
+			try {
+				state.compiler.codeBuffer = decodeBase64ToUint8Array(state.initialProjectState.compiledWasm);
+				state.compiler.compiledModules = state.initialProjectState.compiledModules;
+				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
+			} catch (err) {
+				state.compiler.codeBuffer = new Uint8Array();
+				state.compiler.compiledModules = {};
+				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
+				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
+			}
+		}
+
+		if (state.initialProjectState?.memorySnapshot) {
+			try {
+				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.initialProjectState.memorySnapshot);
+				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.initialProjectState.memorySnapshot);
+				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
+				log(state, 'Memory snapshot loaded and decoded successfully', 'Loader');
+			} catch (err) {
+				state.compiler.memoryBuffer = new Int32Array();
+				state.compiler.memoryBufferFloat = new Float32Array();
+				state.compiler.allocatedMemorySize = 0;
+				console.error('[Loader] Failed to decode memory snapshot:', err);
+				error(state, 'Failed to decode memory snapshot', 'Loader');
+			}
+		}
+	});
+	store.subscribe('graphicHelper.codeBlocks', onRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&

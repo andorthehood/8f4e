@@ -49,12 +49,12 @@ test('switches', async () => {
 
 		mockState.graphicHelper.selectedCodeBlock = codeBlockMock;
 
-		mockState.graphicHelper.codeBlocks.add(codeBlockMock);
+		mockState.graphicHelper.codeBlocks.push(codeBlockMock);
 
 		const lines2 = ['not selected code block', '', '', '', '', '', '', '', ''];
 		const codeToRender2 = lines2.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		mockState.graphicHelper.codeBlocks.add(
+		mockState.graphicHelper.codeBlocks.push(
 			createMockCodeBlock({
 				x: 288,
 				y: 16,

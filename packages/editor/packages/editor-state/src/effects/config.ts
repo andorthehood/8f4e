@@ -7,8 +7,7 @@ import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
 import configSchema from '../configSchema';
 
-import type { ConfigObject } from '../impureHelpers/config/applyConfigToState';
-import type { CodeError, EventDispatcher, State } from '../types';
+import type { CodeError, EventDispatcher, State, ConfigObject } from '../types';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 
@@ -65,15 +64,9 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	 * Each config block is compiled independently to allow proper error mapping.
 	 * Errors are saved to codeErrors.configErrors with the creationIndex of the source block.
 	 */
-	async function rebuildConfig(): Promise<void> {
+	async function forceCompileConfig(): Promise<void> {
 		const compileConfig = state.callbacks.compileConfig;
 		if (!compileConfig) {
-			return;
-		}
-
-		// Check if compilation is disabled by config
-		if (state.compiler.disableCompilation) {
-			log(state, 'Config compilation skipped: disableCompilation flag is set', 'Config');
 			return;
 		}
 
@@ -97,11 +90,25 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		}
 	}
 
+	function rebuildConfig() {
+		// Check if compilation is disabled by config
+		if (state.compiler.disableAutoCompilation) {
+			log(state, 'Config compilation skipped: disableAutoCompilation flag is set', 'Config');
+			return;
+		}
+
+		forceCompileConfig();
+	}
+
 	// Wire up event handlers
 	// rebuildConfig runs BEFORE module compilation because blockTypeUpdater runs first
-	events.on('codeBlockAdded', rebuildConfig);
-	events.on('deleteCodeBlock', rebuildConfig);
-	events.on('projectLoaded', rebuildConfig);
+	events.on('compileConfig', forceCompileConfig);
+	store.subscribe('initialProjectState', () => {
+		if (state.initialProjectState?.compiledConfig) {
+			applyConfigToState(store, state.initialProjectState.compiledConfig);
+		}
+	});
+	store.subscribe('graphicHelper.codeBlocks', rebuildConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'config') {
 			return;
@@ -116,10 +123,10 @@ export default function configEffect(store: StateManager<State>, events: EventDi
  * @param state The current editor state
  * @returns Promise resolving to the merged config object
  */
-export async function compileConfigForExport(state: State): Promise<Record<string, unknown>> {
+export async function compileConfigForExport(state: State): Promise<ConfigObject> {
 	// If compilation is disabled, return the stored compiled config if available
-	if (state.compiler.disableCompilation) {
-		return state.compiler.compiledConfig || {};
+	if (state.compiler.disableAutoCompilation) {
+		return state.compiledConfig || {};
 	}
 
 	// If no compileConfig callback, return empty object

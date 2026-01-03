@@ -122,7 +122,7 @@ function calculateSecondaryDistance(
  * diagonal layouts, by preferring blocks that are truly in the requested direction
  * rather than just diagonally closer by center-to-center distance.
  *
- * @param codeBlocks - The set of all code blocks to search through
+ * @param codeBlocks - The list of all code blocks to search through
  * @param selectedBlock - The currently selected code block to navigate from
  * @param direction - The direction to navigate: 'left', 'right', 'up', or 'down'
  * @returns The closest code block in the specified direction, or the selected block if none found
@@ -137,13 +137,13 @@ function calculateSecondaryDistance(
  * ```
  */
 export default function findClosestCodeBlockInDirection(
-	codeBlocks: Set<CodeBlockGraphicData>,
+	codeBlocks: CodeBlockGraphicData[],
 	selectedBlock: CodeBlockGraphicData,
 	direction: Direction
 ): CodeBlockGraphicData {
 	const selectedBounds = getBlockBounds(selectedBlock);
 
-	const candidates = Array.from(codeBlocks).filter(block => {
+	const candidates = codeBlocks.filter(block => {
 		if (block === selectedBlock) return false;
 
 		const candidateBounds = getBlockBounds(block);

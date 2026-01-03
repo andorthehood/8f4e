@@ -67,6 +67,19 @@ export const mainMenu: MenuGenerator = state => [
 		disabled: !state.callbacks.getListOfProjects,
 	},
 	{ divider: true },
+	{
+		title: 'Compile Config',
+		action: 'compileConfig',
+		close: true,
+		disabled: !state.callbacks.compileConfig,
+	},
+	{
+		title: 'Compile Code',
+		action: 'compileCode',
+		close: true,
+		disabled: !state.callbacks.compileCode,
+	},
+	{ divider: true },
 	{ title: 'Export Project', action: 'exportProject', close: true, disabled: !state.callbacks.exportProject },
 	{
 		title: 'Export Runtime-Ready Project',
@@ -82,7 +95,6 @@ export const mainMenu: MenuGenerator = state => [
 	},
 	{ divider: true },
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },
-	{ title: 'Project Settings', action: 'openSubMenu', payload: { menu: 'projectSettingsMenu' }, close: false },
 	{ divider: true },
 	{ title: 'MIDI Info', action: 'openSubMenu', payload: { menu: 'midiInfoMenu' }, close: false },
 ];
@@ -191,39 +203,6 @@ export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
 	}
 	return menuItems;
 };
-
-export const sampleRateMenu: MenuGenerator = () => [
-	{
-		title: '44100 Hz (buffered, for audio and MIDI CC)',
-		action: 'setSampleRate',
-		payload: { sampleRate: 44100 },
-		close: true,
-	},
-	{
-		title: '22050 Hz (buffered, for audio and MIDI CC)',
-		action: 'setSampleRate',
-		payload: { sampleRate: 22050 },
-		close: true,
-	},
-	{
-		title: '100 Hz (real time, for high precision MIDI timing)',
-		action: 'setSampleRate',
-		payload: { sampleRate: 100 },
-		close: true,
-	},
-	{
-		title: '50 Hz (real time, for high precision MIDI timing)',
-		action: 'setSampleRate',
-		payload: { sampleRate: 50 },
-		close: true,
-	},
-	{ title: '1 Hz (real time, for debugging)', action: 'setSampleRate', payload: { sampleRate: 1 }, close: true },
-];
-
-export const projectSettingsMenu: MenuGenerator = () => [
-	{ title: 'Set Sample Rate', action: 'openSubMenu', payload: { menu: 'sampleRateMenu' }, close: false },
-	{ title: 'Configure Audio I/O', action: 'openSubMenu', payload: { menu: 'configureAudioIO' }, close: false },
-];
 
 export const editorSettingsMenu: MenuGenerator = state => [
 	{
