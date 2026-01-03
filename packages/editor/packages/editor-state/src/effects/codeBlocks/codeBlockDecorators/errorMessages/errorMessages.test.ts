@@ -30,7 +30,7 @@ describe('errorMessages', () => {
 
 		mockState = createMockState({
 			graphicHelper: {
-				codeBlocks: new Set([codeBlock1, codeBlock2]),
+				codeBlocks: [codeBlock1, codeBlock2],
 				viewport: {
 					vGrid: 8,
 					hGrid: 16,

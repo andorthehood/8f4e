@@ -15,8 +15,8 @@ export interface ConfigBlockSource {
  * Config blocks are sorted in creation order.
  * Each config block is compiled independently to allow proper error mapping.
  */
-export function collectConfigBlocks(codeBlocks: Set<CodeBlockGraphicData>): ConfigBlockSource[] {
-	return Array.from(codeBlocks)
+export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): ConfigBlockSource[] {
+	return codeBlocks
 		.filter(block => block.blockType === 'config')
 		.sort((a, b) => a.creationIndex - b.creationIndex)
 		.map(block => {
@@ -45,7 +45,7 @@ if (import.meta.vitest) {
 				blockType: 'config',
 				creationIndex: 1,
 			});
-			const codeBlocks = new Set([block1, block2]);
+			const codeBlocks = [block1, block2];
 
 			const result = collectConfigBlocks(codeBlocks);
 			expect(result).toHaveLength(2);
@@ -68,7 +68,7 @@ if (import.meta.vitest) {
 				blockType: 'config',
 				creationIndex: 0,
 			});
-			const codeBlocks = new Set([block1, block2]);
+			const codeBlocks = [block1, block2];
 
 			const result = collectConfigBlocks(codeBlocks);
 			expect(result[0].block.id).toBe('second');
@@ -86,7 +86,7 @@ if (import.meta.vitest) {
 				blockType: 'module',
 				creationIndex: 1,
 			});
-			const codeBlocks = new Set([configBlock, moduleBlock]);
+			const codeBlocks = [configBlock, moduleBlock];
 
 			const result = collectConfigBlocks(codeBlocks);
 			expect(result).toHaveLength(1);
@@ -99,7 +99,7 @@ if (import.meta.vitest) {
 				blockType: 'module',
 				creationIndex: 0,
 			});
-			const codeBlocks = new Set([moduleBlock]);
+			const codeBlocks = [moduleBlock];
 
 			const result = collectConfigBlocks(codeBlocks);
 			expect(result).toHaveLength(0);
@@ -116,7 +116,7 @@ if (import.meta.vitest) {
 				blockType: 'config',
 				creationIndex: 1,
 			});
-			const codeBlocks = new Set([emptyBlock, contentBlock]);
+			const codeBlocks = [emptyBlock, contentBlock];
 
 			const result = collectConfigBlocks(codeBlocks);
 			expect(result).toHaveLength(1);

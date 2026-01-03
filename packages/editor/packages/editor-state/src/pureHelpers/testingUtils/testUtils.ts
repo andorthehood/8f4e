@@ -233,7 +233,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			loadSession: createMockAsyncFunction(null),
 		},
 		graphicHelper: {
-			codeBlocks: new Set(),
+			codeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
 			viewport: {
 				x: 0,

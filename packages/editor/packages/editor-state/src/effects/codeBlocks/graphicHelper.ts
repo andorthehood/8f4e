@@ -4,7 +4,6 @@ import { getModuleId } from '@8f4e/compiler/syntax';
 import bufferPlotters from './codeBlockDecorators/bufferPlotters/updateGraphicData';
 import buttons from './codeBlockDecorators/buttons/updateGraphicData';
 import debuggers from './codeBlockDecorators/debuggers/updateGraphicData';
-import errorMessages from './codeBlockDecorators/errorMessages/errorMessages';
 import gaps from './gaps';
 import inputs from './codeBlockDecorators/inputs/updateGraphicData';
 import outputs from './codeBlockDecorators/outputs/updateGraphicData';
@@ -13,7 +12,6 @@ import positionOffsetters from './positionOffsetters';
 import switches from './codeBlockDecorators/switches/updateGraphicData';
 import blockHighlights from './codeBlockDecorators/blockHighlights/updateGraphicData';
 import { CodeBlockClickEvent } from './codeBlockDragger';
-import { CodeBlockAddedEvent } from './codeBlockCreator';
 
 import { EventDispatcher } from '../../types';
 import gapCalculator from '../../pureHelpers/codeEditing/gapCalculator';
@@ -21,6 +19,7 @@ import generateCodeColorMap from '../../pureHelpers/codeEditing/generateCodeColo
 import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
 import reverseGapCalculator from '../../pureHelpers/codeEditing/reverseGapCalculator';
 import getLongestLineLength from '../../pureHelpers/codeParsers/getLongestLineLength';
+import wrapText from '../../pureHelpers/wrapText';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
@@ -200,14 +199,95 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(state.graphicHelper.selectedCodeBlock);
 	};
 
-	errorMessages(store);
+	const populateCodeBlocks = function () {
+		if (!state.initialProjectState) {
+			return;
+		}
+
+		state.graphicHelper.outputsByWordAddress.clear();
+		state.graphicHelper.selectedCodeBlock = undefined;
+		state.graphicHelper.draggedCodeBlock = undefined;
+		state.graphicHelper.nextCodeBlockCreationIndex = 0;
+		state.graphicHelper.viewport.x =
+			state.initialProjectState.viewport.gridCoordinates.x * state.graphicHelper.viewport.vGrid;
+		state.graphicHelper.viewport.y =
+			state.initialProjectState.viewport.gridCoordinates.y * state.graphicHelper.viewport.hGrid;
+		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
+			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
+			state.graphicHelper.nextCodeBlockCreationIndex++;
+			// Compute grid coordinates first as source of truth
+			const gridX = codeBlock.gridCoordinates.x;
+			const gridY = codeBlock.gridCoordinates.y;
+			// Compute pixel coordinates from grid coordinates
+			const pixelX = gridX * state.graphicHelper.viewport.vGrid;
+			const pixelY = gridY * state.graphicHelper.viewport.hGrid;
+
+			return {
+				width: 0,
+				minGridWidth: 32,
+				height: 0,
+				code: codeBlock.code,
+				codeColors: [],
+				codeToRender: [],
+				extras: {
+					blockHighlights: [],
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
+					buttons: [],
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					errorMessages: [],
+				},
+				cursor: { col: 0, row: 0, x: 0, y: 0 },
+				id: getModuleId(codeBlock.code) || '',
+				gaps: new Map(),
+				gridX,
+				gridY,
+				x: pixelX,
+				y: pixelY,
+				offsetX: 0,
+				offsetY: 0,
+				lineNumberColumnWidth: 1,
+				lastUpdated: Date.now(),
+				creationIndex,
+				blockType: 'unknown', // Will be updated by blockTypeUpdater effect
+			} as CodeBlockGraphicData;
+		});
+
+		store.set('graphicHelper.codeBlocks', codeBlocks);
+	};
+
+	function updateErrorMessages() {
+		const codeErrors = [...state.codeErrors.compilationErrors, ...state.codeErrors.configErrors];
+		state.graphicHelper.codeBlocks.forEach(codeBlock => {
+			codeBlock.extras.errorMessages = [];
+			codeErrors.forEach(codeError => {
+				if (codeBlock.creationIndex === codeError.codeBlockId || codeBlock.id === codeError.codeBlockId) {
+					const message = wrapText(codeError.message, codeBlock.width / state.graphicHelper.viewport.vGrid - 1);
+
+					codeBlock.extras.errorMessages.push({
+						x: 0,
+						y: (gapCalculator(codeError.lineNumber, codeBlock.gaps) + 1) * state.graphicHelper.viewport.hGrid,
+						message: ['Error:', ...message],
+						lineNumber: codeError.lineNumber,
+					});
+
+					updateGraphics(codeBlock);
+				}
+			});
+		});
+	}
+
+	updateErrorMessages();
 
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
-	events.on<CodeBlockAddedEvent>('codeBlockAdded', ({ codeBlock }) => updateGraphics(codeBlock));
-	events.on('init', updateGraphicsAll);
 	events.on('spriteSheetRerendered', recomputePixelCoordinatesAndUpdateGraphics);
+	store.subscribe('codeErrors', updateErrorMessages);
+	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);

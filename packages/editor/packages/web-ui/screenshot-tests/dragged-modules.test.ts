@@ -34,7 +34,7 @@ test('dragged module', async () => {
 
 		mockState.graphicHelper.draggedCodeBlock = codeBlockMock;
 
-		mockState.graphicHelper.codeBlocks.add(codeBlockMock);
+		mockState.graphicHelper.codeBlocks.push(codeBlockMock);
 	}
 
 	await expect(canvas).toMatchScreenshot();
