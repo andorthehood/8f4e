@@ -276,6 +276,7 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: {},
 				codeBuffer: new Uint8Array([100, 200]),
 				allocatedMemorySize: 1024,
+				memoryAction: { action: 'reused' },
 			});
 			mockState.callbacks.compileCode = mockCompileCode;
 
