@@ -55,8 +55,8 @@ describe('disableAutoCompilation feature', () => {
 			},
 		});
 
-		mockState.graphicHelper.codeBlocks.add(moduleBlock);
-		mockState.graphicHelper.codeBlocks.add(configBlock);
+		mockState.graphicHelper.codeBlocks.push(moduleBlock);
+		mockState.graphicHelper.codeBlocks.push(configBlock);
 
 		mockEvents = createMockEventDispatcherWithVitest();
 		store = createStateManager(mockState);
@@ -69,7 +69,7 @@ describe('disableAutoCompilation feature', () => {
 			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'codeBlockAdded');
+			const compileCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			expect(compileCall).toBeDefined();
 
 			const onRecompileCallback = compileCall![1];
@@ -93,7 +93,7 @@ describe('disableAutoCompilation feature', () => {
 			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'codeBlockAdded');
+			const compileCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			const onRecompileCallback = compileCall![1];
 
 			await onRecompileCallback();
@@ -109,7 +109,7 @@ describe('disableAutoCompilation feature', () => {
 			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(call => call[0] === 'codeBlockAdded');
+			const compileCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			const onRecompileCallback = compileCall![1];
 
 			await onRecompileCallback();
@@ -130,7 +130,7 @@ describe('disableAutoCompilation feature', () => {
 			configEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'codeBlockAdded');
+			const configCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			expect(configCall).toBeDefined();
 
 			const rebuildConfigCallback = configCall![1];
@@ -152,7 +152,7 @@ describe('disableAutoCompilation feature', () => {
 			configEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'codeBlockAdded');
+			const configCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			const rebuildConfigCallback = configCall![1];
 
 			await rebuildConfigCallback();
@@ -173,7 +173,7 @@ describe('disableAutoCompilation feature', () => {
 
 		it('should return stored compiledConfig when disableAutoCompilation is true and config exists', async () => {
 			mockState.compiler.disableAutoCompilation = true;
-			mockState.compiler.compiledConfig = {
+			mockState.compiledConfig = {
 				memorySizeBytes: 2097152,
 				selectedRuntime: 1,
 			};
@@ -216,7 +216,7 @@ describe('disableAutoCompilation feature', () => {
 			configEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'codeBlockAdded');
+			const configCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			const rebuildConfigCallback = configCall![1];
 
 			await rebuildConfigCallback();
@@ -235,7 +235,7 @@ describe('disableAutoCompilation feature', () => {
 			configEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const configCall = onCalls.find(call => call[0] === 'codeBlockAdded');
+			const configCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			const rebuildConfigCallback = configCall![1];
 
 			await rebuildConfigCallback();

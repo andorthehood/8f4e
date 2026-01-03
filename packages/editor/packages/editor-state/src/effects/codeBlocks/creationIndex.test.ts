@@ -25,7 +25,7 @@ describe('creationIndex', () => {
 	describe('codeBlockCreator', () => {
 		it('should assign creationIndex to new code blocks', () => {
 			// Initialize the codeBlockCreator
-			codeBlockCreator(mockState, mockEvents);
+			codeBlockCreator(store, mockEvents);
 
 			// Find the addCodeBlock handler
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -41,14 +41,14 @@ describe('creationIndex', () => {
 			addCodeBlockHandler({ x: 0, y: 0, isNew: true });
 
 			// Verify first code block got creationIndex 0
-			const codeBlocks = Array.from(mockState.graphicHelper.codeBlocks);
+			const codeBlocks = mockState.graphicHelper.codeBlocks;
 			expect(codeBlocks.length).toBe(1);
 			expect(codeBlocks[0].creationIndex).toBe(0);
 			expect(mockState.graphicHelper.nextCodeBlockCreationIndex).toBe(1);
 		});
 
 		it('should increment creationIndex for each new code block', () => {
-			codeBlockCreator(mockState, mockEvents);
+			codeBlockCreator(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
@@ -59,7 +59,7 @@ describe('creationIndex', () => {
 			addCodeBlockHandler({ x: 100, y: 0, isNew: true });
 			addCodeBlockHandler({ x: 200, y: 0, isNew: true });
 
-			const codeBlocks = Array.from(mockState.graphicHelper.codeBlocks);
+			const codeBlocks = mockState.graphicHelper.codeBlocks;
 			expect(codeBlocks.length).toBe(3);
 
 			// Verify each block has a unique, incrementing creationIndex
@@ -69,7 +69,7 @@ describe('creationIndex', () => {
 		});
 
 		it('should leave gaps in creationIndex when blocks are deleted', () => {
-			codeBlockCreator(mockState, mockEvents);
+			codeBlockCreator(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
@@ -83,7 +83,7 @@ describe('creationIndex', () => {
 			addCodeBlockHandler({ x: 200, y: 0, isNew: true });
 
 			// Delete the middle one (creationIndex 1)
-			const codeBlocks = Array.from(mockState.graphicHelper.codeBlocks);
+			const codeBlocks = mockState.graphicHelper.codeBlocks;
 			const middleBlock = codeBlocks.find(b => b.creationIndex === 1);
 			deleteCodeBlockHandler({ codeBlock: middleBlock });
 
@@ -91,7 +91,7 @@ describe('creationIndex', () => {
 			addCodeBlockHandler({ x: 300, y: 0, isNew: true });
 
 			// Verify the new block gets creationIndex 3 (not 1, leaving a gap)
-			const updatedCodeBlocks = Array.from(mockState.graphicHelper.codeBlocks);
+			const updatedCodeBlocks = mockState.graphicHelper.codeBlocks;
 			const creationIndexes = updatedCodeBlocks.map(b => b.creationIndex).sort((a, b) => a - b);
 			expect(creationIndexes).toEqual([0, 2, 3]);
 			expect(mockState.graphicHelper.nextCodeBlockCreationIndex).toBe(4);
@@ -117,7 +117,7 @@ describe('creationIndex', () => {
 
 			loadProjectCallback({ project: projectWithBlocks });
 
-			const codeBlocks = Array.from(mockState.graphicHelper.codeBlocks);
+			const codeBlocks = mockState.graphicHelper.codeBlocks;
 			expect(codeBlocks.length).toBe(3);
 
 			// Verify each block has a creationIndex
@@ -172,11 +172,10 @@ describe('creationIndex', () => {
 				blockType: 'module',
 			});
 
-			// Create a Set to simulate graphicHelper.codeBlocks (insertion order)
-			const codeBlocksSet = new Set([block1, block2, block3]);
+			const codeBlocksArray = [block1, block2, block3];
 
 			// Use the actual flattenProjectForCompiler function
-			const { modules } = flattenProjectForCompiler(codeBlocksSet);
+			const { modules } = flattenProjectForCompiler(codeBlocksArray);
 
 			// Verify blocks are sorted by creationIndex
 			expect(modules[0].code).toEqual(['module b', 'moduleEnd']); // creationIndex 0
@@ -204,9 +203,9 @@ describe('creationIndex', () => {
 				blockType: 'config',
 			});
 
-			const codeBlocksSet = new Set([moduleBlock, functionBlock, configBlock]);
+			const codeBlocksArray = [moduleBlock, functionBlock, configBlock];
 
-			const { modules, functions } = flattenProjectForCompiler(codeBlocksSet);
+			const { modules, functions } = flattenProjectForCompiler(codeBlocksArray);
 
 			expect(modules.length).toBe(1);
 			expect(modules[0].code).toEqual(['module testModule', 'moduleEnd']);

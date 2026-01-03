@@ -6,18 +6,18 @@ import { log } from '../impureHelpers/logger/logger';
 import type { CodeBlockGraphicData, State } from '../types';
 
 /**
- * Converts code blocks from a Set to separate arrays for modules and functions, sorted by creationIndex.
+ * Converts code blocks into separate arrays for modules and functions, sorted by creationIndex.
  *
- * @param codeBlocks - Set of code blocks to filter and sort
+ * @param codeBlocks - List of code blocks to filter and sort
  * @returns Object containing modules and functions arrays, each sorted by creationIndex.
  *          Config blocks and comment blocks are excluded from the WASM compilation pipeline.
  *          Constants blocks are included in modules array.
  */
-export function flattenProjectForCompiler(codeBlocks: Set<CodeBlockGraphicData>): {
+export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	modules: { code: string[] }[];
 	functions: { code: string[] }[];
 } {
-	const allBlocks = Array.from(codeBlocks).sort((a, b) => a.creationIndex - b.creationIndex);
+	const allBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
 
 	return {
 		modules: allBlocks.filter(block => block.blockType === 'module' || block.blockType === 'constants'),
@@ -76,6 +76,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			log(state, 'Compilation succeeded in ' + state.compiler.compilationTime.toFixed(2) + 'ms', 'Compiler');
 		} catch (error) {
+			console.log(error);
 			store.set('compiler.isCompiling', false);
 			const errorObject = error as Error & {
 				line?: { lineNumber: number };
@@ -113,9 +114,42 @@ export default async function compiler(store: StateManager<State>, events: Event
 	}
 
 	events.on('compileCode', onForceCompile);
-	events.on('codeBlockAdded', onRecompile);
 	events.on('deleteCodeBlock', onRecompile);
 	store.subscribe('compiler.compilerOptions', onRecompile);
+	store.subscribe('graphicHelper.codeBlocks', () => {
+		// state.compiler.compilerOptions.memorySizeBytes = defaultState.compiler.compilerOptions.memorySizeBytes;
+		// state.compiler.memoryBuffer = new Int32Array();
+		// state.compiler.memoryBufferFloat = new Float32Array();
+		// state.compiler.codeBuffer = new Uint8Array();
+		// state.compiler.compiledModules = {};
+		// state.compiler.allocatedMemorySize = 0;
+		// store.set('codeErrors.compilationErrors', []);
+		// state.compiler.isCompiling = false;
+		// state.binaryAssets = newProject.binaryAssets || [];
+		// state.runtime.runtimeSettings = defaultState.runtime.runtimeSettings;
+		// state.runtime.selectedRuntime = defaultState.runtime.selectedRuntime;
+		// // postProcessEffects are now derived from shader code blocks, not loaded from project data
+		// if (newProject.compiledWasm && newProject.memorySnapshot) {
+		// 	try {
+		// 		state.compiler.codeBuffer = decodeBase64ToUint8Array(newProject.compiledWasm);
+		// 		state.compiler.memoryBuffer = decodeBase64ToInt32Array(newProject.memorySnapshot);
+		// 		state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(newProject.memorySnapshot);
+		// 		state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
+		// 		if (newProject.compiledModules) {
+		// 			state.compiler.compiledModules = newProject.compiledModules;
+		// 		}
+		// 		log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
+		// 	} catch (err) {
+		// 		console.error('[Loader] Failed to decode pre-compiled WASM:', err);
+		// 		error(state, 'Failed to decode pre-compiled WASM', 'Loader');
+		// 		state.compiler.codeBuffer = new Uint8Array();
+		// 		state.compiler.memoryBuffer = new Int32Array();
+		// 		state.compiler.memoryBufferFloat = new Float32Array();
+		// 	}
+		// } else if (newProject.compiledModules) {
+		// 	state.compiler.compiledModules = newProject.compiledModules;
+		// }
+	});
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&

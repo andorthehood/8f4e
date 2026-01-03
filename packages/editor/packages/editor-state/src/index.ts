@@ -44,7 +44,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	runtime(store, events);
 	projectImport(store, events, state);
-	codeBlockDragger(state, events);
+	codeBlockDragger(store, events);
 	codeBlockNavigation(state, events);
 	demoModeNavigation(state, events);
 	_switch(state, events);
@@ -52,7 +52,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	pianoKeyboard(store, events);
 	viewport(state, events);
 	contextMenu(store, events);
-	codeBlockCreator(state, events);
+	codeBlockCreator(store, events);
 	blockTypeUpdater(store, events); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	configEffect(store, events);

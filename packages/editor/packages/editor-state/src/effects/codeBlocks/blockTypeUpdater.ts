@@ -2,20 +2,13 @@ import { StateManager } from '@8f4e/state-manager';
 
 import getBlockType from '../../pureHelpers/codeParsers/getBlockType';
 
-import type { CodeBlockGraphicData, EventDispatcher, State } from '../../types';
-
-interface CodeBlockAddedEvent {
-	codeBlock: CodeBlockGraphicData;
-}
+import type { CodeBlockGraphicData, State } from '../../types';
 
 /**
  * Effect that keeps the blockType field in sync with code block contents.
- * Updates blockType on:
- * - codeBlockAdded: When a new code block is created
- * - projectLoaded: When a project is loaded (recompute all block types)
- * - code changes: When the selected code block's code changes
+ * Updates blockType when the selected code block's code changes.
  */
-export default function blockTypeUpdater(store: StateManager<State>, events: EventDispatcher): void {
+export default function blockTypeUpdater(store: StateManager<State>): void {
 	const state = store.getState();
 
 	/**
@@ -35,13 +28,6 @@ export default function blockTypeUpdater(store: StateManager<State>, events: Eve
 	}
 
 	/**
-	 * Update blockType when a new code block is added
-	 */
-	function onCodeBlockAdded({ codeBlock }: CodeBlockAddedEvent): void {
-		updateBlockType(codeBlock);
-	}
-
-	/**
 	 * Update blockType when the selected code block's code changes
 	 */
 	function onSelectedCodeBlockCodeChange(): void {
@@ -50,7 +36,6 @@ export default function blockTypeUpdater(store: StateManager<State>, events: Eve
 		}
 	}
 
-	events.on<CodeBlockAddedEvent>('codeBlockAdded', onCodeBlockAdded);
-	events.on('projectLoaded', updateAllBlockTypes);
+	store.subscribe('graphicHelper.codeBlocks', updateAllBlockTypes);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSelectedCodeBlockCodeChange);
 }

@@ -2,6 +2,7 @@ import { EventDispatcher } from '../../types';
 import { InternalMouseEvent } from '../../types';
 import findCodeBlockAtViewportCoordinates from '../../pureHelpers/finders/findCodeBlockAtViewportCoordinates';
 
+import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State } from '../../types';
 
 export interface CodeBlockClickEvent {
@@ -12,7 +13,8 @@ export interface CodeBlockClickEvent {
 	codeBlock: CodeBlockGraphicData;
 }
 
-export default function codeBlockDragger(state: State, events: EventDispatcher): () => void {
+export default function codeBlockDragger(store: StateManager<State>, events: EventDispatcher): () => void {
+	const state = store.getState();
 	function onMouseDown({ x, y }: InternalMouseEvent) {
 		if (!state.featureFlags.moduleDragging) {
 			return;
@@ -38,8 +40,10 @@ export default function codeBlockDragger(state: State, events: EventDispatcher):
 		});
 
 		// Bring dragged module forward.
-		state.graphicHelper.codeBlocks.delete(draggedCodeBlock);
-		state.graphicHelper.codeBlocks.add(draggedCodeBlock);
+		state.graphicHelper.codeBlocks = [
+			...state.graphicHelper.codeBlocks.filter(block => block !== draggedCodeBlock),
+			draggedCodeBlock,
+		];
 	}
 
 	function onMouseMove(event: InternalMouseEvent) {

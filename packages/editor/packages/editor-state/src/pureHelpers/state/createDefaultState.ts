@@ -2,8 +2,6 @@ import { Font } from '@8f4e/sprite-generator';
 
 import { defaultFeatureFlags } from './featureFlags';
 
-import type { CodeBlockGraphicData } from '../../types';
-
 export default function createDefaultState() {
 	return {
 		compiler: {
@@ -36,7 +34,7 @@ export default function createDefaultState() {
 				title: 'Dialog',
 				buttons: [{ title: 'Close', action: 'close' }],
 			},
-			codeBlocks: new Set<CodeBlockGraphicData>(),
+			codeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
 			viewport: {
