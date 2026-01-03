@@ -21,6 +21,8 @@ export interface ConfigObject {
 export function applyConfigToState(store: StateManager<State>, config: ConfigObject): void {
 	const state = store.getState();
 
+	state.compiledConfig = config;
+
 	if (Array.isArray(config.runtimeSettings)) {
 		const validRuntimeTypes = [
 			'WebWorkerLogicRuntime',

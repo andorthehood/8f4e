@@ -103,7 +103,7 @@ describe('Runtime-ready project functionality', () => {
 		});
 
 		// Add the config block to the state
-		mockState.graphicHelper.codeBlocks.add(configBlock);
+		mockState.graphicHelper.codeBlocks.push(configBlock);
 
 		mockEvents = createMockEventDispatcherWithVitest();
 		store = createStateManager(mockState);
@@ -246,9 +246,7 @@ describe('Runtime-ready project functionality', () => {
 
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(
-				call => call[0] === 'codeBlockAdded' || call[0] === 'deleteCodeBlock' || call[0] === 'projectLoaded'
-			);
+			const compileCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			expect(compileCall).toBeDefined();
 
 			const onRecompileCallback = compileCall![1];
@@ -289,9 +287,7 @@ describe('Runtime-ready project functionality', () => {
 
 			// Get the onRecompile callback
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const compileCall = onCalls.find(
-				call => call[0] === 'codeBlockAdded' || call[0] === 'deleteCodeBlock' || call[0] === 'projectLoaded'
-			);
+			const compileCall = onCalls.find(call => call[0] === 'deleteCodeBlock');
 			const onRecompileCallback = compileCall![1];
 
 			// Trigger recompilation

@@ -1,4 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
+import { ConfigObject } from 'impureHelpers/config/applyConfigToState';
 
 import type { Font, SpriteLookups, ColorScheme } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect } from 'glugglug';
@@ -175,7 +176,6 @@ export interface Compiler {
 	allocatedMemorySize: number;
 	compiledFunctions?: CompiledFunctionLookup;
 	disableAutoCompilation: boolean;
-	compiledConfig?: Record<string, unknown>;
 }
 
 export interface Midi {
@@ -369,7 +369,7 @@ export type GraphicHelper = {
 		y: number;
 		animationDurationMs?: number;
 	};
-	codeBlocks: Set<CodeBlockGraphicData>;
+	codeBlocks: CodeBlockGraphicData[];
 	/**
 	 * Monotonically increasing counter for assigning creationIndex to new code blocks.
 	 * Incremented each time a new code block is created.
@@ -484,7 +484,7 @@ export interface Project {
 	compiledModules?: CompiledModuleLookup;
 	memorySnapshot?: string;
 	/** Compiled configuration from config blocks for runtime-only execution */
-	compiledConfig?: Record<string, unknown>;
+	compiledConfig?: ConfigObject;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
 }
@@ -644,6 +644,8 @@ export interface State {
 	colorSchemes: string[];
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
+	initialProjectState?: Project;
+	compiledConfig?: ConfigObject;
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
