@@ -226,14 +226,14 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 					ignoredKeywords: [],
 				},
 			},
-			disableCompilation: false,
+			disableAutoCompilation: false,
 		},
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
 			loadSession: createMockAsyncFunction(null),
 		},
 		graphicHelper: {
-			codeBlocks: new Set(),
+			codeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
 			viewport: {
 				x: 0,

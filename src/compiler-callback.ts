@@ -8,7 +8,7 @@ const compilerWorker = new CompilerWorker();
 
 let memoryRef: WebAssembly.Memory | null = null;
 
-export async function compileProject(
+export async function compileCode(
 	modules: Module[],
 	compilerOptions: CompileOptions,
 	functions?: Module[]
