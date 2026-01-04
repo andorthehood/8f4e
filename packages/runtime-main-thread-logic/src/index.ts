@@ -34,6 +34,7 @@ export default function createMainThreadLogicRuntime(
 
 			const intervalTime = Math.floor(1000 / sampleRate);
 
+			clearInterval(interval);
 			interval = setInterval(() => {
 				if (!wasmApp) return;
 				const startTime = performance.now();
@@ -44,6 +45,7 @@ export default function createMainThreadLogicRuntime(
 				timeToExecuteLoopMs = endTime - startTime;
 			}, intervalTime);
 
+			clearInterval(statsInterval);
 			statsInterval = setInterval(() => {
 				onStats({
 					timerPrecisionPercentage: 100 - Math.abs(timerDriftMs / intervalTime) * 100,
