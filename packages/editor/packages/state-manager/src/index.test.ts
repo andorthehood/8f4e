@@ -469,4 +469,243 @@ describe('StateManager', () => {
 			});
 		});
 	});
+
+	describe('waitForChange', () => {
+		it('should resolve on the next change of the property', async () => {
+			const promise = stateManager.waitForChange('name');
+
+			stateManager.set('name', 'Changed Name');
+
+			const value = await promise;
+			expect(value).toBe('Changed Name');
+		});
+
+		it('should resolve on the next change of nested property', async () => {
+			const promise = stateManager.waitForChange('settings.theme');
+
+			stateManager.set('settings.theme', 'light');
+
+			const value = await promise;
+			expect(value).toBe('light');
+		});
+
+		it('should resolve on the next change of deeply nested property', async () => {
+			const promise = stateManager.waitForChange('settings.preferences.display.fontSize');
+
+			stateManager.set('settings.preferences.display.fontSize', 20);
+
+			const value = await promise;
+			expect(value).toBe(20);
+		});
+
+		it('should clean up subscription after resolving', async () => {
+			const promise = stateManager.waitForChange('name');
+
+			stateManager.set('name', 'First Change');
+			await promise;
+
+			const callback = vi.fn();
+			stateManager.subscribe('name', callback);
+
+			// Change again - the waitForChange subscription should not fire
+			stateManager.set('name', 'Second Change');
+
+			// Only the explicit subscription should be called
+			expect(callback).toHaveBeenCalledTimes(1);
+			expect(callback).toHaveBeenCalledWith('Second Change');
+		});
+
+		it('should resolve only once per promise', async () => {
+			const promise = stateManager.waitForChange('name');
+
+			stateManager.set('name', 'First Change');
+			const value1 = await promise;
+
+			stateManager.set('name', 'Second Change');
+			const value2 = await promise;
+
+			// Both awaits should return the same value (first change)
+			expect(value1).toBe('First Change');
+			expect(value2).toBe('First Change');
+		});
+
+		it('should work for multiple waitForChange calls on different properties', async () => {
+			const namePromise = stateManager.waitForChange('name');
+			const agePromise = stateManager.waitForChange('age');
+
+			stateManager.set('name', 'New Name');
+			stateManager.set('age', 35);
+
+			const [name, age] = await Promise.all([namePromise, agePromise]);
+
+			expect(name).toBe('New Name');
+			expect(age).toBe(35);
+		});
+
+		it('should work for multiple waitForChange calls on the same property', async () => {
+			const promise1 = stateManager.waitForChange('name');
+			const promise2 = stateManager.waitForChange('name');
+
+			stateManager.set('name', 'Changed Name');
+
+			const [value1, value2] = await Promise.all([promise1, promise2]);
+
+			expect(value1).toBe('Changed Name');
+			expect(value2).toBe('Changed Name');
+		});
+	});
+
+	describe('waitForValue', () => {
+		it('should resolve immediately when current value matches', async () => {
+			const promise = stateManager.waitForValue('name', 'John Doe');
+
+			const value = await promise;
+			expect(value).toBe('John Doe');
+		});
+
+		it('should resolve immediately when current nested value matches', async () => {
+			const promise = stateManager.waitForValue('settings.theme', 'dark');
+
+			const value = await promise;
+			expect(value).toBe('dark');
+		});
+
+		it('should resolve on change when current value does not match', async () => {
+			const promise = stateManager.waitForValue('name', 'Jane Doe');
+
+			stateManager.set('name', 'Jane Doe');
+
+			const value = await promise;
+			expect(value).toBe('Jane Doe');
+		});
+
+		it('should resolve on change when current nested value does not match', async () => {
+			const promise = stateManager.waitForValue('settings.theme', 'light');
+
+			stateManager.set('settings.theme', 'light');
+
+			const value = await promise;
+			expect(value).toBe('light');
+		});
+
+		it('should wait through multiple changes until expected value is reached', async () => {
+			const promise = stateManager.waitForValue('age', 40);
+
+			stateManager.set('age', 31);
+			stateManager.set('age', 32);
+			stateManager.set('age', 35);
+			stateManager.set('age', 40);
+
+			const value = await promise;
+			expect(value).toBe(40);
+		});
+
+		it('should clean up subscription after resolving when current value matches', async () => {
+			const promise = stateManager.waitForValue('name', 'John Doe');
+
+			await promise;
+
+			const callback = vi.fn();
+			stateManager.subscribe('name', callback);
+
+			stateManager.set('name', 'New Name');
+
+			// Only the explicit subscription should be called
+			expect(callback).toHaveBeenCalledTimes(1);
+			expect(callback).toHaveBeenCalledWith('New Name');
+		});
+
+		it('should clean up subscription after resolving when value changes to expected', async () => {
+			const promise = stateManager.waitForValue('name', 'Target Name');
+
+			stateManager.set('name', 'Target Name');
+			await promise;
+
+			const callback = vi.fn();
+			stateManager.subscribe('name', callback);
+
+			// Change again - the waitForValue subscription should not fire
+			stateManager.set('name', 'Another Name');
+
+			// Only the explicit subscription should be called
+			expect(callback).toHaveBeenCalledTimes(1);
+			expect(callback).toHaveBeenCalledWith('Another Name');
+		});
+
+		it('should use strict equality for value comparison', async () => {
+			const obj1 = { test: 'value' };
+			const obj2 = { test: 'value' };
+
+			stateManager.set('items', obj1 as unknown as string[]);
+
+			// Should not resolve with a different object reference
+			const promise = stateManager.waitForValue('items', obj2 as unknown as string[]);
+
+			// Wait a bit to ensure it doesn't resolve immediately
+			await new Promise(resolve => setTimeout(resolve, 10));
+
+			// Now set the exact reference
+			stateManager.set('items', obj2 as unknown as string[]);
+
+			const value = await promise;
+			expect(value).toBe(obj2);
+		});
+
+		it('should work for multiple waitForValue calls on different properties', async () => {
+			const namePromise = stateManager.waitForValue('name', 'Target Name');
+			const agePromise = stateManager.waitForValue('age', 45);
+
+			stateManager.set('name', 'Target Name');
+			stateManager.set('age', 45);
+
+			const [name, age] = await Promise.all([namePromise, agePromise]);
+
+			expect(name).toBe('Target Name');
+			expect(age).toBe(45);
+		});
+
+		it('should work for multiple waitForValue calls on the same property', async () => {
+			const promise1 = stateManager.waitForValue('name', 'Target Name');
+			const promise2 = stateManager.waitForValue('name', 'Target Name');
+
+			stateManager.set('name', 'Target Name');
+
+			const [value1, value2] = await Promise.all([promise1, promise2]);
+
+			expect(value1).toBe('Target Name');
+			expect(value2).toBe('Target Name');
+		});
+
+		it('should work for deeply nested properties', async () => {
+			const promise = stateManager.waitForValue('user.profile.personal.contact.address.city', 'San Francisco');
+
+			stateManager.set('user.profile.personal.contact.address.city', 'San Francisco');
+
+			const value = await promise;
+			expect(value).toBe('San Francisco');
+		});
+
+		it('should resolve immediately for deeply nested properties when value matches', async () => {
+			const promise = stateManager.waitForValue('user.profile.personal.contact.address.city', 'New York');
+
+			const value = await promise;
+			expect(value).toBe('New York');
+		});
+
+		it('should not resolve if value changes but does not match expected', async () => {
+			const promise = stateManager.waitForValue('age', 50);
+
+			stateManager.set('age', 35);
+			stateManager.set('age', 40);
+
+			// Wait a bit to ensure it doesn't resolve
+			await new Promise(resolve => setTimeout(resolve, 10));
+
+			// Now set to expected value
+			stateManager.set('age', 50);
+
+			const value = await promise;
+			expect(value).toBe(50);
+		});
+	});
 });
