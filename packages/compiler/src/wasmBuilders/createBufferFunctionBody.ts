@@ -5,22 +5,27 @@ import localSet from '../wasmUtils/local/localSet';
 import br_if from '../wasmUtils/controlFlow/br_if';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
+import createFunction from '../wasmUtils/codeSection/createFunction';
+import createLocalDeclaration from '../wasmUtils/codeSection/createLocalDeclaration';
+
+import type { FunctionBody } from '../wasmUtils/section';
 
 /**
- * Creates the function body for the buffer function, which repeatedly calls the cycle function.
+ * Creates the complete buffer function, which repeatedly calls the cycle function.
  *
  * @param bufferSize - Number of times to call the cycle function (default: 128)
  * @param bufferStrategy - Strategy to use: 'loop' (default, smaller code) or 'unrolled' (potentially faster)
  * @param cycleFunctionIndex - The WASM function index of the cycle function
- * @returns Byte array representing the buffer function body
+ * @returns Complete function body with locals and END instruction
  */
 export default function createBufferFunctionBody(
 	bufferSize: number = 128,
 	bufferStrategy: 'loop' | 'unrolled' = 'loop',
 	cycleFunctionIndex: number = 1
-): number[] {
+): FunctionBody {
 	if (bufferStrategy === 'unrolled') {
-		return new Array(bufferSize).fill(call(cycleFunctionIndex)).flat();
+		const body = new Array(bufferSize).fill(call(cycleFunctionIndex)).flat();
+		return createFunction([], body);
 	}
 
 	// Loop strategy: use a counter and loop control flow
@@ -34,7 +39,7 @@ export default function createBufferFunctionBody(
 
 	const counterLocalIndex = 0;
 
-	return [
+	const body = [
 		// Initialize counter: i32.const bufferSize, local.set $i
 		...i32const(bufferSize),
 		...localSet(counterLocalIndex),
@@ -53,6 +58,9 @@ export default function createBufferFunctionBody(
 		...br_if(0), // br_if 0 branches to start of loop (label 0)
 		WASMInstruction.END,
 	];
+
+	// Loop strategy needs a local i32 counter variable
+	return createFunction([createLocalDeclaration(Type.I32, 1)], body);
 }
 
 if (import.meta.vitest) {
@@ -61,50 +69,22 @@ if (import.meta.vitest) {
 	describe('createBufferFunctionBody', () => {
 		test('unrolled strategy generates repeated call instructions', () => {
 			const result = createBufferFunctionBody(3, 'unrolled', 1);
-			const callInstruction = [0x10, 1]; // call instruction with index 1
-			expect(result).toEqual([...callInstruction, ...callInstruction, ...callInstruction]);
+			expect(result).toMatchSnapshot();
 		});
 
 		test('loop strategy generates loop control flow', () => {
 			const result = createBufferFunctionBody(128, 'loop', 1);
-
-			// Should contain i32.const 128
-			expect(result).toContain(0x41); // I32_CONST
-			expect(result).toContain(128);
-
-			// Should contain loop
-			expect(result).toContain(0x03); // LOOP
-
-			// Should contain call
-			expect(result).toContain(0x10); // CALL
-
-			// Should contain br_if
-			expect(result).toContain(0x0d); // BR_IF
-
-			// Should contain local operations
-			expect(result).toContain(0x20); // LOCAL_GET
-			expect(result).toContain(0x21); // LOCAL_SET
-
-			// Should contain I32_SUB
-			expect(result).toContain(0x6b); // I32_SUB
+			expect(result).toMatchSnapshot();
 		});
 
 		test('loop strategy with custom buffer size', () => {
 			const result = createBufferFunctionBody(256, 'loop', 1);
-
-			// Should contain i32.const 256 (encoded as LEB128: 128, 2)
-			expect(result).toContain(0x41); // I32_CONST
-			const i32ConstIndex = result.indexOf(0x41);
-			expect(result[i32ConstIndex + 1]).toBe(128);
-			expect(result[i32ConstIndex + 2]).toBe(2);
+			expect(result).toMatchSnapshot();
 		});
 
 		test('default parameters use loop strategy with bufferSize 128', () => {
 			const result = createBufferFunctionBody();
-
-			// Should use loop strategy by default
-			expect(result).toContain(0x03); // LOOP
-			expect(result).toContain(0x0d); // BR_IF
+			expect(result).toMatchSnapshot();
 		});
 	});
 }
