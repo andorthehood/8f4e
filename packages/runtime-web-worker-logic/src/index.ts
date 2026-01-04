@@ -8,14 +8,14 @@ let timerDriftMs: number;
 
 async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
 	try {
-		clearInterval(interval);
-		clearInterval(statsInterval);
-
 		const wasmApp = await createModule(memoryRef, codeBuffer);
 
 		const intervalTime = Math.floor(1000 / sampleRate);
 
 		lastIntervalTime = performance.now();
+
+		clearInterval(interval);
+
 		interval = setInterval(() => {
 			const startTime = performance.now();
 			timerDriftMs = startTime - lastIntervalTime - intervalTime;
@@ -24,6 +24,8 @@ async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffe
 			const endTime = performance.now();
 			timeToExecuteLoopMs = endTime - startTime;
 		}, intervalTime);
+
+		clearInterval(statsInterval);
 
 		statsInterval = setInterval(() => {
 			self.postMessage({

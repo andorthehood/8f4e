@@ -24,9 +24,6 @@ async function init(
 	compiledModules: CompiledModuleLookup
 ) {
 	try {
-		clearInterval(interval);
-		clearInterval(statsInterval);
-
 		const wasmApp = await createModule(memoryRef, codeBuffer);
 		memoryBuffer = wasmApp.memoryBuffer;
 
@@ -39,6 +36,7 @@ async function init(
 		const intervalTime = Math.floor(1000 / sampleRate);
 
 		lastIntervalTime = performance.now();
+		clearInterval(interval);
 		interval = setInterval(() => {
 			const startTime = performance.now();
 			timerDriftMs = startTime - lastIntervalTime - intervalTime;
@@ -50,6 +48,7 @@ async function init(
 			broadcastMidiMessages(midiNoteModules, memoryBuffer);
 		}, intervalTime);
 
+		clearInterval(statsInterval);
 		statsInterval = setInterval(() => {
 			self.postMessage({
 				type: 'stats',
