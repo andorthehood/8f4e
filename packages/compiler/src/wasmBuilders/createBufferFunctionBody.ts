@@ -33,8 +33,8 @@ export default function createBufferFunctionBody(
 	//   local.set $i (i32.const bufferSize)
 	//   loop
 	//     call $cycle
-	//     local.tee $i (i32.sub (local.get $i) (i32.const 1))
-	//     br_if 0  ; branch back to loop start if non-zero
+	//     local.set $i (i32.sub (local.get $i) (i32.const 1))
+	//     br_if 0 (local.get $i)  ; branch back to loop start if non-zero
 	//   end
 
 	const counterLocalIndex = 0;
