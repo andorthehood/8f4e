@@ -79,11 +79,11 @@ describe('applyConfigToState', () => {
 		expect(state.compiler.disableAutoCompilation).toBe(true);
 	});
 
-	it('should not change disableAutoCompilation when not in config', () => {
+	it('should reset disableAutoCompilation to false when not in config', () => {
 		const state = createMockState();
 		const store = createStateManager(state);
 		state.compiler.disableAutoCompilation = true;
 		applyConfigToState(store, { memorySizeBytes: 65536 });
-		expect(state.compiler.disableAutoCompilation).toBe(true);
+		expect(state.compiler.disableAutoCompilation).toBe(false);
 	});
 });
