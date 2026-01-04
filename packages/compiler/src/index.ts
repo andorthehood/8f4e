@@ -15,6 +15,7 @@ import { compileModule, compileToAST, compileFunction } from './compiler';
 import collectConstants from './astUtils/collectConstants';
 import getConstantsName from './astUtils/getConstantsName';
 import getModuleName from './astUtils/getModuleName';
+import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import {
 	AST,
 	ArgumentType,
@@ -267,6 +268,13 @@ export default function compile(
 		.flat();
 	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(compiledModules);
 
+	// Apply defaults for buffer options
+	const bufferSize = options.bufferSize ?? 128;
+	const bufferStrategy = options.bufferStrategy ?? 'loop';
+
+	// Create buffer function (includes locals and body)
+	const bufferFunction = createBufferFunctionBody(bufferSize, bufferStrategy, 1);
+
 	// Strip AST from final result if not requested
 	const finalCompiledModules = options.includeAST
 		? compiledModulesMap
@@ -303,7 +311,7 @@ export default function compile(
 			...createCodeSection([
 				createFunction([], memoryInitiatorFunction),
 				createFunction([], cycleFunction),
-				createFunction([], new Array(128).fill(call(1)).flat()),
+				bufferFunction,
 				...compiledFunctions.map(func => func.body),
 				...loopFunctions,
 				...memoryInitiatorFunctions,
