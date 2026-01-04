@@ -1,0 +1,108 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`createBufferFunctionBody > default parameters use loop strategy with bufferSize 128 1`] = `
+[
+  25,
+  1,
+  1,
+  127,
+  65,
+  128,
+  1,
+  33,
+  0,
+  3,
+  64,
+  16,
+  1,
+  32,
+  0,
+  65,
+  1,
+  107,
+  33,
+  0,
+  32,
+  0,
+  13,
+  0,
+  11,
+  11,
+]
+`;
+
+exports[`createBufferFunctionBody > loop strategy generates loop control flow 1`] = `
+[
+  25,
+  1,
+  1,
+  127,
+  65,
+  128,
+  1,
+  33,
+  0,
+  3,
+  64,
+  16,
+  1,
+  32,
+  0,
+  65,
+  1,
+  107,
+  33,
+  0,
+  32,
+  0,
+  13,
+  0,
+  11,
+  11,
+]
+`;
+
+exports[`createBufferFunctionBody > loop strategy with custom buffer size 1`] = `
+[
+  25,
+  1,
+  1,
+  127,
+  65,
+  128,
+  2,
+  33,
+  0,
+  3,
+  64,
+  16,
+  1,
+  32,
+  0,
+  65,
+  1,
+  107,
+  33,
+  0,
+  32,
+  0,
+  13,
+  0,
+  11,
+  11,
+]
+`;
+
+exports[`createBufferFunctionBody > unrolled strategy generates repeated call instructions 1`] = `
+[
+  8,
+  0,
+  16,
+  1,
+  16,
+  1,
+  16,
+  1,
+  11,
+]
+`;
