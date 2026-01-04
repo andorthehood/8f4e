@@ -31,5 +31,7 @@ export function createMockStateManager(state: State): StateManager<State> {
 		set: vi.fn(),
 		subscribe: vi.fn(),
 		unsubscribe: vi.fn(),
+		waitForChange: vi.fn(() => Promise.resolve(undefined as never)),
+		waitForValue: vi.fn(() => Promise.resolve(undefined as never)),
 	};
 }
