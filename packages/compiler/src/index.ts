@@ -1,6 +1,5 @@
 import createCodeSection from './wasmUtils/codeSection/createCodeSection';
 import createFunction from './wasmUtils/codeSection/createFunction';
-import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';
 import createExportSection from './wasmUtils/export/createExportSection';
 import createFunctionExport from './wasmUtils/export/createFunctionExport';
 import createImportSection from './wasmUtils/import/createImportSection';
@@ -273,10 +272,8 @@ export default function compile(
 	const bufferSize = options.bufferSize ?? 128;
 	const bufferStrategy = options.bufferStrategy ?? 'loop';
 
-	// Create buffer function body
-	const bufferFunctionBody = createBufferFunctionBody(bufferSize, bufferStrategy, 1);
-	// For loop strategy, we need a local i32 counter variable
-	const bufferFunctionLocals = bufferStrategy === 'loop' ? [createLocalDeclaration(Type.I32, 1)] : [];
+	// Create buffer function (includes locals and body)
+	const bufferFunction = createBufferFunctionBody(bufferSize, bufferStrategy, 1);
 
 	// Strip AST from final result if not requested
 	const finalCompiledModules = options.includeAST
@@ -314,7 +311,7 @@ export default function compile(
 			...createCodeSection([
 				createFunction([], memoryInitiatorFunction),
 				createFunction([], cycleFunction),
-				createFunction(bufferFunctionLocals, bufferFunctionBody),
+				bufferFunction,
 				...compiledFunctions.map(func => func.body),
 				...loopFunctions,
 				...memoryInitiatorFunctions,
