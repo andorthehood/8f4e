@@ -8,6 +8,11 @@ export interface StateManager<State> {
 		callback: (value: PathValue<State, P>) => void
 	) => Subscription<State, P>;
 	unsubscribe: <P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void) => void;
+	waitForChange: <P extends Path<State>>(selector: P) => Promise<PathValue<State, P>>;
+	waitForValue: <P extends Path<State>>(
+		selector: P,
+		expectedValue: PathValue<State, P>
+	) => Promise<PathValue<State, P>>;
 }
 
 function createStateManager<State>(state: State): StateManager<State> {
@@ -60,7 +65,7 @@ function createStateManager<State>(state: State): StateManager<State> {
 		},
 		subscribe<P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void) {
 			const tokens = String(selector).split('.');
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 			const subscription: Subscription<State, P> = {
 				selector,
 				tokens,
@@ -75,6 +80,50 @@ function createStateManager<State>(state: State): StateManager<State> {
 					subscriptions.delete(subscription);
 				}
 			}
+		},
+		waitForChange<P extends Path<State>>(selector: P): Promise<PathValue<State, P>> {
+			return new Promise(resolve => {
+				const callback = (value: PathValue<State, P>) => {
+					this.unsubscribe(selector, callback);
+					resolve(value);
+				};
+				this.subscribe(selector, callback);
+			});
+		},
+		waitForValue<P extends Path<State>>(selector: P, expectedValue: PathValue<State, P>): Promise<PathValue<State, P>> {
+			return new Promise(resolve => {
+				// Get the current value
+				const tokens = String(selector).split('.');
+				let currentValue: unknown = state;
+				for (const token of tokens) {
+					if (currentValue === null) {
+						currentValue = undefined;
+						break;
+					}
+
+					if (typeof currentValue === 'object' || typeof currentValue === 'function') {
+						currentValue = (currentValue as Record<string, unknown>)[token];
+					} else {
+						currentValue = undefined;
+						break;
+					}
+				}
+
+				// If the current value already matches, resolve immediately
+				if (currentValue === expectedValue) {
+					resolve(currentValue as PathValue<State, P>);
+					return;
+				}
+
+				// Otherwise, subscribe and wait for the expected value
+				const callback = (value: PathValue<State, P>) => {
+					if (value === expectedValue) {
+						this.unsubscribe(selector, callback);
+						resolve(value);
+					}
+				};
+				this.subscribe(selector, callback);
+			});
 		},
 	};
 }
