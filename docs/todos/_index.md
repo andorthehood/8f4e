@@ -15,6 +15,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Created | Summary |
 |----|-------|----------|--------|---------|---------|
+| 161 | Add Explicit Store Wait Helpers | 🟡 | 2-4h | 2026-01-04 | Add `waitForChange` and `waitForValue` helpers to state-manager with immediate resolution and cleanup |
 | 121 | Add Pure Function Support to Compiler | 🟡 | 5-7d | 2025-12-09 | Compiler only accepts modules; add stack-only helper pipeline, `call` instruction, and WASM layout updates |
 | 122 | Add Function Code Blocks to Editor | 🟡 | 3-4d | 2025-12-09 | Editor still only surfaces module/config blocks; introduce function blocks in UI/state and send them to the compiler |
 | 123 | Add Memory Reinit Reason Reporting | 🟡 | 2-4h | 2025-12-14 | Add `MemoryReinitReason` to `compileAndUpdateMemory` results without changing existing memory reinit/recreate decision logic |
