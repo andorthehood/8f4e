@@ -3,8 +3,8 @@ title: 'TODO: Add Explicit Store Wait Helpers'
 priority: Medium
 effort: 2-4h
 created: 2026-01-04
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-04
 ---
 
 # TODO: Add Explicit Store Wait Helpers
