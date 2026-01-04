@@ -1,3 +1,5 @@
+import { getValueByPath } from './getValueByPath';
+
 import type { Path, PathValue } from './types';
 
 export function createWaitForValue<State>(
@@ -11,25 +13,11 @@ export function createWaitForValue<State>(
 	): Promise<PathValue<State, P>> {
 		return new Promise(resolve => {
 			// Get the current value
-			const tokens = String(selector).split('.');
-			let currentValue: unknown = state;
-			for (const token of tokens) {
-				if (currentValue === null) {
-					currentValue = undefined;
-					break;
-				}
-
-				if (typeof currentValue === 'object' || typeof currentValue === 'function') {
-					currentValue = (currentValue as Record<string, unknown>)[token];
-				} else {
-					currentValue = undefined;
-					break;
-				}
-			}
+			const currentValue = getValueByPath(state, selector);
 
 			// If the current value already matches, resolve immediately
 			if (currentValue === expectedValue) {
-				resolve(currentValue as PathValue<State, P>);
+				resolve(currentValue);
 				return;
 			}
 
