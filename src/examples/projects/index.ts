@@ -52,6 +52,7 @@ export const projectMetadata: ProjectMetadata[] = [
 		slug: 'simpleCounterMainThread',
 		title: 'Simple Counter (Main Thread)',
 	},
+	{ slug: 'standaloneProject', title: 'Standalone Project Example' },
 ];
 
 // For backwards compatibility
