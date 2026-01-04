@@ -1,3 +1,5 @@
+import { getValueByPath } from './getValueByPath';
+
 import type { Path, PathValue, Subscription } from './types';
 
 export function createSet<State>(state: State, subscriptions: Set<Subscription<State>>) {
@@ -26,21 +28,7 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 				}
 			}
 
-			let target: unknown = state;
-			for (const token of tokens) {
-				if (target === null) {
-					target = undefined;
-					break;
-				}
-
-				if (typeof target === 'object' || typeof target === 'function') {
-					target = (target as Record<string, unknown>)[token];
-				} else {
-					target = undefined;
-					break;
-				}
-			}
-
+			const target = getValueByPath(state, subscription.selector);
 			(callback as (value: unknown) => void)(target);
 		});
 	};
