@@ -15,7 +15,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Created | Summary |
 |----|-------|----------|--------|---------|---------|
-| 161 | Add Explicit Store Wait Helpers | 🟡 | 2-4h | 2026-01-04 | Add `waitForChange` and `waitForValue` helpers to state-manager with immediate resolution and cleanup |
 | 121 | Add Pure Function Support to Compiler | 🟡 | 5-7d | 2025-12-09 | Compiler only accepts modules; add stack-only helper pipeline, `call` instruction, and WASM layout updates |
 | 122 | Add Function Code Blocks to Editor | 🟡 | 3-4d | 2025-12-09 | Editor still only surfaces module/config blocks; introduce function blocks in UI/state and send them to the compiler |
 | 123 | Add Memory Reinit Reason Reporting | 🟡 | 2-4h | 2025-12-14 | Add `MemoryReinitReason` to `compileAndUpdateMemory` results without changing existing memory reinit/recreate decision logic |
@@ -75,6 +74,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 161 | Add Explicit Store Wait Helpers | 🟡 | 2-4h | 2026-01-04 | Added `waitForChange` and `waitForValue` Promise-based helpers to state-manager; both use strict equality, auto-unsubscribe after resolving, and support immediate resolution; comprehensive tests cover change-driven and immediate resolution with cleanup verification |
 | 157 | Disable Compilation for Runtime-Ready Projects | 🟡 | 3-5h | 2026-01-02 | Added `disableCompilation` config flag to hard-block compilation and skip config/module compilation paths; comprehensive tests added covering compiler, config effects, and runtime-ready export |
 | 147 | Split Memory Instruction Into int/float With Shared Helpers | 🟡 | 4-6h | 2025-12-25 | Split `memory.ts` into `int.ts`/`float.ts`, add shared helpers for argument parsing, pointer depth, and memory flags, split `memory.test.ts` into `int.test.ts`/`float.test.ts`; all tests pass, typecheck passes, lint passes |
 | 148 | Consolidate syntax-related logic into syntax-rules package | 🟡 | 2-3d | 2025-12-25 | Archived - syntax logic consolidated into `@8f4e/compiler/syntax` subpath; superseded by TODO 152 |
