@@ -3,8 +3,8 @@ title: 'TODO: Add Comment Code Blocks'
 priority: Medium
 effort: 1-2d
 created: 2026-01-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-03
 ---
 
 # TODO: Add Comment Code Blocks
