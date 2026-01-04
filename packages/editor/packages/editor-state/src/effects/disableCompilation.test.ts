@@ -114,7 +114,7 @@ describe('disableAutoCompilation feature', () => {
 	});
 
 	describe('Config compilation', () => {
-		it('should skip config compilation when disableAutoCompilation is true', async () => {
+		it('should compile config even when disableAutoCompilation is true', async () => {
 			store.set('compiler.disableAutoCompilation', true);
 
 			configEffect(store, mockEvents);
@@ -122,14 +122,7 @@ describe('disableAutoCompilation feature', () => {
 			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
 			await new Promise(resolve => setTimeout(resolve, 0));
 
-			expect(mockCompileConfig).not.toHaveBeenCalled();
-			expect(
-				mockState.console.logs.some(
-					log =>
-						log.message.includes('Config compilation skipped: disableAutoCompilation flag is set') &&
-						log.category === '[Config]'
-				)
-			).toBe(true);
+			expect(mockCompileConfig).toHaveBeenCalled();
 		});
 
 		it('should compile config normally when disableAutoCompilation is false', async () => {
@@ -145,16 +138,16 @@ describe('disableAutoCompilation feature', () => {
 	});
 
 	describe('Runtime-ready export', () => {
-		it('should skip config compilation for export when disableAutoCompilation is true', async () => {
+		it('should compile config for export even when disableAutoCompilation is true', async () => {
 			mockState.compiler.disableAutoCompilation = true;
 
 			const result = await compileConfigForExport(mockState);
 
-			expect(mockCompileConfig).not.toHaveBeenCalled();
-			expect(result).toEqual({});
+			expect(mockCompileConfig).toHaveBeenCalled();
+			expect(result).toEqual({ memorySizeBytes: 1048576 });
 		});
 
-		it('should return stored compiledConfig when disableAutoCompilation is true and config exists', async () => {
+		it('should compile config for export even when compiledConfig exists', async () => {
 			mockState.compiler.disableAutoCompilation = true;
 			mockState.compiledConfig = {
 				memorySizeBytes: 2097152,
@@ -163,11 +156,8 @@ describe('disableAutoCompilation feature', () => {
 
 			const result = await compileConfigForExport(mockState);
 
-			expect(mockCompileConfig).not.toHaveBeenCalled();
-			expect(result).toEqual({
-				memorySizeBytes: 2097152,
-				selectedRuntime: 1,
-			});
+			expect(mockCompileConfig).toHaveBeenCalled();
+			expect(result).toEqual({ memorySizeBytes: 1048576 });
 		});
 
 		it('should compile config for export when disableAutoCompilation is false', async () => {
