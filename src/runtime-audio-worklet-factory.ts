@@ -42,7 +42,11 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 	let mediaStreamSource: MediaStreamAudioSourceNode | null = null;
 
 	function syncCodeAndSettingsWithRuntime() {
-		const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
+		if (!state.compiledConfig?.runtimeSettings || typeof state.compiledConfig?.selectedRuntime !== 'number') {
+			return;
+		}
+
+		const runtime = state.compiledConfig?.runtimeSettings[state.compiledConfig?.selectedRuntime];
 
 		if (runtime.runtime !== 'AudioWorkletRuntime' || !audioWorklet || !audioContext) {
 			return;
@@ -102,7 +106,11 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 	}
 
 	async function initAudioContext() {
-		const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
+		if (!state.compiledConfig?.runtimeSettings || typeof state.compiledConfig?.selectedRuntime !== 'number') {
+			return;
+		}
+
+		const runtime = state.compiledConfig?.runtimeSettings[state.compiledConfig?.selectedRuntime];
 
 		if (audioContext || runtime.runtime !== 'AudioWorkletRuntime') {
 			return;
