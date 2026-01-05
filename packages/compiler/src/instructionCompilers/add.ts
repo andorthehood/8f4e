@@ -26,9 +26,19 @@ const add: InstructionCompiler = withValidation(
 
 		// Optimization: x + 0 -> x (identity)
 		if (isInteger && isIdentityAddition(operand1, operand2)) {
-			const nonConstantOperand = operand1.constantValue === 0 ? operand2 : operand1;
-			context.stack.push(nonConstantOperand);
-			return context;
+			// One operand is 0, drop it and keep the other
+			const isOperand2Zero = operand2.constantValue === 0;
+
+			if (isOperand2Zero) {
+				// Stack: [value, 0] - drop the 0 on top
+				const nonConstantOperand = operand1;
+				context.stack.push(nonConstantOperand);
+				return saveByteCode(context, [WASMInstruction.DROP]);
+			} else {
+				// Stack: [0, value] - need to swap then drop, complex so skip optimization
+				context.stack.push({ isInteger, isNonZero: false });
+				return saveByteCode(context, [isInteger ? WASMInstruction.I32_ADD : WASMInstruction.F32_ADD]);
+			}
 		}
 
 		context.stack.push({ isInteger, isNonZero: false });

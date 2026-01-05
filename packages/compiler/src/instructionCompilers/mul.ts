@@ -27,15 +27,33 @@ const mul: InstructionCompiler = withValidation(
 
 		// Optimization: x * 0 -> 0
 		if (isInteger && isZeroMultiplication(operand1, operand2)) {
+			// Both operands are on the runtime stack, we need to drop both and push 0
 			context.stack.push({ isInteger: true, isNonZero: false, constantValue: 0 });
-			return saveByteCode(context, i32const(0));
+			return saveByteCode(context, [
+				WASMInstruction.DROP, // Drop first operand
+				WASMInstruction.DROP, // Drop second operand
+				...i32const(0), // Push 0
+			]);
 		}
 
 		// Optimization: x * 1 -> x (identity)
 		if (isInteger && isIdentityMultiplication(operand1, operand2)) {
-			const nonConstantOperand = operand1.constantValue === 1 ? operand2 : operand1;
-			context.stack.push(nonConstantOperand);
-			return context;
+			// One operand is 1, the other is the value we want to keep
+			// Stack: [value, 1] or [1, value]
+			// We need to drop the 1 and keep the value
+			const isOperand2Identity = operand2.constantValue === 1;
+
+			if (isOperand2Identity) {
+				// Stack: [value, 1] - drop the 1 on top
+				const nonConstantOperand = operand1;
+				context.stack.push(nonConstantOperand);
+				return saveByteCode(context, [WASMInstruction.DROP]);
+			} else {
+				// Stack: [1, value] - need to swap then drop
+				// This is complex, so for now just don't optimize
+				context.stack.push({ isInteger, isNonZero: false });
+				return saveByteCode(context, [WASMInstruction.I32_MUL]);
+			}
 		}
 
 		// Optimization: x * 2^n -> x << n (strength reduction)

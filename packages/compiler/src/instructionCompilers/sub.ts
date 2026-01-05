@@ -26,8 +26,9 @@ const sub: InstructionCompiler = withValidation(
 
 		// Optimization: x - 0 -> x (identity)
 		if (isInteger && isIdentitySubtraction(operand2)) {
+			// Stack: [value, 0] - drop the 0 on top
 			context.stack.push(operand1);
-			return context;
+			return saveByteCode(context, [WASMInstruction.DROP]);
 		}
 
 		context.stack.push({ isInteger, isNonZero: false });
