@@ -21,8 +21,9 @@ const div: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation ensures 2 operands exist
-		const operand1 = context.stack.pop()!;
-		const operand2 = context.stack.pop()!;
+		// Stack order: operand1 (top) = divisor, operand2 (bottom) = dividend
+		const operand1 = context.stack.pop()!; // divisor
+		const operand2 = context.stack.pop()!; // dividend
 
 		if (!operand1.isNonZero) {
 			throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
@@ -31,10 +32,10 @@ const div: InstructionCompiler = withValidation(
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
 
 		// Optimization: x / 2^n -> x >> n (strength reduction for integer division)
+		// Only optimize when divisor (operand1) is a power-of-2 constant
 		const shiftAmount = isInteger ? canOptimizeDivToPowerOfTwo(operand1) : null;
 		if (shiftAmount !== null) {
-			// operand1 (divisor) is the power-of-2 constant on top of stack
-			// Stack: [dividend, divisor_constant]
+			// Runtime WASM stack: [dividend, divisor_constant]
 			// We want: [dividend, shift_amount] then SHR_S
 			context.stack.push({ isInteger, isNonZero: true });
 			return saveByteCode(context, [

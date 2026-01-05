@@ -37,6 +37,8 @@ const mul: InstructionCompiler = withValidation(
 		}
 
 		// Optimization: x * 1 -> x (identity)
+		// Only optimize when 1 is the second operand (on top of stack)
+		// Multiplication is commutative, but handling swap adds unnecessary complexity
 		if (isInteger && isIdentityMultiplication(operand1, operand2)) {
 			// One operand is 1, the other is the value we want to keep
 			// Stack: [value, 1] or [1, value]
@@ -44,19 +46,20 @@ const mul: InstructionCompiler = withValidation(
 			const isOperand2Identity = operand2.constantValue === 1;
 
 			if (isOperand2Identity) {
-				// Stack: [value, 1] - drop the 1 on top
+				// Runtime WASM stack: [value, 1] - drop the 1 on top
 				const nonConstantOperand = operand1;
 				context.stack.push(nonConstantOperand);
 				return saveByteCode(context, [WASMInstruction.DROP]);
 			} else {
-				// Stack: [1, value] - need to swap then drop
-				// This is complex, so for now just don't optimize
-				context.stack.push({ isInteger, isNonZero: false });
-				return saveByteCode(context, [WASMInstruction.I32_MUL]);
+				// Runtime WASM stack: [1, value]
+				// Would need to swap operands - fall through to unoptimized multiplication
 			}
 		}
 
 		// Optimization: x * 2^n -> x << n (strength reduction)
+		// Only optimize when the constant is the second operand (on top of stack)
+		// Handling the reverse case (constant first) would require stack manipulation
+		// which adds complexity without significant benefit
 		const shiftAmount = isInteger ? canOptimizeMulToPowerOfTwo(operand1, operand2) : null;
 		if (shiftAmount !== null) {
 			// Both operands are on the runtime WASM stack
@@ -65,7 +68,7 @@ const mul: InstructionCompiler = withValidation(
 			const isOperand2Constant = operand2.constantValue !== undefined;
 
 			if (isOperand2Constant) {
-				// Stack: [value, constant]
+				// Runtime WASM stack: [value, constant]
 				// We want: [value, shift_amount] then SHL
 				context.stack.push({ isInteger: true, isNonZero: false });
 				return saveByteCode(context, [
@@ -74,11 +77,9 @@ const mul: InstructionCompiler = withValidation(
 					WASMInstruction.I32_SHL, // Shift left
 				]);
 			} else {
-				// Stack: [constant, value]
-				// We need to swap them first, then apply the same logic
-				// This is complex, so for now just don't optimize this case
-				context.stack.push({ isInteger, isNonZero: false });
-				return saveByteCode(context, [WASMInstruction.I32_MUL]);
+				// Runtime WASM stack: [constant, value]
+				// Would need to swap operands - complexity not justified for this case
+				// Fall through to unoptimized multiplication
 			}
 		}
 
