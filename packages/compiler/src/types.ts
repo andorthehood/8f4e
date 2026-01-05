@@ -136,6 +136,8 @@ export interface StackItem {
 	isNonZero?: boolean;
 	/** A flag for the memory opraions to check if the memory address is within the memory bounds. */
 	isSafeMemoryAddress?: boolean;
+	/** The constant value if this stack item is a compile-time constant. Used for strength reduction optimizations. */
+	constantValue?: number;
 }
 
 export type Stack = StackItem[];

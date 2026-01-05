@@ -4,6 +4,8 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { canOptimizeDivToPowerOfTwo } from '../utils/strengthReduction';
+import i32const from '../wasmUtils/const/i32const';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -27,6 +29,21 @@ const div: InstructionCompiler = withValidation(
 		}
 
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
+
+		// Optimization: x / 2^n -> x >> n (strength reduction for integer division)
+		const shiftAmount = isInteger ? canOptimizeDivToPowerOfTwo(operand1) : null;
+		if (shiftAmount !== null) {
+			// operand1 (divisor) is the power-of-2 constant on top of stack
+			// Stack: [dividend, divisor_constant]
+			// We want: [dividend, shift_amount] then SHR_S
+			context.stack.push({ isInteger, isNonZero: true });
+			return saveByteCode(context, [
+				WASMInstruction.DROP, // Drop the constant divisor
+				...i32const(shiftAmount), // Push shift amount
+				WASMInstruction.I32_SHR_S, // Arithmetic shift right
+			]);
+		}
+
 		context.stack.push({ isInteger, isNonZero: true });
 		return saveByteCode(context, [isInteger ? WASMInstruction.I32_DIV_S : WASMInstruction.F32_DIV]);
 	}
