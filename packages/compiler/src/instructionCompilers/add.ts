@@ -25,19 +25,20 @@ const add: InstructionCompiler = withValidation(
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
 
 		// Optimization: x + 0 -> x (identity)
+		// Only optimize when 0 is the second operand (on top of stack)
+		// Addition is commutative, but handling swap adds unnecessary complexity
 		if (isInteger && isIdentityAddition(operand1, operand2)) {
 			// One operand is 0, drop it and keep the other
 			const isOperand2Zero = operand2.constantValue === 0;
 
 			if (isOperand2Zero) {
-				// Stack: [value, 0] - drop the 0 on top
+				// Runtime WASM stack: [value, 0] - drop the 0 on top
 				const nonConstantOperand = operand1;
 				context.stack.push(nonConstantOperand);
 				return saveByteCode(context, [WASMInstruction.DROP]);
 			} else {
-				// Stack: [0, value] - need to swap then drop, complex so skip optimization
-				context.stack.push({ isInteger, isNonZero: false });
-				return saveByteCode(context, [isInteger ? WASMInstruction.I32_ADD : WASMInstruction.F32_ADD]);
+				// Runtime WASM stack: [0, value]
+				// Would need to swap operands - fall through to unoptimized addition
 			}
 		}
 
