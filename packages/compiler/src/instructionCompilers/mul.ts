@@ -3,6 +3,8 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { canOptimizeMulToPowerOfTwo, isIdentityMultiplication, isZeroMultiplication } from '../utils/strengthReduction';
+import i32const from '../wasmUtils/const/i32const';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -22,6 +24,46 @@ const mul: InstructionCompiler = withValidation(
 		const operand1 = context.stack.pop()!;
 
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
+
+		// Optimization: x * 0 -> 0
+		if (isInteger && isZeroMultiplication(operand1, operand2)) {
+			context.stack.push({ isInteger: true, isNonZero: false, constantValue: 0 });
+			return saveByteCode(context, i32const(0));
+		}
+
+		// Optimization: x * 1 -> x (identity)
+		if (isInteger && isIdentityMultiplication(operand1, operand2)) {
+			const nonConstantOperand = operand1.constantValue === 1 ? operand2 : operand1;
+			context.stack.push(nonConstantOperand);
+			return context;
+		}
+
+		// Optimization: x * 2^n -> x << n (strength reduction)
+		const shiftAmount = isInteger ? canOptimizeMulToPowerOfTwo(operand1, operand2) : null;
+		if (shiftAmount !== null) {
+			// Both operands are on the runtime WASM stack
+			// One is a power-of-2 constant that we want to replace with a shift
+			// We need to drop the constant operand and replace it with the shift amount
+			const isOperand2Constant = operand2.constantValue !== undefined;
+
+			if (isOperand2Constant) {
+				// Stack: [value, constant]
+				// We want: [value, shift_amount] then SHL
+				context.stack.push({ isInteger: true, isNonZero: false });
+				return saveByteCode(context, [
+					WASMInstruction.DROP, // Drop the constant
+					...i32const(shiftAmount), // Push shift amount
+					WASMInstruction.I32_SHL, // Shift left
+				]);
+			} else {
+				// Stack: [constant, value]
+				// We need to swap them first, then apply the same logic
+				// This is complex, so for now just don't optimize this case
+				context.stack.push({ isInteger, isNonZero: false });
+				return saveByteCode(context, [WASMInstruction.I32_MUL]);
+			}
+		}
+
 		context.stack.push({ isInteger, isNonZero: false });
 		return saveByteCode(context, [isInteger ? WASMInstruction.I32_MUL : WASMInstruction.F32_MUL]);
 	}

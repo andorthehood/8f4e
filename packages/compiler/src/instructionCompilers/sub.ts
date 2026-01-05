@@ -3,6 +3,7 @@ import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { isIdentitySubtraction } from '../utils/strengthReduction';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -22,6 +23,13 @@ const sub: InstructionCompiler = withValidation(
 		const operand1 = context.stack.pop()!;
 
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
+
+		// Optimization: x - 0 -> x (identity)
+		if (isInteger && isIdentitySubtraction(operand2)) {
+			context.stack.push(operand1);
+			return context;
+		}
+
 		context.stack.push({ isInteger, isNonZero: false });
 		return saveByteCode(context, [isInteger ? WASMInstruction.I32_SUB : WASMInstruction.F32_SUB]);
 	}

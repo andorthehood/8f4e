@@ -8,6 +8,7 @@ exports[`push instruction compiler > pushes a constant value 1`] = `
   ],
   "stack": [
     {
+      "constantValue": 42,
       "isInteger": true,
       "isNonZero": true,
     },
@@ -23,6 +24,7 @@ exports[`push instruction compiler > pushes a literal value 1`] = `
   ],
   "stack": [
     {
+      "constantValue": 5,
       "isInteger": true,
       "isNonZero": true,
     },

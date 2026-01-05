@@ -53,6 +53,7 @@ exports[`fallingEdge instruction compiler > compiles the falling edge segment 1`
   },
   "stack": [
     {
+      "constantValue": 0,
       "isInteger": true,
       "isNonZero": false,
     },

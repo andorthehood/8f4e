@@ -92,20 +92,28 @@ const push: InstructionCompiler = withValidation(
 				} else {
 					value = getMemoryStringLastByteAddress(memory, base);
 				}
-				context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
+				context.stack.push({
+					isInteger: true,
+					isNonZero: value !== 0,
+					isSafeMemoryAddress: true,
+					constantValue: value,
+				});
 				return saveByteCode(context, i32const(value));
 			} else if (isElementCountIdentifier(memory, argument.value)) {
 				const base = extractElementCountBase(argument.value);
-				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementCount(memory, base)));
+				const elementCount = getElementCount(memory, base);
+				context.stack.push({ isInteger: true, isNonZero: true, constantValue: elementCount });
+				return saveByteCode(context, i32const(elementCount));
 			} else if (isElementWordSizeIdentifier(memory, argument.value)) {
 				const base = extractElementWordSizeBase(argument.value);
-				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementWordSize(memory, base)));
+				const wordSize = getElementWordSize(memory, base);
+				context.stack.push({ isInteger: true, isNonZero: true, constantValue: wordSize });
+				return saveByteCode(context, i32const(wordSize));
 			} else if (typeof consts[argument.value] !== 'undefined') {
 				context.stack.push({
 					isInteger: consts[argument.value].isInteger,
 					isNonZero: consts[argument.value].value !== 0,
+					constantValue: consts[argument.value].value,
 				});
 				return saveByteCode(
 					context,
@@ -125,7 +133,11 @@ const push: InstructionCompiler = withValidation(
 				return saveByteCode(context, localGet(local.index));
 			}
 		} else {
-			context.stack.push({ isInteger: argument.isInteger, isNonZero: argument.value !== 0 });
+			context.stack.push({
+				isInteger: argument.isInteger,
+				isNonZero: argument.value !== 0,
+				constantValue: argument.value,
+			});
 
 			return saveByteCode(context, getTypeAppropriateConstInstruction(argument));
 		}

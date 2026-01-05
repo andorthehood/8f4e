@@ -53,6 +53,7 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment 1`] 
   },
   "stack": [
     {
+      "constantValue": 0,
       "isInteger": true,
       "isNonZero": false,
     },

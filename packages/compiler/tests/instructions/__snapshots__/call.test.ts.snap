@@ -449,7 +449,9 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
   (func (;3;) (type 3) (param i32) (result i32)
     local.get 0
     i32.const 2
-    i32.mul)
+    drop
+    i32.const 1
+    i32.shl)
   (func (;4;) (type 0)
     (local i32)
     i32.const 0
