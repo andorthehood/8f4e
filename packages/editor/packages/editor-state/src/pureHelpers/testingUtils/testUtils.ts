@@ -218,7 +218,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			memoryBuffer: new Int32Array(0),
 			memoryBufferFloat: new Float32Array(0),
 			compiledModules: {},
-			disableAutoCompilation: false,
 		},
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
