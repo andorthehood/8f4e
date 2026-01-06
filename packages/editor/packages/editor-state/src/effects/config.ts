@@ -1,7 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { log } from '../impureHelpers/logger/logger';
-// import { applyConfigToState } from '../impureHelpers/config/applyConfigToState';
 import isPlainObject from '../pureHelpers/isPlainObject';
 import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
