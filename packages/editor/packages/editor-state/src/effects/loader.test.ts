@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import compiler from './compiler';
+import configEffect from './config';
 import projectImport from './projectImport';
 
 import { createMockState } from '../pureHelpers/testingUtils/testUtils';
@@ -21,9 +22,10 @@ describe('Loader - Project-specific memory configuration', () => {
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
-	it('should use default memory settings when loading project', async () => {
+	it('should clear compiled config when loading project without config blocks', async () => {
 		projectImport(store, mockEvents);
 		compiler(store, mockEvents);
+		configEffect(store, mockEvents);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -40,20 +42,17 @@ describe('Loader - Project-specific memory configuration', () => {
 		// Load the project
 		loadProjectCallback({ project });
 
-		// Verify compiler options use defaults (config effect will update from config blocks)
-		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(1048576);
+		mockEvents.dispatch('compileConfig');
+
+		expect(mockState.compiledConfig).toEqual({});
 	});
 
-	it('should reset memory settings to defaults when loading new project', async () => {
-		// Create a separate defaultState that won't be modified
-		const originalDefault = createMockState();
-		const defaultMemorySize = originalDefault.compiler.compilerOptions.memorySizeBytes;
-
-		// Set custom memory first
-		mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
+	it('should reset compiled config when loading new project without config blocks', async () => {
+		mockState.compiledConfig = { memorySizeBytes: 500 * 65536 };
 
 		projectImport(store, mockEvents);
 		compiler(store, mockEvents);
+		configEffect(store, mockEvents);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -70,7 +69,8 @@ describe('Loader - Project-specific memory configuration', () => {
 		// Load the project
 		loadProjectCallback({ project });
 
-		// Verify compiler options reset to defaults (config effect will update from config blocks)
-		expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(defaultMemorySize);
+		mockEvents.dispatch('compileConfig');
+
+		expect(mockState.compiledConfig).toEqual({});
 	});
 });
