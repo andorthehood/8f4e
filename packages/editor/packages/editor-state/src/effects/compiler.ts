@@ -101,17 +101,9 @@ export default async function compiler(store: StateManager<State>, events: Event
 		store.set('codeErrors.compilationErrors', []);
 		state.binaryAssets = state.initialProjectState?.binaryAssets || [];
 
-		// Return to default compiler state
-		// state.compiler.isCompiling = false;
-		// state.compiler.codeBuffer = new Uint8Array();
-		// state.compiler.compiledModules = {};
-		// state.compiler.memoryBuffer = new Int32Array();
-		// state.compiler.memoryBufferFloat = new Float32Array();
-		// state.compiler.allocatedMemorySize = 0;
-
 		if (
 			state.initialProjectState?.memorySnapshot &&
-			(state.compiler.disableAutoCompilation || !state.callbacks.compileCode)
+			(state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode)
 		) {
 			try {
 				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.initialProjectState.memorySnapshot);
@@ -133,7 +125,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		if (
 			state.initialProjectState?.compiledWasm &&
 			state.initialProjectState.compiledModules &&
-			(state.compiler.disableAutoCompilation || !state.callbacks.compileCode)
+			(state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode)
 		) {
 			try {
 				state.compiler.compiledModules = state.initialProjectState.compiledModules;
@@ -150,7 +142,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		}
 
 		// Check if compilation is disabled by config
-		if (state.compiler.disableAutoCompilation || !state.callbacks.compileCode) {
+		if (state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode) {
 			log(state, 'Compilation skipped: disableAutoCompilation flag is set', 'Compiler');
 			return;
 		}
