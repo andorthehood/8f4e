@@ -293,9 +293,6 @@ describe('Runtime-ready project functionality', () => {
 
 	describe('Project-specific memory configuration', () => {
 		it('should export project structure when saving project', async () => {
-			// Set custom memory settings in compiler options
-			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
-
 			// Set up save functionality
 			projectExport(store, mockEvents);
 
@@ -321,9 +318,6 @@ describe('Runtime-ready project functionality', () => {
 		});
 
 		it('should export project structure in runtime-ready project', async () => {
-			// Set custom memory settings
-			mockState.compiler.compilerOptions.memorySizeBytes = 2000 * 65536;
-
 			// Set up save functionality
 			projectExport(store, mockEvents);
 
