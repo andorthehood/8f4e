@@ -42,9 +42,12 @@ describe('Loader - Project-specific memory configuration', () => {
 		// Load the project
 		loadProjectCallback({ project });
 
-		mockEvents.dispatch('compileConfig');
+		const compileConfigCall = onCalls.find(call => call[0] === 'compileConfig');
+		expect(compileConfigCall).toBeDefined();
+		await compileConfigCall![1]();
 
-		expect(mockState.compiledConfig).toEqual({});
+		const expectedDefaultConfig = createMockState().compiledConfig;
+		expect(mockState.compiledConfig).toEqual(expectedDefaultConfig);
 	});
 
 	it('should reset compiled config when loading new project without config blocks', async () => {
@@ -69,8 +72,11 @@ describe('Loader - Project-specific memory configuration', () => {
 		// Load the project
 		loadProjectCallback({ project });
 
-		mockEvents.dispatch('compileConfig');
+		const compileConfigCall = onCalls.find(call => call[0] === 'compileConfig');
+		expect(compileConfigCall).toBeDefined();
+		await compileConfigCall![1]();
 
-		expect(mockState.compiledConfig).toEqual({});
+		const expectedDefaultConfig = createMockState().compiledConfig;
+		expect(mockState.compiledConfig).toEqual(expectedDefaultConfig);
 	});
 });
