@@ -173,7 +173,6 @@ export interface Compiler {
 	compiledModules: CompiledModuleLookup;
 	allocatedMemorySize: number;
 	compiledFunctions?: CompiledFunctionLookup;
-	disableAutoCompilation: boolean;
 }
 
 export interface Midi {

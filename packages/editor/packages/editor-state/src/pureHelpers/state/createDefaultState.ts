@@ -27,7 +27,6 @@ export default function createDefaultState() {
 			memoryBuffer: new Int32Array(),
 			memoryBufferFloat: new Float32Array(),
 			compiledModules: {},
-			disableAutoCompilation: false,
 		},
 		midi: {
 			inputs: [],
