@@ -6,6 +6,7 @@ import isPlainObject from '../pureHelpers/isPlainObject';
 import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
 import configSchema from '../configSchema';
+import { defaultConfig } from '../pureHelpers/state/createDefaultState';
 
 import type { CodeError, EventDispatcher, State, ConfigObject } from '../types';
 
@@ -72,16 +73,14 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		}
 
 		if (!state.callbacks.compileConfig) {
-			// TODO: come up with a default config.
-			store.set('compiledConfig', {});
+			store.set('compiledConfig', defaultConfig);
 			return;
 		}
 
 		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
 		if (configBlocks.length === 0) {
-			// TODO: come up with a default config.
-			store.set('compiledConfig', {});
+			store.set('compiledConfig', defaultConfig);
 			return;
 		}
 
@@ -92,7 +91,10 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 
 		// Save all errors to state
 		store.set('codeErrors.configErrors', errors);
-		store.set('compiledConfig', mergedConfig);
+		store.set(
+			'compiledConfig',
+			deepMergeConfig(defaultConfig as unknown as Record<string, unknown>, mergedConfig) as unknown as ConfigObject
+		);
 	}
 
 	// Wire up event handlers
@@ -116,18 +118,18 @@ export async function compileConfigForExport(state: State): Promise<ConfigObject
 	// If no compileConfig callback, return empty object
 	const compileConfig = state.callbacks.compileConfig;
 	if (!compileConfig) {
-		return state.compiledConfig || {};
+		return state.compiledConfig || defaultConfig;
 	}
 
 	// Collect all config blocks
 	const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
 	if (configBlocks.length === 0) {
-		return {};
+		return defaultConfig;
 	}
 
 	// Compile each config block independently and merge results
 	const { mergedConfig } = await buildConfigFromBlocks(configBlocks, compileConfig);
 
-	return mergedConfig;
+	return deepMergeConfig(defaultConfig as unknown as Record<string, unknown>, mergedConfig) as unknown as ConfigObject;
 }
