@@ -37,14 +37,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 		store.set('compiler.isCompiling', true);
 		store.set('compiler.lastCompilationStart', performance.now());
 
-		if (
-			!state.compiledConfig?.memorySizeBytes ||
-			!state.compiledConfig?.runtimeSettings ||
-			typeof state.compiledConfig?.selectedRuntime === 'undefined'
-		) {
-			return;
-		}
-
 		try {
 			const compilerOptions = {
 				memorySizeBytes: state.compiledConfig?.memorySizeBytes || 1048576, // 1MB default
