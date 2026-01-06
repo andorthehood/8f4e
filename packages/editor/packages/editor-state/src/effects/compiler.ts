@@ -37,21 +37,29 @@ export default async function compiler(store: StateManager<State>, events: Event
 		store.set('compiler.isCompiling', true);
 		store.set('compiler.lastCompilationStart', performance.now());
 
+		if (
+			!state.compiledConfig?.memorySizeBytes ||
+			!state.compiledConfig?.runtimeSettings ||
+			typeof state.compiledConfig?.selectedRuntime === 'undefined'
+		) {
+			return;
+		}
+
 		try {
 			const compilerOptions = {
-				...state.compiler.compilerOptions,
+				memorySizeBytes: state.compiledConfig?.memorySizeBytes || 1048576, // 1MB default
+				startingMemoryWordAddress: 0,
 				environmentExtensions: {
-					...state.compiler.compilerOptions.environmentExtensions,
 					constants: {
-						...state.compiler.compilerOptions.environmentExtensions.constants,
 						SAMPLE_RATE: {
-							value: state.runtime.runtimeSettings[state.runtime.selectedRuntime].sampleRate,
+							value: state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime].sampleRate,
 							isInteger: true,
 						},
 						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
 						LEFT_CHANNEL: { value: 0, isInteger: true },
 						RIGHT_CHANNEL: { value: 1, isInteger: true },
 					},
+					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 				},
 			};
 
@@ -78,6 +86,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 			}
 
 			log(state, 'Compilation succeeded in ' + state.compiler.compilationTime.toFixed(2) + 'ms', 'Compiler');
+			console.log('[Compiler] Compilation succeeded with config:', compilerOptions);
 		} catch (error) {
 			store.set('compiler.isCompiling', false);
 			const errorObject = error as Error & {

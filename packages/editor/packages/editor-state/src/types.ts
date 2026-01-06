@@ -171,7 +171,6 @@ export interface Compiler {
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
 	compiledModules: CompiledModuleLookup;
-	compilerOptions: CompileOptions;
 	allocatedMemorySize: number;
 	compiledFunctions?: CompiledFunctionLookup;
 	disableAutoCompilation: boolean;
