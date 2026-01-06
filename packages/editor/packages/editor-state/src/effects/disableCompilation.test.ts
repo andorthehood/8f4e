@@ -27,7 +27,12 @@ describe('disableAutoCompilation feature', () => {
 		});
 
 		mockCompileConfig = vi.fn().mockResolvedValue({
-			config: { memorySizeBytes: 1048576 },
+			config: {
+				memorySizeBytes: 1048576,
+				selectedRuntime: 0,
+				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				disableAutoCompilation: false,
+			},
 			errors: [],
 		});
 
@@ -68,7 +73,7 @@ describe('disableAutoCompilation feature', () => {
 
 			compiler(store, mockEvents);
 
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			store.set('compiledConfig', { ...mockState.compiledConfig });
 			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockCompileCode).not.toHaveBeenCalled();
@@ -88,7 +93,7 @@ describe('disableAutoCompilation feature', () => {
 
 			compiler(store, mockEvents);
 
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			store.set('compiledConfig', { ...mockState.compiledConfig });
 			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(mockCompileCode).toHaveBeenCalled();
@@ -96,20 +101,25 @@ describe('disableAutoCompilation feature', () => {
 
 		it('should prioritize disableAutoCompilation check over pre-compiled WASM check', async () => {
 			store.set('compiler.disableAutoCompilation', true);
-			store.set('compiler.codeBuffer', new Uint8Array([1, 2, 3, 4, 5]));
 			mockState.callbacks.compileCode = undefined;
+			mockState.initialProjectState = {
+				...mockState.initialProjectState,
+				compiledWasm: 'AQIDBA==',
+				compiledModules: {},
+			};
 
 			compiler(store, mockEvents);
 
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			store.set('compiledConfig', { ...mockState.compiledConfig });
 			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(
-				mockState.console.logs.some(log =>
-					log.message.includes('Compilation skipped: disableAutoCompilation flag is set')
+				mockState.console.logs.some(
+					log =>
+						log.message.includes('Pre-compiled WASM loaded and decoded successfully') && log.category === '[Loader]'
 				)
 			).toBe(true);
-			expect(mockState.console.logs.some(log => log.message.includes('Using pre-compiled WASM'))).toBe(false);
+			expect(mockState.compiler.codeBuffer).not.toEqual(new Uint8Array());
 		});
 	});
 
@@ -144,7 +154,12 @@ describe('disableAutoCompilation feature', () => {
 			const result = await compileConfigForExport(mockState);
 
 			expect(mockCompileConfig).toHaveBeenCalled();
-			expect(result).toEqual({ memorySizeBytes: 1048576 });
+			expect(result).toEqual({
+				memorySizeBytes: 1048576,
+				selectedRuntime: 0,
+				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				disableAutoCompilation: false,
+			});
 		});
 
 		it('should compile config for export even when compiledConfig exists', async () => {
@@ -152,12 +167,19 @@ describe('disableAutoCompilation feature', () => {
 			mockState.compiledConfig = {
 				memorySizeBytes: 2097152,
 				selectedRuntime: 1,
+				runtimeSettings: [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }],
+				disableAutoCompilation: false,
 			};
 
 			const result = await compileConfigForExport(mockState);
 
 			expect(mockCompileConfig).toHaveBeenCalled();
-			expect(result).toEqual({ memorySizeBytes: 1048576 });
+			expect(result).toEqual({
+				memorySizeBytes: 1048576,
+				selectedRuntime: 0,
+				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				disableAutoCompilation: false,
+			});
 		});
 
 		it('should compile config for export when disableAutoCompilation is false', async () => {
@@ -166,7 +188,12 @@ describe('disableAutoCompilation feature', () => {
 			const result = await compileConfigForExport(mockState);
 
 			expect(mockCompileConfig).toHaveBeenCalled();
-			expect(result).toEqual({ memorySizeBytes: 1048576 });
+			expect(result).toEqual({
+				memorySizeBytes: 1048576,
+				selectedRuntime: 0,
+				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				disableAutoCompilation: false,
+			});
 		});
 
 		it('should return empty config when no compileConfig callback is provided', async () => {
@@ -175,7 +202,7 @@ describe('disableAutoCompilation feature', () => {
 
 			const result = await compileConfigForExport(mockState);
 
-			expect(result).toEqual({});
+			expect(result).toEqual(mockState.compiledConfig);
 		});
 	});
 
@@ -191,7 +218,7 @@ describe('disableAutoCompilation feature', () => {
 			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
 			await new Promise(resolve => setTimeout(resolve, 0));
 
-			expect(mockState.compiler.disableAutoCompilation).toBe(true);
+			expect(mockState.compiledConfig.disableAutoCompilation).toBe(true);
 		});
 
 		it('should not change disableAutoCompilation flag when not in config', async () => {
