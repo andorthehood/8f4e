@@ -93,9 +93,10 @@ describe('projectImport', () => {
 	});
 
 	describe('loadProject', () => {
-		it('should use default memory settings when loading project', () => {
+		it('should clear compiled config when loading project without config blocks', () => {
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
+			configEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -107,20 +108,17 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project });
 
-			// Memory settings now come from config blocks
-			expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(1048576);
+			mockEvents.dispatch('compileConfig');
+
+			expect(mockState.compiledConfig).toEqual({});
 		});
 
-		it('should reset to defaults when loading new project', () => {
-			// Create a separate defaultState that won't be modified
-			const originalDefault = createMockState();
-			const defaultMemorySize = originalDefault.compiler.compilerOptions.memorySizeBytes;
-
-			// Set custom memory first
-			mockState.compiler.compilerOptions.memorySizeBytes = 500 * 65536;
+		it('should reset compiled config when loading new project without config blocks', () => {
+			mockState.compiledConfig = { memorySizeBytes: 500 * 65536 };
 
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
+			configEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -132,8 +130,9 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project });
 
-			// Should reset to defaults (config effect will update from config blocks)
-			expect(mockState.compiler.compilerOptions.memorySizeBytes).toBe(defaultMemorySize);
+			mockEvents.dispatch('compileConfig');
+
+			expect(mockState.compiledConfig).toEqual({});
 		});
 
 		it('should reset compiler state when loading a project', () => {
