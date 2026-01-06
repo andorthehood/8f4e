@@ -2,6 +2,20 @@ import { Font } from '@8f4e/sprite-generator';
 
 import { defaultFeatureFlags } from './featureFlags';
 
+import { ConfigObject } from '../../types';
+
+export const defaultConfig: ConfigObject = {
+	runtimeSettings: [
+		{
+			runtime: 'WebWorkerLogicRuntime',
+			sampleRate: 50,
+		},
+	],
+	selectedRuntime: 0,
+	memorySizeBytes: 1048576,
+	disableAutoCompilation: false,
+};
+
 export default function createDefaultState() {
 	return {
 		compiler: {
@@ -76,14 +90,8 @@ export default function createDefaultState() {
 			logs: [],
 			maxLogs: 100,
 		},
+		compiledConfig: defaultConfig,
 		runtime: {
-			runtimeSettings: [
-				{
-					runtime: 'WebWorkerLogicRuntime' as const,
-					sampleRate: 50,
-				},
-			],
-			selectedRuntime: 0,
 			stats: {
 				timeToExecuteLoopMs: 0,
 				timerPrecisionPercentage: 0,

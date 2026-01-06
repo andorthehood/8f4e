@@ -45,7 +45,7 @@ export function mainThreadLogicRuntime(store: StateManager<State>, events: Event
 		}
 		runtime.init(
 			memory,
-			state.runtime.runtimeSettings[state.runtime.selectedRuntime].sampleRate,
+			state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime].sampleRate,
 			state.compiler.codeBuffer
 		);
 	}
