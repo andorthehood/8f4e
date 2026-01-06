@@ -13,14 +13,6 @@ export default function createDefaultState() {
 			memoryBuffer: new Int32Array(),
 			memoryBufferFloat: new Float32Array(),
 			compiledModules: {},
-			compilerOptions: {
-				memorySizeBytes: 1048576, // 1MB default
-				startingMemoryWordAddress: 0,
-				environmentExtensions: {
-					constants: {},
-					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
-				},
-			},
 			disableAutoCompilation: false,
 		},
 		midi: {
