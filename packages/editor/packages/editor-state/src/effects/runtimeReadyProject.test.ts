@@ -244,17 +244,23 @@ describe('Runtime-ready project functionality', () => {
 			mockState.compiler.allocatedMemorySize = expectedIntMemory.byteLength;
 			// No compileCode callback for runtime-only projects
 			mockState.callbacks.compileCode = undefined;
+			mockState.initialProjectState = {
+				...mockState.initialProjectState,
+				compiledWasm: encodeUint8ArrayToBase64(mockWasmBytecode),
+				compiledModules: {},
+			};
 
 			// Set up compiler functionality
 			compiler(store, mockEvents);
 
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			store.set('compiledConfig', { ...mockState.compiledConfig });
 			await new Promise(resolve => setTimeout(resolve, 0));
 
 			// Verify pre-compiled WASM was recognized via internal logger
 			expect(
 				mockState.console.logs.some(
-					log => log.message.includes('Using pre-compiled WASM') && log.category === '[Compiler]'
+					log =>
+						log.message.includes('Pre-compiled WASM loaded and decoded successfully') && log.category === '[Loader]'
 				)
 			).toBe(true);
 
@@ -283,7 +289,7 @@ describe('Runtime-ready project functionality', () => {
 			// Set up compiler functionality
 			compiler(store, mockEvents);
 
-			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
+			store.set('compiledConfig', { ...mockState.compiledConfig });
 			await new Promise(resolve => setTimeout(resolve, 0));
 
 			// Verify regular compilation was attempted
