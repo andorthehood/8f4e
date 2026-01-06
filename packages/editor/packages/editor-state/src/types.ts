@@ -633,10 +633,10 @@ export interface CodeError {
 }
 
 export interface ConfigObject {
-	memorySizeBytes?: number;
-	selectedRuntime?: number;
-	runtimeSettings?: Runtimes[];
-	disableAutoCompilation?: boolean;
+	memorySizeBytes: number;
+	selectedRuntime: number;
+	runtimeSettings: Runtimes[];
+	disableAutoCompilation: boolean;
 }
 
 export interface State {
@@ -650,15 +650,13 @@ export interface State {
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
 	initialProjectState?: Project;
-	compiledConfig?: ConfigObject;
+	compiledConfig: ConfigObject;
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
 	/** Console state for internal logging */
 	console: ConsoleState;
 	runtime: {
-		runtimeSettings: Runtimes[];
-		selectedRuntime: number;
 		stats: RuntimeStats;
 	};
 	codeErrors: {
