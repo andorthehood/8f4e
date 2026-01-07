@@ -2,7 +2,7 @@
 import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
 import { StateManager } from '@8f4e/state-manager';
 
-import { getMemory } from './compiler-callback';
+import { getCodeBuffer, getMemory } from './compiler-callback';
 
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime
@@ -46,17 +46,17 @@ export function mainThreadLogicRuntime(store: StateManager<State>, events: Event
 		runtime.init(
 			memory,
 			state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime].sampleRate,
-			state.compiler.codeBuffer
+			getCodeBuffer()
 		);
 	}
 
 	runtime = createMainThreadLogicRuntime(onInitialized, onStats, onError);
 	syncCodeAndSettingsWithRuntime();
 
-	store.subscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
+	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
 
 	return () => {
-		store.unsubscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
 		if (runtime) {
 			runtime.stop();
 			runtime = undefined;
