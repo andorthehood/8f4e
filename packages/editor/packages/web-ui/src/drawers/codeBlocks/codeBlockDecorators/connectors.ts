@@ -2,8 +2,14 @@ import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
+import type { MemoryViews } from '../../../types';
 
-export default function drawConnectors(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
+export default function drawConnectors(
+	engine: Engine,
+	state: State,
+	codeBlock: CodeBlockGraphicData,
+	memoryViews: MemoryViews
+): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
@@ -12,8 +18,8 @@ export default function drawConnectors(engine: Engine, state: State, codeBlock: 
 		const { x, y, memory } = output;
 
 		const value = memory.isInteger
-			? state.compiler.memoryBuffer[memory.wordAlignedAddress]
-			: state.compiler.memoryBufferFloat[memory.wordAlignedAddress];
+			? memoryViews.int32[memory.wordAlignedAddress]
+			: memoryViews.float32[memory.wordAlignedAddress];
 
 		output.calibratedMax = Math.max(1, output.calibratedMax, value);
 		output.calibratedMin = Math.min(-1, output.calibratedMin, value);

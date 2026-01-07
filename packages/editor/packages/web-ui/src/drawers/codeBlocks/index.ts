@@ -11,8 +11,9 @@ import drawArrow from './drawArrow';
 import drawBlockHighlights from './codeBlockDecorators/blockHighlights';
 
 import type { State } from '@8f4e/editor-state';
+import type { MemoryViews } from '../../types';
 
-export default function drawModules(engine: Engine, state: State): void {
+export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
@@ -26,11 +27,11 @@ export default function drawModules(engine: Engine, state: State): void {
 
 	for (const codeBlock of state.graphicHelper.codeBlocks) {
 		if (codeBlock.positionOffsetterXWordAddress) {
-			codeBlock.offsetX = state.compiler.memoryBuffer[codeBlock.positionOffsetterXWordAddress];
+			codeBlock.offsetX = memoryViews.int32[codeBlock.positionOffsetterXWordAddress];
 		}
 
 		if (codeBlock.positionOffsetterYWordAddress) {
-			codeBlock.offsetY = state.compiler.memoryBuffer[codeBlock.positionOffsetterYWordAddress];
+			codeBlock.offsetY = memoryViews.int32[codeBlock.positionOffsetterYWordAddress];
 		}
 
 		if (
@@ -106,18 +107,18 @@ export default function drawModules(engine: Engine, state: State): void {
 						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
 					}
 
-					drawPianoKeyboards(engine, state, codeBlock);
+					drawPianoKeyboards(engine, state, codeBlock, memoryViews);
 				},
 				// Enable caching only when the block is NOT selected
 				state.graphicHelper.selectedCodeBlock !== codeBlock
 			);
 
 			drawErrorMessages(engine, state, codeBlock);
-			drawSwitches(engine, state, codeBlock);
-			drawButtons(engine, state, codeBlock);
-			drawConnectors(engine, state, codeBlock);
-			drawPlotters(engine, state, codeBlock);
-			drawDebuggers(engine, state, codeBlock);
+			drawSwitches(engine, state, codeBlock, memoryViews);
+			drawButtons(engine, state, codeBlock, memoryViews);
+			drawConnectors(engine, state, codeBlock, memoryViews);
+			drawPlotters(engine, state, codeBlock, memoryViews);
+			drawDebuggers(engine, state, codeBlock, memoryViews);
 
 			engine.endGroup();
 		} else {
