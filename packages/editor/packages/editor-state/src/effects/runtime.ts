@@ -14,13 +14,13 @@ export default async function runtime(store: StateManager<State>, events: EventD
 	let onlineRuntime: null | string;
 	let isInitializing = false;
 
-	async function initRuntime() {
+	async function initOrDestroyOrUpdateRuntime() {
 		if (isInitializing) {
 			log(state, 'Runtime is already initializing, skipping...', 'Runtime');
 			return;
 		}
 
-		const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
+		const runtime = state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime];
 
 		if (onlineRuntime === runtime.runtime) {
 			return;
@@ -58,5 +58,5 @@ export default async function runtime(store: StateManager<State>, events: EventD
 		}
 	}
 
-	store.subscribe('runtime', initRuntime);
+	store.subscribe('compiler.codeBuffer', initOrDestroyOrUpdateRuntime);
 }

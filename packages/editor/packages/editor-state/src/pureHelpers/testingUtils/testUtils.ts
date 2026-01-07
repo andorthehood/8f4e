@@ -218,15 +218,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			memoryBuffer: new Int32Array(0),
 			memoryBufferFloat: new Float32Array(0),
 			compiledModules: {},
-			compilerOptions: {
-				startingMemoryWordAddress: 0,
-				memorySizeBytes: 1048576, // 1MB
-				environmentExtensions: {
-					constants: {},
-					ignoredKeywords: [],
-				},
-			},
-			disableAutoCompilation: false,
 		},
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
@@ -304,6 +295,14 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			maxLogs: 100,
 		},
 		runtime: {
+			stats: {
+				timeToExecuteLoopMs: 0,
+				timerPrecisionPercentage: 0,
+				timerDriftMs: 0,
+				timerExpectedIntervalTimeMs: 0,
+			},
+		},
+		compiledConfig: {
 			runtimeSettings: [
 				{
 					runtime: 'WebWorkerLogicRuntime',
@@ -311,12 +310,8 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				},
 			],
 			selectedRuntime: 0,
-			stats: {
-				timeToExecuteLoopMs: 0,
-				timerPrecisionPercentage: 0,
-				timerDriftMs: 0,
-				timerExpectedIntervalTimeMs: 0,
-			},
+			memorySizeBytes: 1048576,
+			disableAutoCompilation: false,
 		},
 	};
 
