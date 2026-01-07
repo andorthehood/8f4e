@@ -19,7 +19,7 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 		}
 
 		subscriptions.forEach(subscription => {
-			const { tokens, callback } = subscription;
+			const { tokens, callback, matcher } = subscription;
 			const comparisonLength = Math.min(tokens.length, keys.length);
 
 			for (let i = 0; i < comparisonLength; i++) {
@@ -29,6 +29,15 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 			}
 
 			const target = getValueByPath(state, subscription.selector);
+
+			if (matcher !== undefined) {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const matches = typeof matcher === 'function' ? (matcher as any)(target) : target === matcher;
+				if (!matches) {
+					return;
+				}
+			}
+
 			(callback as (value: unknown) => void)(target);
 		});
 	};
