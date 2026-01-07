@@ -5,11 +5,13 @@ import { createMockCodeBlock } from '@8f4e/editor-state/testing';
 import createMockStateWithColors from './utils/createMockStateWithColors';
 import createCanvas from './utils/createCanvas';
 import { generateColorMapWithAllColors } from './utils/generateColorMapMock';
+import createMockMemoryRef from './utils/createMockMemoryRef';
 
 test('dragged module', async () => {
 	const canvas = createCanvas();
 	const mockState = createMockStateWithColors();
-	await init(mockState, canvas);
+	const memoryRef = createMockMemoryRef();
+	await init(mockState, canvas, memoryRef);
 
 	if (mockState.graphicHelper.spriteLookups) {
 		const codeLines = [
