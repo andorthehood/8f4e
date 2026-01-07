@@ -7,7 +7,7 @@ import type { Project, State } from '../../types';
 
 /**
  * Serializes current runtime state to runtime-ready Project format.
- * Includes compiled modules, memory snapshot, and compiled config.
+ * Includes compiled modules and compiled config.
  * This is async because it compiles config blocks on-demand.
  * @param state Current editor state
  * @param encodeToBase64 Function to encode binary data to base64
@@ -47,7 +47,6 @@ if (import.meta.vitest) {
 				},
 				compiler: {
 					compiledModules: { mod: {} },
-					memoryBuffer: new Int32Array([2, 3]) as unknown as State['compiler']['memoryBuffer'],
 					allocatedMemorySize: 2,
 				},
 				callbacks: {
@@ -67,7 +66,6 @@ if (import.meta.vitest) {
 			const state = createMockState({
 				compiler: {
 					compiledModules: {},
-					memoryBuffer: new Int32Array(0) as unknown as State['compiler']['memoryBuffer'],
 					allocatedMemorySize: 0,
 				},
 			});

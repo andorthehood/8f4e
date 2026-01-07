@@ -11,7 +11,7 @@ import type { Project, State } from '../../types';
  * For runtime-ready exports with compiled config, use serializeToRuntimeReadyProject.
  * @param state Current editor state
  * @param options Optional parameters for serialization
- * @param options.includeCompiled If true, includes compiled modules and memory snapshot (but not compiledConfig)
+ * @param options.includeCompiled If true, includes compiled modules (but not compiledConfig)
  * @returns Project object ready for serialization to JSON
  */
 export default function serializeToProject(
@@ -33,18 +33,6 @@ export default function serializeToProject(
 		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
 		// postProcessEffects are now derived from shader code blocks and not persisted
 	};
-
-	// Optionally include compiled data and memory snapshot
-	if (options?.includeCompiled && options?.encodeToBase64) {
-		if (compiler.allocatedMemorySize > 0 && compiler.memoryBuffer.byteLength > 0) {
-			const memorySnapshotBytes = new Uint8Array(
-				compiler.memoryBuffer.buffer,
-				compiler.memoryBuffer.byteOffset,
-				Math.min(compiler.allocatedMemorySize, compiler.memoryBuffer.byteLength)
-			);
-			project.memorySnapshot = options.encodeToBase64(memorySnapshotBytes);
-		}
-	}
 
 	return project;
 }
@@ -82,7 +70,7 @@ if (import.meta.vitest) {
 			expect(project).toMatchSnapshot();
 		});
 
-		it('includes compiled modules and memory snapshot when requested', () => {
+		it('includes compiled modules when requested', () => {
 			const state = createMockState({
 				graphicHelper: {
 					codeBlocks: [],
@@ -95,16 +83,12 @@ if (import.meta.vitest) {
 				},
 				compiler: {
 					compiledModules: { mod: {} },
-					memoryBuffer: new Int32Array([4, 5, 6, 7]) as unknown as State['compiler']['memoryBuffer'],
 					allocatedMemorySize: 2,
 				},
 				binaryAssets: [],
 			});
 
-			const project = serializeToProject(state, {
-				includeCompiled: true,
-				encodeToBase64: data => `b64:${Array.from(data).join(',')}`,
-			});
+			const project = serializeToProject(state, { includeCompiled: true });
 
 			expect(project).toMatchSnapshot();
 		});
