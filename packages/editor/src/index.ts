@@ -1,9 +1,9 @@
-import initState, { type Options } from '@8f4e/editor-state';
-import initView from '@8f4e/web-ui';
+import initState, { State, type Options } from '@8f4e/editor-state';
+import initView, { MemoryViews } from '@8f4e/web-ui';
 
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
-import { createMemoryViewManager, type MemoryRef } from './memoryViewManager';
+import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 
 // Re-export types that consumers might need
 export type {
@@ -21,10 +21,15 @@ export type {
 export type { EventDispatcher } from './events';
 export type { MemoryRef } from './memoryViewManager';
 
-export default async function init(canvas: HTMLCanvasElement, options: Options) {
-	const memoryRef: MemoryRef = { current: new ArrayBuffer(0) };
+export interface Editor {
+	resize: (width: number, height: number) => void;
+	updateMemoryViews: (memoryRef: MemoryRef) => void;
+	getMemoryViews: () => MemoryViews;
+	state: State;
+}
 
-	const { memoryViews, refreshMemoryViews } = createMemoryViewManager(memoryRef);
+export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
+	const { memoryViews, updateMemoryViews } = createMemoryViewManager(new ArrayBuffer(0));
 	const events = initEvents();
 	const store = initState(events, {
 		...options,
@@ -40,13 +45,6 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 	});
 	const state = store.getState();
 	humanInterface(canvas, events, state);
-
-	// Update memoryRef whenever compiler produces a new memory buffer
-	store.subscribe('compiler.memoryBuffer', () => {
-		refreshMemoryViews();
-	});
-
-	refreshMemoryViews();
 
 	const view = await initView(state, canvas, memoryViews);
 
@@ -71,6 +69,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 			events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
 			view.resize(width, height);
 		},
+		updateMemoryViews,
+		getMemoryViews: () => memoryViews,
 		state,
 	};
 }
