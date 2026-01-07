@@ -82,6 +82,7 @@ describe('Runtime System', () => {
 			await runtimeEffect(store, events);
 
 			store.set('compiler.isCompiling', true);
+			store.set('compiler.isCompiling', false);
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
