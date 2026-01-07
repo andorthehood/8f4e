@@ -40,6 +40,7 @@ interface TestState {
 			};
 		};
 	};
+	optionalValue?: string | null;
 }
 
 describe('StateManager', () => {
@@ -941,28 +942,28 @@ describe('StateManager', () => {
 
 		it('should handle null values', () => {
 			const callback = vi.fn();
-			stateManager.subscribeToValue('name', null as unknown as string, callback);
+			stateManager.subscribeToValue('optionalValue', null, callback);
 
-			stateManager.set('name', null as unknown as string);
+			stateManager.set('optionalValue', null);
 
 			expect(callback).toHaveBeenCalledWith(null);
 			expect(callback).toHaveBeenCalledTimes(1);
 
-			stateManager.set('name', 'Not null');
+			stateManager.set('optionalValue', 'Not null');
 
 			expect(callback).toHaveBeenCalledTimes(1);
 		});
 
 		it('should handle undefined values', () => {
 			const callback = vi.fn();
-			stateManager.subscribeToValue('name', undefined as unknown as string, callback);
+			stateManager.subscribeToValue('optionalValue', undefined, callback);
 
-			stateManager.set('name', undefined as unknown as string);
+			stateManager.set('optionalValue', undefined);
 
 			expect(callback).toHaveBeenCalledWith(undefined);
 			expect(callback).toHaveBeenCalledTimes(1);
 
-			stateManager.set('name', 'Not undefined');
+			stateManager.set('optionalValue', 'Not undefined');
 
 			expect(callback).toHaveBeenCalledTimes(1);
 		});
