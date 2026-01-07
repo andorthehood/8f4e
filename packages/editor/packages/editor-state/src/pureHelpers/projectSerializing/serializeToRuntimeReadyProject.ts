@@ -7,7 +7,7 @@ import type { Project, State } from '../../types';
 
 /**
  * Serializes current runtime state to runtime-ready Project format.
- * Includes compiled WASM, memory snapshot, and compiled config.
+ * Includes compiled modules, memory snapshot, and compiled config.
  * This is async because it compiles config blocks on-demand.
  * @param state Current editor state
  * @param encodeToBase64 Function to encode binary data to base64
