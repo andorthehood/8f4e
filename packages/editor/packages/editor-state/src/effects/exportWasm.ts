@@ -9,15 +9,10 @@ export default function exportWasm(state: State, events: EventDispatcher): void 
 			return;
 		}
 
-		if (!state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0) {
-			console.warn('No compiled WebAssembly code available. Please compile your project first.');
-			return;
-		}
-
 		const projectName = 'project';
 		const fileName = `${projectName}.wasm`;
 
-		state.callbacks.exportBinaryFile(state.compiler.codeBuffer, fileName, 'application/wasm').catch(error => {
+		state.callbacks.exportBinaryFile(fileName, 'application/wasm').catch(error => {
 			console.error('Failed to export WebAssembly file:', error);
 		});
 	}

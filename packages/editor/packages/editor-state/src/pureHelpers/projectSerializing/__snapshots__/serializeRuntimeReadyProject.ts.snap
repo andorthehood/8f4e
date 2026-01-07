@@ -37,7 +37,6 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
   "compiledModules": {
     "mod": {},
   },
-  "compiledWasm": "b64:1",
   "memorySnapshot": "b64:2,0",
   "postProcessEffects": [],
   "viewport": {

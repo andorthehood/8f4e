@@ -2,7 +2,7 @@
 import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
 import { StateManager } from '@8f4e/state-manager';
 
-import { getMemory } from './compiler-callback';
+import { getCodeBuffer, getMemory } from './compiler-callback';
 
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
@@ -94,7 +94,7 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 			audioWorklet.port.postMessage({
 				type: 'init',
 				memoryRef: memory,
-				codeBuffer: state.compiler.codeBuffer,
+				codeBuffer: getCodeBuffer(),
 				audioOutputBuffers,
 				audioInputBuffers,
 			});
@@ -142,11 +142,11 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 		syncCodeAndSettingsWithRuntime();
 	}
 
-	store.subscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
+	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
 	events.on('mousedown', initAudioContext);
 
 	return () => {
-		store.unsubscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
 		events.off('mousedown', initAudioContext);
 
 		if (mediaStreamSource) {
