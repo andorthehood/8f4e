@@ -1,8 +1,14 @@
 import { Engine } from 'glugglug';
 
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
+import type { MemoryViews } from '../../../types';
 
-export default function drawer(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
+export default function drawer(
+	engine: Engine,
+	state: State,
+	codeBlock: CodeBlockGraphicData,
+	memoryViews: MemoryViews
+): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
@@ -13,11 +19,9 @@ export default function drawer(engine: Engine, state: State, codeBlock: CodeBloc
 		.pianoKeyboards) {
 		engine.startGroup(x, y);
 
-		const memoryBuffer = pressedKeysListMemory.isInteger
-			? state.compiler.memoryBuffer
-			: state.compiler.memoryBufferFloat;
+		const memoryBuffer = pressedKeysListMemory.isInteger ? memoryViews.int32 : memoryViews.float32;
 
-		const numberOfKeys = state.compiler.memoryBuffer[pressedNumberOfKeysMemory.wordAlignedAddress];
+		const numberOfKeys = memoryViews.int32[pressedNumberOfKeysMemory.wordAlignedAddress];
 
 		for (let i = 0; i < 24; i++) {
 			engine.drawSprite(i * keyWidth, 0, i % 12);

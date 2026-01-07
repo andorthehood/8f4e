@@ -1,8 +1,9 @@
 import { Engine } from 'glugglug';
 
 import type { State } from '@8f4e/editor-state';
+import type { MemoryViews } from '../../../types';
 
-export default function drawConnections(engine: Engine, state: State): void {
+export default function drawConnections(engine: Engine, state: State, memoryViews: MemoryViews): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
@@ -16,13 +17,11 @@ export default function drawConnections(engine: Engine, state: State): void {
 		for (const { x, y, id } of codeBlock.extras.inputs) {
 			const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[id];
 
-			if (!memory || state.compiler.memoryBuffer[memory.wordAlignedAddress] === 0) {
+			if (!memory || memoryViews.int32[memory.wordAlignedAddress] === 0) {
 				continue;
 			}
 
-			const output = state.graphicHelper.outputsByWordAddress.get(
-				state.compiler.memoryBuffer[memory.wordAlignedAddress]
-			);
+			const output = state.graphicHelper.outputsByWordAddress.get(memoryViews.int32[memory.wordAlignedAddress]);
 
 			if (!output) {
 				continue;
