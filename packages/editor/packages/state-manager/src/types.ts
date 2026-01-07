@@ -9,8 +9,13 @@ export type PathValue<State, P extends string> = P extends `${infer K}.${infer R
 		? State[P]
 		: unknown;
 
+type NonFunction<V> = V extends (...args: never[]) => unknown ? never : V;
+
+export type Matcher<V> = ((value: V) => boolean) | NonFunction<V>;
+
 export type Subscription<State, P extends Path<State> = Path<State>> = {
 	selector: P;
 	tokens: string[];
 	callback: (value: PathValue<State, P>) => void;
+	matcher?: Matcher<PathValue<State, P>>;
 };

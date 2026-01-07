@@ -19,7 +19,7 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 		}
 
 		subscriptions.forEach(subscription => {
-			const { tokens, callback } = subscription;
+			const { tokens, callback, matcher } = subscription;
 			const comparisonLength = Math.min(tokens.length, keys.length);
 
 			for (let i = 0; i < comparisonLength; i++) {
@@ -29,6 +29,23 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 			}
 
 			const target = getValueByPath(state, subscription.selector);
+
+			if ('matcher' in subscription) {
+				let matches: boolean;
+
+				if (typeof matcher === 'function') {
+					// If the matcher is the same function reference as the target, treat it as a value matcher.
+					// Otherwise, treat the matcher as a predicate function.
+					matches = target === matcher ? true : (matcher as (value: unknown) => boolean)(target);
+				} else {
+					matches = target === matcher;
+				}
+
+				if (!matches) {
+					return;
+				}
+			}
+
 			(callback as (value: unknown) => void)(target);
 		});
 	};
