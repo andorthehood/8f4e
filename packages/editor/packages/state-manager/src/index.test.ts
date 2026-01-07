@@ -910,5 +910,61 @@ describe('StateManager', () => {
 			expect(valueCallback).toHaveBeenCalledWith(20);
 			expect(valueCallback).toHaveBeenCalledTimes(1);
 		});
+
+		it('should handle falsy primitive values - zero', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('age', 0, callback);
+
+			stateManager.set('age', 0);
+
+			expect(callback).toHaveBeenCalledWith(0);
+			expect(callback).toHaveBeenCalledTimes(1);
+
+			stateManager.set('age', 5);
+
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should handle falsy primitive values - empty string', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('name', '', callback);
+
+			stateManager.set('name', '');
+
+			expect(callback).toHaveBeenCalledWith('');
+			expect(callback).toHaveBeenCalledTimes(1);
+
+			stateManager.set('name', 'Non-empty');
+
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should handle null values', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('name', null as unknown as string, callback);
+
+			stateManager.set('name', null as unknown as string);
+
+			expect(callback).toHaveBeenCalledWith(null);
+			expect(callback).toHaveBeenCalledTimes(1);
+
+			stateManager.set('name', 'Not null');
+
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should handle undefined values', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('name', undefined as unknown as string, callback);
+
+			stateManager.set('name', undefined as unknown as string);
+
+			expect(callback).toHaveBeenCalledWith(undefined);
+			expect(callback).toHaveBeenCalledTimes(1);
+
+			stateManager.set('name', 'Not undefined');
+
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
 	});
 });
