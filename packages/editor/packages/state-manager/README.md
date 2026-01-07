@@ -270,7 +270,7 @@ Updates a state property. The selector can be a top-level key or a dot-separated
 
 #### `subscribe<P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void): Subscription<State, P>`
 
-Subscribes to changes on a specific state property. Returns a subscription object that can be used for unsubscribing.
+Subscribes to changes on a specific state property. Returns a subscription object. To unsubscribe later, use `unsubscribe(selector, callback)` with the same selector and callback reference.
 
 #### `subscribeToValue<P extends Path<State>>(selector: P, matcher: Matcher<PathValue<State, P>>, callback: (value: PathValue<State, P>) => void): Subscription<State, P>`
 
@@ -281,7 +281,9 @@ Subscribes to changes on a specific state property, but only fires the callback 
 - `matcher`: Either a primitive value for strict equality comparison (`===`) or a predicate function that returns `true` when the value should trigger the callback
 - `callback`: Function called when the value matches the matcher
 
-**Returns:** A subscription object that can be used for unsubscribing.
+**Returns:** A subscription object containing the selector, tokens, callback, and matcher.
+
+**Note:** To unsubscribe, use `unsubscribe(selector, callback)` with the same selector and callback reference, not the subscription object.
 
 **Example with primitive:**
 ```typescript
@@ -297,9 +299,9 @@ stateManager.subscribeToValue('age', (age) => age > 35, (age) => {
 });
 ```
 
-#### `unsubscribe<P extends Path<State>>(subscription: Subscription<State, P>): void`
+#### `unsubscribe<P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void): void`
 
-Unsubscribes from state changes.
+Unsubscribes from state changes by removing the subscription matching the provided selector and callback.
 
 ## License
 

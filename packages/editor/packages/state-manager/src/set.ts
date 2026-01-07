@@ -31,8 +31,16 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 			const target = getValueByPath(state, subscription.selector);
 
 			if (matcher !== undefined) {
-				const matches =
-					typeof matcher === 'function' ? (matcher as (value: unknown) => boolean)(target) : target === matcher;
+				let matches: boolean;
+
+				if (typeof matcher === 'function') {
+					// If the matcher is the same function reference as the target, treat it as a value matcher.
+					// Otherwise, treat the matcher as a predicate function.
+					matches = target === matcher ? true : (matcher as (value: unknown) => boolean)(target);
+				} else {
+					matches = target === matcher;
+				}
+
 				if (!matches) {
 					return;
 				}
