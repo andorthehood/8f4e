@@ -708,4 +708,207 @@ describe('StateManager', () => {
 			expect(value).toBe(50);
 		});
 	});
+
+	describe('subscribeToValue', () => {
+		it('should fire callback when primitive value matches', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('name', 'Jane Doe', callback);
+
+			stateManager.set('name', 'Jane Doe');
+
+			expect(callback).toHaveBeenCalledWith('Jane Doe');
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should not fire callback when primitive value does not match', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('name', 'Jane Doe', callback);
+
+			stateManager.set('name', 'John Smith');
+			stateManager.set('name', 'Another Name');
+
+			expect(callback).not.toHaveBeenCalled();
+		});
+
+		it('should fire callback when predicate returns true', () => {
+			const callback = vi.fn();
+			const matcher = (value: number) => value > 35;
+			stateManager.subscribeToValue('age', matcher, callback);
+
+			stateManager.set('age', 40);
+
+			expect(callback).toHaveBeenCalledWith(40);
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should not fire callback when predicate returns false', () => {
+			const callback = vi.fn();
+			const matcher = (value: number) => value > 35;
+			stateManager.subscribeToValue('age', matcher, callback);
+
+			stateManager.set('age', 30);
+			stateManager.set('age', 25);
+
+			expect(callback).not.toHaveBeenCalled();
+		});
+
+		it('should fire callback multiple times when value matches multiple times', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('age', 40, callback);
+
+			stateManager.set('age', 40);
+			stateManager.set('age', 35);
+			stateManager.set('age', 40);
+
+			expect(callback).toHaveBeenCalledWith(40);
+			expect(callback).toHaveBeenCalledTimes(2);
+		});
+
+		it('should work with nested properties and primitive matching', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('settings.theme', 'light', callback);
+
+			stateManager.set('settings.theme', 'light');
+
+			expect(callback).toHaveBeenCalledWith('light');
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should work with nested properties and predicate matching', () => {
+			const callback = vi.fn();
+			const matcher = (value: number) => value >= 16;
+			stateManager.subscribeToValue('settings.preferences.display.fontSize', matcher, callback);
+
+			stateManager.set('settings.preferences.display.fontSize', 18);
+
+			expect(callback).toHaveBeenCalledWith(18);
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should work with deeply nested properties', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('user.profile.personal.contact.address.city', 'Los Angeles', callback);
+
+			stateManager.set('user.profile.personal.contact.address.city', 'Los Angeles');
+
+			expect(callback).toHaveBeenCalledWith('Los Angeles');
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should unsubscribe correctly with unsubscribe', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('age', 45, callback);
+
+			stateManager.unsubscribe('age', callback);
+			stateManager.set('age', 45);
+
+			expect(callback).not.toHaveBeenCalled();
+		});
+
+		it('should support multiple subscribeToValue on the same property with different matchers', () => {
+			const callback1 = vi.fn();
+			const callback2 = vi.fn();
+			const callback3 = vi.fn();
+
+			stateManager.subscribeToValue('age', 40, callback1);
+			stateManager.subscribeToValue('age', (value: number) => value > 35, callback2);
+			stateManager.subscribeToValue('age', (value: number) => value < 30, callback3);
+
+			stateManager.set('age', 40);
+
+			expect(callback1).toHaveBeenCalledWith(40);
+			expect(callback2).toHaveBeenCalledWith(40);
+			expect(callback3).not.toHaveBeenCalled();
+		});
+
+		it('should not interfere with regular subscribe callbacks', () => {
+			const regularCallback = vi.fn();
+			const valueCallback = vi.fn();
+
+			stateManager.subscribe('age', regularCallback);
+			stateManager.subscribeToValue('age', 40, valueCallback);
+
+			stateManager.set('age', 35);
+
+			expect(regularCallback).toHaveBeenCalledWith(35);
+			expect(valueCallback).not.toHaveBeenCalled();
+
+			stateManager.set('age', 40);
+
+			expect(regularCallback).toHaveBeenCalledWith(40);
+			expect(regularCallback).toHaveBeenCalledTimes(2);
+			expect(valueCallback).toHaveBeenCalledWith(40);
+			expect(valueCallback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should use strict equality for primitive matching', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('age', 30, callback);
+
+			// Current value is 30, so it should match
+			stateManager.set('age', 30);
+
+			expect(callback).toHaveBeenCalledWith(30);
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should return subscription object', () => {
+			const callback = vi.fn();
+			const matcher = (value: string) => value.startsWith('J');
+			const subscription = stateManager.subscribeToValue('name', matcher, callback);
+
+			expect(subscription.selector).toBe('name');
+			expect(subscription.tokens).toEqual(['name']);
+			expect(subscription.callback).toBe(callback);
+			expect(subscription.matcher).toBe(matcher);
+		});
+
+		it('should handle boolean primitive matching', () => {
+			const callback = vi.fn();
+			stateManager.subscribeToValue('settings.notifications', false, callback);
+
+			stateManager.set('settings.notifications', false);
+
+			expect(callback).toHaveBeenCalledWith(false);
+			expect(callback).toHaveBeenCalledTimes(1);
+
+			stateManager.set('settings.notifications', true);
+
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should handle string predicate matching', () => {
+			const callback = vi.fn();
+			const matcher = (value: string) => value.includes('Doe');
+			stateManager.subscribeToValue('name', matcher, callback);
+
+			stateManager.set('name', 'Jane Doe');
+
+			expect(callback).toHaveBeenCalledWith('Jane Doe');
+			expect(callback).toHaveBeenCalledTimes(1);
+
+			stateManager.set('name', 'John Smith');
+
+			expect(callback).toHaveBeenCalledTimes(1);
+		});
+
+		it('should notify parent subscriptions but only fire when matcher matches', () => {
+			const parentCallback = vi.fn();
+			const valueCallback = vi.fn();
+
+			stateManager.subscribe('settings.preferences', parentCallback);
+			stateManager.subscribeToValue('settings.preferences.display.fontSize', 20, valueCallback);
+
+			stateManager.set('settings.preferences.display.fontSize', 18);
+
+			expect(parentCallback).toHaveBeenCalledWith(stateManager.getState().settings.preferences);
+			expect(valueCallback).not.toHaveBeenCalled();
+
+			stateManager.set('settings.preferences.display.fontSize', 20);
+
+			expect(parentCallback).toHaveBeenCalledTimes(2);
+			expect(valueCallback).toHaveBeenCalledWith(20);
+			expect(valueCallback).toHaveBeenCalledTimes(1);
+		});
+	});
 });
