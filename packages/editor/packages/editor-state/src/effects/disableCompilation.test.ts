@@ -19,7 +19,6 @@ describe('disableAutoCompilation feature', () => {
 	beforeEach(() => {
 		mockCompileCode = vi.fn().mockResolvedValue({
 			compiledModules: {},
-			codeBuffer: new Uint8Array([1, 2, 3]),
 			allocatedMemorySize: 1024,
 			memoryBuffer: new Int32Array(256),
 			memoryBufferFloat: new Float32Array(256),
@@ -98,11 +97,12 @@ describe('disableAutoCompilation feature', () => {
 
 		it('should prioritize disableAutoCompilation check over pre-compiled WASM check', async () => {
 			mockState.callbacks.compileCode = undefined;
+			const compiledModules = { mod: {} };
 			store.set('compiledConfig.disableAutoCompilation', true);
 			mockState.initialProjectState = {
 				...mockState.initialProjectState,
 				compiledWasm: 'AQIDBA==',
-				compiledModules: {},
+				compiledModules,
 			};
 
 			compiler(store, mockEvents);
@@ -116,7 +116,7 @@ describe('disableAutoCompilation feature', () => {
 						log.message.includes('Pre-compiled WASM loaded and decoded successfully') && log.category === '[Loader]'
 				)
 			).toBe(true);
-			expect(mockState.compiler.codeBuffer).not.toEqual(new Uint8Array());
+			expect(mockState.compiler.compiledModules).toEqual(compiledModules);
 		});
 	});
 
