@@ -7,6 +7,7 @@ import CompilerWorker from '@8f4e/compiler-worker?worker';
 const compilerWorker = new CompilerWorker();
 
 let memoryRef: WebAssembly.Memory | null = null;
+let codeBuffer: Uint8Array = new Uint8Array();
 
 export async function compileCode(
 	modules: Module[],
@@ -18,6 +19,7 @@ export async function compileCode(
 			switch (data.type) {
 				case 'success':
 					memoryRef = data.payload.wasmMemory;
+					codeBuffer = data.payload.codeBuffer;
 					resolve({
 						compiledModules: data.payload.compiledModules,
 						codeBuffer: data.payload.codeBuffer,
@@ -27,6 +29,7 @@ export async function compileCode(
 						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
 						memoryAction: data.payload.memoryAction,
 						compiledFunctions: data.payload.compiledFunctions,
+						byteCodeSize: data.payload.codeBuffer.length,
 					});
 					break;
 				case 'compilationError': {
@@ -60,4 +63,8 @@ export async function compileCode(
 // Export memory getter for runtimes to access
 export function getMemory(): WebAssembly.Memory | null {
 	return memoryRef;
+}
+
+export function getCodeBuffer(): Uint8Array {
+	return codeBuffer;
 }

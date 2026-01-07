@@ -36,9 +36,6 @@ export default function serializeToProject(
 
 	// Optionally include compiled WASM and memory snapshot
 	if (options?.includeCompiled && options?.encodeToBase64) {
-		if (compiler.codeBuffer.length > 0) {
-			project.compiledWasm = options.encodeToBase64(compiler.codeBuffer);
-		}
 		if (compiler.allocatedMemorySize > 0 && compiler.memoryBuffer.byteLength > 0) {
 			const memorySnapshotBytes = new Uint8Array(
 				compiler.memoryBuffer.buffer,
@@ -98,7 +95,6 @@ if (import.meta.vitest) {
 				},
 				compiler: {
 					compiledModules: { mod: {} },
-					codeBuffer: new Uint8Array([1, 2, 3]),
 					memoryBuffer: new Int32Array([4, 5, 6, 7]) as unknown as State['compiler']['memoryBuffer'],
 					allocatedMemorySize: 2,
 				},

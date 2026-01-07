@@ -164,10 +164,10 @@ export interface ContextMenu extends Position {
 }
 
 export interface Compiler {
-	codeBuffer: Uint8Array;
 	compilationTime: number;
 	isCompiling: boolean;
 	lastCompilationStart: number;
+	byteCodeSize: number;
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
 	compiledModules: CompiledModuleLookup;
@@ -520,6 +520,7 @@ export interface ProjectMetadata {
 export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'memoryRef'> {
 	memoryBuffer: MemoryBuffer;
 	memoryBufferFloat: Float32Array;
+	byteCodeSize: number;
 }
 
 // Callbacks interface contains all callback functions
@@ -549,7 +550,7 @@ export interface Callbacks {
 	importProject?: () => Promise<Project>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
 	importBinaryFile?: () => Promise<{ fileName: string }>;
-	exportBinaryFile?: (data: Uint8Array, fileName: string, mimeType: string) => Promise<void>;
+	exportBinaryFile?: (fileName: string, mimeType: string) => Promise<void>;
 	loadBinaryFileIntoMemory?: (file: BinaryAsset) => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 

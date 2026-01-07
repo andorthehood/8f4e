@@ -58,7 +58,7 @@ export default function drawInfoOverlay(
 	// Compiler stats
 	debugText.push('');
 	debugText.push('Compilation time: ' + state.compiler.compilationTime.toFixed(2) + 'ms');
-	debugText.push('WASM byte code size: ' + formatBytes(state.compiler.codeBuffer.length));
+	debugText.push('WASM byte code size: ' + formatBytes(state.compiler.byteCodeSize));
 
 	if (state.compiledConfig?.memorySizeBytes) {
 		debugText.push(

@@ -19,7 +19,6 @@ export const defaultConfig: ConfigObject = {
 export default function createDefaultState() {
 	return {
 		compiler: {
-			codeBuffer: new Uint8Array(),
 			compilationTime: 0,
 			isCompiling: false,
 			lastCompilationStart: 0,
@@ -27,6 +26,7 @@ export default function createDefaultState() {
 			memoryBuffer: new Int32Array(),
 			memoryBufferFloat: new Float32Array(),
 			compiledModules: {},
+			byteCodeSize: 0,
 		},
 		midi: {
 			inputs: [],
