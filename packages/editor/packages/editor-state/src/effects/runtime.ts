@@ -58,5 +58,5 @@ export default async function runtime(store: StateManager<State>, events: EventD
 		}
 	}
 
-	store.subscribe('compiler.codeBuffer', initOrDestroyOrUpdateRuntime);
+	store.subscribeToValue('compiler.isCompiling', false, initOrDestroyOrUpdateRuntime);
 }

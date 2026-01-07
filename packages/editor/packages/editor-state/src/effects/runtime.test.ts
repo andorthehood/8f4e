@@ -81,7 +81,8 @@ describe('Runtime System', () => {
 
 			await runtimeEffect(store, events);
 
-			store.set('compiler.codeBuffer', new Uint8Array([1]));
+			store.set('compiler.isCompiling', true);
+			store.set('compiler.isCompiling', false);
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -95,7 +96,7 @@ describe('Runtime System', () => {
 				runtimeSettings: [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }],
 				selectedRuntime: 0,
 			});
-			store.set('compiler.codeBuffer', new Uint8Array([2]));
+			store.set('compiler.isCompiling', false);
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));

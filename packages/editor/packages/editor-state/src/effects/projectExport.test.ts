@@ -123,8 +123,14 @@ describe('projectExport', () => {
 	});
 
 	describe('exportRuntimeReadyProject', () => {
-		it('should export runtime-ready project with compiled WASM', async () => {
-			mockState.compiler.codeBuffer = new Uint8Array([1, 2, 3, 4, 5]);
+		it('should export runtime-ready project with compiled modules and memory snapshot', async () => {
+			const backingBuffer = new ArrayBuffer(8);
+			const bytes = new Uint8Array(backingBuffer);
+			bytes.set([1, 2, 3, 4, 5, 6, 7, 8]);
+
+			mockState.compiler.compiledModules = { mod: {} };
+			mockState.compiler.memoryBuffer = new Int32Array(backingBuffer);
+			mockState.compiler.allocatedMemorySize = 6;
 
 			projectExport(store, mockEvents);
 
@@ -140,14 +146,13 @@ describe('projectExport', () => {
 			expect(fileName).toBe('project-runtime-ready.json');
 
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.compiledWasm).toBeDefined();
-			expect(typeof exportedProject.compiledWasm).toBe('string');
+			expect(exportedProject.compiledModules).toEqual({ mod: {} });
+			expect(typeof exportedProject.memorySnapshot).toBe('string');
 		});
 
-		it('should warn when no compiled WASM is available', () => {
-			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-			mockState.compiler.codeBuffer = new Uint8Array(0);
+		it('should omit memory snapshot when none is available', async () => {
+			mockState.compiler.allocatedMemorySize = 0;
+			mockState.compiler.memoryBuffer = new Int32Array(0);
 
 			projectExport(store, mockEvents);
 
@@ -155,20 +160,18 @@ describe('projectExport', () => {
 			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
 			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
 
-			exportRuntimeReadyProjectCallback();
+			await exportRuntimeReadyProjectCallback();
 
-			expect(consoleWarnSpy).toHaveBeenCalledWith(
-				'No compiled WebAssembly code available. Please compile your project first.'
-			);
-			expect(mockExportProject).not.toHaveBeenCalled();
-
-			consoleWarnSpy.mockRestore();
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
+			const [exportedJson] = mockExportProject.mock.calls[0];
+			const exportedProject = JSON.parse(exportedJson);
+			expect(exportedProject.memorySnapshot).toBeUndefined();
 		});
 
 		it('should handle runtime-ready export errors gracefully', async () => {
 			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
-			mockState.compiler.codeBuffer = new Uint8Array([1, 2, 3]);
+			mockState.compiler.compiledModules = { mod: {} };
 			mockState.callbacks.exportProject = vi.fn().mockRejectedValue(new Error('Export failed'));
 
 			projectExport(store, mockEvents);
