@@ -31,12 +31,6 @@ export default function projectExport(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		// Check if compiled WASM code is available
-		if (!state.compiler.codeBuffer || state.compiler.codeBuffer.length === 0) {
-			console.warn('No compiled WebAssembly code available. Please compile your project first.');
-			return;
-		}
-
 		// Serialize to project format with compiled WASM, memory snapshot, and config
 		const runtimeProject = await serializeToRuntimeReadyProject(state, encodeUint8ArrayToBase64);
 
