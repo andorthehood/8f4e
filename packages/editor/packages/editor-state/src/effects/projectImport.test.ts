@@ -203,7 +203,7 @@ describe('projectImport', () => {
 			expect(mockState.compiler.compiledModules).toEqual(runtimeReadyProject.compiledModules);
 		});
 
-		it('should handle decoding errors gracefully', async () => {
+		it('should ignore invalid memory snapshots without crashing', async () => {
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
 
@@ -222,8 +222,8 @@ describe('projectImport', () => {
 			store.set('compiledConfig', { ...mockState.compiledConfig });
 			await new Promise(resolve => setTimeout(resolve, 0));
 
-			expect(consoleErrorSpy).toHaveBeenCalledWith('[Loader] Failed to decode memory snapshot:', expect.any(Error));
-			expect(mockState.compiler.memoryBuffer).toEqual(new Int32Array());
+			expect(consoleErrorSpy).not.toHaveBeenCalled();
+			expect(mockState.compiler.allocatedMemorySize).toBe(0);
 
 			consoleErrorSpy.mockRestore();
 		});
