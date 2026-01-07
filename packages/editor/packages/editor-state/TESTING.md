@@ -95,7 +95,7 @@ const state = createMockState(); // Uses all defaults
 const state = createMockState({
   compiler: {
     compilationTime: 120,
-    codeBuffer: new Uint8Array([1, 2, 3]) 
+    compiledModules: { mod: {} }
   }
 });
 ```
