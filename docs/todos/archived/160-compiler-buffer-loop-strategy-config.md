@@ -3,8 +3,8 @@ title: 'Plan: Configurable Buffer Generation Strategy (Loop vs Unrolled)'
 priority: Medium
 effort: 6-10 hours
 created: 2025-11-06
-status: Planned
-completed: null
+status: Completed
+completed: 2026-01-05
 ---
 
 # Plan: Configurable Buffer Generation Strategy (Loop vs Unrolled)

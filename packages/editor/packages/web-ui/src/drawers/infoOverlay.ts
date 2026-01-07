@@ -43,20 +43,6 @@ export default function drawInfoOverlay(
 		debugText.push('Index: ' + selectedModule.index);
 	}
 
-	const runtime = state.runtime.runtimeSettings[state.runtime.selectedRuntime];
-
-	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioInputBuffers)) {
-		runtime.audioInputBuffers.forEach(({ memoryId, channel, input }) => {
-			debugText.push('- Audio Input ' + input + ': Channel: ' + channel + ' Buffer: ' + memoryId);
-		});
-	}
-
-	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioOutputBuffers)) {
-		runtime.audioOutputBuffers.forEach(({ memoryId, channel, output }) => {
-			debugText.push('- Audio Output ' + output + ': Channel: ' + channel + ' Buffer: ' + memoryId);
-		});
-	}
-
 	// Graphic stats
 	debugText.push('');
 	debugText.push('Quad count: ' + vertices / 6);
@@ -73,19 +59,37 @@ export default function drawInfoOverlay(
 	debugText.push('');
 	debugText.push('Compilation time: ' + state.compiler.compilationTime.toFixed(2) + 'ms');
 	debugText.push('WASM byte code size: ' + formatBytes(state.compiler.codeBuffer.length));
-	debugText.push(
-		'Allocated memory: ' +
-			formatBytes(state.compiler.allocatedMemorySize) +
-			' / ' +
-			formatBytes(state.compiler.compilerOptions.memorySizeBytes) +
-			' (' +
-			Math.round((state.compiler.allocatedMemorySize / state.compiler.compilerOptions.memorySizeBytes) * 100) +
-			'%)'
-	);
+
+	if (state.compiledConfig?.memorySizeBytes) {
+		debugText.push(
+			'Allocated memory: ' +
+				formatBytes(state.compiler.allocatedMemorySize) +
+				' / ' +
+				formatBytes(state.compiledConfig.memorySizeBytes) +
+				' (' +
+				Math.round((state.compiler.allocatedMemorySize / state.compiledConfig.memorySizeBytes) * 100) +
+				'%)'
+		);
+	}
 
 	// Runtime stats
+
+	const runtime = state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime];
+
 	debugText.push('');
 	debugText.push('Runtime: ' + runtime.runtime);
+
+	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioInputBuffers)) {
+		runtime.audioInputBuffers.forEach(({ memoryId, channel, input }) => {
+			debugText.push('Audio Input ' + input + ': Channel: ' + channel + ' Buffer: ' + memoryId);
+		});
+	}
+
+	if (runtime.runtime === 'AudioWorkletRuntime' && Array.isArray(runtime.audioOutputBuffers)) {
+		runtime.audioOutputBuffers.forEach(({ memoryId, channel, output }) => {
+			debugText.push('Audio Output ' + output + ': Channel: ' + channel + ' Buffer: ' + memoryId);
+		});
+	}
 
 	if (state.runtime.stats.timerExpectedIntervalTimeMs) {
 		debugText.push(

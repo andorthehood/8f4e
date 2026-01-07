@@ -1,11 +1,11 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { log } from '../impureHelpers/logger/logger';
-import { applyConfigToState } from '../impureHelpers/config/applyConfigToState';
 import isPlainObject from '../pureHelpers/isPlainObject';
 import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
 import configSchema from '../configSchema';
+import { defaultConfig } from '../pureHelpers/state/createDefaultState';
 
 import type { CodeError, EventDispatcher, State, ConfigObject } from '../types';
 
@@ -65,39 +65,39 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	 * Errors are saved to codeErrors.configErrors with the creationIndex of the source block.
 	 */
 	async function rebuildConfig(): Promise<void> {
-		const compileConfig = state.callbacks.compileConfig;
-		if (!compileConfig) {
+		// If the compileConfig callback is not available but the project contains the compiled config.
+		if (state.initialProjectState?.compiledConfig && !state.callbacks.compileConfig) {
+			store.set('compiledConfig', state.initialProjectState.compiledConfig);
+			return;
+		}
+
+		if (!state.callbacks.compileConfig) {
+			store.set('compiledConfig', defaultConfig);
 			return;
 		}
 
 		const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
 		if (configBlocks.length === 0) {
+			store.set('compiledConfig', defaultConfig);
 			return;
 		}
 
-		const { mergedConfig, errors } = await buildConfigFromBlocks(configBlocks, compileConfig);
+		const { mergedConfig, errors } = await buildConfigFromBlocks(configBlocks, state.callbacks.compileConfig);
 
 		console.log(`[Config] Config loaded:`, mergedConfig);
 		log(state, `Config loaded with ${errors.length} error(s).`, 'Config');
 
 		// Save all errors to state
 		store.set('codeErrors.configErrors', errors);
-
-		// Apply the merged config to state
-		if (isPlainObject(mergedConfig)) {
-			applyConfigToState(store, mergedConfig as ConfigObject);
-		}
+		store.set(
+			'compiledConfig',
+			deepMergeConfig(defaultConfig as unknown as Record<string, unknown>, mergedConfig) as unknown as ConfigObject
+		);
 	}
 
 	// Wire up event handlers
-	// rebuildConfig runs BEFORE module compilation because blockTypeUpdater runs first
 	events.on('compileConfig', rebuildConfig);
-	store.subscribe('initialProjectState', () => {
-		if (state.initialProjectState?.compiledConfig) {
-			applyConfigToState(store, state.initialProjectState.compiledConfig);
-		}
-	});
 	store.subscribe('graphicHelper.codeBlocks', rebuildConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'config') {
@@ -117,18 +117,18 @@ export async function compileConfigForExport(state: State): Promise<ConfigObject
 	// If no compileConfig callback, return empty object
 	const compileConfig = state.callbacks.compileConfig;
 	if (!compileConfig) {
-		return state.compiledConfig || {};
+		return state.compiledConfig || defaultConfig;
 	}
 
 	// Collect all config blocks
 	const configBlocks = collectConfigBlocks(state.graphicHelper.codeBlocks);
 
 	if (configBlocks.length === 0) {
-		return {};
+		return defaultConfig;
 	}
 
 	// Compile each config block independently and merge results
 	const { mergedConfig } = await buildConfigFromBlocks(configBlocks, compileConfig);
 
-	return mergedConfig;
+	return deepMergeConfig(defaultConfig as unknown as Record<string, unknown>, mergedConfig) as unknown as ConfigObject;
 }

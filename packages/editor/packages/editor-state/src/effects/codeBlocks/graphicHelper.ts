@@ -148,10 +148,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		graphicData.codeColors = generateCodeColorMap(codeWithLineNumbers, state.graphicHelper.spriteLookups, [
-			...instructionsToHighlight,
-			...state.compiler.compilerOptions.environmentExtensions.ignoredKeywords,
-		]);
+		graphicData.codeColors = generateCodeColorMap(
+			codeWithLineNumbers,
+			state.graphicHelper.spriteLookups,
+			instructionsToHighlight
+		);
 
 		gaps(graphicData);
 		pianoKeyboards(graphicData, state);

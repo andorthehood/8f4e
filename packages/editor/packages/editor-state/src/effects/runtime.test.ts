@@ -67,7 +67,7 @@ describe('Runtime System', () => {
 			});
 
 			const state = createMockState({
-				runtime: {
+				compiledConfig: {
 					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
 					selectedRuntime: 0,
 				},
@@ -81,12 +81,7 @@ describe('Runtime System', () => {
 
 			await runtimeEffect(store, events);
 
-			// Trigger initial runtime initialization by updating the runtime state
-			store.set('runtime', {
-				stats: state.runtime.stats,
-				runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
-				selectedRuntime: 0,
-			});
+			store.set('compiler.codeBuffer', new Uint8Array([1]));
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -95,12 +90,12 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			// Update to new runtime by using store.set to trigger the subscription
-			store.set('runtime', {
-				stats: state.runtime.stats,
+			store.set('compiledConfig', {
+				...state.compiledConfig,
 				runtimeSettings: [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }],
 				selectedRuntime: 0,
 			});
+			store.set('compiler.codeBuffer', new Uint8Array([2]));
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
