@@ -34,18 +34,11 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 	// Update memoryRef whenever compiler produces a new memory buffer
 	store.subscribe('compiler.memoryBuffer', () => {
 		// The memoryBuffer is an Int32Array which has an underlying buffer
-		// We need to get the ArrayBuffer from it
-		if (state.compiler.memoryBuffer.length > 0) {
-			memoryRef.current = state.compiler.memoryBuffer.buffer;
-		} else {
-			memoryRef.current = null;
-		}
+		memoryRef.current = state.compiler.memoryBuffer.buffer;
 	});
 
 	// Initialize memoryRef with current state
-	if (state.compiler.memoryBuffer.length > 0) {
-		memoryRef.current = state.compiler.memoryBuffer.buffer;
-	}
+	memoryRef.current = state.compiler.memoryBuffer.buffer;
 
 	const view = await initView(state, canvas, memoryRef);
 

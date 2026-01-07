@@ -9,8 +9,9 @@ import drawInfoOverlay from './drawers/infoOverlay';
 import drawConsoleOverlay from './drawers/consoleOverlay';
 import drawBackground from './drawers/drawBackground';
 import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
-import { createMemoryViewManager, type MemoryRef } from './types';
+import { createMemoryViewManager } from './memoryViewManager';
 
+import type { MemoryRef } from './types';
 import type { State } from '@8f4e/editor-state';
 
 // Re-export types
