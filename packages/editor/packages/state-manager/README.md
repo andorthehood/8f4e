@@ -131,6 +131,65 @@ const onNameChanged = (name: string) => {
 stateManager.unsubscribe('user.name', onNameChanged);
 ```
 
+### Subscribing to Specific Values
+
+The `subscribeToValue` method allows you to subscribe to changes that match a specific value or predicate, reducing the need for manual filtering in callbacks.
+
+#### Primitive Value Matching
+
+```typescript
+// Subscribe only when age becomes exactly 40
+stateManager.subscribeToValue('age', 40, (age) => {
+  console.log('Age is now 40:', age);
+});
+
+// Subscribe only when theme becomes 'light'
+stateManager.subscribeToValue('user.settings.theme', 'light', (theme) => {
+  console.log('Theme switched to light mode');
+});
+
+// Subscribe only when notifications are disabled
+stateManager.subscribeToValue('user.settings.notifications', false, (value) => {
+  console.log('Notifications disabled');
+});
+```
+
+#### Predicate Matching
+
+```typescript
+// Subscribe when age is greater than 35
+stateManager.subscribeToValue('age', (age) => age > 35, (age) => {
+  console.log('Age is now over 35:', age);
+});
+
+// Subscribe when name starts with 'J'
+stateManager.subscribeToValue('user.name', (name) => name.startsWith('J'), (name) => {
+  console.log('Name starts with J:', name);
+});
+
+// Subscribe when font size is at least 16
+stateManager.subscribeToValue(
+  'user.settings.preferences.display.fontSize',
+  (size) => size >= 16,
+  (size) => {
+    console.log('Font size is readable:', size);
+  }
+);
+```
+
+#### Unsubscribing from Value Subscriptions
+
+```typescript
+const callback = (age: number) => {
+  console.log('Age is 40:', age);
+};
+
+stateManager.subscribeToValue('age', 40, callback);
+
+// Later, unsubscribe using the same selector and callback
+stateManager.unsubscribe('age', callback);
+```
+
 ### Getting State
 
 ```typescript
@@ -211,11 +270,38 @@ Updates a state property. The selector can be a top-level key or a dot-separated
 
 #### `subscribe<P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void): Subscription<State, P>`
 
-Subscribes to changes on a specific state property. Returns a subscription object that can be used for unsubscribing.
+Subscribes to changes on a specific state property. Returns a subscription object. To unsubscribe later, use `unsubscribe(selector, callback)` with the same selector and callback reference.
 
-#### `unsubscribe<P extends Path<State>>(subscription: Subscription<State, P>): void`
+#### `subscribeToValue<P extends Path<State>>(selector: P, matcher: Matcher<PathValue<State, P>>, callback: (value: PathValue<State, P>) => void): Subscription<State, P>`
 
-Unsubscribes from state changes.
+Subscribes to changes on a specific state property, but only fires the callback when the new value matches the provided matcher.
+
+**Parameters:**
+- `selector`: The path to the state property
+- `matcher`: Either a primitive value for strict equality comparison (`===`) or a predicate function that returns `true` when the value should trigger the callback
+- `callback`: Function called when the value matches the matcher
+
+**Returns:** A subscription object containing the selector, tokens, callback, and matcher.
+
+**Note:** To unsubscribe, use `unsubscribe(selector, callback)` with the same selector and callback reference, not the subscription object.
+
+**Example with primitive:**
+```typescript
+stateManager.subscribeToValue('age', 40, (age) => {
+  console.log('Age is now 40');
+});
+```
+
+**Example with predicate:**
+```typescript
+stateManager.subscribeToValue('age', (age) => age > 35, (age) => {
+  console.log('Age is over 35:', age);
+});
+```
+
+#### `unsubscribe<P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void): void`
+
+Unsubscribes from state changes by removing the subscription matching the provided selector and callback.
 
 ## License
 
