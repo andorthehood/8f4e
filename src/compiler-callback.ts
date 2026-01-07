@@ -1,5 +1,5 @@
 import { type Module, type CompileOptions } from '@8f4e/compiler';
-import { type CompilationResult } from '@8f4e/editor';
+import { Editor, type CompilationResult } from '@8f4e/editor';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 
 // Create worker once at module scope
@@ -12,7 +12,8 @@ let codeBuffer: Uint8Array = new Uint8Array();
 export async function compileCode(
 	modules: Module[],
 	compilerOptions: CompileOptions,
-	functions?: Module[]
+	functions: Module[],
+	editor: Editor
 ): Promise<CompilationResult> {
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
@@ -20,6 +21,9 @@ export async function compileCode(
 				case 'success':
 					memoryRef = data.payload.wasmMemory;
 					codeBuffer = data.payload.codeBuffer;
+
+					editor.updateMemoryViews(data.payload.wasmMemory);
+
 					resolve({
 						compiledModules: data.payload.compiledModules,
 						codeBuffer: data.payload.codeBuffer,

@@ -1,15 +1,13 @@
 import type { MemoryViews } from '@8f4e/web-ui';
 
-export interface MemoryRef {
-	current: WebAssembly.Memory | ArrayBuffer | SharedArrayBuffer | null;
-}
+export type MemoryRef = WebAssembly.Memory | ArrayBuffer | SharedArrayBuffer;
 
 /**
  * Creates memory views and keeps them updated when the underlying buffer identity changes.
  */
 export function createMemoryViewManager(memoryRef: MemoryRef): {
 	memoryViews: MemoryViews;
-	refreshMemoryViews: () => void;
+	updateMemoryViews: (memoryRef: MemoryRef) => void;
 } {
 	let cachedBuffer: ArrayBuffer | SharedArrayBuffer | null = null;
 	const memoryViews: MemoryViews = {
@@ -17,16 +15,15 @@ export function createMemoryViewManager(memoryRef: MemoryRef): {
 		float32: new Float32Array(0),
 	};
 
-	const refreshMemoryViews = () => {
-		const memory = memoryRef.current;
+	const updateMemoryViews = (memoryRef: MemoryRef) => {
 		let buffer: ArrayBuffer | SharedArrayBuffer;
 
-		if (!memory) {
-			buffer = new ArrayBuffer(0);
-		} else if (memory instanceof WebAssembly.Memory) {
-			buffer = memory.buffer;
+		if (memoryRef instanceof WebAssembly.Memory) {
+			buffer = memoryRef.buffer;
+		} else if (memoryRef instanceof ArrayBuffer || memoryRef instanceof SharedArrayBuffer) {
+			buffer = memoryRef;
 		} else {
-			buffer = memory;
+			buffer = new ArrayBuffer(0);
 		}
 
 		if (buffer !== cachedBuffer) {
@@ -36,10 +33,10 @@ export function createMemoryViewManager(memoryRef: MemoryRef): {
 		}
 	};
 
-	refreshMemoryViews();
+	updateMemoryViews(memoryRef);
 
 	return {
 		memoryViews,
-		refreshMemoryViews,
+		updateMemoryViews,
 	};
 }
