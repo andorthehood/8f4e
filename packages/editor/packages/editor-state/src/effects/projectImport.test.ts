@@ -187,6 +187,7 @@ describe('projectImport', () => {
 			const runtimeReadyProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
 				compiledWasm: 'AQIDBA==', // base64 for [1,2,3,4]
+				compiledModules: { mod: {} },
 				memorySnapshot: 'AQAAAA==', // base64 for minimal Int32Array
 			};
 
@@ -199,7 +200,7 @@ describe('projectImport', () => {
 					log => log.message.includes('Pre-compiled WASM loaded') && log.category === '[Loader]'
 				)
 			).toBe(true);
-			expect(mockState.compiler.codeBuffer).not.toEqual(new Uint8Array());
+			expect(mockState.compiler.compiledModules).toEqual(runtimeReadyProject.compiledModules);
 		});
 
 		it('should handle decoding errors gracefully', async () => {
@@ -212,7 +213,6 @@ describe('projectImport', () => {
 
 			const invalidProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				compiledWasm: 'invalid-base64!!!',
 				memorySnapshot: 'invalid-base64!!!',
 			};
 
@@ -222,8 +222,8 @@ describe('projectImport', () => {
 			store.set('compiledConfig', { ...mockState.compiledConfig });
 			await new Promise(resolve => setTimeout(resolve, 0));
 
-			expect(consoleErrorSpy).toHaveBeenCalledWith('[Loader] Failed to decode pre-compiled WASM:', expect.any(Error));
-			expect(mockState.compiler.codeBuffer).toEqual(new Uint8Array());
+			expect(consoleErrorSpy).toHaveBeenCalledWith('[Loader] Failed to decode memory snapshot:', expect.any(Error));
+			expect(mockState.compiler.memoryBuffer).toEqual(new Int32Array());
 
 			consoleErrorSpy.mockRestore();
 		});

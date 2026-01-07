@@ -210,7 +210,6 @@ export function createMockEventDispatcher(): EventDispatcher {
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const defaults: State = {
 		compiler: {
-			codeBuffer: new Uint8Array(0),
 			isCompiling: false,
 			compilationTime: 0,
 			lastCompilationStart: 0,
@@ -218,6 +217,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			memoryBuffer: new Int32Array(0),
 			memoryBufferFloat: new Float32Array(0),
 			compiledModules: {},
+			byteCodeSize: 0,
 		},
 		callbacks: {
 			requestRuntime: createMockAsyncFunction(() => () => {}),
