@@ -2,8 +2,14 @@ import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
+import type { MemoryViews } from '../../../types';
 
-export default function drawSwitches(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
+export default function drawSwitches(
+	engine: Engine,
+	state: State,
+	codeBlock: CodeBlockGraphicData,
+	memoryViews: MemoryViews
+): void {
 	if (!state.graphicHelper.spriteLookups) {
 		return;
 	}
@@ -16,7 +22,7 @@ export default function drawSwitches(engine: Engine, state: State, codeBlock: Co
 		}
 
 		const { wordAlignedAddress } = memory;
-		const value = state.compiler.memoryBuffer[wordAlignedAddress] || 0;
+		const value = memoryViews.int32[wordAlignedAddress] || 0;
 
 		if (value === onValue) {
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);

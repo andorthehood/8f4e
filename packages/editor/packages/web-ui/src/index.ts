@@ -9,12 +9,18 @@ import drawInfoOverlay from './drawers/infoOverlay';
 import drawConsoleOverlay from './drawers/consoleOverlay';
 import drawBackground from './drawers/drawBackground';
 import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
+import { createMemoryViewManager } from './memoryViewManager';
 
+import type { MemoryRef } from './types';
 import type { State } from '@8f4e/editor-state';
+
+// Re-export types
+export type { MemoryRef, MemoryViews } from './types';
 
 export default async function init(
 	state: State,
-	canvas: HTMLCanvasElement
+	canvas: HTMLCanvasElement,
+	memoryRef: MemoryRef
 ): Promise<{
 	resize: (width: number, height: number) => void;
 	reloadSpriteSheet: () => void;
@@ -27,6 +33,9 @@ export default async function init(
 		x: state.graphicHelper.viewport.x,
 		y: state.graphicHelper.viewport.y,
 	};
+
+	// Memory view manager - creates typed array views from the memory ref
+	const getMemoryViews = createMemoryViewManager(memoryRef);
 
 	const {
 		canvas: sprite,
@@ -57,6 +66,9 @@ export default async function init(
 		state.graphicHelper.viewport.x = effectiveViewport.x;
 		state.graphicHelper.viewport.y = effectiveViewport.y;
 
+		// Get memory views - recreated only if buffer identity changed
+		const memoryViews = getMemoryViews();
+
 		drawBackground(engine, state);
 		if (state.featureFlags.consoleOverlay) {
 			drawConsoleOverlay(engine, state);
@@ -69,8 +81,8 @@ export default async function init(
 				maxVertices,
 			});
 		}
-		drawCodeBlocks(engine, state);
-		drawConnections(engine, state);
+		drawCodeBlocks(engine, state, memoryViews);
+		drawConnections(engine, state, memoryViews);
 		drawDialog(engine, state);
 		drawContextMenu(engine, state);
 
