@@ -1,10 +1,9 @@
-import initView, { type MemoryRef } from '@8f4e/web-ui';
-import initState from '@8f4e/editor-state';
+import initState, { type Options } from '@8f4e/editor-state';
+import initView from '@8f4e/web-ui';
 
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
-
-import type { Options } from '@8f4e/editor-state';
+import { createMemoryViewManager, type MemoryRef } from './memoryViewManager';
 
 // Re-export types that consumers might need
 export type {
@@ -20,27 +19,36 @@ export type {
 	FeatureFlagsConfig,
 } from '@8f4e/editor-state';
 export type { EventDispatcher } from './events';
-export type { MemoryRef } from '@8f4e/web-ui';
+export type { MemoryRef } from './memoryViewManager';
 
 export default async function init(canvas: HTMLCanvasElement, options: Options) {
+	const memoryRef: MemoryRef = { current: new ArrayBuffer(0) };
+
+	const { memoryViews, refreshMemoryViews } = createMemoryViewManager(memoryRef);
 	const events = initEvents();
-	const store = initState(events, options);
+	const store = initState(events, {
+		...options,
+		callbacks: {
+			...options.callbacks,
+			getWordFromMemory: (wordAlignedAddress: number) => {
+				return memoryViews.int32[wordAlignedAddress] || 0;
+			},
+			setWordInMemory: (wordAlignedAddress: number, value: number) => {
+				memoryViews.int32[wordAlignedAddress] = value;
+			},
+		},
+	});
 	const state = store.getState();
 	humanInterface(canvas, events, state);
 
-	// Create a stable memory ref that web-ui will read from
-	const memoryRef: MemoryRef = { current: new ArrayBuffer(0) };
-
 	// Update memoryRef whenever compiler produces a new memory buffer
 	store.subscribe('compiler.memoryBuffer', () => {
-		// The memoryBuffer is an Int32Array which has an underlying buffer
-		memoryRef.current = state.compiler.memoryBuffer.buffer;
+		refreshMemoryViews();
 	});
 
-	// Initialize memoryRef with current state
-	memoryRef.current = state.compiler.memoryBuffer.buffer;
+	refreshMemoryViews();
 
-	const view = await initView(state, canvas, memoryRef);
+	const view = await initView(state, canvas, memoryViews);
 
 	store.subscribe('colorScheme', () => {
 		view.reloadSpriteSheet();
