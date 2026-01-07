@@ -76,7 +76,6 @@ describe('Runtime-ready project functionality', () => {
 
 		mockState = createMockState({
 			compiler: {
-				codeBuffer: new Uint8Array([1, 2, 3, 4, 5]), // Mock compiled WASM
 				compiledModules: {},
 			},
 			callbacks: {
@@ -114,7 +113,16 @@ describe('Runtime-ready project functionality', () => {
 	});
 
 	describe('Runtime-ready export', () => {
-		it('should export project with compiled WASM as base64', async () => {
+		it('should export runtime-ready project with compiled modules and memory snapshot', async () => {
+			const backingBuffer = new ArrayBuffer(8);
+			const bytes = new Uint8Array(backingBuffer);
+			bytes.set([1, 2, 3, 4, 5, 6, 7, 8]);
+
+			mockState.compiler.compiledModules = { mod: {} };
+			mockState.compiler.memoryBuffer = new Int32Array(backingBuffer);
+			mockState.compiler.memoryBufferFloat = new Float32Array(backingBuffer);
+			mockState.compiler.allocatedMemorySize = 6;
+
 			// Set up save functionality
 			projectExport(store, mockEvents);
 
@@ -134,14 +142,14 @@ describe('Runtime-ready project functionality', () => {
 
 			expect(fileName).toBe('project-runtime-ready.json');
 
-			// Parse the exported JSON and verify it contains compiledWasm
+			// Parse the exported JSON and verify it contains compiled data
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.compiledWasm).toBeDefined();
-			expect(typeof exportedProject.compiledWasm).toBe('string');
+			expect(exportedProject.compiledModules).toEqual({ mod: {} });
+			expect(typeof exportedProject.memorySnapshot).toBe('string');
 
 			// Verify the base64 encoding is correct using the same encoder as the implementation
-			const expectedBase64 = encodeUint8ArrayToBase64(mockState.compiler.codeBuffer!);
-			expect(exportedProject.compiledWasm).toBe(expectedBase64);
+			const expectedBase64 = encodeUint8ArrayToBase64(new Uint8Array(backingBuffer, 0, 6));
+			expect(exportedProject.memorySnapshot).toBe(expectedBase64);
 		});
 
 		it('should include compiledConfig in runtime-ready export', async () => {
@@ -201,11 +209,9 @@ describe('Runtime-ready project functionality', () => {
 			expect(exportedProject.memorySnapshot).toBe(expectedBase64);
 		});
 
-		it('should warn when no compiled WASM is available', async () => {
-			// Remove compiled WASM by setting it to an empty array
-			mockState.compiler.codeBuffer = new Uint8Array(0);
-
-			const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		it('should omit memory snapshot when no compiled memory is available', async () => {
+			mockState.compiler.allocatedMemorySize = 0;
+			mockState.compiler.memoryBuffer = new Int32Array(0);
 
 			// Set up save functionality
 			projectExport(store, mockEvents);
@@ -218,36 +224,25 @@ describe('Runtime-ready project functionality', () => {
 			// Trigger the exportRuntimeReadyProject action
 			await exportRuntimeReadyProjectCallback();
 
-			// Verify warning was logged and export was not called
-			expect(consoleSpy).toHaveBeenCalledWith(
-				'No compiled WebAssembly code available. Please compile your project first.'
-			);
-			expect(mockExportProject).not.toHaveBeenCalled();
+			expect(mockExportProject).toHaveBeenCalledTimes(1);
 
-			consoleSpy.mockRestore();
+			const [exportedJson] = mockExportProject.mock.calls[0];
+			const exportedProject = JSON.parse(exportedJson);
+			expect(exportedProject.memorySnapshot).toBeUndefined();
 		});
 	});
 
 	describe('Pre-compiled WASM loading', () => {
-		it('should use pre-compiled WASM bytecode when available', async () => {
-			// Set up a project with pre-compiled WASM already decoded (as done by loader)
-			const mockWasmBytecode = new Uint8Array([10, 20, 30, 40, 50]);
-			const memoryFloats = new Float32Array([1.5, -2.25, 0.5, 2.75]);
-			const memoryBufferCopy = memoryFloats.buffer.slice(0);
-			const expectedIntMemory = new Int32Array(memoryBufferCopy);
-			const expectedFloatMemory = new Float32Array(memoryBufferCopy);
-
-			// Simulate loader having already decoded the pre-compiled data
-			mockState.compiler.codeBuffer = mockWasmBytecode;
-			mockState.compiler.memoryBuffer = expectedIntMemory;
-			mockState.compiler.memoryBufferFloat = expectedFloatMemory;
-			mockState.compiler.allocatedMemorySize = expectedIntMemory.byteLength;
+		it('should use pre-compiled WASM metadata when available', async () => {
+			const compiledModules = { mod: {} };
+			const memorySnapshot = 'AQAAAAIAAAADAAAA';
 			// No compileCode callback for runtime-only projects
 			mockState.callbacks.compileCode = undefined;
 			mockState.initialProjectState = {
 				...mockState.initialProjectState,
-				compiledWasm: encodeUint8ArrayToBase64(mockWasmBytecode),
-				compiledModules: {},
+				compiledWasm: 'precompiled-wasm',
+				compiledModules,
+				memorySnapshot,
 			};
 
 			// Set up compiler functionality
@@ -265,22 +260,18 @@ describe('Runtime-ready project functionality', () => {
 			).toBe(true);
 
 			// Verify compiler state is still correct
-			expect(mockState.compiler.codeBuffer).toEqual(mockWasmBytecode);
-			expect(mockState.compiler.memoryBuffer).toEqual(expectedIntMemory);
-			expect(mockState.compiler.memoryBufferFloat).toEqual(expectedFloatMemory);
+			expect(mockState.compiler.compiledModules).toEqual(compiledModules);
+			expect(mockState.compiler.memoryBuffer).toEqual(new Int32Array([1, 2, 3]));
+			expect(mockState.compiler.memoryBufferFloat.byteLength).toBe(mockState.compiler.memoryBuffer.byteLength);
 			expect(mockState.compiler.isCompiling).toBe(false);
 			expect(mockState.codeErrors.compilationErrors).toEqual([]);
 			expect(mockState.compiler.compilationTime).toBe(0);
 		});
 
 		it('should compile normally when no pre-compiled WASM is available', async () => {
-			// Set up a project without pre-compiled WASM (normal project)
-			mockState.compiler.codeBuffer = new Uint8Array(0); // No pre-compiled data
-
 			// Mock the compileCode function
 			const mockCompileCode = vi.fn().mockResolvedValue({
 				compiledModules: {},
-				codeBuffer: new Uint8Array([100, 200]),
 				allocatedMemorySize: 1024,
 				memoryAction: { action: 'reused' },
 			});
