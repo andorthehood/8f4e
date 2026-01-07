@@ -30,7 +30,7 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 
 			const target = getValueByPath(state, subscription.selector);
 
-			if (matcher !== undefined) {
+			if ('matcher' in subscription) {
 				let matches: boolean;
 
 				if (typeof matcher === 'function') {
