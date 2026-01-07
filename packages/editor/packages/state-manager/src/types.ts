@@ -9,7 +9,7 @@ export type PathValue<State, P extends string> = P extends `${infer K}.${infer R
 		? State[P]
 		: unknown;
 
-type NonFunction<V> = V extends (...args: any[]) => any ? never : V;
+type NonFunction<V> = V extends (...args: never[]) => unknown ? never : V;
 
 export type Matcher<V> = ((value: V) => boolean) | NonFunction<V>;
 
