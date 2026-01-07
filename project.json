@@ -55,6 +55,13 @@
         "cwd": "{workspaceRoot}"
       },
       "dependsOn": ["^build"]
+    },
+    "kill-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "lsof -ti tcp:3000 | xargs -r kill",
+        "cwd": "{workspaceRoot}"
+      }
     }
   },
   "tags": ["type:application", "scope:root"]

@@ -39,19 +39,19 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 		try {
 			const compilerOptions = {
-				...state.compiler.compilerOptions,
+				memorySizeBytes: state.compiledConfig?.memorySizeBytes || 1048576, // 1MB default
+				startingMemoryWordAddress: 0,
 				environmentExtensions: {
-					...state.compiler.compilerOptions.environmentExtensions,
 					constants: {
-						...state.compiler.compilerOptions.environmentExtensions.constants,
 						SAMPLE_RATE: {
-							value: state.runtime.runtimeSettings[state.runtime.selectedRuntime].sampleRate,
+							value: state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime].sampleRate,
 							isInteger: true,
 						},
 						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
 						LEFT_CHANNEL: { value: 0, isInteger: true },
 						RIGHT_CHANNEL: { value: 1, isInteger: true },
 					},
+					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 				},
 			};
 
@@ -78,6 +78,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 			}
 
 			log(state, 'Compilation succeeded in ' + state.compiler.compilationTime.toFixed(2) + 'ms', 'Compiler');
+			console.log('[Compiler] Compilation succeeded with config:', compilerOptions);
 		} catch (error) {
 			store.set('compiler.isCompiling', false);
 			const errorObject = error as Error & {
@@ -97,53 +98,13 @@ export default async function compiler(store: StateManager<State>, events: Event
 	}
 
 	function onRecompile() {
-		// Check if compilation is disabled by config
-		if (state.compiler.disableAutoCompilation) {
-			log(state, 'Compilation skipped: disableAutoCompilation flag is set', 'Compiler');
-			return;
-		}
-
-		// Check if project has pre-compiled WASM already loaded (runtime-ready project)
-		// If codeBuffer is populated and we don't have a compiler, skip compilation
-		if (state.compiler.codeBuffer.length > 0 && !state.callbacks.compileCode) {
-			log(state, 'Using pre-compiled WASM from runtime-ready project', 'Compiler');
-			store.set('compiler.isCompiling', false);
-			store.set('codeErrors.compilationErrors', []);
-			return;
-		}
-
-		onForceCompile();
-	}
-
-	events.on('compileCode', onForceCompile);
-	store.subscribe('compiler.compilerOptions', onRecompile);
-	store.subscribe('initialProjectState', () => {
 		store.set('codeErrors.compilationErrors', []);
 		state.binaryAssets = state.initialProjectState?.binaryAssets || [];
 
-		// Return to default compiler state
-		state.compiler.isCompiling = false;
-		state.compiler.compilerOptions.memorySizeBytes = 1048576; // Default to 1MB if not specified
-		state.compiler.codeBuffer = new Uint8Array();
-		state.compiler.compiledModules = {};
-		state.compiler.memoryBuffer = new Int32Array();
-		state.compiler.memoryBufferFloat = new Float32Array();
-		state.compiler.allocatedMemorySize = 0;
-
-		if (state.initialProjectState?.compiledWasm && state.initialProjectState.compiledModules) {
-			try {
-				state.compiler.compiledModules = state.initialProjectState.compiledModules;
-				store.set('compiler.codeBuffer', decodeBase64ToUint8Array(state.initialProjectState.compiledWasm));
-				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
-			} catch (err) {
-				state.compiler.compiledModules = {};
-				store.set('compiler.codeBuffer', new Uint8Array());
-				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
-				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
-			}
-		}
-
-		if (state.initialProjectState?.memorySnapshot) {
+		if (
+			state.initialProjectState?.memorySnapshot &&
+			(state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode)
+		) {
 			try {
 				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.initialProjectState.memorySnapshot);
 				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.initialProjectState.memorySnapshot);
@@ -157,8 +118,40 @@ export default async function compiler(store: StateManager<State>, events: Event
 				error(state, 'Failed to decode memory snapshot', 'Loader');
 			}
 		}
-	});
-	store.subscribe('graphicHelper.codeBlocks', onRecompile);
+
+		// Check if project has pre-compiled WASM.
+		// If auto compilation is disabled or if there is no compilation callback provided then
+		// use the pre-compiled code.
+		if (
+			state.initialProjectState?.compiledWasm &&
+			state.initialProjectState.compiledModules &&
+			(state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode)
+		) {
+			try {
+				state.compiler.compiledModules = state.initialProjectState.compiledModules;
+				store.set('compiler.codeBuffer', decodeBase64ToUint8Array(state.initialProjectState.compiledWasm));
+				store.set('codeErrors.compilationErrors', []);
+				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
+			} catch (err) {
+				state.compiler.compiledModules = {};
+				store.set('compiler.codeBuffer', new Uint8Array());
+				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
+				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
+			}
+			return;
+		}
+
+		// Check if compilation is disabled by config
+		if (state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode) {
+			log(state, 'Compilation skipped: disableAutoCompilation flag is set', 'Compiler');
+			return;
+		}
+
+		onForceCompile();
+	}
+
+	events.on('compileCode', onForceCompile);
+	store.subscribe('compiledConfig', onRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&
