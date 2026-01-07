@@ -29,7 +29,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options) 
 	humanInterface(canvas, events, state);
 
 	// Create a stable memory ref that web-ui will read from
-	const memoryRef: MemoryRef = { current: null };
+	const memoryRef: MemoryRef = { current: new ArrayBuffer(0) };
 
 	// Update memoryRef whenever compiler produces a new memory buffer
 	store.subscribe('compiler.memoryBuffer', () => {

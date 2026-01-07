@@ -5,7 +5,6 @@ import type { SpriteLookup, PostProcessEffect } from 'glugglug';
 import type {
 	CompileOptions,
 	CompiledModuleLookup,
-	MemoryBuffer,
 	DataStructure,
 	Module,
 	CompiledFunctionLookup,
@@ -168,8 +167,6 @@ export interface Compiler {
 	isCompiling: boolean;
 	lastCompilationStart: number;
 	byteCodeSize: number;
-	memoryBuffer: MemoryBuffer;
-	memoryBufferFloat: Float32Array;
 	compiledModules: CompiledModuleLookup;
 	allocatedMemorySize: number;
 	compiledFunctions?: CompiledFunctionLookup;
@@ -518,8 +515,6 @@ export interface ProjectMetadata {
 }
 
 export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'memoryRef'> {
-	memoryBuffer: MemoryBuffer;
-	memoryBufferFloat: Float32Array;
 	byteCodeSize: number;
 }
 
@@ -568,6 +563,11 @@ export interface Callbacks {
 	 * @returns Promise containing the compiled config object and any errors
 	 */
 	compileConfig?: (source: string, schema: ConfigSchema) => Promise<ConfigCompilationResult>;
+
+	// Memory manipulation callback
+	setWordInMemory?: (wordAlignedAddress: number, value: number) => void;
+
+	getWordFromMemory?: (wordAlignedAddress: number) => number;
 }
 
 /**

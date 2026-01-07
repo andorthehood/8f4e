@@ -123,13 +123,8 @@ describe('projectExport', () => {
 	});
 
 	describe('exportRuntimeReadyProject', () => {
-		it('should export runtime-ready project with compiled modules and memory snapshot', async () => {
-			const backingBuffer = new ArrayBuffer(8);
-			const bytes = new Uint8Array(backingBuffer);
-			bytes.set([1, 2, 3, 4, 5, 6, 7, 8]);
-
+		it('should export runtime-ready project with compiled modules', async () => {
 			mockState.compiler.compiledModules = { mod: {} };
-			mockState.compiler.memoryBuffer = new Int32Array(backingBuffer);
 			mockState.compiler.allocatedMemorySize = 6;
 
 			projectExport(store, mockEvents);
@@ -147,12 +142,11 @@ describe('projectExport', () => {
 
 			const exportedProject = JSON.parse(exportedJson);
 			expect(exportedProject.compiledModules).toEqual({ mod: {} });
-			expect(typeof exportedProject.memorySnapshot).toBe('string');
+			expect(exportedProject.memorySnapshot).toBeUndefined();
 		});
 
 		it('should omit memory snapshot when none is available', async () => {
 			mockState.compiler.allocatedMemorySize = 0;
-			mockState.compiler.memoryBuffer = new Int32Array(0);
 
 			projectExport(store, mockEvents);
 

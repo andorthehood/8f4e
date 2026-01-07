@@ -20,9 +20,10 @@ describe('disableAutoCompilation feature', () => {
 		mockCompileCode = vi.fn().mockResolvedValue({
 			compiledModules: {},
 			allocatedMemorySize: 1024,
-			memoryBuffer: new Int32Array(256),
-			memoryBufferFloat: new Float32Array(256),
 			memoryAction: { action: 'reused' },
+			byteCodeSize: 0,
+			hasWasmInstanceBeenReset: false,
+			codeBuffer: new Uint8Array(),
 		});
 
 		mockCompileConfig = vi.fn().mockResolvedValue({

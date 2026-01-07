@@ -3,7 +3,7 @@
  * The web-ui will read from `current` to create typed array views.
  */
 export interface MemoryRef {
-	current: WebAssembly.Memory | ArrayBuffer | SharedArrayBuffer | null;
+	current: WebAssembly.Memory | ArrayBuffer | SharedArrayBuffer;
 }
 
 /**

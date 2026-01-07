@@ -11,10 +11,16 @@ describe('button interaction', () => {
 	let mockEvents: EventDispatcher;
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 	let offCallbacks: Map<string, (...args: unknown[]) => void>;
+	let memoryStore: Map<number, number>;
+	let setWordInMemory: (wordAlignedAddress: number, value: number) => void;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
 		offCallbacks = new Map();
+		memoryStore = new Map();
+		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number) => {
+			memoryStore.set(wordAlignedAddress, value);
+		});
 
 		mockState = createMockState({
 			graphicHelper: {
@@ -33,7 +39,9 @@ describe('button interaction', () => {
 						},
 					},
 				},
-				memoryBuffer: new Int32Array(100),
+			},
+			callbacks: {
+				setWordInMemory,
 			},
 		});
 
@@ -83,7 +91,8 @@ describe('button interaction', () => {
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
-		expect(mockState.compiler.memoryBuffer[5]).toBe(1);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 1);
+		expect(memoryStore.get(5)).toBe(1);
 
 		cleanup();
 	});
@@ -107,11 +116,13 @@ describe('button interaction', () => {
 		];
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
-		expect(mockState.compiler.memoryBuffer[5]).toBe(1);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 1);
+		expect(memoryStore.get(5)).toBe(1);
 
 		// Then release mouse
 		mouseUpCallback?.();
-		expect(mockState.compiler.memoryBuffer[5]).toBe(0);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 0);
+		expect(memoryStore.get(5)).toBe(0);
 
 		cleanup();
 	});
