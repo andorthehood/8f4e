@@ -2,7 +2,7 @@
 import WebWorkerMIDIRuntime from '@8f4e/runtime-web-worker-midi?worker';
 import { StateManager } from '@8f4e/state-manager';
 
-import { getMemory } from './compiler-callback';
+import { getCodeBuffer, getMemory } from './compiler-callback';
 
 import type { State, EventDispatcher } from '@8f4e/editor';
 // Import the runtime dependencies
@@ -72,7 +72,7 @@ export function webWorkerMIDIRuntime(store: StateManager<State>, events: EventDi
 			payload: {
 				memoryRef: memory,
 				sampleRate: state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime].sampleRate,
-				codeBuffer: state.compiler.codeBuffer,
+				codeBuffer: getCodeBuffer(),
 				compiledModules: state.compiler.compiledModules,
 			},
 		});
@@ -84,10 +84,10 @@ export function webWorkerMIDIRuntime(store: StateManager<State>, events: EventDi
 	syncCodeAndSettingsWithRuntime();
 
 	navigator.requestMIDIAccess().then(onMidiAccess);
-	store.subscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
+	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
 
 	return () => {
-		store.unsubscribe('compiler.codeBuffer', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
 
 		if (selectedInput) {
 			selectedInput.removeEventListener('midimessage', onMidiMessage);
