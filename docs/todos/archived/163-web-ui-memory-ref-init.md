@@ -3,8 +3,8 @@ title: 'TODO: Web-UI Memory Ref Init And Views'
 priority: Medium
 effort: 2-3 days
 created: 2026-01-07
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-07
 ---
 
 # TODO: Web-UI Memory Ref Init And Views

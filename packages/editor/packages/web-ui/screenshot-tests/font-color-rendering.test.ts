@@ -5,11 +5,13 @@ import { createMockCodeBlock } from '@8f4e/editor-state/testing';
 import createMockStateWithColors from './utils/createMockStateWithColors';
 import createCanvas from './utils/createCanvas';
 import { generateColorMapWithOneColor } from './utils/generateColorMapMock';
+import createMockMemoryRef from './utils/createMockMemoryRef';
 
 test('font color rendering', async () => {
 	const canvas = createCanvas();
 	const mockState = createMockStateWithColors();
-	await init(mockState, canvas);
+	const memoryRef = createMockMemoryRef();
+	await init(mockState, canvas, memoryRef);
 
 	const allCharacters = Array.from({ length: 128 }, (_, i) => String.fromCharCode(i));
 

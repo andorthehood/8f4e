@@ -2,8 +2,14 @@ import { Engine } from 'glugglug';
 import { Icon } from '@8f4e/sprite-generator';
 
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state';
+import type { MemoryViews } from '../../../types';
 
-export default function drawButtons(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
+export default function drawButtons(
+	engine: Engine,
+	state: State,
+	codeBlock: CodeBlockGraphicData,
+	memoryViews: MemoryViews
+): void {
 	for (const { x, y, id: debuggerId, onValue, offValue } of codeBlock.extras.buttons) {
 		if (!state.graphicHelper.spriteLookups) {
 			continue;
@@ -11,7 +17,7 @@ export default function drawButtons(engine: Engine, state: State, codeBlock: Cod
 
 		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[debuggerId];
 		const { wordAlignedAddress = 0 } = memory || {};
-		const value = state.compiler.memoryBuffer[wordAlignedAddress] || 0;
+		const value = memoryViews.int32[wordAlignedAddress] || 0;
 
 		if (value === onValue) {
 			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);

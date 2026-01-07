@@ -37,10 +37,16 @@ This package was extracted from the `@8f4e/editor` package to separate rendering
 The package exports a single initialization function:
 
 ```typescript
-import initView from '@8f4e/web-ui';
+import initView, { type MemoryRef } from '@8f4e/web-ui';
 import type { State } from '@8f4e/editor';
 
-const view = await initView(state, canvas);
+// Create a stable memory ref that points to the current memory buffer
+const memoryRef: MemoryRef = { current: null };
+
+// Update memoryRef.current whenever compiler produces new memory
+// (typically done via state subscriptions in the editor)
+
+const view = await initView(state, canvas, memoryRef);
 
 // Resize the viewport
 view.resize(width, height);
@@ -53,6 +59,22 @@ view.loadPostProcessEffects(effects);
 
 // Clear rendering cache
 view.clearCache();
+```
+
+### Memory Reference
+
+The `memoryRef` parameter is a stable reference holder that points to the current WebAssembly memory or ArrayBuffer. The web-ui package uses this to create typed array views for reading memory values when rendering decorators (switches, plotters, debuggers, etc.).
+
+The memory ref should be updated whenever the compiler produces a new memory buffer:
+
+```typescript
+store.subscribe('compiler.memoryBuffer', () => {
+	if (state.compiler.memoryBuffer.length > 0) {
+		memoryRef.current = state.compiler.memoryBuffer.buffer;
+	} else {
+		memoryRef.current = null;
+	}
+});
 ```
 
 ## Build
