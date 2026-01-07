@@ -31,8 +31,8 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 			const target = getValueByPath(state, subscription.selector);
 
 			if (matcher !== undefined) {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				const matches = typeof matcher === 'function' ? (matcher as any)(target) : target === matcher;
+				const matches =
+					typeof matcher === 'function' ? (matcher as (value: unknown) => boolean)(target) : target === matcher;
 				if (!matches) {
 					return;
 				}
