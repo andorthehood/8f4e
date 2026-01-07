@@ -1,6 +1,7 @@
 import { BinaryAsset } from '@8f4e/editor-state';
 
 import { getProject, projectManifest } from './examples/registry';
+import { getCodeBuffer } from './compiler-callback';
 
 import type { Project, EditorSettings } from '@8f4e/editor';
 
@@ -114,8 +115,8 @@ export async function exportProject(data: string, fileName: string): Promise<voi
 	URL.revokeObjectURL(url);
 }
 
-export async function exportBinaryFile(data: Uint8Array, fileName: string, mimeType: string): Promise<void> {
-	const blob = new Blob([new Uint8Array(data)], { type: mimeType });
+export async function exportBinaryFile(fileName: string, mimeType: string): Promise<void> {
+	const blob = new Blob([new Uint8Array(getCodeBuffer())], { type: mimeType });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	document.body.appendChild(a);

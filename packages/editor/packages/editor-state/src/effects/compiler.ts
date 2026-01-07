@@ -1,6 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import decodeBase64ToUint8Array from '../pureHelpers/base64/decodeBase64ToUint8Array';
 import decodeBase64ToInt32Array from '../pureHelpers/base64/decodeBase64ToInt32Array';
 import decodeBase64ToFloat32Array from '../pureHelpers/base64/decodeBase64ToFloat32Array';
 import { EventDispatcher } from '../types';
@@ -63,7 +62,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 			store.set('compiler.compiledFunctions', result.compiledFunctions);
 			store.set('compiler.compiledModules', result.compiledModules);
-			store.set('compiler.codeBuffer', result.codeBuffer);
 			store.set('compiler.allocatedMemorySize', result.allocatedMemorySize);
 			store.set('compiler.memoryBuffer', result.memoryBuffer);
 			store.set('compiler.memoryBufferFloat', result.memoryBufferFloat);
@@ -129,12 +127,10 @@ export default async function compiler(store: StateManager<State>, events: Event
 		) {
 			try {
 				state.compiler.compiledModules = state.initialProjectState.compiledModules;
-				store.set('compiler.codeBuffer', decodeBase64ToUint8Array(state.initialProjectState.compiledWasm));
 				store.set('codeErrors.compilationErrors', []);
 				log(state, 'Pre-compiled WASM loaded and decoded successfully', 'Loader');
 			} catch (err) {
 				state.compiler.compiledModules = {};
-				store.set('compiler.codeBuffer', new Uint8Array());
 				console.error('[Loader] Failed to decode pre-compiled WASM:', err);
 				error(state, 'Failed to decode pre-compiled WASM', 'Loader');
 			}
