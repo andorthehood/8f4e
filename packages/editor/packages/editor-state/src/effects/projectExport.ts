@@ -31,7 +31,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		// Serialize to project format with compiled WASM, memory snapshot, and config
+		// Serialize to project format with compiled data, memory snapshot, and config
 		const runtimeProject = await serializeToRuntimeReadyProject(state, encodeUint8ArrayToBase64);
 
 		const fileName = 'project-runtime-ready.json';
