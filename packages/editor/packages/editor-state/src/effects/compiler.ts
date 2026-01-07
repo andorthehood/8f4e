@@ -60,6 +60,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 				return;
 			}
 
+			store.set('compiler.byteCodeSize', result.byteCodeSize);
 			store.set('compiler.compiledFunctions', result.compiledFunctions);
 			store.set('compiler.compiledModules', result.compiledModules);
 			store.set('compiler.allocatedMemorySize', result.allocatedMemorySize);
