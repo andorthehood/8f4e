@@ -10,9 +10,17 @@ describe('switch interaction', () => {
 	let mockState: State;
 	let mockEvents: EventDispatcher;
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
+	let memoryStore: Map<number, number>;
+	let setWordInMemory: (wordAlignedAddress: number, value: number) => void;
+	let getWordFromMemory: (wordAlignedAddress: number) => number;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
+		memoryStore = new Map();
+		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number) => {
+			memoryStore.set(wordAlignedAddress, value);
+		});
+		getWordFromMemory = vi.fn((wordAlignedAddress: number) => memoryStore.get(wordAlignedAddress) ?? 0);
 
 		mockState = createMockState({
 			graphicHelper: {
@@ -31,7 +39,10 @@ describe('switch interaction', () => {
 						},
 					},
 				},
-				memoryBuffer: new Int32Array(100),
+			},
+			callbacks: {
+				getWordFromMemory,
+				setWordInMemory,
 			},
 		});
 
@@ -76,7 +87,7 @@ describe('switch interaction', () => {
 		];
 
 		// Set initial value to off
-		mockState.compiler.memoryBuffer[5] = 0;
+		memoryStore.set(5, 0);
 
 		// Mock findSwitchAtViewportCoordinates to return our switch
 		vi.mock('../../../../pureHelpers/findSwitchAtViewportCoordinates', () => ({
@@ -89,7 +100,8 @@ describe('switch interaction', () => {
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
-		expect(mockState.compiler.memoryBuffer[5]).toBe(1);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 1);
+		expect(memoryStore.get(5)).toBe(1);
 
 		cleanup();
 	});
@@ -112,11 +124,12 @@ describe('switch interaction', () => {
 		];
 
 		// Set initial value to on
-		mockState.compiler.memoryBuffer[5] = 1;
+		memoryStore.set(5, 1);
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
-		expect(mockState.compiler.memoryBuffer[5]).toBe(0);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 0);
+		expect(memoryStore.get(5)).toBe(0);
 
 		cleanup();
 	});
@@ -139,11 +152,12 @@ describe('switch interaction', () => {
 		];
 
 		// Set initial value to something else
-		mockState.compiler.memoryBuffer[5] = 42;
+		memoryStore.set(5, 42);
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
-		expect(mockState.compiler.memoryBuffer[5]).toBe(0);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 0);
+		expect(memoryStore.get(5)).toBe(0);
 
 		cleanup();
 	});

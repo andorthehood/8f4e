@@ -23,8 +23,6 @@ export default function createDefaultState() {
 			isCompiling: false,
 			lastCompilationStart: 0,
 			allocatedMemorySize: 0,
-			memoryBuffer: new Int32Array(),
-			memoryBufferFloat: new Float32Array(),
 			compiledModules: {},
 			byteCodeSize: 0,
 		},

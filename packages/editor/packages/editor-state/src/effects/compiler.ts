@@ -1,7 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import decodeBase64ToInt32Array from '../pureHelpers/base64/decodeBase64ToInt32Array';
-import decodeBase64ToFloat32Array from '../pureHelpers/base64/decodeBase64ToFloat32Array';
 import { EventDispatcher } from '../types';
 import { error, log } from '../impureHelpers/logger/logger';
 
@@ -64,8 +62,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 			store.set('compiler.compiledFunctions', result.compiledFunctions);
 			store.set('compiler.compiledModules', result.compiledModules);
 			store.set('compiler.allocatedMemorySize', result.allocatedMemorySize);
-			store.set('compiler.memoryBuffer', result.memoryBuffer);
-			store.set('compiler.memoryBufferFloat', result.memoryBufferFloat);
 			store.set('compiler.isCompiling', false);
 			store.set('compiler.compilationTime', performance.now() - state.compiler.lastCompilationStart);
 			store.set('codeErrors.compilationErrors', []);
@@ -105,13 +101,9 @@ export default async function compiler(store: StateManager<State>, events: Event
 			(state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode)
 		) {
 			try {
-				state.compiler.memoryBuffer = decodeBase64ToInt32Array(state.initialProjectState.memorySnapshot);
-				state.compiler.memoryBufferFloat = decodeBase64ToFloat32Array(state.initialProjectState.memorySnapshot);
-				state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
+				// state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
 				log(state, 'Memory snapshot loaded and decoded successfully', 'Loader');
 			} catch (err) {
-				state.compiler.memoryBuffer = new Int32Array();
-				state.compiler.memoryBufferFloat = new Float32Array();
 				state.compiler.allocatedMemorySize = 0;
 				console.error('[Loader] Failed to decode memory snapshot:', err);
 				error(state, 'Failed to decode memory snapshot', 'Loader');
