@@ -564,6 +564,26 @@ export interface Callbacks {
 	setWordInMemory?: (wordAlignedAddress: number, value: number) => void;
 
 	getWordFromMemory?: (wordAlignedAddress: number) => number;
+
+	// Clipboard callbacks
+	/**
+	 * Reads text from the system clipboard.
+	 * Used for pasting code blocks into the editor.
+	 * If not provided, clipboard paste operations will be disabled.
+	 *
+	 * @returns Promise that resolves with the clipboard text content
+	 */
+	readClipboardText?: () => Promise<string>;
+
+	/**
+	 * Writes text to the system clipboard.
+	 * Used for copying code blocks from the editor.
+	 * If not provided, clipboard copy operations will be disabled.
+	 *
+	 * @param text - The text content to write to the clipboard
+	 * @returns Promise that resolves when the write operation completes
+	 */
+	writeClipboardText?: (text: string) => Promise<void>;
 }
 
 /**
