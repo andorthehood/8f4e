@@ -3,7 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import codeBlockCreator from './codeBlockCreator';
 
-import { createMockState } from '../../pureHelpers/testingUtils/testUtils';
+import { createMockState, createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
 
 import type { State } from '../../types';
@@ -90,40 +90,12 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			mockState.callbacks.writeClipboardText = mockWriteClipboard;
 
 			// Add a code block to copy
-			mockState.graphicHelper.codeBlocks = [
-				{
-					id: 'test',
-					code: ['module test', '', 'moduleEnd'],
-					x: 0,
-					y: 0,
-					gridX: 0,
-					gridY: 0,
-					width: 100,
-					height: 100,
-					minGridWidth: 32,
-					codeColors: [],
-					codeToRender: [],
-					extras: {
-						blockHighlights: [],
-						inputs: [],
-						outputs: [],
-						debuggers: [],
-						switches: [],
-						buttons: [],
-						pianoKeyboards: [],
-						bufferPlotters: [],
-						errorMessages: [],
-					},
-					cursor: { col: 0, row: 0, x: 0, y: 0 },
-					gaps: new Map(),
-					lineNumberColumnWidth: 2,
-					offsetX: 0,
-					offsetY: 0,
-					lastUpdated: Date.now(),
-					creationIndex: 0,
-					blockType: 'module',
-				},
-			];
+			const testCodeBlock = createMockCodeBlock({
+				id: 'test',
+				code: ['module test', '', 'moduleEnd'],
+				blockType: 'module',
+			});
+			mockState.graphicHelper.codeBlocks = [testCodeBlock];
 
 			codeBlockCreator(store, mockEvents);
 
@@ -148,40 +120,12 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			mockState.callbacks.writeClipboardText = undefined;
 
 			// Add a code block to copy
-			mockState.graphicHelper.codeBlocks = [
-				{
-					id: 'test',
-					code: ['module test', '', 'moduleEnd'],
-					x: 0,
-					y: 0,
-					gridX: 0,
-					gridY: 0,
-					width: 100,
-					height: 100,
-					minGridWidth: 32,
-					codeColors: [],
-					codeToRender: [],
-					extras: {
-						blockHighlights: [],
-						inputs: [],
-						outputs: [],
-						debuggers: [],
-						switches: [],
-						buttons: [],
-						pianoKeyboards: [],
-						bufferPlotters: [],
-						errorMessages: [],
-					},
-					cursor: { col: 0, row: 0, x: 0, y: 0 },
-					gaps: new Map(),
-					lineNumberColumnWidth: 2,
-					offsetX: 0,
-					offsetY: 0,
-					lastUpdated: Date.now(),
-					creationIndex: 0,
-					blockType: 'module',
-				},
-			];
+			const testCodeBlock = createMockCodeBlock({
+				id: 'test',
+				code: ['module test', '', 'moduleEnd'],
+				blockType: 'module',
+			});
+			mockState.graphicHelper.codeBlocks = [testCodeBlock];
 
 			codeBlockCreator(store, mockEvents);
 
@@ -200,40 +144,12 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			mockState.callbacks.writeClipboardText = mockWriteClipboard;
 
 			// Add a code block to copy
-			mockState.graphicHelper.codeBlocks = [
-				{
-					id: 'test',
-					code: ['module test', '', 'moduleEnd'],
-					x: 0,
-					y: 0,
-					gridX: 0,
-					gridY: 0,
-					width: 100,
-					height: 100,
-					minGridWidth: 32,
-					codeColors: [],
-					codeToRender: [],
-					extras: {
-						blockHighlights: [],
-						inputs: [],
-						outputs: [],
-						debuggers: [],
-						switches: [],
-						buttons: [],
-						pianoKeyboards: [],
-						bufferPlotters: [],
-						errorMessages: [],
-					},
-					cursor: { col: 0, row: 0, x: 0, y: 0 },
-					gaps: new Map(),
-					lineNumberColumnWidth: 2,
-					offsetX: 0,
-					offsetY: 0,
-					lastUpdated: Date.now(),
-					creationIndex: 0,
-					blockType: 'module',
-				},
-			];
+			const testCodeBlock = createMockCodeBlock({
+				id: 'test',
+				code: ['module test', '', 'moduleEnd'],
+				blockType: 'module',
+			});
+			mockState.graphicHelper.codeBlocks = [testCodeBlock];
 
 			codeBlockCreator(store, mockEvents);
 
