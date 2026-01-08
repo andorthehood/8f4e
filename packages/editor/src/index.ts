@@ -41,6 +41,13 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			setWordInMemory: (wordAlignedAddress: number, value: number) => {
 				memoryViews.int32[wordAlignedAddress] = value;
 			},
+			// Provide clipboard callbacks that use navigator.clipboard
+			readClipboardText: async () => {
+				return await navigator.clipboard.readText();
+			},
+			writeClipboardText: async (text: string) => {
+				await navigator.clipboard.writeText(text);
+			},
 		},
 	});
 	const state = store.getState();
