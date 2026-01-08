@@ -3,8 +3,8 @@ title: 'TODO: Add clipboard callbacks to editor-state'
 priority: Medium
 effort: 2-4h
 created: 2026-01-08
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-08
 ---
 
 # TODO: Add clipboard callbacks to editor-state
@@ -37,12 +37,12 @@ Introduce clipboard callbacks in the editor-state external API and wire them thr
 
 ## Success Criteria
 
-- [ ] No direct `navigator.clipboard` calls in editor-state runtime code
-- [ ] Clipboard operations are routed through callbacks
-- [ ] Menu items are unavailable when callbacks are undefined
-- [ ] Missing callbacks are handled silently (no warnings/errors)
-- [ ] Tests cover clipboard success and failure paths
-- [ ] Documentation describes the new callbacks and expected behavior
+- [x] No direct `navigator.clipboard` calls in editor-state runtime code
+- [x] Clipboard operations are routed through callbacks
+- [x] Menu items are unavailable when callbacks are undefined
+- [x] Missing callbacks are handled silently (no warnings/errors)
+- [x] Tests cover clipboard success and failure paths
+- [x] Documentation describes the new callbacks and expected behavior
 
 ## Affected Components
 
