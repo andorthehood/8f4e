@@ -39,7 +39,7 @@ async function init() {
 			getModule,
 			getListOfProjects,
 			getProject,
-			requestRuntime: runtimeType => requestRuntime(runtimeType),
+			requestRuntime,
 			compileCode: (modules, compilerOptions, functions) => compileCode(modules, compilerOptions, functions, editor),
 			compileConfig,
 			loadSession,

@@ -31,7 +31,7 @@ export interface Editor {
 
 interface Options {
 	featureFlags?: Partial<State['featureFlags']>;
-	callbacks: Callbacks;
+	callbacks: Omit<Callbacks, 'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText'>;
 }
 
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
