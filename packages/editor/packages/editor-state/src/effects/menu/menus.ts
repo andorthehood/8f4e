@@ -38,6 +38,7 @@ export const mainMenu: MenuGenerator = state => [
 					action: 'addCodeBlock',
 					payload: { isPaste: true },
 					close: true,
+					disabled: !state.callbacks.readClipboardText,
 				},
 				{
 					title: 'Add Built-in Module',
@@ -163,6 +164,7 @@ export const moduleMenu: MenuGenerator = state => {
 			action: 'copyCodeBlock',
 			payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 			close: true,
+			disabled: !state.callbacks.writeClipboardText,
 		},
 		{
 			title: `Log ${blockLabel} info to console`,
