@@ -6,6 +6,7 @@ import initEvents from './events';
 import humanInterface from './events/humanInterface';
 import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
+import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 // Re-export types that consumers might need
 export type {
@@ -22,6 +23,9 @@ export type {
 } from '@8f4e/editor-state';
 export type { EventDispatcher } from './events';
 export type { MemoryRef } from './memoryViewManager';
+
+// Re-export helper functions
+export { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 export interface Editor {
 	resize: (width: number, height: number) => void;
@@ -65,11 +69,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		colorScheme: state.colorScheme,
 	});
 
-	// Note: hGrid represents horizontal grid lines (vertical spacing = character height)
-	//       vGrid represents vertical grid lines (horizontal spacing = character width)
-	state.graphicHelper.spriteLookups = spriteData.spriteLookups;
-	state.graphicHelper.viewport.hGrid = spriteData.characterHeight;
-	state.graphicHelper.viewport.vGrid = spriteData.characterWidth;
+	updateStateWithSpriteData(state, spriteData);
 
 	const view = await initView(state, canvas, memoryViews, spriteData);
 	createSpriteSheetManager(store, view, events);
