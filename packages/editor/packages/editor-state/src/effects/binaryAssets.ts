@@ -4,13 +4,13 @@ import type { State } from '../types';
 
 export default function binaryAssets(state: State, events: EventDispatcher): () => void {
 	async function onImportBinaryAsset() {
-		if (!state.callbacks.importBinaryFile) {
-			console.warn('No importBinaryFile callback provided');
+		if (!state.callbacks.importBinaryAsset) {
+			console.warn('No importBinaryAsset callback provided');
 			return;
 		}
 
 		try {
-			const result = await state.callbacks.importBinaryFile();
+			const result = await state.callbacks.importBinaryAsset();
 			state.binaryAssets.push(result);
 		} catch (error) {
 			console.error('Failed to import binary asset:', error);
@@ -28,10 +28,10 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 		});
 	}
 
-	events.on('importBinaryFile', onImportBinaryAsset);
+	events.on('importBinaryAsset', onImportBinaryAsset);
 	events.on('loadBinaryFilesIntoMemory', onLoadBinaryFilesIntoMemory);
 
 	return () => {
-		events.off('importBinaryFile', onImportBinaryAsset);
+		events.off('importBinaryAsset', onImportBinaryAsset);
 	};
 }

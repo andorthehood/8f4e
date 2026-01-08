@@ -1,9 +1,10 @@
-import initState, { State, type Options } from '@8f4e/editor-state';
+import initState, { Callbacks, State } from '@8f4e/editor-state';
 import initView, { MemoryViews } from '@8f4e/web-ui';
 
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
 import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
+import { createSpriteSheetManager } from './spriteSheetManager';
 
 // Re-export types that consumers might need
 export type {
@@ -28,6 +29,11 @@ export interface Editor {
 	state: State;
 }
 
+interface Options {
+	featureFlags?: Partial<State['featureFlags']>;
+	callbacks: Omit<Callbacks, 'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText'>;
+}
+
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
 	const { memoryViews, updateMemoryViews } = createMemoryViewManager(new ArrayBuffer(0));
 	const events = initEvents();
@@ -41,7 +47,6 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			setWordInMemory: (wordAlignedAddress: number, value: number) => {
 				memoryViews.int32[wordAlignedAddress] = value;
 			},
-			// Provide clipboard callbacks that use navigator.clipboard
 			readClipboardText: async () => {
 				return await navigator.clipboard.readText();
 			},
@@ -54,18 +59,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	humanInterface(canvas, events, state);
 
 	const view = await initView(state, canvas, memoryViews);
-
-	store.subscribe('colorScheme', () => {
-		view.reloadSpriteSheet();
-		view.clearCache();
-		events.dispatch('spriteSheetRerendered');
-	});
-
-	store.subscribe('editorSettings.font', () => {
-		view.reloadSpriteSheet();
-		view.clearCache();
-		events.dispatch('spriteSheetRerendered');
-	});
+	createSpriteSheetManager(store, view, events);
 
 	events.on('loadPostProcessEffects', () => {
 		view.loadPostProcessEffects(state.graphicHelper.postProcessEffects);
