@@ -1,10 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
-import { mainMenu, moduleMenu } from './menus';
+import { mainMenu, moduleMenu } from '../../src/effects/menu/menus';
+import { createMockState, createMockCodeBlock } from '../../src/pureHelpers/testingUtils/testUtils';
 
-import { createMockState, createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
-
-import type { State } from '../../types';
+import type { State } from '../../src/types';
 
 describe('menus - clipboard callback disabled state', () => {
 	describe('mainMenu', () => {
