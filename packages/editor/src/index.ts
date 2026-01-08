@@ -1,5 +1,6 @@
 import initState, { Callbacks, State } from '@8f4e/editor-state';
 import initView, { MemoryViews } from '@8f4e/web-ui';
+import generateSprite from '@8f4e/sprite-generator';
 
 import initEvents from './events';
 import humanInterface from './events/humanInterface';
@@ -58,7 +59,17 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const state = store.getState();
 	humanInterface(canvas, events, state);
 
-	const view = await initView(state, canvas, memoryViews);
+	// Generate sprite data and update state before initializing view
+	const spriteData = generateSprite({
+		font: state.editorSettings.font || '8x16',
+		colorScheme: state.colorScheme,
+	});
+
+	state.graphicHelper.spriteLookups = spriteData.spriteLookups;
+	state.graphicHelper.viewport.hGrid = spriteData.characterHeight;
+	state.graphicHelper.viewport.vGrid = spriteData.characterWidth;
+
+	const view = await initView(state, canvas, memoryViews, spriteData);
 	createSpriteSheetManager(store, view, events);
 
 	events.on('loadPostProcessEffects', () => {
