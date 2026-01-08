@@ -6,12 +6,20 @@ import createMockStateWithColors from './utils/createMockStateWithColors';
 import createCanvas from './utils/createCanvas';
 import { generateColorMapWithOneColor } from './utils/generateColorMapMock';
 import createMockMemoryViews from './utils/createMockMemoryViews';
+import createMockSpriteData from './utils/createMockSpriteData';
 
 test('font color rendering', async () => {
 	const canvas = createCanvas();
 	const mockState = createMockStateWithColors();
 	const memoryViews = createMockMemoryViews();
-	await init(mockState, canvas, memoryViews);
+	const spriteData = createMockSpriteData(mockState);
+
+	// Update state with sprite data before init
+	mockState.graphicHelper.spriteLookups = spriteData.spriteLookups;
+	mockState.graphicHelper.viewport.hGrid = spriteData.characterHeight;
+	mockState.graphicHelper.viewport.vGrid = spriteData.characterWidth;
+
+	await init(mockState, canvas, memoryViews, spriteData);
 
 	const allCharacters = Array.from({ length: 128 }, (_, i) => String.fromCharCode(i));
 
