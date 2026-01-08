@@ -41,7 +41,9 @@ async function init() {
 			getListOfProjects,
 			getProject,
 			requestRuntime,
-			compileCode,
+			compileCode: (modules, compilerOptions, functions) => {
+				return compileCode(modules, compilerOptions, functions, editor);
+			},
 			compileConfig,
 			loadSession,
 			saveSession,

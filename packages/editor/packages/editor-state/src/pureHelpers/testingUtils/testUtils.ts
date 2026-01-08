@@ -205,7 +205,7 @@ export function createMockEventDispatcher(): EventDispatcher {
  * @example
  * const state = createMockState();
  * const state = createMockState({ compiler: { compilationTime: 123 } });
- * const state = createMockState({ compiler: { memoryBuffer: new Float32Array(100) } });
+ * const state = createMockState({ callbacks: { setWordInMemory: () => {} } });
  */
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const defaults: State = {
@@ -214,8 +214,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			compilationTime: 0,
 			lastCompilationStart: 0,
 			allocatedMemorySize: 0,
-			memoryBuffer: new Int32Array(0),
-			memoryBufferFloat: new Float32Array(0),
 			compiledModules: {},
 			byteCodeSize: 0,
 		},
