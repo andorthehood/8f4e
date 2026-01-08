@@ -124,17 +124,16 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
 			}
 		} else if (code.length < 2) {
-			// Try to read from clipboard if callback is available
-			if (state.callbacks.readClipboardText) {
-				try {
-					const clipboardText = await state.callbacks.readClipboardText();
-					code = clipboardText.split('\n');
-				} catch {
-					// Fail silently if clipboard read fails
-					return;
-				}
-			} else {
-				// If no callback is provided, fail silently
+			// If no callback is provided, fail silently
+			if (!state.callbacks.readClipboardText) {
+				return;
+			}
+
+			try {
+				const clipboardText = await state.callbacks.readClipboardText();
+				code = clipboardText.split('\n');
+			} catch {
+				// Fail silently if clipboard read fails
 				return;
 			}
 		}
