@@ -3,8 +3,8 @@ title: 'TODO: Add subscribeToValue to State Manager'
 priority: Medium
 effort: 2-4h
 created: 2026-01-07
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-07
 ---
 
 # TODO: Add subscribeToValue to State Manager
