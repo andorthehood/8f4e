@@ -124,7 +124,19 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
 			}
 		} else if (code.length < 2) {
-			code = (await navigator.clipboard.readText()).split('\n');
+			// Try to read from clipboard if callback is available
+			if (state.callbacks.readClipboardText) {
+				try {
+					const clipboardText = await state.callbacks.readClipboardText();
+					code = clipboardText.split('\n');
+				} catch {
+					// Fail silently if clipboard read fails
+					return;
+				}
+			} else {
+				// If no callback is provided, fail silently
+				return;
+			}
 		}
 
 		// Update ID based on block type
@@ -194,7 +206,12 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 	}
 
 	function onCopyCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
-		navigator.clipboard.writeText(codeBlock.code.join('\n'));
+		// Use callback if available, otherwise fail silently
+		if (state.callbacks.writeClipboardText) {
+			state.callbacks.writeClipboardText(codeBlock.code.join('\n')).catch(() => {
+				// Fail silently if clipboard write fails
+			});
+		}
 	}
 
 	async function onAddCodeBlockBySlug({
