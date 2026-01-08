@@ -115,8 +115,8 @@ export async function exportProject(data: string, fileName: string): Promise<voi
 	URL.revokeObjectURL(url);
 }
 
-export async function exportBinaryFile(fileName: string, mimeType: string): Promise<void> {
-	const blob = new Blob([new Uint8Array(getCodeBuffer())], { type: mimeType });
+export async function exportBinaryCode(fileName: string): Promise<void> {
+	const blob = new Blob([new Uint8Array(getCodeBuffer())], { type: 'application/wasm' });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	document.body.appendChild(a);
@@ -141,7 +141,7 @@ function arrayBufferToDataUrl(arrayBuffer: ArrayBuffer, mimeType: string): strin
 	return `data:${mimeType};base64,${base64}`;
 }
 
-export async function importBinaryFile(): Promise<BinaryAsset> {
+export async function importBinaryAsset(): Promise<BinaryAsset> {
 	const fileHandles = await (
 		window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
 	).showOpenFilePicker();
@@ -163,19 +163,4 @@ export async function importBinaryFile(): Promise<BinaryAsset> {
 		reader.onerror = () => reject(new Error('Failed to read binary asset file'));
 		reader.readAsArrayBuffer(file);
 	});
-}
-
-export async function getStorageQuota(): Promise<{ usedBytes: number; totalBytes: number }> {
-	if (navigator.storage && navigator.storage.estimate) {
-		const estimate = await navigator.storage.estimate();
-		return {
-			usedBytes: estimate.usage || 0,
-			totalBytes: estimate.quota || 0,
-		};
-	} else {
-		return {
-			usedBytes: 0,
-			totalBytes: 0,
-		};
-	}
 }

@@ -35,7 +35,7 @@ export default function generateContextMenuMock(): ContextMenu {
 			},
 			{
 				title: '........... Import binary asset',
-				action: 'importBinaryFile',
+				action: 'importBinaryAsset',
 				close: true,
 				disabled: false,
 			},

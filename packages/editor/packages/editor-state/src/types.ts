@@ -540,8 +540,8 @@ export interface Callbacks {
 	// File handling callbacks
 	importProject?: () => Promise<Project>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
-	importBinaryFile?: () => Promise<{ fileName: string }>;
-	exportBinaryFile?: (fileName: string, mimeType: string) => Promise<void>;
+	importBinaryAsset?: () => Promise<{ fileName: string }>;
+	exportBinaryCode?: (fileName: string) => Promise<void>;
 	loadBinaryFileIntoMemory?: (file: BinaryAsset) => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
