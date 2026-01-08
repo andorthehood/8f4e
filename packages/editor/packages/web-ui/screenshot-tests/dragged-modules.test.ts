@@ -6,12 +6,20 @@ import createMockStateWithColors from './utils/createMockStateWithColors';
 import createCanvas from './utils/createCanvas';
 import { generateColorMapWithAllColors } from './utils/generateColorMapMock';
 import createMockMemoryViews from './utils/createMockMemoryViews';
+import createMockSpriteData from './utils/createMockSpriteData';
 
 test('dragged module', async () => {
 	const canvas = createCanvas();
 	const mockState = createMockStateWithColors();
 	const memoryViews = createMockMemoryViews();
-	await init(mockState, canvas, memoryViews);
+	const spriteData = createMockSpriteData(mockState);
+
+	// Update state with sprite data before init
+	mockState.graphicHelper.spriteLookups = spriteData.spriteLookups;
+	mockState.graphicHelper.viewport.hGrid = spriteData.characterHeight;
+	mockState.graphicHelper.viewport.vGrid = spriteData.characterWidth;
+
+	await init(mockState, canvas, memoryViews, spriteData);
 
 	if (mockState.graphicHelper.spriteLookups) {
 		const codeLines = [
