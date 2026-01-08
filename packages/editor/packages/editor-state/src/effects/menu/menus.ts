@@ -50,9 +50,9 @@ export const mainMenu: MenuGenerator = state => [
 				{ divider: true },
 				{
 					title: 'Import binary asset',
-					action: 'importBinaryFile',
+					action: 'importBinaryAsset',
 					close: true,
-					disabled: !state.callbacks.importBinaryFile,
+					disabled: !state.callbacks.importBinaryAsset,
 				},
 			]
 		: []),
@@ -92,7 +92,7 @@ export const mainMenu: MenuGenerator = state => [
 		title: 'Export WebAssembly',
 		action: 'exportWasm',
 		close: true,
-		disabled: !state.callbacks.exportBinaryFile,
+		disabled: !state.callbacks.exportBinaryCode,
 	},
 	{ divider: true },
 	{ title: 'Editor Settings', action: 'openSubMenu', payload: { menu: 'editorSettingsMenu' }, close: false },

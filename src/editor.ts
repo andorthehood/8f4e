@@ -10,9 +10,8 @@ import {
 	saveEditorSettings,
 	importProject,
 	exportProject,
-	importBinaryFile,
-	exportBinaryFile,
-	getStorageQuota,
+	importBinaryAsset,
+	exportBinaryCode,
 } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
 import compileConfig from './config-callback';
@@ -41,9 +40,7 @@ async function init() {
 			getListOfProjects,
 			getProject,
 			requestRuntime,
-			compileCode: (modules, compilerOptions, functions) => {
-				return compileCode(modules, compilerOptions, functions, editor);
-			},
+			compileCode: (modules, compilerOptions, functions) => compileCode(modules, compilerOptions, functions, editor),
 			compileConfig,
 			loadSession,
 			saveSession,
@@ -51,11 +48,10 @@ async function init() {
 			saveEditorSettings,
 			importProject,
 			exportProject,
-			importBinaryFile,
-			exportBinaryFile,
+			importBinaryAsset,
+			exportBinaryCode,
 			getListOfColorSchemes,
 			getColorScheme,
-			getStorageQuota,
 		},
 	});
 
