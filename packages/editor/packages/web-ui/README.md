@@ -37,16 +37,16 @@ This package was extracted from the `@8f4e/editor` package to separate rendering
 The package exports a single initialization function:
 
 ```typescript
-import initView, { type MemoryRef } from '@8f4e/web-ui';
+import initView, { type MemoryViews } from '@8f4e/web-ui';
 import type { State } from '@8f4e/editor';
 
-// Create a stable memory ref that points to the current memory buffer
-const memoryRef: MemoryRef = { current: null };
+// Create a stable memory views object for the current memory buffer
+const memoryViews: MemoryViews = {
+	int32: new Int32Array(state.compiler.memoryBuffer.buffer),
+	float32: new Float32Array(state.compiler.memoryBuffer.buffer),
+};
 
-// Update memoryRef.current whenever compiler produces new memory
-// (typically done via state subscriptions in the editor)
-
-const view = await initView(state, canvas, memoryRef);
+const view = await initView(state, canvas, memoryViews);
 
 // Resize the viewport
 view.resize(width, height);
@@ -61,20 +61,27 @@ view.loadPostProcessEffects(effects);
 view.clearCache();
 ```
 
-### Memory Reference
+### Memory Views
 
-The `memoryRef` parameter is a stable reference holder that points to the current WebAssembly memory or ArrayBuffer. The web-ui package uses this to create typed array views for reading memory values when rendering decorators (switches, plotters, debuggers, etc.).
+The `memoryViews` parameter is a stable object that provides typed array views for reading memory values when rendering decorators (switches, plotters, debuggers, etc.).
 
-The memory ref should be updated whenever the compiler produces a new memory buffer:
+If the underlying memory buffer can change (for example, WebAssembly memory growth), recreate the typed arrays when the buffer identity changes:
 
 ```typescript
-store.subscribe('compiler.memoryBuffer', () => {
-	if (state.compiler.memoryBuffer.length > 0) {
-		memoryRef.current = state.compiler.memoryBuffer.buffer;
-	} else {
-		memoryRef.current = null;
+let cachedBuffer: ArrayBuffer | SharedArrayBuffer | null = null;
+const memoryViews: MemoryViews = {
+	int32: new Int32Array(0),
+	float32: new Float32Array(0),
+};
+
+const refreshMemoryViews = () => {
+	const buffer = state.compiler.memoryBuffer.buffer;
+	if (buffer !== cachedBuffer) {
+		cachedBuffer = buffer;
+		memoryViews.int32 = new Int32Array(buffer);
+		memoryViews.float32 = new Float32Array(buffer);
 	}
-});
+};
 ```
 
 ## Build

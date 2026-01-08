@@ -58,7 +58,7 @@ export default function resolveMemoryIdentifier(
 
 	if (operator === '*' && memory.isPointer) {
 		memory = state.graphicHelper.outputsByWordAddress.get(
-			state.compiler.memoryBuffer[memory.wordAlignedAddress]
+			state.callbacks?.getWordFromMemory?.(memory.wordAlignedAddress) || 0
 		)?.memory;
 	}
 
