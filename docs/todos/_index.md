@@ -76,6 +76,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 165 | Add clipboard callbacks to editor-state | 🟡 | 2-4h | 2026-01-08 | Introduced `readClipboardText` and `writeClipboardText` callbacks to make editor-state portable; disabled clipboard menu items when callbacks are missing; added comprehensive tests; all navigator.clipboard calls now in editor package only |
 | 163 | Web-UI Memory Ref Init And Views | 🟡 | 2-3d | 2026-01-07 | Moved web-ui memory access to a stable ref passed into init, creating int/float views internally and threading them into memory-dependent drawers; decoupled render layer from compiler state |
 | 161 | Add Explicit Store Wait Helpers | 🟡 | 2-4h | 2026-01-04 | Added `waitForChange` and `waitForValue` Promise-based helpers to state-manager; both use strict equality, auto-unsubscribe after resolving, and support immediate resolution; comprehensive tests cover change-driven and immediate resolution with cleanup verification |
 | 157 | Disable Compilation for Runtime-Ready Projects | 🟡 | 3-5h | 2026-01-02 | Added `disableCompilation` config flag to hard-block compilation and skip config/module compilation paths; comprehensive tests added covering compiler, config effects, and runtime-ready export |
