@@ -6,7 +6,6 @@ import projectExport from './projectExport';
 
 import { createMockState, createMockCodeBlock } from '../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
-import encodeUint8ArrayToBase64 from '../pureHelpers/base64/base64Encoder';
 
 import type { State } from '../types';
 
@@ -113,14 +112,8 @@ describe('Runtime-ready project functionality', () => {
 	});
 
 	describe('Runtime-ready export', () => {
-		it('should export runtime-ready project with compiled modules and memory snapshot', async () => {
-			const backingBuffer = new ArrayBuffer(8);
-			const bytes = new Uint8Array(backingBuffer);
-			bytes.set([1, 2, 3, 4, 5, 6, 7, 8]);
-
+		it('should export runtime-ready project with compiled modules', async () => {
 			mockState.compiler.compiledModules = { mod: {} };
-			mockState.compiler.memoryBuffer = new Int32Array(backingBuffer);
-			mockState.compiler.memoryBufferFloat = new Float32Array(backingBuffer);
 			mockState.compiler.allocatedMemorySize = 6;
 
 			// Set up save functionality
@@ -145,11 +138,7 @@ describe('Runtime-ready project functionality', () => {
 			// Parse the exported JSON and verify it contains compiled data
 			const exportedProject = JSON.parse(exportedJson);
 			expect(exportedProject.compiledModules).toEqual({ mod: {} });
-			expect(typeof exportedProject.memorySnapshot).toBe('string');
-
-			// Verify the base64 encoding is correct using the same encoder as the implementation
-			const expectedBase64 = encodeUint8ArrayToBase64(new Uint8Array(backingBuffer, 0, 6));
-			expect(exportedProject.memorySnapshot).toBe(expectedBase64);
+			expect(exportedProject.memorySnapshot).toBeUndefined();
 		});
 
 		it('should include compiledConfig in runtime-ready export', async () => {
@@ -176,42 +165,8 @@ describe('Runtime-ready project functionality', () => {
 			expect(exportedProject.compiledConfig.memorySizeBytes).toBe(1048576);
 		});
 
-		it('should trim memory snapshot to the allocated memory size', async () => {
-			const backingBuffer = new ArrayBuffer(16);
-			const bytes = new Uint8Array(backingBuffer);
-			for (let i = 0; i < bytes.length; i += 1) {
-				bytes[i] = i + 1;
-			}
-
-			mockState.compiler.memoryBuffer = new Int32Array(backingBuffer);
-			mockState.compiler.memoryBufferFloat = new Float32Array(backingBuffer);
-			mockState.compiler.allocatedMemorySize = 8;
-
-			// Set up save functionality
-			projectExport(store, mockEvents);
-
-			// Get the exportRuntimeReadyProject callback
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
-			expect(exportRuntimeReadyProjectCall).toBeDefined();
-
-			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
-
-			// Trigger the exportRuntimeReadyProject action
-			await exportRuntimeReadyProjectCallback();
-
-			expect(mockExportProject).toHaveBeenCalledTimes(1);
-
-			const [exportedJson] = mockExportProject.mock.calls[0];
-			const exportedProject = JSON.parse(exportedJson);
-			const expectedBase64 = encodeUint8ArrayToBase64(new Uint8Array(backingBuffer, 0, 8));
-
-			expect(exportedProject.memorySnapshot).toBe(expectedBase64);
-		});
-
 		it('should omit memory snapshot when no compiled memory is available', async () => {
 			mockState.compiler.allocatedMemorySize = 0;
-			mockState.compiler.memoryBuffer = new Int32Array(0);
 
 			// Set up save functionality
 			projectExport(store, mockEvents);
@@ -261,8 +216,6 @@ describe('Runtime-ready project functionality', () => {
 
 			// Verify compiler state is still correct
 			expect(mockState.compiler.compiledModules).toEqual(compiledModules);
-			expect(mockState.compiler.memoryBuffer).toEqual(new Int32Array([1, 2, 3]));
-			expect(mockState.compiler.memoryBufferFloat.byteLength).toBe(mockState.compiler.memoryBuffer.byteLength);
 			expect(mockState.compiler.isCompiling).toBe(false);
 			expect(mockState.codeErrors.compilationErrors).toEqual([]);
 			expect(mockState.compiler.compilationTime).toBe(0);
@@ -274,6 +227,9 @@ describe('Runtime-ready project functionality', () => {
 				compiledModules: {},
 				allocatedMemorySize: 1024,
 				memoryAction: { action: 'reused' },
+				byteCodeSize: 0,
+				hasWasmInstanceBeenReset: false,
+				codeBuffer: new Uint8Array(),
 			});
 			mockState.callbacks.compileCode = mockCompileCode;
 

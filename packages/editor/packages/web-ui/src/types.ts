@@ -1,12 +1,4 @@
 /**
- * Reference holder for WebAssembly memory or ArrayBuffer.
- * The web-ui will read from `current` to create typed array views.
- */
-export interface MemoryRef {
-	current: WebAssembly.Memory | ArrayBuffer | SharedArrayBuffer | null;
-}
-
-/**
  * Typed array views for reading memory as integers or floats.
  */
 export interface MemoryViews {

@@ -21,14 +21,14 @@ export default function button(state: State, events: EventDispatcher): () => voi
 			return;
 		}
 
-		state.compiler.memoryBuffer[lastPushedButtonMemory.wordAlignedAddress] = lastPushedButton.onValue;
+		state.callbacks?.setWordInMemory?.(lastPushedButtonMemory.wordAlignedAddress, lastPushedButton.onValue);
 	};
 
 	const onMouseUp = function () {
 		if (!lastPushedButtonMemory || !lastPushedButton) {
 			return;
 		}
-		state.compiler.memoryBuffer[lastPushedButtonMemory.wordAlignedAddress] = lastPushedButton.offValue;
+		state.callbacks?.setWordInMemory?.(lastPushedButtonMemory.wordAlignedAddress, lastPushedButton.offValue);
 	};
 
 	events.on('codeBlockClick', onCodeBlockClick);
