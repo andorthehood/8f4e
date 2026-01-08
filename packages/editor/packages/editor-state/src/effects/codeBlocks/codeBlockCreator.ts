@@ -210,6 +210,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		if (state.callbacks.writeClipboardText) {
 			state.callbacks.writeClipboardText(codeBlock.code.join('\n')).catch(() => {
 				// Fail silently if clipboard write fails
+				return undefined;
 			});
 		}
 	}
