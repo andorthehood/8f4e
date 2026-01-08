@@ -65,6 +65,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		colorScheme: state.colorScheme,
 	});
 
+	// Note: hGrid represents horizontal grid lines (vertical spacing = character height)
+	//       vGrid represents vertical grid lines (horizontal spacing = character width)
 	state.graphicHelper.spriteLookups = spriteData.spriteLookups;
 	state.graphicHelper.viewport.hGrid = spriteData.characterHeight;
 	state.graphicHelper.viewport.vGrid = spriteData.characterWidth;

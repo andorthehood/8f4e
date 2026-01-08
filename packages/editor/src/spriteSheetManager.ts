@@ -20,6 +20,8 @@ export function createSpriteSheetManager(
 		const spriteData = view.reloadSpriteSheet();
 
 		// Update state with new sprite data
+		// Note: hGrid represents horizontal grid lines (vertical spacing = character height)
+		//       vGrid represents vertical grid lines (horizontal spacing = character width)
 		const state = store.getState();
 		state.graphicHelper.spriteLookups = spriteData.spriteLookups;
 		state.graphicHelper.viewport.hGrid = spriteData.characterHeight;
