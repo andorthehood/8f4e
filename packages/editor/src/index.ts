@@ -1,4 +1,4 @@
-import initState, { State } from '@8f4e/editor-state';
+import initState, { Callbacks, State } from '@8f4e/editor-state';
 import initView, { MemoryViews } from '@8f4e/web-ui';
 
 import initEvents from './events';
@@ -31,7 +31,7 @@ export interface Editor {
 
 interface Options {
 	featureFlags?: Partial<State['featureFlags']>;
-	callbacks: State['callbacks'];
+	callbacks: Callbacks;
 }
 
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
