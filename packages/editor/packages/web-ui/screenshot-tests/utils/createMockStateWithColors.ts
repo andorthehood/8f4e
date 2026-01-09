@@ -1,6 +1,18 @@
 import { createMockState } from '@8f4e/editor-state/testing';
+import generateSprite from '@8f4e/sprite-generator';
 
 import type { State } from '@8f4e/editor-state';
+import type { SpriteData } from '../../src';
+
+/**
+ * Updates the state with sprite data from a generated sprite sheet.
+ * This is a helper function to reduce duplication in test setup.
+ */
+function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
+	state.graphicHelper.spriteLookups = spriteData.spriteLookups;
+	state.graphicHelper.viewport.hGrid = spriteData.characterHeight;
+	state.graphicHelper.viewport.vGrid = spriteData.characterWidth;
+}
 
 /**
  * Default color scheme for web-ui screenshot tests
@@ -62,9 +74,10 @@ const defaultColorScheme = {
 /**
  * Create a mock state for web-ui screenshot tests with default color scheme.
  * Extends the base createMockState from editor-state with web-ui specific defaults.
+ * Also generates sprite data and populates spriteLookups, hGrid, and vGrid.
  *
  * @param overrides Optional partial state to override defaults
- * @returns A complete State object with web-ui defaults including color scheme
+ * @returns A complete State object with web-ui defaults including color scheme and sprite data
  *
  * @example
  * ```typescript
@@ -73,7 +86,7 @@ const defaultColorScheme = {
  * ```
  */
 export default function createMockStateWithColors(overrides: Partial<State> = {}): State {
-	return createMockState({
+	const state = createMockState({
 		colorSchemes: {
 			default: defaultColorScheme,
 		},
@@ -89,4 +102,14 @@ export default function createMockStateWithColors(overrides: Partial<State> = {}
 		},
 		...overrides,
 	});
+
+	// Generate sprite data and populate state
+	const spriteData = generateSprite({
+		font: state.editorSettings.font || '8x16',
+		colorScheme: state.colorScheme,
+	});
+
+	updateStateWithSpriteData(state, spriteData);
+
+	return state;
 }
