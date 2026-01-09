@@ -1,4 +1,4 @@
-import generateSprite from '@8f4e/sprite-generator';
+import generateSprite, { type SpriteLookups } from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect } from 'glugglug';
 
 import drawCodeBlocks from './drawers/codeBlocks';
@@ -15,14 +15,23 @@ import type { MemoryViews } from './types';
 
 // Re-export types
 export type { MemoryViews } from './types';
+export type { SpriteLookups } from '@8f4e/sprite-generator';
+
+export interface SpriteData {
+	canvas: OffscreenCanvas;
+	spriteLookups: SpriteLookups;
+	characterWidth: number;
+	characterHeight: number;
+}
 
 export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement,
-	memoryViews: MemoryViews
+	memoryViews: MemoryViews,
+	spriteData: SpriteData
 ): Promise<{
 	resize: (width: number, height: number) => void;
-	reloadSpriteSheet: () => void;
+	reloadSpriteSheet: () => SpriteData;
 	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
 	clearCache: () => void;
 }> {
@@ -33,23 +42,9 @@ export default async function init(
 		y: state.graphicHelper.viewport.y,
 	};
 
-	const {
-		canvas: sprite,
-		spriteLookups,
-		characterWidth,
-		characterHeight,
-	} = generateSprite({
-		font: state.editorSettings.font || '8x16',
-		colorScheme: state.colorScheme,
-	});
-
-	state.graphicHelper.spriteLookups = spriteLookups;
-	state.graphicHelper.viewport.hGrid = characterHeight;
-	state.graphicHelper.viewport.vGrid = characterWidth;
-
 	const engine = new Engine(canvas, { caching: true });
 
-	engine.loadSpriteSheet(sprite);
+	engine.loadSpriteSheet(spriteData.canvas);
 
 	engine.render(function (timeToRender, fps, vertices, maxVertices) {
 		const effectiveViewport = calculateAnimatedViewport(state, performance.now(), animationState, previousViewport);
@@ -88,21 +83,13 @@ export default async function init(
 			engine.resize(width, height);
 		},
 		reloadSpriteSheet: () => {
-			const {
-				canvas: sprite,
-				spriteLookups,
-				characterHeight,
-				characterWidth,
-			} = generateSprite({
+			const spriteData = generateSprite({
 				font: state.editorSettings.font || '8x16',
 				colorScheme: state.colorScheme,
 			});
 
-			state.graphicHelper.spriteLookups = spriteLookups;
-			state.graphicHelper.viewport.hGrid = characterHeight;
-			state.graphicHelper.viewport.vGrid = characterWidth;
-
-			engine.loadSpriteSheet(sprite);
+			engine.loadSpriteSheet(spriteData.canvas);
+			return spriteData;
 		},
 		loadPostProcessEffects: (projectEffects: PostProcessEffect[] = []) => {
 			engine.removeAllPostProcessEffects();
