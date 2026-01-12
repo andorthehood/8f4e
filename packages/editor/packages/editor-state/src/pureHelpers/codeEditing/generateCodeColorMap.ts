@@ -17,13 +17,115 @@ const getInstructionRegExp = (instructions: string[]) =>
 	);
 
 /**
+ * 8f4e language instruction keywords to highlight
+ */
+const instructionsToHighlight = [
+	'and',
+	'or',
+	'const',
+	'load',
+	'load8u',
+	'load16u',
+	'load8s',
+	'load16s',
+	'localGet',
+	'localSet',
+	'else',
+	'if',
+	'ifEnd',
+	'lessThan',
+	'store',
+	'sub',
+	'div',
+	'xor',
+	'local',
+	'greaterOrEqual',
+	'add',
+	'greaterThan',
+	'branch',
+	'branchIfTrue',
+	'push',
+	'block',
+	'blockEnd',
+	'lessOrEqual',
+	'mul',
+	'loop',
+	'loopEnd',
+	'greaterOrEqualUnsigned',
+	'equalToZero',
+	'shiftLeft',
+	'shiftRight',
+	'shiftRightUnsigned',
+	'remainder',
+	'module',
+	'moduleEnd',
+	'config',
+	'configEnd',
+	'set',
+	'scope',
+	'rescope',
+	'rescopeTop',
+	'popScope',
+	'int',
+	'float',
+	'int*',
+	'int**',
+	'float*',
+	'float**',
+	'float[]',
+	'int[]',
+	'int8[]',
+	'int16[]',
+	'int32[]',
+	'float*[]',
+	'float**[]',
+	'int*[]',
+	'int**[]',
+	'castToInt',
+	'castToFloat',
+	'skip',
+	'drop',
+	'clearStack',
+	'risingEdge',
+	'fallingEdge',
+	'hasChanged',
+	'dup',
+	'swap',
+	'cycle',
+	'abs',
+	'use',
+	'equal',
+	'wasm',
+	'branchIfUnchanged',
+	'init',
+	'pow2',
+	'sqrt',
+	'loadFloat',
+	'round',
+	'ensureNonZero',
+	'function',
+	'functionEnd',
+	'initBlock',
+	'initBlockEnd',
+	'concat',
+	'call',
+	'param',
+	'constants',
+	'constantsEnd',
+	'vertexShader',
+	'vertexShaderEnd',
+	'fragmentShader',
+	'fragmentShaderEnd',
+];
+
+/**
  * Generates a 2D lookup where each cell contains the sprite used to render a code character.
+ * Applies 8f4e language syntax highlighting rules.
  * @param code Program text split into lines.
  * @param spriteLookups Mapping of syntax roles to sprite identifiers.
- * @param instructionsToHighlight Instruction names that should receive special styling.
  * @returns A matrix of sprite identifiers aligned to every character in the document.
  */
-export default function generateCodeColorMap<T>(
+export default function highlightSyntax8f4e<T>(
 	code: string[],
 	spriteLookups: {
 		fontLineNumber: T;
@@ -33,8 +135,7 @@ export default function generateCodeColorMap<T>(
 		fontNumbers: T;
 		fontBinaryZero: T;
 		fontBinaryOne: T;
-	},
-	instructionsToHighlight: string[]
+	}
 ): T[][] {
 	return code.map(line => {
 		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
@@ -96,14 +197,14 @@ if (import.meta.vitest) {
 		fontBinaryOne: 'one',
 	} as const;
 
-	describe('generateCodeColorMap', () => {
+	describe('highlightSyntax8f4e', () => {
 		it('marks line numbers when present', () => {
-			const [line] = generateCodeColorMap(['10 NOP'], spriteLookups, ['NOP']);
+			const [line] = highlightSyntax8f4e(['10 add'], spriteLookups);
 			expect(line[0]).toBe('line');
 		});
 
 		it('highlights instructions, comments, and numeric literals', () => {
-			const [line] = generateCodeColorMap(['NOP 10 ; comment'], spriteLookups, ['NOP']);
+			const [line] = highlightSyntax8f4e(['add 10 ; comment'], spriteLookups);
 			expect(line[0]).toBe('instruction');
 			expect(line[3]).toBe('code');
 			expect(line[4]).toBe('number');
@@ -111,11 +212,11 @@ if (import.meta.vitest) {
 		});
 
 		it('marks binary digits separately for zeros and ones', () => {
-			const [line] = generateCodeColorMap(['DATA 0b1010'], spriteLookups, ['DATA']);
-			expect(line[7]).toBe('one');
-			expect(line[8]).toBe('zero');
-			expect(line[9]).toBe('one');
-			expect(line[10]).toBe('zero');
+			const [line] = highlightSyntax8f4e(['const 0b1010'], spriteLookups);
+			expect(line[8]).toBe('one');
+			expect(line[9]).toBe('zero');
+			expect(line[10]).toBe('one');
+			expect(line[11]).toBe('zero');
 		});
 	});
 }

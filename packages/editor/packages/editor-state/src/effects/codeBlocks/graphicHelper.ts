@@ -15,112 +15,13 @@ import { CodeBlockClickEvent } from './codeBlockDragger';
 
 import { EventDispatcher } from '../../types';
 import gapCalculator from '../../pureHelpers/codeEditing/gapCalculator';
-import generateCodeColorMap from '../../pureHelpers/codeEditing/generateCodeColorMap';
+import highlightSyntax8f4e from '../../pureHelpers/codeEditing/generateCodeColorMap';
 import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
 import reverseGapCalculator from '../../pureHelpers/codeEditing/reverseGapCalculator';
 import getLongestLineLength from '../../pureHelpers/codeParsers/getLongestLineLength';
 import wrapText from '../../pureHelpers/wrapText';
 
 import type { CodeBlockGraphicData, State } from '../../types';
-
-const instructionsToHighlight = [
-	'and',
-	'or',
-	'const',
-	'load',
-	'load8u',
-	'load16u',
-	'load8s',
-	'load16s',
-	'localGet',
-	'localSet',
-	'else',
-	'if',
-	'ifEnd',
-	'lessThan',
-	'store',
-	'sub',
-	'div',
-	'xor',
-	'local',
-	'greaterOrEqual',
-	'add',
-	'greaterThan',
-	'branch',
-	'branchIfTrue',
-	'push',
-	'block',
-	'blockEnd',
-	'lessOrEqual',
-	'mul',
-	'loop',
-	'loopEnd',
-	'greaterOrEqualUnsigned',
-	'equalToZero',
-	'shiftLeft',
-	'shiftRight',
-	'shiftRightUnsigned',
-	'remainder',
-	'module',
-	'moduleEnd',
-	'config',
-	'configEnd',
-	'set',
-	'scope',
-	'rescope',
-	'rescopeTop',
-	'popScope',
-	'int',
-	'float',
-	'int*',
-	'int**',
-	'float*',
-	'float**',
-	'float[]',
-	'int[]',
-	'int8[]',
-	'int16[]',
-	'int32[]',
-	'float*[]',
-	'float**[]',
-	'int*[]',
-	'int**[]',
-	'castToInt',
-	'castToFloat',
-	'skip',
-	'drop',
-	'clearStack',
-	'risingEdge',
-	'fallingEdge',
-	'hasChanged',
-	'dup',
-	'swap',
-	'cycle',
-	'abs',
-	'use',
-	'equal',
-	'wasm',
-	'branchIfUnchanged',
-	'init',
-	'pow2',
-	'sqrt',
-	'loadFloat',
-	'round',
-	'ensureNonZero',
-	'function',
-	'functionEnd',
-	'initBlock',
-	'initBlockEnd',
-	'concat',
-	'call',
-	'param',
-	'constants',
-	'constantsEnd',
-	'vertexShader',
-	'vertexShaderEnd',
-	'fragmentShader',
-	'fragmentShaderEnd',
-];
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
@@ -148,11 +49,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		graphicData.codeColors = generateCodeColorMap(
-			codeWithLineNumbers,
-			state.graphicHelper.spriteLookups,
-			instructionsToHighlight
-		);
+		graphicData.codeColors = highlightSyntax8f4e(codeWithLineNumbers, state.graphicHelper.spriteLookups);
 
 		gaps(graphicData);
 		pianoKeyboards(graphicData, state);
