@@ -16,6 +16,7 @@ import { CodeBlockClickEvent } from './codeBlockDragger';
 import { EventDispatcher } from '../../types';
 import gapCalculator from '../../pureHelpers/codeEditing/gapCalculator';
 import highlightSyntax8f4e from '../../pureHelpers/codeEditing/generateCodeColorMap';
+import highlightSyntaxGlsl from '../../pureHelpers/codeEditing/highlightSyntaxGlsl';
 import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
 import reverseGapCalculator from '../../pureHelpers/codeEditing/reverseGapCalculator';
 import getLongestLineLength from '../../pureHelpers/codeParsers/getLongestLineLength';
@@ -49,7 +50,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		graphicData.codeColors = highlightSyntax8f4e(codeWithLineNumbers, state.graphicHelper.spriteLookups);
+		// Choose highlighter based on block type
+		if (graphicData.blockType === 'vertexShader' || graphicData.blockType === 'fragmentShader') {
+			graphicData.codeColors = highlightSyntaxGlsl(codeWithLineNumbers, state.graphicHelper.spriteLookups);
+		} else {
+			graphicData.codeColors = highlightSyntax8f4e(codeWithLineNumbers, state.graphicHelper.spriteLookups);
+		}
 
 		gaps(graphicData);
 		pianoKeyboards(graphicData, state);
