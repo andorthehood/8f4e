@@ -111,46 +111,52 @@ if (import.meta.vitest) {
 	} as const;
 
 	describe('highlightSyntaxGlsl', () => {
-		it('marks line numbers when present', () => {
-			const [line] = highlightSyntaxGlsl(['10 float x = 1.0;'], spriteLookups);
-			expect(line[0]).toBe('line');
-		});
+		it('highlights GLSL shader code with keywords, types, comments, numbers, and preprocessor directives', () => {
+			const glslCode = [
+				'00 #version 300 es',
+				'01 precision mediump float;',
+				'02 ',
+				'03 #define PI 3.14159',
+				'04 #define ITERATIONS 10',
+				'05 ',
+				'06 // Varyings and uniforms',
+				'07 varying vec2 v_texCoord;',
+				'08 uniform sampler2D u_texture;',
+				'09 uniform float u_time;',
+				'10 uniform vec3 u_color;',
+				'11 ',
+				'12 /* Helper function',
+				'13    for color blending */',
+				'14 vec4 blend(vec4 a, vec4 b) {',
+				'15   float factor = 0.5;',
+				'16   int mask = 0xff;',
+				'17   if (factor > 0.0) {',
+				'18     return a * factor;',
+				'19   } else {',
+				'20     return b;',
+				'21   }',
+				'22 }',
+				'23 ',
+				'24 void main() {',
+				'25   vec2 uv = v_texCoord;',
+				'26   float dist = length(uv);',
+				'27   ',
+				'28   for (int i = 0; i < ITERATIONS; i++) {',
+				'29     dist += 0.1;',
+				'30   }',
+				'31   ',
+				'32   while (dist > 1.0) {',
+				'33     dist -= 0.5;',
+				'34     break;',
+				'35   }',
+				'36   ',
+				'37   vec4 color = texture2D(u_texture, uv);',
+				'38   gl_FragColor = blend(color, vec4(u_color, 1.0));',
+				'39 }',
+			];
 
-		it('highlights GLSL keywords', () => {
-			const [line] = highlightSyntaxGlsl(['if (x > 0.0)'], spriteLookups);
-			expect(line[0]).toBe('instruction');
-			expect(line[2]).toBe('code');
-		});
-
-		it('highlights GLSL types', () => {
-			const [line] = highlightSyntaxGlsl(['vec3 color;'], spriteLookups);
-			expect(line[0]).toBe('instruction');
-			expect(line[4]).toBe('code');
-		});
-
-		it('highlights line comments', () => {
-			const [line] = highlightSyntaxGlsl(['float x; // comment'], spriteLookups);
-			expect(line[9]).toBe('comment');
-		});
-
-		it('highlights block comments', () => {
-			const [line] = highlightSyntaxGlsl(['float x; /* comment */'], spriteLookups);
-			expect(line[9]).toBe('comment');
-		});
-
-		it('highlights numeric literals including floats', () => {
-			const [line] = highlightSyntaxGlsl(['float x = 1.5;'], spriteLookups);
-			expect(line[10]).toBe('number');
-		});
-
-		it('highlights preprocessor directives', () => {
-			const [line] = highlightSyntaxGlsl(['#version 300 es'], spriteLookups);
-			expect(line[0]).toBe('instruction');
-		});
-
-		it('highlights hex numbers', () => {
-			const [line] = highlightSyntaxGlsl(['int x = 0xff;'], spriteLookups);
-			expect(line[8]).toBe('number');
+			const result = highlightSyntaxGlsl(glslCode, spriteLookups);
+			expect(result).toMatchSnapshot();
 		});
 	});
 }
