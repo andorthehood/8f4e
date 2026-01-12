@@ -1,4 +1,5 @@
 import extractShaderSource from './extractShaderSource';
+import { DEFAULT_VERTEX_SHADER } from './defaultVertexShader';
 
 import getVertexShaderId from '../shaderUtils/getVertexShaderId';
 import getFragmentShaderId from '../shaderUtils/getFragmentShaderId';
@@ -82,12 +83,14 @@ export default function derivePostProcessEffects(codeBlocks: CodeBlockGraphicDat
 	}
 
 	// Check for fragment shaders without matching vertex shaders
-	for (const [id, { block: fragmentBlock }] of fragmentShaders) {
+	// Use default vertex shader for fragment-only blocks
+	for (const [id, { source: fragmentSource }] of fragmentShaders) {
 		if (!pairedIds.has(id)) {
-			errors.push({
-				lineNumber: 1,
-				message: `Fragment shader "${id}" has no matching vertex shader`,
-				codeBlockId: fragmentBlock.id,
+			effects.push({
+				name: id,
+				vertexShader: DEFAULT_VERTEX_SHADER,
+				fragmentShader: fragmentSource,
+				enabled: true,
 			});
 		}
 	}
@@ -163,7 +166,7 @@ if (import.meta.vitest) {
 			expect(errors[0].message).toContain('no matching fragment shader');
 		});
 
-		it('reports error for fragment shader without matching vertex', () => {
+		it('uses default vertex shader for fragment-only blocks', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
 					id: 'test',
@@ -174,9 +177,11 @@ if (import.meta.vitest) {
 
 			const { effects, errors } = derivePostProcessEffects(blocks);
 
-			expect(effects).toHaveLength(0);
-			expect(errors).toHaveLength(1);
-			expect(errors[0].message).toContain('no matching vertex shader');
+			expect(effects).toHaveLength(1);
+			expect(effects[0].name).toBe('test');
+			expect(effects[0].vertexShader).toBe(DEFAULT_VERTEX_SHADER);
+			expect(effects[0].fragmentShader).toBe('void main() {}');
+			expect(errors).toHaveLength(0);
 		});
 
 		it('handles multiple shader pairs', () => {
@@ -208,6 +213,37 @@ if (import.meta.vitest) {
 			expect(effects).toHaveLength(2);
 			expect(effects[0].name).toBe('effect1');
 			expect(effects[1].name).toBe('effect2');
+			expect(errors).toHaveLength(0);
+		});
+
+		it('handles mixed paired and fragment-only shaders', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				{
+					id: 'paired',
+					code: ['vertexShader paired', 'custom vertex', 'vertexShaderEnd'],
+					creationIndex: 0,
+				} as CodeBlockGraphicData,
+				{
+					id: 'paired',
+					code: ['fragmentShader paired', 'paired fragment', 'fragmentShaderEnd'],
+					creationIndex: 1,
+				} as CodeBlockGraphicData,
+				{
+					id: 'fragmentOnly',
+					code: ['fragmentShader fragmentOnly', 'fragment only', 'fragmentShaderEnd'],
+					creationIndex: 2,
+				} as CodeBlockGraphicData,
+			];
+
+			const { effects, errors } = derivePostProcessEffects(blocks);
+
+			expect(effects).toHaveLength(2);
+			expect(effects[0].name).toBe('paired');
+			expect(effects[0].vertexShader).toBe('custom vertex');
+			expect(effects[0].fragmentShader).toBe('paired fragment');
+			expect(effects[1].name).toBe('fragmentOnly');
+			expect(effects[1].vertexShader).toBe(DEFAULT_VERTEX_SHADER);
+			expect(effects[1].fragmentShader).toBe('fragment only');
 			expect(errors).toHaveLength(0);
 		});
 	});
