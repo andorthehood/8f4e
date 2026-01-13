@@ -22,7 +22,7 @@ export default function enter(
 	newCode.splice(row + 1, 0, '');
 	newCode[row + 1] = save;
 
-	const [newRow] = moveCaret(newCode, row, col, 'ArrowDown');
+	const [newRow] = moveCaret(newCode, row, col, 'down');
 	return { code: newCode, row: newRow, col: 0 };
 }
 

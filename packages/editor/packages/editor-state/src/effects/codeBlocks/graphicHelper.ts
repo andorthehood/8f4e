@@ -31,7 +31,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			codeBlock.code,
 			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.viewport.hGrid), codeBlock.gaps),
 			Math.floor(relativeX / state.graphicHelper.viewport.vGrid) - (codeBlock.lineNumberColumnWidth + 2),
-			'Jump'
+			'jump'
 		);
 		codeBlock.cursor.row = row;
 		codeBlock.cursor.col = col;
