@@ -31,6 +31,12 @@ import type { Options, State, EventDispatcher, Runtimes } from './types';
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
+	// Get default runtime settings from registry
+	const registryEntry = options.runtimeRegistry[options.defaultRuntimeId];
+	if (!registryEntry) {
+		throw new Error(`Default runtime ID "${options.defaultRuntimeId}" not found in runtime registry`);
+	}
+
 	// Create base state
 	const baseState = {
 		...createDefaultState(),
@@ -38,20 +44,11 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
 		defaultRuntimeId: options.defaultRuntimeId,
+		compiledConfig: {
+			...createDefaultState().compiledConfig,
+			runtimeSettings: [registryEntry.defaults as unknown as Runtimes],
+		},
 	};
-
-	// If runtime registry is provided, update default config to use registry defaults
-	if (options.runtimeRegistry && options.defaultRuntimeId) {
-		const registryEntry = options.runtimeRegistry[options.defaultRuntimeId];
-		if (registryEntry && registryEntry.defaults) {
-			// Type assertion is safe here because registry entries are expected to have
-			// defaults that match the Runtimes union type structure
-			baseState.compiledConfig = {
-				...baseState.compiledConfig,
-				runtimeSettings: [registryEntry.defaults as unknown as Runtimes],
-			};
-		}
-	}
 
 	const store = createStateManager<State>(baseState);
 
