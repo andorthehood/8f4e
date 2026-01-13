@@ -5,8 +5,6 @@ export default function keyboardShortcuts(events: EventDispatcher): void {
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
 
-		event.preventDefault();
-
 		// Platform-specific modifier key (metaKey on macOS, ctrlKey on Windows/Linux)
 		const modifierKey = metaKey || ctrlKey;
 
@@ -16,24 +14,28 @@ export default function keyboardShortcuts(events: EventDispatcher): void {
 
 			// Save
 			if (lowerKey === 's') {
+				event.preventDefault();
 				events.dispatch('saveSession');
 				return;
 			}
 
 			// Undo
 			if (lowerKey === 'z' && !event.shiftKey) {
+				event.preventDefault();
 				events.dispatch('undo');
 				return;
 			}
 
 			// Redo (Cmd+Shift+Z on macOS, Ctrl+Y on Windows/Linux, or Cmd+Y on macOS)
 			if ((lowerKey === 'z' && event.shiftKey) || lowerKey === 'y') {
+				event.preventDefault();
 				events.dispatch('redo');
 				return;
 			}
 
 			// Navigation with modifier + arrow keys
 			if (key.startsWith('Arrow')) {
+				event.preventDefault();
 				let direction: 'left' | 'right' | 'up' | 'down';
 				switch (key) {
 					case 'ArrowLeft':
@@ -55,7 +57,7 @@ export default function keyboardShortcuts(events: EventDispatcher): void {
 				return;
 			}
 
-			// Other modifier key combinations are ignored
+			// Other modifier key combinations are not handled, don't prevent default
 			return;
 		}
 
@@ -63,6 +65,7 @@ export default function keyboardShortcuts(events: EventDispatcher): void {
 
 		// Arrow keys for caret movement
 		if (key.startsWith('Arrow')) {
+			event.preventDefault();
 			let direction: 'left' | 'right' | 'up' | 'down';
 			switch (key) {
 				case 'ArrowLeft':
@@ -86,18 +89,21 @@ export default function keyboardShortcuts(events: EventDispatcher): void {
 
 		// Backspace
 		if (key === 'Backspace') {
+			event.preventDefault();
 			events.dispatch('deleteBackward');
 			return;
 		}
 
 		// Enter
 		if (key === 'Enter') {
+			event.preventDefault();
 			events.dispatch('insertNewLine');
 			return;
 		}
 
 		// Single character text input
 		if (key.length === 1) {
+			event.preventDefault();
 			events.dispatch<InsertTextEvent>('insertText', { text: key });
 			return;
 		}
