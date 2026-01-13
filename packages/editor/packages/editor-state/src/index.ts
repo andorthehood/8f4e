@@ -126,7 +126,6 @@ export type {
 	PianoKeyboard,
 	ContextMenu,
 	RuntimeFactory,
-	RuntimeType,
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
 	FeatureFlags,
