@@ -1,5 +1,6 @@
 import executeAppend from '../commands/append';
 import executeConcat from '../commands/concat';
+import executeConst from '../commands/const';
 import executePopScope from '../commands/popScope';
 import executePush from '../commands/push';
 import executeRescope from '../commands/rescope';
@@ -43,6 +44,8 @@ export function executeCommand(state: VMState, command: Command): CommandError[]
 			return executeRescopeSuffix(state, command);
 		case 'popScope':
 			return wrapError(executePopScope(state));
+		case 'const':
+			return wrapError(executeConst(state, command));
 		default:
 			return [{ message: `Unknown command: ${(command as Command).type}`, kind: 'exec' }];
 	}
@@ -61,38 +64,48 @@ if (import.meta.vitest) {
 
 	describe('executeCommand', () => {
 		it('should execute push command', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: [], scopeStack: [], constantsStack: [new Map()] };
 			executeCommand(state, { type: 'push', argument: 42, lineNumber: 1 });
 			expect(state.dataStack).toEqual([42]);
 		});
 
 		it('should execute scope command', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: [], scopeStack: [], constantsStack: [new Map()] };
 			executeCommand(state, { type: 'scope', pathSegments: ['foo', 'bar'], lineNumber: 1 });
 			expect(state.scopeStack).toEqual(['foo', 'bar']);
 		});
 
 		it('should execute set command', () => {
-			const state: VMState = { config: {}, dataStack: [42], scopeStack: ['name'] };
+			const state: VMState = { config: {}, dataStack: [42], scopeStack: ['name'], constantsStack: [new Map()] };
 			executeCommand(state, { type: 'set', lineNumber: 1 });
 			expect(state.config).toEqual({ name: 42 });
 		});
 
 		it('should execute concat command', () => {
-			const state: VMState = { config: {}, dataStack: ['foo', 'bar'], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: ['foo', 'bar'], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeCommand(state, { type: 'concat', lineNumber: 1 });
 			expect(result).toBeNull();
 			expect(state.dataStack).toEqual(['foobar']);
 		});
 
 		it('should execute popScope command', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo', 'bar'] };
+			const state: VMState = {
+				config: {},
+				dataStack: [],
+				scopeStack: ['foo', 'bar'],
+				constantsStack: [new Map(), new Map(), new Map()],
+			};
 			executeCommand(state, { type: 'popScope', lineNumber: 1 });
 			expect(state.scopeStack).toEqual(['foo']);
 		});
 
 		it('should execute rescopeSuffix command', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: ['icons', 'piano', 'title'] };
+			const state: VMState = {
+				config: {},
+				dataStack: [],
+				scopeStack: ['icons', 'piano', 'title'],
+				constantsStack: [new Map(), new Map(), new Map(), new Map()],
+			};
 			const result = executeCommand(state, {
 				type: 'rescopeSuffix',
 				pathSegments: ['harp', 'title'],
@@ -103,7 +116,7 @@ if (import.meta.vitest) {
 		});
 
 		it('should return error for rescopeSuffix with insufficient scope', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo'] };
+			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo'], constantsStack: [new Map(), new Map()] };
 			const result = executeCommand(state, {
 				type: 'rescopeSuffix',
 				pathSegments: ['bar', 'baz'],
@@ -118,7 +131,12 @@ if (import.meta.vitest) {
 		});
 
 		it('should allow rescopeSuffix when suffix equals entire scope stack', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo', 'bar'] };
+			const state: VMState = {
+				config: {},
+				dataStack: [],
+				scopeStack: ['foo', 'bar'],
+				constantsStack: [new Map(), new Map(), new Map()],
+			};
 			const result = executeCommand(state, {
 				type: 'rescopeSuffix',
 				pathSegments: ['baz', 'qux'],
@@ -129,7 +147,12 @@ if (import.meta.vitest) {
 		});
 
 		it('should handle rescopeSuffix with empty path segments', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: ['foo', 'bar'] };
+			const state: VMState = {
+				config: {},
+				dataStack: [],
+				scopeStack: ['foo', 'bar'],
+				constantsStack: [new Map(), new Map(), new Map()],
+			};
 			const result = executeCommand(state, {
 				type: 'rescopeSuffix',
 				pathSegments: [],
@@ -140,7 +163,7 @@ if (import.meta.vitest) {
 		});
 
 		it('should return error for unknown command type', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: [], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeCommand(state, { type: 'unknown' as 'push', lineNumber: 1 });
 			expect(result).toEqual([{ message: 'Unknown command: unknown', kind: 'exec' }]);
 		});
