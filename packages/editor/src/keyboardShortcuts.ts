@@ -89,7 +89,14 @@ export default function keyboardShortcuts(events: EventDispatcher): () => void {
 		}
 
 		// Single character text input
-		if (key.length === 1) {
+		// Only handle printable characters, excluding control keys and modifiers
+		if (
+			key.length === 1 &&
+			!event.altKey &&
+			!event.ctrlKey &&
+			!event.metaKey &&
+			key !== 'Dead' // Dead keys for compose sequences
+		) {
 			event.preventDefault();
 			events.dispatch<InsertTextEvent>('insertText', { text: key });
 			return;
