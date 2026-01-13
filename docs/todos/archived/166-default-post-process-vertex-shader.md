@@ -3,8 +3,8 @@ title: 'TODO: Default Vertex Shader for Post-Process Effects'
 priority: Medium
 effort: 2-4h
 created: 2026-01-12
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-12
 ---
 
 # TODO: Default Vertex Shader for Post-Process Effects
