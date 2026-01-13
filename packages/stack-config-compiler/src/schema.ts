@@ -22,6 +22,7 @@ export {
 	lookupSchemaNode,
 	preprocessSchema,
 	validateAndPushSegments,
+	validateCombinators,
 	validateNavigation,
 	validateNavigationSegment,
 	validateValue,
