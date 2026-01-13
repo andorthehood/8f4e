@@ -42,7 +42,7 @@ if (import.meta.vitest) {
 			expect(state.constantsStack[0].get('MAX_VALUE')).toBe(100);
 		});
 
-		it('should create constants map if empty', () => {
+		it('should define a constant with string value', () => {
 			const state: VMState = {
 				config: {},
 				dataStack: [],
