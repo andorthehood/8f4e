@@ -77,7 +77,7 @@ export interface VMState {
 	config: Record<string, unknown>;
 	dataStack: Literal[];
 	scopeStack: string[];
-	/** Stack of constant maps, parallel to scope stack */
+	/** Stack of constant maps: root map at index 0, then one map per scope segment (always length = scopeStack.length + 1) */
 	constantsStack: Map<string, Literal>[];
 	/** Schema node tree for validation (if schema provided) */
 	schemaRoot?: SchemaNode;
