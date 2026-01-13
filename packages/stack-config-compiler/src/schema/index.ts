@@ -23,3 +23,4 @@ export { default as validateAndPushSegments } from './validateAndPushSegments';
 export { default as validateValue } from './validateValue';
 export { default as collectRequiredPaths } from './collectRequiredPaths';
 export { default as findMissingRequiredFields } from './findMissingRequiredFields';
+export { default as validateCombinators } from './validateCombinators';
