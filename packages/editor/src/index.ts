@@ -3,7 +3,8 @@ import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
 import initEvents from './events';
-import humanInterface from './events/humanInterface';
+import pointerEvents from './events/pointerEvents';
+import keyboardEvents from './events/keyboardEvents';
 import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
@@ -31,6 +32,7 @@ export interface Editor {
 	resize: (width: number, height: number) => void;
 	updateMemoryViews: (memoryRef: MemoryRef) => void;
 	getMemoryViews: () => MemoryViews;
+	dispose: () => void;
 	state: State;
 }
 
@@ -61,7 +63,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 	});
 	const state = store.getState();
-	humanInterface(canvas, events, state);
+	pointerEvents(canvas, events, state);
+	const cleanupKeyboard = keyboardEvents(events);
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = generateSprite({
@@ -85,6 +88,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 		updateMemoryViews,
 		getMemoryViews: () => memoryViews,
+		dispose: cleanupKeyboard,
 		state,
 	};
 }

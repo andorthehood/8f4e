@@ -1,7 +1,7 @@
 import findClosestCodeBlockInDirection, { Direction } from '../pureHelpers/finders/findClosestCodeBlockInDirection';
 import centerViewportOnCodeBlock from '../pureHelpers/centerViewportOnCodeBlock';
 
-import type { State, EventDispatcher, InternalKeyboardEvent } from '../types';
+import type { State, EventDispatcher, NavigateCodeBlockEvent } from '../types';
 
 /**
  * Navigates to a code block in the specified direction.
@@ -41,8 +41,8 @@ export function navigateToCodeBlockInDirection(state: State, direction: Directio
 /**
  * Code block directional navigation effect.
  *
- * Enables navigation between code blocks using Command/Ctrl + Arrow keys.
- * When a code block is selected and the user presses Command + arrow key,
+ * Listens for navigateCodeBlock events to enable navigation between code blocks.
+ * When a navigateCodeBlock event is received with a direction,
  * this effect will:
  * - Find the closest code block in the specified direction
  * - Select that code block
@@ -54,35 +54,10 @@ export function navigateToCodeBlockInDirection(state: State, direction: Directio
  * @param events - The event dispatcher
  */
 export default function codeBlockNavigation(state: State, events: EventDispatcher): void {
-	const onKeydown = (event: InternalKeyboardEvent) => {
-		// Only handle Command/Ctrl + arrow key combinations
-		if (!event.metaKey) {
-			return;
-		}
-
-		// Map arrow keys to directions
-		let direction: Direction | null = null;
-		switch (event.key) {
-			case 'ArrowLeft':
-				direction = 'left';
-				break;
-			case 'ArrowRight':
-				direction = 'right';
-				break;
-			case 'ArrowUp':
-				direction = 'up';
-				break;
-			case 'ArrowDown':
-				direction = 'down';
-				break;
-			default:
-				// Not an arrow key, ignore
-				return;
-		}
-
-		navigateToCodeBlockInDirection(state, direction);
+	const onNavigateCodeBlock = (event: NavigateCodeBlockEvent) => {
+		navigateToCodeBlockInDirection(state, event.direction);
 	};
 
-	// Register the keyboard event handler
-	events.on<InternalKeyboardEvent>('keydown', onKeydown);
+	// Register the abstract navigation event handler
+	events.on<NavigateCodeBlockEvent>('navigateCodeBlock', onNavigateCodeBlock);
 }

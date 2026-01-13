@@ -1,19 +1,8 @@
 import { EventDispatcher } from '.';
 
-import type { State, InternalMouseEvent, InternalKeyboardEvent } from '@8f4e/editor-state';
+import type { State, InternalMouseEvent } from '@8f4e/editor-state';
 
-export default function humanInterface(element: HTMLElement, events: EventDispatcher, state: State) {
-	function onKeyboardEvents(event: KeyboardEvent) {
-		const { key, type, metaKey } = event;
-
-		event.preventDefault();
-
-		events.dispatch<InternalKeyboardEvent>(type, {
-			key,
-			metaKey,
-		});
-	}
-
+export default function pointerEvents(element: HTMLElement, events: EventDispatcher, state: State) {
 	let prevEvent = {
 		offsetX: 0,
 		offsetY: 0,
@@ -56,9 +45,6 @@ export default function humanInterface(element: HTMLElement, events: EventDispat
 			canvasHeight: element.clientHeight,
 		});
 	}
-
-	window.addEventListener('keyup', onKeyboardEvents);
-	window.addEventListener('keydown', onKeyboardEvents);
 
 	if (state.featureFlags.viewportDragging) {
 		window.addEventListener('wheel', onWheelEvents, { passive: false });
