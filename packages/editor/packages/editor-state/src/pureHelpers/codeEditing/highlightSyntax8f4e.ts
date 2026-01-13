@@ -198,25 +198,65 @@ if (import.meta.vitest) {
 	} as const;
 
 	describe('highlightSyntax8f4e', () => {
-		it('marks line numbers when present', () => {
-			const [line] = highlightSyntax8f4e(['10 add'], spriteLookups);
-			expect(line[0]).toBe('line');
-		});
+		it('highlights 8f4e code with instructions, comments, numbers, and binary literals', () => {
+			const code8f4e = [
+				'00 module audioout',
+				'01 ',
+				'02 float* in &saw.out',
+				'03 int channel LEFT_CHANNEL',
+				'04 ',
+				'05 ; Audio buffer',
+				'06 float[] buffer AUDIO_BUFFER_SIZE',
+				'07 int pointer &buffer',
+				'08 ',
+				'09 debug count',
+				'10 plot buffer -2 2',
+				'11 ',
+				'12 ; Store the input value',
+				'13 ; in the buffer',
+				'14 push pointer',
+				'15 push *in',
+				'16 store',
+				'17 ',
+				'18 ; Increment the buffer pointer',
+				'19 ; by the word size (4 bytes)',
+				'20 push &pointer',
+				'21 push pointer',
+				'22 push WORD_SIZE',
+				'23 add',
+				'24 store',
+				'25 ',
+				'26 ; Reset when reaching end',
+				'27 push pointer',
+				'28 push buffer&',
+				'29 greaterThan',
+				'30 if void',
+				'31   push &pointer',
+				'32   push &buffer',
+				'33   store',
+				'34 ifEnd',
+				'35 ',
+				'36 ; Binary flags',
+				'37 const 0b1010',
+				'38 const 0b1100',
+				'39 and',
+				'40 ',
+				'41 ; Hex values',
+				'42 push 0xff',
+				'43 push 0x100',
+				'44 mul',
+				'45 ',
+				'46 ; Conditional logic',
+				'47 localGet 0',
+				'48 push 10',
+				'49 lessThan',
+				'50 branchIfTrue',
+				'51 ',
+				'52 moduleEnd',
+			];
 
-		it('highlights instructions, comments, and numeric literals', () => {
-			const [line] = highlightSyntax8f4e(['add 10 ; comment'], spriteLookups);
-			expect(line[0]).toBe('instruction');
-			expect(line[3]).toBe('code');
-			expect(line[4]).toBe('number');
-			expect(line[7]).toBe('comment');
-		});
-
-		it('marks binary digits separately for zeros and ones', () => {
-			const [line] = highlightSyntax8f4e(['const 0b1010'], spriteLookups);
-			expect(line[8]).toBe('one');
-			expect(line[9]).toBe('zero');
-			expect(line[10]).toBe('one');
-			expect(line[11]).toBe('zero');
+			const result = highlightSyntax8f4e(code8f4e, spriteLookups);
+			expect(result).toMatchSnapshot();
 		});
 	});
 }
