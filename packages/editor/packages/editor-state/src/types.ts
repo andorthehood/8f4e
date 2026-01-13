@@ -10,6 +10,7 @@ import type {
 	CompiledFunctionLookup,
 } from '@8f4e/compiler';
 import type { CompileAndUpdateMemoryResult, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
+import type { Direction } from './pureHelpers/finders/findClosestCodeBlockInDirection';
 
 // Re-export MemoryAction for use by consumers
 export type { CompilerMemoryAction as MemoryAction };
@@ -82,6 +83,35 @@ export interface InternalMouseEvent {
 export interface InternalKeyboardEvent {
 	key: string;
 	metaKey: boolean;
+}
+
+// Abstract event payloads for keyboard actions
+// Direction type is imported from pureHelpers/finders/findClosestCodeBlockInDirection
+
+/**
+ * High-level event payload for navigating between code blocks.
+ * Typically dispatched in response to keyboard shortcuts that move focus
+ * to the nearest code block in the given direction.
+ */
+export interface NavigateCodeBlockEvent {
+	direction: Direction;
+}
+
+/**
+ * High-level event payload for moving the text caret within the current
+ * editable context. Usually dispatched for cursor movement keys (e.g. arrows).
+ */
+export interface MoveCaretEvent {
+	direction: Direction;
+}
+
+/**
+ * High-level event payload for inserting plain text at the current caret
+ * position. Dispatched for character input after keyboard handling has
+ * been normalized into a text string.
+ */
+export interface InsertTextEvent {
+	text: string;
 }
 
 // Type for runtime factory function

@@ -21,7 +21,6 @@ import exportWasm from './effects/exportWasm';
 import viewport from './effects/viewport';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
-import keyboardShortcuts from './effects/keyboardShortcuts';
 import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
 import shaderEffectsDeriver from './effects/shaders/shaderEffectsDeriver';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
@@ -62,7 +61,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	projectExport(store, events);
 	exportWasm(state, events);
 	binaryAsset(state, events);
-	keyboardShortcuts(state, events);
 	historyTracking(store, events);
 	events.dispatch('init');
 
@@ -120,6 +118,9 @@ export type {
 	EventDispatcher,
 	InternalMouseEvent,
 	InternalKeyboardEvent,
+	NavigateCodeBlockEvent,
+	MoveCaretEvent,
+	InsertTextEvent,
 	LogMessage,
 	ConsoleState,
 	CodeError,
