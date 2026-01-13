@@ -11,74 +11,58 @@ completed: null
 
 ## Problem Description
 
-The editor currently supports post-process effects, but there is no mechanism to apply visual effects only to the editor background. This limits visual experimentation and makes it harder to separate UI readability from stylistic background treatments.
+The glugglug engine supports post-process effects but has no background-only pipeline for procedural shaders. This blocks adding layered background visuals (e.g., plasma) while keeping sprite rendering and post-process behavior intact.
 
 ## Proposed Solution
 
-Introduce `backgroundEffects` analogous to `postProcessEffects`, but restricted to the background layer in the editor. This should:
-- Be defined alongside existing effect configuration and follow the same effect structure.
-- Apply only to the background render pass.
-- Leave code block rendering and UI overlays unaffected.
-Shader blocks for background effects will use dedicated markers: `backgroundVertexShader` / `backgroundFragmentShader`.
+Add a background effect pipeline inside glugglug that renders one or more full-screen quads before sprites, with procedural-only shaders and alpha blending enabled by default. The pipeline mirrors post-process conventions (effect list, enabled flag, uniform buffer mapping) while using its own buffer and fallback shader.
 
-Alternative: repurpose post-process effects with a flag for scope, but this risks cross-layer complexity and accidental UI impact.
+Alternative: reuse post-process effects with a scope flag, but that risks state coupling and unintended behavior across passes.
 
 ## Implementation Plan
 
-### Step 1: Define background effects data model and shader block scoping
-- Add a new `backgroundEffects` field in state and project types.
-- Extend block type detection to recognize `backgroundVertexShader` / `backgroundVertexShaderEnd` and
-  `backgroundFragmentShader` / `backgroundFragmentShaderEnd`.
-- Add background shader ID extractors mirroring the existing shader helpers.
-- Add tests for block type detection and effect derivation for background vs foreground.
+### Step 1: Add background effect types and manager
+- Define `BackgroundEffect` (name, vertex/fragment shaders, optional uniforms, enabled flag) aligned with post-process.
+- Implement `BackgroundEffectManager` with its own shared uniform buffer and fallback shader that outputs transparent pixels.
+- Provide standard uniforms `u_time` and `u_resolution`; no `u_renderTexture`.
 
-### Step 2: Rendering integration
-- Split rendering into two passes: background-only to texture with background effects, then foreground/UI directly to canvas.
-- Keep existing post-process effects behavior for the full-scene path unless explicitly replaced.
-- Update the WebGL renderer/engine to support a background-only post-process pipeline.
+### Step 2: Render pipeline integration
+- In `Renderer.renderWithPostProcessing`, render background effects after `startRenderToTexture()` and before sprite draws.
+- In `CachedRenderer.renderWithPostProcessing`, render background effects before the segment draw loop.
+- Keep alpha blending enabled for background effects by default; no per-effect blending config.
 
-### Step 3: Editor configuration and serialization
-- Support loading/saving background effects in project data (if not derived).
-- Add tests covering effect extraction, loading, and rendering behavior.
+### Step 3: Public API surface
+- Add engine/renderer methods: `addBackgroundEffect`, `removeBackgroundEffect`, `removeAllBackgroundEffects`, `updateBackgroundUniforms`, `setBackgroundEffectEnabled`, `getBackgroundBuffer`.
+- Export `BackgroundEffect` (and manager if desired) from glugglug index.
 
 ## Success Criteria
 
-- [ ] Background effects render without impacting code blocks or overlays.
-- [ ] Projects persist background effects across save/load (if persisted).
-- [ ] Post-process effects continue to behave as before.
-- [ ] Tests validate effect scoping and serialization.
+- [ ] Background effects render before sprites and appear behind them.
+- [ ] Multiple background effects layer via alpha blending.
+- [ ] Fallback path renders a fully transparent background when no effects are enabled.
+- [ ] Post-process effects remain unchanged.
 
 ## Affected Components
 
-- `packages/editor/packages/editor-state/src/types.ts` - Add background effects types/state.
-- `packages/editor/packages/editor-state/src/pureHelpers/shaderEffects/derivePostProcessEffects.ts` - Consider shared helpers or parallel logic.
-- `packages/editor/packages/editor-state/src/pureHelpers/shaderUtils/getBlockType.ts` - Extend for background shader blocks.
-- `packages/editor/packages/editor-state/src/pureHelpers/shaderUtils/getBackgroundVertexShaderId.ts` - Add.
-- `packages/editor/packages/editor-state/src/pureHelpers/shaderUtils/getBackgroundFragmentShaderId.ts` - Add.
-- `packages/editor/packages/web-ui/src/drawers/drawBackground.ts` - Apply background-only effects.
-- `packages/editor/packages/web-ui/src/index.ts` - Split rendering passes.
-- `packages/editor/packages/glugglug/src/engine.ts` - Add background-only post-process pathway.
-- `packages/editor/packages/glugglug/src/renderer.ts` - Add separate render-to-texture for background.
-- `packages/editor/packages/editor-state/src/pureHelpers/projectSerializing/serializeToProject.ts` - Persist background effects.
-- `packages/editor/packages/editor-state/src/pureHelpers/projectSerializing/serializeToRuntimeReadyProject.ts` - Persist background effects for runtime-ready exports.
+- `packages/editor/packages/glugglug/src/background/BackgroundEffectManager.ts` - New background effect pipeline.
+- `packages/editor/packages/glugglug/src/types/postProcess.ts` or new `packages/editor/packages/glugglug/src/types/background.ts` - Background effect types.
+- `packages/editor/packages/glugglug/src/renderer.ts` - Background render pass integration.
+- `packages/editor/packages/glugglug/src/CachedRenderer.ts` - Background render pass integration for cached rendering.
+- `packages/editor/packages/glugglug/src/engine.ts` - Public API methods for background effects.
+- `packages/editor/packages/glugglug/src/index.ts` - Export background effect types/manager.
 
 ## Risks & Considerations
 
-- **Layer separation**: Current renderer applies post-processing to the full scene; background-only effects require a new render pass.
-- **Performance**: Background effects should not add significant cost to the main render loop.
-- **Compatibility**: Existing post-process effects should remain unaffected.
-- **Design clarity**: Background shader blocks must be clearly named in menus to avoid confusion with foreground effects.
+- **State restoration**: Background rendering must restore shader attributes/state for sprite rendering.
+- **Performance**: Additional fullscreen passes per background effect.
+- **Compatibility**: Keep post-process pipeline unchanged.
 
 ## Related Items
 
-- **Related**: `docs/todos/156-add-glsl-shader-code-blocks.md`
-- **Related**: `docs/todos/157-add-comment-code-blocks.md`
-
-## References
-
-- `packages/editor/packages/web-ui/src/drawers/drawBackground.ts`
-- `packages/editor/packages/editor-state/src/effects/shaders/shaderEffectsDeriver.ts`
+- **Related**: `docs/todos/155-glugglug-framebuffer-memory-accounting.md`
+- **Related**: `docs/todos/166-default-post-process-vertex-shader.md`
 
 ## Notes
 
-- Background effects are derived from `backgroundVertexShader` / `backgroundFragmentShader` blocks.
+- Procedural-only: background shaders do not sample textures.
+- Alpha blending is enabled by default for background effects.
