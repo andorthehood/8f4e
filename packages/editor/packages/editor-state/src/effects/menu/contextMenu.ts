@@ -125,13 +125,13 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 	};
 
 	const onOpenSubMenu = async (event: MenuEvent) => {
-		const { menu } = event;
-		state.graphicHelper.contextMenu.menuStack.push(menu);
+		const { menu, ...payload } = event;
+		state.graphicHelper.contextMenu.menuStack.push({ menu, payload });
 		state.graphicHelper.contextMenu.items = decorateMenu([
 			{ title: '< Back', action: 'menuBack' },
-			...(await (menus as Record<string, (state: State, event: MenuEvent) => Promise<ContextMenuItem[]>>)[menu](
+			...(await (menus as Record<string, (state: State, payload?: unknown) => Promise<ContextMenuItem[]>>)[menu](
 				state,
-				event
+				payload
 			)),
 		]);
 		state.graphicHelper.contextMenu.itemWidth =
@@ -140,18 +140,22 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 
 	const onMenuBack = async () => {
 		state.graphicHelper.contextMenu.menuStack.pop();
-		const menu = state.graphicHelper.contextMenu.menuStack.pop();
+		const entry = state.graphicHelper.contextMenu.menuStack.pop();
 
-		if (!menu) {
+		if (!entry) {
 			state.graphicHelper.contextMenu.items = decorateMenu(await menus.mainMenu(state));
 			state.graphicHelper.contextMenu.itemWidth =
 				getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
 			return;
 		}
 
+		const { menu, payload } = entry;
 		state.graphicHelper.contextMenu.items = decorateMenu([
 			{ title: '< Back', action: 'menuBack' },
-			...(menus as Record<string, (state: State) => ContextMenuItem[]>)[menu](state),
+			...(await (menus as Record<string, (state: State, payload?: unknown) => Promise<ContextMenuItem[]>>)[menu](
+				state,
+				payload
+			)),
 		]);
 		state.graphicHelper.contextMenu.itemWidth =
 			getLongestMenuItem(state.graphicHelper.contextMenu.items) * state.graphicHelper.viewport.vGrid;
