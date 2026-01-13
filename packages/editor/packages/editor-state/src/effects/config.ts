@@ -4,7 +4,7 @@ import { log } from '../impureHelpers/logger/logger';
 import isPlainObject from '../pureHelpers/isPlainObject';
 import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
-import configSchema from '../configSchema';
+import configSchema, { getConfigSchema } from '../configSchema';
 import { defaultConfig } from '../pureHelpers/state/createDefaultState';
 
 import type { CodeError, EventDispatcher, State, ConfigObject } from '../types';
@@ -18,14 +18,18 @@ interface ConfigBuildResult {
 
 async function buildConfigFromBlocks(
 	configBlocks: ConfigBlockSource[],
-	compileConfig: CompileConfigFn
+	compileConfig: CompileConfigFn,
+	state: State
 ): Promise<ConfigBuildResult> {
 	let mergedConfig: Record<string, unknown> = {};
 	const errors: CodeError[] = [];
 
+	// Use runtime registry schema if available, otherwise use default
+	const schema = state.runtimeRegistry ? getConfigSchema(state.runtimeRegistry) : configSchema;
+
 	for (const { block, source } of configBlocks) {
 		try {
-			const result = await compileConfig(source, configSchema);
+			const result = await compileConfig(source, schema);
 
 			if (result.errors.length > 0) {
 				const blockErrors: CodeError[] = result.errors.map(error => ({
@@ -83,7 +87,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 			return;
 		}
 
-		const { mergedConfig, errors } = await buildConfigFromBlocks(configBlocks, state.callbacks.compileConfig);
+		const { mergedConfig, errors } = await buildConfigFromBlocks(configBlocks, state.callbacks.compileConfig, state);
 
 		console.log(`[Config] Config loaded:`, mergedConfig);
 		log(state, `Config loaded with ${errors.length} error(s).`, 'Config');
@@ -128,7 +132,7 @@ export async function compileConfigForExport(state: State): Promise<ConfigObject
 	}
 
 	// Compile each config block independently and merge results
-	const { mergedConfig } = await buildConfigFromBlocks(configBlocks, compileConfig);
+	const { mergedConfig } = await buildConfigFromBlocks(configBlocks, compileConfig, state);
 
 	return deepMergeConfig(defaultConfig as unknown as Record<string, unknown>, mergedConfig) as unknown as ConfigObject;
 }
