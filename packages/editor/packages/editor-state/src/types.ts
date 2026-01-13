@@ -631,6 +631,8 @@ export interface ConfigSchema {
 	required?: readonly string[];
 	items?: ConfigSchema;
 	additionalProperties?: boolean | ConfigSchema;
+	oneOf?: readonly ConfigSchema[];
+	anyOf?: readonly ConfigSchema[];
 }
 
 /**
