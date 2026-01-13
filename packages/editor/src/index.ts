@@ -18,7 +18,6 @@ export type {
 	CompilationResult,
 	CodeBlockGraphicData,
 	RuntimeFactory,
-	RuntimeType,
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
 	FeatureFlags,

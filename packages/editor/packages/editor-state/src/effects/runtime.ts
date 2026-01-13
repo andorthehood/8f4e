@@ -5,7 +5,7 @@ import { log, error } from '../impureHelpers/logger/logger';
 import type { State, EventDispatcher } from '../types';
 
 // Re-export types for convenience
-export type { RuntimeFactory, RuntimeType } from '../types';
+export type { RuntimeFactory } from '../types';
 
 export default async function runtime(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
