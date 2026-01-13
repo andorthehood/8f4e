@@ -40,7 +40,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 170 | Toggle Post-Process Effects via Function Key | 🟡 | 1-2h | 2026-01-13 | Add a runtime toggle event and host key binding to disable post-process effects |
 | 172 | Decouple Line Numbers from Syntax Highlighting | 🟡 | 2-4h | 2026-01-13 | Pass raw code to syntax highlighters and color line numbers in a separate pass |
 | 173 | Add Scoped Constants to Stack Config Compiler | 🟡 | 1-2d | 2026-01-13 | Add scoped `const` command and constant-aware `push` for config blocks |
-| 174 | Runtime Registry for Configurable Runtime Schemas | 🟡 | 3-5d | 2026-01-13 | Define runtime registry and default runtime id to generate conditional schemas and decouple runtime loading |
 | 002 | Enable Strict TypeScript in Editor Package | 🟡 | 2-3d | 2025-08-23 | Currently has 52 type errors when strict settings enabled, causing missing null checks and implicit any types that reduce type safety and developer experience |
 | 025 | Separate Editor View Layer into Standalone Package | 🟡 | 3-5d | 2025-08-26 | Extract Canvas-based rendering and sprite management into `@8f4e/browser-view` package to make core editor a pure state machine compatible with any renderer |
 | 026 | Separate Editor User Interactions into Standalone Package | 🟡 | 2-3d | 2025-08-26 | Extract DOM event handling and input logic into `@8f4e/browser-input` package to enable alternative input systems (touch, joystick, terminal) |
@@ -83,6 +82,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 174 | Runtime Registry for Configurable Runtime Schemas | 🟡 | 3-5d | 2026-01-13 | Implemented runtime registry system with configurable schemas; added RuntimeRegistry and RuntimeRegistryEntry types; updated config schema generation to use registry; runtime effect now supports registry-based loading with fallback to defaultRuntimeId; created runtime registry in app layer with all four runtimes; all 460 tests passing |
 | 171 | Add Conditional Schema Support to Stack Config Compiler | 🟡 | 2-4d | 2026-01-13 | Extended schema subset with oneOf/anyOf to validate runtime-specific config during compile; implemented post-compilation validation for discriminated unions and overlapping types |
 | 165 | Add clipboard callbacks to editor-state | 🟡 | 2-4h | 2026-01-08 | Introduced `readClipboardText` and `writeClipboardText` callbacks to make editor-state portable; disabled clipboard menu items when callbacks are missing; added comprehensive tests; all navigator.clipboard calls now in editor package only |
 | 163 | Web-UI Memory Ref Init And Views | 🟡 | 2-3d | 2026-01-07 | Moved web-ui memory access to a stable ref passed into init, creating int/float views internally and threading them into memory-dependent drawers; decoupled render layer from compiler state |
