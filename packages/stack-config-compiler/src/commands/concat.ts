@@ -22,56 +22,61 @@ if (import.meta.vitest) {
 
 	describe('executeConcat', () => {
 		it('should concatenate two strings', () => {
-			const state: VMState = { config: {}, dataStack: ['foo', 'bar'], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: ['foo', 'bar'], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeConcat(state);
 			expect(result).toBeNull();
 			expect(state.dataStack).toEqual(['foobar']);
 		});
 
 		it('should concatenate three or more values', () => {
-			const state: VMState = { config: {}, dataStack: ['a', 'b', 'c'], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: ['a', 'b', 'c'], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeConcat(state);
 			expect(result).toBeNull();
 			expect(state.dataStack).toEqual(['abc']);
 		});
 
 		it('should coerce numbers to strings', () => {
-			const state: VMState = { config: {}, dataStack: ['foo', 123], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: ['foo', 123], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeConcat(state);
 			expect(result).toBeNull();
 			expect(state.dataStack).toEqual(['foo123']);
 		});
 
 		it('should coerce booleans to strings', () => {
-			const state: VMState = { config: {}, dataStack: ['value:', true], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: ['value:', true], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeConcat(state);
 			expect(result).toBeNull();
 			expect(state.dataStack).toEqual(['value:true']);
 		});
 
 		it('should coerce null to string', () => {
-			const state: VMState = { config: {}, dataStack: ['is', null], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: ['is', null], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeConcat(state);
 			expect(result).toBeNull();
 			expect(state.dataStack).toEqual(['isnull']);
 		});
 
 		it('should handle single value on stack', () => {
-			const state: VMState = { config: {}, dataStack: ['only'], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: ['only'], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeConcat(state);
 			expect(result).toBeNull();
 			expect(state.dataStack).toEqual(['only']);
 		});
 
 		it('should return error for empty stack', () => {
-			const state: VMState = { config: {}, dataStack: [], scopeStack: [] };
+			const state: VMState = { config: {}, dataStack: [], scopeStack: [], constantsStack: [new Map()] };
 			const result = executeConcat(state);
 			expect(result).toBe('Cannot concat: data stack is empty');
 			expect(state.dataStack).toEqual([]);
 		});
 
 		it('should coerce mixed types to strings', () => {
-			const state: VMState = { config: {}, dataStack: ['foo', 'bar', 123, true, null], scopeStack: [] };
+			const state: VMState = {
+				config: {},
+				dataStack: ['foo', 'bar', 123, true, null],
+				scopeStack: [],
+				constantsStack: [new Map()],
+			};
 			const result = executeConcat(state);
 			expect(result).toBeNull();
 			expect(state.dataStack).toEqual(['foobar123truenull']);
