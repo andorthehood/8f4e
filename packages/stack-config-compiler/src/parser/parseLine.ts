@@ -14,6 +14,7 @@ const VALID_COMMANDS = new Set<CommandType>([
 	'rescope',
 	'rescopeSuffix',
 	'popScope',
+	'const',
 ]);
 
 /**
@@ -85,8 +86,36 @@ export default function parseLine(line: string, lineNumber: number): Command | C
 			}
 			const literal = parseLiteral(argument);
 			if (typeof literal === 'object' && literal !== null && 'error' in literal) {
+				// Try parsing as identifier (uppercase only)
+				if (/^[A-Z][A-Z0-9_]*$/.test(argument)) {
+					command.identifier = argument;
+				} else {
+					return { line: lineNumber, message: literal.error };
+				}
+			} else {
+				command.argument = literal;
+			}
+			break;
+		}
+
+		case 'const': {
+			if (!argument) {
+				return { line: lineNumber, message: 'const requires a name and literal argument' };
+			}
+			// Parse "NAME <literal>" format
+			const constMatch = argument.match(/^([A-Z][A-Z0-9_]*)\s+(.+)$/);
+			if (!constMatch) {
+				return {
+					line: lineNumber,
+					message: 'const requires uppercase name followed by literal (e.g., const MAX_VALUE 100)',
+				};
+			}
+			const [, name, literalStr] = constMatch;
+			const literal = parseLiteral(literalStr);
+			if (typeof literal === 'object' && literal !== null && 'error' in literal) {
 				return { line: lineNumber, message: literal.error };
 			}
+			command.identifier = name;
 			command.argument = literal;
 			break;
 		}
@@ -268,6 +297,78 @@ if (import.meta.vitest) {
 		it('should parse concat command with trailing comment', () => {
 			expect(parseLine('concat ; concatenate stack values', 1)).toEqual({
 				type: 'concat',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse const command with string literal', () => {
+			expect(parseLine('const BASE_PATH "/var/lib"', 1)).toEqual({
+				type: 'const',
+				identifier: 'BASE_PATH',
+				argument: '/var/lib',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse const command with number', () => {
+			expect(parseLine('const MAX_COUNT 100', 1)).toEqual({
+				type: 'const',
+				identifier: 'MAX_COUNT',
+				argument: 100,
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse const command with boolean', () => {
+			expect(parseLine('const ENABLED true', 1)).toEqual({
+				type: 'const',
+				identifier: 'ENABLED',
+				argument: true,
+				lineNumber: 1,
+			});
+		});
+
+		it('should return error for const without argument', () => {
+			expect(parseLine('const', 1)).toEqual({
+				line: 1,
+				message: 'const requires a name and literal argument',
+			});
+		});
+
+		it('should return error for const with lowercase name', () => {
+			expect(parseLine('const myVar 100', 1)).toEqual({
+				line: 1,
+				message: 'const requires uppercase name followed by literal (e.g., const MAX_VALUE 100)',
+			});
+		});
+
+		it('should return error for const with invalid literal', () => {
+			expect(parseLine('const NAME invalid', 1)).toEqual({
+				line: 1,
+				message: 'Invalid literal: invalid',
+			});
+		});
+
+		it('should parse push with identifier', () => {
+			expect(parseLine('push MAX_VALUE', 1)).toEqual({
+				type: 'push',
+				identifier: 'MAX_VALUE',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse push with underscore in identifier', () => {
+			expect(parseLine('push BASE_PATH', 1)).toEqual({
+				type: 'push',
+				identifier: 'BASE_PATH',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse push with number in identifier', () => {
+			expect(parseLine('push VALUE1', 1)).toEqual({
+				type: 'push',
+				identifier: 'VALUE1',
 				lineNumber: 1,
 			});
 		});
