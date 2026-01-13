@@ -19,8 +19,11 @@ export type {
 	CodeBlockGraphicData,
 	RuntimeFactory,
 	RuntimeType,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
 	FeatureFlags,
 	FeatureFlagsConfig,
+	JSONSchemaLike,
 } from '@8f4e/editor-state';
 export type { EventDispatcher } from './events';
 export type { MemoryRef } from './memoryViewManager';
@@ -39,6 +42,8 @@ export interface Editor {
 interface Options {
 	featureFlags?: Partial<State['featureFlags']>;
 	callbacks: Omit<Callbacks, 'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText'>;
+	runtimeRegistry?: import('@8f4e/editor-state').RuntimeRegistry;
+	defaultRuntimeId?: string;
 }
 
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
@@ -46,6 +51,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const events = initEvents();
 	const store = initState(events, {
 		...options,
+		runtimeRegistry: options.runtimeRegistry,
+		defaultRuntimeId: options.defaultRuntimeId,
 		callbacks: {
 			...options.callbacks,
 			getWordFromMemory: (wordAlignedAddress: number) => {
