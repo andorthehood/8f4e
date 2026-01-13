@@ -1,6 +1,6 @@
 import { buildCategoryTree, getNodeAtPath, nodeToMenuItems } from './categoryTree';
 
-import type { CodeBlockGraphicData, MenuGenerator, ContextMenuItem } from '../../types';
+import type { CodeBlockGraphicData, MenuGenerator } from '../../types';
 import type { CategoryItem } from './categoryTree';
 
 export const mainMenu: MenuGenerator = state => [
@@ -199,26 +199,6 @@ export const moduleCategoriesMenu: MenuGenerator = async (state, payload = {}) =
 	}
 
 	return nodeToMenuItems(node, path, 'moduleCategoriesMenu', 'addCodeBlockBySlug', 'codeBlockSlug');
-};
-
-export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
-	const { category } = payload as { category: string };
-	if (!state.callbacks.getListOfModules || !state.callbacks.getModule) {
-		return [];
-	}
-	const modules = await state.callbacks.getListOfModules();
-	const filteredModules = modules.filter(module => module.category === category);
-
-	const menuItems: ContextMenuItem[] = [];
-	for (const moduleMetadata of filteredModules) {
-		menuItems.push({
-			title: moduleMetadata.title,
-			action: 'addCodeBlockBySlug',
-			payload: { codeBlockSlug: moduleMetadata.slug },
-			close: true,
-		});
-	}
-	return menuItems;
 };
 
 export const editorSettingsMenu: MenuGenerator = state => [
