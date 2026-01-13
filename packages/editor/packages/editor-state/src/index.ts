@@ -25,7 +25,7 @@ import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
 import shaderEffectsDeriver from './effects/shaders/shaderEffectsDeriver';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 
-import type { Options, State, EventDispatcher } from './types';
+import type { Options, State, EventDispatcher, Runtimes } from './types';
 
 // Function to create default state
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
@@ -43,10 +43,12 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	// If runtime registry is provided, update default config to use registry defaults
 	if (options.runtimeRegistry && options.defaultRuntimeId) {
 		const registryEntry = options.runtimeRegistry[options.defaultRuntimeId];
-		if (registryEntry) {
+		if (registryEntry && registryEntry.defaults) {
+			// Type assertion is safe here because registry entries are expected to have
+			// defaults that match the Runtimes union type structure
 			baseState.compiledConfig = {
 				...baseState.compiledConfig,
-				runtimeSettings: [registryEntry.defaults as never],
+				runtimeSettings: [registryEntry.defaults as unknown as Runtimes],
 			};
 		}
 	}
