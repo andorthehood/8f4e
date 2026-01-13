@@ -21,7 +21,8 @@ export type CommandType =
 	| 'rescopeTop'
 	| 'rescope'
 	| 'rescopeSuffix'
-	| 'popScope';
+	| 'popScope'
+	| 'const';
 
 /**
  * An internal representation of a parsed command
@@ -30,6 +31,7 @@ export interface Command {
 	type: CommandType;
 	argument?: Literal; // For push: literal value
 	pathSegments?: string[]; // For scope commands: pre-parsed path segments
+	identifier?: string; // For const: constant name; For push: constant reference
 	lineNumber: number;
 }
 
@@ -75,6 +77,8 @@ export interface VMState {
 	config: Record<string, unknown>;
 	dataStack: Literal[];
 	scopeStack: string[];
+	/** Stack of constant maps, parallel to scope stack */
+	constantsStack: Map<string, Literal>[];
 	/** Schema node tree for validation (if schema provided) */
 	schemaRoot?: SchemaNode;
 	/** Set of paths that have been written to (for required field tracking) */
