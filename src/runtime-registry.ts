@@ -1,15 +1,69 @@
-import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
-import type { RuntimeRegistry } from './types';
+import { webWorkerLogicRuntime } from './runtime-web-worker-logic-factory';
+import { mainThreadLogicRuntime } from './runtime-main-thread-logic-factory';
+import { audioWorkletRuntime } from './runtime-audio-worklet-factory';
+import { webWorkerMIDIRuntime } from './runtime-web-worker-midi-factory';
+
+import type { RuntimeRegistry, JSONSchemaLike } from '@8f4e/editor';
 
 /**
- * Default runtime settings schema for backward compatibility.
- * Used when no runtime registry is provided.
+ * Default runtime ID for the application.
+ * This is used as the fallback when no runtime is specified or when an unknown runtime is requested.
  */
-const defaultRuntimeSettingsSchema: JSONSchemaLike = {
-	type: 'object',
-	oneOf: [
-		{
-			// AudioWorkletRuntime - only this runtime can use audio buffers
+export const DEFAULT_RUNTIME_ID = 'WebWorkerLogicRuntime';
+
+/**
+ * Runtime registry for the application.
+ * Maps runtime IDs to their configuration entries including defaults, schemas, and factory functions.
+ */
+export const runtimeRegistry: RuntimeRegistry = {
+	WebWorkerLogicRuntime: {
+		id: 'WebWorkerLogicRuntime',
+		defaults: {
+			runtime: 'WebWorkerLogicRuntime',
+			sampleRate: 50,
+		},
+		schema: {
+			type: 'object',
+			properties: {
+				runtime: {
+					type: 'string',
+					enum: ['WebWorkerLogicRuntime'],
+				},
+				sampleRate: { type: 'number' },
+			},
+			required: ['runtime'],
+			additionalProperties: false,
+		} as JSONSchemaLike,
+		factory: webWorkerLogicRuntime,
+	},
+	MainThreadLogicRuntime: {
+		id: 'MainThreadLogicRuntime',
+		defaults: {
+			runtime: 'MainThreadLogicRuntime',
+			sampleRate: 50,
+		},
+		schema: {
+			type: 'object',
+			properties: {
+				runtime: {
+					type: 'string',
+					enum: ['MainThreadLogicRuntime'],
+				},
+				sampleRate: { type: 'number' },
+			},
+			required: ['runtime'],
+			additionalProperties: false,
+		} as JSONSchemaLike,
+		factory: mainThreadLogicRuntime,
+	},
+	AudioWorkletRuntime: {
+		id: 'AudioWorkletRuntime',
+		defaults: {
+			runtime: 'AudioWorkletRuntime',
+			sampleRate: 44100,
+		},
+		schema: {
+			type: 'object',
 			properties: {
 				runtime: {
 					type: 'string',
@@ -43,9 +97,17 @@ const defaultRuntimeSettingsSchema: JSONSchemaLike = {
 			},
 			required: ['runtime'],
 			additionalProperties: false,
+		} as JSONSchemaLike,
+		factory: audioWorkletRuntime,
+	},
+	WebWorkerMIDIRuntime: {
+		id: 'WebWorkerMIDIRuntime',
+		defaults: {
+			runtime: 'WebWorkerMIDIRuntime',
+			sampleRate: 50,
 		},
-		{
-			// WebWorkerMIDIRuntime - only this runtime can use MIDI fields
+		schema: {
+			type: 'object',
 			properties: {
 				runtime: {
 					type: 'string',
@@ -111,77 +173,7 @@ const defaultRuntimeSettingsSchema: JSONSchemaLike = {
 			},
 			required: ['runtime'],
 			additionalProperties: false,
-		},
-		{
-			// WebWorkerLogicRuntime and MainThreadLogicRuntime - no audio or MIDI buffers
-			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['WebWorkerLogicRuntime', 'MainThreadLogicRuntime'],
-				},
-				sampleRate: { type: 'number' },
-			},
-			required: ['runtime'],
-			additionalProperties: false,
-		},
-	],
+		} as JSONSchemaLike,
+		factory: webWorkerMIDIRuntime,
+	},
 };
-
-/**
- * Generates a runtime settings schema from a runtime registry.
- * Creates a discriminated union using oneOf based on the runtime field.
- */
-function generateRuntimeSettingsSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLike {
-	const oneOfBranches = Object.values(runtimeRegistry).map(entry => {
-		// Ensure the schema has the runtime discriminator
-		const schema = { ...entry.schema };
-		if (schema.type === 'object' && schema.properties) {
-			schema.properties = {
-				...schema.properties,
-				runtime: {
-					type: 'string',
-					enum: [entry.id],
-				},
-			};
-		}
-		return schema;
-	});
-
-	return {
-		type: 'object',
-		oneOf: oneOfBranches,
-	};
-}
-
-/**
- * Generates the config schema, optionally using a runtime registry.
- * If a runtime registry is provided, generates runtime settings schema from the registry.
- * Otherwise, uses the default hardcoded runtime settings schema.
- */
-export function getConfigSchema(runtimeRegistry?: RuntimeRegistry): JSONSchemaLike {
-	const runtimeSettingsSchema = runtimeRegistry
-		? generateRuntimeSettingsSchema(runtimeRegistry)
-		: defaultRuntimeSettingsSchema;
-
-	return {
-		type: 'object',
-		properties: {
-			memorySizeBytes: { type: 'number' },
-			selectedRuntime: { type: 'number' },
-			runtimeSettings: {
-				type: 'array',
-				items: runtimeSettingsSchema,
-			},
-			disableAutoCompilation: { type: 'boolean' },
-		},
-		additionalProperties: false,
-	};
-}
-
-/**
- * Default config schema for backward compatibility.
- * @deprecated Use getConfigSchema() instead to support runtime registry
- */
-const configSchema: JSONSchemaLike = getConfigSchema();
-
-export default configSchema;
