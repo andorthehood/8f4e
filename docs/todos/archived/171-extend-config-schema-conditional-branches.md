@@ -3,8 +3,8 @@ title: 'TODO: Add Conditional Schema Support to Stack Config Compiler'
 priority: Medium
 effort: 2-4d
 created: 2026-01-13
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-13
 ---
 
 # TODO: Add Conditional Schema Support to Stack Config Compiler
