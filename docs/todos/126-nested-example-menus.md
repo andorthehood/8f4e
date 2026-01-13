@@ -22,26 +22,41 @@ Example modules and projects are surfaced in the editor menu as a single-level c
 
 ## Implementation Plan
 
-### Step 1: Extend metadata types and populate categories
-- Add `category: string` to `ProjectMetadata`; ensure `ModuleMetadata` continues to use the same field.
-- Update `src/examples/modules/index.ts` and `src/examples/projects/index.ts` entries to use slash-delimited categories where grouping is desired.
-- Decide on defaults for missing categories (e.g., `Uncategorized`).
+### Step 1: Extend metadata types and normalize categories
+- Add required `category: string` to `ProjectMetadata`; keep required `ModuleMetadata.category`.
+- Assign categories for `src/examples/projects/index.ts` (see suggested grouping below).
+- Define a minimal normalization rule for category input (split on `/`, trim whitespace only).
 
-### Step 2: Build reusable category tree helper
-- Create a small utility to transform a list of `{ category, title, slug }` into a nested tree based on `category.split('/')`, preserving order and labels.
-- Include alpha sorting and filtering to avoid empty nodes.
+### Step 2: Build a reusable category tree + menu builder
+- Create a helper that takes items shaped like `{ title, slug, category }`, normalizes the category path, and builds a tree of nodes + leaves.
+- Sort category nodes and leaves alphabetically by their display label (deterministic ordering).
+- Provide a small utility to turn a tree node into `ContextMenuItem[]` for a given node path.
 
-### Step 3: Refactor module menus to use tree
-- In `packages/editor/packages/editor-state/src/effects/menu/menus.ts`, replace flat `moduleCategoriesMenu`/`builtInModuleMenu` generation with nested menus driven by the tree helper.
-- Use submenu payloads to navigate nodes; leaf items add the module via slug.
+### Step 3: Make submenu navigation payload-aware
+- Update `ContextMenu.menuStack` to store `{ menu, payload }` instead of only `menu` so nested levels can restore the correct parent state.
+- Store only the minimal payload needed for menu reconstruction (avoid storing click coordinates).
+- Update `openSubMenu` to push `{ menu, payload }` and update `menuBack` to pop and reopen the previous menu with its stored payload.
+- Ensure `menuBack` awaits menu generators so async menus remain consistent.
 
-### Step 4: Add nested project menu
-- Introduce a `projectCategoriesMenu`/`projectMenu` variant that groups projects by category path with the same tree helper.
-- Ensure the main menu opens the project submenu that supports nesting.
+### Step 4: Refactor module menus to use tree
+- Replace `moduleCategoriesMenu`/`builtInModuleMenu` with a single tree-driven menu that accepts a payload `{ path?: string[] }`.
+- Use `openSubMenu` items for category nodes and `addCodeBlockBySlug` for leaf modules.
 
-### Step 5: Testing and validation
-- Add/adjust unit tests around the tree helper and menu generation (vitest) to cover nested and flat cases, missing categories, and sorting.
-- Manual check in the editor menu that nested categories show up and modules/projects can be added/loaded correctly.
+### Step 5: Add nested project menu
+- Replace `projectMenu` with a tree-driven menu using the same helper and payload shape.
+- Update the main menu to open the new project menu (top-level path).
+
+### Step 6: Testing and validation
+- Add/adjust unit tests for the category tree helper (nested + flat, missing category, sorting).
+- Add tests for menu generation + menuBack payload restoration (modules + projects).
+- Manual check in the editor menu that nested categories render and modules/projects load as expected.
+
+### Suggested project categories
+- Audio: `audioBuffer`, `audioLoopback`
+- MIDI: `midiArpeggiator`, `midiArpeggiator2`, `midiBreakBeat`, `midiBreakBreak2dSequencer`
+- Synthesis: `bistableMultivibrators`, `ericSaiteGenerator`, `randomGenerators`, `randomNoteGenerator`, `simpleCounterMainThread`
+- Visuals: `dancingWithTheSineLT`, `neuralNetwork`, `rippleEffect`
+- Misc: `standaloneProject`
 
 ## Success Criteria
 
