@@ -1,5 +1,30 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`compileConfig > const command > should error on same-scope redefinition 1`] = `
+[
+  {
+    "kind": "exec",
+    "line": 3,
+    "message": "Cannot redefine constant "NAME" in the same scope",
+  },
+]
+`;
+
+exports[`compileConfig > const command > should error on unknown constant 1`] = `
+[
+  {
+    "kind": "exec",
+    "line": 3,
+    "message": "Unknown constant: UNKNOWN",
+  },
+  {
+    "kind": "exec",
+    "line": 4,
+    "message": "Cannot set: data stack is empty",
+  },
+]
+`;
+
 exports[`compileConfig > should compile a comprehensive example covering all features 1`] = `
 {
   "channels": [
