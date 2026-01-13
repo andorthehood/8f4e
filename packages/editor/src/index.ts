@@ -3,8 +3,8 @@ import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
 import initEvents from './events';
-import humanInterface from './events/humanInterface';
-import keyboardShortcuts from './keyboardShortcuts';
+import pointerEvents from './events/pointerEvents';
+import keyboardEvents from './events/keyboardEvents';
 import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
@@ -62,8 +62,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 	});
 	const state = store.getState();
-	humanInterface(canvas, events, state);
-	keyboardShortcuts(events);
+	pointerEvents(canvas, events, state);
+	keyboardEvents(events);
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = generateSprite({

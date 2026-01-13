@@ -2,7 +2,7 @@ import { EventDispatcher } from '.';
 
 import type { State, InternalMouseEvent } from '@8f4e/editor-state';
 
-export default function humanInterface(element: HTMLElement, events: EventDispatcher, state: State) {
+export default function pointerEvents(element: HTMLElement, events: EventDispatcher, state: State) {
 	let prevEvent = {
 		offsetX: 0,
 		offsetY: 0,
