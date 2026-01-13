@@ -1,31 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`compileConfig > const command > should error on same-scope redefinition 1`] = `
-[
-  {
-    "kind": "exec",
-    "line": 3,
-    "message": "Cannot redefine constant "NAME" in the same scope",
-  },
-]
-`;
-
-exports[`compileConfig > const command > should error on unknown constant 1`] = `
-[
-  {
-    "kind": "exec",
-    "line": 3,
-    "message": "Unknown constant: UNKNOWN",
-  },
-  {
-    "kind": "exec",
-    "line": 4,
-    "message": "Cannot set: data stack is empty",
-  },
-]
-`;
-
-exports[`compileConfig > should compile a comprehensive example covering all features 1`] = `
+exports[`compileConfig - basic compilation > should compile a comprehensive example covering all features 1`] = `
 {
   "channels": [
     "left",
@@ -96,7 +71,7 @@ line2	tabbed",
 }
 `;
 
-exports[`compileConfig > should return error for append to non-array 1`] = `
+exports[`compileConfig - basic compilation > should return error for append to non-array 1`] = `
 [
   {
     "kind": "exec",
@@ -106,22 +81,7 @@ exports[`compileConfig > should return error for append to non-array 1`] = `
 ]
 `;
 
-exports[`compileConfig > should return error for concat on empty stack 1`] = `
-[
-  {
-    "kind": "exec",
-    "line": 3,
-    "message": "Cannot concat: data stack is empty",
-  },
-  {
-    "kind": "exec",
-    "line": 4,
-    "message": "Cannot set: data stack is empty",
-  },
-]
-`;
-
-exports[`compileConfig > should return error for malformed path 1`] = `
+exports[`compileConfig - basic compilation > should return error for malformed path 1`] = `
 [
   {
     "kind": "parse",
@@ -131,7 +91,7 @@ exports[`compileConfig > should return error for malformed path 1`] = `
 ]
 `;
 
-exports[`compileConfig > should return error for operations on empty stacks 1`] = `
+exports[`compileConfig - basic compilation > should return error for operations on empty stacks 1`] = `
 [
   {
     "kind": "exec",
@@ -141,7 +101,7 @@ exports[`compileConfig > should return error for operations on empty stacks 1`] 
 ]
 `;
 
-exports[`compileConfig > should return error for type conflict 1`] = `
+exports[`compileConfig - basic compilation > should return error for type conflict 1`] = `
 [
   {
     "kind": "exec",
@@ -151,7 +111,7 @@ exports[`compileConfig > should return error for type conflict 1`] = `
 ]
 `;
 
-exports[`compileConfig > should return error for unclosed string literal 1`] = `
+exports[`compileConfig - basic compilation > should return error for unclosed string literal 1`] = `
 [
   {
     "kind": "parse",
@@ -161,7 +121,7 @@ exports[`compileConfig > should return error for unclosed string literal 1`] = `
 ]
 `;
 
-exports[`compileConfig > should return errors for invalid input 1`] = `
+exports[`compileConfig - basic compilation > should return errors for invalid input 1`] = `
 [
   {
     "kind": "parse",
