@@ -1,7 +1,7 @@
 import type { EventDispatcher } from './events';
-import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from '@8f4e/editor-state';
+import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent, Direction } from '@8f4e/editor-state';
 
-export default function keyboardShortcuts(events: EventDispatcher): void {
+export default function keyboardShortcuts(events: EventDispatcher): () => void {
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
 
@@ -36,7 +36,7 @@ export default function keyboardShortcuts(events: EventDispatcher): void {
 			// Navigation with modifier + arrow keys
 			if (key.startsWith('Arrow')) {
 				event.preventDefault();
-				let direction: 'left' | 'right' | 'up' | 'down';
+				let direction: Direction;
 				switch (key) {
 					case 'ArrowLeft':
 						direction = 'left';
@@ -66,7 +66,7 @@ export default function keyboardShortcuts(events: EventDispatcher): void {
 		// Arrow keys for caret movement
 		if (key.startsWith('Arrow')) {
 			event.preventDefault();
-			let direction: 'left' | 'right' | 'up' | 'down';
+			let direction: Direction;
 			switch (key) {
 				case 'ArrowLeft':
 					direction = 'left';
@@ -110,4 +110,9 @@ export default function keyboardShortcuts(events: EventDispatcher): void {
 	}
 
 	window.addEventListener('keydown', onKeydown);
+
+	// Return cleanup function
+	return () => {
+		window.removeEventListener('keydown', onKeydown);
+	};
 }
