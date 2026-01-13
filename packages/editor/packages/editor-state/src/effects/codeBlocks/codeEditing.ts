@@ -2,7 +2,7 @@ import { StateManager } from '@8f4e/state-manager';
 
 import backSpace from '../../pureHelpers/codeEditing/backSpace';
 import enter from '../../pureHelpers/codeEditing/enter';
-import { moveCaret, MoveDirection } from '../../pureHelpers/codeEditing/moveCaret';
+import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
 import type from '../../pureHelpers/codeEditing/type';
 import { EventDispatcher, MoveCaretEvent, InsertTextEvent, State } from '../../types';
 
@@ -15,25 +15,13 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 		}
 
 		const codeBlock = state.graphicHelper.selectedCodeBlock;
-		const direction = event.direction;
 
-		let key: MoveDirection;
-		switch (direction) {
-			case 'left':
-				key = 'ArrowLeft';
-				break;
-			case 'right':
-				key = 'ArrowRight';
-				break;
-			case 'up':
-				key = 'ArrowUp';
-				break;
-			case 'down':
-				key = 'ArrowDown';
-				break;
-		}
-
-		const newPosition: [number, number] = moveCaret(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, key);
+		const newPosition: [number, number] = moveCaret(
+			codeBlock.code,
+			codeBlock.cursor.row,
+			codeBlock.cursor.col,
+			event.direction
+		);
 		store.set('graphicHelper.selectedCodeBlock.cursor.row', newPosition[0]);
 		store.set('graphicHelper.selectedCodeBlock.cursor.col', newPosition[1]);
 	};
