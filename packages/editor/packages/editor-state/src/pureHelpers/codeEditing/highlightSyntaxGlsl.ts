@@ -47,7 +47,7 @@ const glslKeywordRegExp = new RegExp('\\b(?:' + allGlslKeywords.join('|') + ')\\
 /**
  * Generates a 2D lookup where each cell contains the sprite used to render a code character.
  * Applies GLSL language syntax highlighting rules.
- * @param code Program text split into lines.
+ * @param code Program text split into lines (raw code without line numbers).
  * @param spriteLookups Mapping of syntax roles to sprite identifiers.
  * @returns A matrix of sprite identifiers aligned to every character in the document.
  */
@@ -64,21 +64,15 @@ export default function highlightSyntaxGlsl<T>(
 	}
 ): T[][] {
 	return code.map(line => {
-		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
 		const keywordMatch = glslKeywordRegExp.exec(line);
 		const keywordIndices = (keywordMatch as unknown as { indices?: number[][] })?.indices || [[]];
-		const { index: numberIndex } = /(?!^)(?:-|)\b(\d+\.?\d*|\d*\.\d+|0x[\dabcdef]+)\b/.exec(line) || {};
+		const { index: numberIndex } = /-?\b(\d+\.?\d*|\d*\.\d+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: lineCommentIndex } = /\/\//.exec(line) || {};
 		const blockCommentStartMatch = /\/\*/.exec(line);
 		const { index: blockCommentStartIndex } = blockCommentStartMatch || { index: undefined };
 		const { index: preprocessorIndex } = /^\s*#/.exec(line) || {};
 
 		const codeColors = new Array(line.length).fill(undefined);
-
-		// Line numbers
-		if (typeof lineNumberIndex !== 'undefined') {
-			codeColors[lineNumberIndex] = spriteLookups.fontLineNumber;
-		}
 
 		// Preprocessor directives (use instruction color as specified)
 		if (typeof preprocessorIndex !== 'undefined') {
@@ -126,46 +120,46 @@ if (import.meta.vitest) {
 	describe('highlightSyntaxGlsl', () => {
 		it('highlights GLSL shader code with keywords, types, comments, numbers, and preprocessor directives', () => {
 			const glslCode = [
-				'00 #version 300 es',
-				'01 precision mediump float;',
-				'02 ',
-				'03 #define PI 3.14159',
-				'04 #define ITERATIONS 10',
-				'05 ',
-				'06 // Varyings and uniforms',
-				'07 varying vec2 v_texCoord;',
-				'08 uniform sampler2D u_texture;',
-				'09 uniform float u_time;',
-				'10 uniform vec3 u_color;',
-				'11 ',
-				'12 /* Helper function',
-				'13    for color blending */',
-				'14 vec4 blend(vec4 a, vec4 b) {',
-				'15   float factor = 0.5;',
-				'16   int mask = 0xff;',
-				'17   if (factor > 0.0) {',
-				'18     return a * factor;',
-				'19   } else {',
-				'20     return b;',
-				'21   }',
-				'22 }',
-				'23 ',
-				'24 void main() {',
-				'25   vec2 uv = v_texCoord;',
-				'26   float dist = length(uv);',
-				'27   ',
-				'28   for (int i = 0; i < ITERATIONS; i++) {',
-				'29     dist += 0.1;',
-				'30   }',
-				'31   ',
-				'32   while (dist > 1.0) {',
-				'33     dist -= 0.5;',
-				'34     break;',
-				'35   }',
-				'36   ',
-				'37   vec4 color = texture2D(u_texture, uv);',
-				'38   gl_FragColor = blend(color, vec4(u_color, 1.0));',
-				'39 }',
+				'#version 300 es',
+				'precision mediump float;',
+				'',
+				'#define PI 3.14159',
+				'#define ITERATIONS 10',
+				'',
+				'// Varyings and uniforms',
+				'varying vec2 v_texCoord;',
+				'uniform sampler2D u_texture;',
+				'uniform float u_time;',
+				'uniform vec3 u_color;',
+				'',
+				'/* Helper function',
+				'   for color blending */',
+				'vec4 blend(vec4 a, vec4 b) {',
+				'  float factor = 0.5;',
+				'  int mask = 0xff;',
+				'  if (factor > 0.0) {',
+				'    return a * factor;',
+				'  } else {',
+				'    return b;',
+				'  }',
+				'}',
+				'',
+				'void main() {',
+				'  vec2 uv = v_texCoord;',
+				'  float dist = length(uv);',
+				'  ',
+				'  for (int i = 0; i < ITERATIONS; i++) {',
+				'    dist += 0.1;',
+				'  }',
+				'  ',
+				'  while (dist > 1.0) {',
+				'    dist -= 0.5;',
+				'    break;',
+				'  }',
+				'  ',
+				'  vec4 color = texture2D(u_texture, uv);',
+				'  gl_FragColor = blend(color, vec4(u_color, 1.0));',
+				'}',
 			];
 
 			const result = highlightSyntaxGlsl(glslCode, spriteLookups);
