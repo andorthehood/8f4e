@@ -66,10 +66,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.codeColors = codeWithLineNumbers.map((line, lineIndex) => {
 			const lineColors = new Array(line.length).fill(undefined);
 
-			// Apply line number color to the prefix
-			for (let i = 0; i < graphicData.lineNumberColumnWidth; i++) {
-				lineColors[i] = spriteLookups.fontLineNumber;
-			}
+			// Apply line number color at the first column (color persists until changed)
+			lineColors[0] = spriteLookups.fontLineNumber;
 
 			// Reset to code color after line number prefix (at the space separator)
 			lineColors[graphicData.lineNumberColumnWidth] = spriteLookups.fontCode;
