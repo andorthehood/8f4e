@@ -64,6 +64,16 @@ export default function preprocessSchema(schema: JSONSchemaLike): SchemaNode {
 		node.additionalPropertiesSchema = preprocessSchema(schema.additionalProperties);
 	}
 
+	// Handle oneOf combinator
+	if (schema.oneOf) {
+		node.oneOfAlternatives = schema.oneOf.map(alt => preprocessSchema(alt));
+	}
+
+	// Handle anyOf combinator
+	if (schema.anyOf) {
+		node.anyOfAlternatives = schema.anyOf.map(alt => preprocessSchema(alt));
+	}
+
 	return node;
 }
 
@@ -120,6 +130,34 @@ if (import.meta.vitest) {
 
 			const node = preprocessSchema(schema);
 			expect(node.additionalPropertiesAllowed).toBe(false);
+		});
+
+		it('should handle oneOf combinator', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				oneOf: [
+					{ properties: { type: { type: 'string', enum: ['a'] } }, required: ['type'] },
+					{ properties: { type: { type: 'string', enum: ['b'] } }, required: ['type'] },
+				],
+			};
+
+			const node = preprocessSchema(schema);
+			expect(node.oneOfAlternatives).toBeDefined();
+			expect(node.oneOfAlternatives?.length).toBe(2);
+			expect(node.oneOfAlternatives?.[0].children.has('type')).toBe(true);
+		});
+
+		it('should handle anyOf combinator', () => {
+			const schema: JSONSchemaLike = {
+				type: 'object',
+				anyOf: [{ properties: { name: { type: 'string' } } }, { properties: { id: { type: 'number' } } }],
+			};
+
+			const node = preprocessSchema(schema);
+			expect(node.anyOfAlternatives).toBeDefined();
+			expect(node.anyOfAlternatives?.length).toBe(2);
+			expect(node.anyOfAlternatives?.[0].children.has('name')).toBe(true);
+			expect(node.anyOfAlternatives?.[1].children.has('id')).toBe(true);
 		});
 	});
 }

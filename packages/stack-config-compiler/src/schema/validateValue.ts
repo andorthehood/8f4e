@@ -2,7 +2,7 @@
  * Validates a value against a schema node
  */
 
-import type { JSONSchemaType, SchemaNode } from './types';
+import type { JSONSchemaType, SchemaNode, JSONSchemaLike } from './types';
 
 /**
  * Validates a value against a schema node
@@ -12,6 +12,31 @@ import type { JSONSchemaType, SchemaNode } from './types';
  * @returns An error message if invalid, null if valid
  */
 export default function validateValue(node: SchemaNode, value: unknown): string | null {
+	// Handle oneOf combinator - exactly one alternative must validate
+	if (node.oneOfAlternatives && node.oneOfAlternatives.length > 0) {
+		const validAlternatives = node.oneOfAlternatives.filter(alt => validateValue(alt, value) === null);
+
+		if (validAlternatives.length === 0) {
+			return 'Value does not match any oneOf alternatives';
+		}
+		if (validAlternatives.length > 1) {
+			return `Value matches multiple oneOf alternatives (${validAlternatives.length} matches), exactly one expected`;
+		}
+		// Exactly one match - valid
+		return null;
+	}
+
+	// Handle anyOf combinator - at least one alternative must validate
+	if (node.anyOfAlternatives && node.anyOfAlternatives.length > 0) {
+		const hasValidAlternative = node.anyOfAlternatives.some(alt => validateValue(alt, value) === null);
+
+		if (!hasValidAlternative) {
+			return 'Value does not match any anyOf alternatives';
+		}
+		// At least one match - valid
+		return null;
+	}
+
 	// Determine the actual type of the value
 	let actualType: JSONSchemaType;
 	if (value === null) {
@@ -63,6 +88,51 @@ if (import.meta.vitest) {
 			expect(validateValue(node, 1)).toBeNull();
 			const error = validateValue(node, 5);
 			expect(error).toContain('not in allowed values');
+		});
+
+		it('should validate oneOf with exactly one match', () => {
+			const schema: JSONSchemaLike = {
+				oneOf: [{ type: 'string' as const }, { type: 'number' as const }],
+			};
+			const node = preprocessSchema(schema);
+			expect(validateValue(node, 'hello')).toBeNull();
+			expect(validateValue(node, 42)).toBeNull();
+		});
+
+		it('should reject oneOf with no matches', () => {
+			const schema: JSONSchemaLike = {
+				oneOf: [{ type: 'string' as const }, { type: 'number' as const }],
+			};
+			const node = preprocessSchema(schema);
+			const error = validateValue(node, true);
+			expect(error).toContain('does not match any oneOf alternatives');
+		});
+
+		it('should reject oneOf with multiple matches', () => {
+			const schema: JSONSchemaLike = {
+				oneOf: [{ type: 'number' as const }, { type: ['number', 'string'] as const }],
+			};
+			const node = preprocessSchema(schema);
+			const error = validateValue(node, 42);
+			expect(error).toContain('matches multiple oneOf alternatives');
+		});
+
+		it('should validate anyOf with at least one match', () => {
+			const schema: JSONSchemaLike = {
+				anyOf: [{ type: 'string' as const }, { type: 'number' as const }],
+			};
+			const node = preprocessSchema(schema);
+			expect(validateValue(node, 'hello')).toBeNull();
+			expect(validateValue(node, 42)).toBeNull();
+		});
+
+		it('should reject anyOf with no matches', () => {
+			const schema: JSONSchemaLike = {
+				anyOf: [{ type: 'string' as const }, { type: 'number' as const }],
+			};
+			const node = preprocessSchema(schema);
+			const error = validateValue(node, true);
+			expect(error).toContain('does not match any anyOf alternatives');
 		});
 	});
 }
