@@ -3,8 +3,8 @@ title: 'TODO: Decouple syntax highlighting for GLSL blocks'
 priority: Medium
 effort: 2-4h
 created: 2026-01-12
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-13
 ---
 
 # TODO: Decouple syntax highlighting for GLSL blocks
