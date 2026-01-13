@@ -1,98 +1,128 @@
-import type { ConfigSchema } from './types';
+import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
-const runtimeSettingsSchema: ConfigSchema = {
+const runtimeSettingsSchema: JSONSchemaLike = {
 	type: 'object',
-	properties: {
-		runtime: {
-			type: 'string',
-			enum: ['WebWorkerLogicRuntime', 'MainThreadLogicRuntime', 'AudioWorkletRuntime', 'WebWorkerMIDIRuntime'],
-		},
-		sampleRate: { type: 'number' },
-		audioInputBuffers: {
-			type: 'array',
-			items: {
-				type: 'object',
-				properties: {
-					memoryId: { type: 'string' },
-					channel: { type: 'number' },
-					input: { type: 'number' },
+	oneOf: [
+		{
+			// AudioWorkletRuntime - only this runtime can use audio buffers
+			properties: {
+				runtime: {
+					type: 'string',
+					enum: ['AudioWorkletRuntime'],
 				},
-				additionalProperties: false,
-			},
-		},
-		audioOutputBuffers: {
-			type: 'array',
-			items: {
-				type: 'object',
-				properties: {
-					memoryId: { type: 'string' },
-					channel: { type: 'number' },
-					output: { type: 'number' },
+				sampleRate: { type: 'number' },
+				audioInputBuffers: {
+					type: 'array',
+					items: {
+						type: 'object',
+						properties: {
+							memoryId: { type: 'string' },
+							channel: { type: 'number' },
+							input: { type: 'number' },
+						},
+						additionalProperties: false,
+					},
 				},
-				additionalProperties: false,
-			},
-		},
-		midiNoteOutputs: {
-			type: 'array',
-			items: {
-				type: 'object',
-				properties: {
-					moduleId: { type: 'string' },
-					channelMemoryId: { type: 'string' },
-					portMemoryId: { type: 'string' },
-					velocityMemoryId: { type: 'string' },
-					noteOnOffMemoryId: { type: 'string' },
-					noteMemoryId: { type: 'string' },
+				audioOutputBuffers: {
+					type: 'array',
+					items: {
+						type: 'object',
+						properties: {
+							memoryId: { type: 'string' },
+							channel: { type: 'number' },
+							output: { type: 'number' },
+						},
+						additionalProperties: false,
+					},
 				},
-				additionalProperties: false,
 			},
+			required: ['runtime'],
+			additionalProperties: false,
 		},
-		midiNoteInputs: {
-			type: 'array',
-			items: {
-				type: 'object',
-				properties: {
-					moduleId: { type: 'string' },
-					channelMemoryId: { type: 'string' },
-					portMemoryId: { type: 'string' },
-					velocityMemoryId: { type: 'string' },
-					noteOnOffMemoryId: { type: 'string' },
-					noteMemoryId: { type: 'string' },
+		{
+			// WebWorkerMIDIRuntime - only this runtime can use MIDI fields
+			properties: {
+				runtime: {
+					type: 'string',
+					enum: ['WebWorkerMIDIRuntime'],
 				},
-				additionalProperties: false,
-			},
-		},
-		midiControlChangeOutputs: {
-			type: 'array',
-			items: {
-				type: 'object',
-				properties: {
-					moduleId: { type: 'string' },
-					channelMemoryId: { type: 'string' },
-					selectedCCMemoryId: { type: 'string' },
-					valueMemoryId: { type: 'string' },
+				sampleRate: { type: 'number' },
+				midiNoteOutputs: {
+					type: 'array',
+					items: {
+						type: 'object',
+						properties: {
+							moduleId: { type: 'string' },
+							channelMemoryId: { type: 'string' },
+							portMemoryId: { type: 'string' },
+							velocityMemoryId: { type: 'string' },
+							noteOnOffMemoryId: { type: 'string' },
+							noteMemoryId: { type: 'string' },
+						},
+						additionalProperties: false,
+					},
 				},
-				additionalProperties: false,
-			},
-		},
-		midiControlChangeInputs: {
-			type: 'array',
-			items: {
-				type: 'object',
-				properties: {
-					moduleId: { type: 'string' },
-					channelMemoryId: { type: 'string' },
-					selectedCCMemoryId: { type: 'string' },
-					valueMemoryId: { type: 'string' },
+				midiNoteInputs: {
+					type: 'array',
+					items: {
+						type: 'object',
+						properties: {
+							moduleId: { type: 'string' },
+							channelMemoryId: { type: 'string' },
+							portMemoryId: { type: 'string' },
+							velocityMemoryId: { type: 'string' },
+							noteOnOffMemoryId: { type: 'string' },
+							noteMemoryId: { type: 'string' },
+						},
+						additionalProperties: false,
+					},
 				},
-				additionalProperties: false,
+				midiControlChangeOutputs: {
+					type: 'array',
+					items: {
+						type: 'object',
+						properties: {
+							moduleId: { type: 'string' },
+							channelMemoryId: { type: 'string' },
+							selectedCCMemoryId: { type: 'string' },
+							valueMemoryId: { type: 'string' },
+						},
+						additionalProperties: false,
+					},
+				},
+				midiControlChangeInputs: {
+					type: 'array',
+					items: {
+						type: 'object',
+						properties: {
+							moduleId: { type: 'string' },
+							channelMemoryId: { type: 'string' },
+							selectedCCMemoryId: { type: 'string' },
+							valueMemoryId: { type: 'string' },
+						},
+						additionalProperties: false,
+					},
+				},
 			},
+			required: ['runtime'],
+			additionalProperties: false,
 		},
-	},
-	additionalProperties: false,
+		{
+			// WebWorkerLogicRuntime and MainThreadLogicRuntime - no audio or MIDI buffers
+			properties: {
+				runtime: {
+					type: 'string',
+					enum: ['WebWorkerLogicRuntime', 'MainThreadLogicRuntime'],
+				},
+				sampleRate: { type: 'number' },
+			},
+			required: ['runtime'],
+			additionalProperties: false,
+		},
+	],
 };
 
-const configSchema: ConfigSchema = {
+const configSchema: JSONSchemaLike = {
 	type: 'object',
 	properties: {
 		memorySizeBytes: { type: 'number' },

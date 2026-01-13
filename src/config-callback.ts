@@ -1,6 +1,6 @@
 import { compileConfig as compileStackConfig } from '@8f4e/stack-config-compiler';
 
-import type { ConfigCompilationResult, ConfigSchema } from '@8f4e/editor-state';
+import type { ConfigCompilationResult, JSONSchemaLike } from '@8f4e/editor-state';
 
 /**
  * Compiles a stack-config program source into a JSON configuration object.
@@ -10,6 +10,6 @@ import type { ConfigCompilationResult, ConfigSchema } from '@8f4e/editor-state';
  * @param schema - JSON Schema describing the expected config structure
  * @returns Promise containing the compiled config object and any errors
  */
-export default async function compileConfig(source: string, schema: ConfigSchema): Promise<ConfigCompilationResult> {
+export default async function compileConfig(source: string, schema: JSONSchemaLike): Promise<ConfigCompilationResult> {
 	return compileStackConfig(source, { schema });
 }
