@@ -1,4 +1,5 @@
-export type Direction = 'left' | 'right' | 'up' | 'down';
+import type { Direction } from '../finders/findClosestCodeBlockInDirection';
+
 export type MoveDirection = Direction | 'jump';
 
 /**
