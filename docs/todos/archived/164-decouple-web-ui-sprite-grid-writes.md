@@ -3,8 +3,8 @@ title: 'TODO: Decouple Web-UI Sprite/Grid Writes'
 priority: Medium
 effort: 1-2d
 created: 2026-01-08
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-8
 ---
 
 # TODO: Decouple Web-UI Sprite/Grid Writes
