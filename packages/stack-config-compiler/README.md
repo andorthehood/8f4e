@@ -189,6 +189,8 @@ The v1 implementation supports a focused subset of JSON Schema:
 - `required`: Required object properties
 - `items`: Array item schema
 - `additionalProperties`: Control whether extra keys are allowed (boolean or schema)
+- `oneOf`: Exactly one alternative must match (for discriminated unions)
+- `anyOf`: At least one alternative must match (for overlapping types)
 
 ### Schema Validation Example
 
@@ -261,6 +263,88 @@ Schema validation catches:
 - **Type mismatches**: `push "hello"` into a number field
 - **Invalid enum values**: `push 5` when enum only allows `[0, 1, 2]`
 - **Missing required fields**: Forgetting to set a required config value
+
+### Conditional Schemas with oneOf/anyOf
+
+The compiler supports conditional validation using `oneOf` and `anyOf` combinators, enabling runtime-specific validation.
+
+#### Example: Runtime-Specific Configuration
+
+```typescript
+import { compileConfig } from '@8f4e/stack-config-compiler';
+
+// Schema with oneOf for discriminated union based on runtime type
+const schema = {
+  type: 'object',
+  properties: {
+    config: {
+      type: 'object',
+      oneOf: [
+        {
+          // Audio runtime configuration
+          properties: {
+            runtime: { type: 'string', enum: ['audio'] },
+            audioOutputBuffers: { type: 'number' }
+          },
+          required: ['runtime', 'audioOutputBuffers'],
+          additionalProperties: false
+        },
+        {
+          // MIDI runtime configuration
+          properties: {
+            runtime: { type: 'string', enum: ['midi'] },
+            midiNoteInputs: { type: 'number' }
+          },
+          required: ['runtime', 'midiNoteInputs'],
+          additionalProperties: false
+        }
+      ]
+    }
+  }
+};
+
+// Valid audio runtime config
+const audioSource = `
+scope "config.runtime"
+push "audio"
+set
+
+rescope "config.audioOutputBuffers"
+push 2
+set
+`;
+
+const result = compileConfig(audioSource, { schema });
+// result.config = { config: { runtime: 'audio', audioOutputBuffers: 2 } }
+// result.errors = []
+```
+
+#### oneOf vs anyOf
+
+- **`oneOf`**: Exactly one alternative must match. Best for discriminated unions where you have mutually exclusive configurations (e.g., different runtime types). If zero or multiple alternatives match, validation fails.
+
+- **`anyOf`**: At least one alternative must match. Best for overlapping schemas where multiple valid structures are acceptable (e.g., a field that accepts either a string or a number).
+
+**Example with anyOf:**
+
+```typescript
+const schema = {
+  type: 'object',
+  properties: {
+    value: {
+      anyOf: [
+        { type: 'string' },
+        { type: 'number' }
+      ]
+    }
+  }
+};
+
+// Both are valid
+compileConfig('scope "value"\npush "hello"\nset', { schema }); // ✓
+compileConfig('scope "value"\npush 42\nset', { schema }); // ✓
+compileConfig('scope "value"\npush true\nset', { schema }); // ✗ Error
+```
 
 ## Error Handling
 
