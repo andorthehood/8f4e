@@ -38,7 +38,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 167 | Decouple Syntax Highlighting for GLSL Blocks | 🟡 | 2-4h | 2026-01-12 | Add a GLSL highlighter path for shader blocks and keep 8f4e highlighting for everything else |
 | 169 | Toggle Position Offsetters via Function Key | 🟡 | 1-2h | 2026-01-13 | Add a runtime toggle event and host key binding to disable memory-driven position offsets |
 | 170 | Toggle Post-Process Effects via Function Key | 🟡 | 1-2h | 2026-01-13 | Add a runtime toggle event and host key binding to disable post-process effects |
-| 171 | Add Conditional Schema Support to Stack Config Compiler | 🟡 | 2-4d | 2026-01-13 | Extend schema subset with oneOf/anyOf to validate runtime-specific config during compile |
 | 172 | Decouple Line Numbers from Syntax Highlighting | 🟡 | 2-4h | 2026-01-13 | Pass raw code to syntax highlighters and color line numbers in a separate pass |
 | 173 | Add Scoped Constants to Stack Config Compiler | 🟡 | 1-2d | 2026-01-13 | Add scoped `const` command and constant-aware `push` for config blocks |
 | 002 | Enable Strict TypeScript in Editor Package | 🟡 | 2-3d | 2025-08-23 | Currently has 52 type errors when strict settings enabled, causing missing null checks and implicit any types that reduce type safety and developer experience |
@@ -83,6 +82,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 171 | Add Conditional Schema Support to Stack Config Compiler | 🟡 | 2-4d | 2026-01-13 | Extended schema subset with oneOf/anyOf to validate runtime-specific config during compile; implemented post-compilation validation for discriminated unions and overlapping types |
 | 165 | Add clipboard callbacks to editor-state | 🟡 | 2-4h | 2026-01-08 | Introduced `readClipboardText` and `writeClipboardText` callbacks to make editor-state portable; disabled clipboard menu items when callbacks are missing; added comprehensive tests; all navigator.clipboard calls now in editor package only |
 | 163 | Web-UI Memory Ref Init And Views | 🟡 | 2-3d | 2026-01-07 | Moved web-ui memory access to a stable ref passed into init, creating int/float views internally and threading them into memory-dependent drawers; decoupled render layer from compiler state |
 | 161 | Add Explicit Store Wait Helpers | 🟡 | 2-4h | 2026-01-04 | Added `waitForChange` and `waitForValue` Promise-based helpers to state-manager; both use strict equality, auto-unsubscribe after resolving, and support immediate resolution; comprehensive tests cover change-driven and immediate resolution with cleanup verification |
