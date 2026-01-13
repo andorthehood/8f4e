@@ -76,11 +76,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 			// Merge syntax colors from raw code, offset by prefix length
 			const rawColors = rawCodeColors[lineIndex] || [];
-			for (let i = 0; i < rawColors.length; i++) {
-				if (rawColors[i] !== undefined) {
-					lineColors[i + lineNumberPrefixLength] = rawColors[i];
+			rawColors.forEach((color, i) => {
+				if (color !== undefined) {
+					lineColors[i + lineNumberPrefixLength] = color;
 				}
-			}
+			});
 
 			return lineColors;
 		});

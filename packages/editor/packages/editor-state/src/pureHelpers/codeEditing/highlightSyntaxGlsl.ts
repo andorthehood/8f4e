@@ -66,7 +66,7 @@ export default function highlightSyntaxGlsl<T>(
 	return code.map(line => {
 		const keywordMatch = glslKeywordRegExp.exec(line);
 		const keywordIndices = (keywordMatch as unknown as { indices?: number[][] })?.indices || [[]];
-		const { index: numberIndex } = /(?:-|)\b(\d+\.?\d*|\d*\.\d+|0x[\dabcdef]+)\b/.exec(line) || {};
+		const { index: numberIndex } = /-?\b(\d+\.?\d*|\d*\.\d+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: lineCommentIndex } = /\/\//.exec(line) || {};
 		const blockCommentStartMatch = /\/\*/.exec(line);
 		const { index: blockCommentStartIndex } = blockCommentStartMatch || { index: undefined };
