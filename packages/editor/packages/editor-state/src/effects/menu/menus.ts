@@ -1,4 +1,7 @@
-import type { CodeBlockGraphicData, MenuGenerator, ContextMenuItem } from '../../types';
+import { buildCategoryTree, getNodeAtPath, nodeToMenuItems } from './categoryTree';
+
+import type { CodeBlockGraphicData, MenuGenerator } from '../../types';
+import type { CategoryItem } from './categoryTree';
 
 export const mainMenu: MenuGenerator = state => [
 	...(state.featureFlags.editing
@@ -175,35 +178,27 @@ export const moduleMenu: MenuGenerator = state => {
 	];
 };
 
-export const moduleCategoriesMenu: MenuGenerator = async state => {
+export const moduleCategoriesMenu: MenuGenerator = async (state, payload = {}) => {
+	const { path = [] } = payload as { path?: string[] };
 	if (!state.callbacks.getListOfModules) {
 		return [];
 	}
 	const modules = await state.callbacks.getListOfModules();
-	const categories = [...new Set(modules.map(module => module.category))];
-	return categories.map(category => {
-		return { title: category, action: 'openSubMenu', payload: { menu: 'builtInModuleMenu', category }, close: false };
-	});
-};
 
-export const builtInModuleMenu: MenuGenerator = async (state, payload = {}) => {
-	const { category } = payload as { category: string };
-	if (!state.callbacks.getListOfModules || !state.callbacks.getModule) {
+	const categoryItems: CategoryItem[] = modules.map(module => ({
+		title: module.title,
+		slug: module.slug,
+		category: module.category,
+	}));
+
+	const tree = buildCategoryTree(categoryItems);
+	const node = path.length === 0 ? tree : getNodeAtPath(tree, path);
+
+	if (!node) {
 		return [];
 	}
-	const modules = await state.callbacks.getListOfModules();
-	const filteredModules = modules.filter(module => module.category === category);
 
-	const menuItems: ContextMenuItem[] = [];
-	for (const moduleMetadata of filteredModules) {
-		menuItems.push({
-			title: moduleMetadata.title,
-			action: 'addCodeBlockBySlug',
-			payload: { codeBlockSlug: moduleMetadata.slug },
-			close: true,
-		});
-	}
-	return menuItems;
+	return nodeToMenuItems(node, path, 'moduleCategoriesMenu', 'addCodeBlockBySlug', 'codeBlockSlug');
 };
 
 export const editorSettingsMenu: MenuGenerator = state => [
@@ -236,19 +231,25 @@ export const fontMenu: MenuGenerator = () => [
 	{ title: '6x10', selector: 'editorSettings.font', value: '6x10', close: false },
 ];
 
-export const projectMenu: MenuGenerator = async state => {
+export const projectMenu: MenuGenerator = async (state, payload = {}) => {
+	const { path = [] } = payload as { path?: string[] };
 	if (!state.callbacks.getListOfProjects || !state.callbacks.getProject) {
 		return [];
 	}
 	const projects = await state.callbacks.getListOfProjects();
-	const menuItems: ContextMenuItem[] = [];
-	for (const projectMetadata of projects) {
-		menuItems.push({
-			title: projectMetadata.title,
-			action: 'loadProjectBySlug',
-			payload: { projectSlug: projectMetadata.slug },
-			close: true,
-		});
+
+	const categoryItems: CategoryItem[] = projects.map(project => ({
+		title: project.title,
+		slug: project.slug,
+		category: project.category,
+	}));
+
+	const tree = buildCategoryTree(categoryItems);
+	const node = path.length === 0 ? tree : getNodeAtPath(tree, path);
+
+	if (!node) {
+		return [];
 	}
-	return menuItems;
+
+	return nodeToMenuItems(node, path, 'projectMenu', 'loadProjectBySlug', 'projectSlug');
 };
