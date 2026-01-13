@@ -16,7 +16,7 @@ export default function type(
 ): { code: string[]; row: number; col: number } {
 	const newCode = [...code];
 	newCode[row] = newCode[row].substring(0, col) + char + newCode[row].substring(col);
-	const [newRow, newCol] = moveCaret(newCode, row, col, 'ArrowRight');
+	const [newRow, newCol] = moveCaret(newCode, row, col, 'right');
 	return {
 		code: newCode,
 		row: newRow,
