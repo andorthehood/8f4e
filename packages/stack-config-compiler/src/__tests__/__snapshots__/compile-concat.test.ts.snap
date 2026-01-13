@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compileConfig - concat command > should return error for concat on empty stack 1`] = `
+[
+  {
+    "kind": "exec",
+    "line": 3,
+    "message": "Cannot concat: data stack is empty",
+  },
+  {
+    "kind": "exec",
+    "line": 4,
+    "message": "Cannot set: data stack is empty",
+  },
+]
+`;
