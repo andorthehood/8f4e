@@ -42,6 +42,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 
+		const spriteLookups = state.graphicHelper.spriteLookups;
+
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
 		const codeWithLineNumbers = graphicData.code.map(
@@ -50,12 +52,36 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		// Choose highlighter based on block type
+		// Choose highlighter based on block type and get syntax colors for raw code
+		let rawCodeColors;
 		if (graphicData.blockType === 'vertexShader' || graphicData.blockType === 'fragmentShader') {
-			graphicData.codeColors = highlightSyntaxGlsl(codeWithLineNumbers, state.graphicHelper.spriteLookups);
+			rawCodeColors = highlightSyntaxGlsl(graphicData.code, spriteLookups);
 		} else {
-			graphicData.codeColors = highlightSyntax8f4e(codeWithLineNumbers, state.graphicHelper.spriteLookups);
+			rawCodeColors = highlightSyntax8f4e(graphicData.code, spriteLookups);
 		}
+
+		// Merge raw code colors into color matrix aligned with codeWithLineNumbers
+		// by offsetting indices to account for line number prefix
+		const lineNumberPrefixLength = graphicData.lineNumberColumnWidth + 1; // +1 for space
+		graphicData.codeColors = codeWithLineNumbers.map((line, lineIndex) => {
+			const lineColors = new Array(line.length).fill(undefined);
+
+			// Apply line number color at the first column (color persists until changed)
+			lineColors[0] = spriteLookups.fontLineNumber;
+
+			// Reset to code color after line number prefix (at the space separator)
+			lineColors[graphicData.lineNumberColumnWidth] = spriteLookups.fontCode;
+
+			// Merge syntax colors from raw code, offset by prefix length
+			const rawColors = rawCodeColors[lineIndex] || [];
+			rawColors.forEach((color, i) => {
+				if (color !== undefined) {
+					lineColors[i + lineNumberPrefixLength] = color;
+				}
+			});
+
+			return lineColors;
+		});
 
 		gaps(graphicData);
 		pianoKeyboards(graphicData, state);
