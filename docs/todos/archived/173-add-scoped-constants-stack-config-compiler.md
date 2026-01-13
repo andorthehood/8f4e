@@ -3,8 +3,8 @@ title: 'TODO: Add Scoped Constants to Stack Config Compiler'
 priority: Medium
 effort: 1-2d
 created: 2026-01-13
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-13
 ---
 
 # TODO: Add Scoped Constants to Stack Config Compiler
