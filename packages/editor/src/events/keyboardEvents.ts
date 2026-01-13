@@ -1,4 +1,4 @@
-import type { EventDispatcher } from './events';
+import type { EventDispatcher } from '.';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent, Direction } from '@8f4e/editor-state';
 
 function getDirectionFromArrowKey(key: string): Direction | null {
@@ -16,7 +16,7 @@ function getDirectionFromArrowKey(key: string): Direction | null {
 	}
 }
 
-export default function keyboardShortcuts(events: EventDispatcher): () => void {
+export default function keyboardEvents(events: EventDispatcher): () => void {
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
 
