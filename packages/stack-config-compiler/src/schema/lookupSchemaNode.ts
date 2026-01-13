@@ -88,8 +88,9 @@ function lookupSchemaNodeInternal(
 			if (child) {
 				current = child;
 			} else if (current.additionalPropertiesAllowed && !inAlternative) {
-				// Allow additionalProperties matching only when not evaluating alternatives
-				// This prevents alternatives from matching everything through additionalProperties
+				// This ensures alternatives are matched only by their explicitly defined properties,
+				// and not via fallback additionalProperties behavior, preventing them from matching everything
+				// through additionalProperties.
 				if (current.additionalPropertiesSchema) {
 					current = current.additionalPropertiesSchema;
 				} else {
@@ -159,7 +160,7 @@ function mergeSchemaNodes(nodes: SchemaNode[]): SchemaNode {
 
 	// Required children - only include fields required in ALL alternatives
 	// This is permissive during field setting; post-compilation validation will check properly
-	if (nodes.length > 0 && nodes.every(n => n.requiredChildren.size > 0)) {
+	if (nodes.length > 0) {
 		const firstRequired = Array.from(nodes[0].requiredChildren);
 		for (const key of firstRequired) {
 			if (nodes.every(n => n.requiredChildren.has(key))) {
