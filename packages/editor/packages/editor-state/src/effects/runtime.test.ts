@@ -54,26 +54,26 @@ describe('Runtime System', () => {
 			const audioRuntimeFactory = vi.fn(() => audioDestroyer);
 			const mainRuntimeFactory = vi.fn(() => mainDestroyer);
 
-			const requestRuntime = vi.fn(async (runtimeType: RuntimeType) => {
-				if (runtimeType === 'AudioWorkletRuntime') {
-					return audioRuntimeFactory;
-				}
-
-				if (runtimeType === 'MainThreadLogicRuntime') {
-					return mainRuntimeFactory;
-				}
-
-				throw new Error(`Unexpected runtime ${runtimeType}`);
-			});
-
 			const state = createMockState({
 				compiledConfig: {
 					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
 					selectedRuntime: 0,
 				},
-				callbacks: {
-					requestRuntime,
+				runtimeRegistry: {
+					AudioWorkletRuntime: {
+						id: 'AudioWorkletRuntime',
+						defaults: { runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
+						schema: { type: 'object', properties: {} },
+						factory: audioRuntimeFactory,
+					},
+					MainThreadLogicRuntime: {
+						id: 'MainThreadLogicRuntime',
+						defaults: { runtime: 'MainThreadLogicRuntime', sampleRate: 60 },
+						schema: { type: 'object', properties: {} },
+						factory: mainRuntimeFactory,
+					},
 				},
+				defaultRuntimeId: 'AudioWorkletRuntime',
 			});
 
 			const store = createStateManager(state);
@@ -87,7 +87,6 @@ describe('Runtime System', () => {
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
 
-			expect(requestRuntime).toHaveBeenCalledTimes(1);
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
@@ -103,7 +102,6 @@ describe('Runtime System', () => {
 
 			expect(audioDestroyer).toHaveBeenCalledTimes(1);
 			expect(mainRuntimeFactory).toHaveBeenCalledTimes(1);
-			expect(requestRuntime).toHaveBeenCalledTimes(2);
 
 			const destroyOrder = audioDestroyer.mock.invocationCallOrder[0];
 			const mainFactoryOrder = mainRuntimeFactory.mock.invocationCallOrder[0];
