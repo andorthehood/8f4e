@@ -1,6 +1,11 @@
 import type { EventDispatcher } from '.';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent, Direction } from '@8f4e/editor-state';
 
+/**
+ * Converts keyboard arrow key names to abstract Direction values used for navigation.
+ * @param key - The keyboard key name (e.g., 'ArrowLeft', 'ArrowRight')
+ * @returns The corresponding Direction ('left', 'right', 'up', 'down') or null if not an arrow key
+ */
 function getDirectionFromArrowKey(key: string): Direction | null {
 	switch (key) {
 		case 'ArrowLeft':
@@ -16,6 +21,23 @@ function getDirectionFromArrowKey(key: string): Direction | null {
 	}
 }
 
+/**
+ * Sets up global keyboard event handling for the editor and dispatches high-level
+ * editor actions via the provided EventDispatcher.
+ *
+ * This listener interprets key presses and may dispatch the following events:
+ * - `saveSession` – when the platform modifier key (Ctrl/Cmd) + S is pressed.
+ * - `undo` – when the modifier key + Z (without Shift) is pressed.
+ * - `redo` – when the modifier key + Shift+Z or modifier key + Y is pressed.
+ * - `navigateCodeBlock` – when the modifier key + an arrow key is pressed; payload includes a direction.
+ * - `moveCaret` – when an arrow key is pressed without modifiers; payload includes a direction.
+ * - `deleteBackward` – when Backspace is pressed.
+ * - `insertNewLine` – when Enter is pressed.
+ * - `insertText` – when a single printable character key is pressed without modifier keys; payload includes text.
+ *
+ * @param events - Dispatcher used to emit editor actions in response to keyboard input.
+ * @returns A cleanup function that removes the keydown event listener from window.
+ */
 export default function keyboardEvents(events: EventDispatcher): () => void {
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;

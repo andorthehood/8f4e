@@ -32,6 +32,7 @@ export interface Editor {
 	resize: (width: number, height: number) => void;
 	updateMemoryViews: (memoryRef: MemoryRef) => void;
 	getMemoryViews: () => MemoryViews;
+	dispose: () => void;
 	state: State;
 }
 
@@ -63,7 +64,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	});
 	const state = store.getState();
 	pointerEvents(canvas, events, state);
-	keyboardEvents(events);
+	const cleanupKeyboard = keyboardEvents(events);
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = generateSprite({
@@ -87,6 +88,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 		updateMemoryViews,
 		getMemoryViews: () => memoryViews,
+		dispose: cleanupKeyboard,
 		state,
 	};
 }

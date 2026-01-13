@@ -15,14 +15,14 @@ export default function backSpace(
 	const newCode = [...code];
 
 	if (col > 0) {
-		const [newRow, newCol] = moveCaret(code, row, col, 'ArrowLeft');
+		const [newRow, newCol] = moveCaret(code, row, col, 'left');
 		newCode[row] = newCode[row].slice(0, newCol) + newCode[row].slice(newCol + 1);
 		return { code: newCode, row: newRow, col: newCol };
 	}
 
 	if (row > 0) {
 		const save = newCode[row];
-		const [newRow] = moveCaret(newCode, row, col, 'ArrowUp');
+		const [newRow] = moveCaret(newCode, row, col, 'up');
 		newCode.splice(row, 1);
 		newCode[newRow] = newCode[newRow] + save;
 		return { code: newCode, row: newRow, col: newCode[newRow].length };
