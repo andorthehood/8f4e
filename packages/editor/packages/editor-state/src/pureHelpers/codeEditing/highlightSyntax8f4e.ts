@@ -121,7 +121,7 @@ const instructionsToHighlight = [
 /**
  * Generates a 2D lookup where each cell contains the sprite used to render a code character.
  * Applies 8f4e language syntax highlighting rules.
- * @param code Program text split into lines.
+ * @param code Program text split into lines (raw code without line numbers).
  * @param spriteLookups Mapping of syntax roles to sprite identifiers.
  * @returns A matrix of sprite identifiers aligned to every character in the document.
  */
@@ -138,10 +138,9 @@ export default function highlightSyntax8f4e<T>(
 	}
 ): T[][] {
 	return code.map(line => {
-		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
 		const instructionMatch = getInstructionRegExp(instructionsToHighlight).exec(line);
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
-		const { index: numberIndex } = /(?!^)(?:-|)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
+		const { index: numberIndex } = /(?:-|)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: commentIndex } = /;/.exec(line) || {};
 		const binaryNumberMatch = /0b([01]+)/.exec(line);
 		const { index: binaryNumberIndex } = binaryNumberMatch || { index: undefined };
@@ -150,10 +149,6 @@ export default function highlightSyntax8f4e<T>(
 		const binaryOnes = binaryNumber.matchAll(/(1+)/g);
 
 		const codeColors = new Array(line.length).fill(undefined);
-
-		if (typeof lineNumberIndex !== 'undefined') {
-			codeColors[lineNumberIndex] = spriteLookups.fontLineNumber;
-		}
 
 		if (instructionIndices.length > 0 && instructionIndices[0].length >= 2) {
 			codeColors[instructionIndices[0][0]] = spriteLookups.fontInstruction;
@@ -200,59 +195,59 @@ if (import.meta.vitest) {
 	describe('highlightSyntax8f4e', () => {
 		it('highlights 8f4e code with instructions, comments, numbers, and binary literals', () => {
 			const code8f4e = [
-				'00 module audioout',
-				'01 ',
-				'02 float* in &saw.out',
-				'03 int channel LEFT_CHANNEL',
-				'04 ',
-				'05 ; Audio buffer',
-				'06 float[] buffer AUDIO_BUFFER_SIZE',
-				'07 int pointer &buffer',
-				'08 ',
-				'09 debug count',
-				'10 plot buffer -2 2',
-				'11 ',
-				'12 ; Store the input value',
-				'13 ; in the buffer',
-				'14 push pointer',
-				'15 push *in',
-				'16 store',
-				'17 ',
-				'18 ; Increment the buffer pointer',
-				'19 ; by the word size (4 bytes)',
-				'20 push &pointer',
-				'21 push pointer',
-				'22 push WORD_SIZE',
-				'23 add',
-				'24 store',
-				'25 ',
-				'26 ; Reset when reaching end',
-				'27 push pointer',
-				'28 push buffer&',
-				'29 greaterThan',
-				'30 if void',
-				'31   push &pointer',
-				'32   push &buffer',
-				'33   store',
-				'34 ifEnd',
-				'35 ',
-				'36 ; Binary flags',
-				'37 const 0b1010',
-				'38 const 0b1100',
-				'39 and',
-				'40 ',
-				'41 ; Hex values',
-				'42 push 0xff',
-				'43 push 0x100',
-				'44 mul',
-				'45 ',
-				'46 ; Conditional logic',
-				'47 localGet 0',
-				'48 push 10',
-				'49 lessThan',
-				'50 branchIfTrue',
-				'51 ',
-				'52 moduleEnd',
+				'module audioout',
+				'',
+				'float* in &saw.out',
+				'int channel LEFT_CHANNEL',
+				'',
+				'; Audio buffer',
+				'float[] buffer AUDIO_BUFFER_SIZE',
+				'int pointer &buffer',
+				'',
+				'debug count',
+				'plot buffer -2 2',
+				'',
+				'; Store the input value',
+				'; in the buffer',
+				'push pointer',
+				'push *in',
+				'store',
+				'',
+				'; Increment the buffer pointer',
+				'; by the word size (4 bytes)',
+				'push &pointer',
+				'push pointer',
+				'push WORD_SIZE',
+				'add',
+				'store',
+				'',
+				'; Reset when reaching end',
+				'push pointer',
+				'push buffer&',
+				'greaterThan',
+				'if void',
+				'  push &pointer',
+				'  push &buffer',
+				'  store',
+				'ifEnd',
+				'',
+				'; Binary flags',
+				'const 0b1010',
+				'const 0b1100',
+				'and',
+				'',
+				'; Hex values',
+				'push 0xff',
+				'push 0x100',
+				'mul',
+				'',
+				'; Conditional logic',
+				'localGet 0',
+				'push 10',
+				'lessThan',
+				'branchIfTrue',
+				'',
+				'moduleEnd',
 			];
 
 			const result = highlightSyntax8f4e(code8f4e, spriteLookups);
