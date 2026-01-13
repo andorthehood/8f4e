@@ -578,8 +578,6 @@ export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'm
 
 // Callbacks interface contains all callback functions
 export interface Callbacks {
-	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
-
 	// Module and project loading callbacks
 	getListOfModules?: () => Promise<ModuleMetadata[]>;
 	getModule?: (slug: string) => Promise<ExampleModule>;
@@ -660,15 +658,13 @@ export interface Options {
 	/**
 	 * Runtime registry mapping runtime IDs to their configuration entries.
 	 * Each entry defines a runtime's defaults, schema, and factory function.
-	 * If not provided, the requestRuntime callback must be implemented.
 	 */
-	runtimeRegistry?: RuntimeRegistry;
+	runtimeRegistry: RuntimeRegistry;
 	/**
 	 * Default runtime ID to use when no runtime is specified or when an unknown runtime ID is encountered.
-	 * Must match a key in the runtimeRegistry if runtimeRegistry is provided.
-	 * If not provided, falls back to the first runtime in the registry or uses the legacy requestRuntime callback.
+	 * Must match a key in the runtimeRegistry.
 	 */
-	defaultRuntimeId?: string;
+	defaultRuntimeId: string;
 }
 
 export interface EditorSettings {
@@ -729,9 +725,10 @@ export interface State {
 		stats: RuntimeStats;
 	};
 	/** Runtime registry for configurable runtime schemas */
-	runtimeRegistry?: RuntimeRegistry;
+	/** Runtime registry for configurable runtime schemas */
+	runtimeRegistry: RuntimeRegistry;
 	/** Default runtime ID to use when no runtime is specified */
-	defaultRuntimeId?: string;
+	defaultRuntimeId: string;
 	codeErrors: {
 		compilationErrors: CodeError[];
 		configErrors: CodeError[];

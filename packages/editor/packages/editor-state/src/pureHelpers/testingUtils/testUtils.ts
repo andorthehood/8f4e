@@ -208,6 +208,8 @@ export function createMockEventDispatcher(): EventDispatcher {
  * const state = createMockState({ callbacks: { setWordInMemory: () => {} } });
  */
 export function createMockState(overrides: DeepPartial<State> = {}): State {
+	const mockRuntimeFactory = () => () => {};
+
 	const defaults: State = {
 		compiler: {
 			isCompiling: false,
@@ -218,9 +220,17 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			byteCodeSize: 0,
 		},
 		callbacks: {
-			requestRuntime: createMockAsyncFunction(() => () => {}),
 			loadSession: createMockAsyncFunction(null),
 		},
+		runtimeRegistry: {
+			WebWorkerLogicRuntime: {
+				id: 'WebWorkerLogicRuntime',
+				defaults: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
+				schema: { type: 'object', properties: {} },
+				factory: mockRuntimeFactory,
+			},
+		},
+		defaultRuntimeId: 'WebWorkerLogicRuntime',
 		graphicHelper: {
 			codeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
