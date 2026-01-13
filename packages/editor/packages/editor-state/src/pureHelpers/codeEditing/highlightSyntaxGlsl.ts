@@ -1,7 +1,19 @@
 /**
  * GLSL language keywords to highlight
  */
-const glslKeywords = ['if', 'else', 'for', 'while', 'return', 'break', 'continue', 'discard'];
+const glslKeywords = [
+	'if',
+	'else',
+	'for',
+	'while',
+	'return',
+	'break',
+	'continue',
+	'discard',
+	'varying',
+	'uniform',
+	'precision',
+];
 
 /**
  * GLSL type keywords to highlight
@@ -19,6 +31,7 @@ const glslTypes = [
 	'mat4',
 	'sampler2D',
 	'samplerCube',
+	'mediump',
 ];
 
 /**
