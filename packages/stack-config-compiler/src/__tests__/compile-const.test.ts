@@ -174,4 +174,30 @@ set
 			},
 		});
 	});
+
+	it('should concat string literal with constant', () => {
+		const source = `
+const BASE_URL "https://example.com"
+
+scope "urls.api"
+push BASE_URL
+push "/api/v1"
+concat
+set
+
+rescope "urls.docs"
+push BASE_URL
+push "/docs"
+concat
+set
+`;
+		const result = compileConfig(source);
+		expect(result.errors).toEqual([]);
+		expect(result.config).toEqual({
+			urls: {
+				api: 'https://example.com/api/v1',
+				docs: 'https://example.com/docs',
+			},
+		});
+	});
 });
