@@ -32,27 +32,29 @@ export const projectManifest: Record<string, () => Promise<Project>> = Object.fr
  * Metadata is kept in sync with actual project files.
  */
 export const projectMetadata: ProjectMetadata[] = [
-	{ slug: 'audioBuffer', title: 'Audio Buffer' },
-	{ slug: 'audioLoopback', title: 'Audio Loopback' },
-	{ slug: 'bistableMultivibrators', title: 'Bistable Multivibrators' },
+	{ slug: 'audioBuffer', title: 'Audio Buffer', category: 'Audio' },
+	{ slug: 'audioLoopback', title: 'Audio Loopback', category: 'Audio' },
+	{ slug: 'bistableMultivibrators', title: 'Bistable Multivibrators', category: 'Synthesis' },
 	{
 		slug: 'rippleEffect',
 		title: 'Ripple Effect Demo',
+		category: 'Visuals',
 	},
-	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT' },
-	{ slug: 'ericSaiteGenerator', title: 'Eric Saite Generator' },
-	{ slug: 'midiArpeggiator', title: 'MIDI Arpeggiator' },
-	{ slug: 'midiArpeggiator2', title: 'MIDI Arpeggiator 2' },
-	{ slug: 'midiBreakBeat', title: 'MIDI Break Beat' },
-	{ slug: 'midiBreakBreak2dSequencer', title: 'MIDI Break Break 2D Sequencer' },
-	{ slug: 'neuralNetwork', title: 'Neural Network' },
-	{ slug: 'randomGenerators', title: 'Random Generators' },
-	{ slug: 'randomNoteGenerator', title: 'Random Note Generator' },
+	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', category: 'Visuals' },
+	{ slug: 'ericSaiteGenerator', title: 'Eric Saite Generator', category: 'Synthesis' },
+	{ slug: 'midiArpeggiator', title: 'MIDI Arpeggiator', category: 'MIDI' },
+	{ slug: 'midiArpeggiator2', title: 'MIDI Arpeggiator 2', category: 'MIDI' },
+	{ slug: 'midiBreakBeat', title: 'MIDI Break Beat', category: 'MIDI' },
+	{ slug: 'midiBreakBreak2dSequencer', title: 'MIDI Break Break 2D Sequencer', category: 'MIDI' },
+	{ slug: 'neuralNetwork', title: 'Neural Network', category: 'Visuals' },
+	{ slug: 'randomGenerators', title: 'Random Generators', category: 'Synthesis' },
+	{ slug: 'randomNoteGenerator', title: 'Random Note Generator', category: 'Synthesis' },
 	{
 		slug: 'simpleCounterMainThread',
 		title: 'Simple Counter (Main Thread)',
+		category: 'Synthesis',
 	},
-	{ slug: 'standaloneProject', title: 'Standalone Project Example' },
+	{ slug: 'standaloneProject', title: 'Standalone Project Example', category: 'Misc' },
 ];
 
 // For backwards compatibility
