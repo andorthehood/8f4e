@@ -84,6 +84,21 @@ export interface InternalKeyboardEvent {
 	metaKey: boolean;
 }
 
+// Abstract event payloads for keyboard actions
+export type Direction = 'left' | 'right' | 'up' | 'down';
+
+export interface NavigateCodeBlockEvent {
+	direction: Direction;
+}
+
+export interface MoveCaretEvent {
+	direction: Direction;
+}
+
+export interface InsertTextEvent {
+	text: string;
+}
+
 // Type for runtime factory function
 export type RuntimeFactory = (store: StateManager<State>, events: EventDispatcher) => () => void;
 
