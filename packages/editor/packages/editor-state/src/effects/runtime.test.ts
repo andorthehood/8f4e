@@ -1,52 +1,12 @@
-import { describe, test, expect, it, vi } from 'vitest';
+import { describe, it, vi, expect } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import runtimeEffect, { RuntimeType } from './runtime';
+import runtimeEffect from './runtime';
 
 import { createMockState } from '../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
 
 describe('Runtime System', () => {
-	describe('RuntimeType', () => {
-		test('should support AudioWorkletRuntime type', () => {
-			const runtimeType: RuntimeType = 'AudioWorkletRuntime';
-			expect(runtimeType).toBe('AudioWorkletRuntime');
-		});
-
-		test('should support WebWorkerMIDIRuntime type', () => {
-			const runtimeType: RuntimeType = 'WebWorkerMIDIRuntime';
-			expect(runtimeType).toBe('WebWorkerMIDIRuntime');
-		});
-
-		test('should support WebWorkerLogicRuntime type', () => {
-			const runtimeType: RuntimeType = 'WebWorkerLogicRuntime';
-			expect(runtimeType).toBe('WebWorkerLogicRuntime');
-		});
-
-		test('should support MainThreadLogicRuntime type', () => {
-			const runtimeType: RuntimeType = 'MainThreadLogicRuntime';
-			expect(runtimeType).toBe('MainThreadLogicRuntime');
-		});
-	});
-
-	describe('Runtime loading integration', () => {
-		test('should have access to runtime types from main module', () => {
-			// This test ensures the types are properly exported from the main runtime module
-			const validRuntimeTypes: RuntimeType[] = [
-				'AudioWorkletRuntime',
-				'WebWorkerMIDIRuntime',
-				'WebWorkerLogicRuntime',
-				'MainThreadLogicRuntime',
-			];
-
-			expect(validRuntimeTypes).toHaveLength(4);
-			expect(validRuntimeTypes).toContain('AudioWorkletRuntime');
-			expect(validRuntimeTypes).toContain('WebWorkerMIDIRuntime');
-			expect(validRuntimeTypes).toContain('WebWorkerLogicRuntime');
-			expect(validRuntimeTypes).toContain('MainThreadLogicRuntime');
-		});
-	});
-
 	describe('Runtime lifecycle integration', () => {
 		it('should destroy previous runtime when runtime type changes without changeRuntime event', async () => {
 			const audioDestroyer = vi.fn();

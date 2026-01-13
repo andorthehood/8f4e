@@ -56,11 +56,8 @@ export interface FeatureFlags {
 export type FeatureFlagsConfig = Partial<FeatureFlags>;
 
 // Runtime types
-export type RuntimeType =
-	| 'WebWorkerLogicRuntime'
-	| 'MainThreadLogicRuntime'
-	| 'AudioWorkletRuntime'
-	| 'WebWorkerMIDIRuntime';
+// Note: RuntimeType was removed as it's no longer needed with the runtime registry system.
+// Runtime IDs are now strings defined by the keys in the RuntimeRegistry.
 
 // EventDispatcher type - complete definition for event management
 export interface EventDispatcher {
