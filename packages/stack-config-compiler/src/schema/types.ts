@@ -20,6 +20,8 @@ export interface JSONSchemaLike {
 	required?: readonly string[];
 	items?: JSONSchemaLike;
 	additionalProperties?: boolean | JSONSchemaLike;
+	oneOf?: readonly JSONSchemaLike[];
+	anyOf?: readonly JSONSchemaLike[];
 }
 
 /**
@@ -42,6 +44,9 @@ export interface SchemaNode {
 	additionalPropertiesAllowed: boolean;
 	/** Schema for additional properties (if not a boolean) */
 	additionalPropertiesSchema?: SchemaNode;
+	/** Alternative schemas for oneOf/anyOf combinators */
+	oneOfAlternatives?: SchemaNode[];
+	anyOfAlternatives?: SchemaNode[];
 }
 
 /**
