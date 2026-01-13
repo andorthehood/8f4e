@@ -11,6 +11,7 @@ import type {
 } from '@8f4e/compiler';
 import type { CompileAndUpdateMemoryResult, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
 import type { Direction } from './pureHelpers/finders/findClosestCodeBlockInDirection';
+import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 // Re-export MemoryAction for use by consumers
 export type { CompilerMemoryAction as MemoryAction };
@@ -588,7 +589,7 @@ export interface Callbacks {
 	 * @param schema - JSON Schema describing the expected config structure
 	 * @returns Promise containing the compiled config object and any errors
 	 */
-	compileConfig?: (source: string, schema: ConfigSchema) => Promise<ConfigCompilationResult>;
+	compileConfig?: (source: string, schema: JSONSchemaLike) => Promise<ConfigCompilationResult>;
 
 	// Memory manipulation callback
 	setWordInMemory?: (wordAlignedAddress: number, value: number) => void;
@@ -614,23 +615,6 @@ export interface Callbacks {
 	 * @returns Promise that resolves when the write operation completes
 	 */
 	writeClipboardText?: (text: string) => Promise<void>;
-}
-
-/**
- * Supported primitive types in config schema subset
- */
-export type ConfigSchemaType = 'string' | 'number' | 'boolean' | 'null' | 'object' | 'array';
-
-/**
- * A subset of JSON Schema used for config validation
- */
-export interface ConfigSchema {
-	type?: ConfigSchemaType | ConfigSchemaType[];
-	enum?: readonly (string | number | boolean | null)[];
-	properties?: Record<string, ConfigSchema>;
-	required?: readonly string[];
-	items?: ConfigSchema;
-	additionalProperties?: boolean | ConfigSchema;
 }
 
 /**

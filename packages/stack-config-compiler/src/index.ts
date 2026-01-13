@@ -47,9 +47,10 @@
 
 import parse from './parser/parse';
 import executeCommands from './vm/executeCommands';
-import { preprocessSchema, findMissingRequiredFields } from './schema';
+import { preprocessSchema, findMissingRequiredFields, validateCombinators } from './schema';
 
 import type { CompileError, CompileOptions, CompileResult } from './types';
+import type { SchemaValidationError } from './schema';
 
 export type {
 	CompileResult,
@@ -107,13 +108,30 @@ export function compileConfig(source: string, options?: CompileOptions): Compile
 	}
 
 	// Check for missing required fields if schema provided
-	const schemaErrors: CompileError[] =
+	const missingFieldsErrors: CompileError[] =
 		schemaRoot && writtenPaths ? findMissingRequiredFields(schemaRoot, writtenPaths) : [];
 
-	if (schemaErrors.length > 0) {
+	if (missingFieldsErrors.length > 0) {
 		return {
 			config: null,
-			errors: schemaErrors,
+			errors: missingFieldsErrors,
+		};
+	}
+
+	// Validate oneOf/anyOf combinators if schema provided
+	const combinatorErrors: CompileError[] = schemaRoot
+		? validateCombinators(schemaRoot, config).map((err: SchemaValidationError) => ({
+				...err,
+				// Report at line 1 for whole-config validations since these errors validate
+				// the final assembled config object, not individual set commands
+				line: 1,
+			}))
+		: [];
+
+	if (combinatorErrors.length > 0) {
+		return {
+			config: null,
+			errors: combinatorErrors,
 		};
 	}
 

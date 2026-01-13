@@ -220,4 +220,190 @@ set
 		expect(result.config).toBeNull();
 		expect(result.errors.some(e => e.path === 'info.title')).toBe(true);
 	});
+
+	it('should validate oneOf with discriminated union (runtime field)', () => {
+		const schema = {
+			type: 'object' as const,
+			properties: {
+				config: {
+					type: 'object' as const,
+					oneOf: [
+						{
+							properties: {
+								runtime: { type: 'string' as const, enum: ['audio'] as const },
+								audioOutputBuffers: { type: 'number' as const },
+							},
+							required: ['runtime', 'audioOutputBuffers'],
+						},
+						{
+							properties: {
+								runtime: { type: 'string' as const, enum: ['midi'] as const },
+								midiNoteInputs: { type: 'number' as const },
+							},
+							required: ['runtime', 'midiNoteInputs'],
+						},
+					],
+				},
+			},
+		};
+
+		// Valid audio runtime config
+		const audioSource = `
+scope "config.runtime"
+push "audio"
+set
+
+rescope "config.audioOutputBuffers"
+push 2
+set
+`;
+		const audioResult = compileConfig(audioSource, { schema });
+		expect(audioResult.errors).toEqual([]);
+		expect(audioResult.config).toEqual({
+			config: {
+				runtime: 'audio',
+				audioOutputBuffers: 2,
+			},
+		});
+
+		// Valid MIDI runtime config
+		const midiSource = `
+scope "config.runtime"
+push "midi"
+set
+
+rescope "config.midiNoteInputs"
+push 16
+set
+`;
+		const midiResult = compileConfig(midiSource, { schema });
+		expect(midiResult.errors).toEqual([]);
+		expect(midiResult.config).toEqual({
+			config: {
+				runtime: 'midi',
+				midiNoteInputs: 16,
+			},
+		});
+	});
+
+	it('should reject oneOf with wrong runtime-specific field', () => {
+		const schema = {
+			type: 'object' as const,
+			properties: {
+				config: {
+					type: 'object' as const,
+					oneOf: [
+						{
+							properties: {
+								runtime: { type: 'string' as const, enum: ['audio'] as const },
+								audioOutputBuffers: { type: 'number' as const },
+							},
+							required: ['runtime'],
+							additionalProperties: false,
+						},
+						{
+							properties: {
+								runtime: { type: 'string' as const, enum: ['midi'] as const },
+								midiNoteInputs: { type: 'number' as const },
+							},
+							required: ['runtime'],
+							additionalProperties: false,
+						},
+					],
+				},
+			},
+		};
+
+		// Try to use MIDI-specific field with audio runtime
+		const source = `
+scope "config.runtime"
+push "audio"
+set
+
+rescope "config.midiNoteInputs"
+push 16
+set
+`;
+		const result = compileConfig(source, { schema });
+		// Should fail because midiNoteInputs is only valid for midi runtime
+		// The oneOf validation should catch this
+		expect(result.config).toBeNull();
+		expect(result.errors.length).toBeGreaterThan(0);
+	});
+
+	it('should validate anyOf with overlapping shapes', () => {
+		const schema = {
+			type: 'object' as const,
+			properties: {
+				value: {
+					anyOf: [{ type: 'string' as const }, { type: 'number' as const }],
+				},
+			},
+		};
+
+		// String value
+		const stringSource = `
+scope "value"
+push "hello"
+set
+`;
+		const stringResult = compileConfig(stringSource, { schema });
+		expect(stringResult.errors).toEqual([]);
+		expect(stringResult.config).toEqual({ value: 'hello' });
+
+		// Number value
+		const numberSource = `
+scope "value"
+push 42
+set
+`;
+		const numberResult = compileConfig(numberSource, { schema });
+		expect(numberResult.errors).toEqual([]);
+		expect(numberResult.config).toEqual({ value: 42 });
+	});
+
+	it('should reject value that matches no anyOf alternatives', () => {
+		const schema = {
+			type: 'object' as const,
+			properties: {
+				value: {
+					anyOf: [{ type: 'string' as const }, { type: 'number' as const }],
+				},
+			},
+		};
+
+		const source = `
+scope "value"
+push true
+set
+`;
+		const result = compileConfig(source, { schema });
+		expect(result.config).toBeNull();
+		expect(result.errors).toHaveLength(1);
+		expect(result.errors[0].kind).toBe('schema');
+		expect(result.errors[0].message).toContain('does not match any anyOf alternatives');
+	});
+
+	it('should reject value that matches multiple oneOf alternatives', () => {
+		const schema = {
+			type: 'object' as const,
+			properties: {
+				value: {
+					oneOf: [{ type: 'number' as const }, { type: ['number', 'string'] as const }],
+				},
+			},
+		};
+
+		// Number matches both alternatives (ambiguous)
+		const source = `
+scope "value"
+push 42
+set
+`;
+		const result = compileConfig(source, { schema });
+		expect(result.config).toBeNull();
+		expect(result.errors).toHaveLength(1);
+		expect(result.errors[0].kind).toBe('schema');
+		expect(result.errors[0].message).toContain('matches multiple oneOf alternatives');
+	});
 });
