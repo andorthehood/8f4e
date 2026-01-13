@@ -10,6 +10,7 @@ import type {
 	CompiledFunctionLookup,
 } from '@8f4e/compiler';
 import type { CompileAndUpdateMemoryResult, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
+import type { Direction } from './pureHelpers/finders/findClosestCodeBlockInDirection';
 
 // Re-export MemoryAction for use by consumers
 export type { CompilerMemoryAction as MemoryAction };
@@ -85,14 +86,14 @@ export interface InternalKeyboardEvent {
 }
 
 // Abstract event payloads for keyboard actions
-// Direction type is exported from pureHelpers/finders/findClosestCodeBlockInDirection
+// Direction type is imported from pureHelpers/finders/findClosestCodeBlockInDirection
 
 export interface NavigateCodeBlockEvent {
-	direction: 'left' | 'right' | 'up' | 'down';
+	direction: Direction;
 }
 
 export interface MoveCaretEvent {
-	direction: 'left' | 'right' | 'up' | 'down';
+	direction: Direction;
 }
 
 export interface InsertTextEvent {
