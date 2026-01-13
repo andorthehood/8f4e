@@ -9,6 +9,7 @@ export default function createVMState(schemaRoot?: SchemaNode): VMState {
 		config: {},
 		dataStack: [],
 		scopeStack: [],
+		constantsStack: [new Map()], // Start with root-level constants map
 	};
 
 	if (schemaRoot) {
@@ -33,6 +34,10 @@ if (import.meta.vitest) {
 
 		it('should create empty scope stack', () => {
 			expect(createVMState().scopeStack).toEqual([]);
+		});
+
+		it('should create empty constants stack', () => {
+			expect(createVMState().constantsStack).toEqual([new Map()]);
 		});
 
 		it('should create independent instances', () => {
