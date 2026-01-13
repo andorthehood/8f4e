@@ -122,7 +122,9 @@ export function compileConfig(source: string, options?: CompileOptions): Compile
 	const combinatorErrors: CompileError[] = schemaRoot
 		? validateCombinators(schemaRoot, config).map((err: SchemaValidationError) => ({
 				...err,
-				line: 1, // Report at line 1 since these are whole-config validations
+				// Report at line 1 for whole-config validations since these errors validate
+				// the final assembled config object, not individual set commands
+				line: 1,
 			}))
 		: [];
 
