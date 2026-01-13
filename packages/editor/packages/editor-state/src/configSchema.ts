@@ -180,7 +180,8 @@ export function getConfigSchema(runtimeRegistry?: RuntimeRegistry): JSONSchemaLi
 
 /**
  * Default config schema for backward compatibility.
- * @deprecated Use getConfigSchema() instead to support runtime registry
+ * @deprecated Use getConfigSchema() instead to support runtime registry.
+ * This will be removed in a future version once all consumers migrate to the registry approach.
  */
 const configSchema: JSONSchemaLike = getConfigSchema();
 
