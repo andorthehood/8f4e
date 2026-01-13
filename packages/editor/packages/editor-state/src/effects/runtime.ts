@@ -37,8 +37,24 @@ export default async function runtime(store: StateManager<State>, events: EventD
 			}
 
 			log(state, `Requesting runtime: ${runtime.runtime}`, 'Runtime');
-			const runtimeFactory = await state.callbacks.requestRuntime(runtime.runtime as RuntimeType);
-			log(state, `Successfully loaded runtime: ${runtime.runtime}`, 'Runtime');
+
+			// Try to get runtime from registry first, fall back to callback
+			let runtimeFactory;
+			if (state.runtimeRegistry && runtime.runtime in state.runtimeRegistry) {
+				// Use runtime registry
+				const registryEntry = state.runtimeRegistry[runtime.runtime];
+				runtimeFactory = registryEntry.factory;
+				log(state, `Loaded runtime from registry: ${runtime.runtime}`, 'Runtime');
+			} else if (state.runtimeRegistry && state.defaultRuntimeId && state.defaultRuntimeId in state.runtimeRegistry) {
+				// Fall back to default runtime ID if unknown runtime requested
+				const registryEntry = state.runtimeRegistry[state.defaultRuntimeId];
+				runtimeFactory = registryEntry.factory;
+				log(state, `Unknown runtime ${runtime.runtime}, falling back to default: ${state.defaultRuntimeId}`, 'Runtime');
+			} else {
+				// Fall back to legacy callback
+				runtimeFactory = await state.callbacks.requestRuntime(runtime.runtime as RuntimeType);
+				log(state, `Successfully loaded runtime via callback: ${runtime.runtime}`, 'Runtime');
+			}
 
 			if (typeof runtimeFactory !== 'function') {
 				throw new Error(`Runtime ${runtime.runtime} callback did not return a valid factory function`);

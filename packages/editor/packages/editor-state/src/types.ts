@@ -119,6 +119,27 @@ export interface InsertTextEvent {
 export type RuntimeFactory = (store: StateManager<State>, events: EventDispatcher) => () => void;
 
 /**
+ * Runtime registry entry describing a runtime configuration.
+ * Each entry defines a runtime's id, default configuration, schema, and factory function.
+ */
+export interface RuntimeRegistryEntry {
+	/** Unique identifier for this runtime (e.g., 'WebWorkerLogicRuntime') */
+	id: string;
+	/** Default configuration object for this runtime */
+	defaults: Record<string, unknown>;
+	/** JSON Schema describing the configuration shape for this runtime */
+	schema: JSONSchemaLike;
+	/** Factory function that creates the runtime instance */
+	factory: RuntimeFactory;
+}
+
+/**
+ * Runtime registry mapping runtime IDs to their registry entries.
+ * Used to configure available runtimes and their schemas at editor initialization.
+ */
+export type RuntimeRegistry = Record<string, RuntimeRegistryEntry>;
+
+/**
  * Grid coordinates represent logical cell positions in the editor grid.
  * These are distinct from pixel coordinates used at runtime.
  */
@@ -636,6 +657,18 @@ export interface ConfigCompilationResult {
 export interface Options {
 	featureFlags?: FeatureFlagsConfig;
 	callbacks: Callbacks;
+	/**
+	 * Runtime registry mapping runtime IDs to their configuration entries.
+	 * Each entry defines a runtime's defaults, schema, and factory function.
+	 * If not provided, the requestRuntime callback must be implemented.
+	 */
+	runtimeRegistry?: RuntimeRegistry;
+	/**
+	 * Default runtime ID to use when no runtime is specified or when an unknown runtime ID is encountered.
+	 * Must match a key in the runtimeRegistry if runtimeRegistry is provided.
+	 * If not provided, falls back to the first runtime in the registry or uses the legacy requestRuntime callback.
+	 */
+	defaultRuntimeId?: string;
 }
 
 export interface EditorSettings {
@@ -695,6 +728,10 @@ export interface State {
 	runtime: {
 		stats: RuntimeStats;
 	};
+	/** Runtime registry for configurable runtime schemas */
+	runtimeRegistry?: RuntimeRegistry;
+	/** Default runtime ID to use when no runtime is specified */
+	defaultRuntimeId?: string;
 	codeErrors: {
 		compilationErrors: CodeError[];
 		configErrors: CodeError[];

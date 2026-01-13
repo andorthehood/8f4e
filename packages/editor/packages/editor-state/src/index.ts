@@ -31,11 +31,27 @@ import type { Options, State, EventDispatcher } from './types';
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	const store = createStateManager<State>({
+	// Create base state
+	const baseState = {
 		...createDefaultState(),
 		callbacks: options.callbacks,
 		featureFlags,
-	});
+		runtimeRegistry: options.runtimeRegistry,
+		defaultRuntimeId: options.defaultRuntimeId,
+	};
+
+	// If runtime registry is provided, update default config to use registry defaults
+	if (options.runtimeRegistry && options.defaultRuntimeId) {
+		const registryEntry = options.runtimeRegistry[options.defaultRuntimeId];
+		if (registryEntry) {
+			baseState.compiledConfig = {
+				...baseState.compiledConfig,
+				runtimeSettings: [registryEntry.defaults as never],
+			};
+		}
+	}
+
+	const store = createStateManager<State>(baseState);
 
 	const state = store.getState();
 
@@ -112,6 +128,8 @@ export type {
 	ContextMenu,
 	RuntimeFactory,
 	RuntimeType,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
 	FeatureFlags,
 	FeatureFlagsConfig,
 	EventDispatcher,
