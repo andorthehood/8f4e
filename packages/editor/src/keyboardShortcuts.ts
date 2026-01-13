@@ -1,6 +1,21 @@
 import type { EventDispatcher } from './events';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent, Direction } from '@8f4e/editor-state';
 
+function getDirectionFromArrowKey(key: string): Direction | null {
+	switch (key) {
+		case 'ArrowLeft':
+			return 'left';
+		case 'ArrowRight':
+			return 'right';
+		case 'ArrowUp':
+			return 'up';
+		case 'ArrowDown':
+			return 'down';
+		default:
+			return null;
+	}
+}
+
 export default function keyboardShortcuts(events: EventDispatcher): () => void {
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
@@ -35,25 +50,11 @@ export default function keyboardShortcuts(events: EventDispatcher): () => void {
 
 			// Navigation with modifier + arrow keys
 			if (key.startsWith('Arrow')) {
-				event.preventDefault();
-				let direction: Direction;
-				switch (key) {
-					case 'ArrowLeft':
-						direction = 'left';
-						break;
-					case 'ArrowRight':
-						direction = 'right';
-						break;
-					case 'ArrowUp':
-						direction = 'up';
-						break;
-					case 'ArrowDown':
-						direction = 'down';
-						break;
-					default:
-						return;
+				const direction = getDirectionFromArrowKey(key);
+				if (direction) {
+					event.preventDefault();
+					events.dispatch<NavigateCodeBlockEvent>('navigateCodeBlock', { direction });
 				}
-				events.dispatch<NavigateCodeBlockEvent>('navigateCodeBlock', { direction });
 				return;
 			}
 
@@ -65,25 +66,11 @@ export default function keyboardShortcuts(events: EventDispatcher): () => void {
 
 		// Arrow keys for caret movement
 		if (key.startsWith('Arrow')) {
-			event.preventDefault();
-			let direction: Direction;
-			switch (key) {
-				case 'ArrowLeft':
-					direction = 'left';
-					break;
-				case 'ArrowRight':
-					direction = 'right';
-					break;
-				case 'ArrowUp':
-					direction = 'up';
-					break;
-				case 'ArrowDown':
-					direction = 'down';
-					break;
-				default:
-					return;
+			const direction = getDirectionFromArrowKey(key);
+			if (direction) {
+				event.preventDefault();
+				events.dispatch<MoveCaretEvent>('moveCaret', { direction });
 			}
-			events.dispatch<MoveCaretEvent>('moveCaret', { direction });
 			return;
 		}
 
