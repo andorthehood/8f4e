@@ -15,7 +15,7 @@ import { CodeBlockClickEvent } from './codeBlockDragger';
 
 import { EventDispatcher } from '../../types';
 import gapCalculator from '../../pureHelpers/codeEditing/gapCalculator';
-import highlightSyntax8f4e from '../../pureHelpers/codeEditing/generateCodeColorMap';
+import highlightSyntax8f4e from '../../pureHelpers/codeEditing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../../pureHelpers/codeEditing/highlightSyntaxGlsl';
 import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
 import reverseGapCalculator from '../../pureHelpers/codeEditing/reverseGapCalculator';
