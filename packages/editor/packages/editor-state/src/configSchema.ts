@@ -1,6 +1,6 @@
-import type { ConfigSchema } from './types';
+import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
-const runtimeSettingsSchema: ConfigSchema = {
+const runtimeSettingsSchema: JSONSchemaLike = {
 	type: 'object',
 	oneOf: [
 		{
@@ -122,7 +122,7 @@ const runtimeSettingsSchema: ConfigSchema = {
 	],
 };
 
-const configSchema: ConfigSchema = {
+const configSchema: JSONSchemaLike = {
 	type: 'object',
 	properties: {
 		memorySizeBytes: { type: 'number' },

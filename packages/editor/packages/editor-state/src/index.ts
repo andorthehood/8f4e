@@ -80,7 +80,6 @@ export type {
 	Options,
 	EditorSettings,
 	CompilationResult,
-	ConfigSchema,
 	ConfigCompilationResult,
 	CodeBlock,
 	Viewport,
@@ -126,6 +125,9 @@ export type {
 	CodeError,
 	MemoryAction,
 } from './types';
+
+// Re-export JSONSchemaLike from stack-config-compiler for convenience
+export type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 // Export EMPTY_DEFAULT_PROJECT as a value
 export { EMPTY_DEFAULT_PROJECT } from './types';
