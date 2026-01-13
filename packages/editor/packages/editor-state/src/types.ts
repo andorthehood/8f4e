@@ -185,12 +185,17 @@ export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
 export type MenuGenerator = (state: State, payload?: unknown) => ContextMenuItem[] | Promise<ContextMenuItem[]>;
 
+export interface MenuStackEntry {
+	menu: string;
+	payload?: unknown;
+}
+
 export interface ContextMenu extends Position {
 	highlightedItem: number;
 	itemWidth: number;
 	items: ContextMenuItem[];
 	open: boolean;
-	menuStack: string[];
+	menuStack: MenuStackEntry[];
 }
 
 export interface Compiler {
@@ -543,6 +548,7 @@ export interface ModuleMetadata {
 export interface ProjectMetadata {
 	slug: string;
 	title: string;
+	category: string;
 }
 
 export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'memoryRef'> {
