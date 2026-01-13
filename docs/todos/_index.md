@@ -36,6 +36,8 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 164 | Decouple Web-UI Sprite/Grid Writes | 🟡 | 1-2d | 2026-01-08 | Move sprite lookups and grid sizing writes out of web-ui into the editor |
 | 166 | Default Vertex Shader for Post-Process Effects | 🟡 | 2-4h | 2026-01-12 | Allow fragment-only post-process shaders by injecting a fullscreen-quad vertex shader default and update the ripple example |
 | 167 | Decouple Syntax Highlighting for GLSL Blocks | 🟡 | 2-4h | 2026-01-12 | Add a GLSL highlighter path for shader blocks and keep 8f4e highlighting for everything else |
+| 169 | Toggle Position Offsetters via Function Key | 🟡 | 1-2h | 2026-01-13 | Add a runtime toggle event and host key binding to disable memory-driven position offsets |
+| 170 | Toggle Post-Process Effects via Function Key | 🟡 | 1-2h | 2026-01-13 | Add a runtime toggle event and host key binding to disable post-process effects |
 | 002 | Enable Strict TypeScript in Editor Package | 🟡 | 2-3d | 2025-08-23 | Currently has 52 type errors when strict settings enabled, causing missing null checks and implicit any types that reduce type safety and developer experience |
 | 025 | Separate Editor View Layer into Standalone Package | 🟡 | 3-5d | 2025-08-26 | Extract Canvas-based rendering and sprite management into `@8f4e/browser-view` package to make core editor a pure state machine compatible with any renderer |
 | 026 | Separate Editor User Interactions into Standalone Package | 🟡 | 2-3d | 2025-08-26 | Extract DOM event handling and input logic into `@8f4e/browser-input` package to enable alternative input systems (touch, joystick, terminal) |
