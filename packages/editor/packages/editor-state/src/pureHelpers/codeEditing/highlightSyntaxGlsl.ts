@@ -35,12 +35,14 @@ const glslTypes = [
 ];
 
 /**
- * Builds a deterministic regexp that matches keywords while preferring longer tokens.
- * @param keywords Keywords that should be highlighted.
- * @returns Regular expression used to find keyword boundaries with indices data.
+ * All GLSL keywords combined and pre-sorted for regex compilation
  */
-const getKeywordRegExp = (keywords: string[]) =>
-	new RegExp('\\b(?:' + keywords.sort((a, b) => b.length - a.length).join('|') + ')\\b', 'd');
+const allGlslKeywords = [...glslKeywords, ...glslTypes].sort((a, b) => b.length - a.length);
+
+/**
+ * Pre-compiled regex for matching GLSL keywords
+ */
+const glslKeywordRegExp = new RegExp('\\b(?:' + allGlslKeywords.join('|') + ')\\b', 'd');
 
 /**
  * Generates a 2D lookup where each cell contains the sprite used to render a code character.
@@ -61,11 +63,9 @@ export default function highlightSyntaxGlsl<T>(
 		fontBinaryOne: T;
 	}
 ): T[][] {
-	const allKeywords = [...glslKeywords, ...glslTypes];
-
 	return code.map(line => {
 		const { index: lineNumberIndex } = /^\d+/.exec(line) || {};
-		const keywordMatch = getKeywordRegExp(allKeywords).exec(line);
+		const keywordMatch = glslKeywordRegExp.exec(line);
 		const keywordIndices = (keywordMatch as unknown as { indices?: number[][] })?.indices || [[]];
 		const { index: numberIndex } = /(?!^)(?:-|)\b(\d+\.?\d*|\d*\.\d+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: lineCommentIndex } = /\/\//.exec(line) || {};
