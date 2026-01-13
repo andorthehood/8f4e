@@ -85,14 +85,14 @@ export interface InternalKeyboardEvent {
 }
 
 // Abstract event payloads for keyboard actions
-export type Direction = 'left' | 'right' | 'up' | 'down';
+// Direction type is exported from pureHelpers/finders/findClosestCodeBlockInDirection
 
 export interface NavigateCodeBlockEvent {
-	direction: Direction;
+	direction: 'left' | 'right' | 'up' | 'down';
 }
 
 export interface MoveCaretEvent {
-	direction: Direction;
+	direction: 'left' | 'right' | 'up' | 'down';
 }
 
 export interface InsertTextEvent {
