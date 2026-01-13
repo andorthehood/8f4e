@@ -140,7 +140,7 @@ export default function highlightSyntax8f4e<T>(
 	return code.map(line => {
 		const instructionMatch = getInstructionRegExp(instructionsToHighlight).exec(line);
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
-		const { index: numberIndex } = /(?:-|)\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
+		const { index: numberIndex } = /-?\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
 		const { index: commentIndex } = /;/.exec(line) || {};
 		const binaryNumberMatch = /0b([01]+)/.exec(line);
 		const { index: binaryNumberIndex } = binaryNumberMatch || { index: undefined };
