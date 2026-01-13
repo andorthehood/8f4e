@@ -5,12 +5,12 @@ import codeBlockNavigation from './codeBlockNavigation';
 import { createMockCodeBlock, createMockState } from '../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
 
-import type { InternalKeyboardEvent, CodeBlockGraphicData } from '../types';
+import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '../types';
 
 describe('codeBlockNavigation', () => {
 	let state: ReturnType<typeof createMockState>;
 	let events: ReturnType<typeof createMockEventDispatcherWithVitest>;
-	let onKeydownHandler: (event: InternalKeyboardEvent) => void;
+	let onNavigateCodeBlockHandler: (event: NavigateCodeBlockEvent) => void;
 	let selectedBlock: CodeBlockGraphicData;
 	let leftBlock: CodeBlockGraphicData;
 	let rightBlock: CodeBlockGraphicData;
@@ -51,28 +51,19 @@ describe('codeBlockNavigation', () => {
 		// Create mock event dispatcher using shared utility
 		events = createMockEventDispatcherWithVitest();
 		(events.on as ReturnType<typeof vi.fn>).mockImplementation(
-			(eventName: string, callback: ((event: InternalKeyboardEvent) => void) | (() => void)) => {
-				if (eventName === 'keydown') {
-					onKeydownHandler = callback as (event: InternalKeyboardEvent) => void;
+			(eventName: string, callback: ((event: NavigateCodeBlockEvent) => void) | (() => void)) => {
+				if (eventName === 'navigateCodeBlock') {
+					onNavigateCodeBlockHandler = callback as (event: NavigateCodeBlockEvent) => void;
 				}
 			}
 		);
 	});
 
-	it('should register a keydown event handler', () => {
+	it('should register a navigateCodeBlock event handler', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
 
-		expect(events.on).toHaveBeenCalledWith('keydown', expect.any(Function));
-	});
-
-	it('should do nothing when metaKey is not pressed', () => {
-		// Initialize the effect
-		codeBlockNavigation(state, events);
-
-		const initialBlock = state.graphicHelper.selectedCodeBlock;
-		onKeydownHandler({ key: 'ArrowRight', metaKey: false });
-		expect(state.graphicHelper.selectedCodeBlock).toBe(initialBlock);
+		expect(events.on).toHaveBeenCalledWith('navigateCodeBlock', expect.any(Function));
 	});
 
 	it('should do nothing when no code block is selected', () => {
@@ -80,48 +71,39 @@ describe('codeBlockNavigation', () => {
 		codeBlockNavigation(state, events);
 
 		state.graphicHelper.selectedCodeBlock = undefined;
-		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
+		onNavigateCodeBlockHandler({ direction: 'right' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(undefined);
 	});
 
-	it('should do nothing for non-arrow keys even with metaKey', () => {
+	it('should navigate left when navigateCodeBlock event with left direction is dispatched', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
 
-		const initialBlock = state.graphicHelper.selectedCodeBlock;
-		onKeydownHandler({ key: 'a', metaKey: true });
-		expect(state.graphicHelper.selectedCodeBlock).toBe(initialBlock);
-	});
-
-	it('should navigate left when Command + ArrowLeft is pressed', () => {
-		// Initialize the effect
-		codeBlockNavigation(state, events);
-
-		onKeydownHandler({ key: 'ArrowLeft', metaKey: true });
+		onNavigateCodeBlockHandler({ direction: 'left' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(leftBlock);
 	});
 
-	it('should navigate right when Command + ArrowRight is pressed', () => {
+	it('should navigate right when navigateCodeBlock event with right direction is dispatched', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
 
-		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
+		onNavigateCodeBlockHandler({ direction: 'right' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
 	});
 
-	it('should navigate up when Command + ArrowUp is pressed', () => {
+	it('should navigate up when navigateCodeBlock event with up direction is dispatched', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
 
-		onKeydownHandler({ key: 'ArrowUp', metaKey: true });
+		onNavigateCodeBlockHandler({ direction: 'up' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(upBlock);
 	});
 
-	it('should navigate down when Command + ArrowDown is pressed', () => {
+	it('should navigate down when navigateCodeBlock event with down direction is dispatched', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
 
-		onKeydownHandler({ key: 'ArrowDown', metaKey: true });
+		onNavigateCodeBlockHandler({ direction: 'down' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(downBlock);
 	});
 
@@ -132,7 +114,7 @@ describe('codeBlockNavigation', () => {
 		const initialViewportX = state.graphicHelper.viewport.x;
 		const initialViewportY = state.graphicHelper.viewport.y;
 
-		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
+		onNavigateCodeBlockHandler({ direction: 'right' });
 
 		// Verify viewport has changed
 		const viewportChanged =
@@ -148,7 +130,7 @@ describe('codeBlockNavigation', () => {
 		// Remove all blocks except selected
 		state.graphicHelper.codeBlocks = [selectedBlock];
 
-		onKeydownHandler({ key: 'ArrowRight', metaKey: true });
+		onNavigateCodeBlockHandler({ direction: 'right' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
 	});
 });
