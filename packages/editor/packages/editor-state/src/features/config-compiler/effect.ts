@@ -4,7 +4,7 @@ import deepMergeConfig from './deepMergeConfig';
 import { combineConfigBlocks } from './combineConfigBlocks';
 import { compileConfigFromCombined } from './compileConfigFromCombined';
 
-import { log } from '../../impureHelpers/logger/logger';
+import { log } from '../logger/logger';
 import { defaultConfig } from '../../pureHelpers/state/createDefaultState';
 
 import type { EventDispatcher, State, ConfigObject } from '../../types';

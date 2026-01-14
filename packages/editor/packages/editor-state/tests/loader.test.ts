@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import compiler from '../src/features/program-compiler/compiler';
-import configEffect from '../src/features/config-compiler/config';
+import compiler from '../src/features/program-compiler/effect';
+import configEffect from '../src/features/config-compiler/effect';
 import projectImport from '../src/effects/projectImport';
 import { createMockState } from '../src/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
