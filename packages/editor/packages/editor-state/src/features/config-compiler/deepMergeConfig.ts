@@ -1,4 +1,4 @@
-import isPlainObject from '../isPlainObject';
+import isPlainObject from './isPlainObject';
 
 /**
  * Deep merges two config objects. Later values override earlier values.

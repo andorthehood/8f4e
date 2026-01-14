@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
-import { createMockCodeBlock } from '../pureHelpers/testingUtils/testUtils';
-import { combineConfigBlocks } from '../pureHelpers/config/combineConfigBlocks';
-import { mapErrorLineToBlock } from '../pureHelpers/config/mapErrorLineToBlock';
+import { combineConfigBlocks } from './combineConfigBlocks';
+import { mapErrorLineToBlock } from './mapErrorLineToBlock';
+
+import { createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
 
 describe('config error mapping', () => {
 	it('should map errors to correct blocks with local line numbers', () => {

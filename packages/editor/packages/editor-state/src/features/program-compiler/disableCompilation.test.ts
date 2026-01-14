@@ -2,12 +2,12 @@ import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest'
 import createStateManager from '@8f4e/state-manager';
 
 import compiler from './compiler';
-import configEffect, { compileConfigForExport } from './config';
 
-import { createMockState, createMockCodeBlock } from '../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
+import configEffect, { compileConfigForExport } from '../config-compiler/config';
+import { createMockState, createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
 
-import type { State } from '../types';
+import type { State } from '../../types';
 
 describe('disableAutoCompilation feature', () => {
 	let mockState: State;

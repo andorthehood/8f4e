@@ -62,7 +62,7 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { createMockCodeBlock } = await import('../testingUtils/testUtils');
+	const { createMockCodeBlock } = await import('../../pureHelpers/testingUtils/testUtils');
 
 	describe('combineConfigBlocks', () => {
 		it('should combine multiple config blocks with blank line separator', () => {

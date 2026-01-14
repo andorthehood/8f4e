@@ -4,7 +4,7 @@ import createStateManager from '@8f4e/state-manager';
 import codeBlockCreator from './codeBlockCreator';
 import graphicHelper from './graphicHelper';
 
-import { flattenProjectForCompiler } from '../compiler';
+import { flattenProjectForCompiler } from '../../features/program-compiler/compiler';
 import projectImport from '../projectImport';
 import { createMockState, createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';

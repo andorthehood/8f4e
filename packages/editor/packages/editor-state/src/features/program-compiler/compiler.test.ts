@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import { flattenProjectForCompiler } from './compiler';
 
-import type { CodeBlockGraphicData } from '../types';
+import type { CodeBlockGraphicData } from '../../types';
 
 describe('flattenProjectForCompiler', () => {
 	it('should exclude comment blocks from compilation', () => {
