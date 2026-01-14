@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import codeBlockCreator from './codeBlockCreator';
-import graphicHelper from './graphicHelper';
+import graphicHelper from './features/graphicHelper/effect';
+import codeBlockCreator from './features/codeBlockCreator/effect';
 
 import { flattenProjectForCompiler } from '../../features/program-compiler/effect';
 import projectImport from '../../features/project-import/effect';
