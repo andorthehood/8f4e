@@ -1,7 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
-import { warn } from '../impureHelpers/logger/logger';
+import { warn } from '../features/logger/logger';
 
 import type { State } from '../types';
 

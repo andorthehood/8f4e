@@ -1,6 +1,6 @@
 import parseBufferPlotters from './codeParser';
 
-import gapCalculator from '../../../../pureHelpers/codeEditing/gapCalculator';
+import gapCalculator from '../../../../features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '../../../../pureHelpers/resolveMemoryIdentifier';
 
 import type { CodeBlockGraphicData, State } from '../../../../types';

@@ -1,7 +1,8 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { log } from '../../impureHelpers/logger/logger';
-import derivePostProcessEffects from '../../pureHelpers/shaderEffects/derivePostProcessEffects';
+import derivePostProcessEffects from './derivePostProcessEffects';
+
+import { log } from '../logger/logger';
 
 import type { EventDispatcher, State } from '../../types';
 
