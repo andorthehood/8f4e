@@ -1,9 +1,9 @@
 import parseDebuggers from './codeParser';
 
-import gapCalculator from '../../../../features/code-editing/gapCalculator';
-import resolveMemoryIdentifier from '../../../../pureHelpers/resolveMemoryIdentifier';
+import type { CodeBlockGraphicData, State } from '~/types';
 
-import type { CodeBlockGraphicData, State } from '../../../../types';
+import gapCalculator from '~/features/code-editing/gapCalculator';
+import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 export default function updateDebuggersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.debuggers = [];

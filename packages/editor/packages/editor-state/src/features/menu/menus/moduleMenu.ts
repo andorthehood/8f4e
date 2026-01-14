@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, MenuGenerator } from '../../../types';
+import type { CodeBlockGraphicData, MenuGenerator } from '~/types';
 
 export interface OpenGroupEvent {
 	codeBlock: CodeBlockGraphicData;

@@ -1,6 +1,6 @@
 import extractConfigBody from './extractConfigBody';
 
-import type { CodeBlockGraphicData } from '../../types';
+import type { CodeBlockGraphicData } from '~/types';
 
 /**
  * Represents a config block source with its block reference for error mapping.

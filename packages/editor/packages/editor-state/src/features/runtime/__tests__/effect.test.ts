@@ -2,8 +2,9 @@ import { describe, it, vi, expect } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import runtimeEffect from '../effect';
-import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../../../pureHelpers/testingUtils/vitestTestUtils';
+
+import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 describe('Runtime System', () => {
 	describe('Runtime lifecycle integration', () => {

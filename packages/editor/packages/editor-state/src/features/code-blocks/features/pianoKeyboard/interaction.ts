@@ -3,11 +3,12 @@ import { StateManager } from '@8f4e/state-manager';
 import findPianoKeyAtViewportCoordinates from './findPianoKeyboardAtViewportCoordinates';
 
 import { CodeBlockClickEvent } from '../codeBlockDragger/effect';
-import { EventDispatcher } from '../../../../types';
 import insertCodeAfterLine from '../../utils/codeParsers/insertCodeAfterLine';
 import replaceCode from '../../utils/codeParsers/replaceCode';
 
-import type { State } from '../../../../types';
+import type { State } from '~/types';
+
+import { EventDispatcher } from '~/types';
 
 function generateCode(
 	pressedKeys: Set<number>,

@@ -2,9 +2,9 @@ import deepMergeConfig from './deepMergeConfig';
 import { combineConfigBlocks } from './combineConfigBlocks';
 import { compileConfigFromCombined } from './compileConfigFromCombined';
 
-import { defaultConfig } from '../../pureHelpers/state/createDefaultState';
+import type { State, ConfigObject } from '~/types';
 
-import type { State, ConfigObject } from '../../types';
+import { defaultConfig } from '~/pureHelpers/state/createDefaultState';
 
 /**
  * Compiles all config blocks and returns the merged config.
