@@ -133,14 +133,17 @@ const defaultRuntimeSettingsSchema: JSONSchemaLike = {
  */
 function generateRuntimeSettingsSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLike {
 	const oneOfBranches = Object.values(runtimeRegistry).map(entry => {
-		// Ensure the schema has the runtime discriminator
+		// Ensure the schema has the runtime discriminator without mutating the original schema
 		const schema = { ...entry.schema };
 		if (schema.type === 'object' && schema.properties) {
-			schema.properties = {
-				...schema.properties,
-				runtime: {
-					type: 'string',
-					enum: [entry.id],
+			return {
+				...schema,
+				properties: {
+					...schema.properties,
+					runtime: {
+						type: 'string' as const,
+						enum: [entry.id] as const,
+					},
 				},
 			};
 		}

@@ -4,7 +4,7 @@ import { log } from '../impureHelpers/logger/logger';
 import isPlainObject from '../pureHelpers/isPlainObject';
 import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
 import { collectConfigBlocks, ConfigBlockSource } from '../pureHelpers/config/collectConfigBlocks';
-import configSchema, { getConfigSchema } from '../configSchema';
+import { getConfigSchema } from '../configSchema';
 import { defaultConfig } from '../pureHelpers/state/createDefaultState';
 
 import type { CodeError, EventDispatcher, State, ConfigObject } from '../types';
@@ -24,8 +24,8 @@ async function buildConfigFromBlocks(
 	let mergedConfig: Record<string, unknown> = {};
 	const errors: CodeError[] = [];
 
-	// Use runtime registry schema if available, otherwise use default
-	const schema = state.runtimeRegistry ? getConfigSchema(state.runtimeRegistry) : configSchema;
+	// Use runtime registry schema (runtimeRegistry is now required)
+	const schema = getConfigSchema(state.runtimeRegistry);
 
 	for (const { block, source } of configBlocks) {
 		try {
