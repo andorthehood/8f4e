@@ -7,7 +7,7 @@ import { combineConfigBlocks } from '../pureHelpers/config/collectConfigBlocks';
 import { getConfigSchema } from '../configSchema';
 import { defaultConfig } from '../pureHelpers/state/createDefaultState';
 
-import type { CodeError, EventDispatcher, State, ConfigObject, CodeBlockGraphicData } from '../types';
+import type { CodeError, EventDispatcher, State, ConfigObject } from '../types';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 
@@ -42,8 +42,8 @@ function mapErrorLineToBlock(
 	return null;
 }
 
-async function buildConfigFromCombinedSource(
-	codeBlocks: CodeBlockGraphicData[],
+async function compileConfigFromCombined(
+	combined: ReturnType<typeof combineConfigBlocks>,
 	compileConfig: CompileConfigFn,
 	state: State
 ): Promise<ConfigBuildResult> {
@@ -52,8 +52,7 @@ async function buildConfigFromCombinedSource(
 	// Use runtime registry schema (runtimeRegistry is now required)
 	const schema = getConfigSchema(state.runtimeRegistry);
 
-	// Combine all config blocks into a single source
-	const { source, lineMappings } = combineConfigBlocks(codeBlocks);
+	const { source, lineMappings } = combined;
 
 	// If no config source, return empty config
 	if (source.trim().length === 0) {
@@ -123,19 +122,16 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 			return;
 		}
 
-		// Check if there are any config blocks
-		const { source } = combineConfigBlocks(state.graphicHelper.codeBlocks);
-		if (source.trim().length === 0) {
+		// Combine all config blocks once
+		const combined = combineConfigBlocks(state.graphicHelper.codeBlocks);
+		if (combined.source.trim().length === 0) {
 			store.set('compiledConfig', defaultConfig);
 			store.set('codeErrors.configErrors', []);
 			return;
 		}
 
-		const { mergedConfig, errors } = await buildConfigFromCombinedSource(
-			state.graphicHelper.codeBlocks,
-			state.callbacks.compileConfig,
-			state
-		);
+		// Compile and map errors
+		const { mergedConfig, errors } = await compileConfigFromCombined(combined, state.callbacks.compileConfig, state);
 
 		console.log(`[Config] Config loaded:`, mergedConfig);
 		log(state, `Config loaded with ${errors.length} error(s).`, 'Config');
@@ -173,14 +169,14 @@ export async function compileConfigForExport(state: State): Promise<ConfigObject
 		return state.compiledConfig || defaultConfig;
 	}
 
-	// Check if there are any config blocks
-	const { source } = combineConfigBlocks(state.graphicHelper.codeBlocks);
-	if (source.trim().length === 0) {
+	// Combine all config blocks
+	const combined = combineConfigBlocks(state.graphicHelper.codeBlocks);
+	if (combined.source.trim().length === 0) {
 		return defaultConfig;
 	}
 
 	// Compile all config blocks as a single source for full schema validation
-	const { mergedConfig } = await buildConfigFromCombinedSource(state.graphicHelper.codeBlocks, compileConfig, state);
+	const { mergedConfig } = await compileConfigFromCombined(combined, compileConfig, state);
 
 	return deepMergeConfig(defaultConfig as unknown as Record<string, unknown>, mergedConfig) as unknown as ConfigObject;
 }
