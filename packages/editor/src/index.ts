@@ -50,8 +50,6 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const events = initEvents();
 	const store = initState(events, {
 		...options,
-		runtimeRegistry: options.runtimeRegistry,
-		defaultRuntimeId: options.defaultRuntimeId,
 		callbacks: {
 			...options.callbacks,
 			getWordFromMemory: (wordAlignedAddress: number) => {
