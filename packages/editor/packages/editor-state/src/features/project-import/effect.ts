@@ -1,10 +1,9 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { EventDispatcher } from '../types';
-import { EMPTY_DEFAULT_PROJECT } from '../types';
-import { warn, error } from '../features/logger/logger';
+import { EventDispatcher, EMPTY_DEFAULT_PROJECT } from '../../types';
+import { warn, error } from '../logger/logger';
 
-import type { Project, State } from '../types';
+import type { Project, State } from '../../types';
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
