@@ -1,9 +1,10 @@
-import move from '../impureHelpers/viewport/move';
-import resize from '../impureHelpers/viewport/resize';
-import snapToGrid from '../impureHelpers/viewport/snapToGrid';
-import { EventDispatcher } from '../types';
+import move from './move';
+import resize from './resize';
+import snapToGrid from './snapToGrid';
 
-import type { State } from '../types';
+import { EventDispatcher } from '../../types';
+
+import type { State } from '../../types';
 
 interface MouseMoveEvent {
 	buttons: number;
