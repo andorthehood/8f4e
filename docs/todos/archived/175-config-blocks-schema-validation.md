@@ -3,8 +3,8 @@ title: 'TODO: Validate Config Blocks as One Source'
 priority: Medium
 effort: 2-4h
 created: 2026-01-14
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-14
 ---
 
 # TODO: Validate Config Blocks as One Source

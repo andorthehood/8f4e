@@ -3,8 +3,8 @@ title: 'TODO: Align Editor-State Builds with In-Source Tests and Vite Tree-Shaki
 priority: Medium
 effort: 1–2d
 created: 2025-12-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-14
 ---
 
 # TODO: Align Editor-State Builds with In-Source Tests and Vite Tree-Shaking
