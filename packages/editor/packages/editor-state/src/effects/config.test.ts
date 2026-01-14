@@ -38,6 +38,8 @@ describe('config error mapping', () => {
 		});
 
 		// Test error mapping: error on line 1 should map to block1, line 1
+		// Note: This duplicates the mapErrorLineToBlock logic from config.ts for test isolation
+		// and to verify the mapping behavior independently
 		const mapErrorLineToBlock = (
 			errorLine: number,
 			mappings: typeof lineMappings
