@@ -31,7 +31,7 @@ export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): ConfigB
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { createMockCodeBlock } = await import('../testingUtils/testUtils');
+	const { createMockCodeBlock } = await import('../../pureHelpers/testingUtils/testUtils');
 
 	describe('collectConfigBlocks', () => {
 		it('should collect config blocks with their sources', () => {

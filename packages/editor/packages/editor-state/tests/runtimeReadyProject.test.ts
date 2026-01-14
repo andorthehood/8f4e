@@ -1,13 +1,12 @@
 import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import compiler from './compiler';
-import projectExport from './projectExport';
+import compiler from '../src/features/program-compiler/compiler';
+import projectExport from '../src/effects/projectExport';
+import { createMockState, createMockCodeBlock } from '../src/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
 
-import { createMockState, createMockCodeBlock } from '../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
-
-import type { State } from '../types';
+import type { State } from '../src/types';
 
 const { decodeBase64ToUint8ArrayMock, createTypedArrayMock } = vi.hoisted(() => {
 	const decodeBase64ToUint8ArrayMock = vi.fn((base64: string) => {
@@ -33,18 +32,18 @@ const { decodeBase64ToUint8ArrayMock, createTypedArrayMock } = vi.hoisted(() => 
 	return { decodeBase64ToUint8ArrayMock, createTypedArrayMock };
 });
 
-vi.mock('../pureHelpers/base64/decodeBase64ToUint8Array', () => ({
+vi.mock('../src/pureHelpers/base64/decodeBase64ToUint8Array', () => ({
 	default: decodeBase64ToUint8ArrayMock,
 }));
 
-vi.mock('../pureHelpers/base64/decodeBase64ToInt32Array', () => ({
+vi.mock('../src/pureHelpers/base64/decodeBase64ToInt32Array', () => ({
 	default: createTypedArrayMock(
 		Int32Array,
 		'Invalid base64 data: byte length must be a multiple of 4 to decode as Int32Array'
 	),
 }));
 
-vi.mock('../pureHelpers/base64/decodeBase64ToFloat32Array', () => ({
+vi.mock('../src/pureHelpers/base64/decodeBase64ToFloat32Array', () => ({
 	default: createTypedArrayMock(
 		Float32Array,
 		'Invalid base64 data: byte length must be a multiple of 4 to decode as Float32Array'

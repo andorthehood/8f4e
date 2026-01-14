@@ -1,15 +1,14 @@
 import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import compiler from './compiler';
-import configEffect from './config';
-import projectImport from './projectImport';
+import compiler from '../src/features/program-compiler/compiler';
+import configEffect from '../src/features/config-compiler/config';
+import projectImport from '../src/effects/projectImport';
+import { createMockState } from '../src/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
+import { EMPTY_DEFAULT_PROJECT } from '../src/types';
 
-import { createMockState } from '../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
-import { EMPTY_DEFAULT_PROJECT } from '../types';
-
-import type { State, Project } from '../types';
+import type { State, Project } from '../src/types';
 
 describe('Loader - Project-specific memory configuration', () => {
 	let mockState: State;
