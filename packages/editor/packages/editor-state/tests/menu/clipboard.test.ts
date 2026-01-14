@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { mainMenu, moduleMenu } from '../../src/effects/menu/menus';
+import { mainMenu, moduleMenu } from '../../src/features/menu/menus';
 import { createMockState, createMockCodeBlock } from '../../src/pureHelpers/testingUtils/testUtils';
 
 import type { State } from '../../src/types';
