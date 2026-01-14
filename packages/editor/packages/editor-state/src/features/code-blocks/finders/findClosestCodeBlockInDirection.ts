@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData } from '../../types';
+import type { CodeBlockGraphicData } from '../../../types';
 
 /**
  * Direction types for navigation
