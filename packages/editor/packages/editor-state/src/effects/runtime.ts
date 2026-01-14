@@ -2,10 +2,10 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { log, error } from '../impureHelpers/logger/logger';
 
-import type { State, EventDispatcher, RuntimeType } from '../types';
+import type { State, EventDispatcher } from '../types';
 
 // Re-export types for convenience
-export type { RuntimeFactory, RuntimeType } from '../types';
+export type { RuntimeFactory } from '../types';
 
 export default async function runtime(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
@@ -37,11 +37,22 @@ export default async function runtime(store: StateManager<State>, events: EventD
 			}
 
 			log(state, `Requesting runtime: ${runtime.runtime}`, 'Runtime');
-			const runtimeFactory = await state.callbacks.requestRuntime(runtime.runtime as RuntimeType);
-			log(state, `Successfully loaded runtime: ${runtime.runtime}`, 'Runtime');
+
+			// Get runtime from registry
+			let runtimeFactory;
+			if (runtime.runtime in state.runtimeRegistry) {
+				const registryEntry = state.runtimeRegistry[runtime.runtime];
+				runtimeFactory = registryEntry.factory;
+				log(state, `Loaded runtime from registry: ${runtime.runtime}`, 'Runtime');
+			} else {
+				// Fall back to default runtime ID if unknown runtime requested
+				const registryEntry = state.runtimeRegistry[state.defaultRuntimeId];
+				runtimeFactory = registryEntry.factory;
+				log(state, `Unknown runtime ${runtime.runtime}, falling back to default: ${state.defaultRuntimeId}`, 'Runtime');
+			}
 
 			if (typeof runtimeFactory !== 'function') {
-				throw new Error(`Runtime ${runtime.runtime} callback did not return a valid factory function`);
+				throw new Error(`Runtime ${runtime.runtime} did not return a valid factory function`);
 			}
 
 			runtimeDestroyer = runtimeFactory(store, events);
