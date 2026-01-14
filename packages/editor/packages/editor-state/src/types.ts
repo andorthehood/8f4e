@@ -10,7 +10,7 @@ import type {
 	CompiledFunctionLookup,
 } from '@8f4e/compiler';
 import type { CompileAndUpdateMemoryResult, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
-import type { Direction } from './pureHelpers/finders/findClosestCodeBlockInDirection';
+import type { Direction } from './features/code-blocks/utils/finders/findClosestCodeBlockInDirection';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 // Re-export MemoryAction for use by consumers
@@ -84,7 +84,7 @@ export interface InternalKeyboardEvent {
 }
 
 // Abstract event payloads for keyboard actions
-// Direction type is imported from pureHelpers/finders/findClosestCodeBlockInDirection
+// Direction type is imported from features/code-blocks/utils/finders/findClosestCodeBlockInDirection
 
 /**
  * High-level event payload for navigating between code blocks.
