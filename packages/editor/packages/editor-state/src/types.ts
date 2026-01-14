@@ -722,7 +722,6 @@ export interface State {
 		stats: RuntimeStats;
 	};
 	/** Runtime registry for configurable runtime schemas */
-	/** Runtime registry for configurable runtime schemas */
 	runtimeRegistry: RuntimeRegistry;
 	/** Default runtime ID to use when no runtime is specified */
 	defaultRuntimeId: string;
