@@ -1,5 +1,5 @@
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
-import type { RuntimeRegistry } from './types';
+import type { RuntimeRegistry } from '../../types';
 
 /**
  * Default runtime settings schema for backward compatibility.
