@@ -3,8 +3,8 @@ title: 'TODO: Nested example menus for modules and projects'
 priority: Medium
 effort: 1-2 days
 created: 2025-12-17
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-13
 ---
 
 # TODO: Nested example menus for modules and projects
