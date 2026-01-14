@@ -73,7 +73,7 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 		});
 
 		sources.push(source);
-		currentLine += lineCount + 1; // +1 for blank line separator
+		currentLine += lineCount + 1; // +1 for blank line separator between blocks
 	}
 
 	return {
