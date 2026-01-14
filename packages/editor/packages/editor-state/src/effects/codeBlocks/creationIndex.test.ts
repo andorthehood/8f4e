@@ -5,7 +5,7 @@ import codeBlockCreator from './codeBlockCreator';
 import graphicHelper from './graphicHelper';
 
 import { flattenProjectForCompiler } from '../../features/program-compiler/effect';
-import projectImport from '../projectImport';
+import projectImport from '../../features/project-import/effect';
 import { createMockState, createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
 import { EMPTY_DEFAULT_PROJECT } from '../../types';

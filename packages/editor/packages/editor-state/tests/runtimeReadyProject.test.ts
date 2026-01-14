@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest'
 import createStateManager from '@8f4e/state-manager';
 
 import compiler from '../src/features/program-compiler/effect';
-import projectExport from '../src/effects/projectExport';
+import projectExport from '../src/features/project-export/effect';
 import { createMockState, createMockCodeBlock } from '../src/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
 
