@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, GraphicHelper, PianoKeyboard } from '../../types';
+import type { CodeBlockGraphicData, GraphicHelper, PianoKeyboard } from '../../../types';
 
 /**
  * Finds the piano keyboard widget inside a code block that encloses the provided viewport-relative point.

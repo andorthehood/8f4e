@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, GraphicHelper } from '../../types';
+import type { CodeBlockGraphicData, GraphicHelper } from '../../../types';
 
 /**
  * Searches all code blocks (topmost first) for the one that contains the viewport-relative coordinates.

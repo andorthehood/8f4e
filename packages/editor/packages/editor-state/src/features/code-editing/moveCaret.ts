@@ -1,4 +1,4 @@
-import type { Direction } from '../../pureHelpers/finders/findClosestCodeBlockInDirection';
+import type { Direction } from '../code-blocks/finders/findClosestCodeBlockInDirection';
 
 export type MoveDirection = Direction | 'jump';
 
