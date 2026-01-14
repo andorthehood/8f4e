@@ -3,8 +3,8 @@ import createStateManager from '@8f4e/state-manager';
 
 import projectImport from './projectImport';
 
-import compiler from '../features/program-compiler/compiler';
-import configEffect from '../features/config-compiler/config';
+import compiler from '../features/program-compiler/effect';
+import configEffect from '../features/config-compiler/effect';
 import { createMockState } from '../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
 import { EMPTY_DEFAULT_PROJECT } from '../types';

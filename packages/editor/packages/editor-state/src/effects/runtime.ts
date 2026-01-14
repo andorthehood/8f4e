@@ -1,6 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { log, error } from '../impureHelpers/logger/logger';
+import { log, error } from '../features/logger/logger';
 
 import type { State, EventDispatcher } from '../types';
 

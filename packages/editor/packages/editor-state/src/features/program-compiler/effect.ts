@@ -1,7 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../../types';
-import { error, log } from '../../impureHelpers/logger/logger';
+import { error, log } from '../logger/logger';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 
