@@ -1,4 +1,4 @@
-import type { CodeBlockType } from '../../../../types';
+import type { CodeBlockType } from '~/types';
 
 /**
  * Detects whether a block of code represents a shader, module, config, function, comment, or unknown block by scanning for marker pairs.

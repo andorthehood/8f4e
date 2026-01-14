@@ -3,7 +3,7 @@ import { mapErrorLineToBlock } from './mapErrorLineToBlock';
 import { getConfigSchema } from './configSchema';
 import isPlainObject from './isPlainObject';
 
-import type { CodeError, State } from '../../types';
+import type { CodeError, State } from '~/types';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 

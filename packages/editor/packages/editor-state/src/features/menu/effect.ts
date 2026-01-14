@@ -2,10 +2,11 @@ import { StateManager } from '@8f4e/state-manager';
 
 import * as menus from './menus';
 
-import { EventDispatcher } from '../../types';
 import findCodeBlockAtViewportCoordinates from '../code-blocks/utils/finders/findCodeBlockAtViewportCoordinates';
 
-import type { ContextMenuItem, State } from '../../types';
+import type { ContextMenuItem, State } from '~/types';
+
+import { EventDispatcher } from '~/types';
 
 interface MouseEvent {
 	x: number;

@@ -1,6 +1,6 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 
-import type { CodeBlockGraphicData } from '../../../../types';
+import type { CodeBlockGraphicData } from '~/types';
 
 export default function gaps(graphicData: CodeBlockGraphicData) {
 	graphicData.gaps.clear();

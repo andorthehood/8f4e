@@ -5,9 +5,10 @@ import { combineConfigBlocks } from './combineConfigBlocks';
 import { compileConfigFromCombined } from './compileConfigFromCombined';
 
 import { log } from '../logger/logger';
-import { defaultConfig } from '../../pureHelpers/state/createDefaultState';
 
-import type { EventDispatcher, State, ConfigObject } from '../../types';
+import type { EventDispatcher, State, ConfigObject } from '~/types';
+
+import { defaultConfig } from '~/pureHelpers/state/createDefaultState';
 
 /**
  * Effect that compiles config blocks and applies the resulting configuration to state.

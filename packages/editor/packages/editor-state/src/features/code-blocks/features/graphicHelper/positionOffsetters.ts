@@ -1,8 +1,8 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 
-import resolveMemoryIdentifier from '../../../../pureHelpers/resolveMemoryIdentifier';
+import type { CodeBlockGraphicData, State } from '~/types';
 
-import type { CodeBlockGraphicData, State } from '../../../../types';
+import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 export function parsePositionOffsetters(code: string[]) {
 	return code.reduce(

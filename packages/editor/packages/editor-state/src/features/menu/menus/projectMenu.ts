@@ -1,6 +1,6 @@
 import { buildCategoryTree, getNodeAtPath, nodeToMenuItems } from '../categoryTree';
 
-import type { MenuGenerator } from '../../../types';
+import type { MenuGenerator } from '~/types';
 import type { CategoryItem } from '../categoryTree';
 
 export const projectMenu: MenuGenerator = async (state, payload = {}) => {

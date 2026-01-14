@@ -4,7 +4,7 @@ import derivePostProcessEffects from './derivePostProcessEffects';
 
 import { log } from '../logger/logger';
 
-import type { EventDispatcher, State } from '../../types';
+import type { EventDispatcher, State } from '~/types';
 
 /**
  * Effect that keeps post-process effects in sync with shader code blocks.

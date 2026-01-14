@@ -1,4 +1,4 @@
-import type { State, LogMessage } from '../../types';
+import type { State, LogMessage } from '~/types';
 
 type LogLevel = LogMessage['level'];
 
