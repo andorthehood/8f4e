@@ -12,6 +12,8 @@ import positionOffsetters from './positionOffsetters';
 import switches from './codeBlockDecorators/switches/updateGraphicData';
 import blockHighlights from './codeBlockDecorators/blockHighlights/updateGraphicData';
 import { CodeBlockClickEvent } from './codeBlockDragger';
+import getLongestLineLength from './codeParsers/getLongestLineLength';
+import wrapText from './wrapText';
 
 import { EventDispatcher } from '../../types';
 import gapCalculator from '../../features/code-editing/gapCalculator';
@@ -19,8 +21,6 @@ import highlightSyntax8f4e from '../../features/code-editing/highlightSyntax8f4e
 import highlightSyntaxGlsl from '../../features/code-editing/highlightSyntaxGlsl';
 import { moveCaret } from '../../features/code-editing/moveCaret';
 import reverseGapCalculator from '../../features/code-editing/reverseGapCalculator';
-import getLongestLineLength from '../../pureHelpers/codeParsers/getLongestLineLength';
-import wrapText from '../../pureHelpers/wrapText';
 
 import type { CodeBlockGraphicData, State } from '../../types';
 

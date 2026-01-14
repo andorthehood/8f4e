@@ -2,10 +2,10 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import codeBlockNavigation from './codeBlockNavigation';
 
-import { createMockCodeBlock, createMockState } from '../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../pureHelpers/testingUtils/vitestTestUtils';
+import { createMockCodeBlock, createMockState } from '../../pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
 
-import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '../types';
+import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '../../types';
 
 describe('codeBlockNavigation', () => {
 	let state: ReturnType<typeof createMockState>;
