@@ -1,9 +1,10 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { EventDispatcher } from '../../types';
 import { error, log } from '../logger/logger';
 
-import type { CodeBlockGraphicData, State } from '../../types';
+import type { CodeBlockGraphicData, State } from '~/types';
+
+import { EventDispatcher } from '~/types';
 
 /**
  * Converts code blocks into separate arrays for modules and functions, sorted by creationIndex.

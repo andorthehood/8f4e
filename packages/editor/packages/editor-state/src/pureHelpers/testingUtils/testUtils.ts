@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, EventDispatcher, State } from '../../types';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 
 /**
  * Deep partial type that makes all properties and nested properties optional

@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import { createMockCodeBlock } from '../../../pureHelpers/testingUtils/testUtils';
+import type { State } from '~/types';
 
-import type { State } from '../../../types';
+import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('Grid Coordinates Integration', () => {
 	let mockState: Pick<State, 'graphicHelper'>;

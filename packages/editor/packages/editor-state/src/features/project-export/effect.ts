@@ -3,10 +3,10 @@ import { StateManager } from '@8f4e/state-manager';
 import serializeToProject from './serializeToProject';
 import serializeToRuntimeReadyProject from './serializeToRuntimeReadyProject';
 
-import { EventDispatcher } from '../../types';
-import encodeUint8ArrayToBase64 from '../../pureHelpers/base64/base64Encoder';
+import type { State } from '~/types';
 
-import type { State } from '../../types';
+import { EventDispatcher } from '~/types';
+import encodeUint8ArrayToBase64 from '~/pureHelpers/base64/base64Encoder';
 
 export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();

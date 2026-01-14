@@ -6,7 +6,7 @@ import getFragmentShaderId from './getFragmentShaderId';
 import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
 
 import type { PostProcessEffect } from 'glugglug';
-import type { CodeBlockGraphicData, CodeError } from '../../types';
+import type { CodeBlockGraphicData, CodeError } from '~/types';
 
 /**
  * Derives post-process effects from shader code blocks.

@@ -1,8 +1,8 @@
 import calculateBorderLineCoordinates from './calculateBorderLineCoordinates';
 
-import { createMockState } from '../../pureHelpers/testingUtils/testUtils';
+import type { State } from '~/types';
 
-import type { State } from '../../types';
+import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 export default function move(state: State, movementX: number, movementY: number): void {
 	state.graphicHelper.viewport.x -= movementX;

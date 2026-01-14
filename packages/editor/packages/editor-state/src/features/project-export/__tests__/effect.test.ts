@@ -2,10 +2,11 @@ import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest'
 import createStateManager from '@8f4e/state-manager';
 
 import projectExport from '../effect';
-import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../../../pureHelpers/testingUtils/vitestTestUtils';
 
-import type { State } from '../../../types';
+import type { State } from '~/types';
+
+import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 describe('projectExport', () => {
 	let mockState: State;

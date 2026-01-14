@@ -2,9 +2,9 @@ import { getModuleId } from '@8f4e/compiler/syntax';
 
 import parseOutputs from './codeParser';
 
-import gapCalculator from '../../../../features/code-editing/gapCalculator';
+import type { CodeBlockGraphicData, Output, State } from '~/types';
 
-import type { CodeBlockGraphicData, Output, State } from '../../../../types';
+import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.outputs = [];

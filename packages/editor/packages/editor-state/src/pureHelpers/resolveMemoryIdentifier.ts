@@ -1,4 +1,4 @@
-import type { MemoryIdentifier, State } from '../types';
+import type { MemoryIdentifier, State } from '~/types';
 import type { DataStructure } from '@8f4e/compiler';
 
 export default function resolveMemoryIdentifier(

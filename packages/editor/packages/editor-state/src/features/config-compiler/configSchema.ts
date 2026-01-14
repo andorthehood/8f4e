@@ -1,5 +1,5 @@
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
-import type { RuntimeRegistry } from '../../types';
+import type { RuntimeRegistry } from '~/types';
 
 /**
  * Generates a runtime settings schema from a runtime registry.
