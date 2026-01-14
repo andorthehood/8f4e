@@ -1,28 +1,28 @@
 import createStateManager, { StateManager } from '@8f4e/state-manager';
 
 import createDefaultState from './pureHelpers/state/createDefaultState';
-import historyTracking from './features/edit-history/historyTracking';
-import codeEditing from './effects/codeBlocks/codeEditing';
+import historyTracking from './features/edit-history/effect';
+import codeEditing from './features/code-editing/effect';
 import _switch from './effects/codeBlocks/codeBlockDecorators/switches/interaction';
 import button from './effects/codeBlocks/codeBlockDecorators/buttons/interaction';
 import codeBlockCreator from './effects/codeBlocks/codeBlockCreator';
 import codeBlockDragger from './effects/codeBlocks/codeBlockDragger';
 import codeBlockNavigation from './effects/codeBlockNavigation';
 import demoModeNavigation from './effects/demoModeNavigation';
-import compiler from './features/program-compiler/compiler';
-import configEffect from './features/config-compiler/config';
-import contextMenu from './effects/menu/contextMenu';
+import compiler from './features/program-compiler/effect';
+import configEffect from './features/config-compiler/effect';
+import contextMenu from './features/menu/effect';
 import graphicHelper from './effects/codeBlocks/graphicHelper';
 import editorSettings from './effects/editorSettings';
 import projectImport from './effects/projectImport';
 import projectExport from './effects/projectExport';
 import pianoKeyboard from './effects/codeBlocks/codeBlockDecorators/pianoKeyboard/interaction';
 import exportWasm from './effects/exportWasm';
-import viewport from './features/viewport/viewport';
+import viewport from './features/viewport/effect';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
 import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
-import shaderEffectsDeriver from './effects/shaders/shaderEffectsDeriver';
+import shaderEffectsDeriver from './features/shader-effects/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 
 import type { Options, State, EventDispatcher, Runtimes } from './types';

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { flattenProjectForCompiler } from './compiler';
+import { flattenProjectForCompiler } from './effect';
 
 import type { CodeBlockGraphicData } from '../../types';
 

@@ -2,7 +2,7 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { EventDispatcher } from '../types';
 import { EMPTY_DEFAULT_PROJECT } from '../types';
-import { warn, error } from '../impureHelpers/logger/logger';
+import { warn, error } from '../features/logger/logger';
 
 import type { Project, State } from '../types';
 
