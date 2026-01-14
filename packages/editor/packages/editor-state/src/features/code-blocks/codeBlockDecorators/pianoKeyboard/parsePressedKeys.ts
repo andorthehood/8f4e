@@ -1,4 +1,4 @@
-import parseCode from '../../../../pureHelpers/codeParsers/parseCode';
+import parseCode from '../../codeParsers/parseCode';
 
 export default function parsePressedKeys(code: string[], pressedKeysListMemoryId: string, startingNumber: number) {
 	const pressedKeys = new Set<number>();

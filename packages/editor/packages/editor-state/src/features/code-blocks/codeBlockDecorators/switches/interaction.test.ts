@@ -90,7 +90,7 @@ describe('switch interaction', () => {
 		memoryStore.set(5, 0);
 
 		// Mock findSwitchAtViewportCoordinates to return our switch
-		vi.mock('../../../../pureHelpers/findSwitchAtViewportCoordinates', () => ({
+		vi.mock('../../finders/findSwitchAtViewportCoordinates', () => ({
 			default: vi.fn(() => ({
 				id: 'testSwitch',
 				onValue: 1,

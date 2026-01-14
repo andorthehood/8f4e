@@ -3,7 +3,7 @@ import { DEFAULT_VERTEX_SHADER } from './defaultVertexShader';
 import getVertexShaderId from './getVertexShaderId';
 import getFragmentShaderId from './getFragmentShaderId';
 
-import getBlockType from '../../pureHelpers/codeParsers/getBlockType';
+import getBlockType from '../code-blocks/codeParsers/getBlockType';
 
 import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlockGraphicData, CodeError } from '../../types';
