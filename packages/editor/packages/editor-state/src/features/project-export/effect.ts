@@ -1,11 +1,12 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { EventDispatcher } from '../types';
-import encodeUint8ArrayToBase64 from '../pureHelpers/base64/base64Encoder';
-import serializeToProject from '../pureHelpers/projectSerializing/serializeToProject';
-import serializeToRuntimeReadyProject from '../pureHelpers/projectSerializing/serializeToRuntimeReadyProject';
+import serializeToProject from './serializeToProject';
+import serializeToRuntimeReadyProject from './serializeToRuntimeReadyProject';
 
-import type { State } from '../types';
+import { EventDispatcher } from '../../types';
+import encodeUint8ArrayToBase64 from '../../pureHelpers/base64/base64Encoder';
+
+import type { State } from '../../types';
 
 export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
@@ -59,8 +60,23 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		}
 	}
 
+	function onExportWasm() {
+		if (!state.callbacks.exportBinaryCode) {
+			console.warn('No exportProject callback provided');
+			return;
+		}
+
+		const projectName = 'project';
+		const fileName = `${projectName}.wasm`;
+
+		state.callbacks.exportBinaryCode(fileName).catch(error => {
+			console.error('Failed to export WebAssembly file:', error);
+		});
+	}
+
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveSession);
 	events.on('saveSession', onSaveSession);
 	events.on('exportProject', onExportProject);
 	events.on('exportRuntimeReadyProject', onExportRuntimeReadyProject);
+	events.on('exportWasm', onExportWasm);
 }
