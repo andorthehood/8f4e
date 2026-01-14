@@ -14,11 +14,11 @@ import blockHighlights from './codeBlockDecorators/blockHighlights/updateGraphic
 import { CodeBlockClickEvent } from './codeBlockDragger';
 
 import { EventDispatcher } from '../../types';
-import gapCalculator from '../../pureHelpers/codeEditing/gapCalculator';
-import highlightSyntax8f4e from '../../pureHelpers/codeEditing/highlightSyntax8f4e';
-import highlightSyntaxGlsl from '../../pureHelpers/codeEditing/highlightSyntaxGlsl';
-import { moveCaret } from '../../pureHelpers/codeEditing/moveCaret';
-import reverseGapCalculator from '../../pureHelpers/codeEditing/reverseGapCalculator';
+import gapCalculator from '../../features/code-editing/gapCalculator';
+import highlightSyntax8f4e from '../../features/code-editing/highlightSyntax8f4e';
+import highlightSyntaxGlsl from '../../features/code-editing/highlightSyntaxGlsl';
+import { moveCaret } from '../../features/code-editing/moveCaret';
+import reverseGapCalculator from '../../features/code-editing/reverseGapCalculator';
 import getLongestLineLength from '../../pureHelpers/codeParsers/getLongestLineLength';
 import wrapText from '../../pureHelpers/wrapText';
 
