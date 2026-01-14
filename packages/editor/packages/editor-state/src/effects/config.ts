@@ -3,7 +3,8 @@ import { StateManager } from '@8f4e/state-manager';
 import { log } from '../impureHelpers/logger/logger';
 import isPlainObject from '../pureHelpers/isPlainObject';
 import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
-import { combineConfigBlocks } from '../pureHelpers/config/collectConfigBlocks';
+import { combineConfigBlocks } from '../pureHelpers/config/combineConfigBlocks';
+import { mapErrorLineToBlock } from '../pureHelpers/config/mapErrorLineToBlock';
 import { getConfigSchema } from '../configSchema';
 import { defaultConfig } from '../pureHelpers/state/createDefaultState';
 
@@ -14,32 +15,6 @@ type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 interface ConfigBuildResult {
 	mergedConfig: Record<string, unknown>;
 	errors: CodeError[];
-}
-
-/**
- * Maps an error line number from the combined source to a specific block and local line number.
- * Returns null if the line cannot be mapped to a block.
- */
-function mapErrorLineToBlock(
-	errorLine: number,
-	lineMappings: Array<{ blockId: number; startLine: number; endLine: number }>
-): { blockId: number; localLine: number } | null {
-	for (const mapping of lineMappings) {
-		if (errorLine >= mapping.startLine && errorLine <= mapping.endLine) {
-			return {
-				blockId: mapping.blockId,
-				localLine: errorLine - mapping.startLine + 1, // Convert to 1-based local line
-			};
-		}
-	}
-	// Schema-wide errors at line 1 or unmappable lines: map to first block
-	if (lineMappings.length > 0) {
-		return {
-			blockId: lineMappings[0].blockId,
-			localLine: 1,
-		};
-	}
-	return null;
 }
 
 async function compileConfigFromCombined(
