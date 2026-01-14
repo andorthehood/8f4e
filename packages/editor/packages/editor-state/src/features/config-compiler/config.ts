@@ -1,14 +1,15 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { log } from '../impureHelpers/logger/logger';
-import isPlainObject from '../pureHelpers/isPlainObject';
-import deepMergeConfig from '../pureHelpers/config/deepMergeConfig';
-import { combineConfigBlocks } from '../pureHelpers/config/combineConfigBlocks';
-import { mapErrorLineToBlock } from '../pureHelpers/config/mapErrorLineToBlock';
-import { getConfigSchema } from '../configSchema';
-import { defaultConfig } from '../pureHelpers/state/createDefaultState';
+import deepMergeConfig from './deepMergeConfig';
+import { combineConfigBlocks } from './combineConfigBlocks';
+import { mapErrorLineToBlock } from './mapErrorLineToBlock';
+import { getConfigSchema } from './configSchema';
+import isPlainObject from './isPlainObject';
 
-import type { CodeError, EventDispatcher, State, ConfigObject } from '../types';
+import { log } from '../../impureHelpers/logger/logger';
+import { defaultConfig } from '../../pureHelpers/state/createDefaultState';
+
+import type { CodeError, EventDispatcher, State, ConfigObject } from '../../types';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 
