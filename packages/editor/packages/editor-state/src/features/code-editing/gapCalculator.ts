@@ -2,7 +2,7 @@ import type { CodeBlockGraphicData } from '../../types';
 
 /**
  * Calculates the physical row index by adding the size of every gap that starts before the logical row.
- * Gaps are produced by `features/code-blocks/gaps.ts` to insert additional blank rows after a line
+ * Gaps are produced by `features/code-blocks/features/graphicHelper/gaps.ts` to insert additional blank rows after a line
  * whenever a decoration (plot/piano visualizers or compilation errors) needs vertical space in the
  * rendered block. Each entry stores how many extra rows were spliced into `codeToRender` after that
  * logical line, so downstream consumers must translate logical line numbers into physical rows before
