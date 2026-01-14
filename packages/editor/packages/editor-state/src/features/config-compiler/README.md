@@ -51,7 +51,7 @@ Each error includes:
 
 ## References
 
-- Config language documentation: [`@8f4e/stack-config-compiler/README.md`](../../../../stack-config-compiler/README.md)
+- Config language documentation: [`@8f4e/stack-config-compiler/README.md`](../../../../../../stack-config-compiler/README.md)
 - Config schema definition: `configSchema.ts`
 - Error mapping utilities: `mapErrorLineToBlock.ts`
 
