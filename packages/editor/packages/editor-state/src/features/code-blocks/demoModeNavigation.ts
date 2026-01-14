@@ -1,9 +1,9 @@
 import { navigateToCodeBlockInDirection } from './codeBlockNavigation';
 
-import centerViewportOnCodeBlock from '../features/viewport/centerViewportOnCodeBlock';
+import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 
-import type { State, EventDispatcher } from '../types';
-import type { Direction } from '../pureHelpers/finders/findClosestCodeBlockInDirection';
+import type { State, EventDispatcher } from '../../types';
+import type { Direction } from './finders/findClosestCodeBlockInDirection';
 
 /**
  * Selects a random code block from the available code blocks.
