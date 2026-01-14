@@ -1,4 +1,4 @@
-import initState, { Callbacks, State } from '@8f4e/editor-state';
+import initState, { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state';
 import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
@@ -18,9 +18,11 @@ export type {
 	CompilationResult,
 	CodeBlockGraphicData,
 	RuntimeFactory,
-	RuntimeType,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
 	FeatureFlags,
 	FeatureFlagsConfig,
+	JSONSchemaLike,
 } from '@8f4e/editor-state';
 export type { EventDispatcher } from './events';
 export type { MemoryRef } from './memoryViewManager';
@@ -39,6 +41,8 @@ export interface Editor {
 interface Options {
 	featureFlags?: Partial<State['featureFlags']>;
 	callbacks: Omit<Callbacks, 'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText'>;
+	runtimeRegistry: RuntimeRegistry;
+	defaultRuntimeId: string;
 }
 
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {

@@ -3,8 +3,8 @@ title: 'TODO: Runtime Registry for Configurable Runtime Schemas'
 priority: Medium
 effort: 3-5d
 created: 2026-01-13
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-13
 ---
 
 # TODO: Runtime Registry for Configurable Runtime Schemas

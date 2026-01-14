@@ -1,6 +1,11 @@
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
+import type { RuntimeRegistry } from './types';
 
-const runtimeSettingsSchema: JSONSchemaLike = {
+/**
+ * Default runtime settings schema for backward compatibility.
+ * Used when no runtime registry is provided.
+ */
+const defaultRuntimeSettingsSchema: JSONSchemaLike = {
 	type: 'object',
 	oneOf: [
 		{
@@ -122,18 +127,65 @@ const runtimeSettingsSchema: JSONSchemaLike = {
 	],
 };
 
-const configSchema: JSONSchemaLike = {
-	type: 'object',
-	properties: {
-		memorySizeBytes: { type: 'number' },
-		selectedRuntime: { type: 'number' },
-		runtimeSettings: {
-			type: 'array',
-			items: runtimeSettingsSchema,
+/**
+ * Generates a runtime settings schema from a runtime registry.
+ * Creates a discriminated union using oneOf based on the runtime field.
+ */
+function generateRuntimeSettingsSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLike {
+	const oneOfBranches = Object.values(runtimeRegistry).map(entry => {
+		// Ensure the schema has the runtime discriminator without mutating the original schema
+		const schema = { ...entry.schema };
+		if (schema.type === 'object' && schema.properties) {
+			return {
+				...schema,
+				properties: {
+					...schema.properties,
+					runtime: {
+						type: 'string' as const,
+						enum: [entry.id] as const,
+					},
+				},
+			};
+		}
+		return schema;
+	});
+
+	return {
+		type: 'object',
+		oneOf: oneOfBranches,
+	};
+}
+
+/**
+ * Generates the config schema, optionally using a runtime registry.
+ * If a runtime registry is provided, generates runtime settings schema from the registry.
+ * Otherwise, uses the default hardcoded runtime settings schema.
+ */
+export function getConfigSchema(runtimeRegistry?: RuntimeRegistry): JSONSchemaLike {
+	const runtimeSettingsSchema = runtimeRegistry
+		? generateRuntimeSettingsSchema(runtimeRegistry)
+		: defaultRuntimeSettingsSchema;
+
+	return {
+		type: 'object',
+		properties: {
+			memorySizeBytes: { type: 'number' },
+			selectedRuntime: { type: 'number' },
+			runtimeSettings: {
+				type: 'array',
+				items: runtimeSettingsSchema,
+			},
+			disableAutoCompilation: { type: 'boolean' },
 		},
-		disableAutoCompilation: { type: 'boolean' },
-	},
-	additionalProperties: false,
-};
+		additionalProperties: false,
+	};
+}
+
+/**
+ * Default config schema for backward compatibility.
+ * @deprecated Use getConfigSchema() instead to support runtime registry.
+ * This will be removed in a future version once all consumers migrate to the registry approach.
+ */
+const configSchema: JSONSchemaLike = getConfigSchema();
 
 export default configSchema;

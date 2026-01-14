@@ -56,11 +56,8 @@ export interface FeatureFlags {
 export type FeatureFlagsConfig = Partial<FeatureFlags>;
 
 // Runtime types
-export type RuntimeType =
-	| 'WebWorkerLogicRuntime'
-	| 'MainThreadLogicRuntime'
-	| 'AudioWorkletRuntime'
-	| 'WebWorkerMIDIRuntime';
+// Note: RuntimeType was removed as it's no longer needed with the runtime registry system.
+// Runtime IDs are now strings defined by the keys in the RuntimeRegistry.
 
 // EventDispatcher type - complete definition for event management
 export interface EventDispatcher {
@@ -117,6 +114,27 @@ export interface InsertTextEvent {
 
 // Type for runtime factory function
 export type RuntimeFactory = (store: StateManager<State>, events: EventDispatcher) => () => void;
+
+/**
+ * Runtime registry entry describing a runtime configuration.
+ * Each entry defines a runtime's id, default configuration, schema, and factory function.
+ */
+export interface RuntimeRegistryEntry {
+	/** Unique identifier for this runtime (e.g., 'WebWorkerLogicRuntime') */
+	id: string;
+	/** Default configuration object for this runtime */
+	defaults: Record<string, unknown>;
+	/** JSON Schema describing the configuration shape for this runtime */
+	schema: JSONSchemaLike;
+	/** Factory function that creates the runtime instance */
+	factory: RuntimeFactory;
+}
+
+/**
+ * Runtime registry mapping runtime IDs to their registry entries.
+ * Used to configure available runtimes and their schemas at editor initialization.
+ */
+export type RuntimeRegistry = Record<string, RuntimeRegistryEntry>;
 
 /**
  * Grid coordinates represent logical cell positions in the editor grid.
@@ -557,8 +575,6 @@ export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'm
 
 // Callbacks interface contains all callback functions
 export interface Callbacks {
-	requestRuntime: (runtimeType: RuntimeType) => Promise<RuntimeFactory>;
-
 	// Module and project loading callbacks
 	getListOfModules?: () => Promise<ModuleMetadata[]>;
 	getModule?: (slug: string) => Promise<ExampleModule>;
@@ -636,6 +652,16 @@ export interface ConfigCompilationResult {
 export interface Options {
 	featureFlags?: FeatureFlagsConfig;
 	callbacks: Callbacks;
+	/**
+	 * Runtime registry mapping runtime IDs to their configuration entries.
+	 * Each entry defines a runtime's defaults, schema, and factory function.
+	 */
+	runtimeRegistry: RuntimeRegistry;
+	/**
+	 * Default runtime ID to use when no runtime is specified or when an unknown runtime ID is encountered.
+	 * Must match a key in the runtimeRegistry.
+	 */
+	defaultRuntimeId: string;
 }
 
 export interface EditorSettings {
@@ -695,6 +721,10 @@ export interface State {
 	runtime: {
 		stats: RuntimeStats;
 	};
+	/** Runtime registry for configurable runtime schemas */
+	runtimeRegistry: RuntimeRegistry;
+	/** Default runtime ID to use when no runtime is specified */
+	defaultRuntimeId: string;
 	codeErrors: {
 		compilationErrors: CodeError[];
 		configErrors: CodeError[];

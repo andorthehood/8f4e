@@ -25,17 +25,32 @@ import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
 import shaderEffectsDeriver from './effects/shaders/shaderEffectsDeriver';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 
-import type { Options, State, EventDispatcher } from './types';
+import type { Options, State, EventDispatcher, Runtimes } from './types';
 
 // Function to create default state
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	const store = createStateManager<State>({
+	// Get default runtime settings from registry
+	const registryEntry = options.runtimeRegistry[options.defaultRuntimeId];
+	if (!registryEntry) {
+		throw new Error(`Default runtime ID "${options.defaultRuntimeId}" not found in runtime registry`);
+	}
+
+	// Create base state
+	const baseState = {
 		...createDefaultState(),
 		callbacks: options.callbacks,
 		featureFlags,
-	});
+		runtimeRegistry: options.runtimeRegistry,
+		defaultRuntimeId: options.defaultRuntimeId,
+		compiledConfig: {
+			...createDefaultState().compiledConfig,
+			runtimeSettings: [registryEntry.defaults as unknown as Runtimes],
+		},
+	};
+
+	const store = createStateManager<State>(baseState);
 
 	const state = store.getState();
 
@@ -111,7 +126,8 @@ export type {
 	PianoKeyboard,
 	ContextMenu,
 	RuntimeFactory,
-	RuntimeType,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
 	FeatureFlags,
 	FeatureFlagsConfig,
 	EventDispatcher,
