@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import { createMockCodeBlock } from '../pureHelpers/testingUtils/testUtils';
 import { combineConfigBlocks } from '../pureHelpers/config/combineConfigBlocks';
+import { mapErrorLineToBlock } from '../pureHelpers/config/mapErrorLineToBlock';
 
 describe('config error mapping', () => {
 	it('should map errors to correct blocks with local line numbers', () => {
@@ -37,30 +38,7 @@ describe('config error mapping', () => {
 			endLine: 5,
 		});
 
-		// Test error mapping: error on line 1 should map to block1, line 1
-		// Note: This duplicates the mapErrorLineToBlock logic from config.ts for test isolation
-		// and to verify the mapping behavior independently
-		const mapErrorLineToBlock = (
-			errorLine: number,
-			mappings: typeof lineMappings
-		): { blockId: number; localLine: number } | null => {
-			for (const mapping of mappings) {
-				if (errorLine >= mapping.startLine && errorLine <= mapping.endLine) {
-					return {
-						blockId: mapping.blockId,
-						localLine: errorLine - mapping.startLine + 1,
-					};
-				}
-			}
-			if (mappings.length > 0) {
-				return {
-					blockId: mappings[0].blockId,
-					localLine: 1,
-				};
-			}
-			return null;
-		};
-
+		// Test error mapping using the actual production function
 		// Error on line 1 (first line of block1)
 		let mapped = mapErrorLineToBlock(1, lineMappings);
 		expect(mapped).toEqual({ blockId: 0, localLine: 1 });

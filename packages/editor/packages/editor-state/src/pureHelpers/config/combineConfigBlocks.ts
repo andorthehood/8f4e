@@ -36,6 +36,11 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 	let currentLine = 1;
 
 	for (const { block, source } of configBlocks) {
+		// Handle empty source edge case - empty string split by '\n' returns [''] with length 1
+		if (source.trim().length === 0) {
+			continue;
+		}
+
 		const lines = source.split('\n');
 		const lineCount = lines.length;
 
