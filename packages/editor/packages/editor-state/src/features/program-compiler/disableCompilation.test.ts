@@ -5,10 +5,11 @@ import compiler from './effect';
 
 import configEffect from '../config-compiler/effect';
 import { compileConfigForExport } from '../config-compiler/compileConfigForExport';
-import { createMockState, createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
 
-import type { State } from '../../types';
+import type { State } from '~/types';
+
+import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 describe('disableAutoCompilation feature', () => {
 	let mockState: State;
