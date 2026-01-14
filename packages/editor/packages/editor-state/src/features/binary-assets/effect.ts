@@ -1,6 +1,6 @@
-import { EventDispatcher } from '../types';
+import { EventDispatcher } from '../../types';
 
-import type { State } from '../types';
+import type { State } from '../../types';
 
 export default function binaryAssets(state: State, events: EventDispatcher): () => void {
 	async function onImportBinaryAsset() {

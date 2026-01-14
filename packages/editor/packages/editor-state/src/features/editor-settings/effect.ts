@@ -1,9 +1,9 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import { EventDispatcher } from '../types';
-import { warn } from '../features/logger/logger';
+import { EventDispatcher } from '../../types';
+import { warn } from '../logger/logger';
 
-import type { State } from '../types';
+import type { State } from '../../types';
 
 export default function editorSettings(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
 	const state = store.getState();
