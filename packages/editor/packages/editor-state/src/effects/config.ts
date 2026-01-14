@@ -111,7 +111,7 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		console.log(`[Config] Config loaded:`, mergedConfig);
 		log(state, `Config loaded with ${errors.length} error(s).`, 'Config');
 
-		// Save all errors to state
+		// Save all errors to state (always set, even if empty)
 		store.set('codeErrors.configErrors', errors);
 		store.set(
 			'compiledConfig',
