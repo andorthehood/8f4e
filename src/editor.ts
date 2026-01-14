@@ -2,7 +2,7 @@ import initEditor from '@8f4e/editor';
 import { ColorScheme } from '@8f4e/sprite-generator';
 
 import { getListOfModules, getModule, getListOfProjects, getProject } from './examples/registry';
-import { requestRuntime } from './runtime-loader';
+import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
 import {
 	loadSession,
 	saveSession,
@@ -34,12 +34,13 @@ async function init() {
 			persistentStorage: true,
 			infoOverlay: true,
 		},
+		runtimeRegistry,
+		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		callbacks: {
 			getListOfModules,
 			getModule,
 			getListOfProjects,
 			getProject,
-			requestRuntime,
 			compileCode: (modules, compilerOptions, functions) => compileCode(modules, compilerOptions, functions, editor),
 			compileConfig,
 			loadSession,

@@ -80,7 +80,6 @@ describe('Runtime-ready project functionality', () => {
 			callbacks: {
 				exportProject: mockExportProject,
 				compileConfig: mockCompileConfig,
-				requestRuntime: vi.fn(),
 				getListOfModules: vi.fn(),
 				getModule: vi.fn(),
 				getListOfProjects: vi.fn(),
