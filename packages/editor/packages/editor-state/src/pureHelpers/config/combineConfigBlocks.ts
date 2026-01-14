@@ -145,11 +145,7 @@ if (import.meta.vitest) {
 			const result = combineConfigBlocks(codeBlocks);
 			expect(result.source).toBe('push 1');
 			expect(result.lineMappings).toHaveLength(1);
-			expect(result.lineMappings[0]).toEqual({
-				blockId: 1,
-				startLine: 1,
-				endLine: 1,
-			});
+			expect(result.lineMappings[0]).toMatchSnapshot();
 		});
 
 		it('should maintain creation order', () => {
@@ -173,9 +169,7 @@ if (import.meta.vitest) {
 			const result = combineConfigBlocks(codeBlocks);
 			expect(result.source).toBe('second\n\nthird\n\nfirst');
 			expect(result.lineMappings).toHaveLength(3);
-			expect(result.lineMappings[0].blockId).toBe(0);
-			expect(result.lineMappings[1].blockId).toBe(1);
-			expect(result.lineMappings[2].blockId).toBe(2);
+			expect(result.lineMappings).toMatchSnapshot();
 		});
 	});
 }
