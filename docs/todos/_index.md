@@ -74,6 +74,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 035 | Complete MIDI Functionality Testing Coverage | 🟢 | 1d | 2025-08-27 | Only CC names are tested; missing coverage for MIDI enumerations and integration patterns across different MIDI devices |
 | 036 | Complete Configuration System Testing Coverage | 🟢 | 1d | 2025-08-27 | Only feature flags are tested; missing coverage for configuration utilities, persistence, and edge cases |
 | 038 | Comprehensive Testing for Editor Type System | 🟢 | 1d | 2025-08-27 | No test coverage for type definitions and validation utilities; need runtime validation tests to ensure type accuracy |
+| 177 | Add ~ import alias to editor-state | 🟢 | 0.5-1h | 2026-01-14 | Allow editor-state to use `~` imports instead of deep relative paths |
 | 176 | Document editor-state features with per-feature READMEs | 🟢 | 0.5-1d | 2026-01-14 | Add top-level feature READMEs for editor-state to capture purpose, events, and references |
 
 ## Completed TODOs (Archived)
