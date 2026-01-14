@@ -17,7 +17,9 @@ const baseConfig = createLibConfig({
 export default defineConfig({
 	...baseConfig,
 	resolve: {
+		...(baseConfig as { resolve?: unknown }).resolve,
 		alias: {
+			...(baseConfig as { resolve?: { alias?: Record<string, string> } }).resolve?.alias,
 			'~': resolve(__dirname, './src'),
 		},
 	},
