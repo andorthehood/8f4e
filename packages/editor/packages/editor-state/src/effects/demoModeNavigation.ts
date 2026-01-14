@@ -1,6 +1,6 @@
 import { navigateToCodeBlockInDirection } from './codeBlockNavigation';
 
-import centerViewportOnCodeBlock from '../pureHelpers/centerViewportOnCodeBlock';
+import centerViewportOnCodeBlock from '../features/viewport/centerViewportOnCodeBlock';
 
 import type { State, EventDispatcher } from '../types';
 import type { Direction } from '../pureHelpers/finders/findClosestCodeBlockInDirection';

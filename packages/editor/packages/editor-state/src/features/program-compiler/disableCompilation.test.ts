@@ -3,7 +3,8 @@ import createStateManager from '@8f4e/state-manager';
 
 import compiler from './compiler';
 
-import configEffect, { compileConfigForExport } from '../config-compiler/config';
+import configEffect from '../config-compiler/config';
+import { compileConfigForExport } from '../config-compiler/compileConfigForExport';
 import { createMockState, createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
 

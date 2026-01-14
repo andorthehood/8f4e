@@ -1,7 +1,7 @@
 import createStateManager, { StateManager } from '@8f4e/state-manager';
 
 import createDefaultState from './pureHelpers/state/createDefaultState';
-import historyTracking from './effects/historyTracking';
+import historyTracking from './features/edit-history/historyTracking';
 import codeEditing from './effects/codeBlocks/codeEditing';
 import _switch from './effects/codeBlocks/codeBlockDecorators/switches/interaction';
 import button from './effects/codeBlocks/codeBlockDecorators/buttons/interaction';
@@ -18,7 +18,7 @@ import projectImport from './effects/projectImport';
 import projectExport from './effects/projectExport';
 import pianoKeyboard from './effects/codeBlocks/codeBlockDecorators/pianoKeyboard/interaction';
 import exportWasm from './effects/exportWasm';
-import viewport from './effects/viewport';
+import viewport from './features/viewport/viewport';
 import binaryAsset from './effects/binaryAssets';
 import runtime from './effects/runtime';
 import blockTypeUpdater from './effects/codeBlocks/blockTypeUpdater';
@@ -151,6 +151,6 @@ export { EMPTY_DEFAULT_PROJECT } from './types';
 // Export helper functions
 export { default as findClosestCodeBlockInDirection } from './pureHelpers/finders/findClosestCodeBlockInDirection';
 export type { Direction } from './pureHelpers/finders/findClosestCodeBlockInDirection';
-export { default as centerViewportOnCodeBlock } from './pureHelpers/centerViewportOnCodeBlock';
-export type { CodeBlockBounds } from './pureHelpers/centerViewportOnCodeBlock';
+export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';
+export type { CodeBlockBounds } from './features/viewport/centerViewportOnCodeBlock';
 export { navigateToCodeBlockInDirection } from './effects/codeBlockNavigation';

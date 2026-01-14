@@ -1,6 +1,6 @@
 import serializeToProject from './serializeToProject';
 
-import { compileConfigForExport } from '../../features/config-compiler/config';
+import { compileConfigForExport } from '../../features/config-compiler/compileConfigForExport';
 import { createMockCodeBlock, createMockState } from '../testingUtils/testUtils';
 
 import type { Project, State } from '../../types';
