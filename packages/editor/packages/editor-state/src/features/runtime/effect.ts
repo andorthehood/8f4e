@@ -2,10 +2,10 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { log, error } from '../logger/logger';
 
-import type { State, EventDispatcher } from '../../types';
+import type { State, EventDispatcher } from '~/types';
 
 // Re-export types for convenience
-export type { RuntimeFactory } from '../../types';
+export type { RuntimeFactory } from '~/types';
 
 export default async function runtime(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();

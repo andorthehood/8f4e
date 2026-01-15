@@ -3,8 +3,8 @@ title: 'TODO: Add ~ import alias to editor-state'
 priority: Low
 effort: 0.5-1h
 created: 2026-01-14
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-14
 ---
 
 # TODO: Add ~ import alias to editor-state

@@ -4,13 +4,13 @@ import createStateManager from '@8f4e/state-manager';
 import graphicHelper from './features/graphicHelper/effect';
 import codeBlockCreator from './features/codeBlockCreator/effect';
 
-import { flattenProjectForCompiler } from '../../features/program-compiler/effect';
-import projectImport from '../../features/project-import/effect';
-import { createMockState, createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
-import { EMPTY_DEFAULT_PROJECT } from '../../types';
+import type { State, Project } from '~/types';
 
-import type { State, Project } from '../../types';
+import { flattenProjectForCompiler } from '~/features/program-compiler/effect';
+import projectImport from '~/features/project-import/effect';
+import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import { EMPTY_DEFAULT_PROJECT } from '~/types';
 
 describe('creationIndex', () => {
 	let mockState: State;

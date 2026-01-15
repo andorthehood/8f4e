@@ -1,8 +1,8 @@
 import parseButtons from './codeParser';
 
-import gapCalculator from '../../../../features/code-editing/gapCalculator';
+import type { CodeBlockGraphicData, State } from '~/types';
 
-import type { CodeBlockGraphicData, State } from '../../../../types';
+import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export default function updateButtonsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.buttons = [];

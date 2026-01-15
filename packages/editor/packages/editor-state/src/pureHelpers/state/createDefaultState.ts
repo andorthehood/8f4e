@@ -2,7 +2,7 @@ import { Font } from '@8f4e/sprite-generator';
 
 import { defaultFeatureFlags } from './featureFlags';
 
-import { ConfigObject } from '../../types';
+import { ConfigObject } from '~/types';
 
 export const defaultConfig: ConfigObject = {
 	runtimeSettings: [

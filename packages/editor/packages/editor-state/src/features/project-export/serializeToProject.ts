@@ -1,8 +1,8 @@
 import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
 
-import { createMockCodeBlock, createMockState } from '../../pureHelpers/testingUtils/testUtils';
+import type { Project, State } from '~/types';
 
-import type { Project, State } from '../../types';
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 /**
  * Serializes current runtime state to Project format for saving to file.

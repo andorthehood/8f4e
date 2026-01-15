@@ -1,4 +1,4 @@
-import type { MenuGenerator } from '../../../types';
+import type { MenuGenerator } from '~/types';
 
 export const binaryAssetsMenu: MenuGenerator = async () => {
 	const opfsRoot = await navigator.storage.getDirectory();
