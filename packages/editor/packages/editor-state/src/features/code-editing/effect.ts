@@ -5,7 +5,7 @@ import enter from './enter';
 import { moveCaret } from './moveCaret';
 import type from './type';
 
-import { EventDispatcher, MoveCaretEvent, InsertTextEvent, State } from '../../types';
+import { EventDispatcher, MoveCaretEvent, InsertTextEvent, State } from '~/types';
 
 export default function codeEditing(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();

@@ -2,9 +2,9 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import updateButtonsGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../pureHelpers/testingUtils/testUtils';
+import type { CodeBlockGraphicData, State } from '~/types';
 
-import type { CodeBlockGraphicData, State } from '../../../../types';
+import { createMockCodeBlock, createMockState, findExtrasById } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('updateButtonsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;

@@ -1,4 +1,4 @@
-import type { MenuGenerator } from '../../../types';
+import type { MenuGenerator } from '~/types';
 
 export const editorSettingsMenu: MenuGenerator = state => [
 	{

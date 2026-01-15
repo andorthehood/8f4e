@@ -1,6 +1,6 @@
-import { createMockCodeBlock } from '../../pureHelpers/testingUtils/testUtils';
+import type { CodeBlock, CodeBlockGraphicData } from '~/types';
 
-import type { CodeBlock, CodeBlockGraphicData } from '../../types';
+import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 /**
  * Converts graphic data code blocks to simplified project structure for serialization.

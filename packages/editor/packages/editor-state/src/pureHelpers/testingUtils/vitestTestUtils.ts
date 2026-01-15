@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 
 import { createMockEventDispatcher } from './testUtils';
 
-import type { EventDispatcher } from '../../types';
+import type { EventDispatcher } from '~/types';
 
 /**
  * Wraps a plain event dispatcher with vitest mocks for testing.

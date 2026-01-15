@@ -74,7 +74,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 035 | Complete MIDI Functionality Testing Coverage | 🟢 | 1d | 2025-08-27 | Only CC names are tested; missing coverage for MIDI enumerations and integration patterns across different MIDI devices |
 | 036 | Complete Configuration System Testing Coverage | 🟢 | 1d | 2025-08-27 | Only feature flags are tested; missing coverage for configuration utilities, persistence, and edge cases |
 | 038 | Comprehensive Testing for Editor Type System | 🟢 | 1d | 2025-08-27 | No test coverage for type definitions and validation utilities; need runtime validation tests to ensure type accuracy |
-| 177 | Add ~ import alias to editor-state | 🟢 | 0.5-1h | 2026-01-14 | Allow editor-state to use `~` imports instead of deep relative paths |
 | 176 | Document editor-state features with per-feature READMEs | 🟢 | 0.5-1d | 2026-01-14 | Add top-level feature READMEs for editor-state to capture purpose, events, and references |
 
 ## Completed TODOs (Archived)
@@ -83,6 +82,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 177 | Add ~ import alias to editor-state | 🟢 | 0.5-1h | 2026-01-14 | Added `~` import alias to editor-state package for cleaner imports; configured TypeScript, Vite, and Vitest to resolve `~/*` to `src/*`; all typechecks, tests, and builds pass |
 | 174 | Runtime Registry for Configurable Runtime Schemas | 🟡 | 3-5d | 2026-01-13 | Implemented runtime registry system with configurable schemas; added RuntimeRegistry and RuntimeRegistryEntry types; updated config schema generation to use registry; runtime effect now supports registry-based loading with fallback to defaultRuntimeId; created runtime registry in app layer with all four runtimes; all 460 tests passing |
 | 172 | Decouple Line Numbers from Syntax Highlighting | 🟡 | 2-4h | 2026-01-13 | Decoupled line number rendering from syntax highlighting by passing raw code to highlighters and applying line-number colors in a separate pass; simplified regexes and made highlighters focus purely on code semantics |
 | 171 | Add Conditional Schema Support to Stack Config Compiler | 🟡 | 2-4d | 2026-01-13 | Extended schema subset with oneOf/anyOf to validate runtime-specific config during compile; implemented post-compilation validation for discriminated unions and overlapping types |

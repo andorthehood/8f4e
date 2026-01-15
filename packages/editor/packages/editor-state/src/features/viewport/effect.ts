@@ -2,9 +2,9 @@ import move from './move';
 import resize from './resize';
 import snapToGrid from './snapToGrid';
 
-import { EventDispatcher } from '../../types';
+import type { State } from '~/types';
 
-import type { State } from '../../types';
+import { EventDispatcher } from '~/types';
 
 interface MouseMoveEvent {
 	buttons: number;

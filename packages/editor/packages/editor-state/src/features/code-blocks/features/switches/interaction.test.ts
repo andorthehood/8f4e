@@ -2,9 +2,9 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import _switch from './interaction';
 
-import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/testingUtils/testUtils';
+import type { State, EventDispatcher } from '~/types';
 
-import type { State, EventDispatcher } from '../../../../types';
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('switch interaction', () => {
 	let mockState: State;

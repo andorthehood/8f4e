@@ -1,4 +1,4 @@
-import type { ContextMenuItem } from '../../types';
+import type { ContextMenuItem } from '~/types';
 
 export interface CategoryItem {
 	title: string;

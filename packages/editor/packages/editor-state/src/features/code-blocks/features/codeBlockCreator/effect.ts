@@ -6,7 +6,7 @@ import getVertexShaderId from '../../../shader-effects/getVertexShaderId';
 import getFragmentShaderId from '../../../shader-effects/getFragmentShaderId';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, EventDispatcher } from '../../../../types';
+import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
 const nameList = [
 	'quark',

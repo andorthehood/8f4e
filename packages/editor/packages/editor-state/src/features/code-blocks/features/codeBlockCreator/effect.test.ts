@@ -3,10 +3,10 @@ import createStateManager from '@8f4e/state-manager';
 
 import codeBlockCreator from './effect';
 
-import { createMockState, createMockCodeBlock } from '../../../../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../../../../pureHelpers/testingUtils/vitestTestUtils';
+import type { State } from '~/types';
 
-import type { State } from '../../../../types';
+import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 describe('codeBlockCreator - clipboard callbacks', () => {
 	let mockState: State;

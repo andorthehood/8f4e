@@ -1,7 +1,7 @@
 import findCodeBlockAtViewportCoordinates from '../../utils/finders/findCodeBlockAtViewportCoordinates';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '../../../../types';
+import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '~/types';
 
 export interface CodeBlockClickEvent {
 	x: number;

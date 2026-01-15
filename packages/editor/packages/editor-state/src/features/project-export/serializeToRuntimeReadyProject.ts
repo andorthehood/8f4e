@@ -1,9 +1,10 @@
 import serializeToProject from './serializeToProject';
 
 import { compileConfigForExport } from '../config-compiler/compileConfigForExport';
-import { createMockCodeBlock, createMockState } from '../../pureHelpers/testingUtils/testUtils';
 
-import type { Project, State } from '../../types';
+import type { Project, State } from '~/types';
+
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 /**
  * Serializes current runtime state to runtime-ready Project format.

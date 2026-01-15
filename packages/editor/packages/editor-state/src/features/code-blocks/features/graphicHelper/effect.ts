@@ -21,7 +21,7 @@ import highlightSyntaxGlsl from '../../../code-editing/highlightSyntaxGlsl';
 import { moveCaret } from '../../../code-editing/moveCaret';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 
-import type { CodeBlockGraphicData, State, EventDispatcher } from '../../../../types';
+import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();

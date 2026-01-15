@@ -1,7 +1,7 @@
 import findClosestCodeBlockInDirection, { Direction } from '../../utils/finders/findClosestCodeBlockInDirection';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 
-import type { State, EventDispatcher, NavigateCodeBlockEvent } from '../../../../types';
+import type { State, EventDispatcher, NavigateCodeBlockEvent } from '~/types';
 
 /**
  * Navigates to a code block in the specified direction.
