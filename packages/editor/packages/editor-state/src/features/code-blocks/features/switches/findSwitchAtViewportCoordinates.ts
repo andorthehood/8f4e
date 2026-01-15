@@ -1,4 +1,4 @@
-import type { CodeBlockGraphicData, GraphicHelper, Switch } from '../../../../types';
+import type { CodeBlockGraphicData, GraphicHelper, Switch } from '~/types';
 
 /**
  * Performs a hit test against switch decorations inside a code block using viewport-relative coordinates.
