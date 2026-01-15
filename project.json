@@ -12,7 +12,11 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "vite",
+        "commands": [
+          "nx run-many --target=build --all && nx watch --all -- nx run-many --target=build --all",
+          "vite"
+        ],
+        "parallel": true,
         "cwd": "{workspaceRoot}"
       }
     },
