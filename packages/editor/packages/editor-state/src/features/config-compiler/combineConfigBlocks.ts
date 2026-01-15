@@ -1,6 +1,6 @@
 import { collectConfigBlocks } from './collectConfigBlocks';
 
-import type { CodeBlockGraphicData } from '../../types';
+import type { CodeBlockGraphicData } from '~/types';
 
 /**
  * Represents line range information for a config block in the combined source.

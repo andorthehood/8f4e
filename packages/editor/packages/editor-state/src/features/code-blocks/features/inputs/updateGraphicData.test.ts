@@ -3,9 +3,9 @@ import { MemoryTypes } from '@8f4e/compiler';
 
 import updateInputsGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState, findExtrasById } from '../../../../pureHelpers/testingUtils/testUtils';
+import type { CodeBlockGraphicData, State } from '~/types';
 
-import type { CodeBlockGraphicData, State } from '../../../../types';
+import { createMockCodeBlock, createMockState, findExtrasById } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('updateInputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;

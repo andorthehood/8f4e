@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import centerViewportOnCodeBlock, { CodeBlockBounds } from './centerViewportOnCodeBlock';
 
-import { createMockViewport } from '../../pureHelpers/testingUtils/testUtils';
+import { createMockViewport } from '~/pureHelpers/testingUtils/testUtils';
 
 /**
  * Helper function to create a mock code block with essential properties for viewport centering tests
