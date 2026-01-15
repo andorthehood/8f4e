@@ -6,7 +6,10 @@
 		"baseUrl": "src",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-		"types": ["vitest/importMeta"]
+		"types": ["vitest/importMeta"],
+		"paths": {
+			"~/*": ["*"]
+		}
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules", "dist", "src/**/*.test.ts"]

@@ -3,10 +3,11 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import demoModeNavigation from './demoModeNavigation';
 
 import * as codeBlockNavigationModule from '../code-blocks/features/codeBlockNavigation/effect';
-import { createMockCodeBlock, createMockState } from '../../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
 
-import type { CodeBlockGraphicData } from '../../types';
+import type { CodeBlockGraphicData } from '~/types';
+
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 // Mock the navigateToCodeBlockInDirection function
 vi.mock('../code-blocks/features/codeBlockNavigation/effect', () => ({

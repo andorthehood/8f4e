@@ -1,4 +1,4 @@
-import { GraphicHelper } from '../../types';
+import { GraphicHelper } from '~/types';
 
 /**
  * Minimal positional data required for viewport centering

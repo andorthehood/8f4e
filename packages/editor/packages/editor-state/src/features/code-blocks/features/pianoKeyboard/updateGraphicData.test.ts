@@ -3,9 +3,9 @@ import { MemoryTypes, type DataStructure } from '@8f4e/compiler';
 
 import updatePianoKeyboardsGraphicData from './updateGraphicData';
 
-import { createMockCodeBlock, createMockState } from '../../../../pureHelpers/testingUtils/testUtils';
+import type { CodeBlockGraphicData, State } from '~/types';
 
-import type { CodeBlockGraphicData, State } from '../../../../types';
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('updatePianoKeyboardsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;

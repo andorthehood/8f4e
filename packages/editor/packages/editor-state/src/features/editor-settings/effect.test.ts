@@ -3,10 +3,10 @@ import createStateManager from '@8f4e/state-manager';
 
 import editorSettings from './effect';
 
-import { createMockState } from '../../pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '../../pureHelpers/testingUtils/vitestTestUtils';
+import type { State, EditorSettings } from '~/types';
 
-import type { State, EditorSettings } from '../../types';
+import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 describe('editorSettings', () => {
 	let mockState: State;

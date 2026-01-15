@@ -1,9 +1,9 @@
 import findButtonAtViewportCoordinates from './findButtonAtViewportCoordinates';
 
-import { EventDispatcher } from '../../../../types';
-
-import type { State, Switch, CodeBlockGraphicData } from '../../../../types';
+import type { State, Switch, CodeBlockGraphicData } from '~/types';
 import type { DataStructure } from '@8f4e/compiler';
+
+import { EventDispatcher } from '~/types';
 
 export default function button(state: State, events: EventDispatcher): () => void {
 	let lastPushedButton: Switch | undefined;

@@ -1,8 +1,8 @@
 import calculateBorderLineCoordinates from './calculateBorderLineCoordinates';
 
-import { createMockState } from '../../pureHelpers/testingUtils/testUtils';
+import type { State } from '~/types';
 
-import type { State } from '../../types';
+import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 export default function resize(state: State, width: number, height: number): void {
 	state.graphicHelper.viewport.width = width;
