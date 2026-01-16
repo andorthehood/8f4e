@@ -320,6 +320,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			selectedRuntime: 0,
 			memorySizeBytes: 1048576,
 			disableAutoCompilation: false,
+			binaryAssets: [],
 		},
 	};
 

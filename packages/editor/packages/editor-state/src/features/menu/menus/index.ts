@@ -1,4 +1,3 @@
-export { binaryAssetsMenu } from './binaryAssetsMenu';
 export { colorSchemeMenu } from './colorSchemeMenu';
 export { editorSettingsMenu } from './editorSettingsMenu';
 export { fontMenu } from './fontMenu';
