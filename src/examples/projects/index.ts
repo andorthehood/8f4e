@@ -40,6 +40,11 @@ export const projectMetadata: ProjectMetadata[] = [
 		title: 'Ripple Effect Demo',
 		category: 'Visuals',
 	},
+	{
+		slug: 'motionBlurTrail',
+		title: 'Motion Blur Trail',
+		category: 'Visuals',
+	},
 	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', category: 'Visuals' },
 	{ slug: 'ericSaiteGenerator', title: 'Eric Saite Generator', category: 'Synthesis' },
 	{ slug: 'midiArpeggiator', title: 'MIDI Arpeggiator', category: 'MIDI' },
