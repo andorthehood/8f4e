@@ -14,6 +14,7 @@ export const defaultConfig: ConfigObject = {
 	selectedRuntime: 0,
 	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
+	binaryAssets: [],
 };
 
 export default function createDefaultState() {

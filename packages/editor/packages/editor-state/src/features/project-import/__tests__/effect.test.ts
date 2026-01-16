@@ -120,7 +120,7 @@ describe('projectImport', () => {
 		});
 
 		it('should reset compiled config when loading new project without config blocks', async () => {
-			mockState.compiledConfig = { memorySizeBytes: 500 * 65536 };
+			mockState.compiledConfig = { ...mockState.compiledConfig, memorySizeBytes: 500 * 65536 };
 
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
@@ -331,6 +331,7 @@ describe('projectImport', () => {
 					memorySizeBytes: 2097152,
 					selectedRuntime: 1,
 					disableAutoCompilation: true,
+					binaryAssets: [],
 				},
 				compiledWasm: 'base64encodedwasm',
 				memorySnapshot: 'base64encodedmemory',
@@ -353,6 +354,7 @@ describe('projectImport', () => {
 				memorySizeBytes: 2097152,
 				selectedRuntime: 1,
 				disableAutoCompilation: true,
+				binaryAssets: [],
 			});
 		});
 
