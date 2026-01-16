@@ -82,6 +82,7 @@ describe('Example Projects Compilation', () => {
 		const projectSlugs = projectFiles.map(f => path.basename(f, '.ts'));
 		expect(projectSlugs).toContain('audioBuffer');
 		expect(projectSlugs).toContain('rippleEffect');
+		expect(projectSlugs).toContain('motionBlurTrail');
 		expect(projectSlugs).toContain('simpleCounterMainThread');
 	});
 
