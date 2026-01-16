@@ -54,9 +54,11 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		// Use callbacks instead of localStorage
 		await state.callbacks.saveSession(projectToSave);
 
-		const storageQuota = await state.callbacks.getStorageQuota!();
-		if (storageQuota) {
-			store.set('storageQuota', storageQuota);
+		if (state.callbacks.getStorageQuota) {
+			const storageQuota = await state.callbacks.getStorageQuota();
+			if (storageQuota) {
+				store.set('storageQuota', storageQuota);
+			}
 		}
 	}
 
