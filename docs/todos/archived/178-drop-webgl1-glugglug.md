@@ -3,8 +3,8 @@ title: 'TODO: Drop WebGL1 and move glugglug to WebGL2-only'
 priority: Medium
 effort: 2-4d
 created: 2026-01-15
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-16
 ---
 
 # TODO: Drop WebGL1 and move glugglug to WebGL2-only
