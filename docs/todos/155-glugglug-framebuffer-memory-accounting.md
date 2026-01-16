@@ -3,8 +3,8 @@ title: 'TODO: Add Framebuffer Memory Accounting in glugglug'
 priority: Medium
 effort: 2-4h
 created: 2025-12-30
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-05
 ---
 
 # TODO: Add Framebuffer Memory Accounting in glugglug
@@ -32,9 +32,9 @@ Add a lightweight accounting layer that estimates bytes for framebuffer-backed t
 
 ## Success Criteria
 
-- [ ] Estimated framebuffer memory is tracked for the render target.
-- [ ] Cached framebuffer textures update totals on create/evict/clear.
-- [ ] A public stats method exposes totals for debugging or profiling.
+- [x] Estimated framebuffer memory is tracked for the render target.
+- [x] Cached framebuffer textures update totals on create/evict/clear.
+- [x] A public stats method exposes totals for debugging or profiling.
 
 ## Affected Components
 
