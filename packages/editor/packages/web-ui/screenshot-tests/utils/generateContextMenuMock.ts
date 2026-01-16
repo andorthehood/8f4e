@@ -34,18 +34,10 @@ export default function generateContextMenuMock(): ContextMenu {
 				divider: true,
 			},
 			{
-				title: '........... Import binary asset',
-				action: 'importBinaryAsset',
+				title: '...... Clear Binary Asset Cache',
+				action: 'clearBinaryAssetCache',
 				close: true,
 				disabled: false,
-			},
-			{
-				title: '............... Binary assets >',
-				action: 'openSubMenu',
-				payload: {
-					menu: 'binaryAssetsMenu',
-				},
-				close: false,
 			},
 			{
 				divider: true,
