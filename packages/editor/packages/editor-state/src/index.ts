@@ -106,6 +106,7 @@ export type {
 	Midi,
 	GraphicHelper,
 	BinaryAsset,
+	ConfigBinaryAsset,
 	Callbacks,
 	ExampleModule,
 	ModuleMetadata,
