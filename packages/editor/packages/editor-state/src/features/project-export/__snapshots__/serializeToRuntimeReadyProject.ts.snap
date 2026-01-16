@@ -6,6 +6,7 @@ exports[`serializeToRuntimeReadyProject > omits compiled config when no config b
   "codeBlocks": [],
   "compiledConfig": {
     "disableAutoCompilation": false,
+    "binaryAssets": [],
     "memorySizeBytes": 1048576,
     "runtimeSettings": [
       {
@@ -43,6 +44,7 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
   ],
   "compiledConfig": {
     "disableAutoCompilation": false,
+    "binaryAssets": [],
     "memorySizeBytes": 65536,
     "runtimeSettings": [
       {
