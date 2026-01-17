@@ -105,6 +105,7 @@ const standalonProject: Project = {
 			},
 		],
 		disableAutoCompilation: true,
+		binaryAssets: [],
 	},
 };
 
