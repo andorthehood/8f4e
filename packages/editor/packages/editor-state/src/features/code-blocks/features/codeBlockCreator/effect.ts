@@ -4,6 +4,7 @@ import { getFunctionId } from '@8f4e/compiler/syntax';
 
 import getVertexShaderId from '../../../shader-effects/getVertexShaderId';
 import getFragmentShaderId from '../../../shader-effects/getFragmentShaderId';
+import getCodeBlockGridWidth from '../../utils/codeParsers/getCodeBlockGridWidth';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -226,8 +227,65 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			console.warn('No getCodeBlock callback provided');
 			return;
 		}
-		const codeBlock = await state.callbacks.getModule(codeBlockSlug);
-		onAddCodeBlock({ code: codeBlock.code.split('\n'), x, y, isNew: false });
+
+		// Load the requested module
+		const requestedModule = await state.callbacks.getModule(codeBlockSlug);
+
+		// Add the requested module at the clicked position
+		const requestedCode = requestedModule.code.split('\n');
+		onAddCodeBlock({ code: requestedCode, x, y, isNew: false });
+
+		// If the module has dependencies, insert them to the right
+		if (requestedModule.dependencies && requestedModule.dependencies.length > 0) {
+			const vGrid = state.graphicHelper.viewport.vGrid;
+			const gridGap = 4; // Fixed gap between modules in grid units
+
+			// Calculate the grid width of the requested module
+			let currentGridX = Math.round((state.graphicHelper.viewport.x + x) / vGrid);
+			const requestedModuleGridWidth = getCodeBlockGridWidth(requestedCode);
+			currentGridX += requestedModuleGridWidth + gridGap;
+
+			// Get existing module IDs to avoid duplicates
+			const existingModuleIds = new Set(state.graphicHelper.codeBlocks.map(block => block.id).filter(id => id !== ''));
+
+			// Insert dependencies from left to right
+			for (const dependencySlug of requestedModule.dependencies) {
+				try {
+					const dependencyModule = await state.callbacks.getModule(dependencySlug);
+					const dependencyCode = dependencyModule.code.split('\n');
+
+					// Get the module ID from the dependency code
+					const dependencyModuleId =
+						getModuleId(dependencyCode) ||
+						getFunctionId(dependencyCode) ||
+						getVertexShaderId(dependencyCode) ||
+						getFragmentShaderId(dependencyCode);
+
+					// Skip if a code block with this moduleId already exists
+					if (dependencyModuleId && existingModuleIds.has(dependencyModuleId)) {
+						continue;
+					}
+
+					// Calculate pixel position from grid position
+					const dependencyX = currentGridX * vGrid - state.graphicHelper.viewport.x;
+					const dependencyY = y;
+
+					// Add the dependency
+					onAddCodeBlock({ code: dependencyCode, x: dependencyX, y: dependencyY, isNew: false });
+
+					// Add to existing IDs set to prevent duplicates within this batch
+					if (dependencyModuleId) {
+						existingModuleIds.add(dependencyModuleId);
+					}
+
+					// Move position to the right for the next dependency
+					const dependencyGridWidth = getCodeBlockGridWidth(dependencyCode);
+					currentGridX += dependencyGridWidth + gridGap;
+				} catch (error) {
+					console.warn(`Failed to load dependency: ${dependencySlug}`, error);
+				}
+			}
+		}
 	}
 
 	events.on('addCodeBlockBySlug', onAddCodeBlockBySlug);
