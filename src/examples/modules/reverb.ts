@@ -15,44 +15,39 @@ const SIZE 5000
 float[] buffer SIZE
 int bufferPointer &buffer
 
-local float _output
-
-debug bufferPointer
-debug out
-
-; Calculate new sample
+; Compute reverb output
 push &out
- push bufferPointer
- loadFloat
- push FEEDBACK
- mul
- push *in
- add
+push bufferPointer
+loadFloat
+push FEEDBACK
+mul
+push *in
+add
 store
 
 ; Store the new sample 
 ; in the buffer
 push bufferPointer
- push &out
- loadFloat
+push &out
+loadFloat
 store
 
-; Increment buffer pointer
+; Advance buffer pointer
 push &bufferPointer
- push bufferPointer
- push %bufferPointer
- add
+push bufferPointer
+push %bufferPointer
+add
 store
 
-; Reset buffer pointer
-; it when reaches the end 
+; Wrap buffer pointer back
+; to start when reaches end
 push bufferPointer
 push buffer&
 greaterThan
 if void
- push &bufferPointer
- push &buffer
- store
+push &bufferPointer
+push &buffer
+store
 ifEnd
 
 moduleEnd`,

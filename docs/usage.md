@@ -66,20 +66,6 @@ This document provides examples and instructions for integrating the 8f4e editor
                 a.click();
                 URL.revokeObjectURL(url);
             },
-            importBinaryAsset: async (file) => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        resolve({
-                            data: e.target.result,
-                            fileName: file.name
-                        });
-                    };
-                    reader.onerror = () => reject(new Error('Failed to read file'));
-                    reader.readAsDataURL(file);
-                });
-            },
-            
             // Runtime factories (can be null for basic use)
             runtimeFactories: {
                 'web-worker-logic': async () => null,
@@ -298,7 +284,6 @@ interface Options {
     // File handling callbacks
     loadProjectFromFile: (file: File) => Promise<Project>;
     saveProjectToFile: (project: Project, filename: string) => Promise<void>;
-    importBinaryAsset: (file: File) => Promise<{ data: string; fileName: string }>;
     
     // Runtime factories
     runtimeFactories: {

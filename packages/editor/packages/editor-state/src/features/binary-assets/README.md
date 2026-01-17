@@ -2,33 +2,32 @@
 
 ## Purpose
 
-Manages binary asset imports and loading into runtime memory. This feature handles the collection of binary assets (images, audio files, etc.) that are used by the 8f4e program.
+Manages binary asset loading into runtime memory from config-defined URLs. This feature handles the collection of binary assets (images, audio files, etc.) that are used by the 8f4e program.
 
 ⚠️ **Status**: Work in progress - API and behavior may change.
 
 ## Key Behaviors
 
-- **Asset Import**: Provides event handler for importing binary assets through the `importBinaryAsset` callback
 - **Memory Loading**: Handles loading binary assets into runtime memory via the `loadBinaryFileIntoMemory` callback
-- **Asset Collection**: Maintains the list of imported assets in `state.binaryAssets`
+- **Asset Collection**: Maintains the list of loaded assets in `state.binaryAssets`
 
 ## Events & Callbacks
 
 ### Events Listened To
 
-- `importBinaryAsset` - Triggers the import flow for a new binary asset
 - `loadBinaryFilesIntoMemory` - Loads all collected binary assets into runtime memory
+- `clearBinaryAssetCache` - Clears the editor-side cache for binary asset URLs
 
 ### Callbacks Used
 
-- `state.callbacks.importBinaryAsset()` - Returns a promise that resolves to a binary asset object
 - `state.callbacks.loadBinaryFileIntoMemory(asset)` - Loads a single asset into memory
+- `state.callbacks.clearBinaryAssetCache()` - Clears the editor-side cache for binary assets
 
 ## State Touched
 
 - `state.binaryAssets` - Array of imported binary asset objects
-- `state.callbacks.importBinaryAsset` - Callback function for importing assets
 - `state.callbacks.loadBinaryFileIntoMemory` - Callback function for loading assets into memory
+- `state.callbacks.clearBinaryAssetCache` - Callback function for clearing the cache
 
 ## Integration Points
 
@@ -39,5 +38,4 @@ Manages binary asset imports and loading into runtime memory. This feature handl
 ## Notes & Limitations
 
 - Currently in WIP status - implementation details may change
-- Requires external callbacks to be provided for file system operations
 - Asset loading is triggered automatically when runtime memory is recreated

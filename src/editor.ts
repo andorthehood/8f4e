@@ -10,7 +10,6 @@ import {
 	saveEditorSettings,
 	importProject,
 	exportProject,
-	importBinaryAsset,
 	exportBinaryCode,
 } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
@@ -49,7 +48,6 @@ async function init() {
 			saveEditorSettings,
 			importProject,
 			exportProject,
-			importBinaryAsset,
 			exportBinaryCode,
 			getListOfColorSchemes,
 			getColorScheme,

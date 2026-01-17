@@ -458,6 +458,19 @@ export interface BinaryAsset {
 	sizeBytes?: number;
 }
 
+export interface ConfigBinaryAsset {
+	url: string;
+	memoryId: string;
+}
+
+export interface ResolvedBinaryAsset {
+	url: string;
+	moduleId: string;
+	memoryName: string;
+	byteAddress: number;
+	byteLength: number;
+}
+
 interface MidiNoteIO {
 	moduleId: string;
 	channelMemoryId?: string;
@@ -593,9 +606,9 @@ export interface Callbacks {
 	// File handling callbacks
 	importProject?: () => Promise<Project>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
-	importBinaryAsset?: () => Promise<{ fileName: string }>;
 	exportBinaryCode?: (fileName: string) => Promise<void>;
-	loadBinaryFileIntoMemory?: (file: BinaryAsset) => Promise<void>;
+	loadBinaryFileIntoMemory?: (file: ResolvedBinaryAsset) => Promise<void>;
+	clearBinaryAssetCache?: () => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
 	// Color scheme loader callback
@@ -699,6 +712,7 @@ export interface ConfigObject {
 	selectedRuntime: number;
 	runtimeSettings: Runtimes[];
 	disableAutoCompilation: boolean;
+	binaryAssets: ConfigBinaryAsset[];
 }
 
 export interface State {
