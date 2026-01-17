@@ -463,6 +463,14 @@ export interface ConfigBinaryAsset {
 	memoryId: string;
 }
 
+export interface ResolvedBinaryAsset {
+	url: string;
+	moduleId: string;
+	memoryName: string;
+	byteAddress: number;
+	byteLength: number;
+}
+
 interface MidiNoteIO {
 	moduleId: string;
 	channelMemoryId?: string;
@@ -599,7 +607,7 @@ export interface Callbacks {
 	importProject?: () => Promise<Project>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
 	exportBinaryCode?: (fileName: string) => Promise<void>;
-	loadBinaryFileIntoMemory?: (file: ConfigBinaryAsset) => Promise<void>;
+	loadBinaryFileIntoMemory?: (file: ResolvedBinaryAsset) => Promise<void>;
 	clearBinaryAssetCache?: () => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
