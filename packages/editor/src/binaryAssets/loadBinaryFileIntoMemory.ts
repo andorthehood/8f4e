@@ -44,7 +44,7 @@ export default async function loadBinaryFileIntoMemory(
 		url,
 		memoryId,
 		mimeType: contentType || undefined,
-		sizeBytes: maxLength,
+		sizeBytes: arrayBuffer.byteLength,
 	};
 	const existing = state.binaryAssets.filter(
 		loaded => !(loaded.url === nextAsset.url && loaded.memoryId === nextAsset.memoryId)
