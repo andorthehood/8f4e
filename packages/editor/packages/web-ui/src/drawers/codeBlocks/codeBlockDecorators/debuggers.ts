@@ -18,6 +18,12 @@ export default function drawConnectors(
 	}
 
 	for (const { x, y, memory, showAddress, showEndAddress, showBinary, bufferPointer } of codeBlock.extras.debuggers) {
+		// TODO: fix this, happens when it's a 16 or 8 bit memory view in 8f4e and the size is not multiple of 4
+		// probably need to create separate memory views for those cases
+		if (memoryViews.float32[memory.wordAlignedAddress + bufferPointer] === undefined) {
+			continue;
+		}
+
 		const value = memory.isInteger
 			? memoryViews.int32[memory.wordAlignedAddress + bufferPointer].toString(showBinary ? 2 : 10)
 			: memoryViews.float32[memory.wordAlignedAddress + bufferPointer].toFixed(4);

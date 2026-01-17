@@ -2,6 +2,7 @@ import initState, { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state
 import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
+import { clearBinaryAssetCache, loadBinaryFileIntoMemory } from './binaryAssets';
 import initEvents from './events';
 import pointerEvents from './events/pointerEvents';
 import keyboardEvents from './events/keyboardEvents';
@@ -48,7 +49,9 @@ interface Options {
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
 	const { memoryViews, updateMemoryViews } = createMemoryViewManager(new ArrayBuffer(0));
 	const events = initEvents();
-	const store = initState(events, {
+	let store: ReturnType<typeof initState>;
+
+	store = initState(events, {
 		...options,
 		callbacks: {
 			...options.callbacks,
@@ -58,6 +61,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			setWordInMemory: (wordAlignedAddress: number, value: number) => {
 				memoryViews.int32[wordAlignedAddress] = value;
 			},
+			loadBinaryFileIntoMemory: asset => loadBinaryFileIntoMemory(store, memoryViews, asset),
+			clearBinaryAssetCache,
 			readClipboardText: async () => {
 				return await navigator.clipboard.readText();
 			},
