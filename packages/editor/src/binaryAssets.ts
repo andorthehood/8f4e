@@ -1,80 +1,68 @@
 import type { BinaryAsset, ConfigBinaryAsset, State } from '@8f4e/editor-state';
+import type { StateManager } from '@8f4e/state-manager';
 import type { MemoryViews } from '@8f4e/web-ui';
 
 const BINARY_ASSET_CACHE_NAME = '8f4e-binary-assets';
 
-export interface BinaryAssetStore {
-	getState: () => State;
-	setBinaryAssets: (assets: BinaryAsset[]) => void;
+export async function clearBinaryAssetCache(): Promise<void> {
+	if (typeof caches === 'undefined') {
+		return;
+	}
+
+	await caches.delete(BINARY_ASSET_CACHE_NAME);
 }
 
-export interface BinaryAssetHandlers {
-	clearBinaryAssetCache: () => Promise<void>;
-	loadBinaryFileIntoMemory: (asset: ConfigBinaryAsset) => Promise<void>;
-}
+export async function loadBinaryFileIntoMemory(
+	store: StateManager<State>,
+	memoryViews: MemoryViews,
+	asset: ConfigBinaryAsset
+): Promise<void> {
+	const { url, memoryId } = asset;
+	if (!url || !memoryId) {
+		console.warn('Binary asset missing url or memoryId');
+		return;
+	}
 
-export function createBinaryAssetHandlers(store: BinaryAssetStore, memoryViews: MemoryViews): BinaryAssetHandlers {
-	const clearBinaryAssetCache = async () => {
-		if (typeof caches === 'undefined') {
-			return;
-		}
+	const response = await getBinaryAssetResponse(url);
+	if (!response?.ok) {
+		console.warn('Failed to load binary asset:', url);
+		return;
+	}
 
-		await caches.delete(BINARY_ASSET_CACHE_NAME);
+	const arrayBuffer = await response.arrayBuffer();
+	const state = store.getState();
+	const target = resolveBinaryAssetTarget(state, memoryId);
+
+	if (!target) {
+		console.warn('Unable to resolve memory target:', memoryId);
+		return;
+	}
+
+	const byteView = new Uint8Array(memoryViews.int32.buffer);
+	const endAddress = target.byteAddress + arrayBuffer.byteLength;
+	const targetEndAddress = target.byteAddress + target.byteLength;
+
+	if (endAddress > byteView.byteLength || endAddress > targetEndAddress) {
+		console.warn('Binary asset exceeds memory bounds:', memoryId);
+		return;
+	}
+
+	byteView.set(new Uint8Array(arrayBuffer), target.byteAddress);
+
+	const contentType = response.headers.get('content-type') || undefined;
+	const fileName = getBinaryAssetFileName(url);
+	const nextAsset: BinaryAsset = {
+		fileName,
+		url,
+		memoryId,
+		mimeType: contentType || undefined,
+		sizeBytes: arrayBuffer.byteLength,
 	};
+	const existing = state.binaryAssets.filter(
+		loaded => !(loaded.url === nextAsset.url && loaded.memoryId === nextAsset.memoryId)
+	);
 
-	const loadBinaryFileIntoMemory = async (asset: ConfigBinaryAsset) => {
-		const { url, memoryId } = asset;
-		if (!url || !memoryId) {
-			console.warn('Binary asset missing url or memoryId');
-			return;
-		}
-
-		const response = await getBinaryAssetResponse(url);
-		if (!response?.ok) {
-			console.warn('Failed to load binary asset:', url);
-			return;
-		}
-
-		const arrayBuffer = await response.arrayBuffer();
-		const state = store.getState();
-		const target = resolveBinaryAssetTarget(state, memoryId);
-
-		if (!target) {
-			console.warn('Unable to resolve memory target:', memoryId);
-			return;
-		}
-
-		const byteView = new Uint8Array(memoryViews.int32.buffer);
-		const endAddress = target.byteAddress + arrayBuffer.byteLength;
-		const targetEndAddress = target.byteAddress + target.byteLength;
-
-		if (endAddress > byteView.byteLength || endAddress > targetEndAddress) {
-			console.warn('Binary asset exceeds memory bounds:', memoryId);
-			return;
-		}
-
-		byteView.set(new Uint8Array(arrayBuffer), target.byteAddress);
-
-		const contentType = response.headers.get('content-type') || undefined;
-		const fileName = getBinaryAssetFileName(url);
-		const nextAsset: BinaryAsset = {
-			fileName,
-			url,
-			memoryId,
-			mimeType: contentType || undefined,
-			sizeBytes: arrayBuffer.byteLength,
-		};
-		const existing = state.binaryAssets.filter(
-			loaded => !(loaded.url === nextAsset.url && loaded.memoryId === nextAsset.memoryId)
-		);
-
-		store.setBinaryAssets([...existing, nextAsset]);
-	};
-
-	return {
-		clearBinaryAssetCache,
-		loadBinaryFileIntoMemory,
-	};
+	store.set('binaryAssets', [...existing, nextAsset]);
 }
 
 async function getBinaryAssetResponse(url: string): Promise<Response | null> {
