@@ -2,7 +2,7 @@ import initState, { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state
 import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
-import { createBinaryAssetHandlers } from './binaryAssets';
+import { clearBinaryAssetCache, loadBinaryFileIntoMemory } from './binaryAssets';
 import initEvents from './events';
 import pointerEvents from './events/pointerEvents';
 import keyboardEvents from './events/keyboardEvents';
@@ -50,13 +50,6 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const { memoryViews, updateMemoryViews } = createMemoryViewManager(new ArrayBuffer(0));
 	const events = initEvents();
 	let store: ReturnType<typeof initState>;
-	const binaryAssetHandlers = createBinaryAssetHandlers(
-		{
-			getState: () => store.getState(),
-			setBinaryAssets: assets => store.set('binaryAssets', assets),
-		},
-		memoryViews
-	);
 
 	store = initState(events, {
 		...options,
@@ -68,9 +61,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			setWordInMemory: (wordAlignedAddress: number, value: number) => {
 				memoryViews.int32[wordAlignedAddress] = value;
 			},
-			loadBinaryFileIntoMemory:
-				options.callbacks.loadBinaryFileIntoMemory ?? (asset => binaryAssetHandlers.loadBinaryFileIntoMemory(asset)),
-			clearBinaryAssetCache: options.callbacks.clearBinaryAssetCache ?? binaryAssetHandlers.clearBinaryAssetCache,
+			loadBinaryFileIntoMemory: asset => loadBinaryFileIntoMemory(store, memoryViews, asset),
+			clearBinaryAssetCache,
 			readClipboardText: async () => {
 				return await navigator.clipboard.readText();
 			},
