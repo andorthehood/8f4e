@@ -93,7 +93,7 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'midiPianoKeyboardC3', title: 'MIDI Piano Keyboard (First key: C3)', category: 'MIDI' },
 	{ slug: 'multipleFloat', title: 'Multiple (8x Float)', category: 'Utilities' },
 	{ slug: 'multipleInt', title: 'Multiple (8x Int)', category: 'Utilities' },
-	{ slug: 'pcmLooper', title: 'PCM Looper (8bit unsigned)', category: 'PCM' },
+	{ slug: 'pcmLooper8bitUnsigned', title: 'PCM Looper (8bit unsigned)', category: 'PCM' },
 	{ slug: 'pcmLooperV16bitSigned', title: 'Variable Speed PCM Looper (16bit signed)', category: 'PCM' },
 	{
 		slug: 'pcmLooperVR16bitSigned',
