@@ -196,6 +196,7 @@ describe('disableAutoCompilation feature', () => {
 				selectedRuntime: 0,
 				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
 				disableAutoCompilation: false,
+				binaryAssets: [],
 			});
 		});
 

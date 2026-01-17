@@ -39,15 +39,15 @@ export async function loadBinaryFileIntoMemory(
 	}
 
 	const byteView = new Uint8Array(memoryViews.int32.buffer);
-	const endAddress = target.byteAddress + arrayBuffer.byteLength;
-	const targetEndAddress = target.byteAddress + target.byteLength;
+	const maxLength = Math.min(arrayBuffer.byteLength, target.byteLength);
+	const endAddress = target.byteAddress + maxLength;
 
-	if (endAddress > byteView.byteLength || endAddress > targetEndAddress) {
+	if (endAddress > byteView.byteLength) {
 		console.warn('Binary asset exceeds memory bounds:', memoryId);
 		return;
 	}
 
-	byteView.set(new Uint8Array(arrayBuffer), target.byteAddress);
+	byteView.set(new Uint8Array(arrayBuffer, 0, maxLength), target.byteAddress);
 
 	const contentType = response.headers.get('content-type') || undefined;
 	const fileName = getBinaryAssetFileName(url);
