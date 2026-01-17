@@ -4,7 +4,7 @@ const pcmLooper8bitUnsigned: ExampleModule = {
 	title: 'Variable Speed PCM Looper (8bit unsigned)',
 	author: 'Andor Polgar',
 	category: 'PCM',
-	code: `module pcmPlayer8bitUnsigned
+	code: `module pcmPlayer8bit
 
 int8[] buffer 62258
 int playhead &buffer
@@ -28,6 +28,8 @@ castToFloat
 push MAX_8U
 castToFloat
 div
+push 0.5
+sub
 store
 
 ; Reset playhead
