@@ -168,4 +168,253 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			// No error should be thrown (silent failure)
 		});
 	});
+
+	describe('addCodeBlockBySlug with dependencies', () => {
+		it('should insert dependencies to the right of the requested module', async () => {
+			const mockGetModule = vi.fn();
+			mockGetModule.mockImplementation(async (slug: string) => {
+				if (slug === 'main') {
+					return {
+						title: 'Main Module',
+						author: 'Test',
+						code: 'module main\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+						dependencies: ['dep1', 'dep2'],
+					};
+				} else if (slug === 'dep1') {
+					return {
+						title: 'Dependency 1',
+						author: 'Test',
+						code: 'module dep1\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+					};
+				} else if (slug === 'dep2') {
+					return {
+						title: 'Dependency 2',
+						author: 'Test',
+						code: 'module dep2\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+					};
+				}
+				throw new Error('Module not found');
+			});
+
+			mockState.callbacks.getModule = mockGetModule;
+			mockState.featureFlags.editing = true;
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockBySlugCall = onCalls.find(call => call[0] === 'addCodeBlockBySlug');
+			const addCodeBlockBySlugCallback = addCodeBlockBySlugCall![1];
+
+			// Trigger add with dependencies
+			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
+
+			// Verify all modules were added
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('main');
+			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('dep1');
+			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('dep2');
+
+			// Verify positions - dep1 should be to the right of main
+			expect(mockState.graphicHelper.codeBlocks[1].gridX).toBeGreaterThan(mockState.graphicHelper.codeBlocks[0].gridX);
+			// Verify positions - dep2 should be to the right of dep1
+			expect(mockState.graphicHelper.codeBlocks[2].gridX).toBeGreaterThan(mockState.graphicHelper.codeBlocks[1].gridX);
+		});
+
+		it('should skip dependencies that already exist', async () => {
+			const mockGetModule = vi.fn();
+			mockGetModule.mockImplementation(async (slug: string) => {
+				if (slug === 'main') {
+					return {
+						title: 'Main Module',
+						author: 'Test',
+						code: 'module main\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+						dependencies: ['dep1', 'dep2'],
+					};
+				} else if (slug === 'dep1') {
+					return {
+						title: 'Dependency 1',
+						author: 'Test',
+						code: 'module dep1\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+					};
+				} else if (slug === 'dep2') {
+					return {
+						title: 'Dependency 2',
+						author: 'Test',
+						code: 'module dep2\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+					};
+				}
+				throw new Error('Module not found');
+			});
+
+			mockState.callbacks.getModule = mockGetModule;
+			mockState.featureFlags.editing = true;
+
+			// Pre-populate with dep1
+			const existingDep1 = createMockCodeBlock({
+				id: 'dep1',
+				code: ['module dep1', '', 'moduleEnd'],
+				blockType: 'module',
+			});
+			mockState.graphicHelper.codeBlocks = [existingDep1];
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockBySlugCall = onCalls.find(call => call[0] === 'addCodeBlockBySlug');
+			const addCodeBlockBySlugCallback = addCodeBlockBySlugCall![1];
+
+			// Trigger add with dependencies
+			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
+
+			// Verify only main and dep2 were added (dep1 already existed)
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('dep1'); // Existing
+			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('main'); // New
+			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('dep2'); // New
+		});
+
+		it('should work without dependencies field', async () => {
+			const mockGetModule = vi.fn().mockResolvedValue({
+				title: 'Simple Module',
+				author: 'Test',
+				code: 'module simple\n\nmoduleEnd',
+				tests: [],
+				category: 'Test',
+				// No dependencies field
+			});
+
+			mockState.callbacks.getModule = mockGetModule;
+			mockState.featureFlags.editing = true;
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockBySlugCall = onCalls.find(call => call[0] === 'addCodeBlockBySlug');
+			const addCodeBlockBySlugCallback = addCodeBlockBySlugCall![1];
+
+			// Trigger add without dependencies
+			await addCodeBlockBySlugCallback({ codeBlockSlug: 'simple', x: 100, y: 100 });
+
+			// Verify only the main module was added
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('simple');
+		});
+
+		it('should handle dependency loading errors gracefully', async () => {
+			const mockGetModule = vi.fn();
+			mockGetModule.mockImplementation(async (slug: string) => {
+				if (slug === 'main') {
+					return {
+						title: 'Main Module',
+						author: 'Test',
+						code: 'module main\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+						dependencies: ['dep1', 'missing'],
+					};
+				} else if (slug === 'dep1') {
+					return {
+						title: 'Dependency 1',
+						author: 'Test',
+						code: 'module dep1\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+					};
+				}
+				throw new Error('Module not found');
+			});
+
+			mockState.callbacks.getModule = mockGetModule;
+			mockState.featureFlags.editing = true;
+
+			// Mock console.warn to verify error handling
+			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockBySlugCall = onCalls.find(call => call[0] === 'addCodeBlockBySlug');
+			const addCodeBlockBySlugCallback = addCodeBlockBySlugCall![1];
+
+			// Trigger add with dependencies (one fails)
+			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
+
+			// Verify main and dep1 were added, but missing was skipped
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('main');
+			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('dep1');
+
+			// Verify warning was logged
+			expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to load dependency: missing', expect.any(Error));
+
+			consoleWarnSpy.mockRestore();
+		});
+
+		it('should use correct grid positioning for dependencies', async () => {
+			const mockGetModule = vi.fn();
+			mockGetModule.mockImplementation(async (slug: string) => {
+				if (slug === 'main') {
+					return {
+						title: 'Main Module',
+						author: 'Test',
+						code: 'module main\nlong line of code here\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+						dependencies: ['dep1'],
+					};
+				} else if (slug === 'dep1') {
+					return {
+						title: 'Dependency 1',
+						author: 'Test',
+						code: 'module dep1\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+					};
+				}
+				throw new Error('Module not found');
+			});
+
+			mockState.callbacks.getModule = mockGetModule;
+			mockState.featureFlags.editing = true;
+			mockState.graphicHelper.viewport.vGrid = 8; // 8 pixels per grid unit
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockBySlugCall = onCalls.find(call => call[0] === 'addCodeBlockBySlug');
+			const addCodeBlockBySlugCallback = addCodeBlockBySlugCall![1];
+
+			// Trigger add with dependencies
+			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
+
+			// Verify both modules were added
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
+
+			// Calculate expected positions
+			const mainModule = mockState.graphicHelper.codeBlocks[0];
+			const dep1Module = mockState.graphicHelper.codeBlocks[1];
+
+			// Main module should be at the clicked grid position
+			expect(mainModule.gridX).toBeCloseTo(
+				Math.round((mockState.graphicHelper.viewport.x + 100) / mockState.graphicHelper.viewport.vGrid),
+				0
+			);
+
+			// Dep1 should be positioned to the right with correct spacing
+			// The exact value depends on the grid width calculation
+			expect(dep1Module.gridX).toBeGreaterThan(mainModule.gridX);
+		});
+	});
 });
