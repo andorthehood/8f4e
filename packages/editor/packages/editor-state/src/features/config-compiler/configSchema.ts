@@ -46,6 +46,18 @@ export function getConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLik
 				items: runtimeSettingsSchema,
 			},
 			disableAutoCompilation: { type: 'boolean' },
+			binaryAssets: {
+				type: 'array',
+				items: {
+					type: 'object',
+					properties: {
+						url: { type: 'string' },
+						memoryId: { type: 'string' },
+					},
+					required: ['url', 'memoryId'],
+					additionalProperties: false,
+				},
+			},
 		},
 		additionalProperties: false,
 	};

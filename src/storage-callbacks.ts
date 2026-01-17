@@ -1,5 +1,3 @@
-import { BinaryAsset } from '@8f4e/editor-state';
-
 import { getProject, projectManifest } from './examples/registry';
 import { getCodeBuffer } from './compiler-callback';
 
@@ -127,40 +125,4 @@ export async function exportBinaryCode(fileName: string): Promise<void> {
 
 	document.body.removeChild(a);
 	URL.revokeObjectURL(url);
-}
-
-function arrayBufferToDataUrl(arrayBuffer: ArrayBuffer, mimeType: string): string {
-	const bytes = new Uint8Array(arrayBuffer);
-	let binary = '';
-
-	for (let i = 0; i < bytes.length; i++) {
-		binary += String.fromCharCode(bytes[i]);
-	}
-
-	const base64 = btoa(binary);
-	return `data:${mimeType};base64,${base64}`;
-}
-
-export async function importBinaryAsset(): Promise<BinaryAsset> {
-	const fileHandles = await (
-		window as unknown as { showOpenFilePicker: () => Promise<FileSystemFileHandle[]> }
-	).showOpenFilePicker();
-	const file = await fileHandles[0].getFile();
-
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onload = event => {
-			try {
-				const buffer = event.target?.result as ArrayBuffer;
-				// TODO: only convert small files to data URLs, for larger files use OPFS or similar
-				const url = arrayBufferToDataUrl(buffer, file.type);
-
-				resolve({ url, fileName: file.name, mimeType: file.type, sizeBytes: file.size });
-			} catch (error) {
-				reject(new Error('Failed to process binary asset: ' + error));
-			}
-		};
-		reader.onerror = () => reject(new Error('Failed to read binary asset file'));
-		reader.readAsArrayBuffer(file);
-	});
 }
