@@ -3,8 +3,8 @@ title: 'TODO: Document editor-state features with per-feature READMEs'
 priority: Low
 effort: 0.5-1d
 created: 2026-01-14
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-14
 ---
 
 # TODO: Document editor-state features with per-feature READMEs
