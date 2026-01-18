@@ -1,28 +1,70 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { error, log } from '../logger/logger';
+import { collectMacros } from '../macro-expansion/collectMacros';
+import { expandMacros } from '../macro-expansion/expandMacros';
+import { remapErrors } from '../macro-expansion/remapErrors';
 
-import type { CodeBlockGraphicData, State } from '~/types';
+import type { CodeBlockGraphicData, State, CodeError } from '~/types';
+import type { LineMapping } from '../macro-expansion/types';
 
 import { EventDispatcher } from '~/types';
 
 /**
  * Converts code blocks into separate arrays for modules and functions, sorted by creationIndex.
+ * Applies macro expansion to all blocks before returning.
  *
  * @param codeBlocks - List of code blocks to filter and sort
- * @returns Object containing modules and functions arrays, each sorted by creationIndex.
- *          Config blocks and comment blocks are excluded from the WASM compilation pipeline.
+ * @returns Object containing modules, functions arrays (each sorted by creationIndex),
+ *          line mappings for error remapping, and macro expansion errors.
+ *          Config blocks, comment blocks, and macro blocks are excluded from the WASM compilation pipeline.
  *          Constants blocks are included in modules array.
  */
 export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	modules: { code: string[] }[];
 	functions: { code: string[] }[];
+	lineMappings: Map<string | number, LineMapping[]>;
+	macroErrors: CodeError[];
 } {
 	const allBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
 
+	const { macros, errors: macroCollectionErrors } = collectMacros(allBlocks);
+
+	const lineMappings = new Map<string | number, LineMapping[]>();
+	const macroErrors: CodeError[] = [];
+
+	macroCollectionErrors.forEach(err => {
+		macroErrors.push({
+			lineNumber: 1,
+			message: err.message,
+			codeBlockId: err.blockId,
+		});
+	});
+
+	const expandBlock = (block: CodeBlockGraphicData) => {
+		const {
+			expandedCode,
+			lineMappings: blockMappings,
+			errors: expansionErrors,
+		} = expandMacros(block.code, macros, block.id);
+		lineMappings.set(block.id, blockMappings);
+		expansionErrors.forEach(err =>
+			macroErrors.push({
+				message: err.message,
+				lineNumber: err.lineNumber,
+				codeBlockId: err.blockId,
+			})
+		);
+		return { code: expandedCode };
+	};
+
 	return {
-		modules: allBlocks.filter(block => block.blockType === 'module' || block.blockType === 'constants'),
-		functions: allBlocks.filter(block => block.blockType === 'function'),
+		modules: allBlocks
+			.filter(block => block.blockType === 'module' || block.blockType === 'constants')
+			.map(expandBlock),
+		functions: allBlocks.filter(block => block.blockType === 'function').map(expandBlock),
+		lineMappings,
+		macroErrors,
 	};
 }
 
@@ -30,7 +72,12 @@ export default async function compiler(store: StateManager<State>, events: Event
 	const state = store.getState();
 
 	async function onForceCompile() {
-		const { modules, functions } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
+		const { modules, functions, lineMappings, macroErrors } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
+
+		if (macroErrors.length > 0) {
+			store.set('codeErrors.compilationErrors', macroErrors);
+			return;
+		}
 
 		store.set('compiler.isCompiling', true);
 		store.set('compiler.lastCompilationStart', performance.now());
@@ -83,13 +130,20 @@ export default async function compiler(store: StateManager<State>, events: Event
 				errorCode?: number;
 			};
 
-			store.set('codeErrors.compilationErrors', [
-				{
-					lineNumber: errorObject?.line?.lineNumber || 1,
-					codeBlockId: errorObject?.context?.namespace?.moduleName || '',
-					message: errorObject?.message || error?.toString() || 'Compilation failed',
-				},
-			]);
+			const compilationError: CodeError = {
+				lineNumber: errorObject?.line?.lineNumber || 1,
+				codeBlockId: errorObject?.context?.namespace?.moduleName || '',
+				message: errorObject?.message || error?.toString() || 'Compilation failed',
+			};
+
+			const blockId = compilationError.codeBlockId;
+			const blockMappings = lineMappings.get(blockId);
+			let remappedErrors = [compilationError];
+			if (blockMappings) {
+				remappedErrors = remapErrors([compilationError], blockMappings);
+			}
+
+			store.set('codeErrors.compilationErrors', remappedErrors);
 		}
 	}
 
