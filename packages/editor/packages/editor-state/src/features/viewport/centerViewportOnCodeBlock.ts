@@ -1,4 +1,4 @@
-import { GraphicHelper } from '~/types';
+import { Viewport } from './types';
 
 /**
  * Minimal positional data required for viewport centering
@@ -38,10 +38,7 @@ export interface CodeBlockBounds {
  * - Coordinates use pixels, not grid units (grid conversion happens elsewhere)
  * - Negative viewport coordinates are allowed (viewport can pan anywhere)
  */
-export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
-	viewport: GraphicHelper['viewport'],
-	codeBlock: T
-): void {
+export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(viewport: Viewport, codeBlock: T): void {
 	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
 	const blockCenterY = codeBlock.y + codeBlock.offsetY + codeBlock.height / 2;
 
