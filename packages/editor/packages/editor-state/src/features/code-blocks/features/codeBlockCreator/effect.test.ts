@@ -416,5 +416,62 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			// The exact value depends on the grid width calculation
 			expect(dep1Module.gridX).toBeGreaterThan(mainModule.gridX);
 		});
+
+		it('should only skip dependencies of the same block type', async () => {
+			const mockGetModule = vi.fn();
+			mockGetModule.mockImplementation(async (slug: string) => {
+				if (slug === 'main') {
+					return {
+						title: 'Main Module',
+						author: 'Test',
+						code: 'module main\n\nmoduleEnd',
+						tests: [],
+						category: 'Test',
+						dependencies: ['sine'],
+					};
+				} else if (slug === 'sine') {
+					return {
+						title: 'Sine Function',
+						author: 'Test',
+						code: 'function sine\nparam float x\nfunctionEnd float',
+						tests: [],
+						category: 'Test',
+					};
+				}
+				throw new Error('Module not found');
+			});
+
+			mockState.callbacks.getModule = mockGetModule;
+			mockState.featureFlags.editing = true;
+
+			// Pre-populate with a module named 'sine' (different type from the function dependency)
+			const existingSineModule = createMockCodeBlock({
+				id: 'sine',
+				code: ['module sine', '', 'moduleEnd'],
+				blockType: 'module',
+			});
+			mockState.graphicHelper.codeBlocks = [existingSineModule];
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockBySlugCall = onCalls.find(call => call[0] === 'addCodeBlockBySlug');
+			const addCodeBlockBySlugCallback = addCodeBlockBySlugCall![1];
+
+			// Trigger add with dependencies
+			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
+
+			// Verify main was added and sine function was also added (not skipped)
+			// because the existing 'sine' is a module, not a function
+			// Note: The sine function's ID will be auto-incremented to 'sine2' by the
+			// existing ID uniqueness logic in onAddCodeBlock
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('sine'); // Existing module
+			expect(mockState.graphicHelper.codeBlocks[0].blockType).toBe('module');
+			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('main'); // New module
+			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('sine2'); // New function (ID incremented)
+			// Check the code contains function markers
+			expect(mockState.graphicHelper.codeBlocks[2].code.join('\n')).toContain('function sine2');
+		});
 	});
 });
