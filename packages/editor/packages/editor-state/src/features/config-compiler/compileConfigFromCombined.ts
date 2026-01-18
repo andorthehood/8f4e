@@ -3,6 +3,8 @@ import { mapErrorLineToBlock } from './mapErrorLineToBlock';
 import { getConfigSchema } from './configSchema';
 import isPlainObject from './isPlainObject';
 
+import { remapErrors } from '../macro-expansion/remapErrors';
+
 import type { CodeError, State } from '~/types';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
@@ -14,6 +16,7 @@ interface ConfigBuildResult {
 
 /**
  * Compiles the combined config source and maps errors back to their original blocks.
+ * Applies macro expansion error remapping after block-level error mapping.
  * @param combined Combined source and line mappings from config blocks.
  * @param compileConfig Compiler callback for config source.
  * @param state Current editor state for schema access and error mapping.
@@ -23,37 +26,46 @@ export async function compileConfigFromCombined(
 	compileConfig: CompileConfigFn,
 	state: State
 ): Promise<ConfigBuildResult> {
-	const errors: CodeError[] = [];
+	const errors: CodeError[] = [...combined.macroErrors];
 
-	// Use runtime registry schema (runtimeRegistry is now required)
+	if (combined.macroErrors.length > 0) {
+		return { mergedConfig: {}, errors };
+	}
+
 	const schema = getConfigSchema(state.runtimeRegistry);
 
-	const { source, lineMappings } = combined;
+	const { source, lineMappings, blockLineMappings } = combined;
 
-	// If no config source, return empty config
 	if (source.trim().length === 0) {
 		return { mergedConfig: {}, errors };
 	}
 
 	try {
-		// Compile once with the combined source for full schema validation
 		const result = await compileConfig(source, schema);
 
-		// Map errors back to individual blocks
 		if (result.errors.length > 0) {
 			for (const error of result.errors) {
 				const mapped = mapErrorLineToBlock(error.line, lineMappings);
 				if (mapped) {
-					errors.push({
+					let mappedError: CodeError = {
 						lineNumber: mapped.localLine,
 						message: error.message,
 						codeBlockId: mapped.blockId,
-					});
+					};
+
+					const macroMappings = blockLineMappings.get(mapped.blockId);
+					if (macroMappings) {
+						const remapped = remapErrors([mappedError], macroMappings);
+						if (remapped.length > 0) {
+							mappedError = remapped[0];
+						}
+					}
+
+					errors.push(mappedError);
 				}
 			}
 		}
 
-		// Use the compiled config directly if available
 		let mergedConfig: Record<string, unknown> = {};
 		if (result.config !== null && isPlainObject(result.config)) {
 			mergedConfig = result.config as Record<string, unknown>;
@@ -61,7 +73,6 @@ export async function compileConfigFromCombined(
 
 		return { mergedConfig, errors };
 	} catch (error) {
-		// On exception, attribute to the first block
 		if (lineMappings.length > 0) {
 			errors.push({
 				lineNumber: 1,
