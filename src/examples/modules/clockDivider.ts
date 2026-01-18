@@ -4,7 +4,6 @@ const clockDivider: ExampleModule = {
 	title: 'Clock Divider',
 	author: 'Andor Polgar',
 	category: 'Clock',
-	dependencies: ['bpmClock'],
 	code: `module clockDiv
 
 int default 16

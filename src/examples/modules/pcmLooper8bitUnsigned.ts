@@ -4,6 +4,7 @@ const pcmLooper8bitUnsigned: ExampleModule = {
 	title: 'Variable Speed PCM Looper (8bit unsigned)',
 	author: 'Andor Polgar',
 	category: 'PCM',
+	dependencies: ['integerLimits'],
 	code: `module pcmPlayer8bit
 
 int8[] buffer 62258
