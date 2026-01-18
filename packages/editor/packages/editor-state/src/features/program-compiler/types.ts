@@ -29,12 +29,3 @@ export interface Compiler {
 export interface CompilationResult extends Omit<CompileAndUpdateMemoryResult, 'memoryRef'> {
 	byteCodeSize: number;
 }
-
-/**
- * Callback for compiling code modules.
- */
-export type CompileCodeCallback = (
-	modules: Module[],
-	compilerOptions: CompileOptions,
-	functions: Module[]
-) => Promise<CompilationResult>;

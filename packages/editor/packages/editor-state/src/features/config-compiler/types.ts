@@ -16,14 +16,6 @@ export interface ConfigCompilationResult {
 }
 
 /**
- * Callback for compiling config programs.
- */
-export type CompileConfigCallback = (
-	source: string,
-	schema: JSONSchemaLike
-) => Promise<ConfigCompilationResult>;
-
-/**
  * Binary asset reference in configuration.
  */
 export interface ConfigBinaryAsset {
