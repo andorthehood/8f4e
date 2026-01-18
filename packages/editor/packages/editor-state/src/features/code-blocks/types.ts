@@ -6,6 +6,7 @@ import type { GridCoordinates } from '../../shared/types';
 import type { ProjectViewport } from '../viewport/types';
 import type { SpriteLookup, SpriteLookups, PostProcessEffect } from 'glugglug';
 import type { ContextMenu } from '../menu/types';
+import type { DataStructure } from '@8f4e/compiler';
 
 /**
  * Project-level code block structure with grid-based coordinates.
@@ -59,7 +60,7 @@ export interface Output {
 	id: string;
 	calibratedMax: number;
 	calibratedMin: number;
-	memory: import('@8f4e/compiler').DataStructure;
+	memory: DataStructure;
 }
 
 export interface Debugger {
@@ -70,13 +71,13 @@ export interface Debugger {
 	x: number;
 	y: number;
 	id: string;
-	memory: import('@8f4e/compiler').DataStructure;
+	memory: DataStructure;
 	bufferPointer: number;
 	showBinary: boolean;
 }
 
 export interface MemoryIdentifier {
-	memory: import('@8f4e/compiler').DataStructure;
+	memory: DataStructure;
 	showAddress: boolean;
 	showEndAddress: boolean;
 	bufferPointer: number;
@@ -111,8 +112,8 @@ export interface PianoKeyboard {
 	height: number;
 	keyWidth: number;
 	pressedKeys: Set<number>;
-	pressedKeysListMemory: import('@8f4e/compiler').DataStructure;
-	pressedNumberOfKeysMemory: import('@8f4e/compiler').DataStructure;
+	pressedKeysListMemory: DataStructure;
+	pressedNumberOfKeysMemory: DataStructure;
 	startingNumber: number;
 }
 
