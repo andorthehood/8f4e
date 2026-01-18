@@ -3,6 +3,7 @@
  */
 
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
+import type { Runtimes } from '../runtime/types';
 
 /**
  * Result of compiling a stack-config program.
@@ -36,11 +37,7 @@ export interface ConfigBinaryAsset {
 export interface ConfigObject {
 	memorySizeBytes: number;
 	selectedRuntime: number;
-	runtimeSettings: Array<{
-		runtime: string;
-		sampleRate: number;
-		[key: string]: unknown;
-	}>;
+	runtimeSettings: Runtimes[];
 	disableAutoCompilation: boolean;
 	binaryAssets: ConfigBinaryAsset[];
 }
