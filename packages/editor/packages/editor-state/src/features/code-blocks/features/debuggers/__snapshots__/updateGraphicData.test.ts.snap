@@ -4,7 +4,7 @@ exports[`updateDebuggersGraphicData > should handle multiple debuggers 1`] = `
 [
   {
     "bufferPointer": 0,
-    "height": 20,
+    "height": 16,
     "id": "var1",
     "memory": {
       "byteAddress": 20,
@@ -23,13 +23,13 @@ exports[`updateDebuggersGraphicData > should handle multiple debuggers 1`] = `
     "showAddress": false,
     "showBinary": false,
     "showEndAddress": false,
-    "width": 20,
-    "x": 150,
+    "width": 16,
+    "x": 120,
     "y": 0,
   },
   {
     "bufferPointer": 0,
-    "height": 20,
+    "height": 16,
     "id": "var2",
     "memory": {
       "byteAddress": 24,
@@ -48,9 +48,9 @@ exports[`updateDebuggersGraphicData > should handle multiple debuggers 1`] = `
     "showAddress": false,
     "showBinary": false,
     "showEndAddress": false,
-    "width": 20,
-    "x": 150,
-    "y": 20,
+    "width": 16,
+    "x": 120,
+    "y": 16,
   },
 ]
 `;
@@ -58,7 +58,7 @@ exports[`updateDebuggersGraphicData > should handle multiple debuggers 1`] = `
 exports[`updateDebuggersGraphicData > should position debuggers at correct y coordinate based on line number 1`] = `
 {
   "bufferPointer": 0,
-  "height": 20,
+  "height": 16,
   "id": "myVar",
   "memory": {
     "byteAddress": 20,
@@ -77,8 +77,8 @@ exports[`updateDebuggersGraphicData > should position debuggers at correct y coo
   "showAddress": false,
   "showBinary": false,
   "showEndAddress": false,
-  "width": 20,
-  "x": 160,
-  "y": 40,
+  "width": 16,
+  "x": 128,
+  "y": 32,
 }
 `;

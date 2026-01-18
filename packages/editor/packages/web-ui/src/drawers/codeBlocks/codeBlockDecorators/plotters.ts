@@ -36,14 +36,14 @@ export default function drawer(
 				? memoryViews.int32[buffer.memory.wordAlignedAddress + i]
 				: memoryViews.float32[buffer.memory.wordAlignedAddress + i];
 
-			const normalizedValue = Math.round(((value + offset) / height) * (state.graphicHelper.viewport.hGrid * 8));
+			const normalizedValue = Math.round(((value + offset) / height) * (state.viewport.hGrid * 8));
 
 			engine.drawSprite(
 				i * Math.floor(maxPlotterWidth / width),
 				0,
 				normalizedValue,
 				Math.floor(maxPlotterWidth / width),
-				state.graphicHelper.viewport.hGrid * 8
+				state.viewport.hGrid * 8
 			);
 		}
 

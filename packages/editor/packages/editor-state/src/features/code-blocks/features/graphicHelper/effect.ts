@@ -28,8 +28,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
 		const [row, col] = moveCaret(
 			codeBlock.code,
-			reverseGapCalculator(Math.floor(relativeY / state.graphicHelper.viewport.hGrid), codeBlock.gaps),
-			Math.floor(relativeX / state.graphicHelper.viewport.vGrid) - (codeBlock.lineNumberColumnWidth + 2),
+			reverseGapCalculator(Math.floor(relativeY / state.viewport.hGrid), codeBlock.gaps),
+			Math.floor(relativeX / state.viewport.vGrid) - (codeBlock.lineNumberColumnWidth + 2),
 			'jump'
 		);
 		codeBlock.cursor.row = row;
@@ -85,8 +85,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		gaps(graphicData);
 		pianoKeyboards(graphicData, state);
 
-		graphicData.width =
-			getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.graphicHelper.viewport.vGrid;
+		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
 
 		bufferPlotters(graphicData, state);
 		outputs(graphicData, state);
@@ -97,10 +96,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		positionOffsetters(graphicData, state);
 		blockHighlights(graphicData, state);
 
-		graphicData.height = graphicData.codeToRender.length * state.graphicHelper.viewport.hGrid;
-		graphicData.cursor.x =
-			(graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.graphicHelper.viewport.vGrid;
-		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.graphicHelper.viewport.hGrid;
+		graphicData.height = graphicData.codeToRender.length * state.viewport.hGrid;
+		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
+		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
 		graphicData.id = getModuleId(graphicData.code) || '';
 	};
 
@@ -114,8 +112,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		// When viewport grid dimensions change (e.g., font change), recompute pixel positions
 		// from the stable grid coordinates, then update graphics. Combined into single iteration.
 		for (const codeBlock of state.graphicHelper.codeBlocks) {
-			codeBlock.x = codeBlock.gridX * state.graphicHelper.viewport.vGrid;
-			codeBlock.y = codeBlock.gridY * state.graphicHelper.viewport.hGrid;
+			codeBlock.x = codeBlock.gridX * state.viewport.vGrid;
+			codeBlock.y = codeBlock.gridY * state.viewport.hGrid;
 			updateGraphics(codeBlock);
 		}
 	};
@@ -136,10 +134,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		state.graphicHelper.selectedCodeBlock = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
 		state.graphicHelper.nextCodeBlockCreationIndex = 0;
-		state.graphicHelper.viewport.x =
-			state.initialProjectState.viewport.gridCoordinates.x * state.graphicHelper.viewport.vGrid;
-		state.graphicHelper.viewport.y =
-			state.initialProjectState.viewport.gridCoordinates.y * state.graphicHelper.viewport.hGrid;
+		state.viewport.x = state.initialProjectState.viewport.gridCoordinates.x * state.viewport.vGrid;
+		state.viewport.y = state.initialProjectState.viewport.gridCoordinates.y * state.viewport.hGrid;
 		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 			state.graphicHelper.nextCodeBlockCreationIndex++;
@@ -147,8 +143,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			const gridX = codeBlock.gridCoordinates.x;
 			const gridY = codeBlock.gridCoordinates.y;
 			// Compute pixel coordinates from grid coordinates
-			const pixelX = gridX * state.graphicHelper.viewport.vGrid;
-			const pixelY = gridY * state.graphicHelper.viewport.hGrid;
+			const pixelX = gridX * state.viewport.vGrid;
+			const pixelY = gridY * state.viewport.hGrid;
 
 			return {
 				width: 0,
@@ -193,11 +189,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			codeBlock.extras.errorMessages = [];
 			codeErrors.forEach(codeError => {
 				if (codeBlock.creationIndex === codeError.codeBlockId || codeBlock.id === codeError.codeBlockId) {
-					const message = wrapText(codeError.message, codeBlock.width / state.graphicHelper.viewport.vGrid - 1);
+					const message = wrapText(codeError.message, codeBlock.width / state.viewport.vGrid - 1);
 
 					codeBlock.extras.errorMessages.push({
 						x: 0,
-						y: (gapCalculator(codeError.lineNumber, codeBlock.gaps) + 1) * state.graphicHelper.viewport.hGrid,
+						y: (gapCalculator(codeError.lineNumber, codeBlock.gaps) + 1) * state.viewport.hGrid,
 						message: ['Error:', ...message],
 						lineNumber: codeError.lineNumber,
 					});

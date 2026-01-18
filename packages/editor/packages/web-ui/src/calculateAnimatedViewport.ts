@@ -142,7 +142,7 @@ export function calculateAnimatedViewport(
 		animationState: nextAnimationState,
 		previousViewport: nextPreviousViewport,
 	} = calculateAnimatedViewportState({
-		actualViewport: state.graphicHelper.viewport,
+		actualViewport: state.viewport,
 		viewportAnimationsEnabled: state.featureFlags.viewportAnimations,
 		currentTime,
 		previousViewport,

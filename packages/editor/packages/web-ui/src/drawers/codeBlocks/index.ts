@@ -14,11 +14,13 @@ import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from '../../types';
 
 export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
-	if (!state.graphicHelper.spriteLookups) {
+	const spriteLookups = state.graphicHelper.spriteLookups;
+
+	if (!spriteLookups) {
 		return;
 	}
 
-	const { x, y } = state.graphicHelper.viewport;
+	const { x, y } = state.viewport;
 
 	const offsetX = -x;
 	const offsetY = -y;
@@ -37,8 +39,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 		if (
 			codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
 			codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
-			codeBlock.x + codeBlock.offsetX + offsetX < state.graphicHelper.viewport.width &&
-			codeBlock.y + codeBlock.offsetY + offsetY < state.graphicHelper.viewport.height
+			codeBlock.x + codeBlock.offsetX + offsetX < state.viewport.width &&
+			codeBlock.y + codeBlock.offsetY + offsetY < state.viewport.height
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 			engine.cacheGroup(
@@ -46,9 +48,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 				codeBlock.width,
 				codeBlock.height,
 				() => {
-					if (state.graphicHelper.spriteLookups?.fillColors) {
-						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-					}
+					engine.setSpriteLookup(spriteLookups.fillColors);
 
 					if (codeBlock === state.graphicHelper.draggedCodeBlock) {
 						engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
@@ -59,33 +59,19 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 					drawBlockHighlights(engine, state, codeBlock);
 
 					if (state.graphicHelper.selectedCodeBlock === codeBlock) {
-						engine.drawSprite(
-							0,
-							codeBlock.cursor.y,
-							'highlightedCodeLine',
-							codeBlock.width,
-							state.graphicHelper.viewport.hGrid
-						);
+						engine.drawSprite(0, codeBlock.cursor.y, 'highlightedCodeLine', codeBlock.width, state.viewport.hGrid);
 					}
 
-					if (state.graphicHelper.spriteLookups?.fontCode) {
-						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-					}
+					engine.setSpriteLookup(spriteLookups.fontCode);
 
 					const corner = '+';
 
 					engine.drawText(0, 0, corner);
-					engine.drawText(codeBlock.width - state.graphicHelper.viewport.vGrid, 0, corner);
-					engine.drawText(0, codeBlock.height - state.graphicHelper.viewport.hGrid, corner);
-					engine.drawText(
-						codeBlock.width - state.graphicHelper.viewport.vGrid,
-						codeBlock.height - state.graphicHelper.viewport.hGrid,
-						corner
-					);
+					engine.drawText(codeBlock.width - state.viewport.vGrid, 0, corner);
+					engine.drawText(0, codeBlock.height - state.viewport.hGrid, corner);
+					engine.drawText(codeBlock.width - state.viewport.vGrid, codeBlock.height - state.viewport.hGrid, corner);
 
-					if (state.graphicHelper.spriteLookups?.fontCode) {
-						engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-					}
+					engine.setSpriteLookup(spriteLookups.fontCode);
 
 					for (let i = 0; i < codeBlock.codeToRender.length; i++) {
 						for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
@@ -95,8 +81,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 							}
 							if (codeBlock.codeToRender[i][j] !== 32) {
 								engine.drawSprite(
-									state.graphicHelper.viewport.vGrid * (j + 1),
-									state.graphicHelper.viewport.hGrid * i,
+									state.viewport.vGrid * (j + 1),
+									state.viewport.hGrid * i,
 									codeBlock.codeToRender[i][j]
 								);
 							}

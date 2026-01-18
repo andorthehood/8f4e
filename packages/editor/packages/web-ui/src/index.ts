@@ -39,8 +39,8 @@ export default async function init(
 	// Animation state - local to web-ui, not part of editor-state
 	const animationState: { current: AnimationState | null } = { current: null };
 	const previousViewport = {
-		x: state.graphicHelper.viewport.x,
-		y: state.graphicHelper.viewport.y,
+		x: state.viewport.x,
+		y: state.viewport.y,
 	};
 
 	const engine = new Engine(canvas, { caching: true });
@@ -51,12 +51,12 @@ export default async function init(
 		const effectiveViewport = calculateAnimatedViewport(state, performance.now(), animationState, previousViewport);
 
 		const originalViewport = {
-			x: state.graphicHelper.viewport.x,
-			y: state.graphicHelper.viewport.y,
+			x: state.viewport.x,
+			y: state.viewport.y,
 		};
 
-		state.graphicHelper.viewport.x = effectiveViewport.x;
-		state.graphicHelper.viewport.y = effectiveViewport.y;
+		state.viewport.x = effectiveViewport.x;
+		state.viewport.y = effectiveViewport.y;
 
 		drawBackground(engine, state);
 		if (state.featureFlags.assetOverlay) {
@@ -75,11 +75,11 @@ export default async function init(
 		}
 		drawCodeBlocks(engine, state, memoryViews);
 		drawConnections(engine, state, memoryViews);
-		drawDialog(engine, state);
 		drawContextMenu(engine, state);
+		drawDialog(engine, state);
 
-		state.graphicHelper.viewport.x = originalViewport.x;
-		state.graphicHelper.viewport.y = originalViewport.y;
+		state.viewport.x = originalViewport.x;
+		state.viewport.y = originalViewport.y;
 	});
 
 	return {

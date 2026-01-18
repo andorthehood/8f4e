@@ -20,14 +20,14 @@ export default function drawAssetOverlay(engine: Engine, state: State): void {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 		engine.drawSprite(
 			0,
-			i * state.graphicHelper.viewport.hGrid,
+			i * state.viewport.hGrid,
 			'moduleBackground',
-			(text[i].length + 2) * state.graphicHelper.viewport.vGrid,
-			state.graphicHelper.viewport.hGrid
+			(text[i].length + 2) * state.viewport.vGrid,
+			state.viewport.hGrid
 		);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontLineNumber);
-		engine.drawText(state.graphicHelper.viewport.vGrid, i * state.graphicHelper.viewport.hGrid, text[i]);
+		engine.drawText(state.viewport.vGrid, i * state.viewport.hGrid, text[i]);
 	}
 
 	engine.endGroup();

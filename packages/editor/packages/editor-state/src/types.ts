@@ -41,7 +41,7 @@ import type {
 	Midi,
 	RuntimeStats,
 } from './features/runtime/types';
-import type { Viewport, ProjectViewport } from './features/viewport/types';
+import type { ProjectViewport, Viewport } from './features/viewport/types';
 import type {
 	Size,
 	Position,
@@ -58,7 +58,7 @@ export type { CompilerMemoryAction as MemoryAction };
 export type { Size, Position, GridCoordinates, EventDispatcher, InternalMouseEvent, InternalKeyboardEvent };
 
 // Re-export viewport types
-export type { Viewport, ProjectViewport };
+export type { ProjectViewport };
 
 // Re-export code-blocks types
 export type {
@@ -276,4 +276,20 @@ export interface State {
 		compilationErrors: CodeError[];
 		configErrors: CodeError[];
 	};
+	dialog: {
+		show: boolean;
+		text: string;
+		wrappedText: string[];
+		title: string;
+		buttons: Array<{
+			title: string;
+			action: string;
+			payload?: unknown;
+		}>;
+		width: number;
+		height: number;
+		x: number;
+		y: number;
+	};
+	viewport: Viewport;
 }

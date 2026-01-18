@@ -29,11 +29,11 @@ export async function insertDependencies({
 	state,
 	onAddCodeBlock,
 }: InsertDependenciesParams): Promise<void> {
-	const vGrid = state.graphicHelper.viewport.vGrid;
+	const vGrid = state.viewport.vGrid;
 	const gridGap = 4; // Fixed gap between modules in grid units
 
 	// Calculate the grid width of the requested module
-	let currentGridX = Math.round((state.graphicHelper.viewport.x + clickX) / vGrid);
+	let currentGridX = Math.round((state.viewport.x + clickX) / vGrid);
 	const requestedModuleGridWidth = getCodeBlockGridWidth(requestedModuleCode);
 	currentGridX += requestedModuleGridWidth + gridGap;
 
@@ -63,7 +63,7 @@ export async function insertDependencies({
 			}
 
 			// Calculate pixel position from grid position
-			const dependencyX = currentGridX * vGrid - state.graphicHelper.viewport.x;
+			const dependencyX = currentGridX * vGrid - state.viewport.x;
 			const dependencyY = clickY;
 
 			// Add the dependency
