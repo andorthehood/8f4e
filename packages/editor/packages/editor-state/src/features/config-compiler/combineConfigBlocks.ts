@@ -1,22 +1,25 @@
 import { collectConfigBlocks } from './collectConfigBlocks';
 
-import type { CodeBlockGraphicData } from '~/types';
+import type { CodeBlockGraphicData, CodeError } from '~/types';
+import type { LineMapping } from '../macro-expansion/types';
 
 /**
  * Represents line range information for a config block in the combined source.
  */
 export interface BlockLineMapping {
-	blockId: number; // creationIndex of the block
-	startLine: number; // 1-based line number in combined source (inclusive)
-	endLine: number; // 1-based line number in combined source (inclusive)
+	blockId: number;
+	startLine: number;
+	endLine: number;
 }
 
 /**
  * Result of combining all config blocks into a single source.
  */
 export interface CombinedConfigSource {
-	source: string; // Combined source with blank line separators
-	lineMappings: BlockLineMapping[]; // Line mappings for each block
+	source: string;
+	lineMappings: BlockLineMapping[];
+	blockLineMappings: Map<number, LineMapping[]>;
+	macroErrors: CodeError[];
 }
 
 /**
@@ -25,18 +28,18 @@ export interface CombinedConfigSource {
  * Returns the combined source and line mappings for error attribution.
  */
 export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CombinedConfigSource {
-	const configBlocks = collectConfigBlocks(codeBlocks);
+	const { configBlocks, macroErrors } = collectConfigBlocks(codeBlocks);
 
 	if (configBlocks.length === 0) {
-		return { source: '', lineMappings: [] };
+		return { source: '', lineMappings: [], blockLineMappings: new Map(), macroErrors };
 	}
 
 	const lineMappings: BlockLineMapping[] = [];
+	const blockLineMappings = new Map<number, LineMapping[]>();
 	const sources: string[] = [];
 	let currentLine = 1;
 
-	for (const { block, source } of configBlocks) {
-		// Handle empty source edge case - empty string split by '\n' returns [''] with length 1
+	for (const { block, source, lineMappings: blockMappings } of configBlocks) {
 		if (source.trim().length === 0) {
 			continue;
 		}
@@ -50,13 +53,17 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 			endLine: currentLine + lineCount - 1,
 		});
 
+		blockLineMappings.set(block.creationIndex, blockMappings);
+
 		sources.push(source);
-		currentLine += lineCount + 1; // +1 for blank line separator between blocks
+		currentLine += lineCount + 1;
 	}
 
 	return {
-		source: sources.join('\n\n'), // Join with blank line separator
+		source: sources.join('\n\n'),
 		lineMappings,
+		blockLineMappings,
+		macroErrors,
 	};
 }
 
@@ -91,6 +98,7 @@ if (import.meta.vitest) {
 				startLine: 3,
 				endLine: 3,
 			});
+			expect(result.macroErrors).toHaveLength(0);
 		});
 
 		it('should handle multi-line config blocks', () => {

@@ -1,6 +1,10 @@
 import extractConfigBody from './extractConfigBody';
 
-import type { CodeBlockGraphicData } from '~/types';
+import { collectMacros } from '../macro-expansion/collectMacros';
+import { expandMacros } from '../macro-expansion/expandMacros';
+
+import type { CodeBlockGraphicData, CodeError } from '~/types';
+import type { LineMapping } from '../macro-expansion/types';
 
 /**
  * Represents a config block source with its block reference for error mapping.
@@ -8,25 +12,57 @@ import type { CodeBlockGraphicData } from '~/types';
 export interface ConfigBlockSource {
 	block: CodeBlockGraphicData;
 	source: string;
+	lineMappings: LineMapping[];
 }
 
 /**
- * Collects all config blocks and returns their sources individually.
+ * Result of collecting config blocks with macro expansion.
+ */
+export interface CollectConfigResult {
+	configBlocks: ConfigBlockSource[];
+	macroErrors: CodeError[];
+}
+
+/**
+ * Collects all config blocks, applies macro expansion, and returns their sources individually.
  * Config blocks are sorted in creation order.
  * Each config block is compiled independently to allow proper error mapping.
  */
-export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): ConfigBlockSource[] {
-	return codeBlocks
+export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CollectConfigResult {
+	const { macros, errors: macroCollectionErrors } = collectMacros(codeBlocks);
+
+	const macroErrors: CodeError[] = [];
+	macroCollectionErrors.forEach(err => {
+		macroErrors.push({
+			lineNumber: 1,
+			message: err.message,
+			codeBlockId: err.blockId,
+		});
+	});
+
+	const configBlocks = codeBlocks
 		.filter(block => block.blockType === 'config')
 		.sort((a, b) => a.creationIndex - b.creationIndex)
 		.map(block => {
 			const body = extractConfigBody(block.code);
+			const { expandedCode, lineMappings, errors: expansionErrors } = expandMacros(body, macros, block.id);
+			expansionErrors.forEach(err =>
+				macroErrors.push({
+					message: err.message,
+					lineNumber: err.lineNumber,
+					codeBlockId: err.blockId,
+				})
+			);
+
 			return {
 				block,
-				source: body.join('\n'),
+				source: expandedCode.join('\n'),
+				lineMappings,
 			};
 		})
 		.filter(item => item.source.trim().length > 0);
+
+	return { configBlocks, macroErrors };
 }
 
 if (import.meta.vitest) {
@@ -48,11 +84,12 @@ if (import.meta.vitest) {
 			const codeBlocks = [block1, block2];
 
 			const result = collectConfigBlocks(codeBlocks);
-			expect(result).toHaveLength(2);
-			expect(result[0].source).toBe('push 1');
-			expect(result[0].block).toBe(block1);
-			expect(result[1].source).toBe('push 2');
-			expect(result[1].block).toBe(block2);
+			expect(result.configBlocks).toHaveLength(2);
+			expect(result.configBlocks[0].source).toBe('push 1');
+			expect(result.configBlocks[0].block).toBe(block1);
+			expect(result.configBlocks[1].source).toBe('push 2');
+			expect(result.configBlocks[1].block).toBe(block2);
+			expect(result.macroErrors).toHaveLength(0);
 		});
 
 		it('should sort config blocks by creationIndex', () => {
@@ -71,8 +108,8 @@ if (import.meta.vitest) {
 			const codeBlocks = [block1, block2];
 
 			const result = collectConfigBlocks(codeBlocks);
-			expect(result[0].block.id).toBe('second');
-			expect(result[1].block.id).toBe('first');
+			expect(result.configBlocks[0].block.id).toBe('second');
+			expect(result.configBlocks[1].block.id).toBe('first');
 		});
 
 		it('should skip non-config blocks', () => {
@@ -89,8 +126,8 @@ if (import.meta.vitest) {
 			const codeBlocks = [configBlock, moduleBlock];
 
 			const result = collectConfigBlocks(codeBlocks);
-			expect(result).toHaveLength(1);
-			expect(result[0].source).toBe('push 1');
+			expect(result.configBlocks).toHaveLength(1);
+			expect(result.configBlocks[0].source).toBe('push 1');
 		});
 
 		it('should return empty array if no config blocks', () => {
@@ -102,7 +139,7 @@ if (import.meta.vitest) {
 			const codeBlocks = [moduleBlock];
 
 			const result = collectConfigBlocks(codeBlocks);
-			expect(result).toHaveLength(0);
+			expect(result.configBlocks).toHaveLength(0);
 		});
 
 		it('should skip config blocks with empty bodies', () => {
@@ -119,8 +156,8 @@ if (import.meta.vitest) {
 			const codeBlocks = [emptyBlock, contentBlock];
 
 			const result = collectConfigBlocks(codeBlocks);
-			expect(result).toHaveLength(1);
-			expect(result[0].source).toBe('push 1');
+			expect(result.configBlocks).toHaveLength(1);
+			expect(result.configBlocks[0].source).toBe('push 1');
 		});
 	});
 }
