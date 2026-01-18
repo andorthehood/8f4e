@@ -151,7 +151,7 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 		store.set('dialog', {
 			...state.dialog,
 			show: true,
-			text: 'This project is using the AudioWorklet runtime, to enable run the program with audio playback, please click anywhere on the screen to continue.',
+			text: 'This project is using the AudioWorklet runtime, to start the program with audio playback, please click anywhere on the screen to continue.',
 			title: 'Audio Permission',
 			buttons: [{ title: 'OK', action: 'close' }],
 		});
