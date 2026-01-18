@@ -3,6 +3,7 @@ import { getModuleId } from '@8f4e/compiler/syntax';
 
 import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
+import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 
 import bufferPlotters from '../bufferPlotters/updateGraphicData';
 import buttons from '../buttons/updateGraphicData';
@@ -13,7 +14,6 @@ import pianoKeyboards from '../pianoKeyboard/updateGraphicData';
 import switches from '../switches/updateGraphicData';
 import blockHighlights from '../blockHighlights/updateGraphicData';
 import { CodeBlockClickEvent } from '../codeBlockDragger/effect';
-import getCodeBlockGridWidth from '../../utils/codeParsers/getCodeBlockGridWidth';
 import wrapText from '../../utils/wrapText';
 import gapCalculator from '../../../code-editing/gapCalculator';
 import highlightSyntax8f4e from '../../../code-editing/highlightSyntax8f4e';
