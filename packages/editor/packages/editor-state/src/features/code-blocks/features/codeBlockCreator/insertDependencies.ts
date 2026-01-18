@@ -1,8 +1,5 @@
-import { getModuleId, getFunctionId } from '@8f4e/compiler/syntax';
-
-import getVertexShaderId from '../../../shader-effects/getVertexShaderId';
-import getFragmentShaderId from '../../../shader-effects/getFragmentShaderId';
 import getCodeBlockGridWidth from '../graphicHelper/getCodeBlockGridWidth';
+import getCodeBlockId from '../../utils/getCodeBlockId';
 
 import type { State, ExampleModule } from '~/types';
 
@@ -49,11 +46,7 @@ export async function insertDependencies({
 			const dependencyCode = dependencyModule.code.split('\n');
 
 			// Get the module ID from the dependency code
-			const dependencyModuleId =
-				getModuleId(dependencyCode) ||
-				getFunctionId(dependencyCode) ||
-				getVertexShaderId(dependencyCode) ||
-				getFragmentShaderId(dependencyCode);
+			const dependencyModuleId = getCodeBlockId(dependencyCode);
 
 			// Skip if a code block with this moduleId already exists
 			if (dependencyModuleId && existingModuleIds.has(dependencyModuleId)) {
