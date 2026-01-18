@@ -1,4 +1,4 @@
-import getLongestLineLength from './getLongestLineLength';
+import getLongestLineLength from '../../utils/codeParsers/getLongestLineLength';
 
 /**
  * Computes the grid width required for a code block.
