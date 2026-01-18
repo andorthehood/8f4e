@@ -2,6 +2,9 @@ import { instructionParser } from '@8f4e/compiler/syntax';
 import { getModuleId } from '@8f4e/compiler/syntax';
 import { getFunctionId } from '@8f4e/compiler/syntax';
 
+import { insertDependencies } from './insertDependencies';
+
+import getCodeBlockId from '../../utils/getCodeBlockId';
 import getVertexShaderId from '../../../shader-effects/getVertexShaderId';
 import getFragmentShaderId from '../../../shader-effects/getFragmentShaderId';
 
@@ -175,7 +178,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				errorMessages: [],
 			},
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: getFunctionId(code) || getModuleId(code) || getVertexShaderId(code) || getFragmentShaderId(code) || '',
+			id: getCodeBlockId(code),
 			gaps: new Map(),
 			gridX: Math.round((state.graphicHelper.viewport.x + x) / state.graphicHelper.viewport.vGrid),
 			gridY: Math.round((state.graphicHelper.viewport.y + y) / state.graphicHelper.viewport.hGrid),
@@ -226,8 +229,26 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			console.warn('No getCodeBlock callback provided');
 			return;
 		}
-		const codeBlock = await state.callbacks.getModule(codeBlockSlug);
-		onAddCodeBlock({ code: codeBlock.code.split('\n'), x, y, isNew: false });
+
+		// Load the requested module
+		const requestedModule = await state.callbacks.getModule(codeBlockSlug);
+
+		// Add the requested module at the clicked position
+		const requestedCode = requestedModule.code.split('\n');
+		onAddCodeBlock({ code: requestedCode, x, y, isNew: false });
+
+		// If the module has dependencies, insert them to the right
+		if (requestedModule.dependencies && requestedModule.dependencies.length > 0) {
+			await insertDependencies({
+				dependencies: requestedModule.dependencies,
+				getModule: state.callbacks.getModule,
+				requestedModuleCode: requestedCode,
+				clickX: x,
+				clickY: y,
+				state,
+				onAddCodeBlock,
+			});
+		}
 	}
 
 	events.on('addCodeBlockBySlug', onAddCodeBlockBySlug);

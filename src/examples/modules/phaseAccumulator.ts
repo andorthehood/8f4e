@@ -5,9 +5,10 @@ const phaseAccumulator: ExampleModule = {
 	description: 'Phase accumulator that advances by frequency and can drive any periodic function (defaults to sine).',
 	author: 'Andor Polgar',
 	category: 'Oscillators',
+	dependencies: ['sine'],
 	code: `module phaseAccumulator
 
-float* frequency &midiNote2Freq.out
+float* frequency
 float phase
 float out
 
