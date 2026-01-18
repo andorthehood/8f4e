@@ -25,8 +25,8 @@ export default function serializeToProject(
 		viewport: {
 			// Convert pixel coordinates to grid coordinates for persistent storage
 			gridCoordinates: {
-				x: Math.round(graphicHelper.viewport.x / graphicHelper.viewport.vGrid),
-				y: Math.round(graphicHelper.viewport.y / graphicHelper.viewport.hGrid),
+				x: Math.round(state.viewport.x / state.viewport.vGrid),
+				y: Math.round(state.viewport.y / state.viewport.hGrid),
 			},
 		},
 		binaryAssets: state.binaryAssets,
@@ -52,17 +52,17 @@ if (import.meta.vitest) {
 							y: 30,
 						}),
 					],
-					viewport: {
-						x: 40,
-						y: 50,
-						vGrid: 10,
-						hGrid: 10,
-					},
 				},
 				compiler: {
 					compiledModules: { mod: {} },
 				},
 				binaryAssets: [],
+				viewport: {
+					x: 40,
+					y: 50,
+					vGrid: 10,
+					hGrid: 10,
+				},
 			});
 
 			const project = serializeToProject(state);
@@ -74,18 +74,18 @@ if (import.meta.vitest) {
 			const state = createMockState({
 				graphicHelper: {
 					codeBlocks: [],
-					viewport: {
-						x: 0,
-						y: 0,
-						vGrid: 10,
-						hGrid: 10,
-					},
 				},
 				compiler: {
 					compiledModules: { mod: {} },
 					allocatedMemorySize: 2,
 				},
 				binaryAssets: [],
+				viewport: {
+					x: 0,
+					y: 0,
+					vGrid: 10,
+					hGrid: 10,
+				},
 			});
 
 			const project = serializeToProject(state, { includeCompiled: true });

@@ -2,24 +2,24 @@
 
 exports[`updatePianoKeyboardsGraphicData > should calculate correct dimensions and position 1`] = `
 {
-  "height": 100,
-  "keyWidth": 20,
+  "height": 80,
+  "keyWidth": 16,
   "pressedKeys": Set {},
   "startingNumber": 60,
-  "width": 480,
+  "width": 384,
   "x": 0,
-  "y": 20,
+  "y": 16,
 }
 `;
 
 exports[`updatePianoKeyboardsGraphicData > should position piano keyboards at correct y coordinate based on line number 1`] = `
 {
-  "height": 100,
-  "keyWidth": 20,
+  "height": 80,
+  "keyWidth": 16,
   "pressedKeys": Set {},
   "startingNumber": 60,
-  "width": 480,
+  "width": 384,
   "x": 0,
-  "y": 60,
+  "y": 48,
 }
 `;

@@ -31,13 +31,13 @@ function removeCode(code: string[], pressedKeysListMemoryId: string) {
 export default function pianoKeyboard(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 	const onCodeBlockClick = function ({ x, y, codeBlock }: CodeBlockClickEvent) {
-		const keyboard = findPianoKeyAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
+		const keyboard = findPianoKeyAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!keyboard) {
 			return;
 		}
 
-		const key = Math.floor((x - (codeBlock.x - state.graphicHelper.viewport.x)) / keyboard.keyWidth);
+		const key = Math.floor((x - (codeBlock.x - state.viewport.x)) / keyboard.keyWidth);
 
 		if (keyboard.pressedKeys.has(key)) {
 			keyboard.pressedKeys.delete(key);

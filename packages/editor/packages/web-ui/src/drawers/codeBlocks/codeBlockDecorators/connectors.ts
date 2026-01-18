@@ -29,8 +29,8 @@ export default function drawConnectors(
 			x,
 			y,
 			Math.round(((value - output.calibratedMin) / (output.calibratedMax + Math.abs(output.calibratedMin))) * 5),
-			state.graphicHelper.viewport.vGrid * 3,
-			state.graphicHelper.viewport.hGrid
+			state.viewport.vGrid * 3,
+			state.viewport.hGrid
 		);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);

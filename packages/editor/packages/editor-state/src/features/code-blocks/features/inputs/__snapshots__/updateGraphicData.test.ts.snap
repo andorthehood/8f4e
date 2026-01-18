@@ -2,12 +2,12 @@
 
 exports[`updateInputsGraphicData > should calculate correct dimensions and position 1`] = `
 {
-  "height": 20,
+  "height": 16,
   "id": "input1",
-  "width": 20,
+  "width": 16,
   "wordAlignedAddress": 5,
   "x": 0,
-  "y": 20,
+  "y": 16,
 }
 `;
 
@@ -16,23 +16,23 @@ exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
   [
     "0",
     {
-      "height": 20,
+      "height": 16,
       "id": "input1",
-      "width": 20,
+      "width": 16,
       "wordAlignedAddress": 5,
       "x": 0,
-      "y": 20,
+      "y": 16,
     },
   ],
   [
     "1",
     {
-      "height": 20,
+      "height": 16,
       "id": "input2",
-      "width": 20,
+      "width": 16,
       "wordAlignedAddress": 6,
       "x": 0,
-      "y": 40,
+      "y": 32,
     },
   ],
 ]

@@ -1,5 +1,7 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 
+import { Viewport } from '~/features/viewport/types';
+
 /**
  * Deep partial type that makes all properties and nested properties optional
  */
@@ -151,14 +153,8 @@ export function findExtrasById<T extends { id: string }>(array: T[], id: string)
  * const viewport = createMockViewport(100, 200, 1920, 1080);
  * const viewport = createMockViewport(100, 200, 800, 600, 500);
  */
-export function createMockViewport(
-	x = 0,
-	y = 0,
-	width = 800,
-	height = 600,
-	animationDurationMs?: number
-): State['graphicHelper']['viewport'] {
-	const viewport: State['graphicHelper']['viewport'] = {
+export function createMockViewport(x = 0, y = 0, width = 800, height = 600, animationDurationMs?: number): Viewport {
+	const viewport: Viewport = {
 		x,
 		y,
 		width,
@@ -234,24 +230,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		graphicHelper: {
 			codeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
-			viewport: {
-				x: 0,
-				y: 0,
-
-				width: 1024,
-				height: 768,
-				roundedWidth: 1024,
-				roundedHeight: 768,
-				vGrid: 8,
-				hGrid: 16,
-				borderLineCoordinates: {
-					top: { startX: 0, startY: 0, endX: 0, endY: 0 },
-					right: { startX: 0, startY: 0, endX: 0, endY: 0 },
-					bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
-					left: { startX: 0, startY: 0, endX: 0, endY: 0 },
-				},
-				center: { x: 0, y: 0 },
-			},
 			outputsByWordAddress: new Map(),
 			contextMenu: {
 				highlightedItem: 0,
@@ -261,12 +239,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				x: 0,
 				y: 0,
 				menuStack: [],
-			},
-			dialog: {
-				show: false,
-				text: '',
-				title: '',
-				buttons: [],
 			},
 			postProcessEffects: [],
 		},
@@ -288,6 +260,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			viewportAnimations: true,
 			demoMode: false,
 			consoleOverlay: false,
+			assetOverlay: true,
 		},
 		colorSchemes: [],
 		historyStack: [],
@@ -321,6 +294,35 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			memorySizeBytes: 1048576,
 			disableAutoCompilation: false,
 			binaryAssets: [],
+		},
+		dialog: {
+			show: false,
+			text: '',
+			wrappedText: [''],
+			title: '',
+			buttons: [],
+			width: 0,
+			height: 0,
+			x: 0,
+			y: 0,
+		},
+		viewport: {
+			x: 0,
+			y: 0,
+
+			width: 1024,
+			height: 768,
+			roundedWidth: 1024,
+			roundedHeight: 768,
+			vGrid: 8,
+			hGrid: 16,
+			borderLineCoordinates: {
+				top: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				right: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				bottom: { startX: 0, startY: 0, endX: 0, endY: 0 },
+				left: { startX: 0, startY: 0, endX: 0, endY: 0 },
+			},
+			center: { x: 0, y: 0 },
 		},
 	};
 

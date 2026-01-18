@@ -30,7 +30,7 @@ export function navigateToCodeBlockInDirection(state: State, direction: Directio
 		// Enable animation for this programmatic viewport change, but restore original value after
 		const originalViewportAnimations = state.featureFlags.viewportAnimations;
 		state.featureFlags.viewportAnimations = true;
-		centerViewportOnCodeBlock(state.graphicHelper.viewport, targetBlock);
+		centerViewportOnCodeBlock(state.viewport, targetBlock);
 		state.featureFlags.viewportAnimations = originalViewportAnimations;
 		return true;
 	}

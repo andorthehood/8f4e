@@ -15,12 +15,12 @@ export default function updateDebuggersGraphicData(graphicData: CodeBlockGraphic
 		}
 
 		graphicData.extras.debuggers.push({
-			width: state.graphicHelper.viewport.vGrid * 2,
-			height: state.graphicHelper.viewport.hGrid,
+			width: state.viewport.vGrid * 2,
+			height: state.viewport.hGrid,
 			x:
-				state.graphicHelper.viewport.vGrid * (3 + graphicData.lineNumberColumnWidth) +
-				state.graphicHelper.viewport.vGrid * graphicData.code[_debugger.lineNumber].length,
-			y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
+				state.viewport.vGrid * (3 + graphicData.lineNumberColumnWidth) +
+				state.viewport.vGrid * graphicData.code[_debugger.lineNumber].length,
+			y: gapCalculator(_debugger.lineNumber, graphicData.gaps) * state.viewport.hGrid,
 			id: _debugger.id,
 			memory: memory.memory,
 			showAddress: memory.showAddress,
