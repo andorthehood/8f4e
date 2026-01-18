@@ -34,7 +34,6 @@ import {
 	HEADER,
 	I16_SIGNED_LARGEST_NUMBER,
 	I16_SIGNED_SMALLEST_NUMBER,
-	I32_SIGNED_LARGEST_NUMBER,
 	VERSION,
 } from './consts';
 import { ErrorCode, getError } from './errors';
@@ -206,7 +205,6 @@ export default function compile(
 	const builtInConsts: Namespace['consts'] = {
 		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
 		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
-		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
 		WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
 		...options.environmentExtensions.constants,
 	};
