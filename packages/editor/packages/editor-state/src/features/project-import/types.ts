@@ -2,12 +2,13 @@
  * Types for project import/export feature - project serialization and metadata.
  */
 
-import type { CodeBlock } from '../code-blocks/types';
-import type { ProjectViewport } from '../viewport/types';
-import type { BinaryAsset } from '../binary-assets/types';
-import type { ConfigObject } from '../config-compiler/types';
 import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { PostProcessEffect } from 'glugglug';
+
+import type { BinaryAsset } from '../binary-assets/types';
+import type { CodeBlock } from '../code-blocks/types';
+import type { ConfigObject } from '../config-compiler/types';
+import type { ProjectViewport } from '../viewport/types';
 
 /**
  * Complete project structure for serialization and loading.
