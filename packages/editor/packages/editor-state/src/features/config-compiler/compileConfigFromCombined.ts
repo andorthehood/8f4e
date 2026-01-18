@@ -54,11 +54,9 @@ export async function compileConfigFromCombined(
 					};
 
 					const macroMappings = blockLineMappings.get(mapped.blockId);
-					if (macroMappings) {
+					if (macroMappings && macroMappings.length > 0) {
 						const remapped = remapErrors([mappedError], macroMappings);
-						if (remapped.length > 0) {
-							mappedError = remapped[0];
-						}
+						mappedError = remapped[0];
 					}
 
 					errors.push(mappedError);
