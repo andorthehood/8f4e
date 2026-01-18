@@ -4,7 +4,6 @@
 
 import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { PostProcessEffect } from 'glugglug';
-
 import type { BinaryAsset } from '../binary-assets/types';
 import type { CodeBlock } from '../code-blocks/types';
 import type { ConfigObject } from '../config-compiler/types';

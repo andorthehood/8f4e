@@ -3,8 +3,8 @@
  */
 
 import type { DataStructure } from '@8f4e/compiler';
-import type { SpriteLookup, SpriteLookups, PostProcessEffect } from 'glugglug';
-
+import type { SpriteLookups } from '@8f4e/sprite-generator';
+import type { SpriteLookup, PostProcessEffect } from 'glugglug';
 import type { GridCoordinates } from '../../shared/types';
 import type { ContextMenu } from '../menu/types';
 import type { ProjectViewport } from '../viewport/types';

@@ -8,12 +8,41 @@ import type { Module, CompileOptions } from '@8f4e/compiler';
 import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
 import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
-
-// Re-export MemoryAction for use by consumers
-export type { CompilerMemoryAction as MemoryAction };
-
-// Re-export shared types
-export type {
+import type { BinaryAsset, ResolvedBinaryAsset } from './features/binary-assets/types';
+import type {
+	CodeBlock,
+	CodeBlockType,
+	CodeBlockGraphicData,
+	Input,
+	Output,
+	Debugger,
+	MemoryIdentifier,
+	BufferPlotter,
+	Switch,
+	PianoKeyboard,
+	GraphicHelper,
+} from './features/code-blocks/types';
+import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
+import type { ConfigCompilationResult, ConfigBinaryAsset, ConfigObject } from './features/config-compiler/types';
+import type { EditorSettings } from './features/editor-settings/types';
+import type { LogMessage, ConsoleState } from './features/logger/types';
+import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
+import type { Compiler, CompilationResult } from './features/program-compiler/types';
+import type { Project, ExampleModule, ModuleMetadata, ProjectMetadata } from './features/project-import/types';
+import type {
+	RuntimeFactory,
+	RuntimeRegistryEntry,
+	RuntimeRegistry,
+	WebWorkerLogicRuntime,
+	MainThreadLogicRuntime,
+	AudioWorkletRuntime,
+	WebWorkerMIDIRuntime,
+	Runtimes,
+	Midi,
+	RuntimeStats,
+} from './features/runtime/types';
+import type { Viewport, ProjectViewport } from './features/viewport/types';
+import type {
 	Size,
 	Position,
 	GridCoordinates,
@@ -22,8 +51,14 @@ export type {
 	InternalKeyboardEvent,
 } from './shared/types';
 
+// Re-export MemoryAction for use by consumers
+export type { CompilerMemoryAction as MemoryAction };
+
+// Re-export shared types
+export type { Size, Position, GridCoordinates, EventDispatcher, InternalMouseEvent, InternalKeyboardEvent };
+
 // Re-export viewport types
-export type { Viewport, ProjectViewport } from './features/viewport/types';
+export type { Viewport, ProjectViewport };
 
 // Re-export code-blocks types
 export type {
@@ -38,20 +73,16 @@ export type {
 	Switch,
 	PianoKeyboard,
 	GraphicHelper,
-} from './features/code-blocks/types';
+};
 
 // Re-export menu types
-export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
+export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 
 // Re-export program-compiler types
-export type { Compiler, CompilationResult } from './features/program-compiler/types';
+export type { Compiler, CompilationResult };
 
 // Re-export config-compiler types
-export type {
-	ConfigCompilationResult,
-	ConfigBinaryAsset,
-	ConfigObject,
-} from './features/config-compiler/types';
+export type { ConfigCompilationResult, ConfigBinaryAsset, ConfigObject };
 
 // Re-export runtime types
 export type {
@@ -65,27 +96,22 @@ export type {
 	Runtimes,
 	Midi,
 	RuntimeStats,
-} from './features/runtime/types';
+};
 
 // Re-export logger types
-export type { LogMessage, ConsoleState } from './features/logger/types';
+export type { LogMessage, ConsoleState };
 
 // Re-export editor-settings types
-export type { EditorSettings } from './features/editor-settings/types';
+export type { EditorSettings };
 
 // Re-export binary-assets types
-export type { BinaryAsset, ResolvedBinaryAsset } from './features/binary-assets/types';
+export type { BinaryAsset, ResolvedBinaryAsset };
 
 // Re-export code-editing types
-export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
+export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent };
 
 // Re-export project-import types
-export type {
-	Project,
-	ExampleModule,
-	ModuleMetadata,
-	ProjectMetadata,
-} from './features/project-import/types';
+export type { Project, ExampleModule, ModuleMetadata, ProjectMetadata };
 
 // Re-export the EMPTY_DEFAULT_PROJECT constant
 export { EMPTY_DEFAULT_PROJECT } from './features/project-import/types';

@@ -10,7 +10,7 @@ export const moduleCategoriesMenu: MenuGenerator = async (state, payload = {}) =
 	}
 	const modules = await state.callbacks.getListOfModules();
 
-	const categoryItems: CategoryItem[] = modules.map(module => ({
+	const categoryItems: CategoryItem[] = modules.map((module: import('~/types').ModuleMetadata) => ({
 		title: module.title,
 		slug: module.slug,
 		category: module.category,
