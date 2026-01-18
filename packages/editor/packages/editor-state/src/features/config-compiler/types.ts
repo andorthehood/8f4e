@@ -2,7 +2,6 @@
  * Types for config-compiler feature - stack-config compilation and configuration management.
  */
 
-import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { Runtimes } from '../runtime/types';
 
 /**
