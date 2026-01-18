@@ -4,6 +4,7 @@ const sine: ExampleModule = {
 	title: 'Sine [-PI, PI] (Polynomial Approximation)',
 	author: 'Andor Polgar',
 	category: 'Functions',
+	dependencies: ['math'],
 	code: `function sine
 ; Polynomial approximation 
 ; of the sine function with
@@ -12,9 +13,7 @@ const sine: ExampleModule = {
 ; [-PI, PI]
 param float x
 
-const PI      3.141592653589793
-const HALF_PI 1.570796326794896
-const TWO_PI  6.283185307179586
+use math
 
 ; Fold to [-pi/2, pi/2]
 localGet x
