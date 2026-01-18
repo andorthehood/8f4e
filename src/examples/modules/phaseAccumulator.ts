@@ -5,22 +5,20 @@ const phaseAccumulator: ExampleModule = {
 	description: 'Phase accumulator that advances by frequency and can drive any periodic function (defaults to sine).',
 	author: 'Andor Polgar',
 	category: 'Oscillators',
-	dependencies: ['sine'],
+	dependencies: ['sine', 'math'],
 	code: `module phaseAccumulator
 
 float* frequency
 float phase
 float out
 
-const PI     3.141592653589793
-const PI_   -3.141592653589793
-const TWO_PI 6.283185307179586
+use math
 
 ; Advance phase by
-; TWO_PI * frequency / SAMPLE_RATE
+; TAU * frequency / SAMPLE_RATE
 push &phase
 push phase
-push TWO_PI
+push TAU
 push *frequency
 mul
 push SAMPLE_RATE
@@ -36,7 +34,7 @@ push PI
 greaterThan
 if void
 push &phase
-push PI_
+push NEG_PI
 store
 ifEnd
 

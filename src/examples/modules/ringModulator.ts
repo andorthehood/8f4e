@@ -5,7 +5,7 @@ const ringModulator: ExampleModule = {
 	description: 'A simple ring modulator using a sine wave oscillator to modulate the input signal.',
 	author: 'Andor Polgar',
 	category: 'Modulation',
-	dependencies: ['sine'],
+	dependencies: ['sine', 'math'],
 	code: `module ringModulator
 
 float defaultFreq 10
@@ -14,13 +14,11 @@ float* freq &defaultFreq
 float out
 float phase
 
-const PI      3.141592653589793
-const PI_    -3.141592653589793
-const TWO_PI  6.283185307179586
+use math
 
 push &phase
 push phase
-push TWO_PI
+push TAU
 push *freq
 mul
 push SAMPLE_RATE
@@ -35,7 +33,7 @@ push PI
 greaterThan
 if void
 push &phase
-push PI_
+push NEG_PI
 store
 ifEnd
 
