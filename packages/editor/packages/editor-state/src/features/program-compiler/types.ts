@@ -5,8 +5,6 @@
 import type {
 	CompiledModuleLookup,
 	CompiledFunctionLookup,
-	Module,
-	CompileOptions,
 } from '@8f4e/compiler';
 import type { CompileAndUpdateMemoryResult } from '@8f4e/compiler-worker/types';
 
