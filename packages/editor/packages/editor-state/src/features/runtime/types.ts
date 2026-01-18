@@ -8,10 +8,10 @@ import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 /**
  * Type for runtime factory function.
- * Note: Uses 'any' for State to avoid circular dependency.
- * The actual State type is imported from ../../types.ts in consuming code.
+ * Note: Uses generic S to allow proper typing while avoiding circular dependency with State.
+ * The actual State type is provided when the factory is called.
  */
-export type RuntimeFactory = (store: StateManager<any>, events: EventDispatcher) => () => void;
+export type RuntimeFactory<S = any> = (store: StateManager<S>, events: EventDispatcher) => () => void;
 
 /**
  * Runtime registry entry describing a runtime configuration.

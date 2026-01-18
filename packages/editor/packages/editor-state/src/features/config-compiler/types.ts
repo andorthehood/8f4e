@@ -36,7 +36,11 @@ export interface ConfigBinaryAsset {
 export interface ConfigObject {
 	memorySizeBytes: number;
 	selectedRuntime: number;
-	runtimeSettings: import('../runtime/types').Runtimes[];
+	runtimeSettings: Array<{
+		runtime: string;
+		sampleRate: number;
+		[key: string]: unknown;
+	}>;
 	disableAutoCompilation: boolean;
 	binaryAssets: ConfigBinaryAsset[];
 }
