@@ -1,5 +1,6 @@
 import getCodeBlockGridWidth from '../graphicHelper/getCodeBlockGridWidth';
 import getCodeBlockId from '../../utils/getCodeBlockId';
+import getBlockType from '../../utils/codeParsers/getBlockType';
 
 import type { State, ExampleModule } from '~/types';
 
@@ -36,20 +37,26 @@ export async function insertDependencies({
 	const requestedModuleGridWidth = getCodeBlockGridWidth(requestedModuleCode);
 	currentGridX += requestedModuleGridWidth + gridGap;
 
-	// Get existing module IDs to avoid duplicates
-	const existingModuleIds = new Set(state.graphicHelper.codeBlocks.map(block => block.id).filter(id => id !== ''));
-
 	// Insert dependencies from left to right
 	for (const dependencySlug of dependencies) {
 		try {
 			const dependencyModule = await getModule(dependencySlug);
 			const dependencyCode = dependencyModule.code.split('\n');
 
-			// Get the module ID from the dependency code
+			// Get the module ID and type from the dependency code
 			const dependencyModuleId = getCodeBlockId(dependencyCode);
+			const dependencyBlockType = getBlockType(dependencyCode);
 
-			// Skip if a code block with this moduleId already exists
-			if (dependencyModuleId && existingModuleIds.has(dependencyModuleId)) {
+			// Skip if a code block with this moduleId and type already exists
+			// Filter by block type first, then check IDs of matching type
+			const existsAlready = state.graphicHelper.codeBlocks.some(block => {
+				if (block.blockType !== dependencyBlockType) {
+					return false;
+				}
+				return block.id === dependencyModuleId;
+			});
+
+			if (dependencyModuleId && existsAlready) {
 				continue;
 			}
 
@@ -59,11 +66,6 @@ export async function insertDependencies({
 
 			// Add the dependency
 			onAddCodeBlock({ code: dependencyCode, x: dependencyX, y: dependencyY, isNew: false });
-
-			// Add to existing IDs set to prevent duplicates within this batch
-			if (dependencyModuleId) {
-				existingModuleIds.add(dependencyModuleId);
-			}
 
 			// Move position to the right for the next dependency
 			const dependencyGridWidth = getCodeBlockGridWidth(dependencyCode);
