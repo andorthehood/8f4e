@@ -4,6 +4,7 @@ import { getFunctionId } from '@8f4e/compiler/syntax';
 
 import { insertDependencies } from './insertDependencies';
 
+import getCodeBlockId from '../../utils/getCodeBlockId';
 import getVertexShaderId from '../../../shader-effects/getVertexShaderId';
 import getFragmentShaderId from '../../../shader-effects/getFragmentShaderId';
 
@@ -177,7 +178,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				errorMessages: [],
 			},
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: getFunctionId(code) || getModuleId(code) || getVertexShaderId(code) || getFragmentShaderId(code) || '',
+			id: getCodeBlockId(code),
 			gaps: new Map(),
 			gridX: Math.round((state.graphicHelper.viewport.x + x) / state.graphicHelper.viewport.vGrid),
 			gridY: Math.round((state.graphicHelper.viewport.y + y) / state.graphicHelper.viewport.hGrid),
