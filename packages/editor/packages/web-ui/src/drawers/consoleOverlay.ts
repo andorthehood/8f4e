@@ -26,7 +26,7 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 		return;
 	}
 
-	const { vGrid, hGrid, roundedWidth: viewportWidth, roundedHeight: viewportHeight } = state.graphicHelper.viewport;
+	const { vGrid, hGrid, roundedWidth: viewportWidth, roundedHeight: viewportHeight } = state.viewport;
 
 	const maxVisibleLogs = Math.floor(viewportHeight / hGrid / 2);
 	const startIndex = Math.max(0, logs.length - maxVisibleLogs);

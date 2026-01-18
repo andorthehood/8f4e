@@ -197,24 +197,6 @@ export interface CodeBlockGraphicData {
 export type GraphicHelper = {
 	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
-	viewport: {
-		width: number;
-		height: number;
-		roundedWidth: number;
-		roundedHeight: number;
-		vGrid: number;
-		hGrid: number;
-		borderLineCoordinates: {
-			top: { startX: number; startY: number; endX: number; endY: number };
-			right: { startX: number; startY: number; endX: number; endY: number };
-			bottom: { startX: number; startY: number; endX: number; endY: number };
-			left: { startX: number; startY: number; endX: number; endY: number };
-		};
-		center: { x: number; y: number };
-		x: number;
-		y: number;
-		animationDurationMs?: number;
-	};
 	codeBlocks: CodeBlockGraphicData[];
 	/**
 	 * Monotonically increasing counter for assigning creationIndex to new code blocks.
@@ -225,16 +207,6 @@ export type GraphicHelper = {
 	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;
-	dialog: {
-		show: boolean;
-		text: string;
-		title: string;
-		buttons: Array<{
-			title: string;
-			action: string;
-			payload?: unknown;
-		}>;
-	};
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects: PostProcessEffect[];
 };

@@ -8,10 +8,10 @@ export default function updateSwitchesGraphicData(graphicData: CodeBlockGraphicD
 	graphicData.extras.switches = [];
 	parseSwitches(graphicData.code).forEach(_switch => {
 		graphicData.extras.switches.push({
-			width: state.graphicHelper.viewport.vGrid * 4,
-			height: state.graphicHelper.viewport.hGrid,
-			x: graphicData.width - 4 * state.graphicHelper.viewport.vGrid,
-			y: gapCalculator(_switch.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
+			width: state.viewport.vGrid * 4,
+			height: state.viewport.hGrid,
+			x: graphicData.width - 4 * state.viewport.vGrid,
+			y: gapCalculator(_switch.lineNumber, graphicData.gaps) * state.viewport.hGrid,
 			id: _switch.id,
 			offValue: _switch.offValue,
 			onValue: _switch.onValue,
