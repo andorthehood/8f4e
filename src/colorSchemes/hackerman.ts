@@ -24,7 +24,7 @@ export default {
 		wireHighlighted: 'rgba(204,255,204,0.8)',
 		errorMessageBackground: '#cc0000',
 		dialogBackground: '#000000',
-		dialogDimmer: 'rgba(0,0,0,0.5)',
+		dialogDimmer: 'rgba(0,0,0,0.7)',
 		highlightedCodeLine: '#004400',
 		plotterBackground: '#000000',
 		plotterTrace: '#99ff99',

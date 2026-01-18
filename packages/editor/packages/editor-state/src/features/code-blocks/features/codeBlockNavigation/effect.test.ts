@@ -111,14 +111,13 @@ describe('codeBlockNavigation', () => {
 		// Initialize the effect
 		codeBlockNavigation(state, events);
 
-		const initialViewportX = state.graphicHelper.viewport.x;
-		const initialViewportY = state.graphicHelper.viewport.y;
+		const initialViewportX = state.viewport.x;
+		const initialViewportY = state.viewport.y;
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 
 		// Verify viewport has changed
-		const viewportChanged =
-			state.graphicHelper.viewport.x !== initialViewportX || state.graphicHelper.viewport.y !== initialViewportY;
+		const viewportChanged = state.viewport.x !== initialViewportX || state.viewport.y !== initialViewportY;
 
 		expect(viewportChanged).toBe(true);
 	});
