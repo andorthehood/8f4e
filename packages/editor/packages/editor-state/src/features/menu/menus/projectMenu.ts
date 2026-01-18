@@ -10,7 +10,7 @@ export const projectMenu: MenuGenerator = async (state, payload = {}) => {
 	}
 	const projects = await state.callbacks.getListOfProjects();
 
-	const categoryItems: CategoryItem[] = projects.map(project => ({
+	const categoryItems: CategoryItem[] = projects.map((project: import('~/types').ProjectMetadata) => ({
 		title: project.title,
 		slug: project.slug,
 		category: project.category,
