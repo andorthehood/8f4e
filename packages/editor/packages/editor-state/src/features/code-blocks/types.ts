@@ -2,11 +2,12 @@
  * Types for code-blocks feature - manages code block entities, rendering, and interactions.
  */
 
-import type { GridCoordinates } from '../../shared/types';
-import type { ProjectViewport } from '../viewport/types';
-import type { SpriteLookup, SpriteLookups, PostProcessEffect } from 'glugglug';
-import type { ContextMenu } from '../menu/types';
 import type { DataStructure } from '@8f4e/compiler';
+import type { SpriteLookup, SpriteLookups, PostProcessEffect } from 'glugglug';
+
+import type { GridCoordinates } from '../../shared/types';
+import type { ContextMenu } from '../menu/types';
+import type { ProjectViewport } from '../viewport/types';
 
 /**
  * Project-level code block structure with grid-based coordinates.

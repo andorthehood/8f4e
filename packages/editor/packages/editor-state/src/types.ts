@@ -4,9 +4,9 @@
  * and re-exporting them for backward compatibility and public API stability.
  */
 
-import type { ColorScheme } from '@8f4e/sprite-generator';
-import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
 import type { Module, CompileOptions } from '@8f4e/compiler';
+import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
+import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 // Re-export MemoryAction for use by consumers
