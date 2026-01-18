@@ -12,6 +12,6 @@ import type { SpriteData } from '@8f4e/web-ui';
  */
 export function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
 	state.graphicHelper.spriteLookups = spriteData.spriteLookups;
-	state.graphicHelper.viewport.hGrid = spriteData.characterHeight;
-	state.graphicHelper.viewport.vGrid = spriteData.characterWidth;
+	state.viewport.hGrid = spriteData.characterHeight;
+	state.viewport.vGrid = spriteData.characterWidth;
 }

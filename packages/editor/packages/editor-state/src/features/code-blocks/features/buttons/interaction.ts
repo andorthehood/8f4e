@@ -10,7 +10,7 @@ export default function button(state: State, events: EventDispatcher): () => voi
 	let lastPushedButtonMemory: DataStructure | undefined;
 
 	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
-		lastPushedButton = findButtonAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
+		lastPushedButton = findButtonAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!lastPushedButton) {
 			return;

@@ -13,12 +13,12 @@ exports[`updateBufferPlottersGraphicData > should calculate correct dimensions a
     "showEndAddress": false,
   },
   "bufferLength": undefined,
-  "height": 20,
+  "height": 16,
   "maxValue": 10,
   "minValue": -10,
-  "width": 20,
-  "x": 30,
-  "y": 20,
+  "width": 16,
+  "x": 24,
+  "y": 16,
 }
 `;
 
@@ -36,12 +36,12 @@ exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotter
       "showEndAddress": false,
     },
     "bufferLength": undefined,
-    "height": 20,
+    "height": 16,
     "maxValue": 10,
     "minValue": -10,
-    "width": 20,
-    "x": 30,
-    "y": 20,
+    "width": 16,
+    "x": 24,
+    "y": 16,
   },
   {
     "buffer": {
@@ -65,12 +65,12 @@ exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotter
       "showEndAddress": false,
     },
     "bufferLength": undefined,
-    "height": 20,
+    "height": 16,
     "maxValue": 100,
     "minValue": -8,
-    "width": 20,
-    "x": 30,
-    "y": 40,
+    "width": 16,
+    "x": 24,
+    "y": 32,
   },
 ]
 `;

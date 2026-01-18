@@ -10,8 +10,8 @@ import type { SpriteData } from '../../src';
  */
 function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
 	state.graphicHelper.spriteLookups = spriteData.spriteLookups;
-	state.graphicHelper.viewport.hGrid = spriteData.characterHeight;
-	state.graphicHelper.viewport.vGrid = spriteData.characterWidth;
+	state.viewport.hGrid = spriteData.characterHeight;
+	state.viewport.vGrid = spriteData.characterWidth;
 }
 
 /**

@@ -23,6 +23,7 @@ import runtime from './features/runtime/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
 import shaderEffectsDeriver from './features/shader-effects/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
+import dialog from './features/dialog/effect';
 
 import type { Options, State, EventDispatcher, Runtimes } from './types';
 
@@ -75,6 +76,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	projectExport(store, events);
 	binaryAsset(state, events);
 	historyTracking(store, events);
+	dialog(store, events);
 	events.dispatch('init');
 
 	events.on('consoleLog', event => {
@@ -96,7 +98,6 @@ export type {
 	ConfigCompilationResult,
 	ConfigObject,
 	CodeBlock,
-	Viewport,
 	ProjectViewport,
 	GridCoordinates,
 	Size,

@@ -26,19 +26,11 @@ export default function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicDat
 	}
 
 	if (arrowPlacement.right) {
-		engine.drawSprite(
-			arrowPlacement.right.x - state.graphicHelper.viewport.vGrid,
-			arrowPlacement.right.y,
-			Icon.ARROW_RIGHT
-		);
+		engine.drawSprite(arrowPlacement.right.x - state.viewport.vGrid, arrowPlacement.right.y, Icon.ARROW_RIGHT);
 	}
 
 	if (arrowPlacement.bottom) {
-		engine.drawSprite(
-			arrowPlacement.bottom.x,
-			arrowPlacement.bottom.y - state.graphicHelper.viewport.hGrid,
-			Icon.ARROW_BOTTOM
-		);
+		engine.drawSprite(arrowPlacement.bottom.x, arrowPlacement.bottom.y - state.viewport.hGrid, Icon.ARROW_BOTTOM);
 	}
 
 	if (arrowPlacement.left) {

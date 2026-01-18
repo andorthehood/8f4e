@@ -388,7 +388,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			mockState.callbacks.getModule = mockGetModule;
 			mockState.featureFlags.editing = true;
-			mockState.graphicHelper.viewport.vGrid = 8; // 8 pixels per grid unit
+			mockState.viewport.vGrid = 8; // 8 pixels per grid unit
 
 			codeBlockCreator(store, mockEvents);
 
@@ -407,10 +407,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const dep1Module = mockState.graphicHelper.codeBlocks[1];
 
 			// Main module should be at the clicked grid position
-			expect(mainModule.gridX).toBeCloseTo(
-				Math.round((mockState.graphicHelper.viewport.x + 100) / mockState.graphicHelper.viewport.vGrid),
-				0
-			);
+			expect(mainModule.gridX).toBeCloseTo(Math.round((mockState.viewport.x + 100) / mockState.viewport.vGrid), 0);
 
 			// Dep1 should be positioned to the right with correct spacing
 			// The exact value depends on the grid width calculation

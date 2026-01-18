@@ -10,7 +10,7 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
-	engine.startGroup(-state.graphicHelper.viewport.x, -state.graphicHelper.viewport.y);
+	engine.startGroup(-state.viewport.x, -state.viewport.y);
 
 	for (const codeBlock of state.graphicHelper.codeBlocks) {
 		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
@@ -28,10 +28,10 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 			}
 
 			engine.drawLine(
-				codeBlock.x + codeBlock.offsetX + x + state.graphicHelper.viewport.vGrid,
-				codeBlock.y + codeBlock.offsetY + y + state.graphicHelper.viewport.hGrid / 2,
-				output.codeBlock.x + output.codeBlock.offsetX + output.x + state.graphicHelper.viewport.vGrid,
-				output.codeBlock.y + output.codeBlock.offsetY + output.y + state.graphicHelper.viewport.vGrid,
+				codeBlock.x + codeBlock.offsetX + x + state.viewport.vGrid,
+				codeBlock.y + codeBlock.offsetY + y + state.viewport.hGrid / 2,
+				output.codeBlock.x + output.codeBlock.offsetX + output.x + state.viewport.vGrid,
+				output.codeBlock.y + output.codeBlock.offsetY + output.y + state.viewport.vGrid,
 				isSelected ? 'wireHighlighted' : 'wire',
 				1
 			);

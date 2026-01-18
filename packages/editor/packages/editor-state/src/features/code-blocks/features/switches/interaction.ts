@@ -6,7 +6,7 @@ import { EventDispatcher } from '~/types';
 
 export default function _switch(state: State, events: EventDispatcher): () => void {
 	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
-		const _switch = findSwitchAtViewportCoordinates(state.graphicHelper, codeBlock, x, y);
+		const _switch = findSwitchAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!_switch) {
 			return;
