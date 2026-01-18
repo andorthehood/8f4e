@@ -68,12 +68,12 @@ export function calculateArrowPlacement(codeBlock: CodeBlockGraphicData, state: 
 	const arrowPlacement: ArrowPlacement = {};
 
 	const topIntersection = calculateIntersection(
-		state.graphicHelper.viewport.borderLineCoordinates.top.startX,
-		state.graphicHelper.viewport.borderLineCoordinates.top.startY,
-		state.graphicHelper.viewport.borderLineCoordinates.top.endX,
-		state.graphicHelper.viewport.borderLineCoordinates.top.endY,
-		state.graphicHelper.viewport.center.x,
-		state.graphicHelper.viewport.center.y,
+		state.viewport.borderLineCoordinates.top.startX,
+		state.viewport.borderLineCoordinates.top.startY,
+		state.viewport.borderLineCoordinates.top.endX,
+		state.viewport.borderLineCoordinates.top.endY,
+		state.viewport.center.x,
+		state.viewport.center.y,
 		codeBlock.x + codeBlock.offsetX,
 		codeBlock.y + codeBlock.offsetY
 	);
@@ -83,12 +83,12 @@ export function calculateArrowPlacement(codeBlock: CodeBlockGraphicData, state: 
 	}
 
 	const rightIntersection = calculateIntersection(
-		state.graphicHelper.viewport.borderLineCoordinates.right.startX,
-		state.graphicHelper.viewport.borderLineCoordinates.right.startY,
-		state.graphicHelper.viewport.borderLineCoordinates.right.endX,
-		state.graphicHelper.viewport.borderLineCoordinates.right.endY,
-		state.graphicHelper.viewport.center.x,
-		state.graphicHelper.viewport.center.y,
+		state.viewport.borderLineCoordinates.right.startX,
+		state.viewport.borderLineCoordinates.right.startY,
+		state.viewport.borderLineCoordinates.right.endX,
+		state.viewport.borderLineCoordinates.right.endY,
+		state.viewport.center.x,
+		state.viewport.center.y,
 		codeBlock.x + codeBlock.offsetX,
 		codeBlock.y + codeBlock.offsetY
 	);
@@ -98,12 +98,12 @@ export function calculateArrowPlacement(codeBlock: CodeBlockGraphicData, state: 
 	}
 
 	const bottomIntersection = calculateIntersection(
-		state.graphicHelper.viewport.borderLineCoordinates.bottom.startX,
-		state.graphicHelper.viewport.borderLineCoordinates.bottom.startY,
-		state.graphicHelper.viewport.borderLineCoordinates.bottom.endX,
-		state.graphicHelper.viewport.borderLineCoordinates.bottom.endY,
-		state.graphicHelper.viewport.center.x,
-		state.graphicHelper.viewport.center.y,
+		state.viewport.borderLineCoordinates.bottom.startX,
+		state.viewport.borderLineCoordinates.bottom.startY,
+		state.viewport.borderLineCoordinates.bottom.endX,
+		state.viewport.borderLineCoordinates.bottom.endY,
+		state.viewport.center.x,
+		state.viewport.center.y,
 		codeBlock.x + codeBlock.offsetX,
 		codeBlock.y + codeBlock.offsetY
 	);
@@ -113,12 +113,12 @@ export function calculateArrowPlacement(codeBlock: CodeBlockGraphicData, state: 
 	}
 
 	const leftIntersection = calculateIntersection(
-		state.graphicHelper.viewport.borderLineCoordinates.left.startX,
-		state.graphicHelper.viewport.borderLineCoordinates.left.startY,
-		state.graphicHelper.viewport.borderLineCoordinates.left.endX,
-		state.graphicHelper.viewport.borderLineCoordinates.left.endY,
-		state.graphicHelper.viewport.center.x,
-		state.graphicHelper.viewport.center.y,
+		state.viewport.borderLineCoordinates.left.startX,
+		state.viewport.borderLineCoordinates.left.startY,
+		state.viewport.borderLineCoordinates.left.endX,
+		state.viewport.borderLineCoordinates.left.endY,
+		state.viewport.center.x,
+		state.viewport.center.y,
 		codeBlock.x + codeBlock.offsetX,
 		codeBlock.y + codeBlock.offsetY
 	);

@@ -113,23 +113,20 @@ export default function drawInfoOverlay(
 		);
 	}
 
-	engine.startGroup(
-		0,
-		state.graphicHelper.viewport.roundedHeight - state.graphicHelper.viewport.hGrid * (debugText.length + 1)
-	);
+	engine.startGroup(0, state.viewport.roundedHeight - state.viewport.hGrid * (debugText.length + 1));
 
 	for (let i = 0; i < debugText.length; i++) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 		engine.drawSprite(
 			0,
-			i * state.graphicHelper.viewport.hGrid,
+			i * state.viewport.hGrid,
 			'moduleBackground',
-			(debugText[i].length + 2) * state.graphicHelper.viewport.vGrid,
-			state.graphicHelper.viewport.hGrid
+			(debugText[i].length + 2) * state.viewport.vGrid,
+			state.viewport.hGrid
 		);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontLineNumber);
-		engine.drawText(state.graphicHelper.viewport.vGrid, i * state.graphicHelper.viewport.hGrid, debugText[i]);
+		engine.drawText(state.viewport.vGrid, i * state.viewport.hGrid, debugText[i]);
 	}
 
 	engine.endGroup();

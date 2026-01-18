@@ -18,7 +18,7 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			return;
 		}
 
-		state.graphicHelper.draggedCodeBlock = findCodeBlockAtViewportCoordinates(state.graphicHelper, x, y);
+		state.graphicHelper.draggedCodeBlock = findCodeBlockAtViewportCoordinates(state, x, y);
 		const draggedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
 		if (!draggedCodeBlock) {
@@ -26,8 +26,8 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
-		const relativeX = Math.abs(x - (draggedCodeBlock.x + draggedCodeBlock.offsetX - state.graphicHelper.viewport.x));
-		const relativeY = Math.abs(y - (draggedCodeBlock.y + draggedCodeBlock.offsetY - state.graphicHelper.viewport.y));
+		const relativeX = Math.abs(x - (draggedCodeBlock.x + draggedCodeBlock.offsetX - state.viewport.x));
+		const relativeY = Math.abs(y - (draggedCodeBlock.y + draggedCodeBlock.offsetY - state.viewport.y));
 
 		events.dispatch<CodeBlockClickEvent>('codeBlockClick', {
 			x,
@@ -59,14 +59,14 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		}
 
 		// Compute grid coordinates from pixel position
-		const gridX = Math.round(state.graphicHelper.draggedCodeBlock.x / state.graphicHelper.viewport.vGrid);
-		const gridY = Math.round(state.graphicHelper.draggedCodeBlock.y / state.graphicHelper.viewport.hGrid);
+		const gridX = Math.round(state.graphicHelper.draggedCodeBlock.x / state.viewport.vGrid);
+		const gridY = Math.round(state.graphicHelper.draggedCodeBlock.y / state.viewport.hGrid);
 
 		// Update grid coordinates and recompute snapped pixel coordinates
 		state.graphicHelper.draggedCodeBlock.gridX = gridX;
 		state.graphicHelper.draggedCodeBlock.gridY = gridY;
-		state.graphicHelper.draggedCodeBlock.x = gridX * state.graphicHelper.viewport.vGrid;
-		state.graphicHelper.draggedCodeBlock.y = gridY * state.graphicHelper.viewport.hGrid;
+		state.graphicHelper.draggedCodeBlock.x = gridX * state.viewport.vGrid;
+		state.graphicHelper.draggedCodeBlock.y = gridY * state.viewport.hGrid;
 
 		state.graphicHelper.draggedCodeBlock = undefined;
 	}

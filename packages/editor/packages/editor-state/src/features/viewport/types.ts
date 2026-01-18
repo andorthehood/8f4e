@@ -13,13 +13,21 @@ export interface ProjectViewport {
 	animationDurationMs?: number;
 }
 
-/**
- * Runtime viewport type using pixel coordinates.
- * Used in graphicHelper.viewport for runtime rendering.
- * This is separate from ProjectViewport which uses grid coordinates for persistence.
- */
-export type Viewport = {
+export interface Viewport {
+	width: number;
+	height: number;
+	roundedWidth: number;
+	roundedHeight: number;
+	vGrid: number;
+	hGrid: number;
+	borderLineCoordinates: {
+		top: { startX: number; startY: number; endX: number; endY: number };
+		right: { startX: number; startY: number; endX: number; endY: number };
+		bottom: { startX: number; startY: number; endX: number; endY: number };
+		left: { startX: number; startY: number; endX: number; endY: number };
+	};
+	center: { x: number; y: number };
 	x: number;
 	y: number;
 	animationDurationMs?: number;
-};
+}
