@@ -8,7 +8,7 @@ const phaseAccumulator: ExampleModule = {
 	dependencies: ['sine'],
 	code: `module phaseAccumulator
 
-float* frequency &midiNote2Freq.out
+float* frequency
 float phase
 float out
 
