@@ -11,6 +11,16 @@ import type { LineMapping } from '../macro-expansion/types';
 import { EventDispatcher } from '~/types';
 
 /**
+ * Result of flattening and expanding code blocks for compilation.
+ */
+export interface FlattenedProject {
+	modules: { code: string[] }[];
+	functions: { code: string[] }[];
+	lineMappings: Map<string | number, LineMapping[]>;
+	macroErrors: CodeError[];
+}
+
+/**
  * Converts code blocks into separate arrays for modules and functions, sorted by creationIndex.
  * Applies macro expansion to all blocks before returning.
  *
@@ -20,12 +30,7 @@ import { EventDispatcher } from '~/types';
  *          Config blocks, comment blocks, and macro blocks are excluded from the WASM compilation pipeline.
  *          Constants blocks are included in modules array.
  */
-export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
-	modules: { code: string[] }[];
-	functions: { code: string[] }[];
-	lineMappings: Map<string | number, LineMapping[]>;
-	macroErrors: CodeError[];
-} {
+export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): FlattenedProject {
 	const allBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
 
 	const { macros, errors: macroCollectionErrors } = collectMacros(allBlocks);
