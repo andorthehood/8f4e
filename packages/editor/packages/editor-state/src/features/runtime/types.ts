@@ -12,6 +12,7 @@ import type { EventDispatcher } from '../../shared/types';
  * Note: Uses generic S to allow proper typing while avoiding circular dependency with State.
  * The actual State type is provided when the factory is called.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RuntimeFactory<S = any> = (store: StateManager<S>, events: EventDispatcher) => () => void;
 
 /**
