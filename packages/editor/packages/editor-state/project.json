@@ -19,6 +19,15 @@
         "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
       }
     },
+    "test-update": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "config": "{projectRoot}/vitest.config.ts",
+        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}",
+        "updateSnapshot": true
+      }
+    },
   "typecheck": {
     "executor": "nx:run-commands",
     "options": {
