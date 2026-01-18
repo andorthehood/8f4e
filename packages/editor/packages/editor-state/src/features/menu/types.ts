@@ -23,9 +23,9 @@ interface MenuItemDivider extends ContextMenuButton {
 
 export type ContextMenuItem = ContextMenuButton | MenuItemDivider;
 
-// Note: MenuGenerator uses 'any' for state to avoid circular dependency.
-// The actual State type is imported from ../../types.ts in consuming code.
-export type MenuGenerator = (state: any, payload?: unknown) => ContextMenuItem[] | Promise<ContextMenuItem[]>;
+// Note: MenuGenerator uses generic S to allow proper typing while avoiding circular dependency.
+// The actual State type is provided when the generator is called.
+export type MenuGenerator<S = any> = (state: S, payload?: unknown) => ContextMenuItem[] | Promise<ContextMenuItem[]>;
 
 export interface MenuStackEntry {
 	menu: string;
