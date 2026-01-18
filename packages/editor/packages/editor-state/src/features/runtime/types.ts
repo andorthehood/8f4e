@@ -3,8 +3,9 @@
  */
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { EventDispatcher } from '../../shared/types';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
+
+import type { EventDispatcher } from '../../shared/types';
 
 /**
  * Type for runtime factory function.
