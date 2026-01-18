@@ -20,6 +20,8 @@ export default function getBlockType(code: string[]): CodeBlockType {
 	const hasFragmentShaderEnd = code.some(line => /^\s*fragmentShaderEnd(\s|$)/.test(line));
 	const hasComment = code.some(line => /^\s*comment(\s|$)/.test(line));
 	const hasCommentEnd = code.some(line => /^\s*commentEnd(\s|$)/.test(line));
+	const hasMacro = code.some(line => /^\s*defmacro(\s|$)/.test(line));
+	const hasMacroEnd = code.some(line => /^\s*defmacroEnd(\s|$)/.test(line));
 
 	if (
 		hasModule &&
@@ -35,7 +37,9 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		!hasFragmentShader &&
 		!hasFragmentShaderEnd &&
 		!hasComment &&
-		!hasCommentEnd
+		!hasCommentEnd &&
+		!hasMacro &&
+		!hasMacroEnd
 	) {
 		return 'module';
 	}
@@ -54,7 +58,9 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		!hasFragmentShader &&
 		!hasFragmentShaderEnd &&
 		!hasComment &&
-		!hasCommentEnd
+		!hasCommentEnd &&
+		!hasMacro &&
+		!hasMacroEnd
 	) {
 		return 'config';
 	}
@@ -73,7 +79,9 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		!hasFragmentShader &&
 		!hasFragmentShaderEnd &&
 		!hasComment &&
-		!hasCommentEnd
+		!hasCommentEnd &&
+		!hasMacro &&
+		!hasMacroEnd
 	) {
 		return 'function';
 	}
@@ -92,7 +100,9 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		!hasFragmentShader &&
 		!hasFragmentShaderEnd &&
 		!hasComment &&
-		!hasCommentEnd
+		!hasCommentEnd &&
+		!hasMacro &&
+		!hasMacroEnd
 	) {
 		return 'constants';
 	}
@@ -111,7 +121,9 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		!hasFragmentShader &&
 		!hasFragmentShaderEnd &&
 		!hasComment &&
-		!hasCommentEnd
+		!hasCommentEnd &&
+		!hasMacro &&
+		!hasMacroEnd
 	) {
 		return 'vertexShader';
 	}
@@ -130,7 +142,9 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		!hasVertexShader &&
 		!hasVertexShaderEnd &&
 		!hasComment &&
-		!hasCommentEnd
+		!hasCommentEnd &&
+		!hasMacro &&
+		!hasMacroEnd
 	) {
 		return 'fragmentShader';
 	}
@@ -149,9 +163,32 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		!hasVertexShader &&
 		!hasVertexShaderEnd &&
 		!hasFragmentShader &&
-		!hasFragmentShaderEnd
+		!hasFragmentShaderEnd &&
+		!hasMacro &&
+		!hasMacroEnd
 	) {
 		return 'comment';
+	}
+
+	if (
+		hasMacro &&
+		hasMacroEnd &&
+		!hasModule &&
+		!hasModuleEnd &&
+		!hasConfig &&
+		!hasConfigEnd &&
+		!hasFunction &&
+		!hasFunctionEnd &&
+		!hasConstants &&
+		!hasConstantsEnd &&
+		!hasVertexShader &&
+		!hasVertexShaderEnd &&
+		!hasFragmentShader &&
+		!hasFragmentShaderEnd &&
+		!hasComment &&
+		!hasCommentEnd
+	) {
+		return 'macro';
 	}
 
 	return 'unknown';
@@ -191,6 +228,14 @@ if (import.meta.vitest) {
 
 		it('detects comment blocks with leading whitespace', () => {
 			expect(getBlockType(['  comment', 'This is a comment', '  commentEnd'])).toBe('comment');
+		});
+
+		it('detects macro blocks', () => {
+			expect(getBlockType(['defmacro myMacro', 'push 42', 'defmacroEnd'])).toBe('macro');
+		});
+
+		it('detects macro blocks with leading whitespace', () => {
+			expect(getBlockType(['  defmacro myMacro', 'push 42', '  defmacroEnd'])).toBe('macro');
 		});
 
 		it('returns unknown for mixed markers', () => {
