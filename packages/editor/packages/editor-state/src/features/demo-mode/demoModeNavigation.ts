@@ -23,7 +23,7 @@ function selectRandomCodeBlock(state: State): boolean {
 
 	state.graphicHelper.selectedCodeBlock = selectedBlock;
 
-	centerViewportOnCodeBlock(state.graphicHelper.viewport, selectedBlock);
+	centerViewportOnCodeBlock(state.viewport, selectedBlock);
 
 	return true;
 }

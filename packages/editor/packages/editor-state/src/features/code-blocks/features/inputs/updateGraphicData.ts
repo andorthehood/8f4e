@@ -16,10 +16,10 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 		}
 
 		graphicData.extras.inputs.push({
-			width: state.graphicHelper.viewport.vGrid * 2,
-			height: state.graphicHelper.viewport.hGrid,
+			width: state.viewport.vGrid * 2,
+			height: state.viewport.hGrid,
 			x: 0,
-			y: gapCalculator(input.lineNumber, graphicData.gaps) * state.graphicHelper.viewport.hGrid,
+			y: gapCalculator(input.lineNumber, graphicData.gaps) * state.viewport.hGrid,
 			id: input.id,
 			wordAlignedAddress: memory.wordAlignedAddress,
 			codeBlock: graphicData,
