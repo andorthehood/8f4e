@@ -32,13 +32,3 @@ export interface ResolvedBinaryAsset {
 	byteAddress: number;
 	byteLength: number;
 }
-
-/**
- * Callback for loading binary files into memory.
- */
-export type LoadBinaryFileIntoMemoryCallback = (file: ResolvedBinaryAsset) => Promise<void>;
-
-/**
- * Callback for clearing binary asset cache.
- */
-export type ClearBinaryAssetCacheCallback = () => Promise<void>;
