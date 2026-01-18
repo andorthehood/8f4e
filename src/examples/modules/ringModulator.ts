@@ -5,6 +5,7 @@ const ringModulator: ExampleModule = {
 	description: 'A simple ring modulator using a sine wave oscillator to modulate the input signal.',
 	author: 'Andor Polgar',
 	category: 'Modulation',
+	dependencies: ['sine'],
 	code: `module ringModulator
 
 float defaultFreq 10
