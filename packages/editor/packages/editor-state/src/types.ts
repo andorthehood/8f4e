@@ -567,6 +567,7 @@ export interface ExampleModule {
 	code: string;
 	tests: unknown[];
 	category: string;
+	dependencies?: string[];
 }
 
 export interface ModuleMetadata {
