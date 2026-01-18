@@ -5,19 +5,19 @@ import type { State } from '~/types';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('Grid Coordinates Integration', () => {
-	let mockState: Pick<State, 'graphicHelper'>;
+	let mockState: Pick<State, 'graphicHelper' | 'viewport'>;
 
 	beforeEach(() => {
 		mockState = {
 			graphicHelper: {
-				viewport: {
-					vGrid: 8, // characterWidth
-					hGrid: 16, // characterHeight
-					x: 0,
-					y: 0,
-				},
 				codeBlocks: [],
 			} as State['graphicHelper'],
+			viewport: {
+				vGrid: 8, // characterWidth
+				hGrid: 16, // characterHeight
+				x: 0,
+				y: 0,
+			},
 		};
 	});
 
@@ -65,12 +65,12 @@ describe('Grid Coordinates Integration', () => {
 			codeBlock.y = 178;
 
 			// Simulate drag end snap (from codeBlockDragger.ts)
-			const newGridX = Math.round(codeBlock.x / mockState.graphicHelper.viewport.vGrid);
-			const newGridY = Math.round(codeBlock.y / mockState.graphicHelper.viewport.hGrid);
+			const newGridX = Math.round(codeBlock.x / mockState.viewport.vGrid);
+			const newGridY = Math.round(codeBlock.y / mockState.viewport.hGrid);
 			codeBlock.gridX = newGridX;
 			codeBlock.gridY = newGridY;
-			codeBlock.x = newGridX * mockState.graphicHelper.viewport.vGrid;
-			codeBlock.y = newGridY * mockState.graphicHelper.viewport.hGrid;
+			codeBlock.x = newGridX * mockState.viewport.vGrid;
+			codeBlock.y = newGridY * mockState.viewport.hGrid;
 
 			expect(codeBlock.gridX).toBe(12); // Math.round(94/8) = 12
 			expect(codeBlock.gridY).toBe(11); // Math.round(178/16) = 11
@@ -97,8 +97,8 @@ describe('Grid Coordinates Integration', () => {
 			// Simulate font change to 6x10 (from reloadSpriteSheet in web-ui/src/index.ts)
 			const newCharacterWidth = 6;
 			const newCharacterHeight = 10;
-			mockState.graphicHelper.viewport.vGrid = newCharacterWidth;
-			mockState.graphicHelper.viewport.hGrid = newCharacterHeight;
+			mockState.viewport.vGrid = newCharacterWidth;
+			mockState.viewport.hGrid = newCharacterHeight;
 
 			// Recompute pixel positions from grid coordinates
 			for (const block of mockState.graphicHelper.codeBlocks) {
@@ -142,8 +142,8 @@ describe('Grid Coordinates Integration', () => {
 			expect(initialGridSpacingY).toBe(10);
 
 			// Simulate font change to 6x10
-			mockState.graphicHelper.viewport.vGrid = 6;
-			mockState.graphicHelper.viewport.hGrid = 10;
+			mockState.viewport.vGrid = 6;
+			mockState.viewport.hGrid = 10;
 
 			for (const block of mockState.graphicHelper.codeBlocks) {
 				block.x = block.gridX * 6;

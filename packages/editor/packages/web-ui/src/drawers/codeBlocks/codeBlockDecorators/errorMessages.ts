@@ -9,17 +9,11 @@ export default function drawErrorMessages(engine: Engine, state: State, codeBloc
 
 	for (const { x, y, message } of codeBlock.extras.errorMessages) {
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-		engine.drawSprite(
-			x,
-			y,
-			'errorMessageBackground',
-			codeBlock.width,
-			message.length * state.graphicHelper.viewport.hGrid
-		);
+		engine.drawSprite(x, y, 'errorMessageBackground', codeBlock.width, message.length * state.viewport.hGrid);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 		for (let i = 0; i < message.length; i++) {
-			engine.drawText(x, y + i * state.graphicHelper.viewport.hGrid, ' ' + message[i]);
+			engine.drawText(x, y + i * state.viewport.hGrid, ' ' + message[i]);
 		}
 	}
 }

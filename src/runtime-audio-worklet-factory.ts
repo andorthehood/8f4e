@@ -108,6 +108,8 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 			return;
 		}
 
+		store.set('dialog', { ...state.dialog, show: false });
+
 		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'interactive' });
 
 		await audioContext.audioWorklet.addModule(audioWorkletUrl);
@@ -144,6 +146,16 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
 	events.on('mousedown', initAudioContext);
+
+	if (!audioContext) {
+		store.set('dialog', {
+			...state.dialog,
+			show: true,
+			text: 'This project is using the AudioWorklet runtime, to start the program with audio playback, please click anywhere on the screen to continue.',
+			title: 'Audio Permission',
+			buttons: [{ title: 'OK', action: 'close' }],
+		});
+	}
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
