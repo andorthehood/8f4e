@@ -94,6 +94,7 @@ export type {
 	EditorSettings,
 	CompilationResult,
 	ConfigCompilationResult,
+	ConfigObject,
 	CodeBlock,
 	Viewport,
 	ProjectViewport,
