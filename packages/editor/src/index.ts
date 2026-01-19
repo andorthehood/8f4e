@@ -65,7 +65,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 				memoryViews.int32[wordAlignedAddress] = value;
 			},
 			fetchBinaryAssets: urls => fetchBinaryAssets(urls, binaryAssetStore),
-			loadBinaryAssetIntoMemory: (url, target) => loadBinaryAssetIntoMemory(url, target, binaryAssetStore, memoryViews),
+			loadBinaryAssetIntoMemory: asset => loadBinaryAssetIntoMemory(asset, binaryAssetStore, memoryViews),
 			clearBinaryAssetCache,
 			readClipboardText: async () => {
 				return await navigator.clipboard.readText();
