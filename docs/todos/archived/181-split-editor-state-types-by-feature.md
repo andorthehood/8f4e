@@ -3,8 +3,8 @@ title: 'TODO: Split Editor-State Types by Feature'
 priority: Medium
 effort: 1-2d
 created: 2026-01-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-17
 ---
 
 # TODO: Split Editor-State Types by Feature
