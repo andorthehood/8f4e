@@ -66,4 +66,10 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		}
 		rebuildConfig();
 	});
+	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
+		if (state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'config') {
+			return;
+		}
+		rebuildConfig();
+	});
 }

@@ -28,15 +28,7 @@ import {
 	Namespace,
 	Namespaces,
 } from './types';
-import {
-	EXPORTED_FUNCTION_COUNT,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	HEADER,
-	I16_SIGNED_LARGEST_NUMBER,
-	I16_SIGNED_SMALLEST_NUMBER,
-	I32_SIGNED_LARGEST_NUMBER,
-	VERSION,
-} from './consts';
+import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
 import { ErrorCode, getError } from './errors';
 import sortModules from './graphOptimizer';
 import WASM_MEMORY_PAGE_SIZE from './wasmUtils/consts';
@@ -121,17 +113,31 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 export function compileModules(
 	modules: AST[],
 	options: CompileOptions,
-	builtInConsts: Namespace['consts'],
-	namespaces: Namespaces,
+	builtInConsts?: Namespace['consts'],
+	namespaces?: Namespaces,
 	compiledFunctions?: CompiledFunctionLookup
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress;
 
+	// If builtInConsts not provided, use empty object - all constants come from env block
+	const consts = builtInConsts ?? {};
+
+	// If namespaces not provided, collect from modules
+	const ns =
+		namespaces ??
+		Object.fromEntries(
+			modules.map(ast => {
+				const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+				const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+				return [name, { consts: collectConstants(ast) }];
+			})
+		);
+
 	return modules.map((ast, index) => {
 		const module = compileModule(
 			ast,
-			builtInConsts,
-			namespaces,
+			consts,
+			ns,
 			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 			options.memorySizeBytes,
 			index,
@@ -203,14 +209,6 @@ export default function compile(
 	const astModules = modules.map(({ code }) => compileToAST(code, options));
 	const sortedModules = sortModules(astModules);
 
-	const builtInConsts: Namespace['consts'] = {
-		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
-		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
-		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
-		WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
-		...options.environmentExtensions.constants,
-	};
-
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
 	const namespaces: Namespaces = Object.fromEntries(
 		sortedModules.map(ast => {
@@ -233,7 +231,7 @@ export default function compile(
 	};
 
 	const compiledFunctions = astFunctions.map((ast, index) =>
-		compileFunction(ast, builtInConsts, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
+		compileFunction(ast, {}, namespaces, EXPORTED_FUNCTION_COUNT + index, functionTypeRegistry)
 	);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 
@@ -248,7 +246,7 @@ export default function compile(
 			...options,
 			startingMemoryWordAddress: 1,
 		},
-		builtInConsts,
+		{}, // Empty builtInConsts - all constants come from env block
 		namespaces,
 		compiledFunctionsMap
 	);

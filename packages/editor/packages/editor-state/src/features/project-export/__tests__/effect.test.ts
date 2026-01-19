@@ -58,6 +58,10 @@ describe('projectExport', () => {
 			projectExport(store, mockEvents);
 
 			expect(subscribeSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', expect.any(Function));
+			expect(subscribeSpy).toHaveBeenCalledWith(
+				'graphicHelper.selectedCodeBlockForProgrammaticEdit.code',
+				expect.any(Function)
+			);
 
 			subscribeSpy.mockRestore();
 		});
@@ -250,6 +254,10 @@ describe('projectExport', () => {
 			// Find the code change callback
 			const codeChangeCall = subscribeSpy.mock.calls.find(call => call[0] === 'graphicHelper.selectedCodeBlock.code');
 			expect(codeChangeCall).toBeDefined();
+			const programmaticChangeCall = subscribeSpy.mock.calls.find(
+				call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+			);
+			expect(programmaticChangeCall).toBeDefined();
 
 			const codeChangeCallback = codeChangeCall![1];
 			await codeChangeCallback();
