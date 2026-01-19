@@ -207,6 +207,7 @@ export type GraphicHelper = {
 	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;
+	selectedCodeBlockForProgrammaticEdit?: CodeBlockGraphicData;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects: PostProcessEffect[];
 };
