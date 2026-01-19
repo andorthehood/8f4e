@@ -5,12 +5,31 @@ import resolveBinaryAssetTarget from '~/pureHelpers/resolveBinaryAssetTarget';
 
 export default function binaryAssets(state: State, events: EventDispatcher): () => void {
 	async function onLoadBinaryFilesIntoMemory() {
-		if (!state.callbacks.loadBinaryFileIntoMemory) {
-			console.warn('No loadBinaryFileIntoMemory callback provided');
+		if (!state.callbacks.fetchBinaryAssets || !state.callbacks.loadBinaryAssetIntoMemory) {
+			console.warn('Missing required callbacks: fetchBinaryAssets or loadBinaryAssetIntoMemory');
 			return;
 		}
 
 		const assets = state.compiledConfig.binaryAssets || [];
+
+		// Step 1: Deduplicate URLs and fetch all assets
+		const uniqueUrls = Array.from(new Set(assets.map(asset => asset.url)));
+
+		try {
+			const fetchedAssets = await state.callbacks.fetchBinaryAssets(uniqueUrls);
+
+			// Store fetched metadata in state with initial loading flags
+			state.binaryAssets = fetchedAssets.map(asset => ({
+				...asset,
+				isLoading: false,
+				loadedIntoMemory: false,
+			}));
+		} catch (error) {
+			console.error('Failed to fetch binary assets:', error);
+			return;
+		}
+
+		// Step 2: Load each asset into its resolved memory target
 		for (const asset of assets) {
 			const resolved = resolveBinaryAssetTarget(state, asset.memoryId);
 			if (!resolved) {
@@ -18,13 +37,32 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 				continue;
 			}
 
-			await state.callbacks.loadBinaryFileIntoMemory({
-				url: asset.url,
-				moduleId: resolved.moduleId,
-				memoryName: resolved.memoryName,
-				byteAddress: resolved.byteAddress,
-				byteLength: resolved.byteLength,
-			});
+			// Find the matching asset in state and update loading flag
+			const assetInState = state.binaryAssets.find(a => a.url === asset.url);
+			if (assetInState) {
+				assetInState.isLoading = true;
+			}
+
+			try {
+				await state.callbacks.loadBinaryAssetIntoMemory(asset.url, {
+					url: asset.url,
+					moduleId: resolved.moduleId,
+					memoryName: resolved.memoryName,
+					byteAddress: resolved.byteAddress,
+					byteLength: resolved.byteLength,
+				});
+
+				// Update state to mark as loaded
+				if (assetInState) {
+					assetInState.isLoading = false;
+					assetInState.loadedIntoMemory = true;
+				}
+			} catch (error) {
+				console.error('Failed to load binary asset into memory:', asset.url, error);
+				if (assetInState) {
+					assetInState.isLoading = false;
+				}
+			}
 		}
 	}
 
