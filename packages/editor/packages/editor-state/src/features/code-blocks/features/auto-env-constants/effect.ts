@@ -1,5 +1,5 @@
 import type { StateManager } from '@8f4e/state-manager';
-import type { State } from '~/types';
+import type { State, CodeBlock } from '~/types';
 
 const AUTO_ENV_CONSTANTS_BLOCK_ID = 'env';
 
@@ -17,6 +17,13 @@ function generateEnvConstantsBlock(state: State): string[] {
 	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`);
 	lines.push('');
 	lines.push('// Auto-generated environment constants - changes will be overwritten');
+	lines.push('');
+
+	// Built-in compiler constants
+	lines.push('const I16_SIGNED_LARGEST_NUMBER 32767');
+	lines.push('const I16_SIGNED_SMALLEST_NUMBER -32768');
+	lines.push('const I32_SIGNED_LARGEST_NUMBER 2147483647');
+	lines.push('const WORD_SIZE 4');
 	lines.push('');
 
 	// Sample rate from runtime config
@@ -58,92 +65,74 @@ function generateEnvConstantsBlock(state: State): string[] {
  *
  * This effect automatically maintains a constants block named 'env' that contains
  * environment values like sample rate, buffer size, and binary asset sizes.
- * The block is always ordered first (creationIndex 0) and is regenerated when
- * runtime settings or binary assets change.
+ * The env block is added to the project's codeBlocks array when the project is loaded,
+ * and its content is updated when runtime settings or binary assets change.
  *
  * @param store - State manager instance
  */
 export default function autoEnvConstants(store: StateManager<State>): void {
 	/**
-	 * Creates or updates the auto-managed env constants block.
-	 * Ensures it has the lowest creationIndex to be compiled first.
+	 * Ensures the env constants block exists in the project and updates its code.
 	 */
-	function ensureEnvConstantsBlock(): void {
-		const state = store.getState(); // Get fresh state each time
+	function updateEnvConstantsBlock(): void {
+		const state = store.getState();
+
+		if (!state.initialProjectState) {
+			return;
+		}
+
 		const newCode = generateEnvConstantsBlock(state);
-		const existingBlockIndex = state.graphicHelper.codeBlocks.findIndex(
-			block => block.id === AUTO_ENV_CONSTANTS_BLOCK_ID
+		const existingBlockIndex = state.initialProjectState.codeBlocks.findIndex(
+			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`)
 		);
 
 		if (existingBlockIndex >= 0) {
-			// Update existing block
-			const existingBlock = state.graphicHelper.codeBlocks[existingBlockIndex];
-
-			// Check if code has actually changed to avoid unnecessary updates
-			const codeChanged = JSON.stringify(existingBlock.code) !== JSON.stringify(newCode);
-
-			if (codeChanged) {
-				const updatedBlocks = [...state.graphicHelper.codeBlocks];
-				updatedBlocks[existingBlockIndex] = {
-					...existingBlock,
-					code: newCode,
-					lastUpdated: Date.now(),
-				};
-				store.set('graphicHelper.codeBlocks', updatedBlocks);
-			}
-		} else {
-			// Create new block
-			// Insert at the beginning with creationIndex 0
-			const newBlock = {
-				width: 0,
-				minGridWidth: 32,
-				height: 0,
+			// Update existing block's code
+			const updatedCodeBlocks = [...state.initialProjectState.codeBlocks];
+			updatedCodeBlocks[existingBlockIndex] = {
+				...updatedCodeBlocks[existingBlockIndex],
 				code: newCode,
-				codeColors: [],
-				codeToRender: [],
-				extras: {
-					blockHighlights: [],
-					inputs: [],
-					outputs: [],
-					debuggers: [],
-					switches: [],
-					buttons: [],
-					pianoKeyboards: [],
-					bufferPlotters: [],
-					errorMessages: [],
-				},
-				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				id: AUTO_ENV_CONSTANTS_BLOCK_ID,
-				gaps: new Map(),
-				gridX: 0,
-				gridY: 0,
-				x: 0,
-				y: 0,
-				lineNumberColumnWidth: 2,
-				offsetX: 0,
-				lastUpdated: Date.now(),
-				offsetY: 0,
-				creationIndex: 0,
-				blockType: 'constants' as const,
 			};
-
-			// Increment all existing blocks' creationIndex
-			const updatedBlocks = state.graphicHelper.codeBlocks.map(block => ({
-				...block,
-				creationIndex: block.creationIndex + 1,
-			}));
-
-			// Add new block at the beginning
-			store.set('graphicHelper.codeBlocks', [newBlock, ...updatedBlocks]);
+			store.set('initialProjectState', {
+				...state.initialProjectState,
+				codeBlocks: updatedCodeBlocks,
+			});
 		}
 	}
 
-	// Initialize the env constants block on first load
-	ensureEnvConstantsBlock();
+	/**
+	 * Ensures env block exists in project when loaded.
+	 */
+	function ensureEnvBlockInProject(): void {
+		const state = store.getState();
 
-	// Update when config changes (which includes runtime settings and binary assets)
-	store.subscribe('compiledConfig', ensureEnvConstantsBlock);
+		if (!state.initialProjectState) {
+			return;
+		}
 
-	// Update when binary assets change (to include asset sizes)
-	store.subscribe('binaryAssets', ensureEnvConstantsBlock);
+		// Check if env block already exists
+		const hasEnvBlock = state.initialProjectState.codeBlocks.some(
+			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`)
+		);
+
+		if (!hasEnvBlock) {
+			// Add env block at the beginning of codeBlocks array
+			const envBlock: CodeBlock = {
+				code: generateEnvConstantsBlock(state),
+				gridCoordinates: { x: 0, y: 0 },
+			};
+
+			store.set('initialProjectState', {
+				...state.initialProjectState,
+				codeBlocks: [envBlock, ...state.initialProjectState.codeBlocks],
+			});
+		}
+	}
+
+	// Ensure env block exists when project is loaded
+	store.subscribe('initialProjectState', ensureEnvBlockInProject);
+
+	// Update env block code when config or binary assets change
+	store.subscribe('compiledConfig', updateEnvConstantsBlock);
+	store.subscribe('binaryAssets', updateEnvConstantsBlock);
 }
