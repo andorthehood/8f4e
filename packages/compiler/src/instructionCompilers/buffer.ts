@@ -84,6 +84,121 @@ if (import.meta.vitest) {
 			expect(context.namespace.memory).toMatchSnapshot();
 		});
 
+		it('creates an int8[] buffer with correct wordAlignedSize', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int8[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'bytes' },
+						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['bytes'];
+			expect(memory.elementWordSize).toBe(1);
+			expect(memory.numberOfElements).toBe(3);
+			// 3 bytes * 1 byte per element = 3 bytes total
+			// ceil(3 / 4) = 1 word
+			expect(memory.wordAlignedSize).toBe(1);
+		});
+
+		it('creates an int8[] buffer requiring alignment padding', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int8[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'bytes' },
+						{ type: ArgumentType.LITERAL, value: 5, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['bytes'];
+			expect(memory.elementWordSize).toBe(1);
+			expect(memory.numberOfElements).toBe(5);
+			// 5 bytes * 1 byte per element = 5 bytes total
+			// ceil(5 / 4) = 2 words
+			expect(memory.wordAlignedSize).toBe(2);
+		});
+
+		it('creates an int16[] buffer with correct wordAlignedSize', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int16[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'shorts' },
+						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['shorts'];
+			expect(memory.elementWordSize).toBe(2);
+			expect(memory.numberOfElements).toBe(3);
+			// 3 elements * 2 bytes per element = 6 bytes total
+			// ceil(6 / 4) = 2 words
+			expect(memory.wordAlignedSize).toBe(2);
+		});
+
+		it('creates an int16[] buffer requiring alignment padding', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int16[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'shorts' },
+						{ type: ArgumentType.LITERAL, value: 5, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['shorts'];
+			expect(memory.elementWordSize).toBe(2);
+			expect(memory.numberOfElements).toBe(5);
+			// 5 elements * 2 bytes per element = 10 bytes total
+			// ceil(10 / 4) = 3 words
+			expect(memory.wordAlignedSize).toBe(3);
+		});
+
+		it('creates an int32[] buffer with correct wordAlignedSize', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int32[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'ints' },
+						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['ints'];
+			expect(memory.elementWordSize).toBe(4);
+			expect(memory.numberOfElements).toBe(3);
+			// 3 elements * 4 bytes per element = 12 bytes total
+			// ceil(12 / 4) = 3 words
+			expect(memory.wordAlignedSize).toBe(3);
+		});
+
 		it('throws on missing arguments', () => {
 			const context = createInstructionCompilerTestContext();
 
