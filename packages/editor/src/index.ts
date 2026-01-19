@@ -2,7 +2,12 @@ import initState, { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state
 import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
 
-import { clearBinaryAssetCache, loadBinaryFileIntoMemory } from './binaryAssets';
+import {
+	clearBinaryAssetCache,
+	fetchBinaryAssets,
+	loadBinaryAssetIntoMemory,
+	loadBinaryFileIntoMemory,
+} from './binaryAssets';
 import initEvents from './events';
 import pointerEvents from './events/pointerEvents';
 import keyboardEvents from './events/keyboardEvents';
@@ -51,6 +56,9 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const events = initEvents();
 	let store: ReturnType<typeof initState>;
 
+	// Asset store for fetched binary assets (keyed by URL)
+	const binaryAssetStore = new Map<string, ArrayBuffer>();
+
 	store = initState(events, {
 		...options,
 		callbacks: {
@@ -61,6 +69,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			setWordInMemory: (wordAlignedAddress: number, value: number) => {
 				memoryViews.int32[wordAlignedAddress] = value;
 			},
+			fetchBinaryAssets: urls => fetchBinaryAssets(binaryAssetStore, urls),
+			loadBinaryAssetIntoMemory: (url, target) => loadBinaryAssetIntoMemory(binaryAssetStore, memoryViews, url, target),
 			loadBinaryFileIntoMemory: asset => loadBinaryFileIntoMemory(store, memoryViews, asset),
 			clearBinaryAssetCache,
 			readClipboardText: async () => {

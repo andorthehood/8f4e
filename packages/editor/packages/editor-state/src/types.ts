@@ -8,7 +8,12 @@ import type { Module, CompileOptions } from '@8f4e/compiler';
 import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
 import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
-import type { BinaryAsset, ResolvedBinaryAsset } from './features/binary-assets/types';
+import type {
+	BinaryAsset,
+	BinaryAssetMeta,
+	BinaryAssetTarget,
+	ResolvedBinaryAsset,
+} from './features/binary-assets/types';
 import type {
 	CodeBlock,
 	CodeBlockType,
@@ -105,7 +110,7 @@ export type { LogMessage, ConsoleState };
 export type { EditorSettings };
 
 // Re-export binary-assets types
-export type { BinaryAsset, ResolvedBinaryAsset };
+export type { BinaryAsset, BinaryAssetMeta, BinaryAssetTarget, ResolvedBinaryAsset };
 
 // Re-export code-editing types
 export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent };
@@ -179,7 +184,30 @@ export interface Callbacks {
 	importProject?: () => Promise<Project>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
 	exportBinaryCode?: (fileName: string) => Promise<void>;
+	/**
+	 * @deprecated Use fetchBinaryAssets + loadBinaryAssetIntoMemory instead.
+	 * Loads a binary file directly into WASM memory. This callback couples fetch and memory write,
+	 * making testing harder and preventing progress UI.
+	 */
 	loadBinaryFileIntoMemory?: (file: ResolvedBinaryAsset) => Promise<void>;
+	/**
+	 * Fetches binary assets from URLs and stores them in editor memory.
+	 * Returns metadata for each asset to be stored in editor-state.
+	 * Assets are cached but not yet written to WASM memory.
+	 *
+	 * @param urls - Array of URLs to fetch
+	 * @returns Promise containing array of asset metadata
+	 */
+	fetchBinaryAssets?: (urls: string[]) => Promise<BinaryAssetMeta[]>;
+	/**
+	 * Loads a pre-fetched binary asset into WASM memory at the specified target location.
+	 * The asset must have been previously fetched via fetchBinaryAssets.
+	 *
+	 * @param url - URL identifier of the asset to load
+	 * @param target - Resolved memory target location
+	 * @returns Promise that resolves when loading is complete
+	 */
+	loadBinaryAssetIntoMemory?: (url: string, target: BinaryAssetTarget) => Promise<void>;
 	clearBinaryAssetCache?: () => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
