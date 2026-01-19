@@ -66,42 +66,38 @@ function generateEnvConstantsBlock(state: State): string[] {
  * This effect automatically maintains a constants block named 'env' that contains
  * environment values like sample rate, buffer size, and binary asset sizes.
  * The env block is added to the project's codeBlocks array when the project is loaded,
- * and its content is updated when runtime settings or binary assets change.
+ * and its content is updated in graphicHelper.codeBlocks when runtime settings or binary assets change.
  *
  * @param store - State manager instance
  */
 export default function autoEnvConstants(store: StateManager<State>): void {
 	/**
-	 * Ensures the env constants block exists in the project and updates its code.
+	 * Updates the env constants block code in graphicHelper.codeBlocks.
+	 * This avoids triggering an infinite loop by not modifying initialProjectState.
 	 */
-	function updateEnvConstantsBlock(): void {
+	function updateEnvConstantsBlockInGraphicHelper(): void {
 		const state = store.getState();
 
-		if (!state.initialProjectState) {
-			return;
-		}
-
 		const newCode = generateEnvConstantsBlock(state);
-		const existingBlockIndex = state.initialProjectState.codeBlocks.findIndex(
-			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`)
+		const existingBlockIndex = state.graphicHelper.codeBlocks.findIndex(
+			block => block.id === AUTO_ENV_CONSTANTS_BLOCK_ID
 		);
 
 		if (existingBlockIndex >= 0) {
-			// Update existing block's code
-			const updatedCodeBlocks = [...state.initialProjectState.codeBlocks];
-			updatedCodeBlocks[existingBlockIndex] = {
-				...updatedCodeBlocks[existingBlockIndex],
+			// Update existing block's code in graphicHelper.codeBlocks
+			const updatedBlocks = [...state.graphicHelper.codeBlocks];
+			updatedBlocks[existingBlockIndex] = {
+				...updatedBlocks[existingBlockIndex],
 				code: newCode,
+				lastUpdated: Date.now(),
 			};
-			store.set('initialProjectState', {
-				...state.initialProjectState,
-				codeBlocks: updatedCodeBlocks,
-			});
+			store.set('graphicHelper.codeBlocks', updatedBlocks);
 		}
 	}
 
 	/**
 	 * Ensures env block exists in project when loaded.
+	 * This only runs once when the project is loaded.
 	 */
 	function ensureEnvBlockInProject(): void {
 		const state = store.getState();
@@ -132,7 +128,8 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 	// Ensure env block exists when project is loaded
 	store.subscribe('initialProjectState', ensureEnvBlockInProject);
 
-	// Update env block code when config or binary assets change
-	store.subscribe('compiledConfig', updateEnvConstantsBlock);
-	store.subscribe('binaryAssets', updateEnvConstantsBlock);
+	// Update env block code in graphicHelper.codeBlocks when config or binary assets change
+	// This avoids the infinite loop caused by modifying initialProjectState
+	store.subscribe('compiledConfig', updateEnvConstantsBlockInGraphicHelper);
+	store.subscribe('binaryAssets', updateEnvConstantsBlockInGraphicHelper);
 }

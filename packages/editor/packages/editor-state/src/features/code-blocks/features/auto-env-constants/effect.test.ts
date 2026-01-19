@@ -3,7 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import autoEnvConstants from './effect';
 
-import type { State, Project } from '~/types';
+import type { State, Project, CodeBlockGraphicData } from '~/types';
 
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
 import { EMPTY_DEFAULT_PROJECT } from '~/types';
@@ -104,6 +104,44 @@ describe('autoEnvConstants', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
+		// Simulate graphicHelper populating codeBlocks from initialProjectState
+		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		if (envCodeBlock) {
+			const graphicBlock: Partial<CodeBlockGraphicData> = {
+				id: 'env',
+				code: envCodeBlock.code,
+				creationIndex: 0,
+				blockType: 'constants',
+				width: 0,
+				height: 0,
+				codeColors: [],
+				codeToRender: [],
+				extras: {
+					blockHighlights: [],
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
+					buttons: [],
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					errorMessages: [],
+				},
+				cursor: { col: 0, row: 0, x: 0, y: 0 },
+				gaps: new Map(),
+				gridX: 0,
+				gridY: 0,
+				x: 0,
+				y: 0,
+				lineNumberColumnWidth: 2,
+				offsetX: 0,
+				offsetY: 0,
+				lastUpdated: Date.now(),
+				minGridWidth: 32,
+			};
+			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+		}
+
 		// Change sample rate
 		store.set('compiledConfig.runtimeSettings', [
 			{
@@ -112,7 +150,7 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
 		expect(sampleRateLine).toBe('const SAMPLE_RATE 44100');
 	});
@@ -140,6 +178,44 @@ describe('autoEnvConstants', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
+		// Simulate graphicHelper populating codeBlocks from initialProjectState
+		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		if (envCodeBlock) {
+			const graphicBlock: Partial<CodeBlockGraphicData> = {
+				id: 'env',
+				code: envCodeBlock.code,
+				creationIndex: 0,
+				blockType: 'constants',
+				width: 0,
+				height: 0,
+				codeColors: [],
+				codeToRender: [],
+				extras: {
+					blockHighlights: [],
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
+					buttons: [],
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					errorMessages: [],
+				},
+				cursor: { col: 0, row: 0, x: 0, y: 0 },
+				gaps: new Map(),
+				gridX: 0,
+				gridY: 0,
+				x: 0,
+				y: 0,
+				lineNumberColumnWidth: 2,
+				offsetX: 0,
+				offsetY: 0,
+				lastUpdated: Date.now(),
+				minGridWidth: 32,
+			};
+			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+		}
+
 		// Add binary asset
 		store.set('binaryAssets', [
 			{
@@ -149,7 +225,7 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
 		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIODATA_SIZE'));
 		expect(assetSizeLine).toBe('const AUDIODATA_SIZE 88200');
 	});
