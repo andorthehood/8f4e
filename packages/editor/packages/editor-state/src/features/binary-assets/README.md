@@ -8,7 +8,7 @@ Manages binary asset loading into runtime memory from config-defined URLs. This 
 
 ## Key Behaviors
 
-- **Memory Loading**: Handles loading binary assets into runtime memory via the `loadBinaryFileIntoMemory` callback
+- **Memory Loading**: Handles loading binary assets into runtime memory via the `loadBinaryAssetIntoMemory` callback
 - **Asset Collection**: Maintains the list of loaded assets in `state.binaryAssets`
 
 ## Events & Callbacks
@@ -20,13 +20,14 @@ Manages binary asset loading into runtime memory from config-defined URLs. This 
 
 ### Callbacks Used
 
-- `state.callbacks.loadBinaryFileIntoMemory(asset)` - Loads a single asset into memory
+- `state.callbacks.fetchBinaryAssets(urls)` - Fetches binary assets and returns metadata
+- `state.callbacks.loadBinaryAssetIntoMemory(asset)` - Loads a single asset into memory
 - `state.callbacks.clearBinaryAssetCache()` - Clears the editor-side cache for binary assets
 
 ## State Touched
 
 - `state.binaryAssets` - Array of imported binary asset objects
-- `state.callbacks.loadBinaryFileIntoMemory` - Callback function for loading assets into memory
+- `state.callbacks.loadBinaryAssetIntoMemory` - Callback function for loading assets into memory
 - `state.callbacks.clearBinaryAssetCache` - Callback function for clearing the cache
 
 ## Integration Points

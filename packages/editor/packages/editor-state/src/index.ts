@@ -111,7 +111,6 @@ export type {
 	GraphicHelper,
 	BinaryAsset,
 	ConfigBinaryAsset,
-	ResolvedBinaryAsset,
 	Callbacks,
 	ExampleModule,
 	ModuleMetadata,

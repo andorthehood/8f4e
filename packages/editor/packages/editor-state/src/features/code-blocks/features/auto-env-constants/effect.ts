@@ -38,7 +38,7 @@ function generateEnvConstantsBlock(state: State): string[] {
 	const binaryAssets = state.binaryAssets || [];
 	const assetSizeLines: string[] = [];
 	for (let i = 0; i < binaryAssets.length; i++) {
-		if (binaryAssets[i].sizeBytes !== undefined) {
+		if (binaryAssets[i].sizeBytes !== undefined && binaryAssets[i].fileName) {
 			// Convert to a valid constant name
 			const constantName = `ASSET_${i}_SIZE`;
 			assetSizeLines.push(`; '${binaryAssets[i].fileName}'`);
