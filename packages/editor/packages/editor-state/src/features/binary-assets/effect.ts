@@ -13,7 +13,12 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 		const assets = state.compiledConfig.binaryAssets || [];
 
 		// Step 1: Deduplicate URLs and fetch all assets
-		const uniqueUrls = Array.from(new Set(assets.map(asset => asset.url)));
+		const uniqueUrls: string[] = [];
+		for (const asset of assets) {
+			if (!uniqueUrls.includes(asset.url)) {
+				uniqueUrls.push(asset.url);
+			}
+		}
 
 		try {
 			const fetchedAssets = await state.callbacks.fetchBinaryAssets(uniqueUrls);
@@ -25,12 +30,9 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 			return;
 		}
 
-		// Step 2: Create a Map for efficient asset lookups by URL
-		const assetMap = new Map(state.binaryAssets.map(asset => [asset.url, asset]));
-
-		// Step 3: Load each asset into its resolved memory target
+		// Step 2: Load each asset into its resolved memory target
 		// Note: `assets` contains ConfigBinaryAsset (url + memoryId from config)
-		// while `assetMap` contains BinaryAsset (metadata stored in state)
+		// while `state.binaryAssets` contains BinaryAsset (metadata stored in state)
 		for (const asset of assets) {
 			const resolved = resolveBinaryAssetTarget(state, asset.memoryId);
 			if (!resolved) {
@@ -38,8 +40,8 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 				continue;
 			}
 
-			// Find the matching asset metadata in state using the URL as key
-			const assetInState = assetMap.get(asset.url);
+			// Find the matching asset metadata in state using the URL
+			const assetInState = state.binaryAssets.find(a => a.url === asset.url);
 			if (assetInState) {
 				assetInState.isLoading = true;
 			}
