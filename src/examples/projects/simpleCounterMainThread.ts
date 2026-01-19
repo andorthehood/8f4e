@@ -28,7 +28,10 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -35, y: 0 },
+			gridCoordinates: {
+				x: -5,
+				y: 3,
+			},
 		},
 		{
 			code: [
@@ -46,10 +49,37 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 0, y: 0 },
+			gridCoordinates: {
+				x: 82,
+				y: 3,
+			},
+		},
+		{
+			code: [
+				'constants env',
+				'; Auto-generated environment constants',
+				'; Changes will be overwritten',
+				'; Last updated: 1/19/2026, 10:01:14 PM',
+				'',
+				'const WORD_SIZE 4',
+				'',
+				'const SAMPLE_RATE 10',
+				'const AUDIO_BUFFER_SIZE 128',
+				'',
+				'constantsEnd',
+			],
+			gridCoordinates: {
+				x: 34,
+				y: 3,
+			},
 		},
 	],
-	viewport: { gridCoordinates: { x: 0, y: 0 } },
+	viewport: {
+		gridCoordinates: {
+			x: -8,
+			y: 1,
+		},
+	},
 };
 
 export default project;
