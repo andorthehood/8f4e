@@ -156,9 +156,10 @@ describe('autoEnvConstants', () => {
 		// Add binary asset with size
 		store.set('binaryAssets', [
 			{
+				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				memoryId: 'audioData',
 				sizeBytes: 44100,
+				loadedIntoMemory: false,
 			},
 		]);
 
@@ -214,9 +215,10 @@ describe('autoEnvConstants', () => {
 		// Add binary asset
 		store.set('binaryAssets', [
 			{
+				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				memoryId: 'audioData',
 				sizeBytes: 88200,
+				loadedIntoMemory: false,
 			},
 		]);
 
@@ -243,21 +245,24 @@ describe('autoEnvConstants', () => {
 		expect(envBlocks?.length).toBe(1);
 	});
 
-	test('should properly format memoryId with special characters', () => {
+	test('should include file name comments for binary asset sizes', () => {
 		autoEnvConstants(store);
 
 		store.set('binaryAssets', [
 			{
+				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				memoryId: 'audio-data-1',
 				sizeBytes: 1024,
+				loadedIntoMemory: false,
 			},
 		]);
 
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const assetCommentLine = envBlock?.code.find(line => line.includes("; 'test.wav'"));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
+		expect(assetCommentLine).toBe("; 'test.wav'");
 		expect(assetSizeLine).toBe('const ASSET_0_SIZE 1024');
 	});
 
@@ -266,9 +271,10 @@ describe('autoEnvConstants', () => {
 
 		store.set('binaryAssets', [
 			{
+				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				memoryId: 'audioData',
 				// no sizeBytes
+				loadedIntoMemory: false,
 			},
 		]);
 
@@ -279,21 +285,19 @@ describe('autoEnvConstants', () => {
 		expect(assetSizeLine).toBeUndefined();
 	});
 
-	test('should skip binary assets without memoryId', () => {
+	test('should skip binary assets without file metadata', () => {
 		autoEnvConstants(store);
 
 		store.set('binaryAssets', [
 			{
-				fileName: 'test.wav',
-				sizeBytes: 1024,
-				// no memoryId
+				url: 'https://example.com/test.wav',
+				loadedIntoMemory: false,
 			},
 		]);
 
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
-		// Should not have any binary asset size constants (after the comment line)
 		const binaryAssetSection = envBlock?.code.indexOf('// Binary asset sizes in bytes');
 		expect(binaryAssetSection).toBe(-1);
 	});
