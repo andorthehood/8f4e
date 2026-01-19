@@ -18,18 +18,17 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 		try {
 			const fetchedAssets = await state.callbacks.fetchBinaryAssets(uniqueUrls);
 
-			// Store fetched metadata in state with initial loading flags
-			state.binaryAssets = fetchedAssets.map(asset => ({
-				...asset,
-				isLoading: false,
-				loadedIntoMemory: false,
-			}));
+			// Store fetched metadata in state
+			state.binaryAssets = fetchedAssets;
 		} catch (error) {
 			console.error('Failed to fetch binary assets:', error);
 			return;
 		}
 
-		// Step 2: Load each asset into its resolved memory target
+		// Step 2: Create a Map for efficient asset lookups by URL
+		const assetMap = new Map(state.binaryAssets.map(asset => [asset.url, asset]));
+
+		// Step 3: Load each asset into its resolved memory target
 		for (const asset of assets) {
 			const resolved = resolveBinaryAssetTarget(state, asset.memoryId);
 			if (!resolved) {
@@ -38,7 +37,7 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 			}
 
 			// Find the matching asset in state and update loading flag
-			const assetInState = state.binaryAssets.find(a => a.url === asset.url);
+			const assetInState = assetMap.get(asset.url);
 			if (assetInState) {
 				assetInState.isLoading = true;
 			}
