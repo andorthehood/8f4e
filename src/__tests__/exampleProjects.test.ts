@@ -26,12 +26,6 @@ const COMPILER_OPTIONS = {
 	memorySizeBytes: 65536,
 	startingMemoryWordAddress: 0,
 	environmentExtensions: {
-		constants: {
-			SAMPLE_RATE: { value: 44100, isInteger: true },
-			AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
-			LEFT_CHANNEL: { value: 0, isInteger: true },
-			RIGHT_CHANNEL: { value: 1, isInteger: true },
-		},
 		ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 	},
 };
@@ -40,13 +34,14 @@ const COMPILER_OPTIONS = {
  * Determines the type of a code block based on its first non-empty line.
  * Returns 'module', 'config', 'function', or 'unknown'.
  */
-function getBlockType(code: string[]): 'module' | 'config' | 'function' | 'unknown' {
+function getBlockType(code: string[]): 'module' | 'config' | 'function' | 'constants' | 'unknown' {
 	for (const line of code) {
 		const trimmed = line.trim();
 		if (trimmed === '') continue;
 		if (trimmed === 'config') return 'config';
 		if (trimmed.startsWith('module ')) return 'module';
 		if (trimmed.startsWith('function ')) return 'function';
+		if (trimmed.startsWith('constants ')) return 'constants';
 		break;
 	}
 	return 'unknown';
@@ -96,7 +91,7 @@ describe('Example Projects Compilation', () => {
 
 				// Extract module blocks
 				const moduleBlocks = project.codeBlocks
-					.filter(block => getBlockType(block.code) === 'module')
+					.filter(block => getBlockType(block.code) === 'module' || getBlockType(block.code) === 'constants')
 					.map(block => ({ code: block.code }));
 
 				// Extract function blocks
