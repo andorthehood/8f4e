@@ -9,6 +9,8 @@ import type { MemoryViews } from '../../src/types';
 export default function createMockMemoryViews(sizeInBytes = 1048576): MemoryViews {
 	const buffer = new ArrayBuffer(sizeInBytes);
 	return {
+		int8: new Int8Array(buffer),
+		int16: new Int16Array(buffer),
 		int32: new Int32Array(buffer),
 		float32: new Float32Array(buffer),
 	};
