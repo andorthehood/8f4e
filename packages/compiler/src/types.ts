@@ -168,7 +168,6 @@ export interface Error {
 export interface CompileOptions {
 	startingMemoryWordAddress: number;
 	environmentExtensions: {
-		constants: Namespace['consts'];
 		ignoredKeywords: string[];
 	};
 	/** Memory size in bytes. */
