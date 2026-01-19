@@ -179,7 +179,8 @@ export interface Callbacks {
 	importProject?: () => Promise<Project>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
 	exportBinaryCode?: (fileName: string) => Promise<void>;
-	loadBinaryFileIntoMemory?: (file: ResolvedBinaryAsset) => Promise<void>;
+	fetchBinaryAssets?: (urls: string[]) => Promise<BinaryAsset[]>;
+	loadBinaryAssetIntoMemory?: (url: string, target: ResolvedBinaryAsset) => Promise<void>;
 	clearBinaryAssetCache?: () => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
