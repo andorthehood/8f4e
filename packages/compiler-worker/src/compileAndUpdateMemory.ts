@@ -70,6 +70,8 @@ export default async function compileAndUpdateMemory(
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
 		const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
 
+		console.log(memoryValueChanges);
+
 		memoryValueChanges.forEach(change => {
 			if (change.isInteger) {
 				if (typeof change.value === 'object') {
