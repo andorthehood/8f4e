@@ -3,8 +3,8 @@ title: 'TODO: Load Binary Assets From Config URLs'
 priority: Medium
 effort: 1-2d
 created: 2026-01-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-17
 ---
 
 # TODO: Load Binary Assets From Config URLs
