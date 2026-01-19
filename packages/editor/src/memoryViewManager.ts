@@ -11,6 +11,8 @@ export function createMemoryViewManager(memoryRef: MemoryRef): {
 } {
 	let cachedBuffer: ArrayBuffer | SharedArrayBuffer | null = null;
 	const memoryViews: MemoryViews = {
+		int8: new Int8Array(0),
+		int16: new Int16Array(0),
 		int32: new Int32Array(0),
 		float32: new Float32Array(0),
 	};
@@ -28,6 +30,8 @@ export function createMemoryViewManager(memoryRef: MemoryRef): {
 
 		if (buffer !== cachedBuffer) {
 			cachedBuffer = buffer;
+			memoryViews.int8 = new Int8Array(buffer);
+			memoryViews.int16 = new Int16Array(buffer);
 			memoryViews.int32 = new Int32Array(buffer);
 			memoryViews.float32 = new Float32Array(buffer);
 		}
