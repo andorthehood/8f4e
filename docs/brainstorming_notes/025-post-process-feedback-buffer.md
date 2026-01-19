@@ -1,60 +1,64 @@
 # Post-process feedback buffer (motion blur / trails)
 
 ## Goal
-Add a reusable, generic feedback mechanism to the post-process pipeline so shaders can sample the previous frame and accumulate effects like motion blur, trails, and temporal filters.
+Enable motion blur and temporal effects by persisting a previous-frame texture and exposing it to shaders in a general, minimal way.
 
-## Summary
-Introduce an optional feedback buffer per post-process effect. When enabled, the effect receives a new standard uniform (`u_feedbackTexture`) that contains the previous feedback output. Each frame renders into a ping-pong feedback texture, then swaps it for the next frame. Effects without feedback continue to render as they do today.
+## Decisions and reasoning
+- Move to WebGL2 and use MRT so a single post-process pass can output both screen color and an auxiliary buffer.
+- Remove multi-effect chaining to keep the pipeline simple and to make MRT integration straightforward.
+- Drop shader block IDs and use the first shader blocks only, since there is now a single post-process effect.
+- Keep the API minimal: shaders opt in by using the auxiliary output/texture; no extra effect config needed.
 
-## Proposed API
-- Extend `PostProcessEffect` with an optional `feedback` descriptor:
-  - `enabled: boolean`
-  - `output?: 'feedback' | 'screen'` (default: `feedback`)
-- Standard uniforms:
-  - `u_renderTexture` (current frame or previous effect output)
-  - `u_feedbackTexture` (previous feedback output, if enabled)
+## Proposed pipeline
+1) Render sprites into `renderTexture`.
+2) Run a single post-process pass using MRT:
+   - Output 0: screen color
+   - Output 1: auxiliary buffer (used for feedback/history or other uses)
+3) Persist the auxiliary buffer across frames using a ping-pong pair.
+4) Seed the auxiliary buffer on first use by copying `renderTexture`.
 
-## Renderer/PostProcess changes
-1) Allocate a ping-pong texture + FBO pair per feedback-enabled effect.
-2) On resize, reallocate feedback textures to match the canvas/render target size.
-3) During `render`:
-   - Bind `u_renderTexture` to the current pipeline input.
-   - Bind `u_feedbackTexture` to the effect's feedback front texture.
-   - Render into:
-     - feedback back texture if `output === 'feedback'`
-     - screen/pipeline target if `output === 'screen'`
-   - Swap feedback front/back for the next frame.
-   - On first use, seed feedback by copying `u_renderTexture` into the feedback buffer.
-4) Final display:
-   - If the last enabled effect renders to feedback, present the feedback front texture to the screen.
+## Shader contract (WebGL2)
+- Inputs:
+  - `u_renderTexture` (current frame)
+  - `u_auxTexture0` (previous auxiliary buffer)
+- Outputs:
+  - `layout(location = 0) out vec4 outColor;`
+  - `layout(location = 1) out vec4 outAux;`
 
-## Shader contract
-Example fragment shader usage:
+Example fragment shader:
 
 ```glsl
+#version 300 es
+precision mediump float;
+
+in vec2 v_screenCoord;
 uniform sampler2D u_renderTexture;
-uniform sampler2D u_feedbackTexture;
-uniform float u_decay;
+uniform sampler2D u_auxTexture0;
+
+layout(location = 0) out vec4 outColor;
+layout(location = 1) out vec4 outAux;
 
 void main() {
-  vec3 current = texture2D(u_renderTexture, v_screenCoord).rgb;
-  vec3 history = texture2D(u_feedbackTexture, v_screenCoord).rgb;
-  vec3 color = current + history * u_decay;
-  gl_FragColor = vec4(color, 1.0);
+  vec3 current = texture(u_renderTexture, v_screenCoord).rgb;
+  vec3 history = texture(u_auxTexture0, v_screenCoord).rgb;
+  vec3 color = current + history * 0.94;
+
+  outColor = vec4(color, 1.0);
+  outAux = vec4(color, 1.0);
 }
 ```
 
-## Example effect: motion blur trail
-- Persistence is shader-controlled (uniform or constant) without any extra engine API.
-- If needed, clamp color to avoid runaway brightness.
+## Shader block rules (no IDs)
+- `fragmentShader` ... `fragmentShaderEnd` is required.
+- `vertexShader` ... `vertexShaderEnd` is optional.
+- Use the first fragment block found.
+- Use the first vertex block if present; otherwise inject the default fullscreen-quad vertex shader.
 
-## Risks / questions
-- Performance: per-effect feedback doubles texture/FBO count.
-- Ordering: clarify how feedback effects compose with non-feedback effects.
-- Initialization: seed feedback from the current frame on first use; consider a reset hook if needed.
-- WebGL1 vs WebGL2 compatibility (texture formats, filtering).
-- Shader output: in WebGL1 the fragment shader only writes to the bound framebuffer, so the engine must bind the aux framebuffer to capture feedback.
+## Risks / considerations
+- MRT requires WebGL2 and increases VRAM usage (extra color attachment + ping-pong).
+- Dropping multi-effect chaining and shader IDs is a breaking change.
+- Auxiliary buffer seeding must be deterministic to avoid a black flash on first frame.
 
 ## Testing
-- Add a minimal effect test that exercises feedback swap logic.
-- Manual smoke test: a motion-blur trail example project that toggles decay.
+- Add a minimal effect test that validates MRT outputs and aux ping-pong swap.
+- Manual smoke test: motion-blur trail example driven by `u_auxTexture0`.
