@@ -18,7 +18,10 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -141, y: 4 },
+			gridCoordinates: {
+				x: -141,
+				y: 4,
+			},
 		},
 		{
 			code: [
@@ -36,36 +39,16 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -141, y: 19 },
+			gridCoordinates: {
+				x: -141,
+				y: 19,
+			},
 		},
 		{
 			code: [
 				'config',
 				'',
-				'scope "runtimeSettings[0]"',
-				'scope "audioInputBuffers[0]"',
-				'',
-				'scope "memoryId"',
-				'push "audioin.buffer"',
-				'set',
-				'',
-				'rescopeTop "channel"',
-				'push 0',
-				'set',
-				'',
-				'rescopeTop "input"',
-				'push 0',
-				'set',
-				'',
-				'configEnd',
-			],
-			gridCoordinates: { x: -105, y: -16 },
-		},
-		{
-			code: [
-				'config',
-				'',
-				'scope "runtimeSettings[0]"',
+				'rescope "runtimeSettings[0]"',
 				'scope "audioOutputBuffers[0]"',
 				'',
 				'scope "memoryId"',
@@ -97,18 +80,46 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -105, y: 8 },
+			gridCoordinates: {
+				x: -106,
+				y: 13,
+			},
+		},
+		{
+			code: [
+				'config',
+				'',
+				'rescope "runtimeSettings[0]"',
+				'scope "audioInputBuffers[0]"',
+				'',
+				'scope "memoryId"',
+				'push "audioin.buffer"',
+				'set',
+				'',
+				'rescopeTop "channel"',
+				'push 0',
+				'set',
+				'',
+				'rescopeTop "input"',
+				'push 0',
+				'set',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: {
+				x: -106,
+				y: -10,
+			},
 		},
 		{
 			code: [
 				'module audioin',
+				'use env',
 				'',
 				'; Audio buffer',
 				'float[] buffer AUDIO_BUFFER_SIZE',
 				'float out',
 				'int pointer &buffer',
-				'',
-				'debug out',
 				'',
 				'plot buffer -2 2',
 				'',
@@ -134,11 +145,15 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 6, y: 3 },
+			gridCoordinates: {
+				x: 5,
+				y: 1,
+			},
 		},
 		{
 			code: [
 				'module audiooutL',
+				'use env',
 				'',
 				'float* in &audioin.out',
 				'',
@@ -177,11 +192,15 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 48, y: 1 },
+			gridCoordinates: {
+				x: 48,
+				y: 1,
+			},
 		},
 		{
 			code: [
 				'module audiooutR',
+				'use env',
 				'',
 				'float* in &audioin.out',
 				'',
@@ -220,10 +239,37 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 90, y: 1 },
+			gridCoordinates: {
+				x: 89,
+				y: 1,
+			},
+		},
+		{
+			code: [
+				'constants env',
+				'; Auto-generated environment constants',
+				'; Changes will be overwritten',
+				'; Last updated: 1/19/2026, 9:50:35 PM',
+				'',
+				'const WORD_SIZE 4',
+				'',
+				'const SAMPLE_RATE 44100',
+				'const AUDIO_BUFFER_SIZE 128',
+				'',
+				'constantsEnd',
+			],
+			gridCoordinates: {
+				x: -52,
+				y: 1,
+			},
 		},
 	],
-	viewport: { gridCoordinates: { x: -17, y: -3 } },
+	viewport: {
+		gridCoordinates: {
+			x: 3,
+			y: 0,
+		},
+	},
 };
 
 export default project;

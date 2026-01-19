@@ -1,0 +1,300 @@
+import { describe, test, expect, beforeEach } from 'vitest';
+import createStateManager from '@8f4e/state-manager';
+
+import autoEnvConstants from './effect';
+
+import type { State, Project, CodeBlockGraphicData } from '~/types';
+
+import createDefaultState from '~/pureHelpers/state/createDefaultState';
+import { EMPTY_DEFAULT_PROJECT } from '~/types';
+
+describe('autoEnvConstants', () => {
+	let store: ReturnType<typeof createStateManager<State>>;
+	let state: State;
+
+	beforeEach(() => {
+		const baseState = {
+			...createDefaultState(),
+			compiledConfig: {
+				...createDefaultState().compiledConfig,
+				runtimeSettings: [
+					{
+						runtime: 'WebWorkerLogicRuntime' as const,
+						sampleRate: 48000,
+					},
+				],
+				selectedRuntime: 0,
+			},
+			initialProjectState: {
+				...EMPTY_DEFAULT_PROJECT,
+			},
+		};
+		store = createStateManager<State>(baseState);
+		state = store.getState();
+	});
+
+	test('should create env constants block when project is loaded', () => {
+		autoEnvConstants(store);
+
+		// Trigger project load
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		expect(envBlock).toBeDefined();
+		expect(envBlock?.code[0]).toBe('constants env');
+	});
+
+	test('should place env block at beginning of codeBlocks array', () => {
+		const projectWithBlocks: Project = {
+			...EMPTY_DEFAULT_PROJECT,
+			codeBlocks: [{ code: ['module test', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+		};
+
+		store.set('initialProjectState', projectWithBlocks);
+		autoEnvConstants(store);
+
+		// Trigger another project load to add env block
+		store.set('initialProjectState', { ...projectWithBlocks });
+
+		expect(state.initialProjectState?.codeBlocks[0].code[0]).toBe('constants env');
+		expect(state.initialProjectState?.codeBlocks[1].code[0]).toBe('module test');
+	});
+
+	test('should include built-in compiler constants', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+
+		expect(envBlock?.code).toContain('const WORD_SIZE 4');
+	});
+
+	test('should include SAMPLE_RATE from runtime config', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
+		expect(sampleRateLine).toBe('const SAMPLE_RATE 48000');
+	});
+
+	test('should include standard environment constants', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		expect(envBlock?.code).toContain('const AUDIO_BUFFER_SIZE 128');
+	});
+
+	test('should include warning comment', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const warningLine = envBlock?.code.find(line => line.includes('Auto-generated'));
+		expect(warningLine).toBeDefined();
+	});
+
+	test('should update when runtime config changes', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		// Simulate graphicHelper populating codeBlocks from initialProjectState
+		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		if (envCodeBlock) {
+			const graphicBlock: Partial<CodeBlockGraphicData> = {
+				id: 'env',
+				code: envCodeBlock.code,
+				creationIndex: 0,
+				blockType: 'constants',
+				width: 0,
+				height: 0,
+				codeColors: [],
+				codeToRender: [],
+				extras: {
+					blockHighlights: [],
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
+					buttons: [],
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					errorMessages: [],
+				},
+				cursor: { col: 0, row: 0, x: 0, y: 0 },
+				gaps: new Map(),
+				gridX: 0,
+				gridY: 0,
+				x: 0,
+				y: 0,
+				lineNumberColumnWidth: 2,
+				offsetX: 0,
+				offsetY: 0,
+				lastUpdated: Date.now(),
+				minGridWidth: 32,
+			};
+			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+		}
+
+		// Change sample rate
+		store.set('compiledConfig.runtimeSettings', [
+			{
+				runtime: 'WebWorkerLogicRuntime' as const,
+				sampleRate: 44100,
+			},
+		]);
+
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
+		expect(sampleRateLine).toBe('const SAMPLE_RATE 44100');
+	});
+
+	test('should include binary asset sizes when available', () => {
+		autoEnvConstants(store);
+
+		// Add binary asset with size
+		store.set('binaryAssets', [
+			{
+				fileName: 'test.wav',
+				memoryId: 'audioData',
+				sizeBytes: 44100,
+			},
+		]);
+
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
+		expect(assetSizeLine).toBe('const ASSET_0_SIZE 44100');
+	});
+
+	test('should update when binary assets change', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		// Simulate graphicHelper populating codeBlocks from initialProjectState
+		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		if (envCodeBlock) {
+			const graphicBlock: Partial<CodeBlockGraphicData> = {
+				id: 'env',
+				code: envCodeBlock.code,
+				creationIndex: 0,
+				blockType: 'constants',
+				width: 0,
+				height: 0,
+				codeColors: [],
+				codeToRender: [],
+				extras: {
+					blockHighlights: [],
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
+					buttons: [],
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					errorMessages: [],
+				},
+				cursor: { col: 0, row: 0, x: 0, y: 0 },
+				gaps: new Map(),
+				gridX: 0,
+				gridY: 0,
+				x: 0,
+				y: 0,
+				lineNumberColumnWidth: 2,
+				offsetX: 0,
+				offsetY: 0,
+				lastUpdated: Date.now(),
+				minGridWidth: 32,
+			};
+			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+		}
+
+		// Add binary asset
+		store.set('binaryAssets', [
+			{
+				fileName: 'test.wav',
+				memoryId: 'audioData',
+				sizeBytes: 88200,
+			},
+		]);
+
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
+		expect(assetSizeLine).toBe('const ASSET_0_SIZE 88200');
+	});
+
+	test('should not duplicate env block if already exists', () => {
+		const projectWithEnv: Project = {
+			...EMPTY_DEFAULT_PROJECT,
+			codeBlocks: [
+				{ code: ['constants env', 'const SAMPLE_RATE 48000', 'constantsEnd'], gridCoordinates: { x: 0, y: 0 } },
+			],
+		};
+
+		store.set('initialProjectState', projectWithEnv);
+		autoEnvConstants(store);
+
+		// Trigger another load
+		store.set('initialProjectState', { ...projectWithEnv });
+
+		const envBlocks = state.initialProjectState?.codeBlocks.filter(block => block.code[0]?.includes('constants env'));
+		expect(envBlocks?.length).toBe(1);
+	});
+
+	test('should properly format memoryId with special characters', () => {
+		autoEnvConstants(store);
+
+		store.set('binaryAssets', [
+			{
+				fileName: 'test.wav',
+				memoryId: 'audio-data-1',
+				sizeBytes: 1024,
+			},
+		]);
+
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
+		expect(assetSizeLine).toBe('const ASSET_0_SIZE 1024');
+	});
+
+	test('should skip binary assets without sizeBytes', () => {
+		autoEnvConstants(store);
+
+		store.set('binaryAssets', [
+			{
+				fileName: 'test.wav',
+				memoryId: 'audioData',
+				// no sizeBytes
+			},
+		]);
+
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
+		expect(assetSizeLine).toBeUndefined();
+	});
+
+	test('should skip binary assets without memoryId', () => {
+		autoEnvConstants(store);
+
+		store.set('binaryAssets', [
+			{
+				fileName: 'test.wav',
+				sizeBytes: 1024,
+				// no memoryId
+			},
+		]);
+
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		// Should not have any binary asset size constants (after the comment line)
+		const binaryAssetSection = envBlock?.code.indexOf('// Binary asset sizes in bytes');
+		expect(binaryAssetSection).toBe(-1);
+	});
+});

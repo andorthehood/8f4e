@@ -44,6 +44,7 @@ export default function createDefaultState() {
 				y: 0,
 				menuStack: [],
 			},
+			selectedCodeBlockForProgrammaticEdit: undefined,
 			postProcessEffects: [],
 		},
 		editorSettings: {

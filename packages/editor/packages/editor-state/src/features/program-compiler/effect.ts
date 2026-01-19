@@ -40,15 +40,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 				memorySizeBytes: state.compiledConfig?.memorySizeBytes || 1048576, // 1MB default
 				startingMemoryWordAddress: 0,
 				environmentExtensions: {
-					constants: {
-						SAMPLE_RATE: {
-							value: state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime].sampleRate,
-							isInteger: true,
-						},
-						AUDIO_BUFFER_SIZE: { value: 128, isInteger: true },
-						LEFT_CHANNEL: { value: 0, isInteger: true },
-						RIGHT_CHANNEL: { value: 1, isInteger: true },
-					},
 					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
 				},
 			};
@@ -146,6 +137,15 @@ export default async function compiler(store: StateManager<State>, events: Event
 		if (
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'function'
+		) {
+			return;
+		}
+		onRecompile();
+	});
+	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
+		if (
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'module' &&
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'function'
 		) {
 			return;
 		}

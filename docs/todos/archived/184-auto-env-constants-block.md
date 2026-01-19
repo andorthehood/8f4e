@@ -3,8 +3,8 @@ title: 'TODO: Auto-managed Environment Constants Block'
 priority: Medium
 effort: 2-4d
 created: 2026-01-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-19
 ---
 
 # TODO: Auto-managed Environment Constants Block

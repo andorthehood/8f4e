@@ -26,26 +26,10 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -9, y: -73 },
-		},
-		{
-			code: [
-				'function sigmoid',
-				'param float x',
-				'; Polynomial sigmoid',
-				'; func. approximation',
-				'',
-				'localGet x',
-				'dup',
-				'abs',
-				'push 1.0',
-				'add',
-				'ensureNonZero',
-				'div',
-				'',
-				'functionEnd float',
-			],
-			gridCoordinates: { x: 73, y: -82 },
+			gridCoordinates: {
+				x: -9,
+				y: -73,
+			},
 		},
 		{
 			code: [
@@ -61,7 +45,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 152, y: -82 },
+			gridCoordinates: {
+				x: 152,
+				y: -82,
+			},
 		},
 		{
 			code: [
@@ -77,7 +64,10 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 152, y: -55 },
+			gridCoordinates: {
+				x: 152,
+				y: -55,
+			},
 		},
 		{
 			code: [
@@ -103,7 +93,29 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 231, y: -65 },
+			gridCoordinates: {
+				x: 231,
+				y: -65,
+			},
+		},
+		{
+			code: [
+				'constants env',
+				'; Auto-generated environment constants',
+				'; Changes will be overwritten',
+				'; Last updated: 1/19/2026, 9:57:55 PM',
+				'',
+				'const WORD_SIZE 4',
+				'',
+				'const SAMPLE_RATE 10',
+				'const AUDIO_BUFFER_SIZE 128',
+				'',
+				'constantsEnd',
+			],
+			gridCoordinates: {
+				x: -9,
+				y: -50,
+			},
 		},
 		{
 			code: [
@@ -132,7 +144,10 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 118, y: -82 },
+			gridCoordinates: {
+				x: 118,
+				y: -82,
+			},
 		},
 		{
 			code: [
@@ -161,7 +176,10 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 118, y: -55 },
+			gridCoordinates: {
+				x: 118,
+				y: -55,
+			},
 		},
 		{
 			code: [
@@ -190,20 +208,54 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 193, y: -65 },
+			gridCoordinates: {
+				x: 193,
+				y: -65,
+			},
 		},
 		{
 			code: ['module result', '', 'int* in &activationFn3.out', '', 'debug *in', '', 'moduleEnd'],
-			gridCoordinates: { x: 74, y: -53 },
+			gridCoordinates: {
+				x: 74,
+				y: -53,
+			},
+		},
+		{
+			code: [
+				'function sigmoid',
+				'param float x',
+				'; Polynomial sigmoid',
+				'; func. approximation',
+				'',
+				'localGet x',
+				'dup',
+				'abs',
+				'push 1.0',
+				'add',
+				'ensureNonZero',
+				'div',
+				'',
+				'functionEnd float',
+			],
+			gridCoordinates: {
+				x: 73,
+				y: -82,
+			},
 		},
 		{
 			code: ['module switches', '', 'int he', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'],
-			gridCoordinates: { x: 74, y: -62 },
+			gridCoordinates: {
+				x: 74,
+				y: -62,
+			},
 		},
 	],
-	viewport: { gridCoordinates: { x: 55, y: -88 } },
-	binaryAssets: [],
-	postProcessEffects: [],
+	viewport: {
+		gridCoordinates: {
+			x: 70,
+			y: -84,
+		},
+	},
 };
 
 export default project;
