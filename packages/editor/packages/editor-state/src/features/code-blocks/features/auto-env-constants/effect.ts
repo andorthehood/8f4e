@@ -1,7 +1,10 @@
 import type { StateManager } from '@8f4e/state-manager';
-import type { State, CodeBlock } from '~/types';
+import type { State, CodeBlock, CodeBlockGraphicData } from '~/types';
 
 const AUTO_ENV_CONSTANTS_BLOCK_ID = 'env';
+
+const isEnvBlock = (block: CodeBlockGraphicData): boolean =>
+	block.blockType === 'constants' && block.id === AUTO_ENV_CONSTANTS_BLOCK_ID;
 
 /**
  * Generates the content for the auto-managed environment constants block.
@@ -15,14 +18,12 @@ function generateEnvConstantsBlock(state: State): string[] {
 
 	// Header with warning
 	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`);
-	lines.push('');
-	lines.push('// Auto-generated environment constants - changes will be overwritten');
+	lines.push('; Auto-generated environment constants');
+	lines.push('; Changes will be overwritten');
+	lines.push('; Last updated: ' + new Date().toLocaleString());
 	lines.push('');
 
 	// Built-in compiler constants
-	lines.push('const I16_SIGNED_LARGEST_NUMBER 32767');
-	lines.push('const I16_SIGNED_SMALLEST_NUMBER -32768');
-	lines.push('const I32_SIGNED_LARGEST_NUMBER 2147483647');
 	lines.push('const WORD_SIZE 4');
 	lines.push('');
 
@@ -33,24 +34,21 @@ function generateEnvConstantsBlock(state: State): string[] {
 	// Audio buffer size (hardcoded for now, matching current behavior)
 	lines.push('const AUDIO_BUFFER_SIZE 128');
 
-	// Channel constants
-	lines.push('const LEFT_CHANNEL 0');
-	lines.push('const RIGHT_CHANNEL 1');
-
 	// Binary asset sizes
 	const binaryAssets = state.binaryAssets || [];
 	const assetSizeLines: string[] = [];
-	for (const asset of binaryAssets) {
-		if (asset.sizeBytes !== undefined && asset.memoryId) {
+	for (let i = 0; i < binaryAssets.length; i++) {
+		if (binaryAssets[i].sizeBytes !== undefined && binaryAssets[i].memoryId) {
 			// Convert memoryId to a valid constant name (uppercase, replace special chars with underscore)
-			const constantName = `${asset.memoryId.toUpperCase().replace(/[^A-Z0-9_]/g, '_')}_SIZE`;
-			assetSizeLines.push(`const ${constantName} ${asset.sizeBytes}`);
+			const constantName = `ASSET_${i}_SIZE`;
+			assetSizeLines.push(`; '${binaryAssets[i].fileName}'`);
+			assetSizeLines.push(`const ${constantName} ${binaryAssets[i].sizeBytes}`);
 		}
 	}
 
 	if (assetSizeLines.length > 0) {
 		lines.push('');
-		lines.push('// Binary asset sizes in bytes');
+		lines.push('; Binary asset sizes in bytes');
 		lines.push(...assetSizeLines);
 	}
 
@@ -79,20 +77,20 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		const state = store.getState();
 
 		const newCode = generateEnvConstantsBlock(state);
-		const existingBlockIndex = state.graphicHelper.codeBlocks.findIndex(
-			block => block.id === AUTO_ENV_CONSTANTS_BLOCK_ID
-		);
+		const targetBlock = state.graphicHelper.codeBlocks.find(block => isEnvBlock(block));
 
-		if (existingBlockIndex >= 0) {
-			// Update existing block's code in graphicHelper.codeBlocks
-			const updatedBlocks = [...state.graphicHelper.codeBlocks];
-			updatedBlocks[existingBlockIndex] = {
-				...updatedBlocks[existingBlockIndex],
-				code: newCode,
-				lastUpdated: Date.now(),
-			};
-			store.set('graphicHelper.codeBlocks', updatedBlocks);
+		console.log('targetBlock', targetBlock);
+
+		if (!targetBlock) {
+			return;
 		}
+
+		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = targetBlock;
+
+		targetBlock.code = newCode;
+		targetBlock.lastUpdated = performance.now();
+
+		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', targetBlock);
 	}
 
 	/**

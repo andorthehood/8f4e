@@ -142,4 +142,13 @@ export default async function compiler(store: StateManager<State>, events: Event
 		}
 		onRecompile();
 	});
+	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
+		if (
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'module' &&
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'function'
+		) {
+			return;
+		}
+		onRecompile();
+	});
 }

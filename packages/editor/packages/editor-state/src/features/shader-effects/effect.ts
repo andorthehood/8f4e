@@ -53,4 +53,12 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 			recomputeShaderEffects();
 		}
 	});
+	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
+		if (
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType === 'fragmentShader' ||
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType === 'vertexShader'
+		) {
+			recomputeShaderEffects();
+		}
+	});
 }
