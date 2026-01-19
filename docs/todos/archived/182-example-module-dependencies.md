@@ -3,8 +3,8 @@ title: 'TODO: Add Example Module Dependencies on Insert'
 priority: Medium
 effort: 4-6h
 created: 2026-01-17
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-18
 ---
 
 # TODO: Add Example Module Dependencies on Insert
