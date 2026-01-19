@@ -1,5 +1,5 @@
 import { StateManager } from '@8f4e/state-manager';
-import { getModuleId } from '@8f4e/compiler/syntax';
+import { getBlockType } from '@8f4e/compiler/syntax';
 
 import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
@@ -20,6 +20,7 @@ import highlightSyntax8f4e from '../../../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../../../code-editing/highlightSyntaxGlsl';
 import { moveCaret } from '../../../code-editing/moveCaret';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
+import getCodeBlockId from '../../utils/getCodeBlockId';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -99,7 +100,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.height = graphicData.codeToRender.length * state.viewport.hGrid;
 		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
-		graphicData.id = getModuleId(graphicData.code) || '';
+		graphicData.id = getCodeBlockId(graphicData.code);
 	};
 
 	const updateGraphicsAll = function () {
@@ -125,6 +126,13 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(state.graphicHelper.selectedCodeBlock);
 	};
 
+	const updateProgrammaticSelectedCodeBlock = function () {
+		if (!state.graphicHelper.selectedCodeBlockForProgrammaticEdit) {
+			return;
+		}
+		updateGraphics(state.graphicHelper.selectedCodeBlockForProgrammaticEdit);
+	};
+
 	const populateCodeBlocks = function () {
 		if (!state.initialProjectState) {
 			return;
@@ -132,6 +140,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 		state.graphicHelper.outputsByWordAddress.clear();
 		state.graphicHelper.selectedCodeBlock = undefined;
+		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
 		state.graphicHelper.nextCodeBlockCreationIndex = 0;
 		state.viewport.x = state.initialProjectState.viewport.gridCoordinates.x * state.viewport.vGrid;
@@ -165,7 +174,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					errorMessages: [],
 				},
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				id: getModuleId(codeBlock.code) || '',
+				id: getCodeBlockId(codeBlock.code),
 				gaps: new Map(),
 				gridX,
 				gridY,
@@ -176,7 +185,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				lineNumberColumnWidth: 1,
 				lastUpdated: Date.now(),
 				creationIndex,
-				blockType: 'unknown', // Will be updated by blockTypeUpdater effect
+				blockType: getBlockType(codeBlock.code),
 			} as CodeBlockGraphicData;
 		});
 
@@ -215,4 +224,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
+	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
+	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.cursor', updateProgrammaticSelectedCodeBlock);
 }
