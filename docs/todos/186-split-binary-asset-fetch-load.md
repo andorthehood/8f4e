@@ -55,7 +55,7 @@ The URL is the asset identifier; the same URL may be loaded into multiple memory
 
 ## Risks & Considerations
 
-- **Breaking change**: callback signature changes for integrators.
+- **No backwards compatibility**: remove old callbacks/types instead of supporting both.
 - **Memory usage**: holding ArrayBuffers in editor memory until loaded.
 - **Asset id**: URL is the id; same URL can be written to multiple memory targets.
 - **Error handling**: consider `loadError` field for UI feedback.
