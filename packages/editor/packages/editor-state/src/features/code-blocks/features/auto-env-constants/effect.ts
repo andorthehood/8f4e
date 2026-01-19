@@ -32,16 +32,19 @@ function generateEnvConstantsBlock(state: State): string[] {
 
 	// Binary asset sizes
 	const binaryAssets = state.binaryAssets || [];
-	if (binaryAssets.length > 0) {
+	const assetSizeLines: string[] = [];
+	for (const asset of binaryAssets) {
+		if (asset.sizeBytes !== undefined && asset.memoryId) {
+			// Convert memoryId to a valid constant name (uppercase, replace special chars with underscore)
+			const constantName = `${asset.memoryId.toUpperCase().replace(/[^A-Z0-9_]/g, '_')}_SIZE`;
+			assetSizeLines.push(`const ${constantName} ${asset.sizeBytes}`);
+		}
+	}
+
+	if (assetSizeLines.length > 0) {
 		lines.push('');
 		lines.push('// Binary asset sizes in bytes');
-		for (const asset of binaryAssets) {
-			if (asset.sizeBytes !== undefined && asset.memoryId) {
-				// Convert memoryId to a valid constant name (uppercase, replace special chars with underscore)
-				const constantName = `${asset.memoryId.toUpperCase().replace(/[^A-Z0-9_]/g, '_')}_SIZE`;
-				lines.push(`const ${constantName} ${asset.sizeBytes}`);
-			}
-		}
+		lines.push(...assetSizeLines);
 	}
 
 	lines.push('');
@@ -61,13 +64,12 @@ function generateEnvConstantsBlock(state: State): string[] {
  * @param store - State manager instance
  */
 export default function autoEnvConstants(store: StateManager<State>): void {
-	const state = store.getState();
-
 	/**
 	 * Creates or updates the auto-managed env constants block.
 	 * Ensures it has the lowest creationIndex to be compiled first.
 	 */
 	function ensureEnvConstantsBlock(): void {
+		const state = store.getState(); // Get fresh state each time
 		const newCode = generateEnvConstantsBlock(state);
 		const existingBlockIndex = state.graphicHelper.codeBlocks.findIndex(
 			block => block.id === AUTO_ENV_CONSTANTS_BLOCK_ID
