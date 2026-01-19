@@ -3,9 +3,10 @@ import createStateManager from '@8f4e/state-manager';
 
 import autoEnvConstants from './effect';
 
-import type { State, CodeBlockGraphicData } from '~/types';
+import type { State, Project } from '~/types';
 
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
+import { EMPTY_DEFAULT_PROJECT } from '~/types';
 
 describe('autoEnvConstants', () => {
 	let store: ReturnType<typeof createStateManager<State>>;
@@ -24,38 +25,67 @@ describe('autoEnvConstants', () => {
 				],
 				selectedRuntime: 0,
 			},
+			initialProjectState: {
+				...EMPTY_DEFAULT_PROJECT,
+			},
 		};
 		store = createStateManager<State>(baseState);
 		state = store.getState();
 	});
 
-	test('should create env constants block on initialization', () => {
+	test('should create env constants block when project is loaded', () => {
 		autoEnvConstants(store);
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		// Trigger project load
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		expect(envBlock).toBeDefined();
-		expect(envBlock?.blockType).toBe('constants');
+		expect(envBlock?.code[0]).toBe('constants env');
 	});
 
-	test('should set creationIndex to 0 for env block', () => {
+	test('should place env block at beginning of codeBlocks array', () => {
+		const projectWithBlocks: Project = {
+			...EMPTY_DEFAULT_PROJECT,
+			codeBlocks: [{ code: ['module test', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+		};
+
+		store.set('initialProjectState', projectWithBlocks);
 		autoEnvConstants(store);
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
-		expect(envBlock?.creationIndex).toBe(0);
+		// Trigger another project load to add env block
+		store.set('initialProjectState', { ...projectWithBlocks });
+
+		expect(state.initialProjectState?.codeBlocks[0].code[0]).toBe('constants env');
+		expect(state.initialProjectState?.codeBlocks[1].code[0]).toBe('module test');
+	});
+
+	test('should include built-in compiler constants', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+
+		expect(envBlock?.code).toContain('const I16_SIGNED_LARGEST_NUMBER 32767');
+		expect(envBlock?.code).toContain('const I16_SIGNED_SMALLEST_NUMBER -32768');
+		expect(envBlock?.code).toContain('const I32_SIGNED_LARGEST_NUMBER 2147483647');
+		expect(envBlock?.code).toContain('const WORD_SIZE 4');
 	});
 
 	test('should include SAMPLE_RATE from runtime config', () => {
 		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
 		expect(sampleRateLine).toBe('const SAMPLE_RATE 48000');
 	});
 
 	test('should include standard environment constants', () => {
 		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		expect(envBlock?.code).toContain('const AUDIO_BUFFER_SIZE 128');
 		expect(envBlock?.code).toContain('const LEFT_CHANNEL 0');
 		expect(envBlock?.code).toContain('const RIGHT_CHANNEL 1');
@@ -63,14 +93,16 @@ describe('autoEnvConstants', () => {
 
 	test('should include warning comment', () => {
 		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const warningLine = envBlock?.code.find(line => line.includes('Auto-generated'));
 		expect(warningLine).toBeDefined();
 	});
 
 	test('should update when runtime config changes', () => {
 		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		// Change sample rate
 		store.set('compiledConfig.runtimeSettings', [
@@ -80,12 +112,14 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
 		expect(sampleRateLine).toBe('const SAMPLE_RATE 44100');
 	});
 
 	test('should include binary asset sizes when available', () => {
+		autoEnvConstants(store);
+
 		// Add binary asset with size
 		store.set('binaryAssets', [
 			{
@@ -95,15 +129,16 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIODATA_SIZE'));
 		expect(assetSizeLine).toBe('const AUDIODATA_SIZE 44100');
 	});
 
 	test('should update when binary assets change', () => {
 		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		// Add binary asset
 		store.set('binaryAssets', [
@@ -114,65 +149,32 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIODATA_SIZE'));
 		expect(assetSizeLine).toBe('const AUDIODATA_SIZE 88200');
 	});
 
-	test('should handle existing env block without duplicating', () => {
-		// Create env block first
-		autoEnvConstants(store);
-		const initialBlockCount = state.graphicHelper.codeBlocks.length;
-
-		// Run again
-		autoEnvConstants(store);
-
-		expect(state.graphicHelper.codeBlocks.length).toBe(initialBlockCount);
-	});
-
-	test('should increment creationIndex of existing blocks', () => {
-		// Add a block first
-		const testBlock: CodeBlockGraphicData = {
-			width: 0,
-			minGridWidth: 32,
-			height: 0,
-			code: ['module test', 'moduleEnd'],
-			codeColors: [],
-			codeToRender: [],
-			extras: {
-				blockHighlights: [],
-				inputs: [],
-				outputs: [],
-				debuggers: [],
-				switches: [],
-				buttons: [],
-				pianoKeyboards: [],
-				bufferPlotters: [],
-				errorMessages: [],
-			},
-			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: 'test',
-			gaps: new Map(),
-			gridX: 0,
-			gridY: 0,
-			x: 0,
-			y: 0,
-			lineNumberColumnWidth: 2,
-			offsetX: 0,
-			lastUpdated: Date.now(),
-			offsetY: 0,
-			creationIndex: 0,
-			blockType: 'module',
+	test('should not duplicate env block if already exists', () => {
+		const projectWithEnv: Project = {
+			...EMPTY_DEFAULT_PROJECT,
+			codeBlocks: [
+				{ code: ['constants env', 'const SAMPLE_RATE 48000', 'constantsEnd'], gridCoordinates: { x: 0, y: 0 } },
+			],
 		};
-		store.set('graphicHelper.codeBlocks', [testBlock]);
 
+		store.set('initialProjectState', projectWithEnv);
 		autoEnvConstants(store);
 
-		const foundTestBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'test');
-		expect(foundTestBlock?.creationIndex).toBe(1);
+		// Trigger another load
+		store.set('initialProjectState', { ...projectWithEnv });
+
+		const envBlocks = state.initialProjectState?.codeBlocks.filter(block => block.code[0]?.includes('constants env'));
+		expect(envBlocks?.length).toBe(1);
 	});
 
 	test('should properly format memoryId with special characters', () => {
+		autoEnvConstants(store);
+
 		store.set('binaryAssets', [
 			{
 				fileName: 'test.wav',
@@ -181,14 +183,16 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIO_DATA_1_SIZE'));
 		expect(assetSizeLine).toBe('const AUDIO_DATA_1_SIZE 1024');
 	});
 
 	test('should skip binary assets without sizeBytes', () => {
+		autoEnvConstants(store);
+
 		store.set('binaryAssets', [
 			{
 				fileName: 'test.wav',
@@ -197,14 +201,16 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIODATA_SIZE'));
 		expect(assetSizeLine).toBeUndefined();
 	});
 
 	test('should skip binary assets without memoryId', () => {
+		autoEnvConstants(store);
+
 		store.set('binaryAssets', [
 			{
 				fileName: 'test.wav',
@@ -213,9 +219,9 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		// Should not have any binary asset size constants (after the comment line)
 		const binaryAssetSection = envBlock?.code.indexOf('// Binary asset sizes in bytes');
 		expect(binaryAssetSection).toBe(-1);
