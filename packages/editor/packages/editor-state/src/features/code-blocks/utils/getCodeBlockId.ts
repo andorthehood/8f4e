@@ -1,17 +1,24 @@
-import { getModuleId, getFunctionId } from '@8f4e/compiler/syntax';
+import { getModuleId, getFunctionId, getConstantsId } from '@8f4e/compiler/syntax';
 
 import getVertexShaderId from '../../shader-effects/getVertexShaderId';
 import getFragmentShaderId from '../../shader-effects/getFragmentShaderId';
 
 /**
  * Retrieves the ID from a code block based on its type.
- * Tries to identify the code block as a module, function, vertex shader, or fragment shader.
+ * Tries to identify the code block as a module, function, constants, vertex shader, or fragment shader.
  *
  * @param code - Code block represented as an array of lines
  * @returns The ID of the code block, or an empty string if no ID is found
  */
 export default function getCodeBlockId(code: string[]): string {
-	return getModuleId(code) || getFunctionId(code) || getVertexShaderId(code) || getFragmentShaderId(code) || '';
+	return (
+		getModuleId(code) ||
+		getFunctionId(code) ||
+		getConstantsId(code) ||
+		getVertexShaderId(code) ||
+		getFragmentShaderId(code) ||
+		''
+	);
 }
 
 if (import.meta.vitest) {
@@ -26,6 +33,11 @@ if (import.meta.vitest) {
 		it('returns function ID for function blocks', () => {
 			const code = ['function testFunction', '', 'functionEnd'];
 			expect(getCodeBlockId(code)).toBe('testFunction');
+		});
+
+		it('returns constants ID for constants blocks', () => {
+			const code = ['constants env', '', 'constantsEnd'];
+			expect(getCodeBlockId(code)).toBe('env');
 		});
 
 		it('returns vertex shader ID for vertex shader blocks', () => {
