@@ -10,7 +10,7 @@ describe('compiler', () => {
 		const astModules = modules.map(({ code }) => compileToAST(code));
 		const compiledModules = compileModules(astModules, {
 			startingMemoryWordAddress: 0,
-			environmentExtensions: { constants: {}, ignoredKeywords: [] },
+			environmentExtensions: { ignoredKeywords: [] },
 			memorySizeBytes: 65536,
 		});
 		expect(generateMemoryInitiatorFunctions(compiledModules)).toMatchSnapshot();

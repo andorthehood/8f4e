@@ -22,6 +22,7 @@ import binaryAsset from './features/binary-assets/effect';
 import runtime from './features/runtime/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
 import shaderEffectsDeriver from './features/shader-effects/effect';
+import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
 
@@ -67,6 +68,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	viewport(state, events);
 	contextMenu(store, events);
 	codeBlockCreator(store, events);
+	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	configEffect(store, events);

@@ -21,12 +21,6 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
   memorySizeBytes: number,           // From compiledConfig, default 1MB
   startingMemoryWordAddress: 0,
   environmentExtensions: {
-    constants: {
-      SAMPLE_RATE: number,           // From runtime config
-      AUDIO_BUFFER_SIZE: 128,
-      LEFT_CHANNEL: 0,
-      RIGHT_CHANNEL: 1,
-    },
     ignoredKeywords: [               // Annotation keywords not compiled
       'debug', 'button', 'switch', 
       'offset', 'plot', 'piano'
@@ -34,6 +28,8 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
   }
 }
 ```
+
+**Note**: Environment constants (SAMPLE_RATE, AUDIO_BUFFER_SIZE, etc.) are no longer injected via compiler options. Instead, they are provided via an auto-managed `constants env` block that is automatically created and updated by the editor-state.
 
 ## Block Type Handling
 
@@ -98,4 +94,4 @@ When memory is recreated, binary assets must be reloaded.
 - Compilation is synchronous from the effect's perspective but callback may be async
 - Blocks are compiled in `creationIndex` order
 - Memory size changes require runtime restart
-- Environment constants are injected at compile time
+- Environment constants are provided via auto-managed `constants env` block

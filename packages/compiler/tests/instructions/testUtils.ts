@@ -71,7 +71,7 @@ export function setInitialMemory(memory: DataView, module: CompiledModule): void
 export async function createTestModule(sourceCode: string): Promise<TestModule> {
 	const ast = compileToAST(sourceCode.split('\n'));
 	const module: CompiledModule = compileModules([ast], {
-		environmentExtensions: { constants: {}, ignoredKeywords: [] },
+		environmentExtensions: { ignoredKeywords: [] },
 		startingMemoryWordAddress: 0,
 		memorySizeBytes: 65536,
 		includeAST: true,
@@ -216,7 +216,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 	const result = compile(
 		modules,
 		{
-			environmentExtensions: { constants: {}, ignoredKeywords: [] },
+			environmentExtensions: { ignoredKeywords: [] },
 			startingMemoryWordAddress: 0,
 			memorySizeBytes: 65536,
 			includeAST: true,

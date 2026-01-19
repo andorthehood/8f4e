@@ -121,17 +121,36 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 export function compileModules(
 	modules: AST[],
 	options: CompileOptions,
-	builtInConsts: Namespace['consts'],
-	namespaces: Namespaces,
+	builtInConsts?: Namespace['consts'],
+	namespaces?: Namespaces,
 	compiledFunctions?: CompiledFunctionLookup
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress;
 
+	// If builtInConsts not provided, use defaults
+	const consts = builtInConsts ?? {
+		I16_SIGNED_LARGEST_NUMBER: { value: I16_SIGNED_LARGEST_NUMBER, isInteger: true },
+		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
+		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
+		WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
+	};
+
+	// If namespaces not provided, collect from modules
+	const ns =
+		namespaces ??
+		Object.fromEntries(
+			modules.map(ast => {
+				const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+				const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+				return [name, { consts: collectConstants(ast) }];
+			})
+		);
+
 	return modules.map((ast, index) => {
 		const module = compileModule(
 			ast,
-			builtInConsts,
-			namespaces,
+			consts,
+			ns,
 			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 			options.memorySizeBytes,
 			index,
@@ -208,7 +227,6 @@ export default function compile(
 		I16_SIGNED_SMALLEST_NUMBER: { value: I16_SIGNED_SMALLEST_NUMBER, isInteger: true },
 		I32_SIGNED_LARGEST_NUMBER: { value: I32_SIGNED_LARGEST_NUMBER, isInteger: true },
 		WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
-		...options.environmentExtensions.constants,
 	};
 
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
