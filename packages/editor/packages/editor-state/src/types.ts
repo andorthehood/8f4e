@@ -8,7 +8,7 @@ import type { Module, CompileOptions } from '@8f4e/compiler';
 import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker/types';
 import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
-import type { BinaryAsset, ResolvedBinaryAsset } from './features/binary-assets/types';
+import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	CodeBlock,
 	CodeBlockType,
@@ -105,7 +105,7 @@ export type { LogMessage, ConsoleState };
 export type { EditorSettings };
 
 // Re-export binary-assets types
-export type { BinaryAsset, ResolvedBinaryAsset };
+export type { BinaryAsset };
 
 // Re-export code-editing types
 export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent };
@@ -180,7 +180,7 @@ export interface Callbacks {
 	exportProject?: (data: string, fileName: string) => Promise<void>;
 	exportBinaryCode?: (fileName: string) => Promise<void>;
 	fetchBinaryAssets?: (urls: string[]) => Promise<BinaryAsset[]>;
-	loadBinaryAssetIntoMemory?: (url: string, target: ResolvedBinaryAsset) => Promise<void>;
+	loadBinaryAssetIntoMemory?: (asset: BinaryAsset) => Promise<void>;
 	clearBinaryAssetCache?: () => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
