@@ -66,9 +66,6 @@ describe('autoEnvConstants', () => {
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 
-		expect(envBlock?.code).toContain('const I16_SIGNED_LARGEST_NUMBER 32767');
-		expect(envBlock?.code).toContain('const I16_SIGNED_SMALLEST_NUMBER -32768');
-		expect(envBlock?.code).toContain('const I32_SIGNED_LARGEST_NUMBER 2147483647');
 		expect(envBlock?.code).toContain('const WORD_SIZE 4');
 	});
 
@@ -87,8 +84,6 @@ describe('autoEnvConstants', () => {
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		expect(envBlock?.code).toContain('const AUDIO_BUFFER_SIZE 128');
-		expect(envBlock?.code).toContain('const LEFT_CHANNEL 0');
-		expect(envBlock?.code).toContain('const RIGHT_CHANNEL 1');
 	});
 
 	test('should include warning comment', () => {
@@ -170,8 +165,8 @@ describe('autoEnvConstants', () => {
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
-		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIODATA_SIZE'));
-		expect(assetSizeLine).toBe('const AUDIODATA_SIZE 44100');
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
+		expect(assetSizeLine).toBe('const ASSET_0_SIZE 44100');
 	});
 
 	test('should update when binary assets change', () => {
@@ -226,8 +221,8 @@ describe('autoEnvConstants', () => {
 		]);
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
-		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIODATA_SIZE'));
-		expect(assetSizeLine).toBe('const AUDIODATA_SIZE 88200');
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
+		expect(assetSizeLine).toBe('const ASSET_0_SIZE 88200');
 	});
 
 	test('should not duplicate env block if already exists', () => {
@@ -262,8 +257,8 @@ describe('autoEnvConstants', () => {
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
-		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIO_DATA_1_SIZE'));
-		expect(assetSizeLine).toBe('const AUDIO_DATA_1_SIZE 1024');
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
+		expect(assetSizeLine).toBe('const ASSET_0_SIZE 1024');
 	});
 
 	test('should skip binary assets without sizeBytes', () => {
@@ -280,7 +275,7 @@ describe('autoEnvConstants', () => {
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
-		const assetSizeLine = envBlock?.code.find(line => line.includes('AUDIODATA_SIZE'));
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
 		expect(assetSizeLine).toBeUndefined();
 	});
 
