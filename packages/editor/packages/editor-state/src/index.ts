@@ -110,6 +110,8 @@ export type {
 	Midi,
 	GraphicHelper,
 	BinaryAsset,
+	BinaryAssetMeta,
+	BinaryAssetTarget,
 	ConfigBinaryAsset,
 	ResolvedBinaryAsset,
 	Callbacks,
