@@ -79,8 +79,6 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		const newCode = generateEnvConstantsBlock(state);
 		const targetBlock = state.graphicHelper.codeBlocks.find(block => isEnvBlock(block));
 
-		console.log('targetBlock', targetBlock);
-
 		if (!targetBlock) {
 			return;
 		}
