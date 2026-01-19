@@ -45,7 +45,7 @@ const buffer: InstructionCompiler = withValidation(
 		context.namespace.memory[line.arguments[0].value] = {
 			numberOfElements,
 			elementWordSize,
-			wordAlignedSize: Math.ceil(numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY,
+			wordAlignedSize: Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY),
 			wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
 			id: line.arguments[0].value,
 			byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,

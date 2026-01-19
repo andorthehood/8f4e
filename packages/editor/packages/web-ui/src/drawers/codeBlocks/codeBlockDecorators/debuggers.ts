@@ -18,16 +18,6 @@ export default function drawConnectors(
 	}
 
 	for (const { x, y, memory, showAddress, showEndAddress, showBinary, bufferPointer } of codeBlock.extras.debuggers) {
-		// TODO: fix this, happens when it's a 16 or 8 bit memory view in 8f4e and the size is not multiple of 4
-		// probably need to create separate memory views for those cases
-		if (memoryViews.float32[memory.wordAlignedAddress + bufferPointer] === undefined) {
-			continue;
-		}
-
-		const value = memory.isInteger
-			? memoryViews.int32[memory.wordAlignedAddress + bufferPointer].toString(showBinary ? 2 : 10)
-			: memoryViews.float32[memory.wordAlignedAddress + bufferPointer].toFixed(4);
-
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
 
 		if (showAddress) {
@@ -35,6 +25,17 @@ export default function drawConnectors(
 		} else if (showEndAddress) {
 			engine.drawText(x, y, '[' + ((memory.wordAlignedSize - 1) * 4 + memory.byteAddress) + ']');
 		} else {
+			let value = '';
+			if (memory.elementWordSize === 1 && memory.isInteger) {
+				value = memoryViews.int8[memory.byteAddress + bufferPointer].toString(showBinary ? 2 : 10);
+			} else if (memory.elementWordSize === 2 && memory.isInteger) {
+				value = memoryViews.int16[memory.byteAddress * 2 + bufferPointer].toString(showBinary ? 2 : 10);
+			} else {
+				value = memory.isInteger
+					? memoryViews.int32[memory.wordAlignedAddress + bufferPointer].toString(showBinary ? 2 : 10)
+					: memoryViews.float32[memory.wordAlignedAddress + bufferPointer].toFixed(4);
+			}
+
 			engine.drawText(x, y, '[' + value + ']');
 		}
 	}
