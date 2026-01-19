@@ -29,6 +29,8 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 		const assetMap = new Map(state.binaryAssets.map(asset => [asset.url, asset]));
 
 		// Step 3: Load each asset into its resolved memory target
+		// Note: `assets` contains ConfigBinaryAsset (url + memoryId from config)
+		// while `assetMap` contains BinaryAsset (metadata stored in state)
 		for (const asset of assets) {
 			const resolved = resolveBinaryAssetTarget(state, asset.memoryId);
 			if (!resolved) {
@@ -36,7 +38,7 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 				continue;
 			}
 
-			// Find the matching asset in state and update loading flag
+			// Find the matching asset metadata in state using the URL as key
 			const assetInState = assetMap.get(asset.url);
 			if (assetInState) {
 				assetInState.isLoading = true;
