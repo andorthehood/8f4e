@@ -41,6 +41,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 173 | Add Scoped Constants to Stack Config Compiler | 🟡 | 1-2d | 2026-01-13 | Add scoped `const` command and constant-aware `push` for config blocks |
 | 178 | Drop WebGL1 and move glugglug to WebGL2-only | 🟡 | 2-4d | 2026-01-15 | Remove WebGL1 fallback, update shaders, and use WebGL2-only renderer setup |
 | 185 | Simplify post-process pipeline to a single effect | 🟡 | 1-2d | 2026-01-19 | Drop multi-effect chaining and run a single post-process pass |
+| 186 | Split Binary Asset Fetch and Memory Load | 🟡 | 1-2d | 2026-01-19 | Split asset fetching from WASM memory loading with metadata-only state tracking |
 | 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Report shader compile/link failures with effect name/line, skip failed effects, log in editor |
 | 180 | Load Binary Assets From Config URLs | 🟡 | 1-2d | 2026-01-16 | Allow config to declare URL-backed binary assets with module.memory targets, cached in the editor |
 | 182 | Add Example Module Dependencies on Insert | 🟡 | 4-6h | 2026-01-17 | Add a dependencies field to example modules and insert missing dependency blocks alongside the requested module |
