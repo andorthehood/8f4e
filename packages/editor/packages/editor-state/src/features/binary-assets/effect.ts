@@ -13,12 +13,8 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 			const uniqueUrls = Array.from(new Set(assets.map(asset => asset.url)));
 			const fetchedMeta = await state.callbacks.fetchBinaryAssets(uniqueUrls);
 
-			// Store metadata in state with initial flags
-			state.binaryAssets = fetchedMeta.map(meta => ({
-				...meta,
-				isLoading: false,
-				loadedIntoMemory: false,
-			}));
+			// Store metadata in state (fetchedMeta already has isLoading=false, loadedIntoMemory=false)
+			state.binaryAssets = fetchedMeta;
 
 			// Phase 2: Load each asset into memory at its target location
 			for (const asset of assets) {
