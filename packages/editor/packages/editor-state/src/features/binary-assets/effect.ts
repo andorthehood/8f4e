@@ -42,29 +42,22 @@ export default function binaryAssets(state: State, events: EventDispatcher): () 
 
 			// Find the matching asset metadata in state using the URL
 			const assetInState = state.binaryAssets.find(a => a.url === asset.url);
-			if (assetInState) {
-				assetInState.isLoading = true;
+			if (!assetInState) {
+				continue;
 			}
 
 			try {
-				await state.callbacks.loadBinaryAssetIntoMemory(asset.url, {
-					url: asset.url,
-					moduleId: resolved.moduleId,
-					memoryName: resolved.memoryName,
-					byteAddress: resolved.byteAddress,
-					byteLength: resolved.byteLength,
-				});
+				assetInState.moduleId = resolved.moduleId;
+				assetInState.memoryName = resolved.memoryName;
+				assetInState.byteAddress = resolved.byteAddress;
+				assetInState.byteLength = resolved.byteLength;
+
+				await state.callbacks.loadBinaryAssetIntoMemory(assetInState);
 
 				// Update state to mark as loaded
-				if (assetInState) {
-					assetInState.isLoading = false;
-					assetInState.loadedIntoMemory = true;
-				}
+				assetInState.loadedIntoMemory = true;
 			} catch (error) {
 				console.error('Failed to load binary asset into memory:', asset.url, error);
-				if (assetInState) {
-					assetInState.isLoading = false;
-				}
 			}
 		}
 	}
