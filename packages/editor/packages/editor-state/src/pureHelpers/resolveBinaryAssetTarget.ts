@@ -3,7 +3,7 @@ import type { State } from '~/types';
 export default function resolveBinaryAssetTarget(
 	state: State,
 	memoryId: string
-): { moduleId: string; memoryName: string; byteAddress: number; byteLength: number } | null {
+): { memoryId: string; byteAddress: number; memoryByteLength: number } | null {
 	const [moduleId, memoryName] = memoryId.split('.');
 	if (!moduleId || !memoryName) {
 		return null;
@@ -15,9 +15,8 @@ export default function resolveBinaryAssetTarget(
 	}
 
 	return {
-		moduleId,
-		memoryName,
+		memoryId,
 		byteAddress: memory.byteAddress,
-		byteLength: memory.wordAlignedSize * 4,
+		memoryByteLength: memory.wordAlignedSize * 4,
 	};
 }

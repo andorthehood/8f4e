@@ -158,7 +158,7 @@ describe('autoEnvConstants', () => {
 			{
 				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				sizeBytes: 44100,
+				assetByteLength: 44100,
 				loadedIntoMemory: false,
 			},
 		]);
@@ -217,7 +217,7 @@ describe('autoEnvConstants', () => {
 			{
 				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				sizeBytes: 88200,
+				assetByteLength: 88200,
 				loadedIntoMemory: false,
 			},
 		]);
@@ -252,7 +252,7 @@ describe('autoEnvConstants', () => {
 			{
 				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				sizeBytes: 1024,
+				assetByteLength: 1024,
 				loadedIntoMemory: false,
 			},
 		]);
@@ -266,14 +266,14 @@ describe('autoEnvConstants', () => {
 		expect(assetSizeLine).toBe('const ASSET_0_SIZE 1024');
 	});
 
-	test('should skip binary assets without sizeBytes', () => {
+	test('should skip binary assets without assetByteLength', () => {
 		autoEnvConstants(store);
 
 		store.set('binaryAssets', [
 			{
 				url: 'https://example.com/test.wav',
 				fileName: 'test.wav',
-				// no sizeBytes
+				// no assetByteLength
 				loadedIntoMemory: false,
 			},
 		]);
