@@ -46,5 +46,13 @@ if (import.meta.vitest) {
 		it('should handle multiple array indices', () => {
 			expect(splitPath('a[0][1]')).toEqual(['a', '[0]', '[1]']);
 		});
+
+		it('should handle empty brackets (append slot)', () => {
+			expect(splitPath('items[]')).toEqual(['items', '[]']);
+		});
+
+		it('should handle append slot with property', () => {
+			expect(splitPath('items[].name')).toEqual(['items', '[]', 'name']);
+		});
 	});
 }

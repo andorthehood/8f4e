@@ -3,8 +3,8 @@ title: 'TODO: Add Disable Flag for Code Blocks'
 priority: High
 effort: 2-4 days
 created: 2026-01-20
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-20
 ---
 
 # TODO: Add Disable Flag for Code Blocks
