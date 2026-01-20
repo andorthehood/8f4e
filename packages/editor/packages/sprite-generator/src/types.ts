@@ -49,6 +49,7 @@ export interface ColorScheme {
 		highlightedCodeLine: string;
 		plotterTrace: string;
 		plotterBackground: string;
+		scanLine: string;
 		codeBlockHighlightLevel1: string;
 		codeBlockHighlightLevel2: string;
 		codeBlockHighlightLevel3: string;
