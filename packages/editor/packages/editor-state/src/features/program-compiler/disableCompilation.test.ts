@@ -31,8 +31,7 @@ describe('disableAutoCompilation feature', () => {
 		mockCompileConfig = vi.fn().mockResolvedValue({
 			config: {
 				memorySizeBytes: 1048576,
-				selectedRuntime: 0,
-				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
 				disableAutoCompilation: false,
 			},
 			errors: [],
@@ -162,8 +161,7 @@ describe('disableAutoCompilation feature', () => {
 			expect(mockCompileConfig).toHaveBeenCalled();
 			expect(result).toEqual({
 				memorySizeBytes: 1048576,
-				selectedRuntime: 0,
-				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
 				disableAutoCompilation: false,
 				binaryAssets: [],
 			});
@@ -173,8 +171,7 @@ describe('disableAutoCompilation feature', () => {
 			mockState.compiledConfig.disableAutoCompilation = true;
 			mockState.compiledConfig = {
 				memorySizeBytes: 2097152,
-				selectedRuntime: 1,
-				runtimeSettings: [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }],
+				runtimeSettings: { runtime: 'MainThreadLogicRuntime', sampleRate: 60 },
 				disableAutoCompilation: false,
 			};
 
@@ -183,8 +180,7 @@ describe('disableAutoCompilation feature', () => {
 			expect(mockCompileConfig).toHaveBeenCalled();
 			expect(result).toEqual({
 				memorySizeBytes: 1048576,
-				selectedRuntime: 0,
-				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
 				disableAutoCompilation: false,
 				binaryAssets: [],
 			});
@@ -198,8 +194,7 @@ describe('disableAutoCompilation feature', () => {
 			expect(mockCompileConfig).toHaveBeenCalled();
 			expect(result).toEqual({
 				memorySizeBytes: 1048576,
-				selectedRuntime: 0,
-				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
 				disableAutoCompilation: false,
 				binaryAssets: [],
 			});
