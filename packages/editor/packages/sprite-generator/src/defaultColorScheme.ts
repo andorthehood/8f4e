@@ -33,6 +33,7 @@ const defaultColorScheme: ColorScheme = {
 		highlightedCodeLine: '#333333',
 		plotterBackground: '#001100',
 		plotterTrace: '#66ff66',
+		scanLine: '#ff0000',
 		codeBlockHighlightLevel1: '#111111',
 		codeBlockHighlightLevel2: '#222222',
 		codeBlockHighlightLevel3: '#333333',
