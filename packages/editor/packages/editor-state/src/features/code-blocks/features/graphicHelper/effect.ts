@@ -6,6 +6,7 @@ import positionOffsetters from './positionOffsetters';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 
 import bufferPlotters from '../bufferPlotters/updateGraphicData';
+import bufferScanners from '../bufferScanners/updateGraphicData';
 import buttons from '../buttons/updateGraphicData';
 import debuggers from '../debuggers/updateGraphicData';
 import inputs from '../inputs/updateGraphicData';
@@ -89,6 +90,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
 
 		bufferPlotters(graphicData, state);
+		bufferScanners(graphicData, state);
 		outputs(graphicData, state);
 		inputs(graphicData, state);
 		debuggers(graphicData, state);
@@ -171,6 +173,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					buttons: [],
 					pianoKeyboards: [],
 					bufferPlotters: [],
+					bufferScanners: [],
 					errorMessages: [],
 				},
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
