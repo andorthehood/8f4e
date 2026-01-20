@@ -42,7 +42,7 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 	let mediaStreamSource: MediaStreamAudioSourceNode | null = null;
 
 	function syncCodeAndSettingsWithRuntime() {
-		const runtime = state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime];
+		const runtime = state.compiledConfig.runtimeSettings;
 
 		if (runtime.runtime !== 'AudioWorkletRuntime' || !audioWorklet || !audioContext) {
 			return;
@@ -55,7 +55,7 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 		}
 
 		const audioOutputBuffers = (runtime.audioOutputBuffers || [])
-			.map(({ memoryId, output, channel }) => {
+			.map(({ memoryId, output, channel }: { memoryId: string; output: number; channel: number }) => {
 				const resolved = resolveAudioBufferMemory(memoryId);
 				if (!resolved) {
 					return { audioBufferWordAddress: undefined, output, channel };
@@ -70,10 +70,13 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 					channel,
 				};
 			})
-			.filter(({ audioBufferWordAddress }) => typeof audioBufferWordAddress !== 'undefined');
+			.filter(
+				({ audioBufferWordAddress }: { audioBufferWordAddress: number | undefined }) =>
+					typeof audioBufferWordAddress !== 'undefined'
+			);
 
 		const audioInputBuffers = (runtime.audioInputBuffers || [])
-			.map(({ memoryId, input, channel }) => {
+			.map(({ memoryId, input, channel }: { memoryId: string; input: number; channel: number }) => {
 				const resolved = resolveAudioBufferMemory(memoryId);
 				if (!resolved) {
 					return { audioBufferWordAddress: undefined, input, channel };
@@ -88,7 +91,10 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 					channel,
 				};
 			})
-			.filter(({ audioBufferWordAddress }) => typeof audioBufferWordAddress !== 'undefined');
+			.filter(
+				({ audioBufferWordAddress }: { audioBufferWordAddress: number | undefined }) =>
+					typeof audioBufferWordAddress !== 'undefined'
+			);
 
 		if (audioWorklet) {
 			audioWorklet.port.postMessage({
@@ -102,7 +108,7 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 	}
 
 	async function initAudioContext() {
-		const runtime = state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime];
+		const runtime = state.compiledConfig.runtimeSettings;
 
 		if (audioContext || runtime.runtime !== 'AudioWorkletRuntime') {
 			return;

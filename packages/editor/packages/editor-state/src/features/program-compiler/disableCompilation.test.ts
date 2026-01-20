@@ -161,8 +161,7 @@ describe('disableAutoCompilation feature', () => {
 			expect(mockCompileConfig).toHaveBeenCalled();
 			expect(result).toEqual({
 				memorySizeBytes: 1048576,
-				selectedRuntime: 0,
-				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
+				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
 				disableAutoCompilation: false,
 				binaryAssets: [],
 			});

@@ -43,11 +43,7 @@ export function mainThreadLogicRuntime(store: StateManager<State>, events: Event
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
-		runtime.init(
-			memory,
-			state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime].sampleRate,
-			getCodeBuffer()
-		);
+		runtime.init(memory, state.compiledConfig.runtimeSettings.sampleRate, getCodeBuffer());
 	}
 
 	runtime = createMainThreadLogicRuntime(onInitialized, onStats, onError);
