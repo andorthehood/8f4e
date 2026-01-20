@@ -16,6 +16,10 @@ export default function gaps(graphicData: CodeBlockGraphicData) {
 			graphicData.gaps.set(lineNumber, { size: 8 });
 		}
 
+		if (instruction === 'scan') {
+			graphicData.gaps.set(lineNumber, { size: 2 });
+		}
+
 		if (instruction === 'piano') {
 			graphicData.gaps.set(lineNumber, { size: 6 });
 		}

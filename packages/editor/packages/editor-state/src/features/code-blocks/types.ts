@@ -118,6 +118,15 @@ export interface PianoKeyboard {
 	startingNumber: number;
 }
 
+export interface BufferScanner {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	buffer: MemoryIdentifier;
+	pointer: MemoryIdentifier;
+}
+
 /**
  * Runtime graphic data for a code block.
  * Contains all information needed to render and interact with a code block.
@@ -167,6 +176,7 @@ export interface CodeBlockGraphicData {
 		outputs: Output[];
 		debuggers: Debugger[];
 		bufferPlotters: BufferPlotter[];
+		bufferScanners: BufferScanner[];
 		switches: Switch[];
 		buttons: Switch[];
 		pianoKeyboards: PianoKeyboard[];
