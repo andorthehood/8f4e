@@ -4,6 +4,7 @@ export default {
 		instruction: '#eeaa66',
 		codeComment: '#eecccc',
 		code: '#cc9988',
+		disabledCode: 'rgba(0,0,0,0.5)',
 		numbers: '#cc9988',
 		menuItemText: '#ff0000',
 		menuItemTextHighlighted: '#000000',
