@@ -46,7 +46,7 @@ export function executeCommand(state: VMState, command: Command): CommandError[]
 		case 'popScope':
 			return wrapError(executePopScope(state));
 		case 'clearScope':
-			return executeClearScope(state);
+			return wrapError(executeClearScope(state));
 		case 'const':
 			return wrapError(executeConst(state, command));
 		default:
