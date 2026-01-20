@@ -25,6 +25,7 @@ export interface ColorScheme {
 		instruction: string;
 		codeComment: string;
 		code: string;
+		disabledCode: string;
 		numbers: string;
 		menuItemText: string;
 		menuItemTextHighlighted: string;
