@@ -18,6 +18,7 @@ const fillColors: Array<keyof ColorScheme['fill']> = [
 	'dialogBackground',
 	'dialogDimmer',
 	'highlightedCodeLine',
+	'scanLine',
 	'codeBlockHighlightLevel1',
 	'codeBlockHighlightLevel2',
 	'codeBlockHighlightLevel3',

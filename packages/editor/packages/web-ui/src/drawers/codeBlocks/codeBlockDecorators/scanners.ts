@@ -34,9 +34,8 @@ export default function drawer(
 		// For single-element buffers, scanline is always at position 0
 		const scanlineX = bufferLength <= 1 ? 0 : Math.floor((clampedIndex / (bufferLength - 1)) * (width - scanlineWidth));
 
-		// Draw the scanline using plotter sprite (sprite 0 is at the bottom of the plotter sprite sheet)
-		// We use sprite 0 and draw it with the full height to create a vertical line
-		engine.drawSprite(scanlineX, 0, 'wire', scanlineWidth, height);
+		// Draw the scanline using the scanLine color
+		engine.drawSprite(scanlineX, 0, 'scanLine', scanlineWidth, height);
 
 		engine.endGroup();
 	}
