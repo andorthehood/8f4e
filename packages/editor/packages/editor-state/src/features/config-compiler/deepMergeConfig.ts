@@ -110,66 +110,60 @@ if (import.meta.vitest) {
 			expect(result).toEqual({ nested: { items: [{ value: 2 }, { value: 3 }] } });
 		});
 
-		it('should merge arrays of objects by index', () => {
+		it('should merge runtime settings object', () => {
 			const one = {
-				runtimeSettings: [
-					{
-						audioInputBuffers: [
-							{
-								memoryId: 'audioin.buffer',
-								channel: 0,
-								input: 0,
-							},
-						],
-					},
-				],
+				runtimeSettings: {
+					audioInputBuffers: [
+						{
+							memoryId: 'audioin.buffer',
+							channel: 0,
+							input: 0,
+						},
+					],
+				},
 			};
 
 			const two = {
-				runtimeSettings: [
-					{
-						audioOutputBuffers: [
-							{
-								memoryId: 'audiooutL.buffer',
-								channel: 0,
-								output: 0,
-							},
-							{
-								memoryId: 'audiooutR.buffer',
-								channel: 1,
-								output: 0,
-							},
-						],
-					},
-				],
+				runtimeSettings: {
+					audioOutputBuffers: [
+						{
+							memoryId: 'audiooutL.buffer',
+							channel: 0,
+							output: 0,
+						},
+						{
+							memoryId: 'audiooutR.buffer',
+							channel: 1,
+							output: 0,
+						},
+					],
+				},
 			};
 
 			const result = deepMergeConfig(one, two);
 
 			expect(result).toEqual({
-				runtimeSettings: [
-					{
-						audioInputBuffers: [
-							{
-								memoryId: 'audioin.buffer',
-								channel: 0,
-								input: 0,
-							},
-						],
-						audioOutputBuffers: [
-							{
-								memoryId: 'audiooutL.buffer',
-								channel: 0,
-								output: 0,
-							},
-							{
-								memoryId: 'audiooutR.buffer',
-								channel: 1,
-								output: 0,
-							},
-						],
-					},
-				],
+				runtimeSettings: {
+					audioInputBuffers: [
+						{
+							memoryId: 'audioin.buffer',
+							channel: 0,
+							input: 0,
+						},
+					],
+					audioOutputBuffers: [
+						{
+							memoryId: 'audiooutL.buffer',
+							channel: 0,
+							output: 0,
+						},
+						{
+							memoryId: 'audiooutR.buffer',
+							channel: 1,
+							output: 0,
+						},
+					],
+				},
 			});
 		});
 

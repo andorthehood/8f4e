@@ -74,7 +74,7 @@ export default function drawInfoOverlay(
 
 	// Runtime stats
 
-	const runtime = state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime];
+	const runtime = state.compiledConfig.runtimeSettings;
 
 	debugText.push('');
 	debugText.push('Runtime: ' + runtime.runtime);

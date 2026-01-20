@@ -5,13 +5,10 @@ import { defaultFeatureFlags } from './featureFlags';
 import { ConfigObject } from '~/types';
 
 export const defaultConfig: ConfigObject = {
-	runtimeSettings: [
-		{
-			runtime: 'WebWorkerLogicRuntime',
-			sampleRate: 50,
-		},
-	],
-	selectedRuntime: 0,
+	runtimeSettings: {
+		runtime: 'WebWorkerLogicRuntime',
+		sampleRate: 50,
+	},
 	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
 	binaryAssets: [],

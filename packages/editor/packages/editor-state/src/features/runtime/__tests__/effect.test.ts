@@ -16,8 +16,7 @@ describe('Runtime System', () => {
 
 			const state = createMockState({
 				compiledConfig: {
-					runtimeSettings: [{ runtime: 'AudioWorkletRuntime', sampleRate: 44100 }],
-					selectedRuntime: 0,
+					runtimeSettings: { runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
 				},
 				runtimeRegistry: {
 					AudioWorkletRuntime: {
@@ -52,8 +51,7 @@ describe('Runtime System', () => {
 
 			store.set('compiledConfig', {
 				...state.compiledConfig,
-				runtimeSettings: [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }],
-				selectedRuntime: 0,
+				runtimeSettings: { runtime: 'MainThreadLogicRuntime', sampleRate: 60 },
 			});
 			store.set('compiler.isCompiling', false);
 
