@@ -13,6 +13,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
     "x": 200,
     "y": 75,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -54,6 +55,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
     "x": 210,
     "y": 50,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -95,6 +97,7 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
     "x": 999,
     "y": 999,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -136,6 +139,7 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
     "x": 200,
     "y": 110,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -177,6 +181,7 @@ exports[`createMockCodeBlock > default values > should create a block with defau
     "x": 50,
     "y": 50,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -218,6 +223,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
     "x": -50,
     "y": 50,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -259,6 +265,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
     "x": 130,
     "y": 50,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -300,6 +307,7 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
     "x": 0,
     "y": 0,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -341,6 +349,7 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
     "x": 150,
     "y": 50,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -385,6 +394,7 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
     "x": 50,
     "y": 50,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -426,6 +436,7 @@ exports[`createMockCodeBlock > override behavior > should override id and offset
     "x": 60,
     "y": 50,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
@@ -467,6 +478,7 @@ exports[`createMockCodeBlock > override behavior > should override position and 
     "x": 300,
     "y": 75,
   },
+  "disabled": false,
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
