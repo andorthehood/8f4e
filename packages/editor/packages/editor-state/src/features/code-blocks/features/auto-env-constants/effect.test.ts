@@ -17,13 +17,10 @@ describe('autoEnvConstants', () => {
 			...createDefaultState(),
 			compiledConfig: {
 				...createDefaultState().compiledConfig,
-				runtimeSettings: [
-					{
-						runtime: 'WebWorkerLogicRuntime' as const,
-						sampleRate: 48000,
-					},
-				],
-				selectedRuntime: 0,
+				runtimeSettings: {
+					runtime: 'WebWorkerLogicRuntime' as const,
+					sampleRate: 48000,
+				},
 			},
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
@@ -138,12 +135,10 @@ describe('autoEnvConstants', () => {
 		}
 
 		// Change sample rate
-		store.set('compiledConfig.runtimeSettings', [
-			{
-				runtime: 'WebWorkerLogicRuntime' as const,
-				sampleRate: 44100,
-			},
-		]);
+		store.set('compiledConfig.runtimeSettings', {
+			runtime: 'WebWorkerLogicRuntime' as const,
+			sampleRate: 44100,
+		});
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
