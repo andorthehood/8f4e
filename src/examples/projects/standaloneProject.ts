@@ -13,12 +13,7 @@ const standalonProject: Project = {
 				'set',
 				'popScope',
 				'',
-				'scope "selectedRuntime"',
-				'push 0',
-				'set',
-				'popScope',
-				'',
-				'scope "runtimeSettings[0]"',
+				'scope "runtimeSettings"',
 				'scope "runtime"',
 				'push "WebWorkerLogicRuntime"',
 				'set',
@@ -96,13 +91,10 @@ const standalonProject: Project = {
 	memorySnapshot: 'AAAAABcAAAA=',
 	compiledConfig: {
 		memorySizeBytes: 8,
-		selectedRuntime: 0,
-		runtimeSettings: [
-			{
-				runtime: 'WebWorkerLogicRuntime',
-				sampleRate: 1,
-			},
-		],
+		runtimeSettings: {
+			runtime: 'WebWorkerLogicRuntime',
+			sampleRate: 1,
+		},
 		disableAutoCompilation: true,
 		binaryAssets: [],
 	},
