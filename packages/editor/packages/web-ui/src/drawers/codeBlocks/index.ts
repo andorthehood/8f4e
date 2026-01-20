@@ -53,6 +53,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 
 					if (codeBlock === state.graphicHelper.draggedCodeBlock) {
 						engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
+					} else if (codeBlock.disabled) {
+						engine.drawSprite(0, 0, 'moduleBackgroundDisabled', codeBlock.width, codeBlock.height);
 					} else {
 						engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
 					}

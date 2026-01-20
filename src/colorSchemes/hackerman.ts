@@ -20,6 +20,7 @@ export default {
 		backgroundDots2: '#006600',
 		moduleBackground: 'rgba(0,0,0,0.85)',
 		moduleBackgroundDragged: 'rgba(0,0,0,0.7)',
+		moduleBackgroundDisabled: 'rgba(0,0,0,0)',
 		wire: 'rgba(153,255,153,0.6)',
 		wireHighlighted: 'rgba(204,255,204,0.8)',
 		errorMessageBackground: '#cc0000',

@@ -18,6 +18,8 @@ export interface CodeBlock {
 	/** Grid coordinates for the code block position in the editor */
 	gridCoordinates: GridCoordinates;
 	viewport?: ProjectViewport;
+	/** When true, the block is excluded from compilation and rendered with a transparent background */
+	disabled?: boolean;
 }
 
 /**
@@ -199,6 +201,11 @@ export interface CodeBlockGraphicData {
 	 * Updated automatically when code changes.
 	 */
 	blockType: CodeBlockType;
+	/**
+	 * When true, the block is excluded from compilation and rendered with a transparent background.
+	 * Defaults to false.
+	 */
+	disabled: boolean;
 }
 
 /**

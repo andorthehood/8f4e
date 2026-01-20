@@ -19,7 +19,9 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	modules: { code: string[] }[];
 	functions: { code: string[] }[];
 } {
-	const allBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
+	const allBlocks = [...codeBlocks]
+		.filter(block => !block.disabled)
+		.sort((a, b) => a.creationIndex - b.creationIndex);
 
 	return {
 		modules: allBlocks.filter(block => block.blockType === 'module' || block.blockType === 'constants'),

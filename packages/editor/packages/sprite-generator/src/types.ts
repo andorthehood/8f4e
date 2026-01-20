@@ -41,6 +41,7 @@ export interface ColorScheme {
 		backgroundDots2: string;
 		moduleBackground: string;
 		moduleBackgroundDragged: string;
+		moduleBackgroundDisabled: string;
 		wire: string;
 		wireHighlighted: string;
 		errorMessageBackground: string;

@@ -17,7 +17,7 @@ export interface ConfigBlockSource {
  */
 export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): ConfigBlockSource[] {
 	return codeBlocks
-		.filter(block => block.blockType === 'config')
+		.filter(block => block.blockType === 'config' && !block.disabled)
 		.sort((a, b) => a.creationIndex - b.creationIndex)
 		.map(block => {
 			const body = extractConfigBody(block.code);
