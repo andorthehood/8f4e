@@ -13,13 +13,13 @@ export default function drawer(
 		return;
 	}
 
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.plotter);
+	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
 	for (const { x, y, width, height, buffer, pointer } of codeBlock.extras.bufferScanners) {
 		engine.startGroup(x, y);
 
 		// Get the buffer length
-		const bufferLength = buffer.memory.wordAlignedSize;
+		const bufferLength = buffer.memory.numberOfElements;
 
 		// Read the pointer value
 		const pointerValue = memoryViews.int32[pointer.memory.wordAlignedAddress + pointer.bufferPointer];
@@ -36,7 +36,7 @@ export default function drawer(
 
 		// Draw the scanline using plotter sprite (sprite 0 is at the bottom of the plotter sprite sheet)
 		// We use sprite 0 and draw it with the full height to create a vertical line
-		engine.drawSprite(scanlineX, 0, 0, scanlineWidth, height);
+		engine.drawSprite(scanlineX, 0, 'wire', scanlineWidth, height);
 
 		engine.endGroup();
 	}
