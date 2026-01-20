@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { error, log } from '../logger/logger';
+import debounceTrailing from '../../pureHelpers/debounceTrailing';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
@@ -28,8 +29,12 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 
 export default async function compiler(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
+	const RECOMPILE_DEBOUNCE_DELAY = 500;
+	const scheduleRecompile = debounceTrailing(onRecompile, RECOMPILE_DEBOUNCE_DELAY);
 
 	async function onForceCompile() {
+		scheduleRecompile.cancel();
+
 		const { modules, functions } = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
 
 		store.set('compiler.isCompiling', true);
@@ -61,12 +66,16 @@ export default async function compiler(store: StateManager<State>, events: Event
 			if (result.memoryAction.action === 'recreated') {
 				log(state, 'WASM Memory instance was (re)created', 'Compiler');
 				log(state, 'Memory was (re)initialized', 'Compiler');
-				events.dispatch('loadBinaryFilesIntoMemory');
+				store.set('compiler.hasMemoryBeenReinitialized', true);
+			} else {
+				store.set('compiler.hasMemoryBeenReinitialized', false);
 			}
 
 			log(state, 'Compilation succeeded in ' + state.compiler.compilationTime.toFixed(2) + 'ms', 'Compiler');
 			console.log('[Compiler] Compilation succeeded with config:', compilerOptions);
 		} catch (error) {
+			log(state, 'Compilation failed', 'Compiler');
+
 			store.set('compiler.isCompiling', false);
 			const errorObject = error as Error & {
 				line?: { lineNumber: number };
@@ -86,7 +95,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 	function onRecompile() {
 		store.set('codeErrors.compilationErrors', []);
-		state.binaryAssets = state.initialProjectState?.binaryAssets || [];
 
 		if (
 			state.initialProjectState?.memorySnapshot &&
@@ -132,23 +140,25 @@ export default async function compiler(store: StateManager<State>, events: Event
 	}
 
 	events.on('compileCode', onForceCompile);
-	store.subscribe('compiledConfig', onRecompile);
+	store.subscribe('compiledConfig', scheduleRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&
-			state.graphicHelper.selectedCodeBlock?.blockType !== 'function'
+			state.graphicHelper.selectedCodeBlock?.blockType !== 'function' &&
+			state.graphicHelper.selectedCodeBlock?.blockType !== 'constants'
 		) {
 			return;
 		}
-		onRecompile();
+		scheduleRecompile();
 	});
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
 		if (
 			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'module' &&
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'function'
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'function' &&
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'constants'
 		) {
 			return;
 		}
-		onRecompile();
+		scheduleRecompile();
 	});
 }
