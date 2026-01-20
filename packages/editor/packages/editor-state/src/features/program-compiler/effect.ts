@@ -19,7 +19,7 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {
 	modules: { code: string[] }[];
 	functions: { code: string[] }[];
 } {
-	const allBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
+	const allBlocks = [...codeBlocks].filter(block => !block.disabled).sort((a, b) => a.creationIndex - b.creationIndex);
 
 	return {
 		modules: allBlocks.filter(block => block.blockType === 'module' || block.blockType === 'constants'),
@@ -142,6 +142,10 @@ export default async function compiler(store: StateManager<State>, events: Event
 	events.on('compileCode', onForceCompile);
 	store.subscribe('compiledConfig', scheduleRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
+		if (state.graphicHelper.selectedCodeBlock?.disabled) {
+			return;
+		}
+
 		if (
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'module' &&
 			state.graphicHelper.selectedCodeBlock?.blockType !== 'function' &&
