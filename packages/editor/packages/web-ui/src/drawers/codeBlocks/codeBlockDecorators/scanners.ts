@@ -33,8 +33,9 @@ export default function drawer(
 		// Calculate x position within the scanner width
 		const scanlineX = Math.floor((clampedIndex / Math.max(bufferLength - 1, 1)) * (width - scanlineWidth));
 
-		// Draw the scanline using plotter trace color
-		engine.drawSprite(scanlineX, 0, 'plotterTrace', scanlineWidth, height);
+		// Draw the scanline using plotter sprite (sprite 0 is at the bottom of the plotter sprite sheet)
+		// We use sprite 0 and draw it with the full height to create a vertical line
+		engine.drawSprite(scanlineX, 0, 0, scanlineWidth, height);
 
 		engine.endGroup();
 	}
