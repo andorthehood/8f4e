@@ -77,7 +77,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 					engine.setSpriteLookup(spriteLookups.fontCode);
 
 					if (codeBlock.disabled) {
-						engine.setSpriteLookup(spriteLookups.fontLineNumber);
+						engine.setSpriteLookup(spriteLookups.fontDisabledCode);
 					}
 
 					for (let i = 0; i < codeBlock.codeToRender.length; i++) {

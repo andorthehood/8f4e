@@ -23,6 +23,7 @@ const defaultColorScheme = {
 		instruction: 'rgba(136,126,203,255)',
 		codeComment: 'rgba(102,102,102,255)',
 		code: 'rgba(255,255,255,255)',
+		disabledCode: 'rgba(0,0,0,0.5)',
 		numbers: 'rgba(201,212,135,255)',
 		menuItemText: 'rgba(255,255,255,255)',
 		menuItemTextHighlighted: 'rgba(0,0,0,255)',
