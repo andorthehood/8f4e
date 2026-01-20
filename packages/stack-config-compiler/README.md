@@ -69,6 +69,7 @@ See [`docs/brainstorming_notes/013-stack-oriented-config-language.md`](../../doc
 | `rescope <path>` | Replace the entire scope stack with new path segments |
 | `rescopeSuffix <path>` | Replace the trailing suffix of the scope stack with new path segments |
 | `popScope` | Pop one segment from the scope stack |
+| `clearScope` | Clear the entire scope stack (reset to root) |
 
 ### Literals
 
@@ -115,6 +116,42 @@ set
 ```
 
 This is useful for transforming related paths without losing the common prefix, making config programs more composable and readable.
+
+### Clearing Scope
+
+The `clearScope` command resets the scope stack to root (empty), discarding all scope segments. This is useful when you want to explicitly move from a deeply nested scope back to the root level. It's equivalent to `rescope ""` but more explicit about the intent.
+
+```
+; clearScope example
+scope "instrument.piano.name"
+push "Grand Piano"
+set
+
+clearScope ; Reset to root
+
+scope "instrument.harp.name"
+push "Celtic Harp"
+set
+; Result: { instrument: { piano: { name: "Grand Piano" }, harp: { name: "Celtic Harp" } } }
+```
+
+**Constant behavior:** The `clearScope` command also clears all scope-specific constants, keeping only root-level constants:
+
+```
+const GLOBAL "global value"
+
+scope "first"
+const LOCAL "local to first"
+push LOCAL
+set
+
+clearScope ; Clears LOCAL constant
+
+scope "second"
+push GLOBAL ; OK: root constant still available
+set
+; Result: { first: "local to first", second: "global value" }
+```
 
 ### String Concatenation
 
