@@ -16,7 +16,7 @@ export default function updateBufferScannersGraphicData(graphicData: CodeBlockGr
 		}
 
 		graphicData.extras.bufferScanners.push({
-			width: graphicData.width,
+			width: graphicData.width - (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 			height: state.viewport.hGrid * 2,
 			x: (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid,
 			y: (gapCalculator(scanner.lineNumber, graphicData.gaps) + 1) * state.viewport.hGrid,
