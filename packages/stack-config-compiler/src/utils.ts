@@ -2,13 +2,14 @@
  * Shared utilities for the stack config compiler
  */
 
-/** Regex to split path into segments (handles dot notation and array indices) */
-export const PATH_SEGMENT_REGEX = /([^.[\]]+|\[\d+\])/g;
+/** Regex to split path into segments (handles dot notation, array indices, and append slots) */
+export const PATH_SEGMENT_REGEX = /([^.[\]]+|\[\d*\])/g;
 
 /**
  * Splits a path string into segments
  * Examples: "foo.bar" -> ["foo", "bar"]
  *           "foo[0].bar" -> ["foo", "[0]", "bar"]
+ *           "foo[].bar" -> ["foo", "[]", "bar"]
  */
 export function splitPathSegments(path: string): string[] {
 	const segments = path.match(PATH_SEGMENT_REGEX) || [];
@@ -41,6 +42,18 @@ if (import.meta.vitest) {
 
 		it('should handle deeply nested path', () => {
 			expect(splitPathSegments('a.b.c.d')).toEqual(['a', 'b', 'c', 'd']);
+		});
+
+		it('should handle empty brackets (append slot)', () => {
+			expect(splitPathSegments('items[]')).toEqual(['items', '[]']);
+		});
+
+		it('should handle append slot with property', () => {
+			expect(splitPathSegments('items[].name')).toEqual(['items', '[]', 'name']);
+		});
+
+		it('should handle multiple append slots', () => {
+			expect(splitPathSegments('a[][].b')).toEqual(['a', '[]', '[]', 'b']);
 		});
 	});
 }
