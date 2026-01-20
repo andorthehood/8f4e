@@ -14,6 +14,7 @@ const VALID_COMMANDS = new Set<CommandType>([
 	'rescope',
 	'rescopeSuffix',
 	'popScope',
+	'clearScope',
 	'const',
 ]);
 
@@ -369,6 +370,20 @@ if (import.meta.vitest) {
 			expect(parseLine('push VALUE1', 1)).toEqual({
 				type: 'push',
 				identifier: 'VALUE1',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse clearScope command', () => {
+			expect(parseLine('clearScope', 1)).toEqual({
+				type: 'clearScope',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse clearScope with trailing comment', () => {
+			expect(parseLine('clearScope ; reset to root', 1)).toEqual({
+				type: 'clearScope',
 				lineNumber: 1,
 			});
 		});
