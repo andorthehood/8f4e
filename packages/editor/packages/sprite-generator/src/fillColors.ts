@@ -12,6 +12,7 @@ const fillColors: Array<keyof ColorScheme['fill']> = [
 	'backgroundDots',
 	'moduleBackground',
 	'moduleBackgroundDragged',
+	'moduleBackgroundDisabled',
 	'wire',
 	'wireHighlighted',
 	'errorMessageBackground',

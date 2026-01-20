@@ -16,12 +16,20 @@ export const moduleMenu: MenuGenerator = state => {
 		blockLabel = 'fragment shader';
 	}
 
+	const isDisabled = state.graphicHelper.selectedCodeBlock?.disabled ?? false;
+
 	return [
 		...(state.featureFlags.editing
 			? [
 					{
 						title: `Delete ${blockLabel}`,
 						action: 'deleteCodeBlock',
+						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+						close: true,
+					},
+					{
+						title: isDisabled ? `Enable ${blockLabel}` : `Disable ${blockLabel}`,
+						action: 'toggleCodeBlockDisabled',
 						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 						close: true,
 					},

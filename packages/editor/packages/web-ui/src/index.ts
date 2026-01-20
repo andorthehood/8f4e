@@ -9,7 +9,6 @@ import drawInfoOverlay from './drawers/infoOverlay';
 import drawConsoleOverlay from './drawers/consoleOverlay';
 import drawBackground from './drawers/drawBackground';
 import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
-import drawAssetOverlay from './drawers/assetOverlay';
 
 import type { State } from '@8f4e/editor-state';
 import type { MemoryViews } from './types';
@@ -59,9 +58,6 @@ export default async function init(
 		state.viewport.y = effectiveViewport.y;
 
 		drawBackground(engine, state);
-		if (state.featureFlags.assetOverlay) {
-			drawAssetOverlay(engine, state);
-		}
 		if (state.featureFlags.consoleOverlay) {
 			drawConsoleOverlay(engine, state);
 		}
