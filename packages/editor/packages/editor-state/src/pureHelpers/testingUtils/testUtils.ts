@@ -106,6 +106,7 @@ export function createMockCodeBlock(
 		lastUpdated: Date.now(),
 		creationIndex: 0,
 		blockType: 'unknown',
+		disabled: false,
 		extras: {
 			blockHighlights: [],
 			inputs: [],
@@ -262,7 +263,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			viewportAnimations: true,
 			demoMode: false,
 			consoleOverlay: false,
-			assetOverlay: true,
 		},
 		colorSchemes: [],
 		historyStack: [],

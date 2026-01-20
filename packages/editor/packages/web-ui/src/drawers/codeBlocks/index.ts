@@ -53,6 +53,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 
 					if (codeBlock === state.graphicHelper.draggedCodeBlock) {
 						engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
+					} else if (codeBlock.disabled) {
+						engine.drawSprite(0, 0, 'moduleBackgroundDisabled', codeBlock.width, codeBlock.height);
 					} else {
 						engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
 					}
@@ -74,10 +76,14 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 
 					engine.setSpriteLookup(spriteLookups.fontCode);
 
+					if (codeBlock.disabled) {
+						engine.setSpriteLookup(spriteLookups.fontDisabledCode);
+					}
+
 					for (let i = 0; i < codeBlock.codeToRender.length; i++) {
 						for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
 							const lookup = codeBlock.codeColors[i][j];
-							if (lookup) {
+							if (!codeBlock.disabled && lookup) {
 								engine.setSpriteLookup(lookup);
 							}
 							if (codeBlock.codeToRender[i][j] !== 32) {
