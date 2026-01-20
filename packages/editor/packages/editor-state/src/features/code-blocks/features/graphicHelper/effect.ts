@@ -189,7 +189,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				lastUpdated: Date.now(),
 				creationIndex,
 				blockType: getBlockType(codeBlock.code),
-				disabled: codeBlock.disabled ?? false,
+				disabled: codeBlock.disabled || false,
 			} as CodeBlockGraphicData;
 		});
 
