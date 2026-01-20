@@ -26,6 +26,7 @@ export default function createDefaultState() {
 			allocatedMemorySize: 0,
 			compiledModules: {},
 			byteCodeSize: 0,
+			hasMemoryBeenReinitialized: false,
 		},
 		midi: {
 			inputs: [],

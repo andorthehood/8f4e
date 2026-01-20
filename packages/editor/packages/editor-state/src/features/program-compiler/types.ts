@@ -16,6 +16,7 @@ export interface Compiler {
 	compiledModules: CompiledModuleLookup;
 	allocatedMemorySize: number;
 	compiledFunctions?: CompiledFunctionLookup;
+	hasMemoryBeenReinitialized: boolean;
 }
 
 /**
