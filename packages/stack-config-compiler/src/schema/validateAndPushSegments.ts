@@ -44,6 +44,11 @@ export default function validateAndPushSegments(state: VMState, segments: string
 				for (const seg of pathSegments) {
 					if (seg.startsWith('[') && seg.endsWith(']')) {
 						const index = parseInt(seg.slice(1, -1), 10);
+						if (Number.isNaN(index)) {
+							// Invalid array index
+							current = undefined;
+							break;
+						}
 						if (Array.isArray(current)) {
 							current = current[index];
 						} else {
