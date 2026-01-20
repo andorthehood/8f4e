@@ -28,7 +28,7 @@ export const moduleMenu: MenuGenerator = state => {
 						close: true,
 					},
 					{
-						title: isDisabled ? `Enable module` : `Disable module`,
+						title: isDisabled ? `Enable ${blockLabel}` : `Disable ${blockLabel}`,
 						action: 'toggleCodeBlockDisabled',
 						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 						close: true,
