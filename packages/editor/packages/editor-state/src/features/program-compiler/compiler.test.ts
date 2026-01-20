@@ -77,4 +77,70 @@ describe('flattenProjectForCompiler', () => {
 		expect(result.modules).toHaveLength(0);
 		expect(result.functions).toHaveLength(0);
 	});
+
+	it('should exclude disabled modules from compilation', () => {
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
+			{
+				code: ['module enabled', 'moduleEnd'],
+				blockType: 'module',
+				creationIndex: 0,
+				disabled: false,
+			} as CodeBlockGraphicData,
+			{
+				code: ['module disabled', 'moduleEnd'],
+				blockType: 'module',
+				creationIndex: 1,
+				disabled: true,
+			} as CodeBlockGraphicData,
+		];
+
+		const result = flattenProjectForCompiler(mockCodeBlocks);
+
+		expect(result.modules).toHaveLength(1);
+		expect(result.modules[0].code).toEqual(['module enabled', 'moduleEnd']);
+	});
+
+	it('should exclude disabled functions from compilation', () => {
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
+			{
+				code: ['function enabled', 'functionEnd'],
+				blockType: 'function',
+				creationIndex: 0,
+				disabled: false,
+			} as CodeBlockGraphicData,
+			{
+				code: ['function disabled', 'functionEnd'],
+				blockType: 'function',
+				creationIndex: 1,
+				disabled: true,
+			} as CodeBlockGraphicData,
+		];
+
+		const result = flattenProjectForCompiler(mockCodeBlocks);
+
+		expect(result.functions).toHaveLength(1);
+		expect(result.functions[0].code).toEqual(['function enabled', 'functionEnd']);
+	});
+
+	it('should exclude disabled constants from compilation', () => {
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
+			{
+				code: ['constants enabled', 'constantsEnd'],
+				blockType: 'constants',
+				creationIndex: 0,
+				disabled: false,
+			} as CodeBlockGraphicData,
+			{
+				code: ['constants disabled', 'constantsEnd'],
+				blockType: 'constants',
+				creationIndex: 1,
+				disabled: true,
+			} as CodeBlockGraphicData,
+		];
+
+		const result = flattenProjectForCompiler(mockCodeBlocks);
+
+		expect(result.modules).toHaveLength(1);
+		expect(result.modules[0].code).toEqual(['constants enabled', 'constantsEnd']);
+	});
 });
