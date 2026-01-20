@@ -52,7 +52,9 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 	}
 
 	async function onLoadBinaryFilesIntoMemory() {
-		if (!state.compiler.hasMemoryBeenReinitialized || state.binaryAssets.some(asset => !asset.loadedIntoMemory)) {
+		const allOfTheAssetsHaveBeenLoaded = !state.binaryAssets.some(asset => !asset.loadedIntoMemory);
+
+		if (!state.compiler.hasMemoryBeenReinitialized && allOfTheAssetsHaveBeenLoaded) {
 			return;
 		}
 
@@ -78,7 +80,6 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 				asset.byteAddress = resolved.byteAddress;
 				asset.memoryByteLength = resolved.memoryByteLength;
 				await state.callbacks.loadBinaryAssetIntoMemory(asset);
-				console.log('idebelefut az kizart dolog');
 				asset.loadedIntoMemory = true;
 			} catch (error) {
 				console.error('Failed to load binary asset into memory:', asset.url, error);
