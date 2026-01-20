@@ -4,7 +4,6 @@
 
 import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { PostProcessEffect } from 'glugglug';
-import type { BinaryAsset } from '../binary-assets/types';
 import type { CodeBlock } from '../code-blocks/types';
 import type { ConfigObject } from '../config-compiler/types';
 import type { ProjectViewport } from '../viewport/types';
@@ -16,7 +15,6 @@ export interface Project {
 	codeBlocks: CodeBlock[];
 	/** Viewport position using grid coordinates for persistent storage */
 	viewport: ProjectViewport;
-	binaryAssets?: BinaryAsset[];
 	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
 	compiledWasm?: string;
 	compiledModules?: CompiledModuleLookup;
@@ -36,7 +34,6 @@ export const EMPTY_DEFAULT_PROJECT: Project = {
 	viewport: {
 		gridCoordinates: { x: 0, y: 0 },
 	},
-	binaryAssets: [],
 };
 
 /**
