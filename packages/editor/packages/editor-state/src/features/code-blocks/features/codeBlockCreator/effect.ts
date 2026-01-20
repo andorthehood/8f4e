@@ -191,6 +191,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			offsetY: 0,
 			creationIndex,
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
+			disabled: false,
 		};
 
 		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks, codeBlock]);
@@ -215,6 +216,19 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				return undefined;
 			});
 		}
+	}
+
+	function onToggleCodeBlockDisabled({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
+		if (!state.featureFlags.editing) {
+			return;
+		}
+
+		// Toggle disabled state
+		codeBlock.disabled = !codeBlock.disabled;
+		// Update lastUpdated to invalidate cache
+		codeBlock.lastUpdated = Date.now();
+		// Trigger store update to re-render
+		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks]);
 	}
 
 	async function onAddCodeBlockBySlug({
@@ -256,4 +270,5 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 	events.on('addCodeBlock', onAddCodeBlock);
 	events.on('copyCodeBlock', onCopyCodeBlock);
 	events.on('deleteCodeBlock', onDeleteCodeBlock);
+	events.on('toggleCodeBlockDisabled', onToggleCodeBlockDisabled);
 }

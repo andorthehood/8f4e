@@ -26,6 +26,7 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 				x: codeBlock.gridX,
 				y: codeBlock.gridY,
 			},
+			...(codeBlock.disabled && { disabled: codeBlock.disabled }),
 		}));
 }
 
