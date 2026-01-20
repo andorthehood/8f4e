@@ -106,6 +106,7 @@ export function createMockCodeBlock(
 		lastUpdated: Date.now(),
 		creationIndex: 0,
 		blockType: 'unknown',
+		disabled: false,
 		extras: {
 			blockHighlights: [],
 			inputs: [],

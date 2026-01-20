@@ -25,6 +25,7 @@ export const minimalColorScheme: ColorScheme = {
 		backgroundDots2: '#333333',
 		moduleBackground: '#000000',
 		moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
+		moduleBackgroundDisabled: 'rgba(0,0,0,0)',
 		wire: '#ffffff',
 		wireHighlighted: '#ffffff',
 		errorMessageBackground: '#ff0000',

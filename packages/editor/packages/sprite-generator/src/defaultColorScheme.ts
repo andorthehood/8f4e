@@ -25,6 +25,7 @@ const defaultColorScheme: ColorScheme = {
 		backgroundDots2: '#444444',
 		moduleBackground: '#000000',
 		moduleBackgroundDragged: 'rgba(0,0,0,0.8)',
+		moduleBackgroundDisabled: 'rgba(0,0,0,0)',
 		wire: '#ffffff',
 		wireHighlighted: '#ffffff',
 		errorMessageBackground: '#cc0000',
