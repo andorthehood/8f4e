@@ -68,12 +68,14 @@ describe('disableAutoCompilation feature', () => {
 
 	describe('Project compilation', () => {
 		it('should skip compilation when disableAutoCompilation is true', async () => {
+			vi.useFakeTimers();
 			store.set('compiledConfig.disableAutoCompilation', true);
 
 			compiler(store, mockEvents);
 
 			store.set('compiledConfig', { ...mockState.compiledConfig, disableAutoCompilation: true });
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
 			expect(mockCompileCode).not.toHaveBeenCalled();
 			expect(mockState.compiler.isCompiling).toBe(false);
@@ -88,17 +90,20 @@ describe('disableAutoCompilation feature', () => {
 		});
 
 		it('should compile normally when disableAutoCompilation is false', async () => {
+			vi.useFakeTimers();
 			store.set('compiledConfig.disableAutoCompilation', false);
 
 			compiler(store, mockEvents);
 
 			store.set('compiledConfig', { ...mockState.compiledConfig, disableAutoCompilation: false });
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
 			expect(mockCompileCode).toHaveBeenCalled();
 		});
 
 		it('should prioritize disableAutoCompilation check over pre-compiled WASM check', async () => {
+			vi.useFakeTimers();
 			mockState.callbacks.compileCode = undefined;
 			const compiledModules = { mod: {} };
 			store.set('compiledConfig.disableAutoCompilation', true);
@@ -111,7 +116,8 @@ describe('disableAutoCompilation feature', () => {
 			compiler(store, mockEvents);
 
 			store.set('compiledConfig', { ...mockState.compiledConfig, disableAutoCompilation: true });
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
 			expect(
 				mockState.console.logs.some(
@@ -170,7 +176,6 @@ describe('disableAutoCompilation feature', () => {
 				selectedRuntime: 1,
 				runtimeSettings: [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }],
 				disableAutoCompilation: false,
-				binaryAssets: [],
 			};
 
 			const result = await compileConfigForExport(mockState);

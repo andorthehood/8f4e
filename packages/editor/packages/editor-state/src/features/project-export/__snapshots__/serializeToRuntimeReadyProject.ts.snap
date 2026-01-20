@@ -2,7 +2,6 @@
 
 exports[`serializeToRuntimeReadyProject > omits compiled config when no config blocks are present 1`] = `
 {
-  "binaryAssets": [],
   "codeBlocks": [],
   "compiledConfig": {
     "binaryAssets": [],
@@ -28,7 +27,6 @@ exports[`serializeToRuntimeReadyProject > omits compiled config when no config b
 
 exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with compiled config 1`] = `
 {
-  "binaryAssets": [],
   "codeBlocks": [
     {
       "code": [
