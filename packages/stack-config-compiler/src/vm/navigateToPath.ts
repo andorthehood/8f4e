@@ -24,6 +24,9 @@ export default function navigateToPath(
 		if (isArrayAppendSlot(segment)) {
 			// Append slot: create a new element in the current array
 			const arr = current as unknown[];
+			if (!Array.isArray(arr)) {
+				return null; // Type error: trying to use [] on non-array
+			}
 			const newIndex = arr.length;
 			arr[newIndex] = isNextArray ? [] : {};
 			current = arr[newIndex] as Record<string, unknown> | unknown[];
@@ -59,6 +62,9 @@ export default function navigateToPath(
 	if (isArrayAppendSlot(lastSegment)) {
 		// For append slot as the final segment, return the array itself with a special marker
 		// The calling code will need to append to this array
+		if (!Array.isArray(current)) {
+			return null; // Type error: trying to use [] on non-array
+		}
 		const arr = current as unknown[];
 		return { parent: arr, key: arr.length };
 	}
