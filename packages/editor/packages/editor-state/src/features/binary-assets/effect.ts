@@ -1,3 +1,5 @@
+import { info } from '../logger/logger';
+
 import type { StateManager } from '@8f4e/state-manager';
 import type { State, EventDispatcher } from '~/types';
 
@@ -11,6 +13,8 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 			console.warn('Missing required callback: fetchBinaryAssets');
 			return;
 		}
+
+		info(state, 'Fetching binary assets...', 'BinaryAssets');
 
 		const assets = state.compiledConfig.binaryAssets || [];
 		const uniqueUrls: string[] = [];
@@ -39,6 +43,8 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 				})
 				.filter((asset): asset is NonNullable<typeof asset> => asset !== null);
 
+			info(state, 'Binary assets fetched successfully', 'BinaryAssets');
+
 			store.set('binaryAssets', nextAssets);
 		} catch (error) {
 			console.error('Failed to fetch binary assets:', error);
@@ -46,6 +52,12 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 	}
 
 	async function onLoadBinaryFilesIntoMemory() {
+		if (!state.compiler.hasMemoryBeenReinitialized || state.binaryAssets.some(asset => !asset.loadedIntoMemory)) {
+			return;
+		}
+
+		info(state, 'Loading binary assets into memory...', 'BinaryAssets');
+
 		if (!state.callbacks.loadBinaryAssetIntoMemory) {
 			console.warn('Missing required callback: loadBinaryAssetIntoMemory');
 			return;
@@ -66,6 +78,7 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 				asset.byteAddress = resolved.byteAddress;
 				asset.memoryByteLength = resolved.memoryByteLength;
 				await state.callbacks.loadBinaryAssetIntoMemory(asset);
+				console.log('idebelefut az kizart dolog');
 				asset.loadedIntoMemory = true;
 			} catch (error) {
 				console.error('Failed to load binary asset into memory:', asset.url, error);
@@ -87,12 +100,12 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 	}
 
 	store.subscribe('compiledConfig', fetchAssetsForConfig);
-	events.on('loadBinaryFilesIntoMemory', onLoadBinaryFilesIntoMemory);
+	store.subscribe('compiler.hasMemoryBeenReinitialized', onLoadBinaryFilesIntoMemory);
 	events.on('clearBinaryAssetCache', onClearBinaryAssetCache);
 
 	return () => {
 		store.unsubscribe('compiledConfig', fetchAssetsForConfig);
-		events.off('loadBinaryFilesIntoMemory', onLoadBinaryFilesIntoMemory);
+		store.unsubscribe('compiler.hasMemoryBeenReinitialized', onLoadBinaryFilesIntoMemory);
 		events.off('clearBinaryAssetCache', onClearBinaryAssetCache);
 	};
 }
