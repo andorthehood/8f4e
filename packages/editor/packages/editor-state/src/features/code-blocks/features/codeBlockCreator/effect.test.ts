@@ -472,3 +472,98 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 		});
 	});
 });
+
+describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
+	let mockState: State;
+	let store: ReturnType<typeof createStateManager<State>>;
+	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
+
+	beforeEach(() => {
+		mockState = createMockState();
+		store = createStateManager(mockState);
+		mockEvents = createMockEventDispatcherWithVitest();
+	});
+
+	it('should toggle disabled state from false to true', () => {
+		const codeBlock = createMockCodeBlock({ disabled: false });
+		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.featureFlags.editing = true;
+
+		codeBlockCreator(store, mockEvents);
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const toggleCall = onCalls.find(call => call[0] === 'toggleCodeBlockDisabled');
+		expect(toggleCall).toBeDefined();
+
+		const toggleCallback = toggleCall![1];
+		toggleCallback({ codeBlock });
+
+		expect(codeBlock.disabled).toBe(true);
+	});
+
+	it('should toggle disabled state from true to false', () => {
+		const codeBlock = createMockCodeBlock({ disabled: true });
+		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.featureFlags.editing = true;
+
+		codeBlockCreator(store, mockEvents);
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const toggleCall = onCalls.find(call => call[0] === 'toggleCodeBlockDisabled');
+		const toggleCallback = toggleCall![1];
+
+		toggleCallback({ codeBlock });
+
+		expect(codeBlock.disabled).toBe(false);
+	});
+
+	it('should update lastUpdated for cache invalidation', () => {
+		const codeBlock = createMockCodeBlock({ disabled: false, lastUpdated: 1000 });
+		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.featureFlags.editing = true;
+
+		codeBlockCreator(store, mockEvents);
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const toggleCall = onCalls.find(call => call[0] === 'toggleCodeBlockDisabled');
+		const toggleCallback = toggleCall![1];
+
+		toggleCallback({ codeBlock });
+
+		expect(codeBlock.lastUpdated).toBeGreaterThan(1000);
+	});
+
+	it('should trigger store update', () => {
+		const codeBlock = createMockCodeBlock({ disabled: false });
+		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.featureFlags.editing = true;
+
+		codeBlockCreator(store, mockEvents);
+
+		const setSpy = vi.spyOn(store, 'set');
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const toggleCall = onCalls.find(call => call[0] === 'toggleCodeBlockDisabled');
+		const toggleCallback = toggleCall![1];
+
+		toggleCallback({ codeBlock });
+
+		expect(setSpy).toHaveBeenCalledWith('graphicHelper.codeBlocks', expect.any(Array));
+	});
+
+	it('should not toggle when editing is disabled', () => {
+		const codeBlock = createMockCodeBlock({ disabled: false });
+		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.featureFlags.editing = false;
+
+		codeBlockCreator(store, mockEvents);
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const toggleCall = onCalls.find(call => call[0] === 'toggleCodeBlockDisabled');
+		const toggleCallback = toggleCall![1];
+
+		toggleCallback({ codeBlock });
+
+		expect(codeBlock.disabled).toBe(false);
+	});
+});

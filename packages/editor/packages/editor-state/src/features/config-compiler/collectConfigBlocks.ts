@@ -17,7 +17,7 @@ export interface ConfigBlockSource {
  */
 export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): ConfigBlockSource[] {
 	return codeBlocks
-		.filter(block => block.blockType === 'config')
+		.filter(block => block.blockType === 'config' && !block.disabled)
 		.sort((a, b) => a.creationIndex - b.creationIndex)
 		.map(block => {
 			const body = extractConfigBody(block.code);
@@ -121,6 +121,27 @@ if (import.meta.vitest) {
 			const result = collectConfigBlocks(codeBlocks);
 			expect(result).toHaveLength(1);
 			expect(result[0].source).toBe('push 1');
+		});
+
+		it('should skip disabled config blocks', () => {
+			const enabledBlock = createMockCodeBlock({
+				code: ['config', 'push enabled', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 0,
+				disabled: false,
+			});
+			const disabledBlock = createMockCodeBlock({
+				code: ['config', 'push disabled', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 1,
+				disabled: true,
+			});
+			const codeBlocks = [enabledBlock, disabledBlock];
+
+			const result = collectConfigBlocks(codeBlocks);
+			expect(result).toHaveLength(1);
+			expect(result[0].source).toBe('push enabled');
+			expect(result[0].block).toBe(enabledBlock);
 		});
 	});
 }
