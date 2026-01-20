@@ -28,6 +28,7 @@ export default {
 		highlightedCodeLine: '#660000',
 		plotterBackground: '#220000',
 		plotterTrace: '#ffffff',
+		scanLine: '#ff0000',
 		codeBlockHighlightLevel1: '#330000',
 		codeBlockHighlightLevel2: '#440000',
 		codeBlockHighlightLevel3: '#550000',
