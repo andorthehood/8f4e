@@ -24,7 +24,6 @@ export const defaultFeatureFlags = {
 	demoMode: false,
 	historyTracking: true,
 	consoleOverlay: true,
-	assetOverlay: true,
 };
 
 /**

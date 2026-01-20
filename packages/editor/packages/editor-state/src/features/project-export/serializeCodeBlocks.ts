@@ -26,6 +26,7 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 				x: codeBlock.gridX,
 				y: codeBlock.gridY,
 			},
+			...(codeBlock.disabled && { disabled: codeBlock.disabled }),
 		}));
 }
 
@@ -50,6 +51,22 @@ if (import.meta.vitest) {
 			const result = convertGraphicDataToProjectStructure(blocks);
 
 			expect(result[0].gridCoordinates).toEqual({ x: 5, y: 7 });
+		});
+
+		it('includes disabled field when block is disabled', () => {
+			const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ id: 'disabled', code: ['code'], disabled: true })];
+
+			const result = convertGraphicDataToProjectStructure(blocks);
+
+			expect(result[0].disabled).toBe(true);
+		});
+
+		it('omits disabled field when block is not disabled', () => {
+			const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ id: 'enabled', code: ['code'], disabled: false })];
+
+			const result = convertGraphicDataToProjectStructure(blocks);
+
+			expect(result[0].disabled).toBeUndefined();
 		});
 	});
 }

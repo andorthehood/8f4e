@@ -25,6 +25,7 @@ export interface ColorScheme {
 		instruction: string;
 		codeComment: string;
 		code: string;
+		disabledCode: string;
 		numbers: string;
 		menuItemText: string;
 		menuItemTextHighlighted: string;
@@ -41,6 +42,7 @@ export interface ColorScheme {
 		backgroundDots2: string;
 		moduleBackground: string;
 		moduleBackgroundDragged: string;
+		moduleBackgroundDisabled: string;
 		wire: string;
 		wireHighlighted: string;
 		errorMessageBackground: string;

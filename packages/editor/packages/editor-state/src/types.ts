@@ -147,9 +147,6 @@ export interface FeatureFlags {
 
 	/** Enable/disable console overlay display (internal logging) */
 	consoleOverlay: boolean;
-
-	/** Enable/disable asset overlay display (binary assets information) */
-	assetOverlay: boolean;
 }
 
 /**
