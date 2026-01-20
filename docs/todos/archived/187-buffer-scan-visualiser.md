@@ -1,3 +1,12 @@
+---
+title: 'TODO: Buffer Scan Visualiser'
+priority: Medium
+effort: 1-2h
+created: 2026-01-20
+status: Completed
+completed: 2026-01-20
+---
+
 # Buffer Scan Visualiser
 
 ## Summary
