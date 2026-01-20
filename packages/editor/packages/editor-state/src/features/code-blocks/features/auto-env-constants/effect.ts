@@ -28,7 +28,7 @@ function generateEnvConstantsBlock(state: State): string[] {
 	lines.push('');
 
 	// Sample rate from runtime config
-	const sampleRate = state.compiledConfig.runtimeSettings[state.compiledConfig.selectedRuntime]?.sampleRate ?? 50;
+	const sampleRate = state.compiledConfig.runtimeSettings?.sampleRate ?? 50;
 	lines.push(`const SAMPLE_RATE ${sampleRate}`);
 
 	// Audio buffer size (hardcoded for now, matching current behavior)

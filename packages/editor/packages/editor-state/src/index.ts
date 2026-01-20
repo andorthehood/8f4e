@@ -47,7 +47,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 		defaultRuntimeId: options.defaultRuntimeId,
 		compiledConfig: {
 			...createDefaultState().compiledConfig,
-			runtimeSettings: [registryEntry.defaults as unknown as Runtimes],
+			runtimeSettings: registryEntry.defaults as unknown as Runtimes,
 		},
 	};
 

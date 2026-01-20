@@ -40,11 +40,7 @@ export function getConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLik
 		type: 'object',
 		properties: {
 			memorySizeBytes: { type: 'number' },
-			selectedRuntime: { type: 'number' },
-			runtimeSettings: {
-				type: 'array',
-				items: runtimeSettingsSchema,
-			},
+			runtimeSettings: runtimeSettingsSchema,
 			disableAutoCompilation: { type: 'boolean' },
 			binaryAssets: {
 				type: 'array',
