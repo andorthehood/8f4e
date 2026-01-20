@@ -2,7 +2,6 @@
 
 exports[`serializeToProject > includes compiled modules when requested 1`] = `
 {
-  "binaryAssets": [],
   "codeBlocks": [],
   "compiledModules": {
     "mod": {},
@@ -18,7 +17,6 @@ exports[`serializeToProject > includes compiled modules when requested 1`] = `
 
 exports[`serializeToProject > serializes basic project state without compiled data 1`] = `
 {
-  "binaryAssets": [],
   "codeBlocks": [
     {
       "code": [
