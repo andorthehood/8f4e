@@ -115,6 +115,7 @@ export function createMockCodeBlock(
 			buttons: [],
 			pianoKeyboards: [],
 			bufferPlotters: [],
+			bufferScanners: [],
 			errorMessages: [],
 		},
 	};
