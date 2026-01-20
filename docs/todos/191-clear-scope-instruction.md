@@ -3,8 +3,8 @@ title: 'TODO: Add clearScope Instruction to Stack Config Compiler'
 priority: Medium
 effort: 1-2h
 created: 2026-01-20
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-20
 ---
 
 # TODO: Add clearScope Instruction to Stack Config Compiler
