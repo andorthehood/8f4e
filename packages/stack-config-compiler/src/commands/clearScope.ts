@@ -7,9 +7,9 @@ import type { VMState } from '../types';
 
 export default function executeClearScope(state: VMState): string | null {
 	// Clear scope stack (reset to root)
-	state.scopeStack.splice(0);
+	state.scopeStack.length = 0;
 	// Keep only root constants (index 0), clear all scope-specific constants
-	state.constantsStack.splice(1);
+	state.constantsStack.length = 1;
 
 	return null;
 }
