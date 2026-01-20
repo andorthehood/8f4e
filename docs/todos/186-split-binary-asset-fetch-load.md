@@ -26,7 +26,7 @@ The URL is the asset identifier; the same URL may be loaded into multiple memory
 
 ### Step 1: Add new types and callbacks
 - Add `BinaryAssetMeta` with `url` (as the id), `fileName`, `mimeType`, `sizeBytes`, `isLoading`, `loadedIntoMemory`.
-- Add callbacks: `fetchBinaryAssets(urls: string[])` and `loadBinaryAssetIntoMemory(url: string, target: ResolvedBinaryAsset)`.
+- Add callbacks: `fetchBinaryAssets(urls: string[])` and `loadBinaryAssetIntoMemory(asset: BinaryAsset)`.
 - Deprecate or remove `loadBinaryFileIntoMemory` in editor-state types.
 
 ### Step 2: Update editor-state binary asset effect

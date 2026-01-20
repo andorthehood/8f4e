@@ -76,7 +76,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	graphicHelper(store, events);
 	codeEditing(store, events);
 	projectExport(store, events);
-	binaryAsset(state, events);
+	binaryAsset(store, events);
 	historyTracking(store, events);
 	dialog(store, events);
 	events.dispatch('init');
@@ -111,7 +111,6 @@ export type {
 	GraphicHelper,
 	BinaryAsset,
 	ConfigBinaryAsset,
-	ResolvedBinaryAsset,
 	Callbacks,
 	ExampleModule,
 	ModuleMetadata,
