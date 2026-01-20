@@ -22,6 +22,7 @@ export type CommandType =
 	| 'rescope'
 	| 'rescopeSuffix'
 	| 'popScope'
+	| 'clearScope'
 	| 'const';
 
 /**
