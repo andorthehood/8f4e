@@ -145,6 +145,7 @@ describe('projectImport', () => {
 		});
 
 		it('should clear compilation errors when loading a project', async () => {
+			vi.useFakeTimers();
 			projectImport(store, mockEvents);
 			configEffect(store, mockEvents);
 			compiler(store, mockEvents);
@@ -159,7 +160,8 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project: EMPTY_DEFAULT_PROJECT });
 			store.set('compiledConfig', { ...mockState.compiledConfig });
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
 			expect(mockState.codeErrors.compilationErrors).toEqual([]);
 		});
@@ -177,6 +179,7 @@ describe('projectImport', () => {
 		});
 
 		it('should load runtime-ready project with pre-compiled WASM', async () => {
+			vi.useFakeTimers();
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
 
@@ -191,9 +194,13 @@ describe('projectImport', () => {
 				memorySnapshot: 'AQAAAA==', // base64 for minimal Int32Array
 			};
 
+			await Promise.resolve();
+			await Promise.resolve();
+
 			loadProjectCallback({ project: runtimeReadyProject });
 			store.set('compiledConfig', { ...mockState.compiledConfig });
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
 			expect(
 				mockState.console.logs.some(
@@ -204,6 +211,7 @@ describe('projectImport', () => {
 		});
 
 		it('should ignore invalid memory snapshots without crashing', async () => {
+			vi.useFakeTimers();
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
 
@@ -220,7 +228,8 @@ describe('projectImport', () => {
 
 			loadProjectCallback({ project: invalidProject });
 			store.set('compiledConfig', { ...mockState.compiledConfig });
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
 			expect(consoleErrorSpy).not.toHaveBeenCalled();
 			expect(mockState.compiler.allocatedMemorySize).toBe(0);

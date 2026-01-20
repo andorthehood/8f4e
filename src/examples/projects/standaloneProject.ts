@@ -64,7 +64,6 @@ const standalonProject: Project = {
 			y: 4,
 		},
 	},
-	binaryAssets: [],
 	compiledModules: {
 		counter: {
 			id: 'counter',

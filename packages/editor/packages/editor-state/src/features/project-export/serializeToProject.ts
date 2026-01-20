@@ -29,7 +29,6 @@ export default function serializeToProject(
 				y: Math.round(state.viewport.y / state.viewport.hGrid),
 			},
 		},
-		binaryAssets: state.binaryAssets,
 		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
 		// postProcessEffects are now derived from shader code blocks and not persisted
 	};
