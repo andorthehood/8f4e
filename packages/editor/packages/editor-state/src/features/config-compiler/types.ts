@@ -27,8 +27,7 @@ export interface ConfigBinaryAsset {
  */
 export interface ConfigObject {
 	memorySizeBytes: number;
-	selectedRuntime: number;
-	runtimeSettings: Runtimes[];
+	runtimeSettings: Runtimes;
 	disableAutoCompilation: boolean;
 	binaryAssets: ConfigBinaryAsset[];
 }

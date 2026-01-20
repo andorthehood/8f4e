@@ -338,7 +338,6 @@ describe('projectImport', () => {
 				...EMPTY_DEFAULT_PROJECT,
 				compiledConfig: {
 					memorySizeBytes: 2097152,
-					selectedRuntime: 1,
 					disableAutoCompilation: true,
 					binaryAssets: [],
 				},
@@ -361,7 +360,6 @@ describe('projectImport', () => {
 
 			expect(mockState.compiledConfig).toEqual({
 				memorySizeBytes: 2097152,
-				selectedRuntime: 1,
 				disableAutoCompilation: true,
 				binaryAssets: [],
 			});
