@@ -16,6 +16,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -56,6 +57,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -96,6 +98,7 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -136,6 +139,7 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -176,6 +180,7 @@ exports[`createMockCodeBlock > default values > should create a block with defau
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -216,6 +221,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -256,6 +262,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -296,6 +303,7 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -336,6 +344,7 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -379,6 +388,7 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -419,6 +429,7 @@ exports[`createMockCodeBlock > override behavior > should override id and offset
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],
@@ -459,6 +470,7 @@ exports[`createMockCodeBlock > override behavior > should override position and 
   "extras": {
     "blockHighlights": [],
     "bufferPlotters": [],
+    "bufferScanners": [],
     "buttons": [],
     "debuggers": [],
     "errorMessages": [],

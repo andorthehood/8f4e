@@ -2,6 +2,7 @@ import { Engine } from 'glugglug';
 
 import drawConnectors from './codeBlockDecorators/connectors';
 import drawPlotters from './codeBlockDecorators/plotters';
+import drawScanners from './codeBlockDecorators/scanners';
 import drawDebuggers from './codeBlockDecorators/debuggers';
 import drawSwitches from './codeBlockDecorators/switches';
 import drawButtons from './codeBlockDecorators/buttons';
@@ -104,6 +105,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawButtons(engine, state, codeBlock, memoryViews);
 			drawConnectors(engine, state, codeBlock, memoryViews);
 			drawPlotters(engine, state, codeBlock, memoryViews);
+			drawScanners(engine, state, codeBlock, memoryViews);
 			drawDebuggers(engine, state, codeBlock, memoryViews);
 
 			engine.endGroup();
