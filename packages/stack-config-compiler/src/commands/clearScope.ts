@@ -5,11 +5,11 @@
 
 import type { VMState } from '../types';
 
-export default function executeClearScope(state: VMState): null {
+export default function executeClearScope(state: VMState): string | null {
 	// Clear scope stack (reset to root)
-	state.scopeStack.length = 0;
+	state.scopeStack.splice(0);
 	// Keep only root constants (index 0), clear all scope-specific constants
-	state.constantsStack.length = 1;
+	state.constantsStack.splice(1);
 
 	return null;
 }
