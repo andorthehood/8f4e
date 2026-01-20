@@ -1,4 +1,5 @@
 import executeAppend from '../commands/append';
+import executeClearScope from '../commands/clearScope';
 import executeConcat from '../commands/concat';
 import executeConst from '../commands/const';
 import executePopScope from '../commands/popScope';
@@ -44,6 +45,8 @@ export function executeCommand(state: VMState, command: Command): CommandError[]
 			return executeRescopeSuffix(state, command);
 		case 'popScope':
 			return wrapError(executePopScope(state));
+		case 'clearScope':
+			return executeClearScope(state);
 		case 'const':
 			return wrapError(executeConst(state, command));
 		default:
@@ -144,6 +147,19 @@ if (import.meta.vitest) {
 			});
 			expect(result).toBeNull();
 			expect(state.scopeStack).toEqual(['baz', 'qux']);
+		});
+
+		it('should execute clearScope command', () => {
+			const state: VMState = {
+				config: {},
+				dataStack: [],
+				scopeStack: ['foo', 'bar', 'baz'],
+				constantsStack: [new Map(), new Map(), new Map(), new Map()],
+			};
+			const result = executeCommand(state, { type: 'clearScope', lineNumber: 1 });
+			expect(result).toBeNull();
+			expect(state.scopeStack).toEqual([]);
+			expect(state.constantsStack).toHaveLength(1);
 		});
 
 		it('should handle rescopeSuffix with empty path segments', () => {
