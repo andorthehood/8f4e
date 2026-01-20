@@ -138,10 +138,10 @@ export default function highlightSyntax8f4e<T>(
 	}
 ): T[][] {
 	return code.map(line => {
+		const { index: commentIndex } = /;/.exec(line) || {};
 		const instructionMatch = getInstructionRegExp(instructionsToHighlight).exec(line);
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
 		const { index: numberIndex } = /-?\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
-		const { index: commentIndex } = /;/.exec(line) || {};
 		const binaryNumberMatch = /0b([01]+)/.exec(line);
 		const { index: binaryNumberIndex } = binaryNumberMatch || { index: undefined };
 		const binaryNumber = binaryNumberMatch?.[1] || '';
@@ -149,8 +149,14 @@ export default function highlightSyntax8f4e<T>(
 		const binaryOnes = binaryNumber.matchAll(/(1+)/g);
 
 		const codeColors = new Array(line.length).fill(undefined);
+		const isBeforeComment = (index: number) => typeof commentIndex === 'undefined' || index < commentIndex;
 
-		if (instructionIndices.length > 0 && instructionIndices[0].length >= 2) {
+		if (
+			instructionMatch &&
+			instructionIndices.length > 0 &&
+			instructionIndices[0].length >= 2 &&
+			isBeforeComment(instructionMatch.index)
+		) {
 			codeColors[instructionIndices[0][0]] = spriteLookups.fontInstruction;
 			codeColors[instructionIndices[0][1]] = spriteLookups.fontCode;
 		}
@@ -159,19 +165,20 @@ export default function highlightSyntax8f4e<T>(
 			codeColors[commentIndex] = spriteLookups.fontCodeComment;
 		}
 
-		if (typeof numberIndex !== 'undefined') {
+		if (typeof numberIndex === 'number' && isBeforeComment(numberIndex)) {
 			codeColors[numberIndex] = spriteLookups.fontNumbers;
 		}
 
-		if (binaryZeros && typeof binaryNumberIndex !== 'undefined') {
+		if (typeof binaryNumberIndex === 'number' && isBeforeComment(binaryNumberIndex)) {
 			for (const match of binaryZeros) {
-				codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryZero;
+				if (typeof match.index === 'number') {
+					codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryZero;
+				}
 			}
-		}
-
-		if (binaryOnes && typeof binaryNumberIndex !== 'undefined') {
 			for (const match of binaryOnes) {
-				codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryOne;
+				if (typeof match.index === 'number') {
+					codeColors[match.index + binaryNumberIndex + 2] = spriteLookups.fontBinaryOne;
+				}
 			}
 		}
 
@@ -246,6 +253,9 @@ if (import.meta.vitest) {
 				'push 10',
 				'lessThan',
 				'branchIfTrue',
+				'',
+				'; this is a push comment',
+				'; this is a push comment 0b1010',
 				'',
 				'moduleEnd',
 			];
