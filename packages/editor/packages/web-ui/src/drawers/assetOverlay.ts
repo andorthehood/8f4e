@@ -11,7 +11,7 @@ export default function drawAssetOverlay(engine: Engine, state: State): void {
 
 	text.push('Assets:');
 	for (const binaryAsset of state.binaryAssets) {
-		text.push(`${binaryAsset.fileName}: ${binaryAsset.sizeBytes} bytes`);
+		text.push(`${binaryAsset.fileName}: ${binaryAsset.assetByteLength} bytes`);
 	}
 
 	engine.startGroup(0, 0);
