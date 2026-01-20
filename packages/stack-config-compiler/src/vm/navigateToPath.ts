@@ -1,5 +1,6 @@
 import getArrayIndex from './getArrayIndex';
 import isArrayIndex from './isArrayIndex';
+import { isArrayAppendSlot } from './isArrayIndex';
 
 /**
  * Navigates to a location in the config object, creating intermediate objects/arrays as needed
@@ -18,9 +19,18 @@ export default function navigateToPath(
 	for (let i = 0; i < segments.length - 1; i++) {
 		const segment = segments[i];
 		const nextSegment = segments[i + 1];
-		const isNextArray = isArrayIndex(nextSegment);
+		const isNextArray = isArrayIndex(nextSegment) || isArrayAppendSlot(nextSegment);
 
-		if (isArrayIndex(segment)) {
+		if (isArrayAppendSlot(segment)) {
+			// Append slot: create a new element in the current array
+			const arr = current as unknown[];
+			if (!Array.isArray(arr)) {
+				return null; // Type error: trying to use [] on non-array
+			}
+			const newIndex = arr.length;
+			arr[newIndex] = isNextArray ? [] : {};
+			current = arr[newIndex] as Record<string, unknown> | unknown[];
+		} else if (isArrayIndex(segment)) {
 			const index = getArrayIndex(segment);
 			const arr = current as unknown[];
 
@@ -49,6 +59,15 @@ export default function navigateToPath(
 	}
 
 	const lastSegment = segments[segments.length - 1];
+	if (isArrayAppendSlot(lastSegment)) {
+		// For append slot as the final segment, return the array itself with a special marker
+		// The calling code will need to append to this array
+		if (!Array.isArray(current)) {
+			return null; // Type error: trying to use [] on non-array
+		}
+		const arr = current as unknown[];
+		return { parent: arr, key: arr.length };
+	}
 	if (isArrayIndex(lastSegment)) {
 		return { parent: current, key: getArrayIndex(lastSegment) };
 	}
@@ -90,6 +109,24 @@ if (import.meta.vitest) {
 		it('should return null when navigating through scalar', () => {
 			const config = { name: 'test' };
 			expect(navigateToPath(config, ['name', 'nested'])).toBe(null);
+		});
+
+		it('should handle append slot in array', () => {
+			const config: Record<string, unknown> = { items: [1, 2] };
+			const result = navigateToPath(config, ['items', '[]']);
+			expect(result).toEqual({ parent: config.items, key: 2 });
+		});
+
+		it('should handle append slot with property', () => {
+			const config: Record<string, unknown> = { items: [] };
+			navigateToPath(config, ['items', '[]', 'name']);
+			expect(config).toEqual({ items: [{}] });
+		});
+
+		it('should handle multiple append slots', () => {
+			const config: Record<string, unknown> = { items: [] };
+			navigateToPath(config, ['items', '[]', 'nested', '[]', 'value']);
+			expect(config).toEqual({ items: [{ nested: [{}] }] });
 		});
 	});
 }

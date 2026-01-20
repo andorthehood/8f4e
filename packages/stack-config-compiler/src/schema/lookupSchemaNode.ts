@@ -69,9 +69,9 @@ function lookupSchemaNodeInternal(
 			return mergeSchemaNodes(matchingNodes);
 		}
 
-		// Check if this is an array index
+		// Check if this is an array index or append slot
 		if (segment.startsWith('[') && segment.endsWith(']')) {
-			// Array index access
+			// Array index access or append slot
 			if (!current.isArray) {
 				return null; // Trying to index into non-array
 			}
