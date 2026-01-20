@@ -12,9 +12,9 @@ import type { SchemaNode } from './types';
  * @returns An error message if invalid, null if valid
  */
 export default function validateNavigationSegment(currentNode: SchemaNode, segment: string): string | null {
-	// Check if this is an array index
+	// Check if this is an array index or append slot
 	if (segment.startsWith('[') && segment.endsWith(']')) {
-		// Array index access - check if current node allows arrays
+		// Array index access or append slot - check if current node allows arrays
 		if (!currentNode.isArray && currentNode.types.size > 0 && !currentNode.types.has('array')) {
 			return `Cannot use array index "${segment}" on non-array type`;
 		}

@@ -3,8 +3,8 @@ title: 'TODO: Split Binary Asset Fetch and Memory Load'
 priority: Medium
 effort: 1-2d
 created: 2026-01-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-20
 ---
 
 # TODO: Split Binary Asset Fetch and Memory Load

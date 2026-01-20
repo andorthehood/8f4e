@@ -56,5 +56,17 @@ if (import.meta.vitest) {
 			const config = { name: 'string' };
 			expect(setAtPath(config, 'name.nested', 'value')).toBe('Type conflict: cannot navigate through scalar value');
 		});
+
+		it('should set value at append slot', () => {
+			const config: Record<string, unknown> = { items: [1, 2] };
+			setAtPath(config, 'items.[]', 3);
+			expect(config).toEqual({ items: [1, 2, 3] });
+		});
+
+		it('should set value at append slot with property', () => {
+			const config: Record<string, unknown> = { items: [] };
+			setAtPath(config, 'items.[].name', 'test');
+			expect(config).toEqual({ items: [{ name: 'test' }] });
+		});
 	});
 }
