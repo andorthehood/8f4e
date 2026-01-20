@@ -61,6 +61,10 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	events.on('compileConfig', rebuildConfig);
 	store.subscribe('graphicHelper.codeBlocks', rebuildConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
+		if (state.graphicHelper.selectedCodeBlock?.disabled) {
+			return;
+		}
+
 		if (state.graphicHelper.selectedCodeBlock?.blockType !== 'config') {
 			return;
 		}
