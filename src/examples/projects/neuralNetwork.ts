@@ -10,11 +10,8 @@ const project: Project = {
 				'push 128',
 				'set',
 				'',
-				'rescope "selectedRuntime"',
-				'push 0',
-				'set',
-				'',
-				'rescope "runtimeSettings[0]"',
+
+				'rescope "runtimeSettings"',
 				'',
 				'scope "sampleRate"',
 				'push 10',
