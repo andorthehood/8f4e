@@ -263,7 +263,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			viewportAnimations: true,
 			demoMode: false,
 			consoleOverlay: false,
-			assetOverlay: true,
 		},
 		colorSchemes: [],
 		historyStack: [],
