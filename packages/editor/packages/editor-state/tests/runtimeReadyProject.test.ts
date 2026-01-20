@@ -187,6 +187,7 @@ describe('Runtime-ready project functionality', () => {
 
 	describe('Pre-compiled WASM loading', () => {
 		it('should use pre-compiled WASM metadata when available', async () => {
+			vi.useFakeTimers();
 			const compiledModules = { mod: {} };
 			const memorySnapshot = 'AQAAAAIAAAADAAAA';
 			// No compileCode callback for runtime-only projects
@@ -202,7 +203,8 @@ describe('Runtime-ready project functionality', () => {
 			compiler(store, mockEvents);
 
 			store.set('compiledConfig', { ...mockState.compiledConfig });
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
 			// Verify pre-compiled WASM was recognized via internal logger
 			expect(
@@ -220,6 +222,7 @@ describe('Runtime-ready project functionality', () => {
 		});
 
 		it('should compile normally when no pre-compiled WASM is available', async () => {
+			vi.useFakeTimers();
 			// Mock the compileCode function
 			const mockCompileCode = vi.fn().mockResolvedValue({
 				compiledModules: {},
@@ -235,7 +238,8 @@ describe('Runtime-ready project functionality', () => {
 			compiler(store, mockEvents);
 
 			store.set('compiledConfig', { ...mockState.compiledConfig });
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await vi.runAllTimersAsync();
+			vi.useRealTimers();
 
 			// Verify regular compilation was attempted
 			expect(mockCompileCode).toHaveBeenCalled();
