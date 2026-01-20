@@ -27,7 +27,7 @@ export default async function fetchBinaryAssets(
 				url,
 				fileName,
 				mimeType: contentType,
-				sizeBytes: arrayBuffer.byteLength,
+				assetByteLength: arrayBuffer.byteLength,
 				loadedIntoMemory: false,
 			});
 		} catch (error) {

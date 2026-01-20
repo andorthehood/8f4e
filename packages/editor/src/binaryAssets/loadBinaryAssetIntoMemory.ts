@@ -6,8 +6,8 @@ export default async function loadBinaryAssetIntoMemory(
 	assetStore: Map<string, ArrayBuffer>,
 	memoryViews: MemoryViews
 ): Promise<void> {
-	const { url, byteAddress, byteLength, memoryName } = asset;
-	if (byteAddress === undefined || byteLength === undefined) {
+	const { url, byteAddress, memoryByteLength, memoryId } = asset;
+	if (byteAddress === undefined || memoryByteLength === undefined) {
 		console.warn('Binary asset missing resolved memory target:', url);
 		return;
 	}
@@ -19,11 +19,11 @@ export default async function loadBinaryAssetIntoMemory(
 	}
 
 	const byteView = new Uint8Array(memoryViews.int32.buffer);
-	const maxLength = Math.min(arrayBuffer.byteLength, byteLength);
+	const maxLength = Math.min(arrayBuffer.byteLength, memoryByteLength);
 	const endAddress = byteAddress + maxLength;
 
 	if (endAddress > byteView.byteLength) {
-		console.warn('Binary asset exceeds memory bounds:', memoryName);
+		console.warn('Binary asset exceeds memory bounds:', memoryId ?? url);
 		return;
 	}
 
