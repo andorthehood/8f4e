@@ -31,7 +31,8 @@ export default function drawer(
 		const scanlineWidth = state.viewport.vGrid;
 
 		// Calculate x position within the scanner width
-		const scanlineX = Math.floor((clampedIndex / Math.max(bufferLength - 1, 1)) * (width - scanlineWidth));
+		// For single-element buffers, scanline is always at position 0
+		const scanlineX = bufferLength <= 1 ? 0 : Math.floor((clampedIndex / (bufferLength - 1)) * (width - scanlineWidth));
 
 		// Draw the scanline using plotter sprite (sprite 0 is at the bottom of the plotter sprite sheet)
 		// We use sprite 0 and draw it with the full height to create a vertical line
