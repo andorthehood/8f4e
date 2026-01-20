@@ -4,8 +4,9 @@
  */
 
 import type { VMState } from '../types';
+import type { CommandError } from '../vm/executeCommand';
 
-export default function executeClearScope(state: VMState): string | null {
+export default function executeClearScope(state: VMState): CommandError[] | null {
 	// Clear scope stack (reset to root)
 	state.scopeStack.length = 0;
 	// Keep only root constants (index 0), clear all scope-specific constants
