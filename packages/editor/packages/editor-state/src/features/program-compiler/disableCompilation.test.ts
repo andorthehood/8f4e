@@ -159,7 +159,6 @@ describe('disableAutoCompilation feature', () => {
 				selectedRuntime: 0,
 				runtimeSettings: [{ runtime: 'WebWorkerLogicRuntime', sampleRate: 50 }],
 				disableAutoCompilation: false,
-				binaryAssets: [],
 			});
 		});
 
@@ -170,7 +169,6 @@ describe('disableAutoCompilation feature', () => {
 				selectedRuntime: 1,
 				runtimeSettings: [{ runtime: 'MainThreadLogicRuntime', sampleRate: 60 }],
 				disableAutoCompilation: false,
-				binaryAssets: [],
 			};
 
 			const result = await compileConfigForExport(mockState);
