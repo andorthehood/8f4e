@@ -9,7 +9,7 @@ const peakHolderNegativeFloat: ExampleModule = {
 float* in
 float out
 
-debug out
+# debug out
 
 push *in
 push out
