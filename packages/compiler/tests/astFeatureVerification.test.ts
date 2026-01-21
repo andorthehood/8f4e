@@ -22,7 +22,7 @@ describe('AST optional output feature manual verification', () => {
 	test('Default behavior excludes AST', () => {
 		const result = compile([testModule], {
 			startingMemoryWordAddress: 0,
-			environmentExtensions: { ignoredKeywords: [] },
+
 			memorySizeBytes: 65536,
 		});
 
@@ -34,7 +34,7 @@ describe('AST optional output feature manual verification', () => {
 	test('Explicit includeAST: false excludes AST', () => {
 		const result = compile([testModule], {
 			startingMemoryWordAddress: 0,
-			environmentExtensions: { ignoredKeywords: [] },
+
 			memorySizeBytes: 65536,
 			includeAST: false,
 		});
@@ -47,7 +47,7 @@ describe('AST optional output feature manual verification', () => {
 	test('includeAST: true includes AST', () => {
 		const result = compile([testModule], {
 			startingMemoryWordAddress: 0,
-			environmentExtensions: { ignoredKeywords: [] },
+
 			memorySizeBytes: 65536,
 			includeAST: true,
 		});

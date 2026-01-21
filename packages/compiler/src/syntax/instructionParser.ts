@@ -2,9 +2,10 @@
  * Regular expression for parsing instruction lines.
  * Matches an instruction keyword followed by up to 7 arguments, ignoring comments.
  * Format: instruction arg1 arg2 ... arg7 ; optional comment
+ * Format: instruction arg1 arg2 ... arg7 # optional comment
  */
 const instructionParser =
-	/^\s*([^\s;]+)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*([^\s;]*)\s*(?:;.*|\s*)/;
+	/^\s*([^\s;#]+)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*(?:[;#].*|\s*)/;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
@@ -15,8 +16,14 @@ if (import.meta.vitest) {
 			expect(match?.slice(1, 5)).toEqual(['push', '1', '2', '3']);
 		});
 
-		it('ignores trailing comments', () => {
+		it('ignores trailing semicolon comments', () => {
 			const match = 'add 1 2 ; comment'.match(instructionParser);
+			expect(match?.[1]).toBe('add');
+			expect(match?.[2]).toBe('1');
+		});
+
+		it('ignores trailing hash comments', () => {
+			const match = 'add 1 2 # comment'.match(instructionParser);
 			expect(match?.[1]).toBe('add');
 			expect(match?.[2]).toBe('1');
 		});
