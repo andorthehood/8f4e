@@ -31,6 +31,7 @@ export default {
 		plotterBackground: '#000000',
 		plotterTrace: '#99ff99',
 		scanLine: '#ff0000',
+		sliderThumb: 'rgba(255,0,0,0.5)',
 		codeBlockHighlightLevel1: '#001100',
 		codeBlockHighlightLevel2: '#002200',
 		codeBlockHighlightLevel3: '#003300',
