@@ -12,13 +12,14 @@ describe('button interaction', () => {
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 	let offCallbacks: Map<string, (...args: unknown[]) => void>;
 	let memoryStore: Map<number, number>;
-	let setWordInMemory: (wordAlignedAddress: number, value: number) => void;
+	let setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
 		offCallbacks = new Map();
 		memoryStore = new Map();
-		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number) => {
+		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number, isInteger: boolean) => {
+			void isInteger;
 			memoryStore.set(wordAlignedAddress, value);
 		});
 
@@ -91,7 +92,7 @@ describe('button interaction', () => {
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
-		expect(setWordInMemory).toHaveBeenCalledWith(5, 1);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 1, true);
 		expect(memoryStore.get(5)).toBe(1);
 
 		cleanup();
@@ -116,12 +117,12 @@ describe('button interaction', () => {
 		];
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
-		expect(setWordInMemory).toHaveBeenCalledWith(5, 1);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 1, true);
 		expect(memoryStore.get(5)).toBe(1);
 
 		// Then release mouse
 		mouseUpCallback?.();
-		expect(setWordInMemory).toHaveBeenCalledWith(5, 0);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 0, true);
 		expect(memoryStore.get(5)).toBe(0);
 
 		cleanup();

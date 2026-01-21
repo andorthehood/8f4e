@@ -13,13 +13,14 @@ describe('slider interaction', () => {
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 	let offCallbacks: Map<string, (...args: unknown[]) => void>;
 	let memoryStore: Map<number, number>;
-	let setWordInMemory: (wordAlignedAddress: number, value: number) => void;
+	let setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
 		offCallbacks = new Map();
 		memoryStore = new Map();
-		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number) => {
+		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number, isInteger: boolean) => {
+			void isInteger;
 			memoryStore.set(wordAlignedAddress, value);
 		});
 
