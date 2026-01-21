@@ -6,6 +6,7 @@ import drawScanners from './codeBlockDecorators/scanners';
 import drawDebuggers from './codeBlockDecorators/debuggers';
 import drawSwitches from './codeBlockDecorators/switches';
 import drawButtons from './codeBlockDecorators/buttons';
+import drawSliders from './codeBlockDecorators/sliders';
 import drawErrorMessages from './codeBlockDecorators/errorMessages';
 import drawPianoKeyboards from './codeBlockDecorators/pianoKeyboards';
 import drawArrow from './drawArrow';
@@ -109,6 +110,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			drawErrorMessages(engine, state, codeBlock);
 			drawSwitches(engine, state, codeBlock, memoryViews);
 			drawButtons(engine, state, codeBlock, memoryViews);
+			drawSliders(engine, state, codeBlock, memoryViews);
 			drawConnectors(engine, state, codeBlock, memoryViews);
 			drawPlotters(engine, state, codeBlock, memoryViews);
 			drawScanners(engine, state, codeBlock, memoryViews);

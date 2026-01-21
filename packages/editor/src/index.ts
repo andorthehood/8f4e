@@ -61,8 +61,12 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			getWordFromMemory: (wordAlignedAddress: number) => {
 				return memoryViews.int32[wordAlignedAddress] || 0;
 			},
-			setWordInMemory: (wordAlignedAddress: number, value: number) => {
-				memoryViews.int32[wordAlignedAddress] = value;
+			setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => {
+				if (isInteger) {
+					memoryViews.int32[wordAlignedAddress] = value;
+					return;
+				}
+				memoryViews.float32[wordAlignedAddress] = value;
 			},
 			fetchBinaryAssets: urls => fetchBinaryAssets(urls, binaryAssetStore),
 			loadBinaryAssetIntoMemory: asset => loadBinaryAssetIntoMemory(asset, binaryAssetStore, memoryViews),
