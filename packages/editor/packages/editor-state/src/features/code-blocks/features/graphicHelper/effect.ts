@@ -13,6 +13,7 @@ import inputs from '../inputs/updateGraphicData';
 import outputs from '../outputs/updateGraphicData';
 import pianoKeyboards from '../pianoKeyboard/updateGraphicData';
 import switches from '../switches/updateGraphicData';
+import sliders from '../sliders/updateGraphicData';
 import blockHighlights from '../blockHighlights/updateGraphicData';
 import { CodeBlockClickEvent } from '../codeBlockDragger/effect';
 import wrapText from '../../utils/wrapText';
@@ -96,6 +97,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		debuggers(graphicData, state);
 		switches(graphicData, state);
 		buttons(graphicData, state);
+		sliders(graphicData, state);
 		positionOffsetters(graphicData, state);
 		blockHighlights(graphicData, state);
 
