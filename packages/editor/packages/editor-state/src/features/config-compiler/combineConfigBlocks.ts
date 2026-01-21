@@ -3,7 +3,7 @@ import { collectConfigBlocks } from './collectConfigBlocks';
 import type { CodeBlockGraphicData } from '~/types';
 
 /**
- * Represents line range information for a config block in the combined source.
+ * Represents line range information for a projectConfig block in the combined source.
  */
 export interface BlockLineMapping {
 	blockId: number; // creationIndex of the block
@@ -12,7 +12,7 @@ export interface BlockLineMapping {
 }
 
 /**
- * Result of combining all config blocks into a single source.
+ * Result of combining all projectConfig blocks into a single source.
  */
 export interface CombinedConfigSource {
 	source: string; // Combined source with blank line separators
@@ -20,7 +20,7 @@ export interface CombinedConfigSource {
 }
 
 /**
- * Combines all config blocks into a single source for validation.
+ * Combines all projectConfig blocks into a single source for validation.
  * Config blocks are sorted in creation order and concatenated with blank line separators.
  * Returns the combined source and line mappings for error attribution.
  */
@@ -65,15 +65,15 @@ if (import.meta.vitest) {
 	const { createMockCodeBlock } = await import('../../pureHelpers/testingUtils/testUtils');
 
 	describe('combineConfigBlocks', () => {
-		it('should combine multiple config blocks with blank line separator', () => {
+		it('should combine multiple projectConfig blocks with blank line separator', () => {
 			const block1 = createMockCodeBlock({
-				code: ['config', 'push 1', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'push 1', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 0,
 			});
 			const block2 = createMockCodeBlock({
-				code: ['config', 'push 2', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'push 2', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 1,
 			});
 			const codeBlocks = [block1, block2];
@@ -93,15 +93,15 @@ if (import.meta.vitest) {
 			});
 		});
 
-		it('should handle multi-line config blocks', () => {
+		it('should handle multi-line projectConfig blocks', () => {
 			const block1 = createMockCodeBlock({
-				code: ['config', 'push 1', 'push 2', 'push 3', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'push 1', 'push 2', 'push 3', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 0,
 			});
 			const block2 = createMockCodeBlock({
-				code: ['config', 'set x 10', 'set y 20', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'set x 10', 'set y 20', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 1,
 			});
 			const codeBlocks = [block1, block2];
@@ -121,7 +121,7 @@ if (import.meta.vitest) {
 			});
 		});
 
-		it('should return empty source for no config blocks', () => {
+		it('should return empty source for no projectConfig blocks', () => {
 			const moduleBlock = createMockCodeBlock({
 				code: ['module test', 'moduleEnd'],
 				blockType: 'module',
@@ -134,15 +134,15 @@ if (import.meta.vitest) {
 			expect(result.lineMappings).toHaveLength(0);
 		});
 
-		it('should skip empty config blocks', () => {
+		it('should skip empty projectConfig blocks', () => {
 			const emptyBlock = createMockCodeBlock({
-				code: ['config', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 0,
 			});
 			const contentBlock = createMockCodeBlock({
-				code: ['config', 'push 1', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'push 1', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 1,
 			});
 			const codeBlocks = [emptyBlock, contentBlock];
@@ -155,18 +155,18 @@ if (import.meta.vitest) {
 
 		it('should maintain creation order', () => {
 			const block1 = createMockCodeBlock({
-				code: ['config', 'first', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'first', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 2,
 			});
 			const block2 = createMockCodeBlock({
-				code: ['config', 'second', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'second', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 0,
 			});
 			const block3 = createMockCodeBlock({
-				code: ['config', 'third', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'third', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 				creationIndex: 1,
 			});
 			const codeBlocks = [block1, block2, block3];
