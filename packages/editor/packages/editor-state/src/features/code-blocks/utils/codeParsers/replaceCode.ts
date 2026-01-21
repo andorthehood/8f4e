@@ -33,9 +33,9 @@ if (import.meta.vitest) {
 				[' push 1'],
 			],
 			[
-				[' push 1', `  push  10`, ` push  8 `, ' ', '', `  push    300`, 'push WORD_SIZE'],
+				[' push 1', `  push  10`, ` push  8 `, ' ', '', `  push    300`, 'push %buffer'],
 				[`push :index`, `push 8`, `push :key`],
-				[' push 1', 'push WORD_SIZE'],
+				[' push 1', 'push %buffer'],
 			],
 		];
 

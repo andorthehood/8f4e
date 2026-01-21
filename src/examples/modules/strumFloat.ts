@@ -35,7 +35,7 @@ if void
   ; Calculate address
   push bufferIn
   push counter
-  push WORD_SIZE
+  push %bufferIn
   mul
   add
   

@@ -14,7 +14,7 @@ int bufferPointer &buffer
 
 push &bufferPointer
 push bufferPointer
-push WORD_SIZE
+push %buffer
 add
 store
 
