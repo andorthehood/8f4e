@@ -23,10 +23,6 @@ function generateEnvConstantsBlock(state: State): string[] {
 	lines.push('; Last updated: ' + new Date().toLocaleString());
 	lines.push('');
 
-	// Built-in compiler constants
-	lines.push('const WORD_SIZE 4');
-	lines.push('');
-
 	// Sample rate from runtime config
 	const sampleRate = state.compiledConfig.runtimeSettings?.sampleRate ?? 50;
 	lines.push(`const SAMPLE_RATE ${sampleRate}`);
