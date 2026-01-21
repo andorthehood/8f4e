@@ -25,7 +25,7 @@ loop
 ; address
 push &buffer
 push pointer
-push WORD_SIZE
+push %buffer
 mul
 add
 
@@ -33,7 +33,7 @@ add
 ; address
 push bufferIn
 push pointer
-push WORD_SIZE
+push %bufferIn
 mul
 add
  

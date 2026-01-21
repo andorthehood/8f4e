@@ -29,7 +29,7 @@ if void
  ; Clear previous output
  push &out0
  push counter
- push WORD_SIZE
+ push %out0
  mul
  add
  push 0
@@ -56,7 +56,7 @@ ifEnd
 ; Calculate output address
 push &out0
 push counter
-push WORD_SIZE
+push %out0
 mul
 add
 push *in
