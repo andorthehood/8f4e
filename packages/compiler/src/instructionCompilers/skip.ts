@@ -57,6 +57,7 @@ const skip: InstructionCompiler = withValidation(
 			isPointingToInteger: false,
 			isPointingToPointer: false,
 			isInteger: true,
+			isUnsigned: false,
 		};
 
 		context.blockStack.push({
