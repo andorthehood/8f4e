@@ -1,4 +1,4 @@
-import extractConfigBody from './extractConfigBody';
+import extractConfigBody, { extractConfigType } from './extractConfigBody';
 
 import type { CodeBlockGraphicData } from '~/types';
 
@@ -8,6 +8,7 @@ import type { CodeBlockGraphicData } from '~/types';
 export interface ConfigBlockSource {
 	block: CodeBlockGraphicData;
 	source: string;
+	configType: string | null;
 }
 
 /**
@@ -21,12 +22,13 @@ export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): ConfigB
 		.sort((a, b) => a.creationIndex - b.creationIndex)
 		.map(block => {
 			const body = extractConfigBody(block.code);
+			const configType = extractConfigType(block.code);
 			return {
 				block,
 				source: body.join('\n'),
+				configType,
 			};
-		})
-		.filter(item => item.source.trim().length > 0);
+		});
 }
 
 if (import.meta.vitest) {
@@ -36,12 +38,12 @@ if (import.meta.vitest) {
 	describe('collectConfigBlocks', () => {
 		it('should collect config blocks with their sources', () => {
 			const block1 = createMockCodeBlock({
-				code: ['config', 'push 1', 'configEnd'],
+				code: ['config project', 'push 1', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
 			const block2 = createMockCodeBlock({
-				code: ['config', 'push 2', 'configEnd'],
+				code: ['config project', 'push 2', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 			});
@@ -58,13 +60,13 @@ if (import.meta.vitest) {
 		it('should sort config blocks by creationIndex', () => {
 			const block1 = createMockCodeBlock({
 				id: 'first',
-				code: ['config', 'push first', 'configEnd'],
+				code: ['config project', 'push first', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 			});
 			const block2 = createMockCodeBlock({
 				id: 'second',
-				code: ['config', 'push second', 'configEnd'],
+				code: ['config project', 'push second', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
@@ -77,7 +79,7 @@ if (import.meta.vitest) {
 
 		it('should skip non-config blocks', () => {
 			const configBlock = createMockCodeBlock({
-				code: ['config', 'push 1', 'configEnd'],
+				code: ['config project', 'push 1', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
@@ -105,33 +107,34 @@ if (import.meta.vitest) {
 			expect(result).toHaveLength(0);
 		});
 
-		it('should skip config blocks with empty bodies', () => {
+		it('should include empty config blocks (filtering happens in combineConfigBlocks)', () => {
 			const emptyBlock = createMockCodeBlock({
-				code: ['config', 'configEnd'],
+				code: ['config project', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
 			const contentBlock = createMockCodeBlock({
-				code: ['config', 'push 1', 'configEnd'],
+				code: ['config project', 'push 1', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 			});
 			const codeBlocks = [emptyBlock, contentBlock];
 
 			const result = collectConfigBlocks(codeBlocks);
-			expect(result).toHaveLength(1);
-			expect(result[0].source).toBe('push 1');
+			expect(result).toHaveLength(2);
+			expect(result[0].source).toBe(''); // Empty block is included
+			expect(result[1].source).toBe('push 1');
 		});
 
 		it('should skip disabled config blocks', () => {
 			const enabledBlock = createMockCodeBlock({
-				code: ['config', 'push enabled', 'configEnd'],
+				code: ['config project', 'push enabled', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 				disabled: false,
 			});
 			const disabledBlock = createMockCodeBlock({
-				code: ['config', 'push disabled', 'configEnd'],
+				code: ['config project', 'push disabled', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 				disabled: true,

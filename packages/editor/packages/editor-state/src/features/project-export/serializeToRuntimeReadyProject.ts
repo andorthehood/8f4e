@@ -39,7 +39,7 @@ if (import.meta.vitest) {
 				id: 'config-1',
 				blockType: 'config',
 				creationIndex: 1,
-				code: ['config', 'memorySizeBytes 65536', 'configEnd'],
+				code: ['config project', 'memorySizeBytes 65536', 'configEnd'],
 			});
 
 			const state = createMockState({

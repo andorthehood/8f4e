@@ -9,13 +9,13 @@ describe('config error mapping', () => {
 	it('should map errors to correct blocks with local line numbers', () => {
 		const block1 = createMockCodeBlock({
 			id: 'block1',
-			code: ['config', 'push 1', 'push 2', 'configEnd'],
+			code: ['config project', 'push 1', 'push 2', 'configEnd'],
 			blockType: 'config',
 			creationIndex: 0,
 		});
 		const block2 = createMockCodeBlock({
 			id: 'block2',
-			code: ['config', 'set x 10', 'set y 20', 'configEnd'],
+			code: ['config project', 'set x 10', 'set y 20', 'configEnd'],
 			blockType: 'config',
 			creationIndex: 1,
 		});
@@ -64,7 +64,7 @@ describe('config error mapping', () => {
 	it('should handle single config block', () => {
 		const block = createMockCodeBlock({
 			id: 'single',
-			code: ['config', 'push 1', 'push 2', 'push 3', 'configEnd'],
+			code: ['config project', 'push 1', 'push 2', 'push 3', 'configEnd'],
 			blockType: 'config',
 			creationIndex: 5,
 		});
@@ -83,17 +83,17 @@ describe('config error mapping', () => {
 
 	it('should handle three config blocks', () => {
 		const block1 = createMockCodeBlock({
-			code: ['config', 'line1', 'configEnd'],
+			code: ['config project', 'line1', 'configEnd'],
 			blockType: 'config',
 			creationIndex: 0,
 		});
 		const block2 = createMockCodeBlock({
-			code: ['config', 'line2a', 'line2b', 'configEnd'],
+			code: ['config project', 'line2a', 'line2b', 'configEnd'],
 			blockType: 'config',
 			creationIndex: 1,
 		});
 		const block3 = createMockCodeBlock({
-			code: ['config', 'line3', 'configEnd'],
+			code: ['config project', 'line3', 'configEnd'],
 			blockType: 'config',
 			creationIndex: 2,
 		});

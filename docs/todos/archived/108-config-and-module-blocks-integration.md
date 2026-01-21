@@ -189,7 +189,7 @@ High-level approach:
 Using `scope`/`rescopeTop` to avoid repeating long paths, an `audioLoopback`-style project could express its configuration as:
 
 ```txt
-config
+config project
 
 ; --- Project metadata ---
 scope "projectInfo"
