@@ -4,7 +4,7 @@ const project: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'rescope "binaryAssets[]"',
 				'',
@@ -39,7 +39,7 @@ const project: Project = {
 				'push "pcmPlayer8bit.buffer"',
 				'set',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: {
 				x: -9,
@@ -48,7 +48,7 @@ const project: Project = {
 		},
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'rescope "memorySizeBytes"',
 				'push 655360',
@@ -99,7 +99,7 @@ const project: Project = {
 				'popScope',
 				'popScope',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: {
 				x: -53,

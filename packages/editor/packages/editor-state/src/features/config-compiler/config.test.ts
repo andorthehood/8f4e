@@ -5,18 +5,18 @@ import { mapErrorLineToBlock } from './mapErrorLineToBlock';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
-describe('config error mapping', () => {
+describe('projectConfig error mapping', () => {
 	it('should map errors to correct blocks with local line numbers', () => {
 		const block1 = createMockCodeBlock({
 			id: 'block1',
-			code: ['config', 'push 1', 'push 2', 'configEnd'],
-			blockType: 'config',
+			code: ['projectConfig', 'push 1', 'push 2', 'projectConfigEnd'],
+			blockType: 'projectConfig',
 			creationIndex: 0,
 		});
 		const block2 = createMockCodeBlock({
 			id: 'block2',
-			code: ['config', 'set x 10', 'set y 20', 'configEnd'],
-			blockType: 'config',
+			code: ['projectConfig', 'set x 10', 'set y 20', 'projectConfigEnd'],
+			blockType: 'projectConfig',
 			creationIndex: 1,
 		});
 		const codeBlocks = [block1, block2];
@@ -61,11 +61,11 @@ describe('config error mapping', () => {
 		expect(mapped).toEqual({ blockId: 0, localLine: 1 });
 	});
 
-	it('should handle single config block', () => {
+	it('should handle single projectConfig block', () => {
 		const block = createMockCodeBlock({
 			id: 'single',
-			code: ['config', 'push 1', 'push 2', 'push 3', 'configEnd'],
-			blockType: 'config',
+			code: ['projectConfig', 'push 1', 'push 2', 'push 3', 'projectConfigEnd'],
+			blockType: 'projectConfig',
 			creationIndex: 5,
 		});
 		const codeBlocks = [block];
@@ -81,20 +81,20 @@ describe('config error mapping', () => {
 		});
 	});
 
-	it('should handle three config blocks', () => {
+	it('should handle three projectConfig blocks', () => {
 		const block1 = createMockCodeBlock({
-			code: ['config', 'line1', 'configEnd'],
-			blockType: 'config',
+			code: ['projectConfig', 'line1', 'projectConfigEnd'],
+			blockType: 'projectConfig',
 			creationIndex: 0,
 		});
 		const block2 = createMockCodeBlock({
-			code: ['config', 'line2a', 'line2b', 'configEnd'],
-			blockType: 'config',
+			code: ['projectConfig', 'line2a', 'line2b', 'projectConfigEnd'],
+			blockType: 'projectConfig',
 			creationIndex: 1,
 		});
 		const block3 = createMockCodeBlock({
-			code: ['config', 'line3', 'configEnd'],
-			blockType: 'config',
+			code: ['projectConfig', 'line3', 'projectConfigEnd'],
+			blockType: 'projectConfig',
 			creationIndex: 2,
 		});
 		const codeBlocks = [block1, block2, block3];

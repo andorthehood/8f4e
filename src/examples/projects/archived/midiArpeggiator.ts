@@ -4,7 +4,7 @@ const midiArpeggiator: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -20,7 +20,7 @@ const midiArpeggiator: Project = {
 				'set',
 				'popScope',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: { x: -80, y: -1 },
 		},

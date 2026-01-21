@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`serializeToRuntimeReadyProject > omits compiled config when no config blocks are present 1`] = `
+exports[`serializeToRuntimeReadyProject > omits compiled projectConfig when no projectConfig blocks are present 1`] = `
 {
   "binaryAssets": [],
   "codeBlocks": [],
@@ -15,15 +15,15 @@ exports[`serializeToRuntimeReadyProject > omits compiled config when no config b
 }
 `;
 
-exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with compiled config 1`] = `
+exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with compiled projectConfig 1`] = `
 {
   "binaryAssets": [],
   "codeBlocks": [
     {
       "code": [
-        "config",
+        "projectConfig",
         "memorySizeBytes 65536",
-        "configEnd",
+        "projectConfigEnd",
       ],
       "gridCoordinates": {
         "x": 0,

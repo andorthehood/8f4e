@@ -64,12 +64,12 @@ describe('Runtime-ready project functionality', () => {
 			errors: [],
 		});
 
-		// Create a config block for testing
+		// Create a projectConfig block for testing
 		const configBlock = createMockCodeBlock({
 			id: 'config-block',
-			code: ['config', 'scope "memorySizeBytes"', 'push 1048576', 'set', 'popScope', 'configEnd'],
+			code: ['projectConfig', 'scope "memorySizeBytes"', 'push 1048576', 'set', 'popScope', 'projectConfigEnd'],
 			creationIndex: 0,
-			blockType: 'config',
+			blockType: 'projectConfig',
 		});
 
 		mockState = createMockState({
@@ -102,7 +102,7 @@ describe('Runtime-ready project functionality', () => {
 			},
 		});
 
-		// Add the config block to the state
+		// Add the projectConfig block to the state
 		mockState.graphicHelper.codeBlocks.push(configBlock);
 
 		mockEvents = createMockEventDispatcherWithVitest();
@@ -267,7 +267,7 @@ describe('Runtime-ready project functionality', () => {
 
 			// Parse the exported JSON and verify project structure
 			const exportedProject = JSON.parse(exportedJson);
-			// memorySizeBytes is no longer in Project - config blocks are the source of truth
+			// memorySizeBytes is no longer in Project - projectConfig blocks are the source of truth
 			expect(exportedProject.codeBlocks).toBeDefined();
 			expect(exportedProject.viewport).toBeDefined();
 		});
@@ -292,7 +292,7 @@ describe('Runtime-ready project functionality', () => {
 
 			// Parse the exported JSON and verify project structure
 			const exportedProject = JSON.parse(exportedJson);
-			// memorySizeBytes is no longer in Project - config blocks are the source of truth
+			// memorySizeBytes is no longer in Project - projectConfig blocks are the source of truth
 			expect(exportedProject.codeBlocks).toBeDefined();
 			expect(exportedProject.viewport).toBeDefined();
 		});

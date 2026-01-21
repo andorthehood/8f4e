@@ -4,7 +4,7 @@ const project: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'rescope "memorySizeBytes"',
 				'push 65536',
@@ -34,7 +34,7 @@ const project: Project = {
 				'push 0',
 				'set',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: {
 				x: -87,

@@ -6,7 +6,7 @@ const standalonProject: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'scope "memorySizeBytes"',
 				'push 8',
@@ -25,7 +25,7 @@ const standalonProject: Project = {
 				'push true',
 				'set ',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: {
 				x: -14,

@@ -3,7 +3,7 @@ import type { Project } from '@8f4e/editor-state';
 const project: Project = {
 	codeBlocks: [
 		{
-			code: ['config', '', 'scope "memorySizeBytes"', 'push 65536', 'set', 'popScope', '', 'configEnd'],
+			code: ['projectConfig', '', 'scope "memorySizeBytes"', 'push 65536', 'set', 'popScope', '', 'configEnd'],
 			gridCoordinates: {
 				x: -141,
 				y: 4,
@@ -11,7 +11,7 @@ const project: Project = {
 		},
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'scope "runtimeSettings"',
 				'',
@@ -23,7 +23,7 @@ const project: Project = {
 				'push "AudioWorkletRuntime"',
 				'set',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: {
 				x: -141,
@@ -32,7 +32,7 @@ const project: Project = {
 		},
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'rescope "runtimeSettings"',
 				'scope "audioOutputBuffers[0]"',
@@ -64,7 +64,7 @@ const project: Project = {
 				'push 0',
 				'set',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: {
 				x: -106,
@@ -73,7 +73,7 @@ const project: Project = {
 		},
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'rescope "runtimeSettings"',
 				'scope "audioInputBuffers[0]"',
@@ -90,7 +90,7 @@ const project: Project = {
 				'push 0',
 				'set',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: {
 				x: -106,

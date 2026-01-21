@@ -34,12 +34,12 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('serializeToRuntimeReadyProject', () => {
-		it('serializes runtime-ready project with compiled config', async () => {
+		it('serializes runtime-ready project with compiled projectConfig', async () => {
 			const configBlock = createMockCodeBlock({
 				id: 'config-1',
-				blockType: 'config',
+				blockType: 'projectConfig',
 				creationIndex: 1,
-				code: ['config', 'memorySizeBytes 65536', 'configEnd'],
+				code: ['projectConfig', 'memorySizeBytes 65536', 'projectConfigEnd'],
 			});
 
 			const state = createMockState({
@@ -63,7 +63,7 @@ if (import.meta.vitest) {
 			expect(project).toMatchSnapshot();
 		});
 
-		it('omits compiled config when no config blocks are present', async () => {
+		it('omits compiled projectConfig when no projectConfig blocks are present', async () => {
 			const state = createMockState({
 				compiler: {
 					compiledModules: {},
