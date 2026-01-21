@@ -52,3 +52,41 @@ Example:
 int16[] samples 8 0
 push %samples
 ```
+
+## Element max value
+
+- `^name` pushes the maximum finite value for the element type of a memory item.
+
+For integers:
+- `int32` / `int` / `int[]`: 2,147,483,647
+- `int16` / `int16[]`: 32,767
+- `int8` / `int8[]`: 127
+
+For floats:
+- `float` / `float[]`: 3.4028234663852886e+38 (max finite float32)
+
+Example:
+
+```
+int16 value 0
+push ^value
+```
+
+## Element min value
+
+- `!name` pushes the lowest finite value (most negative) for the element type of a memory item.
+
+For integers:
+- `int32` / `int` / `int[]`: -2,147,483,648
+- `int16` / `int16[]`: -32,768
+- `int8` / `int8[]`: -128
+
+For floats:
+- `float` / `float[]`: -3.4028234663852886e+38 (lowest finite float32)
+
+Example:
+
+```
+int8[] buffer 10 0
+push !buffer
+```
