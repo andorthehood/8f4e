@@ -20,6 +20,7 @@ const fillColors: Array<keyof ColorScheme['fill']> = [
 	'dialogDimmer',
 	'highlightedCodeLine',
 	'scanLine',
+	'sliderThumb',
 	'codeBlockHighlightLevel1',
 	'codeBlockHighlightLevel2',
 	'codeBlockHighlightLevel3',
