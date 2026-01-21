@@ -56,7 +56,8 @@ push &out
  load16s
  ; Normalize value
  castToFloat
- push 32767.0 ; Max value
+ push ^buffer
+ castToFloat
  div
 store
 
