@@ -15,9 +15,9 @@ export default function parseSliders(code: string[]) {
 					{
 						id: args[1],
 						lineNumber: index,
-						min: !isNaN(parsedMin as number) ? parsedMin : undefined,
-						max: !isNaN(parsedMax as number) ? parsedMax : undefined,
-						step: !isNaN(parsedStep as number) ? parsedStep : undefined,
+						min: parsedMin !== undefined && !isNaN(parsedMin) ? parsedMin : undefined,
+						max: parsedMax !== undefined && !isNaN(parsedMax) ? parsedMax : undefined,
+						step: parsedStep !== undefined && !isNaN(parsedStep) ? parsedStep : undefined,
 					},
 				];
 			}
