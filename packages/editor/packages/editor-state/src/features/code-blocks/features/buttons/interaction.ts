@@ -22,14 +22,22 @@ export default function button(state: State, events: EventDispatcher): () => voi
 			return;
 		}
 
-		state.callbacks?.setWordInMemory?.(lastPushedButtonMemory.wordAlignedAddress, lastPushedButton.onValue);
+		state.callbacks?.setWordInMemory?.(
+			lastPushedButtonMemory.wordAlignedAddress,
+			lastPushedButton.onValue,
+			lastPushedButtonMemory.isInteger ?? true
+		);
 	};
 
 	const onMouseUp = function () {
 		if (!lastPushedButtonMemory || !lastPushedButton) {
 			return;
 		}
-		state.callbacks?.setWordInMemory?.(lastPushedButtonMemory.wordAlignedAddress, lastPushedButton.offValue);
+		state.callbacks?.setWordInMemory?.(
+			lastPushedButtonMemory.wordAlignedAddress,
+			lastPushedButton.offValue,
+			lastPushedButtonMemory.isInteger ?? true
+		);
 	};
 
 	events.on('codeBlockClick', onCodeBlockClick);

@@ -36,6 +36,7 @@ const defaultColorScheme: ColorScheme = {
 		plotterBackground: '#001100',
 		plotterTrace: '#66ff66',
 		scanLine: '#ff0000',
+		sliderThumb: 'rgba(255,0,0,0.5)',
 		codeBlockHighlightLevel1: '#111111',
 		codeBlockHighlightLevel2: '#222222',
 		codeBlockHighlightLevel3: '#333333',
