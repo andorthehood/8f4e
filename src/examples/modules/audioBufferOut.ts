@@ -11,7 +11,7 @@ float* in
 float[] buffer AUDIO_BUFFER_SIZE
 int pointer &buffer
 
-plot buffer -2 2
+# plot buffer -2 2
 
 ; Store the input value
 ; in the buffer
