@@ -44,7 +44,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 186 | Split Binary Asset Fetch and Memory Load | 🟡 | 1-2d | 2026-01-19 | Split asset fetching from WASM memory loading with metadata-only state tracking |
 | 191 | Add clearScope Instruction to Stack Config Compiler | 🟡 | 1-2h | 2026-01-20 | Add explicit scope reset instruction to make root resets clear in config blocks |
 | 192 | Move editor-only directives to # and remove ignoredKeywords | 🟡 | 4-6h | 2026-01-21 | Make editor directives explicit with #, treat # as compiler comment, remove ignoredKeywords API |
-| 194 | Add Unsigned int8/int16 Buffers + Web-UI Views | 🟡 | 1-2d | 2026-01-21 | Add `int8u[]`/`int16u[]` buffer declarations, unsigned min/max semantics, and Uint8/Uint16 memory views in web-ui |
 | 195 | Update Example Code to Use %/^/! Prefixes | 🟡 | 2-4h | 2026-01-21 | Replace WORD_SIZE and manual integer limit constants in examples with element size and bounds prefixes |
 | 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Report shader compile/link failures with effect name/line, skip failed effects, log in editor |
 | 180 | Load Binary Assets From Config URLs | 🟡 | 1-2d | 2026-01-16 | Allow config to declare URL-backed binary assets with module.memory targets, cached in the editor |
@@ -94,6 +93,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 194 | Add Unsigned int8/int16 Buffer Support (Compiler + Web-UI) | 🟡 | 1-2d | 2026-01-21 | Added `int8u[]`/`int16u[]` buffer declarations with unsigned min/max semantics and Uint8/Uint16 memory views in web-ui |
 | 193 | Add Min/Max Value Prefixes for Memory Items | 🟡 | 4-6h | 2026-01-21 | Add `^name`/`!name` prefixes to push max finite and lowest finite values for a memory item’s element type |
 | 177 | Add ~ import alias to editor-state | 🟢 | 0.5-1h | 2026-01-14 | Added `~` import alias to editor-state package for cleaner imports; configured TypeScript, Vite, and Vitest to resolve `~/*` to `src/*`; all typechecks, tests, and builds pass |
 | 174 | Runtime Registry for Configurable Runtime Schemas | 🟡 | 3-5d | 2026-01-13 | Implemented runtime registry system with configurable schemas; added RuntimeRegistry and RuntimeRegistryEntry types; updated config schema generation to use registry; runtime effect now supports registry-based loading with fallback to defaultRuntimeId; created runtime registry in app layer with all four runtimes; all 460 tests passing |
