@@ -199,8 +199,6 @@ const project: Project = {
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 9:56:17 PM',
 				'',
-				'const WORD_SIZE 4',
-				'',
 				'const SAMPLE_RATE 50',
 				'const AUDIO_BUFFER_SIZE 128',
 				'',

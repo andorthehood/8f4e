@@ -57,15 +57,6 @@ describe('autoEnvConstants', () => {
 		expect(state.initialProjectState?.codeBlocks[1].code[0]).toBe('module test');
 	});
 
-	test('should include built-in compiler constants', () => {
-		autoEnvConstants(store);
-		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
-
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
-
-		expect(envBlock?.code).toContain('const WORD_SIZE 4');
-	});
-
 	test('should include SAMPLE_RATE from runtime config', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
