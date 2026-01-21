@@ -259,33 +259,17 @@ if (import.meta.vitest) {
 				'; this is a push comment',
 				'; this is a push comment 0b1010',
 				'',
+				'; Bracketed types',
+				'int8[] buffer1 10',
+				'int8u[] buffer2 20',
+				'int16[] buffer3 30',
+				'int16u[] buffer4 40',
+				'',
 				'moduleEnd',
 			];
 
 			const result = highlightSyntax8f4e(code8f4e, spriteLookups);
 			expect(result).toMatchSnapshot();
-		});
-
-		it('highlights int8[], int8u[], and int16u[] instructions', () => {
-			const code = ['int8[] buffer1 10', 'int8u[] buffer2 20', 'int16u[] buffer3 30', 'push buffer1'];
-
-			const result = highlightSyntax8f4e(code, spriteLookups);
-
-			// First line: int8[] should be highlighted
-			expect(result[0][0]).toBe('instruction');
-			expect(result[0][6]).toBe('code');
-
-			// Second line: int8u[] should be highlighted
-			expect(result[1][0]).toBe('instruction');
-			expect(result[1][7]).toBe('code');
-
-			// Third line: int16u[] should be highlighted
-			expect(result[2][0]).toBe('instruction');
-			expect(result[2][8]).toBe('code');
-
-			// Fourth line: push should be highlighted
-			expect(result[3][0]).toBe('instruction');
-			expect(result[3][4]).toBe('code');
 		});
 	});
 }
