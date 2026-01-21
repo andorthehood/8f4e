@@ -39,7 +39,7 @@ if void
   ; register to the curr
   push pointer 
   push pointer
-  push WORD_SIZE
+  push %out0
   sub
   load
   store
@@ -47,7 +47,7 @@ if void
   ; Increment pointer
   push &pointer
   push pointer
-  push WORD_SIZE
+  push %out0
   sub
   store
 

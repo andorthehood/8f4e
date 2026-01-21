@@ -36,7 +36,7 @@ loop
  ; Increment pointer
  push &_pointer
  push _pointer
- push WORD_SIZE
+ push %out0
  add
  store
 loopEnd

@@ -30,7 +30,7 @@ store
 push &out
  push seed
  castToFloat
- push 2147483647
+ push ^seed
  castToFloat
  div
 store
