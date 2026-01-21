@@ -1,3 +1,12 @@
+---
+title: 'TODO: Unify runtimeSettings shape to a singular runtime object'
+priority: Medium
+effort: 4-6h
+created: 2026-01-20
+status: Completed
+completed: 2026-01-20
+---
+
 # Unify runtimeSettings shape to a singular runtime object
 
 ## Goal
