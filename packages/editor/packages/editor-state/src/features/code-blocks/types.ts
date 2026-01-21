@@ -129,6 +129,17 @@ export interface BufferScanner {
 	pointer: MemoryIdentifier;
 }
 
+export interface Slider {
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	id: string;
+	min: number;
+	max: number;
+	step?: number;
+}
+
 /**
  * Runtime graphic data for a code block.
  * Contains all information needed to render and interact with a code block.
@@ -181,6 +192,7 @@ export interface CodeBlockGraphicData {
 		bufferScanners: BufferScanner[];
 		switches: Switch[];
 		buttons: Switch[];
+		sliders: Slider[];
 		pianoKeyboards: PianoKeyboard[];
 		errorMessages: Array<{
 			message: string[];
