@@ -3,7 +3,7 @@ title: 'TODO: Rename config blocks to projectConfig'
 priority: High
 effort: 1-2 days
 created: 2026-01-21
-status: Open
+status: Cancelled
 completed: null
 ---
 
