@@ -6,7 +6,7 @@ const standalonProject: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'config project',
 				'',
 				'scope "memorySizeBytes"',
 				'push 8',
