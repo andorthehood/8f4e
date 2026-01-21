@@ -3,6 +3,7 @@
 ### push
 
 The push instruction pushes a literal, constant, local, memory value, or address onto the stack.
+For identifier prefixes and suffixes that expand memory identifiers, see [Identifier prefixes](../prefixes.md).
 
 #### Examples
 

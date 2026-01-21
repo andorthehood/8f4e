@@ -45,6 +45,7 @@ The full instruction set reference lives alongside the compiler docs. See [Instr
 ## Memory Access and Pointers
 
 It is also possible to take values from the stack and store them in memory.
+For identifier prefixes and suffixes that expand memory identifiers, see [Identifier prefixes](../packages/compiler/docs/prefixes.md).
 
 The language uses C style pointer notation.
 

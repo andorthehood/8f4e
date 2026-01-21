@@ -44,6 +44,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 186 | Split Binary Asset Fetch and Memory Load | 🟡 | 1-2d | 2026-01-19 | Split asset fetching from WASM memory loading with metadata-only state tracking |
 | 191 | Add clearScope Instruction to Stack Config Compiler | 🟡 | 1-2h | 2026-01-20 | Add explicit scope reset instruction to make root resets clear in config blocks |
 | 192 | Move editor-only directives to # and remove ignoredKeywords | 🟡 | 4-6h | 2026-01-21 | Make editor directives explicit with #, treat # as compiler comment, remove ignoredKeywords API |
+| 193 | Add Min/Max Value Prefixes for Memory Items | 🟡 | 4-6h | 2026-01-21 | Add `^name`/`!name` prefixes to push max finite and lowest finite values for a memory item’s element type |
 | 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Report shader compile/link failures with effect name/line, skip failed effects, log in editor |
 | 180 | Load Binary Assets From Config URLs | 🟡 | 1-2d | 2026-01-16 | Allow config to declare URL-backed binary assets with module.memory targets, cached in the editor |
 | 182 | Add Example Module Dependencies on Insert | 🟡 | 4-6h | 2026-01-17 | Add a dependencies field to example modules and insert missing dependency blocks alongside the requested module |

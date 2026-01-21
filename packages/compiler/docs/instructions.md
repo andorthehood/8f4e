@@ -1,5 +1,7 @@
 # Instructions
 
+- [Identifier prefixes](prefixes.md)
+
 - [Arithmetic instructions](instructions/arithmetic.md)
   - [add](instructions/arithmetic.md#add)
   - [div](instructions/arithmetic.md#div)
