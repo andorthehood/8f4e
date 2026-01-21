@@ -28,7 +28,16 @@ export async function compileConfigFromCombined(
 	// Use runtime registry schema (runtimeRegistry is now required)
 	const schema = getConfigSchema(state.runtimeRegistry);
 
-	const { source, lineMappings } = combined;
+	const { source, lineMappings, typeErrors } = combined;
+
+	// Convert type errors to CodeError format
+	for (const typeError of typeErrors) {
+		errors.push({
+			lineNumber: 1, // Type errors are always on the first line (config marker line)
+			message: typeError.message,
+			codeBlockId: typeError.blockId,
+		});
+	}
 
 	// If no config source, return empty config
 	if (source.trim().length === 0) {

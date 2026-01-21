@@ -1,4 +1,4 @@
-import extractConfigBody from './extractConfigBody';
+import extractConfigBody, { extractConfigType } from './extractConfigBody';
 
 import type { CodeBlockGraphicData } from '~/types';
 
@@ -8,6 +8,7 @@ import type { CodeBlockGraphicData } from '~/types';
 export interface ConfigBlockSource {
 	block: CodeBlockGraphicData;
 	source: string;
+	configType: string | null;
 }
 
 /**
@@ -21,12 +22,14 @@ export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): ConfigB
 		.sort((a, b) => a.creationIndex - b.creationIndex)
 		.map(block => {
 			const body = extractConfigBody(block.code);
+			const configType = extractConfigType(block.code);
 			return {
 				block,
 				source: body.join('\n'),
+				configType,
 			};
-		})
-		.filter(item => item.source.trim().length > 0);
+		});
+	// Note: We don't filter empty sources here anymore - let combineConfigBlocks handle validation
 }
 
 if (import.meta.vitest) {
@@ -105,7 +108,7 @@ if (import.meta.vitest) {
 			expect(result).toHaveLength(0);
 		});
 
-		it('should skip config blocks with empty bodies', () => {
+		it('should include empty config blocks (filtering happens in combineConfigBlocks)', () => {
 			const emptyBlock = createMockCodeBlock({
 				code: ['config project', 'configEnd'],
 				blockType: 'config',
@@ -119,8 +122,9 @@ if (import.meta.vitest) {
 			const codeBlocks = [emptyBlock, contentBlock];
 
 			const result = collectConfigBlocks(codeBlocks);
-			expect(result).toHaveLength(1);
-			expect(result[0].source).toBe('push 1');
+			expect(result).toHaveLength(2);
+			expect(result[0].source).toBe(''); // Empty block is included
+			expect(result[1].source).toBe('push 1');
 		});
 
 		it('should skip disabled config blocks', () => {
