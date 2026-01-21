@@ -4,7 +4,7 @@ const project: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'scope "memorySizeBytes"',
 				'push 128',
@@ -21,7 +21,7 @@ const project: Project = {
 				'push "WebWorkerLogicRuntime"',
 				'set',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: {
 				x: -9,

@@ -1,11 +1,11 @@
 /**
  * Integration tests that verify all example projects under src/examples/projects/*
- * compile without errors - both module code and config blocks.
+ * compile without errors - both module code and projectConfig blocks.
  *
  * This test suite ensures that:
  * 1. All example projects can be discovered programmatically
  * 2. All module code blocks compile without errors
- * 3. All config blocks compile without errors
+ * 3. All projectConfig blocks compile without errors
  */
 import * as path from 'path';
 import * as fs from 'fs';
@@ -29,13 +29,13 @@ const COMPILER_OPTIONS = {
 
 /**
  * Determines the type of a code block based on its first non-empty line.
- * Returns 'module', 'config', 'function', or 'unknown'.
+ * Returns 'module', 'projectConfig', 'function', or 'unknown'.
  */
-function getBlockType(code: string[]): 'module' | 'config' | 'function' | 'constants' | 'unknown' {
+function getBlockType(code: string[]): 'module' | 'projectConfig' | 'function' | 'constants' | 'unknown' {
 	for (const line of code) {
 		const trimmed = line.trim();
 		if (trimmed === '') continue;
-		if (trimmed === 'config') return 'config';
+		if (trimmed === 'projectConfig') return 'projectConfig';
 		if (trimmed.startsWith('module ')) return 'module';
 		if (trimmed.startsWith('function ')) return 'function';
 		if (trimmed.startsWith('constants ')) return 'constants';
@@ -112,25 +112,25 @@ describe('Example Projects Compilation', () => {
 		projectFiles.forEach(filePath => {
 			const slug = path.basename(filePath, '.ts');
 
-			it(`should compile config blocks in project: ${slug}`, async () => {
+			it(`should compile projectConfig blocks in project: ${slug}`, async () => {
 				const { project } = await loadProject(filePath);
 
-				// Extract config blocks
-				const configBlocks = project.codeBlocks.filter(block => getBlockType(block.code) === 'config');
+				// Extract projectConfig blocks
+				const configBlocks = project.codeBlocks.filter(block => getBlockType(block.code) === 'projectConfig');
 
 				if (configBlocks.length === 0) {
-					// Some projects may not have config blocks - that's fine
+					// Some projects may not have projectConfig blocks - that's fine
 					return;
 				}
 
 				configBlocks.forEach((block, index) => {
-					// Extract the config program source (lines between 'config' and 'configEnd')
+					// Extract the config program source (lines between 'projectConfig' and 'projectConfigEnd')
 					const code = block.code;
-					const configStartIndex = code.findIndex(line => line.trim() === 'config');
-					const configEndIndex = code.findIndex(line => line.trim() === 'configEnd');
+					const configStartIndex = code.findIndex(line => line.trim() === 'projectConfig');
+					const configEndIndex = code.findIndex(line => line.trim() === 'projectConfigEnd');
 
 					if (configStartIndex === -1 || configEndIndex === -1) {
-						throw new Error(`Config block ${index} in project ${slug} is missing 'config' or 'configEnd' marker`);
+						throw new Error(`Config block ${index} in project ${slug} is missing 'projectConfig' or 'projectConfigEnd' marker`);
 					}
 
 					// Get the config body (excluding the markers)

@@ -4,7 +4,7 @@ const project: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -21,7 +21,7 @@ const project: Project = {
 				'popScope',
 				'popScope',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: { x: -50, y: -6 },
 		},

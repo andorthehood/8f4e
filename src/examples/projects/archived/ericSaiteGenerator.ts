@@ -4,7 +4,7 @@ const ericSaiteGenerator: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'projectConfig',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -20,7 +20,7 @@ const ericSaiteGenerator: Project = {
 				'set',
 				'popScope',
 				'',
-				'configEnd',
+				'projectConfigEnd',
 			],
 			gridCoordinates: { x: -280, y: -2 },
 		},

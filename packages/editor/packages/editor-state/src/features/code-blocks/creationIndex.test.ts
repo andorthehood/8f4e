@@ -202,8 +202,8 @@ describe('creationIndex', () => {
 			const configBlock = createMockCodeBlock({
 				id: 'testConfig',
 				creationIndex: 2,
-				code: ['config', 'configEnd'],
-				blockType: 'config',
+				code: ['projectConfig', 'projectConfigEnd'],
+				blockType: 'projectConfig',
 			});
 
 			const codeBlocksArray = [moduleBlock, functionBlock, configBlock];
