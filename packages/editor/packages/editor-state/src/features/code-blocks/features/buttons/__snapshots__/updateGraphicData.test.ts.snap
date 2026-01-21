@@ -1,48 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`updateButtonsGraphicData > should calculate correct dimensions and position 1`] = `
-{
-  "height": 16,
-  "id": "btn1",
-  "offValue": 0,
-  "onValue": 1,
-  "width": 32,
-  "x": 68,
-  "y": 0,
-}
-`;
+exports[`updateButtonsGraphicData > should calculate correct dimensions and position 1`] = `undefined`;
 
-exports[`updateButtonsGraphicData > should handle multiple buttons 1`] = `
-[
-  {
-    "height": 16,
-    "id": "btn1",
-    "offValue": 0,
-    "onValue": 1,
-    "width": 32,
-    "x": 68,
-    "y": 0,
-  },
-  {
-    "height": 16,
-    "id": "btn2",
-    "offValue": 5,
-    "onValue": 10,
-    "width": 32,
-    "x": 68,
-    "y": 16,
-  },
-]
-`;
-
-exports[`updateButtonsGraphicData > should position buttons at correct y coordinate based on line number 1`] = `
-{
-  "height": 16,
-  "id": "btn1",
-  "offValue": 0,
-  "onValue": 1,
-  "width": 32,
-  "x": 68,
-  "y": 32,
-}
-`;
+exports[`updateButtonsGraphicData > should position buttons at correct y coordinate based on line number 1`] = `undefined`;

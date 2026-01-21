@@ -4,7 +4,7 @@ import parseDebuggers from './codeParser';
 
 describe('parseDebuggers', () => {
 	it('should parse debug instruction with id', () => {
-		const code = ['debug myVar'];
+		const code = ['# debug myVar'];
 		const result = parseDebuggers(code);
 
 		expect(result).toEqual([
@@ -16,7 +16,7 @@ describe('parseDebuggers', () => {
 	});
 
 	it('should handle multiple debug instructions', () => {
-		const code = ['debug var1', 'mov a b', 'debug var2', 'add c d', 'debug var3'];
+		const code = ['# debug var1', 'mov a b', '# debug var2', 'add c d', '# debug var3'];
 		const result = parseDebuggers(code);
 
 		expect(result).toEqual([
@@ -50,7 +50,7 @@ describe('parseDebuggers', () => {
 	});
 
 	it('should preserve correct line numbers', () => {
-		const code = ['nop', 'nop', 'debug var1', 'nop', 'nop', 'debug var2'];
+		const code = ['nop', 'nop', '# debug var1', 'nop', 'nop', '# debug var2'];
 		const result = parseDebuggers(code);
 
 		expect(result).toEqual([
