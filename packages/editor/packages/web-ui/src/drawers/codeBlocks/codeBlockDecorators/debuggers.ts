@@ -27,9 +27,11 @@ export default function drawConnectors(
 		} else {
 			let value = '';
 			if (memory.elementWordSize === 1 && memory.isInteger) {
-				value = memoryViews.int8[memory.byteAddress + bufferPointer].toString(showBinary ? 2 : 10);
+				const view = memory.isUnsigned ? memoryViews.uint8 : memoryViews.int8;
+				value = view[memory.byteAddress + bufferPointer].toString(showBinary ? 2 : 10);
 			} else if (memory.elementWordSize === 2 && memory.isInteger) {
-				value = memoryViews.int16[memory.byteAddress * 2 + bufferPointer].toString(showBinary ? 2 : 10);
+				const view = memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
+				value = view[memory.byteAddress * 2 + bufferPointer].toString(showBinary ? 2 : 10);
 			} else {
 				value = memory.isInteger
 					? memoryViews.int32[memory.wordAlignedAddress + bufferPointer].toString(showBinary ? 2 : 10)
