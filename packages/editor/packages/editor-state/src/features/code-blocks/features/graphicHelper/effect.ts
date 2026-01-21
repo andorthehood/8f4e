@@ -173,6 +173,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					debuggers: [],
 					switches: [],
 					buttons: [],
+					sliders: [],
 					pianoKeyboards: [],
 					bufferPlotters: [],
 					bufferScanners: [],
