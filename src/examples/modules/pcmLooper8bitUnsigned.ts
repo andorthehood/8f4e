@@ -4,19 +4,17 @@ const pcmLooper8bitUnsigned: ExampleModule = {
 	title: 'Variable Speed PCM Looper (8bit unsigned)',
 	author: 'Andor Polgar',
 	category: 'PCM',
-	dependencies: ['integerLimits'],
+	dependencies: [],
 	code: `module pcmPlayer8bit
 
 int8[] buffer 62258
 int playhead &buffer
 float out
 
-use integerLimits
-
 ; Advance the playhead
 push &playhead
 push playhead
-push BYTES_8
+push %buffer
 add
 store
 
@@ -26,7 +24,9 @@ push &out
 push playhead
 load8u
 castToFloat
-push MAX_8U
+push ^buffer
+push !buffer
+sub
 castToFloat
 div
 push 0.5

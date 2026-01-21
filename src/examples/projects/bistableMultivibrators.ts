@@ -107,8 +107,6 @@ const project: Project = {
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 9:52:44 PM',
 				'',
-				'const WORD_SIZE 4',
-				'',
 				'const SAMPLE_RATE 50',
 				'const AUDIO_BUFFER_SIZE 128',
 				'',
@@ -263,7 +261,6 @@ const project: Project = {
 		{
 			code: [
 				'module scope',
-				'use env',
 				'',
 				'int* in &norGate.out',
 				'int[] buffer 64',
@@ -273,7 +270,7 @@ const project: Project = {
 				'',
 				'push &bufferPointer',
 				'push bufferPointer',
-				'push WORD_SIZE',
+				'push %buffer',
 				'add',
 				'store',
 				'',
@@ -300,7 +297,6 @@ const project: Project = {
 		{
 			code: [
 				'module scope2',
-				'use env',
 				'',
 				'int* in &andGate.out',
 				'int[] buffer 64',
@@ -310,7 +306,7 @@ const project: Project = {
 				'',
 				'push &bufferPointer',
 				'push bufferPointer',
-				'push WORD_SIZE',
+				'push %buffer',
 				'add',
 				'store',
 				'',

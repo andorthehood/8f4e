@@ -42,7 +42,7 @@ const cycle: InstructionCompiler = withValidation(
 				`localGet ${pointerName}`,
 				`localGet ${pointerName}`,
 				`load`,
-				'push WORD_SIZE',
+				`push ${GLOBAL_ALIGNMENT_BOUNDARY}`,
 				'add',
 				'store',
 
@@ -68,14 +68,7 @@ if (import.meta.vitest) {
 
 	describe('cycle instruction compiler', () => {
 		it('compiles the cycle segment', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					consts: {
-						WORD_SIZE: { value: GLOBAL_ALIGNMENT_BOUNDARY, isInteger: true },
-					},
-				},
-			});
+			const context = createInstructionCompilerTestContext();
 			context.stack.push(
 				{ isInteger: true, isNonZero: false },
 				{ isInteger: true, isNonZero: false },

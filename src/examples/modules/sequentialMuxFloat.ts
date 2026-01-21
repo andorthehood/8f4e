@@ -48,7 +48,7 @@ push &out
  ; Calculate input address
  push &in0
  push counter
- push WORD_SIZE
+ push %in0
  mul
  add
 

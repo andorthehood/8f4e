@@ -26,7 +26,7 @@ risingEdge
 if void
  push &stepPointer
  push stepPointer
- push WORD_SIZE
+ push %step1
  add
  store
 ifEnd

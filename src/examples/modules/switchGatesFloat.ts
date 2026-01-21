@@ -52,7 +52,7 @@ loop
  ; Read switch
  push &gate0
  push pointer
- push WORD_SIZE
+ push %gate0
  mul
  add
  load
@@ -62,14 +62,14 @@ loop
   ; Prepare out address
   push &out0
   push pointer
-  push WORD_SIZE
+  push %out0
   mul
   add
 
   ; Read input
   push &in0
   push pointer
-  push WORD_SIZE
+  push %in0
   mul
   add
   load
@@ -80,7 +80,7 @@ loop
   ; Prepare out address
   push &out0
   push pointer
-  push WORD_SIZE
+  push %out0
   mul
   add
   

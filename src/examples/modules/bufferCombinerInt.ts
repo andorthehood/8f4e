@@ -39,7 +39,7 @@ branchIfTrue 1
 ; buffer address
 push &buffer
 push bufferPointer
-push WORD_SIZE
+push %buffer
 mul
 add
  
@@ -51,7 +51,7 @@ lessThan
 if int
 push bufferA  
 push bufferPointer
-push WORD_SIZE
+push %bufferA
 mul
 add
 else
@@ -59,7 +59,7 @@ push bufferB
 push bufferPointer
 push *lengthA
 sub
-push WORD_SIZE
+push %bufferB
 mul
 add
 ifEnd
