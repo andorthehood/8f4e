@@ -10,7 +10,7 @@ float* in
 float[] buffer 64
 int bufferPointer &buffer
 
-plot buffer -1 1
+# plot buffer -1 1
 
 push &bufferPointer
 push bufferPointer
