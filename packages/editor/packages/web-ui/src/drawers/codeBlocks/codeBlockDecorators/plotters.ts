@@ -38,7 +38,7 @@ export default function drawer(
 				value = view[buffer.memory.byteAddress + i];
 			} else if (buffer.memory.elementWordSize === 2 && buffer.memory.isInteger) {
 				const view = buffer.memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
-				value = view[buffer.memory.byteAddress * 2 + i];
+				value = view[buffer.memory.byteAddress / 2 + i];
 			} else {
 				value = buffer.memory.isInteger
 					? memoryViews.int32[buffer.memory.wordAlignedAddress + i]
