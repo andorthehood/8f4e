@@ -5,8 +5,8 @@ export default function parseDebuggers(code: string[]) {
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
 
-			if (instruction === 'debug') {
-				return [...acc, { id: args[0], lineNumber: index }];
+			if (instruction === '#' && args[0] === 'debug') {
+				return [...acc, { id: args[1], lineNumber: index }];
 			}
 			return acc;
 		},

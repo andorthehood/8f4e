@@ -8,7 +8,6 @@ import instructions, { Instruction } from './instructionCompilers';
 import {
 	AST,
 	CompilationContext,
-	CompileOptions,
 	CompiledModule,
 	CompiledFunction,
 	CompiledFunctionLookup,
@@ -40,18 +39,11 @@ export function parseLine(line: string, lineNumber: number): AST[number] {
 	};
 }
 
-export function compileToAST(code: string[], options?: CompileOptions) {
+export function compileToAST(code: string[]) {
 	return code
 		.map((line, index) => [index, line] as [number, string])
 		.filter(([, line]) => !isComment(line))
 		.filter(([, line]) => isValidInstruction(line))
-		.filter(([lineNumber, line]) => {
-			if (!options) {
-				return true;
-			}
-			const { instruction } = parseLine(line, lineNumber);
-			return !options.environmentExtensions.ignoredKeywords.includes(instruction);
-		})
 		.map(([lineNumber, line]) => {
 			return parseLine(line, lineNumber);
 		});

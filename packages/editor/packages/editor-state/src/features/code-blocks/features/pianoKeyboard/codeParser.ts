@@ -5,19 +5,26 @@ import parsePressedKeys from './parsePressedKeys';
 export default function parsePianoKeyboards(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
+				never,
+				string,
+				string,
+				string,
+				string,
+				string,
+			];
 
-			if (instruction === 'piano') {
-				const startingNumber = parseInt(args[2] || '0', 10);
-				const pressedKeys = parsePressedKeys(code, args[0], startingNumber);
+			if (instruction === '#' && args[0] === 'piano') {
+				const startingNumber = parseInt(args[3] || '0', 10);
+				const pressedKeys = parsePressedKeys(code, args[1], startingNumber);
 
 				return [
 					...acc,
 					{
-						id: args[0],
+						id: args[1],
 						lineNumber: index,
-						pressedNumberOfKeysMemoryId: args[1],
-						pressedKeysListMemoryId: args[0],
+						pressedNumberOfKeysMemoryId: args[2],
+						pressedKeysListMemoryId: args[1],
 						startingNumber,
 						pressedKeys,
 					},

@@ -10,7 +10,7 @@ int* in
 int[] buffer 64
 int bufferPointer &buffer
 
-plot buffer 0 255
+# plot buffer 0 255
 
 push &bufferPointer
 push bufferPointer

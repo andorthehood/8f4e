@@ -4,7 +4,7 @@ import parseBufferPlotters from './codeParser';
 
 describe('parseBufferPlotters', () => {
 	it('should parse plot instruction with all arguments', () => {
-		const code = ['plot myBuffer -10 10 bufferLength'];
+		const code = ['# plot myBuffer -10 10 bufferLength'];
 		const result = parseBufferPlotters(code);
 
 		expect(result).toEqual([
@@ -19,7 +19,7 @@ describe('parseBufferPlotters', () => {
 	});
 
 	it('should parse plot instruction with default min/max values', () => {
-		const code = ['plot myBuffer'];
+		const code = ['# plot myBuffer'];
 		const result = parseBufferPlotters(code);
 
 		expect(result).toEqual([
@@ -34,7 +34,7 @@ describe('parseBufferPlotters', () => {
 	});
 
 	it('should parse plot instruction without buffer length', () => {
-		const code = ['plot myBuffer -5 5'];
+		const code = ['# plot myBuffer -5 5'];
 		const result = parseBufferPlotters(code);
 
 		expect(result).toEqual([
@@ -49,7 +49,7 @@ describe('parseBufferPlotters', () => {
 	});
 
 	it('should handle multiple plot instructions', () => {
-		const code = ['plot buffer1 -10 10', 'mov a b', 'plot buffer2 -8 100 len2'];
+		const code = ['# plot buffer1 -10 10', 'mov a b', '# plot buffer2 -8 100 len2'];
 		const result = parseBufferPlotters(code);
 
 		expect(result).toEqual([
@@ -85,7 +85,7 @@ describe('parseBufferPlotters', () => {
 	});
 
 	it('should use default values when min/max are invalid numbers', () => {
-		const code = ['plot myBuffer invalid invalid'];
+		const code = ['# plot myBuffer invalid invalid'];
 		const result = parseBufferPlotters(code);
 
 		expect(result).toEqual([

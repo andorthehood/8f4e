@@ -44,9 +44,6 @@ export default async function compiler(store: StateManager<State>, events: Event
 			const compilerOptions = {
 				memorySizeBytes: state.compiledConfig?.memorySizeBytes || 1048576, // 1MB default
 				startingMemoryWordAddress: 0,
-				environmentExtensions: {
-					ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano', 'scan'],
-				},
 			};
 
 			const result = await state.callbacks.compileCode?.(modules, compilerOptions, functions);

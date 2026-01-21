@@ -12,7 +12,7 @@ describe('compiler', () => {
 		expect(
 			compileModules(astModules, {
 				startingMemoryWordAddress: 0,
-				environmentExtensions: { ignoredKeywords: [] },
+
 				memorySizeBytes: 65536,
 				includeAST: true,
 			})
@@ -22,7 +22,7 @@ describe('compiler', () => {
 	test('compile function excludes AST by default', () => {
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-			environmentExtensions: { ignoredKeywords: [] },
+
 			memorySizeBytes: 65536,
 		});
 
@@ -35,7 +35,7 @@ describe('compiler', () => {
 	test('compile function includes AST when includeAST is true', () => {
 		const result = compile(modules, {
 			startingMemoryWordAddress: 0,
-			environmentExtensions: { ignoredKeywords: [] },
+
 			memorySizeBytes: 65536,
 			includeAST: true,
 		});

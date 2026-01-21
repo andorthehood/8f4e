@@ -24,7 +24,7 @@ exports[`updateDebuggersGraphicData > should handle multiple debuggers 1`] = `
     "showBinary": false,
     "showEndAddress": false,
     "width": 16,
-    "x": 120,
+    "x": 136,
     "y": 0,
   },
   {
@@ -49,7 +49,7 @@ exports[`updateDebuggersGraphicData > should handle multiple debuggers 1`] = `
     "showBinary": false,
     "showEndAddress": false,
     "width": 16,
-    "x": 120,
+    "x": 136,
     "y": 16,
   },
 ]
@@ -78,7 +78,7 @@ exports[`updateDebuggersGraphicData > should position debuggers at correct y coo
   "showBinary": false,
   "showEndAddress": false,
   "width": 16,
-  "x": 128,
+  "x": 144,
   "y": 32,
 }
 `;
