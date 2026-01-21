@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`updateSlidersGraphicData > should calculate correct dimensions and position 1`] = `
+{
+  "height": 40,
+  "id": "mySlider",
+  "max": NaN,
+  "min": NaN,
+  "step": NaN,
+  "width": 170,
+  "x": 30,
+  "y": 40,
+}
+`;
+
+exports[`updateSlidersGraphicData > should handle multiple sliders 1`] = `
+[
+  {
+    "height": 40,
+    "id": "slider1",
+    "max": NaN,
+    "min": NaN,
+    "step": NaN,
+    "width": 170,
+    "x": 30,
+    "y": 40,
+  },
+  {
+    "height": 40,
+    "id": "slider2",
+    "max": 100,
+    "min": 0,
+    "step": NaN,
+    "width": 170,
+    "x": 30,
+    "y": 80,
+  },
+]
+`;
+
+exports[`updateSlidersGraphicData > should position sliders at correct y coordinate based on line number 1`] = `
+{
+  "height": 40,
+  "id": "mySlider",
+  "max": NaN,
+  "min": NaN,
+  "step": NaN,
+  "width": 170,
+  "x": 30,
+  "y": 60,
+}
+`;
