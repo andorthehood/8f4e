@@ -3,15 +3,14 @@ import { StateManager } from '@8f4e/state-manager';
 import findSliderAtViewportCoordinates from './findSliderAtViewportCoordinates';
 
 import type { State, CodeBlockGraphicData, InternalMouseEvent, Slider } from '~/types';
+import type { DataStructure } from '@8f4e/compiler';
 
 import { EventDispatcher } from '~/types';
 
 interface ActiveSlider {
 	slider: Slider;
 	codeBlock: CodeBlockGraphicData;
-	memory: {
-		wordAlignedAddress: number;
-	};
+	memory: Pick<DataStructure, 'wordAlignedAddress' | 'isInteger'>;
 }
 
 export default function slider(store: StateManager<State>, events: EventDispatcher): () => void {
@@ -38,8 +37,13 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 		// Clamp to min/max
 		value = Math.max(slider.min, Math.min(slider.max, value));
 
-		// Write to memory
-		state.callbacks?.setWordInMemory?.(memory.wordAlignedAddress, value);
+		const hasFloatRange =
+			!Number.isInteger(slider.min) ||
+			!Number.isInteger(slider.max) ||
+			(slider.step !== undefined && !Number.isInteger(slider.step));
+		const shouldWriteInteger = memory.isInteger && !hasFloatRange;
+
+		state.callbacks?.setWordInMemory?.(memory.wordAlignedAddress, value, shouldWriteInteger);
 	};
 
 	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {

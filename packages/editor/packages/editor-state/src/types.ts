@@ -199,7 +199,7 @@ export interface Callbacks {
 	compileConfig?: (source: string, schema: JSONSchemaLike) => Promise<ConfigCompilationResult>;
 
 	// Memory manipulation callback
-	setWordInMemory?: (wordAlignedAddress: number, value: number) => void;
+	setWordInMemory?: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
 
 	getWordFromMemory?: (wordAlignedAddress: number) => number;
 
