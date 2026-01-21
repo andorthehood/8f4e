@@ -1,12 +1,15 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { warn, error } from '../logger/logger';
-import { extractConfigType } from '../config-compiler/extractConfigBody';
-import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
 
 import type { Project, State, CodeBlock } from '~/types';
 
 import { EventDispatcher, EMPTY_DEFAULT_PROJECT } from '~/types';
+
+/**
+ * Regex pattern to match editor config blocks.
+ */
+const EDITOR_CONFIG_REGEX = /^\s*config\s+editor/;
 
 /**
  * Filters out editor config blocks from imported projects.
@@ -14,12 +17,8 @@ import { EventDispatcher, EMPTY_DEFAULT_PROJECT } from '~/types';
  */
 function filterEditorConfigBlocks(codeBlocks: CodeBlock[]): CodeBlock[] {
 	return codeBlocks.filter(block => {
-		const blockType = getBlockType(block.code);
-		if (blockType !== 'config') {
-			return true;
-		}
-		const configType = extractConfigType(block.code);
-		return configType !== 'editor';
+		// Quick check: if block contains 'config editor' pattern, filter it out
+		return !block.code.some(line => EDITOR_CONFIG_REGEX.test(line));
 	});
 }
 

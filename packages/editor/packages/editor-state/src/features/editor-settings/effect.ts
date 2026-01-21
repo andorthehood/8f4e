@@ -8,6 +8,11 @@ import type { State } from '~/types';
 
 import { EventDispatcher } from '~/types';
 
+/**
+ * Regex pattern to match editor config blocks.
+ */
+const EDITOR_CONFIG_REGEX = /^\s*config\s+editor/;
+
 export default function editorSettings(store: StateManager<State>, events: EventDispatcher, defaultState: State): void {
 	const state = store.getState();
 
@@ -40,14 +45,15 @@ export default function editorSettings(store: StateManager<State>, events: Event
 		}
 
 		// Load editor config source from persistent storage
-		// Note: This is loaded separately from editor settings and creates code blocks
+		// Note: This is loaded separately from editor settings and would create code blocks
 		// The source is the full block including markers and comments
+		// TODO: Implement code block creation from loaded source (tracked in #197)
+		// This requires integration with the code block creation logic to properly
+		// instantiate editor config blocks with correct positioning and state
 		if (state.featureFlags.persistentStorage && state.callbacks.loadEditorConfigSource) {
 			try {
 				const loadedConfigSource = await state.callbacks.loadEditorConfigSource();
 				if (loadedConfigSource && loadedConfigSource.length > 0) {
-					// TODO: Create a code block from the loaded source
-					// This will be implemented when we have the code block creation logic
 					console.log('[Editor Config] Loaded editor config source, but block creation not yet implemented');
 				}
 			} catch (err) {
@@ -102,7 +108,7 @@ export default function editorSettings(store: StateManager<State>, events: Event
 			.filter(block => {
 				if (block.blockType !== 'config') return false;
 				// Check if it's an editor config block
-				return block.code.some(line => /^\s*config\s+editor/.test(line));
+				return block.code.some(line => EDITOR_CONFIG_REGEX.test(line));
 			})
 			.sort((a, b) => a.creationIndex - b.creationIndex);
 
@@ -153,7 +159,7 @@ export default function editorSettings(store: StateManager<State>, events: Event
 		}
 
 		// Check if it's specifically an editor config
-		const configLine = block.code.find(line => /^\s*config\s+editor/.test(line));
+		const configLine = block.code.find(line => EDITOR_CONFIG_REGEX.test(line));
 		if (!configLine) {
 			return;
 		}
