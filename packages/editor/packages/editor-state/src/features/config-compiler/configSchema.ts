@@ -1,5 +1,12 @@
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
+import type { Font } from '@8f4e/sprite-generator';
 import type { RuntimeRegistry } from '~/types';
+
+/**
+ * Valid font values for editor config.
+ * Must match the Font type from @8f4e/sprite-generator.
+ */
+const VALID_FONTS: Font[] = ['6x10', '8x16'];
 
 /**
  * Generates a runtime settings schema from a runtime registry.
@@ -69,7 +76,7 @@ export function getEditorConfigSchema(): JSONSchemaLike {
 			colorScheme: { type: 'string' },
 			font: {
 				type: 'string',
-				enum: ['6x10', '8x16'],
+				enum: VALID_FONTS,
 			},
 		},
 		additionalProperties: false,
