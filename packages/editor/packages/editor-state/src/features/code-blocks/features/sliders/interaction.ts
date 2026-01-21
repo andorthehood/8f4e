@@ -42,8 +42,8 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 		state.callbacks?.setWordInMemory?.(memory.wordAlignedAddress, value);
 	};
 
-	const onCodeBlockClick = function ({ x, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
-		const slider = findSliderAtViewportCoordinates(state, codeBlock, x, 0);
+	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
+		const slider = findSliderAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!slider) {
 			return;
