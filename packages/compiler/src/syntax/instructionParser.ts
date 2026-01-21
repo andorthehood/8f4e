@@ -5,7 +5,7 @@
  * Format: instruction arg1 arg2 ... arg7 # optional comment
  */
 const instructionParser =
-	/^\s*([^\s;#]+)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*(?:[;#].*|\s*)/;
+	/^\s*([^\s;]+)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*([^\s;#]*)\s*(?:[;#].*|\s*)/;
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
