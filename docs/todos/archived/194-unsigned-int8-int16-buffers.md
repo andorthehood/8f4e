@@ -3,8 +3,8 @@ title: 'TODO: Add Unsigned int8/int16 Buffer Support (Compiler + Web-UI)'
 priority: Medium
 effort: 1-2d
 created: 2026-01-21
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-21
 ---
 
 # TODO: Add Unsigned int8/int16 Buffer Support (Compiler + Web-UI)
