@@ -13,8 +13,6 @@ export default function drawer(
 		return;
 	}
 
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
-
 	for (const { x, y, width, height, id, min, max } of codeBlock.extras.sliders) {
 		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[id];
 
@@ -34,20 +32,16 @@ export default function drawer(
 
 		// Calculate normalized position (0..1)
 		const normalizedValue = Math.max(0, Math.min(1, (value - min) / (max - min)));
-
-		// Calculate thumb width (1 grid column)
-		const thumbWidth = state.viewport.vGrid;
-
-		// Calculate thumb position within the slider width
-		const thumbX = Math.floor(normalizedValue * (width - thumbWidth));
+		const thumbX = Math.floor(normalizedValue * (width - state.viewport.vGrid));
 
 		engine.startGroup(x, y);
 
-		// Draw the slider track (subtle background)
-		// Using a very subtle color or the same background to keep it minimal
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+		engine.drawSprite(0, 0, 'scanLine', thumbX, height);
 
-		// Draw the thumb/handle using the scanLine color (similar to scanner visual style)
-		engine.drawSprite(thumbX, 0, 'scanLine', thumbWidth, height);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+		engine.drawText(thumbX, 0, '#');
+		engine.drawText(thumbX, state.viewport.hGrid, '#');
 
 		engine.endGroup();
 	}
