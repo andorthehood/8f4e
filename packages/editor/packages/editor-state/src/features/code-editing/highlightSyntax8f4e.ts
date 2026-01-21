@@ -138,7 +138,7 @@ export default function highlightSyntax8f4e<T>(
 	}
 ): T[][] {
 	return code.map(line => {
-		const { index: commentIndex } = /;/.exec(line) || {};
+		const { index: commentIndex } = /[;#]/.exec(line) || {};
 		const instructionMatch = getInstructionRegExp(instructionsToHighlight).exec(line);
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
 		const { index: numberIndex } = /-?\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
@@ -211,8 +211,8 @@ if (import.meta.vitest) {
 				'float[] buffer AUDIO_BUFFER_SIZE',
 				'int pointer &buffer',
 				'',
-				'debug count',
-				'plot buffer -2 2',
+				'# debug count',
+				'# plot buffer -2 2',
 				'',
 				'; Store the input value',
 				'; in the buffer',

@@ -9,8 +9,8 @@ export function parsePositionOffsetters(code: string[]) {
 		(acc, line) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];
 
-			if (instruction === 'offset') {
-				return [...acc, { axis: args[0], memory: args[1] }];
+			if (instruction === '#' && args[0] === 'offset') {
+				return [...acc, { axis: args[1], memory: args[2] }];
 			}
 			return acc;
 		},
