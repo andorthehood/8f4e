@@ -21,6 +21,11 @@ export interface ConfigTypeError {
 }
 
 /**
+ * List of supported config types.
+ */
+const SUPPORTED_CONFIG_TYPES = ['project'] as const;
+
+/**
  * Result of combining all config blocks into a single source.
  */
 export interface CombinedConfigSource {
@@ -41,11 +46,11 @@ function validateConfigType(configType: string | null, blockId: number): ConfigT
 		};
 	}
 
-	if (configType !== 'project') {
+	if (!(SUPPORTED_CONFIG_TYPES as readonly string[]).includes(configType)) {
 		return {
 			blockId,
 			configType,
-			message: `Unsupported config type: ${configType}. Supported: project.`,
+			message: `Unsupported config type: ${configType}. Supported: ${SUPPORTED_CONFIG_TYPES.join(', ')}.`,
 		};
 	}
 
