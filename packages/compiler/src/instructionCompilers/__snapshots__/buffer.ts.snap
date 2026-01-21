@@ -11,6 +11,7 @@ exports[`buffer instruction compiler > creates a memory buffer entry 1`] = `
     "isPointer": false,
     "isPointingToInteger": false,
     "isPointingToPointer": false,
+    "isUnsigned": false,
     "numberOfElements": 3,
     "type": "int",
     "wordAlignedAddress": 0,

@@ -80,6 +80,7 @@ const standalonProject: Project = {
 					isPointingToInteger: false,
 					isPointingToPointer: false,
 					isInteger: true,
+					isUnsigned: false,
 				},
 			},
 			wordAlignedSize: 1,
