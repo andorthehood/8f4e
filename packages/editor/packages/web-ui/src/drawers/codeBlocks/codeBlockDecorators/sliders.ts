@@ -15,7 +15,7 @@ export default function drawer(
 
 	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
 
-	for (const { x, y, width, height, id, min, max, step } of codeBlock.extras.sliders) {
+	for (const { x, y, width, height, id, min, max } of codeBlock.extras.sliders) {
 		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[id];
 
 		if (!memory) {
@@ -26,6 +26,11 @@ export default function drawer(
 		const value = memory.isInteger
 			? memoryViews.int32[memory.wordAlignedAddress]
 			: memoryViews.float32[memory.wordAlignedAddress];
+
+		// Handle edge case where min equals max
+		if (min === max) {
+			continue;
+		}
 
 		// Calculate normalized position (0..1)
 		const normalizedValue = Math.max(0, Math.min(1, (value - min) / (max - min)));
