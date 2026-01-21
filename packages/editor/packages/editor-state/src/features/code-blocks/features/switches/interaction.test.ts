@@ -11,13 +11,14 @@ describe('switch interaction', () => {
 	let mockEvents: EventDispatcher;
 	let onCallbacks: Map<string, (...args: unknown[]) => void>;
 	let memoryStore: Map<number, number>;
-	let setWordInMemory: (wordAlignedAddress: number, value: number) => void;
+	let setWordInMemory: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
 	let getWordFromMemory: (wordAlignedAddress: number) => number;
 
 	beforeEach(() => {
 		onCallbacks = new Map();
 		memoryStore = new Map();
-		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number) => {
+		setWordInMemory = vi.fn((wordAlignedAddress: number, value: number, isInteger: boolean) => {
+			void isInteger;
 			memoryStore.set(wordAlignedAddress, value);
 		});
 		getWordFromMemory = vi.fn((wordAlignedAddress: number) => memoryStore.get(wordAlignedAddress) ?? 0);
@@ -100,7 +101,7 @@ describe('switch interaction', () => {
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
-		expect(setWordInMemory).toHaveBeenCalledWith(5, 1);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 1, true);
 		expect(memoryStore.get(5)).toBe(1);
 
 		cleanup();
@@ -128,7 +129,7 @@ describe('switch interaction', () => {
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
-		expect(setWordInMemory).toHaveBeenCalledWith(5, 0);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 0, true);
 		expect(memoryStore.get(5)).toBe(0);
 
 		cleanup();
@@ -156,7 +157,7 @@ describe('switch interaction', () => {
 
 		codeBlockClickCallback?.({ x: 60, y: 60, codeBlock: mockCodeBlock });
 
-		expect(setWordInMemory).toHaveBeenCalledWith(5, 0);
+		expect(setWordInMemory).toHaveBeenCalledWith(5, 0, true);
 		expect(memoryStore.get(5)).toBe(0);
 
 		cleanup();
