@@ -12,6 +12,8 @@ import {
 	getMemoryStringLastByteAddress,
 	getElementWordSize,
 	getElementCount,
+	getElementMaxValue,
+	getElementMinValue,
 } from '../utils/memoryData';
 import {
 	isMemoryIdentifier,
@@ -19,16 +21,20 @@ import {
 	isMemoryReferenceIdentifier,
 	isElementCountIdentifier,
 	isElementWordSizeIdentifier,
+	isElementMaxIdentifier,
+	isElementMinIdentifier,
 } from '../utils/memoryIdentifier';
 import { saveByteCode } from '../utils/compilation';
 import extractElementCountBase from '../syntax/extractElementCountBase';
 import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
+import extractElementMaxBase from '../syntax/extractElementMaxBase';
+import extractElementMinBase from '../syntax/extractElementMinBase';
 import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
 import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
 import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, ArgumentLiteral, InstructionCompiler } from '../types';
+import type { AST, ArgumentLiteral, InstructionCompiler, MemoryMap } from '../types';
 
 function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
 	if (argument.isInteger) {
@@ -102,6 +108,24 @@ const push: InstructionCompiler = withValidation(
 				const base = extractElementWordSizeBase(argument.value);
 				context.stack.push({ isInteger: true, isNonZero: true });
 				return saveByteCode(context, i32const(getElementWordSize(memory, base)));
+			} else if (isElementMaxIdentifier(memory, argument.value)) {
+				const base = extractElementMaxBase(argument.value);
+				const memoryItem = getDataStructure(memory, base);
+				if (!memoryItem) {
+					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+				}
+				const maxValue = getElementMaxValue(memory, base);
+				context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: maxValue !== 0 });
+				return saveByteCode(context, memoryItem.isInteger ? i32const(maxValue) : f32const(maxValue));
+			} else if (isElementMinIdentifier(memory, argument.value)) {
+				const base = extractElementMinBase(argument.value);
+				const memoryItem = getDataStructure(memory, base);
+				if (!memoryItem) {
+					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+				}
+				const minValue = getElementMinValue(memory, base);
+				context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: minValue !== 0 });
+				return saveByteCode(context, memoryItem.isInteger ? i32const(minValue) : f32const(minValue));
 			} else if (typeof consts[argument.value] !== 'undefined') {
 				context.stack.push({
 					isInteger: consts[argument.value].isInteger,
@@ -187,6 +211,234 @@ if (import.meta.vitest) {
 			expect(() => {
 				push({ lineNumber: 1, instruction: 'push', arguments: [] } as AST[number], context);
 			}).toThrowError();
+		});
+
+		describe('element max prefix (^)', () => {
+			it('pushes max value for int32', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myInt: {
+								elementWordSize: 4,
+								isInteger: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					loopSegmentByteCode: context.loopSegmentByteCode,
+				}).toMatchSnapshot();
+			});
+
+			it('pushes max value for int16', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myInt16: {
+								elementWordSize: 2,
+								isInteger: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt16' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					loopSegmentByteCode: context.loopSegmentByteCode,
+				}).toMatchSnapshot();
+			});
+
+			it('pushes max value for int8', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myInt8: {
+								elementWordSize: 1,
+								isInteger: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myInt8' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					loopSegmentByteCode: context.loopSegmentByteCode,
+				}).toMatchSnapshot();
+			});
+
+			it('pushes max finite value for float32', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myFloat: {
+								elementWordSize: 4,
+								isInteger: false,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myFloat' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					loopSegmentByteCode: context.loopSegmentByteCode,
+				}).toMatchSnapshot();
+			});
+		});
+
+		describe('element min prefix (!)', () => {
+			it('pushes min value for int32', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myInt: {
+								elementWordSize: 4,
+								isInteger: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					loopSegmentByteCode: context.loopSegmentByteCode,
+				}).toMatchSnapshot();
+			});
+
+			it('pushes min value for int16', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myInt16: {
+								elementWordSize: 2,
+								isInteger: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt16' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					loopSegmentByteCode: context.loopSegmentByteCode,
+				}).toMatchSnapshot();
+			});
+
+			it('pushes min value for int8', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myInt8: {
+								elementWordSize: 1,
+								isInteger: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myInt8' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					loopSegmentByteCode: context.loopSegmentByteCode,
+				}).toMatchSnapshot();
+			});
+
+			it('pushes lowest finite value for float32', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myFloat: {
+								elementWordSize: 4,
+								isInteger: false,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myFloat' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					loopSegmentByteCode: context.loopSegmentByteCode,
+				}).toMatchSnapshot();
+			});
 		});
 	});
 }
