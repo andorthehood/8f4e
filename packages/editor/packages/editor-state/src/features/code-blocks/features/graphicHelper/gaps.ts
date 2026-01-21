@@ -20,6 +20,10 @@ export default function gaps(graphicData: CodeBlockGraphicData) {
 			graphicData.gaps.set(lineNumber, { size: 2 });
 		}
 
+		if (instruction === '#' && directive === 'slider') {
+			graphicData.gaps.set(lineNumber, { size: 2 });
+		}
+
 		if (instruction === '#' && directive === 'piano') {
 			graphicData.gaps.set(lineNumber, { size: 6 });
 		}
