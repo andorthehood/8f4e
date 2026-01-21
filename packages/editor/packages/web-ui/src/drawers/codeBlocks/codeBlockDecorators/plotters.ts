@@ -32,9 +32,18 @@ export default function drawer(
 		const offset = minValue * -1;
 
 		for (let i = 0; i < width; i++) {
-			const value = buffer.memory.isInteger
-				? memoryViews.int32[buffer.memory.wordAlignedAddress + i]
-				: memoryViews.float32[buffer.memory.wordAlignedAddress + i];
+			let value: number;
+			if (buffer.memory.elementWordSize === 1 && buffer.memory.isInteger) {
+				const view = buffer.memory.isUnsigned ? memoryViews.uint8 : memoryViews.int8;
+				value = view[buffer.memory.byteAddress + i];
+			} else if (buffer.memory.elementWordSize === 2 && buffer.memory.isInteger) {
+				const view = buffer.memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
+				value = view[buffer.memory.byteAddress * 2 + i];
+			} else {
+				value = buffer.memory.isInteger
+					? memoryViews.int32[buffer.memory.wordAlignedAddress + i]
+					: memoryViews.float32[buffer.memory.wordAlignedAddress + i];
+			}
 
 			const normalizedValue = Math.round(((value + offset) / height) * (state.viewport.hGrid * 8));
 

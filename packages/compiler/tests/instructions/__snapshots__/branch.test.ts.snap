@@ -108,6 +108,7 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
     "isPointer": false,
     "isPointingToInteger": false,
     "isPointingToPointer": false,
+    "isUnsigned": false,
     "numberOfElements": 1,
     "type": "int",
     "wordAlignedAddress": 0,
