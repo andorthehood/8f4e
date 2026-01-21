@@ -1,5 +1,145 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`push instruction compiler > element max prefix (^) > pushes max finite value for float32 1`] = `
+{
+  "loopSegmentByteCode": [
+    67,
+    255,
+    255,
+    127,
+    127,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > element max prefix (^) > pushes max value for int8 1`] = `
+{
+  "loopSegmentByteCode": [
+    65,
+    255,
+    0,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > element max prefix (^) > pushes max value for int16 1`] = `
+{
+  "loopSegmentByteCode": [
+    65,
+    255,
+    255,
+    1,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > element max prefix (^) > pushes max value for int32 1`] = `
+{
+  "loopSegmentByteCode": [
+    65,
+    255,
+    255,
+    255,
+    255,
+    7,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > element min prefix (!) > pushes lowest finite value for float32 1`] = `
+{
+  "loopSegmentByteCode": [
+    67,
+    255,
+    255,
+    127,
+    255,
+  ],
+  "stack": [
+    {
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > element min prefix (!) > pushes min value for int8 1`] = `
+{
+  "loopSegmentByteCode": [
+    65,
+    128,
+    127,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > element min prefix (!) > pushes min value for int16 1`] = `
+{
+  "loopSegmentByteCode": [
+    65,
+    128,
+    128,
+    126,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > element min prefix (!) > pushes min value for int32 1`] = `
+{
+  "loopSegmentByteCode": [
+    65,
+    128,
+    128,
+    128,
+    128,
+    120,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
 exports[`push instruction compiler > pushes a constant value 1`] = `
 {
   "loopSegmentByteCode": [
