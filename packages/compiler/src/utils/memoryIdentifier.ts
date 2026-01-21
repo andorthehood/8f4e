@@ -2,9 +2,13 @@ import extractElementCountBase from '../syntax/extractElementCountBase';
 import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
 import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
 import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
+import extractElementMaxBase from '../syntax/extractElementMaxBase';
+import extractElementMinBase from '../syntax/extractElementMinBase';
 import hasElementCountPrefix from '../syntax/hasElementCountPrefix';
 import hasElementWordSizePrefix from '../syntax/hasElementWordSizePrefix';
 import hasMemoryReferencePrefix from '../syntax/hasMemoryReferencePrefix';
+import hasElementMaxPrefix from '../syntax/hasElementMaxPrefix';
+import hasElementMinPrefix from '../syntax/hasElementMinPrefix';
 import isMemoryPointerSyntax from '../syntax/isMemoryPointerIdentifier';
 
 import type { MemoryMap } from '../types';
@@ -27,6 +31,14 @@ export function isElementCountIdentifier(memoryMap: MemoryMap, name: string): bo
 
 export function isElementWordSizeIdentifier(memoryMap: MemoryMap, name: string): boolean {
 	return hasElementWordSizePrefix(name) && Object.hasOwn(memoryMap, extractElementWordSizeBase(name));
+}
+
+export function isElementMaxIdentifier(memoryMap: MemoryMap, name: string): boolean {
+	return hasElementMaxPrefix(name) && Object.hasOwn(memoryMap, extractElementMaxBase(name));
+}
+
+export function isElementMinIdentifier(memoryMap: MemoryMap, name: string): boolean {
+	return hasElementMinPrefix(name) && Object.hasOwn(memoryMap, extractElementMinBase(name));
 }
 
 if (import.meta.vitest) {
@@ -113,6 +125,36 @@ if (import.meta.vitest) {
 
 			it('returns false for plain identifiers', () => {
 				expect(isElementWordSizeIdentifier(mockMemory, 'foo')).toBe(false);
+			});
+		});
+
+		describe('isElementMaxIdentifier', () => {
+			it('returns true for element max with ^ prefix', () => {
+				expect(isElementMaxIdentifier(mockMemory, '^foo')).toBe(true);
+				expect(isElementMaxIdentifier(mockMemory, '^bar')).toBe(true);
+			});
+
+			it('returns false for non-existing element max', () => {
+				expect(isElementMaxIdentifier(mockMemory, '^baz')).toBe(false);
+			});
+
+			it('returns false for plain identifiers', () => {
+				expect(isElementMaxIdentifier(mockMemory, 'foo')).toBe(false);
+			});
+		});
+
+		describe('isElementMinIdentifier', () => {
+			it('returns true for element min with ! prefix', () => {
+				expect(isElementMinIdentifier(mockMemory, '!foo')).toBe(true);
+				expect(isElementMinIdentifier(mockMemory, '!bar')).toBe(true);
+			});
+
+			it('returns false for non-existing element min', () => {
+				expect(isElementMinIdentifier(mockMemory, '!baz')).toBe(false);
+			});
+
+			it('returns false for plain identifiers', () => {
+				expect(isElementMinIdentifier(mockMemory, 'foo')).toBe(false);
 			});
 		});
 	});
