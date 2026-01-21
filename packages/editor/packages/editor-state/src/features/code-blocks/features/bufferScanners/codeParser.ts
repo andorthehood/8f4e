@@ -3,14 +3,14 @@ import { instructionParser } from '@8f4e/compiler/syntax';
 export default function parseBufferScanners(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
+			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];
 
-			if (instruction === 'scan') {
+			if (instruction === '#' && args[0] === 'scan') {
 				return [
 					...acc,
 					{
-						bufferMemoryId: args[0],
-						pointerMemoryId: args[1],
+						bufferMemoryId: args[1],
+						pointerMemoryId: args[2],
 						lineNumber: index,
 					},
 				];
