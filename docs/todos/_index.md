@@ -46,6 +46,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 191 | Add clearScope Instruction to Stack Config Compiler | 🟡 | 1-2h | 2026-01-20 | Add explicit scope reset instruction to make root resets clear in config blocks |
 | 192 | Move editor-only directives to # and remove ignoredKeywords | 🟡 | 4-6h | 2026-01-21 | Make editor directives explicit with #, treat # as compiler comment, remove ignoredKeywords API |
 | 195 | Update Example Code to Use %/^/! Prefixes | 🟡 | 2-4h | 2026-01-21 | Replace WORD_SIZE and manual integer limit constants in examples with element size and bounds prefixes |
+| 200 | Add code block slider control directive | 🟡 | 1-2d | 2026-01-21 | Add a # slider directive to render an interactive horizontal slider inside code blocks and write values directly to a memory word |
 | 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Report shader compile/link failures with effect name/line, skip failed effects, log in editor |
 | 180 | Load Binary Assets From Config URLs | 🟡 | 1-2d | 2026-01-16 | Allow config to declare URL-backed binary assets with module.memory targets, cached in the editor |
 | 182 | Add Example Module Dependencies on Insert | 🟡 | 4-6h | 2026-01-17 | Add a dependencies field to example modules and insert missing dependency blocks alongside the requested module |
