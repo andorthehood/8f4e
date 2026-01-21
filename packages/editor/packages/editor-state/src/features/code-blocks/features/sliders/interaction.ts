@@ -2,13 +2,21 @@ import { StateManager } from '@8f4e/state-manager';
 
 import findSliderAtViewportCoordinates from './findSliderAtViewportCoordinates';
 
-import type { State, CodeBlockGraphicData, InternalMouseEvent } from '~/types';
+import type { State, CodeBlockGraphicData, InternalMouseEvent, Slider } from '~/types';
 
 import { EventDispatcher } from '~/types';
 
+interface ActiveSlider {
+	slider: Slider;
+	codeBlock: CodeBlockGraphicData;
+	memory: {
+		wordAlignedAddress: number;
+	};
+}
+
 export default function slider(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
-	let activeSlider: { slider: any; codeBlock: CodeBlockGraphicData; memory: any } | null = null;
+	let activeSlider: ActiveSlider | null = null;
 
 	const updateSliderValue = (x: number) => {
 		if (!activeSlider) return;
@@ -35,7 +43,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 	};
 
 	const onCodeBlockClick = function ({ x, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
-		const slider = findSliderAtViewportCoordinates(state, codeBlock, x, x);
+		const slider = findSliderAtViewportCoordinates(state, codeBlock, x, 0);
 
 		if (!slider) {
 			return;
