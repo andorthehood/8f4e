@@ -55,7 +55,7 @@ const project: Project = {
 				'push &out',
 				' push seed',
 				' castToFloat',
-				' push 2147483647',
+				' push ^seed',
 				' castToFloat',
 				' div',
 				'store',
@@ -73,8 +73,6 @@ const project: Project = {
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 10:00:14 PM',
-				'',
-				'const WORD_SIZE 4',
 				'',
 				'const SAMPLE_RATE 50',
 				'const AUDIO_BUFFER_SIZE 128',
@@ -127,7 +125,6 @@ const project: Project = {
 		{
 			code: [
 				'module scope',
-				'use env',
 				'',
 				'float* in &lcg.out',
 				'float[] buffer 64',
@@ -137,7 +134,7 @@ const project: Project = {
 				'',
 				'push &bufferPointer',
 				'push bufferPointer',
-				'push WORD_SIZE',
+				'push %buffer',
 				'add',
 				'store',
 				'',
@@ -164,7 +161,6 @@ const project: Project = {
 		{
 			code: [
 				'module scope2',
-				'use env',
 				'',
 				'float* in &XORShift.out',
 				'float[] buffer 64',
@@ -174,7 +170,7 @@ const project: Project = {
 				'',
 				'push &bufferPointer',
 				'push bufferPointer',
-				'push WORD_SIZE',
+				'push %buffer',
 				'add',
 				'store',
 				'',
