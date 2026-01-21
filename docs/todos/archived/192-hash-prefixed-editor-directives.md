@@ -3,8 +3,8 @@ title: 'TODO: Move editor-only directives to # and remove ignoredKeywords'
 priority: Medium
 effort: 4-6h
 created: 2026-01-21
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-21
 ---
 
 # TODO: Move editor-only directives to # and remove ignoredKeywords
