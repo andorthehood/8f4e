@@ -20,7 +20,7 @@ exports[`combineConfigBlocks > should maintain creation order 1`] = `
 ]
 `;
 
-exports[`combineConfigBlocks > should skip empty config blocks 1`] = `
+exports[`combineConfigBlocks > should skip empty projectConfig blocks 1`] = `
 {
   "blockId": 1,
   "endLine": 1,
