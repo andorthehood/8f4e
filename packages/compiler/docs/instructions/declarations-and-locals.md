@@ -36,12 +36,16 @@ float gain 0.75
 
 ### int[]
 
-The int[] instruction declares a buffer of integers in module memory. Variants include `int8[]`, `int16[]`, `int32[]`, `int*[]`, and `int**[]`.
+The int[] instruction declares a buffer of integers in module memory. Variants include `int8[]`, `int8u[]`, `int16[]`, `int16u[]`, `int32[]`, `int*[]`, and `int**[]`.
+
+Unsigned variants (`int8u[]`, `int16u[]`) interpret values as unsigned integers (0-255 for int8u, 0-65535 for int16u) in debuggers, plotters, and when using min/max prefixes.
 
 #### Examples
 
 ```
 int[] values 4 0
+int8u[] unsignedBytes 256
+int16u[] unsignedShorts 128
 ```
 
 ### float[]

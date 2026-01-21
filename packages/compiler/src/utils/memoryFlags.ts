@@ -9,6 +9,7 @@ export default function getMemoryFlags(baseType: 'int' | 'float', pointerDepth: 
 		isPointingToInteger,
 		isPointingToPointer,
 		isInteger,
+		isUnsigned: false,
 	};
 }
 
@@ -24,6 +25,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: false,
 					isInteger: true,
+					isUnsigned: false,
 				});
 			});
 
@@ -34,6 +36,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: true,
 					isPointingToPointer: false,
 					isInteger: true,
+					isUnsigned: false,
 				});
 			});
 
@@ -44,6 +47,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: true,
 					isPointingToPointer: true,
 					isInteger: true,
+					isUnsigned: false,
 				});
 			});
 		});
@@ -56,6 +60,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: false,
 					isInteger: false,
+					isUnsigned: false,
 				});
 			});
 
@@ -66,6 +71,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: false,
 					isInteger: true,
+					isUnsigned: false,
 				});
 			});
 
@@ -76,6 +82,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: true,
 					isInteger: true,
+					isUnsigned: false,
 				});
 			});
 		});
