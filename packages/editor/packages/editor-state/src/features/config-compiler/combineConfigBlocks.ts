@@ -12,15 +12,6 @@ export interface BlockLineMapping {
 }
 
 /**
- * Config type validation error.
- */
-export interface ConfigTypeError {
-	blockId: number;
-	configType: string | null;
-	message: string;
-}
-
-/**
  * List of supported config types.
  */
 const SUPPORTED_CONFIG_TYPES = ['project'] as const;
@@ -31,55 +22,39 @@ const SUPPORTED_CONFIG_TYPES = ['project'] as const;
 export interface CombinedConfigSource {
 	source: string; // Combined source with blank line separators
 	lineMappings: BlockLineMapping[]; // Line mappings for each block
-	typeErrors: ConfigTypeError[]; // Config type validation errors
 }
 
 /**
- * Validates config type and returns an error if unsupported.
+ * Checks if config type is supported.
  */
-function validateConfigType(configType: string | null, blockId: number): ConfigTypeError | null {
+function isSupportedConfigType(configType: string | null): boolean {
 	if (!configType) {
-		return {
-			blockId,
-			configType,
-			message: 'Config block must specify a type: config <type>',
-		};
+		return false;
 	}
-
-	if (!(SUPPORTED_CONFIG_TYPES as readonly string[]).includes(configType)) {
-		return {
-			blockId,
-			configType,
-			message: `Unsupported config type: ${configType}. Supported: ${SUPPORTED_CONFIG_TYPES.join(', ')}.`,
-		};
-	}
-
-	return null;
+	return (SUPPORTED_CONFIG_TYPES as readonly string[]).includes(configType);
 }
 
 /**
  * Combines all config blocks into a single source for validation.
  * Config blocks are sorted in creation order and concatenated with blank line separators.
+ * Only processes config blocks with supported types (currently only 'project').
  * Returns the combined source and line mappings for error attribution.
  */
 export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CombinedConfigSource {
 	const configBlocks = collectConfigBlocks(codeBlocks);
 
 	if (configBlocks.length === 0) {
-		return { source: '', lineMappings: [], typeErrors: [] };
+		return { source: '', lineMappings: [] };
 	}
 
 	const lineMappings: BlockLineMapping[] = [];
-	const typeErrors: ConfigTypeError[] = [];
 	const sources: string[] = [];
 	let currentLine = 1;
 
 	for (const { block, source, configType } of configBlocks) {
-		// Validate config type
-		const typeError = validateConfigType(configType, block.creationIndex);
-		if (typeError) {
-			typeErrors.push(typeError);
-			continue; // Skip blocks with invalid types
+		// Skip blocks with unsupported types (only process 'project' type)
+		if (!isSupportedConfigType(configType)) {
+			continue;
 		}
 
 		// Skip empty sources (valid type but no content)
@@ -103,7 +78,6 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 	return {
 		source: sources.join('\n\n'), // Join with blank line separator
 		lineMappings,
-		typeErrors,
 	};
 }
 
@@ -138,7 +112,6 @@ if (import.meta.vitest) {
 				startLine: 3,
 				endLine: 3,
 			});
-			expect(result.typeErrors).toHaveLength(0);
 		});
 
 		it('should handle multi-line config blocks', () => {
@@ -167,7 +140,6 @@ if (import.meta.vitest) {
 				startLine: 5,
 				endLine: 6,
 			});
-			expect(result.typeErrors).toHaveLength(0);
 		});
 
 		it('should return empty source for no config blocks', () => {
@@ -181,7 +153,6 @@ if (import.meta.vitest) {
 			const result = combineConfigBlocks(codeBlocks);
 			expect(result.source).toBe('');
 			expect(result.lineMappings).toHaveLength(0);
-			expect(result.typeErrors).toHaveLength(0);
 		});
 
 		it('should skip empty config blocks', () => {
@@ -201,7 +172,6 @@ if (import.meta.vitest) {
 			expect(result.source).toBe('push 1');
 			expect(result.lineMappings).toHaveLength(1);
 			expect(result.lineMappings[0]).toMatchSnapshot();
-			expect(result.typeErrors).toHaveLength(0);
 		});
 
 		it('should maintain creation order', () => {
@@ -226,48 +196,45 @@ if (import.meta.vitest) {
 			expect(result.source).toBe('second\n\nthird\n\nfirst');
 			expect(result.lineMappings).toHaveLength(3);
 			expect(result.lineMappings).toMatchSnapshot();
-			expect(result.typeErrors).toHaveLength(0);
 		});
 
-		it('should reject config blocks without type', () => {
+		it('should silently omit config blocks without type', () => {
 			const invalidBlock = createMockCodeBlock({
 				code: ['config', 'push 1', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
-			const codeBlocks = [invalidBlock];
+			const validBlock = createMockCodeBlock({
+				code: ['config project', 'push 2', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 1,
+			});
+			const codeBlocks = [invalidBlock, validBlock];
 
 			const result = combineConfigBlocks(codeBlocks);
-			expect(result.source).toBe('');
-			expect(result.lineMappings).toHaveLength(0);
-			expect(result.typeErrors).toHaveLength(1);
-			expect(result.typeErrors[0]).toEqual({
-				blockId: 0,
-				configType: null,
-				message: 'Config block must specify a type: config <type>',
-			});
+			expect(result.source).toBe('push 2');
+			expect(result.lineMappings).toHaveLength(1);
 		});
 
-		it('should reject unsupported config types', () => {
+		it('should silently omit unsupported config types', () => {
 			const editorConfigBlock = createMockCodeBlock({
 				code: ['config editor', 'push 1', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
-			const codeBlocks = [editorConfigBlock];
+			const projectConfigBlock = createMockCodeBlock({
+				code: ['config project', 'push 2', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 1,
+			});
+			const codeBlocks = [editorConfigBlock, projectConfigBlock];
 
 			const result = combineConfigBlocks(codeBlocks);
-			expect(result.source).toBe('');
-			expect(result.lineMappings).toHaveLength(0);
-			expect(result.typeErrors).toHaveLength(1);
-			expect(result.typeErrors[0]).toEqual({
-				blockId: 0,
-				configType: 'editor',
-				message: 'Unsupported config type: editor. Supported: project.',
-			});
+			expect(result.source).toBe('push 2');
+			expect(result.lineMappings).toHaveLength(1);
 		});
 
-		it('should process valid blocks and report errors for invalid ones', () => {
+		it('should process only valid project config blocks', () => {
 			const validBlock = createMockCodeBlock({
 				code: ['config project', 'push 1', 'configEnd'],
 				blockType: 'config',
@@ -283,8 +250,6 @@ if (import.meta.vitest) {
 			const result = combineConfigBlocks(codeBlocks);
 			expect(result.source).toBe('push 1');
 			expect(result.lineMappings).toHaveLength(1);
-			expect(result.typeErrors).toHaveLength(1);
-			expect(result.typeErrors[0].configType).toBe('editor');
 		});
 	});
 }
