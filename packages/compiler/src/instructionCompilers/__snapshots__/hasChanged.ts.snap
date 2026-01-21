@@ -38,6 +38,7 @@ exports[`hasChanged instruction compiler > compiles the change detector segment 
       "isPointer": false,
       "isPointingToInteger": false,
       "isPointingToPointer": false,
+      "isUnsigned": false,
       "numberOfElements": 1,
       "type": "int",
       "wordAlignedAddress": 0,

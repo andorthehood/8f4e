@@ -90,6 +90,7 @@ if (import.meta.vitest) {
 							isPointer: false,
 							isPointingToInteger: false,
 							isPointingToPointer: false,
+							isUnsigned: false,
 							type: 'int' as unknown as MemoryTypes,
 						},
 					},

@@ -14,6 +14,8 @@ export function createMemoryViewManager(memoryRef: MemoryRef): {
 		int8: new Int8Array(0),
 		int16: new Int16Array(0),
 		int32: new Int32Array(0),
+		uint8: new Uint8Array(0),
+		uint16: new Uint16Array(0),
 		float32: new Float32Array(0),
 	};
 
@@ -33,6 +35,8 @@ export function createMemoryViewManager(memoryRef: MemoryRef): {
 			memoryViews.int8 = new Int8Array(buffer);
 			memoryViews.int16 = new Int16Array(buffer);
 			memoryViews.int32 = new Int32Array(buffer);
+			memoryViews.uint8 = new Uint8Array(buffer);
+			memoryViews.uint16 = new Uint16Array(buffer);
 			memoryViews.float32 = new Float32Array(buffer);
 		}
 	};

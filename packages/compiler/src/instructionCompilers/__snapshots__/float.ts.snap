@@ -11,6 +11,7 @@ exports[`float instruction compiler > creates a float memory entry 1`] = `
     "isPointer": false,
     "isPointingToInteger": false,
     "isPointingToPointer": false,
+    "isUnsigned": false,
     "numberOfElements": 1,
     "type": "float",
     "wordAlignedAddress": 0,

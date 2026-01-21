@@ -62,6 +62,7 @@ exports[`skip instruction compiler > allocates a sleeper counter with literal ar
       "isPointer": false,
       "isPointingToInteger": false,
       "isPointingToPointer": false,
+      "isUnsigned": false,
       "numberOfElements": 1,
       "type": 0,
       "wordAlignedAddress": 0,
