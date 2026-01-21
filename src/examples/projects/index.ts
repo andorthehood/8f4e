@@ -49,6 +49,7 @@ export const projectMetadata: ProjectMetadata[] = [
 		category: 'Misc',
 	},
 	{ slug: 'standaloneProject', title: 'Standalone Project Example', category: 'Misc' },
+	{ slug: 'samplePlayer', title: 'Sample Player', category: 'Audio' },
 ];
 
 // For backwards compatibility
