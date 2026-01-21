@@ -8,7 +8,6 @@ const defaultOptions = {
 	startingMemoryWordAddress: 1,
 	environmentExtensions: {
 		constants: {},
-		ignoredKeywords: [],
 	},
 	memorySizeBytes: 65536,
 	includeAST: true,
