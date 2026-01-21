@@ -10,7 +10,7 @@ float* in
 int* trigger
 float out
 
-debug out
+# debug out
 
 push *trigger
 risingEdge
