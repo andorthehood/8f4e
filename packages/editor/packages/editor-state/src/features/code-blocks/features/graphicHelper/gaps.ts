@@ -10,17 +10,17 @@ export default function gaps(graphicData: CodeBlockGraphicData) {
 	});
 
 	graphicData.code.forEach((line, lineNumber) => {
-		const [, instruction] = (line.match(instructionParser) ?? []) as [never, string];
+		const [, instruction, directive] = (line.match(instructionParser) ?? []) as [never, string, string];
 
-		if (instruction === 'plot') {
+		if (instruction === '#' && directive === 'plot') {
 			graphicData.gaps.set(lineNumber, { size: 8 });
 		}
 
-		if (instruction === 'scan') {
+		if (instruction === '#' && directive === 'scan') {
 			graphicData.gaps.set(lineNumber, { size: 2 });
 		}
 
-		if (instruction === 'piano') {
+		if (instruction === '#' && directive === 'piano') {
 			graphicData.gaps.set(lineNumber, { size: 6 });
 		}
 	});
