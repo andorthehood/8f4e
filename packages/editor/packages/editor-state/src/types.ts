@@ -171,6 +171,8 @@ export interface Callbacks {
 	saveSession?: (project: Project) => Promise<void>;
 	loadEditorSettings?: () => Promise<EditorSettings | null>;
 	saveEditorSettings?: (settings: EditorSettings) => Promise<void>;
+	loadEditorConfigSource?: () => Promise<string[] | null>;
+	saveEditorConfigSource?: (source: string[]) => Promise<void>;
 
 	// File handling callbacks
 	importProject?: () => Promise<Project>;

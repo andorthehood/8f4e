@@ -1,10 +1,27 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { warn, error } from '../logger/logger';
+import { extractConfigType } from '../config-compiler/extractConfigBody';
+import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
 
-import type { Project, State } from '~/types';
+import type { Project, State, CodeBlock } from '~/types';
 
 import { EventDispatcher, EMPTY_DEFAULT_PROJECT } from '~/types';
+
+/**
+ * Filters out editor config blocks from imported projects.
+ * Editor config blocks are session-specific and should not be imported.
+ */
+function filterEditorConfigBlocks(codeBlocks: CodeBlock[]): CodeBlock[] {
+	return codeBlocks.filter(block => {
+		const blockType = getBlockType(block.code);
+		if (blockType !== 'config') {
+			return true;
+		}
+		const configType = extractConfigType(block.code);
+		return configType !== 'editor';
+	});
+}
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
@@ -37,7 +54,12 @@ export default function projectImport(store: StateManager<State>, events: EventD
 	}
 
 	function loadProject({ project: newProject }: { project: Project }) {
-		store.set('initialProjectState', newProject);
+		// Filter out editor config blocks before setting the project
+		const filteredProject = {
+			...newProject,
+			codeBlocks: filterEditorConfigBlocks(newProject.codeBlocks),
+		};
+		store.set('initialProjectState', filteredProject);
 	}
 
 	void projectPromise;
