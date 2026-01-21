@@ -1,4 +1,10 @@
 /**
+ * Regex pattern to match config marker with required type attribute.
+ * Matches: "config <type>" where type is any non-whitespace sequence.
+ */
+export const CONFIG_WITH_TYPE_REGEX = /^\s*config\s+\S+/;
+
+/**
  * Extracts the config type from the config marker line.
  * Returns null if no config marker is found or if it doesn't have a type.
  */
@@ -21,7 +27,7 @@ export default function extractConfigBody(code: string[]): string[] {
 	let endIndex = -1;
 
 	for (let i = 0; i < code.length; i++) {
-		if (/^\s*config\s+\S+/.test(code[i])) {
+		if (CONFIG_WITH_TYPE_REGEX.test(code[i])) {
 			startIndex = i;
 		} else if (/^\s*configEnd(\s|$)/.test(code[i])) {
 			endIndex = i;
