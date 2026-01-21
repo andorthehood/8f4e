@@ -30,8 +30,8 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 		// Map to slider range
 		let value = slider.min + normalizedValue * (slider.max - slider.min);
 
-		// Apply step if provided
-		if (slider.step !== undefined) {
+		// Apply step if provided (must be positive)
+		if (slider.step !== undefined && slider.step > 0) {
 			value = slider.min + Math.round((value - slider.min) / slider.step) * slider.step;
 		}
 
