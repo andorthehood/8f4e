@@ -37,7 +37,7 @@ loop
  ; Calculate output address
  push &bit0
  push bitPointer
- push WORD_SIZE
+ push %bit0
  mul
  add
 

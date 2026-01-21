@@ -57,7 +57,7 @@ loop
  push *length
  push 1
  sub
- push WORD_SIZE
+ push %buffer
  mul
  add
  greaterOrEqual
@@ -66,7 +66,7 @@ loop
  ; Increment level pointer
  push &_levelPointer
  push _levelPointer
- push WORD_SIZE
+ push %buffer
  add
  store
 loopEnd
