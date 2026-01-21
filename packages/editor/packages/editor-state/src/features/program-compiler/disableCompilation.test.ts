@@ -46,7 +46,7 @@ describe('disableAutoCompilation feature', () => {
 
 		const configBlock = createMockCodeBlock({
 			id: 'config-block',
-			code: ['config', 'memorySizeBytes 1048576', 'configEnd'],
+			code: ['config project', 'memorySizeBytes 1048576', 'configEnd'],
 			creationIndex: 1,
 			blockType: 'config',
 		});

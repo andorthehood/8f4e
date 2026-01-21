@@ -27,7 +27,7 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
   "codeBlocks": [
     {
       "code": [
-        "config",
+        "config project",
         "memorySizeBytes 65536",
         "configEnd",
       ],

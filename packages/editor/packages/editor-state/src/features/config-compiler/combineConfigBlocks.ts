@@ -12,6 +12,11 @@ export interface BlockLineMapping {
 }
 
 /**
+ * List of supported config types.
+ */
+const SUPPORTED_CONFIG_TYPES = ['project'] as const;
+
+/**
  * Result of combining all config blocks into a single source.
  */
 export interface CombinedConfigSource {
@@ -20,8 +25,19 @@ export interface CombinedConfigSource {
 }
 
 /**
+ * Checks if config type is supported.
+ */
+function isSupportedConfigType(configType: string | null): boolean {
+	if (!configType) {
+		return false;
+	}
+	return (SUPPORTED_CONFIG_TYPES as readonly string[]).includes(configType);
+}
+
+/**
  * Combines all config blocks into a single source for validation.
  * Config blocks are sorted in creation order and concatenated with blank line separators.
+ * Only processes config blocks with supported types (currently only 'project').
  * Returns the combined source and line mappings for error attribution.
  */
 export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CombinedConfigSource {
@@ -35,8 +51,13 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 	const sources: string[] = [];
 	let currentLine = 1;
 
-	for (const { block, source } of configBlocks) {
-		// Handle empty source edge case - empty string split by '\n' returns [''] with length 1
+	for (const { block, source, configType } of configBlocks) {
+		// Skip blocks with unsupported types (only process 'project' type)
+		if (!isSupportedConfigType(configType)) {
+			continue;
+		}
+
+		// Skip empty sources (valid type but no content)
 		if (source.trim().length === 0) {
 			continue;
 		}
@@ -67,12 +88,12 @@ if (import.meta.vitest) {
 	describe('combineConfigBlocks', () => {
 		it('should combine multiple config blocks with blank line separator', () => {
 			const block1 = createMockCodeBlock({
-				code: ['config', 'push 1', 'configEnd'],
+				code: ['config project', 'push 1', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
 			const block2 = createMockCodeBlock({
-				code: ['config', 'push 2', 'configEnd'],
+				code: ['config project', 'push 2', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 			});
@@ -95,12 +116,12 @@ if (import.meta.vitest) {
 
 		it('should handle multi-line config blocks', () => {
 			const block1 = createMockCodeBlock({
-				code: ['config', 'push 1', 'push 2', 'push 3', 'configEnd'],
+				code: ['config project', 'push 1', 'push 2', 'push 3', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
 			const block2 = createMockCodeBlock({
-				code: ['config', 'set x 10', 'set y 20', 'configEnd'],
+				code: ['config project', 'set x 10', 'set y 20', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 			});
@@ -136,12 +157,12 @@ if (import.meta.vitest) {
 
 		it('should skip empty config blocks', () => {
 			const emptyBlock = createMockCodeBlock({
-				code: ['config', 'configEnd'],
+				code: ['config project', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
 			const contentBlock = createMockCodeBlock({
-				code: ['config', 'push 1', 'configEnd'],
+				code: ['config project', 'push 1', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 			});
@@ -155,17 +176,17 @@ if (import.meta.vitest) {
 
 		it('should maintain creation order', () => {
 			const block1 = createMockCodeBlock({
-				code: ['config', 'first', 'configEnd'],
+				code: ['config project', 'first', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 2,
 			});
 			const block2 = createMockCodeBlock({
-				code: ['config', 'second', 'configEnd'],
+				code: ['config project', 'second', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 0,
 			});
 			const block3 = createMockCodeBlock({
-				code: ['config', 'third', 'configEnd'],
+				code: ['config project', 'third', 'configEnd'],
 				blockType: 'config',
 				creationIndex: 1,
 			});
@@ -175,6 +196,60 @@ if (import.meta.vitest) {
 			expect(result.source).toBe('second\n\nthird\n\nfirst');
 			expect(result.lineMappings).toHaveLength(3);
 			expect(result.lineMappings).toMatchSnapshot();
+		});
+
+		it('should silently omit config blocks without type', () => {
+			const invalidBlock = createMockCodeBlock({
+				code: ['config', 'push 1', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 0,
+			});
+			const validBlock = createMockCodeBlock({
+				code: ['config project', 'push 2', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 1,
+			});
+			const codeBlocks = [invalidBlock, validBlock];
+
+			const result = combineConfigBlocks(codeBlocks);
+			expect(result.source).toBe('push 2');
+			expect(result.lineMappings).toHaveLength(1);
+		});
+
+		it('should silently omit unsupported config types', () => {
+			const editorConfigBlock = createMockCodeBlock({
+				code: ['config editor', 'push 1', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 0,
+			});
+			const projectConfigBlock = createMockCodeBlock({
+				code: ['config project', 'push 2', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 1,
+			});
+			const codeBlocks = [editorConfigBlock, projectConfigBlock];
+
+			const result = combineConfigBlocks(codeBlocks);
+			expect(result.source).toBe('push 2');
+			expect(result.lineMappings).toHaveLength(1);
+		});
+
+		it('should process only valid project config blocks', () => {
+			const validBlock = createMockCodeBlock({
+				code: ['config project', 'push 1', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 0,
+			});
+			const invalidBlock = createMockCodeBlock({
+				code: ['config editor', 'push 2', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 1,
+			});
+			const codeBlocks = [validBlock, invalidBlock];
+
+			const result = combineConfigBlocks(codeBlocks);
+			expect(result.source).toBe('push 1');
+			expect(result.lineMappings).toHaveLength(1);
 		});
 	});
 }

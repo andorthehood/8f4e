@@ -3,7 +3,7 @@ import type { Project } from '@8f4e/editor-state';
 const project: Project = {
 	codeBlocks: [
 		{
-			code: ['config', '', 'scope "memorySizeBytes"', 'push 65536', 'set', 'popScope', '', 'configEnd'],
+			code: ['config project', '', 'scope "memorySizeBytes"', 'push 65536', 'set', 'popScope', '', 'configEnd'],
 			gridCoordinates: {
 				x: -141,
 				y: 4,
@@ -11,7 +11,7 @@ const project: Project = {
 		},
 		{
 			code: [
-				'config',
+				'config project',
 				'',
 				'scope "runtimeSettings"',
 				'',
@@ -32,7 +32,7 @@ const project: Project = {
 		},
 		{
 			code: [
-				'config',
+				'config project',
 				'',
 				'rescope "runtimeSettings"',
 				'scope "audioOutputBuffers[0]"',
@@ -73,7 +73,7 @@ const project: Project = {
 		},
 		{
 			code: [
-				'config',
+				'config project',
 				'',
 				'rescope "runtimeSettings"',
 				'scope "audioInputBuffers[0]"',

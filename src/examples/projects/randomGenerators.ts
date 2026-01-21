@@ -4,7 +4,7 @@ const project: Project = {
 	codeBlocks: [
 		{
 			code: [
-				'config',
+				'config project',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
