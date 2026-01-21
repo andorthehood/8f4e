@@ -10,7 +10,7 @@ int* in
 int* trigger
 int out
 
-debug out
+# debug out
 
 push *trigger
 risingEdge

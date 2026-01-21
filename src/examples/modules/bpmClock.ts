@@ -10,7 +10,7 @@ int bpm 120
 int out
 int counter 
 
-debug counter
+# debug counter
 
 push &out
 push 0

@@ -24,21 +24,21 @@ int* in7
 int out7
 
 int gate0
-switch gate0
+# switch gate0
 int gate1
-switch gate1
+# switch gate1
 int gate2
-switch gate2
+# switch gate2
 int gate3
-switch gate3
+# switch gate3
 int gate4
-switch gate4
+# switch gate4
 int gate5
-switch gate5
+# switch gate5
 int gate6
-switch gate6
+# switch gate6
 int gate7
-switch gate7
+# switch gate7
 
 int pointer 0
 
