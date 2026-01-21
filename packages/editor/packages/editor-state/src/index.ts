@@ -5,6 +5,7 @@ import historyTracking from './features/edit-history/effect';
 import codeEditing from './features/code-editing/effect';
 import _switch from './features/code-blocks/features/switches/interaction';
 import button from './features/code-blocks/features/buttons/interaction';
+import slider from './features/code-blocks/features/sliders/interaction';
 import codeBlockCreator from './features/code-blocks/features/codeBlockCreator/effect';
 import codeBlockDragger from './features/code-blocks/features/codeBlockDragger/effect';
 import codeBlockNavigation from './features/code-blocks/features/codeBlockNavigation/effect';
@@ -64,6 +65,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	demoModeNavigation(state, events);
 	_switch(state, events);
 	button(state, events);
+	slider(store, events);
 	pianoKeyboard(store, events);
 	viewport(state, events);
 	contextMenu(store, events);
