@@ -38,6 +38,23 @@ export default function editorSettings(store: StateManager<State>, events: Event
 				state.editorSettings = { ...defaultState.editorSettings };
 			}
 		}
+
+		// Load editor config source from persistent storage
+		// Note: This is loaded separately from editor settings and creates code blocks
+		// The source is the full block including markers and comments
+		if (state.featureFlags.persistentStorage && state.callbacks.loadEditorConfigSource) {
+			try {
+				const loadedConfigSource = await state.callbacks.loadEditorConfigSource();
+				if (loadedConfigSource && loadedConfigSource.length > 0) {
+					// TODO: Create a code block from the loaded source
+					// This will be implemented when we have the code block creation logic
+					console.log('[Editor Config] Loaded editor config source, but block creation not yet implemented');
+				}
+			} catch (err) {
+				console.warn('Failed to load editor config source from storage:', err);
+				warn(state, 'Failed to load editor config source from storage');
+			}
+		}
 	})();
 
 	/**
@@ -71,6 +88,36 @@ export default function editorSettings(store: StateManager<State>, events: Event
 		store.set('codeErrors.editorConfigErrors', errors);
 	}
 
+	/**
+	 * Saves editor config block source to persistent storage.
+	 * Collects all editor config blocks and saves their full source (including markers/comments).
+	 */
+	function saveEditorConfigSource(): void {
+		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorConfigSource) {
+			return;
+		}
+
+		// Find all editor config blocks
+		const editorConfigBlocks = state.graphicHelper.codeBlocks
+			.filter(block => {
+				if (block.blockType !== 'config') return false;
+				// Check if it's an editor config block
+				return block.code.some(line => /^\s*config\s+editor/.test(line));
+			})
+			.sort((a, b) => a.creationIndex - b.creationIndex);
+
+		// If there are no editor config blocks, save empty array
+		if (editorConfigBlocks.length === 0) {
+			state.callbacks.saveEditorConfigSource([]);
+			return;
+		}
+
+		// For now, we'll save the first editor config block found
+		// In the future, we could concatenate multiple blocks or save them separately
+		const firstBlock = editorConfigBlocks[0];
+		state.callbacks.saveEditorConfigSource(firstBlock.code);
+	}
+
 	function onSaveEditorSettings() {
 		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorSettings) {
 			return;
@@ -87,8 +134,11 @@ export default function editorSettings(store: StateManager<State>, events: Event
 
 	store.subscribe('editorSettings', onSaveEditorSettings);
 
-	// Subscribe to code blocks to recompile editor config when they change
-	store.subscribe('graphicHelper.codeBlocks', compileEditorConfig);
+	// Subscribe to code blocks to recompile editor config and save source when they change
+	store.subscribe('graphicHelper.codeBlocks', () => {
+		compileEditorConfig();
+		saveEditorConfigSource();
+	});
 
 	// Subscribe to code changes in selected blocks if it's an editor config block
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
@@ -109,5 +159,6 @@ export default function editorSettings(store: StateManager<State>, events: Event
 		}
 
 		compileEditorConfig();
+		saveEditorConfigSource();
 	});
 }
