@@ -10,7 +10,7 @@ float default 1 ;Hz
 float* frequency &default
 int out
 
-debug out
+# debug out
 
 push &out
 push out

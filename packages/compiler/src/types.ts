@@ -167,9 +167,6 @@ export interface Error {
 
 export interface CompileOptions {
 	startingMemoryWordAddress: number;
-	environmentExtensions: {
-		ignoredKeywords: string[];
-	};
 	/** Memory size in bytes. */
 	memorySizeBytes: number;
 	globalDataStructures?: DataStructure[];

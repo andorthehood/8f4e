@@ -9,18 +9,19 @@ export default function parseBufferPlotters(code: string[]) {
 				string,
 				string,
 				string,
+				string,
 				string | undefined,
 			];
 
-			if (instruction === 'plot') {
+			if (instruction === '#' && args[0] === 'plot') {
 				return [
 					...acc,
 					{
-						bufferMemoryId: args[0],
+						bufferMemoryId: args[1],
 						lineNumber: index,
-						minValue: parseInt(args[1], 10) || -8,
-						maxValue: parseInt(args[2], 10) || 8,
-						bufferLengthMemoryId: args[3] || undefined,
+						minValue: parseInt(args[2], 10) || -8,
+						maxValue: parseInt(args[3], 10) || 8,
+						bufferLengthMemoryId: args[4] || undefined,
 					},
 				];
 			}

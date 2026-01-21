@@ -206,7 +206,7 @@ export default function compile(
 	compiledFunctions?: CompiledFunctionLookup;
 	allocatedMemorySize: number;
 } {
-	const astModules = modules.map(({ code }) => compileToAST(code, options));
+	const astModules = modules.map(({ code }) => compileToAST(code));
 	const sortedModules = sortModules(astModules);
 
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
@@ -220,7 +220,7 @@ export default function compile(
 	);
 
 	// Compile functions first with WASM indices and type registry
-	const astFunctions = functions ? functions.map(({ code }) => compileToAST(code, options)) : [];
+	const astFunctions = functions ? functions.map(({ code }) => compileToAST(code)) : [];
 
 	// Create a shared type registry for all functions
 	// Base type index is 3 (after the 3 built-in types)

@@ -25,9 +25,6 @@ const projectsDir = path.resolve(__dirname, '../examples/projects');
 const COMPILER_OPTIONS = {
 	memorySizeBytes: 65536,
 	startingMemoryWordAddress: 0,
-	environmentExtensions: {
-		ignoredKeywords: ['debug', 'button', 'switch', 'offset', 'plot', 'piano'],
-	},
 };
 
 /**
