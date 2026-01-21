@@ -3,7 +3,7 @@ import type { Project } from '@8f4e/editor-state';
 const project: Project = {
 	codeBlocks: [
 		{
-			code: ['projectConfig', '', 'scope "memorySizeBytes"', 'push 65536', 'set', 'popScope', '', 'configEnd'],
+			code: ['projectConfig', '', 'scope "memorySizeBytes"', 'push 65536', 'set', 'popScope', '', 'projectConfigEnd'],
 			gridCoordinates: {
 				x: -141,
 				y: 4,
