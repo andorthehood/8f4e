@@ -58,6 +58,7 @@ export default function createDefaultState() {
 		codeErrors: {
 			compilationErrors: [],
 			configErrors: [],
+			editorConfigErrors: [],
 		},
 		console: {
 			logs: [],

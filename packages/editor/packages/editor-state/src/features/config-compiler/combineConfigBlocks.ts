@@ -14,7 +14,8 @@ export interface BlockLineMapping {
 /**
  * List of supported config types.
  */
-const SUPPORTED_CONFIG_TYPES = ['project'] as const;
+const SUPPORTED_PROJECT_CONFIG_TYPES = ['project'] as const;
+const SUPPORTED_EDITOR_CONFIG_TYPES = ['editor'] as const;
 
 /**
  * Result of combining all config blocks into a single source.
@@ -25,22 +26,22 @@ export interface CombinedConfigSource {
 }
 
 /**
- * Checks if config type is supported.
+ * Checks if config type is in the allowed list.
  */
-function isSupportedConfigType(configType: string | null): boolean {
+function isAllowedConfigType(configType: string | null, allowedTypes: readonly string[]): boolean {
 	if (!configType) {
 		return false;
 	}
-	return (SUPPORTED_CONFIG_TYPES as readonly string[]).includes(configType);
+	return allowedTypes.includes(configType);
 }
 
 /**
- * Combines all config blocks into a single source for validation.
- * Config blocks are sorted in creation order and concatenated with blank line separators.
- * Only processes config blocks with supported types (currently only 'project').
- * Returns the combined source and line mappings for error attribution.
+ * Internal helper that combines config blocks filtered by allowed types.
  */
-export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CombinedConfigSource {
+function combineConfigBlocksByType(
+	codeBlocks: CodeBlockGraphicData[],
+	allowedTypes: readonly string[]
+): CombinedConfigSource {
 	const configBlocks = collectConfigBlocks(codeBlocks);
 
 	if (configBlocks.length === 0) {
@@ -52,8 +53,8 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 	let currentLine = 1;
 
 	for (const { block, source, configType } of configBlocks) {
-		// Skip blocks with unsupported types (only process 'project' type)
-		if (!isSupportedConfigType(configType)) {
+		// Skip blocks with types not in the allowed list
+		if (!isAllowedConfigType(configType, allowedTypes)) {
 			continue;
 		}
 
@@ -79,6 +80,26 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 		source: sources.join('\n\n'), // Join with blank line separator
 		lineMappings,
 	};
+}
+
+/**
+ * Combines all project config blocks into a single source for validation.
+ * Config blocks are sorted in creation order and concatenated with blank line separators.
+ * Only processes config blocks with type 'project'.
+ * Returns the combined source and line mappings for error attribution.
+ */
+export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CombinedConfigSource {
+	return combineConfigBlocksByType(codeBlocks, SUPPORTED_PROJECT_CONFIG_TYPES);
+}
+
+/**
+ * Combines all editor config blocks into a single source for validation.
+ * Config blocks are sorted in creation order and concatenated with blank line separators.
+ * Only processes config blocks with type 'editor'.
+ * Returns the combined source and line mappings for error attribution.
+ */
+export function combineEditorConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CombinedConfigSource {
+	return combineConfigBlocksByType(codeBlocks, SUPPORTED_EDITOR_CONFIG_TYPES);
 }
 
 if (import.meta.vitest) {
@@ -250,6 +271,57 @@ if (import.meta.vitest) {
 			const result = combineConfigBlocks(codeBlocks);
 			expect(result.source).toBe('push 1');
 			expect(result.lineMappings).toHaveLength(1);
+		});
+	});
+
+	describe('combineEditorConfigBlocks', () => {
+		it('should combine multiple editor config blocks', () => {
+			const block1 = createMockCodeBlock({
+				code: ['config editor', 'set colorScheme dark', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 0,
+			});
+			const block2 = createMockCodeBlock({
+				code: ['config editor', 'set font 8x16', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 1,
+			});
+			const codeBlocks = [block1, block2];
+
+			const result = combineEditorConfigBlocks(codeBlocks);
+			expect(result.source).toBe('set colorScheme dark\n\nset font 8x16');
+			expect(result.lineMappings).toHaveLength(2);
+		});
+
+		it('should only process editor config blocks, not project config', () => {
+			const editorBlock = createMockCodeBlock({
+				code: ['config editor', 'set colorScheme dark', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 0,
+			});
+			const projectBlock = createMockCodeBlock({
+				code: ['config project', 'push 1', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 1,
+			});
+			const codeBlocks = [editorBlock, projectBlock];
+
+			const result = combineEditorConfigBlocks(codeBlocks);
+			expect(result.source).toBe('set colorScheme dark');
+			expect(result.lineMappings).toHaveLength(1);
+		});
+
+		it('should return empty for no editor config blocks', () => {
+			const projectBlock = createMockCodeBlock({
+				code: ['config project', 'push 1', 'configEnd'],
+				blockType: 'config',
+				creationIndex: 0,
+			});
+			const codeBlocks = [projectBlock];
+
+			const result = combineEditorConfigBlocks(codeBlocks);
+			expect(result.source).toBe('');
+			expect(result.lineMappings).toHaveLength(0);
 		});
 	});
 }
