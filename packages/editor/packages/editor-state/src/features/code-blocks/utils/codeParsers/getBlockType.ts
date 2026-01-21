@@ -1,3 +1,5 @@
+import { CONFIG_WITH_TYPE_REGEX } from '../../../config-compiler/extractConfigBody';
+
 import type { CodeBlockType } from '~/types';
 
 /**
@@ -8,7 +10,7 @@ import type { CodeBlockType } from '~/types';
 export default function getBlockType(code: string[]): CodeBlockType {
 	const hasModule = code.some(line => /^\s*module(\s|$)/.test(line));
 	const hasModuleEnd = code.some(line => /^\s*moduleEnd(\s|$)/.test(line));
-	const hasConfig = code.some(line => /^\s*config(\s|$)/.test(line));
+	const hasConfig = code.some(line => CONFIG_WITH_TYPE_REGEX.test(line));
 	const hasConfigEnd = code.some(line => /^\s*configEnd(\s|$)/.test(line));
 	const hasFunction = code.some(line => /^\s*function(\s|$)/.test(line));
 	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
@@ -166,7 +168,11 @@ if (import.meta.vitest) {
 		});
 
 		it('detects config blocks', () => {
-			expect(getBlockType(['config', 'configEnd'])).toBe('config');
+			expect(getBlockType(['config project', 'configEnd'])).toBe('config');
+		});
+
+		it('rejects config blocks without type', () => {
+			expect(getBlockType(['config', 'configEnd'])).toBe('unknown');
 		});
 
 		it('detects function blocks', () => {
