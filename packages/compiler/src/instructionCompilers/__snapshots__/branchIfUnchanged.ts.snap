@@ -39,6 +39,7 @@ exports[`branchIfUnchanged instruction compiler > compiles the unchanged check s
       "isPointer": false,
       "isPointingToInteger": false,
       "isPointingToPointer": false,
+      "isUnsigned": false,
       "numberOfElements": 1,
       "type": "int",
       "wordAlignedAddress": 0,
