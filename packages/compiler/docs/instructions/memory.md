@@ -1,5 +1,7 @@
 # Memory instructions
 
+For identifier prefixes and suffixes that expand memory identifiers, see [Identifier prefixes](../prefixes.md).
+
 ### load
 
 The load instruction consumes an address from the stack and pushes the 32-bit integer value stored at that address.
