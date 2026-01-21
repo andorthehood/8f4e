@@ -57,10 +57,14 @@ push %samples
 
 - `^name` pushes the maximum finite value for the element type of a memory item.
 
-For integers:
+For signed integers:
 - `int32` / `int` / `int[]`: 2,147,483,647
 - `int16` / `int16[]`: 32,767
 - `int8` / `int8[]`: 127
+
+For unsigned integers:
+- `int8u[]`: 255
+- `int16u[]`: 65,535
 
 For floats:
 - `float` / `float[]`: 3.4028234663852886e+38 (max finite float32)
@@ -70,16 +74,23 @@ Example:
 ```
 int16 value 0
 push ^value
+
+int8u[] unsignedBuffer 10 0
+push ^unsignedBuffer
 ```
 
 ## Element min value
 
 - `!name` pushes the lowest finite value (most negative) for the element type of a memory item.
 
-For integers:
+For signed integers:
 - `int32` / `int` / `int[]`: -2,147,483,648
 - `int16` / `int16[]`: -32,768
 - `int8` / `int8[]`: -128
+
+For unsigned integers:
+- `int8u[]`: 0
+- `int16u[]`: 0
 
 For floats:
 - `float` / `float[]`: -3.4028234663852886e+38 (lowest finite float32)
@@ -89,4 +100,7 @@ Example:
 ```
 int8[] buffer 10 0
 push !buffer
+
+int8u[] unsignedBuffer 10 0
+push !unsignedBuffer
 ```
