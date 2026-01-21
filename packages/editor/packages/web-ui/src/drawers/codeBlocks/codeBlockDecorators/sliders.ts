@@ -40,8 +40,8 @@ export default function drawer(
 		engine.drawSprite(0, 0, 'sliderThumb', thumbX, height);
 
 		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
-		engine.drawText(thumbX, 0, '#');
-		engine.drawText(thumbX, state.viewport.hGrid, '#');
+		engine.drawText(thumbX, 0, '|');
+		engine.drawText(thumbX, state.viewport.hGrid, '|');
 
 		engine.endGroup();
 	}
