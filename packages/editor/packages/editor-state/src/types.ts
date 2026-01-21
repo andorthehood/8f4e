@@ -19,6 +19,7 @@ import type {
 	MemoryIdentifier,
 	BufferPlotter,
 	Switch,
+	Slider,
 	PianoKeyboard,
 	GraphicHelper,
 } from './features/code-blocks/types';
@@ -71,6 +72,7 @@ export type {
 	MemoryIdentifier,
 	BufferPlotter,
 	Switch,
+	Slider,
 	PianoKeyboard,
 	GraphicHelper,
 };

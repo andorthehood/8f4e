@@ -173,6 +173,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				debuggers: [],
 				switches: [],
 				buttons: [],
+				sliders: [],
 				pianoKeyboards: [],
 				bufferPlotters: [],
 				bufferScanners: [],
