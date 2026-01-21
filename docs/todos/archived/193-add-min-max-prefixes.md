@@ -3,8 +3,8 @@ title: 'TODO: Add Min/Max Value Prefixes for Memory Items'
 priority: Medium
 effort: 4-6h
 created: 2026-01-21
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-21
 ---
 
 # TODO: Add Min/Max Value Prefixes for Memory Items
@@ -80,4 +80,3 @@ These should behave like existing `$name` and `%name` prefixes: they are resolve
 
 - This should be implemented in the compiler only; editor does not need changes beyond documentation.
 - Use constants for float bounds to avoid any dependence on JS runtime semantics.
-
