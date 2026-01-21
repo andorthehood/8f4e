@@ -32,12 +32,22 @@ export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
 
 	if (memoryItem.isInteger) {
 		const elementWordSize = memoryItem.elementWordSize;
-		if (elementWordSize === 1) {
-			return 127;
-		} else if (elementWordSize === 2) {
-			return 32767;
+		if (memoryItem.isUnsigned) {
+			if (elementWordSize === 1) {
+				return 255;
+			} else if (elementWordSize === 2) {
+				return 65535;
+			} else {
+				return 4294967295;
+			}
 		} else {
-			return 2147483647;
+			if (elementWordSize === 1) {
+				return 127;
+			} else if (elementWordSize === 2) {
+				return 32767;
+			} else {
+				return 2147483647;
+			}
 		}
 	} else {
 		return 3.4028234663852886e38;
@@ -50,12 +60,16 @@ export function getElementMinValue(memoryMap: MemoryMap, id: string): number {
 
 	if (memoryItem.isInteger) {
 		const elementWordSize = memoryItem.elementWordSize;
-		if (elementWordSize === 1) {
-			return -128;
-		} else if (elementWordSize === 2) {
-			return -32768;
+		if (memoryItem.isUnsigned) {
+			return 0;
 		} else {
-			return -2147483648;
+			if (elementWordSize === 1) {
+				return -128;
+			} else if (elementWordSize === 2) {
+				return -32768;
+			} else {
+				return -2147483648;
+			}
 		}
 	} else {
 		return -3.4028234663852886e38;
@@ -201,6 +215,52 @@ if (import.meta.vitest) {
 
 			it('returns 0 for non-existing identifier', () => {
 				expect(getElementMinValue(mockMemory, 'nonExisting')).toBe(0);
+			});
+		});
+
+		describe('getElementMaxValue with unsigned buffers', () => {
+			it('returns max value for unsigned int8', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 1, isInteger: true, isUnsigned: true } as unknown as MemoryMap[string],
+				};
+				expect(getElementMaxValue(memory, 'val')).toBe(255);
+			});
+
+			it('returns max value for unsigned int16', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 2, isInteger: true, isUnsigned: true } as unknown as MemoryMap[string],
+				};
+				expect(getElementMaxValue(memory, 'val')).toBe(65535);
+			});
+
+			it('returns max value for unsigned int32', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 4, isInteger: true, isUnsigned: true } as unknown as MemoryMap[string],
+				};
+				expect(getElementMaxValue(memory, 'val')).toBe(4294967295);
+			});
+		});
+
+		describe('getElementMinValue with unsigned buffers', () => {
+			it('returns min value 0 for unsigned int8', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 1, isInteger: true, isUnsigned: true } as unknown as MemoryMap[string],
+				};
+				expect(getElementMinValue(memory, 'val')).toBe(0);
+			});
+
+			it('returns min value 0 for unsigned int16', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 2, isInteger: true, isUnsigned: true } as unknown as MemoryMap[string],
+				};
+				expect(getElementMinValue(memory, 'val')).toBe(0);
+			});
+
+			it('returns min value 0 for unsigned int32', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 4, isInteger: true, isUnsigned: true } as unknown as MemoryMap[string],
+				};
+				expect(getElementMinValue(memory, 'val')).toBe(0);
 			});
 		});
 	});

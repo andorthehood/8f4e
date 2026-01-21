@@ -45,6 +45,7 @@ exports[`fallingEdge instruction compiler > compiles the falling edge segment 1`
       "isPointer": false,
       "isPointingToInteger": false,
       "isPointingToPointer": false,
+      "isUnsigned": false,
       "numberOfElements": 1,
       "type": "int",
       "wordAlignedAddress": 0,

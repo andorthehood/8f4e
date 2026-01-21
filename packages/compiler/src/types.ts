@@ -26,6 +26,7 @@ export interface DataStructure {
 	isPointer: boolean;
 	isPointingToInteger: boolean;
 	isPointingToPointer: boolean;
+	isUnsigned: boolean;
 }
 
 export type MemoryMap = Record<string, DataStructure>;

@@ -28,6 +28,7 @@ const buffer: InstructionCompiler = withValidation(
 
 		let numberOfElements = 1;
 		const elementWordSize = line.instruction.includes('8') ? 1 : line.instruction.includes('16') ? 2 : 4;
+		const isUnsigned = line.instruction.endsWith('u[]');
 
 		if (line.arguments[1].type === ArgumentType.LITERAL) {
 			numberOfElements = line.arguments[1].value;
@@ -54,6 +55,7 @@ const buffer: InstructionCompiler = withValidation(
 			isPointingToInteger: line.instruction.startsWith('int') && line.instruction.includes('*'),
 			isPointingToPointer: line.instruction.includes('**'),
 			type: line.instruction.slice(0, -2) as unknown as MemoryTypes,
+			isUnsigned,
 		};
 
 		return context;
@@ -205,6 +207,69 @@ if (import.meta.vitest) {
 			expect(() => {
 				buffer({ lineNumber: 1, instruction: 'int[]', arguments: [] } as AST[number], context);
 			}).toThrowError();
+		});
+
+		it('creates an int8u[] buffer with unsigned flag', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int8u[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'unsignedBytes' },
+						{ type: ArgumentType.LITERAL, value: 5, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['unsignedBytes'];
+			expect(memory.elementWordSize).toBe(1);
+			expect(memory.numberOfElements).toBe(5);
+			expect(memory.isUnsigned).toBe(true);
+			expect(memory.isInteger).toBe(true);
+		});
+
+		it('creates an int16u[] buffer with unsigned flag', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int16u[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'unsignedShorts' },
+						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['unsignedShorts'];
+			expect(memory.elementWordSize).toBe(2);
+			expect(memory.numberOfElements).toBe(3);
+			expect(memory.isUnsigned).toBe(true);
+			expect(memory.isInteger).toBe(true);
+		});
+
+		it('creates an int8[] buffer with isUnsigned false', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int8[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'signedBytes' },
+						{ type: ArgumentType.LITERAL, value: 5, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['signedBytes'];
+			expect(memory.isUnsigned).toBe(false);
 		});
 	});
 }
