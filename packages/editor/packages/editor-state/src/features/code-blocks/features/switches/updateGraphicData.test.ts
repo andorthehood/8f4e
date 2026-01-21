@@ -13,7 +13,7 @@ describe('updateSwitchesGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
-			code: ['switch sw1 0 1'],
+			code: ['# switch sw1 0 1'],
 			width: 100,
 			gaps: new Map(),
 		});
@@ -59,7 +59,7 @@ describe('updateSwitchesGraphicData', () => {
 	});
 
 	it('should handle multiple switches', () => {
-		mockGraphicData.code = ['switch sw1 0 1', 'switch sw2 5 10'];
+		mockGraphicData.code = ['# switch sw1 0 1', '# switch sw2 5 10'];
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
@@ -68,7 +68,7 @@ describe('updateSwitchesGraphicData', () => {
 	});
 
 	it('should position switches at correct y coordinate based on line number', () => {
-		mockGraphicData.code = ['nop', 'nop', 'switch sw1 0 1'];
+		mockGraphicData.code = ['nop', 'nop', '# switch sw1 0 1'];
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
@@ -77,7 +77,7 @@ describe('updateSwitchesGraphicData', () => {
 	});
 
 	it('should handle switches with custom values', () => {
-		mockGraphicData.code = ['switch sw1 -5 100'];
+		mockGraphicData.code = ['# switch sw1 -5 100'];
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
@@ -87,7 +87,7 @@ describe('updateSwitchesGraphicData', () => {
 
 	it('should position switches correctly with gaps', () => {
 		mockGraphicData.gaps = new Map([[1, { size: 1 }]]); // Gap at line 1
-		mockGraphicData.code = ['switch sw1 0 1', 'nop', 'switch sw2 0 1'];
+		mockGraphicData.code = ['# switch sw1 0 1', 'nop', '# switch sw2 0 1'];
 
 		updateSwitchesGraphicData(mockGraphicData, mockState);
 
