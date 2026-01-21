@@ -1,3 +1,76 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`updateBufferPlottersGraphicData > should calculate correct dimensions and position 1`] = `undefined`;
+exports[`updateBufferPlottersGraphicData > should calculate correct dimensions and position 1`] = `
+{
+  "buffer": {
+    "bufferPointer": 0,
+    "memory": {
+      "byteAddress": 0,
+      "wordAlignedAddress": 0,
+    },
+    "showAddress": false,
+    "showBinary": false,
+    "showEndAddress": false,
+  },
+  "bufferLength": undefined,
+  "height": 16,
+  "maxValue": 10,
+  "minValue": -10,
+  "width": 16,
+  "x": 24,
+  "y": 16,
+}
+`;
+
+exports[`updateBufferPlottersGraphicData > should handle multiple buffer plotters 1`] = `
+[
+  {
+    "buffer": {
+      "bufferPointer": 0,
+      "memory": {
+        "byteAddress": 0,
+        "wordAlignedAddress": 0,
+      },
+      "showAddress": false,
+      "showBinary": false,
+      "showEndAddress": false,
+    },
+    "bufferLength": undefined,
+    "height": 16,
+    "maxValue": 10,
+    "minValue": -10,
+    "width": 16,
+    "x": 24,
+    "y": 16,
+  },
+  {
+    "buffer": {
+      "bufferPointer": 0,
+      "memory": {
+        "byteAddress": 4,
+        "default": 0,
+        "elementWordSize": 1,
+        "id": "buffer2",
+        "isInteger": true,
+        "isPointer": false,
+        "isPointingToInteger": false,
+        "isPointingToPointer": false,
+        "numberOfElements": 100,
+        "type": 1,
+        "wordAlignedAddress": 1,
+        "wordAlignedSize": 100,
+      },
+      "showAddress": false,
+      "showBinary": false,
+      "showEndAddress": false,
+    },
+    "bufferLength": undefined,
+    "height": 16,
+    "maxValue": 100,
+    "minValue": -8,
+    "width": 16,
+    "x": 24,
+    "y": 32,
+  },
+]
+`;
