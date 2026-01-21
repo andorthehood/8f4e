@@ -1,5 +1,5 @@
 /**
- * Extracts the body content between config and configEnd markers.
+ * Extracts the body content between projectConfig and projectConfigEnd markers.
  * Returns the lines between the markers (exclusive).
  */
 export default function extractConfigBody(code: string[]): string[] {
@@ -7,9 +7,9 @@ export default function extractConfigBody(code: string[]): string[] {
 	let endIndex = -1;
 
 	for (let i = 0; i < code.length; i++) {
-		if (/^\s*config(\s|$)/.test(code[i])) {
+		if (/^\s*projectConfig(\s|$)/.test(code[i])) {
 			startIndex = i;
-		} else if (/^\s*configEnd(\s|$)/.test(code[i])) {
+		} else if (/^\s*projectConfigEnd(\s|$)/.test(code[i])) {
 			endIndex = i;
 		}
 	}
@@ -25,32 +25,32 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('extractConfigBody', () => {
-		it('should extract the body between config and configEnd markers', () => {
-			const code = ['config', 'push 42', 'set', 'configEnd'];
+		it('should extract the body between projectConfig and projectConfigEnd markers', () => {
+			const code = ['projectConfig', 'push 42', 'set', 'projectConfigEnd'];
 			const body = extractConfigBody(code);
 			expect(body).toEqual(['push 42', 'set']);
 		});
 
 		it('should handle empty body between markers', () => {
-			const code = ['config', 'configEnd'];
+			const code = ['projectConfig', 'projectConfigEnd'];
 			const body = extractConfigBody(code);
 			expect(body).toEqual([]);
 		});
 
 		it('should handle leading whitespace on markers', () => {
-			const code = ['  config', 'push 42', '  configEnd'];
+			const code = ['  projectConfig', 'push 42', '  projectConfigEnd'];
 			const body = extractConfigBody(code);
 			expect(body).toEqual(['push 42']);
 		});
 
-		it('should return empty array if no config marker', () => {
-			const code = ['push 42', 'configEnd'];
+		it('should return empty array if no projectConfig marker', () => {
+			const code = ['push 42', 'projectConfigEnd'];
 			const body = extractConfigBody(code);
 			expect(body).toEqual([]);
 		});
 
-		it('should return empty array if no configEnd marker', () => {
-			const code = ['config', 'push 42'];
+		it('should return empty array if no projectConfigEnd marker', () => {
+			const code = ['projectConfig', 'push 42'];
 			const body = extractConfigBody(code);
 			expect(body).toEqual([]);
 		});
@@ -61,8 +61,8 @@ if (import.meta.vitest) {
 			expect(body).toEqual([]);
 		});
 
-		it('should return empty array if config comes after configEnd', () => {
-			const code = ['configEnd', 'push 42', 'config'];
+		it('should return empty array if projectConfig comes after projectConfigEnd', () => {
+			const code = ['projectConfigEnd', 'push 42', 'projectConfig'];
 			const body = extractConfigBody(code);
 			expect(body).toEqual([]);
 		});

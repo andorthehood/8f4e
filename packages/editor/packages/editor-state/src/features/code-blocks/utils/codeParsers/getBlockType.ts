@@ -1,15 +1,15 @@
 import type { CodeBlockType } from '~/types';
 
 /**
- * Detects whether a block of code represents a shader, module, config, function, comment, or unknown block by scanning for marker pairs.
+ * Detects whether a block of code represents a shader, module, projectConfig, function, comment, or unknown block by scanning for marker pairs.
  * @param code - Code block represented as an array of lines.
  * @returns The inferred code block type.
  */
 export default function getBlockType(code: string[]): CodeBlockType {
 	const hasModule = code.some(line => /^\s*module(\s|$)/.test(line));
 	const hasModuleEnd = code.some(line => /^\s*moduleEnd(\s|$)/.test(line));
-	const hasConfig = code.some(line => /^\s*config(\s|$)/.test(line));
-	const hasConfigEnd = code.some(line => /^\s*configEnd(\s|$)/.test(line));
+	const hasProjectConfig = code.some(line => /^\s*projectConfig(\s|$)/.test(line));
+	const hasProjectConfigEnd = code.some(line => /^\s*projectConfigEnd(\s|$)/.test(line));
 	const hasFunction = code.some(line => /^\s*function(\s|$)/.test(line));
 	const hasFunctionEnd = code.some(line => /^\s*functionEnd(\s|$)/.test(line));
 	const hasConstants = code.some(line => /^\s*constants(\s|$)/.test(line));
@@ -24,8 +24,8 @@ export default function getBlockType(code: string[]): CodeBlockType {
 	if (
 		hasModule &&
 		hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
+		!hasProjectConfig &&
+		!hasProjectConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
@@ -41,8 +41,8 @@ export default function getBlockType(code: string[]): CodeBlockType {
 	}
 
 	if (
-		hasConfig &&
-		hasConfigEnd &&
+		hasProjectConfig &&
+		hasProjectConfigEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
 		!hasFunction &&
@@ -56,7 +56,7 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		!hasComment &&
 		!hasCommentEnd
 	) {
-		return 'config';
+		return 'projectConfig';
 	}
 
 	if (
@@ -64,8 +64,8 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasFunctionEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
+		!hasProjectConfig &&
+		!hasProjectConfigEnd &&
 		!hasConstants &&
 		!hasConstantsEnd &&
 		!hasVertexShader &&
@@ -83,8 +83,8 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasConstantsEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
+		!hasProjectConfig &&
+		!hasProjectConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasVertexShader &&
@@ -102,8 +102,8 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasVertexShaderEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
+		!hasProjectConfig &&
+		!hasProjectConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
@@ -121,8 +121,8 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasFragmentShaderEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
+		!hasProjectConfig &&
+		!hasProjectConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
@@ -140,8 +140,8 @@ export default function getBlockType(code: string[]): CodeBlockType {
 		hasCommentEnd &&
 		!hasModule &&
 		!hasModuleEnd &&
-		!hasConfig &&
-		!hasConfigEnd &&
+		!hasProjectConfig &&
+		!hasProjectConfigEnd &&
 		!hasFunction &&
 		!hasFunctionEnd &&
 		!hasConstants &&
@@ -165,8 +165,8 @@ if (import.meta.vitest) {
 			expect(getBlockType(['module foo', 'moduleEnd'])).toBe('module');
 		});
 
-		it('detects config blocks', () => {
-			expect(getBlockType(['config', 'configEnd'])).toBe('config');
+		it('detects projectConfig blocks', () => {
+			expect(getBlockType(['projectConfig', 'projectConfigEnd'])).toBe('projectConfig');
 		});
 
 		it('detects function blocks', () => {

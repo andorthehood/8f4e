@@ -25,7 +25,7 @@ export interface CodeBlock {
 /**
  * The type of a code block, determined by its content markers.
  * - 'module': Contains module/moduleEnd markers (compiled to WASM)
- * - 'config': Contains config/configEnd markers (compiled to JSON configuration)
+ * - 'projectConfig': Contains projectConfig/projectConfigEnd markers (compiled to JSON configuration)
  * - 'function': Contains function/functionEnd markers (compiled to WASM as reusable helper)
  * - 'constants': Contains constants/constantsEnd markers
  * - 'vertexShader': Contains vertexShader/vertexShaderEnd markers (GLSL vertex shader)
@@ -35,7 +35,7 @@ export interface CodeBlock {
  */
 export type CodeBlockType =
 	| 'module'
-	| 'config'
+	| 'projectConfig'
 	| 'function'
 	| 'constants'
 	| 'vertexShader'
