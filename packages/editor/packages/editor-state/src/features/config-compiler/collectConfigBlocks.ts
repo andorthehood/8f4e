@@ -29,7 +29,6 @@ export function collectConfigBlocks(codeBlocks: CodeBlockGraphicData[]): ConfigB
 				configType,
 			};
 		});
-	// Note: We don't filter empty sources here anymore - let combineConfigBlocks handle validation
 }
 
 if (import.meta.vitest) {
