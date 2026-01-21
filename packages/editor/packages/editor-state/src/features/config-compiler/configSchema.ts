@@ -31,7 +31,7 @@ function generateRuntimeSettingsSchema(runtimeRegistry: RuntimeRegistry): JSONSc
 }
 
 /**
- * Generates the config schema.
+ * Generates the config schema for project config.
  */
 export function getConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLike {
 	const runtimeSettingsSchema = generateRuntimeSettingsSchema(runtimeRegistry);
@@ -53,6 +53,23 @@ export function getConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLik
 					required: ['url', 'memoryId'],
 					additionalProperties: false,
 				},
+			},
+		},
+		additionalProperties: false,
+	};
+}
+
+/**
+ * Generates the config schema for editor config.
+ */
+export function getEditorConfigSchema(): JSONSchemaLike {
+	return {
+		type: 'object',
+		properties: {
+			colorScheme: { type: 'string' },
+			font: {
+				type: 'string',
+				enum: ['6x10', '8x16'],
 			},
 		},
 		additionalProperties: false,
