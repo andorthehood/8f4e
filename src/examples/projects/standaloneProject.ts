@@ -37,7 +37,7 @@ const standalonProject: Project = {
 				'module counter',
 				'',
 				'int count',
-				'debug count',
+				'# debug count',
 				'',
 				'push &count',
 				'push count',

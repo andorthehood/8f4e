@@ -34,7 +34,7 @@ const project: Project = {
 				'',
 				'int value 0',
 				'',
-				'debug value',
+				'# debug value',
 				'',
 				'push &value',
 				'push 1',
