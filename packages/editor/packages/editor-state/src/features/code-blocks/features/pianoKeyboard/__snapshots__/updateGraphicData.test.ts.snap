@@ -1,5 +1,25 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`updatePianoKeyboardsGraphicData > should calculate correct dimensions and position 1`] = `{}`;
+exports[`updatePianoKeyboardsGraphicData > should calculate correct dimensions and position 1`] = `
+{
+  "height": 80,
+  "keyWidth": 16,
+  "pressedKeys": Set {},
+  "startingNumber": 60,
+  "width": 384,
+  "x": 0,
+  "y": 16,
+}
+`;
 
-exports[`updatePianoKeyboardsGraphicData > should position piano keyboards at correct y coordinate based on line number 1`] = `{}`;
+exports[`updatePianoKeyboardsGraphicData > should position piano keyboards at correct y coordinate based on line number 1`] = `
+{
+  "height": 80,
+  "keyWidth": 16,
+  "pressedKeys": Set {},
+  "startingNumber": 60,
+  "width": 384,
+  "x": 0,
+  "y": 48,
+}
+`;
