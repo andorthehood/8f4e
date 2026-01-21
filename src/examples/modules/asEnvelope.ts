@@ -16,7 +16,7 @@ float out
 
 int attacking 0
 
-debug out
+# debug out
 
 push *trigger
 risingEdge
