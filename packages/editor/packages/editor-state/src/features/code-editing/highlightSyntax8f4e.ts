@@ -5,14 +5,14 @@
  */
 const getInstructionRegExp = (instructions: string[]) =>
 	new RegExp(
-		'\\b(?:' +
+		'(?<=^|\\s)(?:' +
 			instructions
 				.sort((a, b) => b.length - a.length)
 				.join('|')
 				.replaceAll(/\*/g, '\\*')
 				.replaceAll(/\]/g, '\\]')
 				.replaceAll(/\[/g, '\\[') +
-			')\\b',
+			')(?=\\s|$)',
 		'd'
 	);
 
@@ -75,7 +75,9 @@ const instructionsToHighlight = [
 	'float[]',
 	'int[]',
 	'int8[]',
+	'int8u[]',
 	'int16[]',
+	'int16u[]',
 	'int32[]',
 	'float*[]',
 	'float**[]',
@@ -256,6 +258,12 @@ if (import.meta.vitest) {
 				'',
 				'; this is a push comment',
 				'; this is a push comment 0b1010',
+				'',
+				'; Bracketed types',
+				'int8[] buffer1 10',
+				'int8u[] buffer2 20',
+				'int16[] buffer3 30',
+				'int16u[] buffer4 40',
 				'',
 				'moduleEnd',
 			];
