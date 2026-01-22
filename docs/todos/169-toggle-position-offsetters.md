@@ -3,8 +3,8 @@ title: 'TODO: Toggle position offsetters via function key'
 priority: Medium
 effort: 1-2h
 created: 2026-01-13
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-22
 ---
 
 # TODO: Toggle position offsetters via function key
