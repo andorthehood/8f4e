@@ -5,6 +5,7 @@ import { isEditorConfigBlock, serializeEditorConfigBlocks } from './utils/editor
 
 import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
 import { log, warn } from '../logger/logger';
+import deepEqual from '../config-compiler/utils/deepEqual';
 
 import type { State, EventDispatcher, EditorConfig } from '~/types';
 
@@ -55,8 +56,15 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 		console.log(`[Editor Config] Config loaded:`, mergedConfig);
 		log(state, `Editor config loaded with ${errors.length} error(s).`, 'Config');
 
-		store.set('codeErrors.editorConfigErrors', errors);
-		store.set('compiledEditorConfig', compiledConfig as EditorConfig);
+		// Only update error array if it has changed
+		if (!deepEqual(errors, state.codeErrors.editorConfigErrors)) {
+			store.set('codeErrors.editorConfigErrors', errors);
+		}
+
+		// Only update config if it has changed
+		if (!deepEqual(compiledConfig, state.compiledEditorConfig)) {
+			store.set('compiledEditorConfig', compiledConfig as EditorConfig);
+		}
 	}
 
 	function saveEditorConfigBlocks() {
