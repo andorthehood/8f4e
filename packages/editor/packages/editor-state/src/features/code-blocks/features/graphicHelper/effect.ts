@@ -23,6 +23,8 @@ import highlightSyntaxGlsl from '../../../code-editing/highlightSyntaxGlsl';
 import { moveCaret } from '../../../code-editing/moveCaret';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import getCodeBlockId from '../../utils/getCodeBlockId';
+import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -137,7 +139,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(state.graphicHelper.selectedCodeBlockForProgrammaticEdit);
 	};
 
-	const populateCodeBlocks = function () {
+	const populateCodeBlocks = async function () {
 		if (!state.initialProjectState) {
 			return;
 		}
@@ -152,55 +154,71 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 			state.graphicHelper.nextCodeBlockCreationIndex++;
-			// Compute grid coordinates first as source of truth
 			const gridX = codeBlock.gridCoordinates.x;
 			const gridY = codeBlock.gridCoordinates.y;
-			// Compute pixel coordinates from grid coordinates
 			const pixelX = gridX * state.viewport.vGrid;
 			const pixelY = gridY * state.viewport.hGrid;
 
-			return {
+			return createCodeBlockGraphicData({
 				width: 0,
 				minGridWidth: 32,
 				height: 0,
 				code: codeBlock.code,
-				codeColors: [],
-				codeToRender: [],
-				extras: {
-					blockHighlights: [],
-					inputs: [],
-					outputs: [],
-					debuggers: [],
-					switches: [],
-					buttons: [],
-					sliders: [],
-					pianoKeyboards: [],
-					bufferPlotters: [],
-					bufferScanners: [],
-					errorMessages: [],
-				},
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
 				id: getCodeBlockId(codeBlock.code),
-				gaps: new Map(),
 				gridX,
 				gridY,
 				x: pixelX,
 				y: pixelY,
-				offsetX: 0,
-				offsetY: 0,
 				lineNumberColumnWidth: 1,
-				lastUpdated: Date.now(),
 				creationIndex,
 				blockType: getBlockType(codeBlock.code),
 				disabled: codeBlock.disabled || false,
-			} as CodeBlockGraphicData;
+			});
 		});
+
+		if (state.featureFlags.persistentStorage && state.callbacks.loadEditorConfigBlocks) {
+			try {
+				const loadedBlocks = (await state.callbacks.loadEditorConfigBlocks()) ?? [];
+				const validBlocks = loadedBlocks.filter(block => isEditorConfigCode(block.code));
+				const editorConfigBlocks = validBlocks.length > 0 ? validBlocks : [DEFAULT_EDITOR_CONFIG_BLOCK];
+
+				let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
+				for (let i = 0; i < editorConfigBlocks.length; i += 1) {
+					const rawBlock = editorConfigBlocks[i];
+					const gridX = rawBlock.gridCoordinates?.x ?? 0;
+					const gridY = rawBlock.gridCoordinates?.y ?? 0;
+					const block = createCodeBlockGraphicData({
+						id: getCodeBlockId(rawBlock.code),
+						code: rawBlock.code,
+						disabled: rawBlock.disabled || false,
+						creationIndex,
+						blockType: getBlockType(rawBlock.code),
+						minGridWidth: 32,
+						gridX,
+						gridY,
+						x: gridX * state.viewport.vGrid,
+						y: gridY * state.viewport.hGrid,
+					});
+
+					codeBlocks.push(block);
+					creationIndex += 1;
+					state.graphicHelper.nextCodeBlockCreationIndex = creationIndex;
+				}
+			} catch (err) {
+				console.warn('Failed to load editor config blocks from storage:', err);
+			}
+		}
 
 		store.set('graphicHelper.codeBlocks', codeBlocks);
 	};
 
 	function updateErrorMessages() {
-		const codeErrors = [...state.codeErrors.compilationErrors, ...state.codeErrors.configErrors];
+		const codeErrors = [
+			...state.codeErrors.compilationErrors,
+			...state.codeErrors.projectConfigErrors,
+			...state.codeErrors.editorConfigErrors,
+		];
 		state.graphicHelper.codeBlocks.forEach(codeBlock => {
 			codeBlock.extras.errorMessages = [];
 			codeErrors.forEach(codeError => {
