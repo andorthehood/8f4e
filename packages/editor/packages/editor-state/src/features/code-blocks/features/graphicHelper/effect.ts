@@ -25,6 +25,7 @@ import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
+import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -161,7 +162,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 			return createCodeBlockGraphicData({
 				width: 0,
-				minGridWidth: 32,
+				minGridWidth: CODE_BLOCK_MIN_GRID_WIDTH,
 				height: 0,
 				code: codeBlock.code,
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
@@ -194,7 +195,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						disabled: rawBlock.disabled || false,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
-						minGridWidth: 32,
+						minGridWidth: CODE_BLOCK_MIN_GRID_WIDTH,
 						gridX,
 						gridY,
 						x: gridX * state.viewport.vGrid,
