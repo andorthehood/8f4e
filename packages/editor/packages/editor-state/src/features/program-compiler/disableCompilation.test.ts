@@ -3,7 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import compiler from './effect';
 
-import configEffect from '../config-compiler/effect';
+import projectConfigEffect from '../project-config/effect';
 import { compileConfigForExport } from '../config-compiler/compileConfigForExport';
 
 import type { State } from '~/types';
@@ -132,7 +132,7 @@ describe('disableAutoCompilation feature', () => {
 		it('should compile config even when disableAutoCompilation is true', async () => {
 			store.set('compiledProjectConfig.disableAutoCompilation', true);
 
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
 			await new Promise(resolve => setTimeout(resolve, 0));
@@ -143,7 +143,7 @@ describe('disableAutoCompilation feature', () => {
 		it('should compile config normally when disableAutoCompilation is false', async () => {
 			store.set('compiledProjectConfig.disableAutoCompilation', false);
 
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
 			await new Promise(resolve => setTimeout(resolve, 0));
@@ -217,7 +217,7 @@ describe('disableAutoCompilation feature', () => {
 				errors: [],
 			});
 
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
 			await new Promise(resolve => setTimeout(resolve, 0));
@@ -233,7 +233,7 @@ describe('disableAutoCompilation feature', () => {
 				errors: [],
 			});
 
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
 			await new Promise(resolve => setTimeout(resolve, 0));
