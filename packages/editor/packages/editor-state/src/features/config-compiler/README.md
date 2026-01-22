@@ -2,39 +2,29 @@
 
 ## Purpose
 
-Compiles configuration blocks written in the stack-based config language into a validated configuration object. Combines multiple config blocks, compiles them using the `@8f4e/stack-config-compiler`, maps errors back to source blocks, and merges results with default configuration values.
+Provides shared helpers for compiling stack-based config blocks into validated configuration objects. These utilities are used by the `project-config` and `editor-config` features.
 
 ## Key Behaviors
 
-- **Config Collection**: Gathers all config-type blocks from the project
+- **Config Collection**: Helpers for gathering config-type blocks
 - **Source Combination**: Combines multiple config blocks into a single source string with line tracking
 - **Compilation**: Uses `@8f4e/stack-config-compiler` to parse and execute config programs
-- **Schema Validation**: Validates compiled config against a predefined schema
+- **Schema Validation**: Validates compiled config against a provided schema
 - **Error Mapping**: Maps compilation/validation errors back to specific config blocks and line numbers
 - **Default Merging**: Deep merges compiled config with default values
-- **Runtime Selection**: Determines which runtime to use based on compiled config
 
-## Events & Callbacks
+## Consumers
 
-### Events Listened To
-
-- Config blocks are monitored through state subscriptions
-- Triggered automatically when config blocks are modified
-
-### State Touched
-
-- `state.graphicHelper.codeBlocks` - Filtered for config-type blocks
-- `state.compiledConfig` - Resulting configuration object after compilation and merging
-- `state.compiledConfig.selectedRuntime` - Index of the selected runtime
-- `state.codeErrors.configErrors` - Array of config compilation/validation errors
+- `project-config` feature
+- `editor-config` feature
 
 ## Integration Points
 
 - **Config Compiler Package**: Uses [`@8f4e/stack-config-compiler`](../../../../stack-config-compiler/README.md) for parsing and execution
-- **Config Schema**: Validates against schema defined in `configSchema.ts`
-- **Runtime**: Compiled config determines runtime settings and selection
-- **Program Compiler**: Memory size and other compiler options come from config
-- **Project Export**: Compiled config is included in runtime-ready project exports
+- **Config Schemas**: Project config is validated by `project-config/schema.ts`; editor config is validated by `editor-config/schema.ts`
+- **Runtime**: Project config determines runtime settings and selection
+- **Program Compiler**: Memory size and other compiler options come from project config
+- **Project Export**: Compiled project config is included in runtime-ready project exports
 
 ## Error Handling
 
@@ -52,7 +42,8 @@ Each error includes:
 ## References
 
 - Config language documentation: [`@8f4e/stack-config-compiler/README.md`](../../../../../../stack-config-compiler/README.md)
-- Config schema definition: `configSchema.ts`
+- Project config schema definition: `project-config/schema.ts`
+- Editor config schema definition: `editor-config/schema.ts`
 - Error mapping utilities: `mapErrorLineToBlock.ts`
 
 ## Notes & Limitations

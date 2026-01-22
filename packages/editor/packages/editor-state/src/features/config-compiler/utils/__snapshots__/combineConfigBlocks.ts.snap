@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`combineConfigBlocks > should maintain creation order 1`] = `
+[
+  {
+    "blockId": 0,
+    "endLine": 1,
+    "startLine": 1,
+  },
+  {
+    "blockId": 1,
+    "endLine": 3,
+    "startLine": 3,
+  },
+  {
+    "blockId": 2,
+    "endLine": 5,
+    "startLine": 5,
+  },
+]
+`;
+
+exports[`combineConfigBlocks > should skip empty config blocks 1`] = `
+{
+  "blockId": 1,
+  "endLine": 1,
+  "startLine": 1,
+}
+`;
