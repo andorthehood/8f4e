@@ -149,6 +149,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable console overlay display (internal logging) */
 	consoleOverlay: boolean;
+
+	/** Enable/disable position offsetters that allow code blocks to be moved via memory values */
+	positionOffsetters: boolean;
 }
 
 /**
