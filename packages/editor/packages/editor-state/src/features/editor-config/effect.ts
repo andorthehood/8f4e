@@ -1,28 +1,17 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { getEditorConfigSchema } from './schema';
+import { isEditorConfigBlock, serializeEditorConfigBlocks } from './utils/editorConfigBlocks';
 
-import deepMergeConfig from '../config-compiler/utils/deepMergeConfig';
-import { extractConfigType } from '../config-compiler/utils/extractConfigBody';
-import { compileConfigBlocksByType } from '../config-compiler/utils/compileConfigBlocksByType';
+import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
 import { log, warn } from '../logger/logger';
 
-import type { State, EditorConfigBlock, EventDispatcher, EditorConfig } from '~/types';
+import type { State, EventDispatcher, EditorConfig } from '~/types';
 
 import { defaultEditorConfig } from '~/pureHelpers/state/createDefaultState';
 
-function isEditorConfigBlock(state: State): boolean {
-	if (!state.graphicHelper.selectedCodeBlock) {
-		return false;
-	}
-	return extractConfigType(state.graphicHelper.selectedCodeBlock.code) === 'editor';
-}
-
 function isEditorConfigBlockForProgrammaticEdit(state: State): boolean {
-	if (!state.graphicHelper.selectedCodeBlockForProgrammaticEdit) {
-		return false;
-	}
-	return extractConfigType(state.graphicHelper.selectedCodeBlockForProgrammaticEdit.code) === 'editor';
+	return isEditorConfigBlock(state.graphicHelper.selectedCodeBlockForProgrammaticEdit ?? null);
 }
 
 export default function editorConfigEffect(store: StateManager<State>, events: EventDispatcher): void {
@@ -49,11 +38,12 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 		}
 
 		const schema = getEditorConfigSchema();
-		const { mergedConfig, errors, hasSource } = await compileConfigBlocksByType({
+		const { compiledConfig, mergedConfig, errors, hasSource } = await compileConfigWithDefaults({
 			codeBlocks: state.graphicHelper.codeBlocks,
 			configType: 'editor',
 			schema,
 			compileConfig: state.callbacks.compileConfig,
+			defaultConfig: defaultEditorConfig,
 		});
 
 		if (!hasSource) {
@@ -66,13 +56,7 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 		log(state, `Editor config loaded with ${errors.length} error(s).`, 'Config');
 
 		store.set('codeErrors.editorConfigErrors', errors);
-		store.set(
-			'compiledEditorConfig',
-			deepMergeConfig(
-				defaultEditorConfig as unknown as Record<string, unknown>,
-				mergedConfig
-			) as unknown as EditorConfig
-		);
+		store.set('compiledEditorConfig', compiledConfig as EditorConfig);
 	}
 
 	function saveEditorConfigBlocks() {
@@ -80,18 +64,7 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 			return;
 		}
 
-		const editorConfigBlocks: EditorConfigBlock[] = state.graphicHelper.codeBlocks
-			.filter(block => extractConfigType(block.code) === 'editor')
-			.map(block => ({
-				code: block.code,
-				disabled: block.disabled,
-				gridCoordinates: {
-					x: block.gridX,
-					y: block.gridY,
-				},
-			}));
-
-		state.callbacks.saveEditorConfigBlocks(editorConfigBlocks);
+		state.callbacks.saveEditorConfigBlocks(serializeEditorConfigBlocks(state.graphicHelper.codeBlocks));
 	}
 
 	store.subscribe('compiledEditorConfig.colorScheme', async () => {
@@ -109,7 +82,7 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 	events.on('compileConfig', rebuildEditorConfig);
 	store.subscribe('graphicHelper.codeBlocks', rebuildEditorConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
-		if (!isEditorConfigBlock(state)) {
+		if (!isEditorConfigBlock(state.graphicHelper.selectedCodeBlock ?? null)) {
 			return;
 		}
 		saveEditorConfigBlocks();
