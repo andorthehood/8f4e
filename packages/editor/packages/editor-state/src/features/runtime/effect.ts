@@ -20,7 +20,7 @@ export default async function runtime(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const runtime = state.compiledConfig.runtimeSettings;
+		const runtime = state.compiledProjectConfig.runtimeSettings;
 
 		if (onlineRuntime === runtime.runtime) {
 			return;
