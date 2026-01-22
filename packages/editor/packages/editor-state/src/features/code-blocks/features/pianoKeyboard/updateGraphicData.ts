@@ -9,7 +9,7 @@ import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 /**
  * Updates piano keyboard graphics for a code block.
- * Sets minGridWidth on the block if piano keyboards are present.
+ * Sets minGridWidth to PIANO_KEYBOARD_MIN_GRID_WIDTH (48) on the block if piano keyboards are present.
  */
 export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGraphicData, state: State): void {
 	graphicData.extras.pianoKeyboards = [];
