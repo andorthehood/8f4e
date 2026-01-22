@@ -9,12 +9,9 @@ import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
 /**
  * Updates piano keyboard graphics for a code block.
- * @returns The minimum grid width required if the block has piano keyboards, undefined otherwise
+ * Sets minGridWidth on the block if piano keyboards are present.
  */
-export default function updatePianoKeyboardsGraphicData(
-	graphicData: CodeBlockGraphicData,
-	state: State
-): number | undefined {
+export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGraphicData, state: State): void {
 	graphicData.extras.pianoKeyboards = [];
 	let hasPianoKeyboard = false;
 
@@ -49,5 +46,7 @@ export default function updatePianoKeyboardsGraphicData(
 		});
 	});
 
-	return hasPianoKeyboard ? PIANO_KEYBOARD_MIN_GRID_WIDTH : undefined;
+	if (hasPianoKeyboard) {
+		graphicData.minGridWidth = PIANO_KEYBOARD_MIN_GRID_WIDTH;
+	}
 }
