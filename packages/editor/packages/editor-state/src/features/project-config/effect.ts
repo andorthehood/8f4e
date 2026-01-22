@@ -2,9 +2,8 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { getProjectConfigSchema } from './schema';
 
-import deepMergeConfig from '../config-compiler/utils/deepMergeConfig';
-import { extractConfigType } from '../config-compiler/utils/extractConfigBody';
-import { compileConfigBlocksByType } from '../config-compiler/utils/compileConfigBlocksByType';
+import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
+import { isConfigBlockOfType } from '../config-compiler/utils/isConfigBlockOfType';
 import { log } from '../logger/logger';
 
 import type { EventDispatcher, State, ProjectConfig } from '~/types';
@@ -12,17 +11,11 @@ import type { EventDispatcher, State, ProjectConfig } from '~/types';
 import { defaultProjectConfig } from '~/pureHelpers/state/createDefaultState';
 
 function isProjectConfigBlock(state: State): boolean {
-	if (state.graphicHelper.selectedCodeBlock?.blockType !== 'config') {
-		return false;
-	}
-	return extractConfigType(state.graphicHelper.selectedCodeBlock.code) === 'project';
+	return isConfigBlockOfType(state.graphicHelper.selectedCodeBlock, 'project');
 }
 
 function isProjectConfigBlockForProgrammaticEdit(state: State): boolean {
-	if (state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'config') {
-		return false;
-	}
-	return extractConfigType(state.graphicHelper.selectedCodeBlockForProgrammaticEdit.code) === 'project';
+	return isConfigBlockOfType(state.graphicHelper.selectedCodeBlockForProgrammaticEdit, 'project');
 }
 
 export default function projectConfigEffect(store: StateManager<State>, events: EventDispatcher): void {
@@ -41,11 +34,12 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 		}
 
 		const schema = getProjectConfigSchema(state.runtimeRegistry);
-		const { mergedConfig, errors, hasSource } = await compileConfigBlocksByType({
+		const { compiledConfig, mergedConfig, errors, hasSource } = await compileConfigWithDefaults({
 			codeBlocks: state.graphicHelper.codeBlocks,
 			configType: 'project',
 			schema,
 			compileConfig: state.callbacks.compileConfig,
+			defaultConfig: defaultProjectConfig,
 		});
 
 		if (!hasSource) {
@@ -58,13 +52,7 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 		log(state, `Project config loaded with ${errors.length} error(s).`, 'Config');
 
 		store.set('codeErrors.projectConfigErrors', errors);
-		store.set(
-			'compiledProjectConfig',
-			deepMergeConfig(
-				defaultProjectConfig as unknown as Record<string, unknown>,
-				mergedConfig
-			) as unknown as ProjectConfig
-		);
+		store.set('compiledProjectConfig', compiledConfig as ProjectConfig);
 	}
 
 	events.on('compileConfig', rebuildProjectConfig);
