@@ -1,6 +1,5 @@
 import parsePianoKeyboards from './codeParser';
-
-import { PIANO_KEYBOARD_MIN_GRID_WIDTH } from '../../utils/constants';
+import { PIANO_KEYBOARD_MIN_GRID_WIDTH } from './constants';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
