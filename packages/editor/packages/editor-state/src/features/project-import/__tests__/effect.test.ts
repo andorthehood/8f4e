@@ -3,7 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import projectImport from '../effect';
 import compiler from '../../program-compiler/effect';
-import configEffect from '../../config-compiler/effect';
+import projectConfigEffect from '../../project-config/effect';
 
 import type { State, Project } from '~/types';
 
@@ -25,7 +25,7 @@ describe('projectImport', () => {
 	describe('Event wiring', () => {
 		it('should register importProject event handler', () => {
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const importProjectCall = onCalls.find(call => call[0] === 'importProject');
@@ -34,7 +34,7 @@ describe('projectImport', () => {
 
 		it('should register loadProject event handler', () => {
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -43,7 +43,7 @@ describe('projectImport', () => {
 
 		it('should register loadProjectBySlug event handler', () => {
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
@@ -99,7 +99,7 @@ describe('projectImport', () => {
 		it('should clear compiled config when loading project without config blocks', async () => {
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -124,7 +124,7 @@ describe('projectImport', () => {
 
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -147,7 +147,7 @@ describe('projectImport', () => {
 		it('should clear compilation errors when loading a project', async () => {
 			vi.useFakeTimers();
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -346,7 +346,7 @@ describe('projectImport', () => {
 			};
 
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -371,7 +371,7 @@ describe('projectImport', () => {
 			};
 
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
