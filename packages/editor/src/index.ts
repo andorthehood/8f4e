@@ -15,7 +15,6 @@ export type {
 	Project,
 	Options,
 	State,
-	EditorSettings,
 	CompilationResult,
 	CodeBlockGraphicData,
 	RuntimeFactory,
