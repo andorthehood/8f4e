@@ -6,9 +6,9 @@ import { compileConfigFromCombined } from './compileConfigFromCombined';
 
 import { log } from '../logger/logger';
 
-import type { EventDispatcher, State, ConfigObject } from '~/types';
+import type { EventDispatcher, State, ProjectConfig } from '~/types';
 
-import { defaultConfig } from '~/pureHelpers/state/createDefaultState';
+import { defaultProjectConfig } from '~/pureHelpers/state/createDefaultState';
 
 /**
  * Effect that compiles config blocks and applies the resulting configuration to state.
@@ -19,27 +19,27 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 	const state = store.getState();
 
 	/**
-	 * Rebuilds the config from all config blocks and applies it to state.
-	 * All config blocks are combined and compiled as a single source for full schema validation.
+	 * Rebuilds the project config from all project config blocks and applies it to state.
+	 * All project config blocks are combined and compiled as a single source for full schema validation.
 	 * Errors are mapped back to individual blocks using line ranges.
 	 */
 	async function rebuildConfig(): Promise<void> {
 		// If the compileConfig callback is not available but the project contains the compiled config.
-		if (state.initialProjectState?.compiledConfig && !state.callbacks.compileConfig) {
-			store.set('compiledConfig', state.initialProjectState.compiledConfig);
+		if (state.initialProjectState?.compiledProjectConfig && !state.callbacks.compileConfig) {
+			store.set('compiledProjectConfig', state.initialProjectState.compiledProjectConfig);
 			return;
 		}
 
 		if (!state.callbacks.compileConfig) {
-			store.set('compiledConfig', defaultConfig);
+			store.set('compiledProjectConfig', defaultProjectConfig);
 			return;
 		}
 
 		// Combine all config blocks once
 		const combined = combineConfigBlocks(state.graphicHelper.codeBlocks);
 		if (combined.source.trim().length === 0) {
-			store.set('compiledConfig', defaultConfig);
-			store.set('codeErrors.configErrors', []);
+			store.set('compiledProjectConfig', defaultProjectConfig);
+			store.set('codeErrors.projectConfigErrors', []);
 			return;
 		}
 
@@ -50,10 +50,13 @@ export default function configEffect(store: StateManager<State>, events: EventDi
 		log(state, `Config loaded with ${errors.length} error(s).`, 'Config');
 
 		// Save all errors to state (always set, even if empty)
-		store.set('codeErrors.configErrors', errors);
+		store.set('codeErrors.projectConfigErrors', errors);
 		store.set(
-			'compiledConfig',
-			deepMergeConfig(defaultConfig as unknown as Record<string, unknown>, mergedConfig) as unknown as ConfigObject
+			'compiledProjectConfig',
+			deepMergeConfig(
+				defaultProjectConfig as unknown as Record<string, unknown>,
+				mergedConfig
+			) as unknown as ProjectConfig
 		);
 	}
 

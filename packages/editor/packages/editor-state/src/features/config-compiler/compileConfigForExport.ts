@@ -2,32 +2,35 @@ import deepMergeConfig from './deepMergeConfig';
 import { combineConfigBlocks } from './combineConfigBlocks';
 import { compileConfigFromCombined } from './compileConfigFromCombined';
 
-import type { State, ConfigObject } from '~/types';
+import type { State, ProjectConfig } from '~/types';
 
-import { defaultConfig } from '~/pureHelpers/state/createDefaultState';
+import { defaultProjectConfig } from '~/pureHelpers/state/createDefaultState';
 
 /**
- * Compiles all config blocks and returns the merged config.
+ * Compiles all project config blocks and returns the merged config.
  * Used for runtime-ready project export.
- * All config blocks are combined and compiled as a single source for full schema validation.
+ * All project config blocks are combined and compiled as a single source for full schema validation.
  * @param state The current editor state
- * @returns Promise resolving to the merged config object
+ * @returns Promise resolving to the merged project config object
  */
-export async function compileConfigForExport(state: State): Promise<ConfigObject> {
+export async function compileConfigForExport(state: State): Promise<ProjectConfig> {
 	// If no compileConfig callback, return empty object
 	const compileConfig = state.callbacks.compileConfig;
 	if (!compileConfig) {
-		return state.compiledConfig || defaultConfig;
+		return state.compiledProjectConfig || defaultProjectConfig;
 	}
 
 	// Combine all config blocks
 	const combined = combineConfigBlocks(state.graphicHelper.codeBlocks);
 	if (combined.source.trim().length === 0) {
-		return defaultConfig;
+		return defaultProjectConfig;
 	}
 
 	// Compile all config blocks as a single source for full schema validation
 	const { mergedConfig } = await compileConfigFromCombined(combined, compileConfig, state);
 
-	return deepMergeConfig(defaultConfig as unknown as Record<string, unknown>, mergedConfig) as unknown as ConfigObject;
+	return deepMergeConfig(
+		defaultProjectConfig as unknown as Record<string, unknown>,
+		mergedConfig
+	) as unknown as ProjectConfig;
 }

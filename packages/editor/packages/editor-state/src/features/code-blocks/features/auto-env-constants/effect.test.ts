@@ -15,8 +15,8 @@ describe('autoEnvConstants', () => {
 	beforeEach(() => {
 		const baseState = {
 			...createDefaultState(),
-			compiledConfig: {
-				...createDefaultState().compiledConfig,
+			compiledProjectConfig: {
+				...createDefaultState().compiledProjectConfig,
 				runtimeSettings: {
 					runtime: 'WebWorkerLogicRuntime' as const,
 					sampleRate: 48000,
@@ -126,7 +126,7 @@ describe('autoEnvConstants', () => {
 		}
 
 		// Change sample rate
-		store.set('compiledConfig.runtimeSettings', {
+		store.set('compiledProjectConfig.runtimeSettings', {
 			runtime: 'WebWorkerLogicRuntime' as const,
 			sampleRate: 44100,
 		});
