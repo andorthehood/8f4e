@@ -139,7 +139,7 @@ describe('Runtime-ready project functionality', () => {
 			expect(exportedProject.memorySnapshot).toBeUndefined();
 		});
 
-		it('should include compiledConfig in runtime-ready export', async () => {
+		it('should include compiledProjectConfig in runtime-ready export', async () => {
 			// Set up save functionality
 			projectExport(store, mockEvents);
 
@@ -157,10 +157,10 @@ describe('Runtime-ready project functionality', () => {
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
 			const [exportedJson] = mockExportProject.mock.calls[0];
 
-			// Parse the exported JSON and verify it contains compiledConfig
+			// Parse the exported JSON and verify it contains compiledProjectConfig
 			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.compiledConfig).toBeDefined();
-			expect(exportedProject.compiledConfig.memorySizeBytes).toBe(1048576);
+			expect(exportedProject.compiledProjectConfig).toBeDefined();
+			expect(exportedProject.compiledProjectConfig.memorySizeBytes).toBe(1048576);
 		});
 
 		it('should omit memory snapshot when no compiled memory is available', async () => {
@@ -202,7 +202,7 @@ describe('Runtime-ready project functionality', () => {
 			// Set up compiler functionality
 			compiler(store, mockEvents);
 
-			store.set('compiledConfig', { ...mockState.compiledConfig });
+			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -237,7 +237,7 @@ describe('Runtime-ready project functionality', () => {
 			// Set up compiler functionality
 			compiler(store, mockEvents);
 
-			store.set('compiledConfig', { ...mockState.compiledConfig });
+			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
