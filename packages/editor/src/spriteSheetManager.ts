@@ -30,5 +30,5 @@ export function createSpriteSheetManager(
 	};
 
 	store.subscribe('colorScheme', rerenderSpriteSheet);
-	store.subscribe('editorSettings.font', rerenderSpriteSheet);
+	store.subscribe('compiledEditorConfig.font', rerenderSpriteSheet);
 }

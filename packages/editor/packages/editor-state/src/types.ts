@@ -27,7 +27,6 @@ import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './
 import type { ConfigCompilationResult } from './features/config-compiler/types';
 import type { EditorConfig } from './features/editor-config/types';
 import type { ConfigBinaryAsset, ProjectConfig } from './features/project-config/types';
-import type { EditorSettings } from './features/editor-settings/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
 import type { Compiler, CompilationResult } from './features/program-compiler/types';
@@ -104,9 +103,6 @@ export type {
 
 // Re-export logger types
 export type { LogMessage, ConsoleState };
-
-// Re-export editor-settings types
-export type { EditorSettings };
 
 // Re-export binary-assets types
 export type { BinaryAsset };
@@ -264,7 +260,6 @@ export interface State {
 	midi: Midi;
 	graphicHelper: GraphicHelper;
 	callbacks: Callbacks;
-	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	colorSchemes: string[];
 	colorScheme?: ColorScheme;

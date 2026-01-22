@@ -97,7 +97,7 @@ export function combineConfigBlocksByType(
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { createMockCodeBlock } = await import('../../pureHelpers/testingUtils/testUtils');
+	const { createMockCodeBlock } = await import('../../../pureHelpers/testingUtils/testUtils');
 
 	describe('combineConfigBlocks', () => {
 		it('should combine multiple config blocks with blank line separator', () => {
