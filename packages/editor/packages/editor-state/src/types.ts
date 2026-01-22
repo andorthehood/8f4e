@@ -24,12 +24,9 @@ import type {
 	GraphicHelper,
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
-import type {
-	ConfigCompilationResult,
-	ConfigBinaryAsset,
-	ProjectConfig,
-	EditorConfig,
-} from './features/config-compiler/types';
+import type { ConfigCompilationResult } from './features/config-compiler/types';
+import type { EditorConfig } from './features/editor-config/types';
+import type { ConfigBinaryAsset, ProjectConfig } from './features/project-config/types';
 import type { EditorSettings } from './features/editor-settings/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
@@ -88,7 +85,7 @@ export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 // Re-export program-compiler types
 export type { Compiler, CompilationResult };
 
-// Re-export config-compiler types
+// Re-export config types
 export type { ConfigCompilationResult, ConfigBinaryAsset, ProjectConfig, EditorConfig };
 
 // Re-export runtime types
