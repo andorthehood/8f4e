@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
-import { combineConfigBlocks } from './combineConfigBlocks';
-import { mapErrorLineToBlock } from './mapErrorLineToBlock';
+import { combineConfigBlocks } from './utils/combineConfigBlocks';
+import { mapErrorLineToBlock } from './utils/mapErrorLineToBlock';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 

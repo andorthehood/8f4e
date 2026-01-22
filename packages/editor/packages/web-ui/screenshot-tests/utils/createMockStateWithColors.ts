@@ -107,7 +107,7 @@ export default function createMockStateWithColors(overrides: Partial<State> = {}
 
 	// Generate sprite data and populate state
 	const spriteData = generateSprite({
-		font: state.editorSettings.font || '8x16',
+		font: state.compiledEditorConfig.font || '8x16',
 		colorScheme: state.colorScheme,
 	});
 
