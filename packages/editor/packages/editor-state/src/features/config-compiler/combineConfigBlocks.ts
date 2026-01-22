@@ -38,7 +38,7 @@ function isSupportedConfigType(configType: string | null): configType is ConfigT
 /**
  * Combines all config blocks into a single source for validation.
  * Config blocks are sorted in creation order and concatenated with blank line separators.
- * Only processes config blocks with supported types (currently only 'project').
+ * Only processes config blocks with supported types.
  * Returns the combined source and line mappings for error attribution.
  * @deprecated Use combineConfigBlocksByType instead
  */
