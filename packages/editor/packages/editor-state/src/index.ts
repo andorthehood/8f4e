@@ -14,7 +14,7 @@ import compiler from './features/program-compiler/effect';
 import configEffect from './features/config-compiler/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
-import editorSettings from './features/editor-settings/effect';
+import editorConfigEffect from './features/editor-settings/effect';
 import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/pianoKeyboard/interaction';
 import projectExport from './features/project-export/effect';
@@ -56,7 +56,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	const state = store.getState();
 
-	editorSettings(store, events, state);
+	editorConfigEffect(store, events);
 
 	runtime(store, events);
 	projectImport(store, events);
@@ -102,6 +102,7 @@ export type {
 	ConfigCompilationResult,
 	ProjectConfig,
 	EditorConfig,
+	EditorConfigBlock,
 	CodeBlock,
 	ProjectViewport,
 	GridCoordinates,
