@@ -146,7 +146,6 @@ export interface Slider {
  */
 export interface CodeBlockGraphicData {
 	width: number;
-	minGridWidth: number;
 	height: number;
 	code: string[];
 	lineNumberColumnWidth: number;
