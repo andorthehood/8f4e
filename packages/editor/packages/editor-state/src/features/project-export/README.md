@@ -38,13 +38,13 @@ Serializes from:
 - `state.graphicHelper.viewport` - Viewport position and grid settings
 - `state.binaryAssets` - Binary asset references
 - `state.compiler.compiledModules` - Compiled WASM bytecode
-- `state.compiledConfig` - Compiled configuration object
+- `state.compiledProjectConfig` - Compiled configuration object
 
 ## Integration Points
 
 - **Edit History**: Uses basic serialization for undo/redo snapshots
 - **Project Import**: Exported projects are loaded through project import feature
-- **Config Compiler**: Includes compiled config in runtime-ready exports
+- **Project Config**: Includes compiled project config in runtime-ready exports
 - **Program Compiler**: Includes compiled modules in runtime-ready exports
 
 ## Project Schema
@@ -59,7 +59,7 @@ The project structure is defined by the serialization functions:
   },
   binaryAssets: Array<BinaryAsset>,
   compiledModules?: Array<Module>,  // Optional in basic mode
-  compiledConfig?: Config,          // Runtime-ready only
+  compiledProjectConfig?: Config,   // Runtime-ready only
   // postProcessEffects are derived, not persisted
 }
 ```
