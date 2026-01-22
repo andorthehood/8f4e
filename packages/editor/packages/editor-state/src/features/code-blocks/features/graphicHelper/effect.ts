@@ -200,7 +200,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	function updateErrorMessages() {
-		const codeErrors = [...state.codeErrors.compilationErrors, ...state.codeErrors.projectConfigErrors];
+		const codeErrors = [
+			...state.codeErrors.compilationErrors,
+			...state.codeErrors.projectConfigErrors,
+			...state.codeErrors.editorConfigErrors,
+		];
 		state.graphicHelper.codeBlocks.forEach(codeBlock => {
 			codeBlock.extras.errorMessages = [];
 			codeErrors.forEach(codeError => {
