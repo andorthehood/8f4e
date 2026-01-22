@@ -34,6 +34,7 @@ function getDirectionFromArrowKey(key: string): Direction | null {
  * - `deleteBackward` – when Backspace is pressed.
  * - `insertNewLine` – when Enter is pressed.
  * - `insertText` – when a single printable character key is pressed without modifier keys; payload includes text.
+ * - `togglePositionOffsetters` – when F10 is pressed.
  *
  * @param events - Dispatcher used to emit editor actions in response to keyboard input.
  * @returns A cleanup function that removes the keydown event listener from window.
@@ -41,6 +42,13 @@ function getDirectionFromArrowKey(key: string): Direction | null {
 export default function keyboardEvents(events: EventDispatcher): () => void {
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
+
+		// Handle F10 for toggling position offsetters
+		if (key === 'F10') {
+			event.preventDefault();
+			events.dispatch('togglePositionOffsetters');
+			return;
+		}
 
 		// Platform-specific modifier key (metaKey on macOS, ctrlKey on Windows/Linux)
 		const modifierKey = metaKey || ctrlKey;
