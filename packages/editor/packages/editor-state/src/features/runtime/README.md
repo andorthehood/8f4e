@@ -7,7 +7,7 @@ Manages the lifecycle of runtime instances that execute compiled 8f4e programs. 
 ## Key Behaviors
 
 - **Runtime Registry**: Looks up runtime factories from `state.runtimeRegistry` at project root
-- **Runtime Selection**: Determines which runtime to use from `compiledConfig.selectedRuntime`
+- **Runtime Selection**: Determines which runtime to use from `compiledProjectConfig.selectedRuntime`
 - **Lifecycle Management**: Creates and destroys runtime instances as needed
 - **Runtime Switching**: Recreates runtime when configuration changes (e.g., switching from audio to MIDI runtime)
 - **Fallback Handling**: Falls back to default runtime ID if unknown runtime is requested
@@ -48,8 +48,8 @@ Each entry contains a `factory` function that creates and returns a destroyer fu
 
 - `state.runtimeRegistry` - Registry of available runtime factories
 - `state.defaultRuntimeId` - Fallback runtime identifier
-- `state.compiledConfig.selectedRuntime` - Index of selected runtime
-- `state.compiledConfig.runtimeSettings` - Array of runtime configurations
+- `state.compiledProjectConfig.selectedRuntime` - Index of selected runtime
+- `state.compiledProjectConfig.runtimeSettings` - Array of runtime configurations
 
 ## Integration Points
 
@@ -78,7 +78,7 @@ Runtime lifecycle events are logged:
 ## References
 
 - Runtime registry is defined at project root initialization
-- Runtime settings schema: See config compiler schema
+- Runtime settings schema: See project config schema
 
 ## Notes & Limitations
 

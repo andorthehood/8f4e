@@ -25,7 +25,7 @@ import type {
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
 import type { ConfigCompilationResult } from './features/config-compiler/types';
-import type { EditorConfig } from './features/editor-config/types';
+import type { EditorConfig, EditorConfigBlock } from './features/editor-config/types';
 import type { ConfigBinaryAsset, ProjectConfig } from './features/project-config/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
@@ -85,7 +85,7 @@ export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 export type { Compiler, CompilationResult };
 
 // Re-export config types
-export type { ConfigCompilationResult, ConfigBinaryAsset, ProjectConfig, EditorConfig };
+export type { ConfigCompilationResult, ConfigBinaryAsset, ProjectConfig, EditorConfig, EditorConfigBlock };
 
 // Re-export runtime types
 export type {
@@ -115,19 +115,6 @@ export type { Project, ExampleModule, ModuleMetadata, ProjectMetadata };
 
 // Re-export the EMPTY_DEFAULT_PROJECT constant
 export { EMPTY_DEFAULT_PROJECT } from './features/project-import/types';
-
-/**
- * Raw editor config block for persistence.
- * Stores the code as an array of strings to preserve comments.
- */
-export interface EditorConfigBlock {
-	code: string[];
-	disabled?: boolean;
-	gridCoordinates?: {
-		x: number;
-		y: number;
-	};
-}
 
 // Feature Flags types (top-level public API)
 export interface FeatureFlags {
