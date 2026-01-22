@@ -2,7 +2,7 @@ import { Font } from '@8f4e/sprite-generator';
 
 import { defaultFeatureFlags } from './featureFlags';
 
-import { ProjectConfig } from '~/types';
+import { ProjectConfig, EditorConfig } from '~/types';
 
 export const defaultProjectConfig: ProjectConfig = {
 	runtimeSettings: {
@@ -12,6 +12,11 @@ export const defaultProjectConfig: ProjectConfig = {
 	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
 	binaryAssets: [],
+};
+
+export const defaultEditorConfig: EditorConfig = {
+	font: '8x16',
+	colorScheme: 'hackerman',
 };
 
 export default function createDefaultState() {
@@ -58,12 +63,14 @@ export default function createDefaultState() {
 		codeErrors: {
 			compilationErrors: [],
 			projectConfigErrors: [],
+			editorConfigErrors: [],
 		},
 		console: {
 			logs: [],
 			maxLogs: 100,
 		},
 		compiledProjectConfig: defaultProjectConfig,
+		compiledEditorConfig: defaultEditorConfig,
 		runtime: {
 			stats: {
 				timeToExecuteLoopMs: 0,

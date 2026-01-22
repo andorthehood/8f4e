@@ -273,6 +273,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		codeErrors: {
 			compilationErrors: [],
 			projectConfigErrors: [],
+			editorConfigErrors: [],
 		},
 		console: {
 			logs: [],
@@ -294,6 +295,10 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			memorySizeBytes: 1048576,
 			disableAutoCompilation: false,
 			binaryAssets: [],
+		},
+		compiledEditorConfig: {
+			font: '8x16',
+			colorScheme: 'hackerman',
 		},
 		dialog: {
 			show: false,
