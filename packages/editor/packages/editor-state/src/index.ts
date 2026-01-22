@@ -101,6 +101,7 @@ export type {
 	CompilationResult,
 	ConfigCompilationResult,
 	ProjectConfig,
+	EditorConfig,
 	CodeBlock,
 	ProjectViewport,
 	GridCoordinates,
