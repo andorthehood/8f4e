@@ -14,7 +14,8 @@ export interface BlockLineMapping {
 /**
  * List of supported config types.
  */
-const SUPPORTED_CONFIG_TYPES = ['project'] as const;
+const SUPPORTED_CONFIG_TYPES = ['project', 'editor'] as const;
+export type ConfigType = (typeof SUPPORTED_CONFIG_TYPES)[number];
 
 /**
  * Result of combining all config blocks into a single source.
@@ -27,7 +28,7 @@ export interface CombinedConfigSource {
 /**
  * Checks if config type is supported.
  */
-function isSupportedConfigType(configType: string | null): boolean {
+function isSupportedConfigType(configType: string | null): configType is ConfigType {
 	if (!configType) {
 		return false;
 	}
@@ -37,10 +38,23 @@ function isSupportedConfigType(configType: string | null): boolean {
 /**
  * Combines all config blocks into a single source for validation.
  * Config blocks are sorted in creation order and concatenated with blank line separators.
- * Only processes config blocks with supported types (currently only 'project').
+ * Only processes config blocks with supported types.
  * Returns the combined source and line mappings for error attribution.
+ * @deprecated Use combineConfigBlocksByType instead
  */
 export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CombinedConfigSource {
+	return combineConfigBlocksByType(codeBlocks, 'project');
+}
+
+/**
+ * Combines all config blocks of a specific type into a single source for validation.
+ * Config blocks are sorted in creation order and concatenated with blank line separators.
+ * Returns the combined source and line mappings for error attribution.
+ */
+export function combineConfigBlocksByType(
+	codeBlocks: CodeBlockGraphicData[],
+	targetType: ConfigType
+): CombinedConfigSource {
 	const configBlocks = collectConfigBlocks(codeBlocks);
 
 	if (configBlocks.length === 0) {
@@ -52,8 +66,8 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 	let currentLine = 1;
 
 	for (const { block, source, configType } of configBlocks) {
-		// Skip blocks with unsupported types (only process 'project' type)
-		if (!isSupportedConfigType(configType)) {
+		// Skip blocks with unsupported types or blocks that don't match targetType
+		if (!isSupportedConfigType(configType) || configType !== targetType) {
 			continue;
 		}
 
@@ -83,7 +97,7 @@ export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): Combine
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
-	const { createMockCodeBlock } = await import('../../pureHelpers/testingUtils/testUtils');
+	const { createMockCodeBlock } = await import('../../../pureHelpers/testingUtils/testUtils');
 
 	describe('combineConfigBlocks', () => {
 		it('should combine multiple config blocks with blank line separator', () => {

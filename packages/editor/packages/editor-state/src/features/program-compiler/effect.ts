@@ -42,7 +42,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 		try {
 			const compilerOptions = {
-				memorySizeBytes: state.compiledConfig?.memorySizeBytes || 1048576, // 1MB default
+				memorySizeBytes: state.compiledProjectConfig?.memorySizeBytes || 1048576, // 1MB default
 				startingMemoryWordAddress: 0,
 			};
 
@@ -95,7 +95,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 
 		if (
 			state.initialProjectState?.memorySnapshot &&
-			(state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode)
+			(state.compiledProjectConfig.disableAutoCompilation || !state.callbacks.compileCode)
 		) {
 			try {
 				// state.compiler.allocatedMemorySize = state.compiler.memoryBuffer.byteLength;
@@ -113,7 +113,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		if (
 			state.initialProjectState?.compiledWasm &&
 			state.initialProjectState.compiledModules &&
-			(state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode)
+			(state.compiledProjectConfig.disableAutoCompilation || !state.callbacks.compileCode)
 		) {
 			try {
 				state.compiler.compiledModules = state.initialProjectState.compiledModules;
@@ -128,7 +128,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 		}
 
 		// Check if compilation is disabled by config
-		if (state.compiledConfig.disableAutoCompilation || !state.callbacks.compileCode) {
+		if (state.compiledProjectConfig.disableAutoCompilation || !state.callbacks.compileCode) {
 			log(state, 'Compilation skipped: disableAutoCompilation flag is set', 'Compiler');
 			return;
 		}
@@ -137,7 +137,7 @@ export default async function compiler(store: StateManager<State>, events: Event
 	}
 
 	events.on('compileCode', onForceCompile);
-	store.subscribe('compiledConfig', scheduleRecompile);
+	store.subscribe('compiledProjectConfig', scheduleRecompile);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (state.graphicHelper.selectedCodeBlock?.disabled) {
 			return;

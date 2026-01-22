@@ -5,7 +5,7 @@
 import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlock } from '../code-blocks/types';
-import type { ConfigObject } from '../config-compiler/types';
+import type { ProjectConfig } from '../project-config/types';
 import type { ProjectViewport } from '../viewport/types';
 
 /**
@@ -20,7 +20,7 @@ export interface Project {
 	compiledModules?: CompiledModuleLookup;
 	memorySnapshot?: string;
 	/** Compiled configuration from config blocks for runtime-only execution */
-	compiledConfig?: ConfigObject;
+	compiledProjectConfig?: ProjectConfig;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects?: PostProcessEffect[];
 }

@@ -11,10 +11,10 @@ import codeBlockDragger from './features/code-blocks/features/codeBlockDragger/e
 import codeBlockNavigation from './features/code-blocks/features/codeBlockNavigation/effect';
 import demoModeNavigation from './features/demo-mode/demoModeNavigation';
 import compiler from './features/program-compiler/effect';
-import configEffect from './features/config-compiler/effect';
+import projectConfigEffect from './features/project-config/effect';
 import contextMenu from './features/menu/effect';
 import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
-import editorSettings from './features/editor-settings/effect';
+import editorConfigEffect from './features/editor-config/effect';
 import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/pianoKeyboard/interaction';
 import projectExport from './features/project-export/effect';
@@ -46,8 +46,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
 		defaultRuntimeId: options.defaultRuntimeId,
-		compiledConfig: {
-			...createDefaultState().compiledConfig,
+		compiledProjectConfig: {
+			...createDefaultState().compiledProjectConfig,
 			runtimeSettings: registryEntry.defaults as unknown as Runtimes,
 		},
 	};
@@ -56,7 +56,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	const state = store.getState();
 
-	editorSettings(store, events, state);
+	editorConfigEffect(store, events);
 
 	runtime(store, events);
 	projectImport(store, events);
@@ -73,7 +73,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
-	configEffect(store, events);
+	projectConfigEffect(store, events);
 	compiler(store, events);
 	graphicHelper(store, events);
 	codeEditing(store, events);
@@ -97,10 +97,11 @@ export type {
 	CodeBlockType,
 	Project,
 	Options,
-	EditorSettings,
 	CompilationResult,
 	ConfigCompilationResult,
-	ConfigObject,
+	ProjectConfig,
+	EditorConfig,
+	EditorConfigBlock,
 	CodeBlock,
 	ProjectViewport,
 	GridCoordinates,

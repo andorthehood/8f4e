@@ -3,7 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 
 import projectImport from '../effect';
 import compiler from '../../program-compiler/effect';
-import configEffect from '../../config-compiler/effect';
+import projectConfigEffect from '../../project-config/effect';
 
 import type { State, Project } from '~/types';
 
@@ -25,7 +25,7 @@ describe('projectImport', () => {
 	describe('Event wiring', () => {
 		it('should register importProject event handler', () => {
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const importProjectCall = onCalls.find(call => call[0] === 'importProject');
@@ -34,7 +34,7 @@ describe('projectImport', () => {
 
 		it('should register loadProject event handler', () => {
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -43,7 +43,7 @@ describe('projectImport', () => {
 
 		it('should register loadProjectBySlug event handler', () => {
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
@@ -99,7 +99,7 @@ describe('projectImport', () => {
 		it('should clear compiled config when loading project without config blocks', async () => {
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -115,16 +115,16 @@ describe('projectImport', () => {
 			expect(compileConfigCall).toBeDefined();
 			await compileConfigCall![1]();
 
-			const expectedDefaultConfig = createMockState().compiledConfig;
-			expect(mockState.compiledConfig).toEqual(expectedDefaultConfig);
+			const expectedDefaultConfig = createMockState().compiledProjectConfig;
+			expect(mockState.compiledProjectConfig).toEqual(expectedDefaultConfig);
 		});
 
 		it('should reset compiled config when loading new project without config blocks', async () => {
-			mockState.compiledConfig = { ...mockState.compiledConfig, memorySizeBytes: 500 * 65536 };
+			mockState.compiledProjectConfig = { ...mockState.compiledProjectConfig, memorySizeBytes: 500 * 65536 };
 
 			projectImport(store, mockEvents);
 			compiler(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -140,14 +140,14 @@ describe('projectImport', () => {
 			expect(compileConfigCall).toBeDefined();
 			await compileConfigCall![1]();
 
-			const expectedDefaultConfig = createMockState().compiledConfig;
-			expect(mockState.compiledConfig).toEqual(expectedDefaultConfig);
+			const expectedDefaultConfig = createMockState().compiledProjectConfig;
+			expect(mockState.compiledProjectConfig).toEqual(expectedDefaultConfig);
 		});
 
 		it('should clear compilation errors when loading a project', async () => {
 			vi.useFakeTimers();
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 			compiler(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -159,7 +159,7 @@ describe('projectImport', () => {
 			mockState.compiler.isCompiling = true;
 
 			loadProjectCallback({ project: EMPTY_DEFAULT_PROJECT });
-			store.set('compiledConfig', { ...mockState.compiledConfig });
+			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -198,7 +198,7 @@ describe('projectImport', () => {
 			await Promise.resolve();
 
 			loadProjectCallback({ project: runtimeReadyProject });
-			store.set('compiledConfig', { ...mockState.compiledConfig });
+			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -227,7 +227,7 @@ describe('projectImport', () => {
 			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
 			loadProjectCallback({ project: invalidProject });
-			store.set('compiledConfig', { ...mockState.compiledConfig });
+			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -333,10 +333,10 @@ describe('projectImport', () => {
 	});
 
 	describe('Runtime-ready project loading', () => {
-		it('should store compiledConfig when loading a runtime-ready project', async () => {
+		it('should store compiledProjectConfig when loading a runtime-ready project', async () => {
 			const runtimeReadyProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				compiledConfig: {
+				compiledProjectConfig: {
 					memorySizeBytes: 2097152,
 					disableAutoCompilation: true,
 					binaryAssets: [],
@@ -346,7 +346,7 @@ describe('projectImport', () => {
 			};
 
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -358,20 +358,20 @@ describe('projectImport', () => {
 			expect(compileConfigCall).toBeDefined();
 			await compileConfigCall![1]();
 
-			expect(mockState.compiledConfig).toEqual({
+			expect(mockState.compiledProjectConfig).toEqual({
 				memorySizeBytes: 2097152,
 				disableAutoCompilation: true,
 				binaryAssets: [],
 			});
 		});
 
-		it('should not set compiledConfig when not present in project', async () => {
+		it('should not set compiledProjectConfig when not present in project', async () => {
 			const regularProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
 			};
 
 			projectImport(store, mockEvents);
-			configEffect(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -383,8 +383,8 @@ describe('projectImport', () => {
 			expect(compileConfigCall).toBeDefined();
 			await compileConfigCall![1]();
 
-			const expectedDefaultConfig = createMockState().compiledConfig;
-			expect(mockState.compiledConfig).toEqual(expectedDefaultConfig);
+			const expectedDefaultConfig = createMockState().compiledProjectConfig;
+			expect(mockState.compiledProjectConfig).toEqual(expectedDefaultConfig);
 		});
 	});
 });

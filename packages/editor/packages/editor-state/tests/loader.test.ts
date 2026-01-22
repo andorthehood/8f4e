@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
 import compiler from '../src/features/program-compiler/effect';
-import configEffect from '../src/features/config-compiler/effect';
+import projectConfigEffect from '../src/features/project-config/effect';
 import projectImport from '../src/features/project-import/effect';
 import { createMockState } from '../src/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
@@ -24,7 +24,7 @@ describe('Loader - Project-specific memory configuration', () => {
 	it('should clear compiled config when loading project without config blocks', async () => {
 		projectImport(store, mockEvents);
 		compiler(store, mockEvents);
-		configEffect(store, mockEvents);
+		projectConfigEffect(store, mockEvents);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -45,16 +45,16 @@ describe('Loader - Project-specific memory configuration', () => {
 		expect(compileConfigCall).toBeDefined();
 		await compileConfigCall![1]();
 
-		const expectedDefaultConfig = createMockState().compiledConfig;
-		expect(mockState.compiledConfig).toEqual(expectedDefaultConfig);
+		const expectedDefaultConfig = createMockState().compiledProjectConfig;
+		expect(mockState.compiledProjectConfig).toEqual(expectedDefaultConfig);
 	});
 
 	it('should reset compiled config when loading new project without config blocks', async () => {
-		mockState.compiledConfig = { memorySizeBytes: 500 * 65536 };
+		mockState.compiledProjectConfig = { memorySizeBytes: 500 * 65536 };
 
 		projectImport(store, mockEvents);
 		compiler(store, mockEvents);
-		configEffect(store, mockEvents);
+		projectConfigEffect(store, mockEvents);
 
 		// Get the loadProject callback
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -75,7 +75,7 @@ describe('Loader - Project-specific memory configuration', () => {
 		expect(compileConfigCall).toBeDefined();
 		await compileConfigCall![1]();
 
-		const expectedDefaultConfig = createMockState().compiledConfig;
-		expect(mockState.compiledConfig).toEqual(expectedDefaultConfig);
+		const expectedDefaultConfig = createMockState().compiledProjectConfig;
+		expect(mockState.compiledProjectConfig).toEqual(expectedDefaultConfig);
 	});
 });
