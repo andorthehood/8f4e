@@ -24,6 +24,7 @@ export type {
 	FeatureFlags,
 	FeatureFlagsConfig,
 	JSONSchemaLike,
+	EditorConfigBlock,
 } from '@8f4e/editor-state';
 export type { EventDispatcher } from './events';
 export type { MemoryRef } from './memoryViewManager';
@@ -85,7 +86,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = generateSprite({
-		font: state.editorSettings.font || '8x16',
+		font: state.compiledEditorConfig.font || '8x16',
 		colorScheme: state.colorScheme,
 	});
 

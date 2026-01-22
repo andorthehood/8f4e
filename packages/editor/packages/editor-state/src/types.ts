@@ -123,6 +123,15 @@ export type { Project, ExampleModule, ModuleMetadata, ProjectMetadata };
 // Re-export the EMPTY_DEFAULT_PROJECT constant
 export { EMPTY_DEFAULT_PROJECT } from './features/project-import/types';
 
+/**
+ * Raw editor config block for persistence.
+ * Stores the code as an array of strings to preserve comments.
+ */
+export interface EditorConfigBlock {
+	code: string[];
+	disabled?: boolean;
+}
+
 // Feature Flags types (top-level public API)
 export interface FeatureFlags {
 	/** Enable/disable right-click context menu functionality */
@@ -176,8 +185,8 @@ export interface Callbacks {
 	// Session storage callbacks
 	loadSession: () => Promise<Project | null>;
 	saveSession?: (project: Project) => Promise<void>;
-	loadEditorSettings?: () => Promise<EditorSettings | null>;
-	saveEditorSettings?: (settings: EditorSettings) => Promise<void>;
+	loadEditorConfigBlocks?: () => Promise<EditorConfigBlock[] | null>;
+	saveEditorConfigBlocks?: (blocks: EditorConfigBlock[]) => Promise<void>;
 
 	// File handling callbacks
 	importProject?: () => Promise<Project>;

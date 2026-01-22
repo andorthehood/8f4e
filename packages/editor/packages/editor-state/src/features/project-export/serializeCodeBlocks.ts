@@ -1,3 +1,5 @@
+import { extractConfigType } from '../config-compiler/extractConfigBody';
+
 import type { CodeBlock, CodeBlockGraphicData } from '~/types';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
@@ -5,6 +7,7 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 /**
  * Converts graphic data code blocks to simplified project structure for serialization.
  * Uses gridX/gridY from code blocks for persistent storage.
+ * Excludes editor config blocks from the exported project.
  * @param codeBlocks Array of code blocks with full graphic data
  * @returns Array of simplified code blocks suitable for file format with gridCoordinates
  */
@@ -12,6 +15,16 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 	const codeBlocksCopy = [...codeBlocks];
 
 	return codeBlocksCopy
+		.filter(codeBlock => {
+			// Exclude editor config blocks from project export
+			if (codeBlock.blockType === 'config') {
+				const configType = extractConfigType(codeBlock.code);
+				if (configType === 'editor') {
+					return false;
+				}
+			}
+			return true;
+		})
 		.sort((codeBlockA, codeBlockB) => {
 			if (codeBlockA.id > codeBlockB.id) {
 				return 1;
