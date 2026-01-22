@@ -97,7 +97,6 @@ export type {
 	CodeBlockType,
 	Project,
 	Options,
-	EditorSettings,
 	CompilationResult,
 	ConfigCompilationResult,
 	ProjectConfig,

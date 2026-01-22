@@ -2,8 +2,8 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { getEditorConfigSchema } from './schema';
 
-import deepMergeConfig from '../config-compiler/deepMergeConfig';
-import { extractConfigType } from '../config-compiler/extractConfigBody';
+import deepMergeConfig from '../config-compiler/utils/deepMergeConfig';
+import { extractConfigType } from '../config-compiler/utils/extractConfigBody';
 import { compileConfigBlocksByType } from '../config-compiler/utils/compileConfigBlocksByType';
 import { log, warn } from '../logger/logger';
 import { createCodeBlockGraphicData } from '../code-blocks/utils/createCodeBlockGraphicData';

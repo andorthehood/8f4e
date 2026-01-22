@@ -1,4 +1,4 @@
-import { CONFIG_WITH_TYPE_REGEX } from '../../../config-compiler/extractConfigBody';
+import { CONFIG_WITH_TYPE_REGEX } from '../../../config-compiler/utils/extractConfigBody';
 
 import type { CodeBlockType } from '~/types';
 

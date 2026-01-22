@@ -1,6 +1,6 @@
-import deepMergeConfig from '../config-compiler/deepMergeConfig';
-import { combineConfigBlocks } from '../config-compiler/combineConfigBlocks';
-import { compileConfigFromCombined } from '../config-compiler/compileConfigFromCombined';
+import deepMergeConfig from '../config-compiler/utils/deepMergeConfig';
+import { combineConfigBlocks } from '../config-compiler/utils/combineConfigBlocks';
+import { compileConfigFromCombined } from '../config-compiler/utils/compileConfigFromCombined';
 
 import type { State, ProjectConfig } from '~/types';
 

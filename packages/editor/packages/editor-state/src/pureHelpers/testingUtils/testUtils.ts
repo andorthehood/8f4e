@@ -250,10 +250,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			outputs: [],
 			inputs: [],
 		},
-		editorSettings: {
-			colorScheme: 'default',
-			font: '8x16',
-		},
 		featureFlags: {
 			contextMenu: true,
 			infoOverlay: true,

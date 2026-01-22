@@ -10,7 +10,7 @@ import type { State } from '@8f4e/editor-state';
  */
 export default function createMockSpriteData(state: State): SpriteData {
 	return generateSprite({
-		font: state.editorSettings.font || '8x16',
+		font: state.compiledEditorConfig.font || '8x16',
 		colorScheme: state.colorScheme,
 	});
 }

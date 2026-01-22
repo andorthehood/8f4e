@@ -86,10 +86,6 @@ describe('Runtime-ready project functionality', () => {
 				compileCode: vi.fn(),
 				loadSession: vi.fn(),
 			},
-			editorSettings: {
-				colorScheme: 'default',
-				font: '6x10',
-			},
 			featureFlags: {
 				contextMenu: true,
 				infoOverlay: true,
