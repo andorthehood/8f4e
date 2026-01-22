@@ -4,7 +4,7 @@ import createStateManager from '@8f4e/state-manager';
 import compiler from './effect';
 
 import projectConfigEffect from '../project-config/effect';
-import { compileConfigForExport } from '../config-compiler/compileConfigForExport';
+import { compileConfigForExport } from '../project-config/compileConfigForExport';
 
 import type { State } from '~/types';
 
