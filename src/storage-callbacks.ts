@@ -1,12 +1,12 @@
 import { getProject, projectManifest } from './examples/registry';
 import { getCodeBuffer } from './compiler-callback';
 
-import type { Project, EditorSettings } from '@8f4e/editor';
+import type { Project, EditorConfigBlock } from '@8f4e/editor';
 
 // Storage key constants
 const STORAGE_KEYS = {
 	PROJECT: 'project_editor',
-	EDITOR_SETTINGS: 'editorSettings_editor',
+	EDITOR_CONFIG_BLOCKS: 'editorConfigBlocks_editor',
 } as const;
 
 const kebabCaseToCamelCase = (str: string) =>
@@ -50,21 +50,21 @@ export async function saveSession(project: Project): Promise<void> {
 	}
 }
 
-export async function loadEditorSettings(): Promise<EditorSettings | null> {
+export async function loadEditorConfigBlocks(): Promise<EditorConfigBlock[] | null> {
 	try {
-		const stored = localStorage.getItem(STORAGE_KEYS.EDITOR_SETTINGS);
+		const stored = localStorage.getItem(STORAGE_KEYS.EDITOR_CONFIG_BLOCKS);
 		return stored ? JSON.parse(stored) : null;
 	} catch (error) {
-		console.error('Failed to load editor settings from localStorage:', error);
+		console.error('Failed to load editor config blocks from localStorage:', error);
 		return null;
 	}
 }
 
-export async function saveEditorSettings(settings: EditorSettings): Promise<void> {
+export async function saveEditorConfigBlocks(blocks: EditorConfigBlock[]): Promise<void> {
 	try {
-		localStorage.setItem(STORAGE_KEYS.EDITOR_SETTINGS, JSON.stringify(settings));
+		localStorage.setItem(STORAGE_KEYS.EDITOR_CONFIG_BLOCKS, JSON.stringify(blocks));
 	} catch (error) {
-		console.error('Failed to save editor settings to localStorage:', error);
+		console.error('Failed to save editor config blocks to localStorage:', error);
 		throw error;
 	}
 }
