@@ -30,12 +30,19 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 	engine.startGroup(offsetX, offsetY);
 
 	for (const codeBlock of state.graphicHelper.codeBlocks) {
-		if (codeBlock.positionOffsetterXWordAddress) {
-			codeBlock.offsetX = memoryViews.int32[codeBlock.positionOffsetterXWordAddress];
-		}
+		// Read position offsets from memory only if the feature is enabled
+		if (state.featureFlags.positionOffsetters) {
+			if (codeBlock.positionOffsetterXWordAddress) {
+				codeBlock.offsetX = memoryViews.int32[codeBlock.positionOffsetterXWordAddress];
+			}
 
-		if (codeBlock.positionOffsetterYWordAddress) {
-			codeBlock.offsetY = memoryViews.int32[codeBlock.positionOffsetterYWordAddress];
+			if (codeBlock.positionOffsetterYWordAddress) {
+				codeBlock.offsetY = memoryViews.int32[codeBlock.positionOffsetterYWordAddress];
+			}
+		} else {
+			// When disabled, force offsets to 0
+			codeBlock.offsetX = 0;
+			codeBlock.offsetY = 0;
 		}
 
 		if (

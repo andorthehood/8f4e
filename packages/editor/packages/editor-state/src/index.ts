@@ -26,6 +26,7 @@ import shaderEffectsDeriver from './features/shader-effects/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
+import featureFlagsEffect from './features/feature-flags/effect';
 
 import type { Options, State, EventDispatcher, Runtimes } from './types';
 
@@ -81,6 +82,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	binaryAsset(store, events);
 	historyTracking(store, events);
 	dialog(store, events);
+	featureFlagsEffect(store, events);
 	events.dispatch('init');
 
 	events.on('consoleLog', event => {
