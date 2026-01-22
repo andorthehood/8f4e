@@ -1,5 +1,6 @@
+import type { StateManager } from '@8f4e/state-manager';
 import type { EventDispatcher } from '.';
-import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent, Direction } from '@8f4e/editor-state';
+import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent, Direction, State } from '@8f4e/editor-state';
 
 /**
  * Converts keyboard arrow key names to abstract Direction values used for navigation.
@@ -34,19 +35,22 @@ function getDirectionFromArrowKey(key: string): Direction | null {
  * - `deleteBackward` – when Backspace is pressed.
  * - `insertNewLine` – when Enter is pressed.
  * - `insertText` – when a single printable character key is pressed without modifier keys; payload includes text.
- * - `togglePositionOffsetters` – when F10 is pressed.
+ *
+ * F10 toggles position offsetters directly via store mutation.
  *
  * @param events - Dispatcher used to emit editor actions in response to keyboard input.
+ * @param store - State manager for direct feature flag toggling.
  * @returns A cleanup function that removes the keydown event listener from window.
  */
-export default function keyboardEvents(events: EventDispatcher): () => void {
+export default function keyboardEvents(events: EventDispatcher, store: StateManager<State>): () => void {
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
 
 		// Handle F10 for toggling position offsetters
 		if (key === 'F10') {
 			event.preventDefault();
-			events.dispatch('togglePositionOffsetters');
+			const state = store.getState();
+			store.set('featureFlags.positionOffsetters', !state.featureFlags.positionOffsetters);
 			return;
 		}
 
