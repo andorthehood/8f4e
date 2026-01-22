@@ -23,6 +23,8 @@ import highlightSyntaxGlsl from '../../../code-editing/highlightSyntaxGlsl';
 import { moveCaret } from '../../../code-editing/moveCaret';
 import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import getCodeBlockId from '../../utils/getCodeBlockId';
+import { extractConfigType } from '../../../config-compiler/utils/extractConfigBody';
+import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -137,7 +139,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(state.graphicHelper.selectedCodeBlockForProgrammaticEdit);
 	};
 
-	const populateCodeBlocks = function () {
+	const populateCodeBlocks = async function () {
 		if (!state.initialProjectState) {
 			return;
 		}
@@ -195,6 +197,42 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				disabled: codeBlock.disabled || false,
 			} as CodeBlockGraphicData;
 		});
+
+		if (state.featureFlags.persistentStorage && state.callbacks.loadEditorConfigBlocks) {
+			try {
+				const editorConfigBlocks = await state.callbacks.loadEditorConfigBlocks();
+				if (editorConfigBlocks && editorConfigBlocks.length > 0) {
+					let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
+					for (let i = 0; i < editorConfigBlocks.length; i += 1) {
+						const rawBlock = editorConfigBlocks[i];
+						if (extractConfigType(rawBlock.code) !== 'editor') {
+							continue;
+						}
+
+						const gridX = rawBlock.gridCoordinates?.x ?? 0;
+						const gridY = rawBlock.gridCoordinates?.y ?? 0;
+						const block = createCodeBlockGraphicData({
+							id: getCodeBlockId(rawBlock.code),
+							code: rawBlock.code,
+							disabled: rawBlock.disabled || false,
+							creationIndex,
+							blockType: getBlockType(rawBlock.code),
+							minGridWidth: 32,
+							gridX,
+							gridY,
+							x: gridX * state.viewport.vGrid,
+							y: gridY * state.viewport.hGrid,
+						});
+
+						codeBlocks.push(block);
+						creationIndex += 1;
+						state.graphicHelper.nextCodeBlockCreationIndex = creationIndex;
+					}
+				}
+			} catch (err) {
+				console.warn('Failed to load editor config blocks from storage:', err);
+			}
+		}
 
 		store.set('graphicHelper.codeBlocks', codeBlocks);
 	};

@@ -53,6 +53,7 @@ export async function saveSession(project: Project): Promise<void> {
 export async function loadEditorConfigBlocks(): Promise<EditorConfigBlock[] | null> {
 	try {
 		const stored = localStorage.getItem(STORAGE_KEYS.EDITOR_CONFIG_BLOCKS);
+		console.log('[Storage] loadEditorConfigBlocks', { stored });
 		return stored ? JSON.parse(stored) : null;
 	} catch (error) {
 		console.error('Failed to load editor config blocks from localStorage:', error);
@@ -62,6 +63,7 @@ export async function loadEditorConfigBlocks(): Promise<EditorConfigBlock[] | nu
 
 export async function saveEditorConfigBlocks(blocks: EditorConfigBlock[]): Promise<void> {
 	try {
+		console.log('[Storage] saveEditorConfigBlocks', blocks);
 		localStorage.setItem(STORAGE_KEYS.EDITOR_CONFIG_BLOCKS, JSON.stringify(blocks));
 	} catch (error) {
 		console.error('Failed to save editor config blocks to localStorage:', error);
