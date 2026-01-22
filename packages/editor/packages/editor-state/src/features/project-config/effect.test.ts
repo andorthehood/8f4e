@@ -52,20 +52,31 @@ describe('projectConfigEffect - diffing behavior', () => {
 		});
 
 		// Default mock response - unchanged config
-		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { stackHeight: 100, heapSize: 1024 },
-			mergedConfig: { stackHeight: 100, heapSize: 1024 },
-			errors: [],
+		// Return the same config that's in the current state to test the no-change case
+		mockCompileConfigWithDefaults.mockImplementation(async () => ({
+			compiledConfig: mockState.compiledProjectConfig,
+			mergedConfig: mockState.compiledProjectConfig,
+			errors: mockState.codeErrors.projectConfigErrors,
 			hasSource: true,
-		});
+		}));
 
 		mockEvents = createMockEventDispatcherWithVitest();
 
 		mockStore = {
 			getState: () => mockState,
-			set: vi.fn(),
+			set: vi.fn((path: string, value: unknown) => {
+				// Update the mock state to reflect changes
+				const pathParts = path.split('.');
+				if (pathParts.length === 1) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					(mockState as any)[pathParts[0]] = value;
+				} else if (pathParts.length === 2) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					(mockState as any)[pathParts[0]][pathParts[1]] = value;
+				}
+			}),
 			subscribe: vi.fn(),
-		};
+		} as StateManager<State>;
 	});
 
 	it('should not call store.set for compiledProjectConfig when config is unchanged', async () => {

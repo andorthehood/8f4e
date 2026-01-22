@@ -32,7 +32,9 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 	})();
 
 	async function rebuildEditorConfig(): Promise<void> {
-		if (!state.callbacks.compileConfig) {
+		const currentState = store.getState();
+
+		if (!currentState.callbacks.compileConfig) {
 			store.set('compiledEditorConfig', defaultEditorConfig);
 			store.set('codeErrors.editorConfigErrors', []);
 			return;
@@ -40,10 +42,10 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 
 		const schema = getEditorConfigSchema();
 		const { compiledConfig, mergedConfig, errors, hasSource } = await compileConfigWithDefaults({
-			codeBlocks: state.graphicHelper.codeBlocks,
+			codeBlocks: currentState.graphicHelper.codeBlocks,
 			configType: 'editor',
 			schema,
-			compileConfig: state.callbacks.compileConfig,
+			compileConfig: currentState.callbacks.compileConfig,
 			defaultConfig: defaultEditorConfig,
 		});
 
@@ -54,15 +56,15 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 		}
 
 		console.log(`[Editor Config] Config loaded:`, mergedConfig);
-		log(state, `Editor config loaded with ${errors.length} error(s).`, 'Config');
+		log(currentState, `Editor config loaded with ${errors.length} error(s).`, 'Config');
 
 		// Only update error array if it has changed
-		if (!deepEqual(errors, state.codeErrors.editorConfigErrors)) {
+		if (!deepEqual(errors, currentState.codeErrors.editorConfigErrors)) {
 			store.set('codeErrors.editorConfigErrors', errors);
 		}
 
 		// Only update config if it has changed
-		if (!deepEqual(compiledConfig, state.compiledEditorConfig)) {
+		if (!deepEqual(compiledConfig, currentState.compiledEditorConfig)) {
 			store.set('compiledEditorConfig', compiledConfig as EditorConfig);
 		}
 	}
