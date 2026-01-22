@@ -81,7 +81,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	});
 	const state = store.getState();
 	pointerEvents(canvas, events, state);
-	const cleanupKeyboard = keyboardEvents(events);
+	const cleanupKeyboard = keyboardEvents(events, store);
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = generateSprite({
