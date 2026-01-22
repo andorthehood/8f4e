@@ -5,7 +5,7 @@
 import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlock } from '../code-blocks/types';
-import type { ProjectConfig } from '../config-compiler/types';
+import type { ProjectConfig } from '../project-config/types';
 import type { ProjectViewport } from '../viewport/types';
 
 /**

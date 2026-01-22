@@ -1,6 +1,6 @@
 import serializeToProject from './serializeToProject';
 
-import { compileConfigForExport } from '../config-compiler/compileConfigForExport';
+import { compileConfigForExport } from '../project-config/compileConfigForExport';
 
 import type { Project, State } from '~/types';
 
