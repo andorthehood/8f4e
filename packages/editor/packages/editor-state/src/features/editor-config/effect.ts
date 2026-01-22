@@ -6,21 +6,20 @@ import deepMergeConfig from '../config-compiler/utils/deepMergeConfig';
 import { extractConfigType } from '../config-compiler/utils/extractConfigBody';
 import { compileConfigBlocksByType } from '../config-compiler/utils/compileConfigBlocksByType';
 import { log, warn } from '../logger/logger';
-import { createCodeBlockGraphicData } from '../code-blocks/utils/createCodeBlockGraphicData';
 
 import type { State, EditorConfigBlock, EventDispatcher, EditorConfig } from '~/types';
 
 import { defaultEditorConfig } from '~/pureHelpers/state/createDefaultState';
 
 function isEditorConfigBlock(state: State): boolean {
-	if (state.graphicHelper.selectedCodeBlock?.blockType !== 'config') {
+	if (!state.graphicHelper.selectedCodeBlock) {
 		return false;
 	}
 	return extractConfigType(state.graphicHelper.selectedCodeBlock.code) === 'editor';
 }
 
 function isEditorConfigBlockForProgrammaticEdit(state: State): boolean {
-	if (state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType !== 'config') {
+	if (!state.graphicHelper.selectedCodeBlockForProgrammaticEdit) {
 		return false;
 	}
 	return extractConfigType(state.graphicHelper.selectedCodeBlockForProgrammaticEdit.code) === 'editor';
@@ -38,42 +37,6 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 				console.warn('Failed to load color schemes:', err);
 				warn(state, 'Failed to load color schemes');
 				state.colorSchemes = [];
-			}
-		}
-
-		const loadEditorConfigBlocks = state.callbacks.loadEditorConfigBlocks;
-		if (state.featureFlags.persistentStorage && loadEditorConfigBlocks) {
-			try {
-				const loadedBlocks = await loadEditorConfigBlocks();
-				if (loadedBlocks && loadedBlocks.length > 0) {
-					const maxCreationIndex = state.graphicHelper.codeBlocks.reduce(
-						(max, block) => Math.max(max, block.creationIndex),
-						-1
-					);
-
-					for (let i = 0; i < loadedBlocks.length; i += 1) {
-						const rawBlock = loadedBlocks[i];
-						const configType = extractConfigType(rawBlock.code);
-
-						if (configType === 'editor') {
-							const newBlock = createCodeBlockGraphicData({
-								id: `editor-config-${i}`,
-								code: rawBlock.code,
-								disabled: rawBlock.disabled || false,
-								creationIndex: maxCreationIndex + i + 1,
-								blockType: 'config',
-							});
-							state.graphicHelper.codeBlocks.push(newBlock);
-						}
-					}
-
-					state.graphicHelper.nextCodeBlockCreationIndex = maxCreationIndex + loadedBlocks.length + 1;
-
-					events.dispatch('compileConfig');
-				}
-			} catch (err) {
-				console.warn('Failed to load editor config blocks from storage:', err);
-				warn(state, 'Failed to load editor config blocks from storage');
 			}
 		}
 	})();
@@ -118,15 +81,14 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 		}
 
 		const editorConfigBlocks: EditorConfigBlock[] = state.graphicHelper.codeBlocks
-			.filter(block => {
-				if (block.blockType !== 'config') {
-					return false;
-				}
-				return extractConfigType(block.code) === 'editor';
-			})
+			.filter(block => extractConfigType(block.code) === 'editor')
 			.map(block => ({
 				code: block.code,
 				disabled: block.disabled,
+				gridCoordinates: {
+					x: block.gridX,
+					y: block.gridY,
+				},
 			}));
 
 		state.callbacks.saveEditorConfigBlocks(editorConfigBlocks);
@@ -145,20 +107,19 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 	});
 
 	events.on('compileConfig', rebuildEditorConfig);
-	store.subscribe('graphicHelper.codeBlocks', () => {
-		saveEditorConfigBlocks();
-		rebuildEditorConfig();
-	});
+	store.subscribe('graphicHelper.codeBlocks', rebuildEditorConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (!isEditorConfigBlock(state)) {
 			return;
 		}
+		saveEditorConfigBlocks();
 		rebuildEditorConfig();
 	});
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
 		if (!isEditorConfigBlockForProgrammaticEdit(state)) {
 			return;
 		}
+		saveEditorConfigBlocks();
 		rebuildEditorConfig();
 	});
 }
