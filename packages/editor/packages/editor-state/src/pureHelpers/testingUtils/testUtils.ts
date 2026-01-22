@@ -272,7 +272,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		binaryAssets: [],
 		codeErrors: {
 			compilationErrors: [],
-			configErrors: [],
+			projectConfigErrors: [],
 		},
 		console: {
 			logs: [],
@@ -286,7 +286,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				timerExpectedIntervalTimeMs: 0,
 			},
 		},
-		compiledConfig: {
+		compiledProjectConfig: {
 			runtimeSettings: {
 				runtime: 'WebWorkerLogicRuntime',
 				sampleRate: 50,

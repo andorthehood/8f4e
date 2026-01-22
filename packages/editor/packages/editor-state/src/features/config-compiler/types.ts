@@ -23,9 +23,9 @@ export interface ConfigBinaryAsset {
 }
 
 /**
- * Runtime configuration object compiled from config blocks.
+ * Project configuration object compiled from project config blocks.
  */
-export interface ConfigObject {
+export interface ProjectConfig {
 	memorySizeBytes: number;
 	runtimeSettings: Runtimes;
 	disableAutoCompilation: boolean;

@@ -11,7 +11,7 @@ import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils
  * For runtime-ready exports with compiled config, use serializeToRuntimeReadyProject.
  * @param state Current editor state
  * @param options Optional parameters for serialization
- * @param options.includeCompiled If true, includes compiled modules (but not compiledConfig)
+ * @param options.includeCompiled If true, includes compiled modules (but not compiledProjectConfig)
  * @returns Project object ready for serialization to JSON
  */
 export default function serializeToProject(

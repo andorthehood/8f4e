@@ -15,7 +15,7 @@ describe('Runtime System', () => {
 			const mainRuntimeFactory = vi.fn(() => mainDestroyer);
 
 			const state = createMockState({
-				compiledConfig: {
+				compiledProjectConfig: {
 					runtimeSettings: { runtime: 'AudioWorkletRuntime', sampleRate: 44100 },
 				},
 				runtimeRegistry: {
@@ -49,8 +49,8 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			store.set('compiledConfig', {
-				...state.compiledConfig,
+			store.set('compiledProjectConfig', {
+				...state.compiledProjectConfig,
 				runtimeSettings: { runtime: 'MainThreadLogicRuntime', sampleRate: 60 },
 			});
 			store.set('compiler.isCompiling', false);

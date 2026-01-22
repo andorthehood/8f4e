@@ -24,7 +24,7 @@ function generateEnvConstantsBlock(state: State): string[] {
 	lines.push('');
 
 	// Sample rate from runtime config
-	const sampleRate = state.compiledConfig.runtimeSettings?.sampleRate ?? 50;
+	const sampleRate = state.compiledProjectConfig.runtimeSettings?.sampleRate ?? 50;
 	lines.push(`const SAMPLE_RATE ${sampleRate}`);
 
 	// Audio buffer size (hardcoded for now, matching current behavior)
@@ -122,6 +122,6 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 
 	// Update env block code in graphicHelper.codeBlocks when config or binary assets change
 	// This avoids the infinite loop caused by modifying initialProjectState
-	store.subscribe('compiledConfig', updateEnvConstantsBlockInGraphicHelper);
+	store.subscribe('compiledProjectConfig', updateEnvConstantsBlockInGraphicHelper);
 	store.subscribe('binaryAssets', updateEnvConstantsBlockInGraphicHelper);
 }

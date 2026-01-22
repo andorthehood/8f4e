@@ -24,7 +24,7 @@ import type {
 	GraphicHelper,
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
-import type { ConfigCompilationResult, ConfigBinaryAsset, ConfigObject } from './features/config-compiler/types';
+import type { ConfigCompilationResult, ConfigBinaryAsset, ProjectConfig } from './features/config-compiler/types';
 import type { EditorSettings } from './features/editor-settings/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
@@ -84,7 +84,7 @@ export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 export type { Compiler, CompilationResult };
 
 // Re-export config-compiler types
-export type { ConfigCompilationResult, ConfigBinaryAsset, ConfigObject };
+export type { ConfigCompilationResult, ConfigBinaryAsset, ProjectConfig };
 
 // Re-export runtime types
 export type {
@@ -259,7 +259,7 @@ export interface State {
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
 	initialProjectState?: Project;
-	compiledConfig: ConfigObject;
+	compiledProjectConfig: ProjectConfig;
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
@@ -274,7 +274,7 @@ export interface State {
 	defaultRuntimeId: string;
 	codeErrors: {
 		compilationErrors: CodeError[];
-		configErrors: CodeError[];
+		projectConfigErrors: CodeError[];
 	};
 	dialog: {
 		show: boolean;
