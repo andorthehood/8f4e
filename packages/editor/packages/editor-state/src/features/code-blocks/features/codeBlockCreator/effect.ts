@@ -7,6 +7,7 @@ import { insertDependencies } from './insertDependencies';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import getVertexShaderId from '../../../shader-effects/getVertexShaderId';
 import getFragmentShaderId from '../../../shader-effects/getFragmentShaderId';
+import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -161,7 +162,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 
 		const codeBlock: CodeBlockGraphicData = {
 			width: 0,
-			minGridWidth: 32,
+			minGridWidth: CODE_BLOCK_MIN_GRID_WIDTH,
 			height: 0,
 			code,
 			codeColors: [],
