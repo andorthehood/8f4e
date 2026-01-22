@@ -5,6 +5,7 @@ import { getProjectConfigSchema } from './schema';
 import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
 import { isConfigBlockOfType } from '../config-compiler/utils/isConfigBlockOfType';
 import { log } from '../logger/logger';
+import deepEqual from '../config-compiler/utils/deepEqual';
 
 import type { EventDispatcher, State, ProjectConfig } from '~/types';
 
@@ -51,8 +52,15 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 		console.log(`[Project Config] Config loaded:`, mergedConfig);
 		log(state, `Project config loaded with ${errors.length} error(s).`, 'Config');
 
-		store.set('codeErrors.projectConfigErrors', errors);
-		store.set('compiledProjectConfig', compiledConfig as ProjectConfig);
+		// Only update error array if it has changed
+		if (!deepEqual(errors, state.codeErrors.projectConfigErrors)) {
+			store.set('codeErrors.projectConfigErrors', errors);
+		}
+
+		// Only update config if it has changed
+		if (!deepEqual(compiledConfig, state.compiledProjectConfig)) {
+			store.set('compiledProjectConfig', compiledConfig as ProjectConfig);
+		}
 	}
 
 	events.on('compileConfig', rebuildProjectConfig);
