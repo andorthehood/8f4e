@@ -23,23 +23,25 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 	const state = store.getState();
 
 	async function rebuildProjectConfig(): Promise<void> {
-		if (state.initialProjectState?.compiledProjectConfig && !state.callbacks.compileConfig) {
-			store.set('compiledProjectConfig', state.initialProjectState.compiledProjectConfig);
+		const currentState = store.getState();
+
+		if (currentState.initialProjectState?.compiledProjectConfig && !currentState.callbacks.compileConfig) {
+			store.set('compiledProjectConfig', currentState.initialProjectState.compiledProjectConfig);
 			return;
 		}
 
-		if (!state.callbacks.compileConfig) {
+		if (!currentState.callbacks.compileConfig) {
 			store.set('compiledProjectConfig', defaultProjectConfig);
 			store.set('codeErrors.projectConfigErrors', []);
 			return;
 		}
 
-		const schema = getProjectConfigSchema(state.runtimeRegistry);
+		const schema = getProjectConfigSchema(currentState.runtimeRegistry);
 		const { compiledConfig, mergedConfig, errors, hasSource } = await compileConfigWithDefaults({
-			codeBlocks: state.graphicHelper.codeBlocks,
+			codeBlocks: currentState.graphicHelper.codeBlocks,
 			configType: 'project',
 			schema,
-			compileConfig: state.callbacks.compileConfig,
+			compileConfig: currentState.callbacks.compileConfig,
 			defaultConfig: defaultProjectConfig,
 		});
 
@@ -50,15 +52,15 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 		}
 
 		console.log(`[Project Config] Config loaded:`, mergedConfig);
-		log(state, `Project config loaded with ${errors.length} error(s).`, 'Config');
+		log(currentState, `Project config loaded with ${errors.length} error(s).`, 'Config');
 
 		// Only update error array if it has changed
-		if (!deepEqual(errors, state.codeErrors.projectConfigErrors)) {
+		if (!deepEqual(errors, currentState.codeErrors.projectConfigErrors)) {
 			store.set('codeErrors.projectConfigErrors', errors);
 		}
 
 		// Only update config if it has changed
-		if (!deepEqual(compiledConfig, state.compiledProjectConfig)) {
+		if (!deepEqual(compiledConfig, currentState.compiledProjectConfig)) {
 			store.set('compiledProjectConfig', compiledConfig as ProjectConfig);
 		}
 	}
