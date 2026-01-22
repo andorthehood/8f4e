@@ -23,6 +23,14 @@ export interface ConfigBinaryAsset {
 }
 
 /**
+ * Editor configuration object compiled from editor config blocks.
+ */
+export interface EditorConfig {
+	font: '8x16' | '6x10';
+	colorScheme: string;
+}
+
+/**
  * Project configuration object compiled from project config blocks.
  */
 export interface ProjectConfig {
