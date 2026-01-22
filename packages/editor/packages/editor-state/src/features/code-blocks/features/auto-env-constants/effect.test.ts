@@ -3,8 +3,6 @@ import createStateManager from '@8f4e/state-manager';
 
 import autoEnvConstants from './effect';
 
-import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
-
 import type { State, Project, CodeBlockGraphicData } from '~/types';
 
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
@@ -122,7 +120,6 @@ describe('autoEnvConstants', () => {
 				offsetX: 0,
 				offsetY: 0,
 				lastUpdated: Date.now(),
-				minGridWidth: CODE_BLOCK_MIN_GRID_WIDTH,
 			};
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
 		}
@@ -194,8 +191,7 @@ describe('autoEnvConstants', () => {
 				lineNumberColumnWidth: 2,
 				offsetX: 0,
 				offsetY: 0,
-				lastUpdated: Date.now(),
-				minGridWidth: CODE_BLOCK_MIN_GRID_WIDTH,
+				minGridWidth: 32,
 			};
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
 		}
