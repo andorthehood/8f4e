@@ -16,7 +16,7 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 
 		info(state, 'Fetching binary assets...', 'BinaryAssets');
 
-		const assets = state.compiledConfig.binaryAssets || [];
+		const assets = state.compiledProjectConfig.binaryAssets || [];
 		const uniqueUrls: string[] = [];
 
 		for (const asset of assets) {
@@ -100,12 +100,12 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 		}
 	}
 
-	store.subscribe('compiledConfig', fetchAssetsForConfig);
+	store.subscribe('compiledProjectConfig', fetchAssetsForConfig);
 	store.subscribe('compiler.hasMemoryBeenReinitialized', onLoadBinaryFilesIntoMemory);
 	events.on('clearBinaryAssetCache', onClearBinaryAssetCache);
 
 	return () => {
-		store.unsubscribe('compiledConfig', fetchAssetsForConfig);
+		store.unsubscribe('compiledProjectConfig', fetchAssetsForConfig);
 		store.unsubscribe('compiler.hasMemoryBeenReinitialized', onLoadBinaryFilesIntoMemory);
 		events.off('clearBinaryAssetCache', onClearBinaryAssetCache);
 	};

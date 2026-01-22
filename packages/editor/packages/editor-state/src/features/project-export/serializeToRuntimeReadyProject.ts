@@ -22,9 +22,9 @@ export default async function serializeToRuntimeReadyProject(
 	const project = serializeToProject(state, { includeCompiled: true, encodeToBase64 });
 
 	// Compile config on-demand for runtime-ready export
-	const compiledConfig = await compileConfigForExport(state);
-	if (Object.keys(compiledConfig).length > 0) {
-		project.compiledConfig = compiledConfig;
+	const compiledProjectConfig = await compileConfigForExport(state);
+	if (Object.keys(compiledProjectConfig).length > 0) {
+		project.compiledProjectConfig = compiledProjectConfig;
 	}
 
 	return project;

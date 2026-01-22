@@ -41,7 +41,7 @@ export function webWorkerLogicRuntime(store: StateManager<State>, events: EventD
 			type: 'init',
 			payload: {
 				memoryRef: memory,
-				sampleRate: state.compiledConfig.runtimeSettings.sampleRate,
+				sampleRate: state.compiledProjectConfig.runtimeSettings.sampleRate,
 				codeBuffer: getCodeBuffer(),
 				compiledModules: state.compiler.compiledModules,
 			},

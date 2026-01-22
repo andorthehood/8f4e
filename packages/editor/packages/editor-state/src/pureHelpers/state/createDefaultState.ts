@@ -2,9 +2,9 @@ import { Font } from '@8f4e/sprite-generator';
 
 import { defaultFeatureFlags } from './featureFlags';
 
-import { ConfigObject } from '~/types';
+import { ProjectConfig } from '~/types';
 
-export const defaultConfig: ConfigObject = {
+export const defaultProjectConfig: ProjectConfig = {
 	runtimeSettings: {
 		runtime: 'WebWorkerLogicRuntime',
 		sampleRate: 50,
@@ -57,13 +57,13 @@ export default function createDefaultState() {
 		binaryAssets: [],
 		codeErrors: {
 			compilationErrors: [],
-			configErrors: [],
+			projectConfigErrors: [],
 		},
 		console: {
 			logs: [],
 			maxLogs: 100,
 		},
-		compiledConfig: defaultConfig,
+		compiledProjectConfig: defaultProjectConfig,
 		runtime: {
 			stats: {
 				timeToExecuteLoopMs: 0,

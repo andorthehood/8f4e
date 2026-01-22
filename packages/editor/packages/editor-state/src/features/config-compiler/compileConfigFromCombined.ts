@@ -1,6 +1,6 @@
 import { combineConfigBlocks } from './combineConfigBlocks';
 import { mapErrorLineToBlock } from './mapErrorLineToBlock';
-import { getConfigSchema } from './configSchema';
+import { getConfigSchema } from './projectConfigSchema';
 import isPlainObject from './isPlainObject';
 
 import type { CodeError, State } from '~/types';
