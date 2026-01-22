@@ -68,11 +68,11 @@ describe('disableAutoCompilation feature', () => {
 	describe('Project compilation', () => {
 		it('should skip compilation when disableAutoCompilation is true', async () => {
 			vi.useFakeTimers();
-			store.set('compiledConfig.disableAutoCompilation', true);
+			store.set('compiledProjectConfig.disableAutoCompilation', true);
 
 			compiler(store, mockEvents);
 
-			store.set('compiledConfig', { ...mockState.compiledConfig, disableAutoCompilation: true });
+			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig, disableAutoCompilation: true });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -90,11 +90,11 @@ describe('disableAutoCompilation feature', () => {
 
 		it('should compile normally when disableAutoCompilation is false', async () => {
 			vi.useFakeTimers();
-			store.set('compiledConfig.disableAutoCompilation', false);
+			store.set('compiledProjectConfig.disableAutoCompilation', false);
 
 			compiler(store, mockEvents);
 
-			store.set('compiledConfig', { ...mockState.compiledConfig, disableAutoCompilation: false });
+			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig, disableAutoCompilation: false });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -105,7 +105,7 @@ describe('disableAutoCompilation feature', () => {
 			vi.useFakeTimers();
 			mockState.callbacks.compileCode = undefined;
 			const compiledModules = { mod: {} };
-			store.set('compiledConfig.disableAutoCompilation', true);
+			store.set('compiledProjectConfig.disableAutoCompilation', true);
 			mockState.initialProjectState = {
 				...mockState.initialProjectState,
 				compiledWasm: 'AQIDBA==',
@@ -114,7 +114,7 @@ describe('disableAutoCompilation feature', () => {
 
 			compiler(store, mockEvents);
 
-			store.set('compiledConfig', { ...mockState.compiledConfig, disableAutoCompilation: true });
+			store.set('compiledProjectConfig', { ...mockState.compiledProjectConfig, disableAutoCompilation: true });
 			await vi.runAllTimersAsync();
 			vi.useRealTimers();
 
@@ -130,7 +130,7 @@ describe('disableAutoCompilation feature', () => {
 
 	describe('Config compilation', () => {
 		it('should compile config even when disableAutoCompilation is true', async () => {
-			store.set('compiledConfig.disableAutoCompilation', true);
+			store.set('compiledProjectConfig.disableAutoCompilation', true);
 
 			configEffect(store, mockEvents);
 
@@ -141,7 +141,7 @@ describe('disableAutoCompilation feature', () => {
 		});
 
 		it('should compile config normally when disableAutoCompilation is false', async () => {
-			store.set('compiledConfig.disableAutoCompilation', false);
+			store.set('compiledProjectConfig.disableAutoCompilation', false);
 
 			configEffect(store, mockEvents);
 
@@ -154,7 +154,7 @@ describe('disableAutoCompilation feature', () => {
 
 	describe('Runtime-ready export', () => {
 		it('should compile config for export even when disableAutoCompilation is true', async () => {
-			mockState.compiledConfig.disableAutoCompilation = true;
+			mockState.compiledProjectConfig.disableAutoCompilation = true;
 
 			const result = await compileConfigForExport(mockState);
 
@@ -167,9 +167,9 @@ describe('disableAutoCompilation feature', () => {
 			});
 		});
 
-		it('should compile config for export even when compiledConfig exists', async () => {
-			mockState.compiledConfig.disableAutoCompilation = true;
-			mockState.compiledConfig = {
+		it('should compile config for export even when compiledProjectConfig exists', async () => {
+			mockState.compiledProjectConfig.disableAutoCompilation = true;
+			mockState.compiledProjectConfig = {
 				memorySizeBytes: 2097152,
 				runtimeSettings: { runtime: 'MainThreadLogicRuntime', sampleRate: 60 },
 				disableAutoCompilation: false,
@@ -187,7 +187,7 @@ describe('disableAutoCompilation feature', () => {
 		});
 
 		it('should compile config for export when disableAutoCompilation is false', async () => {
-			mockState.compiledConfig.disableAutoCompilation = false;
+			mockState.compiledProjectConfig.disableAutoCompilation = false;
 
 			const result = await compileConfigForExport(mockState);
 
@@ -201,12 +201,12 @@ describe('disableAutoCompilation feature', () => {
 		});
 
 		it('should return empty config when no compileConfig callback is provided', async () => {
-			mockState.compiledConfig.disableAutoCompilation = false;
+			mockState.compiledProjectConfig.disableAutoCompilation = false;
 			mockState.callbacks.compileConfig = undefined;
 
 			const result = await compileConfigForExport(mockState);
 
-			expect(result).toEqual(mockState.compiledConfig);
+			expect(result).toEqual(mockState.compiledProjectConfig);
 		});
 	});
 
@@ -222,11 +222,11 @@ describe('disableAutoCompilation feature', () => {
 			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
 			await new Promise(resolve => setTimeout(resolve, 0));
 
-			expect(mockState.compiledConfig.disableAutoCompilation).toBe(true);
+			expect(mockState.compiledProjectConfig.disableAutoCompilation).toBe(true);
 		});
 
 		it('should not change disableAutoCompilation flag when not in config', async () => {
-			store.set('compiledConfig.disableAutoCompilation', false);
+			store.set('compiledProjectConfig.disableAutoCompilation', false);
 
 			mockCompileConfig.mockResolvedValue({
 				config: { memorySizeBytes: 2097152 },
@@ -238,7 +238,7 @@ describe('disableAutoCompilation feature', () => {
 			store.set('graphicHelper.codeBlocks', [...mockState.graphicHelper.codeBlocks]);
 			await new Promise(resolve => setTimeout(resolve, 0));
 
-			expect(mockState.compiledConfig.disableAutoCompilation).toBe(false);
+			expect(mockState.compiledProjectConfig.disableAutoCompilation).toBe(false);
 		});
 	});
 });

@@ -60,21 +60,21 @@ export default function drawInfoOverlay(
 	debugText.push('Compilation time: ' + state.compiler.compilationTime.toFixed(2) + 'ms');
 	debugText.push('WASM byte code size: ' + formatBytes(state.compiler.byteCodeSize));
 
-	if (state.compiledConfig?.memorySizeBytes) {
+	if (state.compiledProjectConfig?.memorySizeBytes) {
 		debugText.push(
 			'Allocated memory: ' +
 				formatBytes(state.compiler.allocatedMemorySize) +
 				' / ' +
-				formatBytes(state.compiledConfig.memorySizeBytes) +
+				formatBytes(state.compiledProjectConfig.memorySizeBytes) +
 				' (' +
-				Math.round((state.compiler.allocatedMemorySize / state.compiledConfig.memorySizeBytes) * 100) +
+				Math.round((state.compiler.allocatedMemorySize / state.compiledProjectConfig.memorySizeBytes) * 100) +
 				'%)'
 		);
 	}
 
 	// Runtime stats
 
-	const runtime = state.compiledConfig.runtimeSettings;
+	const runtime = state.compiledProjectConfig.runtimeSettings;
 
 	debugText.push('');
 	debugText.push('Runtime: ' + runtime.runtime);

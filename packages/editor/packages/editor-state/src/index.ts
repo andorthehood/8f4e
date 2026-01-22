@@ -46,8 +46,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
 		defaultRuntimeId: options.defaultRuntimeId,
-		compiledConfig: {
-			...createDefaultState().compiledConfig,
+		compiledProjectConfig: {
+			...createDefaultState().compiledProjectConfig,
 			runtimeSettings: registryEntry.defaults as unknown as Runtimes,
 		},
 	};
@@ -100,7 +100,7 @@ export type {
 	EditorSettings,
 	CompilationResult,
 	ConfigCompilationResult,
-	ConfigObject,
+	ProjectConfig,
 	CodeBlock,
 	ProjectViewport,
 	GridCoordinates,
