@@ -29,7 +29,7 @@ Then update the config compiler to recognize and compile both `project` and `edi
 
 After that, remove the editor settings feature and its menu. Delete `features/editor-settings` and its tests, remove any menu entries for editor settings, and replace references to `editorSettings` with `compiledEditorConfig`.
 
-For persistence, wire the new callbacks. On initialization, load editor config blocks via `loadEditorConfigBlocks` and inject them into `graphicHelper.codeBlocks`. When editor config blocks change, save the raw code via `saveEditorConfigBlocks`. Editor config blocks must be excluded from project import/export.
+For persistence, wire the new callbacks. On initialization, load editor config blocks via `loadEditorConfigBlocks` and append them when `graphicHelper` populates project code blocks. When editor config blocks change, save the raw code via `saveEditorConfigBlocks`. Editor config blocks must be excluded from project import/export.
 
 Finally, update UI/readers to use `compiledEditorConfig` (including sprite generation and any color/font reads), and update tests/snapshots that reference editor settings or the old project config names.
 

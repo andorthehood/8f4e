@@ -123,6 +123,10 @@ export { EMPTY_DEFAULT_PROJECT } from './features/project-import/types';
 export interface EditorConfigBlock {
 	code: string[];
 	disabled?: boolean;
+	gridCoordinates?: {
+		x: number;
+		y: number;
+	};
 }
 
 // Feature Flags types (top-level public API)
