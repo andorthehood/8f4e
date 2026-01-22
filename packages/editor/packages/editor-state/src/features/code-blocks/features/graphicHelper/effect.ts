@@ -88,9 +88,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		});
 
 		gaps(graphicData);
-		const pianoKeyboardMinWidth = pianoKeyboards(graphicData, state);
+		pianoKeyboards(graphicData, state);
 
-		graphicData.width = getCodeBlockGridWidth(graphicData.code, pianoKeyboardMinWidth) * state.viewport.vGrid;
+		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
 
 		bufferPlotters(graphicData, state);
 		bufferScanners(graphicData, state);
