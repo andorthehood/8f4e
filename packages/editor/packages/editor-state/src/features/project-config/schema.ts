@@ -33,7 +33,7 @@ function generateRuntimeSettingsSchema(runtimeRegistry: RuntimeRegistry): JSONSc
 /**
  * Generates the config schema.
  */
-export function getConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLike {
+export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSchemaLike {
 	const runtimeSettingsSchema = generateRuntimeSettingsSchema(runtimeRegistry);
 
 	return {
