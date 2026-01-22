@@ -36,7 +36,7 @@ function getDirectionFromArrowKey(key: string): Direction | null {
  * - `insertNewLine` – when Enter is pressed.
  * - `insertText` – when a single printable character key is pressed without modifier keys; payload includes text.
  *
- * F10 toggles position offsetters directly via store mutation.
+ * Additionally, F10 toggles position offsetters directly via store mutation (does not dispatch an event).
  *
  * @param events - Dispatcher used to emit editor actions in response to keyboard input.
  * @param store - State manager for direct feature flag toggling.
