@@ -25,7 +25,6 @@ import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
-import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -89,9 +88,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		});
 
 		gaps(graphicData);
-		pianoKeyboards(graphicData, state);
+		const pianoKeyboardMinWidth = pianoKeyboards(graphicData, state);
 
-		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
+		graphicData.width = getCodeBlockGridWidth(graphicData.code, pianoKeyboardMinWidth) * state.viewport.vGrid;
 
 		bufferPlotters(graphicData, state);
 		bufferScanners(graphicData, state);
@@ -162,7 +161,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 			return createCodeBlockGraphicData({
 				width: 0,
-				minGridWidth: CODE_BLOCK_MIN_GRID_WIDTH,
 				height: 0,
 				code: codeBlock.code,
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
@@ -195,7 +193,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						disabled: rawBlock.disabled || false,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
-						minGridWidth: CODE_BLOCK_MIN_GRID_WIDTH,
 						gridX,
 						gridY,
 						x: gridX * state.viewport.vGrid,
