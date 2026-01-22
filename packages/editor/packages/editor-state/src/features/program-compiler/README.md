@@ -18,7 +18,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 ```typescript
 {
-  memorySizeBytes: number,           // From compiledConfig, default 1MB
+  memorySizeBytes: number,           // From compiledProjectConfig, default 1MB
   startingMemoryWordAddress: 0,
   environmentExtensions: {
     ignoredKeywords: [               // Annotation keywords not compiled
@@ -64,7 +64,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 ## Integration Points
 
-- **Config Compiler**: Memory size and sample rate come from compiled config
+- **Project Config**: Memory size and sample rate come from compiled project config
 - **Binary Assets**: Triggers asset loading when memory is recreated
 - **Runtime**: Runtime selection affects environment constants
 - **Project Export**: Compiled modules are included in runtime-ready exports

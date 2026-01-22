@@ -250,10 +250,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			outputs: [],
 			inputs: [],
 		},
-		editorSettings: {
-			colorScheme: 'default',
-			font: '8x16',
-		},
 		featureFlags: {
 			contextMenu: true,
 			infoOverlay: true,
@@ -273,7 +269,8 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		binaryAssets: [],
 		codeErrors: {
 			compilationErrors: [],
-			configErrors: [],
+			projectConfigErrors: [],
+			editorConfigErrors: [],
 		},
 		console: {
 			logs: [],
@@ -287,7 +284,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				timerExpectedIntervalTimeMs: 0,
 			},
 		},
-		compiledConfig: {
+		compiledProjectConfig: {
 			runtimeSettings: {
 				runtime: 'WebWorkerLogicRuntime',
 				sampleRate: 50,
@@ -295,6 +292,10 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			memorySizeBytes: 1048576,
 			disableAutoCompilation: false,
 			binaryAssets: [],
+		},
+		compiledEditorConfig: {
+			font: '8x16',
+			colorScheme: 'hackerman',
 		},
 		dialog: {
 			show: false,

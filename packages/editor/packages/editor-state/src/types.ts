@@ -24,8 +24,9 @@ import type {
 	GraphicHelper,
 } from './features/code-blocks/types';
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
-import type { ConfigCompilationResult, ConfigBinaryAsset, ConfigObject } from './features/config-compiler/types';
-import type { EditorSettings } from './features/editor-settings/types';
+import type { ConfigCompilationResult } from './features/config-compiler/types';
+import type { EditorConfig, EditorConfigBlock } from './features/editor-config/types';
+import type { ConfigBinaryAsset, ProjectConfig } from './features/project-config/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
 import type { Compiler, CompilationResult } from './features/program-compiler/types';
@@ -83,8 +84,8 @@ export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 // Re-export program-compiler types
 export type { Compiler, CompilationResult };
 
-// Re-export config-compiler types
-export type { ConfigCompilationResult, ConfigBinaryAsset, ConfigObject };
+// Re-export config types
+export type { ConfigCompilationResult, ConfigBinaryAsset, ProjectConfig, EditorConfig, EditorConfigBlock };
 
 // Re-export runtime types
 export type {
@@ -102,9 +103,6 @@ export type {
 
 // Re-export logger types
 export type { LogMessage, ConsoleState };
-
-// Re-export editor-settings types
-export type { EditorSettings };
 
 // Re-export binary-assets types
 export type { BinaryAsset };
@@ -174,8 +172,8 @@ export interface Callbacks {
 	// Session storage callbacks
 	loadSession: () => Promise<Project | null>;
 	saveSession?: (project: Project) => Promise<void>;
-	loadEditorSettings?: () => Promise<EditorSettings | null>;
-	saveEditorSettings?: (settings: EditorSettings) => Promise<void>;
+	loadEditorConfigBlocks?: () => Promise<EditorConfigBlock[] | null>;
+	saveEditorConfigBlocks?: (blocks: EditorConfigBlock[]) => Promise<void>;
 
 	// File handling callbacks
 	importProject?: () => Promise<Project>;
@@ -256,13 +254,13 @@ export interface State {
 	midi: Midi;
 	graphicHelper: GraphicHelper;
 	callbacks: Callbacks;
-	editorSettings: EditorSettings;
 	featureFlags: FeatureFlags;
 	colorSchemes: string[];
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
 	initialProjectState?: Project;
-	compiledConfig: ConfigObject;
+	compiledProjectConfig: ProjectConfig;
+	compiledEditorConfig: EditorConfig;
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
@@ -277,7 +275,8 @@ export interface State {
 	defaultRuntimeId: string;
 	codeErrors: {
 		compilationErrors: CodeError[];
-		configErrors: CodeError[];
+		projectConfigErrors: CodeError[];
+		editorConfigErrors: CodeError[];
 	};
 	dialog: {
 		show: boolean;

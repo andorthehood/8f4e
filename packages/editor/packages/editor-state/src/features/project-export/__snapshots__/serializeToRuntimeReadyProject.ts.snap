@@ -3,7 +3,8 @@
 exports[`serializeToRuntimeReadyProject > omits compiled config when no config blocks are present 1`] = `
 {
   "codeBlocks": [],
-  "compiledConfig": {
+  "compiledModules": {},
+  "compiledProjectConfig": {
     "binaryAssets": [],
     "disableAutoCompilation": false,
     "memorySizeBytes": 1048576,
@@ -12,7 +13,6 @@ exports[`serializeToRuntimeReadyProject > omits compiled config when no config b
       "sampleRate": 50,
     },
   },
-  "compiledModules": {},
   "viewport": {
     "gridCoordinates": {
       "x": 0,
@@ -37,7 +37,10 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
       },
     },
   ],
-  "compiledConfig": {
+  "compiledModules": {
+    "mod": {},
+  },
+  "compiledProjectConfig": {
     "binaryAssets": [],
     "disableAutoCompilation": false,
     "memorySizeBytes": 65536,
@@ -45,9 +48,6 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
       "runtime": "WebWorkerLogicRuntime",
       "sampleRate": 50,
     },
-  },
-  "compiledModules": {
-    "mod": {},
   },
   "viewport": {
     "gridCoordinates": {

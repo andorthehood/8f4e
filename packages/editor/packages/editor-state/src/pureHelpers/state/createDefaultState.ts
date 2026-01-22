@@ -1,10 +1,8 @@
-import { Font } from '@8f4e/sprite-generator';
-
 import { defaultFeatureFlags } from './featureFlags';
 
-import { ConfigObject } from '~/types';
+import { ProjectConfig, EditorConfig } from '~/types';
 
-export const defaultConfig: ConfigObject = {
+export const defaultProjectConfig: ProjectConfig = {
 	runtimeSettings: {
 		runtime: 'WebWorkerLogicRuntime',
 		sampleRate: 50,
@@ -12,6 +10,11 @@ export const defaultConfig: ConfigObject = {
 	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
 	binaryAssets: [],
+};
+
+export const defaultEditorConfig: EditorConfig = {
+	font: '8x16',
+	colorScheme: 'hackerman',
 };
 
 export default function createDefaultState() {
@@ -45,10 +48,6 @@ export default function createDefaultState() {
 			selectedCodeBlockForProgrammaticEdit: undefined,
 			postProcessEffects: [],
 		},
-		editorSettings: {
-			colorScheme: 'hackerman',
-			font: '8x16' as Font,
-		},
 		featureFlags: defaultFeatureFlags,
 		colorSchemes: [],
 		historyStack: [],
@@ -57,13 +56,15 @@ export default function createDefaultState() {
 		binaryAssets: [],
 		codeErrors: {
 			compilationErrors: [],
-			configErrors: [],
+			projectConfigErrors: [],
+			editorConfigErrors: [],
 		},
 		console: {
 			logs: [],
 			maxLogs: 100,
 		},
-		compiledConfig: defaultConfig,
+		compiledProjectConfig: defaultProjectConfig,
+		compiledEditorConfig: defaultEditorConfig,
 		runtime: {
 			stats: {
 				timeToExecuteLoopMs: 0,

@@ -71,7 +71,7 @@ export function webWorkerMIDIRuntime(store: StateManager<State>, events: EventDi
 			type: 'init',
 			payload: {
 				memoryRef: memory,
-				sampleRate: state.compiledConfig.runtimeSettings.sampleRate,
+				sampleRate: state.compiledProjectConfig.runtimeSettings.sampleRate,
 				codeBuffer: getCodeBuffer(),
 				compiledModules: state.compiler.compiledModules,
 			},

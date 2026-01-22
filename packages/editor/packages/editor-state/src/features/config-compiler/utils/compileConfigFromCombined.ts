@@ -1,7 +1,8 @@
 import { combineConfigBlocks } from './combineConfigBlocks';
 import { mapErrorLineToBlock } from './mapErrorLineToBlock';
-import { getConfigSchema } from './configSchema';
 import isPlainObject from './isPlainObject';
+
+import { getProjectConfigSchema } from '../../project-config/schema';
 
 import type { CodeError, State } from '~/types';
 
@@ -26,7 +27,7 @@ export async function compileConfigFromCombined(
 	const errors: CodeError[] = [];
 
 	// Use runtime registry schema (runtimeRegistry is now required)
-	const schema = getConfigSchema(state.runtimeRegistry);
+	const schema = getProjectConfigSchema(state.runtimeRegistry);
 
 	const { source, lineMappings } = combined;
 
