@@ -191,7 +191,6 @@ describe('autoEnvConstants', () => {
 				lineNumberColumnWidth: 2,
 				offsetX: 0,
 				offsetY: 0,
-				minGridWidth: 32,
 			};
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
 		}
