@@ -1,8 +1,9 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import deepMergeConfig from '../config-compiler/deepMergeConfig';
-import { extractConfigType } from '../config-compiler/extractConfigBody';
-import { getConfigSchema } from '../config-compiler/projectConfigSchema';
+import { getProjectConfigSchema } from './schema';
+
+import deepMergeConfig from '../config-compiler/utils/deepMergeConfig';
+import { extractConfigType } from '../config-compiler/utils/extractConfigBody';
 import { compileConfigBlocksByType } from '../config-compiler/utils/compileConfigBlocksByType';
 import { log } from '../logger/logger';
 
@@ -39,7 +40,7 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 			return;
 		}
 
-		const schema = getConfigSchema(state.runtimeRegistry);
+		const schema = getProjectConfigSchema(state.runtimeRegistry);
 		const { mergedConfig, errors, hasSource } = await compileConfigBlocksByType({
 			codeBlocks: state.graphicHelper.codeBlocks,
 			configType: 'project',

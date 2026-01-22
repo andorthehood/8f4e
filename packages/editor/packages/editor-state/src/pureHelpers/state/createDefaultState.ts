@@ -1,5 +1,3 @@
-import { Font } from '@8f4e/sprite-generator';
-
 import { defaultFeatureFlags } from './featureFlags';
 
 import { ProjectConfig, EditorConfig } from '~/types';
@@ -49,10 +47,6 @@ export default function createDefaultState() {
 			},
 			selectedCodeBlockForProgrammaticEdit: undefined,
 			postProcessEffects: [],
-		},
-		editorSettings: {
-			colorScheme: 'hackerman',
-			font: '8x16' as Font,
 		},
 		featureFlags: defaultFeatureFlags,
 		colorSchemes: [],

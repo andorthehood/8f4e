@@ -1,6 +1,6 @@
-import { combineConfigBlocksByType, ConfigType } from '../combineConfigBlocks';
-import { mapErrorLineToBlock } from '../mapErrorLineToBlock';
-import isPlainObject from '../isPlainObject';
+import { combineConfigBlocksByType, ConfigType } from './combineConfigBlocks';
+import { mapErrorLineToBlock } from './mapErrorLineToBlock';
+import isPlainObject from './isPlainObject';
 
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { CodeBlockGraphicData, CodeError, State } from '~/types';
