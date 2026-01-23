@@ -47,5 +47,7 @@ export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGr
 
 	if (hasPianoKeyboard) {
 		graphicData.minGridWidth = PIANO_KEYBOARD_MIN_GRID_WIDTH;
+	} else {
+		delete graphicData.minGridWidth;
 	}
 }
