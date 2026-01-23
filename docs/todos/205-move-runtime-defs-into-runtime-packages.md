@@ -16,6 +16,7 @@ Runtime factories and schemas currently live in the app layer, which makes them 
 ## Proposed Solution
 
 Move each runtime's factory + defaults + schema into its own runtime package, and export a single runtime definition object from each package. Hosts (root app, viewer) simply import runtime definitions and assemble their registry from the subset they want to support.
+This is not a simple folder move inside the app; the ownership of factories/schemas must be transferred to the runtime packages themselves.
 
 ## Implementation Plan
 
@@ -29,13 +30,16 @@ Move each runtime's factory + defaults + schema into its own runtime package, an
 - Confirm runtime definition shape: `{ id, defaults, schema, factory }`.
 
 ### Step 2: Move factories into runtime packages
-- Move these files from `src/` into their owning runtime packages (names can be adjusted, but keep consistent exports):
+- Move these files from `src/` into their owning runtime packages (names can be adjusted, but keep consistent exports). Do not just relocate them into a new `src/runtime-defs/` folder inside the app:
   - `src/runtime-web-worker-logic-factory.ts` → `packages/runtime-web-worker-logic/src/runtimeDef.ts` (or `factory.ts`)
   - `src/runtime-main-thread-logic-factory.ts` → `packages/runtime-main-thread-logic/src/runtimeDef.ts`
   - `src/runtime-audio-worklet-factory.ts` → `packages/runtime-audio-worklet/src/runtimeDef.ts`
   - `src/runtime-web-worker-midi-factory.ts` → `packages/runtime-web-worker-midi/src/runtimeDef.ts`
 - Keep any runtime-specific helpers (e.g. memory ID parsing for audio buffers) in the runtime package alongside the factory.
-- Ensure each factory still imports `getCodeBuffer/getMemory` or equivalent from the host layer if that is the current pattern; if those callbacks live in the host app, consider moving them into a shared compiler-callback package or passing them into the factory via parameters.
+- Resolve `getCodeBuffer/getMemory` ownership explicitly:
+  - Preferred: inject callbacks into the factory via parameters from the host registry (no direct import from app `src/`).
+  - Avoid: importing `src/compiler-callback.ts` from inside runtime packages (creates runtime → app dependency).
+  - Alternative: move callbacks to a shared module that is not app-specific if injection is not feasible.
 
 ### Step 3: Move schemas/defaults into runtime packages
 - For each runtime, move the defaults and schema from `src/runtime-registry.ts` into the runtime package and export a single runtime definition:
