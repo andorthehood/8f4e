@@ -13,7 +13,8 @@
         ],
         "cwd": "{projectRoot}",
         "parallel": false
-      }
+      },
+      "dependsOn": ["^build"]
     },
     "lint": {
       "executor": "nx:run-commands",
@@ -42,7 +43,8 @@
       "options": {
         "command": "tsc --noEmit",
         "cwd": "{projectRoot}"
-      }
+      },
+      "dependsOn": ["^build"]
     }
   },
   "tags": ["type:runtime", "scope:audio"]
