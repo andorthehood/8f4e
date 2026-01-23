@@ -208,6 +208,18 @@ describe('color-helpers module', () => {
 		it('should throw error for unknown format', () => {
 			expect(() => lighten('not-a-color', 0.5)).toThrow('Invalid color format');
 		});
+
+		it('should throw error for RGB values outside 0-255 range', () => {
+			expect(() => lighten('rgba(300,0,0,1)', 0.5)).toThrow('RGB values must be in the 0-255 range');
+			expect(() => lighten('rgba(0,400,0,1)', 0.5)).toThrow('RGB values must be in the 0-255 range');
+			expect(() => lighten('rgba(0,0,500,1)', 0.5)).toThrow('RGB values must be in the 0-255 range');
+			expect(() => lighten('rgba(-10,0,0,1)', 0.5)).toThrow('RGB values must be in the 0-255 range');
+		});
+
+		it('should throw error for alpha values outside 0-1 range', () => {
+			expect(() => alpha('rgba(255,0,0,2)', 0.5)).toThrow('Alpha value must be in the 0-1 range');
+			expect(() => alpha('rgba(255,0,0,-0.5)', 0.5)).toThrow('Alpha value must be in the 0-1 range');
+		});
 	});
 
 	describe('integration - real world color scheme scenarios', () => {
