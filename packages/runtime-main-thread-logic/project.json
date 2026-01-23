@@ -9,7 +9,8 @@
       "options": {
         "command": "tsc",
         "cwd": "{projectRoot}"
-      }
+      },
+      "dependsOn": ["^build"]
     },
     "lint": {
       "executor": "nx:run-commands",
@@ -46,7 +47,8 @@
       "options": {
         "command": "tsc --noEmit",
         "cwd": "{projectRoot}"
-      }
+      },
+      "dependsOn": ["^build"]
     }
   },
   "tags": ["type:runtime", "scope:logic"]
