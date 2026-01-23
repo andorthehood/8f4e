@@ -13,6 +13,7 @@ export function getEditorConfigSchema(): JSONSchemaLike {
 			},
 			colorScheme: {
 				type: 'string',
+				enum: ['redalert', 'hackerman', 'default'],
 			},
 		},
 		additionalProperties: false,
