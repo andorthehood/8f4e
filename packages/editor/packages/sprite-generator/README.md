@@ -2,6 +2,75 @@
 
 This package generates sprite sheets for the 8f4e editor, including fonts, icons, and UI elements.
 
+## Color Helpers
+
+The sprite generator exports utility functions for deriving custom color schemes. These helpers accept hex (`#rgb`, `#rrggbb`) or rgba (`rgba(r,g,b,a)`) format and always return `rgba(r,g,b,a)` strings compatible with canvas `fillStyle`.
+
+### Usage
+
+```typescript
+import { lighten, darken, alpha, mix } from '@8f4e/sprite-generator';
+
+// Lighten a color by 30%
+const lighter = lighten('#00cc00', 0.3);
+// => 'rgba(77,217,77,1)'
+
+// Darken a color by 50%
+const darker = darken('#00cc00', 0.5);
+// => 'rgba(0,102,0,1)'
+
+// Set alpha channel
+const transparent = alpha('#ff0000', 0.5);
+// => 'rgba(255,0,0,0.5)'
+
+// Mix two colors (default 50/50 blend)
+const mixed = mix('#ff0000', '#0000ff');
+// => 'rgba(128,0,128,1)'
+
+// Mix with custom weight (70% first color, 30% second)
+const weighted = mix('#ff0000', '#0000ff', 0.7);
+// => 'rgba(179,0,76,1)'
+```
+
+### Deriving a Custom Color Scheme
+
+```typescript
+import { lighten, darken, alpha, mix, ColorScheme } from '@8f4e/sprite-generator';
+
+const baseColor = '#00cc00';
+
+const myColorScheme: ColorScheme = {
+  text: {
+    lineNumber: darken(baseColor, 0.5),
+    instruction: lighten(baseColor, 0.3),
+    code: baseColor,
+    disabledCode: alpha(baseColor, 0.5),
+    // ... other text colors
+  },
+  fill: {
+    background: '#000000',
+    moduleBackground: alpha('#000000', 0.85),
+    wire: alpha(lighten(baseColor, 0.2), 0.6),
+    wireHighlighted: alpha(lighten(baseColor, 0.3), 0.8),
+    // ... other fill colors
+  },
+  // ... icons colors
+};
+```
+
+### API Reference
+
+- **`lighten(color: string, amount: number): string`** - Lightens a color by the specified amount (0-1)
+- **`darken(color: string, amount: number): string`** - Darkens a color by the specified amount (0-1)
+- **`alpha(color: string, alphaValue: number): string`** - Sets the alpha channel (0-1)
+- **`mix(color1: string, color2: string, weight?: number): string`** - Mixes two colors with optional weight (0-1, default 0.5)
+
+All functions:
+- Accept hex (`#rgb`, `#rrggbb`) or rgba (`rgba(r,g,b,a)`) format
+- Return `rgba(r,g,b,a)` format strings
+- Clamp all parameters to valid ranges
+- Are side-effect free and deterministic
+
 ## Font Bitmaps
 
 Font bitmaps are precomputed from ASCII art sources and bundled as Base64-encoded payloads to reduce bundle size and eliminate runtime conversion overhead.
