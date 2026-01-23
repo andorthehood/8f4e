@@ -14,6 +14,9 @@
 		"./runtime-def": {
 			"types": "./dist/runtimeDef.d.ts",
 			"default": "./dist/runtimeDef.js"
+		},
+		"./worklet": {
+			"default": "./dist/worklet/index.js"
 		}
 	},
 	"sideEffects": false,

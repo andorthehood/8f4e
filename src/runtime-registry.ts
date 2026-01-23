@@ -4,7 +4,7 @@ import { createAudioWorkletRuntimeDef } from '@8f4e/runtime-audio-worklet/runtim
 import { createWebWorkerMIDIRuntimeDef } from '@8f4e/runtime-web-worker-midi/runtime-def';
 import WebWorkerLogicRuntime from '@8f4e/runtime-web-worker-logic?worker';
 import WebWorkerMIDIRuntime from '@8f4e/runtime-web-worker-midi?worker';
-import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
+import audioWorkletUrl from '@8f4e/runtime-audio-worklet/worklet?url';
 
 import { getCodeBuffer, getMemory } from './compiler-callback';
 
