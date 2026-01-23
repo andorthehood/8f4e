@@ -1,3 +1,12 @@
+---
+title: 'TODO: Editor Config Blocks (Replace editorSettings)'
+priority: Medium
+effort: 1-2 days
+created: 2026-01-22
+status: Completed
+completed: 2026-01-22
+---
+
 # Editor Config Blocks (Replace editorSettings)
 
 ## Goal
