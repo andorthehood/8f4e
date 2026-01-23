@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import { getProjectConfigSchema } from './schema';
+import { defaultProjectConfig } from './defaults';
 
 import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
 import { isConfigBlockOfType } from '../config-compiler/utils/isConfigBlockOfType';
@@ -8,8 +9,6 @@ import { log } from '../logger/logger';
 import deepEqual from '../config-compiler/utils/deepEqual';
 
 import type { EventDispatcher, State, ProjectConfig } from '~/types';
-
-import { defaultProjectConfig } from '~/pureHelpers/state/createDefaultState';
 
 function isProjectConfigBlock(state: State): boolean {
 	return isConfigBlockOfType(state.graphicHelper.selectedCodeBlock, 'project');
