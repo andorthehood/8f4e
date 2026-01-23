@@ -2,6 +2,7 @@ import { StateManager } from '@8f4e/state-manager';
 
 import { getEditorConfigSchema } from './schema';
 import { isEditorConfigBlock, serializeEditorConfigBlocks } from './utils/editorConfigBlocks';
+import { defaultEditorConfig } from './defaults';
 
 import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
 import { log, warn } from '../logger/logger';
@@ -9,16 +10,12 @@ import deepEqual from '../config-compiler/utils/deepEqual';
 
 import type { State, EventDispatcher, EditorConfig } from '~/types';
 
-import { defaultEditorConfig } from '~/pureHelpers/state/createDefaultState';
-
-function isEditorConfigBlockForProgrammaticEdit(state: State): boolean {
-	return isEditorConfigBlock(state.graphicHelper.selectedCodeBlockForProgrammaticEdit ?? null);
-}
-
 export default function editorConfigEffect(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 
-	void (async () => {
+	async function rebuildEditorConfig(): Promise<void> {
+		const currentState = store.getState();
+
 		if (state.callbacks.getListOfColorSchemes) {
 			try {
 				const colorSchemes = await state.callbacks.getListOfColorSchemes();
@@ -29,10 +26,6 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 				state.colorSchemes = [];
 			}
 		}
-	})();
-
-	async function rebuildEditorConfig(): Promise<void> {
-		const currentState = store.getState();
 
 		if (!currentState.callbacks.compileConfig) {
 			store.set('compiledEditorConfig', defaultEditorConfig);
@@ -40,7 +33,7 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 			return;
 		}
 
-		const schema = getEditorConfigSchema();
+		const schema = getEditorConfigSchema(currentState);
 		const { compiledConfig, mergedConfig, errors, hasSource } = await compileConfigWithDefaults({
 			codeBlocks: currentState.graphicHelper.codeBlocks,
 			configType: 'editor',
@@ -93,13 +86,6 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 	store.subscribe('graphicHelper.codeBlocks', rebuildEditorConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (!isEditorConfigBlock(state.graphicHelper.selectedCodeBlock ?? null)) {
-			return;
-		}
-		saveEditorConfigBlocks();
-		rebuildEditorConfig();
-	});
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
-		if (!isEditorConfigBlockForProgrammaticEdit(state)) {
 			return;
 		}
 		saveEditorConfigBlocks();
