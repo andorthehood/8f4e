@@ -19,8 +19,6 @@ export function createCodeBlockGraphicData(
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
 	const gridY = overrides.gridY ?? Math.round(y / defaultHGrid);
 
-	const minGridWidth = overrides.minGridWidth ?? width;
-
 	const cursorX = x + offsetX + width / 2;
 	const cursorYValue = cursorY ?? height / 2;
 	const cursor = overrides.cursor ?? {
@@ -39,7 +37,6 @@ export function createCodeBlockGraphicData(
 		height,
 		offsetX,
 		offsetY,
-		minGridWidth,
 		cursor,
 		id,
 		code: [],
