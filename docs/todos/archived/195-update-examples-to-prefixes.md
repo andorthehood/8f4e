@@ -3,8 +3,8 @@ title: 'TODO: Update Example Code to Use %/^/! Prefixes'
 priority: Medium
 effort: 2-4h
 created: 2026-01-21
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-21
 ---
 
 # TODO: Update Example Code to Use %/^/! Prefixes
