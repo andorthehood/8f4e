@@ -146,7 +146,6 @@ export interface Slider {
  */
 export interface CodeBlockGraphicData {
 	width: number;
-	minGridWidth: number;
 	height: number;
 	code: string[];
 	lineNumberColumnWidth: number;
@@ -154,6 +153,8 @@ export interface CodeBlockGraphicData {
 	codeColors: Array<Array<SpriteLookup | undefined>>;
 	/** The gaps between lines */
 	gaps: Map<number, { size: number }>;
+	/** Optional minimum grid width override (e.g., for piano keyboards) */
+	minGridWidth?: number;
 	cursor: {
 		/** The column of the cursor */
 		col: number;

@@ -47,6 +47,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 192 | Move editor-only directives to # and remove ignoredKeywords | 🟡 | 4-6h | 2026-01-21 | Make editor directives explicit with #, treat # as compiler comment, remove ignoredKeywords API |
 | 195 | Update Example Code to Use %/^/! Prefixes | 🟡 | 2-4h | 2026-01-21 | Replace WORD_SIZE and manual integer limit constants in examples with element size and bounds prefixes |
 | 200 | Add code block slider control directive | 🟡 | 1-2d | 2026-01-21 | Add a # slider directive to render an interactive horizontal slider inside code blocks and write values directly to a memory word |
+| 204 | Expose sprite-generator color helpers | 🟡 | 0.5-1d | 2026-01-22 | Export RGB helpers (lighten/darken/alpha/mix) so users can derive custom color schemes |
 | 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Report shader compile/link failures with effect name/line, skip failed effects, log in editor |
 | 180 | Load Binary Assets From Config URLs | 🟡 | 1-2d | 2026-01-16 | Allow config to declare URL-backed binary assets with module.memory targets, cached in the editor |
 | 182 | Add Example Module Dependencies on Insert | 🟡 | 4-6h | 2026-01-17 | Add a dependencies field to example modules and insert missing dependency blocks alongside the requested module |
@@ -96,6 +97,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
 | 202 | Skip reapplying compiled config when unchanged | 🟡 | 1-2d | 2026-01-22 | Added deep-equal utility to compare compiled config output after defaults are merged; config is only set in store when changed, reducing unnecessary store updates and downstream recomputations |
+| 201 | Make minGridWidth a shared constant | 🟡 | 2-4h | 2026-01-22 | Introduced `CODE_BLOCK_MIN_GRID_WIDTH` constant in utils module; updated `getCodeBlockGridWidth` to use constant as default; replaced hardcoded values in effect.ts and codeBlockCreator; all 309 code-blocks tests passing |
 | 194 | Add Unsigned int8/int16 Buffer Support (Compiler + Web-UI) | 🟡 | 1-2d | 2026-01-21 | Added `int8u[]`/`int16u[]` buffer declarations with unsigned min/max semantics and Uint8/Uint16 memory views in web-ui |
 | 193 | Add Min/Max Value Prefixes for Memory Items | 🟡 | 4-6h | 2026-01-21 | Add `^name`/`!name` prefixes to push max finite and lowest finite values for a memory item’s element type |
 | 177 | Add ~ import alias to editor-state | 🟢 | 0.5-1h | 2026-01-14 | Added `~` import alias to editor-state package for cleaner imports; configured TypeScript, Vite, and Vitest to resolve `~/*` to `src/*`; all typechecks, tests, and builds pass |
