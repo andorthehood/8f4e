@@ -180,7 +180,7 @@ describe('projectConfigEffect - diffing behavior', () => {
 		expect(setCallsForErrors[0][1]).toEqual(newErrors);
 	});
 
-	it('should update both config and errors when both change', async () => {
+	it('should update errors but keep last valid config when errors are present', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
 			compiledConfig: { stackHeight: 200, heapSize: 2048 },
@@ -198,7 +198,7 @@ describe('projectConfigEffect - diffing behavior', () => {
 
 		await rebuildProjectConfig();
 
-		// Verify both were updated
+		// Verify errors updated and config not updated when errors are present
 		const setCallsForProjectConfig = (mockStore.set as Mock).mock.calls.filter(
 			call => call[0] === 'compiledProjectConfig'
 		);
@@ -206,7 +206,7 @@ describe('projectConfigEffect - diffing behavior', () => {
 			call => call[0] === 'codeErrors.projectConfigErrors'
 		);
 
-		expect(setCallsForProjectConfig).toHaveLength(1);
+		expect(setCallsForProjectConfig).toHaveLength(0);
 		expect(setCallsForErrors).toHaveLength(1);
 	});
 });
