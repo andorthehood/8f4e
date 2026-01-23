@@ -47,7 +47,8 @@ function parseColor(color: string): RGBA {
 		throw new Error(`Invalid hex color format: ${color}`);
 	}
 
-	// Handle rgba format
+	// Handle rgba/rgb format
+	// Supports both rgb(r,g,b) and rgba(r,g,b,a) formats for flexibility
 	const rgbaMatch = trimmed.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)$/);
 	if (rgbaMatch) {
 		const r = parseInt(rgbaMatch[1], 10);
