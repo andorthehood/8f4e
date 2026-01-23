@@ -1,10 +1,10 @@
+import { defaultProjectConfig } from './defaults';
+
 import deepMergeConfig from '../config-compiler/utils/deepMergeConfig';
-import { combineConfigBlocks } from '../config-compiler/utils/combineConfigBlocks';
+import { combineConfigBlocksByType } from '../config-compiler/utils/combineConfigBlocks';
 import { compileConfigFromCombined } from '../config-compiler/utils/compileConfigFromCombined';
 
 import type { State, ProjectConfig } from '~/types';
-
-import { defaultProjectConfig } from '~/pureHelpers/state/createDefaultState';
 
 /**
  * Compiles all project config blocks and returns the merged config.
@@ -21,7 +21,7 @@ export async function compileConfigForExport(state: State): Promise<ProjectConfi
 	}
 
 	// Combine all config blocks
-	const combined = combineConfigBlocks(state.graphicHelper.codeBlocks);
+	const combined = combineConfigBlocksByType(state.graphicHelper.codeBlocks, 'project');
 	if (combined.source.trim().length === 0) {
 		return defaultProjectConfig;
 	}
