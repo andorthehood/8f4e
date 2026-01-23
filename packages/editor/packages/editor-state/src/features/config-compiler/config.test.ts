@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { combineConfigBlocks } from './utils/combineConfigBlocks';
+import { combineConfigBlocksByType } from './utils/combineConfigBlocks';
 import { mapErrorLineToBlock } from './utils/mapErrorLineToBlock';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
@@ -21,7 +21,7 @@ describe('config error mapping', () => {
 		});
 		const codeBlocks = [block1, block2];
 
-		const { source, lineMappings } = combineConfigBlocks(codeBlocks);
+		const { source, lineMappings } = combineConfigBlocksByType(codeBlocks, 'project');
 
 		// Verify combined source
 		expect(source).toBe('push 1\npush 2\n\nset x 10\nset y 20');
@@ -70,7 +70,7 @@ describe('config error mapping', () => {
 		});
 		const codeBlocks = [block];
 
-		const { source, lineMappings } = combineConfigBlocks(codeBlocks);
+		const { source, lineMappings } = combineConfigBlocksByType(codeBlocks, 'project');
 
 		expect(source).toBe('push 1\npush 2\npush 3');
 		expect(lineMappings).toHaveLength(1);
@@ -99,7 +99,7 @@ describe('config error mapping', () => {
 		});
 		const codeBlocks = [block1, block2, block3];
 
-		const { source, lineMappings } = combineConfigBlocks(codeBlocks);
+		const { source, lineMappings } = combineConfigBlocksByType(codeBlocks, 'project');
 
 		expect(source).toBe('line1\n\nline2a\nline2b\n\nline3');
 		expect(lineMappings).toHaveLength(3);
