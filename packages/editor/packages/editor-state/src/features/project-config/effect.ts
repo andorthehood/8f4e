@@ -58,8 +58,9 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 			store.set('codeErrors.projectConfigErrors', errors);
 		}
 
-		// Only update config if it has changed
-		if (!deepEqual(compiledConfig, currentState.compiledProjectConfig)) {
+		// Only update config if it has changed and there are no errors.
+		// This keeps the last valid config while the user is mid-edit with invalid input.
+		if (errors.length === 0 && !deepEqual(compiledConfig, currentState.compiledProjectConfig)) {
 			store.set('compiledProjectConfig', compiledConfig as ProjectConfig);
 		}
 	}
