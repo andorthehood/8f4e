@@ -161,7 +161,6 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 
 		const codeBlock: CodeBlockGraphicData = {
 			width: 0,
-			minGridWidth: 32,
 			height: 0,
 			code,
 			codeColors: [],
