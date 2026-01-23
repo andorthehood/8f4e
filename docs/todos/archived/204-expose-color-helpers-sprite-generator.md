@@ -3,8 +3,8 @@ title: 'TODO: Expose sprite-generator color helpers for custom scheme derivation
 priority: Medium
 effort: 0.5-1d
 created: 2026-01-22
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-23
 ---
 
 # TODO: Expose sprite-generator color helpers for custom scheme derivation

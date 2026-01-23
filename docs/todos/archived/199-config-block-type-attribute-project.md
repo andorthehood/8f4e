@@ -3,8 +3,8 @@ title: 'TODO: Add config block type attribute for project config'
 priority: High
 effort: 1-2 days
 created: 2026-01-21
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-22
 ---
 
 # TODO: Add config block type attribute for project config
