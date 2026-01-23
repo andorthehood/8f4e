@@ -1,12 +1,19 @@
 import parsePianoKeyboards from './codeParser';
+import { PIANO_KEYBOARD_MIN_GRID_WIDTH } from './constants';
 
 import type { CodeBlockGraphicData, State } from '~/types';
 
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 
-export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
+/**
+ * Updates piano keyboard graphics for a code block.
+ * Sets minGridWidth to PIANO_KEYBOARD_MIN_GRID_WIDTH (48) on the block if piano keyboards are present.
+ */
+export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGraphicData, state: State): void {
 	graphicData.extras.pianoKeyboards = [];
+	let hasPianoKeyboard = false;
+
 	parsePianoKeyboards(graphicData.code).forEach(pianoKeyboard => {
 		const memoryIdentifierKeysList = resolveMemoryIdentifier(
 			state,
@@ -23,7 +30,7 @@ export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGr
 			return;
 		}
 
-		graphicData.minGridWidth = 48;
+		hasPianoKeyboard = true;
 
 		graphicData.extras.pianoKeyboards.push({
 			x: 0,
@@ -37,4 +44,10 @@ export default function updatePianoKeyboardsGraphicData(graphicData: CodeBlockGr
 			startingNumber: pianoKeyboard.startingNumber,
 		});
 	});
+
+	if (hasPianoKeyboard) {
+		graphicData.minGridWidth = PIANO_KEYBOARD_MIN_GRID_WIDTH;
+	} else {
+		delete graphicData.minGridWidth;
+	}
 }

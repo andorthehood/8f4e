@@ -3,8 +3,8 @@ title: 'TODO: Make minGridWidth a shared constant'
 priority: Medium
 effort: 2-4 hours
 created: 2026-01-22
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-22
 ---
 
 # TODO: Make minGridWidth a shared constant

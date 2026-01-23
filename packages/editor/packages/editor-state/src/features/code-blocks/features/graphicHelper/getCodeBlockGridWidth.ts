@@ -1,14 +1,15 @@
 import getLongestLineLength from '../../utils/codeParsers/getLongestLineLength';
+import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
 
 /**
  * Computes the grid width required for a code block.
  * Matches the sizing logic used by graphicHelper effect.
  *
  * @param code - Code block represented as an array of lines
- * @param minGridWidth - Minimum grid width (defaults to 32)
+ * @param minGridWidth - Minimum grid width (defaults to CODE_BLOCK_MIN_GRID_WIDTH)
  * @returns The grid width in grid units
  */
-export default function getCodeBlockGridWidth(code: string[], minGridWidth = 32): number {
+export default function getCodeBlockGridWidth(code: string[], minGridWidth = CODE_BLOCK_MIN_GRID_WIDTH): number {
 	// Calculate line number column width
 	const lineNumberColumnWidth = code.length.toString().length;
 
@@ -33,7 +34,7 @@ if (import.meta.vitest) {
 			// Line numbers: "0 ", "1 ", "2 " (2 chars each)
 			// Longest line with line number: "1 this is a much longer line of code" = 36 chars
 			// Width = 36 + 4 = 40
-			expect(getCodeBlockGridWidth(code, 32)).toBe(40);
+			expect(getCodeBlockGridWidth(code)).toBe(40);
 		});
 
 		it('accounts for multi-digit line numbers', () => {
@@ -47,17 +48,17 @@ if (import.meta.vitest) {
 			expect(getCodeBlockGridWidth(code, 10)).toBe(15);
 		});
 
-		it('uses default minGridWidth of 32 when not specified', () => {
+		it('uses default minGridWidth of CODE_BLOCK_MIN_GRID_WIDTH when not specified', () => {
 			const code = ['x'];
 			// Line number: "0 " (2 chars)
 			// Line: "0 x" = 3 chars
-			// Width = max(32, 3 + 4) = max(32, 7) = 32
-			expect(getCodeBlockGridWidth(code)).toBe(32);
+			// Width = max(CODE_BLOCK_MIN_GRID_WIDTH, 3 + 4) = max(32, 7) = 32
+			expect(getCodeBlockGridWidth(code)).toBe(CODE_BLOCK_MIN_GRID_WIDTH);
 		});
 
 		it('handles empty code array', () => {
 			const code: string[] = [];
-			expect(getCodeBlockGridWidth(code, 32)).toBe(32);
+			expect(getCodeBlockGridWidth(code)).toBe(CODE_BLOCK_MIN_GRID_WIDTH);
 		});
 
 		it('matches graphicHelper width calculation logic', () => {
@@ -66,11 +67,11 @@ if (import.meta.vitest) {
 			// Lines: "0 module delay", "1 ", "2 float[] buffer 44100", "3 moduleEnd"
 			// Longest: "2 float[] buffer 44100" = 22 chars
 			// Width = max(32, 22 + 4) = max(32, 26) = 32
-			expect(getCodeBlockGridWidth(code, 32)).toBe(32);
+			expect(getCodeBlockGridWidth(code)).toBe(CODE_BLOCK_MIN_GRID_WIDTH);
 
 			// Test with longer line
 			const longCode = ['module test', 'this is a very long line that exceeds the minimum grid width value'];
-			expect(getCodeBlockGridWidth(longCode, 32)).toBe(72); // "0 this is a very long line that exceeds the minimum grid width value" = 68 + 4 = 72
+			expect(getCodeBlockGridWidth(longCode)).toBe(72); // "0 this is a very long line that exceeds the minimum grid width value" = 68 + 4 = 72
 		});
 	});
 }

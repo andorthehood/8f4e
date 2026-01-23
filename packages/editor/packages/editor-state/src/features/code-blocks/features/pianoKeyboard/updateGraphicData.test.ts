@@ -16,7 +16,6 @@ describe('updatePianoKeyboardsGraphicData', () => {
 			id: 'test-block',
 			code: ['# piano keys1 numKeys 60'],
 			gaps: new Map(),
-			minGridWidth: 0,
 		});
 
 		mockState = createMockState({
@@ -85,10 +84,18 @@ describe('updatePianoKeyboardsGraphicData', () => {
 		expect(pianoWithoutRefs).toMatchSnapshot();
 	});
 
-	it('should set minimum grid width', () => {
+	it('should set minimum grid width when piano keyboard is present', () => {
 		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.minGridWidth).toBe(48);
+	});
+
+	it('should not set minimum grid width when no piano keyboard is present', () => {
+		mockGraphicData.code = ['# some other directive'];
+
+		updatePianoKeyboardsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.minGridWidth).toBeUndefined();
 	});
 
 	it('should not add piano keyboard when memory is not found', () => {
