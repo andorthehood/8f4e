@@ -28,5 +28,9 @@
 	},
 	"homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {},
-	"devDependencies": {}
+	"devDependencies": {},
+	"peerDependencies": {
+		"@8f4e/editor": "*",
+		"@8f4e/state-manager": "*"
+	}
 }

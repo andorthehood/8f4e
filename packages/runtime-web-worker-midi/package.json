@@ -32,5 +32,9 @@
 	},
 	"devDependencies": {
 		"@types/node": "^24.3.0"
+	},
+	"peerDependencies": {
+		"@8f4e/editor": "*",
+		"@8f4e/state-manager": "*"
 	}
 }
