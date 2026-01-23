@@ -10,6 +10,8 @@ import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
+import type { ShaderError } from 'glugglug';
+
 // Re-export types that consumers might need
 export type {
 	Project,
@@ -44,6 +46,7 @@ interface Options {
 	callbacks: Omit<Callbacks, 'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText'>;
 	runtimeRegistry: RuntimeRegistry;
 	defaultRuntimeId: string;
+	onShaderError?: (error: ShaderError) => void;
 }
 
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
@@ -91,7 +94,15 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	updateStateWithSpriteData(state, spriteData);
 
-	const view = await initView(state, canvas, memoryViews, spriteData);
+	const onShaderError =
+		options.onShaderError ??
+		((error: ShaderError) => {
+			const lineInfo = error.line ? ` line=${error.line}` : '';
+			const effectName = error.effectName ? ` effect=${error.effectName}` : '';
+			console.error(`[glugglug] shader ${error.stage} error${effectName}${lineInfo}: ${error.infoLog}`);
+		});
+
+	const view = await initView(state, canvas, memoryViews, spriteData, { onShaderError });
 	createSpriteSheetManager(store, view, events);
 
 	events.on('loadPostProcessEffects', () => {

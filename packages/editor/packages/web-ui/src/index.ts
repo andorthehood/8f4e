@@ -1,5 +1,5 @@
 import generateSprite, { type SpriteLookups } from '@8f4e/sprite-generator';
-import { Engine, PostProcessEffect } from 'glugglug';
+import { Engine, PostProcessEffect, type ShaderError } from 'glugglug';
 
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/codeBlockDecorators/connections';
@@ -28,7 +28,8 @@ export default async function init(
 	state: State,
 	canvas: HTMLCanvasElement,
 	memoryViews: MemoryViews,
-	spriteData: SpriteData
+	spriteData: SpriteData,
+	options?: { onShaderError?: (error: ShaderError) => void }
 ): Promise<{
 	resize: (width: number, height: number) => void;
 	reloadSpriteSheet: () => SpriteData;
@@ -42,7 +43,7 @@ export default async function init(
 		y: state.viewport.y,
 	};
 
-	const engine = new Engine(canvas, { caching: true });
+	const engine = new Engine(canvas, { caching: true, onShaderError: options?.onShaderError });
 
 	engine.loadSpriteSheet(spriteData.canvas);
 
