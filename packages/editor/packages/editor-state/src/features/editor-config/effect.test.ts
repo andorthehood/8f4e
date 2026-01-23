@@ -180,7 +180,7 @@ describe('editorConfigEffect - diffing behavior', () => {
 		expect(setCallsForErrors[0][1]).toEqual(newErrors);
 	});
 
-	it('should update both config and errors when both change', async () => {
+	it('should update errors but keep last valid config when errors are present', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
 			compiledConfig: { colorScheme: 'light', fontSize: 16 },
@@ -198,7 +198,7 @@ describe('editorConfigEffect - diffing behavior', () => {
 
 		await rebuildEditorConfig();
 
-		// Verify both were updated
+		// Verify errors updated and config not updated when errors are present
 		const setCallsForEditorConfig = (mockStore.set as Mock).mock.calls.filter(
 			call => call[0] === 'compiledEditorConfig'
 		);
@@ -206,7 +206,7 @@ describe('editorConfigEffect - diffing behavior', () => {
 			call => call[0] === 'codeErrors.editorConfigErrors'
 		);
 
-		expect(setCallsForEditorConfig).toHaveLength(1);
+		expect(setCallsForEditorConfig).toHaveLength(0);
 		expect(setCallsForErrors).toHaveLength(1);
 	});
 });

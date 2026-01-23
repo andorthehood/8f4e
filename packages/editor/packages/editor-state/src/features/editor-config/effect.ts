@@ -56,8 +56,9 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 			store.set('codeErrors.editorConfigErrors', errors);
 		}
 
-		// Only update config if it has changed
-		if (!deepEqual(compiledConfig, currentState.compiledEditorConfig)) {
+		// Only update config if it has changed and there are no errors.
+		// This keeps the last valid config while the user is mid-edit with invalid input.
+		if (errors.length === 0 && !deepEqual(compiledConfig, currentState.compiledEditorConfig)) {
 			store.set('compiledEditorConfig', compiledConfig as EditorConfig);
 		}
 	}
