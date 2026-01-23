@@ -44,18 +44,6 @@ export async function getModule(slug: string): Promise<ExampleModule> {
 }
 
 /**
- * @deprecated Use getListOfModules and getModule instead.
- * This function is kept for backwards compatibility but now loads modules lazily.
- */
-export async function loadAllModules(): Promise<Record<string, ExampleModule>> {
-	console.log('Loading all modules (lazy)...');
-
-	await getListOfModules();
-
-	return { ...loadedModulesCache };
-}
-
-/**
  * Get list of projects with metadata only.
  * Returns hardcoded metadata without loading any project code.
  */

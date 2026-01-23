@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`combineConfigBlocks > should maintain creation order 1`] = `
+exports[`combineConfigBlocksByType > should maintain creation order 1`] = `
 [
   {
     "blockId": 0,
@@ -20,7 +20,7 @@ exports[`combineConfigBlocks > should maintain creation order 1`] = `
 ]
 `;
 
-exports[`combineConfigBlocks > should skip empty config blocks 1`] = `
+exports[`combineConfigBlocksByType > should skip empty config blocks 1`] = `
 {
   "blockId": 1,
   "endLine": 1,
