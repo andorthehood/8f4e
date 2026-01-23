@@ -1,3 +1,6 @@
+// Export runtime metadata for hosts to import
+export * from './metadata';
+
 import resetMidi from './resetMidi';
 import findMidiNoteOutModules from './findMidiNoteOutModules';
 import broadcastMidiMessages from './broadcastMidiMessages';

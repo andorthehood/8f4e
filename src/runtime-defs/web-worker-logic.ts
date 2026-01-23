@@ -1,11 +1,12 @@
 /**
  * WebWorker Logic Runtime Definition
- * Factory, schema, and defaults for the WebWorker Logic Runtime
+ * Factory for the WebWorker Logic Runtime, combining package metadata with host-level factory.
  */
 import WebWorkerLogicRuntime from '@8f4e/runtime-web-worker-logic?worker';
+import { runtimeId, runtimeDefaults, runtimeSchema } from '@8f4e/runtime-web-worker-logic';
 import { StateManager } from '@8f4e/state-manager';
 
-import type { RuntimeRegistryEntry, State, EventDispatcher, JSONSchemaLike } from '@8f4e/editor';
+import type { RuntimeRegistryEntry, State, EventDispatcher } from '@8f4e/editor';
 
 export function createWebWorkerLogicRuntimeDef(callbacks: {
 	getCodeBuffer: () => Uint8Array;
@@ -69,23 +70,9 @@ export function createWebWorkerLogicRuntimeDef(callbacks: {
 	}
 
 	return {
-		id: 'WebWorkerLogicRuntime',
-		defaults: {
-			runtime: 'WebWorkerLogicRuntime',
-			sampleRate: 50,
-		},
-		schema: {
-			type: 'object',
-			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['WebWorkerLogicRuntime'],
-				},
-				sampleRate: { type: 'number' },
-			},
-			required: ['runtime'],
-			additionalProperties: false,
-		} as JSONSchemaLike,
+		id: runtimeId,
+		defaults: runtimeDefaults,
+		schema: runtimeSchema,
 		factory: webWorkerLogicRuntimeFactory,
 	};
 }

@@ -1,11 +1,12 @@
 /**
  * WebWorker MIDI Runtime Definition
- * Factory, schema, and defaults for the WebWorker MIDI Runtime
+ * Factory for the WebWorker MIDI Runtime, combining package metadata with host-level factory.
  */
 import WebWorkerMIDIRuntime from '@8f4e/runtime-web-worker-midi?worker';
+import { runtimeId, runtimeDefaults, runtimeSchema } from '@8f4e/runtime-web-worker-midi';
 import { StateManager } from '@8f4e/state-manager';
 
-import type { RuntimeRegistryEntry, State, EventDispatcher, JSONSchemaLike } from '@8f4e/editor';
+import type { RuntimeRegistryEntry, State, EventDispatcher } from '@8f4e/editor';
 
 export function createWebWorkerMIDIRuntimeDef(callbacks: {
 	getCodeBuffer: () => Uint8Array;
@@ -109,79 +110,9 @@ export function createWebWorkerMIDIRuntimeDef(callbacks: {
 	}
 
 	return {
-		id: 'WebWorkerMIDIRuntime',
-		defaults: {
-			runtime: 'WebWorkerMIDIRuntime',
-			sampleRate: 50,
-		},
-		schema: {
-			type: 'object',
-			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['WebWorkerMIDIRuntime'],
-				},
-				sampleRate: { type: 'number' },
-				midiNoteOutputs: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							moduleId: { type: 'string' },
-							channelMemoryId: { type: 'string' },
-							portMemoryId: { type: 'string' },
-							velocityMemoryId: { type: 'string' },
-							noteOnOffMemoryId: { type: 'string' },
-							noteMemoryId: { type: 'string' },
-						},
-						additionalProperties: false,
-					},
-				},
-				midiNoteInputs: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							moduleId: { type: 'string' },
-							channelMemoryId: { type: 'string' },
-							portMemoryId: { type: 'string' },
-							velocityMemoryId: { type: 'string' },
-							noteOnOffMemoryId: { type: 'string' },
-							noteMemoryId: { type: 'string' },
-						},
-						additionalProperties: false,
-					},
-				},
-				midiControlChangeOutputs: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							moduleId: { type: 'string' },
-							channelMemoryId: { type: 'string' },
-							selectedCCMemoryId: { type: 'string' },
-							valueMemoryId: { type: 'string' },
-						},
-						additionalProperties: false,
-					},
-				},
-				midiControlChangeInputs: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							moduleId: { type: 'string' },
-							channelMemoryId: { type: 'string' },
-							selectedCCMemoryId: { type: 'string' },
-							valueMemoryId: { type: 'string' },
-						},
-						additionalProperties: false,
-					},
-				},
-			},
-			required: ['runtime'],
-			additionalProperties: false,
-		} as JSONSchemaLike,
+		id: runtimeId,
+		defaults: runtimeDefaults,
+		schema: runtimeSchema,
 		factory: webWorkerMIDIRuntimeFactory,
 	};
 }
