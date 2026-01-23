@@ -10,6 +10,10 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
+		},
+		"./runtime-def": {
+			"types": "./dist/runtimeDef.d.ts",
+			"default": "./dist/runtimeDef.js"
 		}
 	},
 	"sideEffects": false,
@@ -27,5 +31,9 @@
 	"devDependencies": {
 		"@types/node": "^24.3.0",
 		"vite": "^7.1.11"
+	},
+	"peerDependencies": {
+		"@8f4e/editor": "*",
+		"@8f4e/state-manager": "*"
 	}
 }
