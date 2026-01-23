@@ -36,17 +36,6 @@ function isSupportedConfigType(configType: string | null): configType is ConfigT
 }
 
 /**
- * Combines all config blocks into a single source for validation.
- * Config blocks are sorted in creation order and concatenated with blank line separators.
- * Only processes config blocks with supported types.
- * Returns the combined source and line mappings for error attribution.
- * @deprecated Use combineConfigBlocksByType instead
- */
-export function combineConfigBlocks(codeBlocks: CodeBlockGraphicData[]): CombinedConfigSource {
-	return combineConfigBlocksByType(codeBlocks, 'project');
-}
-
-/**
  * Combines all config blocks of a specific type into a single source for validation.
  * Config blocks are sorted in creation order and concatenated with blank line separators.
  * Returns the combined source and line mappings for error attribution.
@@ -99,7 +88,7 @@ if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 	const { createMockCodeBlock } = await import('../../../pureHelpers/testingUtils/testUtils');
 
-	describe('combineConfigBlocks', () => {
+	describe('combineConfigBlocksByType', () => {
 		it('should combine multiple config blocks with blank line separator', () => {
 			const block1 = createMockCodeBlock({
 				code: ['config project', 'push 1', 'configEnd'],
@@ -113,7 +102,7 @@ if (import.meta.vitest) {
 			});
 			const codeBlocks = [block1, block2];
 
-			const result = combineConfigBlocks(codeBlocks);
+			const result = combineConfigBlocksByType(codeBlocks, 'project');
 			expect(result.source).toBe('push 1\n\npush 2');
 			expect(result.lineMappings).toHaveLength(2);
 			expect(result.lineMappings[0]).toEqual({
@@ -141,7 +130,7 @@ if (import.meta.vitest) {
 			});
 			const codeBlocks = [block1, block2];
 
-			const result = combineConfigBlocks(codeBlocks);
+			const result = combineConfigBlocksByType(codeBlocks, 'project');
 			expect(result.source).toBe('push 1\npush 2\npush 3\n\nset x 10\nset y 20');
 			expect(result.lineMappings).toHaveLength(2);
 			expect(result.lineMappings[0]).toEqual({
@@ -164,7 +153,7 @@ if (import.meta.vitest) {
 			});
 			const codeBlocks = [moduleBlock];
 
-			const result = combineConfigBlocks(codeBlocks);
+			const result = combineConfigBlocksByType(codeBlocks, 'project');
 			expect(result.source).toBe('');
 			expect(result.lineMappings).toHaveLength(0);
 		});
@@ -182,7 +171,7 @@ if (import.meta.vitest) {
 			});
 			const codeBlocks = [emptyBlock, contentBlock];
 
-			const result = combineConfigBlocks(codeBlocks);
+			const result = combineConfigBlocksByType(codeBlocks, 'project');
 			expect(result.source).toBe('push 1');
 			expect(result.lineMappings).toHaveLength(1);
 			expect(result.lineMappings[0]).toMatchSnapshot();
@@ -206,7 +195,7 @@ if (import.meta.vitest) {
 			});
 			const codeBlocks = [block1, block2, block3];
 
-			const result = combineConfigBlocks(codeBlocks);
+			const result = combineConfigBlocksByType(codeBlocks, 'project');
 			expect(result.source).toBe('second\n\nthird\n\nfirst');
 			expect(result.lineMappings).toHaveLength(3);
 			expect(result.lineMappings).toMatchSnapshot();
@@ -225,7 +214,7 @@ if (import.meta.vitest) {
 			});
 			const codeBlocks = [invalidBlock, validBlock];
 
-			const result = combineConfigBlocks(codeBlocks);
+			const result = combineConfigBlocksByType(codeBlocks, 'project');
 			expect(result.source).toBe('push 2');
 			expect(result.lineMappings).toHaveLength(1);
 		});
@@ -243,7 +232,7 @@ if (import.meta.vitest) {
 			});
 			const codeBlocks = [editorConfigBlock, projectConfigBlock];
 
-			const result = combineConfigBlocks(codeBlocks);
+			const result = combineConfigBlocksByType(codeBlocks, 'project');
 			expect(result.source).toBe('push 2');
 			expect(result.lineMappings).toHaveLength(1);
 		});
@@ -261,7 +250,7 @@ if (import.meta.vitest) {
 			});
 			const codeBlocks = [validBlock, invalidBlock];
 
-			const result = combineConfigBlocks(codeBlocks);
+			const result = combineConfigBlocksByType(codeBlocks, 'project');
 			expect(result.source).toBe('push 1');
 			expect(result.lineMappings).toHaveLength(1);
 		});
