@@ -23,6 +23,11 @@ Detailed description of the proposed solution:
 - Key changes required
 - Alternative approaches considered
 
+## Anti-Patterns (Optional)
+
+- What not to do (common misinterpretations to avoid)
+- Things that look similar but are incorrect
+
 ## Implementation Plan
 
 ### Step 1: [Action]
@@ -39,6 +44,11 @@ Detailed description of the proposed solution:
 - Specific task description
 - Expected outcome
 - Dependencies or prerequisites
+
+## Validation Checkpoints (Optional)
+
+- Commands or checks to confirm each step completed correctly
+- Example: `rg -n "pattern" path/` or `git status` expectations
 
 ## Success Criteria
 
