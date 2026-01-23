@@ -13,7 +13,7 @@ import { lighten, darken, alpha, mix } from '@8f4e/sprite-generator';
 
 // Lighten a color by 30%
 const lighter = lighten('#00cc00', 0.3);
-// => 'rgba(77,217,77,1)'
+// => 'rgba(77,219,77,1)'
 
 // Darken a color by 50%
 const darker = darken('#00cc00', 0.5);
@@ -29,7 +29,7 @@ const mixed = mix('#ff0000', '#0000ff');
 
 // Mix with custom weight (70% first color, 30% second)
 const weighted = mix('#ff0000', '#0000ff', 0.7);
-// => 'rgba(179,0,76,1)'
+// => 'rgba(179,0,77,1)'
 ```
 
 ### Deriving a Custom Color Scheme

@@ -49,12 +49,22 @@ function parseColor(color: string): RGBA {
 
 	// Handle rgba/rgb format
 	// Supports both rgb(r,g,b) and rgba(r,g,b,a) formats for flexibility
-	const rgbaMatch = trimmed.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)$/);
+	const rgbaMatch = trimmed.match(/^rgba?\(\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)\s*(?:,\s*(-?[\d.]+)\s*)?\)$/);
 	if (rgbaMatch) {
 		const r = parseInt(rgbaMatch[1], 10);
 		const g = parseInt(rgbaMatch[2], 10);
 		const b = parseInt(rgbaMatch[3], 10);
 		const a = rgbaMatch[4] !== undefined ? parseFloat(rgbaMatch[4]) : 1;
+
+		// Validate RGB values are in the 0-255 range
+		if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+			throw new Error(`Invalid color format: RGB values must be in the 0-255 range: ${color}`);
+		}
+
+		// Validate alpha is in the 0-1 range
+		if (a < 0 || a > 1) {
+			throw new Error(`Invalid color format: Alpha value must be in the 0-1 range: ${color}`);
+		}
 
 		return { r, g, b, a };
 	}
@@ -68,7 +78,13 @@ function parseColor(color: string): RGBA {
  * @returns rgba string in format rgba(r,g,b,a)
  */
 function toRgbaString(rgba: RGBA): string {
-	return `rgba(${Math.round(rgba.r)},${Math.round(rgba.g)},${Math.round(rgba.b)},${rgba.a})`;
+	// Clamp RGB values to 0-255 range and alpha to 0-1 range
+	const r = clamp(Math.round(rgba.r), 0, 255);
+	const g = clamp(Math.round(rgba.g), 0, 255);
+	const b = clamp(Math.round(rgba.b), 0, 255);
+	const a = clamp(rgba.a, 0, 1);
+
+	return `rgba(${r},${g},${b},${a})`;
 }
 
 /**
