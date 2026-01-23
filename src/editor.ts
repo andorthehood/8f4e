@@ -1,5 +1,6 @@
 import initEditor from '@8f4e/editor';
 import { ColorScheme } from '@8f4e/sprite-generator';
+import { compileConfig, JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 import { getListOfModules, getModule, getListOfProjects, getProject } from './examples/registry';
 import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
@@ -13,7 +14,6 @@ import {
 	exportBinaryCode,
 } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
-import compileConfig from './config-callback';
 
 async function getListOfColorSchemes(): Promise<string[]> {
 	return ['hackerman', 'redalert', 'default'];
@@ -41,7 +41,7 @@ async function init() {
 			getListOfProjects,
 			getProject,
 			compileCode: (modules, compilerOptions, functions) => compileCode(modules, compilerOptions, functions, editor),
-			compileConfig,
+			compileConfig: async (source: string, schema: JSONSchemaLike) => compileConfig(source, { schema }),
 			loadSession,
 			saveSession,
 			loadEditorConfigBlocks,
