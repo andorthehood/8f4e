@@ -10,6 +10,10 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
+		},
+		"./runtime-def": {
+			"types": "./dist/runtimeDef.d.ts",
+			"default": "./dist/runtimeDef.js"
 		}
 	},
 	"sideEffects": false,

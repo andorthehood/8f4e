@@ -1,11 +1,8 @@
 // Import the types from the editor
-import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
+// Note: audioWorkletUrl is imported at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
 
-import { getCodeBuffer, getMemory } from './compiler-callback';
-
-import type { State, EventDispatcher } from '@8f4e/editor';
-// Import the runtime dependencies
+import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
 /**
  * Resolves a memory identifier into module and memory name components.
@@ -34,12 +31,23 @@ function resolveAudioBufferMemory(memoryId: string): { moduleId: string; memoryN
 }
 
 // AudioWorklet Runtime Factory
-export function audioWorkletRuntime(store: StateManager<State>, events: EventDispatcher) {
+export function audioWorkletRuntimeFactory(
+	store: StateManager<State>,
+	events: EventDispatcher,
+	getCodeBuffer: () => Uint8Array,
+	getMemory: () => WebAssembly.Memory | null,
+	audioWorkletUrl: string
+) {
 	const state = store.getState();
-	let audioContext: AudioContext | null = null;
-	let audioWorklet: AudioWorkletNode | null = null;
-	let mediaStream: MediaStream | null = null;
-	let mediaStreamSource: MediaStreamAudioSourceNode | null = null;
+	// Using any types for Web Audio API types that aren't available in worker context during build
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let audioContext: any | null = null;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let audioWorklet: any | null = null;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let mediaStream: any | null = null;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	let mediaStreamSource: any | null = null;
 
 	function syncCodeAndSettingsWithRuntime() {
 		const runtime = state.compiledProjectConfig.runtimeSettings;
@@ -110,9 +118,11 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 
 		store.set('dialog', { ...state.dialog, show: false });
 
+		// @ts-expect-error - AudioContext not available in worker context during build
 		audioContext = new AudioContext({ sampleRate: runtime.sampleRate, latencyHint: 'interactive' });
 
 		await audioContext.audioWorklet.addModule(audioWorkletUrl);
+		// @ts-expect-error - AudioWorkletNode not available in worker context during build
 		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
 			outputChannelCount: [2],
 			numberOfOutputs: 1,
@@ -121,16 +131,20 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 			channelCountMode: 'explicit',
 		});
 
-		audioWorklet.port.onmessage = function ({ data }) {
-			switch (data.type) {
+		audioWorklet.port.onmessage = function (event: { data: unknown }) {
+			const { data } = event;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const typedData = data as any;
+			switch (typedData.type) {
 				case 'initialized':
-					events.dispatch('runtimeInitialized', data.payload);
+					events.dispatch('runtimeInitialized', typedData.payload);
 					break;
 			}
 		};
 
 		if (runtime.audioInputBuffers) {
 			try {
+				// @ts-expect-error - navigator.mediaDevices not available in worker context during build
 				mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 				mediaStreamSource = audioContext.createMediaStreamSource(mediaStream);
 				mediaStreamSource.connect(audioWorklet);
@@ -167,7 +181,8 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 		}
 
 		if (mediaStream) {
-			mediaStream.getTracks().forEach(track => track.stop());
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			mediaStream.getTracks().forEach((track: any) => track.stop());
 			mediaStream = null;
 		}
 
@@ -180,5 +195,62 @@ export function audioWorkletRuntime(store: StateManager<State>, events: EventDis
 			audioContext.close();
 			audioContext = null;
 		}
+	};
+}
+
+/**
+ * Create a runtime definition with injected callbacks.
+ * This allows the host to provide getCodeBuffer and getMemory implementations.
+ */
+export function createAudioWorkletRuntimeDef(
+	getCodeBuffer: () => Uint8Array,
+	getMemory: () => WebAssembly.Memory | null,
+	audioWorkletUrl: string
+): RuntimeRegistryEntry {
+	return {
+		id: 'AudioWorkletRuntime',
+		defaults: {
+			runtime: 'AudioWorkletRuntime',
+			sampleRate: 44100,
+		},
+		schema: {
+			type: 'object',
+			properties: {
+				runtime: {
+					type: 'string',
+					enum: ['AudioWorkletRuntime'],
+				},
+				sampleRate: { type: 'number' },
+				audioInputBuffers: {
+					type: 'array',
+					items: {
+						type: 'object',
+						properties: {
+							memoryId: { type: 'string' },
+							channel: { type: 'number' },
+							input: { type: 'number' },
+						},
+						additionalProperties: false,
+					},
+				},
+				audioOutputBuffers: {
+					type: 'array',
+					items: {
+						type: 'object',
+						properties: {
+							memoryId: { type: 'string' },
+							channel: { type: 'number' },
+							output: { type: 'number' },
+						},
+						additionalProperties: false,
+					},
+				},
+			},
+			required: ['runtime'],
+			additionalProperties: false,
+		} as JSONSchemaLike,
+		factory: (store: StateManager<State>, events: EventDispatcher) => {
+			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl);
+		},
 	};
 }
