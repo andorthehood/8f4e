@@ -63,7 +63,7 @@ export function audioWorkletRuntimeFactory(
 		}
 
 		const audioOutputBuffers = (runtime.audioOutputBuffers || [])
-			.map(({ memoryId, output, channel }) => {
+			.map(({ memoryId, output, channel }: { memoryId: string; output: number; channel: number }) => {
 				const resolved = resolveAudioBufferMemory(memoryId);
 				if (!resolved) {
 					return { audioBufferWordAddress: undefined, output, channel };
@@ -78,10 +78,13 @@ export function audioWorkletRuntimeFactory(
 					channel,
 				};
 			})
-			.filter(({ audioBufferWordAddress }) => typeof audioBufferWordAddress !== 'undefined');
+			.filter(
+				({ audioBufferWordAddress }: { audioBufferWordAddress: number | undefined }) =>
+					typeof audioBufferWordAddress !== 'undefined'
+			);
 
 		const audioInputBuffers = (runtime.audioInputBuffers || [])
-			.map(({ memoryId, input, channel }) => {
+			.map(({ memoryId, input, channel }: { memoryId: string; input: number; channel: number }) => {
 				const resolved = resolveAudioBufferMemory(memoryId);
 				if (!resolved) {
 					return { audioBufferWordAddress: undefined, input, channel };
@@ -96,7 +99,10 @@ export function audioWorkletRuntimeFactory(
 					channel,
 				};
 			})
-			.filter(({ audioBufferWordAddress }) => typeof audioBufferWordAddress !== 'undefined');
+			.filter(
+				({ audioBufferWordAddress }: { audioBufferWordAddress: number | undefined }) =>
+					typeof audioBufferWordAddress !== 'undefined'
+			);
 
 		if (audioWorklet) {
 			audioWorklet.port.postMessage({
