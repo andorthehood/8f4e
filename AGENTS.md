@@ -15,11 +15,6 @@
 - `npm run lint`: ESLint with autofix; also runs on pre-commit via Husky/lint-staged.
 - `npm run graph`: Opens Nx project dependency graph.
 
-## Comment & Documentation Style
-- Do not add inline implementation comments inside code (e.g. trailing `//` remarks or per-line explanations).
-- You may add or update JSDoc-style comments for functions, classes, and modules when they improve clarity.
-- Prefer expressing intent via JSDoc and clear naming rather than scattered inline comments.
-
 ## Coding Style & Naming Conventions
 - Language: TypeScript (ES modules). Target: modern browsers/node.
 - Formatting: Prettier (tabs, single quotes, semi, trailing commas, width 120).
