@@ -2,13 +2,15 @@
 import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
 import { StateManager } from '@8f4e/state-manager';
 
-import { getCodeBuffer, getMemory } from './compiler-callback';
-
-import type { State, EventDispatcher } from '@8f4e/editor';
-// Import the runtime
+import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
 // Main Thread Logic Runtime Factory
-export function mainThreadLogicRuntime(store: StateManager<State>, events: EventDispatcher) {
+export function mainThreadLogicRuntimeFactory(
+	store: StateManager<State>,
+	events: EventDispatcher,
+	getCodeBuffer: () => Uint8Array,
+	getMemory: () => WebAssembly.Memory | null
+) {
 	const state = store.getState();
 	let runtime: ReturnType<typeof createMainThreadLogicRuntime> | undefined;
 
@@ -57,5 +59,37 @@ export function mainThreadLogicRuntime(store: StateManager<State>, events: Event
 			runtime.stop();
 			runtime = undefined;
 		}
+	};
+}
+
+/**
+ * Create a runtime definition with injected callbacks.
+ * This allows the host to provide getCodeBuffer and getMemory implementations.
+ */
+export function createMainThreadLogicRuntimeDef(
+	getCodeBuffer: () => Uint8Array,
+	getMemory: () => WebAssembly.Memory | null
+): RuntimeRegistryEntry {
+	return {
+		id: 'MainThreadLogicRuntime',
+		defaults: {
+			runtime: 'MainThreadLogicRuntime',
+			sampleRate: 50,
+		},
+		schema: {
+			type: 'object',
+			properties: {
+				runtime: {
+					type: 'string',
+					enum: ['MainThreadLogicRuntime'],
+				},
+				sampleRate: { type: 'number' },
+			},
+			required: ['runtime'],
+			additionalProperties: false,
+		} as JSONSchemaLike,
+		factory: (store: StateManager<State>, events: EventDispatcher) => {
+			return mainThreadLogicRuntimeFactory(store, events, getCodeBuffer, getMemory);
+		},
 	};
 }
