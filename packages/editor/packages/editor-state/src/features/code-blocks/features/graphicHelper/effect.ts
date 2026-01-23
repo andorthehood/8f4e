@@ -161,7 +161,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 			return createCodeBlockGraphicData({
 				width: 0,
-				minGridWidth: 32,
 				height: 0,
 				code: codeBlock.code,
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
@@ -194,7 +193,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						disabled: rawBlock.disabled || false,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
-						minGridWidth: 32,
 						gridX,
 						gridY,
 						x: gridX * state.viewport.vGrid,
