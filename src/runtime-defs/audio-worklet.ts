@@ -1,11 +1,12 @@
 /**
  * AudioWorklet Runtime Definition
- * Factory, schema, and defaults for the AudioWorklet Runtime
+ * Factory for the AudioWorklet Runtime, combining package metadata with host-level factory.
  */
 import audioWorkletUrl from '@8f4e/runtime-audio-worklet?url';
+import { runtimeId, runtimeDefaults, runtimeSchema } from '@8f4e/runtime-audio-worklet';
 import { StateManager } from '@8f4e/state-manager';
 
-import type { RuntimeRegistryEntry, State, EventDispatcher, JSONSchemaLike } from '@8f4e/editor';
+import type { RuntimeRegistryEntry, State, EventDispatcher } from '@8f4e/editor';
 
 /**
  * Resolves a memory identifier into module and memory name components.
@@ -187,47 +188,9 @@ export function createAudioWorkletRuntimeDef(callbacks: {
 	}
 
 	return {
-		id: 'AudioWorkletRuntime',
-		defaults: {
-			runtime: 'AudioWorkletRuntime',
-			sampleRate: 44100,
-		},
-		schema: {
-			type: 'object',
-			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['AudioWorkletRuntime'],
-				},
-				sampleRate: { type: 'number' },
-				audioInputBuffers: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							memoryId: { type: 'string' },
-							channel: { type: 'number' },
-							input: { type: 'number' },
-						},
-						additionalProperties: false,
-					},
-				},
-				audioOutputBuffers: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: {
-							memoryId: { type: 'string' },
-							channel: { type: 'number' },
-							output: { type: 'number' },
-						},
-						additionalProperties: false,
-					},
-				},
-			},
-			required: ['runtime'],
-			additionalProperties: false,
-		} as JSONSchemaLike,
+		id: runtimeId,
+		defaults: runtimeDefaults,
+		schema: runtimeSchema,
 		factory: audioWorkletRuntimeFactory,
 	};
 }

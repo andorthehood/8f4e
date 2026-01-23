@@ -1,11 +1,12 @@
 /**
  * Main Thread Logic Runtime Definition
- * Factory, schema, and defaults for the Main Thread Logic Runtime
+ * Factory for the Main Thread Logic Runtime, combining package metadata with host-level factory.
  */
 import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
+import { runtimeId, runtimeDefaults, runtimeSchema } from '@8f4e/runtime-main-thread-logic';
 import { StateManager } from '@8f4e/state-manager';
 
-import type { RuntimeRegistryEntry, State, EventDispatcher, JSONSchemaLike } from '@8f4e/editor';
+import type { RuntimeRegistryEntry, State, EventDispatcher } from '@8f4e/editor';
 
 export function createMainThreadLogicRuntimeDef(callbacks: {
 	getCodeBuffer: () => Uint8Array;
@@ -64,23 +65,9 @@ export function createMainThreadLogicRuntimeDef(callbacks: {
 	}
 
 	return {
-		id: 'MainThreadLogicRuntime',
-		defaults: {
-			runtime: 'MainThreadLogicRuntime',
-			sampleRate: 50,
-		},
-		schema: {
-			type: 'object',
-			properties: {
-				runtime: {
-					type: 'string',
-					enum: ['MainThreadLogicRuntime'],
-				},
-				sampleRate: { type: 'number' },
-			},
-			required: ['runtime'],
-			additionalProperties: false,
-		} as JSONSchemaLike,
+		id: runtimeId,
+		defaults: runtimeDefaults,
+		schema: runtimeSchema,
 		factory: mainThreadLogicRuntimeFactory,
 	};
 }

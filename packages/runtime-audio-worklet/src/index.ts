@@ -1,3 +1,6 @@
+// Export runtime metadata for hosts to import
+export * from './metadata';
+
 import createModule from './createModule';
 class Main extends AudioWorkletProcessor {
 	constructor(...args: ConstructorParameters<typeof AudioWorkletProcessor>) {
