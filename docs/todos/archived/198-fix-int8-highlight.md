@@ -3,8 +3,8 @@ title: 'TODO: Fix highlighting for int8[] and int8u[]'
 priority: Medium
 effort: 2-4 hours
 created: 2026-01-21
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-22
 ---
 
 # TODO: Fix highlighting for int8[] and int8u[]
