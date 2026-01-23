@@ -3,8 +3,8 @@ title: 'TODO: Use CodeBlock id instead of recomputing from code'
 priority: Low
 effort: 2-4 days
 created: 2026-01-22
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-23
 ---
 
 # TODO: Use CodeBlock id instead of recomputing from code
@@ -34,10 +34,10 @@ Treat `CodeBlockGraphicData.id` as the source of truth and stop recalculating ID
 
 ## Success Criteria
 
-- [ ] No runtime code path recomputes code block IDs on each update
-- [ ] IDs are assigned once during creation/import and remain stable
-- [ ] IDs update when code changes make the derived ID invalid
-- [ ] Tests cover ID stability across edits
+- [x] No runtime code path recomputes code block IDs on each update
+- [x] IDs are assigned once during creation/import and remain stable
+- [x] IDs update when code changes make the derived ID invalid
+- [x] Tests cover ID stability across edits
 
 ## Affected Components
 

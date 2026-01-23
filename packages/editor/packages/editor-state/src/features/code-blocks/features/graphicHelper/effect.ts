@@ -106,7 +106,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.height = graphicData.codeToRender.length * state.viewport.hGrid;
 		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
-		graphicData.id = getCodeBlockId(graphicData.code);
 	};
 
 	const updateGraphicsAll = function () {
@@ -211,6 +210,20 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		store.set('graphicHelper.codeBlocks', codeBlocks);
 	};
 
+	function updateCodeBlockIdIfNeeded() {
+		if (!state.graphicHelper.selectedCodeBlock) {
+			return;
+		}
+
+		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		const newId = getCodeBlockId(codeBlock.code);
+
+		// Only update if the derived ID has changed
+		if (newId !== codeBlock.id) {
+			codeBlock.id = newId;
+		}
+	}
+
 	function updateErrorMessages() {
 		const codeErrors = [
 			...state.codeErrors.compilationErrors,
@@ -245,6 +258,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', updateCodeBlockIdIfNeeded);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);

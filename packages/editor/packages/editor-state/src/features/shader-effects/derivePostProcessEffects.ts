@@ -3,8 +3,6 @@ import { DEFAULT_VERTEX_SHADER } from './defaultVertexShader';
 import getVertexShaderId from './getVertexShaderId';
 import getFragmentShaderId from './getFragmentShaderId';
 
-import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
-
 import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlockGraphicData, CodeError } from '~/types';
 
@@ -27,7 +25,7 @@ export default function derivePostProcessEffects(codeBlocks: CodeBlockGraphicDat
 	const fragmentShaders = new Map<string, { block: CodeBlockGraphicData; source: string }>();
 
 	for (const block of sortedBlocks) {
-		const blockType = getBlockType(block.code);
+		const blockType = block.blockType;
 
 		if (blockType === 'vertexShader') {
 			const id = getVertexShaderId(block.code);
