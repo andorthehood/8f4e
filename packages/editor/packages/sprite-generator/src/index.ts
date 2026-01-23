@@ -19,6 +19,7 @@ export { Icon } from './icons';
 export type { ColorScheme, Font } from './types';
 export { PianoKey } from './pianoKeyboard';
 export { default as defaultColorScheme } from './defaultColorScheme';
+export { lighten, darken, alpha, mix } from './color-helpers';
 
 const fonts: Record<
 	Config['font'],
