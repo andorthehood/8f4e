@@ -1,10 +1,10 @@
-import { combineConfigBlocks } from './combineConfigBlocks';
 import { mapErrorLineToBlock } from './mapErrorLineToBlock';
 import isPlainObject from './isPlainObject';
 
 import { getProjectConfigSchema } from '../../project-config/schema';
 
 import type { CodeError, State } from '~/types';
+import type { CombinedConfigSource } from './combineConfigBlocks';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 
@@ -20,7 +20,7 @@ interface ConfigBuildResult {
  * @param state Current editor state for schema access and error mapping.
  */
 export async function compileConfigFromCombined(
-	combined: ReturnType<typeof combineConfigBlocks>,
+	combined: CombinedConfigSource,
 	compileConfig: CompileConfigFn,
 	state: State
 ): Promise<ConfigBuildResult> {

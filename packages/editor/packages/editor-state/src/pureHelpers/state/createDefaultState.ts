@@ -1,21 +1,7 @@
 import { defaultFeatureFlags } from './featureFlags';
 
-import { ProjectConfig, EditorConfig } from '~/types';
-
-export const defaultProjectConfig: ProjectConfig = {
-	runtimeSettings: {
-		runtime: 'WebWorkerLogicRuntime',
-		sampleRate: 50,
-	},
-	memorySizeBytes: 1048576,
-	disableAutoCompilation: false,
-	binaryAssets: [],
-};
-
-export const defaultEditorConfig: EditorConfig = {
-	font: '8x16',
-	colorScheme: 'hackerman',
-};
+import { defaultEditorConfig } from '~/features/editor-config/defaults';
+import { defaultProjectConfig } from '~/features/project-config/defaults';
 
 export default function createDefaultState() {
 	return {
