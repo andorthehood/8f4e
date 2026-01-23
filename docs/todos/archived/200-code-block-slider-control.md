@@ -1,10 +1,10 @@
 ---
-id: 200
 title: Add code block slider control directive
 priority: 🟡
 effort: 1-2d
 created: 2026-01-21
-summary: Add a # slider directive to render an interactive horizontal slider inside code blocks and write values directly to a memory word.
+completed: 2026-01-22
+status: Completed
 ---
 
 # Add code block slider control directive
