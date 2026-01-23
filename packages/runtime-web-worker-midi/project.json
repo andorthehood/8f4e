@@ -9,7 +9,8 @@
       "options": {
         "command": "tsc",
         "cwd": "{projectRoot}"
-      }
+      },
+      "dependsOn": ["^build"]
     },
     "lint": {
       "executor": "nx:run-commands",
