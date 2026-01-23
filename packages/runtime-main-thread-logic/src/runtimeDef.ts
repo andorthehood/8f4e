@@ -1,7 +1,6 @@
 // Import the types from the editor
+import createMainThreadLogicRuntime from '@8f4e/runtime-main-thread-logic';
 import { StateManager } from '@8f4e/state-manager';
-
-import createMainThreadLogicRuntime from './index';
 
 import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
