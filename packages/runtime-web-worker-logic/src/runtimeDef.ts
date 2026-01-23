@@ -1,14 +1,17 @@
 // Import the types from the editor
-import WebWorkerLogicRuntime from '@8f4e/runtime-web-worker-logic?worker';
+// Note: Worker import is done at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
 
-import { getCodeBuffer, getMemory } from './compiler-callback';
-
-import type { State, EventDispatcher } from '@8f4e/editor';
-// Import the runtime dependencies
+import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
 
 // WebWorker Logic Runtime Factory
-export function webWorkerLogicRuntime(store: StateManager<State>, events: EventDispatcher) {
+export function webWorkerLogicRuntimeFactory(
+	store: StateManager<State>,
+	events: EventDispatcher,
+	getCodeBuffer: () => Uint8Array,
+	getMemory: () => WebAssembly.Memory | null,
+	WorkerConstructor: new () => Worker
+) {
 	const state = store.getState();
 	let worker: Worker | undefined;
 
@@ -48,7 +51,7 @@ export function webWorkerLogicRuntime(store: StateManager<State>, events: EventD
 		});
 	}
 
-	worker = new WebWorkerLogicRuntime();
+	worker = new WorkerConstructor();
 
 	worker.addEventListener('message', onWorkerMessage);
 	syncCodeAndSettingsWithRuntime();
@@ -62,5 +65,38 @@ export function webWorkerLogicRuntime(store: StateManager<State>, events: EventD
 			worker.terminate();
 			worker = undefined;
 		}
+	};
+}
+
+/**
+ * Create a runtime definition with injected callbacks.
+ * This allows the host to provide getCodeBuffer and getMemory implementations.
+ */
+export function createWebWorkerLogicRuntimeDef(
+	getCodeBuffer: () => Uint8Array,
+	getMemory: () => WebAssembly.Memory | null,
+	WorkerConstructor: new () => Worker
+): RuntimeRegistryEntry {
+	return {
+		id: 'WebWorkerLogicRuntime',
+		defaults: {
+			runtime: 'WebWorkerLogicRuntime',
+			sampleRate: 50,
+		},
+		schema: {
+			type: 'object',
+			properties: {
+				runtime: {
+					type: 'string',
+					enum: ['WebWorkerLogicRuntime'],
+				},
+				sampleRate: { type: 'number' },
+			},
+			required: ['runtime'],
+			additionalProperties: false,
+		} as JSONSchemaLike,
+		factory: (store: StateManager<State>, events: EventDispatcher) => {
+			return webWorkerLogicRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
+		},
 	};
 }
