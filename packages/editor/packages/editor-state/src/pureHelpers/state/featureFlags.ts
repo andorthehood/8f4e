@@ -10,7 +10,6 @@ export const defaultFeatureFlags: FeatureFlags = {
 	moduleDragging: true,
 	viewportDragging: true,
 	viewportAnimations: true,
-	persistentStorage: true,
 	editing: true,
 	demoMode: false,
 	historyTracking: true,

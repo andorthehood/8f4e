@@ -187,11 +187,9 @@ describe('projectExport', () => {
 	});
 
 	describe('saveSession', () => {
-		it('should save session when persistentStorage is enabled', async () => {
+		it('should save session when saveSession callback is provided', async () => {
 			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });
-
-			mockState.featureFlags.persistentStorage = true;
 			mockState.callbacks.saveSession = mockSaveSession;
 			mockState.callbacks.getStorageQuota = mockGetStorageQuota;
 
@@ -208,11 +206,10 @@ describe('projectExport', () => {
 			expect(mockState.storageQuota.usedBytes).toBe(1024);
 		});
 
-		it('should not save session when persistentStorage is disabled', async () => {
+		it('should not save session when saveSession callback is absent', async () => {
 			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
 
-			mockState.featureFlags.persistentStorage = false;
-			mockState.callbacks.saveSession = mockSaveSession;
+			mockState.callbacks.saveSession = undefined;
 
 			projectExport(store, mockEvents);
 
@@ -226,7 +223,6 @@ describe('projectExport', () => {
 		});
 
 		it('should not save session when callback is not provided', async () => {
-			mockState.featureFlags.persistentStorage = true;
 			mockState.callbacks.saveSession = undefined;
 
 			projectExport(store, mockEvents);
@@ -243,7 +239,6 @@ describe('projectExport', () => {
 			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });
 
-			mockState.featureFlags.persistentStorage = true;
 			mockState.callbacks.saveSession = mockSaveSession;
 			mockState.callbacks.getStorageQuota = mockGetStorageQuota;
 
