@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "@8f4e/website-background",
   "sourceRoot": "src",
   "projectType": "application",
   "implicitDependencies": [
@@ -12,27 +12,16 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": [
-          "nx run-many --target=build --all && NX_DAEMON=true nx watch --all -- nx run-many --target=build --all",
-          "vite"
-        ],
-        "parallel": true,
-        "cwd": "{workspaceRoot}"
-      }
-    },
-    "lint": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "eslint src --fix",
-        "cwd": "{workspaceRoot}"
+        "command": "vite --config vite.config.mjs --host --port 3001",
+        "cwd": "{projectRoot}"
       }
     },
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/dist"],
+      "outputs": ["{projectRoot}/dist"],
       "options": {
         "command": "vite build",
-        "cwd": "{workspaceRoot}"
+        "cwd": "{projectRoot}"
       },
       "dependsOn": ["typecheck", "^build"]
     },
@@ -40,33 +29,34 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "vite preview",
-        "cwd": "{workspaceRoot}"
+        "cwd": "{projectRoot}"
       },
       "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint src --fix",
+        "cwd": "{projectRoot}"
+      }
     },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
         "command": "tsc --noEmit --project tsconfig.build.json",
-        "cwd": "{workspaceRoot}"
+        "cwd": "{projectRoot}"
       },
       "dependsOn": ["^build"]
     },
     "test": {
       "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "command": "vitest run --config vitest.config.ts",
-        "cwd": "{workspaceRoot}"
+        "cwd": "{projectRoot}"
       },
       "dependsOn": ["^build"]
-    },
-    "kill-dev": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "lsof -ti tcp:3000 | xargs -r kill",
-        "cwd": "{workspaceRoot}"
-      }
     }
   },
-  "tags": ["type:application", "scope:root"]
+  "tags": ["type:application", "scope:ui"]
 }

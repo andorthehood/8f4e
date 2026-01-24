@@ -31,6 +31,7 @@
       "unitTestRunner": "vitest"
     }
   },
+  "useDaemonProcess": true,
   "nxCloudAccessToken": null,
   "defaultBase": "HEAD~1"
 }
