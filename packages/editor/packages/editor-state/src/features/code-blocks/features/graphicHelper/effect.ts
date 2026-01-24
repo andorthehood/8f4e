@@ -176,7 +176,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			});
 		});
 
-		if (state.featureFlags.persistentStorage && state.callbacks.loadEditorConfigBlocks) {
+		if (state.callbacks.loadEditorConfigBlocks) {
 			try {
 				const loadedBlocks = (await state.callbacks.loadEditorConfigBlocks()) ?? [];
 				const validBlocks = loadedBlocks.filter(block => isEditorConfigCode(block.code));
