@@ -64,7 +64,7 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 	}
 
 	function saveEditorConfigBlocks() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveEditorConfigBlocks) {
+		if (!state.callbacks.saveEditorConfigBlocks) {
 			return;
 		}
 

@@ -1,28 +1,10 @@
 import initEditor from '@8f4e/editor';
-import { ColorScheme } from '@8f4e/sprite-generator';
-import { compileConfig, JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
-import { getListOfModules, getModule, getListOfProjects, getProject } from './examples/registry';
 import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
-import {
-	loadSession,
-	saveSession,
-	loadEditorConfigBlocks,
-	saveEditorConfigBlocks,
-	importProject,
-	exportProject,
-	exportBinaryCode,
-} from './storage-callbacks';
+import { loadSession, loadEditorConfigBlocks } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
-
-async function getListOfColorSchemes(): Promise<string[]> {
-	return ['hackerman', 'redalert', 'default'];
-}
-
-async function getColorScheme(name: string): Promise<ColorScheme> {
-	const module = await import(`./colorSchemes/${name}.ts`);
-	return module.default;
-}
+import compileConfig from './config-callback';
+import defaultColorScheme from './defaultColorScheme';
 
 async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
@@ -35,21 +17,12 @@ async function init() {
 		runtimeRegistry,
 		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		callbacks: {
-			getListOfModules,
-			getModule,
-			getListOfProjects,
-			getProject,
 			compileCode: (modules, compilerOptions, functions) => compileCode(modules, compilerOptions, functions, editor),
-			compileConfig: async (source: string, schema: JSONSchemaLike) => compileConfig(source, { schema }),
+			compileConfig,
 			loadSession,
-			saveSession,
 			loadEditorConfigBlocks,
-			saveEditorConfigBlocks,
-			importProject,
-			exportProject,
-			exportBinaryCode,
-			getListOfColorSchemes,
-			getColorScheme,
+			getListOfColorSchemes: async () => ['default'],
+			getColorScheme: async () => defaultColorScheme,
 		},
 	});
 

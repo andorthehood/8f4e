@@ -32,7 +32,6 @@ describe('Feature Flags Configuration', () => {
 		expect(defaultFeatureFlags.infoOverlay).toBe(true);
 		expect(defaultFeatureFlags.moduleDragging).toBe(true);
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
-		expect(defaultFeatureFlags.persistentStorage).toBe(true);
 		expect(defaultFeatureFlags.editing).toBe(true);
 		expect(defaultFeatureFlags.demoMode).toBe(false);
 	});
@@ -47,7 +46,6 @@ describe('Feature Flags Configuration', () => {
 		expect(result.infoOverlay).toBe(true);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.persistentStorage).toBe(true);
 		expect(result.editing).toBe(true);
 		expect(result.demoMode).toBe(false);
 	});
@@ -63,7 +61,6 @@ describe('Feature Flags Configuration', () => {
 		expect(result.infoOverlay).toBe(true);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.persistentStorage).toBe(true);
 	});
 
 	test('validateFeatureFlags should allow combining editing flag with other flags', () => {
@@ -79,7 +76,6 @@ describe('Feature Flags Configuration', () => {
 		expect(result.moduleDragging).toBe(false);
 		expect(result.infoOverlay).toBe(true);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.persistentStorage).toBe(true);
 	});
 
 	test('validateFeatureFlags should allow enabling demo mode', () => {
@@ -93,7 +89,6 @@ describe('Feature Flags Configuration', () => {
 		expect(result.infoOverlay).toBe(true);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.persistentStorage).toBe(true);
 		expect(result.editing).toBe(true);
 	});
 });
