@@ -1,0 +1,72 @@
+import { type Module, type CompileOptions } from '@8f4e/compiler';
+import { Editor, type CompilationResult } from '@8f4e/editor';
+import CompilerWorker from '@8f4e/compiler-worker?worker';
+
+// Create worker once at module scope
+// it will live for the entire application lifecycle
+const compilerWorker = new CompilerWorker();
+
+let memoryRef: WebAssembly.Memory | null = null;
+let codeBuffer: Uint8Array = new Uint8Array();
+
+export async function compileCode(
+	modules: Module[],
+	compilerOptions: CompileOptions,
+	functions: Module[],
+	editor: Editor
+): Promise<CompilationResult> {
+	return new Promise((resolve, reject) => {
+		const handleMessage = ({ data }: MessageEvent) => {
+			switch (data.type) {
+				case 'success':
+					memoryRef = data.payload.wasmMemory;
+					codeBuffer = data.payload.codeBuffer;
+
+					editor.updateMemoryViews(data.payload.wasmMemory);
+
+					resolve({
+						compiledModules: data.payload.compiledModules,
+						codeBuffer: data.payload.codeBuffer,
+						allocatedMemorySize: data.payload.allocatedMemorySize,
+						hasWasmInstanceBeenReset: data.payload.hasWasmInstanceBeenReset,
+						memoryAction: data.payload.memoryAction,
+						compiledFunctions: data.payload.compiledFunctions,
+						byteCodeSize: data.payload.codeBuffer.length,
+					});
+					break;
+				case 'compilationError': {
+					const error = new Error(data.payload.message) as Error & {
+						line?: { lineNumber: number };
+						context?: { namespace?: { moduleName: string } };
+						errorCode?: number;
+					};
+					error.line = data.payload?.line;
+					error.context = data.payload?.context;
+					error.errorCode = data.payload?.errorCode;
+					reject(error);
+					break;
+				}
+			}
+		};
+
+		compilerWorker.addEventListener('message', handleMessage, { once: true });
+
+		compilerWorker.postMessage({
+			type: 'compile',
+			payload: {
+				modules,
+				compilerOptions,
+				functions,
+			},
+		});
+	});
+}
+
+// Export memory getter for runtimes to access
+export function getMemory(): WebAssembly.Memory | null {
+	return memoryRef;
+}
+
+export function getCodeBuffer(): Uint8Array {
+	return codeBuffer;
+}

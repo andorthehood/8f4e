@@ -1,5 +1,4 @@
 import { Engine } from 'glugglug';
-import { Icon } from '@8f4e/sprite-generator';
 
 import { calculateArrowPlacement } from './arrowPlacement';
 
@@ -18,22 +17,22 @@ export default function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicDat
 	const arrowPlacement = calculateArrowPlacement(codeBlock, state);
 
 	if (state.graphicHelper.spriteLookups) {
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
+		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCodeComment);
 	}
 
 	if (arrowPlacement.top) {
-		engine.drawSprite(arrowPlacement.top.x, arrowPlacement.top.y, Icon.ARROW_TOP);
+		engine.drawSprite(arrowPlacement.top.x, arrowPlacement.top.y, '^');
 	}
 
 	if (arrowPlacement.right) {
-		engine.drawSprite(arrowPlacement.right.x - state.viewport.vGrid, arrowPlacement.right.y, Icon.ARROW_RIGHT);
+		engine.drawSprite(arrowPlacement.right.x - state.viewport.vGrid, arrowPlacement.right.y, '>');
 	}
 
 	if (arrowPlacement.bottom) {
-		engine.drawSprite(arrowPlacement.bottom.x, arrowPlacement.bottom.y - state.viewport.hGrid, Icon.ARROW_BOTTOM);
+		engine.drawSprite(arrowPlacement.bottom.x, arrowPlacement.bottom.y - state.viewport.hGrid, 'v');
 	}
 
 	if (arrowPlacement.left) {
-		engine.drawSprite(arrowPlacement.left.x, arrowPlacement.left.y, Icon.ARROW_LEFT);
+		engine.drawSprite(arrowPlacement.left.x, arrowPlacement.left.y, '<');
 	}
 }
