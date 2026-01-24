@@ -9,7 +9,6 @@ The feature flags system allows you to enable/disable specific editor functional
 - `consoleOverlay: boolean` - Enable/disable console overlay display (internal logging) (default: false)
 - `moduleDragging: boolean` - Enable/disable dragging and repositioning of code block modules
 - `viewportDragging: boolean` - Enable/disable panning/scrolling of the editor viewport
- - Storage persistence is controlled by providing or omitting storage callbacks (`loadSession`, `saveSession`, `loadEditorConfigBlocks`, `saveEditorConfigBlocks`). No dedicated flag is required.
 - `editing: boolean` - Enable/disable all editing functionality (create, edit, delete, save)
 - `demoMode: boolean` - Enable/disable automatic demo mode with periodic code block navigation (default: false)
 
@@ -153,27 +152,6 @@ const state = init(events, project, {
     infoOverlay: false,
     moduleDragging: false,
     viewportDragging: false,
-  }
-});
-```
-
-## Backward Compatibility
-
-The system maintains full backward compatibility with existing options:
-
-```typescript
-// Legacy usage still works
-const state = init(events, project, {
-  showInfoOverlay: false,
-  // Storage behavior depends on provided callbacks
-});
-
-// Feature flags take precedence over legacy options
-const state = init(events, project, {
-  showInfoOverlay: true,         // Legacy option
-  // Storage behavior depends on provided callbacks
-  featureFlags: {
-    infoOverlay: false           // This overrides showInfoOverlay
   }
 });
 ```
