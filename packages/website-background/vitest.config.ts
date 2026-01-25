@@ -5,6 +5,7 @@ export default defineConfig({
 	test: {
 		...sharedTestConfig,
 		reporters: getReporters(),
+		passWithNoTests: true,
 		include: ['src/**/*.test.ts', 'src/__tests__/**/*.test.ts'],
 		environment: 'node',
 		typecheck: {
