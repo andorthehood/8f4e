@@ -1,12 +1,11 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { promises as fs } from 'fs';
 
 import { describe, expect, it } from 'vitest';
 
-import { compileProject } from '../src/compileProject';
-
 const testDir = path.dirname(fileURLToPath(import.meta.url));
+const packageRoot = path.resolve(testDir, '..');
 const fixturePath = path.join(testDir, 'fixtures', 'audioBuffer.project.json');
 
 async function loadAudioBufferProject() {
@@ -17,7 +16,8 @@ async function loadAudioBufferProject() {
 describe('compileProject (audioBuffer example)', () => {
 	it('compiles modules, functions, and config into runtime-ready output', async () => {
 		const project = await loadAudioBufferProject();
-		const { outputProject } = compileProject(project);
+		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
+		const { outputProject } = cliModule.compileProject(project);
 
 		expect(outputProject).toMatchSnapshot();
 	});

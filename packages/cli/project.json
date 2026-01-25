@@ -21,6 +21,7 @@
 		"test": {
 			"executor": "@nx/vitest:test",
 			"outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+			"dependsOn": ["^build", "build"],
 			"options": {
 				"config": "{projectRoot}/vitest.config.ts",
 				"reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
