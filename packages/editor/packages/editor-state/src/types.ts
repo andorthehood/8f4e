@@ -133,9 +133,6 @@ export interface FeatureFlags {
 	/** Enable/disable viewport animations for programmatic viewport changes */
 	viewportAnimations: boolean;
 
-	/** Enable/disable persistent storage functionality */
-	persistentStorage: boolean;
-
 	/** Enable/disable all editing functionality (create, edit, delete, save) */
 	editing: boolean;
 

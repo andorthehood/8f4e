@@ -7,13 +7,16 @@
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
 - Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
 
-## Build, Test, and Development Commands
-- `npm run dev`: Watches `packages/editor` and starts Vite on `http://localhost:3000`.
-- `npm run build`: Builds all Nx packages, then Vite production build to `dist/`.
-- `npm run test`: Runs Vitest for all packages via Nx.
-- `npm run typecheck`: Type-checks all packages. Runs on pre-commit via Husky/lint-staged and in CI on push/PR to main and staging.
-- `npm run lint`: ESLint with autofix; also runs on pre-commit via Husky/lint-staged.
-- `npm run graph`: Opens Nx project dependency graph.
+## Build, Test, and Development Commands (Nx-first)
+- `npx nx run app:dev`: Builds packages (watch) and starts Vite dev server on `http://localhost:3000`.
+- `npx nx run app:serve`: Serves the production build via `vite preview`.
+- `npx nx run app:build`: Vite production build to `dist/` for the root app.
+- `npx nx run-many --target=build --all`: Build all packages/libs.
+- `npx nx run-many --target=test --all`: Run Vitest across all packages.
+- `npx nx run-many --target=typecheck --all`: Type-check all packages; also run on pre-commit via Husky/lint-staged.
+- `npx nx run app:lint`: ESLint for the root app. Use `run-many --target=lint --all` to lint all projects if needed.
+- `npx nx graph`: Open Nx project dependency graph.
+- `npx nx run app:kill-dev`: Kill any dev server on port 3000.
 
 ## Coding Style & Naming Conventions
 - Language: TypeScript (ES modules). Target: modern browsers/node.

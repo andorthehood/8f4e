@@ -14,6 +14,7 @@
 
 ## Testing
 - Vitest (via Nx). Prefer unit tests and golden/snapshot tests for outputs.
+- To update snapshots after intentional changes, use `npx nx run sprite-generator:test -- --update` (or the `:update` variant for screenshot tests).
 
 ## Commits & PRs
 - Commits: `sprite-generator: <change>`; PRs include rationale and test notes.

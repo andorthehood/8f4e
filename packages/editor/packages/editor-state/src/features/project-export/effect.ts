@@ -44,7 +44,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	}
 
 	async function onSaveSession() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveSession) {
+		if (!state.callbacks.saveSession) {
 			return;
 		}
 
