@@ -52,8 +52,7 @@ describe('projectImport', () => {
 	});
 
 	describe('Initial session loading', () => {
-		it('should load empty project when persistentStorage is disabled', async () => {
-			mockState.featureFlags.persistentStorage = false;
+		it('should load empty project when loadSession callback is absent', async () => {
 			projectImport(store, mockEvents);
 
 			// Give time for promises to resolve
@@ -62,12 +61,10 @@ describe('projectImport', () => {
 			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
 		});
 
-		it('should load session from callback when persistentStorage is enabled', async () => {
+		it('should load session from callback when provided', async () => {
 			const mockProject: Project = {
 				...EMPTY_DEFAULT_PROJECT,
 			};
-
-			mockState.featureFlags.persistentStorage = true;
 			mockState.callbacks.loadSession = vi.fn().mockResolvedValue(mockProject);
 
 			projectImport(store, mockEvents);
@@ -80,8 +77,6 @@ describe('projectImport', () => {
 
 		it('should handle loadSession errors gracefully', async () => {
 			const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-			mockState.featureFlags.persistentStorage = true;
 			mockState.callbacks.loadSession = vi.fn().mockRejectedValue(new Error('Storage error'));
 
 			projectImport(store, mockEvents);
