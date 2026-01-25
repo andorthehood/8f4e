@@ -97,7 +97,6 @@ export default function createMockStateWithColors(overrides: Partial<State> = {}
 			infoOverlay: false,
 			moduleDragging: false,
 			viewportDragging: false,
-			persistentStorage: false,
 			editing: false,
 			demoMode: false,
 			viewportAnimations: false,
