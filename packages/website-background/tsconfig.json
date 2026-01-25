@@ -5,20 +5,6 @@
 		"outDir": "dist",
 		"baseUrl": "../..",
 		"types": ["vite/client", "vite-plugin-glsl/ext"],
-		"paths": {
-			"@8f4e/editor": ["packages/editor/src/index.ts"],
-			"@8f4e/editor-state": ["packages/editor/packages/editor-state/src/index.ts"],
-			"@8f4e/web-ui": ["packages/editor/packages/web-ui/src/index.ts"],
-			"glugglug": ["packages/editor/packages/glugglug/src/index.ts"],
-			"@8f4e/compiler": ["packages/compiler/src/index.ts"],
-			"@8f4e/compiler/syntax": ["packages/compiler/src/syntax/index.ts"],
-			"@8f4e/sprite-generator": ["packages/editor/packages/sprite-generator/src/index.ts"],
-			"@8f4e/state-manager": ["packages/editor/packages/state-manager/src/index.ts"],
-			"@8f4e/runtime-audio-worklet": ["packages/runtime-audio-worklet/src/index.ts"],
-			"@8f4e/runtime-web-worker-logic": ["packages/runtime-web-worker-logic/src/index.ts"],
-			"@8f4e/runtime-main-thread-logic": ["packages/runtime-main-thread-logic/src/index.ts"],
-			"@8f4e/runtime-web-worker-midi": ["packages/runtime-web-worker-midi/src/index.ts"]
-		}
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.mts", "src/**/*.cts"],
 	"exclude": ["node_modules", "dist"]
