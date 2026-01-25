@@ -44,7 +44,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	}
 
 	async function onSaveSession() {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.saveSession) {
+		if (!state.callbacks.saveSession) {
 			return;
 		}
 
@@ -76,6 +76,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		});
 	}
 
+	store.subscribe('graphicHelper.codeBlocks', onSaveSession);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveSession);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', onSaveSession);
 	events.on('saveSession', onSaveSession);

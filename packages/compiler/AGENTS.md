@@ -28,6 +28,7 @@
 - Vitest (via Nx). Place tests in `tests/`, `__tests__/`, or `*.test.ts`.
 - Focus on deterministic, fast unit tests for parsing, IR, and transforms.
 - In-source tests (`import.meta.vitest`) are enabled for `src/syntax/**/*.ts` via Vitest config.
+- To update snapshots after intentional changes, use `npx nx run compiler:test -- --update`.
 
 ## Pure Function Feature
 
