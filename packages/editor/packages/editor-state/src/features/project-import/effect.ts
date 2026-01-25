@@ -10,7 +10,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 	const state = store.getState();
 
 	const projectPromise = Promise.resolve().then(() => {
-		if (!state.featureFlags.persistentStorage || !state.callbacks.loadSession) {
+		if (!state.callbacks.loadSession) {
 			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
 		}
 
