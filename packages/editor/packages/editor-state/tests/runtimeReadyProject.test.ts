@@ -91,7 +91,6 @@ describe('Runtime-ready project functionality', () => {
 				infoOverlay: true,
 				moduleDragging: true,
 				viewportDragging: true,
-				persistentStorage: true,
 				editing: true,
 				demoMode: false,
 				viewportAnimations: true,

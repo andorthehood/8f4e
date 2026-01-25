@@ -9,7 +9,6 @@ The feature flags system allows you to enable/disable specific editor functional
 - `consoleOverlay: boolean` - Enable/disable console overlay display (internal logging) (default: false)
 - `moduleDragging: boolean` - Enable/disable dragging and repositioning of code block modules
 - `viewportDragging: boolean` - Enable/disable panning/scrolling of the editor viewport
-- `localStorage: boolean` - Enable/disable localStorage functionality
 - `editing: boolean` - Enable/disable all editing functionality (create, edit, delete, save)
 - `demoMode: boolean` - Enable/disable automatic demo mode with periodic code block navigation (default: false)
 
@@ -61,7 +60,7 @@ const state = init(events, project, {
     editing: false,             // Disable all editing functionality
     contextMenu: false,         // Disable context menus
     moduleDragging: false,      // Disable module dragging
-    // viewportDragging, infoOverlay and localStorage remain enabled for navigation
+    // viewportDragging and infoOverlay remain enabled for navigation
   }
 });
 ```
@@ -77,7 +76,7 @@ const state = init(events, project, {
     contextMenu: false,         // Disable context menus
     moduleDragging: false,      // Disable module dragging
     viewportDragging: false,    // Disable viewport panning
-    // infoOverlay and localStorage remain enabled
+    // infoOverlay remains enabled
   }
 });
 ```
@@ -153,29 +152,6 @@ const state = init(events, project, {
     infoOverlay: false,
     moduleDragging: false,
     viewportDragging: false,
-    localStorage: false,
-  }
-});
-```
-
-## Backward Compatibility
-
-The system maintains full backward compatibility with existing options:
-
-```typescript
-// Legacy usage still works
-const state = init(events, project, {
-  showInfoOverlay: false,
-  isLocalStorageEnabled: false,
-});
-
-// Feature flags take precedence over legacy options
-const state = init(events, project, {
-  showInfoOverlay: true,         // Legacy option
-  isLocalStorageEnabled: true,   // Legacy option
-  featureFlags: {
-    infoOverlay: false,          // This overrides showInfoOverlay
-    localStorage: false,         // This overrides isLocalStorageEnabled
   }
 });
 ```

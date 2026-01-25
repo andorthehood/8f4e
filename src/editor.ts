@@ -30,7 +30,6 @@ async function init() {
 	canvas.height = window.innerHeight;
 	const editor = await initEditor(canvas, {
 		featureFlags: {
-			persistentStorage: true,
 			infoOverlay: true,
 		},
 		runtimeRegistry,

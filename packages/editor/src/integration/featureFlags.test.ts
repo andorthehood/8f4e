@@ -20,20 +20,17 @@ describe('Feature Flags Integration', () => {
 		// Other flags should remain at defaults
 		expect(featureFlags.infoOverlay).toBe(true);
 		expect(featureFlags.viewportDragging).toBe(true);
-		expect(featureFlags.persistentStorage).toBe(true);
 	});
 
 	test('should handle feature flags override correctly', () => {
 		const options: Partial<Options> = {
 			featureFlags: {
-				persistentStorage: false,
 				infoOverlay: true, // Override default
 			},
 		};
 
 		const featureFlags = validateFeatureFlags(options.featureFlags);
 
-		expect(featureFlags.persistentStorage).toBe(false);
 		expect(featureFlags.infoOverlay).toBe(true);
 	});
 
@@ -49,7 +46,6 @@ describe('Feature Flags Integration', () => {
 		expect(result).toHaveProperty('infoOverlay');
 		expect(result).toHaveProperty('moduleDragging');
 		expect(result).toHaveProperty('viewportDragging');
-		expect(result).toHaveProperty('persistentStorage');
 		expect(result).toHaveProperty('editing');
 
 		// Should merge correctly
@@ -57,7 +53,6 @@ describe('Feature Flags Integration', () => {
 		expect(result.infoOverlay).toBe(true);
 		expect(result.moduleDragging).toBe(true);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.persistentStorage).toBe(true);
 		expect(result.editing).toBe(true);
 	});
 
@@ -76,7 +71,6 @@ describe('Feature Flags Integration', () => {
 		expect(featureFlags.infoOverlay).toBe(true);
 		expect(featureFlags.moduleDragging).toBe(true);
 		expect(featureFlags.viewportDragging).toBe(true);
-		expect(featureFlags.persistentStorage).toBe(true);
 	});
 
 	test('should support view-only mode with editing and contextMenu disabled', () => {
@@ -96,6 +90,5 @@ describe('Feature Flags Integration', () => {
 		// Navigation and info should remain enabled
 		expect(featureFlags.viewportDragging).toBe(true);
 		expect(featureFlags.infoOverlay).toBe(true);
-		expect(featureFlags.persistentStorage).toBe(true);
 	});
 });
