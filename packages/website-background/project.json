@@ -9,6 +9,21 @@
     "@8f4e/runtime-audio-worklet"
   ],
   "targets": {
+    "compile-project": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/src/project-runtime-ready.json"],
+      "dependsOn": [
+        "^build",
+        {
+          "target": "build",
+          "projects": ["@8f4e/cli"]
+        }
+      ],
+      "options": {
+        "command": "cli src/project.json -o src/project-runtime-ready.json",
+        "cwd": "{projectRoot}"
+      }
+    },
     "dev": {
       "executor": "nx:run-commands",
       "options": {
@@ -23,7 +38,7 @@
         "command": "vite build",
         "cwd": "{projectRoot}"
       },
-      "dependsOn": ["typecheck", "^build"]
+      "dependsOn": ["typecheck", "compile-project", "^build"]
     },
     "serve": {
       "executor": "nx:run-commands",

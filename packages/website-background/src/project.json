@@ -1,0 +1,267 @@
+{
+    "codeBlocks": [
+        {
+            "code": [
+                "config project",
+                "",
+                "scope \"memorySizeBytes\"",
+                "push 128",
+                "set",
+                "",
+                "rescope \"runtimeSettings\"",
+                "",
+                "scope \"sampleRate\"",
+                "push 10",
+                "set",
+                "",
+                "rescopeTop \"runtime\"",
+                "push \"WebWorkerLogicRuntime\"",
+                "set",
+                "",
+                "configEnd"
+            ],
+            "gridCoordinates": {
+                "x": -9,
+                "y": -73
+            }
+        },
+        {
+            "code": [
+                "module activationFn",
+                "",
+                "float* in &perceptron.out",
+                "float out",
+                "",
+                "push &out",
+                "push *in",
+                "call sigmoid",
+                "store",
+                "",
+                "moduleEnd"
+            ],
+            "gridCoordinates": {
+                "x": 152,
+                "y": -82
+            }
+        },
+        {
+            "code": [
+                "module activationFn2",
+                "",
+                "float* in &perceptron2.out",
+                "float out",
+                "",
+                "push &out",
+                "push *in",
+                "call sigmoid",
+                "store",
+                "",
+                "moduleEnd"
+            ],
+            "gridCoordinates": {
+                "x": 152,
+                "y": -55
+            }
+        },
+        {
+            "code": [
+                "module activationFn3",
+                "",
+                "float* in &perceptron3.out",
+                "int out",
+                "",
+                "push &out",
+                "",
+                "push *in",
+                "call sigmoid",
+                "",
+                "push 0.5",
+                "greaterThan",
+                "if int",
+                "push 1",
+                "else",
+                "push 0",
+                "ifEnd",
+                "",
+                "store",
+                "",
+                "moduleEnd"
+            ],
+            "gridCoordinates": {
+                "x": 231,
+                "y": -65
+            }
+        },
+        {
+            "code": [
+                "constants env",
+                "; Auto-generated environment constants",
+                "; Changes will be overwritten",
+                "; Last updated: 1/19/2026, 9:57:55 PM",
+                "",
+                "const SAMPLE_RATE 10",
+                "const AUDIO_BUFFER_SIZE 128",
+                "",
+                "constantsEnd"
+            ],
+            "gridCoordinates": {
+                "x": -9,
+                "y": -50
+            }
+        },
+        {
+            "code": [
+                "module perceptron",
+                "; Pre-trained perceptron",
+                "",
+                "float* in1 &switches.out1",
+                "float* in2 &switches.out2",
+                "float out",
+                "",
+                "; Weights",
+                "const W1 10.056234",
+                "const W2 -42.53689",
+                "const BIAS -3.92453",
+                "",
+                "push &out",
+                "push *in1",
+                "push W1",
+                "mul",
+                "push *in2",
+                "push W2",
+                "mul",
+                "add",
+                "push BIAS",
+                "add",
+                "store",
+                "moduleEnd"
+            ],
+            "gridCoordinates": {
+                "x": 118,
+                "y": -82
+            }
+        },
+        {
+            "code": [
+                "module perceptron2",
+                "; Pre-trained perceptron",
+                "",
+                "float* in1 &switches.out1",
+                "float* in2 &switches.out2",
+                "float out",
+                "",
+                "; Weights",
+                "const W1 -70.313797",
+                "const W2 24.76387",
+                "const BIAS -8.765101",
+                "",
+                "push &out",
+                "push *in1",
+                "push W1",
+                "mul",
+                "push *in2",
+                "push W2",
+                "mul",
+                "add",
+                "push BIAS",
+                "add",
+                "store",
+                "moduleEnd"
+            ],
+            "gridCoordinates": {
+                "x": 118,
+                "y": -55
+            }
+        },
+        {
+            "code": [
+                "module perceptron3",
+                "; Pre-trained perceptron",
+                "",
+                "float* in1 &activationFn.out",
+                "float* in2 &activationFn2.out",
+                "float out ",
+                "",
+                "; Weights",
+                "const W1 6.94625",
+                "const W2 6.64608",
+                "const BIAS 6.05782",
+                "",
+                "push &out",
+                "push *in1",
+                "push W1",
+                "mul",
+                "push *in2",
+                "push W2",
+                "mul",
+                "add",
+                "push BIAS",
+                "add",
+                "store",
+                "moduleEnd"
+            ],
+            "gridCoordinates": {
+                "x": 193,
+                "y": -65
+            }
+        },
+        {
+            "code": [
+                "module result",
+                "",
+                "int* in &activationFn3.out",
+                "",
+                "# debug *in",
+                "",
+                "moduleEnd"
+            ],
+            "gridCoordinates": {
+                "x": 74,
+                "y": -53
+            }
+        },
+        {
+            "code": [
+                "function sigmoid",
+                "param float x",
+                "; Polynomial sigmoid",
+                "; func. approximation",
+                "",
+                "localGet x",
+                "dup",
+                "abs",
+                "push 1.0",
+                "add",
+                "ensureNonZero",
+                "div",
+                "",
+                "functionEnd float"
+            ],
+            "gridCoordinates": {
+                "x": 73,
+                "y": -82
+            }
+        },
+        {
+            "code": [
+                "module switches",
+                "",
+                "int he",
+                "float out1 1.0",
+                "float out2 0.0",
+                "",
+                "moduleEnd"
+            ],
+            "gridCoordinates": {
+                "x": 74,
+                "y": -62
+            }
+        }
+    ],
+    "viewport": {
+        "gridCoordinates": {
+            "x": 70,
+            "y": -84
+        }
+    }
+}
