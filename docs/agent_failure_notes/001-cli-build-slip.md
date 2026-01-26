@@ -1,14 +1,15 @@
 ---
-title: AI Shaming Note - CLI Build Sloppiness
-models: gpt-5.2-codex
+title: Agent Failure Note - Ignoring Build Orchestration (Nx)
+model: gpt-5.2-codex
+agent: Codex CLI
 date: 2026-01-25
 ---
 
-# AI Shaming Note - CLI Build Sloppiness
+# AI Failure Note - Ignoring Build Orchestration (Nx)
 
 ## Short Summary
 
-I ignored Nx dependency orchestration and tried to fix CI test failures with local hacks inside test code instead of making the test target depend on upstream builds.
+The agent ignored Nx dependency orchestration and tried to fix CI test failures with local hacks inside test code instead of making the test target depend on upstream builds.
 
 ## Original Problem
 
@@ -21,9 +22,11 @@ Example failure:
 
 This was not a test logic issue; it was a build ordering issue.
 
-## Bad Approaches I Tried (Don't Do This)
+## Bad Approaches Attempted (Don't Do This)
 
-- Suggested aliasing compiler packages to source in Vitest (test-only hack that bypasses real build output and masks CI conditions).
+### Test-only environment lies
+
+The agent suggested aliasing compiler packages to source in Vitest (a test-only hack that bypasses real build output and masks CI conditions).
 
 ```ts
 // vitest.config.ts (bad)
@@ -35,7 +38,9 @@ resolve: {
 },
 ```
 
-- Added manual build steps inside tests (duplicating build logic in test code instead of using Nx target dependencies).
+### Reimplementing the build system inside tests
+
+The agent added manual build steps inside tests. This duplicates Nx’s responsibility and desynchronizes test behavior from CI orchestration.
 
 ```ts
 // tests/compileProjectAudioBuffer.test.ts (bad)
@@ -52,7 +57,9 @@ beforeAll(async () => {
 });
 ```
 
-- Switched strategies midstream (tsc patches, ESM tweaks, bundling) without first addressing Nx orchestration, creating churn.
+### Strategy thrashing instead of root-cause fixing
+
+The agent switched strategies midstream (tsc patches, ESM tweaks, bundling) without first addressing Nx orchestration, creating churn.
 
 ```json
 // project.json (bad direction change without fixing dependsOn)
@@ -65,6 +72,11 @@ beforeAll(async () => {
 }
 ```
 
+## Failure Pattern
+
+Treating build orchestration failures as test or runtime problems, leading to local hacks instead of fixing target dependencies.
+
 ## Correct Solution
 
-- Use Nx target dependencies so `@8f4e/cli:test` depends on `build` for itself and upstream packages.
+Use Nx target dependencies so `@8f4e/cli:test` depends on `build` for itself and upstream packages.
+Build order is part of the system contract and must be expressed in Nx, not encoded implicitly in test code or tooling hacks.
