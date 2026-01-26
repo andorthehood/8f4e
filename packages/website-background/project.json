@@ -61,7 +61,7 @@
         "command": "tsc --noEmit --project tsconfig.build.json",
         "cwd": "{projectRoot}"
       },
-      "dependsOn": ["^build"]
+      "dependsOn": ["compile-project", "^build"]
     },
     "test": {
       "executor": "nx:run-commands",
