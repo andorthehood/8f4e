@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – <short descriptive title>
 agent: <tool or agent name>
-models: <model or models used>
+model: <model or models used>
 date: YYYY-MM-DD
 ---
 
