@@ -15,7 +15,7 @@
                 "set",
                 "",
                 "rescopeTop \"runtime\"",
-                "push \"WebWorkerLogicRuntime\"",
+                "push \"MainThreadLogicRuntime\"",
                 "set",
                 "",
                 "configEnd"
