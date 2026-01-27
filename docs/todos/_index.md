@@ -38,6 +38,8 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 166 | Default Vertex Shader for Post-Process Effects | 🟡 | 2-4h | 2026-01-12 | Allow fragment-only post-process shaders by injecting a fullscreen-quad vertex shader default and update the ripple example |
 | 167 | Decouple Syntax Highlighting for GLSL Blocks | 🟡 | 2-4h | 2026-01-12 | Add a GLSL highlighter path for shader blocks and keep 8f4e highlighting for everything else |
 | 169 | Toggle Position Offsetters via Function Key | 🟡 | 1-2h | 2026-01-13 | Add a runtime toggle event and host key binding to disable memory-driven position offsets |
+| 206 | Add Fraction Literals to Compiler | 🟡 | 2-4h | 2026-01-27 | Add `int/int` fraction parsing for numeric literals with division-by-zero checks |
+| 207 | Add Fraction Literals to Stack Config Compiler | 🟡 | 2-4h | 2026-01-27 | Mirror compiler fraction parsing for stack-config numeric literals |
 | 170 | Toggle Post-Process Effects via Function Key | 🟡 | 1-2h | 2026-01-13 | Add a runtime toggle event and host key binding to disable post-process effects |
 | 173 | Add Scoped Constants to Stack Config Compiler | 🟡 | 1-2d | 2026-01-13 | Add scoped `const` command and constant-aware `push` for config blocks |
 | 178 | Drop WebGL1 and move glugglug to WebGL2-only | 🟡 | 2-4d | 2026-01-15 | Remove WebGL1 fallback, update shaders, and use WebGL2-only renderer setup |
