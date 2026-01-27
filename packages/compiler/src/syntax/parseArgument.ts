@@ -19,7 +19,7 @@ export type Argument = ArgumentLiteral | ArgumentIdentifier;
 export function parseArgument(argument: string): Argument {
 	switch (true) {
 		// Check for fraction literals before other numeric parsing
-		case /^-?\d+\/-?\d+$/.test(argument): {
+		case /^-?\d+\/\d+$/.test(argument): {
 			const [numeratorStr, denominatorStr] = argument.split('/');
 			const numerator = parseInt(numeratorStr, 10);
 			const denominator = parseInt(denominatorStr, 10);
@@ -88,6 +88,12 @@ if (import.meta.vitest) {
 		it('throws error on division by zero in fraction literals', () => {
 			expect(() => parseArgument('8/0')).toThrow('Division by zero');
 			expect(() => parseArgument('1/0')).toThrow('Division by zero');
+		});
+
+		it('does not parse negative denominators as fractions', () => {
+			// These should be parsed as identifiers, not fractions
+			const result = parseArgument('1/-2');
+			expect(result.type).toBe(ArgumentType.IDENTIFIER);
 		});
 	});
 }
