@@ -3,8 +3,8 @@ title: 'TODO: Add Fraction Literals to Stack Config Compiler'
 priority: Medium
 effort: 2-4h
 created: 2026-01-27
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-27
 ---
 
 # TODO: Add Fraction Literals to Stack Config Compiler
@@ -34,10 +34,10 @@ Add fraction-literal support to the stack-config-compiler parser so numeric argu
 
 ## Success Criteria
 
-- [ ] `push 1/16` parses as `0.0625` (not `1`).
-- [ ] `const MAX 8/2` parses as `4`.
-- [ ] `8/0` throws a parse error.
-- [ ] Invalid numeric tokens (e.g., `123abc`) are rejected.
+- [x] `push 1/16` parses as `0.0625` (not `1`).
+- [x] `const MAX 8/2` parses as `4`.
+- [x] `8/0` throws a parse error.
+- [x] Invalid numeric tokens (e.g., `123abc`) are rejected.
 
 ## Risks & Considerations
 
