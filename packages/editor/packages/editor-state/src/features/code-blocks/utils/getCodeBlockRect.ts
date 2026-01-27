@@ -1,18 +1,12 @@
 import type { Rect } from '~/features/code-blocks/utils/rectsOverlap';
+import type { CodeBlockGraphicData } from '~/types';
 
 import getCodeBlockGridWidth from '~/features/code-blocks/features/graphicHelper/getCodeBlockGridWidth';
-import getCodeBlockGridHeight from '~/features/code-blocks/features/graphicHelper/getCodeBlockGridHeight';
 
-type BlockLike = {
-	gridX: number;
-	gridY: number;
-	code: string[];
-	minGridWidth?: number;
-};
-
-export default function getCodeBlockRect(block: BlockLike): Rect {
+export default function getCodeBlockRect(block: CodeBlockGraphicData): Rect {
 	const width = getCodeBlockGridWidth(block.code, block.minGridWidth);
-	const height = getCodeBlockGridHeight(block.code);
+	const heightSource = block.codeToRender.length > 0 ? block.codeToRender.length : block.code.length;
+	const height = Math.max(heightSource, 1);
 	return {
 		left: block.gridX,
 		right: block.gridX + width,

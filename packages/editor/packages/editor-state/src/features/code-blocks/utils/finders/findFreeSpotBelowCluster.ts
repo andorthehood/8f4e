@@ -1,12 +1,8 @@
+import type { CodeBlockGraphicData } from '~/types';
+
 import getCodeBlockRect from '~/features/code-blocks/utils/getCodeBlockRect';
 import rectsOverlap from '~/features/code-blocks/utils/rectsOverlap';
-
-type BlockLike = {
-	gridX: number;
-	gridY: number;
-	code: string[];
-	minGridWidth?: number;
-};
+import { createCodeBlockGraphicData } from '~/features/code-blocks/utils/createCodeBlockGraphicData';
 
 type GridSpot = {
 	gridX: number;
@@ -24,17 +20,19 @@ function expandRect(rect: ReturnType<typeof getCodeBlockRect>, paddingX: number,
 
 export function isGridSpotFree(
 	spot: GridSpot,
-	candidate: Pick<BlockLike, 'code' | 'minGridWidth'>,
-	existingBlocks: BlockLike[],
+	candidate: CodeBlockGraphicData,
+	existingBlocks: CodeBlockGraphicData[],
 	paddingX = 2,
 	paddingY = 2
 ): boolean {
-	const candidateRect = getCodeBlockRect({
+	const candidateAtSpot = createCodeBlockGraphicData({
+		code: candidate.code,
 		gridX: spot.gridX,
 		gridY: spot.gridY,
-		code: candidate.code,
 		minGridWidth: candidate.minGridWidth,
+		codeToRender: candidate.codeToRender,
 	});
+	const candidateRect = getCodeBlockRect(candidateAtSpot);
 
 	return existingBlocks.every(block => {
 		const expandedRect = expandRect(getCodeBlockRect(block), paddingX, paddingY);
@@ -47,8 +45,8 @@ export function isGridSpotFree(
  * Keeps a padding so the new block doesn't sit directly against the cluster.
  */
 export default function findFreeSpotBelowCluster(
-	existingBlocks: BlockLike[],
-	candidate: Pick<BlockLike, 'code' | 'minGridWidth'>,
+	existingBlocks: CodeBlockGraphicData[],
+	candidate: CodeBlockGraphicData,
 	paddingX = 2,
 	paddingY = 2
 ): GridSpot {
