@@ -28,6 +28,9 @@ const int: InstructionCompiler = withValidation(
 		const pointerDepth = getPointerDepth(line.instruction);
 		const flags = getMemoryFlags('int', pointerDepth);
 
+		// Truncate any float values to integers (important for fraction literals and float defaults)
+		const truncatedDefault = Math.trunc(defaultValue);
+
 		context.namespace.memory[id] = {
 			numberOfElements: 1,
 			elementWordSize: 4,
@@ -35,7 +38,7 @@ const int: InstructionCompiler = withValidation(
 			wordAlignedSize: 1,
 			byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 			id,
-			default: defaultValue,
+			default: truncatedDefault,
 			type: line.instruction as unknown as MemoryTypes,
 			...flags,
 		};
