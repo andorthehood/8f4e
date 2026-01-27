@@ -5,8 +5,7 @@ import getCodeBlockGridWidth from '~/features/code-blocks/features/graphicHelper
 
 export default function getCodeBlockRect(block: CodeBlockGraphicData): Rect {
 	const width = getCodeBlockGridWidth(block.code, block.minGridWidth);
-	const heightSource = block.codeToRender.length > 0 ? block.codeToRender.length : block.code.length;
-	const height = Math.max(heightSource, 1);
+	const height = Math.max(block.codeToRender.length, 1);
 	return {
 		left: block.gridX,
 		right: block.gridX + width,

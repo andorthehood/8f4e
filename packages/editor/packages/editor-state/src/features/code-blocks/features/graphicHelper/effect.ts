@@ -194,6 +194,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						code: rawBlock.code,
 						gridX: requestedGridX,
 						gridY: requestedGridY,
+						codeToRender: new Array(rawBlock.code.length).fill([]),
 					});
 
 					let gridX = requestedGridX;
