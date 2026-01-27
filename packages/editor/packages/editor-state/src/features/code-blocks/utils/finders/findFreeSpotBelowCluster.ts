@@ -25,12 +25,14 @@ export function isGridSpotFree(
 	paddingX = 2,
 	paddingY = 2
 ): boolean {
+	const candidateCodeToRender =
+		candidate.codeToRender.length > 0 ? candidate.codeToRender : new Array(candidate.code.length).fill([]);
 	const candidateAtSpot = createCodeBlockGraphicData({
 		code: candidate.code,
 		gridX: spot.gridX,
 		gridY: spot.gridY,
 		minGridWidth: candidate.minGridWidth,
-		codeToRender: candidate.codeToRender,
+		codeToRender: candidateCodeToRender,
 	});
 	const candidateRect = getCodeBlockRect(candidateAtSpot);
 
