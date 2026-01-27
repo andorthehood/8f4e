@@ -28,7 +28,7 @@ const int: InstructionCompiler = withValidation(
 		const pointerDepth = getPointerDepth(line.instruction);
 		const flags = getMemoryFlags('int', pointerDepth);
 
-		// Truncate float values to integers (e.g., 1/16 → 0.0625 → 0)
+		// Truncate any float values to integers (important for fraction literals and float defaults)
 		const truncatedDefault = Math.trunc(defaultValue);
 
 		context.namespace.memory[id] = {
