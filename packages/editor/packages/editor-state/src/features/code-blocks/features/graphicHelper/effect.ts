@@ -190,11 +190,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					const requestedGridX = rawBlock.gridCoordinates.x;
 					const requestedGridY = rawBlock.gridCoordinates.y;
 
-					const candidate = {
+					const candidate = createCodeBlockGraphicData({
 						code: rawBlock.code,
 						gridX: requestedGridX,
 						gridY: requestedGridY,
-					};
+					});
 
 					let gridX = requestedGridX;
 					let gridY = requestedGridY;
