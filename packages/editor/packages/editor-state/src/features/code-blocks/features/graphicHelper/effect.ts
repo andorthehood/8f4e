@@ -25,6 +25,8 @@ import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
+import findFreeSpotBelowCluster from '../../utils/finders/findFreeSpotBelowCluster';
+import isCodeBlockOverlapping from '../../utils/isCodeBlockOverlapping';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -185,8 +187,23 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 				for (let i = 0; i < editorConfigBlocks.length; i += 1) {
 					const rawBlock = editorConfigBlocks[i];
-					const gridX = rawBlock.gridCoordinates?.x ?? 0;
-					const gridY = rawBlock.gridCoordinates?.y ?? 0;
+					const requestedGridX = rawBlock.gridCoordinates.x;
+					const requestedGridY = rawBlock.gridCoordinates.y;
+
+					const candidate = {
+						code: rawBlock.code,
+						gridX: requestedGridX,
+						gridY: requestedGridY,
+					};
+
+					let gridX = requestedGridX;
+					let gridY = requestedGridY;
+
+					if (isCodeBlockOverlapping(candidate, codeBlocks)) {
+						const spot = findFreeSpotBelowCluster(codeBlocks, candidate);
+						gridX = spot.gridX;
+						gridY = spot.gridY;
+					}
 					const block = createCodeBlockGraphicData({
 						id: getCodeBlockId(rawBlock.code),
 						code: rawBlock.code,

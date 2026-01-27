@@ -10,7 +10,7 @@ export interface EditorConfig {
 export interface EditorConfigBlock {
 	code: string[];
 	disabled?: boolean;
-	gridCoordinates?: {
+	gridCoordinates: {
 		x: number;
 		y: number;
 	};
