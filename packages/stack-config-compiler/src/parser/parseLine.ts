@@ -387,5 +387,36 @@ if (import.meta.vitest) {
 				lineNumber: 1,
 			});
 		});
+
+		it('should parse push command with fraction literal', () => {
+			expect(parseLine('push 1/16', 1)).toEqual({
+				type: 'push',
+				argument: 0.0625,
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse const command with fraction literal', () => {
+			expect(parseLine('const MAX 8/2', 1)).toEqual({
+				type: 'const',
+				identifier: 'MAX',
+				argument: 4,
+				lineNumber: 1,
+			});
+		});
+
+		it('should return error for push with division by zero', () => {
+			expect(parseLine('push 8/0', 1)).toEqual({
+				line: 1,
+				message: 'Division by zero in fraction: 8/0',
+			});
+		});
+
+		it('should return error for const with division by zero', () => {
+			expect(parseLine('const VALUE 10/0', 1)).toEqual({
+				line: 1,
+				message: 'Division by zero in fraction: 10/0',
+			});
+		});
 	});
 }
