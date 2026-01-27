@@ -1,0 +1,668 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "MY_FRACTION",
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.125,
+      },
+    ],
+    "instruction": "const",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "MY_FRACTION",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 6,
+  },
+]
+`;
+
+exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    f32.const 0x1p-3 (;=0.125;)
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`float: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "bar",
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.0625,
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "bar",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 6,
+  },
+]
+`;
+
+exports[`float: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    f32.load
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`float: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "bar": {
+    "byteAddress": 0,
+    "default": 0.0625,
+    "elementWordSize": 4,
+    "id": "bar",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`float: with negative fraction literal (-1/2) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "bar",
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": -0.5,
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "bar",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 6,
+  },
+]
+`;
+
+exports[`float: with negative fraction literal (-1/2) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    f32.load
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`float: with negative fraction literal (-1/2) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "bar": {
+    "byteAddress": 0,
+    "default": -0.5,
+    "elementWordSize": 4,
+    "id": "bar",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.0625,
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 6,
+  },
+]
+`;
+
+exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "foo": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "foo",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 4,
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "foo",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 6,
+  },
+]
+`;
+
+exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "foo": {
+    "byteAddress": 0,
+    "default": 4,
+    "elementWordSize": 4,
+    "id": "foo",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "test",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 1,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.0625,
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 4,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 5,
+  },
+]
+`;
+
+exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 0
+    f32.const 0x1p-4 (;=0.0625;)
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "output": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+}
+`;
