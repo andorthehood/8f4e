@@ -1,0 +1,27 @@
+{
+  "name": "@8f4e/website-background",
+  "version": "1.0.0",
+  "private": true,
+  "description": "8f4e viewer application",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andorthehood/8f4e.git"
+  },
+  "author": "Andor Polgar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andorthehood/8f4e/issues"
+  },
+  "homepage": "https://github.com/andorthehood/8f4e#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "vite": "^7.1.11",
+    "vite-plugin-glsl": "^1.5.1",
+    "vite-plugin-static-copy": "^3.1.2"
+  }
+}

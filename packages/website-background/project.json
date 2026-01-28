@@ -1,0 +1,77 @@
+{
+  "name": "@8f4e/website-background",
+  "sourceRoot": "src",
+  "projectType": "application",
+  "implicitDependencies": [
+    "@8f4e/compiler-worker",
+    "@8f4e/runtime-web-worker-logic",
+    "@8f4e/runtime-web-worker-midi",
+    "@8f4e/runtime-audio-worklet"
+  ],
+  "targets": {
+    "compile-project": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/src/project-runtime-ready.json"],
+      "dependsOn": [
+        "^build",
+        {
+          "target": "build",
+          "projects": ["@8f4e/cli"]
+        }
+      ],
+      "options": {
+        "command": "cli src/project.json -o src/project-runtime-ready.json",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite --config vite.config.mjs --host --port 3001",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "command": "vite build",
+        "cwd": "{projectRoot}"
+      },
+      "dependsOn": ["typecheck", "compile-project", "^build"]
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite preview",
+        "cwd": "{projectRoot}"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint src --fix",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit --project tsconfig.build.json",
+        "cwd": "{projectRoot}"
+      },
+      "dependsOn": ["compile-project", "^build"]
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "command": "vitest run --config vitest.config.ts",
+        "cwd": "{projectRoot}"
+      },
+      "dependsOn": ["^build"]
+    }
+  },
+  "tags": ["type:application", "scope:ui"]
+}

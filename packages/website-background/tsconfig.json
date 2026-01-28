@@ -1,0 +1,19 @@
+{
+	"extends": "@8f4e/config/tsconfig.dom.json",
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "dist",
+		"baseUrl": "../..",
+		"types": [
+			"vite/client",
+			"vite-plugin-glsl/ext"
+		],
+	},
+	"include": [
+		"src/**/*.ts",
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}
