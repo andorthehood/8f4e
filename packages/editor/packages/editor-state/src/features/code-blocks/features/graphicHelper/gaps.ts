@@ -9,17 +9,6 @@ export const GAP_SIZES: Record<string, number> = {
 	piano: 6,
 };
 
-export function getGapRowCount(code: string[]): number {
-	let gapRows = 0;
-	for (const line of code) {
-		const [, instruction, directive] = (line.match(instructionParser) ?? []) as [never, string, string];
-		if (instruction === '#' && directive && GAP_SIZES[directive]) {
-			gapRows += GAP_SIZES[directive];
-		}
-	}
-	return gapRows;
-}
-
 export default function gaps(graphicData: CodeBlockGraphicData) {
 	graphicData.gaps.clear();
 
