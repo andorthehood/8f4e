@@ -91,6 +91,8 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'midiFrequenciesLookupTable', title: 'MIDI Frequencies Lookup Table', category: 'Lookup Tables' },
 	{ slug: 'midiNoteOut', title: 'MIDI Note Out', category: 'MIDI' },
 	{ slug: 'midiPianoKeyboardC3', title: 'MIDI Piano Keyboard (First key: C3)', category: 'MIDI' },
+	{ slug: 'morse', title: 'Morse Code', category: 'Constants' },
+	{ slug: 'morseHex', title: 'Morse Code (Hex)', category: 'Constants' },
 	{ slug: 'multipleFloat', title: 'Multiple (8x Float)', category: 'Utilities' },
 	{ slug: 'multipleInt', title: 'Multiple (8x Int)', category: 'Utilities' },
 	{ slug: 'pcmLooper8bitUnsigned', title: 'PCM Looper (8bit unsigned)', category: 'PCM' },
