@@ -1,30 +1,21 @@
 import type { Project, ProjectMetadata } from '@8f4e/editor-state';
 
 /**
- * Lazy project loaders using Vite's import.meta.glob.
- * Each loader returns a Promise that resolves to the project's default export.
- * This prevents bundling project code until it's actually requested.
- */
-const projectLoaders = import.meta.glob<Project>('./*.ts', {
-	eager: false,
-	import: 'default',
-});
-
-/**
- * Extracts the project slug from the file path.
- * Example: "./audioBuffer.ts" -> "audioBuffer"
- */
-function getSlugFromPath(path: string): string {
-	return path.replace(/^\.\//, '').replace(/\.ts$/, '');
-}
-
-/**
  * Manifest of available projects with their lazy loaders.
  * Maps slug -> loader function.
  */
-export const projectManifest: Record<string, () => Promise<Project>> = Object.fromEntries(
-	Object.entries(projectLoaders).map(([path, loader]) => [getSlugFromPath(path), loader])
-);
+export const projectManifest: Record<string, () => Promise<Project>> = {
+	audioBuffer: () => import('@8f4e/examples/projects/audioBuffer').then(m => m.default),
+	audioLoopback: () => import('@8f4e/examples/projects/audioLoopback').then(m => m.default),
+	bistableMultivibrators: () => import('@8f4e/examples/projects/bistableMultivibrators').then(m => m.default),
+	dancingWithTheSineLT: () => import('@8f4e/examples/projects/dancingWithTheSineLT').then(m => m.default),
+	neuralNetwork: () => import('@8f4e/examples/projects/neuralNetwork').then(m => m.default),
+	randomGenerators: () => import('@8f4e/examples/projects/randomGenerators').then(m => m.default),
+	rippleEffect: () => import('@8f4e/examples/projects/rippleEffect').then(m => m.default),
+	samplePlayer: () => import('@8f4e/examples/projects/samplePlayer').then(m => m.default),
+	simpleCounterMainThread: () => import('@8f4e/examples/projects/simpleCounterMainThread').then(m => m.default),
+	standaloneProject: () => import('@8f4e/examples/projects/standaloneProject').then(m => m.default),
+};
 
 /**
  * Hardcoded metadata for all projects.
@@ -35,21 +26,21 @@ export const projectMetadata: ProjectMetadata[] = [
 	{ slug: 'audioBuffer', title: 'Audio Buffer', category: 'Audio' },
 	{ slug: 'audioLoopback', title: 'Audio Loopback', category: 'Audio' },
 	{ slug: 'bistableMultivibrators', title: 'Bistable Multivibrators', category: 'Digital' },
+	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', category: 'Visuals' },
+	{ slug: 'neuralNetwork', title: 'Neural Network', category: 'Machine Learning' },
+	{ slug: 'randomGenerators', title: 'Random Generators', category: 'Misc' },
 	{
 		slug: 'rippleEffect',
 		title: 'Ripple Effect Demo',
 		category: 'Visuals',
 	},
-	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', category: 'Visuals' },
-	{ slug: 'neuralNetwork', title: 'Neural Network', category: 'Machine Learning' },
-	{ slug: 'randomGenerators', title: 'Random Generators', category: 'Misc' },
+	{ slug: 'samplePlayer', title: 'Sample Player', category: 'Audio' },
 	{
 		slug: 'simpleCounterMainThread',
 		title: 'Simple Counter (Main Thread)',
 		category: 'Misc',
 	},
 	{ slug: 'standaloneProject', title: 'Standalone Project Example', category: 'Misc' },
-	{ slug: 'samplePlayer', title: 'Sample Player', category: 'Audio' },
 ];
 
 // For backwards compatibility
