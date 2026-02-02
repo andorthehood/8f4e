@@ -15,6 +15,7 @@ export const projectManifest: Record<string, () => Promise<Project>> = {
 	samplePlayer: () => import('@8f4e/examples/projects/samplePlayer').then(m => m.default),
 	simpleCounterMainThread: () => import('@8f4e/examples/projects/simpleCounterMainThread').then(m => m.default),
 	standaloneProject: () => import('@8f4e/examples/projects/standaloneProject').then(m => m.default),
+	digitClassifier: () => import('@8f4e/examples/projects/digitClassifier').then(m => m.default),
 };
 
 /**
@@ -41,6 +42,7 @@ export const projectMetadata: ProjectMetadata[] = [
 		category: 'Misc',
 	},
 	{ slug: 'standaloneProject', title: 'Standalone Project Example', category: 'Misc' },
+	{ slug: 'digitClassifier', title: 'Digit Classifier', category: 'Machine Learning' },
 ];
 
 // For backwards compatibility
