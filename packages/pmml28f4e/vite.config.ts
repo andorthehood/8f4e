@@ -7,7 +7,7 @@ const nodeBuiltins = [...builtinModules, ...builtinModules.map(mod => `node:${mo
 
 export default defineConfig({
 	build: {
-		target: 'node24',
+		target: 'node22',
 		outDir: 'dist',
 		emptyOutDir: true,
 		lib: {
@@ -19,7 +19,7 @@ export default defineConfig({
 			fileName: (_format, entryName) => `${entryName}.js`,
 		},
 		rollupOptions: {
-			external: [...nodeBuiltins, '@8f4e/editor-state', 'fast-xml-parser'],
+			external: [...nodeBuiltins, '@8f4e/editor-state', 'fast-xml-parser', 'commander'],
 			output: {
 				banner: chunk => (chunk.name === 'cli' ? '#!/usr/bin/env node' : undefined),
 			},
