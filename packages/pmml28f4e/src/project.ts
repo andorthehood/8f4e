@@ -1,11 +1,10 @@
 import type { CodeBlock, Project } from '@8f4e/editor-state';
 import type { PmmlNeuralNetwork, PmmlNeuralLayer, PmmlNeuron } from './pmml';
-import type { ConvertOptions } from './options';
 
-const DEFAULT_GRID_SPACING_X = 36;
+const DEFAULT_GRID_SPACING_X = 40;
 const DEFAULT_BLOCK_PADDING_Y = 2;
 const MAX_ROWS_PER_LAYER = 6;
-const LAYER_GAP_COLUMNS = 4;
+const LAYER_GAP_COLUMNS = 1;
 
 function sanitizeIdentifier(value: string): string {
 	const sanitized = value.replace(/[^a-zA-Z0-9_]/g, '_');
@@ -30,14 +29,6 @@ function getActivationForNeuron(
 		normalizeActivation(layer.activationFunction) ??
 		normalizeActivation(networkActivation)
 	);
-}
-
-function buildConfigBlock(modelName?: string): CodeBlock {
-	const titleLine = modelName ? `; PMML Model: ${modelName}` : '; PMML Model';
-	return {
-		code: ['config project', titleLine, 'configEnd'],
-		gridCoordinates: { x: -12, y: 6 },
-	};
 }
 
 function buildSigmoidFunctionBlock(): CodeBlock {
@@ -81,7 +72,7 @@ function buildNeuronCode(
 	layerIndex: number,
 	layerType: string
 ): string[] {
-	const code: string[] = [`module neuron_${neuron.id}`, `; ${layerType} layer ${layerIndex + 1}`, '', '; Inputs'];
+	const code: string[] = [`module neuron${neuron.id}`, `; ${layerType} layer ${layerIndex + 1}`, ''];
 	connections.forEach(connection => {
 		code.push(`float* in${connection.index} ${connection.address}`);
 	});
@@ -120,7 +111,7 @@ function buildOutputsBlock(outputs: PmmlNeuralNetwork['outputs']): CodeBlock {
 	const code: string[] = ['module outputs', '; Output layer', '; PMML outputs', ''];
 	outputs.forEach((output, index) => {
 		const name = sanitizeIdentifier(output.fieldName || `output${index}`);
-		code.push(`float* in${index} &neuron_${output.outputNeuron}.out`);
+		code.push(`float* in${index} &neuron${output.outputNeuron}.out`);
 		code.push(`float ${name}`);
 		code.push(`push &${name}`);
 		code.push(`push *in${index}`);
@@ -133,7 +124,7 @@ function buildOutputsBlock(outputs: PmmlNeuralNetwork['outputs']): CodeBlock {
 	};
 }
 
-export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork, options: ConvertOptions): Project {
+export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork): Project {
 	const codeBlocks: CodeBlock[] = [];
 	const activationNeeded = [
 		neuralNetwork.activationFunction,
@@ -144,7 +135,6 @@ export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork, 
 		.map(value => normalizeActivation(String(value)))
 		.some(value => value === 'logistic' || value === 'sigmoid');
 
-	codeBlocks.push(buildConfigBlock(options.projectName ?? neuralNetwork.modelName));
 	if (activationNeeded) {
 		codeBlocks.push(buildSigmoidFunctionBlock());
 	}
@@ -201,7 +191,7 @@ export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork, 
 				};
 
 				codeBlocks.push(buildNeuronBlock(code, position));
-				addressById.set(neuron.id, `&neuron_${neuron.id}.out`);
+				addressById.set(neuron.id, `&neuron${neuron.id}.out`);
 				cursorY -= columnHeights[localIndex] + DEFAULT_BLOCK_PADDING_Y;
 			}
 		}
