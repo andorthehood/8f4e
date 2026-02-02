@@ -1,0 +1,113 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`convertPmmlNeuralNetworkToProject > creates code blocks for inputs, neuron, outputs, and sigmoid 1`] = `
+{
+  "codeBlocks": [
+    {
+      "code": [
+        "config project",
+        "; PMML Model: Tiny",
+        "configEnd",
+      ],
+      "gridCoordinates": {
+        "x": -12,
+        "y": 6,
+      },
+    },
+    {
+      "code": [
+        "function sigmoid",
+        "param float x",
+        "; Polynomial sigmoid approximation",
+        "",
+        "localGet x",
+        "dup",
+        "abs",
+        "push 1.0",
+        "add",
+        "ensureNonZero",
+        "div",
+        "",
+        "functionEnd float",
+      ],
+      "gridCoordinates": {
+        "x": -12,
+        "y": -6,
+      },
+    },
+    {
+      "code": [
+        "module inputs",
+        "; PMML inputs",
+        "",
+        "float input0 0.0",
+        "float input1 0.0",
+        "",
+        "moduleEnd",
+      ],
+      "gridCoordinates": {
+        "x": -36,
+        "y": 0,
+      },
+    },
+    {
+      "code": [
+        "module neuron_2",
+        "",
+        "; Inputs",
+        "float* in0 &inputs.input0",
+        "float* in1 &inputs.input1",
+        "float out",
+        "",
+        "; Weights",
+        "const W0 1.5",
+        "const W1 -2",
+        "const BIAS 0.5",
+        "",
+        "push &out",
+        "push BIAS",
+        "push *in0",
+        "push W0",
+        "mul",
+        "add",
+        "push *in1",
+        "push W1",
+        "mul",
+        "add",
+        "call sigmoid",
+        "store",
+        "",
+        "moduleEnd",
+      ],
+      "gridCoordinates": {
+        "x": 0,
+        "y": -0,
+      },
+    },
+    {
+      "code": [
+        "module outputs",
+        "; PMML outputs",
+        "",
+        "float* in0 &neuron_2.out",
+        "float output0",
+        "push &output0",
+        "push *in0",
+        "store",
+        "",
+        "moduleEnd",
+      ],
+      "gridCoordinates": {
+        "x": 72,
+        "y": 0,
+      },
+    },
+  ],
+  "viewport": {
+    "gridCoordinates": {
+      "x": 0,
+      "y": 0,
+    },
+  },
+}
+`;
