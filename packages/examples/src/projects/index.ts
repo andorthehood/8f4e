@@ -8,3 +8,4 @@ export { default as rippleEffect } from './rippleEffect';
 export { default as samplePlayer } from './samplePlayer';
 export { default as simpleCounterMainThread } from './simpleCounterMainThread';
 export { default as standaloneProject } from './standaloneProject';
+export { default as digitClassifier } from './digitClassifier';
