@@ -34,6 +34,16 @@
       },
       "dependsOn": ["^build", "build"]
     },
+    "test-update": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "config": "{projectRoot}/vitest.config.ts",
+        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}",
+        "update": true
+      },
+      "dependsOn": ["^build", "build"]
+    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
