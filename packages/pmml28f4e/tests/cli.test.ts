@@ -19,7 +19,7 @@ describe('pmml28f4e cli', () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 		await execFileAsync(
 			process.execPath,
-			[path.join(packageRoot, 'dist', 'cli.js'), fixturePath, '--out', outputPath, '--pretty', '--name', 'Tiny'],
+			[path.join(packageRoot, 'dist', 'cli.js'), fixturePath, '--out', outputPath, '--pretty'],
 			{ cwd: packageRoot }
 		);
 
