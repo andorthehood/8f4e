@@ -9,7 +9,7 @@ export default defineConfig({
 	build: {
 		target: 'node22',
 		outDir: 'dist',
-		emptyOutDir: true,
+		emptyOutDir: false,
 		lib: {
 			entry: {
 				cli: path.resolve(__dirname, 'src/cli.ts'),
@@ -19,7 +19,7 @@ export default defineConfig({
 			fileName: (_format, entryName) => `${entryName}.js`,
 		},
 		rollupOptions: {
-			external: [...nodeBuiltins, '@8f4e/editor-state', 'fast-xml-parser', 'commander'],
+			external: [...nodeBuiltins, '@8f4e/editor-state'],
 			output: {
 				banner: chunk => (chunk.name === 'cli' ? '#!/usr/bin/env node' : undefined),
 			},
