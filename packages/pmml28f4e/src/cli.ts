@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { convertPmmlNeuralNetworkToProject } from './index';
 
 function printHelp(): void {
-	console.log(`pmml28f4e <input.pmml> [--out project.json] [--pretty] [--name "Project Name"]`);
+	console.log(`pmml28f4e <input.pmml> [--out project.json] [--pretty]`);
 }
 
 function getArgValue(args: string[], flag: string): string | undefined {
@@ -27,12 +27,11 @@ async function runCli(args: string[]): Promise<{ outputJson?: string; outputPath
 	}
 
 	const outPath = getArgValue(args, '--out');
-	const name = getArgValue(args, '--name');
 	const pretty = args.includes('--pretty');
 
 	const inputFile = resolve(process.cwd(), inputPath);
 	const pmmlXml = await readFile(inputFile, 'utf8');
-	const project = convertPmmlNeuralNetworkToProject(pmmlXml, { projectName: name });
+	const project = convertPmmlNeuralNetworkToProject(pmmlXml);
 	const json = JSON.stringify(project, null, pretty ? 2 : 0);
 
 	if (outPath) {
