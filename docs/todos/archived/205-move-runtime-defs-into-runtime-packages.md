@@ -3,8 +3,8 @@ title: 'TODO: Move Runtime Definitions into Runtime Packages'
 priority: Medium
 effort: 1-2d
 created: 2026-01-23
-status: Open
-completed: null
+status: Completed
+completed: 2026-01-23
 ---
 
 # TODO: Move Runtime Definitions into Runtime Packages
