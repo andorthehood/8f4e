@@ -7,7 +7,7 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "vite build && chmod +x dist/cli.js",
+        "command": "tsc --emitDeclarationOnly && vite build && chmod +x dist/cli.js",
         "cwd": "{projectRoot}"
       }
     },
@@ -32,7 +32,7 @@
         "config": "{projectRoot}/vitest.config.ts",
         "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
       },
-      "dependsOn": ["build"]
+      "dependsOn": ["^build", "build"]
     },
     "typecheck": {
       "executor": "nx:run-commands",
