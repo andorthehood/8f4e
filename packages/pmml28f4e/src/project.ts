@@ -45,7 +45,7 @@ function buildSigmoidFunctionBlock(): CodeBlock {
 		code: [
 			'function sigmoid',
 			'param float x',
-			'; Polynomial sigmoid approximation',
+			'; Fast sigmoid approximation: x / (1 + |x|)',
 			'',
 			'localGet x',
 			'dup',
