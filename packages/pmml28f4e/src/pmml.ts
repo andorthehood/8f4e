@@ -115,10 +115,11 @@ function findFirstTag(node: unknown, tagName: string): Record<string, unknown> |
 
 export function parsePmmlNeuralNetwork(pmmlXml: string): PmmlNeuralNetwork {
 	const doc = parser.parse(pmmlXml);
-	const neuralNetwork = doc?.PMML?.NeuralNetwork ?? doc?.NeuralNetwork ?? findFirstTag(doc, 'NeuralNetwork');
-	if (!neuralNetwork) {
+	const neuralNetworkNode = doc?.PMML?.NeuralNetwork ?? doc?.NeuralNetwork ?? findFirstTag(doc, 'NeuralNetwork');
+	if (!neuralNetworkNode) {
 		throw new Error('No <NeuralNetwork> tag found.');
 	}
+	const neuralNetwork = Array.isArray(neuralNetworkNode) ? neuralNetworkNode[0] : neuralNetworkNode;
 
 	const inputs = asRecordArray(neuralNetwork?.NeuralInputs?.NeuralInput).map(input => {
 		const id = toNumber(input.id, 'NeuralInput.id');
