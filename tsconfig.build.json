@@ -12,7 +12,9 @@
 			"@8f4e/runtime-audio-worklet": ["packages/runtime-audio-worklet/dist/index.d.ts"],
 			"@8f4e/runtime-web-worker-logic": ["packages/runtime-web-worker-logic/dist/index.d.ts"],
 			"@8f4e/runtime-main-thread-logic": ["packages/runtime-main-thread-logic/dist/index.d.ts"],
-			"@8f4e/runtime-web-worker-midi": ["packages/runtime-web-worker-midi/dist/index.d.ts"]
+			"@8f4e/runtime-web-worker-midi": ["packages/runtime-web-worker-midi/dist/index.d.ts"],
+			"@8f4e/examples": ["packages/examples/src/index.ts"],
+			"@8f4e/examples/*": ["packages/examples/src/*"]
 		}
 	}
 }
