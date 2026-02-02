@@ -1,11 +1,20 @@
 import { defineConfig } from 'vite'
 import glsl from 'vite-plugin-glsl'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
+import path from 'path'
+import { fileURLToPath } from 'url'
 // import { visualizer } from "rollup-plugin-visualizer";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig(() => {
   return {
     root: 'src',
+    resolve: {
+      alias: {
+        '@8f4e/examples': path.resolve(__dirname, 'packages/examples/src')
+      }
+    },
     plugins: [
       // visualizer(),
       glsl({
