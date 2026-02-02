@@ -3,11 +3,17 @@ import type { PmmlNeuralNetwork, PmmlNeuralLayer, PmmlNeuron } from './pmml';
 import type { ConvertOptions } from './options';
 
 const DEFAULT_GRID_SPACING_X = 36;
-const DEFAULT_GRID_SPACING_Y = 8;
+const DEFAULT_BLOCK_PADDING_Y = 2;
+const MAX_ROWS_PER_LAYER = 6;
+const LAYER_GAP_COLUMNS = 4;
 
 function sanitizeIdentifier(value: string): string {
 	const sanitized = value.replace(/[^a-zA-Z0-9_]/g, '_');
 	return /^[a-zA-Z_]/.test(sanitized) ? sanitized : `_${sanitized}`;
+}
+
+function formatFloat(value: number): string {
+	return Number.isInteger(value) ? `${value}.0` : String(value);
 }
 
 function normalizeActivation(value: string | undefined): string | undefined {
@@ -56,7 +62,7 @@ function buildSigmoidFunctionBlock(): CodeBlock {
 }
 
 function buildInputsBlock(inputs: PmmlNeuralNetwork['inputs']): CodeBlock {
-	const code: string[] = ['module inputs', '; PMML inputs', ''];
+	const code: string[] = ['module inputs', '; Input layer', '; PMML inputs', ''];
 	inputs.forEach(input => {
 		const name = sanitizeIdentifier(input.fieldName);
 		code.push(`float ${name} 0.0`);
@@ -68,22 +74,23 @@ function buildInputsBlock(inputs: PmmlNeuralNetwork['inputs']): CodeBlock {
 	};
 }
 
-function buildNeuronBlock(
+function buildNeuronCode(
 	neuron: PmmlNeuron,
 	activation: string | undefined,
 	connections: Array<{ address: string; index: number; weight: number }>,
-	position: { x: number; y: number }
-): CodeBlock {
-	const code: string[] = [`module neuron_${neuron.id}`, '', '; Inputs'];
+	layerIndex: number,
+	layerType: string
+): string[] {
+	const code: string[] = [`module neuron_${neuron.id}`, `; ${layerType} layer ${layerIndex + 1}`, '', '; Inputs'];
 	connections.forEach(connection => {
 		code.push(`float* in${connection.index} ${connection.address}`);
 	});
 	code.push('float out', '', '; Weights');
 
 	connections.forEach(connection => {
-		code.push(`const W${connection.index} ${connection.weight}`);
+		code.push(`const W${connection.index} ${formatFloat(connection.weight)}`);
 	});
-	code.push(`const BIAS ${neuron.bias}`, '', 'push &out', 'push BIAS');
+	code.push(`const BIAS ${formatFloat(neuron.bias)}`, '', 'push &out', 'push BIAS');
 
 	connections.forEach(connection => {
 		code.push(`push *in${connection.index}`);
@@ -99,7 +106,10 @@ function buildNeuronBlock(
 	}
 
 	code.push('store', '', 'moduleEnd');
+	return code;
+}
 
+function buildNeuronBlock(code: string[], position: { x: number; y: number }): CodeBlock {
 	return {
 		code,
 		gridCoordinates: position,
@@ -107,7 +117,7 @@ function buildNeuronBlock(
 }
 
 function buildOutputsBlock(outputs: PmmlNeuralNetwork['outputs']): CodeBlock {
-	const code: string[] = ['module outputs', '; PMML outputs', ''];
+	const code: string[] = ['module outputs', '; Output layer', '; PMML outputs', ''];
 	outputs.forEach((output, index) => {
 		const name = sanitizeIdentifier(output.fieldName || `output${index}`);
 		code.push(`float* in${index} &neuron_${output.outputNeuron}.out`);
@@ -147,31 +157,62 @@ export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork, 
 		addressById.set(input.id, `&inputs.${name}`);
 	});
 
+	let layerBaseX = 0;
 	neuralNetwork.layers.forEach((layer, layerIndex) => {
-		layer.neurons.forEach((neuron, neuronIndex) => {
-			const activation = getActivationForNeuron(neuron, layer, neuralNetwork.activationFunction);
-			const connections = neuron.connections.map((connection, index) => {
-				const address = addressById.get(connection.from);
-				if (!address) {
-					throw new Error(`Unknown connection source id ${connection.from} for neuron ${neuron.id}`);
-				}
-				return { address, index, weight: connection.weight };
-			});
+		const activationByIndex = layer.neurons.map(neuron =>
+			getActivationForNeuron(neuron, layer, neuralNetwork.activationFunction)
+		);
+		const layerType = layerIndex === neuralNetwork.layers.length - 1 ? 'Output' : 'Hidden';
+		const neuronCodes = layer.neurons.map((neuron, index) =>
+			buildNeuronCode(
+				neuron,
+				activationByIndex[index],
+				neuron.connections.map((connection, connectionIndex) => {
+					const address = addressById.get(connection.from);
+					if (!address) {
+						throw new Error(`Unknown connection source id ${connection.from} for neuron ${neuron.id}`);
+					}
+					return { address, index: connectionIndex, weight: connection.weight };
+				}),
+				layerIndex,
+				layerType
+			)
+		);
+		const heights = neuronCodes.map(code => Math.max(1, code.length));
+		const columns = Math.max(1, Math.ceil(layer.neurons.length / MAX_ROWS_PER_LAYER));
 
-			const position = {
-				x: layerIndex * DEFAULT_GRID_SPACING_X,
-				y: -neuronIndex * DEFAULT_GRID_SPACING_Y,
-			};
+		for (let columnIndex = 0; columnIndex < columns; columnIndex += 1) {
+			const start = columnIndex * MAX_ROWS_PER_LAYER;
+			const end = Math.min(start + MAX_ROWS_PER_LAYER, layer.neurons.length);
+			const columnHeights = heights.slice(start, end);
+			const totalHeight =
+				columnHeights.reduce((sum, height) => sum + height, 0) +
+				DEFAULT_BLOCK_PADDING_Y * Math.max(0, columnHeights.length - 1);
+			let cursorY = Math.round(totalHeight / 2);
 
-			codeBlocks.push(buildNeuronBlock(neuron, activation, connections, position));
-			addressById.set(neuron.id, `&neuron_${neuron.id}.out`);
-		});
+			for (let localIndex = 0; localIndex < columnHeights.length; localIndex += 1) {
+				const neuronIndex = start + localIndex;
+				const neuron = layer.neurons[neuronIndex];
+				const code = neuronCodes[neuronIndex];
+
+				const position = {
+					x: layerBaseX + columnIndex * DEFAULT_GRID_SPACING_X,
+					y: cursorY,
+				};
+
+				codeBlocks.push(buildNeuronBlock(code, position));
+				addressById.set(neuron.id, `&neuron_${neuron.id}.out`);
+				cursorY -= columnHeights[localIndex] + DEFAULT_BLOCK_PADDING_Y;
+			}
+		}
+
+		layerBaseX += (columns + LAYER_GAP_COLUMNS) * DEFAULT_GRID_SPACING_X;
 	});
 
 	if (neuralNetwork.outputs.length > 0) {
 		const outputBlock = buildOutputsBlock(neuralNetwork.outputs);
 		outputBlock.gridCoordinates = {
-			x: neuralNetwork.layers.length * DEFAULT_GRID_SPACING_X + DEFAULT_GRID_SPACING_X,
+			x: layerBaseX + DEFAULT_GRID_SPACING_X,
 			y: 0,
 		};
 		codeBlocks.push(outputBlock);
