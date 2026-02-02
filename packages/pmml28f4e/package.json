@@ -1,0 +1,38 @@
+{
+	"name": "@8f4e/pmml28f4e",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Convert PMML neural networks into 8f4e project files",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"bin": {
+		"pmml28f4e": "./dist/cli.js"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andorthehood/8f4e.git"
+	},
+	"author": "Andor Polgar",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/andorthehood/8f4e/issues"
+	},
+	"homepage": "https://github.com/andorthehood/8f4e#readme",
+	"dependencies": {
+		"@8f4e/editor-state": "*",
+		"commander": "^14.0.3",
+		"fast-xml-parser": "^5.2.5"
+	},
+	"devDependencies": {
+		"@types/node": "^24.3.0",
+		"vitest": "4.0.13"
+	}
+}
