@@ -99,6 +99,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 203 | Use CodeBlock id instead of recomputing from code | 🟢 | 2-4d | 2026-01-23 | Removed redundant ID recomputation in updateGraphics; IDs now assigned once at creation and updated only when module/function name changes; added comprehensive ID stability tests |
 | 202 | Skip reapplying compiled config when unchanged | 🟡 | 1-2d | 2026-01-22 | Added deep-equal utility to compare compiled config output after defaults are merged; config is only set in store when changed, reducing unnecessary store updates and downstream recomputations |
 | 201 | Make minGridWidth a shared constant | 🟡 | 2-4h | 2026-01-22 | Introduced `CODE_BLOCK_MIN_GRID_WIDTH` constant in utils module; updated `getCodeBlockGridWidth` to use constant as default; replaced hardcoded values in effect.ts and codeBlockCreator; all 309 code-blocks tests passing |
 | 194 | Add Unsigned int8/int16 Buffer Support (Compiler + Web-UI) | 🟡 | 1-2d | 2026-01-21 | Added `int8u[]`/`int16u[]` buffer declarations with unsigned min/max semantics and Uint8/Uint16 memory views in web-ui |
