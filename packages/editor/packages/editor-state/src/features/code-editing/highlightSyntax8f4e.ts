@@ -121,6 +121,8 @@ const instructionsToHighlight = [
 	'vertexShaderEnd',
 	'fragmentShader',
 	'fragmentShaderEnd',
+	'comment',
+	'commentEnd',
 ];
 
 /**
