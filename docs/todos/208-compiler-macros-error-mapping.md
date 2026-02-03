@@ -3,43 +3,11 @@ title: 'TODO: Compiler Macro Expansion with Error Mapping'
 priority: Medium
 effort: 2-3d
 created: 2026-02-02
-status: Complete
-completed: 2026-02-03
+status: Open
+completed: null
 ---
 
 # TODO: Compiler Macro Expansion with Error Mapping
-
-## Implementation Summary
-
-**Completed**: 2026-02-03
-
-The macro expansion feature has been successfully implemented with full error mapping support:
-
-1. **Macro Expansion Utility** (`packages/compiler/src/utils/macroExpansion.ts`):
-   - `parseMacroDefinitions()` - Parses and validates macro definitions
-   - `expandMacros()` - Expands macro calls while preserving line numbers
-   - Full validation for duplicate names, missing ends, and nested macros
-
-2. **Compiler Integration**:
-   - `compile()` function now accepts optional `macros` parameter
-   - `compileToAST()` updated to use `callSiteLineNumber` from line metadata
-   - `CompilationContext` extended with `currentMacroId` field for error tracking
-
-3. **Error Handling**:
-   - Added 5 new error codes: `DUPLICATE_MACRO_NAME`, `MISSING_MACRO_END`, `UNDEFINED_MACRO`, `NESTED_MACRO_DEFINITION`, `NESTED_MACRO_CALL`
-   - All macro errors include proper line numbers and macro context
-
-4. **Testing**:
-   - 14 unit tests for macro expansion utility
-   - 3 integration tests for end-to-end compilation
-   - All tests passing, full backward compatibility maintained
-
-**Usage Example**:
-```typescript
-const macros = [{ code: ['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'] }];
-const modules = [{ code: ['module test', 'macro double', 'moduleEnd'] }];
-const result = compile(modules, options, undefined, macros);
-```
 
 ## Problem Description
 
