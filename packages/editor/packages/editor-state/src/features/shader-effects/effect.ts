@@ -27,10 +27,10 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 		state.graphicHelper.postProcessEffects = effects;
 
 		// Clear any stale shader-related errors, then apply new ones
-		state.codeErrors.compilationErrors = [...state.codeErrors.compilationErrors, ...errors];
+		state.codeErrors.compilationErrors = errors;
 
 		// Dispatch event to load the new effects into the renderer
-		events.dispatch('loadPostProcessEffects', effects);
+		events.dispatch('loadPostProcessEffect', effects);
 	}
 
 	store.subscribe('graphicHelper.codeBlocks', () => {
