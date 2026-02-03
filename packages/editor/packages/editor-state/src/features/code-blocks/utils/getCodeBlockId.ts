@@ -1,24 +1,15 @@
 import { getModuleId, getFunctionId, getConstantsId } from '@8f4e/compiler/syntax';
 
-import getVertexShaderId from '../../shader-effects/getVertexShaderId';
-import getFragmentShaderId from '../../shader-effects/getFragmentShaderId';
-
 /**
  * Retrieves the ID from a code block based on its type.
- * Tries to identify the code block as a module, function, constants, vertex shader, or fragment shader.
+ * Tries to identify the code block as a module, function, or constants block.
+ * Shader blocks (vertexShader / fragmentShader) do not carry IDs.
  *
  * @param code - Code block represented as an array of lines
  * @returns The ID of the code block, or an empty string if no ID is found
  */
 export default function getCodeBlockId(code: string[]): string {
-	return (
-		getModuleId(code) ||
-		getFunctionId(code) ||
-		getConstantsId(code) ||
-		getVertexShaderId(code) ||
-		getFragmentShaderId(code) ||
-		''
-	);
+	return getModuleId(code) || getFunctionId(code) || getConstantsId(code) || '';
 }
 
 if (import.meta.vitest) {
@@ -40,14 +31,9 @@ if (import.meta.vitest) {
 			expect(getCodeBlockId(code)).toBe('env');
 		});
 
-		it('returns vertex shader ID for vertex shader blocks', () => {
-			const code = ['vertexShader testVertex', '', 'vertexShaderEnd'];
-			expect(getCodeBlockId(code)).toBe('testVertex');
-		});
-
-		it('returns fragment shader ID for fragment shader blocks', () => {
-			const code = ['fragmentShader testFragment', '', 'fragmentShaderEnd'];
-			expect(getCodeBlockId(code)).toBe('testFragment');
+		it('returns empty string for shader blocks', () => {
+			expect(getCodeBlockId(['vertexShader', '', 'vertexShaderEnd'])).toBe('');
+			expect(getCodeBlockId(['fragmentShader', '', 'fragmentShaderEnd'])).toBe('');
 		});
 
 		it('returns empty string when no ID is found', () => {

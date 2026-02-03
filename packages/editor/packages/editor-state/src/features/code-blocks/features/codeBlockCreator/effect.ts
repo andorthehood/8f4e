@@ -5,8 +5,6 @@ import { getFunctionId } from '@8f4e/compiler/syntax';
 import { insertDependencies } from './insertDependencies';
 
 import getCodeBlockId from '../../utils/getCodeBlockId';
-import getVertexShaderId from '../../../shader-effects/getVertexShaderId';
-import getFragmentShaderId from '../../../shader-effects/getFragmentShaderId';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -117,9 +115,9 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			if (blockType === 'function') {
 				code = ['function ' + getRandomCodeBlockId(), '', '', 'functionEnd'];
 			} else if (blockType === 'vertexShader') {
-				code = ['vertexShader ' + getRandomCodeBlockId(), '', '', 'vertexShaderEnd'];
+				code = ['vertexShader', '', '', 'vertexShaderEnd'];
 			} else if (blockType === 'fragmentShader') {
-				code = ['fragmentShader ' + getRandomCodeBlockId(), '', '', 'fragmentShaderEnd'];
+				code = ['fragmentShader', '', '', 'fragmentShaderEnd'];
 			} else if (blockType === 'comment') {
 				code = ['comment', '', '', 'commentEnd'];
 			} else {
@@ -143,17 +141,11 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		// Update ID based on block type
 		const moduleId = getModuleId(code);
 		const functionId = getFunctionId(code);
-		const vertexShaderId = getVertexShaderId(code);
-		const fragmentShaderId = getFragmentShaderId(code);
 
 		if (functionId) {
 			code = changeCodeBlockIdInCode(code, 'function', incrementCodeBlockIdUntilUnique(state, functionId));
 		} else if (moduleId) {
 			code = changeCodeBlockIdInCode(code, 'module', incrementCodeBlockIdUntilUnique(state, moduleId));
-		} else if (vertexShaderId) {
-			code = changeCodeBlockIdInCode(code, 'vertexShader', incrementCodeBlockIdUntilUnique(state, vertexShaderId));
-		} else if (fragmentShaderId) {
-			code = changeCodeBlockIdInCode(code, 'fragmentShader', incrementCodeBlockIdUntilUnique(state, fragmentShaderId));
 		}
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
