@@ -1,0 +1,45 @@
+import type { ExampleModule } from '@8f4e/editor-state';
+
+const postProcessRippleShader: ExampleModule = {
+	title: 'Post-process Ripple Shader',
+	author: 'Andor Polgar',
+	category: 'Shaders',
+	code: `fragmentShader postprocess
+#version 300 es
+
+precision mediump float;
+
+#define RIPPLE_SPEED 5.0
+#define RIPPLE_FREQUENCY 50.0
+#define RIPPLE_AMPLITUDE 0.0025
+#define RIPPLE_FADE 3.0
+
+in vec2 v_screenCoord;
+uniform vec2 u_resolution;
+uniform float u_time;
+uniform sampler2D u_renderTexture;
+out vec4 outColor;
+
+void main() {
+  vec2 uv = v_screenCoord;
+
+  vec2 center = vec2(0.5, 0.5);
+  vec2 offset = uv - center;
+  float dist = length(offset);
+  float safeDist = max(dist, 0.0001);
+
+  float wave = sin(dist * RIPPLE_FREQUENCY - u_time * RIPPLE_SPEED);
+  float attenuation = exp(-dist * RIPPLE_FADE);
+  float displacement = wave * RIPPLE_AMPLITUDE * attenuation;
+
+  vec2 rippleUV = uv + (offset / safeDist) * displacement;
+
+  vec3 color = texture(u_renderTexture, rippleUV).rgb;
+
+  outColor = vec4(color, 1.0);
+}
+fragmentShaderEnd`,
+	tests: [],
+};
+
+export default postProcessRippleShader;
