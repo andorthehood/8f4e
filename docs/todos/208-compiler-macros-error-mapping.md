@@ -30,7 +30,7 @@ The macro expansion feature has been successfully implemented with full error ma
    - All macro errors include proper line numbers and macro context
 
 4. **Testing**:
-   - 13 unit tests for macro expansion utility
+   - 14 unit tests for macro expansion utility
    - 3 integration tests for end-to-end compilation
    - All tests passing, full backward compatibility maintained
 
