@@ -1,0 +1,112 @@
+import type { Project } from '@8f4e/editor-state';
+
+const project: Project = {
+	codeBlocks: [
+		{
+			code: [
+				'config project',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'scope "runtimeSettings"',
+				'scope "runtime"',
+				'push "WebWorkerLogicRuntime"',
+				'set',
+				'rescopeTop "sampleRate"',
+				'push 50',
+				'set',
+				'popScope',
+				'popScope',
+				'',
+				'configEnd',
+			],
+			gridCoordinates: {
+				x: -59,
+				y: 12,
+			},
+		},
+		{
+			code: [
+				'constants env',
+				'; Auto-generated environment constants',
+				'; Changes will be overwritten',
+				'; Last updated: 2/3/2026, 10:10:00 PM',
+				'',
+				'const SAMPLE_RATE 50',
+				'const AUDIO_BUFFER_SIZE 128',
+				'',
+				'constantsEnd',
+			],
+			gridCoordinates: {
+				x: -59,
+				y: 0,
+			},
+		},
+		{
+			code: [
+				'module main',
+				'',
+				'; This project demonstrates a background',
+				'; plasma effect using a GLSL shader',
+				'; code block.',
+				'',
+				'moduleEnd',
+			],
+			gridCoordinates: {
+				x: 25,
+				y: 10,
+			},
+		},
+		{
+			code: [
+				'fragmentShader background',
+				'#version 300 es',
+				'',
+				'precision mediump float;',
+				'',
+				'in vec2 v_screenCoord;',
+				'uniform vec2 u_resolution;',
+				'uniform float u_time;',
+				'out vec4 outColor;',
+				'',
+				'float plasma(vec2 p) {',
+				'  float v = 0.0;',
+				'  v += sin(p.x + u_time * 0.6);',
+				'  v += sin(p.y + u_time * 0.7);',
+				'  v += sin(p.x + p.y + u_time * 0.4);',
+				'  v += sin(length(p) * 4.0 - u_time * 0.8);',
+				'  return v * 0.25;',
+				'}',
+				'',
+				'void main() {',
+				'  vec2 uv = v_screenCoord;',
+				'  float aspect = u_resolution.x / max(u_resolution.y, 1.0);',
+				'  vec2 p = (uv - 0.5) * vec2(aspect, 1.0) * 6.0;',
+				'  float v = plasma(p);',
+				'  vec3 color = vec3(',
+				'    0.5 + 0.5 * sin(3.0 * v + u_time * 0.2),',
+				'    0.5 + 0.5 * sin(3.0 * v + u_time * 0.2 + 2.1),',
+				'    0.5 + 0.5 * sin(3.0 * v + u_time * 0.2 + 4.2)',
+				'  );',
+				'  outColor = vec4(color, 1.0);',
+				'}',
+				'fragmentShaderEnd',
+			],
+			gridCoordinates: {
+				x: 87,
+				y: 10,
+			},
+		},
+	],
+	viewport: {
+		gridCoordinates: {
+			x: 21,
+			y: 8,
+		},
+	},
+};
+
+export default project;
