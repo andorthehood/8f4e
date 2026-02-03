@@ -15,21 +15,24 @@ const fallingEdge: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation with minOperands: 1 guarantees at least 1 operand exists on the stack
-		context.stack.pop()!;
-
-		context.stack.push({ isInteger: true, isNonZero: false });
+		const operand = context.stack.pop()!;
 
 		const currentValueName = '__fallingEdgeDetector_currentValue' + line.lineNumber;
 		const previousValueName = '__fallingEdgeDetector_previousValue' + line.lineNumber;
+		const memoryType = operand.isInteger ? 'int' : 'float';
+		const loadInstruction = operand.isInteger ? 'load' : 'loadFloat';
+
+		// Restore the operand for the segment so type checks apply to the original value.
+		context.stack.push(operand);
 
 		return compileSegment(
 			[
-				`int ${previousValueName} 0`,
-				`local int ${currentValueName}`,
+				`${memoryType} ${previousValueName} 0`,
+				`local ${memoryType} ${currentValueName}`,
 				`localSet ${currentValueName}`,
 				`localGet ${currentValueName}`,
 				`push &${previousValueName}`,
-				'load',
+				loadInstruction,
 				'lessThan',
 				'if int',
 				'push 1',
