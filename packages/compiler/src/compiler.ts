@@ -19,6 +19,7 @@ import { ErrorCode, getError } from './errors';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from './consts';
 import Type from './wasmUtils/type';
 import { calculateWordAlignedSizeOfMemory } from './utils/compilation';
+import { expandMacros } from './utils/macroExpander';
 
 export type { MemoryTypes, MemoryMap } from './types';
 
@@ -40,12 +41,26 @@ export function parseLine(line: string, lineNumber: number): AST[number] {
 }
 
 export function compileToAST(code: string[]) {
-	return code
-		.map((line, index) => [index, line] as [number, string])
-		.filter(([, line]) => !isComment(line))
-		.filter(([, line]) => isValidInstruction(line))
-		.map(([lineNumber, line]) => {
-			return parseLine(line, lineNumber);
+	// First, expand macros
+	const { expandedLines, errors } = expandMacros(code);
+
+	// If there are any macro expansion errors, throw the first one
+	if (errors.length > 0) {
+		const error = errors[0];
+		throw getError(error.code, {
+			lineNumber: error.lineNumber,
+			instruction: '' as Instruction,
+			arguments: [],
+		});
+	}
+
+	// Then compile the expanded lines to AST
+	// Use callSiteLineNumber when available, otherwise use lineNumber
+	return expandedLines
+		.filter(({ line }) => !isComment(line))
+		.filter(({ line }) => isValidInstruction(line))
+		.map(({ line, lineNumber, callSiteLineNumber }) => {
+			return parseLine(line, callSiteLineNumber ?? lineNumber);
 		});
 }
 
