@@ -25,9 +25,15 @@ export default function derivePostProcessEffects(codeBlocks: CodeBlockGraphicDat
 		const blockType = getBlockType(block.code);
 
 		if (blockType === 'fragmentShader' && firstFragmentSource === null) {
-			firstFragmentSource = extractShaderSource(block.code, 'fragmentShader');
+			const fragmentSource = extractShaderSource(block.code, 'fragmentShader');
+			if (fragmentSource) {
+				firstFragmentSource = fragmentSource;
+			}
 		} else if (blockType === 'vertexShader' && firstVertexSource === null) {
-			firstVertexSource = extractShaderSource(block.code, 'vertexShader');
+			const vertexSource = extractShaderSource(block.code, 'vertexShader');
+			if (vertexSource) {
+				firstVertexSource = vertexSource;
+			}
 		}
 	}
 
