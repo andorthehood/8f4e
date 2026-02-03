@@ -15,21 +15,24 @@ const risingEdge: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		// Non-null assertion is safe: withValidation with minOperands: 1 guarantees at least 1 operand exists on the stack
-		context.stack.pop()!;
-
-		context.stack.push({ isInteger: true, isNonZero: false });
+		const operand = context.stack.pop()!;
 
 		const currentValueName = '__risingEdgeDetector_currentValue' + line.lineNumber;
 		const previousValueName = '__risingEdgeDetector_previousValue' + line.lineNumber;
+		const memoryType = operand.isInteger ? 'int' : 'float';
+		const loadInstruction = operand.isInteger ? 'load' : 'loadFloat';
+
+		// Restore the operand for the segment so type checks apply to the original value.
+		context.stack.push(operand);
 
 		return compileSegment(
 			[
-				`int ${previousValueName} 0`,
-				`local int ${currentValueName}`,
+				`${memoryType} ${previousValueName} 0`,
+				`local ${memoryType} ${currentValueName}`,
 				`localSet ${currentValueName}`,
 				`localGet ${currentValueName}`,
 				`push &${previousValueName}`,
-				'load',
+				loadInstruction,
 				'greaterThan',
 				'if int',
 				'push 1',
@@ -54,6 +57,20 @@ if (import.meta.vitest) {
 		it('compiles the rising edge segment', () => {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false });
+
+			risingEdge({ lineNumber: 4, instruction: 'risingEdge', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				memory: context.namespace.memory,
+				locals: context.namespace.locals,
+				loopSegmentByteCode: context.loopSegmentByteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('compiles the rising edge segment for float operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: false });
 
 			risingEdge({ lineNumber: 4, instruction: 'risingEdge', arguments: [] } as AST[number], context);
 
