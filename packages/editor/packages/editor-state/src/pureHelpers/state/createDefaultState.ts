@@ -44,6 +44,7 @@ export default function createDefaultState() {
 			compilationErrors: [],
 			projectConfigErrors: [],
 			editorConfigErrors: [],
+			shaderErrors: [],
 		},
 		console: {
 			logs: [],

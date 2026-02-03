@@ -94,7 +94,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const view = await initView(state, canvas, memoryViews, spriteData);
 	createSpriteSheetManager(store, view, events);
 
-	events.on('loadPostProcessEffects', () => {
+	events.on('loadPostProcessEffect', () => {
 		view.loadPostProcessEffect(state.graphicHelper.postProcessEffects[0] ?? null);
 	});
 
