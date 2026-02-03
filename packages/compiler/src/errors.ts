@@ -26,6 +26,11 @@ export enum ErrorCode {
 	PARAM_AFTER_FUNCTION_BODY,
 	DUPLICATE_PARAMETER_NAME,
 	INSTRUCTION_MUST_BE_TOP_LEVEL,
+	DUPLICATE_MACRO_NAME,
+	MISSING_MACRO_END,
+	UNDEFINED_MACRO,
+	NESTED_MACRO_DEFINITION,
+	MACRO_CALL_IN_MACRO_BODY,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -206,6 +211,41 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'This instruction must be used at the top level. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.DUPLICATE_MACRO_NAME:
+			return {
+				code,
+				message: 'Duplicate macro name. Each macro must have a unique name. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.MISSING_MACRO_END:
+			return {
+				code,
+				message: 'Missing defineMacroEnd for macro definition. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.UNDEFINED_MACRO:
+			return {
+				code,
+				message: 'Undefined macro. The macro must be defined with defineMacro before use. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.NESTED_MACRO_DEFINITION:
+			return {
+				code,
+				message: 'Nested macro definitions are not allowed. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.MACRO_CALL_IN_MACRO_BODY:
+			return {
+				code,
+				message: 'Macro calls inside macro bodies are not allowed to prevent recursion. (' + code + ')',
 				line,
 				context,
 			};
