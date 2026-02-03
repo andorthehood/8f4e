@@ -24,6 +24,9 @@ export default function deriveShaderEffects(codeBlocks: CodeBlockGraphicData[]):
 	let backgroundVertex: string | null = null;
 
 	for (const block of sortedBlocks) {
+		if (block.disabled) {
+			continue;
+		}
 		const blockType = getBlockType(block.code);
 		if (blockType !== 'fragmentShader' && blockType !== 'vertexShader') {
 			continue;
@@ -216,6 +219,27 @@ if (import.meta.vitest) {
 			expect(postProcessEffects).toHaveLength(1);
 			expect(postProcessEffects[0].fragmentShader).toBe('targeted fragment');
 			expect(backgroundEffects).toHaveLength(0);
+		});
+
+		it('skips disabled shader blocks', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				{
+					id: 'a',
+					code: ['fragmentShader postprocess', 'disabled fragment', 'fragmentShaderEnd'],
+					creationIndex: 0,
+					disabled: true,
+				} as CodeBlockGraphicData,
+				{
+					id: 'b',
+					code: ['fragmentShader postprocess', 'active fragment', 'fragmentShaderEnd'],
+					creationIndex: 1,
+				} as CodeBlockGraphicData,
+			];
+
+			const { postProcessEffects } = deriveShaderEffects(blocks);
+
+			expect(postProcessEffects).toHaveLength(1);
+			expect(postProcessEffects[0].fragmentShader).toBe('active fragment');
 		});
 
 		it('produces no effect when only a vertex shader block exists', () => {
