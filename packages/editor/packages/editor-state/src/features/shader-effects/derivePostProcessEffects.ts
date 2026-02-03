@@ -25,15 +25,13 @@ export default function derivePostProcessEffects(codeBlocks: CodeBlockGraphicDat
 		const blockType = getBlockType(block.code);
 
 		if (blockType === 'fragmentShader' && firstFragmentSource === null) {
-			const fragmentSource = extractShaderSource(block.code, 'fragmentShader');
-			if (fragmentSource) {
-				firstFragmentSource = fragmentSource;
-			}
+			firstFragmentSource = extractShaderSource(block.code, 'fragmentShader');
 		} else if (blockType === 'vertexShader' && firstVertexSource === null) {
-			const vertexSource = extractShaderSource(block.code, 'vertexShader');
-			if (vertexSource) {
-				firstVertexSource = vertexSource;
-			}
+			firstVertexSource = extractShaderSource(block.code, 'vertexShader');
+		}
+
+		if (firstFragmentSource !== null && firstVertexSource !== null) {
+			break;
 		}
 	}
 
@@ -169,6 +167,67 @@ if (import.meta.vitest) {
 			const { effects, errors } = derivePostProcessEffects(blocks);
 
 			expect(effects).toHaveLength(0);
+			expect(errors).toHaveLength(0);
+		});
+
+		it('produces an effect with empty fragment shader body', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				{
+					id: 'a',
+					code: ['fragmentShader', 'fragmentShaderEnd'],
+					creationIndex: 0,
+				} as CodeBlockGraphicData,
+			];
+
+			const { effects, errors } = derivePostProcessEffects(blocks);
+
+			expect(effects).toHaveLength(1);
+			expect(effects[0].fragmentShader).toBe('');
+			expect(effects[0].vertexShader).toBe(DEFAULT_VERTEX_SHADER);
+			expect(errors).toHaveLength(0);
+		});
+
+		it('produces an effect with empty vertex shader body', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				{
+					id: 'a',
+					code: ['vertexShader', 'vertexShaderEnd'],
+					creationIndex: 0,
+				} as CodeBlockGraphicData,
+				{
+					id: 'b',
+					code: ['fragmentShader', 'void main() {}', 'fragmentShaderEnd'],
+					creationIndex: 1,
+				} as CodeBlockGraphicData,
+			];
+
+			const { effects, errors } = derivePostProcessEffects(blocks);
+
+			expect(effects).toHaveLength(1);
+			expect(effects[0].vertexShader).toBe('');
+			expect(effects[0].fragmentShader).toBe('void main() {}');
+			expect(errors).toHaveLength(0);
+		});
+
+		it('produces an effect with both empty shader bodies', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				{
+					id: 'a',
+					code: ['vertexShader', 'vertexShaderEnd'],
+					creationIndex: 0,
+				} as CodeBlockGraphicData,
+				{
+					id: 'b',
+					code: ['fragmentShader', 'fragmentShaderEnd'],
+					creationIndex: 1,
+				} as CodeBlockGraphicData,
+			];
+
+			const { effects, errors } = derivePostProcessEffects(blocks);
+
+			expect(effects).toHaveLength(1);
+			expect(effects[0].vertexShader).toBe('');
+			expect(effects[0].fragmentShader).toBe('');
 			expect(errors).toHaveLength(0);
 		});
 	});
