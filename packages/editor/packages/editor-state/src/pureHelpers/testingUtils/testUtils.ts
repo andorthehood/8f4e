@@ -242,6 +242,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				menuStack: [],
 			},
 			postProcessEffects: [],
+			backgroundEffects: [],
 		},
 		midi: {
 			outputs: [],
