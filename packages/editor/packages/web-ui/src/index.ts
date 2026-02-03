@@ -1,5 +1,5 @@
 import generateSprite, { type SpriteLookups } from '@8f4e/sprite-generator';
-import { Engine, PostProcessEffect } from 'glugglug';
+import { Engine, PostProcessEffect, BackgroundEffect } from 'glugglug';
 
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/codeBlockDecorators/connections';
@@ -33,6 +33,7 @@ export default async function init(
 	resize: (width: number, height: number) => void;
 	reloadSpriteSheet: () => SpriteData;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
+	loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
 	clearCache: () => void;
 }> {
 	// Animation state - local to web-ui, not part of editor-state
@@ -96,6 +97,13 @@ export default async function init(
 				engine.setPostProcessEffect(effect);
 			} else {
 				engine.clearPostProcessEffect();
+			}
+		},
+		loadBackgroundEffect: (effect: BackgroundEffect | null) => {
+			if (effect) {
+				engine.setBackgroundEffect(effect);
+			} else {
+				engine.clearBackgroundEffect();
 			}
 		},
 		clearCache: () => {

@@ -1,5 +1,6 @@
 export { default as audioBuffer } from './audioBuffer';
 export { default as audioLoopback } from './audioLoopback';
+export { default as backgroundPlasma } from './backgroundPlasma';
 export { default as bistableMultivibrators } from './bistableMultivibrators';
 export { default as dancingWithTheSineLT } from './dancingWithTheSineLT';
 export { default as neuralNetwork } from './neuralNetwork';

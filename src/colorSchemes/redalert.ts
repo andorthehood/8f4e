@@ -16,7 +16,7 @@ export default {
 	fill: {
 		menuItemBackground: '#000000',
 		menuItemBackgroundHighlighted: '#ff9999',
-		background: '#110000',
+		background: 'rgba(0,0,0,0)',
 		backgroundDots: '#660000',
 		backgroundDots2: '#660000',
 		moduleBackground: '#220000',
