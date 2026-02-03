@@ -28,6 +28,7 @@ export interface CodeBlock {
  * - 'config': Contains config/configEnd markers (compiled to JSON configuration)
  * - 'function': Contains function/functionEnd markers (compiled to WASM as reusable helper)
  * - 'constants': Contains constants/constantsEnd markers
+ * - 'macro': Contains defineMacro/defineMacroEnd markers (reusable code snippets)
  * - 'vertexShader': Contains vertexShader/vertexShaderEnd markers (GLSL vertex shader)
  * - 'fragmentShader': Contains fragmentShader/fragmentShaderEnd markers (GLSL fragment shader)
  * - 'comment': Contains comment/commentEnd markers (documentation, excluded from compilation)
@@ -38,6 +39,7 @@ export type CodeBlockType =
 	| 'config'
 	| 'function'
 	| 'constants'
+	| 'macro'
 	| 'vertexShader'
 	| 'fragmentShader'
 	| 'comment'

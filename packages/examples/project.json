@@ -30,7 +30,8 @@
 			"options": {
 				"command": "tsc --noEmit",
 				"cwd": "{projectRoot}"
-			}
+			},
+			"dependsOn": ["^build"]
 		}
 	},
 	"tags": ["type:library", "scope:examples"]

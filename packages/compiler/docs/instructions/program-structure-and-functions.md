@@ -7,6 +7,7 @@ Block instructions define the structure of your program. See detailed documentat
 - [Module blocks](./blocks/module.md) - `module` and `moduleEnd`
 - [Function blocks](./blocks/function.md) - `function`, `param`, and `functionEnd`
 - [Constants blocks](./blocks/constants.md) - `constants` and `constantsEnd`
+- [Macro blocks](./blocks/macros.md) - `defineMacro`, `defineMacroEnd`, and `macro`
 
 ## Other Instructions
 

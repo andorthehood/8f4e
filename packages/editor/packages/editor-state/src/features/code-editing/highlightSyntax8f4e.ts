@@ -114,10 +114,15 @@ const instructionsToHighlight = [
 	'param',
 	'constants',
 	'constantsEnd',
+	'defineMacro',
+	'defineMacroEnd',
+	'macro',
 	'vertexShader',
 	'vertexShaderEnd',
 	'fragmentShader',
 	'fragmentShaderEnd',
+	'comment',
+	'commentEnd',
 ];
 
 /**
