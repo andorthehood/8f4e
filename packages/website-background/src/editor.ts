@@ -17,7 +17,8 @@ async function init() {
 		runtimeRegistry,
 		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		callbacks: {
-			compileCode: (modules, compilerOptions, functions) => compileCode(modules, compilerOptions, functions, editor),
+			compileCode: (modules, compilerOptions, functions, macros) =>
+				compileCode(modules, compilerOptions, functions, editor, macros),
 			compileConfig,
 			loadSession,
 			loadEditorConfigBlocks,
