@@ -51,9 +51,11 @@ This feature enables live coding visuals for algorave performances:
 
 ## Shader Block Format
 
-Shader blocks use bare markers with no ID argument:
-- `vertexShader` ... `vertexShaderEnd`
-- `fragmentShader` ... `fragmentShaderEnd`
+Shader blocks use targeted markers with no ID argument:
+- `vertexShader postprocess` ... `vertexShaderEnd`
+- `fragmentShader postprocess` ... `fragmentShaderEnd`
+- `vertexShader background` ... `vertexShaderEnd`
+- `fragmentShader background` ... `fragmentShaderEnd`
 
 ## Default Shaders
 
@@ -64,7 +66,7 @@ A default vertex shader is provided for fragment-only effects:
 ## References
 
 - Shader extraction: `extractShaderSource.ts`
-- Effect derivation: `derivePostProcessEffects.ts` (first-block selection)
+- Effect derivation: `deriveShaderEffects.ts` (first-block selection per target)
 - Default shaders: `defaultVertexShader.ts`
 
 ## Notes & Limitations
