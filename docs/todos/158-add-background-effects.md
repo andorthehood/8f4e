@@ -3,8 +3,8 @@ title: 'TODO: Add Background Effect'
 priority: Medium
 effort: 2-4d
 created: 2026-01-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-03
 ---
 
 # TODO: Add Background Effect
@@ -35,9 +35,9 @@ Add a single background effect inside glugglug that renders one full-screen quad
 
 ## Success Criteria
 
-- [ ] The background effect renders before sprites and appears behind them.
-- [ ] Fallback path renders a fully transparent background when no effect is set.
-- [ ] Post-process effect remains unchanged.
+- [x] The background effect renders before sprites and appears behind them.
+- [x] Fallback path renders a fully transparent background when no effect is set.
+- [x] Post-process effect remains unchanged.
 
 ## Affected Components
 
