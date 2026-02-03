@@ -1,7 +1,5 @@
 import extractShaderSource from './extractShaderSource';
 import { DEFAULT_VERTEX_SHADER } from './defaultVertexShader';
-import getVertexShaderId from './getVertexShaderId';
-import getFragmentShaderId from './getFragmentShaderId';
 
 import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
 
@@ -9,109 +7,76 @@ import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlockGraphicData, CodeError } from '~/types';
 
 /**
- * Derives post-process effects from shader code blocks.
- * Pairs vertex and fragment shaders with matching IDs using last-wins resolution.
- * Returns both the effects array and any pairing errors.
+ * Derives a single post-process effect from shader code blocks.
+ * Uses the first fragment shader block found (by creation order).
+ * If a vertex shader block is present, uses the first one; otherwise falls back to the default.
  */
 export default function derivePostProcessEffects(codeBlocks: CodeBlockGraphicData[]): {
 	effects: PostProcessEffect[];
 	errors: CodeError[];
 } {
-	const errors: CodeError[] = [];
-
 	// Sort by creation index to ensure stable ordering
 	const sortedBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
 
-	// Collect shader blocks by ID, keeping only the last one for each ID
-	const vertexShaders = new Map<string, { block: CodeBlockGraphicData; source: string }>();
-	const fragmentShaders = new Map<string, { block: CodeBlockGraphicData; source: string }>();
+	let firstFragmentSource: string | null = null;
+	let firstVertexSource: string | null = null;
 
 	for (const block of sortedBlocks) {
 		const blockType = getBlockType(block.code);
 
-		if (blockType === 'vertexShader') {
-			const id = getVertexShaderId(block.code);
-			if (id) {
-				const source = extractShaderSource(block.code, 'vertexShader');
-				vertexShaders.set(id, { block, source });
-			} else {
-				errors.push({
-					lineNumber: 1,
-					message: 'Vertex shader block is missing an ID',
-					codeBlockId: block.id,
-				});
-			}
-		} else if (blockType === 'fragmentShader') {
-			const id = getFragmentShaderId(block.code);
-			if (id) {
-				const source = extractShaderSource(block.code, 'fragmentShader');
-				fragmentShaders.set(id, { block, source });
-			} else {
-				errors.push({
-					lineNumber: 1,
-					message: 'Fragment shader block is missing an ID',
-					codeBlockId: block.id,
-				});
-			}
+		if (blockType === 'fragmentShader' && firstFragmentSource === null) {
+			firstFragmentSource = extractShaderSource(block.code, 'fragmentShader');
+		} else if (blockType === 'vertexShader' && firstVertexSource === null) {
+			firstVertexSource = extractShaderSource(block.code, 'vertexShader');
 		}
 	}
 
-	// Build effects by pairing vertex and fragment shaders with matching IDs
-	const effects: PostProcessEffect[] = [];
-	const pairedIds = new Set<string>();
-
-	// Check for vertex shaders with matching fragment shaders
-	for (const [id, { block: vertexBlock, source: vertexSource }] of vertexShaders) {
-		const fragmentData = fragmentShaders.get(id);
-
-		if (fragmentData) {
-			effects.push({
-				name: id,
-				vertexShader: vertexSource,
-				fragmentShader: fragmentData.source,
-				enabled: true,
-			});
-			pairedIds.add(id);
-		} else {
-			// Missing fragment shader
-			errors.push({
-				lineNumber: 1,
-				message: `Vertex shader "${id}" has no matching fragment shader`,
-				codeBlockId: vertexBlock.id,
-			});
-		}
+	if (firstFragmentSource === null) {
+		return { effects: [], errors: [] };
 	}
 
-	// Check for fragment shaders without matching vertex shaders
-	// Use default vertex shader for fragment-only blocks
-	for (const [id, { source: fragmentSource }] of fragmentShaders) {
-		if (!pairedIds.has(id)) {
-			effects.push({
-				name: id,
-				vertexShader: DEFAULT_VERTEX_SHADER,
-				fragmentShader: fragmentSource,
-				enabled: true,
-			});
-		}
-	}
-
-	return { effects, errors };
+	return {
+		effects: [
+			{
+				vertexShader: firstVertexSource ?? DEFAULT_VERTEX_SHADER,
+				fragmentShader: firstFragmentSource,
+			},
+		],
+		errors: [],
+	};
 }
 
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
 	describe('derivePostProcessEffects', () => {
-		it('pairs vertex and fragment shaders with matching IDs', () => {
+		it('produces an effect from a fragment shader block', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
-					id: 'test',
-					code: ['vertexShader test', 'void main() {}', 'vertexShaderEnd'],
+					id: 'a',
+					code: ['fragmentShader', 'void main() {}', 'fragmentShaderEnd'],
+					creationIndex: 0,
+				} as CodeBlockGraphicData,
+			];
+
+			const { effects, errors } = derivePostProcessEffects(blocks);
+
+			expect(effects).toHaveLength(1);
+			expect(effects[0].fragmentShader).toBe('void main() {}');
+			expect(effects[0].vertexShader).toBe(DEFAULT_VERTEX_SHADER);
+			expect(errors).toHaveLength(0);
+		});
+
+		it('pairs the first vertex shader with the first fragment shader', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				{
+					id: 'a',
+					code: ['vertexShader', 'custom vertex', 'vertexShaderEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 				{
-					id: 'test',
-					code: ['fragmentShader test', 'void main() {}', 'fragmentShaderEnd'],
+					id: 'b',
+					code: ['fragmentShader', 'custom fragment', 'fragmentShaderEnd'],
 					creationIndex: 1,
 				} as CodeBlockGraphicData,
 			];
@@ -119,26 +84,47 @@ if (import.meta.vitest) {
 			const { effects, errors } = derivePostProcessEffects(blocks);
 
 			expect(effects).toHaveLength(1);
-			expect(effects[0].name).toBe('test');
-			expect(effects[0].enabled).toBe(true);
+			expect(effects[0].vertexShader).toBe('custom vertex');
+			expect(effects[0].fragmentShader).toBe('custom fragment');
 			expect(errors).toHaveLength(0);
 		});
 
-		it('uses last-wins resolution for duplicate IDs', () => {
+		it('uses the first fragment block when multiple exist', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
-					id: 'test',
-					code: ['vertexShader test', 'first version', 'vertexShaderEnd'],
+					id: 'a',
+					code: ['fragmentShader', 'first fragment', 'fragmentShaderEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 				{
-					id: 'test',
-					code: ['vertexShader test', 'second version', 'vertexShaderEnd'],
+					id: 'b',
+					code: ['fragmentShader', 'second fragment', 'fragmentShaderEnd'],
+					creationIndex: 1,
+				} as CodeBlockGraphicData,
+			];
+
+			const { effects, errors } = derivePostProcessEffects(blocks);
+
+			expect(effects).toHaveLength(1);
+			expect(effects[0].fragmentShader).toBe('first fragment');
+			expect(errors).toHaveLength(0);
+		});
+
+		it('uses the first vertex block when multiple exist', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				{
+					id: 'a',
+					code: ['vertexShader', 'first vertex', 'vertexShaderEnd'],
+					creationIndex: 0,
+				} as CodeBlockGraphicData,
+				{
+					id: 'b',
+					code: ['vertexShader', 'second vertex', 'vertexShaderEnd'],
 					creationIndex: 1,
 				} as CodeBlockGraphicData,
 				{
-					id: 'test',
-					code: ['fragmentShader test', 'fragment code', 'fragmentShaderEnd'],
+					id: 'c',
+					code: ['fragmentShader', 'fragment', 'fragmentShaderEnd'],
 					creationIndex: 2,
 				} as CodeBlockGraphicData,
 			];
@@ -146,15 +132,15 @@ if (import.meta.vitest) {
 			const { effects, errors } = derivePostProcessEffects(blocks);
 
 			expect(effects).toHaveLength(1);
-			expect(effects[0].vertexShader).toBe('second version');
+			expect(effects[0].vertexShader).toBe('first vertex');
 			expect(errors).toHaveLength(0);
 		});
 
-		it('reports error for vertex shader without matching fragment', () => {
+		it('returns no effect when no fragment shader block exists', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
-					id: 'test',
-					code: ['vertexShader test', 'void main() {}', 'vertexShaderEnd'],
+					id: 'a',
+					code: ['vertexShader', 'some vertex', 'vertexShaderEnd'],
 					creationIndex: 0,
 				} as CodeBlockGraphicData,
 			];
@@ -162,88 +148,21 @@ if (import.meta.vitest) {
 			const { effects, errors } = derivePostProcessEffects(blocks);
 
 			expect(effects).toHaveLength(0);
-			expect(errors).toHaveLength(1);
-			expect(errors[0].message).toContain('no matching fragment shader');
-		});
-
-		it('uses default vertex shader for fragment-only blocks', () => {
-			const blocks: CodeBlockGraphicData[] = [
-				{
-					id: 'test',
-					code: ['fragmentShader test', 'void main() {}', 'fragmentShaderEnd'],
-					creationIndex: 0,
-				} as CodeBlockGraphicData,
-			];
-
-			const { effects, errors } = derivePostProcessEffects(blocks);
-
-			expect(effects).toHaveLength(1);
-			expect(effects[0].name).toBe('test');
-			expect(effects[0].vertexShader).toBe(DEFAULT_VERTEX_SHADER);
-			expect(effects[0].fragmentShader).toBe('void main() {}');
 			expect(errors).toHaveLength(0);
 		});
 
-		it('handles multiple shader pairs', () => {
+		it('returns no effect when there are no shader blocks', () => {
 			const blocks: CodeBlockGraphicData[] = [
 				{
-					id: 'effect1',
-					code: ['vertexShader effect1', 'code1', 'vertexShaderEnd'],
+					id: 'a',
+					code: ['module foo', '', 'moduleEnd'],
 					creationIndex: 0,
-				} as CodeBlockGraphicData,
-				{
-					id: 'effect1',
-					code: ['fragmentShader effect1', 'code1', 'fragmentShaderEnd'],
-					creationIndex: 1,
-				} as CodeBlockGraphicData,
-				{
-					id: 'effect2',
-					code: ['vertexShader effect2', 'code2', 'vertexShaderEnd'],
-					creationIndex: 2,
-				} as CodeBlockGraphicData,
-				{
-					id: 'effect2',
-					code: ['fragmentShader effect2', 'code2', 'fragmentShaderEnd'],
-					creationIndex: 3,
 				} as CodeBlockGraphicData,
 			];
 
 			const { effects, errors } = derivePostProcessEffects(blocks);
 
-			expect(effects).toHaveLength(2);
-			expect(effects[0].name).toBe('effect1');
-			expect(effects[1].name).toBe('effect2');
-			expect(errors).toHaveLength(0);
-		});
-
-		it('handles mixed paired and fragment-only shaders', () => {
-			const blocks: CodeBlockGraphicData[] = [
-				{
-					id: 'paired',
-					code: ['vertexShader paired', 'custom vertex', 'vertexShaderEnd'],
-					creationIndex: 0,
-				} as CodeBlockGraphicData,
-				{
-					id: 'paired',
-					code: ['fragmentShader paired', 'paired fragment', 'fragmentShaderEnd'],
-					creationIndex: 1,
-				} as CodeBlockGraphicData,
-				{
-					id: 'fragmentOnly',
-					code: ['fragmentShader fragmentOnly', 'fragment only', 'fragmentShaderEnd'],
-					creationIndex: 2,
-				} as CodeBlockGraphicData,
-			];
-
-			const { effects, errors } = derivePostProcessEffects(blocks);
-
-			expect(effects).toHaveLength(2);
-			expect(effects[0].name).toBe('paired');
-			expect(effects[0].vertexShader).toBe('custom vertex');
-			expect(effects[0].fragmentShader).toBe('paired fragment');
-			expect(effects[1].name).toBe('fragmentOnly');
-			expect(effects[1].vertexShader).toBe(DEFAULT_VERTEX_SHADER);
-			expect(effects[1].fragmentShader).toBe('fragment only');
+			expect(effects).toHaveLength(0);
 			expect(errors).toHaveLength(0);
 		});
 	});
