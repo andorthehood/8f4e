@@ -28,6 +28,7 @@ export interface MacroDefinition {
 /**
  * Parse macro definitions from macro modules.
  * Validates that:
+ * - Each code block contains only one macro definition
  * - Each macro has a unique name
  * - Each macro ends with `defineMacroEnd`
  * - No nested macro definitions or calls inside macro bodies
@@ -43,6 +44,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 		const { code } = module;
 		let currentMacro: MacroDefinition | null = null;
 		let insideMacro = false;
+		let macroCount = 0;
 
 		code.forEach((line, lineIndex) => {
 			// Skip comments
@@ -69,6 +71,12 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 					);
 				}
 
+				if (macroCount > 0) {
+					throw new Error(
+						`Line ${lineIndex}: Each code block can contain only one macro definition. Found multiple 'defineMacro' declarations.`
+					);
+				}
+
 				const macroName = match[2];
 				if (!macroName) {
 					throw new Error(`Line ${lineIndex}: Missing macro name after 'defineMacro'.`);
@@ -84,6 +92,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 					definitionLineNumber: lineIndex,
 				};
 				insideMacro = true;
+				macroCount++;
 			} else if (instruction === 'defineMacroEnd') {
 				if (!insideMacro || !currentMacro) {
 					throw new Error(`Line ${lineIndex}: 'defineMacroEnd' without matching 'defineMacro'.`);
