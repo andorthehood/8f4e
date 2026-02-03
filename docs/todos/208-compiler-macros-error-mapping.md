@@ -3,8 +3,8 @@ title: 'TODO: Compiler Macro Expansion with Error Mapping'
 priority: Medium
 effort: 2-3d
 created: 2026-02-02
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-03
 ---
 
 # TODO: Compiler Macro Expansion with Error Mapping
@@ -63,11 +63,11 @@ Implementation should compile the expanded source while preserving original call
 
 ## Success Criteria
 
-- [ ] Macro blocks expand in all compiler entry points.
-- [ ] Errors inside expanded bodies report the `macro <name>` call-site line number.
-- [ ] Duplicate/missing macros and missing end lines surface clear errors.
-- [ ] No nested macro expansion is allowed (errors on nested use).
-- [ ] Tests cover expansion and line mapping behavior.
+- [x] Macro blocks expand in all compiler entry points.
+- [x] Errors inside expanded bodies report the `macro <name>` call-site line number.
+- [x] Duplicate/missing macros and missing end lines surface clear errors.
+- [x] No nested macro expansion is allowed (errors on nested use).
+- [x] Tests cover expansion and line mapping behavior.
 
 ## Affected Components
 
