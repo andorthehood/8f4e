@@ -274,6 +274,7 @@ export interface State {
 		compilationErrors: CodeError[];
 		projectConfigErrors: CodeError[];
 		editorConfigErrors: CodeError[];
+		shaderErrors: CodeError[];
 	};
 	dialog: {
 		show: boolean;
