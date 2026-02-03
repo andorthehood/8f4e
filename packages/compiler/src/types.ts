@@ -129,7 +129,6 @@ export interface CompilationContext {
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
 	functionTypeRegistry?: FunctionTypeRegistry;
-	currentMacroId?: string;
 }
 
 export interface StackItem {

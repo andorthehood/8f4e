@@ -16,7 +16,6 @@ import collectConstants from './astUtils/collectConstants';
 import getConstantsName from './astUtils/getConstantsName';
 import getModuleName from './astUtils/getModuleName';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
-import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 import {
 	AST,
 	ArgumentType,
@@ -73,14 +72,6 @@ export { default as collectConstants } from './astUtils/collectConstants';
 export { default as getConstantsName } from './astUtils/getConstantsName';
 export { default as getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
-export {
-	parseMacroDefinitions,
-	expandMacros,
-	convertExpandedLinesToCode,
-	type MacroDefinition,
-	type ExpandedLine,
-} from './utils/macroExpansion';
-export { ErrorCode, getError } from './errors';
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
@@ -208,36 +199,14 @@ function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): Com
 export default function compile(
 	modules: Module[],
 	options: CompileOptions,
-	functions?: Module[],
-	macros?: Module[]
+	functions?: Module[]
 ): {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
 	allocatedMemorySize: number;
 } {
-	// Parse and expand macros if provided
-	const macroDefinitions = macros ? parseMacroDefinitions(macros) : new Map();
-
-	// Expand macros in modules
-	const expandedModules = macros
-		? modules.map(module => {
-				const expanded = expandMacros(module, macroDefinitions);
-				return convertExpandedLinesToCode(expanded);
-			})
-		: modules.map(module => ({ code: module.code, lineMetadata: undefined }));
-
-	// Expand macros in functions
-	const expandedFunctions =
-		macros && functions
-			? functions.map(func => {
-					const expanded = expandMacros(func, macroDefinitions);
-					return convertExpandedLinesToCode(expanded);
-				})
-			: (functions?.map(func => ({ code: func.code, lineMetadata: undefined })) ?? []);
-
-	// Compile to AST with line metadata for error mapping
-	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
+	const astModules = modules.map(({ code }) => compileToAST(code));
 	const sortedModules = sortModules(astModules);
 
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
@@ -251,7 +220,7 @@ export default function compile(
 	);
 
 	// Compile functions first with WASM indices and type registry
-	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
+	const astFunctions = functions ? functions.map(({ code }) => compileToAST(code)) : [];
 
 	// Create a shared type registry for all functions
 	// Base type index is 3 (after the 3 built-in types)

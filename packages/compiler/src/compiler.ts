@@ -39,18 +39,13 @@ export function parseLine(line: string, lineNumber: number): AST[number] {
 	};
 }
 
-export function compileToAST(
-	code: string[],
-	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
-): AST {
+export function compileToAST(code: string[]) {
 	return code
 		.map((line, index) => [index, line] as [number, string])
 		.filter(([, line]) => !isComment(line))
 		.filter(([, line]) => isValidInstruction(line))
 		.map(([lineNumber, line]) => {
-			// Use callSiteLineNumber from metadata if available, otherwise use actual line number
-			const actualLineNumber = lineMetadata?.[lineNumber]?.callSiteLineNumber ?? lineNumber;
-			return parseLine(line, actualLineNumber);
+			return parseLine(line, lineNumber);
 		});
 }
 
@@ -61,12 +56,8 @@ export function compileLine(line: AST[number], context: CompilationContext) {
 	instructions[line.instruction](line, context);
 }
 
-export function compileSegment(
-	code: string[],
-	context: CompilationContext,
-	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
-) {
-	compileToAST(code, lineMetadata).forEach(line => {
+export function compileSegment(lines: string[], context: CompilationContext) {
+	compileToAST(lines).forEach(line => {
 		compileLine(line, context);
 	});
 	return context;
