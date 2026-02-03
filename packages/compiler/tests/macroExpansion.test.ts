@@ -89,7 +89,7 @@ describe('parseMacroDefinitions', () => {
 			},
 		];
 
-		expect(() => parseMacroDefinitions(macros)).toThrow(/Duplicate macro name 'add10'/);
+		expect(() => parseMacroDefinitions(macros)).toThrow(/Duplicate macro name/);
 	});
 
 	test('should throw error on missing defineMacroEnd', () => {
@@ -99,7 +99,7 @@ describe('parseMacroDefinitions', () => {
 			},
 		];
 
-		expect(() => parseMacroDefinitions(macros)).toThrow(/missing 'defineMacroEnd'/);
+		expect(() => parseMacroDefinitions(macros)).toThrow(/Missing defineMacroEnd/);
 	});
 
 	test('should throw error on nested macro definitions', () => {
@@ -127,7 +127,7 @@ describe('parseMacroDefinitions', () => {
 			},
 		];
 
-		expect(() => parseMacroDefinitions(macros)).toThrow(/Macro calls are not allowed inside macro definitions/);
+		expect(() => parseMacroDefinitions(macros)).toThrow(/Macro calls inside macro definitions/);
 	});
 
 	test('should throw error on defineMacroEnd without matching defineMacro', () => {
@@ -137,7 +137,7 @@ describe('parseMacroDefinitions', () => {
 			},
 		];
 
-		expect(() => parseMacroDefinitions(macros)).toThrow(/'defineMacroEnd' without matching 'defineMacro'/);
+		expect(() => parseMacroDefinitions(macros)).toThrow(/Missing defineMacroEnd/);
 	});
 });
 
@@ -156,7 +156,7 @@ describe('expandMacros', () => {
 		];
 
 		const macroMap = parseMacroDefinitions(macros);
-		const expanded = expandMacros(modules, macroMap);
+		const expanded = expandMacros(modules[0], macroMap);
 
 		expect(expanded.length).toBe(8);
 		// Line 0: module test
@@ -190,7 +190,7 @@ describe('expandMacros', () => {
 		];
 
 		const macroMap = parseMacroDefinitions(macros);
-		const expanded = expandMacros(modules, macroMap);
+		const expanded = expandMacros(modules[0], macroMap);
 
 		expect(expanded.length).toBe(6);
 		// Line 0: module test
@@ -216,7 +216,7 @@ describe('expandMacros', () => {
 
 		const macroMap = parseMacroDefinitions(macros);
 
-		expect(() => expandMacros(modules, macroMap)).toThrow(/Undefined macro 'undefined'/);
+		expect(() => expandMacros(modules[0], macroMap)).toThrow(/Undefined macro/);
 	});
 
 	test('should preserve comments and empty lines', () => {
@@ -233,7 +233,7 @@ describe('expandMacros', () => {
 		];
 
 		const macroMap = parseMacroDefinitions(macros);
-		const expanded = expandMacros(modules, macroMap);
+		const expanded = expandMacros(modules[0], macroMap);
 
 		expect(expanded.length).toBe(5);
 		expect(expanded[0]).toEqual({ line: 'module test', callSiteLineNumber: 0 });

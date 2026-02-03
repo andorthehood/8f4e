@@ -222,7 +222,7 @@ export default function compile(
 	// Expand macros in modules
 	const expandedModules = macros
 		? modules.map(module => {
-				const expanded = expandMacros([module], macroDefinitions);
+				const expanded = expandMacros(module, macroDefinitions);
 				return convertExpandedLinesToCode(expanded);
 			})
 		: modules.map(module => ({ code: module.code, lineMetadata: undefined }));
@@ -231,7 +231,7 @@ export default function compile(
 	const expandedFunctions =
 		macros && functions
 			? functions.map(func => {
-					const expanded = expandMacros([func], macroDefinitions);
+					const expanded = expandMacros(func, macroDefinitions);
 					return convertExpandedLinesToCode(expanded);
 				})
 			: (functions?.map(func => ({ code: func.code, lineMetadata: undefined })) ?? []);
