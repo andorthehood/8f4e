@@ -73,6 +73,14 @@ export { default as collectConstants } from './astUtils/collectConstants';
 export { default as getConstantsName } from './astUtils/getConstantsName';
 export { default as getModuleName } from './astUtils/getModuleName';
 export { instructionParser } from './compiler';
+export {
+	parseMacroDefinitions,
+	expandMacros,
+	convertExpandedLinesToCode,
+	type MacroDefinition,
+	type ExpandedLine,
+} from './utils/macroExpansion';
+export { ErrorCode, getError } from './errors';
 
 function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
