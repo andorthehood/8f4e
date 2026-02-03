@@ -95,7 +95,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	createSpriteSheetManager(store, view, events);
 
 	events.on('loadPostProcessEffects', () => {
-		view.loadPostProcessEffects(state.graphicHelper.postProcessEffects);
+		view.loadPostProcessEffect(state.graphicHelper.postProcessEffects[0] ?? null);
 	});
 
 	return {
