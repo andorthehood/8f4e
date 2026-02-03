@@ -2,7 +2,7 @@ import { CompileOptions, Module } from '@8f4e/compiler';
 
 import compileAndUpdateMemory from './compileAndUpdateMemory';
 
-async function compile(modules: Module[], compilerOptions: CompileOptions, functions?: Module[]) {
+async function compile(modules: Module[], compilerOptions: CompileOptions, functions?: Module[], macros?: Module[]) {
 	try {
 		const {
 			codeBuffer,
@@ -12,7 +12,7 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 			memoryRef,
 			hasWasmInstanceBeenReset,
 			memoryAction,
-		} = await compileAndUpdateMemory(modules, compilerOptions, functions);
+		} = await compileAndUpdateMemory(modules, compilerOptions, functions, macros);
 		self.postMessage({
 			type: 'success',
 			payload: {
@@ -36,7 +36,12 @@ async function compile(modules: Module[], compilerOptions: CompileOptions, funct
 self.onmessage = function (event) {
 	switch (event.data.type) {
 		case 'compile':
-			compile(event.data.payload.modules, event.data.payload.compilerOptions, event.data.payload.functions);
+			compile(
+				event.data.payload.modules,
+				event.data.payload.compilerOptions,
+				event.data.payload.functions,
+				event.data.payload.macros
+			);
 			break;
 	}
 };
