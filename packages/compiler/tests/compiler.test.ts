@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 
 import { ArgumentType } from '../src/types';
-import { isComment, isValidInstruction, parseArgument, parseLine } from '../src/compiler';
+import { isComment, isValidInstruction, parseArgument, parseLine, compileToAST } from '../src/compiler';
 
 import type { AST } from '../src/types';
 
@@ -96,5 +96,36 @@ describe('isValidInstruction', () => {
 
 	test.each(fixtures)('given %p the output is %p', (line, value) => {
 		expect(isValidInstruction(line)).toBe(value);
+	});
+});
+
+describe('compileToAST', () => {
+	test('should use callSiteLineNumber from lineMetadata when provided', () => {
+		const code = ['push 10', 'push 20', 'add'];
+		const lineMetadata = [
+			{ callSiteLineNumber: 5 },
+			{ callSiteLineNumber: 5, macroId: 'double' },
+			{ callSiteLineNumber: 5, macroId: 'double' },
+		];
+
+		const ast = compileToAST(code, lineMetadata);
+
+		// All AST entries should have lineNumber 5 (the call site)
+		expect(ast).toHaveLength(3);
+		expect(ast[0].lineNumber).toBe(5);
+		expect(ast[1].lineNumber).toBe(5);
+		expect(ast[2].lineNumber).toBe(5);
+	});
+
+	test('should use actual line numbers when lineMetadata is not provided', () => {
+		const code = ['push 10', 'push 20', 'add'];
+
+		const ast = compileToAST(code);
+
+		// Should use 0-indexed line numbers
+		expect(ast).toHaveLength(3);
+		expect(ast[0].lineNumber).toBe(0);
+		expect(ast[1].lineNumber).toBe(1);
+		expect(ast[2].lineNumber).toBe(2);
 	});
 });
