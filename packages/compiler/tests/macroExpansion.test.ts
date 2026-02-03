@@ -21,7 +21,24 @@ describe('parseMacroDefinitions', () => {
 		expect(macroDef?.body).toEqual(['push 10', 'add']);
 	});
 
-	test('should parse multiple macro definitions', () => {
+	test('should parse multiple macro definitions from separate code blocks', () => {
+		const macros: Module[] = [
+			{
+				code: ['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'],
+			},
+			{
+				code: ['defineMacro triple', 'push 3', 'mul', 'defineMacroEnd'],
+			},
+		];
+
+		const macroMap = parseMacroDefinitions(macros);
+
+		expect(macroMap.size).toBe(2);
+		expect(macroMap.has('double')).toBe(true);
+		expect(macroMap.has('triple')).toBe(true);
+	});
+
+	test('should throw error on multiple macro definitions in same code block', () => {
 		const macros: Module[] = [
 			{
 				code: [
@@ -37,11 +54,7 @@ describe('parseMacroDefinitions', () => {
 			},
 		];
 
-		const macroMap = parseMacroDefinitions(macros);
-
-		expect(macroMap.size).toBe(2);
-		expect(macroMap.has('double')).toBe(true);
-		expect(macroMap.has('triple')).toBe(true);
+		expect(() => parseMacroDefinitions(macros)).toThrow(/Each code block can contain only one macro definition/);
 	});
 
 	test('should skip comments in macro definitions', () => {
@@ -69,16 +82,10 @@ describe('parseMacroDefinitions', () => {
 	test('should throw error on duplicate macro names', () => {
 		const macros: Module[] = [
 			{
-				code: [
-					'defineMacro add10',
-					'push 10',
-					'add',
-					'defineMacroEnd',
-					'defineMacro add10',
-					'push 20',
-					'add',
-					'defineMacroEnd',
-				],
+				code: ['defineMacro add10', 'push 10', 'add', 'defineMacroEnd'],
+			},
+			{
+				code: ['defineMacro add10', 'push 20', 'add', 'defineMacroEnd'],
 			},
 		];
 
@@ -116,16 +123,7 @@ describe('parseMacroDefinitions', () => {
 	test('should throw error on macro calls inside macro definitions', () => {
 		const macros: Module[] = [
 			{
-				code: [
-					'defineMacro add10',
-					'push 10',
-					'add',
-					'defineMacroEnd',
-					'defineMacro add20',
-					'macro add10',
-					'macro add10',
-					'defineMacroEnd',
-				],
+				code: ['defineMacro add20', 'macro add10', 'macro add10', 'defineMacroEnd'],
 			},
 		];
 
