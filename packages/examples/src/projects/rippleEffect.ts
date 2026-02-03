@@ -82,7 +82,7 @@ const project: Project = {
 		},
 		{
 			code: [
-				'fragmentShader ripple',
+				'fragmentShader',
 				'#version 300 es',
 				'',
 				'precision mediump float;',
