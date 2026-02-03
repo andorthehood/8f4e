@@ -66,7 +66,7 @@ describe('Macro expansion integration', () => {
 			memorySizeBytes: 1024,
 		};
 
-		expect(() => compile(modules, options, functions, [])).toThrow(/Undefined macro 'undefined'/);
+		expect(() => compile(modules, options, functions, [])).toThrow(/Undefined macro/);
 	});
 
 	test('should compile without macros (backward compatibility)', () => {

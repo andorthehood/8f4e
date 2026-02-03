@@ -1,7 +1,11 @@
 import instructionParser from '../syntax/instructionParser';
 import isComment from '../syntax/isComment';
 import isValidInstruction from '../syntax/isValidInstruction';
-import { Module } from '../types';
+import { ErrorCode, getError } from '../errors';
+
+import type { Module } from '../types';
+import type { AST } from '../types';
+import type { Instruction } from '../instructionCompilers';
 
 /**
  * Represents an expanded source line with metadata for error mapping.
@@ -66,9 +70,12 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 
 			if (instruction === 'defineMacro') {
 				if (insideMacro) {
-					throw new Error(
-						`Line ${lineIndex}: Nested macro definitions are not allowed. Found 'defineMacro' inside macro '${currentMacro!.name}'.`
-					);
+					const astLine: AST[number] = {
+						lineNumber: lineIndex,
+						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
+						arguments: [],
+					};
+					throw getError(ErrorCode.NESTED_MACRO_DEFINITION, astLine);
 				}
 
 				if (macroCount > 0) {
@@ -83,7 +90,12 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				}
 
 				if (macroMap.has(macroName)) {
-					throw new Error(`Line ${lineIndex}: Duplicate macro name '${macroName}'.`);
+					const astLine: AST[number] = {
+						lineNumber: lineIndex,
+						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
+						arguments: [],
+					};
+					throw getError(ErrorCode.DUPLICATE_MACRO_NAME, astLine);
 				}
 
 				currentMacro = {
@@ -95,7 +107,12 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				macroCount++;
 			} else if (instruction === 'defineMacroEnd') {
 				if (!insideMacro || !currentMacro) {
-					throw new Error(`Line ${lineIndex}: 'defineMacroEnd' without matching 'defineMacro'.`);
+					const astLine: AST[number] = {
+						lineNumber: lineIndex,
+						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
+						arguments: [],
+					};
+					throw getError(ErrorCode.MISSING_MACRO_END, astLine);
 				}
 
 				macroMap.set(currentMacro.name, currentMacro);
@@ -104,9 +121,12 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 			} else if (insideMacro) {
 				// Check for nested macro calls or definitions inside macro body
 				if (instruction === 'macro') {
-					throw new Error(
-						`Line ${lineIndex}: Macro calls are not allowed inside macro definitions. Found 'macro' inside macro '${currentMacro!.name}'.`
-					);
+					const astLine: AST[number] = {
+						lineNumber: lineIndex,
+						instruction: 'push' as Instruction, // Placeholder instruction for error reporting
+						arguments: [],
+					};
+					throw getError(ErrorCode.NESTED_MACRO_CALL, astLine);
 				}
 
 				// Add line to current macro body
@@ -117,9 +137,12 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 		// Check if any macro was left unclosed
 		if (insideMacro) {
 			const macro = currentMacro!;
-			throw new Error(
-				`Macro '${macro.name}' started at line ${macro.definitionLineNumber} is missing 'defineMacroEnd'.`
-			);
+			const astLine: AST[number] = {
+				lineNumber: macro.definitionLineNumber,
+				instruction: 'push' as Instruction, // Placeholder instruction for error reporting
+				arguments: [],
+			};
+			throw getError(ErrorCode.MISSING_MACRO_END, astLine);
 		}
 	});
 
@@ -127,69 +150,71 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 }
 
 /**
- * Expand macros in source modules.
+ * Expand macros in a single source module.
  * Each `macro <name>` instruction is replaced with the macro body,
  * preserving the call-site line number for error mapping.
  *
- * @param modules Array of source modules to expand
+ * @param module Source module to expand
  * @param macroDefinitions Map of macro definitions
  * @returns Array of expanded lines with metadata
  * @throws Error if an undefined macro is referenced
  */
-export function expandMacros(modules: Module[], macroDefinitions: Map<string, MacroDefinition>): ExpandedLine[] {
+export function expandMacros(module: Module, macroDefinitions: Map<string, MacroDefinition>): ExpandedLine[] {
 	const expandedLines: ExpandedLine[] = [];
+	const { code } = module;
 
-	modules.forEach(module => {
-		const { code } = module;
+	code.forEach((line, lineIndex) => {
+		// For comments and empty lines, preserve as-is
+		if (isComment(line) || !isValidInstruction(line)) {
+			expandedLines.push({
+				line,
+				callSiteLineNumber: lineIndex,
+			});
+			return;
+		}
 
-		code.forEach((line, lineIndex) => {
-			// For comments and empty lines, preserve as-is
-			if (isComment(line) || !isValidInstruction(line)) {
-				expandedLines.push({
-					line,
-					callSiteLineNumber: lineIndex,
-				});
-				return;
+		const match = line.match(instructionParser);
+		if (!match) {
+			expandedLines.push({
+				line,
+				callSiteLineNumber: lineIndex,
+			});
+			return;
+		}
+
+		const instruction = match[1];
+
+		if (instruction === 'macro') {
+			const macroName = match[2];
+			if (!macroName) {
+				throw new Error(`Line ${lineIndex}: Missing macro name after 'macro'.`);
 			}
 
-			const match = line.match(instructionParser);
-			if (!match) {
-				expandedLines.push({
-					line,
-					callSiteLineNumber: lineIndex,
-				});
-				return;
+			const macroDef = macroDefinitions.get(macroName);
+			if (!macroDef) {
+				const astLine: AST[number] = {
+					lineNumber: lineIndex,
+					instruction: 'push' as Instruction, // Placeholder instruction for error reporting
+					arguments: [],
+				};
+				throw getError(ErrorCode.UNDEFINED_MACRO, astLine);
 			}
 
-			const instruction = match[1];
-
-			if (instruction === 'macro') {
-				const macroName = match[2];
-				if (!macroName) {
-					throw new Error(`Line ${lineIndex}: Missing macro name after 'macro'.`);
-				}
-
-				const macroDef = macroDefinitions.get(macroName);
-				if (!macroDef) {
-					throw new Error(`Line ${lineIndex}: Undefined macro '${macroName}'.`);
-				}
-
-				// Expand macro body, all lines map back to the call site
-				macroDef.body.forEach(macroLine => {
-					expandedLines.push({
-						line: macroLine,
-						callSiteLineNumber: lineIndex,
-						macroId: macroName,
-					});
-				});
-			} else {
-				// Regular instruction, not a macro call
+			// Expand macro body, all lines map back to the call site
+			macroDef.body.forEach(macroLine => {
 				expandedLines.push({
-					line,
+					line: macroLine,
 					callSiteLineNumber: lineIndex,
+					macroId: macroName,
 				});
-			}
-		});
+			});
+		} else {
+			// Regular instruction, not a macro call
+			expandedLines.push({
+				line,
+				callSiteLineNumber: lineIndex,
+			});
+		}
 	});
 
 	return expandedLines;
