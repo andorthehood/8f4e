@@ -7,6 +7,7 @@ import type { Project, ProjectMetadata } from '@8f4e/editor-state';
 export const projectManifest: Record<string, () => Promise<Project>> = {
 	audioBuffer: () => import('@8f4e/examples/projects/audioBuffer').then(m => m.default),
 	audioLoopback: () => import('@8f4e/examples/projects/audioLoopback').then(m => m.default),
+	backgroundPlasma: () => import('@8f4e/examples/projects/backgroundPlasma').then(m => m.default),
 	bistableMultivibrators: () => import('@8f4e/examples/projects/bistableMultivibrators').then(m => m.default),
 	dancingWithTheSineLT: () => import('@8f4e/examples/projects/dancingWithTheSineLT').then(m => m.default),
 	neuralNetwork: () => import('@8f4e/examples/projects/neuralNetwork').then(m => m.default),
@@ -26,6 +27,7 @@ export const projectManifest: Record<string, () => Promise<Project>> = {
 export const projectMetadata: ProjectMetadata[] = [
 	{ slug: 'audioBuffer', title: 'Audio Buffer', category: 'Audio' },
 	{ slug: 'audioLoopback', title: 'Audio Loopback', category: 'Audio' },
+	{ slug: 'backgroundPlasma', title: 'Background Plasma', category: 'Visuals' },
 	{ slug: 'bistableMultivibrators', title: 'Bistable Multivibrators', category: 'Digital' },
 	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', category: 'Visuals' },
 	{ slug: 'neuralNetwork', title: 'Neural Network', category: 'Machine Learning' },
