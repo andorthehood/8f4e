@@ -69,6 +69,47 @@ describe('Macro expansion integration', () => {
 		expect(() => compile(modules, options, functions, [])).toThrow(/Undefined macro/);
 	});
 
+	test('should compile modules with macro expansion', () => {
+		const macros: Module[] = [
+			{
+				code: ['defineMacro incrementCounter', 'push 1', 'add', 'defineMacroEnd'],
+			},
+		];
+
+		const modules: Module[] = [
+			{
+				code: ['module test', 'int counter 0', 'push counter', 'macro incrementCounter', 'drop', 'moduleEnd'],
+			},
+		];
+
+		const options = {
+			startingMemoryWordAddress: 0,
+			memorySizeBytes: 1024,
+		};
+
+		// Should not throw
+		const result = compile(modules, options, undefined, macros);
+
+		expect(result).toBeDefined();
+		expect(result.compiledModules).toBeDefined();
+		expect(result.compiledModules.test).toBeDefined();
+	});
+
+	test('should throw error on undefined macro in module', () => {
+		const modules: Module[] = [
+			{
+				code: ['module test', 'int counter 0', 'push counter', 'macro undefined', 'drop', 'moduleEnd'],
+			},
+		];
+
+		const options = {
+			startingMemoryWordAddress: 0,
+			memorySizeBytes: 1024,
+		};
+
+		expect(() => compile(modules, options, undefined, [])).toThrow(/Undefined macro/);
+	});
+
 	test('should compile without macros (backward compatibility)', () => {
 		const functions: Module[] = [
 			{

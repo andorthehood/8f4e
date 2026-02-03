@@ -13,7 +13,8 @@ export async function compileCode(
 	modules: Module[],
 	compilerOptions: CompileOptions,
 	functions: Module[],
-	editor: Editor
+	editor: Editor,
+	macros?: Module[]
 ): Promise<CompilationResult> {
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
@@ -57,6 +58,7 @@ export async function compileCode(
 				modules,
 				compilerOptions,
 				functions,
+				macros,
 			},
 		});
 	});
