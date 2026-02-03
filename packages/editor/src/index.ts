@@ -1,6 +1,7 @@
 import initState, { Callbacks, State, RuntimeRegistry } from '@8f4e/editor-state';
 import initView, { MemoryViews } from '@8f4e/web-ui';
 import generateSprite from '@8f4e/sprite-generator';
+import { PostProcessEffect } from 'glugglug';
 
 import { clearBinaryAssetCache, fetchBinaryAssets, loadBinaryAssetIntoMemory } from './binaryAssets';
 import initEvents from './events';
@@ -94,8 +95,8 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const view = await initView(state, canvas, memoryViews, spriteData);
 	createSpriteSheetManager(store, view, events);
 
-	events.on('loadPostProcessEffect', () => {
-		view.loadPostProcessEffect(state.graphicHelper.postProcessEffects[0] ?? null);
+	events.on('loadPostProcessEffect', (effect: unknown) => {
+		view.loadPostProcessEffect(effect as PostProcessEffect | null);
 	});
 
 	return {
