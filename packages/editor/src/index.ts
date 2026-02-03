@@ -10,7 +10,7 @@ import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
-import type { PostProcessEffect } from 'glugglug';
+import type { PostProcessEffect, BackgroundEffect } from 'glugglug';
 
 // Re-export types that consumers might need
 export type {
@@ -98,6 +98,9 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	events.on<PostProcessEffect | null>('loadPostProcessEffect', effect => {
 		view.loadPostProcessEffect(effect);
+	});
+	events.on<BackgroundEffect | null>('loadBackgroundEffect', effect => {
+		view.loadBackgroundEffect(effect);
 	});
 
 	return {

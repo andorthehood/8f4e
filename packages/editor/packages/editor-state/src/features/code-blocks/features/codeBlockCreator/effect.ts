@@ -111,7 +111,9 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			return;
 		}
 
-		if (isNew) {
+		const hasExplicitCode = code.length > 1 || (code.length === 1 && code[0].trim().length > 0);
+
+		if (isNew && !hasExplicitCode) {
 			if (blockType === 'function') {
 				code = ['function ' + getRandomCodeBlockId(), '', '', 'functionEnd'];
 			} else if (blockType === 'vertexShader') {
