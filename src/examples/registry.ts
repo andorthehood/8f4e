@@ -1,5 +1,5 @@
-import { moduleManifest, moduleMetadata } from './modules/index';
-import { projectManifest, projectMetadata } from './projects/index';
+import { moduleManifest, moduleMetadata } from './exampleModules';
+import { projectManifest, projectMetadata } from './exampleProjects';
 
 import type { ExampleModule, ModuleMetadata, Project, ProjectMetadata } from '@8f4e/editor-state';
 
