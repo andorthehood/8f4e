@@ -33,6 +33,7 @@ export default function createDefaultState() {
 			},
 			selectedCodeBlockForProgrammaticEdit: undefined,
 			postProcessEffects: [],
+			backgroundEffects: [],
 		},
 		featureFlags: defaultFeatureFlags,
 		colorSchemes: [],
@@ -44,6 +45,7 @@ export default function createDefaultState() {
 			compilationErrors: [],
 			projectConfigErrors: [],
 			editorConfigErrors: [],
+			shaderErrors: [],
 		},
 		console: {
 			logs: [],

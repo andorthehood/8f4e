@@ -242,6 +242,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				menuStack: [],
 			},
 			postProcessEffects: [],
+			backgroundEffects: [],
 		},
 		midi: {
 			outputs: [],
@@ -267,6 +268,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			compilationErrors: [],
 			projectConfigErrors: [],
 			editorConfigErrors: [],
+			shaderErrors: [],
 		},
 		console: {
 			logs: [],

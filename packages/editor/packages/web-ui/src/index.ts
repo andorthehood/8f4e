@@ -1,5 +1,5 @@
 import generateSprite, { type SpriteLookups } from '@8f4e/sprite-generator';
-import { Engine, PostProcessEffect } from 'glugglug';
+import { Engine, PostProcessEffect, BackgroundEffect } from 'glugglug';
 
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/codeBlockDecorators/connections';
@@ -32,7 +32,8 @@ export default async function init(
 ): Promise<{
 	resize: (width: number, height: number) => void;
 	reloadSpriteSheet: () => SpriteData;
-	loadPostProcessEffects: (postProcessEffects: PostProcessEffect[]) => void;
+	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
+	loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
 	clearCache: () => void;
 }> {
 	// Animation state - local to web-ui, not part of editor-state
@@ -91,11 +92,18 @@ export default async function init(
 			engine.loadSpriteSheet(spriteData.canvas);
 			return spriteData;
 		},
-		loadPostProcessEffects: (projectEffects: PostProcessEffect[] = []) => {
-			engine.removeAllPostProcessEffects();
-
-			for (const effect of projectEffects) {
-				engine.addPostProcessEffect(effect);
+		loadPostProcessEffect: (effect: PostProcessEffect | null) => {
+			if (effect) {
+				engine.setPostProcessEffect(effect);
+			} else {
+				engine.clearPostProcessEffect();
+			}
+		},
+		loadBackgroundEffect: (effect: BackgroundEffect | null) => {
+			if (effect) {
+				engine.setBackgroundEffect(effect);
+			} else {
+				engine.clearBackgroundEffect();
 			}
 		},
 		clearCache: () => {

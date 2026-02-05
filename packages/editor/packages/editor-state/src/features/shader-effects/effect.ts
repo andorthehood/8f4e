@@ -1,13 +1,13 @@
 import { StateManager } from '@8f4e/state-manager';
 
-import derivePostProcessEffects from './derivePostProcessEffects';
+import deriveShaderEffects from './deriveShaderEffects';
 
 import { log } from '../logger/logger';
 
 import type { EventDispatcher, State } from '~/types';
 
 /**
- * Effect that keeps post-process effects in sync with shader code blocks.
+ * Effect that keeps post-process and background effects in sync with shader code blocks.
  * Recomputes effects when:
  * - projectLoaded: When a project is loaded
  * - code changes: When shader block's code changes
@@ -16,30 +16,23 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 	const state = store.getState();
 
 	/**
-	 * Recompute post-process effects from all shader blocks
+	 * Recompute shader effects from all shader blocks
 	 */
 	function recomputeShaderEffects(): void {
-		const { effects, errors } = derivePostProcessEffects(state.graphicHelper.codeBlocks);
+		const { postProcessEffects, backgroundEffects, errors } = deriveShaderEffects(state.graphicHelper.codeBlocks);
 
 		log(state, 'Recomputed shader effects', 'Shaders');
 
 		// Update the post-process effects
-		state.graphicHelper.postProcessEffects = effects;
+		state.graphicHelper.postProcessEffects = postProcessEffects;
+		state.graphicHelper.backgroundEffects = backgroundEffects;
 
-		// Update shader errors - filter out previous shader-related errors
-		// We identify shader errors by checking for specific shader-related error messages
-		const SHADER_ERROR_MARKERS = [
-			'matching fragment shader',
-			'matching vertex shader',
-			'shader block is missing an ID',
-		];
-		const existingErrors = state.codeErrors.compilationErrors.filter(
-			err => !SHADER_ERROR_MARKERS.some(marker => err.message.includes(marker))
-		);
-		state.codeErrors.compilationErrors = [...existingErrors, ...errors];
+		// Clear any stale shader-related errors, then apply new ones
+		state.codeErrors.shaderErrors = errors;
 
-		// Dispatch event to load the new effects into the renderer
-		events.dispatch('loadPostProcessEffects', effects);
+		// Dispatch event to load the new effect into the renderer
+		events.dispatch('loadPostProcessEffect', postProcessEffects[0] ?? null);
+		events.dispatch('loadBackgroundEffect', backgroundEffects[0] ?? null);
 	}
 
 	store.subscribe('graphicHelper.codeBlocks', () => {

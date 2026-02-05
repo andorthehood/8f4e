@@ -3,7 +3,7 @@ title: 'TODO: Add Macro Code Blocks and Expansion'
 priority: Medium
 effort: 2-4d
 created: 2026-01-18
-status: Open
+status: Cancelled
 completed: null
 ---
 

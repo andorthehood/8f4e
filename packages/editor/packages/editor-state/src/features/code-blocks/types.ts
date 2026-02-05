@@ -4,7 +4,7 @@
 
 import type { DataStructure } from '@8f4e/compiler';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
-import type { SpriteLookup, PostProcessEffect } from 'glugglug';
+import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
 import type { GridCoordinates } from '../../shared/types';
 import type { ContextMenu } from '../menu/types';
 import type { ProjectViewport } from '../viewport/types';
@@ -28,6 +28,7 @@ export interface CodeBlock {
  * - 'config': Contains config/configEnd markers (compiled to JSON configuration)
  * - 'function': Contains function/functionEnd markers (compiled to WASM as reusable helper)
  * - 'constants': Contains constants/constantsEnd markers
+ * - 'macro': Contains defineMacro/defineMacroEnd markers (reusable code snippets)
  * - 'vertexShader': Contains vertexShader/vertexShaderEnd markers (GLSL vertex shader)
  * - 'fragmentShader': Contains fragmentShader/fragmentShaderEnd markers (GLSL fragment shader)
  * - 'comment': Contains comment/commentEnd markers (documentation, excluded from compilation)
@@ -38,6 +39,7 @@ export type CodeBlockType =
 	| 'config'
 	| 'function'
 	| 'constants'
+	| 'macro'
 	| 'vertexShader'
 	| 'fragmentShader'
 	| 'comment'
@@ -240,4 +242,6 @@ export type GraphicHelper = {
 	selectedCodeBlockForProgrammaticEdit?: CodeBlockGraphicData;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects: PostProcessEffect[];
+	/** Background effects configuration for custom visual effects */
+	backgroundEffects: BackgroundEffect[];
 };
