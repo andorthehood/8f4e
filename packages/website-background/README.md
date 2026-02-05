@@ -5,4 +5,3 @@ Website background assets built from an 8f4e editor project. This folder contain
 ## Contents
 
 - `src/editor.ts`: entry point for rendering or exporting the background.
-- `src/project-runtime-ready.json`: precompiled project data.
