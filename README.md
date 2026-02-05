@@ -25,7 +25,7 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
     │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)
     ├── <a href="./packages/examples/README.md">examples</a> (Example modules and projects)
-    ├── <a href="./packages/pmml28f4e/README.md">pmml28f4e</a> (PMML neural network conversion to 8f4e projects)
+    ├── <a href="./packages/pmml28f4e/README.md">pmml28f4e</a> (tool to convert PMML neural networks to 8f4e projects)
     ├── <a href="./packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a>     ┐ 
     ├── <a href="./packages/runtime-main-thread-logic/README.md">runtime-main-thread-logic</a> │ (Various runtime environments 
     ├── <a href="./packages/runtime-web-worker-logic/README.md">runtime-web-worker-logic</a>  │ for different execution contexts)
