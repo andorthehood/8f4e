@@ -21,10 +21,10 @@ Blocks are automatically classified by content or explicit type annotation.
 
 ## Effect Generation
 
-Post-process effects are generated from shader pairs:
-- Each fragment shader can have an associated vertex shader
-- Default vertex shader is used if none is specified
-- Effects are identified by shader block IDs
+A single post-process effect is derived from shader blocks:
+- The first fragment shader block (by creation order) is used as the effect
+- The first vertex shader block is paired with it; if none exists, the default vertex shader is used
+- Only one effect is active at a time
 
 ## Events & Callbacks
 
@@ -49,11 +49,13 @@ This feature enables live coding visuals for algorave performances:
 - Real-time shader updates during performance
 - Visual feedback synchronized with audio code
 
-## Shader IDs
+## Shader Block Format
 
-Utilities provide consistent ID generation:
-- `getFragmentShaderId(blockId)` - ID for fragment shader effects
-- `getVertexShaderId(blockId)` - ID for vertex shader effects
+Shader blocks use targeted markers with no ID argument:
+- `vertexShader postprocess` ... `vertexShaderEnd`
+- `fragmentShader postprocess` ... `fragmentShaderEnd`
+- `vertexShader background` ... `vertexShaderEnd`
+- `fragmentShader background` ... `fragmentShaderEnd`
 
 ## Default Shaders
 
@@ -64,7 +66,7 @@ A default vertex shader is provided for fragment-only effects:
 ## References
 
 - Shader extraction: `extractShaderSource.ts`
-- Effect derivation: `derivePostProcessEffects.ts`
+- Effect derivation: `deriveShaderEffects.ts` (first-block selection per target)
 - Default shaders: `defaultVertexShader.ts`
 
 ## Notes & Limitations

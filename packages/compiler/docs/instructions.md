@@ -81,6 +81,11 @@
   - [call](instructions/program-structure-and-functions.md#call)
   - [use](instructions/program-structure-and-functions.md#use)
 
+- [Macros](instructions/blocks/macros.md)
+  - [defineMacro](instructions/blocks/macros.md#definemacro)
+  - [defineMacroEnd](instructions/blocks/macros.md#definemacroend)
+  - [macro](instructions/blocks/macros.md#macro)
+
 - [Math helpers](instructions/math-helpers.md)
   - [abs](instructions/math-helpers.md#abs)
   - [pow2](instructions/math-helpers.md#pow2)

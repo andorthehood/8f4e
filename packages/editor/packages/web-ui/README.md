@@ -19,7 +19,8 @@ Initializes the web UI renderer.
 **Returns:** An object with methods to control the renderer:
 - `resize(width, height)` - Resize the canvas
 - `reloadSpriteSheet()` - Regenerate the sprite sheet and return new `SpriteData`
-- `loadPostProcessEffects(effects)` - Load post-process effects
+- `loadPostProcessEffect(effect)` - Load a post-process effect
+- `loadBackgroundEffect(effect)` - Load a background effect
 - `clearCache()` - Clear the rendering cache
 
 ### `SpriteData`

@@ -2,7 +2,7 @@
 
 ### risingEdge
 
-The risingEdge instruction returns 1 when the current integer value is greater than the previous value, otherwise 0.
+The risingEdge instruction returns 1 when the current value is greater than the previous value, otherwise 0. Supports `int` and `float`.
 
 #### Examples
 
@@ -13,7 +13,7 @@ risingEdge
 
 ### fallingEdge
 
-The fallingEdge instruction returns 1 when the current integer value is less than the previous value, otherwise 0.
+The fallingEdge instruction returns 1 when the current value is less than the previous value, otherwise 0. Supports `int` and `float`.
 
 #### Examples
 

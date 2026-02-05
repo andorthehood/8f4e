@@ -1,0 +1,19 @@
+<PMML version="4.4" xmlns="http://www.dmg.org/PMML-4_4">
+  <NeuralNetwork modelName="Tiny" activationFunction="logistic">
+    <NeuralInputs numberOfInputs="1">
+      <NeuralInput id="0">
+        <DerivedField><FieldRef field="input0"/></DerivedField>
+      </NeuralInput>
+    </NeuralInputs>
+    <NeuralLayer numberOfNeurons="1" activationFunction="logistic">
+      <Neuron id="1" bias="0.1">
+        <Con from="0" weight="1.5"/>
+      </Neuron>
+    </NeuralLayer>
+    <NeuralOutputs numberOfOutputs="1">
+      <NeuralOutput outputNeuron="1">
+        <DerivedField><FieldRef field="output0"/></DerivedField>
+      </NeuralOutput>
+    </NeuralOutputs>
+  </NeuralNetwork>
+</PMML>

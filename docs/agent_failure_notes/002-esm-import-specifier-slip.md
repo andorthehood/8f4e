@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - ESM Import Specifier Misstep
 model: gpt-5.2-codex
-agent: Codex CLI
+agent: codex-cli
 date: 2026-01-25
 ---
 
