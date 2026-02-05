@@ -13,25 +13,25 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 <pre>
 8f4e/
 └── packages/
-    ├── [cli](./packages/cli/README.md) (CLI for compiling 8f4e project JSON files)
-    ├── [compiler](./packages/compiler/README.md) (The core compiler that transforms 8f4e code into WebAssembly)
-    ├── [compiler-worker](./packages/compiler-worker/README.md) (Web Worker wrapper around the compiler for live coding)
-    ├── [config](./packages/config/README.md) (Shared tooling and configuration helpers for the workspace)
-    ├── [editor](./packages/editor/README.md) (The main editor package with UI components and state management)
+    ├── <a href="./packages/cli/README.md">cli</a> (CLI for compiling 8f4e project JSON files)
+    ├── <a href="./packages/compiler/README.md">compiler</a> (The core compiler that transforms 8f4e code into WebAssembly)
+    ├── <a href="./packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
+    ├── <a href="./packages/config/README.md">config</a> (Shared tooling and configuration helpers for the workspace)
+    ├── <a href="./packages/editor/README.md">editor</a> (The main editor package with UI components and state management)
     │   └── packages/
-    │       ├── [editor-state](./packages/editor/packages/editor-state/README.md) (Editor state management)
-    │       ├── [glugglug](./packages/editor/packages/glugglug/README.md) (2D WebGL graphics utilities)
-    │       ├── [sprite-generator](./packages/editor/packages/sprite-generator/README.md) (All UI graphics are generative)
-    │       ├── [state-manager](./packages/editor/packages/state-manager/README.md) (State manager with subscriptions)
-    │       └── [web-ui](./packages/editor/packages/web-ui/README.md) (WebGL rendering for the editor interface)
-    ├── [examples](./packages/examples/README.md) (Example modules and projects)
-    ├── [pmml28f4e](./packages/pmml28f4e/README.md) (PMML neural network conversion to 8f4e projects)
-    ├── [runtime-audio-worklet](./packages/runtime-audio-worklet/README.md)     ┐ 
-    ├── [runtime-main-thread-logic](./packages/runtime-main-thread-logic/README.md) │ (Various runtime environments 
-    ├── [runtime-web-worker-logic](./packages/runtime-web-worker-logic/README.md)  │ for different execution contexts)
-    ├── [runtime-web-worker-midi](./packages/runtime-web-worker-midi/README.md)   ┘
-    ├── [stack-config-compiler](./packages/stack-config-compiler/README.md) (Stack-machine-inspired config language compiler)
-    └── [website-background](./packages/website-background/README.md) (Website background assets built from an editor project)
+    │       ├── <a href="./packages/editor/packages/editor-state/README.md">editor-state</a> (Editor state management)
+    │       ├── <a href="./packages/editor/packages/glugglug/README.md">glugglug</a> (2D WebGL graphics utilities)
+    │       ├── <a href="./packages/editor/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
+    │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
+    │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)
+    ├── <a href="./packages/examples/README.md">examples</a> (Example modules and projects)
+    ├── <a href="./packages/pmml28f4e/README.md">pmml28f4e</a> (PMML neural network conversion to 8f4e projects)
+    ├── <a href="./packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a>     ┐ 
+    ├── <a href="./packages/runtime-main-thread-logic/README.md">runtime-main-thread-logic</a> │ (Various runtime environments 
+    ├── <a href="./packages/runtime-web-worker-logic/README.md">runtime-web-worker-logic</a>  │ for different execution contexts)
+    ├── <a href="./packages/runtime-web-worker-midi/README.md">runtime-web-worker-midi</a>   ┘
+    ├── <a href="./packages/stack-config-compiler/README.md">stack-config-compiler</a> (Stack-machine-inspired config language compiler)
+    └── <a href="./packages/website-background/README.md">website-background</a> (Website background assets built from an editor project)
 </pre>
 
 You can use `npx nx graph` to explore the relationship between the packages.
