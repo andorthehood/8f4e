@@ -2,7 +2,8 @@
 
 # 8f4e 
 
-8f4e is a stack oriented programming language that I created to perform generative music at algorave events. I wanted an efficient and portable tool for real time audio signal generation and processing. This monorepo contains the compiler, runtimes, and a browser based visual code editor I designed specifically for the 8f4e language.
+8f4e is a stack oriented programming language and live code editor that I created to perform generative music at algorave events. This monorepo contains the compiler, specialised runtimes, and the code of a browser-based visual code editor I designed specifically for the 8f4e language.
+The editor and runtime stack follows a REPL-style coding loop (edit, compile/evaluate, and observe output), but it is UI-driven rather than a terminal prompt workflow.
 
 More details about the language design and documentation can be found at [./docs/README.md](./docs/README.md)
 
@@ -13,11 +14,8 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 <pre>
 8f4e/
 └── packages/
-    ├── <a href="./packages/cli/README.md">cli</a> (CLI for compiling 8f4e project JSON files)
     ├── <a href="./packages/compiler/README.md">compiler</a> (The core compiler that transforms 8f4e code into WebAssembly)
-    ├── <a href="./packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
-    ├── <a href="./packages/config/README.md">config</a> (Shared tooling and configuration helpers for the workspace)
-    ├── <a href="./packages/editor/README.md">editor</a> (The main editor package with UI components and state management)
+    ├── <a href="./packages/editor/README.md">editor</a> (The main editor package)
     │   └── packages/
     │       ├── <a href="./packages/editor/packages/editor-state/README.md">editor-state</a> (Editor state management)
     │       ├── <a href="./packages/editor/packages/glugglug/README.md">glugglug</a> (2D WebGL graphics utilities)
@@ -25,12 +23,15 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
     │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)
     ├── <a href="./packages/examples/README.md">examples</a> (Example modules and projects)
-    ├── <a href="./packages/pmml28f4e/README.md">pmml28f4e</a> (tool to convert PMML neural networks to 8f4e projects)
     ├── <a href="./packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a>     ┐ 
     ├── <a href="./packages/runtime-main-thread-logic/README.md">runtime-main-thread-logic</a> │ (Various runtime environments 
     ├── <a href="./packages/runtime-web-worker-logic/README.md">runtime-web-worker-logic</a>  │ for different execution contexts)
     ├── <a href="./packages/runtime-web-worker-midi/README.md">runtime-web-worker-midi</a>   ┘
+    ├── <a href="./packages/cli/README.md">cli</a> (CLI for compiling 8f4e project files)
+    ├── <a href="./packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
+    ├── <a href="./packages/pmml28f4e/README.md">pmml28f4e</a> (tool to convert PMML neural networks to 8f4e projects)
     ├── <a href="./packages/stack-config-compiler/README.md">stack-config-compiler</a> (Stack-machine-inspired config language compiler)
+    ├── <a href="./packages/config/README.md">config</a> (Shared tooling and configuration helpers for the workspace)
     └── <a href="./packages/website-background/README.md">website-background</a> (Website background assets built from an editor project)
 </pre>
 
