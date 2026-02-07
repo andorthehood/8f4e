@@ -3,8 +3,8 @@ title: 'TODO: Wire background effects into the editor via targeted shader blocks
 priority: High
 effort: 2-3h
 created: 2026-02-03
-status: In Progress
-completed: null
+status: Completed
+completed: 2026-02-03
 ---
 
 # TODO: Wire background effects into the editor via targeted shader blocks
