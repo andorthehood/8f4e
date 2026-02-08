@@ -1,7 +1,10 @@
+import { getMemoryStringLastByteAddress } from './memoryData';
+
 import { parseMemoryInstructionArgumentsShape } from '../syntax/memoryInstructionParser';
 import { SyntaxRulesError } from '../syntax/syntaxError';
 import { ArgumentType } from '../syntax/parseArgument';
 import { ErrorCode, getError } from '../errors';
+import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
 
 import type { CompilationContext, Argument } from '../types';
 
@@ -57,7 +60,12 @@ export default function parseMemoryInstructionArguments(
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
 			}
 
-			defaultValue = memoryItem.byteAddress;
+			// Use start or end address based on syntax: &buffer vs buffer&
+			if (hasMemoryReferencePrefixStart(parsedArgs.secondArg.pattern)) {
+				defaultValue = memoryItem.byteAddress;
+			} else {
+				defaultValue = getMemoryStringLastByteAddress(context.namespace.memory, parsedArgs.secondArg.base);
+			}
 		} else if (parsedArgs.secondArg.type === 'element-count') {
 			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
 
