@@ -24,8 +24,8 @@ Default values can be specified as literals, constants, or memory references (us
 
 ```
 int count 4
-int* ptr &buffer
-int* endPtr buffer&
+int* ptr &count
+int* endPtr count&
 ```
 
 ### float
@@ -38,6 +38,7 @@ Default values can be specified as literals, constants, or memory references (us
 
 ```
 float gain 0.75
+float[] samples 4 0.0
 float* ptr &samples
 float* endPtr samples&
 ```
