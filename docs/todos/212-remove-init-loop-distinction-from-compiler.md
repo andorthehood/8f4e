@@ -22,7 +22,15 @@ Remove the init/loop section distinction from module compilation internals and t
 Important context for this TODO:
 - Backward compatibility is explicitly not required for this refactor.
 - Breaking API/output behavior is acceptable while the app is still pre-release.
-- A future dedicated memory-init special block will replace the old conceptual role of init sections.
+- Keep the runtime/exported `init` function, but redefine it to memory-default initialization only.
+- Do not keep or add an `init` block syntax in module code.
+- A future dedicated special block type (outside module code sections) can be introduced for richer one-time setup.
+
+### Agreed Contract
+
+- **Keep runtime API distinction**: `init` and `cycle` remain separate entrypoints.
+- **Remove language/compiler section distinction**: no module-level `init` vs `loop` sections in source or compilation pipeline.
+- **Declaration defaults remain first-class**: `int foo 10`, `float bar 1.0`, etc. continue to compile into memory default metadata and are applied by `init`.
 
 ## Anti-Patterns
 
@@ -42,12 +50,17 @@ Important context for this TODO:
 - Ensure generated module functions are assembled from a single body flow for module execution.
 - Remove no-longer-needed branching and dead code paths.
 
-### Step 3: Update tests and snapshots to new model
+### Step 3: Preserve and clarify memory-default initialization path
+- Keep declaration-default parsing for memory declarations (`int`, `float`, buffers) and their `memory.default` metadata.
+- Keep generation of the exported `init` routine that applies declaration defaults.
+- Ensure `init` no longer depends on module init-section code; it should only perform memory initialization responsibilities for this phase.
+
+### Step 4: Update tests and snapshots to new model
 - Update compiler unit tests and snapshots to match the simplified internal model.
 - Remove tests that only validate the old section split behavior.
-- Keep or add tests that protect required semantics for module execution and memory ops.
+- Keep/add tests proving declaration defaults are still applied through exported `init`.
 
-### Step 4: Prepare clean handoff for future memory-init special block
+### Step 5: Prepare clean handoff for future special one-time block type
 - Document extension points where the future memory-init block should plug in.
 - Avoid reusing old section abstractions when adding the new block type.
 
@@ -61,6 +74,8 @@ Important context for this TODO:
 
 - [ ] Compiler no longer uses init/loop section split for module internals.
 - [ ] Section-specific helpers and branching tied to that split are removed.
+- [ ] Exported `init` remains available and applies declaration defaults (`int foo 10`, `float bar 1.0`, etc.).
+- [ ] No `init` block syntax is required or supported in module code for this model.
 - [ ] Compiler tests/typecheck pass after snapshot/test updates.
 - [ ] Codebase is ready for a separate dedicated memory-init special block feature.
 
@@ -77,6 +92,7 @@ Important context for this TODO:
 
 - **Behavior drift**: removing the split can accidentally alter execution ordering; mitigate with focused instruction-level and integration tests.
 - **Scope validation regressions**: old init-only validation rules may become stale and must be revised.
+- **Initialization regressions**: declaration defaults must still be applied exactly once when `init` is called.
 - **Snapshot churn**: expected and acceptable, but should still be reviewed for unintended semantic changes.
 - **Breaking changes**: explicitly accepted for this pre-release phase.
 
@@ -88,4 +104,7 @@ Important context for this TODO:
 ## Notes
 
 - This TODO intentionally separates compiler simplification from the new memory-init block implementation.
-- The target end state is a simpler core compiler with explicit specialized blocks for one-time memory setup.
+- The target end state is a simpler core compiler with:
+  - no module init/loop section split
+  - an exported runtime `init` for declaration-default memory initialization
+  - optional future dedicated special block type for richer one-time setup (outside module code sections)
