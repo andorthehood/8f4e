@@ -107,8 +107,6 @@ const instructionsToHighlight = [
 	'ensureNonZero',
 	'function',
 	'functionEnd',
-	'initBlock',
-	'initBlockEnd',
 	'concat',
 	'call',
 	'param',
