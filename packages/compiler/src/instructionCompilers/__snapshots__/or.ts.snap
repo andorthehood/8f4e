@@ -2,7 +2,7 @@
 
 exports[`or instruction compiler > emits I32_OR and tracks non-zero state 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     114,
   ],
   "stack": [

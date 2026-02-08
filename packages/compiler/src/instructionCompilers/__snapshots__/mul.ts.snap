@@ -2,7 +2,7 @@
 
 exports[`mul instruction compiler > emits F32_MUL for float operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     148,
   ],
   "stack": [
@@ -16,7 +16,7 @@ exports[`mul instruction compiler > emits F32_MUL for float operands 1`] = `
 
 exports[`mul instruction compiler > emits I32_MUL for integer operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     108,
   ],
   "stack": [
