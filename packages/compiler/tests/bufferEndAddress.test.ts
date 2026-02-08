@@ -6,9 +6,6 @@ import type { Module } from '../src/types';
 
 const defaultOptions = {
 	startingMemoryWordAddress: 1,
-	environmentExtensions: {
-		constants: {},
-	},
 	memorySizeBytes: 65536,
 	includeAST: false,
 };
