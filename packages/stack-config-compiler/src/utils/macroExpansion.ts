@@ -127,7 +127,7 @@ export function parseMacroDefinitions(macroSources: string[]): Map<string, Macro
 				currentMacro = {
 					name: macroName,
 					body: [],
-					definitionLineNumber: lineIndex,
+					definitionLineNumber: lineIndex + 1, // Store 1-based line number for consistency
 				};
 				insideMacro = true;
 				macroCount++;
@@ -158,7 +158,7 @@ export function parseMacroDefinitions(macroSources: string[]): Map<string, Macro
 		if (insideMacro) {
 			const macro = currentMacro!;
 			throw new Error(
-				`Macro source ${sourceIndex}, line ${macro.definitionLineNumber + 1}: Missing 'defineMacroEnd'. Each 'defineMacro' must be closed with 'defineMacroEnd'.`
+				`Macro source ${sourceIndex}, line ${macro.definitionLineNumber}: Missing 'defineMacroEnd'. Each 'defineMacro' must be closed with 'defineMacroEnd'.`
 			);
 		}
 	});
