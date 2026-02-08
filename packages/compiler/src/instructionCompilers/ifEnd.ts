@@ -1,7 +1,6 @@
 import { ErrorCode, getError } from '../errors';
 import { BLOCK_TYPE } from '../types';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -40,7 +39,8 @@ const ifEnd: InstructionCompiler = withValidation(
 			context.stack.push(operand);
 		}
 
-		return saveByteCode(context, [WASMInstruction.END]);
+		context.byteCode.push(...[WASMInstruction.END]);
+		return context;
 	}
 );
 
@@ -68,7 +68,7 @@ if (import.meta.vitest) {
 			expect({
 				stack: context.stack,
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

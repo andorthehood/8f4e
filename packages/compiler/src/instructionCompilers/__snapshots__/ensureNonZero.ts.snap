@@ -8,7 +8,7 @@ exports[`ensureNonZero instruction compiler > ensures float operand is non-zero 
       "isInteger": false,
     },
   },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     32,
@@ -48,7 +48,7 @@ exports[`ensureNonZero instruction compiler > ensures integer operand is non-zer
       "isInteger": true,
     },
   },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     32,

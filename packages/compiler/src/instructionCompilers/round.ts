@@ -1,4 +1,3 @@
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -21,7 +20,8 @@ const round: InstructionCompiler = withValidation(
 
 		context.stack.push({ isInteger: false, isNonZero: false });
 
-		return saveByteCode(context, [WASMInstruction.F32_NEAREST]);
+		context.byteCode.push(...[WASMInstruction.F32_NEAREST]);
+		return context;
 	}
 );
 

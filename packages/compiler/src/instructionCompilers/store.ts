@@ -1,5 +1,4 @@
 import { ErrorCode } from '../errors';
-import { saveByteCode } from '../utils/compilation';
 import f32store from '../wasmUtils/store/f32store';
 import i32store from '../wasmUtils/store/i32store';
 import { compileSegment } from '../compiler';
@@ -82,7 +81,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -97,7 +96,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

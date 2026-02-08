@@ -1,5 +1,4 @@
 import { areAllOperandsIntegers } from '../utils/operandTypes';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -23,7 +22,8 @@ const equal: InstructionCompiler = withValidation(
 
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
 		context.stack.push({ isInteger: true, isNonZero: false });
-		return saveByteCode(context, [isInteger ? WASMInstruction.I32_EQ : WASMInstruction.F32_EQ]);
+		context.byteCode.push(...[isInteger ? WASMInstruction.I32_EQ : WASMInstruction.F32_EQ]);
+		return context;
 	}
 );
 

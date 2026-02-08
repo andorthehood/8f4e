@@ -1,5 +1,4 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -42,7 +41,8 @@ const abs: InstructionCompiler = withValidation(
 			);
 		} else {
 			context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
-			return saveByteCode(context, [WASMInstruction.F32_ABS]);
+			context.byteCode.push(...[WASMInstruction.F32_ABS]);
+		return context;
 		}
 	}
 );

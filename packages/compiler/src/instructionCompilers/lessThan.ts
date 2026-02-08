@@ -1,5 +1,4 @@
 import { areAllOperandsIntegers } from '../utils/operandTypes';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -23,7 +22,8 @@ const lessThan: InstructionCompiler = withValidation(
 
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
 		context.stack.push({ isInteger: true, isNonZero: false });
-		return saveByteCode(context, [isInteger ? WASMInstruction.I32_LT_S : WASMInstruction.F32_LT]);
+		context.byteCode.push(...[isInteger ? WASMInstruction.I32_LT_S : WASMInstruction.F32_LT]);
+		return context;
 	}
 );
 
@@ -41,7 +41,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -53,7 +53,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

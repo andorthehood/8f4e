@@ -2,7 +2,7 @@
 
 exports[`branch instruction compiler > emits br bytecode 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     12,
     0,
   ],

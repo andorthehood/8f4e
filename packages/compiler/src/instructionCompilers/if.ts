@@ -1,7 +1,6 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -27,7 +26,8 @@ const _if: InstructionCompiler = withValidation(
 				hasExpectedResult: false,
 				blockType: BLOCK_TYPE.CONDITION,
 			});
-			return saveByteCode(context, [WASMInstruction.IF, Type.VOID]);
+			context.byteCode.push(...[WASMInstruction.IF, Type.VOID]);
+		return context;
 		}
 
 		if (
@@ -40,7 +40,8 @@ const _if: InstructionCompiler = withValidation(
 				hasExpectedResult: true,
 				blockType: BLOCK_TYPE.CONDITION,
 			});
-			return saveByteCode(context, [WASMInstruction.IF, Type.F32]);
+			context.byteCode.push(...[WASMInstruction.IF, Type.F32]);
+		return context;
 		}
 
 		context.blockStack.push({
@@ -48,7 +49,8 @@ const _if: InstructionCompiler = withValidation(
 			hasExpectedResult: true,
 			blockType: BLOCK_TYPE.CONDITION,
 		});
-		return saveByteCode(context, [WASMInstruction.IF, Type.I32]);
+		context.byteCode.push(...[WASMInstruction.IF, Type.I32]);
+		return context;
 	}
 );
 

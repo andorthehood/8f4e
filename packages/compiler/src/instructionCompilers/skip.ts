@@ -5,7 +5,7 @@ import i32const from '../wasmUtils/const/i32const';
 import br from '../wasmUtils/controlFlow/br';
 import i32load from '../wasmUtils/load/i32load';
 import i32store from '../wasmUtils/store/i32store';
-import { calculateWordAlignedSizeOfMemory, saveByteCode } from '../utils/compilation';
+import { calculateWordAlignedSizeOfMemory} from '../utils/compilation';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
@@ -27,7 +27,8 @@ const skip: InstructionCompiler = withValidation(
 		let timesToSkip = 0;
 
 		if (!line.arguments[0]) {
-			return saveByteCode(context, [WASMInstruction.RETURN]);
+			context.byteCode.push(...[WASMInstruction.RETURN]);
+		return context;
 		}
 
 		if (line.arguments[0].type === ArgumentType.LITERAL) {
@@ -107,7 +108,7 @@ if (import.meta.vitest) {
 			skip({ lineNumber: 1, instruction: 'skip', arguments: [] } as AST[number], context);
 
 			expect({
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -126,7 +127,7 @@ if (import.meta.vitest) {
 			expect({
 				blockStack: context.blockStack,
 				memory: context.namespace.memory,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

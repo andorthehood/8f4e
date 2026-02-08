@@ -40,7 +40,7 @@ exports[`cycle instruction compiler > compiles the cycle segment 1`] = `
       "isInteger": true,
     },
   },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     2,
     33,

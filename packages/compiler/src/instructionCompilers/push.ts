@@ -24,7 +24,6 @@ import {
 	isElementMaxIdentifier,
 	isElementMinIdentifier,
 } from '../utils/memoryIdentifier';
-import { saveByteCode } from '../utils/compilation';
 import extractElementCountBase from '../syntax/extractElementCountBase';
 import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
 import extractElementMaxBase from '../syntax/extractElementMaxBase';
@@ -176,7 +175,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -201,7 +200,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -238,7 +237,7 @@ if (import.meta.vitest) {
 
 				expect({
 					stack: context.stack,
-					loopSegmentByteCode: context.loopSegmentByteCode,
+					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
 
@@ -266,7 +265,7 @@ if (import.meta.vitest) {
 
 				expect({
 					stack: context.stack,
-					loopSegmentByteCode: context.loopSegmentByteCode,
+					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
 
@@ -294,7 +293,7 @@ if (import.meta.vitest) {
 
 				expect({
 					stack: context.stack,
-					loopSegmentByteCode: context.loopSegmentByteCode,
+					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
 
@@ -322,7 +321,7 @@ if (import.meta.vitest) {
 
 				expect({
 					stack: context.stack,
-					loopSegmentByteCode: context.loopSegmentByteCode,
+					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
 		});
@@ -352,7 +351,7 @@ if (import.meta.vitest) {
 
 				expect({
 					stack: context.stack,
-					loopSegmentByteCode: context.loopSegmentByteCode,
+					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
 
@@ -380,7 +379,7 @@ if (import.meta.vitest) {
 
 				expect({
 					stack: context.stack,
-					loopSegmentByteCode: context.loopSegmentByteCode,
+					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
 
@@ -408,7 +407,7 @@ if (import.meta.vitest) {
 
 				expect({
 					stack: context.stack,
-					loopSegmentByteCode: context.loopSegmentByteCode,
+					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
 
@@ -436,7 +435,7 @@ if (import.meta.vitest) {
 
 				expect({
 					stack: context.stack,
-					loopSegmentByteCode: context.loopSegmentByteCode,
+					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
 		});
