@@ -2,7 +2,7 @@
 
 exports[`wasm instruction compiler > emits the provided wasm opcode 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     42,
   ],
 }

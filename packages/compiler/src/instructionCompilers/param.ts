@@ -20,17 +20,17 @@ const param: InstructionCompiler = withValidation(
 		// Parameters must be declared before any other function body code:
 		// - Parameters are registered as locals at indices 0, 1, 2, etc. in order
 		// - The 'local' instruction also registers locals but should come after all params
-		// - Other instructions generate bytecode in loopSegmentByteCode
+		// - Other instructions generate bytecode in byteCode
 		//
 		// We validate this by checking:
 		// 1. localCount > paramCount: means a non-param local was declared (via 'local' instruction)
-		// 2. loopSegmentByteCode.length > 0: means other instructions have already run
+		// 2. byteCode.length > 0: means other instructions have already run
 		//
 		// If either is true, we're past the param declaration phase and should error.
 		const paramCount = context.currentFunctionSignature?.parameters.length || 0;
 		const localCount = Object.keys(context.namespace.locals).length;
 
-		if (localCount > paramCount || context.loopSegmentByteCode.length > 0) {
+		if (localCount > paramCount || context.byteCode.length > 0) {
 			throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
 		}
 

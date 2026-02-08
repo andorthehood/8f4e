@@ -89,7 +89,7 @@ if (import.meta.vitest) {
 			expect({
 				stack: context.stack,
 				locals: context.namespace.locals,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -109,7 +109,7 @@ if (import.meta.vitest) {
 			expect({
 				stack: context.stack,
 				locals: context.namespace.locals,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

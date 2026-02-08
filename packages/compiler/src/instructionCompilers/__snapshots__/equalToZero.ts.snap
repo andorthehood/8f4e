@@ -2,7 +2,7 @@
 
 exports[`equalToZero instruction compiler > emits I32_EQZ for integer operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     69,
   ],
   "stack": [
@@ -16,7 +16,7 @@ exports[`equalToZero instruction compiler > emits I32_EQZ for integer operands 1
 
 exports[`equalToZero instruction compiler > emits float comparison segment 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     67,
     0,
     0,

@@ -14,7 +14,7 @@ exports[`if instruction compiler > emits a float if block 1`] = `
       "hasExpectedResult": true,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     4,
     125,
   ],
@@ -35,7 +35,7 @@ exports[`if instruction compiler > emits a void if block 1`] = `
       "hasExpectedResult": false,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     4,
     64,
   ],

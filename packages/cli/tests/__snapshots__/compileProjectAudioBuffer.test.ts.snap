@@ -259,10 +259,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
   "compiledModules": {
     "audioout": {
       "byteAddress": 4,
-      "id": "audioout",
-      "index": 2,
-      "initFunctionBody": [],
-      "loopFunction": [
+      "cycleFunction": [
         80,
         2,
         1,
@@ -345,6 +342,9 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
         11,
         11,
       ],
+      "id": "audioout",
+      "index": 2,
+      "initFunctionBody": [],
       "memoryMap": {
         "buffer": {
           "byteAddress": 8,
@@ -397,38 +397,35 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
     },
     "env": {
       "byteAddress": 4,
-      "id": "env",
-      "index": 0,
-      "initFunctionBody": [],
-      "loopFunction": [
+      "cycleFunction": [
         2,
         0,
         11,
       ],
+      "id": "env",
+      "index": 0,
+      "initFunctionBody": [],
       "memoryMap": {},
       "wordAlignedAddress": 1,
       "wordAlignedSize": 0,
     },
     "math": {
       "byteAddress": 4,
-      "id": "math",
-      "index": 1,
-      "initFunctionBody": [],
-      "loopFunction": [
+      "cycleFunction": [
         2,
         0,
         11,
       ],
+      "id": "math",
+      "index": 1,
+      "initFunctionBody": [],
       "memoryMap": {},
       "wordAlignedAddress": 1,
       "wordAlignedSize": 0,
     },
     "phaseAccumulator": {
       "byteAddress": 524,
-      "id": "phaseAccumulator",
-      "index": 3,
-      "initFunctionBody": [],
-      "loopFunction": [
+      "cycleFunction": [
         99,
         1,
         1,
@@ -530,6 +527,9 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
         0,
         11,
       ],
+      "id": "phaseAccumulator",
+      "index": 3,
+      "initFunctionBody": [],
       "memoryMap": {
         "defaultFreq": {
           "byteAddress": 524,

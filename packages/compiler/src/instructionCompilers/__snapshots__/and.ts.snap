@@ -2,7 +2,7 @@
 
 exports[`and instruction compiler > emits I32_AND for integer operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     113,
   ],
   "stack": [

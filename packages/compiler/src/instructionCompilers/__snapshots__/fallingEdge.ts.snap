@@ -2,13 +2,7 @@
 
 exports[`fallingEdge instruction compiler > compiles the falling edge segment 1`] = `
 {
-  "locals": {
-    "__fallingEdgeDetector_currentValue5": {
-      "index": 0,
-      "isInteger": true,
-    },
-  },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     32,
@@ -35,6 +29,12 @@ exports[`fallingEdge instruction compiler > compiles the falling edge segment 1`
     2,
     0,
   ],
+  "locals": {
+    "__fallingEdgeDetector_currentValue5": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
   "memory": {
     "__fallingEdgeDetector_previousValue5": {
       "byteAddress": 0,

@@ -2,7 +2,7 @@
 
 exports[`blockEnd instruction compiler > restores expected result on the stack 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     11,
   ],
   "stack": [
