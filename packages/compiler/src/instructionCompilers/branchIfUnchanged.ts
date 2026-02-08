@@ -76,7 +76,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 				memory: context.namespace.memory,
 				locals: context.namespace.locals,
 			}).toMatchSnapshot();

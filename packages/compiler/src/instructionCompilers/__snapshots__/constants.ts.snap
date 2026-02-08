@@ -4,7 +4,7 @@ exports[`constants instruction compiler > starts constants block and records mod
 {
   "blockStack": [
     {
-      "blockType": 6,
+      "blockType": 5,
       "expectedResultIsInteger": false,
       "hasExpectedResult": false,
     },

@@ -2,45 +2,7 @@
 
 exports[`cycle instruction compiler > compiles the cycle segment 1`] = `
 {
-  "locals": {
-    "__loadAddress_temp_13": {
-      "index": 6,
-      "isInteger": true,
-    },
-    "__loadAddress_temp_8": {
-      "index": 3,
-      "isInteger": true,
-    },
-    "__pointerCycle_endPosition2": {
-      "index": 2,
-      "isInteger": true,
-    },
-    "__pointerCycle_pointerToIncrement2": {
-      "index": 0,
-      "isInteger": true,
-    },
-    "__pointerCycle_startPosition2": {
-      "index": 1,
-      "isInteger": true,
-    },
-    "__storeAddress_temp_11": {
-      "index": 4,
-      "isInteger": true,
-    },
-    "__storeAddress_temp_19": {
-      "index": 7,
-      "isInteger": true,
-    },
-    "__storeValue_temp_11": {
-      "index": 5,
-      "isInteger": true,
-    },
-    "__storeValue_temp_19": {
-      "index": 8,
-      "isInteger": true,
-    },
-  },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     2,
     33,
@@ -147,6 +109,44 @@ exports[`cycle instruction compiler > compiles the cycle segment 1`] = `
     0,
     11,
   ],
+  "locals": {
+    "__loadAddress_temp_13": {
+      "index": 6,
+      "isInteger": true,
+    },
+    "__loadAddress_temp_8": {
+      "index": 3,
+      "isInteger": true,
+    },
+    "__pointerCycle_endPosition2": {
+      "index": 2,
+      "isInteger": true,
+    },
+    "__pointerCycle_pointerToIncrement2": {
+      "index": 0,
+      "isInteger": true,
+    },
+    "__pointerCycle_startPosition2": {
+      "index": 1,
+      "isInteger": true,
+    },
+    "__storeAddress_temp_11": {
+      "index": 4,
+      "isInteger": true,
+    },
+    "__storeAddress_temp_19": {
+      "index": 7,
+      "isInteger": true,
+    },
+    "__storeValue_temp_11": {
+      "index": 5,
+      "isInteger": true,
+    },
+    "__storeValue_temp_19": {
+      "index": 8,
+      "isInteger": true,
+    },
+  },
   "stack": [],
 }
 `;

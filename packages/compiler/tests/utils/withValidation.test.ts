@@ -15,8 +15,7 @@ function createMockContext(): CompilationContext {
 			moduleName: '',
 			namespaces: {},
 		},
-		initSegmentByteCode: [],
-		loopSegmentByteCode: [],
+		byteCode: [],
 		stack: [],
 		blockStack: [
 			{
@@ -85,18 +84,6 @@ describe('withValidation', () => {
 				mockCompiler
 			);
 			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.MISSING_ARGUMENT}`);
-		});
-
-		it('should pass when instruction is inside init block with init scope', () => {
-			context.blockStack = [
-				{
-					hasExpectedResult: false,
-					expectedResultIsInteger: false,
-					blockType: BLOCK_TYPE.INIT,
-				},
-			];
-			const compiler = withValidation({ scope: 'init' }, mockCompiler);
-			expect(() => compiler(ast, context)).not.toThrow();
 		});
 	});
 

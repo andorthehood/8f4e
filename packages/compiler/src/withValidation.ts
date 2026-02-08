@@ -11,7 +11,7 @@ import {
 import type { BlockStack, CompilationContext, InstructionCompiler, StackItem } from './types';
 
 export type OperandRule = 'int' | 'float' | 'matching';
-export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'init' | 'block' | 'constants';
+export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'block' | 'constants';
 
 export interface ValidationSpec {
 	scope?: ScopeRule;
@@ -40,9 +40,6 @@ function validateScope(
 			break;
 		case 'moduleOrFunction':
 			isValid = isInstructionInsideModuleOrFunction(blockStack);
-			break;
-		case 'init':
-			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.INIT);
 			break;
 		case 'block':
 			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.BLOCK);

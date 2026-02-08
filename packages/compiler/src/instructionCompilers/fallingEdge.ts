@@ -64,7 +64,7 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				memory: context.namespace.memory,
 				locals: context.namespace.locals,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});
