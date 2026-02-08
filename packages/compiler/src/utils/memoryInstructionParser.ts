@@ -1,5 +1,3 @@
-import { getMemoryStringLastByteAddress } from './memoryData';
-
 import { parseMemoryInstructionArgumentsShape } from '../syntax/memoryInstructionParser';
 import { SyntaxRulesError } from '../syntax/syntaxError';
 import { ArgumentType } from '../syntax/parseArgument';
@@ -64,7 +62,8 @@ export default function parseMemoryInstructionArguments(
 			if (hasMemoryReferencePrefixStart(parsedArgs.secondArg.pattern)) {
 				defaultValue = memoryItem.byteAddress;
 			} else {
-				defaultValue = getMemoryStringLastByteAddress(context.namespace.memory, parsedArgs.secondArg.base);
+				// Compute end address directly from memoryItem
+				defaultValue = memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * 4;
 			}
 		} else if (parsedArgs.secondArg.type === 'element-count') {
 			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
