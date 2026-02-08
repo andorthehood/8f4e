@@ -24,7 +24,8 @@ const store: InstructionCompiler = withValidation(
 		const operand2Address = context.stack.pop()!;
 
 		if (operand2Address.isSafeMemoryAddress) {
-			return saveByteCode(context, operand1Value.isInteger ? i32store() : f32store());
+			context.byteCode.push(...(operand1Value.isInteger ? i32store() : f32store()));
+			return context;
 		} else {
 			context.stack.push(operand2Address);
 			context.stack.push(operand1Value);

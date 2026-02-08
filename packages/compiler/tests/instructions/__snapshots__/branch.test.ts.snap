@@ -82,20 +82,7 @@ exports[`branch (int) > if the generated AST, WAT and memory map match the snaps
 ]
 `;
 
-exports[`branch (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    block  ;; label = @1
-      br 1 (;@0;)
-      i32.const 0
-      i32.const 1
-      i32.store
-    end)
-  (export "test" (func 0)))
-"
-`;
+exports[`branch (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`branch (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {

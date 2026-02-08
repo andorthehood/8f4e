@@ -14,12 +14,6 @@ exports[`loop instruction compiler > compiles the loop segment 1`] = `
       "hasExpectedResult": false,
     },
   ],
-  "locals": {
-    "__infiniteLoopProtectionCounter2": {
-      "index": 0,
-      "isInteger": true,
-    },
-  },
   "byteCode": [
     65,
     0,
@@ -55,6 +49,12 @@ exports[`loop instruction compiler > compiles the loop segment 1`] = `
     33,
     0,
   ],
+  "locals": {
+    "__infiniteLoopProtectionCounter2": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
   "memory": {
     "__loopErrorSignaler": {
       "byteAddress": 0,

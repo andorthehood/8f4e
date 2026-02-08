@@ -70,10 +70,10 @@ const push: InstructionCompiler = withValidation(
 
 				context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: false });
 
-				return saveByteCode(context, [
-					...i32const(memoryItem.byteAddress),
-					...(memoryItem.isInteger ? i32load() : f32load()),
-				]);
+				context.byteCode.push(
+					...[...i32const(memoryItem.byteAddress), ...(memoryItem.isInteger ? i32load() : f32load())]
+				);
+				return context;
 			} else if (isMemoryPointerIdentifier(memory, argument.value)) {
 				const base = extractMemoryPointerBase(argument.value);
 				const memoryItem = getDataStructure(memory, base);
@@ -84,11 +84,14 @@ const push: InstructionCompiler = withValidation(
 
 				context.stack.push({ isInteger: memoryItem.isPointingToInteger, isNonZero: false });
 
-				return saveByteCode(context, [
-					...i32const(memoryItem.byteAddress),
-					...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
-					...(memoryItem.isPointingToInteger ? i32load() : f32load()),
-				]);
+				context.byteCode.push(
+					...[
+						...i32const(memoryItem.byteAddress),
+						...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
+						...(memoryItem.isPointingToInteger ? i32load() : f32load()),
+					]
+				);
+				return context;
 			} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
 				const base = extractMemoryReferenceBase(argument.value);
 				let value = 0;
@@ -98,15 +101,18 @@ const push: InstructionCompiler = withValidation(
 					value = getMemoryStringLastByteAddress(memory, base);
 				}
 				context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
-				return saveByteCode(context, i32const(value));
+				context.byteCode.push(...i32const(value));
+				return context;
 			} else if (isElementCountIdentifier(memory, argument.value)) {
 				const base = extractElementCountBase(argument.value);
 				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementCount(memory, base)));
+				context.byteCode.push(...i32const(getElementCount(memory, base)));
+				return context;
 			} else if (isElementWordSizeIdentifier(memory, argument.value)) {
 				const base = extractElementWordSizeBase(argument.value);
 				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementWordSize(memory, base)));
+				context.byteCode.push(...i32const(getElementWordSize(memory, base)));
+				return context;
 			} else if (isElementMaxIdentifier(memory, argument.value)) {
 				const base = extractElementMaxBase(argument.value);
 				const memoryItem = getDataStructure(memory, base);
@@ -115,7 +121,8 @@ const push: InstructionCompiler = withValidation(
 				}
 				const maxValue = getElementMaxValue(memory, base);
 				context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: maxValue !== 0 });
-				return saveByteCode(context, memoryItem.isInteger ? i32const(maxValue) : f32const(maxValue));
+				context.byteCode.push(...(memoryItem.isInteger ? i32const(maxValue) : f32const(maxValue)));
+				return context;
 			} else if (isElementMinIdentifier(memory, argument.value)) {
 				const base = extractElementMinBase(argument.value);
 				const memoryItem = getDataStructure(memory, base);
@@ -124,18 +131,19 @@ const push: InstructionCompiler = withValidation(
 				}
 				const minValue = getElementMinValue(memory, base);
 				context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: minValue !== 0 });
-				return saveByteCode(context, memoryItem.isInteger ? i32const(minValue) : f32const(minValue));
+				context.byteCode.push(...(memoryItem.isInteger ? i32const(minValue) : f32const(minValue)));
+				return context;
 			} else if (typeof consts[argument.value] !== 'undefined') {
 				context.stack.push({
 					isInteger: consts[argument.value].isInteger,
 					isNonZero: consts[argument.value].value !== 0,
 				});
-				return saveByteCode(
-					context,
-					consts[argument.value].isInteger
+				context.byteCode.push(
+					...(consts[argument.value].isInteger
 						? i32const(consts[argument.value].value)
-						: f32const(consts[argument.value].value)
+						: f32const(consts[argument.value].value))
 				);
+				return context;
 			} else {
 				const local = locals[argument.value];
 
@@ -145,12 +153,14 @@ const push: InstructionCompiler = withValidation(
 
 				context.stack.push({ isInteger: local.isInteger, isNonZero: false });
 
-				return saveByteCode(context, localGet(local.index));
+				context.byteCode.push(...localGet(local.index));
+				return context;
 			}
 		} else {
 			context.stack.push({ isInteger: argument.isInteger, isNonZero: argument.value !== 0 });
 
-			return saveByteCode(context, getTypeAppropriateConstInstruction(argument));
+			context.byteCode.push(...getTypeAppropriateConstInstruction(argument));
+			return context;
 		}
 	}
 );

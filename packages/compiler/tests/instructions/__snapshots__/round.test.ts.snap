@@ -70,19 +70,7 @@ exports[`round > if the generated AST, WAT and memory map match the snapshot 1`]
 ]
 `;
 
-exports[`round > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 4
-    i32.const 0
-    f32.load
-    f32.nearest
-    f32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`round > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`round > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {

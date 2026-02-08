@@ -2,12 +2,6 @@
 
 exports[`hasChanged instruction compiler > compiles the change detector segment 1`] = `
 {
-  "locals": {
-    "__hasChangedDetector_currentValue3": {
-      "index": 0,
-      "isInteger": true,
-    },
-  },
   "byteCode": [
     33,
     0,
@@ -28,6 +22,12 @@ exports[`hasChanged instruction compiler > compiles the change detector segment 
     2,
     0,
   ],
+  "locals": {
+    "__hasChangedDetector_currentValue3": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
   "memory": {
     "__hasChangedDetector_previousValue3": {
       "byteAddress": 0,

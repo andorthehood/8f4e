@@ -36,7 +36,8 @@ const loopEnd: InstructionCompiler = withValidation(
 			context.stack.push(operand);
 		}
 
-		return saveByteCode(context, [...br(0), WASMInstruction.END, WASMInstruction.END]);
+		context.byteCode.push(...[...br(0), WASMInstruction.END, WASMInstruction.END]);
+		return context;
 	}
 );
 
@@ -62,7 +63,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

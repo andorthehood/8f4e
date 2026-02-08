@@ -39,7 +39,7 @@ const load: InstructionCompiler = withValidation(
 				throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 			}
 			context.byteCode.push(...instructions);
-		return context;
+			return context;
 		} else {
 			context.stack.push({ isInteger: true, isNonZero: false });
 			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;

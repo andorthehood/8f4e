@@ -21,7 +21,7 @@ const equalToZero: InstructionCompiler = withValidation(
 		if (operand.isInteger) {
 			context.stack.push({ isInteger: true, isNonZero: false });
 			context.byteCode.push(...[WASMInstruction.I32_EQZ]);
-		return context;
+			return context;
 		} else {
 			context.stack.push(operand);
 			return compileSegment(['push 0.0', 'equal'], context);
@@ -43,7 +43,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -55,7 +55,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

@@ -23,11 +23,11 @@ const greaterOrEqualUnsigned: InstructionCompiler = withValidation(
 		if (areAllOperandsIntegers(operand1, operand2)) {
 			context.stack.push({ isInteger: true, isNonZero: false });
 			context.byteCode.push(...[WASMInstruction.I32_GE_U]);
-		return context;
+			return context;
 		} else {
 			context.stack.push({ isInteger: true, isNonZero: false });
 			context.byteCode.push(...[WASMInstruction.F32_GE]);
-		return context;
+			return context;
 		}
 	}
 );
@@ -49,7 +49,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -64,7 +64,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

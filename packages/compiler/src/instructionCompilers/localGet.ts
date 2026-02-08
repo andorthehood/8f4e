@@ -29,7 +29,8 @@ const _localGet: InstructionCompiler = withValidation(
 
 			context.stack.push({ isInteger: local.isInteger, isNonZero: false });
 
-			return saveByteCode(context, localGet(local.index));
+			context.byteCode.push(...localGet(local.index));
+			return context;
 		} else {
 			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 		}

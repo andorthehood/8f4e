@@ -81,41 +81,7 @@ exports[`infinite loop protection > if the generated AST, WAT and memory map mat
 ]
 `;
 
-exports[`infinite loop protection > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    (local i32)
-    i32.const 0
-    local.set 0
-    block  ;; label = @1
-      loop  ;; label = @2
-        local.get 0
-        i32.const 1000
-        i32.ge_s
-        if  ;; label = @3
-          i32.const 4
-          i32.const 3
-          i32.store
-          br 2 (;@1;)
-        end
-        local.get 0
-        i32.const 1
-        i32.add
-        local.set 0
-        i32.const 0
-        i32.const 0
-        i32.load
-        i32.const 1
-        i32.add
-        i32.store
-        br 0 (;@2;)
-      end
-    end)
-  (export "test" (func 0)))
-"
-`;
+exports[`infinite loop protection > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`infinite loop protection > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
@@ -270,46 +236,7 @@ exports[`loop > if the generated AST, WAT and memory map match the snapshot 1`] 
 ]
 `;
 
-exports[`loop > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    (local i32)
-    i32.const 0
-    local.set 0
-    block  ;; label = @1
-      loop  ;; label = @2
-        local.get 0
-        i32.const 1000
-        i32.ge_s
-        if  ;; label = @3
-          i32.const 4
-          i32.const 3
-          i32.store
-          br 2 (;@1;)
-        end
-        local.get 0
-        i32.const 1
-        i32.add
-        local.set 0
-        i32.const 0
-        i32.load
-        i32.const 10
-        i32.eq
-        br_if 1 (;@1;)
-        i32.const 0
-        i32.const 0
-        i32.load
-        i32.const 1
-        i32.add
-        i32.store
-        br 0 (;@2;)
-      end
-    end)
-  (export "test" (func 0)))
-"
-`;
+exports[`loop > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`loop > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {

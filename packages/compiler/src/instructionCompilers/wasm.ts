@@ -18,7 +18,7 @@ const wasm: InstructionCompiler = function (line, context) {
 	}
 
 	context.byteCode.push(...[line.arguments[0].value]);
-		return context;
+	return context;
 };
 
 export default wasm;

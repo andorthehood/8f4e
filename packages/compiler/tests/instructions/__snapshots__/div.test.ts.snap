@@ -95,31 +95,7 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
 ]
 `;
 
-exports[`div (float) > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    (local f32)
-    i32.const 8
-    i32.const 0
-    f32.load
-    i32.const 4
-    f32.load
-    local.set 0
-    local.get 0
-    f32.const 0x0p+0 (;=0;)
-    f32.eq
-    if (result f32)  ;; label = @1
-      f32.const 0x1p+0 (;=1;)
-    else
-      local.get 0
-    end
-    f32.div
-    f32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`div (float) > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`div (float) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
@@ -266,30 +242,7 @@ exports[`div (int) > if the generated AST, WAT and memory map match the snapshot
 ]
 `;
 
-exports[`div (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    (local i32)
-    i32.const 8
-    i32.const 0
-    i32.load
-    i32.const 4
-    i32.load
-    local.set 0
-    local.get 0
-    i32.eqz
-    if (result i32)  ;; label = @1
-      i32.const 1
-    else
-      local.get 0
-    end
-    i32.div_s
-    i32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`div (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`div (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {

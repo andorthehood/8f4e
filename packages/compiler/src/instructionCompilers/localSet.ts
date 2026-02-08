@@ -38,7 +38,8 @@ const _localSet: InstructionCompiler = withValidation(
 				throw getError(ErrorCode.ONLY_FLOATS, line, context);
 			}
 
-			return saveByteCode(context, localSet(local.index));
+			context.byteCode.push(...localSet(local.index));
+			return context;
 		} else {
 			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 		}
