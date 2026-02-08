@@ -2,13 +2,7 @@
 
 exports[`branchIfUnchanged instruction compiler > compiles the unchanged check segment 1`] = `
 {
-  "locals": {
-    "__branchIfUnchanged_currentValue4": {
-      "index": 0,
-      "isInteger": true,
-    },
-  },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     65,
@@ -29,6 +23,12 @@ exports[`branchIfUnchanged instruction compiler > compiles the unchanged check s
     2,
     0,
   ],
+  "locals": {
+    "__branchIfUnchanged_currentValue4": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
   "memory": {
     "__branchIfUnchanged_previousValue4": {
       "byteAddress": 0,

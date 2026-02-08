@@ -2,7 +2,7 @@
 
 exports[`lessThan instruction compiler > emits F32_LT for float operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     93,
   ],
   "stack": [
@@ -16,7 +16,7 @@ exports[`lessThan instruction compiler > emits F32_LT for float operands 1`] = `
 
 exports[`lessThan instruction compiler > emits I32_LT_S for integer operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     72,
   ],
   "stack": [

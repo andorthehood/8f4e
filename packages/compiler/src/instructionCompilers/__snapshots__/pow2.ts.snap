@@ -2,7 +2,7 @@
 
 exports[`pow2 instruction compiler > computes power of two 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     65,
     2,
     65,

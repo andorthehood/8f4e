@@ -492,7 +492,7 @@ describe('Pure Function Edge Cases', () => {
 		expect(result.compiledFunctions!.doNothing).toBeDefined();
 	});
 
-	test('should handle function calling from init block', () => {
+	test('should handle function calling from module', () => {
 		const functions: Module[] = [
 			{
 				code: ['function getZero', 'push 0', 'functionEnd int'],
@@ -501,7 +501,7 @@ describe('Pure Function Edge Cases', () => {
 
 		const modules: Module[] = [
 			{
-				code: ['module test', 'int x 0', 'initBlock', 'call getZero', 'drop', 'initBlockEnd', 'moduleEnd'],
+				code: ['module test', 'int x 0', 'loop', 'call getZero', 'drop', 'loopEnd', 'moduleEnd'],
 			},
 		];
 
