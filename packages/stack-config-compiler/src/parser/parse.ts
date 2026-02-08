@@ -5,13 +5,20 @@ import type { Command, CompileError } from '../types';
 /**
  * Parses a source string into an array of commands
  */
-export default function parse(source: string): { commands: Command[]; errors: CompileError[] } {
+export default function parse(
+	source: string,
+	lineMetadata?: Array<{ callSiteLineNumber: number; macroId?: string }>
+): { commands: Command[]; errors: CompileError[] } {
 	const lines = source.split('\n');
 	const commands: Command[] = [];
 	const errors: CompileError[] = [];
 
 	for (let i = 0; i < lines.length; i++) {
-		const result = parseLine(lines[i], i + 1);
+		// Use callSiteLineNumber from metadata if available, otherwise use actual line number (1-based)
+		const actualLineNumber = lineMetadata?.[i]?.callSiteLineNumber ?? i;
+		const macroId = lineMetadata?.[i]?.macroId;
+
+		const result = parseLine(lines[i], actualLineNumber + 1, macroId);
 
 		if (result === null) continue;
 

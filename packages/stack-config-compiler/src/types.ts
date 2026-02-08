@@ -34,6 +34,8 @@ export interface Command {
 	pathSegments?: string[]; // For scope commands: pre-parsed path segments
 	identifier?: string; // For const: constant name; For push: constant reference
 	lineNumber: number;
+	/** The macro ID if this command was expanded from a macro, undefined otherwise */
+	macroId?: string;
 }
 
 /**
@@ -51,6 +53,8 @@ export interface CompileError {
 	kind?: CompileErrorKind;
 	/** Config path where the error occurred (for schema errors) */
 	path?: string;
+	/** The macro ID if this error originated from an expanded macro, undefined otherwise */
+	macroId?: string;
 }
 
 /**
@@ -59,6 +63,8 @@ export interface CompileError {
 export interface CompileOptions {
 	/** Optional JSON Schema to validate the resulting config against */
 	schema?: JSONSchemaLike;
+	/** Optional array of macro source strings for macro expansion */
+	macros?: string[];
 }
 
 /**
