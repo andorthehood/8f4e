@@ -262,7 +262,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "id": "audioout",
       "index": 2,
       "initFunctionBody": [],
-      "loopFunction": [
+      "cycleFunction": [
         80,
         2,
         1,
@@ -400,7 +400,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "id": "env",
       "index": 0,
       "initFunctionBody": [],
-      "loopFunction": [
+      "cycleFunction": [
         2,
         0,
         11,
@@ -414,7 +414,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "id": "math",
       "index": 1,
       "initFunctionBody": [],
-      "loopFunction": [
+      "cycleFunction": [
         2,
         0,
         11,
@@ -428,7 +428,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "id": "phaseAccumulator",
       "index": 3,
       "initFunctionBody": [],
-      "loopFunction": [
+      "cycleFunction": [
         99,
         1,
         1,
