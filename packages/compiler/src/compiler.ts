@@ -90,8 +90,7 @@ export function compileModule(
 			moduleName: undefined,
 			functions,
 		},
-		initSegmentByteCode: [],
-		loopSegmentByteCode: [],
+		byteCode: [],
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
@@ -117,13 +116,13 @@ export function compileModule(
 
 	return {
 		id: context.namespace.moduleName,
-		loopFunction: createFunction(
+		cycleFunction: createFunction(
 			Object.values(context.namespace.locals).map(local => {
 				return createLocalDeclaration(local.isInteger ? Type.I32 : Type.F32, 1);
 			}),
-			context.loopSegmentByteCode
+			context.byteCode
 		),
-		initFunctionBody: context.initSegmentByteCode,
+		initFunctionBody: [],
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
@@ -149,8 +148,7 @@ export function compileFunction(
 			moduleName: undefined,
 			functions: {},
 		},
-		initSegmentByteCode: [],
-		loopSegmentByteCode: [],
+		byteCode: [],
 		stack: [],
 		blockStack: [],
 		startingByteAddress: 0,
@@ -197,7 +195,7 @@ export function compileFunction(
 		signature: context.currentFunctionSignature,
 		body: createFunction(
 			localDeclarations.map(local => createLocalDeclaration(local.isInteger ? Type.I32 : Type.F32, local.count)),
-			context.loopSegmentByteCode
+			context.byteCode
 		),
 		locals: localDeclarations,
 		wasmIndex,

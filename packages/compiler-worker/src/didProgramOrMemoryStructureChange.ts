@@ -21,7 +21,7 @@ export default function didProgramOrMemoryStructureChange(
 			return true;
 		}
 
-		if (compiledModule.loopFunction.length !== previousModule.loopFunction.length) {
+		if (compiledModule.cycleFunction.length !== previousModule.cycleFunction.length) {
 			return true;
 		}
 

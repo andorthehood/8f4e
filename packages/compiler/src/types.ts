@@ -34,7 +34,7 @@ export type MemoryMap = Record<string, DataStructure>;
 export interface CompiledModule {
 	index: number;
 	initFunctionBody: number[];
-	loopFunction: number[];
+	cycleFunction: number[];
 	id: string;
 	byteAddress: number;
 	wordAlignedAddress: number;
@@ -123,8 +123,7 @@ export interface CompilationContext {
 	blockStack: BlockStack;
 	startingByteAddress: number;
 	memoryByteSize: number;
-	initSegmentByteCode: Array<WASMInstruction | Type | number>;
-	loopSegmentByteCode: Array<WASMInstruction | Type | number>;
+	byteCode: Array<WASMInstruction | Type | number>;
 	mode?: CompilationMode;
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
@@ -148,7 +147,6 @@ export enum BLOCK_TYPE {
 	CONDITION,
 	FUNCTION,
 	BLOCK,
-	INIT,
 	CONSTANTS,
 }
 

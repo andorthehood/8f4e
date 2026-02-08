@@ -2,7 +2,7 @@
 
 exports[`drop instruction compiler > drops the top stack value 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     26,
   ],
   "stack": [

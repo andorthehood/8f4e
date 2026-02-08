@@ -2,7 +2,7 @@
 
 exports[`call instruction compiler > emits call bytecode and pushes returns 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     16,
     2,
   ],

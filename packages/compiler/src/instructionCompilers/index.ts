@@ -61,8 +61,6 @@ import ensureNonZero from './ensureNonZero';
 import _function from './function';
 import functionEnd from './functionEnd';
 import param from './param';
-import initBlock from './initBlock';
-import initBlockEnd from './initBlockEnd';
 import call from './call';
 import constants from './constants';
 import constantsEnd from './constantsEnd';
@@ -149,8 +147,6 @@ const instructions = {
 	function: _function,
 	functionEnd,
 	param,
-	initBlock,
-	initBlockEnd,
 	call,
 	constants,
 	constantsEnd,

@@ -2,7 +2,7 @@
 
 exports[`castToInt instruction compiler > converts float operand to int 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     168,
   ],
   "stack": [

@@ -2,7 +2,7 @@
 
 exports[`clearStack instruction compiler > drops all stack values 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     26,
     26,
   ],
