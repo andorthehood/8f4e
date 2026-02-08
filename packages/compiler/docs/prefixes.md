@@ -7,6 +7,8 @@
 - `&name` pushes the start address (byte address) of the memory item.
 - `name&` pushes the last byte address of the memory item.
 
+These work in both `push` instructions and declaration initializers (e.g., `int* ptr &buffer` or `int* endPtr buffer&`).
+
 Examples:
 
 ```
