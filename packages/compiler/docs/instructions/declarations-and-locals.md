@@ -18,20 +18,29 @@ store
 
 The int instruction declares a 32-bit integer in module memory. Use `int*` or `int**` to declare pointer types.
 
+Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
+
 #### Examples
 
 ```
 int count 4
+int* ptr &count
+int* endPtr count&
 ```
 
 ### float
 
 The float instruction declares a 32-bit floating-point value in module memory. Use `float*` or `float**` to declare pointer types.
 
+Default values can be specified as literals, constants, or memory references (using `&name` for start address or `name&` for end address).
+
 #### Examples
 
 ```
 float gain 0.75
+float[] samples 4 0.0
+float* ptr &samples
+float* endPtr samples&
 ```
 
 ### int[]
