@@ -5,7 +5,7 @@ import i32const from '../wasmUtils/const/i32const';
 import br from '../wasmUtils/controlFlow/br';
 import i32load from '../wasmUtils/load/i32load';
 import i32store from '../wasmUtils/store/i32store';
-import { calculateWordAlignedSizeOfMemory} from '../utils/compilation';
+import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
@@ -28,7 +28,7 @@ const skip: InstructionCompiler = withValidation(
 
 		if (!line.arguments[0]) {
 			context.byteCode.push(...[WASMInstruction.RETURN]);
-		return context;
+			return context;
 		}
 
 		if (line.arguments[0].type === ArgumentType.LITERAL) {
@@ -67,32 +67,35 @@ const skip: InstructionCompiler = withValidation(
 			blockType: BLOCK_TYPE.BLOCK,
 		});
 
-		return saveByteCode(context, [
-			WASMInstruction.BLOCK,
-			Type.VOID,
-			// Increment counter
-			...i32const(byteAddress),
-			...i32const(byteAddress),
-			...i32load(),
-			...i32const(1),
-			WASMInstruction.I32_ADD,
-			...i32store(),
-			// Return if the value of the counter is smaller than
-			// the number specified in the argument
-			...i32const(byteAddress),
-			...i32load(),
-			...i32const(timesToSkip),
-			WASMInstruction.I32_LT_S,
-			WASMInstruction.IF,
-			Type.VOID,
-			// WASMInstruction.RETURN,
-			...br(1),
-			WASMInstruction.ELSE,
-			...i32const(byteAddress),
-			...i32const(0),
-			...i32store(),
-			WASMInstruction.END,
-		]);
+		context.byteCode.push(
+			...[
+				WASMInstruction.BLOCK,
+				Type.VOID,
+				// Increment counter
+				...i32const(byteAddress),
+				...i32const(byteAddress),
+				...i32load(),
+				...i32const(1),
+				WASMInstruction.I32_ADD,
+				...i32store(),
+				// Return if the value of the counter is smaller than
+				// the number specified in the argument
+				...i32const(byteAddress),
+				...i32load(),
+				...i32const(timesToSkip),
+				WASMInstruction.I32_LT_S,
+				WASMInstruction.IF,
+				Type.VOID,
+				// WASMInstruction.RETURN,
+				...br(1),
+				WASMInstruction.ELSE,
+				...i32const(byteAddress),
+				...i32const(0),
+				...i32store(),
+				WASMInstruction.END,
+			]
+		);
+		return context;
 	}
 );
 

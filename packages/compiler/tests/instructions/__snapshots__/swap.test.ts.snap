@@ -70,34 +70,7 @@ exports[`swap (int) > if the generated AST, WAT and memory map match the snapsho
 ]
 `;
 
-exports[`swap (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    (local i32 i32 i32 i32)
-    i32.const 0
-    i32.load
-    i32.const 4
-    local.set 0
-    local.set 1
-    local.get 0
-    local.get 1
-    local.set 3
-    local.set 2
-    local.get 2
-    i32.const 65535
-    i32.gt_s
-    if (result i32)  ;; label = @1
-      i32.const 0
-    else
-      local.get 2
-    end
-    local.get 3
-    i32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`swap (int) > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`swap (int) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {

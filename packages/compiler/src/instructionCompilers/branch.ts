@@ -22,7 +22,8 @@ const branch: InstructionCompiler = withValidation(
 		if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
 			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		} else {
-			return saveByteCode(context, br(line.arguments[0].value));
+			context.byteCode.push(...br(line.arguments[0].value));
+			return context;
 		}
 	}
 );
@@ -46,7 +47,7 @@ if (import.meta.vitest) {
 			);
 
 			expect({
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

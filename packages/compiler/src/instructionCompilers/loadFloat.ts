@@ -20,7 +20,8 @@ const loadFloat: InstructionCompiler = withValidation(
 
 		if (operand.isSafeMemoryAddress) {
 			context.stack.push({ isInteger: false, isNonZero: false });
-			return saveByteCode(context, f32load());
+			context.byteCode.push(...f32load());
+			return context;
 		} else {
 			context.stack.push(operand);
 			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;

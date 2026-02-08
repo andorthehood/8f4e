@@ -42,7 +42,7 @@ const abs: InstructionCompiler = withValidation(
 		} else {
 			context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
 			context.byteCode.push(...[WASMInstruction.F32_ABS]);
-		return context;
+			return context;
 		}
 	}
 );
@@ -61,7 +61,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -73,7 +73,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 				locals: context.namespace.locals,
 			}).toMatchSnapshot();
 		});

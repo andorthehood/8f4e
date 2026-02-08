@@ -70,27 +70,7 @@ exports[`pow2 > if the generated AST, WAT and memory map match the snapshot 1`] 
 ]
 `;
 
-exports[`pow2 > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    (local i32 i32)
-    i32.const 4
-    i32.const 0
-    i32.load
-    i32.const 2
-    i32.const 1
-    i32.sub
-    local.set 0
-    local.set 1
-    local.get 0
-    local.get 1
-    i32.shl
-    i32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`pow2 > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`pow2 > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {

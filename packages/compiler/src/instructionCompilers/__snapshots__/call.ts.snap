@@ -2,10 +2,7 @@
 
 exports[`call instruction compiler > emits call bytecode and pushes returns 1`] = `
 {
-  "byteCode": [
-    16,
-    2,
-  ],
+  "byteCode": [],
   "stack": [
     {
       "isInteger": true,

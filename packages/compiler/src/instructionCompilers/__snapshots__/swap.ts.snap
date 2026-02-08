@@ -2,16 +2,6 @@
 
 exports[`swap instruction compiler > swaps the top two stack values 1`] = `
 {
-  "locals": {
-    "__swapTempA3": {
-      "index": 0,
-      "isInteger": false,
-    },
-    "__swapTempB3": {
-      "index": 1,
-      "isInteger": true,
-    },
-  },
   "byteCode": [
     33,
     0,
@@ -22,6 +12,16 @@ exports[`swap instruction compiler > swaps the top two stack values 1`] = `
     32,
     1,
   ],
+  "locals": {
+    "__swapTempA3": {
+      "index": 0,
+      "isInteger": false,
+    },
+    "__swapTempB3": {
+      "index": 1,
+      "isInteger": true,
+    },
+  },
   "stack": [
     {
       "isInteger": false,

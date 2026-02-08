@@ -2,12 +2,6 @@
 
 exports[`dup instruction compiler > duplicates the top stack value 1`] = `
 {
-  "locals": {
-    "__dupTemp3": {
-      "index": 0,
-      "isInteger": true,
-    },
-  },
   "byteCode": [
     33,
     0,
@@ -16,6 +10,12 @@ exports[`dup instruction compiler > duplicates the top stack value 1`] = `
     32,
     0,
   ],
+  "locals": {
+    "__dupTemp3": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
   "stack": [
     {
       "isInteger": true,

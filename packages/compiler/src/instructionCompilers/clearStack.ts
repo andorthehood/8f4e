@@ -16,7 +16,8 @@ const clearStack: InstructionCompiler = withValidation(
 		const length = context.stack.length;
 		context.stack = [];
 
-		return saveByteCode(context, new Array(length).fill(WASMInstruction.DROP));
+		context.byteCode.push(...new Array(length).fill(WASMInstruction.DROP));
+		return context;
 	}
 );
 

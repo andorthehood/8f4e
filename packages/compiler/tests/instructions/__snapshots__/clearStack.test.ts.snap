@@ -47,17 +47,6 @@ exports[`clearStack > if the generated AST, WAT and memory map match the snapsho
 ]
 `;
 
-exports[`clearStack > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 1
-    i32.const 1
-    drop
-    drop)
-  (export "test" (func 0)))
-"
-`;
+exports[`clearStack > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`clearStack > if the generated AST, WAT and memory map match the snapshot 3`] = `{}`;

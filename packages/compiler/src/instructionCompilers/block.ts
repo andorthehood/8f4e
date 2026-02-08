@@ -27,7 +27,7 @@ const block: InstructionCompiler = withValidation(
 				blockType: BLOCK_TYPE.BLOCK,
 			});
 			context.byteCode.push(...[WASMInstruction.BLOCK, Type.F32]);
-		return context;
+			return context;
 		}
 
 		if (line.arguments[0].value === 'int') {
@@ -37,7 +37,7 @@ const block: InstructionCompiler = withValidation(
 				blockType: BLOCK_TYPE.BLOCK,
 			});
 			context.byteCode.push(...[WASMInstruction.BLOCK, Type.I32]);
-		return context;
+			return context;
 		}
 
 		context.blockStack.push({

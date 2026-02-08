@@ -27,7 +27,7 @@ const _if: InstructionCompiler = withValidation(
 				blockType: BLOCK_TYPE.CONDITION,
 			});
 			context.byteCode.push(...[WASMInstruction.IF, Type.VOID]);
-		return context;
+			return context;
 		}
 
 		if (
@@ -41,7 +41,7 @@ const _if: InstructionCompiler = withValidation(
 				blockType: BLOCK_TYPE.CONDITION,
 			});
 			context.byteCode.push(...[WASMInstruction.IF, Type.F32]);
-		return context;
+			return context;
 		}
 
 		context.blockStack.push({
@@ -75,7 +75,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -94,7 +94,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

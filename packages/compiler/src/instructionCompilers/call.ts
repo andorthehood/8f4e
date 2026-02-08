@@ -54,7 +54,7 @@ const call: InstructionCompiler = withValidation(
 
 		// Emit WASM call instruction
 		if (targetFunction.wasmIndex !== undefined) {
-			saveByteCode(context, wasmCall(targetFunction.wasmIndex));
+			context.byteCode.push(...wasmCall(targetFunction.wasmIndex));
 		}
 
 		return context;

@@ -2,12 +2,6 @@
 
 exports[`abs instruction compiler > compiles int abs via segment instructions 1`] = `
 {
-  "locals": {
-    "__absify_value3": {
-      "index": 0,
-      "isInteger": true,
-    },
-  },
   "byteCode": [
     33,
     0,
@@ -28,6 +22,12 @@ exports[`abs instruction compiler > compiles int abs via segment instructions 1`
     0,
     11,
   ],
+  "locals": {
+    "__absify_value3": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
   "stack": [
     {
       "isInteger": true,

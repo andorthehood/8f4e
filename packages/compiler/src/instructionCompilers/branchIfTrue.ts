@@ -28,7 +28,8 @@ const branchIfTrue: InstructionCompiler = withValidation(
 		// Non-null assertion is safe: withValidation ensures 1 operand exists
 		context.stack.pop()!;
 
-		return saveByteCode(context, br_if(line.arguments[0].value));
+		context.byteCode.push(...br_if(line.arguments[0].value));
+		return context;
 	}
 );
 
@@ -53,7 +54,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

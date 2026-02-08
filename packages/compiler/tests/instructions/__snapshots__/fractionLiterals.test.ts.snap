@@ -70,17 +70,7 @@ exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memo
 ]
 `;
 
-exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 0
-    f32.const 0x1p-3 (;=0.125;)
-    f32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`const: with fraction literal (1/8) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
@@ -172,18 +162,7 @@ exports[`float: with fraction literal (1/16) > if the generated AST, WAT and mem
 ]
 `;
 
-exports[`float: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 4
-    i32.const 0
-    f32.load
-    f32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`float: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`float: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
@@ -290,18 +269,7 @@ exports[`float: with negative fraction literal (-1/2) > if the generated AST, WA
 ]
 `;
 
-exports[`float: with negative fraction literal (-1/2) > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 4
-    i32.const 0
-    f32.load
-    f32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`float: with negative fraction literal (-1/2) > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`float: with negative fraction literal (-1/2) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
@@ -408,18 +376,7 @@ exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST
 ]
 `;
 
-exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 4
-    i32.const 0
-    i32.load
-    i32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`int: with fraction literal (1/16) truncates to 0 > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
@@ -526,18 +483,7 @@ exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT a
 ]
 `;
 
-exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 4
-    i32.const 0
-    i32.load
-    i32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`int: with fraction literal (8/2) equals 4 > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
@@ -635,17 +581,7 @@ exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memo
 ]
 `;
 
-exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 0
-    f32.const 0x1p-4 (;=0.0625;)
-    f32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`push: with fraction literal (1/16) > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {

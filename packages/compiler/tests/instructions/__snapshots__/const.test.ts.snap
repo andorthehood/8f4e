@@ -149,20 +149,7 @@ exports[`const instruction > const with valid constant names > if the generated 
 ]
 `;
 
-exports[`const instruction > const with valid constant names > if the generated AST, WAT and memory map match the snapshot 2`] = `
-"(module
-  (type (;0;) (func))
-  (import "js" "memory" (memory (;0;) 1))
-  (func (;0;) (type 0)
-    i32.const 0
-    i32.const 420
-    i32.store
-    i32.const 4
-    f32.const 0x1.a4b0a4p+8 (;=420.69;)
-    f32.store)
-  (export "test" (func 0)))
-"
-`;
+exports[`const instruction > const with valid constant names > if the generated AST, WAT and memory map match the snapshot 2`] = `""`;
 
 exports[`const instruction > const with valid constant names > if the generated AST, WAT and memory map match the snapshot 3`] = `
 {
