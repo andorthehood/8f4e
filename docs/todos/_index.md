@@ -41,6 +41,8 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 206 | Add Fraction Literals to Compiler | 🟡 | 2-4h | 2026-01-27 | Add `int/int` fraction parsing for numeric literals with division-by-zero checks |
 | 207 | Add Fraction Literals to Stack Config Compiler | 🟡 | 2-4h | 2026-01-27 | Mirror compiler fraction parsing for stack-config numeric literals |
 | 210 | Add WebMCP-based MCP server integration to the 8f4e editor | 🟡 | 2-4d | 2026-02-07 | Build a feature-flagged integration spike using the experimental WebMCP API to validate browser lifecycle, tooling, and fallback behavior |
+| 211 | Add WASM memory to GLSL float uniform bindings via project config | 🟡 | 2-4d | 2026-02-08 | Add float-only config-driven uniform bindings using `memoryId`-encoded span (`module.value`, `module.buffer[i]`, `module.buffer[i:n]`) for postprocess/background shaders |
+| 212 | Remove init/loop section distinction from compiler modules | 🟡 | 1-2d | 2026-02-08 | Simplify `@8f4e/compiler` internals by removing module init-vs-loop sectioning ahead of a dedicated memory-init special block |
 | 170 | Toggle Post-Process Effects via Function Key | 🟡 | 1-2h | 2026-01-13 | Add a runtime toggle event and host key binding to disable post-process effects |
 | 173 | Add Scoped Constants to Stack Config Compiler | 🟡 | 1-2d | 2026-01-13 | Add scoped `const` command and constant-aware `push` for config blocks |
 | 178 | Drop WebGL1 and move glugglug to WebGL2-only | 🟡 | 2-4d | 2026-01-15 | Remove WebGL1 fallback, update shaders, and use WebGL2-only renderer setup |
