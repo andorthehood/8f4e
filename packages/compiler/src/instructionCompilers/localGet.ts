@@ -64,7 +64,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
