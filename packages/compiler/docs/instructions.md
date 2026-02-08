@@ -76,8 +76,6 @@
   - [function](instructions/program-structure-and-functions.md#function)
   - [param](instructions/program-structure-and-functions.md#param)
   - [functionEnd](instructions/program-structure-and-functions.md#functionend)
-  - [initBlock](instructions/program-structure-and-functions.md#initblock)
-  - [initBlockEnd](instructions/program-structure-and-functions.md#initblockend)
   - [call](instructions/program-structure-and-functions.md#call)
   - [use](instructions/program-structure-and-functions.md#use)
 
