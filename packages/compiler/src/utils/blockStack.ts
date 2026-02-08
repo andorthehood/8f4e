@@ -52,11 +52,6 @@ if (import.meta.vitest) {
 			expectedResultIsInteger: false,
 			hasExpectedResult: false,
 		};
-		const mockInitBlock: BlockStack[number] = {
-			blockType: BLOCK_TYPE.INIT,
-			expectedResultIsInteger: false,
-			hasExpectedResult: false,
-		};
 
 		describe('isInstructionIsInsideAModule', () => {
 			it('returns true when inside a module', () => {
@@ -101,14 +96,13 @@ if (import.meta.vitest) {
 
 		describe('isInstructionIsInsideBlock', () => {
 			it('returns true when inside specified block type', () => {
-				expect(isInstructionIsInsideBlock([mockInitBlock], BLOCK_TYPE.INIT)).toBe(true);
-				expect(isInstructionIsInsideBlock([mockLoopBlock, mockInitBlock], BLOCK_TYPE.INIT)).toBe(true);
+				expect(isInstructionIsInsideBlock([mockLoopBlock], BLOCK_TYPE.LOOP)).toBe(true);
 				expect(isInstructionIsInsideBlock([mockModuleBlock], BLOCK_TYPE.MODULE)).toBe(true);
 			});
 
 			it('returns false when not inside specified block type', () => {
-				expect(isInstructionIsInsideBlock([], BLOCK_TYPE.INIT)).toBe(false);
-				expect(isInstructionIsInsideBlock([mockModuleBlock], BLOCK_TYPE.INIT)).toBe(false);
+				expect(isInstructionIsInsideBlock([], BLOCK_TYPE.LOOP)).toBe(false);
+				expect(isInstructionIsInsideBlock([mockModuleBlock], BLOCK_TYPE.LOOP)).toBe(false);
 				expect(isInstructionIsInsideBlock([mockFunctionBlock], BLOCK_TYPE.LOOP)).toBe(false);
 			});
 		});

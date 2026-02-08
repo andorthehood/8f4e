@@ -62,7 +62,7 @@ const standalonProject: Project = {
 	compiledModules: {
 		counter: {
 			id: 'counter',
-			loopFunction: [15, 0, 65, 4, 65, 4, 40, 2, 0, 65, 1, 106, 54, 2, 0, 11],
+			cycleFunction: [15, 0, 65, 4, 65, 4, 40, 2, 0, 65, 1, 106, 54, 2, 0, 11],
 			initFunctionBody: [],
 			byteAddress: 4,
 			wordAlignedAddress: 1,

@@ -40,7 +40,7 @@ if (import.meta.vitest) {
 			);
 
 			expect({
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

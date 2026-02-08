@@ -2,7 +2,7 @@
 
 exports[`store instruction compiler > stores to a safe memory address 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     54,
     2,
     0,
@@ -13,7 +13,7 @@ exports[`store instruction compiler > stores to a safe memory address 1`] = `
 
 exports[`store instruction compiler > wraps unsafe address with bounds check 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     1,
     33,
