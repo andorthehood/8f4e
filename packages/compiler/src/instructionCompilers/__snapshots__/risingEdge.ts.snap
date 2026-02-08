@@ -2,13 +2,7 @@
 
 exports[`risingEdge instruction compiler > compiles the rising edge segment 1`] = `
 {
-  "locals": {
-    "__risingEdgeDetector_currentValue4": {
-      "index": 0,
-      "isInteger": true,
-    },
-  },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     32,
@@ -35,6 +29,12 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment 1`] 
     2,
     0,
   ],
+  "locals": {
+    "__risingEdgeDetector_currentValue4": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
   "memory": {
     "__risingEdgeDetector_previousValue4": {
       "byteAddress": 0,
@@ -63,13 +63,7 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment 1`] 
 
 exports[`risingEdge instruction compiler > compiles the rising edge segment for float operands 1`] = `
 {
-  "locals": {
-    "__risingEdgeDetector_currentValue4": {
-      "index": 0,
-      "isInteger": false,
-    },
-  },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     32,
@@ -96,6 +90,12 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment for 
     2,
     0,
   ],
+  "locals": {
+    "__risingEdgeDetector_currentValue4": {
+      "index": 0,
+      "isInteger": false,
+    },
+  },
   "memory": {
     "__risingEdgeDetector_previousValue4": {
       "byteAddress": 0,

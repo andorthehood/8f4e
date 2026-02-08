@@ -6,7 +6,7 @@ describe('getOrCreateMemory', () => {
 	// Helper to create a minimal CompiledModuleLookup for testing
 	const createMockCompiledModules = () => ({
 		module1: {
-			loopFunction: 'function loop() {}',
+			cycleFunction: 'function loop() {}',
 			initFunctionBody: 'init body',
 			wordAlignedSize: 100,
 			memoryMap: {},
@@ -53,7 +53,7 @@ describe('getOrCreateMemory', () => {
 			const compiledModules2 = {
 				...createMockCompiledModules(),
 				module2: {
-					loopFunction: 'function loop2() {}',
+					cycleFunction: 'function loop2() {}',
 					initFunctionBody: 'init body 2',
 					wordAlignedSize: 200,
 					memoryMap: {},
@@ -90,7 +90,7 @@ describe('getOrCreateMemory', () => {
 			const compiledModules2 = {
 				...createMockCompiledModules(),
 				module2: {
-					loopFunction: 'function loop2() {}',
+					cycleFunction: 'function loop2() {}',
 					initFunctionBody: 'init body 2',
 					wordAlignedSize: 200,
 					memoryMap: {},
