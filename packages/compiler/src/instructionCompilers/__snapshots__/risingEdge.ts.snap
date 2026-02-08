@@ -8,7 +8,7 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment 1`] 
       "isInteger": true,
     },
   },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     32,
@@ -69,7 +69,7 @@ exports[`risingEdge instruction compiler > compiles the rising edge segment for 
       "isInteger": false,
     },
   },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     32,

@@ -1,4 +1,3 @@
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -22,7 +21,8 @@ const or: InstructionCompiler = withValidation(
 		const operand1 = context.stack.pop()!;
 
 		context.stack.push({ isInteger: true, isNonZero: operand1.isNonZero || operand2.isNonZero });
-		return saveByteCode(context, [WASMInstruction.I32_OR]);
+		context.byteCode.push(...[WASMInstruction.I32_OR]);
+		return context;
 	}
 );
 
@@ -40,7 +40,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

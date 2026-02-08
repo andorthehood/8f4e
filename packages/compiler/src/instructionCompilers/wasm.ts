@@ -1,6 +1,5 @@
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import { saveByteCode } from '../utils/compilation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
@@ -18,7 +17,8 @@ const wasm: InstructionCompiler = function (line, context) {
 		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	}
 
-	return saveByteCode(context, [line.arguments[0].value]);
+	context.byteCode.push(...[line.arguments[0].value]);
+		return context;
 };
 
 export default wasm;
@@ -40,7 +40,7 @@ if (import.meta.vitest) {
 			);
 
 			expect({
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

@@ -1,6 +1,5 @@
 import { ErrorCode, getError } from '../errors';
 import { ArgumentType } from '../types';
-import { saveByteCode } from '../utils/compilation';
 import wasmCall from '../wasmUtils/call/call';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -92,7 +91,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

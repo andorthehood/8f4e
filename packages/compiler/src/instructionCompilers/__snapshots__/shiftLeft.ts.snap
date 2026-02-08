@@ -2,7 +2,7 @@
 
 exports[`shiftLeft instruction compiler > emits I32_SHL for integer operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     116,
   ],
   "stack": [

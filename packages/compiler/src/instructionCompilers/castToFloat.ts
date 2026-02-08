@@ -1,5 +1,4 @@
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
@@ -21,7 +20,8 @@ const castToFloat: InstructionCompiler = withValidation(
 
 		context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
 
-		return saveByteCode(context, [WASMInstruction.F32_CONVERT_I32_S]);
+		context.byteCode.push(...[WASMInstruction.F32_CONVERT_I32_S]);
+		return context;
 	}
 );
 
@@ -39,7 +39,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

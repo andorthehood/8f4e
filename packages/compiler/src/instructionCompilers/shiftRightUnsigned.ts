@@ -1,4 +1,3 @@
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -21,7 +20,8 @@ const shiftRightUnsigned: InstructionCompiler = withValidation(
 		context.stack.pop();
 
 		context.stack.push({ isInteger: true, isNonZero: false });
-		return saveByteCode(context, [WASMInstruction.I32_SHR_U]);
+		context.byteCode.push(...[WASMInstruction.I32_SHR_U]);
+		return context;
 	}
 );
 
@@ -39,7 +39,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

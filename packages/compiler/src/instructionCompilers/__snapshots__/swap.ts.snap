@@ -12,7 +12,7 @@ exports[`swap instruction compiler > swaps the top two stack values 1`] = `
       "isInteger": true,
     },
   },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     33,

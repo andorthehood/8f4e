@@ -1,5 +1,4 @@
 import { ErrorCode, getError } from '../errors';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import i32load from '../wasmUtils/load/i32load';
 import i32load16s from '../wasmUtils/load/i32load16s';
@@ -39,7 +38,8 @@ const load: InstructionCompiler = withValidation(
 			if (!instructions) {
 				throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
 			}
-			return saveByteCode(context, instructions);
+			context.byteCode.push(...instructions);
+		return context;
 		} else {
 			context.stack.push({ isInteger: true, isNonZero: false });
 			const tempVariableName = '__loadAddress_temp_' + line.lineNumber;
@@ -83,7 +83,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -95,7 +95,7 @@ if (import.meta.vitest) {
 
 			expect({
 				stack: context.stack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});

@@ -1,4 +1,3 @@
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -20,7 +19,8 @@ const sqrt: InstructionCompiler = withValidation(
 		context.stack.pop()!;
 
 		context.stack.push({ isInteger: false, isNonZero: true });
-		return saveByteCode(context, [WASMInstruction.F32_SQRT]);
+		context.byteCode.push(...[WASMInstruction.F32_SQRT]);
+		return context;
 	}
 );
 

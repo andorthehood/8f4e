@@ -2,7 +2,6 @@ import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -27,7 +26,8 @@ const block: InstructionCompiler = withValidation(
 				hasExpectedResult: true,
 				blockType: BLOCK_TYPE.BLOCK,
 			});
-			return saveByteCode(context, [WASMInstruction.BLOCK, Type.F32]);
+			context.byteCode.push(...[WASMInstruction.BLOCK, Type.F32]);
+		return context;
 		}
 
 		if (line.arguments[0].value === 'int') {
@@ -36,7 +36,8 @@ const block: InstructionCompiler = withValidation(
 				hasExpectedResult: true,
 				blockType: BLOCK_TYPE.BLOCK,
 			});
-			return saveByteCode(context, [WASMInstruction.BLOCK, Type.I32]);
+			context.byteCode.push(...[WASMInstruction.BLOCK, Type.I32]);
+		return context;
 		}
 
 		context.blockStack.push({
@@ -45,7 +46,8 @@ const block: InstructionCompiler = withValidation(
 			blockType: BLOCK_TYPE.BLOCK,
 		});
 
-		return saveByteCode(context, [WASMInstruction.BLOCK, Type.VOID]);
+		context.byteCode.push(...[WASMInstruction.BLOCK, Type.VOID]);
+		return context;
 	}
 );
 
@@ -69,7 +71,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -87,7 +89,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -105,7 +107,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

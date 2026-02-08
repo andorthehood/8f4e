@@ -189,8 +189,6 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 			}
 		});
 
-		instructions.push(...module.initFunctionBody);
-
 		return createFunction([], instructions);
 	});
 }
@@ -284,7 +282,7 @@ export default function compile(
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
-	const loopFunctions = compiledModules.map(({ loopFunction }) => loopFunction);
+	const moduleFunctions = compiledModules.map(({ moduleFunction }) => moduleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
 	// Offset for user functions and module functions
@@ -342,7 +340,7 @@ export default function compile(
 				createFunction([], cycleFunction),
 				bufferFunction,
 				...compiledFunctions.map(func => func.body),
-				...loopFunctions,
+				...moduleFunctions,
 				...memoryInitiatorFunctions,
 			]),
 		]),

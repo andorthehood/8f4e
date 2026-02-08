@@ -20,7 +20,7 @@ exports[`loop instruction compiler > compiles the loop segment 1`] = `
       "isInteger": true,
     },
   },
-  "loopSegmentByteCode": [
+  "byteCode": [
     65,
     0,
     33,

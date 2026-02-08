@@ -14,7 +14,7 @@ exports[`else instruction compiler > emits else bytecode and restores block 1`] 
       "hasExpectedResult": true,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     5,
   ],
   "stack": [],

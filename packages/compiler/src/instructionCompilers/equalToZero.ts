@@ -1,5 +1,4 @@
 import WASMInstruction from '../wasmUtils/wasmInstruction';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { compileSegment } from '../compiler';
 import createInstructionCompilerTestContext from '../utils/testUtils';
@@ -21,7 +20,8 @@ const equalToZero: InstructionCompiler = withValidation(
 
 		if (operand.isInteger) {
 			context.stack.push({ isInteger: true, isNonZero: false });
-			return saveByteCode(context, [WASMInstruction.I32_EQZ]);
+			context.byteCode.push(...[WASMInstruction.I32_EQZ]);
+		return context;
 		} else {
 			context.stack.push(operand);
 			return compileSegment(['push 0.0', 'equal'], context);

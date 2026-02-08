@@ -2,7 +2,7 @@
 
 exports[`branchIfTrue instruction compiler > emits br_if bytecode 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     13,
     2,
   ],
