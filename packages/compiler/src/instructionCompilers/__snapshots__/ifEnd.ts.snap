@@ -9,7 +9,7 @@ exports[`ifEnd instruction compiler > ends a conditional block with result 1`] =
       "hasExpectedResult": false,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     11,
   ],
   "stack": [

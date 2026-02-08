@@ -284,7 +284,7 @@ export default function compile(
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
-	const loopFunctions = compiledModules.map(({ loopFunction }) => loopFunction);
+	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
 	// Offset for user functions and module functions
@@ -342,7 +342,7 @@ export default function compile(
 				createFunction([], cycleFunction),
 				bufferFunction,
 				...compiledFunctions.map(func => func.body),
-				...loopFunctions,
+				...cycleFunctions,
 				...memoryInitiatorFunctions,
 			]),
 		]),

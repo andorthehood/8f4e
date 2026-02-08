@@ -107,7 +107,7 @@ if (import.meta.vitest) {
 			skip({ lineNumber: 1, instruction: 'skip', arguments: [] } as AST[number], context);
 
 			expect({
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -126,7 +126,7 @@ if (import.meta.vitest) {
 			expect({
 				blockStack: context.blockStack,
 				memory: context.namespace.memory,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});
