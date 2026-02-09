@@ -75,7 +75,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		memorySizeBytes: 65536,
 		includeAST: true,
 	})[0];
-	const program = createSingleFunctionWASMProgram(module.loopFunction);
+	const program = createSingleFunctionWASMProgram(module.cycleFunction);
 	const memoryRef = new WebAssembly.Memory({ initial: 1 });
 	const dataView = new DataView(memoryRef.buffer);
 	const memoryBuffer = new Int32Array(memoryRef.buffer);

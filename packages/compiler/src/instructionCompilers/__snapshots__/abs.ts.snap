@@ -2,13 +2,7 @@
 
 exports[`abs instruction compiler > compiles int abs via segment instructions 1`] = `
 {
-  "locals": {
-    "__absify_value3": {
-      "index": 0,
-      "isInteger": true,
-    },
-  },
-  "loopSegmentByteCode": [
+  "byteCode": [
     33,
     0,
     32,
@@ -28,6 +22,12 @@ exports[`abs instruction compiler > compiles int abs via segment instructions 1`
     0,
     11,
   ],
+  "locals": {
+    "__absify_value3": {
+      "index": 0,
+      "isInteger": true,
+    },
+  },
   "stack": [
     {
       "isInteger": true,
@@ -39,7 +39,7 @@ exports[`abs instruction compiler > compiles int abs via segment instructions 1`
 
 exports[`abs instruction compiler > emits F32_ABS for float operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     139,
   ],
   "stack": [
