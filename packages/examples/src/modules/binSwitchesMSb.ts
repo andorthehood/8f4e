@@ -31,7 +31,6 @@ push &bitPointer
 push 0
 store
 
-; @debug 0bout
 ; @debug out
 
 ; Clear bits
