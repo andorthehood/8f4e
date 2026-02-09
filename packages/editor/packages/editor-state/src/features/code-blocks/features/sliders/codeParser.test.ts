@@ -4,7 +4,7 @@ import parseSliders from './codeParser';
 
 describe('parseSliders', () => {
 	it('should parse slider instruction with memory id only', () => {
-		const code = ['# slider mySlider'];
+		const code = ['; @slider mySlider'];
 		const result = parseSliders(code);
 
 		expect(result).toEqual([
@@ -19,7 +19,7 @@ describe('parseSliders', () => {
 	});
 
 	it('should parse slider instruction with min and max', () => {
-		const code = ['# slider mySlider 0 100'];
+		const code = ['; @slider mySlider 0 100'];
 		const result = parseSliders(code);
 
 		expect(result).toEqual([
@@ -34,7 +34,7 @@ describe('parseSliders', () => {
 	});
 
 	it('should parse slider instruction with min, max, and step', () => {
-		const code = ['# slider mySlider 0 100 10'];
+		const code = ['; @slider mySlider 0 100 10'];
 		const result = parseSliders(code);
 
 		expect(result).toEqual([
@@ -49,7 +49,7 @@ describe('parseSliders', () => {
 	});
 
 	it('should parse slider instruction with float values', () => {
-		const code = ['# slider mySlider 0.0 1.0 0.01'];
+		const code = ['; @slider mySlider 0.0 1.0 0.01'];
 		const result = parseSliders(code);
 
 		expect(result).toEqual([
@@ -64,7 +64,7 @@ describe('parseSliders', () => {
 	});
 
 	it('should handle multiple slider instructions', () => {
-		const code = ['# slider slider1 0 100', 'mov a b', '# slider slider2 0.0 1.0'];
+		const code = ['; @slider slider1 0 100', 'mov a b', '; @slider slider2 0.0 1.0'];
 		const result = parseSliders(code);
 
 		expect(result).toEqual([
@@ -100,7 +100,7 @@ describe('parseSliders', () => {
 	});
 
 	it('should preserve correct line numbers', () => {
-		const code = ['nop', 'nop', '# slider slider1 0 100', 'nop', 'nop', '# slider slider2 0.0 1.0'];
+		const code = ['nop', 'nop', '; @slider slider1 0 100', 'nop', 'nop', '; @slider slider2 0.0 1.0'];
 		const result = parseSliders(code);
 
 		expect(result).toEqual([
@@ -122,7 +122,7 @@ describe('parseSliders', () => {
 	});
 
 	it('should handle negative values', () => {
-		const code = ['# slider mySlider -100 100 5'];
+		const code = ['; @slider mySlider -100 100 5'];
 		const result = parseSliders(code);
 
 		expect(result).toEqual([

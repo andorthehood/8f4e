@@ -12,7 +12,7 @@ float* in
 float out
 int pointer &buffer
 
-# debug pointer
+; @debug pointer
 
 push &out
  push pointer

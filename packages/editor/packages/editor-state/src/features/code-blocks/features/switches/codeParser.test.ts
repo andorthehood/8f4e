@@ -4,7 +4,7 @@ import parseSwitches from './codeParser';
 
 describe('parseSwitches', () => {
 	it('should parse switch instruction with all arguments', () => {
-		const code = ['# switch mySwitch 0 1'];
+		const code = ['; @switch mySwitch 0 1'];
 		const result = parseSwitches(code);
 
 		expect(result).toEqual([
@@ -18,7 +18,7 @@ describe('parseSwitches', () => {
 	});
 
 	it('should parse switch instruction with default off/on values', () => {
-		const code = ['# switch mySwitch'];
+		const code = ['; @switch mySwitch'];
 		const result = parseSwitches(code);
 
 		expect(result).toEqual([
@@ -32,7 +32,7 @@ describe('parseSwitches', () => {
 	});
 
 	it('should parse switch instruction with custom values', () => {
-		const code = ['# switch mySwitch 10 100'];
+		const code = ['; @switch mySwitch 10 100'];
 		const result = parseSwitches(code);
 
 		expect(result).toEqual([
@@ -46,7 +46,7 @@ describe('parseSwitches', () => {
 	});
 
 	it('should handle multiple switch instructions', () => {
-		const code = ['# switch sw1 0 1', 'mov a b', '# switch sw2 5 15'];
+		const code = ['; @switch sw1 0 1', 'mov a b', '; @switch sw2 5 15'];
 		const result = parseSwitches(code);
 
 		expect(result).toEqual([
@@ -80,7 +80,7 @@ describe('parseSwitches', () => {
 	});
 
 	it('should use default values when off/on are invalid numbers', () => {
-		const code = ['# switch mySwitch invalid invalid'];
+		const code = ['; @switch mySwitch invalid invalid'];
 		const result = parseSwitches(code);
 
 		expect(result).toEqual([
@@ -94,7 +94,7 @@ describe('parseSwitches', () => {
 	});
 
 	it('should preserve correct line numbers', () => {
-		const code = ['nop', 'nop', '# switch sw1 0 1', 'nop', 'nop', '# switch sw2 5 10'];
+		const code = ['nop', 'nop', '; @switch sw1 0 1', 'nop', 'nop', '; @switch sw2 5 10'];
 		const result = parseSwitches(code);
 
 		expect(result).toEqual([

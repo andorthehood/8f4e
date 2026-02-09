@@ -1,22 +1,14 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-
 export default function parseSwitches(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-				never,
-				string,
-				string,
-				string,
-				string,
-				string,
-			];
-
-			if (instruction === '#' && args[0] === 'switch') {
-				return [
-					...acc,
-					{ id: args[1], lineNumber: index, onValue: parseInt(args[3], 10) || 1, offValue: parseInt(args[2], 10) || 0 },
-				];
+			// Match semicolon comment lines with @switch directive
+			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
+			if (commentMatch && commentMatch[1] === 'switch') {
+				const args = commentMatch[2].trim().split(/\s+/);
+				const id = args[0];
+				const offValue = parseInt(args[1], 10) || 0;
+				const onValue = parseInt(args[2], 10) || 1;
+				return [...acc, { id, lineNumber: index, onValue, offValue }];
 			}
 			return acc;
 		},

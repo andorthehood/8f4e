@@ -7,7 +7,7 @@ const midiPianoKeyboardC3: ExampleModule = {
 	code: `module piano
 int[] notes 12
 int notesCount 0
-# piano notes notesCount 48
+; @piano notes notesCount 48
 moduleEnd`,
 	tests: [],
 };
