@@ -27,6 +27,7 @@ if (import.meta.vitest) {
 			expect(match?.[2]).toBe('1');
 			expect(match?.[3]).toBe('2');
 			expect(match?.[4]).toBe('#');
+			expect(match?.[5]).toBe('comment');
 		});
 	});
 }
