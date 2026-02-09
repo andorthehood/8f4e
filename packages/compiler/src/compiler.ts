@@ -79,7 +79,8 @@ export function compileModule(
 	startingByteAddress = 0,
 	memorySizeBytes: number,
 	index: number,
-	functions?: CompiledFunctionLookup
+	functions?: CompiledFunctionLookup,
+	skipExecutionInCycle?: boolean
 ): CompiledModule {
 	const context: CompilationContext = {
 		namespace: {
@@ -127,6 +128,7 @@ export function compileModule(
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
+		skipExecutionInCycle,
 		ast,
 		index,
 	};

@@ -17,6 +17,7 @@ import getConstantsName from './astUtils/getConstantsName';
 import getModuleName from './astUtils/getModuleName';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
+import { extractModuleDirectives } from './directiveExtractor';
 import {
 	AST,
 	ArgumentType,
@@ -124,7 +125,8 @@ export function compileModules(
 	options: CompileOptions,
 	builtInConsts?: Namespace['consts'],
 	namespaces?: Namespaces,
-	compiledFunctions?: CompiledFunctionLookup
+	compiledFunctions?: CompiledFunctionLookup,
+	moduleDirectives?: Array<{ skipExecutionInCycle?: boolean }>
 ): CompiledModule[] {
 	let memoryAddress = options.startingMemoryWordAddress;
 
@@ -150,7 +152,8 @@ export function compileModules(
 			memoryAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 			options.memorySizeBytes,
 			index,
-			compiledFunctions
+			compiledFunctions,
+			moduleDirectives?.[index]?.skipExecutionInCycle
 		);
 		memoryAddress += module.wordAlignedSize;
 
@@ -227,6 +230,18 @@ export default function compile(
 			})
 		: modules.map(module => ({ code: module.code, lineMetadata: undefined }));
 
+	// Extract compiler directives from modules before converting to AST
+	const moduleDirectives = expandedModules.map(({ code }) => extractModuleDirectives(code));
+
+	// Check for directive errors and throw if any
+	moduleDirectives.forEach(({ errors }, index) => {
+		if (errors.length > 0) {
+			// Throw the first error
+			const error = errors[0];
+			throw getError(error.code, error.line);
+		}
+	});
+
 	// Expand macros in functions
 	const expandedFunctions =
 		macros && functions
@@ -238,6 +253,15 @@ export default function compile(
 
 	// Compile to AST with line metadata for error mapping
 	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
+	
+	// Create a map of module directives by module name
+	const directivesByModuleName = new Map<string, { skipExecutionInCycle?: boolean }>();
+	astModules.forEach((ast, index) => {
+		const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+		const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+		directivesByModuleName.set(name, moduleDirectives[index].metadata);
+	});
+	
 	const sortedModules = sortModules(astModules);
 
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
@@ -249,6 +273,13 @@ export default function compile(
 			return [name, { consts: collectConstants(ast) }];
 		})
 	);
+	
+	// Create sorted directives array matching sorted modules
+	const sortedDirectives = sortedModules.map(ast => {
+		const isConstantsBlock = ast.some(line => line.instruction === 'constants');
+		const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
+		return directivesByModuleName.get(name) || {};
+	});
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
@@ -279,7 +310,8 @@ export default function compile(
 		},
 		{}, // Empty builtInConsts - all constants come from env block
 		namespaces,
-		compiledFunctionsMap
+		compiledFunctionsMap,
+		sortedDirectives
 	);
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
@@ -290,7 +322,12 @@ export default function compile(
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
 	const cycleFunction = compiledModules
-		.map((module, index) => call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount))
+		.filter(module => !module.skipExecutionInCycle)
+		.map((module, index) => {
+			// Find the original index of this module in the full compiledModules array
+			const originalIndex = compiledModules.findIndex(m => m.id === module.id);
+			return call(originalIndex + EXPORTED_FUNCTION_COUNT + userFunctionCount);
+		})
 		.flat();
 	const memoryInitiatorFunction = compiledModules
 		.map((module, index) => call(index + compiledModules.length + EXPORTED_FUNCTION_COUNT + userFunctionCount))
