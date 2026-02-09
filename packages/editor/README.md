@@ -14,3 +14,7 @@ renderers can replace it.
 - Translate DOM input data into internal event payloads (coordinates, movement deltas, button state, canvas size).
 - Initialize the UI renderer with state and memory views, and forward resize and post-process events.
 - Expose state access, memory view updates, and state machine callbacks as extension points.
+
+## Docs
+
+- `docs/editor-directives.md` - Editor-only code-block directive syntax (`; @...`) and supported directives.
