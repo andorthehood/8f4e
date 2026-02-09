@@ -98,4 +98,19 @@ describe('parseBufferPlotters', () => {
 			},
 		]);
 	});
+
+	it('should preserve 0 values for min/max', () => {
+		const code = ['; @plot myBuffer 0 255'];
+		const result = parseBufferPlotters(code);
+
+		expect(result).toEqual([
+			{
+				bufferMemoryId: 'myBuffer',
+				lineNumber: 0,
+				minValue: 0,
+				maxValue: 255,
+				bufferLengthMemoryId: undefined,
+			},
+		]);
+	});
 });
