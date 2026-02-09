@@ -3,8 +3,8 @@ title: 'TODO: Stop treating # as compiler comments'
 priority: Medium
 effort: 2-4h
 created: 2026-02-09
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-09
 ---
 
 # TODO: Stop treating # as compiler comments
@@ -46,10 +46,10 @@ Scope:
 
 ## Success Criteria
 
-- [ ] Compiler no longer treats `#` as line comments.
-- [ ] Compiler no longer treats trailing `# ...` as inline comments.
-- [ ] Compiler test suite passes with updated syntax expectations.
-- [ ] Remaining hash-prefixed syntax is reserved for explicit future directive handling.
+- [x] Compiler no longer treats `#` as line comments.
+- [x] Compiler no longer treats trailing `# ...` as inline comments.
+- [x] Compiler test suite passes with updated syntax expectations.
+- [x] Remaining hash-prefixed syntax is reserved for explicit future directive handling.
 
 ## Affected Components
 
