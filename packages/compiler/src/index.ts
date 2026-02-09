@@ -17,7 +17,7 @@ import getConstantsName from './astUtils/getConstantsName';
 import getModuleName from './astUtils/getModuleName';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-import { extractModuleDirectives } from './directiveExtractor';
+import { extractDirectivesFromCode } from './directiveExtractor';
 import {
 	AST,
 	ArgumentType,
@@ -231,7 +231,7 @@ export default function compile(
 		: modules.map(module => ({ code: module.code, lineMetadata: undefined }));
 
 	// Extract compiler directives from modules before converting to AST
-	const moduleDirectives = expandedModules.map(({ code }) => extractModuleDirectives(code));
+	const moduleDirectives = expandedModules.map(({ code }) => extractDirectivesFromCode(code));
 
 	// Check for directive errors and throw if any
 	moduleDirectives.forEach(({ errors }) => {

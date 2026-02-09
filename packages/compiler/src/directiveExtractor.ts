@@ -1,4 +1,5 @@
 import { isDirective, parseDirective } from './syntax/parseDirective';
+import { getBlockType } from './syntax/getBlockType';
 import { ErrorCode } from './errors';
 
 import type { AST } from './types';
@@ -8,37 +9,24 @@ export interface DirectiveMetadata {
 }
 
 /**
- * Extracts compiler directives from module code and validates them.
- * @param code - The module code lines.
- * @param blockType - The block type string ('module', 'function', 'constants').
+ * Extracts compiler directives from AST context.
+ * This is called after AST generation, using the original code to extract directives
+ * that were filtered out during AST compilation.
+ * @param code - The original module code lines (before AST filtering).
  * @returns Directive metadata and any errors found.
  */
-export function extractModuleDirectives(
-	code: string[],
-	blockType?: string
-): { metadata: DirectiveMetadata; errors: Array<{ line: AST[number]; code: ErrorCode }> } {
+export function extractDirectivesFromCode(code: string[]): {
+	metadata: DirectiveMetadata;
+	errors: Array<{ line: AST[number]; code: ErrorCode }>;
+} {
 	const metadata: DirectiveMetadata = {};
 	const errors: Array<{ line: AST[number]; code: ErrorCode }> = [];
 
-	// Determine block type efficiently in a single pass (if not provided)
-	let isModuleBlock = blockType === 'module';
-	let isFunctionBlock = blockType === 'function';
-	let isConstantsBlock = blockType === 'constants';
-
-	if (!blockType) {
-		for (const line of code) {
-			if (/^\s*module\s/.test(line)) {
-				isModuleBlock = true;
-				break;
-			} else if (/^\s*function\s/.test(line)) {
-				isFunctionBlock = true;
-				break;
-			} else if (/^\s*constants\s/.test(line)) {
-				isConstantsBlock = true;
-				break;
-			}
-		}
-	}
+	// Determine block type using the helper function
+	const blockType = getBlockType(code);
+	const isModuleBlock = blockType === 'module';
+	const isFunctionBlock = blockType === 'function';
+	const isConstantsBlock = blockType === 'constants';
 
 	code.forEach((line, lineNumber) => {
 		if (!isDirective(line)) {
@@ -89,10 +77,10 @@ export function extractModuleDirectives(
 if (import.meta.vitest) {
 	const { describe, it, expect } = import.meta.vitest;
 
-	describe('extractModuleDirectives', () => {
+	describe('extractDirectivesFromCode', () => {
 		it('extracts skipExecution directive', () => {
 			const code = ['module test', '#skipExecution', 'int value 0', 'moduleEnd'];
-			const { metadata, errors } = extractModuleDirectives(code);
+			const { metadata, errors } = extractDirectivesFromCode(code);
 
 			expect(metadata.skipExecutionInCycle).toBe(true);
 			expect(errors).toHaveLength(0);
@@ -100,7 +88,7 @@ if (import.meta.vitest) {
 
 		it('accepts duplicate skipExecution directives (idempotent)', () => {
 			const code = ['module test', '#skipExecution', '#skipExecution', 'int value 0', 'moduleEnd'];
-			const { metadata, errors } = extractModuleDirectives(code);
+			const { metadata, errors } = extractDirectivesFromCode(code);
 
 			expect(metadata.skipExecutionInCycle).toBe(true);
 			expect(errors).toHaveLength(0);
@@ -108,7 +96,7 @@ if (import.meta.vitest) {
 
 		it('reports error for unknown directive', () => {
 			const code = ['module test', '#unknownDirective', 'moduleEnd'];
-			const { metadata, errors } = extractModuleDirectives(code);
+			const { metadata, errors } = extractDirectivesFromCode(code);
 
 			expect(metadata).toEqual({});
 			expect(errors).toHaveLength(1);
@@ -117,7 +105,7 @@ if (import.meta.vitest) {
 
 		it('reports error for module directive in function context', () => {
 			const code = ['function test', '#skipExecution', 'functionEnd'];
-			const { metadata, errors } = extractModuleDirectives(code);
+			const { metadata, errors } = extractDirectivesFromCode(code);
 
 			expect(metadata).toEqual({});
 			expect(errors).toHaveLength(1);
@@ -126,7 +114,7 @@ if (import.meta.vitest) {
 
 		it('accepts directive in module context', () => {
 			const code = ['module test', '#skipExecution', 'moduleEnd'];
-			const { metadata, errors } = extractModuleDirectives(code);
+			const { metadata, errors } = extractDirectivesFromCode(code);
 
 			expect(metadata.skipExecutionInCycle).toBe(true);
 			expect(errors).toHaveLength(0);
@@ -134,7 +122,7 @@ if (import.meta.vitest) {
 
 		it('does not extract directive from constants block', () => {
 			const code = ['constants env', '#skipExecution', 'constantsEnd'];
-			const { metadata, errors } = extractModuleDirectives(code);
+			const { metadata, errors } = extractDirectivesFromCode(code);
 
 			expect(metadata).toEqual({});
 			expect(errors).toHaveLength(1);
