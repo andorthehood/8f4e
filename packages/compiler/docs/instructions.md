@@ -1,6 +1,7 @@
 # Instructions
 
 - [Comments](comments.md)
+- [Compiler Directives](directives.md)
 - [Identifier prefixes](prefixes.md)
 
 - [Arithmetic instructions](instructions/arithmetic.md)
