@@ -1,5 +1,6 @@
 import { isDirective, parseDirective } from './syntax/parseDirective';
-import { ErrorCode, getError } from './errors';
+import { ErrorCode } from './errors';
+
 import type { AST } from './types';
 
 export interface DirectiveMetadata {
@@ -19,10 +20,25 @@ export function extractModuleDirectives(
 	const metadata: DirectiveMetadata = {};
 	const errors: Array<{ line: AST[number]; code: ErrorCode }> = [];
 
-	// Determine if this is a module context
-	const isModuleBlock = blockType === 'module' || code.some(line => /^\s*module\s/.test(line));
-	const isFunctionBlock = blockType === 'function' || code.some(line => /^\s*function\s/.test(line));
-	const isConstantsBlock = blockType === 'constants' || code.some(line => /^\s*constants\s/.test(line));
+	// Determine block type efficiently in a single pass (if not provided)
+	let isModuleBlock = blockType === 'module';
+	let isFunctionBlock = blockType === 'function';
+	let isConstantsBlock = blockType === 'constants';
+
+	if (!blockType) {
+		for (const line of code) {
+			if (/^\s*module\s/.test(line)) {
+				isModuleBlock = true;
+				break;
+			} else if (/^\s*function\s/.test(line)) {
+				isFunctionBlock = true;
+				break;
+			} else if (/^\s*constants\s/.test(line)) {
+				isConstantsBlock = true;
+				break;
+			}
+		}
+	}
 
 	code.forEach((line, lineNumber) => {
 		if (!isDirective(line)) {

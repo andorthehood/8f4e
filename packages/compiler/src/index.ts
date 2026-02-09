@@ -234,7 +234,7 @@ export default function compile(
 	const moduleDirectives = expandedModules.map(({ code }) => extractModuleDirectives(code));
 
 	// Check for directive errors and throw if any
-	moduleDirectives.forEach(({ errors }, index) => {
+	moduleDirectives.forEach(({ errors }) => {
 		if (errors.length > 0) {
 			// Throw the first error
 			const error = errors[0];
@@ -253,7 +253,7 @@ export default function compile(
 
 	// Compile to AST with line metadata for error mapping
 	const astModules = expandedModules.map(({ code, lineMetadata }) => compileToAST(code, lineMetadata));
-	
+
 	// Create a map of module directives by module name
 	const directivesByModuleName = new Map<string, { skipExecutionInCycle?: boolean }>();
 	astModules.forEach((ast, index) => {
@@ -261,7 +261,7 @@ export default function compile(
 		const name = isConstantsBlock ? getConstantsName(ast) : getModuleName(ast);
 		directivesByModuleName.set(name, moduleDirectives[index].metadata);
 	});
-	
+
 	const sortedModules = sortModules(astModules);
 
 	// Collect namespaces from all modules (includes both regular modules and constants blocks)
@@ -273,7 +273,7 @@ export default function compile(
 			return [name, { consts: collectConstants(ast) }];
 		})
 	);
-	
+
 	// Create sorted directives array matching sorted modules
 	const sortedDirectives = sortedModules.map(ast => {
 		const isConstantsBlock = ast.some(line => line.instruction === 'constants');
@@ -321,11 +321,15 @@ export default function compile(
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
+
+	// Create a map of module IDs to their original indices for O(1) lookup
+	const moduleIndexMap = new Map(compiledModules.map((module, index) => [module.id, index]));
+
 	const cycleFunction = compiledModules
 		.filter(module => !module.skipExecutionInCycle)
-		.map((module, index) => {
-			// Find the original index of this module in the full compiledModules array
-			const originalIndex = compiledModules.findIndex(m => m.id === module.id);
+		.map(module => {
+			// Look up the original index of this module
+			const originalIndex = moduleIndexMap.get(module.id)!;
 			return call(originalIndex + EXPORTED_FUNCTION_COUNT + userFunctionCount);
 		})
 		.flat();
