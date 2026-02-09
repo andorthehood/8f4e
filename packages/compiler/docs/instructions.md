@@ -1,5 +1,6 @@
 # Instructions
 
+- [Comments and Editor Directives](comments-and-editor-directives.md)
 - [Identifier prefixes](prefixes.md)
 
 - [Arithmetic instructions](instructions/arithmetic.md)
