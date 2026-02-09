@@ -1,30 +1,22 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-
 import parsePressedKeys from './parsePressedKeys';
 
 export default function parsePianoKeyboards(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [
-				never,
-				string,
-				string,
-				string,
-				string,
-				string,
-			];
-
-			if (instruction === '#' && args[0] === 'piano') {
-				const startingNumber = parseInt(args[3] || '0', 10);
-				const pressedKeys = parsePressedKeys(code, args[1], startingNumber);
+			// Match semicolon comment lines with @piano directive
+			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
+			if (commentMatch && commentMatch[1] === 'piano') {
+				const args = commentMatch[2].trim().split(/\s+/);
+				const startingNumber = parseInt(args[2] || '0', 10);
+				const pressedKeys = parsePressedKeys(code, args[0], startingNumber);
 
 				return [
 					...acc,
 					{
-						id: args[1],
+						id: args[0],
 						lineNumber: index,
-						pressedNumberOfKeysMemoryId: args[2],
-						pressedKeysListMemoryId: args[1],
+						pressedNumberOfKeysMemoryId: args[1],
+						pressedKeysListMemoryId: args[0],
 						startingNumber,
 						pressedKeys,
 					},

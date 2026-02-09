@@ -1,12 +1,11 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-
 export default function parseDebuggers(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
-
-			if (instruction === '#' && args[0] === 'debug') {
-				return [...acc, { id: args[1], lineNumber: index }];
+			// Match semicolon comment lines with @debug directive
+			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
+			if (commentMatch && commentMatch[1] === 'debug') {
+				const id = commentMatch[2].trim();
+				return [...acc, { id, lineNumber: index }];
 			}
 			return acc;
 		},
