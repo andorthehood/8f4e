@@ -9,7 +9,7 @@ exports[`loopEnd instruction compiler > ends a loop block 1`] = `
       "hasExpectedResult": false,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     12,
     0,
     11,

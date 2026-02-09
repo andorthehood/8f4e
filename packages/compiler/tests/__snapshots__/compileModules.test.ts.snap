@@ -206,10 +206,7 @@ exports[`compiler > compileModules 1`] = `
       },
     ],
     "byteAddress": 0,
-    "id": "abs",
-    "index": 0,
-    "initFunctionBody": [],
-    "loopFunction": [
+    "cycleFunction": [
       32,
       1,
       1,
@@ -244,6 +241,9 @@ exports[`compiler > compileModules 1`] = `
       0,
       11,
     ],
+    "id": "abs",
+    "index": 0,
+    "initFunctionBody": [],
     "memoryMap": {
       "DEFAULT_VALUE": {
         "byteAddress": 0,

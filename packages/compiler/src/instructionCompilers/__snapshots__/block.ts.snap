@@ -14,7 +14,7 @@ exports[`block instruction compiler > emits a typed block for float 1`] = `
       "hasExpectedResult": true,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     2,
     125,
   ],
@@ -35,7 +35,7 @@ exports[`block instruction compiler > emits a typed block for int 1`] = `
       "hasExpectedResult": true,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     2,
     127,
   ],
@@ -56,7 +56,7 @@ exports[`block instruction compiler > emits a void block for unknown type 1`] = 
       "hasExpectedResult": false,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     2,
     64,
   ],
