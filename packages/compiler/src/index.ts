@@ -284,22 +284,15 @@ export default function compile(
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
-
-	// Filter modules for cycle execution (exclude modules with skipExecutionInCycle flag)
-	const modulesForCycleExecution = compiledModules.filter(module => !module.skipExecutionInCycle);
-
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
-	const cycleFunction = modulesForCycleExecution
-		.map(module => {
-			// Use the original module index for function calls
-			const originalIndex = compiledModules.indexOf(module);
-			return call(originalIndex + EXPORTED_FUNCTION_COUNT + userFunctionCount);
-		})
-		.flat();
+	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle flag
+	const cycleFunction = compiledModules.flatMap((module, index) =>
+		module.skipExecutionInCycle ? [] : call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
+	);
 	const memoryInitiatorFunction = compiledModules
 		.map((module, index) => call(index + compiledModules.length + EXPORTED_FUNCTION_COUNT + userFunctionCount))
 		.flat();

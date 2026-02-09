@@ -63,12 +63,12 @@ moduleEnd
 ```
 
 In this example:
-- `activeModule` executes every cycle, incrementing its counter
+- `activeModule` executes every cycle, incrementing its value
 - `disabledModule` does not execute, but its memory is initialized with `data = 42`
 - `consumer` can access `disabledModule:data` even though `disabledModule` doesn't execute
 
 ## Error Handling
 
-If an unknown compiler directive is encountered, the compiler will throw an `UNKNOWN_COMPILER_DIRECTIVE` error.
+If an unknown compiler directive is encountered, the compiler will throw an `UNRECOGNISED_INSTRUCTION` error.
 
 If a module-scoped directive like `#skipExecution` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.

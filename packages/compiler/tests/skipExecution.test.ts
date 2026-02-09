@@ -124,7 +124,7 @@ functionEnd
 		];
 
 		expect(() => {
-			compile(modules, { memorySizeBytes: 1024 }, functions);
+			compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1 }, functions);
 		}).toThrow();
 	});
 
@@ -154,7 +154,7 @@ moduleEnd
 		expect(result.compiledModules.skippedModule.memoryMap.skippedCounter.default).toBe(10);
 	});
 
-	test('inter-module memory references work with skipped modules', () => {
+	test('memory allocation occurs for both active and skipped modules', () => {
 		const modules = [
 			{
 				code: `
@@ -173,7 +173,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { memorySizeBytes: 1024 });
+		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1 });
 
 		// Verify both modules are compiled with separate memory maps
 		expect(result.compiledModules.normalModule).toBeDefined();
