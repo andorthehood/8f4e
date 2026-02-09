@@ -35,7 +35,11 @@
 - Note: The `glugglug` submodule still uses Jest and maintains its own test configuration.
 
 ## Commit & Pull Request Guidelines
-- Commits: Imperative mood, concise scope (e.g., "editor: fix drag selection"). Reference issues (`#123`) when relevant.
+- Commit messages: Use Conventional Commits.
+- Features: `feat(package-name): <summary>` for package-specific changes, or `feat: <summary>` for non-package-specific changes.
+- Fixes: `fix(package-name): <summary>` for package-specific changes, or `fix: <summary>` for non-package-specific changes.
+- Refactoring/maintenance: `chore(package-name): <summary>` for package-specific changes, or `chore: <summary>` for non-package-specific changes.
+- Documentation-only changes: `docs: <summary>`.
 - PRs: Include summary, rationale, and test notes; link issues; add screenshots/gifs for UI/editor changes; update `docs/` when behavior or APIs change.
 
 ## Security & Configuration Tips
