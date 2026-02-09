@@ -1,10 +1,10 @@
 /**
- * Checks if a line is a comment (starts with semicolon or hash after optional whitespace).
+ * Checks if a line is a comment (starts with semicolon after optional whitespace).
  * @param line - The line to check.
  * @returns True if the line is a comment, false otherwise.
  */
 export default function isComment(line: string): boolean {
-	return /^\s*[;#]/.test(line);
+	return /^\s*;/.test(line);
 }
 
 if (import.meta.vitest) {
@@ -16,9 +16,9 @@ if (import.meta.vitest) {
 			expect(isComment('   ; comment')).toBe(true);
 		});
 
-		it('matches lines starting with hash', () => {
-			expect(isComment('# comment')).toBe(true);
-			expect(isComment('   # comment')).toBe(true);
+		it('returns false for lines starting with hash', () => {
+			expect(isComment('# directive')).toBe(false);
+			expect(isComment('   # directive')).toBe(false);
 		});
 
 		it('returns false for non-comment lines', () => {
