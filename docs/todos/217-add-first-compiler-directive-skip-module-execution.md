@@ -17,7 +17,7 @@ Current compiler behavior always includes every compiled module in the generated
 
 ## Proposed Solution
 
-Introduce a module-scoped compiler directive (hash-prefixed, after TODO 216 is complete) that marks a module as non-executing in the cycle dispatcher.
+Introduce a module-scoped compiler directive (hash-prefixed, after TODO 216 is complete) that is handled through the existing instruction pipeline and marks a module as non-executing in the cycle dispatcher.
 
 Required semantics:
 - Module is still compiled normally (AST, memory map, inter-module references preserved).
@@ -30,17 +30,27 @@ Suggested directive spelling for v1:
 Placement:
 - Allowed anywhere within a module block.
 
+Implementation strategy:
+- Treat `#skipExecution` as a dedicated no-op instruction compiler.
+- Set a module-level metadata flag in compile context (for example `skipExecutionInCycle = true`).
+- Avoid a separate directive pre-pass to keep the implementation simple and minimize extra loops.
+
 ## Implementation Plan
 
-### Step 1: Parse directive and attach module metadata
-- Add compiler directive pre-pass on AST/module compilation input.
-- Detect `#skipExecution` in module scope and store metadata flag on compiled module output (for example `skipExecutionInCycle: boolean`).
+### Step 1: Add directive as an instruction compiler
+- Add `#skipExecution` to the instruction registry (`packages/compiler/src/instructionCompilers/index.ts`).
+- Implement a no-op instruction compiler (for example `packages/compiler/src/instructionCompilers/skipExecutionDirective.ts`) that:
+  - verifies module scope
+  - sets module context metadata (`skipExecutionInCycle = true`)
 - Ignore duplicate `#skipExecution` directives (idempotent behavior).
-- Fail fast on unknown hash directives with line-numbered compiler directive errors.
-- Fail fast with compiler directive errors when module-only directives are used outside module blocks.
+- Add dedicated compiler directive errors for:
+  - unknown hash directive
+  - module-only directive used outside module scope
 
-### Step 2: Exclude flagged modules from cycle dispatcher
-- In `packages/compiler/src/index.ts`, when building the global cycle function call list, filter out modules marked `skipExecutionInCycle`.
+### Step 2: Propagate metadata and exclude flagged modules from cycle dispatcher
+- Extend compiler context/module output types to carry `skipExecutionInCycle`.
+- In `packages/compiler/src/compiler.ts`, include the metadata on `CompiledModule` result.
+- In `packages/compiler/src/index.ts`, when building the global cycle function call list, skip modules marked `skipExecutionInCycle`.
 - Keep memory initiator function generation unchanged for those modules.
 - Keep module compilation order/memory layout unchanged.
 
@@ -70,9 +80,11 @@ Placement:
 ## Affected Components
 
 - `packages/compiler/src/index.ts` - cycle dispatcher assembly.
-- `packages/compiler/src/compiler.ts` - directive pre-pass integration.
-- `packages/compiler/src/types.ts` - optional module metadata flag.
-- `packages/compiler/src/syntax/*` - directive tokenization/classification as needed.
+- `packages/compiler/src/compiler.ts` - propagate module directive metadata to `CompiledModule`.
+- `packages/compiler/src/types.ts` - context + module metadata flag.
+- `packages/compiler/src/instructionCompilers/index.ts` - register directive instruction.
+- `packages/compiler/src/instructionCompilers/*` - directive instruction compiler implementation.
+- `packages/compiler/src/errors.ts` - dedicated compiler directive error codes/messages.
 - `packages/compiler/tests/**` - execution omission + memory-init coverage.
 - `packages/compiler/docs/**` - directive documentation.
 
@@ -99,3 +111,4 @@ Placement:
 ## Notes
 
 - This TODO intentionally skips broader directive infrastructure and focuses on the first concrete directive end-to-end.
+- The preferred implementation path is to reuse the existing instruction pipeline rather than adding a separate AST directive pass.
