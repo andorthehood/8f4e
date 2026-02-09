@@ -1,16 +1,15 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-
 export default function parseBufferScanners(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];
-
-			if (instruction === '#' && args[0] === 'scan') {
+			// Match semicolon comment lines with @scan directive
+			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
+			if (commentMatch && commentMatch[1] === 'scan') {
+				const args = commentMatch[2].trim().split(/\s+/);
 				return [
 					...acc,
 					{
-						bufferMemoryId: args[1],
-						pointerMemoryId: args[2],
+						bufferMemoryId: args[0],
+						pointerMemoryId: args[1],
 						lineNumber: index,
 					},
 				];
