@@ -13,7 +13,7 @@ describe('updateSlidersGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
-			code: ['int mySlider 50', '# slider mySlider'],
+			code: ['int mySlider 50', '; @slider mySlider'],
 			width: 200,
 			gaps: new Map(),
 		});
@@ -76,7 +76,7 @@ describe('updateSlidersGraphicData', () => {
 	});
 
 	it('should use custom min/max when provided', () => {
-		mockGraphicData.code = ['int mySlider 50', '# slider mySlider 10 200'];
+		mockGraphicData.code = ['int mySlider 50', '; @slider mySlider 10 200'];
 
 		updateSlidersGraphicData(mockGraphicData, mockState);
 
@@ -86,7 +86,7 @@ describe('updateSlidersGraphicData', () => {
 	});
 
 	it('should include step when provided', () => {
-		mockGraphicData.code = ['int mySlider 50', '# slider mySlider 0 100 5'];
+		mockGraphicData.code = ['int mySlider 50', '; @slider mySlider 0 100 5'];
 
 		updateSlidersGraphicData(mockGraphicData, mockState);
 
@@ -113,7 +113,7 @@ describe('updateSlidersGraphicData', () => {
 	});
 
 	it('should handle multiple sliders', () => {
-		mockGraphicData.code = ['int slider1 0', '# slider slider1', 'int slider2 50', '# slider slider2 0 100'];
+		mockGraphicData.code = ['int slider1 0', '; @slider slider1', 'int slider2 50', '; @slider slider2 0 100'];
 		mockState.compiler.compiledModules['test-block'].memoryMap.slider1 = {
 			id: 'slider1',
 			wordAlignedAddress: 0,
@@ -136,7 +136,7 @@ describe('updateSlidersGraphicData', () => {
 	});
 
 	it('should position sliders at correct y coordinate based on line number', () => {
-		mockGraphicData.code = ['nop', 'int mySlider 50', '# slider mySlider'];
+		mockGraphicData.code = ['nop', 'int mySlider 50', '; @slider mySlider'];
 
 		updateSlidersGraphicData(mockGraphicData, mockState);
 
@@ -146,7 +146,7 @@ describe('updateSlidersGraphicData', () => {
 
 	it('should position sliders correctly with gaps', () => {
 		mockGraphicData.gaps = new Map([[1, { size: 1 }]]);
-		mockGraphicData.code = ['int slider1 0', '# slider slider1', 'nop', 'int slider2 50', '# slider slider2'];
+		mockGraphicData.code = ['int slider1 0', '; @slider slider1', 'nop', 'int slider2 50', '; @slider slider2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap.slider1 = {
 			id: 'slider1',
 			wordAlignedAddress: 0,
@@ -171,7 +171,7 @@ describe('updateSlidersGraphicData', () => {
 	});
 
 	it('should skip sliders with undefined memory', () => {
-		mockGraphicData.code = ['# slider unknownSlider'];
+		mockGraphicData.code = ['; @slider unknownSlider'];
 
 		updateSlidersGraphicData(mockGraphicData, mockState);
 

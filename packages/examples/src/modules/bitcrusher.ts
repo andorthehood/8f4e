@@ -11,7 +11,7 @@ float defAmount 0.9
 float* amount &defAmount
 float out
 
-# debug out
+; @debug out
 
 push &out
 

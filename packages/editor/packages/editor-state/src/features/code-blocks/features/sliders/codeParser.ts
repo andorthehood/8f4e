@@ -1,19 +1,18 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-
 export default function parseSliders(code: string[]) {
 	return code.reduce(
 		(acc, line, index) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, ...string[]];
-
-			if (instruction === '#' && args[0] === 'slider') {
-				const parsedMin = args[2] !== undefined ? parseFloat(args[2]) : undefined;
-				const parsedMax = args[3] !== undefined ? parseFloat(args[3]) : undefined;
-				const parsedStep = args[4] !== undefined ? parseFloat(args[4]) : undefined;
+			// Match semicolon comment lines with @slider directive
+			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
+			if (commentMatch && commentMatch[1] === 'slider') {
+				const args = commentMatch[2].trim().split(/\s+/);
+				const parsedMin = args[1] !== undefined ? parseFloat(args[1]) : undefined;
+				const parsedMax = args[2] !== undefined ? parseFloat(args[2]) : undefined;
+				const parsedStep = args[3] !== undefined ? parseFloat(args[3]) : undefined;
 
 				return [
 					...acc,
 					{
-						id: args[1],
+						id: args[0],
 						lineNumber: index,
 						min: parsedMin !== undefined && !isNaN(parsedMin) ? parsedMin : undefined,
 						max: parsedMax !== undefined && !isNaN(parsedMax) ? parsedMax : undefined,
