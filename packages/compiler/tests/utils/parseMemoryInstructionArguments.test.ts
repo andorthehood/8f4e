@@ -13,8 +13,7 @@ describe('parseMemoryInstructionArguments', () => {
 			functions: {},
 			moduleName: 'test',
 		},
-		initSegmentByteCode: [],
-		loopSegmentByteCode: [],
+		byteCode: [],
 		stack: [],
 		blockStack: [],
 		startingByteAddress: 0,
@@ -86,6 +85,20 @@ describe('parseMemoryInstructionArguments', () => {
 			];
 			const result = parseMemoryInstructionArguments(args, 7, 'float*', createMockContext(memory));
 			expect(result).toEqual({ id: 'myPtr', defaultValue: 100 });
+		});
+
+		it('should resolve memory reference with & suffix to end address', () => {
+			const memory = {
+				buffer: { byteAddress: 100, wordAlignedSize: 5, isInteger: true, isPointer: false },
+			};
+			const args = [
+				{ type: ArgumentType.IDENTIFIER, value: 'myPtr' },
+				{ type: ArgumentType.IDENTIFIER, value: 'buffer&' },
+			];
+			const result = parseMemoryInstructionArguments(args, 7, 'int*', createMockContext(memory));
+			// End address should be: byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY
+			// = 100 + (5 - 1) * 4 = 100 + 16 = 116
+			expect(result).toEqual({ id: 'myPtr', defaultValue: 116 });
 		});
 
 		it('should throw error when memory reference does not exist', () => {

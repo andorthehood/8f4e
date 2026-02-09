@@ -69,7 +69,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -87,7 +87,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 
@@ -105,7 +105,7 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				loopSegmentByteCode: context.loopSegmentByteCode,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 

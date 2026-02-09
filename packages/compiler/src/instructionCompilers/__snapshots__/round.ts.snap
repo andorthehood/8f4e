@@ -2,7 +2,7 @@
 
 exports[`round instruction compiler > rounds a float operand 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     144,
   ],
   "stack": [
