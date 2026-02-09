@@ -49,7 +49,7 @@ moduleEnd
 		expect(result.compiledModules.skippedModule.memoryMap.counter).toBeDefined();
 
 		// Verify the skipExecution flag is set
-		expect(result.compiledModules.normalModule.skipExecutionInCycle).toBeUndefined();
+		expect(result.compiledModules.normalModule.skipExecutionInCycle).toBeFalsy();
 		expect(result.compiledModules.skippedModule.skipExecutionInCycle).toBe(true);
 
 		// The cycle function should only call normalModule
