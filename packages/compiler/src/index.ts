@@ -284,15 +284,18 @@ export default function compile(
 
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	resolveInterModularConnections(compiledModulesMap);
+
+	// Filter modules for cycle execution (exclude modules with skipExecutionInCycle flag)
+	const modulesForCycleExecution = compiledModules.filter(module => !module.skipExecutionInCycle);
+
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
-	const cycleFunction = compiledModules
-		.filter(module => !module.skipExecutionInCycle)
+	const cycleFunction = modulesForCycleExecution
 		.map(module => {
-			// Find the original index in the compiledModules array
+			// Use the original module index for function calls
 			const originalIndex = compiledModules.indexOf(module);
 			return call(originalIndex + EXPORTED_FUNCTION_COUNT + userFunctionCount);
 		})
