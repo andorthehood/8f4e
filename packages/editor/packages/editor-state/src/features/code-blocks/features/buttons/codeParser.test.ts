@@ -4,7 +4,7 @@ import parseButtons from './codeParser';
 
 describe('parseButtons', () => {
 	it('should parse button instruction with all arguments', () => {
-		const code = ['# button myButton 0 1'];
+		const code = ['; @button myButton 0 1'];
 		const result = parseButtons(code);
 
 		expect(result).toEqual([
@@ -18,7 +18,7 @@ describe('parseButtons', () => {
 	});
 
 	it('should parse button instruction with default off/on values', () => {
-		const code = ['# button myButton'];
+		const code = ['; @button myButton'];
 		const result = parseButtons(code);
 
 		expect(result).toEqual([
@@ -32,7 +32,7 @@ describe('parseButtons', () => {
 	});
 
 	it('should parse button instruction with custom values', () => {
-		const code = ['# button myButton 10 100'];
+		const code = ['; @button myButton 10 100'];
 		const result = parseButtons(code);
 
 		expect(result).toEqual([
@@ -46,7 +46,7 @@ describe('parseButtons', () => {
 	});
 
 	it('should handle multiple button instructions', () => {
-		const code = ['# button btn1 0 1', 'mov a b', '# button btn2 5 15'];
+		const code = ['; @button btn1 0 1', 'mov a b', '; @button btn2 5 15'];
 		const result = parseButtons(code);
 
 		expect(result).toEqual([
@@ -80,7 +80,7 @@ describe('parseButtons', () => {
 	});
 
 	it('should use default values when off/on are invalid numbers', () => {
-		const code = ['# button myButton invalid invalid'];
+		const code = ['; @button myButton invalid invalid'];
 		const result = parseButtons(code);
 
 		expect(result).toEqual([

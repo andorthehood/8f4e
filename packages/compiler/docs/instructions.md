@@ -1,5 +1,6 @@
 # Instructions
 
+- [Comments](comments.md)
 - [Identifier prefixes](prefixes.md)
 
 - [Arithmetic instructions](instructions/arithmetic.md)

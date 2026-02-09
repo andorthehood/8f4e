@@ -349,7 +349,7 @@ const project: Project = {
 				'int counter',
 				'int out',
 				'',
-				'# debug out',
+				'; @debug out',
 				'',
 				'const PULSE_WIDTH 2',
 				'const PERIOD 8',

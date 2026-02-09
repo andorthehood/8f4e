@@ -15,14 +15,14 @@ int bit5
 int bit6
 int bit7
 
-# switch bit0 0 1
-# switch bit1 0 1
-# switch bit2 0 1
-# switch bit3 0 1
-# switch bit4 0 1
-# switch bit5 0 1
-# switch bit6 0 1
-# switch bit7 0 1
+; @switch bit0 0 1
+; @switch bit1 0 1
+; @switch bit2 0 1
+; @switch bit3 0 1
+; @switch bit4 0 1
+; @switch bit5 0 1
+; @switch bit6 0 1
+; @switch bit7 0 1
 
 int bitPointer
 int out
@@ -31,8 +31,7 @@ push &bitPointer
 push 0
 store
 
-# debug 0bout
-# debug out
+; @debug out
 
 ; Clear bits
 push &out
