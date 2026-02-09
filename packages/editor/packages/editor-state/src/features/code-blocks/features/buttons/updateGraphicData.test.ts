@@ -13,7 +13,7 @@ describe('updateButtonsGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
-			code: ['# button btn1 0 1'],
+			code: ['; @button btn1 0 1'],
 			width: 100,
 			gaps: new Map(),
 		});
@@ -59,7 +59,7 @@ describe('updateButtonsGraphicData', () => {
 	});
 
 	it('should handle multiple buttons', () => {
-		mockGraphicData.code = ['# button btn1 0 1', '# button btn2 5 10'];
+		mockGraphicData.code = ['; @button btn1 0 1', '; @button btn2 5 10'];
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
@@ -68,7 +68,7 @@ describe('updateButtonsGraphicData', () => {
 	});
 
 	it('should position buttons at correct y coordinate based on line number', () => {
-		mockGraphicData.code = ['nop', 'nop', '# button btn1 0 1'];
+		mockGraphicData.code = ['nop', 'nop', '; @button btn1 0 1'];
 
 		updateButtonsGraphicData(mockGraphicData, mockState);
 
