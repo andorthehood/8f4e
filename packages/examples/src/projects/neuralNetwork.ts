@@ -209,7 +209,7 @@ const project: Project = {
 			},
 		},
 		{
-			code: ['module result', '', 'int* in &activationFn3.out', '', '# debug *in', '', 'moduleEnd'],
+			code: ['module result', '', 'int* in &activationFn3.out', '', '; @debug *in', '', 'moduleEnd'],
 			gridCoordinates: {
 				x: 74,
 				y: -53,

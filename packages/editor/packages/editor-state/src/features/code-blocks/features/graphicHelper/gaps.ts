@@ -1,5 +1,3 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-
 import type { CodeBlockGraphicData } from '~/types';
 
 export default function gaps(graphicData: CodeBlockGraphicData) {
@@ -10,22 +8,26 @@ export default function gaps(graphicData: CodeBlockGraphicData) {
 	});
 
 	graphicData.code.forEach((line, lineNumber) => {
-		const [, instruction, directive] = (line.match(instructionParser) ?? []) as [never, string, string];
+		// Match semicolon comment lines with @ directives
+		const commentMatch = line.match(/^\s*;\s*@(\w+)/);
+		if (commentMatch) {
+			const directive = commentMatch[1];
 
-		if (instruction === '#' && directive === 'plot') {
-			graphicData.gaps.set(lineNumber, { size: 8 });
-		}
+			if (directive === 'plot') {
+				graphicData.gaps.set(lineNumber, { size: 8 });
+			}
 
-		if (instruction === '#' && directive === 'scan') {
-			graphicData.gaps.set(lineNumber, { size: 2 });
-		}
+			if (directive === 'scan') {
+				graphicData.gaps.set(lineNumber, { size: 2 });
+			}
 
-		if (instruction === '#' && directive === 'slider') {
-			graphicData.gaps.set(lineNumber, { size: 2 });
-		}
+			if (directive === 'slider') {
+				graphicData.gaps.set(lineNumber, { size: 2 });
+			}
 
-		if (instruction === '#' && directive === 'piano') {
-			graphicData.gaps.set(lineNumber, { size: 6 });
+			if (directive === 'piano') {
+				graphicData.gaps.set(lineNumber, { size: 6 });
+			}
 		}
 	});
 

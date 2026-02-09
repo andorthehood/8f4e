@@ -15,7 +15,7 @@ describe('updateBufferScannersGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
-			code: ['# scan buffer1 pointer1'],
+			code: ['; @scan buffer1 pointer1'],
 			gaps: new Map(),
 			width: 100,
 		});
@@ -61,7 +61,7 @@ describe('updateBufferScannersGraphicData', () => {
 	});
 
 	it('should not add scanner when buffer memory is not found', () => {
-		mockGraphicData.code = ['# scan nonExistentBuffer pointer1'];
+		mockGraphicData.code = ['; @scan nonExistentBuffer pointer1'];
 
 		updateBufferScannersGraphicData(mockGraphicData, mockState);
 
@@ -69,7 +69,7 @@ describe('updateBufferScannersGraphicData', () => {
 	});
 
 	it('should not add scanner when pointer memory is not found', () => {
-		mockGraphicData.code = ['# scan buffer1 nonExistentPointer'];
+		mockGraphicData.code = ['; @scan buffer1 nonExistentPointer'];
 
 		updateBufferScannersGraphicData(mockGraphicData, mockState);
 
@@ -104,7 +104,7 @@ describe('updateBufferScannersGraphicData', () => {
 	});
 
 	it('should handle multiple buffer scanners', () => {
-		mockGraphicData.code = ['# scan buffer1 pointer1', '# scan buffer2 pointer2'];
+		mockGraphicData.code = ['; @scan buffer1 pointer1', '; @scan buffer2 pointer2'];
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
