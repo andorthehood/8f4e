@@ -3,8 +3,8 @@ title: 'TODO: Remove init/loop section distinction from compiler modules'
 priority: Medium
 effort: 1-2d
 created: 2026-02-08
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-08
 ---
 
 # TODO: Remove init/loop section distinction from compiler modules
