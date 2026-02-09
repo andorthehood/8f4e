@@ -76,3 +76,4 @@ This feature contains several subfeatures under `features/` that handle specific
 
 - See `utils/` for block manipulation helpers
 - See `features/` subdirectories for detailed subfeature implementations
+- See `../../../../../docs/editor-directives.md` for editor-only directive syntax (`; @...`) and supported directives
