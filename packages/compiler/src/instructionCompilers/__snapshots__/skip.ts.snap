@@ -14,7 +14,7 @@ exports[`skip instruction compiler > allocates a sleeper counter with literal ar
       "hasExpectedResult": false,
     },
   ],
-  "loopSegmentByteCode": [
+  "byteCode": [
     2,
     64,
     65,
@@ -74,7 +74,7 @@ exports[`skip instruction compiler > allocates a sleeper counter with literal ar
 
 exports[`skip instruction compiler > returns early without arguments 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     15,
   ],
 }

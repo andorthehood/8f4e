@@ -2,7 +2,7 @@
 
 exports[`greaterOrEqual instruction compiler > emits F32_GE for float operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     96,
   ],
   "stack": [
@@ -16,7 +16,7 @@ exports[`greaterOrEqual instruction compiler > emits F32_GE for float operands 1
 
 exports[`greaterOrEqual instruction compiler > emits I32_GE_S for integer operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     78,
   ],
   "stack": [

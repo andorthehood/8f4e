@@ -2,7 +2,7 @@
 
 exports[`xor instruction compiler > emits I32_XOR for integer operands 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     115,
   ],
   "stack": [

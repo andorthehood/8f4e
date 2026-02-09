@@ -23,8 +23,7 @@ export default function createInstructionCompilerTestContext(
 		],
 		startingByteAddress: 0,
 		memoryByteSize: 0,
-		initSegmentByteCode: [],
-		loopSegmentByteCode: [],
+		byteCode: [],
 	};
 
 	return {
