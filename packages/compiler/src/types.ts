@@ -41,6 +41,7 @@ export interface CompiledModule {
 	memoryMap: MemoryMap;
 	wordAlignedSize: number;
 	ast?: AST;
+	skipExecutionInCycle?: boolean;
 }
 
 export type CompiledModuleLookup = Record<string, CompiledModule>;
@@ -129,6 +130,7 @@ export interface CompilationContext {
 	currentFunctionSignature?: FunctionSignature;
 	functionTypeRegistry?: FunctionTypeRegistry;
 	currentMacroId?: string;
+	skipExecutionInCycle?: boolean;
 }
 
 export interface StackItem {
