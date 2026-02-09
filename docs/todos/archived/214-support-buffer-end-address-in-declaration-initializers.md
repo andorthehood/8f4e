@@ -3,8 +3,8 @@ title: 'TODO: Support buffer& End Address in Declaration Initializers'
 priority: Medium
 effort: 2-4h
 created: 2026-02-08
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-08
 ---
 
 # TODO: Support buffer& End Address in Declaration Initializers
