@@ -2,6 +2,7 @@ import instructionParser from './syntax/instructionParser';
 import isComment from './syntax/isComment';
 import isValidInstruction from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
+import { isDirective } from './syntax/parseDirective';
 import createFunction from './wasmUtils/codeSection/createFunction';
 import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';
 import instructions, { Instruction } from './instructionCompilers';
@@ -46,6 +47,7 @@ export function compileToAST(
 	return code
 		.map((line, index) => [index, line] as [number, string])
 		.filter(([, line]) => !isComment(line))
+		.filter(([, line]) => !isDirective(line))
 		.filter(([, line]) => isValidInstruction(line))
 		.map(([lineNumber, line]) => {
 			// Use callSiteLineNumber from metadata if available, otherwise use actual line number
@@ -115,7 +117,7 @@ export function compileModule(
 		);
 	}
 
-	return {
+	const module: CompiledModule = {
 		id: context.namespace.moduleName,
 		cycleFunction: createFunction(
 			Object.values(context.namespace.locals).map(local => {
@@ -128,10 +130,16 @@ export function compileModule(
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
 		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
-		skipExecutionInCycle,
 		ast,
 		index,
 	};
+
+	// Only add skipExecutionInCycle if it's true
+	if (skipExecutionInCycle) {
+		module.skipExecutionInCycle = skipExecutionInCycle;
+	}
+
+	return module;
 }
 
 export function compileFunction(
