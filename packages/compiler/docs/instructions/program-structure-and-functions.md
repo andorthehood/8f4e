@@ -11,30 +11,6 @@ Block instructions define the structure of your program. See detailed documentat
 
 ## Other Instructions
 
-### initBlock
-
-The initBlock instruction begins a module initialization block that runs once before the main loop.
-
-#### Examples
-
-```
-initBlock
- push 1
-initBlockEnd
-```
-
-### initBlockEnd
-
-The initBlockEnd instruction ends a module initialization block.
-
-#### Examples
-
-```
-initBlock
- push 1
-initBlockEnd
-```
-
 ### call
 
 The call instruction invokes a function by name, consuming its arguments from the stack and pushing its return values.

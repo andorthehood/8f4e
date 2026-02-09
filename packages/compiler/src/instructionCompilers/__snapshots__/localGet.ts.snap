@@ -2,7 +2,7 @@
 
 exports[`localGet instruction compiler > loads a local value 1`] = `
 {
-  "loopSegmentByteCode": [
+  "byteCode": [
     32,
     0,
   ],

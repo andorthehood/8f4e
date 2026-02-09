@@ -1,7 +1,3 @@
-import { isInstructionIsInsideBlock } from './blockStack';
-
-import { BLOCK_TYPE } from '../types';
-
 import type { CompilationContext, MemoryMap } from '../types';
 
 export function calculateWordAlignedSizeOfMemory(memory: MemoryMap): number {
@@ -11,11 +7,7 @@ export function calculateWordAlignedSizeOfMemory(memory: MemoryMap): number {
 }
 
 export function saveByteCode(context: CompilationContext, byteCode: number[]): CompilationContext {
-	if (isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.INIT)) {
-		context.initSegmentByteCode.push(...byteCode);
-	} else {
-		context.loopSegmentByteCode.push(...byteCode);
-	}
+	context.byteCode.push(...byteCode);
 	return context;
 }
 
@@ -46,51 +38,24 @@ if (import.meta.vitest) {
 		});
 
 		describe('saveByteCode', () => {
-			it('saves to init segment when inside INIT block', () => {
+			it('saves bytecode to the context', () => {
 				const context = {
-					blockStack: [
-						{
-							blockType: BLOCK_TYPE.INIT,
-							expectedResultIsInteger: false,
-							hasExpectedResult: false,
-						},
-					],
-					initSegmentByteCode: [],
-					loopSegmentByteCode: [],
+					blockStack: [],
+					byteCode: [],
 				} as unknown as CompilationContext;
 
 				const result = saveByteCode(context, [1, 2, 3]);
-				expect(result.initSegmentByteCode).toEqual([1, 2, 3]);
-				expect(result.loopSegmentByteCode).toEqual([]);
-			});
-
-			it('saves to loop segment when not inside INIT block', () => {
-				const context = {
-					blockStack: [
-						{
-							blockType: BLOCK_TYPE.LOOP,
-							expectedResultIsInteger: false,
-							hasExpectedResult: false,
-						},
-					],
-					initSegmentByteCode: [],
-					loopSegmentByteCode: [],
-				} as unknown as CompilationContext;
-
-				const result = saveByteCode(context, [4, 5, 6]);
-				expect(result.initSegmentByteCode).toEqual([]);
-				expect(result.loopSegmentByteCode).toEqual([4, 5, 6]);
+				expect(result.byteCode).toEqual([1, 2, 3]);
 			});
 
 			it('appends to existing bytecode', () => {
 				const context = {
 					blockStack: [],
-					initSegmentByteCode: [],
-					loopSegmentByteCode: [1, 2],
+					byteCode: [1, 2],
 				} as unknown as CompilationContext;
 
 				const result = saveByteCode(context, [3, 4]);
-				expect(result.loopSegmentByteCode).toEqual([1, 2, 3, 4]);
+				expect(result.byteCode).toEqual([1, 2, 3, 4]);
 			});
 		});
 	});
