@@ -31,6 +31,8 @@ export enum ErrorCode {
 	UNDEFINED_MACRO,
 	NESTED_MACRO_DEFINITION,
 	NESTED_MACRO_CALL,
+	UNKNOWN_COMPILER_DIRECTIVE,
+	COMPILER_DIRECTIVE_INVALID_CONTEXT,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -246,6 +248,20 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'Macro calls inside macro definitions are not allowed. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.UNKNOWN_COMPILER_DIRECTIVE:
+			return {
+				code,
+				message: 'Unknown compiler directive. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT:
+			return {
+				code,
+				message: 'Compiler directive used in invalid context. (' + code + ')',
 				line,
 				context,
 			};

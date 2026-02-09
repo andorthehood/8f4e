@@ -40,6 +40,7 @@ export interface CompiledModule {
 	wordAlignedAddress: number;
 	memoryMap: MemoryMap;
 	wordAlignedSize: number;
+	skipExecutionInCycle?: boolean;
 	ast?: AST;
 }
 
