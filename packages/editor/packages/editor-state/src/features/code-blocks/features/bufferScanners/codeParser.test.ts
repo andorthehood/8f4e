@@ -4,7 +4,7 @@ import parseBufferScanners from './codeParser';
 
 describe('parseBufferScanners', () => {
 	it('should parse scan instruction with buffer and pointer', () => {
-		const code = ['# scan myBuffer myPointer'];
+		const code = ['; @scan myBuffer myPointer'];
 		const result = parseBufferScanners(code);
 
 		expect(result).toEqual([
@@ -17,7 +17,7 @@ describe('parseBufferScanners', () => {
 	});
 
 	it('should handle multiple scan instructions', () => {
-		const code = ['# scan buffer1 ptr1', 'mov a b', '# scan buffer2 ptr2'];
+		const code = ['; @scan buffer1 ptr1', 'mov a b', '; @scan buffer2 ptr2'];
 		const result = parseBufferScanners(code);
 
 		expect(result).toEqual([
@@ -49,7 +49,7 @@ describe('parseBufferScanners', () => {
 	});
 
 	it('should parse scan instruction at different line positions', () => {
-		const code = ['mov a b', '# scan testBuffer testPointer', 'add c d'];
+		const code = ['mov a b', '; @scan testBuffer testPointer', 'add c d'];
 		const result = parseBufferScanners(code);
 
 		expect(result).toEqual([

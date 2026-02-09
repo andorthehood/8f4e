@@ -1,5 +1,3 @@
-import { instructionParser } from '@8f4e/compiler/syntax';
-
 import type { CodeBlockGraphicData, State } from '~/types';
 
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
@@ -7,10 +5,11 @@ import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 export function parsePositionOffsetters(code: string[]) {
 	return code.reduce(
 		(acc, line) => {
-			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string, string];
-
-			if (instruction === '#' && args[0] === 'offset') {
-				return [...acc, { axis: args[1], memory: args[2] }];
+			// Match semicolon comment lines with @offset directive
+			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
+			if (commentMatch && commentMatch[1] === 'offset') {
+				const args = commentMatch[2].trim().split(/\s+/);
+				return [...acc, { axis: args[0], memory: args[1] }];
 			}
 			return acc;
 		},
