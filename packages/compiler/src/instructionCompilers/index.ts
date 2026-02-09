@@ -64,6 +64,7 @@ import param from './param';
 import call from './call';
 import constants from './constants';
 import constantsEnd from './constantsEnd';
+import skipExecution from './skipExecution';
 
 const instructions = {
 	and,
@@ -150,6 +151,7 @@ const instructions = {
 	call,
 	constants,
 	constantsEnd,
+	'#skipExecution': skipExecution,
 } as const;
 
 export default instructions;

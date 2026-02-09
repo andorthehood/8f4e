@@ -290,7 +290,12 @@ export default function compile(
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
 	const cycleFunction = compiledModules
-		.map((module, index) => call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount))
+		.filter(module => !module.skipExecutionInCycle)
+		.map(module => {
+			// Find the original index in the compiledModules array
+			const originalIndex = compiledModules.indexOf(module);
+			return call(originalIndex + EXPORTED_FUNCTION_COUNT + userFunctionCount);
+		})
 		.flat();
 	const memoryInitiatorFunction = compiledModules
 		.map((module, index) => call(index + compiledModules.length + EXPORTED_FUNCTION_COUNT + userFunctionCount))
