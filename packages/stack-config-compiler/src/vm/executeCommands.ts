@@ -18,10 +18,15 @@ export default function executeCommands(
 		const commandErrors = executeCommand(state, command);
 		if (commandErrors) {
 			for (const error of commandErrors) {
-				errors.push({
+				const err: CompileError = {
 					line: command.lineNumber,
 					...error,
-				});
+				};
+				// Only add macroId if it's defined
+				if (command.macroId) {
+					err.macroId = command.macroId;
+				}
+				errors.push(err);
 			}
 		}
 	}
