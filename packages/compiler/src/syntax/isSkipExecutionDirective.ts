@@ -4,7 +4,7 @@
  * @returns True if the line is a #skipExecution directive, false otherwise.
  */
 export default function isSkipExecutionDirective(line: string): boolean {
-	return /^\s*#skipExecution\s*(?:;.*)?$/.test(line);
+	return /^\s*#skipExecution(?:\s+;.*|\s*)$/.test(line);
 }
 
 if (import.meta.vitest) {
