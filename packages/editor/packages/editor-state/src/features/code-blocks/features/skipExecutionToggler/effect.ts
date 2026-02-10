@@ -15,6 +15,9 @@ export default function skipExecutionToggler(store: StateManager<State>, events:
 			return;
 		}
 
+		// Set target code block for programmatic edit to avoid re-rendering all code blocks
+		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = codeBlock;
+
 		// Check if module has #skipExecution directive
 		const hasDirective = codeBlock.code.some(line => isSkipExecutionDirective(line));
 
@@ -37,8 +40,9 @@ export default function skipExecutionToggler(store: StateManager<State>, events:
 
 		// Update lastUpdated to invalidate cache
 		codeBlock.lastUpdated = Date.now();
-		// Trigger store update to re-render
-		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks]);
+
+		// Trigger store update to re-render only the specific code block
+		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	}
 
 	events.on('toggleModuleSkipExecutionDirective', onToggleModuleSkipExecutionDirective);
