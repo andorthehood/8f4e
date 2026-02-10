@@ -3,8 +3,8 @@ title: 'TODO: Add first compiler directive to skip module execution in cycle'
 priority: Medium
 effort: 4-6h
 created: 2026-02-09
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-10
 ---
 
 # TODO: Add first compiler directive to skip module execution in cycle
