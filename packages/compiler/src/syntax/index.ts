@@ -1,6 +1,7 @@
 export { default as isConstantName } from './isConstantName';
 export { default as instructionParser } from './instructionParser';
 export { default as isComment } from './isComment';
+export { default as isSkipExecutionDirective } from './isSkipExecutionDirective';
 export { default as isValidInstruction } from './isValidInstruction';
 export {
 	ArgumentType,
