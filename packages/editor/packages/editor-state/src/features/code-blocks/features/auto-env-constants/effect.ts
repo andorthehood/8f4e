@@ -26,6 +26,8 @@ function generateEnvConstantsBlock(state: State): string[] {
 	// Sample rate from runtime config
 	const sampleRate = state.compiledProjectConfig.runtimeSettings?.sampleRate ?? 50;
 	lines.push(`const SAMPLE_RATE ${sampleRate}`);
+	// Precomputed reciprocal avoids repeated divisions in DSP code.
+	lines.push(`const INV_SAMPLE_RATE ${1 / sampleRate}`);
 
 	// Audio buffer size (hardcoded for now, matching current behavior)
 	lines.push('const AUDIO_BUFFER_SIZE 128');
