@@ -153,7 +153,7 @@ describe('skipExecutionToggler', () => {
 
 		toggleCallback({ codeBlock });
 
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.codeBlocks', expect.any(Array));
+		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	});
 
 	it('should not toggle when editing is disabled', () => {
