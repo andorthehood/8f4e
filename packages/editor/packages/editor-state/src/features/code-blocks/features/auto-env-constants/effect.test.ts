@@ -64,6 +64,8 @@ describe('autoEnvConstants', () => {
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
 		expect(sampleRateLine).toBe('const SAMPLE_RATE 48000');
+		const invSampleRateLine = envBlock?.code.find(line => line.includes('INV_SAMPLE_RATE'));
+		expect(invSampleRateLine).toBe('const INV_SAMPLE_RATE 0.000020833333333333333');
 	});
 
 	test('should include standard environment constants', () => {
@@ -133,6 +135,8 @@ describe('autoEnvConstants', () => {
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
 		expect(sampleRateLine).toBe('const SAMPLE_RATE 44100');
+		const invSampleRateLine = envBlock?.code.find(line => line.includes('INV_SAMPLE_RATE'));
+		expect(invSampleRateLine).toBe('const INV_SAMPLE_RATE 0.000022675736961451248');
 	});
 
 	test('should include binary asset sizes when available', () => {
@@ -214,7 +218,15 @@ describe('autoEnvConstants', () => {
 		const projectWithEnv: Project = {
 			...EMPTY_DEFAULT_PROJECT,
 			codeBlocks: [
-				{ code: ['constants env', 'const SAMPLE_RATE 48000', 'constantsEnd'], gridCoordinates: { x: 0, y: 0 } },
+				{
+					code: [
+						'constants env',
+						'const SAMPLE_RATE 48000',
+						'const INV_SAMPLE_RATE 0.000020833333333333333',
+						'constantsEnd',
+					],
+					gridCoordinates: { x: 0, y: 0 },
+				},
 			],
 		};
 
