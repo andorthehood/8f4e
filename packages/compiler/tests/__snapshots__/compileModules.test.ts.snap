@@ -306,6 +306,7 @@ exports[`compiler > compileModules 1`] = `
         "wordAlignedSize": 1,
       },
     },
+    "skipExecutionInCycle": undefined,
     "wordAlignedAddress": 0,
     "wordAlignedSize": 4,
   },
