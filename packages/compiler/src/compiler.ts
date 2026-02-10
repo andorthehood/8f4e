@@ -129,6 +129,7 @@ export function compileModule(
 		wordAlignedSize: calculateWordAlignedSizeOfMemory(context.namespace.memory),
 		ast,
 		index,
+		skipExecutionInCycle: context.skipExecutionInCycle,
 	};
 }
 
