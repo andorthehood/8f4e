@@ -1,3 +1,5 @@
+import { isSkipExecutionDirective } from '@8f4e/compiler/syntax';
+
 import type { CodeBlockGraphicData, MenuGenerator } from '~/types';
 
 export interface OpenGroupEvent {
@@ -18,6 +20,11 @@ export const moduleMenu: MenuGenerator = state => {
 
 	const isDisabled = state.graphicHelper.selectedCodeBlock?.disabled ?? false;
 
+	// Check if module has #skipExecution directive
+	const hasSkipExecutionDirective =
+		blockType === 'module' &&
+		state.graphicHelper.selectedCodeBlock?.code.some((line: string) => isSkipExecutionDirective(line));
+
 	return [
 		...(state.featureFlags.editing
 			? [
@@ -33,6 +40,16 @@ export const moduleMenu: MenuGenerator = state => {
 						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 						close: true,
 					},
+					...(blockType === 'module'
+						? [
+								{
+									title: hasSkipExecutionDirective ? 'Unskip module' : 'Skip module',
+									action: 'toggleModuleSkipExecutionDirective',
+									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									close: true,
+								},
+							]
+						: []),
 				]
 			: []),
 		{
