@@ -35,7 +35,7 @@ export async function compileConfigBlocksByType({
 	}
 
 	try {
-		const result = await compileConfig(combined.source, schema);
+		const result = await compileConfig(combined.source, schema, configType);
 
 		if (result.errors.length > 0) {
 			for (const error of result.errors) {

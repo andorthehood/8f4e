@@ -13,7 +13,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "nx run-many --target=build --all && nx watch --all -- nx run-many --target=build --all",
+          "nx run-many --target=build --all && NX_DAEMON=true nx watch --all -- nx run-many --target=build --all",
           "vite"
         ],
         "parallel": true,
