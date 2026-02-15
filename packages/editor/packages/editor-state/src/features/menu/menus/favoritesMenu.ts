@@ -1,4 +1,5 @@
 import deriveFavorites from '../../code-blocks/features/favorites/deriveFavorites';
+import formatBlockType from '../utils/formatBlockType';
 
 import type { MenuGenerator } from '~/types';
 
@@ -29,7 +30,7 @@ export const favoritesMenu: MenuGenerator = state => {
 
 	// Create menu items for each favorite, labeled as "blockType id"
 	return favorites.map(favorite => ({
-		title: `${favorite.blockType} ${favorite.id}`,
+		title: `${formatBlockType(favorite.blockType)} ${favorite.id}`,
 		action: 'jumpToFavoriteCodeBlock',
 		payload: {
 			creationIndex: favorite.creationIndex,
