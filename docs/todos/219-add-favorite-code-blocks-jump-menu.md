@@ -60,7 +60,7 @@ Expected outcome:
 - Resolve target block by:
   - `creationIndex === creationId` first
   - optional fallback `id === id`
-- Set selected block and center viewport with existing helper.
+- Set selected block and center viewport with existing `centerViewportOnCodeBlock` helper.
 - Preserve existing viewport animation behavior conventions for programmatic navigation.
 - If target cannot be resolved, no-op.
 
