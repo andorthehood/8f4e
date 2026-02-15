@@ -26,6 +26,7 @@ export function serializeEditorConfigBlocks(codeBlocks: CodeBlockGraphicData[]):
 export const DEFAULT_EDITOR_CONFIG_BLOCK: EditorConfigBlock = {
 	code: [
 		'config editor',
+		'; @favorite',
 		"; This is a special block that doesn't",
 		'; get saved with the project.',
 		'',

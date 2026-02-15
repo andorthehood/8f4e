@@ -18,6 +18,7 @@ function generateEnvConstantsBlock(state: State): string[] {
 
 	// Header with warning
 	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`);
+	lines.push('; @favorite');
 	lines.push('; Auto-generated environment constants');
 	lines.push('; Changes will be overwritten');
 	lines.push('; Last updated: ' + new Date().toLocaleString());
