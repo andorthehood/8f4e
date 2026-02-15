@@ -3,8 +3,8 @@ title: 'TODO: Add Favorite Code Blocks + Jump Menu Navigation'
 priority: Medium
 effort: 1-2d
 created: 2026-02-13
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-15
 ---
 
 # TODO: Add Favorite Code Blocks + Jump Menu Navigation
