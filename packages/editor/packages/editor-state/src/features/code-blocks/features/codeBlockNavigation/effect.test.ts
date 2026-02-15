@@ -1,16 +1,22 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-import codeBlockNavigation from './effect';
+import codeBlockNavigation, { jumpToCodeBlock } from './effect';
 
 import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '~/types';
 
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
+interface JumpToFavoriteCodeBlockEvent {
+	creationIndex: number;
+	id: string;
+}
+
 describe('codeBlockNavigation', () => {
 	let state: ReturnType<typeof createMockState>;
 	let events: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let onNavigateCodeBlockHandler: (event: NavigateCodeBlockEvent) => void;
+	let onJumpToFavoriteCodeBlockHandler: (event: JumpToFavoriteCodeBlockEvent) => void;
 	let selectedBlock: CodeBlockGraphicData;
 	let leftBlock: CodeBlockGraphicData;
 	let rightBlock: CodeBlockGraphicData;
@@ -23,11 +29,11 @@ describe('codeBlockNavigation', () => {
 		vi.useFakeTimers();
 
 		// Create mock code blocks using shared utility
-		selectedBlock = createMockCodeBlock({ x: 200, y: 200 });
-		leftBlock = createMockCodeBlock({ x: 0, y: 200 });
-		rightBlock = createMockCodeBlock({ x: 400, y: 200 });
-		upBlock = createMockCodeBlock({ x: 200, y: 0 });
-		downBlock = createMockCodeBlock({ x: 200, y: 400 });
+		selectedBlock = createMockCodeBlock({ x: 200, y: 200, creationIndex: 0, id: 'selected' });
+		leftBlock = createMockCodeBlock({ x: 0, y: 200, creationIndex: 1, id: 'left' });
+		rightBlock = createMockCodeBlock({ x: 400, y: 200, creationIndex: 2, id: 'right' });
+		upBlock = createMockCodeBlock({ x: 200, y: 0, creationIndex: 3, id: 'up' });
+		downBlock = createMockCodeBlock({ x: 200, y: 400, creationIndex: 4, id: 'down' });
 
 		// Create mock state using shared utility
 		state = createMockState({
@@ -50,9 +56,14 @@ describe('codeBlockNavigation', () => {
 		// Create mock event dispatcher using shared utility
 		events = createMockEventDispatcherWithVitest();
 		(events.on as ReturnType<typeof vi.fn>).mockImplementation(
-			(eventName: string, callback: ((event: NavigateCodeBlockEvent) => void) | (() => void)) => {
+			(
+				eventName: string,
+				callback: ((event: NavigateCodeBlockEvent | JumpToFavoriteCodeBlockEvent) => void) | (() => void)
+			) => {
 				if (eventName === 'navigateCodeBlock') {
 					onNavigateCodeBlockHandler = callback as (event: NavigateCodeBlockEvent) => void;
+				} else if (eventName === 'jumpToFavoriteCodeBlock') {
+					onJumpToFavoriteCodeBlockHandler = callback as (event: JumpToFavoriteCodeBlockEvent) => void;
 				}
 			}
 		);
@@ -63,6 +74,13 @@ describe('codeBlockNavigation', () => {
 		codeBlockNavigation(state, events);
 
 		expect(events.on).toHaveBeenCalledWith('navigateCodeBlock', expect.any(Function));
+	});
+
+	it('should register a jumpToFavoriteCodeBlock event handler', () => {
+		// Initialize the effect
+		codeBlockNavigation(state, events);
+
+		expect(events.on).toHaveBeenCalledWith('jumpToFavoriteCodeBlock', expect.any(Function));
 	});
 
 	it('should do nothing when no code block is selected', () => {
@@ -130,5 +148,64 @@ describe('codeBlockNavigation', () => {
 
 		onNavigateCodeBlockHandler({ direction: 'right' });
 		expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+	});
+
+	describe('jumpToCodeBlock', () => {
+		it('should jump to code block by creationIndex', () => {
+			const result = jumpToCodeBlock(state, 2, 'wrong-id');
+			expect(result).toBe(true);
+			expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
+		});
+
+		it('should jump to code block by id when creationIndex does not match', () => {
+			const result = jumpToCodeBlock(state, 999, 'left');
+			expect(result).toBe(true);
+			expect(state.graphicHelper.selectedCodeBlock).toBe(leftBlock);
+		});
+
+		it('should return false when neither creationIndex nor id matches', () => {
+			const result = jumpToCodeBlock(state, 999, 'nonexistent');
+			expect(result).toBe(false);
+			// selectedCodeBlock should remain unchanged
+			expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+		});
+
+		it('should prefer creationIndex over id when both could match', () => {
+			// Set up a scenario where id matches one block but creationIndex matches another
+			const result = jumpToCodeBlock(state, 3, 'left');
+			// Should select upBlock (creationIndex=3) not leftBlock (id='left')
+			expect(result).toBe(true);
+			expect(state.graphicHelper.selectedCodeBlock).toBe(upBlock);
+		});
+
+		it('should center viewport on the jumped-to code block', () => {
+			const initialViewportX = state.viewport.x;
+			const initialViewportY = state.viewport.y;
+
+			jumpToCodeBlock(state, 4, 'down');
+
+			// Verify viewport has changed
+			const viewportChanged = state.viewport.x !== initialViewportX || state.viewport.y !== initialViewportY;
+			expect(viewportChanged).toBe(true);
+		});
+	});
+
+	describe('jumpToFavoriteCodeBlock event', () => {
+		it('should jump when jumpToFavoriteCodeBlock event is dispatched', () => {
+			// Initialize the effect
+			codeBlockNavigation(state, events);
+
+			onJumpToFavoriteCodeBlockHandler({ creationIndex: 2, id: 'right' });
+			expect(state.graphicHelper.selectedCodeBlock).toBe(rightBlock);
+		});
+
+		it('should handle jumpToFavoriteCodeBlock with non-existent target gracefully', () => {
+			// Initialize the effect
+			codeBlockNavigation(state, events);
+
+			onJumpToFavoriteCodeBlockHandler({ creationIndex: 999, id: 'nonexistent' });
+			// selectedCodeBlock should remain unchanged
+			expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+		});
 	});
 });
