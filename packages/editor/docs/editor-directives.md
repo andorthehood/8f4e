@@ -105,6 +105,18 @@ Apply code-block visual position offset from an integer memory value.
 Where:
 - `axis` is `x` or `y`.
 
+### `@favorite`
+
+Mark a code block as a favorite for quick navigation.
+
+```txt
+; @favorite
+```
+
+When a code block contains this directive, it appears in the "Jump to..." submenu of the main context menu (right-click on empty space). Selecting a favorite from the submenu will jump to and center the viewport on that code block.
+
+Use this to bookmark important modules, functions, or other blocks in large projects for faster navigation.
+
 ## Notes
 
 - Directive parsing should be strict: plain comments like `; note` are not directives.
