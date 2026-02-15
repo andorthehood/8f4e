@@ -1,5 +1,4 @@
 import { isSkipExecutionDirective } from '@8f4e/compiler/syntax';
-import formatBlockType from '../utils/formatBlockType';
 import parseFavorite from '../../code-blocks/features/favorites/codeParser';
 
 import type { CodeBlockGraphicData, MenuGenerator } from '~/types';
@@ -10,7 +9,15 @@ export interface OpenGroupEvent {
 
 export const moduleMenu: MenuGenerator = state => {
 	const blockType = state.graphicHelper.selectedCodeBlock?.blockType;
-	const blockLabel = blockType ? formatBlockType(blockType) : 'module';
+	let blockLabel = 'module';
+
+	if (blockType === 'function') {
+		blockLabel = 'function';
+	} else if (blockType === 'vertexShader') {
+		blockLabel = 'vertex shader';
+	} else if (blockType === 'fragmentShader') {
+		blockLabel = 'fragment shader';
+	}
 
 	const isDisabled = state.graphicHelper.selectedCodeBlock?.disabled ?? false;
 
