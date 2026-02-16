@@ -58,10 +58,10 @@ export default function groupStickyToggler(store: StateManager<State>, events: E
 					let newLine: string;
 					if (makeSticky && !currentlyHasSticky) {
 						// Add sticky
-						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+/, `; @group ${groupName} sticky`);
+						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+/, () => `; @group ${groupName} sticky`);
 					} else if (!makeSticky && currentlyHasSticky) {
 						// Remove sticky
-						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+\s+sticky/, `; @group ${groupName}`);
+						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+\s+sticky/, () => `; @group ${groupName}`);
 					} else {
 						// No change needed for this block
 						continue;
