@@ -21,7 +21,6 @@ export default defineConfig(
 			'**/index.ts',
 			'**/section.ts',
 			'**/syntaxError.ts',
-			'**/isIntermodularReferencePattern.ts',
 			'**/resolveInterModularConnections.ts',
 		],
 		typecheckEnabled: true,
