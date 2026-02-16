@@ -13,8 +13,6 @@ completed: null
 
 Current grouped dragging relies on holding a modifier key. For frequently moved group layouts, users want groups to always move together without requiring `Alt` on every drag.
 
-The existing idea of `lock` can be ambiguous because lock often means immovable. A clearer behavior name is needed for "always move together."
-
 ## Proposed Solution
 
 Extend the group directive syntax with an optional keyword:
@@ -145,7 +143,6 @@ Sticky parsing:
 
 ## Risks & Considerations
 
-- **Naming migration**: avoid mixing `lock` and `sticky`; docs and menus must consistently use `sticky`.
 - **Directive rewriting**: mutation logic must preserve formatting/other directives where possible.
 - **State drift**: ensure group-wide menu actions normalize inconsistent per-block sticky flags.
 
@@ -158,5 +155,4 @@ Sticky parsing:
 
 ## Notes
 
-- Product naming decision: use `sticky`, not `lock`.
 - Expected UX: sticky means "always move together," not "prevent movement."

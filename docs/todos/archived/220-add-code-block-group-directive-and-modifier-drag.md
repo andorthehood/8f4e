@@ -3,8 +3,8 @@ title: 'TODO: Add code-block grouping directive and modifier drag behavior'
 priority: Medium
 effort: 1-2d
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Add code-block grouping directive and modifier drag behavior
