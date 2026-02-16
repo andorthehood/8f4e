@@ -13,7 +13,7 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 		const movementY = event.offsetY - prevEvent.offsetY;
 		prevEvent = event;
 
-		const { offsetX, offsetY, type, buttons } = event;
+		const { offsetX, offsetY, type, buttons, altKey } = event;
 
 		event.preventDefault();
 
@@ -26,6 +26,7 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 			stopPropagation: false,
 			canvasWidth: element.clientWidth,
 			canvasHeight: element.clientHeight,
+			altKey,
 		};
 
 		events.dispatch<InternalMouseEvent>(type, eventObject);
@@ -43,6 +44,7 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 			stopPropagation: false,
 			canvasWidth: element.clientWidth,
 			canvasHeight: element.clientHeight,
+			altKey: event.altKey,
 		});
 	}
 
