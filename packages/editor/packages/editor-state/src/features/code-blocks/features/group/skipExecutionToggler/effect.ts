@@ -1,5 +1,7 @@
 import { instructionParser, isSkipExecutionDirective } from '@8f4e/compiler/syntax';
 
+import { getGroupModuleBlocks } from '../getGroupBlocks';
+
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -21,9 +23,7 @@ export default function groupSkipExecutionToggler(store: StateManager<State>, ev
 		}
 
 		// Find all module blocks in the same group
-		const groupBlocks = state.graphicHelper.codeBlocks.filter(
-			block => block.groupName === codeBlock.groupName && block.blockType === 'module'
-		);
+		const groupBlocks = getGroupModuleBlocks(state.graphicHelper.codeBlocks, codeBlock.groupName);
 
 		if (groupBlocks.length === 0) {
 			return;

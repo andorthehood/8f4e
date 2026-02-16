@@ -25,7 +25,7 @@ import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/e
 import shaderEffectsDeriver from './features/shader-effects/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
-import groupSkipExecutionToggler from './features/code-blocks/features/groupSkipExecutionToggler/effect';
+import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
 import favoriteToggler from './features/code-blocks/features/favoriteToggler/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
