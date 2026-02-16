@@ -30,6 +30,11 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 			) {
 				const refValue = _arguments[1].value;
 
+				// Only process if it's an inter-module reference
+				if (!(INTERMODULAR_REFERENCE_PATTERN.test(refValue) || isIntermodularElementCountReference(refValue))) {
+					return;
+				}
+
 				// Handle inter-module address references (&module.memory or &module.memory&)
 				if (INTERMODULAR_REFERENCE_PATTERN.test(refValue)) {
 					// Check if this is an end-address reference (ends with &)
