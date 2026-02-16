@@ -136,7 +136,9 @@ Examples:
 ```
 
 Notes:
-- Group names are case-sensitive and should not contain spaces.
+- Group names are case-sensitive.
+- Group names can contain letters, numbers, hyphens, and underscores.
+- Group names should not contain spaces (the first token after @group is used as the group name).
 - Blocks without a group directive or with different group names are unaffected by grouped drag.
 - Normal drag behavior (without Alt/Option) remains unchanged.
 
