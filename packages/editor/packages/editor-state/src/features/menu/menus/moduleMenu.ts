@@ -1,6 +1,6 @@
 import { isSkipExecutionDirective } from '@8f4e/compiler/syntax';
 
-import { getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
+import { getGroupBlocks, getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
 import parseFavorite from '../../code-blocks/features/favorites/codeParser';
 
 import type { CodeBlockGraphicData, MenuGenerator } from '~/types';
@@ -32,18 +32,26 @@ export const moduleMenu: MenuGenerator = state => {
 	const hasFavoriteDirective =
 		state.graphicHelper.selectedCodeBlock && parseFavorite(state.graphicHelper.selectedCodeBlock.code);
 
-	// Check if code block has a group name and compute group skip status
+	// Check if code block has a group name and compute group skip/sticky status
 	const groupName = state.graphicHelper.selectedCodeBlock?.groupName;
 	const hasGroup = !!groupName;
 	let allGroupBlocksSkipped = false;
+	let allGroupBlocksSticky = false;
 
-	if (hasGroup && blockType === 'module') {
-		// Find all module blocks in the same group
-		const groupModuleBlocks = getGroupModuleBlocks(state.graphicHelper.codeBlocks, groupName);
-		// Check if all group module blocks have #skipExecution directive
-		allGroupBlocksSkipped = groupModuleBlocks.every((block: CodeBlockGraphicData) =>
-			block.code.some((line: string) => isSkipExecutionDirective(line))
-		);
+	if (hasGroup) {
+		// Find all blocks in the same group for sticky check
+		const groupBlocks = getGroupBlocks(state.graphicHelper.codeBlocks, groupName);
+		// Check if all group blocks have sticky flag
+		allGroupBlocksSticky = groupBlocks.every((block: CodeBlockGraphicData) => block.groupSticky);
+
+		if (blockType === 'module') {
+			// Find all module blocks in the same group
+			const groupModuleBlocks = getGroupModuleBlocks(state.graphicHelper.codeBlocks, groupName);
+			// Check if all group module blocks have #skipExecution directive
+			allGroupBlocksSkipped = groupModuleBlocks.every((block: CodeBlockGraphicData) =>
+				block.code.some((line: string) => isSkipExecutionDirective(line))
+			);
+		}
 	}
 
 	return [
@@ -93,6 +101,15 @@ export const moduleMenu: MenuGenerator = state => {
 									title: `Ungroup "${groupName}"`,
 									action: 'ungroupByName',
 									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									close: true,
+								},
+								{
+									title: allGroupBlocksSticky ? 'Make Group Non-Sticky' : 'Make Group Sticky',
+									action: 'toggleGroupSticky',
+									payload: {
+										codeBlock: state.graphicHelper.selectedCodeBlock,
+										makeSticky: !allGroupBlocksSticky,
+									},
 									close: true,
 								},
 							]
