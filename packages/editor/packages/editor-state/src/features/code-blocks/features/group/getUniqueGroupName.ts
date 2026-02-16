@@ -22,7 +22,7 @@ function getAllGroupNames(codeBlocks: CodeBlockGraphicData[]): Set<string> {
  */
 function incrementGroupName(name: string): string {
 	// Check if the name ends with a number
-	// Use non-greedy match to capture the full trailing number
+	// Use non-greedy match for the base name to ensure all trailing digits are captured by the greedy \d+
 	const match = name.match(/^(.*?)(\d+)$/);
 	if (match) {
 		// Name ends with a number, increment it

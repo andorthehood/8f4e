@@ -236,6 +236,8 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			let code = [...clipboardBlock.code];
 
 			// Update module/function IDs to ensure uniqueness
+			// Note: incrementCodeBlockIdUntilUnique checks state.graphicHelper.codeBlocks,
+			// so we must add each block immediately to detect collisions with previously pasted blocks
 			const moduleId = getModuleId(code);
 			const functionId = getFunctionId(code);
 
