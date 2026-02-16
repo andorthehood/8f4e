@@ -3,8 +3,8 @@ title: 'TODO: Add "Skip group" context-menu action for grouped code blocks'
 priority: Medium
 effort: 1-2d
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Add "Skip group" context-menu action for grouped code blocks
