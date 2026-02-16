@@ -13,6 +13,8 @@ export interface CodeBlockClickEvent {
 
 export default function codeBlockDragger(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
+	// dragSet holds the blocks being dragged together. It's computed fresh on each mousedown
+	// and cleared on mouseup, so concurrent drags are not a concern (only one drag at a time).
 	let dragSet: CodeBlockGraphicData[] = [];
 
 	function onMouseDown(event: InternalMouseEvent) {
