@@ -17,9 +17,9 @@ import getConstantsName from './astUtils/getConstantsName';
 import getModuleName from './astUtils/getModuleName';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
+import resolveInterModularConnections from './utils/resolveInterModularConnections';
 import {
 	AST,
-	ArgumentType,
 	CompileOptions,
 	CompiledModule,
 	CompiledModuleLookup,
@@ -30,7 +30,6 @@ import {
 	Namespaces,
 } from './types';
 import { EXPORTED_FUNCTION_COUNT, GLOBAL_ALIGNMENT_BOUNDARY, HEADER, VERSION } from './consts';
-import { ErrorCode, getError } from './errors';
 import sortModules from './graphOptimizer';
 import WASM_MEMORY_PAGE_SIZE from './wasmUtils/consts';
 
@@ -81,43 +80,6 @@ export {
 	type ExpandedLine,
 } from './utils/macroExpansion';
 export { ErrorCode, getError } from './errors';
-
-function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
-	Object.values(compiledModules).forEach(({ ast, memoryMap }) => {
-		ast!.forEach(line => {
-			const { instruction, arguments: _arguments } = line;
-			if (
-				['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
-				_arguments[0] &&
-				_arguments[1] &&
-				_arguments[0].type === ArgumentType.IDENTIFIER &&
-				_arguments[1].type === ArgumentType.IDENTIFIER &&
-				/&(\S+)\.(\S+)/.test(_arguments[1].value)
-			) {
-				// Remove &
-				const [targetModuleId, targetMemoryId] = _arguments[1].value.substring(1).split('.');
-
-				const targetModule = compiledModules[targetModuleId];
-
-				if (!targetModule) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
-				}
-
-				const targetMemory = targetModule.memoryMap[targetMemoryId];
-
-				if (!targetMemory) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
-				}
-
-				const memory = memoryMap[_arguments[0].value];
-
-				if (memory) {
-					memory.default = targetMemory.byteAddress;
-				}
-			}
-		});
-	});
-}
 
 export function compileModules(
 	modules: AST[],
