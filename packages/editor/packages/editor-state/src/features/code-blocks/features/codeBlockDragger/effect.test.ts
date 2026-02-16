@@ -115,7 +115,9 @@ describe('codeBlockDragger', () => {
 			expect(block1.y).toBe(120); // 6 * 20
 			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
 		});
+	});
 
+	describe('grouped drag (default behavior without Alt)', () => {
 		it('should drag grouped blocks together without Alt key (default group drag)', () => {
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', '; @group audio', 'moduleEnd'],
@@ -175,9 +177,7 @@ describe('codeBlockDragger', () => {
 			expect(block2.x).toBe(110);
 			expect(block2.y).toBe(210);
 		});
-	});
 
-	describe('grouped drag (default behavior without Alt)', () => {
 		it('should drag all blocks in same group by default (without Alt key)', () => {
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', '; @group audio', 'moduleEnd'],
