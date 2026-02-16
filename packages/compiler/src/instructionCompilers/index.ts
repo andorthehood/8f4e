@@ -119,7 +119,6 @@ const instructions = {
 	'int16[]': buffer,
 	'int16u[]': buffer,
 	'int32[]': buffer,
-	'int32u[]': buffer,
 	'float*[]': buffer,
 	'float**[]': buffer,
 	'int*[]': buffer,
