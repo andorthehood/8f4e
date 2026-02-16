@@ -3,8 +3,8 @@ title: 'TODO: Support Inter-Module Element Count References'
 priority: Medium
 effort: 3-5h
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Support Inter-Module Element Count References
@@ -47,11 +47,11 @@ Resolve to `targetMemory.wordAlignedSize` (same semantics as local `$name`).
 
 ## Success Criteria
 
-- [ ] `$module.memory` is accepted in declaration/default and `init` second-argument paths.
-- [ ] Resolver writes `target.wordAlignedSize` into defaults.
-- [ ] Multi-dot forms are rejected.
-- [ ] Dependency sorting recognizes `$module.memory`.
-- [ ] `npx nx run compiler:test` passes.
+- [x] `$module.memory` is accepted in declaration/default and `init` second-argument paths.
+- [x] Resolver writes `target.wordAlignedSize` into defaults.
+- [x] Multi-dot forms are rejected.
+- [x] Dependency sorting recognizes `$module.memory`.
+- [x] `npx nx run compiler:test` passes.
 
 ## Affected Components
 
