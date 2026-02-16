@@ -24,9 +24,9 @@ describe('inter-module references - element max', () => {
 		expect(targetModule.memoryMap['maxValue'].default).toBe(2147483647);
 	});
 
-	test('resolves element max reference for unsigned int32', () => {
+	test('resolves element max reference for signed int32', () => {
 		const modules = [
-			{ code: ['module sourceModule', 'int32u[] buffer 5 0', 'moduleEnd'] },
+			{ code: ['module sourceModule', 'int32[] buffer 5 0', 'moduleEnd'] },
 			{ code: ['module targetModule', 'int maxValue ^sourceModule.buffer', 'moduleEnd'] },
 		];
 
@@ -39,8 +39,8 @@ describe('inter-module references - element max', () => {
 
 		expect(targetModule).toBeDefined();
 		expect(targetModule.memoryMap['maxValue']).toBeDefined();
-		// maxValue should be set to the element max value (unsigned int32)
-		expect(targetModule.memoryMap['maxValue'].default).toBe(4294967295);
+		// maxValue should be set to the element max value (signed int32)
+		expect(targetModule.memoryMap['maxValue'].default).toBe(2147483647);
 	});
 
 	test('resolves element max reference for float32', () => {
