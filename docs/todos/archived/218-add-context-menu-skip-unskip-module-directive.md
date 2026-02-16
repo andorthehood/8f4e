@@ -3,8 +3,8 @@ title: 'TODO: Add context-menu action to skip/unskip module execution'
 priority: Medium
 effort: 3-5h
 created: 2026-02-10
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-10
 ---
 
 # TODO: Add context-menu action to skip/unskip module execution
