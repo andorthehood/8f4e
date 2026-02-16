@@ -4,9 +4,10 @@ import { getFunctionId } from '@8f4e/compiler/syntax';
 
 import { insertDependencies } from './insertDependencies';
 
-import { serializeGroupToClipboard } from '../clipboard/clipboardUtils';
+import { serializeGroupToClipboard, type ClipboardCodeBlock } from '../clipboard/clipboardUtils';
 import { parseClipboardData, extractGroupNameFromCode } from '../clipboard/clipboardUtils';
 import { createGroupNameMapping } from '../group/getUniqueGroupName';
+import { replaceGroupName } from '../group/replaceGroupName';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -203,15 +204,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks, codeBlock]);
 	}
 
-	function onPasteMultipleBlocks({
-		x,
-		y,
-		blocks,
-	}: {
-		x: number;
-		y: number;
-		blocks: import('../clipboard/clipboardUtils').ClipboardCodeBlock[];
-	}): void {
+	function onPasteMultipleBlocks({ x, y, blocks }: { x: number; y: number; blocks: ClipboardCodeBlock[] }): void {
 		if (!state.featureFlags.editing) {
 			return;
 		}
@@ -257,14 +250,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			if (originalGroupName && groupNameMapping.has(originalGroupName)) {
 				const newGroupName = groupNameMapping.get(originalGroupName)!;
 				// Replace the group name in the code
-				code = code.map(line => {
-					// Match the @group directive
-					const match = line.match(/^(\s*;\s*@group\s+)(\S+)(\s.*)?$/);
-					if (match && match[2] === originalGroupName) {
-						return match[1] + newGroupName + (match[3] || '');
-					}
-					return line;
-				});
+				code = code.map(line => replaceGroupName(line, originalGroupName, newGroupName));
 			}
 
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
