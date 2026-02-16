@@ -1,14 +1,18 @@
+import { getElementMaxValue } from './memoryData';
+
 import { INTERMODULAR_REFERENCE_PATTERN } from '../syntax/isIntermodularReferencePattern';
 import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
 import extractIntermodularElementCountBase from '../syntax/extractIntermodularElementCountBase';
 import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElementWordSizeReference';
 import extractIntermodularElementWordSizeBase from '../syntax/extractIntermodularElementWordSizeBase';
+import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMaxReference';
+import extractIntermodularElementMaxBase from '../syntax/extractIntermodularElementMaxBase';
 import { ErrorCode, getError } from '../errors';
 import { ArgumentType, CompiledModuleLookup } from '../types';
 
 /**
  * Resolves inter-modular connections by finding references like &module.memory,
- * module.memory&, $module.memory, and %module.memory in compiled modules and setting the appropriate memory defaults.
+ * module.memory&, $module.memory, %module.memory, and ^module.memory in compiled modules and setting the appropriate memory defaults.
  *
  * This function:
  * - Identifies inter-module references in memory declarations and init instructions
@@ -18,6 +22,7 @@ import { ArgumentType, CompiledModuleLookup } from '../types';
  *   - module.memory&: end address (byteAddress + (wordAlignedSize - 1) * 4)
  *   - $module.memory: element count (wordAlignedSize)
  *   - %module.memory: element word size (elementWordSize)
+ *   - ^module.memory: element max value (computed based on target memory type)
  * - Updates the local memory's default value with the resolved value
  */
 export default function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
@@ -25,7 +30,7 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 		ast!.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
-				['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
+				['int*', 'int**', 'float*', 'float**', 'init', 'int', 'float'].includes(instruction) &&
 				_arguments[0] &&
 				_arguments[1] &&
 				_arguments[0].type === ArgumentType.IDENTIFIER &&
@@ -112,6 +117,28 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 					if (memory) {
 						// Set element word size (elementWordSize)
 						memory.default = targetMemory.elementWordSize;
+					}
+				} else if (isIntermodularElementMaxReference(refValue)) {
+					// Handle inter-module element max references (^module.memory)
+					const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMaxBase(refValue);
+
+					const targetModule = compiledModules[targetModuleId];
+
+					if (!targetModule) {
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+					}
+
+					const targetMemory = targetModule.memoryMap[targetMemoryId];
+
+					if (!targetMemory) {
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+					}
+
+					const memory = memoryMap[_arguments[0].value];
+
+					if (memory) {
+						// Set element max value (computed based on target memory type)
+						memory.default = getElementMaxValue(targetModule.memoryMap, targetMemoryId);
 					}
 				}
 			}
