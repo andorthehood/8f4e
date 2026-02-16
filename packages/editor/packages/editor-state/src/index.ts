@@ -25,6 +25,7 @@ import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/e
 import shaderEffectsDeriver from './features/shader-effects/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
+import groupSkipExecutionToggler from './features/code-blocks/features/groupSkipExecutionToggler/effect';
 import favoriteToggler from './features/code-blocks/features/favoriteToggler/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
@@ -73,6 +74,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	contextMenu(store, events);
 	codeBlockCreator(store, events);
 	skipExecutionToggler(store, events);
+	groupSkipExecutionToggler(store, events);
 	favoriteToggler(store, events);
 	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first

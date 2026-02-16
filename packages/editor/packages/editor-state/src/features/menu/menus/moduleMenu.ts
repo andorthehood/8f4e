@@ -1,4 +1,5 @@
 import { isSkipExecutionDirective } from '@8f4e/compiler/syntax';
+
 import parseFavorite from '../../code-blocks/features/favorites/codeParser';
 
 import type { CodeBlockGraphicData, MenuGenerator } from '~/types';
@@ -30,6 +31,22 @@ export const moduleMenu: MenuGenerator = state => {
 	const hasFavoriteDirective =
 		state.graphicHelper.selectedCodeBlock && parseFavorite(state.graphicHelper.selectedCodeBlock.code);
 
+	// Check if code block has a group name and compute group skip status
+	const groupName = state.graphicHelper.selectedCodeBlock?.groupName;
+	const hasGroup = !!groupName;
+	let allGroupBlocksSkipped = false;
+
+	if (hasGroup && blockType === 'module') {
+		// Find all module blocks in the same group
+		const groupModuleBlocks = state.graphicHelper.codeBlocks.filter(
+			(block: CodeBlockGraphicData) => block.groupName === groupName && block.blockType === 'module'
+		);
+		// Check if all group module blocks have #skipExecution directive
+		allGroupBlocksSkipped = groupModuleBlocks.every((block: CodeBlockGraphicData) =>
+			block.code.some((line: string) => isSkipExecutionDirective(line))
+		);
+	}
+
 	return [
 		...(state.featureFlags.editing
 			? [
@@ -50,6 +67,16 @@ export const moduleMenu: MenuGenerator = state => {
 								{
 									title: hasSkipExecutionDirective ? 'Unskip module' : 'Skip module',
 									action: 'toggleModuleSkipExecutionDirective',
+									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									close: true,
+								},
+							]
+						: []),
+					...(blockType === 'module' && hasGroup
+						? [
+								{
+									title: allGroupBlocksSkipped ? 'Unskip group' : 'Skip group',
+									action: 'toggleGroupSkipExecutionDirective',
 									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 									close: true,
 								},
