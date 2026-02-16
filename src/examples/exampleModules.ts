@@ -97,6 +97,7 @@ export const moduleManifest: Record<string, () => Promise<ExampleModule>> = {
 	switchGatesFloat: () => import('@8f4e/examples/modules/switchGatesFloat').then(m => m.default),
 	switchGatesInt: () => import('@8f4e/examples/modules/switchGatesInt').then(m => m.default),
 	triangleSignedFloat: () => import('@8f4e/examples/modules/triangleSignedFloat').then(m => m.default),
+	triggerPatternSequencer: () => import('@8f4e/examples/modules/triggerPatternSequencer').then(m => m.default),
 };
 
 /**
@@ -222,6 +223,7 @@ export const moduleMetadata: ModuleMetadata[] = [
 	{ slug: 'switchGatesFloat', title: 'Switchable Gates (8x Float)', category: 'Controllers' },
 	{ slug: 'switchGatesInt', title: 'Switchable Gates (8x Int)', category: 'Controllers' },
 	{ slug: 'triangleSignedFloat', title: 'Triangle (Signed, Float)', category: 'Oscillators' },
+	{ slug: 'triggerPatternSequencer', title: 'Trigger Pattern Sequencer', category: 'Sequencers' },
 ];
 
 // For backwards compatibility, export a default object that matches the old API
