@@ -3,6 +3,8 @@ import createStateManager from '@8f4e/state-manager';
 
 import codeBlockCreator from './effect';
 
+import groupCopier from '../group/copier/effect';
+
 import type { State } from '~/types';
 
 import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
@@ -40,7 +42,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			mockState.graphicHelper.codeBlocks = [block1, block2];
 
-			codeBlockCreator(store, mockEvents);
+			groupCopier(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const copyGroupCall = onCalls.find(call => call[0] === 'copyGroupBlocks');
@@ -82,7 +84,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			mockState.graphicHelper.codeBlocks = [block1];
 
-			codeBlockCreator(store, mockEvents);
+			groupCopier(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const copyGroupCall = onCalls.find(call => call[0] === 'copyGroupBlocks');
@@ -108,7 +110,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			mockState.graphicHelper.codeBlocks = [block1];
 
-			codeBlockCreator(store, mockEvents);
+			groupCopier(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const copyGroupCall = onCalls.find(call => call[0] === 'copyGroupBlocks');
@@ -146,7 +148,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			mockState.graphicHelper.codeBlocks = [block1, block2, block3];
 
-			codeBlockCreator(store, mockEvents);
+			groupCopier(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const copyGroupCall = onCalls.find(call => call[0] === 'copyGroupBlocks');
