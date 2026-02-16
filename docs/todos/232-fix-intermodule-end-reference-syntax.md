@@ -19,6 +19,13 @@ That is incorrect for the agreed language design. The intended syntax is:
 
 This mismatch creates inconsistent mental models with existing postfix behavior (`buffer&`) and makes inter-module references harder to read.
 
+Current implementation points (leading `&` only):
+- `packages/compiler/src/syntax/isIntermodularReference.ts` uses `^&...` matching.
+- `packages/compiler/src/syntax/isIntermodularReferencePattern.ts` uses `^&...` matching for dependency/AST detection.
+- `packages/compiler/src/utils/resolveInterModularConnections.ts` strips a leading `&` when parsing inter-module references.
+- `packages/compiler/src/graphOptimizer.ts` assumes references start with `&` when extracting dependency module IDs.
+- `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/connections.ts` draws wires from resolved pointer values, so it depends on compiler resolution recognizing the correct syntax.
+
 ## Proposed Solution
 
 Update inter-module end-address handling to accept `module.foo&` and reject `&module.foo&`.
@@ -83,8 +90,11 @@ No compatibility mode is needed.
 - `packages/compiler/src/syntax/isIntermodularReference.ts`
 - `packages/compiler/src/syntax/memoryInstructionParser.ts`
 - `packages/compiler/src/utils/memoryInstructionParser.ts`
+- `packages/compiler/src/syntax/isIntermodularReferencePattern.ts`
 - `packages/compiler/src/index.ts`
+- `packages/compiler/src/utils/resolveInterModularConnections.ts`
 - `packages/compiler/src/graphOptimizer.ts`
+- `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/connections.ts`
 - `packages/compiler/tests/intermodular-references/*`
 - `docs/todos/226-support-intermodule-buffer-end-reference.md`
 
@@ -104,4 +114,3 @@ No compatibility mode is needed.
 - `docs/todos/228-support-intermodule-element-word-size-reference.md`
 - `docs/todos/229-support-intermodule-element-max-reference.md`
 - `docs/todos/230-support-intermodule-element-min-reference.md`
-
