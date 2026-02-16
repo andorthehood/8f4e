@@ -5,6 +5,7 @@ const bpmClock: ExampleModule = {
 	author: 'Andor Polgar',
 	category: 'Clock',
 	code: `module bpmClock
+use env
 
 int bpm 120
 int out
