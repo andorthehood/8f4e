@@ -1,4 +1,3 @@
-import parseGroup from '../codeParser';
 import removeDirective from '../../../utils/removeDirective';
 import { getGroupBlocks } from '../getGroupBlocks';
 
@@ -10,9 +9,9 @@ import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
  * Provides a context menu action to ungroup all blocks in a group at once.
  */
 export default function groupUngroupper(store: StateManager<State>, events: EventDispatcher): void {
-	const state = store.getState();
-
 	function onUngroupByName({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
+		const state = store.getState();
+
 		if (!state.featureFlags.editing) {
 			return;
 		}
@@ -29,16 +28,11 @@ export default function groupUngroupper(store: StateManager<State>, events: Even
 
 		// Remove ; @group directive from all blocks in the group
 		groupBlocks.forEach(block => {
-			// Check if block has ; @group directive
-			const hasGroup = parseGroup(block.code);
+			// Remove all ; @group directive lines
+			block.code = removeDirective(block.code, 'group');
 
-			if (hasGroup) {
-				// Remove all ; @group directive lines
-				block.code = removeDirective(block.code, 'group');
-
-				// Update lastUpdated to invalidate cache
-				block.lastUpdated = Date.now();
-			}
+			// Update lastUpdated to invalidate cache
+			block.lastUpdated = Date.now();
 		});
 
 		// Trigger store update to refresh all affected blocks
