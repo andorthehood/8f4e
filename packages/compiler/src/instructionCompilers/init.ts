@@ -43,8 +43,7 @@ const init: InstructionCompiler = withValidation(
 			// Do nothing
 			// Intermodular element count references are resolved later
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
-			// Starts with & but doesn't match strict inter-module pattern
-			// This catches invalid patterns like &module.path.to.memory
+			// Local memory address reference (e.g., &buffer)
 			const memoryItem = memory[line.arguments[1].value.substring(1)];
 
 			if (!memoryItem) {
@@ -53,8 +52,7 @@ const init: InstructionCompiler = withValidation(
 
 			defaultValue = memoryItem.byteAddress;
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '$') {
-			// Starts with $ but doesn't match strict inter-module pattern
-			// This catches invalid patterns like $module.path.to.memory
+			// Local memory element count reference (e.g., $buffer)
 			const memoryItem = memory[line.arguments[1].value.substring(1)];
 
 			if (!memoryItem) {
