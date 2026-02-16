@@ -59,9 +59,13 @@ export default function sortModules(modules: AST[]): AST[] {
 						const { module } = extractIntermodularElementCountBase(value);
 						return module;
 					}
-					// Handle address reference (&module.memory or &module.memory&)
-					// Remove leading & and trailing & (if present)
-					const cleanRef = value.endsWith('&') ? value.substring(1, value.length - 1) : value.substring(1);
+					// Handle address reference (&module.memory or module.memory&)
+					// Parse reference based on form:
+					// - Start: &module.memory -> remove leading &
+					// - End: module.memory& -> remove trailing &
+					const cleanRef = value.endsWith('&')
+						? value.substring(0, value.length - 1) // Remove trailing &
+						: value.substring(1); // Remove leading &
 					return cleanRef.split('.')[0];
 				});
 
@@ -84,9 +88,13 @@ export default function sortModules(modules: AST[]): AST[] {
 						const { module } = extractIntermodularElementCountBase(value);
 						return module;
 					}
-					// Handle address reference (&module.memory or &module.memory&)
-					// Remove leading & and trailing & (if present)
-					const cleanRef = value.endsWith('&') ? value.substring(1, value.length - 1) : value.substring(1);
+					// Handle address reference (&module.memory or module.memory&)
+					// Parse reference based on form:
+					// - Start: &module.memory -> remove leading &
+					// - End: module.memory& -> remove trailing &
+					const cleanRef = value.endsWith('&')
+						? value.substring(0, value.length - 1) // Remove trailing &
+						: value.substring(1); // Remove leading &
 					return cleanRef.split('.')[0];
 				});
 
