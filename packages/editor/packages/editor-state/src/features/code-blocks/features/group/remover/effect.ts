@@ -1,4 +1,5 @@
-import parseGroup from '../group/codeParser';
+import parseGroup from '../codeParser';
+import removeDirective from '../../../utils/removeDirective';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -23,10 +24,7 @@ export default function groupRemover(store: StateManager<State>, events: EventDi
 
 		if (hasGroup) {
 			// Remove all ; @group directive lines
-			codeBlock.code = codeBlock.code.filter(line => {
-				const commentMatch = line.match(/^\s*;\s*@(\w+)/);
-				return !(commentMatch && commentMatch[1] === 'group');
-			});
+			codeBlock.code = removeDirective(codeBlock.code, 'group');
 
 			// Update lastUpdated to invalidate cache
 			codeBlock.lastUpdated = Date.now();

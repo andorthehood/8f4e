@@ -27,7 +27,7 @@ import autoEnvConstants from './features/code-blocks/features/auto-env-constants
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
 import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
 import favoriteToggler from './features/code-blocks/features/favoriteToggler/effect';
-import groupRemover from './features/code-blocks/features/groupRemover/effect';
+import groupRemover from './features/code-blocks/features/group/remover/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
 
