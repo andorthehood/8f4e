@@ -117,6 +117,29 @@ When a code block contains this directive, it appears in the "Jump to..." submen
 
 Use this to bookmark important modules, functions, or other blocks in large projects for faster navigation.
 
+### `@group`
+
+Assign a code block to a named group for coordinated movement.
+
+```txt
+; @group <groupName>
+```
+
+When a code block contains this directive, holding the Alt/Option key while dragging the block will move all blocks with the same group name together. This is useful for keeping related modules, functions, or other blocks positioned relative to each other.
+
+Examples:
+
+```txt
+; @group audio-chain
+; @group visualizers
+; @group utilities
+```
+
+Notes:
+- Group names are case-sensitive and should not contain spaces.
+- Blocks without a group directive or with different group names are unaffected by grouped drag.
+- Normal drag behavior (without Alt/Option) remains unchanged.
+
 ## Notes
 
 - Directive parsing should be strict: plain comments like `; note` are not directives.

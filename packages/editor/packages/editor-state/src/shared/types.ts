@@ -50,6 +50,8 @@ export interface InternalMouseEvent {
 	stopPropagation: boolean;
 	canvasWidth: number;
 	canvasHeight: number;
+	/** Alt/Option key modifier state */
+	altKey: boolean;
 }
 
 /**
