@@ -1,4 +1,5 @@
 import parseFavorite from '../favorites/codeParser';
+import removeDirective from '../../utils/removeDirective';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -23,10 +24,7 @@ export default function favoriteToggler(store: StateManager<State>, events: Even
 
 		if (hasFavorite) {
 			// Remove all ; @favorite directive lines
-			codeBlock.code = codeBlock.code.filter(line => {
-				const commentMatch = line.match(/^\s*;\s*@(\w+)/);
-				return !(commentMatch && commentMatch[1] === 'favorite');
-			});
+			codeBlock.code = removeDirective(codeBlock.code, 'favorite');
 		} else {
 			// Find the best position to insert the directive
 			// For modules/functions/shaders, insert after the header line
