@@ -30,11 +30,6 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 			) {
 				const refValue = _arguments[1].value;
 
-				// Only process if it's an inter-module reference
-				if (!(INTERMODULAR_REFERENCE_PATTERN.test(refValue) || isIntermodularElementCountReference(refValue))) {
-					return;
-				}
-
 				// Handle inter-module address references (&module.memory or &module.memory&)
 				if (INTERMODULAR_REFERENCE_PATTERN.test(refValue)) {
 					// Check if this is an end-address reference (ends with &)
@@ -67,10 +62,8 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 							memory.default = targetMemory.byteAddress;
 						}
 					}
-				}
-
-				// Handle inter-module element count references ($module.memory)
-				if (isIntermodularElementCountReference(refValue)) {
+				} else if (isIntermodularElementCountReference(refValue)) {
+					// Handle inter-module element count references ($module.memory)
 					const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementCountBase(refValue);
 
 					const targetModule = compiledModules[targetModuleId];
