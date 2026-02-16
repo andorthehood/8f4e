@@ -13,7 +13,12 @@ export interface CodeBlockClickEvent {
 
 export default function codeBlockDragger(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
-	function onMouseDown({ x, y }: InternalMouseEvent) {
+	// dragSet holds the blocks being dragged together. It's computed fresh on each mousedown
+	// and cleared on mouseup, so concurrent drags are not a concern (only one drag at a time).
+	let dragSet: CodeBlockGraphicData[] = [];
+
+	function onMouseDown(event: InternalMouseEvent) {
+		const { x, y, altKey } = event;
 		if (!state.featureFlags.moduleDragging) {
 			return;
 		}
@@ -25,6 +30,15 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			return;
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
+
+		// Compute drag set based on modifier and group
+		if (altKey && draggedCodeBlock.groupName) {
+			// Grouped drag: include all blocks with matching group name
+			dragSet = state.graphicHelper.codeBlocks.filter(block => block.groupName === draggedCodeBlock.groupName);
+		} else {
+			// Single block drag
+			dragSet = [draggedCodeBlock];
+		}
 
 		const relativeX = Math.abs(x - (draggedCodeBlock.x + draggedCodeBlock.offsetX - state.viewport.x));
 		const relativeY = Math.abs(y - (draggedCodeBlock.y + draggedCodeBlock.offsetY - state.viewport.y));
@@ -46,29 +60,48 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 
 	function onMouseMove(event: InternalMouseEvent) {
 		const { movementX, movementY } = event;
-		if (state.graphicHelper.draggedCodeBlock) {
-			state.graphicHelper.draggedCodeBlock.x += movementX;
-			state.graphicHelper.draggedCodeBlock.y += movementY;
+		if (state.graphicHelper.draggedCodeBlock && dragSet.length > 0) {
+			// Apply movement to all blocks in drag set
+			for (const block of dragSet) {
+				block.x += movementX;
+				block.y += movementY;
+			}
 			event.stopPropagation = true;
 		}
 	}
 
 	function onMouseUp() {
-		if (!state.graphicHelper.draggedCodeBlock) {
+		if (!state.graphicHelper.draggedCodeBlock || dragSet.length === 0) {
 			return;
 		}
 
-		// Compute grid coordinates from pixel position
-		const gridX = Math.round(state.graphicHelper.draggedCodeBlock.x / state.viewport.vGrid);
-		const gridY = Math.round(state.graphicHelper.draggedCodeBlock.y / state.viewport.hGrid);
+		const primaryBlock = state.graphicHelper.draggedCodeBlock;
+		const vGrid = state.viewport.vGrid;
+		const hGrid = state.viewport.hGrid;
 
-		// Update grid coordinates and recompute snapped pixel coordinates
-		state.graphicHelper.draggedCodeBlock.gridX = gridX;
-		state.graphicHelper.draggedCodeBlock.gridY = gridY;
-		state.graphicHelper.draggedCodeBlock.x = gridX * state.viewport.vGrid;
-		state.graphicHelper.draggedCodeBlock.y = gridY * state.viewport.hGrid;
+		// Compute a single snap delta based on the primary dragged block
+		const snapGridX = Math.round(primaryBlock.x / vGrid);
+		const snapGridY = Math.round(primaryBlock.y / hGrid);
+		const snapX = snapGridX * vGrid;
+		const snapY = snapGridY * hGrid;
+		const deltaX = snapX - primaryBlock.x;
+		const deltaY = snapY - primaryBlock.y;
+
+		// Snap all blocks in drag set to grid using the same pixel delta
+		for (const block of dragSet) {
+			block.x += deltaX;
+			block.y += deltaY;
+
+			const gridX = Math.round(block.x / vGrid);
+			const gridY = Math.round(block.y / hGrid);
+			block.gridX = gridX;
+			block.gridY = gridY;
+			block.x = gridX * vGrid;
+			block.y = gridY * hGrid;
+		}
 
 		state.graphicHelper.draggedCodeBlock = undefined;
+		dragSet = [];
 	}
 
 	events.on('mousedown', onMouseDown);
