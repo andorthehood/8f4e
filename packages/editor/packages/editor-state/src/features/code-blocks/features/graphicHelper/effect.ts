@@ -25,6 +25,7 @@ import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
+import parseGroup from '../group/codeParser';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -107,6 +108,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
 		graphicData.id = getCodeBlockId(graphicData.code);
+		graphicData.groupName = parseGroup(graphicData.code);
 	};
 
 	const updateGraphicsAll = function () {
