@@ -26,6 +26,7 @@ import shaderEffectsDeriver from './features/shader-effects/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
 import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
+import groupStickyToggler from './features/code-blocks/features/group/stickyToggler/effect';
 import favoriteToggler from './features/code-blocks/features/favoriteToggler/effect';
 import groupRemover from './features/code-blocks/features/group/remover/effect';
 import groupUngroupper from './features/code-blocks/features/group/ungroupper/effect';
@@ -77,6 +78,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	codeBlockCreator(store, events);
 	skipExecutionToggler(store, events);
 	groupSkipExecutionToggler(store, events);
+	groupStickyToggler(store, events);
 	favoriteToggler(store, events);
 	groupRemover(store, events);
 	groupUngroupper(store, events);
