@@ -2,6 +2,8 @@ import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { INTERMODULAR_REFERENCE_PATTERN } from '../syntax/isIntermodularReferencePattern';
+import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
@@ -28,10 +30,20 @@ const init: InstructionCompiler = withValidation(
 
 		if (line.arguments[1].type === ArgumentType.LITERAL) {
 			defaultValue = line.arguments[1].value;
-		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && /&(\S+)\.(\S+)/.test(line.arguments[1].value)) {
+		} else if (
+			line.arguments[1].type === ArgumentType.IDENTIFIER &&
+			INTERMODULAR_REFERENCE_PATTERN.test(line.arguments[1].value)
+		) {
 			// Do nothing
 			// Intermodular references are resolved later
+		} else if (
+			line.arguments[1].type === ArgumentType.IDENTIFIER &&
+			isIntermodularElementCountReference(line.arguments[1].value)
+		) {
+			// Do nothing
+			// Intermodular element count references are resolved later
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
+			// Local memory address reference (e.g., &buffer)
 			const memoryItem = memory[line.arguments[1].value.substring(1)];
 
 			if (!memoryItem) {
@@ -39,6 +51,15 @@ const init: InstructionCompiler = withValidation(
 			}
 
 			defaultValue = memoryItem.byteAddress;
+		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '$') {
+			// Local memory element count reference (e.g., $buffer)
+			const memoryItem = memory[line.arguments[1].value.substring(1)];
+
+			if (!memoryItem) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+			}
+
+			defaultValue = memoryItem.wordAlignedSize;
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
 			const constant = context.namespace.consts[line.arguments[1].value];
 
