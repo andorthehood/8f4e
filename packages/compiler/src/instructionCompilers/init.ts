@@ -31,6 +31,9 @@ const init: InstructionCompiler = withValidation(
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && /&(\S+)\.(\S+)/.test(line.arguments[1].value)) {
 			// Do nothing
 			// Intermodular references are resolved later
+		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && /\$(\S+)\.(\S+)/.test(line.arguments[1].value)) {
+			// Do nothing
+			// Intermodular element count references are resolved later
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
 			const memoryItem = memory[line.arguments[1].value.substring(1)];
 
@@ -39,6 +42,14 @@ const init: InstructionCompiler = withValidation(
 			}
 
 			defaultValue = memoryItem.byteAddress;
+		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '$') {
+			const memoryItem = memory[line.arguments[1].value.substring(1)];
+
+			if (!memoryItem) {
+				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
+			}
+
+			defaultValue = memoryItem.wordAlignedSize;
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
 			const constant = context.namespace.consts[line.arguments[1].value];
 
