@@ -235,6 +235,6 @@ describe('inter-module references - element word size', () => {
 		expect(targetModule.memoryMap['size']).toBeDefined();
 		// Should get the element word size of the pointer type
 		expect(targetModule.memoryMap['size'].default).toBe(sourceModule.memoryMap['ptr'].elementWordSize);
-		expect(targetModule.memoryMap['size'].default).toBe(4); // pointer is 4 bytes
+		expect(targetModule.memoryMap['size'].default).toBe(4); // int (pointed-to type) is 4 bytes
 	});
 });
