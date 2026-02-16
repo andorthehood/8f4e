@@ -127,8 +127,9 @@ Assign a code block to a named group for coordinated movement.
 
 When a code block contains this directive, it can be moved together with other blocks sharing the same group name:
 
-- **Without `sticky`**: Hold Alt/Option while dragging to move all blocks in the group together (normal behavior)
-- **With `sticky`**: All blocks in the group always move together, without requiring Alt/Option key
+- **Default behavior**: All blocks in the group move together when you drag any member
+- **With `Alt/Option` held**: Override group drag to move only the selected block (single-block drag)
+- **With `sticky` keyword**: All blocks in the group always move together, Alt/Option key has no effect
 
 This is useful for keeping related modules, functions, or other blocks positioned relative to each other.
 
@@ -154,8 +155,9 @@ Notes:
 - Group names can contain letters, numbers, hyphens, and underscores.
 - Group names should not contain spaces (the first token after @group is used as the group name).
 - The `sticky` keyword must be exactly `sticky` (lowercase) to be recognized.
-- Blocks without a group directive or with different group names are unaffected by grouped drag.
-- Normal single-block drag behavior remains unchanged for non-grouped blocks.
+- By default, all blocks in a group move together when dragging. Use Alt/Option to override and drag a single block.
+- Sticky groups always move together regardless of the Alt/Option key.
+- Ungrouped blocks are unaffected and always use single-block drag behavior.
 
 ## Notes
 
