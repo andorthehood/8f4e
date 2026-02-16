@@ -1,24 +1,29 @@
+export interface GroupParseResult {
+	groupName: string;
+	sticky: boolean;
+}
+
 /**
  * Parses ; @group directive from code block lines.
  *
  * A code block is assigned a group name if it contains a line matching the pattern:
- * "; @group <groupName>"
+ * "; @group <groupName> [sticky]"
  *
  * @param code - Array of code lines to parse
- * @returns The group name if a valid @group directive is found, undefined otherwise
+ * @returns Object with groupName and sticky flag if a valid @group directive is found, undefined otherwise
  *
  * @example
  * ```typescript
  * const code = [
  *   'module myModule',
- *   '; @group audio-chain',
+ *   '; @group audio-chain sticky',
  *   'output out 1',
  *   'moduleEnd'
  * ];
- * const groupName = parseGroup(code); // 'audio-chain'
+ * const result = parseGroup(code); // { groupName: 'audio-chain', sticky: true }
  * ```
  */
-export default function parseGroup(code: string[]): string | undefined {
+export default function parseGroup(code: string[]): GroupParseResult | undefined {
 	for (const line of code) {
 		// Match semicolon comment lines with @group directive followed by an argument
 		const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
@@ -26,9 +31,12 @@ export default function parseGroup(code: string[]): string | undefined {
 			// Extract the first token from the args as the group name
 			const args = commentMatch[2].trim();
 			if (args.length > 0) {
+				const tokens = args.split(/\s+/);
 				// First word/token is the group name
-				const groupName = args.split(/\s+/)[0];
-				return groupName;
+				const groupName = tokens[0];
+				// Second token (if present and equals 'sticky') sets sticky flag
+				const sticky = tokens.length > 1 && tokens[1] === 'sticky';
+				return { groupName, sticky };
 			}
 		}
 	}
