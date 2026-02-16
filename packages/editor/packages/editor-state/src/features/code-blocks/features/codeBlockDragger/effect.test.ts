@@ -59,8 +59,8 @@ describe('codeBlockDragger', () => {
 		};
 	});
 
-	describe('single block drag (no modifier)', () => {
-		it('should drag a single block without Alt key', () => {
+	describe('single block drag (ungrouped blocks)', () => {
+		it('should drag a single ungrouped block without Alt key', () => {
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', 'moduleEnd'],
 				gridX: 5,
@@ -116,7 +116,7 @@ describe('codeBlockDragger', () => {
 			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
 		});
 
-		it('should not drag other blocks without Alt key', () => {
+		it('should drag grouped blocks together without Alt key (default group drag)', () => {
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', '; @group audio', 'moduleEnd'],
 				gridX: 5,
@@ -143,7 +143,7 @@ describe('codeBlockDragger', () => {
 
 			codeBlockDragger(store, events);
 
-			// Mousedown on block1 without Alt key
+			// Mousedown on block1 without Alt key - should drag whole group
 			mousedownHandlers[0]({
 				x: 50,
 				y: 100,
@@ -169,16 +169,16 @@ describe('codeBlockDragger', () => {
 				altKey: false,
 			});
 
+			// Both block1 and block2 should move together
 			expect(block1.x).toBe(60);
 			expect(block1.y).toBe(110);
-			// block2 should not move
-			expect(block2.x).toBe(100);
-			expect(block2.y).toBe(200);
+			expect(block2.x).toBe(110);
+			expect(block2.y).toBe(210);
 		});
 	});
 
-	describe('grouped drag (with Alt modifier)', () => {
-		it('should drag all blocks in same group with Alt key', () => {
+	describe('grouped drag (default behavior without Alt)', () => {
+		it('should drag all blocks in same group by default (without Alt key)', () => {
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', '; @group audio', 'moduleEnd'],
 				gridX: 5,
@@ -215,7 +215,7 @@ describe('codeBlockDragger', () => {
 
 			codeBlockDragger(store, events);
 
-			// Mousedown on block1 with Alt key
+			// Mousedown on block1 without Alt key (default group drag)
 			mousedownHandlers[0]({
 				x: 50,
 				y: 100,
@@ -225,7 +225,7 @@ describe('codeBlockDragger', () => {
 				stopPropagation: false,
 				canvasWidth: 800,
 				canvasHeight: 600,
-				altKey: true,
+				altKey: false,
 			});
 
 			expect(state.graphicHelper.draggedCodeBlock).toBe(block1);
@@ -240,7 +240,7 @@ describe('codeBlockDragger', () => {
 				stopPropagation: false,
 				canvasWidth: 800,
 				canvasHeight: 600,
-				altKey: true,
+				altKey: false,
 			});
 
 			// Both block1 and block2 should move
@@ -273,7 +273,7 @@ describe('codeBlockDragger', () => {
 			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
 		});
 
-		it('should not group drag if block has no group name with Alt key', () => {
+		it('should not group drag if block has no group name even without Alt key', () => {
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', 'moduleEnd'],
 				gridX: 5,
@@ -298,7 +298,7 @@ describe('codeBlockDragger', () => {
 
 			codeBlockDragger(store, events);
 
-			// Mousedown on block1 with Alt key but no group
+			// Mousedown on block1 without Alt key but no group
 			mousedownHandlers[0]({
 				x: 50,
 				y: 100,
@@ -308,7 +308,7 @@ describe('codeBlockDragger', () => {
 				stopPropagation: false,
 				canvasWidth: 800,
 				canvasHeight: 600,
-				altKey: true,
+				altKey: false,
 			});
 
 			// Mousemove
@@ -321,7 +321,7 @@ describe('codeBlockDragger', () => {
 				stopPropagation: false,
 				canvasWidth: 800,
 				canvasHeight: 600,
-				altKey: true,
+				altKey: false,
 			});
 
 			// Only block1 should move (no group)
@@ -331,7 +331,7 @@ describe('codeBlockDragger', () => {
 			expect(block2.y).toBe(200);
 		});
 
-		it('should drag blocks in different groups separately', () => {
+		it('should drag blocks in different groups separately (without Alt)', () => {
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', '; @group audio', 'moduleEnd'],
 				gridX: 5,
@@ -358,7 +358,151 @@ describe('codeBlockDragger', () => {
 
 			codeBlockDragger(store, events);
 
-			// Mousedown on block1 with Alt key
+			// Mousedown on block1 without Alt key
+			mousedownHandlers[0]({
+				x: 50,
+				y: 100,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			// Mousemove
+			mousemoveHandlers[0]({
+				x: 60,
+				y: 110,
+				movementX: 10,
+				movementY: 10,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			// Only block1 should move (different groups)
+			expect(block1.x).toBe(60);
+			expect(block1.y).toBe(110);
+			expect(block2.x).toBe(100);
+			expect(block2.y).toBe(200);
+		});
+	});
+
+	describe('single block override (Alt key on grouped blocks)', () => {
+		it('should drag only selected block with Alt key (override group drag)', () => {
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', '; @group audio', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				creationIndex: 0,
+				blockType: 'module',
+				groupName: 'audio',
+			});
+
+			const block2 = createCodeBlockGraphicData({
+				code: ['module test2', '; @group audio', 'moduleEnd'],
+				gridX: 10,
+				gridY: 10,
+				x: 100,
+				y: 200,
+				creationIndex: 1,
+				blockType: 'module',
+				groupName: 'audio',
+			});
+
+			state.graphicHelper.codeBlocks = [block1, block2];
+
+			codeBlockDragger(store, events);
+
+			// Mousedown on block1 WITH Alt key - should override group drag
+			mousedownHandlers[0]({
+				x: 50,
+				y: 100,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: true,
+			});
+
+			expect(state.graphicHelper.draggedCodeBlock).toBe(block1);
+
+			// Mousemove
+			mousemoveHandlers[0]({
+				x: 60,
+				y: 110,
+				movementX: 10,
+				movementY: 10,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: true,
+			});
+
+			// Only block1 should move (Alt override)
+			expect(block1.x).toBe(60);
+			expect(block1.y).toBe(110);
+			// block2 should NOT move despite being in same group
+			expect(block2.x).toBe(100);
+			expect(block2.y).toBe(200);
+
+			// Mouseup
+			mouseupHandlers[0]();
+
+			// Only block1 should snap
+			expect(block1.gridX).toBe(6);
+			expect(block1.gridY).toBe(6);
+			expect(block1.x).toBe(60);
+			expect(block1.y).toBe(120);
+
+			// block2 unchanged
+			expect(block2.gridX).toBe(10);
+			expect(block2.gridY).toBe(10);
+			expect(block2.x).toBe(100);
+			expect(block2.y).toBe(200);
+
+			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+		});
+
+		it('should not affect sticky groups (always drag together regardless of Alt)', () => {
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', '; @group audio sticky', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				creationIndex: 0,
+				blockType: 'module',
+				groupName: 'audio',
+				groupSticky: true,
+			});
+
+			const block2 = createCodeBlockGraphicData({
+				code: ['module test2', '; @group audio sticky', 'moduleEnd'],
+				gridX: 10,
+				gridY: 10,
+				x: 100,
+				y: 200,
+				creationIndex: 1,
+				blockType: 'module',
+				groupName: 'audio',
+				groupSticky: true,
+			});
+
+			state.graphicHelper.codeBlocks = [block1, block2];
+
+			codeBlockDragger(store, events);
+
+			// Mousedown on block1 WITH Alt key - sticky should ignore Alt
 			mousedownHandlers[0]({
 				x: 50,
 				y: 100,
@@ -384,11 +528,11 @@ describe('codeBlockDragger', () => {
 				altKey: true,
 			});
 
-			// Only block1 should move (different groups)
+			// Both blocks should move together (sticky overrides Alt)
 			expect(block1.x).toBe(60);
 			expect(block1.y).toBe(110);
-			expect(block2.x).toBe(100);
-			expect(block2.y).toBe(200);
+			expect(block2.x).toBe(110);
+			expect(block2.y).toBe(210);
 		});
 	});
 
