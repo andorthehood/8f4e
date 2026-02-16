@@ -32,8 +32,11 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
-		// Compute drag set based on modifier and group
-		if (altKey && draggedCodeBlock.groupName) {
+		// Compute drag set based on sticky flag and modifier
+		// 1. If block is in a sticky group: always group drag
+		// 2. Else if block is in a non-sticky group and modifier is held: group drag
+		// 3. Else: normal single-block drag
+		if (draggedCodeBlock.groupName && (draggedCodeBlock.groupSticky || altKey)) {
 			// Grouped drag: include all blocks with matching group name
 			dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
 		} else {
