@@ -6,14 +6,14 @@ import { ArgumentType, CompiledModuleLookup } from '../types';
 
 /**
  * Resolves inter-modular connections by finding references like &module.memory,
- * &module.memory&, and $module.memory in compiled modules and setting the appropriate memory defaults.
+ * module.memory&, and $module.memory in compiled modules and setting the appropriate memory defaults.
  *
  * This function:
  * - Identifies inter-module references in memory declarations and init instructions
  * - Validates that both the target module and memory exist
  * - Computes the appropriate value based on the reference syntax:
  *   - &module.memory: start address (byteAddress)
- *   - &module.memory&: end address (byteAddress + (wordAlignedSize - 1) * 4)
+ *   - module.memory&: end address (byteAddress + (wordAlignedSize - 1) * 4)
  *   - $module.memory: element count (wordAlignedSize)
  * - Updates the local memory's default value with the resolved value
  */
@@ -30,12 +30,16 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 			) {
 				const refValue = _arguments[1].value;
 
-				// Handle inter-module address references (&module.memory or &module.memory&)
+				// Handle inter-module address references (&module.memory or module.memory&)
 				if (INTERMODULAR_REFERENCE_PATTERN.test(refValue)) {
 					// Check if this is an end-address reference (ends with &)
 					const isEndAddress = refValue.endsWith('&');
-					// Remove leading & and trailing & (if present)
-					const cleanRef = refValue.substring(1, isEndAddress ? refValue.length - 1 : refValue.length);
+					// Parse reference based on form:
+					// - Start: &module.memory -> remove leading &
+					// - End: module.memory& -> remove trailing &
+					const cleanRef = isEndAddress
+						? refValue.substring(0, refValue.length - 1) // Remove trailing &
+						: refValue.substring(1); // Remove leading &
 					const [targetModuleId, targetMemoryId] = cleanRef.split('.');
 
 					const targetModule = compiledModules[targetModuleId];
