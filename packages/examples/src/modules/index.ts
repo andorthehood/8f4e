@@ -29,6 +29,7 @@ export { default as changeDetectorInt } from './changeDetectorInt';
 export { default as clockDivider } from './clockDivider';
 export { default as decToBin8bitMSb } from './decToBin8bitMSb';
 export { default as delay } from './delay';
+export { default as euclideanRhythm } from './euclideanRhythm';
 export { default as expLookupTable } from './expLookupTable';
 export { default as generalMIDIDrumCodes } from './generalMIDIDrumCodes';
 export { default as highPassFilter } from './highPassFilter';
