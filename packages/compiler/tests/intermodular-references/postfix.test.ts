@@ -1,29 +1,8 @@
 import { describe, test, expect } from 'vitest';
 
-import compile from '../src';
+import compile from '../../src';
 
-describe('inter-module references', () => {
-	test('resolves start-address inter-module reference (&module.memory)', () => {
-		const modules = [
-			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int* ptr &sourceModule.buffer', 'moduleEnd'] },
-		];
-
-		const result = compile(modules, {
-			startingMemoryWordAddress: 0,
-			memorySizeBytes: 65536,
-		});
-
-		const sourceModule = result.compiledModules['sourceModule'];
-		const targetModule = result.compiledModules['targetModule'];
-
-		expect(sourceModule).toBeDefined();
-		expect(targetModule).toBeDefined();
-		expect(targetModule.memoryMap['ptr']).toBeDefined();
-		// ptr should point to the start address of buffer
-		expect(targetModule.memoryMap['ptr'].default).toBe(sourceModule.memoryMap['buffer'].byteAddress);
-	});
-
+describe('inter-module references - postfix (&)', () => {
 	test('resolves end-address inter-module reference (&module.memory&)', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
@@ -91,21 +70,6 @@ describe('inter-module references', () => {
 		const expectedEndAddress =
 			sourceModule.memoryMap['buffer'].byteAddress + (sourceModule.memoryMap['buffer'].wordAlignedSize - 1) * 4;
 		expect(targetModule.memoryMap['ptr'].default).toBe(expectedEndAddress);
-	});
-
-	test('rejects multi-dot inter-module reference', () => {
-		const modules = [
-			{ code: ['module sourceModule', 'int buffer 42', 'moduleEnd'] },
-			{ code: ['module targetModule', 'int* ptr &sourceModule.buffer.extra', 'moduleEnd'] },
-		];
-
-		// Should throw because multi-dot references are now rejected
-		expect(() => {
-			compile(modules, {
-				startingMemoryWordAddress: 0,
-				memorySizeBytes: 65536,
-			});
-		}).toThrow();
 	});
 
 	test('module dependency sorting works with end-address references', () => {
