@@ -26,6 +26,8 @@ export { default as extractElementCountBase } from './extractElementCountBase';
 export { default as hasElementWordSizePrefix } from './hasElementWordSizePrefix';
 export { default as extractElementWordSizeBase } from './extractElementWordSizeBase';
 export { default as isIntermodularReference } from './isIntermodularReference';
+export { default as isIntermodularElementWordSizeReference } from './isIntermodularElementWordSizeReference';
+export { default as extractIntermodularElementWordSizeBase } from './extractIntermodularElementWordSizeBase';
 export { default as getPointerDepth } from './getPointerDepth';
 export {
 	parseMemoryInstructionArgumentsShape,
