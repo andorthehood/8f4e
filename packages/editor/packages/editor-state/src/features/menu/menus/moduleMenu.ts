@@ -81,6 +81,16 @@ export const moduleMenu: MenuGenerator = state => {
 								},
 							]
 						: []),
+					...(hasGroup
+						? [
+								{
+									title: 'Remove from group',
+									action: 'removeFromGroupDirective',
+									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									close: true,
+								},
+							]
+						: []),
 					{
 						title: hasFavoriteDirective ? 'Unfavorite' : 'Favorite',
 						action: 'toggleFavoriteDirective',
