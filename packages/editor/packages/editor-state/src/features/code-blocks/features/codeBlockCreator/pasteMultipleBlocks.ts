@@ -1,7 +1,7 @@
 import { getModuleId, getFunctionId } from '@8f4e/compiler/syntax';
 
 import { type ClipboardCodeBlock } from '../clipboard/clipboardUtils';
-import { extractGroupNameFromCode } from '../clipboard/clipboardUtils';
+import { extractGroupName } from '../group/extractGroupName';
 import { createGroupNameMapping } from '../group/getUniqueGroupName';
 import { replaceGroupName } from '../group/replaceGroupName';
 import getCodeBlockId from '../../utils/getCodeBlockId';
@@ -126,7 +126,7 @@ export function pasteMultipleBlocks(
 	// Extract all group names from pasted blocks
 	const pastedGroupNames: string[] = [];
 	for (const block of blocks) {
-		const groupName = extractGroupNameFromCode(block.code);
+		const groupName = extractGroupName(block.code);
 		if (groupName) {
 			pastedGroupNames.push(groupName);
 		}
@@ -210,7 +210,7 @@ export function pasteMultipleBlocks(
 		code = updateInterModuleReferences(code, simpleIdMapping);
 
 		// Rename group if needed
-		const originalGroupName = extractGroupNameFromCode(code);
+		const originalGroupName = extractGroupName(code);
 		if (originalGroupName && groupNameMapping.has(originalGroupName)) {
 			const newGroupName = groupNameMapping.get(originalGroupName)!;
 			// Replace the group name in the code

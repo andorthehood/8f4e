@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
-import { serializeGroupToClipboard, parseClipboardData, extractGroupNameFromCode } from './clipboardUtils';
+import { serializeGroupToClipboard, parseClipboardData } from './clipboardUtils';
+
+import { extractGroupName } from '../group/extractGroupName';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
@@ -228,11 +230,11 @@ describe('parseClipboardData', () => {
 	});
 });
 
-describe('extractGroupNameFromCode', () => {
+describe('extractGroupName', () => {
 	it('should extract group name from code with @group directive', () => {
 		const code = ['module test', '; @group audio-chain', 'moduleEnd'];
 
-		const groupName = extractGroupNameFromCode(code);
+		const groupName = extractGroupName(code);
 
 		expect(groupName).toBe('audio-chain');
 	});
@@ -240,7 +242,7 @@ describe('extractGroupNameFromCode', () => {
 	it('should return undefined when no @group directive', () => {
 		const code = ['module test', 'moduleEnd'];
 
-		const groupName = extractGroupNameFromCode(code);
+		const groupName = extractGroupName(code);
 
 		expect(groupName).toBeUndefined();
 	});
@@ -248,7 +250,7 @@ describe('extractGroupNameFromCode', () => {
 	it('should extract group name ignoring sticky flag', () => {
 		const code = ['module test', '; @group audio-chain sticky', 'moduleEnd'];
 
-		const groupName = extractGroupNameFromCode(code);
+		const groupName = extractGroupName(code);
 
 		expect(groupName).toBe('audio-chain');
 	});
