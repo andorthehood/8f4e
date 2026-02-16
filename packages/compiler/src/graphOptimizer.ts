@@ -1,3 +1,4 @@
+import { INTERMODULAR_REFERENCE_PATTERN } from './syntax/isIntermodularReferencePattern';
 import { ArgumentType } from './types';
 
 import type { AST } from './types';
@@ -45,7 +46,7 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						/^&[^\s&.]+\.[^\s&.]+&?$/.test(_arguments[1].value)
+						INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value)
 					);
 				})
 				.map(({ arguments: _arguments }) => {
@@ -63,7 +64,7 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						/^&[^\s&.]+\.[^\s&.]+&?$/.test(_arguments[1].value)
+						INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value)
 					);
 				})
 				.map(({ arguments: _arguments }) => {
