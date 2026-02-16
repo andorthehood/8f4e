@@ -1,5 +1,3 @@
-import parseGroup from '../group/codeParser';
-
 import type { CodeBlockGraphicData } from '~/types';
 
 /**
@@ -109,13 +107,4 @@ export function parseClipboardData(
 	}
 
 	return { type: 'multi', blocks: parsed };
-}
-
-/**
- * Extracts group names from a clipboard block's code.
- * Returns undefined if no group directive is found.
- */
-export function extractGroupNameFromCode(code: string[]): string | undefined {
-	const groupInfo = parseGroup(code);
-	return groupInfo?.groupName;
 }
