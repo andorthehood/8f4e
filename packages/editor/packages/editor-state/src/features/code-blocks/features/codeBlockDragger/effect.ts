@@ -75,14 +75,29 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			return;
 		}
 
-		// Snap all blocks in drag set to grid
+		const primaryBlock = state.graphicHelper.draggedCodeBlock;
+		const vGrid = state.viewport.vGrid;
+		const hGrid = state.viewport.hGrid;
+
+		// Compute a single snap delta based on the primary dragged block
+		const snapGridX = Math.round(primaryBlock.x / vGrid);
+		const snapGridY = Math.round(primaryBlock.y / hGrid);
+		const snapX = snapGridX * vGrid;
+		const snapY = snapGridY * hGrid;
+		const deltaX = snapX - primaryBlock.x;
+		const deltaY = snapY - primaryBlock.y;
+
+		// Snap all blocks in drag set to grid using the same pixel delta
 		for (const block of dragSet) {
-			const gridX = Math.round(block.x / state.viewport.vGrid);
-			const gridY = Math.round(block.y / state.viewport.hGrid);
+			block.x += deltaX;
+			block.y += deltaY;
+
+			const gridX = Math.round(block.x / vGrid);
+			const gridY = Math.round(block.y / hGrid);
 			block.gridX = gridX;
 			block.gridY = gridY;
-			block.x = gridX * state.viewport.vGrid;
-			block.y = gridY * state.viewport.hGrid;
+			block.x = gridX * vGrid;
+			block.y = gridY * hGrid;
 		}
 
 		state.graphicHelper.draggedCodeBlock = undefined;
