@@ -92,10 +92,14 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 				_arguments[1] &&
 				_arguments[0].type === ArgumentType.IDENTIFIER &&
 				_arguments[1].type === ArgumentType.IDENTIFIER &&
-				/&(\S+)\.(\S+)/.test(_arguments[1].value)
+				/^&[^\s&.]+\.[^\s&.]+&?$/.test(_arguments[1].value)
 			) {
-				// Remove &
-				const [targetModuleId, targetMemoryId] = _arguments[1].value.substring(1).split('.');
+				const refValue = _arguments[1].value;
+				// Check if this is an end-address reference (ends with &)
+				const isEndAddress = refValue.endsWith('&');
+				// Remove leading & and trailing & (if present)
+				const cleanRef = refValue.substring(1, isEndAddress ? refValue.length - 1 : refValue.length);
+				const [targetModuleId, targetMemoryId] = cleanRef.split('.');
 
 				const targetModule = compiledModules[targetModuleId];
 
@@ -112,7 +116,14 @@ function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
 				const memory = memoryMap[_arguments[0].value];
 
 				if (memory) {
-					memory.default = targetMemory.byteAddress;
+					// Compute start or end address based on syntax
+					if (isEndAddress) {
+						// End address: byteAddress + (wordAlignedSize - 1) * 4
+						memory.default = targetMemory.byteAddress + (targetMemory.wordAlignedSize - 1) * 4;
+					} else {
+						// Start address
+						memory.default = targetMemory.byteAddress;
+					}
 				}
 			}
 		});
