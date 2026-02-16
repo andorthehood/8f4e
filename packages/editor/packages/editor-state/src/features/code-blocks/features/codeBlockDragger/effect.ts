@@ -1,4 +1,5 @@
 import findCodeBlockAtViewportCoordinates from '../../utils/finders/findCodeBlockAtViewportCoordinates';
+import { getGroupBlocks } from '../group/getGroupBlocks';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '~/types';
@@ -34,7 +35,7 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		// Compute drag set based on modifier and group
 		if (altKey && draggedCodeBlock.groupName) {
 			// Grouped drag: include all blocks with matching group name
-			dragSet = state.graphicHelper.codeBlocks.filter(block => block.groupName === draggedCodeBlock.groupName);
+			dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
 		} else {
 			// Single block drag
 			dragSet = [draggedCodeBlock];
