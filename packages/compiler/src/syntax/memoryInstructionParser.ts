@@ -5,13 +5,16 @@ import hasElementCountPrefix from './hasElementCountPrefix';
 import extractMemoryReferenceBase from './extractMemoryReferenceBase';
 import extractElementCountBase from './extractElementCountBase';
 import isIntermodularReference from './isIntermodularReference';
+import isIntermodularElementCountReference from './isIntermodularElementCountReference';
+import extractIntermodularElementCountBase from './extractIntermodularElementCountBase';
 
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }
 	| { type: 'identifier'; value: string }
 	| { type: 'memory-reference'; base: string; pattern: string }
 	| { type: 'element-count'; base: string }
-	| { type: 'intermodular-reference'; pattern: string };
+	| { type: 'intermodular-reference'; pattern: string }
+	| { type: 'intermodular-element-count'; module: string; memory: string; pattern: string };
 
 export interface ParsedMemoryInstructionArguments {
 	firstArg: MemoryArgumentShape;
@@ -58,6 +61,17 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
+	// Check for intermodular element count reference pattern (e.g., "$module.memory")
+	if (isIntermodularElementCountReference(arg.value)) {
+		const { module, memory } = extractIntermodularElementCountBase(arg.value);
+		return {
+			type: 'intermodular-element-count',
+			module,
+			memory,
+			pattern: arg.value,
+		};
+	}
+
 	// Check for memory reference prefix
 	if (hasMemoryReferencePrefix(arg.value)) {
 		return {
@@ -98,6 +112,16 @@ if (import.meta.vitest) {
 		it('parses intermodular reference argument', () => {
 			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '&mod.id' }]);
 			expect(result.firstArg).toEqual({ type: 'intermodular-reference', pattern: '&mod.id' });
+		});
+
+		it('parses intermodular element count argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '$mod.buffer' }]);
+			expect(result.firstArg).toEqual({
+				type: 'intermodular-element-count',
+				module: 'mod',
+				memory: 'buffer',
+				pattern: '$mod.buffer',
+			});
 		});
 
 		it('parses memory reference argument', () => {

@@ -1,4 +1,6 @@
 import { INTERMODULAR_REFERENCE_PATTERN } from './syntax/isIntermodularReferencePattern';
+import isIntermodularElementCountReference from './syntax/isIntermodularElementCountReference';
+import extractIntermodularElementCountBase from './syntax/extractIntermodularElementCountBase';
 import { ArgumentType } from './types';
 
 import type { AST } from './types';
@@ -46,11 +48,18 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value)
+						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
+							isIntermodularElementCountReference(_arguments[1].value))
 					);
 				})
 				.map(({ arguments: _arguments }) => {
 					const value = _arguments[1].value as string;
+					// Handle element count reference ($module.memory)
+					if (isIntermodularElementCountReference(value)) {
+						const { module } = extractIntermodularElementCountBase(value);
+						return module;
+					}
+					// Handle address reference (&module.memory or &module.memory&)
 					// Remove leading & and trailing & (if present)
 					const cleanRef = value.endsWith('&') ? value.substring(1, value.length - 1) : value.substring(1);
 					return cleanRef.split('.')[0];
@@ -64,11 +73,18 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value)
+						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
+							isIntermodularElementCountReference(_arguments[1].value))
 					);
 				})
 				.map(({ arguments: _arguments }) => {
 					const value = _arguments[1].value as string;
+					// Handle element count reference ($module.memory)
+					if (isIntermodularElementCountReference(value)) {
+						const { module } = extractIntermodularElementCountBase(value);
+						return module;
+					}
+					// Handle address reference (&module.memory or &module.memory&)
 					// Remove leading & and trailing & (if present)
 					const cleanRef = value.endsWith('&') ? value.substring(1, value.length - 1) : value.substring(1);
 					return cleanRef.split('.')[0];
