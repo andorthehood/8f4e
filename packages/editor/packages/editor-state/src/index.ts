@@ -28,6 +28,7 @@ import skipExecutionToggler from './features/code-blocks/features/skipExecutionT
 import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
 import favoriteToggler from './features/code-blocks/features/favoriteToggler/effect';
 import groupRemover from './features/code-blocks/features/group/remover/effect';
+import groupUngroupper from './features/code-blocks/features/group/ungroupper/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
 
@@ -78,6 +79,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	groupSkipExecutionToggler(store, events);
 	favoriteToggler(store, events);
 	groupRemover(store, events);
+	groupUngroupper(store, events);
 	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects

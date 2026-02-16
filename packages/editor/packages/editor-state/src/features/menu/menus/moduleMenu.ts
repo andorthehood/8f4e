@@ -89,6 +89,12 @@ export const moduleMenu: MenuGenerator = state => {
 									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 									close: true,
 								},
+								{
+									title: `Ungroup "${groupName}"`,
+									action: 'ungroupByName',
+									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									close: true,
+								},
 							]
 						: []),
 					{
