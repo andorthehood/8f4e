@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – Unprompted int32u[] Buffer Type Addition
 agent: GitHub Copilot Agent
-model: Claude 3.5 Sonnet
+model: Claude Sonnet 4.5
 date: 2026-02-16
 ---
 
