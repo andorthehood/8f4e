@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 
 import compile from '../../src';
 
-describe('inter-module references - postfix (&)', () => {
+describe('inter-module references - end address', () => {
 	test('resolves end-address inter-module reference (&module.memory&)', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 10 0', 'moduleEnd'] },
