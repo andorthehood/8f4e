@@ -226,6 +226,12 @@ export interface CodeBlockGraphicData {
 	 * Blocks with the same group name can be moved together when Alt/Option is held during drag.
 	 */
 	groupName?: string;
+	/**
+	 * Optional flag indicating whether the group should stick together during drag without requiring a modifier key.
+	 * When true, all blocks in this group will move together automatically.
+	 * Derived from the optional 'sticky' keyword in ; @group directive.
+	 */
+	groupSticky?: boolean;
 }
 
 /**

@@ -108,7 +108,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
 		graphicData.id = getCodeBlockId(graphicData.code);
-		graphicData.groupName = parseGroup(graphicData.code);
+		const groupResult = parseGroup(graphicData.code);
+		graphicData.groupName = groupResult?.groupName;
+		graphicData.groupSticky = groupResult?.sticky;
 	};
 
 	const updateGraphicsAll = function () {
