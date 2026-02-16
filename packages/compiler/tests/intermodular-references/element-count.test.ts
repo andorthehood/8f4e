@@ -62,6 +62,21 @@ describe('inter-module references - element count', () => {
 		}).toThrow();
 	});
 
+	test('rejects multi-dot element count reference in init instruction', () => {
+		const modules = [
+			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
+			{ code: ['module targetModule', 'int count', 'init count $sourceModule.buffer.extra', 'moduleEnd'] },
+		];
+
+		// Should throw because multi-dot references are rejected in init as well
+		expect(() => {
+			compile(modules, {
+				startingMemoryWordAddress: 0,
+				memorySizeBytes: 65536,
+			});
+		}).toThrow();
+	});
+
 	test('throws error for unknown module in element count reference', () => {
 		const modules = [
 			{ code: ['module sourceModule', 'int[] buffer 5 0', 'moduleEnd'] },
