@@ -9,6 +9,8 @@ import isIntermodularElementCountReference from './isIntermodularElementCountRef
 import extractIntermodularElementCountBase from './extractIntermodularElementCountBase';
 import isIntermodularElementWordSizeReference from './isIntermodularElementWordSizeReference';
 import extractIntermodularElementWordSizeBase from './extractIntermodularElementWordSizeBase';
+import isIntermodularElementMaxReference from './isIntermodularElementMaxReference';
+import extractIntermodularElementMaxBase from './extractIntermodularElementMaxBase';
 
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }
@@ -17,7 +19,8 @@ export type MemoryArgumentShape =
 	| { type: 'element-count'; base: string }
 	| { type: 'intermodular-reference'; pattern: string }
 	| { type: 'intermodular-element-count'; module: string; memory: string; pattern: string }
-	| { type: 'intermodular-element-word-size'; module: string; memory: string; pattern: string };
+	| { type: 'intermodular-element-word-size'; module: string; memory: string; pattern: string }
+	| { type: 'intermodular-element-max'; module: string; memory: string; pattern: string };
 
 export interface ParsedMemoryInstructionArguments {
 	firstArg: MemoryArgumentShape;
@@ -86,6 +89,17 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
+	// Check for intermodular element max reference pattern (e.g., "^module.memory")
+	if (isIntermodularElementMaxReference(arg.value)) {
+		const { module, memory } = extractIntermodularElementMaxBase(arg.value);
+		return {
+			type: 'intermodular-element-max',
+			module,
+			memory,
+			pattern: arg.value,
+		};
+	}
+
 	// Check for memory reference prefix
 	if (hasMemoryReferencePrefix(arg.value)) {
 		return {
@@ -145,6 +159,16 @@ if (import.meta.vitest) {
 				module: 'mod',
 				memory: 'buffer',
 				pattern: '%mod.buffer',
+			});
+		});
+
+		it('parses intermodular element max argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '^mod.buffer' }]);
+			expect(result.firstArg).toEqual({
+				type: 'intermodular-element-max',
+				module: 'mod',
+				memory: 'buffer',
+				pattern: '^mod.buffer',
 			});
 		});
 
