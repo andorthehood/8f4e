@@ -1,5 +1,6 @@
 import { isSkipExecutionDirective } from '@8f4e/compiler/syntax';
 
+import { getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
 import parseFavorite from '../../code-blocks/features/favorites/codeParser';
 
 import type { CodeBlockGraphicData, MenuGenerator } from '~/types';
@@ -38,9 +39,7 @@ export const moduleMenu: MenuGenerator = state => {
 
 	if (hasGroup && blockType === 'module') {
 		// Find all module blocks in the same group
-		const groupModuleBlocks = state.graphicHelper.codeBlocks.filter(
-			(block: CodeBlockGraphicData) => block.groupName === groupName && block.blockType === 'module'
-		);
+		const groupModuleBlocks = getGroupModuleBlocks(state.graphicHelper.codeBlocks, groupName);
 		// Check if all group module blocks have #skipExecution directive
 		allGroupBlocksSkipped = groupModuleBlocks.every((block: CodeBlockGraphicData) =>
 			block.code.some((line: string) => isSkipExecutionDirective(line))
