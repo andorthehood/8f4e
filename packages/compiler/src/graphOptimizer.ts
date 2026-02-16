@@ -1,3 +1,4 @@
+import { INTERMODULAR_REFERENCE_PATTERN } from './syntax/isIntermodularReferencePattern';
 import { ArgumentType } from './types';
 
 import type { AST } from './types';
@@ -45,12 +46,14 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						/&(\S+)\.(\S+)/.test(_arguments[1].value)
+						INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value)
 					);
 				})
 				.map(({ arguments: _arguments }) => {
 					const value = _arguments[1].value as string;
-					return value.split('.')[0].substring(1);
+					// Remove leading & and trailing & (if present)
+					const cleanRef = value.endsWith('&') ? value.substring(1, value.length - 1) : value.substring(1);
+					return cleanRef.split('.')[0];
 				});
 
 			const intermodulerConnectionsB = astB
@@ -61,12 +64,14 @@ export default function sortModules(modules: AST[]): AST[] {
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
-						/&(\S+)\.(\S+)/.test(_arguments[1].value)
+						INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value)
 					);
 				})
 				.map(({ arguments: _arguments }) => {
 					const value = _arguments[1].value as string;
-					return value.split('.')[0].substring(1);
+					// Remove leading & and trailing & (if present)
+					const cleanRef = value.endsWith('&') ? value.substring(1, value.length - 1) : value.substring(1);
+					return cleanRef.split('.')[0];
 				});
 
 			if (intermodulerConnectionsB.includes(moduleIdA) && !intermodulerConnectionsA.includes(moduleIdB)) {

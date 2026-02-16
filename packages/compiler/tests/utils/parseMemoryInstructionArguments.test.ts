@@ -57,7 +57,7 @@ describe('parseMemoryInstructionArguments', () => {
 		it('should handle intermodular reference without error', () => {
 			const args = [
 				{ type: ArgumentType.IDENTIFIER, value: 'bufferIn' },
-				{ type: ArgumentType.IDENTIFIER, value: '&notesMux2.out.notes' },
+				{ type: ArgumentType.IDENTIFIER, value: '&notesMux2.out' },
 			];
 			const result = parseMemoryInstructionArguments(args, 5, 'float*', createMockContext());
 			// Intermodular references are resolved later, so defaultValue stays 0
