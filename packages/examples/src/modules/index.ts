@@ -86,3 +86,4 @@ export { default as strumFloat } from './strumFloat';
 export { default as switchGatesFloat } from './switchGatesFloat';
 export { default as switchGatesInt } from './switchGatesInt';
 export { default as triangleSignedFloat } from './triangleSignedFloat';
+export { default as triggerPatternSequencer } from './triggerPatternSequencer';
