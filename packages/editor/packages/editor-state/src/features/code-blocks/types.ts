@@ -221,6 +221,11 @@ export interface CodeBlockGraphicData {
 	 * Defaults to false.
 	 */
 	disabled: boolean;
+	/**
+	 * Optional group name for the code block, derived from ; @group directive.
+	 * Blocks with the same group name can be moved together when Alt/Option is held during drag.
+	 */
+	groupName?: string;
 }
 
 /**
