@@ -144,4 +144,3 @@ describe('parseGroup', () => {
 		expect(parseGroup(code)).toEqual({ groupName: 'myGroup', nonstick: false });
 	});
 });
-});
