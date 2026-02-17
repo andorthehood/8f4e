@@ -112,6 +112,12 @@ export const moduleMenu: MenuGenerator = state => {
 									},
 									close: true,
 								},
+								{
+									title: 'Delete group',
+									action: 'deleteGroup',
+									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									close: true,
+								},
 							]
 						: []),
 					{
