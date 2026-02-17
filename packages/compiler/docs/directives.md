@@ -83,11 +83,10 @@ moduleEnd
 ```
 
 **Behavior:**
-- The module is compiled normally (AST, memory map, inter-module references preserved)
-- Module memory defaults are initialized during the init/memory-init phase
-- The module's cycle function is called exactly once during the exported `init` function, after all memory initialization completes
-- The module's cycle function is not called from the global cycle dispatcher
-- Multiple `#initOnly` directives in the same module are idempotent (same effect)
+- The module code runs exactly once during initialization
+- The module code does not run during the cycle loop
+- Memory declared in the module is initialized with default values before the module code runs
+- Multiple `#initOnly` directives in the same module have the same effect as one
 - If both `#skipExecution` and `#initOnly` are present, `#skipExecution` takes precedence (the module does not execute at all)
 
 **Use Cases:**
