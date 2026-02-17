@@ -256,4 +256,3 @@ describe('groupNonstickToggler', () => {
 		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', block2);
 	});
 });
-});
