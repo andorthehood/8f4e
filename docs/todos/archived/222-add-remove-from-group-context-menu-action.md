@@ -3,8 +3,8 @@ title: 'TODO: Add "Remove from group" context-menu action'
 priority: Medium
 effort: 4-8h
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Add "Remove from group" context-menu action

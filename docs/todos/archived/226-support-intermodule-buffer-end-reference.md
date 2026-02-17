@@ -3,8 +3,8 @@ title: 'TODO: Support Inter-Module Buffer End Address References'
 priority: Medium
 effort: 4-6h
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Support Inter-Module Buffer End Address References
