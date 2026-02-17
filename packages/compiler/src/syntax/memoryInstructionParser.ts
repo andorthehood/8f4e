@@ -11,6 +11,8 @@ import isIntermodularElementWordSizeReference from './isIntermodularElementWordS
 import extractIntermodularElementWordSizeBase from './extractIntermodularElementWordSizeBase';
 import isIntermodularElementMaxReference from './isIntermodularElementMaxReference';
 import extractIntermodularElementMaxBase from './extractIntermodularElementMaxBase';
+import isIntermodularElementMinReference from './isIntermodularElementMinReference';
+import extractIntermodularElementMinBase from './extractIntermodularElementMinBase';
 
 export type MemoryArgumentShape =
 	| { type: 'literal'; value: number }
@@ -20,7 +22,8 @@ export type MemoryArgumentShape =
 	| { type: 'intermodular-reference'; pattern: string }
 	| { type: 'intermodular-element-count'; module: string; memory: string; pattern: string }
 	| { type: 'intermodular-element-word-size'; module: string; memory: string; pattern: string }
-	| { type: 'intermodular-element-max'; module: string; memory: string; pattern: string };
+	| { type: 'intermodular-element-max'; module: string; memory: string; pattern: string }
+	| { type: 'intermodular-element-min'; module: string; memory: string; pattern: string };
 
 export interface ParsedMemoryInstructionArguments {
 	firstArg: MemoryArgumentShape;
@@ -100,6 +103,17 @@ function classifyArgument(arg: Argument): MemoryArgumentShape {
 		};
 	}
 
+	// Check for intermodular element min reference pattern (e.g., "!module.memory")
+	if (isIntermodularElementMinReference(arg.value)) {
+		const { module, memory } = extractIntermodularElementMinBase(arg.value);
+		return {
+			type: 'intermodular-element-min',
+			module,
+			memory,
+			pattern: arg.value,
+		};
+	}
+
 	// Check for memory reference prefix
 	if (hasMemoryReferencePrefix(arg.value)) {
 		return {
@@ -169,6 +183,16 @@ if (import.meta.vitest) {
 				module: 'mod',
 				memory: 'buffer',
 				pattern: '^mod.buffer',
+			});
+		});
+
+		it('parses intermodular element min argument', () => {
+			const result = parseMemoryInstructionArgumentsShape([{ type: ArgumentType.IDENTIFIER, value: '!mod.buffer' }]);
+			expect(result.firstArg).toEqual({
+				type: 'intermodular-element-min',
+				module: 'mod',
+				memory: 'buffer',
+				pattern: '!mod.buffer',
 			});
 		});
 
