@@ -1,4 +1,4 @@
-import { getElementMaxValue } from './memoryData';
+import { getElementMaxValue, getElementMinValue } from './memoryData';
 
 import { INTERMODULAR_REFERENCE_PATTERN } from '../syntax/isIntermodularReferencePattern';
 import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
@@ -7,12 +7,14 @@ import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElem
 import extractIntermodularElementWordSizeBase from '../syntax/extractIntermodularElementWordSizeBase';
 import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMaxReference';
 import extractIntermodularElementMaxBase from '../syntax/extractIntermodularElementMaxBase';
+import isIntermodularElementMinReference from '../syntax/isIntermodularElementMinReference';
+import extractIntermodularElementMinBase from '../syntax/extractIntermodularElementMinBase';
 import { ErrorCode, getError } from '../errors';
 import { ArgumentType, CompiledModuleLookup } from '../types';
 
 /**
  * Resolves inter-modular connections by finding references like &module.memory,
- * module.memory&, $module.memory, %module.memory, and ^module.memory in compiled modules and setting the appropriate memory defaults.
+ * module.memory&, $module.memory, %module.memory, ^module.memory, and !module.memory in compiled modules and setting the appropriate memory defaults.
  *
  * This function:
  * - Identifies inter-module references in memory declarations and init instructions
@@ -23,6 +25,7 @@ import { ArgumentType, CompiledModuleLookup } from '../types';
  *   - $module.memory: element count (wordAlignedSize)
  *   - %module.memory: element word size (elementWordSize)
  *   - ^module.memory: element max value (computed based on target memory type)
+ *   - !module.memory: element min value (computed based on target memory type)
  * - Updates the local memory's default value with the resolved value
  */
 export default function resolveInterModularConnections(compiledModules: CompiledModuleLookup) {
@@ -139,6 +142,28 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 					if (memory) {
 						// Set element max value (computed based on target memory type)
 						memory.default = getElementMaxValue(targetModule.memoryMap, targetMemoryId);
+					}
+				} else if (isIntermodularElementMinReference(refValue)) {
+					// Handle inter-module element min references (!module.memory)
+					const { module: targetModuleId, memory: targetMemoryId } = extractIntermodularElementMinBase(refValue);
+
+					const targetModule = compiledModules[targetModuleId];
+
+					if (!targetModule) {
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+					}
+
+					const targetMemory = targetModule.memoryMap[targetMemoryId];
+
+					if (!targetMemory) {
+						throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line);
+					}
+
+					const memory = memoryMap[_arguments[0].value];
+
+					if (memory) {
+						// Set element min value (computed based on target memory type)
+						memory.default = getElementMinValue(targetModule.memoryMap, targetMemoryId);
 					}
 				}
 			}
