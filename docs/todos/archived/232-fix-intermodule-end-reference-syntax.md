@@ -3,8 +3,8 @@ title: 'TODO: Fix inter-module end-reference syntax to module.foo&'
 priority: Medium
 effort: 2-4h
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Fix inter-module end-reference syntax to module.foo&
