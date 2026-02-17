@@ -17,8 +17,9 @@ We need an explicit per-group override that flips grouped drag behavior back to 
 
 ## Proposed Solution
 
-Add optional group override keyword:
-- `; @group <groupName> nonstick`
+Replace the sticky keyword/direction with a nonstick keyword (no backward compatibility):
+- remove support for `; @group <groupName> sticky`
+- use `; @group <groupName> nonstick` as the only explicit group-mode keyword
 
 Behavior model:
 - Default grouped blocks (`; @group <name>`): drag moves whole group.
@@ -31,6 +32,7 @@ Menu actions:
 
 ## Scope (MVP)
 
+- Remove sticky parsing, metadata, actions, and docs.
 - Parse optional `nonstick` second argument on `@group`.
 - Derive runtime flag (for example `groupNonstick`) from code.
 - Apply drag precedence with default-grouped + nonstick override.
@@ -60,6 +62,7 @@ Conflict handling:
 ## Implementation Plan
 
 ### Step 1: Update `@group` parser and metadata
+- Remove `sticky` token support entirely.
 - Parse second token for exact `nonstick`.
 - Derive runtime group mode flag from code updates.
 
@@ -89,6 +92,7 @@ Conflict handling:
 ## Success Criteria
 
 - [ ] `@group` supports optional `nonstick`.
+- [ ] `sticky` keyword is no longer supported anywhere.
 - [ ] Default grouped drag remains group-first.
 - [ ] Nonstick groups drag single-block by default.
 - [ ] `Alt` behavior inverts correctly for nonstick groups.
@@ -117,4 +121,4 @@ Conflict handling:
 
 ## Notes
 
-- Product naming decision: use `nonstick` keyword, not `sticky`/`lock`.
+- Product decision: replace sticky with nonstick, no compatibility layer required.
