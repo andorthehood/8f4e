@@ -1,26 +1,26 @@
 export interface GroupParseResult {
 	groupName: string;
-	sticky: boolean;
+	nonstick: boolean;
 }
 
 /**
  * Parses ; @group directive from code block lines.
  *
  * A code block is assigned a group name if it contains a line matching the pattern:
- * "; @group <groupName> [sticky]"
+ * "; @group <groupName> [nonstick]"
  *
  * @param code - Array of code lines to parse
- * @returns Object with groupName and sticky flag if a valid @group directive is found, undefined otherwise
+ * @returns Object with groupName and nonstick flag if a valid @group directive is found, undefined otherwise
  *
  * @example
  * ```typescript
  * const code = [
  *   'module myModule',
- *   '; @group audio-chain sticky',
+ *   '; @group audio-chain nonstick',
  *   'output out 1',
  *   'moduleEnd'
  * ];
- * const result = parseGroup(code); // { groupName: 'audio-chain', sticky: true }
+ * const result = parseGroup(code); // { groupName: 'audio-chain', nonstick: true }
  * ```
  */
 export default function parseGroup(code: string[]): GroupParseResult | undefined {
@@ -34,9 +34,9 @@ export default function parseGroup(code: string[]): GroupParseResult | undefined
 				const tokens = args.split(/\s+/);
 				// First word/token is the group name
 				const groupName = tokens[0];
-				// Second token (if present and equals 'sticky') sets sticky flag
-				const sticky = tokens.length > 1 && tokens[1] === 'sticky';
-				return { groupName, sticky };
+				// Second token (if present and equals 'nonstick') sets nonstick flag
+				const nonstick = tokens.length > 1 && tokens[1] === 'nonstick';
+				return { groupName, nonstick };
 			}
 		}
 	}
