@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import groupStickyToggler from './effect';
+import groupNonstickToggler from './effect';
 
 import type { State } from '~/types';
 
 import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
-describe('groupStickyToggler', () => {
+describe('groupNonstickToggler', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
@@ -19,7 +19,7 @@ describe('groupStickyToggler', () => {
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
-	it('should add sticky to @group directive in all group blocks when makeSticky is true', () => {
+	it('should add nonstick to @group directive in all group blocks when makeNonstick is true', () => {
 		const block1 = createMockCodeBlock({
 			code: ['module test1', '; @group audio-chain', '', 'moduleEnd'],
 			blockType: 'module',
@@ -38,57 +38,57 @@ describe('groupStickyToggler', () => {
 		mockState.graphicHelper.codeBlocks = [block1, block2, block3];
 		mockState.featureFlags.editing = true;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		expect(toggleCall).toBeDefined();
 
 		const toggleCallback = toggleCall![1];
-		toggleCallback({ codeBlock: block1, makeSticky: true });
+		toggleCallback({ codeBlock: block1, makeNonstick: true });
 
-		// Both blocks in the group should have sticky added
-		expect(block1.code).toEqual(['module test1', '; @group audio-chain sticky', '', 'moduleEnd']);
-		expect(block2.code).toEqual(['module test2', '; @group audio-chain sticky', '', 'moduleEnd']);
+		// Both blocks in the group should have nonstick added
+		expect(block1.code).toEqual(['module test1', '; @group audio-chain nonstick', '', 'moduleEnd']);
+		expect(block2.code).toEqual(['module test2', '; @group audio-chain nonstick', '', 'moduleEnd']);
 		// Block in different group should be unchanged
 		expect(block3.code).toEqual(['module test3', '; @group other-group', '', 'moduleEnd']);
 	});
 
-	it('should remove sticky from @group directive in all group blocks when makeSticky is false', () => {
+	it('should remove nonstick from @group directive in all group blocks when makeNonstick is false', () => {
 		const block1 = createMockCodeBlock({
-			code: ['module test1', '; @group audio-chain sticky', '', 'moduleEnd'],
+			code: ['module test1', '; @group audio-chain nonstick', '', 'moduleEnd'],
 			blockType: 'module',
 			groupName: 'audio-chain',
-			groupSticky: true,
+			groupNonstick: true,
 		});
 		const block2 = createMockCodeBlock({
-			code: ['module test2', '; @group audio-chain sticky', '', 'moduleEnd'],
+			code: ['module test2', '; @group audio-chain nonstick', '', 'moduleEnd'],
 			blockType: 'module',
 			groupName: 'audio-chain',
-			groupSticky: true,
+			groupNonstick: true,
 		});
 		mockState.graphicHelper.codeBlocks = [block1, block2];
 		mockState.featureFlags.editing = true;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		const toggleCallback = toggleCall![1];
 
-		toggleCallback({ codeBlock: block1, makeSticky: false });
+		toggleCallback({ codeBlock: block1, makeNonstick: false });
 
-		// Both blocks should have sticky removed
+		// Both blocks should have nonstick removed
 		expect(block1.code).toEqual(['module test1', '; @group audio-chain', '', 'moduleEnd']);
 		expect(block2.code).toEqual(['module test2', '; @group audio-chain', '', 'moduleEnd']);
 	});
 
-	it('should normalize sticky state when some blocks are sticky and others are not', () => {
+	it('should normalize nonstick state when some blocks are nonstick and others are not', () => {
 		const block1 = createMockCodeBlock({
-			code: ['module test1', '; @group audio-chain sticky', '', 'moduleEnd'],
+			code: ['module test1', '; @group audio-chain nonstick', '', 'moduleEnd'],
 			blockType: 'module',
 			groupName: 'audio-chain',
-			groupSticky: true,
+			groupNonstick: true,
 		});
 		const block2 = createMockCodeBlock({
 			code: ['module test2', '; @group audio-chain', '', 'moduleEnd'],
@@ -98,17 +98,17 @@ describe('groupStickyToggler', () => {
 		mockState.graphicHelper.codeBlocks = [block1, block2];
 		mockState.featureFlags.editing = true;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		const toggleCallback = toggleCall![1];
 
-		toggleCallback({ codeBlock: block1, makeSticky: true });
+		toggleCallback({ codeBlock: block1, makeNonstick: true });
 
-		// Block 1 should keep sticky, block 2 should get sticky
-		expect(block1.code).toEqual(['module test1', '; @group audio-chain sticky', '', 'moduleEnd']);
-		expect(block2.code).toEqual(['module test2', '; @group audio-chain sticky', '', 'moduleEnd']);
+		// Block 1 should keep nonstick, block 2 should get nonstick
+		expect(block1.code).toEqual(['module test1', '; @group audio-chain nonstick', '', 'moduleEnd']);
+		expect(block2.code).toEqual(['module test2', '; @group audio-chain nonstick', '', 'moduleEnd']);
 	});
 
 	it('should handle @group directive with whitespace variations', () => {
@@ -120,16 +120,16 @@ describe('groupStickyToggler', () => {
 		mockState.graphicHelper.codeBlocks = [block1];
 		mockState.featureFlags.editing = true;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		const toggleCallback = toggleCall![1];
 
-		toggleCallback({ codeBlock: block1, makeSticky: true });
+		toggleCallback({ codeBlock: block1, makeNonstick: true });
 
-		// Should add sticky despite whitespace variations
-		expect(block1.code).toEqual(['module test1', '; @group audio-chain sticky', '', 'moduleEnd']);
+		// Should add nonstick despite whitespace variations
+		expect(block1.code).toEqual(['module test1', '; @group audio-chain nonstick', '', 'moduleEnd']);
 	});
 
 	it('should work with different block types', () => {
@@ -146,17 +146,17 @@ describe('groupStickyToggler', () => {
 		mockState.graphicHelper.codeBlocks = [moduleBlock, functionBlock];
 		mockState.featureFlags.editing = true;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		const toggleCallback = toggleCall![1];
 
-		toggleCallback({ codeBlock: moduleBlock, makeSticky: true });
+		toggleCallback({ codeBlock: moduleBlock, makeNonstick: true });
 
 		// Both blocks should be affected regardless of type
-		expect(moduleBlock.code).toEqual(['module test1', '; @group audio-chain sticky', '', 'moduleEnd']);
-		expect(functionBlock.code).toEqual(['function test2', '; @group audio-chain sticky', '', 'functionEnd']);
+		expect(moduleBlock.code).toEqual(['module test1', '; @group audio-chain nonstick', '', 'moduleEnd']);
+		expect(functionBlock.code).toEqual(['function test2', '; @group audio-chain nonstick', '', 'functionEnd']);
 	});
 
 	it('should not toggle when editing is disabled', () => {
@@ -168,13 +168,13 @@ describe('groupStickyToggler', () => {
 		mockState.graphicHelper.codeBlocks = [block1];
 		mockState.featureFlags.editing = false;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		const toggleCallback = toggleCall![1];
 
-		toggleCallback({ codeBlock: block1, makeSticky: true });
+		toggleCallback({ codeBlock: block1, makeNonstick: true });
 
 		expect(block1.code).toEqual(['module test1', '; @group audio-chain', '', 'moduleEnd']);
 	});
@@ -187,13 +187,13 @@ describe('groupStickyToggler', () => {
 		mockState.graphicHelper.codeBlocks = [block1];
 		mockState.featureFlags.editing = true;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		const toggleCallback = toggleCall![1];
 
-		toggleCallback({ codeBlock: block1, makeSticky: true });
+		toggleCallback({ codeBlock: block1, makeNonstick: true });
 
 		expect(block1.code).toEqual(['module test1', '', 'moduleEnd']);
 	});
@@ -214,13 +214,13 @@ describe('groupStickyToggler', () => {
 		mockState.graphicHelper.codeBlocks = [block1, block2];
 		mockState.featureFlags.editing = true;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		const toggleCallback = toggleCall![1];
 
-		toggleCallback({ codeBlock: block1, makeSticky: true });
+		toggleCallback({ codeBlock: block1, makeNonstick: true });
 
 		expect(block1.lastUpdated).toBeGreaterThan(1000);
 		expect(block2.lastUpdated).toBeGreaterThan(1000);
@@ -240,15 +240,15 @@ describe('groupStickyToggler', () => {
 		mockState.graphicHelper.codeBlocks = [block1, block2];
 		mockState.featureFlags.editing = true;
 
-		groupStickyToggler(store, mockEvents);
+		groupNonstickToggler(store, mockEvents);
 
 		const setSpy = vi.spyOn(store, 'set');
 
 		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupSticky');
+		const toggleCall = onCalls.find(call => call[0] === 'toggleGroupNonstick');
 		const toggleCallback = toggleCall![1];
 
-		toggleCallback({ codeBlock: block1, makeSticky: true });
+		toggleCallback({ codeBlock: block1, makeNonstick: true });
 
 		// Should be called twice - once for each block
 		expect(setSpy).toHaveBeenCalledTimes(2);

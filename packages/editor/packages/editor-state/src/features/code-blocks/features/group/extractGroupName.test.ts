@@ -15,8 +15,8 @@ describe('extractGroupName', () => {
 		expect(groupName).toBeUndefined();
 	});
 
-	it('should extract group name with sticky flag', () => {
-		const code = ['module foo', '; @group audio sticky', 'moduleEnd'];
+	it('should extract group name with nonstick flag', () => {
+		const code = ['module foo', '; @group audio nonstick', 'moduleEnd'];
 		const groupName = extractGroupName(code);
 		expect(groupName).toBe('audio');
 	});

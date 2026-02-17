@@ -4,16 +4,16 @@ import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
 /**
- * Effect that handles toggling the sticky flag for all code blocks in a group.
- * Provides context menu actions to make a group sticky (always move together) or non-sticky (require modifier key).
+ * Effect that handles toggling the nonstick flag for all code blocks in a group.
+ * Provides context menu actions to make a group nonstick (single-block drag by default) or sticky (group drag by default).
  */
-export default function groupStickyToggler(store: StateManager<State>, events: EventDispatcher): void {
-	function onToggleGroupSticky({
+export default function groupNonstickToggler(store: StateManager<State>, events: EventDispatcher): void {
+	function onToggleGroupNonstick({
 		codeBlock,
-		makeSticky,
+		makeNonstick,
 	}: {
 		codeBlock: CodeBlockGraphicData;
-		makeSticky: boolean;
+		makeNonstick: boolean;
 	}): void {
 		const state = store.getState();
 
@@ -33,7 +33,7 @@ export default function groupStickyToggler(store: StateManager<State>, events: E
 			return;
 		}
 
-		// Apply the sticky change to all group blocks
+		// Apply the nonstick change to all group blocks
 		for (const block of groupBlocks) {
 			// Set target code block for programmatic edit
 			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = block;
@@ -52,16 +52,16 @@ export default function groupStickyToggler(store: StateManager<State>, events: E
 					const args = commentMatch[2].trim();
 					const tokens = args.split(/\s+/);
 					const groupName = tokens[0];
-					const currentlyHasSticky = tokens.length > 1 && tokens[1] === 'sticky';
+					const currentlyHasNonstick = tokens.length > 1 && tokens[1] === 'nonstick';
 
-					// Update the line based on target sticky state
+					// Update the line based on target nonstick state
 					let newLine: string;
-					if (makeSticky && !currentlyHasSticky) {
-						// Add sticky
-						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+/, () => `; @group ${groupName} sticky`);
-					} else if (!makeSticky && currentlyHasSticky) {
-						// Remove sticky
-						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+\s+sticky/, () => `; @group ${groupName}`);
+					if (makeNonstick && !currentlyHasNonstick) {
+						// Add nonstick
+						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+/, () => `; @group ${groupName} nonstick`);
+					} else if (!makeNonstick && currentlyHasNonstick) {
+						// Remove nonstick
+						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+\s+nonstick/, () => `; @group ${groupName}`);
 					} else {
 						// No change needed for this block
 						continue;
@@ -79,5 +79,5 @@ export default function groupStickyToggler(store: StateManager<State>, events: E
 		}
 	}
 
-	events.on('toggleGroupSticky', onToggleGroupSticky);
+	events.on('toggleGroupNonstick', onToggleGroupNonstick);
 }
