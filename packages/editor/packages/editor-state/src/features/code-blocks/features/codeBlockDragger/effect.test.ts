@@ -650,4 +650,201 @@ describe('codeBlockDragger', () => {
 			expect(state.graphicHelper.selectedCodeBlock).toBe(block1);
 		});
 	});
+
+	describe('nonstick groups', () => {
+		it('should drag only selected block without Alt key (nonstick group default)', () => {
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', '; @group audio nonstick', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				creationIndex: 0,
+				blockType: 'module',
+				groupName: 'audio',
+				groupNonstick: true,
+			});
+
+			const block2 = createCodeBlockGraphicData({
+				code: ['module test2', '; @group audio nonstick', 'moduleEnd'],
+				gridX: 10,
+				gridY: 10,
+				x: 100,
+				y: 200,
+				creationIndex: 1,
+				blockType: 'module',
+				groupName: 'audio',
+				groupNonstick: true,
+			});
+
+			state.graphicHelper.codeBlocks = [block1, block2];
+
+			codeBlockDragger(store, events);
+
+			// Mousedown on block1 without Alt key - nonstick groups drag individually by default
+			mousedownHandlers[0]({
+				x: 50,
+				y: 100,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			// Mousemove
+			mousemoveHandlers[0]({
+				x: 60,
+				y: 110,
+				movementX: 10,
+				movementY: 10,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			// Only block1 should move (nonstick default behavior)
+			expect(block1.x).toBe(60);
+			expect(block1.y).toBe(110);
+			// block2 should NOT move despite being in same group
+			expect(block2.x).toBe(100);
+			expect(block2.y).toBe(200);
+		});
+
+		it('should drag whole group with Alt key (nonstick group override)', () => {
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', '; @group audio nonstick', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				creationIndex: 0,
+				blockType: 'module',
+				groupName: 'audio',
+				groupNonstick: true,
+			});
+
+			const block2 = createCodeBlockGraphicData({
+				code: ['module test2', '; @group audio nonstick', 'moduleEnd'],
+				gridX: 10,
+				gridY: 10,
+				x: 100,
+				y: 200,
+				creationIndex: 1,
+				blockType: 'module',
+				groupName: 'audio',
+				groupNonstick: true,
+			});
+
+			state.graphicHelper.codeBlocks = [block1, block2];
+
+			codeBlockDragger(store, events);
+
+			// Mousedown on block1 WITH Alt key - nonstick groups drag together with Alt
+			mousedownHandlers[0]({
+				x: 50,
+				y: 100,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: true,
+			});
+
+			// Mousemove
+			mousemoveHandlers[0]({
+				x: 60,
+				y: 110,
+				movementX: 10,
+				movementY: 10,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: true,
+			});
+
+			// Both blocks should move together (Alt overrides nonstick)
+			expect(block1.x).toBe(60);
+			expect(block1.y).toBe(110);
+			expect(block2.x).toBe(110);
+			expect(block2.y).toBe(210);
+		});
+
+		it('should snap both blocks to grid when group-dragged with Alt key', () => {
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', '; @group audio nonstick', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				creationIndex: 0,
+				blockType: 'module',
+				groupName: 'audio',
+				groupNonstick: true,
+			});
+
+			const block2 = createCodeBlockGraphicData({
+				code: ['module test2', '; @group audio nonstick', 'moduleEnd'],
+				gridX: 10,
+				gridY: 10,
+				x: 100,
+				y: 200,
+				creationIndex: 1,
+				blockType: 'module',
+				groupName: 'audio',
+				groupNonstick: true,
+			});
+
+			state.graphicHelper.codeBlocks = [block1, block2];
+
+			codeBlockDragger(store, events);
+
+			// Mousedown with Alt
+			mousedownHandlers[0]({
+				x: 50,
+				y: 100,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: true,
+			});
+
+			// Mousemove
+			mousemoveHandlers[0]({
+				x: 60,
+				y: 110,
+				movementX: 10,
+				movementY: 10,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: true,
+			});
+
+			// Mouseup
+			mouseupHandlers[0]();
+
+			// Both blocks should snap to grid
+			expect(block1.gridX).toBe(6);
+			expect(block1.gridY).toBe(6);
+			expect(block1.x).toBe(60);
+			expect(block1.y).toBe(120);
+
+			expect(block2.gridX).toBe(11);
+			expect(block2.gridY).toBe(11);
+			expect(block2.x).toBe(110);
+			expect(block2.y).toBe(220);
+		});
+	});
 });
