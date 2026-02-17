@@ -67,8 +67,92 @@ In this example:
 - `disabledModule` does not execute, but its memory is initialized with `data = 42`
 - `consumer` can access `disabledModule:data` even though `disabledModule` doesn't execute
 
+### `#initOnly`
+
+Marks a module to execute once during the init phase and skip execution in the cycle dispatcher.
+
+**Scope:** Module blocks only
+
+**Usage:**
+```
+module myInitModule
+#initOnly
+int state 0
+; ... initialization code ...
+moduleEnd
+```
+
+**Behavior:**
+- The module is compiled normally (AST, memory map, inter-module references preserved)
+- Module memory defaults are initialized during the init/memory-init phase
+- The module's cycle function is called exactly once during the exported `init` function, after all memory initialization completes
+- The module's cycle function is not called from the global cycle dispatcher
+- Multiple `#initOnly` directives in the same module are idempotent (same effect)
+- If both `#skipExecution` and `#initOnly` are present, `#skipExecution` takes precedence (the module does not execute at all)
+
+**Use Cases:**
+- One-time setup or initialization logic that should run before the main cycle loop
+- Compute derived values or perform setup operations that depend on other modules' initialized memory
+- Initialize state that will be read by other modules during cycle execution
+
+**Errors:**
+- Using `#initOnly` outside of a module block (e.g., in `constants` or `function` blocks) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
+
+**Example:**
+
+```
+; Data module with initialized values
+module config
+int baseValue 100
+moduleEnd
+
+; Init-only module that runs setup logic once
+module setup
+#initOnly
+use config
+int derivedValue 0
+push derivedValue
+push config:baseValue
+load
+push 2
+mul
+store
+moduleEnd
+
+; Regular module that uses the setup data
+module main
+use setup
+int counter 0
+push counter
+push counter
+load
+push 1
+add
+store
+moduleEnd
+```
+
+In this example:
+- `config` has its memory initialized with `baseValue = 100`
+- `setup` runs once during init, computing `derivedValue = baseValue * 2 = 200`
+- `main` executes every cycle, incrementing its counter
+
+**Interaction with `#skipExecution`:**
+
+When both directives are present in the same module:
+```
+module myModule
+#skipExecution
+#initOnly
+int value 0
+; ... code ...
+moduleEnd
+```
+
+The `#skipExecution` directive takes precedence, and the module code does not execute during either init or cycle. This allows you to temporarily disable a module that was previously marked as init-only without removing the `#initOnly` directive.
+
 ## Error Handling
 
 If an unknown compiler directive is encountered, the compiler will throw an `UNRECOGNISED_INSTRUCTION` error.
 
-If a module-scoped directive like `#skipExecution` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
+If a module-scoped directive like `#skipExecution` or `#initOnly` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
