@@ -127,8 +127,9 @@ Assign a code block to a named group for coordinated movement.
 
 When a code block contains this directive, it can be moved together with other blocks sharing the same group name:
 
-- **Without `sticky`**: Hold Alt/Option while dragging to move all blocks in the group together (normal behavior)
-- **With `sticky`**: All blocks in the group always move together, without requiring Alt/Option key
+- **Default behavior**: All blocks in the group move together when you drag any member
+- **With `Alt/Option` held**: Override group drag to move only the selected block (single-block drag)
+- **With `sticky` keyword**: All blocks in the group always move together, Alt/Option key has no effect
 
 This is useful for keeping related modules, functions, or other blocks positioned relative to each other.
 
@@ -146,6 +147,7 @@ When a code block belongs to a group, the context menu provides these actions:
 
 - **Make Group Sticky**: Adds the `sticky` keyword to all blocks in the group, making them move together automatically
 - **Make Group Non-Sticky**: Removes the `sticky` keyword from all blocks in the group, returning to modifier-based drag
+- **Copy group**: Copies all blocks in the group to clipboard as a multi-block JSON array (see Clipboard Behavior below)
 - **Remove from group**: Removes the `@group` directive from the selected block only
 - **Ungroup "<groupName>"**: Removes the `@group` directive from all blocks in the group
 
@@ -154,8 +156,80 @@ Notes:
 - Group names can contain letters, numbers, hyphens, and underscores.
 - Group names should not contain spaces (the first token after @group is used as the group name).
 - The `sticky` keyword must be exactly `sticky` (lowercase) to be recognized.
-- Blocks without a group directive or with different group names are unaffected by grouped drag.
-- Normal single-block drag behavior remains unchanged for non-grouped blocks.
+- By default, all blocks in a group move together when dragging. Use Alt/Option to override and drag a single block.
+- Sticky groups always move together regardless of the Alt/Option key.
+- Ungrouped blocks are unaffected and always use single-block drag behavior.
+
+## Clipboard Behavior
+
+The editor supports two clipboard formats for copying and pasting code blocks:
+
+### Single-Block Copy/Paste
+
+When you copy a single code block (using "Copy module/function" in the context menu), it is copied to the clipboard as plain text with newline-separated code lines.
+
+**Example:**
+```txt
+module oscillator
+output out 1
+moduleEnd
+```
+
+Pasting plain text creates a single new code block at the paste location.
+
+### Multi-Block Copy/Paste (Groups)
+
+When you copy a group (using "Copy group" in the context menu), all blocks in the group are copied to the clipboard as a JSON array.
+
+**Format:**
+```json
+[
+  {
+    "code": ["module foo", "moduleEnd"],
+    "gridCoordinates": { "x": 0, "y": 0 },
+    "disabled": false
+  },
+  {
+    "code": ["module bar", "moduleEnd"],
+    "gridCoordinates": { "x": 12, "y": 4 }
+  }
+]
+```
+
+**Rules:**
+- `gridCoordinates` are relative to the copied anchor block (the selected block becomes `{x: 0, y: 0}`)
+- The `disabled` field is included only when `true` (omitted when `false`)
+- Blocks are ordered by their creation index for deterministic ordering
+- No envelope metadata (`type`, `version`, etc.) is added to the payload
+
+**Paste Behavior:**
+- The editor automatically detects whether clipboard content is a multi-block array or plain text
+- A valid multi-block array must have at least 2 items with the required shape
+- Pasted blocks are placed relative to the paste location (anchor position)
+- Module/function IDs are automatically incremented to avoid collisions
+
+**Group Name Collision Handling:**
+
+When pasted blocks contain `@group` directives, group names are automatically renamed to avoid collisions with existing groups:
+
+- If a group name ends with a number, that number is incremented: `audio1` → `audio2`
+- If a group name doesn't end with a number, `1` is appended: `audio` → `audio1`
+- The rename process repeats until a unique name is found
+- All blocks with the same original group name get the same new group name
+
+**Examples:**
+- Paste `audio` when `audio` exists → becomes `audio1`
+- Paste `audio1` when `audio` and `audio1` exist → becomes `audio2`
+- Paste `bass09` when `bass09` and `bass10` exist → becomes `bass11`
+
+**Fallback Behavior:**
+
+Invalid clipboard content falls back to single-block paste behavior:
+- Non-JSON text
+- JSON that isn't an array
+- Arrays with fewer than 2 items
+- Arrays with items missing required fields (`code`, `gridCoordinates`)
+- Arrays with items containing invalid data types
 
 ## Notes
 

@@ -8,7 +8,7 @@ Avoid duplicating buffer metadata in separate variables.
 
 - Use `$buffer` for element count.
 - Use `%buffer` for element word size.
-- Use `buffer&` (or inter-module `&module.buffer&`) for end address.
+- Use `buffer&` (or inter-module `module.buffer&`) for end address.
 
 This keeps modules resilient when buffer declarations change.
 

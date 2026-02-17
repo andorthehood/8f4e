@@ -3,7 +3,9 @@ import { getModuleId } from '@8f4e/compiler/syntax';
 import { getFunctionId } from '@8f4e/compiler/syntax';
 
 import { insertDependencies } from './insertDependencies';
+import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 
+import { parseClipboardData } from '../clipboard/clipboardUtils';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -133,7 +135,16 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 
 			try {
 				const clipboardText = await state.callbacks.readClipboardText();
-				code = clipboardText.split('\n');
+				const parsedData = parseClipboardData(clipboardText);
+
+				if (parsedData.type === 'multi') {
+					// Multi-block paste
+					pasteMultipleBlocks(store, { x, y, blocks: parsedData.blocks });
+					return;
+				} else {
+					// Single-block paste
+					code = parsedData.text.split('\n');
+				}
 			} catch {
 				// Fail silently if clipboard read fails
 				return;
