@@ -372,3 +372,29 @@ export function expectModuleToThrow(description: string, moduleCode: string, err
 		});
 	});
 }
+
+/**
+ * Creates a WebAssembly instance from compiled code with typed exports
+ * @param codeBuffer - Compiled WebAssembly code buffer
+ * @param options - Options for memory configuration
+ * @returns Object with instance exports (init, cycle, buffer) and memory buffer
+ */
+export async function createWasmInstance(
+	codeBuffer: Uint8Array,
+	options: { memorySizePages?: number; shared?: boolean } = {}
+) {
+	const { memorySizePages = 1, shared = false } = options;
+	const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages, shared });
+	const buffer = new Int32Array(memory.buffer);
+
+	const { instance } = await WebAssembly.instantiate(codeBuffer, {
+		js: { memory },
+	});
+
+	return {
+		init: instance.exports.init as () => void,
+		cycle: instance.exports.cycle as () => void,
+		buffer: instance.exports.buffer as (address: number, size: number) => number,
+		memory: buffer,
+	};
+}
