@@ -130,6 +130,7 @@ export function compileModule(
 		ast,
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
+		initOnlyExecution: context.initOnlyExecution,
 	};
 }
 
