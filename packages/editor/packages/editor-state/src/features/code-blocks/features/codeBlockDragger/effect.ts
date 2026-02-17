@@ -32,16 +32,34 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
-		// Compute drag set based on sticky flag and modifier
-		// 1. If block is in a sticky group: always group drag
-		// 2. Else if block is in a non-sticky group and modifier is NOT held: group drag
-		// 3. Else if block is in a non-sticky group and modifier IS held: single-block override
-		// 4. Else: normal single-block drag
-		if (draggedCodeBlock.groupName && (draggedCodeBlock.groupSticky || !altKey)) {
-			// Grouped drag: include all blocks with matching group name
-			dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+		// Compute drag set based on sticky/nonstick flags and modifier
+		// 1. If block is in a sticky group: always group drag (Alt ignored)
+		// 2. Else if block is in a nonstick group and Alt IS held: group drag
+		// 3. Else if block is in a nonstick group and Alt NOT held: single-block drag
+		// 4. Else if block is in a default group and Alt NOT held: group drag
+		// 5. Else if block is in a default group and Alt IS held: single-block override
+		// 6. Else: normal single-block drag (no group)
+		if (draggedCodeBlock.groupName) {
+			if (draggedCodeBlock.groupSticky) {
+				// Sticky group: always group drag
+				dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+			} else if (draggedCodeBlock.groupNonstick) {
+				// Nonstick group: single-block by default, Alt for group-drag
+				if (altKey) {
+					dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+				} else {
+					dragSet = [draggedCodeBlock];
+				}
+			} else {
+				// Default group: group drag by default, Alt for single-block override
+				if (!altKey) {
+					dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+				} else {
+					dragSet = [draggedCodeBlock];
+				}
+			}
 		} else {
-			// Single block drag (either no group or Alt override on non-sticky group)
+			// Single block drag (no group)
 			dragSet = [draggedCodeBlock];
 		}
 

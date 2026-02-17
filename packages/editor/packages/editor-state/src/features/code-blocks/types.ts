@@ -232,6 +232,12 @@ export interface CodeBlockGraphicData {
 	 * Derived from the optional 'sticky' keyword in ; @group directive.
 	 */
 	groupSticky?: boolean;
+	/**
+	 * Optional flag indicating whether the group should drag single-block by default.
+	 * When true, dragging a block moves only that block unless Alt/Option is held to group-drag.
+	 * Derived from the optional 'nonstick' keyword in ; @group directive.
+	 */
+	groupNonstick?: boolean;
 }
 
 /**
