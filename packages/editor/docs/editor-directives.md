@@ -150,6 +150,7 @@ When a code block belongs to a group, the context menu provides these actions:
 - **Make Group Sticky**: Adds the `sticky` keyword to all blocks in the group, making them move together automatically
 - **Make Group Non-Sticky**: Removes the `sticky` keyword from all blocks in the group, returning to default behavior
 - **Make Group Nonstick**: Adds the `nonstick` keyword to all blocks in the group, making them drag individually by default
+- **Make Group Non-Nonstick**: Removes the `nonstick` keyword from all blocks in the group, returning to default behavior
 - **Copy group**: Copies all blocks in the group to clipboard as a multi-block JSON array (see Clipboard Behavior below)
 - **Remove from group**: Removes the `@group` directive from the selected block only
 - **Ungroup "<groupName>"**: Removes the `@group` directive from all blocks in the group

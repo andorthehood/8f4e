@@ -116,7 +116,7 @@ export const moduleMenu: MenuGenerator = state => {
 									close: true,
 								},
 								{
-									title: allGroupBlocksNonstick ? 'Make Group Sticky' : 'Make Group Nonstick',
+									title: allGroupBlocksNonstick ? 'Make Group Non-Nonstick' : 'Make Group Nonstick',
 									action: 'toggleGroupNonstick',
 									payload: {
 										codeBlock: state.graphicHelper.selectedCodeBlock,

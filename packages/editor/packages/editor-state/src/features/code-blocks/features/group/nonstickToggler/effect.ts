@@ -57,16 +57,28 @@ export default function groupNonstickToggler(store: StateManager<State>, events:
 
 					// Update the line based on target nonstick state
 					let newLine: string;
+					// Escape special regex characters in group name
+					const escapedGroupName = groupName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 					if (makeNonstick && !currentlyHasNonstick) {
 						// Add nonstick (and remove sticky if present)
 						if (currentlyHasSticky) {
-							newLine = groupLine.replace(/^\s*;\s*@group\s+\S+\s+sticky/, () => `; @group ${groupName} nonstick`);
+							newLine = groupLine.replace(
+								new RegExp(`^\\s*;\\s*@group\\s+${escapedGroupName}\\s+sticky`),
+								`; @group ${groupName} nonstick`
+							);
 						} else {
-							newLine = groupLine.replace(/^\s*;\s*@group\s+\S+/, () => `; @group ${groupName} nonstick`);
+							newLine = groupLine.replace(
+								new RegExp(`^\\s*;\\s*@group\\s+${escapedGroupName}(?:\\s|$)`),
+								`; @group ${groupName} nonstick`
+							);
 						}
 					} else if (!makeNonstick && currentlyHasNonstick) {
 						// Remove nonstick (return to default)
-						newLine = groupLine.replace(/^\s*;\s*@group\s+\S+\s+nonstick/, () => `; @group ${groupName}`);
+						newLine = groupLine.replace(
+							new RegExp(`^\\s*;\\s*@group\\s+${escapedGroupName}\\s+nonstick`),
+							`; @group ${groupName}`
+						);
 					} else {
 						// No change needed for this block
 						continue;
