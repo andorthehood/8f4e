@@ -3,8 +3,8 @@ title: 'TODO: Add init-only compiler directive for module execution'
 priority: Medium
 effort: 3-5h
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Add init-only compiler directive for module execution

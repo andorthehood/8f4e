@@ -3,8 +3,8 @@ title: 'TODO: Add sticky group mode via @group directive'
 priority: Medium
 effort: 1-2d
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Add sticky group mode via @group directive

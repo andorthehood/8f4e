@@ -3,8 +3,8 @@ title: 'TODO: Add nonstick group override directive and menu actions'
 priority: Medium
 effort: 4-8h
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-17
 ---
 
 # TODO: Add nonstick group override directive and menu actions
