@@ -251,13 +251,29 @@ export default function compile(
 
 	// Offset for user functions and module functions
 	const userFunctionCount = compiledFunctions.length;
-	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle flag
+	// Generate cycle dispatcher calls, skipping modules with skipExecutionInCycle or initOnlyExecution flags
 	const cycleFunction = compiledModules.flatMap((module, index) =>
-		module.skipExecutionInCycle ? [] : call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
+		module.skipExecutionInCycle || module.initOnlyExecution
+			? []
+			: call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
 	);
-	const memoryInitiatorFunction = compiledModules
-		.map((module, index) => call(index + compiledModules.length + EXPORTED_FUNCTION_COUNT + userFunctionCount))
-		.flat();
+
+	// Generate init-only module calls (run after memory initialization)
+	// Skip if skipExecutionInCycle is true (precedence rule)
+	const initOnlyModuleCalls = compiledModules.flatMap((module, index) =>
+		module.initOnlyExecution && !module.skipExecutionInCycle
+			? call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
+			: []
+	);
+
+	const memoryInitiatorFunction = [
+		// First, call all memory initialization functions
+		...compiledModules
+			.map((module, index) => call(index + compiledModules.length + EXPORTED_FUNCTION_COUNT + userFunctionCount))
+			.flat(),
+		// Then, call init-only module cycle functions
+		...initOnlyModuleCalls,
+	];
 	const memoryInitiatorFunctions = generateMemoryInitiatorFunctions(compiledModules);
 
 	// Apply defaults for buffer options
