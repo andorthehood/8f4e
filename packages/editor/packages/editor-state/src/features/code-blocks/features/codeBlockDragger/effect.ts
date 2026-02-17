@@ -32,16 +32,30 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
-		// Compute drag set based on sticky flag and modifier
-		// 1. If block is in a sticky group: always group drag
-		// 2. Else if block is in a non-sticky group and modifier is NOT held: group drag
-		// 3. Else if block is in a non-sticky group and modifier IS held: single-block override
-		// 4. Else: normal single-block drag
-		if (draggedCodeBlock.groupName && (draggedCodeBlock.groupSticky || !altKey)) {
-			// Grouped drag: include all blocks with matching group name
-			dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+		// Compute drag set based on nonstick flag and modifier
+		// 1. If block is in a nonstick group and modifier is NOT held: single-block drag
+		// 2. Else if block is in a nonstick group and modifier IS held: group-drag override
+		// 3. Else if block is in a regular group (default) and modifier is NOT held: group drag
+		// 4. Else if block is in a regular group and modifier IS held: single-block override
+		// 5. Else: normal single-block drag
+		if (draggedCodeBlock.groupName) {
+			if (draggedCodeBlock.groupNonstick) {
+				// Nonstick group: single-block by default, Alt for group drag
+				if (altKey) {
+					dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+				} else {
+					dragSet = [draggedCodeBlock];
+				}
+			} else {
+				// Regular group: group drag by default, Alt for single-block
+				if (altKey) {
+					dragSet = [draggedCodeBlock];
+				} else {
+					dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+				}
+			}
 		} else {
-			// Single block drag (either no group or Alt override on non-sticky group)
+			// Single block drag (no group)
 			dragSet = [draggedCodeBlock];
 		}
 

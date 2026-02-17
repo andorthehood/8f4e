@@ -363,10 +363,10 @@ describe('codeBlockCreator - group copy/paste', () => {
 			expect(mockState.graphicHelper.codeBlocks[1].id).not.toBe(mockState.graphicHelper.codeBlocks[2].id);
 		});
 
-		it('should preserve sticky flag in group directive', async () => {
+		it('should preserve nonstick flag in group directive', async () => {
 			const clipboardData = JSON.stringify([
-				{ code: ['module foo', '; @group audio sticky', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
-				{ code: ['module bar', '; @group audio sticky', 'moduleEnd'], gridCoordinates: { x: 5, y: 0 } },
+				{ code: ['module foo', '; @group audio nonstick', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
+				{ code: ['module bar', '; @group audio nonstick', 'moduleEnd'], gridCoordinates: { x: 5, y: 0 } },
 			]);
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
@@ -381,9 +381,9 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			// Sticky flag should be preserved
-			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toContain('sticky');
-			expect(mockState.graphicHelper.codeBlocks[1].code[1]).toContain('sticky');
+			// Nonstick flag should be preserved
+			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toContain('nonstick');
+			expect(mockState.graphicHelper.codeBlocks[1].code[1]).toContain('nonstick');
 		});
 	});
 });
