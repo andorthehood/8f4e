@@ -1,5 +1,7 @@
 import { describe, test, expect } from 'vitest';
 
+import { createWasmInstance } from './instructions/testUtils';
+
 import compile from '../src/index';
 
 describe('#initOnly directive', () => {
@@ -45,12 +47,7 @@ moduleEnd
 		expect(result.compiledModules.normalModule.initOnlyExecution).toBeFalsy();
 
 		// Instantiate WASM and test runtime behavior
-		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
-		const buffer = new Int32Array(memory.buffer);
-
-		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-			js: { memory },
-		});
+		const { init, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
 
 		const initOnlyModuleAddr = result.compiledModules.initOnlyModule.memoryMap.counter.byteAddress / 4;
 		const normalModuleAddr = result.compiledModules.normalModule.memoryMap.counter.byteAddress / 4;
@@ -60,22 +57,22 @@ moduleEnd
 		expect(buffer[normalModuleAddr]).toBe(0);
 
 		// After init, initOnlyModule counter should be 1, normalModule still 0
-		(instance.exports as { init: () => void; cycle: () => void }).init();
+		init();
 		expect(buffer[initOnlyModuleAddr]).toBe(1);
 		expect(buffer[normalModuleAddr]).toBe(0);
 
 		// After first cycle, initOnlyModule counter stays 1, normalModule becomes 1
-		(instance.exports as { init: () => void; cycle: () => void }).cycle();
+		cycle();
 		expect(buffer[initOnlyModuleAddr]).toBe(1);
 		expect(buffer[normalModuleAddr]).toBe(1);
 
 		// After second cycle, initOnlyModule counter stays 1, normalModule becomes 2
-		(instance.exports as { init: () => void; cycle: () => void }).cycle();
+		cycle();
 		expect(buffer[initOnlyModuleAddr]).toBe(1);
 		expect(buffer[normalModuleAddr]).toBe(2);
 
 		// After third cycle, initOnlyModule counter stays 1, normalModule becomes 3
-		(instance.exports as { init: () => void; cycle: () => void }).cycle();
+		cycle();
 		expect(buffer[initOnlyModuleAddr]).toBe(1);
 		expect(buffer[normalModuleAddr]).toBe(3);
 	});
@@ -202,12 +199,7 @@ moduleEnd
 		expect(result.compiledModules.bothDirectivesModule.initOnlyExecution).toBe(true);
 
 		// Instantiate WASM and test runtime behavior - skipExecution should win
-		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
-		const buffer = new Int32Array(memory.buffer);
-
-		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-			js: { memory },
-		});
+		const { init, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
 
 		const moduleAddr = result.compiledModules.bothDirectivesModule.memoryMap.counter.byteAddress / 4;
 
@@ -215,15 +207,15 @@ moduleEnd
 		expect(buffer[moduleAddr]).toBe(0);
 
 		// After init, counter should still be 0 (skipExecution takes precedence)
-		(instance.exports as { init: () => void; cycle: () => void }).init();
+		init();
 		expect(buffer[moduleAddr]).toBe(0);
 
 		// After cycle, counter should still be 0
-		(instance.exports as { init: () => void; cycle: () => void }).cycle();
+		cycle();
 		expect(buffer[moduleAddr]).toBe(0);
 
 		// After another cycle, counter should still be 0
-		(instance.exports as { init: () => void; cycle: () => void }).cycle();
+		cycle();
 		expect(buffer[moduleAddr]).toBe(0);
 	});
 
@@ -260,12 +252,7 @@ moduleEnd
 		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1, disableSharedMemory: true });
 
 		// Instantiate WASM and test runtime behavior
-		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
-		const buffer = new Int32Array(memory.buffer);
-
-		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-			js: { memory },
-		});
+		const { init, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
 
 		const sharedValueAddr = result.compiledModules.dataModule.memoryMap.sharedValue.byteAddress / 4;
 		const resultAddr = result.compiledModules.initOnlyModule.memoryMap.result.byteAddress / 4;
@@ -275,12 +262,12 @@ moduleEnd
 		expect(buffer[resultAddr]).toBe(0);
 
 		// After init, result should be 42 (copied from sharedValue)
-		(instance.exports as { init: () => void; cycle: () => void }).init();
+		init();
 		expect(buffer[sharedValueAddr]).toBe(42);
 		expect(buffer[resultAddr]).toBe(42);
 
 		// After cycle, both should remain unchanged
-		(instance.exports as { init: () => void; cycle: () => void }).cycle();
+		cycle();
 		expect(buffer[sharedValueAddr]).toBe(42);
 		expect(buffer[resultAddr]).toBe(42);
 	});
@@ -334,12 +321,7 @@ moduleEnd
 		const result = compile(modules, { memorySizeBytes: 1024, startingMemoryWordAddress: 1, disableSharedMemory: true });
 
 		// Instantiate WASM and test runtime behavior
-		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
-		const buffer = new Int32Array(memory.buffer);
-
-		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
-			js: { memory },
-		});
+		const { init, cycle, memory: buffer } = await createWasmInstance(result.codeBuffer);
 
 		const addr1 = result.compiledModules.initOnly1.memoryMap.counter.byteAddress / 4;
 		const addr2 = result.compiledModules.initOnly2.memoryMap.counter.byteAddress / 4;
@@ -351,13 +333,13 @@ moduleEnd
 		expect(buffer[addr3]).toBe(0);
 
 		// After init, counters should have defaults + increments (10+1, 20+2, 30+3)
-		(instance.exports as { init: () => void; cycle: () => void }).init();
+		init();
 		expect(buffer[addr1]).toBe(11);
 		expect(buffer[addr2]).toBe(22);
 		expect(buffer[addr3]).toBe(33);
 
 		// After cycle, all should remain unchanged
-		(instance.exports as { init: () => void; cycle: () => void }).cycle();
+		cycle();
 		expect(buffer[addr1]).toBe(11);
 		expect(buffer[addr2]).toBe(22);
 		expect(buffer[addr3]).toBe(33);
