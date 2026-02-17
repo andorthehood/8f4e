@@ -244,6 +244,7 @@ exports[`compiler > compileModules 1`] = `
     "id": "abs",
     "index": 0,
     "initFunctionBody": [],
+    "initOnlyExecution": undefined,
     "memoryMap": {
       "DEFAULT_VALUE": {
         "byteAddress": 0,
