@@ -9,10 +9,10 @@ describe('replaceGroupName', () => {
 		expect(result).toBe('; @group audio1');
 	});
 
-	it('should replace group name and preserve sticky flag', () => {
-		const line = '; @group audio sticky';
+	it('should replace group name and preserve nonstick flag', () => {
+		const line = '; @group audio nonstick';
 		const result = replaceGroupName(line, 'audio', 'audio1');
-		expect(result).toBe('; @group audio1 sticky');
+		expect(result).toBe('; @group audio1 nonstick');
 	});
 
 	it('should preserve leading whitespace', () => {
