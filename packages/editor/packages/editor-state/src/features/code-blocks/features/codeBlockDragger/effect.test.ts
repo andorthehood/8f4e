@@ -473,9 +473,9 @@ describe('codeBlockDragger', () => {
 			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
 		});
 
-		it('should not affect sticky groups (always drag together regardless of Alt)', () => {
+		it('should drag single block by default for nonstick groups (Alt reverses to group drag)', () => {
 			const block1 = createCodeBlockGraphicData({
-				code: ['module test1', '; @group audio sticky', 'moduleEnd'],
+				code: ['module test1', '; @group audio nonstick', 'moduleEnd'],
 				gridX: 5,
 				gridY: 5,
 				x: 50,
@@ -483,11 +483,11 @@ describe('codeBlockDragger', () => {
 				creationIndex: 0,
 				blockType: 'module',
 				groupName: 'audio',
-				groupSticky: true,
+				groupNonstick: true,
 			});
 
 			const block2 = createCodeBlockGraphicData({
-				code: ['module test2', '; @group audio sticky', 'moduleEnd'],
+				code: ['module test2', '; @group audio nonstick', 'moduleEnd'],
 				gridX: 10,
 				gridY: 10,
 				x: 100,
@@ -495,14 +495,77 @@ describe('codeBlockDragger', () => {
 				creationIndex: 1,
 				blockType: 'module',
 				groupName: 'audio',
-				groupSticky: true,
+				groupNonstick: true,
 			});
 
 			state.graphicHelper.codeBlocks = [block1, block2];
 
 			codeBlockDragger(store, events);
 
-			// Mousedown on block1 WITH Alt key - sticky should ignore Alt
+			// Mousedown on block1 WITHOUT Alt key - nonstick should drag single block
+			mousedownHandlers[0]({
+				x: 50,
+				y: 100,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			// Mousemove
+			mousemoveHandlers[0]({
+				x: 60,
+				y: 110,
+				movementX: 10,
+				movementY: 10,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			// Only block1 should move (nonstick default behavior)
+			expect(block1.x).toBe(60);
+			expect(block1.y).toBe(110);
+			// block2 should NOT move
+			expect(block2.x).toBe(100);
+			expect(block2.y).toBe(200);
+		});
+
+		it('should drag group together with Alt key for nonstick groups', () => {
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', '; @group audio nonstick', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				creationIndex: 0,
+				blockType: 'module',
+				groupName: 'audio',
+				groupNonstick: true,
+			});
+
+			const block2 = createCodeBlockGraphicData({
+				code: ['module test2', '; @group audio nonstick', 'moduleEnd'],
+				gridX: 10,
+				gridY: 10,
+				x: 100,
+				y: 200,
+				creationIndex: 1,
+				blockType: 'module',
+				groupName: 'audio',
+				groupNonstick: true,
+			});
+
+			state.graphicHelper.codeBlocks = [block1, block2];
+
+			codeBlockDragger(store, events);
+
+			// Mousedown on block1 WITH Alt key - nonstick should reverse to group drag
 			mousedownHandlers[0]({
 				x: 50,
 				y: 100,
@@ -528,7 +591,7 @@ describe('codeBlockDragger', () => {
 				altKey: true,
 			});
 
-			// Both blocks should move together (sticky overrides Alt)
+			// Both blocks should move together (nonstick Alt reverses behavior)
 			expect(block1.x).toBe(60);
 			expect(block1.y).toBe(110);
 			expect(block2.x).toBe(110);
