@@ -3,8 +3,8 @@ title: 'TODO: Support Inter-Module Element Word Size References'
 priority: Medium
 effort: 3-5h
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Support Inter-Module Element Word Size References
@@ -46,11 +46,11 @@ Resolve to `targetMemory.elementWordSize` (same semantics as local `%name`).
 
 ## Success Criteria
 
-- [ ] `%module.memory` is accepted in declaration/default and `init` paths.
-- [ ] Resolver writes `elementWordSize`.
-- [ ] Multi-dot forms are rejected.
-- [ ] Dependency sorting recognizes `%module.memory`.
-- [ ] `npx nx run compiler:test` passes.
+- [x] `%module.memory` is accepted in declaration/default and `init` paths.
+- [x] Resolver writes `elementWordSize`.
+- [x] Multi-dot forms are rejected.
+- [x] Dependency sorting recognizes `%module.memory`.
+- [x] `npx nx run compiler:test` passes.
 
 ## Affected Components
 

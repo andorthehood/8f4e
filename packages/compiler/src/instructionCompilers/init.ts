@@ -4,6 +4,8 @@ import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 import { INTERMODULAR_REFERENCE_PATTERN } from '../syntax/isIntermodularReferencePattern';
 import isIntermodularElementCountReference from '../syntax/isIntermodularElementCountReference';
+import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElementWordSizeReference';
+import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMaxReference';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
@@ -42,6 +44,18 @@ const init: InstructionCompiler = withValidation(
 		) {
 			// Do nothing
 			// Intermodular element count references are resolved later
+		} else if (
+			line.arguments[1].type === ArgumentType.IDENTIFIER &&
+			isIntermodularElementWordSizeReference(line.arguments[1].value)
+		) {
+			// Do nothing
+			// Intermodular element word size references are resolved later
+		} else if (
+			line.arguments[1].type === ArgumentType.IDENTIFIER &&
+			isIntermodularElementMaxReference(line.arguments[1].value)
+		) {
+			// Do nothing
+			// Intermodular element max references are resolved later
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER && line.arguments[1].value[0] === '&') {
 			// Local memory address reference (e.g., &buffer)
 			const memoryItem = memory[line.arguments[1].value.substring(1)];
