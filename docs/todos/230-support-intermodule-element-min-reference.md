@@ -3,8 +3,8 @@ title: 'TODO: Support Inter-Module Element Min Value References'
 priority: Medium
 effort: 3-5h
 created: 2026-02-16
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-17
 ---
 
 # TODO: Support Inter-Module Element Min Value References
