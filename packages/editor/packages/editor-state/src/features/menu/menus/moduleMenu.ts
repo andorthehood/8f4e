@@ -129,6 +129,17 @@ export const moduleMenu: MenuGenerator = state => {
 			close: true,
 			disabled: !state.callbacks.writeClipboardText,
 		},
+		...(hasGroup
+			? [
+					{
+						title: 'Copy group',
+						action: 'copyGroupBlocks',
+						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+						close: true,
+						disabled: !state.callbacks.writeClipboardText,
+					},
+				]
+			: []),
 		{
 			title: `Log ${blockLabel} info to console`,
 			action: 'consoleLog',
