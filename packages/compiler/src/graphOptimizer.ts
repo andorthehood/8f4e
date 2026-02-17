@@ -1,6 +1,10 @@
 import { INTERMODULAR_REFERENCE_PATTERN } from './syntax/isIntermodularReferencePattern';
 import isIntermodularElementCountReference from './syntax/isIntermodularElementCountReference';
 import extractIntermodularElementCountBase from './syntax/extractIntermodularElementCountBase';
+import isIntermodularElementWordSizeReference from './syntax/isIntermodularElementWordSizeReference';
+import extractIntermodularElementWordSizeBase from './syntax/extractIntermodularElementWordSizeBase';
+import isIntermodularElementMaxReference from './syntax/isIntermodularElementMaxReference';
+import extractIntermodularElementMaxBase from './syntax/extractIntermodularElementMaxBase';
 import { ArgumentType } from './types';
 
 import type { AST } from './types';
@@ -43,13 +47,15 @@ export default function sortModules(modules: AST[]): AST[] {
 			const intermodulerConnectionsA = astA
 				.filter(({ instruction, arguments: _arguments }) => {
 					return (
-						['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
+						['int*', 'int**', 'float*', 'float**', 'init', 'int', 'float'].includes(instruction) &&
 						_arguments[0] &&
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
 						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
-							isIntermodularElementCountReference(_arguments[1].value))
+							isIntermodularElementCountReference(_arguments[1].value) ||
+							isIntermodularElementWordSizeReference(_arguments[1].value) ||
+							isIntermodularElementMaxReference(_arguments[1].value))
 					);
 				})
 				.map(({ arguments: _arguments }) => {
@@ -59,22 +65,38 @@ export default function sortModules(modules: AST[]): AST[] {
 						const { module } = extractIntermodularElementCountBase(value);
 						return module;
 					}
-					// Handle address reference (&module.memory or &module.memory&)
-					// Remove leading & and trailing & (if present)
-					const cleanRef = value.endsWith('&') ? value.substring(1, value.length - 1) : value.substring(1);
+					// Handle element word size reference (%module.memory)
+					if (isIntermodularElementWordSizeReference(value)) {
+						const { module } = extractIntermodularElementWordSizeBase(value);
+						return module;
+					}
+					// Handle element max reference (^module.memory)
+					if (isIntermodularElementMaxReference(value)) {
+						const { module } = extractIntermodularElementMaxBase(value);
+						return module;
+					}
+					// Handle address reference (&module.memory or module.memory&)
+					// Parse reference based on form:
+					// - Start: &module.memory -> remove leading &
+					// - End: module.memory& -> remove trailing &
+					const cleanRef = value.endsWith('&')
+						? value.substring(0, value.length - 1) // Remove trailing &
+						: value.substring(1); // Remove leading &
 					return cleanRef.split('.')[0];
 				});
 
 			const intermodulerConnectionsB = astB
 				.filter(({ instruction, arguments: _arguments }) => {
 					return (
-						['int*', 'int**', 'float*', 'float**', 'init', 'int'].includes(instruction) &&
+						['int*', 'int**', 'float*', 'float**', 'init', 'int', 'float'].includes(instruction) &&
 						_arguments[0] &&
 						_arguments[1] &&
 						_arguments[0].type === ArgumentType.IDENTIFIER &&
 						_arguments[1].type === ArgumentType.IDENTIFIER &&
 						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
-							isIntermodularElementCountReference(_arguments[1].value))
+							isIntermodularElementCountReference(_arguments[1].value) ||
+							isIntermodularElementWordSizeReference(_arguments[1].value) ||
+							isIntermodularElementMaxReference(_arguments[1].value))
 					);
 				})
 				.map(({ arguments: _arguments }) => {
@@ -84,9 +106,23 @@ export default function sortModules(modules: AST[]): AST[] {
 						const { module } = extractIntermodularElementCountBase(value);
 						return module;
 					}
-					// Handle address reference (&module.memory or &module.memory&)
-					// Remove leading & and trailing & (if present)
-					const cleanRef = value.endsWith('&') ? value.substring(1, value.length - 1) : value.substring(1);
+					// Handle element word size reference (%module.memory)
+					if (isIntermodularElementWordSizeReference(value)) {
+						const { module } = extractIntermodularElementWordSizeBase(value);
+						return module;
+					}
+					// Handle element max reference (^module.memory)
+					if (isIntermodularElementMaxReference(value)) {
+						const { module } = extractIntermodularElementMaxBase(value);
+						return module;
+					}
+					// Handle address reference (&module.memory or module.memory&)
+					// Parse reference based on form:
+					// - Start: &module.memory -> remove leading &
+					// - End: module.memory& -> remove trailing &
+					const cleanRef = value.endsWith('&')
+						? value.substring(0, value.length - 1) // Remove trailing &
+						: value.substring(1); // Remove leading &
 					return cleanRef.split('.')[0];
 				});
 
