@@ -55,6 +55,10 @@ export default function parseMemoryInstructionArguments(
 			// Intermodular element count references are resolved later
 		} else if (parsedArgs.secondArg.type === 'intermodular-element-word-size') {
 			// Intermodular element word size references are resolved later
+		} else if (parsedArgs.secondArg.type === 'intermodular-element-max') {
+			// Intermodular element max references are resolved later
+		} else if (parsedArgs.secondArg.type === 'intermodular-element-min') {
+			// Intermodular element min references are resolved later
 		} else if (parsedArgs.secondArg.type === 'memory-reference') {
 			const memoryItem = context.namespace.memory[parsedArgs.secondArg.base];
 

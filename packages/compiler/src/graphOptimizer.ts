@@ -5,6 +5,8 @@ import isIntermodularElementWordSizeReference from './syntax/isIntermodularEleme
 import extractIntermodularElementWordSizeBase from './syntax/extractIntermodularElementWordSizeBase';
 import isIntermodularElementMaxReference from './syntax/isIntermodularElementMaxReference';
 import extractIntermodularElementMaxBase from './syntax/extractIntermodularElementMaxBase';
+import isIntermodularElementMinReference from './syntax/isIntermodularElementMinReference';
+import extractIntermodularElementMinBase from './syntax/extractIntermodularElementMinBase';
 import { ArgumentType } from './types';
 
 import type { AST } from './types';
@@ -55,7 +57,8 @@ export default function sortModules(modules: AST[]): AST[] {
 						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
 							isIntermodularElementCountReference(_arguments[1].value) ||
 							isIntermodularElementWordSizeReference(_arguments[1].value) ||
-							isIntermodularElementMaxReference(_arguments[1].value))
+							isIntermodularElementMaxReference(_arguments[1].value) ||
+							isIntermodularElementMinReference(_arguments[1].value))
 					);
 				})
 				.map(({ arguments: _arguments }) => {
@@ -73,6 +76,11 @@ export default function sortModules(modules: AST[]): AST[] {
 					// Handle element max reference (^module.memory)
 					if (isIntermodularElementMaxReference(value)) {
 						const { module } = extractIntermodularElementMaxBase(value);
+						return module;
+					}
+					// Handle element min reference (!module.memory)
+					if (isIntermodularElementMinReference(value)) {
+						const { module } = extractIntermodularElementMinBase(value);
 						return module;
 					}
 					// Handle address reference (&module.memory or module.memory&)
@@ -96,7 +104,8 @@ export default function sortModules(modules: AST[]): AST[] {
 						(INTERMODULAR_REFERENCE_PATTERN.test(_arguments[1].value) ||
 							isIntermodularElementCountReference(_arguments[1].value) ||
 							isIntermodularElementWordSizeReference(_arguments[1].value) ||
-							isIntermodularElementMaxReference(_arguments[1].value))
+							isIntermodularElementMaxReference(_arguments[1].value) ||
+							isIntermodularElementMinReference(_arguments[1].value))
 					);
 				})
 				.map(({ arguments: _arguments }) => {
@@ -114,6 +123,11 @@ export default function sortModules(modules: AST[]): AST[] {
 					// Handle element max reference (^module.memory)
 					if (isIntermodularElementMaxReference(value)) {
 						const { module } = extractIntermodularElementMaxBase(value);
+						return module;
+					}
+					// Handle element min reference (!module.memory)
+					if (isIntermodularElementMinReference(value)) {
+						const { module } = extractIntermodularElementMinBase(value);
 						return module;
 					}
 					// Handle address reference (&module.memory or module.memory&)
