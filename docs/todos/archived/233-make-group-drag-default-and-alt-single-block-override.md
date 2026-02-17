@@ -3,8 +3,8 @@ title: 'TODO: Make grouped drag default and Alt drag single-block override'
 priority: Medium
 effort: 4-8h
 created: 2026-02-16
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-16
 ---
 
 # TODO: Make grouped drag default and Alt drag single-block override
