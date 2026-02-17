@@ -111,6 +111,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const groupResult = parseGroup(graphicData.code);
 		graphicData.groupName = groupResult?.groupName;
 		graphicData.groupSticky = groupResult?.sticky;
+		graphicData.groupNonstick = groupResult?.nonstick;
 	};
 
 	const updateGraphicsAll = function () {

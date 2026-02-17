@@ -122,14 +122,16 @@ Use this to bookmark important modules, functions, or other blocks in large proj
 Assign a code block to a named group for coordinated movement.
 
 ```txt
-; @group <groupName> [sticky]
+; @group <groupName> [sticky|nonstick]
 ```
 
-When a code block contains this directive, it can be moved together with other blocks sharing the same group name:
+When a code block contains this directive, it can be moved together with other blocks sharing the same group name. The behavior depends on the optional keyword:
 
-- **Default behavior**: All blocks in the group move together when you drag any member
-- **With `Alt/Option` held**: Override group drag to move only the selected block (single-block drag)
+- **Default behavior** (no keyword): All blocks in the group move together when you drag any member
+  - **With `Alt/Option` held**: Override to move only the selected block (single-block drag)
 - **With `sticky` keyword**: All blocks in the group always move together, Alt/Option key has no effect
+- **With `nonstick` keyword**: Dragging a block moves only that block by default
+  - **With `Alt/Option` held**: Override to move the entire group together
 
 This is useful for keeping related modules, functions, or other blocks positioned relative to each other.
 
@@ -138,7 +140,7 @@ Examples:
 ```txt
 ; @group audio-chain
 ; @group visualizers sticky
-; @group utilities
+; @group utilities nonstick
 ```
 
 **Menu Actions:**
@@ -146,7 +148,8 @@ Examples:
 When a code block belongs to a group, the context menu provides these actions:
 
 - **Make Group Sticky**: Adds the `sticky` keyword to all blocks in the group, making them move together automatically
-- **Make Group Non-Sticky**: Removes the `sticky` keyword from all blocks in the group, returning to modifier-based drag
+- **Make Group Non-Sticky**: Removes the `sticky` keyword from all blocks in the group, returning to default behavior
+- **Make Group Nonstick**: Adds the `nonstick` keyword to all blocks in the group, making them drag individually by default
 - **Copy group**: Copies all blocks in the group to clipboard as a multi-block JSON array (see Clipboard Behavior below)
 - **Remove from group**: Removes the `@group` directive from the selected block only
 - **Ungroup "<groupName>"**: Removes the `@group` directive from all blocks in the group

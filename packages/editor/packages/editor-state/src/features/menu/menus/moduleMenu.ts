@@ -32,17 +32,20 @@ export const moduleMenu: MenuGenerator = state => {
 	const hasFavoriteDirective =
 		state.graphicHelper.selectedCodeBlock && parseFavorite(state.graphicHelper.selectedCodeBlock.code);
 
-	// Check if code block has a group name and compute group skip/sticky status
+	// Check if code block has a group name and compute group skip/sticky/nonstick status
 	const groupName = state.graphicHelper.selectedCodeBlock?.groupName;
 	const hasGroup = !!groupName;
 	let allGroupBlocksSkipped = false;
 	let allGroupBlocksSticky = false;
+	let allGroupBlocksNonstick = false;
 
 	if (hasGroup) {
-		// Find all blocks in the same group for sticky check
+		// Find all blocks in the same group for sticky/nonstick check
 		const groupBlocks = getGroupBlocks(state.graphicHelper.codeBlocks, groupName);
 		// Check if all group blocks have sticky flag
 		allGroupBlocksSticky = groupBlocks.every((block: CodeBlockGraphicData) => block.groupSticky);
+		// Check if all group blocks have nonstick flag
+		allGroupBlocksNonstick = groupBlocks.every((block: CodeBlockGraphicData) => block.groupNonstick);
 
 		if (blockType === 'module') {
 			// Find all module blocks in the same group
@@ -109,6 +112,15 @@ export const moduleMenu: MenuGenerator = state => {
 									payload: {
 										codeBlock: state.graphicHelper.selectedCodeBlock,
 										makeSticky: !allGroupBlocksSticky,
+									},
+									close: true,
+								},
+								{
+									title: allGroupBlocksNonstick ? 'Make Group Sticky' : 'Make Group Nonstick',
+									action: 'toggleGroupNonstick',
+									payload: {
+										codeBlock: state.graphicHelper.selectedCodeBlock,
+										makeNonstick: !allGroupBlocksNonstick,
 									},
 									close: true,
 								},
