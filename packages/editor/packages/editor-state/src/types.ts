@@ -197,9 +197,14 @@ export interface Callbacks {
 	 *
 	 * @param source - The config program source code (one command per line)
 	 * @param schema - JSON Schema describing the expected config structure
+	 * @param configType - Whether this is the editor or project config
 	 * @returns Promise containing the compiled config object and any errors
 	 */
-	compileConfig?: (source: string, schema: JSONSchemaLike) => Promise<ConfigCompilationResult>;
+	compileConfig?: (
+		source: string,
+		schema: JSONSchemaLike,
+		configType: 'editor' | 'project'
+	) => Promise<ConfigCompilationResult>;
 
 	// Memory manipulation callback
 	setWordInMemory?: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
