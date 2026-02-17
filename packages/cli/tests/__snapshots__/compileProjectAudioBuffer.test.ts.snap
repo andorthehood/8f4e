@@ -345,6 +345,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "id": "audioout",
       "index": 2,
       "initFunctionBody": [],
+      "initOnlyExecution": undefined,
       "memoryMap": {
         "buffer": {
           "byteAddress": 8,
@@ -406,6 +407,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "id": "env",
       "index": 0,
       "initFunctionBody": [],
+      "initOnlyExecution": undefined,
       "memoryMap": {},
       "skipExecutionInCycle": undefined,
       "wordAlignedAddress": 1,
@@ -421,6 +423,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "id": "math",
       "index": 1,
       "initFunctionBody": [],
+      "initOnlyExecution": undefined,
       "memoryMap": {},
       "skipExecutionInCycle": undefined,
       "wordAlignedAddress": 1,
@@ -533,6 +536,7 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
       "id": "phaseAccumulator",
       "index": 3,
       "initFunctionBody": [],
+      "initOnlyExecution": undefined,
       "memoryMap": {
         "defaultFreq": {
           "byteAddress": 524,
