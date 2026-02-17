@@ -122,14 +122,13 @@ Use this to bookmark important modules, functions, or other blocks in large proj
 Assign a code block to a named group for coordinated movement.
 
 ```txt
-; @group <groupName> [sticky]
+; @group <groupName> [nonstick]
 ```
 
 When a code block contains this directive, it can be moved together with other blocks sharing the same group name:
 
-- **Default behavior**: All blocks in the group move together when you drag any member
-- **With `Alt/Option` held**: Override group drag to move only the selected block (single-block drag)
-- **With `sticky` keyword**: All blocks in the group always move together, Alt/Option key has no effect
+- **Default behavior (without `nonstick`)**: All blocks in the group move together when you drag any member. Hold `Alt/Option` to override and drag only the selected block (single-block drag)
+- **With `nonstick` keyword**: Drag only the selected block by default (single-block drag). Hold `Alt/Option` to override and drag all blocks in the group together (group drag)
 
 This is useful for keeping related modules, functions, or other blocks positioned relative to each other.
 
@@ -137,7 +136,7 @@ Examples:
 
 ```txt
 ; @group audio-chain
-; @group visualizers sticky
+; @group visualizers nonstick
 ; @group utilities
 ```
 
@@ -145,8 +144,8 @@ Examples:
 
 When a code block belongs to a group, the context menu provides these actions:
 
-- **Make Group Sticky**: Adds the `sticky` keyword to all blocks in the group, making them move together automatically
-- **Make Group Non-Sticky**: Removes the `sticky` keyword from all blocks in the group, returning to modifier-based drag
+- **Make Group Nonstick**: Adds the `nonstick` keyword to all blocks in the group, making them drag individually by default
+- **Make Group Sticky**: Removes the `nonstick` keyword from all blocks in the group, returning to default group-drag behavior
 - **Copy group**: Copies all blocks in the group to clipboard as a multi-block JSON array (see Clipboard Behavior below)
 - **Remove from group**: Removes the `@group` directive from the selected block only
 - **Ungroup "<groupName>"**: Removes the `@group` directive from all blocks in the group
@@ -155,9 +154,9 @@ Notes:
 - Group names are case-sensitive.
 - Group names can contain letters, numbers, hyphens, and underscores.
 - Group names should not contain spaces (the first token after @group is used as the group name).
-- The `sticky` keyword must be exactly `sticky` (lowercase) to be recognized.
+- The `nonstick` keyword must be exactly `nonstick` (lowercase) to be recognized.
 - By default, all blocks in a group move together when dragging. Use Alt/Option to override and drag a single block.
-- Sticky groups always move together regardless of the Alt/Option key.
+- Nonstick groups drag individually by default. Use Alt/Option to override and drag all blocks together.
 - Ungrouped blocks are unaffected and always use single-block drag behavior.
 
 ## Clipboard Behavior
