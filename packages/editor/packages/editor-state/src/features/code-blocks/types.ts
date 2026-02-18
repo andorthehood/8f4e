@@ -6,7 +6,6 @@ import type { DataStructure } from '@8f4e/compiler';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
 import type { ContextMenu } from '../menu/types';
-import type { ProjectViewport } from '../viewport/types';
 
 /**
  * Project-level code block structure for persistent storage.
@@ -15,7 +14,6 @@ import type { ProjectViewport } from '../viewport/types';
  */
 export interface CodeBlock {
 	code: string[];
-	viewport?: ProjectViewport;
 }
 
 /**
@@ -229,6 +227,13 @@ export interface CodeBlockGraphicData {
 	 * Derived from the optional 'nonstick' keyword in ; @group directive.
 	 */
 	groupNonstick?: boolean;
+	/**
+	 * When true, marks this block as the home block for initial viewport placement.
+	 * The viewport centers on the first block with isHome=true when a project loads.
+	 * Derived from ; @home directive.
+	 * Defaults to false.
+	 */
+	isHome: boolean;
 }
 
 /**

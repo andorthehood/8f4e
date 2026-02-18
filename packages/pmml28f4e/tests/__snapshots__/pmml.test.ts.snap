@@ -82,11 +82,5 @@ exports[`convertPmmlNeuralNetworkToProject > creates code blocks for inputs, neu
       ],
     },
   ],
-  "viewport": {
-    "gridCoordinates": {
-      "x": 0,
-      "y": 0,
-    },
-  },
 }
 `;

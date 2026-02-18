@@ -440,7 +440,6 @@ const project: Project = {
 			],
 		},
 	],
-	viewport: { gridCoordinates: { x: 37, y: -25 } },
 };
 
 export default project;
