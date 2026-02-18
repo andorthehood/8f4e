@@ -170,6 +170,9 @@ export type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 // Export EMPTY_DEFAULT_PROJECT as a value
 export { EMPTY_DEFAULT_PROJECT } from './types';
 
+// Export .8f4e format helpers
+export { serializeProjectTo8f4e, parse8f4eToProject } from './pureHelpers/projectFormat8f4e';
+
 // Export helper functions
 export { default as findClosestCodeBlockInDirection } from './features/code-blocks/utils/finders/findClosestCodeBlockInDirection';
 export type { Direction } from './features/code-blocks/utils/finders/findClosestCodeBlockInDirection';

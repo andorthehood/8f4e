@@ -1,0 +1,157 @@
+8f4e/v1
+
+config project
+; @pos -65 0
+
+scope "memorySizeBytes"
+push 65536
+set
+popScope
+
+scope "runtimeSettings"
+scope "runtime"
+push "WebWorkerLogicRuntime"
+set
+rescopeTop "sampleRate"
+push 50
+set
+popScope
+
+configEnd
+
+module XORShift
+; @pos 74 1
+
+int seed 69420
+float out
+
+push &seed
+ push seed
+ push seed
+ push 13
+ shiftLeft
+ xor
+
+ push seed
+ push 17
+ shiftRight
+ xor
+
+ push seed
+ push 5
+ shiftLeft
+ xor
+store
+
+push &out
+ push seed
+ castToFloat
+ push ^seed
+ castToFloat
+ div
+store
+
+moduleEnd
+
+constants env
+; @pos -64 25
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 1/19/2026, 10:00:14 PM
+
+const SAMPLE_RATE 50
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
+module lcg
+; @pos 2 1
+; Linear congruential 
+; generator
+
+const MULTIPLIER 1664525
+const INCREMENT 1013904223 
+const MODULUS 65536 ; 2^16
+int seed 69420
+
+float out
+
+push &seed
+ push MULTIPLIER
+ push seed
+ mul
+ push INCREMENT
+ add
+ push MODULUS
+ remainder
+store
+
+push &out
+ push seed
+ castToFloat
+ push MODULUS
+ castToFloat
+ div 
+store
+
+moduleEnd
+
+module scope
+; @pos 39 1
+
+float* in &lcg.out
+float[] buffer 64
+int bufferPointer &buffer
+
+; @plot buffer -2 2
+
+push &bufferPointer
+push bufferPointer
+push %buffer
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if void
+ push &bufferPointer
+ push &buffer
+ store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
+
+module scope2
+; @pos 109 1
+
+float* in &XORShift.out
+float[] buffer 64
+int bufferPointer &buffer
+
+; @plot buffer -2 2
+
+push &bufferPointer
+push bufferPointer
+push %buffer
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if void
+ push &bufferPointer
+ push &buffer
+ store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd
