@@ -7,6 +7,7 @@ import { replaceGroupName } from '../group/replaceGroupName';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import upsertPos from '../position/upsertPos';
+import parseDisabled from '../disabled/parseDisabled';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State } from '~/types';
@@ -221,6 +222,9 @@ export function pasteMultipleBlocks(
 		// Add canonical @pos directive to code
 		code = upsertPos(code, gridX, gridY);
 
+		// Parse disabled state from @disabled directive in code
+		const disabled = parseDisabled(code);
+
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 		state.graphicHelper.nextCodeBlockCreationIndex++;
 
@@ -232,7 +236,7 @@ export function pasteMultipleBlocks(
 			x: gridX * state.viewport.vGrid,
 			y: gridY * state.viewport.hGrid,
 			creationIndex,
-			disabled: clipboardBlock.disabled ?? false,
+			disabled,
 		});
 
 		// Add block immediately so next iteration's ID uniqueness check sees it

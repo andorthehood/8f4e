@@ -3,11 +3,11 @@ import type { CodeBlockGraphicData } from '~/types';
 /**
  * Represents a code block in the clipboard payload.
  * This is a simplified representation with only the essential data needed for copy/paste.
+ * Disabled state is stored within the code array via the ; @disabled directive.
  */
 export interface ClipboardCodeBlock {
 	code: string[];
 	gridCoordinates: { x: number; y: number };
-	disabled?: boolean;
 }
 
 /**
@@ -22,22 +22,13 @@ export function serializeGroupToClipboard(
 	groupBlocks: CodeBlockGraphicData[],
 	anchorBlock: CodeBlockGraphicData
 ): string {
-	const clipboardBlocks: ClipboardCodeBlock[] = groupBlocks.map(block => {
-		const clipboardBlock: ClipboardCodeBlock = {
-			code: block.code,
-			gridCoordinates: {
-				x: block.gridX - anchorBlock.gridX,
-				y: block.gridY - anchorBlock.gridY,
-			},
-		};
-
-		// Only include disabled if it's true
-		if (block.disabled) {
-			clipboardBlock.disabled = true;
-		}
-
-		return clipboardBlock;
-	});
+	const clipboardBlocks: ClipboardCodeBlock[] = groupBlocks.map(block => ({
+		code: block.code,
+		gridCoordinates: {
+			x: block.gridX - anchorBlock.gridX,
+			y: block.gridY - anchorBlock.gridY,
+		},
+	}));
 
 	return JSON.stringify(clipboardBlocks);
 }
@@ -67,11 +58,6 @@ function isValidClipboardCodeBlock(obj: unknown): obj is ClipboardCodeBlock {
 
 	const coords = block.gridCoordinates as Record<string, unknown>;
 	if (typeof coords.x !== 'number' || typeof coords.y !== 'number') {
-		return false;
-	}
-
-	// Check optional fields
-	if (block.disabled !== undefined && typeof block.disabled !== 'boolean') {
 		return false;
 	}
 
