@@ -551,7 +551,7 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 		toggleCallback({ codeBlock });
 
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.codeBlocks', expect.any(Array));
+		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	});
 
 	it('should not toggle when editing is disabled', () => {
@@ -567,6 +567,40 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 		toggleCallback({ codeBlock });
 
+		expect(codeBlock.disabled).toBe(false);
+	});
+
+	it('should add @disabled directive when enabling disabled', () => {
+		const codeBlock = createMockCodeBlock({ code: ['module test', 'moduleEnd'], disabled: false });
+		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.featureFlags.editing = true;
+
+		codeBlockCreator(store, mockEvents);
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const toggleCall = onCalls.find(call => call[0] === 'toggleCodeBlockDisabled');
+		const toggleCallback = toggleCall![1];
+
+		toggleCallback({ codeBlock });
+
+		expect(codeBlock.code).toContain('; @disabled');
+		expect(codeBlock.disabled).toBe(true);
+	});
+
+	it('should remove @disabled directive when disabling disabled', () => {
+		const codeBlock = createMockCodeBlock({ code: ['module test', '; @disabled', 'moduleEnd'], disabled: true });
+		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.featureFlags.editing = true;
+
+		codeBlockCreator(store, mockEvents);
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const toggleCall = onCalls.find(call => call[0] === 'toggleCodeBlockDisabled');
+		const toggleCallback = toggleCall![1];
+
+		toggleCallback({ codeBlock });
+
+		expect(codeBlock.code).not.toContain('; @disabled');
 		expect(codeBlock.disabled).toBe(false);
 	});
 });

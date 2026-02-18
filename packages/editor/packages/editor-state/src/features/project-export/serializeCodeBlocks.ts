@@ -7,6 +7,7 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 /**
  * Converts graphic data code blocks to simplified project structure for serialization.
  * Position is stored in @pos directive within code, not in separate gridCoordinates field.
+ * Disabled state is stored in @disabled directive within code, not in separate disabled field.
  * Excludes editor config blocks from the exported project.
  * @param codeBlocks Array of code blocks with full graphic data
  * @returns Array of simplified code blocks suitable for file format
@@ -32,7 +33,6 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 		})
 		.map(codeBlock => ({
 			code: codeBlock.code,
-			...(codeBlock.disabled && { disabled: codeBlock.disabled }),
 		}));
 }
 
@@ -57,23 +57,26 @@ if (import.meta.vitest) {
 			const result = convertGraphicDataToProjectStructure(blocks);
 
 			expect(result[0]).not.toHaveProperty('gridCoordinates');
+			expect(result[0]).not.toHaveProperty('disabled');
 			expect(result[0].code).toEqual(['code']);
 		});
 
-		it('includes disabled field when block is disabled', () => {
+		it('does not include disabled field even when block is disabled', () => {
 			const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ id: 'disabled', code: ['code'], disabled: true })];
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0].disabled).toBe(true);
+			expect(result[0]).not.toHaveProperty('disabled');
+			expect(result[0].code).toEqual(['code']);
 		});
 
-		it('omits disabled field when block is not disabled', () => {
+		it('does not include disabled field when block is not disabled', () => {
 			const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ id: 'enabled', code: ['code'], disabled: false })];
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0].disabled).toBeUndefined();
+			expect(result[0]).not.toHaveProperty('disabled');
+			expect(result[0].code).toEqual(['code']);
 		});
 	});
 }

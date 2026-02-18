@@ -27,6 +27,7 @@ import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicDa
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 import parseGroup from '../group/codeParser';
 import parsePos from '../position/parsePos';
+import parseDisabled from '../disabled/parseDisabled';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -176,6 +177,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			const pixelX = gridX * state.viewport.vGrid;
 			const pixelY = gridY * state.viewport.hGrid;
 
+			// Parse @disabled directive from code
+			const disabled = parseDisabled(codeBlock.code);
+
 			return createCodeBlockGraphicData({
 				width: 0,
 				height: 0,
@@ -189,7 +193,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				lineNumberColumnWidth: 1,
 				creationIndex,
 				blockType: getBlockType(codeBlock.code),
-				disabled: codeBlock.disabled || false,
+				disabled,
 			});
 		});
 
@@ -204,10 +208,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					const rawBlock = editorConfigBlocks[i];
 					const gridX = rawBlock.gridCoordinates?.x ?? 0;
 					const gridY = rawBlock.gridCoordinates?.y ?? 0;
+					// Parse @disabled directive from code
+					const disabled = parseDisabled(rawBlock.code);
 					const block = createCodeBlockGraphicData({
 						id: getCodeBlockId(rawBlock.code),
 						code: rawBlock.code,
-						disabled: rawBlock.disabled || false,
+						disabled,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
 						gridX,
