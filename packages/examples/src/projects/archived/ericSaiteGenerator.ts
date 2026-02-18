@@ -545,7 +545,6 @@ const ericSaiteGenerator: Project = {
 			],
 		},
 	],
-	viewport: { gridCoordinates: { x: -241, y: -15 } },
 };
 
 export default ericSaiteGenerator;
