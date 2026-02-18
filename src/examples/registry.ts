@@ -1,9 +1,7 @@
-import { parse8f4eToProject } from '@8f4e/editor-state';
-
 import { moduleManifest, moduleMetadata } from './exampleModules';
 import { projectManifest, projectMetadata } from './exampleProjects';
 
-import type { ExampleModule, ModuleMetadata, Project, ProjectMetadata } from '@8f4e/editor-state';
+import type { ExampleModule, ModuleMetadata, ProjectMetadata } from '@8f4e/editor-state';
 
 // Re-export manifests for external use
 export { projectManifest };
@@ -12,7 +10,7 @@ export { projectManifest };
 const loadedModulesCache: Record<string, ExampleModule> = {};
 
 // Cache for loaded projects to avoid redundant loading
-const loadedProjectsCache: Record<string, Project> = {};
+const loadedProjectsCache: Record<string, string> = {};
 
 /**
  * Get list of modules with metadata only.
@@ -57,7 +55,7 @@ export async function getListOfProjects(): Promise<ProjectMetadata[]> {
  * Get specific project by slug.
  * Uses cached version if available, otherwise loads on-demand.
  */
-export async function getProject(slug: string): Promise<Project> {
+export async function getProject(slug: string): Promise<string> {
 	if (loadedProjectsCache[slug]) {
 		console.log(`Project ${slug} loaded from cache`);
 		return loadedProjectsCache[slug];
@@ -69,13 +67,12 @@ export async function getProject(slug: string): Promise<Project> {
 	}
 
 	console.log(`Loading project: ${slug}`);
-	const project = parse8f4eToProject(await loader());
-	loadedProjectsCache[slug] = project;
+	const text = await loader();
+	loadedProjectsCache[slug] = text;
 	console.log(`Loaded project: ${slug}`);
 
-	return project;
+	return text;
 }
 
 // Type definitions for backwards compatibility
 export type ModulesType = Record<string, ExampleModule> & { [key: string]: ExampleModule | undefined };
-export type ProjectsType = Record<string, Project> & { [key: string]: Project | undefined };

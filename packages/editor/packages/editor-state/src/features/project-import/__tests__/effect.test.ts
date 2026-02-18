@@ -291,11 +291,9 @@ describe('projectImport', () => {
 
 	describe('loadProjectBySlug', () => {
 		it('should load project by slug using callback', async () => {
-			const mockProject: Project = {
-				...EMPTY_DEFAULT_PROJECT,
-			};
+			const mock8f4eText = '8f4e/v1\n\nmodule counter\n\nmoduleEnd';
 
-			mockState.callbacks.getProject = vi.fn().mockResolvedValue(mockProject);
+			mockState.callbacks.getProject = vi.fn().mockResolvedValue(mock8f4eText);
 			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -306,7 +304,7 @@ describe('projectImport', () => {
 
 			expect(mockState.callbacks.getProject).toHaveBeenCalledWith('test-slug');
 
-			expect(mockState.initialProjectState).toEqual(mockProject);
+			expect(mockState.initialProjectState.codeBlocks).toHaveLength(1);
 		});
 
 		it('should warn when no getProject callback is provided', async () => {
