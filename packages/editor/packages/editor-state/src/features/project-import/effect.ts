@@ -4,6 +4,7 @@ import { warn, error } from '../logger/logger';
 
 import type { Project, State } from '~/types';
 
+import { parse8f4eToProject } from '~/pureHelpers/projectFormat8f4e';
 import { EventDispatcher, EMPTY_DEFAULT_PROJECT } from '~/types';
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
@@ -32,7 +33,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			warn(state, 'No getProject callback provided');
 			return;
 		}
-		const project = await state.callbacks.getProject(projectSlug);
+		const project = parse8f4eToProject(await state.callbacks.getProject(projectSlug));
 		loadProject({ project });
 	}
 
