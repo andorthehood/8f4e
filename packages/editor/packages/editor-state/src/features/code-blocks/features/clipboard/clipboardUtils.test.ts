@@ -34,9 +34,9 @@ describe('serializeGroupToClipboard', () => {
 		});
 	});
 
-	it('should include disabled flag when true', () => {
+	it('should preserve disabled state in code via @disabled directive', () => {
 		const anchor = createMockCodeBlock({
-			code: ['module foo', 'moduleEnd'],
+			code: ['module foo', '; @disabled', 'moduleEnd'],
 			gridX: 0,
 			gridY: 0,
 			disabled: true,
@@ -45,10 +45,11 @@ describe('serializeGroupToClipboard', () => {
 		const result = serializeGroupToClipboard([anchor], anchor);
 		const parsed = JSON.parse(result);
 
-		expect(parsed[0].disabled).toBe(true);
+		expect(parsed[0].code).toContain('; @disabled');
+		expect(parsed[0]).not.toHaveProperty('disabled');
 	});
 
-	it('should not include disabled flag when false', () => {
+	it('should not have disabled field when block is not disabled', () => {
 		const anchor = createMockCodeBlock({
 			code: ['module foo', 'moduleEnd'],
 			gridX: 0,
@@ -59,7 +60,8 @@ describe('serializeGroupToClipboard', () => {
 		const result = serializeGroupToClipboard([anchor], anchor);
 		const parsed = JSON.parse(result);
 
-		expect(parsed[0].disabled).toBeUndefined();
+		expect(parsed[0].code).not.toContain('; @disabled');
+		expect(parsed[0]).not.toHaveProperty('disabled');
 	});
 
 	it('should handle negative relative coordinates', () => {
@@ -113,18 +115,18 @@ describe('parseClipboardData', () => {
 			}
 		});
 
-		it('should parse multi-block with disabled flag', () => {
+		it('should parse multi-block with @disabled directive in code', () => {
 			const clipboardText = JSON.stringify([
-				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 }, disabled: true },
-				{ code: ['module bar', 'moduleEnd'], gridCoordinates: { x: 12, y: 4 }, disabled: false },
+				{ code: ['module foo', '; @disabled', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
+				{ code: ['module bar', 'moduleEnd'], gridCoordinates: { x: 12, y: 4 } },
 			]);
 
 			const result = parseClipboardData(clipboardText);
 
 			expect(result.type).toBe('multi');
 			if (result.type === 'multi') {
-				expect(result.blocks[0].disabled).toBe(true);
-				expect(result.blocks[1].disabled).toBe(false);
+				expect(result.blocks[0].code).toContain('; @disabled');
+				expect(result.blocks[1].code).not.toContain('; @disabled');
 			}
 		});
 	});
@@ -209,17 +211,6 @@ describe('parseClipboardData', () => {
 		it('should fallback to single-block when gridCoordinates is missing x or y', () => {
 			const clipboardText = JSON.stringify([
 				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0 } },
-				{ code: ['module bar', 'moduleEnd'], gridCoordinates: { x: 12, y: 4 } },
-			]);
-
-			const result = parseClipboardData(clipboardText);
-
-			expect(result.type).toBe('single');
-		});
-
-		it('should fallback to single-block when disabled is not boolean', () => {
-			const clipboardText = JSON.stringify([
-				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 }, disabled: 'true' },
 				{ code: ['module bar', 'moduleEnd'], gridCoordinates: { x: 12, y: 4 } },
 			]);
 
