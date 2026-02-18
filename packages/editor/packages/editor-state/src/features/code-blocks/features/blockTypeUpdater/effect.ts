@@ -37,12 +37,24 @@ export default function blockTypeUpdater(store: StateManager<State>): void {
 	}
 
 	function onProgrammaticSelectedCodeBlockCodeChange(): void {
-		if (state.graphicHelper.selectedCodeBlockForProgrammaticEdit) {
-			updateBlockType(state.graphicHelper.selectedCodeBlockForProgrammaticEdit);
+		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEdit;
+		if (block) {
+			updateBlockType(block);
+		}
+	}
+
+	function onProgrammaticSelectedCodeBlockWithoutCompilerTriggerCodeChange(): void {
+		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
+		if (block) {
+			updateBlockType(block);
 		}
 	}
 
 	store.subscribe('graphicHelper.codeBlocks', updateAllBlockTypes);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', onSelectedCodeBlockCodeChange);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticSelectedCodeBlockCodeChange);
+	store.subscribe(
+		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+		onProgrammaticSelectedCodeBlockWithoutCompilerTriggerCodeChange
+	);
 }
