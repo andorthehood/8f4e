@@ -5,6 +5,7 @@ import serializeToRuntimeReadyProject from './serializeToRuntimeReadyProject';
 
 import type { State } from '~/types';
 
+import { serializeProjectTo8f4e } from '~/pureHelpers/projectFormat8f4e';
 import { EventDispatcher } from '~/types';
 import encodeUint8ArrayToBase64 from '~/pureHelpers/base64/base64Encoder';
 
@@ -18,10 +19,17 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		}
 
 		const projectToSave = serializeToProject(state);
-		const fileName = 'project.json';
-		const json = JSON.stringify(projectToSave, null, 2);
+		const fileName = 'project.8f4e';
 
-		state.callbacks.exportProject(json, fileName).catch(error => {
+		let text: string;
+		try {
+			text = serializeProjectTo8f4e(projectToSave);
+		} catch (error) {
+			console.error('Failed to serialize project:', error);
+			return;
+		}
+
+		state.callbacks.exportProject(text, fileName).catch(error => {
 			console.error('Failed to save project to file:', error);
 		});
 	}
