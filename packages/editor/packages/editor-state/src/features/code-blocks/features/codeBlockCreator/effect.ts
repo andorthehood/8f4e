@@ -206,6 +206,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			creationIndex,
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
 			disabled: false,
+			isHome: false,
 		};
 
 		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks, codeBlock]);

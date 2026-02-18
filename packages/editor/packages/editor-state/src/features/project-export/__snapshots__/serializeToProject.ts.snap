@@ -6,12 +6,6 @@ exports[`serializeToProject > includes compiled modules when requested 1`] = `
   "compiledModules": {
     "mod": {},
   },
-  "viewport": {
-    "gridCoordinates": {
-      "x": 0,
-      "y": 0,
-    },
-  },
 }
 `;
 
@@ -25,11 +19,5 @@ exports[`serializeToProject > serializes basic project state without compiled da
     },
   ],
   "compiledModules": undefined,
-  "viewport": {
-    "gridCoordinates": {
-      "x": 4,
-      "y": 5,
-    },
-  },
 }
 `;
