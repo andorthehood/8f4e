@@ -117,6 +117,39 @@ When a code block contains this directive, it appears in the "Jump to..." submen
 
 Use this to bookmark important modules, functions, or other blocks in large projects for faster navigation.
 
+### `@disabled`
+
+Mark a code block as disabled to exclude it from compilation.
+
+```txt
+; @disabled
+```
+
+When a code block contains this directive, it is excluded from compilation and rendered with a transparent background. This is useful for temporarily disabling modules, functions, or other blocks without deleting them.
+
+**Behavior:**
+- **Project Load**: Disabled state is parsed from `@disabled` directive. Blocks without the directive are enabled by default.
+- **Context Menu**: Use "Disable <blockLabel>" or "Enable <blockLabel>" menu items to toggle the directive.
+- **Compilation**: Disabled blocks are filtered out before compilation, so they don't affect the compiled program.
+- **Rendering**: Disabled blocks appear with a transparent/dimmed background in the editor.
+
+**Format:**
+The canonical format is exactly: `; @disabled`
+
+Example:
+```txt
+module debugOscillator
+; @disabled
+; @pos 10 20
+output debugOut 1
+moduleEnd
+```
+
+**Important:**
+- The `@disabled` directive is the source of truth for disabled state in saved projects.
+- You can manually add or remove the directive to enable/disable blocks.
+- Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
+
 ### `@pos`
 
 Define the grid position of a code block in the editor.
@@ -224,9 +257,8 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 ```json
 [
   {
-    "code": ["module foo", "; @pos 5 10", "moduleEnd"],
-    "gridCoordinates": { "x": 0, "y": 0 },
-    "disabled": false
+    "code": ["module foo", "; @disabled", "; @pos 5 10", "moduleEnd"],
+    "gridCoordinates": { "x": 0, "y": 0 }
   },
   {
     "code": ["module bar", "; @pos 17 14", "moduleEnd"],
@@ -239,11 +271,11 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 - `gridCoordinates` are **relative offsets** used only for paste positioning (not for project storage)
 - Coordinates are relative to the copied anchor block (the selected block becomes `{x: 0, y: 0}`)
 - When pasted, final position = paste location + relative offset, then `@pos` is updated in code
-- The `disabled` field is included only when `true` (omitted when `false`)
+- Disabled state is stored in code via `@disabled` directive, not as a separate field
 - Blocks are ordered by their creation index for deterministic ordering
 - No envelope metadata (`type`, `version`, etc.) is added to the payload
 
-**Note:** The clipboard format uses `gridCoordinates` for paste mechanics only. In saved projects, position is stored in the `@pos` directive within code, not as a separate field.
+**Note:** The clipboard format uses `gridCoordinates` for paste mechanics only. In saved projects, both position and disabled state are stored in directives within code (`@pos` and `@disabled`), not as separate fields.
 
 **Paste Behavior:**
 - The editor automatically detects whether clipboard content is a multi-block array or plain text
