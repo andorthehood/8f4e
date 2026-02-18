@@ -214,8 +214,5 @@ export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork):
 
 	return {
 		codeBlocks,
-		viewport: {
-			gridCoordinates: { x: 0, y: 0 },
-		},
 	};
 }
