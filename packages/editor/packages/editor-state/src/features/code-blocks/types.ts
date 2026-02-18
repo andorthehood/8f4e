@@ -249,6 +249,11 @@ export type GraphicHelper = {
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlockForProgrammaticEdit?: CodeBlockGraphicData;
+	/**
+	 * Similar to selectedCodeBlockForProgrammaticEdit but without triggering compiler effects.
+	 * Use this for operations like drag-end position updates that should save but not recompile.
+	 */
+	selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger?: CodeBlockGraphicData;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects: PostProcessEffect[];
 	/** Background effects configuration for custom visual effects */

@@ -48,6 +48,14 @@ export default function groupDeleter(store: StateManager<State>, events: EventDi
 			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = undefined;
 		}
 
+		// Clear non-compiler programmatic selection if it points to a deleted block
+		if (
+			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger &&
+			blocksToDelete.has(state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger)
+		) {
+			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger = undefined;
+		}
+
 		// Update the code blocks array
 		store.set('graphicHelper.codeBlocks', remainingBlocks);
 	}
