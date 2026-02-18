@@ -161,7 +161,7 @@ export interface Callbacks {
 	getListOfModules?: () => Promise<ModuleMetadata[]>;
 	getModule?: (slug: string) => Promise<ExampleModule>;
 	getListOfProjects?: () => Promise<ProjectMetadata[]>;
-	getProject?: (slug: string) => Promise<Project>;
+	getProject?: (slug: string) => Promise<string>;
 
 	// Compilation callback
 	compileCode?: (

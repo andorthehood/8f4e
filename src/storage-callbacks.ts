@@ -22,7 +22,7 @@ export async function loadSession(): Promise<Project | null> {
 		const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
 		if (projectName && projectManifest[projectName]) {
 			console.log('Loading project from URL hash:', projectName);
-			return await getProject(projectName);
+			return parse8f4eToProject(await getProject(projectName));
 		}
 
 		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
@@ -33,7 +33,7 @@ export async function loadSession(): Promise<Project | null> {
 
 		if (Object.keys(projectManifest).length > 0) {
 			console.log('Loading default project: audioBuffer');
-			return await getProject('audioBuffer');
+			return parse8f4eToProject(await getProject('audioBuffer'));
 		}
 
 		return null;
