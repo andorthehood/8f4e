@@ -1,3 +1,5 @@
+import { parse8f4eToProject } from '@8f4e/editor-state';
+
 import { moduleManifest, moduleMetadata } from './exampleModules';
 import { projectManifest, projectMetadata } from './exampleProjects';
 
@@ -67,7 +69,7 @@ export async function getProject(slug: string): Promise<Project> {
 	}
 
 	console.log(`Loading project: ${slug}`);
-	const project = await loader();
+	const project = parse8f4eToProject(await loader());
 	loadedProjectsCache[slug] = project;
 	console.log(`Loaded project: ${slug}`);
 
