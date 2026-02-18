@@ -251,12 +251,12 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			// Original block should still have "audio"
+			// Original block should still have "audio" at line 1
 			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toBe('; @group audio');
 
-			// Pasted blocks should have renamed group "audio1"
-			expect(mockState.graphicHelper.codeBlocks[1].code[1]).toBe('; @group audio1');
-			expect(mockState.graphicHelper.codeBlocks[2].code[1]).toBe('; @group audio1');
+			// Pasted blocks should have renamed group "audio1" at line 2 (after @pos)
+			expect(mockState.graphicHelper.codeBlocks[1].code[2]).toBe('; @group audio1');
+			expect(mockState.graphicHelper.codeBlocks[2].code[2]).toBe('; @group audio1');
 		});
 
 		it('should handle multiple different group names in paste', async () => {
@@ -288,10 +288,10 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			// audio -> audio1, video -> video1
-			expect(mockState.graphicHelper.codeBlocks[2].code[1]).toBe('; @group audio1');
-			expect(mockState.graphicHelper.codeBlocks[3].code[1]).toBe('; @group video1');
-			expect(mockState.graphicHelper.codeBlocks[4].code[1]).toBe('; @group audio1'); // Same as first
+			// audio -> audio1, video -> video1 (now at line 2 after @pos)
+			expect(mockState.graphicHelper.codeBlocks[2].code[2]).toBe('; @group audio1');
+			expect(mockState.graphicHelper.codeBlocks[3].code[2]).toBe('; @group video1');
+			expect(mockState.graphicHelper.codeBlocks[4].code[2]).toBe('; @group audio1'); // Same as first
 		});
 
 		it('should fallback to single-block paste for invalid JSON', async () => {
@@ -309,9 +309,12 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			// Should create one block with plain text
+			// Should create one block with plain text (now includes @pos)
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].code).toEqual(['module test', '', 'moduleEnd']);
+			expect(mockState.graphicHelper.codeBlocks[0].code[0]).toBe('module test');
+			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
+			expect(mockState.graphicHelper.codeBlocks[0].code[2]).toBe('');
+			expect(mockState.graphicHelper.codeBlocks[0].code[3]).toBe('moduleEnd');
 		});
 
 		it('should fallback to single-block paste for array with only 1 item', async () => {
@@ -381,9 +384,9 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			// Nonstick flag should be preserved
-			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toContain('nonstick');
-			expect(mockState.graphicHelper.codeBlocks[1].code[1]).toContain('nonstick');
+			// Nonstick flag should be preserved (now at index 2 after @pos)
+			expect(mockState.graphicHelper.codeBlocks[0].code[2]).toContain('nonstick');
+			expect(mockState.graphicHelper.codeBlocks[1].code[2]).toContain('nonstick');
 		});
 	});
 });
