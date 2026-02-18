@@ -121,9 +121,9 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 
 			// Update @pos directive in code for this block
 			// Use selectedCodeBlockForProgrammaticEdit to trigger save subscriptions
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = block;
+			store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', block);
 			block.code = upsertPos(block.code, gridX, gridY);
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = undefined;
+			store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', undefined);
 		}
 
 		state.graphicHelper.draggedCodeBlock = undefined;
