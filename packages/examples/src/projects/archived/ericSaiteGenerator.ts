@@ -6,7 +6,6 @@ const ericSaiteGenerator: Project = {
 			code: [
 				'config',
 				'; @pos -241 -15',
-				'; @pos -280 -2',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
