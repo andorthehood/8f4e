@@ -109,7 +109,6 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 
 		if (!hasEnvBlock) {
 			// Add env block at the beginning of codeBlocks array
-			// Position will be initialized from @pos directive (defaults to 0,0)
 			const envBlock: CodeBlock = {
 				code: generateEnvConstantsBlock(state),
 			};
