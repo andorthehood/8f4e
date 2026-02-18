@@ -119,6 +119,8 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			block.x = gridX * vGrid;
 			block.y = gridY * hGrid;
 
+			block.lastUpdated = Date.now();
+
 			// Update @pos directive in code for this block
 			// Use selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger to save without triggering compilation
 			store.set('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', block);
