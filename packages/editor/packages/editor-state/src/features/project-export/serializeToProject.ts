@@ -6,7 +6,6 @@ import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils
 
 /**
  * Serializes current runtime state to Project format for saving to file.
- * Converts pixel coordinates to grid coordinates for persistent storage.
  * Note: This is the synchronous version that doesn't include compiled config.
  * For runtime-ready exports with compiled config, use serializeToRuntimeReadyProject.
  * @param state Current editor state
@@ -22,13 +21,6 @@ export default function serializeToProject(
 
 	const project: Project = {
 		codeBlocks: convertGraphicDataToProjectStructure(graphicHelper.codeBlocks),
-		viewport: {
-			// Convert pixel coordinates to grid coordinates for persistent storage
-			gridCoordinates: {
-				x: Math.round(state.viewport.x / state.viewport.vGrid),
-				y: Math.round(state.viewport.y / state.viewport.hGrid),
-			},
-		},
 		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
 		// postProcessEffects are now derived from shader code blocks and not persisted
 	};

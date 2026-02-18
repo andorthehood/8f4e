@@ -613,7 +613,6 @@ const midiArpeggiator2: Project = {
 			],
 		},
 	],
-	viewport: { gridCoordinates: { x: -90, y: -12 } },
 };
 
 export default midiArpeggiator2;
