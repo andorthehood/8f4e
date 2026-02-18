@@ -138,10 +138,13 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	const updateProgrammaticSelectedCodeBlock = function () {
-		if (!state.graphicHelper.selectedCodeBlockForProgrammaticEdit) {
+		const block =
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit ||
+			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
+		if (!block) {
 			return;
 		}
-		updateGraphics(state.graphicHelper.selectedCodeBlockForProgrammaticEdit);
+		updateGraphics(block);
 	};
 
 	const populateCodeBlocks = async function () {
@@ -276,4 +279,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.cursor', updateProgrammaticSelectedCodeBlock);
+	store.subscribe(
+		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+		updateProgrammaticSelectedCodeBlock
+	);
+	store.subscribe(
+		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.cursor',
+		updateProgrammaticSelectedCodeBlock
+	);
 }

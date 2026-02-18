@@ -120,10 +120,10 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			block.y = gridY * hGrid;
 
 			// Update @pos directive in code for this block
-			// Use selectedCodeBlockForProgrammaticEdit to trigger save subscriptions
-			store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', block);
+			// Use selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger to save without triggering compilation
+			store.set('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', block);
 			block.code = upsertPos(block.code, gridX, gridY);
-			store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', undefined);
+			store.set('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', undefined);
 		}
 
 		state.graphicHelper.draggedCodeBlock = undefined;
