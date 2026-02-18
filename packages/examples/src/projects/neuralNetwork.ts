@@ -210,12 +210,6 @@ const project: Project = {
 			code: ['module switches', '; @pos 74 -62', '', 'int he', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'],
 		},
 	],
-	viewport: {
-		gridCoordinates: {
-			x: 70,
-			y: -84,
-		},
-	},
 };
 
 export default project;

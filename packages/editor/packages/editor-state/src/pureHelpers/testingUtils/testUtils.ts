@@ -104,6 +104,7 @@ export function createMockCodeBlock(
 		creationIndex: 0,
 		blockType: 'unknown',
 		disabled: false,
+		isHome: false,
 		extras: {
 			blockHighlights: [],
 			inputs: [],
