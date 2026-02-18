@@ -6,7 +6,6 @@ const midiArpeggiator: Project = {
 			code: [
 				'config',
 				'; @pos -47 -25',
-				'; @pos -80 -1',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
