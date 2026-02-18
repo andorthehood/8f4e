@@ -138,9 +138,15 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	const updateProgrammaticSelectedCodeBlock = function () {
-		const block =
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit ||
-			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
+		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEdit;
+		if (!block) {
+			return;
+		}
+		updateGraphics(block);
+	};
+
+	const updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger = function () {
+		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
 		if (!block) {
 			return;
 		}
@@ -281,10 +287,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.cursor', updateProgrammaticSelectedCodeBlock);
 	store.subscribe(
 		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
-		updateProgrammaticSelectedCodeBlock
-	);
-	store.subscribe(
-		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.cursor',
-		updateProgrammaticSelectedCodeBlock
+		updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger
 	);
 }
