@@ -11,12 +11,11 @@ import type { ProjectViewport } from '../viewport/types';
 /**
  * Project-level code block structure for persistent storage.
  * Position is stored within code via @pos directive.
+ * Disabled state is stored within code via @disabled directive.
  */
 export interface CodeBlock {
 	code: string[];
 	viewport?: ProjectViewport;
-	/** When true, the block is excluded from compilation and rendered with a transparent background */
-	disabled?: boolean;
 }
 
 /**
