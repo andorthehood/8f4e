@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -65 0',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -22,14 +23,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -65,
-				y: 0,
-			},
 		},
 		{
 			code: [
 				'module XORShift',
+				'; @pos 74 1',
 				'',
 				'int seed 69420',
 				'float out',
@@ -62,14 +60,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 74,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos -64 25',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 10:00:14 PM',
@@ -79,14 +74,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -64,
-				y: 25,
-			},
 		},
 		{
 			code: [
 				'module lcg',
+				'; @pos 2 1',
 				'; Linear congruential ',
 				'; generator',
 				'',
@@ -117,14 +109,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 2,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'module scope',
+				'; @pos 39 1',
 				'',
 				'float* in &lcg.out',
 				'float[] buffer 64',
@@ -153,14 +142,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 39,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'module scope2',
+				'; @pos 109 1',
 				'',
 				'float* in &XORShift.out',
 				'float[] buffer 64',
@@ -189,10 +175,6 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 109,
-				y: 1,
-			},
 		},
 	],
 	viewport: {

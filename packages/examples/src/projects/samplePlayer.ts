@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -9 -63',
 				'',
 				'rescope "binaryAssets[]"',
 				'',
@@ -41,14 +42,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -9,
-				y: -63,
-			},
 		},
 		{
 			code: [
 				'config project',
+				'; @pos -53 -63',
 				'',
 				'rescope "memorySizeBytes"',
 				'push 655360',
@@ -101,14 +99,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -53,
-				y: -63,
-			},
 		},
 		{
 			code: [
 				'module audioout',
+				'; @pos 124 -63',
 				'use env',
 				'',
 				'float* in &pcmPlayer8bit.out',
@@ -147,14 +142,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 124,
-				y: -63,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos 32 -63',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/21/2026, 2:21:06 PM',
@@ -168,14 +160,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: 32,
-				y: -63,
-			},
 		},
 		{
 			code: [
 				'module pcmPlayer8bit',
+				'; @pos 85 -63',
 				'use env',
 				'',
 				'int8u[] buffer ASSET_0_SIZE',
@@ -223,10 +212,6 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 85,
-				y: -63,
-			},
 		},
 	],
 	viewport: {

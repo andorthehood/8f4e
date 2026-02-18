@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -5 3',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -23,14 +24,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -5,
-				y: 3,
-			},
 		},
 		{
 			code: [
 				'module counter',
+				'; @pos 82 3',
 				'',
 				'int value 0',
 				'',
@@ -44,14 +42,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 82,
-				y: 3,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos 34 3',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 10:01:14 PM',
@@ -61,10 +56,6 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: 34,
-				y: 3,
-			},
 		},
 	],
 	viewport: {

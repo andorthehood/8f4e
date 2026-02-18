@@ -5,18 +5,15 @@
 import type { DataStructure } from '@8f4e/compiler';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
-import type { GridCoordinates } from '../../shared/types';
 import type { ContextMenu } from '../menu/types';
 import type { ProjectViewport } from '../viewport/types';
 
 /**
- * Project-level code block structure with grid-based coordinates.
- * Used for persistent storage.
+ * Project-level code block structure for persistent storage.
+ * Position is stored within code via @pos directive.
  */
 export interface CodeBlock {
 	code: string[];
-	/** Grid coordinates for the code block position in the editor */
-	gridCoordinates: GridCoordinates;
 	viewport?: ProjectViewport;
 	/** When true, the block is excluded from compilation and rendered with a transparent background */
 	disabled?: boolean;

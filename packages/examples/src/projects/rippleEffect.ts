@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -59 12',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -23,14 +24,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -59,
-				y: 12,
-			},
 		},
 		{
 			code: [
 				'module counter',
+				'; @pos 25 19',
 				'',
 				'int count',
 				'; @debug count',
@@ -43,14 +41,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 25,
-				y: 19,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos -59 0',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 10:03:27 PM',
@@ -60,14 +55,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -59,
-				y: 0,
-			},
 		},
 		{
 			code: [
 				'module main',
+				'; @pos 25 10',
 				'',
 				'; This project demonstrates a radial ripple',
 				'; post-process effect using GLSL shader',
@@ -75,14 +67,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 25,
-				y: 10,
-			},
 		},
 		{
 			code: [
 				'fragmentShader postprocess',
+				'; @pos 87 10',
 				'#version 300 es',
 				'',
 				'precision mediump float;',
@@ -118,10 +107,6 @@ const project: Project = {
 				'}',
 				'fragmentShaderEnd',
 			],
-			gridCoordinates: {
-				x: 87,
-				y: 10,
-			},
 		},
 	],
 	viewport: {
