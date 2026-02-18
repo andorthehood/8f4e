@@ -125,7 +125,7 @@ Define the grid position of a code block in the editor.
 ; @pos <gridX> <gridY>
 ```
 
-This directive stores the position of a code block within the project. Position is persisted as part of the code, not in separate metadata.
+This directive stores the position of a code block within the project.
 
 **Rules:**
 - `gridX` and `gridY` must be strict integers (floats are rejected)
@@ -153,9 +153,8 @@ moduleEnd
 ```
 
 **Important:**
-- The `@pos` directive is the **only** source of truth for block position in saved projects
-- Runtime position (`x`, `y`, `gridX`, `gridY`) is derived from `@pos`, not saved separately
-- During drag, runtime position updates continuously but `@pos` updates only on drag end
+- The `@pos` directive is the source of truth for block position in saved projects
+- During drag, `@pos` updates only on drag end (not during the drag)
 
 ### `@group`
 

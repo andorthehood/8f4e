@@ -6,7 +6,6 @@ const project: Project = {
 			code: [
 				'config',
 				'; @pos 37 -25',
-				'; @pos -35 -13',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
