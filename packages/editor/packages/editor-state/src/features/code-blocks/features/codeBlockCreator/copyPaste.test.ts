@@ -70,12 +70,12 @@ describe('codeBlockCreator - group copy/paste', () => {
 			expect(parsed[1].gridCoordinates).toEqual({ x: 12, y: 4 });
 		});
 
-		it('should include disabled flag in serialized blocks', async () => {
+		it('should preserve disabled state via @disabled directive in code', async () => {
 			const mockWriteClipboard = vi.fn().mockResolvedValue(undefined);
 			mockState.callbacks.writeClipboardText = mockWriteClipboard;
 
 			const block1 = createMockCodeBlock({
-				code: ['module foo', '; @group audio', 'moduleEnd'],
+				code: ['module foo', '; @disabled', '; @group audio', 'moduleEnd'],
 				gridX: 0,
 				gridY: 0,
 				groupName: 'audio',
@@ -96,7 +96,8 @@ describe('codeBlockCreator - group copy/paste', () => {
 			const clipboardContent = mockWriteClipboard.mock.calls[0][0];
 			const parsed = JSON.parse(clipboardContent);
 
-			expect(parsed[0].disabled).toBe(true);
+			expect(parsed[0].code).toContain('; @disabled');
+			expect(parsed[0]).not.toHaveProperty('disabled');
 		});
 
 		it('should fallback to single copy when block has no group', async () => {
@@ -203,10 +204,10 @@ describe('codeBlockCreator - group copy/paste', () => {
 			expect(mockState.graphicHelper.codeBlocks[1].gridY).toBe(anchorGridY + 3);
 		});
 
-		it('should preserve disabled flag on pasted blocks', async () => {
+		it('should parse disabled state from @disabled directive on pasted blocks', async () => {
 			const clipboardData = JSON.stringify([
-				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 }, disabled: true },
-				{ code: ['module bar', 'moduleEnd'], gridCoordinates: { x: 5, y: 3 }, disabled: false },
+				{ code: ['module foo', '; @disabled', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
+				{ code: ['module bar', 'moduleEnd'], gridCoordinates: { x: 5, y: 3 } },
 			]);
 
 			const mockReadClipboard = vi.fn().mockResolvedValue(clipboardData);
