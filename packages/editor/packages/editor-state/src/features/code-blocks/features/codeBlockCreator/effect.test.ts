@@ -40,9 +40,12 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			// Verify clipboard was read
 			expect(mockReadClipboard).toHaveBeenCalled();
 
-			// Verify code block was added with clipboard content
+			// Verify code block was added with clipboard content (now includes @pos)
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].code).toEqual(['module test', '', 'moduleEnd']);
+			expect(mockState.graphicHelper.codeBlocks[0].code[0]).toBe('module test');
+			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
+			expect(mockState.graphicHelper.codeBlocks[0].code[2]).toBe('');
+			expect(mockState.graphicHelper.codeBlocks[0].code[3]).toBe('moduleEnd');
 		});
 
 		it('should fail silently when readClipboardText is not provided', async () => {
