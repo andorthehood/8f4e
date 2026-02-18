@@ -6,6 +6,7 @@ import { createGroupNameMapping } from '../group/getUniqueGroupName';
 import { replaceGroupName } from '../group/replaceGroupName';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import upsertPos from '../position/upsertPos';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State } from '~/types';
@@ -216,6 +217,9 @@ export function pasteMultipleBlocks(
 			// Replace the group name in the code
 			code = code.map(line => replaceGroupName(line, originalGroupName, newGroupName));
 		}
+
+		// Add canonical @pos directive to code
+		code = upsertPos(code, gridX, gridY);
 
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 		state.graphicHelper.nextCodeBlockCreationIndex++;

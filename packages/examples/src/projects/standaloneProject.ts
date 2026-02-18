@@ -7,6 +7,7 @@ const standalonProject: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -14 8',
 				'',
 				'scope "memorySizeBytes"',
 				'push 8',
@@ -27,14 +28,11 @@ const standalonProject: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -14,
-				y: 8,
-			},
 		},
 		{
 			code: [
 				'module counter',
+				'; @pos 25 8',
 				'',
 				'int count',
 				'; @debug count',
@@ -47,10 +45,6 @@ const standalonProject: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 25,
-				y: 8,
-			},
 		},
 	],
 	viewport: {

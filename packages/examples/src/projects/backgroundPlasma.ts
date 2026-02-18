@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -59 12',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -23,14 +24,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -59,
-				y: 12,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos -59 0',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 2/3/2026, 10:10:00 PM',
@@ -40,14 +38,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -59,
-				y: 0,
-			},
 		},
 		{
 			code: [
 				'module main',
+				'; @pos 25 10',
 				'',
 				'; This project demonstrates a background',
 				'; plasma effect using a GLSL shader',
@@ -55,14 +50,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 25,
-				y: 10,
-			},
 		},
 		{
 			code: [
 				'fragmentShader background',
+				'; @pos 87 10',
 				'#version 300 es',
 				'',
 				'precision mediump float;',
@@ -95,10 +87,6 @@ const project: Project = {
 				'}',
 				'fragmentShaderEnd',
 			],
-			gridCoordinates: {
-				x: 87,
-				y: 10,
-			},
 		},
 	],
 	viewport: {

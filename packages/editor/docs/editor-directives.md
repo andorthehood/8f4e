@@ -117,6 +117,45 @@ When a code block contains this directive, it appears in the "Jump to..." submen
 
 Use this to bookmark important modules, functions, or other blocks in large projects for faster navigation.
 
+### `@pos`
+
+Define the grid position of a code block in the editor.
+
+```txt
+; @pos <gridX> <gridY>
+```
+
+This directive stores the position of a code block within the project.
+
+**Rules:**
+- `gridX` and `gridY` must be strict integers (floats are rejected)
+- Negative values are allowed
+- Multiple `@pos` directives in one block are treated as invalid (position defaults to `0,0`)
+- Malformed values (non-integers) are treated as invalid (position defaults to `0,0`)
+
+**Behavior:**
+- **Project Load**: Position is parsed from `@pos` directive. Missing or invalid directive defaults to `(0,0)`
+- **Code Edit**: If you manually edit `@pos` to valid values, the block immediately moves to that position
+- **Dragging**: When you drag a block, `@pos` is automatically updated when the drag ends (not during the drag)
+- **Creation**: New blocks automatically get a canonical `@pos` directive based on creation location
+- **Paste**: Pasted blocks automatically get `@pos` directives with adjusted positions
+
+**Format:**
+The canonical format is exactly: `; @pos ${gridX} ${gridY}`
+
+Example:
+```txt
+module oscillator
+; @pos 10 20
+; @favorite
+output out 1
+moduleEnd
+```
+
+**Important:**
+- The `@pos` directive is the source of truth for block position in saved projects
+- During drag, `@pos` updates only on drag end (not during the drag)
+
 ### `@group`
 
 Assign a code block to a named group for coordinated movement.
@@ -185,22 +224,26 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 ```json
 [
   {
-    "code": ["module foo", "moduleEnd"],
+    "code": ["module foo", "; @pos 5 10", "moduleEnd"],
     "gridCoordinates": { "x": 0, "y": 0 },
     "disabled": false
   },
   {
-    "code": ["module bar", "moduleEnd"],
+    "code": ["module bar", "; @pos 17 14", "moduleEnd"],
     "gridCoordinates": { "x": 12, "y": 4 }
   }
 ]
 ```
 
 **Rules:**
-- `gridCoordinates` are relative to the copied anchor block (the selected block becomes `{x: 0, y: 0}`)
+- `gridCoordinates` are **relative offsets** used only for paste positioning (not for project storage)
+- Coordinates are relative to the copied anchor block (the selected block becomes `{x: 0, y: 0}`)
+- When pasted, final position = paste location + relative offset, then `@pos` is updated in code
 - The `disabled` field is included only when `true` (omitted when `false`)
 - Blocks are ordered by their creation index for deterministic ordering
 - No envelope metadata (`type`, `version`, etc.) is added to the payload
+
+**Note:** The clipboard format uses `gridCoordinates` for paste mechanics only. In saved projects, position is stored in the `@pos` directive within code, not as a separate field.
 
 **Paste Behavior:**
 - The editor automatically detects whether clipboard content is a multi-block array or plain text

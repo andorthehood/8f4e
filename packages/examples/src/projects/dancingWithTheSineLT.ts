@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -122 -9',
 				'',
 				'rescope "memorySizeBytes"',
 				'push 65536',
@@ -23,14 +24,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -122,
-				y: -9,
-			},
 		},
 		{
 			code: [
 				'module dancer1',
+				'; @pos -34 -9',
 				'',
 				'; Can yor IDE do this?',
 				'',
@@ -65,14 +63,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -34,
-				y: -9,
-			},
 		},
 		{
 			code: [
 				'module dancer2',
+				'; @pos 1 -9',
 				'float* sin &sineLT.sin32',
 				'float* last &sineLT.sin255',
 				'float* first &sineLT.sin0',
@@ -104,14 +99,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 1,
-				y: -9,
-			},
 		},
 		{
 			code: [
 				'module dancer3',
+				'; @pos 36 -9',
 				'',
 				'float* sin &sineLT.sin64',
 				'float* last &sineLT.sin255',
@@ -144,14 +136,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 36,
-				y: -9,
-			},
 		},
 		{
 			code: [
 				'module dancer4',
+				'; @pos 89 -12',
 				'',
 				'float* sin &sineLT.sin64',
 				'float* last &sineLT.sin255',
@@ -187,14 +176,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 89,
-				y: -12,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos -122 15',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 9:56:17 PM',
@@ -204,14 +190,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -122,
-				y: 15,
-			},
 		},
 		{
 			code: [
 				'module sineLT',
+				'; @pos -68 -9',
 				'',
 				'float sin0 0.0000',
 				'float sin1 0.0246',
@@ -472,10 +455,6 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -68,
-				y: -9,
-			},
 		},
 	],
 	viewport: {

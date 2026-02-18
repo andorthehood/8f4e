@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -67 16',
 				'',
 				'rescope "memorySizeBytes"',
 				'push 65536',
@@ -23,14 +24,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -67,
-				y: 16,
-			},
 		},
 		{
 			code: [
 				'module andGate',
+				'; @pos 243 31',
 				'',
 				'         ;   .---.',
 				"int* in1 ; --+    '   ",
@@ -55,14 +53,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 243,
-				y: 31,
-			},
 		},
 		{
 			code: [
 				'module buttons',
+				'; @pos 196 16',
 				'',
 				'; Buttons for the SR AND-OR latch',
 				'',
@@ -77,14 +72,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 196,
-				y: 16,
-			},
 		},
 		{
 			code: [
 				'module comment',
+				'; @pos 131 14',
 				'',
 				'; Of course there is an easier',
 				'; way to implement latching',
@@ -95,14 +87,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 131,
-				y: 14,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos -30 16',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 9:52:44 PM',
@@ -112,14 +101,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -30,
-				y: 16,
-			},
 		},
 		{
 			code: [
 				'module negate',
+				'; @pos 207 33',
 				'',
 				'int* in &buttons.reset',
 				'int out',
@@ -137,14 +123,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 207,
-				y: 33,
-			},
 		},
 		{
 			code: [
 				'module norGate',
+				'; @pos 95 35',
 				'',
 				'         ;   .---.',
 				"int* in1 ; --+    '",
@@ -171,14 +154,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 95,
-				y: 35,
-			},
 		},
 		{
 			code: [
 				'module norGate2',
+				'; @pos 95 8',
 				'',
 				'         ;   .---.',
 				"int* in1 ; --+    '   ",
@@ -205,14 +185,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 95,
-				y: 8,
-			},
 		},
 		{
 			code: [
 				'module orGate',
+				'; @pos 243 6',
 				'',
 				'         ;   .---.',
 				"int* in1 ; --+    '   ",
@@ -237,14 +214,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 243,
-				y: 6,
-			},
 		},
 		{
 			code: [
 				'module resetButton',
+				'; @pos 47 27',
 				'',
 				'int out',
 				'               ; Push this button',
@@ -253,14 +227,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 47,
-				y: 27,
-			},
 		},
 		{
 			code: [
 				'module scope',
+				'; @pos 131 26',
 				'',
 				'int* in &norGate.out',
 				'int[] buffer 64',
@@ -289,14 +260,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 131,
-				y: 26,
-			},
 		},
 		{
 			code: [
 				'module scope2',
+				'; @pos 279 19',
 				'',
 				'int* in &andGate.out',
 				'int[] buffer 64',
@@ -325,14 +293,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 279,
-				y: 19,
-			},
 		},
 		{
 			code: [
 				'module setButton',
+				'; @pos 47 17',
 				'',
 				'int out',
 				'               ; Push this button',
@@ -341,10 +306,6 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 47,
-				y: 17,
-			},
 		},
 	],
 	viewport: {
