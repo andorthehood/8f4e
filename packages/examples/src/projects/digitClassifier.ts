@@ -5,6 +5,7 @@ const digitClassifier: Project = {
 		{
 			code: [
 				'module comment',
+				'; @pos -185 -19',
 				'',
 				'; Mapping from the',
 				'; drawing grid to the',
@@ -13,14 +14,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -185,
-				y: -19,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos 0 0',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 2/2/2026, 9:30:27 PM',
@@ -30,14 +28,11 @@ const digitClassifier: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: 0,
-				y: 0,
-			},
 		},
 		{
 			code: [
 				'module grid',
+				'; @pos -274 15',
 				'',
 				'; Draw the symbols',
 				'; you want to input into',
@@ -52,14 +47,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -274,
-				y: 15,
-			},
 		},
 		{
 			code: [
 				'module inputs',
+				'; @pos -90 2',
 				'; Input layer',
 				'',
 				'float input0 0.0',
@@ -80,14 +72,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -90,
-				y: 2,
-			},
 		},
 		{
 			code: [
 				'module mask00',
+				'; @pos -221 -9',
 				'',
 				'int* row &grid.row0',
 				'float* input &inputs.input0',
@@ -101,14 +90,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -221,
-				y: -9,
-			},
 		},
 		{
 			code: [
 				'module mask01',
+				'; @pos -185 -9',
 				'',
 				'int* row &grid.row0',
 				'float* input &inputs.input1',
@@ -124,14 +110,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -185,
-				y: -9,
-			},
 		},
 		{
 			code: [
 				'module mask02',
+				'; @pos -149 -9',
 				'',
 				'int* row &grid.row0',
 				'float* input &inputs.input2',
@@ -145,14 +128,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -149,
-				y: -9,
-			},
 		},
 		{
 			code: [
 				'module mask10',
+				'; @pos -221 7',
 				'',
 				'int* row &grid.row1',
 				'float* input &inputs.input3',
@@ -166,14 +146,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -221,
-				y: 7,
-			},
 		},
 		{
 			code: [
 				'module mask11',
+				'; @pos -185 7',
 				'',
 				'int* row &grid.row1',
 				'float* input &inputs.input4',
@@ -189,14 +166,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -185,
-				y: 7,
-			},
 		},
 		{
 			code: [
 				'module mask12',
+				'; @pos -149 7',
 				'',
 				'int* row &grid.row1',
 				'float* input &inputs.input5',
@@ -210,14 +184,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -149,
-				y: 7,
-			},
 		},
 		{
 			code: [
 				'module mask20',
+				'; @pos -221 23',
 				'',
 				'int* row &grid.row2',
 				'float* input &inputs.input6',
@@ -231,14 +202,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -221,
-				y: 23,
-			},
 		},
 		{
 			code: [
 				'module mask21',
+				'; @pos -185 23',
 				'',
 				'int* row &grid.row2',
 				'float* input &inputs.input7',
@@ -254,14 +222,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -185,
-				y: 23,
-			},
 		},
 		{
 			code: [
 				'module mask22',
+				'; @pos -149 23',
 				'',
 				'int* row &grid.row2',
 				'float* input &inputs.input8',
@@ -275,14 +240,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -149,
-				y: 23,
-			},
 		},
 		{
 			code: [
 				'module mask30',
+				'; @pos -221 39',
 				'',
 				'int* row &grid.row3',
 				'float* input &inputs.input9',
@@ -296,14 +258,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -221,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module mask31',
+				'; @pos -185 39',
 				'',
 				'int* row &grid.row3',
 				'float* input &inputs.input10',
@@ -319,14 +278,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -185,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module mask32',
+				'; @pos -149 39',
 				'',
 				'int* row &grid.row3',
 				'float* input &inputs.input11',
@@ -340,14 +296,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -149,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module mask40',
+				'; @pos -221 55',
 				'',
 				'int* row &grid.row4',
 				'float* input &inputs.input12',
@@ -361,14 +314,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -221,
-				y: 55,
-			},
 		},
 		{
 			code: [
 				'module mask41',
+				'; @pos -185 55',
 				'',
 				'int* row &grid.row4',
 				'float* input &inputs.input13',
@@ -384,14 +334,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -185,
-				y: 55,
-			},
 		},
 		{
 			code: [
 				'module mask42',
+				'; @pos -149 55',
 				'',
 				'int* row &grid.row4',
 				'float* input &inputs.input14',
@@ -405,14 +352,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: -149,
-				y: 55,
-			},
 		},
 		{
 			code: [
 				'module neuron100',
+				'; @pos 680 119',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron57.out',
@@ -451,14 +395,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 680,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron101',
+				'; @pos 680 79',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron56.out',
@@ -497,14 +438,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 680,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron102',
+				'; @pos 680 39',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron51.out',
@@ -543,14 +481,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 680,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron103',
+				'; @pos 680 -1',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron53.out',
@@ -589,14 +524,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 680,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron104',
+				'; @pos 680 -41',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron59.out',
@@ -635,14 +567,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 680,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron105',
+				'; @pos 680 -81',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron59.out',
@@ -681,14 +610,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 680,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron106',
+				'; @pos 720 39',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron53.out',
@@ -727,14 +653,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 720,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron107',
+				'; @pos 720 -1',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron58.out',
@@ -773,14 +696,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 720,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron108',
+				'; @pos 800 119',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron91.out',
@@ -819,14 +739,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 800,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron109',
+				'; @pos 800 79',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron93.out',
@@ -865,14 +782,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 800,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron110',
+				'; @pos 800 39',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron86.out',
@@ -911,14 +825,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 800,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron111',
+				'; @pos 800 -1',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron91.out',
@@ -957,14 +868,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 800,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron112',
+				'; @pos 800 -41',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron82.out',
@@ -1003,14 +911,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 800,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron113',
+				'; @pos 800 -81',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron88.out',
@@ -1049,14 +954,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 800,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron114',
+				'; @pos 840 79',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron84.out',
@@ -1095,14 +997,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 840,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron115',
+				'; @pos 840 39',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron84.out',
@@ -1141,14 +1040,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 840,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron116',
+				'; @pos 840 -1',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron83.out',
@@ -1187,14 +1083,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 840,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron117',
+				'; @pos 840 -41',
 				'; Output layer 4',
 				'',
 				'float* in0 &neuron89.out',
@@ -1233,14 +1126,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 840,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron15',
+				'; @pos 0 119',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input0',
@@ -1279,14 +1169,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 0,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron16',
+				'; @pos 0 79',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input3',
@@ -1325,14 +1212,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 0,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron17',
+				'; @pos 0 39',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input0',
@@ -1371,14 +1255,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 0,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron18',
+				'; @pos 0 -1',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input2',
@@ -1417,14 +1298,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 0,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron19',
+				'; @pos 0 -41',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input0',
@@ -1463,14 +1341,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 0,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron20',
+				'; @pos 0 -81',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input2',
@@ -1509,14 +1384,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 0,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron21',
+				'; @pos 40 119',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -1555,14 +1427,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 40,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron22',
+				'; @pos 40 79',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input2',
@@ -1601,14 +1470,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 40,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron23',
+				'; @pos 40 39',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input3',
@@ -1647,14 +1513,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 40,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron24',
+				'; @pos 40 -1',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input4',
@@ -1693,14 +1556,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 40,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron25',
+				'; @pos 40 -41',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input4',
@@ -1739,14 +1599,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 40,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron26',
+				'; @pos 40 -81',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input0',
@@ -1785,14 +1642,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 40,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron27',
+				'; @pos 80 119',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input3',
@@ -1831,14 +1685,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 80,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron28',
+				'; @pos 80 79',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input4',
@@ -1877,14 +1728,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 80,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron29',
+				'; @pos 80 39',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input0',
@@ -1923,14 +1771,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 80,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron30',
+				'; @pos 80 -1',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input5',
@@ -1969,14 +1814,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 80,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron31',
+				'; @pos 80 -41',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input3',
@@ -2015,14 +1857,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 80,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron32',
+				'; @pos 80 -81',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input4',
@@ -2061,14 +1900,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 80,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron33',
+				'; @pos 120 119',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input3',
@@ -2107,14 +1943,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 120,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron34',
+				'; @pos 120 79',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2153,14 +1986,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 120,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron35',
+				'; @pos 120 39',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2199,14 +2029,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 120,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron36',
+				'; @pos 120 -1',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2245,14 +2072,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 120,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron37',
+				'; @pos 120 -41',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input3',
@@ -2291,14 +2115,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 120,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron38',
+				'; @pos 120 -81',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2337,14 +2158,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 120,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron39',
+				'; @pos 160 119',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input2',
@@ -2383,14 +2201,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 160,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron40',
+				'; @pos 160 79',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input2',
@@ -2429,14 +2244,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 160,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron41',
+				'; @pos 160 39',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input5',
@@ -2475,14 +2287,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 160,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron42',
+				'; @pos 160 -1',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2521,14 +2330,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 160,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron43',
+				'; @pos 160 -41',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2567,14 +2373,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 160,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron44',
+				'; @pos 160 -81',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2613,14 +2416,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 160,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron45',
+				'; @pos 200 119',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2659,14 +2459,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 200,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron46',
+				'; @pos 200 79',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input4',
@@ -2705,14 +2502,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 200,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron47',
+				'; @pos 200 39',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input0',
@@ -2751,14 +2545,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 200,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron48',
+				'; @pos 200 -1',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input3',
@@ -2797,14 +2588,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 200,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron49',
+				'; @pos 200 -41',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2843,14 +2631,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 200,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron50',
+				'; @pos 200 -81',
 				'; Hidden layer 1',
 				'',
 				'float* in0 &inputs.input1',
@@ -2889,14 +2674,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 200,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron51',
+				'; @pos 280 119',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron21.out',
@@ -2935,14 +2717,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 280,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron52',
+				'; @pos 280 79',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron32.out',
@@ -2981,14 +2760,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 280,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron53',
+				'; @pos 280 39',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron31.out',
@@ -3027,14 +2803,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 280,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron54',
+				'; @pos 280 -1',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron15.out',
@@ -3073,14 +2846,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 280,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron55',
+				'; @pos 280 -41',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron25.out',
@@ -3119,14 +2889,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 280,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron56',
+				'; @pos 280 -81',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron34.out',
@@ -3165,14 +2932,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 280,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron57',
+				'; @pos 320 119',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron31.out',
@@ -3211,14 +2975,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 320,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron58',
+				'; @pos 320 79',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron16.out',
@@ -3257,14 +3018,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 320,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron59',
+				'; @pos 320 39',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron19.out',
@@ -3303,14 +3061,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 320,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron60',
+				'; @pos 320 -1',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron15.out',
@@ -3349,14 +3104,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 320,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron61',
+				'; @pos 320 -41',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron24.out',
@@ -3395,14 +3147,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 320,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron62',
+				'; @pos 320 -81',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron17.out',
@@ -3441,14 +3190,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 320,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron63',
+				'; @pos 360 119',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron27.out',
@@ -3487,14 +3233,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 360,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron64',
+				'; @pos 360 79',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron16.out',
@@ -3533,14 +3276,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 360,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron65',
+				'; @pos 360 39',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron18.out',
@@ -3579,14 +3319,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 360,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron66',
+				'; @pos 360 -1',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron25.out',
@@ -3625,14 +3362,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 360,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron67',
+				'; @pos 360 -41',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron18.out',
@@ -3671,14 +3405,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 360,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron68',
+				'; @pos 360 -81',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron25.out',
@@ -3717,14 +3448,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 360,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron69',
+				'; @pos 400 119',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron15.out',
@@ -3763,14 +3491,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 400,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron70',
+				'; @pos 400 79',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron21.out',
@@ -3809,14 +3534,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 400,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron71',
+				'; @pos 400 39',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron22.out',
@@ -3855,14 +3577,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 400,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron72',
+				'; @pos 400 -1',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron16.out',
@@ -3901,14 +3620,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 400,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron73',
+				'; @pos 400 -41',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron16.out',
@@ -3947,14 +3663,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 400,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron74',
+				'; @pos 400 -81',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron22.out',
@@ -3993,14 +3706,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 400,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron75',
+				'; @pos 440 119',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron19.out',
@@ -4039,14 +3749,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 440,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron76',
+				'; @pos 440 79',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron22.out',
@@ -4085,14 +3792,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 440,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron77',
+				'; @pos 440 39',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron18.out',
@@ -4131,14 +3835,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 440,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron78',
+				'; @pos 440 -1',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron29.out',
@@ -4177,14 +3878,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 440,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron79',
+				'; @pos 440 -41',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron15.out',
@@ -4223,14 +3921,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 440,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron80',
+				'; @pos 440 -81',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron22.out',
@@ -4269,14 +3964,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 440,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron81',
+				'; @pos 480 19',
 				'; Hidden layer 2',
 				'',
 				'float* in0 &neuron26.out',
@@ -4315,14 +4007,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 480,
-				y: 19,
-			},
 		},
 		{
 			code: [
 				'module neuron82',
+				'; @pos 560 119',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron54.out',
@@ -4361,14 +4050,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 560,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron83',
+				'; @pos 560 79',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron61.out',
@@ -4407,14 +4093,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 560,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron84',
+				'; @pos 560 39',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron52.out',
@@ -4453,14 +4136,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 560,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron85',
+				'; @pos 560 -1',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron53.out',
@@ -4499,14 +4179,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 560,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron86',
+				'; @pos 560 -41',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron59.out',
@@ -4545,14 +4222,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 560,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron87',
+				'; @pos 560 -81',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron58.out',
@@ -4591,14 +4265,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 560,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron88',
+				'; @pos 600 119',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron64.out',
@@ -4637,14 +4308,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 600,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron89',
+				'; @pos 600 79',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron65.out',
@@ -4683,14 +4351,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 600,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron90',
+				'; @pos 600 39',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron51.out',
@@ -4729,14 +4394,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 600,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron91',
+				'; @pos 600 -1',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron57.out',
@@ -4775,14 +4437,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 600,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron92',
+				'; @pos 600 -41',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron51.out',
@@ -4821,14 +4480,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 600,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron93',
+				'; @pos 600 -81',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron54.out',
@@ -4867,14 +4523,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 600,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module neuron94',
+				'; @pos 640 119',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron52.out',
@@ -4913,14 +4566,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 640,
-				y: 119,
-			},
 		},
 		{
 			code: [
 				'module neuron95',
+				'; @pos 640 79',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron51.out',
@@ -4959,14 +4609,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 640,
-				y: 79,
-			},
 		},
 		{
 			code: [
 				'module neuron96',
+				'; @pos 640 39',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron52.out',
@@ -5005,14 +4652,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 640,
-				y: 39,
-			},
 		},
 		{
 			code: [
 				'module neuron97',
+				'; @pos 640 -1',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron59.out',
@@ -5051,14 +4695,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 640,
-				y: -1,
-			},
 		},
 		{
 			code: [
 				'module neuron98',
+				'; @pos 640 -41',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron53.out',
@@ -5097,14 +4738,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 640,
-				y: -41,
-			},
 		},
 		{
 			code: [
 				'module neuron99',
+				'; @pos 640 -81',
 				'; Hidden layer 3',
 				'',
 				'float* in0 &neuron53.out',
@@ -5143,14 +4781,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 640,
-				y: -81,
-			},
 		},
 		{
 			code: [
 				'module outputs',
+				'; @pos 921 -9',
 				'; Output layer',
 				'; PMML outputs',
 				'',
@@ -5227,14 +4862,11 @@ const digitClassifier: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 921,
-				y: -9,
-			},
 		},
 		{
 			code: [
 				'function sigmoid',
+				'; @pos -90 30',
 				'param float x',
 				'; Polynomial sigmoid approximation',
 				'',
@@ -5248,10 +4880,6 @@ const digitClassifier: Project = {
 				'',
 				'functionEnd float',
 			],
-			gridCoordinates: {
-				x: -90,
-				y: 30,
-			},
 		},
 	],
 	viewport: {

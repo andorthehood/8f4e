@@ -5,6 +5,7 @@ const midiArpeggiator2: Project = {
 		{
 			code: [
 				'config',
+				'; @pos -90 -12',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -22,11 +23,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -130, y: 5 },
 		},
 		{
 			code: [
 				'module bufferCombiner',
+				'; @pos 34 5',
 				'',
 				'float* bufferA &chord1.notes',
 				'int* lengthA &chord1.length',
@@ -99,11 +100,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 34, y: 5 },
 		},
 		{
 			code: [
 				'module chord1',
+				'; @pos -19 4',
 				'float[] notes 12',
 				'int length 3',
 				'; @piano notes length 48',
@@ -112,11 +113,11 @@ const midiArpeggiator2: Project = {
 				'init notes[2] 52.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -19, y: 4 },
 		},
 		{
 			code: [
 				'module chord2',
+				'; @pos -19 17',
 				'float[] notes 12',
 				'int length 3',
 				'; @piano notes length 48',
@@ -125,11 +126,11 @@ const midiArpeggiator2: Project = {
 				'init notes[2] 65.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -19, y: 17 },
 		},
 		{
 			code: [
 				'module clock',
+				'; @pos 30 -41',
 				'',
 				'const HIGH 1',
 				'const LOW 0',
@@ -149,11 +150,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 30, y: -41 },
 		},
 		{
 			code: [
 				'module clockDivider',
+				'; @pos 64 -41',
 				'',
 				'int default 8',
 				'int* divider &default',
@@ -197,11 +198,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 64, y: -41 },
 		},
 		{
 			code: [
 				'module lcg',
+				'; @pos -89 -31',
 				'; Linear congruential ',
 				'; generator',
 				'',
@@ -234,11 +235,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -89, y: -31 },
 		},
 		{
 			code: [
 				'module lcg2',
+				'; @pos -125 -31',
 				'; Linear congruential ',
 				'; generator',
 				'',
@@ -271,11 +272,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -125, y: -31 },
 		},
 		{
 			code: [
 				'module mapToRange2',
+				'; @pos -18 -31',
 				'',
 				'const IN_RANGE_MIN -1.0',
 				'const IN_RANGE_MAX 1.0',
@@ -309,11 +310,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -18, y: -31 },
 		},
 		{
 			code: [
 				'module mapToRange4',
+				'; @pos -55 6',
 				'',
 				'const IN_RANGE_MIN -1.0',
 				'const IN_RANGE_MAX 1.0',
@@ -346,11 +347,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -55, y: 6 },
 		},
 		{
 			code: [
 				'module mapToRange5',
+				'; @pos -53 -31',
 				'',
 				'const IN_RANGE_MIN -1.0',
 				'const IN_RANGE_MAX 1.0',
@@ -383,11 +384,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -53, y: -31 },
 		},
 		{
 			code: [
 				'module midinoteout',
+				'; @pos 20 -13',
 				'',
 				'float* noteIn &quantizer.out',
 				'int channel 1',
@@ -402,11 +403,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 20, y: -13 },
 		},
 		{
 			code: [
 				'module quantizer',
+				'; @pos 119 5',
 				'',
 				'float* in &mapToRange2.out',
 				'float* buffer &replicator.buffer',
@@ -479,11 +480,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 119, y: 5 },
 		},
 		{
 			code: [
 				'module replicator',
+				'; @pos 72 5',
 				'',
 				'const TIMES 3',
 				'const OFFSET 24.0',
@@ -565,11 +566,11 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 72, y: 5 },
 		},
 		{
 			code: [
 				'module triangle2',
+				'; @pos -89 2',
 				'',
 				'float default 0.3 ;Hz ',
 				'float* frequency &default',
@@ -610,7 +611,6 @@ const midiArpeggiator2: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -89, y: 2 },
 		},
 	],
 	viewport: { gridCoordinates: { x: -90, y: -12 } },
