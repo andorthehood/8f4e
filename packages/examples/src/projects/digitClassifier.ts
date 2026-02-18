@@ -4882,12 +4882,6 @@ const digitClassifier: Project = {
 			],
 		},
 	],
-	viewport: {
-		gridCoordinates: {
-			x: -179,
-			y: -12,
-		},
-	},
 };
 
 export default digitClassifier;

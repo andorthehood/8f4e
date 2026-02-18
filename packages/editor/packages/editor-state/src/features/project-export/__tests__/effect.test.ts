@@ -86,7 +86,8 @@ describe('projectExport', () => {
 			const exportedProject = JSON.parse(exportedJson);
 			// Project no longer contains title field - config blocks are the source of truth
 			expect(exportedProject.codeBlocks).toBeDefined();
-			expect(exportedProject.viewport).toBeDefined();
+			// viewport is no longer in Project - @home directive is the source of truth
+			expect(exportedProject.viewport).toBeUndefined();
 		});
 
 		it('should warn when no exportProject callback is provided', () => {

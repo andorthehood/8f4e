@@ -47,12 +47,6 @@ const standalonProject: Project = {
 			],
 		},
 	],
-	viewport: {
-		gridCoordinates: {
-			x: -19,
-			y: 4,
-		},
-	},
 	compiledModules: {
 		counter: {
 			id: 'counter',
