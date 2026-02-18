@@ -1,0 +1,217 @@
+8f4e/v1
+
+config project
+; @pos -87 1
+
+rescope "memorySizeBytes"
+push 65536
+set
+popScope
+
+scope "runtimeSettings"
+scope "sampleRate"
+push 44100
+set
+
+rescopeTop "runtime"
+push "AudioWorkletRuntime"
+set
+
+rescopeTop "audioOutputBuffers[0]"
+
+scope "memoryId"
+push "audioout.buffer"
+set
+
+rescopeTop "channel"
+push 0
+set
+
+rescopeTop "output"
+push 0
+set
+
+configEnd
+
+module audioout
+; @pos 88 1
+use env
+
+float* in &phaseAccumulator.out
+
+; Audio buffer
+float[] buffer AUDIO_BUFFER_SIZE
+int pointer &buffer
+
+; @plot buffer -2 2
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the
+; buffer word size
+push &pointer
+push pointer
+push %buffer
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if void
+ push &pointer
+ push &buffer
+ store
+ifEnd
+
+moduleEnd
+
+constants env
+; @pos -42 1
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 1/19/2026, 9:24:55 PM
+
+const SAMPLE_RATE 44100
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
+constants math
+; @pos -42 14
+
+const PI      3.141592653589793
+const NEG_PI -3.141592653589793
+const TAU     6.283185307179586
+const HALF_PI 1.570796326794896
+const INV_PI  0.318309886183790
+const INV_TAU 0.159154943091895
+const PHI     1.618033988749895
+const DEG2RAD 0.017453292519943
+const RAD2DEG 57.29577951308232
+const SQRT2   1.414213562373095
+const SQRT1_2 0.707106781186547
+const LN2     0.693147180559945
+const LN10    2.302585092994046
+const LOG2E   1.442695040888963
+const LOG10E  0.434294481903251
+const E       2.718281828459045
+
+constantsEnd
+
+module phaseAccumulator
+; @pos 46 1
+use env
+
+float defaultFreq 440
+float* frequency &defaultFreq
+float phase
+float out
+
+use math
+
+; Advance phase by
+; TAU * frequency / SAMPLE_RATE
+push &phase
+push phase
+push TAU
+push *frequency
+mul
+push SAMPLE_RATE
+castToFloat
+ensureNonZero
+div
+add
+store 
+
+; Wrap phase when it exceeds PI
+push phase
+push PI
+greaterThan
+if void
+push &phase
+push NEG_PI
+store
+ifEnd
+
+push &out
+push phase
+; You can swap this call 
+; with any periodic function
+call sine
+store
+
+moduleEnd
+
+function sine
+; @pos 7 1
+; Polynomial approximation 
+; of the sine function with
+; Taylor series (7th order)
+; Only works in the range of
+; [-PI, PI]
+param float x
+
+use math
+
+; Fold to [-pi/2, pi/2]
+localGet x
+push HALF_PI
+greaterThan
+if void
+push PI
+localGet x
+sub
+localSet x
+ifEnd
+
+localGet x
+push HALF_PI
+push -1.0
+mul
+lessThan
+if void
+push PI
+push -1.0
+mul
+localGet x
+sub
+localSet x
+ifEnd
+
+local float x2
+localGet x
+dup
+mul
+localSet x2
+
+; Taylor coefficients
+const T1 -0.1666666666
+const T2 0.0083333333
+const T3 -0.000198412
+
+localGet x2
+push T3
+mul
+push T2
+add
+localGet x2
+mul
+push T1
+add
+localGet x2
+mul
+push 1.0
+add
+localGet x
+mul
+
+functionEnd float
