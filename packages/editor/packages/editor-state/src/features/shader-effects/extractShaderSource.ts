@@ -30,7 +30,7 @@ export default function extractShaderSource(code: string[], startMarker: string)
 	// Extract lines between markers (excluding the markers themselves)
 	const sourceLines = code.slice(startIndex + 1, endIndex);
 
-	// Replace editor directives with blank lines to preserve line numbers for error reporting
+	// Replace editor directives with blank lines to preserve line numbers for error reporting.
 	// Directives match pattern: "; @<word>" (e.g. "; @pos", "; @disabled")
 	const processedLines = sourceLines.map(line => {
 		if (/^\s*;\s*@\w+/.test(line)) {
@@ -38,6 +38,15 @@ export default function extractShaderSource(code: string[], startMarker: string)
 		}
 		return line;
 	});
+
+	// GLSL requires #version to be on line 1.
+	// If directives were above it and got blanked out, move #version to first line while
+	// preserving downstream line indices by keeping total line count unchanged.
+	const versionLineIndex = processedLines.findIndex(line => /^\s*#version\b/.test(line));
+	if (versionLineIndex > 0) {
+		const [versionLine] = processedLines.splice(versionLineIndex, 1);
+		processedLines.unshift(versionLine);
+	}
 
 	return processedLines.join('\n');
 }
@@ -112,6 +121,23 @@ if (import.meta.vitest) {
 			const outputLines = source.split('\n');
 
 			expect(outputLines.length).toBe(extractedLines.length);
+		});
+
+		it('moves #version to first line when directives appear above it', () => {
+			const code = [
+				'fragmentShader background',
+				'; @pos 87 10',
+				'#version 300 es',
+				'precision mediump float;',
+				'void main() {}',
+				'fragmentShaderEnd',
+			];
+
+			const source = extractShaderSource(code, 'fragmentShader background');
+			const lines = source.split('\n');
+			expect(lines[0]).toBe('#version 300 es');
+			expect(lines[1]).toBe('');
+			expect(lines[2]).toBe('precision mediump float;');
 		});
 
 		it('replaces various directive formats with blank lines', () => {
