@@ -1,3 +1,5 @@
+import { parse8f4eToProject } from '@8f4e/editor-state';
+
 import type { Project, ProjectMetadata } from '@8f4e/editor-state';
 
 /**
@@ -5,18 +7,27 @@ import type { Project, ProjectMetadata } from '@8f4e/editor-state';
  * Maps slug -> loader function.
  */
 export const projectManifest: Record<string, () => Promise<Project>> = {
-	audioBuffer: () => import('@8f4e/examples/projects/audioBuffer').then(m => m.default),
-	audioLoopback: () => import('@8f4e/examples/projects/audioLoopback').then(m => m.default),
-	backgroundPlasma: () => import('@8f4e/examples/projects/backgroundPlasma').then(m => m.default),
-	bistableMultivibrators: () => import('@8f4e/examples/projects/bistableMultivibrators').then(m => m.default),
-	dancingWithTheSineLT: () => import('@8f4e/examples/projects/dancingWithTheSineLT').then(m => m.default),
-	neuralNetwork: () => import('@8f4e/examples/projects/neuralNetwork').then(m => m.default),
-	randomGenerators: () => import('@8f4e/examples/projects/randomGenerators').then(m => m.default),
-	rippleEffect: () => import('@8f4e/examples/projects/rippleEffect').then(m => m.default),
-	samplePlayer: () => import('@8f4e/examples/projects/samplePlayer').then(m => m.default),
-	simpleCounterMainThread: () => import('@8f4e/examples/projects/simpleCounterMainThread').then(m => m.default),
-	standaloneProject: () => import('@8f4e/examples/projects/standaloneProject').then(m => m.default),
-	digitClassifier: () => import('@8f4e/examples/projects/digitClassifier').then(m => m.default),
+	audioBuffer: () => import('@8f4e/examples/projects/audioBuffer.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	audioLoopback: () =>
+		import('@8f4e/examples/projects/audioLoopback.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	backgroundPlasma: () =>
+		import('@8f4e/examples/projects/backgroundPlasma.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	bistableMultivibrators: () =>
+		import('@8f4e/examples/projects/bistableMultivibrators.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	dancingWithTheSineLT: () =>
+		import('@8f4e/examples/projects/dancingWithTheSineLT.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	neuralNetwork: () =>
+		import('@8f4e/examples/projects/neuralNetwork.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	randomGenerators: () =>
+		import('@8f4e/examples/projects/randomGenerators.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	rippleEffect: () => import('@8f4e/examples/projects/rippleEffect.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	samplePlayer: () => import('@8f4e/examples/projects/samplePlayer.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	simpleCounterMainThread: () =>
+		import('@8f4e/examples/projects/simpleCounterMainThread.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	standaloneProject: () =>
+		import('@8f4e/examples/projects/standaloneProject.8f4e?raw').then(m => parse8f4eToProject(m.default)),
+	digitClassifier: () =>
+		import('@8f4e/examples/projects/digitClassifier.8f4e?raw').then(m => parse8f4eToProject(m.default)),
 };
 
 /**
