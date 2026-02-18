@@ -18,6 +18,7 @@ function generateEnvConstantsBlock(state: State): string[] {
 
 	// Header with warning
 	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`);
+	lines.push('; @pos 0 0');
 	lines.push('; @favorite');
 	lines.push('; Auto-generated environment constants');
 	lines.push('; Changes will be overwritten');
@@ -110,7 +111,6 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 			// Add env block at the beginning of codeBlocks array
 			const envBlock: CodeBlock = {
 				code: generateEnvConstantsBlock(state),
-				gridCoordinates: { x: 0, y: 0 },
 			};
 
 			store.set('initialProjectState', {

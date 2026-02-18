@@ -22,10 +22,6 @@ exports[`serializeToProject > serializes basic project state without compiled da
       "code": [
         "10 example",
       ],
-      "gridCoordinates": {
-        "x": 3,
-        "y": 2,
-      },
     },
   ],
   "compiledModules": undefined,
