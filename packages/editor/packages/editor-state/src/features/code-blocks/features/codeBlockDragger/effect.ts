@@ -1,5 +1,6 @@
 import findCodeBlockAtViewportCoordinates from '../../utils/finders/findCodeBlockAtViewportCoordinates';
 import { getGroupBlocks } from '../group/getGroupBlocks';
+import upsertPos from '../position/upsertPos';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '~/types';
@@ -117,6 +118,12 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			block.gridY = gridY;
 			block.x = gridX * vGrid;
 			block.y = gridY * hGrid;
+
+			// Update @pos directive in code for this block
+			// Use selectedCodeBlockForProgrammaticEdit to trigger save subscriptions
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = block;
+			block.code = upsertPos(block.code, gridX, gridY);
+			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = undefined;
 		}
 
 		state.graphicHelper.draggedCodeBlock = undefined;
