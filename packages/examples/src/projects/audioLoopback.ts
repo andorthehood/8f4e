@@ -3,15 +3,22 @@ import type { Project } from '@8f4e/editor-state';
 const project: Project = {
 	codeBlocks: [
 		{
-			code: ['config project', '', 'scope "memorySizeBytes"', 'push 65536', 'set', 'popScope', '', 'configEnd'],
-			gridCoordinates: {
-				x: -141,
-				y: 4,
-			},
+			code: [
+				'config project',
+				'; @pos -141 4',
+				'',
+				'scope "memorySizeBytes"',
+				'push 65536',
+				'set',
+				'popScope',
+				'',
+				'configEnd',
+			],
 		},
 		{
 			code: [
 				'config project',
+				'; @pos -141 19',
 				'',
 				'scope "runtimeSettings"',
 				'',
@@ -25,14 +32,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -141,
-				y: 19,
-			},
 		},
 		{
 			code: [
 				'config project',
+				'; @pos -106 13',
 				'',
 				'rescope "runtimeSettings"',
 				'scope "audioOutputBuffers[0]"',
@@ -66,14 +70,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -106,
-				y: 13,
-			},
 		},
 		{
 			code: [
 				'config project',
+				'; @pos -106 -10',
 				'',
 				'rescope "runtimeSettings"',
 				'scope "audioInputBuffers[0]"',
@@ -92,14 +93,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -106,
-				y: -10,
-			},
 		},
 		{
 			code: [
 				'module audioin',
+				'; @pos 5 1',
 				'use env',
 				'',
 				'; Audio buffer',
@@ -131,14 +129,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 5,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'module audiooutL',
+				'; @pos 48 1',
 				'use env',
 				'',
 				'float* in &audioin.out',
@@ -178,14 +173,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 48,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'module audiooutR',
+				'; @pos 89 1',
 				'use env',
 				'',
 				'float* in &audioin.out',
@@ -225,14 +217,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 89,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos -52 1',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 9:50:35 PM',
@@ -242,10 +231,6 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -52,
-				y: 1,
-			},
 		},
 	],
 	viewport: {

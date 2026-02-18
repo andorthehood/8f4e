@@ -5,6 +5,8 @@ const midiArpeggiator: Project = {
 		{
 			code: [
 				'config',
+				'; @pos -47 -25',
+				'; @pos -80 -1',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -22,11 +24,11 @@ const midiArpeggiator: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -80, y: -1 },
 		},
 		{
 			code: [
 				'module chord1',
+				'; @pos -43 -1',
 				'float[] notes 12',
 				'int length 6',
 				'; @piano notes length 48',
@@ -38,11 +40,11 @@ const midiArpeggiator: Project = {
 				'init notes[5] 60.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -43, y: -1 },
 		},
 		{
 			code: [
 				'module chord2',
+				'; @pos 7 -1',
 				'float[] notes 12',
 				'int length 6',
 				'; @piano notes length 48',
@@ -54,11 +56,11 @@ const midiArpeggiator: Project = {
 				'init notes[5] 67.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 7, y: -1 },
 		},
 		{
 			code: [
 				'module clock',
+				'; @pos 150 -38',
 				'',
 				'const HIGH 1',
 				'const LOW 0',
@@ -78,11 +80,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 150, y: -38 },
 		},
 		{
 			code: [
 				'module clockDivider',
+				'; @pos 184 -38',
 				'',
 				'int default 4',
 				'int* divider &default',
@@ -126,11 +128,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 184, y: -38 },
 		},
 		{
 			code: [
 				'module controls',
+				'; @pos -4 -12',
 				'',
 				'int changeChord',
 				'; @button changeChord',
@@ -141,11 +143,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -4, y: -12 },
 		},
 		{
 			code: [
 				'module lengthMux',
+				'; @pos 102 6',
 				'',
 				'int* in0 &chord1.length',
 				'int* in1 &chord2.length',
@@ -200,11 +202,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 102, y: 6 },
 		},
 		{
 			code: [
 				'module mapToRange2',
+				'; @pos 99 -26',
 				'',
 				'const IN_RANGE_MIN -1.0',
 				'const IN_RANGE_MAX 1.0',
@@ -235,11 +237,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 99, y: -26 },
 		},
 		{
 			code: [
 				'module midinoteout',
+				'; @pos 226 6',
 				'',
 				'float* noteIn &quantizer.out',
 				'int* channel &controls.channel',
@@ -254,11 +256,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 226, y: 6 },
 		},
 		{
 			code: [
 				'module notesMux',
+				'; @pos 59 6',
 				'',
 				'int* in0 &chord1.notes',
 				'int* in1 &chord2.notes',
@@ -312,11 +314,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 59, y: 6 },
 		},
 		{
 			code: [
 				'module quantizer',
+				'; @pos 184 6',
 				'',
 				'float* in &mapToRange2.out',
 				'float* buffer &replicator.buffer',
@@ -389,11 +391,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 184, y: 6 },
 		},
 		{
 			code: [
 				'module replicator',
+				'; @pos 145 6',
 				'',
 				'const TIMES 3',
 				'const OFFSET 24.0',
@@ -483,11 +485,11 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 145, y: 6 },
 		},
 		{
 			code: [
 				'module triangle',
+				'; @pos 64 -36',
 				'',
 				'float default 0.5 ;Hz ',
 				'float* frequency &default',
@@ -528,7 +530,6 @@ const midiArpeggiator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 64, y: -36 },
 		},
 	],
 	viewport: { gridCoordinates: { x: -47, y: -25 } },

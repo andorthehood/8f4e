@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -87 1',
 				'',
 				'rescope "memorySizeBytes"',
 				'push 65536',
@@ -36,14 +37,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -87,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'module audioout',
+				'; @pos 88 1',
 				'use env',
 				'',
 				'float* in &phaseAccumulator.out',
@@ -83,14 +81,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 88,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos -42 1',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 9:24:55 PM',
@@ -100,14 +95,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -42,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'constants math',
+				'; @pos -42 14',
 				'',
 				'const PI      3.141592653589793',
 				'const NEG_PI -3.141592653589793',
@@ -128,14 +120,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -42,
-				y: 14,
-			},
 		},
 		{
 			code: [
 				'module phaseAccumulator',
+				'; @pos 46 1',
 				'use env',
 				'',
 				'float defaultFreq 440',
@@ -178,14 +167,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 46,
-				y: 1,
-			},
 		},
 		{
 			code: [
 				'function sine',
+				'; @pos 7 1',
 				'; Polynomial approximation ',
 				'; of the sine function with',
 				'; Taylor series (7th order)',
@@ -249,10 +235,6 @@ const project: Project = {
 				'',
 				'functionEnd float',
 			],
-			gridCoordinates: {
-				x: 7,
-				y: 1,
-			},
 		},
 	],
 	viewport: {
