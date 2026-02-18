@@ -264,7 +264,8 @@ describe('Runtime-ready project functionality', () => {
 			const exportedProject = JSON.parse(exportedJson);
 			// memorySizeBytes is no longer in Project - config blocks are the source of truth
 			expect(exportedProject.codeBlocks).toBeDefined();
-			expect(exportedProject.viewport).toBeDefined();
+			// viewport is no longer in Project - @home directive is the source of truth
+			expect(exportedProject.viewport).toBeUndefined();
 		});
 
 		it('should export project structure in runtime-ready project', async () => {
@@ -289,7 +290,8 @@ describe('Runtime-ready project functionality', () => {
 			const exportedProject = JSON.parse(exportedJson);
 			// memorySizeBytes is no longer in Project - config blocks are the source of truth
 			expect(exportedProject.codeBlocks).toBeDefined();
-			expect(exportedProject.viewport).toBeDefined();
+			// viewport is no longer in Project - @home directive is the source of truth
+			expect(exportedProject.viewport).toBeUndefined();
 		});
 	});
 });
