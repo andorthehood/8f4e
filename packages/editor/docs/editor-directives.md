@@ -117,6 +117,38 @@ When a code block contains this directive, it appears in the "Jump to..." submen
 
 Use this to bookmark important modules, functions, or other blocks in large projects for faster navigation.
 
+### `@home`
+
+Mark a code block as the home block for initial viewport placement.
+
+```txt
+; @home
+```
+
+When a project loads, the viewport centers on the first code block containing the `@home` directive. If no code block contains `@home`, the viewport defaults to position `(0,0)`.
+
+**Behavior:**
+- **Project Load**: On load, viewport centers on the first block with `@home` (determined by code block order).
+- **Multiple @home**: If multiple blocks have `@home`, only the first one (by project order) is used.
+- **No @home**: If no blocks have `@home`, viewport defaults to `(0,0)`.
+
+**Format:**
+The canonical format is exactly: `; @home`
+
+Example:
+```txt
+module mainOscillator
+; @home
+; @pos 50 30
+output out 1
+moduleEnd
+```
+
+**Important:**
+- Use `@home` to define the starting view for your project.
+- Only one `@home` directive takes effect (the first block in project order).
+- Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
+
 ### `@disabled`
 
 Mark a code block as disabled to exclude it from compilation.
