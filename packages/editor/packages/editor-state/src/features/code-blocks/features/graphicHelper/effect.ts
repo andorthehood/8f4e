@@ -28,6 +28,8 @@ import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor
 import parseGroup from '../group/codeParser';
 import parsePos from '../position/parsePos';
 import parseDisabled from '../disabled/parseDisabled';
+import parseHome from '../home/parseHome';
+import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -164,8 +166,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = undefined;
 		state.graphicHelper.draggedCodeBlock = undefined;
 		state.graphicHelper.nextCodeBlockCreationIndex = 0;
-		state.viewport.x = state.initialProjectState.viewport.gridCoordinates.x * state.viewport.vGrid;
-		state.viewport.y = state.initialProjectState.viewport.gridCoordinates.y * state.viewport.hGrid;
+
 		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 			state.graphicHelper.nextCodeBlockCreationIndex++;
@@ -179,6 +180,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 			// Parse @disabled directive from code
 			const disabled = parseDisabled(codeBlock.code);
+
+			// Parse @home directive from code
+			const isHome = parseHome(codeBlock.code);
 
 			return createCodeBlockGraphicData({
 				width: 0,
@@ -194,6 +198,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				creationIndex,
 				blockType: getBlockType(codeBlock.code),
 				disabled,
+				isHome,
 			});
 		});
 
@@ -232,6 +237,15 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 
 		store.set('graphicHelper.codeBlocks', codeBlocks);
+
+		// Center viewport on first @home block, or default to (0,0)
+		const homeBlock = codeBlocks.find(block => block.isHome);
+		if (homeBlock) {
+			centerViewportOnCodeBlock(state.viewport, homeBlock);
+		} else {
+			state.viewport.x = 0;
+			state.viewport.y = 0;
+		}
 	};
 
 	function updateErrorMessages() {
@@ -277,6 +291,15 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 	};
 
+	// When user edits code, parse @home and update isHome flag
+	const applyHomeFromCodeEdit = function () {
+		if (!state.graphicHelper.selectedCodeBlock) {
+			return;
+		}
+		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		codeBlock.isHome = parseHome(codeBlock.code);
+	};
+
 	updateErrorMessages();
 
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
@@ -288,6 +311,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', applyHomeFromCodeEdit);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.cursor', updateProgrammaticSelectedCodeBlock);
