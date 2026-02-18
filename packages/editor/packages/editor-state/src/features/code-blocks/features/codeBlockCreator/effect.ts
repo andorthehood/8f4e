@@ -8,6 +8,7 @@ import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import upsertPos from '../position/upsertPos';
+import upsertDisabled from '../disabled/upsertDisabled';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -236,12 +237,14 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			return;
 		}
 
-		// Toggle disabled state
-		codeBlock.disabled = !codeBlock.disabled;
+		// Toggle disabled state by upserting/removing @disabled directive
+		const newDisabledState = !codeBlock.disabled;
+		codeBlock.code = upsertDisabled(codeBlock.code, newDisabledState);
+		codeBlock.disabled = newDisabledState;
 		// Update lastUpdated to invalidate cache
 		codeBlock.lastUpdated = Date.now();
-		// Trigger store update to re-render
-		store.set('graphicHelper.codeBlocks', [...state.graphicHelper.codeBlocks]);
+		// Use selectedCodeBlockForProgrammaticEdit to trigger graphics update
+		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	}
 
 	async function onAddCodeBlockBySlug({
