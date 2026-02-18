@@ -31,10 +31,6 @@ exports[`serializeToRuntimeReadyProject > serializes runtime-ready project with 
         "memorySizeBytes 65536",
         "configEnd",
       ],
-      "gridCoordinates": {
-        "x": 0,
-        "y": 0,
-      },
     },
   ],
   "compiledModules": {

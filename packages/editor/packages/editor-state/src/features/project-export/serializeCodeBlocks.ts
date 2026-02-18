@@ -6,10 +6,10 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 /**
  * Converts graphic data code blocks to simplified project structure for serialization.
- * Uses gridX/gridY from code blocks for persistent storage.
+ * Position is stored in @pos directive within code, not in separate gridCoordinates field.
  * Excludes editor config blocks from the exported project.
  * @param codeBlocks Array of code blocks with full graphic data
- * @returns Array of simplified code blocks suitable for file format with gridCoordinates
+ * @returns Array of simplified code blocks suitable for file format
  */
 export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): CodeBlock[] {
 	const codeBlocksCopy = [...codeBlocks];
@@ -32,10 +32,6 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 		})
 		.map(codeBlock => ({
 			code: codeBlock.code,
-			gridCoordinates: {
-				x: codeBlock.gridX,
-				y: codeBlock.gridY,
-			},
 			...(codeBlock.disabled && { disabled: codeBlock.disabled }),
 		}));
 }
@@ -55,12 +51,13 @@ if (import.meta.vitest) {
 			expect(result.map(block => block.code[0])).toEqual(['line 2', 'line 1']);
 		});
 
-		it('uses gridX and gridY directly for gridCoordinates', () => {
+		it('exports code without gridCoordinates field', () => {
 			const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ id: '1', code: ['code'], gridX: 5, gridY: 7 })];
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0].gridCoordinates).toEqual({ x: 5, y: 7 });
+			expect(result[0]).not.toHaveProperty('gridCoordinates');
+			expect(result[0].code).toEqual(['code']);
 		});
 
 		it('includes disabled field when block is disabled', () => {

@@ -7,6 +7,7 @@ import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import getCodeBlockId from '../../utils/getCodeBlockId';
+import upsertPos from '../position/upsertPos';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
@@ -164,6 +165,13 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 		state.graphicHelper.nextCodeBlockCreationIndex++;
 
+		// Calculate grid position
+		const gridX = Math.round((state.viewport.x + x) / state.viewport.vGrid);
+		const gridY = Math.round((state.viewport.y + y) / state.viewport.hGrid);
+
+		// Add canonical @pos directive to code
+		code = upsertPos(code, gridX, gridY);
+
 		const codeBlock: CodeBlockGraphicData = {
 			width: 0,
 			height: 0,
@@ -186,8 +194,8 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
 			id: getCodeBlockId(code),
 			gaps: new Map(),
-			gridX: Math.round((state.viewport.x + x) / state.viewport.vGrid),
-			gridY: Math.round((state.viewport.y + y) / state.viewport.hGrid),
+			gridX,
+			gridY,
 			x: state.viewport.x + x,
 			y: state.viewport.y + y,
 			lineNumberColumnWidth: 2,
