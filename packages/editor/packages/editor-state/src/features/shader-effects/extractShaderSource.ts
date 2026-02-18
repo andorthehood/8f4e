@@ -2,6 +2,9 @@
  * Extracts shader source code from between shader markers.
  * The start marker can include a target suffix (e.g. 'fragmentShader postprocess').
  * The end marker is derived from the base type (e.g. 'fragmentShaderEnd').
+ *
+ * Editor directives (lines matching `; @<word>` pattern) are replaced with blank lines
+ * to prevent GLSL syntax errors while preserving line numbers for accurate error reporting.
  */
 export default function extractShaderSource(code: string[], startMarker: string): string {
 	const baseType = startMarker.split(/\s+/)[0];
