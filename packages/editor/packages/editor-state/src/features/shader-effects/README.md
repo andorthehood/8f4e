@@ -72,7 +72,8 @@ A default vertex shader is provided for fragment-only effects:
 ## Notes & Limitations
 
 - Effects are derived, not persisted in project serialization
-- Shader errors may not map line numbers as precisely as code errors
+- Shader errors map line numbers accurately due to blank-line preservation for editor directives
 - Effects are for editor display, not for runtime audio output visualization
 - Shader compilation happens separately from WASM compilation
 - GLSL version and capabilities depend on WebGL context
+- Editor directives (e.g., `; @pos`, `; @disabled`) are replaced with blank lines during extraction to prevent syntax errors while preserving line numbers

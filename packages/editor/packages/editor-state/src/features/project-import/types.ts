@@ -6,15 +6,12 @@ import type { CompiledModuleLookup } from '@8f4e/compiler';
 import type { PostProcessEffect } from 'glugglug';
 import type { CodeBlock } from '../code-blocks/types';
 import type { ProjectConfig } from '../project-config/types';
-import type { ProjectViewport } from '../viewport/types';
 
 /**
  * Complete project structure for serialization and loading.
  */
 export interface Project {
 	codeBlocks: CodeBlock[];
-	/** Viewport position using grid coordinates for persistent storage */
-	viewport: ProjectViewport;
 	/** Compiled WebAssembly bytecode encoded as base64 string for runtime-only execution */
 	compiledWasm?: string;
 	compiledModules?: CompiledModuleLookup;
@@ -31,9 +28,6 @@ export interface Project {
 export const EMPTY_DEFAULT_PROJECT: Project = {
 	codeBlocks: [],
 	compiledModules: {},
-	viewport: {
-		gridCoordinates: { x: 0, y: 0 },
-	},
 };
 
 /**

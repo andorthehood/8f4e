@@ -2,6 +2,9 @@
  * Extracts shader source code from between shader markers.
  * The start marker can include a target suffix (e.g. 'fragmentShader postprocess').
  * The end marker is derived from the base type (e.g. 'fragmentShaderEnd').
+ *
+ * Editor directives (lines matching `; @<word>` pattern) are replaced with blank lines
+ * to prevent GLSL syntax errors while preserving line numbers for accurate error reporting.
  */
 export default function extractShaderSource(code: string[], startMarker: string): string {
 	const baseType = startMarker.split(/\s+/)[0];
@@ -26,7 +29,17 @@ export default function extractShaderSource(code: string[], startMarker: string)
 
 	// Extract lines between markers (excluding the markers themselves)
 	const sourceLines = code.slice(startIndex + 1, endIndex);
-	return sourceLines.join('\n');
+
+	// Replace editor directives with blank lines to preserve line numbers for error reporting
+	// Directives match pattern: "; @<word>" (e.g. "; @pos", "; @disabled")
+	const processedLines = sourceLines.map(line => {
+		if (/^\s*;\s*@\w+/.test(line)) {
+			return '';
+		}
+		return line;
+	});
+
+	return processedLines.join('\n');
 }
 
 if (import.meta.vitest) {
@@ -64,6 +77,102 @@ if (import.meta.vitest) {
 		it('returns empty string when markers are missing', () => {
 			const code = ['some code', 'more code'];
 			expect(extractShaderSource(code, 'vertexShader postprocess')).toBe('');
+		});
+
+		it('replaces editor directive lines with blank lines', () => {
+			const code = [
+				'fragmentShader background',
+				'; @pos 10 20',
+				'precision mediump float;',
+				'; @disabled',
+				'void main() {',
+				'  gl_FragColor = vec4(1.0);',
+				'}',
+				'fragmentShaderEnd',
+			];
+
+			const source = extractShaderSource(code, 'fragmentShader background');
+			expect(source).toBe('\nprecision mediump float;\n\nvoid main() {\n  gl_FragColor = vec4(1.0);\n}');
+		});
+
+		it('preserves line count when directives are present', () => {
+			const code = [
+				'fragmentShader background',
+				'; @pos 87 10',
+				'#version 300 es',
+				'',
+				'precision mediump float;',
+				'void main() {}',
+				'fragmentShaderEnd',
+			];
+
+			const source = extractShaderSource(code, 'fragmentShader background');
+			// Lines between markers (indices 1-5, exclusive of markers at 0 and 6)
+			const extractedLines = code.slice(1, 6);
+			const outputLines = source.split('\n');
+
+			expect(outputLines.length).toBe(extractedLines.length);
+		});
+
+		it('replaces various directive formats with blank lines', () => {
+			const code = [
+				'vertexShader postprocess',
+				';@pos 0 0',
+				'  ; @disabled',
+				'\t;\t@favorite',
+				'; @group myGroup',
+				'attribute vec2 a_position;',
+				'vertexShaderEnd',
+			];
+
+			const source = extractShaderSource(code, 'vertexShader postprocess');
+			const lines = source.split('\n');
+
+			expect(lines[0]).toBe('');
+			expect(lines[1]).toBe('');
+			expect(lines[2]).toBe('');
+			expect(lines[3]).toBe('');
+			expect(lines[4]).toBe('attribute vec2 a_position;');
+		});
+
+		it('does not affect non-directive comment lines', () => {
+			const code = [
+				'fragmentShader background',
+				'; This is a regular comment',
+				'; Another comment without directive',
+				'precision mediump float;',
+				'; @ not a valid directive (space before @)',
+				'void main() {}',
+				'fragmentShaderEnd',
+			];
+
+			const source = extractShaderSource(code, 'fragmentShader background');
+			expect(source).toBe(
+				'; This is a regular comment\n; Another comment without directive\nprecision mediump float;\n; @ not a valid directive (space before @)\nvoid main() {}'
+			);
+		});
+
+		it('handles empty shader with only directives', () => {
+			const code = ['fragmentShader background', '; @pos 10 20', '; @disabled', 'fragmentShaderEnd'];
+
+			const source = extractShaderSource(code, 'fragmentShader background');
+			expect(source).toBe('\n');
+		});
+
+		it('handles shader with directive at different positions', () => {
+			const code = [
+				'fragmentShader background',
+				'precision mediump float;',
+				'; @pos 10 20',
+				'void main() {',
+				'; @debug enabled',
+				'  gl_FragColor = vec4(1.0);',
+				'}',
+				'fragmentShaderEnd',
+			];
+
+			const source = extractShaderSource(code, 'fragmentShader background');
+			expect(source).toBe('precision mediump float;\n\nvoid main() {\n\n  gl_FragColor = vec4(1.0);\n}');
 		});
 	});
 }
