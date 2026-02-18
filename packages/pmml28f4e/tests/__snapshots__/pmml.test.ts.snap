@@ -6,6 +6,7 @@ exports[`convertPmmlNeuralNetworkToProject > creates code blocks for inputs, neu
     {
       "code": [
         "function sigmoid",
+        "; @pos -12 -6",
         "param float x",
         "; Fast sigmoid approximation: x / (1 + |x|)",
         "",
@@ -19,14 +20,11 @@ exports[`convertPmmlNeuralNetworkToProject > creates code blocks for inputs, neu
         "",
         "functionEnd float",
       ],
-      "gridCoordinates": {
-        "x": -12,
-        "y": -6,
-      },
     },
     {
       "code": [
         "module inputs",
+        "; @pos -32 0",
         "; Input layer",
         "; PMML inputs",
         "",
@@ -35,14 +33,11 @@ exports[`convertPmmlNeuralNetworkToProject > creates code blocks for inputs, neu
         "",
         "moduleEnd",
       ],
-      "gridCoordinates": {
-        "x": -40,
-        "y": 0,
-      },
     },
     {
       "code": [
         "module neuron2",
+        "; @pos 0 13",
         "; Output layer 1",
         "",
         "float* in0 &inputs.input0",
@@ -69,14 +64,11 @@ exports[`convertPmmlNeuralNetworkToProject > creates code blocks for inputs, neu
         "",
         "moduleEnd",
       ],
-      "gridCoordinates": {
-        "x": 0,
-        "y": 13,
-      },
     },
     {
       "code": [
         "module outputs",
+        "; @pos 120 0",
         "; Output layer",
         "; PMML outputs",
         "",
@@ -88,10 +80,6 @@ exports[`convertPmmlNeuralNetworkToProject > creates code blocks for inputs, neu
         "",
         "moduleEnd",
       ],
-      "gridCoordinates": {
-        "x": 120,
-        "y": 0,
-      },
     },
   ],
   "viewport": {
