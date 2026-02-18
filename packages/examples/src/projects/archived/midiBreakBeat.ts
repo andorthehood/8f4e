@@ -5,6 +5,8 @@ const project: Project = {
 		{
 			code: [
 				'config',
+				'; @pos 37 -25',
+				'; @pos -35 -13',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -22,11 +24,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -35, y: -13 },
 		},
 		{
 			code: [
 				'module and4',
+				'; @pos 167 30',
 				'         ;   .----.',
 				"int* in1 ; --+     '",
 				'int out  ;   | and  |---',
@@ -44,11 +46,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 167, y: 30 },
 		},
 		{
 			code: [
 				'module and3',
+				'; @pos 167 12',
 				'         ;   .----.',
 				"int* in1 ; --+     '",
 				'int out  ;   | and  |---',
@@ -66,11 +68,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 167, y: 12 },
 		},
 		{
 			code: [
 				'module and2',
+				'; @pos 167 -6',
 				'         ;   .----.',
 				"int* in1 ; --+     '",
 				'int out  ;   | and  |---',
@@ -88,11 +90,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 167, y: -6 },
 		},
 		{
 			code: [
 				'module and',
+				'; @pos 167 -24',
 				'         ;   .----.',
 				"int* in1 ; --+     '",
 				'int out  ;   | and  |---',
@@ -110,11 +112,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 167, y: -24 },
 		},
 		{
 			code: [
 				'module midinoteout3',
+				'; @pos 201 -24',
 				'',
 				'use generalMIDIDrumCodes',
 				'',
@@ -126,11 +128,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 201, y: -24 },
 		},
 		{
 			code: [
 				'module midinoteout6',
+				'; @pos 201 30',
 				'',
 				'use generalMIDIDrumCodes',
 				'',
@@ -142,11 +144,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 201, y: 30 },
 		},
 		{
 			code: [
 				'module midinoteout5',
+				'; @pos 201 12',
 				'',
 				'use generalMIDIDrumCodes',
 				'',
@@ -158,11 +160,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 201, y: 12 },
 		},
 		{
 			code: [
 				'module midinoteout4',
+				'; @pos 201 -6',
 				'',
 				'use generalMIDIDrumCodes',
 				'',
@@ -174,11 +176,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 201, y: -6 },
 		},
 		{
 			code: [
 				'module break2',
+				'; @pos 39 -13',
 				'',
 				'; MSb 0 kick',
 				'; 1 snare',
@@ -203,11 +205,11 @@ const project: Project = {
 				'int last   0b00000000',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 39, y: -13 },
 		},
 		{
 			code: [
 				'module break',
+				'; @pos 5 -13',
 				'',
 				'; MSb 0 kick',
 				'; 1 snare',
@@ -232,11 +234,11 @@ const project: Project = {
 				'int last   0b00000000',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 5, y: -13 },
 		},
 		{
 			code: [
 				'module generalMIDIDrumCodes',
+				'; @pos 238 -24',
 				'',
 				'const LASER 27',
 				'const WHIP 28',
@@ -304,11 +306,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 238, y: -24 },
 		},
 		{
 			code: [
 				'module decToBin',
+				'; @pos 121 -13',
 				'',
 				'int* in &sequencer.out',
 				'',
@@ -369,11 +371,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 121, y: -13 },
 		},
 		{
 			code: [
 				'module pulse',
+				'; @pos 85 13',
 				'',
 				'int counter',
 				'int out',
@@ -408,11 +410,11 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 85, y: 13 },
 		},
 		{
 			code: [
 				'module sequencer',
+				'; @pos 80 -13',
 				'',
 				'int* start &break2.step1',
 				'int* last &break2.last',
@@ -437,7 +439,6 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 80, y: -13 },
 		},
 	],
 	viewport: { gridCoordinates: { x: 37, y: -25 } },

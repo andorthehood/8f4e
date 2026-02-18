@@ -26,6 +26,7 @@ import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
 import parseGroup from '../group/codeParser';
+import parsePos from '../position/parsePos';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
@@ -158,8 +159,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 			state.graphicHelper.nextCodeBlockCreationIndex++;
-			const gridX = codeBlock.gridCoordinates.x;
-			const gridY = codeBlock.gridCoordinates.y;
+
+			// Parse @pos directive from code, default to (0,0) if missing or invalid
+			const posResult = parsePos(codeBlock.code);
+			const gridX = posResult?.x ?? 0;
+			const gridY = posResult?.y ?? 0;
 			const pixelX = gridX * state.viewport.vGrid;
 			const pixelY = gridY * state.viewport.hGrid;
 
@@ -241,6 +245,23 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		});
 	}
 
+	// When user edits code, parse @pos and update runtime position if valid
+	const applyPositionFromCodeEdit = function () {
+		if (!state.graphicHelper.selectedCodeBlock) {
+			return;
+		}
+		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		const posResult = parsePos(codeBlock.code);
+
+		// Only update position if @pos is valid
+		if (posResult !== undefined) {
+			codeBlock.gridX = posResult.x;
+			codeBlock.gridY = posResult.y;
+			codeBlock.x = posResult.x * state.viewport.vGrid;
+			codeBlock.y = posResult.y * state.viewport.hGrid;
+		}
+	};
+
 	updateErrorMessages();
 
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
@@ -251,6 +272,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
+	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);
 	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.cursor', updateProgrammaticSelectedCodeBlock);

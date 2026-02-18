@@ -35,6 +35,7 @@ function buildSigmoidFunctionBlock(): CodeBlock {
 	return {
 		code: [
 			'function sigmoid',
+			'; @pos -12 -6',
 			'param float x',
 			'; Fast sigmoid approximation: x / (1 + |x|)',
 			'',
@@ -48,12 +49,11 @@ function buildSigmoidFunctionBlock(): CodeBlock {
 			'',
 			'functionEnd float',
 		],
-		gridCoordinates: { x: -12, y: -6 },
 	};
 }
 
 function buildInputsBlock(inputs: PmmlNeuralNetwork['inputs']): CodeBlock {
-	const code: string[] = ['module inputs', '; Input layer', '; PMML inputs', ''];
+	const code: string[] = ['module inputs', '; @pos -32 0', '; Input layer', '; PMML inputs', ''];
 	inputs.forEach(input => {
 		const name = sanitizeIdentifier(input.fieldName);
 		code.push(`float ${name} 0.0`);
@@ -61,7 +61,6 @@ function buildInputsBlock(inputs: PmmlNeuralNetwork['inputs']): CodeBlock {
 	code.push('', 'moduleEnd');
 	return {
 		code,
-		gridCoordinates: { x: -DEFAULT_GRID_SPACING_X, y: 0 },
 	};
 }
 
@@ -101,14 +100,21 @@ function buildNeuronCode(
 }
 
 function buildNeuronBlock(code: string[], position: { x: number; y: number }): CodeBlock {
+	// Insert @pos directive as second line
+	code.splice(1, 0, `; @pos ${position.x} ${position.y}`);
 	return {
 		code,
-		gridCoordinates: position,
 	};
 }
 
-function buildOutputsBlock(outputs: PmmlNeuralNetwork['outputs']): CodeBlock {
-	const code: string[] = ['module outputs', '; Output layer', '; PMML outputs', ''];
+function buildOutputsBlock(outputs: PmmlNeuralNetwork['outputs'], position: { x: number; y: number }): CodeBlock {
+	const code: string[] = [
+		'module outputs',
+		`; @pos ${position.x} ${position.y}`,
+		'; Output layer',
+		'; PMML outputs',
+		'',
+	];
 	outputs.forEach((output, index) => {
 		const name = sanitizeIdentifier(output.fieldName || `output${index}`);
 		code.push(`float* in${index} &neuron${output.outputNeuron}.out`);
@@ -120,7 +126,6 @@ function buildOutputsBlock(outputs: PmmlNeuralNetwork['outputs']): CodeBlock {
 	code.push('moduleEnd');
 	return {
 		code,
-		gridCoordinates: { x: DEFAULT_GRID_SPACING_X, y: 0 },
 	};
 }
 
@@ -200,11 +205,10 @@ export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork):
 	});
 
 	if (neuralNetwork.outputs.length > 0) {
-		const outputBlock = buildOutputsBlock(neuralNetwork.outputs);
-		outputBlock.gridCoordinates = {
+		const outputBlock = buildOutputsBlock(neuralNetwork.outputs, {
 			x: layerBaseX + DEFAULT_GRID_SPACING_X,
 			y: 0,
-		};
+		});
 		codeBlocks.push(outputBlock);
 	}
 

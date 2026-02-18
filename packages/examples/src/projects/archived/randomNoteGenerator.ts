@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config',
+				'; @pos -50 -6',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -23,11 +24,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -50, y: -6 },
 		},
 		{
 			code: [
 				'module chord',
+				'; @pos -12 -6',
 				'float[] notes 12',
 				'int notesCount 6',
 				'; @piano notes notesCount 36',
@@ -39,11 +40,11 @@ const project: Project = {
 				'init notes[5] 52.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -12, y: -6 },
 		},
 		{
 			code: [
 				'module chord2',
+				'; @pos 38 -6',
 				'float[] notes 12',
 				'int notesCount 6',
 				'; @piano notes notesCount 36',
@@ -55,11 +56,11 @@ const project: Project = {
 				'init notes[5] 53.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 38, y: -6 },
 		},
 		{
 			code: [
 				'module chord3',
+				'; @pos -12 11',
 				'float[] notes 12',
 				'int notesCount 5',
 				'; @piano notes notesCount 36',
@@ -70,11 +71,11 @@ const project: Project = {
 				'init notes[4] 55.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -12, y: 11 },
 		},
 		{
 			code: [
 				'module chord4',
+				'; @pos 38 11',
 				'float[] notes 12',
 				'int notesCount 2',
 				'; @piano notes notesCount 36',
@@ -82,11 +83,11 @@ const project: Project = {
 				'init notes[1] 38.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 38, y: 11 },
 		},
 		{
 			code: [
 				'module clock',
+				'; @pos 31 40',
 				'',
 				'const HIGH 1',
 				'const LOW 0',
@@ -106,11 +107,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 31, y: 40 },
 		},
 		{
 			code: [
 				'module clockDiv',
+				'; @pos 67 40',
 				'',
 				'int default 128',
 				'int* divider &default',
@@ -146,11 +147,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 67, y: 40 },
 		},
 		{
 			code: [
 				'module clockDiv2',
+				'; @pos 31 61',
 				'',
 				'int default 4',
 				'int* divider &default',
@@ -191,11 +192,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 31, y: 61 },
 		},
 		{
 			code: [
 				'module float2Int',
+				'; @pos 69 77',
 				'',
 				'float* in &seqMuxF.out',
 				'int out',
@@ -209,11 +210,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 69, y: 77 },
 		},
 		{
 			code: [
 				'module lcg',
+				'; @pos 119 -53',
 				'; Linear congruential ',
 				'; generator',
 				'',
@@ -246,11 +247,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 119, y: -53 },
 		},
 		{
 			code: [
 				'module midinoteout',
+				'; @pos 91 19',
 				'',
 				'int* note &float2Int.out',
 				'int channel 1',
@@ -259,11 +260,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 91, y: 19 },
 		},
 		{
 			code: [
 				'module quantizer',
+				'; @pos 181 6',
 				'',
 				'float* in &signal.out',
 				'float* buffer &replicator.buffer',
@@ -332,11 +333,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 181, y: 6 },
 		},
 		{
 			code: [
 				'module quantizer2',
+				'; @pos 263 6',
 				'',
 				'float* in &signal.out',
 				'float* buffer &replicator2.buffer',
@@ -405,11 +406,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 263, y: 6 },
 		},
 		{
 			code: [
 				'module quantizer3',
+				'; @pos 346 6',
 				'',
 				'float* in &signal.out',
 				'float* buffer &replicator3.buffer',
@@ -478,11 +479,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 346, y: 6 },
 		},
 		{
 			code: [
 				'module quantizer4',
+				'; @pos 429 6',
 				'',
 				'float* in &signal.out',
 				'float* buffer &replicator4.buffer',
@@ -551,11 +552,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 429, y: 6 },
 		},
 		{
 			code: [
 				'module replicator',
+				'; @pos 141 6',
 				'',
 				'const TIMES 2',
 				'const OFFSET 24.0',
@@ -631,11 +632,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 141, y: 6 },
 		},
 		{
 			code: [
 				'module replicator2',
+				'; @pos 223 6',
 				'',
 				'const TIMES 2',
 				'const OFFSET 24.0',
@@ -707,11 +708,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 223, y: 6 },
 		},
 		{
 			code: [
 				'module replicator3',
+				'; @pos 305 6',
 				'',
 				'const TIMES 2',
 				'const OFFSET 24.0',
@@ -783,11 +784,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 305, y: 6 },
 		},
 		{
 			code: [
 				'module replicator4',
+				'; @pos 388 6',
 				'',
 				'const TIMES 4',
 				'const OFFSET 24.0',
@@ -859,11 +860,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 388, y: 6 },
 		},
 		{
 			code: [
 				'module sawSignedFloat',
+				'; @pos 85 -53',
 				'',
 				'float default 0.7 ;Hz ',
 				'float* frequency &default',
@@ -890,11 +891,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 85, y: -53 },
 		},
 		{
 			code: [
 				'module seqMuxF',
+				'; @pos 104 40',
 				'',
 				'float* in0 &quantizer.out',
 				'float* in1 &quantizer2.out',
@@ -952,11 +953,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 104, y: 40 },
 		},
 		{
 			code: [
 				'module seqMuxF2',
+				'; @pos 157 -54',
 				'',
 				'float* in0 &lcg.out',
 				'float* in1 &lcg.out',
@@ -1014,11 +1015,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 157, y: -54 },
 		},
 		{
 			code: [
 				'module signal',
+				'; @pos 201 -41',
 				'',
 				'float* in &seqMuxF2.out',
 				'float out',
@@ -1042,11 +1043,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 201, y: -41 },
 		},
 		{
 			code: [
 				'module triangleSignedFloat',
+				'; @pos 49 -53',
 				'',
 				'float default 1 ;Hz ',
 				'float* frequency &default',
@@ -1087,10 +1088,9 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: 49, y: -53 },
 		},
 	],
-	viewport: { gridCoordinates: { x: -17, y: -11 } },
+	viewport: { gridCoordinates: { x: -28, y: -22 } },
 };
 
 export default project;

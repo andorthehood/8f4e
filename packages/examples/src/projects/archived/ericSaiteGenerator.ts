@@ -5,6 +5,8 @@ const ericSaiteGenerator: Project = {
 		{
 			code: [
 				'config',
+				'; @pos -241 -15',
+				'; @pos -280 -2',
 				'',
 				'scope "memorySizeBytes"',
 				'push 65536',
@@ -22,11 +24,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: { x: -280, y: -2 },
 		},
 		{
 			code: [
 				'module bufferToOut',
+				'; @pos -96 -2',
 				'',
 				'float* bufferIn &notesMux2.out.notes',
 				'float out1',
@@ -70,11 +72,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -96, y: -2 },
 		},
 		{
 			code: [
 				'module chord2',
+				'; @pos -187 -2',
 				'float[] notes 12',
 				'int length 3',
 				'; @piano notes length 48',
@@ -83,11 +85,11 @@ const ericSaiteGenerator: Project = {
 				'init notes[2] 66.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -187, y: -2 },
 		},
 		{
 			code: [
 				'module chord3',
+				'; @pos -187 13',
 				'float[] notes 12',
 				'int length 3',
 				'; @piano notes length 48',
@@ -96,11 +98,11 @@ const ericSaiteGenerator: Project = {
 				'init notes[2] 61.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -187, y: 13 },
 		},
 		{
 			code: [
 				'module chord4',
+				'; @pos -238 -2',
 				'float[] notes 12',
 				'int length 1',
 				'; @piano notes length 36',
@@ -109,11 +111,11 @@ const ericSaiteGenerator: Project = {
 				'init notes[0] 43.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -238, y: -2 },
 		},
 		{
 			code: [
 				'module chord5',
+				'; @pos -238 13',
 				'float[] notes 12',
 				'int length 2',
 				'; @piano notes length 36',
@@ -122,11 +124,11 @@ const ericSaiteGenerator: Project = {
 				'init notes[2] -1.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -238, y: 13 },
 		},
 		{
 			code: [
 				'module clock',
+				'; @pos -175 -23',
 				'',
 				'const HIGH 1',
 				'const LOW 0',
@@ -146,11 +148,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -175, y: -23 },
 		},
 		{
 			code: [
 				'module clockDivider',
+				'; @pos -140 -46',
 				'',
 				'int default 48',
 				'int* divider &default',
@@ -194,11 +196,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -140, y: -46 },
 		},
 		{
 			code: [
 				'module clockDivider2',
+				'; @pos -105 -46',
 				'',
 				'int default 24',
 				'int* divider &default',
@@ -242,11 +244,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -105, y: -46 },
 		},
 		{
 			code: [
 				'module lcg',
+				'; @pos -187 53',
 				'; Linear congruential ',
 				'; generator',
 				'',
@@ -279,11 +281,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -187, y: 53 },
 		},
 		{
 			code: [
 				'module mapToRange2',
+				'; @pos -150 53',
 				'',
 				'const IN_RANGE_MIN -1.0',
 				'const IN_RANGE_MAX 1.0',
@@ -314,11 +316,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -150, y: 53 },
 		},
 		{
 			code: [
 				'module midinoteout',
+				'; @pos -50 38',
 				'',
 				'float* noteIn &quantizer.out',
 				'int channel 1',
@@ -333,11 +335,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -50, y: 38 },
 		},
 		{
 			code: [
 				'module midinoteout2',
+				'; @pos -50 -10',
 				'',
 				'float* noteIn &bufferToOut.out1',
 				'int channel 1',
@@ -352,11 +354,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -50, y: -10 },
 		},
 		{
 			code: [
 				'module midinoteout3',
+				'; @pos -50 6',
 				'',
 				'float* noteIn &bufferToOut.out2',
 				'int channel 1',
@@ -371,11 +373,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -50, y: 6 },
 		},
 		{
 			code: [
 				'module midinoteout4',
+				'; @pos -50 22',
 				'',
 				'float* noteIn &bufferToOut.out3',
 				'int channel 1',
@@ -390,11 +392,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -50, y: 22 },
 		},
 		{
 			code: [
 				'module notesMux2',
+				'; @pos -136 -2',
 				'',
 				'int* in0 &chord4.notes',
 				'int* in1 &chord2.notes',
@@ -448,11 +450,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -136, y: -2 },
 		},
 		{
 			code: [
 				'module quantizer',
+				'; @pos -115 53',
 				'',
 				'float* in &mapToRange2.out',
 				'float* buffer &scale1.notes',
@@ -525,11 +527,11 @@ const ericSaiteGenerator: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -115, y: 53 },
 		},
 		{
 			code: [
 				'module scale1',
+				'; @pos -187 28',
 				'float[] notes 12',
 				'int length 7',
 				'; @piano notes length 60',
@@ -542,7 +544,6 @@ const ericSaiteGenerator: Project = {
 				'init notes[6] 81.0',
 				'moduleEnd',
 			],
-			gridCoordinates: { x: -187, y: 28 },
 		},
 	],
 	viewport: { gridCoordinates: { x: -241, y: -15 } },

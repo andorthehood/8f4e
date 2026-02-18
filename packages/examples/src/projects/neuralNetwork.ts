@@ -5,6 +5,7 @@ const project: Project = {
 		{
 			code: [
 				'config project',
+				'; @pos -9 -73',
 				'',
 				'scope "memorySizeBytes"',
 				'push 128',
@@ -23,14 +24,11 @@ const project: Project = {
 				'',
 				'configEnd',
 			],
-			gridCoordinates: {
-				x: -9,
-				y: -73,
-			},
 		},
 		{
 			code: [
 				'module activationFn',
+				'; @pos 152 -82',
 				'',
 				'float* in &perceptron.out',
 				'float out',
@@ -42,14 +40,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 152,
-				y: -82,
-			},
 		},
 		{
 			code: [
 				'module activationFn2',
+				'; @pos 152 -55',
 				'',
 				'float* in &perceptron2.out',
 				'float out',
@@ -61,14 +56,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 152,
-				y: -55,
-			},
 		},
 		{
 			code: [
 				'module activationFn3',
+				'; @pos 231 -65',
 				'',
 				'float* in &perceptron3.out',
 				'int out',
@@ -90,14 +82,11 @@ const project: Project = {
 				'',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 231,
-				y: -65,
-			},
 		},
 		{
 			code: [
 				'constants env',
+				'; @pos -9 -50',
 				'; Auto-generated environment constants',
 				'; Changes will be overwritten',
 				'; Last updated: 1/19/2026, 9:57:55 PM',
@@ -107,14 +96,11 @@ const project: Project = {
 				'',
 				'constantsEnd',
 			],
-			gridCoordinates: {
-				x: -9,
-				y: -50,
-			},
 		},
 		{
 			code: [
 				'module perceptron',
+				'; @pos 118 -82',
 				'; Pre-trained perceptron',
 				'',
 				'float* in1 &switches.out1',
@@ -139,14 +125,11 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 118,
-				y: -82,
-			},
 		},
 		{
 			code: [
 				'module perceptron2',
+				'; @pos 118 -55',
 				'; Pre-trained perceptron',
 				'',
 				'float* in1 &switches.out1',
@@ -171,14 +154,11 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 118,
-				y: -55,
-			},
 		},
 		{
 			code: [
 				'module perceptron3',
+				'; @pos 193 -65',
 				'; Pre-trained perceptron',
 				'',
 				'float* in1 &activationFn.out',
@@ -203,21 +183,14 @@ const project: Project = {
 				'store',
 				'moduleEnd',
 			],
-			gridCoordinates: {
-				x: 193,
-				y: -65,
-			},
 		},
 		{
-			code: ['module result', '', 'int* in &activationFn3.out', '', '; @debug *in', '', 'moduleEnd'],
-			gridCoordinates: {
-				x: 74,
-				y: -53,
-			},
+			code: ['module result', '; @pos 74 -53', '', 'int* in &activationFn3.out', '', '; @debug *in', '', 'moduleEnd'],
 		},
 		{
 			code: [
 				'function sigmoid',
+				'; @pos 73 -82',
 				'param float x',
 				'; Polynomial sigmoid',
 				'; func. approximation',
@@ -232,17 +205,9 @@ const project: Project = {
 				'',
 				'functionEnd float',
 			],
-			gridCoordinates: {
-				x: 73,
-				y: -82,
-			},
 		},
 		{
-			code: ['module switches', '', 'int he', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'],
-			gridCoordinates: {
-				x: 74,
-				y: -62,
-			},
+			code: ['module switches', '; @pos 74 -62', '', 'int he', 'float out1 1.0', 'float out2 0.0', '', 'moduleEnd'],
 		},
 	],
 	viewport: {
