@@ -22,7 +22,6 @@ There is no quick layout action to arrange multiple related code blocks into a c
 - Place each subsequent block with a fixed gap of `4` grid columns after the previous block.
 
 ## Proposed Label
-
 - `Align blocks in row`
 
 ## Implementation Notes
