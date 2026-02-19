@@ -24,11 +24,11 @@ float out
 push *trigger
 risingEdge 
 if void
- push &stepPointer
- push stepPointer
- push %step1
- add
- store
+push &stepPointer
+push stepPointer
+push %step1
+add
+store
 ifEnd
 
 ; Guard
@@ -36,9 +36,9 @@ push stepPointer
 push &_last
 greaterThan
 if void
- push &stepPointer
- push &step1
- store
+push &stepPointer
+push &step1
+store
 ifEnd
 
 push &out

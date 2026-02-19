@@ -27,48 +27,48 @@ loop
  ; Calculate difference 
  ; between the input and
  ; the current level.
- push &_difference
- push *_levelPointer
- push *in
- sub
- abs
- store
+push &_difference
+push *_levelPointer
+push *in
+sub
+abs
+store
 
- push _difference
- push _smallestDiff
- lessOrEqual
- if void
+push _difference
+push _smallestDiff
+lessOrEqual
+if void
   ; If it's actually smaller
   ; than the smallest difference,
   ; then update the smallest 
   ; difference.
-  push &_smallestDiff
-  push _difference
-  store
+push &_smallestDiff
+push _difference
+store
   ; Save the current level value.
-  push &out
-  push *_levelPointer
-  store
- ifEnd
+push &out
+push *_levelPointer
+store
+ifEnd
 
  ; Guard
- push _levelPointer
- push buffer
- push *length
- push 1
- sub
- push %buffer
- mul
- add
- greaterOrEqual
- branchIfTrue 1 
+push _levelPointer
+push buffer
+push *length
+push 1
+sub
+push %buffer
+mul
+add
+greaterOrEqual
+branchIfTrue 1 
 
  ; Increment level pointer
- push &_levelPointer
- push _levelPointer
- push %buffer
- add
- store
+push &_levelPointer
+push _levelPointer
+push %buffer
+add
+store
 loopEnd
 
 moduleEnd`,

@@ -15,25 +15,25 @@ uniform float u_time;
 out vec4 outColor;
 
 float plasma(vec2 p) {
-  float v = 0.0;
-  v += sin(p.x + u_time * 0.6);
-  v += sin(p.y + u_time * 0.7);
-  v += sin(p.x + p.y + u_time * 0.4);
-  v += sin(length(p) * 4.0 - u_time * 0.8);
-  return v * 0.25;
+float v = 0.0;
+v += sin(p.x + u_time * 0.6);
+v += sin(p.y + u_time * 0.7);
+v += sin(p.x + p.y + u_time * 0.4);
+v += sin(length(p) * 4.0 - u_time * 0.8);
+return v * 0.25;
 }
 
 void main() {
-  vec2 uv = v_screenCoord;
-  float aspect = u_resolution.x / max(u_resolution.y, 1.0);
-  vec2 p = (uv - 0.5) * vec2(aspect, 1.0) * 6.0;
-  float v = plasma(p);
-  vec3 color = vec3(
-    0.5 + 0.5 * sin(3.0 * v + u_time * 0.2),
-    0.5 + 0.5 * sin(3.0 * v + u_time * 0.2 + 2.1),
-    0.5 + 0.5 * sin(3.0 * v + u_time * 0.2 + 4.2)
-  );
-  outColor = vec4(color, 1.0);
+vec2 uv = v_screenCoord;
+float aspect = u_resolution.x / max(u_resolution.y, 1.0);
+vec2 p = (uv - 0.5) * vec2(aspect, 1.0) * 6.0;
+float v = plasma(p);
+vec3 color = vec3(
+0.5 + 0.5 * sin(3.0 * v + u_time * 0.2),
+0.5 + 0.5 * sin(3.0 * v + u_time * 0.2 + 2.1),
+0.5 + 0.5 * sin(3.0 * v + u_time * 0.2 + 4.2)
+);
+outColor = vec4(color, 1.0);
 }
 fragmentShaderEnd`,
 	tests: [],
