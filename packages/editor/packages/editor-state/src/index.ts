@@ -25,6 +25,7 @@ import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/e
 import shaderEffectsDeriver from './features/shader-effects/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
+import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
 import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
 import groupNonstickToggler from './features/code-blocks/features/group/nonstickToggler/effect';
 import groupCopier from './features/code-blocks/features/group/copier/effect';
@@ -79,6 +80,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	contextMenu(store, events);
 	codeBlockCreator(store, events);
 	skipExecutionToggler(store, events);
+	clearDebugProbes(store, events);
 	groupSkipExecutionToggler(store, events);
 	groupNonstickToggler(store, events);
 	groupCopier(store, events);
