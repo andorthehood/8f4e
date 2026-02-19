@@ -6,22 +6,14 @@ import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils
 
 /**
  * Serializes current runtime state to Project format for saving to file.
- * Note: This is the synchronous version that doesn't include compiled config.
- * For runtime-ready exports with compiled config, use serializeToRuntimeReadyProject.
  * @param state Current editor state
- * @param options Optional parameters for serialization
- * @param options.includeCompiled If true, includes compiled modules (but not compiledProjectConfig)
  * @returns Project object ready for serialization to JSON
  */
-export default function serializeToProject(
-	state: State,
-	options?: { includeCompiled?: boolean; encodeToBase64?: (data: Uint8Array) => string }
-): Project {
-	const { graphicHelper, compiler } = state;
+export default function serializeToProject(state: State): Project {
+	const { graphicHelper } = state;
 
 	const project: Project = {
 		codeBlocks: convertGraphicDataToProjectStructure(graphicHelper.codeBlocks),
-		compiledModules: options?.includeCompiled ? compiler.compiledModules : undefined,
 		// postProcessEffects are now derived from shader code blocks and not persisted
 	};
 
@@ -57,29 +49,6 @@ if (import.meta.vitest) {
 			});
 
 			const project = serializeToProject(state);
-
-			expect(project).toMatchSnapshot();
-		});
-
-		it('includes compiled modules when requested', () => {
-			const state = createMockState({
-				graphicHelper: {
-					codeBlocks: [],
-				},
-				compiler: {
-					compiledModules: { mod: {} },
-					allocatedMemorySize: 2,
-				},
-				binaryAssets: [],
-				viewport: {
-					x: 0,
-					y: 0,
-					vGrid: 10,
-					hGrid: 10,
-				},
-			});
-
-			const project = serializeToProject(state, { includeCompiled: true });
 
 			expect(project).toMatchSnapshot();
 		});
