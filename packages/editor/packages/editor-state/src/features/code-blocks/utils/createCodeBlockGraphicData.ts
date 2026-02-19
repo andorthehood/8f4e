@@ -33,6 +33,7 @@ export function createCodeBlockGraphicData(
 		y,
 		gridX,
 		gridY,
+		gridWidth: overrides.gridWidth ?? 0,
 		width,
 		height,
 		offsetX,

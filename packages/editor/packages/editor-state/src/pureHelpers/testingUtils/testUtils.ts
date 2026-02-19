@@ -89,6 +89,7 @@ export function createMockCodeBlock(
 		y,
 		gridX,
 		gridY,
+		gridWidth: overrides.gridWidth ?? 0,
 		width,
 		height,
 		offsetX,
