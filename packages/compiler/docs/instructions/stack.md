@@ -5,11 +5,15 @@
 The push instruction pushes a literal, constant, local, memory value, or address onto the stack.
 For identifier prefixes and suffixes that expand memory identifiers, see [Identifier prefixes](../prefixes.md).
 
+Float64 literals use the `f64` suffix; unsuffixed float literals default to float32.
+
 #### Examples
 
 ```
 push 1
 push 2.5
+push 3.14f64
+push 1e-10f64
 ```
 
 ### drop
