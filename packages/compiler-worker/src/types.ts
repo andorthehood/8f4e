@@ -25,6 +25,7 @@ export type CompileAndUpdateMemoryResult = {
 	memoryRef: WebAssembly.Memory;
 	hasWasmInstanceBeenReset: boolean;
 	memoryAction: MemoryAction;
+	initOnlyReran: boolean;
 };
 
 export type MemoryValueChange = {
