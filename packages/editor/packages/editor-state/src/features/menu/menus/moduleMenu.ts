@@ -77,6 +77,12 @@ export const moduleMenu: MenuGenerator = state => {
 									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
 									close: true,
 								},
+								{
+									title: 'Clear debug probes',
+									action: 'clearDebugProbes',
+									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									close: true,
+								},
 							]
 						: []),
 					...(blockType === 'module' && hasGroup
