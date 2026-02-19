@@ -24,10 +24,18 @@ const buffer: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 		}
 
-		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
+		let wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 
 		let numberOfElements = 1;
-		const elementWordSize = line.instruction.includes('8') ? 1 : line.instruction.includes('16') ? 2 : 4;
+		// float64 elements are 8 bytes each; all others fall back to 4 bytes (int/float/pointer),
+		// 2 bytes (int16), or 1 byte (int8). The global grid stays at 4 bytes.
+		const elementWordSize = line.instruction.includes('8')
+			? 1
+			: line.instruction.includes('16')
+				? 2
+				: line.instruction.includes('64')
+					? 8
+					: 4;
 		const isUnsigned = line.instruction.endsWith('u[]');
 
 		if (line.arguments[1].type === ArgumentType.LITERAL) {
@@ -40,6 +48,17 @@ const buffer: InstructionCompiler = withValidation(
 			}
 
 			numberOfElements = constant.value;
+		}
+
+		// float64 requires 8-byte start alignment. On the 4-byte word grid this means the word
+		// offset from the module's startingByteAddress must be even. If the current word offset
+		// would produce an odd byte-address / 4 result, advance by one padding word so that
+		// (startingByteAddress + wordAlignedAddress * 4) % 8 === 0.
+		if (elementWordSize === 8) {
+			const candidateByteAddress = context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY;
+			if (candidateByteAddress % 8 !== 0) {
+				wordAlignedAddress += 1;
+			}
 		}
 
 		context.namespace.memory[line.arguments[0].value] = {
@@ -273,6 +292,117 @@ if (import.meta.vitest) {
 
 			const memory = context.namespace.memory['signedBytes'];
 			expect(memory.isUnsigned).toBe(false);
+		});
+
+		it('creates a float64[] buffer with elementWordSize 8', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'float64[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'doubles' },
+						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const memory = context.namespace.memory['doubles'];
+			expect(memory.elementWordSize).toBe(8);
+			expect(memory.numberOfElements).toBe(3);
+			// 3 elements * 8 bytes per element = 24 bytes total
+			// ceil(24 / 4) = 6 words
+			expect(memory.wordAlignedSize).toBe(6);
+			expect(memory.isInteger).toBe(false);
+			expect(memory.isUnsigned).toBe(false);
+		});
+
+		it('float64[] byteAddress is 8-byte aligned when starting at byte 0', () => {
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'float64[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'doubles' },
+						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			expect(context.namespace.memory['doubles'].byteAddress % 8).toBe(0);
+		});
+
+		it('float64[] is 8-byte aligned after an odd number of int32 elements', () => {
+			// Allocate 3 x int32 (= 3 words = 12 bytes), leaving the next free byte at offset 12.
+			// 12 % 8 = 4, so the allocator must add a 4-byte padding word before the float64[]
+			// to reach byte offset 16 (16 % 8 = 0).
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int32[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'ints' },
+						{ type: ArgumentType.LITERAL, value: 3, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			buffer(
+				{
+					lineNumber: 2,
+					instruction: 'float64[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'doubles' },
+						{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const dbl = context.namespace.memory['doubles'];
+			expect(dbl.byteAddress % 8).toBe(0);
+		});
+
+		it('float64[] is 8-byte aligned after an even number of int32 elements (no padding needed)', () => {
+			// Allocate 2 x int32 (= 2 words = 8 bytes). 8 % 8 = 0, no padding required.
+			const context = createInstructionCompilerTestContext();
+
+			buffer(
+				{
+					lineNumber: 1,
+					instruction: 'int32[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'ints' },
+						{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			buffer(
+				{
+					lineNumber: 2,
+					instruction: 'float64[]',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'doubles' },
+						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+					],
+				} as AST[number],
+				context
+			);
+
+			const dbl = context.namespace.memory['doubles'];
+			expect(dbl.byteAddress % 8).toBe(0);
+			// No padding: float64 should start immediately after the 2-word int32 block.
+			expect(dbl.byteAddress).toBe(8);
 		});
 	});
 }

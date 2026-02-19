@@ -124,6 +124,7 @@ const instructions = {
 	'float**[]': buffer,
 	'int*[]': buffer,
 	'int**[]': buffer,
+	'float64[]': buffer,
 	castToInt,
 	castToFloat,
 	skip,
