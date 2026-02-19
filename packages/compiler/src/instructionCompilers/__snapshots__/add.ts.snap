@@ -1,12 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`add instruction compiler > emits F32_ADD for float operands 1`] = `
+exports[`add instruction compiler > emits F32_ADD for float32 operands 1`] = `
 {
   "byteCode": [
     146,
   ],
   "stack": [
     {
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`add instruction compiler > emits F64_ADD for float64 operands 1`] = `
+{
+  "byteCode": [
+    160,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
       "isInteger": false,
       "isNonZero": false,
     },
