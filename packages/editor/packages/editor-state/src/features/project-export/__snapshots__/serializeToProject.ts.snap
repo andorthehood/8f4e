@@ -1,14 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`serializeToProject > includes compiled modules when requested 1`] = `
-{
-  "codeBlocks": [],
-  "compiledModules": {
-    "mod": {},
-  },
-}
-`;
-
 exports[`serializeToProject > serializes basic project state without compiled data 1`] = `
 {
   "codeBlocks": [
@@ -18,6 +9,5 @@ exports[`serializeToProject > serializes basic project state without compiled da
       ],
     },
   ],
-  "compiledModules": undefined,
 }
 `;

@@ -4,7 +4,6 @@ import createStateManager from '@8f4e/state-manager';
 import compiler from './effect';
 
 import projectConfigEffect from '../project-config/effect';
-import { compileConfigForExport } from '../project-config/compileConfigForExport';
 
 import type { State } from '~/types';
 
@@ -152,63 +151,6 @@ describe('disableAutoCompilation feature', () => {
 		});
 	});
 
-	describe('Runtime-ready export', () => {
-		it('should compile config for export even when disableAutoCompilation is true', async () => {
-			mockState.compiledProjectConfig.disableAutoCompilation = true;
-
-			const result = await compileConfigForExport(mockState);
-
-			expect(mockCompileConfig).toHaveBeenCalled();
-			expect(result).toEqual({
-				memorySizeBytes: 1048576,
-				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
-				disableAutoCompilation: false,
-				binaryAssets: [],
-			});
-		});
-
-		it('should compile config for export even when compiledProjectConfig exists', async () => {
-			mockState.compiledProjectConfig.disableAutoCompilation = true;
-			mockState.compiledProjectConfig = {
-				memorySizeBytes: 2097152,
-				runtimeSettings: { runtime: 'MainThreadLogicRuntime', sampleRate: 60 },
-				disableAutoCompilation: false,
-			};
-
-			const result = await compileConfigForExport(mockState);
-
-			expect(mockCompileConfig).toHaveBeenCalled();
-			expect(result).toEqual({
-				memorySizeBytes: 1048576,
-				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
-				disableAutoCompilation: false,
-				binaryAssets: [],
-			});
-		});
-
-		it('should compile config for export when disableAutoCompilation is false', async () => {
-			mockState.compiledProjectConfig.disableAutoCompilation = false;
-
-			const result = await compileConfigForExport(mockState);
-
-			expect(mockCompileConfig).toHaveBeenCalled();
-			expect(result).toEqual({
-				memorySizeBytes: 1048576,
-				runtimeSettings: { runtime: 'WebWorkerLogicRuntime', sampleRate: 50 },
-				disableAutoCompilation: false,
-				binaryAssets: [],
-			});
-		});
-
-		it('should return empty config when no compileConfig callback is provided', async () => {
-			mockState.compiledProjectConfig.disableAutoCompilation = false;
-			mockState.callbacks.compileConfig = undefined;
-
-			const result = await compileConfigForExport(mockState);
-
-			expect(result).toEqual(mockState.compiledProjectConfig);
-		});
-	});
 
 	describe('applyConfigToState integration', () => {
 		it('should set disableAutoCompilation flag from config', async () => {

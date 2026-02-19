@@ -36,13 +36,6 @@ describe('projectExport', () => {
 			expect(exportProjectCall).toBeDefined();
 		});
 
-		it('should register exportRuntimeReadyProject event handler', () => {
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
-			expect(exportRuntimeReadyProjectCall).toBeDefined();
-		});
 
 		it('should register saveSession event handler', () => {
 			projectExport(store, mockEvents);
@@ -122,65 +115,6 @@ describe('projectExport', () => {
 		});
 	});
 
-	describe('exportRuntimeReadyProject', () => {
-		it('should export runtime-ready project with compiled modules', async () => {
-			mockState.compiler.compiledModules = { mod: {} };
-			mockState.compiler.allocatedMemorySize = 6;
-
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
-			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
-
-			await exportRuntimeReadyProjectCallback();
-
-			expect(mockExportProject).toHaveBeenCalledTimes(1);
-			const [exportedJson, fileName] = mockExportProject.mock.calls[0];
-
-			expect(fileName).toBe('project-runtime-ready.json');
-
-			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.compiledModules).toEqual({ mod: {} });
-			expect(exportedProject.memorySnapshot).toBeUndefined();
-		});
-
-		it('should omit memory snapshot when none is available', async () => {
-			mockState.compiler.allocatedMemorySize = 0;
-
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
-			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
-
-			await exportRuntimeReadyProjectCallback();
-
-			expect(mockExportProject).toHaveBeenCalledTimes(1);
-			const [exportedJson] = mockExportProject.mock.calls[0];
-			const exportedProject = JSON.parse(exportedJson);
-			expect(exportedProject.memorySnapshot).toBeUndefined();
-		});
-
-		it('should handle runtime-ready export errors gracefully', async () => {
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-			mockState.compiler.compiledModules = { mod: {} };
-			mockState.callbacks.exportProject = vi.fn().mockRejectedValue(new Error('Export failed'));
-
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportRuntimeReadyProjectCall = onCalls.find(call => call[0] === 'exportRuntimeReadyProject');
-			const exportRuntimeReadyProjectCallback = exportRuntimeReadyProjectCall![1];
-
-			await exportRuntimeReadyProjectCallback();
-
-			expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to save runtime-ready project to file:', expect.any(Error));
-
-			consoleErrorSpy.mockRestore();
-		});
-	});
 
 	describe('exportFileName', () => {
 		it('should use custom exportFileName as base for .8f4e export', async () => {
@@ -197,19 +131,6 @@ describe('projectExport', () => {
 			expect(fileName).toBe('my-project.8f4e');
 		});
 
-		it('should use custom exportFileName as base for runtime-ready export', async () => {
-			mockState.compiledProjectConfig.exportFileName = 'my-project';
-
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportRuntimeReadyProjectCallback = onCalls.find(call => call[0] === 'exportRuntimeReadyProject')![1];
-
-			await exportRuntimeReadyProjectCallback();
-
-			const [, fileName] = mockExportProject.mock.calls[0];
-			expect(fileName).toBe('my-project-runtime-ready.json');
-		});
 
 		it('should use custom exportFileName as base for WASM export', async () => {
 			const mockExportBinaryCode = vi.fn().mockResolvedValue(undefined);
@@ -226,19 +147,6 @@ describe('projectExport', () => {
 			expect(mockExportBinaryCode).toHaveBeenCalledWith('my-project.wasm');
 		});
 
-		it('should strip .json suffix from exportFileName to prevent double extension', async () => {
-			mockState.compiledProjectConfig.exportFileName = 'demo.json';
-
-			projectExport(store, mockEvents);
-
-			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const exportRuntimeReadyProjectCallback = onCalls.find(call => call[0] === 'exportRuntimeReadyProject')![1];
-
-			await exportRuntimeReadyProjectCallback();
-
-			const [, fileName] = mockExportProject.mock.calls[0];
-			expect(fileName).toBe('demo-runtime-ready.json');
-		});
 
 		it('should strip .wasm suffix from exportFileName to prevent double extension', async () => {
 			const mockExportBinaryCode = vi.fn().mockResolvedValue(undefined);

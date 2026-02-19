@@ -126,12 +126,6 @@ export const mainMenu: MenuGenerator = state => [
 	{ divider: true },
 	{ title: 'Export Project', action: 'exportProject', close: true, disabled: !state.callbacks.exportProject },
 	{
-		title: 'Export Runtime-Ready Project',
-		action: 'exportRuntimeReadyProject',
-		close: true,
-		disabled: !state.callbacks.exportProject,
-	},
-	{
 		title: 'Export WebAssembly',
 		action: 'exportWasm',
 		close: true,
