@@ -4,6 +4,8 @@ import { getBlockType } from '@8f4e/compiler/syntax';
 import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
+import getCodeBlockGridHeight from './getCodeBlockGridHeight';
+import findFreeSpace, { hasCollision } from './findFreeSpace';
 
 import bufferPlotters from '../bufferPlotters/updateGraphicData';
 import bufferScanners from '../bufferScanners/updateGraphicData';
@@ -95,7 +97,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		gaps(graphicData);
 		pianoKeyboards(graphicData, state);
 
-		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;
+		const codeBlockGridWidth = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth);
+		graphicData.width = codeBlockGridWidth * state.viewport.vGrid;
+		graphicData.gridWidth = codeBlockGridWidth;
 
 		bufferPlotters(graphicData, state);
 		bufferScanners(graphicData, state);
@@ -109,6 +113,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		blockHighlights(graphicData, state);
 
 		graphicData.height = graphicData.codeToRender.length * state.viewport.hGrid;
+		graphicData.gridHeight = graphicData.codeToRender.length;
 		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
 		graphicData.id = getCodeBlockId(graphicData.code);
@@ -192,6 +197,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				id: getCodeBlockId(codeBlock.code),
 				gridX,
 				gridY,
+				gridWidth: getCodeBlockGridWidth(codeBlock.code),
+				gridHeight: getCodeBlockGridHeight(codeBlock.code),
 				x: pixelX,
 				y: pixelY,
 				lineNumberColumnWidth: 1,
@@ -209,10 +216,20 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				const editorConfigBlocks = validBlocks.length > 0 ? validBlocks : [DEFAULT_EDITOR_CONFIG_BLOCK];
 
 				let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
+
 				for (let i = 0; i < editorConfigBlocks.length; i += 1) {
 					const rawBlock = editorConfigBlocks[i];
-					const gridX = rawBlock.gridCoordinates?.x ?? 0;
-					const gridY = rawBlock.gridCoordinates?.y ?? 0;
+					const storedGridX = rawBlock.gridCoordinates?.x ?? 0;
+					const storedGridY = rawBlock.gridCoordinates?.y ?? 0;
+
+					const gridWidth = getCodeBlockGridWidth(rawBlock.code);
+					const gridHeight = getCodeBlockGridHeight(rawBlock.code);
+
+					// Use stored position if it doesn't collide; otherwise find the first free spot
+					const { x: gridX, y: gridY } = hasCollision(codeBlocks, storedGridX, storedGridY, gridWidth, gridHeight)
+						? findFreeSpace(codeBlocks, gridWidth, gridHeight)
+						: { x: storedGridX, y: storedGridY };
+
 					// Parse @disabled directive from code
 					const disabled = parseDisabled(rawBlock.code);
 					const block = createCodeBlockGraphicData({
@@ -223,6 +240,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 						blockType: getBlockType(rawBlock.code),
 						gridX,
 						gridY,
+						gridWidth,
+						gridHeight,
 						x: gridX * state.viewport.vGrid,
 						y: gridY * state.viewport.hGrid,
 					});
