@@ -1,6 +1,7 @@
-import { areAllOperandsIntegers } from '../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { ErrorCode, getError } from '../errors';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -21,9 +22,17 @@ const mul: InstructionCompiler = withValidation(
 		const operand2 = context.stack.pop()!;
 		const operand1 = context.stack.pop()!;
 
+		if (hasMixedFloatWidth(operand1, operand2)) {
+			throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
+		}
+
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
-		context.stack.push({ isInteger, isNonZero: false });
-		return saveByteCode(context, [isInteger ? WASMInstruction.I32_MUL : WASMInstruction.F32_MUL]);
+		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
+
+		context.stack.push({ isInteger, ...(isFloat64 ? { isFloat64: true } : {}), isNonZero: false });
+		return saveByteCode(context, [
+			isInteger ? WASMInstruction.I32_MUL : isFloat64 ? WASMInstruction.F64_MUL : WASMInstruction.F32_MUL,
+		]);
 	}
 );
 
@@ -45,7 +54,7 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('emits F32_MUL for float operands', () => {
+		it('emits F32_MUL for float32 operands', () => {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
@@ -55,6 +64,33 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
+		});
+
+		it('emits F64_MUL for float64 operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push(
+				{ isInteger: false, isFloat64: true, isNonZero: false },
+				{ isInteger: false, isFloat64: true, isNonZero: false }
+			);
+
+			mul({ lineNumber: 1, instruction: 'mul', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				byteCode: context.byteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on mixed float32/float64 operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push(
+				{ isInteger: false, isNonZero: false },
+				{ isInteger: false, isFloat64: true, isNonZero: false }
+			);
+
+			expect(() => {
+				mul({ lineNumber: 1, instruction: 'mul', arguments: [] } as AST[number], context);
+			}).toThrowError();
 		});
 	});
 }
