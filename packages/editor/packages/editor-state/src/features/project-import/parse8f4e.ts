@@ -92,6 +92,14 @@ export function parse8f4eToProject(text: string): Project {
 				codeBlocks.push({ code: currentBlockLines });
 				currentBlockLines = null;
 				openerKeyword = null;
+			} else if (trimmed !== '') {
+				// Check for mixed openers inside the block
+				const innerOpener = getOpenerKeyword(trimmed);
+				if (innerOpener) {
+					throw new Error(
+						`Parse error at line ${i + 1}: mixed block type markers (found opener "${trimmed}" inside "${openerKeyword}" block)`
+					);
+				}
 			}
 		}
 	}
@@ -143,6 +151,12 @@ if (import.meta.vitest) {
 
 		it('throws on non-opener content outside block', () => {
 			expect(() => parse8f4eToProject('8f4e/v1\n\nunexpectedContent')).toThrow('expected opener keyword');
+		});
+
+		it('throws on mixed openers inside block', () => {
+			expect(() => parse8f4eToProject('8f4e/v1\n\nmodule foo\nfunction bar\nfunctionEnd\nmoduleEnd')).toThrow(
+				'mixed block type markers'
+			);
 		});
 
 		it('round-trips through serialize then parse', async () => {
