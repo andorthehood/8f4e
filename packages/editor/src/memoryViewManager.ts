@@ -17,6 +17,7 @@ export function createMemoryViewManager(memoryRef: MemoryRef): {
 		uint8: new Uint8Array(0),
 		uint16: new Uint16Array(0),
 		float32: new Float32Array(0),
+		float64: new Float64Array(0),
 	};
 
 	const updateMemoryViews = (memoryRef: MemoryRef) => {
@@ -38,6 +39,7 @@ export function createMemoryViewManager(memoryRef: MemoryRef): {
 			memoryViews.uint8 = new Uint8Array(buffer);
 			memoryViews.uint16 = new Uint16Array(buffer);
 			memoryViews.float32 = new Float32Array(buffer);
+			memoryViews.float64 = new Float64Array(buffer);
 		}
 	};
 
