@@ -4436,79 +4436,29 @@ module outputs
 ; @pos -274 33
 
 ; Confidence scores:
-; @debug confidence0
-; @debug confidence1
-; @debug confidence2
-; @debug confidence3
-; @debug confidence4
-; @debug confidence5
-; @debug confidence6
-; @debug confidence7
-; @debug confidence8
-; @debug confidence9
+; @debug *confidence0
+; @debug *confidence1
+; @debug *confidence2
+; @debug *confidence3
+; @debug *confidence4
+; @debug *confidence5
+; @debug *confidence6
+; @debug *confidence7
+; @debug *confidence8
+; @debug *confidence9
 
-
-; Copying the values of the output 
-; neurons here into this module 
-float* in0 &neuron108.out
-float confidence0
-push &confidence0
-push *in0
-store
-
-float* in1 &neuron109.out
-float confidence1
-push &confidence1
-push *in1
-store
-
-float* in2 &neuron110.out
-float confidence2
-push &confidence2
-push *in2
-store
-
-float* in3 &neuron111.out
-float confidence3
-push &confidence3
-push *in3
-store
-
-float* in4 &neuron112.out
-float confidence4
-push &confidence4
-push *in4
-store
-
-float* in5 &neuron113.out
-float confidence5
-push &confidence5
-push *in5
-store
-
-float* in6 &neuron114.out
-float confidence6
-push &confidence6
-push *in6
-store
-
-float* in7 &neuron115.out
-float confidence7
-push &confidence7
-push *in7
-store
-
-float* in8 &neuron116.out
-float confidence8
-push &confidence8
-push *in8
-store
-
-float* in9 &neuron117.out
-float confidence9
-push &confidence9
-push *in9
-store
+; Routing the values of the output 
+; neurons here into this module
+float* confidence0 &neuron108.out
+float* confidence1 &neuron109.out
+float* confidence2 &neuron110.out
+float* confidence3 &neuron111.out
+float* confidence4 &neuron112.out
+float* confidence5 &neuron113.out
+float* confidence6 &neuron114.out
+float* confidence7 &neuron115.out
+float* confidence8 &neuron116.out
+float* confidence9 &neuron117.out
 
 moduleEnd
 
