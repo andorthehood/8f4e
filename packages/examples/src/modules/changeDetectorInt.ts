@@ -22,9 +22,9 @@ push *in
 equal
 if void
 else
- push &trigOut
- push HIGH
- store
+push &trigOut
+push HIGH
+store
 ifEnd
 
 push &prevValue

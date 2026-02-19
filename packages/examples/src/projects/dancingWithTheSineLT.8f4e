@@ -41,9 +41,9 @@ push sin
 push last
 equal
 if void
- push &sin
- push first
- store
+push &sin
+push first
+store
 ifEnd
 
 push &offset
@@ -74,9 +74,9 @@ push sin
 push last
 equal
 if void
- push &sin
- push first
- store
+push &sin
+push first
+store
 ifEnd
 
 push &offset
@@ -108,9 +108,9 @@ push sin
 push last
 equal
 if void
- push &sin
- push first
- store
+push &sin
+push first
+store
 ifEnd
 
 push &offset
@@ -145,9 +145,9 @@ push sin
 push last
 equal
 if void
- push &sin
- push first
- store
+push &sin
+push first
+store
 ifEnd
 
 push &offsetY

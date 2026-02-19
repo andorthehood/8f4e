@@ -24,40 +24,40 @@ push *trigger
 risingEdge
 if void
  ; Reset pointer
- push &pointer
- push &last
- store
+push &pointer
+push &last
+store
 
- loop
+loop
   ; Guard
-  push pointer
-  push &out0
-  equal
-  branchIfTrue 1
+push pointer
+push &out0
+equal
+branchIfTrue 1
   
   ; Copy value from prev
   ; register to the curr
-  push pointer 
-  push pointer
-  push %out0
-  sub
-  load
-  store
+push pointer 
+push pointer
+push %out0
+sub
+load
+store
 
   ; Increment pointer
-  push &pointer
-  push pointer
-  push %out0
-  sub
-  store
+push &pointer
+push pointer
+push %out0
+sub
+store
 
- loopEnd
+loopEnd
  
  ; Copy the input value
  ; to the first register
- push &out0
- push *in
- store
+push &out0
+push *in
+store
  
 ifEnd
 

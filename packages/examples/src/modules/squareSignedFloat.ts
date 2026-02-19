@@ -29,31 +29,31 @@ push counter
 push 1.0
 greaterThan
 if void
- push &direction
- push -1.0
- store
+push &direction
+push -1.0
+store
 ifEnd
 
 push counter
 push -1.0
 lessThan
 if void
- push &direction
- push 1.0
- store
+push &direction
+push 1.0
+store
 ifEnd
 
 push counter
 push 0.0
 greaterThan
 if void
- push &out
- push 1.0
- store
+push &out
+push 1.0
+store
 else
- push &out
- push -1.0
- store
+push &out
+push -1.0
+store
 ifEnd
 
 moduleEnd`,

@@ -15,9 +15,9 @@ push *in
 push out
 greaterThan
 if void
- push &out
- push *in
- store
+push &out
+push *in
+store
 ifEnd
 
 moduleEnd`,

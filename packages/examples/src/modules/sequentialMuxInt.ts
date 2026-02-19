@@ -27,11 +27,11 @@ push *trigger
 risingEdge
 if void 
  ; Increment counter
- push &counter
-  push counter
-  push 1
-  add
- store
+push &counter
+push counter
+push 1
+add
+store
 ifEnd
 
 ; Guard
@@ -39,22 +39,22 @@ push counter
 push *length
 greaterOrEqual
 if void
- push &counter
-  push 0
- store
+push &counter
+push 0
+store
 ifEnd
 
 push &out
  ; Calculate input address
- push &in0
- push counter
- push %in0
- mul
- add
+push &in0
+push counter
+push %in0
+mul
+add
 
  ; Load value
- load
- load
+load
+load
 store
 
 moduleEnd`,
