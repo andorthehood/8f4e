@@ -1,3 +1,12 @@
+---
+title: 'TODO: Preserve Shader Line Numbers When Handling Editor Directives'
+priority: Medium
+effort: 2-4h
+created: 2026-02-18
+status: Complete
+completed: 2026-02-18
+---
+
 # 244: Preserve Shader Line Numbers When Handling Editor Directives
 
 ## Problem

@@ -1,3 +1,12 @@
+---
+title: 'TODO: Migrate code block position to ; @pos editor directive'
+priority: Medium
+effort: 1-2d
+created: 2026-02-18
+status: Complete
+completed: 2026-02-18
+---
+
 # 237: Migrate Code Block Position to `@pos` Directive
 
 ## Goal

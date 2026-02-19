@@ -3,8 +3,8 @@ title: 'TODO: Switch regular project export/import to .8f4e text format'
 priority: High
 effort: 1-2d
 created: 2026-02-18
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-19
 ---
 
 # TODO: Switch regular project export/import to .8f4e text format

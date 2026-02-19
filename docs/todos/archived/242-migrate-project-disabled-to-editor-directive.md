@@ -3,8 +3,8 @@ title: 'TODO: Migrate project disabled flag to ; @disabled editor directive'
 priority: Medium
 effort: 1-2d
 created: 2026-02-18
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-18
 ---
 
 # TODO: Migrate project disabled flag to ; @disabled editor directive
