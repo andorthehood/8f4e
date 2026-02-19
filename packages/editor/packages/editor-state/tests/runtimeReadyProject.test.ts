@@ -5,7 +5,7 @@ import compiler from '../src/features/program-compiler/effect';
 import projectExport from '../src/features/project-export/effect';
 import { createMockState, createMockCodeBlock } from '../src/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
-import { parse8f4eToProject } from '../src/pureHelpers/projectFormat8f4e';
+import { parse8f4eToProject } from '../src/features/project-import/parse8f4e';
 
 import type { State } from '../src/types';
 
