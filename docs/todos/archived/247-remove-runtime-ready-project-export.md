@@ -3,8 +3,8 @@ title: 'TODO: Remove runtime-ready project export'
 priority: Medium
 effort: 0.5d
 created: 2026-02-19
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-19
 ---
 
 # TODO: Remove runtime-ready project export
