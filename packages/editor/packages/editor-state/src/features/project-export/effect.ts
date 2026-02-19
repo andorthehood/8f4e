@@ -2,10 +2,10 @@ import { StateManager } from '@8f4e/state-manager';
 
 import serializeToProject from './serializeToProject';
 import serializeToRuntimeReadyProject from './serializeToRuntimeReadyProject';
+import { serializeProjectTo8f4e } from './serializeTo8f4e';
 
 import type { State } from '~/types';
 
-import { serializeProjectTo8f4e } from '~/pureHelpers/projectFormat8f4e';
 import { EventDispatcher } from '~/types';
 import encodeUint8ArrayToBase64 from '~/pureHelpers/base64/base64Encoder';
 

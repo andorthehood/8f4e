@@ -171,7 +171,8 @@ export type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 export { EMPTY_DEFAULT_PROJECT } from './types';
 
 // Export .8f4e format helpers
-export { serializeProjectTo8f4e, parse8f4eToProject } from './pureHelpers/projectFormat8f4e';
+export { serializeProjectTo8f4e } from './features/project-export/serializeTo8f4e';
+export { parse8f4eToProject } from './features/project-import/parse8f4e';
 
 // Export helper functions
 export { default as findClosestCodeBlockInDirection } from './features/code-blocks/utils/finders/findClosestCodeBlockInDirection';
