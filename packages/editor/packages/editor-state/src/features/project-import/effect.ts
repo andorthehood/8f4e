@@ -1,10 +1,11 @@
 import { StateManager } from '@8f4e/state-manager';
 
+import { parse8f4eToProject } from './parse8f4e';
+
 import { warn, error } from '../logger/logger';
 
 import type { Project, State } from '~/types';
 
-import { parse8f4eToProject } from '~/pureHelpers/projectFormat8f4e';
 import { EventDispatcher, EMPTY_DEFAULT_PROJECT } from '~/types';
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
