@@ -58,6 +58,11 @@ export default async function compileAndUpdateMemory(
 		memoryWasRecreated || true
 	);
 	const init = wasmInstanceRef.exports.init as CallableFunction;
+	const runInitOnly = wasmInstanceRef.exports.initOnly as CallableFunction | undefined;
+	const hasInitOnlyModules = Object.values(compiledModules).some(
+		module => module.initOnlyExecution && !module.skipExecutionInCycle
+	);
+	let initOnlyReran = false;
 
 	// Memory needs initialization when:
 	// - First compilation (!previousCompiledModules)
@@ -67,11 +72,13 @@ export default async function compileAndUpdateMemory(
 
 	if (needsInitialization) {
 		init();
+		initOnlyReran = false;
 	} else {
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
 		const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
 
+		const hasDefaultChanges = memoryValueChanges.length > 0;
 		memoryValueChanges.forEach(change => {
 			if (change.isInteger) {
 				if (typeof change.value === 'object') {
@@ -91,6 +98,11 @@ export default async function compileAndUpdateMemory(
 				}
 			}
 		});
+
+		if (hasDefaultChanges && hasInitOnlyModules) {
+			runInitOnly?.();
+			initOnlyReran = Boolean(runInitOnly);
+		}
 	}
 
 	previousCompiledModules = compiledModules;
@@ -103,5 +115,6 @@ export default async function compileAndUpdateMemory(
 		memoryRef,
 		hasWasmInstanceBeenReset,
 		memoryAction,
+		initOnlyReran,
 	};
 }
