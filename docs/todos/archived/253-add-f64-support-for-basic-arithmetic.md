@@ -3,8 +3,8 @@ title: 'TODO: Add float64 support for add/sub/mul/div'
 priority: Medium
 effort: 2-4d
 created: 2026-02-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-19
 ---
 
 # TODO: Add float64 support for add/sub/mul/div

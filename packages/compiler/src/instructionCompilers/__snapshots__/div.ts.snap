@@ -1,12 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`div instruction compiler > emits F32_DIV for float operands 1`] = `
+exports[`div instruction compiler > emits F32_DIV for float32 operands 1`] = `
 {
   "byteCode": [
     149,
   ],
   "stack": [
     {
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`div instruction compiler > emits F64_DIV for float64 operands 1`] = `
+{
+  "byteCode": [
+    163,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
       "isInteger": false,
       "isNonZero": true,
     },
