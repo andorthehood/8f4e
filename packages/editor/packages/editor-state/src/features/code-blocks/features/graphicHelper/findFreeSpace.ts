@@ -1,6 +1,6 @@
 import type { CodeBlockGraphicData } from '~/types';
 
-type PlacedBlock = Pick<CodeBlockGraphicData, 'gridX' | 'gridY' | 'gridWidth' | 'code'>;
+type PlacedBlock = Pick<CodeBlockGraphicData, 'gridX' | 'gridY' | 'gridWidth' | 'gridHeight'>;
 
 /**
  * Returns true if a block placed at (x, y) with the given dimensions overlaps any of
@@ -9,7 +9,7 @@ type PlacedBlock = Pick<CodeBlockGraphicData, 'gridX' | 'gridY' | 'gridWidth' | 
 export function hasCollision(existingBlocks: PlacedBlock[], x: number, y: number, w: number, h: number): boolean {
 	for (const block of existingBlocks) {
 		const xOverlap = x < block.gridX + block.gridWidth && x + w > block.gridX;
-		const yOverlap = y < block.gridY + block.code.length && y + h > block.gridY;
+		const yOverlap = y < block.gridY + block.gridHeight && y + h > block.gridY;
 		if (xOverlap && yOverlap) {
 			return true;
 		}
@@ -23,7 +23,7 @@ export function hasCollision(existingBlocks: PlacedBlock[], x: number, y: number
  *
  * @param existingBlocks - Existing placed blocks to check against
  * @param targetWidth - Target block width in grid units
- * @param targetHeight - Target block height in grid units (number of code lines)
+ * @param targetHeight - Target block height in grid units (including gap rows)
  * @returns The first free grid coordinate {x, y} for placement
  */
 export default function findFreeSpace(
