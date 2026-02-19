@@ -129,6 +129,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 249 | Add float64 allocation support on 4-byte grid | 🟡 | 2-4d | 2026-02-19 | Added `float64[]` buffer declaration with `elementWordSize: 8`, 8-byte start-alignment enforcement on the 4-byte word grid, and regression tests for mixed int32/float64 layouts |
 | 238 | Re-run init-only modules when default memory values change | 🟡 | 4-6h | 2026-02-19 | On incremental recompiles, rerun all init-only modules after changed defaults are patched, without invoking full `init()` |
 | 202 | Skip reapplying compiled config when unchanged | 🟡 | 1-2d | 2026-01-22 | Added deep-equal utility to compare compiled config output after defaults are merged; config is only set in store when changed, reducing unnecessary store updates and downstream recomputations |
 | 201 | Make minGridWidth a shared constant | 🟡 | 2-4h | 2026-01-22 | Introduced `CODE_BLOCK_MIN_GRID_WIDTH` constant in utils module; updated `getCodeBlockGridWidth` to use constant as default; replaced hardcoded values in effect.ts and codeBlockCreator; all 309 code-blocks tests passing |
