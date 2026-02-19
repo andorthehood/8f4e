@@ -20,6 +20,7 @@ The runtime-ready export produced `project-runtime-ready.json` — a JSON file c
 - `onExportRuntimeReadyProject` handler and `events.on('exportRuntimeReadyProject', ...)` from `effect.ts`
 - `serializeToRuntimeReadyProject.ts` and its snapshot file
 - `compileConfigForExport.ts` (only called from the runtime-ready path)
+- `pureHelpers/base64/base64Encoder.ts` (`encodeUint8ArrayToBase64`) — only used by `serializeToRuntimeReadyProject.ts` and the runtime-ready handler in `effect.ts`
 - "Export Runtime-Ready Project" menu item from `mainMenu.ts`
 - "Export Runtime-Ready Project" entry from the screenshot test mock
 - The `exportRuntimeReadyProject` describe block from `effect.test.ts` (3 tests + 1 event wiring test)
@@ -39,6 +40,7 @@ The runtime-ready export produced `project-runtime-ready.json` — a JSON file c
 | `packages/editor/packages/editor-state/src/features/project-export/serializeToRuntimeReadyProject.ts` | **Delete** |
 | `packages/editor/packages/editor-state/src/features/project-export/__snapshots__/serializeToRuntimeReadyProject.ts.snap` | **Delete** |
 | `packages/editor/packages/editor-state/src/features/project-config/compileConfigForExport.ts` | **Delete** |
+| `packages/editor/packages/editor-state/src/pureHelpers/base64/base64Encoder.ts` | **Delete** |
 | `packages/editor/packages/editor-state/src/features/project-export/serializeToProject.ts` | Remove `includeCompiled` option |
 | `packages/editor/packages/editor-state/src/features/project-export/__snapshots__/serializeToProject.ts.snap` | Regenerate if needed |
 | `packages/editor/packages/web-ui/screenshot-tests/utils/generateContextMenuMock.ts` | Remove mock entry |
