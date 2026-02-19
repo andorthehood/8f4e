@@ -37,6 +37,29 @@ exports[`push instruction compiler > element max prefix (^) > pushes max finite 
 }
 `;
 
+exports[`push instruction compiler > element max prefix (^) > pushes max finite value for float64 1`] = `
+{
+  "byteCode": [
+    68,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    239,
+    127,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
 exports[`push instruction compiler > element max prefix (^) > pushes max value for int8 1`] = `
 {
   "byteCode": [
@@ -100,6 +123,29 @@ exports[`push instruction compiler > element min prefix (!) > pushes lowest fini
   ],
   "stack": [
     {
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > element min prefix (!) > pushes lowest finite value for float64 1`] = `
+{
+  "byteCode": [
+    68,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    239,
+    255,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
       "isInteger": false,
       "isNonZero": true,
     },

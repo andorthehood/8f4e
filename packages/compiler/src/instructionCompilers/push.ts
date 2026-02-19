@@ -341,6 +341,35 @@ if (import.meta.vitest) {
 					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
+
+			it('pushes max finite value for float64', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF64: {
+								elementWordSize: 8,
+								isInteger: false,
+								isFloat64: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myF64' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					byteCode: context.byteCode,
+				}).toMatchSnapshot();
+			});
 		});
 
 		describe('element min prefix (!)', () => {
@@ -446,6 +475,35 @@ if (import.meta.vitest) {
 						lineNumber: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myFloat' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					byteCode: context.byteCode,
+				}).toMatchSnapshot();
+			});
+
+			it('pushes lowest finite value for float64', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF64: {
+								elementWordSize: 8,
+								isInteger: false,
+								isFloat64: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myF64' }],
 					} as AST[number],
 					context
 				);
