@@ -2,8 +2,10 @@ import { withValidation } from '../withValidation';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import f32const from '../wasmUtils/const/f32const';
+import f64const from '../wasmUtils/const/f64const';
 import i32const from '../wasmUtils/const/i32const';
 import f32load from '../wasmUtils/load/f32load';
+import f64load from '../wasmUtils/load/f64load';
 import i32load from '../wasmUtils/load/i32load';
 import localGet from '../wasmUtils/local/localGet';
 import {
@@ -34,14 +36,34 @@ import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
 import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
-import type { AST, ArgumentLiteral, InstructionCompiler, MemoryMap } from '../types';
+import type { AST, DataStructure, InstructionCompiler, MemoryMap, StackItem } from '../types';
 
-function getTypeAppropriateConstInstruction(argument: ArgumentLiteral) {
-	if (argument.isInteger) {
-		return i32const(argument.value);
-	} else {
-		return f32const(argument.value);
-	}
+type ValueKind = 'int32' | 'float32' | 'float64';
+
+function resolveMemoryValueKind(memoryItem: DataStructure): ValueKind {
+	if (memoryItem.isInteger) return 'int32';
+	if (memoryItem.isFloat64) return 'float64';
+	return 'float32';
+}
+
+function resolveArgumentValueKind(argument: { isInteger: boolean }): ValueKind {
+	return argument.isInteger ? 'int32' : 'float32';
+}
+
+const constOpcode: Record<ValueKind, (value: number) => number[]> = {
+	int32: i32const,
+	float32: f32const,
+	float64: f64const,
+};
+
+const loadOpcode: Record<ValueKind, () => number[]> = {
+	int32: () => i32load(),
+	float32: () => f32load(),
+	float64: () => f64load(),
+};
+
+function kindToStackItem(kind: ValueKind, extras?: Partial<StackItem>): StackItem {
+	return { isInteger: kind === 'int32', ...(kind === 'float64' ? { isFloat64: true } : {}), ...extras };
 }
 
 /**
@@ -69,12 +91,10 @@ const push: InstructionCompiler = withValidation(
 					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 				}
 
-				context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: false });
+				const kind = resolveMemoryValueKind(memoryItem);
+				context.stack.push(kindToStackItem(kind, { isNonZero: false }));
 
-				return saveByteCode(context, [
-					...i32const(memoryItem.byteAddress),
-					...(memoryItem.isInteger ? i32load() : f32load()),
-				]);
+				return saveByteCode(context, [...i32const(memoryItem.byteAddress), ...loadOpcode[kind]()]);
 			} else if (isMemoryPointerIdentifier(memory, argument.value)) {
 				const base = extractMemoryPointerBase(argument.value);
 				const memoryItem = getDataStructure(memory, base);
@@ -114,29 +134,25 @@ const push: InstructionCompiler = withValidation(
 				if (!memoryItem) {
 					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 				}
+				const kind = resolveMemoryValueKind(memoryItem);
 				const maxValue = getElementMaxValue(memory, base);
-				context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: maxValue !== 0 });
-				return saveByteCode(context, memoryItem.isInteger ? i32const(maxValue) : f32const(maxValue));
+				context.stack.push(kindToStackItem(kind, { isNonZero: maxValue !== 0 }));
+				return saveByteCode(context, constOpcode[kind](maxValue));
 			} else if (isElementMinIdentifier(memory, argument.value)) {
 				const base = extractElementMinBase(argument.value);
 				const memoryItem = getDataStructure(memory, base);
 				if (!memoryItem) {
 					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 				}
+				const kind = resolveMemoryValueKind(memoryItem);
 				const minValue = getElementMinValue(memory, base);
-				context.stack.push({ isInteger: memoryItem.isInteger, isNonZero: minValue !== 0 });
-				return saveByteCode(context, memoryItem.isInteger ? i32const(minValue) : f32const(minValue));
+				context.stack.push(kindToStackItem(kind, { isNonZero: minValue !== 0 }));
+				return saveByteCode(context, constOpcode[kind](minValue));
 			} else if (typeof consts[argument.value] !== 'undefined') {
-				context.stack.push({
-					isInteger: consts[argument.value].isInteger,
-					isNonZero: consts[argument.value].value !== 0,
-				});
-				return saveByteCode(
-					context,
-					consts[argument.value].isInteger
-						? i32const(consts[argument.value].value)
-						: f32const(consts[argument.value].value)
-				);
+				const constItem = consts[argument.value];
+				const kind = resolveArgumentValueKind(constItem);
+				context.stack.push(kindToStackItem(kind, { isNonZero: constItem.value !== 0 }));
+				return saveByteCode(context, constOpcode[kind](constItem.value));
 			} else {
 				const local = locals[argument.value];
 
@@ -149,9 +165,9 @@ const push: InstructionCompiler = withValidation(
 				return saveByteCode(context, localGet(local.index));
 			}
 		} else {
-			context.stack.push({ isInteger: argument.isInteger, isNonZero: argument.value !== 0 });
-
-			return saveByteCode(context, getTypeAppropriateConstInstruction(argument));
+			const kind = resolveArgumentValueKind(argument);
+			context.stack.push(kindToStackItem(kind, { isNonZero: argument.value !== 0 }));
+			return saveByteCode(context, constOpcode[kind](argument.value));
 		}
 	}
 );
@@ -325,6 +341,35 @@ if (import.meta.vitest) {
 					byteCode: context.byteCode,
 				}).toMatchSnapshot();
 			});
+
+			it('pushes max finite value for float64', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF64: {
+								elementWordSize: 8,
+								isInteger: false,
+								isFloat64: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '^myF64' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					byteCode: context.byteCode,
+				}).toMatchSnapshot();
+			});
 		});
 
 		describe('element min prefix (!)', () => {
@@ -438,6 +483,242 @@ if (import.meta.vitest) {
 					stack: context.stack,
 					byteCode: context.byteCode,
 				}).toMatchSnapshot();
+			});
+
+			it('pushes lowest finite value for float64', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF64: {
+								elementWordSize: 8,
+								isInteger: false,
+								isFloat64: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '!myF64' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					byteCode: context.byteCode,
+				}).toMatchSnapshot();
+			});
+		});
+
+		describe('float64 memory push', () => {
+			it('pushes a float64 memory identifier using f64.load', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF64: {
+								byteAddress: 0,
+								elementWordSize: 8,
+								isInteger: false,
+								isFloat64: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
+					} as AST[number],
+					context
+				);
+
+				expect({
+					stack: context.stack,
+					byteCode: context.byteCode,
+				}).toMatchSnapshot();
+			});
+
+			it('tracks isFloat64 on the stack item', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF64: {
+								byteAddress: 8,
+								elementWordSize: 8,
+								isInteger: false,
+								isFloat64: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
+					} as AST[number],
+					context
+				);
+
+				expect(context.stack[0].isFloat64).toBe(true);
+				expect(context.stack[0].isInteger).toBe(false);
+			});
+
+			it('float32 memory push does not set isFloat64', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF32: {
+								byteAddress: 0,
+								elementWordSize: 4,
+								isInteger: false,
+								isFloat64: false,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF32' }],
+					} as AST[number],
+					context
+				);
+
+				expect(context.stack[0].isFloat64).toBeUndefined();
+				expect(context.stack[0].isInteger).toBe(false);
+			});
+
+			it('emits f64.load (opcode 43) for float64 memory', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF64: {
+								byteAddress: 0,
+								elementWordSize: 8,
+								isInteger: false,
+								isFloat64: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
+					} as AST[number],
+					context
+				);
+
+				// byteCode: i32const(0) + f64load() = [65, 0, 43, 3, 0]
+				expect(context.byteCode).toContain(43); // F64_LOAD opcode
+			});
+
+			it('emits f32.load (opcode 42) for float32 memory, not f64.load', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myF32: {
+								byteAddress: 0,
+								elementWordSize: 4,
+								isInteger: false,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF32' }],
+					} as AST[number],
+					context
+				);
+
+				expect(context.byteCode).toContain(42); // F32_LOAD opcode
+				expect(context.byteCode).not.toContain(43); // no F64_LOAD
+			});
+
+			it('handles mixed int32/float32/float64 memory layout', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							myInt: {
+								byteAddress: 0,
+								elementWordSize: 4,
+								isInteger: true,
+							} as unknown as MemoryMap[string],
+							myFloat: {
+								byteAddress: 4,
+								elementWordSize: 4,
+								isInteger: false,
+							} as unknown as MemoryMap[string],
+							myF64: {
+								byteAddress: 8,
+								elementWordSize: 8,
+								isInteger: false,
+								isFloat64: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				const contextInt = { ...context, stack: [] as typeof context.stack, byteCode: [] as typeof context.byteCode };
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myInt' }],
+					} as AST[number],
+					contextInt
+				);
+				expect(contextInt.stack[0]).toMatchObject({ isInteger: true });
+				expect(contextInt.byteCode).not.toContain(42);
+				expect(contextInt.byteCode).not.toContain(43);
+
+				const contextFloat = { ...context, stack: [] as typeof context.stack, byteCode: [] as typeof context.byteCode };
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myFloat' }],
+					} as AST[number],
+					contextFloat
+				);
+				expect(contextFloat.stack[0]).toMatchObject({ isInteger: false });
+				expect(contextFloat.stack[0].isFloat64).toBeUndefined();
+				expect(contextFloat.byteCode).toContain(42); // F32_LOAD
+
+				const contextF64 = { ...context, stack: [] as typeof context.stack, byteCode: [] as typeof context.byteCode };
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'myF64' }],
+					} as AST[number],
+					contextF64
+				);
+				expect(contextF64.stack[0]).toMatchObject({ isInteger: false, isFloat64: true });
+				expect(contextF64.byteCode).toContain(43); // F64_LOAD
 			});
 		});
 	});

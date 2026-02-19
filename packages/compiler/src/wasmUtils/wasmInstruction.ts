@@ -33,6 +33,7 @@ enum WASMInstruction {
 	LOCAL_SET = 0x21,
 	I32_LOAD = 0x28,
 	F32_LOAD = 0x2a,
+	F64_LOAD = 0x2b,
 	I32_LOAD_8_S = 0x2c,
 	I32_LOAD_8_U = 0x2d,
 	I32_LOAD_16_S = 0x2e,
