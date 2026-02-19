@@ -3,8 +3,8 @@ title: 'TODO: Add "Go @home" main menu action'
 priority: Medium
 effort: 2-4h
 created: 2026-02-19
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-19
 ---
 
 # TODO: Add "Go @home" main menu action
