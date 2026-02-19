@@ -58,6 +58,7 @@ import sqrt from './sqrt';
 import loadFloat from './loadFloat';
 import round from './round';
 import ensureNonZero from './ensureNonZero';
+import float64 from './float64';
 import _function from './function';
 import functionEnd from './functionEnd';
 import param from './param';
@@ -113,6 +114,9 @@ const instructions = {
 	'int**': int,
 	'float*': float,
 	'float**': float,
+	float64: float64,
+	'float64*': float64,
+	'float64**': float64,
 	'float[]': buffer,
 	'int[]': buffer,
 	'int8[]': buffer,
@@ -124,6 +128,7 @@ const instructions = {
 	'float**[]': buffer,
 	'int*[]': buffer,
 	'int**[]': buffer,
+	'float64[]': buffer,
 	castToInt,
 	castToFloat,
 	skip,
