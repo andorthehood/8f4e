@@ -27,20 +27,20 @@ push *trigger
 risingEdge
 if void
  ; Clear previous output
- push &out0
- push counter
- push %out0
- mul
- add
- push 0
- store
+push &out0
+push counter
+push %out0
+mul
+add
+push 0
+store
  
  ; Increment counter
- push &counter
- push counter
- push 1
- add
- store
+push &counter
+push counter
+push 1
+add
+store
 ifEnd
 
 ; Guard
@@ -48,9 +48,9 @@ push counter
 push *length
 greaterOrEqual
 if void
- push &counter
- push 0
- store
+push &counter
+push 0
+store
 ifEnd
  
 ; Calculate output address
