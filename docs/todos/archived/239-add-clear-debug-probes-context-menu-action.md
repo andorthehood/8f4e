@@ -3,8 +3,8 @@ title: 'TODO: Add "Clear debug probes" context-menu action'
 priority: Medium
 effort: 2-4h
 created: 2026-02-18
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-19
 ---
 
 # TODO: Add "Clear debug probes" context-menu action
