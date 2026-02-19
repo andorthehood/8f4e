@@ -45,9 +45,12 @@ const buffer: InstructionCompiler = withValidation(
 		context.namespace.memory[line.arguments[0].value] = {
 			numberOfElements,
 			elementWordSize,
+			// Round up to the 4-byte allocation grid so all data structures stay word-addressable.
 			wordAlignedSize: Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY),
+			// Store address in 4-byte words because pointer math/view indexing is word-based.
 			wordAlignedAddress: context.startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY + wordAlignedAddress,
 			id: line.arguments[0].value,
+			// Convert the word-grid offset back to a byte address for wasm load/store instructions.
 			byteAddress: context.startingByteAddress + wordAlignedAddress * GLOBAL_ALIGNMENT_BOUNDARY,
 			default: {},
 			isInteger: line.instruction.startsWith('int') || line.instruction.includes('*'),
