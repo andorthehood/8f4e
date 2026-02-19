@@ -3,8 +3,8 @@ title: 'TODO: Add float64 memory view to web-ui'
 priority: Medium
 effort: 4-8h
 created: 2026-02-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-19
 ---
 
 # TODO: Add float64 memory view to web-ui
@@ -67,11 +67,11 @@ Out of scope:
 
 ## Success Criteria
 
-- [ ] Memory view types include `float64: Float64Array`.
-- [ ] Memory view manager always exposes synchronized `float64` views.
-- [ ] Web-ui drawers that render/read float memory handle float64-backed memory items correctly.
-- [ ] Existing tests pass and mocks are updated to include `float64`.
-- [ ] No regressions in existing int32/float32 behavior.
+- [x] Memory view types include `float64: Float64Array`.
+- [x] Memory view manager always exposes synchronized `float64` views.
+- [x] Web-ui drawers that render/read float memory handle float64-backed memory items correctly.
+- [x] Existing tests pass and mocks are updated to include `float64`.
+- [x] No regressions in existing int32/float32 behavior.
 
 ## Affected Components
 
