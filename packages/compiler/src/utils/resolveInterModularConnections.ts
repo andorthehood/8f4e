@@ -33,7 +33,9 @@ export default function resolveInterModularConnections(compiledModules: Compiled
 		ast!.forEach(line => {
 			const { instruction, arguments: _arguments } = line;
 			if (
-				['int*', 'int**', 'float*', 'float**', 'init', 'int', 'float'].includes(instruction) &&
+				['int*', 'int**', 'float*', 'float**', 'float64', 'float64*', 'float64**', 'init', 'int', 'float'].includes(
+					instruction
+				) &&
 				_arguments[0] &&
 				_arguments[1] &&
 				_arguments[0].type === ArgumentType.IDENTIFIER &&
