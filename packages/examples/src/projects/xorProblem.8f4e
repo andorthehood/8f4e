@@ -1,5 +1,16 @@
 8f4e/v1
 
+comment
+; @pos 66 -75
+; This is a compact, pre-trained 
+; neural network that solves the 
+; XOR problem by combining two
+; input switches through hidden 
+; perceptrons with sigmoid 
+; activations and outputting a 
+; binary classification result.
+commentEnd
+
 config project
 ; @pos -9 -73
 
@@ -15,6 +26,10 @@ set
 
 rescopeTop "runtime"
 push "WebWorkerLogicRuntime"
+set
+
+rescope "exportFileName"
+push "xorProblem"
 set
 
 configEnd
@@ -70,11 +85,13 @@ moduleEnd
 
 constants env
 ; @pos -9 -50
+; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 1/19/2026, 9:57:55 PM
+; Last updated: 2/19/2026, 2:34:30 PM
 
 const SAMPLE_RATE 10
+const INV_SAMPLE_RATE 0.1
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
@@ -83,8 +100,8 @@ module perceptron
 ; @pos 118 -82
 ; Pre-trained perceptron
 
-float* in1 &switches.out1
-float* in2 &switches.out2
+float* in1 &switches.in1
+float* in2 &switches.in2
 float out
 
 ; Weights
@@ -109,8 +126,8 @@ module perceptron2
 ; @pos 118 -55
 ; Pre-trained perceptron
 
-float* in1 &switches.out1
-float* in2 &switches.out2
+float* in1 &switches.in1
+float* in2 &switches.in2
 float out
 
 ; Weights
@@ -158,16 +175,19 @@ store
 moduleEnd
 
 module result
-; @pos 74 -53
+; @pos 50 -53
 
-int* in &activationFn3.out
+; 1 means the the two input numbers are different
+; 0 means the two input numbers are the same
 
-; @debug *in
+; @debug *out
+
+int* out &activationFn3.out
 
 moduleEnd
 
 function sigmoid
-; @pos 73 -82
+; @pos 152 -38
 param float x
 ; Polynomial sigmoid
 ; func. approximation
@@ -183,10 +203,12 @@ div
 functionEnd float
 
 module switches
-; @pos 74 -62
+; @pos 74 -64
+; @home
 
-int he
-float out1 1.0
-float out2 0.0
+; You can change the 
+; input values here:
+float in1 1.0
+float in2 0.0
 
 moduleEnd

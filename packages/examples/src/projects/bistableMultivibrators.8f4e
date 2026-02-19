@@ -75,24 +75,12 @@ int reset
 
 moduleEnd
 
-module comment
-; @pos 131 14
-
-; Of course there is an easier
-; way to implement latching
-; logic in 8F4E, this is just
-; a fun project to demonstrate
-; feedback between modules.
-
-
-moduleEnd
-
 constants env
 ; @pos -30 16
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/19/2026, 1:43:47 PM
+; Last updated: 2/19/2026, 1:45:45 PM
 
 const SAMPLE_RATE 50
 const INV_SAMPLE_RATE 0.02
