@@ -3,8 +3,8 @@ title: 'TODO: Replace project viewport with ; @home editor directive'
 priority: Medium
 effort: 1-2d
 created: 2026-02-18
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-18
 ---
 
 # TODO: Replace project viewport with ; @home editor directive
