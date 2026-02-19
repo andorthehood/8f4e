@@ -22,9 +22,9 @@ push bufferPointer
 push buffer&
 greaterThan
 if void
- push &bufferPointer
- push &buffer
- store
+push &bufferPointer
+push &buffer
+store
 ifEnd
 
 push bufferPointer

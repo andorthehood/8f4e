@@ -18,45 +18,45 @@ int counter 10000
 push *trigger
 risingEdge
 if void
- push &counter
- push 0
- store
+push &counter
+push 0
+store
 ifEnd
 
 push *clock
 risingEdge
 if void
- push counter
- push *lengthIn
- lessThan
- if void
-  push &out
+push counter
+push *lengthIn
+lessThan
+if void
+push &out
   
   ; Calculate address
-  push bufferIn
-  push counter
-  push %bufferIn
-  mul
-  add
+push bufferIn
+push counter
+push %bufferIn
+mul
+add
   
-  loadFloat
-  store
+loadFloat
+store
 
   ; Increment counter
-  push &counter
-  push counter
-  push 1 
-  add
-  store
+push &counter
+push counter
+push 1 
+add
+store
   
-  push &trigOut
-  push 1
-  store
- ifEnd
+push &trigOut
+push 1
+store
+ifEnd
 else
- push &trigOut
- push 0
- store
+push &trigOut
+push 0
+store
 ifEnd
 
 moduleEnd`,

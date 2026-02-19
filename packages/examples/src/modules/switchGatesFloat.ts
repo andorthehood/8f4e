@@ -44,50 +44,50 @@ int pointer 0
 
 loop
  ; Exit point
- push pointer
- push 7
- greaterThan
- branchIfTrue 1 
+push pointer
+push 7
+greaterThan
+branchIfTrue 1 
 
  ; Read switch
- push &gate0
- push pointer
- push %gate0
- mul
- add
- load
- push 1
- equal
- if void
+push &gate0
+push pointer
+push %gate0
+mul
+add
+load
+push 1
+equal
+if void
   ; Prepare out address
-  push &out0
-  push pointer
-  push %out0
-  mul
-  add
+push &out0
+push pointer
+push %out0
+mul
+add
 
   ; Read input
-  push &in0
-  push pointer
-  push %in0
-  mul
-  add
-  load
-  load
-  store
+push &in0
+push pointer
+push %in0
+mul
+add
+load
+load
+store
 
- else
+else
   ; Prepare out address
-  push &out0
-  push pointer
-  push %out0
-  mul
-  add
+push &out0
+push pointer
+push %out0
+mul
+add
   
   ; Set out to 0
-  push 0
-  store
- ifEnd
+push 0
+store
+ifEnd
 loopEnd
 
 moduleEnd`,
