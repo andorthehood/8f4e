@@ -193,4 +193,23 @@ describe('clearDebugProbes', () => {
 
 		expect(codeBlock.code).toEqual(['module test', '; @debug x', 'moduleEnd']);
 	});
+
+	it('should preserve incomplete @debug directives without variable name', () => {
+		const codeBlock = createMockCodeBlock({
+			code: ['module test', '; @debug', 'moduleEnd'],
+			blockType: 'module',
+		});
+		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.featureFlags.editing = true;
+
+		clearDebugProbes(store, mockEvents);
+
+		const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+		const clearCall = onCalls.find(call => call[0] === 'clearDebugProbes');
+		const clearCallback = clearCall![1];
+
+		clearCallback({ codeBlock });
+
+		expect(codeBlock.code).toEqual(['module test', '; @debug', 'moduleEnd']);
+	});
 });
