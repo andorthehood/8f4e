@@ -182,6 +182,108 @@ describe('projectExport', () => {
 		});
 	});
 
+	describe('exportFileName', () => {
+		it('should use custom exportFileName as base for .8f4e export', async () => {
+			mockState.compiledProjectConfig.exportFileName = 'my-project';
+
+			projectExport(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportProjectCallback = onCalls.find(call => call[0] === 'exportProject')![1];
+
+			await exportProjectCallback();
+
+			const [, fileName] = mockExportProject.mock.calls[0];
+			expect(fileName).toBe('my-project.8f4e');
+		});
+
+		it('should use custom exportFileName as base for runtime-ready export', async () => {
+			mockState.compiledProjectConfig.exportFileName = 'my-project';
+
+			projectExport(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportRuntimeReadyProjectCallback = onCalls.find(call => call[0] === 'exportRuntimeReadyProject')![1];
+
+			await exportRuntimeReadyProjectCallback();
+
+			const [, fileName] = mockExportProject.mock.calls[0];
+			expect(fileName).toBe('my-project-runtime-ready.json');
+		});
+
+		it('should use custom exportFileName as base for WASM export', async () => {
+			const mockExportBinaryCode = vi.fn().mockResolvedValue(undefined);
+			mockState.callbacks.exportBinaryCode = mockExportBinaryCode;
+			mockState.compiledProjectConfig.exportFileName = 'my-project';
+
+			projectExport(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportWasmCallback = onCalls.find(call => call[0] === 'exportWasm')![1];
+
+			exportWasmCallback();
+
+			expect(mockExportBinaryCode).toHaveBeenCalledWith('my-project.wasm');
+		});
+
+		it('should strip .json suffix from exportFileName to prevent double extension', async () => {
+			mockState.compiledProjectConfig.exportFileName = 'demo.json';
+
+			projectExport(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportRuntimeReadyProjectCallback = onCalls.find(call => call[0] === 'exportRuntimeReadyProject')![1];
+
+			await exportRuntimeReadyProjectCallback();
+
+			const [, fileName] = mockExportProject.mock.calls[0];
+			expect(fileName).toBe('demo-runtime-ready.json');
+		});
+
+		it('should strip .wasm suffix from exportFileName to prevent double extension', async () => {
+			const mockExportBinaryCode = vi.fn().mockResolvedValue(undefined);
+			mockState.callbacks.exportBinaryCode = mockExportBinaryCode;
+			mockState.compiledProjectConfig.exportFileName = 'demo.wasm';
+
+			projectExport(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportWasmCallback = onCalls.find(call => call[0] === 'exportWasm')![1];
+
+			exportWasmCallback();
+
+			expect(mockExportBinaryCode).toHaveBeenCalledWith('demo.wasm');
+		});
+
+		it('should fall back to "project" base when exportFileName is undefined', async () => {
+			mockState.compiledProjectConfig.exportFileName = undefined;
+
+			projectExport(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportProjectCallback = onCalls.find(call => call[0] === 'exportProject')![1];
+
+			await exportProjectCallback();
+
+			const [, fileName] = mockExportProject.mock.calls[0];
+			expect(fileName).toBe('project.8f4e');
+		});
+
+		it('should fall back to "project" base when exportFileName is empty string', async () => {
+			mockState.compiledProjectConfig.exportFileName = '';
+
+			projectExport(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const exportProjectCallback = onCalls.find(call => call[0] === 'exportProject')![1];
+
+			await exportProjectCallback();
+
+			const [, fileName] = mockExportProject.mock.calls[0];
+			expect(fileName).toBe('project.8f4e');
+		});
+	});
+
 	describe('saveSession', () => {
 		it('should save session when saveSession callback is provided', async () => {
 			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
