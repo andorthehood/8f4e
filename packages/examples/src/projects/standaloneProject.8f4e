@@ -1,0 +1,37 @@
+8f4e/v1
+
+config project
+; @pos -14 8
+
+scope "memorySizeBytes"
+push 8
+set
+popScope
+
+scope "runtimeSettings"
+scope "runtime"
+push "WebWorkerLogicRuntime"
+set
+rescopeTop "sampleRate"
+push 1
+set
+
+rescope disableAutoCompilation
+push true
+set 
+
+configEnd
+
+module counter
+; @pos 25 8
+
+int count
+; @debug count
+
+push &count
+push count
+push 1
+add
+store
+
+moduleEnd

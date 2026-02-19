@@ -2,32 +2,35 @@
  * Integration tests that verify all example projects compile without errors -
  * both module code and config blocks.
  */
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
 import { describe, it, expect } from 'vitest';
 import compile from '@8f4e/compiler';
 import { compileConfig } from '@8f4e/stack-config-compiler';
-import audioBuffer from '@8f4e/examples/projects/audioBuffer';
-import audioLoopback from '@8f4e/examples/projects/audioLoopback';
-import bistableMultivibrators from '@8f4e/examples/projects/bistableMultivibrators';
-import dancingWithTheSineLT from '@8f4e/examples/projects/dancingWithTheSineLT';
-import neuralNetwork from '@8f4e/examples/projects/neuralNetwork';
-import randomGenerators from '@8f4e/examples/projects/randomGenerators';
-import rippleEffect from '@8f4e/examples/projects/rippleEffect';
-import samplePlayer from '@8f4e/examples/projects/samplePlayer';
-import simpleCounterMainThread from '@8f4e/examples/projects/simpleCounterMainThread';
-import standaloneProject from '@8f4e/examples/projects/standaloneProject';
+import { parse8f4eToProject } from '@8f4e/editor-state';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const projectsDir = resolve(__dirname, '../../packages/examples/src/projects');
+
+function loadProject(name: string) {
+	return parse8f4eToProject(readFileSync(resolve(projectsDir, `${name}.8f4e`), 'utf-8'));
+}
 
 const projects = [
-	audioBuffer,
-	audioLoopback,
-	bistableMultivibrators,
-	dancingWithTheSineLT,
-	neuralNetwork,
-	randomGenerators,
-	rippleEffect,
-	samplePlayer,
-	simpleCounterMainThread,
-	standaloneProject,
-];
+	'audioBuffer',
+	'audioLoopback',
+	'bistableMultivibrators',
+	'dancingWithTheSineLT',
+	'neuralNetwork',
+	'randomGenerators',
+	'rippleEffect',
+	'samplePlayer',
+	'simpleCounterMainThread',
+	'standaloneProject',
+].map(loadProject);
 
 const COMPILER_OPTIONS = {
 	memorySizeBytes: 65536,

@@ -1,5 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
+import { parse8f4eToProject } from './parse8f4e';
+
 import { warn, error } from '../logger/logger';
 
 import type { Project, State } from '~/types';
@@ -32,8 +34,15 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			warn(state, 'No getProject callback provided');
 			return;
 		}
-		const project = await state.callbacks.getProject(projectSlug);
-		loadProject({ project });
+		try {
+			const projectText = await state.callbacks.getProject(projectSlug);
+			const project = parse8f4eToProject(projectText);
+			loadProject({ project });
+		} catch (err) {
+			console.error('Failed to load project by slug:', err);
+			error(state, 'Failed to load project by slug');
+			loadProject({ project: EMPTY_DEFAULT_PROJECT });
+		}
 	}
 
 	function loadProject({ project: newProject }: { project: Project }) {
