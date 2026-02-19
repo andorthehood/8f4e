@@ -1,12 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`sub instruction compiler > emits F32_SUB for float operands 1`] = `
+exports[`sub instruction compiler > emits F32_SUB for float32 operands 1`] = `
 {
   "byteCode": [
     147,
   ],
   "stack": [
     {
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`sub instruction compiler > emits F64_SUB for float64 operands 1`] = `
+{
+  "byteCode": [
+    161,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
       "isInteger": false,
       "isNonZero": false,
     },

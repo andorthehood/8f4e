@@ -1,12 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`mul instruction compiler > emits F32_MUL for float operands 1`] = `
+exports[`mul instruction compiler > emits F32_MUL for float32 operands 1`] = `
 {
   "byteCode": [
     148,
   ],
   "stack": [
     {
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
+exports[`mul instruction compiler > emits F64_MUL for float64 operands 1`] = `
+{
+  "byteCode": [
+    162,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
       "isInteger": false,
       "isNonZero": false,
     },
