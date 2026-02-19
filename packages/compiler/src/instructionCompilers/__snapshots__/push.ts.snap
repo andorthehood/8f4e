@@ -220,6 +220,52 @@ exports[`push instruction compiler > pushes a constant value 1`] = `
 }
 `;
 
+exports[`push instruction compiler > pushes a f64 constant emitting f64.const 1`] = `
+{
+  "byteCode": [
+    68,
+    24,
+    45,
+    68,
+    84,
+    251,
+    33,
+    9,
+    64,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > pushes a f64 literal value emitting f64.const 1`] = `
+{
+  "byteCode": [
+    68,
+    31,
+    133,
+    235,
+    81,
+    184,
+    30,
+    9,
+    64,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
 exports[`push instruction compiler > pushes a literal value 1`] = `
 {
   "byteCode": [
