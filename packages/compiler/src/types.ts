@@ -107,7 +107,7 @@ export interface TestModule {
 	ast: AST;
 }
 
-export type Const = { value: number; isInteger: boolean };
+export type Const = { value: number; isInteger: boolean; isFloat64?: boolean };
 
 export type Consts = Record<string, Const>;
 export interface Namespace {
