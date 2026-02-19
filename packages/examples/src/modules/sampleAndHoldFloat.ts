@@ -15,9 +15,9 @@ float out
 push *trigger
 risingEdge
 if void
- push &out
- push *in
- store
+push &out
+push *in
+store
 ifEnd
 
 moduleEnd`,
