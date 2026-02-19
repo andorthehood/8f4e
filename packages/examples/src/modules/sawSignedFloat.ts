@@ -23,9 +23,9 @@ push out
 push 1.0
 greaterThan
 if void
- push &out
- push 0.0
- store
+push &out
+push 0.0
+store
 ifEnd
 
 moduleEnd`,
