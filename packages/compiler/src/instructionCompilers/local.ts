@@ -25,6 +25,7 @@ const local: InstructionCompiler = withValidation(
 
 		context.namespace.locals[line.arguments[1].value] = {
 			isInteger: line.arguments[0].value === 'int',
+			...(line.arguments[0].value === 'float64' ? { isFloat64: true } : {}),
 			index: Object.keys(context.namespace.locals).length,
 		};
 

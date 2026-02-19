@@ -111,7 +111,7 @@ export type Const = { value: number; isInteger: boolean; isFloat64?: boolean };
 
 export type Consts = Record<string, Const>;
 export interface Namespace {
-	locals: Record<string, { isInteger: boolean; index: number }>;
+	locals: Record<string, { isInteger: boolean; isFloat64?: boolean; index: number }>;
 	memory: MemoryMap;
 	consts: Consts;
 	moduleName: string | undefined;
