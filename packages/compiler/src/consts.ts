@@ -4,6 +4,7 @@ export const I16_SIGNED_LARGEST_NUMBER = 32767;
 export const I16_SIGNED_SMALLEST_NUMBER = -32768;
 export const LOGIC_HIGH = I16_SIGNED_LARGEST_NUMBER;
 export const LOGIC_LOW = 0;
+// Global allocation grid is 4 bytes so memory maps cleanly to Int32Array/Float32Array views.
 export const GLOBAL_ALIGNMENT_BOUNDARY = 4;
 export const HEADER = [0x00, 0x61, 0x73, 0x6d];
 export const VERSION = [0x01, 0x00, 0x00, 0x00];

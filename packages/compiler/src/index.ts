@@ -289,6 +289,7 @@ export default function compile(
 		? compiledModulesMap
 		: stripASTFromCompiledModules(compiledModulesMap);
 
+	// Round up to whole wasm pages (64 KiB each); memory cannot be imported with fractional pages.
 	const memorySizePages = Math.ceil(options.memorySizeBytes / WASM_MEMORY_PAGE_SIZE);
 
 	return {
