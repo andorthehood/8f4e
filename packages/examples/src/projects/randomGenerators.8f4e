@@ -1,7 +1,19 @@
 8f4e/v1
 
+comment
+; @pos 62 19
+; @home
+; Two different approaches
+; for pseudorandom generation:
+; a Linear Congruential
+; Generator (LCG)
+; and
+; a XORShift algorithm 
+; implemented in 8f4e.
+commentEnd
+
 config project
-; @pos -65 0
+; @pos -84 2
 
 scope "memorySizeBytes"
 push 65536
@@ -17,10 +29,14 @@ push 50
 set
 popScope
 
+rescope "exportFileName"
+push "randomGenerators"
+set
+
 configEnd
 
 module XORShift
-; @pos 74 1
+; @pos 102 1
 
 int seed 69420
 float out
@@ -54,18 +70,20 @@ store
 moduleEnd
 
 constants env
-; @pos -64 25
+; @pos -84 26
+; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 1/19/2026, 10:00:14 PM
+; Last updated: 2/19/2026, 2:47:12 PM
 
 const SAMPLE_RATE 50
+const INV_SAMPLE_RATE 0.02
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
 module lcg
-; @pos 2 1
+; @pos -10 1
 ; Linear congruential 
 ; generator
 
@@ -97,7 +115,7 @@ store
 moduleEnd
 
 module scope
-; @pos 39 1
+; @pos 27 1
 
 float* in &lcg.out
 float[] buffer 64
@@ -127,7 +145,7 @@ store
 moduleEnd
 
 module scope2
-; @pos 109 1
+; @pos 137 1
 
 float* in &XORShift.out
 float[] buffer 64
