@@ -1,4 +1,4 @@
-export default function getMemoryFlags(baseType: 'int' | 'float', pointerDepth: number) {
+export default function getMemoryFlags(baseType: 'int' | 'float' | 'float64', pointerDepth: number) {
 	const isPointer = pointerDepth > 0;
 	const isPointingToInteger = isPointer && baseType === 'int';
 	const isPointingToPointer = pointerDepth === 2;
@@ -45,6 +45,41 @@ if (import.meta.vitest) {
 				expect(flags).toEqual({
 					isPointer: true,
 					isPointingToInteger: true,
+					isPointingToPointer: true,
+					isInteger: true,
+					isUnsigned: false,
+				});
+			});
+		});
+
+		describe('for float64 base type', () => {
+			it('returns correct flags for non-pointer float64', () => {
+				const flags = getMemoryFlags('float64', 0);
+				expect(flags).toEqual({
+					isPointer: false,
+					isPointingToInteger: false,
+					isPointingToPointer: false,
+					isInteger: false,
+					isUnsigned: false,
+				});
+			});
+
+			it('returns correct flags for single-level float64 pointer', () => {
+				const flags = getMemoryFlags('float64', 1);
+				expect(flags).toEqual({
+					isPointer: true,
+					isPointingToInteger: false,
+					isPointingToPointer: false,
+					isInteger: true,
+					isUnsigned: false,
+				});
+			});
+
+			it('returns correct flags for double-level float64 pointer', () => {
+				const flags = getMemoryFlags('float64', 2);
+				expect(flags).toEqual({
+					isPointer: true,
+					isPointingToInteger: false,
 					isPointingToPointer: true,
 					isInteger: true,
 					isUnsigned: false,
