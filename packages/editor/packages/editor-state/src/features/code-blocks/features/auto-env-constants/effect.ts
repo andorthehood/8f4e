@@ -1,3 +1,5 @@
+import parsePos from '../position/parsePos';
+
 import type { StateManager } from '@8f4e/state-manager';
 import type { State, CodeBlock, CodeBlockGraphicData } from '~/types';
 
@@ -11,14 +13,17 @@ const isEnvBlock = (block: CodeBlockGraphicData): boolean =>
  * This block provides runtime environment values as constants that can be used throughout the program.
  *
  * @param state - The current editor state
+ * @param existingPos - Existing env block grid position from its `; @pos x y` directive. When provided, this
+ * position is preserved in the regenerated block; otherwise the block defaults to `0,0`.
  * @returns Array of code lines for the constants block
  */
-function generateEnvConstantsBlock(state: State): string[] {
+function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: number }): string[] {
 	const lines: string[] = [];
+	const pos = existingPos ?? { x: 0, y: 0 };
 
 	// Header with warning
 	lines.push(`constants ${AUTO_ENV_CONSTANTS_BLOCK_ID}`);
-	lines.push('; @pos 0 0');
+	lines.push(`; @pos ${pos.x} ${pos.y}`);
 	lines.push('; @favorite');
 	lines.push('; Auto-generated environment constants');
 	lines.push('; Changes will be overwritten');
@@ -75,13 +80,13 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 	 */
 	function updateEnvConstantsBlockInGraphicHelper(): void {
 		const state = store.getState();
-
-		const newCode = generateEnvConstantsBlock(state);
 		const targetBlock = state.graphicHelper.codeBlocks.find(block => isEnvBlock(block));
 
 		if (!targetBlock) {
 			return;
 		}
+		const existingPos = parsePos(targetBlock.code);
+		const newCode = generateEnvConstantsBlock(state, existingPos);
 
 		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = targetBlock;
 
