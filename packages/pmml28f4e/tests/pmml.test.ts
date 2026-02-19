@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { serializeProjectTo8f4e } from '@8f4e/editor-state';
 
 import { convertPmmlNeuralNetworkToProject } from '../src/index';
 
@@ -25,6 +26,6 @@ const samplePmml = `
 describe('convertPmmlNeuralNetworkToProject', () => {
 	it('creates code blocks for inputs, neuron, outputs, and sigmoid', () => {
 		const project = convertPmmlNeuralNetworkToProject(samplePmml);
-		expect(project).toMatchSnapshot();
+		expect(serializeProjectTo8f4e(project)).toMatchSnapshot();
 	});
 });
