@@ -24,49 +24,49 @@ store
 
 ; Generate rhythm into buffer
 loop
- push _index
- push $rhythm
- greaterOrEqual
- branchIfTrue 1
+push _index
+push $rhythm
+greaterOrEqual
+branchIfTrue 1
 
- push &_bucket
- push _bucket
- push pulses
- add
- store
+push &_bucket
+push _bucket
+push pulses
+add
+store
 
- push &_beat
- push 0
- store
+push &_beat
+push 0
+store
 
- push _bucket
- push $rhythm
- greaterOrEqual
- if void
-  push &_bucket
-  push _bucket
-  push $rhythm
-  sub
-  store
+push _bucket
+push $rhythm
+greaterOrEqual
+if void
+push &_bucket
+push _bucket
+push $rhythm
+sub
+store
 
-  push &_beat
-  push 1
-  store
- ifEnd
+push &_beat
+push 1
+store
+ifEnd
 
- push &rhythm
- push _index
- push %rhythm
- mul
- add
- push _beat
- store
+push &rhythm
+push _index
+push %rhythm
+mul
+add
+push _beat
+store
 
- push &_index
- push _index
- push 1
- add
- store
+push &_index
+push _index
+push 1
+add
+store
 loopEnd
 
 moduleEnd`,
