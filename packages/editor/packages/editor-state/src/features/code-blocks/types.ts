@@ -170,6 +170,8 @@ export interface CodeBlockGraphicData {
 	gridY: number;
 	/** Grid-space width of the block. Updated alongside width in updateGraphics. */
 	gridWidth: number;
+	/** Grid-space height of the block, including visual gap rows. Updated alongside height in updateGraphics. */
+	gridHeight: number;
 	/** Pixel-space X coordinate, computed from gridX * vGrid (where vGrid = characterWidth) */
 	x: number;
 	/** Pixel-space Y coordinate, computed from gridY * hGrid (where hGrid = characterHeight) */

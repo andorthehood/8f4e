@@ -198,6 +198,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			gridX,
 			gridY,
 			gridWidth: 0,
+			gridHeight: 0,
 			x: state.viewport.x + x,
 			y: state.viewport.y + y,
 			lineNumberColumnWidth: 2,
