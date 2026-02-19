@@ -3,8 +3,8 @@ title: 'TODO: Add Delete Group context-menu action (no confirmation)'
 priority: Medium
 effort: 4-8h
 created: 2026-02-16
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-18
 ---
 
 # TODO: Add Delete Group context-menu action (no confirmation)
