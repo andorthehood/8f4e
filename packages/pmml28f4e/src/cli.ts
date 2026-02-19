@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { Command } from 'commander';
+import { serializeProjectTo8f4e } from '@8f4e/editor-state';
 
 import { convertPmmlNeuralNetworkToProject } from './index';
 
@@ -13,18 +14,17 @@ async function runCli(): Promise<void> {
 		.description('Convert PMML neural networks into 8f4e project files')
 		.argument('<input>', 'Input PMML file path')
 		.option('-o, --out <path>', 'Output file path (prints to stdout if not specified)')
-		.option('-p, --pretty', 'Format output with indentation')
-		.action(async (inputPath: string, options: { out?: string; name?: string; pretty?: boolean }) => {
+		.action(async (inputPath: string, options: { out?: string }) => {
 			const inputFile = resolve(process.cwd(), inputPath);
 			const pmmlXml = await readFile(inputFile, 'utf8');
 			const project = convertPmmlNeuralNetworkToProject(pmmlXml);
-			const json = JSON.stringify(project, null, options.pretty ? 2 : 0);
+			const text = serializeProjectTo8f4e(project);
 
 			if (options.out) {
 				const resolvedOut = resolve(process.cwd(), options.out);
-				await writeFile(resolvedOut, json, 'utf8');
+				await writeFile(resolvedOut, text, 'utf8');
 			} else {
-				console.log(json);
+				console.log(text);
 			}
 		});
 
