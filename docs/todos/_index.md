@@ -55,7 +55,6 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 230 | Support inter-module element min value references | 🟡 | 3-5h | 2026-02-16 | Add `!module.memory` inter-module derived min resolution with type-aware semantics and graph/test coverage |
 | 232 | Fix inter-module end-reference syntax to module.foo& | 🟡 | 2-4h | 2026-02-16 | Replace incorrect `&module.foo&` implementation with `module.foo&`, keep `&module.foo` for start, and align resolver/sorting/tests/docs |
 | 231 | Add init-only compiler directive for module execution | 🟡 | 3-5h | 2026-02-16 | Add `#initOnly` module directive that runs code once after memory init, excludes cycle execution, and defers to `#skipExecution` when both are present |
-| 238 | Re-run init-only modules when default memory values change | 🟡 | 4-6h | 2026-02-18 | On incremental recompiles, rerun all init-only modules after changed defaults are patched, without invoking full `init()` |
 | 242 | Migrate project disabled flag to ; @disabled editor directive | 🟡 | 1-2d | 2026-02-18 | Replace project-level `disabled` persistence with `; @disabled`, keep runtime `graphicHelper.codeBlocks[].disabled` for filtering, and preserve disable/enable menu UX |
 | 243 | Replace project viewport with ; @home editor directive | 🟡 | 1-2d | 2026-02-18 | Remove project `viewport`, derive startup camera from first `; @home` block via centering helper, and default to `(0,0)` when missing |
 | 225 | Add free-space finder for editor config block placement | 🟡 | 4-8h | 2026-02-16 | Add a helper that scans from `0,0` downward and returns the first non-overlapping coordinate using code-block width/height bounds |
@@ -129,6 +128,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 238 | Re-run init-only modules when default memory values change | 🟡 | 4-6h | 2026-02-19 | On incremental recompiles, rerun all init-only modules after changed defaults are patched, without invoking full `init()` |
 | 202 | Skip reapplying compiled config when unchanged | 🟡 | 1-2d | 2026-01-22 | Added deep-equal utility to compare compiled config output after defaults are merged; config is only set in store when changed, reducing unnecessary store updates and downstream recomputations |
 | 201 | Make minGridWidth a shared constant | 🟡 | 2-4h | 2026-01-22 | Introduced `CODE_BLOCK_MIN_GRID_WIDTH` constant in utils module; updated `getCodeBlockGridWidth` to use constant as default; replaced hardcoded values in effect.ts and codeBlockCreator; all 309 code-blocks tests passing |
 | 194 | Add Unsigned int8/int16 Buffer Support (Compiler + Web-UI) | 🟡 | 1-2d | 2026-01-21 | Added `int8u[]`/`int16u[]` buffer declarations with unsigned min/max semantics and Uint8/Uint16 memory views in web-ui |

@@ -86,6 +86,7 @@ moduleEnd
 - The module code runs exactly once during initialization
 - The module code does not run during the cycle loop
 - Memory declared in the module is initialized with default values before the module code runs
+- Incremental recompiles that patch default memory values rerun all init-only modules via the `initOnly` export; full `init` still runs on first compile or memory recreation
 - Multiple `#initOnly` directives in the same module have the same effect as one
 - If both `#skipExecution` and `#initOnly` are present, `#skipExecution` takes precedence (the module does not execute at all)
 
