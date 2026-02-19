@@ -7,6 +7,13 @@ import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
+function getElementWordSize(instruction: string): number {
+	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;
+	if (instruction.includes('8')) return 1;
+	if (instruction.includes('16')) return 2;
+	return 4;
+}
+
 /**
  * Instruction compiler for `int[]`, `float[]`, and `float64[]`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
@@ -27,14 +34,7 @@ const buffer: InstructionCompiler = withValidation(
 		const wordAlignedAddress = calculateWordAlignedSizeOfMemory(context.namespace.memory);
 
 		let numberOfElements = 1;
-		const elementWordSize =
-			line.instruction.startsWith('float64') && !line.instruction.includes('*')
-				? 8
-				: line.instruction.includes('8')
-					? 1
-					: line.instruction.includes('16')
-						? 2
-						: 4;
+		const elementWordSize = getElementWordSize(line.instruction);
 		const isUnsigned = line.instruction.endsWith('u[]');
 
 		if (line.arguments[1].type === ArgumentType.LITERAL) {
