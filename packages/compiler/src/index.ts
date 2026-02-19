@@ -132,17 +132,15 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 		Object.values(module.memoryMap).forEach(memory => {
 			if (memory.numberOfElements > 1 && typeof memory.default === 'object') {
 				Object.entries(memory.default).forEach(([relativeWordAddress, value]) => {
-					instructions.push(
-						...(memory.isInteger
-							? i32store(
-									memory.byteAddress + (parseInt(relativeWordAddress, 10) + 1) * GLOBAL_ALIGNMENT_BOUNDARY,
-									value
-								)
-							: f32store(
-									memory.byteAddress + (parseInt(relativeWordAddress, 10) + 1) * GLOBAL_ALIGNMENT_BOUNDARY,
-									value
-								))
-					);
+					const elementByteAddress =
+						memory.byteAddress + (parseInt(relativeWordAddress, 10) + 1) * memory.elementWordSize;
+					if (memory.elementWordSize === 8) {
+						instructions.push(...f64store(elementByteAddress, value));
+					} else {
+						instructions.push(
+							...(memory.isInteger ? i32store(elementByteAddress, value) : f32store(elementByteAddress, value))
+						);
+					}
 				});
 			} else if (memory.numberOfElements === 1 && memory.default !== 0) {
 				if (memory.elementWordSize === 8) {
