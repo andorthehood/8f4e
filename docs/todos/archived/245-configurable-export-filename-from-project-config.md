@@ -3,8 +3,8 @@ title: 'TODO: Add configurable export filename in project config'
 priority: Medium
 effort: 2-4h
 created: 2026-02-18
-status: Open
-completed: null
+status: Complete
+completed: 2026-02-19
 ---
 
 # TODO: Add configurable export filename in project config
@@ -96,4 +96,3 @@ This prevents project authors from defining a project-specific export naming con
 - `packages/editor/packages/editor-state/src/features/project-config/schema.ts`
 - `packages/editor/packages/editor-state/src/features/project-export/effect.ts`
 - `packages/editor/packages/editor-state/src/features/project-export/__tests__/effect.test.ts`
-
