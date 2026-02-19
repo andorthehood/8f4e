@@ -3,8 +3,8 @@ title: 'TODO: Add float64 support for store instruction'
 priority: Medium
 effort: 1-2d
 created: 2026-02-20
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-19
 ---
 
 # TODO: Add float64 support for store instruction
