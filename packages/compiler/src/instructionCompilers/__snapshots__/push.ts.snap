@@ -1,5 +1,24 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`push instruction compiler > float64 memory push > pushes a float64 memory identifier using f64.load 1`] = `
+{
+  "byteCode": [
+    65,
+    0,
+    43,
+    3,
+    0,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
 exports[`push instruction compiler > element max prefix (^) > pushes max finite value for float32 1`] = `
 {
   "byteCode": [
