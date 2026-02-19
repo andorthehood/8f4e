@@ -2,7 +2,7 @@
 title: 'TODO: Add float64 support in function signatures'
 priority: Medium
 effort: 1-2d
-created: 2026-02-19
+created: 2026-02-20
 status: Open
 completed: null
 ---
