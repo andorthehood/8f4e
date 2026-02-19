@@ -41,6 +41,10 @@ configEnd
 config project
 ; @pos -53 -63
 
+rescope "exportFileName"
+push "samplePlayer"
+set
+
 rescope "memorySizeBytes"
 push 655360
 set
@@ -92,8 +96,17 @@ popScope
 
 configEnd
 
+comment
+; @pos 33 -45
+; Loads an external 8-bit PCM asset into memory, 
+; continuously plays it with a looping playhead, 
+; and routes the normalized output into a single 
+; audioout buffer that is read by both left and 
+; right audio channels.
+commentEnd
+
 module audioout
-; @pos 124 -63
+; @pos 130 -63
 use env
 
 float* in &pcmPlayer8bit.out
@@ -134,11 +147,13 @@ moduleEnd
 
 constants env
 ; @pos 32 -63
+; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 1/21/2026, 2:21:06 PM
+; Last updated: 2/19/2026, 1:40:31 PM
 
 const SAMPLE_RATE 44100
+const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
@@ -148,7 +163,8 @@ const ASSET_0_SIZE 62258
 constantsEnd
 
 module pcmPlayer8bit
-; @pos 85 -63
+; @pos 92 -63
+; @home
 use env
 
 int8u[] buffer ASSET_0_SIZE
@@ -168,7 +184,9 @@ castToFloat
 push ^buffer ; max value
 castToFloat
 div
-push 0.5
+push 2.0
+mul
+push 1.0
 sub
 store
 

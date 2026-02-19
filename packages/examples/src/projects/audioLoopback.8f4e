@@ -1,31 +1,6 @@
 8f4e/v1
 
 config project
-; @pos -141 4
-
-scope "memorySizeBytes"
-push 65536
-set
-popScope
-
-configEnd
-
-config project
-; @pos -141 19
-
-scope "runtimeSettings"
-
-scope "sampleRate"
-push 44100
-set
-
-rescopeTop "runtime"
-push "AudioWorkletRuntime"
-set
-
-configEnd
-
-config project
 ; @pos -106 13
 
 rescope "runtimeSettings"
@@ -80,6 +55,44 @@ set
 
 configEnd
 
+comment
+; @pos 130 12
+; This is a stereo loopback example
+; that reads input audio from a 
+; shared buffer and writes the same 
+; signal into left and right output 
+; buffers using circular-buffer 
+; pointer logic.
+commentEnd
+
+config project
+; @pos -141 4
+
+rescope "memorySizeBytes"
+push 65536
+set
+
+configEnd
+
+config project
+; @pos -141 19
+
+rescope "runtimeSettings"
+
+scope "sampleRate"
+push 44100
+set
+
+rescopeTop "runtime"
+push "AudioWorkletRuntime"
+set
+
+rescope "exportFileName"
+push "audioLoopback"
+set
+
+configEnd
+
 module audioin
 ; @pos 5 1
 use env
@@ -115,6 +128,7 @@ moduleEnd
 
 module audiooutL
 ; @pos 48 1
+; @home
 use env
 
 float* in &audioin.out
@@ -156,6 +170,7 @@ moduleEnd
 
 module audiooutR
 ; @pos 89 1
+
 use env
 
 float* in &audioin.out
@@ -197,11 +212,13 @@ moduleEnd
 
 constants env
 ; @pos -52 1
+; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 1/19/2026, 9:50:35 PM
+; Last updated: 2/19/2026, 1:30:23 PM
 
 const SAMPLE_RATE 44100
+const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd

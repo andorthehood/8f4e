@@ -24,7 +24,7 @@ const projects = [
 	'audioLoopback',
 	'bistableMultivibrators',
 	'dancingWithTheSineLT',
-	'neuralNetwork',
+	'xorProblem',
 	'randomGenerators',
 	'rippleEffect',
 	'samplePlayer',
