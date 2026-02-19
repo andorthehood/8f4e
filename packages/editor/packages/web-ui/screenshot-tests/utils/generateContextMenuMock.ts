@@ -75,12 +75,6 @@ export default function generateContextMenuMock(): ContextMenu {
 				disabled: false,
 			},
 			{
-				title: '.. Export Runtime-Ready Project',
-				action: 'exportRuntimeReadyProject',
-				close: true,
-				disabled: false,
-			},
-			{
 				title: '............ Export WebAssembly',
 				action: 'exportWasm',
 				close: true,
