@@ -10,7 +10,7 @@ export const projectManifest: Record<string, () => Promise<string>> = {
 	backgroundPlasma: () => import('@8f4e/examples/projects/backgroundPlasma.8f4e?raw').then(m => m.default),
 	bistableMultivibrators: () => import('@8f4e/examples/projects/bistableMultivibrators.8f4e?raw').then(m => m.default),
 	dancingWithTheSineLT: () => import('@8f4e/examples/projects/dancingWithTheSineLT.8f4e?raw').then(m => m.default),
-	neuralNetwork: () => import('@8f4e/examples/projects/neuralNetwork.8f4e?raw').then(m => m.default),
+	xorProblem: () => import('@8f4e/examples/projects/xorProblem.8f4e?raw').then(m => m.default),
 	randomGenerators: () => import('@8f4e/examples/projects/randomGenerators.8f4e?raw').then(m => m.default),
 	rippleEffect: () => import('@8f4e/examples/projects/rippleEffect.8f4e?raw').then(m => m.default),
 	samplePlayer: () => import('@8f4e/examples/projects/samplePlayer.8f4e?raw').then(m => m.default),
@@ -31,7 +31,7 @@ export const projectMetadata: ProjectMetadata[] = [
 	{ slug: 'backgroundPlasma', title: 'Background Plasma', category: 'Visuals' },
 	{ slug: 'bistableMultivibrators', title: 'Bistable Multivibrators', category: 'Digital' },
 	{ slug: 'dancingWithTheSineLT', title: 'Dancing With The Sine LT', category: 'Visuals' },
-	{ slug: 'neuralNetwork', title: 'Neural Network', category: 'Machine Learning' },
+	{ slug: 'xorProblem', title: 'XOR Problem', category: 'Machine Learning' },
 	{ slug: 'randomGenerators', title: 'Random Generators', category: 'Misc' },
 	{
 		slug: 'rippleEffect',
