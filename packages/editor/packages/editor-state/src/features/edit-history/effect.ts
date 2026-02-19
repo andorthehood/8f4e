@@ -18,7 +18,7 @@ export default function historyTracking(store: StateManager<State>, events: Even
 			state.historyStack.shift();
 		}
 
-		state.historyStack.push(serializeToProject(state, { includeCompiled: false }));
+		state.historyStack.push(serializeToProject(state));
 		state.redoStack = [];
 	}
 
@@ -60,7 +60,7 @@ export default function historyTracking(store: StateManager<State>, events: Even
 			if (state.historyStack.length >= 10) {
 				state.historyStack.shift();
 			}
-			state.historyStack.push(serializeToProject(state, { includeCompiled: false }));
+			state.historyStack.push(serializeToProject(state));
 			events.dispatch('loadProject', { project: nextState });
 		}
 	}
