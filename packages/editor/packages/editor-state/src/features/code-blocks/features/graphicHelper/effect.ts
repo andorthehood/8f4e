@@ -25,6 +25,7 @@ import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import { DEFAULT_EDITOR_CONFIG_BLOCK, isEditorConfigCode } from '../../../editor-config/utils/editorConfigBlocks';
+import findFreeSpace, { hasCollision, GridRect } from '../../utils/findFreeSpace';
 import parseGroup from '../group/codeParser';
 import parsePos from '../position/parsePos';
 import parseDisabled from '../disabled/parseDisabled';
@@ -209,10 +210,28 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				const editorConfigBlocks = validBlocks.length > 0 ? validBlocks : [DEFAULT_EDITOR_CONFIG_BLOCK];
 
 				let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
+
+				// Build grid-space bounds for all project blocks already in the list
+				const existingRects: GridRect[] = codeBlocks.map(block => ({
+					gridX: block.gridX,
+					gridY: block.gridY,
+					gridWidth: getCodeBlockGridWidth(block.code),
+					gridHeight: block.code.length || 1,
+				}));
+
 				for (let i = 0; i < editorConfigBlocks.length; i += 1) {
 					const rawBlock = editorConfigBlocks[i];
-					const gridX = rawBlock.gridCoordinates?.x ?? 0;
-					const gridY = rawBlock.gridCoordinates?.y ?? 0;
+					const storedGridX = rawBlock.gridCoordinates?.x ?? 0;
+					const storedGridY = rawBlock.gridCoordinates?.y ?? 0;
+
+					const gridWidth = getCodeBlockGridWidth(rawBlock.code);
+					const gridHeight = rawBlock.code.length || 1;
+
+					// Use stored position if it doesn't collide; otherwise find the first free spot
+					const { x: gridX, y: gridY } = hasCollision(existingRects, storedGridX, storedGridY, gridWidth, gridHeight)
+						? findFreeSpace(existingRects, gridWidth, gridHeight)
+						: { x: storedGridX, y: storedGridY };
+
 					// Parse @disabled directive from code
 					const disabled = parseDisabled(rawBlock.code);
 					const block = createCodeBlockGraphicData({
@@ -228,6 +247,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					});
 
 					codeBlocks.push(block);
+					existingRects.push({ gridX, gridY, gridWidth, gridHeight });
 					creationIndex += 1;
 					state.graphicHelper.nextCodeBlockCreationIndex = creationIndex;
 				}
