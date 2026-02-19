@@ -33,4 +33,5 @@ export type MemoryValueChange = {
 	wordAlignedAddress: number;
 	value: number | Record<string, number>;
 	isInteger: boolean;
+	isFloat64?: boolean;
 };
