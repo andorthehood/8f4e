@@ -10,6 +10,7 @@ import createTypeSection from './wasmUtils/typeFunction/createTypeSection';
 import Type from './wasmUtils/type';
 import call from './wasmUtils/call/call';
 import f32store from './wasmUtils/store/f32store';
+import f64store from './wasmUtils/store/f64store';
 import i32store from './wasmUtils/store/i32store';
 import { compileModule, compileToAST, compileFunction } from './compiler';
 import collectConstants from './astUtils/collectConstants';
@@ -126,7 +127,6 @@ export function compileModules(
 
 export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule[]) {
 	return compiledModules.map(module => {
-		let pointer = module.byteAddress;
 		const instructions: number[] = [];
 
 		Object.values(module.memoryMap).forEach(memory => {
@@ -134,20 +134,26 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 				Object.entries(memory.default).forEach(([relativeWordAddress, value]) => {
 					instructions.push(
 						...(memory.isInteger
-							? i32store(pointer + (parseInt(relativeWordAddress, 10) + 1) * GLOBAL_ALIGNMENT_BOUNDARY, value)
-							: f32store(pointer + (parseInt(relativeWordAddress, 10) + 1) * GLOBAL_ALIGNMENT_BOUNDARY, value))
+							? i32store(
+									memory.byteAddress + (parseInt(relativeWordAddress, 10) + 1) * GLOBAL_ALIGNMENT_BOUNDARY,
+									value
+								)
+							: f32store(
+									memory.byteAddress + (parseInt(relativeWordAddress, 10) + 1) * GLOBAL_ALIGNMENT_BOUNDARY,
+									value
+								))
 					);
 				});
-				pointer += memory.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 			} else if (memory.numberOfElements === 1 && memory.default !== 0) {
-				instructions.push(
-					...(memory.isInteger
-						? i32store(pointer, memory.default as number)
-						: f32store(pointer, memory.default as number))
-				);
-				pointer += GLOBAL_ALIGNMENT_BOUNDARY;
-			} else if (memory.numberOfElements === 1 && memory.default === 0) {
-				pointer += GLOBAL_ALIGNMENT_BOUNDARY;
+				if (memory.elementWordSize === 8) {
+					instructions.push(...f64store(memory.byteAddress, memory.default as number));
+				} else {
+					instructions.push(
+						...(memory.isInteger
+							? i32store(memory.byteAddress, memory.default as number)
+							: f32store(memory.byteAddress, memory.default as number))
+					);
+				}
 			}
 		});
 
