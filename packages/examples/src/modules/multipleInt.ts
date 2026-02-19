@@ -23,22 +23,22 @@ push &out0
 store
 
 loop
- push _pointer
- push *in
- store 
+push _pointer
+push *in
+store 
 
  ; Exit point
- push _pointer
- push &out7; Last output
- equal
- branchIfTrue 1
+push _pointer
+push &out7; Last output
+equal
+branchIfTrue 1
 
  ; Increment pointer
- push &_pointer
- push _pointer
- push %out0
- add
- store
+push &_pointer
+push _pointer
+push %out0
+add
+store
 loopEnd
 moduleEnd`,
 	tests: [],

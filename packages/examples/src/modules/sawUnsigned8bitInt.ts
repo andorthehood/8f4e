@@ -35,9 +35,9 @@ push !range8
 sub
 greaterThan
 if void
- push &out
- push 0
- store
+push &out
+push 0
+store
 ifEnd
 
 moduleEnd`,
