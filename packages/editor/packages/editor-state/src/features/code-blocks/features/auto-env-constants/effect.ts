@@ -13,6 +13,8 @@ const isEnvBlock = (block: CodeBlockGraphicData): boolean =>
  * This block provides runtime environment values as constants that can be used throughout the program.
  *
  * @param state - The current editor state
+ * @param existingPos - Existing env block grid position from its `; @pos x y` directive. When provided, this
+ * position is preserved in the regenerated block; otherwise the block defaults to `0,0`.
  * @returns Array of code lines for the constants block
  */
 function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: number }): string[] {
