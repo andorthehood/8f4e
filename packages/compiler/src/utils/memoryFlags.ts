@@ -3,12 +3,14 @@ export default function getMemoryFlags(baseType: 'int' | 'float' | 'float64', po
 	const isPointingToInteger = isPointer && baseType === 'int';
 	const isPointingToPointer = pointerDepth === 2;
 	const isInteger = baseType === 'int' || isPointer;
+	const isFloat64 = baseType === 'float64' && !isPointer;
 
 	return {
 		isPointer,
 		isPointingToInteger,
 		isPointingToPointer,
 		isInteger,
+		...(isFloat64 ? { isFloat64 } : {}),
 		isUnsigned: false,
 	};
 }
@@ -60,6 +62,7 @@ if (import.meta.vitest) {
 					isPointingToInteger: false,
 					isPointingToPointer: false,
 					isInteger: false,
+					isFloat64: true,
 					isUnsigned: false,
 				});
 			});

@@ -7,6 +7,7 @@ exports[`float64 instruction compiler > creates a float64 memory entry 1`] = `
     "default": 0,
     "elementWordSize": 8,
     "id": "value",
+    "isFloat64": true,
     "isInteger": false,
     "isPointer": false,
     "isPointingToInteger": false,
