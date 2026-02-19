@@ -3,8 +3,8 @@ title: 'TODO: Add f64 literal suffix support'
 priority: Medium
 effort: 1-2d
 created: 2026-02-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-19
 ---
 
 # TODO: Add f64 literal suffix support

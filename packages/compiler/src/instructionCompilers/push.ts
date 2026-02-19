@@ -46,7 +46,8 @@ function resolveMemoryValueKind(memoryItem: DataStructure): ValueKind {
 	return 'float32';
 }
 
-function resolveArgumentValueKind(argument: { isInteger: boolean }): ValueKind {
+function resolveArgumentValueKind(argument: { isInteger: boolean; isFloat64?: boolean }): ValueKind {
+	if (argument.isFloat64) return 'float64';
 	return argument.isInteger ? 'int32' : 'float32';
 }
 
@@ -227,6 +228,105 @@ if (import.meta.vitest) {
 			expect(() => {
 				push({ lineNumber: 1, instruction: 'push', arguments: [] } as AST[number], context);
 			}).toThrowError();
+		});
+
+		it('pushes a f64 literal value emitting f64.const', () => {
+			const context = createInstructionCompilerTestContext();
+
+			push(
+				{
+					lineNumber: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.LITERAL, value: 3.14, isInteger: false, isFloat64: true }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				byteCode: context.byteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('tracks isFloat64 on the stack item for f64 literal', () => {
+			const context = createInstructionCompilerTestContext();
+
+			push(
+				{
+					lineNumber: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false, isFloat64: true }],
+				} as AST[number],
+				context
+			);
+
+			expect(context.stack[0].isFloat64).toBe(true);
+			expect(context.stack[0].isInteger).toBe(false);
+		});
+
+		it('pushes a f64 constant emitting f64.const', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					consts: {
+						PI64: { value: 3.141592653589793, isInteger: false, isFloat64: true },
+					},
+				},
+			});
+
+			push(
+				{
+					lineNumber: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				byteCode: context.byteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('tracks isFloat64 on the stack item for f64 constant', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					consts: {
+						PI64: { value: 3.141592653589793, isInteger: false, isFloat64: true },
+					},
+				},
+			});
+
+			push(
+				{
+					lineNumber: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'PI64' }],
+				} as AST[number],
+				context
+			);
+
+			expect(context.stack[0].isFloat64).toBe(true);
+			expect(context.stack[0].isInteger).toBe(false);
+		});
+
+		it('float32 literal push does not emit f64.const', () => {
+			const context = createInstructionCompilerTestContext();
+
+			push(
+				{
+					lineNumber: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.LITERAL, value: 3.14, isInteger: false }],
+				} as AST[number],
+				context
+			);
+
+			expect(context.stack[0].isFloat64).toBeUndefined();
+			// f32.const opcode is 67 (0x43), f64.const opcode is 68 (0x44)
+			expect(context.byteCode[0]).toBe(67);
 		});
 
 		describe('element max prefix (^)', () => {
