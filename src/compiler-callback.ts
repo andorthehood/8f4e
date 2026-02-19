@@ -33,6 +33,7 @@ export async function compileCode(
 						memoryAction: data.payload.memoryAction,
 						compiledFunctions: data.payload.compiledFunctions,
 						byteCodeSize: data.payload.codeBuffer.length,
+						initOnlyReran: data.payload.initOnlyReran,
 					});
 					break;
 				case 'compilationError': {
