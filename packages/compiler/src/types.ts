@@ -10,6 +10,9 @@ export enum MemoryTypes {
 	'float',
 	'float*',
 	'float**',
+	'float64',
+	'float64*',
+	'float64**',
 }
 
 export interface DataStructure {
