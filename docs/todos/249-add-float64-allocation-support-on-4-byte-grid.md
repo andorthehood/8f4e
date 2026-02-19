@@ -24,6 +24,14 @@ Without explicit `float64` allocation support:
 
 Add an allocation-only phase for `float64` while preserving the existing 4-byte global grid.
 
+Scope for this TODO (explicit):
+- In scope: scalar `float64` declaration allocation.
+- In scope: array `float64[]` allocation.
+- In scope: pointer declarations `float64*` and `float64**` allocation metadata.
+- In scope: correct memory-map metadata (`elementWordSize`, `wordAlignedSize`, `wordAlignedAddress`, `byteAddress`) for both.
+- Out of scope: runtime arithmetic/casts and execution semantics for `float64`.
+- Out of scope: load/store instruction behavior beyond allocation metadata.
+
 Key ideas:
 - Keep the global grid at 4 bytes (do not migrate the whole system to an 8-byte grid).
 - Represent `float64` as `elementWordSize = 8`, so each element consumes 2 grid words.
@@ -42,14 +50,18 @@ This first step only guarantees safe memory reservation and addressing metadata.
 
 ### Step 1: Extend memory type surface for allocation
 - Add `float64` family entries to compiler memory type metadata.
+- Accept scalar `float64` declarations in declaration compilers.
+- Accept `float64*` / `float64**` declarations in declaration compilers with correct pointer flags.
 - Accept `float64[]` as a declaration instruction mapped to buffer allocation.
-- Outcome: parser/compiler can represent float64 memory declarations in the memory map.
+- Outcome: parser/compiler can represent scalar, pointer, and array float64 declarations in the memory map.
 
 ### Step 2: Implement allocator semantics
+- Update scalar allocation logic so `float64` resolves to `elementWordSize = 8`.
+- Ensure `float64*` / `float64**` retain pointer-width allocation semantics while preserving correct float64 pointer typing metadata.
 - Update buffer allocation logic so `float64[]` resolves to `elementWordSize = 8`.
 - Keep `wordAlignedSize` computation on 4-byte units.
 - Ensure `float64` declarations only start on even word offsets (2-word boundary) to guarantee 8-byte byte-address alignment.
-- Outcome: `float64` buffers reserve correct byte ranges without breaking existing pointer math.
+- Outcome: `float64` scalars, pointers, and buffers reserve/encode correct metadata without breaking existing pointer math.
 
 ### Step 3: Add focused tests and docs
 - Add compiler tests for mixed allocations and expected `wordAlignedAddress`/`byteAddress` progression.
@@ -62,6 +74,8 @@ This first step only guarantees safe memory reservation and addressing metadata.
 - `rg -n "float64\\[\\]|float64" /Users/andorpolgar/git/8f4e/packages/compiler/src`
 - `npx nx run @8f4e/compiler:test -- --run "buffer|memory|allocation"`
 - Verify memory-map snapshots show:
+  - scalar `float64` entries exist with `elementWordSize: 8`
+  - `float64*` / `float64**` entries exist with correct pointer flags and expected pointer-width allocation
   - `elementWordSize: 8` for `float64[]`
   - `wordAlignedSize` increments in 4-byte words (2 words per `float64` element)
   - `byteAddress % 8 === 0` for every `float64` allocation
@@ -69,6 +83,8 @@ This first step only guarantees safe memory reservation and addressing metadata.
 
 ## Success Criteria
 
+- [ ] Scalar `float64` declarations compile into memory map entries with `elementWordSize = 8`.
+- [ ] `float64*` and `float64**` declarations compile into memory map entries with correct pointer flags/metadata.
 - [ ] `float64[]` declarations compile into memory map entries with `elementWordSize = 8`.
 - [ ] Allocation remains 4-byte-grid-based and address progression is correct in mixed-type layouts.
 - [ ] All `float64` allocations are 8-byte aligned and safe for 64-bit view indexing.
@@ -79,7 +95,9 @@ This first step only guarantees safe memory reservation and addressing metadata.
 ## Affected Components
 
 - `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts` - memory type definitions.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/index.ts` - instruction registry for `float64[]`.
+- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/index.ts` - instruction registry for `float64` and `float64[]`.
+- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/float.ts` (or equivalent) - scalar float64 allocation metadata.
+- `/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryFlags.ts` - pointer flag behavior for float64 pointer declarations.
 - `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/buffer.ts` - element size and aligned allocation calculations.
 - `/Users/andorpolgar/git/8f4e/packages/compiler/tests` and/or in-source tests - allocation/layout coverage.
 - `/Users/andorpolgar/git/8f4e/packages/compiler/src/consts.ts` and related comments - alignment rationale.
