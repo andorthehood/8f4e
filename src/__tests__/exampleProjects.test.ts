@@ -3,14 +3,17 @@
  * both module code and config blocks.
  */
 import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { describe, it, expect } from 'vitest';
 import compile from '@8f4e/compiler';
 import { compileConfig } from '@8f4e/stack-config-compiler';
 import { parse8f4eToProject } from '@8f4e/editor-state';
 
-const projectsDir = resolve(process.cwd(), 'packages/examples/src/projects');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const projectsDir = resolve(__dirname, '../../packages/examples/src/projects');
 
 function loadProject(name: string) {
 	return parse8f4eToProject(readFileSync(resolve(projectsDir, `${name}.8f4e`), 'utf-8'));
