@@ -258,6 +258,14 @@ enum WASMInstruction {
 
 	F32_DIV = 0x95,
 
+	F64_ADD = 0xa0,
+
+	F64_SUB = 0xa1,
+
+	F64_MUL = 0xa2,
+
+	F64_DIV = 0xa3,
+
 	F32_NEAREST = 0x90,
 
 	F32_SQRT = 0x91,

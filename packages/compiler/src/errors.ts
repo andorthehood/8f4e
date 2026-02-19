@@ -32,6 +32,7 @@ export enum ErrorCode {
 	NESTED_MACRO_DEFINITION,
 	NESTED_MACRO_CALL,
 	COMPILER_DIRECTIVE_INVALID_CONTEXT,
+	MIXED_FLOAT_WIDTH,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -254,6 +255,16 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'This compiler directive can only be used within a module block. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.MIXED_FLOAT_WIDTH:
+			return {
+				code,
+				message:
+					'Mixed float widths: arithmetic operations require all float operands to have the same width (float32 or float64). (' +
+					code +
+					')',
 				line,
 				context,
 			};
