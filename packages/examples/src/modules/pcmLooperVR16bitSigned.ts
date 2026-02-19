@@ -21,16 +21,16 @@ float* speed &defSpeed
 push *reset
 risingEdge
 if void
- push &playhead
- push 0.0
- store
+push &playhead
+push 0.0
+store
 ifEnd
 
 ; Playhead increments
 push &playhead
- push playhead 
- push *speed
- add
+push playhead 
+push *speed
+add
 store
 
 ; Resets when it reaches end
@@ -39,26 +39,26 @@ castToInt
 push *length
 greaterThan
 if void
- push &playhead
- push 0
- store
+push &playhead
+push 0
+store
 ifEnd
 
 ; Load value from buffer
 ; and save it to the output
 push &out
- push playhead
- castToInt
- push %buffer
- mul
- push &buffer
- add
- load16s
+push playhead
+castToInt
+push %buffer
+mul
+push &buffer
+add
+load16s
  ; Normalize value
- castToFloat
- push ^buffer
- castToFloat
- div
+castToFloat
+push ^buffer
+castToFloat
+div
 store
 
 moduleEnd`,

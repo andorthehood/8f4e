@@ -26,29 +26,29 @@ int seed 69420
 float out
 
 push &seed
- push seed
- push seed
- push 13
- shiftLeft
- xor
+push seed
+push seed
+push 13
+shiftLeft
+xor
 
- push seed
- push 17
- shiftRight
- xor
+push seed
+push 17
+shiftRight
+xor
 
- push seed
- push 5
- shiftLeft
- xor
+push seed
+push 5
+shiftLeft
+xor
 store
 
 push &out
- push seed
- castToFloat
- push ^seed
- castToFloat
- div
+push seed
+castToFloat
+push ^seed
+castToFloat
+div
 store
 
 moduleEnd
@@ -77,21 +77,21 @@ int seed 69420
 float out
 
 push &seed
- push MULTIPLIER
- push seed
- mul
- push INCREMENT
- add
- push MODULUS
- remainder
+push MULTIPLIER
+push seed
+mul
+push INCREMENT
+add
+push MODULUS
+remainder
 store
 
 push &out
- push seed
- castToFloat
- push MODULUS
- castToFloat
- div 
+push seed
+castToFloat
+push MODULUS
+castToFloat
+div 
 store
 
 moduleEnd
@@ -115,9 +115,9 @@ push bufferPointer
 push buffer&
 greaterThan
 if void
- push &bufferPointer
- push &buffer
- store
+push &bufferPointer
+push &buffer
+store
 ifEnd
 
 push bufferPointer
@@ -145,9 +145,9 @@ push bufferPointer
 push buffer&
 greaterThan
 if void
- push &bufferPointer
- push &buffer
- store
+push &bufferPointer
+push &buffer
+store
 ifEnd
 
 push bufferPointer

@@ -29,37 +29,37 @@ store
 loop
  ; Exit loop if bitPointer
  ; is greater than 7
- push bitPointer
- push 7
- greaterThan
- branchIfTrue 1
+push bitPointer
+push 7
+greaterThan
+branchIfTrue 1
  
  ; Calculate output address
- push &bit0
- push bitPointer
- push %bit0
- mul
- add
+push &bit0
+push bitPointer
+push %bit0
+mul
+add
 
- push *in
- push 0b10000000
- push bitPointer
- shiftRight
- and
- if int
-  push HIGH
- else
-  push LOW
- ifEnd 
+push *in
+push 0b10000000
+push bitPointer
+shiftRight
+and
+if int
+push HIGH
+else
+push LOW
+ifEnd 
 
- store
+store
 
  ; Increment bitPointer
- push &bitPointer
- push bitPointer
- push 1
- add
- store
+push &bitPointer
+push bitPointer
+push 1
+add
+store
 
 loopEnd
 
