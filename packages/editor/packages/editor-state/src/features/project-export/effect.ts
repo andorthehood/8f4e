@@ -12,6 +12,14 @@ import encodeUint8ArrayToBase64 from '~/pureHelpers/base64/base64Encoder';
 export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 
+	function getExportBaseName(): string {
+		const exportFileName = state.compiledProjectConfig.exportFileName;
+		if (!exportFileName) {
+			return 'project';
+		}
+		return exportFileName.replace(/\.(json|wasm|8f4e)$/, '');
+	}
+
 	function onExportProject() {
 		if (!state.callbacks.exportProject) {
 			console.warn('No exportProject callback provided');
@@ -19,7 +27,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		}
 
 		const projectToSave = serializeToProject(state);
-		const fileName = 'project.8f4e';
+		const fileName = `${getExportBaseName()}.8f4e`;
 
 		let text: string;
 		try {
@@ -43,7 +51,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		// Serialize to project format with compiled data, memory snapshot, and config
 		const runtimeProject = await serializeToRuntimeReadyProject(state, encodeUint8ArrayToBase64);
 
-		const fileName = 'project-runtime-ready.json';
+		const fileName = `${getExportBaseName()}-runtime-ready.json`;
 		const json = JSON.stringify(runtimeProject, null, 2);
 
 		state.callbacks.exportProject(json, fileName).catch(error => {
@@ -76,8 +84,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const projectName = 'project';
-		const fileName = `${projectName}.wasm`;
+		const fileName = `${getExportBaseName()}.wasm`;
 
 		state.callbacks.exportBinaryCode(fileName).catch(error => {
 			console.error('Failed to export WebAssembly file:', error);
