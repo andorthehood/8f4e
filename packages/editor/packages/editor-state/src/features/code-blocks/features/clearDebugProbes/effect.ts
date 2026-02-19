@@ -6,7 +6,7 @@ import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
  * Pattern: ; @debug <variable-name>
  */
 function isDebugDirective(line: string): boolean {
-	const commentMatch = line.match(/^\s*;\s*@(\w+)/);
+	const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.+)/);
 	return !!(commentMatch && commentMatch[1] === 'debug');
 }
 
