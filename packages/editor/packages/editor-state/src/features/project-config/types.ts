@@ -14,4 +14,5 @@ export interface ProjectConfig {
 	runtimeSettings: Runtimes;
 	disableAutoCompilation: boolean;
 	binaryAssets: ConfigBinaryAsset[];
+	exportFileName?: string;
 }
