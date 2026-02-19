@@ -1,7 +1,7 @@
 8f4e/v1
 
 config project
-; @pos -87 1
+; @pos -94 1
 
 rescope "memorySizeBytes"
 push 65536
@@ -31,10 +31,25 @@ rescopeTop "output"
 push 0
 set
 
+rescope "exportFileName"
+push "audioBuffer"
+set
+
 configEnd
+
+comment
+; @pos 131 7
+; A minimal audio synthesis example 
+; that generates a sine wave 
+; (phaseAccumulator + sine)
+; and writes each sample into a 
+; fixed-size circular audio buffer
+; (audioout)
+commentEnd
 
 module audioout
 ; @pos 88 1
+; @home
 use env
 
 float* in &phaseAccumulator.out
@@ -75,18 +90,20 @@ ifEnd
 moduleEnd
 
 constants env
-; @pos -42 1
+; @pos -49 1
+; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 1/19/2026, 9:24:55 PM
+; Last updated: 2/19/2026, 1:23:48 PM
 
 const SAMPLE_RATE 44100
+const INV_SAMPLE_RATE 0.000022675736961451248
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
 constants math
-; @pos -42 14
+; @pos -49 15
 
 const PI      3.141592653589793
 const NEG_PI -3.141592653589793

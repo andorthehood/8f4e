@@ -1,6 +1,6 @@
 8f4e/v1
 
-module comment
+comment
 ; @pos -185 -19
 
 ; Mapping from the
@@ -8,21 +8,34 @@ module comment
 ; neural network's input
 ; layer
 
-moduleEnd
+commentEnd
+
+comment
+; @pos -326 27
+; This project implements a feedforward
+; neural network that maps a 3x5 binary 
+; drawing grid into 15 inputs, runs them
+; through multiple sigmoid-based hidden
+; layers, and exposes per-digit (0-9) 
+; classification confidence scores
+commentEnd
 
 constants env
 ; @pos 0 0
+; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/2/2026, 9:30:27 PM
+; Last updated: 2/19/2026, 2:22:00 PM
 
 const SAMPLE_RATE 50
+const INV_SAMPLE_RATE 0.02
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
 module grid
-; @pos -274 15
+; @pos -274 10
+; @home 
 
 ; Draw the symbols
 ; you want to input into
@@ -30,10 +43,15 @@ module grid
 ; with 1s
 
 int row0 0b111
-int row1 0b101
+int row1 0b001
 int row2 0b111
-int row3 0b101
+int row3 0b001
 int row4 0b111
+
+; Below you can read
+; the confidence score
+; of each digit the 
+; network can recognise
 
 moduleEnd
 
@@ -616,7 +634,7 @@ moduleEnd
 
 module neuron108
 ; @pos 800 119
-; Output layer 4
+; Output layer
 
 float* in0 &neuron91.out
 float* in1 &neuron94.out
@@ -656,7 +674,7 @@ moduleEnd
 
 module neuron109
 ; @pos 800 79
-; Output layer 4
+; Output layer
 
 float* in0 &neuron93.out
 float* in1 &neuron98.out
@@ -696,7 +714,7 @@ moduleEnd
 
 module neuron110
 ; @pos 800 39
-; Output layer 4
+; Output layer
 
 float* in0 &neuron86.out
 float* in1 &neuron90.out
@@ -736,7 +754,7 @@ moduleEnd
 
 module neuron111
 ; @pos 800 -1
-; Output layer 4
+; Output layer
 
 float* in0 &neuron91.out
 float* in1 &neuron100.out
@@ -776,7 +794,7 @@ moduleEnd
 
 module neuron112
 ; @pos 800 -41
-; Output layer 4
+; Output layer
 
 float* in0 &neuron82.out
 float* in1 &neuron88.out
@@ -816,7 +834,7 @@ moduleEnd
 
 module neuron113
 ; @pos 800 -81
-; Output layer 4
+; Output layer
 
 float* in0 &neuron88.out
 float* in1 &neuron89.out
@@ -856,7 +874,7 @@ moduleEnd
 
 module neuron114
 ; @pos 840 79
-; Output layer 4
+; Output layer
 
 float* in0 &neuron84.out
 float* in1 &neuron85.out
@@ -896,7 +914,7 @@ moduleEnd
 
 module neuron115
 ; @pos 840 39
-; Output layer 4
+; Output layer
 
 float* in0 &neuron84.out
 float* in1 &neuron85.out
@@ -936,7 +954,7 @@ moduleEnd
 
 module neuron116
 ; @pos 840 -1
-; Output layer 4
+; Output layer
 
 float* in0 &neuron83.out
 float* in1 &neuron91.out
@@ -976,7 +994,7 @@ moduleEnd
 
 module neuron117
 ; @pos 840 -41
-; Output layer 4
+; Output layer
 
 float* in0 &neuron89.out
 float* in1 &neuron95.out
@@ -4415,85 +4433,37 @@ store
 moduleEnd
 
 module outputs
-; @pos 921 -9
-; Output layer
-; PMML outputs
+; @pos -274 33
 
-float* in0 &neuron108.out
-float output0
-push &output0
-push *in0
-store
+; Confidence scores:
+; @debug *confidence0
+; @debug *confidence1
+; @debug *confidence2
+; @debug *confidence3
+; @debug *confidence4
+; @debug *confidence5
+; @debug *confidence6
+; @debug *confidence7
+; @debug *confidence8
+; @debug *confidence9
 
-float* in1 &neuron109.out
-float output1
-push &output1
-push *in1
-store
-
-float* in2 &neuron110.out
-float output2
-push &output2
-push *in2
-store
-
-float* in3 &neuron111.out
-float output3
-push &output3
-push *in3
-store
-
-float* in4 &neuron112.out
-float output4
-push &output4
-push *in4
-store
-
-float* in5 &neuron113.out
-float output5
-push &output5
-push *in5
-store
-
-float* in6 &neuron114.out
-float output6
-push &output6
-push *in6
-store
-
-float* in7 &neuron115.out
-float output7
-push &output7
-push *in7
-store
-
-float* in8 &neuron116.out
-float output8
-push &output8
-push *in8
-store
-
-float* in9 &neuron117.out
-float output9
-push &output9
-push *in9
-store
-
-; @debug output0
-; @debug output1
-; @debug output2
-; @debug output3
-; @debug output4
-; @debug output5
-; @debug output6
-; @debug output7
-; @debug output8
-; @debug output9
+; Routing the values of the output 
+; neurons here into this module
+float* confidence0 &neuron108.out
+float* confidence1 &neuron109.out
+float* confidence2 &neuron110.out
+float* confidence3 &neuron111.out
+float* confidence4 &neuron112.out
+float* confidence5 &neuron113.out
+float* confidence6 &neuron114.out
+float* confidence7 &neuron115.out
+float* confidence8 &neuron116.out
+float* confidence9 &neuron117.out
 
 moduleEnd
 
 function sigmoid
-; @pos -90 30
+; @pos -98 28
 param float x
 ; Polynomial sigmoid approximation
 
