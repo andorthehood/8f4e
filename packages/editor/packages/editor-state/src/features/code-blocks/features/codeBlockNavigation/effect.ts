@@ -86,6 +86,32 @@ export function jumpToCodeBlock(state: State, creationIndex: number, id: string)
 }
 
 /**
+ * Centers the viewport on the first @home code block, or defaults to origin.
+ *
+ * Selects the first code block with isHome=true (regardless of disabled state),
+ * centers the viewport on it with animation enabled, and keeps the previous
+ * viewport animation setting afterward. If no home block exists, centers the
+ * viewport at (0,0).
+ *
+ * @param state - The editor state
+ */
+export function goHome(state: State): void {
+	const homeBlock = state.graphicHelper.codeBlocks.find(block => block.isHome);
+	const originalViewportAnimations = state.featureFlags.viewportAnimations;
+	state.featureFlags.viewportAnimations = true;
+
+	if (homeBlock) {
+		state.graphicHelper.selectedCodeBlock = homeBlock;
+		centerViewportOnCodeBlock(state.viewport, homeBlock);
+	} else {
+		state.viewport.x = 0;
+		state.viewport.y = 0;
+	}
+
+	state.featureFlags.viewportAnimations = originalViewportAnimations;
+}
+
+/**
  * Code block directional navigation effect.
  *
  * Listens for navigateCodeBlock events to enable navigation between code blocks.
@@ -116,7 +142,12 @@ export default function codeBlockNavigation(state: State, events: EventDispatche
 		jumpToCodeBlock(state, event.creationIndex, event.id);
 	};
 
+	const onGoHome = () => {
+		goHome(state);
+	};
+
 	// Register the abstract navigation event handler
 	events.on<NavigateCodeBlockEvent>('navigateCodeBlock', onNavigateCodeBlock);
 	events.on<JumpToFavoriteCodeBlockEvent>('jumpToFavoriteCodeBlock', onJumpToFavoriteCodeBlock);
+	events.on('goHome', onGoHome);
 }
