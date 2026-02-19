@@ -129,6 +129,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 
 | ID | Title | Priority | Effort | Completed | Summary |
 |----|-------|----------|--------|-----------|---------|
+| 255 | Add float64 memory view to web-ui | 🟡 | 4-8h | 2026-02-19 | Added `float64: Float64Array` to `MemoryViews` interface; updated `createMemoryViewManager` to initialize and refresh `Float64Array`; updated `createMockMemoryViews`; updated `debuggers`, `plotters`, `connectors`, and `sliders` drawers to read float64-backed memory via the new view |
 | 253 | Add float64 support for add/sub/mul/div | 🟡 | 2-4d | 2026-02-19 | Extended `add`, `sub`, `mul`, and `div` instruction compilers to emit `f64.*` opcodes for float64 operands; added `MIXED_FLOAT_WIDTH` error for mixed float32/float64 arithmetic; added `areAllOperandsFloat64` and `hasMixedFloatWidth` helpers to operandTypes; existing int32 and float32 paths unchanged |
 | 256 | Add f64 literal suffix support | 🟡 | 1-2d | 2026-02-19 | Added `f64`-suffixed numeric literal parsing (e.g. `3.14f64`, `1e-10f64`); extended `ArgumentLiteral` and `Const` with `isFloat64` flag; `push` now emits `f64.const` for `f64`-suffixed literals and `f64`-typed constants; unsuffixed float literals remain float32 |
 | 250 | Add float64 push support | 🟡 | 2-4d | 2026-02-19 | Added `f64.load` and `f64.const` emission for float64 memory-backed pushes; introduced resolver + opcode-table architecture in push.ts; added `isFloat64` flag to DataStructure and StackItem; regression-tested against existing int32/float32 push paths |
