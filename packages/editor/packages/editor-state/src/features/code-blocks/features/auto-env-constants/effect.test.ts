@@ -214,6 +214,105 @@ describe('autoEnvConstants', () => {
 		expect(assetSizeLine).toBe('const ASSET_0_SIZE 88200');
 	});
 
+	test('should preserve existing @pos when regenerating env block', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		if (envCodeBlock) {
+			const codeWithCustomPos = [...envCodeBlock.code];
+			codeWithCustomPos[1] = '; @pos 12 -7';
+			const graphicBlock: Partial<CodeBlockGraphicData> = {
+				id: 'env',
+				code: codeWithCustomPos,
+				creationIndex: 0,
+				blockType: 'constants',
+				width: 0,
+				height: 0,
+				codeColors: [],
+				codeToRender: [],
+				extras: {
+					blockHighlights: [],
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
+					buttons: [],
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					errorMessages: [],
+				},
+				cursor: { col: 0, row: 0, x: 0, y: 0 },
+				gaps: new Map(),
+				gridX: 12,
+				gridY: -7,
+				x: 0,
+				y: 0,
+				lineNumberColumnWidth: 2,
+				offsetX: 0,
+				offsetY: 0,
+			};
+			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+		}
+
+		store.set('compiledProjectConfig.runtimeSettings', {
+			runtime: 'WebWorkerLogicRuntime' as const,
+			sampleRate: 44100,
+		});
+
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		expect(envBlock?.code).toContain('; @pos 12 -7');
+	});
+
+	test('should default @pos to 0,0 when existing env block has no @pos', () => {
+		autoEnvConstants(store);
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		if (envCodeBlock) {
+			const codeWithoutPos = envCodeBlock.code.filter(line => !line.includes('@pos'));
+			const graphicBlock: Partial<CodeBlockGraphicData> = {
+				id: 'env',
+				code: codeWithoutPos,
+				creationIndex: 0,
+				blockType: 'constants',
+				width: 0,
+				height: 0,
+				codeColors: [],
+				codeToRender: [],
+				extras: {
+					blockHighlights: [],
+					inputs: [],
+					outputs: [],
+					debuggers: [],
+					switches: [],
+					buttons: [],
+					pianoKeyboards: [],
+					bufferPlotters: [],
+					errorMessages: [],
+				},
+				cursor: { col: 0, row: 0, x: 0, y: 0 },
+				gaps: new Map(),
+				gridX: 0,
+				gridY: 0,
+				x: 0,
+				y: 0,
+				lineNumberColumnWidth: 2,
+				offsetX: 0,
+				offsetY: 0,
+			};
+			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+		}
+
+		store.set('compiledProjectConfig.runtimeSettings', {
+			runtime: 'WebWorkerLogicRuntime' as const,
+			sampleRate: 44100,
+		});
+
+		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === 'env');
+		expect(envBlock?.code).toContain('; @pos 0 0');
+	});
+
 	test('should not duplicate env block if already exists', () => {
 		const projectWithEnv: Project = {
 			...EMPTY_DEFAULT_PROJECT,
