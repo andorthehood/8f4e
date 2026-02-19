@@ -23,34 +23,34 @@ risingEdge
 if void
  ; Read current pattern value:
  ; *(bufferIn + _offset)
- push bufferIn
- push _offset
- add
- load
- if void
-  push &out
-  push 1
-  store
- ifEnd
+push bufferIn
+push _offset
+add
+load
+if void
+push &out
+push 1
+store
+ifEnd
 
  ; Advance by element size
- push &_offset
- push _offset
- push %bufferIn
- add
- store
+push &_offset
+push _offset
+push %bufferIn
+add
+store
 
  ; Wrap when element address
- push bufferIn
- push _offset
- add
- push bufferEndIn
- greaterThan
- if void
-  push &_offset
-  push 0
-  store
- ifEnd
+push bufferIn
+push _offset
+add
+push bufferEndIn
+greaterThan
+if void
+push &_offset
+push 0
+store
+ifEnd
 ifEnd
 
 moduleEnd`,

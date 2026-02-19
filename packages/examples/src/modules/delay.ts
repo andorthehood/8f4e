@@ -15,18 +15,18 @@ int pointer &buffer
 ; @debug pointer
 
 push &out
- push pointer
- loadFloat
+push pointer
+loadFloat
 store
 
 push pointer
- push *in
+push *in
 store
 
 push &pointer
- push pointer
- push %pointer
- add
+push pointer
+push %pointer
+add
 store
 
 push pointer
@@ -35,9 +35,9 @@ push length
 add
 greaterThan
 if void
- push &pointer
- push &buffer
- store
+push &pointer
+push &buffer
+store
 ifEnd
 
 moduleEnd`,

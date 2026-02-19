@@ -16,9 +16,9 @@ push out
 push HIGH
 equal
 if int
- push LOW
+push LOW
 else
- push HIGH
+push HIGH
 ifEnd
 store
 
