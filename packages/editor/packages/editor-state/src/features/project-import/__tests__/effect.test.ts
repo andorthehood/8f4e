@@ -293,6 +293,8 @@ describe('projectImport', () => {
 		it('should load project by slug using callback', async () => {
 			const mock8f4eText = '8f4e/v1\n\nmodule counter\n\nmoduleEnd';
 
+			// Prevent projectPromise from overwriting initialProjectState after loadProjectBySlug sets it
+			mockState.callbacks.loadSession = () => new Promise(() => {});
 			mockState.callbacks.getProject = vi.fn().mockResolvedValue(mock8f4eText);
 			projectImport(store, mockEvents);
 
