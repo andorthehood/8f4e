@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-import codeBlockNavigation, { jumpToCodeBlock } from './effect';
+import codeBlockNavigation, { goHome, jumpToCodeBlock } from './effect';
 
 import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '~/types';
 
@@ -17,6 +17,7 @@ describe('codeBlockNavigation', () => {
 	let events: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let onNavigateCodeBlockHandler: (event: NavigateCodeBlockEvent) => void;
 	let onJumpToFavoriteCodeBlockHandler: (event: JumpToFavoriteCodeBlockEvent) => void;
+	let onGoHomeHandler: () => void;
 	let selectedBlock: CodeBlockGraphicData;
 	let leftBlock: CodeBlockGraphicData;
 	let rightBlock: CodeBlockGraphicData;
@@ -64,6 +65,8 @@ describe('codeBlockNavigation', () => {
 					onNavigateCodeBlockHandler = callback as (event: NavigateCodeBlockEvent) => void;
 				} else if (eventName === 'jumpToFavoriteCodeBlock') {
 					onJumpToFavoriteCodeBlockHandler = callback as (event: JumpToFavoriteCodeBlockEvent) => void;
+				} else if (eventName === 'goHome') {
+					onGoHomeHandler = callback as () => void;
 				}
 			}
 		);
@@ -81,6 +84,13 @@ describe('codeBlockNavigation', () => {
 		codeBlockNavigation(state, events);
 
 		expect(events.on).toHaveBeenCalledWith('jumpToFavoriteCodeBlock', expect.any(Function));
+	});
+
+	it('should register a goHome event handler', () => {
+		// Initialize the effect
+		codeBlockNavigation(state, events);
+
+		expect(events.on).toHaveBeenCalledWith('goHome', expect.any(Function));
 	});
 
 	it('should do nothing when no code block is selected', () => {
@@ -206,6 +216,63 @@ describe('codeBlockNavigation', () => {
 			onJumpToFavoriteCodeBlockHandler({ creationIndex: 999, id: 'nonexistent' });
 			// selectedCodeBlock should remain unchanged
 			expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+		});
+	});
+
+	describe('goHome', () => {
+		it('should center viewport on the first home block and select it', () => {
+			const firstHome = createMockCodeBlock({ id: 'home-1', x: 100, y: 100, isHome: true });
+			const secondHome = createMockCodeBlock({ id: 'home-2', x: 400, y: 400, isHome: true });
+
+			state = createMockState({
+				graphicHelper: { codeBlocks: [firstHome, secondHome] },
+				viewport: { x: 10, y: 20, width: 200, height: 200, roundedWidth: 200, roundedHeight: 200 },
+			});
+
+			goHome(state);
+
+			expect(state.graphicHelper.selectedCodeBlock).toBe(firstHome);
+			expect(state.viewport.x).toBe(50);
+			expect(state.viewport.y).toBe(50);
+		});
+
+		it('should use a disabled home block if it is first', () => {
+			const disabledHome = createMockCodeBlock({ id: 'home-disabled', isHome: true, disabled: true });
+			const otherHome = createMockCodeBlock({ id: 'home-other', isHome: true });
+
+			state = createMockState({
+				graphicHelper: { codeBlocks: [disabledHome, otherHome] },
+			});
+
+			goHome(state);
+
+			expect(state.graphicHelper.selectedCodeBlock).toBe(disabledHome);
+		});
+
+		it('should center on origin when no home block exists', () => {
+			state = createMockState({
+				featureFlags: { viewportAnimations: false },
+				viewport: { x: 25, y: -10 },
+				graphicHelper: { codeBlocks: [selectedBlock], selectedCodeBlock: selectedBlock },
+			});
+
+			goHome(state);
+
+			expect(state.viewport.x).toBe(0);
+			expect(state.viewport.y).toBe(0);
+			expect(state.featureFlags.viewportAnimations).toBe(false);
+			expect(state.graphicHelper.selectedCodeBlock).toBe(selectedBlock);
+		});
+
+		it('should respond to goHome event', () => {
+			const homeBlock = createMockCodeBlock({ id: 'home-event', isHome: true, x: 160, y: 80 });
+			state.graphicHelper.codeBlocks = [homeBlock, ...state.graphicHelper.codeBlocks];
+
+			codeBlockNavigation(state, events);
+
+			onGoHomeHandler();
+
+			expect(state.graphicHelper.selectedCodeBlock).toBe(homeBlock);
 		});
 	});
 });

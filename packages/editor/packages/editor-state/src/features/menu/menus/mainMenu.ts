@@ -81,6 +81,11 @@ export const mainMenu: MenuGenerator = state => [
 	...(state.featureFlags.editing
 		? [
 				{
+					title: 'Go @home',
+					action: 'goHome',
+					close: true,
+				},
+				{
 					title: 'Jump to...',
 					action: 'openSubMenu',
 					payload: { menu: 'favoritesMenu' },
