@@ -20,6 +20,7 @@ export default function getOrCreateMemory(
 
 	if (shouldRecreate) {
 		const prevBytes = currentMemorySize;
+		// Round up requested bytes to whole wasm pages (64 KiB); WebAssembly.Memory is page-granular.
 		const pages = Math.ceil(memorySizeBytes / WASM_PAGE_SIZE);
 
 		memoryRefCache = new WebAssembly.Memory({
