@@ -58,7 +58,7 @@ const LINE_REGEX = /^\s*(\w+)(?:\s+(.+))?\s*$/;
 /**
  * Parses a single line into a command
  */
-export default function parseLine(line: string, lineNumber: number): Command | CompileError | null {
+export default function parseLine(line: string, lineNumber: number, macroId?: string): Command | CompileError | null {
 	const trimmed = line.trim();
 
 	if (!trimmed || trimmed.startsWith(';')) {
@@ -69,21 +69,28 @@ export default function parseLine(line: string, lineNumber: number): Command | C
 
 	const match = withoutComment.match(LINE_REGEX);
 	if (!match) {
-		return { line: lineNumber, message: `Invalid syntax: ${trimmed}` };
+		const error: CompileError = { line: lineNumber, message: `Invalid syntax: ${trimmed}` };
+		if (macroId) error.macroId = macroId;
+		return error;
 	}
 
 	const [, commandName, argument] = match;
 
 	if (!VALID_COMMANDS.has(commandName as CommandType)) {
-		return { line: lineNumber, message: `Unknown command: ${commandName}` };
+		const error: CompileError = { line: lineNumber, message: `Unknown command: ${commandName}` };
+		if (macroId) error.macroId = macroId;
+		return error;
 	}
 
 	const command: Command = { type: commandName as CommandType, lineNumber };
+	if (macroId) command.macroId = macroId;
 
 	switch (commandName) {
 		case 'push': {
 			if (!argument) {
-				return { line: lineNumber, message: 'push requires a literal argument' };
+				const error: CompileError = { line: lineNumber, message: 'push requires a literal argument' };
+				if (macroId) error.macroId = macroId;
+				return error;
 			}
 			const literal = parseLiteral(argument);
 			if (typeof literal === 'object' && literal !== null && 'error' in literal) {
@@ -91,7 +98,9 @@ export default function parseLine(line: string, lineNumber: number): Command | C
 				if (/^[A-Z][A-Z0-9_]*$/.test(argument)) {
 					command.identifier = argument;
 				} else {
-					return { line: lineNumber, message: literal.error };
+					const error: CompileError = { line: lineNumber, message: literal.error };
+					if (macroId) error.macroId = macroId;
+					return error;
 				}
 			} else {
 				command.argument = literal;
@@ -101,20 +110,26 @@ export default function parseLine(line: string, lineNumber: number): Command | C
 
 		case 'const': {
 			if (!argument) {
-				return { line: lineNumber, message: 'const requires a name and literal argument' };
+				const error: CompileError = { line: lineNumber, message: 'const requires a name and literal argument' };
+				if (macroId) error.macroId = macroId;
+				return error;
 			}
 			// Parse "NAME <literal>" format
 			const constMatch = argument.match(/^([A-Z][A-Z0-9_]*)\s+(.+)$/);
 			if (!constMatch) {
-				return {
+				const error: CompileError = {
 					line: lineNumber,
 					message: 'const requires uppercase name followed by literal (e.g., const MAX_VALUE 100)',
 				};
+				if (macroId) error.macroId = macroId;
+				return error;
 			}
 			const [, name, literalStr] = constMatch;
 			const literal = parseLiteral(literalStr);
 			if (typeof literal === 'object' && literal !== null && 'error' in literal) {
-				return { line: lineNumber, message: literal.error };
+				const error: CompileError = { line: lineNumber, message: literal.error };
+				if (macroId) error.macroId = macroId;
+				return error;
 			}
 			command.identifier = name;
 			command.argument = literal;
@@ -126,11 +141,15 @@ export default function parseLine(line: string, lineNumber: number): Command | C
 		case 'rescope':
 		case 'rescopeSuffix': {
 			if (!argument) {
-				return { line: lineNumber, message: `${commandName} requires a path argument` };
+				const error: CompileError = { line: lineNumber, message: `${commandName} requires a path argument` };
+				if (macroId) error.macroId = macroId;
+				return error;
 			}
 			const pathResult = parsePathArgument(argument);
 			if ('error' in pathResult) {
-				return { line: lineNumber, message: pathResult.error };
+				const error: CompileError = { line: lineNumber, message: pathResult.error };
+				if (macroId) error.macroId = macroId;
+				return error;
 			}
 			command.pathSegments = pathResult;
 			break;
