@@ -7,7 +7,7 @@ import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils
 /**
  * Serializes current runtime state to Project format for saving to file.
  * @param state Current editor state
- * @returns Project object ready for serialization to JSON
+ * @returns Project object ready for `.8f4e` export and session persistence
  */
 export default function serializeToProject(state: State): Project {
 	const { graphicHelper } = state;
