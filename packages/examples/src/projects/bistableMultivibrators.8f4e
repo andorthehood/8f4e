@@ -1,7 +1,21 @@
 8f4e/v1
 
+comment
+; @pos 45 5
+; Demonstrates a bistable SR latch 
+; (multivibrator) built from feedback 
+; logic gates, with set/reset button 
+; inputs and scope buffers that 
+; visualize both latch state and 
+; derived gate output over time.
+commentEnd
+
 config project
 ; @pos -67 16
+
+rescope "exportFileName"
+push "bistableMultivibrators"
+set
 
 rescope "memorySizeBytes"
 push 65536
@@ -20,7 +34,7 @@ set
 configEnd
 
 module andGate
-; @pos 243 31
+; @pos 243 32
 
          ;   .---.
 int* in1 ; --+    '   
@@ -46,7 +60,7 @@ store
 moduleEnd
 
 module buttons
-; @pos 196 16
+; @pos 193 17
 
 ; Buttons for the SR AND-OR latch
 
@@ -75,11 +89,13 @@ moduleEnd
 
 constants env
 ; @pos -30 16
+; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 1/19/2026, 9:52:44 PM
+; Last updated: 2/19/2026, 1:43:47 PM
 
 const SAMPLE_RATE 50
+const INV_SAMPLE_RATE 0.02
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
@@ -104,7 +120,7 @@ store
 moduleEnd
 
 module norGate
-; @pos 95 35
+; @pos 95 36
 
          ;   .---.
 int* in1 ; --+    '
@@ -186,7 +202,7 @@ store
 moduleEnd
 
 module resetButton
-; @pos 47 27
+; @pos 45 27
 
 int out
                ; Push this button
@@ -256,7 +272,8 @@ store
 moduleEnd
 
 module setButton
-; @pos 47 17
+; @pos 45 16
+; @home
 
 int out
                ; Push this button
