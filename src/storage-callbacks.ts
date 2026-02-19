@@ -1,3 +1,5 @@
+import { parse8f4eToProject } from '@8f4e/editor-state';
+
 import { getProject, projectManifest } from './examples/registry';
 import { getCodeBuffer } from './compiler-callback';
 
@@ -20,7 +22,7 @@ export async function loadSession(): Promise<Project | null> {
 		const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
 		if (projectName && projectManifest[projectName]) {
 			console.log('Loading project from URL hash:', projectName);
-			return await getProject(projectName);
+			return parse8f4eToProject(await getProject(projectName));
 		}
 
 		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
@@ -31,7 +33,7 @@ export async function loadSession(): Promise<Project | null> {
 
 		if (Object.keys(projectManifest).length > 0) {
 			console.log('Loading default project: audioBuffer');
-			return await getProject('audioBuffer');
+			return parse8f4eToProject(await getProject('audioBuffer'));
 		}
 
 		return null;
@@ -72,7 +74,7 @@ export async function saveEditorConfigBlocks(blocks: EditorConfigBlock[]): Promi
 export async function importProject(): Promise<Project> {
 	const input = document.createElement('input');
 	input.type = 'file';
-	input.accept = '.json';
+	input.accept = '.8f4e';
 
 	return new Promise((resolve, reject) => {
 		input.addEventListener('change', event => {
@@ -85,7 +87,7 @@ export async function importProject(): Promise<Project> {
 			reader.onload = event => {
 				try {
 					const content = event.target?.result as string;
-					const project = JSON.parse(content);
+					const project = parse8f4eToProject(content);
 					resolve(project);
 				} catch (error) {
 					reject(new Error('Failed to parse project file: ' + error));
