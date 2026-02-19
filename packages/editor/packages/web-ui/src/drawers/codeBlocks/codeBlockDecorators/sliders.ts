@@ -23,7 +23,9 @@ export default function drawer(
 		// Read the current value from memory
 		const value = memory.isInteger
 			? memoryViews.int32[memory.wordAlignedAddress]
-			: memoryViews.float32[memory.wordAlignedAddress];
+			: memory.isFloat64
+				? memoryViews.float64[memory.byteAddress / 8]
+				: memoryViews.float32[memory.wordAlignedAddress];
 
 		// Handle edge case where min equals max
 		if (min === max) {
