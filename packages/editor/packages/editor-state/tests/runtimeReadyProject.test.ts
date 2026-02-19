@@ -5,6 +5,7 @@ import compiler from '../src/features/program-compiler/effect';
 import projectExport from '../src/features/project-export/effect';
 import { createMockState, createMockCodeBlock } from '../src/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '../src/pureHelpers/testingUtils/vitestTestUtils';
+import { parse8f4eToProject } from '../src/features/project-import/parse8f4e';
 
 import type { State } from '../src/types';
 
@@ -258,14 +259,15 @@ describe('Runtime-ready project functionality', () => {
 
 			// Verify exportProject was called
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
-			const [exportedJson] = mockExportProject.mock.calls[0];
+			const [exportedText] = mockExportProject.mock.calls[0];
 
-			// Parse the exported JSON and verify project structure
-			const exportedProject = JSON.parse(exportedJson);
+			// Parse the exported .8f4e text and verify project structure
+			expect(exportedText).toMatch(/^8f4e\/v1/);
+			const exportedProject = parse8f4eToProject(exportedText);
 			// memorySizeBytes is no longer in Project - config blocks are the source of truth
 			expect(exportedProject.codeBlocks).toBeDefined();
 			// viewport is no longer in Project - @home directive is the source of truth
-			expect(exportedProject.viewport).toBeUndefined();
+			expect((exportedProject as Record<string, unknown>).viewport).toBeUndefined();
 		});
 
 		it('should export project structure in runtime-ready project', async () => {

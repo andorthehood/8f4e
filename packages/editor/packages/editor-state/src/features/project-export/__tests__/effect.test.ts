@@ -68,7 +68,7 @@ describe('projectExport', () => {
 	});
 
 	describe('exportProject', () => {
-		it('should export project as JSON', async () => {
+		it('should export project as .8f4e text', async () => {
 			projectExport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -78,16 +78,11 @@ describe('projectExport', () => {
 			await exportProjectCallback();
 
 			expect(mockExportProject).toHaveBeenCalledTimes(1);
-			const [exportedJson, fileName] = mockExportProject.mock.calls[0];
+			const [exportedText, fileName] = mockExportProject.mock.calls[0];
 
-			expect(fileName).toBe('project.json');
-			expect(typeof exportedJson).toBe('string');
-
-			const exportedProject = JSON.parse(exportedJson);
-			// Project no longer contains title field - config blocks are the source of truth
-			expect(exportedProject.codeBlocks).toBeDefined();
-			// viewport is no longer in Project - @home directive is the source of truth
-			expect(exportedProject.viewport).toBeUndefined();
+			expect(fileName).toBe('project.8f4e');
+			expect(typeof exportedText).toBe('string');
+			expect(exportedText).toMatch(/^8f4e\/v1/);
 		});
 
 		it('should warn when no exportProject callback is provided', () => {
