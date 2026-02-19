@@ -395,7 +395,7 @@ export async function createWasmInstance(
 		init: instance.exports.init as () => void,
 		cycle: instance.exports.cycle as () => void,
 		initOnly: instance.exports.initOnly as () => void,
-		buffer: instance.exports.buffer as (address: number, size: number) => number,
+		buffer: instance.exports.buffer as () => void,
 		memory: buffer,
 	};
 }

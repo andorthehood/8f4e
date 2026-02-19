@@ -52,7 +52,7 @@ moduleEnd
 
 		expect(exportKeys).toContain('initOnly');
 		expect(firstResult.compiledModules.setup.initOnlyExecution).toBe(true);
-		expect(firstResult.initOnlyReran).toBe(true);
+		expect(firstResult.initOnlyReran).toBe(false);
 		expect(memoryView[addresses.base]).toBe(1);
 		expect(memoryView[addresses.derived]).toBe(2);
 
@@ -69,7 +69,7 @@ moduleEnd
 		const addresses = getAddresses(firstResult.compiledModules);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
 
-		expect(firstResult.initOnlyReran).toBe(true);
+		expect(firstResult.initOnlyReran).toBe(false);
 		expect(memoryView[addresses.base]).toBe(3);
 		expect(memoryView[addresses.derived]).toBe(4);
 

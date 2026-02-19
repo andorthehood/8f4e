@@ -72,7 +72,7 @@ export default async function compileAndUpdateMemory(
 
 	if (needsInitialization) {
 		init();
-		initOnlyReran = hasInitOnlyModules && Boolean(runInitOnly);
+		initOnlyReran = false;
 	} else {
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
