@@ -3,8 +3,8 @@ title: 'TODO: Re-run init-only modules when default memory values change'
 priority: Medium
 effort: 4-6h
 created: 2026-02-18
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-19
 ---
 
 # TODO: Re-run init-only modules when default memory values change

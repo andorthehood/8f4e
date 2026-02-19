@@ -265,6 +265,7 @@ export default function compile(
 			? call(index + EXPORTED_FUNCTION_COUNT + userFunctionCount)
 			: []
 	);
+	const initOnlyFunction = createFunction([], initOnlyModuleCalls);
 
 	const memoryInitiatorFunction = [
 		// First, call all memory initialization functions
@@ -307,6 +308,7 @@ export default function compile(
 				0x00,
 				0x00,
 				0x00,
+				0x00,
 				...userFunctionSignatureIndices,
 				...functionSignatures,
 				...functionSignatures,
@@ -314,11 +316,13 @@ export default function compile(
 			...createExportSection([
 				createFunctionExport('init', 0x00),
 				createFunctionExport('cycle', 0x01),
-				createFunctionExport('buffer', 0x02),
+				createFunctionExport('initOnly', 0x02),
+				createFunctionExport('buffer', 0x03),
 			]),
 			...createCodeSection([
 				createFunction([], memoryInitiatorFunction),
 				createFunction([], cycleFunction),
+				initOnlyFunction,
 				bufferFunction,
 				...compiledFunctions.map(func => func.body),
 				...cycleFunctions,
