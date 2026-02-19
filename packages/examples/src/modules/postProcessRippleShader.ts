@@ -21,22 +21,22 @@ uniform sampler2D u_renderTexture;
 out vec4 outColor;
 
 void main() {
-vec2 uv = v_screenCoord;
+  vec2 uv = v_screenCoord;
 
-vec2 center = vec2(0.5, 0.5);
-vec2 offset = uv - center;
-float dist = length(offset);
-float safeDist = max(dist, 0.0001);
+  vec2 center = vec2(0.5, 0.5);
+  vec2 offset = uv - center;
+  float dist = length(offset);
+  float safeDist = max(dist, 0.0001);
 
-float wave = sin(dist * RIPPLE_FREQUENCY - u_time * RIPPLE_SPEED);
-float attenuation = exp(-dist * RIPPLE_FADE);
-float displacement = wave * RIPPLE_AMPLITUDE * attenuation;
+  float wave = sin(dist * RIPPLE_FREQUENCY - u_time * RIPPLE_SPEED);
+  float attenuation = exp(-dist * RIPPLE_FADE);
+  float displacement = wave * RIPPLE_AMPLITUDE * attenuation;
 
-vec2 rippleUV = uv + (offset / safeDist) * displacement;
+  vec2 rippleUV = uv + (offset / safeDist) * displacement;
 
-vec3 color = texture(u_renderTexture, rippleUV).rgb;
+  vec3 color = texture(u_renderTexture, rippleUV).rgb;
 
-outColor = vec4(color, 1.0);
+  outColor = vec4(color, 1.0);
 }
 fragmentShaderEnd`,
 	tests: [],
