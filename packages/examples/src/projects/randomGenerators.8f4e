@@ -8,7 +8,7 @@ comment
 ; a Linear Congruential
 ; Generator (LCG)
 ; and
-; a XORShift algorithm 
+; an XORShift algorithm
 ; implemented in 8f4e.
 commentEnd
 
