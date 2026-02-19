@@ -325,6 +325,26 @@ describe('projectImport', () => {
 
 			consoleWarnSpy.mockRestore();
 		});
+
+		it('should handle parse errors gracefully and load default project', async () => {
+			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+			// Prevent projectPromise from overwriting initialProjectState after loadProjectBySlug sets it
+			mockState.callbacks.loadSession = () => new Promise(() => {});
+			mockState.callbacks.getProject = vi.fn().mockResolvedValue('invalid .8f4e content');
+			projectImport(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
+			const loadProjectBySlugCallback = loadProjectBySlugCall![1];
+
+			await loadProjectBySlugCallback({ projectSlug: 'test-slug' });
+
+			expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to load project by slug:', expect.any(Error));
+			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
+
+			consoleErrorSpy.mockRestore();
+		});
 	});
 
 	describe('Runtime-ready project loading', () => {
