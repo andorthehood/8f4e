@@ -12,6 +12,9 @@ export default function createMockMemoryViews(sizeInBytes = 1048576): MemoryView
 		int8: new Int8Array(buffer),
 		int16: new Int16Array(buffer),
 		int32: new Int32Array(buffer),
+		uint8: new Uint8Array(buffer),
+		uint16: new Uint16Array(buffer),
 		float32: new Float32Array(buffer),
+		float64: new Float64Array(buffer),
 	};
 }
