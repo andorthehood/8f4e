@@ -13,14 +13,14 @@ interface CodeBlock {
 }
 
 function countOpenBlocks(blocks: CodeBlock[]) {
-	return blocks.reduce((count, block) => (!block.endLineNumber ? count + 1 : count), 0);
+	return blocks.reduce((count, block) => (block.endLineNumber === undefined ? count + 1 : count), 0);
 }
 
 function getLastOpenBlockByEndInstruction(blocks: CodeBlock[], instruction: string) {
 	return blocks
 		.slice()
 		.reverse()
-		.find(block => block.endInstruction === instruction && !block.endLineNumber);
+		.find(block => block.endInstruction === instruction && block.endLineNumber === undefined);
 }
 
 export default function parseCodeBlocks(code: string[]) {
@@ -39,6 +39,27 @@ export default function parseCodeBlocks(code: string[]) {
 				endLineNumber: undefined,
 				depth: openBlockCount,
 			});
+		}
+
+		if (instruction === 'else') {
+			const lastOpenIfBlock = blocks
+				.slice()
+				.reverse()
+				.find(
+					block =>
+						block.startInstruction === 'if' && block.endInstruction === 'ifEnd' && block.endLineNumber === undefined
+				);
+
+			if (lastOpenIfBlock) {
+				lastOpenIfBlock.endLineNumber = lineIndex;
+				blocks.push({
+					startInstruction: 'else',
+					endInstruction: 'ifEnd',
+					startLineNumber: lineIndex,
+					endLineNumber: undefined,
+					depth: lastOpenIfBlock.depth,
+				});
+			}
 		}
 
 		if (endInstructions.includes(instruction)) {
