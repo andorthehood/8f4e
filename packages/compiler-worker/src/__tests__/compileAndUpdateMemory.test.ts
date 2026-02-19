@@ -14,8 +14,8 @@ module setup
 #initOnly
 int base ${baseDefault}
 int derived 0
-push derived
-push base
+push &derived
+push &base
 load
 push 1
 add
@@ -54,12 +54,14 @@ moduleEnd
 		expect(firstResult.compiledModules.setup.initOnlyExecution).toBe(true);
 		expect(firstResult.initOnlyReran).toBe(true);
 		expect(memoryView[addresses.base]).toBe(1);
+		expect(memoryView[addresses.derived]).toBe(2);
 
 		const secondResult = await compileAndUpdateMemory(createModules(10), compilerOptions);
 		const updatedMemory = new Int32Array(secondResult.memoryRef.buffer);
 
 		expect(secondResult.initOnlyReran).toBe(true);
 		expect(updatedMemory[addresses.base]).toBe(10);
+		expect(updatedMemory[addresses.derived]).toBe(11);
 	});
 
 	it('does not rerun init-only modules when defaults are unchanged', async () => {
@@ -69,6 +71,7 @@ moduleEnd
 
 		expect(firstResult.initOnlyReran).toBe(true);
 		expect(memoryView[addresses.base]).toBe(3);
+		expect(memoryView[addresses.derived]).toBe(4);
 
 		memoryView[addresses.base] = 5;
 
@@ -77,5 +80,6 @@ moduleEnd
 
 		expect(secondResult.initOnlyReran).toBe(false);
 		expect(secondMemory[addresses.base]).toBe(5);
+		expect(secondMemory[addresses.derived]).toBe(4);
 	});
 });
