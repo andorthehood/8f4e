@@ -41,13 +41,13 @@ describe('projectImport', () => {
 			expect(loadProjectCall).toBeDefined();
 		});
 
-		it('should register loadProjectBySlug event handler', () => {
+		it('should register loadProjectByUrl event handler', () => {
 			projectImport(store, mockEvents);
 			projectConfigEffect(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
-			expect(loadProjectBySlugCall).toBeDefined();
+			const loadProjectByUrlCall = onCalls.find(call => call[0] === 'loadProjectByUrl');
+			expect(loadProjectByUrlCall).toBeDefined();
 		});
 	});
 
@@ -289,22 +289,26 @@ describe('projectImport', () => {
 		});
 	});
 
-	describe('loadProjectBySlug', () => {
-		it('should load project by slug using callback', async () => {
+	describe('loadProjectByUrl', () => {
+		it('should load project by url using callback', async () => {
 			const mock8f4eText = '8f4e/v1\n\nmodule counter\n\nmoduleEnd';
 
-			// Prevent projectPromise from overwriting initialProjectState after loadProjectBySlug sets it
+			// Prevent projectPromise from overwriting initialProjectState after loadProjectByUrl sets it
 			mockState.callbacks.loadSession = () => new Promise(() => {});
 			mockState.callbacks.getProject = vi.fn().mockResolvedValue(mock8f4eText);
 			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
-			const loadProjectBySlugCallback = loadProjectBySlugCall![1];
+			const loadProjectByUrlCall = onCalls.find(call => call[0] === 'loadProjectByUrl');
+			const loadProjectByUrlCallback = loadProjectByUrlCall![1];
 
-			await loadProjectBySlugCallback({ projectSlug: 'test-slug' });
+			await loadProjectByUrlCallback({
+				projectUrl: 'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e',
+			});
 
-			expect(mockState.callbacks.getProject).toHaveBeenCalledWith('test-slug');
+			expect(mockState.callbacks.getProject).toHaveBeenCalledWith(
+				'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e'
+			);
 
 			expect(mockState.initialProjectState.codeBlocks).toHaveLength(1);
 		});
@@ -316,10 +320,12 @@ describe('projectImport', () => {
 			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
-			const loadProjectBySlugCallback = loadProjectBySlugCall![1];
+			const loadProjectByUrlCall = onCalls.find(call => call[0] === 'loadProjectByUrl');
+			const loadProjectByUrlCallback = loadProjectByUrlCall![1];
 
-			await loadProjectBySlugCallback({ projectSlug: 'test-slug' });
+			await loadProjectByUrlCallback({
+				projectUrl: 'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e',
+			});
 
 			expect(consoleWarnSpy).toHaveBeenCalledWith('No getProject callback provided');
 
@@ -329,18 +335,20 @@ describe('projectImport', () => {
 		it('should handle parse errors gracefully and load default project', async () => {
 			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
-			// Prevent projectPromise from overwriting initialProjectState after loadProjectBySlug sets it
+			// Prevent projectPromise from overwriting initialProjectState after loadProjectByUrl sets it
 			mockState.callbacks.loadSession = () => new Promise(() => {});
 			mockState.callbacks.getProject = vi.fn().mockResolvedValue('invalid .8f4e content');
 			projectImport(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
-			const loadProjectBySlugCall = onCalls.find(call => call[0] === 'loadProjectBySlug');
-			const loadProjectBySlugCallback = loadProjectBySlugCall![1];
+			const loadProjectByUrlCall = onCalls.find(call => call[0] === 'loadProjectByUrl');
+			const loadProjectByUrlCallback = loadProjectByUrlCall![1];
 
-			await loadProjectBySlugCallback({ projectSlug: 'test-slug' });
+			await loadProjectByUrlCallback({
+				projectUrl: 'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e',
+			});
 
-			expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to load project by slug:', expect.any(Error));
+			expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to load project by url:', expect.any(Error));
 			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
 
 			consoleErrorSpy.mockRestore();
