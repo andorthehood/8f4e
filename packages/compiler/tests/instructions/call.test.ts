@@ -72,3 +72,25 @@ functionEnd int`,
 	],
 	[[{}, { output: 5 }]]
 );
+
+moduleTesterWithFunctions(
+	'call float64-returning function',
+	`module test
+float64 output
+
+loop
+  push &output
+  call getDoublePI
+  store
+loopEnd
+
+moduleEnd`,
+	[
+		`function getDoublePI
+push 3.14159265358979f64
+push 2.0f64
+mul
+functionEnd float64`,
+	],
+	[[{}, { output: 6.28318530717958 }]]
+);
