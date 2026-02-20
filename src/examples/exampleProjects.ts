@@ -18,6 +18,7 @@ export const projectManifest: Record<string, () => Promise<string>> = {
 		import('@8f4e/examples/projects/simpleCounterMainThread.8f4e?raw').then(m => m.default),
 	standaloneProject: () => import('@8f4e/examples/projects/standaloneProject.8f4e?raw').then(m => m.default),
 	digitClassifier: () => import('@8f4e/examples/projects/digitClassifier.8f4e?raw').then(m => m.default),
+	digitClassifier64: () => import('@8f4e/examples/projects/digitClassifier64.8f4e?raw').then(m => m.default),
 };
 
 /**
@@ -46,6 +47,7 @@ export const projectMetadata: ProjectMetadata[] = [
 	},
 	{ slug: 'standaloneProject', title: 'Standalone Project Example', category: 'Misc' },
 	{ slug: 'digitClassifier', title: 'Digit Classifier', category: 'Machine Learning' },
+	{ slug: 'digitClassifier64', title: 'Digit Classifier (float64)', category: 'Machine Learning' },
 ];
 
 // For backwards compatibility
