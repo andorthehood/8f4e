@@ -51,7 +51,7 @@ Preserve metadata flags (including `isFloat64`) when aliasing constants.
 
 ## Validation Checkpoints
 
-- `rg -n "collectConstants|ArgumentLiteral|const" /Users/andorpolgar/git/8f4e/packages/compiler/src/astUtils`
+- `rg -n "collectConstants|ArgumentLiteral|const" packages/compiler/src/astUtils`
 - `npx nx run @8f4e/compiler:test -- --run "collectConstants|const|namespace|use"`
 
 ## Success Criteria
@@ -63,9 +63,9 @@ Preserve metadata flags (including `isFloat64`) when aliasing constants.
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/astUtils/collectConstants.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/index.ts` (consumer path relying on collected namespaces)
-- `/Users/andorpolgar/git/8f4e/packages/compiler/tests` and/or in-source tests in `collectConstants.ts`
+- `packages/compiler/src/astUtils/collectConstants.ts`
+- `packages/compiler/src/index.ts` (consumer path relying on collected namespaces)
+- `packages/compiler/tests` and/or in-source tests in `collectConstants.ts`
 
 ## Risks & Considerations
 
@@ -76,8 +76,8 @@ Preserve metadata flags (including `isFloat64`) when aliasing constants.
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/256-add-f64-literal-suffix-support.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/250-add-f64-push-support.md`
+- **Related**: `docs/todos/256-add-f64-literal-suffix-support.md`
+- **Related**: `docs/todos/250-add-f64-push-support.md`
 
 ## Notes
 

@@ -39,7 +39,7 @@ Keep integer and unsigned integer behavior unchanged.
 
 ### Step 1: Update helper logic
 - Modify:
-  - `/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryData.ts`
+  - `packages/compiler/src/utils/memoryData.ts`
 - Add explicit float-width branching in:
   - `getElementMaxValue`
   - `getElementMinValue`
@@ -55,7 +55,7 @@ Keep integer and unsigned integer behavior unchanged.
 
 ## Validation Checkpoints
 
-- `rg -n "getElementMaxValue|getElementMinValue|elementWordSize" /Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryData.ts`
+- `rg -n "getElementMaxValue|getElementMinValue|elementWordSize" packages/compiler/src/utils/memoryData.ts`
 - `npx nx run @8f4e/compiler:test -- --run "memoryData|push|intermodule|prefix"`
 
 ## Success Criteria
@@ -67,8 +67,8 @@ Keep integer and unsigned integer behavior unchanged.
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryData.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/tests` (or in-source helper tests relying on max/min semantics)
+- `packages/compiler/src/utils/memoryData.ts`
+- `packages/compiler/tests` (or in-source helper tests relying on max/min semantics)
 
 ## Risks & Considerations
 
@@ -79,9 +79,9 @@ Keep integer and unsigned integer behavior unchanged.
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/250-add-f64-push-support.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/253-add-f64-support-for-basic-arithmetic.md`
+- **Related**: `docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
+- **Related**: `docs/todos/250-add-f64-push-support.md`
+- **Related**: `docs/todos/253-add-f64-support-for-basic-arithmetic.md`
 
 ## Notes
 

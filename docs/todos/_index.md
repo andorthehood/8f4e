@@ -11,6 +11,17 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 053 | Fix Runtime Reinitialization on Code Change | 🔴 | 4-6h | 2025-09-03 | Runtime destroys and recreates completely on every code change instead of syncing existing instance, causing audio glitches, performance degradation, and loss of runtime state |
 | 091 | Optimize Dev Workflow with Nx Caching and Incremental Builds | 🔴 | 2-3d | 2025-11-07 | Replace current Vite-watches-all-sources setup with Nx-managed incremental builds to leverage caching and only rebuild affected packages |
 | 199 | Add config block type attribute for project config | 🔴 | 1-2d | 2026-01-21 | Require `config project` markers, reject untyped `config`, and update examples/tests/docs accordingly |
+| 262 | Add float64 support for equal instruction | 🔴 | 1-3h | 2026-02-20 | Add `F64_EQ` path for float64 operands in `equal` while preserving int32/float32 behavior |
+| 263 | Add float64 support for lessThan instruction | 🔴 | 1-3h | 2026-02-20 | Add `F64_LT` path for float64 operands in `lessThan` while preserving int32/float32 behavior |
+| 264 | Add float64 support for lessOrEqual instruction | 🔴 | 1-3h | 2026-02-20 | Add `F64_LE` path for float64 operands in `lessOrEqual` while preserving int32/float32 behavior |
+| 265 | Add float64 support for greaterThan instruction | 🔴 | 1-3h | 2026-02-20 | Add `F64_GT` path for float64 operands in `greaterThan` while preserving int32/float32 behavior |
+| 266 | Add float64 support for greaterOrEqual instruction | 🔴 | 1-3h | 2026-02-20 | Add `F64_GE` path for float64 operands in `greaterOrEqual` while preserving int32/float32 behavior |
+| 267 | Add float64 support for greaterOrEqualUnsigned instruction | 🔴 | 1-3h | 2026-02-20 | Add float64 compare path in `greaterOrEqualUnsigned` while preserving unsigned-int behavior |
+| 268 | Add float64 support for sqrt instruction | 🔴 | 1-3h | 2026-02-20 | Add `F64_SQRT` opcode path for float64 operands in `sqrt` |
+| 269 | Add float64 support for round instruction | 🔴 | 1-3h | 2026-02-20 | Add `F64_NEAREST` opcode path for float64 operands in `round` |
+| 270 | Add float64 support for castToInt instruction | 🔴 | 1-3h | 2026-02-20 | Add `I32_TRUNC_F64_S` path for float64 operands in `castToInt` |
+| 271 | Add float64 support for loadFloat instruction | 🔴 | 1-3h | 2026-02-20 | Add `f64.load` capability to `loadFloat` while preserving existing bounds-check behavior |
+| 272 | Add float32/float64 width checks to localSet instruction | 🔴 | 1-3h | 2026-02-20 | Reject float32<->float64 assignments in `localSet` using `isFloat64` compatibility checks |
 
 ### 🟡 Medium Priority
 

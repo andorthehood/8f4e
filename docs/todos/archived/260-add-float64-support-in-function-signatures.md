@@ -58,7 +58,7 @@ Core behavior:
 
 ## Validation Checkpoints
 
-- `rg -n "FunctionSignature|param|functionEnd|Type\\.F32|Type\\.F64" /Users/andorpolgar/git/8f4e/packages/compiler/src`
+- `rg -n "FunctionSignature|param|functionEnd|Type\\.F32|Type\\.F64" packages/compiler/src`
 - `npx nx run @8f4e/compiler:test -- --run "param|functionEnd|function|signature"`
 
 ## Success Criteria
@@ -70,11 +70,11 @@ Core behavior:
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/param.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/functionEnd.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/compiler.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/tests`
+- `packages/compiler/src/types.ts`
+- `packages/compiler/src/instructionCompilers/param.ts`
+- `packages/compiler/src/instructionCompilers/functionEnd.ts`
+- `packages/compiler/src/compiler.ts`
+- `packages/compiler/tests`
 
 ## Risks & Considerations
 
@@ -85,9 +85,9 @@ Core behavior:
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/250-add-f64-push-support.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/253-add-f64-support-for-basic-arithmetic.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/252-add-float-promote-demote-instructions.md`
+- **Related**: `docs/todos/250-add-f64-push-support.md`
+- **Related**: `docs/todos/253-add-f64-support-for-basic-arithmetic.md`
+- **Related**: `docs/todos/252-add-float-promote-demote-instructions.md`
 
 ## Notes
 

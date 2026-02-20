@@ -25,7 +25,7 @@ constants env
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/19/2026, 2:22:00 PM
+; Last updated: 2/20/2026, 1:10:07 PM
 
 const SAMPLE_RATE 50
 const INV_SAMPLE_RATE 0.02
@@ -42,11 +42,11 @@ module grid
 ; the neural network
 ; with 1s
 
-int row0 0b111
-int row1 0b001
-int row2 0b111
-int row3 0b001
-int row4 0b111
+int row0 0b0111
+int row1 0b0100
+int row2 0b0111
+int row3 0b0101
+int row4 0b0111
 
 ; Below you can read
 ; the confidence score
@@ -4463,9 +4463,11 @@ float* confidence9 &neuron117.out
 moduleEnd
 
 function sigmoid
-; @pos -98 28
+; @pos -326 38
 param float x
-; Polynomial sigmoid approximation
+; Fast sigmoid approximation
+; of logistic sigmoid
+; mapped to [0, 1]
 
 localGet x
 dup
@@ -4474,5 +4476,9 @@ push 1.0
 add
 ensureNonZero
 div
+push 0.5
+mul
+push 0.5
+add
 
 functionEnd float
