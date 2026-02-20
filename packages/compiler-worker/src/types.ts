@@ -34,4 +34,5 @@ export type MemoryValueChange = {
 	value: number | Record<string, number>;
 	isInteger: boolean;
 	isFloat64?: boolean;
+	elementWordSize: number;
 };

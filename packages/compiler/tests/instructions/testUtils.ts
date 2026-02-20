@@ -120,7 +120,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 		if (memoryItem.isInteger) {
 			return dataView.getInt32(memoryItem.byteAddress, true);
-		} else if (memoryItem.isFloat64) {
+		} else if (memoryItem.isFloat64 || (!memoryItem.isInteger && memoryItem.elementWordSize === 8)) {
 			return dataView.getFloat64(memoryItem.byteAddress, true);
 		} else {
 			return dataView.getFloat32(memoryItem.byteAddress, true);
@@ -133,17 +133,20 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 			return;
 		}
 
+		const isFloat64Memory = memoryItem.isFloat64 || (!memoryItem.isInteger && memoryItem.elementWordSize === 8);
 		if (typeof value === 'number') {
 			if (Number.isInteger(value)) {
 				dataView.setInt32(memoryItem.byteAddress, value, true);
-			} else if (memoryItem.isFloat64) {
+			} else if (isFloat64Memory) {
 				dataView.setFloat64(memoryItem.byteAddress, value, true);
 			} else {
 				dataView.setFloat32(memoryItem.byteAddress, value, true);
 			}
 		} else {
 			for (let i = 0; i < value.length; i++) {
-				if (Number.isInteger(value[i])) {
+				if (isFloat64Memory) {
+					dataView.setFloat64(memoryItem.byteAddress + i * 8, value[i], true);
+				} else if (Number.isInteger(value[i])) {
 					dataView.setInt32(memoryItem.byteAddress + i * 4, value[i], true);
 				} else {
 					dataView.setFloat32(memoryItem.byteAddress + i * 4, value[i], true);
@@ -280,7 +283,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 
 		if (memoryItem.isInteger) {
 			return dataView.getInt32(memoryItem.byteAddress, true);
-		} else if (memoryItem.isFloat64) {
+		} else if (memoryItem.isFloat64 || (!memoryItem.isInteger && memoryItem.elementWordSize === 8)) {
 			return dataView.getFloat64(memoryItem.byteAddress, true);
 		} else {
 			return dataView.getFloat32(memoryItem.byteAddress, true);
@@ -293,17 +296,20 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 			return;
 		}
 
+		const isFloat64Memory = memoryItem.isFloat64 || (!memoryItem.isInteger && memoryItem.elementWordSize === 8);
 		if (typeof value === 'number') {
 			if (Number.isInteger(value)) {
 				dataView.setInt32(memoryItem.byteAddress, value, true);
-			} else if (memoryItem.isFloat64) {
+			} else if (isFloat64Memory) {
 				dataView.setFloat64(memoryItem.byteAddress, value, true);
 			} else {
 				dataView.setFloat32(memoryItem.byteAddress, value, true);
 			}
 		} else {
 			for (let i = 0; i < value.length; i++) {
-				if (Number.isInteger(value[i])) {
+				if (isFloat64Memory) {
+					dataView.setFloat64(memoryItem.byteAddress + i * 8, value[i], true);
+				} else if (Number.isInteger(value[i])) {
 					dataView.setInt32(memoryItem.byteAddress + i * 4, value[i], true);
 				} else {
 					dataView.setFloat32(memoryItem.byteAddress + i * 4, value[i], true);
