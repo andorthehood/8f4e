@@ -76,6 +76,7 @@ export default async function compileAndUpdateMemory(
 	} else {
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
+		const memoryBufferFloat64 = new Float64Array(memoryRef.buffer);
 		const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
 
 		const hasDefaultChanges = memoryValueChanges.length > 0;
@@ -87,6 +88,15 @@ export default async function compileAndUpdateMemory(
 					});
 				} else {
 					memoryBufferInt[change.wordAlignedAddress] = change.value;
+				}
+			} else if (change.isFloat64) {
+				const float64Index = change.wordAlignedAddress / 2;
+				if (typeof change.value === 'object') {
+					Object.entries(change.value).forEach(([index, item]) => {
+						memoryBufferFloat64[float64Index + parseInt(index, 10)] = item;
+					});
+				} else {
+					memoryBufferFloat64[float64Index] = change.value;
 				}
 			} else {
 				if (typeof change.value === 'object') {
