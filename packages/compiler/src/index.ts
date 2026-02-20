@@ -132,8 +132,7 @@ export function generateMemoryInitiatorFunctions(compiledModules: CompiledModule
 		Object.values(module.memoryMap).forEach(memory => {
 			if (memory.numberOfElements > 1 && typeof memory.default === 'object') {
 				Object.entries(memory.default).forEach(([relativeWordAddress, value]) => {
-					const elementByteAddress =
-						memory.byteAddress + (parseInt(relativeWordAddress, 10) + 1) * memory.elementWordSize;
+					const elementByteAddress = memory.byteAddress + parseInt(relativeWordAddress, 10) * memory.elementWordSize;
 					if (memory.elementWordSize === 8) {
 						instructions.push(...f64store(elementByteAddress, value));
 					} else {

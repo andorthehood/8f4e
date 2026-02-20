@@ -89,7 +89,7 @@ export default async function compileAndUpdateMemory(
 				} else {
 					memoryBufferInt[change.wordAlignedAddress] = change.value;
 				}
-			} else if (change.isFloat64) {
+			} else if (change.elementWordSize === 8 && !change.isInteger) {
 				const float64Index = change.wordAlignedAddress / 2;
 				if (typeof change.value === 'object') {
 					Object.entries(change.value).forEach(([index, item]) => {

@@ -33,6 +33,7 @@ export default function getMemoryValueChanges(
 						value: memory.default,
 						isInteger: memory.isInteger,
 						isFloat64: memory.isFloat64,
+						elementWordSize: memory.elementWordSize,
 					});
 				}
 			} else {
@@ -43,6 +44,7 @@ export default function getMemoryValueChanges(
 						value: memory.default,
 						isInteger: memory.isInteger,
 						isFloat64: memory.isFloat64,
+						elementWordSize: memory.elementWordSize,
 					});
 				}
 			}
