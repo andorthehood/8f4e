@@ -40,7 +40,8 @@ const call: InstructionCompiler = withValidation(
 			const stackIndex = context.stack.length - parameters.length + i;
 			const stackItem = context.stack[stackIndex];
 			const expectedInteger = parameters[i] === 'int';
-			if (stackItem.isInteger !== expectedInteger) {
+			const expectedFloat64 = parameters[i] === 'float64';
+			if (stackItem.isInteger !== expectedInteger || !!stackItem.isFloat64 !== expectedFloat64) {
 				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
 			}
 		}
@@ -50,7 +51,10 @@ const call: InstructionCompiler = withValidation(
 
 		// Push return values onto stack
 		returns.forEach(returnType => {
-			context.stack.push({ isInteger: returnType === 'int' });
+			context.stack.push({
+				isInteger: returnType === 'int',
+				...(returnType === 'float64' ? { isFloat64: true } : {}),
+			});
 		});
 
 		// Emit WASM call instruction
