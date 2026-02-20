@@ -16,6 +16,11 @@ export async function loadSession(): Promise<Project | null> {
 	try {
 		const projectUrlFromQuery = new URLSearchParams(location.search).get('projectUrl') || '';
 		if (projectUrlFromQuery) {
+			const url = new URL(window.location.href);
+			url.searchParams.delete('projectUrl');
+			const cleanUrl = `${url.pathname}${url.search}${url.hash}`;
+			window.history.replaceState({}, '', cleanUrl);
+
 			console.log('Loading project from query param:', projectUrlFromQuery);
 			return parse8f4eToProject(await getProject(projectUrlFromQuery));
 		}
