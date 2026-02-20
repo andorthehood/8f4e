@@ -71,7 +71,7 @@ This first step only guarantees safe memory reservation and addressing metadata.
 
 ## Validation Checkpoints
 
-- `rg -n "float64\\[\\]|float64" /Users/andorpolgar/git/8f4e/packages/compiler/src`
+- `rg -n "float64\\[\\]|float64" packages/compiler/src`
 - `npx nx run @8f4e/compiler:test -- --run "buffer|memory|allocation"`
 - Verify memory-map snapshots show:
   - scalar `float64` entries exist with `elementWordSize: 8`
@@ -94,13 +94,13 @@ This first step only guarantees safe memory reservation and addressing metadata.
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts` - memory type definitions.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/index.ts` - instruction registry for `float64` and `float64[]`.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/float.ts` (or equivalent) - scalar float64 allocation metadata.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/utils/memoryFlags.ts` - pointer flag behavior for float64 pointer declarations.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/buffer.ts` - element size and aligned allocation calculations.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/tests` and/or in-source tests - allocation/layout coverage.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/consts.ts` and related comments - alignment rationale.
+- `packages/compiler/src/types.ts` - memory type definitions.
+- `packages/compiler/src/instructionCompilers/index.ts` - instruction registry for `float64` and `float64[]`.
+- `packages/compiler/src/instructionCompilers/float.ts` (or equivalent) - scalar float64 allocation metadata.
+- `packages/compiler/src/utils/memoryFlags.ts` - pointer flag behavior for float64 pointer declarations.
+- `packages/compiler/src/instructionCompilers/buffer.ts` - element size and aligned allocation calculations.
+- `packages/compiler/tests` and/or in-source tests - allocation/layout coverage.
+- `packages/compiler/src/consts.ts` and related comments - alignment rationale.
 
 ## Risks & Considerations
 
@@ -113,8 +113,8 @@ This first step only guarantees safe memory reservation and addressing metadata.
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/146-investigate-index-arithmetic-support.md` (word/byte addressing implications).
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/150-add-test-module-type.md` (test ergonomics for low-level memory behavior).
+- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md` (word/byte addressing implications).
+- **Related**: `docs/todos/150-add-test-module-type.md` (test ergonomics for low-level memory behavior).
 
 ## Notes
 
