@@ -1,6 +1,6 @@
 import { parse8f4eToProject } from '@8f4e/editor-state';
 
-import { getProject, hasProjectUrl, getDefaultProjectUrl } from './examples/registry';
+import { getProject, getDefaultProjectUrl } from './examples/registry';
 import { getCodeBuffer } from './compiler-callback';
 
 import type { Project, EditorConfigBlock } from '@8f4e/editor';
@@ -15,7 +15,7 @@ const STORAGE_KEYS = {
 export async function loadSession(): Promise<Project | null> {
 	try {
 		const projectUrlFromQuery = new URLSearchParams(location.search).get('projectUrl') || '';
-		if (projectUrlFromQuery && hasProjectUrl(projectUrlFromQuery)) {
+		if (projectUrlFromQuery) {
 			console.log('Loading project from query param:', projectUrlFromQuery);
 			return parse8f4eToProject(await getProject(projectUrlFromQuery));
 		}
