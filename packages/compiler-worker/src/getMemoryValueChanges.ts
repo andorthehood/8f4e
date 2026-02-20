@@ -32,6 +32,7 @@ export default function getMemoryValueChanges(
 						wordAlignedAddress: memory.wordAlignedAddress,
 						value: memory.default,
 						isInteger: memory.isInteger,
+						isFloat64: memory.isFloat64,
 					});
 				}
 			} else {
@@ -41,6 +42,7 @@ export default function getMemoryValueChanges(
 						wordAlignedAddress: memory.wordAlignedAddress,
 						value: memory.default,
 						isInteger: memory.isInteger,
+						isFloat64: memory.isFloat64,
 					});
 				}
 			}

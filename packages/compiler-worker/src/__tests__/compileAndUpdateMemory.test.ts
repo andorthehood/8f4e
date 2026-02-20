@@ -83,3 +83,53 @@ moduleEnd
 		expect(secondMemory[addresses.derived]).toBe(4);
 	});
 });
+
+describe('compileAndUpdateMemory float64 incremental patching', () => {
+	const compilerOptions = { memorySizeBytes: 1024, startingMemoryWordAddress: 1 };
+	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
+
+	beforeEach(async () => {
+		vi.resetModules();
+		({ default: compileAndUpdateMemory } = await import('../compileAndUpdateMemory'));
+	});
+
+	it('patches float64 scalar default correctly on incremental recompile', async () => {
+		const createModules = (val: number): Module[] => [
+			{ code: `module mymod\nfloat64 value ${val}\nmoduleEnd`.split('\n') },
+		];
+
+		const firstResult = await compileAndUpdateMemory(createModules(1.5), compilerOptions);
+		const memEntry = firstResult.compiledModules.mymod.memoryMap.value;
+		const float64Index = memEntry.byteAddress / 8;
+		const firstView = new Float64Array(firstResult.memoryRef.buffer);
+
+		expect(firstView[float64Index]).toBeCloseTo(1.5);
+
+		const secondResult = await compileAndUpdateMemory(createModules(2.5), compilerOptions);
+		const secondView = new Float64Array(secondResult.memoryRef.buffer);
+
+		expect(secondView[float64Index]).toBeCloseTo(2.5);
+	});
+
+	it('does not overwrite float64 memory when default is unchanged on incremental recompile', async () => {
+		const createModules = (val: number): Module[] => [
+			{ code: `module mymod\nfloat64 value ${val}\nmoduleEnd`.split('\n') },
+		];
+
+		const firstResult = await compileAndUpdateMemory(createModules(3.14), compilerOptions);
+		const memEntry = firstResult.compiledModules.mymod.memoryMap.value;
+		const float64Index = memEntry.byteAddress / 8;
+
+		const firstView = new Float64Array(firstResult.memoryRef.buffer);
+		expect(firstView[float64Index]).toBeCloseTo(3.14);
+
+		// Manually overwrite the value in memory
+		firstView[float64Index] = 9.99;
+
+		const secondResult = await compileAndUpdateMemory(createModules(3.14), compilerOptions);
+		const secondView = new Float64Array(secondResult.memoryRef.buffer);
+
+		// Should NOT have been reset to 3.14 since the default didn't change
+		expect(secondView[float64Index]).toBeCloseTo(9.99);
+	});
+});
