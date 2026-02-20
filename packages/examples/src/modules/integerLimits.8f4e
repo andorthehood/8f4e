@@ -1,0 +1,32 @@
+constants integerLimits
+
+const MAX_8U   255
+const MIN_8U   0
+const MAX_16U  65535
+const MIN_16U  0
+const MAX_32U  4294967295
+const MIN_32U  0
+const MAX_8S   127
+const MIN_8S  -128
+const MAX_16S  32767
+const MIN_16S -32768
+const MAX_32S  2147483647
+const MIN_32S -2147483648
+
+const RANGE_8  256
+const RANGE_16 6536
+const RANGE_32 4294967296
+
+const MASK_8  0xff
+const MASK_16 0xffff
+const MASK_32 0xffffffff
+
+const SIGN_BIT_8  0x80
+const SIGN_BIT_16 0x8000
+const SIGN_BIT_32 0x80000000
+
+const BYTES_8 1
+const BYTES_16 2
+const BYTES_32 4
+
+constantsEnd

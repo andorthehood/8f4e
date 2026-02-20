@@ -263,16 +263,19 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		}
 
 		// Load the requested module
-		const requestedModule = await state.callbacks.getModule(codeBlockSlug);
+		const requestedModuleCodeText = await state.callbacks.getModule(codeBlockSlug);
 
 		// Add the requested module at the clicked position
-		const requestedCode = requestedModule.code.split('\n');
+		const requestedCode = requestedModuleCodeText.split('\n');
 		onAddCodeBlock({ code: requestedCode, x, y, isNew: false });
 
 		// If the module has dependencies, insert them to the right
-		if (requestedModule.dependencies && requestedModule.dependencies.length > 0) {
+		const dependencies = state.callbacks.getModuleDependencies
+			? await state.callbacks.getModuleDependencies(codeBlockSlug)
+			: [];
+		if (dependencies.length > 0) {
 			await insertDependencies({
-				dependencies: requestedModule.dependencies,
+				dependencies,
 				getModule: state.callbacks.getModule,
 				requestedModuleCode: requestedCode,
 				clickX: x,

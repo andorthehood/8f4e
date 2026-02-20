@@ -1,0 +1,10 @@
+module midiLUT
+
+float[] notes 128
+${midiFrequencies
+	.map((value, note) => {
+		return `init notes[${note}] ${value.toFixed(4)}`;
+	})
+	.join('\n')}
+
+moduleEnd

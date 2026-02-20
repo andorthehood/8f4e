@@ -133,7 +133,6 @@ export type {
 	BinaryAsset,
 	ConfigBinaryAsset,
 	Callbacks,
-	ExampleModule,
 	ModuleMetadata,
 	ProjectMetadata,
 	Runtimes,
