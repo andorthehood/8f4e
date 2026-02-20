@@ -51,8 +51,40 @@ describe('parseInputs', () => {
 		]);
 	});
 
+	it('should parse float64* instruction', () => {
+		const code = ['float64* myInput'];
+		const result = parseInputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myInput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
+	it('should parse float64** instruction', () => {
+		const code = ['float64** myInput'];
+		const result = parseInputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myInput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should handle multiple input instructions of different types', () => {
-		const code = ['int* input1', 'mov a b', 'float* input2', 'int** input3', 'float** input4'];
+		const code = [
+			'int* input1',
+			'mov a b',
+			'float* input2',
+			'int** input3',
+			'float** input4',
+			'float64* input5',
+			'float64** input6',
+		];
 		const result = parseInputs(code);
 
 		expect(result).toEqual([
@@ -71,6 +103,14 @@ describe('parseInputs', () => {
 			{
 				id: 'input4',
 				lineNumber: 4,
+			},
+			{
+				id: 'input5',
+				lineNumber: 5,
+			},
+			{
+				id: 'input6',
+				lineNumber: 6,
 			},
 		]);
 	});
