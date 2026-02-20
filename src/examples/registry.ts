@@ -1,5 +1,5 @@
 import { moduleManifest, moduleMetadata } from './exampleModules';
-import { projectMetadata, projectMetadataByUrl } from './exampleProjects';
+import { projectMetadata } from './exampleProjects';
 
 import type { ExampleModule, ModuleMetadata, ProjectMetadata } from '@8f4e/editor-state';
 
@@ -46,10 +46,6 @@ export async function getModule(slug: string): Promise<ExampleModule> {
  */
 export async function getListOfProjects(): Promise<ProjectMetadata[]> {
 	return projectMetadata;
-}
-
-export function hasProjectUrl(url: string): boolean {
-	return Boolean(projectMetadataByUrl[url]);
 }
 
 export function getDefaultProjectUrl(): string | null {
