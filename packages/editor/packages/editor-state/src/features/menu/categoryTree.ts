@@ -93,8 +93,8 @@ export function getNodeAtPath(root: CategoryNode, path: string[]): CategoryNode 
  * @param node The category node to convert
  * @param path The current path (used for submenu payloads)
  * @param menuName The menu name to use for openSubMenu actions
- * @param itemAction The action to use for leaf items (e.g., 'addCodeBlockBySlug', 'loadProjectBySlug')
- * @param itemPayloadKey The payload key to use for leaf items (e.g., 'codeBlockSlug', 'projectSlug')
+ * @param itemAction The action to use for leaf items (e.g., 'addCodeBlockBySlug', 'loadProjectByUrl')
+ * @param itemPayloadKey The payload key to use for leaf items (e.g., 'codeBlockSlug', 'projectUrl')
  */
 export function nodeToMenuItems(
 	node: CategoryNode,
