@@ -153,7 +153,8 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 		case ErrorCode.INVALID_FUNCTION_SIGNATURE:
 			return {
 				code,
-				message: 'Invalid function signature. Parameters and returns must be "int" or "float". (' + code + ')',
+				message:
+					'Invalid function signature. Parameters and returns must be "int", "float", or "float64". (' + code + ')',
 				line,
 				context,
 			};
