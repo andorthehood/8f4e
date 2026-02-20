@@ -31,24 +31,71 @@ Out of scope:
 - implicit cast/promotion logic,
 - non-store instructions.
 
-## Implementation Summary
+## Anti-Patterns
 
-- Added `F64 = 0x7c` to `Type` enum in `wasmUtils/type.ts`
-- Added `isFloat64?: boolean` to `Namespace.locals` type in `types.ts`
-- Updated `local.ts` instruction compiler to set `isFloat64: true` when type is `float64`
-- Updated `compiler.ts` to emit `Type.F64` local declarations for float64 locals (both `compileModule` and `compileFunction`)
-- Updated `store.ts` to:
-  - Import and use `f64store` when `operand1Value.isFloat64 === true`
-  - Use `local float64 <name>` for the temp value variable in the unsafe-address (bounds-check) path
-  - Keep existing `i32store` and `f32store` paths unchanged
-- Added in-file unit tests covering float64 safe/unsafe address paths and float64 local type tracking
-- Added integration tests in `tests/instructions/store.test.ts` verifying the WASM output round-trips float64 values correctly
+- Do not silently demote float64 values to float32 on store.
+- Do not choose store opcode from operand shape alone; use memory metadata.
+- Do not regress existing int32/float32 store behavior.
 
-## Affected Files
+## Implementation Plan
 
-- `packages/compiler/src/wasmUtils/type.ts`
-- `packages/compiler/src/types.ts`
-- `packages/compiler/src/instructionCompilers/local.ts`
-- `packages/compiler/src/compiler.ts`
+### Step 1: Add/store f64 wasm primitive
+- Ensure `f64store` helper exists and is used by `store` compiler path where appropriate.
+
+### Step 2: Update store routing
+- Route by target memory type/element size:
+  - int -> `i32.store`
+  - float32 -> `f32.store`
+  - float64 -> `f64.store`
+- Keep bounds-check/safe-address wrappers shared.
+
+### Step 3: Add tests
+- Add tests for:
+  - storing float64 into float64 memory item,
+  - existing int/float32 store paths unchanged,
+  - invalid width/type combinations fail with explicit compiler error.
+
+## Validation Checkpoints
+
+- `rg -n "store|f64store|f64\\.store" packages/compiler/src`
+- `npx nx run @8f4e/compiler:test -- --run "store|float|memory"`
+
+## Success Criteria
+
+- [ ] `store` emits `f64.store` for float64 memory targets.
+- [ ] Existing int32 and float32 store behavior remains unchanged.
+- [ ] Type/width mismatches are rejected with clear compiler errors.
+- [ ] Tests cover float64 store path and regression cases.
+
+## Affected Components
+
 - `packages/compiler/src/instructionCompilers/store.ts`
-- `packages/compiler/tests/instructions/store.test.ts` (new)
+- `packages/compiler/src/wasmUtils/store/f64store.ts` (or equivalent)
+- `packages/compiler/src/types.ts` / validation helpers
+- `packages/compiler/tests`
+
+## Risks & Considerations
+
+- **Risk 1**: Incorrect opcode routing for float memory kinds.
+  - Mitigation: strict routing tests by memory metadata.
+- **Risk 2**: Drift from push/arithmetic type-width handling.
+  - Mitigation: share validation helpers where possible.
+
+## Related Items
+
+- **Depends on**: `docs/todos/250-add-f64-push-support.md`
+- **Related**: `docs/todos/253-add-f64-support-for-basic-arithmetic.md`
+- **Related**: `docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
+
+## Notes
+
+- Keep this TODO narrowly focused on `store` so it can land independently and be verified in isolation.
+
+## Archive Instructions
+
+When this TODO is completed:
+1. Update the front matter to set `status: Completed` and provide the `completed` date
+2. Move it to the `todo/archived/` folder to keep the main todo directory clean and organized
+3. Update the `todo/_index.md` file to:
+   - Move the TODO from the "Active TODOs" section to the "Completed TODOs" section
+   - Add the completion date to the TODO entry (use `date +%Y-%m-%d` command if current date is not provided in the context)
