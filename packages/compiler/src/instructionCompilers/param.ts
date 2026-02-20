@@ -45,7 +45,7 @@ const param: InstructionCompiler = withValidation(
 		const paramType = line.arguments[0].value;
 		const paramName = line.arguments[1].value;
 
-		if (paramType !== 'int' && paramType !== 'float') {
+		if (paramType !== 'int' && paramType !== 'float' && paramType !== 'float64') {
 			throw getError(ErrorCode.INVALID_FUNCTION_SIGNATURE, line, context);
 		}
 
@@ -60,6 +60,7 @@ const param: InstructionCompiler = withValidation(
 
 		context.namespace.locals[paramName] = {
 			isInteger: paramType === 'int',
+			...(paramType === 'float64' ? { isFloat64: true } : {}),
 			index: paramIndex,
 		};
 
@@ -104,6 +105,41 @@ if (import.meta.vitest) {
 					arguments: [
 						{ type: ArgumentType.IDENTIFIER, value: 'int' },
 						{ type: ArgumentType.IDENTIFIER, value: 'value' },
+					],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				locals: context.namespace.locals,
+				currentFunctionSignature: context.currentFunctionSignature,
+			}).toMatchSnapshot();
+		});
+
+		it('registers a float64 function parameter', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.FUNCTION,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+				],
+				currentFunctionSignature: { parameters: [], returns: [] },
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					locals: {},
+				},
+			});
+
+			param(
+				{
+					lineNumber: 1,
+					instruction: 'param',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'float64' },
+						{ type: ArgumentType.IDENTIFIER, value: 'x' },
 					],
 				} as AST[number],
 				context

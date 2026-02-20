@@ -36,6 +36,7 @@ import int from './int';
 import float from './float';
 import castToInt from './castToInt';
 import castToFloat from './castToFloat';
+import castToFloat64 from './castToFloat64';
 import skip from './skip';
 import buffer from './buffer';
 import drop from './drop';
@@ -133,6 +134,7 @@ const instructions = {
 	'float64**[]': buffer,
 	castToInt,
 	castToFloat,
+	castToFloat64,
 	skip,
 	drop,
 	clearStack,
