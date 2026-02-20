@@ -3,7 +3,7 @@ title: 'TODO: Add float promote/demote instructions'
 priority: Medium
 effort: 1-2d
 created: 2026-02-19
-status: Open
+status: Cancelled
 completed: null
 ---
 
@@ -54,7 +54,7 @@ Out of scope:
 
 ## Validation Checkpoints
 
-- `rg -n "promoteToFloat64|demoteToFloat32|promote_f32|demote_f64" /Users/andorpolgar/git/8f4e/packages/compiler`
+- `rg -n "promoteToFloat64|demoteToFloat32|promote_f32|demote_f64" packages/compiler`
 - `npx nx run @8f4e/compiler:test -- --run "promote|demote|cast|float"`
 
 ## Success Criteria
@@ -66,10 +66,10 @@ Out of scope:
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers` - new instruction compilers and registry entries.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/wasmUtils/wasmInstruction.ts` - opcodes if not already present.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts` and validation helpers - width-aware stack typing.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/tests` - instruction tests/snapshots.
+- `packages/compiler/src/instructionCompilers` - new instruction compilers and registry entries.
+- `packages/compiler/src/wasmUtils/wasmInstruction.ts` - opcodes if not already present.
+- `packages/compiler/src/types.ts` and validation helpers - width-aware stack typing.
+- `packages/compiler/tests` - instruction tests/snapshots.
 
 ## Risks & Considerations
 
@@ -80,8 +80,8 @@ Out of scope:
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/250-add-f64-push-support.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
+- **Related**: `docs/todos/250-add-f64-push-support.md`
+- **Related**: `docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
 
 ## Notes
 
