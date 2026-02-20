@@ -13,72 +13,70 @@ export type ExampleProjectMetadata = ProjectMetadata & { url: string };
  * This allows listing projects without loading their code.
  * Metadata is kept in sync with actual project files.
  */
-export const projectMetadataByUrl: Record<string, ExampleProjectMetadata> = {
-	[`${exampleProjectsBaseUrl}/audioBuffer.8f4e`]: {
+export const projectMetadata: ExampleProjectMetadata[] = [
+	{
 		title: 'Audio Buffer',
 		category: 'Audio',
 		url: `${exampleProjectsBaseUrl}/audioBuffer.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/audioLoopback.8f4e`]: {
+	{
 		title: 'Audio Loopback',
 		category: 'Audio',
 		url: `${exampleProjectsBaseUrl}/audioLoopback.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/backgroundPlasma.8f4e`]: {
+	{
 		title: 'Background Plasma',
 		category: 'Visuals',
 		url: `${exampleProjectsBaseUrl}/backgroundPlasma.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/bistableMultivibrators.8f4e`]: {
+	{
 		title: 'Bistable Multivibrators',
 		category: 'Digital',
 		url: `${exampleProjectsBaseUrl}/bistableMultivibrators.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/dancingWithTheSineLT.8f4e`]: {
+	{
 		title: 'Dancing With The Sine LT',
 		category: 'Visuals',
 		url: `${exampleProjectsBaseUrl}/dancingWithTheSineLT.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/xorProblem.8f4e`]: {
+	{
 		title: 'XOR Problem',
 		category: 'Machine Learning',
 		url: `${exampleProjectsBaseUrl}/xorProblem.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/randomGenerators.8f4e`]: {
+	{
 		title: 'Random Generators',
 		category: 'Misc',
 		url: `${exampleProjectsBaseUrl}/randomGenerators.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/rippleEffect.8f4e`]: {
+	{
 		title: 'Ripple Effect Demo',
 		category: 'Visuals',
 		url: `${exampleProjectsBaseUrl}/rippleEffect.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/samplePlayer.8f4e`]: {
+	{
 		title: 'Sample Player',
 		category: 'Audio',
 		url: `${exampleProjectsBaseUrl}/samplePlayer.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/simpleCounterMainThread.8f4e`]: {
+	{
 		title: 'Simple Counter (Main Thread)',
 		category: 'Misc',
 		url: `${exampleProjectsBaseUrl}/simpleCounterMainThread.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/standaloneProject.8f4e`]: {
+	{
 		title: 'Standalone Project Example',
 		category: 'Misc',
 		url: `${exampleProjectsBaseUrl}/standaloneProject.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/digitClassifier.8f4e`]: {
+	{
 		title: 'Digit Classifier',
 		category: 'Machine Learning',
 		url: `${exampleProjectsBaseUrl}/digitClassifier.8f4e`,
 	},
-	[`${exampleProjectsBaseUrl}/digitClassifier64.8f4e`]: {
+	{
 		title: 'Digit Classifier (float64)',
 		category: 'Machine Learning',
 		url: `${exampleProjectsBaseUrl}/digitClassifier64.8f4e`,
 	},
-};
-
-export const projectMetadata: ExampleProjectMetadata[] = Object.values(projectMetadataByUrl);
+];
