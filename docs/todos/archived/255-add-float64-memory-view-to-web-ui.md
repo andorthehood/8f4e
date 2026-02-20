@@ -60,8 +60,8 @@ Out of scope:
 
 ## Validation Checkpoints
 
-- `rg -n "float32|int32|MemoryViews|createMemoryViewManager" /Users/andorpolgar/git/8f4e/packages/editor /Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui`
-- `rg -n "memoryViews\\.float32|memory\\.isInteger|elementWordSize" /Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui/src/drawers/codeBlocks`
+- `rg -n "float32|int32|MemoryViews|createMemoryViewManager" packages/editor packages/editor/packages/web-ui`
+- `rg -n "memoryViews\\.float32|memory\\.isInteger|elementWordSize" packages/editor/packages/web-ui/src/drawers/codeBlocks`
 - `npx nx run editor:test`
 - `npx nx run @8f4e/web-ui:test`
 
@@ -75,15 +75,15 @@ Out of scope:
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/editor/src/memoryViewManager.ts`
-- `/Users/andorpolgar/git/8f4e/packages/editor/src/index.ts`
-- `/Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui/src/types.ts`
-- `/Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/debuggers.ts`
-- `/Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/plotters.ts`
-- `/Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/connectors.ts`
-- `/Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/sliders.ts`
-- `/Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/pianoKeyboards.ts`
-- `/Users/andorpolgar/git/8f4e/packages/editor/packages/web-ui/screenshot-tests/utils/createMockMemoryViews.ts`
+- `packages/editor/src/memoryViewManager.ts`
+- `packages/editor/src/index.ts`
+- `packages/editor/packages/web-ui/src/types.ts`
+- `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/debuggers.ts`
+- `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/plotters.ts`
+- `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/connectors.ts`
+- `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/sliders.ts`
+- `packages/editor/packages/web-ui/src/drawers/codeBlocks/codeBlockDecorators/pianoKeyboards.ts`
+- `packages/editor/packages/web-ui/screenshot-tests/utils/createMockMemoryViews.ts`
 - related tests in editor/web-ui packages
 
 ## Risks & Considerations
@@ -95,9 +95,9 @@ Out of scope:
 
 ## Related Items
 
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/250-add-f64-push-support.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/253-add-f64-support-for-basic-arithmetic.md`
+- **Related**: `docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
+- **Related**: `docs/todos/250-add-f64-push-support.md`
+- **Related**: `docs/todos/253-add-f64-support-for-basic-arithmetic.md`
 
 ## Notes
 
