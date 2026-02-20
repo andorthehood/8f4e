@@ -120,7 +120,7 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 		if (memoryItem.isInteger) {
 			return dataView.getInt32(memoryItem.byteAddress, true);
-		} else if (memoryItem.isFloat64) {
+		} else if (memoryItem.isFloat64 || (!memoryItem.isInteger && memoryItem.elementWordSize === 8)) {
 			return dataView.getFloat64(memoryItem.byteAddress, true);
 		} else {
 			return dataView.getFloat32(memoryItem.byteAddress, true);
@@ -280,7 +280,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 
 		if (memoryItem.isInteger) {
 			return dataView.getInt32(memoryItem.byteAddress, true);
-		} else if (memoryItem.isFloat64) {
+		} else if (memoryItem.isFloat64 || (!memoryItem.isInteger && memoryItem.elementWordSize === 8)) {
 			return dataView.getFloat64(memoryItem.byteAddress, true);
 		} else {
 			return dataView.getFloat32(memoryItem.byteAddress, true);
