@@ -184,6 +184,53 @@ describe('Param Instruction', () => {
 		expect(result.compiledFunctions!.mixedParams.signature.parameters).toEqual(['int', 'float']);
 	});
 
+	test('should accept float64 param and track it in function signature', () => {
+		const functions: Module[] = [
+			{
+				code: ['function getDouble', 'param float64 x', 'localGet x', 'push 2.0f64', 'mul', 'functionEnd float64'],
+			},
+		];
+
+		const modules: Module[] = [
+			{
+				code: ['module test', 'moduleEnd'],
+			},
+		];
+
+		const result = compile(modules, defaultOptions, functions);
+
+		expect(result.compiledFunctions!.getDouble).toBeDefined();
+		expect(result.compiledFunctions!.getDouble.signature.parameters).toEqual(['float64']);
+		expect(result.compiledFunctions!.getDouble.signature.returns).toEqual(['float64']);
+	});
+
+	test('should accept mixed int, float, and float64 parameters', () => {
+		const functions: Module[] = [
+			{
+				code: [
+					'function mixedAll',
+					'param int intVal',
+					'param float floatVal',
+					'param float64 doubleVal',
+					'localGet doubleVal',
+					'functionEnd float64',
+				],
+			},
+		];
+
+		const modules: Module[] = [
+			{
+				code: ['module test', 'moduleEnd'],
+			},
+		];
+
+		const result = compile(modules, defaultOptions, functions);
+
+		expect(result.compiledFunctions!.mixedAll).toBeDefined();
+		expect(result.compiledFunctions!.mixedAll.signature.parameters).toEqual(['int', 'float', 'float64']);
+		expect(result.compiledFunctions!.mixedAll.signature.returns).toEqual(['float64']);
+	});
+
 	test('should reject param instruction outside function', () => {
 		const modules: Module[] = [
 			{
