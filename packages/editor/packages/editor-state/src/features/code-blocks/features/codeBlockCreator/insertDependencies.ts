@@ -2,11 +2,11 @@ import getCodeBlockGridWidth from '../graphicHelper/getCodeBlockGridWidth';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 
-import type { State, ExampleModule } from '~/types';
+import type { State } from '~/types';
 
 interface InsertDependenciesParams {
 	dependencies: string[];
-	getModule: (slug: string) => Promise<ExampleModule>;
+	getModule: (slug: string) => Promise<string>;
 	requestedModuleCode: string[];
 	clickX: number;
 	clickY: number;
@@ -40,8 +40,7 @@ export async function insertDependencies({
 	// Insert dependencies from left to right
 	for (const dependencySlug of dependencies) {
 		try {
-			const dependencyModule = await getModule(dependencySlug);
-			const dependencyCode = dependencyModule.code.split('\n');
+			const dependencyCode = (await getModule(dependencySlug)).split('\n');
 
 			// Get the module ID and type from the dependency code
 			const dependencyModuleId = getCodeBlockId(dependencyCode);
