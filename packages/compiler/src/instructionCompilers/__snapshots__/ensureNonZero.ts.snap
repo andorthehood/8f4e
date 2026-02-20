@@ -14,16 +14,18 @@ exports[`ensureNonZero instruction compiler > ensures float operand is non-zero 
     0,
     91,
     4,
-    125,
+    64,
     67,
     0,
     0,
     32,
     64,
+    33,
+    0,
     5,
+    11,
     32,
     0,
-    11,
   ],
   "locals": {
     "__ensureNonZero_temp_2": {
@@ -33,6 +35,58 @@ exports[`ensureNonZero instruction compiler > ensures float operand is non-zero 
   },
   "stack": [
     {
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`ensureNonZero instruction compiler > ensures float64 operand is non-zero with float64 default 1`] = `
+{
+  "byteCode": [
+    33,
+    0,
+    32,
+    0,
+    68,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    97,
+    4,
+    64,
+    68,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    4,
+    64,
+    33,
+    0,
+    5,
+    11,
+    32,
+    0,
+  ],
+  "locals": {
+    "__ensureNonZero_temp_3": {
+      "index": 0,
+      "isFloat64": true,
+      "isInteger": false,
+    },
+  },
+  "stack": [
+    {
+      "isFloat64": true,
       "isInteger": false,
       "isNonZero": true,
     },
