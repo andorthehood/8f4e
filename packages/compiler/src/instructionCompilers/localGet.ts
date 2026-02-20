@@ -28,7 +28,11 @@ const _localGet: InstructionCompiler = withValidation(
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 			}
 
-			context.stack.push({ isInteger: local.isInteger, isNonZero: false });
+			context.stack.push({
+				isInteger: local.isInteger,
+				...(local.isFloat64 ? { isFloat64: true } : {}),
+				isNonZero: false,
+			});
 
 			return saveByteCode(context, localGet(local.index));
 		} else {

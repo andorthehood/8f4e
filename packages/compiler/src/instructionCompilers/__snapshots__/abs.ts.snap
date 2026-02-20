@@ -50,3 +50,18 @@ exports[`abs instruction compiler > emits F32_ABS for float operands 1`] = `
   ],
 }
 `;
+
+exports[`abs instruction compiler > emits F64_ABS for float64 operands 1`] = `
+{
+  "byteCode": [
+    153,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;

@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`castToFloat64 instruction compiler > converts int operand to float64 1`] = `
+{
+  "byteCode": [
+    183,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`castToFloat64 instruction compiler > is a no-op for float64 operand 1`] = `
+{
+  "byteCode": [],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`castToFloat64 instruction compiler > promotes float32 operand to float64 1`] = `
+{
+  "byteCode": [
+    187,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
