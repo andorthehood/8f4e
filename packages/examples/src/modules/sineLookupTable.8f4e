@@ -1,0 +1,9 @@
+module sineLUT
+
+${sine
+	.map((value, index) => {
+		return `float sin${index} ${value.toFixed(4)}`;
+	})
+	.join('\n')}
+
+moduleEnd
