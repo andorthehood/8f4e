@@ -52,8 +52,8 @@ export interface CompiledModule {
 export type CompiledModuleLookup = Record<string, CompiledModule>;
 
 export interface FunctionSignature {
-	parameters: Array<'int' | 'float'>;
-	returns: Array<'int' | 'float'>;
+	parameters: Array<'int' | 'float' | 'float64'>;
+	returns: Array<'int' | 'float' | 'float64'>;
 }
 
 export interface FunctionTypeRegistry {

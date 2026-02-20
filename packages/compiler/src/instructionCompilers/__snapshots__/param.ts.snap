@@ -1,5 +1,23 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`param instruction compiler > registers a float64 function parameter 1`] = `
+{
+  "currentFunctionSignature": {
+    "parameters": [
+      "float64",
+    ],
+    "returns": [],
+  },
+  "locals": {
+    "x": {
+      "index": 0,
+      "isFloat64": true,
+      "isInteger": false,
+    },
+  },
+}
+`;
+
 exports[`param instruction compiler > registers a function parameter 1`] = `
 {
   "currentFunctionSignature": {

@@ -1,5 +1,31 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`functionEnd instruction compiler > accepts float64 return type and emits Type.F64 in type registry 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "currentFunctionSignature": {
+    "parameters": [
+      "float64",
+    ],
+    "returns": [
+      "float64",
+    ],
+  },
+  "functionTypeRegistry": {
+    "baseTypeIndex": 0,
+    "signatureMapSize": 1,
+    "typesLength": 1,
+  },
+  "stack": [],
+}
+`;
+
 exports[`functionEnd instruction compiler > updates function signature and clears stack 1`] = `
 {
   "blockStack": [
