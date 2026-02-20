@@ -13,6 +13,7 @@ const packageRoot = path.resolve(testDir, '..');
 const fixturePath = path.join(testDir, 'fixtures', 'audioBuffer.project.json');
 const tmpDir = path.join(testDir, '.tmp');
 const outputPath = path.join(tmpDir, 'audioBuffer.runtime-ready.json');
+const tracePath = path.join(tmpDir, 'audioBuffer.trace.json');
 
 describe('cli', () => {
 	it('compiles a project JSON to runtime-ready output', async () => {
@@ -27,5 +28,24 @@ describe('cli', () => {
 		expect(output.compiledProjectConfig).toBeDefined();
 		expect(output.compiledModules).toBeDefined();
 		expect(output.compiledWasm).toBeDefined();
+	});
+
+	it('writes instruction flow trace when --trace-output is provided', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		await execFileAsync(
+			process.execPath,
+			[path.join(packageRoot, 'bin', 'cli.js'), fixturePath, '-o', outputPath, '--trace-output', tracePath],
+			{
+				cwd: packageRoot,
+			}
+		);
+
+		const raw = await fs.readFile(tracePath, 'utf8');
+		const trace = JSON.parse(raw) as { memorySizeBytes: number; blocks: Array<{ entries: unknown[] }> };
+
+		expect(trace.memorySizeBytes).toBeTypeOf('number');
+		expect(Array.isArray(trace.blocks)).toBe(true);
+		expect(trace.blocks.length).toBeGreaterThan(0);
+		expect(trace.blocks.some(block => block.entries.length > 0)).toBe(true);
 	});
 });

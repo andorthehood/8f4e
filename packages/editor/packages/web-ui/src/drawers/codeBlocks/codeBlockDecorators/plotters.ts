@@ -39,7 +39,7 @@ export default function drawer(
 			} else if (buffer.memory.elementWordSize === 2 && buffer.memory.isInteger) {
 				const view = buffer.memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
 				value = view[buffer.memory.byteAddress / 2 + i];
-			} else if (buffer.memory.isFloat64) {
+			} else if (buffer.memory.elementWordSize === 8 && !buffer.memory.isInteger) {
 				value = memoryViews.float64[buffer.memory.byteAddress / 8 + i];
 			} else {
 				value = buffer.memory.isInteger
