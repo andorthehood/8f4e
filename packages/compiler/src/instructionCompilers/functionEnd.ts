@@ -25,10 +25,13 @@ const functionEnd: InstructionCompiler = withValidation(
 
 		// Parse return types: functionEnd [<returnType1> <returnType2> ...]
 		const returnTypes = line.arguments.map(arg => {
-			if (arg.type !== ArgumentType.IDENTIFIER || (arg.value !== 'int' && arg.value !== 'float')) {
+			if (
+				arg.type !== ArgumentType.IDENTIFIER ||
+				(arg.value !== 'int' && arg.value !== 'float' && arg.value !== 'float64')
+			) {
 				throw getError(ErrorCode.INVALID_FUNCTION_SIGNATURE, line, context);
 			}
-			return arg.value as 'int' | 'float';
+			return arg.value as 'int' | 'float' | 'float64';
 		});
 
 		if (returnTypes.length > 8) {
@@ -42,8 +45,9 @@ const functionEnd: InstructionCompiler = withValidation(
 
 		for (let i = 0; i < returnTypes.length; i++) {
 			const stackItem = context.stack[context.stack.length - returnTypes.length + i];
-			const expectedInteger = returnTypes[i] === 'int';
-			if (stackItem.isInteger !== expectedInteger) {
+			const expectedIsInteger = returnTypes[i] === 'int';
+			const expectedIsFloat64 = returnTypes[i] === 'float64';
+			if (stackItem.isInteger !== expectedIsInteger || !!stackItem.isFloat64 !== expectedIsFloat64) {
 				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
 			}
 		}
@@ -54,8 +58,10 @@ const functionEnd: InstructionCompiler = withValidation(
 
 			// Register type signature in the type registry if available
 			if (context.functionTypeRegistry) {
-				const params = context.currentFunctionSignature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
-				const results = returnTypes.map(type => (type === 'int' ? Type.I32 : Type.F32));
+				const params = context.currentFunctionSignature.parameters.map(type =>
+					type === 'int' ? Type.I32 : type === 'float64' ? Type.F64 : Type.F32
+				);
+				const results = returnTypes.map(type => (type === 'int' ? Type.I32 : type === 'float64' ? Type.F64 : Type.F32));
 
 				const signature = JSON.stringify({ params, results });
 
@@ -104,6 +110,46 @@ if (import.meta.vitest) {
 					lineNumber: 1,
 					instruction: 'functionEnd',
 					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'int' }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				blockStack: context.blockStack,
+				currentFunctionSignature: context.currentFunctionSignature,
+				functionTypeRegistry: {
+					baseTypeIndex: context.functionTypeRegistry?.baseTypeIndex,
+					signatureMapSize: context.functionTypeRegistry?.signatureMap.size,
+					typesLength: context.functionTypeRegistry?.types.length,
+				},
+			}).toMatchSnapshot();
+		});
+
+		it('accepts float64 return type and emits Type.F64 in type registry', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					...createInstructionCompilerTestContext().blockStack,
+					{
+						blockType: BLOCK_TYPE.FUNCTION,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+				],
+				currentFunctionSignature: { parameters: ['float64'], returns: [] },
+				functionTypeRegistry: {
+					baseTypeIndex: 0,
+					signatureMap: new Map<string, number>(),
+					types: [],
+				} as FunctionTypeRegistry,
+			});
+			context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
+
+			functionEnd(
+				{
+					lineNumber: 1,
+					instruction: 'functionEnd',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'float64' }],
 				} as AST[number],
 				context
 			);

@@ -6,7 +6,14 @@ export default function parseOutputs(code: string[]) {
 		(acc, line, index) => {
 			const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
 
-			if (instruction === 'int' || instruction === 'float' || instruction === 'int[]' || instruction === 'float[]') {
+			if (
+				instruction === 'int' ||
+				instruction === 'float' ||
+				instruction === 'float64' ||
+				instruction === 'int[]' ||
+				instruction === 'float[]' ||
+				instruction === 'float64[]'
+			) {
 				if (!args[0]) {
 					return acc;
 				}

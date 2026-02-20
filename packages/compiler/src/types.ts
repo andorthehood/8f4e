@@ -10,6 +10,9 @@ export enum MemoryTypes {
 	'float',
 	'float*',
 	'float**',
+	'float64',
+	'float64*',
+	'float64**',
 }
 
 export interface DataStructure {
@@ -22,6 +25,7 @@ export interface DataStructure {
 	default: number | Record<string, number>;
 	// lineNumber: number;
 	isInteger: boolean;
+	isFloat64?: boolean;
 	id: string;
 	isPointer: boolean;
 	isPointingToInteger: boolean;
@@ -48,8 +52,8 @@ export interface CompiledModule {
 export type CompiledModuleLookup = Record<string, CompiledModule>;
 
 export interface FunctionSignature {
-	parameters: Array<'int' | 'float'>;
-	returns: Array<'int' | 'float'>;
+	parameters: Array<'int' | 'float' | 'float64'>;
+	returns: Array<'int' | 'float' | 'float64'>;
 }
 
 export interface FunctionTypeRegistry {
@@ -103,11 +107,11 @@ export interface TestModule {
 	ast: AST;
 }
 
-export type Const = { value: number; isInteger: boolean };
+export type Const = { value: number; isInteger: boolean; isFloat64?: boolean };
 
 export type Consts = Record<string, Const>;
 export interface Namespace {
-	locals: Record<string, { isInteger: boolean; index: number }>;
+	locals: Record<string, { isInteger: boolean; isFloat64?: boolean; index: number }>;
 	memory: MemoryMap;
 	consts: Consts;
 	moduleName: string | undefined;
@@ -137,6 +141,7 @@ export interface CompilationContext {
 
 export interface StackItem {
 	isInteger: boolean;
+	isFloat64?: boolean;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
 	/** A flag for the memory opraions to check if the memory address is within the memory bounds. */

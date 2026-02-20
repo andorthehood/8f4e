@@ -32,6 +32,7 @@ export enum ErrorCode {
 	NESTED_MACRO_DEFINITION,
 	NESTED_MACRO_CALL,
 	COMPILER_DIRECTIVE_INVALID_CONTEXT,
+	MIXED_FLOAT_WIDTH,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -152,7 +153,8 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 		case ErrorCode.INVALID_FUNCTION_SIGNATURE:
 			return {
 				code,
-				message: 'Invalid function signature. Parameters and returns must be "int" or "float". (' + code + ')',
+				message:
+					'Invalid function signature. Parameters and returns must be "int", "float", or "float64". (' + code + ')',
 				line,
 				context,
 			};
@@ -254,6 +256,16 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 			return {
 				code,
 				message: 'This compiler directive can only be used within a module block. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.MIXED_FLOAT_WIDTH:
+			return {
+				code,
+				message:
+					'Mixed float widths: arithmetic operations require all float operands to have the same width (float32 or float64). (' +
+					code +
+					')',
 				line,
 				context,
 			};

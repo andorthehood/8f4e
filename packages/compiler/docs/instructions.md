@@ -44,6 +44,7 @@
 - [Conversion](instructions/conversion.md)
   - [castToFloat](instructions/conversion.md#casttofloat)
   - [castToInt](instructions/conversion.md#casttoint)
+  - [castToFloat64](instructions/conversion.md#casttofloat64)
 
 - [Stack instructions](instructions/stack.md)
   - [push](instructions/stack.md#push)

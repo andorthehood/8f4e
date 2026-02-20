@@ -32,6 +32,10 @@ const ensureNonZero: InstructionCompiler = withValidation(
 			defaultNonZeroValue = line.arguments[0].value.toString();
 		}
 
+		if (!operand.isInteger && operand.isFloat64) {
+			defaultNonZeroValue = defaultNonZeroValue + 'f64';
+		}
+
 		const tempVariableName = '__ensureNonZero_temp_' + line.lineNumber;
 
 		if (operand.isInteger) {
@@ -53,22 +57,23 @@ const ensureNonZero: InstructionCompiler = withValidation(
 			context.stack.push({ isInteger: true, isNonZero: true });
 			return ret;
 		} else {
+			const localType = operand.isFloat64 ? 'float64' : 'float';
 			const ret = compileSegment(
 				[
-					`local float ${tempVariableName}`,
+					`local ${localType} ${tempVariableName}`,
 					`localSet ${tempVariableName}`,
 					`localGet ${tempVariableName}`,
 					'equalToZero',
-					'if float',
+					'if void',
 					`push ${defaultNonZeroValue}`,
-					'else',
-					`localGet ${tempVariableName}`,
+					`localSet ${tempVariableName}`,
 					'ifEnd',
+					`localGet ${tempVariableName}`,
 				],
 				context
 			);
 			context.stack.pop();
-			context.stack.push({ isInteger: false, isNonZero: true });
+			context.stack.push({ isInteger: false, ...(operand.isFloat64 ? { isFloat64: true } : {}), isNonZero: true });
 			return ret;
 		}
 	}
@@ -102,6 +107,26 @@ if (import.meta.vitest) {
 					lineNumber: 2,
 					instruction: 'ensureNonZero',
 					arguments: [{ type: ArgumentType.LITERAL, value: 2.5, isInteger: false }],
+				} as AST[number],
+				context
+			);
+
+			expect({
+				stack: context.stack,
+				locals: context.namespace.locals,
+				byteCode: context.byteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('ensures float64 operand is non-zero with float64 default', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
+
+			ensureNonZero(
+				{
+					lineNumber: 3,
+					instruction: 'ensureNonZero',
+					arguments: [{ type: ArgumentType.LITERAL, value: 2.5, isInteger: false, isFloat64: true }],
 				} as AST[number],
 				context
 			);
