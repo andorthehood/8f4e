@@ -18,6 +18,29 @@ exports[`push instruction compiler > element max prefix (^) > pushes max finite 
 }
 `;
 
+exports[`push instruction compiler > element max prefix (^) > pushes max finite value for float64 1`] = `
+{
+  "byteCode": [
+    68,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    239,
+    127,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
 exports[`push instruction compiler > element max prefix (^) > pushes max value for int8 1`] = `
 {
   "byteCode": [
@@ -88,6 +111,29 @@ exports[`push instruction compiler > element min prefix (!) > pushes lowest fini
 }
 `;
 
+exports[`push instruction compiler > element min prefix (!) > pushes lowest finite value for float64 1`] = `
+{
+  "byteCode": [
+    68,
+    255,
+    255,
+    255,
+    255,
+    255,
+    255,
+    239,
+    255,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
 exports[`push instruction compiler > element min prefix (!) > pushes min value for int8 1`] = `
 {
   "byteCode": [
@@ -140,6 +186,25 @@ exports[`push instruction compiler > element min prefix (!) > pushes min value f
 }
 `;
 
+exports[`push instruction compiler > float64 memory push > pushes a float64 memory identifier using f64.load 1`] = `
+{
+  "byteCode": [
+    65,
+    0,
+    43,
+    3,
+    0,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
 exports[`push instruction compiler > pushes a constant value 1`] = `
 {
   "byteCode": [
@@ -149,6 +214,52 @@ exports[`push instruction compiler > pushes a constant value 1`] = `
   "stack": [
     {
       "isInteger": true,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > pushes a f64 constant emitting f64.const 1`] = `
+{
+  "byteCode": [
+    68,
+    24,
+    45,
+    68,
+    84,
+    251,
+    33,
+    9,
+    64,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": true,
+    },
+  ],
+}
+`;
+
+exports[`push instruction compiler > pushes a f64 literal value emitting f64.const 1`] = `
+{
+  "byteCode": [
+    68,
+    31,
+    133,
+    235,
+    81,
+    184,
+    30,
+    9,
+    64,
+  ],
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
       "isNonZero": true,
     },
   ],

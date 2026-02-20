@@ -27,6 +27,18 @@ describe('parseOutputs', () => {
 		]);
 	});
 
+	it('should parse float64 instruction', () => {
+		const code = ['float64 myOutput'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myOutput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should parse anonymous allocation', () => {
 		const code = ['int 2'];
 		const result = parseOutputs(code);
@@ -75,8 +87,28 @@ describe('parseOutputs', () => {
 		]);
 	});
 
+	it('should parse float64[] instruction', () => {
+		const code = ['float64[] myOutput'];
+		const result = parseOutputs(code);
+
+		expect(result).toEqual([
+			{
+				id: 'myOutput',
+				lineNumber: 0,
+			},
+		]);
+	});
+
 	it('should handle multiple output instructions of different types', () => {
-		const code = ['int output1', 'mov a b', 'float output2', 'int[] output3', 'float[] output4'];
+		const code = [
+			'int output1',
+			'mov a b',
+			'float output2',
+			'int[] output3',
+			'float[] output4',
+			'float64 output5',
+			'float64[] output6',
+		];
 		const result = parseOutputs(code);
 
 		expect(result).toEqual([
@@ -95,6 +127,14 @@ describe('parseOutputs', () => {
 			{
 				id: 'output4',
 				lineNumber: 4,
+			},
+			{
+				id: 'output5',
+				lineNumber: 5,
+			},
+			{
+				id: 'output6',
+				lineNumber: 6,
 			},
 		]);
 	});
