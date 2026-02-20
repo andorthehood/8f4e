@@ -62,7 +62,7 @@ Out of scope:
 
 ## Validation Checkpoints
 
-- `rg -n "compileAndUpdateMemory|getMemoryValueChanges|MemoryValueChange|Float32Array|Int32Array" /Users/andorpolgar/git/8f4e/packages/compiler-worker/src`
+- `rg -n "compileAndUpdateMemory|getMemoryValueChanges|MemoryValueChange|Float32Array|Int32Array" packages/compiler-worker/src`
 - `npx nx run @8f4e/compiler-worker:test -- --run "compileAndUpdateMemory|memoryValueChanges"`
 
 ## Success Criteria
@@ -74,10 +74,10 @@ Out of scope:
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler-worker/src/compileAndUpdateMemory.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler-worker/src/getMemoryValueChanges.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler-worker/src/types.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler-worker/src/__tests__`
+- `packages/compiler-worker/src/compileAndUpdateMemory.ts`
+- `packages/compiler-worker/src/getMemoryValueChanges.ts`
+- `packages/compiler-worker/src/types.ts`
+- `packages/compiler-worker/src/__tests__`
 
 ## Risks & Considerations
 
@@ -88,9 +88,9 @@ Out of scope:
 
 ## Related Items
 
-- **Depends on**: `/Users/andorpolgar/git/8f4e/docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/258-add-f64-store-support.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/255-add-float64-memory-view-to-web-ui.md`
+- **Depends on**: `docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
+- **Related**: `docs/todos/258-add-f64-store-support.md`
+- **Related**: `docs/todos/255-add-float64-memory-view-to-web-ui.md`
 
 ## Notes
 

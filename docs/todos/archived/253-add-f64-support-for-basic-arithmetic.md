@@ -71,7 +71,7 @@ Out of scope:
 
 ## Validation Checkpoints
 
-- `rg -n "F64_ADD|F64_SUB|F64_MUL|F64_DIV|mixed float|add|sub|mul|div" /Users/andorpolgar/git/8f4e/packages/compiler/src`
+- `rg -n "F64_ADD|F64_SUB|F64_MUL|F64_DIV|mixed float|add|sub|mul|div" packages/compiler/src`
 - `npx nx run @8f4e/compiler:test -- --run "add|sub|mul|div|float|validation"`
 - Confirm generated snapshots contain `f64.add`, `f64.sub`, `f64.mul`, `f64.div` in float64 cases.
 
@@ -84,13 +84,13 @@ Out of scope:
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/add.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/sub.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/mul.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/div.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts` and operand utility helpers
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/errors.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/tests` and snapshots
+- `packages/compiler/src/instructionCompilers/add.ts`
+- `packages/compiler/src/instructionCompilers/sub.ts`
+- `packages/compiler/src/instructionCompilers/mul.ts`
+- `packages/compiler/src/instructionCompilers/div.ts`
+- `packages/compiler/src/types.ts` and operand utility helpers
+- `packages/compiler/src/errors.ts`
+- `packages/compiler/tests` and snapshots
 
 ## Risks & Considerations
 
@@ -103,9 +103,9 @@ Out of scope:
 
 ## Related Items
 
-- **Depends on**: `/Users/andorpolgar/git/8f4e/docs/todos/250-add-f64-push-support.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/252-add-float-promote-demote-instructions.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
+- **Depends on**: `docs/todos/250-add-f64-push-support.md`
+- **Related**: `docs/todos/252-add-float-promote-demote-instructions.md`
+- **Related**: `docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
 
 ## Notes
 

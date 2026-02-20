@@ -58,7 +58,7 @@ Core behavior:
 
 ## Validation Checkpoints
 
-- `rg -n "f64|suffix|parseArgument|ArgumentLiteral|push" /Users/andorpolgar/git/8f4e/packages/compiler/src`
+- `rg -n "f64|suffix|parseArgument|ArgumentLiteral|push" packages/compiler/src`
 - `npx nx run @8f4e/compiler:test -- --run "parseArgument|push|float"`
 - Confirm snapshots include `f64.const` for suffixed literals.
 
@@ -72,11 +72,11 @@ Core behavior:
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/syntax/parseArgument.ts`
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts` (literal metadata shape if needed)
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/push.ts` (or push resolver helper)
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/astUtils/collectConstants.ts` and constant resolution paths
-- `/Users/andorpolgar/git/8f4e/packages/compiler/tests`
+- `packages/compiler/src/syntax/parseArgument.ts`
+- `packages/compiler/src/types.ts` (literal metadata shape if needed)
+- `packages/compiler/src/instructionCompilers/push.ts` (or push resolver helper)
+- `packages/compiler/src/astUtils/collectConstants.ts` and constant resolution paths
+- `packages/compiler/tests`
 - compiler docs for literal syntax
 
 ## Risks & Considerations
@@ -88,9 +88,9 @@ Core behavior:
 
 ## Related Items
 
-- **Depends on**: `/Users/andorpolgar/git/8f4e/docs/todos/250-add-f64-push-support.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/252-add-float-promote-demote-instructions.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/253-add-f64-support-for-basic-arithmetic.md`
+- **Depends on**: `docs/todos/250-add-f64-push-support.md`
+- **Related**: `docs/todos/252-add-float-promote-demote-instructions.md`
+- **Related**: `docs/todos/253-add-f64-support-for-basic-arithmetic.md`
 
 ## Notes
 
