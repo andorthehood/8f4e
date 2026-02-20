@@ -188,8 +188,12 @@ export function compileFunction(
 		}));
 
 	// Get the type index for this function's signature
-	const params = context.currentFunctionSignature.parameters.map(type => (type === 'int' ? Type.I32 : Type.F32));
-	const results = context.currentFunctionSignature.returns.map(type => (type === 'int' ? Type.I32 : Type.F32));
+	const params = context.currentFunctionSignature.parameters.map(type =>
+		type === 'int' ? Type.I32 : type === 'float64' ? Type.F64 : Type.F32
+	);
+	const results = context.currentFunctionSignature.returns.map(type =>
+		type === 'int' ? Type.I32 : type === 'float64' ? Type.F64 : Type.F32
+	);
 	const signature = JSON.stringify({ params, results });
 	const typeIndex = typeRegistry.signatureMap.get(signature);
 
