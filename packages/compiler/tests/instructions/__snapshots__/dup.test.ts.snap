@@ -111,7 +111,7 @@ exports[`dup > if the generated AST, WAT and memory map match the snapshot 2`] =
     local.set 2
     local.set 1
     local.get 1
-    i32.const 65535
+    i32.const 65532
     i32.gt_s
     if (result i32)  ;; label = @1
       i32.const 0
