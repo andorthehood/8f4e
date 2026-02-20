@@ -48,7 +48,7 @@ const store: InstructionCompiler = withValidation(
 					`localSet ${tempAddressVariableName}`,
 
 					`localGet ${tempAddressVariableName}`,
-					`push ${context.memoryByteSize - 1}`,
+					`push ${context.memoryByteSize - (operand1Value.isFloat64 ? 8 : 4)}`,
 					'greaterThan',
 					'if int',
 					`push 0`,
