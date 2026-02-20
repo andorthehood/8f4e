@@ -67,7 +67,6 @@ const ensureNonZero: InstructionCompiler = withValidation(
 					'if void',
 					`push ${defaultNonZeroValue}`,
 					`localSet ${tempVariableName}`,
-					'else',
 					'ifEnd',
 					`localGet ${tempVariableName}`,
 				],
