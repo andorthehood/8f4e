@@ -1,0 +1,11 @@
+module expLUT
+
+float[] lut 512 
+
+${exp
+	.map((value, index) => {
+		return `init lut[${index}] ${value.toFixed(4)}`;
+	})
+	.join('\n')}
+
+moduleEnd

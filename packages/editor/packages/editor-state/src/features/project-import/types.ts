@@ -31,19 +31,6 @@ export const EMPTY_DEFAULT_PROJECT: Project = {
 };
 
 /**
- * Example module metadata.
- */
-export interface ExampleModule {
-	title: string;
-	description?: string;
-	author: string;
-	code: string;
-	tests: unknown[];
-	category: string;
-	dependencies?: string[];
-}
-
-/**
  * Module metadata for listing.
  */
 export interface ModuleMetadata {
@@ -51,6 +38,7 @@ export interface ModuleMetadata {
 	title: string;
 	description?: string;
 	category: string;
+	dependencies?: string[];
 }
 
 /**
