@@ -255,6 +255,7 @@ enum WASMInstruction {
 	I32_POPCNT = 0x69,
 
 	F32_ABS = 0x8b,
+	F64_ABS = 0x99,
 
 	F32_ADD = 0x92,
 
