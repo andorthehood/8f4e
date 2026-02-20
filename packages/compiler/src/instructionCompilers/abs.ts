@@ -41,8 +41,12 @@ const abs: InstructionCompiler = withValidation(
 				context
 			);
 		} else {
-			context.stack.push({ isInteger: false, isNonZero: operand.isNonZero });
-			return saveByteCode(context, [WASMInstruction.F32_ABS]);
+			context.stack.push({
+				isInteger: false,
+				...(operand.isFloat64 ? { isFloat64: true } : {}),
+				isNonZero: operand.isNonZero,
+			});
+			return saveByteCode(context, [operand.isFloat64 ? WASMInstruction.F64_ABS : WASMInstruction.F32_ABS]);
 		}
 	}
 );
@@ -75,6 +79,18 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 				locals: context.namespace.locals,
+			}).toMatchSnapshot();
+		});
+
+		it('emits F64_ABS for float64 operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isFloat64: true, isNonZero: true });
+
+			abs({ lineNumber: 2, instruction: 'abs', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				byteCode: context.byteCode,
 			}).toMatchSnapshot();
 		});
 	});
