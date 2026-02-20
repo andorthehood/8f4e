@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Handles loading projects into the editor from various sources: persistent storage, file uploads, URL slugs, and default templates. Manages the initial project state and coordinates with import callbacks.
+Handles loading projects into the editor from various sources: persistent storage, file uploads, direct project URLs, and default templates. Manages the initial project state and coordinates with import callbacks.
 
 ## Key Behaviors
 
 - **Initial Load**: Loads project from storage or falls back to default on editor startup
 - **File Import**: Handles importing project files through file picker
-- **Slug Import**: Loads projects by URL slug identifier
+- **URL Import**: Loads projects by project URL
 - **Default Project**: Provides fallback when no saved project exists
 - **State Initialization**: Sets up `initialProjectState` for the editor
 
