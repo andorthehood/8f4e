@@ -49,7 +49,7 @@ export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
 				return 2147483647;
 			}
 		}
-	} else if (memoryItem.isFloat64) {
+	} else if (!memoryItem.isInteger && memoryItem.elementWordSize === 8) {
 		return 1.7976931348623157e308;
 	} else {
 		return 3.4028234663852886e38;
@@ -73,7 +73,7 @@ export function getElementMinValue(memoryMap: MemoryMap, id: string): number {
 				return -2147483648;
 			}
 		}
-	} else if (memoryItem.isFloat64) {
+	} else if (!memoryItem.isInteger && memoryItem.elementWordSize === 8) {
 		return -1.7976931348623157e308;
 	} else {
 		return -3.4028234663852886e38;
@@ -190,6 +190,13 @@ if (import.meta.vitest) {
 				expect(getElementMaxValue(memory, 'val')).toBe(1.7976931348623157e308);
 			});
 
+			it('returns max finite float64 value for float64[] buffer (no isFloat64 flag)', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 8, isInteger: false } as unknown as MemoryMap[string],
+				};
+				expect(getElementMaxValue(memory, 'val')).toBe(1.7976931348623157e308);
+			});
+
 			it('returns 0 for non-existing identifier', () => {
 				expect(getElementMaxValue(mockMemory, 'nonExisting')).toBe(0);
 			});
@@ -227,6 +234,13 @@ if (import.meta.vitest) {
 			it('returns lowest finite float64 value', () => {
 				const memory: MemoryMap = {
 					val: { elementWordSize: 8, isInteger: false, isFloat64: true } as unknown as MemoryMap[string],
+				};
+				expect(getElementMinValue(memory, 'val')).toBe(-1.7976931348623157e308);
+			});
+
+			it('returns lowest finite float64 value for float64[] buffer (no isFloat64 flag)', () => {
+				const memory: MemoryMap = {
+					val: { elementWordSize: 8, isInteger: false } as unknown as MemoryMap[string],
 				};
 				expect(getElementMinValue(memory, 'val')).toBe(-1.7976931348623157e308);
 			});
