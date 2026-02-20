@@ -1,6 +1,6 @@
 import { parse8f4eToProject } from '@8f4e/editor-state';
 
-import { getProject, projectManifest } from './examples/registry';
+import { getProject, hasProjectUrl, getDefaultProjectUrl } from './examples/registry';
 import { getCodeBuffer } from './compiler-callback';
 
 import type { Project, EditorConfigBlock } from '@8f4e/editor';
@@ -11,18 +11,13 @@ const STORAGE_KEYS = {
 	EDITOR_CONFIG_BLOCKS: 'editorConfigBlocks_editor',
 } as const;
 
-const kebabCaseToCamelCase = (str: string) =>
-	str.replace(/-([a-z])/g, function (g) {
-		return g[1].toUpperCase();
-	});
-
 // Implementation of storage callbacks using localStorage
 export async function loadSession(): Promise<Project | null> {
 	try {
-		const projectName = kebabCaseToCamelCase(location.hash.match(/#\/([a-z-]*)/)?.[1] || '');
-		if (projectName && projectManifest[projectName]) {
-			console.log('Loading project from URL hash:', projectName);
-			return parse8f4eToProject(await getProject(projectName));
+		const projectUrlFromQuery = new URLSearchParams(location.search).get('projectUrl') || '';
+		if (projectUrlFromQuery && hasProjectUrl(projectUrlFromQuery)) {
+			console.log('Loading project from query param:', projectUrlFromQuery);
+			return parse8f4eToProject(await getProject(projectUrlFromQuery));
 		}
 
 		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
@@ -31,9 +26,10 @@ export async function loadSession(): Promise<Project | null> {
 			return JSON.parse(stored);
 		}
 
-		if (Object.keys(projectManifest).length > 0) {
-			console.log('Loading default project: audioBuffer');
-			return parse8f4eToProject(await getProject('audioBuffer'));
+		const defaultProjectUrl = getDefaultProjectUrl();
+		if (defaultProjectUrl) {
+			console.log(`Loading default project: ${defaultProjectUrl}`);
+			return parse8f4eToProject(await getProject(defaultProjectUrl));
 		}
 
 		return null;

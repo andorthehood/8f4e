@@ -28,19 +28,19 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			});
 	});
 
-	async function loadProjectBySlug({ projectSlug }: { projectSlug: string }) {
+	async function loadProjectByUrl({ projectUrl }: { projectUrl: string }) {
 		if (!state.callbacks.getProject) {
 			console.warn('No getProject callback provided');
 			warn(state, 'No getProject callback provided');
 			return;
 		}
 		try {
-			const projectText = await state.callbacks.getProject(projectSlug);
+			const projectText = await state.callbacks.getProject(projectUrl);
 			const project = parse8f4eToProject(projectText);
 			loadProject({ project });
 		} catch (err) {
-			console.error('Failed to load project by slug:', err);
-			error(state, 'Failed to load project by slug');
+			console.error('Failed to load project by url:', err);
+			error(state, 'Failed to load project by url');
 			loadProject({ project: EMPTY_DEFAULT_PROJECT });
 		}
 	}
@@ -71,5 +71,5 @@ export default function projectImport(store: StateManager<State>, events: EventD
 
 	events.on('importProject', onImportProject);
 	events.on('loadProject', loadProject);
-	events.on('loadProjectBySlug', loadProjectBySlug);
+	events.on('loadProjectByUrl', loadProjectByUrl);
 }
