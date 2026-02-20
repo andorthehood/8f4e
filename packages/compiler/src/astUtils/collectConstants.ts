@@ -10,11 +10,13 @@ export default function collectConstants(ast: AST): Namespace['consts'] {
 		ast
 			.filter(({ instruction }) => instruction === 'const')
 			.map(({ arguments: _arguments }) => {
+				const lit = _arguments[1] as ArgumentLiteral;
 				return [
 					_arguments[0].value,
 					{
-						value: parseFloat(_arguments[1].value.toString()),
-						isInteger: (_arguments[1] as ArgumentLiteral).isInteger,
+						value: parseFloat(lit.value.toString()),
+						isInteger: lit.isInteger,
+						...(lit.isFloat64 ? { isFloat64: true } : {}),
 					},
 				];
 			})
@@ -58,6 +60,24 @@ if (import.meta.vitest) {
 			const result = collectConstants(ast);
 			expect(result).toEqual({
 				PI: { value: 3.14159, isInteger: false },
+			});
+		});
+
+		it('should collect float64 constants from AST preserving isFloat64 flag', () => {
+			const ast: AST = [
+				{
+					instruction: 'const',
+					arguments: [
+						{ type: ArgumentType.IDENTIFIER, value: 'PI64' },
+						{ type: ArgumentType.LITERAL, value: 3.141592653589793, isInteger: false, isFloat64: true },
+					],
+					lineNumber: 1,
+				},
+			];
+
+			const result = collectConstants(ast);
+			expect(result).toEqual({
+				PI64: { value: 3.141592653589793, isInteger: false, isFloat64: true },
 			});
 		});
 

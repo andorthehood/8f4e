@@ -3,8 +3,8 @@ title: 'TODO: Add float64 push support'
 priority: Medium
 effort: 2-4d
 created: 2026-02-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-19
 ---
 
 # TODO: Add float64 push support
@@ -31,7 +31,7 @@ Scope for this TODO:
 - Refactor `push` to use a resolver + opcode-table architecture instead of adding more nested if/else branches.
 
 Out of scope:
-- full `f64` arithmetic pipeline (`add/sub/mul/div` promotion),
+- implicit numeric promotion between `float32` and `float64`,
 - standalone `store`/`load` instruction migration outside push flow,
 - full editor/runtime UI parity.
 
@@ -46,7 +46,7 @@ Out of scope:
 
 ### Step 1: Introduce push resolver contract
 - Create a small push-source resolver that maps parsed argument/context into a normalized descriptor (e.g. source kind, value type, const value, memory address mode).
-- Extend type metadata from binary `isInteger` toward explicit value kind (`int`/`float32`/`float64`) in the push path.
+- Extend stack operand metadata from binary `isInteger` toward explicit value kind (`int32`/`float32`/`float64`) in the push path.
 - Outcome: one canonical representation drives push codegen decisions.
 
 ### Step 2: Add opcode selection tables
@@ -82,7 +82,7 @@ Out of scope:
 - `/Users/andorpolgar/git/8f4e/packages/compiler/src/wasmUtils/load` - ensure `f64load` helper for memory-backed push.
 - `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/push.ts` - float64-aware push routing.
 - `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers` (new helper module) - push resolver/opcode mapping utilities.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts` and related routing helpers - metadata/type decisions for stack item typing.
+- `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts` - stack value typing updates needed by push routing.
 - `/Users/andorpolgar/git/8f4e/packages/compiler/tests` - instruction/snapshot coverage.
 
 ## Risks & Considerations

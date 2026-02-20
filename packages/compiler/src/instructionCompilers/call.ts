@@ -40,7 +40,8 @@ const call: InstructionCompiler = withValidation(
 			const stackIndex = context.stack.length - parameters.length + i;
 			const stackItem = context.stack[stackIndex];
 			const expectedInteger = parameters[i] === 'int';
-			if (stackItem.isInteger !== expectedInteger) {
+			const expectedFloat64 = parameters[i] === 'float64';
+			if (stackItem.isInteger !== expectedInteger || !!stackItem.isFloat64 !== expectedFloat64) {
 				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
 			}
 		}
@@ -50,7 +51,10 @@ const call: InstructionCompiler = withValidation(
 
 		// Push return values onto stack
 		returns.forEach(returnType => {
-			context.stack.push({ isInteger: returnType === 'int' });
+			context.stack.push({
+				isInteger: returnType === 'int',
+				...(returnType === 'float64' ? { isFloat64: true } : {}),
+			});
 		});
 
 		// Emit WASM call instruction
@@ -94,6 +98,57 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
+		});
+
+		it('tracks float64 parameter and return types on stack', () => {
+			const context = createInstructionCompilerTestContext();
+			context.namespace.functions = {
+				foo64: {
+					id: 'foo64',
+					signature: { parameters: ['float64'], returns: ['float64'] },
+					body: [],
+					locals: [],
+					wasmIndex: 2,
+				},
+			} as CompilationContext['namespace']['functions'];
+			context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
+
+			call(
+				{
+					lineNumber: 1,
+					instruction: 'call',
+					arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo64' }],
+				} as AST[number],
+				context
+			);
+
+			expect(context.stack).toHaveLength(1);
+			expect(context.stack[0]).toMatchObject({ isInteger: false, isFloat64: true });
+		});
+
+		it('throws on float32 argument passed to float64 parameter', () => {
+			const context = createInstructionCompilerTestContext();
+			context.namespace.functions = {
+				foo64: {
+					id: 'foo64',
+					signature: { parameters: ['float64'], returns: [] },
+					body: [],
+					locals: [],
+					wasmIndex: 2,
+				},
+			} as CompilationContext['namespace']['functions'];
+			context.stack.push({ isInteger: false, isNonZero: false });
+
+			expect(() => {
+				call(
+					{
+						lineNumber: 1,
+						instruction: 'call',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: 'foo64' }],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
 		});
 
 		it('throws on undefined function', () => {

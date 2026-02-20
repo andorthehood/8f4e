@@ -19,7 +19,9 @@ export default function drawConnectors(
 
 		const value = memory.isInteger
 			? memoryViews.int32[memory.wordAlignedAddress]
-			: memoryViews.float32[memory.wordAlignedAddress];
+			: memory.isFloat64
+				? memoryViews.float64[memory.byteAddress / 8]
+				: memoryViews.float32[memory.wordAlignedAddress];
 
 		output.calibratedMax = Math.max(1, output.calibratedMax, value);
 		output.calibratedMin = Math.min(-1, output.calibratedMin, value);

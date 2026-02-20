@@ -33,12 +33,14 @@ enum WASMInstruction {
 	LOCAL_SET = 0x21,
 	I32_LOAD = 0x28,
 	F32_LOAD = 0x2a,
+	F64_LOAD = 0x2b,
 	I32_LOAD_8_S = 0x2c,
 	I32_LOAD_8_U = 0x2d,
 	I32_LOAD_16_S = 0x2e,
 	I32_LOAD_16_U = 0x2f,
 	I32_STORE = 0x36,
 	F32_STORE = 0x38,
+	F64_STORE = 0x39,
 	/** varsint32 constant */
 	I32_CONST = 0x41,
 	/** varsint64 constant */
@@ -140,6 +142,12 @@ enum WASMInstruction {
 	 * Type signature: (param f32, f32) (result i32)
 	 */
 	F32_GE = 0x60,
+
+	/**
+	 * Floating-Point Equality (f64)
+	 * Type signature: (param f64, f64) (result i32)
+	 */
+	F64_EQ = 0x61,
 
 	/**
 	 * Aadd.
@@ -247,6 +255,7 @@ enum WASMInstruction {
 	I32_POPCNT = 0x69,
 
 	F32_ABS = 0x8b,
+	F64_ABS = 0x99,
 
 	F32_ADD = 0x92,
 
@@ -255,6 +264,14 @@ enum WASMInstruction {
 	F32_MUL = 0x94,
 
 	F32_DIV = 0x95,
+
+	F64_ADD = 0xa0,
+
+	F64_SUB = 0xa1,
+
+	F64_MUL = 0xa2,
+
+	F64_DIV = 0xa3,
 
 	F32_NEAREST = 0x90,
 
@@ -271,6 +288,18 @@ enum WASMInstruction {
 	 *  Type signature: (param f32) (result f32)
 	 */
 	F32_CONVERT_I32_S = 0xb2,
+
+	/**
+	 * Convert Integer To Floating-Point, Signed
+	 * Type signature: (param i32) (result f64)
+	 */
+	F64_CONVERT_I32_S = 0xb7,
+
+	/**
+	 * Promote 32-bit float to 64-bit float
+	 * Type signature: (param f32) (result f64)
+	 */
+	F64_PROMOTE_F32 = 0xbb,
 }
 
 export default WASMInstruction;

@@ -5,7 +5,7 @@ export enum ArgumentType {
 	IDENTIFIER = 'identifier',
 }
 
-export type ArgumentLiteral = { type: ArgumentType.LITERAL; value: number; isInteger: boolean };
+export type ArgumentLiteral = { type: ArgumentType.LITERAL; value: number; isInteger: boolean; isFloat64?: boolean };
 export type ArgumentIdentifier = { type: ArgumentType.IDENTIFIER; value: string };
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier;
@@ -38,6 +38,10 @@ export function parseArgument(argument: string): Argument {
 				type: ArgumentType.LITERAL,
 				isInteger: Number.isInteger(value),
 			};
+		}
+		case /^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(argument): {
+			const numStr = argument.slice(0, -3);
+			return { value: parseFloat(numStr), type: ArgumentType.LITERAL, isInteger: false, isFloat64: true };
 		}
 		case /^-?[0-9.]+$/.test(argument):
 			return { value: parseFloat(argument), type: ArgumentType.LITERAL, isInteger: /^-?[0-9]+$/.test(argument) };
@@ -94,6 +98,60 @@ if (import.meta.vitest) {
 			// These should be parsed as identifiers, not fractions
 			const result = parseArgument('1/-2');
 			expect(result.type).toBe(ArgumentType.IDENTIFIER);
+		});
+
+		it('parses f64-suffixed float literals', () => {
+			expect(parseArgument('3.14f64')).toEqual({
+				value: 3.14,
+				type: ArgumentType.LITERAL,
+				isInteger: false,
+				isFloat64: true,
+			});
+			expect(parseArgument('-42.0f64')).toEqual({
+				value: -42.0,
+				type: ArgumentType.LITERAL,
+				isInteger: false,
+				isFloat64: true,
+			});
+			expect(parseArgument('0.5f64')).toEqual({
+				value: 0.5,
+				type: ArgumentType.LITERAL,
+				isInteger: false,
+				isFloat64: true,
+			});
+		});
+
+		it('parses f64-suffixed integer-valued literals as float64', () => {
+			expect(parseArgument('3f64')).toEqual({
+				value: 3,
+				type: ArgumentType.LITERAL,
+				isInteger: false,
+				isFloat64: true,
+			});
+		});
+
+		it('parses f64-suffixed scientific notation literals', () => {
+			expect(parseArgument('1e-10f64')).toEqual({
+				value: 1e-10,
+				type: ArgumentType.LITERAL,
+				isInteger: false,
+				isFloat64: true,
+			});
+			expect(parseArgument('1.5e10f64')).toEqual({
+				value: 1.5e10,
+				type: ArgumentType.LITERAL,
+				isInteger: false,
+				isFloat64: true,
+			});
+		});
+
+		it('does not parse malformed f64 suffix forms as f64 literals', () => {
+			// F64 (uppercase) is not valid
+			expect(parseArgument('3.14F64').type).toBe(ArgumentType.IDENTIFIER);
+			// double-f is not valid
+			expect(parseArgument('3.14ff64').type).toBe(ArgumentType.IDENTIFIER);
+			// multiple dots are not valid
+			expect(parseArgument('..f64').type).toBe(ArgumentType.IDENTIFIER);
 		});
 	});
 }
