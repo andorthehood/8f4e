@@ -1,5 +1,28 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`equalToZero instruction compiler > emits F64_EQ for float64 operands 1`] = `
+{
+  "byteCode": [
+    68,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    97,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
 exports[`equalToZero instruction compiler > emits I32_EQZ for integer operands 1`] = `
 {
   "byteCode": [

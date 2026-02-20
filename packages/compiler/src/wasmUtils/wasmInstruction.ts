@@ -144,6 +144,12 @@ enum WASMInstruction {
 	F32_GE = 0x60,
 
 	/**
+	 * Floating-Point Equality (f64)
+	 * Type signature: (param f64, f64) (result i32)
+	 */
+	F64_EQ = 0x61,
+
+	/**
 	 * Aadd.
 	 * Type signature: (param i32 i32) (result i32)
 	 */
