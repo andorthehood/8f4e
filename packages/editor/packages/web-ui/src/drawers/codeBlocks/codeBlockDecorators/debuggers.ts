@@ -32,6 +32,8 @@ export default function drawConnectors(
 			} else if (memory.elementWordSize === 2 && memory.isInteger) {
 				const view = memory.isUnsigned ? memoryViews.uint16 : memoryViews.int16;
 				value = view[memory.byteAddress / 2 + bufferPointer].toString(showBinary ? 2 : 10);
+			} else if (memory.elementWordSize === 8 && !memory.isInteger) {
+				value = memoryViews.float64[memory.byteAddress / 8 + bufferPointer].toFixed(4);
 			} else {
 				value = memory.isInteger
 					? memoryViews.int32[memory.wordAlignedAddress + bufferPointer].toString(showBinary ? 2 : 10)

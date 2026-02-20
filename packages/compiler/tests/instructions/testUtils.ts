@@ -120,6 +120,8 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 
 		if (memoryItem.isInteger) {
 			return dataView.getInt32(memoryItem.byteAddress, true);
+		} else if (memoryItem.isFloat64) {
+			return dataView.getFloat64(memoryItem.byteAddress, true);
 		} else {
 			return dataView.getFloat32(memoryItem.byteAddress, true);
 		}
@@ -134,6 +136,8 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 		if (typeof value === 'number') {
 			if (Number.isInteger(value)) {
 				dataView.setInt32(memoryItem.byteAddress, value, true);
+			} else if (memoryItem.isFloat64) {
+				dataView.setFloat64(memoryItem.byteAddress, value, true);
 			} else {
 				dataView.setFloat32(memoryItem.byteAddress, value, true);
 			}
@@ -276,6 +280,8 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 
 		if (memoryItem.isInteger) {
 			return dataView.getInt32(memoryItem.byteAddress, true);
+		} else if (memoryItem.isFloat64) {
+			return dataView.getFloat64(memoryItem.byteAddress, true);
 		} else {
 			return dataView.getFloat32(memoryItem.byteAddress, true);
 		}
@@ -290,6 +296,8 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 		if (typeof value === 'number') {
 			if (Number.isInteger(value)) {
 				dataView.setInt32(memoryItem.byteAddress, value, true);
+			} else if (memoryItem.isFloat64) {
+				dataView.setFloat64(memoryItem.byteAddress, value, true);
 			} else {
 				dataView.setFloat32(memoryItem.byteAddress, value, true);
 			}

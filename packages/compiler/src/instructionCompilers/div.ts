@@ -1,5 +1,5 @@
 import { ErrorCode, getError } from '../errors';
-import { areAllOperandsIntegers } from '../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
@@ -26,9 +26,17 @@ const div: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
 		}
 
+		if (hasMixedFloatWidth(operand1, operand2)) {
+			throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
+		}
+
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
-		context.stack.push({ isInteger, isNonZero: true });
-		return saveByteCode(context, [isInteger ? WASMInstruction.I32_DIV_S : WASMInstruction.F32_DIV]);
+		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
+
+		context.stack.push({ isInteger, ...(isFloat64 ? { isFloat64: true } : {}), isNonZero: true });
+		return saveByteCode(context, [
+			isInteger ? WASMInstruction.I32_DIV_S : isFloat64 ? WASMInstruction.F64_DIV : WASMInstruction.F32_DIV,
+		]);
 	}
 );
 
@@ -50,7 +58,7 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('emits F32_DIV for float operands', () => {
+		it('emits F32_DIV for float32 operands', () => {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: true }, { isInteger: false, isNonZero: true });
 
@@ -60,6 +68,30 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
+		});
+
+		it('emits F64_DIV for float64 operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push(
+				{ isInteger: false, isFloat64: true, isNonZero: true },
+				{ isInteger: false, isFloat64: true, isNonZero: true }
+			);
+
+			div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				byteCode: context.byteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on mixed float32/float64 operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isNonZero: true }, { isInteger: false, isFloat64: true, isNonZero: true });
+
+			expect(() => {
+				div({ lineNumber: 1, instruction: 'div', arguments: [] } as AST[number], context);
+			}).toThrowError();
 		});
 
 		it('throws on division by zero', () => {
