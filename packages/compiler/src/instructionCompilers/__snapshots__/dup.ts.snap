@@ -1,5 +1,37 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`dup instruction compiler > duplicates float64 while preserving float64 type 1`] = `
+{
+  "byteCode": [
+    33,
+    0,
+    32,
+    0,
+    32,
+    0,
+  ],
+  "locals": {
+    "__dupTemp4": {
+      "index": 0,
+      "isFloat64": true,
+      "isInteger": false,
+    },
+  },
+  "stack": [
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": false,
+    },
+    {
+      "isFloat64": true,
+      "isInteger": false,
+      "isNonZero": false,
+    },
+  ],
+}
+`;
+
 exports[`dup instruction compiler > duplicates the top stack value 1`] = `
 {
   "byteCode": [
