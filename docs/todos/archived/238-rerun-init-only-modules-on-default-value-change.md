@@ -79,7 +79,7 @@ Rationale:
 
 - `npx nx run compiler:test`
 - `npx nx run compiler-worker:test`
-- `rg -n "initOnly|runInitOnly|getMemoryValueChanges|compileAndUpdateMemory" /Users/andorpolgar/git/8f4e/packages/compiler /Users/andorpolgar/git/8f4e/packages/compiler-worker`
+- `rg -n "initOnly|runInitOnly|getMemoryValueChanges|compileAndUpdateMemory" packages/compiler packages/compiler-worker`
 
 ## Success Criteria
 

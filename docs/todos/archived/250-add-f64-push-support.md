@@ -63,7 +63,7 @@ Out of scope:
 
 ## Validation Checkpoints
 
-- `rg -n "push|f64const|f64load|f64\\.const|f64\\.load" /Users/andorpolgar/git/8f4e/packages/compiler`
+- `rg -n "push|f64const|f64load|f64\\.const|f64\\.load" packages/compiler`
 - `npx nx run @8f4e/compiler:test -- --run "push|float|memory"`
 - Confirm snapshots contain `f64.const`/`f64.load` in float64 push scenarios.
 - Confirm `push.ts` complexity does not grow via repeated type branches (resolver/table pattern is present).
@@ -78,12 +78,12 @@ Out of scope:
 
 ## Affected Components
 
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/wasmUtils/const` - add `f64const` helper.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/wasmUtils/load` - ensure `f64load` helper for memory-backed push.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers/push.ts` - float64-aware push routing.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/instructionCompilers` (new helper module) - push resolver/opcode mapping utilities.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/src/types.ts` - stack value typing updates needed by push routing.
-- `/Users/andorpolgar/git/8f4e/packages/compiler/tests` - instruction/snapshot coverage.
+- `packages/compiler/src/wasmUtils/const` - add `f64const` helper.
+- `packages/compiler/src/wasmUtils/load` - ensure `f64load` helper for memory-backed push.
+- `packages/compiler/src/instructionCompilers/push.ts` - float64-aware push routing.
+- `packages/compiler/src/instructionCompilers` (new helper module) - push resolver/opcode mapping utilities.
+- `packages/compiler/src/types.ts` - stack value typing updates needed by push routing.
+- `packages/compiler/tests` - instruction/snapshot coverage.
 
 ## Risks & Considerations
 
@@ -98,8 +98,8 @@ Out of scope:
 
 ## Related Items
 
-- **Depends on**: `/Users/andorpolgar/git/8f4e/docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
-- **Related**: `/Users/andorpolgar/git/8f4e/docs/todos/146-investigate-index-arithmetic-support.md`
+- **Depends on**: `docs/todos/249-add-float64-allocation-support-on-4-byte-grid.md`
+- **Related**: `docs/todos/146-investigate-index-arithmetic-support.md`
 
 ## Notes
 

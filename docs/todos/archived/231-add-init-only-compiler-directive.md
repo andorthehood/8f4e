@@ -78,7 +78,7 @@ Agreed semantics:
 ## Validation Checkpoints
 
 - `npx nx run compiler:test`
-- `rg -n \"#initOnly|initOnlyExecution|skipExecutionInCycle\" /Users/andorpolgar/git/8f4e/packages/compiler/src /Users/andorpolgar/git/8f4e/packages/compiler/tests /Users/andorpolgar/git/8f4e/packages/compiler/docs`
+- `rg -n \"#initOnly|initOnlyExecution|skipExecutionInCycle\" packages/compiler/src packages/compiler/tests packages/compiler/docs`
 - Verify integration test asserts behavior via actual `init` and `cycle` execution, not only metadata flags.
 
 ## Success Criteria
