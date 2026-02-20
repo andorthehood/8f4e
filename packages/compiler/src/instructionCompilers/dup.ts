@@ -20,14 +20,10 @@ const dup: InstructionCompiler = withValidation(
 		const tempName = '__dupTemp' + line.lineNumber;
 
 		context.stack.push(operand);
+		const localType = operand.isInteger ? 'int' : operand.isFloat64 ? 'float64' : 'float';
 
 		return compileSegment(
-			[
-				`local ${operand.isInteger ? 'int' : 'float'} ${tempName}`,
-				`localSet ${tempName}`,
-				`localGet ${tempName}`,
-				`localGet ${tempName}`,
-			],
+			[`local ${localType} ${tempName}`, `localSet ${tempName}`, `localGet ${tempName}`, `localGet ${tempName}`],
 			context
 		);
 	}
@@ -44,6 +40,19 @@ if (import.meta.vitest) {
 			context.stack.push({ isInteger: true, isNonZero: false });
 
 			dup({ lineNumber: 3, instruction: 'dup', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				locals: context.namespace.locals,
+				byteCode: context.byteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('duplicates float64 while preserving float64 type', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push({ isInteger: false, isFloat64: true, isNonZero: false });
+
+			dup({ lineNumber: 4, instruction: 'dup', arguments: [] } as AST[number], context);
 
 			expect({
 				stack: context.stack,

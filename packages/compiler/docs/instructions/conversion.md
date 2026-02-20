@@ -21,3 +21,23 @@ The castToInt instruction takes a value from the stack, converts it to an intege
 push 3.7
 castToInt
 ```
+
+### castToFloat64
+
+The castToFloat64 instruction converts the top stack value to a 64-bit floating-point number.
+
+- If the input is `int`, it converts to float64.
+- If the input is `float` (float32), it promotes to float64.
+- If the input is already float64, it is left unchanged.
+
+#### Examples
+
+```
+push 3
+castToFloat64
+```
+
+```
+push 3.14
+castToFloat64
+```

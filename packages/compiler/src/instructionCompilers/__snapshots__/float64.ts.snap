@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`float64 instruction compiler > creates a float64 memory entry 1`] = `
+{
+  "value": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 8,
+    "id": "value",
+    "isFloat64": true,
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float64",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 2,
+  },
+}
+`;

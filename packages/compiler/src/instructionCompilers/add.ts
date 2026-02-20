@@ -1,7 +1,8 @@
 import createInstructionCompilerTestContext from '../utils/testUtils';
-import { areAllOperandsIntegers } from '../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
 import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
+import { ErrorCode, getError } from '../errors';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 
 import type { AST, InstructionCompiler } from '../types';
@@ -21,9 +22,17 @@ const add: InstructionCompiler = withValidation(
 		const operand2 = context.stack.pop()!;
 		const operand1 = context.stack.pop()!;
 
+		if (hasMixedFloatWidth(operand1, operand2)) {
+			throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
+		}
+
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
-		context.stack.push({ isInteger, isNonZero: false });
-		return saveByteCode(context, [isInteger ? WASMInstruction.I32_ADD : WASMInstruction.F32_ADD]);
+		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
+
+		context.stack.push({ isInteger, ...(isFloat64 ? { isFloat64: true } : {}), isNonZero: false });
+		return saveByteCode(context, [
+			isInteger ? WASMInstruction.I32_ADD : isFloat64 ? WASMInstruction.F64_ADD : WASMInstruction.F32_ADD,
+		]);
 	}
 );
 
@@ -45,7 +54,7 @@ if (import.meta.vitest) {
 			}).toMatchSnapshot();
 		});
 
-		it('emits F32_ADD for float operands', () => {
+		it('emits F32_ADD for float32 operands', () => {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: false, isNonZero: false }, { isInteger: false, isNonZero: false });
 
@@ -55,6 +64,33 @@ if (import.meta.vitest) {
 				stack: context.stack,
 				byteCode: context.byteCode,
 			}).toMatchSnapshot();
+		});
+
+		it('emits F64_ADD for float64 operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push(
+				{ isInteger: false, isFloat64: true, isNonZero: false },
+				{ isInteger: false, isFloat64: true, isNonZero: false }
+			);
+
+			add({ lineNumber: 1, instruction: 'add', arguments: [] } as AST[number], context);
+
+			expect({
+				stack: context.stack,
+				byteCode: context.byteCode,
+			}).toMatchSnapshot();
+		});
+
+		it('throws on mixed float32/float64 operands', () => {
+			const context = createInstructionCompilerTestContext();
+			context.stack.push(
+				{ isInteger: false, isNonZero: false },
+				{ isInteger: false, isFloat64: true, isNonZero: false }
+			);
+
+			expect(() => {
+				add({ lineNumber: 1, instruction: 'add', arguments: [] } as AST[number], context);
+			}).toThrowError();
 		});
 	});
 }
