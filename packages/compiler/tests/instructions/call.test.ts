@@ -132,3 +132,25 @@ describe('call instruction (float64)', () => {
 		expect(dataView.getFloat64(outputAddress, true)).toBeCloseTo(value, 12);
 	});
 });
+
+moduleTesterWithFunctions(
+	'call float64-returning function',
+	`module test
+float64 output
+
+loop
+  push &output
+  call getDoublePI
+  store
+loopEnd
+
+moduleEnd`,
+	[
+		`function getDoublePI
+push 3.14159265358979f64
+push 2.0f64
+mul
+functionEnd float64`,
+	],
+	[[{}, { output: 6.28318530717958 }]]
+);
