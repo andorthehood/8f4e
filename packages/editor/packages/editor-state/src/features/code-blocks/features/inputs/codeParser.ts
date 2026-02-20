@@ -4,7 +4,14 @@ export default function parseInputs(code: string[]): Array<{ id: string; lineNum
 	return code.reduce<Array<{ id: string; lineNumber: number }>>((acc, line, index) => {
 		const [, instruction, ...args] = (line.match(instructionParser) ?? []) as [never, string, string, string];
 
-		if (instruction === 'int*' || instruction === 'float*' || instruction === 'int**' || instruction === 'float**') {
+		if (
+			instruction === 'int*' ||
+			instruction === 'float*' ||
+			instruction === 'float64*' ||
+			instruction === 'int**' ||
+			instruction === 'float**' ||
+			instruction === 'float64**'
+		) {
 			return [...acc, { id: args[0], lineNumber: index }];
 		}
 		return acc;

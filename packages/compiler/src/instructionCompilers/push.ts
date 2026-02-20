@@ -51,6 +51,13 @@ function resolveArgumentValueKind(argument: { isInteger: boolean; isFloat64?: bo
 	return argument.isInteger ? 'int32' : 'float32';
 }
 
+function resolvePointerTargetValueKind(memoryItem: DataStructure): ValueKind {
+	if (memoryItem.isPointingToInteger) return 'int32';
+	const memoryType = String(memoryItem.type);
+	if (memoryType.startsWith('float64')) return 'float64';
+	return 'float32';
+}
+
 const constOpcode: Record<ValueKind, (value: number) => number[]> = {
 	int32: i32const,
 	float32: f32const,
@@ -104,12 +111,13 @@ const push: InstructionCompiler = withValidation(
 					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 				}
 
-				context.stack.push({ isInteger: memoryItem.isPointingToInteger, isNonZero: false });
+				const kind = resolvePointerTargetValueKind(memoryItem);
+				context.stack.push(kindToStackItem(kind, { isNonZero: false }));
 
 				return saveByteCode(context, [
 					...i32const(memoryItem.byteAddress),
 					...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
-					...(memoryItem.isPointingToInteger ? i32load() : f32load()),
+					...loadOpcode[kind](),
 				]);
 			} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
 				const base = extractMemoryReferenceBase(argument.value);
@@ -755,6 +763,62 @@ if (import.meta.vitest) {
 
 				expect(context.byteCode).toContain(42); // F32_LOAD opcode
 				expect(context.byteCode).not.toContain(43); // no F64_LOAD
+			});
+
+			it('dereferencing float64* emits f64.load and marks stack item as float64', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							floatPointer: {
+								byteAddress: 0,
+								type: 'float64*',
+								isPointingToInteger: false,
+								isPointingToPointer: false,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '*floatPointer' }],
+					} as AST[number],
+					context
+				);
+
+				expect(context.stack[0]).toMatchObject({ isInteger: false, isFloat64: true });
+				expect(context.byteCode).toContain(43); // F64_LOAD opcode
+			});
+
+			it('dereferencing float64** still resolves to a float64 value', () => {
+				const context = createInstructionCompilerTestContext({
+					namespace: {
+						...createInstructionCompilerTestContext().namespace,
+						memory: {
+							floatPointerPointer: {
+								byteAddress: 0,
+								type: 'float64**',
+								isPointingToInteger: false,
+								isPointingToPointer: true,
+							} as unknown as MemoryMap[string],
+						},
+					},
+				});
+
+				push(
+					{
+						lineNumber: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.IDENTIFIER, value: '*floatPointerPointer' }],
+					} as AST[number],
+					context
+				);
+
+				expect(context.stack[0]).toMatchObject({ isInteger: false, isFloat64: true });
+				expect(context.byteCode).toContain(43); // F64_LOAD opcode
 			});
 
 			it('handles mixed int32/float32/float64 memory layout', () => {
