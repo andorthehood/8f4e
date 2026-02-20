@@ -4,7 +4,7 @@ priority: Medium
 effort: 1-2d
 created: 2026-02-20
 status: Completed
-completed: 2026-02-19
+completed: 2026-02-20
 ---
 
 # TODO: Add float64 support for store instruction
