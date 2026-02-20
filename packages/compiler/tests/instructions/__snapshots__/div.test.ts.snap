@@ -110,11 +110,11 @@ exports[`div (float) > if the generated AST, WAT and memory map match the snapsh
     local.get 0
     f32.const 0x0p+0 (;=0;)
     f32.eq
-    if (result f32)  ;; label = @1
+    if  ;; label = @1
       f32.const 0x1p+0 (;=1;)
-    else
-      local.get 0
+      local.set 0
     end
+    local.get 0
     f32.div
     f32.store)
   (export "test" (func 0)))

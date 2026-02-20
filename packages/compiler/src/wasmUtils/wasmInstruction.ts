@@ -144,6 +144,12 @@ enum WASMInstruction {
 	F32_GE = 0x60,
 
 	/**
+	 * Floating-Point Equality (f64)
+	 * Type signature: (param f64, f64) (result i32)
+	 */
+	F64_EQ = 0x61,
+
+	/**
 	 * Aadd.
 	 * Type signature: (param i32 i32) (result i32)
 	 */
@@ -249,6 +255,7 @@ enum WASMInstruction {
 	I32_POPCNT = 0x69,
 
 	F32_ABS = 0x8b,
+	F64_ABS = 0x99,
 
 	F32_ADD = 0x92,
 
@@ -281,6 +288,18 @@ enum WASMInstruction {
 	 *  Type signature: (param f32) (result f32)
 	 */
 	F32_CONVERT_I32_S = 0xb2,
+
+	/**
+	 * Convert Integer To Floating-Point, Signed
+	 * Type signature: (param i32) (result f64)
+	 */
+	F64_CONVERT_I32_S = 0xb7,
+
+	/**
+	 * Promote 32-bit float to 64-bit float
+	 * Type signature: (param f32) (result f64)
+	 */
+	F64_PROMOTE_F32 = 0xbb,
 }
 
 export default WASMInstruction;
