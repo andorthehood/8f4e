@@ -1,10 +1,7 @@
 import { moduleManifest, moduleMetadata } from './exampleModules';
-import { projectManifest, projectMetadata } from './exampleProjects';
+import { projectMetadata } from './exampleProjects';
 
 import type { ExampleModule, ModuleMetadata, ProjectMetadata } from '@8f4e/editor-state';
-
-// Re-export manifests for external use
-export { projectManifest };
 
 // Cache for loaded modules to avoid redundant loading
 const loadedModulesCache: Record<string, ExampleModule> = {};
@@ -51,25 +48,28 @@ export async function getListOfProjects(): Promise<ProjectMetadata[]> {
 	return projectMetadata;
 }
 
+export function getDefaultProjectUrl(): string | null {
+	return projectMetadata.length > 0 ? projectMetadata[0].url : null;
+}
+
 /**
- * Get specific project by slug.
+ * Get specific project by URL.
  * Uses cached version if available, otherwise loads on-demand.
  */
-export async function getProject(slug: string): Promise<string> {
-	if (loadedProjectsCache[slug]) {
-		console.log(`Project ${slug} loaded from cache`);
-		return loadedProjectsCache[slug];
+export async function getProject(url: string): Promise<string> {
+	if (loadedProjectsCache[url]) {
+		console.log(`Project ${url} loaded from cache`);
+		return loadedProjectsCache[url];
 	}
 
-	const loader = projectManifest[slug];
-	if (!loader) {
-		throw new Error(`Project not found: ${slug}`);
+	console.log(`Loading project: ${url}`);
+	const response = await fetch(url);
+	if (!response.ok) {
+		throw new Error(`Failed to fetch project from ${url}: HTTP ${response.status}`);
 	}
-
-	console.log(`Loading project: ${slug}`);
-	const text = await loader();
-	loadedProjectsCache[slug] = text;
-	console.log(`Loaded project: ${slug}`);
+	const text = await response.text();
+	loadedProjectsCache[url] = text;
+	console.log(`Loaded project: ${url}`);
 
 	return text;
 }

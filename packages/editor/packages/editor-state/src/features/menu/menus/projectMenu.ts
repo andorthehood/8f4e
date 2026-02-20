@@ -12,7 +12,7 @@ export const projectMenu: MenuGenerator = async (state, payload = {}) => {
 
 	const categoryItems: CategoryItem[] = projects.map((project: import('~/types').ProjectMetadata) => ({
 		title: project.title,
-		slug: project.slug,
+		slug: project.url,
 		category: project.category,
 	}));
 
@@ -23,5 +23,5 @@ export const projectMenu: MenuGenerator = async (state, payload = {}) => {
 		return [];
 	}
 
-	return nodeToMenuItems(node, path, 'projectMenu', 'loadProjectBySlug', 'projectSlug');
+	return nodeToMenuItems(node, path, 'projectMenu', 'loadProjectByUrl', 'projectUrl');
 };

@@ -57,7 +57,7 @@ export interface ModuleMetadata {
  * Project metadata for listing.
  */
 export interface ProjectMetadata {
-	slug: string;
+	url: string;
 	title: string;
 	category: string;
 }
