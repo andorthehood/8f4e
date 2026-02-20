@@ -1,0 +1,39 @@
+---
+name: Deploy Example Projects to DigitalOcean Spaces
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/examples/src/projects/**'
+      - '.github/workflows/deploy-example-projects.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DO_SPACES_BUCKET: ${{ vars.DO_SPACES_BUCKET }}
+      DO_SPACES_REGION: ${{ vars.DO_SPACES_REGION }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Stage example project files
+        run: |
+          set -euo pipefail
+          mkdir -p upload/example-projects
+          find packages/examples/src/projects -maxdepth 1 -type f -name '*.8f4e' -exec cp {} upload/example-projects/ \;
+          ls -la upload/example-projects
+
+      - name: DigitalOcean Spaces Upload Action
+        uses: BetaHuhn/do-spaces-action@v2.0.146
+        with:
+          access_key: ${{ secrets.DO_SPACES_ACCESS_KEY }}
+          secret_key: ${{ secrets.DO_SPACES_SECRET_KEY }}
+          space_name: ${{ env.DO_SPACES_BUCKET }}
+          space_region: ${{ env.DO_SPACES_REGION }}
+          source: upload/example-projects
+          out_dir: 8f4e/example-projects
