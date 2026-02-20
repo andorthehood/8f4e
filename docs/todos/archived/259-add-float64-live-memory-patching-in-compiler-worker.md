@@ -3,8 +3,8 @@ title: 'TODO: Add float64 live memory patching in compiler-worker'
 priority: Medium
 effort: 4-8h
 created: 2026-02-19
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-19
 ---
 
 # TODO: Add float64 live memory patching in compiler-worker
