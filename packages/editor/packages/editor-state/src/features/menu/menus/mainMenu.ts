@@ -85,15 +85,15 @@ export const mainMenu: MenuGenerator = state => [
 					action: 'goHome',
 					close: true,
 				},
-				{
-					title: 'Jump to...',
-					action: 'openSubMenu',
-					payload: { menu: 'favoritesMenu' },
-					close: false,
-				},
-				{ divider: true },
 			]
 		: []),
+	{
+		title: 'Jump to...',
+		action: 'openSubMenu',
+		payload: { menu: 'favoritesMenu' },
+		close: false,
+	},
+	{ divider: true },
 	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }, { divider: true }] : []),
 	{ title: 'Open From Disk', action: 'importProject', close: true, disabled: !state.callbacks.importProject },
 	{
