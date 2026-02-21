@@ -7,7 +7,7 @@
 			"executor": "nx:run-commands",
 			"outputs": ["{projectRoot}/dist"],
 			"options": {
-				"command": "tsc",
+				"command": "node --experimental-strip-types ./src/module-generators/generateModules.ts && tsc",
 				"cwd": "{projectRoot}"
 			}
 		},
@@ -21,7 +21,7 @@
 		"dev": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "tsc --watch",
+				"command": "node --experimental-strip-types ./src/module-generators/generateModules.ts && tsc --watch",
 				"cwd": "{projectRoot}"
 			}
 		},
