@@ -1,4 +1,4 @@
-module bitwiseAnd
+module bitwiseXor
          ;  \\\\----.
 int* in1 ; --+     '
 int out  ;   )) xor |---
