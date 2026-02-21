@@ -7,7 +7,7 @@
 			"executor": "nx:run-commands",
 			"outputs": ["{projectRoot}/dist"],
 			"options": {
-				"command": "node --experimental-strip-types ./src/module-generators/generateModules.ts && tsc",
+				"command": "node --experimental-strip-types ./src/module-generators/generateModules.ts && tsc && mkdir -p dist/modules && cp src/modules/*.8f4e dist/modules/",
 				"cwd": "{projectRoot}"
 			}
 		},
