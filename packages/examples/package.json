@@ -4,21 +4,9 @@
 	"private": true,
 	"description": "8f4e example modules and projects",
 	"type": "module",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
 	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
-		},
-		"./modules/*": {
-			"types": "./dist/modules/*.d.ts",
-			"default": "./dist/modules/*.js"
-		},
-		"./projects/*": {
-			"types": "./dist/projects/*.d.ts",
-			"default": "./dist/projects/*.js"
-		}
+		"./modules/*.8f4e": "./src/modules/*.8f4e",
+		"./projects/*.8f4e": "./src/projects/*.8f4e"
 	},
 	"sideEffects": false,
 	"repository": {

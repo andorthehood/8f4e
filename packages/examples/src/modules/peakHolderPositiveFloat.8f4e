@@ -1,0 +1,17 @@
+module peakHolder
+
+float* in
+float out
+
+; @debug out
+
+push *in
+push out
+greaterThan
+if void
+push &out
+push *in
+store
+ifEnd
+
+moduleEnd

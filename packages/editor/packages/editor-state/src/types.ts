@@ -30,7 +30,7 @@ import type { ConfigBinaryAsset, ProjectConfig } from './features/project-config
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
 import type { Compiler, CompilationResult } from './features/program-compiler/types';
-import type { Project, ExampleModule, ModuleMetadata, ProjectMetadata } from './features/project-import/types';
+import type { Project, ModuleMetadata, ProjectMetadata } from './features/project-import/types';
 import type {
 	RuntimeFactory,
 	RuntimeRegistryEntry,
@@ -111,7 +111,7 @@ export type { BinaryAsset };
 export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent };
 
 // Re-export project-import types
-export type { Project, ExampleModule, ModuleMetadata, ProjectMetadata };
+export type { Project, ModuleMetadata, ProjectMetadata };
 
 // Re-export the EMPTY_DEFAULT_PROJECT constant
 export { EMPTY_DEFAULT_PROJECT } from './features/project-import/types';
@@ -159,7 +159,8 @@ export type FeatureFlagsConfig = Partial<FeatureFlags>;
 export interface Callbacks {
 	// Module and project loading callbacks
 	getListOfModules?: () => Promise<ModuleMetadata[]>;
-	getModule?: (slug: string) => Promise<ExampleModule>;
+	getModule?: (slug: string) => Promise<string>;
+	getModuleDependencies?: (slug: string) => Promise<string[]>;
 	getListOfProjects?: () => Promise<ProjectMetadata[]>;
 	getProject?: (url: string) => Promise<string>;
 
