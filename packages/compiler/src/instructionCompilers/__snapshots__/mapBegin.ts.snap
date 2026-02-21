@@ -1,0 +1,60 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mapBegin instruction compiler > opens a map block for float input type 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 6,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "mapInputIsFloat64": false,
+  "mapInputIsInteger": false,
+}
+`;
+
+exports[`mapBegin instruction compiler > opens a map block for float64 input type 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 6,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "mapInputIsFloat64": true,
+  "mapInputIsInteger": false,
+}
+`;
+
+exports[`mapBegin instruction compiler > opens a map block for int input type 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+    {
+      "blockType": 6,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "mapDefaultSet": false,
+  "mapInputIsFloat64": false,
+  "mapInputIsInteger": true,
+  "mapRows": [],
+}
+`;

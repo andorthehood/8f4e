@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`default instruction compiler > records a default value 1`] = `
+{
+  "mapDefaultIsInteger": true,
+  "mapDefaultSet": true,
+  "mapDefaultValue": 99,
+}
+`;

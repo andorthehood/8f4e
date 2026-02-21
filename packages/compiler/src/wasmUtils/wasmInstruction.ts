@@ -27,6 +27,8 @@ enum WASMInstruction {
 	CALL = 0x10,
 	/** Drop */
 	DROP = 0x1a,
+	/** Select */
+	SELECT = 0x1b,
 	/** Get Local */
 	LOCAL_GET = 0x20,
 	/** Set Local */
