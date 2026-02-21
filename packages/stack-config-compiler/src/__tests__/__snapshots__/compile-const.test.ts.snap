@@ -3,6 +3,7 @@
 exports[`compileConfig - const command > should error on same-scope redefinition 1`] = `
 [
   {
+    "blockIndex": 0,
     "kind": "exec",
     "line": 3,
     "message": "Cannot redefine constant "NAME" in the same scope",
@@ -13,11 +14,13 @@ exports[`compileConfig - const command > should error on same-scope redefinition
 exports[`compileConfig - const command > should error on unknown constant 1`] = `
 [
   {
+    "blockIndex": 0,
     "kind": "exec",
     "line": 3,
     "message": "Unknown constant: UNKNOWN",
   },
   {
+    "blockIndex": 0,
     "kind": "exec",
     "line": 4,
     "message": "Cannot set: data stack is empty",

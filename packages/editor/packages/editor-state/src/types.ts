@@ -195,11 +195,11 @@ export interface Callbacks {
 	 * Compiles a stack-config program source into a JSON configuration object.
 	 * Used by config blocks to generate runtime configuration.
 	 *
-	 * @param source - The config program source code (one command per line)
+	 * @param sourceBlocks - Config block source codes in execution order
 	 * @param schema - JSON Schema describing the expected config structure
 	 * @returns Promise containing the compiled config object and any errors
 	 */
-	compileConfig?: (source: string, schema: JSONSchemaLike) => Promise<ConfigCompilationResult>;
+	compileConfig?: (sourceBlocks: string[], schema: JSONSchemaLike) => Promise<ConfigCompilationResult>;
 
 	// Memory manipulation callback
 	setWordInMemory?: (wordAlignedAddress: number, value: number, isInteger: boolean) => void;
