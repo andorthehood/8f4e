@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import { withValidation } from '../../src/withValidation';
 import { ErrorCode } from '../../src/errors';
-import { BLOCK_TYPE } from '../../src/types';
+import { ArgumentType, BLOCK_TYPE } from '../../src/types';
 
 import type { AST, CompilationContext, InstructionCompiler } from '../../src/types';
 
@@ -84,6 +84,30 @@ describe('withValidation', () => {
 				mockCompiler
 			);
 			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.MISSING_ARGUMENT}`);
+		});
+	});
+
+	describe('argument count validation', () => {
+		it('should pass when instruction has sufficient arguments', () => {
+			const astWithArgs = {
+				...ast,
+				arguments: [
+					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				],
+			};
+			const compiler = withValidation({ minArguments: 2 }, mockCompiler);
+			expect(() => compiler(astWithArgs, context)).not.toThrow();
+		});
+
+		it('should fail when instruction has too few arguments', () => {
+			const compiler = withValidation({ minArguments: 1 }, mockCompiler);
+			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.MISSING_ARGUMENT}`);
+		});
+
+		it('should pass when minArguments is exactly 0', () => {
+			const compiler = withValidation({ minArguments: 0 }, mockCompiler);
+			expect(() => compiler(ast, context)).not.toThrow();
 		});
 	});
 
