@@ -160,8 +160,7 @@ const mapEnd: InstructionCompiler = withValidation(
 
 		if (rows.length === 0) {
 			// No rows: discard the input and push the default/zero value
-			saveByteCode(context, [WASMInstruction.DROP]);
-			saveByteCode(context, constOp[outputKind](defaultValue));
+			saveByteCode(context, [WASMInstruction.DROP, ...constOp[outputKind](defaultValue)]);
 		} else {
 			// Allocate four temporary locals: inputLocal, resultLocal, matchedLocal, condLocal
 			const localBase = Object.keys(context.namespace.locals).length;
@@ -190,43 +189,43 @@ const mapEnd: InstructionCompiler = withValidation(
 			const matchedLocalIdx = localBase + 2;
 			const condLocalIdx = localBase + 3;
 
-			// Step 1: save input to inputLocal (pops from WASM stack)
-			saveByteCode(context, localSet(inputLocalIdx));
-
-			// Step 2: initialise resultLocal to default or typed zero
-			saveByteCode(context, constOp[outputKind](defaultValue));
-			saveByteCode(context, localSet(resultLocalIdx));
-
-			// Step 3: initialise matchedLocal to 0
-			saveByteCode(context, i32const(0));
-			saveByteCode(context, localSet(matchedLocalIdx));
+			// Step 1: save input; Step 2: init resultLocal; Step 3: init matchedLocal
+			saveByteCode(context, [
+				...localSet(inputLocalIdx),
+				...constOp[outputKind](defaultValue),
+				...localSet(resultLocalIdx),
+				...i32const(0),
+				...localSet(matchedLocalIdx),
+			]);
 
 			// Step 4: emit one select-based update per row
 			for (const row of rows) {
-				// Push the candidate value for this row
-				saveByteCode(context, constOp[outputKind](row.valueValue));
-				// Push current resultLocal
-				saveByteCode(context, localGet(resultLocalIdx));
-				// Compute cond = (inputLocal == key)
-				saveByteCode(context, localGet(inputLocalIdx));
-				saveByteCode(context, constOp[inputKind](row.keyValue));
-				saveByteCode(context, [eqOpcode[inputKind]]);
-				// Save cond for re-use
-				saveByteCode(context, localSet(condLocalIdx));
-				// Compute apply = cond AND !matchedLocal
-				saveByteCode(context, localGet(condLocalIdx));
-				saveByteCode(context, localGet(matchedLocalIdx));
-				saveByteCode(context, [WASMInstruction.I32_EQZ]);
-				saveByteCode(context, [WASMInstruction.I32_AND]);
-				// select(value, resultLocal, apply)
-				saveByteCode(context, [WASMInstruction.SELECT]);
-				// Update resultLocal
-				saveByteCode(context, localSet(resultLocalIdx));
-				// Update matchedLocal = matchedLocal OR cond
-				saveByteCode(context, localGet(matchedLocalIdx));
-				saveByteCode(context, localGet(condLocalIdx));
-				saveByteCode(context, [WASMInstruction.I32_OR]);
-				saveByteCode(context, localSet(matchedLocalIdx));
+				saveByteCode(context, [
+					// Push the candidate value for this row
+					...constOp[outputKind](row.valueValue),
+					// Push current resultLocal
+					...localGet(resultLocalIdx),
+					// Compute cond = (inputLocal == key)
+					...localGet(inputLocalIdx),
+					...constOp[inputKind](row.keyValue),
+					eqOpcode[inputKind],
+					// Save cond for re-use
+					...localSet(condLocalIdx),
+					// Compute apply = cond AND !matchedLocal
+					...localGet(condLocalIdx),
+					...localGet(matchedLocalIdx),
+					WASMInstruction.I32_EQZ,
+					WASMInstruction.I32_AND,
+					// select(value, resultLocal, apply)
+					WASMInstruction.SELECT,
+					// Update resultLocal
+					...localSet(resultLocalIdx),
+					// Update matchedLocal = matchedLocal OR cond
+					...localGet(matchedLocalIdx),
+					...localGet(condLocalIdx),
+					WASMInstruction.I32_OR,
+					...localSet(matchedLocalIdx),
+				]);
 			}
 
 			// Step 5: push the final result
