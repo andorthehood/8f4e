@@ -1,9 +1,9 @@
 import deepMergeConfig from './deepMergeConfig';
 import { compileConfigBlocksByType } from './compileConfigBlocksByType';
 
-import type { ConfigType } from './combineConfigBlocks';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { CodeBlockGraphicData, CodeError, State } from '~/types';
+import type { ConfigType } from './configTypes';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 
