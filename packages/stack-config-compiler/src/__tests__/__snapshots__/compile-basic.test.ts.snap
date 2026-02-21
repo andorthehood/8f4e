@@ -74,6 +74,7 @@ line2	tabbed",
 exports[`compileConfig - basic compilation > should return error for append to non-array 1`] = `
 [
   {
+    "blockIndex": 0,
     "kind": "exec",
     "line": 6,
     "message": "Cannot append to non-array value at path "name"",
@@ -84,6 +85,7 @@ exports[`compileConfig - basic compilation > should return error for append to n
 exports[`compileConfig - basic compilation > should return error for malformed path 1`] = `
 [
   {
+    "blockIndex": 0,
     "kind": "parse",
     "line": 2,
     "message": "Malformed path: unclosed bracket in "items[0"",
@@ -94,6 +96,7 @@ exports[`compileConfig - basic compilation > should return error for malformed p
 exports[`compileConfig - basic compilation > should return error for operations on empty stacks 1`] = `
 [
   {
+    "blockIndex": 0,
     "kind": "exec",
     "line": 2,
     "message": "Cannot set at root scope (scope stack is empty)",
@@ -104,6 +107,7 @@ exports[`compileConfig - basic compilation > should return error for operations 
 exports[`compileConfig - basic compilation > should return error for type conflict 1`] = `
 [
   {
+    "blockIndex": 0,
     "kind": "exec",
     "line": 8,
     "message": "Type conflict: cannot navigate through scalar value",
@@ -114,6 +118,7 @@ exports[`compileConfig - basic compilation > should return error for type confli
 exports[`compileConfig - basic compilation > should return error for unclosed string literal 1`] = `
 [
   {
+    "blockIndex": 0,
     "kind": "parse",
     "line": 3,
     "message": "Invalid string literal: "unclosed",
@@ -124,6 +129,7 @@ exports[`compileConfig - basic compilation > should return error for unclosed st
 exports[`compileConfig - basic compilation > should return errors for invalid input 1`] = `
 [
   {
+    "blockIndex": 0,
     "kind": "parse",
     "line": 3,
     "message": "Unknown command: unknownCommand",

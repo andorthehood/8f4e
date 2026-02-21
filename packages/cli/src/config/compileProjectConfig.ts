@@ -20,7 +20,12 @@ interface CompileProjectConfigResult {
 }
 
 function formatConfigErrors(errors: CompileError[]): string {
-	return errors.map(error => `line ${error.line}: ${error.message}`).join('\n');
+	return errors
+		.map(error => {
+			const blockPrefix = typeof error.blockIndex === 'number' ? `block ${error.blockIndex + 1}, ` : '';
+			return `${blockPrefix}line ${error.line}: ${error.message}`;
+		})
+		.join('\n');
 }
 
 export default function compileProjectConfig(
@@ -61,7 +66,7 @@ export default function compileProjectConfig(
 		};
 	}
 
-	const configResult = compileConfig(configSource);
+	const configResult = compileConfig(configSources);
 	if (configResult.errors.length > 0) {
 		const errorMessage = formatConfigErrors(configResult.errors);
 		const error = new Error(`Config compilation failed:\n${errorMessage}`);

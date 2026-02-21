@@ -17,7 +17,7 @@ rescope "config.negative"
 push -1/2
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			config: {
@@ -46,7 +46,7 @@ rescope "values.negHalf"
 push NEG_HALF
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			values: {
@@ -67,7 +67,7 @@ push 1/4
 concat
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			result: 'value:0.25',
@@ -80,7 +80,7 @@ scope "test"
 push 8/0
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0]).toMatchObject({
@@ -96,7 +96,7 @@ scope "test"
 push VALUE
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0]).toMatchObject({
@@ -114,7 +114,7 @@ push 1/8
 push 1/16
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			ratios: [0.5, 0.25, 0.125, 0.0625],
@@ -127,7 +127,7 @@ scope "test"
 push 123abc
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0]).toMatchObject({
@@ -156,7 +156,7 @@ rescope "grid[0][1]"
 push 1/8
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			dimensions: {
@@ -185,7 +185,7 @@ rescope "values.bothNeg"
 push -3/-4
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			values: {
