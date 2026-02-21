@@ -45,15 +45,19 @@ describe('Feature Flags Integration', () => {
 		expect(result).toHaveProperty('contextMenu');
 		expect(result).toHaveProperty('infoOverlay');
 		expect(result).toHaveProperty('moduleDragging');
+		expect(result).toHaveProperty('codeLineSelection');
 		expect(result).toHaveProperty('viewportDragging');
 		expect(result).toHaveProperty('editing');
+		expect(result).toHaveProperty('modeToggling');
 
 		// Should merge correctly
 		expect(result.contextMenu).toBe(false);
 		expect(result.infoOverlay).toBe(true);
 		expect(result.moduleDragging).toBe(true);
+		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(true);
+		expect(result.editing).toBe(false);
+		expect(result.modeToggling).toBe(true);
 	});
 
 	test('should handle editing flag configuration', () => {
@@ -70,7 +74,9 @@ describe('Feature Flags Integration', () => {
 		expect(featureFlags.contextMenu).toBe(true);
 		expect(featureFlags.infoOverlay).toBe(true);
 		expect(featureFlags.moduleDragging).toBe(true);
+		expect(featureFlags.codeLineSelection).toBe(false);
 		expect(featureFlags.viewportDragging).toBe(true);
+		expect(featureFlags.modeToggling).toBe(true);
 	});
 
 	test('should support view-only mode with editing and contextMenu disabled', () => {
@@ -87,6 +93,8 @@ describe('Feature Flags Integration', () => {
 		expect(featureFlags.editing).toBe(false);
 		expect(featureFlags.contextMenu).toBe(false);
 		expect(featureFlags.moduleDragging).toBe(false);
+		expect(featureFlags.codeLineSelection).toBe(false);
+		expect(featureFlags.modeToggling).toBe(true);
 		// Navigation and info should remain enabled
 		expect(featureFlags.viewportDragging).toBe(true);
 		expect(featureFlags.infoOverlay).toBe(true);

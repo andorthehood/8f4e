@@ -72,19 +72,26 @@ const instructionsToHighlight = [
 	'int**',
 	'float*',
 	'float**',
+	'float64',
+	'float64*',
+	'float64**',
 	'float[]',
+	'float64[]',
 	'int[]',
 	'int8[]',
 	'int8u[]',
 	'int16[]',
 	'int16u[]',
 	'int32[]',
+	'float64*[]',
+	'float64**[]',
 	'float*[]',
 	'float**[]',
 	'int*[]',
 	'int**[]',
 	'castToInt',
 	'castToFloat',
+	'castToFloat64',
 	'skip',
 	'drop',
 	'clearStack',
@@ -146,8 +153,26 @@ export default function highlightSyntax8f4e<T>(
 		fontBinaryOne: T;
 	}
 ): T[][] {
+	const getCommentIndex = (line: string): number | undefined => {
+		const semicolonIndex = line.indexOf(';');
+		const hashCommentMatch = /^\s*#/.exec(line);
+		const hashCommentIndex = hashCommentMatch ? hashCommentMatch[0].length - 1 : -1;
+
+		if (semicolonIndex === -1 && hashCommentIndex === -1) {
+			return undefined;
+		}
+		if (semicolonIndex === -1) {
+			return hashCommentIndex;
+		}
+		if (hashCommentIndex === -1) {
+			return semicolonIndex;
+		}
+
+		return Math.min(semicolonIndex, hashCommentIndex);
+	};
+
 	return code.map(line => {
-		const { index: commentIndex } = /[;#]/.exec(line) || {};
+		const commentIndex = getCommentIndex(line);
 		const instructionMatch = getInstructionRegExp(instructionsToHighlight).exec(line);
 		const instructionIndices = (instructionMatch as unknown as { indices?: number[][] })?.indices || [[]];
 		const { index: numberIndex } = /-?\b(\d+|0b[01]+|0x[\dabcdef]+)\b/.exec(line) || {};
@@ -277,6 +302,27 @@ if (import.meta.vitest) {
 
 			const result = highlightSyntax8f4e(code8f4e, spriteLookups);
 			expect(result).toMatchSnapshot();
+		});
+
+		it('does not treat # in constant names as comment start', () => {
+			const result = highlightSyntax8f4e(['const A#0 22'], spriteLookups);
+			expect(result[0][7]).not.toBe(spriteLookups.fontCodeComment);
+		});
+
+		it('treats line-start # as comment start', () => {
+			const result = highlightSyntax8f4e(['  # comment'], spriteLookups);
+			expect(result[0][2]).toBe(spriteLookups.fontCodeComment);
+		});
+
+		it('does not treat inline # as comment start', () => {
+			const result = highlightSyntax8f4e(['const FOOBAR 42 # comment'], spriteLookups);
+			expect(result[0][16]).not.toBe(spriteLookups.fontCodeComment);
+		});
+
+		it('highlights float64-related instructions', () => {
+			const result = highlightSyntax8f4e(['float64**[] OUT', 'castToFloat64'], spriteLookups);
+			expect(result[0][0]).toBe(spriteLookups.fontInstruction);
+			expect(result[1][0]).toBe(spriteLookups.fontInstruction);
 		});
 	});
 }

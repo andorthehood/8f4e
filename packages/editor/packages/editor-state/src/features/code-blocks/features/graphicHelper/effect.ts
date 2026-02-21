@@ -36,6 +36,10 @@ import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
+		if (!state.featureFlags.codeLineSelection) {
+			return;
+		}
+
 		const [row, col] = moveCaret(
 			codeBlock.code,
 			reverseGapCalculator(Math.floor(relativeY / state.viewport.hGrid), codeBlock.gaps),
