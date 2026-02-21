@@ -37,7 +37,7 @@ async function init() {
 		callbacks: {
 			getListOfModules,
 			getModule,
-			getModuleDependencies: async slug => getModuleDependencies(slug),
+			getModuleDependencies,
 			getListOfProjects,
 			getProject,
 			compileCode: (modules, compilerOptions, functions, macros) =>
