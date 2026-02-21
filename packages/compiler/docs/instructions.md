@@ -39,6 +39,10 @@
   - [ifEnd](instructions/control-flow.md#ifend)
   - [loop](instructions/control-flow.md#loop)
   - [loopEnd](instructions/control-flow.md#loopend)
+  - [mapBegin](instructions/control-flow.md#mapbegin)
+  - [map](instructions/control-flow.md#map)
+  - [default](instructions/control-flow.md#default)
+  - [mapEnd](instructions/control-flow.md#mapend)
   - [skip](instructions/control-flow.md#skip)
 
 - [Conversion](instructions/conversion.md)

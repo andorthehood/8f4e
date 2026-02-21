@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`default instruction compiler > records a default value 1`] = `
+{
+  "mapState": {
+    "defaultIsFloat64": false,
+    "defaultIsInteger": true,
+    "defaultSet": true,
+    "defaultValue": 99,
+    "inputIsFloat64": false,
+    "inputIsInteger": true,
+    "rows": [],
+  },
+}
+`;

@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`map instruction compiler > records an int key→int value row 1`] = `
+[
+  {
+    "keyValue": 1,
+    "valueIsFloat64": false,
+    "valueIsInteger": true,
+    "valueValue": 100,
+  },
+]
+`;
