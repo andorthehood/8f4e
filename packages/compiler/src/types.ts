@@ -157,12 +157,31 @@ export enum BLOCK_TYPE {
 	FUNCTION,
 	BLOCK,
 	CONSTANTS,
+	MAP,
+}
+
+export interface MapRow {
+	keyValue: number;
+	valueValue: number;
+	valueIsInteger: boolean;
+	valueIsFloat64?: boolean;
+}
+
+export interface MapBlockState {
+	inputIsInteger: boolean;
+	inputIsFloat64: boolean;
+	rows: MapRow[];
+	defaultValue?: number;
+	defaultIsInteger?: boolean;
+	defaultIsFloat64?: boolean;
+	defaultSet: boolean;
 }
 
 export type BlockStack = Array<{
 	expectedResultIsInteger: boolean;
 	hasExpectedResult: boolean;
 	blockType: BLOCK_TYPE;
+	mapState?: MapBlockState;
 }>;
 
 export type InstructionCompiler = (line: AST[number], context: CompilationContext) => CompilationContext;

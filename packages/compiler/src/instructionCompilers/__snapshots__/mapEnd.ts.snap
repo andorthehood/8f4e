@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mapEnd instruction compiler > emits DROP + typed zero for zero rows 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultIsInteger": false,
+      "hasExpectedResult": false,
+    },
+  ],
+  "byteCode": [
+    26,
+    65,
+    0,
+  ],
+  "stack": [
+    {
+      "isInteger": true,
+    },
+  ],
+}
+`;
