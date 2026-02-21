@@ -124,13 +124,13 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 		// Check if instruction is allowed in constants blocks (defaults to false)
 		const insideConstantsBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS);
 		if (insideConstantsBlock && !spec.allowedInConstantsBlocks) {
-			throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
 		}
 
 		// Check if instruction is allowed in map blocks (defaults to false)
 		const insideMapBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.MAP);
 		if (insideMapBlock && !spec.allowedInMapBlocks) {
-			throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
 		}
 
 		if (spec.scope) {

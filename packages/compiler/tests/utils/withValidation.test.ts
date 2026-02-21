@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import { withValidation } from '../../src/withValidation';
 import { ErrorCode } from '../../src/errors';
-import { BLOCK_TYPE } from '../../src/types';
+import { ArgumentType, BLOCK_TYPE } from '../../src/types';
 
 import type { AST, CompilationContext, InstructionCompiler } from '../../src/types';
 
@@ -92,8 +92,8 @@ describe('withValidation', () => {
 			const astWithArgs = {
 				...ast,
 				arguments: [
-					{ type: 'literal' as never, value: 1, isInteger: true },
-					{ type: 'literal' as never, value: 2, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
 				],
 			};
 			const compiler = withValidation({ minArguments: 2 }, mockCompiler);

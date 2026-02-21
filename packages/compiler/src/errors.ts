@@ -33,6 +33,7 @@ export enum ErrorCode {
 	NESTED_MACRO_CALL,
 	COMPILER_DIRECTIVE_INVALID_CONTEXT,
 	MIXED_FLOAT_WIDTH,
+	INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
 }
 
 export function getError(code: ErrorCode, line: AST[number], context?: CompilationContext): Error {
@@ -266,6 +267,13 @@ export function getError(code: ErrorCode, line: AST[number], context?: Compilati
 					'Mixed float widths: arithmetic operations require all float operands to have the same width (float32 or float64). (' +
 					code +
 					')',
+				line,
+				context,
+			};
+		case ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK:
+			return {
+				code,
+				message: 'This instruction is not allowed inside this block type. (' + code + ')',
 				line,
 				context,
 			};
