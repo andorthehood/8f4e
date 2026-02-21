@@ -1,4 +1,6 @@
-import { moduleTesterWithFunctions } from './testUtils';
+import { describe, test, expect } from 'vitest';
+
+import { moduleTesterWithFunctions, createTestModuleWithFunctions } from './testUtils';
 
 moduleTesterWithFunctions(
 	'call constant function',
@@ -95,6 +97,34 @@ functionEnd float64`,
 	],
 	[[{ input: Math.PI }, { output: Math.PI }]]
 );
+
+describe('call passes float64 param and return - precision check', () => {
+	test('preserves float64 precision (not downgraded to float32)', async () => {
+		const testModule = await createTestModuleWithFunctions(
+			`module test
+float64 input
+float64 output
+
+loop
+  push &output
+  push input
+  call axion
+  store
+loopEnd
+
+moduleEnd`,
+			[
+				`function axion
+param float64 x
+localGet x
+functionEnd float64`,
+			]
+		);
+		testModule.memory.set('input', Math.PI);
+		testModule.test();
+		expect(testModule.memory.get('output')).toBeCloseTo(Math.PI, 12);
+	});
+});
 
 moduleTesterWithFunctions(
 	'call float64-returning function',
