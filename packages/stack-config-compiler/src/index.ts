@@ -8,7 +8,7 @@
  * ```ts
  * import { compileConfig } from '@8f4e/stack-config-compiler';
  *
- * const source = `
+ * const blocks = [`
  * scope "instrument.name"
  * push "Piano"
  * set
@@ -16,9 +16,9 @@
  * rescopeTop "volume"
  * push 0.8
  * set
- * `;
+ * `];
  *
- * const result = compileConfig(source);
+ * const result = compileConfig(blocks);
  * // result.config = { instrument: { name: "Piano", volume: 0.8 } }
  * // result.errors = []
  * ```
@@ -40,7 +40,7 @@
  *   }
  * };
  *
- * const result = compileConfig(source, { schema });
+ * const result = compileConfig(blocks, { schema });
  * // Schema errors will include path and kind: 'schema'
  * ```
  */
@@ -66,7 +66,7 @@ export type { JSONSchemaLike, JSONSchemaType } from './schema';
 /**
  * Compiles a stack config source program into a JSON-compatible object.
  *
- * @param source - The source code in stack config language (one command per line)
+ * @param sourceBlocks - Config block sources in execution order (one command per line)
  * @param options - Optional configuration including JSON Schema for validation
  * @returns An object containing:
  *   - `config`: The resulting JSON-compatible object, or `null` if there were errors
@@ -74,11 +74,11 @@ export type { JSONSchemaLike, JSONSchemaType } from './schema';
  *
  * @example
  * ```ts
- * const result = compileConfig(`
+ * const result = compileConfig([`
  * scope "name"
  * push "Piano"
  * set
- * `);
+ * `]);
  *
  * if (result.errors.length === 0) {
  *   console.log(result.config); // { name: "Piano" }
@@ -87,29 +87,56 @@ export type { JSONSchemaLike, JSONSchemaType } from './schema';
  * }
  * ```
  */
-export function compileConfig(source: string, options?: CompileOptions): CompileResult {
-	const { commands, errors: parseErrors } = parse(source);
+export function compileConfig(sourceBlocks: string[], options?: CompileOptions): CompileResult {
+	const schemaRoot = options?.schema ? preprocessSchema(options.schema) : undefined;
+	const errors: CompileError[] = [];
+	let config: Record<string, unknown> = {};
+	const writtenPaths = schemaRoot ? new Set<string>() : undefined;
 
-	if (parseErrors.length > 0) {
-		return {
-			config: null,
-			errors: parseErrors.map(e => ({ ...e, kind: 'parse' as const })),
-		};
+	for (let blockIndex = 0; blockIndex < sourceBlocks.length; blockIndex += 1) {
+		const source = sourceBlocks[blockIndex];
+
+		if (source.trim().length === 0) {
+			continue;
+		}
+
+		const { commands, errors: parseErrors } = parse(source);
+
+		if (parseErrors.length > 0) {
+			for (const error of parseErrors) {
+				errors.push({
+					...error,
+					kind: 'parse',
+					blockIndex,
+				});
+			}
+			continue;
+		}
+
+		const { config: blockConfig, errors: execErrors } = executeCommands(commands, schemaRoot, {
+			config,
+			writtenPaths,
+		});
+		config = blockConfig;
+
+		for (const error of execErrors) {
+			errors.push({
+				...error,
+				blockIndex,
+			});
+		}
 	}
 
-	const schemaRoot = options?.schema ? preprocessSchema(options.schema) : undefined;
-	const { config, errors: execErrors, writtenPaths } = executeCommands(commands, schemaRoot);
-
-	if (execErrors.length > 0) {
+	if (errors.length > 0) {
 		return {
 			config: null,
-			errors: execErrors,
+			errors,
 		};
 	}
 
 	// Check for missing required fields if schema provided
 	const missingFieldsErrors: CompileError[] =
-		schemaRoot && writtenPaths ? findMissingRequiredFields(schemaRoot, writtenPaths) : [];
+		schemaRoot && writtenPaths ? findMissingRequiredFields(schemaRoot, writtenPaths).map(error => ({ ...error })) : [];
 
 	if (missingFieldsErrors.length > 0) {
 		return {
