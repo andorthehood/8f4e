@@ -17,7 +17,7 @@ const mapBegin: InstructionCompiler = withValidation(
 	},
 	(line, context) => {
 		if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
+			throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
 		}
 
 		const inputType = line.arguments[0].value;
