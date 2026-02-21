@@ -712,5 +712,38 @@ describe('codeBlockDragger', () => {
 
 			expect(state.graphicHelper.selectedCodeBlock).toBe(block1);
 		});
+
+		it('should clear selected code block when mousedown is on empty space', () => {
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				creationIndex: 0,
+				blockType: 'module',
+			});
+
+			state.graphicHelper.codeBlocks = [block1];
+			state.graphicHelper.selectedCodeBlock = block1;
+
+			codeBlockDragger(store, events);
+
+			// Mousedown outside any block
+			mousedownHandlers[0]({
+				x: 400,
+				y: 400,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			expect(state.graphicHelper.selectedCodeBlock).toBeUndefined();
+			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+		});
 	});
 });
