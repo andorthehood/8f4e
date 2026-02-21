@@ -69,7 +69,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 
 					drawBlockHighlights(engine, state, codeBlock);
 
-					if (state.graphicHelper.selectedCodeBlock === codeBlock) {
+					if (state.featureFlags.codeLineSelection && state.graphicHelper.selectedCodeBlock === codeBlock) {
 						engine.drawSprite(0, codeBlock.cursor.y, 'highlightedCodeLine', codeBlock.width, state.viewport.hGrid);
 					}
 
@@ -104,7 +104,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 						}
 					}
 
-					if (state.graphicHelper.selectedCodeBlock === codeBlock) {
+					if (state.featureFlags.editing && state.graphicHelper.selectedCodeBlock === codeBlock) {
 						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
 					}
 
