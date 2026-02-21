@@ -177,35 +177,17 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const mockGetModule = vi.fn();
 			mockGetModule.mockImplementation(async (slug: string) => {
 				if (slug === 'main') {
-					return {
-						title: 'Main Module',
-						author: 'Test',
-						code: 'module main\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-						dependencies: ['dep1', 'dep2'],
-					};
+					return 'module main\n\nmoduleEnd';
 				} else if (slug === 'dep1') {
-					return {
-						title: 'Dependency 1',
-						author: 'Test',
-						code: 'module dep1\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-					};
+					return 'module dep1\n\nmoduleEnd';
 				} else if (slug === 'dep2') {
-					return {
-						title: 'Dependency 2',
-						author: 'Test',
-						code: 'module dep2\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-					};
+					return 'module dep2\n\nmoduleEnd';
 				}
 				throw new Error('Module not found');
 			});
 
 			mockState.callbacks.getModule = mockGetModule;
+			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dep1', 'dep2']);
 			mockState.featureFlags.editing = true;
 
 			codeBlockCreator(store, mockEvents);
@@ -233,35 +215,17 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const mockGetModule = vi.fn();
 			mockGetModule.mockImplementation(async (slug: string) => {
 				if (slug === 'main') {
-					return {
-						title: 'Main Module',
-						author: 'Test',
-						code: 'module main\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-						dependencies: ['dep1', 'dep2'],
-					};
+					return 'module main\n\nmoduleEnd';
 				} else if (slug === 'dep1') {
-					return {
-						title: 'Dependency 1',
-						author: 'Test',
-						code: 'module dep1\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-					};
+					return 'module dep1\n\nmoduleEnd';
 				} else if (slug === 'dep2') {
-					return {
-						title: 'Dependency 2',
-						author: 'Test',
-						code: 'module dep2\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-					};
+					return 'module dep2\n\nmoduleEnd';
 				}
 				throw new Error('Module not found');
 			});
 
 			mockState.callbacks.getModule = mockGetModule;
+			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dep1', 'dep2']);
 			mockState.featureFlags.editing = true;
 
 			// Pre-populate with dep1
@@ -289,16 +253,10 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 		});
 
 		it('should work without dependencies field', async () => {
-			const mockGetModule = vi.fn().mockResolvedValue({
-				title: 'Simple Module',
-				author: 'Test',
-				code: 'module simple\n\nmoduleEnd',
-				tests: [],
-				category: 'Test',
-				// No dependencies field
-			});
+			const mockGetModule = vi.fn().mockResolvedValue('module simple\n\nmoduleEnd');
 
 			mockState.callbacks.getModule = mockGetModule;
+			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue([]);
 			mockState.featureFlags.editing = true;
 
 			codeBlockCreator(store, mockEvents);
@@ -319,27 +277,15 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const mockGetModule = vi.fn();
 			mockGetModule.mockImplementation(async (slug: string) => {
 				if (slug === 'main') {
-					return {
-						title: 'Main Module',
-						author: 'Test',
-						code: 'module main\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-						dependencies: ['dep1', 'missing'],
-					};
+					return 'module main\n\nmoduleEnd';
 				} else if (slug === 'dep1') {
-					return {
-						title: 'Dependency 1',
-						author: 'Test',
-						code: 'module dep1\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-					};
+					return 'module dep1\n\nmoduleEnd';
 				}
 				throw new Error('Module not found');
 			});
 
 			mockState.callbacks.getModule = mockGetModule;
+			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dep1', 'missing']);
 			mockState.featureFlags.editing = true;
 
 			// Mock console.warn to verify error handling
@@ -369,27 +315,15 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const mockGetModule = vi.fn();
 			mockGetModule.mockImplementation(async (slug: string) => {
 				if (slug === 'main') {
-					return {
-						title: 'Main Module',
-						author: 'Test',
-						code: 'module main\nlong line of code here\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-						dependencies: ['dep1'],
-					};
+					return 'module main\nlong line of code here\nmoduleEnd';
 				} else if (slug === 'dep1') {
-					return {
-						title: 'Dependency 1',
-						author: 'Test',
-						code: 'module dep1\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-					};
+					return 'module dep1\n\nmoduleEnd';
 				}
 				throw new Error('Module not found');
 			});
 
 			mockState.callbacks.getModule = mockGetModule;
+			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dep1']);
 			mockState.featureFlags.editing = true;
 			mockState.viewport.vGrid = 8; // 8 pixels per grid unit
 
@@ -421,27 +355,15 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const mockGetModule = vi.fn();
 			mockGetModule.mockImplementation(async (slug: string) => {
 				if (slug === 'main') {
-					return {
-						title: 'Main Module',
-						author: 'Test',
-						code: 'module main\n\nmoduleEnd',
-						tests: [],
-						category: 'Test',
-						dependencies: ['sine'],
-					};
+					return 'module main\n\nmoduleEnd';
 				} else if (slug === 'sine') {
-					return {
-						title: 'Sine Function',
-						author: 'Test',
-						code: 'function sine\nparam float x\nfunctionEnd float',
-						tests: [],
-						category: 'Test',
-					};
+					return 'function sine\nparam float x\nfunctionEnd float';
 				}
 				throw new Error('Module not found');
 			});
 
 			mockState.callbacks.getModule = mockGetModule;
+			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['sine']);
 			mockState.featureFlags.editing = true;
 
 			// Pre-populate with a module named 'sine' (different type from the function dependency)

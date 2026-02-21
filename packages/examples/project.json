@@ -5,9 +5,8 @@
 	"targets": {
 		"build": {
 			"executor": "nx:run-commands",
-			"outputs": ["{projectRoot}/dist"],
 			"options": {
-				"command": "tsc",
+				"command": "node ./src/module-generators/generateModules.ts",
 				"cwd": "{projectRoot}"
 			}
 		},
@@ -21,14 +20,14 @@
 		"dev": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "tsc --watch",
+				"command": "node ./src/module-generators/generateModules.ts && tsc --watch",
 				"cwd": "{projectRoot}"
 			}
 		},
 		"typecheck": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "tsc --noEmit",
+				"command": "tsc --project tsconfig.typecheck.json --noEmit",
 				"cwd": "{projectRoot}"
 			},
 			"dependsOn": ["^build"]

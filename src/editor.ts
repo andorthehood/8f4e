@@ -2,7 +2,7 @@ import initEditor from '@8f4e/editor';
 import { ColorScheme } from '@8f4e/sprite-generator';
 import { compileConfig, JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
-import { getListOfModules, getModule, getListOfProjects, getProject } from './examples/registry';
+import { getListOfModules, getModule, getModuleDependencies, getListOfProjects, getProject } from './examples/registry';
 import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
 import {
 	loadSession,
@@ -37,6 +37,7 @@ async function init() {
 		callbacks: {
 			getListOfModules,
 			getModule,
+			getModuleDependencies,
 			getListOfProjects,
 			getProject,
 			compileCode: (modules, compilerOptions, functions, macros) =>
