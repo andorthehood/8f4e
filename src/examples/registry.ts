@@ -1,10 +1,13 @@
+import { extractUseDependencies } from '@8f4e/compiler/syntax';
+
 import { moduleManifest, moduleMetadata } from './exampleModules';
 import { projectMetadata } from './exampleProjects';
 
-import type { ExampleModule, ModuleMetadata, ProjectMetadata } from '@8f4e/editor-state';
+import type { ModuleMetadata, ProjectMetadata } from '@8f4e/editor-state';
 
 // Cache for loaded modules to avoid redundant loading
-const loadedModulesCache: Record<string, ExampleModule> = {};
+const loadedModulesCache: Record<string, string> = {};
+const moduleDependencyCache: Record<string, string[]> = {};
 
 // Cache for loaded projects to avoid redundant loading
 const loadedProjectsCache: Record<string, string> = {};
@@ -17,11 +20,29 @@ export async function getListOfModules(): Promise<ModuleMetadata[]> {
 	return moduleMetadata;
 }
 
+function inferModuleDependenciesFromCode(slug: string, code: string): string[] {
+	const validSlugs = new Set(Object.keys(moduleManifest));
+	const dependencies = extractUseDependencies(code);
+
+	return dependencies.filter(dependency => dependency !== slug && validSlugs.has(dependency));
+}
+
+export async function getModuleDependencies(slug: string): Promise<string[]> {
+	if (moduleDependencyCache[slug]) {
+		return moduleDependencyCache[slug];
+	}
+
+	const code = await getModule(slug);
+	const dependencies = inferModuleDependenciesFromCode(slug, code);
+	moduleDependencyCache[slug] = dependencies;
+	return dependencies;
+}
+
 /**
  * Get a specific module by slug.
  * Uses cached version if available, otherwise loads on-demand.
  */
-export async function getModule(slug: string): Promise<ExampleModule> {
+export async function getModule(slug: string): Promise<string> {
 	if (loadedModulesCache[slug]) {
 		console.log(`Module ${slug} loaded from cache`);
 		return loadedModulesCache[slug];
@@ -35,7 +56,7 @@ export async function getModule(slug: string): Promise<ExampleModule> {
 	console.log(`Loading module: ${slug}`);
 	const module = await loader();
 	loadedModulesCache[slug] = module;
-	console.log(`Loaded module: ${module.title}`);
+	console.log(`Loaded module: ${slug}`);
 
 	return module;
 }
@@ -75,4 +96,4 @@ export async function getProject(url: string): Promise<string> {
 }
 
 // Type definitions for backwards compatibility
-export type ModulesType = Record<string, ExampleModule> & { [key: string]: ExampleModule | undefined };
+export type ModulesType = Record<string, string> & { [key: string]: string | undefined };
