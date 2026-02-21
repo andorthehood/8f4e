@@ -2,8 +2,14 @@
 
 exports[`default instruction compiler > records a default value 1`] = `
 {
-  "mapDefaultIsInteger": true,
-  "mapDefaultSet": true,
-  "mapDefaultValue": 99,
+  "mapState": {
+    "defaultIsFloat64": false,
+    "defaultIsInteger": true,
+    "defaultSet": true,
+    "defaultValue": 99,
+    "inputIsFloat64": false,
+    "inputIsInteger": true,
+    "rows": [],
+  },
 }
 `;
