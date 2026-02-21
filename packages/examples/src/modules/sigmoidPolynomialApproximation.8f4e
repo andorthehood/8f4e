@@ -1,6 +1,6 @@
 module sigmoid
 ; Polynomial sigmoid 
-; funtion approximation
+; function approximation
 
 float* in
 float out
