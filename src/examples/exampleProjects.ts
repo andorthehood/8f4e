@@ -84,4 +84,9 @@ export const projectMetadata: ExampleProjectMetadata[] = [
 		category: 'Audio',
 		url: `${exampleProjectsBaseUrl}/keyboardControlledMonoSynth.8f4e`,
 	},
+	{
+		title: 'Keyboard-Controlled Two Operator FM Synth',
+		category: 'Audio',
+		url: `${exampleProjectsBaseUrl}/keyboardControlledTwoOperatorFMSynth.8f4e`,
+	},
 ];
