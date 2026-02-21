@@ -68,6 +68,10 @@ import constants from './constants';
 import constantsEnd from './constantsEnd';
 import skipExecution from './skipExecution';
 import initOnly from './initOnly';
+import mapBegin from './mapBegin';
+import map from './map';
+import _default from './default';
+import mapEnd from './mapEnd';
 
 const instructions = {
 	and,
@@ -163,6 +167,10 @@ const instructions = {
 	constantsEnd,
 	'#skipExecution': skipExecution,
 	'#initOnly': initOnly,
+	mapBegin,
+	map,
+	default: _default,
+	mapEnd,
 } as const;
 
 export default instructions;
