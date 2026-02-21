@@ -7,10 +7,10 @@ Provides shared helpers for compiling stack-based config blocks into validated c
 ## Key Behaviors
 
 - **Config Collection**: Helpers for gathering config-type blocks
-- **Source Combination**: Combines multiple config blocks into a single source string with line tracking
+- **Block Compilation**: Compiles config blocks as an ordered array of independent block programs
 - **Compilation**: Uses `@8f4e/stack-config-compiler` to parse and execute config programs
 - **Schema Validation**: Validates compiled config against a provided schema
-- **Error Mapping**: Maps compilation/validation errors back to specific config blocks and line numbers
+- **Error Mapping**: Maps compiler errors to specific config blocks using `blockIndex`
 - **Default Merging**: Deep merges compiled config with default values
 
 ## Consumers
@@ -44,10 +44,9 @@ Each error includes:
 - Config language documentation: [`@8f4e/stack-config-compiler/README.md`](../../../../../../stack-config-compiler/README.md)
 - Project config schema definition: `project-config/schema.ts`
 - Editor config schema definition: `editor-config/schema.ts`
-- Error mapping utilities: `mapErrorLineToBlock.ts`
 
 ## Notes & Limitations
 
-- Config blocks are combined in `creationIndex` order
-- Line numbers in errors account for block boundaries
+- Config blocks are compiled in `creationIndex` order
+- Scope/data stack/constants are reset between blocks
 - Default config values provide fallbacks for missing settings
