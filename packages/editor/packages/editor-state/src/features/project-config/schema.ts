@@ -43,6 +43,8 @@ export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSc
 			runtimeSettings: runtimeSettingsSchema,
 			disableAutoCompilation: { type: 'boolean' },
 			exportFileName: { type: 'string' },
+			keyCodeMemoryId: { type: 'string' },
+			keyPressedMemoryId: { type: 'string' },
 			binaryAssets: {
 				type: 'array',
 				items: {
