@@ -1,12 +1,17 @@
 import type { VMState } from '../types';
 import type { SchemaNode } from '../schema';
 
+interface CreateVMStateOptions {
+	config?: Record<string, unknown>;
+	writtenPaths?: Set<string>;
+}
+
 /**
  * Creates a fresh VM state
  */
-export default function createVMState(schemaRoot?: SchemaNode): VMState {
+export default function createVMState(schemaRoot?: SchemaNode, options: CreateVMStateOptions = {}): VMState {
 	const state: VMState = {
-		config: {},
+		config: options.config ?? {},
 		dataStack: [],
 		scopeStack: [],
 		constantsStack: [new Map()], // Start with root-level constants map
@@ -14,7 +19,7 @@ export default function createVMState(schemaRoot?: SchemaNode): VMState {
 
 	if (schemaRoot) {
 		state.schemaRoot = schemaRoot;
-		state.writtenPaths = new Set();
+		state.writtenPaths = options.writtenPaths ?? new Set();
 	}
 
 	return state;

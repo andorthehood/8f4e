@@ -1,6 +1,6 @@
 import { extractConfigType } from './extractConfigBody';
 
-import type { ConfigType } from './combineConfigBlocks';
+import type { ConfigType } from './configTypes';
 
 type ConfigBlockLike = {
 	code: string[];

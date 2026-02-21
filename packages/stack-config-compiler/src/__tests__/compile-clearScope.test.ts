@@ -15,7 +15,7 @@ scope "instrument.harp.name"
 push "Celtic Harp"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			instrument: {
@@ -51,7 +51,7 @@ scope "third"
 push GLOBAL
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			first: 'first local',
@@ -85,8 +85,8 @@ push 2
 set
 `;
 
-		const result1 = compileConfig(source1);
-		const result2 = compileConfig(source2);
+		const result1 = compileConfig([source1]);
+		const result2 = compileConfig([source2]);
 
 		expect(result1.errors).toEqual([]);
 		expect(result2.errors).toEqual([]);
@@ -115,7 +115,7 @@ scope "c"
 push 3
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			a: 1,
@@ -138,7 +138,7 @@ scope "c.d"
 push ROOT_VAL
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			a: { b: 100 },
