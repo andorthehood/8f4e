@@ -11,7 +11,7 @@ push "bar"
 concat
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({ message: 'foobar' });
 	});
@@ -25,7 +25,7 @@ push 123
 concat
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({ combined: 'foobar123' });
 	});
@@ -40,7 +40,7 @@ push 42
 concat
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({ coerced: 'value:truenull42' });
 	});
@@ -51,7 +51,7 @@ scope "test"
 concat
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
@@ -63,7 +63,7 @@ push "only"
 concat
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({ single: 'only' });
 	});

@@ -22,7 +22,7 @@ rescope "age"
 push 30
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({ name: 'John', age: 30 });
 	});
@@ -41,7 +41,7 @@ scope "titel"
 push "My Title"
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].kind).toBe('schema');
@@ -62,7 +62,7 @@ scope "count"
 push "not a number"
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].kind).toBe('schema');
@@ -83,7 +83,7 @@ scope "status"
 push "unknown"
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].kind).toBe('schema');
@@ -105,7 +105,7 @@ scope "name"
 push "John"
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].kind).toBe('schema');
@@ -135,7 +135,7 @@ scope "titel"
 push "My Project"
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].kind).toBe('schema');
@@ -158,7 +158,7 @@ scope "items"
 push "not a number"
 append
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors.some(e => e.kind === 'schema' && e.message.includes('Expected type number'))).toBe(true);
 	});
@@ -180,7 +180,7 @@ rescope "extraField"
 push "allowed"
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({ name: 'John', extraField: 'allowed' });
 	});
@@ -191,7 +191,7 @@ scope "anyField"
 push "anyValue"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({ anyField: 'anyValue' });
 	});
@@ -216,7 +216,7 @@ scope "info.description"
 push "Some text"
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors.some(e => e.path === 'info.title')).toBe(true);
 	});
@@ -257,7 +257,7 @@ rescope "config.audioOutputBuffers"
 push 2
 set
 `;
-		const audioResult = compileConfig(audioSource, { schema });
+		const audioResult = compileConfig([audioSource], { schema });
 		expect(audioResult.errors).toEqual([]);
 		expect(audioResult.config).toEqual({
 			config: {
@@ -276,7 +276,7 @@ rescope "config.midiNoteInputs"
 push 16
 set
 `;
-		const midiResult = compileConfig(midiSource, { schema });
+		const midiResult = compileConfig([midiSource], { schema });
 		expect(midiResult.errors).toEqual([]);
 		expect(midiResult.config).toEqual({
 			config: {
@@ -324,7 +324,7 @@ rescope "config.midiNoteInputs"
 push 16
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		// Should fail because midiNoteInputs is only valid for midi runtime
 		// The oneOf validation should catch this
 		expect(result.config).toBeNull();
@@ -347,7 +347,7 @@ scope "value"
 push "hello"
 set
 `;
-		const stringResult = compileConfig(stringSource, { schema });
+		const stringResult = compileConfig([stringSource], { schema });
 		expect(stringResult.errors).toEqual([]);
 		expect(stringResult.config).toEqual({ value: 'hello' });
 
@@ -357,7 +357,7 @@ scope "value"
 push 42
 set
 `;
-		const numberResult = compileConfig(numberSource, { schema });
+		const numberResult = compileConfig([numberSource], { schema });
 		expect(numberResult.errors).toEqual([]);
 		expect(numberResult.config).toEqual({ value: 42 });
 	});
@@ -377,7 +377,7 @@ scope "value"
 push true
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].kind).toBe('schema');
@@ -400,7 +400,7 @@ scope "value"
 push 42
 set
 `;
-		const result = compileConfig(source, { schema });
+		const result = compileConfig([source], { schema });
 		expect(result.config).toBeNull();
 		expect(result.errors).toHaveLength(1);
 		expect(result.errors[0].kind).toBe('schema');

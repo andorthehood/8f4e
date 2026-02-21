@@ -94,7 +94,7 @@ describe('Example Projects Compilation', () => {
 					const configBody = code.slice(configStartIndex + 1, configEndIndex);
 					const source = configBody.join('\n');
 
-					const result = compileConfig(source);
+					const result = compileConfig([source]);
 
 					expect(
 						result.errors,
