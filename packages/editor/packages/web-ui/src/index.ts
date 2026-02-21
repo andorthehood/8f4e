@@ -60,7 +60,7 @@ export default async function init(
 		state.viewport.y = effectiveViewport.y;
 
 		drawBackground(engine, state);
-		if (state.featureFlags.consoleOverlay) {
+		if (state.featureFlags.consoleOverlay && state.featureFlags.editing) {
 			drawConsoleOverlay(engine, state);
 		}
 		if (state.featureFlags.infoOverlay) {
