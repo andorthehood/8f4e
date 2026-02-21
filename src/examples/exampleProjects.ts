@@ -79,4 +79,9 @@ export const projectMetadata: ExampleProjectMetadata[] = [
 		category: 'Machine Learning',
 		url: `${exampleProjectsBaseUrl}/digitClassifier64.8f4e`,
 	},
+	{
+		title: 'Keyboard-Controlled Mono Synth',
+		category: 'Audio',
+		url: `${exampleProjectsBaseUrl}/keyboardControlledMonoSynth.8f4e`,
+	},
 ];
