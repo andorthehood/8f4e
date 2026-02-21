@@ -140,6 +140,93 @@ loop
 loopEnd
 ```
 
+### mapBegin
+
+The `mapBegin` instruction opens a map block and declares the input type for the mapping operation. The input type must be `int`, `float`, or `float64`.
+
+Between `mapBegin` and `mapEnd` only `map`, `default`, and `mapEnd` are valid instructions.
+
+#### Examples
+
+```
+int key
+push key
+mapBegin int
+  map 1 100
+  map 2 200
+mapEnd int
+```
+
+### map
+
+The `map` instruction declares a single key→value row inside a map block. The key is matched against the input value, and if it matches (and no earlier row has already matched), the corresponding value becomes the result.
+
+Key type must match the input type declared in `mapBegin`. Value type is validated against the output type at `mapEnd`.
+
+#### Examples
+
+```
+push key
+mapBegin int
+  map 1 10
+  map 2 20
+mapEnd int
+```
+
+### default
+
+The `default` instruction declares an explicit fallback value inside a map block. It is returned when no `map` key matches the input. If omitted the implicit default is the typed zero (`0`, `0.0`, or `0.0f64` depending on output type).
+
+The default value type must match the output type declared in `mapEnd`.
+
+#### Examples
+
+```
+push key
+mapBegin int
+  map 1 100
+  default 999
+mapEnd int
+```
+
+### mapEnd
+
+The `mapEnd` instruction closes a map block and declares the output type (`int`, `float`, or `float64`). It consumes the input value from the stack and pushes the mapped result.
+
+Lowering uses branchless WebAssembly `select` instructions: each row is evaluated in declaration order with first-match-wins semantics.
+
+> **Note on float key precision**: key matching uses exact equality (`f32.eq` / `f64.eq`). Rounding and precision management is the user's responsibility.
+
+#### Examples
+
+```
+int keycode
+int output
+push &output
+push keycode
+mapBegin int
+  map 65 1
+  map 66 2
+  map 67 3
+  default 0
+mapEnd int
+store
+```
+
+Mixed input/output types:
+
+```
+int keycode
+float output
+push &output
+push keycode
+mapBegin int
+  map 0 0.5
+  map 1 1.0
+mapEnd float
+store
+```
+
 ### skip
 
 The skip instruction skips execution for a number of iterations. When called without arguments it returns immediately; with a count it skips until the counter reaches the provided value.
