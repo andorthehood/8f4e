@@ -27,12 +27,14 @@ describe('Feature Flags Configuration', () => {
 		});
 	});
 
-	test('defaultFeatureFlags should have all features enabled', () => {
+	test('defaultFeatureFlags should default to view mode with editing disabled', () => {
 		expect(defaultFeatureFlags.contextMenu).toBe(true);
 		expect(defaultFeatureFlags.infoOverlay).toBe(true);
 		expect(defaultFeatureFlags.moduleDragging).toBe(true);
+		expect(defaultFeatureFlags.codeLineSelection).toBe(false);
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
-		expect(defaultFeatureFlags.editing).toBe(true);
+		expect(defaultFeatureFlags.editing).toBe(false);
+		expect(defaultFeatureFlags.modeToggling).toBe(true);
 		expect(defaultFeatureFlags.demoMode).toBe(false);
 	});
 
@@ -45,8 +47,10 @@ describe('Feature Flags Configuration', () => {
 		expect(result.contextMenu).toBe(false);
 		expect(result.infoOverlay).toBe(true);
 		expect(result.moduleDragging).toBe(true);
+		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(true);
+		expect(result.editing).toBe(false);
+		expect(result.modeToggling).toBe(true);
 		expect(result.demoMode).toBe(false);
 	});
 
@@ -88,7 +92,9 @@ describe('Feature Flags Configuration', () => {
 		expect(result.contextMenu).toBe(true);
 		expect(result.infoOverlay).toBe(true);
 		expect(result.moduleDragging).toBe(true);
+		expect(result.codeLineSelection).toBe(false);
 		expect(result.viewportDragging).toBe(true);
-		expect(result.editing).toBe(true);
+		expect(result.editing).toBe(false);
+		expect(result.modeToggling).toBe(true);
 	});
 });

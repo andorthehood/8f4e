@@ -127,6 +127,9 @@ export interface FeatureFlags {
 	/** Enable/disable dragging and repositioning of code block modules */
 	moduleDragging: boolean;
 
+	/** Enable/disable selecting lines/caret positions within code blocks */
+	codeLineSelection: boolean;
+
 	/** Enable/disable panning/scrolling of the editor viewport */
 	viewportDragging: boolean;
 
@@ -135,6 +138,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable all editing functionality (create, edit, delete, save) */
 	editing: boolean;
+
+	/** Enable/disable keyboard toggling between view/edit modes (i/Escape) */
+	modeToggling: boolean;
 
 	/** Enable/disable automatic demo mode with periodic code block navigation */
 	demoMode: boolean;

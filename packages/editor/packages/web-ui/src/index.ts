@@ -6,6 +6,7 @@ import drawConnections from './drawers/codeBlocks/codeBlockDecorators/connection
 import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
 import drawInfoOverlay from './drawers/infoOverlay';
+import drawModeOverlay from './drawers/modeOverlay';
 import drawConsoleOverlay from './drawers/consoleOverlay';
 import drawBackground from './drawers/drawBackground';
 import { calculateAnimatedViewport, type AnimationState } from './calculateAnimatedViewport';
@@ -73,6 +74,7 @@ export default async function init(
 		drawCodeBlocks(engine, state, memoryViews);
 		drawConnections(engine, state, memoryViews);
 		drawContextMenu(engine, state);
+		drawModeOverlay(engine, state);
 		drawDialog(engine, state);
 
 		state.viewport.x = originalViewport.x;
