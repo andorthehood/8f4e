@@ -5,9 +5,8 @@
 	"targets": {
 		"build": {
 			"executor": "nx:run-commands",
-			"outputs": ["{projectRoot}/dist"],
 			"options": {
-				"command": "node --experimental-strip-types ./src/module-generators/generateModules.ts && node --eval \"const fs=require('node:fs');fs.rmSync('dist',{recursive:true,force:true});fs.mkdirSync('dist/modules',{recursive:true});fs.mkdirSync('dist/projects',{recursive:true});\" && cp src/modules/*.8f4e dist/modules/ && cp src/projects/*.8f4e dist/projects/",
+				"command": "node ./src/module-generators/generateModules.ts",
 				"cwd": "{projectRoot}"
 			}
 		},
@@ -21,7 +20,7 @@
 		"dev": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "node --experimental-strip-types ./src/module-generators/generateModules.ts && tsc --watch",
+				"command": "node ./src/module-generators/generateModules.ts && tsc --watch",
 				"cwd": "{projectRoot}"
 			}
 		},
