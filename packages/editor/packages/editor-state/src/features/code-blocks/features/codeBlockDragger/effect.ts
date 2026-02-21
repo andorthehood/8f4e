@@ -29,6 +29,8 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		const draggedCodeBlock = state.graphicHelper.draggedCodeBlock;
 
 		if (!draggedCodeBlock) {
+			state.graphicHelper.selectedCodeBlock = undefined;
+			dragSet = [];
 			return;
 		}
 		state.graphicHelper.selectedCodeBlock = state.graphicHelper.draggedCodeBlock;
