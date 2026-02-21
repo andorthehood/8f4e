@@ -11,7 +11,7 @@ import {
 import type { BlockStack, CompilationContext, InstructionCompiler, StackItem } from './types';
 
 export type OperandRule = 'int' | 'float' | 'matching';
-export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'block' | 'constants';
+export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'block' | 'constants' | 'map';
 
 export interface ValidationSpec {
 	scope?: ScopeRule;
@@ -20,6 +20,7 @@ export interface ValidationSpec {
 	onInsufficientOperands?: ErrorCode;
 	onInvalidScope?: ErrorCode;
 	allowedInConstantsBlocks?: boolean;
+	allowedInMapBlocks?: boolean;
 }
 
 function validateScope(
@@ -46,6 +47,9 @@ function validateScope(
 			break;
 		case 'constants':
 			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.CONSTANTS);
+			break;
+		case 'map':
+			isValid = isInstructionIsInsideBlock(blockStack, BLOCK_TYPE.MAP);
 			break;
 	}
 
@@ -119,6 +123,12 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 		// Check if instruction is allowed in constants blocks (defaults to false)
 		const insideConstantsBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.CONSTANTS);
 		if (insideConstantsBlock && !spec.allowedInConstantsBlocks) {
+			throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
+		}
+
+		// Check if instruction is allowed in map blocks (defaults to false)
+		const insideMapBlock = isInstructionIsInsideBlock(context.blockStack, BLOCK_TYPE.MAP);
+		if (insideMapBlock && !spec.allowedInMapBlocks) {
 			throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
 		}
 

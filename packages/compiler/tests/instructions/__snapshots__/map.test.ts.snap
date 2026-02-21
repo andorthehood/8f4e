@@ -1,0 +1,1485 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "mapFirstMatch",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapBegin",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 10,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 20,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 11,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 13,
+  },
+]
+`;
+
+exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32 i32 i32 i32)
+    i32.const 4
+    i32.const 0
+    i32.load
+    local.set 0
+    i32.const 0
+    local.set 1
+    i32.const 0
+    local.set 2
+    i32.const 10
+    local.get 1
+    local.get 0
+    i32.const 1
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    i32.const 20
+    local.get 1
+    local.get 0
+    i32.const 1
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    local.get 1
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`map: first-match-wins with duplicate keys > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`map: float→float mapping > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "mapFloatFloat",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "float",
+      },
+    ],
+    "instruction": "mapBegin",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.5,
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 10,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 1.5,
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 20,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "float",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 11,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 13,
+  },
+]
+`;
+
+exports[`map: float→float mapping > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local f32 f32 i32 i32)
+    i32.const 4
+    i32.const 0
+    f32.load
+    local.set 0
+    f32.const 0x0p+0 (;=0;)
+    local.set 1
+    i32.const 0
+    local.set 2
+    f32.const 0x1.4p+3 (;=10;)
+    local.get 1
+    local.get 0
+    f32.const 0x1p-1 (;=0.5;)
+    f32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    f32.const 0x1.4p+4 (;=20;)
+    local.get 1
+    local.get 0
+    f32.const 0x1.8p+0 (;=1.5;)
+    f32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    local.get 1
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`map: float→float mapping > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`map: implicit default zero for int output > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "mapImplicitDefault",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapBegin",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 7,
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 42,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 12,
+  },
+]
+`;
+
+exports[`map: implicit default zero for int output > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32 i32 i32 i32)
+    i32.const 4
+    i32.const 0
+    i32.load
+    local.set 0
+    i32.const 0
+    local.set 1
+    i32.const 0
+    local.set 2
+    i32.const 42
+    local.get 1
+    local.get 0
+    i32.const 7
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    local.get 1
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`map: implicit default zero for int output > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`map: int→float mapping > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "mapIntFloat",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "float",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapBegin",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 0,
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 0.5,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+      {
+        "isInteger": false,
+        "type": "literal",
+        "value": 1.5,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "float",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 11,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 13,
+  },
+]
+`;
+
+exports[`map: int→float mapping > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32 f32 i32 i32)
+    i32.const 4
+    i32.const 0
+    i32.load
+    local.set 0
+    f32.const 0x0p+0 (;=0;)
+    local.set 1
+    i32.const 0
+    local.set 2
+    f32.const 0x1p-1 (;=0.5;)
+    local.get 1
+    local.get 0
+    i32.const 0
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    f32.const 0x1.8p+0 (;=1.5;)
+    local.get 1
+    local.get 0
+    i32.const 1
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    local.get 1
+    f32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`map: int→float mapping > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": false,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "float",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`map: int→int basic mapping > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "mapIntInt",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapBegin",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 100,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 2,
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 200,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 3,
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 300,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumber": 11,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 12,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 14,
+  },
+]
+`;
+
+exports[`map: int→int basic mapping > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32 i32 i32 i32)
+    i32.const 4
+    i32.const 0
+    i32.load
+    local.set 0
+    i32.const 0
+    local.set 1
+    i32.const 0
+    local.set 2
+    i32.const 100
+    local.get 1
+    local.get 0
+    i32.const 1
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    i32.const 200
+    local.get 1
+    local.get 0
+    i32.const 2
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    i32.const 300
+    local.get 1
+    local.get 0
+    i32.const 3
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    local.get 1
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`map: int→int basic mapping > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`map: int→int with explicit default > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "mapIntIntDefault",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapBegin",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 1,
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 10,
+      },
+    ],
+    "instruction": "map",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 999,
+      },
+    ],
+    "instruction": "default",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 11,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 13,
+  },
+]
+`;
+
+exports[`map: int→int with explicit default > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    (local i32 i32 i32 i32)
+    i32.const 4
+    i32.const 0
+    i32.load
+    local.set 0
+    i32.const 999
+    local.set 1
+    i32.const 0
+    local.set 2
+    i32.const 10
+    local.get 1
+    local.get 0
+    i32.const 1
+    i32.eq
+    local.set 3
+    local.get 3
+    local.get 2
+    i32.eqz
+    i32.and
+    select
+    local.set 1
+    local.get 2
+    local.get 3
+    i32.or
+    local.set 2
+    local.get 1
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`map: int→int with explicit default > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`map: zero-row map returns default > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "mapZeroRows",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapBegin",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 11,
+  },
+]
+`;
+
+exports[`map: zero-row map returns default > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    drop
+    i32.const 0
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`map: zero-row map returns default > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
+
+exports[`map: zero-row map with explicit default > if the generated AST, WAT and memory map match the snapshot 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "mapZeroRowsDefault",
+      },
+    ],
+    "instruction": "module",
+    "lineNumber": 0,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 2,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "output",
+      },
+    ],
+    "instruction": "int",
+    "lineNumber": 3,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "&output",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 5,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "input",
+      },
+    ],
+    "instruction": "push",
+    "lineNumber": 6,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapBegin",
+    "lineNumber": 7,
+  },
+  {
+    "arguments": [
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 42,
+      },
+    ],
+    "instruction": "default",
+    "lineNumber": 8,
+  },
+  {
+    "arguments": [
+      {
+        "type": "identifier",
+        "value": "int",
+      },
+    ],
+    "instruction": "mapEnd",
+    "lineNumber": 9,
+  },
+  {
+    "arguments": [],
+    "instruction": "store",
+    "lineNumber": 10,
+  },
+  {
+    "arguments": [],
+    "instruction": "moduleEnd",
+    "lineNumber": 12,
+  },
+]
+`;
+
+exports[`map: zero-row map with explicit default > if the generated AST, WAT and memory map match the snapshot 2`] = `
+"(module
+  (type (;0;) (func))
+  (import "js" "memory" (memory (;0;) 1))
+  (func (;0;) (type 0)
+    i32.const 4
+    i32.const 0
+    i32.load
+    drop
+    i32.const 42
+    i32.store)
+  (export "test" (func 0)))
+"
+`;
+
+exports[`map: zero-row map with explicit default > if the generated AST, WAT and memory map match the snapshot 3`] = `
+{
+  "input": {
+    "byteAddress": 0,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "input",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 0,
+    "wordAlignedSize": 1,
+  },
+  "output": {
+    "byteAddress": 4,
+    "default": 0,
+    "elementWordSize": 4,
+    "id": "output",
+    "isInteger": true,
+    "isPointer": false,
+    "isPointingToInteger": false,
+    "isPointingToPointer": false,
+    "isUnsigned": false,
+    "numberOfElements": 1,
+    "type": "int",
+    "wordAlignedAddress": 1,
+    "wordAlignedSize": 1,
+  },
+}
+`;
