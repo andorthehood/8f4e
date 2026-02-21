@@ -9,9 +9,6 @@ import type { ModuleMetadata, ProjectMetadata } from '@8f4e/editor-state';
 const loadedModulesCache: Record<string, string> = {};
 const moduleDependencyCache: Record<string, string[]> = {};
 
-// Cache for loaded projects to avoid redundant loading
-const loadedProjectsCache: Record<string, string> = {};
-
 /**
  * Get list of modules with metadata only.
  * Returns hardcoded metadata without loading any module code.
@@ -74,22 +71,16 @@ export function getDefaultProjectUrl(): string | null {
 }
 
 /**
- * Get specific project by URL.
- * Uses cached version if available, otherwise loads on-demand.
+ * Get specific project by URL with forced cache bypass.
  */
 export async function getProject(url: string): Promise<string> {
-	if (loadedProjectsCache[url]) {
-		console.log(`Project ${url} loaded from cache`);
-		return loadedProjectsCache[url];
-	}
-
 	console.log(`Loading project: ${url}`);
-	const response = await fetch(url);
+	const requestUrl = `${url}${url.includes('?') ? '&' : '?'}_t=${Date.now()}`;
+	const response = await fetch(requestUrl, { cache: 'no-store' });
 	if (!response.ok) {
-		throw new Error(`Failed to fetch project from ${url}: HTTP ${response.status}`);
+		throw new Error(`Failed to fetch project from ${requestUrl}: HTTP ${response.status}`);
 	}
 	const text = await response.text();
-	loadedProjectsCache[url] = text;
 	console.log(`Loaded project: ${url}`);
 
 	return text;
