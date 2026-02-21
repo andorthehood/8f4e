@@ -104,20 +104,51 @@ export async function importProject(): Promise<Project> {
 
 export async function exportProject(data: string, fileName: string): Promise<void> {
 	const blob = new Blob([data], { type: 'application/json' });
-	const url = URL.createObjectURL(blob);
-	const a = document.createElement('a');
-	document.body.appendChild(a);
-	a.style.display = 'none';
-	a.href = url;
-	a.download = fileName;
-	a.click();
-
-	document.body.removeChild(a);
-	URL.revokeObjectURL(url);
+	await saveBlobWithPickerFallback(blob, fileName, {
+		description: '8f4e Project',
+		accept: { 'application/json': ['.8f4e', '.json'] },
+	});
 }
 
 export async function exportBinaryCode(fileName: string): Promise<void> {
 	const blob = new Blob([new Uint8Array(getCodeBuffer())], { type: 'application/wasm' });
+
+	await saveBlobWithPickerFallback(blob, fileName, {
+		description: 'WebAssembly Binary',
+		accept: { 'application/wasm': ['.wasm'] },
+	});
+}
+
+async function saveBlobWithPickerFallback(
+	blob: Blob,
+	fileName: string,
+	fileType: {
+		description: string;
+		accept: Record<string, string[]>;
+	}
+): Promise<void> {
+	const showSaveFilePicker = (
+		window as Window & {
+			showSaveFilePicker?: (options: {
+				suggestedName: string;
+				types: Array<{ description: string; accept: Record<string, string[]> }>;
+			}) => Promise<{
+				createWritable: () => Promise<{ write: (data: Blob) => Promise<void>; close: () => Promise<void> }>;
+			}>;
+		}
+	).showSaveFilePicker;
+
+	if (showSaveFilePicker) {
+		const handle = await showSaveFilePicker({
+			suggestedName: fileName,
+			types: [fileType],
+		});
+		const writable = await handle.createWritable();
+		await writable.write(blob);
+		await writable.close();
+		return;
+	}
+
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
 	document.body.appendChild(a);
