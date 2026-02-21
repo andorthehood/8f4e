@@ -15,4 +15,6 @@ export interface ProjectConfig {
 	disableAutoCompilation: boolean;
 	binaryAssets: ConfigBinaryAsset[];
 	exportFileName?: string;
+	keyCodeMemoryId?: string;
+	keyPressedMemoryId?: string;
 }
