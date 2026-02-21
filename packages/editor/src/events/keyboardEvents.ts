@@ -45,11 +45,28 @@ function getDirectionFromArrowKey(key: string): Direction | null {
 export default function keyboardEvents(events: EventDispatcher, store: StateManager<State>): () => void {
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
+		const state = store.getState();
+
+		// Modal switching: i enters edit mode from view mode, Esc returns to view mode.
+		if (state.featureFlags.modeToggling) {
+			if (!state.featureFlags.editing && key === 'i' && !event.altKey && !event.ctrlKey && !event.metaKey) {
+				event.preventDefault();
+				store.set('featureFlags.editing', true);
+				store.set('featureFlags.codeLineSelection', true);
+				return;
+			}
+
+			if (state.featureFlags.editing && key === 'Escape') {
+				event.preventDefault();
+				store.set('featureFlags.editing', false);
+				store.set('featureFlags.codeLineSelection', false);
+				return;
+			}
+		}
 
 		// Handle F10 for toggling position offsetters
 		if (key === 'F10') {
 			event.preventDefault();
-			const state = store.getState();
 			store.set('featureFlags.positionOffsetters', !state.featureFlags.positionOffsetters);
 			return;
 		}
