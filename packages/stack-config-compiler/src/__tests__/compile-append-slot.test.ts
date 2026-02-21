@@ -13,7 +13,7 @@ rescope "items[]"
 push "second"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toEqual({
 			items: ['first', 'second'],
 		});
@@ -29,7 +29,7 @@ rescope "items[].name"
 push "second"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toEqual({
 			items: [{ name: 'first' }, { name: 'second' }],
 		});
@@ -47,7 +47,7 @@ scope "name"
 push "Item 2"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toEqual({
 			items: [{ name: 'Item 1' }, { name: 'Item 2' }],
 		});
@@ -73,7 +73,7 @@ rescopeTop "data.name"
 push "Second"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toEqual({
 			items: [
 				{ id: 1, data: { name: 'First' } },
@@ -117,7 +117,7 @@ rescope "memoryId"
 push "pcmPlayer8bit.buffer"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toEqual({
 			binaryAssets: [
 				{
@@ -140,7 +140,7 @@ scope "url"
 push "https://example.com/file2.pcm"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toEqual({
 			binaryAssets: [{ url: 'https://example.com/file1.pcm' }, { url: 'https://example.com/file2.pcm' }],
 		});
@@ -158,7 +158,7 @@ scope "tags[]"
 push "tag2"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toEqual({
 			items: [{ tags: ['tag1'] }, { tags: ['tag2'] }],
 		});
@@ -174,7 +174,7 @@ rescope "items[]"
 push "appended"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toEqual({
 			items: ['first', 'appended'],
 		});
