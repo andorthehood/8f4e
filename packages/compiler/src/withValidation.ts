@@ -16,6 +16,7 @@ export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'block' | '
 export interface ValidationSpec {
 	scope?: ScopeRule;
 	minOperands?: number;
+	minArguments?: number;
 	operandTypes?: OperandRule[] | OperandRule;
 	onInsufficientOperands?: ErrorCode;
 	onInvalidScope?: ErrorCode;
@@ -140,6 +141,10 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 				context,
 				spec.onInvalidScope ?? ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK
 			);
+		}
+
+		if (spec.minArguments !== undefined && line.arguments.length < spec.minArguments) {
+			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 		}
 
 		const operandsNeeded = spec.minOperands ?? 0;

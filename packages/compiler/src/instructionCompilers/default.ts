@@ -15,11 +15,10 @@ const _default: InstructionCompiler = withValidation(
 	{
 		scope: 'map',
 		allowedInMapBlocks: true,
+		minArguments: 1,
 	},
 	(line, context) => {
-		if (!line.arguments[0]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
+		const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
 
 		const valueArg = line.arguments[0];
 		let defaultValue: number;
@@ -40,10 +39,10 @@ const _default: InstructionCompiler = withValidation(
 			defaultIsFloat64 = !!c.isFloat64;
 		}
 
-		context.mapDefaultValue = defaultValue;
-		context.mapDefaultIsInteger = defaultIsInteger;
-		context.mapDefaultIsFloat64 = defaultIsFloat64;
-		context.mapDefaultSet = true;
+		mapState.defaultValue = defaultValue;
+		mapState.defaultIsInteger = defaultIsInteger;
+		mapState.defaultIsFloat64 = defaultIsFloat64;
+		mapState.defaultSet = true;
 
 		return context;
 	}
@@ -67,12 +66,9 @@ if (import.meta.vitest) {
 						blockType: BLOCK_TYPE.MAP,
 						expectedResultIsInteger: false,
 						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
 					},
 				],
-				mapInputIsInteger: true,
-				mapInputIsFloat64: false,
-				mapRows: [],
-				mapDefaultSet: false,
 			});
 
 			_default(
@@ -85,9 +81,7 @@ if (import.meta.vitest) {
 			);
 
 			expect({
-				mapDefaultValue: context.mapDefaultValue,
-				mapDefaultIsInteger: context.mapDefaultIsInteger,
-				mapDefaultSet: context.mapDefaultSet,
+				mapState: context.blockStack[context.blockStack.length - 1].mapState,
 			}).toMatchSnapshot();
 		});
 
@@ -103,12 +97,9 @@ if (import.meta.vitest) {
 						blockType: BLOCK_TYPE.MAP,
 						expectedResultIsInteger: false,
 						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
 					},
 				],
-				mapInputIsInteger: true,
-				mapInputIsFloat64: false,
-				mapRows: [],
-				mapDefaultSet: false,
 			});
 
 			expect(() => {

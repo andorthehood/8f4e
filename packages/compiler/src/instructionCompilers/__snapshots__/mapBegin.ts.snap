@@ -12,10 +12,14 @@ exports[`mapBegin instruction compiler > opens a map block for float input type 
       "blockType": 6,
       "expectedResultIsInteger": false,
       "hasExpectedResult": false,
+      "mapState": {
+        "defaultSet": false,
+        "inputIsFloat64": false,
+        "inputIsInteger": false,
+        "rows": [],
+      },
     },
   ],
-  "mapInputIsFloat64": false,
-  "mapInputIsInteger": false,
 }
 `;
 
@@ -31,10 +35,14 @@ exports[`mapBegin instruction compiler > opens a map block for float64 input typ
       "blockType": 6,
       "expectedResultIsInteger": false,
       "hasExpectedResult": false,
+      "mapState": {
+        "defaultSet": false,
+        "inputIsFloat64": true,
+        "inputIsInteger": false,
+        "rows": [],
+      },
     },
   ],
-  "mapInputIsFloat64": true,
-  "mapInputIsInteger": false,
 }
 `;
 
@@ -50,11 +58,13 @@ exports[`mapBegin instruction compiler > opens a map block for int input type 1`
       "blockType": 6,
       "expectedResultIsInteger": false,
       "hasExpectedResult": false,
+      "mapState": {
+        "defaultSet": false,
+        "inputIsFloat64": false,
+        "inputIsInteger": true,
+        "rows": [],
+      },
     },
   ],
-  "mapDefaultSet": false,
-  "mapInputIsFloat64": false,
-  "mapInputIsInteger": true,
-  "mapRows": [],
 }
 `;

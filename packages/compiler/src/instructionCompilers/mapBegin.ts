@@ -13,9 +13,10 @@ import type { AST, InstructionCompiler } from '../types';
 const mapBegin: InstructionCompiler = withValidation(
 	{
 		scope: 'moduleOrFunction',
+		minArguments: 1,
 	},
 	(line, context) => {
-		if (!line.arguments[0] || line.arguments[0].type !== ArgumentType.IDENTIFIER) {
+		if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
 			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 		}
 
@@ -28,15 +29,13 @@ const mapBegin: InstructionCompiler = withValidation(
 			expectedResultIsInteger: false,
 			hasExpectedResult: false,
 			blockType: BLOCK_TYPE.MAP,
+			mapState: {
+				inputIsInteger: inputType === 'int',
+				inputIsFloat64: inputType === 'float64',
+				rows: [],
+				defaultSet: false,
+			},
 		});
-
-		context.mapInputIsInteger = inputType === 'int';
-		context.mapInputIsFloat64 = inputType === 'float64';
-		context.mapRows = [];
-		context.mapDefaultValue = undefined;
-		context.mapDefaultIsInteger = undefined;
-		context.mapDefaultIsFloat64 = undefined;
-		context.mapDefaultSet = false;
 
 		return context;
 	}
@@ -62,10 +61,6 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				mapInputIsInteger: context.mapInputIsInteger,
-				mapInputIsFloat64: context.mapInputIsFloat64,
-				mapRows: context.mapRows,
-				mapDefaultSet: context.mapDefaultSet,
 			}).toMatchSnapshot();
 		});
 
@@ -83,8 +78,6 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				mapInputIsInteger: context.mapInputIsInteger,
-				mapInputIsFloat64: context.mapInputIsFloat64,
 			}).toMatchSnapshot();
 		});
 
@@ -102,8 +95,6 @@ if (import.meta.vitest) {
 
 			expect({
 				blockStack: context.blockStack,
-				mapInputIsInteger: context.mapInputIsInteger,
-				mapInputIsFloat64: context.mapInputIsFloat64,
 			}).toMatchSnapshot();
 		});
 
