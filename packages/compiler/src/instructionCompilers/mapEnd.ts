@@ -76,7 +76,10 @@ const mapEnd: InstructionCompiler = withValidation(
 		// Validate the input stack operand matches the declared inputType
 		const inputOperand = context.stack[context.stack.length - 1];
 		if (mapState.inputIsFloat64) {
-			if (inputOperand.isInteger || !inputOperand.isFloat64) {
+			if (inputOperand.isInteger) {
+				throw getError(ErrorCode.ONLY_FLOATS, line, context);
+			}
+			if (!inputOperand.isFloat64) {
 				throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 			}
 		} else if (mapState.inputIsInteger) {
@@ -102,6 +105,9 @@ const mapEnd: InstructionCompiler = withValidation(
 		// Validate value types for each row against outputType
 		for (const row of rows) {
 			if (outputIsFloat64) {
+				if (row.valueIsInteger) {
+					throw getError(ErrorCode.ONLY_FLOATS, line, context);
+				}
 				if (!row.valueIsFloat64) {
 					throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 				}
@@ -123,6 +129,9 @@ const mapEnd: InstructionCompiler = withValidation(
 		// Validate explicit default type against outputType
 		if (hasDefault) {
 			if (outputIsFloat64) {
+				if (defaultIsInteger) {
+					throw getError(ErrorCode.ONLY_FLOATS, line, context);
+				}
 				if (!defaultIsFloat64) {
 					throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 				}
