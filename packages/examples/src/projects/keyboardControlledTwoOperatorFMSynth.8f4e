@@ -107,10 +107,10 @@ ifEnd
 moduleEnd
 
 module audioout
-; @pos 474 37
+; @pos 534 38
 use env
 
-float* in &vca.out
+float* in &reverb.out
 
 ; Audio buffer
 float[] buffer AUDIO_BUFFER_SIZE
@@ -152,7 +152,7 @@ constants env
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/21/2026, 8:31:43 PM
+; Last updated: 2/21/2026, 8:57:08 PM
 
 const SAMPLE_RATE 44100
 const INV_SAMPLE_RATE 0.000022675736961451248
@@ -222,6 +222,31 @@ int keyCode
 
 ; @debug keyPressed
 ; @debug keyCode
+
+moduleEnd
+
+module limiter
+; @pos 422 43
+float* in &operator2.out
+float out
+
+push &out
+push *in
+push 1.0
+greaterThan
+if float
+push 1.0
+else
+push *in
+ifEnd
+push -1.0
+lessThan
+if float
+push -1.0
+else
+push *in
+ifEnd
+store
 
 moduleEnd
 
@@ -605,7 +630,7 @@ store
 moduleEnd
 
 module operator2
-; @pos 378 38
+; @pos 376 38
 use env
 
 float* frequency &midiNote2Freq.out
@@ -613,6 +638,8 @@ float* phaseMod &operator1.out
 float modIndex 1/2
 float phase 0.1
 float out
+
+; @slider modIndex 0 10.0
 
 use math
 
@@ -650,6 +677,55 @@ mul
 ; with any periodic function
 call sine
 store
+
+moduleEnd
+
+module reverb
+; @pos 497 38
+
+float* in &vca.out
+float out
+
+const FEEDBACK 0.5
+const SIZE 5000
+
+float[] buffer SIZE
+int bufferPointer &buffer
+
+; Compute reverb output
+push &out
+push bufferPointer
+loadFloat
+push FEEDBACK
+mul
+push *in
+add
+store
+
+; Store the new sample 
+; in the buffer
+push bufferPointer
+push &out
+loadFloat
+store
+
+; Advance buffer pointer
+push &bufferPointer
+push bufferPointer
+push %bufferPointer
+add
+store
+
+; Wrap buffer pointer back
+; to start when reaches end
+push bufferPointer
+push buffer&
+greaterThan
+if void
+push &bufferPointer
+push &buffer
+store
+ifEnd
 
 moduleEnd
 
@@ -719,9 +795,9 @@ mul
 functionEnd float
 
 module vca
-; @pos 429 43
+; @pos 461 43
 
-float* in &operator2.out
+float* in &limiter.out
 float* volume &arEnv.out
 float out
 
