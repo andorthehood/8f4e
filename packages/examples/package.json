@@ -11,6 +11,7 @@
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
 		},
+		"./modules/*.8f4e": "./dist/modules/*.8f4e",
 		"./modules/*": {
 			"types": "./dist/modules/*.d.ts",
 			"default": "./dist/modules/*.js"
