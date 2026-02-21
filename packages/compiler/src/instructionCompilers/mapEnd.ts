@@ -49,10 +49,11 @@ const mapEnd: InstructionCompiler = withValidation(
 	{
 		scope: 'map',
 		allowedInMapBlocks: true,
+		minArguments: 1,
 		minOperands: 1,
 	},
 	(line, context) => {
-		if (!line.arguments[0] || line.arguments[0].type !== ArgumentType.IDENTIFIER) {
+		if (line.arguments[0].type !== ArgumentType.IDENTIFIER) {
 			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 		}
 
@@ -65,13 +66,20 @@ const mapEnd: InstructionCompiler = withValidation(
 		const outputIsFloat64 = outputType === 'float64';
 		const outputKind: MapKind = outputIsInteger ? 'int32' : outputIsFloat64 ? 'float64' : 'float32';
 
+		// Pop the MAP block from blockStack and read its state
+		const block = context.blockStack.pop();
+		if (!block || block.blockType !== BLOCK_TYPE.MAP || !block.mapState) {
+			throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
+		}
+		const mapState = block.mapState;
+
 		// Validate the input stack operand matches the declared inputType
 		const inputOperand = context.stack[context.stack.length - 1];
-		if (context.mapInputIsFloat64) {
+		if (mapState.inputIsFloat64) {
 			if (inputOperand.isInteger || !inputOperand.isFloat64) {
 				throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 			}
-		} else if (context.mapInputIsInteger) {
+		} else if (mapState.inputIsInteger) {
 			if (!inputOperand.isInteger) {
 				throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 			}
@@ -85,11 +93,11 @@ const mapEnd: InstructionCompiler = withValidation(
 			}
 		}
 
-		const rows = context.mapRows!;
-		const hasDefault = context.mapDefaultSet === true;
-		const defaultValue = hasDefault ? context.mapDefaultValue! : 0;
-		const defaultIsInteger = hasDefault ? !!context.mapDefaultIsInteger : true;
-		const defaultIsFloat64 = hasDefault ? !!context.mapDefaultIsFloat64 : false;
+		const rows = mapState.rows;
+		const hasDefault = mapState.defaultSet;
+		const defaultValue = hasDefault ? mapState.defaultValue! : 0;
+		const defaultIsInteger = hasDefault ? !!mapState.defaultIsInteger : true;
+		const defaultIsFloat64 = hasDefault ? !!mapState.defaultIsFloat64 : false;
 
 		// Validate value types for each row against outputType
 		for (const row of rows) {
@@ -133,28 +141,13 @@ const mapEnd: InstructionCompiler = withValidation(
 			}
 		}
 
-		// Pop the MAP block from blockStack
-		const block = context.blockStack.pop();
-		if (!block || block.blockType !== BLOCK_TYPE.MAP) {
-			throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-		}
-
 		// Pop the input operand from the logical stack
 		context.stack.pop();
 
 		// Determine input kind for the equality opcode
-		const inputIsFloat64 = context.mapInputIsFloat64 === true;
-		const inputIsInteger = context.mapInputIsInteger === true;
+		const inputIsFloat64 = mapState.inputIsFloat64;
+		const inputIsInteger = mapState.inputIsInteger;
 		const inputKind: MapKind = inputIsInteger ? 'int32' : inputIsFloat64 ? 'float64' : 'float32';
-
-		// Clear map state
-		context.mapRows = undefined;
-		context.mapDefaultValue = undefined;
-		context.mapDefaultIsInteger = undefined;
-		context.mapDefaultIsFloat64 = undefined;
-		context.mapDefaultSet = undefined;
-		context.mapInputIsInteger = undefined;
-		context.mapInputIsFloat64 = undefined;
 
 		if (rows.length === 0) {
 			// No rows: discard the input and push the default/zero value
@@ -259,12 +252,9 @@ if (import.meta.vitest) {
 						blockType: BLOCK_TYPE.MAP,
 						expectedResultIsInteger: false,
 						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
 					},
 				],
-				mapInputIsInteger: true,
-				mapInputIsFloat64: false,
-				mapRows: [],
-				mapDefaultSet: false,
 			});
 			context.stack.push({ isInteger: true });
 
@@ -301,12 +291,9 @@ if (import.meta.vitest) {
 						blockType: BLOCK_TYPE.MAP,
 						expectedResultIsInteger: false,
 						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
 					},
 				],
-				mapInputIsInteger: true,
-				mapInputIsFloat64: false,
-				mapRows: [],
-				mapDefaultSet: false,
 			});
 			context.stack.push({ isInteger: true });
 

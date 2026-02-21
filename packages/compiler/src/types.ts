@@ -137,13 +137,6 @@ export interface CompilationContext {
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
 	initOnlyExecution?: boolean;
-	mapInputIsInteger?: boolean;
-	mapInputIsFloat64?: boolean;
-	mapRows?: MapRow[];
-	mapDefaultValue?: number;
-	mapDefaultIsInteger?: boolean;
-	mapDefaultIsFloat64?: boolean;
-	mapDefaultSet?: boolean;
 }
 
 export interface StackItem {
@@ -174,10 +167,21 @@ export interface MapRow {
 	valueIsFloat64?: boolean;
 }
 
+export interface MapBlockState {
+	inputIsInteger: boolean;
+	inputIsFloat64: boolean;
+	rows: MapRow[];
+	defaultValue?: number;
+	defaultIsInteger?: boolean;
+	defaultIsFloat64?: boolean;
+	defaultSet: boolean;
+}
+
 export type BlockStack = Array<{
 	expectedResultIsInteger: boolean;
 	hasExpectedResult: boolean;
 	blockType: BLOCK_TYPE;
+	mapState?: MapBlockState;
 }>;
 
 export type InstructionCompiler = (line: AST[number], context: CompilationContext) => CompilationContext;
