@@ -137,6 +137,13 @@ export interface CompilationContext {
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
 	initOnlyExecution?: boolean;
+	mapInputIsInteger?: boolean;
+	mapInputIsFloat64?: boolean;
+	mapRows?: MapRow[];
+	mapDefaultValue?: number;
+	mapDefaultIsInteger?: boolean;
+	mapDefaultIsFloat64?: boolean;
+	mapDefaultSet?: boolean;
 }
 
 export interface StackItem {
@@ -157,6 +164,14 @@ export enum BLOCK_TYPE {
 	FUNCTION,
 	BLOCK,
 	CONSTANTS,
+	MAP,
+}
+
+export interface MapRow {
+	keyValue: number;
+	valueValue: number;
+	valueIsInteger: boolean;
+	valueIsFloat64?: boolean;
 }
 
 export type BlockStack = Array<{
