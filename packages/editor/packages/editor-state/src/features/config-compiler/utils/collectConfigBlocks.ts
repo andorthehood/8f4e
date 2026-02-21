@@ -107,7 +107,7 @@ if (import.meta.vitest) {
 			expect(result).toHaveLength(0);
 		});
 
-		it('should include empty config blocks (filtering happens in combineConfigBlocksByType)', () => {
+		it('should include empty config blocks (filtering happens in compileConfigBlocksByType)', () => {
 			const emptyBlock = createMockCodeBlock({
 				code: ['config project', 'configEnd'],
 				blockType: 'config',

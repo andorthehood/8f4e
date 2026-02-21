@@ -1,9 +1,9 @@
-import { ConfigType } from './combineConfigBlocks';
 import { collectConfigBlocks } from './collectConfigBlocks';
 import isPlainObject from './isPlainObject';
 
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { CodeBlockGraphicData, CodeError, State } from '~/types';
+import type { ConfigType } from './configTypes';
 
 type CompileConfigFn = NonNullable<State['callbacks']['compileConfig']>;
 
