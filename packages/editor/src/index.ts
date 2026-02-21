@@ -6,6 +6,7 @@ import { clearBinaryAssetCache, fetchBinaryAssets, loadBinaryAssetIntoMemory } f
 import initEvents from './events';
 import pointerEvents from './events/pointerEvents';
 import keyboardEvents from './events/keyboardEvents';
+import keyboardMemoryEvents from './events/keyboardMemoryEvents';
 import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
@@ -84,6 +85,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const state = store.getState();
 	pointerEvents(canvas, events, state);
 	const cleanupKeyboard = keyboardEvents(events, store);
+	const cleanupKeyboardMemory = keyboardMemoryEvents(store);
 
 	// Generate sprite data and update state before initializing view
 	const spriteData = generateSprite({
@@ -110,7 +112,10 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 		updateMemoryViews,
 		getMemoryViews: () => memoryViews,
-		dispose: cleanupKeyboard,
+		dispose: () => {
+			cleanupKeyboard();
+			cleanupKeyboardMemory();
+		},
 		state,
 	};
 }
