@@ -1,3 +1,5 @@
+import { extractUseDependencies } from '@8f4e/compiler/syntax';
+
 import { moduleManifest, moduleMetadata } from './exampleModules';
 import { projectMetadata } from './exampleProjects';
 
@@ -5,6 +7,7 @@ import type { ModuleMetadata, ProjectMetadata } from '@8f4e/editor-state';
 
 // Cache for loaded modules to avoid redundant loading
 const loadedModulesCache: Record<string, string> = {};
+const moduleDependencyCache: Record<string, string[]> = {};
 
 // Cache for loaded projects to avoid redundant loading
 const loadedProjectsCache: Record<string, string> = {};
@@ -17,9 +20,22 @@ export async function getListOfModules(): Promise<ModuleMetadata[]> {
 	return moduleMetadata;
 }
 
-export function getModuleDependencies(slug: string): string[] {
-	const metadata = moduleMetadata.find(module => module.slug === slug);
-	return metadata?.dependencies ?? [];
+function inferModuleDependenciesFromCode(slug: string, code: string): string[] {
+	const validSlugs = new Set(Object.keys(moduleManifest));
+	const dependencies = extractUseDependencies(code);
+
+	return dependencies.filter(dependency => dependency !== slug && validSlugs.has(dependency));
+}
+
+export async function getModuleDependencies(slug: string): Promise<string[]> {
+	if (moduleDependencyCache[slug]) {
+		return moduleDependencyCache[slug];
+	}
+
+	const code = await getModule(slug);
+	const dependencies = inferModuleDependenciesFromCode(slug, code);
+	moduleDependencyCache[slug] = dependencies;
+	return dependencies;
 }
 
 /**
