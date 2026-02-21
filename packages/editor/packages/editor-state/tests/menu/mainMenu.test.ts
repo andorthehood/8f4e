@@ -33,4 +33,16 @@ describe('menus - go home entry', () => {
 		expect(goHomeItem).toBeDefined();
 		expect(goHomeItem?.disabled).toBeUndefined();
 	});
+
+	it('shows "Jump to..." in view mode when editing is disabled', () => {
+		const mockState = createMockState({
+			featureFlags: { editing: false },
+		});
+
+		const menu = mainMenu(mockState as State);
+		const jumpToItem = menu.find(item => item.title === 'Jump to...');
+
+		expect(jumpToItem).toBeDefined();
+		expect(jumpToItem?.action).toBe('openSubMenu');
+	});
 });

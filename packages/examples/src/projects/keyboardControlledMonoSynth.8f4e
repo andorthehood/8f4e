@@ -163,13 +163,15 @@ constantsEnd
 module janko
 ; @pos 176 35
 ; @home
-; Converts HID keycodes to MIDI note numbers              +---------+
+; Converts HID keycodes to MIDI note numbers              .---------.
 ; based on the Janko layout                               |  Enter  |
-;+----------+---+---+---+---+---+---+---+---+---+---+---+-+-+     | |
-;| CapsLock | C#| D#| F | G | A | B | C#| D#| F | G | A | B |  <--' |
+;                                                         |       | |
+;.----------+---+---+---+---+---+---+---+---+---+---+---+-+-+  <--' |
+;| CapsLock | C#| D#| F | G | A | B | C#| D#| F | G | A | B |       |
 ;+--------+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+---+-------+
 ;| Shift  | C | D | E | F#| G#| A#| C | D | E | F#| G#|    Shift    |
-;+--------+---+---+---+---+---+---+---+---+---+---+---+-------------+
+;'--------+---+---+---+---+---+---+---+---+---+---+---+-------------'
+;
 ; @group janko
 int* in &keyboard.keyCode; Keycode
 int out ; MIDI note number
