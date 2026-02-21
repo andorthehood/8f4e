@@ -42,6 +42,9 @@ const map: InstructionCompiler = withValidation(
 
 		// Validate key type against the declared inputType
 		if (mapState.inputIsFloat64) {
+			if (keyIsInteger) {
+				throw getError(ErrorCode.ONLY_FLOATS, line, context);
+			}
 			if (!keyIsFloat64) {
 				throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 			}
