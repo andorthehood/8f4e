@@ -1,7 +1,6 @@
-import { ArgumentType } from '../types';
+import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
-import { BLOCK_TYPE } from '../types';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
 import type { AST, InstructionCompiler } from '../types';
@@ -16,11 +15,10 @@ const map: InstructionCompiler = withValidation(
 	{
 		scope: 'map',
 		allowedInMapBlocks: true,
+		minArguments: 2,
 	},
 	(line, context) => {
-		if (!line.arguments[0] || !line.arguments[1]) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
+		const mapState = context.blockStack[context.blockStack.length - 1].mapState!;
 
 		// Resolve key argument
 		const keyArg = line.arguments[0];
@@ -43,11 +41,11 @@ const map: InstructionCompiler = withValidation(
 		}
 
 		// Validate key type against the declared inputType
-		if (context.mapInputIsFloat64) {
+		if (mapState.inputIsFloat64) {
 			if (!keyIsFloat64) {
 				throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 			}
-		} else if (context.mapInputIsInteger) {
+		} else if (mapState.inputIsInteger) {
 			if (!keyIsInteger) {
 				throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 			}
@@ -81,7 +79,7 @@ const map: InstructionCompiler = withValidation(
 			valueIsFloat64 = !!c.isFloat64;
 		}
 
-		context.mapRows!.push({ keyValue, valueValue, valueIsInteger, valueIsFloat64 });
+		mapState.rows.push({ keyValue, valueValue, valueIsInteger, valueIsFloat64 });
 
 		return context;
 	}
@@ -105,12 +103,9 @@ if (import.meta.vitest) {
 						blockType: BLOCK_TYPE.MAP,
 						expectedResultIsInteger: false,
 						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
 					},
 				],
-				mapInputIsInteger: true,
-				mapInputIsFloat64: false,
-				mapRows: [],
-				mapDefaultSet: false,
 			});
 
 			map(
@@ -125,7 +120,7 @@ if (import.meta.vitest) {
 				context
 			);
 
-			expect(context.mapRows).toMatchSnapshot();
+			expect(context.blockStack[context.blockStack.length - 1].mapState!.rows).toMatchSnapshot();
 		});
 
 		it('throws when key type mismatches int inputType', () => {
@@ -140,12 +135,9 @@ if (import.meta.vitest) {
 						blockType: BLOCK_TYPE.MAP,
 						expectedResultIsInteger: false,
 						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
 					},
 				],
-				mapInputIsInteger: true,
-				mapInputIsFloat64: false,
-				mapRows: [],
-				mapDefaultSet: false,
 			});
 
 			expect(() => {
@@ -175,12 +167,9 @@ if (import.meta.vitest) {
 						blockType: BLOCK_TYPE.MAP,
 						expectedResultIsInteger: false,
 						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
 					},
 				],
-				mapInputIsInteger: true,
-				mapInputIsFloat64: false,
-				mapRows: [],
-				mapDefaultSet: false,
 			});
 
 			expect(() => {
