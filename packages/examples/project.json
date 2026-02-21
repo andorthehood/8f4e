@@ -7,7 +7,7 @@
 			"executor": "nx:run-commands",
 			"outputs": ["{projectRoot}/dist"],
 			"options": {
-				"command": "node --experimental-strip-types ./src/module-generators/generateModules.ts && tsc && mkdir -p dist/modules && cp src/modules/*.8f4e dist/modules/",
+				"command": "node --experimental-strip-types ./src/module-generators/generateModules.ts && node --eval \"const fs=require('node:fs');fs.rmSync('dist',{recursive:true,force:true});fs.mkdirSync('dist/modules',{recursive:true});fs.mkdirSync('dist/projects',{recursive:true});\" && cp src/modules/*.8f4e dist/modules/ && cp src/projects/*.8f4e dist/projects/",
 				"cwd": "{projectRoot}"
 			}
 		},
@@ -28,7 +28,7 @@
 		"typecheck": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "tsc --noEmit",
+				"command": "tsc --project tsconfig.typecheck.json --noEmit",
 				"cwd": "{projectRoot}"
 			},
 			"dependsOn": ["^build"]
