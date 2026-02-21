@@ -11,6 +11,10 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 	const state = store.getState();
 
 	const onMoveCaret = function (event: MoveCaretEvent) {
+		if (!state.featureFlags.codeLineSelection) {
+			return;
+		}
+
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
 		}

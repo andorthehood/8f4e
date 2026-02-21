@@ -17,9 +17,11 @@ export const defaultFeatureFlags = {
 	contextMenu: true,
 	infoOverlay: true, // Default to true, can be overridden
 	moduleDragging: true,
+	codeLineSelection: false,
 	viewportDragging: true,
 	viewportAnimations: false,
-	editing: true,
+	editing: false,
+	modeToggling: true,
 	demoMode: false,
 	historyTracking: true,
 	consoleOverlay: true,
