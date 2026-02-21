@@ -4,14 +4,20 @@ import { executeCommand } from './executeCommand';
 import type { Command, CompileError } from '../types';
 import type { SchemaNode } from '../schema';
 
+interface ExecuteCommandsOptions {
+	config?: Record<string, unknown>;
+	writtenPaths?: Set<string>;
+}
+
 /**
  * Executes a list of commands and returns the final config or errors
  */
 export default function executeCommands(
 	commands: Command[],
-	schemaRoot?: SchemaNode
+	schemaRoot?: SchemaNode,
+	options: ExecuteCommandsOptions = {}
 ): { config: Record<string, unknown>; errors: CompileError[]; writtenPaths?: Set<string> } {
-	const state = createVMState(schemaRoot);
+	const state = createVMState(schemaRoot, options);
 	const errors: CompileError[] = [];
 
 	for (const command of commands) {
