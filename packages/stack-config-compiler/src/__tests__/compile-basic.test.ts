@@ -130,7 +130,7 @@ push "prod"
 set
 `;
 
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toMatchSnapshot();
 	});
@@ -142,7 +142,7 @@ unknownCommand
 push "value"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
@@ -157,7 +157,7 @@ scope "name.nested"
 push "value"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
@@ -168,7 +168,7 @@ scope "name"
 push "unclosed
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
@@ -179,7 +179,7 @@ scope "items[0"
 push "value"
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
@@ -188,7 +188,7 @@ set
 		const source = `
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
@@ -201,7 +201,7 @@ set
 push "extra"
 append
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});

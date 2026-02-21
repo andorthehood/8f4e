@@ -41,7 +41,7 @@ async function init() {
 			getProject,
 			compileCode: (modules, compilerOptions, functions, macros) =>
 				compileCode(modules, compilerOptions, functions, editor, macros),
-			compileConfig: async (source: string, schema: JSONSchemaLike) => compileConfig(source, { schema }),
+			compileConfig: async (sourceBlocks: string[], schema: JSONSchemaLike) => compileConfig(sourceBlocks, { schema }),
 			loadSession,
 			saveSession,
 			loadEditorConfigBlocks,

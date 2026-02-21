@@ -38,7 +38,7 @@ export async function compileConfigFromCombined(
 
 	try {
 		// Compile once with the combined source for full schema validation
-		const result = await compileConfig(source, schema);
+		const result = await compileConfig([source], schema);
 
 		// Map errors back to individual blocks
 		if (result.errors.length > 0) {

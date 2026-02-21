@@ -47,6 +47,8 @@ export type CompileErrorKind = 'parse' | 'exec' | 'schema';
 export interface CompileError {
 	line: number;
 	message: string;
+	/** Source block index where the error occurred (0-based). */
+	blockIndex?: number;
 	/** Error kind: parse, exec, or schema */
 	kind?: CompileErrorKind;
 	/** Config path where the error occurred (for schema errors) */

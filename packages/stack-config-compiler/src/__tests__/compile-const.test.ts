@@ -16,7 +16,7 @@ rescope "config.count"
 push MAX_COUNT
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			config: {
@@ -44,7 +44,7 @@ rescope "global"
 push GLOBAL
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			first: 'first local',
@@ -72,7 +72,7 @@ rescopeTop "after.value"
 push NAME
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			outer: {
@@ -93,7 +93,7 @@ scope "test"
 push UNKNOWN
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
@@ -103,7 +103,7 @@ set
 const NAME "first"
 const NAME "second"
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
@@ -131,7 +131,7 @@ rescopeTop "null"
 push NULL_VAL
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			test: {
@@ -162,7 +162,7 @@ rescopeTop "after"
 push VAL1
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			level1: {
@@ -191,7 +191,7 @@ push "/docs"
 concat
 set
 `;
-		const result = compileConfig(source);
+		const result = compileConfig([source]);
 		expect(result.errors).toEqual([]);
 		expect(result.config).toEqual({
 			urls: {
