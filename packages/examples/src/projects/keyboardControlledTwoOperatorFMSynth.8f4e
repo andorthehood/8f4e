@@ -18,15 +18,24 @@ push "AudioWorkletRuntime"
 set
 
 rescopeTop "audioOutputBuffers[0]"
-
 scope "memoryId"
 push "audioout.buffer"
 set
-
 rescopeTop "channel"
 push 0
 set
+rescopeTop "output"
+push 0
+set
 
+rescope "runtimeSettings"
+scope "audioOutputBuffers[1]"
+scope "memoryId"
+push "audioout.buffer"
+set
+rescopeTop "channel"
+push 1
+set
 rescopeTop "output"
 push 0
 set
@@ -107,7 +116,7 @@ ifEnd
 moduleEnd
 
 module audioout
-; @pos 534 38
+; @pos 536 38
 use env
 
 float* in &reverb.out
@@ -152,7 +161,7 @@ constants env
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/21/2026, 8:57:08 PM
+; Last updated: 2/22/2026, 8:54:07 AM
 
 const SAMPLE_RATE 44100
 const INV_SAMPLE_RATE 0.000022675736961451248
@@ -184,7 +193,7 @@ store
 moduleEnd
 
 function jankoMap
-; @pos 210 48
+; @pos 212 50
 ; @group janko
 param int keycode
 use midiCodes
@@ -432,7 +441,7 @@ const G9  127
 constantsEnd
 
 module midiLUT
-; @pos 249 57
+; @pos 249 58
 
 float[] notes 128
 init notes[0] 8.1758
@@ -797,7 +806,7 @@ mul
 functionEnd float
 
 module vca
-; @pos 461 43
+; @pos 459 43
 
 float* in &limiter.out
 float* volume &arEnv.out
