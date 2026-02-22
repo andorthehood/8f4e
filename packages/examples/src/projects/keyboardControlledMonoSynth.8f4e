@@ -3,6 +3,7 @@
 config project
 ; @pos -94 1
 
+
 rescope "memorySizeBytes"
 push 65536
 set
@@ -18,15 +19,24 @@ push "AudioWorkletRuntime"
 set
 
 rescopeTop "audioOutputBuffers[0]"
-
 scope "memoryId"
 push "audioout.buffer"
 set
-
 rescopeTop "channel"
 push 0
 set
+rescopeTop "output"
+push 0
+set
 
+rescope "runtimeSettings"
+scope "audioOutputBuffers[1]"
+scope "memoryId"
+push "audioout.buffer"
+set
+rescopeTop "channel"
+push 1
+set
 rescopeTop "output"
 push 0
 set
