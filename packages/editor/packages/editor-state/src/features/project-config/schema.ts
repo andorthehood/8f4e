@@ -50,6 +50,7 @@ export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSc
 				items: {
 					type: 'object',
 					properties: {
+						id: { type: 'string' },
 						url: { type: 'string' },
 						memoryId: { type: 'string' },
 					},
