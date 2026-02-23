@@ -1,63 +1,15 @@
 import { ErrorCode, getError } from '../errors';
 import { parseArgument, ArgumentType, type ArgumentLiteral } from '../syntax/parseArgument';
-import isConstantName from '../syntax/isConstantName';
+import parseConstantMulDivExpression, {
+	type ConstantMulDivExpression,
+} from '../syntax/parseConstantMulDivExpression';
 
 import type { AST, CompilationContext, Const, Consts } from '../types';
 
-const MUL_DIV_OPERATOR = ['*', '/'] as const;
-
-type MulDivOperator = (typeof MUL_DIV_OPERATOR)[number];
-
-type ConstantExpression = {
-	baseIdentifier: string;
-	operator: MulDivOperator;
-	rhs: string;
-};
-
-function getFirstOperatorIndex(value: string): number {
-	const mulIndex = value.indexOf('*');
-	const divIndex = value.indexOf('/');
-
-	if (mulIndex === -1) {
-		return divIndex;
-	}
-
-	if (divIndex === -1) {
-		return mulIndex;
-	}
-
-	return Math.min(mulIndex, divIndex);
-}
-
-export function parseConstantMulDivExpression(value: string): ConstantExpression | null {
-	const operatorIndex = getFirstOperatorIndex(value);
-
-	if (operatorIndex <= 0 || operatorIndex === value.length - 1) {
-		return null;
-	}
-
-	const operator = value[operatorIndex] as MulDivOperator;
-
-	if (!MUL_DIV_OPERATOR.includes(operator)) {
-		return null;
-	}
-
-	const baseIdentifier = value.slice(0, operatorIndex);
-	const rhs = value.slice(operatorIndex + 1);
-
-	if (!isConstantName(baseIdentifier)) {
-		return null;
-	}
-
-	return {
-		baseIdentifier,
-		operator,
-		rhs,
-	};
-}
+type MulDivOperator = ConstantMulDivExpression['operator'];
 
 function resolveExpressionRhsLiteral(
-	expression: ConstantExpression,
+	expression: ConstantMulDivExpression,
 	line: AST[number],
 	context: CompilationContext
 ): ArgumentLiteral {
@@ -201,6 +153,11 @@ if (import.meta.vitest) {
 				isInteger: false,
 				isFloat64: true,
 			});
+		});
+
+		it('rejects expressions with multiple operators', () => {
+			expect(tryResolveConstantValueOrExpression(mockContext.namespace.consts, 'SIZE/2/2')).toBeUndefined();
+			expect(tryResolveConstantValueOrExpression(mockContext.namespace.consts, 'SIZE*2/2')).toBeUndefined();
 		});
 	});
 }
