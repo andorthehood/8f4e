@@ -100,19 +100,19 @@ init value 42
 
 ### storeBytes
 
-The storeBytes instruction pops a count `N` of byte values and a destination address from the stack, and writes the bytes contiguously to memory in push order. Each value is truncated to a byte before storing.
+The storeBytes instruction pops a destination address from the top of the stack, then pops `N` byte values and writes them contiguously to memory in pop order (first pop → `dst + 0`). Each value is truncated to a byte before storing.
 
-Stack layout before call: `... , dstAddress , byte1 , byte2 , ... , byteN`
+Stack layout before call: `... , byte1 , byte2 , ... , byteN , dstAddress`
 
 #### Examples
 
 ```
 int8[] buffer 8
-push &buffer
 push 72
 push 101
 push 108
 push 108
 push 111
+push &buffer
 storeBytes 5
 ```
