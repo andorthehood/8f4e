@@ -7,6 +7,7 @@ import {
 	isMemoryPointerIdentifier,
 	isMemoryReferenceIdentifier,
 } from '../../utils/memoryIdentifier';
+import { isConstantValueOrExpression } from '../../utils/resolveConstantValue';
 
 import type { Namespace } from '../../types';
 
@@ -40,7 +41,7 @@ export default function resolveIdentifierPushKind(namespace: Namespace, value: s
 			return IdentifierPushKind.ELEMENT_MAX;
 		case isElementMinIdentifier(memory, value):
 			return IdentifierPushKind.ELEMENT_MIN;
-		case typeof consts[value] !== 'undefined':
+		case isConstantValueOrExpression(consts, value):
 			return IdentifierPushKind.CONST;
 		default:
 			return IdentifierPushKind.LOCAL;

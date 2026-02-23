@@ -4,6 +4,7 @@ import { calculateWordAlignedSizeOfMemory } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
@@ -40,12 +41,7 @@ const buffer: InstructionCompiler = withValidation(
 		if (line.arguments[1].type === ArgumentType.LITERAL) {
 			numberOfElements = line.arguments[1].value;
 		} else {
-			const constant = context.namespace.consts[line.arguments[1].value];
-
-			if (!constant) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-			}
-
+			const constant = resolveConstantValueOrExpressionOrThrow(line.arguments[1].value, line, context);
 			numberOfElements = constant.value;
 		}
 

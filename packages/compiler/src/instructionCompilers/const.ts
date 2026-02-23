@@ -3,6 +3,7 @@ import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -34,11 +35,7 @@ const _const: InstructionCompiler = withValidation(
 		let value = { value: 0, isInteger: true };
 
 		if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
-			if (typeof context.namespace.consts[line.arguments[1].value] !== 'undefined') {
-				value = context.namespace.consts[line.arguments[1].value];
-			} else {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-			}
+			value = resolveConstantValueOrExpressionOrThrow(line.arguments[1].value, line, context);
 		} else {
 			value = line.arguments[1];
 		}
