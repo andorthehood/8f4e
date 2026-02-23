@@ -97,3 +97,22 @@ The init instruction sets the default value for a declared memory identifier or 
 int value
 init value 42
 ```
+
+### storeBytes
+
+The storeBytes instruction pops a count `N` of byte values and a destination address from the stack, and writes the bytes contiguously to memory in push order. Each value is truncated to a byte before storing.
+
+Stack layout before call: `... , dstAddress , byte1 , byte2 , ... , byteN`
+
+#### Examples
+
+```
+int8[] buffer 8
+push &buffer
+push 72
+push 101
+push 108
+push 108
+push 111
+storeBytes 5
+```
