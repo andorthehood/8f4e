@@ -1,6 +1,5 @@
 import { withValidation } from '../withValidation';
 import { ArgumentType, BLOCK_TYPE, MemoryTypes } from '../types';
-import { ErrorCode, getError } from '../errors';
 import i32const from '../wasmUtils/const/i32const';
 import br from '../wasmUtils/controlFlow/br';
 import i32load from '../wasmUtils/load/i32load';
@@ -10,6 +9,7 @@ import Type from '../wasmUtils/type';
 import WASMInstruction from '../wasmUtils/wasmInstruction';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '../consts';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -22,8 +22,6 @@ const skip: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 	},
 	(line, context) => {
-		const { consts } = context.namespace;
-
 		let timesToSkip = 0;
 
 		if (!line.arguments[0]) {
@@ -33,11 +31,7 @@ const skip: InstructionCompiler = withValidation(
 		if (line.arguments[0].type === ArgumentType.LITERAL) {
 			timesToSkip = line.arguments[0].value;
 		} else {
-			if (typeof consts[line.arguments[0].value] !== 'undefined') {
-				timesToSkip = consts[line.arguments[0].value].value;
-			} else {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-			}
+			timesToSkip = resolveConstantValueOrExpressionOrThrow(line.arguments[0].value, line, context).value;
 		}
 
 		const memory = context.namespace.memory;
