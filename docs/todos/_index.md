@@ -22,6 +22,9 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 270 | Add float64 support for castToInt instruction | 🔴 | 1-3h | 2026-02-20 | Add `I32_TRUNC_F64_S` path for float64 operands in `castToInt` |
 | 271 | Add float64 support for loadFloat instruction | 🔴 | 1-3h | 2026-02-20 | Add `f64.load` capability to `loadFloat` while preserving existing bounds-check behavior |
 | 272 | Add float32/float64 width checks to localSet instruction | 🔴 | 1-3h | 2026-02-20 | Reject float32<->float64 assignments in `localSet` using `isFloat64` compatibility checks |
+| 277 | Add storeBytes with explicit byte count argument | 🔴 | 4-8h | 2026-02-23 | Add explicit `storeBytes <count>` byte writes using `i32.store8`, preserving push order and avoiding hidden string-capture state |
+| 278 | Add storeWords with explicit count and word size | 🔴 | 1-2d | 2026-02-23 | Add explicit `storeWords <count> <wordSize>` contiguous word writes with `wordSize`-selected integer store opcodes |
+| 279 | Extend push with compile-time string literals | 🔴 | 4-8h | 2026-02-23 | Add `push \"...\"` support with compile-time expansion into per-byte pushes, including escape decoding and parser support for quoted arguments |
 
 ### 🟡 Medium Priority
 
