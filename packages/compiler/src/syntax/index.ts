@@ -17,6 +17,7 @@ export { default as getModuleId } from './getModuleId';
 export { default as getFunctionId } from './getFunctionId';
 export { default as getConstantsId } from './getConstantsId';
 export { default as extractUseDependencies } from './extractUseDependencies';
+export { default as parseConstantMulDivExpression, type ConstantMulDivExpression } from './parseConstantMulDivExpression';
 export { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
 export { default as hasMemoryReferencePrefix } from './hasMemoryReferencePrefix';
 export { default as hasMemoryReferencePrefixStart } from './hasMemoryReferencePrefixStart';
