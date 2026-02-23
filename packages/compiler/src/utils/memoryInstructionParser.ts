@@ -3,6 +3,10 @@ import { SyntaxRulesError } from '../syntax/syntaxError';
 import { ArgumentType } from '../syntax/parseArgument';
 import { ErrorCode, getError } from '../errors';
 import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
+import {
+	resolveConstantValueOrExpressionOrThrow,
+	tryResolveConstantValueOrExpression,
+} from './resolveConstantValue';
 
 import type { CompilationContext, Argument } from '../types';
 
@@ -35,7 +39,7 @@ export default function parseMemoryInstructionArguments(
 		defaultValue = parsedArgs.firstArg.value;
 		id = '__anonymous__' + lineNumber;
 	} else if (parsedArgs.firstArg.type === 'identifier') {
-		const constant = context.namespace.consts[parsedArgs.firstArg.value];
+		const constant = tryResolveConstantValueOrExpression(context.namespace.consts, parsedArgs.firstArg.value);
 
 		if (constant) {
 			defaultValue = constant.value;
@@ -82,12 +86,7 @@ export default function parseMemoryInstructionArguments(
 
 			defaultValue = memoryItem.wordAlignedSize;
 		} else if (parsedArgs.secondArg.type === 'identifier') {
-			const constant = context.namespace.consts[parsedArgs.secondArg.value];
-
-			if (!constant) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context);
-			}
-
+			const constant = resolveConstantValueOrExpressionOrThrow(parsedArgs.secondArg.value, lineForError, context);
 			defaultValue = constant.value;
 		}
 	}
