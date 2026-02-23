@@ -41,6 +41,7 @@ enum WASMInstruction {
 	I32_LOAD_16_S = 0x2e,
 	I32_LOAD_16_U = 0x2f,
 	I32_STORE = 0x36,
+	I32_STORE8 = 0x3a,
 	F32_STORE = 0x38,
 	F64_STORE = 0x39,
 	/** varsint32 constant */

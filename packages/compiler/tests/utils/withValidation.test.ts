@@ -111,6 +111,44 @@ describe('withValidation', () => {
 		});
 	});
 
+	describe('argument type validation', () => {
+		it('validates nonNegativeIntegerLiteral rule', () => {
+			const astWithArgs = {
+				...ast,
+				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
+			};
+			const compiler = withValidation({ minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] }, mockCompiler);
+			expect(() => compiler(astWithArgs, context)).not.toThrow();
+		});
+
+		it('throws TYPE_MISMATCH for non-integer literal on nonNegativeIntegerLiteral rule', () => {
+			const astWithArgs = {
+				...ast,
+				arguments: [{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false }],
+			};
+			const compiler = withValidation({ minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] }, mockCompiler);
+			expect(() => compiler(astWithArgs, context)).toThrow(`${ErrorCode.TYPE_MISMATCH}`);
+		});
+
+		it('throws EXPECTED_VALUE for negative integer on nonNegativeIntegerLiteral rule', () => {
+			const astWithArgs = {
+				...ast,
+				arguments: [{ type: ArgumentType.LITERAL, value: -1, isInteger: true }],
+			};
+			const compiler = withValidation({ minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] }, mockCompiler);
+			expect(() => compiler(astWithArgs, context)).toThrow(`${ErrorCode.EXPECTED_VALUE}`);
+		});
+
+		it('throws EXPECTED_VALUE for identifier on nonNegativeIntegerLiteral rule', () => {
+			const astWithArgs = {
+				...ast,
+				arguments: [{ type: ArgumentType.IDENTIFIER, value: 'x' }],
+			};
+			const compiler = withValidation({ minArguments: 1, argumentTypes: ['nonNegativeIntegerLiteral'] }, mockCompiler);
+			expect(() => compiler(astWithArgs, context)).toThrow(`${ErrorCode.EXPECTED_VALUE}`);
+		});
+	});
+
 	describe('operand count validation', () => {
 		it('should pass when stack has sufficient operands', () => {
 			context.stack.push({ isInteger: true });
@@ -123,17 +161,6 @@ describe('withValidation', () => {
 			context.stack.push({ isInteger: true });
 			const compiler = withValidation({ minOperands: 2 }, mockCompiler);
 			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.INSUFFICIENT_OPERANDS}`);
-		});
-
-		it('should use custom error code for insufficient operands', () => {
-			const compiler = withValidation(
-				{
-					minOperands: 1,
-					onInsufficientOperands: ErrorCode.MISSING_ARGUMENT,
-				},
-				mockCompiler
-			);
-			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.MISSING_ARGUMENT}`);
 		});
 
 		it('should not mutate stack when operand count check fails', () => {
@@ -275,6 +302,51 @@ describe('withValidation', () => {
 				mockCompiler
 			);
 			expect(() => compiler(ast, context)).toThrow(`${ErrorCode.TYPE_MISMATCH}`);
+		});
+	});
+
+	describe('dynamic operand validation', () => {
+		it('uses validateOperands to compute minOperands', () => {
+			const astWithArgs = {
+				...ast,
+				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
+			};
+			context.stack.push({ isInteger: true }, { isInteger: true });
+
+			const compiler = withValidation(
+				{
+					validateOperands: line => {
+						const count = (line.arguments[0] as { type: ArgumentType.LITERAL; value: number }).value;
+						return { minOperands: count + 1 };
+					},
+				},
+				mockCompiler
+			);
+
+			expect(() => compiler(astWithArgs, context)).toThrow(`${ErrorCode.INSUFFICIENT_OPERANDS}`);
+		});
+
+		it('uses validateOperands to validate dynamic operandTypes', () => {
+			const astWithArgs = {
+				...ast,
+				arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
+			};
+			context.stack.push({ isInteger: true }, { isInteger: false });
+
+			const compiler = withValidation(
+				{
+					validateOperands: line => {
+						const count = (line.arguments[0] as { type: ArgumentType.LITERAL; value: number }).value;
+						return {
+							minOperands: count + 1,
+							operandTypes: new Array(count + 1).fill('int'),
+						};
+					},
+				},
+				mockCompiler
+			);
+
+			expect(() => compiler(astWithArgs, context)).toThrow(`${ErrorCode.TYPE_MISMATCH}`);
 		});
 	});
 

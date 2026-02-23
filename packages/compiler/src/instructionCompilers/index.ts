@@ -72,6 +72,7 @@ import mapBegin from './mapBegin';
 import map from './map';
 import _default from './default';
 import mapEnd from './mapEnd';
+import storeBytes from './storeBytes';
 
 const instructions = {
 	and,
@@ -171,6 +172,7 @@ const instructions = {
 	map,
 	default: _default,
 	mapEnd,
+	storeBytes,
 } as const;
 
 export default instructions;
