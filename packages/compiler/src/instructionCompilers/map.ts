@@ -2,6 +2,7 @@ import { ArgumentType, BLOCK_TYPE } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -31,10 +32,7 @@ const map: InstructionCompiler = withValidation(
 			keyIsInteger = keyArg.isInteger;
 			keyIsFloat64 = !!keyArg.isFloat64;
 		} else {
-			const c = context.namespace.consts[keyArg.value];
-			if (c === undefined) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-			}
+			const c = resolveConstantValueOrExpressionOrThrow(keyArg.value, line, context);
 			keyValue = c.value;
 			keyIsInteger = c.isInteger;
 			keyIsFloat64 = !!c.isFloat64;
@@ -73,10 +71,7 @@ const map: InstructionCompiler = withValidation(
 			valueIsInteger = valueArg.isInteger;
 			valueIsFloat64 = !!valueArg.isFloat64;
 		} else {
-			const c = context.namespace.consts[valueArg.value];
-			if (c === undefined) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-			}
+			const c = resolveConstantValueOrExpressionOrThrow(valueArg.value, line, context);
 			valueValue = c.value;
 			valueIsInteger = c.isInteger;
 			valueIsFloat64 = !!c.isFloat64;
