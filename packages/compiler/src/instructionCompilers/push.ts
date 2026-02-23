@@ -1,7 +1,3 @@
-import { withValidation } from '../withValidation';
-import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../errors';
-import createInstructionCompilerTestContext from '../utils/testUtils';
 import pushConst from './push/handlers/pushConst';
 import pushElementCount from './push/handlers/pushElementCount';
 import pushElementMax from './push/handlers/pushElementMax';
@@ -12,7 +8,13 @@ import pushLocal from './push/handlers/pushLocal';
 import pushMemoryIdentifier from './push/handlers/pushMemoryIdentifier';
 import pushMemoryPointer from './push/handlers/pushMemoryPointer';
 import pushMemoryReference from './push/handlers/pushMemoryReference';
+import pushStringLiteral from './push/handlers/pushStringLiteral';
 import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
+
+import createInstructionCompilerTestContext from '../utils/testUtils';
+import { ErrorCode, getError } from '../errors';
+import { ArgumentType } from '../types';
+import { withValidation } from '../withValidation';
 
 import type { AST, InstructionCompiler, MemoryMap } from '../types';
 
@@ -30,6 +32,10 @@ const push: InstructionCompiler = withValidation(
 		}
 
 		const argument = line.arguments[0];
+
+		if (argument.type === ArgumentType.STRING_LITERAL) {
+			return pushStringLiteral(argument, context);
+		}
 
 		if (argument.type === ArgumentType.IDENTIFIER) {
 			switch (resolveIdentifierPushKind(context.namespace, argument.value)) {
@@ -114,6 +120,24 @@ if (import.meta.vitest) {
 			expect(() => {
 				push({ lineNumber: 1, instruction: 'push', arguments: [] } as AST[number], context);
 			}).toThrowError();
+		});
+
+		it('expands a string literal into per-byte i32.const pushes', () => {
+			const context = createInstructionCompilerTestContext();
+
+			push(
+				{
+					lineNumber: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.STRING_LITERAL, value: 'hi' }],
+				} as AST[number],
+				context
+			);
+
+			// 'h'=104, 'i'=105 → two stack items
+			expect(context.stack).toHaveLength(2);
+			expect(context.stack[0]).toMatchObject({ isInteger: true });
+			expect(context.stack[1]).toMatchObject({ isInteger: true });
 		});
 
 		it('pushes a f64 literal value emitting f64.const', () => {
