@@ -7,6 +7,8 @@
  * Tracks fetch and load status independently.
  */
 export interface BinaryAsset {
+	/** Optional config-provided identifier for generated constants */
+	id?: string;
 	/** URL of the binary asset (serves as the asset identifier) */
 	url: string;
 	/** The file name of the binary data */
