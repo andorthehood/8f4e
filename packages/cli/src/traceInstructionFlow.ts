@@ -18,7 +18,7 @@ export interface InstructionTraceEntry {
 	lineNumber: number;
 	instruction: string;
 	arguments: Array<{
-		type: 'literal' | 'identifier';
+		type: 'literal' | 'identifier' | 'string_literal';
 		value: number | string;
 		isInteger?: boolean;
 		isFloat64?: boolean;
@@ -54,6 +54,13 @@ function serializeArguments(line: AST[number]): InstructionTraceEntry['arguments
 		if (argument.type === 'identifier') {
 			return {
 				type: 'identifier' as const,
+				value: argument.value,
+			};
+		}
+
+		if (argument.type === 'string_literal') {
+			return {
+				type: 'string_literal' as const,
 				value: argument.value,
 			};
 		}
