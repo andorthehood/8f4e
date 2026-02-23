@@ -12,17 +12,18 @@ describe('storeBytes instruction', () => {
 	let dataView: DataView;
 	let instance: WebAssembly.Instance;
 
-	// Pushes 'Hello' as individual ASCII bytes (72=H, 101=e, 108=l, 108=l, 111=o)
+	// Pushes bytes first, then addr last (addr-last convention).
+	// Pop order: 111 first → dst+0, then 108 → dst+1, 108 → dst+2, 101 → dst+3, 72 → dst+4
 	const sourceCode = `module storeBytesTest
 
 int8[] dest 8
 
-push &dest
 push 72
 push 101
 push 108
 push 108
 push 111
+push &dest
 storeBytes 5
 
 moduleEnd
@@ -49,15 +50,15 @@ moduleEnd
 		new Uint8Array(dataView.buffer).fill(0);
 	});
 
-	test('writes bytes contiguously in push order', () => {
+	test('writes bytes in pop order (top-of-stack to dst+0)', () => {
 		(instance.exports.test as CallableFunction)();
 
 		const base = testModule.memoryMap['dest'].byteAddress;
-		expect(dataView.getUint8(base + 0)).toBe(72); // 'H'
-		expect(dataView.getUint8(base + 1)).toBe(101); // 'e'
+		expect(dataView.getUint8(base + 0)).toBe(111); // 'o' — top of stack, first pop
+		expect(dataView.getUint8(base + 1)).toBe(108); // 'l'
 		expect(dataView.getUint8(base + 2)).toBe(108); // 'l'
-		expect(dataView.getUint8(base + 3)).toBe(108); // 'l'
-		expect(dataView.getUint8(base + 4)).toBe(111); // 'o'
+		expect(dataView.getUint8(base + 3)).toBe(101); // 'e'
+		expect(dataView.getUint8(base + 4)).toBe(72); // 'H' — bottom byte, last pop
 	});
 
 	test('does not write beyond the given count', () => {
@@ -73,9 +74,9 @@ describe('storeBytes truncates values to byte', () => {
 		const ast = compileToAST(
 			`module storeBytesOverflow
 int8[] buf 4
-push &buf
 push 256
 push 257
+push &buf
 storeBytes 2
 moduleEnd`.split('\n')
 		);
@@ -88,8 +89,9 @@ moduleEnd`.split('\n')
 		(instance.exports.test as CallableFunction)();
 
 		const base = mod.memoryMap['buf'].byteAddress;
-		expect(dv.getUint8(base + 0)).toBe(0); // 256 & 0xff == 0
-		expect(dv.getUint8(base + 1)).toBe(1); // 257 & 0xff == 1
+		// Pop order: 257 first → dst+0, 256 → dst+1
+		expect(dv.getUint8(base + 0)).toBe(1); // 257 & 0xff == 1
+		expect(dv.getUint8(base + 1)).toBe(0); // 256 & 0xff == 0
 	});
 });
 
