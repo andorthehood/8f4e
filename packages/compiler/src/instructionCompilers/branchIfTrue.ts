@@ -22,7 +22,7 @@ const branchIfTrue: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 		}
 
-		if (line.arguments[0].type === ArgumentType.IDENTIFIER) {
+		if (line.arguments[0].type !== ArgumentType.LITERAL) {
 			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 

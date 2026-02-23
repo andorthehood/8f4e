@@ -3,22 +3,91 @@ import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 export enum ArgumentType {
 	LITERAL = 'literal',
 	IDENTIFIER = 'identifier',
+	STRING_LITERAL = 'string_literal',
 }
 
 export type ArgumentLiteral = { type: ArgumentType.LITERAL; value: number; isInteger: boolean; isFloat64?: boolean };
 export type ArgumentIdentifier = { type: ArgumentType.IDENTIFIER; value: string };
+export type ArgumentStringLiteral = { type: ArgumentType.STRING_LITERAL; value: string };
 
-export type Argument = ArgumentLiteral | ArgumentIdentifier;
+export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral;
+
+/**
+ * Decodes escape sequences in a raw (unquoted) string literal body.
+ * Supported: \", \\, \n, \r, \t, \xNN.
+ */
+export function decodeStringLiteral(raw: string): string {
+	let result = '';
+	let i = 0;
+	while (i < raw.length) {
+		if (raw[i] === '\\') {
+			if (i + 1 >= raw.length) {
+				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, `Unexpected end of string after backslash`, {
+					raw,
+				});
+			}
+			const next = raw[i + 1];
+			switch (next) {
+				case '"':
+					result += '"';
+					i += 2;
+					break;
+				case '\\':
+					result += '\\';
+					i += 2;
+					break;
+				case 'n':
+					result += '\n';
+					i += 2;
+					break;
+				case 'r':
+					result += '\r';
+					i += 2;
+					break;
+				case 't':
+					result += '\t';
+					i += 2;
+					break;
+				case 'x': {
+					const hex = raw.slice(i + 2, i + 4);
+					if (!/^[0-9a-fA-F]{2}$/.test(hex)) {
+						throw new SyntaxRulesError(
+							SyntaxErrorCode.INVALID_STRING_LITERAL,
+							`Invalid hex escape sequence: \\x${hex}`,
+							{ raw, hex }
+						);
+					}
+					result += String.fromCharCode(parseInt(hex, 16));
+					i += 4;
+					break;
+				}
+				default:
+					throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, `Unknown escape sequence: \\${next}`, {
+						raw,
+						escape: next,
+					});
+			}
+		} else {
+			result += raw[i];
+			i++;
+		}
+	}
+	return result;
+}
 
 /**
  * Parses a single argument from an instruction line.
- * Recognizes numeric literals (decimal, hex, binary, fractions) and identifiers.
+ * Recognizes numeric literals (decimal, hex, binary, fractions), quoted string literals, and identifiers.
  * @param argument - The argument string to parse.
  * @returns Parsed argument with type information.
  */
 export function parseArgument(argument: string): Argument {
 	switch (true) {
-		// Check for fraction literals before other numeric parsing
+		// Check for quoted string literals
+		case argument.startsWith('"') && argument.endsWith('"') && argument.length >= 2: {
+			const raw = argument.slice(1, -1);
+			return { type: ArgumentType.STRING_LITERAL, value: decodeStringLiteral(raw) };
+		}
 		case /^-?\d+\/\d+$/.test(argument): {
 			const [numeratorStr, denominatorStr] = argument.split('/');
 			const numerator = parseInt(numeratorStr, 10);
@@ -152,6 +221,55 @@ if (import.meta.vitest) {
 			expect(parseArgument('3.14ff64').type).toBe(ArgumentType.IDENTIFIER);
 			// multiple dots are not valid
 			expect(parseArgument('..f64').type).toBe(ArgumentType.IDENTIFIER);
+		});
+
+		describe('string literals', () => {
+			it('parses a simple quoted string', () => {
+				expect(parseArgument('"hello"')).toEqual({ type: ArgumentType.STRING_LITERAL, value: 'hello' });
+			});
+
+			it('parses an empty string', () => {
+				expect(parseArgument('""')).toEqual({ type: ArgumentType.STRING_LITERAL, value: '' });
+			});
+
+			it('decodes \\n escape', () => {
+				expect(parseArgument('"a\\nb"')).toEqual({ type: ArgumentType.STRING_LITERAL, value: 'a\nb' });
+			});
+
+			it('decodes \\r escape', () => {
+				expect(parseArgument('"a\\rb"')).toEqual({ type: ArgumentType.STRING_LITERAL, value: 'a\rb' });
+			});
+
+			it('decodes \\t escape', () => {
+				expect(parseArgument('"a\\tb"')).toEqual({ type: ArgumentType.STRING_LITERAL, value: 'a\tb' });
+			});
+
+			it('decodes \\\\ escape', () => {
+				expect(parseArgument('"a\\\\b"')).toEqual({ type: ArgumentType.STRING_LITERAL, value: 'a\\b' });
+			});
+
+			it('decodes \\" escape', () => {
+				expect(parseArgument('"say \\"hi\\""')).toEqual({ type: ArgumentType.STRING_LITERAL, value: 'say "hi"' });
+			});
+
+			it('decodes \\xNN hex escape', () => {
+				expect(parseArgument('"\\x41"')).toEqual({ type: ArgumentType.STRING_LITERAL, value: 'A' });
+				expect(parseArgument('"\\x00"')).toEqual({ type: ArgumentType.STRING_LITERAL, value: '\x00' });
+				expect(parseArgument('"\\xFF"')).toEqual({ type: ArgumentType.STRING_LITERAL, value: '\xFF' });
+			});
+
+			it('throws on malformed \\x escape', () => {
+				expect(() => parseArgument('"\\xGG"')).toThrow('Invalid hex escape sequence');
+				expect(() => parseArgument('"\\x1"')).toThrow('Invalid hex escape sequence');
+			});
+
+			it('throws on unknown escape sequence', () => {
+				expect(() => parseArgument('"\\z"')).toThrow('Unknown escape sequence');
+			});
+
+			it('throws on trailing backslash', () => {
+				expect(() => decodeStringLiteral('abc\\')).toThrow('Unexpected end of string');
+			});
 		});
 	});
 }
