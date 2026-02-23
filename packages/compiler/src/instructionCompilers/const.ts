@@ -35,14 +35,8 @@ const _const: InstructionCompiler = withValidation(
 		let value = { value: 0, isInteger: true };
 
 		if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
-			if (typeof context.namespace.consts[line.arguments[1].value] !== 'undefined') {
-				value = context.namespace.consts[line.arguments[1].value];
-			} else {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-			}
-		} else if (line.arguments[1].type === ArgumentType.LITERAL) {
 			value = resolveConstantValueOrExpressionOrThrow(line.arguments[1].value, line, context);
-		} else {
+		} else if (line.arguments[1].type === ArgumentType.LITERAL) {
 			value = line.arguments[1];
 		} else {
 			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
