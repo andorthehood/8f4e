@@ -39,8 +39,10 @@ const _const: InstructionCompiler = withValidation(
 			} else {
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 			}
-		} else {
+		} else if (line.arguments[1].type === ArgumentType.LITERAL) {
 			value = line.arguments[1];
+		} else {
+			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 
 		context.namespace.consts[constantName] = value;

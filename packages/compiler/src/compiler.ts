@@ -2,6 +2,7 @@ import instructionParser from './syntax/instructionParser';
 import isComment from './syntax/isComment';
 import isValidInstruction from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
+import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
 import createFunction from './wasmUtils/codeSection/createFunction';
 import createLocalDeclaration from './wasmUtils/codeSection/createLocalDeclaration';
 import instructions, { Instruction } from './instructionCompilers';
@@ -25,17 +26,64 @@ export type { MemoryTypes, MemoryMap } from './types';
 // Re-export for backward compatibility
 export { instructionParser, isComment, isValidInstruction, parseArgument };
 
+/**
+ * Tokenizes an instruction line, treating quoted strings as single tokens.
+ * Stops at an unquoted semicolon (comment delimiter).
+ * Escape sequences inside quotes are preserved for parseArgument to decode.
+ */
+function tokenizeInstruction(line: string): string[] {
+	const tokens: string[] = [];
+	let i = 0;
+	const len = line.length;
+
+	while (i < len) {
+		// Skip whitespace
+		if (/\s/.test(line[i])) {
+			i++;
+			continue;
+		}
+		// Semicolon starts a comment – stop
+		if (line[i] === ';') break;
+
+		// Quoted string token
+		if (line[i] === '"') {
+			let token = '"';
+			i++; // skip opening quote
+			while (i < len && line[i] !== '"') {
+				if (line[i] === '\\' && i + 1 < len) {
+					token += line[i] + line[i + 1];
+					i += 2;
+				} else {
+					token += line[i++];
+				}
+			}
+			if (i >= len) {
+				throw new SyntaxRulesError(SyntaxErrorCode.INVALID_STRING_LITERAL, 'Unterminated string literal');
+			}
+			token += '"'; // closing quote
+			i++; // consume closing quote
+			tokens.push(token);
+		} else {
+			// Regular token: read until whitespace or semicolon
+			let token = '';
+			while (i < len && !/\s/.test(line[i]) && line[i] !== ';') {
+				token += line[i++];
+			}
+			if (token) tokens.push(token);
+		}
+	}
+
+	return tokens;
+}
+
 export function parseLine(line: string, lineNumber: number): AST[number] {
-	const [, instruction, ...args] = (line.match(instructionParser) || []) as [never, Instruction, string, string];
+	const tokens = tokenizeInstruction(line);
+	const [instruction, ...args] = tokens as [Instruction, ...string[]];
 
 	return {
 		lineNumber,
 		instruction,
-		arguments: args
-			.filter(argument => {
-				return argument !== '';
-			})
-			.map(parseArgument),
+		arguments: args.map(parseArgument),
 	};
 }
 

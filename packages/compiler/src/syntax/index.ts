@@ -6,9 +6,11 @@ export { default as isValidInstruction } from './isValidInstruction';
 export {
 	ArgumentType,
 	parseArgument,
+	decodeStringLiteral,
 	type Argument,
 	type ArgumentLiteral,
 	type ArgumentIdentifier,
+	type ArgumentStringLiteral,
 } from './parseArgument';
 export { getBlockType, type CodeBlockType } from './getBlockType';
 export { default as getModuleId } from './getModuleId';
