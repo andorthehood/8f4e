@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – Placeholder In-Source Tests Added Only to Satisfy Vitest
-agent: Codex (GPT-5)
-model: GPT-5
+agent: Codex App Version 26.217.1959 (669)
+model: gpt-5.3-codex
 date: 2026-02-23
 ---
 

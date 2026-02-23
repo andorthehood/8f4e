@@ -16,7 +16,6 @@ const _localSet: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 1,
-		onInsufficientOperands: ErrorCode.INSUFFICIENT_OPERANDS,
 	},
 	(line, context) => {
 		if (!line.arguments[0]) {
