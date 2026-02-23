@@ -159,6 +159,26 @@ describe('autoEnvConstants', () => {
 		expect(assetSizeLine).toBe('const ASSET_0_SIZE 44100');
 	});
 
+	test('should use binary asset id in generated size constants when present', () => {
+		autoEnvConstants(store);
+
+		store.set('binaryAssets', [
+			{
+				id: 'snare',
+				url: 'https://example.com/snare.wav',
+				fileName: 'snare.wav',
+				assetByteLength: 22050,
+				loadedIntoMemory: false,
+			},
+		]);
+
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_SNARE_SIZE'));
+		expect(assetSizeLine).toBe('const ASSET_SNARE_SIZE 22050');
+	});
+
 	test('should update when binary assets change', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });

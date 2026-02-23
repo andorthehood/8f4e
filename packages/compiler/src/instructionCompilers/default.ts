@@ -1,7 +1,7 @@
 import { ArgumentType, BLOCK_TYPE } from '../types';
-import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -30,10 +30,7 @@ const _default: InstructionCompiler = withValidation(
 			defaultIsInteger = valueArg.isInteger;
 			defaultIsFloat64 = !!valueArg.isFloat64;
 		} else {
-			const c = context.namespace.consts[valueArg.value];
-			if (c === undefined) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-			}
+			const c = resolveConstantValueOrExpressionOrThrow(valueArg.value, line, context);
 			defaultValue = c.value;
 			defaultIsInteger = c.isInteger;
 			defaultIsFloat64 = !!c.isFloat64;

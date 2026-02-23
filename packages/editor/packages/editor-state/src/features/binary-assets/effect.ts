@@ -37,6 +37,7 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 
 					return {
 						...fetched,
+						id: asset.id,
 						memoryId: asset.memoryId,
 						loadedIntoMemory: false,
 					};
