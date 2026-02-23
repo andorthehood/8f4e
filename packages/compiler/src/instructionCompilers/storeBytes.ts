@@ -1,8 +1,7 @@
 import { ArgumentType } from '../types';
-import { ErrorCode, getError } from '../errors';
+import { ErrorCode } from '../errors';
 import i32store8 from '../wasmUtils/store/i32store8';
 import { compileSegment } from '../compiler';
-import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -17,32 +16,35 @@ const storeBytes: InstructionCompiler = withValidation(
 		scope: 'module',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minArguments: 1,
+		argumentTypes: ['nonNegativeIntegerLiteral'],
+		validateOperands: (line) => {
+			const count = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>).value;
+			return {
+				minOperands: count + 1,
+				operandTypes: new Array(count + 1).fill('int'),
+			};
+		},
 	},
 	(line, context) => {
-		const arg = line.arguments[0];
-
-		if (arg.type !== ArgumentType.LITERAL || !arg.isInteger || arg.value < 0) {
-			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
-		}
-
-		const count = arg.value;
-
-		if (context.stack.length < count + 1) {
-			throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-		}
+		const count = (line.arguments[0] as Extract<(typeof line.arguments)[number], { type: ArgumentType.LITERAL }>).value;
 
 		const tempAddrVar = `__storeBytesAddr_${line.lineNumber}`;
 		const tempByteVar = `__storeBytesByte_${line.lineNumber}`;
 
-		// Save dstAddress from the top of the stack (pushed last by caller)
-		compileSegment([`local int ${tempAddrVar}`, `local int ${tempByteVar}`, `localSet ${tempAddrVar}`], context);
-
-		// For each byte: pop from stack, immediately store at consecutive offset
+		const lines = [`local int ${tempAddrVar}`, `local int ${tempByteVar}`, `localSet ${tempAddrVar}`];
 		for (let i = 0; i < count; i++) {
-			compileSegment([`localSet ${tempByteVar}`, `localGet ${tempAddrVar}`, `localGet ${tempByteVar}`], context);
-			saveByteCode(context, i32store8(undefined, undefined, 0, i));
-			// i32.store8 consumes addr+byte from the WASM stack but not from 8f4e tracking; pop manually
-			context.stack.pop();
+			lines.push(
+				`localSet ${tempByteVar}`,
+				`localGet ${tempAddrVar}`,
+				`localGet ${tempByteVar}`,
+				...i32store8(undefined, undefined, 0, i).map(b => `wasm ${b}`)
+			);
+		}
+
+		compileSegment(lines, context);
+
+		// `wasm` opcodes do not update stack tracking. Each i32.store8 consumes addr+byte.
+		for (let i = 0; i < count * 2; i++) {
 			context.stack.pop();
 		}
 
@@ -65,7 +67,7 @@ if (import.meta.vitest) {
 			}).toThrow();
 		});
 
-		it('throws MISSING_ARGUMENT for a non-integer count argument', () => {
+		it('throws TYPE_MISMATCH for a non-integer count argument', () => {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
 
@@ -78,10 +80,10 @@ if (import.meta.vitest) {
 					} as AST[number],
 					context
 				);
-			}).toThrow();
+			}).toThrow(`${ErrorCode.TYPE_MISMATCH}`);
 		});
 
-		it('throws MISSING_ARGUMENT for a negative count argument', () => {
+		it('throws EXPECTED_VALUE for a negative count argument', () => {
 			const context = createInstructionCompilerTestContext();
 			context.stack.push({ isInteger: true, isNonZero: false, isSafeMemoryAddress: true });
 
@@ -94,7 +96,7 @@ if (import.meta.vitest) {
 					} as AST[number],
 					context
 				);
-			}).toThrow();
+			}).toThrow(`${ErrorCode.EXPECTED_VALUE}`);
 		});
 
 		it('throws INSUFFICIENT_OPERANDS when stack has fewer than count+1 items', () => {

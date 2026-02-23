@@ -1,4 +1,4 @@
-import { BLOCK_TYPE } from './types';
+import { ArgumentType, BLOCK_TYPE } from './types';
 import { ErrorCode, getError } from './errors';
 import { areAllOperandsFloats, areAllOperandsIntegers } from './utils/operandTypes';
 import {
@@ -11,14 +11,22 @@ import {
 import type { BlockStack, CompilationContext, InstructionCompiler, StackItem } from './types';
 
 export type OperandRule = 'int' | 'float' | 'matching';
+export type ArgumentRule = 'literal' | 'identifier' | 'integerLiteral' | 'nonNegativeIntegerLiteral';
 export type ScopeRule = 'module' | 'function' | 'moduleOrFunction' | 'block' | 'constants' | 'map';
 
 export interface ValidationSpec {
 	scope?: ScopeRule;
 	minOperands?: number;
 	minArguments?: number;
+	argumentTypes?: ArgumentRule[] | ArgumentRule;
 	operandTypes?: OperandRule[] | OperandRule;
-	onInsufficientOperands?: ErrorCode;
+	validateOperands?: (
+		line: Parameters<InstructionCompiler>[0],
+		context: CompilationContext
+	) => {
+		minOperands?: number;
+		operandTypes?: OperandRule[] | OperandRule;
+	};
 	onInvalidScope?: ErrorCode;
 	allowedInConstantsBlocks?: boolean;
 	allowedInMapBlocks?: boolean;
@@ -119,6 +127,67 @@ function validateOperandTypes(
 	}
 }
 
+function validateArgumentByRule(
+	argument: Parameters<InstructionCompiler>[0]['arguments'][number],
+	rule: ArgumentRule,
+	line: Parameters<InstructionCompiler>[0],
+	context: CompilationContext
+): void {
+	switch (rule) {
+		case 'literal':
+			if (argument.type !== ArgumentType.LITERAL) {
+				throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+			}
+			break;
+		case 'identifier':
+			if (argument.type !== ArgumentType.IDENTIFIER) {
+				throw getError(ErrorCode.EXPECTED_IDENTIFIER, line, context);
+			}
+			break;
+		case 'integerLiteral':
+			if (argument.type !== ArgumentType.LITERAL) {
+				throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+			}
+			if (!argument.isInteger) {
+				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
+			}
+			break;
+		case 'nonNegativeIntegerLiteral':
+			if (argument.type !== ArgumentType.LITERAL) {
+				throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+			}
+			if (!argument.isInteger) {
+				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
+			}
+			if (argument.value < 0) {
+				throw getError(ErrorCode.EXPECTED_VALUE, line, context);
+			}
+			break;
+	}
+}
+
+function validateArgumentTypes(
+	argumentsList: Parameters<InstructionCompiler>[0]['arguments'],
+	rules: ArgumentRule[] | ArgumentRule,
+	line: Parameters<InstructionCompiler>[0],
+	context: CompilationContext
+): void {
+	if (Array.isArray(rules)) {
+		for (let i = 0; i < rules.length; i++) {
+			const argument = argumentsList[i];
+			if (!argument) {
+				return;
+			}
+			validateArgumentByRule(argument, rules[i], line, context);
+		}
+		return;
+	}
+
+	for (const argument of argumentsList) {
+		validateArgumentByRule(argument, rules, line, context);
+	}
+}
+
 export function withValidation(spec: ValidationSpec, compiler: InstructionCompiler): InstructionCompiler {
 	return function (line, context) {
 		// Check if instruction is allowed in constants blocks (defaults to false)
@@ -147,17 +216,23 @@ export function withValidation(spec: ValidationSpec, compiler: InstructionCompil
 			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 		}
 
-		const operandsNeeded = spec.minOperands ?? 0;
+		if (spec.argumentTypes) {
+			validateArgumentTypes(line.arguments, spec.argumentTypes, line, context);
+		}
+
+		const validatedOperands = spec.validateOperands?.(line, context);
+		const operandsNeeded = validatedOperands?.minOperands ?? spec.minOperands ?? 0;
+		const operandTypes = validatedOperands?.operandTypes ?? spec.operandTypes;
 
 		if (operandsNeeded > 0) {
 			const operands = peekStackOperands(context.stack, operandsNeeded);
 
 			if (operands.length < operandsNeeded) {
-				throw getError(spec.onInsufficientOperands ?? ErrorCode.INSUFFICIENT_OPERANDS, line, context);
+				throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 			}
 
-			if (spec.operandTypes) {
-				validateOperandTypes(operands, spec.operandTypes, line, context);
+			if (operandTypes) {
+				validateOperandTypes(operands, operandTypes, line, context);
 			}
 		}
 
