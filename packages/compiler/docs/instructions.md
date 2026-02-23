@@ -65,6 +65,7 @@
   - [load16u](instructions/memory.md#load16u)
   - [loadFloat](instructions/memory.md#loadfloat)
   - [store](instructions/memory.md#store)
+  - [storeBytes](instructions/memory.md#storebytes)
   - [init](instructions/memory.md#init)
 
 - [Declarations and locals](instructions/declarations-and-locals.md)
