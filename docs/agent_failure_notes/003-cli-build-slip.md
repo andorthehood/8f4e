@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - Ignoring Build Orchestration (Nx)
-model: gpt-5.2-codex
 agent: codex-cli
+model: gpt-5.2-codex
 date: 2026-01-25
 ---
 
