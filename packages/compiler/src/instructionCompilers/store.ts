@@ -19,7 +19,6 @@ const store: InstructionCompiler = withValidation(
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		minOperands: 2,
 		operandTypes: ['int'],
-		onInsufficientOperands: ErrorCode.INSUFFICIENT_OPERANDS,
 	},
 	(line, context) => {
 		const operand1Value = context.stack.pop()!;
