@@ -30,36 +30,36 @@ const storeBytes: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 		}
 
-		// Collect byte items in push order (byte[0] = first pushed = deepest below top)
-		const byteItems = [];
+		// Collect byte items in stack-pop order (poppedBytes[0] = last pushed byte)
+		const poppedBytes = [];
 		for (let i = 0; i < count; i++) {
-			byteItems.unshift(context.stack.pop()!);
+			poppedBytes.push(context.stack.pop()!);
 		}
 		const addressItem = context.stack.pop()!;
 
 		// Re-push for compileSegment to consume via localSet
 		context.stack.push(addressItem);
-		for (const b of byteItems) {
+		for (const b of poppedBytes) {
 			context.stack.push(b);
 		}
 
 		const tempAddrVar = `__storeBytesAddr_${line.lineNumber}`;
-		const tempByteVars = byteItems.map((_, i) => `__storeBytesByte${i}_${line.lineNumber}`);
+		const tempByteVars = poppedBytes.map((_, i) => `__storeBytesByte${i}_${line.lineNumber}`);
 
 		const ret = compileSegment(
 			[
 				`local int ${tempAddrVar}`,
 				// Declare byte locals
-				...byteItems.map((_, i) => `local int ${tempByteVars[i]}`),
-				// localSet bytes in reverse push order: the last pushed byte is at the top of the
-				// stack, so we localSet tempByteVars[count-1] first, then count-2, ..., then 0
-				...byteItems.map((_, i) => `localSet ${tempByteVars[count - 1 - i]}`),
+				...poppedBytes.map((_, i) => `local int ${tempByteVars[i]}`),
+				// localSet in stack-pop order (poppedBytes[0] is on top of stack)
+				...poppedBytes.map((_, i) => `localSet ${tempByteVars[i]}`),
 				`localSet ${tempAddrVar}`,
-				// Emit one i32.store8 per byte using static offset
-				...byteItems.flatMap((_, i) => [
+				// Write at offset (count-1-i): poppedBytes[0] (last pushed) → offset N-1,
+				// poppedBytes[N-1] (first pushed) → offset 0, preserving push order in memory
+				...poppedBytes.flatMap((_, i) => [
 					`localGet ${tempAddrVar}`,
 					`localGet ${tempByteVars[i]}`,
-					...i32store8(undefined, undefined, 0, i).map(b => `wasm ${b}`),
+					...i32store8(undefined, undefined, 0, count - 1 - i).map(b => `wasm ${b}`),
 				]),
 			],
 			context
