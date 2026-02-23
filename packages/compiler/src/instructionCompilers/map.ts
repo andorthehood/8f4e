@@ -31,6 +31,12 @@ const map: InstructionCompiler = withValidation(
 			keyValue = keyArg.value;
 			keyIsInteger = keyArg.isInteger;
 			keyIsFloat64 = !!keyArg.isFloat64;
+		} else if (keyArg.type === ArgumentType.STRING_LITERAL) {
+			if (keyArg.value.length !== 1) {
+				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
+			}
+			keyValue = keyArg.value.charCodeAt(0);
+			keyIsInteger = true;
 		} else {
 			const c = resolveConstantValueOrExpressionOrThrow(keyArg.value, line, context);
 			keyValue = c.value;
@@ -70,6 +76,12 @@ const map: InstructionCompiler = withValidation(
 			valueValue = valueArg.value;
 			valueIsInteger = valueArg.isInteger;
 			valueIsFloat64 = !!valueArg.isFloat64;
+		} else if (valueArg.type === ArgumentType.STRING_LITERAL) {
+			if (valueArg.value.length !== 1) {
+				throw getError(ErrorCode.TYPE_MISMATCH, line, context);
+			}
+			valueValue = valueArg.value.charCodeAt(0);
+			valueIsInteger = true;
 		} else {
 			const c = resolveConstantValueOrExpressionOrThrow(valueArg.value, line, context);
 			valueValue = c.value;
@@ -119,6 +131,72 @@ if (import.meta.vitest) {
 			);
 
 			expect(context.blockStack[context.blockStack.length - 1].mapState!.rows).toMatchSnapshot();
+		});
+
+		it('accepts single-character string literals as ASCII int key/value', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					{
+						blockType: BLOCK_TYPE.MODULE,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+					{
+						blockType: BLOCK_TYPE.MAP,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
+					},
+				],
+			});
+
+			map(
+				{
+					lineNumber: 1,
+					instruction: 'map',
+					arguments: [
+						{ type: ArgumentType.STRING_LITERAL, value: 'A' },
+						{ type: ArgumentType.STRING_LITERAL, value: 'B' },
+					],
+				} as AST[number],
+				context
+			);
+
+			expect(context.blockStack[context.blockStack.length - 1].mapState!.rows).toEqual([
+				{ keyValue: 65, valueValue: 66, valueIsInteger: true, valueIsFloat64: false },
+			]);
+		});
+
+		it('rejects multi-character string literals', () => {
+			const context = createInstructionCompilerTestContext({
+				blockStack: [
+					{
+						blockType: BLOCK_TYPE.MODULE,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+					},
+					{
+						blockType: BLOCK_TYPE.MAP,
+						expectedResultIsInteger: false,
+						hasExpectedResult: false,
+						mapState: { inputIsInteger: true, inputIsFloat64: false, rows: [], defaultSet: false },
+					},
+				],
+			});
+
+			expect(() => {
+				map(
+					{
+						lineNumber: 1,
+						instruction: 'map',
+						arguments: [
+							{ type: ArgumentType.STRING_LITERAL, value: 'AB' },
+							{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+						],
+					} as AST[number],
+					context
+				);
+			}).toThrowError();
 		});
 
 		it('throws when key type mismatches int inputType', () => {

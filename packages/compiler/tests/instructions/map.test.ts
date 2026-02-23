@@ -31,6 +31,28 @@ moduleEnd
 );
 
 moduleTester(
+	'map: int→int with single-character literals as ASCII',
+	`module mapCharLiteral
+
+int input
+int output
+
+push &output
+push input
+mapBegin int
+  map "A" "B"
+mapEnd int
+store
+
+moduleEnd
+`,
+	[
+		[{ input: 65 }, { output: 66 }],
+		[{ input: 66 }, { output: 0 }],
+	]
+);
+
+moduleTester(
 	'map: int→int with explicit default',
 	`module mapIntIntDefault
 
@@ -191,6 +213,19 @@ int x
 push x
 mapBegin int
   map 1.5 10
+mapEnd int
+moduleEnd
+`)
+		).rejects.toThrow();
+	});
+
+	test('throws when multi-character string key is used', async () => {
+		await expect(
+			createTestModule(`module m
+int x
+push x
+mapBegin int
+  map "AB" 10
 mapEnd int
 moduleEnd
 `)
