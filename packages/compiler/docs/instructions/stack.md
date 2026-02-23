@@ -10,6 +10,9 @@ For constants, `push` also supports compile-time mul/div expressions with exactl
 - `CONST*number`
 - `CONST/number`
 
+A quoted string literal is expanded at compile time into one `i32.const` per byte (in source order).
+Supported escape sequences: `\"`, `\\`, `\n`, `\r`, `\t`, `\xNN`.
+
 #### Examples
 
 ```
@@ -18,6 +21,9 @@ push 1
 push 2.5
 push 3.14f64
 push 1e-10f64
+push "hello"
+push "line1\nline2"
+push "\x41\x42"
 push SIZE/2
 ```
 
