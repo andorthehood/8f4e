@@ -164,7 +164,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('binaryAssets', [
 			{
-				id: 'SNARE',
+				id: 'snare',
 				url: 'https://example.com/snare.wav',
 				fileName: 'snare.wav',
 				assetByteLength: 22050,
