@@ -17,7 +17,7 @@ What the agent was asked to do and what failed.
 
 Include concrete symptoms or error messages if useful.
 
-## Incorrect Fixes Attempted (Anti-Patterns)
+## Anti-Patterns
 
 List approaches that looked reasonable but were wrong.
 
