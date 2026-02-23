@@ -90,12 +90,14 @@ store
 ### init
 
 The init instruction sets the default value for a declared memory identifier or buffer element (for example `init bufferName[3] 42`).
+The value argument can also be a constant mul/div expression with exactly one operator (`CONST*number` or `CONST/number`).
 
 #### Examples
 
 ```
+const SIZE 8
 int value
-init value 42
+init value SIZE/2
 ```
 
 ### storeBytes
