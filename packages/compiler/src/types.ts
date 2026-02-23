@@ -1,4 +1,10 @@
-import { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier } from './syntax/parseArgument';
+import {
+	ArgumentType,
+	type Argument,
+	type ArgumentLiteral,
+	type ArgumentIdentifier,
+	type ArgumentStringLiteral,
+} from './syntax/parseArgument';
 import { Instruction } from './instructionCompilers';
 import Type from './wasmUtils/type';
 import WASMInstruction from './wasmUtils/wasmInstruction';
@@ -88,7 +94,7 @@ export interface Module {
 }
 
 // Re-export types from syntax subpath for backward compatibility
-export { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier };
+export { ArgumentType, type Argument, type ArgumentLiteral, type ArgumentIdentifier, type ArgumentStringLiteral };
 
 export type AST = Array<{ lineNumber: number; instruction: Instruction; arguments: Array<Argument> }>;
 

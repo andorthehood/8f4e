@@ -36,8 +36,10 @@ const _const: InstructionCompiler = withValidation(
 
 		if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
 			value = resolveConstantValueOrExpressionOrThrow(line.arguments[1].value, line, context);
-		} else {
+		} else if (line.arguments[1].type === ArgumentType.LITERAL) {
 			value = line.arguments[1];
+		} else {
+			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 		}
 
 		context.namespace.consts[constantName] = value;
