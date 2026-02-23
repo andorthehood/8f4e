@@ -2,6 +2,7 @@ import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import i32store8 from '../wasmUtils/store/i32store8';
 import { compileSegment } from '../compiler';
+import { saveByteCode } from '../utils/compilation';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
 
@@ -30,47 +31,22 @@ const storeBytes: InstructionCompiler = withValidation(
 			throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 		}
 
-		// Collect byte items in stack-pop order (poppedBytes[0] = last pushed byte)
-		const poppedBytes = [];
-		for (let i = 0; i < count; i++) {
-			poppedBytes.push(context.stack.pop()!);
-		}
-		const addressItem = context.stack.pop()!;
-
-		// Re-push for compileSegment to consume via localSet
-		context.stack.push(addressItem);
-		for (const b of poppedBytes) {
-			context.stack.push(b);
-		}
-
 		const tempAddrVar = `__storeBytesAddr_${line.lineNumber}`;
-		const tempByteVars = poppedBytes.map((_, i) => `__storeBytesByte${i}_${line.lineNumber}`);
+		const tempByteVar = `__storeBytesByte_${line.lineNumber}`;
 
-		const ret = compileSegment(
-			[
-				`local int ${tempAddrVar}`,
-				// Declare byte locals
-				...poppedBytes.map((_, i) => `local int ${tempByteVars[i]}`),
-				// localSet in stack-pop order (poppedBytes[0] is on top of stack)
-				...poppedBytes.map((_, i) => `localSet ${tempByteVars[i]}`),
-				`localSet ${tempAddrVar}`,
-				// Write at offset (count-1-i): poppedBytes[0] (last pushed) → offset N-1,
-				// poppedBytes[N-1] (first pushed) → offset 0, preserving push order in memory
-				...poppedBytes.flatMap((_, i) => [
-					`localGet ${tempAddrVar}`,
-					`localGet ${tempByteVars[i]}`,
-					...i32store8(undefined, undefined, 0, count - 1 - i).map(b => `wasm ${b}`),
-				]),
-			],
-			context
-		);
+		// Save dstAddress from the top of the stack (pushed last by caller)
+		compileSegment([`local int ${tempAddrVar}`, `local int ${tempByteVar}`, `localSet ${tempAddrVar}`], context);
 
-		// wasm instructions don't update the stack tracking; manually pop the localGet pairs
-		for (let i = 0; i < count * 2; i++) {
+		// For each byte: pop from stack, immediately store at consecutive offset
+		for (let i = 0; i < count; i++) {
+			compileSegment([`localSet ${tempByteVar}`, `localGet ${tempAddrVar}`, `localGet ${tempByteVar}`], context);
+			saveByteCode(context, i32store8(undefined, undefined, 0, i));
+			// i32.store8 consumes addr+byte from the WASM stack but not from 8f4e tracking; pop manually
+			context.stack.pop();
 			context.stack.pop();
 		}
 
-		return ret;
+		return context;
 	}
 );
 
@@ -140,12 +116,12 @@ if (import.meta.vitest) {
 
 		it('compiles storeBytes 3 and leaves an empty stack', () => {
 			const context = createInstructionCompilerTestContext({ memoryByteSize: 256 });
-			// address + 3 bytes
+			// bytes pushed first, addr pushed last (on top)
 			context.stack.push(
-				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true },
 				{ isInteger: true, isNonZero: false },
 				{ isInteger: true, isNonZero: false },
-				{ isInteger: true, isNonZero: false }
+				{ isInteger: true, isNonZero: false },
+				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true }
 			);
 
 			storeBytes(
@@ -162,10 +138,11 @@ if (import.meta.vitest) {
 
 		it('emits i32.store8 opcode (0x3a = 58) for each byte', () => {
 			const context = createInstructionCompilerTestContext({ memoryByteSize: 256 });
+			// bytes pushed first, addr pushed last (on top)
 			context.stack.push(
-				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true },
 				{ isInteger: true, isNonZero: false },
-				{ isInteger: true, isNonZero: false }
+				{ isInteger: true, isNonZero: false },
+				{ isInteger: true, isNonZero: false, isSafeMemoryAddress: true }
 			);
 
 			storeBytes(
