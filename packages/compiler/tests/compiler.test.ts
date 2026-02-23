@@ -129,3 +129,31 @@ describe('compileToAST', () => {
 		expect(ast[2].lineNumber).toBe(2);
 	});
 });
+
+describe('parseLine string literals', () => {
+	test('parses a quoted string argument as STRING_LITERAL', () => {
+		const result = parseLine('push "hello"', 0);
+		expect(result.instruction).toBe('push');
+		expect(result.arguments).toEqual([{ type: ArgumentType.STRING_LITERAL, value: 'hello' }]);
+	});
+
+	test('parses a quoted string with spaces as a single argument', () => {
+		const result = parseLine('push "hello world"', 0);
+		expect(result.arguments).toHaveLength(1);
+		expect(result.arguments[0]).toEqual({ type: ArgumentType.STRING_LITERAL, value: 'hello world' });
+	});
+
+	test('preserves a quoted semicolon inside a string', () => {
+		const result = parseLine('push "a;b"', 0);
+		expect(result.arguments).toEqual([{ type: ArgumentType.STRING_LITERAL, value: 'a;b' }]);
+	});
+
+	test('handles escape sequences inside a quoted string', () => {
+		const result = parseLine('push "a\\nb"', 0);
+		expect(result.arguments).toEqual([{ type: ArgumentType.STRING_LITERAL, value: 'a\nb' }]);
+	});
+
+	test('throws on unterminated string literal', () => {
+		expect(() => parseLine('push "hello', 0)).toThrow('Unterminated string literal');
+	});
+});
