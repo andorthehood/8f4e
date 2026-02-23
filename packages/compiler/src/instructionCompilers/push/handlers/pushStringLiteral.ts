@@ -17,7 +17,7 @@ export default function pushStringLiteral(
 	argument: ArgumentStringLiteral,
 	context: CompilationContext
 ): CompilationContext {
-	// Array.from iterates by Unicode code point; & 0xff clamps each to 0..255
+	// Array.from iterates by UTF-16 code unit; & 0xff clamps each to 0..255
 	const bytes = Array.from(argument.value, ch => ch.charCodeAt(0) & 0xff);
 	for (const byte of bytes) {
 		context.stack.push({ isInteger: true, isNonZero: byte !== 0 });
