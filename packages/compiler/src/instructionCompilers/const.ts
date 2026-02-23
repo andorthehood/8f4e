@@ -3,6 +3,7 @@ import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
 import { withValidation } from '../withValidation';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler } from '../types';
 
@@ -40,6 +41,8 @@ const _const: InstructionCompiler = withValidation(
 				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
 			}
 		} else if (line.arguments[1].type === ArgumentType.LITERAL) {
+			value = resolveConstantValueOrExpressionOrThrow(line.arguments[1].value, line, context);
+		} else {
 			value = line.arguments[1];
 		} else {
 			throw getError(ErrorCode.EXPECTED_VALUE, line, context);
