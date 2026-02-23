@@ -25,6 +25,7 @@ This document provides a comprehensive index of all TODO items in the 8f4e proje
 | 277 | Add storeBytes with explicit byte count argument | 🔴 | 4-8h | 2026-02-23 | Add explicit `storeBytes <count>` byte writes using `i32.store8`, preserving push order and avoiding hidden string-capture state |
 | 278 | Add storeWords with explicit count and word size | 🔴 | 1-2d | 2026-02-23 | Add explicit `storeWords <count> <wordSize>` contiguous word writes with `wordSize`-selected integer store opcodes |
 | 279 | Extend push with compile-time string literals | 🔴 | 4-8h | 2026-02-23 | Add `push \"...\"` support with compile-time expansion into per-byte pushes, including escape decoding and parser support for quoted arguments |
+| 280 | Add reverse stack instruction with explicit item count | 🔴 | 4-8h | 2026-02-23 | Add `reverse <count>` to reverse the top N stack items in place as a type-agnostic, no-bytecode stack primitive |
 
 ### 🟡 Medium Priority
 

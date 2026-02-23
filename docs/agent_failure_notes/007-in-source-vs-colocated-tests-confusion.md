@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – In-source vs colocated tests terminology confusion
 agent: GitHub Copilot
-model: Claude Haiku 4.5
+model: Claude Sonnet 4.5
 date: 2026-02-03
 ---
 
