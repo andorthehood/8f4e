@@ -5,6 +5,7 @@
 import type { Runtimes } from '../runtime/types';
 
 export interface ConfigBinaryAsset {
+	id?: string;
 	url: string;
 	memoryId: string;
 }

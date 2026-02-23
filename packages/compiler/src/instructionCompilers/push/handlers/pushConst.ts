@@ -4,12 +4,13 @@ import { ArgumentType } from '../../../types';
 import f64const from '../../../wasmUtils/const/f64const';
 import i32const from '../../../wasmUtils/const/i32const';
 import { constOpcode, kindToStackItem, resolveArgumentValueKind } from '../shared';
+import { resolveConstantValueOrExpressionOrThrow } from '../../../utils/resolveConstantValue';
 
 import type { AST, CompilationContext } from '../../../types';
 
 export default function pushConst(line: AST[number], context: CompilationContext): CompilationContext {
 	const argument = line.arguments[0] as { value: string };
-	const constItem = context.namespace.consts[argument.value];
+	const constItem = resolveConstantValueOrExpressionOrThrow(argument.value, line, context);
 	const kind = resolveArgumentValueKind(constItem);
 	context.stack.push(kindToStackItem(kind, { isNonZero: constItem.value !== 0 }));
 	return saveByteCode(context, constOpcode[kind](constItem.value));

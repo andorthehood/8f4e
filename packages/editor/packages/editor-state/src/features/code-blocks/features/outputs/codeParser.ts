@@ -12,7 +12,9 @@ export default function parseOutputs(code: string[]) {
 				instruction === 'float64' ||
 				instruction === 'int[]' ||
 				instruction === 'float[]' ||
-				instruction === 'float64[]'
+				instruction === 'float64[]' ||
+				instruction === 'int8[]' ||
+				instruction === 'int16[]'
 			) {
 				if (!args[0]) {
 					return acc;

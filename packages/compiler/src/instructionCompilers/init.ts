@@ -7,6 +7,7 @@ import isIntermodularElementCountReference from '../syntax/isIntermodularElement
 import isIntermodularElementWordSizeReference from '../syntax/isIntermodularElementWordSizeReference';
 import isIntermodularElementMaxReference from '../syntax/isIntermodularElementMaxReference';
 import isIntermodularElementMinReference from '../syntax/isIntermodularElementMinReference';
+import { resolveConstantValueOrExpressionOrThrow } from '../utils/resolveConstantValue';
 
 import type { AST, InstructionCompiler, MemoryTypes } from '../types';
 
@@ -82,12 +83,7 @@ const init: InstructionCompiler = withValidation(
 
 			defaultValue = memoryItem.wordAlignedSize;
 		} else if (line.arguments[1].type === ArgumentType.IDENTIFIER) {
-			const constant = context.namespace.consts[line.arguments[1].value];
-
-			if (!constant) {
-				throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-			}
-
+			const constant = resolveConstantValueOrExpressionOrThrow(line.arguments[1].value, line, context);
 			defaultValue = constant.value;
 		}
 
