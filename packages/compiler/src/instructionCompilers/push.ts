@@ -1,78 +1,20 @@
 import { withValidation } from '../withValidation';
 import { ArgumentType } from '../types';
 import { ErrorCode, getError } from '../errors';
-import f32const from '../wasmUtils/const/f32const';
-import f64const from '../wasmUtils/const/f64const';
-import i32const from '../wasmUtils/const/i32const';
-import f32load from '../wasmUtils/load/f32load';
-import f64load from '../wasmUtils/load/f64load';
-import i32load from '../wasmUtils/load/i32load';
-import localGet from '../wasmUtils/local/localGet';
-import {
-	getDataStructure,
-	getDataStructureByteAddress,
-	getMemoryStringLastByteAddress,
-	getElementWordSize,
-	getElementCount,
-	getElementMaxValue,
-	getElementMinValue,
-} from '../utils/memoryData';
-import {
-	isMemoryIdentifier,
-	isMemoryPointerIdentifier,
-	isMemoryReferenceIdentifier,
-	isElementCountIdentifier,
-	isElementWordSizeIdentifier,
-	isElementMaxIdentifier,
-	isElementMinIdentifier,
-} from '../utils/memoryIdentifier';
-import { saveByteCode } from '../utils/compilation';
-import extractElementCountBase from '../syntax/extractElementCountBase';
-import extractElementWordSizeBase from '../syntax/extractElementWordSizeBase';
-import extractElementMaxBase from '../syntax/extractElementMaxBase';
-import extractElementMinBase from '../syntax/extractElementMinBase';
-import extractMemoryPointerBase from '../syntax/extractMemoryPointerBase';
-import extractMemoryReferenceBase from '../syntax/extractMemoryReferenceBase';
-import hasMemoryReferencePrefixStart from '../syntax/hasMemoryReferencePrefixStart';
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import pushConst from './push/handlers/pushConst';
+import pushElementCount from './push/handlers/pushElementCount';
+import pushElementMax from './push/handlers/pushElementMax';
+import pushElementMin from './push/handlers/pushElementMin';
+import pushElementWordSize from './push/handlers/pushElementWordSize';
+import pushLiteral from './push/handlers/pushLiteral';
+import pushLocal from './push/handlers/pushLocal';
+import pushMemoryIdentifier from './push/handlers/pushMemoryIdentifier';
+import pushMemoryPointer from './push/handlers/pushMemoryPointer';
+import pushMemoryReference from './push/handlers/pushMemoryReference';
+import resolveIdentifierPushKind, { IdentifierPushKind } from './push/resolveIdentifierPushKind';
 
-import type { AST, DataStructure, InstructionCompiler, MemoryMap, StackItem } from '../types';
-
-type ValueKind = 'int32' | 'float32' | 'float64';
-
-function resolveMemoryValueKind(memoryItem: DataStructure): ValueKind {
-	if (memoryItem.isInteger) return 'int32';
-	if (memoryItem.isFloat64) return 'float64';
-	return 'float32';
-}
-
-function resolveArgumentValueKind(argument: { isInteger: boolean; isFloat64?: boolean }): ValueKind {
-	if (argument.isFloat64) return 'float64';
-	return argument.isInteger ? 'int32' : 'float32';
-}
-
-function resolvePointerTargetValueKind(memoryItem: DataStructure): ValueKind {
-	if (memoryItem.isPointingToInteger) return 'int32';
-	const memoryType = String(memoryItem.type);
-	if (memoryType.startsWith('float64')) return 'float64';
-	return 'float32';
-}
-
-const constOpcode: Record<ValueKind, (value: number) => number[]> = {
-	int32: i32const,
-	float32: f32const,
-	float64: f64const,
-};
-
-const loadOpcode: Record<ValueKind, () => number[]> = {
-	int32: () => i32load(),
-	float32: () => f32load(),
-	float64: () => f64load(),
-};
-
-function kindToStackItem(kind: ValueKind, extras?: Partial<StackItem>): StackItem {
-	return { isInteger: kind === 'int32', ...(kind === 'float64' ? { isFloat64: true } : {}), ...extras };
-}
+import type { AST, InstructionCompiler, MemoryMap } from '../types';
 
 /**
  * Instruction compiler for `push`.
@@ -83,8 +25,6 @@ const push: InstructionCompiler = withValidation(
 		scope: 'moduleOrFunction',
 	},
 	(line, context) => {
-		const { locals, memory, consts } = context.namespace;
-
 		if (!line.arguments[0]) {
 			throw getError(ErrorCode.MISSING_ARGUMENT, line, context);
 		}
@@ -92,91 +32,29 @@ const push: InstructionCompiler = withValidation(
 		const argument = line.arguments[0];
 
 		if (argument.type === ArgumentType.IDENTIFIER) {
-			if (isMemoryIdentifier(memory, argument.value)) {
-				const memoryItem = getDataStructure(memory, argument.value);
-
-				if (!memoryItem) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-				}
-
-				const kind = resolveMemoryValueKind(memoryItem);
-				context.stack.push(kindToStackItem(kind, { isNonZero: false }));
-
-				return saveByteCode(context, [...i32const(memoryItem.byteAddress), ...loadOpcode[kind]()]);
-			} else if (isMemoryPointerIdentifier(memory, argument.value)) {
-				const base = extractMemoryPointerBase(argument.value);
-				const memoryItem = getDataStructure(memory, base);
-
-				if (!memoryItem) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-				}
-
-				const kind = resolvePointerTargetValueKind(memoryItem);
-				context.stack.push(kindToStackItem(kind, { isNonZero: false }));
-
-				return saveByteCode(context, [
-					...i32const(memoryItem.byteAddress),
-					...(memoryItem.isPointingToPointer ? [...i32load(), ...i32load()] : i32load()),
-					...loadOpcode[kind](),
-				]);
-			} else if (isMemoryReferenceIdentifier(memory, argument.value)) {
-				const base = extractMemoryReferenceBase(argument.value);
-				let value = 0;
-				if (hasMemoryReferencePrefixStart(argument.value)) {
-					value = getDataStructureByteAddress(memory, base);
-				} else {
-					value = getMemoryStringLastByteAddress(memory, base);
-				}
-				context.stack.push({ isInteger: true, isNonZero: value !== 0, isSafeMemoryAddress: true });
-				return saveByteCode(context, i32const(value));
-			} else if (isElementCountIdentifier(memory, argument.value)) {
-				const base = extractElementCountBase(argument.value);
-				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementCount(memory, base)));
-			} else if (isElementWordSizeIdentifier(memory, argument.value)) {
-				const base = extractElementWordSizeBase(argument.value);
-				context.stack.push({ isInteger: true, isNonZero: true });
-				return saveByteCode(context, i32const(getElementWordSize(memory, base)));
-			} else if (isElementMaxIdentifier(memory, argument.value)) {
-				const base = extractElementMaxBase(argument.value);
-				const memoryItem = getDataStructure(memory, base);
-				if (!memoryItem) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-				}
-				const kind = resolveMemoryValueKind(memoryItem);
-				const maxValue = getElementMaxValue(memory, base);
-				context.stack.push(kindToStackItem(kind, { isNonZero: maxValue !== 0 }));
-				return saveByteCode(context, constOpcode[kind](maxValue));
-			} else if (isElementMinIdentifier(memory, argument.value)) {
-				const base = extractElementMinBase(argument.value);
-				const memoryItem = getDataStructure(memory, base);
-				if (!memoryItem) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-				}
-				const kind = resolveMemoryValueKind(memoryItem);
-				const minValue = getElementMinValue(memory, base);
-				context.stack.push(kindToStackItem(kind, { isNonZero: minValue !== 0 }));
-				return saveByteCode(context, constOpcode[kind](minValue));
-			} else if (typeof consts[argument.value] !== 'undefined') {
-				const constItem = consts[argument.value];
-				const kind = resolveArgumentValueKind(constItem);
-				context.stack.push(kindToStackItem(kind, { isNonZero: constItem.value !== 0 }));
-				return saveByteCode(context, constOpcode[kind](constItem.value));
-			} else {
-				const local = locals[argument.value];
-
-				if (!local) {
-					throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context);
-				}
-
-				context.stack.push({ isInteger: local.isInteger, isNonZero: false });
-
-				return saveByteCode(context, localGet(local.index));
+			switch (resolveIdentifierPushKind(context.namespace, argument.value)) {
+				case IdentifierPushKind.MEMORY_IDENTIFIER:
+					return pushMemoryIdentifier(line, context);
+				case IdentifierPushKind.MEMORY_POINTER:
+					return pushMemoryPointer(line, context);
+				case IdentifierPushKind.MEMORY_REFERENCE:
+					return pushMemoryReference(line, context);
+				case IdentifierPushKind.ELEMENT_COUNT:
+					return pushElementCount(line, context);
+				case IdentifierPushKind.ELEMENT_WORD_SIZE:
+					return pushElementWordSize(line, context);
+				case IdentifierPushKind.ELEMENT_MAX:
+					return pushElementMax(line, context);
+				case IdentifierPushKind.ELEMENT_MIN:
+					return pushElementMin(line, context);
+				case IdentifierPushKind.CONST:
+					return pushConst(line, context);
+				case IdentifierPushKind.LOCAL:
+				default:
+					return pushLocal(line, context);
 			}
 		} else {
-			const kind = resolveArgumentValueKind(argument);
-			context.stack.push(kindToStackItem(kind, { isNonZero: argument.value !== 0 }));
-			return saveByteCode(context, constOpcode[kind](argument.value));
+			return pushLiteral(argument, context);
 		}
 	}
 );
