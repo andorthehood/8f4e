@@ -89,8 +89,10 @@ const defaultColorScheme = {
  */
 export default function createMockStateWithColors(overrides: Partial<State> = {}): State {
 	const state = createMockState({
-		colorSchemes: {
-			default: defaultColorScheme,
+		colorScheme: defaultColorScheme,
+		compiledProjectConfig: {
+			...createMockState().compiledProjectConfig,
+			colorScheme: defaultColorScheme,
 		},
 		featureFlags: {
 			contextMenu: true,
