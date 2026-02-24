@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 
 import { Viewport } from '~/features/viewport/types';
+import { defaultProjectConfig } from '~/features/project-config/defaults';
 
 /**
  * Deep partial type that makes all properties and nested properties optional
@@ -262,7 +263,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			consoleOverlay: false,
 			positionOffsetters: true,
 		},
-		colorSchemes: [],
+		colorScheme: defaultProjectConfig.colorScheme,
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
@@ -285,18 +286,9 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				timerExpectedIntervalTimeMs: 0,
 			},
 		},
-		compiledProjectConfig: {
-			runtimeSettings: {
-				runtime: 'WebWorkerLogicRuntime',
-				sampleRate: 50,
-			},
-			memorySizeBytes: 1048576,
-			disableAutoCompilation: false,
-			binaryAssets: [],
-		},
+		compiledProjectConfig: { ...defaultProjectConfig },
 		compiledEditorConfig: {
 			font: '8x16',
-			colorScheme: 'hackerman',
 		},
 		dialog: {
 			show: false,
