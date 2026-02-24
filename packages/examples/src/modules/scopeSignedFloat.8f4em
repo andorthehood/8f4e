@@ -1,0 +1,30 @@
+8f4e/v1
+
+module scope
+
+float* in
+float[] buffer 64
+int bufferPointer &buffer
+
+; @plot buffer -1 1
+
+push &bufferPointer
+push bufferPointer
+push %buffer
+add
+store
+
+push bufferPointer
+push buffer&
+greaterThan
+if void
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+push bufferPointer
+push *in
+store
+
+moduleEnd

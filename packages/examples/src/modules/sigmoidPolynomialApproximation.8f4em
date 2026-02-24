@@ -1,0 +1,19 @@
+8f4e/v1
+
+module sigmoid
+; Polynomial sigmoid 
+; function approximation
+
+float* in
+float out
+
+push &out
+push *in
+push *in
+abs
+push 1.0
+add
+div
+store
+
+moduleEnd
