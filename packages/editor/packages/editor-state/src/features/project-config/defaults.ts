@@ -1,4 +1,5 @@
 import type { ProjectConfig } from './types';
+import { defaultProjectColorScheme } from './defaultColorScheme';
 
 export const defaultProjectConfig: ProjectConfig = {
 	runtimeSettings: {
@@ -8,4 +9,5 @@ export const defaultProjectConfig: ProjectConfig = {
 	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
 	binaryAssets: [],
+	colorScheme: defaultProjectColorScheme,
 };
