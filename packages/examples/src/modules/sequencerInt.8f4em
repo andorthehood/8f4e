@@ -1,0 +1,44 @@
+8f4e/v1
+
+module sequencer
+
+int step0 
+int step1
+int step2 
+int step3
+int step4
+int step5
+int step6
+int _last 
+
+int* stepPointer &step1
+int* trigger
+
+int out
+
+; Increment step pointer
+push *trigger
+risingEdge 
+if void
+push &stepPointer
+push stepPointer
+push %step1
+add
+store
+ifEnd
+
+; Guard
+push stepPointer
+push &_last
+greaterThan
+if void
+push &stepPointer
+push &step1
+store
+ifEnd
+
+push &out
+push *stepPointer
+store 
+
+moduleEnd
