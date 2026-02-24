@@ -1,21 +1,15 @@
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
-import { State } from '~/types';
-
 /**
- * Generates the editor config schema for font and colorScheme.
+ * Generates the editor config schema for font.
  */
-export function getEditorConfigSchema(state: State): JSONSchemaLike {
+export function getEditorConfigSchema(): JSONSchemaLike {
 	return {
 		type: 'object',
 		properties: {
 			font: {
 				type: 'string',
 				enum: ['8x16', '6x10'],
-			},
-			colorScheme: {
-				type: 'string',
-				enum: state.colorSchemes,
 			},
 		},
 		additionalProperties: false,

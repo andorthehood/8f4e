@@ -5,7 +5,7 @@ import { isEditorConfigBlock, serializeEditorConfigBlocks } from './utils/editor
 import { defaultEditorConfig } from './defaults';
 
 import { compileConfigWithDefaults } from '../config-compiler/utils/compileConfigWithDefaults';
-import { log, warn } from '../logger/logger';
+import { log } from '../logger/logger';
 import deepEqual from '../config-compiler/utils/deepEqual';
 
 import type { State, EventDispatcher, EditorConfig } from '~/types';
@@ -16,24 +16,13 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 	async function rebuildEditorConfig(): Promise<void> {
 		const currentState = store.getState();
 
-		if (state.callbacks.getListOfColorSchemes) {
-			try {
-				const colorSchemes = await state.callbacks.getListOfColorSchemes();
-				state.colorSchemes = colorSchemes;
-			} catch (err) {
-				console.warn('Failed to load color schemes:', err);
-				warn(state, 'Failed to load color schemes');
-				state.colorSchemes = [];
-			}
-		}
-
 		if (!currentState.callbacks.compileConfig) {
 			store.set('compiledEditorConfig', defaultEditorConfig);
 			store.set('codeErrors.editorConfigErrors', []);
 			return;
 		}
 
-		const schema = getEditorConfigSchema(currentState);
+		const schema = getEditorConfigSchema();
 		const { compiledConfig, mergedConfig, errors, hasSource } = await compileConfigWithDefaults({
 			codeBlocks: currentState.graphicHelper.codeBlocks,
 			configType: 'editor',
@@ -70,18 +59,6 @@ export default function editorConfigEffect(store: StateManager<State>, events: E
 
 		state.callbacks.saveEditorConfigBlocks(serializeEditorConfigBlocks(state.graphicHelper.codeBlocks));
 	}
-
-	store.subscribe('compiledEditorConfig.colorScheme', async () => {
-		if (state.callbacks.getColorScheme) {
-			try {
-				const colorScheme = await state.callbacks.getColorScheme(state.compiledEditorConfig.colorScheme);
-				store.set('colorScheme', colorScheme);
-			} catch (err) {
-				console.warn('Failed to load color scheme:', err);
-				warn(state, 'Failed to load color scheme');
-			}
-		}
-	});
 
 	events.on('compileConfig', rebuildEditorConfig);
 	store.subscribe('graphicHelper.codeBlocks', rebuildEditorConfig);
