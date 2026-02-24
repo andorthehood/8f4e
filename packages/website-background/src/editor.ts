@@ -4,7 +4,6 @@ import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
 import { loadSession, loadEditorConfigBlocks } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
 import compileConfig from './config-callback';
-import defaultColorScheme from './defaultColorScheme';
 
 async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
@@ -22,8 +21,6 @@ async function init() {
 			compileConfig,
 			loadSession,
 			loadEditorConfigBlocks,
-			getListOfColorSchemes: async () => ['default'],
-			getColorScheme: async () => defaultColorScheme,
 		},
 	});
 
