@@ -4,18 +4,15 @@ config project
 ; @pos -122 -9
 
 rescope "memorySizeBytes"
-push 65536
-set
+set 65536
 popScope
 
 rescope "runtimeSettings"
 scope "sampleRate"
-push 50
-set
+set 50
 
 rescopeTop "runtime"
-push "WebWorkerLogicRuntime"
-set
+set "WebWorkerLogicRuntime"
 
 configEnd
 

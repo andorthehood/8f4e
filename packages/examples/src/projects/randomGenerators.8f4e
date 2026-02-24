@@ -16,22 +16,18 @@ config project
 ; @pos -84 2
 
 scope "memorySizeBytes"
-push 65536
-set
+set 65536
 popScope
 
 scope "runtimeSettings"
 scope "runtime"
-push "WebWorkerLogicRuntime"
-set
+set "WebWorkerLogicRuntime"
 rescopeTop "sampleRate"
-push 50
-set
+set 50
 popScope
 
 rescope "exportFileName"
-push "randomGenerators"
-set
+set "randomGenerators"
 
 configEnd
 
