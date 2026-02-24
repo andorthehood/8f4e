@@ -1,0 +1,21 @@
+8f4e/v1
+
+module clock
+
+const HIGH 1
+const LOW 0
+
+int out
+
+push &out
+push out
+push HIGH
+equal
+if int
+push LOW
+else
+push HIGH
+ifEnd
+store
+
+moduleEnd
