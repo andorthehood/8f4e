@@ -1,8 +1,3 @@
-export const midiFrequenciesLookupTableMetadata = {
-	title: 'MIDI Frequencies Lookup Table',
-	category: 'Lookup Tables',
-} as const;
-
 const A = 440;
 
 const midiFrequencies = new Array(128).fill(0).map((value, note) => {
