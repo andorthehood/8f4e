@@ -193,10 +193,6 @@ export interface Callbacks {
 	clearBinaryAssetCache?: () => Promise<void>;
 	getStorageQuota?: () => Promise<{ usedBytes: number; totalBytes: number }>;
 
-	// Color scheme loader callback
-	getListOfColorSchemes?: () => Promise<string[]>;
-	getColorScheme?: (name: string) => Promise<ColorScheme>;
-
 	// Config compilation callback
 	/**
 	 * Compiles a stack-config program source into a JSON configuration object.
@@ -264,7 +260,6 @@ export interface State {
 	graphicHelper: GraphicHelper;
 	callbacks: Callbacks;
 	featureFlags: FeatureFlags;
-	colorSchemes: string[];
 	colorScheme?: ColorScheme;
 	historyStack: Project[];
 	initialProjectState?: Project;

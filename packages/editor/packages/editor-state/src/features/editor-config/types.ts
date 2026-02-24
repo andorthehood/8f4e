@@ -4,7 +4,6 @@
 
 export interface EditorConfig {
 	font: '8x16' | '6x10';
-	colorScheme: string;
 }
 
 export interface EditorConfigBlock {
