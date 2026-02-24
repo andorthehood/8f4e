@@ -66,6 +66,9 @@ export default function projectConfigEffect(store: StateManager<State>, events: 
 	}
 
 	events.on('compileConfig', rebuildProjectConfig);
+	store.subscribe('compiledProjectConfig.colorScheme', () => {
+		store.set('colorScheme', state.compiledProjectConfig.colorScheme);
+	});
 	store.subscribe('graphicHelper.codeBlocks', rebuildProjectConfig);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
 		if (!isProjectConfigBlock(state)) {
