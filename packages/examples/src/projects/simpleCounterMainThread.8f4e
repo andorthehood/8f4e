@@ -4,17 +4,14 @@ config project
 ; @pos -5 3
 
 scope "memorySizeBytes"
-push 65536
-set
+set 65536
 popScope
 
 scope "runtimeSettings"
 scope "runtime"
-push "MainThreadLogicRuntime"
-set
+set "MainThreadLogicRuntime"
 rescopeTop "sampleRate"
-push 10
-set
+set 10
 popScope
 popScope
 
