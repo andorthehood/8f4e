@@ -36,7 +36,7 @@ export default function createDefaultState() {
 			backgroundEffects: [],
 		},
 		featureFlags: defaultFeatureFlags,
-		colorSchemes: [],
+		colorScheme: defaultProjectConfig.colorScheme,
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
