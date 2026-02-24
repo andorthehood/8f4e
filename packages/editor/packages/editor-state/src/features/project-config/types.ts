@@ -3,6 +3,7 @@
  */
 
 import type { Runtimes } from '../runtime/types';
+import type { ColorScheme } from '@8f4e/sprite-generator';
 
 export interface ConfigBinaryAsset {
 	id?: string;
@@ -15,6 +16,7 @@ export interface ProjectConfig {
 	runtimeSettings: Runtimes;
 	disableAutoCompilation: boolean;
 	binaryAssets: ConfigBinaryAsset[];
+	colorScheme: ColorScheme;
 	exportFileName?: string;
 	keyCodeMemoryId?: string;
 	keyPressedMemoryId?: string;

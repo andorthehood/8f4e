@@ -26,8 +26,7 @@ describe('editorConfigEffect - diffing behavior', () => {
 
 		mockState = createMockState({
 			compiledEditorConfig: {
-				colorScheme: 'dark',
-				fontSize: 14,
+				font: '8x16',
 			},
 			codeErrors: {
 				projectConfigErrors: [],
@@ -45,7 +44,7 @@ describe('editorConfigEffect - diffing behavior', () => {
 			},
 			callbacks: {
 				compileConfig: vi.fn().mockResolvedValue({
-					result: { colorScheme: 'dark', fontSize: 14 },
+					result: { font: '8x16' },
 					errors: [],
 				}),
 			},
@@ -105,8 +104,8 @@ describe('editorConfigEffect - diffing behavior', () => {
 	it('should call store.set for compiledEditorConfig when config changes', async () => {
 		// Change the compiled config result
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { colorScheme: 'light', fontSize: 16 }, // Different values
-			mergedConfig: { colorScheme: 'light', fontSize: 16 },
+			compiledConfig: { font: '6x10' }, // Different value
+			mergedConfig: { font: '6x10' },
 			errors: [],
 			hasSource: true,
 		});
@@ -127,13 +126,13 @@ describe('editorConfigEffect - diffing behavior', () => {
 			call => call[0] === 'compiledEditorConfig'
 		);
 		expect(setCallsForEditorConfig).toHaveLength(1);
-		expect(setCallsForEditorConfig[0][1]).toEqual({ colorScheme: 'light', fontSize: 16 });
+		expect(setCallsForEditorConfig[0][1]).toEqual({ font: '6x10' });
 	});
 
 	it('should not call store.set for editorConfigErrors when errors are unchanged', async () => {
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { colorScheme: 'dark', fontSize: 14 },
-			mergedConfig: { colorScheme: 'dark', fontSize: 14 },
+			compiledConfig: { font: '8x16' },
+			mergedConfig: { font: '8x16' },
 			errors: [], // Same as initial state
 			hasSource: true,
 		});
@@ -157,8 +156,8 @@ describe('editorConfigEffect - diffing behavior', () => {
 	it('should call store.set for editorConfigErrors when errors change', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { colorScheme: 'dark', fontSize: 14 },
-			mergedConfig: { colorScheme: 'dark', fontSize: 14 },
+			compiledConfig: { font: '8x16' },
+			mergedConfig: { font: '8x16' },
 			errors: newErrors,
 			hasSource: true,
 		});
@@ -183,8 +182,8 @@ describe('editorConfigEffect - diffing behavior', () => {
 	it('should update errors but keep last valid config when errors are present', async () => {
 		const newErrors = [{ message: 'Config error', line: 1, col: 1 }];
 		mockCompileConfigWithDefaults.mockResolvedValue({
-			compiledConfig: { colorScheme: 'light', fontSize: 16 },
-			mergedConfig: { colorScheme: 'light', fontSize: 16 },
+			compiledConfig: { font: '6x10' },
+			mergedConfig: { font: '6x10' },
 			errors: newErrors,
 			hasSource: true,
 		});

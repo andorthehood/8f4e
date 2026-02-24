@@ -1,5 +1,4 @@
 import initEditor from '@8f4e/editor';
-import { ColorScheme } from '@8f4e/sprite-generator';
 import { compileConfig, JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
 import { getListOfModules, getModule, getModuleDependencies, getListOfProjects, getProject } from './examples/registry';
@@ -14,15 +13,6 @@ import {
 	exportBinaryCode,
 } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
-
-async function getListOfColorSchemes(): Promise<string[]> {
-	return ['hackerman', 'redalert', 'default'];
-}
-
-async function getColorScheme(name: string): Promise<ColorScheme> {
-	const module = await import(`./colorSchemes/${name}.ts`);
-	return module.default;
-}
 
 async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
@@ -50,8 +40,6 @@ async function init() {
 			importProject,
 			exportProject,
 			exportBinaryCode,
-			getListOfColorSchemes,
-			getColorScheme,
 		},
 	});
 

@@ -1,4 +1,6 @@
-export default {
+import type { ColorScheme } from '@8f4e/sprite-generator';
+
+export const defaultProjectColorScheme: ColorScheme = {
 	text: {
 		lineNumber: 'rgba(51,51,51,255)',
 		instruction: 'rgba(136,126,203,255)',
