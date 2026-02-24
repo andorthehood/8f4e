@@ -15,22 +15,18 @@ config project
 ; @pos -9 -73
 
 scope "memorySizeBytes"
-push 128
-set
+set 128
 
 rescope "runtimeSettings"
 
 scope "sampleRate"
-push 10
-set
+set 10
 
 rescopeTop "runtime"
-push "WebWorkerLogicRuntime"
-set
+set "WebWorkerLogicRuntime"
 
 rescope "exportFileName"
-push "xorProblem"
-set
+set "xorProblem"
 
 configEnd
 

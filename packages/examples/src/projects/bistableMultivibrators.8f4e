@@ -14,22 +14,18 @@ config project
 ; @pos -67 16
 
 rescope "exportFileName"
-push "bistableMultivibrators"
-set
+set "bistableMultivibrators"
 
 rescope "memorySizeBytes"
-push 65536
-set
+set 65536
 
 rescope "runtimeSettings"
 
 scope "sampleRate"
-push 50
-set
+set 50
 
 rescopeTop "runtime"
-push "WebWorkerLogicRuntime"
-set
+set "WebWorkerLogicRuntime"
 
 configEnd
 

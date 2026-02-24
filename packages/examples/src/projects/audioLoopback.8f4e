@@ -7,31 +7,25 @@ rescope "runtimeSettings"
 scope "audioOutputBuffers[0]"
 
 scope "memoryId"
-push "audiooutL.buffer"
-set
+set "audiooutL.buffer"
 
 rescopeTop "channel"
-push 0
-set
+set 0
 
 rescopeTop "output"
-push 0
-set
+set 0
 
 rescope "runtimeSettings"
 scope "audioOutputBuffers[1]"
 
 scope "memoryId"
-push "audiooutR.buffer"
-set
+set "audiooutR.buffer"
 
 rescopeTop "channel"
-push 1
-set
+set 1
 
 rescopeTop "output"
-push 0
-set
+set 0
 
 configEnd
 
@@ -42,16 +36,13 @@ rescope "runtimeSettings"
 scope "audioInputBuffers[0]"
 
 scope "memoryId"
-push "audioin.buffer"
-set
+set "audioin.buffer"
 
 rescopeTop "channel"
-push 0
-set
+set 0
 
 rescopeTop "input"
-push 0
-set
+set 0
 
 configEnd
 
@@ -69,8 +60,7 @@ config project
 ; @pos -141 4
 
 rescope "memorySizeBytes"
-push 65536
-set
+set 65536
 
 configEnd
 
@@ -80,16 +70,13 @@ config project
 rescope "runtimeSettings"
 
 scope "sampleRate"
-push 44100
-set
+set 44100
 
 rescopeTop "runtime"
-push "AudioWorkletRuntime"
-set
+set "AudioWorkletRuntime"
 
 rescope "exportFileName"
-push "audioLoopback"
-set
+set "audioLoopback"
 
 configEnd
 

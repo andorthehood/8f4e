@@ -5,53 +5,41 @@ config project
 
 
 rescope "memorySizeBytes"
-push 65536
-set
+set 65536
 popScope
 
 scope "runtimeSettings"
 scope "sampleRate"
-push 44100
-set
+set 44100
 
 rescopeTop "runtime"
-push "AudioWorkletRuntime"
-set
+set "AudioWorkletRuntime"
 
 rescopeTop "audioOutputBuffers[0]"
 scope "memoryId"
-push "audioout.buffer"
-set
+set "audioout.buffer"
 rescopeTop "channel"
-push 0
-set
+set 0
 rescopeTop "output"
-push 0
-set
+set 0
 
 rescope "runtimeSettings"
 scope "audioOutputBuffers[1]"
 scope "memoryId"
-push "audioout.buffer"
-set
+set "audioout.buffer"
 rescopeTop "channel"
-push 1
-set
+set 1
 rescopeTop "output"
-push 0
-set
+set 0
 
 rescope "exportFileName"
-push "jankoSynth"
-set
+set "jankoSynth"
 
 rescope "keyPressedMemoryId"
-push "keyboard.keyPressed"
-set
+set "keyboard.keyPressed"
 
 rescope "keyCodeMemoryId"
-push "keyboard.keyCode"
-set
+set "keyboard.keyCode"
 
 configEnd
 
