@@ -205,4 +205,22 @@ append
 		expect(result.config).toBeNull();
 		expect(result.errors).toMatchSnapshot();
 	});
+
+	it('should support set shorthand with literal argument', () => {
+		const source = `
+scope "instrument.name"
+set "Piano"
+
+rescopeTop "volume"
+set 0.8
+`;
+		const result = compileConfig([source]);
+		expect(result.errors).toEqual([]);
+		expect(result.config).toEqual({
+			instrument: {
+				name: 'Piano',
+				volume: 0.8,
+			},
+		});
+	});
 });
