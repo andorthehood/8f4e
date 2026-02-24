@@ -3,6 +3,7 @@ import { getModuleId } from '@8f4e/compiler/syntax';
 import { getFunctionId } from '@8f4e/compiler/syntax';
 
 import { insertDependencies } from './insertDependencies';
+import parseModuleSource from './parseModuleSource';
 import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 
 import { parseClipboardData } from '../clipboard/clipboardUtils';
@@ -266,7 +267,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		const requestedModuleCodeText = await state.callbacks.getModule(codeBlockSlug);
 
 		// Add the requested module at the clicked position
-		const requestedCode = requestedModuleCodeText.split('\n');
+		const requestedCode = parseModuleSource(requestedModuleCodeText);
 		onAddCodeBlock({ code: requestedCode, x, y, isNew: false });
 
 		// If the module has dependencies, insert them to the right

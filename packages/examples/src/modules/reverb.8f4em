@@ -1,0 +1,49 @@
+8f4e/v1
+
+module reverb
+
+float* in
+float out
+
+const FEEDBACK 0.5
+const SIZE 5000
+
+float[] buffer SIZE
+int bufferPointer &buffer
+
+; Compute reverb output
+push &out
+push bufferPointer
+loadFloat
+push FEEDBACK
+mul
+push *in
+add
+store
+
+; Store the new sample 
+; in the buffer
+push bufferPointer
+push &out
+loadFloat
+store
+
+; Advance buffer pointer
+push &bufferPointer
+push bufferPointer
+push %bufferPointer
+add
+store
+
+; Wrap buffer pointer back
+; to start when reaches end
+push bufferPointer
+push buffer&
+greaterThan
+if void
+push &bufferPointer
+push &buffer
+store
+ifEnd
+
+moduleEnd

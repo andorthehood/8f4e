@@ -1,0 +1,19 @@
+8f4e/v1
+
+module sh
+
+int* in
+int* trigger
+int out
+
+; @debug out
+
+push *trigger
+risingEdge
+if void
+push &out
+push *in
+store
+ifEnd
+
+moduleEnd
