@@ -62,6 +62,7 @@ See [`docs/brainstorming_notes/013-stack-oriented-config-language.md`](../../doc
 |---------|-------------|
 | `push <literal>` | Push a literal (string, number, boolean, null) onto the data stack |
 | `set` | Pop all values from the stack and set them at the current scope path |
+| `set <literal|CONSTANT>` | Shorthand for `push <literal|CONSTANT>` followed by `set` |
 | `append` | Pop all values and append them to an array at the current scope path |
 | `concat` | Concatenate all stack values into a single string (using `String()` coercion) |
 | `scope <path>` | Push path segments onto the scope stack |
@@ -152,6 +153,20 @@ push GLOBAL ; OK: root constant still available
 set
 ; Result: { first: "local to first", second: "global value" }
 ```
+
+### Set Shorthand
+
+For single-value assignments, you can pass a literal or constant directly to `set`:
+
+```
+scope "instrument.name"
+set "Piano" ; equivalent to: push "Piano" + set
+
+rescopeTop "volume"
+set 0.8 ; equivalent to: push 0.8 + set
+```
+
+`push` remains useful for composing multi-value operations (arrays, `concat`, etc.).
 
 ### String Concatenation
 

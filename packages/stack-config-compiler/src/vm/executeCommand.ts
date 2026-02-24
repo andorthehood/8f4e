@@ -29,8 +29,19 @@ export function executeCommand(state: VMState, command: Command): CommandError[]
 	switch (command.type) {
 		case 'push':
 			return wrapError(executePush(state, command));
-		case 'set':
+		case 'set': {
+			// set <arg> is sugar for: push <arg> ; set
+			if (command.argument !== undefined || command.identifier !== undefined) {
+				const pushError = executePush(state, {
+					...command,
+					type: 'push',
+				});
+				if (pushError !== null) {
+					return wrapError(pushError);
+				}
+			}
 			return executeSet(state);
+		}
 		case 'append':
 			return executeAppend(state);
 		case 'concat':
@@ -82,6 +93,23 @@ if (import.meta.vitest) {
 			const state: VMState = { config: {}, dataStack: [42], scopeStack: ['name'], constantsStack: [new Map()] };
 			executeCommand(state, { type: 'set', lineNumber: 1 });
 			expect(state.config).toEqual({ name: 42 });
+		});
+
+		it('should execute set command with inline literal', () => {
+			const state: VMState = { config: {}, dataStack: [], scopeStack: ['name'], constantsStack: [new Map()] };
+			executeCommand(state, { type: 'set', argument: 42, lineNumber: 1 });
+			expect(state.config).toEqual({ name: 42 });
+		});
+
+		it('should execute set command with inline constant reference', () => {
+			const state: VMState = {
+				config: {},
+				dataStack: [],
+				scopeStack: ['name'],
+				constantsStack: [new Map([['VALUE', 'ok']])],
+			};
+			executeCommand(state, { type: 'set', identifier: 'VALUE', lineNumber: 1 });
+			expect(state.config).toEqual({ name: 'ok' });
 		});
 
 		it('should execute concat command', () => {
