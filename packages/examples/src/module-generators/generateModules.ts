@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import expLookupTable from './expLookupTable.ts';
-import midiFrequenciesLookupTable from './midiFrequenciesLookupTable.ts';
+import midiFrequenciesLookupTable from './midiFreqLUT_12TET.ts';
 import sineLookupTable from './sineLookupTable.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -19,7 +19,7 @@ const generatedModules = [
 		code: expLookupTable,
 	},
 	{
-		fileName: 'midiFrequenciesLookupTable.8f4e',
+		fileName: 'midiFreqLUT_12TET.8f4e',
 		code: midiFrequenciesLookupTable,
 	},
 ] as const;
