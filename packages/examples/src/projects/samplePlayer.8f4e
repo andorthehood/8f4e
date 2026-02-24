@@ -33,8 +33,7 @@ concat
 set
 
 rescopeTop "memoryId"
-push "pcmPlayer8bit.buffer"
-set
+set "pcmPlayer8bit.buffer"
 
 configEnd
 
@@ -42,12 +41,10 @@ config project
 ; @pos -53 -63
 
 rescope "exportFileName"
-push "samplePlayer"
-set
+set "samplePlayer"
 
 rescope "memorySizeBytes"
-push 655360
-set
+set 655360
 popScope
 
 scope "runtimeSettings"
@@ -57,37 +54,30 @@ push 44100
 set
 
 rescopeTop "runtime"
-push "AudioWorkletRuntime"
-set
+set "AudioWorkletRuntime"
 
 rescopeTop "audioOutputBuffers[0]"
 
 scope "memoryId"
-push "audioout.buffer"
-set
+set "audioout.buffer"
 
 rescopeTop "channel"
-push 0
-set
+set 0
 
 rescopeTop "output"
-push 0
-set
+set 0
 
 rescope "runtimeSettings"
 scope "audioOutputBuffers[1]"
 
 scope "memoryId"
-push "audioout.buffer"
-set
+set "audioout.buffer"
 
 rescopeTop "channel"
-push 1
-set
+set 1
 
 rescopeTop "output"
-push 0
-set
+set 0
 
 popScope
 popScope
