@@ -200,4 +200,20 @@ set
 			},
 		});
 	});
+
+	it('should support set shorthand with constant reference', () => {
+		const source = `
+const TITLE "Piano"
+
+scope "instrument.name"
+set TITLE
+`;
+		const result = compileConfig([source]);
+		expect(result.errors).toEqual([]);
+		expect(result.config).toEqual({
+			instrument: {
+				name: 'Piano',
+			},
+		});
+	});
 });

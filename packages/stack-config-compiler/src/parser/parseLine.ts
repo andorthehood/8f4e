@@ -85,16 +85,30 @@ export default function parseLine(line: string, lineNumber: number): Command | C
 			if (!argument) {
 				return { line: lineNumber, message: 'push requires a literal argument' };
 			}
-			const literal = parseLiteral(argument);
-			if (typeof literal === 'object' && literal !== null && 'error' in literal) {
-				// Try parsing as identifier (uppercase only)
-				if (/^[A-Z][A-Z0-9_]*$/.test(argument)) {
-					command.identifier = argument;
-				} else {
-					return { line: lineNumber, message: literal.error };
-				}
+			const pushLikeArgument = parsePushLikeArgument(argument);
+			if ('error' in pushLikeArgument) {
+				return { line: lineNumber, message: pushLikeArgument.error };
+			}
+			if ('identifier' in pushLikeArgument) {
+				command.identifier = pushLikeArgument.identifier;
 			} else {
-				command.argument = literal;
+				command.argument = pushLikeArgument.argument;
+			}
+			break;
+		}
+
+		case 'set': {
+			if (!argument) {
+				break;
+			}
+			const pushLikeArgument = parsePushLikeArgument(argument);
+			if ('error' in pushLikeArgument) {
+				return { line: lineNumber, message: pushLikeArgument.error };
+			}
+			if ('identifier' in pushLikeArgument) {
+				command.identifier = pushLikeArgument.identifier;
+			} else {
+				command.argument = pushLikeArgument.argument;
 			}
 			break;
 		}
@@ -138,6 +152,19 @@ export default function parseLine(line: string, lineNumber: number): Command | C
 	}
 
 	return command;
+}
+
+function parsePushLikeArgument(argument: string): { argument: Command['argument'] } | { identifier: string } | { error: string } {
+	const literal = parseLiteral(argument);
+	if (typeof literal === 'object' && literal !== null && 'error' in literal) {
+		// Try parsing as identifier (uppercase only)
+		if (/^[A-Z][A-Z0-9_]*$/.test(argument)) {
+			return { identifier: argument };
+		}
+		return { error: literal.error };
+	}
+
+	return { argument: literal };
 }
 
 if (import.meta.vitest) {
@@ -233,6 +260,29 @@ if (import.meta.vitest) {
 			expect(parseLine('set', 1)).toEqual({
 				type: 'set',
 				lineNumber: 1,
+			});
+		});
+
+		it('should parse set command with string literal argument', () => {
+			expect(parseLine('set "hello"', 1)).toEqual({
+				type: 'set',
+				argument: 'hello',
+				lineNumber: 1,
+			});
+		});
+
+		it('should parse set command with identifier argument', () => {
+			expect(parseLine('set MAX_VALUE', 1)).toEqual({
+				type: 'set',
+				identifier: 'MAX_VALUE',
+				lineNumber: 1,
+			});
+		});
+
+		it('should return error for set with invalid argument', () => {
+			expect(parseLine('set invalid', 1)).toEqual({
+				line: 1,
+				message: 'Invalid literal: invalid',
 			});
 		});
 
