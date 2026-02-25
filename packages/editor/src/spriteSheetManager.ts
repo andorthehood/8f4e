@@ -6,7 +6,7 @@ import type { EventDispatcher } from './events';
 import type { SpriteData } from '@8f4e/web-ui';
 
 type SpriteSheetView = {
-	reloadSpriteSheet: () => Promise<SpriteData>;
+	reloadSpriteSheet: () => SpriteData;
 	clearCache: () => void;
 };
 
@@ -18,8 +18,8 @@ export function createSpriteSheetManager(
 	view: SpriteSheetView,
 	events: EventDispatcher
 ): void {
-	const rerenderSpriteSheet = async () => {
-		const spriteData = await view.reloadSpriteSheet();
+	const rerenderSpriteSheet = () => {
+		const spriteData = view.reloadSpriteSheet();
 
 		// Update state with new sprite data
 		const state = store.getState();
