@@ -1,4 +1,4 @@
-import generateSprite, { type SpriteLookups } from '@8f4e/sprite-generator';
+import { type SpriteLookups } from '@8f4e/sprite-generator';
 import { Engine, PostProcessEffect, BackgroundEffect } from 'glugglug';
 
 import drawCodeBlocks from './drawers/codeBlocks';
@@ -16,7 +16,6 @@ import type { MemoryViews } from './types';
 
 // Re-export types
 export type { MemoryViews } from './types';
-export type { SpriteLookups } from '@8f4e/sprite-generator';
 
 export interface SpriteData {
 	canvas: OffscreenCanvas;
@@ -32,7 +31,7 @@ export default async function init(
 	spriteData: SpriteData
 ): Promise<{
 	resize: (width: number, height: number) => void;
-	reloadSpriteSheet: () => Promise<SpriteData>;
+	loadSpriteSheet: (spriteData: SpriteData) => void;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
 	loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
 	clearCache: () => void;
@@ -85,14 +84,8 @@ export default async function init(
 		resize: (width, height) => {
 			engine.resize(width, height);
 		},
-		reloadSpriteSheet: async () => {
-			const spriteData = await generateSprite({
-				font: state.compiledEditorConfig.font || '8x16',
-				colorScheme: state.colorScheme,
-			});
-
+		loadSpriteSheet: spriteData => {
 			engine.loadSpriteSheet(spriteData.canvas);
-			return spriteData;
 		},
 		loadPostProcessEffect: (effect: PostProcessEffect | null) => {
 			if (effect) {

@@ -96,6 +96,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	updateStateWithSpriteData(state, spriteData);
 
 	const view = await initView(state, canvas, memoryViews, spriteData);
+
 	createSpriteSheetManager(store, view, events);
 
 	events.on<PostProcessEffect | null>('loadPostProcessEffect', effect => {
