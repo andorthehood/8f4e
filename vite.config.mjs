@@ -10,6 +10,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export default defineConfig(() => {
   return {
     root: 'src',
+    define: {
+      'import.meta.vitest': 'undefined'
+    },
     resolve: {
       alias: {
         '@8f4e/examples': path.resolve(__dirname, 'packages/examples/src')

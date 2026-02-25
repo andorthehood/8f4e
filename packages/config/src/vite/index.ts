@@ -74,6 +74,9 @@ export function createLibConfig(options: LibBuildOptions): UserConfig {
 	}
 
 	return {
+		define: {
+			'import.meta.vitest': 'undefined',
+		},
 		build: {
 			...sharedLibBuildOptions,
 			outDir,
