@@ -3,8 +3,8 @@ title: 'TODO: Lazy-load Sprite Font Payloads'
 priority: Medium
 effort: 4-8h
 created: 2026-02-25
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-25
 ---
 
 # TODO: Lazy-load Sprite Font Payloads
