@@ -22,8 +22,8 @@
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@nx/js": "^22.1.1",
-    "@nx/vite": "^22.1.1",
+    "@nx/js": "22.5.2",
+    "@nx/vite": "22.5.2",
     "@playwright/test": "^1.56.1",
     "@swc/cli": "^0.7.7",
     "@swc/core": "^1.13.3",
@@ -44,7 +44,7 @@
     "globals": "^16.5.0",
     "husky": "7.0.4",
     "lint-staged": "12.1.4",
-    "nx": "22.1.1",
+    "nx": "22.5.2",
     "playwright": "^1.56.1",
     "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
@@ -65,5 +65,13 @@
       "eslint --cache --fix",
       "bash -c 'npx nx run-many --target=typecheck --all'"
     ]
+  },
+  "overrides": {
+    "nx": {
+      "minimatch": "10.2.1"
+    },
+    "@nx/devkit": {
+      "minimatch": "10.2.1"
+    }
   }
 }
