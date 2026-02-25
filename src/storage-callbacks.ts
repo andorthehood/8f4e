@@ -1,6 +1,5 @@
 import { parse8f4eToProject } from '@8f4e/editor-state';
 
-import { getProjectRegistry } from './examples/lazyProjectRegistry';
 import { getCodeBuffer } from './compiler-callback';
 
 import type { Project, EditorConfigBlock } from '@8f4e/editor';
@@ -10,6 +9,10 @@ const STORAGE_KEYS = {
 	PROJECT: 'project_editor',
 	EDITOR_CONFIG_BLOCKS: 'editorConfigBlocks_editor',
 } as const;
+
+function getProjectRegistry() {
+	return import('./examples/projectRegistry');
+}
 
 // Implementation of storage callbacks using localStorage
 export async function loadSession(): Promise<Project | null> {
