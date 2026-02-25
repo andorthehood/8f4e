@@ -1,7 +1,8 @@
 import initEditor from '@8f4e/editor';
 import { compileConfig, JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
-import { getRegistry } from './examples/lazyRegistry';
+import { getModuleRegistry } from './examples/lazyModuleRegistry';
+import { getProjectRegistry } from './examples/lazyProjectRegistry';
 import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
 import {
 	loadSession,
@@ -25,11 +26,11 @@ async function init() {
 		runtimeRegistry,
 		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		callbacks: {
-			getListOfModules: () => getRegistry().then(r => r.getListOfModules()),
-			getModule: (slug: string) => getRegistry().then(r => r.getModule(slug)),
-			getModuleDependencies: (slug: string) => getRegistry().then(r => r.getModuleDependencies(slug)),
-			getListOfProjects: () => getRegistry().then(r => r.getListOfProjects()),
-			getProject: (url: string) => getRegistry().then(r => r.getProject(url)),
+			getListOfModules: () => getModuleRegistry().then(r => r.getListOfModules()),
+			getModule: (slug: string) => getModuleRegistry().then(r => r.getModule(slug)),
+			getModuleDependencies: (slug: string) => getModuleRegistry().then(r => r.getModuleDependencies(slug)),
+			getListOfProjects: () => getProjectRegistry().then(r => r.getListOfProjects()),
+			getProject: (url: string) => getProjectRegistry().then(r => r.getProject(url)),
 			compileCode: (modules, compilerOptions, functions, macros) =>
 				compileCode(modules, compilerOptions, functions, editor, macros),
 			compileConfig: async (sourceBlocks: string[], schema: JSONSchemaLike) => compileConfig(sourceBlocks, { schema }),
