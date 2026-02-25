@@ -1,8 +1,6 @@
 import initEditor from '@8f4e/editor';
 import { compileConfig, JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
-import { getModuleRegistry } from './examples/lazyModuleRegistry';
-import { getProjectRegistry } from './examples/lazyProjectRegistry';
 import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
 import {
 	loadSession,
@@ -14,6 +12,14 @@ import {
 	exportBinaryCode,
 } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
+
+function getModuleRegistry() {
+	return import('./examples/moduleRegistry');
+}
+
+function getProjectRegistry() {
+	return import('./examples/projectRegistry');
+}
 
 async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
