@@ -10,9 +10,7 @@ import generatePianoKeyboard, { generateLookup as generateLookupForPianoKeys } f
 import { Command, Config, ColorScheme } from './types';
 import decodeFontBase64 from './fonts/font-decoder';
 import { fontMetadata as ascii8x16Metadata } from './fonts/8x16/generated/ascii';
-import { fontMetadata as ascii6x10Metadata } from './fonts/6x10/generated/ascii';
 import { fontMetadata as glyphs8x16Metadata } from './fonts/8x16/generated/glyphs';
-import { fontMetadata as glyphs6x10Metadata } from './fonts/6x10/generated/glyphs';
 import defaultColorScheme from './defaultColorScheme';
 
 export { Icon } from './icons';
@@ -21,23 +19,35 @@ export { PianoKey } from './pianoKeyboard';
 export { default as defaultColorScheme } from './defaultColorScheme';
 export { lighten, darken, alpha, mix } from './color-helpers';
 
-const fonts: Record<
-	Config['font'],
-	{ asciiBitmap: number[]; glyphsBitmap: number[]; characterWidth: number; characterHeight: number }
-> = {
+type FontData = { asciiBitmap: number[]; glyphsBitmap: number[]; characterWidth: number; characterHeight: number };
+
+// 8x16 is the default font: eagerly decoded at module initialization for a fast startup path.
+const fontCache: Partial<Record<Config['font'], FontData>> = {
 	'8x16': {
 		asciiBitmap: decodeFontBase64(ascii8x16Metadata),
 		glyphsBitmap: decodeFontBase64(glyphs8x16Metadata),
 		characterWidth: 8,
 		characterHeight: 16,
 	},
-	'6x10': {
-		asciiBitmap: decodeFontBase64(ascii6x10Metadata),
-		glyphsBitmap: decodeFontBase64(glyphs6x10Metadata),
+};
+
+// Lazily load and decode an alternate font, caching the result so it is decoded at most once.
+async function loadFont(font: Config['font']): Promise<FontData> {
+	if (fontCache[font]) {
+		return fontCache[font]!;
+	}
+	const [{ fontMetadata: asciiMetadata }, { fontMetadata: glyphsMetadata }] = await Promise.all([
+		import('./fonts/6x10/generated/ascii'),
+		import('./fonts/6x10/generated/glyphs'),
+	]);
+	fontCache['6x10'] = {
+		asciiBitmap: decodeFontBase64(asciiMetadata),
+		glyphsBitmap: decodeFontBase64(glyphsMetadata),
 		characterWidth: 6,
 		characterHeight: 10,
-	},
-};
+	};
+	return fontCache['6x10']!;
+}
 
 export interface SpriteLookups extends FontLookups {
 	fillColors: Record<keyof ColorScheme['fill'], SpriteCoordinates>;
@@ -48,14 +58,14 @@ export interface SpriteLookups extends FontLookups {
 	pianoKeys: Record<number, SpriteCoordinates>;
 }
 
-export default function generateSprite(config: Config): {
+export default async function generateSprite(config: Config): Promise<{
 	canvas: OffscreenCanvas;
 	spriteLookups: SpriteLookups;
 	characterWidth: number;
 	characterHeight: number;
-} {
+}> {
 	const canvas = new OffscreenCanvas(1024, 1024);
-	const { characterWidth, characterHeight, asciiBitmap, glyphsBitmap } = fonts[config.font];
+	const { characterWidth, characterHeight, asciiBitmap, glyphsBitmap } = await loadFont(config.font);
 
 	// Use default color scheme if none provided
 	const colorScheme = config.colorScheme || defaultColorScheme;
