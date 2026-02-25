@@ -45,12 +45,13 @@ function createLazyRuntimeEntry(
 			}
 
 			loadPromise.then(loadedEntry => {
+				// Replace the stub schema with the real schema in-place so that
+				// any subsequent call to getProjectConfigSchema picks it up,
+				// even if this runtime instance has already been destroyed.
+				entry.schema = loadedEntry.schema;
+				// Trigger config revalidation against the newly loaded schema.
+				events.dispatch('compileConfig');
 				if (!destroyed) {
-					// Replace the stub schema with the real schema in-place so that
-					// any subsequent call to getProjectConfigSchema picks it up.
-					entry.schema = loadedEntry.schema;
-					// Trigger config revalidation against the newly loaded schema.
-					events.dispatch('compileConfig');
 					destroy = loadedEntry.factory(store, events);
 				}
 			});
