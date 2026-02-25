@@ -106,6 +106,9 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		view.loadBackgroundEffect(effect);
 	});
 
+	events.dispatch('init');
+	events.dispatch('loadSession');
+
 	return {
 		resize: (width: number, height: number) => {
 			events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
