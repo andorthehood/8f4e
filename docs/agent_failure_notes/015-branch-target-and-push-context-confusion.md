@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note – Branch target and push-context confusion
-agent: Codex
-model: GPT-5
+agent: Codex App Version 26.217.1959 (669)
+model: gpt-5.3-codex
 date: 2026-02-25
 ---
 
