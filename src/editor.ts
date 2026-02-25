@@ -1,7 +1,6 @@
 import initEditor from '@8f4e/editor';
 import { compileConfig, JSONSchemaLike } from '@8f4e/stack-config-compiler';
 
-import { getListOfModules, getModule, getModuleDependencies, getListOfProjects, getProject } from './examples/registry';
 import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
 import {
 	loadSession,
@@ -14,6 +13,14 @@ import {
 } from './storage-callbacks';
 import { compileCode } from './compiler-callback';
 
+function getModuleRegistry() {
+	return import('./examples/moduleRegistry');
+}
+
+function getProjectRegistry() {
+	return import('./examples/projectRegistry');
+}
+
 async function init() {
 	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
 	canvas.width = window.innerWidth;
@@ -25,11 +32,11 @@ async function init() {
 		runtimeRegistry,
 		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		callbacks: {
-			getListOfModules,
-			getModule,
-			getModuleDependencies,
-			getListOfProjects,
-			getProject,
+			getListOfModules: () => getModuleRegistry().then(r => r.getListOfModules()),
+			getModule: (slug: string) => getModuleRegistry().then(r => r.getModule(slug)),
+			getModuleDependencies: (slug: string) => getModuleRegistry().then(r => r.getModuleDependencies(slug)),
+			getListOfProjects: () => getProjectRegistry().then(r => r.getListOfProjects()),
+			getProject: (url: string) => getProjectRegistry().then(r => r.getProject(url)),
 			compileCode: (modules, compilerOptions, functions, macros) =>
 				compileCode(modules, compilerOptions, functions, editor, macros),
 			compileConfig: async (sourceBlocks: string[], schema: JSONSchemaLike) => compileConfig(sourceBlocks, { schema }),
