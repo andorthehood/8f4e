@@ -8,7 +8,7 @@ import type { State } from '@8f4e/editor-state';
  * @param state The state object to get font and color scheme from
  * @returns SpriteData for use in web-ui init
  */
-export default function createMockSpriteData(state: State): SpriteData {
+export default async function createMockSpriteData(state: State): Promise<SpriteData> {
 	return generateSprite({
 		font: state.compiledEditorConfig.font || '8x16',
 		colorScheme: state.colorScheme,

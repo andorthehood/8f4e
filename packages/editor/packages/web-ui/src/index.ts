@@ -32,7 +32,7 @@ export default async function init(
 	spriteData: SpriteData
 ): Promise<{
 	resize: (width: number, height: number) => void;
-	reloadSpriteSheet: () => SpriteData;
+	reloadSpriteSheet: () => Promise<SpriteData>;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
 	loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
 	clearCache: () => void;
@@ -85,8 +85,8 @@ export default async function init(
 		resize: (width, height) => {
 			engine.resize(width, height);
 		},
-		reloadSpriteSheet: () => {
-			const spriteData = generateSprite({
+		reloadSpriteSheet: async () => {
+			const spriteData = await generateSprite({
 				font: state.compiledEditorConfig.font || '8x16',
 				colorScheme: state.colorScheme,
 			});

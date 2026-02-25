@@ -88,7 +88,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const cleanupKeyboardMemory = keyboardMemoryEvents(store);
 
 	// Generate sprite data and update state before initializing view
-	const spriteData = generateSprite({
+	const spriteData = await generateSprite({
 		font: state.compiledEditorConfig.font || '8x16',
 		colorScheme: state.colorScheme,
 	});
