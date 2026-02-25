@@ -9,9 +9,9 @@ import createMockSpriteData from './utils/createMockSpriteData';
 
 test('context menu', async () => {
 	const canvas = createCanvas();
-	const mockState = createMockStateWithColors();
+	const mockState = await createMockStateWithColors();
 	const memoryViews = createMockMemoryViews();
-	const spriteData = createMockSpriteData(mockState);
+	const spriteData = await createMockSpriteData(mockState);
 
 	await init(mockState, canvas, memoryViews, spriteData);
 	mockState.graphicHelper.contextMenu = generateContextMenuMock();
