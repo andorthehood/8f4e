@@ -59,15 +59,15 @@ Shader blocks use targeted markers with no ID argument:
 
 ## Default Shaders
 
-A default vertex shader is provided for fragment-only effects:
-- Pass-through vertex shader for simple post-processing
-- Defined in `defaultVertexShader.ts`
+A default vertex shader is provided by `glugglug` for fragment-only effects:
+- Pass-through fullscreen-quad shader for simple post-processing/background effects
+- `deriveShaderEffects` leaves `vertexShader` undefined when no vertex block is present
 
 ## References
 
 - Shader extraction: `extractShaderSource.ts`
 - Effect derivation: `deriveShaderEffects.ts` (first-block selection per target)
-- Default shaders: `defaultVertexShader.ts`
+- Runtime defaults: `glugglug` effect managers
 
 ## Notes & Limitations
 
