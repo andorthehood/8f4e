@@ -1,5 +1,4 @@
 import extractShaderSource from './extractShaderSource';
-import { DEFAULT_VERTEX_SHADER } from './defaultVertexShader';
 
 import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
 
@@ -69,14 +68,14 @@ export default function deriveShaderEffects(codeBlocks: CodeBlockGraphicData[]):
 
 	if (postProcessFragment !== null) {
 		postProcessEffects.push({
-			vertexShader: postProcessVertex ?? DEFAULT_VERTEX_SHADER,
+			...(postProcessVertex !== null ? { vertexShader: postProcessVertex } : {}),
 			fragmentShader: postProcessFragment,
 		});
 	}
 
 	if (backgroundFragment !== null) {
 		backgroundEffects.push({
-			vertexShader: backgroundVertex ?? DEFAULT_VERTEX_SHADER,
+			...(backgroundVertex !== null ? { vertexShader: backgroundVertex } : {}),
 			fragmentShader: backgroundFragment,
 		});
 	}
@@ -105,7 +104,7 @@ if (import.meta.vitest) {
 
 			expect(postProcessEffects).toHaveLength(1);
 			expect(postProcessEffects[0].fragmentShader).toBe('void main() {}');
-			expect(postProcessEffects[0].vertexShader).toBe(DEFAULT_VERTEX_SHADER);
+			expect(postProcessEffects[0].vertexShader).toBeUndefined();
 			expect(backgroundEffects).toHaveLength(0);
 			expect(errors).toHaveLength(0);
 		});
@@ -124,7 +123,7 @@ if (import.meta.vitest) {
 			expect(postProcessEffects).toHaveLength(0);
 			expect(backgroundEffects).toHaveLength(1);
 			expect(backgroundEffects[0].fragmentShader).toBe('void main() {}');
-			expect(backgroundEffects[0].vertexShader).toBe(DEFAULT_VERTEX_SHADER);
+			expect(backgroundEffects[0].vertexShader).toBeUndefined();
 			expect(errors).toHaveLength(0);
 		});
 
