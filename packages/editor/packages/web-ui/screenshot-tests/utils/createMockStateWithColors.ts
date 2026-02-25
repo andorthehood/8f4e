@@ -83,11 +83,11 @@ const defaultColorScheme = {
  *
  * @example
  * ```typescript
- * const state = createMockStateWithColors();
- * const state = createMockStateWithColors({ featureFlags: { editing: false } });
+ * const state = await createMockStateWithColors();
+ * const state = await createMockStateWithColors({ featureFlags: { editing: false } });
  * ```
  */
-export default function createMockStateWithColors(overrides: Partial<State> = {}): State {
+export default async function createMockStateWithColors(overrides: Partial<State> = {}): Promise<State> {
 	const state = createMockState({
 		colorScheme: defaultColorScheme,
 		compiledProjectConfig: {
@@ -109,7 +109,7 @@ export default function createMockStateWithColors(overrides: Partial<State> = {}
 	});
 
 	// Generate sprite data and populate state
-	const spriteData = generateSprite({
+	const spriteData = await generateSprite({
 		font: state.compiledEditorConfig.font || '8x16',
 		colorScheme: state.colorScheme,
 	});
