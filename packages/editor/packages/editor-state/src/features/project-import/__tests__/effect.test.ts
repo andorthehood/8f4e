@@ -49,14 +49,24 @@ describe('projectImport', () => {
 			const loadProjectByUrlCall = onCalls.find(call => call[0] === 'loadProjectByUrl');
 			expect(loadProjectByUrlCall).toBeDefined();
 		});
+
+		it('should register loadSession event handler', () => {
+			projectImport(store, mockEvents);
+			projectConfigEffect(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const loadSessionCall = onCalls.find(call => call[0] === 'loadSession');
+			expect(loadSessionCall).toBeDefined();
+		});
 	});
 
 	describe('Initial session loading', () => {
 		it('should load empty project when loadSession callback is absent', async () => {
 			projectImport(store, mockEvents);
-
-			// Give time for promises to resolve
-			await new Promise(resolve => setTimeout(resolve, 10));
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const loadSessionCall = onCalls.find(call => call[0] === 'loadSession');
+			const loadSessionCallback = loadSessionCall![1];
+			await loadSessionCallback();
 
 			expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
 		});
@@ -68,6 +78,10 @@ describe('projectImport', () => {
 			mockState.callbacks.loadSession = vi.fn().mockResolvedValue(mockProject);
 
 			projectImport(store, mockEvents);
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const loadSessionCall = onCalls.find(call => call[0] === 'loadSession');
+			const loadSessionCallback = loadSessionCall![1];
+			await loadSessionCallback();
 
 			// Give time for promises to resolve
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -80,6 +94,10 @@ describe('projectImport', () => {
 			mockState.callbacks.loadSession = vi.fn().mockRejectedValue(new Error('Storage error'));
 
 			projectImport(store, mockEvents);
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const loadSessionCall = onCalls.find(call => call[0] === 'loadSession');
+			const loadSessionCallback = loadSessionCall![1];
+			await loadSessionCallback();
 
 			// Give time for promises to resolve
 			await new Promise(resolve => setTimeout(resolve, 10));
@@ -293,8 +311,6 @@ describe('projectImport', () => {
 		it('should load project by url using callback', async () => {
 			const mock8f4eText = '8f4e/v1\n\nmodule counter\n\nmoduleEnd';
 
-			// Prevent projectPromise from overwriting initialProjectState after loadProjectByUrl sets it
-			mockState.callbacks.loadSession = () => new Promise(() => {});
 			mockState.callbacks.getProject = vi.fn().mockResolvedValue(mock8f4eText);
 			projectImport(store, mockEvents);
 
@@ -335,8 +351,6 @@ describe('projectImport', () => {
 		it('should handle parse errors gracefully and load default project', async () => {
 			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
-			// Prevent projectPromise from overwriting initialProjectState after loadProjectByUrl sets it
-			mockState.callbacks.loadSession = () => new Promise(() => {});
 			mockState.callbacks.getProject = vi.fn().mockResolvedValue('invalid .8f4e content');
 			projectImport(store, mockEvents);
 
