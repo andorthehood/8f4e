@@ -99,7 +99,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	binaryAsset(store, events);
 	historyTracking(store, events);
 	dialog(store, events);
-	events.dispatch('init');
 
 	events.on('consoleLog', event => {
 		console.log(event);

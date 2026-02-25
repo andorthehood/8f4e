@@ -88,7 +88,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const cleanupKeyboardMemory = keyboardMemoryEvents(store);
 
 	// Generate sprite data and update state before initializing view
-	const spriteData = generateSprite({
+	const spriteData = await generateSprite({
 		font: state.compiledEditorConfig.font || '8x16',
 		colorScheme: state.colorScheme,
 	});
@@ -96,6 +96,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	updateStateWithSpriteData(state, spriteData);
 
 	const view = await initView(state, canvas, memoryViews, spriteData);
+
 	createSpriteSheetManager(store, view, events);
 
 	events.on<PostProcessEffect | null>('loadPostProcessEffect', effect => {
@@ -104,6 +105,9 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	events.on<BackgroundEffect | null>('loadBackgroundEffect', effect => {
 		view.loadBackgroundEffect(effect);
 	});
+
+	events.dispatch('init');
+	events.dispatch('loadSession');
 
 	return {
 		resize: (width: number, height: number) => {
