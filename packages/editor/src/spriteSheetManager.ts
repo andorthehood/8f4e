@@ -1,3 +1,5 @@
+import generateSprite from '@8f4e/sprite-generator';
+
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 import type { State } from '@8f4e/editor-state';
@@ -6,7 +8,7 @@ import type { EventDispatcher } from './events';
 import type { SpriteData } from '@8f4e/web-ui';
 
 type SpriteSheetView = {
-	reloadSpriteSheet: () => Promise<SpriteData>;
+	loadSpriteSheet: (spriteData: SpriteData) => void;
 	clearCache: () => void;
 };
 
@@ -18,11 +20,16 @@ export function createSpriteSheetManager(
 	view: SpriteSheetView,
 	events: EventDispatcher
 ): void {
+	const state = store.getState();
 	const rerenderSpriteSheet = async () => {
-		const spriteData = await view.reloadSpriteSheet();
+		const spriteData = await generateSprite({
+			font: state.compiledEditorConfig.font || '8x16',
+			colorScheme: state.colorScheme,
+		});
+
+		view.loadSpriteSheet(spriteData);
 
 		// Update state with new sprite data
-		const state = store.getState();
 		updateStateWithSpriteData(state, spriteData);
 
 		view.clearCache();
