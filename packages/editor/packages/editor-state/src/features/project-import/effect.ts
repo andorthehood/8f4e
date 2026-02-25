@@ -11,12 +11,13 @@ import { EventDispatcher, EMPTY_DEFAULT_PROJECT } from '~/types';
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 
-	const projectPromise = Promise.resolve().then(() => {
+	function onLoadSession() {
 		if (!state.callbacks.loadSession) {
-			return Promise.resolve().then(() => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
+			loadProject({ project: EMPTY_DEFAULT_PROJECT });
+			return;
 		}
 
-		return state.callbacks
+		state.callbacks
 			.loadSession()
 			.then(localProject => {
 				loadProject({ project: localProject || EMPTY_DEFAULT_PROJECT });
@@ -26,7 +27,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 				warn(state, 'Failed to load project from storage');
 				loadProject({ project: EMPTY_DEFAULT_PROJECT });
 			});
-	});
+	}
 
 	async function loadProjectByUrl({ projectUrl }: { projectUrl: string }) {
 		if (!state.callbacks.getProject) {
@@ -49,8 +50,6 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		store.set('initialProjectState', newProject);
 	}
 
-	void projectPromise;
-
 	function onImportProject() {
 		if (!state.callbacks.importProject) {
 			console.warn('No importProject callback provided');
@@ -72,4 +71,5 @@ export default function projectImport(store: StateManager<State>, events: EventD
 	events.on('importProject', onImportProject);
 	events.on('loadProject', loadProject);
 	events.on('loadProjectByUrl', loadProjectByUrl);
+	events.on('loadSession', onLoadSession);
 }
