@@ -3,8 +3,8 @@ title: 'TODO: Lazy-load Example Modules Metadata'
 priority: Medium
 effort: 4-8h
 created: 2026-02-25
-status: Open
-completed: null
+status: Completed
+completed: 2026-02-25
 ---
 
 # TODO: Lazy-load Example Modules Metadata
@@ -54,10 +54,10 @@ Candidate approaches:
 
 ## Success Criteria
 
-- [ ] Example module metadata is no longer eagerly loaded at app startup
-- [ ] Main startup chunk size is reduced measurably
-- [ ] Built-in module insertion and dependency resolution behavior is unchanged
-- [ ] No regressions in module/project loading flows
+- [x] Example module metadata is no longer eagerly loaded at app startup
+- [x] Main startup chunk size is reduced measurably
+- [x] Built-in module insertion and dependency resolution behavior is unchanged
+- [x] No regressions in module/project loading flows
 
 ## Affected Components
 
