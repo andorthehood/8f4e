@@ -129,9 +129,6 @@ Define a named binary asset URL for later loading.
 
 Notes:
 - Allowed in any block type.
-- Directives are evaluated in project order and use last-write-wins for duplicate paths.
-- Invalid paths/values are ignored with a console warning.
-- This is editor metadata only and does not affect compiler output.
 - If the same `id` is defined multiple times, the last definition wins.
 - Asset size constants are auto-generated in the env block as `ASSET_<ID>_SIZE`.
 
@@ -145,6 +142,9 @@ Load a previously defined asset into a memory location.
 
 Notes:
 - Allowed in any block type.
+- Directives are evaluated in project order and use last-write-wins for duplicate paths.
+- Invalid paths/values are ignored with a console warning.
+- This is editor metadata only and does not affect compiler output.
 - `<memoryRef>` must be an `&...` memory reference.
 - Unknown asset ids are logged and skipped.
 - Multiple loads for one asset are supported, but the recommended pattern is one load per asset and sharing that memory from other modules to reduce memory usage.
