@@ -9,7 +9,7 @@ import {
 	createMockBitmap,
 } from './utils/testHelpers';
 
-import generateFeedbackScale, { generateLookup } from '../src/feedbackScale';
+import generateFeedbackScale, { generateLookup, getFeedbackScaleColors } from '../src/feedbackScale';
 import { Command } from '../src/types';
 
 describe('feedbackScale module', () => {
@@ -57,7 +57,7 @@ describe('feedbackScale module', () => {
 				minimalColorScheme.icons
 			);
 
-			const feedbackScaleLength = minimalColorScheme.icons.feedbackScale.length;
+			const feedbackScaleLength = getFeedbackScaleColors(minimalColorScheme.icons).length;
 
 			// Should have rectangles for each feedback scale item (background rectangles)
 			const rectangleCommands = findAllCommands(commands, Command.RECTANGLE);
@@ -106,7 +106,7 @@ describe('feedbackScale module', () => {
 			expect(colorValues).toContain(minimalColorScheme.icons.outputConnector);
 
 			// Should include feedback scale colors
-			minimalColorScheme.icons.feedbackScale.forEach(color => {
+			getFeedbackScaleColors(minimalColorScheme.icons).forEach(color => {
 				expect(colorValues).toContain(color);
 			});
 		});
@@ -120,11 +120,11 @@ describe('feedbackScale module', () => {
 			);
 
 			const fillColorCommands = findAllCommands(commands, Command.FILL_COLOR);
-			const feedbackScaleLength = minimalColorScheme.icons.feedbackScale.length;
+			const feedbackScaleLength = getFeedbackScaleColors(minimalColorScheme.icons).length;
 
 			// Each feedback scale item has multiple fill color commands
 			const feedbackScaleColorCommands = fillColorCommands.filter(cmd =>
-				minimalColorScheme.icons.feedbackScale.includes(cmd[1] as string)
+				getFeedbackScaleColors(minimalColorScheme.icons).includes(cmd[1] as string)
 			);
 			expect(feedbackScaleColorCommands.length).toBe(feedbackScaleLength);
 		});
@@ -183,7 +183,12 @@ describe('feedbackScale module', () => {
 		it('should handle empty feedback scale array', () => {
 			const emptyColorsScheme = {
 				...minimalColorScheme.icons,
-				feedbackScale: [],
+				feedbackScale0: '',
+				feedbackScale1: '',
+				feedbackScale2: '',
+				feedbackScale3: '',
+				feedbackScale4: '',
+				feedbackScale5: '',
 			};
 
 			const commands = generateFeedbackScale(
@@ -215,7 +220,7 @@ describe('feedbackScale module', () => {
 
 			expect(colorValues).toContain(minimalColorScheme.icons.outputConnectorBackground);
 			expect(colorValues).toContain(minimalColorScheme.icons.outputConnector);
-			minimalColorScheme.icons.feedbackScale.forEach(color => {
+			getFeedbackScaleColors(minimalColorScheme.icons).forEach(color => {
 				expect(colorValues).toContain(color);
 			});
 		});
@@ -226,10 +231,10 @@ describe('feedbackScale module', () => {
 			const lookup = generateLookup(
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.icons.feedbackScale
+				minimalColorScheme.icons
 			);
 
-			const feedbackScaleLength = minimalColorScheme.icons.feedbackScale.length;
+			const feedbackScaleLength = getFeedbackScaleColors(minimalColorScheme.icons).length;
 
 			// Should have entries for all feedback scale colors
 			expect(Object.keys(lookup)).toHaveLength(feedbackScaleLength);
@@ -244,10 +249,10 @@ describe('feedbackScale module', () => {
 			const lookup = generateLookup(
 				characterDimensions6x10.width,
 				characterDimensions6x10.height,
-				minimalColorScheme.icons.feedbackScale
+				minimalColorScheme.icons
 			);
 
-			const feedbackScaleLength = minimalColorScheme.icons.feedbackScale.length;
+			const feedbackScaleLength = getFeedbackScaleColors(minimalColorScheme.icons).length;
 
 			// Should have entries for all feedback scale colors
 			expect(Object.keys(lookup)).toHaveLength(feedbackScaleLength);
@@ -257,7 +262,7 @@ describe('feedbackScale module', () => {
 			const lookup = generateLookup(
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.icons.feedbackScale
+				minimalColorScheme.icons
 			);
 
 			const firstItem = lookup[0];
@@ -275,7 +280,7 @@ describe('feedbackScale module', () => {
 			const lookup = generateLookup(
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.icons.feedbackScale
+				minimalColorScheme.icons
 			);
 
 			const itemWidth = characterDimensions8x16.width * 3;
@@ -298,7 +303,7 @@ describe('feedbackScale module', () => {
 			const lookup = generateLookup(
 				characterDimensions6x10.width,
 				characterDimensions6x10.height,
-				minimalColorScheme.icons.feedbackScale
+				minimalColorScheme.icons
 			);
 
 			const firstItem = lookup[0];
@@ -313,7 +318,16 @@ describe('feedbackScale module', () => {
 		});
 
 		it('should handle empty feedback scale array', () => {
-			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height, []);
+			const emptyColorsScheme = {
+				...minimalColorScheme.icons,
+				feedbackScale0: '',
+				feedbackScale1: '',
+				feedbackScale2: '',
+				feedbackScale3: '',
+				feedbackScale4: '',
+				feedbackScale5: '',
+			};
+			const lookup = generateLookup(characterDimensions8x16.width, characterDimensions8x16.height, emptyColorsScheme);
 
 			// Should have no entries
 			expect(Object.keys(lookup)).toHaveLength(0);
@@ -323,7 +337,7 @@ describe('feedbackScale module', () => {
 			const lookup = generateLookup(
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.icons.feedbackScale
+				minimalColorScheme.icons
 			);
 
 			const coordinates = Object.values(lookup);
@@ -345,7 +359,7 @@ describe('feedbackScale module', () => {
 			const lookup = generateLookup(
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.icons.feedbackScale
+				minimalColorScheme.icons
 			);
 
 			const coordinates = Object.values(lookup);
@@ -362,13 +376,13 @@ describe('feedbackScale module', () => {
 			const lookup = generateLookup(
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.icons.feedbackScale
+				minimalColorScheme.icons
 			);
 
 			const keys = Object.keys(lookup)
 				.map(Number)
 				.sort((a, b) => a - b);
-			const expectedKeys = Array.from({ length: minimalColorScheme.icons.feedbackScale.length }, (_, i) => i);
+			const expectedKeys = Array.from({ length: getFeedbackScaleColors(minimalColorScheme.icons).length }, (_, i) => i);
 
 			expect(keys).toEqual(expectedKeys);
 		});

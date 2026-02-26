@@ -93,14 +93,12 @@ export const derivedColorScheme: ColorScheme = {
 		outputConnector: accentColor,
 
 		// Feedback scale - create a gradient from red to blue
-		feedbackScale: [
-			'#ff0000',
-			mix('#ff0000', '#0000ff', 0.2),
-			mix('#ff0000', '#0000ff', 0.4),
-			mix('#ff0000', '#0000ff', 0.6),
-			mix('#ff0000', '#0000ff', 0.8),
-			'#0000ff',
-		],
+		feedbackScale0: '#ff0000',
+		feedbackScale1: mix('#ff0000', '#0000ff', 0.2),
+		feedbackScale2: mix('#ff0000', '#0000ff', 0.4),
+		feedbackScale3: mix('#ff0000', '#0000ff', 0.6),
+		feedbackScale4: mix('#ff0000', '#0000ff', 0.8),
+		feedbackScale5: '#0000ff',
 
 		// Arrow
 		arrow: baseColor,

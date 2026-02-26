@@ -63,7 +63,12 @@ export interface ColorScheme {
 		inputConnectorBackground: string;
 		outputConnectorBackground: string;
 		switchBackground: string;
-		feedbackScale: string[];
+		feedbackScale0: string;
+		feedbackScale1: string;
+		feedbackScale2: string;
+		feedbackScale3: string;
+		feedbackScale4: string;
+		feedbackScale5: string;
 		arrow: string;
 		pianoKeyWhite: string;
 		pianoKeyWhiteHighlighted: string;
