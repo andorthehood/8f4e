@@ -1,5 +1,7 @@
 import type { ProjectConfig } from './types';
 
+import type { ProjectConfig } from './types';
+
 export const defaultProjectConfig: ProjectConfig = {
 	runtimeSettings: {
 		runtime: 'WebWorkerLogicRuntime',
@@ -7,5 +9,4 @@ export const defaultProjectConfig: ProjectConfig = {
 	},
 	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
-	binaryAssets: [],
 };
