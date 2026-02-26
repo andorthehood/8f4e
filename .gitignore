@@ -15,3 +15,5 @@ coverage
 stats.html
 
 .DS_Store.push_trigger
+
+packages/examples/src/projects/*.wasm

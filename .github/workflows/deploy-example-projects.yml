@@ -6,6 +6,11 @@ on:
     branches: [main]
     paths:
       - 'packages/examples/src/projects/**'
+      - 'packages/examples/src/module-generators/**'
+      - 'packages/examples/generate-project-wasm.sh'
+      - 'packages/examples/project.json'
+      - 'packages/examples/package.json'
+      - 'packages/cli/**'
       - '.github/workflows/deploy-example-projects.yml'
   workflow_dispatch:
 
@@ -21,11 +26,21 @@ jobs:
         with:
           submodules: recursive
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx nx run @8f4e/examples:build
+
       - name: Stage example project files
         run: |
           set -euo pipefail
           mkdir -p upload/example-projects
           find packages/examples/src/projects -maxdepth 1 -type f -name '*.8f4e' -exec cp {} upload/example-projects/ \;
+          find packages/examples/src/projects -maxdepth 1 -type f -name '*.wasm' -exec cp {} upload/example-projects/ \;
           ls -la upload/example-projects
 
       - name: DigitalOcean Spaces Upload Action
