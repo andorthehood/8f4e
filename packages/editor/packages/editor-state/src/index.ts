@@ -19,7 +19,7 @@ import projectImport from './features/project-import/effect';
 import pianoKeyboard from './features/code-blocks/features/pianoKeyboard/interaction';
 import projectExport from './features/project-export/effect';
 import viewport from './features/viewport/effect';
-import binaryAsset from './features/binary-assets/effect';
+import binaryAssetFetching from './features/binary-asset-fetching/effect';
 import runtime from './features/runtime/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
 import shaderEffectsDeriver from './features/shader-effects/effect';
@@ -35,6 +35,7 @@ import favoriteToggler from './features/code-blocks/features/favoriteToggler/eff
 import groupRemover from './features/code-blocks/features/group/remover/effect';
 import groupUngroupper from './features/code-blocks/features/group/ungroupper/effect';
 import groupDeleter from './features/code-blocks/features/group/deleter/effect';
+import binaryAssetLoading from './features/code-blocks/features/binary-asset-loading/effect';
 import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 import dialog from './features/dialog/effect';
 
@@ -100,7 +101,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	graphicHelper(store, events);
 	codeEditing(store, events);
 	projectExport(store, events);
-	binaryAsset(store, events);
+	binaryAssetFetching(store, events);
+	binaryAssetLoading(store);
 	historyTracking(store, events);
 	dialog(store, events);
 

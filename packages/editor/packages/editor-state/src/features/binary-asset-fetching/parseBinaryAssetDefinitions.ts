@@ -1,39 +1,32 @@
-import parseLocalDirectives from '../code-blocks/features/local-directives/parseDirectives';
+import parseDirectives from '../global-directives/parseDirectives';
 
-import type { CodeBlockGraphicData } from '~/types';
+import type { ParsedDirective } from '../global-directives/types';
+import type { CodeBlockGraphicData } from '../code-blocks/types';
 
 export interface BinaryAssetDefinition {
 	id: string;
 	url: string;
 }
 
-export default function parseBinaryAssetDefinitions(
-	codeBlocks: CodeBlockGraphicData[]
-): Map<string, BinaryAssetDefinition> {
+export default function parseBinaryAssetDefinitions(directives: ParsedDirective[]): Map<string, BinaryAssetDefinition> {
 	const definitionsById = new Map<string, BinaryAssetDefinition>();
 
-	for (const codeBlock of codeBlocks) {
-		const localDirectives =
-			codeBlock.directives && codeBlock.directives.length > 0
-				? codeBlock.directives
-				: parseLocalDirectives(codeBlock.code);
-		for (const directive of localDirectives) {
-			if (directive.name !== 'defAsset') {
-				continue;
-			}
-
-			if (directive.args.length < 2) {
-				continue;
-			}
-
-			const [id, url] = directive.args;
-			if (!id || !url) {
-				continue;
-			}
-
-			// Last one wins by insertion order.
-			definitionsById.set(id, { id, url });
+	for (const directive of directives) {
+		if (directive.name !== 'defAsset') {
+			continue;
 		}
+
+		if (directive.args.length < 2) {
+			continue;
+		}
+
+		const [id, url] = directive.args;
+		if (!id || !url) {
+			continue;
+		}
+
+		// Last one wins by insertion order.
+		definitionsById.set(id, { id, url });
 	}
 
 	return definitionsById;
@@ -51,7 +44,7 @@ if (import.meta.vitest) {
 				},
 			] as CodeBlockGraphicData[];
 
-			const result = parseBinaryAssetDefinitions(codeBlocks);
+			const result = parseBinaryAssetDefinitions(parseDirectives(codeBlocks));
 			expect([...result.values()]).toEqual([{ id: 'kick', url: 'https://example.com/kick.pcm' }]);
 		});
 
@@ -68,7 +61,7 @@ if (import.meta.vitest) {
 				},
 			] as CodeBlockGraphicData[];
 
-			const result = parseBinaryAssetDefinitions(codeBlocks);
+			const result = parseBinaryAssetDefinitions(parseDirectives(codeBlocks));
 			expect(result.get('kick')).toEqual({ id: 'kick', url: 'https://example.com/new.pcm' });
 		});
 
@@ -80,7 +73,7 @@ if (import.meta.vitest) {
 				},
 			] as CodeBlockGraphicData[];
 
-			const result = parseBinaryAssetDefinitions(codeBlocks);
+			const result = parseBinaryAssetDefinitions(parseDirectives(codeBlocks));
 			expect(result.size).toBe(0);
 		});
 	});

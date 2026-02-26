@@ -1,4 +1,4 @@
-import parseLocalDirectives from '../code-blocks/features/local-directives/parseDirectives';
+import parseLocalDirectives from '../local-directives/parseDirectives';
 
 import type { CodeBlockGraphicData } from '~/types';
 
