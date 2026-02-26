@@ -90,10 +90,10 @@ if (import.meta.vitest) {
 				{
 					id: 'defs',
 					code: [
-						'comment',
+						'module defs',
 						'; @defAsset kick https://example.com/old.pcm',
 						'; @defAsset kick https://example.com/new.pcm',
-						'commentEnd',
+						'moduleEnd',
 					],
 				},
 			] as CodeBlockGraphicData[];

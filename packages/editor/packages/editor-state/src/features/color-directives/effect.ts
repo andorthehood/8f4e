@@ -103,7 +103,7 @@ if (import.meta.vitest) {
 			const codeBlocks = [
 				{
 					id: 'block',
-					code: ['comment', '; @color text.code #112233', '; @color fill.wire rgba(1,2,3,0.4)', 'commentEnd'],
+					code: ['module colors', '; @color text.code #112233', '; @color fill.wire rgba(1,2,3,0.4)', 'moduleEnd'],
 				},
 			] as CodeBlockGraphicData[];
 
@@ -116,7 +116,7 @@ if (import.meta.vitest) {
 			const codeBlocks = [
 				{
 					id: 'block',
-					code: ['comment', '; @color text.code #111111', '; @color text.code #222222', 'commentEnd'],
+					code: ['module colors', '; @color text.code #111111', '; @color text.code #222222', 'moduleEnd'],
 				},
 			] as CodeBlockGraphicData[];
 
@@ -128,7 +128,7 @@ if (import.meta.vitest) {
 			const codeBlocks = [
 				{
 					id: 'block',
-					code: ['comment', '; @color bad.path #000000', '; @color text.code ???', 'commentEnd'],
+					code: ['module colors', '; @color bad.path #000000', '; @color text.code ???', 'moduleEnd'],
 				},
 			] as CodeBlockGraphicData[];
 

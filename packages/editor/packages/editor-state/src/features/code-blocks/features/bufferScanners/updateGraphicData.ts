@@ -8,8 +8,12 @@ import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 export default function updateBufferScannersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.bufferScanners = [];
 	parseBufferScanners(graphicData.code).forEach(scanner => {
-		const buffer = resolveMemoryIdentifier(state, graphicData.id, scanner.bufferMemoryId);
-		const pointer = resolveMemoryIdentifier(state, graphicData.id, scanner.pointerMemoryId);
+		if (!graphicData.moduleId) {
+			return;
+		}
+
+		const buffer = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.bufferMemoryId);
+		const pointer = resolveMemoryIdentifier(state, graphicData.moduleId, scanner.pointerMemoryId);
 
 		if (!buffer || !pointer) {
 			return;
