@@ -3,6 +3,8 @@ import createStateManager from '@8f4e/state-manager';
 
 import autoEnvConstants from './effect';
 
+import parseDirectives from '../../../global-directives/parseDirectives';
+
 import type { State, Project, CodeBlockGraphicData } from '~/types';
 
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
@@ -95,6 +97,7 @@ describe('autoEnvConstants', () => {
 			const graphicBlock: Partial<CodeBlockGraphicData> = {
 				id: 'env',
 				code: envCodeBlock.code,
+				directives: parseDirectives([{ code: envCodeBlock.code } as CodeBlockGraphicData]),
 				creationIndex: 0,
 				blockType: 'constants',
 				width: 0,
@@ -124,6 +127,7 @@ describe('autoEnvConstants', () => {
 				lastUpdated: Date.now(),
 			};
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+			store.set('directives', parseDirectives([graphicBlock as CodeBlockGraphicData]));
 		}
 
 		// Change sample rate
@@ -189,6 +193,7 @@ describe('autoEnvConstants', () => {
 			const graphicBlock: Partial<CodeBlockGraphicData> = {
 				id: 'env',
 				code: envCodeBlock.code,
+				directives: parseDirectives([{ code: envCodeBlock.code } as CodeBlockGraphicData]),
 				creationIndex: 0,
 				blockType: 'constants',
 				width: 0,
@@ -217,6 +222,7 @@ describe('autoEnvConstants', () => {
 				offsetY: 0,
 			};
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+			store.set('directives', parseDirectives([graphicBlock as CodeBlockGraphicData]));
 		}
 
 		// Add binary asset
@@ -245,6 +251,7 @@ describe('autoEnvConstants', () => {
 			const graphicBlock: Partial<CodeBlockGraphicData> = {
 				id: 'env',
 				code: codeWithCustomPos,
+				directives: parseDirectives([{ code: codeWithCustomPos } as CodeBlockGraphicData]),
 				creationIndex: 0,
 				blockType: 'constants',
 				width: 0,
@@ -273,6 +280,7 @@ describe('autoEnvConstants', () => {
 				offsetY: 0,
 			};
 			store.set('graphicHelper.codeBlocks', [graphicBlock as CodeBlockGraphicData]);
+			store.set('directives', parseDirectives([graphicBlock as CodeBlockGraphicData]));
 		}
 
 		store.set('compiledProjectConfig.runtimeSettings', {
@@ -294,6 +302,7 @@ describe('autoEnvConstants', () => {
 			const graphicBlock: Partial<CodeBlockGraphicData> = {
 				id: 'env',
 				code: codeWithoutPos,
+				directives: parseDirectives([{ code: codeWithoutPos } as CodeBlockGraphicData]),
 				creationIndex: 0,
 				blockType: 'constants',
 				width: 0,

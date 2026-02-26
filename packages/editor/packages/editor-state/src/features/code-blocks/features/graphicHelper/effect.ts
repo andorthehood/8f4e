@@ -29,12 +29,14 @@ import parseGroup from '../group/codeParser';
 import parsePos from '../position/parsePos';
 import parseDisabled from '../disabled/parseDisabled';
 import parseHome from '../home/parseHome';
+import parseLocalDirectives from '../local-directives/parseDirectives';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '~/types';
 
 export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
+	let populatedFromProject: State['initialProjectState'] | null = null;
 	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
 		if (!state.featureFlags.codeLineSelection) {
 			return;
@@ -116,6 +118,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
 		graphicData.id = getCodeBlockId(graphicData.code);
+		graphicData.directives = parseLocalDirectives(graphicData.code);
 		const groupResult = parseGroup(graphicData.code);
 		graphicData.groupName = groupResult?.groupName;
 		graphicData.groupNonstick = groupResult?.nonstick;
@@ -161,7 +164,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	const populateCodeBlocks = async function () {
-		if (!state.initialProjectState) {
+		const initialProjectState = state.initialProjectState;
+		if (!initialProjectState) {
+			return;
+		}
+		if (initialProjectState === populatedFromProject) {
 			return;
 		}
 
@@ -171,12 +178,14 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		state.graphicHelper.draggedCodeBlock = undefined;
 		state.graphicHelper.nextCodeBlockCreationIndex = 0;
 
-		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
+		const codeBlocks = initialProjectState.codeBlocks.map(codeBlock => {
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 			state.graphicHelper.nextCodeBlockCreationIndex++;
+			const codeBlockId = getCodeBlockId(codeBlock.code);
 
 			// Parse @pos directive from code, default to (0,0) if missing or invalid
-			const posResult = parsePos(codeBlock.code);
+			const localDirectives = parseLocalDirectives(codeBlock.code);
+			const posResult = parsePos(localDirectives);
 			const gridX = posResult?.x ?? 0;
 			const gridY = posResult?.y ?? 0;
 			const pixelX = gridX * state.viewport.vGrid;
@@ -192,8 +201,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				width: 0,
 				height: 0,
 				code: codeBlock.code,
+				directives: localDirectives,
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				id: getCodeBlockId(codeBlock.code),
+				id: codeBlockId,
 				gridX,
 				gridY,
 				x: pixelX,
@@ -219,9 +229,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 					const gridY = rawBlock.gridCoordinates?.y ?? 0;
 					// Parse @disabled directive from code
 					const disabled = parseDisabled(rawBlock.code);
+					const directives = parseLocalDirectives(rawBlock.code);
 					const block = createCodeBlockGraphicData({
 						id: getCodeBlockId(rawBlock.code),
 						code: rawBlock.code,
+						directives,
 						disabled,
 						creationIndex,
 						blockType: getBlockType(rawBlock.code),
@@ -240,7 +252,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			}
 		}
 
+		if (state.initialProjectState !== initialProjectState) {
+			return;
+		}
+
 		store.set('graphicHelper.codeBlocks', codeBlocks);
+		populatedFromProject = initialProjectState;
 
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);
@@ -284,7 +301,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 		const codeBlock = state.graphicHelper.selectedCodeBlock;
-		const posResult = parsePos(codeBlock.code);
+		const posResult = parsePos(codeBlock.directives ?? []);
 
 		// Only update position if @pos is valid
 		if (posResult !== undefined) {
@@ -311,7 +328,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on('spriteSheetRerendered', recomputePixelCoordinatesAndUpdateGraphics);
 	store.subscribe('codeErrors', updateErrorMessages);
-	store.subscribe('initialProjectState', populateCodeBlocks);
+	store.subscribe('directives', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);

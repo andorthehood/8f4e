@@ -1,4 +1,4 @@
-import parseDirectives from '../directives/parseDirectives';
+import parseLocalDirectives from '../code-blocks/features/local-directives/parseDirectives';
 
 import type { CodeBlockGraphicData } from '~/types';
 
@@ -21,36 +21,41 @@ export interface ParsedBinaryAssetDirectives {
 export default function parseBinaryAssetDirectives(codeBlocks: CodeBlockGraphicData[]): ParsedBinaryAssetDirectives {
 	const definitionsById = new Map<string, BinaryAssetDefinition>();
 	const loadDirectives: BinaryAssetLoadDirective[] = [];
-	const directives = parseDirectives(codeBlocks);
 
-	for (const directive of directives) {
-		if (directive.name === 'defAsset') {
-			// Keep legacy behavior: directives without an argument segment are ignored.
-			if (directive.argText === null || directive.args.length < 2) {
+	for (const codeBlock of codeBlocks) {
+		const localDirectives =
+			codeBlock.directives && codeBlock.directives.length > 0
+				? codeBlock.directives
+				: parseLocalDirectives(codeBlock.code);
+		for (const directive of localDirectives) {
+			if (directive.name === 'defAsset') {
+				// Keep legacy behavior: directives without an argument segment are ignored.
+				if (directive.argText === null || directive.args.length < 2) {
+					continue;
+				}
+
+				const [id, url] = directive.args;
+				if (!id || !url) {
+					continue;
+				}
+
+				definitionsById.set(id, { id, url });
 				continue;
 			}
 
-			const [id, url] = directive.args;
-			if (!id || !url) {
-				continue;
+			if (directive.name === 'loadAsset') {
+				// Keep legacy behavior: directives without an argument segment are ignored.
+				if (directive.argText === null || directive.args.length < 2) {
+					continue;
+				}
+
+				const [assetId, memoryRef] = directive.args;
+				if (!assetId || !memoryRef) {
+					continue;
+				}
+
+				loadDirectives.push({ assetId, memoryRef, codeBlockId: codeBlock.id });
 			}
-
-			definitionsById.set(id, { id, url });
-			continue;
-		}
-
-		if (directive.name === 'loadAsset') {
-			// Keep legacy behavior: directives without an argument segment are ignored.
-			if (directive.argText === null || directive.args.length < 2) {
-				continue;
-			}
-
-			const [assetId, memoryRef] = directive.args;
-			if (!assetId || !memoryRef) {
-				continue;
-			}
-
-			loadDirectives.push({ assetId, memoryRef, codeBlockId: directive.codeBlockId });
 		}
 	}
 

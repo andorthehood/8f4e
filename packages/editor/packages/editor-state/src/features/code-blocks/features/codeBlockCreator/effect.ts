@@ -8,6 +8,7 @@ import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import getCodeBlockId from '../../utils/getCodeBlockId';
+import parseLocalDirectives from '../local-directives/parseDirectives';
 import upsertPos from '../position/upsertPos';
 import upsertDisabled from '../disabled/upsertDisabled';
 
@@ -178,6 +179,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			width: 0,
 			height: 0,
 			code,
+			directives: parseLocalDirectives(code),
 			codeColors: [],
 			codeToRender: [],
 			extras: {

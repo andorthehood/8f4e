@@ -1,7 +1,9 @@
 import type { CodeBlockGraphicData } from '../code-blocks/types';
 import type { ParsedDirective } from './types';
 
-export default function parseDirectives(codeBlocks: CodeBlockGraphicData[]): ParsedDirective[] {
+type DirectiveSourceBlock = Pick<CodeBlockGraphicData, 'code'>;
+
+export default function parseDirectives(codeBlocks: DirectiveSourceBlock[]): ParsedDirective[] {
 	const directives: ParsedDirective[] = [];
 	let sourceOrder = 0;
 
@@ -20,8 +22,6 @@ export default function parseDirectives(codeBlocks: CodeBlockGraphicData[]): Par
 			directives.push({
 				name: commentMatch[1],
 				args,
-				codeBlockId: codeBlock.id,
-				codeBlockCreationId: codeBlock.creationIndex ?? -1,
 				lineNumber: lineIndex + 1,
 				sourceOrder,
 				rawLine,
@@ -53,8 +53,6 @@ if (import.meta.vitest) {
 				{
 					name: 'color',
 					args: ['text.code', '#ff00ff'],
-					codeBlockId: 'a',
-					codeBlockCreationId: 4,
 					lineNumber: 2,
 					sourceOrder: 0,
 					rawLine: '; @color text.code #ff00ff',
@@ -63,8 +61,6 @@ if (import.meta.vitest) {
 				{
 					name: 'favorite',
 					args: [],
-					codeBlockId: 'a',
-					codeBlockCreationId: 4,
 					lineNumber: 3,
 					sourceOrder: 1,
 					rawLine: '; @favorite',
