@@ -49,14 +49,14 @@ popScope
 
 configEnd
 
-comment
+module notes
 ; @pos 33 -45
 ; Loads an external 8-bit PCM asset into memory, 
 ; continuously plays it with a looping playhead, 
 ; and routes the normalized output into a single 
 ; audioout buffer that is read by both left and 
 ; right audio channels.
-commentEnd
+moduleEnd
 
 module assets
 ; @pos -107 -70

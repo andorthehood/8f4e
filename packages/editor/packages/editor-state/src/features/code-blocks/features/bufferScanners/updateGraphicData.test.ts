@@ -15,6 +15,7 @@ describe('updateBufferScannersGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			code: ['; @scan buffer1 pointer1'],
 			gaps: new Map(),
 			width: 100,

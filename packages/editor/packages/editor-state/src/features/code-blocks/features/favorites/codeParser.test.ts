@@ -64,7 +64,7 @@ describe('parseFavorite', () => {
 
 	it('should work with different block types', () => {
 		expect(parseFavorite(['function test', '; @favorite', 'functionEnd'])).toBe(true);
-		expect(parseFavorite(['comment', '; @favorite', 'commentEnd'])).toBe(true);
+		expect(parseFavorite(['module commentLike', '; @favorite', 'moduleEnd'])).toBe(true);
 		expect(parseFavorite(['vertexShader postprocess', '; @favorite', 'vertexShaderEnd'])).toBe(true);
 	});
 });
