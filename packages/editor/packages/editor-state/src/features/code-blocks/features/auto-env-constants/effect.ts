@@ -42,10 +42,15 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	// Binary asset sizes
 	const binaryAssets = state.binaryAssets || [];
 	const assetSizeLines: string[] = [];
+	const emittedConstantNames = new Set<string>();
 	for (let i = 0; i < binaryAssets.length; i++) {
 		if (binaryAssets[i].assetByteLength !== undefined && binaryAssets[i].fileName) {
 			const assetIdentifier = (binaryAssets[i].id || `${i}`).toUpperCase();
 			const constantName = `ASSET_${assetIdentifier}_SIZE`;
+			if (emittedConstantNames.has(constantName)) {
+				continue;
+			}
+			emittedConstantNames.add(constantName);
 			assetSizeLines.push(`; '${binaryAssets[i].fileName}'`);
 			assetSizeLines.push(`const ${constantName} ${binaryAssets[i].assetByteLength}`);
 		}
