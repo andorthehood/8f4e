@@ -56,12 +56,6 @@ export const mainMenu: MenuGenerator = state => [
 					close: true,
 				},
 				{
-					title: 'New Comment',
-					action: 'addCodeBlock',
-					payload: { isNew: true, blockType: 'comment' },
-					close: true,
-				},
-				{
 					title: 'Paste Module',
 					action: 'addCodeBlock',
 					payload: { isPaste: true },

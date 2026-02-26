@@ -13,6 +13,7 @@ describe('updateSlidersGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			code: ['int mySlider 50', '; @slider mySlider'],
 			width: 200,
 			gaps: new Map(),
