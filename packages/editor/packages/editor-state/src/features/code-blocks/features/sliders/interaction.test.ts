@@ -90,6 +90,7 @@ describe('slider interaction', () => {
 
 		const mockCodeBlock = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -124,6 +125,7 @@ describe('slider interaction', () => {
 
 		const mockCodeBlock = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -157,6 +159,7 @@ describe('slider interaction', () => {
 
 		const mockCodeBlock = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -190,6 +193,7 @@ describe('slider interaction', () => {
 
 		const mockCodeBlock = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -225,6 +229,7 @@ describe('slider interaction', () => {
 
 		const mockCodeBlock = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -265,6 +270,7 @@ describe('slider interaction', () => {
 
 		const mockCodeBlock = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,

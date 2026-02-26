@@ -1,3 +1,5 @@
+import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
+
 import type { CodeBlockGraphicData } from '~/types';
 
 export function createCodeBlockGraphicData(
@@ -12,6 +14,9 @@ export function createCodeBlockGraphicData(
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
 	const id = overrides.id ?? 'code-block';
+	const code = overrides.code ?? [];
+	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
+	const moduleId = overrides.moduleId ?? derivedModuleId;
 
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
@@ -39,7 +44,8 @@ export function createCodeBlockGraphicData(
 		offsetY,
 		cursor,
 		id,
-		code: [],
+		...(moduleId !== undefined ? { moduleId } : {}),
+		code,
 		codeColors: [],
 		codeToRender: [],
 		gaps: new Map(),
