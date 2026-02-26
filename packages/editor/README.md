@@ -41,3 +41,4 @@ Example color overrides:
 ; @color icons.feedbackScale4 #3300cc
 ; @color icons.feedbackScale5 #0000ff
 ```
+- `docs/color-paths.md` - Configurable color paths for `; @color <path> <value>`.
