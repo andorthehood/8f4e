@@ -606,7 +606,6 @@ exports[`compileProject (audioBuffer example) > compiles modules, functions, and
     },
   },
   "compiledProjectConfig": {
-    "binaryAssets": [],
     "disableAutoCompilation": false,
     "memorySizeBytes": 65536,
     "runtimeSettings": {

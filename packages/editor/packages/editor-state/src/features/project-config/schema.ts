@@ -45,19 +45,6 @@ export function getProjectConfigSchema(runtimeRegistry: RuntimeRegistry): JSONSc
 			exportFileName: { type: 'string' },
 			keyCodeMemoryId: { type: 'string' },
 			keyPressedMemoryId: { type: 'string' },
-			binaryAssets: {
-				type: 'array',
-				items: {
-					type: 'object',
-					properties: {
-						id: { type: 'string' },
-						url: { type: 'string' },
-						memoryId: { type: 'string' },
-					},
-					required: ['url', 'memoryId'],
-					additionalProperties: false,
-				},
-			},
 		},
 		additionalProperties: false,
 	};
