@@ -19,9 +19,13 @@ const wasmPath = path.join(tmpDir, 'audioBuffer.wasm');
 describe('cli', () => {
 	it('writes instruction flow trace when --trace-output is provided', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
-		await execFileAsync(process.execPath, [path.join(packageRoot, 'bin', 'cli.js'), fixturePath, '--trace-output', tracePath], {
-			cwd: packageRoot,
-		});
+		await execFileAsync(
+			process.execPath,
+			[path.join(packageRoot, 'bin', 'cli.js'), fixturePath, '--trace-output', tracePath],
+			{
+				cwd: packageRoot,
+			}
+		);
 
 		const raw = await fs.readFile(tracePath, 'utf8');
 		const trace = JSON.parse(raw) as { memorySizeBytes: number; blocks: Array<{ entries: unknown[] }> };
@@ -34,9 +38,13 @@ describe('cli', () => {
 
 	it('writes wasm bytes when --wasm-output is provided', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
-		await execFileAsync(process.execPath, [path.join(packageRoot, 'bin', 'cli.js'), fixturePath, '--wasm-output', wasmPath], {
-			cwd: packageRoot,
-		});
+		await execFileAsync(
+			process.execPath,
+			[path.join(packageRoot, 'bin', 'cli.js'), fixturePath, '--wasm-output', wasmPath],
+			{
+				cwd: packageRoot,
+			}
+		);
 		const wasmBytes = await fs.readFile(wasmPath);
 
 		expect(wasmBytes.length).toBeGreaterThan(8);
@@ -46,18 +54,22 @@ describe('cli', () => {
 	it('fails when neither --wasm-output nor --trace-output is provided', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 
-		await expect(execFileAsync(process.execPath, [path.join(packageRoot, 'bin', 'cli.js'), fixturePath], { cwd: packageRoot })).rejects.toThrow(
-			'Command failed'
-		);
+		await expect(
+			execFileAsync(process.execPath, [path.join(packageRoot, 'bin', 'cli.js'), fixturePath], { cwd: packageRoot })
+		).rejects.toThrow('Command failed');
 	});
 
 	it('rejects JSON input files', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 
 		await expect(
-			execFileAsync(process.execPath, [path.join(packageRoot, 'bin', 'cli.js'), jsonFixturePath, '--wasm-output', wasmPath], {
-				cwd: packageRoot,
-			})
+			execFileAsync(
+				process.execPath,
+				[path.join(packageRoot, 'bin', 'cli.js'), jsonFixturePath, '--wasm-output', wasmPath],
+				{
+					cwd: packageRoot,
+				}
+			)
 		).rejects.toThrow('Invalid input file: expected a .8f4e project file');
 	});
 });
