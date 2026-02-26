@@ -415,4 +415,33 @@ describe('autoEnvConstants', () => {
 		const binaryAssetSection = envBlock?.code.indexOf('// Binary asset sizes in bytes');
 		expect(binaryAssetSection).toBe(-1);
 	});
+
+	test('should emit each asset size constant only once for duplicate asset ids', () => {
+		autoEnvConstants(store);
+
+		store.set('binaryAssets', [
+			{
+				id: 'amen',
+				url: 'https://example.com/amen.pcm',
+				fileName: 'amen.pcm',
+				assetByteLength: 1024,
+				loadedIntoMemory: true,
+				memoryId: 'playerA.buffer',
+			},
+			{
+				id: 'amen',
+				url: 'https://example.com/amen.pcm',
+				fileName: 'amen.pcm',
+				assetByteLength: 1024,
+				loadedIntoMemory: true,
+				memoryId: 'playerB.buffer',
+			},
+		]);
+
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
+
+		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const sizeLines = envBlock?.code.filter(line => line.includes('const ASSET_AMEN_SIZE'));
+		expect(sizeLines).toEqual(['const ASSET_AMEN_SIZE 1024']);
+	});
 });
