@@ -160,6 +160,8 @@ export interface CodeBlockGraphicData {
 		y: number;
 	};
 	id: string;
+	/** Raw module/constants identifier used as key in compiler.compiledModules */
+	moduleId?: string;
 	positionOffsetterXWordAddress?: number;
 	positionOffsetterYWordAddress?: number;
 	/** Grid-space X coordinate (source of truth for horizontal position). Pixel X = gridX * vGrid */

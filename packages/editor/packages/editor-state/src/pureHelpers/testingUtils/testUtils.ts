@@ -1,4 +1,5 @@
 import { defaultColorScheme } from '@8f4e/sprite-generator';
+import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
 
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 
@@ -69,6 +70,9 @@ export function createMockCodeBlock(
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
 	const id = overrides.id ?? 'test-block';
+	const code = overrides.code ?? [];
+	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
+	const moduleId = overrides.moduleId ?? derivedModuleId;
 
 	// Default grid size for testing (matches common font sizes)
 	const defaultVGrid = 8;
@@ -98,7 +102,8 @@ export function createMockCodeBlock(
 		offsetY,
 		cursor,
 		id,
-		code: [],
+		...(moduleId !== undefined ? { moduleId } : {}),
+		code,
 		codeColors: [],
 		codeToRender: [],
 		gaps: new Map(),
