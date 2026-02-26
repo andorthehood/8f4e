@@ -9,7 +9,7 @@ import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker
 import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { BinaryAsset } from './features/binary-assets/types';
-import type { ParsedDirective } from './features/directives/parseDirectives';
+import type { ParsedDirective } from './features/directives/types';
 import type {
 	CodeBlock,
 	CodeBlockType,
