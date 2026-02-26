@@ -21,33 +21,23 @@ renderers can replace it.
 
 ## Color Config
 
-Configure colors in `config project` blocks using the `colorScheme` path.
+Configure colors with editor directives using `; @color <path> <value>`.
 
-- `config project` owns `colorScheme` (all text, fill, and icon colors).
-- `config editor` only controls editor presentation settings like `font`.
+- `config project` no longer owns `colorScheme`.
+- `config editor` controls editor presentation settings like `font`.
 - Color values should be valid color strings (for example `#101820` or `rgba(255,255,255,0.65)`).
-- Main groups are `colorScheme.text`, `colorScheme.fill`, and `colorScheme.icons`.
+- Main groups are `text`, `fill`, and `icons`.
 
-Example project config overrides:
+Example color overrides:
 
 ```txt
-config project
-scope "colorScheme.fill.moduleBackground"
-set "#101820"
-
-rescope "colorScheme.fill.wire"
-set "rgba(255,255,255,0.65)"
-
-rescope "colorScheme.text.instruction"
-set "#b388ff"
-
-rescope "colorScheme.icons.feedbackScale"
-push "#ff0000"
-push "#cc0033"
-push "#990066"
-push "#660099"
-push "#3300cc"
-push "#0000ff"
-set
-configEnd
+; @color fill.moduleBackground #101820
+; @color fill.wire rgba(255,255,255,0.65)
+; @color text.instruction #b388ff
+; @color icons.feedbackScale0 #ff0000
+; @color icons.feedbackScale1 #cc0033
+; @color icons.feedbackScale2 #990066
+; @color icons.feedbackScale3 #660099
+; @color icons.feedbackScale4 #3300cc
+; @color icons.feedbackScale5 #0000ff
 ```
