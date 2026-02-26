@@ -2,6 +2,7 @@ import { StateManager } from '@8f4e/state-manager';
 import { defaultColorScheme } from '@8f4e/sprite-generator';
 
 import deepEqual from '../config-compiler/utils/deepEqual';
+import parseDirectives from '../directives/parseDirectives';
 
 import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { State } from '~/types';
@@ -50,29 +51,31 @@ function applyColorOverride(colorScheme: ColorScheme, path: string, value: strin
 
 function compileColorSchemeFromDirectives(codeBlocks: CodeBlockGraphicData[]): ColorScheme {
 	const nextColorScheme = cloneDefaultColorScheme();
+	const directives = parseDirectives(codeBlocks);
 
-	for (const codeBlock of codeBlocks) {
-		for (const line of codeBlock.code) {
-			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
-			if (!commentMatch || commentMatch[1] !== 'color') {
-				continue;
-			}
+	for (const directive of directives) {
+		if (directive.name !== 'color') {
+			continue;
+		}
 
-			const args = commentMatch[2].trim().split(/\s+/);
-			if (args.length !== 2) {
-				console.warn('Invalid @color directive (expected: ; @color <path> <value>):', line);
-				continue;
-			}
+		// Keep legacy behavior: directives without an argument segment are ignored.
+		if (directive.argText === null) {
+			continue;
+		}
 
-			const [path, value] = args;
-			if (!isValidColorValue(value)) {
-				console.warn('Invalid @color value:', value);
-				continue;
-			}
+		if (directive.args.length !== 2) {
+			console.warn('Invalid @color directive (expected: ; @color <path> <value>):', directive.rawLine);
+			continue;
+		}
 
-			if (!applyColorOverride(nextColorScheme, path, value)) {
-				console.warn('Unknown @color path:', path);
-			}
+		const [path, value] = directive.args;
+		if (!isValidColorValue(value)) {
+			console.warn('Invalid @color value:', value);
+			continue;
+		}
+
+		if (!applyColorOverride(nextColorScheme, path, value)) {
+			console.warn('Unknown @color path:', path);
 		}
 	}
 

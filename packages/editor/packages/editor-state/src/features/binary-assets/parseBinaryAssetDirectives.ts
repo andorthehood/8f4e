@@ -1,3 +1,5 @@
+import parseDirectives from '../directives/parseDirectives';
+
 import type { CodeBlockGraphicData } from '~/types';
 
 export interface BinaryAssetDefinition {
@@ -19,43 +21,36 @@ export interface ParsedBinaryAssetDirectives {
 export default function parseBinaryAssetDirectives(codeBlocks: CodeBlockGraphicData[]): ParsedBinaryAssetDirectives {
 	const definitionsById = new Map<string, BinaryAssetDefinition>();
 	const loadDirectives: BinaryAssetLoadDirective[] = [];
+	const directives = parseDirectives(codeBlocks);
 
-	for (const codeBlock of codeBlocks) {
-		for (const line of codeBlock.code) {
-			const commentMatch = line.match(/^\s*;\s*@(\w+)\s+(.*)/);
-			if (!commentMatch) {
+	for (const directive of directives) {
+		if (directive.name === 'defAsset') {
+			// Keep legacy behavior: directives without an argument segment are ignored.
+			if (directive.argText === null || directive.args.length < 2) {
 				continue;
 			}
 
-			const directive = commentMatch[1];
-			const args = commentMatch[2].trim().split(/\s+/);
-
-			if (directive === 'defAsset') {
-				if (args.length < 2) {
-					continue;
-				}
-
-				const [id, url] = args;
-				if (!id || !url) {
-					continue;
-				}
-
-				definitionsById.set(id, { id, url });
+			const [id, url] = directive.args;
+			if (!id || !url) {
 				continue;
 			}
 
-			if (directive === 'loadAsset') {
-				if (args.length < 2) {
-					continue;
-				}
+			definitionsById.set(id, { id, url });
+			continue;
+		}
 
-				const [assetId, memoryRef] = args;
-				if (!assetId || !memoryRef) {
-					continue;
-				}
-
-				loadDirectives.push({ assetId, memoryRef, codeBlockId: codeBlock.id });
+		if (directive.name === 'loadAsset') {
+			// Keep legacy behavior: directives without an argument segment are ignored.
+			if (directive.argText === null || directive.args.length < 2) {
+				continue;
 			}
+
+			const [assetId, memoryRef] = directive.args;
+			if (!assetId || !memoryRef) {
+				continue;
+			}
+
+			loadDirectives.push({ assetId, memoryRef, codeBlockId: directive.codeBlockId });
 		}
 	}
 

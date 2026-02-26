@@ -9,6 +9,7 @@ import type { MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-worker
 import type { ColorScheme } from '@8f4e/sprite-generator';
 import type { JSONSchemaLike } from '@8f4e/stack-config-compiler';
 import type { BinaryAsset } from './features/binary-assets/types';
+import type { ParsedDirective } from './features/directives/parseDirectives';
 import type {
 	CodeBlock,
 	CodeBlockType,
@@ -106,6 +107,7 @@ export type { LogMessage, ConsoleState };
 
 // Re-export binary-assets types
 export type { BinaryAsset };
+export type { ParsedDirective };
 
 // Re-export code-editing types
 export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent };
@@ -268,6 +270,7 @@ export interface State {
 	redoStack: Project[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
+	directives: ParsedDirective[];
 	/** Console state for internal logging */
 	console: ConsoleState;
 	runtime: {

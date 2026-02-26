@@ -43,6 +43,7 @@ export default function createDefaultState() {
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
 		binaryAssets: [],
+		directives: [],
 		codeErrors: {
 			compilationErrors: [],
 			projectConfigErrors: [],
