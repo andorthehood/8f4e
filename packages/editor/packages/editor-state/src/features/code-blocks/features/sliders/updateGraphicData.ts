@@ -7,7 +7,11 @@ import gapCalculator from '~/features/code-editing/gapCalculator';
 export default function updateSlidersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.sliders = [];
 	parseSliders(graphicData.code).forEach(slider => {
-		const memory = state.compiler.compiledModules[graphicData.id]?.memoryMap[slider.id];
+		if (!graphicData.moduleId) {
+			return;
+		}
+
+		const memory = state.compiler.compiledModules[graphicData.moduleId]?.memoryMap[slider.id];
 
 		if (!memory) {
 			return;

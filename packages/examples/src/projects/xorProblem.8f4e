@@ -1,6 +1,6 @@
 8f4e/v1
 
-comment
+module notes
 ; @pos 66 -75
 ; This is a compact, pre-trained 
 ; neural network that solves the 
@@ -9,7 +9,7 @@ comment
 ; perceptrons with sigmoid 
 ; activations and outputting a 
 ; binary classification result.
-commentEnd
+moduleEnd
 
 config project
 ; @pos -9 -73
