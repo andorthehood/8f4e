@@ -58,6 +58,12 @@ comment
 ; right audio channels.
 commentEnd
 
+module assets
+; @pos -107 -70
+; @defAsset amen https://static.llllllllllll.com/andor/8f4e/amen_170bpm_8bit_unsigned.pcm
+
+moduleEnd
+
 module audioout
 ; @pos 130 -63
 use env
@@ -103,7 +109,7 @@ constants env
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/19/2026, 1:40:31 PM
+; Last updated: 2/26/2026, 1:22:04 PM
 
 const SAMPLE_RATE 44100
 const INV_SAMPLE_RATE 0.000022675736961451248
@@ -116,13 +122,12 @@ const ASSET_AMEN_SIZE 62258
 constantsEnd
 
 module pcmPlayer8bit
-; @pos 92 -63
+; @pos 91 -63
 ; @home
-; @defAsset amen https://static.llllllllllll.com/andor/8f4e/amen_170bpm_8bit_unsigned.pcm
-; @loadAsset amen &buffer
 use env
 
 int8u[] buffer ASSET_AMEN_SIZE
+; @loadAsset amen &buffer
 int playhead &buffer
 float out
 int startPos 0
