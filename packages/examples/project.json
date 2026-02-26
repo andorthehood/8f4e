@@ -5,8 +5,10 @@
 	"targets": {
 		"build": {
 			"executor": "nx:run-commands",
+			"outputs": ["{projectRoot}/dist"],
+			"dependsOn": ["^build"],
 			"options": {
-				"command": "node ./src/module-generators/generateModules.ts",
+				"command": "node ./src/module-generators/generateModules.ts && ./generate-project-wasm.sh",
 				"cwd": "{projectRoot}"
 			}
 		},
