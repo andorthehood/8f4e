@@ -59,7 +59,12 @@ const defaultColorScheme = {
 		switchBackground: '#003300',
 		inputConnector: '#ffffff',
 		outputConnector: '#ffffff',
-		feedbackScale: ['#ff0000', '#cc0033', '#990066', '#660099', '#3300cc', '#0000ff'],
+		feedbackScale0: '#ff0000',
+		feedbackScale1: '#cc0033',
+		feedbackScale2: '#990066',
+		feedbackScale3: '#660099',
+		feedbackScale4: '#3300cc',
+		feedbackScale5: '#0000ff',
 		arrow: '#ffffff',
 		pianoKeyWhite: '#ffffff',
 		pianoKeyWhiteHighlighted: '#ff0000',
@@ -90,10 +95,6 @@ const defaultColorScheme = {
 export default async function createMockStateWithColors(overrides: Partial<State> = {}): Promise<State> {
 	const state = createMockState({
 		colorScheme: defaultColorScheme,
-		compiledProjectConfig: {
-			...createMockState().compiledProjectConfig,
-			colorScheme: defaultColorScheme,
-		},
 		featureFlags: {
 			contextMenu: true,
 			infoOverlay: false,
