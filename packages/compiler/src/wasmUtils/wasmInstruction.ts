@@ -2,55 +2,196 @@
  * WebAssembly instuction set
  */
 enum WASMInstruction {
-	/** Unreachable */
+	/**
+	 * Trap immediately when executed.
+	 * Type signature: (param) (result)
+	 */
 	UNREACHABLE = 0x00,
-	/** No-Op. It does nothing. */
+
+	/**
+	 * No-op instruction.
+	 * Type signature: (param) (result)
+	 */
 	NOP = 0x01,
-	/** Pushes an entry onto the control-flow stack. */
+
+	/**
+	 * Begin a block.
+	 * Type signature: (param t1* ...) (result t2* ...), determined by block type.
+	 */
 	BLOCK = 0x02,
-	/** Binds a label to the current position, and pushes an entry onto the control-flow stack. */
+
+	/**
+	 * Begin a loop block with a backward branch target.
+	 * Type signature: (param t1* ...) (result t2* ...), determined by block type.
+	 */
 	LOOP = 0x03,
-	/** If */
+
+	/**
+	 * Begin a conditional block.
+	 * Type signature: (param i32 t1* ...) (result t2* ...), determined by block type.
+	 */
 	IF = 0x04,
-	/** Else */
+
+	/**
+	 * Alternate branch for the current if block.
+	 * Type signature: (param t* ...) (result t* ...)
+	 */
 	ELSE = 0x05,
-	/** Pops an entry from the control-flow stack. */
+
+	/**
+	 * End the current structured control-flow block.
+	 * Type signature: (param t* ...) (result t* ...)
+	 */
 	END = 0x0b,
-	/** Unconditional branch */
+
+	/**
+	 * Unconditional branch to a relative label.
+	 * Type signature: (param t* ...) (result)
+	 */
 	BR = 0x0c,
-	/** Conditional branch */
+
+	/**
+	 * Conditional branch to a relative label.
+	 * Type signature: (param i32 t* ...) (result t* ...)
+	 */
 	BR_IF = 0x0d,
-	/** Table branch */
+
+	/**
+	 * Branch to one label from a table by index.
+	 * Type signature: (param i32 t* ...) (result)
+	 */
 	BR_TABLE = 0x0e,
-	/** Return */
+
+	/**
+	 * Return from the current function.
+	 * Type signature: (param t* ...) (result)
+	 */
 	RETURN = 0x0f,
+
+	/**
+	 * Call a function by index.
+	 * Type signature: (param t1* ...) (result t2* ...), as defined by the callee type.
+	 */
 	CALL = 0x10,
-	/** Drop */
+
+	/**
+	 * Pop and discard the top stack value.
+	 * Type signature: (param t) (result)
+	 */
 	DROP = 0x1a,
-	/** Select */
+
+	/**
+	 * Select one of two values based on a condition.
+	 * Type signature: (param t t i32) (result t)
+	 */
 	SELECT = 0x1b,
-	/** Get Local */
+
+	/**
+	 * Read a local variable.
+	 * Type signature: (param) (result t), where t is the local type.
+	 */
 	LOCAL_GET = 0x20,
-	/** Set Local */
+
+	/**
+	 * Read a mutable global variable.
+	 * Type signature: (param) (result t), where t is the global type.
+	 */
+	GLOBAL_GET = 0x23,
+
+	/**
+	 * Write a local variable.
+	 * Type signature: (param t) (result), where t is the local type.
+	 */
 	LOCAL_SET = 0x21,
+
+	/**
+	 * Load a 32-bit integer from memory.
+	 * Type signature: (param i32) (result i32)
+	 */
 	I32_LOAD = 0x28,
+
+	/**
+	 * Load a 32-bit float from memory.
+	 * Type signature: (param i32) (result f32)
+	 */
 	F32_LOAD = 0x2a,
+
+	/**
+	 * Load a 64-bit float from memory.
+	 * Type signature: (param i32) (result f64)
+	 */
 	F64_LOAD = 0x2b,
+
+	/**
+	 * Load a signed 8-bit integer from memory and extend to i32.
+	 * Type signature: (param i32) (result i32)
+	 */
 	I32_LOAD_8_S = 0x2c,
+
+	/**
+	 * Load an unsigned 8-bit integer from memory and extend to i32.
+	 * Type signature: (param i32) (result i32)
+	 */
 	I32_LOAD_8_U = 0x2d,
+
+	/**
+	 * Load a signed 16-bit integer from memory and extend to i32.
+	 * Type signature: (param i32) (result i32)
+	 */
 	I32_LOAD_16_S = 0x2e,
+
+	/**
+	 * Load an unsigned 16-bit integer from memory and extend to i32.
+	 * Type signature: (param i32) (result i32)
+	 */
 	I32_LOAD_16_U = 0x2f,
+
+	/**
+	 * Store a 32-bit integer to memory.
+	 * Type signature: (param i32 i32) (result)
+	 */
 	I32_STORE = 0x36,
+
+	/**
+	 * Store the low 8 bits of an i32 to memory.
+	 * Type signature: (param i32 i32) (result)
+	 */
 	I32_STORE8 = 0x3a,
+
+	/**
+	 * Store a 32-bit float to memory.
+	 * Type signature: (param i32 f32) (result)
+	 */
 	F32_STORE = 0x38,
+
+	/**
+	 * Store a 64-bit float to memory.
+	 * Type signature: (param i32 f64) (result)
+	 */
 	F64_STORE = 0x39,
-	/** varsint32 constant */
+
+	/**
+	 * Push a 32-bit integer constant.
+	 * Type signature: (param) (result i32)
+	 */
 	I32_CONST = 0x41,
-	/** varsint64 constant */
+
+	/**
+	 * Push a 64-bit integer constant.
+	 * Type signature: (param) (result i64)
+	 */
 	I64_CONTS = 0x42,
-	/** float32 constant */
+
+	/**
+	 * Push a 32-bit floating-point constant.
+	 * Type signature: (param) (result f32)
+	 */
 	F32_CONST = 0x43,
-	/** float64 constant */
+
+	/**
+	 * Push a 64-bit floating-point constant.
+	 * Type signature: (param) (result f64)
+	 */
 	F64_CONST = 0x44,
 
 	/**
@@ -89,8 +230,18 @@ enum WASMInstruction {
 	 */
 	I32_LT_U = 0x49,
 
+	/**
+	 * Greater than (signed).
+	 * Tests whether the first operand is greater than the second operand.
+	 * Type signature: (param i32 i32) (result i32)
+	 */
 	I32_GT_S = 0x4a,
 
+	/**
+	 * Greater than (unsigned).
+	 * Tests whether the first operand is greater than the second operand.
+	 * Type signature: (param i32 i32) (result i32)
+	 */
 	I32_GT_U = 0x4b,
 
 	/**
@@ -107,13 +258,18 @@ enum WASMInstruction {
 	 */
 	I32_LE_U = 0x4d,
 
-	/** Greater than or equal to (signed)
-	 *
-	 *
+	/**
+	 * Greater than or equal to (signed).
+	 * Tests whether the first operand is greater than or equal to the second operand.
+	 * Type signature: (param i32 i32) (result i32)
 	 */
 	I32_GE_S = 0x4e,
 
-	/** Integer Greater Than or Equal To, Unsigned */
+	/**
+	 * Greater than or equal to (unsigned).
+	 * Tests whether the first operand is greater than or equal to the second operand.
+	 * Type signature: (param i32 i32) (result i32)
+	 */
 	I32_GE_U = 0x4f,
 
 	/**
@@ -257,27 +413,76 @@ enum WASMInstruction {
 	 */
 	I32_POPCNT = 0x69,
 
+	/**
+	 * Absolute value.
+	 * Type signature: (param f32) (result f32)
+	 */
 	F32_ABS = 0x8b,
+
+	/**
+	 * Absolute value.
+	 * Type signature: (param f64) (result f64)
+	 */
 	F64_ABS = 0x99,
 
+	/**
+	 * Floating-point addition.
+	 * Type signature: (param f32 f32) (result f32)
+	 */
 	F32_ADD = 0x92,
 
+	/**
+	 * Floating-point subtraction.
+	 * Type signature: (param f32 f32) (result f32)
+	 */
 	F32_SUB = 0x93,
 
+	/**
+	 * Floating-point multiplication.
+	 * Type signature: (param f32 f32) (result f32)
+	 */
 	F32_MUL = 0x94,
 
+	/**
+	 * Floating-point division.
+	 * Type signature: (param f32 f32) (result f32)
+	 */
 	F32_DIV = 0x95,
 
+	/**
+	 * Floating-point addition.
+	 * Type signature: (param f64 f64) (result f64)
+	 */
 	F64_ADD = 0xa0,
 
+	/**
+	 * Floating-point subtraction.
+	 * Type signature: (param f64 f64) (result f64)
+	 */
 	F64_SUB = 0xa1,
 
+	/**
+	 * Floating-point multiplication.
+	 * Type signature: (param f64 f64) (result f64)
+	 */
 	F64_MUL = 0xa2,
 
+	/**
+	 * Floating-point division.
+	 * Type signature: (param f64 f64) (result f64)
+	 */
 	F64_DIV = 0xa3,
 
+	/**
+	 * Round to nearest integer value, ties to even.
+	 * Type signature: (param f32) (result f32)
+	 */
 	F32_NEAREST = 0x90,
 
+	/**
+	 * Square root.
+	 * Type signature: (param f32) (result f32)
+	 */
 	F32_SQRT = 0x91,
 
 	/**
@@ -288,7 +493,7 @@ enum WASMInstruction {
 
 	/**
 	 * Convert Integer To Floating-Point, Signed
-	 *  Type signature: (param f32) (result f32)
+	 * Type signature: (param i32) (result f32)
 	 */
 	F32_CONVERT_I32_S = 0xb2,
 

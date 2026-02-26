@@ -1,6 +1,6 @@
 8f4e/v1
 
-comment
+module notes1
 ; @pos -185 -19
 
 ; Mapping from the
@@ -8,9 +8,9 @@ comment
 ; neural network's input
 ; layer
 
-commentEnd
+moduleEnd
 
-comment
+module notes2
 ; @pos -326 27
 ; This project implements a feedforward
 ; neural network that maps a 3x5 binary 
@@ -18,12 +18,12 @@ comment
 ; through multiple sigmoid-based hidden
 ; layers, and exposes per-digit (0-9) 
 ; classification confidence scores
-commentEnd
+moduleEnd
 
-comment
+module notes3
 ; @pos -458 20
 ; @color fill.wire rgba(255,255,255,0.3)
-commentEnd
+moduleEnd
 
 constants env
 ; @pos 0 0

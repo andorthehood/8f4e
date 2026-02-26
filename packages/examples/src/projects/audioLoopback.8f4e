@@ -46,7 +46,7 @@ set 0
 
 configEnd
 
-comment
+module notes
 ; @pos 130 12
 ; This is a stereo loopback example
 ; that reads input audio from a 
@@ -54,7 +54,7 @@ comment
 ; signal into left and right output 
 ; buffers using circular-buffer 
 ; pointer logic.
-commentEnd
+moduleEnd
 
 config project
 ; @pos -141 4
