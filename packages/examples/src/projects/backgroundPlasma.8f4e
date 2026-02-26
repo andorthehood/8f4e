@@ -50,7 +50,7 @@ set 50
 
 configEnd
 
-comment
+module colors
 ; @pos -166 22
 ; @color text.lineNumber rgba(0,0,0,0.3)
 ; @color text.code rgba(255,255,255,0.8)
@@ -66,7 +66,7 @@ comment
 ; @color fill.backgroundDots2 rgba(255,255,255,0.3)
 ; @color fill.menuItemBackground rgba(255,255,255,0.2)
 ; @color fill.menuItemBackgroundHighlighted rgba(255,255,255,0.5)
-commentEnd
+moduleEnd
 
 constants env
 ; @pos -114 22

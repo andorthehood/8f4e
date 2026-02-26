@@ -1,5 +1,6 @@
 import { StateManager } from '@8f4e/state-manager';
 import { getBlockType } from '@8f4e/compiler/syntax';
+import { getModuleId, getConstantsId } from '@8f4e/compiler/syntax';
 
 import gaps from './gaps';
 import positionOffsetters from './positionOffsetters';
@@ -64,6 +65,8 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		);
 
 		graphicData.codeToRender = codeWithLineNumbers.map(line => line.split('').map(char => char.charCodeAt(0)));
+		graphicData.id = getCodeBlockId(graphicData.code);
+		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
 
 		// Choose highlighter based on block type and get syntax colors for raw code
 		let rawCodeColors;
@@ -115,7 +118,6 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.height = graphicData.codeToRender.length * state.viewport.hGrid;
 		graphicData.cursor.x = (graphicData.cursor.col + (graphicData.lineNumberColumnWidth + 2)) * state.viewport.vGrid;
 		graphicData.cursor.y = gapCalculator(graphicData.cursor.row, graphicData.gaps) * state.viewport.hGrid;
-		graphicData.id = getCodeBlockId(graphicData.code);
 		const groupResult = parseGroup(graphicData.code);
 		graphicData.groupName = groupResult?.groupName;
 		graphicData.groupNonstick = groupResult?.nonstick;

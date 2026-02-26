@@ -12,7 +12,7 @@ import { EventDispatcher } from '~/types';
  *
  * @param codeBlocks - List of code blocks to filter and sort
  * @returns Object containing modules, functions, and macros arrays, each sorted by creationIndex.
- *          Config blocks and comment blocks are excluded from the WASM compilation pipeline.
+ *          Config/shader/unknown blocks are excluded from the WASM compilation pipeline.
  *          Constants blocks are included in modules array.
  */
 export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): {

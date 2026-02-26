@@ -15,6 +15,7 @@ describe('updateBufferPlottersGraphicData', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			id: 'test-block',
+			moduleId: 'test-block',
 			code: ['; @plot buffer1 -10 10'],
 			gaps: new Map(),
 			width: 100,
