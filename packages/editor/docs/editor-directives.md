@@ -121,6 +121,8 @@ Examples:
 ; @color icons.feedbackScale3 #660099
 ```
 
+See [Color Paths](./color-paths.md) for the full list of configurable color paths.
+
 ### `@defAsset`
 
 Define a named binary asset URL for later loading.
