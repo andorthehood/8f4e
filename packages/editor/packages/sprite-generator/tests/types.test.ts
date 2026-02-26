@@ -122,7 +122,12 @@ describe('Types and Enums', () => {
 			expect(iconKeys).toContain('inputConnectorBackground');
 			expect(iconKeys).toContain('outputConnectorBackground');
 			expect(iconKeys).toContain('switchBackground');
-			expect(iconKeys).toContain('feedbackScale');
+			expect(iconKeys).toContain('feedbackScale0');
+			expect(iconKeys).toContain('feedbackScale1');
+			expect(iconKeys).toContain('feedbackScale2');
+			expect(iconKeys).toContain('feedbackScale3');
+			expect(iconKeys).toContain('feedbackScale4');
+			expect(iconKeys).toContain('feedbackScale5');
 			expect(iconKeys).toContain('arrow');
 			expect(iconKeys).toContain('pianoKeyWhite');
 			expect(iconKeys).toContain('pianoKeyWhiteHighlighted');
@@ -135,9 +140,13 @@ describe('Types and Enums', () => {
 			expect(iconKeys).toContain('pianoKeyboardNoteHighlighted');
 		});
 
-		it('should have feedbackScale as an array', () => {
-			expect(Array.isArray(minimalColorScheme.icons.feedbackScale)).toBe(true);
-			expect(minimalColorScheme.icons.feedbackScale.length).toBeGreaterThan(0);
+		it('should have scalar feedbackScale fields', () => {
+			expect(minimalColorScheme.icons.feedbackScale0).toBeDefined();
+			expect(minimalColorScheme.icons.feedbackScale1).toBeDefined();
+			expect(minimalColorScheme.icons.feedbackScale2).toBeDefined();
+			expect(minimalColorScheme.icons.feedbackScale3).toBeDefined();
+			expect(minimalColorScheme.icons.feedbackScale4).toBeDefined();
+			expect(minimalColorScheme.icons.feedbackScale5).toBeDefined();
 		});
 	});
 

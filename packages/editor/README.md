@@ -18,4 +18,27 @@ renderers can replace it.
 ## Docs
 
 - `docs/editor-directives.md` - Editor-only code-block directive syntax (`; @...`) and supported directives.
+
+## Color Config
+
+Configure colors with editor directives using `; @color <path> <value>`.
+
+- `config project` no longer owns `colorScheme`.
+- `config editor` controls editor presentation settings like `font`.
+- Color values should be valid color strings (for example `#101820` or `rgba(255,255,255,0.65)`).
+- Main groups are `text`, `fill`, and `icons`.
+
+Example color overrides:
+
+```txt
+; @color fill.moduleBackground #101820
+; @color fill.wire rgba(255,255,255,0.65)
+; @color text.instruction #b388ff
+; @color icons.feedbackScale0 #ff0000
+; @color icons.feedbackScale1 #cc0033
+; @color icons.feedbackScale2 #990066
+; @color icons.feedbackScale3 #660099
+; @color icons.feedbackScale4 #3300cc
+; @color icons.feedbackScale5 #0000ff
+```
 - `docs/color-paths.md` - Configurable color paths for `; @color <path> <value>`.

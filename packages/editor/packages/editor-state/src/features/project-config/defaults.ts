@@ -1,5 +1,3 @@
-import { defaultColorScheme } from '@8f4e/sprite-generator';
-
 import type { ProjectConfig } from './types';
 
 export const defaultProjectConfig: ProjectConfig = {
@@ -9,5 +7,4 @@ export const defaultProjectConfig: ProjectConfig = {
 	},
 	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
-	colorScheme: defaultColorScheme,
 };

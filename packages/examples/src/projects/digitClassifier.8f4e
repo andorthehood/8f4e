@@ -20,15 +20,10 @@ comment
 ; classification confidence scores
 commentEnd
 
-config project
+comment
 ; @pos -458 20
-
-scope "colorScheme"
-scope "fill"
-scope "wire"
-set "rgba(255,255,255,0.3)"
-
-configEnd
+; @color fill.wire rgba(255,255,255,0.3)
+commentEnd
 
 constants env
 ; @pos 0 0
