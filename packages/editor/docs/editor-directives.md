@@ -119,6 +119,8 @@ Examples:
 ; @color text.code #cccccc
 ; @color fill.moduleBackground rgba(0,0,0,0.9)
 ; @color icons.feedbackScale3 #660099
+```
+
 ### `@defAsset`
 
 Define a named binary asset URL for later loading.
