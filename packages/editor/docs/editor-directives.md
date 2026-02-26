@@ -119,6 +119,12 @@ Examples:
 ; @color text.code #cccccc
 ; @color fill.moduleBackground rgba(0,0,0,0.9)
 ; @color icons.feedbackScale3 #660099
+### `@defAsset`
+
+Define a named binary asset URL for later loading.
+
+```txt
+; @defAsset <id> <url>
 ```
 
 Notes:
@@ -126,6 +132,22 @@ Notes:
 - Directives are evaluated in project order and use last-write-wins for duplicate paths.
 - Invalid paths/values are ignored with a console warning.
 - This is editor metadata only and does not affect compiler output.
+- If the same `id` is defined multiple times, the last definition wins.
+- Asset size constants are auto-generated in the env block as `ASSET_<ID>_SIZE`.
+
+### `@loadAsset`
+
+Load a previously defined asset into a memory location.
+
+```txt
+; @loadAsset <id> <memoryRef>
+```
+
+Notes:
+- Allowed in any block type.
+- `<memoryRef>` must be an `&...` memory reference.
+- Unknown asset ids are logged and skipped.
+- Multiple loads for one asset are supported, but the recommended pattern is one load per asset and sharing that memory from other modules to reduce memory usage.
 
 ### `@favorite`
 
