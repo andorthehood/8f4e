@@ -105,6 +105,33 @@ Apply code-block visual position offset from an integer memory value.
 Where:
 - `axis` is `x` or `y`.
 
+### `@defAsset`
+
+Define a named binary asset URL for later loading.
+
+```txt
+; @defAsset <id> <url>
+```
+
+Notes:
+- Allowed in any block type.
+- If the same `id` is defined multiple times, the last definition wins.
+- Asset size constants are auto-generated in the env block as `ASSET_<ID>_SIZE`.
+
+### `@loadAsset`
+
+Load a previously defined asset into a memory location.
+
+```txt
+; @loadAsset <id> <memoryRef>
+```
+
+Notes:
+- Allowed in any block type.
+- `<memoryRef>` must be an `&...` memory reference.
+- Unknown asset ids are logged and skipped.
+- Multiple loads for one asset are supported, but the recommended pattern is one load per asset and sharing that memory from other modules to reduce memory usage.
+
 ### `@favorite`
 
 Mark a code block as a favorite for quick navigation.
