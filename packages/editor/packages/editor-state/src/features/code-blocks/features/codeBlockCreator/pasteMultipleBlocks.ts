@@ -56,8 +56,13 @@ export function updateInterModuleReferences(code: string[], idMapping: Map<strin
  * Helper function to check if a code block ID is already taken
  */
 function checkIfCodeBlockIdIsTaken(state: State, id: string): boolean {
+	const parseRawId = (value: string): string => {
+		const match = value.match(/^(module|function|constants|config)_(.+)$/);
+		return match ? match[2] : value;
+	};
+
 	return state.graphicHelper.codeBlocks.some(codeBlock => {
-		return codeBlock.id === id;
+		return codeBlock.id === id || parseRawId(codeBlock.id) === id;
 	});
 }
 

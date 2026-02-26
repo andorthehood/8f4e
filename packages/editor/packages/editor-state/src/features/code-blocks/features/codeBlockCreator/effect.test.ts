@@ -201,9 +201,9 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify all modules were added
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('main');
-			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('dep1');
-			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('dep2');
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_main');
+			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_dep1');
+			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('module_dep2');
 
 			// Verify positions - dep1 should be to the right of main
 			expect(mockState.graphicHelper.codeBlocks[1].gridX).toBeGreaterThan(mockState.graphicHelper.codeBlocks[0].gridX);
@@ -230,7 +230,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Pre-populate with dep1
 			const existingDep1 = createMockCodeBlock({
-				id: 'dep1',
+				id: 'module_dep1',
 				code: ['module dep1', '', 'moduleEnd'],
 				blockType: 'module',
 			});
@@ -247,9 +247,9 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify only main and dep2 were added (dep1 already existed)
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('dep1'); // Existing
-			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('main'); // New
-			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('dep2'); // New
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_dep1'); // Existing
+			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_main'); // New
+			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('module_dep2'); // New
 		});
 
 		it('should work without dependencies field', async () => {
@@ -270,7 +270,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify only the main module was added
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('simple');
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_simple');
 		});
 
 		it('should handle dependency loading errors gracefully', async () => {
@@ -302,8 +302,8 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify main and dep1 were added, but missing was skipped
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('main');
-			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('dep1');
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_main');
+			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_dep1');
 
 			// Verify warning was logged
 			expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to load dependency: missing', expect.any(Error));
@@ -368,7 +368,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Pre-populate with a module named 'sine' (different type from the function dependency)
 			const existingSineModule = createMockCodeBlock({
-				id: 'sine',
+				id: 'module_sine',
 				code: ['module sine', '', 'moduleEnd'],
 				blockType: 'module',
 			});
@@ -388,10 +388,10 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			// Note: The sine function's ID will be auto-incremented to 'sine2' by the
 			// existing ID uniqueness logic in onAddCodeBlock
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('sine'); // Existing module
+			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_sine'); // Existing module
 			expect(mockState.graphicHelper.codeBlocks[0].blockType).toBe('module');
-			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('main'); // New module
-			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('sine2'); // New function (ID incremented)
+			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_main'); // New module
+			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('function_sine2'); // New function (ID incremented)
 			// Check the code contains function markers
 			expect(mockState.graphicHelper.codeBlocks[2].code.join('\n')).toContain('function sine2');
 		});

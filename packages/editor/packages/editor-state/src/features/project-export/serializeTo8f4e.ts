@@ -10,7 +10,6 @@ const OPENERS = [
 	'defineMacro',
 	'vertexShader',
 	'fragmentShader',
-	'comment',
 ] as const;
 
 const CLOSERS = [
@@ -21,7 +20,6 @@ const CLOSERS = [
 	'defineMacroEnd',
 	'vertexShaderEnd',
 	'fragmentShaderEnd',
-	'commentEnd',
 ] as const;
 
 function getOpenerKeyword(line: string): string | null {

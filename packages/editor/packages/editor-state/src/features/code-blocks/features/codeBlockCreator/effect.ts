@@ -58,8 +58,13 @@ function getRandomCodeBlockId() {
 }
 
 function checkIfCodeBlockIdIsTaken(state: State, id: string) {
+	const parseRawId = (value: string): string => {
+		const match = value.match(/^(module|function|constants|config)_(.+)$/);
+		return match ? match[2] : value;
+	};
+
 	return state.graphicHelper.codeBlocks.some(codeBlock => {
-		return codeBlock.id === id;
+		return codeBlock.id === id || parseRawId(codeBlock.id) === id;
 	});
 }
 
@@ -109,7 +114,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		x: number;
 		y: number;
 		isNew: boolean;
-		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader' | 'comment';
+		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader';
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -125,8 +130,6 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				code = ['vertexShader', '', '', 'vertexShaderEnd'];
 			} else if (blockType === 'fragmentShader') {
 				code = ['fragmentShader', '', '', 'fragmentShaderEnd'];
-			} else if (blockType === 'comment') {
-				code = ['comment', '', '', 'commentEnd'];
 			} else {
 				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
 			}
