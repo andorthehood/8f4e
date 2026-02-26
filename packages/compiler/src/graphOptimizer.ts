@@ -156,3 +156,92 @@ export default function sortModules(modules: AST[]): AST[] {
 	// Return constants blocks first, then sorted regular modules
 	return [...constantsBlocks, ...sortedRegularModules];
 }
+
+if (import.meta.vitest) {
+	const { describe, it, expect } = import.meta.vitest;
+
+	const identifierArgument = (value: string) => ({
+		type: ArgumentType.IDENTIFIER,
+		value,
+	});
+
+	const createModuleAst = (moduleId: string, references: string[] = []): AST => {
+		return [
+			{
+				lineNumber: 1,
+				instruction: 'module',
+				arguments: [identifierArgument(moduleId)],
+			},
+			...references.map((reference, index) => {
+				return {
+					lineNumber: index + 2,
+					instruction: 'int',
+					arguments: [identifierArgument(`value${index}`), identifierArgument(reference)],
+				};
+			}),
+		] as AST;
+	};
+
+	const createConstantsAst = (): AST => {
+		return [
+			{
+				lineNumber: 1,
+				instruction: 'constants',
+				arguments: [],
+			},
+		] as AST;
+	};
+
+	const getModuleId = (ast: AST): string => {
+		const moduleLine = ast.find(line => line.instruction === 'module');
+		return (moduleLine?.arguments[0]?.value as string) || 'constants';
+	};
+
+	describe('sortModules', () => {
+		it('puts constants blocks first and sorts independent modules by module id', () => {
+			const constants = createConstantsAst();
+			const beta = createModuleAst('beta');
+			const alpha = createModuleAst('alpha');
+
+			const sorted = sortModules([beta, constants, alpha]);
+
+			expect(sorted.map(getModuleId)).toEqual(['constants', 'alpha', 'beta']);
+		});
+
+		it('handles all supported intermodular reference syntaxes', () => {
+			const alpha = createModuleAst('alpha');
+			const beta = createModuleAst('beta', [
+				'$alpha.value',
+				'%alpha.value',
+				'^alpha.value',
+				'!alpha.value',
+				'&alpha.value',
+				'alpha.value&',
+			]);
+
+			const sorted = sortModules([beta, alpha]);
+
+			expect(sorted.map(getModuleId)).toEqual(['beta', 'alpha']);
+		});
+
+		it('orders module before another module that references it', () => {
+			const alpha = createModuleAst('alpha', ['&beta.value']);
+			const beta = createModuleAst('beta');
+
+			const sorted = sortModules([alpha, beta]);
+
+			expect(sorted.map(getModuleId)).toEqual(['alpha', 'beta']);
+		});
+
+		it('handles duplicate module ids deterministically', () => {
+			const first = createModuleAst('same');
+			const second = createModuleAst('same');
+
+			const sorted = sortModules([first, second]);
+
+			expect(sorted).toHaveLength(2);
+			expect(sorted[0]).toBe(first);
+			expect(sorted[1]).toBe(second);
+		});
+	});
+}

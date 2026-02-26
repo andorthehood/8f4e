@@ -25,7 +25,6 @@ Code blocks are categorized by type, which determines compilation and rendering 
 - **`function`** - Function definitions compiled separately
 - **`constants`** - Constant definitions (compiled as modules)
 - **`config`** - Stack-based configuration blocks (see config-compiler feature)
-- **`comment`** - Documentation blocks (not compiled)
 - **`vertexShader`** - GLSL vertex shader code
 - **`fragmentShader`** - GLSL fragment shader code
 - **`unknown`** - Unclassified blocks (fallback)

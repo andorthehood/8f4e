@@ -53,7 +53,11 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 			return;
 		}
 
-		const memory = state.compiler.compiledModules[codeBlock.id]?.memoryMap[slider.id];
+		if (!codeBlock.moduleId) {
+			return;
+		}
+
+		const memory = state.compiler.compiledModules[codeBlock.moduleId]?.memoryMap[slider.id];
 
 		if (!memory) {
 			return;

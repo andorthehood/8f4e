@@ -30,7 +30,7 @@ set "audioBuffer"
 
 configEnd
 
-comment
+module notes
 ; @pos 131 7
 ; A minimal audio synthesis example 
 ; that generates a sine wave 
@@ -38,7 +38,7 @@ comment
 ; and writes each sample into a 
 ; fixed-size circular audio buffer
 ; (audioout)
-commentEnd
+moduleEnd
 
 module audioout
 ; @pos 88 1

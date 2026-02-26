@@ -77,7 +77,7 @@ describe('parseGroup', () => {
 			groupName: 'funcGroup',
 			nonstick: false,
 		});
-		expect(parseGroup(['comment', '; @group commentGroup', 'commentEnd'])).toEqual({
+		expect(parseGroup(['module commentGroup', '; @group commentGroup', 'moduleEnd'])).toEqual({
 			groupName: 'commentGroup',
 			nonstick: false,
 		});
