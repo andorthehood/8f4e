@@ -118,7 +118,7 @@ export default async function generateSprite(config: Config): Promise<{
 		spriteLookups: {
 			fillColors: generateLookupForFillColors(characterWidth, characterHeight),
 			...generateLookupsForFonts(characterWidth, characterHeight),
-			feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons.feedbackScale),
+			feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons),
 			plotter: generateLookupForPlotter(characterWidth, characterHeight),
 			background: generateLookupForBackground(characterWidth, characterHeight),
 			icons: generateLookupForIcons(characterWidth, characterHeight),

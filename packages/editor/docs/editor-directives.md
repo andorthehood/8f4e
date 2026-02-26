@@ -146,6 +146,9 @@ Load a previously defined asset into a memory location.
 
 Notes:
 - Allowed in any block type.
+- Directives are evaluated in project order and use last-write-wins for duplicate paths.
+- Invalid paths/values are ignored with a console warning.
+- This is editor metadata only and does not affect compiler output.
 - `<memoryRef>` must be an `&...` memory reference.
 - Unknown asset ids are logged and skipped.
 - Multiple loads for one asset are supported, but the recommended pattern is one load per asset and sharing that memory from other modules to reduce memory usage.

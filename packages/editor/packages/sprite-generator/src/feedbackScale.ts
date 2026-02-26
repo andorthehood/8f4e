@@ -6,17 +6,30 @@ import { ColorScheme, Command, DrawingCommand } from './types';
 const offsetX = 0;
 const offsetY = 130;
 
+export function getFeedbackScaleColors(colors: ColorScheme['icons']): string[] {
+	return [
+		colors.feedbackScale0,
+		colors.feedbackScale1,
+		colors.feedbackScale2,
+		colors.feedbackScale3,
+		colors.feedbackScale4,
+		colors.feedbackScale5,
+	].filter(color => color.trim().length > 0);
+}
+
 export default function generate(
 	font: number[],
 	characterWidth: number,
 	characterHeight: number,
 	colors: ColorScheme['icons']
 ): DrawingCommand[] {
+	const feedbackScaleColors = getFeedbackScaleColors(colors);
+
 	return [
 		[Command.RESET_TRANSFORM],
 		[Command.TRANSLATE, offsetX, offsetY],
 
-		...colors.feedbackScale.flatMap<DrawingCommand>(color => {
+		...feedbackScaleColors.flatMap<DrawingCommand>(color => {
 			return [
 				[Command.FILL_COLOR, colors.outputConnectorBackground],
 				[Command.RECTANGLE, 0, 0, characterWidth * 3, characterHeight],
@@ -37,10 +50,12 @@ export default function generate(
 export const generateLookup = function (
 	characterWidth: number,
 	characterHeight: number,
-	feedbackScale: ColorScheme['icons']['feedbackScale']
+	colors: ColorScheme['icons']
 ): Record<number, SpriteCoordinates> {
+	const feedbackScaleColors = getFeedbackScaleColors(colors);
+
 	return Object.fromEntries(
-		feedbackScale.map((color, index) => {
+		feedbackScaleColors.map((_color, index) => {
 			return [
 				index,
 				{

@@ -50,45 +50,23 @@ set 50
 
 configEnd
 
-config project
+comment
 ; @pos -166 22
-; Color config
-
-scope "colorScheme"
-scope "text"
-scope "lineNumber"
-set "rgba(0,0,0,0.3)"
-rescopeTop "code"
-set "rgba(255,255,255,0.8)"
-rescopeTop "instruction"
-set "#ffffff"
-rescopeTop "numbers"
-set "#ffffff"
-rescopeTop "codeComment"
-set "rgba(0,0,0,0.5)"
-rescopeTop "menuItemTextHighlighted"
-set "#ffffff"
-
-rescope "colorScheme"
-scope "fill"
-scope "moduleBackground"
-set "rgba(255,255,255,0.2)"
-rescopeTop "wire"
-set "rgba(255,255,255,0.5)"
-rescopeTop "highlightedCodeLine"
-set "rgba(255,255,255,0.4)"
-rescopeTop "moduleBackgroundDragged"
-set "rgba(255,255,255,0.2)"
-rescopeTop "backgroundDots"
-set "rgba(255,255,255,0.1)"
-rescopeTop "backgroundDots2"
-set "rgba(255,255,255,0.3)"
-rescopeTop "menuItemBackground"
-set "rgba(255,255,255,0.2)"
-rescopeTop "menuItemBackgroundHighlighted"
-set "rgba(255,255,255,0.5)"
-
-configEnd
+; @color text.lineNumber rgba(0,0,0,0.3)
+; @color text.code rgba(255,255,255,0.8)
+; @color text.instruction #ffffff
+; @color text.numbers #ffffff
+; @color text.codeComment rgba(0,0,0,0.5)
+; @color text.menuItemTextHighlighted #ffffff
+; @color fill.moduleBackground rgba(255,255,255,0.2)
+; @color fill.wire rgba(255,255,255,0.5)
+; @color fill.highlightedCodeLine rgba(255,255,255,0.4)
+; @color fill.moduleBackgroundDragged rgba(255,255,255,0.2)
+; @color fill.backgroundDots rgba(255,255,255,0.1)
+; @color fill.backgroundDots2 rgba(255,255,255,0.3)
+; @color fill.menuItemBackground rgba(255,255,255,0.2)
+; @color fill.menuItemBackgroundHighlighted rgba(255,255,255,0.5)
+commentEnd
 
 constants env
 ; @pos -114 22
