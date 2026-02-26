@@ -1,3 +1,5 @@
+import { defaultColorScheme } from '@8f4e/sprite-generator';
+
 import type { CodeBlockGraphicData, EventDispatcher, State } from '~/types';
 
 import { Viewport } from '~/features/viewport/types';
@@ -263,7 +265,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			consoleOverlay: false,
 			positionOffsetters: true,
 		},
-		colorScheme: defaultProjectConfig.colorScheme,
+		colorScheme: defaultColorScheme,
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
