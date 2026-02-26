@@ -1,3 +1,5 @@
+import { defaultColorScheme } from '@8f4e/sprite-generator';
+
 import { defaultFeatureFlags } from './featureFlags';
 
 import { defaultEditorConfig } from '~/features/editor-config/defaults';
@@ -36,7 +38,7 @@ export default function createDefaultState() {
 			backgroundEffects: [],
 		},
 		featureFlags: defaultFeatureFlags,
-		colorScheme: defaultProjectConfig.colorScheme,
+		colorScheme: defaultColorScheme,
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
