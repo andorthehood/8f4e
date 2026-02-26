@@ -40,6 +40,7 @@ export function createCodeBlockGraphicData(
 		cursor,
 		id,
 		code: [],
+		directives: [],
 		codeColors: [],
 		codeToRender: [],
 		gaps: new Map(),

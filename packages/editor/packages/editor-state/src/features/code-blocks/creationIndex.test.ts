@@ -4,6 +4,8 @@ import createStateManager from '@8f4e/state-manager';
 import graphicHelper from './features/graphicHelper/effect';
 import codeBlockCreator from './features/codeBlockCreator/effect';
 
+import directivesEffect from '../global-directives/effect';
+
 import type { State, Project } from '~/types';
 
 import { flattenProjectForCompiler } from '~/features/program-compiler/effect';
@@ -102,6 +104,7 @@ describe('creationIndex', () => {
 	describe('projectImport', () => {
 		it('should assign creationIndex to code blocks when loading a project', () => {
 			projectImport(store, mockEvents);
+			directivesEffect(store);
 			graphicHelper(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
@@ -130,6 +133,7 @@ describe('creationIndex', () => {
 
 		it('should reset creationIndex counter when loading a new project', () => {
 			projectImport(store, mockEvents);
+			directivesEffect(store);
 			graphicHelper(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;

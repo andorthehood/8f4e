@@ -99,6 +99,7 @@ export function createMockCodeBlock(
 		cursor,
 		id,
 		code: [],
+		directives: [],
 		codeColors: [],
 		codeToRender: [],
 		gaps: new Map(),

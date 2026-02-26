@@ -6,6 +6,7 @@ import type { DataStructure } from '@8f4e/compiler';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
 import type { ContextMenu } from '../menu/types';
+import type { ParsedDirective } from '../global-directives/types';
 
 /**
  * Project-level code block structure for persistent storage.
@@ -144,6 +145,7 @@ export interface CodeBlockGraphicData {
 	width: number;
 	height: number;
 	code: string[];
+	directives: ParsedDirective[];
 	lineNumberColumnWidth: number;
 	codeToRender: number[][];
 	codeColors: Array<Array<SpriteLookup | undefined>>;

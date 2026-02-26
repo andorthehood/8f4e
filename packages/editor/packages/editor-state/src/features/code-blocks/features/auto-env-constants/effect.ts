@@ -90,7 +90,8 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		if (!targetBlock) {
 			return;
 		}
-		const existingPos = parsePos(targetBlock.code);
+
+		const existingPos = parsePos(targetBlock.directives ?? []);
 		const newCode = generateEnvConstantsBlock(state, existingPos);
 
 		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = targetBlock;
