@@ -8,8 +8,12 @@ import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 export default function updateBufferPlottersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.bufferPlotters = [];
 	parseBufferPlotters(graphicData.code).forEach(plotter => {
-		const buffer = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferMemoryId);
-		const bufferLength = resolveMemoryIdentifier(state, graphicData.id, plotter.bufferLengthMemoryId);
+		if (!graphicData.moduleId) {
+			return;
+		}
+
+		const buffer = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.bufferMemoryId);
+		const bufferLength = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.bufferLengthMemoryId);
 
 		if (!buffer) {
 			return;

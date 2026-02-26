@@ -28,7 +28,11 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 	}
 
 	offsetters.forEach(offsetter => {
-		const memory = resolveMemoryIdentifier(state, graphicData.id, offsetter.memory);
+		if (!graphicData.moduleId) {
+			return;
+		}
+
+		const memory = resolveMemoryIdentifier(state, graphicData.moduleId, offsetter.memory);
 
 		if (!memory || !memory.memory.isInteger) {
 			return;

@@ -8,7 +8,11 @@ import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 export default function updateDebuggersGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.extras.debuggers = [];
 	parseDebuggers(graphicData.code).forEach(_debugger => {
-		const memory = resolveMemoryIdentifier(state, graphicData.id, _debugger.id);
+		if (!graphicData.moduleId) {
+			return;
+		}
+
+		const memory = resolveMemoryIdentifier(state, graphicData.moduleId, _debugger.id);
 
 		if (!memory) {
 			return;
