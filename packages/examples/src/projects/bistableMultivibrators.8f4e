@@ -1,6 +1,6 @@
 8f4e/v1
 
-comment
+module notes
 ; @pos 45 5
 ; Demonstrates a bistable SR latch 
 ; (multivibrator) built from feedback 
@@ -8,7 +8,7 @@ comment
 ; inputs and scope buffers that 
 ; visualize both latch state and 
 ; derived gate output over time.
-commentEnd
+moduleEnd
 
 config project
 ; @pos -67 16
