@@ -1,5 +1,5 @@
-import parseBinaryAssetDirectives from './parseBinaryAssetDirectives';
-
+import parseBinaryAssetDefinitions from '../binary-asset-fetching/parseBinaryAssetDefinitions';
+import parseBinaryAssetLoads from '../binary-asset-loading/parseBinaryAssetLoads';
 import { info } from '../logger/logger';
 
 import type { StateManager } from '@8f4e/state-manager';
@@ -35,10 +35,11 @@ export default function binaryAssets(store: StateManager<State>, events: EventDi
 			return;
 		}
 
-		const parsed = parseBinaryAssetDirectives(state.graphicHelper.codeBlocks);
-		const loadRequests = parsed.loadDirectives
+		const definitionsById = parseBinaryAssetDefinitions(state.graphicHelper.codeBlocks);
+		const loadDirectives = parseBinaryAssetLoads(state.graphicHelper.codeBlocks);
+		const loadRequests = loadDirectives
 			.map(loadDirective => {
-				const definition = parsed.definitionsById.get(loadDirective.assetId);
+				const definition = definitionsById.get(loadDirective.assetId);
 				if (!definition) {
 					console.warn('Unknown @loadAsset id:', loadDirective.assetId);
 					return null;

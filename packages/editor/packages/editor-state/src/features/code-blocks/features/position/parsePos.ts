@@ -40,11 +40,6 @@ export default function parsePos(directives: ParsedDirective[]): PosParseResult 
 			continue;
 		}
 
-		// Keep legacy behavior: "; @pos" (without args) is ignored by the parser.
-		if (directive.argText === null) {
-			continue;
-		}
-
 		// If we already found a @pos directive, multiple exists - return undefined (invalid)
 		if (foundPos !== undefined) {
 			return undefined;

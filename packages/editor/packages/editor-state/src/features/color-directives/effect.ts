@@ -58,11 +58,6 @@ function compileColorSchemeFromDirectives(codeBlocks: CodeBlockGraphicData[]): C
 			continue;
 		}
 
-		// Keep legacy behavior: directives without an argument segment are ignored.
-		if (directive.argText === null) {
-			continue;
-		}
-
 		if (directive.args.length !== 2) {
 			console.warn('Invalid @color directive (expected: ; @color <path> <value>):', directive.rawLine);
 			continue;
