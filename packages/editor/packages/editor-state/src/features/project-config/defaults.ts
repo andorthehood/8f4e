@@ -7,5 +7,4 @@ export const defaultProjectConfig: ProjectConfig = {
 	},
 	memorySizeBytes: 1048576,
 	disableAutoCompilation: false,
-	binaryAssets: [],
 };
