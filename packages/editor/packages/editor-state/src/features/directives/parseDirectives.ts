@@ -1,15 +1,5 @@
-import type { CodeBlockGraphicData } from '~/types';
-
-export interface ParsedDirective {
-	name: string;
-	args: string[];
-	codeBlockId: string;
-	codeBlockCreationId: number;
-	lineNumber: number;
-	sourceOrder: number;
-	rawLine: string;
-	argText: string | null;
-}
+import type { CodeBlockGraphicData } from '../code-blocks/types';
+import type { ParsedDirective } from './types';
 
 export default function parseDirectives(codeBlocks: CodeBlockGraphicData[]): ParsedDirective[] {
 	const directives: ParsedDirective[] = [];

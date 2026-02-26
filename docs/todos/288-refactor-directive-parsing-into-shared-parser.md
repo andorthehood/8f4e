@@ -20,16 +20,24 @@ Current issues:
 
 ## Proposed Solution
 
-Introduce a shared directive parser in `@8f4e/editor-state` that scans code blocks and emits a normalized directive list:
+Use a state-level directive cache, maintained by a dedicated effect:
+
+- Add a `directives` field to editor-state.
+- Add a `directives` effect that subscribes to code-block code changes, reparses directives, and only updates state when the parsed directives actually changed.
+- Keep parsing logic in a shared parser utility used by the effect.
+
+The shared parser emits a normalized directive list:
 
 ```ts
 type ParsedDirective = {
 	name: string;
 	args: string[];
+	codeBlockId: string;
 	codeBlockCreationId: number;
 	lineNumber: number;
 	sourceOrder: number;
 	rawLine: string;
+	argText: string | null;
 };
 ```
 
@@ -37,7 +45,8 @@ Rules:
 - Parser is string-first (no numeric coercion in the shared layer).
 - Parses only canonical directive comments (`; @name ...`).
 - Preserves deterministic ordering via `sourceOrder`.
-- Feature handlers are responsible for type conversion and validation.
+- Feature handlers subscribe to `state.directives` and are responsible for type conversion and validation.
+- Keep directive type definitions in a dedicated directives types module to avoid type-barrel/feature cycles.
 
 ## Anti-Patterns (Optional)
 
@@ -47,19 +56,26 @@ Rules:
 
 ## Implementation Plan
 
-### Step 1: Add shared parser utility and types
-- Create shared parser function(s) under `editor-state` feature utils.
+### Step 1: Add shared parser utility and directive types
+- Create shared parser function(s) under `editor-state` directives feature.
+- Add dedicated `features/directives/types.ts` for `ParsedDirective`.
 - Return normalized `ParsedDirective[]` with source metadata.
 
-### Step 2: Migrate existing directive consumers incrementally
+### Step 2: Add directives cache effect and state field
+- Add `state.directives` to editor-state types/defaults/testing utilities.
+- Add `features/directives/effect.ts`.
+- Effect subscribes to code edits, reparses directives, and only writes state when changed.
+
+### Step 3: Migrate existing directive consumers incrementally
 - Start with `color-directives` and binary asset directive parsing.
+- Subscribe these features to `state.directives` updates.
 - Keep behavior identical (last-write-wins, skip invalid directives, same warnings).
 
-### Step 3: Expand adoption to remaining directive readers
-- Update additional directive readers (e.g., plot/scan/slider parsers) to consume shared parser output where practical.
+### Step 4: Expand adoption to remaining directive readers
+- Update additional directive readers (e.g., plot/scan/slider parsers) to consume `state.directives` where practical.
 - Remove redundant regex helpers once migrated.
 
-### Step 4: Prepare runtime settings directive migration
+### Step 5: Prepare runtime settings directive migration
 - Reuse shared parser for runtime directive handlers.
 - Keep runtime-specific argument validation in runtime-owned handlers.
 
@@ -72,22 +88,27 @@ Rules:
 
 ## Success Criteria
 
-- [ ] Shared parser produces normalized directive records with source metadata.
-- [ ] `@color` and binary asset parsing use the shared parser without behavior regressions.
-- [ ] Duplicate directive-tokenization regex logic is reduced across editor-state features.
-- [ ] Shared parser is documented and reusable for runtime directive migration.
+- [x] Shared parser produces normalized directive records with source metadata.
+- [x] `@color` and binary asset parsing use shared directive data without behavior regressions.
+- [x] State-level directive cache (`state.directives`) is maintained by a dedicated effect with change detection.
+- [ ] Duplicate directive-tokenization regex logic is reduced across all editor-state features.
+- [ ] Shared parser/cache is fully adopted for runtime directive migration.
 
 ## Affected Components
 
-- `packages/editor/packages/editor-state/src/features` - shared directive parser utility and migrated consumers
-- `packages/editor/packages/editor-state/src/features/color-directives` - parser migration
-- `packages/editor/packages/editor-state/src/features/binary-assets` - parser migration
+- `packages/editor/packages/editor-state/src/features/directives` - shared directive parser, types, and directives cache effect
+- `packages/editor/packages/editor-state/src/types.ts` - `State.directives` and directive type re-export
+- `packages/editor/packages/editor-state/src/pureHelpers/state/createDefaultState.ts` - directives default value
+- `packages/editor/packages/editor-state/src/pureHelpers/testingUtils/testUtils.ts` - directives in mock state defaults
+- `packages/editor/packages/editor-state/src/features/color-directives` - migrated to directive cache consumption
+- `packages/editor/packages/editor-state/src/features/binary-assets` - migrated to directive cache consumption
 - `packages/editor/docs/editor-directives.md` - optional parser/reference notes if needed
 
 ## Risks & Considerations
 
 - **Behavior drift risk**: Subtle regex/whitespace differences can break existing directives; preserve current behavior with regression tests.
-- **Partial migration complexity**: Mixed old/new parser paths may exist temporarily; keep migration incremental and well-scoped.
+- **Partial migration complexity**: Mixed old/new parser paths still exist for some features; keep migration incremental and well-scoped.
+- **State churn risk**: Recomputing directives on every edit can cause noisy updates unless deep-equality guard is preserved.
 - **Dependencies**: Coordinate with runtime-settings-to-directives migration to avoid conflicting parser changes.
 
 ## Related Items
@@ -97,13 +118,17 @@ Rules:
 
 ## References
 
+- `packages/editor/packages/editor-state/src/features/directives/types.ts`
+- `packages/editor/packages/editor-state/src/features/directives/parseDirectives.ts`
+- `packages/editor/packages/editor-state/src/features/directives/effect.ts`
 - `packages/editor/packages/editor-state/src/features/color-directives/effect.ts`
 - `packages/editor/packages/editor-state/src/features/binary-assets/parseBinaryAssetDirectives.ts`
-- `packages/editor/packages/editor-state/src/features/code-blocks/features/graphicHelper/gaps.ts`
+- `packages/editor/packages/editor-state/src/types.ts`
 
 ## Notes
 
 - This TODO is an infrastructure refactor and should preserve user-visible behavior.
+- Implemented shape uses a state cache (`state.directives`) instead of each feature reparsing code blocks directly.
 - Keep parser output stable and deterministic to support last-write-wins semantics.
 
 ## Archive Instructions
