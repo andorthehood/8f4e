@@ -328,7 +328,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on('spriteSheetRerendered', recomputePixelCoordinatesAndUpdateGraphics);
 	store.subscribe('codeErrors', updateErrorMessages);
-	store.subscribe('directives', populateCodeBlocks);
+	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);
