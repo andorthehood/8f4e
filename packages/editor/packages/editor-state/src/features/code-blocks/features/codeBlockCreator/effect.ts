@@ -1,6 +1,7 @@
 import { instructionParser } from '@8f4e/compiler/syntax';
 import { getModuleId } from '@8f4e/compiler/syntax';
 import { getFunctionId } from '@8f4e/compiler/syntax';
+import { getConstantsId } from '@8f4e/compiler/syntax';
 
 import { insertDependencies } from './insertDependencies';
 import parseModuleSource from './parseModuleSource';
@@ -58,8 +59,13 @@ function getRandomCodeBlockId() {
 }
 
 function checkIfCodeBlockIdIsTaken(state: State, id: string) {
+	const parseRawId = (value: string): string => {
+		const match = value.match(/^(module|function|constants|config)_(.+)$/);
+		return match ? match[2] : value;
+	};
+
 	return state.graphicHelper.codeBlocks.some(codeBlock => {
-		return codeBlock.id === id;
+		return codeBlock.id === id || parseRawId(codeBlock.id) === id;
 	});
 }
 
@@ -109,7 +115,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		x: number;
 		y: number;
 		isNew: boolean;
-		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader' | 'comment';
+		blockType?: 'module' | 'function' | 'vertexShader' | 'fragmentShader';
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -125,8 +131,6 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				code = ['vertexShader', '', '', 'vertexShaderEnd'];
 			} else if (blockType === 'fragmentShader') {
 				code = ['fragmentShader', '', '', 'fragmentShaderEnd'];
-			} else if (blockType === 'comment') {
-				code = ['comment', '', '', 'commentEnd'];
 			} else {
 				code = ['module ' + getRandomCodeBlockId(), '', '', 'moduleEnd'];
 			}
@@ -195,6 +199,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			},
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
 			id: getCodeBlockId(code),
+			moduleId: getModuleId(code) || getConstantsId(code) || undefined,
 			gaps: new Map(),
 			gridX,
 			gridY,

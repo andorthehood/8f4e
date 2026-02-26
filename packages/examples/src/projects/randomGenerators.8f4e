@@ -1,6 +1,6 @@
 8f4e/v1
 
-comment
+module notes
 ; @pos 62 19
 ; @home
 ; Two different approaches
@@ -10,7 +10,7 @@ comment
 ; and
 ; an XORShift algorithm
 ; implemented in 8f4e.
-commentEnd
+moduleEnd
 
 config project
 ; @pos -84 2
