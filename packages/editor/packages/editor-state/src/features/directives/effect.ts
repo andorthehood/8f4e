@@ -1,6 +1,7 @@
 import { StateManager } from '@8f4e/state-manager';
 
 import parseDirectives from './parseDirectives';
+
 import deepEqual from '../config-compiler/utils/deepEqual';
 
 import type { State } from '~/types';
