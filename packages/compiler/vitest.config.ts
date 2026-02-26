@@ -5,6 +5,8 @@ export default defineConfig(
 	createNodePreset({
 		include: [
 			'tests/**/*.test.ts',
+			'src/graphOptimizer.ts',
+			'src/withValidation/**/*.ts',
 			'src/wasmUtils/**/*.ts',
 			'src/wasmBuilders/**/*.ts',
 			'src/astUtils/**/*.ts',
