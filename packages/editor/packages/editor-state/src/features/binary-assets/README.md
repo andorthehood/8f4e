@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Manages binary asset loading into runtime memory from config-defined URLs. This feature handles the collection of binary assets (images, audio files, etc.) that are used by the 8f4e program.
+Manages binary asset loading into runtime memory from editor directives. This feature handles the collection of binary assets (images, audio files, etc.) used by the 8f4e program.
 
 ⚠️ **Status**: Work in progress - API and behavior may change.
 
@@ -10,6 +10,7 @@ Manages binary asset loading into runtime memory from config-defined URLs. This 
 
 - **Memory Loading**: Handles loading binary assets into runtime memory via the `loadBinaryAssetIntoMemory` callback
 - **Asset Collection**: Maintains the list of loaded assets in `state.binaryAssets`
+- **Directive Source**: Derives assets from `; @defAsset <id> <url>` and `; @loadAsset <id> <memoryRef>` directives
 
 ## Events & Callbacks
 
@@ -40,3 +41,5 @@ Manages binary asset loading into runtime memory from config-defined URLs. This 
 
 - Currently in WIP status - implementation details may change
 - Asset loading is triggered automatically when runtime memory is recreated
+- Duplicate `@defAsset` ids use last-write-wins semantics
+- Unknown `@loadAsset` ids are logged and skipped

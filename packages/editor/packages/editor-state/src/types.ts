@@ -26,7 +26,7 @@ import type {
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
 import type { ConfigCompilationResult } from './features/config-compiler/types';
 import type { EditorConfig, EditorConfigBlock } from './features/editor-config/types';
-import type { ConfigBinaryAsset, ProjectConfig } from './features/project-config/types';
+import type { ProjectConfig } from './features/project-config/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
 import type { Compiler, CompilationResult } from './features/program-compiler/types';
@@ -85,7 +85,7 @@ export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
 export type { Compiler, CompilationResult };
 
 // Re-export config types
-export type { ConfigCompilationResult, ConfigBinaryAsset, ProjectConfig, EditorConfig, EditorConfigBlock };
+export type { ConfigCompilationResult, ProjectConfig, EditorConfig, EditorConfigBlock };
 
 // Re-export runtime types
 export type {

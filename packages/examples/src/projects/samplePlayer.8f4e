@@ -1,43 +1,6 @@
 8f4e/v1
 
 config project
-; @pos -9 -63
-
-rescope "binaryAssets[]"
-
-const PROTOCOL "https://"
-const DOMAIN "llllllllllll.com"
-const SUBDOMAIN "static"
-const PATH "/andor/8f4e/"
-const SAMPLE "amen"
-const BPM "170bpm"
-const RES "8bit"
-const SIGNEDNESS "unsigned"
-const EXT ".pcm"
-
-scope "url"
-push PROTOCOL
-push SUBDOMAIN
-push "."
-push DOMAIN
-push PATH
-push SAMPLE
-push "_"
-push BPM
-push "_"
-push RES
-push "_"
-push SIGNEDNESS
-push EXT
-concat
-set
-
-rescopeTop "memoryId"
-set "pcmPlayer8bit.buffer"
-
-configEnd
-
-config project
 ; @pos -53 -63
 
 rescope "exportFileName"
@@ -95,6 +58,12 @@ comment
 ; right audio channels.
 commentEnd
 
+module assets
+; @pos -107 -70
+; @defAsset amen https://static.llllllllllll.com/andor/8f4e/amen_170bpm_8bit_unsigned.pcm
+
+moduleEnd
+
 module audioout
 ; @pos 130 -63
 use env
@@ -140,7 +109,7 @@ constants env
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/19/2026, 1:40:31 PM
+; Last updated: 2/26/2026, 1:22:04 PM
 
 const SAMPLE_RATE 44100
 const INV_SAMPLE_RATE 0.000022675736961451248
@@ -148,20 +117,21 @@ const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
 ; 'amen_170bpm_8bit_unsigned.pcm'
-const ASSET_0_SIZE 62258
+const ASSET_AMEN_SIZE 62258
 
 constantsEnd
 
 module pcmPlayer8bit
-; @pos 92 -63
+; @pos 91 -63
 ; @home
 use env
 
-int8u[] buffer ASSET_0_SIZE
+int8u[] buffer ASSET_AMEN_SIZE
+; @loadAsset amen &buffer
 int playhead &buffer
 float out
 int startPos 0
-int endPos ASSET_0_SIZE
+int endPos ASSET_AMEN_SIZE
 
 ; @scan buffer playhead
 
